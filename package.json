@@ -27,6 +27,18 @@
     "prettier": "^1.19.1",
     "react-test-renderer": "16.9.0"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ]
+  },
   "jest": {
     "preset": "react-native"
   }

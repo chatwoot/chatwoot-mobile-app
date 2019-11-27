@@ -20,7 +20,9 @@
     "babel-jest": "^24.9.0",
     "eslint": "^6.5.1",
     "eslint-plugin-prettier": "^3.1.1",
+    "husky": "^3.1.0",
     "jest": "^24.9.0",
+    "lint-staged": "^9.5.0",
     "metro-react-native-babel-preset": "^0.56.0",
     "prettier": "^1.19.1",
     "react-test-renderer": "16.9.0"

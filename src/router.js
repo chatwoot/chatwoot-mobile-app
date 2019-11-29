@@ -1,18 +1,18 @@
 import React from 'react';
-import {createAppContainer} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
-import Home from './screens/Home/Home';
+import HomeScreen from './screens/HomeScreen/HomeScreen';
 
-const createNavigationStack = ({initialRouteName}) =>
+const createNavigationStack = ({ initialRouteName }) =>
   createStackNavigator({
-    Home: {screen: Home},
+    Home: { screen: HomeScreen },
   });
 
 class RootApp extends React.Component {
   render() {
     const App = createAppContainer(
-      createNavigationStack({initialRouteName: 'Home'}),
+      createNavigationStack({ initialRouteName: 'Home' }),
     );
     return <App />;
   }

@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 import locale from './locale';
 
 const rootReducer = combineReducers({

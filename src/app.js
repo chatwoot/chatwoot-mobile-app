@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {Provider} from 'react-redux';
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
 
-import {PersistGate} from 'redux-persist/integration/react';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import Router from './router';
-import {store, persistor} from './store';
+import { store, persistor } from './store';
 
 export default class Chatwoot extends Component {
   render() {

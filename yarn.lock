@@ -662,6 +662,21 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@eva-design/dss@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@eva-design/dss/-/dss-1.2.0.tgz#a7043fb0c7042fddabe46affd10faa0bcbb601eb"
+  integrity sha512-iBmaj33uniTENTvt54lrgU+qxkURh1oAGZeG11tuEOV4muhqFKOUeH7LvvgGeOVPfNOkOmPZR2hpJD77v+iiaw==
+
+"@eva-design/eva@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@eva-design/eva/-/eva-1.2.0.tgz#dc7714f31b7abfd928a8a3cefc28726a506afc60"
+  integrity sha512-6yXXCTaYUozHJmn1ksi/JBFCt2JFd1glgKuimT8BRcocaXNGHcmYPyPLpIDpcP0VZ+LyQr5cMMC0hzf3OXUlqQ==
+
+"@eva-design/processor@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@eva-design/processor/-/processor-1.2.0.tgz#8a064d41061810b8da3d7a813ae5b4da7c996ff0"
+  integrity sha512-UDx+c8B9GOUY/ccrAE+0D3cN6Mz51i2Ihy7fyi4NWOmL1MM7CgOy52RrMCpj/zUvdU64mOSIvlLVgTJ7lj4bLA==
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
@@ -1209,6 +1224,11 @@ acorn@^7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.1.0.tgz#949d36f2c292535da602283586c2477c57eb2d6c"
   integrity sha512-kL5CuoXA/dgxlBbVrflsflzQ3PAas7RYZB52NOm/6839iVYJgKMJ3cQJD+t2i5+qFa8h3MDpEOJiS64E8JLnSQ==
+
+add@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/add/-/add-2.0.6.tgz#248f0a9f6e5a528ef2295dbeec30532130ae2235"
+  integrity sha1-JI8Kn25aUo7yKV2+7DBTITCuIjU=
 
 aggregate-error@^3.0.0:
   version "3.0.1"
@@ -2856,6 +2876,11 @@ fbjs@^1.0.0:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.18"
 
+fecha@3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/fecha/-/fecha-3.0.3.tgz#fabbd416497649a42c24d34bfa726b579203a1e2"
+  integrity sha512-6LQK/1jud/FZnfEEZJ7y81vw7ge81DNd/XEsX0hgMUjhS+QMljkb1C0czBaP7dMNRVrd5mw/J2J7qI2Nw+TWZw==
+
 figures@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/figures/-/figures-1.7.0.tgz#cbe1e3affcf1cd44b80cadfed28dc793a9701d2e"
@@ -3258,7 +3283,7 @@ hoist-non-react-statics@^2.3.1:
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
   integrity sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==
 
-hoist-non-react-statics@^3.0.1, hoist-non-react-statics@^3.3.0:
+hoist-non-react-statics@^3.0.1, hoist-non-react-statics@^3.2.1, hoist-non-react-statics@^3.3.0:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#101685d3aff3b23ea213163f6e8e12f4f111e19f"
   integrity sha512-wbg3bpgA/ZqWrZuMOeJi8+SKMhr7X9TesL/rXMjTzh0p0JUBo3II8DHboYbuIXWRlttrUFxwcu/5kygrCw8fJw==
@@ -4449,6 +4474,11 @@ locate-path@^5.0.0:
   integrity sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==
   dependencies:
     p-locate "^4.1.0"
+
+lodash.merge@^4.6.1:
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
+  integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
 lodash.sortby@^4.7.0:
   version "4.7.0"
@@ -5789,6 +5819,17 @@ react-native-safe-area-view@^0.14.1:
   integrity sha512-tOxHGQUN83MTmQB4ghoQkibqOdGiX4JQEmeyEv96MKWO/x8T2PJv84ECUos9hD3blPRQwVwSpAid1PPPhrVEaw==
   dependencies:
     debounce "^1.2.0"
+
+react-native-ui-kitten@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-ui-kitten/-/react-native-ui-kitten-4.2.0.tgz#f8992d4a664d93fc9a3076e5d24fca49ae2fb05e"
+  integrity sha512-3ml/hENusELwY7QtwTfl9Kd3qDaWvSNc3reIujBZniX961fJGRMnVRaEYIETFBm/aG6lN0y4Eu2El3geagcGWg==
+  dependencies:
+    "@eva-design/dss" "^1.2.0"
+    "@eva-design/processor" "^1.2.0"
+    fecha "3.0.3"
+    hoist-non-react-statics "^3.2.1"
+    lodash.merge "^4.6.1"
 
 react-native@0.61.5:
   version "0.61.5"
@@ -7454,3 +7495,8 @@ yargs@^9.0.0:
     which-module "^2.0.0"
     y18n "^3.2.1"
     yargs-parser "^7.0.0"
+
+yarn@^1.19.2:
+  version "1.19.2"
+  resolved "https://registry.yarnpkg.com/yarn/-/yarn-1.19.2.tgz#cf5fc9b24ad97a11c65d7cb0b2ac945eb936122f"
+  integrity sha512-OdLN/K/sA+KnW4ggNQwHYK6YJdLkSWxbx6IYd+WIQJ6xDfk8CIYKckBfwGxTBmDaEluWs83InzjFCmUqPtpY+w==

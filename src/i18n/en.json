@@ -1,3 +1,12 @@
 {
-  "WELCOME": "Welcome"
+  "WELCOME": "Welcome",
+  "LOGIN": {
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "EMAIL_ERROR": "Enter a valid email",
+    "PASSWORD_ERROR": "Enter a valid password",
+    "LOGIN": "Login",
+    "FORGOT_PASSWORD": "Forgot Password? ",
+    "RESET_HERE": "Reset here"
+  }
 }

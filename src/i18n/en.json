@@ -7,6 +7,10 @@
     "PASSWORD_ERROR": "Enter a valid password",
     "LOGIN": "Login",
     "FORGOT_PASSWORD": "Forgot Password? ",
-    "RESET_HERE": "Reset here"
+    "RESET_HERE": "Reset here",
+    "NO_ACCOUNT": "Don't have an account?",
+    "CREATE_ACCOUNT": "Create an account here",
+    "SETTINGS": "Settings",
+    "TERMS": "Terms & Conditions"
   }
 }

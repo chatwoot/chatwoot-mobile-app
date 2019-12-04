@@ -1,19 +1,27 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-const deviceWidth = Dimensions.get('window').width;
+// const deviceWidth = Dimensions.get('window').width;
 
 export default StyleSheet.create({
   mainView: {
     flex: 1,
   },
   logoView: {
+    flex: 2,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 104,
   },
   logo: {
-    width: deviceWidth * 0.5,
-    height: deviceWidth * 0.218,
+    // width: deviceWidth * 0.9,
+    // height: deviceWidth * 0.19,
+    flex: 1,
+    width: 315,
+    height: 900,
+    resizeMode: 'contain',
+  },
+  contentView: {
+    flex: 3,
   },
   formView: {
     paddingLeft: 40,
@@ -58,7 +66,6 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   loginButton: {
-    // backgroundColor: '#38B1BD',
     flex: 1,
   },
   loginButtonText: {

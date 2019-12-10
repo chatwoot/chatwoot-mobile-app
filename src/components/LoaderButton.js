@@ -1,28 +1,38 @@
+import { Button } from 'react-native-ui-kitten';
 import React, { Component } from 'react';
+import { ActivityIndicator } from 'react-native';
 
-import { Spinner, Text, Button } from 'react-native-ui-kitten';
+import { theme } from '../theme';
 
-import styles from './LoaderButton.style';
+export default class LoaderButton extends Component {
+  renderChildren() {
+    const { loading, children } = this.props;
 
-export default class LoadingButton extends Component {
-  renderText() {
-    const { loading, placeholder } = this.props;
-    if (!loading) {
-      return <Text style={styles.loginButtonText}>{placeholder}</Text>;
+    if (loading) {
+      return null;
     }
-    return <Spinner />;
+
+    return children;
+  }
+
+  renderLoading() {
+    return <ActivityIndicator color={theme.loaderColor} />;
   }
 
   render() {
-    const { loading, onPress, style } = this.props;
+    const { loading } = this.props;
 
+    const customProps = {};
+
+    if (loading) {
+      Object.assign(customProps, {
+        icon: () => this.renderLoading(),
+        disabled: true,
+      });
+    }
     return (
-      <Button
-        style={[styles.loginButton, style]}
-        disabled={loading}
-        onPress={() => onPress()}>
-        {' '}
-        {this.renderText()}
+      <Button {...this.props} {...customProps}>
+        {this.renderChildren()}
       </Button>
     );
   }

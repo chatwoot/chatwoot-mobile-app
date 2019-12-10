@@ -1,6 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
-
-// const deviceWidth = Dimensions.get('window').width;
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   mainView: {
@@ -13,8 +11,6 @@ export default StyleSheet.create({
     marginTop: 104,
   },
   logo: {
-    // width: deviceWidth * 0.9,
-    // height: deviceWidth * 0.19,
     flex: 1,
     width: 315,
     height: 900,
@@ -66,6 +62,9 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   loginButton: {
+    color: 'white',
+    fontWeight: '500',
+    fontSize: 16,
     flex: 1,
   },
   loginButtonText: {

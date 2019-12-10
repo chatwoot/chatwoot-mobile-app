@@ -1,10 +1,10 @@
 import { light as lightTheme } from '@eva-design/eva';
 
+const primaryColor = '#1f93ff';
+
 export const theme = {
   ...lightTheme,
-  'color-primary-100': '#1f93ff',
-  'color-primary-200': '#1f93ff',
-  'color-primary-300': '#1f93ff',
-  'color-primary-400': '#1f93ff',
-  'color-primary-500': '#1f93ff',
+  'color-primary-default': primaryColor,
+  'color-primary-active': primaryColor,
+  loaderColor: '#ffff',
 };

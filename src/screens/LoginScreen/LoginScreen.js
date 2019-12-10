@@ -59,17 +59,17 @@ class LoginScreen extends Component {
   }
 
   doLogin() {
-    // this.setState({
-    //   isLoggingIn: true,
-    // });
-    // setTimeout(() => {
-    //   this.setState({
-    //     isLoggingIn: false,
-    //   });
-    // }, 2000);
+    this.setState({
+      isLoggingIn: true,
+    });
+    setTimeout(() => {
+      this.setState({
+        isLoggingIn: false,
+      });
+    }, 2000);
+
     const value = this.formRef.getValue();
     if (value) {
-      // this.props.onLogin(value);
     }
   }
 
@@ -102,13 +102,17 @@ class LoginScreen extends Component {
                 </Text>
               </TouchableOpacity>
             </View>
+
             <View style={styles.loginButtonView}>
               <LoaderButton
                 style={styles.loginButton}
                 loading={isLoggingIn}
-                placeholder={i18n.t('LOGIN.LOGIN')}
-                onPress={() => this.doLogin()}
-              />
+                onPress={() => this.doLogin()}>
+                <Text style={styles.loginButtonText}>
+                  {i18n.t('LOGIN.LOGIN')}
+                </Text>
+                {''}
+              </LoaderButton>
             </View>
           </View>
 

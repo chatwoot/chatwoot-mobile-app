@@ -108,14 +108,14 @@ class LoginScreen extends Component {
           <View>
             <View style={styles.forgotView}>
               <TouchableOpacity>
-                <Text style={styles.textStyle} category="h1">
+                <Text style={styles.textStyle}>
                   {i18n.t('LOGIN.FORGOT_PASSWORD')}
                 </Text>
               </TouchableOpacity>
             </View>
             <View style={styles.accountView}>
               <TouchableOpacity>
-                <Text style={styles.textStyle} category="h1">
+                <Text style={styles.textStyle}>
                   {i18n.t('LOGIN.CREATE_ACCOUNT')}
                 </Text>
               </TouchableOpacity>

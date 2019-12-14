@@ -45,14 +45,14 @@ export default StyleSheet.create({
   },
 
   accountView: {
-    paddingTop: 16,
+    paddingTop: 32,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
 
   forgotView: {
-    paddingTop: 16,
+    paddingTop: 32,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

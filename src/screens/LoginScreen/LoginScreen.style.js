@@ -19,12 +19,12 @@ export default StyleSheet.create({
     resizeMode: 'contain',
   },
   contentView: {
-    flex: 3,
+    flex: 6,
   },
   formView: {
     paddingLeft: 40,
     paddingRight: 40,
-    marginTop: 24,
+    marginTop: 48,
   },
 
   textStyle: {
@@ -33,7 +33,7 @@ export default StyleSheet.create({
     fontWeight: theme['font-medium'],
   },
   loginButtonView: {
-    paddingTop: 16,
+    paddingTop: 32,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -44,14 +44,8 @@ export default StyleSheet.create({
     flex: 1,
   },
 
-  loginButtonText: {
-    color: 'white',
-    fontWeight: theme['font-medium'],
-    fontSize: theme['text-button-size'],
-  },
-
   accountView: {
-    paddingTop: 8,
+    paddingTop: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

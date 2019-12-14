@@ -98,11 +98,9 @@ class LoginScreen extends Component {
               <LoaderButton
                 style={styles.loginButton}
                 loading={isLoggingIn}
-                onPress={() => this.doLogin()}>
-                <Text style={styles.loginButtonText}>
-                  {i18n.t('LOGIN.LOGIN')}
-                </Text>
-                {''}
+                onPress={() => this.doLogin()}
+                size="large">
+                {i18n.t('LOGIN.LOGIN')}
               </LoaderButton>
             </View>
           </View>

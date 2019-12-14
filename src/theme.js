@@ -80,8 +80,9 @@ export const theme = {
   'color-danger-transparent-600': 'rgba(255, 72, 48, 0.48)',
 
   'loader-color': '#ffff',
+  'color-basic-transparent-300': '$color-primary-500',
 
-  'color-primary-disabled': '$color-primary-500',
+  'color-primary-active': '$color-primary-500',
 
   // Text color
   'text-primary-color': '#989898',

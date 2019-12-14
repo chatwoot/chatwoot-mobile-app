@@ -5,7 +5,7 @@ import { Layout, Text } from 'react-native-ui-kitten';
 import t from 'tcomb-form-native';
 
 import styles from './LoginScreen.style';
-import { Email, PasswordFormat } from '../../helpers/formHelper';
+import { Email, Password } from '../../helpers/formHelper';
 import TextInputField from '../../components/TextInputField';
 import images from '../../constants/images';
 
@@ -15,7 +15,7 @@ import LoaderButton from '../../components/LoaderButton';
 const { Form } = t.form;
 const LoginForm = t.struct({
   username: Email,
-  password: PasswordFormat,
+  password: Password,
 });
 
 class LoginScreen extends Component {
@@ -81,6 +81,7 @@ class LoginScreen extends Component {
         <View style={styles.logoView}>
           <Image style={styles.logo} source={images.appLogo} />
         </View>
+
         <View style={styles.contentView}>
           <View style={styles.formView}>
             <Form
@@ -92,16 +93,6 @@ class LoginScreen extends Component {
               value={values}
               onChange={value => this.onChange(value)}
             />
-            <View style={styles.forgotView}>
-              <TouchableOpacity style={styles.forgotPasswordButton}>
-                <Text style={styles.textStyle}>
-                  {i18n.t('LOGIN.FORGOT_PASSWORD')}
-                  <Text style={styles.resetText}>
-                    {i18n.t('LOGIN.RESET_HERE')}
-                  </Text>
-                </Text>
-              </TouchableOpacity>
-            </View>
 
             <View style={styles.loginButtonView}>
               <LoaderButton
@@ -117,27 +108,17 @@ class LoginScreen extends Component {
           </View>
 
           <View>
-            <View style={styles.accountView}>
+            <View style={styles.forgotView}>
               <TouchableOpacity>
-                <Text style={styles.textStyle}>
-                  {i18n.t('LOGIN.NO_ACCOUNT')}
-
-                  <Text style={styles.accountText}>
-                    {' '}
-                    {i18n.t('LOGIN.CREATE_ACCOUNT')}
-                  </Text>
+                <Text style={styles.textStyle} category="h1">
+                  {i18n.t('LOGIN.FORGOT_PASSWORD')}
                 </Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.termsPrivacyView}>
+            <View style={styles.accountView}>
               <TouchableOpacity>
-                <Text style={styles.textStyle}> {i18n.t('LOGIN.TERMS')}</Text>
-              </TouchableOpacity>
-              <Text style={styles.textStyle}> | </Text>
-              <TouchableOpacity onPress={this.openSettings}>
-                <Text style={styles.textStyle}>
-                  {' '}
-                  {i18n.t('LOGIN.SETTINGS')}{' '}
+                <Text style={styles.textStyle} category="h1">
+                  {i18n.t('LOGIN.CREATE_ACCOUNT')}
                 </Text>
               </TouchableOpacity>
             </View>

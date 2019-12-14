@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import { theme } from '../../theme';
+
 export default StyleSheet.create({
   mainView: {
     flex: 1,
@@ -25,14 +27,10 @@ export default StyleSheet.create({
     marginTop: 24,
   },
 
-  forgotView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  forgotPasswordButton: {
-    alignItems: 'flex-end',
-    flex: 1,
+  textStyle: {
+    fontSize: theme['text-primary-size'],
+    color: theme['text-primary-color'],
+    fontWeight: theme['font-medium'],
   },
   loginButtonView: {
     paddingTop: 16,
@@ -41,39 +39,25 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
 
-  textStyle: {
-    fontSize: 12,
-    color: '#989898',
+  loginButton: {
+    color: 'white',
+    flex: 1,
   },
-  accountText: {
-    fontSize: 12,
-    color: '#989898',
-    fontWeight: '500',
+
+  loginButtonText: {
+    color: 'white',
+    fontWeight: theme['font-medium'],
+    fontSize: theme['text-button-size'],
   },
-  resetText: {
-    fontSize: 12,
-    color: '#989898',
-    fontWeight: '500',
-  },
+
   accountView: {
-    paddingTop: 16,
+    paddingTop: 8,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  loginButton: {
-    color: 'white',
-    fontWeight: '500',
-    fontSize: 16,
-    flex: 1,
-  },
-  loginButtonText: {
-    color: 'white',
-    fontWeight: '500',
-    fontSize: 16,
-  },
 
-  termsPrivacyView: {
+  forgotView: {
     paddingTop: 16,
     flexDirection: 'row',
     alignItems: 'center',

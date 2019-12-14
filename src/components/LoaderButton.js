@@ -16,7 +16,7 @@ export default class LoaderButton extends Component {
   }
 
   renderLoading() {
-    return <ActivityIndicator color={theme.loaderColor} />;
+    return <ActivityIndicator color={theme['loader-color']} />;
   }
 
   render() {

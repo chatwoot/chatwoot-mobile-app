@@ -1,29 +1,32 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import { Text } from 'react-native-ui-kitten';
 import { TextInput, StyleSheet } from 'react-native';
+
+import { theme } from '../theme';
 
 const styles = StyleSheet.create({
   textViewError: {
     borderWidth: 1,
-    borderColor: '#ed2f2f',
+    borderColor: theme['color-danger-900'],
     borderRadius: 4,
     marginTop: 10,
   },
   label: {
-    color: '#989898',
+    color: theme['text-primary-color'],
     paddingBottom: 6,
-    fontSize: 12,
+    fontSize: 14,
   },
   errorLabel: {
-    color: '#ed2f2f',
+    color: theme['color-danger-900'],
     textAlign: 'left',
     paddingTop: 2,
     paddingBottom: 2,
-    fontSize: 12,
+    fontSize: theme['text-primary-size'],
   },
   inputStyle: {
-    fontSize: 12,
-    color: '#989898',
+    fontSize: theme['text-primary-size'],
+    color: theme['text-primary-color'],
     paddingTop: 4,
     paddingLeft: 4,
     paddingRight: 4,
@@ -34,15 +37,15 @@ const styles = StyleSheet.create({
     height: 40,
   },
   errorInputStyle: {
-    fontSize: 12,
-    color: '#989898',
+    fontSize: theme['text-primary-size'],
+    color: theme['text-primary-color'],
     paddingTop: 4,
     paddingLeft: 4,
     paddingRight: 4,
     paddingBottom: 4,
     borderWidth: 1,
     borderRadius: 4,
-    borderColor: '#ed2f2f',
+    borderColor: theme['color-danger-900'],
     height: 40,
   },
 });
@@ -72,9 +75,7 @@ export default function TextInputField(locals) {
         onSelectionChange={locals.onSelectionChange}
         onSubmitEditing={locals.onSubmitEditing}
         onContentSizeChange={locals.onContentSizeChange}
-        placeholderTextColor={
-          locals.placeholderTextColor ? locals.placeholderTextColor : '#999999'
-        }
+        placeholderTextColor={theme['text-primary-color']}
         secureTextEntry={locals.secureTextEntry}
         selectTextOnFocus={locals.selectTextOnFocus}
         selectionColor={locals.selectionColor}

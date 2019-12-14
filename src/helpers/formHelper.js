@@ -25,7 +25,7 @@ export const isStringPassword = password => {
   const re = passwordRegex;
   return re.test(password);
 };
-export const PasswordFormat = t.refinement(t.String, password =>
+export const Password = t.refinement(t.String, password =>
   isStringPassword(password),
 );
 

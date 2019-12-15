@@ -88,6 +88,17 @@ export const theme = {
   'text-primary-color': '#989898',
   'text-primary-size': 14,
   'text-button-size': 18,
+
+  // Input
+  'input-border-color': '#c0ccda',
+
+  // Button
+  'button-color': '#ffff',
+  'button-font-size': 18,
+
+  // Font Family
+  'font-family': 'Inter',
+
   // Font Weight
   'font-thin': '100',
   'font-ultra-light': '200',

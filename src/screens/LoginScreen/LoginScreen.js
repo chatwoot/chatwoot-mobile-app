@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { View, Image, TouchableOpacity } from 'react-native';
-import { Layout, Text } from 'react-native-ui-kitten';
+import { Layout } from 'react-native-ui-kitten';
 import t from 'tcomb-form-native';
 
 import styles from './LoginScreen.style';
@@ -11,6 +11,8 @@ import images from '../../constants/images';
 
 import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
+
+import Text from '../../components/Text';
 
 const { Form } = t.form;
 const LoginForm = t.struct({
@@ -99,7 +101,8 @@ class LoginScreen extends Component {
                 style={styles.loginButton}
                 loading={isLoggingIn}
                 onPress={() => this.doLogin()}
-                size="large">
+                size="large"
+                textStyle={styles.loginButtonText}>
                 {i18n.t('LOGIN.LOGIN')}
               </LoaderButton>
             </View>

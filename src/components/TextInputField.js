@@ -1,21 +1,22 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Text } from 'react-native-ui-kitten';
 import { TextInput, StyleSheet } from 'react-native';
 
 import { theme } from '../theme';
+import Text from './Text';
 
 const styles = StyleSheet.create({
   textViewError: {
     borderWidth: 1,
     borderColor: theme['color-danger-900'],
     borderRadius: 4,
-    marginTop: 10,
+    marginTop: 8,
   },
   label: {
     color: theme['text-primary-color'],
     paddingBottom: 6,
-    fontSize: 14,
+    fontSize: theme['text-primary-size'],
+    fontWeight: theme['font-medium'],
   },
   errorLabel: {
     color: theme['color-danger-900'],
@@ -33,8 +34,8 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
     borderWidth: 1,
     borderRadius: 4,
-    borderColor: '#E9E9E9',
-    height: 40,
+    borderColor: theme['input-border-color'],
+    height: 48,
   },
   errorInputStyle: {
     fontSize: theme['text-primary-size'],
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     borderColor: theme['color-danger-900'],
-    height: 40,
+    height: 48,
   },
 });
 

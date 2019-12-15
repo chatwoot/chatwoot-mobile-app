@@ -40,8 +40,13 @@ export default StyleSheet.create({
   },
 
   loginButton: {
-    color: 'white',
     flex: 1,
+  },
+  loginButtonText: {
+    color: theme['button-color'],
+    fontFamily: theme['font-family'],
+    fontWeight: theme['font-medium'],
+    fontSize: theme['button-font-size'],
   },
 
   accountView: {

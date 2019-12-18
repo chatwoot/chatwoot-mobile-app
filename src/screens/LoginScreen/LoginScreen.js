@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { View, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity, Text } from 'react-native';
 import { Layout } from 'react-native-ui-kitten';
 import t from 'tcomb-form-native';
 
@@ -12,7 +12,7 @@ import images from '../../constants/images';
 import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
 
-import Text from '../../components/Text';
+import CustomText from '../../components/Text';
 
 const { Form } = t.form;
 const LoginForm = t.struct({
@@ -111,16 +111,16 @@ class LoginScreen extends Component {
           <View>
             <View style={styles.forgotView}>
               <TouchableOpacity>
-                <Text style={styles.textStyle}>
+                <CustomText style={styles.textStyle}>
                   {i18n.t('LOGIN.FORGOT_PASSWORD')}
-                </Text>
+                </CustomText>
               </TouchableOpacity>
             </View>
             <View style={styles.accountView}>
               <TouchableOpacity>
-                <Text style={styles.textStyle}>
+                <CustomText style={styles.textStyle}>
                   {i18n.t('LOGIN.CREATE_ACCOUNT')}
-                </Text>
+                </CustomText>
               </TouchableOpacity>
             </View>
           </View>

@@ -32,6 +32,11 @@ export default StyleSheet.create({
     color: theme['text-primary-color'],
     fontWeight: theme['font-medium'],
   },
+  textStyle1: {
+    fontSize: theme['text-primary-size'],
+    color: theme['text-primary-color'],
+    fontWeight: theme['font-bold'],
+  },
   loginButtonView: {
     paddingTop: 32,
     flexDirection: 'row',
@@ -44,7 +49,7 @@ export default StyleSheet.create({
   },
   loginButtonText: {
     color: theme['button-color'],
-    fontFamily: theme['font-family'],
+    fontFamily: 'Inter-Medium',
     fontWeight: theme['font-medium'],
     fontSize: theme['button-font-size'],
   },

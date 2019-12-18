@@ -85,7 +85,7 @@ export const theme = {
   'color-primary-active': '$color-primary-500',
 
   // Text color
-  'text-primary-color': '#989898',
+  'text-primary-color': '#6e6f73',
   'text-primary-size': 14,
   'text-button-size': 18,
 

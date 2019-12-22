@@ -14,7 +14,7 @@ export default StyleSheet.create({
   },
   logo: {
     flex: 1,
-    width: 315,
+    width: 335,
     height: 900,
     resizeMode: 'contain',
   },
@@ -31,11 +31,6 @@ export default StyleSheet.create({
     fontSize: theme['text-primary-size'],
     color: theme['text-primary-color'],
     fontWeight: theme['font-medium'],
-  },
-  textStyle1: {
-    fontSize: theme['text-primary-size'],
-    color: theme['text-primary-color'],
-    fontWeight: theme['font-bold'],
   },
   loginButtonView: {
     paddingTop: 32,

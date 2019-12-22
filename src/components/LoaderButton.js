@@ -1,10 +1,11 @@
-import { Button } from 'react-native-ui-kitten';
+import { Button as UIKittenButton } from 'react-native-ui-kitten';
+
 import React, { Component } from 'react';
 import { ActivityIndicator } from 'react-native';
 
 import { theme } from '../theme';
 
-export default class LoaderButton extends Component {
+export default class Button extends Component {
   renderChildren() {
     const { loading, children } = this.props;
 
@@ -21,19 +22,18 @@ export default class LoaderButton extends Component {
 
   render() {
     const { loading } = this.props;
-
-    const customProps = {};
-
+    let customProps;
     if (loading) {
-      Object.assign(customProps, {
+      customProps = {
         icon: () => this.renderLoading(),
         disabled: true,
-      });
+      };
     }
+
     return (
-      <Button {...this.props} {...customProps}>
+      <UIKittenButton {...this.props} {...customProps}>
         {this.renderChildren()}
-      </Button>
+      </UIKittenButton>
     );
   }
 }

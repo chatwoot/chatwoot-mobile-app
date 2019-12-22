@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { View, Image, TouchableOpacity, Text } from 'react-native';
+import { View, Image, TouchableOpacity } from 'react-native';
 import { Layout } from 'react-native-ui-kitten';
 import t from 'tcomb-form-native';
 

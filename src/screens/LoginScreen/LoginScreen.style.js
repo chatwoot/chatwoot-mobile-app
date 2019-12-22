@@ -14,7 +14,7 @@ export default StyleSheet.create({
   },
   logo: {
     flex: 1,
-    width: 335,
+    width: 315,
     height: 900,
     resizeMode: 'contain',
   },

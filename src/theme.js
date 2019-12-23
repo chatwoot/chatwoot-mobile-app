@@ -93,11 +93,15 @@ export const theme = {
   'input-border-color': '#c0ccda',
 
   // Button
-  'button-color': '#ffff',
+  'button-color': '#fff',
   'button-font-size': 18,
 
   // Font Family
-  'font-family': 'Inter',
+  'font-family-light': 'Inter-Light',
+  'font-family-regular': 'Inter-Regular',
+  'font-family-medium': 'Inter-Medium',
+  'font-family-semibold': 'Inter-Semibold',
+  'font-family-bold': 'Inter-Bold',
 
   // Font Weight
   'font-thin': '100',

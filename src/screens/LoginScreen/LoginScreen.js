@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { View, Image, TouchableOpacity } from 'react-native';
-import { Layout } from 'react-native-ui-kitten';
+import { Layout, Button } from 'react-native-ui-kitten';
 import t from 'tcomb-form-native';
 
 import styles from './LoginScreen.style';
@@ -110,18 +110,14 @@ class LoginScreen extends Component {
 
           <View>
             <View style={styles.forgotView}>
-              <TouchableOpacity>
-                <CustomText style={styles.textStyle}>
-                  {i18n.t('LOGIN.FORGOT_PASSWORD')}
-                </CustomText>
-              </TouchableOpacity>
+              <Button textStyle={styles.textStyle} style={styles.button}>
+                {i18n.t('LOGIN.FORGOT_PASSWORD')}
+              </Button>
             </View>
             <View style={styles.accountView}>
-              <TouchableOpacity>
-                <CustomText style={styles.textStyle}>
-                  {i18n.t('LOGIN.CREATE_ACCOUNT')}
-                </CustomText>
-              </TouchableOpacity>
+              <Button textStyle={styles.textStyle} style={styles.button}>
+                {i18n.t('LOGIN.CREATE_ACCOUNT')}
+              </Button>
             </View>
           </View>
         </View>

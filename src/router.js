@@ -4,15 +4,24 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import HomeScreen from './screens/HomeScreen/HomeScreen';
 
+import LoginScreen from './screens/LoginScreen/LoginScreen';
+
 const createNavigationStack = ({ initialRouteName }) =>
-  createStackNavigator({
-    Home: { screen: HomeScreen },
-  });
+  createStackNavigator(
+    {
+      Login: { screen: LoginScreen },
+      Home: { screen: HomeScreen },
+    },
+    {
+      initialRouteName,
+      headerMode: 'none',
+    },
+  );
 
 class RootApp extends React.Component {
   render() {
     const App = createAppContainer(
-      createNavigationStack({ initialRouteName: 'Home' }),
+      createNavigationStack({ initialRouteName: 'Login' }),
     );
     return <App />;
   }

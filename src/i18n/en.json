@@ -1,3 +1,16 @@
 {
-  "WELCOME": "Welcome"
+  "WELCOME": "Welcome",
+  "LOGIN": {
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "EMAIL_ERROR": "Enter a valid email",
+    "PASSWORD_ERROR": "Enter a valid password",
+    "LOGIN": "Sign In",
+    "FORGOT_PASSWORD": "Forgot your password?",
+    "RESET_HERE": "Reset here",
+    "NO_ACCOUNT": "Don't have an account?",
+    "CREATE_ACCOUNT": "Create new account",
+    "SETTINGS": "Settings",
+    "TERMS": "Terms & Conditions"
+  }
 }

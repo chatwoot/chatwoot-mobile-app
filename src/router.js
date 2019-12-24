@@ -1,6 +1,7 @@
 import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import { connect } from 'react-redux';
 
 import HomeScreen from './screens/HomeScreen/HomeScreen';
 
@@ -20,11 +21,30 @@ const createNavigationStack = ({ initialRouteName }) =>
 
 class RootApp extends React.Component {
   render() {
-    const App = createAppContainer(
-      createNavigationStack({ initialRouteName: 'Login' }),
-    );
+    const { isLogged } = this.props;
+
+    const AuthStack = createNavigationStack({
+      initialRouteName: 'Login',
+    });
+    const LoggedInStack = createNavigationStack({
+      initialRouteName: 'Home',
+    });
+    const stack = isLogged ? LoggedInStack : AuthStack;
+
+    const App = createAppContainer(stack);
+
     return <App />;
   }
 }
 
-export default RootApp;
+function bindAction() {
+  return {};
+}
+
+function mapStateToProps(state) {
+  return {
+    isLogged: state.auth.isLogged,
+  };
+}
+
+export default connect(mapStateToProps, bindAction)(RootApp);

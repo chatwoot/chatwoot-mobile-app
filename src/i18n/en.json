@@ -12,5 +12,10 @@
     "CREATE_ACCOUNT": "Create new account",
     "SETTINGS": "Settings",
     "TERMS": "Terms & Conditions"
+  },
+  "ERRORS": {
+    "COMMON_ERROR": "Something went wrong. Please try after sometime.",
+    "OfFLINE": "You are not connected to Internet",
+    "CANNOT_FETCH": "There was an error fetching the information, please try again"
   }
 }

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-
-import { View, Image, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import { View, Image } from 'react-native';
 import { Layout, Button } from 'react-native-ui-kitten';
 import t from 'tcomb-form-native';
 
+import { onLogin } from '../../actions/auth';
+
+import { setLocale } from '../../actions/locale';
 import styles from './LoginScreen.style';
 import { Email, Password } from '../../helpers/formHelper';
 import TextInputField from '../../components/TextInputField';
@@ -12,23 +15,21 @@ import images from '../../constants/images';
 import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
 
-import CustomText from '../../components/Text';
-
 const { Form } = t.form;
 const LoginForm = t.struct({
-  username: Email,
+  email: Email,
   password: Password,
 });
 
 class LoginScreen extends Component {
   state = {
     values: {
-      username: '',
+      email: '',
       password: '',
     },
     options: {
       fields: {
-        username: {
+        email: {
           placeholder: '',
           template: TextInputField,
           keyboardType: 'email-address',
@@ -51,7 +52,6 @@ class LoginScreen extends Component {
         },
       },
     },
-    isLoggingIn: false,
   };
 
   onChange(values) {
@@ -61,23 +61,17 @@ class LoginScreen extends Component {
   }
 
   doLogin() {
-    this.setState({
-      isLoggingIn: true,
-    });
-    setTimeout(() => {
-      this.setState({
-        isLoggingIn: false,
-      });
-    }, 2000);
-
     const value = this.formRef.getValue();
+
+    const { email, password } = value;
     if (value) {
+      this.props.onLogin({ email, password });
     }
   }
 
   render() {
-    const { options, values, isLoggingIn } = this.state;
-
+    const { options, values } = this.state;
+    const { isLoggingIn } = this.props;
     return (
       <Layout style={styles.mainView}>
         <View style={styles.logoView}>
@@ -126,4 +120,16 @@ class LoginScreen extends Component {
   }
 }
 
-export default LoginScreen;
+function bindAction(dispatch) {
+  return {
+    onLogin: data => dispatch(onLogin(data)),
+    setLocale: data => dispatch(setLocale(data)),
+  };
+}
+function mapStateToProps(state) {
+  return {
+    isLoggingIn: state.auth.isLoggingIn,
+  };
+}
+
+export default connect(mapStateToProps, bindAction)(LoginScreen);

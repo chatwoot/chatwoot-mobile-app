@@ -1,11 +1,21 @@
 import { Button as UIKittenButton } from 'react-native-ui-kitten';
-
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { ActivityIndicator } from 'react-native';
 
 import { theme } from '../theme';
 
 export default class Button extends Component {
+  static propTypes = {
+    children: PropTypes.object,
+    loading: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    children: {},
+    loading: false,
+  };
+
   renderChildren() {
     const { loading, children } = this.props;
 

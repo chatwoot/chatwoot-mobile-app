@@ -2,6 +2,7 @@ import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import HomeScreen from './screens/HomeScreen/HomeScreen';
 
@@ -20,6 +21,14 @@ const createNavigationStack = ({ initialRouteName }) =>
   );
 
 class RootApp extends React.Component {
+  static propTypes = {
+    isLogged: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    isLogged: false,
+  };
+
   render() {
     const { isLogged } = this.props;
 

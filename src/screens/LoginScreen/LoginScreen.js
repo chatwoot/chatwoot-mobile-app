@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { View, Image } from 'react-native';
 import { Layout, Button } from 'react-native-ui-kitten';
 import t from 'tcomb-form-native';
+import PropTypes from 'prop-types';
 
 import { onLogin } from '../../actions/auth';
 
@@ -22,6 +23,16 @@ const LoginForm = t.struct({
 });
 
 class LoginScreen extends Component {
+  static propTypes = {
+    onLogin: PropTypes.func,
+    isLoggingIn: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    onLogin: () => {},
+    isLoggingIn: false,
+  };
+
   state = {
     values: {
       email: '',
@@ -63,8 +74,8 @@ class LoginScreen extends Component {
   doLogin() {
     const value = this.formRef.getValue();
 
-    const { email, password } = value;
     if (value) {
+      const { email, password } = value;
       this.props.onLogin({ email, password });
     }
   }

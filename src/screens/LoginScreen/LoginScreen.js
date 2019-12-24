@@ -24,8 +24,8 @@ const LoginForm = t.struct({
 class LoginScreen extends Component {
   state = {
     values: {
-      email: 'sojan.official@gmail.com',
-      password: 'hopetillend',
+      email: '',
+      password: '',
     },
     options: {
       fields: {

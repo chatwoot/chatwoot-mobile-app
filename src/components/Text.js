@@ -19,14 +19,13 @@ const getFontFamily = ({ locale, fontWeight = 400 }) => {
 class CustomText extends Component {
   static propTypes = {
     locale: PropTypes.string,
-  };
-
-  static defaultProps = {
-    locale: null,
+    style: PropTypes.object,
+    children: PropTypes.string,
   };
 
   generateStyles = styles => {
     const { locale } = this.props;
+
     const { fontWeight, ...rest } = styles;
     const fontStyles = {};
     fontStyles.fontFamily = getFontFamily({ locale, fontWeight });
@@ -38,6 +37,7 @@ class CustomText extends Component {
 
   render() {
     const { children, style } = this.props;
+
     const styles = this.generateStyles({ ...StyleSheet.flatten(style) });
     return (
       <Text {...this.props} style={styles}>

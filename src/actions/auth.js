@@ -14,7 +14,6 @@ export const onLogin = ({ email, password }) => async dispatch => {
     const { data } = response.data;
     dispatch({ type: LOGIN_SUCCESS, payload: data });
   } catch (error) {
-    console.log('error->', error);
     dispatch({ type: LOGIN_ERROR, payload: error });
   }
 };

@@ -3,16 +3,35 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
-import HomeScreen from './screens/HomeScreen/HomeScreen';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import LoginScreen from './screens/LoginScreen/LoginScreen';
+
+import ConversationList from './screens/ConversationList/ConversationList';
+
+import ConversationFilter from './screens/ConversationList/ConversationFilter';
+
+import SettingsScreen from './screens/Settings/SettingsScreen';
+import TabBar from './components/TabBar';
+
+const Tab = createBottomTabNavigator(
+  {
+    Home: ConversationList,
+    Settings: SettingsScreen,
+  },
+  {
+    tabBarComponent: TabBar,
+  },
+);
 
 const createNavigationStack = ({ initialRouteName }) =>
   createStackNavigator(
     {
       Login: { screen: LoginScreen },
-      Home: { screen: HomeScreen },
+      ConversationList: { screen: ConversationList },
+      ConversationFilter: ConversationFilter,
+      Settings: SettingsScreen,
+      Tab: { screen: Tab },
     },
     {
       initialRouteName,
@@ -36,9 +55,9 @@ class RootApp extends React.Component {
       initialRouteName: 'Login',
     });
     const LoggedInStack = createNavigationStack({
-      initialRouteName: 'Home',
+      initialRouteName: 'Tab',
     });
-    const stack = isLogged ? LoggedInStack : AuthStack;
+    const stack = !isLogged ? LoggedInStack : AuthStack;
 
     const App = createAppContainer(stack);
 

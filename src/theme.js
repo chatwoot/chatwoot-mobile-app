@@ -81,6 +81,7 @@ export const theme = {
 
   'loader-color': '#ffff',
   'color-primary': '#1F93FF',
+  'color-success': '#13ce66',
   'color-basic-transparent-300': '$color-primary-500',
 
   'color-gray': '#6E6F73',
@@ -95,6 +96,7 @@ export const theme = {
 
   // Text color
   'text-primary-color': '#6e6f73',
+  'text-active-color': '#1f2d3d',
   'text-primary-size': 14,
   'text-button-size': 18,
 
@@ -134,5 +136,5 @@ export const theme = {
   'font-size-medium': 16,
   'font-size-small': 14,
   'font-size-extra-small': 12,
-  'font-extra-extra-small': 10,
+  'font-size-extra-extra-small': 10,
 };

@@ -1,5 +1,3 @@
-import AsyncStorage from '@react-native-community/async-storage';
-
 import axios from '../helpers/APIHelper';
 
 import {

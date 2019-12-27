@@ -9,8 +9,6 @@ import LoginScreen from './screens/LoginScreen/LoginScreen';
 
 import ConversationList from './screens/ConversationList/ConversationList';
 
-import ConversationFilter from './screens/ConversationList/ConversationFilter';
-
 import SettingsScreen from './screens/Settings/SettingsScreen';
 import TabBar from './components/TabBar';
 
@@ -29,7 +27,7 @@ const createNavigationStack = ({ initialRouteName }) =>
     {
       Login: { screen: LoginScreen },
       ConversationList: { screen: ConversationList },
-      ConversationFilter: ConversationFilter,
+
       Settings: SettingsScreen,
       Tab: { screen: Tab },
     },
@@ -57,7 +55,7 @@ class RootApp extends React.Component {
     const LoggedInStack = createNavigationStack({
       initialRouteName: 'Tab',
     });
-    const stack = !isLogged ? LoggedInStack : AuthStack;
+    const stack = isLogged ? LoggedInStack : AuthStack;
 
     const App = createAppContainer(stack);
 

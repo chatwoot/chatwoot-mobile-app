@@ -28,6 +28,11 @@ const styles = StyleSheet.create({
     fontWeight: theme['font-medium'],
     fontSize: theme['font-size-medium'],
   },
+  emptyView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
+  },
   emptyText: {
     color: theme['text-primary-color'],
     fontSize: theme['font-size-medium'],

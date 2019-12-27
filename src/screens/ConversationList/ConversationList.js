@@ -86,16 +86,24 @@ class HomeScreen extends Component {
   renderList = () => {
     const { conversations } = this.props;
     const { payload } = conversations;
-
-    if (payload.length) {
-      return (
-        <Layout style={styles.tabContainer}>
-          <List data={payload} renderItem={renderItem} />
-        </Layout>
-      );
-    }
     return (
       <Layout style={styles.tabContainer}>
+        <List data={payload} renderItem={renderItem} />
+      </Layout>
+    );
+  };
+
+  renderEmptyList = () => {
+    return (
+      <Layout style={styles.tabContainer}>
+        <List data={LoaderData} renderItem={renderItemLoader} />
+      </Layout>
+    );
+  };
+
+  renderEmptyMessage = () => {
+    return (
+      <Layout style={styles.emptyView}>
         <CustomText style={styles.emptyText}>
           {i18n.t('CONVERSATION.EMPTY')}
         </CustomText>
@@ -133,11 +141,11 @@ class HomeScreen extends Component {
                 : styles.tabNotActiveTitle
             }>
             {!isFetching ? (
-              this.renderList()
+              <React.Fragment>
+                {payload.length ? this.renderList() : this.renderEmptyMessage()}
+              </React.Fragment>
             ) : (
-              <Layout style={styles.tabContainer}>
-                <List data={LoaderData} renderItem={renderItemLoader} />
-              </Layout>
+              this.renderEmptyList()
             )}
           </Tab>
           <Tab
@@ -148,9 +156,11 @@ class HomeScreen extends Component {
                 : styles.tabNotActiveTitle
             }>
             {!isFetching ? (
-              <List data={payload} renderItem={renderItem} />
+              <React.Fragment>
+                {payload.length ? this.renderList() : this.renderEmptyMessage()}
+              </React.Fragment>
             ) : (
-              <List data={LoaderData} renderItem={renderItemLoader} />
+              this.renderEmptyList()
             )}
           </Tab>
           <Tab
@@ -161,9 +171,11 @@ class HomeScreen extends Component {
                 : styles.tabNotActiveTitle
             }>
             {!isFetching ? (
-              <List data={payload} renderItem={renderItem} />
+              <React.Fragment>
+                {payload.length ? this.renderList() : this.renderEmptyMessage()}
+              </React.Fragment>
             ) : (
-              <List data={LoaderData} renderItem={renderItemLoader} />
+              this.renderEmptyList()
             )}
           </Tab>
         </TabView>

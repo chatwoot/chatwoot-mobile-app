@@ -12,9 +12,11 @@ export const getAgents = () => async dispatch => {
   dispatch({ type: GET_AGENT });
   try {
     const response = await axios.get(`${API}inboxes.json`);
+    const { data } = response.data;
+
     dispatch({
       type: GET_AGENT_SUCCESS,
-      payload: response,
+      payload: data,
     });
   } catch (error) {
     dispatch({ type: GET_AGENT_ERROR, payload: error });

@@ -1,7 +1,13 @@
-import { LOGIN, LOGIN_SUCCESS, LOGIN_ERROR } from '../constants/actions';
+import {
+  LOGIN,
+  LOGIN_SUCCESS,
+  LOGIN_ERROR,
+  SET_AUTH_HEADER,
+} from '../constants/actions';
 
 const initialState = {
   user: {},
+  headers: {},
   isLogged: false,
   isLoggingIn: false,
   error: {},
@@ -30,6 +36,12 @@ export default (state = initialState, action) => {
         error: action.payload,
         user: null,
         success: {},
+      };
+
+    case SET_AUTH_HEADER:
+      return {
+        ...state,
+        headers: action.payload,
       };
 
     default:

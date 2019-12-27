@@ -8,11 +8,11 @@ import axios from '../helpers/APIHelper';
 
 import { API } from '../constants/url';
 
-export const getConversations = () => async dispatch => {
+export const getConversations = ({ assigneeType }) => async dispatch => {
   dispatch({ type: GET_CONVERSATION });
   try {
     const response = await axios.get(
-      `${API}conversations?status=open&assignee_type_id=0`,
+      `${API}conversations?status=open&assignee_type_id=${assigneeType}`,
     );
     const { data } = response.data;
     dispatch({

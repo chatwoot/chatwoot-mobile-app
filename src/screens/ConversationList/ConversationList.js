@@ -142,7 +142,9 @@ class HomeScreen extends Component {
             }>
             {!isFetching ? (
               <React.Fragment>
-                {payload.length ? this.renderList() : this.renderEmptyMessage()}
+                {payload && payload.length
+                  ? this.renderList()
+                  : this.renderEmptyMessage()}
               </React.Fragment>
             ) : (
               this.renderEmptyList()
@@ -157,7 +159,9 @@ class HomeScreen extends Component {
             }>
             {!isFetching ? (
               <React.Fragment>
-                {payload.length ? this.renderList() : this.renderEmptyMessage()}
+                {payload && payload.length
+                  ? this.renderList()
+                  : this.renderEmptyMessage()}
               </React.Fragment>
             ) : (
               this.renderEmptyList()
@@ -172,7 +176,9 @@ class HomeScreen extends Component {
             }>
             {!isFetching ? (
               <React.Fragment>
-                {payload.length ? this.renderList() : this.renderEmptyMessage()}
+                {payload && payload.length
+                  ? this.renderList()
+                  : this.renderEmptyMessage()}
               </React.Fragment>
             ) : (
               this.renderEmptyList()

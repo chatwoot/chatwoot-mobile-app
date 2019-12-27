@@ -18,7 +18,11 @@
     "TERMS": "Terms & Conditions"
   },
   "CONVERSATION": {
-    "HEADER_TITLE": "Sort Conversations"
+    "HEADER_TITLE": "Filter",
+    "MINE": "Mine",
+    "UN_ASSIGNED": "Unassigned",
+    "ALL": "All",
+    "EMPTY": "There are no active conversations in this group."
   },
   "SETTINGS": {
     "HEADER_TITLE": "Settings"

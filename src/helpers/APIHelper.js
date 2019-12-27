@@ -4,6 +4,7 @@ import { BASE_URL } from '../constants/url';
 import I18n from '../i18n';
 
 import { showToast } from './ToastHelper';
+import { getHeaders } from './AuthHelper';
 
 const parseErrorCode = error => {
   if (error.response) {
@@ -26,8 +27,8 @@ API.defaults.baseURL = BASE_URL;
 API.interceptors.request.use(
   async config => {
     const headerConf = config;
-    // const token = await getToken();
-    // headerConf.headers.token = token;
+    const headers = await getHeaders();
+    headerConf.headers = headers;
     return headerConf;
   },
   error => Promise.reject(error),

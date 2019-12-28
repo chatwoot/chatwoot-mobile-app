@@ -39,7 +39,7 @@ class HomeScreen extends Component {
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
-    conversations: PropTypes.array,
+    conversations: PropTypes.shape([]),
     isFetching: PropTypes.bool,
     getAgents: PropTypes.func,
     getConversations: PropTypes.func,
@@ -47,7 +47,6 @@ class HomeScreen extends Component {
   };
 
   static defaultProps = {
-    conversations: [],
     isFetching: false,
     getAgents: () => {},
     getConversations: () => {},

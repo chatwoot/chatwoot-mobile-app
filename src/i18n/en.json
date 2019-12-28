@@ -25,7 +25,11 @@
     "EMPTY": "There are no active conversations in this group."
   },
   "SETTINGS": {
-    "HEADER_TITLE": "Settings"
+    "HEADER_TITLE": "Settings",
+    "AVAILABILITY": "Your Availability",
+    "PUSH": "Push notification",
+    "HELP": "Help docs",
+    "LOG_OUT": "Logout"
   },
   "ERRORS": {
     "COMMON_ERROR": "Something went wrong. Please try after sometime.",

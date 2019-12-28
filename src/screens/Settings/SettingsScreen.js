@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Icon, Layout, TopNavigation, Toggle } from 'react-native-ui-kitten';
+import { Layout, TopNavigation } from 'react-native-ui-kitten';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View, Image } from 'react-native';
 import packageFile from '../../../package.json';
 import UserAvatar from '../../components/UserAvatar';
 import CustomText from '../../components/Text';
@@ -11,15 +11,34 @@ import { onLogOut } from '../../actions/auth';
 import i18n from '../../i18n';
 
 import images from '../../constants/images';
-import { theme } from '../../theme';
 
 import styles from './SettingsScreen.style';
 import { getGravatarUrl } from '../../helpers';
-
-const ItemIcon = props => (
-  <Icon {...props} fill={theme['color-primary']} width={26} height={26} />
-);
-
+import SettingsItem from '../../components/SettingsItem.js';
+const settingsData = [
+  {
+    text: i18n.t('SETTINGS.AVAILABILITY'),
+    checked: false,
+    iconSize: 'small',
+    itemType: 'toggle',
+  },
+  {
+    text: i18n.t('SETTINGS.PUSH'),
+    checked: false,
+    iconSize: 'small',
+    itemType: 'toggle',
+  },
+  {
+    text: i18n.t('SETTINGS.HELP'),
+    checked: true,
+    iconName: 'question-mark-circle-outline',
+  },
+  {
+    text: i18n.t('SETTINGS.LOG_OUT'),
+    checked: false,
+    iconName: 'log-out-outline',
+  },
+];
 class Settings extends Component {
   static propTypes = {
     user: PropTypes.shape({
@@ -35,8 +54,10 @@ class Settings extends Component {
     onLogOut: () => {},
   };
 
-  logOut = () => {
-    this.props.onLogOut();
+  onPressItem = ({ itemName }) => {
+    if (itemName === 'logout') {
+      this.props.onLogOut();
+    }
   };
 
   render() {
@@ -59,33 +80,16 @@ class Settings extends Component {
           </View>
         </View>
         <View style={styles.itemListView}>
-          <TouchableOpacity style={[styles.section, styles.enabledSection]}>
-            <CustomText style={styles.sectionText}>
-              {i18n.t('SETTINGS.AVAILABILITY')}
-            </CustomText>
-
-            <Toggle checked={false} size="small" />
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.section, styles.enabledSection]}>
-            <CustomText style={styles.sectionText}>
-              {i18n.t('SETTINGS.PUSH')}
-            </CustomText>
-            <Toggle checked size="small" />
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.section, styles.enabledSection]}>
-            <CustomText style={styles.sectionText}>
-              {i18n.t('SETTINGS.HELP')}
-            </CustomText>
-            <ItemIcon name="question-mark-circle-outline" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.section, styles.enabledSection]}
-            onPress={this.logOut}>
-            <CustomText style={styles.sectionText}>
-              {i18n.t('SETTINGS.LOG_OUT')}
-            </CustomText>
-            <ItemIcon name="log-out-outline" />
-          </TouchableOpacity>
+          {settingsData.map((item, index) => (
+            <SettingsItem
+              text={item.text}
+              checked={item.checked}
+              iconSize={item.iconSize}
+              itemType={item.itemType}
+              iconName={item.iconName}
+              onPressItem={this.onPressItem}
+            />
+          ))}
         </View>
         <View style={styles.aboutView}>
           <Image style={styles.aboutImage} source={images.appLogo} />

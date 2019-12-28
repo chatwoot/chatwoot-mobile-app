@@ -28,20 +28,22 @@ const styles = StyleSheet.create({
 const propTypes = {
   thumbnail: PropTypes.string,
   userName: PropTypes.string,
+  size: PropTypes.string,
 };
 
 const defaultProps = {
   thumbnail: null,
   userName: null,
+  size: 'large',
 };
 
-const UserAvatar = ({ thumbnail, userName }) => {
+const UserAvatar = ({ thumbnail, userName, size }) => {
   return thumbnail ? (
     <Avatar
       source={{
         uri: thumbnail,
       }}
-      size="large"
+      size={size}
       style={styles.avatar}
     />
   ) : (

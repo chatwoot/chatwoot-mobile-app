@@ -70,12 +70,13 @@ const styles = StyleSheet.create({
   aboutImage: {
     width: deviceWidth * 0.82391,
     height: deviceWidth * 0.171,
+    aspectRatio: 2,
+    resizeMode: 'contain',
   },
   lastChild: {
-    marginBottom: 24,
+    marginBottom: 32,
   },
   appDescriptionView: {
-    marginTop: 8,
     justifyContent: 'center',
     alignItems: 'center',
   },

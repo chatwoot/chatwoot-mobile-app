@@ -19,7 +19,7 @@ export default (state = initialState, action) => {
 
     case GET_CONVERSATION_ERROR: {
       return {
-        ...initialState,
+        ...state,
         isFetching: false,
       };
     }

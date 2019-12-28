@@ -12,14 +12,14 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case GET_AGENT: {
       return {
-        ...initialState,
+        ...state,
         isFetching: true,
       };
     }
 
     case GET_AGENT_ERROR: {
       return {
-        ...initialState,
+        ...state,
         isFetching: false,
       };
     }

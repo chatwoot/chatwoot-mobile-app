@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   emailLabel: {
     paddingTop: 8,
     fontSize: theme['font-size-small'],
-    fontWeight: theme['font-medium'],
+    fontWeight: theme['font-regular'],
     color: theme['text-active-color'],
   },
 

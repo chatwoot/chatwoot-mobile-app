@@ -37,8 +37,8 @@ const defaultProps = {
   size: 'large',
 };
 
-const UserAvatar = ({ thumbnail, userName, size }) => {
-  return thumbnail ? (
+const UserAvatar = ({ thumbnail, userName, size }) =>
+  thumbnail ? (
     <Avatar
       source={{
         uri: thumbnail,
@@ -53,7 +53,6 @@ const UserAvatar = ({ thumbnail, userName, size }) => {
       </CustomText>
     </View>
   );
-};
 
 UserAvatar.defaultProps = defaultProps;
 UserAvatar.propTypes = propTypes;

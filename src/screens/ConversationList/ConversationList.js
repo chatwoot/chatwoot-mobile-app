@@ -23,6 +23,7 @@ import styles from './ConversationList.style';
 import CustomText from '../../components/Text';
 
 import i18n from '../../i18n';
+import { View } from 'react-native';
 
 const MenuIcon = style => <Icon {...style} name="funnel-outline" />;
 
@@ -58,13 +59,13 @@ class HomeScreen extends Component {
   };
 
   componentDidMount = () => {
+    const { selectedIndex } = this.state;
     this.props.getAgents();
-    this.loadConversations();
+    this.loadConversations({ assigneeType: selectedIndex });
   };
 
-  loadConversations = () => {
-    const { selectedIndex } = this.state;
-    this.props.getConversations({ assigneeType: selectedIndex });
+  loadConversations = ({ assigneeType }) => {
+    this.props.getConversations({ assigneeType });
   };
 
   openFilter = () => {
@@ -77,10 +78,10 @@ class HomeScreen extends Component {
   };
 
   onChangeTab = index => {
+    this.loadConversations({ assigneeType: index });
     this.setState({
       selectedIndex: index,
     });
-    this.loadConversations();
   };
 
   renderList = () => {
@@ -111,6 +112,26 @@ class HomeScreen extends Component {
     );
   };
 
+  renderTab = ({ selectedIndex, tabTitle, payload, isFetching }) => (
+    <Tab
+      title={tabTitle}
+      titleStyle={
+        selectedIndex === 0 ? styles.tabActiveTitle : styles.tabNotActiveTitle
+      }>
+      <View style={styles.tabView}>
+        {!isFetching ? (
+          <React.Fragment>
+            {payload && payload.length
+              ? this.renderList()
+              : this.renderEmptyMessage()}
+          </React.Fragment>
+        ) : (
+          this.renderEmptyList()
+        )}
+      </View>
+    </Tab>
+  );
+
   render() {
     const { selectedIndex } = this.state;
     const { conversations, isFetching } = this.props;
@@ -123,7 +144,7 @@ class HomeScreen extends Component {
     return (
       <Layout style={styles.container}>
         <TopNavigation
-          title="Chatwoot"
+          title={i18n.t('CONVERSATION.DEFAULT_HEADER_TITLE')}
           alignment="center"
           rightControls={this.renderRightControls()}
           titleStyle={styles.headerTitle}
@@ -133,57 +154,26 @@ class HomeScreen extends Component {
           indicatorStyle={styles.tabViewIndicator}
           onSelect={this.onChangeTab}
           tabBarStyle={styles.tabBar}>
-          <Tab
-            title={`${i18n.t('CONVERSATION.MINE')} ${mineCount}`}
-            titleStyle={
-              selectedIndex === 0
-                ? styles.tabActiveTitle
-                : styles.tabNotActiveTitle
-            }>
-            {!isFetching ? (
-              <React.Fragment>
-                {payload && payload.length
-                  ? this.renderList()
-                  : this.renderEmptyMessage()}
-              </React.Fragment>
-            ) : (
-              this.renderEmptyList()
-            )}
-          </Tab>
-          <Tab
-            title={`${i18n.t('CONVERSATION.UN_ASSIGNED')} ${unAssignedCount}`}
-            titleStyle={
-              selectedIndex === 1
-                ? styles.tabActiveTitle
-                : styles.tabNotActiveTitle
-            }>
-            {!isFetching ? (
-              <React.Fragment>
-                {payload && payload.length
-                  ? this.renderList()
-                  : this.renderEmptyMessage()}
-              </React.Fragment>
-            ) : (
-              this.renderEmptyList()
-            )}
-          </Tab>
-          <Tab
-            title={`${i18n.t('CONVERSATION.ALL')} ${allCount}`}
-            titleStyle={
-              selectedIndex === 2
-                ? styles.tabActiveTitle
-                : styles.tabNotActiveTitle
-            }>
-            {!isFetching ? (
-              <React.Fragment>
-                {payload && payload.length
-                  ? this.renderList()
-                  : this.renderEmptyMessage()}
-              </React.Fragment>
-            ) : (
-              this.renderEmptyList()
-            )}
-          </Tab>
+          {this.renderTab({
+            selectedIndex,
+            tabTitle: `${i18n.t('CONVERSATION.MINE')} ${mineCount}`,
+            payload,
+            isFetching,
+          })}
+          {this.renderTab({
+            selectedIndex,
+            tabTitle: `${i18n.t(
+              'CONVERSATION.UN_ASSIGNED',
+            )} ${unAssignedCount}`,
+            payload,
+            isFetching,
+          })}
+          {this.renderTab({
+            selectedIndex,
+            tabTitle: `${i18n.t('CONVERSATION.ALL')} ${allCount}`,
+            payload,
+            isFetching,
+          })}
         </TabView>
       </Layout>
     );

@@ -12,7 +12,9 @@ const styles = StyleSheet.create({
     fontSize: theme['font-size-large'],
   },
   tabContainer: { minHeight: 64 },
-
+  tabView: {
+    height: '100%',
+  },
   tabViewIndicator: {
     backgroundColor: theme['color-primary'],
   },

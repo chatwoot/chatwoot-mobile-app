@@ -11,12 +11,12 @@ const propTypes = {
   readStatus: PropTypes.number,
   name: PropTypes.string,
   item: PropTypes.shape({
-    meta: {
+    meta: PropTypes.shape({
       sender: {
         name: PropTypes.string,
         thumbnail: PropTypes.string,
       },
-    },
+    }),
     messages: PropTypes.shape([]),
   }).isRequired,
 };

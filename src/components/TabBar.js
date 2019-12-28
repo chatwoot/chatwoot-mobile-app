@@ -45,16 +45,12 @@ export default class TabBar extends React.Component {
           <BottomNavigationTab
             title={i18n.t('FOOTER.HOME')}
             icon={HomeIcon}
-            titleStyle={
-              selectedIndex === 0 ? styles.tabActive : styles.tabNotActive
-            }
+            titleStyle={!selectedIndex ? styles.tabActive : styles.tabNotActive}
           />
           <BottomNavigationTab
             title={i18n.t('FOOTER.SETTINGS')}
             icon={SettingsIcon}
-            titleStyle={
-              selectedIndex === 1 ? styles.tabActive : styles.tabNotActive
-            }
+            titleStyle={selectedIndex ? styles.tabActive : styles.tabNotActive}
           />
         </BottomNavigation>
       </SafeAreaView>

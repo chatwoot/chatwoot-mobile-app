@@ -12,7 +12,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case GET_CONVERSATION: {
       return {
-        ...initialState,
+        ...state,
         isFetching: true,
       };
     }

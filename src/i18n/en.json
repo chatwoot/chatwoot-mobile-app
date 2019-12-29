@@ -1,5 +1,9 @@
 {
   "WELCOME": "Welcome",
+  "FOOTER": {
+    "HOME": "Home",
+    "SETTINGS": "Settings"
+  },
   "LOGIN": {
     "EMAIL": "Email",
     "PASSWORD": "Password",
@@ -12,6 +16,20 @@
     "CREATE_ACCOUNT": "Create new account",
     "SETTINGS": "Settings",
     "TERMS": "Terms & Conditions"
+  },
+  "CONVERSATION": {
+    "DEFAULT_HEADER_TITLE": "Conversations",
+    "MINE": "Mine",
+    "UN_ASSIGNED": "Unassigned",
+    "ALL": "All",
+    "EMPTY": "There are no active conversations in this group."
+  },
+  "SETTINGS": {
+    "HEADER_TITLE": "Settings",
+    "AVAILABILITY": "Your Availability",
+    "PUSH": "Push notification",
+    "HELP": "Help docs",
+    "LOG_OUT": "Logout"
   },
   "ERRORS": {
     "COMMON_ERROR": "Something went wrong. Please try after sometime.",

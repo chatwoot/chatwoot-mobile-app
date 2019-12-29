@@ -221,7 +221,11 @@ PODS:
     - React
   - RNGestureHandler (1.5.1):
     - React
+  - RNReanimated (1.4.0):
+    - React
   - RNSnackbar (2.0.4):
+    - React
+  - RNSVG (9.13.6):
     - React
   - Yoga (1.14.0)
 
@@ -255,7 +259,9 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNSnackbar (from `../node_modules/react-native-snackbar`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -315,8 +321,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/async-storage"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNReanimated:
+    :path: "../node_modules/react-native-reanimated"
   RNSnackbar:
     :path: "../node_modules/react-native-snackbar"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -348,7 +358,9 @@ SPEC CHECKSUMS:
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   RNCAsyncStorage: 44395cb9c7c1523104c2b499eb426ef7aff82bca
   RNGestureHandler: 7add966bb5d90ee8cf38d4341f87814474357972
+  RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNSnackbar: 2f53c450de4f74f3698f3be044130c32fb8edf71
+  RNSVG: 8ba35cbeb385a52fd960fd28db9d7d18b4c2974f
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
 PODFILE CHECKSUM: dd3ba6fd37881078d55734a854d92966d833682d

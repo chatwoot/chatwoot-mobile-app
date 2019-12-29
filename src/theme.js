@@ -80,14 +80,32 @@ export const theme = {
   'color-danger-transparent-600': 'rgba(255, 72, 48, 0.48)',
 
   'loader-color': '#ffff',
+  'color-primary': '#1F93FF',
+  'color-success': '#13ce66',
   'color-basic-transparent-300': '$color-primary-500',
 
-  'color-primary-active': '$color-primary-500',
+  'color-gray': '#6E6F73',
+  'color-light-gray': '#d3d3d3',
+  'color-border': '#f0f4f5',
+  'color-border-light': '#f0f4f5',
+  'color-background': '#EFF2F7',
+  'color-background-light': '#F9FAFC',
+  'color-white': '#FFF',
+  'color-body': '#3C4858',
+  'color-heading': '#1F2D3D',
 
   // Text color
   'text-primary-color': '#6e6f73',
+  'text-active-color': '#1f2d3d',
   'text-primary-size': 14,
   'text-button-size': 18,
+
+  // Header
+
+  'header-text-color': '#1f2d3d',
+
+  // Tab
+  'tab-not-active-color': '#8492a6',
 
   // Input
   'input-border-color': '#c0ccda',
@@ -100,7 +118,7 @@ export const theme = {
   'font-family-light': 'Inter-Light',
   'font-family-regular': 'Inter-Regular',
   'font-family-medium': 'Inter-Medium',
-  'font-family-semibold': 'Inter-Semibold',
+  'font-family-semi-bold': 'Inter-Semibold',
   'font-family-bold': 'Inter-Bold',
 
   // Font Weight
@@ -111,4 +129,12 @@ export const theme = {
   'font-medium': '500',
   'font-semi-bold': '600',
   'font-bold': '700',
+
+  // Font size
+  'font-size-extra-large': 20,
+  'font-size-large': 18,
+  'font-size-medium': 16,
+  'font-size-small': 14,
+  'font-size-extra-small': 12,
+  'font-size-extra-extra-small': 10,
 };

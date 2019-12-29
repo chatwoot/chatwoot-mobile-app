@@ -5,14 +5,16 @@ import {
   LOGIN_ERROR,
   LOGIN_SUCCESS,
   USER_LOGOUT,
+  SET_AUTH_HEADER,
 } from '../constants/actions';
 
 export const onLogin = ({ email, password }) => async dispatch => {
   try {
     dispatch({ type: LOGIN });
-    const response = await axios.post('/auth/sign_in', { email, password });
+    const response = await axios.post('auth/sign_in', { email, password });
     const { data } = response.data;
     dispatch({ type: LOGIN_SUCCESS, payload: data });
+    dispatch({ type: SET_AUTH_HEADER, payload: response.headers });
   } catch (error) {
     dispatch({ type: LOGIN_ERROR, payload: error });
   }

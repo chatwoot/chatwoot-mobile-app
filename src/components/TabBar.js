@@ -41,7 +41,8 @@ export default class TabBar extends React.Component {
         <BottomNavigation
           selectedIndex={selectedIndex}
           onSelect={this.changeTab}
-          appearance="noIndicator">
+          appearance="noIndicator"
+          style={styles.tabBar}>
           <BottomNavigationTab
             title={i18n.t('FOOTER.HOME')}
             icon={HomeIcon}
@@ -59,6 +60,10 @@ export default class TabBar extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  tabBar: {
+    borderTopWidth: 1,
+    borderTopColor: theme['color-border-light'],
+  },
   tabActive: {
     color: theme['color-primary'],
     fontFamily: theme['font-family-semi-bold'],

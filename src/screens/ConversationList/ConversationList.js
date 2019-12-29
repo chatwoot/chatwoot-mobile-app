@@ -8,6 +8,7 @@ import {
   TabView,
   List,
 } from 'react-native-ui-kitten';
+import { SafeAreaView } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -141,7 +142,7 @@ class HomeScreen extends Component {
     const allCount = meta ? `(${meta.all_count})` : '';
 
     return (
-      <Layout style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <TopNavigation
           title={i18n.t('CONVERSATION.DEFAULT_HEADER_TITLE')}
           alignment="center"
@@ -174,7 +175,7 @@ class HomeScreen extends Component {
             isFetching,
           })}
         </TabView>
-      </Layout>
+      </SafeAreaView>
     );
   }
 }

@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   sectionText: {
     color: theme['color-body'],
     fontSize: theme['font-size-medium'],
-    fontWeight: theme['font-semi-bold'],
+    fontWeight: theme['font-medium'],
   },
 });
 

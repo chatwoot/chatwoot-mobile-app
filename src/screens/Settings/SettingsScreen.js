@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Layout, TopNavigation } from 'react-native-ui-kitten';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { SafeAreaView } from 'react-native';
+
 import { View, Image } from 'react-native';
 import packageFile from '../../../package.json';
 import UserAvatar from '../../components/UserAvatar';
@@ -37,6 +39,7 @@ const settingsData = [
     text: i18n.t('SETTINGS.LOG_OUT'),
     checked: false,
     iconName: 'log-out-outline',
+    itemName: 'logout',
   },
 ];
 class Settings extends Component {
@@ -66,7 +69,7 @@ class Settings extends Component {
     } = this.props;
     const avatarUrl = getGravatarUrl({ email });
     return (
-      <Layout style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <TopNavigation
           title={i18n.t('SETTINGS.HEADER_TITLE')}
           titleStyle={styles.headerTitle}
@@ -87,6 +90,7 @@ class Settings extends Component {
               iconSize={item.iconSize}
               itemType={item.itemType}
               iconName={item.iconName}
+              itemName={item.itemName}
               onPressItem={this.onPressItem}
             />
           ))}
@@ -101,7 +105,7 @@ class Settings extends Component {
             {`v${packageFile.version}`}
           </CustomText>
         </View>
-      </Layout>
+      </SafeAreaView>
     );
   }
 }

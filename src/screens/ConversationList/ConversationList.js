@@ -35,7 +35,7 @@ const LoaderData = new Array(24).fill(0);
 
 const renderItemLoader = () => <ConversationItemLoader />;
 
-class HomeScreen extends Component {
+class ConversationList extends Component {
   static propTypes = {
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
@@ -45,7 +45,7 @@ class HomeScreen extends Component {
     getInboxes: PropTypes.func,
     getConversations: PropTypes.func,
     inboxSelected: PropTypes.shape({}),
-    conversationStatus: PropTypes.bool,
+    conversationStatus: PropTypes.string,
     item: PropTypes.shape({}),
   };
 
@@ -215,4 +215,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, bindAction)(HomeScreen);
+export default connect(mapStateToProps, bindAction)(ConversationList);

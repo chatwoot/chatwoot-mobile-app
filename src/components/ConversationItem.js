@@ -71,7 +71,7 @@ class ConversationItem extends Component {
             <View style={styles.badgeView}>
               <View style={styles.badge}>
                 <CustomText style={styles.badgeCount}>
-                  {unread_count}
+                  {unread_count.toString()}
                 </CustomText>
               </View>
             </View>

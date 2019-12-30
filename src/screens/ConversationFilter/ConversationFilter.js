@@ -131,6 +131,7 @@ class FilterScreen extends Component {
               {allInboxes.map((item, index) => {
                 return (
                   <FilterItem
+                    key={item.page_id}
                     item={item}
                     isChecked={item.isChecked}
                     onCheckedChange={this.onCheckedChange}
@@ -148,6 +149,7 @@ class FilterScreen extends Component {
                 return (
                   <FilterItem
                     item={item}
+                    key={item.name}
                     isChecked={conversationStatus === item.name ? true : false}
                     onCheckedChange={this.onCheckedChange}
                   />

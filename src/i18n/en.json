@@ -30,7 +30,8 @@
     "CHOOSE_INBOX": "Choose Inbox",
     "CHOOSE_STATUS": "Conversation Status",
     "OPEN": "Open",
-    "RESOLVED": "Resolved"
+    "RESOLVED": "Resolved",
+    "SUBMIT": "Submit"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Settings",

@@ -160,11 +160,10 @@ class FilterScreen extends Component {
         <View style={styles.filterButtonView}>
           <LoaderButton
             style={styles.filterButton}
-            loading={false}
             size="large"
-            textStyle={styles.loginButtonText}
+            textStyle={styles.filterButtonText}
             onPress={() => this.submitFilters()}>
-            Submit
+            {i18n.t('FILTER.SUBMIT')}
           </LoaderButton>
         </View>
       </Layout>

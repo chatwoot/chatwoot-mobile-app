@@ -46,6 +46,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
+  filterButtonText: {
+    color: theme['button-color'],
+    fontFamily: 'Inter-Medium',
+    fontWeight: theme['font-medium'],
+    fontSize: theme['button-font-size'],
+  },
   text: {
     marginVertical: 8,
   },

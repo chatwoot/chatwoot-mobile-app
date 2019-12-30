@@ -19,10 +19,18 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversations",
+
     "MINE": "Mine",
     "UN_ASSIGNED": "Unassigned",
     "ALL": "All",
     "EMPTY": "There are no active conversations in this group."
+  },
+  "FILTER": {
+    "HEADER_TITLE": "Filter",
+    "CHOOSE_INBOX": "Choose Inbox",
+    "CHOOSE_STATUS": "Conversation Status",
+    "OPEN": "Open",
+    "RESOLVED": "Resolved"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Settings",

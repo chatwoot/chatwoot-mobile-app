@@ -125,11 +125,13 @@ class ConversationList extends Component {
     );
   };
 
-  renderTab = ({ selectedIndex, tabTitle, payload, isFetching }) => (
+  renderTab = ({ tabIndex, selectedIndex, tabTitle, payload, isFetching }) => (
     <Tab
       title={tabTitle}
       titleStyle={
-        selectedIndex === 0 ? styles.tabActiveTitle : styles.tabNotActiveTitle
+        selectedIndex === tabIndex
+          ? styles.tabActiveTitle
+          : styles.tabNotActiveTitle
       }>
       <View style={styles.tabView}>
         {!isFetching ? (
@@ -172,12 +174,14 @@ class ConversationList extends Component {
           onSelect={this.onChangeTab}
           tabBarStyle={styles.tabBar}>
           {this.renderTab({
+            tabIndex: 0,
             selectedIndex,
             tabTitle: `${i18n.t('CONVERSATION.MINE')} ${mineCount}`,
             payload,
             isFetching,
           })}
           {this.renderTab({
+            tabIndex: 1,
             selectedIndex,
             tabTitle: `${i18n.t(
               'CONVERSATION.UN_ASSIGNED',
@@ -186,6 +190,7 @@ class ConversationList extends Component {
             isFetching,
           })}
           {this.renderTab({
+            tabIndex: 2,
             selectedIndex,
             tabTitle: `${i18n.t('CONVERSATION.ALL')} ${allCount}`,
             payload,

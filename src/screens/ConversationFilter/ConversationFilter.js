@@ -94,21 +94,20 @@ class FilterScreen extends Component {
   };
 
   onBackPress = () => {
-    const { navigation } = this.props;
-
-    navigation.goBack();
+    this.submitFilters();
   };
 
   renderLeftControl = () => <BackAction onPress={this.onBackPress} />;
 
   processEntries = ({ inboxSelected }) => {
     const { inboxes } = this.props;
-    const temp = inboxes.map(inbox => ({
+    const allInboxes = inboxes.map(inbox => ({
       ...inbox,
       itemType: 'inbox',
       isChecked: inboxSelected && inboxSelected.id === inbox.id ? true : false,
     }));
-    this.setState({ allInboxes: temp });
+
+    this.setState({ allInboxes });
   };
 
   render() {

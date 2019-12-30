@@ -2,11 +2,13 @@ import {
   GET_AGENT,
   GET_AGENT_ERROR,
   GET_AGENT_SUCCESS,
+  SET_AGENT,
 } from '../constants/actions';
 
 const initialState = {
   isFetching: false,
   data: [],
+  agentSelected: {},
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -26,10 +28,18 @@ export default (state = initialState, action) => {
 
     case GET_AGENT_SUCCESS: {
       return {
+        ...state,
         isFetching: false,
         data: action.payload,
       };
     }
+
+    case SET_AGENT:
+      return {
+        ...state,
+        agentSelected: action.payload,
+      };
+
     default:
       return state;
   }

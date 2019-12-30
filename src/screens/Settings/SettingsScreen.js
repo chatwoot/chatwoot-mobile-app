@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, TopNavigation } from 'react-native-ui-kitten';
+import { TopNavigation } from 'react-native-ui-kitten';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-native';

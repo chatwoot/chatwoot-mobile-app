@@ -44,6 +44,8 @@ class HomeScreen extends Component {
     isFetching: PropTypes.bool,
     getAgents: PropTypes.func,
     getConversations: PropTypes.func,
+    agentSelected: PropTypes.shape({}),
+    conversationStatus: PropTypes.bool,
     item: PropTypes.shape({}),
   };
 
@@ -52,6 +54,7 @@ class HomeScreen extends Component {
     getAgents: () => {},
     getConversations: () => {},
     item: {},
+    conversationStatus: 'Open',
   };
 
   state = {
@@ -65,12 +68,22 @@ class HomeScreen extends Component {
   };
 
   loadConversations = ({ assigneeType }) => {
-    this.props.getConversations({ assigneeType });
+    const { conversationStatus, agentSelected } = this.props;
+
+    this.props.getConversations({
+      assigneeType,
+      conversationStatus,
+      agentSelected,
+    });
   };
 
   openFilter = () => {
-    const { navigation } = this.props;
-    navigation.navigate('ConversationFilter');
+    const { navigation, agentSelected } = this.props;
+    const { selectedIndex } = this.state;
+    navigation.navigate('ConversationFilter', {
+      assigneeType: selectedIndex,
+      agentSelected,
+    });
   };
 
   renderRightControls = () => {
@@ -183,14 +196,18 @@ class HomeScreen extends Component {
 function bindAction(dispatch) {
   return {
     getAgents: () => dispatch(getAgents()),
-    getConversations: ({ assigneeType }) =>
-      dispatch(getConversations({ assigneeType })),
+    getConversations: ({ assigneeType, conversationStatus, agentSelected }) =>
+      dispatch(
+        getConversations({ assigneeType, conversationStatus, agentSelected }),
+      ),
   };
 }
 function mapStateToProps(state) {
   return {
     isFetching: state.conversation.isFetching,
     conversations: state.conversation.data,
+    conversationStatus: state.conversation.conversationStatus,
+    agentSelected: state.agent.agentSelected,
   };
 }
 

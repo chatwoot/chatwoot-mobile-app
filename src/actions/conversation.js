@@ -12,12 +12,12 @@ import { API } from '../constants/url';
 export const getConversations = ({
   assigneeType,
   conversationStatus,
-  agentSelected,
+  inboxSelected,
 }) => async dispatch => {
   dispatch({ type: GET_CONVERSATION });
   try {
     const status = conversationStatus === 'Open' ? 'open' : 'resolved';
-    const inbox_id = agentSelected && agentSelected ? agentSelected.id : null;
+    const inbox_id = inboxSelected && inboxSelected ? inboxSelected.id : null;
     const apiUrl = `${API}conversations?${
       inbox_id ? `inbox_id=${inbox_id}&` : ''
     }status=${status}&assignee_type_id=${assigneeType}`;

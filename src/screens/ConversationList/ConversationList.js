@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { getAgents } from '../../actions/agent';
+import { getInboxes } from '../../actions/inbox';
 
 import { getConversations } from '../../actions/conversation';
 
@@ -42,16 +42,16 @@ class HomeScreen extends Component {
     }).isRequired,
     conversations: PropTypes.shape([]),
     isFetching: PropTypes.bool,
-    getAgents: PropTypes.func,
+    getInboxes: PropTypes.func,
     getConversations: PropTypes.func,
-    agentSelected: PropTypes.shape({}),
+    inboxSelected: PropTypes.shape({}),
     conversationStatus: PropTypes.bool,
     item: PropTypes.shape({}),
   };
 
   static defaultProps = {
     isFetching: false,
-    getAgents: () => {},
+    getInboxes: () => {},
     getConversations: () => {},
     item: {},
     conversationStatus: 'Open',
@@ -63,26 +63,26 @@ class HomeScreen extends Component {
 
   componentDidMount = () => {
     const { selectedIndex } = this.state;
-    this.props.getAgents();
+    this.props.getInboxes();
     this.loadConversations({ assigneeType: selectedIndex });
   };
 
   loadConversations = ({ assigneeType }) => {
-    const { conversationStatus, agentSelected } = this.props;
+    const { conversationStatus, inboxSelected } = this.props;
 
     this.props.getConversations({
       assigneeType,
       conversationStatus,
-      agentSelected,
+      inboxSelected,
     });
   };
 
   openFilter = () => {
-    const { navigation, agentSelected } = this.props;
+    const { navigation, inboxSelected } = this.props;
     const { selectedIndex } = this.state;
     navigation.navigate('ConversationFilter', {
       assigneeType: selectedIndex,
-      agentSelected,
+      inboxSelected,
     });
   };
 
@@ -147,17 +147,21 @@ class HomeScreen extends Component {
 
   render() {
     const { selectedIndex } = this.state;
-    const { conversations, isFetching } = this.props;
+    const { conversations, isFetching, inboxSelected } = this.props;
     const { payload, meta } = conversations;
+    const { name: inBoxName } = inboxSelected;
 
     const mineCount = meta ? `(${meta.mine_count})` : '';
     const unAssignedCount = meta ? `(${meta.unassigned_count})` : '';
     const allCount = meta ? `(${meta.all_count})` : '';
 
+    const headerTitle =
+      inBoxName || i18n.t('CONVERSATION.DEFAULT_HEADER_TITLE');
+
     return (
       <SafeAreaView style={styles.container}>
         <TopNavigation
-          title={i18n.t('CONVERSATION.DEFAULT_HEADER_TITLE')}
+          title={headerTitle}
           alignment="center"
           rightControls={this.renderRightControls()}
           titleStyle={styles.headerTitle}
@@ -195,10 +199,10 @@ class HomeScreen extends Component {
 
 function bindAction(dispatch) {
   return {
-    getAgents: () => dispatch(getAgents()),
-    getConversations: ({ assigneeType, conversationStatus, agentSelected }) =>
+    getInboxes: () => dispatch(getInboxes()),
+    getConversations: ({ assigneeType, conversationStatus, inboxSelected }) =>
       dispatch(
-        getConversations({ assigneeType, conversationStatus, agentSelected }),
+        getConversations({ assigneeType, conversationStatus, inboxSelected }),
       ),
   };
 }
@@ -207,7 +211,7 @@ function mapStateToProps(state) {
     isFetching: state.conversation.isFetching,
     conversations: state.conversation.data,
     conversationStatus: state.conversation.conversationStatus,
-    agentSelected: state.agent.agentSelected,
+    inboxSelected: state.inbox.inboxSelected,
   };
 }
 

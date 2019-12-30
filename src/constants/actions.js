@@ -5,11 +5,11 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const SET_AUTH_HEADER = 'SET_AUTH_HEADER';
 
-export const GET_AGENT = 'GET_AGENT';
-export const GET_AGENT_SUCCESS = 'GET_AGENT_SUCCESS';
-export const GET_AGENT_ERROR = 'GET_AGENT_ERROR';
+export const GET_INBOX = 'GET_INBOX';
+export const GET_INBOX_SUCCESS = 'GET_INBOX_SUCCESS';
+export const GET_INBOX_ERROR = 'GET_INBOX_ERROR';
 
-export const SET_AGENT = 'SET_AGENT';
+export const SET_INBOX = 'SET_INBOX';
 
 export const GET_CONVERSATION = 'GET_CONVERSATION';
 export const GET_CONVERSATION_SUCCESS = 'GET_CONVERSATION_SUCCESS';

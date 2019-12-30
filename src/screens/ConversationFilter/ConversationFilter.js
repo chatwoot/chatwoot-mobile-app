@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 
 import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
-import { setAgent } from '../../actions/agent';
+import { setInbox } from '../../actions/inbox';
 import {
   setConversationStatus,
   getConversations,
@@ -45,9 +45,9 @@ class FilterScreen extends Component {
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
-    agents: PropTypes.shape([]),
-    agentSelected: PropTypes.shape({}),
-    setAgent: PropTypes.func,
+    inboxes: PropTypes.shape([]),
+    inboxSelected: PropTypes.shape({}),
+    setInbox: PropTypes.func,
     setConversationStatus: PropTypes.func,
     getConversations: PropTypes.func,
     conversationStatus: PropTypes.string,
@@ -55,29 +55,29 @@ class FilterScreen extends Component {
 
   constructor(props) {
     super(props);
-    const { agents } = this.props;
+    const { inboxes } = this.props;
     this.state = {
-      allAgents: agents,
+      allInboxes: inboxes,
     };
   }
   componentDidMount = () => {
-    const { agentSelected } = this.props;
-    this.processEntries({ agentSelected });
+    const { inboxSelected } = this.props;
+    this.processEntries({ inboxSelected });
   };
 
   onCheckedChange = ({ item }) => {
     const { itemType, name } = item;
 
     if (itemType === 'inbox') {
-      this.processEntries({ agentSelected: item });
-      this.props.setAgent({ agent: item });
+      this.processEntries({ inboxSelected: item });
+      this.props.setInbox({ inbox: item });
     } else {
       this.props.setConversationStatus({ status: name });
     }
   };
 
   submitFilters = () => {
-    const { navigation, conversationStatus, agentSelected } = this.props;
+    const { navigation, conversationStatus, inboxSelected } = this.props;
     const {
       state: {
         params: { assigneeType },
@@ -87,7 +87,7 @@ class FilterScreen extends Component {
     this.props.getConversations({
       assigneeType,
       conversationStatus,
-      agentSelected,
+      inboxSelected,
     });
 
     navigation.goBack();
@@ -101,18 +101,18 @@ class FilterScreen extends Component {
 
   renderLeftControl = () => <BackAction onPress={this.onBackPress} />;
 
-  processEntries = ({ agentSelected }) => {
-    const { agents } = this.props;
-    const temp = agents.map(agent => ({
-      ...agent,
+  processEntries = ({ inboxSelected }) => {
+    const { inboxes } = this.props;
+    const temp = inboxes.map(inbox => ({
+      ...inbox,
       itemType: 'inbox',
-      isChecked: agentSelected && agentSelected.id === agent.id ? true : false,
+      isChecked: inboxSelected && inboxSelected.id === inbox.id ? true : false,
     }));
-    this.setState({ allAgents: temp });
+    this.setState({ allInboxes: temp });
   };
 
   render() {
-    const { allAgents } = this.state;
+    const { allInboxes } = this.state;
     const { conversationStatus } = this.props;
 
     return (
@@ -129,7 +129,7 @@ class FilterScreen extends Component {
                 {i18n.t('FILTER.CHOOSE_INBOX')}
               </CustomText>
 
-              {allAgents.map((item, index) => {
+              {allInboxes.map((item, index) => {
                 return (
                   <FilterItem
                     item={item}
@@ -173,19 +173,19 @@ class FilterScreen extends Component {
 
 function bindAction(dispatch) {
   return {
-    setAgent: ({ agent }) => dispatch(setAgent({ agent })),
+    setInbox: ({ inbox }) => dispatch(setInbox({ inbox })),
     setConversationStatus: ({ status }) =>
       dispatch(setConversationStatus({ status })),
-    getConversations: ({ assigneeType, conversationStatus, agentSelected }) =>
+    getConversations: ({ assigneeType, conversationStatus, inboxSelected }) =>
       dispatch(
-        getConversations({ assigneeType, conversationStatus, agentSelected }),
+        getConversations({ assigneeType, conversationStatus, inboxSelected }),
       ),
   };
 }
 function mapStateToProps(state) {
   return {
-    agents: state.agent.data,
-    agentSelected: state.agent.agentSelected,
+    inboxes: state.inbox.data,
+    inboxSelected: state.inbox.inboxSelected,
     conversationStatus: state.conversation.conversationStatus,
   };
 }

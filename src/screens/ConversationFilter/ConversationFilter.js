@@ -131,7 +131,7 @@ class FilterScreen extends Component {
               {allInboxes.map((item, index) => {
                 return (
                   <FilterItem
-                    key={item.page_id}
+                    key={item.id.toString()}
                     item={item}
                     isChecked={item.isChecked}
                     onCheckedChange={this.onCheckedChange}

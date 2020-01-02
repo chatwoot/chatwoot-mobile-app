@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { getAgents } from '../../actions/agent';
+import { getInboxes } from '../../actions/inbox';
 
 import { getConversations } from '../../actions/conversation';
 
@@ -35,23 +35,26 @@ const LoaderData = new Array(24).fill(0);
 
 const renderItemLoader = () => <ConversationItemLoader />;
 
-class HomeScreen extends Component {
+class ConversationList extends Component {
   static propTypes = {
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
     conversations: PropTypes.shape([]),
     isFetching: PropTypes.bool,
-    getAgents: PropTypes.func,
+    getInboxes: PropTypes.func,
     getConversations: PropTypes.func,
+    inboxSelected: PropTypes.shape({}),
+    conversationStatus: PropTypes.string,
     item: PropTypes.shape({}),
   };
 
   static defaultProps = {
     isFetching: false,
-    getAgents: () => {},
+    getInboxes: () => {},
     getConversations: () => {},
     item: {},
+    conversationStatus: 'Open',
   };
 
   state = {
@@ -60,17 +63,27 @@ class HomeScreen extends Component {
 
   componentDidMount = () => {
     const { selectedIndex } = this.state;
-    this.props.getAgents();
+    this.props.getInboxes();
     this.loadConversations({ assigneeType: selectedIndex });
   };
 
   loadConversations = ({ assigneeType }) => {
-    this.props.getConversations({ assigneeType });
+    const { conversationStatus, inboxSelected } = this.props;
+
+    this.props.getConversations({
+      assigneeType,
+      conversationStatus,
+      inboxSelected,
+    });
   };
 
   openFilter = () => {
-    const { navigation } = this.props;
-    navigation.navigate('ConversationFilter');
+    const { navigation, inboxSelected } = this.props;
+    const { selectedIndex } = this.state;
+    navigation.navigate('ConversationFilter', {
+      assigneeType: selectedIndex,
+      inboxSelected,
+    });
   };
 
   renderRightControls = () => {
@@ -112,11 +125,13 @@ class HomeScreen extends Component {
     );
   };
 
-  renderTab = ({ selectedIndex, tabTitle, payload, isFetching }) => (
+  renderTab = ({ tabIndex, selectedIndex, tabTitle, payload, isFetching }) => (
     <Tab
       title={tabTitle}
       titleStyle={
-        selectedIndex === 0 ? styles.tabActiveTitle : styles.tabNotActiveTitle
+        selectedIndex === tabIndex
+          ? styles.tabActiveTitle
+          : styles.tabNotActiveTitle
       }>
       <View style={styles.tabView}>
         {!isFetching ? (
@@ -134,17 +149,21 @@ class HomeScreen extends Component {
 
   render() {
     const { selectedIndex } = this.state;
-    const { conversations, isFetching } = this.props;
+    const { conversations, isFetching, inboxSelected } = this.props;
     const { payload, meta } = conversations;
+    const { name: inBoxName } = inboxSelected;
 
     const mineCount = meta ? `(${meta.mine_count})` : '';
     const unAssignedCount = meta ? `(${meta.unassigned_count})` : '';
     const allCount = meta ? `(${meta.all_count})` : '';
 
+    const headerTitle =
+      inBoxName || i18n.t('CONVERSATION.DEFAULT_HEADER_TITLE');
+
     return (
       <SafeAreaView style={styles.container}>
         <TopNavigation
-          title={i18n.t('CONVERSATION.DEFAULT_HEADER_TITLE')}
+          title={headerTitle}
           alignment="center"
           rightControls={this.renderRightControls()}
           titleStyle={styles.headerTitle}
@@ -155,12 +174,14 @@ class HomeScreen extends Component {
           onSelect={this.onChangeTab}
           tabBarStyle={styles.tabBar}>
           {this.renderTab({
+            tabIndex: 0,
             selectedIndex,
             tabTitle: `${i18n.t('CONVERSATION.MINE')} ${mineCount}`,
             payload,
             isFetching,
           })}
           {this.renderTab({
+            tabIndex: 1,
             selectedIndex,
             tabTitle: `${i18n.t(
               'CONVERSATION.UN_ASSIGNED',
@@ -169,6 +190,7 @@ class HomeScreen extends Component {
             isFetching,
           })}
           {this.renderTab({
+            tabIndex: 2,
             selectedIndex,
             tabTitle: `${i18n.t('CONVERSATION.ALL')} ${allCount}`,
             payload,
@@ -182,16 +204,20 @@ class HomeScreen extends Component {
 
 function bindAction(dispatch) {
   return {
-    getAgents: () => dispatch(getAgents()),
-    getConversations: ({ assigneeType }) =>
-      dispatch(getConversations({ assigneeType })),
+    getInboxes: () => dispatch(getInboxes()),
+    getConversations: ({ assigneeType, conversationStatus, inboxSelected }) =>
+      dispatch(
+        getConversations({ assigneeType, conversationStatus, inboxSelected }),
+      ),
   };
 }
 function mapStateToProps(state) {
   return {
     isFetching: state.conversation.isFetching,
     conversations: state.conversation.data,
+    conversationStatus: state.conversation.conversationStatus,
+    inboxSelected: state.inbox.inboxSelected,
   };
 }
 
-export default connect(mapStateToProps, bindAction)(HomeScreen);
+export default connect(mapStateToProps, bindAction)(ConversationList);

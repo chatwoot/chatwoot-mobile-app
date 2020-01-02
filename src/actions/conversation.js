@@ -2,18 +2,28 @@ import {
   GET_CONVERSATION,
   GET_CONVERSATION_ERROR,
   GET_CONVERSATION_SUCCESS,
+  SET_CONVERSATION_STATUS,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
 
 import { API } from '../constants/url';
 
-export const getConversations = ({ assigneeType }) => async dispatch => {
+export const getConversations = ({
+  assigneeType,
+  conversationStatus,
+  inboxSelected,
+}) => async dispatch => {
   dispatch({ type: GET_CONVERSATION });
   try {
-    const response = await axios.get(
-      `${API}conversations?status=open&assignee_type_id=${assigneeType}`,
-    );
+    const status = conversationStatus === 'Open' ? 'open' : 'resolved';
+    const inbox_id = inboxSelected && inboxSelected ? inboxSelected.id : null;
+    const apiUrl = `${API}conversations?${
+      inbox_id ? `inbox_id=${inbox_id}&` : ''
+    }status=${status}&assignee_type_id=${assigneeType}`;
+
+    const response = await axios.get(apiUrl);
+
     const { data } = response.data;
     dispatch({
       type: GET_CONVERSATION_SUCCESS,
@@ -22,4 +32,8 @@ export const getConversations = ({ assigneeType }) => async dispatch => {
   } catch (error) {
     dispatch({ type: GET_CONVERSATION_ERROR, payload: error });
   }
+};
+
+export const setConversationStatus = ({ status }) => async dispatch => {
+  dispatch({ type: SET_CONVERSATION_STATUS, payload: status });
 };

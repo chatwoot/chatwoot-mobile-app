@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 import locale from './locale';
 import auth from './auth';
-import agent from './agent';
+import inbox from './inbox';
 import conversation from './conversation';
 
 const rootReducer = combineReducers({
   locale,
   auth,
-  agent,
+  inbox,
   conversation,
 });
 

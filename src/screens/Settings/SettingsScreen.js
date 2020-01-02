@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, TopNavigation } from 'react-native-ui-kitten';
+import { TopNavigation } from 'react-native-ui-kitten';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-native';
@@ -85,6 +85,7 @@ class Settings extends Component {
         <View style={styles.itemListView}>
           {settingsData.map((item, index) => (
             <SettingsItem
+              key={item.text}
               text={item.text}
               checked={item.checked}
               iconSize={item.iconSize}
@@ -100,8 +101,7 @@ class Settings extends Component {
         </View>
 
         <View style={styles.appDescriptionView}>
-          <CustomText
-            style={[styles.appDescriptionCustomText, styles.lastChild]}>
+          <CustomText style={styles.appDescriptionView}>
             {`v${packageFile.version}`}
           </CustomText>
         </View>

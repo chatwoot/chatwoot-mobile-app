@@ -23,7 +23,7 @@ const propTypes = {
 
 class ConversationItem extends Component {
   render() {
-    const { item, readStatus } = this.props;
+    const { item } = this.props;
     const {
       meta: {
         sender: { name, thumbnail },
@@ -42,7 +42,7 @@ class ConversationItem extends Component {
           <View>
             <CustomText
               style={
-                readStatus
+                unread_count
                   ? styles.conversationUserActive
                   : styles.conversationUserNotActive
               }>
@@ -51,7 +51,7 @@ class ConversationItem extends Component {
 
             <CustomText
               style={
-                readStatus ? styles.messageActive : styles.messageNotActive
+                unread_count ? styles.messageActive : styles.messageNotActive
               }
               numberOfLines={1}
               maxLength={8}>
@@ -67,11 +67,11 @@ class ConversationItem extends Component {
               {dynamicTime({ time: created_at })}
             </CustomText>
           </View>
-          {readStatus ? (
+          {unread_count ? (
             <View style={styles.badgeView}>
               <View style={styles.badge}>
                 <CustomText style={styles.badgeCount}>
-                  {unread_count}
+                  {unread_count.toString()}
                 </CustomText>
               </View>
             </View>

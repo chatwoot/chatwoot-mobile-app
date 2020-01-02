@@ -11,6 +11,7 @@ import ConversationList from './screens/ConversationList/ConversationList';
 
 import SettingsScreen from './screens/Settings/SettingsScreen';
 import TabBar from './components/TabBar';
+import ConversationFilter from './screens/ConversationFilter/ConversationFilter';
 
 const Tab = createBottomTabNavigator(
   {
@@ -27,7 +28,7 @@ const createNavigationStack = ({ initialRouteName }) =>
     {
       Login: { screen: LoginScreen },
       ConversationList: { screen: ConversationList },
-
+      ConversationFilter: { screen: ConversationFilter },
       Settings: SettingsScreen,
       Tab: { screen: Tab },
     },

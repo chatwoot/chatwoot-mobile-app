@@ -73,12 +73,11 @@ const styles = StyleSheet.create({
     aspectRatio: 2,
     resizeMode: 'contain',
   },
-  lastChild: {
-    marginBottom: 32,
-  },
+
   appDescriptionView: {
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 32,
   },
   appDescriptionText: {
     fontSize: theme['font-size-medium'],

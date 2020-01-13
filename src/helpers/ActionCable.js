@@ -1,12 +1,22 @@
-import BaseActionCableConnector from './BaseActionCableConnector';
+import { ActionCable, Cable } from '@kesha-antonov/react-native-action-cable';
+import { WEB_SOCKET_URL } from '../constants/url';
+
+const connectActionCable = ActionCable.createConsumer(WEB_SOCKET_URL);
+
+const cable = new Cable({});
+
 import { getPubSubToken } from './AuthHelper';
 
-import { store } from '../store';
-import { addConversation } from '../actions/conversation';
-
-class ActionCableConnector extends BaseActionCableConnector {
+class ActionCableConnector {
   constructor(pubSubToken) {
-    super(pubSubToken);
+    const channel = cable.setChannel(
+      'RoomChannel',
+      connectActionCable.subscriptions.create({
+        channel: 'RoomChannel',
+        pubsub_token: pubSubToken,
+      }),
+    );
+    channel.on('received', this.onReceived);
 
     this.events = {
       'message.created': this.onMessageCreated,
@@ -18,29 +28,24 @@ class ActionCableConnector extends BaseActionCableConnector {
     };
   }
 
-  onAssigneeChanged = payload => {
-    const { meta = {}, id } = payload;
-    const { assignee } = meta || {};
-    if (id) {
-      //   this.app.$store.dispatch('updateAssignee', { id, assignee });
+  onReceived = ({ event, data } = {}) => {
+    if (this.events[event] && typeof this.events[event] === 'function') {
+      this.events[event](data);
     }
   };
 
+  onAssigneeChanged = payload => {};
+
   onConversationCreated = data => {};
 
-  onMessageCreated = data => {
-    store.dispatch(addConversation(data));
-    // this.app.$store.dispatch('addMessage', data);
-  };
+  onMessageCreated = data => {};
 
-  onStatusChange = data => {
-    // this.app.$store.dispatch('addConversation', data);
-  };
+  onStatusChange = data => {};
 
   handleReceived = data => {};
 }
 
-export async function init() {
+export async function initActionCable() {
   const pubSubToken = await getPubSubToken();
 
   const actionCable = new ActionCableConnector(pubSubToken);

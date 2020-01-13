@@ -8,7 +8,7 @@ import {
   TabView,
   List,
 } from 'react-native-ui-kitten';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -24,7 +24,6 @@ import styles from './ConversationList.style';
 import CustomText from '../../components/Text';
 
 import i18n from '../../i18n';
-import { View } from 'react-native';
 
 const MenuIcon = style => <Icon {...style} name="funnel-outline" />;
 
@@ -34,6 +33,8 @@ const renderItem = ({ item }) => <ConversationItem item={item} />;
 const LoaderData = new Array(24).fill(0);
 
 const renderItemLoader = () => <ConversationItemLoader />;
+
+import { initActionCable } from '../../helpers/ActionCable';
 
 class ConversationList extends Component {
   static propTypes = {
@@ -65,6 +66,7 @@ class ConversationList extends Component {
     const { selectedIndex } = this.state;
     this.props.getInboxes();
     this.loadConversations({ assigneeType: selectedIndex });
+    initActionCable();
   };
 
   loadConversations = ({ assigneeType }) => {

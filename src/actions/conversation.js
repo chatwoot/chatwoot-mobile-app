@@ -24,10 +24,20 @@ export const getConversations = ({
 
     const response = await axios.get(apiUrl);
 
-    const { data } = response.data;
+    const {
+      data: { meta, payload },
+    } = response.data;
+    const updatedPayload = payload.sort((a, b) => {
+      return b.timestamp - a.timestamp;
+    });
+    const allConversations = {
+      meta,
+      payload: updatedPayload,
+    };
+
     dispatch({
       type: GET_CONVERSATION_SUCCESS,
-      payload: data,
+      payload: allConversations,
     });
   } catch (error) {
     dispatch({ type: GET_CONVERSATION_ERROR, payload: error });

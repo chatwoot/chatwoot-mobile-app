@@ -6,6 +6,7 @@ import CustomText from './Text';
 import UserAvatar from './UserAvatar';
 import { theme } from '../theme';
 import { dynamicTime } from '../helpers/TimeHelper';
+import { findLastMessage } from '../helpers';
 
 const propTypes = {
   readStatus: PropTypes.number,
@@ -28,11 +29,13 @@ class ConversationItem extends Component {
       meta: {
         sender: { name, thumbnail },
       },
-      messages: [message],
+      messages,
       unread_count,
     } = item;
 
-    const { content, created_at } = message;
+    const lastMessage = findLastMessage({ messages });
+    const { content, created_at } = lastMessage;
+
     return (
       <TouchableOpacity activeOpacity={0.95} style={styles.container}>
         <View style={styles.itemView}>
@@ -56,8 +59,8 @@ class ConversationItem extends Component {
               numberOfLines={1}
               maxLength={8}>
               {content.length < 35
-                ? `${message.content}`
-                : `${message.content.substring(0, 32)}...`}
+                ? `${content}`
+                : `${content.substring(0, 32)}...`}
             </CustomText>
           </View>
         </View>

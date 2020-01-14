@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
@@ -12,6 +13,7 @@
   "dependencies": {
     "@eva-design/eva": "^1.2.0",
     "@react-native-community/async-storage": "^1.6.3",
+    "@kesha-antonov/react-native-action-cable": "^1.0.5",
     "@ui-kitten/eva-icons": "^4.3.2",
     "axios": "^0.19.0",
     "i18n-js": "^3.5.0",

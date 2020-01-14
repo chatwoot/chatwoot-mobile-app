@@ -13,3 +13,14 @@ export const getHeaders = async () => {
     };
   } catch (error) {}
 };
+
+export const getPubSubToken = async () => {
+  try {
+    const state = await store.getState();
+    const {
+      user: { pubsub_token: pubSubToken },
+    } = state.auth;
+
+    return pubSubToken;
+  } catch (error) {}
+};

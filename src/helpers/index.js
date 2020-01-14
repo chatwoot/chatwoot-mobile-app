@@ -1,6 +1,8 @@
 import md5 from 'md5';
 import { GRAVATAR_URL } from '../constants/url';
 
+import { MESSAGE_TYPES } from '../constants';
+
 export function getUserInitial({ userName }) {
   const parts = userName ? userName.split(/[ -]/) : [];
   let initials = '';
@@ -17,4 +19,11 @@ export function getUserInitial({ userName }) {
 export function getGravatarUrl({ email }) {
   const hash = md5(email);
   return `${GRAVATAR_URL}${hash}?default=404`;
+}
+
+export function findLastMessage({ messages }) {
+  const lastMessage = messages.find(element => {
+    return element.message_type !== MESSAGE_TYPES.ACTIVITY;
+  });
+  return lastMessage;
 }

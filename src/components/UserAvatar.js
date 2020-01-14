@@ -22,6 +22,8 @@ const styles = StyleSheet.create({
   },
   userName: {
     color: theme['color-white'],
+    fontWeight: theme['font-medium'],
+    fontSize: theme['text-primary-size'],
   },
 });
 

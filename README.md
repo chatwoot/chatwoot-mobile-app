@@ -34,6 +34,6 @@
 
 Feel free to send us feedback on [Twitter](https://twitter.com/chatwootapp) or [file an issue](https://github.com/chatwoot/chatwoot-mobile-app/issues). If you wish to contribute, please take a quick look at the [CONTRIBUTING.md](CONTRIBUTING.md) guide.
 
-If there's anything you'd like to chat about, please feel free to join our [Gitter](https://discord.gg/cJXdrwS) chat!
+If there's anything you'd like to chat about, please feel free to join our [Discord](https://discord.gg/cJXdrwS) chat!
 
 _Chatwoot_ &copy; 2017-2020, ThoughtWoot Inc - Released under the MIT License.

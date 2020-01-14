@@ -3,7 +3,7 @@
 ## Branching model
 
 We use [git-flow](https://nvie.com/posts/a-successful-git-branching-model/) branching model. The base branch is `develop`.
-If you are looking for a stable version, please use the `master` or tags labelled as `v1.x.x`.
+
 
 - [Running](#running)
   - [Prerequisites](#prerequisites)

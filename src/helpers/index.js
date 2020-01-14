@@ -29,5 +29,10 @@ export function findLastMessage({ messages }) {
 }
 
 export const getRandomColor = () => {
-  return '#' + Math.floor(Math.random() * 16777215).toString(16);
+  return (
+    '#' +
+    Math.random()
+      .toString(16)
+      .slice(-6)
+  );
 };

@@ -4,7 +4,7 @@ import { Avatar } from 'react-native-ui-kitten';
 import PropTypes from 'prop-types';
 
 import CustomText from './Text';
-import { getUserInitial } from '../helpers';
+import { getUserInitial, getRandomColor } from '../helpers';
 import { theme } from '../theme';
 
 const styles = StyleSheet.create({
@@ -22,6 +22,8 @@ const styles = StyleSheet.create({
   },
   userName: {
     color: theme['color-white'],
+    fontWeight: theme['font-medium'],
+    fontSize: theme['text-primary-size'],
   },
 });
 
@@ -47,7 +49,7 @@ const UserAvatar = ({ thumbnail, userName, size }) =>
       style={styles.avatar}
     />
   ) : (
-    <View style={styles.userThumbNail}>
+    <View style={[styles.userThumbNail, { backgroundColor: getRandomColor() }]}>
       <CustomText style={styles.userName}>
         {getUserInitial({ userName })}
       </CustomText>

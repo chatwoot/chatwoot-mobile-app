@@ -27,3 +27,12 @@ export function findLastMessage({ messages }) {
   });
   return lastMessage;
 }
+
+export const getRandomColor = () => {
+  return (
+    '#' +
+    Math.random()
+      .toString(16)
+      .slice(-6)
+  );
+};

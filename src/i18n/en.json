@@ -44,5 +44,11 @@
     "COMMON_ERROR": "Something went wrong. Please try after sometime.",
     "OfFLINE": "You are not connected to Internet",
     "CANNOT_FETCH": "There was an error fetching the information, please try again"
+  },
+  "EXIT": {
+    "TITLE": "Exit",
+    "SUBTITLE": "Are you sure you want to quit?",
+    "CANCEL": "Cancel",
+    "OK": "Ok"
   }
 }

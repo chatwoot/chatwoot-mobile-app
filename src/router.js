@@ -13,6 +13,8 @@ import SettingsScreen from './screens/Settings/SettingsScreen';
 import TabBar from './components/TabBar';
 import ConversationFilter from './screens/ConversationFilter/ConversationFilter';
 
+import NoNetworkBar from './components/NoNetworkBar';
+
 const Tab = createBottomTabNavigator(
   {
     Home: ConversationList,
@@ -60,7 +62,12 @@ class RootApp extends React.Component {
 
     const App = createAppContainer(stack);
 
-    return <App />;
+    return (
+      <React.Fragment>
+        <NoNetworkBar />
+        <App />
+      </React.Fragment>
+    );
   }
 }
 

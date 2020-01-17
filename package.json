@@ -12,8 +12,9 @@
   },
   "dependencies": {
     "@eva-design/eva": "^1.2.0",
-    "@react-native-community/async-storage": "^1.6.3",
     "@kesha-antonov/react-native-action-cable": "^1.0.5",
+    "@react-native-community/async-storage": "^1.6.3",
+    "@react-native-community/netinfo": "^5.3.3",
     "@ui-kitten/eva-icons": "^4.3.2",
     "axios": "^0.19.0",
     "i18n-js": "^3.5.0",

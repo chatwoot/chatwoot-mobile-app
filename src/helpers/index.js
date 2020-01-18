@@ -1,8 +1,6 @@
 import md5 from 'md5';
 import { GRAVATAR_URL } from '../constants/url';
 
-import { MESSAGE_TYPES } from '../constants';
-
 export function getUserInitial({ userName }) {
   const parts = userName ? userName.split(/[ -]/) : [];
   let initials = '';
@@ -22,17 +20,25 @@ export function getGravatarUrl({ email }) {
 }
 
 export function findLastMessage({ messages }) {
-  const lastMessage = messages.find(element => {
-    return element.message_type !== MESSAGE_TYPES.ACTIVITY;
-  });
-  return lastMessage;
+  let [last] = messages.slice(-1);
+
+  return last;
 }
 
-export const getRandomColor = () => {
-  return (
-    '#' +
-    Math.random()
-      .toString(16)
-      .slice(-6)
-  );
+export const getRandomColor = function({ userName }) {
+  let hash = 0;
+
+  for (let i = 0; i < userName.length; i++) {
+    // eslint-disable-next-line no-bitwise
+    hash = userName.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  let colour = '#';
+
+  for (let i = 0; i < 3; i++) {
+    // eslint-disable-next-line no-bitwise
+    let value = (hash >> (i * 8)) & 0xff;
+
+    colour += ('00' + value.toString(16)).substr(-2);
+  }
+  return colour;
 };

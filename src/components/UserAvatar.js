@@ -49,7 +49,11 @@ const UserAvatar = ({ thumbnail, userName, size }) =>
       style={styles.avatar}
     />
   ) : (
-    <View style={[styles.userThumbNail, { backgroundColor: getRandomColor() }]}>
+    <View
+      style={[
+        styles.userThumbNail,
+        { backgroundColor: getRandomColor({ userName }) },
+      ]}>
       <CustomText style={styles.userName}>
         {getUserInitial({ userName })}
       </CustomText>

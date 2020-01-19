@@ -42,3 +42,17 @@ export const getRandomColor = function({ userName }) {
   }
   return colour;
 };
+
+export const checkImageExist = ({ thumbnail }) => {
+  fetch(thumbnail)
+    .then(res => {
+      if (res.status === 404) {
+        return false;
+      } else {
+        return true;
+      }
+    })
+    .catch(() => {
+      return false;
+    });
+};

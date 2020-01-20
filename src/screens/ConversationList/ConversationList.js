@@ -101,10 +101,16 @@ class ConversationList extends Component {
 
   renderList = () => {
     const { conversations } = this.props;
+
     const { payload } = conversations;
+
+    const filterConversations = payload.filter(
+      item => item.messages.length !== 0,
+    );
+
     return (
       <Layout style={styles.tabContainer}>
-        <List data={payload} renderItem={renderItem} />
+        <List data={filterConversations} renderItem={renderItem} />
       </Layout>
     );
   };

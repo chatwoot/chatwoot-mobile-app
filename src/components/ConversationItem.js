@@ -6,7 +6,7 @@ import CustomText from './Text';
 import UserAvatar from './UserAvatar';
 import { theme } from '../theme';
 import { dynamicTime } from '../helpers/TimeHelper';
-import { findLastMessage } from '../helpers';
+import { findLastMessage, getUnreadCount } from '../helpers';
 
 const propTypes = {
   readStatus: PropTypes.number,
@@ -30,8 +30,9 @@ class ConversationItem extends Component {
         sender: { name, thumbnail },
       },
       messages,
-      unread_count,
     } = item;
+
+    const unread_count = getUnreadCount(item);
 
     const lastMessage = findLastMessage({ messages });
     const { content, created_at } = lastMessage;

@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* ChatwootTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ChatwootTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -12,19 +13,19 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		167946146FB4540C749643FD /* libPods-ChatwootTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18FE270EF3B23F5F98E0DA5F /* libPods-ChatwootTests.a */; };
+		248049416009460394082249 /* Inter-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3E086A744E6C46D8A9670375 /* Inter-Light.otf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* ChatwootTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ChatwootTests.m */; };
 		80CE3500E8BACE2D033C958F /* libPods-Chatwoot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE1D39D22FF5343589EF844 /* libPods-Chatwoot.a */; };
-		93FED224E6A2318CD657A1F1 /* libPods-Chatwoot-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFFE1D5359440EDDD504D64 /* libPods-Chatwoot-tvOSTests.a */; };
-		E40EC38D0EC19CCE148A5DB0 /* libPods-Chatwoot-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C4EFE54417C83F5DD0461B5 /* libPods-Chatwoot-tvOS.a */; };
-		D663BED441BE4A3A8EB586CD /* Inter-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 23DCEDEC190E469D84FEF453 /* Inter-Bold.otf */; };
-		9F1E6CDBA5454DA6A996CE26 /* Inter-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7FA8797888964DECB6EF22E5 /* Inter-Italic.otf */; };
-		248049416009460394082249 /* Inter-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3E086A744E6C46D8A9670375 /* Inter-Light.otf */; };
-		B9F07E6FFF8D48E88739B68E /* Inter-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 792A10EE18404A17875F9185 /* Inter-Medium.otf */; };
 		8E35D9117D334C3BB3711C81 /* Inter-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2ABECD63C65549639979616B /* Inter-Regular.otf */; };
+		93FED224E6A2318CD657A1F1 /* libPods-Chatwoot-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFFE1D5359440EDDD504D64 /* libPods-Chatwoot-tvOSTests.a */; };
+		9F1E6CDBA5454DA6A996CE26 /* Inter-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7FA8797888964DECB6EF22E5 /* Inter-Italic.otf */; };
+		B9F07E6FFF8D48E88739B68E /* Inter-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 792A10EE18404A17875F9185 /* Inter-Medium.otf */; };
 		CA0A34E4A91F483090D5B6E6 /* Inter-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 85F3262F81DA4094BD8A7D78 /* Inter-SemiBold.otf */; };
+		D663BED441BE4A3A8EB586CD /* Inter-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 23DCEDEC190E469D84FEF453 /* Inter-Bold.otf */; };
+		E40EC38D0EC19CCE148A5DB0 /* libPods-Chatwoot-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C4EFE54417C83F5DD0461B5 /* libPods-Chatwoot-tvOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,27 +58,27 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Chatwoot/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Chatwoot/main.m; sourceTree = "<group>"; };
 		18FE270EF3B23F5F98E0DA5F /* libPods-ChatwootTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatwootTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		23DCEDEC190E469D84FEF453 /* Inter-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Bold.otf"; path = "../assets/Inter-Bold.otf"; sourceTree = "<group>"; };
 		286177D310F1E407F476A391 /* Pods-Chatwoot-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatwoot-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Chatwoot-tvOSTests/Pods-Chatwoot-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		2ABECD63C65549639979616B /* Inter-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Regular.otf"; path = "../assets/Inter-Regular.otf"; sourceTree = "<group>"; };
 		2C4EFE54417C83F5DD0461B5 /* libPods-Chatwoot-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Chatwoot-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E47B1E0B4A5D006451C7 /* Chatwoot-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chatwoot-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Chatwoot-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Chatwoot-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3381215DAF425AB6F7F2DAE1 /* Pods-ChatwootTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatwootTests.release.xcconfig"; path = "Target Support Files/Pods-ChatwootTests/Pods-ChatwootTests.release.xcconfig"; sourceTree = "<group>"; };
 		37DCDE4912EBEA5C448F3F37 /* Pods-Chatwoot-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatwoot-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Chatwoot-tvOSTests/Pods-Chatwoot-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		3E086A744E6C46D8A9670375 /* Inter-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Light.otf"; path = "../assets/Inter-Light.otf"; sourceTree = "<group>"; };
 		4CE1D39D22FF5343589EF844 /* libPods-Chatwoot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Chatwoot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		599F02E53EC5DABD1E2A508A /* Pods-Chatwoot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatwoot.release.xcconfig"; path = "Target Support Files/Pods-Chatwoot/Pods-Chatwoot.release.xcconfig"; sourceTree = "<group>"; };
 		5FFFE1D5359440EDDD504D64 /* libPods-Chatwoot-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Chatwoot-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		792A10EE18404A17875F9185 /* Inter-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Medium.otf"; path = "../assets/Inter-Medium.otf"; sourceTree = "<group>"; };
+		7FA8797888964DECB6EF22E5 /* Inter-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Italic.otf"; path = "../assets/Inter-Italic.otf"; sourceTree = "<group>"; };
 		85262BC354F22EC4430C7138 /* Pods-Chatwoot-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatwoot-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Chatwoot-tvOS/Pods-Chatwoot-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		85F3262F81DA4094BD8A7D78 /* Inter-SemiBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-SemiBold.otf"; path = "../assets/Inter-SemiBold.otf"; sourceTree = "<group>"; };
 		B930E27AB88A15A260EF8BAC /* Pods-Chatwoot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatwoot.debug.xcconfig"; path = "Target Support Files/Pods-Chatwoot/Pods-Chatwoot.debug.xcconfig"; sourceTree = "<group>"; };
 		CCBA2888AC9B3EFA9A8391B3 /* Pods-ChatwootTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatwootTests.debug.xcconfig"; path = "Target Support Files/Pods-ChatwootTests/Pods-ChatwootTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E4671DECBE2AF7C8E457CAA1 /* Pods-Chatwoot-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatwoot-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Chatwoot-tvOS/Pods-Chatwoot-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		23DCEDEC190E469D84FEF453 /* Inter-Bold.otf */ = {isa = PBXFileReference; name = "Inter-Bold.otf"; path = "../assets/Inter-Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		7FA8797888964DECB6EF22E5 /* Inter-Italic.otf */ = {isa = PBXFileReference; name = "Inter-Italic.otf"; path = "../assets/Inter-Italic.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		3E086A744E6C46D8A9670375 /* Inter-Light.otf */ = {isa = PBXFileReference; name = "Inter-Light.otf"; path = "../assets/Inter-Light.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		792A10EE18404A17875F9185 /* Inter-Medium.otf */ = {isa = PBXFileReference; name = "Inter-Medium.otf"; path = "../assets/Inter-Medium.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		2ABECD63C65549639979616B /* Inter-Regular.otf */ = {isa = PBXFileReference; name = "Inter-Regular.otf"; path = "../assets/Inter-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		85F3262F81DA4094BD8A7D78 /* Inter-SemiBold.otf */ = {isa = PBXFileReference; name = "Inter-SemiBold.otf"; path = "../assets/Inter-SemiBold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +134,19 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		0ACBC74E1837447AA42176C7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				23DCEDEC190E469D84FEF453 /* Inter-Bold.otf */,
+				7FA8797888964DECB6EF22E5 /* Inter-Italic.otf */,
+				3E086A744E6C46D8A9670375 /* Inter-Light.otf */,
+				792A10EE18404A17875F9185 /* Inter-Medium.otf */,
+				2ABECD63C65549639979616B /* Inter-Regular.otf */,
+				85F3262F81DA4094BD8A7D78 /* Inter-SemiBold.otf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		119D27CCE636BF1CEC4389B9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -145,7 +159,6 @@
 				CCBA2888AC9B3EFA9A8391B3 /* Pods-ChatwootTests.debug.xcconfig */,
 				3381215DAF425AB6F7F2DAE1 /* Pods-ChatwootTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -209,20 +222,6 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
-		};
-		0ACBC74E1837447AA42176C7 /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				23DCEDEC190E469D84FEF453 /* Inter-Bold.otf */,
-				7FA8797888964DECB6EF22E5 /* Inter-Italic.otf */,
-				3E086A744E6C46D8A9670375 /* Inter-Light.otf */,
-				792A10EE18404A17875F9185 /* Inter-Medium.otf */,
-				2ABECD63C65549639979616B /* Inter-Regular.otf */,
-				85F3262F81DA4094BD8A7D78 /* Inter-SemiBold.otf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -334,6 +333,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -658,6 +658,7 @@
 			baseConfigurationReference = B930E27AB88A15A260EF8BAC /* Pods-Chatwoot.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				INFOPLIST_FILE = Chatwoot/Info.plist;
@@ -667,7 +668,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.chatwoot.app;
 				PRODUCT_NAME = Chatwoot;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -678,6 +679,7 @@
 			baseConfigurationReference = 599F02E53EC5DABD1E2A508A /* Pods-Chatwoot.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = Chatwoot/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -686,7 +688,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.chatwoot.app;
 				PRODUCT_NAME = Chatwoot;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

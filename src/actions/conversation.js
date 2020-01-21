@@ -3,6 +3,8 @@ import {
   GET_CONVERSATION_ERROR,
   GET_CONVERSATION_SUCCESS,
   SET_CONVERSATION_STATUS,
+  ADD_CONVERSATION,
+  ADD_MESSAGE,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -46,4 +48,34 @@ export const getConversations = ({
 
 export const setConversationStatus = ({ status }) => async dispatch => {
   dispatch({ type: SET_CONVERSATION_STATUS, payload: status });
+};
+
+export const addConversation = ({ conversation }) => async dispatch => {
+  dispatch({ type: ADD_CONVERSATION, payload: conversation });
+};
+
+export const addMessage = ({ message }) => async (dispatch, getState) => {
+  const {
+    data: { payload },
+  } = getState().conversation;
+
+  const [chat] = payload.filter(c => c.id === message.conversation_id);
+
+  if (!chat) {
+    return;
+  }
+  const previousMessageIds = chat.messages.map(m => m.id);
+  if (!previousMessageIds.includes(message.id)) {
+    chat.messages.push(message);
+  }
+
+  const index = payload.findIndex(c => c.id === message.conversation_id);
+
+  let updatedConversations = payload.map((content, i) =>
+    i === index ? { ...content } : content,
+  );
+
+  updatedConversations.unshift(...updatedConversations.splice(index, 1));
+
+  dispatch({ type: ADD_MESSAGE, payload: updatedConversations });
 };

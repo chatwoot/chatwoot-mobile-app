@@ -7,6 +7,10 @@ const cable = new Cable({});
 
 import { getPubSubToken } from './AuthHelper';
 
+import { addConversation, addMessage } from '../actions/conversation';
+
+import { store } from '../store';
+
 class ActionCableConnector {
   constructor(pubSubToken) {
     const channel = cable.setChannel(
@@ -36,9 +40,13 @@ class ActionCableConnector {
 
   onAssigneeChanged = payload => {};
 
-  onConversationCreated = data => {};
+  onConversationCreated = conversation => {
+    store.dispatch(addConversation({ conversation }));
+  };
 
-  onMessageCreated = data => {};
+  onMessageCreated = message => {
+    store.dispatch(addMessage({ message }));
+  };
 
   onStatusChange = data => {};
 

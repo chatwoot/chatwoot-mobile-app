@@ -41,8 +41,8 @@
     "LOG_OUT": "Logout"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Something went wrong. Please try after sometime.",
-    "OfFLINE": "You are not connected to Internet",
+    "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
+    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
     "CANNOT_FETCH": "There was an error fetching the information, please try again"
   },
   "EXIT": {

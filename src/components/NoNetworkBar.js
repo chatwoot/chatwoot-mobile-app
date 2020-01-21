@@ -7,7 +7,7 @@ import { theme } from '../theme';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme['color-gray'],
+    backgroundColor: theme['color-danger-800'],
   },
   offlineText: {
     color: theme['color-white'],
@@ -72,7 +72,7 @@ export default class OfflineBar extends Component {
     const { isConnected } = this.state;
     return !isConnected ? (
       <View style={styles.container}>
-        <StatusBar backgroundColor={theme['color-gray']} />
+        <StatusBar backgroundColor={theme['color-danger-800']} />
         <Animated.Text style={[styles.offlineText, animationStyle]}>
           {i18n.t('ERRORS.OfFLINE')}
         </Animated.Text>

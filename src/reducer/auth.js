@@ -5,7 +5,7 @@ import {
   SET_AUTH_HEADER,
 } from '../constants/actions';
 
-const initialState = {
+export const initialState = {
   user: {},
   headers: {},
   isLogged: false,

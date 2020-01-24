@@ -67,6 +67,7 @@
     ]
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "testRegex": "src/.*.spec.(js|jsx)$"
   }
 }

@@ -3,6 +3,9 @@ import {
   LOGIN_SUCCESS,
   LOGIN_ERROR,
   SET_AUTH_HEADER,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_ERROR,
+  RESET_PASSWORD,
 } from '../constants/actions';
 
 export const initialState = {
@@ -10,6 +13,7 @@ export const initialState = {
   headers: {},
   isLogged: false,
   isLoggingIn: false,
+  isResettingPassword: false,
   error: {},
   success: {},
 };
@@ -32,6 +36,29 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoggingIn: false,
+        isLogged: false,
+        error: action.payload,
+        user: null,
+        success: {},
+      };
+    case RESET_PASSWORD:
+      return {
+        ...state,
+        isResettingPassword: true,
+      };
+    case RESET_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        isResettingPassword: false,
+        isLogged: true,
+        user: {},
+        error: {},
+        success: {},
+      };
+    case RESET_PASSWORD_ERROR:
+      return {
+        ...state,
+        isResettingPassword: false,
         isLogged: false,
         error: action.payload,
         user: null,

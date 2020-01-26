@@ -5,7 +5,7 @@ import { Layout, Button } from 'react-native-ui-kitten';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
 
-import { onLogin } from '../../actions/auth';
+import { onResetPassword } from '../../actions/auth';
 
 import { setLocale } from '../../actions/locale';
 import styles from './ForgotPassword.style';
@@ -23,14 +23,14 @@ const LoginForm = t.struct({
 
 class ForgotPassword extends Component {
   static propTypes = {
-    onLogin: PropTypes.func,
-    isLoggingIn: PropTypes.bool,
+    onResetPassword: PropTypes.func,
+    isLoading: PropTypes.bool,
     navigation: PropTypes.object,
   };
 
   static defaultProps = {
     onLogin: () => {},
-    isLoggingIn: false,
+    isLoading: false,
   };
 
   state = {
@@ -61,16 +61,15 @@ class ForgotPassword extends Component {
 
   doLogin() {
     const value = this.formRef.getValue();
-
     if (value) {
-      this.props.onLogin({});
+      this.props.onResetPassword({});
     }
   }
 
   render() {
     const { navigate } = this.props.navigation;
     const { options, values } = this.state;
-    const { isLoggingIn } = this.props;
+    const { isLoading } = this.props;
     return (
       <Layout style={styles.mainView}>
         <View style={styles.logoView}>
@@ -92,7 +91,7 @@ class ForgotPassword extends Component {
             <View style={styles.loginButtonView}>
               <LoaderButton
                 style={styles.loginButton}
-                loading={isLoggingIn}
+                loading={isLoading}
                 onPress={() => this.doLogin()}
                 size="large"
                 textStyle={styles.loginButtonText}>
@@ -111,7 +110,10 @@ class ForgotPassword extends Component {
               </Button>
             </View>
             <View style={styles.accountView}>
-              <Button textStyle={styles.textStyle} style={styles.button}>
+              <Button
+                textStyle={styles.textStyle}
+                style={styles.button}
+                onPress={() => navigate('Login')}>
                 {i18n.t('FORGOT_PASSWORD.CREATE_ACCOUNT')}
               </Button>
             </View>
@@ -124,13 +126,13 @@ class ForgotPassword extends Component {
 
 function bindAction(dispatch) {
   return {
-    onLogin: data => dispatch(onLogin(data)),
+    onResetPassword: data => dispatch(onResetPassword(data)),
     setLocale: data => dispatch(setLocale(data)),
   };
 }
 function mapStateToProps(state) {
   return {
-    isLoggingIn: state.auth.isLoggingIn,
+    isLoading: state.auth.isResettingPassword,
   };
 }
 

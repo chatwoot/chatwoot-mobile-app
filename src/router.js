@@ -14,6 +14,7 @@ import TabBar from './components/TabBar';
 import ConversationFilter from './screens/ConversationFilter/ConversationFilter';
 
 import NoNetworkBar from './components/NoNetworkBar';
+import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 
 const Tab = createBottomTabNavigator(
   {
@@ -29,6 +30,7 @@ const createNavigationStack = ({ initialRouteName }) =>
   createStackNavigator(
     {
       Login: { screen: LoginScreen },
+      ResetPassword: { screen: ResetPassword },
       ConversationList: { screen: ConversationList },
       ConversationFilter: { screen: ConversationFilter },
       Settings: SettingsScreen,

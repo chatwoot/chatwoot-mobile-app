@@ -8,8 +8,8 @@ import PropTypes from 'prop-types';
 import { onLogin } from '../../actions/auth';
 
 import { setLocale } from '../../actions/locale';
-import styles from './LoginScreen.style';
-import { Email, Password } from '../../helpers/formHelper';
+import styles from './ForgotPassword.style';
+import { Email } from '../../helpers/formHelper';
 import TextInputField from '../../components/TextInputField';
 import images from '../../constants/images';
 
@@ -19,14 +19,13 @@ import LoaderButton from '../../components/LoaderButton';
 const { Form } = t.form;
 const LoginForm = t.struct({
   email: Email,
-  password: Password,
 });
 
-class LoginScreen extends Component {
+class ForgotPassword extends Component {
   static propTypes = {
     onLogin: PropTypes.func,
     isLoggingIn: PropTypes.bool,
-    navigation: PropTypes.func,
+    navigation: PropTypes.object,
   };
 
   static defaultProps = {
@@ -37,7 +36,6 @@ class LoginScreen extends Component {
   state = {
     values: {
       email: '',
-      password: '',
     },
     options: {
       fields: {
@@ -50,17 +48,6 @@ class LoginScreen extends Component {
           config: {
             label: i18n.t('LOGIN.EMAIL'),
           },
-        },
-        password: {
-          placeholder: '',
-          template: TextInputField,
-          keyboardType: 'default',
-          autoCapitalize: 'none',
-          error: i18n.t('LOGIN.PASSWORD_ERROR'),
-          config: {
-            label: i18n.t('LOGIN.PASSWORD'),
-          },
-          secureTextEntry: true,
         },
       },
     },
@@ -76,8 +63,7 @@ class LoginScreen extends Component {
     const value = this.formRef.getValue();
 
     if (value) {
-      const { email, password } = value;
-      this.props.onLogin({ email, password });
+      this.props.onLogin({});
     }
   }
 
@@ -110,7 +96,7 @@ class LoginScreen extends Component {
                 onPress={() => this.doLogin()}
                 size="large"
                 textStyle={styles.loginButtonText}>
-                {i18n.t('LOGIN.LOGIN')}
+                {i18n.t('FORGOT_PASSWORD.RESET_HERE')}
               </LoaderButton>
             </View>
           </View>
@@ -120,13 +106,13 @@ class LoginScreen extends Component {
               <Button
                 textStyle={styles.textStyle}
                 style={styles.button}
-                onPress={() => navigate('ResetPassword')}>
-                {i18n.t('LOGIN.FORGOT_PASSWORD')}
+                onPress={() => navigate('Login')}>
+                {i18n.t('FORGOT_PASSWORD.LOGIN')}
               </Button>
             </View>
             <View style={styles.accountView}>
               <Button textStyle={styles.textStyle} style={styles.button}>
-                {i18n.t('LOGIN.CREATE_ACCOUNT')}
+                {i18n.t('FORGOT_PASSWORD.CREATE_ACCOUNT')}
               </Button>
             </View>
           </View>
@@ -148,4 +134,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, bindAction)(LoginScreen);
+export default connect(mapStateToProps, bindAction)(ForgotPassword);

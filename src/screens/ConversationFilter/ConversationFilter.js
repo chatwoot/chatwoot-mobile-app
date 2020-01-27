@@ -9,7 +9,7 @@ import {
 
 import { connect } from 'react-redux';
 
-import { View } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
 
 import PropTypes from 'prop-types';
 
@@ -115,7 +115,7 @@ class FilterScreen extends Component {
     const { conversationStatus } = this.props;
 
     return (
-      <Layout style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <TopNavigation
           leftControl={this.renderLeftControl()}
           title={i18n.t('FILTER.HEADER_TITLE')}
@@ -167,7 +167,7 @@ class FilterScreen extends Component {
             {i18n.t('FILTER.SUBMIT')}
           </LoaderButton>
         </View>
-      </Layout>
+      </SafeAreaView>
     );
   }
 }

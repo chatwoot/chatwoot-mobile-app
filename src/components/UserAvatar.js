@@ -32,15 +32,17 @@ const propTypes = {
   thumbnail: PropTypes.string,
   userName: PropTypes.string,
   size: PropTypes.string,
+  defaultBGColor: PropTypes.string,
 };
 
 const defaultProps = {
   thumbnail: null,
   userName: null,
   size: 'large',
+  defaultBGColor: theme['color-primary'],
 };
 
-const UserAvatar = ({ thumbnail, userName, size }) =>
+const UserAvatar = ({ thumbnail, userName, size, defaultBGColor }) =>
   thumbnail ? (
     <Avatar
       source={{
@@ -53,7 +55,7 @@ const UserAvatar = ({ thumbnail, userName, size }) =>
     <View
       style={[
         styles.userThumbNail,
-        { backgroundColor: getRandomColor({ userName }) },
+        { backgroundColor: defaultBGColor || getRandomColor({ userName }) },
       ]}>
       <CustomText style={styles.userName}>
         {getUserInitial({ userName })}

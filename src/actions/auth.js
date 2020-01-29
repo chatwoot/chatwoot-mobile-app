@@ -1,6 +1,7 @@
 import axios from '../helpers/APIHelper';
 
 import {
+  RESET_AUTH,
   LOGIN,
   LOGIN_ERROR,
   LOGIN_SUCCESS,
@@ -10,6 +11,7 @@ import {
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_ERROR,
 } from '../constants/actions';
+import { showToast } from '../helpers/ToastHelper';
 
 export const onLogin = ({ email, password }) => async dispatch => {
   try {
@@ -27,11 +29,16 @@ export const onResetPassword = ({ email }) => async dispatch => {
   try {
     dispatch({ type: RESET_PASSWORD });
     const response = await axios.post('auth/password', { email });
-    const { data } = response.data;
+    const { data } = response;
+    showToast(data);
     dispatch({ type: RESET_PASSWORD_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: RESET_PASSWORD_ERROR, payload: error });
   }
+};
+
+export const resetAuth = () => async dispatch => {
+  dispatch({ type: RESET_AUTH });
 };
 
 export const onLogOut = () => async dispatch => {

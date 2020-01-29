@@ -1,21 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Image } from 'react-native';
-import { Layout, Button } from 'react-native-ui-kitten';
+import { View } from 'react-native';
+import {
+  Layout,
+  TopNavigation,
+  TopNavigationAction,
+  Icon,
+} from 'react-native-ui-kitten';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
 
-import { onResetPassword } from '../../actions/auth';
+import { onResetPassword, resetAuth } from '../../actions/auth';
 
 import { setLocale } from '../../actions/locale';
 import styles from './ForgotPassword.style';
 import { Email } from '../../helpers/formHelper';
 import TextInputField from '../../components/TextInputField';
-import images from '../../constants/images';
 
 import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
-
+const BackIcon = style => <Icon {...style} name="arrow-ios-back-outline" />;
+const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
 const { Form } = t.form;
 const LoginForm = t.struct({
   email: Email,
@@ -25,11 +30,12 @@ class ForgotPassword extends Component {
   static propTypes = {
     onResetPassword: PropTypes.func,
     isLoading: PropTypes.bool,
-    navigation: PropTypes.object,
+    navigation: PropTypes.func,
+    resetAuth: PropTypes.func,
   };
 
   static defaultProps = {
-    onLogin: () => {},
+    doResetPassword: () => {},
     isLoading: false,
   };
 
@@ -43,15 +49,26 @@ class ForgotPassword extends Component {
           placeholder: '',
           template: TextInputField,
           keyboardType: 'email-address',
-          error: i18n.t('LOGIN.EMAIL_ERROR'),
+          error: i18n.t('FORGOT_PASSWORD.EMAIL_ERROR'),
           autoCapitalize: 'none',
           config: {
-            label: i18n.t('LOGIN.EMAIL'),
+            label: i18n.t('FORGOT_PASSWORD.EMAIL'),
           },
         },
       },
     },
   };
+
+  componentDidMount() {
+    this.props.resetAuth();
+  }
+
+  onBackPress = () => {
+    const { navigation } = this.props;
+    navigation.goBack();
+  };
+
+  renderLeftControl = () => <BackAction onPress={this.onBackPress} />;
 
   onChange(values) {
     this.setState({
@@ -59,23 +76,23 @@ class ForgotPassword extends Component {
     });
   }
 
-  doLogin() {
+  doResetPassword() {
     const value = this.formRef.getValue();
     if (value) {
-      this.props.onResetPassword({});
+      this.props.onResetPassword(value);
     }
   }
 
   render() {
-    const { navigate } = this.props.navigation;
     const { options, values } = this.state;
     const { isLoading } = this.props;
     return (
       <Layout style={styles.mainView}>
-        <View style={styles.logoView}>
-          <Image style={styles.logo} source={images.appLogo} />
-        </View>
-
+        <TopNavigation
+          titleStyle={styles.headerTitle}
+          title={'Reset Password'}
+          leftControl={this.renderLeftControl()}
+        />
         <View style={styles.contentView}>
           <View style={styles.formView}>
             <Form
@@ -92,30 +109,11 @@ class ForgotPassword extends Component {
               <LoaderButton
                 style={styles.loginButton}
                 loading={isLoading}
-                onPress={() => this.doLogin()}
+                onPress={() => this.doResetPassword()}
                 size="large"
                 textStyle={styles.loginButtonText}>
                 {i18n.t('FORGOT_PASSWORD.RESET_HERE')}
               </LoaderButton>
-            </View>
-          </View>
-
-          <View>
-            <View style={styles.forgotView}>
-              <Button
-                textStyle={styles.textStyle}
-                style={styles.button}
-                onPress={() => navigate('Login')}>
-                {i18n.t('FORGOT_PASSWORD.LOGIN')}
-              </Button>
-            </View>
-            <View style={styles.accountView}>
-              <Button
-                textStyle={styles.textStyle}
-                style={styles.button}
-                onPress={() => navigate('Login')}>
-                {i18n.t('FORGOT_PASSWORD.CREATE_ACCOUNT')}
-              </Button>
             </View>
           </View>
         </View>
@@ -126,6 +124,7 @@ class ForgotPassword extends Component {
 
 function bindAction(dispatch) {
   return {
+    resetAuth: () => dispatch(resetAuth()),
     onResetPassword: data => dispatch(onResetPassword(data)),
     setLocale: data => dispatch(setLocale(data)),
   };

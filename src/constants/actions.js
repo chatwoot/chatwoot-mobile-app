@@ -1,4 +1,5 @@
 export const SET_LOCALE = 'SET_LOCALE';
+export const RESET_AUTH = 'RESET_AUTH';
 
 export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';

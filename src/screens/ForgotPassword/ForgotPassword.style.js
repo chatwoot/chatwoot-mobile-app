@@ -6,24 +6,20 @@ export default StyleSheet.create({
   mainView: {
     flex: 1,
   },
-  logoView: {
-    flex: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 104,
-  },
-  logo: {
-    flex: 1,
-    width: 315,
-    height: 900,
-    resizeMode: 'contain',
+  headerTitle: {
+    marginVertical: 8,
+    color: theme['header-text-color'],
+    fontFamily: theme['font-family-semi-bold'],
+    fontSize: theme['font-size-large'],
+    fontWeight: theme['font-semi-bold'],
   },
   contentView: {
+    marginTop: 50,
     flex: 6,
   },
   formView: {
-    paddingLeft: 40,
-    paddingRight: 40,
+    paddingLeft: 50,
+    paddingRight: 50,
     marginTop: 48,
   },
 

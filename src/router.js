@@ -12,6 +12,7 @@ import ConversationList from './screens/ConversationList/ConversationList';
 import SettingsScreen from './screens/Settings/SettingsScreen';
 import TabBar from './components/TabBar';
 import ConversationFilter from './screens/ConversationFilter/ConversationFilter';
+import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 
 import NoNetworkBar from './components/NoNetworkBar';
 
@@ -29,6 +30,7 @@ const createNavigationStack = ({ initialRouteName }) =>
   createStackNavigator(
     {
       Login: { screen: LoginScreen },
+      ResetPassword: { screen: ResetPassword },
       ConversationList: { screen: ConversationList },
       ConversationFilter: { screen: ConversationFilter },
       Settings: SettingsScreen,

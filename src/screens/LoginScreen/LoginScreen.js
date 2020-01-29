@@ -26,6 +26,7 @@ class LoginScreen extends Component {
   static propTypes = {
     onLogin: PropTypes.func,
     isLoggingIn: PropTypes.bool,
+    navigation: PropTypes.func,
   };
 
   static defaultProps = {
@@ -81,6 +82,7 @@ class LoginScreen extends Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation;
     const { options, values } = this.state;
     const { isLoggingIn } = this.props;
     return (
@@ -115,7 +117,10 @@ class LoginScreen extends Component {
 
           <View>
             <View style={styles.forgotView}>
-              <Button textStyle={styles.textStyle} style={styles.button}>
+              <Button
+                textStyle={styles.textStyle}
+                style={styles.button}
+                onPress={() => navigate('ResetPassword')}>
                 {i18n.t('LOGIN.FORGOT_PASSWORD')}
               </Button>
             </View>

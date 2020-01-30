@@ -17,6 +17,12 @@
     "SETTINGS": "Settings",
     "TERMS": "Terms & Conditions"
   },
+  "FORGOT_PASSWORD": {
+    "EMAIL": "Please enter your email",
+    "EMAIL_ERROR": "Enter a valid email",
+    "RESET_HERE": "Reset password",
+    "HEADER_TITLE": "Reset password"
+  },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversations",
 

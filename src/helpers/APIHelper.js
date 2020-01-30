@@ -13,6 +13,9 @@ const parseErrorCode = error => {
         errors: [message],
       } = error.response.data;
       showToast({ message });
+    } else if (error.response.status === 404) {
+      const { message } = error.response.data;
+      showToast({ message });
     }
   } else {
     showToast({ message: I18n.t('ERRORS.COMMON_ERROR') });

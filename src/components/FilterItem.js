@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   itemText: {
     color: theme['text-primary-color'],
-    fontFamily: theme['font-regular'],
+    fontFamily: theme['font-family-regular'],
     fontSize: theme['font-size-medium'],
   },
 });

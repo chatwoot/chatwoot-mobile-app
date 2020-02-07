@@ -15,8 +15,9 @@ import i18n from '../../i18n';
 import images from '../../constants/images';
 
 import styles from './SettingsScreen.style';
-import { getGravatarUrl } from '../../helpers';
+
 import SettingsItem from '../../components/SettingsItem.js';
+import { theme } from '../../theme.js';
 const settingsData = [
   {
     text: i18n.t('SETTINGS.AVAILABILITY'),
@@ -67,7 +68,6 @@ class Settings extends Component {
     const {
       user: { email, name },
     } = this.props;
-    const avatarUrl = getGravatarUrl({ email });
     return (
       <SafeAreaView style={styles.container}>
         <TopNavigation
@@ -76,7 +76,11 @@ class Settings extends Component {
           alignment="center"
         />
         <View style={styles.profileContainer}>
-          <UserAvatar thumbnail={avatarUrl} userName={name} size="giant" />
+          <UserAvatar
+            userName={name}
+            size="giant"
+            defaultBGColor={theme['color-primary']}
+          />
           <View style={styles.detailsContainer}>
             <CustomText style={styles.nameLabel}>{name}</CustomText>
             <CustomText style={styles.emailLabel}>{email}</CustomText>

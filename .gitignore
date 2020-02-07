@@ -64,3 +64,9 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+# Android release configurations 
+android/api-fastlane.json
+android/gradle.properties
+
+

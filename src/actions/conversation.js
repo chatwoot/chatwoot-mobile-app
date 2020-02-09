@@ -5,6 +5,10 @@ import {
   SET_CONVERSATION_STATUS,
   ADD_CONVERSATION,
   ADD_MESSAGE,
+  GET_MESSAGES,
+  GET_MESSAGES_SUCCESS,
+  GET_MESSAGES_ERROR,
+  UPDATE_CONVERSATION,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -54,7 +58,10 @@ export const addConversation = ({ conversation }) => async dispatch => {
   dispatch({ type: ADD_CONVERSATION, payload: conversation });
 };
 
-export const addMessage = ({ message }) => async (dispatch, getState) => {
+export const addMessageToConversation = ({ message }) => async (
+  dispatch,
+  getState,
+) => {
   const {
     data: { payload },
   } = getState().conversation;
@@ -77,5 +84,37 @@ export const addMessage = ({ message }) => async (dispatch, getState) => {
 
   updatedConversations.unshift(...updatedConversations.splice(index, 1));
 
-  dispatch({ type: ADD_MESSAGE, payload: updatedConversations });
+  dispatch({ type: UPDATE_CONVERSATION, payload: updatedConversations });
+};
+
+export const addMessage = ({ messages }) => async dispatch => {
+  try {
+    dispatch({
+      type: ADD_MESSAGE,
+      payload: messages,
+    });
+  } catch (error) {
+    dispatch({ type: GET_MESSAGES_ERROR, payload: error });
+  }
+};
+
+export const loadMessages = ({
+  conversationId,
+  beforeId,
+}) => async dispatch => {
+  dispatch({ type: GET_MESSAGES });
+  try {
+    const apiUrl = `${API}conversations/${conversationId}?before=${beforeId}`;
+
+    const response = await axios.get(apiUrl);
+
+    const { payload } = response.data;
+
+    dispatch({
+      type: GET_MESSAGES_SUCCESS,
+      payload: payload,
+    });
+  } catch (error) {
+    dispatch({ type: GET_MESSAGES_ERROR, payload: error });
+  }
 };

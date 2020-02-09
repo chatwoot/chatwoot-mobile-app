@@ -7,12 +7,16 @@ const cable = new Cable({});
 
 import { getPubSubToken } from './AuthHelper';
 
-import { addConversation, addMessage } from '../actions/conversation';
+import {
+  addConversation,
+  addMessageToConversation,
+} from '../actions/conversation';
 
 import { store } from '../store';
 
 class ActionCableConnector {
   constructor(pubSubToken) {
+    // console.log('pubSubToken ', pubSubToken);
     const channel = cable.setChannel(
       'RoomChannel',
       connectActionCable.subscriptions.create({
@@ -20,6 +24,7 @@ class ActionCableConnector {
         pubsub_token: pubSubToken,
       }),
     );
+
     channel.on('received', this.onReceived);
 
     this.events = {
@@ -33,6 +38,8 @@ class ActionCableConnector {
   }
 
   onReceived = ({ event, data } = {}) => {
+    // console.log('event, data', event, data);
+
     if (this.events[event] && typeof this.events[event] === 'function') {
       this.events[event](data);
     }
@@ -45,7 +52,7 @@ class ActionCableConnector {
   };
 
   onMessageCreated = message => {
-    store.dispatch(addMessage({ message }));
+    store.dispatch(addMessageToConversation({ message }));
   };
 
   onStatusChange = data => {};

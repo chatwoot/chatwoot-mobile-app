@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 
 import { getInboxes } from '../../actions/inbox';
 
-import { getConversations } from '../../actions/conversation';
+import { getConversations, addMessage } from '../../actions/conversation';
 
 import ConversationItem from '../../components/ConversationItem';
 import ConversationItemLoader from '../../components/ConversationItemLoader';
@@ -26,9 +26,6 @@ import CustomText from '../../components/Text';
 import i18n from '../../i18n';
 
 const MenuIcon = style => <Icon {...style} name="funnel-outline" />;
-
-// eslint-disable-next-line react/prop-types
-const renderItem = ({ item }) => <ConversationItem item={item} />;
 
 const LoaderData = new Array(24).fill(0);
 
@@ -44,6 +41,7 @@ class ConversationList extends Component {
     conversations: PropTypes.shape([]),
     isFetching: PropTypes.bool,
     getInboxes: PropTypes.func,
+    addMessages: PropTypes.func,
     getConversations: PropTypes.func,
     inboxSelected: PropTypes.shape({}),
     conversationStatus: PropTypes.string,
@@ -54,6 +52,7 @@ class ConversationList extends Component {
     isFetching: false,
     getInboxes: () => {},
     getConversations: () => {},
+    addMessages: () => {},
     item: {},
     conversationStatus: 'Open',
   };
@@ -99,6 +98,24 @@ class ConversationList extends Component {
     });
   };
 
+  onSelectConversation = item => {
+    const { messages, meta } = item;
+    const { navigation, addMessages } = this.props;
+    addMessages({ messages });
+    navigation.navigate('ChatScreen', {
+      conversationId: item.id,
+      meta,
+      messages,
+    });
+  };
+
+  renderItem = ({ item }) => (
+    <ConversationItem
+      item={item}
+      onSelectConversation={this.onSelectConversation}
+    />
+  );
+
   renderList = () => {
     const { conversations } = this.props;
 
@@ -110,7 +127,7 @@ class ConversationList extends Component {
 
     return (
       <Layout style={styles.tabContainer}>
-        <List data={filterConversations} renderItem={renderItem} />
+        <List data={filterConversations} renderItem={this.renderItem} />
       </Layout>
     );
   };
@@ -217,6 +234,7 @@ function bindAction(dispatch) {
       dispatch(
         getConversations({ assigneeType, conversationStatus, inboxSelected }),
       ),
+    addMessages: ({ messages }) => dispatch(addMessage({ messages })),
   };
 }
 function mapStateToProps(state) {

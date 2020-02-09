@@ -7,24 +7,25 @@ import PropTypes from 'prop-types';
 import CustomText from './Text';
 
 import { theme } from '../theme';
+import { messageStamp } from '../helpers/TimeHelper';
 
 const propTypes = {
   message: PropTypes.shape({
-    text: PropTypes.string,
+    content: PropTypes.string,
     date: PropTypes.string,
-    alignment: PropTypes.string,
   }),
 };
 
 const defaultProps = {
-  message: { text: null, date: null, alignment: 'flex-start' },
+  message: { content: null, date: null },
 };
 
 class ChatMessage extends Component {
   render() {
     const { message } = this.props;
 
-    const { alignment } = message;
+    const { message_type, created_at } = message;
+    const alignment = message_type ? 'flex-end' : 'flex-start';
 
     return (
       <View style={[styles.message, { justifyContent: alignment }]}>
@@ -33,17 +34,21 @@ class ChatMessage extends Component {
             <React.Fragment>
               <View style={styles.messageLeft}>
                 <CustomText style={styles.messageContent}>
-                  {message.text}
+                  {message.content}
                 </CustomText>
               </View>
-              <CustomText style={styles.date}>{message.date}</CustomText>
+              <CustomText style={styles.date}>
+                {messageStamp({ time: created_at })}
+              </CustomText>
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <CustomText style={styles.date}>{message.date}</CustomText>
+              <CustomText style={styles.date}>
+                {messageStamp({ time: created_at })}
+              </CustomText>
               <View style={styles.messageRight}>
                 <CustomText style={styles.messageContent}>
-                  {message.text}
+                  {message.content}
                 </CustomText>
               </View>
             </React.Fragment>

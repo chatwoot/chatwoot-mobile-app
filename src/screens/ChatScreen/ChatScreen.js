@@ -6,33 +6,22 @@ import {
   List,
   Button,
   Input,
+  Spinner,
 } from 'react-native-ui-kitten';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { View, SafeAreaView } from 'react-native';
 
 import ChatMessage from '../../components/ChatMessage';
 
-import messages from './data.json';
 import styles from './ChatScreen.style';
 import UserAvatar from '../../components/UserAvatar';
 import { theme } from '../../theme.js';
+import { loadMessages } from '../../actions/conversation';
 
 const PaperPlaneIconFill = style => {
   return <Icon {...style} name="paper-plane" />;
-};
-
-const renderProfileAvatar = () => {
-  return (
-    <UserAvatar
-      userName="Neymar Jr"
-      size="small"
-      defaultBGColor={theme['color-primary']}
-    />
-  );
-};
-
-const renderRightControls = style => {
-  return <TopNavigationAction icon={renderProfileAvatar} />;
 };
 
 const renderMessage = info => {
@@ -45,14 +34,37 @@ const renderMessage = info => {
   );
 };
 
-const onListContentSizeChange = e => {
-  // setTimeout(() => this.listRef.current.scrollToEnd({ animated: true }), 0);
-};
-
 class ChatScreen extends Component {
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func.isRequired,
+    }).isRequired,
+    allMessages: PropTypes.shape({}),
+    loadAllMessages: PropTypes.func,
+    isFetching: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    isFetching: false,
+    loadAllMessages: () => {},
+    allMessages: [],
+  };
+
   state = {
     message: '',
-    allMessages: messages,
+  };
+
+  componentDidMount = () => {
+    const { navigation } = this.props;
+    const {
+      state: {
+        params: { messages },
+      },
+    } = navigation;
+    const lastMessage = [...messages].pop();
+    const { conversation_id: conversationId, id: beforeId } = lastMessage;
+    const { loadAllMessages } = this.props;
+    loadAllMessages({ conversationId, beforeId });
   };
 
   onNewMessageChange = text => {
@@ -61,21 +73,7 @@ class ChatScreen extends Component {
     });
   };
 
-  onNewMessageAdd = () => {
-    const { allMessages, message } = this.state;
-    let tempArray = allMessages;
-    tempArray.push({
-      author: 'admin',
-      text: message,
-      date: '4:12 PM',
-      read: true,
-      delivered: true,
-      alignment: 'flex-end',
-    });
-    this.setState({
-      allMessages: tempArray,
-    });
-  };
+  onNewMessageAdd = () => {};
 
   renderSendButton = () => {
     return (
@@ -89,29 +87,68 @@ class ChatScreen extends Component {
     );
   };
 
+  renderProfileAvatar = props => {
+    const { navigation } = this.props;
+    const {
+      state: {
+        params: {
+          meta: {
+            sender: { name, thumbnail },
+          },
+        },
+      },
+    } = navigation;
+    return (
+      <UserAvatar
+        userName={name}
+        size="small"
+        thumbnail={thumbnail}
+        defaultBGColor={theme['color-primary']}
+      />
+    );
+  };
+
+  renderRightControls = style => {
+    return <TopNavigationAction icon={this.renderProfileAvatar} />;
+  };
+
   render() {
-    const { allMessages } = this.state;
+    const { allMessages, navigation, isFetching } = this.props;
+
+    const {
+      state: {
+        params: {
+          meta: {
+            sender: { name },
+          },
+        },
+      },
+    } = navigation;
 
     return (
       <SafeAreaView style={styles.container}>
         <TopNavigation
           alignment="center"
-          title="Neymar Jr"
+          title={name}
           subtitle="Lase seen just now"
-          rightControls={renderRightControls()}
+          rightControls={this.renderRightControls()}
           titleStyle={styles.headerTitle}
           subtitleStyle={styles.subHeaderTitle}
         />
 
         <View style={styles.container} autoDismiss={false}>
-          <List
-            ref={this.listRef}
-            contentContainerStyle={styles.chatContainer}
-            data={allMessages}
-            onContentSizeChange={this.onListContentSizeChange}
-            renderItem={renderMessage}
-            initialScrollIndex={allMessages.length - 1}
-          />
+          {!isFetching ? (
+            <List
+              ref={this.listRef}
+              contentContainerStyle={styles.chatContainer}
+              data={allMessages}
+              onContentSizeChange={this.onListContentSizeChange}
+              renderItem={renderMessage}
+            />
+          ) : (
+            <Spinner size="medium" />
+          )}
+
           <View style={styles.inputContainer}>
             <Input
               style={styles.input}
@@ -127,4 +164,17 @@ class ChatScreen extends Component {
   }
 }
 
-export default ChatScreen;
+function bindAction(dispatch) {
+  return {
+    loadAllMessages: ({ conversationId, beforeId }) =>
+      dispatch(loadMessages({ conversationId, beforeId })),
+  };
+}
+function mapStateToProps(state) {
+  return {
+    allMessages: state.conversation.allMessages,
+    isFetching: state.conversation.isFetching,
+  };
+}
+
+export default connect(mapStateToProps, bindAction)(ChatScreen);

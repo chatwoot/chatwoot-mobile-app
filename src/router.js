@@ -62,7 +62,7 @@ class RootApp extends React.Component {
       initialRouteName: 'Login',
     });
     const LoggedInStack = createNavigationStack({
-      initialRouteName: 'ChatScreen',
+      initialRouteName: 'Tab',
     });
     const stack = isLogged ? LoggedInStack : AuthStack;
 

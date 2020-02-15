@@ -14,7 +14,10 @@ import { connect } from 'react-redux';
 
 import { getInboxes } from '../../actions/inbox';
 
-import { getConversations, addMessage } from '../../actions/conversation';
+import {
+  getConversations,
+  loadInitialMessage,
+} from '../../actions/conversation';
 
 import ConversationItem from '../../components/ConversationItem';
 import ConversationItemLoader from '../../components/ConversationItemLoader';
@@ -41,7 +44,7 @@ class ConversationList extends Component {
     conversations: PropTypes.shape([]),
     isFetching: PropTypes.bool,
     getInboxes: PropTypes.func,
-    addMessages: PropTypes.func,
+    loadInitialMessages: PropTypes.func,
     getConversations: PropTypes.func,
     inboxSelected: PropTypes.shape({}),
     conversationStatus: PropTypes.string,
@@ -52,7 +55,7 @@ class ConversationList extends Component {
     isFetching: false,
     getInboxes: () => {},
     getConversations: () => {},
-    addMessages: () => {},
+    loadInitialMessages: () => {},
     item: {},
     conversationStatus: 'Open',
   };
@@ -100,8 +103,8 @@ class ConversationList extends Component {
 
   onSelectConversation = item => {
     const { messages, meta } = item;
-    const { navigation, addMessages } = this.props;
-    addMessages({ messages });
+    const { navigation, loadInitialMessages } = this.props;
+    loadInitialMessages({ messages });
     navigation.navigate('ChatScreen', {
       conversationId: item.id,
       meta,
@@ -234,7 +237,8 @@ function bindAction(dispatch) {
       dispatch(
         getConversations({ assigneeType, conversationStatus, inboxSelected }),
       ),
-    addMessages: ({ messages }) => dispatch(addMessage({ messages })),
+    loadInitialMessages: ({ messages }) =>
+      dispatch(loadInitialMessage({ messages })),
   };
 }
 function mapStateToProps(state) {

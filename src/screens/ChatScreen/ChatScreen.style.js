@@ -26,11 +26,8 @@ const styles = StyleSheet.create({
     flex: 10,
   },
   chatContainer: {
-    flex: 1,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    borderColor: 'red',
-    borderWidth: 1,
   },
   spinnerView: {
     flex: 1,

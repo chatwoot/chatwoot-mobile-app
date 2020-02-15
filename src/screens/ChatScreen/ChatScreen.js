@@ -186,25 +186,20 @@ class ChatScreen extends Component {
           <View style={styles.container} autoDismiss={false}>
             <View style={styles.chatView}>
               {!isFetching ? (
-                <ScrollView
-                  ref="scrollView"
-                  style={{
-                    flex: 1,
-                    height: '100%',
-                    borderColor: 'pink',
-                    borderWidth: 1,
+                <List
+                  ref={ref => {
+                    this.myFlatListRef = ref;
                   }}
-                  onContentSizeChange={(width, height) =>
-                    this.refs.scrollView.scrollTo({ y: height })
-                  }>
-                  <List
-                    ref={this.listRef}
-                    maxHeight="100%"
-                    contentContainerStyle={styles.chatContainer}
-                    data={allMessages}
-                    renderItem={renderMessage}
-                  />
-                </ScrollView>
+                  onContentSizeChange={() => {
+                    this.myFlatListRef.scrollToEnd({ animated: true });
+                  }}
+                  onLayout={() => {
+                    this.myFlatListRef.scrollToEnd({ animated: true });
+                  }}
+                  contentContainerStyle={styles.chatContainer}
+                  data={allMessages}
+                  renderItem={renderMessage}
+                />
               ) : (
                 <View style={styles.spinnerView}>
                   <Spinner size="medium" />

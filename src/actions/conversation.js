@@ -129,8 +129,6 @@ export const loadMoreMessages = ({
 // Send message
 
 export const sendMessage = ({ conversationId, message }) => async dispatch => {
-  try {
-    const apiUrl = `${API}conversations/${conversationId}/messages`;
-    await axios.post(apiUrl, message);
-  } catch () {}
+  const apiUrl = `${API}conversations/${conversationId}/messages`;
+  await axios.post(apiUrl, message);
 };

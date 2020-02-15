@@ -5969,6 +5969,11 @@ react-native-reanimated@^1.4.0:
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.4.0.tgz#7f1acbf9be08492d834f512700570978052be2f9"
   integrity sha512-tO7nSNNP+iRLVbkcSS5GXyDBb7tSI02+XuRL3/S39EAr35rnvUy2JfeLUQG+fWSObJjnMVhasUDEUwlENk8IXw==
 
+react-native-root-view-background-color@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-root-view-background-color/-/react-native-root-view-background-color-1.0.1.tgz#fce3f0b2c691cadebef111e45e986fe677a2021f"
+  integrity sha512-oZo34EfZuVVWweKpYC7Ejz3DUX5RfjC0ci8jwNS71UOKtun/LMxsWraJgnMzoUGjCwddZ+kovqOtAzedLjblOg==
+
 react-native-safe-area-view@^0.14.1, react-native-safe-area-view@^0.14.6:
   version "0.14.8"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.14.8.tgz#ef33c46ff8164ae77acad48c3039ec9c34873e5b"

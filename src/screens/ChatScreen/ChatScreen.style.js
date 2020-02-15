@@ -7,6 +7,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#eff2f7',
   },
+  keyboardView: {
+    flex: 1,
+  },
   headerTitle: {
     color: theme['header-text-color'],
     fontFamily: theme['font-family-semi-bold'],
@@ -37,20 +40,16 @@ const styles = StyleSheet.create({
 
   inputView: {
     flex: 1,
-    padding: 16,
+    padding: 8,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: theme['color-white'],
   },
-  input: {
-    flex: 1,
-    marginHorizontal: 4,
-  },
   addMessageButton: {
-    width: 24,
-    height: 24,
-    borderRadius: 24,
+    width: 12,
+    height: 12,
+    borderRadius: 12,
   },
 });
 

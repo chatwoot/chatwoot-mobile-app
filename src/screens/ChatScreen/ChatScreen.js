@@ -5,7 +5,6 @@ import {
   TopNavigationAction,
   List,
   Button,
-  Input,
   Spinner,
 } from 'react-native-ui-kitten';
 import { connect } from 'react-redux';
@@ -15,7 +14,8 @@ import {
   View,
   SafeAreaView,
   KeyboardAvoidingView,
-  ScrollView,
+  TextInput,
+  Platform,
 } from 'react-native';
 
 import ChatMessage from '../../components/ChatMessage';
@@ -149,11 +149,6 @@ class ChatScreen extends Component {
     navigation.goBack();
   };
 
-  onListContentSizeChange = e => {
-    // console.log(this.refs.current);
-    // setTimeout(() => this.listRef.current.scrollToEnd({ animated: true }), 0);
-  };
-
   renderLeftControl = () => <BackAction onPress={this.onBackPress} />;
 
   render() {
@@ -172,7 +167,10 @@ class ChatScreen extends Component {
 
     return (
       <SafeAreaView style={styles.mainContainer}>
-        <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+        <KeyboardAvoidingView
+          style={styles.keyboardView}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          enabled>
           <TopNavigation
             alignment="center"
             title={name}
@@ -208,7 +206,7 @@ class ChatScreen extends Component {
             </View>
 
             <View style={styles.inputView}>
-              <Input
+              <TextInput
                 style={styles.input}
                 placeholder="Type message..."
                 isFocused={this.onFocused}

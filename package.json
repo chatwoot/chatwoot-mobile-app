@@ -38,7 +38,7 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "tcomb-form-native": "^0.6.20",
-    "yarn": "^1.19.2"
+    "yarn": "^1.22.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

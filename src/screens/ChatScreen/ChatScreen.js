@@ -11,7 +11,7 @@ import {
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { View, SafeAreaView } from 'react-native';
+import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 
 import ChatMessage from '../../components/ChatMessage';
 
@@ -19,6 +19,10 @@ import styles from './ChatScreen.style';
 import UserAvatar from '../../components/UserAvatar';
 import { theme } from '../../theme.js';
 import { loadMessages } from '../../actions/conversation';
+
+const BackIcon = style => <Icon {...style} name="arrow-ios-back-outline" />;
+
+const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
 
 const PaperPlaneIconFill = style => {
   return <Icon {...style} name="paper-plane" />;
@@ -112,6 +116,14 @@ class ChatScreen extends Component {
     return <TopNavigationAction icon={this.renderProfileAvatar} />;
   };
 
+  onBackPress = () => {
+    const { navigation } = this.props;
+
+    navigation.goBack();
+  };
+
+  renderLeftControl = () => <BackAction onPress={this.onBackPress} />;
+
   render() {
     const { allMessages, navigation, isFetching } = this.props;
 
@@ -126,39 +138,51 @@ class ChatScreen extends Component {
     } = navigation;
 
     return (
-      <SafeAreaView style={styles.container}>
-        <TopNavigation
-          alignment="center"
-          title={name}
-          subtitle="Lase seen just now"
-          rightControls={this.renderRightControls()}
-          titleStyle={styles.headerTitle}
-          subtitleStyle={styles.subHeaderTitle}
-        />
+      <SafeAreaView style={styles.mainContainer}>
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+          <TopNavigation
+            alignment="center"
+            title={name}
+            subtitle="Lase seen just now"
+            rightControls={this.renderRightControls()}
+            leftControl={this.renderLeftControl()}
+            titleStyle={styles.headerTitle}
+            subtitleStyle={styles.subHeaderTitle}
+          />
 
-        <View style={styles.container} autoDismiss={false}>
-          {!isFetching ? (
-            <List
-              ref={this.listRef}
-              contentContainerStyle={styles.chatContainer}
-              data={allMessages}
-              onContentSizeChange={this.onListContentSizeChange}
-              renderItem={renderMessage}
-            />
-          ) : (
-            <Spinner size="medium" />
-          )}
+          <View style={styles.container} autoDismiss={false}>
+            <View style={styles.chatView}>
+              {!isFetching ? (
+                <List
+                  ref={this.listRef}
+                  contentContainerStyle={styles.chatContainer}
+                  data={allMessages}
+                  onContentSizeChange={this.onListContentSizeChange}
+                  renderItem={renderMessage}
+                />
+              ) : (
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Spinner size="medium" />
+                </View>
+              )}
+            </View>
 
-          <View style={styles.inputContainer}>
-            <Input
-              style={styles.input}
-              placeholder="Type message..."
-              isFocused={this.onFocused}
-              onChangeText={this.onNewMessageChange}
-            />
-            {this.renderSendButton()}
+            <View style={styles.inputView}>
+              <Input
+                style={styles.input}
+                placeholder="Type message..."
+                isFocused={this.onFocused}
+                onChangeText={this.onNewMessageChange}
+              />
+              {this.renderSendButton()}
+            </View>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     );
   }

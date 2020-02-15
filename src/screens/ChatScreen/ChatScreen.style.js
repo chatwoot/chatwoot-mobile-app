@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { theme } from '../../theme';
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
     backgroundColor: '#eff2f7',
   },
@@ -17,13 +17,23 @@ const styles = StyleSheet.create({
     fontFamily: theme['font-family-regular'],
     fontSize: theme['font-size-extra-small'],
   },
+
+  container: {
+    flex: 1,
+    backgroundColor: '#eff2f7',
+  },
+
+  chatView: {
+    flex: 10,
+  },
   chatContainer: {
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
 
-  inputContainer: {
-    padding: 8,
+  inputView: {
+    flex: 1,
+    padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

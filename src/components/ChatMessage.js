@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     color: theme['color-gray'],
     fontSize: theme['font-size-extra-extra-small'],
-    fontWeight: theme['font-light'],
   },
 });
 

@@ -20,15 +20,22 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    backgroundColor: '#eff2f7',
+    backgroundColor: theme['color-background'],
   },
-
   chatView: {
     flex: 10,
   },
   chatContainer: {
+    flex: 1,
     paddingHorizontal: 16,
     paddingVertical: 12,
+    borderColor: 'red',
+    borderWidth: 1,
+  },
+  spinnerView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   inputView: {

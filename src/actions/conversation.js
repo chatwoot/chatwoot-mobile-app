@@ -9,12 +9,13 @@ import {
   GET_MESSAGES_SUCCESS,
   GET_MESSAGES_ERROR,
   UPDATE_CONVERSATION,
+  UPDATE_MESSAGE,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
 
 import { API } from '../constants/url';
-
+// Load all the conversations
 export const getConversations = ({
   assigneeType,
   conversationStatus,
@@ -50,14 +51,17 @@ export const getConversations = ({
   }
 };
 
+// Set conversation status (Open or Resolved)
 export const setConversationStatus = ({ status }) => async dispatch => {
   dispatch({ type: SET_CONVERSATION_STATUS, payload: status });
 };
 
+// Add new conversation to the conversation list
 export const addConversation = ({ conversation }) => async dispatch => {
   dispatch({ type: ADD_CONVERSATION, payload: conversation });
 };
 
+// Add new message to a conversation
 export const addMessageToConversation = ({ message }) => async (
   dispatch,
   getState,
@@ -65,6 +69,8 @@ export const addMessageToConversation = ({ message }) => async (
   const {
     data: { payload },
   } = getState().conversation;
+
+  dispatch({ type: UPDATE_MESSAGE, payload: message });
 
   const [chat] = payload.filter(c => c.id === message.conversation_id);
 
@@ -87,7 +93,8 @@ export const addMessageToConversation = ({ message }) => async (
   dispatch({ type: UPDATE_CONVERSATION, payload: updatedConversations });
 };
 
-export const addMessage = ({ messages }) => async dispatch => {
+// Load initial messages
+export const loadInitialMessage = ({ messages }) => async dispatch => {
   try {
     dispatch({
       type: ADD_MESSAGE,
@@ -98,7 +105,7 @@ export const addMessage = ({ messages }) => async dispatch => {
   }
 };
 
-export const loadMessages = ({
+export const loadMoreMessages = ({
   conversationId,
   beforeId,
 }) => async dispatch => {
@@ -117,4 +124,13 @@ export const loadMessages = ({
   } catch (error) {
     dispatch({ type: GET_MESSAGES_ERROR, payload: error });
   }
+};
+
+// Send message
+
+export const sendMessage = ({ conversationId, message }) => async dispatch => {
+  try {
+    const apiUrl = `${API}conversations/${conversationId}/messages`;
+    await axios.post(apiUrl, message);
+  } catch () {}
 };

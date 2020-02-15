@@ -9,6 +9,7 @@ import {
   GET_MESSAGES_SUCCESS,
   GET_MESSAGES_ERROR,
   ADD_MESSAGE,
+  UPDATE_MESSAGE,
 } from '../constants/actions';
 
 const initialState = {
@@ -90,6 +91,13 @@ export default (state = initialState, action) => {
         ...state,
         isFetching: false,
         allMessages: action.payload,
+      };
+    }
+    case UPDATE_MESSAGE: {
+      return {
+        ...state,
+        isFetching: false,
+        allMessages: [...state.allMessages, action.payload],
       };
     }
 

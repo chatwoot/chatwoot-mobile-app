@@ -11,14 +11,19 @@ import {
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { View, SafeAreaView, KeyboardAvoidingView } from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  ScrollView,
+} from 'react-native';
 
 import ChatMessage from '../../components/ChatMessage';
 
 import styles from './ChatScreen.style';
 import UserAvatar from '../../components/UserAvatar';
 import { theme } from '../../theme.js';
-import { loadMessages } from '../../actions/conversation';
+import { loadMoreMessages, sendMessage } from '../../actions/conversation';
 
 const BackIcon = style => <Icon {...style} name="arrow-ios-back-outline" />;
 
@@ -44,6 +49,7 @@ class ChatScreen extends Component {
       navigate: PropTypes.func.isRequired,
     }).isRequired,
     allMessages: PropTypes.shape({}),
+    sendMessages: PropTypes.func,
     loadAllMessages: PropTypes.func,
     isFetching: PropTypes.bool,
   };
@@ -51,6 +57,7 @@ class ChatScreen extends Component {
   static defaultProps = {
     isFetching: false,
     loadAllMessages: () => {},
+    sendMessages: () => {},
     allMessages: [],
   };
 
@@ -77,7 +84,27 @@ class ChatScreen extends Component {
     });
   };
 
-  onNewMessageAdd = () => {};
+  onNewMessageAdd = () => {
+    const { navigation } = this.props;
+    const { message } = this.state;
+
+    const {
+      state: {
+        params: { conversationId },
+      },
+    } = navigation;
+    const { sendMessages } = this.props;
+    sendMessages({
+      conversationId,
+      message: {
+        message: message,
+        private: false,
+      },
+    });
+    this.setState({
+      message: '',
+    });
+  };
 
   renderSendButton = () => {
     return (
@@ -122,10 +149,16 @@ class ChatScreen extends Component {
     navigation.goBack();
   };
 
+  onListContentSizeChange = e => {
+    // console.log(this.refs.current);
+    // setTimeout(() => this.listRef.current.scrollToEnd({ animated: true }), 0);
+  };
+
   renderLeftControl = () => <BackAction onPress={this.onBackPress} />;
 
   render() {
     const { allMessages, navigation, isFetching } = this.props;
+    const { message } = this.state;
 
     const {
       state: {
@@ -153,20 +186,27 @@ class ChatScreen extends Component {
           <View style={styles.container} autoDismiss={false}>
             <View style={styles.chatView}>
               {!isFetching ? (
-                <List
-                  ref={this.listRef}
-                  contentContainerStyle={styles.chatContainer}
-                  data={allMessages}
-                  onContentSizeChange={this.onListContentSizeChange}
-                  renderItem={renderMessage}
-                />
-              ) : (
-                <View
+                <ScrollView
+                  ref="scrollView"
                   style={{
                     flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
+                    height: '100%',
+                    borderColor: 'pink',
+                    borderWidth: 1,
+                  }}
+                  onContentSizeChange={(width, height) =>
+                    this.refs.scrollView.scrollTo({ y: height })
+                  }>
+                  <List
+                    ref={this.listRef}
+                    maxHeight="100%"
+                    contentContainerStyle={styles.chatContainer}
+                    data={allMessages}
+                    renderItem={renderMessage}
+                  />
+                </ScrollView>
+              ) : (
+                <View style={styles.spinnerView}>
                   <Spinner size="medium" />
                 </View>
               )}
@@ -177,6 +217,7 @@ class ChatScreen extends Component {
                 style={styles.input}
                 placeholder="Type message..."
                 isFocused={this.onFocused}
+                value={message}
                 onChangeText={this.onNewMessageChange}
               />
               {this.renderSendButton()}
@@ -191,7 +232,9 @@ class ChatScreen extends Component {
 function bindAction(dispatch) {
   return {
     loadAllMessages: ({ conversationId, beforeId }) =>
-      dispatch(loadMessages({ conversationId, beforeId })),
+      dispatch(loadMoreMessages({ conversationId, beforeId })),
+    sendMessages: ({ conversationId, message }) =>
+      dispatch(sendMessage({ conversationId, message })),
   };
 }
 function mapStateToProps(state) {

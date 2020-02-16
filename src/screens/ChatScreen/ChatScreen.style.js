@@ -47,11 +47,20 @@ const styles = StyleSheet.create({
 
   inputView: {
     flex: 1,
-    padding: 8,
+    padding: 12,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: theme['color-white'],
+  },
+  input: {
+    flex: 1,
+    fontSize: theme['font-size-medium'],
+    lineHeight: 22,
+    height: 22,
+    padding: 0,
+    margin: 0,
+    borderWidth: 0,
   },
   addMessageButton: {
     width: 12,

@@ -202,7 +202,6 @@ class ChatScreen extends Component {
           <TopNavigation
             alignment="center"
             title={name}
-            subtitle="Lase seen just now"
             rightControls={this.renderRightControls()}
             leftControl={this.renderLeftControl()}
             titleStyle={styles.headerTitle}

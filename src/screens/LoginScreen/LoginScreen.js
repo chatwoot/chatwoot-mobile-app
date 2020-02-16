@@ -36,8 +36,8 @@ class LoginScreen extends Component {
 
   state = {
     values: {
-      email: 'muhsinkeramam@gmail.com',
-      password: 'MUHSINk916',
+      email: '',
+      password: '',
     },
     options: {
       fields: {

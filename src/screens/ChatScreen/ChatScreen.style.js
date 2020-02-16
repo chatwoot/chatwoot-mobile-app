@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme['color-background'],
   },
   chatView: {
-    flex: 10,
+    flex: 13,
   },
   chatContainer: {
     paddingHorizontal: 16,

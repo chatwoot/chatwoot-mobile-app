@@ -23,7 +23,11 @@ import ChatMessage from '../../components/ChatMessage';
 import styles from './ChatScreen.style';
 import UserAvatar from '../../components/UserAvatar';
 import { theme } from '../../theme.js';
-import { loadMoreMessages, sendMessage } from '../../actions/conversation';
+import {
+  loadMessage,
+  loadMoreMessage,
+  sendMessage,
+} from '../../actions/conversation';
 
 const BackIcon = style => <Icon {...style} name="arrow-ios-back-outline" />;
 
@@ -50,19 +54,23 @@ class ChatScreen extends Component {
     }).isRequired,
     allMessages: PropTypes.shape({}),
     sendMessages: PropTypes.func,
-    loadAllMessages: PropTypes.func,
+    loadMessages: PropTypes.func,
+    loadMoreMessages: PropTypes.func,
     isFetching: PropTypes.bool,
+    isFetchingMore: PropTypes.bool,
   };
 
   static defaultProps = {
     isFetching: false,
-    loadAllMessages: () => {},
+    isFetchingMore: false,
+    loadMoreMessages: () => {},
     sendMessages: () => {},
     allMessages: [],
   };
 
   state = {
     message: '',
+    onEndReachedCalledDuringMomentum: true,
   };
 
   componentDidMount = () => {
@@ -74,8 +82,8 @@ class ChatScreen extends Component {
     } = navigation;
     const lastMessage = [...messages].pop();
     const { conversation_id: conversationId, id: beforeId } = lastMessage;
-    const { loadAllMessages } = this.props;
-    loadAllMessages({ conversationId, beforeId });
+    const { loadMessages } = this.props;
+    loadMessages({ conversationId, beforeId });
   };
 
   onNewMessageChange = text => {
@@ -151,8 +159,26 @@ class ChatScreen extends Component {
 
   renderLeftControl = () => <BackAction onPress={this.onBackPress} />;
 
+  loadMoreMessages = () => {
+    const { allMessages } = this.props;
+    const [lastMessage] = allMessages;
+    const { conversation_id: conversationId, id: beforeId } = lastMessage;
+    const { loadMoreMessages } = this.props;
+    loadMoreMessages({ conversationId, beforeId });
+  };
+
+  onEndReached = ({ distanceFromEnd }) => {
+    const { onEndReachedCalledDuringMomentum } = this.state;
+    if (!onEndReachedCalledDuringMomentum) {
+      this.loadMoreMessages();
+      this.setState({
+        onEndReachedCalledDuringMomentum: true,
+      });
+    }
+  };
+
   render() {
-    const { allMessages, navigation, isFetching } = this.props;
+    const { allMessages, navigation, isFetching, isFetchingMore } = this.props;
     const { message } = this.state;
 
     const {
@@ -164,6 +190,8 @@ class ChatScreen extends Component {
         },
       },
     } = navigation;
+
+    const completeMessages = [].concat(allMessages).reverse();
 
     return (
       <SafeAreaView style={styles.mainContainer}>
@@ -183,19 +211,26 @@ class ChatScreen extends Component {
 
           <View style={styles.container} autoDismiss={false}>
             <View style={styles.chatView}>
+              {isFetchingMore && (
+                <View style={styles.loadMoreSpinnerView}>
+                  <Spinner size="medium" />
+                </View>
+              )}
               {!isFetching ? (
                 <List
                   ref={ref => {
                     this.myFlatListRef = ref;
                   }}
-                  onContentSizeChange={() => {
-                    this.myFlatListRef.scrollToEnd({ animated: true });
+                  onEndReached={this.onEndReached.bind(this)}
+                  onEndReachedThreshold={0.5}
+                  onMomentumScrollBegin={() => {
+                    this.setState({
+                      onEndReachedCalledDuringMomentum: false,
+                    });
                   }}
-                  onLayout={() => {
-                    this.myFlatListRef.scrollToEnd({ animated: true });
-                  }}
+                  inverted
                   contentContainerStyle={styles.chatContainer}
-                  data={allMessages}
+                  data={completeMessages}
                   renderItem={renderMessage}
                 />
               ) : (
@@ -224,8 +259,10 @@ class ChatScreen extends Component {
 
 function bindAction(dispatch) {
   return {
-    loadAllMessages: ({ conversationId, beforeId }) =>
-      dispatch(loadMoreMessages({ conversationId, beforeId })),
+    loadMessages: ({ conversationId, beforeId }) =>
+      dispatch(loadMessage({ conversationId, beforeId })),
+    loadMoreMessages: ({ conversationId, beforeId }) =>
+      dispatch(loadMoreMessage({ conversationId, beforeId })),
     sendMessages: ({ conversationId, message }) =>
       dispatch(sendMessage({ conversationId, message })),
   };
@@ -234,6 +271,7 @@ function mapStateToProps(state) {
   return {
     allMessages: state.conversation.allMessages,
     isFetching: state.conversation.isFetching,
+    isFetchingMore: state.conversation.isFetchingMore,
   };
 }
 

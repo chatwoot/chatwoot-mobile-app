@@ -10,6 +10,13 @@ import {
   GET_MESSAGES_ERROR,
   UPDATE_CONVERSATION,
   UPDATE_MESSAGE,
+  GET_MORE_MESSAGES,
+  GET_MORE_MESSAGES_SUCCESS,
+  GET_MORE_MESSAGES_ERROR,
+  ALL_MESSAGES_LOADED,
+  SEND_MESSAGE,
+  SEND_MESSAGE_SUCCESS,
+  SEND_MESSAGE_ERROR,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -105,10 +112,7 @@ export const loadInitialMessage = ({ messages }) => async dispatch => {
   }
 };
 
-export const loadMoreMessages = ({
-  conversationId,
-  beforeId,
-}) => async dispatch => {
+export const loadMessage = ({ conversationId, beforeId }) => async dispatch => {
   dispatch({ type: GET_MESSAGES });
   try {
     const apiUrl = `${API}conversations/${conversationId}?before=${beforeId}`;
@@ -126,9 +130,43 @@ export const loadMoreMessages = ({
   }
 };
 
-// Send message
+export const loadMoreMessage = ({
+  conversationId,
+  beforeId,
+}) => async dispatch => {
+  dispatch({ type: GET_MORE_MESSAGES });
+  try {
+    const apiUrl = `${API}conversations/${conversationId}?before=${beforeId}`;
+    const response = await axios.get(apiUrl);
+    const { payload } = response.data;
+    if (payload.length) {
+      dispatch({
+        type: GET_MORE_MESSAGES_SUCCESS,
+        payload: payload,
+      });
+    } else {
+      dispatch({
+        type: ALL_MESSAGES_LOADED,
+      });
+    }
+  } catch (error) {
+    dispatch({ type: GET_MORE_MESSAGES_ERROR, payload: error });
+  }
+};
 
+// Send message
 export const sendMessage = ({ conversationId, message }) => async dispatch => {
-  const apiUrl = `${API}conversations/${conversationId}/messages`;
-  await axios.post(apiUrl, message);
+  dispatch({ type: SEND_MESSAGE });
+  try {
+    const apiUrl = `${API}conversations/${conversationId}/messages`;
+    const response = await axios.post(apiUrl, message);
+
+    const { payload } = response.data;
+    dispatch({
+      type: SEND_MESSAGE_SUCCESS,
+      payload: payload,
+    });
+  } catch (error) {
+    dispatch({ type: SEND_MESSAGE_ERROR, payload: error });
+  }
 };

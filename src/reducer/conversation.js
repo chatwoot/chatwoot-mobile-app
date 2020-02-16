@@ -10,10 +10,15 @@ import {
   GET_MESSAGES_ERROR,
   ADD_MESSAGE,
   UPDATE_MESSAGE,
+  ALL_MESSAGES_LOADED,
+  GET_MORE_MESSAGES,
+  GET_MORE_MESSAGES_SUCCESS,
+  GET_MORE_MESSAGES_ERROR,
 } from '../constants/actions';
 
 const initialState = {
   isFetching: false,
+  isFetchingMore: false,
   conversationStatus: 'Open',
   data: [],
   allMessages: [],
@@ -41,6 +46,7 @@ export default (state = initialState, action) => {
         data: action.payload,
       };
     }
+
     case ADD_CONVERSATION: {
       return {
         ...state,
@@ -58,11 +64,20 @@ export default (state = initialState, action) => {
           payload: action.payload,
         },
       };
+
     case SET_CONVERSATION_STATUS:
       return {
         ...state,
         conversationStatus: action.payload,
       };
+
+    case ADD_MESSAGE: {
+      return {
+        ...state,
+        isFetching: false,
+        allMessages: action.payload,
+      };
+    }
 
     case GET_MESSAGES: {
       return {
@@ -86,13 +101,35 @@ export default (state = initialState, action) => {
       };
     }
 
-    case ADD_MESSAGE: {
+    case GET_MORE_MESSAGES: {
+      return {
+        ...state,
+        isFetchingMore: true,
+      };
+    }
+
+    case GET_MORE_MESSAGES_SUCCESS: {
+      return {
+        ...state,
+        isFetchingMore: false,
+        allMessages: [...action.payload, ...state.allMessages],
+      };
+    }
+    case GET_MORE_MESSAGES_ERROR: {
+      return {
+        ...state,
+        isFetchingMore: false,
+      };
+    }
+
+    case ALL_MESSAGES_LOADED: {
       return {
         ...state,
         isFetching: false,
-        allMessages: action.payload,
+        isFetchingMore: false,
       };
     }
+
     case UPDATE_MESSAGE: {
       return {
         ...state,

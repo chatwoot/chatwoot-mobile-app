@@ -5,7 +5,7 @@ import { theme } from '../../theme';
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#eff2f7',
+    backgroundColor: theme['color-background'],
   },
   keyboardView: {
     flex: 1,
@@ -31,6 +31,13 @@ const styles = StyleSheet.create({
   chatContainer: {
     paddingHorizontal: 16,
     paddingVertical: 12,
+    paddingTop: 8,
+  },
+  loadMoreSpinnerView: {
+    backgroundColor: theme['color-background-light'],
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 8,
   },
   spinnerView: {
     flex: 1,

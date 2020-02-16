@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Image, KeyboardAvoidingView } from 'react-native';
+import { View, Image } from 'react-native';
 import { Layout, Button } from 'react-native-ui-kitten';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
@@ -36,8 +36,8 @@ class LoginScreen extends Component {
 
   state = {
     values: {
-      email: '',
-      password: '',
+      email: 'muhsinkeramam@gmail.com',
+      password: 'MUHSINk916',
     },
     options: {
       fields: {
@@ -86,54 +86,52 @@ class LoginScreen extends Component {
     const { options, values } = this.state;
     const { isLoggingIn } = this.props;
     return (
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
-        <Layout style={styles.mainView}>
-          <View style={styles.logoView}>
-            <Image style={styles.logo} source={images.appLogo} />
-          </View>
+      <Layout style={styles.mainView}>
+        <View style={styles.logoView}>
+          <Image style={styles.logo} source={images.appLogo} />
+        </View>
 
-          <View style={styles.contentView}>
-            <View style={styles.formView}>
-              <Form
-                ref={ref => {
-                  this.formRef = ref;
-                }}
-                type={LoginForm}
-                options={options}
-                value={values}
-                onChange={value => this.onChange(value)}
-              />
+        <View style={styles.contentView}>
+          <View style={styles.formView}>
+            <Form
+              ref={ref => {
+                this.formRef = ref;
+              }}
+              type={LoginForm}
+              options={options}
+              value={values}
+              onChange={value => this.onChange(value)}
+            />
 
-              <View style={styles.loginButtonView}>
-                <LoaderButton
-                  style={styles.loginButton}
-                  loading={isLoggingIn}
-                  onPress={() => this.doLogin()}
-                  size="large"
-                  textStyle={styles.loginButtonText}>
-                  {i18n.t('LOGIN.LOGIN')}
-                </LoaderButton>
-              </View>
-            </View>
-
-            <View>
-              <View style={styles.forgotView}>
-                <Button
-                  textStyle={styles.textStyle}
-                  style={styles.button}
-                  onPress={() => navigate('ResetPassword')}>
-                  {i18n.t('LOGIN.FORGOT_PASSWORD')}
-                </Button>
-              </View>
-              <View style={styles.accountView}>
-                <Button textStyle={styles.textStyle} style={styles.button}>
-                  {i18n.t('LOGIN.CREATE_ACCOUNT')}
-                </Button>
-              </View>
+            <View style={styles.loginButtonView}>
+              <LoaderButton
+                style={styles.loginButton}
+                loading={isLoggingIn}
+                onPress={() => this.doLogin()}
+                size="large"
+                textStyle={styles.loginButtonText}>
+                {i18n.t('LOGIN.LOGIN')}
+              </LoaderButton>
             </View>
           </View>
-        </Layout>
-      </KeyboardAvoidingView>
+
+          <View>
+            <View style={styles.forgotView}>
+              <Button
+                textStyle={styles.textStyle}
+                style={styles.button}
+                onPress={() => navigate('ResetPassword')}>
+                {i18n.t('LOGIN.FORGOT_PASSWORD')}
+              </Button>
+            </View>
+            <View style={styles.accountView}>
+              <Button textStyle={styles.textStyle} style={styles.button}>
+                {i18n.t('LOGIN.CREATE_ACCOUNT')}
+              </Button>
+            </View>
+          </View>
+        </View>
+      </Layout>
     );
   }
 }

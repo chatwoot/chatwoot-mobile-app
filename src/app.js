@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import { Alert, BackHandler, Platform } from 'react-native';
-// import BackgroundColor from 'react-native-background-color';
-import RootViewBackgroundColor from 'react-native-root-view-background-color';
+import { Alert, BackHandler } from 'react-native';
 
 import { PersistGate } from 'redux-persist/integration/react';
 import { mapping } from '@eva-design/eva';
@@ -22,12 +20,6 @@ export default class Chatwoot extends Component {
       'hardwareBackPress',
       this.handleBackButtonClick,
     );
-
-    if (Platform.OS === 'android') {
-      setTimeout(() => {
-        RootViewBackgroundColor.setBackground(255, 255, 255, 1);
-      }, 500);
-    }
   }
 
   componentWillUnmount() {

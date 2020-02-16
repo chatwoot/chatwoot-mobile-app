@@ -191,7 +191,10 @@ class ChatScreen extends Component {
       },
     } = navigation;
 
-    const completeMessages = [].concat(allMessages).reverse();
+    const completeMessages = []
+      .concat(allMessages)
+      .reverse()
+      .filter(item => item.content !== '');
 
     return (
       <SafeAreaView style={styles.mainContainer}>
@@ -245,6 +248,7 @@ class ChatScreen extends Component {
                 placeholder="Type message..."
                 isFocused={this.onFocused}
                 value={message}
+                placeholderTextColor={theme['text-primary-color']}
                 onChangeText={this.onNewMessageChange}
               />
               {this.renderSendButton()}

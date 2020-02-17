@@ -5,7 +5,6 @@ import { theme } from '../../theme';
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: theme['color-background'],
   },
   keyboardView: {
     flex: 1,

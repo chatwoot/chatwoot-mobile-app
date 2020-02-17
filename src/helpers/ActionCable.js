@@ -1,10 +1,5 @@
 import { ActionCable, Cable } from '@kesha-antonov/react-native-action-cable';
 import { WEB_SOCKET_URL } from '../constants/url';
-
-const connectActionCable = ActionCable.createConsumer(WEB_SOCKET_URL);
-
-const cable = new Cable({});
-
 import { getPubSubToken } from './AuthHelper';
 
 import {
@@ -14,16 +9,27 @@ import {
 
 import { store } from '../store';
 
+const connectActionCable = ActionCable.createConsumer(WEB_SOCKET_URL);
+
+const cable = new Cable({});
+
+const channelName = 'RoomChannel';
+
+let channel = null;
+
 class ActionCableConnector {
   constructor(pubSubToken) {
-    // console.log('pubSubToken ', pubSubToken);
-    const channel = cable.setChannel(
-      'RoomChannel',
-      connectActionCable.subscriptions.create({
-        channel: 'RoomChannel',
-        pubsub_token: pubSubToken,
-      }),
-    );
+    connectActionCable.disconnect();
+
+    if (!channel) {
+      channel = cable.setChannel(
+        channelName,
+        connectActionCable.subscriptions.create({
+          channel: channelName,
+          pubsub_token: pubSubToken,
+        }),
+      );
+    }
 
     channel.on('received', this.onReceived);
 

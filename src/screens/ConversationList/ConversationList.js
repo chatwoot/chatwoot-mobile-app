@@ -65,19 +65,32 @@ class ConversationList extends Component {
   };
 
   componentDidMount = () => {
-    const { selectedIndex } = this.state;
     this.props.getInboxes();
-    this.loadConversations({ assigneeType: selectedIndex });
+    this.loadConversations();
     initActionCable();
   };
 
-  loadConversations = ({ assigneeType }) => {
+  loadConversations = () => {
+    const { selectedIndex } = this.state;
     const { conversationStatus, inboxSelected } = this.props;
 
     this.props.getConversations({
-      assigneeType,
+      assigneeType: selectedIndex,
       conversationStatus,
       inboxSelected,
+    });
+  };
+
+  onSelectConversation = item => {
+    const { messages, meta } = item;
+
+    const { navigation, loadInitialMessages } = this.props;
+    loadInitialMessages({ messages });
+    navigation.navigate('ChatScreen', {
+      conversationId: item.id,
+      meta,
+      messages,
+      refresh: this.loadConversations,
     });
   };
 
@@ -95,21 +108,10 @@ class ConversationList extends Component {
   };
 
   onChangeTab = index => {
-    this.loadConversations({ assigneeType: index });
     this.setState({
       selectedIndex: index,
     });
-  };
-
-  onSelectConversation = item => {
-    const { messages, meta } = item;
-    const { navigation, loadInitialMessages } = this.props;
-    loadInitialMessages({ messages });
-    navigation.navigate('ChatScreen', {
-      conversationId: item.id,
-      meta,
-      messages,
-    });
+    this.loadConversations();
   };
 
   renderItem = ({ item }) => (

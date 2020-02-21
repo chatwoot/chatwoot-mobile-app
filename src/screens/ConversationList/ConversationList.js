@@ -34,7 +34,8 @@ const LoaderData = new Array(24).fill(0);
 
 const renderItemLoader = () => <ConversationItemLoader />;
 
-import { initActionCable } from '../../helpers/ActionCable';
+import ActionCable from '../../helpers/ActionCable';
+import { getPubSubToken } from '../../helpers/AuthHelper';
 
 class ConversationList extends Component {
   static propTypes = {
@@ -67,7 +68,12 @@ class ConversationList extends Component {
   componentDidMount = () => {
     this.props.getInboxes();
     this.loadConversations();
-    initActionCable();
+    this.initActionCable();
+  };
+
+  initActionCable = async () => {
+    const pubSubToken = await getPubSubToken();
+    ActionCable.init({ pubSubToken });
   };
 
   loadConversations = () => {

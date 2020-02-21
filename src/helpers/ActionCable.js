@@ -1,6 +1,4 @@
-import { ActionCable, Cable } from '@kesha-antonov/react-native-action-cable';
-import { WEB_SOCKET_URL } from '../constants/url';
-import { getPubSubToken } from './AuthHelper';
+import BaseActionCableConnector from './BaseActionCableConnector';
 
 import {
   addConversation,
@@ -9,49 +7,15 @@ import {
 
 import { store } from '../store';
 
-const connectActionCable = ActionCable.createConsumer(WEB_SOCKET_URL);
-
-const cable = new Cable({});
-
-const channelName = 'RoomChannel';
-
-let channel = null;
-
-class ActionCableConnector {
-  constructor(pubSubToken) {
-    connectActionCable.disconnect();
-
-    if (!channel) {
-      channel = cable.setChannel(
-        channelName,
-        connectActionCable.subscriptions.create({
-          channel: channelName,
-          pubsub_token: pubSubToken,
-        }),
-      );
-    }
-
-    channel.on('received', this.onReceived);
+class ActionCableConnector extends BaseActionCableConnector {
+  constructor(pubsubToken) {
+    super(pubsubToken);
 
     this.events = {
       'message.created': this.onMessageCreated,
       'conversation.created': this.onConversationCreated,
-      'status_change:conversation': this.onStatusChange,
-      'user:logout': this.onLogout,
-      'page:reload': this.onReload,
-      'assignee.changed': this.onAssigneeChanged,
     };
   }
-
-  onReceived = ({ event, data } = {}) => {
-    // console.log('event, data', event, data);
-
-    if (this.events[event] && typeof this.events[event] === 'function') {
-      this.events[event](data);
-    }
-  };
-
-  onAssigneeChanged = payload => {};
 
   onConversationCreated = conversation => {
     store.dispatch(addConversation({ conversation }));
@@ -61,14 +25,17 @@ class ActionCableConnector {
     store.dispatch(addMessageToConversation({ message }));
   };
 
+  onAssigneeChanged = payload => {};
+
   onStatusChange = data => {};
 
   handleReceived = data => {};
 }
 
-export async function initActionCable() {
-  const pubSubToken = await getPubSubToken();
+export default {
+  init({ pubSubToken }) {
+    const actionCable = new ActionCableConnector(pubSubToken);
 
-  const actionCable = new ActionCableConnector(pubSubToken);
-  return actionCable;
-}
+    return actionCable;
+  },
+};

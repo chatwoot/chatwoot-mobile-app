@@ -14,6 +14,7 @@ import {
   GET_MORE_MESSAGES,
   GET_MORE_MESSAGES_SUCCESS,
   GET_MORE_MESSAGES_ERROR,
+  SET_CONVERSATION,
 } from '../constants/actions';
 
 const initialState = {
@@ -23,6 +24,7 @@ const initialState = {
   conversationStatus: 'Open',
   data: [],
   allMessages: [],
+  selectedConversationId: null,
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -70,6 +72,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         conversationStatus: action.payload,
+      };
+
+    case SET_CONVERSATION:
+      return {
+        ...state,
+        selectedConversationId: action.payload,
       };
 
     case ADD_MESSAGE: {

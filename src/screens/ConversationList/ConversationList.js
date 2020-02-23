@@ -17,6 +17,7 @@ import { getInboxes } from '../../actions/inbox';
 import {
   getConversations,
   loadInitialMessage,
+  setConversation,
 } from '../../actions/conversation';
 
 import ConversationItem from '../../components/ConversationItem';
@@ -47,6 +48,7 @@ class ConversationList extends Component {
     getInboxes: PropTypes.func,
     loadInitialMessages: PropTypes.func,
     getConversations: PropTypes.func,
+    selectConversation: PropTypes.func,
     inboxSelected: PropTypes.shape({}),
     conversationStatus: PropTypes.string,
     item: PropTypes.shape({}),
@@ -57,6 +59,7 @@ class ConversationList extends Component {
     getInboxes: () => {},
     getConversations: () => {},
     loadInitialMessages: () => {},
+    selectConversation: () => {},
     item: {},
     conversationStatus: 'Open',
   };
@@ -90,10 +93,13 @@ class ConversationList extends Component {
   onSelectConversation = item => {
     const { messages, meta } = item;
 
-    const { navigation, loadInitialMessages } = this.props;
+    const conversationId = item.id;
+
+    const { navigation, loadInitialMessages, selectConversation } = this.props;
+    selectConversation({ conversationId });
     loadInitialMessages({ messages });
     navigation.navigate('ChatScreen', {
-      conversationId: item.id,
+      conversationId,
       meta,
       messages,
       refresh: this.loadConversations,
@@ -245,6 +251,9 @@ function bindAction(dispatch) {
       dispatch(
         getConversations({ assigneeType, conversationStatus, inboxSelected }),
       ),
+
+    selectConversation: ({ conversationId }) =>
+      dispatch(setConversation({ conversationId })),
     loadInitialMessages: ({ messages }) =>
       dispatch(loadInitialMessage({ messages })),
   };

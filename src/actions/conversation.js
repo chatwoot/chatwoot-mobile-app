@@ -20,6 +20,7 @@ import {
   MARK_MESSAGES_AS_READ,
   MARK_MESSAGES_AS_READ_SUCCESS,
   MARK_MESSAGES_AS_READ_ERROR,
+  SET_CONVERSATION,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -66,6 +67,10 @@ export const setConversationStatus = ({ status }) => async dispatch => {
   dispatch({ type: SET_CONVERSATION_STATUS, payload: status });
 };
 
+export const setConversation = ({ conversationId }) => async dispatch => {
+  dispatch({ type: SET_CONVERSATION, payload: conversationId });
+};
+
 // Add new conversation to the conversation list
 export const addConversation = ({ conversation }) => async (
   dispatch,
@@ -91,9 +96,13 @@ export const addMessageToConversation = ({ message }) => async (
 ) => {
   const {
     data: { payload },
+    selectedConversationId,
   } = getState().conversation;
 
-  dispatch({ type: UPDATE_MESSAGE, payload: message });
+  const { conversation_id } = message;
+  if (selectedConversationId === conversation_id) {
+    dispatch({ type: UPDATE_MESSAGE, payload: message });
+  }
 
   const [chat] = payload.filter(c => c.id === message.conversation_id);
 
@@ -161,6 +170,7 @@ export const loadMoreMessage = ({
     const apiUrl = `${API}conversations/${conversationId}?before=${beforeId}`;
     const response = await axios.get(apiUrl);
     const { payload } = response.data;
+
     if (payload.length) {
       dispatch({
         type: GET_MORE_MESSAGES_SUCCESS,

@@ -74,9 +74,11 @@ export const addConversation = ({ conversation }) => async (
   const {
     data: { payload },
   } = getState().conversation;
+
   // Check conversation is already exists or not
   const [conversationExists] = payload.filter(c => c.id === conversation.id);
-  if (!conversationExists) {
+
+  if (conversationExists) {
     return;
   }
   dispatch({ type: ADD_CONVERSATION, payload: conversation });
@@ -134,6 +136,12 @@ export const loadMessage = ({ conversationId, beforeId }) => async dispatch => {
     const response = await axios.get(apiUrl);
 
     const { payload } = response.data;
+
+    if (payload.length < 20) {
+      dispatch({
+        type: ALL_MESSAGES_LOADED,
+      });
+    }
 
     dispatch({
       type: GET_MESSAGES_SUCCESS,

@@ -19,6 +19,7 @@ import {
 const initialState = {
   isFetching: false,
   isFetchingMore: false,
+  isAllMessagesLoaded: false,
   conversationStatus: 'Open',
   data: [],
   allMessages: [],
@@ -76,6 +77,7 @@ export default (state = initialState, action) => {
         ...state,
         isFetching: false,
         allMessages: action.payload,
+        isAllMessagesLoaded: false,
       };
     }
 
@@ -83,6 +85,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isFetching: true,
+        isAllMessagesLoaded: false,
       };
     }
 
@@ -125,6 +128,7 @@ export default (state = initialState, action) => {
     case ALL_MESSAGES_LOADED: {
       return {
         ...state,
+        isAllMessagesLoaded: true,
         isFetching: false,
         isFetchingMore: false,
       };

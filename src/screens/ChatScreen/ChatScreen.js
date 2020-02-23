@@ -59,12 +59,14 @@ class ChatScreen extends Component {
     loadMoreMessages: PropTypes.func,
     isFetching: PropTypes.bool,
     isFetchingMore: PropTypes.bool,
+    isAllMessagesLoad: PropTypes.bool,
     markAllMessagesAsRead: PropTypes.func,
   };
 
   static defaultProps = {
     isFetching: false,
     isFetchingMore: false,
+    isAllMessagesLoad: false,
     loadMoreMessages: () => {},
     sendMessages: () => {},
     markAllMessagesAsRead: () => {},
@@ -165,11 +167,13 @@ class ChatScreen extends Component {
   renderLeftControl = () => <BackAction onPress={this.onBackPress} />;
 
   loadMoreMessages = () => {
-    const { allMessages } = this.props;
-    const [lastMessage] = allMessages;
-    const { conversation_id: conversationId, id: beforeId } = lastMessage;
-    const { loadMoreMessages } = this.props;
-    loadMoreMessages({ conversationId, beforeId });
+    const { allMessages, isAllMessagesLoad } = this.props;
+    if (!isAllMessagesLoad) {
+      const [lastMessage] = allMessages;
+      const { conversation_id: conversationId, id: beforeId } = lastMessage;
+      const { loadMoreMessages } = this.props;
+      loadMoreMessages({ conversationId, beforeId });
+    }
   };
 
   onEndReached = ({ distanceFromEnd }) => {
@@ -184,6 +188,7 @@ class ChatScreen extends Component {
 
   render() {
     const { allMessages, navigation, isFetching, isFetchingMore } = this.props;
+
     const { message } = this.state;
 
     const {
@@ -282,6 +287,7 @@ function mapStateToProps(state) {
     allMessages: state.conversation.allMessages,
     isFetching: state.conversation.isFetching,
     isFetchingMore: state.conversation.isFetchingMore,
+    isAllMessagesLoad: state.conversation.isAllMessagesLoad,
   };
 }
 

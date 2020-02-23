@@ -17,6 +17,9 @@ import {
   SEND_MESSAGE,
   SEND_MESSAGE_SUCCESS,
   SEND_MESSAGE_ERROR,
+  MARK_MESSAGES_AS_READ,
+  MARK_MESSAGES_AS_READ_SUCCESS,
+  MARK_MESSAGES_AS_READ_ERROR,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -64,7 +67,18 @@ export const setConversationStatus = ({ status }) => async dispatch => {
 };
 
 // Add new conversation to the conversation list
-export const addConversation = ({ conversation }) => async dispatch => {
+export const addConversation = ({ conversation }) => async (
+  dispatch,
+  getState,
+) => {
+  const {
+    data: { payload },
+  } = getState().conversation;
+  // Check conversation is already exists or not
+  const [conversationExists] = payload.filter(c => c.id === conversation.id);
+  if (!conversationExists) {
+    return;
+  }
   dispatch({ type: ADD_CONVERSATION, payload: conversation });
 };
 
@@ -168,5 +182,26 @@ export const sendMessage = ({ conversationId, message }) => async dispatch => {
     });
   } catch (error) {
     dispatch({ type: SEND_MESSAGE_ERROR, payload: error });
+  }
+};
+
+export const markMessagesAsRead = ({
+  conversationId,
+  message,
+}) => async dispatch => {
+  dispatch({ type: MARK_MESSAGES_AS_READ });
+  try {
+    const apiUrl = `${API}conversations/${conversationId}/update_last_seen`;
+    const agent_last_seen_at = new Date().getTime();
+    const response = await axios.post(apiUrl, {
+      agent_last_seen_at,
+    });
+
+    dispatch({
+      type: MARK_MESSAGES_AS_READ_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    dispatch({ type: MARK_MESSAGES_AS_READ_ERROR, payload: error });
   }
 };

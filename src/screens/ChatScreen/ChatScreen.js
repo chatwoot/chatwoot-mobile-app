@@ -27,6 +27,7 @@ import {
   loadMessage,
   loadMoreMessage,
   sendMessage,
+  markMessagesAsRead,
 } from '../../actions/conversation';
 
 const BackIcon = style => <Icon {...style} name="arrow-ios-back-outline" />;
@@ -58,6 +59,7 @@ class ChatScreen extends Component {
     loadMoreMessages: PropTypes.func,
     isFetching: PropTypes.bool,
     isFetchingMore: PropTypes.bool,
+    markAllMessagesAsRead: PropTypes.func,
   };
 
   static defaultProps = {
@@ -65,6 +67,7 @@ class ChatScreen extends Component {
     isFetchingMore: false,
     loadMoreMessages: () => {},
     sendMessages: () => {},
+    markAllMessagesAsRead: () => {},
     allMessages: [],
   };
 
@@ -74,7 +77,7 @@ class ChatScreen extends Component {
   };
 
   componentDidMount = () => {
-    const { navigation } = this.props;
+    const { navigation, markAllMessagesAsRead } = this.props;
     const {
       state: {
         params: { messages },
@@ -84,6 +87,7 @@ class ChatScreen extends Component {
     const { conversation_id: conversationId, id: beforeId } = lastMessage;
     const { loadMessages } = this.props;
     loadMessages({ conversationId, beforeId });
+    markAllMessagesAsRead({ conversationId });
   };
 
   onNewMessageChange = text => {
@@ -269,6 +273,8 @@ function bindAction(dispatch) {
       dispatch(loadMoreMessage({ conversationId, beforeId })),
     sendMessages: ({ conversationId, message }) =>
       dispatch(sendMessage({ conversationId, message })),
+    markAllMessagesAsRead: ({ conversationId }) =>
+      dispatch(markMessagesAsRead({ conversationId })),
   };
 }
 function mapStateToProps(state) {

@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   message: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 12,
+    marginVertical: 6,
   },
 
   messageContainer: {
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
+    padding: 8,
     borderBottomRightRadius: 8,
     borderTopRightRadius: 8,
     maxWidth: Dimensions.get('window').width - 120,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
+    padding: 8,
     borderBottomLeftRadius: 8,
     borderTopLeftRadius: 8,
     maxWidth: Dimensions.get('window').width - 120,

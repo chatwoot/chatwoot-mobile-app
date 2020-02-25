@@ -22,13 +22,13 @@ const styles = StyleSheet.create({
     color: theme['color-primary'],
     fontFamily: theme['font-family-medium'],
     fontWeight: theme['font-medium'],
-    fontSize: theme['font-size-medium'],
+    fontSize: theme['font-size-small'],
   },
   tabNotActiveTitle: {
     color: theme['tab-not-active-color'],
     fontFamily: theme['font-family-medium'],
     fontWeight: theme['font-medium'],
-    fontSize: theme['font-size-medium'],
+    fontSize: theme['font-size-small'],
   },
   emptyView: {
     alignItems: 'center',

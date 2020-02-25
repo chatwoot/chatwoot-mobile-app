@@ -11,6 +11,7 @@ import { findLastMessage, getUnreadCount } from '../helpers';
 const propTypes = {
   readStatus: PropTypes.number,
   name: PropTypes.string,
+  onSelectConversation: PropTypes.func,
   item: PropTypes.shape({
     meta: PropTypes.shape({
       sender: {
@@ -24,7 +25,7 @@ const propTypes = {
 
 class ConversationItem extends Component {
   render() {
-    const { item } = this.props;
+    const { item, onSelectConversation } = this.props;
     const {
       meta: {
         sender: { name, thumbnail },
@@ -38,7 +39,10 @@ class ConversationItem extends Component {
     const { content, created_at } = lastMessage;
 
     return (
-      <TouchableOpacity activeOpacity={0.95} style={styles.container}>
+      <TouchableOpacity
+        activeOpacity={0.95}
+        style={styles.container}
+        onPress={() => onSelectConversation(item)}>
         <View style={styles.itemView}>
           <View style={styles.avatarView}>
             <UserAvatar thumbnail={thumbnail} userName={name} />

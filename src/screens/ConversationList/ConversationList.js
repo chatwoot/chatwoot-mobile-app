@@ -14,7 +14,11 @@ import { connect } from 'react-redux';
 
 import { getInboxes } from '../../actions/inbox';
 
-import { getConversations } from '../../actions/conversation';
+import {
+  getConversations,
+  loadInitialMessage,
+  setConversation,
+} from '../../actions/conversation';
 
 import ConversationItem from '../../components/ConversationItem';
 import ConversationItemLoader from '../../components/ConversationItemLoader';
@@ -27,14 +31,12 @@ import i18n from '../../i18n';
 
 const MenuIcon = style => <Icon {...style} name="funnel-outline" />;
 
-// eslint-disable-next-line react/prop-types
-const renderItem = ({ item }) => <ConversationItem item={item} />;
-
 const LoaderData = new Array(24).fill(0);
 
 const renderItemLoader = () => <ConversationItemLoader />;
 
-import { initActionCable } from '../../helpers/ActionCable';
+import ActionCable from '../../helpers/ActionCable';
+import { getPubSubToken } from '../../helpers/AuthHelper';
 
 class ConversationList extends Component {
   static propTypes = {
@@ -44,7 +46,9 @@ class ConversationList extends Component {
     conversations: PropTypes.shape([]),
     isFetching: PropTypes.bool,
     getInboxes: PropTypes.func,
+    loadInitialMessages: PropTypes.func,
     getConversations: PropTypes.func,
+    selectConversation: PropTypes.func,
     inboxSelected: PropTypes.shape({}),
     conversationStatus: PropTypes.string,
     item: PropTypes.shape({}),
@@ -54,6 +58,8 @@ class ConversationList extends Component {
     isFetching: false,
     getInboxes: () => {},
     getConversations: () => {},
+    loadInitialMessages: () => {},
+    selectConversation: () => {},
     item: {},
     conversationStatus: 'Open',
   };
@@ -63,19 +69,40 @@ class ConversationList extends Component {
   };
 
   componentDidMount = () => {
-    const { selectedIndex } = this.state;
     this.props.getInboxes();
-    this.loadConversations({ assigneeType: selectedIndex });
-    initActionCable();
+    this.loadConversations();
+    this.initActionCable();
   };
 
-  loadConversations = ({ assigneeType }) => {
+  initActionCable = async () => {
+    const pubSubToken = await getPubSubToken();
+    ActionCable.init({ pubSubToken });
+  };
+
+  loadConversations = () => {
+    const { selectedIndex } = this.state;
     const { conversationStatus, inboxSelected } = this.props;
 
     this.props.getConversations({
-      assigneeType,
+      assigneeType: selectedIndex,
       conversationStatus,
       inboxSelected,
+    });
+  };
+
+  onSelectConversation = item => {
+    const { messages, meta } = item;
+
+    const conversationId = item.id;
+
+    const { navigation, loadInitialMessages, selectConversation } = this.props;
+    selectConversation({ conversationId });
+    loadInitialMessages({ messages });
+    navigation.navigate('ChatScreen', {
+      conversationId,
+      meta,
+      messages,
+      refresh: this.loadConversations,
     });
   };
 
@@ -93,11 +120,18 @@ class ConversationList extends Component {
   };
 
   onChangeTab = index => {
-    this.loadConversations({ assigneeType: index });
     this.setState({
       selectedIndex: index,
     });
+    this.loadConversations();
   };
+
+  renderItem = ({ item }) => (
+    <ConversationItem
+      item={item}
+      onSelectConversation={this.onSelectConversation}
+    />
+  );
 
   renderList = () => {
     const { conversations } = this.props;
@@ -110,7 +144,7 @@ class ConversationList extends Component {
 
     return (
       <Layout style={styles.tabContainer}>
-        <List data={filterConversations} renderItem={renderItem} />
+        <List data={filterConversations} renderItem={this.renderItem} />
       </Layout>
     );
   };
@@ -217,6 +251,11 @@ function bindAction(dispatch) {
       dispatch(
         getConversations({ assigneeType, conversationStatus, inboxSelected }),
       ),
+
+    selectConversation: ({ conversationId }) =>
+      dispatch(setConversation({ conversationId })),
+    loadInitialMessages: ({ messages }) =>
+      dispatch(loadInitialMessage({ messages })),
   };
 }
 function mapStateToProps(state) {

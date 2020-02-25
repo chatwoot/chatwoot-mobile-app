@@ -18,8 +18,8 @@ export default StyleSheet.create({
     flex: 6,
   },
   formView: {
-    paddingLeft: 50,
-    paddingRight: 50,
+    paddingLeft: 40,
+    paddingRight: 40,
     marginTop: 48,
   },
 

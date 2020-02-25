@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
 import {
-  Layout,
   TopNavigation,
   TopNavigationAction,
   Icon,
@@ -87,7 +86,7 @@ class ForgotPassword extends Component {
     const { options, values } = this.state;
     const { isLoading } = this.props;
     return (
-      <Layout style={styles.mainView}>
+      <SafeAreaView style={styles.mainView}>
         <TopNavigation
           titleStyle={styles.headerTitle}
           title={i18n.t('FORGOT_PASSWORD.HEADER_TITLE')}
@@ -117,7 +116,7 @@ class ForgotPassword extends Component {
             </View>
           </View>
         </View>
-      </Layout>
+      </SafeAreaView>
     );
   }
 }

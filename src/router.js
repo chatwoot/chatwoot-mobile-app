@@ -10,6 +10,9 @@ import LoginScreen from './screens/LoginScreen/LoginScreen';
 import ConversationList from './screens/ConversationList/ConversationList';
 
 import SettingsScreen from './screens/Settings/SettingsScreen';
+
+import ChatScreen from './screens/ChatScreen/ChatScreen';
+
 import TabBar from './components/TabBar';
 import ConversationFilter from './screens/ConversationFilter/ConversationFilter';
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
@@ -35,6 +38,7 @@ const createNavigationStack = ({ initialRouteName }) =>
       ConversationFilter: { screen: ConversationFilter },
       Settings: SettingsScreen,
       Tab: { screen: Tab },
+      ChatScreen: { screen: ChatScreen },
     },
     {
       initialRouteName,

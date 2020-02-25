@@ -90,6 +90,8 @@ export const theme = {
   'color-border-light': '#f0f4f5',
   'color-background': '#EFF2F7',
   'color-background-light': '#F9FAFC',
+  'color-background-message': '#c7e3ff',
+  'color-background-activity': '#fff3cf',
   'color-white': '#FFF',
   'color-body': '#3C4858',
   'color-heading': '#1F2D3D',

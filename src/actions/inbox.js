@@ -13,7 +13,7 @@ const defaultInbox = { id: 0, name: 'All' };
 export const getInboxes = () => async dispatch => {
   dispatch({ type: GET_INBOX });
   try {
-    const response = await axios.get(`${API}inboxes.json`);
+    const response = await axios.get(`${API}inboxes`);
     let { payload } = response.data;
 
     payload = [defaultInbox, ...payload];

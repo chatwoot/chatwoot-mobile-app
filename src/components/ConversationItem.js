@@ -45,7 +45,11 @@ class ConversationItem extends Component {
         onPress={() => onSelectConversation(item)}>
         <View style={styles.itemView}>
           <View style={styles.avatarView}>
-            <UserAvatar thumbnail={thumbnail} userName={name} />
+            <UserAvatar
+              thumbnail={thumbnail}
+              userName={name}
+              defaultBGColor=""
+            />
           </View>
           <View>
             <CustomText

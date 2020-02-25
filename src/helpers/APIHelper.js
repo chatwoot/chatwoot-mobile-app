@@ -6,13 +6,13 @@ import I18n from '../i18n';
 import { showToast } from './ToastHelper';
 import { getHeaders } from './AuthHelper';
 
+import { store } from '../store';
+import { onLogOut } from '../actions/auth';
+
 const parseErrorCode = error => {
   if (error.response) {
     if (error.response.status === 401) {
-      const {
-        errors: [message],
-      } = error.response.data;
-      showToast({ message });
+      store.dispatch(onLogOut());
     } else if (error.response.status === 404) {
       const { message } = error.response.data;
       showToast({ message });

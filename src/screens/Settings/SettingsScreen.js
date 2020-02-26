@@ -16,25 +16,16 @@ import images from '../../constants/images';
 
 import styles from './SettingsScreen.style';
 
-import SettingsItem from '../../components/SettingsItem.js';
+import SettingsItem from '../../components/SettingsItem';
 import { theme } from '../../theme.js';
+import { openURL } from '../../helpers/index.js';
+import { HELP_URL } from '../../constants/url.js';
 const settingsData = [
-  {
-    text: i18n.t('SETTINGS.AVAILABILITY'),
-    checked: false,
-    iconSize: 'small',
-    itemType: 'toggle',
-  },
-  {
-    text: i18n.t('SETTINGS.PUSH'),
-    checked: false,
-    iconSize: 'small',
-    itemType: 'toggle',
-  },
   {
     text: i18n.t('SETTINGS.HELP'),
     checked: true,
     iconName: 'question-mark-circle-outline',
+    itemName: 'help',
   },
   {
     text: i18n.t('SETTINGS.LOG_OUT'),
@@ -59,8 +50,17 @@ class Settings extends Component {
   };
 
   onPressItem = ({ itemName }) => {
-    if (itemName === 'logout') {
-      this.props.onLogOut();
+    switch (itemName) {
+      case 'logout':
+        this.props.onLogOut();
+        break;
+
+      case 'help':
+        openURL({ URL: HELP_URL });
+        break;
+
+      default:
+        break;
     }
   };
 

@@ -191,7 +191,12 @@ class ConversationList extends Component {
 
   render() {
     const { selectedIndex } = this.state;
-    const { conversations, isFetching, inboxSelected } = this.props;
+    const {
+      conversations,
+      isFetching,
+      inboxSelected,
+      conversationStatus,
+    } = this.props;
     const { payload, meta } = conversations;
     const { name: inBoxName } = inboxSelected;
 
@@ -199,8 +204,7 @@ class ConversationList extends Component {
     const unAssignedCount = meta ? `(${meta.unassigned_count})` : '';
     const allCount = meta ? `(${meta.all_count})` : '';
 
-    const headerTitle =
-      inBoxName || i18n.t('CONVERSATION.DEFAULT_HEADER_TITLE');
+    const headerTitle = `${inBoxName} (${conversationStatus})`;
 
     return (
       <SafeAreaView style={styles.container}>
@@ -210,6 +214,7 @@ class ConversationList extends Component {
           rightControls={this.renderRightControls()}
           titleStyle={styles.headerTitle}
         />
+
         <TabView
           selectedIndex={selectedIndex}
           indicatorStyle={styles.tabViewIndicator}

@@ -29,31 +29,32 @@ import {
 import axios from '../helpers/APIHelper';
 
 import { API } from '../constants/url';
+import { ASSIGNEE_TYPE } from '../constants';
 // Load all the conversations
 export const getConversations = ({
   assigneeType,
   conversationStatus,
   inboxSelected,
-  pageNumber,
+  pageNumber = 1,
 }) => async dispatch => {
   dispatch({ type: GET_CONVERSATION });
   try {
     let assignee;
     switch (assigneeType) {
       case 0:
-        assignee = 'me';
+        assignee = ASSIGNEE_TYPE.ME;
         break;
       case 1:
-        assignee = 'unassigned';
+        assignee = ASSIGNEE_TYPE.UN_ASSIGNED;
         break;
       default:
-        assignee = 'all';
+        assignee = ASSIGNEE_TYPE.ALL;
     }
 
     const status = conversationStatus === 'Open' ? 'open' : 'resolved';
-    const inbox_id = inboxSelected && inboxSelected ? inboxSelected.id : null;
+    const inboxId = inboxSelected && inboxSelected ? inboxSelected.id : null;
     const apiUrl = `${API}conversations?${
-      inbox_id ? `inbox_id=${inbox_id}&` : ''
+      inboxId ? `inbox_id=${inboxId}&` : ''
     }status=${status}&assignee_type=${assignee}&page=${pageNumber}`;
 
     const response = await axios.get(apiUrl);
@@ -90,19 +91,19 @@ export const loadMoreConversation = ({
     let assignee;
     switch (assigneeType) {
       case 0:
-        assignee = 'me';
+        assignee = ASSIGNEE_TYPE.ME;
         break;
       case 1:
-        assignee = 'unassigned';
+        assignee = ASSIGNEE_TYPE.UN_ASSIGNED;
         break;
       default:
-        assignee = 'all';
+        assignee = ASSIGNEE_TYPE.ALL;
     }
 
     const status = conversationStatus === 'Open' ? 'open' : 'resolved';
-    const inbox_id = inboxSelected && inboxSelected ? inboxSelected.id : null;
+    const inboxId = inboxSelected && inboxSelected ? inboxSelected.id : null;
     const apiUrl = `${API}conversations?${
-      inbox_id ? `inbox_id=${inbox_id}&` : ''
+      inboxId ? `inbox_id=${inboxId}&` : ''
     }status=${status}&assignee_type=${assignee}&page=${pageNumber}`;
 
     const response = await axios.get(apiUrl);

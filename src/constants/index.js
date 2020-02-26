@@ -15,3 +15,9 @@ export const MESSAGE_STATUS = {
   READ: 2,
   FAILED: 3,
 };
+
+export const ASSIGNEE_TYPE = {
+  ME: 'me',
+  UN_ASSIGNED: 'unassigned',
+  ALL: 'all',
+};

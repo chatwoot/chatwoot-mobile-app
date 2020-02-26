@@ -147,9 +147,9 @@ class ConversationList extends Component {
     const { onEndReachedCalledDuringMomentum, pageNumber } = this.state;
 
     if (!onEndReachedCalledDuringMomentum) {
-      this.setState({
-        pageNumber: pageNumber + 1,
-      });
+      this.setState(state => ({
+        pageNumber: state.pageNumber + 1,
+      }));
 
       const { selectedIndex } = this.state;
       const { conversationStatus, inboxSelected } = this.props;

@@ -15,6 +15,8 @@ import images from '../../constants/images';
 
 import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
+import { openURL } from '../../helpers';
+import { SIGNUP_URL } from '../../constants/url';
 
 const { Form } = t.form;
 const LoginForm = t.struct({
@@ -125,7 +127,10 @@ class LoginScreen extends Component {
               </Button>
             </View>
             <View style={styles.accountView}>
-              <Button textStyle={styles.textStyle} style={styles.button}>
+              <Button
+                textStyle={styles.textStyle}
+                style={styles.button}
+                onPress={() => openURL({ URL: SIGNUP_URL })}>
                 {i18n.t('LOGIN.CREATE_ACCOUNT')}
               </Button>
             </View>

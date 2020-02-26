@@ -15,6 +15,9 @@ import {
   GET_MORE_MESSAGES_SUCCESS,
   GET_MORE_MESSAGES_ERROR,
   SET_CONVERSATION,
+  GET_MORE_CONVERSATIONS,
+  GET_MORE_CONVERSATIONS_SUCCESS,
+  GET_MORE_CONVERSATIONS_ERROR,
 } from '../constants/actions';
 
 const initialState = {
@@ -109,6 +112,30 @@ export default (state = initialState, action) => {
         ...state,
         isFetching: false,
         allMessages: [...action.payload, ...state.allMessages],
+      };
+    }
+
+    case GET_MORE_CONVERSATIONS: {
+      return {
+        ...state,
+        isFetchingMore: true,
+      };
+    }
+
+    case GET_MORE_CONVERSATIONS_SUCCESS: {
+      return {
+        ...state,
+        isFetchingMore: false,
+        data: {
+          meta: state.data.meta,
+          payload: [...state.data.payload, ...action.payload],
+        },
+      };
+    }
+    case GET_MORE_CONVERSATIONS_ERROR: {
+      return {
+        ...state,
+        isFetchingMore: false,
       };
     }
 

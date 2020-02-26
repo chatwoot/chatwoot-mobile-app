@@ -21,6 +21,9 @@ import {
   MARK_MESSAGES_AS_READ_SUCCESS,
   MARK_MESSAGES_AS_READ_ERROR,
   SET_CONVERSATION,
+  GET_MORE_CONVERSATIONS,
+  GET_MORE_CONVERSATIONS_SUCCESS,
+  GET_MORE_CONVERSATIONS_ERROR,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -31,14 +34,27 @@ export const getConversations = ({
   assigneeType,
   conversationStatus,
   inboxSelected,
+  pageNumber,
 }) => async dispatch => {
   dispatch({ type: GET_CONVERSATION });
   try {
+    let assignee;
+    switch (assigneeType) {
+      case 0:
+        assignee = 'me';
+        break;
+      case 1:
+        assignee = 'unassigned';
+        break;
+      default:
+        assignee = 'all';
+    }
+
     const status = conversationStatus === 'Open' ? 'open' : 'resolved';
     const inbox_id = inboxSelected && inboxSelected ? inboxSelected.id : null;
     const apiUrl = `${API}conversations?${
       inbox_id ? `inbox_id=${inbox_id}&` : ''
-    }status=${status}&assignee_type_id=${assigneeType}`;
+    }status=${status}&assignee_type=${assignee}&page=${pageNumber}`;
 
     const response = await axios.get(apiUrl);
 
@@ -59,6 +75,51 @@ export const getConversations = ({
     });
   } catch (error) {
     dispatch({ type: GET_CONVERSATION_ERROR, payload: error });
+  }
+};
+
+// Load more  conversations
+export const loadMoreConversation = ({
+  assigneeType,
+  conversationStatus,
+  inboxSelected,
+  pageNumber,
+}) => async dispatch => {
+  dispatch({ type: GET_MORE_CONVERSATIONS });
+  try {
+    let assignee;
+    switch (assigneeType) {
+      case 0:
+        assignee = 'me';
+        break;
+      case 1:
+        assignee = 'unassigned';
+        break;
+      default:
+        assignee = 'all';
+    }
+
+    const status = conversationStatus === 'Open' ? 'open' : 'resolved';
+    const inbox_id = inboxSelected && inboxSelected ? inboxSelected.id : null;
+    const apiUrl = `${API}conversations?${
+      inbox_id ? `inbox_id=${inbox_id}&` : ''
+    }status=${status}&assignee_type=${assignee}&page=${pageNumber}`;
+
+    const response = await axios.get(apiUrl);
+
+    const {
+      data: { payload },
+    } = response.data;
+    const updatedPayload = payload.sort((a, b) => {
+      return b.timestamp - a.timestamp;
+    });
+
+    dispatch({
+      type: GET_MORE_CONVERSATIONS_SUCCESS,
+      payload: updatedPayload,
+    });
+  } catch (error) {
+    dispatch({ type: GET_MORE_CONVERSATIONS_ERROR, payload: error });
   }
 };
 

@@ -1,5 +1,6 @@
 import md5 from 'md5';
 import { GRAVATAR_URL } from '../constants/url';
+import { Linking } from 'react-native';
 
 export function getUserInitial({ userName }) {
   const parts = userName ? userName.split(/[ -]/) : [];
@@ -64,4 +65,8 @@ export const checkImageExist = ({ thumbnail }) => {
     .catch(() => {
       return false;
     });
+};
+
+export const openURL = ({ URL }) => {
+  Linking.openURL(URL);
 };

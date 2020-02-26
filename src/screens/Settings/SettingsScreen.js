@@ -21,18 +21,6 @@ import { theme } from '../../theme.js';
 import { openURL } from '../../helpers/index.js';
 import { HELP_URL } from '../../constants/url.js';
 const settingsData = [
-  // {
-  //   text: i18n.t('SETTINGS.AVAILABILITY'),
-  //   checked: false,
-  //   iconSize: 'small',
-  //   itemType: 'toggle',
-  // },
-  // {
-  //   text: i18n.t('SETTINGS.PUSH'),
-  //   checked: false,
-  //   iconSize: 'small',
-  //   itemType: 'toggle',
-  // },
   {
     text: i18n.t('SETTINGS.HELP'),
     checked: true,

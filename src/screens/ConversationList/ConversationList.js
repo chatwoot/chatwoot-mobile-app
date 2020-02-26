@@ -18,6 +18,7 @@ import {
   getConversations,
   loadInitialMessage,
   setConversation,
+  loadMoreConversation,
 } from '../../actions/conversation';
 
 import ConversationItem from '../../components/ConversationItem';
@@ -49,6 +50,7 @@ class ConversationList extends Component {
     loadInitialMessages: PropTypes.func,
     getConversations: PropTypes.func,
     selectConversation: PropTypes.func,
+    loadMoreConversations: PropTypes.func,
     inboxSelected: PropTypes.shape({}),
     conversationStatus: PropTypes.string,
     item: PropTypes.shape({}),
@@ -60,12 +62,15 @@ class ConversationList extends Component {
     getConversations: () => {},
     loadInitialMessages: () => {},
     selectConversation: () => {},
+    loadMoreConversations: () => {},
     item: {},
     conversationStatus: 'Open',
   };
 
   state = {
     selectedIndex: 0,
+    onEndReachedCalledDuringMomentum: true,
+    pageNumber: 1,
   };
 
   componentDidMount = () => {
@@ -80,13 +85,14 @@ class ConversationList extends Component {
   };
 
   loadConversations = () => {
-    const { selectedIndex } = this.state;
+    const { selectedIndex, pageNumber } = this.state;
     const { conversationStatus, inboxSelected } = this.props;
 
     this.props.getConversations({
       assigneeType: selectedIndex,
       conversationStatus,
       inboxSelected,
+      pageNumber,
     });
   };
 
@@ -122,6 +128,7 @@ class ConversationList extends Component {
   onChangeTab = index => {
     this.setState({
       selectedIndex: index,
+      pageNumber: 1,
     });
     this.loadConversations();
   };
@@ -133,18 +140,50 @@ class ConversationList extends Component {
     />
   );
 
+  onEndReached = ({ distanceFromEnd }) => {
+    const { onEndReachedCalledDuringMomentum, pageNumber } = this.state;
+    if (!onEndReachedCalledDuringMomentum) {
+      this.setState({
+        pageNumber: pageNumber + 1,
+      });
+
+      const { selectedIndex } = this.state;
+      const { conversationStatus, inboxSelected } = this.props;
+
+      this.props.loadMoreConversations({
+        assigneeType: selectedIndex,
+        conversationStatus,
+        inboxSelected,
+        pageNumber: pageNumber + 1,
+      });
+
+      this.setState({
+        onEndReachedCalledDuringMomentum: true,
+      });
+    }
+  };
+
   renderList = () => {
     const { conversations } = this.props;
 
     const { payload } = conversations;
 
-    const filterConversations = payload.filter(
-      item => item.messages.length !== 0,
-    );
-
     return (
       <Layout style={styles.tabContainer}>
-        <List data={filterConversations} renderItem={this.renderItem} />
+        <List
+          data={payload}
+          renderItem={this.renderItem}
+          ref={ref => {
+            this.myFlatListRef = ref;
+          }}
+          onEndReached={this.onEndReached.bind(this)}
+          onEndReachedThreshold={0.5}
+          onMomentumScrollBegin={() => {
+            this.setState({
+              onEndReachedCalledDuringMomentum: false,
+            });
+          }}
+        />
       </Layout>
     );
   };
@@ -252,9 +291,34 @@ class ConversationList extends Component {
 function bindAction(dispatch) {
   return {
     getInboxes: () => dispatch(getInboxes()),
-    getConversations: ({ assigneeType, conversationStatus, inboxSelected }) =>
+    getConversations: ({
+      assigneeType,
+      conversationStatus,
+      inboxSelected,
+      pageNumber,
+    }) =>
       dispatch(
-        getConversations({ assigneeType, conversationStatus, inboxSelected }),
+        getConversations({
+          assigneeType,
+          conversationStatus,
+          inboxSelected,
+          pageNumber,
+        }),
+      ),
+
+    loadMoreConversations: ({
+      assigneeType,
+      conversationStatus,
+      inboxSelected,
+      pageNumber,
+    }) =>
+      dispatch(
+        loadMoreConversation({
+          assigneeType,
+          conversationStatus,
+          inboxSelected,
+          pageNumber,
+        }),
       ),
 
     selectConversation: ({ conversationId }) =>

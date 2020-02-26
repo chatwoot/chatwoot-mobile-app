@@ -7,6 +7,7 @@ import {
   Tab,
   TabView,
   List,
+  Spinner,
 } from 'react-native-ui-kitten';
 import { SafeAreaView, View } from 'react-native';
 import PropTypes from 'prop-types';
@@ -46,6 +47,7 @@ class ConversationList extends Component {
     }).isRequired,
     conversations: PropTypes.shape([]),
     isFetching: PropTypes.bool,
+    isFetchingMore: PropTypes.bool,
     getInboxes: PropTypes.func,
     loadInitialMessages: PropTypes.func,
     getConversations: PropTypes.func,
@@ -58,6 +60,7 @@ class ConversationList extends Component {
 
   static defaultProps = {
     isFetching: false,
+    isFetchingMore: false,
     getInboxes: () => {},
     getConversations: () => {},
     loadInitialMessages: () => {},
@@ -142,6 +145,7 @@ class ConversationList extends Component {
 
   onEndReached = ({ distanceFromEnd }) => {
     const { onEndReachedCalledDuringMomentum, pageNumber } = this.state;
+
     if (!onEndReachedCalledDuringMomentum) {
       this.setState({
         pageNumber: pageNumber + 1,
@@ -161,6 +165,16 @@ class ConversationList extends Component {
         onEndReachedCalledDuringMomentum: true,
       });
     }
+  };
+
+  renderMoreLoader = () => {
+    const { isFetchingMore } = this.props;
+
+    return (
+      <View style={styles.loadMoreSpinnerView}>
+        {isFetchingMore ? <Spinner size="medium" /> : null}
+      </View>
+    );
   };
 
   renderList = () => {
@@ -183,6 +197,7 @@ class ConversationList extends Component {
               onEndReachedCalledDuringMomentum: false,
             });
           }}
+          ListFooterComponent={this.renderMoreLoader}
         />
       </Layout>
     );
@@ -206,7 +221,15 @@ class ConversationList extends Component {
     );
   };
 
-  renderTab = ({ tabIndex, selectedIndex, tabTitle, payload, isFetching }) => (
+  renderTab = ({
+    tabIndex,
+    selectedIndex,
+    tabTitle,
+    payload,
+    isFetching,
+    renderList,
+    isFetchingMore,
+  }) => (
     <Tab
       title={tabTitle}
       titleStyle={
@@ -333,6 +356,7 @@ function mapStateToProps(state) {
     conversations: state.conversation.data,
     conversationStatus: state.conversation.conversationStatus,
     inboxSelected: state.inbox.inboxSelected,
+    isFetchingMore: state.conversation.isFetchingMore,
   };
 }
 

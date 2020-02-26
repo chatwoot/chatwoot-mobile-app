@@ -5,13 +5,23 @@ import { theme } from '../../theme';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: theme['color-white'],
   },
   headerTitle: {
     color: theme['header-text-color'],
     fontFamily: theme['font-family-semi-bold'],
     fontSize: theme['font-size-medium'],
   },
-  tabContainer: { minHeight: 64 },
+  tabContainer: {
+    paddingBottom: 90,
+    minHeight: 64,
+  },
+  loadMoreSpinnerView: {
+    alignItems: 'center',
+    paddingTop: 16,
+    height: '100%',
+    backgroundColor: theme['color-white'],
+  },
   tabView: {
     height: '100%',
   },

@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     color: theme['header-text-color'],
     fontFamily: theme['font-family-semi-bold'],
-    fontSize: theme['font-size-large'],
+    fontSize: theme['font-size-medium'],
   },
   tabContainer: { minHeight: 64 },
   tabView: {

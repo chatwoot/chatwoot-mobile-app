@@ -77,9 +77,11 @@ class ConversationList extends Component {
   };
 
   componentDidMount = () => {
-    this.props.getInboxes();
-    this.loadConversations();
-    this.initActionCable();
+    setTimeout(() => {
+      this.props.getInboxes();
+      this.loadConversations();
+      this.initActionCable();
+    }, 200);
   };
 
   initActionCable = async () => {
@@ -112,7 +114,6 @@ class ConversationList extends Component {
       conversationId,
       meta,
       messages,
-      refresh: this.loadConversations,
     });
   };
 

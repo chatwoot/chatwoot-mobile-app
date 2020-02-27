@@ -160,8 +160,6 @@ class ChatScreen extends Component {
 
   onBackPress = () => {
     const { navigation } = this.props;
-    // eslint-disable-next-line react/prop-types
-    this.props.navigation.state.params.refresh();
     navigation.goBack();
   };
 

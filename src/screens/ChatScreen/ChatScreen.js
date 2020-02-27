@@ -85,7 +85,8 @@ class ChatScreen extends Component {
         params: { messages },
       },
     } = navigation;
-    const lastMessage = [...messages].pop();
+    const lastMessage = [...messages].reverse().pop();
+
     const { conversation_id: conversationId, id: beforeId } = lastMessage;
     const { loadMessages } = this.props;
     loadMessages({ conversationId, beforeId });

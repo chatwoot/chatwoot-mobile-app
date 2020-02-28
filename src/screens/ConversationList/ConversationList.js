@@ -19,7 +19,6 @@ import {
   getConversations,
   loadInitialMessage,
   setConversation,
-  loadMoreConversation,
 } from '../../actions/conversation';
 
 import ConversationItem from '../../components/ConversationItem';
@@ -48,11 +47,11 @@ class ConversationList extends Component {
     conversations: PropTypes.shape([]),
     isFetching: PropTypes.bool,
     isFetchingMore: PropTypes.bool,
+    isAllConversationsLoaded: PropTypes.bool,
     getInboxes: PropTypes.func,
     loadInitialMessages: PropTypes.func,
     getConversations: PropTypes.func,
     selectConversation: PropTypes.func,
-    loadMoreConversations: PropTypes.func,
     inboxSelected: PropTypes.shape({}),
     conversationStatus: PropTypes.string,
     item: PropTypes.shape({}),
@@ -61,11 +60,11 @@ class ConversationList extends Component {
   static defaultProps = {
     isFetching: false,
     isFetchingMore: false,
+    isAllConversationsLoaded: false,
     getInboxes: () => {},
     getConversations: () => {},
     loadInitialMessages: () => {},
     selectConversation: () => {},
-    loadMoreConversations: () => {},
     item: {},
     conversationStatus: 'Open',
   };
@@ -100,6 +99,21 @@ class ConversationList extends Component {
       inboxSelected,
       pageNumber,
     });
+  };
+
+  onEndReached = async ({ distanceFromEnd }) => {
+    const { onEndReachedCalledDuringMomentum } = this.state;
+
+    if (!onEndReachedCalledDuringMomentum) {
+      await this.setState(state => ({
+        pageNumber: state.pageNumber + 1,
+      }));
+
+      this.loadConversations();
+      this.setState({
+        onEndReachedCalledDuringMomentum: true,
+      });
+    }
   };
 
   onSelectConversation = item => {
@@ -145,36 +159,12 @@ class ConversationList extends Component {
     />
   );
 
-  onEndReached = ({ distanceFromEnd }) => {
-    const { onEndReachedCalledDuringMomentum, pageNumber } = this.state;
-
-    if (!onEndReachedCalledDuringMomentum) {
-      this.setState(state => ({
-        pageNumber: state.pageNumber + 1,
-      }));
-
-      const { selectedIndex } = this.state;
-      const { conversationStatus, inboxSelected } = this.props;
-
-      this.props.loadMoreConversations({
-        assigneeType: selectedIndex,
-        conversationStatus,
-        inboxSelected,
-        pageNumber: pageNumber + 1,
-      });
-
-      this.setState({
-        onEndReachedCalledDuringMomentum: true,
-      });
-    }
-  };
-
   renderMoreLoader = () => {
-    const { isFetchingMore } = this.props;
+    const { isAllConversationsLoaded } = this.props;
 
     return (
       <View style={styles.loadMoreSpinnerView}>
-        {isFetchingMore ? <Spinner size="medium" /> : null}
+        {!isAllConversationsLoaded ? <Spinner size="medium" /> : null}
       </View>
     );
   };
@@ -234,7 +224,6 @@ class ConversationList extends Component {
     payload,
     isFetching,
     renderList,
-    isFetchingMore,
   }) => (
     <Tab
       title={tabTitle}
@@ -244,7 +233,7 @@ class ConversationList extends Component {
           : styles.tabNotActiveTitle
       }>
       <View style={styles.tabView}>
-        {!isFetching ? (
+        {!isFetching || payload.length ? (
           <React.Fragment>
             {payload && payload.length
               ? this.renderList()
@@ -265,6 +254,7 @@ class ConversationList extends Component {
       inboxSelected,
       conversationStatus,
     } = this.props;
+
     const { payload, meta } = conversations;
     const { name: inBoxName } = inboxSelected;
 
@@ -335,21 +325,6 @@ function bindAction(dispatch) {
         }),
       ),
 
-    loadMoreConversations: ({
-      assigneeType,
-      conversationStatus,
-      inboxSelected,
-      pageNumber,
-    }) =>
-      dispatch(
-        loadMoreConversation({
-          assigneeType,
-          conversationStatus,
-          inboxSelected,
-          pageNumber,
-        }),
-      ),
-
     selectConversation: ({ conversationId }) =>
       dispatch(setConversation({ conversationId })),
     loadInitialMessages: ({ messages }) =>
@@ -359,10 +334,10 @@ function bindAction(dispatch) {
 function mapStateToProps(state) {
   return {
     isFetching: state.conversation.isFetching,
+    isAllConversationsLoaded: state.conversation.isAllConversationsLoaded,
     conversations: state.conversation.data,
     conversationStatus: state.conversation.conversationStatus,
     inboxSelected: state.inbox.inboxSelected,
-    isFetchingMore: state.conversation.isFetchingMore,
   };
 }
 

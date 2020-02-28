@@ -14,6 +14,7 @@ import {
   GET_MORE_MESSAGES_SUCCESS,
   GET_MORE_MESSAGES_ERROR,
   ALL_MESSAGES_LOADED,
+  ALL_CONVERSATIONS_LOADED,
   SEND_MESSAGE,
   SEND_MESSAGE_SUCCESS,
   SEND_MESSAGE_ERROR,
@@ -21,15 +22,13 @@ import {
   MARK_MESSAGES_AS_READ_SUCCESS,
   MARK_MESSAGES_AS_READ_ERROR,
   SET_CONVERSATION,
-  GET_MORE_CONVERSATIONS,
-  GET_MORE_CONVERSATIONS_SUCCESS,
-  GET_MORE_CONVERSATIONS_ERROR,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
 
 import { API } from '../constants/url';
 import { ASSIGNEE_TYPE } from '../constants';
+
 // Load all the conversations
 export const getConversations = ({
   assigneeType,
@@ -37,7 +36,10 @@ export const getConversations = ({
   inboxSelected,
   pageNumber = 1,
 }) => async dispatch => {
-  dispatch({ type: GET_CONVERSATION });
+  if (pageNumber === 1) {
+    dispatch({ type: GET_CONVERSATION });
+  }
+
   try {
     let assignee;
     switch (assigneeType) {
@@ -53,11 +55,18 @@ export const getConversations = ({
 
     const status = conversationStatus === 'Open' ? 'open' : 'resolved';
     const inboxId = inboxSelected && inboxSelected ? inboxSelected.id : null;
-    const apiUrl = `${API}conversations?${
-      inboxId ? `inbox_id=${inboxId}&` : ''
-    }status=${status}&assignee_type=${assignee}&page=${pageNumber}`;
 
-    const response = await axios.get(apiUrl);
+    const apiUrl = `${API}conversations`;
+    const params = {
+      ...(inboxId && { inbox_id: inboxId }),
+      status,
+      assignee_type: assignee,
+      page: pageNumber,
+    };
+
+    const response = await axios.get(apiUrl, {
+      params,
+    });
 
     const {
       data: { meta, payload },
@@ -67,60 +76,21 @@ export const getConversations = ({
     });
     const allConversations = {
       meta,
-      payload: updatedPayload,
+      conversations: updatedPayload,
     };
 
     dispatch({
       type: GET_CONVERSATION_SUCCESS,
       payload: allConversations,
     });
+
+    if (payload.length < 20) {
+      dispatch({
+        type: ALL_CONVERSATIONS_LOADED,
+      });
+    }
   } catch (error) {
     dispatch({ type: GET_CONVERSATION_ERROR, payload: error });
-  }
-};
-
-// Load more  conversations
-export const loadMoreConversation = ({
-  assigneeType,
-  conversationStatus,
-  inboxSelected,
-  pageNumber,
-}) => async dispatch => {
-  dispatch({ type: GET_MORE_CONVERSATIONS });
-  try {
-    let assignee;
-    switch (assigneeType) {
-      case 0:
-        assignee = ASSIGNEE_TYPE.ME;
-        break;
-      case 1:
-        assignee = ASSIGNEE_TYPE.UN_ASSIGNED;
-        break;
-      default:
-        assignee = ASSIGNEE_TYPE.ALL;
-    }
-
-    const status = conversationStatus === 'Open' ? 'open' : 'resolved';
-    const inboxId = inboxSelected && inboxSelected ? inboxSelected.id : null;
-    const apiUrl = `${API}conversations?${
-      inboxId ? `inbox_id=${inboxId}&` : ''
-    }status=${status}&assignee_type=${assignee}&page=${pageNumber}`;
-
-    const response = await axios.get(apiUrl);
-
-    const {
-      data: { payload },
-    } = response.data;
-    const updatedPayload = payload.sort((a, b) => {
-      return b.timestamp - a.timestamp;
-    });
-
-    dispatch({
-      type: GET_MORE_CONVERSATIONS_SUCCESS,
-      payload: updatedPayload,
-    });
-  } catch (error) {
-    dispatch({ type: GET_MORE_CONVERSATIONS_ERROR, payload: error });
   }
 };
 

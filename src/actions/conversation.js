@@ -54,11 +54,12 @@ export const getConversations = ({
     }
 
     const status = conversationStatus === 'Open' ? 'open' : 'resolved';
-    const inboxId = inboxSelected && inboxSelected ? inboxSelected.id : null;
+
+    const inboxId = inboxSelected.id || null;
 
     const apiUrl = `${API}conversations`;
     const params = {
-      ...(inboxId && { inbox_id: inboxId }),
+      inbox_id: inboxId,
       status,
       assignee_type: assignee,
       page: pageNumber,

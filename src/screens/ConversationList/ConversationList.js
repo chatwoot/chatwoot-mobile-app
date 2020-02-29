@@ -7,6 +7,7 @@ import {
   Tab,
   TabView,
   List,
+  Spinner,
 } from 'react-native-ui-kitten';
 import { SafeAreaView, View } from 'react-native';
 import PropTypes from 'prop-types';
@@ -45,6 +46,8 @@ class ConversationList extends Component {
     }).isRequired,
     conversations: PropTypes.shape([]),
     isFetching: PropTypes.bool,
+    isFetchingMore: PropTypes.bool,
+    isAllConversationsLoaded: PropTypes.bool,
     getInboxes: PropTypes.func,
     loadInitialMessages: PropTypes.func,
     getConversations: PropTypes.func,
@@ -56,6 +59,8 @@ class ConversationList extends Component {
 
   static defaultProps = {
     isFetching: false,
+    isFetchingMore: false,
+    isAllConversationsLoaded: false,
     getInboxes: () => {},
     getConversations: () => {},
     loadInitialMessages: () => {},
@@ -66,12 +71,16 @@ class ConversationList extends Component {
 
   state = {
     selectedIndex: 0,
+    onEndReachedCalledDuringMomentum: true,
+    pageNumber: 1,
   };
 
   componentDidMount = () => {
-    this.props.getInboxes();
-    this.loadConversations();
-    this.initActionCable();
+    setTimeout(() => {
+      this.props.getInboxes();
+      this.loadConversations();
+      this.initActionCable();
+    }, 200);
   };
 
   initActionCable = async () => {
@@ -80,14 +89,31 @@ class ConversationList extends Component {
   };
 
   loadConversations = () => {
-    const { selectedIndex } = this.state;
+    const { selectedIndex, pageNumber } = this.state;
+
     const { conversationStatus, inboxSelected } = this.props;
 
     this.props.getConversations({
       assigneeType: selectedIndex,
       conversationStatus,
       inboxSelected,
+      pageNumber,
     });
+  };
+
+  onEndReached = async ({ distanceFromEnd }) => {
+    const { onEndReachedCalledDuringMomentum } = this.state;
+
+    if (!onEndReachedCalledDuringMomentum) {
+      await this.setState(state => ({
+        pageNumber: state.pageNumber + 1,
+      }));
+
+      this.loadConversations();
+      this.setState({
+        onEndReachedCalledDuringMomentum: true,
+      });
+    }
   };
 
   onSelectConversation = item => {
@@ -102,7 +128,6 @@ class ConversationList extends Component {
       conversationId,
       meta,
       messages,
-      refresh: this.loadConversations,
     });
   };
 
@@ -122,6 +147,7 @@ class ConversationList extends Component {
   onChangeTab = index => {
     this.setState({
       selectedIndex: index,
+      pageNumber: 1,
     });
     this.loadConversations();
   };
@@ -132,6 +158,16 @@ class ConversationList extends Component {
       onSelectConversation={this.onSelectConversation}
     />
   );
+
+  renderMoreLoader = () => {
+    const { isAllConversationsLoaded } = this.props;
+
+    return (
+      <View style={styles.loadMoreSpinnerView}>
+        {!isAllConversationsLoaded ? <Spinner size="medium" /> : null}
+      </View>
+    );
+  };
 
   renderList = () => {
     const { conversations } = this.props;
@@ -144,7 +180,21 @@ class ConversationList extends Component {
 
     return (
       <Layout style={styles.tabContainer}>
-        <List data={filterConversations} renderItem={this.renderItem} />
+        <List
+          data={filterConversations}
+          renderItem={this.renderItem}
+          ref={ref => {
+            this.myFlatListRef = ref;
+          }}
+          onEndReached={this.onEndReached.bind(this)}
+          onEndReachedThreshold={0.5}
+          onMomentumScrollBegin={() => {
+            this.setState({
+              onEndReachedCalledDuringMomentum: false,
+            });
+          }}
+          ListFooterComponent={this.renderMoreLoader}
+        />
       </Layout>
     );
   };
@@ -167,7 +217,14 @@ class ConversationList extends Component {
     );
   };
 
-  renderTab = ({ tabIndex, selectedIndex, tabTitle, payload, isFetching }) => (
+  renderTab = ({
+    tabIndex,
+    selectedIndex,
+    tabTitle,
+    payload,
+    isFetching,
+    renderList,
+  }) => (
     <Tab
       title={tabTitle}
       titleStyle={
@@ -176,7 +233,7 @@ class ConversationList extends Component {
           : styles.tabNotActiveTitle
       }>
       <View style={styles.tabView}>
-        {!isFetching ? (
+        {!isFetching || payload.length ? (
           <React.Fragment>
             {payload && payload.length
               ? this.renderList()
@@ -197,6 +254,7 @@ class ConversationList extends Component {
       inboxSelected,
       conversationStatus,
     } = this.props;
+
     const { payload, meta } = conversations;
     const { name: inBoxName } = inboxSelected;
 
@@ -252,9 +310,19 @@ class ConversationList extends Component {
 function bindAction(dispatch) {
   return {
     getInboxes: () => dispatch(getInboxes()),
-    getConversations: ({ assigneeType, conversationStatus, inboxSelected }) =>
+    getConversations: ({
+      assigneeType,
+      conversationStatus,
+      inboxSelected,
+      pageNumber,
+    }) =>
       dispatch(
-        getConversations({ assigneeType, conversationStatus, inboxSelected }),
+        getConversations({
+          assigneeType,
+          conversationStatus,
+          inboxSelected,
+          pageNumber,
+        }),
       ),
 
     selectConversation: ({ conversationId }) =>
@@ -266,6 +334,7 @@ function bindAction(dispatch) {
 function mapStateToProps(state) {
   return {
     isFetching: state.conversation.isFetching,
+    isAllConversationsLoaded: state.conversation.isAllConversationsLoaded,
     conversations: state.conversation.data,
     conversationStatus: state.conversation.conversationStatus,
     inboxSelected: state.inbox.inboxSelected,

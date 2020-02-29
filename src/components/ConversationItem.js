@@ -110,12 +110,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   conversationUserActive: {
+    textTransform: 'capitalize',
     fontSize: theme['font-size-medium'],
     color: theme['text-active-color'],
     fontWeight: theme['font-medium'],
     paddingTop: 4,
   },
   conversationUserNotActive: {
+    textTransform: 'capitalize',
     fontSize: theme['font-size-medium'],
     color: theme['color-body'],
     paddingTop: 4,

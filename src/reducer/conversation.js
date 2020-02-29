@@ -11,6 +11,7 @@ import {
   ADD_MESSAGE,
   UPDATE_MESSAGE,
   ALL_MESSAGES_LOADED,
+  ALL_CONVERSATIONS_LOADED,
   GET_MORE_MESSAGES,
   GET_MORE_MESSAGES_SUCCESS,
   GET_MORE_MESSAGES_ERROR,
@@ -20,36 +21,22 @@ import {
 const initialState = {
   isFetching: false,
   isFetchingMore: false,
+  isAllConversationsLoaded: false,
   isAllMessagesLoaded: false,
   conversationStatus: 'Open',
-  data: [],
+  data: {
+    meta: {
+      mine_count: 0,
+      unassigned_count: 0,
+      all_count: 0,
+    },
+    payload: [],
+  },
   allMessages: [],
   selectedConversationId: null,
 };
 export default (state = initialState, action) => {
   switch (action.type) {
-    case GET_CONVERSATION: {
-      return {
-        ...state,
-        isFetching: true,
-      };
-    }
-
-    case GET_CONVERSATION_ERROR: {
-      return {
-        ...initialState,
-        isFetching: false,
-      };
-    }
-
-    case GET_CONVERSATION_SUCCESS: {
-      return {
-        ...state,
-        isFetching: false,
-        data: action.payload,
-      };
-    }
-
     case ADD_CONVERSATION: {
       return {
         ...state,
@@ -83,7 +70,6 @@ export default (state = initialState, action) => {
     case ADD_MESSAGE: {
       return {
         ...state,
-        isFetching: false,
         allMessages: action.payload,
         isAllMessagesLoaded: false,
       };
@@ -109,6 +95,35 @@ export default (state = initialState, action) => {
         ...state,
         isFetching: false,
         allMessages: [...action.payload, ...state.allMessages],
+      };
+    }
+    case GET_CONVERSATION: {
+      return {
+        ...state,
+        isFetching: true,
+        isAllConversationsLoaded: false,
+        data: {
+          meta: state.data.meta,
+          payload: [],
+        },
+      };
+    }
+
+    case GET_CONVERSATION_SUCCESS: {
+      return {
+        ...state,
+        isFetching: false,
+        data: {
+          meta: action.payload.meta,
+          payload: [...state.data.payload, ...action.payload.conversations],
+        },
+      };
+    }
+
+    case GET_CONVERSATION_ERROR: {
+      return {
+        ...initialState,
+        isFetching: false,
       };
     }
 
@@ -139,6 +154,14 @@ export default (state = initialState, action) => {
         isAllMessagesLoaded: true,
         isFetching: false,
         isFetchingMore: false,
+      };
+    }
+
+    case ALL_CONVERSATIONS_LOADED: {
+      return {
+        ...state,
+        isAllConversationsLoaded: true,
+        isFetching: false,
       };
     }
 

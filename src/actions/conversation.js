@@ -14,6 +14,7 @@ import {
   GET_MORE_MESSAGES_SUCCESS,
   GET_MORE_MESSAGES_ERROR,
   ALL_MESSAGES_LOADED,
+  ALL_CONVERSATIONS_LOADED,
   SEND_MESSAGE,
   SEND_MESSAGE_SUCCESS,
   SEND_MESSAGE_ERROR,
@@ -26,21 +27,47 @@ import {
 import axios from '../helpers/APIHelper';
 
 import { API } from '../constants/url';
+import { ASSIGNEE_TYPE } from '../constants';
+
 // Load all the conversations
 export const getConversations = ({
   assigneeType,
   conversationStatus,
   inboxSelected,
+  pageNumber = 1,
 }) => async dispatch => {
-  dispatch({ type: GET_CONVERSATION });
-  try {
-    const status = conversationStatus === 'Open' ? 'open' : 'resolved';
-    const inbox_id = inboxSelected && inboxSelected ? inboxSelected.id : null;
-    const apiUrl = `${API}conversations?${
-      inbox_id ? `inbox_id=${inbox_id}&` : ''
-    }status=${status}&assignee_type_id=${assigneeType}`;
+  if (pageNumber === 1) {
+    dispatch({ type: GET_CONVERSATION });
+  }
 
-    const response = await axios.get(apiUrl);
+  try {
+    let assignee;
+    switch (assigneeType) {
+      case 0:
+        assignee = ASSIGNEE_TYPE.ME;
+        break;
+      case 1:
+        assignee = ASSIGNEE_TYPE.UN_ASSIGNED;
+        break;
+      default:
+        assignee = ASSIGNEE_TYPE.ALL;
+    }
+
+    const status = conversationStatus === 'Open' ? 'open' : 'resolved';
+
+    const inboxId = inboxSelected.id || null;
+
+    const apiUrl = `${API}conversations`;
+    const params = {
+      inbox_id: inboxId,
+      status,
+      assignee_type: assignee,
+      page: pageNumber,
+    };
+
+    const response = await axios.get(apiUrl, {
+      params,
+    });
 
     const {
       data: { meta, payload },
@@ -50,13 +77,19 @@ export const getConversations = ({
     });
     const allConversations = {
       meta,
-      payload: updatedPayload,
+      conversations: updatedPayload,
     };
 
     dispatch({
       type: GET_CONVERSATION_SUCCESS,
       payload: allConversations,
     });
+
+    if (payload.length < 20) {
+      dispatch({
+        type: ALL_CONVERSATIONS_LOADED,
+      });
+    }
   } catch (error) {
     dispatch({ type: GET_CONVERSATION_ERROR, payload: error });
   }

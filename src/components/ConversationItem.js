@@ -67,9 +67,9 @@ class ConversationItem extends Component {
               }
               numberOfLines={1}
               maxLength={8}>
-              {content.length < 33
+              {content.length < 25
                 ? `${content}`
-                : `${content.substring(0, 30)}...`}
+                : `${content.substring(0, 25)}...`}
             </CustomText>
           </View>
         </View>

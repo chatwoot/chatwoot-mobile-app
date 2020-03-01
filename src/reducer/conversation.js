@@ -12,15 +12,11 @@ import {
   UPDATE_MESSAGE,
   ALL_MESSAGES_LOADED,
   ALL_CONVERSATIONS_LOADED,
-  GET_MORE_MESSAGES,
-  GET_MORE_MESSAGES_SUCCESS,
-  GET_MORE_MESSAGES_ERROR,
   SET_CONVERSATION,
 } from '../constants/actions';
 
 const initialState = {
   isFetching: false,
-  isFetchingMore: false,
   isAllConversationsLoaded: false,
   isAllMessagesLoaded: false,
   conversationStatus: 'Open',
@@ -65,6 +61,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         selectedConversationId: action.payload,
+        allMessages: [],
       };
 
     case ADD_MESSAGE: {
@@ -75,28 +72,6 @@ export default (state = initialState, action) => {
       };
     }
 
-    case GET_MESSAGES: {
-      return {
-        ...state,
-        isFetching: true,
-        isAllMessagesLoaded: false,
-      };
-    }
-
-    case GET_MESSAGES_ERROR: {
-      return {
-        ...initialState,
-        isFetching: false,
-      };
-    }
-
-    case GET_MESSAGES_SUCCESS: {
-      return {
-        ...state,
-        isFetching: false,
-        allMessages: [...action.payload, ...state.allMessages],
-      };
-    }
     case GET_CONVERSATION: {
       return {
         ...state,
@@ -127,24 +102,26 @@ export default (state = initialState, action) => {
       };
     }
 
-    case GET_MORE_MESSAGES: {
+    case GET_MESSAGES: {
       return {
         ...state,
-        isFetchingMore: true,
+        isFetching: true,
+        isAllMessagesLoaded: false,
       };
     }
 
-    case GET_MORE_MESSAGES_SUCCESS: {
+    case GET_MESSAGES_SUCCESS: {
       return {
         ...state,
-        isFetchingMore: false,
+        isFetching: true,
         allMessages: [...action.payload, ...state.allMessages],
       };
     }
-    case GET_MORE_MESSAGES_ERROR: {
+
+    case GET_MESSAGES_ERROR: {
       return {
-        ...state,
-        isFetchingMore: false,
+        ...initialState,
+        isFetching: false,
       };
     }
 
@@ -152,8 +129,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isAllMessagesLoaded: true,
-        isFetching: false,
-        isFetchingMore: false,
       };
     }
 

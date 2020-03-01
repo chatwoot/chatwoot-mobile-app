@@ -4,15 +4,11 @@ import {
   GET_CONVERSATION_SUCCESS,
   SET_CONVERSATION_STATUS,
   ADD_CONVERSATION,
-  ADD_MESSAGE,
   GET_MESSAGES,
   GET_MESSAGES_SUCCESS,
   GET_MESSAGES_ERROR,
   UPDATE_CONVERSATION,
   UPDATE_MESSAGE,
-  GET_MORE_MESSAGES,
-  GET_MORE_MESSAGES_SUCCESS,
-  GET_MORE_MESSAGES_ERROR,
   ALL_MESSAGES_LOADED,
   ALL_CONVERSATIONS_LOADED,
   SEND_MESSAGE,
@@ -158,64 +154,35 @@ export const addMessageToConversation = ({ message }) => async (
   dispatch({ type: UPDATE_CONVERSATION, payload: updatedConversations });
 };
 
-// Load initial messages
-export const loadInitialMessage = ({ messages }) => async dispatch => {
-  try {
-    dispatch({
-      type: ADD_MESSAGE,
-      payload: messages,
-    });
-  } catch (error) {
-    dispatch({ type: GET_MESSAGES_ERROR, payload: error });
-  }
-};
-
-export const loadMessage = ({ conversationId, beforeId }) => async dispatch => {
+export const loadMessages = ({
+  conversationId,
+  beforeId,
+}) => async dispatch => {
   dispatch({ type: GET_MESSAGES });
-  try {
-    const apiUrl = `${API}conversations/${conversationId}?before=${beforeId}`;
 
-    const response = await axios.get(apiUrl);
+  try {
+    const apiUrl = `${API}conversations/${conversationId}`;
+
+    const params = {
+      before: beforeId,
+    };
+
+    const response = await axios.get(apiUrl, { params });
 
     const { payload } = response.data;
+
+    dispatch({
+      type: GET_MESSAGES_SUCCESS,
+      payload: payload,
+    });
 
     if (payload.length < 20) {
       dispatch({
         type: ALL_MESSAGES_LOADED,
       });
     }
-
-    dispatch({
-      type: GET_MESSAGES_SUCCESS,
-      payload: payload,
-    });
   } catch (error) {
     dispatch({ type: GET_MESSAGES_ERROR, payload: error });
-  }
-};
-
-export const loadMoreMessage = ({
-  conversationId,
-  beforeId,
-}) => async dispatch => {
-  dispatch({ type: GET_MORE_MESSAGES });
-  try {
-    const apiUrl = `${API}conversations/${conversationId}?before=${beforeId}`;
-    const response = await axios.get(apiUrl);
-    const { payload } = response.data;
-
-    if (payload.length) {
-      dispatch({
-        type: GET_MORE_MESSAGES_SUCCESS,
-        payload: payload,
-      });
-    } else {
-      dispatch({
-        type: ALL_MESSAGES_LOADED,
-      });
-    }
-  } catch (error) {
-    dispatch({ type: GET_MORE_MESSAGES_ERROR, payload: error });
   }
 };
 

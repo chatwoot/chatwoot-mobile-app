@@ -24,8 +24,7 @@ import styles from './ChatScreen.style';
 import UserAvatar from '../../components/UserAvatar';
 import { theme } from '../../theme.js';
 import {
-  loadMessage,
-  loadMoreMessage,
+  loadMessages,
   sendMessage,
   markMessagesAsRead,
 } from '../../actions/conversation';
@@ -54,21 +53,17 @@ class ChatScreen extends Component {
       navigate: PropTypes.func.isRequired,
     }).isRequired,
     allMessages: PropTypes.shape({}),
-    sendMessages: PropTypes.func,
+    sendMessage: PropTypes.func,
     loadMessages: PropTypes.func,
-    loadMoreMessages: PropTypes.func,
     isFetching: PropTypes.bool,
-    isFetchingMore: PropTypes.bool,
-    isAllMessagesLoad: PropTypes.bool,
+    isAllMessagesLoaded: PropTypes.bool,
     markAllMessagesAsRead: PropTypes.func,
   };
 
   static defaultProps = {
     isFetching: false,
-    isFetchingMore: false,
-    isAllMessagesLoad: false,
-    loadMoreMessages: () => {},
-    sendMessages: () => {},
+    isAllMessagesLoaded: false,
+    sendMessage: () => {},
     markAllMessagesAsRead: () => {},
     allMessages: [],
   };
@@ -87,9 +82,9 @@ class ChatScreen extends Component {
     } = navigation;
     const lastMessage = [...messages].reverse().pop();
 
-    const { conversation_id: conversationId, id: beforeId } = lastMessage;
-    const { loadMessages } = this.props;
-    loadMessages({ conversationId, beforeId });
+    const { conversation_id: conversationId } = lastMessage;
+
+    this.props.loadMessages({ conversationId });
     markAllMessagesAsRead({ conversationId });
   };
 
@@ -108,8 +103,8 @@ class ChatScreen extends Component {
         params: { conversationId },
       },
     } = navigation;
-    const { sendMessages } = this.props;
-    sendMessages({
+
+    this.props.sendMessage({
       conversationId,
       message: {
         message: message,
@@ -166,12 +161,12 @@ class ChatScreen extends Component {
   renderLeftControl = () => <BackAction onPress={this.onBackPress} />;
 
   loadMoreMessages = () => {
-    const { allMessages, isAllMessagesLoad } = this.props;
-    if (!isAllMessagesLoad) {
+    const { allMessages, isAllMessagesLoaded } = this.props;
+
+    if (!isAllMessagesLoaded) {
       const [lastMessage] = allMessages;
       const { conversation_id: conversationId, id: beforeId } = lastMessage;
-      const { loadMoreMessages } = this.props;
-      loadMoreMessages({ conversationId, beforeId });
+      this.props.loadMessages({ conversationId, beforeId });
     }
   };
 
@@ -185,8 +180,20 @@ class ChatScreen extends Component {
     }
   };
 
+  renderMoreLoader = () => {
+    const { isAllMessagesLoaded, isFetching } = this.props;
+
+    return (
+      <View style={styles.loadMoreSpinnerView}>
+        {!isAllMessagesLoaded && isFetching ? (
+          <Spinner size="medium" color="red" />
+        ) : null}
+      </View>
+    );
+  };
+
   render() {
-    const { allMessages, navigation, isFetching, isFetchingMore } = this.props;
+    const { allMessages, navigation, isFetching } = this.props;
 
     const { message } = this.state;
 
@@ -222,12 +229,7 @@ class ChatScreen extends Component {
 
           <View style={styles.container} autoDismiss={false}>
             <View style={styles.chatView}>
-              {isFetchingMore && (
-                <View style={styles.loadMoreSpinnerView}>
-                  <Spinner size="medium" />
-                </View>
-              )}
-              {!isFetching ? (
+              {completeMessages.length ? (
                 <List
                   ref={ref => {
                     this.myFlatListRef = ref;
@@ -243,9 +245,11 @@ class ChatScreen extends Component {
                   contentContainerStyle={styles.chatContainer}
                   data={completeMessages}
                   renderItem={renderMessage}
+                  ListFooterComponent={this.renderMoreLoader}
                 />
-              ) : (
-                <View style={styles.spinnerView}>
+              ) : null}
+              {isFetching && !completeMessages.length && (
+                <View style={styles.loadMoreSpinnerView}>
                   <Spinner size="medium" />
                 </View>
               )}
@@ -272,10 +276,8 @@ class ChatScreen extends Component {
 function bindAction(dispatch) {
   return {
     loadMessages: ({ conversationId, beforeId }) =>
-      dispatch(loadMessage({ conversationId, beforeId })),
-    loadMoreMessages: ({ conversationId, beforeId }) =>
-      dispatch(loadMoreMessage({ conversationId, beforeId })),
-    sendMessages: ({ conversationId, message }) =>
+      dispatch(loadMessages({ conversationId, beforeId })),
+    sendMessage: ({ conversationId, message }) =>
       dispatch(sendMessage({ conversationId, message })),
     markAllMessagesAsRead: ({ conversationId }) =>
       dispatch(markMessagesAsRead({ conversationId })),
@@ -285,8 +287,7 @@ function mapStateToProps(state) {
   return {
     allMessages: state.conversation.allMessages,
     isFetching: state.conversation.isFetching,
-    isFetchingMore: state.conversation.isFetchingMore,
-    isAllMessagesLoad: state.conversation.isAllMessagesLoad,
+    isAllMessagesLoaded: state.conversation.isAllMessagesLoaded,
   };
 }
 

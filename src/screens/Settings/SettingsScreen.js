@@ -66,7 +66,7 @@ class Settings extends Component {
 
   render() {
     const {
-      user: { email, name },
+      user: { email, name, avatar_url },
     } = this.props;
     return (
       <SafeAreaView style={styles.container}>
@@ -80,6 +80,7 @@ class Settings extends Component {
             userName={name}
             size="giant"
             defaultBGColor={theme['color-primary']}
+            thumbnail={avatar_url}
           />
           <View style={styles.detailsContainer}>
             <CustomText style={styles.nameLabel}>{name}</CustomText>

@@ -8,16 +8,18 @@
 ---
 
 <p align="center">
-  <img src="https://img.shields.io/github/license/chatwoot/chatwoot" alt="License">
- 
+   <a href="https://github.com/react-native-community/releases/blob/master/CHANGELOG.md"><img src="https://img.shields.io/github/package-json/dependency-version/chatwoot/chatwoot-mobile-app/react-native?color=%2361dafb" alt="Project Dependencies"></a>
   <img src="https://img.shields.io/discord/647412545203994635" alt="Discord">
   <a href="https://discord.gg/cJXdrwS"><img src="https://img.shields.io/badge/chat-Discord-violet?logo=discord" alt="Chat on Discord"></a>
+   <a href="http://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="Chat on Discord"></a>
+ <img src="https://img.shields.io/github/license/chatwoot/chatwoot" alt="License">
 </p>
 
 ## Features
 
 - Log your Chatwoot account
 - See all conversations
+- Chat screen
 - Filter conversations
 - Settings
 - ... and more to come!
@@ -25,8 +27,9 @@
 <p float="left">
   <img src=".github/login.jpg" alt="screenshot-1" width="150">
   <img src=".github/list.jpg" alt="screenshot-2" width="150">
-  <img src=".github/filter.jpg" alt="screenshot-3" width="150">
-  <img src=".github/settings.jpg" alt="screenshot-4"width="150">
+  <img src=".github/chat.jpg" alt="screenshot-3"width="150">
+  <img src=".github/filter.jpg" alt="screenshot-4" width="150">
+  <img src=".github/settings.jpg" alt="screenshot-5"width="150">
   
 </p>
 

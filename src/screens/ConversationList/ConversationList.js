@@ -46,7 +46,6 @@ class ConversationList extends Component {
     }).isRequired,
     conversations: PropTypes.shape([]),
     isFetching: PropTypes.bool,
-    isFetchingMore: PropTypes.bool,
     isAllConversationsLoaded: PropTypes.bool,
     getInboxes: PropTypes.func,
     loadInitialMessages: PropTypes.func,
@@ -59,7 +58,7 @@ class ConversationList extends Component {
 
   static defaultProps = {
     isFetching: false,
-    isFetchingMore: false,
+
     isAllConversationsLoaded: false,
     getInboxes: () => {},
     getConversations: () => {},
@@ -121,9 +120,8 @@ class ConversationList extends Component {
 
     const conversationId = item.id;
 
-    const { navigation, loadInitialMessages, selectConversation } = this.props;
+    const { navigation, selectConversation } = this.props;
     selectConversation({ conversationId });
-    loadInitialMessages({ messages });
     navigation.navigate('ChatScreen', {
       conversationId,
       meta,

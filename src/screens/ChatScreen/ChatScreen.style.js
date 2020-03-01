@@ -33,11 +33,11 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   loadMoreSpinnerView: {
-    backgroundColor: theme['color-background-light'],
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 8,
   },
+
   spinnerView: {
     flex: 1,
     alignItems: 'center',

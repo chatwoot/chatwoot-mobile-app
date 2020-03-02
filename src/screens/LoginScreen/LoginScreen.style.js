@@ -1,30 +1,28 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 import { theme } from '../../theme';
 
 export default StyleSheet.create({
-  mainView: {
+  keyboardView: {
     flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   logoView: {
-    flex: 2,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 104,
+    marginTop: Dimensions.get('window').height * 0.2,
   },
   logo: {
-    flex: 1,
-    width: 315,
-    height: 900,
-    resizeMode: 'contain',
+    width: Dimensions.get('window').width * 0.819,
+    height: 100,
+    resizeMode: 'center',
   },
-  contentView: {
-    flex: 6,
-  },
+
   formView: {
     paddingLeft: 40,
     paddingRight: 40,
-    marginTop: 48,
+    marginTop: Dimensions.get('window').height * 0.07,
   },
 
   textStyle: {

@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Image } from 'react-native';
-import { Layout, Button } from 'react-native-ui-kitten';
+import {
+  View,
+  Image,
+  KeyboardAvoidingView,
+  Dimensions,
+  Platform,
+} from 'react-native';
+import { Button } from 'react-native-ui-kitten';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
 
@@ -15,6 +21,8 @@ import images from '../../constants/images';
 
 import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
+import { ScrollView } from 'react-native-gesture-handler';
+
 import { openURL } from '../../helpers';
 import { SIGNUP_URL } from '../../constants/url';
 
@@ -88,55 +96,62 @@ class LoginScreen extends Component {
     const { options, values } = this.state;
     const { isLoggingIn } = this.props;
     return (
-      <Layout style={styles.mainView}>
-        <View style={styles.logoView}>
-          <Image style={styles.logo} source={images.appLogo} />
-        </View>
-
-        <View style={styles.contentView}>
-          <View style={styles.formView}>
-            <Form
-              ref={ref => {
-                this.formRef = ref;
-              }}
-              type={LoginForm}
-              options={options}
-              value={values}
-              onChange={value => this.onChange(value)}
-            />
-
-            <View style={styles.loginButtonView}>
-              <LoaderButton
-                style={styles.loginButton}
-                loading={isLoggingIn}
-                onPress={() => this.doLogin()}
-                size="large"
-                textStyle={styles.loginButtonText}>
-                {i18n.t('LOGIN.LOGIN')}
-              </LoaderButton>
-            </View>
+      <KeyboardAvoidingView
+        style={styles.keyboardView}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        enabled>
+        <ScrollView
+          style={{
+            height: Dimensions.get('window').height,
+          }}>
+          <View style={styles.logoView}>
+            <Image style={styles.logo} source={images.appLogo} />
           </View>
 
-          <View>
-            <View style={styles.forgotView}>
-              <Button
-                textStyle={styles.textStyle}
-                style={styles.button}
-                onPress={() => navigate('ResetPassword')}>
-                {i18n.t('LOGIN.FORGOT_PASSWORD')}
-              </Button>
+          <View style={styles.contentView}>
+            <View style={styles.formView}>
+              <Form
+                ref={ref => {
+                  this.formRef = ref;
+                }}
+                type={LoginForm}
+                options={options}
+                value={values}
+                onChange={value => this.onChange(value)}
+              />
+              <View style={styles.loginButtonView}>
+                <LoaderButton
+                  style={styles.loginButton}
+                  loading={isLoggingIn}
+                  onPress={() => this.doLogin()}
+                  size="large"
+                  textStyle={styles.loginButtonText}>
+                  {i18n.t('LOGIN.LOGIN')}
+                </LoaderButton>
+              </View>
             </View>
-            <View style={styles.accountView}>
-              <Button
-                textStyle={styles.textStyle}
-                style={styles.button}
-                onPress={() => openURL({ URL: SIGNUP_URL })}>
-                {i18n.t('LOGIN.CREATE_ACCOUNT')}
-              </Button>
+
+            <View>
+              <View style={styles.forgotView}>
+                <Button
+                  textStyle={styles.textStyle}
+                  style={styles.button}
+                  onPress={() => navigate('ResetPassword')}>
+                  {i18n.t('LOGIN.FORGOT_PASSWORD')}
+                </Button>
+              </View>
+              <View style={styles.accountView}>
+                <Button
+                  textStyle={styles.textStyle}
+                  style={styles.button}
+                  onPress={() => openURL({ URL: SIGNUP_URL })}>
+                  {i18n.t('LOGIN.CREATE_ACCOUNT')}
+                </Button>
+              </View>
             </View>
           </View>
-        </View>
-      </Layout>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }

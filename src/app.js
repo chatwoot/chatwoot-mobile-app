@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import { Alert, BackHandler } from 'react-native';
-
+import { Alert, BackHandler, Platform } from 'react-native';
+import BackgroundColor from 'react-native-background-color';
 import { PersistGate } from 'redux-persist/integration/react';
 import { mapping } from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from 'react-native-ui-kitten';
@@ -16,6 +16,11 @@ import i18n from './i18n';
 
 export default class Chatwoot extends Component {
   componentDidMount() {
+    // To hide splash screen
+    if (Platform.os === 'android') {
+      BackgroundColor.setColor('#FFFFFF');
+    }
+
     BackHandler.addEventListener(
       'hardwareBackPress',
       this.handleBackButtonClick,

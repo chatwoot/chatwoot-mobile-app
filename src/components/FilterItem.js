@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { Radio } from 'react-native-ui-kitten';
 
@@ -36,14 +36,16 @@ class FilterItem extends Component {
     const { name } = item;
 
     return (
-      <View style={styles.itemView}>
+      <TouchableOpacity
+        style={styles.itemView}
+        onPress={() => onCheckedChange({ item })}>
         <CustomText style={styles.itemText}>{name}</CustomText>
         <Radio
           style={styles.radio}
           checked={isChecked}
           onChange={() => onCheckedChange({ item })}
         />
-      </View>
+      </TouchableOpacity>
     );
   }
 }

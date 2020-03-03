@@ -2,6 +2,8 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 import { theme } from '../../theme';
 
+const deviceWidth = Dimensions.get('window').width;
+
 export default StyleSheet.create({
   keyboardView: {
     flex: 1,
@@ -11,12 +13,13 @@ export default StyleSheet.create({
   logoView: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: Dimensions.get('window').height * 0.2,
+    marginTop: Dimensions.get('window').height * 0.13,
   },
   logo: {
-    width: Dimensions.get('window').width * 0.819,
-    height: 100,
-    resizeMode: 'center',
+    width: deviceWidth * 0.819,
+    height: deviceWidth * 0.4,
+    aspectRatio: 2,
+    resizeMode: 'contain',
   },
 
   formView: {

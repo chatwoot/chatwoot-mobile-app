@@ -24,6 +24,7 @@ import CustomText from '../../components/Text';
 import FilterItem from '../../components/FilterItem';
 
 import styles from './ConversationFilter.style';
+import { INBOX_ICON } from '../../constants';
 
 const BackIcon = style => <Icon {...style} name="arrow-ios-back-outline" />;
 
@@ -33,10 +34,12 @@ const statusOptions = [
   {
     name: i18n.t('FILTER.OPEN'),
     itemType: 'status',
+    icon: 'book-open-outline',
   },
   {
     name: i18n.t('FILTER.RESOLVED'),
     itemType: 'status',
+    icon: 'done-all-outline',
   },
 ];
 
@@ -134,6 +137,7 @@ class FilterScreen extends Component {
                     key={item.id.toString()}
                     item={item}
                     isChecked={item.isChecked}
+                    iconName={INBOX_ICON[item.channel_type]}
                     onCheckedChange={this.onCheckedChange}
                   />
                 );
@@ -150,6 +154,7 @@ class FilterScreen extends Component {
                   <FilterItem
                     item={item}
                     key={item.name}
+                    iconName={item.icon}
                     isChecked={conversationStatus === item.name ? true : false}
                     onCheckedChange={this.onCheckedChange}
                   />

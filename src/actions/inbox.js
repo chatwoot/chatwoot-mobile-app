@@ -9,7 +9,7 @@ import axios from '../helpers/APIHelper';
 
 import { API } from '../constants/url';
 
-const defaultInbox = { id: 0, name: 'All' };
+const defaultInbox = { id: 0, name: 'All', channel_type: 'Channel::All' };
 export const getInboxes = () => async dispatch => {
   dispatch({ type: GET_INBOX });
   try {

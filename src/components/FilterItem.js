@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { Radio } from 'react-native-ui-kitten';
+import { Radio, Icon } from 'react-native-ui-kitten';
 
 import CustomText from './Text';
 
 import { theme } from '../theme';
-
 const styles = StyleSheet.create({
   itemView: {
     flexDirection: 'row',
@@ -15,10 +14,25 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     marginTop: 8,
   },
-  itemText: {
+  iconView: {
+    flex: 1,
+  },
+  icon: {
+    width: 16,
+    height: 16,
+  },
+  textView: {
+    flex: 8,
+  },
+  text: {
     color: theme['text-primary-color'],
     fontFamily: theme['font-family-regular'],
     fontSize: theme['font-size-medium'],
+    textAlign: 'left',
+  },
+  radioView: {
+    flex: 1,
+    alignItems: 'flex-end',
   },
 });
 
@@ -28,23 +42,34 @@ const propTypes = {
   }),
   onCheckedChange: PropTypes.func,
   isChecked: PropTypes.bool,
+  iconName: PropTypes.string,
 };
 
 class FilterItem extends Component {
   render() {
-    const { item, onCheckedChange, isChecked } = this.props;
+    const { item, onCheckedChange, isChecked, iconName } = this.props;
     const { name } = item;
 
     return (
       <TouchableOpacity
         style={styles.itemView}
         onPress={() => onCheckedChange({ item })}>
-        <CustomText style={styles.itemText}>{name}</CustomText>
-        <Radio
-          style={styles.radio}
-          checked={isChecked}
-          onChange={() => onCheckedChange({ item })}
-        />
+        {iconName ? (
+          <View style={styles.iconView}>
+            <Icon style={styles.icon} name={iconName} />
+          </View>
+        ) : null}
+
+        <View style={styles.textView}>
+          <CustomText style={styles.text}>{name}</CustomText>
+        </View>
+
+        <View style={styles.radioView}>
+          <Radio
+            checked={isChecked}
+            onChange={() => onCheckedChange({ item })}
+          />
+        </View>
       </TouchableOpacity>
     );
   }

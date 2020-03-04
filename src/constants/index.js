@@ -21,3 +21,10 @@ export const ASSIGNEE_TYPE = {
   UN_ASSIGNED: 'unassigned',
   ALL: 'all',
 };
+
+export const INBOX_ICON = {
+  'Channel::All': 'copy-outline',
+  'Channel::WebWidget': 'globe-outline',
+  'Channel::TwitterProfile': 'twitter-outline',
+  'Channel::FacebookPage': 'facebook-outline',
+};

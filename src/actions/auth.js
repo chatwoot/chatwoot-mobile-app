@@ -12,15 +12,21 @@ import {
   RESET_AUTH,
 } from '../constants/actions';
 import { showToast } from '../helpers/ToastHelper';
+import I18n from '../i18n';
 
 export const onLogin = ({ email, password }) => async dispatch => {
   try {
     dispatch({ type: LOGIN });
     const response = await axios.post('auth/sign_in', { email, password });
     const { data } = response.data;
-    dispatch({ type: LOGIN_SUCCESS, payload: data });
+
+    showToast({ message: I18n.t('SUCCESS.AUTH') });
     dispatch({ type: SET_AUTH_HEADER, payload: response.headers });
+    dispatch({ type: LOGIN_SUCCESS, payload: data });
   } catch (error) {
+    if (error && error.status === 401) {
+      showToast({ message: I18n.t('ERRORS.AUTH') });
+    }
     dispatch({ type: LOGIN_ERROR, payload: error });
   }
 };

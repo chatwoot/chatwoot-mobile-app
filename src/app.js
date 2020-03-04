@@ -17,7 +17,7 @@ import i18n from './i18n';
 export default class Chatwoot extends Component {
   componentDidMount() {
     // To hide splash screen
-    if (Platform.os === 'android') {
+    if (Platform.OS === 'android') {
       BackgroundColor.setColor('#FFFFFF');
     }
 

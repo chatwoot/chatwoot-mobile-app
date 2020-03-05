@@ -6,6 +6,7 @@ import {
   List,
   Button,
   Spinner,
+  Layout,
 } from 'react-native-ui-kitten';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -27,7 +28,10 @@ import {
   loadMessages,
   sendMessage,
   markMessagesAsRead,
+  loadCannedResponses,
 } from '../../actions/conversation';
+
+import ChatInputBox from '../../components/ChatInputBox';
 
 const BackIcon = style => <Icon {...style} name="arrow-ios-back-outline" />;
 
@@ -52,9 +56,11 @@ class ChatScreen extends Component {
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
+    cannedResponses: PropTypes.shape([]),
     allMessages: PropTypes.shape({}),
     sendMessage: PropTypes.func,
     loadMessages: PropTypes.func,
+    loadCannedResponses: PropTypes.func,
     isFetching: PropTypes.bool,
     isAllMessagesLoaded: PropTypes.bool,
     markAllMessagesAsRead: PropTypes.func,
@@ -66,6 +72,7 @@ class ChatScreen extends Component {
     sendMessage: () => {},
     markAllMessagesAsRead: () => {},
     allMessages: [],
+    cannedResponses: [],
   };
 
   state = {
@@ -83,7 +90,7 @@ class ChatScreen extends Component {
     const lastMessage = [...messages].reverse().pop();
 
     const { conversation_id: conversationId } = lastMessage;
-
+    this.props.loadCannedResponses();
     this.props.loadMessages({ conversationId });
     markAllMessagesAsRead({ conversationId });
   };
@@ -193,10 +200,8 @@ class ChatScreen extends Component {
   };
 
   render() {
-    const { allMessages, navigation, isFetching } = this.props;
-
+    const { allMessages, navigation, isFetching, cannedResponses } = this.props;
     const { message } = this.state;
-
     const {
       state: {
         params: {
@@ -255,7 +260,10 @@ class ChatScreen extends Component {
               )}
             </View>
 
-            <View style={styles.inputView}>
+            <Layout style={styles.inputView}>
+              <ChatInputBox autoCompleteData={cannedResponses} />
+              {/*
+
               <TextInput
                 style={styles.input}
                 placeholder="Type message..."
@@ -264,8 +272,12 @@ class ChatScreen extends Component {
                 placeholderTextColor={theme['text-primary-color']}
                 onChangeText={this.onNewMessageChange}
               />
+
+              <ChatInputBox autoCompleteData={cannedResponses} />
+
+              */}
               {this.renderSendButton()}
-            </View>
+            </Layout>
           </View>
         </KeyboardAvoidingView>
       </SafeAreaView>
@@ -277,6 +289,8 @@ function bindAction(dispatch) {
   return {
     loadMessages: ({ conversationId, beforeId }) =>
       dispatch(loadMessages({ conversationId, beforeId })),
+
+    loadCannedResponses: () => dispatch(loadCannedResponses()),
     sendMessage: ({ conversationId, message }) =>
       dispatch(sendMessage({ conversationId, message })),
     markAllMessagesAsRead: ({ conversationId }) =>
@@ -286,6 +300,7 @@ function bindAction(dispatch) {
 function mapStateToProps(state) {
   return {
     allMessages: state.conversation.allMessages,
+    cannedResponses: state.conversation.cannedResponses,
     isFetching: state.conversation.isFetching,
     isAllMessagesLoaded: state.conversation.isAllMessagesLoaded,
   };

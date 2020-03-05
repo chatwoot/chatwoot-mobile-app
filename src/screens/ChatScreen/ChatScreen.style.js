@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 import { theme } from '../../theme';
 
@@ -42,6 +42,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+  overflowMenu: {
+    padding: 8,
+    borderRadius: 8,
+    width: Dimensions.get('window').width / 1.5,
   },
 
   inputView: {

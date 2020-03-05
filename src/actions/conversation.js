@@ -239,7 +239,7 @@ export const loadCannedResponses = () => async dispatch => {
 
     const payload = data.map(item => ({
       ...item,
-      title: `${item.short_code} - ${item.content.substring(0, 32)}`,
+      title: `${item.short_code} - ${item.content.substring(0, 40)}`,
     }));
 
     dispatch({

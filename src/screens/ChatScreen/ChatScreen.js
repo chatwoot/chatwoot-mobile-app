@@ -31,8 +31,6 @@ import {
   loadCannedResponses,
 } from '../../actions/conversation';
 
-import ChatInputBox from '../../components/ChatInputBox';
-
 const BackIcon = style => <Icon {...style} name="arrow-ios-back-outline" />;
 
 const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
@@ -121,25 +119,27 @@ class ChatScreen extends Component {
   };
 
   onNewMessageAdd = () => {
-    const { navigation } = this.props;
     const { message } = this.state;
 
-    const {
-      state: {
-        params: { conversationId },
-      },
-    } = navigation;
+    if (message) {
+      const { navigation } = this.props;
+      const {
+        state: {
+          params: { conversationId },
+        },
+      } = navigation;
 
-    this.props.sendMessage({
-      conversationId,
-      message: {
-        message: message,
-        private: false,
-      },
-    });
-    this.setState({
-      message: '',
-    });
+      this.props.sendMessage({
+        conversationId,
+        message: {
+          message: message,
+          private: false,
+        },
+      });
+      this.setState({
+        message: '',
+      });
+    }
   };
 
   renderSendButton = () => {
@@ -340,20 +340,7 @@ class ChatScreen extends Component {
                 placeholderTextColor={theme['text-primary-color']}
                 onChangeText={this.onNewMessageChange}
               />
-              {/*
 
-              <TextInput
-                style={styles.input}
-                placeholder="Type message..."
-                isFocused={this.onFocused}
-                value={message}
-                placeholderTextColor={theme['text-primary-color']}
-                onChangeText={this.onNewMessageChange}
-              />
-
-              <ChatInputBox autoCompleteData={cannedResponses} />
-
-              */}
               {this.renderSendButton()}
             </View>
           </View>

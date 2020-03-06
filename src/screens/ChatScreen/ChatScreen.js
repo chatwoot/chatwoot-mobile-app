@@ -103,7 +103,7 @@ class ChatScreen extends Component {
 
     const { cannedResponses } = this.props;
 
-    if (text.charAt(0) === '\\') {
+    if (text.charAt(0) === '/') {
       const query = text.substring(1).toLowerCase();
       const filteredCannedResponses = cannedResponses.filter(item =>
         item.title.toLowerCase().includes(query),

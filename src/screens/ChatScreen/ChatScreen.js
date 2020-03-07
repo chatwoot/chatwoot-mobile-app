@@ -6,6 +6,7 @@ import {
   List,
   Button,
   Spinner,
+  OverflowMenu,
 } from 'react-native-ui-kitten';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -27,6 +28,7 @@ import {
   loadMessages,
   sendMessage,
   markMessagesAsRead,
+  loadCannedResponses,
 } from '../../actions/conversation';
 
 const BackIcon = style => <Icon {...style} name="arrow-ios-back-outline" />;
@@ -52,9 +54,11 @@ class ChatScreen extends Component {
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
+    cannedResponses: PropTypes.shape([]),
     allMessages: PropTypes.shape({}),
     sendMessage: PropTypes.func,
     loadMessages: PropTypes.func,
+    loadCannedResponses: PropTypes.func,
     isFetching: PropTypes.bool,
     isAllMessagesLoaded: PropTypes.bool,
     markAllMessagesAsRead: PropTypes.func,
@@ -66,11 +70,15 @@ class ChatScreen extends Component {
     sendMessage: () => {},
     markAllMessagesAsRead: () => {},
     allMessages: [],
+    cannedResponses: [],
   };
 
   state = {
     message: '',
     onEndReachedCalledDuringMomentum: true,
+    menuVisible: false,
+    selectedIndex: null,
+    filteredCannedResponses: [],
   };
 
   componentDidMount = () => {
@@ -83,7 +91,7 @@ class ChatScreen extends Component {
     const lastMessage = [...messages].reverse().pop();
 
     const { conversation_id: conversationId } = lastMessage;
-
+    this.props.loadCannedResponses();
     this.props.loadMessages({ conversationId });
     markAllMessagesAsRead({ conversationId });
   };
@@ -92,28 +100,46 @@ class ChatScreen extends Component {
     this.setState({
       message: text,
     });
+
+    const { cannedResponses } = this.props;
+
+    if (text.charAt(0) === '/') {
+      const query = text.substring(1).toLowerCase();
+      const filteredCannedResponses = cannedResponses.filter(item =>
+        item.title.toLowerCase().includes(query),
+      );
+      if (filteredCannedResponses.length) {
+        this.showCannedResponses({ filteredCannedResponses });
+      } else {
+        this.hideCannedResponses();
+      }
+    } else {
+      this.hideCannedResponses();
+    }
   };
 
   onNewMessageAdd = () => {
-    const { navigation } = this.props;
     const { message } = this.state;
 
-    const {
-      state: {
-        params: { conversationId },
-      },
-    } = navigation;
+    if (message) {
+      const { navigation } = this.props;
+      const {
+        state: {
+          params: { conversationId },
+        },
+      } = navigation;
 
-    this.props.sendMessage({
-      conversationId,
-      message: {
-        message: message,
-        private: false,
-      },
-    });
-    this.setState({
-      message: '',
-    });
+      this.props.sendMessage({
+        conversationId,
+        message: {
+          message: message,
+          private: false,
+        },
+      });
+      this.setState({
+        message: '',
+      });
+    }
   };
 
   renderSendButton = () => {
@@ -192,10 +218,48 @@ class ChatScreen extends Component {
     );
   };
 
+  onItemSelect = index => {
+    const { filteredCannedResponses } = this.state;
+    const selectedItem = filteredCannedResponses[index];
+
+    const { content } = selectedItem;
+    this.setState({
+      selectedIndex: index,
+      menuVisible: false,
+      message: content,
+    });
+  };
+
+  toggleOverFlowMenu = () => {
+    this.setState({
+      menuVisible: !this.state.menuVisible,
+    });
+  };
+
+  showCannedResponses = ({ filteredCannedResponses }) => {
+    this.setState({
+      selectedIndex: null,
+      filteredCannedResponses,
+      menuVisible: true,
+    });
+  };
+
+  hideCannedResponses = () => {
+    this.setState({
+      selectedIndex: null,
+      filteredCannedResponses: [],
+      menuVisible: false,
+    });
+  };
+
   render() {
     const { allMessages, navigation, isFetching } = this.props;
-
-    const { message } = this.state;
+    const {
+      message,
+      filteredCannedResponses,
+      menuVisible,
+      selectedIndex,
+    } = this.state;
 
     const {
       state: {
@@ -254,7 +318,19 @@ class ChatScreen extends Component {
                 </View>
               )}
             </View>
-
+            {filteredCannedResponses && (
+              <OverflowMenu
+                data={filteredCannedResponses}
+                visible={menuVisible}
+                selectedIndex={selectedIndex}
+                onSelect={this.onItemSelect}
+                placement="top"
+                style={styles.overflowMenu}
+                backdropStyle={{ backgroundColor: theme['back-drop-color'] }}
+                onBackdropPress={this.toggleOverFlowMenu}>
+                <View />
+              </OverflowMenu>
+            )}
             <View style={styles.inputView}>
               <TextInput
                 style={styles.input}
@@ -264,6 +340,7 @@ class ChatScreen extends Component {
                 placeholderTextColor={theme['text-primary-color']}
                 onChangeText={this.onNewMessageChange}
               />
+
               {this.renderSendButton()}
             </View>
           </View>
@@ -277,6 +354,8 @@ function bindAction(dispatch) {
   return {
     loadMessages: ({ conversationId, beforeId }) =>
       dispatch(loadMessages({ conversationId, beforeId })),
+
+    loadCannedResponses: () => dispatch(loadCannedResponses()),
     sendMessage: ({ conversationId, message }) =>
       dispatch(sendMessage({ conversationId, message })),
     markAllMessagesAsRead: ({ conversationId }) =>
@@ -286,6 +365,7 @@ function bindAction(dispatch) {
 function mapStateToProps(state) {
   return {
     allMessages: state.conversation.allMessages,
+    cannedResponses: state.conversation.cannedResponses,
     isFetching: state.conversation.isFetching,
     isAllMessagesLoaded: state.conversation.isAllMessagesLoaded,
   };

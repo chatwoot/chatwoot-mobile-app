@@ -95,7 +95,7 @@ export const theme = {
   'color-white': '#FFF',
   'color-body': '#3C4858',
   'color-heading': '#1F2D3D',
-
+  'back-drop-color': 'rgba(0, 0, 0, 0.5)',
   // Text color
   'text-primary-color': '#6e6f73',
   'text-active-color': '#1f2d3d',

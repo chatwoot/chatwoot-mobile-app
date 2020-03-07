@@ -18,6 +18,9 @@ import {
   MARK_MESSAGES_AS_READ_SUCCESS,
   MARK_MESSAGES_AS_READ_ERROR,
   SET_CONVERSATION,
+  GET_CANNED_RESPONSES,
+  GET_CANNED_RESPONSES_SUCCESS,
+  GET_CANNED_RESPONSES_ERROR,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -221,5 +224,29 @@ export const markMessagesAsRead = ({
     });
   } catch (error) {
     dispatch({ type: MARK_MESSAGES_AS_READ_ERROR, payload: error });
+  }
+};
+
+export const loadCannedResponses = () => async dispatch => {
+  dispatch({ type: GET_CANNED_RESPONSES });
+
+  try {
+    const apiUrl = `${API}canned_responses`;
+
+    const response = await axios.get(apiUrl);
+
+    const { data } = response;
+
+    const payload = data.map(item => ({
+      ...item,
+      title: `${item.short_code} - ${item.content.substring(0, 40)}`,
+    }));
+
+    dispatch({
+      type: GET_CANNED_RESPONSES_SUCCESS,
+      payload,
+    });
+  } catch (error) {
+    dispatch({ type: GET_CANNED_RESPONSES_ERROR, payload: error });
   }
 };

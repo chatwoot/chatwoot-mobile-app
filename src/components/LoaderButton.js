@@ -1,4 +1,4 @@
-import { Button as UIKittenButton } from 'react-native-ui-kitten';
+import { Button as UIKittenButton } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { ActivityIndicator } from 'react-native';

@@ -5,7 +5,7 @@ import {
   Icon,
   TopNavigationAction,
   Text,
-} from 'react-native-ui-kitten';
+} from '@ui-kitten/components';
 
 import { connect } from 'react-redux';
 

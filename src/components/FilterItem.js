@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { Radio, Icon } from 'react-native-ui-kitten';
+import { Radio, Icon } from '@ui-kitten/components';
 
 import CustomText from './Text';
 

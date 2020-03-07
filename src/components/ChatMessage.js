@@ -5,7 +5,7 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 
 import PropTypes from 'prop-types';
 
-import { Icon } from 'react-native-ui-kitten';
+import { Icon } from '@ui-kitten/components';
 
 import CustomText from './Text';
 

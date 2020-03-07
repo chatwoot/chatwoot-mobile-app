@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Avatar } from 'react-native-ui-kitten';
+import { Avatar } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 
 import CustomText from './Text';

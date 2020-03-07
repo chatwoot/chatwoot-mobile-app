@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
-import { Toggle } from 'react-native-ui-kitten';
-import { Icon } from 'react-native-ui-kitten';
+import { Toggle } from '@ui-kitten/components';
+import { Icon } from '@ui-kitten/components';
 
 import CustomText from './Text';
 import { theme } from '../theme';

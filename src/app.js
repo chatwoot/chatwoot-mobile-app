@@ -4,7 +4,7 @@ import { Alert, BackHandler, Platform } from 'react-native';
 import BackgroundColor from 'react-native-background-color';
 import { PersistGate } from 'redux-persist/integration/react';
 import { mapping } from '@eva-design/eva';
-import { ApplicationProvider, IconRegistry } from 'react-native-ui-kitten';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
 import { theme } from './theme';

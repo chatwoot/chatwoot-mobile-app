@@ -1,11 +1,10 @@
-/**
- * Metro configuration for React Native
- * https://github.com/facebook/react-native
- *
- * @format
- */
+const MetroConfig = require('@ui-kitten/metro-config');
 
-module.exports = {
+const evaConfig = {
+  evaPackage: '@eva-design/eva',
+};
+
+module.exports = MetroConfig.create(evaConfig, {
   transformer: {
     getTransformOptions: async () => ({
       transform: {
@@ -14,4 +13,4 @@ module.exports = {
       },
     }),
   },
-};
+});

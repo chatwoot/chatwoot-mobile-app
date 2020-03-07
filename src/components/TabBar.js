@@ -4,7 +4,7 @@ import {
   BottomNavigation,
   BottomNavigationTab,
   Icon,
-} from 'react-native-ui-kitten';
+} from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 

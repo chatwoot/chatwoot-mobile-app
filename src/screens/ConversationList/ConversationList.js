@@ -8,7 +8,7 @@ import {
   TabView,
   List,
   Spinner,
-} from 'react-native-ui-kitten';
+} from '@ui-kitten/components';
 import { SafeAreaView, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';

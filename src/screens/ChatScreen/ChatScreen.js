@@ -7,7 +7,7 @@ import {
   Button,
   Spinner,
   OverflowMenu,
-} from 'react-native-ui-kitten';
+} from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 

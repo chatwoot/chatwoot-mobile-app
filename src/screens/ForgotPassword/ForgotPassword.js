@@ -5,7 +5,7 @@ import {
   TopNavigation,
   TopNavigationAction,
   Icon,
-} from 'react-native-ui-kitten';
+} from '@ui-kitten/components';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
 

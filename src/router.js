@@ -66,7 +66,7 @@ class RootApp extends React.Component {
     });
     const stack = isLogged ? LoggedInStack : AuthStack;
 
-    const App = createAppContainer(stack);
+    const App = createAppContainer(LoggedInStack);
 
     return (
       <React.Fragment>

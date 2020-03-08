@@ -1,31 +1,33 @@
+import { withStyles } from '@ui-kitten/components';
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
 import CustomText from './Text';
 import UserAvatar from './UserAvatar';
-import { theme } from '../theme';
 import { dynamicTime } from '../helpers/TimeHelper';
 import { findLastMessage, getUnreadCount } from '../helpers';
 
-const propTypes = {
-  readStatus: PropTypes.number,
-  name: PropTypes.string,
-  onSelectConversation: PropTypes.func,
-  item: PropTypes.shape({
-    meta: PropTypes.shape({
-      sender: {
-        name: PropTypes.string,
-        thumbnail: PropTypes.string,
-      },
-    }),
-    messages: PropTypes.shape([]),
-  }).isRequired,
-};
-
 class ConversationItem extends Component {
+  static propTypes = {
+    themedStyle: PropTypes.object,
+    theme: PropTypes.object,
+    readStatus: PropTypes.number,
+    name: PropTypes.string,
+    onSelectConversation: PropTypes.func,
+    item: PropTypes.shape({
+      meta: PropTypes.shape({
+        sender: {
+          name: PropTypes.string,
+          thumbnail: PropTypes.string,
+        },
+      }),
+      messages: PropTypes.shape([]),
+    }).isRequired,
+  };
+
   render() {
-    const { item, onSelectConversation } = this.props;
+    const { themedStyle, item, onSelectConversation } = this.props;
     const {
       meta: {
         sender: { name, thumbnail },
@@ -41,10 +43,10 @@ class ConversationItem extends Component {
     return (
       <TouchableOpacity
         activeOpacity={0.95}
-        style={styles.container}
+        style={themedStyle.container}
         onPress={() => onSelectConversation(item)}>
-        <View style={styles.itemView}>
-          <View style={styles.avatarView}>
+        <View style={themedStyle.itemView}>
+          <View style={themedStyle.avatarView}>
             <UserAvatar
               thumbnail={thumbnail}
               userName={name}
@@ -55,15 +57,17 @@ class ConversationItem extends Component {
             <CustomText
               style={
                 unread_count
-                  ? styles.conversationUserActive
-                  : styles.conversationUserNotActive
+                  ? themedStyle.conversationUserActive
+                  : themedStyle.conversationUserNotActive
               }>
               {name}
             </CustomText>
 
             <CustomText
               style={
-                unread_count ? styles.messageActive : styles.messageNotActive
+                unread_count
+                  ? themedStyle.messageActive
+                  : themedStyle.messageNotActive
               }
               numberOfLines={1}
               maxLength={8}>
@@ -75,14 +79,14 @@ class ConversationItem extends Component {
         </View>
         <View>
           <View>
-            <CustomText style={styles.timeStamp}>
+            <CustomText style={themedStyle.timeStamp}>
               {dynamicTime({ time: created_at })}
             </CustomText>
           </View>
           {unread_count ? (
-            <View style={styles.badgeView}>
-              <View style={styles.badge}>
-                <CustomText style={styles.badgeCount}>
+            <View style={themedStyle.badgeView}>
+              <View style={themedStyle.badge}>
+                <CustomText style={themedStyle.badgeCount}>
                   {unread_count.toString()}
                 </CustomText>
               </View>
@@ -94,13 +98,13 @@ class ConversationItem extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+export default withStyles(ConversationItem, theme => ({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 16,
-    backgroundColor: theme['color-white'],
+    backgroundColor: theme['background-basic-color-1'],
     marginVertical: 0.5,
     borderColor: theme['color-border-light'],
     borderBottomWidth: 1,
@@ -148,7 +152,7 @@ const styles = StyleSheet.create({
     paddingTop: 4,
   },
   timeStamp: {
-    color: theme['text-primary-color'],
+    color: theme['text-hint-color'],
     fontSize: theme['font-size-extra-extra-small'],
     fontWeight: theme['font-regular'],
   },
@@ -162,17 +166,13 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
     borderRadius: 16,
-    backgroundColor: theme['color-success'],
+    backgroundColor: theme['color-success-default'],
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
   badgeCount: {
-    color: theme['color-white'],
+    color: theme['text-control-color'],
     fontSize: theme['font-size-extra-extra-small'],
   },
-});
-
-ConversationItem.propTypes = propTypes;
-
-export default ConversationItem;
+}));

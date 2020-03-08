@@ -1,49 +1,35 @@
 import React, { Component } from 'react';
+import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { Text, StyleSheet } from 'react-native';
-
-const getFontFamily = ({ locale, fontWeight = 400 }) => {
-  const InterTextMapping = {
-    300: '-Light',
-    400: '-Regular',
-    500: '-Medium',
-    600: '-Semibold',
-    700: '-Bold',
-    800: '-Bold',
-    900: '-Bold',
-  };
-
-  return `Inter${InterTextMapping[fontWeight]}`;
-};
+import { Text } from '@ui-kitten/components';
 
 class CustomText extends Component {
   static propTypes = {
+    // We may use UI Kitten mapping engine instead of creating own,
+    // Notice that using this way we replace RN Text with UI Kitten Text
+    // And create mapping.json with needed configuration
+    //
+    // Now, there is no need to combine `fontWeight` and `fontFamily` props
+    // fontFamily will be queried for a given fontWeight.
+    // Think if you can use fontSize properties for this to bring more consistency in your app.
+    // E.g fontWeight is 400, fontSize should be 18, etc.
+    //
+    // Notice we don't create defaultProps for 400 - it is used as default in mapping.json.
+    weight: PropTypes.oneOf(['300', '400', '500', '600', '700', '800', '900']),
     locale: PropTypes.string,
     style: PropTypes.object,
     children: PropTypes.string,
   };
 
-  generateStyles = styles => {
-    const { locale } = this.props;
-
-    const { fontWeight, ...rest } = styles;
-    const fontStyles = {};
-    fontStyles.fontFamily = getFontFamily({ locale, fontWeight });
-    return {
-      ...fontStyles,
-      ...rest,
-    };
+  findWeightVariant = props => {
+    const flatStyle = StyleSheet.flatten(props.style || {});
+    return flatStyle.fontWeight || '400';
   };
 
   render() {
-    const { children, style } = this.props;
+    const weightVariant = this.findWeightVariant(this.props);
 
-    const styles = this.generateStyles({ ...StyleSheet.flatten(style) });
-    return (
-      <Text {...this.props} style={styles}>
-        {children}
-      </Text>
-    );
+    return <Text {...this.props} weight={weightVariant} />;
   }
 }
 

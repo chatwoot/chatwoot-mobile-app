@@ -1,0 +1,72 @@
+{
+  "strict": {
+    "text-font-family": "Inter-Regular"
+  },
+  "components": {
+    "Text": {
+      "meta": {
+        "variantGroups": {
+          "weight": {
+            "300": {
+              "default": false
+            },
+            "400": {
+              "default": true
+            },
+            "500": {
+              "default": false
+            },
+            "600": {
+              "default": false
+            },
+            "700": {
+              "default": false
+            },
+            "800": {
+              "default": false
+            },
+            "900": {
+              "default": false
+            }
+          }
+        }
+      },
+      "appearances": {
+        "default": {
+          "variantGroups": {
+            "weight": {
+              "300": {
+                "fontFamily": "Inter-Light",
+                "fontWeight": "300"
+              },
+              "400": {
+                "fontFamily": "Inter-Regular",
+                "fontWeight": "400"
+              },
+              "500": {
+                "fontFamily": "Inter-Medium",
+                "fontWeight": "500"
+              },
+              "600": {
+                "fontFamily": "Inter-Semibold",
+                "fontWeight": "600"
+              },
+              "700": {
+                "fontFamily": "Inter-Bold",
+                "fontWeight": "700"
+              },
+              "800": {
+                "fontFamily": "Inter-Bold",
+                "fontWeight": "800"
+              },
+              "900": {
+                "fontFamily": "Inter-Bold",
+                "fontWeight": "900"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

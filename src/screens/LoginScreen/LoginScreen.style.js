@@ -1,10 +1,8 @@
-import { StyleSheet, Dimensions } from 'react-native';
-
-import { theme } from '../../theme';
+import { Dimensions } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width;
 
-export default StyleSheet.create({
+export default theme => ({
   keyboardView: {
     flex: 1,
     flexDirection: 'column',
@@ -31,8 +29,6 @@ export default StyleSheet.create({
   textStyle: {
     fontSize: theme['text-primary-size'],
     fontWeight: theme['font-medium'],
-    color: theme['text-primary-color'],
-    fontFamily: theme['font-family-medium'],
   },
 
   loginButtonView: {
@@ -46,8 +42,7 @@ export default StyleSheet.create({
     flex: 1,
   },
   loginButtonText: {
-    color: theme['button-color'],
-    fontFamily: 'Inter-Medium',
+    color: theme['text-control-color'],
     fontWeight: theme['font-medium'],
     fontSize: theme['button-font-size'],
   },
@@ -64,9 +59,5 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  button: {
-    backgroundColor: theme['button-color'],
-    borderColor: theme['button-color'],
   },
 });

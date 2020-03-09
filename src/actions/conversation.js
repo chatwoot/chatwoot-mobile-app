@@ -164,7 +164,7 @@ export const loadMessages = ({
   dispatch({ type: GET_MESSAGES });
 
   try {
-    const apiUrl = `${API}conversations/${conversationId}`;
+    const apiUrl = `${API}conversations/${conversationId}/messages`;
 
     const params = {
       before: beforeId,

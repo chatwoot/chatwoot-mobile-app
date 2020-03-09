@@ -146,7 +146,7 @@ const defaultProps = {
   message: { content: null, date: null },
 };
 
-class ChatMessage extends Component {
+class ChatMessageComponent extends Component {
   render() {
     const { message, themedStyle } = this.props;
 
@@ -172,6 +172,8 @@ class ChatMessage extends Component {
     );
   }
 }
+
+const ChatMessage = withStyles(ChatMessageComponent, styles);
 
 ChatMessage.defaultProps = defaultProps;
 ChatMessage.propTypes = propTypes;

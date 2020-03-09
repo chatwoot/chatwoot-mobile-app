@@ -39,14 +39,8 @@ const PaperPlaneIconFill = style => {
   return <Icon {...style} name="paper-plane" />;
 };
 
-const renderMessage = info => {
-  return (
-    <ChatMessage
-      index={info.index}
-      message={info.item}
-      alignment={info.item.alignment}
-    />
-  );
+const renderMessage = item => {
+  return <ChatMessage message={item.item} />;
 };
 
 class ChatScreenComponent extends Component {

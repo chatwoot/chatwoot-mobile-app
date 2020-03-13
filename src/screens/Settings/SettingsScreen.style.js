@@ -1,17 +1,15 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { Dimensions } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width;
 
-import { theme } from '../../theme';
-
-const styles = StyleSheet.create({
+const styles = theme => ({
   container: {
     flex: 1,
+    backgroundColor: theme['background-basic-color-1'],
   },
 
   headerTitle: {
-    color: theme['header-text-color'],
-    fontFamily: theme['font-family-semi-bold'],
+    fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-large'],
   },
   profileContainer: {
@@ -81,7 +79,6 @@ const styles = StyleSheet.create({
   },
   appDescriptionText: {
     fontSize: theme['font-size-medium'],
-    color: theme['text-primary-color'],
   },
 });
 

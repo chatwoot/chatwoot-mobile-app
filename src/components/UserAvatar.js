@@ -1,13 +1,15 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Avatar } from 'react-native-ui-kitten';
+import { View } from 'react-native';
+import { Avatar, useStyleSheet, StyleService } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
+import { getRandomColor, getUserInitial } from '../helpers';
 
 import CustomText from './Text';
-import { getUserInitial, getRandomColor } from '../helpers';
-import { theme } from '../theme';
 
-const styles = StyleSheet.create({
+// By using UI Kitten StyleService + useStyleSheet,
+// we may accept theme variables without a need to refer a theme
+// This also gives you ability to support multi-theming.
+const themedStyles = StyleService.create({
   avatar: {
     alignSelf: 'center',
   },
@@ -15,16 +17,15 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 48,
-    backgroundColor: theme['color-primary'],
+    backgroundColor: 'color-primary-default',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
   userName: {
-    color: theme['color-white'],
-    fontFamily: theme['font-family-bold'],
-    fontWeight: theme['font-bold'],
-    fontSize: theme['font-size-medium'],
+    color: 'text-control-color',
+    fontWeight: 'font-bold',
+    fontSize: 'font-size-medium',
   },
 });
 
@@ -39,11 +40,17 @@ const defaultProps = {
   thumbnail: null,
   userName: null,
   size: 'large',
-  defaultBGColor: theme['color-primary'],
+  // TODO: Remove comments after reviewing this.
+  // Makes it redundant to have an additional variable in theme
+  // defaultBGColor: theme['color-primary'],
 };
 
-const UserAvatar = ({ thumbnail, userName, size, defaultBGColor }) =>
-  thumbnail ? (
+const UserAvatar = ({ thumbnail, userName, size, defaultBGColor }) => {
+  const styles = useStyleSheet(themedStyles);
+  const thumbBackgroundColor =
+    defaultBGColor || styles.userThumbNail.backgroundColor;
+
+  return thumbnail ? (
     <Avatar
       source={{
         uri: thumbnail,
@@ -55,13 +62,16 @@ const UserAvatar = ({ thumbnail, userName, size, defaultBGColor }) =>
     <View
       style={[
         styles.userThumbNail,
-        { backgroundColor: defaultBGColor || getRandomColor({ userName }) },
+        {
+          backgroundColor: thumbBackgroundColor || getRandomColor({ userName }),
+        },
       ]}>
       <CustomText style={styles.userName}>
         {getUserInitial({ userName })}
       </CustomText>
     </View>
   );
+};
 
 UserAvatar.defaultProps = defaultProps;
 UserAvatar.propTypes = propTypes;

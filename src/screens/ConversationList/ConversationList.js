@@ -8,7 +8,8 @@ import {
   TabView,
   List,
   Spinner,
-} from 'react-native-ui-kitten';
+  withStyles,
+} from '@ui-kitten/components';
 import { SafeAreaView, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -39,8 +40,10 @@ const renderItemLoader = () => <ConversationItemLoader />;
 import ActionCable from '../../helpers/ActionCable';
 import { getPubSubToken } from '../../helpers/AuthHelper';
 
-class ConversationList extends Component {
+class ConversationListComponent extends Component {
   static propTypes = {
+    themedStyle: PropTypes.object,
+    theme: PropTypes.object,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
@@ -158,17 +161,17 @@ class ConversationList extends Component {
   );
 
   renderMoreLoader = () => {
-    const { isAllConversationsLoaded } = this.props;
+    const { isAllConversationsLoaded, themedStyle } = this.props;
 
     return (
-      <View style={styles.loadMoreSpinnerView}>
+      <View style={themedStyle.loadMoreSpinnerView}>
         {!isAllConversationsLoaded ? <Spinner size="medium" /> : null}
       </View>
     );
   };
 
   renderList = () => {
-    const { conversations } = this.props;
+    const { conversations, themedStyle } = this.props;
 
     const { payload } = conversations;
 
@@ -177,7 +180,7 @@ class ConversationList extends Component {
     );
 
     return (
-      <Layout style={styles.tabContainer}>
+      <Layout style={themedStyle.tabContainer}>
         <List
           data={filterConversations}
           renderItem={this.renderItem}
@@ -198,17 +201,19 @@ class ConversationList extends Component {
   };
 
   renderEmptyList = () => {
+    const { themedStyle } = this.props;
     return (
-      <Layout style={styles.tabContainer}>
+      <Layout style={themedStyle.tabContainer}>
         <List data={LoaderData} renderItem={renderItemLoader} />
       </Layout>
     );
   };
 
   renderEmptyMessage = () => {
+    const { themedStyle } = this.props;
     return (
-      <Layout style={styles.emptyView}>
-        <CustomText style={styles.emptyText}>
+      <Layout style={themedStyle.emptyView}>
+        <CustomText appearance="hint" style={themedStyle.emptyText}>
           {i18n.t('CONVERSATION.EMPTY')}
         </CustomText>
       </Layout>
@@ -222,27 +227,31 @@ class ConversationList extends Component {
     payload,
     isFetching,
     renderList,
-  }) => (
-    <Tab
-      title={tabTitle}
-      titleStyle={
-        selectedIndex === tabIndex
-          ? styles.tabActiveTitle
-          : styles.tabNotActiveTitle
-      }>
-      <View style={styles.tabView}>
-        {!isFetching || payload.length ? (
-          <React.Fragment>
-            {payload && payload.length
-              ? this.renderList()
-              : this.renderEmptyMessage()}
-          </React.Fragment>
-        ) : (
-          this.renderEmptyList()
-        )}
-      </View>
-    </Tab>
-  );
+  }) => {
+    const { themedStyle } = this.props;
+
+    return (
+      <Tab
+        title={tabTitle}
+        titleStyle={
+          selectedIndex === tabIndex
+            ? themedStyle.tabActiveTitle
+            : themedStyle.tabNotActiveTitle
+        }>
+        <View style={themedStyle.tabView}>
+          {!isFetching || payload.length ? (
+            <React.Fragment>
+              {payload && payload.length
+                ? this.renderList()
+                : this.renderEmptyMessage()}
+            </React.Fragment>
+          ) : (
+            this.renderEmptyList()
+          )}
+        </View>
+      </Tab>
+    );
+  };
 
   render() {
     const { selectedIndex } = this.state;
@@ -251,6 +260,7 @@ class ConversationList extends Component {
       isFetching,
       inboxSelected,
       conversationStatus,
+      themedStyle,
     } = this.props;
 
     const { payload, meta } = conversations;
@@ -263,19 +273,19 @@ class ConversationList extends Component {
     const headerTitle = `${inBoxName} (${conversationStatus})`;
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={themedStyle.container}>
         <TopNavigation
           title={headerTitle}
           alignment="center"
           rightControls={this.renderRightControls()}
-          titleStyle={styles.headerTitle}
+          titleStyle={themedStyle.headerTitle}
         />
 
         <TabView
           selectedIndex={selectedIndex}
-          indicatorStyle={styles.tabViewIndicator}
+          indicatorStyle={themedStyle.tabViewIndicator}
           onSelect={this.onChangeTab}
-          tabBarStyle={styles.tabBar}>
+          tabBarStyle={themedStyle.tabBar}>
           {this.renderTab({
             tabIndex: 0,
             selectedIndex,
@@ -339,4 +349,5 @@ function mapStateToProps(state) {
   };
 }
 
+const ConversationList = withStyles(ConversationListComponent, styles);
 export default connect(mapStateToProps, bindAction)(ConversationList);

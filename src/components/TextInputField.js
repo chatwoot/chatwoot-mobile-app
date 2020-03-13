@@ -1,57 +1,61 @@
 import React from 'react';
-import { View } from 'react-native';
-import { TextInput, StyleSheet } from 'react-native';
+import { View, TextInput } from 'react-native';
+import { StyleService, useStyleSheet } from '@ui-kitten/components';
 
-import { theme } from '../theme';
 import Text from './Text';
 
-const styles = StyleSheet.create({
+const themedStyles = StyleService.create({
   textViewError: {
     borderWidth: 1,
-    borderColor: theme['color-danger-900'],
+    borderColor: 'color-danger-900',
     borderRadius: 4,
     marginTop: 8,
   },
   label: {
-    color: theme['text-primary-color'],
+    // For `every text in app`, the reserved variable is text-basic-color
+    color: 'text-basic-color',
     paddingBottom: 6,
-    fontSize: theme['text-primary-size'],
-    fontWeight: theme['font-medium'],
+    fontSize: 'text-primary-size',
+    fontWeight: 'font-medium',
   },
   errorLabel: {
-    color: theme['color-danger-900'],
+    color: 'color-danger-900',
     textAlign: 'left',
     paddingTop: 2,
     paddingBottom: 2,
-    fontSize: theme['text-primary-size'],
+    fontSize: 'text-primary-size',
   },
   inputStyle: {
-    fontSize: theme['text-primary-size'],
-    color: theme['text-primary-color'],
+    fontSize: 'text-primary-size',
+    // For `every text in app`, the reserved variable is text-basic-color
+    color: 'text-basic-color',
     paddingTop: 4,
     paddingLeft: 4,
     paddingRight: 4,
     paddingBottom: 4,
     borderWidth: 1,
     borderRadius: 4,
-    borderColor: theme['input-border-color'],
+    borderColor: 'input-border-color',
     height: 48,
   },
   errorInputStyle: {
-    fontSize: theme['text-primary-size'],
-    color: theme['text-primary-color'],
+    fontSize: 'text-primary-size',
+    // For `every text in app`, the reserved variable is text-basic-color
+    color: 'text-basic-color',
     paddingTop: 4,
     paddingLeft: 4,
     paddingRight: 4,
     paddingBottom: 4,
     borderWidth: 1,
     borderRadius: 4,
-    borderColor: theme['color-danger-900'],
+    borderColor: 'color-danger-900',
     height: 48,
   },
 });
 
 export default function TextInputField(locals) {
+  const styles = useStyleSheet(themedStyles);
+
   return (
     <View>
       <Text style={styles.label}>{locals.config.label}</Text>
@@ -76,7 +80,7 @@ export default function TextInputField(locals) {
         onSelectionChange={locals.onSelectionChange}
         onSubmitEditing={locals.onSubmitEditing}
         onContentSizeChange={locals.onContentSizeChange}
-        placeholderTextColor={theme['text-primary-color']}
+        // placeholderTextColor={theme['text-primary-color']}
         secureTextEntry={locals.secureTextEntry}
         selectTextOnFocus={locals.selectTextOnFocus}
         selectionColor={locals.selectionColor}

@@ -1,16 +1,19 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { View, StatusBar, Animated, Easing, StyleSheet } from 'react-native';
+import { View, StatusBar, Animated, Easing } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
+import { withStyles } from '@ui-kitten/components';
 
 import i18n from '../i18n';
-import { theme } from '../theme';
 
-const styles = StyleSheet.create({
+const styles = theme => ({
   container: {
     backgroundColor: theme['color-danger-800'],
   },
   offlineText: {
-    color: theme['color-white'],
+    // For texts displayed on contrast backgrounds (color-danger-800 in this case)
+    // We have predefined text-control-color variable
+    color: theme['text-control-color'],
     padding: 8,
     textAlign: 'center',
     fontWeight: theme['font-medium'],
@@ -18,7 +21,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class OfflineBar extends Component {
+const propTypes = {
+  themedStyle: PropTypes.object,
+  theme: PropTypes.object,
+};
+
+class OfflineBar extends Component {
   animationConstants = {
     DURATION: 800,
     TO_VALUE: 4,
@@ -62,6 +70,7 @@ export default class OfflineBar extends Component {
   };
 
   render() {
+    const { themedStyle, theme } = this.props;
     const interpolated = this.animation.interpolate({
       inputRange: this.animationConstants.INPUT_RANGE,
       outputRange: this.animationConstants.OUTPUT_RANGE,
@@ -71,12 +80,16 @@ export default class OfflineBar extends Component {
     };
     const { isConnected } = this.state;
     return !isConnected ? (
-      <View style={styles.container}>
+      <View style={themedStyle.container}>
         <StatusBar backgroundColor={theme['color-danger-800']} />
-        <Animated.Text style={[styles.offlineText, animationStyle]}>
+        <Animated.Text style={[themedStyle.offlineText, animationStyle]}>
           {i18n.t('ERRORS.OfFLINE')}
         </Animated.Text>
       </View>
     ) : null;
   }
 }
+
+OfflineBar.propTypes = propTypes;
+
+export default withStyles(OfflineBar, styles);

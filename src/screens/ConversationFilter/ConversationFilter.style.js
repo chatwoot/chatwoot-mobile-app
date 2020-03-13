@@ -1,15 +1,10 @@
-import { StyleSheet } from 'react-native';
-
-import { theme } from '../../theme';
-
-const styles = StyleSheet.create({
+const styles = theme => ({
   container: {
     flex: 1,
+    backgroundColor: theme['background-basic-color-1'],
   },
   headerTitle: {
     marginVertical: 8,
-    color: theme['header-text-color'],
-    fontFamily: theme['font-family-semi-bold'],
     fontSize: theme['font-size-large'],
     fontWeight: theme['font-semi-bold'],
   },
@@ -32,8 +27,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   itemText: {
-    color: theme['text-primary-color'],
-    fontFamily: theme['font-regular'],
     fontSize: theme['font-size-medium'],
   },
 
@@ -47,8 +40,6 @@ const styles = StyleSheet.create({
   },
 
   filterButtonText: {
-    color: theme['button-color'],
-    fontFamily: 'Inter-Medium',
     fontWeight: theme['font-medium'],
     fontSize: theme['button-font-size'],
   },

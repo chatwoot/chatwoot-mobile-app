@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { Radio, Icon } from 'react-native-ui-kitten';
+import { Radio, Icon, withStyles } from '@ui-kitten/components';
 
 import CustomText from './Text';
 
-import { theme } from '../theme';
-const styles = StyleSheet.create({
+const styles = theme => ({
   itemView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -25,8 +24,8 @@ const styles = StyleSheet.create({
     flex: 8,
   },
   text: {
-    color: theme['text-primary-color'],
-    fontFamily: theme['font-family-regular'],
+    color: theme['text-hint-color'],
+    fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-medium'],
     textAlign: 'left',
   },
@@ -37,6 +36,8 @@ const styles = StyleSheet.create({
 });
 
 const propTypes = {
+  themedStyle: PropTypes.object,
+  theme: PropTypes.object,
   item: PropTypes.shape({
     name: PropTypes.string,
   }),
@@ -45,26 +46,37 @@ const propTypes = {
   iconName: PropTypes.string,
 };
 
-class FilterItem extends Component {
+class FilterItemComponent extends Component {
   render() {
-    const { item, onCheckedChange, isChecked, iconName } = this.props;
+    const {
+      item,
+      onCheckedChange,
+      isChecked,
+      iconName,
+      themedStyle,
+      theme,
+    } = this.props;
     const { name } = item;
 
     return (
       <TouchableOpacity
-        style={styles.itemView}
+        style={themedStyle.itemView}
         onPress={() => onCheckedChange({ item })}>
         {iconName ? (
-          <View style={styles.iconView}>
-            <Icon style={styles.icon} name={iconName} />
+          <View style={themedStyle.iconView}>
+            <Icon
+              style={themedStyle.icon}
+              fill={theme['text-hint-color']}
+              name={iconName}
+            />
           </View>
         ) : null}
 
-        <View style={styles.textView}>
-          <CustomText style={styles.text}>{name}</CustomText>
+        <View style={themedStyle.textView}>
+          <CustomText style={themedStyle.text}>{name}</CustomText>
         </View>
 
-        <View style={styles.radioView}>
+        <View style={themedStyle.radioView}>
           <Radio
             checked={isChecked}
             onChange={() => onCheckedChange({ item })}
@@ -75,6 +87,7 @@ class FilterItem extends Component {
   }
 }
 
-FilterItem.propTypes = propTypes;
+FilterItemComponent.propTypes = propTypes;
 
+const FilterItem = withStyles(FilterItemComponent, styles);
 export default FilterItem;

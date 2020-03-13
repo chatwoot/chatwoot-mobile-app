@@ -7,7 +7,8 @@ import {
   Button,
   Spinner,
   OverflowMenu,
-} from 'react-native-ui-kitten';
+  withStyles,
+} from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -23,7 +24,6 @@ import ChatMessage from '../../components/ChatMessage';
 
 import styles from './ChatScreen.style';
 import UserAvatar from '../../components/UserAvatar';
-import { theme } from '../../theme.js';
 import {
   loadMessages,
   sendMessage,
@@ -39,18 +39,14 @@ const PaperPlaneIconFill = style => {
   return <Icon {...style} name="paper-plane" />;
 };
 
-const renderMessage = info => {
-  return (
-    <ChatMessage
-      index={info.index}
-      message={info.item}
-      alignment={info.item.alignment}
-    />
-  );
+const renderMessage = item => {
+  return <ChatMessage message={item.item} />;
 };
 
-class ChatScreen extends Component {
+class ChatScreenComponent extends Component {
   static propTypes = {
+    themedStyle: PropTypes.object,
+    theme: PropTypes.object,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
@@ -145,7 +141,7 @@ class ChatScreen extends Component {
   renderSendButton = () => {
     return (
       <Button
-        style={styles.addMessageButton}
+        style={this.props.themedStyle.addMessageButton}
         appearance="ghost"
         size="large"
         icon={PaperPlaneIconFill}
@@ -165,14 +161,7 @@ class ChatScreen extends Component {
         },
       },
     } = navigation;
-    return (
-      <UserAvatar
-        userName={name}
-        size="small"
-        thumbnail={thumbnail}
-        defaultBGColor={theme['color-primary']}
-      />
-    );
+    return <UserAvatar userName={name} size="small" thumbnail={thumbnail} />;
   };
 
   renderRightControls = style => {
@@ -253,7 +242,13 @@ class ChatScreen extends Component {
   };
 
   render() {
-    const { allMessages, navigation, isFetching } = this.props;
+    const {
+      allMessages,
+      navigation,
+      isFetching,
+      themedStyle,
+      theme,
+    } = this.props;
     const {
       message,
       filteredCannedResponses,
@@ -277,9 +272,9 @@ class ChatScreen extends Component {
       .filter(item => item.content !== '');
 
     return (
-      <SafeAreaView style={styles.mainContainer}>
+      <SafeAreaView style={themedStyle.mainContainer}>
         <KeyboardAvoidingView
-          style={styles.keyboardView}
+          style={themedStyle.keyboardView}
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
           enabled>
           <TopNavigation
@@ -287,12 +282,12 @@ class ChatScreen extends Component {
             title={name}
             rightControls={this.renderRightControls()}
             leftControl={this.renderLeftControl()}
-            titleStyle={styles.headerTitle}
-            subtitleStyle={styles.subHeaderTitle}
+            titleStyle={themedStyle.headerTitle}
+            subtitleStyle={themedStyle.subHeaderTitle}
           />
 
-          <View style={styles.container} autoDismiss={false}>
-            <View style={styles.chatView}>
+          <View style={themedStyle.container} autoDismiss={false}>
+            <View style={themedStyle.chatView}>
               {completeMessages.length ? (
                 <List
                   ref={ref => {
@@ -306,14 +301,14 @@ class ChatScreen extends Component {
                     });
                   }}
                   inverted
-                  contentContainerStyle={styles.chatContainer}
+                  contentContainerStyle={themedStyle.chatContainer}
                   data={completeMessages}
                   renderItem={renderMessage}
                   ListFooterComponent={this.renderMoreLoader}
                 />
               ) : null}
               {isFetching && !completeMessages.length && (
-                <View style={styles.loadMoreSpinnerView}>
+                <View style={themedStyle.loadMoreSpinnerView}>
                   <Spinner size="medium" />
                 </View>
               )}
@@ -325,19 +320,19 @@ class ChatScreen extends Component {
                 selectedIndex={selectedIndex}
                 onSelect={this.onItemSelect}
                 placement="top"
-                style={styles.overflowMenu}
-                backdropStyle={{ backgroundColor: theme['back-drop-color'] }}
+                style={themedStyle.overflowMenu}
+                backdropStyle={themedStyle.backdrop}
                 onBackdropPress={this.toggleOverFlowMenu}>
                 <View />
               </OverflowMenu>
             )}
-            <View style={styles.inputView}>
+            <View style={themedStyle.inputView}>
               <TextInput
-                style={styles.input}
+                style={themedStyle.input}
                 placeholder="Type message..."
                 isFocused={this.onFocused}
                 value={message}
-                placeholderTextColor={theme['text-primary-color']}
+                placeholderTextColor={theme['text-basic-color']}
                 onChangeText={this.onNewMessageChange}
               />
 
@@ -371,4 +366,5 @@ function mapStateToProps(state) {
   };
 }
 
+const ChatScreen = withStyles(ChatScreenComponent, styles);
 export default connect(mapStateToProps, bindAction)(ChatScreen);

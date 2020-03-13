@@ -1,8 +1,6 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { Dimensions } from 'react-native';
 
-import { theme } from '../../theme';
-
-const styles = StyleSheet.create({
+const styles = theme => ({
   mainContainer: {
     flex: 1,
   },
@@ -10,13 +8,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    color: theme['header-text-color'],
-    fontFamily: theme['font-family-semi-bold'],
+    fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-large'],
   },
   subHeaderTitle: {
-    color: theme['header-text-color'],
-    fontFamily: theme['font-family-regular'],
     fontSize: theme['font-size-extra-small'],
   },
 
@@ -61,7 +56,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: theme['text-primary-size'],
-    color: theme['text-primary-color'],
+    color: theme['text-basic-color'],
     margin: 0,
     marginHorizontal: 4,
     paddingTop: 4,
@@ -74,6 +69,9 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 12,
+  },
+  backdrop: {
+    backgroundColor: theme['back-drop-color'],
   },
 });
 

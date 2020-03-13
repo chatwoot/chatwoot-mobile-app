@@ -5,7 +5,8 @@ import {
   TopNavigation,
   TopNavigationAction,
   Icon,
-} from 'react-native-ui-kitten';
+  withStyles,
+} from '@ui-kitten/components';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
 
@@ -25,8 +26,10 @@ const LoginForm = t.struct({
   email: Email,
 });
 
-class ForgotPassword extends Component {
+class ForgotPasswordComponent extends Component {
   static propTypes = {
+    themedStyle: PropTypes.object,
+    theme: PropTypes.object,
     onResetPassword: PropTypes.func,
     isLoading: PropTypes.bool,
     navigation: PropTypes.func,
@@ -46,7 +49,7 @@ class ForgotPassword extends Component {
       fields: {
         email: {
           placeholder: '',
-          template: TextInputField,
+          template: props => <TextInputField {...props} />,
           keyboardType: 'email-address',
           error: i18n.t('FORGOT_PASSWORD.EMAIL_ERROR'),
           autoCapitalize: 'none',
@@ -84,16 +87,16 @@ class ForgotPassword extends Component {
 
   render() {
     const { options, values } = this.state;
-    const { isLoading } = this.props;
+    const { isLoading, themedStyle } = this.props;
     return (
-      <SafeAreaView style={styles.mainView}>
+      <SafeAreaView style={themedStyle.mainView}>
         <TopNavigation
-          titleStyle={styles.headerTitle}
+          titleStyle={themedStyle.headerTitle}
           title={i18n.t('FORGOT_PASSWORD.HEADER_TITLE')}
           leftControl={this.renderLeftControl()}
         />
-        <View style={styles.contentView}>
-          <View style={styles.formView}>
+        <View style={themedStyle.contentView}>
+          <View style={themedStyle.formView}>
             <Form
               ref={ref => {
                 this.formRef = ref;
@@ -104,13 +107,13 @@ class ForgotPassword extends Component {
               onChange={value => this.onChange(value)}
             />
 
-            <View style={styles.loginButtonView}>
+            <View style={themedStyle.loginButtonView}>
               <LoaderButton
-                style={styles.loginButton}
+                style={themedStyle.loginButton}
                 loading={isLoading}
                 onPress={() => this.doResetPassword()}
                 size="large"
-                textStyle={styles.loginButtonText}>
+                textStyle={themedStyle.loginButtonText}>
                 {i18n.t('FORGOT_PASSWORD.RESET_HERE')}
               </LoaderButton>
             </View>
@@ -134,4 +137,5 @@ function mapStateToProps(state) {
   };
 }
 
+const ForgotPassword = withStyles(ForgotPasswordComponent, styles);
 export default connect(mapStateToProps, bindAction)(ForgotPassword);

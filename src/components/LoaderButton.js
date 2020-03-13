@@ -1,12 +1,11 @@
-import { Button as UIKittenButton } from 'react-native-ui-kitten';
+import { Button as UIKittenButton, withStyles } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { ActivityIndicator } from 'react-native';
 
-import { theme } from '../theme';
-
-export default class Button extends Component {
+class ButtonComponent extends Component {
   static propTypes = {
+    theme: PropTypes.object,
     children: PropTypes.object,
     loading: PropTypes.bool,
   };
@@ -27,6 +26,7 @@ export default class Button extends Component {
   }
 
   renderLoading() {
+    const { theme } = this.props;
     return <ActivityIndicator color={theme['loader-color']} />;
   }
 
@@ -47,3 +47,5 @@ export default class Button extends Component {
     );
   }
 }
+
+export default withStyles(ButtonComponent);

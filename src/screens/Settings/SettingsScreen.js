@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TopNavigation } from 'react-native-ui-kitten';
+import { TopNavigation, withStyles } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-native';
@@ -17,10 +17,18 @@ import images from '../../constants/images';
 import styles from './SettingsScreen.style';
 
 import SettingsItem from '../../components/SettingsItem';
-import { theme } from '../../theme.js';
 import { openURL } from '../../helpers/index.js';
 import { HELP_URL } from '../../constants/url.js';
 const settingsData = [
+  // Now you can use themes dynamically.
+  // The only thing left is creating an action for it
+  // https://akveo.github.io/react-native-ui-kitten/docs/guides/runtime-theming
+  {
+    text: i18n.t('SETTINGS.SWITCH_THEME'),
+    checked: false,
+    iconName: 'color-palette-outline',
+    itemName: 'theme',
+  },
   {
     text: i18n.t('SETTINGS.HELP'),
     checked: true,
@@ -34,23 +42,31 @@ const settingsData = [
     itemName: 'logout',
   },
 ];
-class Settings extends Component {
+class SettingsComponent extends Component {
   static propTypes = {
+    themedStyle: PropTypes.object,
+    theme: PropTypes.object,
     user: PropTypes.shape({
       name: PropTypes.string,
       email: PropTypes.string,
     }).isRequired,
 
+    switchTheme: PropTypes.func,
     onLogOut: PropTypes.func,
   };
 
   static defaultProps = {
     user: { email: null, name: null },
+    switchTheme: () => {},
     onLogOut: () => {},
   };
 
   onPressItem = ({ itemName }) => {
     switch (itemName) {
+      case 'theme':
+        this.props.switchTheme();
+        break;
+
       case 'logout':
         this.props.onLogOut();
         break;
@@ -67,27 +83,23 @@ class Settings extends Component {
   render() {
     const {
       user: { email, name, avatar_url },
+      themedStyle,
     } = this.props;
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={themedStyle.container}>
         <TopNavigation
           title={i18n.t('SETTINGS.HEADER_TITLE')}
-          titleStyle={styles.headerTitle}
+          titleStyle={themedStyle.headerTitle}
           alignment="center"
         />
-        <View style={styles.profileContainer}>
-          <UserAvatar
-            userName={name}
-            size="giant"
-            defaultBGColor={theme['color-primary']}
-            thumbnail={avatar_url}
-          />
-          <View style={styles.detailsContainer}>
-            <CustomText style={styles.nameLabel}>{name}</CustomText>
-            <CustomText style={styles.emailLabel}>{email}</CustomText>
+        <View style={themedStyle.profileContainer}>
+          <UserAvatar userName={name} size="giant" thumbnail={avatar_url} />
+          <View style={themedStyle.detailsContainer}>
+            <CustomText style={themedStyle.nameLabel}>{name}</CustomText>
+            <CustomText style={themedStyle.emailLabel}>{email}</CustomText>
           </View>
         </View>
-        <View style={styles.itemListView}>
+        <View style={themedStyle.itemListView}>
           {settingsData.map((item, index) => (
             <SettingsItem
               key={item.text}
@@ -101,12 +113,12 @@ class Settings extends Component {
             />
           ))}
         </View>
-        <View style={styles.aboutView}>
-          <Image style={styles.aboutImage} source={images.appLogo} />
+        <View style={themedStyle.aboutView}>
+          <Image style={themedStyle.aboutImage} source={images.appLogo} />
         </View>
 
-        <View style={styles.appDescriptionView}>
-          <CustomText style={styles.appDescriptionView}>
+        <View style={themedStyle.appDescriptionView}>
+          <CustomText style={themedStyle.appDescriptionText}>
             {`v${packageFile.version}`}
           </CustomText>
         </View>
@@ -126,4 +138,5 @@ function mapStateToProps(state) {
   };
 }
 
+const Settings = withStyles(SettingsComponent, styles);
 export default connect(mapStateToProps, bindAction)(Settings);

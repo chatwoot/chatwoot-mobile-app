@@ -1,23 +1,23 @@
 import React from 'react';
 import { SafeAreaView } from 'react-navigation';
+import PropTypes from 'prop-types';
 import {
   BottomNavigation,
   BottomNavigationTab,
   Icon,
-} from 'react-native-ui-kitten';
-import PropTypes from 'prop-types';
-import { StyleSheet } from 'react-native';
+  withStyles,
+} from '@ui-kitten/components';
 
 import i18n from '../i18n';
-
-import { theme } from '../theme';
 
 const HomeIcon = style => <Icon {...style} name="home-outline" />;
 
 const SettingsIcon = style => <Icon {...style} name="settings-outline" />;
 
-export default class TabBar extends React.Component {
+class TabBarComponent extends React.Component {
   static propTypes = {
+    themedStyle: PropTypes.object,
+    theme: PropTypes.object,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
@@ -34,6 +34,7 @@ export default class TabBar extends React.Component {
       navigation: {
         state: { index: selectedIndex },
       },
+      themedStyle,
     } = this.props;
 
     return (
@@ -42,16 +43,20 @@ export default class TabBar extends React.Component {
           selectedIndex={selectedIndex}
           onSelect={this.changeTab}
           appearance="noIndicator"
-          style={styles.tabBar}>
+          style={themedStyle.tabBar}>
           <BottomNavigationTab
             title={i18n.t('FOOTER.HOME')}
             icon={HomeIcon}
-            titleStyle={!selectedIndex ? styles.tabActive : styles.tabNotActive}
+            titleStyle={
+              !selectedIndex ? themedStyle.tabActive : themedStyle.tabNotActive
+            }
           />
           <BottomNavigationTab
             title={i18n.t('FOOTER.SETTINGS')}
             icon={SettingsIcon}
-            titleStyle={selectedIndex ? styles.tabActive : styles.tabNotActive}
+            titleStyle={
+              selectedIndex ? themedStyle.tabActive : themedStyle.tabNotActive
+            }
           />
         </BottomNavigation>
       </SafeAreaView>
@@ -59,19 +64,17 @@ export default class TabBar extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
+export default withStyles(TabBarComponent, theme => ({
   tabBar: {
     borderTopWidth: 1,
     borderTopColor: theme['color-border-light'],
   },
   tabActive: {
-    color: theme['color-primary'],
-    fontFamily: theme['font-family-semi-bold'],
+    fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-extra-small'],
   },
   tabNotActive: {
-    color: theme['text-primary-color'],
-    fontFamily: theme['font-family-semi-bold'],
+    fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-extra-small'],
   },
-});
+}));

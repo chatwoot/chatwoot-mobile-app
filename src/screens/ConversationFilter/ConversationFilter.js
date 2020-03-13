@@ -5,7 +5,8 @@ import {
   Icon,
   TopNavigationAction,
   Text,
-} from 'react-native-ui-kitten';
+  withStyles,
+} from '@ui-kitten/components';
 
 import { connect } from 'react-redux';
 
@@ -43,8 +44,10 @@ const statusOptions = [
   },
 ];
 
-class FilterScreen extends Component {
+class FilterScreenComponent extends Component {
   static propTypes = {
+    themedStyle: PropTypes.object,
+    theme: PropTypes.object,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
@@ -115,19 +118,19 @@ class FilterScreen extends Component {
 
   render() {
     const { allInboxes } = this.state;
-    const { conversationStatus } = this.props;
+    const { conversationStatus, themedStyle } = this.props;
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={themedStyle.container}>
         <TopNavigation
           leftControl={this.renderLeftControl()}
           title={i18n.t('FILTER.HEADER_TITLE')}
-          titleStyle={styles.headerTitle}
+          titleStyle={themedStyle.headerTitle}
         />
         <Layout>
-          <View style={styles.itemMainView}>
+          <View style={themedStyle.itemMainView}>
             <View>
-              <CustomText style={styles.itemHeaderTitle}>
+              <CustomText style={themedStyle.itemHeaderTitle}>
                 {i18n.t('FILTER.CHOOSE_INBOX')}
               </CustomText>
 
@@ -144,9 +147,9 @@ class FilterScreen extends Component {
               })}
             </View>
           </View>
-          <View style={styles.itemMainView}>
+          <View style={themedStyle.itemMainView}>
             <View>
-              <Text style={styles.itemHeaderTitle}>
+              <Text style={themedStyle.itemHeaderTitle}>
                 {i18n.t('FILTER.CHOOSE_STATUS')}
               </Text>
               {statusOptions.map((item, index) => {
@@ -163,11 +166,11 @@ class FilterScreen extends Component {
             </View>
           </View>
         </Layout>
-        <View style={styles.filterButtonView}>
+        <View style={themedStyle.filterButtonView}>
           <LoaderButton
-            style={styles.filterButton}
+            style={themedStyle.filterButton}
             size="large"
-            textStyle={styles.filterButtonText}
+            textStyle={themedStyle.filterButtonText}
             onPress={() => this.submitFilters()}>
             {i18n.t('FILTER.SUBMIT')}
           </LoaderButton>
@@ -196,4 +199,5 @@ function mapStateToProps(state) {
   };
 }
 
+const FilterScreen = withStyles(FilterScreenComponent, styles);
 export default connect(mapStateToProps, bindAction)(FilterScreen);

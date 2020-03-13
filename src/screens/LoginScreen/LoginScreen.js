@@ -7,7 +7,7 @@ import {
   Dimensions,
   Platform,
 } from 'react-native';
-import { Button } from 'react-native-ui-kitten';
+import { Button, withStyles } from '@ui-kitten/components';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
 
@@ -32,8 +32,10 @@ const LoginForm = t.struct({
   password: Password,
 });
 
-class LoginScreen extends Component {
+class LoginScreenComponent extends Component {
   static propTypes = {
+    themedStyle: PropTypes.object,
+    theme: PropTypes.object,
     onLogin: PropTypes.func,
     isLoggingIn: PropTypes.bool,
     navigation: PropTypes.func,
@@ -53,7 +55,7 @@ class LoginScreen extends Component {
       fields: {
         email: {
           placeholder: '',
-          template: TextInputField,
+          template: props => <TextInputField {...props} />,
           keyboardType: 'email-address',
           error: i18n.t('LOGIN.EMAIL_ERROR'),
           autoCapitalize: 'none',
@@ -63,7 +65,7 @@ class LoginScreen extends Component {
         },
         password: {
           placeholder: '',
-          template: TextInputField,
+          template: props => <TextInputField {...props} />,
           keyboardType: 'default',
           autoCapitalize: 'none',
           error: i18n.t('LOGIN.PASSWORD_ERROR'),
@@ -94,22 +96,22 @@ class LoginScreen extends Component {
   render() {
     const { navigate } = this.props.navigation;
     const { options, values } = this.state;
-    const { isLoggingIn } = this.props;
+    const { isLoggingIn, themedStyle } = this.props;
     return (
       <KeyboardAvoidingView
-        style={styles.keyboardView}
+        style={themedStyle.keyboardView}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         enabled>
         <ScrollView
           style={{
             height: Dimensions.get('window').height,
           }}>
-          <View style={styles.logoView}>
-            <Image style={styles.logo} source={images.appLogo} />
+          <View style={themedStyle.logoView}>
+            <Image style={themedStyle.logo} source={images.appLogo} />
           </View>
 
-          <View style={styles.contentView}>
-            <View style={styles.formView}>
+          <View style={themedStyle.contentView}>
+            <View style={themedStyle.formView}>
               <Form
                 ref={ref => {
                   this.formRef = ref;
@@ -119,31 +121,33 @@ class LoginScreen extends Component {
                 value={values}
                 onChange={value => this.onChange(value)}
               />
-              <View style={styles.loginButtonView}>
+              <View style={themedStyle.loginButtonView}>
                 <LoaderButton
-                  style={styles.loginButton}
+                  style={themedStyle.loginButton}
                   loading={isLoggingIn}
                   onPress={() => this.doLogin()}
                   size="large"
-                  textStyle={styles.loginButtonText}>
+                  textStyle={themedStyle.loginButtonText}>
                   {i18n.t('LOGIN.LOGIN')}
                 </LoaderButton>
               </View>
             </View>
 
             <View>
-              <View style={styles.forgotView}>
+              <View style={themedStyle.forgotView}>
                 <Button
-                  textStyle={styles.textStyle}
-                  style={styles.button}
+                  appearance="ghost"
+                  status="basic"
+                  style={themedStyle.button}
                   onPress={() => navigate('ResetPassword')}>
                   {i18n.t('LOGIN.FORGOT_PASSWORD')}
                 </Button>
               </View>
-              <View style={styles.accountView}>
+              <View style={themedStyle.accountView}>
                 <Button
-                  textStyle={styles.textStyle}
-                  style={styles.button}
+                  appearance="ghost"
+                  status="basic"
+                  style={themedStyle.button}
                   onPress={() => openURL({ URL: SIGNUP_URL })}>
                   {i18n.t('LOGIN.CREATE_ACCOUNT')}
                 </Button>
@@ -168,4 +172,5 @@ function mapStateToProps(state) {
   };
 }
 
+const LoginScreen = withStyles(LoginScreenComponent, styles);
 export default connect(mapStateToProps, bindAction)(LoginScreen);

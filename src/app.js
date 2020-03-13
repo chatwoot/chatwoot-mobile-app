@@ -3,10 +3,9 @@ import { Provider } from 'react-redux';
 import { Alert, BackHandler, Platform } from 'react-native';
 import BackgroundColor from 'react-native-background-color';
 import { PersistGate } from 'redux-persist/integration/react';
-import { mapping } from '@eva-design/eva';
-import { ApplicationProvider, IconRegistry } from 'react-native-ui-kitten';
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
-
 import { theme } from './theme';
 
 import Router from './router';
@@ -55,7 +54,7 @@ export default class Chatwoot extends Component {
     return (
       <React.Fragment>
         <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider mapping={mapping} theme={theme}>
+        <ApplicationProvider {...eva} theme={theme}>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               <Router />

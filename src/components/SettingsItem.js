@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
-import { Toggle } from 'react-native-ui-kitten';
-import { Icon } from 'react-native-ui-kitten';
+import { Toggle, Divider, Icon, withStyles } from '@ui-kitten/components';
 
 import CustomText from './Text';
-import { theme } from '../theme';
-
-const propTypes = {
-  text: PropTypes.string,
-  checked: PropTypes.bool,
-  iconSize: PropTypes.string,
-  itemType: PropTypes.string,
-  iconName: PropTypes.string,
-  itemName: PropTypes.string,
-  onPressItem: PropTypes.func,
-};
 
 class SettingsItem extends Component {
+  static propTypes = {
+    theme: PropTypes.object,
+    themedStyle: PropTypes.object,
+    text: PropTypes.string,
+    checked: PropTypes.bool,
+    iconSize: PropTypes.string,
+    itemType: PropTypes.string,
+    iconName: PropTypes.string,
+    itemName: PropTypes.string,
+    onPressItem: PropTypes.func,
+  };
+
   render() {
     const {
       text,
@@ -27,33 +27,36 @@ class SettingsItem extends Component {
       iconName,
       itemName,
       onPressItem,
+      theme,
+      themedStyle,
     } = this.props;
 
     return (
-      <TouchableOpacity
-        style={[styles.section, styles.enabledSection]}
-        onPress={() => onPressItem({ itemName })}>
-        <CustomText style={styles.sectionText}>{text}</CustomText>
-        {itemType === 'toggle' ? (
-          <Toggle checked={checked} size={iconSize} />
-        ) : (
-          <Icon
-            name={iconName}
-            fill={theme['color-primary']}
-            width={26}
-            height={26}
-          />
-        )}
-      </TouchableOpacity>
+      <React.Fragment>
+        <TouchableOpacity
+          style={[themedStyle.section, themedStyle.enabledSection]}
+          onPress={() => onPressItem({ itemName })}>
+          <CustomText style={themedStyle.sectionText}>{text}</CustomText>
+          {itemType === 'toggle' ? (
+            <Toggle checked={checked} size={iconSize} />
+          ) : (
+            <Icon
+              name={iconName}
+              fill={theme['color-primary-default']}
+              width={26}
+              height={26}
+            />
+          )}
+        </TouchableOpacity>
+        <Divider />
+      </React.Fragment>
     );
   }
 }
 
-const styles = StyleSheet.create({
+const styles = theme => ({
   section: {
     padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: theme['color-border-light'],
   },
   enabledSection: {
     justifyContent: 'space-between',
@@ -69,6 +72,4 @@ const styles = StyleSheet.create({
   },
 });
 
-SettingsItem.propTypes = propTypes;
-
-export default SettingsItem;
+export default withStyles(SettingsItem, styles);

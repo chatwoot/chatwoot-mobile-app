@@ -5,11 +5,13 @@ export const getHeaders = async () => {
     const state = await store.getState();
     const {
       headers: { 'access-token': accessToken, uid, client },
+      user: { account_id: accountId },
     } = state.auth;
     return {
       'access-token': accessToken,
       uid: uid,
       client: client,
+      accountId,
     };
   } catch (error) {}
 };

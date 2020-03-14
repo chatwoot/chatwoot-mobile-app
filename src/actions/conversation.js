@@ -25,7 +25,6 @@ import {
 
 import axios from '../helpers/APIHelper';
 
-import { API } from '../constants/url';
 import { ASSIGNEE_TYPE } from '../constants';
 
 // Load all the conversations
@@ -56,7 +55,6 @@ export const getConversations = ({
 
     const inboxId = inboxSelected.id || null;
 
-    const apiUrl = `${API}conversations`;
     const params = {
       inbox_id: inboxId,
       status,
@@ -64,7 +62,7 @@ export const getConversations = ({
       page: pageNumber,
     };
 
-    const response = await axios.get(apiUrl, {
+    const response = await axios.get('conversations', {
       params,
     });
 
@@ -164,7 +162,7 @@ export const loadMessages = ({
   dispatch({ type: GET_MESSAGES });
 
   try {
-    const apiUrl = `${API}conversations/${conversationId}/messages`;
+    const apiUrl = `conversations/${conversationId}/messages`;
 
     const params = {
       before: beforeId,
@@ -193,7 +191,7 @@ export const loadMessages = ({
 export const sendMessage = ({ conversationId, message }) => async dispatch => {
   dispatch({ type: SEND_MESSAGE });
   try {
-    const apiUrl = `${API}conversations/${conversationId}/messages`;
+    const apiUrl = `conversations/${conversationId}/messages`;
     const response = await axios.post(apiUrl, message);
 
     const { payload } = response.data;
@@ -212,7 +210,7 @@ export const markMessagesAsRead = ({
 }) => async dispatch => {
   dispatch({ type: MARK_MESSAGES_AS_READ });
   try {
-    const apiUrl = `${API}conversations/${conversationId}/update_last_seen`;
+    const apiUrl = `conversations/${conversationId}/update_last_seen`;
     const agent_last_seen_at = new Date().getTime();
     const response = await axios.post(apiUrl, {
       agent_last_seen_at,
@@ -231,9 +229,7 @@ export const loadCannedResponses = () => async dispatch => {
   dispatch({ type: GET_CANNED_RESPONSES });
 
   try {
-    const apiUrl = `${API}canned_responses`;
-
-    const response = await axios.get(apiUrl);
+    const response = await axios.get('canned_responses');
 
     const { data } = response;
 

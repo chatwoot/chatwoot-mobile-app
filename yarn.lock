@@ -1223,12 +1223,17 @@
     hoist-non-react-statics "^3.2.1"
     lodash.merge "^4.6.1"
 
-"@ui-kitten/eva-icons@^4.3.2":
+"@ui-kitten/eva-icons@^4.4.1":
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/@ui-kitten/eva-icons/-/eva-icons-4.4.1.tgz#a71b9415889510321d4c422174107af98b8becf9"
   integrity sha512-G730KOgSuUuTTuxuTg6ChcUJZxQ0zX2XKlonAgDwtJiBTDj+zrofr2IJ0ZURHkHgasJwZ1o8S+RxZ+5wH7LGKw==
   dependencies:
     react-native-eva-icons "1.1.0"
+
+"@ui-kitten/metro-config@^4.4.1":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@ui-kitten/metro-config/-/metro-config-4.4.1.tgz#1a6838a18598a5c7be9dc04daf589f220116c7a1"
+  integrity sha512-ozNZG6ukJ9XPFOqOIjHeoojbdGDqYIvLxYyox6d9LL2W/xtbTwqY/fsomsbwdRgcUHu145UCPn4FnUdHVAMXcQ==
 
 abab@^2.0.0:
   version "2.0.3"
@@ -5900,17 +5905,6 @@ react-native-tab-view@^2.11.0:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-2.13.0.tgz#23037aa43b0f8f682ddc20415a4baaaf6f82ae8f"
   integrity sha512-AeYbp/u91+D/C9+PmVEPBmFb3ixv8IkLMC3Sc5MajJ/fg0Zl3Of+BcEknBvTnKoe7Fj2y8+Qf9zorBbh5xzh4A==
-
-react-native-ui-kitten@^4.4.1:
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/react-native-ui-kitten/-/react-native-ui-kitten-4.4.1.tgz#12d428579d5eea1c35d840f99252d27c6b41428f"
-  integrity sha512-l3QZNKl+y4U4gcuFJYb1ozXPmIJ5ipz+cxCNwq+sWlymY3A7puvqhP9bP1T2tc1wqwR3Gpjnc9Jlnwwv1OUzsQ==
-  dependencies:
-    "@eva-design/dss" "^1.4.0"
-    "@eva-design/processor" "^1.4.0"
-    fecha "3.0.3"
-    hoist-non-react-statics "^3.2.1"
-    lodash.merge "^4.6.1"
 
 react-native@0.61.5:
   version "0.61.5"

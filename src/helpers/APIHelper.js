@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { BASE_URL } from '../constants/url';
+import { API_URL, BASE_URL } from '../constants/url';
 import I18n from '../i18n';
 
 import { showToast } from './ToastHelper';
@@ -29,10 +29,17 @@ API.defaults.baseURL = BASE_URL;
 // Request parsing interceptor
 API.interceptors.request.use(
   async config => {
-    const headerConf = config;
     const headers = await getHeaders();
-    headerConf.headers = headers;
-    return headerConf;
+
+    if (headers) {
+      config.headers = headers;
+      const { accountId } = headers;
+      if (accountId) {
+        config.url = `${API_URL}accounts/${accountId}/${config.url}`;
+      }
+    }
+
+    return config;
   },
   error => Promise.reject(error),
 );

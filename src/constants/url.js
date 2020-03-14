@@ -1,6 +1,6 @@
 export const BASE_URL = 'https://app.chatwoot.com/';
 
-export const API = 'api/v1/';
+export const API_URL = 'api/v1/';
 
 export const WEB_SOCKET_URL = 'wss://app.chatwoot.com/cable';
 

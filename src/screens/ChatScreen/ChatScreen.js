@@ -194,7 +194,7 @@ class ChatScreenComponent extends Component {
     const { isAllMessagesLoaded, isFetching } = this.props;
 
     return (
-      <View style={styles.loadMoreSpinnerView}>
+      <View style={this.props.themedStyle.loadMoreSpinnerView}>
         {!isAllMessagesLoaded && isFetching ? (
           <Spinner size="medium" color="red" />
         ) : null}

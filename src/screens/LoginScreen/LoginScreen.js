@@ -11,7 +11,7 @@ import { Button, withStyles } from '@ui-kitten/components';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
 
-import { onLogin } from '../../actions/auth';
+import { onLogin, resetAuth } from '../../actions/auth';
 
 import { setLocale } from '../../actions/locale';
 import styles from './LoginScreen.style';
@@ -39,6 +39,7 @@ class LoginScreenComponent extends Component {
     onLogin: PropTypes.func,
     isLoggingIn: PropTypes.bool,
     navigation: PropTypes.func,
+    resetAuth: PropTypes.func,
   };
 
   static defaultProps = {
@@ -78,6 +79,10 @@ class LoginScreenComponent extends Component {
     },
   };
 
+  componentDidMount() {
+    this.props.resetAuth();
+  }
+
   onChange(values) {
     this.setState({
       values,
@@ -97,6 +102,7 @@ class LoginScreenComponent extends Component {
     const { navigate } = this.props.navigation;
     const { options, values } = this.state;
     const { isLoggingIn, themedStyle } = this.props;
+
     return (
       <KeyboardAvoidingView
         style={themedStyle.keyboardView}
@@ -138,7 +144,6 @@ class LoginScreenComponent extends Component {
                 <Button
                   appearance="ghost"
                   status="basic"
-                  style={themedStyle.button}
                   onPress={() => navigate('ResetPassword')}>
                   {i18n.t('LOGIN.FORGOT_PASSWORD')}
                 </Button>
@@ -147,7 +152,6 @@ class LoginScreenComponent extends Component {
                 <Button
                   appearance="ghost"
                   status="basic"
-                  style={themedStyle.button}
                   onPress={() => openURL({ URL: SIGNUP_URL })}>
                   {i18n.t('LOGIN.CREATE_ACCOUNT')}
                 </Button>
@@ -162,6 +166,7 @@ class LoginScreenComponent extends Component {
 
 function bindAction(dispatch) {
   return {
+    resetAuth: () => dispatch(resetAuth()),
     onLogin: data => dispatch(onLogin(data)),
     setLocale: data => dispatch(setLocale(data)),
   };

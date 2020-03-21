@@ -26,11 +26,6 @@ export default theme => ({
     marginTop: Dimensions.get('window').height * 0.07,
   },
 
-  textStyle: {
-    fontSize: theme['text-primary-size'],
-    fontWeight: theme['font-medium'],
-  },
-
   loginButtonView: {
     paddingTop: 32,
     flexDirection: 'row',
@@ -44,7 +39,7 @@ export default theme => ({
   loginButtonText: {
     color: theme['text-control-color'],
     fontWeight: theme['font-medium'],
-    fontSize: theme['button-font-size'],
+    fontSize: theme['font-size-large'],
   },
 
   accountView: {

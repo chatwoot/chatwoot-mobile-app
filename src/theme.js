@@ -84,6 +84,7 @@ export const theme = {
 
   'color-light-gray': '$color-basic-active',
   'color-border': '$color-basic-active',
+  'loader-color': '$color-basic-100',
 
   'color-background': '#EFF2F7',
   'color-background-light': '#F9FAFC',
@@ -91,6 +92,7 @@ export const theme = {
   'color-background-activity': '#fff3cf',
   'text-basic-color': '#1f2d3d',
   'text-hint-color': '#8492a6',
+
   'back-drop-color': 'rgba(0, 0, 0, 0.5)',
   // Text color
   'text-primary-size': 14,

@@ -16,7 +16,7 @@ const styles = theme => ({
     flexDirection: 'row',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: theme['color-border-light'],
+    borderBottomColor: theme['color-border'],
   },
 
   detailsContainer: {
@@ -44,7 +44,7 @@ const styles = theme => ({
   section: {
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: theme['color-border-light'],
+    borderBottomColor: theme['color-border'],
   },
 
   enabledSection: {
@@ -55,7 +55,6 @@ const styles = theme => ({
   },
 
   sectionText: {
-    color: theme['color-body'],
     fontSize: theme['font-size-medium'],
     fontWeight: theme['font-semi-bold'],
   },

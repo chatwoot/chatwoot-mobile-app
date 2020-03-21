@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Dimensions } from 'react-native';
 import { StyleService, useStyleSheet } from '@ui-kitten/components';
 import * as Animatable from 'react-native-animatable';
+import { theme } from '../theme';
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -13,7 +14,7 @@ const themedStyles = StyleService.create({
     justifyContent: 'space-between',
     marginVertical: 0.5,
     backgroundColor: 'background-basic-color-1',
-    borderColor: 'color-border',
+    borderColor: theme['color-border'],
     borderBottomWidth: 1,
   },
   itemView: {

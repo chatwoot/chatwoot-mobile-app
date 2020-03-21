@@ -10,7 +10,7 @@ const styles = theme => ({
   },
   itemMainView: {
     borderBottomWidth: 1,
-    borderBottomColor: theme['color-border-light'],
+    borderBottomColor: theme['color-border'],
     marginTop: 16,
     paddingBottom: 8,
     paddingLeft: 24,
@@ -19,7 +19,6 @@ const styles = theme => ({
   itemHeaderTitle: {
     fontSize: theme['font-size-medium'],
     fontWeight: theme['font-semi-bold'],
-    color: theme['color-heading'],
   },
   itemView: {
     flexDirection: 'row',
@@ -41,7 +40,7 @@ const styles = theme => ({
 
   filterButtonText: {
     fontWeight: theme['font-medium'],
-    fontSize: theme['button-font-size'],
+    fontSize: theme['font-size-large'],
   },
   text: {
     marginVertical: 8,

@@ -63,7 +63,7 @@ class TabBarComponent extends React.Component {
 export default withStyles(TabBarComponent, theme => ({
   tabBar: {
     borderTopWidth: 1,
-    borderTopColor: theme['color-border-light'],
+    borderTopColor: theme['color-border'],
   },
   tabActive: {
     fontWeight: theme['font-semi-bold'],

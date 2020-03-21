@@ -35,12 +35,11 @@ const themedStyles = StyleService.create({
     paddingBottom: 4,
     borderWidth: 1,
     borderRadius: 4,
-    borderColor: 'input-border-color',
+    borderColor: 'color-basic-focus-border',
     height: 48,
   },
   errorInputStyle: {
     fontSize: 'text-primary-size',
-    // For `every text in app`, the reserved variable is text-basic-color
     color: 'text-basic-color',
     paddingTop: 4,
     paddingLeft: 4,

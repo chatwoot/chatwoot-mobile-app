@@ -35,7 +35,7 @@ export default theme => ({
   loginButtonText: {
     color: theme['text-control-color'],
     fontWeight: theme['font-medium'],
-    fontSize: theme['button-font-size'],
+    fontSize: theme['font-size-large'],
   },
 
   accountView: {

@@ -106,7 +106,7 @@ export default withStyles(ConversationItem, theme => ({
     padding: 16,
     backgroundColor: theme['background-basic-color-1'],
     marginVertical: 0.5,
-    borderColor: theme['color-border-light'],
+    borderColor: theme['color-border'],
     borderBottomWidth: 1,
   },
   itemView: {
@@ -116,14 +116,12 @@ export default withStyles(ConversationItem, theme => ({
   conversationUserActive: {
     textTransform: 'capitalize',
     fontSize: theme['font-size-medium'],
-    color: theme['text-active-color'],
     fontWeight: theme['font-medium'],
     paddingTop: 4,
   },
   conversationUserNotActive: {
     textTransform: 'capitalize',
     fontSize: theme['font-size-medium'],
-    color: theme['color-body'],
     paddingTop: 4,
   },
   avatarView: {
@@ -142,13 +140,11 @@ export default withStyles(ConversationItem, theme => ({
   },
   messageActive: {
     fontSize: theme['text-primary-size'],
-    color: theme['text-active-color'],
     fontWeight: theme['font-medium'],
     paddingTop: 4,
   },
   messageNotActive: {
     fontSize: theme['text-primary-size'],
-    color: theme['color-body'],
     paddingTop: 4,
   },
   timeStamp: {

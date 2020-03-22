@@ -47,6 +47,7 @@ const statusOptions = [
 class FilterScreenComponent extends Component {
   static propTypes = {
     themedStyle: PropTypes.object,
+    route: PropTypes.object,
     theme: PropTypes.object,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
@@ -83,12 +84,10 @@ class FilterScreenComponent extends Component {
   };
 
   submitFilters = () => {
-    const { navigation, conversationStatus, inboxSelected } = this.props;
+    const { navigation, conversationStatus, inboxSelected, route } = this.props;
     const {
-      state: {
-        params: { assigneeType },
-      },
-    } = navigation;
+      params: { assigneeType },
+    } = route;
 
     this.props.getConversations({
       assigneeType,

@@ -1,52 +1,41 @@
-import React from 'react';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import PropTypes from 'prop-types';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
-
+import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
-
-import ConversationList from './screens/ConversationList/ConversationList';
-
-import SettingsScreen from './screens/Settings/SettingsScreen';
-
-import ChatScreen from './screens/ChatScreen/ChatScreen';
-
 import TabBar from './components/TabBar';
+import ConversationList from './screens/ConversationList/ConversationList';
+import SettingsScreen from './screens/Settings/SettingsScreen';
+import ChatScreen from './screens/ChatScreen/ChatScreen';
 import ConversationFilter from './screens/ConversationFilter/ConversationFilter';
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 
-import NoNetworkBar from './components/NoNetworkBar';
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-const Tab = createBottomTabNavigator(
-  {
-    Home: ConversationList,
-    Settings: SettingsScreen,
-  },
-  {
-    tabBarComponent: TabBar,
-  },
+const HomeStack = () => (
+  <Stack.Navigator initialRouteName="ConversationList" headerMode="none">
+    <Stack.Screen name="ConversationList" component={ConversationList} />
+  </Stack.Navigator>
 );
 
-const createNavigationStack = ({ initialRouteName }) =>
-  createStackNavigator(
-    {
-      Login: { screen: LoginScreen },
-      ResetPassword: { screen: ResetPassword },
-      ConversationList: { screen: ConversationList },
-      ConversationFilter: { screen: ConversationFilter },
-      Settings: SettingsScreen,
-      Tab: { screen: Tab },
-      ChatScreen: { screen: ChatScreen },
-    },
-    {
-      initialRouteName,
-      headerMode: 'none',
-    },
-  );
+const SettingsStack = () => (
+  <Stack.Navigator initialRouteName="Settings" headerMode={'none'}>
+    <Stack.Screen name="Settings" component={SettingsScreen} />
+  </Stack.Navigator>
+);
 
-class RootApp extends React.Component {
+const TabStack = () => (
+  <Tab.Navigator tabBar={props => <TabBar {...props} />}>
+    <Tab.Screen name="Home" component={HomeStack} />
+    <Tab.Screen name="Settings" component={SettingsStack} />
+  </Tab.Navigator>
+);
+
+class RootApp extends Component {
   static propTypes = {
     isLogged: PropTypes.bool,
   };
@@ -54,25 +43,35 @@ class RootApp extends React.Component {
   static defaultProps = {
     isLogged: false,
   };
-
   render() {
     const { isLogged } = this.props;
 
-    const AuthStack = createNavigationStack({
-      initialRouteName: 'Login',
-    });
-    const LoggedInStack = createNavigationStack({
-      initialRouteName: 'Tab',
-    });
-    const stack = isLogged ? LoggedInStack : AuthStack;
-
-    const App = createAppContainer(stack);
-
     return (
-      <React.Fragment>
-        <NoNetworkBar />
-        <App />
-      </React.Fragment>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Login" headerMode={'none'}>
+          {isLogged ? (
+            <>
+              <Stack.Screen name="Tab" component={TabStack} />
+              <Stack.Screen name="ChatScreen" component={ChatScreen} />
+              <Stack.Screen
+                name="ConversationFilter"
+                component={ConversationFilter}
+              />
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="ResetPassword" component={ResetPassword} />
+              <Stack.Screen
+                name="ConversationList"
+                component={ConversationList}
+              />
+
+              <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
     );
   }
 }

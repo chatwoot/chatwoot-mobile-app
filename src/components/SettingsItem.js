@@ -66,7 +66,6 @@ const styles = theme => ({
   },
 
   sectionText: {
-    color: theme['color-body'],
     fontSize: theme['font-size-medium'],
     fontWeight: theme['font-medium'],
   },

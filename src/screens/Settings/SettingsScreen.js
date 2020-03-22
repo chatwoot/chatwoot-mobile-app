@@ -20,15 +20,6 @@ import SettingsItem from '../../components/SettingsItem';
 import { openURL } from '../../helpers/index.js';
 import { HELP_URL } from '../../constants/url.js';
 const settingsData = [
-  // Now you can use themes dynamically.
-  // The only thing left is creating an action for it
-  // https://akveo.github.io/react-native-ui-kitten/docs/guides/runtime-theming
-  {
-    text: i18n.t('SETTINGS.SWITCH_THEME'),
-    checked: false,
-    iconName: 'color-palette-outline',
-    itemName: 'theme',
-  },
   {
     text: i18n.t('SETTINGS.HELP'),
     checked: true,

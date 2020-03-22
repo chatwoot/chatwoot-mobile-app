@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView } from 'react-navigation';
+//import { SafeAreaView } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import {
   BottomNavigation,
@@ -18,48 +18,47 @@ class TabBarComponent extends React.Component {
   static propTypes = {
     themedStyle: PropTypes.object,
     theme: PropTypes.object,
+    state: PropTypes.object,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
   };
 
   changeTab = index => {
-    const { navigation } = this.props;
-    const selectedTabRoute = navigation.state.routes[index];
-    navigation.navigate(selectedTabRoute.routeName);
+    const { state, navigation } = this.props;
+    const selectedTabRoute = state.routes[index];
+    navigation.navigate(selectedTabRoute.name);
   };
 
   render() {
     const {
-      navigation: {
-        state: { index: selectedIndex },
-      },
+      state: { index: selectedIndex },
       themedStyle,
     } = this.props;
 
     return (
-      <SafeAreaView>
-        <BottomNavigation
-          selectedIndex={selectedIndex}
-          onSelect={this.changeTab}
-          appearance="noIndicator"
-          style={themedStyle.tabBar}>
-          <BottomNavigationTab
-            title={i18n.t('FOOTER.HOME')}
-            icon={HomeIcon}
-            titleStyle={
-              !selectedIndex ? themedStyle.tabActive : themedStyle.tabNotActive
-            }
-          />
-          <BottomNavigationTab
-            title={i18n.t('FOOTER.SETTINGS')}
-            icon={SettingsIcon}
-            titleStyle={
-              selectedIndex ? themedStyle.tabActive : themedStyle.tabNotActive
-            }
-          />
-        </BottomNavigation>
-      </SafeAreaView>
+      // <SafeAreaView>
+      <BottomNavigation
+        selectedIndex={selectedIndex}
+        onSelect={this.changeTab}
+        appearance="noIndicator"
+        style={themedStyle.tabBar}>
+        <BottomNavigationTab
+          title={i18n.t('FOOTER.HOME')}
+          icon={HomeIcon}
+          titleStyle={
+            !selectedIndex ? themedStyle.tabActive : themedStyle.tabNotActive
+          }
+        />
+        <BottomNavigationTab
+          title={i18n.t('FOOTER.SETTINGS')}
+          icon={SettingsIcon}
+          titleStyle={
+            selectedIndex ? themedStyle.tabActive : themedStyle.tabNotActive
+          }
+        />
+      </BottomNavigation>
+      // </SafeAreaView>
     );
   }
 }

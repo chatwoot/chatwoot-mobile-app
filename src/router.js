@@ -16,30 +16,25 @@ import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-function homeStack() {
-  return (
-    <Stack.Navigator initialRouteName="ConversationList" headerMode={'none'}>
-      <Stack.Screen name="ConversationList" component={ConversationList} />
-      <Stack.Screen name="ChatScreen" component={ChatScreen} />
-      <Stack.Screen name="ConversationFilter" component={ConversationFilter} />
-    </Stack.Navigator>
-  );
-}
-function settingsStack() {
-  return (
-    <Stack.Navigator initialRouteName="Settings" headerMode={'none'}>
-      <Stack.Screen name="Settings" component={SettingsScreen} />
-    </Stack.Navigator>
-  );
-}
-function appTabs() {
-  return (
-    <Tab.Navigator tabBar={props => <TabBar {...props} />}>
-      <Tab.Screen name="Home" component={homeStack} />
-      <Tab.Screen name="Settings" component={settingsStack} />
-    </Tab.Navigator>
-  );
-}
+const HomeStack = () => (
+  <Stack.Navigator initialRouteName="ConversationList" headerMode="none">
+    <Stack.Screen name="ConversationList" component={ConversationList} />
+  </Stack.Navigator>
+);
+
+const SettingsStack = () => (
+  <Stack.Navigator initialRouteName="Settings" headerMode={'none'}>
+    <Stack.Screen name="Settings" component={SettingsScreen} />
+  </Stack.Navigator>
+);
+
+const TabStack = () => (
+  <Tab.Navigator tabBar={props => <TabBar {...props} />}>
+    <Tab.Screen name="Home" component={HomeStack} />
+    <Tab.Screen name="Settings" component={SettingsStack} />
+  </Tab.Navigator>
+);
+
 class RootApp extends Component {
   static propTypes = {
     isLogged: PropTypes.bool,
@@ -55,22 +50,25 @@ class RootApp extends Component {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login" headerMode={'none'}>
           {isLogged ? (
-            <Stack.Screen name="Tab" component={appTabs} />
+            <>
+              <Stack.Screen name="Tab" component={TabStack} />
+              <Stack.Screen name="ChatScreen" component={ChatScreen} />
+              <Stack.Screen
+                name="ConversationFilter"
+                component={ConversationFilter}
+              />
+            </>
           ) : (
-            <React.Fragment>
+            <>
               <Stack.Screen name="Login" component={LoginScreen} />
               <Stack.Screen name="ResetPassword" component={ResetPassword} />
               <Stack.Screen
                 name="ConversationList"
                 component={ConversationList}
               />
-              <Stack.Screen
-                name="ConversationFilter"
-                component={ConversationFilter}
-              />
+
               <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
-              <Stack.Screen name="ChatScreen" component={ChatScreen} />
-            </React.Fragment>
+            </>
           )}
         </Stack.Navigator>
       </NavigationContainer>

@@ -47,6 +47,7 @@ class ChatScreenComponent extends Component {
   static propTypes = {
     themedStyle: PropTypes.object,
     theme: PropTypes.object,
+    route: PropTypes.object,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
@@ -78,12 +79,10 @@ class ChatScreenComponent extends Component {
   };
 
   componentDidMount = () => {
-    const { navigation, markAllMessagesAsRead } = this.props;
+    const { markAllMessagesAsRead, route } = this.props;
     const {
-      state: {
-        params: { messages },
-      },
-    } = navigation;
+      params: { messages },
+    } = route;
     const lastMessage = [...messages].reverse().pop();
 
     const { conversation_id: conversationId } = lastMessage;
@@ -118,12 +117,10 @@ class ChatScreenComponent extends Component {
     const { message } = this.state;
 
     if (message) {
-      const { navigation } = this.props;
+      const { route } = this.props;
       const {
-        state: {
-          params: { conversationId },
-        },
-      } = navigation;
+        params: { conversationId },
+      } = route;
 
       this.props.sendMessage({
         conversationId,
@@ -151,16 +148,14 @@ class ChatScreenComponent extends Component {
   };
 
   renderProfileAvatar = props => {
-    const { navigation } = this.props;
+    const { route } = this.props;
     const {
-      state: {
-        params: {
-          meta: {
-            sender: { name, thumbnail },
-          },
+      params: {
+        meta: {
+          sender: { name, thumbnail },
         },
       },
-    } = navigation;
+    } = route;
     return <UserAvatar userName={name} size="small" thumbnail={thumbnail} />;
   };
 
@@ -242,13 +237,7 @@ class ChatScreenComponent extends Component {
   };
 
   render() {
-    const {
-      allMessages,
-      navigation,
-      isFetching,
-      themedStyle,
-      theme,
-    } = this.props;
+    const { allMessages, isFetching, themedStyle, theme, route } = this.props;
     const {
       message,
       filteredCannedResponses,
@@ -257,14 +246,12 @@ class ChatScreenComponent extends Component {
     } = this.state;
 
     const {
-      state: {
-        params: {
-          meta: {
-            sender: { name },
-          },
+      params: {
+        meta: {
+          sender: { name },
         },
       },
-    } = navigation;
+    } = route;
 
     const completeMessages = []
       .concat(allMessages)

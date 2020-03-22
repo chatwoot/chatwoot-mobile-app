@@ -1,5 +1,4 @@
 import React from 'react';
-//import { SafeAreaView } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import {
   BottomNavigation,
@@ -37,7 +36,6 @@ class TabBarComponent extends React.Component {
     } = this.props;
 
     return (
-      // <SafeAreaView>
       <BottomNavigation
         selectedIndex={selectedIndex}
         onSelect={this.changeTab}
@@ -58,7 +56,6 @@ class TabBarComponent extends React.Component {
           }
         />
       </BottomNavigation>
-      // </SafeAreaView>
     );
   }
 }

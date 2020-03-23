@@ -25,11 +25,11 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversations",
-
     "MINE": "Mine",
     "UN_ASSIGNED": "Unassigned",
     "ALL": "All",
-    "EMPTY": "There are no active conversations in this group."
+    "EMPTY": "There are no active conversations in this group.",
+    "PICTURE_CONTENT": "Picture message"
   },
   "FILTER": {
     "HEADER_TITLE": "Filter",

@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-
-import { View, Dimensions } from 'react-native';
-
+import { View, Dimensions, Image } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { Icon, withStyles } from '@ui-kitten/components';
@@ -48,7 +46,17 @@ const styles = theme => ({
     backgroundColor: theme['color-background-message'],
     marginLeft: 16,
   },
-
+  imageView: {
+    borderRadius: 8,
+    borderTopLeftRadius: 8,
+    left: 4,
+    backgroundColor: theme['color-background-message'],
+  },
+  image: {
+    width: 250,
+    height: 300,
+    resizeMode: 'contain',
+  },
   activityView: {
     padding: 8,
     borderRadius: 8,
@@ -86,13 +94,55 @@ const PersonIcon = style => {
   return <Icon {...style} name="person-outline" />;
 };
 
+const MessageContentComponent = ({ themedStyle, message, type }) => (
+  <React.Fragment>
+    {message.content ? (
+      <View
+        style={
+          type === 'outgoing'
+            ? themedStyle.messageRight
+            : themedStyle.messageLeft
+        }>
+        <CustomText style={themedStyle.messageContent}>
+          {message.content}
+        </CustomText>
+      </View>
+    ) : (
+      <View style={themedStyle.imageView}>
+        <Image
+          style={themedStyle.image}
+          source={{
+            uri: 'https://www.footyrenders.com/render/Neymar-45-370x540.png',
+          }}
+        />
+      </View>
+    )}
+  </React.Fragment>
+);
+
+const MessageContent = withStyles(MessageContentComponent, styles);
+
+const OutGoingMessageComponent = ({ themedStyle, message, created_at }) => {
+  return (
+    <React.Fragment>
+      <CustomText style={themedStyle.date}>
+        {messageStamp({ time: created_at })}
+      </CustomText>
+
+      <MessageContent
+        message={message}
+        created_at={created_at}
+        type="outgoing"
+      />
+    </React.Fragment>
+  );
+};
+
+const OutGoingMessage = withStyles(OutGoingMessageComponent, styles);
+
 const IncomingMessageComponent = ({ themedStyle, message, created_at }) => (
   <React.Fragment>
-    <View style={themedStyle.messageLeft}>
-      <CustomText style={themedStyle.messageContent}>
-        {message.content}
-      </CustomText>
-    </View>
+    <MessageContent message={message} created_at={created_at} type="incoming" />
     <CustomText style={themedStyle.date}>
       {messageStamp({ time: created_at })}
     </CustomText>
@@ -100,22 +150,6 @@ const IncomingMessageComponent = ({ themedStyle, message, created_at }) => (
 );
 
 const IncomingMessage = withStyles(IncomingMessageComponent, styles);
-
-const OutGoingMessageComponent = ({ themedStyle, message, created_at }) => (
-  <React.Fragment>
-    <CustomText style={themedStyle.date}>
-      {messageStamp({ time: created_at })}
-    </CustomText>
-
-    <View style={themedStyle.messageRight}>
-      <CustomText style={themedStyle.messageContent}>
-        {message.content}
-      </CustomText>
-    </View>
-  </React.Fragment>
-);
-
-const OutGoingMessage = withStyles(OutGoingMessageComponent, styles);
 
 const ActivityMessageComponent = ({ themedStyle, message, created_at }) => (
   <View style={themedStyle.activityView}>
@@ -161,11 +195,23 @@ class ChatMessageComponent extends Component {
       <View style={[themedStyle.message, { justifyContent: alignment }]}>
         <View style={themedStyle.messageContainer}>
           {alignment === 'flex-start' ? (
-            <IncomingMessage message={message} created_at={created_at} />
+            <IncomingMessage
+              message={message}
+              created_at={created_at}
+              type="incoming"
+            />
           ) : alignment === 'center' ? (
-            <ActivityMessage message={message} created_at={created_at} />
+            <ActivityMessage
+              message={message}
+              created_at={created_at}
+              type="activity"
+            />
           ) : (
-            <OutGoingMessage message={message} created_at={created_at} />
+            <OutGoingMessage
+              message={message}
+              created_at={created_at}
+              type="outgoing"
+            />
           )}
         </View>
       </View>

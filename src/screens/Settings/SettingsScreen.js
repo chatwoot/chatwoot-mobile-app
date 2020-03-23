@@ -40,6 +40,7 @@ class SettingsComponent extends Component {
     user: PropTypes.shape({
       name: PropTypes.string,
       email: PropTypes.string,
+      avatar_url: PropTypes.string,
     }).isRequired,
 
     switchTheme: PropTypes.func,

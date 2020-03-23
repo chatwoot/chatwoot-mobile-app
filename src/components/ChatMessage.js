@@ -50,11 +50,10 @@ const styles = theme => ({
     borderRadius: 8,
     borderTopLeftRadius: 8,
     left: 4,
-    backgroundColor: theme['color-background-message'],
   },
   image: {
-    width: 250,
-    height: 300,
+    width: 200,
+    height: 150,
     resizeMode: 'contain',
   },
   activityView: {
@@ -112,7 +111,7 @@ const MessageContentComponent = ({ themedStyle, message, type }) => (
         <Image
           style={themedStyle.image}
           source={{
-            uri: 'https://www.footyrenders.com/render/Neymar-45-370x540.png',
+            uri: message.attachment.thumb_url,
           }}
         />
       </View>

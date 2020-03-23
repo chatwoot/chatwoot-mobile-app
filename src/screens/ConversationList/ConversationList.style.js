@@ -1,5 +1,3 @@
-import { theme } from '../../theme';
-
 const styles = theme => ({
   container: {
     flex: 1,

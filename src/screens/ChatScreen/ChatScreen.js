@@ -50,6 +50,7 @@ class ChatScreenComponent extends Component {
     route: PropTypes.object,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
+      goBack: PropTypes.func.isRequired,
     }).isRequired,
     cannedResponses: PropTypes.shape([]),
     allMessages: PropTypes.shape({}),

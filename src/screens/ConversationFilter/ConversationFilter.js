@@ -51,6 +51,7 @@ class FilterScreenComponent extends Component {
     theme: PropTypes.object,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
+      goBack: PropTypes.func.isRequired,
     }).isRequired,
     inboxes: PropTypes.shape([]),
     inboxSelected: PropTypes.shape({}),

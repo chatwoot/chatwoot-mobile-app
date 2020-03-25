@@ -39,10 +39,6 @@ const PaperPlaneIconFill = style => {
   return <Icon {...style} name="paper-plane" />;
 };
 
-const renderMessage = item => {
-  return <ChatMessage message={item.item} />;
-};
-
 class ChatScreenComponent extends Component {
   static propTypes = {
     themedStyle: PropTypes.object,
@@ -157,7 +153,14 @@ class ChatScreenComponent extends Component {
         },
       },
     } = route;
-    return <UserAvatar userName={name} size="small" thumbnail={thumbnail} />;
+    return <UserAvatar userName={name} thumbnail={thumbnail} />;
+  };
+
+  showImage = ({ imageUrl }) => {
+    const { navigation } = this.props;
+    navigation.navigate('ImageScreen', {
+      imageUrl,
+    });
   };
 
   renderRightControls = style => {
@@ -237,6 +240,10 @@ class ChatScreenComponent extends Component {
     });
   };
 
+  renderMessage = item => {
+    return <ChatMessage message={item.item} showImage={this.showImage} />;
+  };
+
   render() {
     const { allMessages, isFetching, themedStyle, theme, route } = this.props;
     const {
@@ -291,7 +298,7 @@ class ChatScreenComponent extends Component {
                   inverted
                   contentContainerStyle={themedStyle.chatContainer}
                   data={completeMessages}
-                  renderItem={renderMessage}
+                  renderItem={this.renderMessage}
                   ListFooterComponent={this.renderMoreLoader}
                 />
               ) : null}

@@ -12,6 +12,7 @@ import SettingsScreen from './screens/Settings/SettingsScreen';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
 import ConversationFilter from './screens/ConversationFilter/ConversationFilter';
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
+import ImageScreen from './screens/ChatScreen/ImageScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -57,6 +58,7 @@ class RootApp extends Component {
                 name="ConversationFilter"
                 component={ConversationFilter}
               />
+              <Stack.Screen name="ImageScreen" component={ImageScreen} />
             </>
           ) : (
             <>

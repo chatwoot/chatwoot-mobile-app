@@ -3,6 +3,7 @@ import { Dimensions } from 'react-native';
 const styles = theme => ({
   mainContainer: {
     flex: 1,
+    backgroundColor: theme['background-basic-color-1'],
   },
   keyboardView: {
     flex: 1,

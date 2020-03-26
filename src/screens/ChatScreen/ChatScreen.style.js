@@ -21,6 +21,7 @@ const styles = theme => ({
     backgroundColor: theme['color-background'],
   },
   chatView: {
+    backgroundColor: theme['background-basic-color-1'],
     flex: 13,
   },
   chatContainer: {

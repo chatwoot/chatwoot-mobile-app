@@ -19,6 +19,9 @@ import styles from './SettingsScreen.style';
 import SettingsItem from '../../components/SettingsItem';
 import { openURL } from '../../helpers/index.js';
 import { HELP_URL } from '../../constants/url.js';
+
+import { theme } from '../../theme';
+
 const settingsData = [
   {
     text: i18n.t('SETTINGS.HELP'),
@@ -77,6 +80,7 @@ class SettingsComponent extends Component {
       user: { email, name, avatar_url },
       themedStyle,
     } = this.props;
+
     return (
       <SafeAreaView style={themedStyle.container}>
         <TopNavigation
@@ -85,7 +89,11 @@ class SettingsComponent extends Component {
           alignment="center"
         />
         <View style={themedStyle.profileContainer}>
-          <UserAvatar userName={name} size="giant" thumbnail={avatar_url} />
+          <UserAvatar
+            userName={name}
+            thumbnail={avatar_url}
+            defaultBGColor={theme['color-primary-default']}
+          />
           <View style={themedStyle.detailsContainer}>
             <CustomText style={themedStyle.nameLabel}>{name}</CustomText>
             <CustomText style={themedStyle.emailLabel}>{email}</CustomText>

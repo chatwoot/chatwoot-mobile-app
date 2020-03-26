@@ -1,6 +1,6 @@
 import { withStyles, Icon } from '@ui-kitten/components';
 import React, { Component } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import CustomText from './Text';
@@ -101,9 +101,9 @@ class ConversationItem extends Component {
           {unread_count ? (
             <View style={themedStyle.badgeView}>
               <View style={themedStyle.badge}>
-                <CustomText style={themedStyle.badgeCount}>
+                <Text style={themedStyle.badgeCount}>
                   {unread_count.toString()}
-                </CustomText>
+                </Text>
               </View>
             </View>
           ) : null}
@@ -181,19 +181,19 @@ export default withStyles(ConversationItem, theme => ({
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
-    paddingTop: 8,
+    paddingTop: 16,
   },
   badge: {
     width: 16,
     height: 16,
     borderRadius: 16,
     backgroundColor: theme['color-success-default'],
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
   badgeCount: {
     color: theme['text-control-color'],
     fontSize: theme['font-size-extra-extra-small'],
+    fontWeight: theme['font-medium'],
   },
 }));

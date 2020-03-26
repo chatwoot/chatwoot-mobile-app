@@ -54,7 +54,9 @@ class ConversationListComponent extends Component {
     loadInitialMessages: PropTypes.func,
     getConversations: PropTypes.func,
     selectConversation: PropTypes.func,
-    inboxSelected: PropTypes.shape({}),
+    inboxSelected: PropTypes.shape({
+      name: PropTypes.string,
+    }),
     conversationStatus: PropTypes.string,
     item: PropTypes.shape({}),
   };

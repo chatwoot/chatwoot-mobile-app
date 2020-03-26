@@ -53,7 +53,7 @@ class FilterScreenComponent extends Component {
       navigate: PropTypes.func.isRequired,
       goBack: PropTypes.func.isRequired,
     }).isRequired,
-    inboxes: PropTypes.shape([]),
+    inboxes: PropTypes.array.isRequired,
     inboxSelected: PropTypes.shape({}),
     setInbox: PropTypes.func,
     setConversationStatus: PropTypes.func,

@@ -8,7 +8,7 @@ export default theme => ({
     fontWeight: theme['font-semi-bold'],
   },
   contentView: {
-    marginTop: 50,
+    backgroundColor: theme['background-basic-color-1'],
     flex: 6,
   },
   formView: {

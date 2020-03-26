@@ -38,7 +38,9 @@ class LoginScreenComponent extends Component {
     theme: PropTypes.object,
     onLogin: PropTypes.func,
     isLoggingIn: PropTypes.bool,
-    navigation: PropTypes.func,
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func.isRequired,
+    }).isRequired,
     resetAuth: PropTypes.func,
   };
 

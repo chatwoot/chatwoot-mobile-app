@@ -6,23 +6,22 @@ import { ActivityIndicator } from 'react-native';
 class ButtonComponent extends Component {
   static propTypes = {
     theme: PropTypes.object,
-    children: PropTypes.object,
     loading: PropTypes.bool,
+    children: PropTypes.node,
   };
 
   static defaultProps = {
-    children: {},
     loading: false,
   };
 
   renderChildren() {
-    const { loading, children } = this.props;
+    const { loading } = this.props;
 
     if (loading) {
       return null;
     }
 
-    return children;
+    return this.props.children;
   }
 
   renderLoading() {

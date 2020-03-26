@@ -7,6 +7,7 @@ export default theme => ({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
+    backgroundColor: theme['background-basic-color-1'],
   },
   logoView: {
     alignItems: 'center',

@@ -13,7 +13,7 @@ import { messageStamp } from '../helpers/TimeHelper';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-const styles = theme => ({
+const styles = (theme) => ({
   message: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -51,14 +51,6 @@ const styles = theme => ({
     marginLeft: 16,
   },
   imageView: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
     borderRadius: 8,
     borderTopLeftRadius: 8,
     left: 4,
@@ -117,7 +109,7 @@ const styles = theme => ({
   },
 });
 
-const PersonIcon = style => {
+const PersonIcon = (style) => {
   return <Icon {...style} name="person-outline" />;
 };
 

@@ -7,7 +7,7 @@ class ButtonComponent extends Component {
   static propTypes = {
     theme: PropTypes.object,
     loading: PropTypes.bool,
-    children: PropTypes.node,
+    children: PropTypes.string,
   };
 
   static defaultProps = {
@@ -15,13 +15,13 @@ class ButtonComponent extends Component {
   };
 
   renderChildren() {
-    const { loading } = this.props;
+    const { loading, children } = this.props;
 
     if (loading) {
       return null;
     }
 
-    return this.props.children;
+    return children;
   }
 
   renderLoading() {
@@ -31,6 +31,7 @@ class ButtonComponent extends Component {
 
   render() {
     const { loading } = this.props;
+
     let customProps;
     if (loading) {
       customProps = {

@@ -13,17 +13,16 @@ class ConversationItem extends Component {
   static propTypes = {
     themedStyle: PropTypes.object,
     theme: PropTypes.object,
-    readStatus: PropTypes.number,
     name: PropTypes.string,
     onSelectConversation: PropTypes.func,
     item: PropTypes.shape({
       meta: PropTypes.shape({
-        sender: {
+        sender: PropTypes.shape({
           name: PropTypes.string,
           thumbnail: PropTypes.string,
-        },
+        }),
       }),
-      messages: PropTypes.shape([]),
+      messages: PropTypes.array.isRequired,
     }).isRequired,
   };
 

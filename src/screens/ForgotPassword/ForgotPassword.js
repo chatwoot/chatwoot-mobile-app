@@ -32,7 +32,10 @@ class ForgotPasswordComponent extends Component {
     theme: PropTypes.object,
     onResetPassword: PropTypes.func,
     isLoading: PropTypes.bool,
-    navigation: PropTypes.func,
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func.isRequired,
+      goBack: PropTypes.func.isRequired,
+    }).isRequired,
     resetAuth: PropTypes.func,
   };
 

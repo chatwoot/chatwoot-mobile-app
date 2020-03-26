@@ -2,7 +2,7 @@ import Snackbar from 'react-native-snackbar';
 
 export const showToast = ({ message }) => {
   Snackbar.show({
-    title: message,
+    text: message,
     duration: Snackbar.LENGTH_SHORT,
   });
 };

@@ -13,7 +13,7 @@ import { messageStamp } from '../helpers/TimeHelper';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-const styles = (theme) => ({
+const styles = theme => ({
   message: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -109,7 +109,7 @@ const styles = (theme) => ({
   },
 });
 
-const PersonIcon = (style) => {
+const PersonIcon = style => {
   return <Icon {...style} name="person-outline" />;
 };
 
@@ -229,7 +229,7 @@ const defaultProps = {
 };
 
 const ChatMessageComponent = ({ message, themedStyle, showImage }) => {
-  const { message_type, created_at, attachment, content } = message;
+  const { message_type, created_at } = message;
 
   let alignment = message_type ? 'flex-end' : 'flex-start';
   if (message_type === 2) {

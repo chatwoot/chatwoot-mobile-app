@@ -16,7 +16,7 @@ const propTypes = {
   style: PropTypes.object,
 };
 
-const styles = theme => ({});
+const styles = () => ({});
 
 ImageLoader.propTypes = propTypes;
 export default withStyles(ImageLoader, styles);

@@ -13,7 +13,7 @@ import { messageStamp } from '../helpers/TimeHelper';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-const styles = theme => ({
+const styles = (theme) => ({
   message: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -109,7 +109,7 @@ const styles = theme => ({
   },
 });
 
-const PersonIcon = style => {
+const PersonIcon = (style) => {
   return <Icon {...style} name="person-outline" />;
 };
 
@@ -197,7 +197,12 @@ const IncomingMessageComponent = ({
 
 const IncomingMessage = withStyles(IncomingMessageComponent, styles);
 
-const ActivityMessageComponent = ({ themedStyle, message, created_at }) => (
+const ActivityMessageComponent = ({
+  themedStyle,
+  message,
+  created_at,
+  theme,
+}) => (
   <View style={themedStyle.activityView}>
     <View style={themedStyle.activityDateView}>
       <CustomText style={themedStyle.date}>
@@ -205,7 +210,7 @@ const ActivityMessageComponent = ({ themedStyle, message, created_at }) => (
       </CustomText>
     </View>
     <View style={themedStyle.messageActivity}>
-      <PersonIcon style={themedStyle.icon} />
+      <PersonIcon style={themedStyle.icon} fill={theme['text-hint-color']} />
       <CustomText style={themedStyle.messageContent}>
         {message.content}
       </CustomText>

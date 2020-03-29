@@ -9,6 +9,10 @@ import { dynamicTime } from '../helpers/TimeHelper';
 import { findLastMessage, getUnreadCount } from '../helpers';
 import i18n from '../i18n';
 
+const PreviewIcon = (style) => {
+  return <Icon {...style} name="image-outline" />;
+};
+
 class ConversationItem extends Component {
   static propTypes = {
     themedStyle: PropTypes.object,
@@ -27,7 +31,8 @@ class ConversationItem extends Component {
   };
 
   render() {
-    const { themedStyle, item, onSelectConversation } = this.props;
+    const { themedStyle, item, onSelectConversation, theme } = this.props;
+
     const {
       meta: {
         sender: { name, thumbnail },
@@ -77,7 +82,10 @@ class ConversationItem extends Component {
               </CustomText>
             ) : (
               <View style={themedStyle.imageView}>
-                <Icon style={themedStyle.previewIcon} name="image-outline" />
+                <PreviewIcon
+                  style={themedStyle.previewIcon}
+                  fill={theme['text-hint-color']}
+                />
                 <CustomText
                   style={
                     unread_count
@@ -113,7 +121,7 @@ class ConversationItem extends Component {
   }
 }
 
-export default withStyles(ConversationItem, theme => ({
+export default withStyles(ConversationItem, (theme) => ({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -162,6 +170,7 @@ export default withStyles(ConversationItem, theme => ({
     width: 16,
     height: 16,
     marginTop: 4,
+    color: 'black',
   },
   messageActive: {
     fontSize: theme['text-primary-size'],

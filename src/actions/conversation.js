@@ -33,7 +33,7 @@ export const getConversations = ({
   conversationStatus,
   inboxSelected,
   pageNumber = 1,
-}) => async dispatch => {
+}) => async (dispatch) => {
   if (pageNumber === 1) {
     dispatch({ type: GET_CONVERSATION });
   }
@@ -93,11 +93,11 @@ export const getConversations = ({
 };
 
 // Set conversation status (Open or Resolved)
-export const setConversationStatus = ({ status }) => async dispatch => {
+export const setConversationStatus = ({ status }) => async (dispatch) => {
   dispatch({ type: SET_CONVERSATION_STATUS, payload: status });
 };
 
-export const setConversation = ({ conversationId }) => async dispatch => {
+export const setConversation = ({ conversationId }) => async (dispatch) => {
   dispatch({ type: SET_CONVERSATION, payload: conversationId });
 };
 
@@ -111,7 +111,7 @@ export const addConversation = ({ conversation }) => async (
   } = getState().conversation;
 
   // Check conversation is already exists or not
-  const [conversationExists] = payload.filter(c => c.id === conversation.id);
+  const [conversationExists] = payload.filter((c) => c.id === conversation.id);
 
   if (conversationExists) {
     return;
@@ -127,24 +127,30 @@ export const addMessageToConversation = ({ message }) => async (
   const {
     data: { payload },
     selectedConversationId,
+    allMessages,
   } = getState().conversation;
 
-  const { conversation_id } = message;
-  if (selectedConversationId === conversation_id) {
+  const { conversation_id, id: messageId } = message;
+
+  const isMessageAlreadyExist = allMessages.find(
+    (item) => item.id === messageId,
+  );
+
+  if (selectedConversationId === conversation_id && !isMessageAlreadyExist) {
     dispatch({ type: UPDATE_MESSAGE, payload: message });
   }
 
-  const [chat] = payload.filter(c => c.id === message.conversation_id);
+  const [chat] = payload.filter((c) => c.id === message.conversation_id);
 
   if (!chat) {
     return;
   }
-  const previousMessageIds = chat.messages.map(m => m.id);
+  const previousMessageIds = chat.messages.map((m) => m.id);
   if (!previousMessageIds.includes(message.id)) {
     chat.messages.push(message);
   }
 
-  const index = payload.findIndex(c => c.id === message.conversation_id);
+  const index = payload.findIndex((c) => c.id === message.conversation_id);
 
   let updatedConversations = payload.map((content, i) =>
     i === index ? { ...content } : content,
@@ -155,10 +161,9 @@ export const addMessageToConversation = ({ message }) => async (
   dispatch({ type: UPDATE_CONVERSATION, payload: updatedConversations });
 };
 
-export const loadMessages = ({
-  conversationId,
-  beforeId,
-}) => async dispatch => {
+export const loadMessages = ({ conversationId, beforeId }) => async (
+  dispatch,
+) => {
   dispatch({ type: GET_MESSAGES });
 
   try {
@@ -188,7 +193,9 @@ export const loadMessages = ({
 };
 
 // Send message
-export const sendMessage = ({ conversationId, message }) => async dispatch => {
+export const sendMessage = ({ conversationId, message }) => async (
+  dispatch,
+) => {
   dispatch({ type: SEND_MESSAGE });
   try {
     const apiUrl = `conversations/${conversationId}/messages`;
@@ -204,10 +211,9 @@ export const sendMessage = ({ conversationId, message }) => async dispatch => {
   }
 };
 
-export const markMessagesAsRead = ({
-  conversationId,
-  message,
-}) => async dispatch => {
+export const markMessagesAsRead = ({ conversationId, message }) => async (
+  dispatch,
+) => {
   dispatch({ type: MARK_MESSAGES_AS_READ });
   try {
     const apiUrl = `conversations/${conversationId}/update_last_seen`;
@@ -225,7 +231,7 @@ export const markMessagesAsRead = ({
   }
 };
 
-export const loadCannedResponses = () => async dispatch => {
+export const loadCannedResponses = () => async (dispatch) => {
   dispatch({ type: GET_CANNED_RESPONSES });
 
   try {
@@ -233,7 +239,7 @@ export const loadCannedResponses = () => async dispatch => {
 
     const { data } = response;
 
-    const payload = data.map(item => ({
+    const payload = data.map((item) => ({
       ...item,
       title: `${item.short_code} - ${item.content.substring(0, 40)}`,
     }));

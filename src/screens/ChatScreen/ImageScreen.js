@@ -9,17 +9,20 @@ import {
   withStyles,
 } from '@ui-kitten/components';
 
+import ImageZoom from 'react-native-image-pan-zoom';
+
 import ImageLoader from '../../components/ImageLoader';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-const styles = theme => ({
+const styles = (theme) => ({
   container: {
     flex: 1,
     backgroundColor: theme['background-basic-color-1'],
   },
   imageContainer: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -34,15 +37,17 @@ const styles = theme => ({
     alignItems: 'center',
   },
   bannerImage: {
-    height: deviceHeight - 128,
+    height: deviceHeight,
     width: deviceWidth,
     resizeMode: 'contain',
   },
 });
 
-const BackIcon = style => <Icon {...style} name="close-outline" />;
+const BackIcon = (style) => <Icon {...style} name="close-outline" />;
 
-const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
+const BackAction = (props) => (
+  <TopNavigationAction {...props} icon={BackIcon} />
+);
 
 const propTypes = {
   themedStyle: PropTypes.object,
@@ -67,14 +72,20 @@ const ImageScreen = ({ themedStyle, navigation, route }) => {
     <SafeAreaView style={themedStyle.container}>
       <TopNavigation leftControl={<BackAction onPress={navigation.goBack} />} />
       <Layout style={themedStyle.imageContainer}>
-        <Image
-          style={themedStyle.bannerImage}
-          source={{ uri: imageUrl }}
-          onLoadStart={() => onLoadImage(true)}
-          onLoadEnd={() => {
-            onLoadImage(false);
-          }}
-        />
+        <ImageZoom
+          cropWidth={Dimensions.get('window').width}
+          cropHeight={Dimensions.get('window').height}
+          imageWidth={Dimensions.get('window').width}
+          imageHeight={Dimensions.get('window').height}>
+          <Image
+            style={themedStyle.bannerImage}
+            source={{ uri: imageUrl }}
+            onLoadStart={() => onLoadImage(true)}
+            onLoadEnd={() => {
+              onLoadImage(false);
+            }}
+          />
+        </ImageZoom>
         {imageLoading && <ImageLoader style={themedStyle.imageLoader} />}
       </Layout>
     </SafeAreaView>

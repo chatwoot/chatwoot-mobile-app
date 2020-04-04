@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { View, Dimensions, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { Icon, withStyles } from '@ui-kitten/components';
+import { Icon, withStyles, Tooltip } from '@ui-kitten/components';
 
 import CustomText from './Text';
 
@@ -115,20 +115,43 @@ const PersonIcon = (style) => {
 
 const MessageContentComponent = ({ themedStyle, message, type, showImage }) => {
   const [imageLoading, onLoadImage] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  const [senderDetails, setSender] = useState('');
+
+  const toggleTooltip = () => {
+    setVisible(!visible);
+    setSender('');
+  };
+
+  const showSender = () => {
+    if (message.sender) {
+      setVisible(!visible);
+      setSender(`Sent by: ${message.sender.name}`);
+    }
+  };
 
   return (
     <React.Fragment>
       {message.content ? (
-        <View
+        <TouchableOpacity
           style={
             type === 'outgoing'
               ? themedStyle.messageRight
               : themedStyle.messageLeft
-          }>
-          <CustomText style={themedStyle.messageContent}>
-            {message.content}
-          </CustomText>
-        </View>
+          }
+          activeOpacity={0.95}
+          onPress={showSender}>
+          <Tooltip
+            text={senderDetails}
+            placement="top start"
+            visible={visible}
+            onBackdropPress={toggleTooltip}>
+            <CustomText style={themedStyle.messageContent}>
+              {message.content}
+            </CustomText>
+          </Tooltip>
+        </TouchableOpacity>
       ) : (
         <TouchableOpacity
           onPress={() => showImage({ imageUrl: message.attachment.data_url })}

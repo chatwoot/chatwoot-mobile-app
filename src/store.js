@@ -14,7 +14,7 @@ const persistConfig = {
 };
 
 if (__DEV__) {
-  middleware.push(createLogger());
+  // middleware.push(createLogger());
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

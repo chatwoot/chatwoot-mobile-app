@@ -1,16 +1,14 @@
-const styles = theme => ({
+const styles = (theme) => ({
   container: {
     flex: 1,
-    // Backgrounds, are registered with `background-basic-color-${LEVEL}` variables
     backgroundColor: theme['background-basic-color-1'],
-    // backgroundColor: theme['color-white'],
   },
   headerTitle: {
     fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-medium'],
   },
   tabContainer: {
-    paddingBottom: 90,
+    paddingBottom: 120,
     minHeight: 64,
   },
   loadMoreSpinnerView: {
@@ -22,11 +20,7 @@ const styles = theme => ({
   tabView: {
     height: '100%',
   },
-  tabViewIndicator: {
-    // TODO: Remove comments after reviewing this.
-    // Is primary by default and uses `color-primary-default`
-    // backgroundColor: theme['color-primary'],
-  },
+
   tabActiveTitle: {
     fontWeight: theme['font-medium'],
     fontSize: theme['font-size-small'],

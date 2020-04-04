@@ -31,11 +31,13 @@ import {
   loadCannedResponses,
 } from '../../actions/conversation';
 
-const BackIcon = style => <Icon {...style} name="arrow-ios-back-outline" />;
+const BackIcon = (style) => <Icon {...style} name="arrow-ios-back-outline" />;
 
-const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
+const BackAction = (props) => (
+  <TopNavigationAction {...props} icon={BackIcon} />
+);
 
-const PaperPlaneIconFill = style => {
+const PaperPlaneIconFill = (style) => {
   return <Icon {...style} name="paper-plane" />;
 };
 
@@ -88,7 +90,7 @@ class ChatScreenComponent extends Component {
     markAllMessagesAsRead({ conversationId });
   };
 
-  onNewMessageChange = text => {
+  onNewMessageChange = (text) => {
     this.setState({
       message: text,
     });
@@ -97,7 +99,7 @@ class ChatScreenComponent extends Component {
 
     if (text.charAt(0) === '/') {
       const query = text.substring(1).toLowerCase();
-      const filteredCannedResponses = cannedResponses.filter(item =>
+      const filteredCannedResponses = cannedResponses.filter((item) =>
         item.title.toLowerCase().includes(query),
       );
       if (filteredCannedResponses.length) {
@@ -144,7 +146,7 @@ class ChatScreenComponent extends Component {
     );
   };
 
-  renderProfileAvatar = props => {
+  renderProfileAvatar = (props) => {
     const { route } = this.props;
     const {
       params: {
@@ -163,7 +165,7 @@ class ChatScreenComponent extends Component {
     });
   };
 
-  renderRightControls = style => {
+  renderRightControls = (style) => {
     return <TopNavigationAction icon={this.renderProfileAvatar} />;
   };
 
@@ -206,7 +208,7 @@ class ChatScreenComponent extends Component {
     );
   };
 
-  onItemSelect = index => {
+  onItemSelect = (index) => {
     const { filteredCannedResponses } = this.state;
     const selectedItem = filteredCannedResponses[index];
 
@@ -240,8 +242,14 @@ class ChatScreenComponent extends Component {
     });
   };
 
-  renderMessage = item => {
-    return <ChatMessage message={item.item} showImage={this.showImage} />;
+  renderMessage = (item) => {
+    return (
+      <ChatMessage
+        message={item.item}
+        showImage={this.showImage}
+        key={item.index}
+      />
+    );
   };
 
   render() {
@@ -264,7 +272,7 @@ class ChatScreenComponent extends Component {
     const completeMessages = []
       .concat(allMessages)
       .reverse()
-      .filter(item => item.content !== '');
+      .filter((item) => item.content !== '');
 
     return (
       <SafeAreaView style={themedStyle.mainContainer}>
@@ -285,7 +293,7 @@ class ChatScreenComponent extends Component {
             <View style={themedStyle.chatView}>
               {completeMessages.length ? (
                 <List
-                  ref={ref => {
+                  ref={(ref) => {
                     this.myFlatListRef = ref;
                   }}
                   onEndReached={this.onEndReached.bind(this)}

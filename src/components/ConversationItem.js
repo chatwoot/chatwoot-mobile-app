@@ -47,7 +47,7 @@ class ConversationItem extends Component {
 
     return (
       <TouchableOpacity
-        activeOpacity={0.95}
+        activeOpacity={0.1}
         style={themedStyle.container}
         onPress={() => onSelectConversation(item)}>
         <View style={themedStyle.itemView}>

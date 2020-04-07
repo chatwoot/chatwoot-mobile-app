@@ -9,7 +9,7 @@ import {
   RESET_AUTH,
 } from '../constants/actions';
 
-export const initialState = {
+const initialState = {
   user: {},
   headers: {},
   isLogged: false,

@@ -64,8 +64,7 @@ const useInitialURL = () => {
 
 export default function RootApp() {
   const isLogged = useSelector((state) => state.auth.isLogged);
-  const { url: initialUrl, processing } = useInitialURL();
-  console.log('initialUrl', initialUrl, processing);
+  // const { url: initialUrl, processing } = useInitialURL();
 
   return (
     <NavigationContainer>

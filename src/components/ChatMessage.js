@@ -38,6 +38,12 @@ const styles = (theme) => ({
     marginRight: 16,
   },
 
+  imageViewLeft: {
+    borderRadius: 8,
+    borderTopRightRadius: 8,
+    left: -4,
+  },
+
   messageRight: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -50,11 +56,12 @@ const styles = (theme) => ({
     backgroundColor: theme['color-background-message'],
     marginLeft: 16,
   },
-  imageView: {
+  imageViewRight: {
     borderRadius: 8,
     borderTopLeftRadius: 8,
     left: 4,
   },
+
   imageLoader: {
     position: 'absolute',
     left: 0,
@@ -95,11 +102,50 @@ const styles = (theme) => ({
     width: 16,
     height: 16,
   },
-
+  fileAttachmentContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  attachmentIconView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
+  },
+  fileAttachmentView: {
+    flexDirection: 'row',
+  },
+  attachmentTextView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   messageContent: {
     color: theme['text-active-color'],
     fontSize: theme['font-size-regular'],
     fontWeight: theme['font-regular'],
+  },
+
+  filenameText: {
+    color: theme['text-basic-color'],
+    fontSize: theme['font-size-small'],
+    fontWeight: theme['font-medium'],
+    textAlign: 'left',
+  },
+
+  downloadText: {
+    color: theme['color-primary-default'],
+    paddingRight: 8,
+    fontSize: theme['font-size-small'],
+    fontWeight: theme['font-medium'],
+    textAlign: 'left',
+    alignSelf: 'stretch',
+  },
+
+  messageAttachment: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   date: {
@@ -113,11 +159,23 @@ const PersonIcon = (style) => {
   return <Icon {...style} name="person-outline" />;
 };
 
-const MessageContentComponent = ({ themedStyle, message, type, showImage }) => {
+const FileIcon = (style) => {
+  return <Icon {...style} name="file-text-outline" width={32} height={32} />;
+};
+
+const MessageContentComponent = ({
+  themedStyle,
+  message,
+  type,
+  showAttachment,
+  theme,
+}) => {
   const [imageLoading, onLoadImage] = useState(false);
   const [visible, setVisible] = useState(false);
 
   const [senderDetails, setSender] = useState('');
+
+  const { attachment } = message;
 
   const toggleTooltip = () => {
     setVisible(!visible);
@@ -131,9 +189,72 @@ const MessageContentComponent = ({ themedStyle, message, type, showImage }) => {
     }
   };
 
+  const renderAttachment = () => {
+    const { file_type: fileType, data_url: dataUrl } = attachment;
+    const fileName = dataUrl ? dataUrl.split('/').reverse()[0] : '';
+
+    return (
+      <React.Fragment>
+        {fileType !== 'file' ? (
+          <TouchableOpacity
+            onPress={() => showAttachment({ type: 'image', dataUrl })}
+            style={
+              type === 'outgoing'
+                ? themedStyle.imageViewRight
+                : themedStyle.imageViewLeft
+            }>
+            <Image
+              style={themedStyle.image}
+              source={{
+                uri: dataUrl,
+              }}
+              onLoadStart={() => onLoadImage(true)}
+              onLoadEnd={() => {
+                onLoadImage(false);
+              }}
+            />
+            {imageLoading && <ImageLoader style={themedStyle.imageLoader} />}
+          </TouchableOpacity>
+        ) : (
+          <View
+            style={
+              type === 'outgoing'
+                ? themedStyle.messageRight
+                : themedStyle.messageLeft
+            }>
+            <View style={themedStyle.fileAttachmentContainer}>
+              <View style={themedStyle.fileAttachmentView}>
+                <View style={themedStyle.attachmentIconView}>
+                  <FileIcon
+                    style={themedStyle.icon}
+                    fill={theme['color-primary-default']}
+                  />
+                </View>
+                <View style={themedStyle.attachmentTexView}>
+                  <CustomText style={themedStyle.filenameText}>
+                    {fileName.length < 30
+                      ? `${fileName}`
+                      : `...${fileName.substr(fileName.length - 15)}`}
+                  </CustomText>
+
+                  <TouchableOpacity
+                    onPress={() => showAttachment({ type: 'file', dataUrl })}>
+                    <CustomText style={themedStyle.downloadText}>
+                      Download
+                    </CustomText>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </View>
+        )}
+      </React.Fragment>
+    );
+  };
+
   return (
     <React.Fragment>
-      {message.content ? (
+      {!attachment ? (
         <TouchableOpacity
           style={
             type === 'outgoing'
@@ -153,21 +274,7 @@ const MessageContentComponent = ({ themedStyle, message, type, showImage }) => {
           </Tooltip>
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity
-          onPress={() => showImage({ imageUrl: message.attachment.data_url })}
-          style={themedStyle.imageView}>
-          <Image
-            style={themedStyle.image}
-            source={{
-              uri: message.attachment.data_url,
-            }}
-            onLoadStart={() => onLoadImage(true)}
-            onLoadEnd={() => {
-              onLoadImage(false);
-            }}
-          />
-          {imageLoading && <ImageLoader style={themedStyle.imageLoader} />}
-        </TouchableOpacity>
+        renderAttachment()
       )}
     </React.Fragment>
   );
@@ -179,7 +286,7 @@ const OutGoingMessageComponent = ({
   themedStyle,
   message,
   created_at,
-  showImage,
+  showAttachment,
 }) => {
   return (
     <React.Fragment>
@@ -191,7 +298,7 @@ const OutGoingMessageComponent = ({
         message={message}
         created_at={created_at}
         type="outgoing"
-        showImage={showImage}
+        showAttachment={showAttachment}
       />
     </React.Fragment>
   );
@@ -203,14 +310,15 @@ const IncomingMessageComponent = ({
   themedStyle,
   message,
   created_at,
-  showImage,
+
+  showAttachment,
 }) => (
   <React.Fragment>
     <MessageContent
       message={message}
       created_at={created_at}
       type="incoming"
-      showImage={showImage}
+      showAttachment={showAttachment}
     />
     <CustomText style={themedStyle.date}>
       {messageStamp({ time: created_at })}
@@ -249,14 +357,19 @@ const propTypes = {
     date: PropTypes.string,
   }),
   themedStyle: PropTypes.object,
-  showImage: PropTypes.func,
+  showAttachment: PropTypes.func,
 };
 
 const defaultProps = {
   message: { content: null, date: null },
 };
 
-const ChatMessageComponent = ({ message, themedStyle, showImage }) => {
+const ChatMessageComponent = ({
+  message,
+  themedStyle,
+
+  showAttachment,
+}) => {
   const { message_type, created_at } = message;
 
   let alignment = message_type ? 'flex-end' : 'flex-start';
@@ -272,7 +385,7 @@ const ChatMessageComponent = ({ message, themedStyle, showImage }) => {
             message={message}
             created_at={created_at}
             type="incoming"
-            showImage={showImage}
+            showAttachment={showAttachment}
           />
         ) : alignment === 'center' ? (
           <ActivityMessage
@@ -285,7 +398,7 @@ const ChatMessageComponent = ({ message, themedStyle, showImage }) => {
             message={message}
             created_at={created_at}
             type="outgoing"
-            showImage={showImage}
+            showAttachment={showAttachment}
           />
         )}
       </View>

@@ -22,6 +22,7 @@ const styles = (theme) => ({
     maxWidth: Dimensions.get('window').width - 120,
     left: 4,
     backgroundColor: theme['color-background-message'],
+    elevation: 1,
   },
 
   fileViewLeft: {
@@ -34,6 +35,7 @@ const styles = (theme) => ({
     maxWidth: Dimensions.get('window').width - 120,
     left: -4,
     backgroundColor: theme['background-basic-color-1'],
+    elevation: 1,
   },
   imageViewLeft: {
     borderRadius: 8,
@@ -78,6 +80,10 @@ const styles = (theme) => ({
     justifyContent: 'center',
     padding: 8,
   },
+  attachmentTexView: {
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
   fileAttachmentView: {
     flexDirection: 'row',
   },
@@ -111,7 +117,7 @@ const propTypes = {
 };
 
 const FileIcon = (style) => {
-  return <Icon {...style} name="file-text-outline" width={32} height={32} />;
+  return <Icon {...style} name="file-text-outline" width={48} height={48} />;
 };
 
 const ChatAttachmentItemComponent = ({
@@ -169,7 +175,6 @@ const ChatAttachmentItemComponent = ({
                     ? `${fileName}`
                     : `...${fileName.substr(fileName.length - 15)}`}
                 </CustomText>
-
                 <TouchableOpacity
                   onPress={() => showAttachment({ type: 'file', dataUrl })}>
                   <CustomText style={themedStyle.downloadText}>

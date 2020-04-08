@@ -17,6 +17,7 @@ const styles = (theme) => ({
     left: -4,
     backgroundColor: theme['background-basic-color-1'],
     marginRight: 16,
+    elevation: 1,
   },
 
   messageRight: {
@@ -30,6 +31,7 @@ const styles = (theme) => ({
     left: 4,
     backgroundColor: theme['color-background-message'],
     marginLeft: 16,
+    elevation: 1,
   },
   messageContent: {
     color: theme['text-active-color'],

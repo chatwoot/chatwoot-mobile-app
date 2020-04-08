@@ -1,6 +1,5 @@
-/* eslint-disable react/prop-types */
-import { withStyles, Icon } from '@ui-kitten/components';
-import React, { Component, Fragment } from 'react';
+import { withStyles } from '@ui-kitten/components';
+import React, { Component } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -8,58 +7,9 @@ import CustomText from './Text';
 import UserAvatar from './UserAvatar';
 import { dynamicTime } from '../helpers/TimeHelper';
 import { findLastMessage, getUnreadCount } from '../helpers';
-import i18n from '../i18n';
 
-const ImagePreviewIcon = (style) => {
-  return <Icon {...style} name="image-outline" />;
-};
+import ConversationAttachmentItem from './ConversationAttachmentItem';
 
-const FilePreviewIcon = (style) => {
-  return <Icon {...style} name="file-text-outline" />;
-};
-
-const AttachmentItem = ({ themedStyle, unread_count, theme, attachment }) => {
-  const { file_type: fileType } = attachment;
-  return (
-    <Fragment>
-      {fileType === 'image' ? (
-        <View style={themedStyle.imageView}>
-          <ImagePreviewIcon
-            style={themedStyle.previewIcon}
-            fill={theme['text-hint-color']}
-          />
-          <CustomText
-            style={
-              unread_count
-                ? themedStyle.messageActive
-                : themedStyle.messageNotActive
-            }
-            numberOfLines={1}
-            maxLength={8}>
-            {i18n.t('CONVERSATION.PICTURE_CONTENT')}
-          </CustomText>
-        </View>
-      ) : (
-        <View style={themedStyle.imageView}>
-          <FilePreviewIcon
-            style={themedStyle.previewIcon}
-            fill={theme['text-hint-color']}
-          />
-          <CustomText
-            style={
-              unread_count
-                ? themedStyle.messageActive
-                : themedStyle.messageNotActive
-            }
-            numberOfLines={1}
-            maxLength={8}>
-            {i18n.t('CONVERSATION.ATTACHMENT_CONTENT')}
-          </CustomText>
-        </View>
-      )}
-    </Fragment>
-  );
-};
 class ConversationItem extends Component {
   static propTypes = {
     themedStyle: PropTypes.object,
@@ -128,10 +78,10 @@ class ConversationItem extends Component {
                   : `${content.substring(0, 25)}...`}
               </CustomText>
             ) : (
-              <AttachmentItem
+              <ConversationAttachmentItem
                 themedStyle={themedStyle}
                 theme={theme}
-                unread_count={unread_count}
+                unReadCount={unread_count}
                 attachment={attachment}
               />
             )}
@@ -198,26 +148,7 @@ export default withStyles(ConversationItem, (theme) => ({
     bottom: 2,
     right: 2,
   },
-  imageView: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  previewIcon: {
-    width: 16,
-    height: 16,
-    marginTop: 4,
-    color: 'black',
-  },
-  messageActive: {
-    fontSize: theme['text-primary-size'],
-    fontWeight: theme['font-medium'],
-    paddingTop: 4,
-  },
-  messageNotActive: {
-    fontSize: theme['text-primary-size'],
-    paddingTop: 4,
-  },
+
   timeStamp: {
     color: theme['text-hint-color'],
     fontSize: theme['font-size-extra-extra-small'],

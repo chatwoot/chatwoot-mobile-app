@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 import { withStyles, Icon } from '@ui-kitten/components';
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -9,10 +10,56 @@ import { dynamicTime } from '../helpers/TimeHelper';
 import { findLastMessage, getUnreadCount } from '../helpers';
 import i18n from '../i18n';
 
-const PreviewIcon = (style) => {
+const ImagePreviewIcon = (style) => {
   return <Icon {...style} name="image-outline" />;
 };
 
+const FilePreviewIcon = (style) => {
+  return <Icon {...style} name="file-text-outline" />;
+};
+
+const AttachmentItem = ({ themedStyle, unread_count, theme, attachment }) => {
+  const { file_type: fileType } = attachment;
+  return (
+    <Fragment>
+      {fileType === 'image' ? (
+        <View style={themedStyle.imageView}>
+          <ImagePreviewIcon
+            style={themedStyle.previewIcon}
+            fill={theme['text-hint-color']}
+          />
+          <CustomText
+            style={
+              unread_count
+                ? themedStyle.messageActive
+                : themedStyle.messageNotActive
+            }
+            numberOfLines={1}
+            maxLength={8}>
+            {i18n.t('CONVERSATION.PICTURE_CONTENT')}
+          </CustomText>
+        </View>
+      ) : (
+        <View style={themedStyle.imageView}>
+          <FilePreviewIcon
+            style={themedStyle.previewIcon}
+            fill={theme['text-hint-color']}
+          />
+          <CustomText
+            style={
+              unread_count
+                ? themedStyle.messageActive
+                : themedStyle.messageNotActive
+            }
+            numberOfLines={1}
+            maxLength={8}>
+            {i18n.t('CONVERSATION.ATTACHMENT_CONTENT')}
+          </CustomText>
+        </View>
+      )}
+    </Fragment>
+  );
+};
 class ConversationItem extends Component {
   static propTypes = {
     themedStyle: PropTypes.object,
@@ -43,7 +90,7 @@ class ConversationItem extends Component {
     const unread_count = getUnreadCount(item);
 
     const lastMessage = findLastMessage({ messages });
-    const { content, created_at } = lastMessage;
+    const { content, created_at, attachment } = lastMessage;
 
     return (
       <TouchableOpacity
@@ -67,7 +114,7 @@ class ConversationItem extends Component {
               }>
               {name}
             </CustomText>
-            {lastMessage.content ? (
+            {!lastMessage.attachment ? (
               <CustomText
                 style={
                   unread_count
@@ -81,22 +128,12 @@ class ConversationItem extends Component {
                   : `${content.substring(0, 25)}...`}
               </CustomText>
             ) : (
-              <View style={themedStyle.imageView}>
-                <PreviewIcon
-                  style={themedStyle.previewIcon}
-                  fill={theme['text-hint-color']}
-                />
-                <CustomText
-                  style={
-                    unread_count
-                      ? themedStyle.messageActive
-                      : themedStyle.messageNotActive
-                  }
-                  numberOfLines={1}
-                  maxLength={8}>
-                  {i18n.t('CONVERSATION.PICTURE_CONTENT')}
-                </CustomText>
-              </View>
+              <AttachmentItem
+                themedStyle={themedStyle}
+                theme={theme}
+                unread_count={unread_count}
+                attachment={attachment}
+              />
             )}
           </View>
         </View>

@@ -182,7 +182,7 @@ PODS:
     - React-cxxreact (= 0.62.0)
     - React-jsi (= 0.62.0)
   - React-jsinspector (0.62.0)
-  - react-native-netinfo (5.5.1):
+  - react-native-netinfo (5.6.2):
     - React
   - react-native-safe-area-context (0.7.3):
     - React
@@ -249,15 +249,15 @@ PODS:
     - React
   - RNCMaskedView (0.1.7):
     - React
-  - RNGestureHandler (1.6.0):
+  - RNGestureHandler (1.6.1):
     - React
-  - RNReanimated (1.7.0):
+  - RNReanimated (1.7.1):
     - React
-  - RNScreens (2.2.0):
+  - RNScreens (2.4.0):
     - React
   - RNSnackbar (2.2.0):
     - React
-  - RNSVG (9.13.6):
+  - RNSVG (12.0.3):
     - React
   - Yoga (1.14.0)
 
@@ -390,7 +390,7 @@ SPEC CHECKSUMS:
   React-jsi: bc8166d6833cdcb0848c80710b26ce63fad2c099
   React-jsiexecutor: 8bf0b2707f05865113415088c398a7f98c0cf546
   React-jsinspector: 8e5913c4c6c54f0d3f9c9fc630c465a89cded65d
-  react-native-netinfo: 3bf235d94cc291cf0673ad9fd9eaae82f84ed8a9
+  react-native-netinfo: 73303369946c2487c600418961bfdc87748b832f
   react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
   React-RCTActionSheet: 674afbc8b9c76e0a83520e0a51da29a70802c03f
   React-RCTAnimation: f5f24330d09ee677fb49e0782f8321868f4df431
@@ -404,11 +404,11 @@ SPEC CHECKSUMS:
   ReactCommon: d22162ab8f1358c53dfcd0f9c4d82d38facdbc48
   RNCAsyncStorage: e0dd7c8a36543b4ef84969acd9f8aceba3a92dc2
   RNCMaskedView: 76c40a1d41c3e2535df09246a2b5487f04de0814
-  RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
-  RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
-  RNScreens: 812b79d384e2bea7eebc4ec981469160d4948fd5
+  RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
+  RNReanimated: 4e102df74a9674fa943e05f97f3362b6e44d0b48
+  RNScreens: b5c0e1b2b04512919e78bd3898e144a157ce2363
   RNSnackbar: 160077964866262ed08cfd33ab4760219ea2aef6
-  RNSVG: 8ba35cbeb385a52fd960fd28db9d7d18b4c2974f
+  RNSVG: 7e16ddfc6e00d5aa69c9eb83e699bcce5dcb85d4
   Yoga: 9db9ff2025ad21d1ac0a8b3c85d5ac4e7c29d525
 
 PODFILE CHECKSUM: 50cf41b195f988d309ece502347fd21dfe790b2f

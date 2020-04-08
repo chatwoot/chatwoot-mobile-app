@@ -29,7 +29,8 @@
     "UN_ASSIGNED": "Unassigned",
     "ALL": "All",
     "EMPTY": "There are no active conversations in this group.",
-    "PICTURE_CONTENT": "Picture message"
+    "PICTURE_CONTENT": "Picture message",
+    "ATTACHMENT_CONTENT": "File Attachment"
   },
   "FILTER": {
     "HEADER_TITLE": "Filter",

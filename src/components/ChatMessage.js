@@ -56,6 +56,31 @@ const styles = (theme) => ({
     backgroundColor: theme['color-background-message'],
     marginLeft: 16,
   },
+
+  fileViewRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
+    borderBottomLeftRadius: 8,
+    borderTopLeftRadius: 8,
+    maxWidth: Dimensions.get('window').width - 120,
+    left: 4,
+    backgroundColor: theme['color-background-message'],
+  },
+
+  fileViewLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 8,
+    borderBottomRightRadius: 8,
+    borderTopRightRadius: 8,
+    maxWidth: Dimensions.get('window').width - 120,
+    left: -4,
+    backgroundColor: theme['background-basic-color-1'],
+  },
+
   imageViewRight: {
     borderRadius: 8,
     borderTopLeftRadius: 8,
@@ -135,7 +160,6 @@ const styles = (theme) => ({
 
   downloadText: {
     color: theme['color-primary-default'],
-    paddingRight: 8,
     fontSize: theme['font-size-small'],
     fontWeight: theme['font-medium'],
     textAlign: 'left',
@@ -219,8 +243,8 @@ const MessageContentComponent = ({
           <View
             style={
               type === 'outgoing'
-                ? themedStyle.messageRight
-                : themedStyle.messageLeft
+                ? themedStyle.fileViewRight
+                : themedStyle.fileViewLeft
             }>
             <View style={themedStyle.fileAttachmentContainer}>
               <View style={themedStyle.fileAttachmentView}>

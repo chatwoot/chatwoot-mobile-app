@@ -28,14 +28,14 @@ export function findLastMessage({ messages }) {
 
 export function getUnreadCount(conversation) {
   return conversation.messages.filter(
-    chatMessage =>
+    (chatMessage) =>
       chatMessage.created_at * 1000 > conversation.agent_last_seen_at * 1000 &&
       chatMessage.message_type === 0 &&
       chatMessage.private !== true,
   ).length;
 }
 
-export const getRandomColor = function({ userName }) {
+export const getRandomColor = function ({ userName }) {
   let hash = 0;
 
   for (let i = 0; i < userName.length; i++) {
@@ -55,7 +55,7 @@ export const getRandomColor = function({ userName }) {
 
 export const checkImageExist = ({ thumbnail }) => {
   fetch(thumbnail)
-    .then(res => {
+    .then((res) => {
       if (res.status === 404) {
         return false;
       } else {
@@ -69,4 +69,10 @@ export const checkImageExist = ({ thumbnail }) => {
 
 export const openURL = ({ URL }) => {
   Linking.openURL(URL);
+};
+
+export const getInboxName = ({ inboxes, inboxId }) => {
+  const inbox = inboxes.find((item) => item.id === inboxId);
+
+  return inbox ? inbox.name : '';
 };

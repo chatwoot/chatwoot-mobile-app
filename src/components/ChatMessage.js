@@ -1,17 +1,15 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
-import { View, Dimensions, Image, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { Icon, withStyles, Tooltip } from '@ui-kitten/components';
+import { Icon, withStyles } from '@ui-kitten/components';
 
 import CustomText from './Text';
 
-import ImageLoader from './ImageLoader';
 import { messageStamp } from '../helpers/TimeHelper';
-
-const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Dimensions.get('window').height;
+import ChatAttachmentItem from '../components/ChatAttachmentItem';
+import ChatMessageItem from '../components/ChatMessageItem';
 
 const styles = (theme) => ({
   message: {
@@ -25,57 +23,6 @@ const styles = (theme) => ({
     alignItems: 'center',
   },
 
-  messageLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 8,
-    borderBottomRightRadius: 8,
-    borderTopRightRadius: 8,
-    maxWidth: Dimensions.get('window').width - 120,
-    left: -4,
-    backgroundColor: theme['background-basic-color-1'],
-    marginRight: 16,
-  },
-
-  messageRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 8,
-    borderBottomLeftRadius: 8,
-    borderTopLeftRadius: 8,
-    maxWidth: Dimensions.get('window').width - 120,
-    left: 4,
-    backgroundColor: theme['color-background-message'],
-    marginLeft: 16,
-  },
-  imageView: {
-    borderRadius: 8,
-    borderTopLeftRadius: 8,
-    left: 4,
-  },
-  imageLoader: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    opacity: 0.7,
-    backgroundColor: theme['color-background-message'],
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 8,
-    borderTopLeftRadius: 8,
-  },
-
-  image: {
-    height: deviceHeight / 5,
-    width: deviceWidth / 2,
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
-    alignSelf: 'center',
-  },
   activityView: {
     padding: 8,
     borderRadius: 8,
@@ -113,63 +60,23 @@ const PersonIcon = (style) => {
   return <Icon {...style} name="person-outline" />;
 };
 
-const MessageContentComponent = ({ themedStyle, message, type, showImage }) => {
-  const [imageLoading, onLoadImage] = useState(false);
-  const [visible, setVisible] = useState(false);
+const MessageContentComponent = ({
+  themedStyle,
+  message,
+  type,
+  showAttachment,
+  theme,
+}) => {
+  const { attachment } = message;
 
-  const [senderDetails, setSender] = useState('');
-
-  const toggleTooltip = () => {
-    setVisible(!visible);
-    setSender('');
-  };
-
-  const showSender = () => {
-    if (message.sender) {
-      setVisible(!visible);
-      setSender(`Sent by: ${message.sender.name}`);
-    }
-  };
-
-  return (
-    <React.Fragment>
-      {message.content ? (
-        <TouchableOpacity
-          style={
-            type === 'outgoing'
-              ? themedStyle.messageRight
-              : themedStyle.messageLeft
-          }
-          activeOpacity={0.95}
-          onPress={showSender}>
-          <Tooltip
-            text={senderDetails}
-            placement="top start"
-            visible={visible}
-            onBackdropPress={toggleTooltip}>
-            <CustomText style={themedStyle.messageContent}>
-              {message.content}
-            </CustomText>
-          </Tooltip>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          onPress={() => showImage({ imageUrl: message.attachment.data_url })}
-          style={themedStyle.imageView}>
-          <Image
-            style={themedStyle.image}
-            source={{
-              uri: message.attachment.data_url,
-            }}
-            onLoadStart={() => onLoadImage(true)}
-            onLoadEnd={() => {
-              onLoadImage(false);
-            }}
-          />
-          {imageLoading && <ImageLoader style={themedStyle.imageLoader} />}
-        </TouchableOpacity>
-      )}
-    </React.Fragment>
+  return attachment ? (
+    <ChatAttachmentItem
+      attachment={attachment}
+      type={type}
+      showAttachment={showAttachment}
+    />
+  ) : (
+    <ChatMessageItem message={message} type={type} />
   );
 };
 
@@ -179,23 +86,21 @@ const OutGoingMessageComponent = ({
   themedStyle,
   message,
   created_at,
-  showImage,
-}) => {
-  return (
-    <React.Fragment>
-      <CustomText style={themedStyle.date}>
-        {messageStamp({ time: created_at })}
-      </CustomText>
+  showAttachment,
+}) => (
+  <React.Fragment>
+    <CustomText style={themedStyle.date}>
+      {messageStamp({ time: created_at })}
+    </CustomText>
 
-      <MessageContent
-        message={message}
-        created_at={created_at}
-        type="outgoing"
-        showImage={showImage}
-      />
-    </React.Fragment>
-  );
-};
+    <MessageContent
+      message={message}
+      created_at={created_at}
+      type="outgoing"
+      showAttachment={showAttachment}
+    />
+  </React.Fragment>
+);
 
 const OutGoingMessage = withStyles(OutGoingMessageComponent, styles);
 
@@ -203,14 +108,15 @@ const IncomingMessageComponent = ({
   themedStyle,
   message,
   created_at,
-  showImage,
+
+  showAttachment,
 }) => (
   <React.Fragment>
     <MessageContent
       message={message}
       created_at={created_at}
       type="incoming"
-      showImage={showImage}
+      showAttachment={showAttachment}
     />
     <CustomText style={themedStyle.date}>
       {messageStamp({ time: created_at })}
@@ -249,14 +155,19 @@ const propTypes = {
     date: PropTypes.string,
   }),
   themedStyle: PropTypes.object,
-  showImage: PropTypes.func,
+  showAttachment: PropTypes.func,
 };
 
 const defaultProps = {
   message: { content: null, date: null },
 };
 
-const ChatMessageComponent = ({ message, themedStyle, showImage }) => {
+const ChatMessageComponent = ({
+  message,
+  themedStyle,
+
+  showAttachment,
+}) => {
   const { message_type, created_at } = message;
 
   let alignment = message_type ? 'flex-end' : 'flex-start';
@@ -272,7 +183,7 @@ const ChatMessageComponent = ({ message, themedStyle, showImage }) => {
             message={message}
             created_at={created_at}
             type="incoming"
-            showImage={showImage}
+            showAttachment={showAttachment}
           />
         ) : alignment === 'center' ? (
           <ActivityMessage
@@ -285,7 +196,7 @@ const ChatMessageComponent = ({ message, themedStyle, showImage }) => {
             message={message}
             created_at={created_at}
             type="outgoing"
-            showImage={showImage}
+            showAttachment={showAttachment}
           />
         )}
       </View>

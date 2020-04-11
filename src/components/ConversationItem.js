@@ -1,4 +1,4 @@
-import { withStyles, Icon } from '@ui-kitten/components';
+import { withStyles } from '@ui-kitten/components';
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import PropTypes from 'prop-types';
@@ -7,11 +7,8 @@ import CustomText from './Text';
 import UserAvatar from './UserAvatar';
 import { dynamicTime } from '../helpers/TimeHelper';
 import { findLastMessage, getUnreadCount } from '../helpers';
-import i18n from '../i18n';
 
-const PreviewIcon = (style) => {
-  return <Icon {...style} name="image-outline" />;
-};
+import ConversationAttachmentItem from './ConversationAttachmentItem';
 
 class ConversationItem extends Component {
   static propTypes = {
@@ -43,7 +40,7 @@ class ConversationItem extends Component {
     const unread_count = getUnreadCount(item);
 
     const lastMessage = findLastMessage({ messages });
-    const { content, created_at } = lastMessage;
+    const { content, created_at, attachment } = lastMessage;
 
     return (
       <TouchableOpacity
@@ -67,7 +64,7 @@ class ConversationItem extends Component {
               }>
               {name}
             </CustomText>
-            {lastMessage.content ? (
+            {!lastMessage.attachment ? (
               <CustomText
                 style={
                   unread_count
@@ -81,22 +78,12 @@ class ConversationItem extends Component {
                   : `${content.substring(0, 25)}...`}
               </CustomText>
             ) : (
-              <View style={themedStyle.imageView}>
-                <PreviewIcon
-                  style={themedStyle.previewIcon}
-                  fill={theme['text-hint-color']}
-                />
-                <CustomText
-                  style={
-                    unread_count
-                      ? themedStyle.messageActive
-                      : themedStyle.messageNotActive
-                  }
-                  numberOfLines={1}
-                  maxLength={8}>
-                  {i18n.t('CONVERSATION.PICTURE_CONTENT')}
-                </CustomText>
-              </View>
+              <ConversationAttachmentItem
+                themedStyle={themedStyle}
+                theme={theme}
+                unReadCount={unread_count}
+                attachment={attachment}
+              />
             )}
           </View>
         </View>
@@ -161,26 +148,7 @@ export default withStyles(ConversationItem, (theme) => ({
     bottom: 2,
     right: 2,
   },
-  imageView: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  previewIcon: {
-    width: 16,
-    height: 16,
-    marginTop: 4,
-    color: 'black',
-  },
-  messageActive: {
-    fontSize: theme['text-primary-size'],
-    fontWeight: theme['font-medium'],
-    paddingTop: 4,
-  },
-  messageNotActive: {
-    fontSize: theme['text-primary-size'],
-    paddingTop: 4,
-  },
+
   timeStamp: {
     color: theme['text-hint-color'],
     fontSize: theme['font-size-extra-extra-small'],

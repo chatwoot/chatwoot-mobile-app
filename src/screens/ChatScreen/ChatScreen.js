@@ -18,6 +18,7 @@ import {
   KeyboardAvoidingView,
   TextInput,
   Platform,
+  Linking,
 } from 'react-native';
 
 import ChatMessage from '../../components/ChatMessage';
@@ -158,11 +159,19 @@ class ChatScreenComponent extends Component {
     return <UserAvatar userName={name} thumbnail={thumbnail} />;
   };
 
-  showImage = ({ imageUrl }) => {
-    const { navigation } = this.props;
-    navigation.navigate('ImageScreen', {
-      imageUrl,
-    });
+  showAttachment = ({ type, dataUrl }) => {
+    if (type === 'image') {
+      const { navigation } = this.props;
+      navigation.navigate('ImageScreen', {
+        imageUrl: dataUrl,
+      });
+    } else {
+      Linking.canOpenURL(dataUrl).then((supported) => {
+        if (supported) {
+          Linking.openURL(dataUrl);
+        }
+      });
+    }
   };
 
   renderRightControls = (style) => {
@@ -246,8 +255,8 @@ class ChatScreenComponent extends Component {
     return (
       <ChatMessage
         message={item.item}
-        showImage={this.showImage}
         key={item.index}
+        showAttachment={this.showAttachment}
       />
     );
   };

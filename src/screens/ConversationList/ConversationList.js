@@ -31,7 +31,7 @@ import CustomText from '../../components/Text';
 
 import i18n from '../../i18n';
 
-const MenuIcon = style => <Icon {...style} name="funnel-outline" />;
+const MenuIcon = (style) => <Icon {...style} name="funnel-outline" />;
 
 const LoaderData = new Array(24).fill(0);
 
@@ -57,6 +57,7 @@ class ConversationListComponent extends Component {
     inboxSelected: PropTypes.shape({
       name: PropTypes.string,
     }),
+    inboxes: PropTypes.array.isRequired,
     conversationStatus: PropTypes.string,
     item: PropTypes.shape({}),
   };
@@ -70,6 +71,7 @@ class ConversationListComponent extends Component {
     loadInitialMessages: () => {},
     selectConversation: () => {},
     item: {},
+    inboxes: [],
     conversationStatus: 'Open',
   };
 
@@ -109,7 +111,7 @@ class ConversationListComponent extends Component {
     const { onEndReachedCalledDuringMomentum } = this.state;
 
     if (!onEndReachedCalledDuringMomentum) {
-      await this.setState(state => ({
+      await this.setState((state) => ({
         pageNumber: state.pageNumber + 1,
       }));
 
@@ -120,7 +122,7 @@ class ConversationListComponent extends Component {
     }
   };
 
-  onSelectConversation = item => {
+  onSelectConversation = (item) => {
     const { messages, meta } = item;
 
     const conversationId = item.id;
@@ -147,7 +149,7 @@ class ConversationListComponent extends Component {
     return <TopNavigationAction icon={MenuIcon} onPress={this.openFilter} />;
   };
 
-  onChangeTab = index => {
+  onChangeTab = (index) => {
     this.setState({
       selectedIndex: index,
       pageNumber: 1,
@@ -159,6 +161,7 @@ class ConversationListComponent extends Component {
     <ConversationItem
       item={item}
       onSelectConversation={this.onSelectConversation}
+      inboxes={this.props.inboxes}
     />
   );
 
@@ -178,7 +181,7 @@ class ConversationListComponent extends Component {
     const { payload } = conversations;
 
     const filterConversations = payload.filter(
-      item => item.messages.length !== 0,
+      (item) => item.messages.length !== 0,
     );
 
     return (
@@ -186,7 +189,7 @@ class ConversationListComponent extends Component {
         <List
           data={filterConversations}
           renderItem={this.renderItem}
-          ref={ref => {
+          ref={(ref) => {
             this.myFlatListRef = ref;
           }}
           onEndReached={this.onEndReached.bind(this)}
@@ -348,6 +351,7 @@ function mapStateToProps(state) {
     conversations: state.conversation.data,
     conversationStatus: state.conversation.conversationStatus,
     inboxSelected: state.inbox.inboxSelected,
+    inboxes: state.inbox.data,
   };
 }
 

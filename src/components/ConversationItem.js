@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import CustomText from './Text';
 import UserAvatar from './UserAvatar';
 import { dynamicTime } from '../helpers/TimeHelper';
-import { findLastMessage, getUnreadCount } from '../helpers';
+import { findLastMessage, getUnreadCount, getInboxName } from '../helpers';
 
 import ConversationAttachmentItem from './ConversationAttachmentItem';
 
@@ -16,6 +16,7 @@ class ConversationItem extends Component {
     theme: PropTypes.object,
     name: PropTypes.string,
     onSelectConversation: PropTypes.func,
+    inboxes: PropTypes.array.isRequired,
     item: PropTypes.shape({
       meta: PropTypes.shape({
         sender: PropTypes.shape({
@@ -24,18 +25,27 @@ class ConversationItem extends Component {
         }),
       }),
       messages: PropTypes.array.isRequired,
+      inbox_id: PropTypes.number,
     }).isRequired,
   };
 
   render() {
-    const { themedStyle, item, onSelectConversation, theme } = this.props;
+    const {
+      themedStyle,
+      item,
+      onSelectConversation,
+      theme,
+      inboxes,
+    } = this.props;
 
     const {
       meta: {
         sender: { name, thumbnail },
       },
       messages,
+      inbox_id: inboxId,
     } = item;
+    const inboxName = getInboxName({ inboxes, inboxId });
 
     const unread_count = getUnreadCount(item);
 
@@ -56,14 +66,25 @@ class ConversationItem extends Component {
             />
           </View>
           <View>
-            <CustomText
-              style={
-                unread_count
-                  ? themedStyle.conversationUserActive
-                  : themedStyle.conversationUserNotActive
-              }>
-              {name}
-            </CustomText>
+            <View style={themedStyle.nameView}>
+              <CustomText
+                style={
+                  unread_count
+                    ? themedStyle.conversationUserActive
+                    : themedStyle.conversationUserNotActive
+                }>
+                {name}
+              </CustomText>
+
+              {inboxName && (
+                <CustomText style={themedStyle.labelText}>
+                  {inboxName.length < 9
+                    ? `${inboxName}`
+                    : `${inboxName.substring(0, 8)}...`}
+                </CustomText>
+              )}
+            </View>
+
             {!lastMessage.attachment ? (
               <CustomText
                 style={
@@ -172,5 +193,28 @@ export default withStyles(ConversationItem, (theme) => ({
     color: theme['text-control-color'],
     fontSize: theme['font-size-extra-extra-small'],
     fontWeight: theme['font-medium'],
+  },
+  messageActive: {
+    fontSize: theme['text-primary-size'],
+    fontWeight: theme['font-medium'],
+    paddingTop: 4,
+  },
+  messageNotActive: {
+    fontSize: theme['text-primary-size'],
+    paddingTop: 4,
+  },
+  nameView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  labelText: {
+    color: theme['text-control-color'],
+    fontSize: theme['font-size-extra-extra-small'],
+    fontWeight: theme['font-semi-bold'],
+    borderRadius: 3,
+    paddingLeft: 2,
+    paddingRight: 2,
+    marginLeft: 4,
+    backgroundColor: theme['color-primary-default'],
   },
 }));

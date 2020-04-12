@@ -2,7 +2,7 @@ import { Dimensions } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width;
 
-export default theme => ({
+export default (theme) => ({
   keyboardView: {
     flex: 1,
     flexDirection: 'column',
@@ -55,5 +55,11 @@ export default theme => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  button: {
+    padding: 0,
+    minWidth: 2,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
   },
 });

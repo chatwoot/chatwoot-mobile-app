@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Dimensions,
   Platform,
+  Text,
 } from 'react-native';
 import { Button, withStyles } from '@ui-kitten/components';
 import t from 'tcomb-form-native';
@@ -58,7 +59,7 @@ class LoginScreenComponent extends Component {
       fields: {
         email: {
           placeholder: '',
-          template: props => <TextInputField {...props} />,
+          template: (props) => <TextInputField {...props} />,
           keyboardType: 'email-address',
           error: i18n.t('LOGIN.EMAIL_ERROR'),
           autoCapitalize: 'none',
@@ -68,7 +69,7 @@ class LoginScreenComponent extends Component {
         },
         password: {
           placeholder: '',
-          template: props => <TextInputField {...props} />,
+          template: (props) => <TextInputField {...props} />,
           keyboardType: 'default',
           autoCapitalize: 'none',
           error: i18n.t('LOGIN.PASSWORD_ERROR'),
@@ -121,13 +122,13 @@ class LoginScreenComponent extends Component {
           <View style={themedStyle.contentView}>
             <View style={themedStyle.formView}>
               <Form
-                ref={ref => {
+                ref={(ref) => {
                   this.formRef = ref;
                 }}
                 type={LoginForm}
                 options={options}
                 value={values}
-                onChange={value => this.onChange(value)}
+                onChange={(value) => this.onChange(value)}
               />
               <View style={themedStyle.loginButtonView}>
                 <LoaderButton
@@ -152,10 +153,19 @@ class LoginScreenComponent extends Component {
               </View>
               <View style={themedStyle.accountView}>
                 <Button
+                  style={themedStyle.button}
                   appearance="ghost"
                   status="basic"
                   onPress={() => openURL({ URL: SIGNUP_URL })}>
                   {i18n.t('LOGIN.CREATE_ACCOUNT')}
+                </Button>
+                <Text>|</Text>
+                <Button
+                  style={themedStyle.button}
+                  appearance="ghost"
+                  status="basic"
+                  onPress={() => navigate('ConfigureURL')}>
+                  Change URL
                 </Button>
               </View>
             </View>
@@ -169,8 +179,8 @@ class LoginScreenComponent extends Component {
 function bindAction(dispatch) {
   return {
     resetAuth: () => dispatch(resetAuth()),
-    onLogin: data => dispatch(onLogin(data)),
-    setLocale: data => dispatch(setLocale(data)),
+    onLogin: (data) => dispatch(onLogin(data)),
+    setLocale: (data) => dispatch(setLocale(data)),
   };
 }
 function mapStateToProps(state) {

@@ -1,5 +1,7 @@
 import axios from '../helpers/APIHelper';
 
+import * as RootNavigation from '../helpers/NavigationHelper';
+
 import {
   LOGIN,
   LOGIN_ERROR,
@@ -14,7 +16,7 @@ import {
 import { showToast } from '../helpers/ToastHelper';
 import I18n from '../i18n';
 
-export const onLogin = ({ email, password }) => async dispatch => {
+export const onLogin = ({ email, password }) => async (dispatch) => {
   try {
     dispatch({ type: LOGIN });
     const response = await axios.post('auth/sign_in', { email, password });
@@ -31,7 +33,7 @@ export const onLogin = ({ email, password }) => async dispatch => {
   }
 };
 
-export const onResetPassword = ({ email }) => async dispatch => {
+export const onResetPassword = ({ email }) => async (dispatch) => {
   try {
     dispatch({ type: RESET_PASSWORD });
     const response = await axios.post('auth/password', { email });
@@ -43,10 +45,11 @@ export const onResetPassword = ({ email }) => async dispatch => {
   }
 };
 
-export const resetAuth = () => async dispatch => {
+export const resetAuth = () => async (dispatch) => {
+  RootNavigation.navigate('ConfigureURL');
   dispatch({ type: RESET_AUTH });
 };
 
-export const onLogOut = () => async dispatch => {
+export const onLogOut = () => async (dispatch) => {
   dispatch({ type: USER_LOGOUT });
 };

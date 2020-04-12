@@ -46,7 +46,7 @@ class ConfigureURLScreenComponent extends Component {
 
   state = {
     values: {
-      url: 'app.chatwoot.com',
+      url: '',
     },
     options: {
       fields: {

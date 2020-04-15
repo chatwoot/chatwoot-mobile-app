@@ -1,5 +1,9 @@
 export const SET_LOCALE = 'SET_LOCALE';
 
+export const SET_URL = 'SET_URL';
+export const SET_URL_SUCCESS = 'SET_URL_SUCCESS';
+export const SET_URL_ERROR = 'SET_URL_ERROR';
+
 export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
@@ -50,5 +54,5 @@ export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
 export const RESET_PASSWORD_ERROR = 'RESET_PASSWORD_ERROR';
 
 export const RESET_AUTH = 'RESET_AUTH';
-
+export const RESET_SETTINGS = 'RESET_SETTINGS';
 export const USER_LOGOUT = 'USER_LOGOUT';

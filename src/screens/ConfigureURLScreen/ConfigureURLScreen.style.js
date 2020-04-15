@@ -27,39 +27,19 @@ export default (theme) => ({
     marginTop: Dimensions.get('window').height * 0.07,
   },
 
-  loginButtonView: {
-    paddingTop: 32,
+  nextButtonView: {
+    paddingTop: 64,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
 
-  loginButton: {
+  nextButton: {
     flex: 1,
   },
-  loginButtonText: {
+  nextButtonText: {
     color: theme['text-control-color'],
     fontWeight: theme['font-medium'],
     fontSize: theme['font-size-large'],
-  },
-
-  accountView: {
-    paddingTop: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  forgotView: {
-    paddingTop: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    padding: 0,
-    minWidth: 2,
-    paddingHorizontal: 0,
-    paddingVertical: 0,
   },
 });

@@ -3,8 +3,11 @@ import { connect } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import { navigationRef } from './helpers/NavigationHelper';
+
 import PropTypes from 'prop-types';
 import { createStackNavigator } from '@react-navigation/stack';
+import ConfigureURLScreen from './screens/ConfigureURLScreen/ConfigureURLScreen';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import TabBar from './components/TabBar';
 import ConversationList from './screens/ConversationList/ConversationList';
@@ -30,7 +33,7 @@ const SettingsStack = () => (
 );
 
 const TabStack = () => (
-  <Tab.Navigator tabBar={props => <TabBar {...props} />}>
+  <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
     <Tab.Screen name="Home" component={HomeStack} />
     <Tab.Screen name="Settings" component={SettingsStack} />
   </Tab.Navigator>
@@ -39,17 +42,21 @@ const TabStack = () => (
 class RootApp extends Component {
   static propTypes = {
     isLogged: PropTypes.bool,
+    isUrlSet: PropTypes.bool,
   };
 
   static defaultProps = {
     isLogged: false,
+    isUrlSet: false,
   };
   render() {
-    const { isLogged } = this.props;
+    const { isLogged, isUrlSet } = this.props;
 
     return (
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login" headerMode={'none'}>
+      <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator
+          initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'}
+          headerMode={'none'}>
           {isLogged ? (
             <>
               <Stack.Screen name="Tab" component={TabStack} />
@@ -62,6 +69,10 @@ class RootApp extends Component {
             </>
           ) : (
             <>
+              <Stack.Screen
+                name="ConfigureURL"
+                component={ConfigureURLScreen}
+              />
               <Stack.Screen name="Login" component={LoginScreen} />
               <Stack.Screen name="ResetPassword" component={ResetPassword} />
               <Stack.Screen
@@ -85,6 +96,7 @@ function bindAction() {
 function mapStateToProps(state) {
   return {
     isLogged: state.auth.isLogged,
+    isUrlSet: state.settings.isUrlSet,
   };
 }
 

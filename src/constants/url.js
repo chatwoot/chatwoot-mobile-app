@@ -1,3 +1,5 @@
+export const URL_TYPE = 'https://';
+
 export const BASE_URL = 'https://app.chatwoot.com/';
 
 export const API_URL = 'api/v1/';

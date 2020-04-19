@@ -26,7 +26,7 @@ export default (state = initialState, action) => {
     case SET_URL_ERROR:
       return {
         ...state,
-        isSettingUrl: true,
+        isSettingUrl: false,
         isUrlSet: false,
         error: action.payload,
         installationUrl: null,

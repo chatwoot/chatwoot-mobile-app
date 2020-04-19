@@ -8,7 +8,8 @@
     "ENTER_URL": "Chatwoot installation URL",
     "URL_ERROR": "Enter a valid URL",
     "NEXT": "Next",
-    "CHANGE_LANGUAGE": "Change language"
+    "CHANGE_LANGUAGE": "Change language",
+    "ERROR": "Invalid chatwoot installation url"
   },
   "LOGIN": {
     "EMAIL": "Email",

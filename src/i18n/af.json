@@ -1,0 +1,73 @@
+{
+  "WELCOME": "Welcome",
+  "FOOTER": {
+    "HOME": "Home",
+    "SETTINGS": "Settings"
+  },
+  "CONFIGURE_URL": {
+    "ENTER_URL": "Chatwoot installation URL",
+    "URL_ERROR": "Enter a valid URL",
+    "NEXT": "Next",
+    "CHANGE_LANGUAGE": "Change language"
+  },
+  "LOGIN": {
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "EMAIL_ERROR": "Enter a valid email",
+    "PASSWORD_ERROR": "Enter a valid password",
+    "LOGIN": "Sign In",
+    "FORGOT_PASSWORD": "Forgot your password?",
+    "RESET_HERE": "Reset here",
+    "NO_ACCOUNT": "Don't have an account?",
+    "CREATE_ACCOUNT": "Create new account",
+    "SETTINGS": "Settings",
+    "TERMS": "Terms & Conditions"
+  },
+  "FORGOT_PASSWORD": {
+    "EMAIL": "Please enter your email",
+    "EMAIL_ERROR": "Enter a valid email",
+    "RESET_HERE": "Reset password",
+    "HEADER_TITLE": "Reset password"
+  },
+  "CONVERSATION": {
+    "DEFAULT_HEADER_TITLE": "Conversations",
+    "MINE": "Mine",
+    "UN_ASSIGNED": "Unassigned",
+    "ALL": "All",
+    "EMPTY": "There are no active conversations in this group.",
+    "PICTURE_CONTENT": "Picture message",
+    "ATTACHMENT_CONTENT": "File Attachment",
+    "DOWNLOAD": "Download"
+  },
+  "FILTER": {
+    "HEADER_TITLE": "Filter",
+    "CHOOSE_INBOX": "Choose Inbox",
+    "CHOOSE_STATUS": "Conversation Status",
+    "OPEN": "Open",
+    "RESOLVED": "Resolved",
+    "SUBMIT": "Submit"
+  },
+  "SETTINGS": {
+    "HEADER_TITLE": "Settings",
+    "AVAILABILITY": "Your Availability",
+    "PUSH": "Push notification",
+    "HELP": "Help docs",
+    "SWITCH_THEME": "Switch Theme",
+    "LOG_OUT": "Logout"
+  },
+  "ERRORS": {
+    "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
+    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
+    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "AUTH": "Username / Password Incorrect. Please try again"
+  },
+  "SUCCESS": {
+    "AUTH": "Login Successful"
+  },
+  "EXIT": {
+    "TITLE": "Exit",
+    "SUBTITLE": "Are you sure you want to quit?",
+    "CANCEL": "Cancel",
+    "OK": "Ok"
+  }
+}

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -39,65 +39,51 @@ const TabStack = () => (
   </Tab.Navigator>
 );
 
-class RootApp extends Component {
-  static propTypes = {
-    isLogged: PropTypes.bool,
-    isUrlSet: PropTypes.bool,
-  };
+const propTypes = {
+  isLogged: PropTypes.bool,
+  isUrlSet: PropTypes.bool,
+};
 
-  static defaultProps = {
-    isLogged: false,
-    isUrlSet: false,
-  };
-  render() {
-    const { isLogged, isUrlSet } = this.props;
+const defaultProps = {
+  isLogged: false,
+  isUrlSet: false,
+};
 
-    return (
-      <NavigationContainer ref={navigationRef}>
-        <Stack.Navigator
-          initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'}
-          headerMode={'none'}>
-          {isLogged ? (
-            <>
-              <Stack.Screen name="Tab" component={TabStack} />
-              <Stack.Screen name="ChatScreen" component={ChatScreen} />
-              <Stack.Screen
-                name="ConversationFilter"
-                component={ConversationFilter}
-              />
-              <Stack.Screen name="ImageScreen" component={ImageScreen} />
-            </>
-          ) : (
-            <>
-              <Stack.Screen
-                name="ConfigureURL"
-                component={ConfigureURLScreen}
-              />
-              <Stack.Screen name="Login" component={LoginScreen} />
-              <Stack.Screen name="ResetPassword" component={ResetPassword} />
-              <Stack.Screen
-                name="ConversationList"
-                component={ConversationList}
-              />
+const App = () => {
+  const isLogged = useSelector((state) => state.auth.isLogged);
+  const isUrlSet = useSelector((state) => state.settings.isUrlSet);
 
-              <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
-            </>
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
-}
+  return (
+    <NavigationContainer ref={navigationRef}>
+      <Stack.Navigator
+        initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'}
+        headerMode={'none'}>
+        {isLogged ? (
+          <>
+            <Stack.Screen name="Tab" component={TabStack} />
+            <Stack.Screen name="ChatScreen" component={ChatScreen} />
+            <Stack.Screen
+              name="ConversationFilter"
+              component={ConversationFilter}
+            />
+            <Stack.Screen name="ImageScreen" component={ImageScreen} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="ConfigureURL" component={ConfigureURLScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="ResetPassword" component={ResetPassword} />
+            <Stack.Screen
+              name="ConversationList"
+              component={ConversationList}
+            />
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
-function bindAction() {
-  return {};
-}
-
-function mapStateToProps(state) {
-  return {
-    isLogged: state.auth.isLogged,
-    isUrlSet: state.settings.isUrlSet,
-  };
-}
-
-export default connect(mapStateToProps, bindAction)(RootApp);
+App.propTypes = propTypes;
+App.defaultProps = defaultProps;
+export default App;

@@ -85,6 +85,10 @@ class LoginScreenComponent extends Component {
 
   componentDidMount() {
     this.props.resetAuth();
+    const { installationUrl, navigation } = this.props;
+    if (!installationUrl) {
+      navigation.navigate('ConfigureURL');
+    }
   }
 
   onChange(values) {

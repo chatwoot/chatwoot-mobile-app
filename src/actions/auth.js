@@ -1,7 +1,5 @@
 import axios from '../helpers/APIHelper';
 
-import * as RootNavigation from '../helpers/NavigationHelper';
-
 import {
   LOGIN,
   LOGIN_ERROR,
@@ -22,7 +20,6 @@ export const onLogin = ({ email, password }) => async (dispatch) => {
     const response = await axios.post('auth/sign_in', { email, password });
     const { data } = response.data;
 
-    showToast({ message: I18n.t('SUCCESS.AUTH') });
     dispatch({ type: SET_AUTH_HEADER, payload: response.headers });
     dispatch({ type: LOGIN_SUCCESS, payload: data });
   } catch (error) {
@@ -46,7 +43,6 @@ export const onResetPassword = ({ email }) => async (dispatch) => {
 };
 
 export const resetAuth = () => async (dispatch) => {
-  RootNavigation.navigate('ConfigureURL');
   dispatch({ type: RESET_AUTH });
 };
 

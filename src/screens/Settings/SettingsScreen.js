@@ -45,7 +45,6 @@ class SettingsComponent extends Component {
       email: PropTypes.string,
       avatar_url: PropTypes.string,
     }).isRequired,
-
     switchTheme: PropTypes.func,
     onLogOut: PropTypes.func,
   };

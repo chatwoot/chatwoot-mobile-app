@@ -5,11 +5,12 @@ import {
   SET_URL_ERROR,
   SET_URL_SUCCESS,
   RESET_SETTINGS,
-  URL_TYPE,
 } from '../constants/actions';
+
 import * as RootNavigation from '../helpers/NavigationHelper';
 import { showToast } from '../helpers/ToastHelper';
 import I18n from '../i18n';
+import { URL_TYPE } from '../constants/url';
 
 export const setInstallationUrl = ({ url }) => async (dispatch) => {
   try {

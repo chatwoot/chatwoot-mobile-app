@@ -43,6 +43,7 @@ class LoginScreenComponent extends Component {
       navigate: PropTypes.func.isRequired,
     }).isRequired,
     resetAuth: PropTypes.func,
+    installationUrl: PropTypes.string,
   };
 
   static defaultProps = {
@@ -84,6 +85,10 @@ class LoginScreenComponent extends Component {
 
   componentDidMount() {
     this.props.resetAuth();
+    const { installationUrl, navigation } = this.props;
+    if (!installationUrl) {
+      navigation.navigate('ConfigureURL');
+    }
   }
 
   onChange(values) {
@@ -104,7 +109,7 @@ class LoginScreenComponent extends Component {
   render() {
     const { navigate } = this.props.navigation;
     const { options, values } = this.state;
-    const { isLoggingIn, themedStyle } = this.props;
+    const { isLoggingIn, themedStyle, installationUrl } = this.props;
 
     return (
       <KeyboardAvoidingView
@@ -156,7 +161,9 @@ class LoginScreenComponent extends Component {
                   style={themedStyle.button}
                   appearance="ghost"
                   status="basic"
-                  onPress={() => openURL({ URL: SIGNUP_URL })}>
+                  onPress={() =>
+                    openURL({ URL: `${installationUrl}${SIGNUP_URL}` })
+                  }>
                   {i18n.t('LOGIN.CREATE_ACCOUNT')}
                 </Button>
                 <Text>|</Text>
@@ -186,6 +193,7 @@ function bindAction(dispatch) {
 function mapStateToProps(state) {
   return {
     isLoggingIn: state.auth.isLoggingIn,
+    installationUrl: state.settings.installationUrl,
   };
 }
 

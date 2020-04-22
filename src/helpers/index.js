@@ -84,6 +84,5 @@ export const openURL = ({ URL }) => {
 
 export const getInboxName = ({ inboxes, inboxId }) => {
   const inbox = inboxes.find((item) => item.id === inboxId);
-
-  return inbox ? inbox.name : '';
+  return inbox ? inbox.name : null;
 };

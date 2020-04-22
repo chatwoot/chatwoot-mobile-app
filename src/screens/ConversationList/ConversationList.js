@@ -86,7 +86,7 @@ class ConversationListComponent extends Component {
       this.props.getInboxes();
       this.loadConversations();
       this.initActionCable();
-    }, 200);
+    }, 100);
   };
 
   initActionCable = async () => {
@@ -275,7 +275,7 @@ class ConversationListComponent extends Component {
     const unAssignedCount = meta ? `(${meta.unassigned_count})` : '';
     const allCount = meta ? `(${meta.all_count})` : '';
 
-    const headerTitle = `${inBoxName} (${conversationStatus})`;
+    const headerTitle = inBoxName ? `${inBoxName} (${conversationStatus})` : '';
 
     return (
       <SafeAreaView style={themedStyle.container}>

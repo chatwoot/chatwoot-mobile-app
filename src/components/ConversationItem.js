@@ -50,7 +50,7 @@ class ConversationItem extends Component {
     const unread_count = getUnreadCount(item);
 
     const lastMessage = findLastMessage({ messages });
-    const { content, created_at, attachment } = lastMessage;
+    const { content, created_at, attachments } = lastMessage;
 
     return (
       <TouchableOpacity
@@ -85,7 +85,14 @@ class ConversationItem extends Component {
               )}
             </View>
 
-            {!lastMessage.attachment ? (
+            {attachments && attachments.length ? (
+              <ConversationAttachmentItem
+                themedStyle={themedStyle}
+                theme={theme}
+                unReadCount={unread_count}
+                attachment={attachments[0]}
+              />
+            ) : (
               <CustomText
                 style={
                   unread_count
@@ -94,17 +101,10 @@ class ConversationItem extends Component {
                 }
                 numberOfLines={1}
                 maxLength={8}>
-                {content.length < 25
+                {content && content.length < 25
                   ? `${content}`
                   : `${content.substring(0, 25)}...`}
               </CustomText>
-            ) : (
-              <ConversationAttachmentItem
-                themedStyle={themedStyle}
-                theme={theme}
-                unReadCount={unread_count}
-                attachment={attachment}
-              />
             )}
           </View>
         </View>

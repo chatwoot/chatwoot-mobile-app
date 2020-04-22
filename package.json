@@ -1,12 +1,13 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "0.0.25",
+  "version": "0.0.31",
   "private": true,
   "scripts": {
     "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",
     "android": "react-native run-android",
     "android:clean": "cd android && ./gradlew clean",
     "android:release": "react-native run-android --variant=release",
+    "android:publish": "cd android && fastlane android beta",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",

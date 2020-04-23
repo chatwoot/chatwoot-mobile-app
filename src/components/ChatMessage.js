@@ -67,11 +67,11 @@ const MessageContentComponent = ({
   showAttachment,
   theme,
 }) => {
-  const { attachment } = message;
+  const { attachments } = message;
 
-  return attachment ? (
+  return attachments ? (
     <ChatAttachmentItem
-      attachment={attachment}
+      attachment={attachments}
       type={type}
       showAttachment={showAttachment}
     />

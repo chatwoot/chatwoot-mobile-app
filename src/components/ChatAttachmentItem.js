@@ -129,7 +129,7 @@ const ChatAttachmentItemComponent = ({
 }) => {
   const [imageLoading, onLoadImage] = useState(false);
 
-  const { file_type: fileType, data_url: dataUrl } = attachment;
+  const { file_type: fileType, data_url: dataUrl } = attachment[0];
   const fileName = dataUrl ? dataUrl.split('/').reverse()[0] : '';
 
   return (

@@ -113,7 +113,7 @@ const propTypes = {
   theme: PropTypes.object,
   type: PropTypes.string,
   showAttachment: PropTypes.func,
-  attachment: PropTypes.object,
+  attachment: PropTypes.shape([]),
 };
 
 const FileIcon = (style) => {

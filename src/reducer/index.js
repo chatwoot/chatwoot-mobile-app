@@ -15,5 +15,5 @@ const rootReducer = combineReducers({
 
 export default (state, action) =>
   action.type === 'USER_LOGOUT'
-    ? rootReducer(undefined, action)
+    ? rootReducer({ settings: state.settings }, action)
     : rootReducer(state, action);

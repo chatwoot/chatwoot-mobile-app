@@ -38,7 +38,9 @@
     "EMPTY": "There are no active conversations in this group.",
     "PICTURE_CONTENT": "Picture message",
     "ATTACHMENT_CONTENT": "File Attachment",
-    "DOWNLOAD": "Download"
+    "DOWNLOAD": "Download",
+    "TODAY": "Today",
+    "YESTERDAY": "Yesterday"
   },
   "FILTER": {
     "HEADER_TITLE": "Filter",

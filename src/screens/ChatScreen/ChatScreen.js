@@ -322,7 +322,7 @@ class ChatScreenComponent extends Component {
                   renderSectionFooter={({ section: { date } }) => (
                     <ChatMessageDate date={date} />
                   )}
-                  contentContainerStyle={themedStyle.chatContainer}
+                  style={themedStyle.chatContainer}
                   ListFooterComponent={this.renderMoreLoader}
                 />
               ) : null}

@@ -1,6 +1,6 @@
 import { Dimensions } from 'react-native';
 
-const styles = theme => ({
+const styles = (theme) => ({
   mainContainer: {
     flex: 1,
     backgroundColor: theme['background-basic-color-1'],
@@ -21,7 +21,6 @@ const styles = theme => ({
     backgroundColor: theme['color-background'],
   },
   chatView: {
-    backgroundColor: theme['background-basic-color-1'],
     flex: 13,
   },
   chatContainer: {
@@ -53,7 +52,7 @@ const styles = theme => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: theme['color-white'],
+    backgroundColor: theme['background-basic-color-1'],
   },
   input: {
     flex: 1,

@@ -1,6 +1,9 @@
 import md5 from 'md5';
 import { GRAVATAR_URL } from '../constants/url';
 import { Linking } from 'react-native';
+import DateHelper from './DateHelper';
+
+const groupBy = require('lodash.groupby');
 
 export function getUserInitial({ userName }) {
   const parts = userName ? userName.split(/[ -]/) : [];
@@ -85,4 +88,32 @@ export const openURL = ({ URL }) => {
 export const getInboxName = ({ inboxes, inboxId }) => {
   const inbox = inboxes.find((item) => item.id === inboxId);
   return inbox ? inbox.name : null;
+};
+
+export const getGroupedConversation = ({ conversations }) => {
+  const conversationGroupedByDate = groupBy(
+    Object.values(conversations),
+    (message) => new DateHelper(message.created_at).format(),
+  );
+  return Object.keys(conversationGroupedByDate).map((date) => {
+    const messages = conversationGroupedByDate[date].map((message, index) => {
+      let showAvatar = false;
+      if (index === conversationGroupedByDate[date].length - 1) {
+        showAvatar = true;
+      } else {
+        const nextMessage = conversationGroupedByDate[date][index + 1];
+        const currentSender = message.sender ? message.sender.name : '';
+        const nextSender = nextMessage.sender ? nextMessage.sender.name : '';
+        showAvatar =
+          currentSender !== nextSender ||
+          message.message_type !== nextMessage.message_type;
+      }
+      return { showAvatar, ...message };
+    });
+
+    return {
+      data: messages,
+      date,
+    };
+  });
 };

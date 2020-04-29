@@ -200,6 +200,7 @@ class ConversationListComponent extends Component {
             });
           }}
           ListFooterComponent={this.renderMoreLoader}
+          keyExtractor={(item) => item.id.toString()}
         />
       </Layout>
     );

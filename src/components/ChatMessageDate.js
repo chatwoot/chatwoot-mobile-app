@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { withStyles } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
-import CustomText from './Text';
 
 const styles = (theme) => ({
   mainView: {
@@ -28,7 +27,7 @@ const ChatMessageDateComponent = ({ date, themedStyle }) => {
   return (
     <View style={themedStyle.mainView}>
       <View style={themedStyle.dateView}>
-        <CustomText style={themedStyle.text}>{date}</CustomText>
+        <Text style={themedStyle.text}>{date}</Text>
       </View>
     </View>
   );

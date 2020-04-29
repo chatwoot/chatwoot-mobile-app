@@ -12,11 +12,11 @@ class DateHelper {
   format(dateFormat = 'MMM DD, YYYY') {
     if (moment(this.date).isSame(this.today, 'day')) {
       return i18n.t('CONVERSATION.TODAY');
-    } else if (moment(this.date).isSame(this.yesterday, 'day')) {
-      return i18n.t('CONVERSATION.YESTERDAY');
-    } else {
-      return this.date.format(dateFormat);
     }
+    if (moment(this.date).isSame(this.yesterday, 'day')) {
+      return i18n.t('CONVERSATION.YESTERDAY');
+    }
+    return this.date.format(dateFormat);
   }
 }
 

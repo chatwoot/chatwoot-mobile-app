@@ -90,6 +90,7 @@ export const theme = {
   'color-background-light': '#F9FAFC',
   'color-background-message': '#c7e3ff',
   'color-background-activity': '#fff3cf',
+  'color-background-date': '#eaf5feeb',
   'text-basic-color': '#1f2d3d',
   'text-hint-color': '#8492a6',
 

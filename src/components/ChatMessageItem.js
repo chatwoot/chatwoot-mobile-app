@@ -21,6 +21,13 @@ const styles = (theme) => ({
     left: -4,
     backgroundColor: theme['background-basic-color-1'],
     marginRight: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 1,
     elevation: 1,
   },
 
@@ -35,6 +42,13 @@ const styles = (theme) => ({
     left: 4,
     backgroundColor: theme['color-background-message'],
     marginLeft: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 1,
     elevation: 1,
   },
   messageContent: {

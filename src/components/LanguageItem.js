@@ -39,9 +39,7 @@ const propTypes = {
   themedStyle: PropTypes.object,
   theme: PropTypes.object,
   title: PropTypes.string,
-  item: PropTypes.shape({
-    name: PropTypes.string,
-  }),
+  item: PropTypes.string,
   onCheckedChange: PropTypes.func,
   isChecked: PropTypes.bool,
 };
@@ -49,7 +47,6 @@ const propTypes = {
 class LanguageItemComponent extends Component {
   render() {
     const { title, item, onCheckedChange, isChecked, themedStyle } = this.props;
-
     return (
       <TouchableOpacity
         style={themedStyle.itemView}

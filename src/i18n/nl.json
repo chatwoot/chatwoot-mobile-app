@@ -1,0 +1,74 @@
+{
+  "WELCOME": "Verwelkoming",
+  "FOOTER": {
+    "HOME": "Startpagina",
+    "SETTINGS": "Instellingen"
+  },
+  "CONFIGURE_URL": {
+    "ENTER_URL": "URL installatie chatwoot",
+    "URL_ERROR": "Voer een geldige URL in",
+    "NEXT": "Volgende",
+    "CHANGE_LANGUAGE": "Taal wijzigen",
+    "ERROR": "Ongeldige chatwoot installatie url"
+  },
+  "LOGIN": {
+    "EMAIL": "E-mailadres",
+    "PASSWORD": "Wachtwoord",
+    "EMAIL_ERROR": "Voer een geldig e-mailadres in",
+    "PASSWORD_ERROR": "Voer een geldig wachtwoord in",
+    "LOGIN": "Log in",
+    "FORGOT_PASSWORD": "Wachtwoord vergeten?",
+    "RESET_HERE": "Hier resetten",
+    "NO_ACCOUNT": "Nog geen account?",
+    "CREATE_ACCOUNT": "Nieuw account aanmaken",
+    "SETTINGS": "Instellingen",
+    "TERMS": "Algemene Voorwaarden"
+  },
+  "FORGOT_PASSWORD": {
+    "EMAIL": "Voer uw e-mailadres in",
+    "EMAIL_ERROR": "Voer een geldig e-mailadres in",
+    "RESET_HERE": "Wachtwoord opnieuw instellen",
+    "HEADER_TITLE": "Wachtwoord opnieuw instellen"
+  },
+  "CONVERSATION": {
+    "DEFAULT_HEADER_TITLE": "Gesprekken",
+    "MINE": "Mijn",
+    "UN_ASSIGNED": "Niet-toegewezen",
+    "ALL": "Allemaal",
+    "EMPTY": "Er zijn geen actieve gesprekken in deze groep.",
+    "PICTURE_CONTENT": "Bericht met foto",
+    "ATTACHMENT_CONTENT": "Bestand bijlage",
+    "DOWNLOAD": "downloaden"
+  },
+  "FILTER": {
+    "HEADER_TITLE": "Filteren",
+    "CHOOSE_INBOX": "Postvak In kiezen",
+    "CHOOSE_STATUS": "Gesprek status",
+    "OPEN": "Open",
+    "RESOLVED": "Opgelost",
+    "SUBMIT": "Bevestigen"
+  },
+  "SETTINGS": {
+    "HEADER_TITLE": "Instellingen",
+    "AVAILABILITY": "Je beschikbaarheid",
+    "PUSH": "Push-melding",
+    "HELP": "Help docs",
+    "SWITCH_THEME": "Wissel thema",
+    "LOG_OUT": "Afmelden"
+  },
+  "ERRORS": {
+    "COMMON_ERROR": "Kan geen verbinding maken met Woot Server, probeer het later opnieuw",
+    "OfFLINE": "U moet verbinding maken met Wi-Fi of een mobiel netwerk om weer online te kunnen komen",
+    "CANNOT_FETCH": "Er is een fout opgetreden bij het ophalen van de informatie, probeer het opnieuw",
+    "AUTH": "Gebruikersnaam / wachtwoord onjuist. Probeer het opnieuw"
+  },
+  "SUCCESS": {
+    "AUTH": "Login succesvol"
+  },
+  "EXIT": {
+    "TITLE": "Afsluiten",
+    "SUBTITLE": "Weet u zeker dat u wilt afsluiten?",
+    "CANCEL": "annuleren",
+    "OK": "OK"
+  }
+}

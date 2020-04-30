@@ -12,15 +12,16 @@ import PropTypes from 'prop-types';
 
 import { onResetPassword, resetAuth } from '../../actions/auth';
 
-import { setLocale } from '../../actions/locale';
 import styles from './ForgotPassword.style';
 import { Email } from '../../helpers/formHelper';
 import TextInputField from '../../components/TextInputField';
 
 import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
-const BackIcon = style => <Icon {...style} name="arrow-ios-back-outline" />;
-const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
+const BackIcon = (style) => <Icon {...style} name="arrow-ios-back-outline" />;
+const BackAction = (props) => (
+  <TopNavigationAction {...props} icon={BackIcon} />
+);
 const { Form } = t.form;
 const LoginForm = t.struct({
   email: Email,
@@ -52,7 +53,7 @@ class ForgotPasswordComponent extends Component {
       fields: {
         email: {
           placeholder: '',
-          template: props => <TextInputField {...props} />,
+          template: (props) => <TextInputField {...props} />,
           keyboardType: 'email-address',
           error: i18n.t('FORGOT_PASSWORD.EMAIL_ERROR'),
           autoCapitalize: 'none',
@@ -101,13 +102,13 @@ class ForgotPasswordComponent extends Component {
         <View style={themedStyle.contentView}>
           <View style={themedStyle.formView}>
             <Form
-              ref={ref => {
+              ref={(ref) => {
                 this.formRef = ref;
               }}
               type={LoginForm}
               options={options}
               value={values}
-              onChange={value => this.onChange(value)}
+              onChange={(value) => this.onChange(value)}
             />
 
             <View style={themedStyle.loginButtonView}>
@@ -130,8 +131,7 @@ class ForgotPasswordComponent extends Component {
 function bindAction(dispatch) {
   return {
     resetAuth: () => dispatch(resetAuth()),
-    onResetPassword: data => dispatch(onResetPassword(data)),
-    setLocale: data => dispatch(setLocale(data)),
+    onResetPassword: (data) => dispatch(onResetPassword(data)),
   };
 }
 function mapStateToProps(state) {

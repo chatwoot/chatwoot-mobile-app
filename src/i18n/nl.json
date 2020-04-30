@@ -52,9 +52,11 @@
     "HEADER_TITLE": "Instellingen",
     "AVAILABILITY": "Je beschikbaarheid",
     "PUSH": "Push-melding",
-    "HELP": "Help docs",
+    "HELP": "Helpen documenten",
     "SWITCH_THEME": "Wissel thema",
-    "LOG_OUT": "Afmelden"
+    "LOG_OUT": "Afmelden",
+    "CHANGE_LANGUAGE": "Taal wijzigen",
+    "SUBMIT": "Bevestigen"
   },
   "ERRORS": {
     "COMMON_ERROR": "Kan geen verbinding maken met Woot Server, probeer het later opnieuw",

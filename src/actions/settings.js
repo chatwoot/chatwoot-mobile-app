@@ -5,12 +5,17 @@ import {
   SET_URL_ERROR,
   SET_URL_SUCCESS,
   RESET_SETTINGS,
+  SET_LOCALE,
 } from '../constants/actions';
 
 import * as RootNavigation from '../helpers/NavigationHelper';
 import { showToast } from '../helpers/ToastHelper';
 import I18n from '../i18n';
 import { URL_TYPE } from '../constants/url';
+
+export const setLocale = (value) => (dispatch) => {
+  dispatch({ type: SET_LOCALE, payload: value });
+};
 
 export const setInstallationUrl = ({ url }) => async (dispatch) => {
   try {

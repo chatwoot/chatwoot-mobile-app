@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "private": true,
   "scripts": {
     "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",
@@ -27,6 +27,7 @@
     "@ui-kitten/metro-config": "^4.4.1",
     "axios": "^0.19.2",
     "i18n-js": "^3.5.1",
+    "lodash.groupby": "^4.6.0",
     "md5": "^2.2.1",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",

@@ -3,7 +3,6 @@ import {
   Icon,
   TopNavigation,
   TopNavigationAction,
-  List,
   Button,
   Spinner,
   OverflowMenu,
@@ -18,11 +17,12 @@ import {
   KeyboardAvoidingView,
   TextInput,
   Platform,
+  SectionList,
   Linking,
 } from 'react-native';
 
 import ChatMessage from '../../components/ChatMessage';
-
+import ChatMessageDate from '../../components/ChatMessageDate';
 import styles from './ChatScreen.style';
 import UserAvatar from '../../components/UserAvatar';
 import {
@@ -31,6 +31,7 @@ import {
   markMessagesAsRead,
   loadCannedResponses,
 } from '../../actions/conversation';
+import { getGroupedConversation } from '../../helpers';
 
 const BackIcon = (style) => <Icon {...style} name="arrow-ios-back-outline" />;
 
@@ -125,7 +126,7 @@ class ChatScreenComponent extends Component {
       this.props.sendMessage({
         conversationId,
         message: {
-          message: message,
+          content: message,
           private: false,
         },
       });
@@ -282,7 +283,9 @@ class ChatScreenComponent extends Component {
       .concat(allMessages)
       .reverse()
       .filter((item) => item.content !== '');
-
+    const groupedConversationList = getGroupedConversation({
+      conversations: completeMessages,
+    });
     return (
       <SafeAreaView style={themedStyle.mainContainer}>
         <KeyboardAvoidingView
@@ -300,11 +303,12 @@ class ChatScreenComponent extends Component {
 
           <View style={themedStyle.container} autoDismiss={false}>
             <View style={themedStyle.chatView}>
-              {completeMessages.length ? (
-                <List
+              {groupedConversationList.length ? (
+                <SectionList
                   ref={(ref) => {
                     this.myFlatListRef = ref;
                   }}
+                  inverted
                   onEndReached={this.onEndReached.bind(this)}
                   onEndReachedThreshold={0.5}
                   onMomentumScrollBegin={() => {
@@ -312,14 +316,17 @@ class ChatScreenComponent extends Component {
                       onEndReachedCalledDuringMomentum: false,
                     });
                   }}
-                  inverted
-                  contentContainerStyle={themedStyle.chatContainer}
-                  data={completeMessages}
+                  sections={groupedConversationList}
+                  keyExtractor={(item, index) => item + index}
                   renderItem={this.renderMessage}
+                  renderSectionFooter={({ section: { date } }) => (
+                    <ChatMessageDate date={date} />
+                  )}
+                  style={themedStyle.chatContainer}
                   ListFooterComponent={this.renderMoreLoader}
                 />
               ) : null}
-              {isFetching && !completeMessages.length && (
+              {isFetching && !groupedConversationList.length && (
                 <View style={themedStyle.loadMoreSpinnerView}>
                   <Spinner size="medium" />
                 </View>

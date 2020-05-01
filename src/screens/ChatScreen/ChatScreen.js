@@ -23,6 +23,7 @@ import {
 
 import ChatMessage from '../../components/ChatMessage';
 import ChatMessageDate from '../../components/ChatMessageDate';
+import ScrollToBottomButton from '../../components/ScrollToBottomButton';
 import styles from './ChatScreen.style';
 import UserAvatar from '../../components/UserAvatar';
 import {
@@ -77,6 +78,7 @@ class ChatScreenComponent extends Component {
     menuVisible: false,
     selectedIndex: null,
     filteredCannedResponses: [],
+    showScrollToButton: false,
   };
 
   componentDidMount = () => {
@@ -252,15 +254,37 @@ class ChatScreenComponent extends Component {
     });
   };
 
-  renderMessage = (item) => {
-    return (
-      <ChatMessage
-        message={item.item}
-        key={item.index}
-        showAttachment={this.showAttachment}
-      />
-    );
+  renderMessage = (item) => (
+    <ChatMessage
+      message={item.item}
+      key={item.index}
+      showAttachment={this.showAttachment}
+    />
+  );
+
+  scrollToBottom = () => {
+    this.setState({
+      showScrollToButton: false,
+    });
+    this.SectionListReference.scrollToLocation({
+      animated: true,
+      itemIndex: 0,
+      viewPosition: 0,
+    });
   };
+
+  setCurrentReadOffset(event) {
+    const scrollHight = Math.floor(event.nativeEvent.contentOffset.y);
+    if (scrollHight > 0) {
+      this.setState({
+        showScrollToButton: true,
+      });
+    } else {
+      this.setState({
+        showScrollToButton: false,
+      });
+    }
+  }
 
   render() {
     const { allMessages, isFetching, themedStyle, theme, route } = this.props;
@@ -269,6 +293,7 @@ class ChatScreenComponent extends Component {
       filteredCannedResponses,
       menuVisible,
       selectedIndex,
+      showScrollToButton,
     } = this.state;
 
     const {
@@ -305,8 +330,10 @@ class ChatScreenComponent extends Component {
             <View style={themedStyle.chatView}>
               {groupedConversationList.length ? (
                 <SectionList
+                  scrollEventThrottle={1900}
+                  onScroll={(event) => this.setCurrentReadOffset(event)}
                   ref={(ref) => {
-                    this.myFlatListRef = ref;
+                    this.SectionListReference = ref;
                   }}
                   inverted
                   onEndReached={this.onEndReached.bind(this)}
@@ -326,6 +353,11 @@ class ChatScreenComponent extends Component {
                   ListFooterComponent={this.renderMoreLoader}
                 />
               ) : null}
+              {showScrollToButton && (
+                <ScrollToBottomButton
+                  scrollToBottom={() => this.scrollToBottom()}
+                />
+              )}
               {isFetching && !groupedConversationList.length && (
                 <View style={themedStyle.loadMoreSpinnerView}>
                   <Spinner size="medium" />
@@ -345,6 +377,7 @@ class ChatScreenComponent extends Component {
                 <View />
               </OverflowMenu>
             )}
+
             <View style={themedStyle.inputView}>
               <TextInput
                 style={themedStyle.input}

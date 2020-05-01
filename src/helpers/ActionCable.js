@@ -1,7 +1,7 @@
 import BaseActionCableConnector from './BaseActionCableConnector';
 
 import {
-  addConversation,
+  addOrUpdateConversation,
   addMessageToConversation,
 } from '../actions/conversation';
 
@@ -17,19 +17,19 @@ class ActionCableConnector extends BaseActionCableConnector {
     };
   }
 
-  onConversationCreated = conversation => {
-    store.dispatch(addConversation({ conversation }));
+  onConversationCreated = (conversation) => {
+    store.dispatch(addOrUpdateConversation({ conversation }));
   };
 
-  onMessageCreated = message => {
+  onMessageCreated = (message) => {
     store.dispatch(addMessageToConversation({ message }));
   };
 
-  onAssigneeChanged = payload => {};
+  onAssigneeChanged = (payload) => {};
 
-  onStatusChange = data => {};
+  onStatusChange = (data) => {};
 
-  handleReceived = data => {};
+  handleReceived = (data) => {};
 }
 
 export default {

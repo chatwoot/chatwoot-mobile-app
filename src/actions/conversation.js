@@ -101,8 +101,8 @@ export const setConversation = ({ conversationId }) => async (dispatch) => {
   dispatch({ type: SET_CONVERSATION, payload: conversationId });
 };
 
-// Add new conversation to the conversation list
-export const addConversation = ({ conversation }) => async (
+// Add or update new conversation to the conversation list
+export const addOrUpdateConversation = ({ conversation }) => async (
   dispatch,
   getState,
 ) => {
@@ -131,7 +131,6 @@ export const addMessageToConversation = ({ message }) => async (
   } = getState().conversation;
 
   const { conversation_id, id: messageId } = message;
-
   const isMessageAlreadyExist = allMessages.find(
     (item) => item.id === messageId,
   );
@@ -139,10 +138,15 @@ export const addMessageToConversation = ({ message }) => async (
   if (selectedConversationId === conversation_id && !isMessageAlreadyExist) {
     dispatch({ type: UPDATE_MESSAGE, payload: message });
   }
-
+  // Check conversation exist or not in conversation state
   const [chat] = payload.filter((c) => c.id === message.conversation_id);
 
   if (!chat) {
+    // Add conversation if it is not exist conversation state
+    const apiUrl = `conversations/${conversation_id}`;
+    const response = await axios.get(apiUrl);
+    const conversation = response.data;
+    dispatch(addOrUpdateConversation({ conversation }));
     return;
   }
   const previousMessageIds = chat.messages.map((m) => m.id);

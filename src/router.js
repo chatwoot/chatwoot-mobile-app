@@ -12,10 +12,12 @@ import LoginScreen from './screens/LoginScreen/LoginScreen';
 import TabBar from './components/TabBar';
 import ConversationList from './screens/ConversationList/ConversationList';
 import SettingsScreen from './screens/Settings/SettingsScreen';
+import LanguageScreen from './screens/Language/LanguageScreen';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
 import ConversationFilter from './screens/ConversationFilter/ConversationFilter';
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
+import i18n from './i18n';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -52,7 +54,8 @@ const defaultProps = {
 const App = () => {
   const isLogged = useSelector((state) => state.auth.isLogged);
   const isUrlSet = useSelector((state) => state.settings.isUrlSet);
-
+  const locale = useSelector((state) => state.settings.localeValue);
+  i18n.locale = locale;
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
@@ -67,6 +70,7 @@ const App = () => {
               component={ConversationFilter}
             />
             <Stack.Screen name="ImageScreen" component={ImageScreen} />
+            <Stack.Screen name="Language" component={LanguageScreen} />
           </>
         ) : (
           <>

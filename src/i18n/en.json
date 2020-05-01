@@ -56,6 +56,8 @@
     "PUSH": "Push notification",
     "HELP": "Help docs",
     "SWITCH_THEME": "Switch Theme",
+    "CHANGE_LANGUAGE": "Change language",
+    "SUBMIT": "Submit",
     "LOG_OUT": "Logout"
   },
   "ERRORS": {

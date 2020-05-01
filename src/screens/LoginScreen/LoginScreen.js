@@ -14,7 +14,6 @@ import PropTypes from 'prop-types';
 
 import { onLogin, resetAuth } from '../../actions/auth';
 
-import { setLocale } from '../../actions/locale';
 import styles from './LoginScreen.style';
 import { Email, Password } from '../../helpers/formHelper';
 import TextInputField from '../../components/TextInputField';
@@ -187,7 +186,6 @@ function bindAction(dispatch) {
   return {
     resetAuth: () => dispatch(resetAuth()),
     onLogin: (data) => dispatch(onLogin(data)),
-    setLocale: (data) => dispatch(setLocale(data)),
   };
 }
 function mapStateToProps(state) {

@@ -3,15 +3,25 @@ import {
   SET_URL_SUCCESS,
   SET_URL_ERROR,
   RESET_SETTINGS,
+  SET_LOCALE,
 } from '../constants/actions';
 const initialState = {
   installationUrl: null,
   isUrlSet: false,
   isSettingUrl: false,
+  localeValue: 'en',
+  isLocaleSet: false,
   error: {},
 };
 export default (state = initialState, action) => {
   switch (action.type) {
+    case SET_LOCALE:
+      return {
+        ...state,
+        localeValue: action.payload,
+        isLocaleSet: true,
+      };
+
     case SET_URL:
       return { ...state, isSettingUrl: true };
 

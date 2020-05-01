@@ -10,6 +10,7 @@ import {
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_ERROR,
   RESET_AUTH,
+  SET_LOCALE,
 } from '../constants/actions';
 import { showToast } from '../helpers/ToastHelper';
 import I18n from '../i18n';
@@ -42,10 +43,22 @@ export const onResetPassword = ({ email }) => async (dispatch) => {
   }
 };
 
+export const getAccountDetails = () => async (dispatch) => {
+  try {
+    const result = await axios.get('');
+
+    const {
+      data: { locale },
+    } = result;
+    dispatch({ type: SET_LOCALE, payload: locale || 'en' });
+  } catch (error) {}
+};
+
 export const resetAuth = () => async (dispatch) => {
   dispatch({ type: RESET_AUTH });
 };
 
 export const onLogOut = () => async (dispatch) => {
+  dispatch({ type: SET_LOCALE, payload: 'en' });
   dispatch({ type: USER_LOGOUT });
 };

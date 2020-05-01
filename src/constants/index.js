@@ -27,4 +27,10 @@ export const INBOX_ICON = {
   'Channel::WebWidget': 'globe-outline',
   'Channel::TwitterProfile': 'twitter-outline',
   'Channel::FacebookPage': 'facebook-outline',
+  'Channel::TwilioSms': 'message-circle-outline',
+};
+
+export const LANGUAGES = {
+  en: 'English',
+  nl: 'Dutch',
 };

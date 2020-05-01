@@ -24,18 +24,25 @@ import { theme } from '../../theme';
 
 const settingsData = [
   {
-    text: i18n.t('SETTINGS.HELP'),
+    text: 'HELP',
     checked: true,
     iconName: 'question-mark-circle-outline',
     itemName: 'help',
   },
   {
-    text: i18n.t('SETTINGS.LOG_OUT'),
+    text: 'CHANGE_LANGUAGE',
+    checked: true,
+    iconName: 'globe-outline',
+    itemName: 'language',
+  },
+  {
+    text: 'LOG_OUT',
     checked: false,
     iconName: 'log-out-outline',
     itemName: 'logout',
   },
 ];
+
 class SettingsComponent extends Component {
   static propTypes = {
     themedStyle: PropTypes.object,
@@ -44,6 +51,9 @@ class SettingsComponent extends Component {
       name: PropTypes.string,
       email: PropTypes.string,
       avatar_url: PropTypes.string,
+    }).isRequired,
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func.isRequired,
     }).isRequired,
     switchTheme: PropTypes.func,
     onLogOut: PropTypes.func,
@@ -57,6 +67,11 @@ class SettingsComponent extends Component {
 
   onPressItem = ({ itemName }) => {
     switch (itemName) {
+      case 'language':
+        const { navigation } = this.props;
+        navigation.navigate('Language');
+        break;
+
       case 'theme':
         this.props.switchTheme();
         break;
@@ -102,7 +117,7 @@ class SettingsComponent extends Component {
           {settingsData.map((item, index) => (
             <SettingsItem
               key={item.text}
-              text={item.text}
+              text={i18n.t(`SETTINGS.${item.text}`)}
               checked={item.checked}
               iconSize={item.iconSize}
               itemType={item.itemType}

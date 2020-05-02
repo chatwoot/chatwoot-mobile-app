@@ -31,6 +31,7 @@ import {
   sendMessage,
   markMessagesAsRead,
   loadCannedResponses,
+  resetConversation,
 } from '../../actions/conversation';
 import { getGroupedConversation } from '../../helpers';
 
@@ -53,8 +54,10 @@ class ChatScreenComponent extends Component {
       navigate: PropTypes.func.isRequired,
       goBack: PropTypes.func.isRequired,
     }).isRequired,
+    resetConversation: PropTypes.func,
     cannedResponses: PropTypes.array.isRequired,
     allMessages: PropTypes.array.isRequired,
+    conversationDetails: PropTypes.object,
     sendMessage: PropTypes.func,
     loadMessages: PropTypes.func,
     loadCannedResponses: PropTypes.func,
@@ -83,12 +86,11 @@ class ChatScreenComponent extends Component {
 
   componentDidMount = () => {
     const { markAllMessagesAsRead, route } = this.props;
-    const {
-      params: { messages },
-    } = route;
-    const lastMessage = [...messages].reverse().pop();
 
-    const { conversation_id: conversationId } = lastMessage;
+    const { conversationId, meta } = route.params;
+    if (!meta) {
+      this.props.resetConversation();
+    }
     this.props.loadCannedResponses();
     this.props.loadMessages({ conversationId });
     markAllMessagesAsRead({ conversationId });
@@ -150,18 +152,6 @@ class ChatScreenComponent extends Component {
     );
   };
 
-  renderProfileAvatar = (props) => {
-    const { route } = this.props;
-    const {
-      params: {
-        meta: {
-          sender: { name, thumbnail },
-        },
-      },
-    } = route;
-    return <UserAvatar userName={name} thumbnail={thumbnail} />;
-  };
-
   showAttachment = ({ type, dataUrl }) => {
     if (type === 'image') {
       const { navigation } = this.props;
@@ -175,10 +165,6 @@ class ChatScreenComponent extends Component {
         }
       });
     }
-  };
-
-  renderRightControls = (style) => {
-    return <TopNavigationAction icon={this.renderProfileAvatar} />;
   };
 
   onBackPress = () => {
@@ -287,7 +273,15 @@ class ChatScreenComponent extends Component {
   }
 
   render() {
-    const { allMessages, isFetching, themedStyle, theme, route } = this.props;
+    const {
+      allMessages,
+      isFetching,
+      themedStyle,
+      theme,
+      conversationDetails,
+      route,
+    } = this.props;
+
     const {
       message,
       filteredCannedResponses,
@@ -295,15 +289,26 @@ class ChatScreenComponent extends Component {
       selectedIndex,
       showScrollToButton,
     } = this.state;
+    const senderDetails = {
+      name: null,
+      thumbnail: null,
+    };
 
-    const {
-      params: {
-        meta: {
-          sender: { name },
-        },
-      },
-    } = route;
-
+    const { meta } = route.params;
+    if (meta) {
+      const {
+        sender: { name, thumbnail },
+      } = meta;
+      senderDetails.name = name;
+      senderDetails.thumbnail = thumbnail;
+    }
+    if (!senderDetails.name && conversationDetails) {
+      const {
+        contact: { name, thumbnail },
+      } = conversationDetails;
+      senderDetails.name = name;
+      senderDetails.thumbnail = thumbnail;
+    }
     const completeMessages = []
       .concat(allMessages)
       .reverse()
@@ -311,20 +316,34 @@ class ChatScreenComponent extends Component {
     const groupedConversationList = getGroupedConversation({
       conversations: completeMessages,
     });
+
     return (
       <SafeAreaView style={themedStyle.mainContainer}>
         <KeyboardAvoidingView
           style={themedStyle.keyboardView}
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
           enabled>
-          <TopNavigation
-            alignment="center"
-            title={name}
-            rightControls={this.renderRightControls()}
-            leftControl={this.renderLeftControl()}
-            titleStyle={themedStyle.headerTitle}
-            subtitleStyle={themedStyle.subHeaderTitle}
-          />
+          {senderDetails.name && (
+            <TopNavigation
+              alignment="center"
+              title={senderDetails.name}
+              rightControls={
+                <TopNavigationAction
+                  icon={() => {
+                    return (
+                      <UserAvatar
+                        userName={senderDetails.name}
+                        thumbnail={senderDetails.thumbnail}
+                      />
+                    );
+                  }}
+                />
+              }
+              leftControl={this.renderLeftControl()}
+              titleStyle={themedStyle.headerTitle}
+              subtitleStyle={themedStyle.subHeaderTitle}
+            />
+          )}
 
           <View style={themedStyle.container} autoDismiss={false}>
             <View style={themedStyle.chatView}>
@@ -399,6 +418,7 @@ class ChatScreenComponent extends Component {
 
 function bindAction(dispatch) {
   return {
+    resetConversation: () => dispatch(resetConversation()),
     loadMessages: ({ conversationId, beforeId }) =>
       dispatch(loadMessages({ conversationId, beforeId })),
 
@@ -411,6 +431,7 @@ function bindAction(dispatch) {
 }
 function mapStateToProps(state) {
   return {
+    conversationDetails: state.conversation.conversationDetails,
     allMessages: state.conversation.allMessages,
     cannedResponses: state.conversation.cannedResponses,
     isFetching: state.conversation.isFetching,

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import { navigationRef } from './helpers/NavigationHelper';
+import { Linking, View } from 'react-native';
+import { Spinner } from '@ui-kitten/components';
+import { navigationRef, navigate } from './helpers/NavigationHelper';
 
 import PropTypes from 'prop-types';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -18,6 +19,8 @@ import ConversationFilter from './screens/ConversationFilter/ConversationFilter'
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
 import i18n from './i18n';
+
+import { checkUrlIsConversation } from './helpers/UrlHelper';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -51,11 +54,67 @@ const defaultProps = {
   isUrlSet: false,
 };
 
+const useMount = (func) => useEffect(() => func(), [func]);
+
+const useInitialURL = () => {
+  const [urlDetails, setUrlDetails] = useState(null);
+  const [urlProcessing, setProcessing] = useState(true);
+  const accountId = useSelector((state) => state.auth.user.account_id);
+
+  useMount(() => {
+    const getUrlAsync = async () => {
+      // Get the deep link used to open the app
+      const initialUrl = await Linking.getInitialURL();
+
+      const isConversationURL = await checkUrlIsConversation({
+        url: initialUrl,
+      });
+      // console.log('isURLConversation', initialUrl, isConversationURL);
+
+      if (isConversationURL) {
+        const urlParams = initialUrl.split('/');
+
+        const parsedAccountId = parseInt(urlParams[5]);
+        const conversationId = parseInt(urlParams[7]);
+        // Check account id and opened conversation account id are same
+        // console.log(`Opening ${conversationId}`);
+
+        if (parsedAccountId === accountId) {
+          navigate('ChatScreen', {
+            conversationId,
+          });
+        }
+      } else {
+        setProcessing(false);
+        setUrlDetails(null);
+      }
+    };
+
+    getUrlAsync();
+  });
+
+  return { urlDetails, urlProcessing };
+};
+
 const App = () => {
   const isLogged = useSelector((state) => state.auth.isLogged);
   const isUrlSet = useSelector((state) => state.settings.isUrlSet);
   const locale = useSelector((state) => state.settings.localeValue);
+  const { urlProcessing, urlDetails } = useInitialURL();
   i18n.locale = locale;
+
+  if (!urlDetails || urlProcessing) {
+    return (
+      <View
+        style={{
+          alignItems: 'center',
+          paddingTop: 16,
+          height: '100%',
+        }}>
+        <Spinner size="large" />
+      </View>
+    );
+  }
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator

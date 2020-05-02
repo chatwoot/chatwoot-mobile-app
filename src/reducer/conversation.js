@@ -16,6 +16,8 @@ import {
   GET_CANNED_RESPONSES,
   GET_CANNED_RESPONSES_SUCCESS,
   GET_CANNED_RESPONSES_ERROR,
+  SET_CONVERSATION_DETAILS,
+  RESET_CONVERSATION,
 } from '../constants/actions';
 
 const initialState = {
@@ -33,6 +35,7 @@ const initialState = {
   },
   allMessages: [],
   cannedResponses: [],
+  conversationDetails: null,
   selectedConversationId: null,
 };
 export default (state = initialState, action) => {
@@ -66,6 +69,13 @@ export default (state = initialState, action) => {
         ...state,
         selectedConversationId: action.payload,
         allMessages: [],
+        conversationDetails: null,
+      };
+
+    case SET_CONVERSATION_DETAILS:
+      return {
+        ...state,
+        conversationDetails: action.payload,
       };
 
     case ADD_MESSAGE: {
@@ -141,6 +151,13 @@ export default (state = initialState, action) => {
         ...state,
         isAllConversationsLoaded: true,
         isFetching: false,
+      };
+    }
+
+    case RESET_CONVERSATION: {
+      return {
+        ...state,
+        allMessages: [],
       };
     }
 

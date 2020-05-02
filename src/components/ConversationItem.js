@@ -73,14 +73,14 @@ class ConversationItem extends Component {
                     ? themedStyle.conversationUserActive
                     : themedStyle.conversationUserNotActive
                 }>
-                {name}
+                {name.length < 18 ? `${name}` : `${name.substring(0, 15)}...`}
               </CustomText>
 
               {inboxName && (
                 <CustomText style={themedStyle.labelText}>
-                  {inboxName.length < 9
+                  {inboxName.length < 14
                     ? `${inboxName}`
-                    : `${inboxName.substring(0, 8)}...`}
+                    : `${inboxName.substring(0, 12)}...`}
                 </CustomText>
               )}
             </View>

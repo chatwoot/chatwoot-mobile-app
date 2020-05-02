@@ -4,12 +4,11 @@
 
 We use [git-flow](https://nvie.com/posts/a-successful-git-branching-model/) branching model. The base branch is `develop`.
 
-
 - [Running](#running)
   - [Prerequisites](#prerequisites)
   - [Environment Variables](#environment-variables)
   - [Running](#running-1)
-    - [iOS](#ios)
+    - [iOS](#ios) - **Mac is required if you wish to develop for iOS.**
     - [Android](#android)
 
 ## Installation and setup
@@ -33,16 +32,22 @@ And install dependencies
 
 `$ yarn`
 
-### Environment Variables
+#### Environment Variables
 
-In order to run the application locally you will need to find and add some environment variables to the project. These can be found in `url.js` under src/constants folder.
+In order to run the application locally you will need to find and add some environment variables to the project. These can be found in `url.js` under `src/constants` folder. Replace `INSTALLATION_URL` with your Chatwoot installation url
 
 ## Running
 
 ### iOS
 
-- `react-native run-ios`
+- `cd ios && pod install`
+
+- `yarn ios`
+
+OR
+
+Open `Chatwoot.xcworkspace` file under `ios` folder. Choose your target device and click on playbutton
 
 ### Android
 
-- `react-native run-android`
+- `yarn android`

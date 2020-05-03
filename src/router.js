@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Linking, View } from 'react-native';
-import { Spinner } from '@ui-kitten/components';
-import { navigationRef, navigate } from './helpers/NavigationHelper';
+import { Linking } from 'react-native';
+import { navigationRef } from './helpers/NavigationHelper';
 
 import PropTypes from 'prop-types';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -19,9 +18,8 @@ import ConversationFilter from './screens/ConversationFilter/ConversationFilter'
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
 import i18n from './i18n';
-import styles from './style';
 
-import { checkUrlIsConversation } from './helpers/UrlHelper';
+import { doDeepLinking } from './helpers/DeepLinking';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -55,65 +53,33 @@ const defaultProps = {
   isUrlSet: false,
 };
 
-// eslint-disable-next-line react-hooks/exhaustive-deps
-const useMount = (func) => useEffect(() => func(), []);
+const useInitialURL = async () => {
+  const initialUrl = await Linking.getInitialURL();
+  if (initialUrl) {
+    doDeepLinking({ url: initialUrl });
+  }
+};
 
-const useInitialURL = () => {
-  const [processing, setProcessing] = useState(true);
-  const isLogged = useSelector((state) => state.auth.isLogged);
-  const userDetails = useSelector((state) => state.auth.user);
-
-  useMount(() => {
-    const getUrlAsync = async () => {
-      if (isLogged) {
-        // Get the deep link used to open the app
-        const initialUrl = await Linking.getInitialURL();
-        const { account_id: accountId } = userDetails;
-
-        const isConversationURL = await checkUrlIsConversation({
-          url: initialUrl,
-        });
-        if (isConversationURL) {
-          const urlParams = initialUrl.split('/');
-
-          const parsedAccountId = parseInt(urlParams[5]);
-          const conversationId = parseInt(urlParams[7]);
-          // Check account id and opened conversation account id are same
-          if (parsedAccountId === accountId) {
-            navigate('ChatScreen', {
-              conversationId,
-            });
-          }
-          setProcessing(false);
-        } else {
-          setProcessing(false);
-        }
-      } else {
-        setProcessing(false);
-      }
-    };
-
-    getUrlAsync();
-  });
-
-  return { processing };
+const _handleOpenURL = (event) => {
+  doDeepLinking({ url: event.url });
 };
 
 const App = () => {
   const isLogged = useSelector((state) => state.auth.isLogged);
   const isUrlSet = useSelector((state) => state.settings.isUrlSet);
   const locale = useSelector((state) => state.settings.localeValue);
-  const { processing: urlProcessing } = useInitialURL();
 
   i18n.locale = locale;
+  // Get the deep link used to open the app in minimized state
+  useEffect(() => {
+    Linking.addEventListener('url', _handleOpenURL);
+    return () => {
+      Linking.removeEventListener('url');
+    };
+  }, []);
+  // Get the deep link used to open the app in closed state
+  useInitialURL();
 
-  if (urlProcessing) {
-    return (
-      <View style={styles.loaderView}>
-        <Spinner size="large" />
-      </View>
-    );
-  }
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator

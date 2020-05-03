@@ -68,7 +68,6 @@ class ConversationListComponent extends Component {
 
   static defaultProps = {
     isFetching: false,
-
     isAllConversationsLoaded: false,
     getInboxes: () => {},
     getConversations: () => {},
@@ -86,12 +85,10 @@ class ConversationListComponent extends Component {
   };
 
   componentDidMount = () => {
-    setTimeout(() => {
-      this.props.getAccountDetails();
-      this.props.getInboxes();
-      this.loadConversations();
-      this.initActionCable();
-    }, 100);
+    this.props.getAccountDetails();
+    this.props.getInboxes();
+    this.loadConversations();
+    this.initActionCable();
   };
 
   initActionCable = async () => {

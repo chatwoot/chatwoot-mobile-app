@@ -19,6 +19,7 @@ import ConversationFilter from './screens/ConversationFilter/ConversationFilter'
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
 import i18n from './i18n';
+import styles from './style';
 
 import { checkUrlIsConversation } from './helpers/UrlHelper';
 
@@ -54,63 +55,61 @@ const defaultProps = {
   isUrlSet: false,
 };
 
-const useMount = (func) => useEffect(() => func(), [func]);
+// eslint-disable-next-line react-hooks/exhaustive-deps
+const useMount = (func) => useEffect(() => func(), []);
 
 const useInitialURL = () => {
-  const [urlDetails, setUrlDetails] = useState(null);
-  const [urlProcessing, setProcessing] = useState(true);
-  const accountId = useSelector((state) => state.auth.user.account_id);
+  const [processing, setProcessing] = useState(true);
+  const isLogged = useSelector((state) => state.auth.isLogged);
+  const userDetails = useSelector((state) => state.auth.user);
 
   useMount(() => {
     const getUrlAsync = async () => {
-      // Get the deep link used to open the app
-      const initialUrl = await Linking.getInitialURL();
+      if (isLogged) {
+        // Get the deep link used to open the app
+        const initialUrl = await Linking.getInitialURL();
+        const { account_id: accountId } = userDetails;
 
-      const isConversationURL = await checkUrlIsConversation({
-        url: initialUrl,
-      });
-      // console.log('isURLConversation', initialUrl, isConversationURL);
+        const isConversationURL = await checkUrlIsConversation({
+          url: initialUrl,
+        });
+        if (isConversationURL) {
+          const urlParams = initialUrl.split('/');
 
-      if (isConversationURL) {
-        const urlParams = initialUrl.split('/');
-
-        const parsedAccountId = parseInt(urlParams[5]);
-        const conversationId = parseInt(urlParams[7]);
-        // Check account id and opened conversation account id are same
-        // console.log(`Opening ${conversationId}`);
-
-        if (parsedAccountId === accountId) {
-          navigate('ChatScreen', {
-            conversationId,
-          });
+          const parsedAccountId = parseInt(urlParams[5]);
+          const conversationId = parseInt(urlParams[7]);
+          // Check account id and opened conversation account id are same
+          if (parsedAccountId === accountId) {
+            navigate('ChatScreen', {
+              conversationId,
+            });
+          }
+          setProcessing(false);
+        } else {
+          setProcessing(false);
         }
       } else {
         setProcessing(false);
-        setUrlDetails(null);
       }
     };
 
     getUrlAsync();
   });
 
-  return { urlDetails, urlProcessing };
+  return { processing };
 };
 
 const App = () => {
   const isLogged = useSelector((state) => state.auth.isLogged);
   const isUrlSet = useSelector((state) => state.settings.isUrlSet);
   const locale = useSelector((state) => state.settings.localeValue);
-  const { urlProcessing, urlDetails } = useInitialURL();
+  const { processing: urlProcessing } = useInitialURL();
+
   i18n.locale = locale;
 
-  if (!urlDetails || urlProcessing) {
+  if (urlProcessing) {
     return (
-      <View
-        style={{
-          alignItems: 'center',
-          paddingTop: 16,
-          height: '100%',
-        }}>
+      <View style={styles.loaderView}>
         <Spinner size="large" />
       </View>
     );

@@ -22,6 +22,8 @@ import {
   setConversation,
 } from '../../actions/conversation';
 
+import { saveDeviceDetails } from '../../actions/settings';
+
 import { getAccountDetails } from '../../actions/auth';
 
 import ConversationItem from '../../components/ConversationItem';
@@ -57,6 +59,7 @@ class ConversationListComponent extends Component {
     getConversations: PropTypes.func,
     selectConversation: PropTypes.func,
     getAccountDetails: PropTypes.func,
+    saveDeviceDetails: PropTypes.func,
     inboxSelected: PropTypes.shape({
       name: PropTypes.string,
     }),
@@ -68,6 +71,7 @@ class ConversationListComponent extends Component {
 
   static defaultProps = {
     isFetching: false,
+
     isAllConversationsLoaded: false,
     getInboxes: () => {},
     getConversations: () => {},
@@ -348,6 +352,7 @@ function bindAction(dispatch) {
       dispatch(setConversation({ conversationId })),
     loadInitialMessages: ({ messages }) =>
       dispatch(loadInitialMessage({ messages })),
+    saveDeviceDetails: () => dispatch(saveDeviceDetails()),
   };
 }
 function mapStateToProps(state) {

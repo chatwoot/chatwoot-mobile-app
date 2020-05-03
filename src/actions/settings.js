@@ -1,4 +1,5 @@
 import axios from 'axios';
+import messaging from '@react-native-firebase/messaging';
 
 import {
   SET_URL,
@@ -37,4 +38,12 @@ export const setInstallationUrl = ({ url }) => async (dispatch) => {
 
 export const resetSettings = () => async (dispatch) => {
   dispatch({ type: RESET_SETTINGS });
+};
+
+export const saveDeviceDetails = () => async (dispatch) => {
+  try {
+    // const enabled = await messaging().hasPermission();
+    // const settings = await messaging().requestPermission();
+    // const token = await messaging().getToken();
+  } catch {}
 };

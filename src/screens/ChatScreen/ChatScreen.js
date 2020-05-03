@@ -88,6 +88,7 @@ class ChatScreenComponent extends Component {
     const { markAllMessagesAsRead, route } = this.props;
 
     const { conversationId, meta } = route.params;
+    // Reset all messages if app is opening from external link (Deep linking or Push)
     if (!meta) {
       this.props.resetConversation();
     }

@@ -273,27 +273,13 @@ class ChatScreenComponent extends Component {
     }
   }
 
-  render() {
-    const {
-      allMessages,
-      isFetching,
-      themedStyle,
-      theme,
-      conversationDetails,
-      route,
-    } = this.props;
-
-    const {
-      message,
-      filteredCannedResponses,
-      menuVisible,
-      selectedIndex,
-      showScrollToButton,
-    } = this.state;
+  renderTopNavigation = () => {
     const senderDetails = {
       name: null,
       thumbnail: null,
     };
+
+    const { themedStyle, conversationDetails, route } = this.props;
 
     const { meta } = route.params;
     if (meta) {
@@ -310,6 +296,46 @@ class ChatScreenComponent extends Component {
       senderDetails.name = name;
       senderDetails.thumbnail = thumbnail;
     }
+    if (senderDetails.name) {
+      return (
+        <TopNavigation
+          alignment="center"
+          title={senderDetails.name}
+          rightControls={
+            <TopNavigationAction
+              icon={() => (
+                <UserAvatar
+                  userName={senderDetails.name}
+                  thumbnail={senderDetails.thumbnail}
+                />
+              )}
+            />
+          }
+          leftControl={this.renderLeftControl()}
+          titleStyle={themedStyle.headerTitle}
+          subtitleStyle={themedStyle.subHeaderTitle}
+        />
+      );
+    }
+  };
+
+  render() {
+    const {
+      allMessages,
+      isFetching,
+      themedStyle,
+      theme,
+      conversationDetails,
+    } = this.props;
+
+    const {
+      message,
+      filteredCannedResponses,
+      menuVisible,
+      selectedIndex,
+      showScrollToButton,
+    } = this.state;
+
     const completeMessages = []
       .concat(allMessages)
       .reverse()
@@ -324,27 +350,7 @@ class ChatScreenComponent extends Component {
           style={themedStyle.keyboardView}
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
           enabled>
-          {senderDetails.name && (
-            <TopNavigation
-              alignment="center"
-              title={senderDetails.name}
-              rightControls={
-                <TopNavigationAction
-                  icon={() => {
-                    return (
-                      <UserAvatar
-                        userName={senderDetails.name}
-                        thumbnail={senderDetails.thumbnail}
-                      />
-                    );
-                  }}
-                />
-              }
-              leftControl={this.renderLeftControl()}
-              titleStyle={themedStyle.headerTitle}
-              subtitleStyle={themedStyle.subHeaderTitle}
-            />
-          )}
+          {this.renderTopNavigation()}
 
           <View style={themedStyle.container} autoDismiss={false}>
             <View style={themedStyle.chatView}>

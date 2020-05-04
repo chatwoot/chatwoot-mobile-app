@@ -1,0 +1,78 @@
+{
+  "WELCOME": "Bienvenue",
+  "FOOTER": {
+    "HOME": "Accueil",
+    "SETTINGS": "Paramètres"
+  },
+  "CONFIGURE_URL": {
+    "ENTER_URL": "URL d'installation de Chatwoot",
+    "URL_ERROR": "Saisissez une URL valide",
+    "NEXT": "Suivant",
+    "CHANGE_LANGUAGE": "Modifier la langue",
+    "ERROR": "URL d'installation de Chatwoot invalide"
+  },
+  "LOGIN": {
+    "EMAIL": "Courriel",
+    "PASSWORD": "Mot de passe",
+    "EMAIL_ERROR": "Saisissez une adresse de courriel valide",
+    "PASSWORD_ERROR": "Saisissez un mot de passe valide",
+    "LOGIN": "Se connecter",
+    "FORGOT_PASSWORD": "Mot de passe oublié ?",
+    "RESET_HERE": "Réinitialiser ici",
+    "NO_ACCOUNT": "Vous n'avez pas de compte ?",
+    "CREATE_ACCOUNT": "Créer un nouveau compte",
+    "SETTINGS": "Paramètres",
+    "TERMS": "Conditions Générales"
+  },
+  "FORGOT_PASSWORD": {
+    "EMAIL": "Veuillez saisir votre adresse de courriel",
+    "EMAIL_ERROR": "Saisissez une adresse de courriel valide",
+    "RESET_HERE": "Réinitialiser le mot de passe",
+    "HEADER_TITLE": "Réinitialiser le mot de passe"
+  },
+  "CONVERSATION": {
+    "DEFAULT_HEADER_TITLE": "Conversations",
+    "MINE": "Les miennes",
+    "UN_ASSIGNED": "Non assignées",
+    "ALL": "Toutes",
+    "EMPTY": "Il n'y a aucune conversation active dans ce groupe.",
+    "PICTURE_CONTENT": "Message image",
+    "ATTACHMENT_CONTENT": "Pièce jointe",
+    "DOWNLOAD": "Télécharger",
+    "TODAY": "Aujourd'hui",
+    "YESTERDAY": "Hier"
+  },
+  "FILTER": {
+    "HEADER_TITLE": "Filtrer",
+    "CHOOSE_INBOX": "Choisir la boîte de réception",
+    "CHOOSE_STATUS": "Statut de la conversation",
+    "OPEN": "Ouverte",
+    "RESOLVED": "Résolue",
+    "SUBMIT": "Envoyer"
+  },
+  "SETTINGS": {
+    "HEADER_TITLE": "Paramètres",
+    "AVAILABILITY": "Votre disponibilité",
+    "PUSH": "Notifications push",
+    "HELP": "Documentation",
+    "SWITCH_THEME": "Changer de thème",
+    "CHANGE_LANGUAGE": "Modifier la langue",
+    "SUBMIT": "Envoyer",
+    "LOG_OUT": "Se déconnecter"
+  },
+  "ERRORS": {
+    "COMMON_ERROR": "Impossible de se connecter au serveur Woot, veuillez réessayer ultérieurement",
+    "OfFLINE": "Vous devez vous connecter au Wi-Fi ou à un réseau cellulaire pour vous reconnecter",
+    "CANNOT_FETCH": "Une erreur s'est produite lors de la récupération des informations, veuillez réessayer",
+    "AUTH": "Nom d'utilisateur / mot de passe incorrect. Veuillez réessayer"
+  },
+  "SUCCESS": {
+    "AUTH": "Connexion réussie"
+  },
+  "EXIT": {
+    "TITLE": "Quitter",
+    "SUBTITLE": "Voulez-vous vraiment quitter ?",
+    "CANCEL": "Annuler",
+    "OK": "OK"
+  }
+}

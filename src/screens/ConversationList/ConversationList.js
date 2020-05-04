@@ -62,12 +62,12 @@ class ConversationListComponent extends Component {
     }),
     inboxes: PropTypes.array.isRequired,
     conversationStatus: PropTypes.string,
+    webSocketUrl: PropTypes.string,
     item: PropTypes.shape({}),
   };
 
   static defaultProps = {
     isFetching: false,
-
     isAllConversationsLoaded: false,
     getInboxes: () => {},
     getConversations: () => {},
@@ -85,17 +85,17 @@ class ConversationListComponent extends Component {
   };
 
   componentDidMount = () => {
-    setTimeout(() => {
-      this.props.getAccountDetails();
-      this.props.getInboxes();
-      this.loadConversations();
-      this.initActionCable();
-    }, 100);
+    this.props.getAccountDetails();
+    this.props.getInboxes();
+    this.loadConversations();
+    this.initActionCable();
   };
 
   initActionCable = async () => {
     const pubSubToken = await getPubSubToken();
-    ActionCable.init({ pubSubToken });
+    const { webSocketUrl } = this.props;
+
+    ActionCable.init({ pubSubToken, webSocketUrl });
   };
 
   loadConversations = () => {
@@ -352,6 +352,7 @@ function bindAction(dispatch) {
 }
 function mapStateToProps(state) {
   return {
+    webSocketUrl: state.settings.webSocketUrl,
     isFetching: state.conversation.isFetching,
     isAllConversationsLoaded: state.conversation.isAllConversationsLoaded,
     conversations: state.conversation.data,

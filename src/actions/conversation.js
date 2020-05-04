@@ -21,6 +21,8 @@ import {
   GET_CANNED_RESPONSES,
   GET_CANNED_RESPONSES_SUCCESS,
   GET_CANNED_RESPONSES_ERROR,
+  SET_CONVERSATION_DETAILS,
+  RESET_CONVERSATION,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -179,7 +181,12 @@ export const loadMessages = ({ conversationId, beforeId }) => async (
 
     const response = await axios.get(apiUrl, { params });
 
-    const { payload } = response.data;
+    const { payload, meta } = response.data;
+
+    dispatch({
+      type: SET_CONVERSATION_DETAILS,
+      payload: meta,
+    });
 
     dispatch({
       type: GET_MESSAGES_SUCCESS,
@@ -255,4 +262,8 @@ export const loadCannedResponses = () => async (dispatch) => {
   } catch (error) {
     dispatch({ type: GET_CANNED_RESPONSES_ERROR, payload: error });
   }
+};
+
+export const resetConversation = () => async (dispatch) => {
+  dispatch({ type: RESET_CONVERSATION });
 };

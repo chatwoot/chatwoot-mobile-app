@@ -34,3 +34,7 @@ export const LANGUAGES = {
   en: 'English',
   nl: 'Dutch',
 };
+
+export const URL_REGEX = {
+  CONVERSATION: 'app/accounts/[-0-9]+/conversations/[-0-9]',
+};

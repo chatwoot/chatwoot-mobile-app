@@ -1,14 +1,13 @@
 import { ActionCable, Cable } from '@kesha-antonov/react-native-action-cable';
-import { WEB_SOCKET_URL } from '../constants/url';
-
-const connectActionCable = ActionCable.createConsumer(WEB_SOCKET_URL);
 
 const cable = new Cable({});
 
 const channelName = 'RoomChannel';
 
 class BaseActionCableConnector {
-  constructor(pubSubToken) {
+  constructor(pubSubToken, webSocketUrl) {
+    const connectActionCable = ActionCable.createConsumer(webSocketUrl);
+
     const channel = cable.setChannel(
       channelName,
       connectActionCable.subscriptions.create({

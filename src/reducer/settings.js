@@ -7,6 +7,7 @@ import {
 } from '../constants/actions';
 const initialState = {
   installationUrl: null,
+  webSocketUrl: null,
   isUrlSet: false,
   isSettingUrl: false,
   localeValue: 'en',
@@ -30,7 +31,8 @@ export default (state = initialState, action) => {
         ...state,
         isSettingUrl: false,
         isUrlSet: true,
-        installationUrl: action.payload,
+        installationUrl: action.payload.installationUrl,
+        webSocketUrl: action.payload.webSocketUrl,
         error: {},
       };
     case SET_URL_ERROR:

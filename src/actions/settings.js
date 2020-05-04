@@ -20,9 +20,14 @@ export const setLocale = (value) => (dispatch) => {
 export const setInstallationUrl = ({ url }) => async (dispatch) => {
   try {
     const BASE_URL = `${URL_TYPE}${url}/`;
+    const WEB_SOCKET_URL = `wss://${url}/cable`;
     dispatch({ type: SET_URL });
     await axios.get(`${BASE_URL}api`);
-    dispatch({ type: SET_URL_SUCCESS, payload: BASE_URL });
+    dispatch({
+      type: SET_URL_SUCCESS,
+      payload: { installationUrl: BASE_URL, webSocketUrl: WEB_SOCKET_URL },
+    });
+
     RootNavigation.navigate('Login');
   } catch (error) {
     showToast({ message: I18n.t('CONFIGURE_URL.ERROR') });

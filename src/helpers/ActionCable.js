@@ -8,8 +8,8 @@ import {
 import { store } from '../store';
 
 class ActionCableConnector extends BaseActionCableConnector {
-  constructor(pubsubToken) {
-    super(pubsubToken);
+  constructor(pubsubToken, webSocketUrl) {
+    super(pubsubToken, webSocketUrl);
 
     this.events = {
       'message.created': this.onMessageCreated,
@@ -33,8 +33,8 @@ class ActionCableConnector extends BaseActionCableConnector {
 }
 
 export default {
-  init({ pubSubToken }) {
-    const actionCable = new ActionCableConnector(pubSubToken);
+  init({ pubSubToken, webSocketUrl }) {
+    const actionCable = new ActionCableConnector(pubSubToken, webSocketUrl);
 
     return actionCable;
   },

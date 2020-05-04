@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { API_URL, BASE_URL } from '../constants/url';
+import { API_URL } from '../constants/url';
 import I18n from '../i18n';
 
 import { showToast } from './ToastHelper';
@@ -26,7 +26,7 @@ const parseErrorCode = (error) => {
 };
 
 const API = axios.create();
-API.defaults.baseURL = BASE_URL;
+
 // Request parsing interceptor
 API.interceptors.request.use(
   async (config) => {
@@ -39,7 +39,6 @@ API.interceptors.request.use(
         config.url = `${API_URL}accounts/${accountId}/${config.url}`;
       }
     }
-
     return config;
   },
   (error) => Promise.reject(error),

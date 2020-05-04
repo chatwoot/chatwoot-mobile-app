@@ -224,7 +224,12 @@ export const sendMessage = ({ conversationId, message }) => async (
 
 export const markMessagesAsRead = ({ conversationId, message }) => async (
   dispatch,
+  getState,
 ) => {
+  const {
+    data: { payload },
+  } = getState().conversation;
+
   dispatch({ type: MARK_MESSAGES_AS_READ });
   try {
     const apiUrl = `conversations/${conversationId}/update_last_seen`;
@@ -237,11 +242,16 @@ export const markMessagesAsRead = ({ conversationId, message }) => async (
       type: MARK_MESSAGES_AS_READ_SUCCESS,
       payload: response.data,
     });
+
+    const updatedConversations = payload.map((item) =>
+      item.id === conversationId ? { ...item, agent_last_seen_at } : item,
+    );
+
+    dispatch({ type: UPDATE_CONVERSATION, payload: updatedConversations });
   } catch (error) {
     dispatch({ type: MARK_MESSAGES_AS_READ_ERROR, payload: error });
   }
 };
-
 export const loadCannedResponses = () => async (dispatch) => {
   dispatch({ type: GET_CANNED_RESPONSES });
 

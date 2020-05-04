@@ -12,7 +12,7 @@ import {
 export const initialState = {
   user: {},
   headers: {},
-  isLogged: false,
+  isLoggedIn: false,
   isLoggingIn: false,
   isResettingPassword: false,
   error: {},
@@ -28,7 +28,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoggingIn: false,
-        isLogged: true,
+        isLoggedIn: true,
         user: action.payload,
         error: {},
         success: {},
@@ -37,7 +37,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoggingIn: false,
-        isLogged: false,
+        isLoggedIn: false,
         error: action.payload,
         user: null,
         success: {},

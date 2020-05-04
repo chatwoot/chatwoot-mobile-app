@@ -44,12 +44,12 @@ const TabStack = () => (
 );
 
 const propTypes = {
-  isLogged: PropTypes.bool,
+  isLoggedIn: PropTypes.bool,
   isUrlSet: PropTypes.bool,
 };
 
 const defaultProps = {
-  isLogged: false,
+  isLoggedIn: false,
   isUrlSet: false,
 };
 
@@ -91,7 +91,7 @@ const _handleOpenURL = (event) => {
 };
 
 const App = () => {
-  const isLogged = useSelector((state) => state.auth.isLogged);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const isUrlSet = useSelector((state) => state.settings.isUrlSet);
   const locale = useSelector((state) => state.settings.localeValue);
   const { linkedURL, resetURL } = useDeepLinkURL();
@@ -110,7 +110,7 @@ const App = () => {
       <Stack.Navigator
         initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'}
         headerMode={'none'}>
-        {isLogged ? (
+        {isLoggedIn ? (
           <>
             <Stack.Screen name="Tab" component={TabStack} />
             <Stack.Screen name="ChatScreen" component={ChatScreen} />

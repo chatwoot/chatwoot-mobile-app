@@ -6,9 +6,9 @@ export const doDeepLinking = async ({ url }) => {
   try {
     const state = await store.getState();
 
-    const { isLogged, user: userDetails } = state.auth;
+    const { isLoggedIn, user: userDetails } = state.auth;
     // Check user is logged or not
-    if (isLogged) {
+    if (isLoggedIn) {
       const { account_id: accountId } = userDetails;
 
       const isConversationURL = await checkUrlIsConversation({
@@ -29,6 +29,6 @@ export const doDeepLinking = async ({ url }) => {
         }
       }
     }
-    return isLogged;
+    return isLoggedIn;
   } catch {}
 };

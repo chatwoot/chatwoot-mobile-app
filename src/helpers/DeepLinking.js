@@ -14,6 +14,7 @@ export const doDeepLinking = async ({ url }) => {
       const isConversationURL = await checkUrlIsConversation({
         url,
       });
+
       if (isConversationURL) {
         const urlParams = url.split('/');
 
@@ -23,9 +24,13 @@ export const doDeepLinking = async ({ url }) => {
 
         // Check account id and opened conversation account id are same
         if (parsedAccountId === accountId) {
-          navigate('ChatScreen', {
-            conversationId,
-          });
+          navigate(
+            'ChatScreen',
+            {
+              conversationId,
+            },
+            `ChatScreen+${conversationId}`,
+          );
         }
       }
     }

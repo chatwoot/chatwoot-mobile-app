@@ -99,6 +99,7 @@ const App = () => {
   useEffect(() => {
     resetURL();
   }, [linkedURL, resetURL]);
+
   if (linkedURL) {
     _handleOpenURL({ url: linkedURL });
   }

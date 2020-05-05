@@ -50,4 +50,13 @@ Open `Chatwoot.xcworkspace` file under `ios` folder. Choose your target device a
 
 ### Android
 
+- Create `gradle.properties` file with following contents under `android/app` folder
+
+```
+android.useAndroidX=true
+android.enableJetifier=true
+FLIPPER_VERSION=0.33.1
+org.gradle.jvmargs=-Xmx4608m
+```
+
 - `yarn android`

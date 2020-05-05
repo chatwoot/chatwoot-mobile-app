@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { Icon, withStyles } from '@ui-kitten/components';
+import { withStyles } from '@ui-kitten/components';
 
 import CustomText from './Text';
 
@@ -28,6 +28,8 @@ const styles = (theme) => ({
     borderRadius: 8,
     maxWidth: Dimensions.get('window').width - 50,
     backgroundColor: theme['color-background-activity'],
+    borderWidth: 1,
+    borderColor: theme['color-border-activity'],
   },
   activityDateView: {
     alignItems: 'flex-end',
@@ -44,21 +46,16 @@ const styles = (theme) => ({
   },
 
   messageContent: {
-    color: theme['text-active-color'],
     fontSize: theme['font-size-regular'],
     fontWeight: theme['font-regular'],
+    color: theme['text-basic-color'],
   },
 
   date: {
-    fontStyle: 'italic',
     color: theme['text-hint-color'],
     fontSize: theme['font-size-extra-extra-small'],
   },
 });
-
-const PersonIcon = (style) => {
-  return <Icon {...style} name="person-outline" />;
-};
 
 const MessageContentComponent = ({
   themedStyle,
@@ -66,6 +63,7 @@ const MessageContentComponent = ({
   type,
   showAttachment,
   theme,
+  created_at,
 }) => {
   const { attachments } = message;
 
@@ -76,7 +74,7 @@ const MessageContentComponent = ({
       showAttachment={showAttachment}
     />
   ) : (
-    <ChatMessageItem message={message} type={type} />
+    <ChatMessageItem message={message} type={type} created_at={created_at} />
   );
 };
 
@@ -89,10 +87,6 @@ const OutGoingMessageComponent = ({
   showAttachment,
 }) => (
   <React.Fragment>
-    <CustomText style={themedStyle.date}>
-      {messageStamp({ time: created_at })}
-    </CustomText>
-
     <MessageContent
       message={message}
       created_at={created_at}
@@ -118,9 +112,6 @@ const IncomingMessageComponent = ({
       type="incoming"
       showAttachment={showAttachment}
     />
-    <CustomText style={themedStyle.date}>
-      {messageStamp({ time: created_at })}
-    </CustomText>
   </React.Fragment>
 );
 
@@ -133,15 +124,14 @@ const ActivityMessageComponent = ({
   theme,
 }) => (
   <View style={themedStyle.activityView}>
+    <View style={themedStyle.messageActivity}>
+      <CustomText style={themedStyle.messageContent}>
+        {message.content}
+      </CustomText>
+    </View>
     <View style={themedStyle.activityDateView}>
       <CustomText style={themedStyle.date}>
         {messageStamp({ time: created_at })}
-      </CustomText>
-    </View>
-    <View style={themedStyle.messageActivity}>
-      <PersonIcon style={themedStyle.icon} fill={theme['text-hint-color']} />
-      <CustomText style={themedStyle.messageContent}>
-        {message.content}
       </CustomText>
     </View>
   </View>

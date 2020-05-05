@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles, Tooltip, Icon } from '@ui-kitten/components';
 
 import CustomText from './Text';
+import { messageStamp } from '../helpers/TimeHelper';
 
 const LockIcon = (style) => {
   return <Icon {...style} name="lock-outline" />;
@@ -17,6 +18,8 @@ const styles = (theme) => ({
     padding: 8,
     borderBottomRightRadius: 8,
     borderTopRightRadius: 8,
+    borderBottomLeftRadius: 4,
+    borderTopLeftRadius: 4,
     maxWidth: Dimensions.get('window').width - 120,
     left: -4,
     backgroundColor: theme['background-basic-color-1'],
@@ -38,9 +41,11 @@ const styles = (theme) => ({
     padding: 8,
     borderBottomLeftRadius: 8,
     borderTopLeftRadius: 8,
+    borderTopRightRadius: 4,
+    borderBottomRightRadius: 4,
     maxWidth: Dimensions.get('window').width - 120,
     left: 4,
-    backgroundColor: theme['color-background-message'],
+    backgroundColor: theme['color-primary-default'],
     marginLeft: 16,
     shadowColor: '#000',
     shadowOffset: {
@@ -51,10 +56,23 @@ const styles = (theme) => ({
     shadowRadius: 1,
     elevation: 1,
   },
-  messageContent: {
-    color: theme['text-active-color'],
-    fontSize: theme['font-size-regular'],
+  messageContentRight: {
+    color: theme['color-basic-100'],
+    fontSize: theme['font-size-small'],
     fontWeight: theme['font-regular'],
+  },
+  messageContentLeft: {
+    color: theme['text-light-color'],
+    fontSize: theme['font-size-small'],
+    fontWeight: theme['font-regular'],
+  },
+  dateRight: {
+    color: theme['color-background-message'],
+    fontSize: theme['font-size-extra-extra-small'],
+  },
+  dateLeft: {
+    color: theme['color-date-left'],
+    fontSize: theme['font-size-extra-extra-small'],
   },
   privateMessageView: {
     flexDirection: 'row',
@@ -71,6 +89,7 @@ const propTypes = {
   themedStyle: PropTypes.object,
   theme: PropTypes.object,
   type: PropTypes.string,
+  created_at: PropTypes.number,
   message: PropTypes.shape({
     sender: PropTypes.shape({
       name: PropTypes.string,
@@ -81,7 +100,13 @@ const propTypes = {
   attachment: PropTypes.object,
 };
 
-const ChatMessageItemComponent = ({ type, message, themedStyle, theme }) => {
+const ChatMessageItemComponent = ({
+  type,
+  message,
+  themedStyle,
+  theme,
+  created_at,
+}) => {
   const [visible, setVisible] = useState(false);
 
   const [senderDetails, setSender] = useState('');
@@ -99,6 +124,12 @@ const ChatMessageItemComponent = ({ type, message, themedStyle, theme }) => {
   };
   const messageViewStyle =
     type === 'outgoing' ? themedStyle.messageRight : themedStyle.messageLeft;
+  const messageTextStyle =
+    type === 'outgoing'
+      ? themedStyle.messageContentRight
+      : themedStyle.messageContentLeft;
+  const dateStyle =
+    type === 'outgoing' ? themedStyle.dateRight : themedStyle.dateLeft;
 
   return (
     <TouchableOpacity
@@ -110,28 +141,32 @@ const ChatMessageItemComponent = ({ type, message, themedStyle, theme }) => {
       ]}
       activeOpacity={0.95}
       onPress={showSender}>
-      <Tooltip
-        text={senderDetails}
-        placement="top start"
-        visible={visible}
-        onBackdropPress={toggleTooltip}>
-        {message.private ? (
-          <View style={themedStyle.privateMessageView}>
-            <CustomText style={themedStyle.messageContent}>
-              {message.content}
-            </CustomText>
+      <View>
+        <Tooltip
+          text={senderDetails}
+          placement="top start"
+          visible={visible}
+          onBackdropPress={toggleTooltip}>
+          {message.private ? (
+            <View style={themedStyle.privateMessageView}>
+              <CustomText style={themedStyle.messageContentRight}>
+                {message.content}
+              </CustomText>
 
-            <LockIcon
-              style={themedStyle.icon}
-              fill={theme['text-hint-color']}
-            />
-          </View>
-        ) : (
-          <CustomText style={themedStyle.messageContent}>
-            {message.content}
-          </CustomText>
-        )}
-      </Tooltip>
+              <LockIcon
+                style={themedStyle.icon}
+                fill={theme['text-hint-color']}
+              />
+            </View>
+          ) : (
+            <CustomText style={messageTextStyle}>{message.content}</CustomText>
+          )}
+        </Tooltip>
+
+        <CustomText style={dateStyle}>
+          {messageStamp({ time: created_at })}
+        </CustomText>
+      </View>
     </TouchableOpacity>
   );
 };

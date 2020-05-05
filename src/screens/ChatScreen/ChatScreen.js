@@ -34,6 +34,7 @@ import {
   resetConversation,
 } from '../../actions/conversation';
 import { getGroupedConversation } from '../../helpers';
+import i18n from '../../i18n';
 
 const BackIcon = (style) => <Icon {...style} name="arrow-ios-back-outline" />;
 
@@ -320,13 +321,7 @@ class ChatScreenComponent extends Component {
   };
 
   render() {
-    const {
-      allMessages,
-      isFetching,
-      themedStyle,
-      theme,
-      conversationDetails,
-    } = this.props;
+    const { allMessages, isFetching, themedStyle, theme } = this.props;
 
     const {
       message,
@@ -407,7 +402,7 @@ class ChatScreenComponent extends Component {
             <View style={themedStyle.inputView}>
               <TextInput
                 style={themedStyle.input}
-                placeholder="Type message..."
+                placeholder={`${i18n.t('CONVERSATION.TYPE_MESSAGE')}...`}
                 isFocused={this.onFocused}
                 value={message}
                 placeholderTextColor={theme['text-basic-color']}

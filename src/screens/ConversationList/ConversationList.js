@@ -22,8 +22,6 @@ import {
   setConversation,
 } from '../../actions/conversation';
 
-import { saveDeviceDetails } from '../../actions/settings';
-
 import { getAccountDetails } from '../../actions/auth';
 
 import ConversationItem from '../../components/ConversationItem';
@@ -352,7 +350,6 @@ function bindAction(dispatch) {
       dispatch(setConversation({ conversationId })),
     loadInitialMessages: ({ messages }) =>
       dispatch(loadInitialMessage({ messages })),
-    saveDeviceDetails: () => dispatch(saveDeviceDetails()),
   };
 }
 function mapStateToProps(state) {

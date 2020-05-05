@@ -68,6 +68,8 @@ buck-out/
 # Android release configuration
 android/api-fastlane.json
 android/gradle.properties
+# Firebase 
+android/app/google-services.json
 
 
 

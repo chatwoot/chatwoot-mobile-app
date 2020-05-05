@@ -1,5 +1,5 @@
 import axios from '../helpers/APIHelper';
-
+import * as Sentry from '@sentry/react-native';
 import {
   LOGIN,
   LOGIN_ERROR,
@@ -20,7 +20,8 @@ export const onLogin = ({ email, password }) => async (dispatch) => {
     dispatch({ type: LOGIN });
     const response = await axios.post('auth/sign_in', { email, password });
     const { data } = response.data;
-
+    const { name: username, id } = data;
+    Sentry.setUser({ email, username, id });
     dispatch({ type: SET_AUTH_HEADER, payload: response.headers });
     dispatch({ type: LOGIN_SUCCESS, payload: data });
   } catch (error) {
@@ -37,6 +38,7 @@ export const onResetPassword = ({ email }) => async (dispatch) => {
     const response = await axios.post('auth/password', { email });
     const { data } = response;
     showToast(data);
+
     dispatch({ type: RESET_PASSWORD_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: RESET_PASSWORD_ERROR, payload: error });

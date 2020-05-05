@@ -154,6 +154,7 @@ export default withStyles(ConversationItem, (theme) => ({
     textTransform: 'capitalize',
     fontSize: theme['font-size-medium'],
     paddingTop: 4,
+    color: theme['text-basic-color'],
   },
   avatarView: {
     justifyContent: 'flex-end',
@@ -202,6 +203,7 @@ export default withStyles(ConversationItem, (theme) => ({
   messageNotActive: {
     fontSize: theme['text-primary-size'],
     paddingTop: 4,
+    color: theme['text-light-color'],
   },
   nameView: {
     flexDirection: 'row',

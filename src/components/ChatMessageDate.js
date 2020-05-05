@@ -16,7 +16,7 @@ const styles = (theme) => ({
   dateView: {
     padding: 8,
     borderRadius: 8,
-    backgroundColor: theme['color-background'],
+    backgroundColor: theme['color-background-date'],
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -28,7 +28,6 @@ const styles = (theme) => ({
   },
   text: {
     fontSize: theme['font-size-extra-small'],
-    fontWeight: theme['font-medium'],
   },
 });
 

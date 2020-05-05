@@ -40,7 +40,8 @@
     "ATTACHMENT_CONTENT": "File Attachment",
     "DOWNLOAD": "Download",
     "TODAY": "Today",
-    "YESTERDAY": "Yesterday"
+    "YESTERDAY": "Yesterday",
+    "TYPE_MESSAGE": "Type message"
   },
   "FILTER": {
     "HEADER_TITLE": "Filter",

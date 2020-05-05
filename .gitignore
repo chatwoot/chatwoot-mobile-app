@@ -75,3 +75,4 @@ android/gradle.properties
 sentry.js
 ios/sentry.properties
 android/sentry.properties
+CUSTOM_RELEASE_GUIDE.md

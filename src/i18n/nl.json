@@ -38,7 +38,8 @@
     "EMPTY": "Er zijn geen actieve gesprekken in deze groep.",
     "PICTURE_CONTENT": "Bericht met foto",
     "ATTACHMENT_CONTENT": "Bestand bijlage",
-    "DOWNLOAD": "downloaden"
+    "DOWNLOAD": "downloaden",
+    "TYPE_MESSAGE": "Typ bericht"
   },
   "FILTER": {
     "HEADER_TITLE": "Filteren",

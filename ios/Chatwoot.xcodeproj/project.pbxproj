@@ -74,6 +74,7 @@
 		5FFFE1D5359440EDDD504D64 /* libPods-Chatwoot-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Chatwoot-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		792A10EE18404A17875F9185 /* Inter-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Medium.otf"; path = "../assets/Inter-Medium.otf"; sourceTree = "<group>"; };
 		7FA8797888964DECB6EF22E5 /* Inter-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Italic.otf"; path = "../assets/Inter-Italic.otf"; sourceTree = "<group>"; };
+		83A8AC0A24615D6C00D7732E /* Chatwoot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Chatwoot.entitlements; path = Chatwoot/Chatwoot.entitlements; sourceTree = "<group>"; };
 		85262BC354F22EC4430C7138 /* Pods-Chatwoot-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatwoot-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Chatwoot-tvOS/Pods-Chatwoot-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		85F3262F81DA4094BD8A7D78 /* Inter-SemiBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-SemiBold.otf"; path = "../assets/Inter-SemiBold.otf"; sourceTree = "<group>"; };
 		B930E27AB88A15A260EF8BAC /* Pods-Chatwoot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatwoot.debug.xcconfig"; path = "Target Support Files/Pods-Chatwoot/Pods-Chatwoot.debug.xcconfig"; sourceTree = "<group>"; };
@@ -168,6 +169,7 @@
 		13B07FAE1A68108700A75B9A /* Chatwoot */ = {
 			isa = PBXGroup;
 			children = (
+				83A8AC0A24615D6C00D7732E /* Chatwoot.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -682,6 +684,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Chatwoot/Chatwoot.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 35;
@@ -708,6 +711,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Chatwoot/Chatwoot.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 35;

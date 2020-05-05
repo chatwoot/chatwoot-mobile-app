@@ -65,8 +65,13 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
-# Android release configurations 
+# Android release configuration
 android/api-fastlane.json
 android/gradle.properties
 
 
+
+# Sentry configuration
+sentry.js
+ios/sentry.properties
+android/sentry.properties

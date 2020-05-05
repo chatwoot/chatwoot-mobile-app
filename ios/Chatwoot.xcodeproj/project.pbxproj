@@ -18,6 +18,7 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* ChatwootTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ChatwootTests.m */; };
+		6EE376D0FBB7436B8397F150 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 465F83908DE84FC7B11A89C7 /* libz.tbd */; };
 		80CE3500E8BACE2D033C958F /* libPods-Chatwoot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE1D39D22FF5343589EF844 /* libPods-Chatwoot.a */; };
 		8E35D9117D334C3BB3711C81 /* Inter-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2ABECD63C65549639979616B /* Inter-Regular.otf */; };
 		93FED224E6A2318CD657A1F1 /* libPods-Chatwoot-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFFE1D5359440EDDD504D64 /* libPods-Chatwoot-tvOSTests.a */; };
@@ -67,6 +68,7 @@
 		3381215DAF425AB6F7F2DAE1 /* Pods-ChatwootTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatwootTests.release.xcconfig"; path = "Target Support Files/Pods-ChatwootTests/Pods-ChatwootTests.release.xcconfig"; sourceTree = "<group>"; };
 		37DCDE4912EBEA5C448F3F37 /* Pods-Chatwoot-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatwoot-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Chatwoot-tvOSTests/Pods-Chatwoot-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3E086A744E6C46D8A9670375 /* Inter-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Light.otf"; path = "../assets/Inter-Light.otf"; sourceTree = "<group>"; };
+		465F83908DE84FC7B11A89C7 /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		4CE1D39D22FF5343589EF844 /* libPods-Chatwoot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Chatwoot.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		599F02E53EC5DABD1E2A508A /* Pods-Chatwoot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatwoot.release.xcconfig"; path = "Target Support Files/Pods-Chatwoot/Pods-Chatwoot.release.xcconfig"; sourceTree = "<group>"; };
 		5FFFE1D5359440EDDD504D64 /* libPods-Chatwoot-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Chatwoot-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,6 +97,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				80CE3500E8BACE2D033C958F /* libPods-Chatwoot.a in Frameworks */,
+				6EE376D0FBB7436B8397F150 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,6 +188,7 @@
 				2C4EFE54417C83F5DD0461B5 /* libPods-Chatwoot-tvOS.a */,
 				5FFFE1D5359440EDDD504D64 /* libPods-Chatwoot-tvOSTests.a */,
 				18FE270EF3B23F5F98E0DA5F /* libPods-ChatwootTests.a */,
+				465F83908DE84FC7B11A89C7 /* libz.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -255,6 +259,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				2A72F8E879CF4C21A3719FBF /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -407,7 +412,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		2A72F8E879CF4C21A3719FBF /* Upload Debug Symbols to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Upload Debug Symbols to Sentry";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -421,7 +440,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
 		4373DB12AC7EED4CBA054A82 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -665,12 +684,12 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 35;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 6C953F3RX2;
 				INFOPLIST_FILE = Chatwoot/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.0.33;
+				MARKETING_VERSION = 0.0.35;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -691,11 +710,11 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_TEAM = 6C953F3RX2;
 				INFOPLIST_FILE = Chatwoot/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.0.33;
+				MARKETING_VERSION = 0.0.35;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

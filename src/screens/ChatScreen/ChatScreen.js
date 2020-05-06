@@ -67,7 +67,7 @@ class ChatScreenComponent extends Component {
     isAllMessagesLoaded: PropTypes.bool,
     markAllMessagesAsRead: PropTypes.func,
     toggleTypingStatus: PropTypes.func,
-    conversationTypingUsers: PropTypes.array.isRequired,
+    conversationTypingUsers: PropTypes.shape({}),
   };
 
   static defaultProps = {
@@ -77,7 +77,7 @@ class ChatScreenComponent extends Component {
     markAllMessagesAsRead: () => {},
     allMessages: [],
     cannedResponses: [],
-    conversationTypingUsers: [],
+    conversationTypingUsers: {},
   };
 
   state = {

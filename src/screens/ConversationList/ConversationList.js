@@ -61,7 +61,7 @@ class ConversationListComponent extends Component {
     inboxSelected: PropTypes.shape({
       name: PropTypes.string,
     }),
-    conversationTypingUsers: PropTypes.array.isRequired,
+    conversationTypingUsers: PropTypes.shape({}),
     inboxes: PropTypes.array.isRequired,
     conversationStatus: PropTypes.string,
     webSocketUrl: PropTypes.string,
@@ -70,7 +70,6 @@ class ConversationListComponent extends Component {
 
   static defaultProps = {
     isFetching: false,
-    conversationTypingUsers: [],
     isAllConversationsLoaded: false,
     getInboxes: () => {},
     getConversations: () => {},

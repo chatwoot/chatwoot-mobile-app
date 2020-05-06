@@ -65,6 +65,7 @@ class ChatScreenComponent extends Component {
     isFetching: PropTypes.bool,
     isAllMessagesLoaded: PropTypes.bool,
     markAllMessagesAsRead: PropTypes.func,
+    conversationTypingUsers: PropTypes.array.isRequired,
   };
 
   static defaultProps = {
@@ -74,6 +75,7 @@ class ChatScreenComponent extends Component {
     markAllMessagesAsRead: () => {},
     allMessages: [],
     cannedResponses: [],
+    conversationTypingUsers: [],
   };
 
   state = {
@@ -280,8 +282,19 @@ class ChatScreenComponent extends Component {
       thumbnail: null,
     };
 
-    const { themedStyle, conversationDetails, route } = this.props;
+    const {
+      themedStyle,
+      conversationDetails,
+      route,
+      conversationTypingUsers,
+    } = this.props;
+    const {
+      params: { conversationId },
+    } = route;
 
+    const isUserTyping = conversationTypingUsers.find(
+      (item) => item.id === conversationId,
+    );
     const { meta } = route.params;
     if (meta) {
       const {
@@ -300,7 +313,7 @@ class ChatScreenComponent extends Component {
     if (senderDetails.name) {
       return (
         <TopNavigation
-          alignment="center"
+          subtitle={isUserTyping ? `${i18n.t('CONVERSATION.TYPING')}...` : ''}
           title={senderDetails.name}
           rightControls={
             <TopNavigationAction
@@ -438,6 +451,7 @@ function mapStateToProps(state) {
     cannedResponses: state.conversation.cannedResponses,
     isFetching: state.conversation.isFetching,
     isAllMessagesLoaded: state.conversation.isAllMessagesLoaded,
+    conversationTypingUsers: state.conversation.conversationTypingUsers,
   };
 }
 

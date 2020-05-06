@@ -5,6 +5,7 @@ const styles = (theme) => ({
     flex: 1,
     backgroundColor: theme['background-basic-color-1'],
   },
+
   keyboardView: {
     flex: 1,
   },
@@ -14,7 +15,9 @@ const styles = (theme) => ({
   },
   subHeaderTitle: {
     fontSize: theme['font-size-extra-small'],
+    color: theme['color-gray'],
   },
+  subtitleStyle: {},
 
   container: {
     flex: 1,

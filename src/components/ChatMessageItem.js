@@ -71,7 +71,7 @@ const styles = (theme) => ({
     fontSize: theme['font-size-extra-extra-small'],
   },
   dateLeft: {
-    color: theme['color-date-left'],
+    color: theme['color-gray'],
     fontSize: theme['font-size-extra-extra-small'],
   },
   privateMessageView: {

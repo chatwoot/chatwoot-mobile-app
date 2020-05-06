@@ -17,7 +17,6 @@ const styles = (theme) => ({
     fontSize: theme['font-size-extra-small'],
     color: theme['color-gray'],
   },
-  subtitleStyle: {},
 
   container: {
     flex: 1,

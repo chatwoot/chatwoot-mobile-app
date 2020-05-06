@@ -23,6 +23,8 @@ import {
   GET_CANNED_RESPONSES_ERROR,
   SET_CONVERSATION_DETAILS,
   RESET_CONVERSATION,
+  ADD_USER_TYPING_TO_CONVERSATION,
+  REMOVE_USER_TYPING_FROM_CONVERSATION,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -276,4 +278,45 @@ export const loadCannedResponses = () => async (dispatch) => {
 
 export const resetConversation = () => async (dispatch) => {
   dispatch({ type: RESET_CONVERSATION });
+};
+
+export const addUserTypingToConversation = ({ conversation, user }) => async (
+  dispatch,
+  getState,
+) => {
+  const { conversationTypingUsers } = await getState().conversation;
+  const { id } = conversation;
+
+  const isConversationAlreadyExist = conversationTypingUsers.find(
+    (item) => item.id === id,
+  );
+  if (!isConversationAlreadyExist) {
+    dispatch({
+      type: ADD_USER_TYPING_TO_CONVERSATION,
+      payload: conversation,
+    });
+  }
+};
+
+export const removeUserFromTypingConversation = ({
+  conversation,
+  user,
+}) => async (dispatch, getState) => {
+  const { conversationTypingUsers } = await getState().conversation;
+  const { id } = conversation;
+
+  const isConversationAlreadyExist = conversationTypingUsers.find(
+    (item) => item.id === id,
+  );
+
+  if (isConversationAlreadyExist) {
+    const updatedTypingUsers = conversationTypingUsers.filter((item) => {
+      return item.id !== id;
+    });
+
+    dispatch({
+      type: REMOVE_USER_TYPING_FROM_CONVERSATION,
+      payload: updatedTypingUsers,
+    });
+  }
 };

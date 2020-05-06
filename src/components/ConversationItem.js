@@ -7,6 +7,7 @@ import CustomText from './Text';
 import UserAvatar from './UserAvatar';
 import { dynamicTime } from '../helpers/TimeHelper';
 import { findLastMessage, getUnreadCount, getInboxName } from '../helpers';
+import i18n from '../i18n';
 
 import ConversationAttachmentItem from './ConversationAttachmentItem';
 
@@ -17,7 +18,9 @@ class ConversationItem extends Component {
     name: PropTypes.string,
     onSelectConversation: PropTypes.func,
     inboxes: PropTypes.array.isRequired,
+    conversationTypingUsers: PropTypes.array.isRequired,
     item: PropTypes.shape({
+      id: PropTypes.number,
       meta: PropTypes.shape({
         sender: PropTypes.shape({
           name: PropTypes.string,
@@ -36,6 +39,7 @@ class ConversationItem extends Component {
       onSelectConversation,
       theme,
       inboxes,
+      conversationTypingUsers,
     } = this.props;
 
     const {
@@ -44,6 +48,7 @@ class ConversationItem extends Component {
       },
       messages,
       inbox_id: inboxId,
+      id,
     } = item;
     const inboxName = getInboxName({ inboxes, inboxId });
 
@@ -51,6 +56,10 @@ class ConversationItem extends Component {
 
     const lastMessage = findLastMessage({ messages });
     const { content, created_at, attachments } = lastMessage;
+
+    const isUserTyping = conversationTypingUsers.find(
+      (conversation) => conversation.id === id,
+    );
 
     return (
       <TouchableOpacity
@@ -84,26 +93,31 @@ class ConversationItem extends Component {
                 </CustomText>
               )}
             </View>
-
-            {attachments && attachments.length ? (
-              <ConversationAttachmentItem
-                themedStyle={themedStyle}
-                theme={theme}
-                unReadCount={unread_count}
-                attachment={attachments[0]}
-              />
+            {!isUserTyping ? (
+              attachments && attachments.length ? (
+                <ConversationAttachmentItem
+                  themedStyle={themedStyle}
+                  theme={theme}
+                  unReadCount={unread_count}
+                  attachment={attachments[0]}
+                />
+              ) : (
+                <CustomText
+                  style={
+                    unread_count
+                      ? themedStyle.messageActive
+                      : themedStyle.messageNotActive
+                  }
+                  numberOfLines={1}
+                  maxLength={8}>
+                  {content && content.length > 25
+                    ? `${content.substring(0, 25)}...`
+                    : `${content}`}
+                </CustomText>
+              )
             ) : (
-              <CustomText
-                style={
-                  unread_count
-                    ? themedStyle.messageActive
-                    : themedStyle.messageNotActive
-                }
-                numberOfLines={1}
-                maxLength={8}>
-                {content && content.length > 25
-                  ? `${content.substring(0, 25)}...`
-                  : `${content}`}
+              <CustomText style={themedStyle.typingText}>
+                {`${i18n.t('CONVERSATION.TYPING')}...`}
               </CustomText>
             )}
           </View>
@@ -194,6 +208,12 @@ export default withStyles(ConversationItem, (theme) => ({
     color: theme['text-control-color'],
     fontSize: theme['font-size-extra-extra-small'],
     fontWeight: theme['font-medium'],
+  },
+  typingText: {
+    color: theme['color-success-default'],
+    fontSize: theme['text-primary-size'],
+    fontWeight: theme['font-medium'],
+    paddingTop: 4,
   },
   messageActive: {
     fontSize: theme['text-primary-size'],

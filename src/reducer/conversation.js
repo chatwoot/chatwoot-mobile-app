@@ -18,8 +18,7 @@ import {
   GET_CANNED_RESPONSES_ERROR,
   SET_CONVERSATION_DETAILS,
   RESET_CONVERSATION,
-  ADD_USER_TYPING_TO_CONVERSATION,
-  REMOVE_USER_TYPING_FROM_CONVERSATION,
+  ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
 } from '../constants/actions';
 
 const initialState = {
@@ -39,7 +38,7 @@ const initialState = {
   cannedResponses: [],
   conversationDetails: null,
   selectedConversationId: null,
-  conversationTypingUsers: [],
+  conversationTypingUsers: {},
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -193,19 +192,13 @@ export default (state = initialState, action) => {
       };
     }
 
-    case ADD_USER_TYPING_TO_CONVERSATION: {
+    case ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION: {
       return {
         ...state,
-        conversationTypingUsers: [
+        conversationTypingUsers: {
           ...state.conversationTypingUsers,
-          action.payload,
-        ],
-      };
-    }
-    case REMOVE_USER_TYPING_FROM_CONVERSATION: {
-      return {
-        ...state,
-        conversationTypingUsers: action.payload,
+          [action.payload.conversationId]: action.payload.users,
+        },
       };
     }
 

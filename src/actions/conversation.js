@@ -23,8 +23,7 @@ import {
   GET_CANNED_RESPONSES_ERROR,
   SET_CONVERSATION_DETAILS,
   RESET_CONVERSATION,
-  ADD_USER_TYPING_TO_CONVERSATION,
-  REMOVE_USER_TYPING_FROM_CONVERSATION,
+  ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -284,16 +283,19 @@ export const addUserTypingToConversation = ({ conversation, user }) => async (
   dispatch,
   getState,
 ) => {
+  const { id: conversationId } = conversation;
   const { conversationTypingUsers } = await getState().conversation;
-  const { id } = conversation;
-
-  const isConversationAlreadyExist = conversationTypingUsers.find(
-    (item) => item.id === id,
-  );
-  if (!isConversationAlreadyExist) {
+  const records = conversationTypingUsers[conversationId] || [];
+  const hasUserRecordAlready = !!records.filter(
+    (record) => record.id === user.id && record.type === user.type,
+  ).length;
+  if (!hasUserRecordAlready) {
     dispatch({
-      type: ADD_USER_TYPING_TO_CONVERSATION,
-      payload: conversation,
+      type: ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
+      payload: {
+        conversationId,
+        users: [...records, user],
+      },
     });
   }
 };
@@ -302,21 +304,30 @@ export const removeUserFromTypingConversation = ({
   conversation,
   user,
 }) => async (dispatch, getState) => {
+  const { id: conversationId } = conversation;
   const { conversationTypingUsers } = await getState().conversation;
-  const { id } = conversation;
-
-  const isConversationAlreadyExist = conversationTypingUsers.find(
-    (item) => item.id === id,
+  const records = conversationTypingUsers[conversationId] || [];
+  const updatedUsers = records.filter(
+    (record) => record.id !== user.id || record.type !== user.type,
   );
 
-  if (isConversationAlreadyExist) {
-    const updatedTypingUsers = conversationTypingUsers.filter((item) => {
-      return item.id !== id;
-    });
+  dispatch({
+    type: ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
+    payload: {
+      conversationId,
+      users: updatedUsers,
+    },
+  });
+};
 
-    dispatch({
-      type: REMOVE_USER_TYPING_FROM_CONVERSATION,
-      payload: updatedTypingUsers,
-    });
-  }
+export const toggleTypingStatus = ({ conversationId, typingStatus }) => async (
+  dispatch,
+) => {
+  const apiUrl = `conversations/${conversationId}/toggle_typing_status`;
+
+  await axios
+    .post(apiUrl, {
+      typing_status: typingStatus,
+    })
+    .catch();
 };

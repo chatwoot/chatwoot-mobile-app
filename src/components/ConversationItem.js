@@ -36,16 +36,6 @@ class ConversationItem extends Component {
     }).isRequired,
   };
 
-  findTypingUser = ({ conversationId, conversationTypingUsers }) => {
-    const userList = conversationTypingUsers[conversationId];
-    const isAnyoneTyping = userList && userList.length !== 0;
-    if (isAnyoneTyping) {
-      const userListAsName = getTypingUsersText(userList);
-      return userListAsName;
-    }
-    return false;
-  };
-
   render() {
     const {
       themedStyle,

@@ -6,8 +6,12 @@ import PropTypes from 'prop-types';
 import CustomText from './Text';
 import UserAvatar from './UserAvatar';
 import { dynamicTime } from '../helpers/TimeHelper';
-import { findLastMessage, getUnreadCount, getInboxName } from '../helpers';
-import i18n from '../i18n';
+import {
+  findLastMessage,
+  getUnreadCount,
+  getInboxName,
+  getTypingUsersText,
+} from '../helpers';
 
 import ConversationAttachmentItem from './ConversationAttachmentItem';
 
@@ -18,7 +22,7 @@ class ConversationItem extends Component {
     name: PropTypes.string,
     onSelectConversation: PropTypes.func,
     inboxes: PropTypes.array.isRequired,
-    conversationTypingUsers: PropTypes.array.isRequired,
+    conversationTypingUsers: PropTypes.shape({}),
     item: PropTypes.shape({
       id: PropTypes.number,
       meta: PropTypes.shape({
@@ -30,6 +34,16 @@ class ConversationItem extends Component {
       messages: PropTypes.array.isRequired,
       inbox_id: PropTypes.number,
     }).isRequired,
+  };
+
+  findTypingUser = ({ conversationId, conversationTypingUsers }) => {
+    const userList = conversationTypingUsers[conversationId];
+    const isAnyoneTyping = userList && userList.length !== 0;
+    if (isAnyoneTyping) {
+      const userListAsName = getTypingUsersText(userList);
+      return userListAsName;
+    }
+    return false;
   };
 
   render() {
@@ -57,9 +71,10 @@ class ConversationItem extends Component {
     const lastMessage = findLastMessage({ messages });
     const { content, created_at, attachments } = lastMessage;
 
-    const isUserTyping = conversationTypingUsers.find(
-      (conversation) => conversation.id === id,
-    );
+    const typingUser = getTypingUsersText({
+      conversationTypingUsers,
+      conversationId: id,
+    });
 
     return (
       <TouchableOpacity
@@ -82,7 +97,7 @@ class ConversationItem extends Component {
                     ? themedStyle.conversationUserActive
                     : themedStyle.conversationUserNotActive
                 }>
-                {name.length < 18 ? `${name}` : `${name.substring(0, 15)}...`}
+                {name.length < 15 ? `${name}` : `${name.substring(0, 14)}...`}
               </CustomText>
 
               {inboxName && (
@@ -93,7 +108,7 @@ class ConversationItem extends Component {
                 </CustomText>
               )}
             </View>
-            {!isUserTyping ? (
+            {!typingUser ? (
               attachments && attachments.length ? (
                 <ConversationAttachmentItem
                   themedStyle={themedStyle}
@@ -117,7 +132,7 @@ class ConversationItem extends Component {
               )
             ) : (
               <CustomText style={themedStyle.typingText}>
-                {`${i18n.t('CONVERSATION.TYPING')}...`}
+                {`${typingUser}...`}
               </CustomText>
             )}
           </View>

@@ -39,7 +39,8 @@
     "PICTURE_CONTENT": "Bericht met foto",
     "ATTACHMENT_CONTENT": "Bestand bijlage",
     "DOWNLOAD": "downloaden",
-    "TYPE_MESSAGE": "Typ bericht"
+    "TYPE_MESSAGE": "Typ bericht",
+    "TYPING": "typen"
   },
   "FILTER": {
     "HEADER_TITLE": "Filteren",

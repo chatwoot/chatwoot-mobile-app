@@ -117,3 +117,28 @@ export const getGroupedConversation = ({ conversations }) => {
     };
   });
 };
+
+export const getTypingUsersText = ({
+  conversationId,
+  conversationTypingUsers,
+}) => {
+  const userList = conversationTypingUsers[conversationId];
+  const isAnyoneTyping = userList && userList.length !== 0;
+  if (isAnyoneTyping) {
+    const count = userList.length;
+    if (count === 1) {
+      const [user] = userList;
+      return `${user.name} is typing`;
+    }
+
+    if (count === 2) {
+      const [first, second] = userList;
+      return `${first.name} and ${second.name} are typing`;
+    }
+
+    const [user] = userList;
+    const rest = userList.length - 1;
+    return `${user.name} and ${rest} others are typing`;
+  }
+  return false;
+};

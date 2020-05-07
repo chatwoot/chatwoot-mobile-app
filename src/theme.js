@@ -93,6 +93,7 @@ export const theme = {
   'color-border-activity': '#ffe5a2',
   'color-message-left': '#3c4858',
   'color-gray': '#999a9b',
+  'color-background-inbox': '#ebf5ff',
 
   'color-background-date': '#e1f5feeb',
   'text-basic-color': '#1f2d3d',

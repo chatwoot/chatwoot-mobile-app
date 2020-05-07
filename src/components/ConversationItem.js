@@ -87,14 +87,14 @@ class ConversationItem extends Component {
                     ? themedStyle.conversationUserActive
                     : themedStyle.conversationUserNotActive
                 }>
-                {name.length < 15 ? `${name}` : `${name.substring(0, 14)}...`}
+                {name.length < 20 ? `${name}` : `${name.substring(0, 16)}...`}
               </CustomText>
 
               {inboxName && (
                 <CustomText style={themedStyle.labelText}>
-                  {inboxName.length < 14
+                  {inboxName.length < 8
                     ? `${inboxName}`
-                    : `${inboxName.substring(0, 12)}...`}
+                    : `${inboxName.substring(0, 6)}...`}
                 </CustomText>
               )}
             </View>
@@ -122,7 +122,9 @@ class ConversationItem extends Component {
               )
             ) : (
               <CustomText style={themedStyle.typingText}>
-                {`${typingUser}...`}
+                {typingUser && typingUser.length > 25
+                  ? `${typingUser.substring(0, 25)}...`
+                  : `${typingUser}`}
               </CustomText>
             )}
           </View>
@@ -235,13 +237,13 @@ export default withStyles(ConversationItem, (theme) => ({
     alignItems: 'center',
   },
   labelText: {
-    color: theme['text-control-color'],
+    color: theme['color-primary-default'],
     fontSize: theme['font-size-extra-extra-small'],
     fontWeight: theme['font-semi-bold'],
     borderRadius: 3,
     paddingLeft: 2,
     paddingRight: 2,
     marginLeft: 4,
-    backgroundColor: theme['color-primary-default'],
+    backgroundColor: theme['color-background-inbox'],
   },
 }));

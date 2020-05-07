@@ -19,6 +19,7 @@ import {
   SET_CONVERSATION_DETAILS,
   RESET_CONVERSATION,
   ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
+  RESET_USER_TYPING_CONVERSATION,
 } from '../constants/actions';
 
 const initialState = {
@@ -192,6 +193,12 @@ export default (state = initialState, action) => {
       };
     }
 
+    case RESET_USER_TYPING_CONVERSATION: {
+      return {
+        ...state,
+        conversationTypingUsers: {},
+      };
+    }
     case ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION: {
       return {
         ...state,

@@ -24,6 +24,7 @@ import {
   SET_CONVERSATION_DETAILS,
   RESET_CONVERSATION,
   ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
+  RESET_USER_TYPING_CONVERSATION,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -277,6 +278,12 @@ export const loadCannedResponses = () => async (dispatch) => {
 
 export const resetConversation = () => async (dispatch) => {
   dispatch({ type: RESET_CONVERSATION });
+};
+
+export const resetTypingToConversation = () => async (dispatch) => {
+  dispatch({
+    type: RESET_USER_TYPING_CONVERSATION,
+  });
 };
 
 export const addUserTypingToConversation = ({ conversation, user }) => async (

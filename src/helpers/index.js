@@ -128,17 +128,34 @@ export const getTypingUsersText = ({
     const count = userList.length;
     if (count === 1) {
       const [user] = userList;
-      return `${user.name} is typing`;
+      const { type } = user;
+      // Check user is typing
+      if (type === 'contact') {
+        return 'typing...';
+      }
+      return `${user.name
+        .toString()
+        .replace(/^./, (str) => str.toUpperCase())} is typing...`;
     }
 
     if (count === 2) {
       const [first, second] = userList;
-      return `${first.name} and ${second.name} are typing`;
+      return `${first.name
+        .toString()
+        .replace(/^./, (str) =>
+          str.toUpperCase(),
+        )} and ${second.name
+        .toString()
+        .replace(/^./, (str) => str.toUpperCase())} are typing...`;
     }
 
     const [user] = userList;
     const rest = userList.length - 1;
-    return `${user.name} and ${rest} others are typing`;
+    return `${user.name
+      .toString()
+      .replace(/^./, (str) =>
+        str.toUpperCase(),
+      )} and ${rest} others are typing...`;
   }
   return false;
 };

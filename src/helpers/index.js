@@ -117,3 +117,45 @@ export const getGroupedConversation = ({ conversations }) => {
     };
   });
 };
+
+export const getTypingUsersText = ({
+  conversationId,
+  conversationTypingUsers,
+}) => {
+  const userList = conversationTypingUsers[conversationId];
+  const isAnyoneTyping = userList && userList.length !== 0;
+  if (isAnyoneTyping) {
+    const count = userList.length;
+    if (count === 1) {
+      const [user] = userList;
+      const { type } = user;
+      // Check user is typing
+      if (type === 'contact') {
+        return 'typing...';
+      }
+      return `${user.name
+        .toString()
+        .replace(/^./, (str) => str.toUpperCase())} is typing...`;
+    }
+
+    if (count === 2) {
+      const [first, second] = userList;
+      return `${first.name
+        .toString()
+        .replace(/^./, (str) =>
+          str.toUpperCase(),
+        )} and ${second.name
+        .toString()
+        .replace(/^./, (str) => str.toUpperCase())} are typing...`;
+    }
+
+    const [user] = userList;
+    const rest = userList.length - 1;
+    return `${user.name
+      .toString()
+      .replace(/^./, (str) =>
+        str.toUpperCase(),
+      )} and ${rest} others are typing...`;
+  }
+  return false;
+};

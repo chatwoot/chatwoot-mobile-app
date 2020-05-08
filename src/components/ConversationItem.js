@@ -6,7 +6,12 @@ import PropTypes from 'prop-types';
 import CustomText from './Text';
 import UserAvatar from './UserAvatar';
 import { dynamicTime } from '../helpers/TimeHelper';
-import { findLastMessage, getUnreadCount, getInboxName } from '../helpers';
+import {
+  findLastMessage,
+  getUnreadCount,
+  getInboxName,
+  getTypingUsersText,
+} from '../helpers';
 
 import ConversationAttachmentItem from './ConversationAttachmentItem';
 
@@ -17,7 +22,9 @@ class ConversationItem extends Component {
     name: PropTypes.string,
     onSelectConversation: PropTypes.func,
     inboxes: PropTypes.array.isRequired,
+    conversationTypingUsers: PropTypes.shape({}),
     item: PropTypes.shape({
+      id: PropTypes.number,
       meta: PropTypes.shape({
         sender: PropTypes.shape({
           name: PropTypes.string,
@@ -36,6 +43,7 @@ class ConversationItem extends Component {
       onSelectConversation,
       theme,
       inboxes,
+      conversationTypingUsers,
     } = this.props;
 
     const {
@@ -44,6 +52,7 @@ class ConversationItem extends Component {
       },
       messages,
       inbox_id: inboxId,
+      id,
     } = item;
     const inboxName = getInboxName({ inboxes, inboxId });
 
@@ -51,6 +60,11 @@ class ConversationItem extends Component {
 
     const lastMessage = findLastMessage({ messages });
     const { content, created_at, attachments } = lastMessage;
+
+    const typingUser = getTypingUsersText({
+      conversationTypingUsers,
+      conversationId: id,
+    });
 
     return (
       <TouchableOpacity
@@ -73,37 +87,44 @@ class ConversationItem extends Component {
                     ? themedStyle.conversationUserActive
                     : themedStyle.conversationUserNotActive
                 }>
-                {name.length < 18 ? `${name}` : `${name.substring(0, 15)}...`}
+                {name.length < 20 ? `${name}` : `${name.substring(0, 16)}...`}
               </CustomText>
 
               {inboxName && (
                 <CustomText style={themedStyle.labelText}>
-                  {inboxName.length < 14
+                  {inboxName.length < 8
                     ? `${inboxName}`
-                    : `${inboxName.substring(0, 12)}...`}
+                    : `${inboxName.substring(0, 6)}...`}
                 </CustomText>
               )}
             </View>
-
-            {attachments && attachments.length ? (
-              <ConversationAttachmentItem
-                themedStyle={themedStyle}
-                theme={theme}
-                unReadCount={unread_count}
-                attachment={attachments[0]}
-              />
+            {!typingUser ? (
+              attachments && attachments.length ? (
+                <ConversationAttachmentItem
+                  themedStyle={themedStyle}
+                  theme={theme}
+                  unReadCount={unread_count}
+                  attachment={attachments[0]}
+                />
+              ) : (
+                <CustomText
+                  style={
+                    unread_count
+                      ? themedStyle.messageActive
+                      : themedStyle.messageNotActive
+                  }
+                  numberOfLines={1}
+                  maxLength={8}>
+                  {content && content.length > 25
+                    ? `${content.substring(0, 25)}...`
+                    : `${content}`}
+                </CustomText>
+              )
             ) : (
-              <CustomText
-                style={
-                  unread_count
-                    ? themedStyle.messageActive
-                    : themedStyle.messageNotActive
-                }
-                numberOfLines={1}
-                maxLength={8}>
-                {content && content.length > 25
-                  ? `${content.substring(0, 25)}...`
-                  : `${content}`}
+              <CustomText style={themedStyle.typingText}>
+                {typingUser && typingUser.length > 25
+                  ? `${typingUser.substring(0, 25)}...`
+                  : `${typingUser}`}
               </CustomText>
             )}
           </View>
@@ -195,6 +216,12 @@ export default withStyles(ConversationItem, (theme) => ({
     fontSize: theme['font-size-extra-extra-small'],
     fontWeight: theme['font-medium'],
   },
+  typingText: {
+    color: theme['color-success-default'],
+    fontSize: theme['text-primary-size'],
+    fontWeight: theme['font-medium'],
+    paddingTop: 4,
+  },
   messageActive: {
     fontSize: theme['text-primary-size'],
     fontWeight: theme['font-medium'],
@@ -210,13 +237,13 @@ export default withStyles(ConversationItem, (theme) => ({
     alignItems: 'center',
   },
   labelText: {
-    color: theme['text-control-color'],
+    color: theme['color-primary-default'],
     fontSize: theme['font-size-extra-extra-small'],
     fontWeight: theme['font-semi-bold'],
     borderRadius: 3,
     paddingLeft: 2,
     paddingRight: 2,
     marginLeft: 4,
-    backgroundColor: theme['color-primary-default'],
+    backgroundColor: theme['color-background-inbox'],
   },
 }));

@@ -23,6 +23,8 @@ import {
   GET_CANNED_RESPONSES_ERROR,
   SET_CONVERSATION_DETAILS,
   RESET_CONVERSATION,
+  ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
+  RESET_USER_TYPING_CONVERSATION,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -276,4 +278,63 @@ export const loadCannedResponses = () => async (dispatch) => {
 
 export const resetConversation = () => async (dispatch) => {
   dispatch({ type: RESET_CONVERSATION });
+};
+
+export const resetTypingToConversation = () => async (dispatch) => {
+  dispatch({
+    type: RESET_USER_TYPING_CONVERSATION,
+  });
+};
+
+export const addUserTypingToConversation = ({ conversation, user }) => async (
+  dispatch,
+  getState,
+) => {
+  const { id: conversationId } = conversation;
+  const { conversationTypingUsers } = await getState().conversation;
+  const records = conversationTypingUsers[conversationId] || [];
+  const hasUserRecordAlready = !!records.filter(
+    (record) => record.id === user.id && record.type === user.type,
+  ).length;
+  if (!hasUserRecordAlready) {
+    dispatch({
+      type: ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
+      payload: {
+        conversationId,
+        users: [...records, user],
+      },
+    });
+  }
+};
+
+export const removeUserFromTypingConversation = ({
+  conversation,
+  user,
+}) => async (dispatch, getState) => {
+  const { id: conversationId } = conversation;
+  const { conversationTypingUsers } = await getState().conversation;
+  const records = conversationTypingUsers[conversationId] || [];
+  const updatedUsers = records.filter(
+    (record) => record.id !== user.id || record.type !== user.type,
+  );
+
+  dispatch({
+    type: ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
+    payload: {
+      conversationId,
+      users: updatedUsers,
+    },
+  });
+};
+
+export const toggleTypingStatus = ({ conversationId, typingStatus }) => async (
+  dispatch,
+) => {
+  const apiUrl = `conversations/${conversationId}/toggle_typing_status`;
+
+  await axios
+    .post(apiUrl, {
+      typing_status: typingStatus,
+    })
+    .catch();
 };

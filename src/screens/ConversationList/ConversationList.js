@@ -61,6 +61,7 @@ class ConversationListComponent extends Component {
     inboxSelected: PropTypes.shape({
       name: PropTypes.string,
     }),
+    conversationTypingUsers: PropTypes.shape({}),
     inboxes: PropTypes.array.isRequired,
     conversationStatus: PropTypes.string,
     webSocketUrl: PropTypes.string,
@@ -69,7 +70,6 @@ class ConversationListComponent extends Component {
 
   static defaultProps = {
     isFetching: false,
-
     isAllConversationsLoaded: false,
     getInboxes: () => {},
     getConversations: () => {},
@@ -168,6 +168,7 @@ class ConversationListComponent extends Component {
       item={item}
       onSelectConversation={this.onSelectConversation}
       inboxes={this.props.inboxes}
+      conversationTypingUsers={this.props.conversationTypingUsers}
     />
   );
 
@@ -361,6 +362,7 @@ function mapStateToProps(state) {
     conversationStatus: state.conversation.conversationStatus,
     inboxSelected: state.inbox.inboxSelected,
     inboxes: state.inbox.data,
+    conversationTypingUsers: state.conversation.conversationTypingUsers,
   };
 }
 

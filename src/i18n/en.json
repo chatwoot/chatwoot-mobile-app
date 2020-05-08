@@ -41,7 +41,8 @@
     "DOWNLOAD": "Download",
     "TODAY": "Today",
     "YESTERDAY": "Yesterday",
-    "TYPE_MESSAGE": "Type message"
+    "TYPE_MESSAGE": "Type message",
+    "TYPING": "typing"
   },
   "FILTER": {
     "HEADER_TITLE": "Filter",

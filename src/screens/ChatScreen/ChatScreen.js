@@ -32,8 +32,9 @@ import {
   markMessagesAsRead,
   loadCannedResponses,
   resetConversation,
+  toggleTypingStatus,
 } from '../../actions/conversation';
-import { getGroupedConversation } from '../../helpers';
+import { getGroupedConversation, getTypingUsersText } from '../../helpers';
 import i18n from '../../i18n';
 
 const BackIcon = (style) => <Icon {...style} name="arrow-ios-back-outline" />;
@@ -65,6 +66,8 @@ class ChatScreenComponent extends Component {
     isFetching: PropTypes.bool,
     isAllMessagesLoaded: PropTypes.bool,
     markAllMessagesAsRead: PropTypes.func,
+    toggleTypingStatus: PropTypes.func,
+    conversationTypingUsers: PropTypes.shape({}),
   };
 
   static defaultProps = {
@@ -74,6 +77,7 @@ class ChatScreenComponent extends Component {
     markAllMessagesAsRead: () => {},
     allMessages: [],
     cannedResponses: [],
+    conversationTypingUsers: {},
   };
 
   state = {
@@ -280,8 +284,21 @@ class ChatScreenComponent extends Component {
       thumbnail: null,
     };
 
-    const { themedStyle, conversationDetails, route } = this.props;
+    const {
+      themedStyle,
+      conversationDetails,
+      route,
+      conversationTypingUsers,
+    } = this.props;
 
+    const {
+      params: { conversationId },
+    } = route;
+
+    const typingUser = getTypingUsersText({
+      conversationTypingUsers,
+      conversationId,
+    });
     const { meta } = route.params;
     if (meta) {
       const {
@@ -300,7 +317,7 @@ class ChatScreenComponent extends Component {
     if (senderDetails.name) {
       return (
         <TopNavigation
-          alignment="center"
+          subtitle={typingUser ? `${typingUser}...` : ''}
           title={senderDetails.name}
           rightControls={
             <TopNavigationAction
@@ -318,6 +335,17 @@ class ChatScreenComponent extends Component {
         />
       );
     }
+  };
+
+  onBlur = () => {
+    const { route } = this.props;
+    const { conversationId } = route.params;
+    this.props.toggleTypingStatus({ conversationId, typingStatus: 'off' });
+  };
+  onFocus = () => {
+    const { route } = this.props;
+    const { conversationId } = route.params;
+    this.props.toggleTypingStatus({ conversationId, typingStatus: 'on' });
   };
 
   render() {
@@ -404,6 +432,8 @@ class ChatScreenComponent extends Component {
                 style={themedStyle.input}
                 placeholder={`${i18n.t('CONVERSATION.TYPE_MESSAGE')}...`}
                 isFocused={this.onFocused}
+                onBlur={this.onBlur}
+                onFocus={this.onFocus}
                 value={message}
                 placeholderTextColor={theme['text-basic-color']}
                 onChangeText={this.onNewMessageChange}
@@ -429,6 +459,8 @@ function bindAction(dispatch) {
       dispatch(sendMessage({ conversationId, message })),
     markAllMessagesAsRead: ({ conversationId }) =>
       dispatch(markMessagesAsRead({ conversationId })),
+    toggleTypingStatus: ({ conversationId, typingStatus }) =>
+      dispatch(toggleTypingStatus({ conversationId, typingStatus })),
   };
 }
 function mapStateToProps(state) {
@@ -438,6 +470,7 @@ function mapStateToProps(state) {
     cannedResponses: state.conversation.cannedResponses,
     isFetching: state.conversation.isFetching,
     isAllMessagesLoaded: state.conversation.isAllMessagesLoaded,
+    conversationTypingUsers: state.conversation.conversationTypingUsers,
   };
 }
 

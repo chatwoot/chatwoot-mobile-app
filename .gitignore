@@ -70,6 +70,7 @@ android/api-fastlane.json
 android/gradle.properties
 # Firebase 
 android/app/google-services.json
+ios/GoogleService-Info.plist
 
 
 

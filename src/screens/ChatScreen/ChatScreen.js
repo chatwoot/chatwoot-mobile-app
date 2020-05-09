@@ -146,18 +146,6 @@ class ChatScreenComponent extends Component {
     }
   };
 
-  renderSendButton = () => {
-    return (
-      <Button
-        style={this.props.themedStyle.addMessageButton}
-        appearance="ghost"
-        size="large"
-        icon={PaperPlaneIconFill}
-        onPress={this.onNewMessageAdd}
-      />
-    );
-  };
-
   showAttachment = ({ type, dataUrl }) => {
     if (type === 'image') {
       const { navigation } = this.props;
@@ -438,8 +426,14 @@ class ChatScreenComponent extends Component {
                 placeholderTextColor={theme['text-basic-color']}
                 onChangeText={this.onNewMessageChange}
               />
-
-              {this.renderSendButton()}
+              <Button
+                style={this.props.themedStyle.addMessageButton}
+                appearance="ghost"
+                size="large"
+                icon={PaperPlaneIconFill}
+                onPress={this.onNewMessageAdd}
+                disabled={message === '' ? true : false}
+              />
             </View>
           </View>
         </KeyboardAvoidingView>

@@ -69,9 +69,8 @@ const styles = (theme) => ({
     height: 48,
   },
   addMessageButton: {
-    width: 12,
-    height: 12,
-    borderRadius: 12,
+    paddingHorizontal: 0,
+    backgroundColor: 'transparent',
   },
   backdrop: {
     backgroundColor: theme['back-drop-color'],

@@ -214,10 +214,9 @@ export const sendMessage = ({ conversationId, message }) => async (
     const apiUrl = `conversations/${conversationId}/messages`;
     const response = await axios.post(apiUrl, message);
 
-    const { payload } = response.data;
     dispatch({
       type: SEND_MESSAGE_SUCCESS,
-      payload: payload,
+      payload: response.data,
     });
   } catch (error) {
     dispatch({ type: SEND_MESSAGE_ERROR, payload: error });

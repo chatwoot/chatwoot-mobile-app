@@ -15,7 +15,7 @@ import {
 import { showToast } from '../helpers/ToastHelper';
 import I18n from '../i18n';
 
-export const onLogin = ({ email, password }) => async (dispatch) => {
+export const doLogin = ({ email, password }) => async (dispatch) => {
   try {
     dispatch({ type: LOGIN });
     const response = await axios.post('auth/sign_in', { email, password });

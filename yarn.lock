@@ -1581,17 +1581,17 @@
     hoist-non-react-statics "^3.2.1"
     lodash.merge "^4.6.1"
 
-"@ui-kitten/eva-icons@^4.4.1":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@ui-kitten/eva-icons/-/eva-icons-4.4.1.tgz#a71b9415889510321d4c422174107af98b8becf9"
-  integrity sha512-G730KOgSuUuTTuxuTg6ChcUJZxQ0zX2XKlonAgDwtJiBTDj+zrofr2IJ0ZURHkHgasJwZ1o8S+RxZ+5wH7LGKw==
+"@ui-kitten/eva-icons@^5.0.0 ":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@ui-kitten/eva-icons/-/eva-icons-5.0.0.tgz#b8ab2fea3dafcb9f914534ef66a5dfd1badfeb1d"
+  integrity sha512-Iae3FtnNQKC0PnRnFDUpaCFhvUFaN+NkRxag6LstEjNqAMcVnsQbPTqPQFx18j920Z5S7f5/oZqaJ8NxZtPaNA==
   dependencies:
-    react-native-eva-icons "1.1.0"
+    react-native-eva-icons "^1.3.1"
 
-"@ui-kitten/metro-config@^4.4.1":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@ui-kitten/metro-config/-/metro-config-4.4.1.tgz#1a6838a18598a5c7be9dc04daf589f220116c7a1"
-  integrity sha512-ozNZG6ukJ9XPFOqOIjHeoojbdGDqYIvLxYyox6d9LL2W/xtbTwqY/fsomsbwdRgcUHu145UCPn4FnUdHVAMXcQ==
+"@ui-kitten/metro-config@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@ui-kitten/metro-config/-/metro-config-5.0.0.tgz#28d60d781def017e6def3b96ce0d1594d44efb2e"
+  integrity sha512-ImnpqdzNzZOgOHbrK27RgObzhMKT5iw2ZSqAZmEHUaVQexOwHlA1yBCHI2TnhuwtqiRsgYOW0zQywr05CnCPpQ==
 
 abab@^2.0.0:
   version "2.0.3"
@@ -6387,10 +6387,10 @@ react-native-background-color@^0.0.8:
   resolved "https://registry.yarnpkg.com/react-native-background-color/-/react-native-background-color-0.0.8.tgz#661f737156a18a86ece362126e9c97e33fa42ed2"
   integrity sha512-Or89KCBNyFsD0234g/MgWyRrhwtd5egHXdqUwal1e5FKpum8d/x1y5PQqF3OUFR0W/ztp5Vt3FaLc/LEY0Fy+Q==
 
-react-native-eva-icons@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-eva-icons/-/react-native-eva-icons-1.1.0.tgz#323e55d759187edc216d049e7c0012a27383e0ed"
-  integrity sha512-0k6sbiKoHxmmbCgAZTHj6llcdcwtbyZJ1E2AK0my7QU0WRaWwqWMep5AUlMbrIiuYE9mkMZiabEXYcfn3ir2PA==
+react-native-eva-icons@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-eva-icons/-/react-native-eva-icons-1.3.1.tgz#1e6e019b0fd3cb1669db50bd6bbdaa6d89327593"
+  integrity sha512-emd/aYXuOacuDVTx0SJoLi+xsOdCNdljQB3PTNCM9AQ3m/smG0X1TN0+ihelPO7MqoHzaH0h6lbANtwxGUy8Fw==
 
 react-native-gesture-handler@^1.6.1:
   version "1.6.1"

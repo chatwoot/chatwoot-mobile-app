@@ -17,19 +17,16 @@ import PropTypes from 'prop-types';
 import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
 import { setInbox } from '../../actions/inbox';
-import {
-  setConversationStatus,
-  getConversations,
-} from '../../actions/conversation';
+import { setConversationStatus, getConversations } from '../../actions/conversation';
 import CustomText from '../../components/Text';
 import FilterItem from '../../components/FilterItem';
 
 import styles from './ConversationFilter.style';
 import { INBOX_ICON } from '../../constants';
 
-const BackIcon = style => <Icon {...style} name="arrow-ios-back-outline" />;
+const BackIcon = (style) => <Icon {...style} name="arrow-ios-back-outline" />;
 
-const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
+const BackAction = (props) => <TopNavigationAction {...props} icon={BackIcon} />;
 
 const statusOptions = [
   {
@@ -44,23 +41,25 @@ const statusOptions = [
   },
 ];
 
-class FilterScreenComponent extends Component {
-  static propTypes = {
-    themedStyle: PropTypes.object,
-    route: PropTypes.object,
+const propTypes = {
+  eva: PropTypes.shape({
+    style: PropTypes.object,
     theme: PropTypes.object,
-    navigation: PropTypes.shape({
-      navigate: PropTypes.func.isRequired,
-      goBack: PropTypes.func.isRequired,
-    }).isRequired,
-    inboxes: PropTypes.array.isRequired,
-    inboxSelected: PropTypes.shape({}),
-    setInbox: PropTypes.func,
-    setConversationStatus: PropTypes.func,
-    getConversations: PropTypes.func,
-    conversationStatus: PropTypes.string,
-  };
+  }).isRequired,
+  route: PropTypes.object,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
+  inboxes: PropTypes.array.isRequired,
+  inboxSelected: PropTypes.shape({}),
+  setInbox: PropTypes.func,
+  setConversationStatus: PropTypes.func,
+  getConversations: PropTypes.func,
+  conversationStatus: PropTypes.string,
+};
 
+class FilterScreenComponent extends Component {
   constructor(props) {
     super(props);
     const { inboxes } = this.props;
@@ -107,7 +106,7 @@ class FilterScreenComponent extends Component {
 
   processEntries = ({ inboxSelected }) => {
     const { inboxes } = this.props;
-    const allInboxes = inboxes.map(inbox => ({
+    const allInboxes = inboxes.map((inbox) => ({
       ...inbox,
       itemType: 'inbox',
       isChecked: inboxSelected && inboxSelected.id === inbox.id ? true : false,
@@ -118,12 +117,15 @@ class FilterScreenComponent extends Component {
 
   render() {
     const { allInboxes } = this.state;
-    const { conversationStatus, themedStyle } = this.props;
+    const {
+      conversationStatus,
+      eva: { style: themedStyle },
+    } = this.props;
 
     return (
       <SafeAreaView style={themedStyle.container}>
         <TopNavigation
-          leftControl={this.renderLeftControl()}
+          accessoryLeft={this.renderLeftControl}
           title={i18n.t('FILTER.HEADER_TITLE')}
           titleStyle={themedStyle.headerTitle}
         />
@@ -149,9 +151,7 @@ class FilterScreenComponent extends Component {
           </View>
           <View style={themedStyle.itemMainView}>
             <View>
-              <Text style={themedStyle.itemHeaderTitle}>
-                {i18n.t('FILTER.CHOOSE_STATUS')}
-              </Text>
+              <Text style={themedStyle.itemHeaderTitle}>{i18n.t('FILTER.CHOOSE_STATUS')}</Text>
               {statusOptions.map((item, index) => {
                 return (
                   <FilterItem
@@ -171,9 +171,9 @@ class FilterScreenComponent extends Component {
             style={themedStyle.filterButton}
             size="large"
             textStyle={themedStyle.filterButtonText}
-            onPress={() => this.submitFilters()}>
-            {i18n.t('FILTER.SUBMIT')}
-          </LoaderButton>
+            onPress={() => this.submitFilters()}
+            text={i18n.t('FILTER.SUBMIT')}
+          />
         </View>
       </SafeAreaView>
     );
@@ -183,12 +183,9 @@ class FilterScreenComponent extends Component {
 function bindAction(dispatch) {
   return {
     setInbox: ({ inbox }) => dispatch(setInbox({ inbox })),
-    setConversationStatus: ({ status }) =>
-      dispatch(setConversationStatus({ status })),
+    setConversationStatus: ({ status }) => dispatch(setConversationStatus({ status })),
     getConversations: ({ assigneeType, conversationStatus, inboxSelected }) =>
-      dispatch(
-        getConversations({ assigneeType, conversationStatus, inboxSelected }),
-      ),
+      dispatch(getConversations({ assigneeType, conversationStatus, inboxSelected })),
   };
 }
 function mapStateToProps(state) {
@@ -199,5 +196,6 @@ function mapStateToProps(state) {
   };
 }
 
+FilterScreenComponent.propTypes = propTypes;
 const FilterScreen = withStyles(FilterScreenComponent, styles);
 export default connect(mapStateToProps, bindAction)(FilterScreen);

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  Icon,
   Layout,
   TopNavigation,
   TopNavigationAction,
@@ -9,6 +8,7 @@ import {
   List,
   Spinner,
   withStyles,
+  Icon,
 } from '@ui-kitten/components';
 import { SafeAreaView, View } from 'react-native';
 import PropTypes from 'prop-types';
@@ -16,11 +16,7 @@ import { connect } from 'react-redux';
 
 import { getInboxes } from '../../actions/inbox';
 
-import {
-  getConversations,
-  loadInitialMessage,
-  setConversation,
-} from '../../actions/conversation';
+import { getConversations, loadInitialMessage, setConversation } from '../../actions/conversation';
 
 import { getAccountDetails } from '../../actions/auth';
 
@@ -44,8 +40,10 @@ import { getPubSubToken } from '../../helpers/AuthHelper';
 
 class ConversationListComponent extends Component {
   static propTypes = {
-    themedStyle: PropTypes.object,
-    theme: PropTypes.object,
+    eva: PropTypes.shape({
+      style: PropTypes.object,
+      theme: PropTypes.object,
+    }).isRequired,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
@@ -155,8 +153,8 @@ class ConversationListComponent extends Component {
     return <TopNavigationAction icon={MenuIcon} onPress={this.openFilter} />;
   };
 
-  onChangeTab = (index) => {
-    this.setState({
+  onChangeTab = async (index) => {
+    await this.setState({
       selectedIndex: index,
       pageNumber: 1,
     });
@@ -173,26 +171,30 @@ class ConversationListComponent extends Component {
   );
 
   renderMoreLoader = () => {
-    const { isAllConversationsLoaded, themedStyle } = this.props;
+    const {
+      isAllConversationsLoaded,
+      eva: { style },
+    } = this.props;
 
     return (
-      <View style={themedStyle.loadMoreSpinnerView}>
+      <View style={style.loadMoreSpinnerView}>
         {!isAllConversationsLoaded ? <Spinner size="medium" /> : null}
       </View>
     );
   };
 
   renderList = () => {
-    const { conversations, themedStyle } = this.props;
+    const {
+      conversations,
+      eva: { style },
+    } = this.props;
 
     const { payload } = conversations;
 
-    const filterConversations = payload.filter(
-      (item) => item.messages.length !== 0,
-    );
+    const filterConversations = payload.filter((item) => item.messages.length !== 0);
 
     return (
-      <Layout style={themedStyle.tabContainer}>
+      <Layout style={style.tabContainer}>
         <List
           data={filterConversations}
           renderItem={this.renderItem}
@@ -214,49 +216,38 @@ class ConversationListComponent extends Component {
   };
 
   renderEmptyList = () => {
-    const { themedStyle } = this.props;
+    const {
+      eva: { style },
+    } = this.props;
     return (
-      <Layout style={themedStyle.tabContainer}>
+      <Layout style={style.tabContainer}>
         <List data={LoaderData} renderItem={renderItemLoader} />
       </Layout>
     );
   };
 
   renderEmptyMessage = () => {
-    const { themedStyle } = this.props;
+    const {
+      eva: { style },
+    } = this.props;
     return (
-      <Layout style={themedStyle.emptyView}>
-        <CustomText appearance="hint" style={themedStyle.emptyText}>
+      <Layout style={style.emptyView}>
+        <CustomText appearance="hint" style={style.emptyText}>
           {i18n.t('CONVERSATION.EMPTY')}
         </CustomText>
       </Layout>
     );
   };
 
-  renderTab = ({
-    tabIndex,
-    selectedIndex,
-    tabTitle,
-    payload,
-    isFetching,
-    renderList,
-  }) => {
-    const { themedStyle } = this.props;
-
+  renderTab = ({ tabIndex, selectedIndex, tabTitle, payload, isFetching, renderList, style }) => {
     return (
       <Tab
         title={tabTitle}
-        titleStyle={
-          selectedIndex === tabIndex
-            ? themedStyle.tabActiveTitle
-            : themedStyle.tabNotActiveTitle
-        }>
-        <View style={themedStyle.tabView}>
+        titleStyle={selectedIndex === tabIndex ? style.tabActiveTitle : style.tabNotActiveTitle}>
+        <View style={style.tabView}>
           {!isFetching || payload.length ? (
             <React.Fragment>
-              {payload && payload.length
-                ? this.renderList()
-                : this.renderEmptyMessage()}
+              {payload && payload.length ? this.renderList() : this.renderEmptyMessage()}
             </React.Fragment>
           ) : (
             this.renderEmptyList()
@@ -273,7 +264,7 @@ class ConversationListComponent extends Component {
       isFetching,
       inboxSelected,
       conversationStatus,
-      themedStyle,
+      eva: { style },
     } = this.props;
 
     const { payload, meta } = conversations;
@@ -286,34 +277,34 @@ class ConversationListComponent extends Component {
     const headerTitle = inBoxName ? `${inBoxName} (${conversationStatus})` : '';
 
     return (
-      <SafeAreaView style={themedStyle.container}>
+      <SafeAreaView style={style.container}>
         <TopNavigation
           title={headerTitle}
           alignment="center"
-          rightControls={this.renderRightControls()}
-          titleStyle={themedStyle.headerTitle}
+          accessoryRight={this.renderRightControls}
+          titleStyle={style.headerTitle}
         />
 
         <TabView
           selectedIndex={selectedIndex}
-          indicatorStyle={themedStyle.tabViewIndicator}
+          indicatorStyle={style.tabViewIndicator}
           onSelect={this.onChangeTab}
-          tabBarStyle={themedStyle.tabBar}>
+          tabBarStyle={style.tabBar}>
           {this.renderTab({
             tabIndex: 0,
             selectedIndex,
             tabTitle: `${i18n.t('CONVERSATION.MINE')} ${mineCount}`,
             payload,
             isFetching,
+            style,
           })}
           {this.renderTab({
             tabIndex: 1,
             selectedIndex,
-            tabTitle: `${i18n.t(
-              'CONVERSATION.UN_ASSIGNED',
-            )} ${unAssignedCount}`,
+            tabTitle: `${i18n.t('CONVERSATION.UN_ASSIGNED')} ${unAssignedCount}`,
             payload,
             isFetching,
+            style,
           })}
           {this.renderTab({
             tabIndex: 2,
@@ -321,6 +312,7 @@ class ConversationListComponent extends Component {
             tabTitle: `${i18n.t('CONVERSATION.ALL')} ${allCount}`,
             payload,
             isFetching,
+            style,
           })}
         </TabView>
       </SafeAreaView>
@@ -332,12 +324,7 @@ function bindAction(dispatch) {
   return {
     getInboxes: () => dispatch(getInboxes()),
     getAccountDetails: () => dispatch(getAccountDetails()),
-    getConversations: ({
-      assigneeType,
-      conversationStatus,
-      inboxSelected,
-      pageNumber,
-    }) =>
+    getConversations: ({ assigneeType, conversationStatus, inboxSelected, pageNumber }) =>
       dispatch(
         getConversations({
           assigneeType,
@@ -347,10 +334,8 @@ function bindAction(dispatch) {
         }),
       ),
 
-    selectConversation: ({ conversationId }) =>
-      dispatch(setConversation({ conversationId })),
-    loadInitialMessages: ({ messages }) =>
-      dispatch(loadInitialMessage({ messages })),
+    selectConversation: ({ conversationId }) => dispatch(setConversation({ conversationId })),
+    loadInitialMessages: ({ messages }) => dispatch(loadInitialMessage({ messages })),
   };
 }
 function mapStateToProps(state) {

@@ -1,7 +1,6 @@
 import { Icon } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { theme } from '../theme';
 
 const CustomIcon = ({ name, color, height, width, ...customProps }) => {
   return <Icon height={height} width={width} fill={color} name={name} {...customProps} />;
@@ -15,7 +14,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-  color: theme['text-light-color'],
   height: 24,
   width: 24,
 };

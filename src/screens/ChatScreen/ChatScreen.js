@@ -6,6 +6,8 @@ import {
   Button,
   Spinner,
   withStyles,
+  OverflowMenu,
+  MenuItem,
 } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -44,6 +46,8 @@ const BackAction = (props) => <TopNavigationAction {...props} icon={BackIcon} />
 const PaperPlaneIconFill = (style) => {
   return <Icon {...style} name="paper-plane" />;
 };
+
+const renderAnchor = () => <View />;
 
 class ChatScreenComponent extends Component {
   static propTypes = {
@@ -192,11 +196,11 @@ class ChatScreenComponent extends Component {
     const {
       isAllMessagesLoaded,
       isFetching,
-      eva: { style: themedStyle },
+      eva: { style },
     } = this.props;
 
     return (
-      <View style={themedStyle.loadMoreSpinnerView}>
+      <View style={style.loadMoreSpinnerView}>
         {!isAllMessagesLoaded && isFetching ? <Spinner size="medium" color="red" /> : null}
       </View>
     );
@@ -350,10 +354,16 @@ class ChatScreenComponent extends Component {
     const {
       allMessages,
       isFetching,
-      eva: { style: themedStyle, theme },
+      eva: { style, theme },
     } = this.props;
 
-    const { message, showScrollToButton } = this.state;
+    const {
+      message,
+      showScrollToButton,
+      filteredCannedResponses,
+      menuVisible,
+      selectedIndex,
+    } = this.state;
 
     const completeMessages = []
       .concat(allMessages)
@@ -362,17 +372,16 @@ class ChatScreenComponent extends Component {
     const groupedConversationList = getGroupedConversation({
       conversations: completeMessages,
     });
-
     return (
-      <SafeAreaView style={themedStyle.mainContainer}>
+      <SafeAreaView style={style.mainContainer}>
         <KeyboardAvoidingView
-          style={themedStyle.keyboardView}
+          style={style.keyboardView}
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
           enabled>
           {this.renderTopNavigation()}
 
-          <View style={themedStyle.container} autoDismiss={false}>
-            <View style={themedStyle.chatView}>
+          <View style={style.container} autoDismiss={false}>
+            <View style={style.chatView}>
               {groupedConversationList.length ? (
                 <SectionList
                   scrollEventThrottle={1900}
@@ -392,7 +401,7 @@ class ChatScreenComponent extends Component {
                   keyExtractor={(item, index) => item + index}
                   renderItem={this.renderMessage}
                   renderSectionFooter={({ section: { date } }) => <ChatMessageDate date={date} />}
-                  style={themedStyle.chatContainer}
+                  style={style.chatContainer}
                   ListFooterComponent={this.renderMoreLoader}
                 />
               ) : null}
@@ -400,15 +409,15 @@ class ChatScreenComponent extends Component {
                 <ScrollToBottomButton scrollToBottom={() => this.scrollToBottom()} />
               )}
               {isFetching && !groupedConversationList.length && (
-                <View style={themedStyle.loadMoreSpinnerView}>
+                <View style={style.loadMoreSpinnerView}>
                   <Spinner size="medium" />
                 </View>
               )}
             </View>
 
-            <View style={themedStyle.inputView}>
+            <View style={style.inputView}>
               <TextInput
-                style={themedStyle.input}
+                style={style.input}
                 placeholder={`${i18n.t('CONVERSATION.TYPE_MESSAGE')}...`}
                 isFocused={this.onFocused}
                 onBlur={this.onBlur}
@@ -417,8 +426,25 @@ class ChatScreenComponent extends Component {
                 placeholderTextColor={theme['text-basic-color']}
                 onChangeText={this.onNewMessageChange}
               />
+
+              {filteredCannedResponses && (
+                <OverflowMenu
+                  anchor={renderAnchor}
+                  data={filteredCannedResponses}
+                  visible={menuVisible}
+                  selectedIndex={selectedIndex}
+                  onSelect={this.onItemSelect}
+                  placement="top"
+                  style={style.overflowMenu}
+                  backdropStyle={style.backdrop}
+                  onBackdropPress={this.toggleOverFlowMenu}>
+                  {filteredCannedResponses.map((item) => (
+                    <MenuItem title={item.title} key={item.id} />
+                  ))}
+                </OverflowMenu>
+              )}
               <Button
-                style={themedStyle.addMessageButton}
+                style={style.addMessageButton}
                 appearance="ghost"
                 size="large"
                 accessoryLeft={PaperPlaneIconFill}

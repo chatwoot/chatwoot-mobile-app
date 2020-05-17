@@ -89,7 +89,7 @@ const propTypes = {
   eva: PropTypes.shape({
     style: PropTypes.object,
     theme: PropTypes.object,
-  }).isRequired,
+  }),
   type: PropTypes.string,
   created_at: PropTypes.number,
   message: PropTypes.shape({

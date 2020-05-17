@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { View } from 'react-native';
 import { withStyles } from '@ui-kitten/components';
@@ -31,11 +30,11 @@ const styles = (theme) => ({
   },
 });
 
-const ChatMessageDateComponent = ({ date, themedStyle }) => {
+const ChatMessageDateComponent = ({ date, eva: { style } }) => {
   return (
-    <View style={themedStyle.mainView}>
-      <View style={themedStyle.dateView}>
-        <CustomText style={themedStyle.text}>{date}</CustomText>
+    <View style={style.mainView}>
+      <View style={style.dateView}>
+        <CustomText style={style.text}>{date}</CustomText>
       </View>
     </View>
   );
@@ -43,15 +42,19 @@ const ChatMessageDateComponent = ({ date, themedStyle }) => {
 
 const propTypes = {
   date: PropTypes.string,
+  eva: PropTypes.shape({
+    style: PropTypes.object,
+    theme: PropTypes.object,
+  }).isRequired,
 };
 
 const defaultProps = {
   date: null,
 };
 
-const ChatMessageDate = withStyles(ChatMessageDateComponent, styles);
+ChatMessageDateComponent.defaultProps = defaultProps;
+ChatMessageDateComponent.propTypes = propTypes;
 
-ChatMessageDate.defaultProps = defaultProps;
-ChatMessageDate.propTypes = propTypes;
+const ChatMessageDate = withStyles(ChatMessageDateComponent, styles);
 
 export default ChatMessageDate;

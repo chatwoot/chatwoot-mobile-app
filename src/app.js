@@ -8,6 +8,8 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { theme } from './theme';
 
+import NoNetworkBar from './components/NoNetworkBar';
+
 import Router from './router';
 import { store, persistor } from './store';
 
@@ -20,17 +22,11 @@ export default class Chatwoot extends Component {
       BackgroundColor.setColor('#FFFFFF');
     }
 
-    BackHandler.addEventListener(
-      'hardwareBackPress',
-      this.handleBackButtonClick,
-    );
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener(
-      'hardwareBackPress',
-      this.handleBackButtonClick,
-    );
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
 
   handleBackButtonClick = () => {
@@ -57,6 +53,7 @@ export default class Chatwoot extends Component {
         <ApplicationProvider {...eva} theme={theme}>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
+              <NoNetworkBar />
               <Router />
             </PersistGate>
           </Provider>

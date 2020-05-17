@@ -20,8 +20,6 @@ import SettingsItem from '../../components/SettingsItem';
 import { openURL } from '../../helpers/index.js';
 import { HELP_URL } from '../../constants/url.js';
 
-import { theme } from '../../theme';
-
 const settingsData = [
   {
     text: 'HELP',
@@ -45,8 +43,10 @@ const settingsData = [
 
 class SettingsComponent extends Component {
   static propTypes = {
-    themedStyle: PropTypes.object,
-    theme: PropTypes.object,
+    eva: PropTypes.shape({
+      style: PropTypes.object,
+      theme: PropTypes.object,
+    }).isRequired,
     user: PropTypes.shape({
       name: PropTypes.string,
       email: PropTypes.string,
@@ -55,13 +55,11 @@ class SettingsComponent extends Component {
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
-    switchTheme: PropTypes.func,
     onLogOut: PropTypes.func,
   };
 
   static defaultProps = {
     user: { email: null, name: null },
-    switchTheme: () => {},
     onLogOut: () => {},
   };
 
@@ -70,10 +68,6 @@ class SettingsComponent extends Component {
       case 'language':
         const { navigation } = this.props;
         navigation.navigate('Language');
-        break;
-
-      case 'theme':
-        this.props.switchTheme();
         break;
 
       case 'logout':
@@ -92,28 +86,28 @@ class SettingsComponent extends Component {
   render() {
     const {
       user: { email, name, avatar_url },
-      themedStyle,
+      eva: { style, theme },
     } = this.props;
 
     return (
-      <SafeAreaView style={themedStyle.container}>
+      <SafeAreaView style={style.container}>
         <TopNavigation
           title={i18n.t('SETTINGS.HEADER_TITLE')}
-          titleStyle={themedStyle.headerTitle}
+          titleStyle={style.headerTitle}
           alignment="center"
         />
-        <View style={themedStyle.profileContainer}>
+        <View style={style.profileContainer}>
           <UserAvatar
             userName={name}
             thumbnail={avatar_url}
             defaultBGColor={theme['color-primary-default']}
           />
-          <View style={themedStyle.detailsContainer}>
-            <CustomText style={themedStyle.nameLabel}>{name}</CustomText>
-            <CustomText style={themedStyle.emailLabel}>{email}</CustomText>
+          <View style={style.detailsContainer}>
+            <CustomText style={style.nameLabel}>{name}</CustomText>
+            <CustomText style={style.emailLabel}>{email}</CustomText>
           </View>
         </View>
-        <View style={themedStyle.itemListView}>
+        <View style={style.itemListView}>
           {settingsData.map((item, index) => (
             <SettingsItem
               key={item.text}
@@ -127,14 +121,12 @@ class SettingsComponent extends Component {
             />
           ))}
         </View>
-        <View style={themedStyle.aboutView}>
-          <Image style={themedStyle.aboutImage} source={images.appLogo} />
+        <View style={style.aboutView}>
+          <Image style={style.aboutImage} source={images.appLogo} />
         </View>
 
-        <View style={themedStyle.appDescriptionView}>
-          <CustomText style={themedStyle.appDescriptionText}>
-            {`v${packageFile.version}`}
-          </CustomText>
+        <View style={style.appDescriptionView}>
+          <CustomText style={style.appDescriptionText}>{`v${packageFile.version}`}</CustomText>
         </View>
       </SafeAreaView>
     );

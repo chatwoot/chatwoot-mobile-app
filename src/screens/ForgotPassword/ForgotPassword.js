@@ -16,7 +16,10 @@ import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
 import Icon from '../../components/Icon';
 
-const BackIcon = (style) => <Icon {...style} name="arrow-ios-back-outline" />;
+// eslint-disable-next-line react/prop-types
+const BackIcon = ({ style: { tintColor } }) => {
+  return <Icon name="arrow-ios-back-outline" color={tintColor} />;
+};
 
 const { Form } = t.form;
 const LoginForm = t.struct({
@@ -26,6 +29,7 @@ const LoginForm = t.struct({
 const propTypes = {
   eva: PropTypes.shape({
     style: PropTypes.object,
+    theme: PropTypes.object,
   }).isRequired,
   onResetPassword: PropTypes.func,
   isLoading: PropTypes.bool,

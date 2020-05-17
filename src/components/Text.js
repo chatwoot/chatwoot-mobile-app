@@ -15,13 +15,13 @@ class CustomText extends Component {
     // E.g fontWeight is 400, fontSize should be 18, etc.
     //
     // Notice we don't create defaultProps for 400 - it is used as default in mapping.json.
+    // style: PropTypes.arrayOf(PropTypes.object),
     weight: PropTypes.oneOf(['300', '400', '500', '600', '700', '800', '900']),
     locale: PropTypes.string,
-    style: PropTypes.object,
     children: PropTypes.string,
   };
 
-  findWeightVariant = props => {
+  findWeightVariant = (props) => {
     const flatStyle = StyleSheet.flatten(props.style || {});
     return flatStyle.fontWeight || '400';
   };

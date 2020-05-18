@@ -1,51 +1,31 @@
-import { Button as UIKittenButton, withStyles } from '@ui-kitten/components';
+import { Button, useTheme } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { ActivityIndicator } from 'react-native';
 
-class ButtonComponent extends Component {
-  static propTypes = {
-    theme: PropTypes.object,
-    loading: PropTypes.bool,
-    children: PropTypes.string,
-  };
+const LoadingIndicator = () => {
+  const theme = useTheme();
+  return <ActivityIndicator size="small" color={theme['loader-color']} />;
+};
 
-  static defaultProps = {
-    loading: false,
-  };
+const LoaderButton = ({ loading, text, ...customProps }) => {
+  return (
+    <Button {...customProps} {...(loading && { accessoryLeft: LoadingIndicator })}>
+      {loading ? null : text}
+    </Button>
+  );
+};
 
-  renderChildren() {
-    const { loading, children } = this.props;
+const propTypes = {
+  loading: PropTypes.bool,
+  text: PropTypes.string.isRequired,
+};
 
-    if (loading) {
-      return null;
-    }
+const defaultProps = {
+  loading: false,
+};
 
-    return children;
-  }
+LoaderButton.propTypes = propTypes;
+LoaderButton.defaultProps = defaultProps;
 
-  renderLoading() {
-    const { theme } = this.props;
-    return <ActivityIndicator color={theme['loader-color']} />;
-  }
-
-  render() {
-    const { loading } = this.props;
-
-    let customProps;
-    if (loading) {
-      customProps = {
-        icon: () => this.renderLoading(),
-        disabled: true,
-      };
-    }
-
-    return (
-      <UIKittenButton {...this.props} {...customProps}>
-        {this.renderChildren()}
-      </UIKittenButton>
-    );
-  }
-}
-
-export default withStyles(ButtonComponent);
+export default LoaderButton;

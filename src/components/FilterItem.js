@@ -5,7 +5,7 @@ import { Radio, Icon, withStyles } from '@ui-kitten/components';
 
 import CustomText from './Text';
 
-const styles = theme => ({
+const styles = (theme) => ({
   itemView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -36,8 +36,10 @@ const styles = theme => ({
 });
 
 const propTypes = {
-  themedStyle: PropTypes.object,
-  theme: PropTypes.object,
+  eva: PropTypes.shape({
+    style: PropTypes.object,
+    theme: PropTypes.object,
+  }).isRequired,
   item: PropTypes.shape({
     name: PropTypes.string,
   }),
@@ -53,22 +55,15 @@ class FilterItemComponent extends Component {
       onCheckedChange,
       isChecked,
       iconName,
-      themedStyle,
-      theme,
+      eva: { style: themedStyle, theme },
     } = this.props;
     const { name } = item;
 
     return (
-      <TouchableOpacity
-        style={themedStyle.itemView}
-        onPress={() => onCheckedChange({ item })}>
+      <TouchableOpacity style={themedStyle.itemView} onPress={() => onCheckedChange({ item })}>
         {iconName ? (
           <View style={themedStyle.iconView}>
-            <Icon
-              style={themedStyle.icon}
-              fill={theme['text-hint-color']}
-              name={iconName}
-            />
+            <Icon style={themedStyle.icon} fill={theme['text-hint-color']} name={iconName} />
           </View>
         ) : null}
 
@@ -77,10 +72,7 @@ class FilterItemComponent extends Component {
         </View>
 
         <View style={themedStyle.radioView}>
-          <Radio
-            checked={isChecked}
-            onChange={() => onCheckedChange({ item })}
-          />
+          <Radio checked={isChecked} onChange={() => onCheckedChange({ item })} />
         </View>
       </TouchableOpacity>
     );

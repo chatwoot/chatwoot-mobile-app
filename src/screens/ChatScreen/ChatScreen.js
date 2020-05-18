@@ -5,8 +5,9 @@ import {
   TopNavigationAction,
   Button,
   Spinner,
-  OverflowMenu,
   withStyles,
+  OverflowMenu,
+  MenuItem,
 } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -36,21 +37,24 @@ import {
 } from '../../actions/conversation';
 import { getGroupedConversation, getTypingUsersText } from '../../helpers';
 import i18n from '../../i18n';
+import CustomText from '../../components/Text';
 
 const BackIcon = (style) => <Icon {...style} name="arrow-ios-back-outline" />;
 
-const BackAction = (props) => (
-  <TopNavigationAction {...props} icon={BackIcon} />
-);
+const BackAction = (props) => <TopNavigationAction {...props} icon={BackIcon} />;
 
 const PaperPlaneIconFill = (style) => {
   return <Icon {...style} name="paper-plane" />;
 };
 
+const renderAnchor = () => <View />;
+
 class ChatScreenComponent extends Component {
   static propTypes = {
-    themedStyle: PropTypes.object,
-    theme: PropTypes.object,
+    eva: PropTypes.shape({
+      style: PropTypes.object,
+      theme: PropTypes.object,
+    }).isRequired,
     route: PropTypes.object,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
@@ -189,13 +193,15 @@ class ChatScreenComponent extends Component {
   };
 
   renderMoreLoader = () => {
-    const { isAllMessagesLoaded, isFetching } = this.props;
+    const {
+      isAllMessagesLoaded,
+      isFetching,
+      eva: { style },
+    } = this.props;
 
     return (
-      <View style={this.props.themedStyle.loadMoreSpinnerView}>
-        {!isAllMessagesLoaded && isFetching ? (
-          <Spinner size="medium" color="red" />
-        ) : null}
+      <View style={style.loadMoreSpinnerView}>
+        {!isAllMessagesLoaded && isFetching ? <Spinner size="medium" color="red" /> : null}
       </View>
     );
   };
@@ -235,11 +241,7 @@ class ChatScreenComponent extends Component {
   };
 
   renderMessage = (item) => (
-    <ChatMessage
-      message={item.item}
-      key={item.index}
-      showAttachment={this.showAttachment}
-    />
+    <ChatMessage message={item.item} key={item.index} showAttachment={this.showAttachment} />
   );
 
   scrollToBottom = () => {
@@ -257,7 +259,7 @@ class ChatScreenComponent extends Component {
     const scrollHight = Math.floor(event.nativeEvent.contentOffset.y);
     if (scrollHight > 0) {
       this.setState({
-        showScrollToButton: true,
+        showScrollToButton: false,
       });
     } else {
       this.setState({
@@ -266,17 +268,17 @@ class ChatScreenComponent extends Component {
     }
   }
 
-  renderTopNavigation = () => {
+  renderTitle = () => {
     const senderDetails = {
       name: null,
       thumbnail: null,
     };
 
     const {
-      themedStyle,
       conversationDetails,
       route,
       conversationTypingUsers,
+      eva: { style },
     } = this.props;
 
     const {
@@ -304,25 +306,37 @@ class ChatScreenComponent extends Component {
     }
     if (senderDetails.name) {
       return (
-        <TopNavigation
-          subtitle={typingUser ? `${typingUser}...` : ''}
-          title={senderDetails.name}
-          rightControls={
-            <TopNavigationAction
-              icon={() => (
-                <UserAvatar
-                  userName={senderDetails.name}
-                  thumbnail={senderDetails.thumbnail}
-                />
-              )}
-            />
-          }
-          leftControl={this.renderLeftControl()}
-          titleStyle={themedStyle.headerTitle}
-          subtitleStyle={themedStyle.subHeaderTitle}
-        />
+        <View style={style.headerView}>
+          <UserAvatar
+            style={style.avatarView}
+            userName={senderDetails.name}
+            thumbnail={senderDetails.thumbnail}
+          />
+          <View style={style.titleView}>
+            <View>
+              <CustomText style={style.headerTitle}>{senderDetails.name}</CustomText>
+            </View>
+            {typingUser ? (
+              <View>
+                <CustomText style={style.subHeaderTitle}>
+                  {typingUser ? `${typingUser}` : ''}
+                </CustomText>
+              </View>
+            ) : null}
+          </View>
+        </View>
       );
     }
+  };
+
+  renderTopNavigation = () => {
+    return (
+      <TopNavigation
+        title={this.renderTitle}
+        accessoryRight={this.renderRightControl}
+        accessoryLeft={this.renderLeftControl}
+      />
+    );
   };
 
   onBlur = () => {
@@ -337,14 +351,18 @@ class ChatScreenComponent extends Component {
   };
 
   render() {
-    const { allMessages, isFetching, themedStyle, theme } = this.props;
+    const {
+      allMessages,
+      isFetching,
+      eva: { style, theme },
+    } = this.props;
 
     const {
       message,
+      showScrollToButton,
       filteredCannedResponses,
       menuVisible,
       selectedIndex,
-      showScrollToButton,
     } = this.state;
 
     const completeMessages = []
@@ -354,17 +372,16 @@ class ChatScreenComponent extends Component {
     const groupedConversationList = getGroupedConversation({
       conversations: completeMessages,
     });
-
     return (
-      <SafeAreaView style={themedStyle.mainContainer}>
+      <SafeAreaView style={style.mainContainer}>
         <KeyboardAvoidingView
-          style={themedStyle.keyboardView}
+          style={style.keyboardView}
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
           enabled>
           {this.renderTopNavigation()}
 
-          <View style={themedStyle.container} autoDismiss={false}>
-            <View style={themedStyle.chatView}>
+          <View style={style.container} autoDismiss={false}>
+            <View style={style.chatView}>
               {groupedConversationList.length ? (
                 <SectionList
                   scrollEventThrottle={1900}
@@ -383,41 +400,24 @@ class ChatScreenComponent extends Component {
                   sections={groupedConversationList}
                   keyExtractor={(item, index) => item + index}
                   renderItem={this.renderMessage}
-                  renderSectionFooter={({ section: { date } }) => (
-                    <ChatMessageDate date={date} />
-                  )}
-                  style={themedStyle.chatContainer}
+                  renderSectionFooter={({ section: { date } }) => <ChatMessageDate date={date} />}
+                  style={style.chatContainer}
                   ListFooterComponent={this.renderMoreLoader}
                 />
               ) : null}
               {showScrollToButton && (
-                <ScrollToBottomButton
-                  scrollToBottom={() => this.scrollToBottom()}
-                />
+                <ScrollToBottomButton scrollToBottom={() => this.scrollToBottom()} />
               )}
               {isFetching && !groupedConversationList.length && (
-                <View style={themedStyle.loadMoreSpinnerView}>
+                <View style={style.loadMoreSpinnerView}>
                   <Spinner size="medium" />
                 </View>
               )}
             </View>
-            {filteredCannedResponses && (
-              <OverflowMenu
-                data={filteredCannedResponses}
-                visible={menuVisible}
-                selectedIndex={selectedIndex}
-                onSelect={this.onItemSelect}
-                placement="top"
-                style={themedStyle.overflowMenu}
-                backdropStyle={themedStyle.backdrop}
-                onBackdropPress={this.toggleOverFlowMenu}>
-                <View />
-              </OverflowMenu>
-            )}
 
-            <View style={themedStyle.inputView}>
+            <View style={style.inputView}>
               <TextInput
-                style={themedStyle.input}
+                style={style.input}
                 placeholder={`${i18n.t('CONVERSATION.TYPE_MESSAGE')}...`}
                 isFocused={this.onFocused}
                 onBlur={this.onBlur}
@@ -426,11 +426,28 @@ class ChatScreenComponent extends Component {
                 placeholderTextColor={theme['text-basic-color']}
                 onChangeText={this.onNewMessageChange}
               />
+
+              {filteredCannedResponses && (
+                <OverflowMenu
+                  anchor={renderAnchor}
+                  data={filteredCannedResponses}
+                  visible={menuVisible}
+                  selectedIndex={selectedIndex}
+                  onSelect={this.onItemSelect}
+                  placement="top"
+                  style={style.overflowMenu}
+                  backdropStyle={style.backdrop}
+                  onBackdropPress={this.toggleOverFlowMenu}>
+                  {filteredCannedResponses.map((item) => (
+                    <MenuItem title={item.title} key={item.id} />
+                  ))}
+                </OverflowMenu>
+              )}
               <Button
-                style={this.props.themedStyle.addMessageButton}
+                style={style.addMessageButton}
                 appearance="ghost"
                 size="large"
-                icon={PaperPlaneIconFill}
+                accessoryLeft={PaperPlaneIconFill}
                 onPress={this.onNewMessageAdd}
                 disabled={message === '' ? true : false}
               />
@@ -447,12 +464,10 @@ function bindAction(dispatch) {
     resetConversation: () => dispatch(resetConversation()),
     loadMessages: ({ conversationId, beforeId }) =>
       dispatch(loadMessages({ conversationId, beforeId })),
-
     loadCannedResponses: () => dispatch(loadCannedResponses()),
     sendMessage: ({ conversationId, message }) =>
       dispatch(sendMessage({ conversationId, message })),
-    markAllMessagesAsRead: ({ conversationId }) =>
-      dispatch(markMessagesAsRead({ conversationId })),
+    markAllMessagesAsRead: ({ conversationId }) => dispatch(markMessagesAsRead({ conversationId })),
     toggleTypingStatus: ({ conversationId, typingStatus }) =>
       dispatch(toggleTypingStatus({ conversationId, typingStatus })),
   };

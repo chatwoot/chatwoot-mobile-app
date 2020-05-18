@@ -57,22 +57,11 @@ const styles = (theme) => ({
   },
 });
 
-const MessageContentComponent = ({
-  themedStyle,
-  message,
-  type,
-  showAttachment,
-  theme,
-  created_at,
-}) => {
+const MessageContentComponent = ({ message, type, showAttachment, created_at }) => {
   const { attachments } = message;
 
   return attachments ? (
-    <ChatAttachmentItem
-      attachment={attachments}
-      type={type}
-      showAttachment={showAttachment}
-    />
+    <ChatAttachmentItem attachment={attachments} type={type} showAttachment={showAttachment} />
   ) : (
     <ChatMessageItem message={message} type={type} created_at={created_at} />
   );
@@ -80,12 +69,7 @@ const MessageContentComponent = ({
 
 const MessageContent = withStyles(MessageContentComponent, styles);
 
-const OutGoingMessageComponent = ({
-  themedStyle,
-  message,
-  created_at,
-  showAttachment,
-}) => (
+const OutGoingMessageComponent = ({ message, created_at, showAttachment }) => (
   <React.Fragment>
     <MessageContent
       message={message}
@@ -98,13 +82,7 @@ const OutGoingMessageComponent = ({
 
 const OutGoingMessage = withStyles(OutGoingMessageComponent, styles);
 
-const IncomingMessageComponent = ({
-  themedStyle,
-  message,
-  created_at,
-
-  showAttachment,
-}) => (
+const IncomingMessageComponent = ({ message, created_at, showAttachment }) => (
   <React.Fragment>
     <MessageContent
       message={message}
@@ -117,22 +95,13 @@ const IncomingMessageComponent = ({
 
 const IncomingMessage = withStyles(IncomingMessageComponent, styles);
 
-const ActivityMessageComponent = ({
-  themedStyle,
-  message,
-  created_at,
-  theme,
-}) => (
-  <View style={themedStyle.activityView}>
-    <View style={themedStyle.messageActivity}>
-      <CustomText style={themedStyle.messageContent}>
-        {message.content}
-      </CustomText>
+const ActivityMessageComponent = ({ eva: { style }, message, created_at }) => (
+  <View style={style.activityView}>
+    <View style={style.messageActivity}>
+      <CustomText style={style.messageContent}>{message.content}</CustomText>
     </View>
-    <View style={themedStyle.activityDateView}>
-      <CustomText style={themedStyle.date}>
-        {messageStamp({ time: created_at })}
-      </CustomText>
+    <View style={style.activityDateView}>
+      <CustomText style={style.date}>{messageStamp({ time: created_at })}</CustomText>
     </View>
   </View>
 );
@@ -140,11 +109,14 @@ const ActivityMessageComponent = ({
 const ActivityMessage = withStyles(ActivityMessageComponent, styles);
 
 const propTypes = {
+  eva: PropTypes.shape({
+    style: PropTypes.object,
+    theme: PropTypes.object,
+  }),
   message: PropTypes.shape({
     content: PropTypes.string,
     date: PropTypes.string,
   }),
-  themedStyle: PropTypes.object,
   showAttachment: PropTypes.func,
 };
 
@@ -152,12 +124,7 @@ const defaultProps = {
   message: { content: null, date: null },
 };
 
-const ChatMessageComponent = ({
-  message,
-  themedStyle,
-
-  showAttachment,
-}) => {
+const ChatMessageComponent = ({ message, eva: { style }, showAttachment }) => {
   const { message_type, created_at } = message;
 
   let alignment = message_type ? 'flex-end' : 'flex-start';
@@ -166,8 +133,8 @@ const ChatMessageComponent = ({
   }
 
   return (
-    <View style={[themedStyle.message, { justifyContent: alignment }]}>
-      <View style={themedStyle.messageContainer}>
+    <View style={[style.message, { justifyContent: alignment }]}>
+      <View style={style.messageContainer}>
         {alignment === 'flex-start' ? (
           <IncomingMessage
             message={message}
@@ -176,11 +143,7 @@ const ChatMessageComponent = ({
             showAttachment={showAttachment}
           />
         ) : alignment === 'center' ? (
-          <ActivityMessage
-            message={message}
-            created_at={created_at}
-            type="activity"
-          />
+          <ActivityMessage message={message} created_at={created_at} type="activity" />
         ) : (
           <OutGoingMessage
             message={message}

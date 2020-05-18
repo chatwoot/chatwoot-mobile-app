@@ -45,12 +45,12 @@ const styles = (theme) => ({
 
 const BackIcon = (style) => <Icon {...style} name="close-outline" />;
 
-const BackAction = (props) => (
-  <TopNavigationAction {...props} icon={BackIcon} />
-);
+const BackAction = (props) => <TopNavigationAction {...props} icon={BackIcon} />;
 
 const propTypes = {
-  themedStyle: PropTypes.object,
+  eva: PropTypes.shape({
+    style: PropTypes.object,
+  }).isRequired,
   navigation: PropTypes.shape({
     goBack: PropTypes.func.isRequired,
   }).isRequired,
@@ -62,7 +62,7 @@ const propTypes = {
   }).isRequired,
 };
 
-const ImageScreen = ({ themedStyle, navigation, route }) => {
+const ImageScreen = ({ eva: { style: themedStyle }, navigation, route }) => {
   const [imageLoading, onLoadImage] = useState(false);
   const {
     params: { imageUrl },

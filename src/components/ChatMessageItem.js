@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TouchableOpacity, Dimensions, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { withStyles, Tooltip, Icon } from '@ui-kitten/components';
+import { withStyles, Icon } from '@ui-kitten/components';
 
 import CustomText from './Text';
 import { messageStamp } from '../helpers/TimeHelper';
 
 const LockIcon = (style) => {
-  return <Icon {...style} name="lock-outline" />;
+  return <Icon {...style} name="lock" />;
 };
 
 const styles = (theme) => ({
@@ -86,8 +86,10 @@ const styles = (theme) => ({
 });
 
 const propTypes = {
-  themedStyle: PropTypes.object,
-  theme: PropTypes.object,
+  eva: PropTypes.shape({
+    style: PropTypes.object,
+    theme: PropTypes.object,
+  }),
   type: PropTypes.string,
   created_at: PropTypes.number,
   message: PropTypes.shape({
@@ -100,36 +102,11 @@ const propTypes = {
   attachment: PropTypes.object,
 };
 
-const ChatMessageItemComponent = ({
-  type,
-  message,
-  themedStyle,
-  theme,
-  created_at,
-}) => {
-  const [visible, setVisible] = useState(false);
-
-  const [senderDetails, setSender] = useState('');
-
-  const toggleTooltip = () => {
-    setVisible(!visible);
-    setSender('');
-  };
-
-  const showSender = () => {
-    if (message.sender) {
-      setVisible(!visible);
-      setSender(`Sent by: ${message.sender.name}`);
-    }
-  };
-  const messageViewStyle =
-    type === 'outgoing' ? themedStyle.messageRight : themedStyle.messageLeft;
+const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, created_at }) => {
+  const messageViewStyle = type === 'outgoing' ? style.messageRight : style.messageLeft;
   const messageTextStyle =
-    type === 'outgoing'
-      ? themedStyle.messageContentRight
-      : themedStyle.messageContentLeft;
-  const dateStyle =
-    type === 'outgoing' ? themedStyle.dateRight : themedStyle.dateLeft;
+    type === 'outgoing' ? style.messageContentRight : style.messageContentLeft;
+  const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
 
   return (
     <TouchableOpacity
@@ -137,33 +114,36 @@ const ChatMessageItemComponent = ({
         messageViewStyle,
         message.private && {
           backgroundColor: theme['color-background-activity'],
+          color: theme['text-basic-color'],
         },
       ]}
-      activeOpacity={0.95}
-      onPress={showSender}>
+      activeOpacity={0.95}>
       <View>
-        <Tooltip
-          text={senderDetails}
-          placement="top start"
-          visible={visible}
-          onBackdropPress={toggleTooltip}>
-          {message.private ? (
-            <View style={themedStyle.privateMessageView}>
-              <CustomText style={themedStyle.messageContentRight}>
-                {message.content}
-              </CustomText>
+        {message.private ? (
+          <View style={style.privateMessageView}>
+            <CustomText
+              style={[
+                style.messageContentRight,
+                message.private && {
+                  color: theme['text-basic-color'],
+                },
+              ]}>
+              {message.content}
+            </CustomText>
 
-              <LockIcon
-                style={themedStyle.icon}
-                fill={theme['text-hint-color']}
-              />
-            </View>
-          ) : (
-            <CustomText style={messageTextStyle}>{message.content}</CustomText>
-          )}
-        </Tooltip>
+            <LockIcon style={style.icon} fill={theme['text-basic-color']} />
+          </View>
+        ) : (
+          <CustomText style={messageTextStyle}>{message.content}</CustomText>
+        )}
 
-        <CustomText style={dateStyle}>
+        <CustomText
+          style={[
+            dateStyle,
+            message.private && {
+              color: theme['color-gray'],
+            },
+          ]}>
           {messageStamp({ time: created_at })}
         </CustomText>
       </View>

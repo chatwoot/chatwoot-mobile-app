@@ -9,6 +9,16 @@ const styles = (theme) => ({
   keyboardView: {
     flex: 1,
   },
+  headerView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatarView: {
+    marginHorizontal: 4,
+  },
+  titleView: {
+    marginHorizontal: 8,
+  },
   headerTitle: {
     fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-large'],

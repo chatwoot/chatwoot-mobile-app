@@ -1,19 +1,50 @@
 import React from 'react';
 import { View, Dimensions } from 'react-native';
-import { StyleService, useStyleSheet } from '@ui-kitten/components';
+import { withStyles } from '@ui-kitten/components';
 import * as Animatable from 'react-native-animatable';
-import { theme } from '../theme';
+import PropTypes from 'prop-types';
 
 const deviceWidth = Dimensions.get('window').width;
 
-const themedStyles = StyleService.create({
+const propTypes = {
+  eva: PropTypes.shape({
+    style: PropTypes.object,
+  }).isRequired,
+};
+
+const ConversationItemLoaderComponent = ({ eva }) => {
+  const { style } = eva;
+  return (
+    <Animatable.View
+      animation="flash"
+      easing="ease-out"
+      iterationCount="infinite"
+      duration={3000}
+      style={style.container}>
+      <View style={style.itemView}>
+        <View style={style.avatarView}>
+          <View style={style.avatarLoader} />
+        </View>
+        <View>
+          <View style={style.userNameLoader} />
+          <View style={style.chatLoader} />
+        </View>
+      </View>
+      <View>
+        <View style={style.timeStampLoader} />
+      </View>
+    </Animatable.View>
+  );
+};
+ConversationItemLoaderComponent.propTypes = propTypes;
+export default withStyles(ConversationItemLoaderComponent, (theme) => ({
   container: {
     padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginVertical: 0.5,
-    backgroundColor: 'background-basic-color-1',
+    backgroundColor: theme['background-basic-color-1'],
     borderColor: theme['color-border'],
     borderBottomWidth: 1,
   },
@@ -29,7 +60,7 @@ const themedStyles = StyleService.create({
     width: 48,
     height: 48,
     borderRadius: 48,
-    backgroundColor: 'color-light-gray',
+    backgroundColor: theme['color-light-gray'],
 
     flexDirection: 'row',
     alignItems: 'center',
@@ -38,50 +69,22 @@ const themedStyles = StyleService.create({
   userNameLoader: {
     width: deviceWidth * 0.2,
     height: deviceWidth * 0.02,
-    backgroundColor: 'color-light-gray',
+    backgroundColor: theme['color-light-gray'],
     marginTop: 8,
     borderRadius: 4,
   },
   chatLoader: {
     width: deviceWidth * 0.5,
     height: deviceWidth * 0.02,
-    backgroundColor: 'color-light-gray',
+    backgroundColor: theme['color-light-gray'],
     marginTop: 16,
     borderRadius: 8,
   },
   timeStampLoader: {
     width: deviceWidth * 0.08,
     height: deviceWidth * 0.02,
-    backgroundColor: 'color-light-gray',
+    backgroundColor: theme['color-light-gray'],
     marginTop: 8,
     borderRadius: 8,
   },
-});
-
-const ConversationItemLoader = () => {
-  const styles = useStyleSheet(themedStyles);
-
-  return (
-    <Animatable.View
-      animation="flash"
-      easing="ease-out"
-      iterationCount="infinite"
-      duration={3000}
-      style={styles.container}>
-      <View style={styles.itemView}>
-        <View style={styles.avatarView}>
-          <View style={styles.avatarLoader} />
-        </View>
-        <View>
-          <View style={styles.userNameLoader} />
-          <View style={styles.chatLoader} />
-        </View>
-      </View>
-      <View>
-        <View style={styles.timeStampLoader} />
-      </View>
-    </Animatable.View>
-  );
-};
-
-export default ConversationItemLoader;
+}));

@@ -22,7 +22,8 @@
     "NO_ACCOUNT": "Don't have an account?",
     "CREATE_ACCOUNT": "Create new account",
     "SETTINGS": "Settings",
-    "TERMS": "Terms & Conditions"
+    "TERMS": "Terms & Conditions",
+    "CHANGE_URL": "Change URL"
   },
   "FORGOT_PASSWORD": {
     "EMAIL": "Please enter your email",

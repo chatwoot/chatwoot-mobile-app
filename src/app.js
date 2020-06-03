@@ -6,6 +6,9 @@ import { PersistGate } from 'redux-persist/integration/react';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+
+import ErrorHelper from './helpers/ErrorHelper';
+
 import { theme } from './theme';
 
 import NoNetworkBar from './components/NoNetworkBar';
@@ -17,6 +20,7 @@ import i18n from './i18n';
 
 export default class Chatwoot extends Component {
   componentDidMount() {
+    ErrorHelper.init();
     // To hide splash screen
     if (Platform.OS === 'android') {
       BackgroundColor.setColor('#FFFFFF');

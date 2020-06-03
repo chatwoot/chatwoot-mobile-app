@@ -6392,6 +6392,11 @@ react-native-eva-icons@^1.3.1:
   resolved "https://registry.yarnpkg.com/react-native-eva-icons/-/react-native-eva-icons-1.3.1.tgz#1e6e019b0fd3cb1669db50bd6bbdaa6d89327593"
   integrity sha512-emd/aYXuOacuDVTx0SJoLi+xsOdCNdljQB3PTNCM9AQ3m/smG0X1TN0+ihelPO7MqoHzaH0h6lbANtwxGUy8Fw==
 
+react-native-exception-handler@^2.10.8:
+  version "2.10.8"
+  resolved "https://registry.yarnpkg.com/react-native-exception-handler/-/react-native-exception-handler-2.10.8.tgz#1a7f846592d888d23adaf797e31802585f1d9ff0"
+  integrity sha512-ZN+jwpADRkCUNdad/50k0mZdMoICGrGdtaxgvRU+pNcWRRBAXJhuo4+jY0eQaoVpx1ghycGE6tBu9ka8gL2NOQ==
+
 react-native-gesture-handler@^1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.6.1.tgz#678e2dce250ed66e93af409759be22cd6375dd17"
@@ -6829,6 +6834,11 @@ rimraf@~2.2.6:
   version "2.2.8"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.2.8.tgz#e439be2aaee327321952730f99a8929e4fc50582"
   integrity sha1-5Dm+Kq7jJzIZUnMPmaiSnk/FBYI=
+
+rn-test-exception-handler@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/rn-test-exception-handler/-/rn-test-exception-handler-1.3.2.tgz#91ec246a2a359f5dde68b0e7538fa2395324821f"
+  integrity sha512-TkyEcY/kwbZKfeAmPKYJgzhE/3cgZ/Loa1xo//GyiadDyGUsXwCYssEwnKJeU+m/dQSYrWVuK3OYIGnbEDyqbA==
 
 rsvp@^4.8.4:
   version "4.8.5"

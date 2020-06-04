@@ -45,8 +45,6 @@ const styles = (theme) => ({
 
 const BackIcon = (style) => <Icon {...style} name="close-outline" />;
 
-const BackAction = (props) => <TopNavigationAction {...props} icon={BackIcon} />;
-
 const propTypes = {
   eva: PropTypes.shape({
     style: PropTypes.object,
@@ -64,13 +62,20 @@ const propTypes = {
 
 const ImageScreen = ({ eva: { style: themedStyle }, navigation, route }) => {
   const [imageLoading, onLoadImage] = useState(false);
+
+  const renderLeftControl = () => <TopNavigationAction onPress={onBackPress} icon={BackIcon} />;
+
+  const onBackPress = () => {
+    navigation.goBack();
+  };
+
   const {
     params: { imageUrl },
   } = route;
 
   return (
     <SafeAreaView style={themedStyle.container}>
-      <TopNavigation leftControl={<BackAction onPress={navigation.goBack} />} />
+      <TopNavigation accessoryLeft={renderLeftControl} />
       <Layout style={themedStyle.imageContainer}>
         <ImageZoom
           cropWidth={Dimensions.get('window').width}

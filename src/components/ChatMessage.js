@@ -162,4 +162,4 @@ const ChatMessage = withStyles(ChatMessageComponent, styles);
 ChatMessage.defaultProps = defaultProps;
 ChatMessage.propTypes = propTypes;
 
-export default ChatMessage;
+export default React.memo(ChatMessage);

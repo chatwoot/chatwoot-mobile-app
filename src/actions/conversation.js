@@ -25,6 +25,7 @@ import {
   RESET_CONVERSATION,
   ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
   RESET_USER_TYPING_CONVERSATION,
+  ADD_MESSAGE,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -106,10 +107,7 @@ export const setConversation = ({ conversationId }) => async (dispatch) => {
 };
 
 // Add or update new conversation to the conversation list
-export const addOrUpdateConversation = ({ conversation }) => async (
-  dispatch,
-  getState,
-) => {
+export const addOrUpdateConversation = ({ conversation }) => async (dispatch, getState) => {
   const {
     data: { payload },
   } = getState().conversation;
@@ -124,10 +122,7 @@ export const addOrUpdateConversation = ({ conversation }) => async (
 };
 
 // Add new message to a conversation
-export const addMessageToConversation = ({ message }) => async (
-  dispatch,
-  getState,
-) => {
+export const addMessageToConversation = ({ message }) => async (dispatch, getState) => {
   const {
     data: { payload },
     selectedConversationId,
@@ -135,9 +130,7 @@ export const addMessageToConversation = ({ message }) => async (
   } = getState().conversation;
 
   const { conversation_id, id: messageId } = message;
-  const isMessageAlreadyExist = allMessages.find(
-    (item) => item.id === messageId,
-  );
+  const isMessageAlreadyExist = allMessages.find((item) => item.id === messageId);
 
   if (selectedConversationId === conversation_id && !isMessageAlreadyExist) {
     dispatch({ type: UPDATE_MESSAGE, payload: message });
@@ -160,18 +153,14 @@ export const addMessageToConversation = ({ message }) => async (
 
   const index = payload.findIndex((c) => c.id === message.conversation_id);
 
-  let updatedConversations = payload.map((content, i) =>
-    i === index ? { ...content } : content,
-  );
+  let updatedConversations = payload.map((content, i) => (i === index ? { ...content } : content));
 
   updatedConversations.unshift(...updatedConversations.splice(index, 1));
 
   dispatch({ type: UPDATE_CONVERSATION, payload: updatedConversations });
 };
 
-export const loadMessages = ({ conversationId, beforeId }) => async (
-  dispatch,
-) => {
+export const loadMessages = ({ conversationId, beforeId }) => async (dispatch) => {
   dispatch({ type: GET_MESSAGES });
 
   try {
@@ -206,9 +195,7 @@ export const loadMessages = ({ conversationId, beforeId }) => async (
 };
 
 // Send message
-export const sendMessage = ({ conversationId, message }) => async (
-  dispatch,
-) => {
+export const sendMessage = ({ conversationId, message }) => async (dispatch) => {
   dispatch({ type: SEND_MESSAGE });
   try {
     const apiUrl = `conversations/${conversationId}/messages`;
@@ -223,10 +210,7 @@ export const sendMessage = ({ conversationId, message }) => async (
   }
 };
 
-export const markMessagesAsRead = ({ conversationId, message }) => async (
-  dispatch,
-  getState,
-) => {
+export const markMessagesAsRead = ({ conversationId, message }) => async (dispatch, getState) => {
   const {
     data: { payload },
   } = getState().conversation;
@@ -306,10 +290,10 @@ export const addUserTypingToConversation = ({ conversation, user }) => async (
   }
 };
 
-export const removeUserFromTypingConversation = ({
-  conversation,
-  user,
-}) => async (dispatch, getState) => {
+export const removeUserFromTypingConversation = ({ conversation, user }) => async (
+  dispatch,
+  getState,
+) => {
   const { id: conversationId } = conversation;
   const { conversationTypingUsers } = await getState().conversation;
   const records = conversationTypingUsers[conversationId] || [];
@@ -326,9 +310,7 @@ export const removeUserFromTypingConversation = ({
   });
 };
 
-export const toggleTypingStatus = ({ conversationId, typingStatus }) => async (
-  dispatch,
-) => {
+export const toggleTypingStatus = ({ conversationId, typingStatus }) => async (dispatch) => {
   const apiUrl = `conversations/${conversationId}/toggle_typing_status`;
 
   await axios
@@ -336,4 +318,16 @@ export const toggleTypingStatus = ({ conversationId, typingStatus }) => async (
       typing_status: typingStatus,
     })
     .catch();
+};
+
+// Load initial messages [While opening chat screen from conversation list]
+export const loadInitialMessage = ({ messages }) => async (dispatch) => {
+  try {
+    dispatch({
+      type: ADD_MESSAGE,
+      payload: messages,
+    });
+  } catch (error) {
+    dispatch({ type: GET_MESSAGES_ERROR, payload: error });
+  }
 };

@@ -43,7 +43,7 @@ const styles = (theme) => ({
   loadMoreSpinnerView: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 8,
+    paddingBottom: 8,
   },
 
   spinnerView: {

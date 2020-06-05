@@ -10,6 +10,7 @@ import {
   withStyles,
   Icon,
 } from '@ui-kitten/components';
+
 import { SafeAreaView, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -131,8 +132,9 @@ class ConversationListComponent extends Component {
 
     const conversationId = item.id;
 
-    const { navigation, selectConversation } = this.props;
+    const { navigation, selectConversation, loadInitialMessages } = this.props;
     selectConversation({ conversationId });
+    loadInitialMessages({ messages });
     navigation.navigate('ChatScreen', {
       conversationId,
       meta,
@@ -196,6 +198,7 @@ class ConversationListComponent extends Component {
     return (
       <Layout style={style.tabContainer}>
         <List
+          keyboardShouldPersistTaps="handled"
           data={filterConversations}
           renderItem={this.renderItem}
           ref={(ref) => {

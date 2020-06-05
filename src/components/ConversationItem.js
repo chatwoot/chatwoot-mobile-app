@@ -31,7 +31,7 @@ const propTypes = {
     inbox_id: PropTypes.number,
   }).isRequired,
 };
-const ConversationItem = ({
+const ConversationItemComponent = ({
   eva,
   item,
   onSelectConversation,
@@ -61,12 +61,16 @@ const ConversationItem = ({
 
   return (
     <TouchableOpacity
-      activeOpacity={0.1}
+      activeOpacity={0.5}
       style={style.container}
       onPress={() => onSelectConversation(item)}>
       <View style={style.itemView}>
         <View style={style.avatarView}>
-          <UserAvatar thumbnail={thumbnail} userName={name} defaultBGColor="" />
+          <UserAvatar
+            thumbnail={thumbnail}
+            userName={name}
+            defaultBGColor={theme['color-primary-default']}
+          />
         </View>
         <View>
           <View style={style.nameView}>
@@ -122,8 +126,7 @@ const ConversationItem = ({
   );
 };
 
-ConversationItem.propTypes = propTypes;
-export default withStyles(ConversationItem, (theme) => ({
+const styles = (theme) => ({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -219,4 +222,10 @@ export default withStyles(ConversationItem, (theme) => ({
     marginLeft: 4,
     backgroundColor: theme['color-background-inbox'],
   },
-}));
+});
+
+ConversationItemComponent.propTypes = propTypes;
+
+const ChatMessageItem = withStyles(ConversationItemComponent, styles);
+
+export default React.memo(ChatMessageItem);

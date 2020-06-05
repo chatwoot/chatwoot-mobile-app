@@ -60,7 +60,10 @@ class FilterItemComponent extends Component {
     const { name } = item;
 
     return (
-      <TouchableOpacity style={themedStyle.itemView} onPress={() => onCheckedChange({ item })}>
+      <TouchableOpacity
+        style={themedStyle.itemView}
+        onPress={() => onCheckedChange({ item })}
+        activeOpacity={0.5}>
         {iconName ? (
           <View style={themedStyle.iconView}>
             <Icon style={themedStyle.icon} fill={theme['text-hint-color']} name={iconName} />
@@ -82,4 +85,5 @@ class FilterItemComponent extends Component {
 FilterItemComponent.propTypes = propTypes;
 
 const FilterItem = withStyles(FilterItemComponent, styles);
-export default FilterItem;
+
+export default React.memo(FilterItem);

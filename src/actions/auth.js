@@ -24,6 +24,7 @@ export const doLogin = ({ email, password }) => async (dispatch) => {
     Sentry.setUser({ email, username, id });
     dispatch({ type: SET_AUTH_HEADER, payload: response.headers });
     dispatch({ type: LOGIN_SUCCESS, payload: data });
+    dispatch(getAccountDetails());
   } catch (error) {
     if (error && error.status === 401) {
       showToast({ message: I18n.t('ERRORS.AUTH') });

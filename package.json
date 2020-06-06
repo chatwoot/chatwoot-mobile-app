@@ -29,6 +29,7 @@
     "@ui-kitten/eva-icons": "^5.0.0 ",
     "@ui-kitten/metro-config": "^5.0.0",
     "axios": "^0.19.2",
+    "hermes-engine": "0.4.2-rc1",
     "i18n-js": "^3.7.0",
     "lodash.groupby": "^4.6.0",
     "md5": "^2.2.1",

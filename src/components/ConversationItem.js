@@ -76,12 +76,12 @@ const ConversationItemComponent = ({
           <View style={style.nameView}>
             <CustomText
               style={unread_count ? style.conversationUserActive : style.conversationUserNotActive}>
-              {name.length < 19 ? `${name}` : `${name.substring(0, 16)}...`}
+              {name.length < 26 ? `${name}` : `${name.substring(0, 20)}...`}
             </CustomText>
 
             {inboxName && (
               <CustomText style={style.labelText}>
-                {inboxName.length < 9 ? `${inboxName}` : `${inboxName.substring(0, 6)}...`}
+                {inboxName.length < 10 ? `${inboxName}` : `${inboxName.substring(0, 7)}...`}
               </CustomText>
             )}
           </View>
@@ -98,7 +98,7 @@ const ConversationItemComponent = ({
                 style={unread_count ? style.messageActive : style.messageNotActive}
                 numberOfLines={1}
                 maxLength={8}>
-                {content && content.length > 25 ? `${content.substring(0, 25)}...` : `${content}`}
+                {content && content.length > 30 ? `${content.substring(0, 30)}...` : `${content}`}
               </CustomText>
             )
           ) : (

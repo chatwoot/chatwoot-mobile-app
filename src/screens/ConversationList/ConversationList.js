@@ -19,8 +19,6 @@ import { getInboxes } from '../../actions/inbox';
 
 import { getConversations, loadInitialMessage, setConversation } from '../../actions/conversation';
 
-import { getAccountDetails } from '../../actions/auth';
-
 import ConversationItem from '../../components/ConversationItem';
 import ConversationItemLoader from '../../components/ConversationItemLoader';
 
@@ -55,7 +53,6 @@ class ConversationListComponent extends Component {
     loadInitialMessages: PropTypes.func,
     getConversations: PropTypes.func,
     selectConversation: PropTypes.func,
-    getAccountDetails: PropTypes.func,
     saveDeviceDetails: PropTypes.func,
     inboxSelected: PropTypes.shape({
       name: PropTypes.string,
@@ -86,7 +83,6 @@ class ConversationListComponent extends Component {
   };
 
   componentDidMount = () => {
-    this.props.getAccountDetails();
     this.props.getInboxes();
     this.loadConversations();
     this.initActionCable();
@@ -326,7 +322,6 @@ class ConversationListComponent extends Component {
 function bindAction(dispatch) {
   return {
     getInboxes: () => dispatch(getInboxes()),
-    getAccountDetails: () => dispatch(getAccountDetails()),
     getConversations: ({ assigneeType, conversationStatus, inboxSelected, pageNumber }) =>
       dispatch(
         getConversations({

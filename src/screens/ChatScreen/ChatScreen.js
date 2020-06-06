@@ -285,7 +285,7 @@ class ChatScreenComponent extends Component {
       conversationDetails,
       route,
       conversationTypingUsers,
-      eva: { style },
+      eva: { style, theme },
     } = this.props;
 
     const {
@@ -318,6 +318,7 @@ class ChatScreenComponent extends Component {
             style={style.avatarView}
             userName={senderDetails.name}
             thumbnail={senderDetails.thumbnail}
+            defaultBGColor={theme['color-primary-default']}
           />
           <View style={style.titleView}>
             <View>

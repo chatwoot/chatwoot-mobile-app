@@ -46,7 +46,7 @@ class OfflineBar extends Component {
     this.animation = new Animated.Value(0);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     NetInfo.addEventListener((state) => {
       const { isConnected } = state;
       this.setNetworkStatus(isConnected);

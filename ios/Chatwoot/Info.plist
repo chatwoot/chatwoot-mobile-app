@@ -48,6 +48,11 @@
 		<string>Inter-Regular.otf</string>
 		<string>Inter-SemiBold.otf</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

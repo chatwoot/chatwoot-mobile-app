@@ -94,17 +94,10 @@ class ConversationListComponent extends Component {
     this.initActionCable();
 
     const { pushToken } = this.props;
-
     this.props.saveDeviceDetails({ token: null });
-
     if (!pushToken) {
       this.props.saveDeviceDetails({ token: pushToken });
     }
-    messaging().onTokenRefresh((newToken) => {
-      if (pushToken !== newToken) {
-        this.props.saveDeviceDetails({ token: newToken });
-      }
-    });
   };
 
   initActionCable = async () => {

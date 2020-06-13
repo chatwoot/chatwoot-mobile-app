@@ -335,6 +335,7 @@ class ChatScreenComponent extends Component {
         </View>
       );
     }
+    return null;
   };
 
   renderTopNavigation = () => {

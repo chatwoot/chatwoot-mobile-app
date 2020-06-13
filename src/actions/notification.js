@@ -1,0 +1,125 @@
+import { Platform } from 'react-native';
+import messaging from '@react-native-firebase/messaging';
+import {
+  getUniqueId,
+  getSystemName,
+  getManufacturer,
+  getModel,
+  getApiLevel,
+  getBrand,
+  getBuildNumber,
+} from 'react-native-device-info';
+import axios from 'axios';
+
+import { getHeaders } from '../helpers/AuthHelper';
+import { getBaseUrl } from '../helpers/UrlHelper';
+import { API_URL } from '../constants/url';
+import {
+  SET_PUSH_TOKEN,
+  ALL_NOTIFICATIONS_LOADED,
+  UPDATE_ALL_NOTIFICATIONS,
+} from '../constants/actions';
+import APIHelper from '../helpers/APIHelper';
+
+import {
+  GET_NOTIFICATION,
+  GET_NOTIFICATION_SUCCESS,
+  GET_NOTIFICATION_ERROR,
+} from '../constants/actions';
+
+export const getAllNotifications = ({ pageNo = 1 }) => async (dispatch) => {
+  try {
+    if (pageNo === 1) {
+      dispatch({ type: GET_NOTIFICATION });
+    }
+
+    const response = await APIHelper.get(`notifications?page=${pageNo}`);
+    const {
+      data: { payload, meta },
+    } = response.data;
+    const updatedPayload = payload.sort((a, b) => {
+      return b.created_at - a.created_at;
+    });
+
+    dispatch({
+      type: GET_NOTIFICATION_SUCCESS,
+      payload: {
+        notifications: updatedPayload,
+        meta,
+      },
+    });
+
+    if (payload.length < 25) {
+      dispatch({
+        type: ALL_NOTIFICATIONS_LOADED,
+      });
+    }
+  } catch (error) {
+    dispatch({ type: GET_NOTIFICATION_ERROR, payload: error });
+  }
+};
+
+export const markAllNotificationAsRead = () => async (dispatch, getState) => {
+  const {
+    data: { payload },
+  } = getState().notification;
+
+  try {
+    const apiUrl = 'notifications/read_all';
+    await APIHelper.post(apiUrl);
+    const updatedNotifications = payload.map((item, index) => {
+      item.read_at = 'read_at';
+      return item;
+    });
+
+    dispatch({
+      type: UPDATE_ALL_NOTIFICATIONS,
+      payload: {
+        notifications: updatedNotifications,
+        meta: { unread_count: 0 },
+      },
+    });
+  } catch (error) {}
+};
+
+export const saveDeviceDetails = ({ token }) => async (dispatch) => {
+  try {
+    const checkPermission = await messaging().hasPermission();
+    if (!checkPermission) {
+      await messaging().requestPermission();
+    }
+
+    if (Platform.os === 'ios') {
+      await messaging().registerForRemoteNotifications();
+    }
+    // Check refresh token or create new fcm token
+    const fcmToken = token || (await messaging().getToken());
+    const deviceId = getUniqueId();
+    const devicePlatform = getSystemName();
+    const manufacturer = await getManufacturer();
+    const model = await getModel();
+    const apiLevel = await getApiLevel();
+    const deviceName = `${manufacturer} ${model}`;
+    const brandName = await getBrand();
+    const buildNumber = await getBuildNumber();
+
+    const pushData = {
+      subscription_type: 'fcm',
+      subscription_attributes: {
+        deviceName,
+        devicePlatform,
+        apiLevel,
+        brandName,
+        buildNumber,
+        push_token: fcmToken,
+        device_id: deviceId,
+      },
+    };
+    const headers = await getHeaders();
+    const baseURL = await getBaseUrl();
+    await axios.post(`${baseURL}${API_URL}notification_subscriptions`, pushData, {
+      headers: headers,
+    });
+    dispatch({ type: SET_PUSH_TOKEN, payload: fcmToken });
+  } catch (err) {}
+};

@@ -201,11 +201,11 @@ const styles = (theme) => ({
   messageActive: {
     fontSize: theme['text-primary-size'],
     fontWeight: theme['font-medium'],
-    paddingTop: 4,
+    paddingTop: 2,
   },
   messageNotActive: {
     fontSize: theme['text-primary-size'],
-    paddingTop: 4,
+    paddingTop: 2,
     color: theme['text-light-color'],
   },
   nameView: {

@@ -75,7 +75,8 @@
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",
     "EMPTY": "No notifications yet",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded"
+    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
+    "MARK_ALL": "Mark all as read"
   },
   "ERRORS": {
     "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",

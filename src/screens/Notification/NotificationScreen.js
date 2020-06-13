@@ -23,6 +23,7 @@ import { getAllNotifications, markAllNotificationAsRead } from '../../actions/no
 import CustomText from '../../components/Text';
 import { getGroupedNotifications } from '../../helpers';
 import NotificationItemLoader from '../../components/NotificationItemLoader';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const LoaderData = new Array(24).fill(0);
 
@@ -64,10 +65,6 @@ class NotificationScreenComponent extends Component {
     menuVisible: false,
   };
 
-  componentDidMount = () => {
-    this.loadNotifications({ pageNo: 1 });
-  };
-
   loadNotifications = () => {
     const { pageNo } = this.state;
     this.props.getAllNotifications({
@@ -78,7 +75,7 @@ class NotificationScreenComponent extends Component {
   loadMoreNotifications = async () => {
     const { isAllNotificationsLoaded } = this.props;
     await this.setState((state) => ({
-      pageNo: state.pageNo + 2,
+      pageNo: state.pageNo + 1,
     }));
     if (!isAllNotificationsLoaded) {
       this.loadNotifications();
@@ -166,17 +163,18 @@ class NotificationScreenComponent extends Component {
 
   renderMenuAction = () => <TopNavigationAction icon={MenuIcon} onPress={this.toggleMenu} />;
 
-  renderRightActions = () => (
-    <React.Fragment>
-      <OverflowMenu
-        anchor={this.renderMenuAction}
-        visible={this.state.menuVisible}
-        onSelect={(index) => this.markAllNotificationAsRead()}
-        onBackdropPress={this.toggleMenu}>
-        <MenuItem accessoryLeft={InfoIcon} title="Mark all as read" />
-      </OverflowMenu>
-    </React.Fragment>
-  );
+  renderRightActions = () => {
+    const {
+      eva: { style },
+    } = this.props;
+    return (
+      <React.Fragment>
+        <TouchableOpacity onPress={this.markAllNotificationAsRead}>
+          <CustomText style={style.markAllText}>{i18n.t('NOTIFICATION.MARK_ALL')}</CustomText>
+        </TouchableOpacity>
+      </React.Fragment>
+    );
+  };
 
   render() {
     const {
@@ -184,15 +182,13 @@ class NotificationScreenComponent extends Component {
       allNotifications,
       isFetching,
     } = this.props;
-    // const splitArray = allNotifications.slice(0, 2);
+    // const splitArray = allNotifications.slice(0, 5);
     const groupedNotifications = getGroupedNotifications({ notifications: allNotifications });
 
     return (
       <SafeAreaView style={style.container}>
         <TopNavigation
-          title={i18n.t('NOTIFICATION.HEADER_TITLE')}
           titleStyle={style.headerTitle}
-          alignment="center"
           {...(groupedNotifications.length && { accessoryRight: this.renderRightActions })}
         />
         <View>
@@ -210,9 +206,10 @@ class NotificationScreenComponent extends Component {
                   }}
                   sections={groupedNotifications}
                   keyExtractor={(item, index) => item + index}
-                  renderItem={({ item }) => (
+                  renderItem={({ item, index }) => (
                     <NotificationItem
                       item={item}
+                      index={index}
                       onSelectNotification={this.onSelectNotification}
                     />
                   )}

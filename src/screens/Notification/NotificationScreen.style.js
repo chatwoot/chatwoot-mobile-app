@@ -2,7 +2,6 @@ const styles = (theme) => ({
   container: {
     flex: 1,
     backgroundColor: theme['background-basic-color-1'],
-    // paddingBottom: 120,
   },
   headerTitle: {
     fontWeight: theme['font-semi-bold'],
@@ -40,6 +39,10 @@ const styles = (theme) => ({
     paddingBottom: 64,
     height: '100%',
     backgroundColor: theme['background-basic-color-1'],
+  },
+  markAllText: {
+    color: theme['color-primary-default'],
+    fontWeight: theme['font-semi-bold'],
   },
 });
 

@@ -59,6 +59,7 @@ class ConversationListComponent extends Component {
     getConversations: PropTypes.func,
     selectConversation: PropTypes.func,
     saveDeviceDetails: PropTypes.func,
+    getAllNotifications: PropTypes.func,
     inboxSelected: PropTypes.shape({
       name: PropTypes.string,
     }),
@@ -92,7 +93,7 @@ class ConversationListComponent extends Component {
     this.props.getInboxes();
     this.loadConversations();
     this.initActionCable();
-
+    this.props.getAllNotifications({ pageNo: 1 });
     const { pushToken } = this.props;
     this.props.saveDeviceDetails({ token: null });
     if (!pushToken) {

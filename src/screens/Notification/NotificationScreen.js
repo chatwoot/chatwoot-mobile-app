@@ -7,8 +7,6 @@ import {
   Layout,
   List,
   Spinner,
-  OverflowMenu,
-  MenuItem,
 } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -31,8 +29,6 @@ const renderItemLoader = () => <NotificationItemLoader />;
 
 const MenuIcon = (style) => <Icon {...style} name="more-horizontal-outline" />;
 
-const InfoIcon = (props) => <Icon {...props} name="checkmark-outline" />;
-
 class NotificationScreenComponent extends Component {
   static propTypes = {
     eva: PropTypes.shape({
@@ -49,6 +45,7 @@ class NotificationScreenComponent extends Component {
     isAllNotificationsLoaded: PropTypes.bool,
     getAllNotifications: PropTypes.func,
     markAllNotificationAsRead: PropTypes.func,
+    unReadCount: PropTypes.number,
   };
 
   static defaultProps = {
@@ -181,15 +178,17 @@ class NotificationScreenComponent extends Component {
       eva: { style },
       allNotifications,
       isFetching,
+      unReadCount,
     } = this.props;
-    // const splitArray = allNotifications.slice(0, 5);
+
     const groupedNotifications = getGroupedNotifications({ notifications: allNotifications });
 
     return (
       <SafeAreaView style={style.container}>
         <TopNavigation
           titleStyle={style.headerTitle}
-          {...(groupedNotifications.length && { accessoryRight: this.renderRightActions })}
+          {...(groupedNotifications.length &&
+            unReadCount && { accessoryRight: this.renderRightActions })}
         />
         <View>
           {!isFetching || groupedNotifications.length ? (
@@ -244,6 +243,7 @@ function bindAction(dispatch) {
 function mapStateToProps(state) {
   return {
     allNotifications: state.notification.data.payload,
+    unReadCount: state.notification.data.meta.unread_count,
     isFetching: state.notification.isFetching,
     isAllNotificationsLoaded: state.notification.isAllNotificationsLoaded,
   };

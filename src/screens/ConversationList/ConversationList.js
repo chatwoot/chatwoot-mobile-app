@@ -10,7 +10,6 @@ import {
   withStyles,
   Icon,
 } from '@ui-kitten/components';
-import messaging from '@react-native-firebase/messaging';
 
 import { SafeAreaView, View } from 'react-native';
 import PropTypes from 'prop-types';

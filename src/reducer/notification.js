@@ -11,7 +11,7 @@ const initialState = {
   isFetching: false,
   isAllNotificationsLoaded: false,
   data: {
-    meta: {},
+    meta: { unread_count: 0 },
     payload: [],
   },
   pushToken: null,

@@ -1,6 +1,6 @@
 import { withStyles } from '@ui-kitten/components';
 import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
 import CustomText from './Text';
@@ -43,9 +43,14 @@ const NotificationItemComponent = ({ eva, item, onSelectNotification }) => {
       },
     },
   } = item;
-
+  const backgroundColor = read_at
+    ? theme['background-basic-color-1']
+    : theme['color-background-message'];
   return (
-    <TouchableOpacity style={style.itemContainer} onPress={() => onSelectNotification(item)}>
+    <TouchableOpacity
+      activeOpacity={0.5}
+      style={[style.itemContainer, { backgroundColor }]}
+      onPress={() => onSelectNotification(item)}>
       <View style={style.itemView}>
         <View style={style.avatarView}>
           <UserAvatar
@@ -55,13 +60,9 @@ const NotificationItemComponent = ({ eva, item, onSelectNotification }) => {
           />
         </View>
         <View style={style.contentView}>
-          <Text>
-            <CustomText style={style.content}>{push_message_title}</CustomText>
-            <CustomText style={style.time}>{`  ${timeAgo({ time: created_at })}`}</CustomText>
-          </Text>
+          <CustomText style={style.content}>{push_message_title}</CustomText>
+          <CustomText style={style.time}>{`${timeAgo({ time: created_at })}`}</CustomText>
         </View>
-
-        <View style={style.readView}>{!read_at && <View style={style.readBubble} />}</View>
       </View>
     </TouchableOpacity>
   );
@@ -76,8 +77,6 @@ const styles = (theme) => ({
     paddingRight: 16,
     paddingBottom: 12,
     paddingTop: 12,
-    backgroundColor: theme['background-basic-color-1'],
-    marginVertical: 0.5,
   },
   itemView: {
     flexDirection: 'row',
@@ -98,24 +97,14 @@ const styles = (theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  readBubble: {
-    borderRadius: 6,
-    borderColor: 'hsl(214, 69%, 52%)',
-    height: 6,
-    width: 6,
-    borderWidth: 6,
-    marginTop: 8,
-  },
   content: {
     fontSize: theme['font-size-extra-small'],
     fontWeight: theme['font-medium'],
-    paddingTop: 4,
   },
   time: {
-    fontSize: theme['font-size-extra-small'],
-    fontWeight: theme['font-bold'],
-    color: 'gray',
-    fontStyle: 'italic',
+    color: theme['text-hint-color'],
+    fontSize: theme['font-size-extra-extra-small'],
+    fontWeight: theme['font-regular'],
   },
 });
 
@@ -123,5 +112,4 @@ NotificationItemComponent.propTypes = propTypes;
 
 const NotificationItem = withStyles(NotificationItemComponent, styles);
 
-// export default React.memo(NotificationItem);
-export default NotificationItem;
+export default React.memo(NotificationItem);

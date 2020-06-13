@@ -10,6 +10,7 @@ import {
   withStyles,
   Icon,
 } from '@ui-kitten/components';
+import messaging from '@react-native-firebase/messaging';
 
 import { SafeAreaView, View } from 'react-native';
 import PropTypes from 'prop-types';
@@ -18,6 +19,10 @@ import { connect } from 'react-redux';
 import { getInboxes } from '../../actions/inbox';
 
 import { getConversations, loadInitialMessage, setConversation } from '../../actions/conversation';
+
+import { saveDeviceDetails } from '../../actions/notification';
+
+import { getAllNotifications } from '../../actions/notification';
 
 import ConversationItem from '../../components/ConversationItem';
 import ConversationItemLoader from '../../components/ConversationItemLoader';
@@ -61,6 +66,7 @@ class ConversationListComponent extends Component {
     inboxes: PropTypes.array.isRequired,
     conversationStatus: PropTypes.string,
     webSocketUrl: PropTypes.string,
+    pushToken: PropTypes.string,
     item: PropTypes.shape({}),
   };
 
@@ -86,6 +92,19 @@ class ConversationListComponent extends Component {
     this.props.getInboxes();
     this.loadConversations();
     this.initActionCable();
+
+    const { pushToken } = this.props;
+
+    this.props.saveDeviceDetails({ token: null });
+
+    if (!pushToken) {
+      this.props.saveDeviceDetails({ token: pushToken });
+    }
+    messaging().onTokenRefresh((newToken) => {
+      if (pushToken !== newToken) {
+        this.props.saveDeviceDetails({ token: newToken });
+      }
+    });
   };
 
   initActionCable = async () => {
@@ -176,7 +195,11 @@ class ConversationListComponent extends Component {
 
     return (
       <View style={style.loadMoreSpinnerView}>
-        {!isAllConversationsLoaded ? <Spinner size="medium" /> : null}
+        {!isAllConversationsLoaded ? (
+          <Spinner size="medium" />
+        ) : (
+          <CustomText> {i18n.t('CONVERSATION.ALL_CONVERSATION_LOADED')} 🎉</CustomText>
+        )}
       </View>
     );
   };
@@ -334,6 +357,8 @@ function bindAction(dispatch) {
 
     selectConversation: ({ conversationId }) => dispatch(setConversation({ conversationId })),
     loadInitialMessages: ({ messages }) => dispatch(loadInitialMessage({ messages })),
+    saveDeviceDetails: ({ token }) => dispatch(saveDeviceDetails({ token })),
+    getAllNotifications: ({ pageNo }) => dispatch(getAllNotifications({ pageNo })),
   };
 }
 function mapStateToProps(state) {
@@ -346,6 +371,7 @@ function mapStateToProps(state) {
     inboxSelected: state.inbox.inboxSelected,
     inboxes: state.inbox.data,
     conversationTypingUsers: state.conversation.conversationTypingUsers,
+    pushToken: state.notification.pushToken,
   };
 }
 

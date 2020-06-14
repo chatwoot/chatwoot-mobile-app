@@ -35,6 +35,7 @@ import {
   resetConversation,
   toggleTypingStatus,
 } from '../../actions/conversation';
+import { markNotificationAsRead } from '../../actions/notification';
 import { getGroupedConversation, getTypingUsersText } from '../../helpers';
 import i18n from '../../i18n';
 import CustomText from '../../components/Text';
@@ -71,6 +72,8 @@ class ChatScreenComponent extends Component {
     isAllMessagesLoaded: PropTypes.bool,
     markAllMessagesAsRead: PropTypes.func,
     toggleTypingStatus: PropTypes.func,
+    markMessagesAsRead: PropTypes.func,
+    markNotificationAsRead: PropTypes.func,
     conversationTypingUsers: PropTypes.shape({}),
   };
 
@@ -95,8 +98,15 @@ class ChatScreenComponent extends Component {
 
   componentDidMount = () => {
     const { markAllMessagesAsRead, route } = this.props;
+    const { conversationId, meta, messages, primaryActorDetails } = route.params;
+    // Clear all notification related the conversation
+    if (primaryActorDetails) {
+      this.props.markNotificationAsRead({
+        primaryActorId: primaryActorDetails.primary_actor_id,
+        primaryActorType: primaryActorDetails.primary_actor_type,
+      });
+    }
 
-    const { conversationId, meta, messages } = route.params;
     // Reset all messages if app is opening from external link (Deep linking or Push)
     if (!meta) {
       this.props.resetConversation();
@@ -107,8 +117,8 @@ class ChatScreenComponent extends Component {
       const { id } = lastMessage;
       beforeId = id;
     }
-
     this.props.loadMessages({ conversationId, beforeId });
+
     this.props.loadCannedResponses();
     markAllMessagesAsRead({ conversationId });
   };
@@ -476,9 +486,11 @@ function bindAction(dispatch) {
     loadCannedResponses: () => dispatch(loadCannedResponses()),
     sendMessage: ({ conversationId, message }) =>
       dispatch(sendMessage({ conversationId, message })),
-    markAllMessagesAsRead: ({ conversationId }) => dispatch(markMessagesAsRead({ conversationId })),
+    markMessagesAsRead: ({ conversationId }) => dispatch(markMessagesAsRead({ conversationId })),
     toggleTypingStatus: ({ conversationId, typingStatus }) =>
       dispatch(toggleTypingStatus({ conversationId, typingStatus })),
+    markNotificationAsRead: ({ primaryActorId, primaryActorType }) =>
+      dispatch(markNotificationAsRead({ primaryActorId, primaryActorType })),
   };
 }
 function mapStateToProps(state) {

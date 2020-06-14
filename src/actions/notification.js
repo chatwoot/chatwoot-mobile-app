@@ -18,6 +18,7 @@ import {
   SET_PUSH_TOKEN,
   ALL_NOTIFICATIONS_LOADED,
   UPDATE_ALL_NOTIFICATIONS,
+  ADD_NOTIFICATION,
 } from '../constants/actions';
 import APIHelper from '../helpers/APIHelper';
 
@@ -37,6 +38,7 @@ export const getAllNotifications = ({ pageNo = 1 }) => async (dispatch) => {
     const {
       data: { payload, meta },
     } = response.data;
+
     const updatedPayload = payload.sort((a, b) => {
       return b.created_at - a.created_at;
     });
@@ -59,6 +61,21 @@ export const getAllNotifications = ({ pageNo = 1 }) => async (dispatch) => {
   }
 };
 
+export const markNotificationAsRead = ({ primaryActorId, primaryActorType }) => async (
+  dispatch,
+) => {
+  try {
+    const apiUrl = 'notifications/read_all';
+    await APIHelper.post(apiUrl, {
+      primary_actor_type: primaryActorType,
+      primary_actor_id: primaryActorId,
+    });
+    setTimeout(() => {
+      dispatch(getAllNotifications({ pageNo: 1 }));
+    }, 500);
+  } catch {}
+};
+
 export const markAllNotificationAsRead = () => async (dispatch, getState) => {
   const {
     data: { payload },
@@ -71,6 +88,8 @@ export const markAllNotificationAsRead = () => async (dispatch, getState) => {
       item.read_at = 'read_at';
       return item;
     });
+
+    dispatch(getAllNotifications({ pageNo: 1 }));
 
     dispatch({
       type: UPDATE_ALL_NOTIFICATIONS,
@@ -85,7 +104,7 @@ export const markAllNotificationAsRead = () => async (dispatch, getState) => {
 export const saveDeviceDetails = ({ token }) => async (dispatch) => {
   try {
     const checkPermission = await messaging().hasPermission();
-    if (!checkPermission) {
+    if (!checkPermission || checkPermission === -1) {
       await messaging().requestPermission();
     }
 
@@ -122,4 +141,18 @@ export const saveDeviceDetails = ({ token }) => async (dispatch) => {
     });
     dispatch({ type: SET_PUSH_TOKEN, payload: fcmToken });
   } catch (err) {}
+};
+
+export const addNotification = ({ notification }) => async (dispatch, getState) => {
+  const {
+    data: { payload },
+  } = getState().notification;
+
+  // Check notification is already exists or not
+  const [notificationExists] = payload.filter((c) => c.id === notification.id);
+
+  if (notificationExists) {
+    return;
+  }
+  dispatch({ type: ADD_NOTIFICATION, payload: notification });
 };

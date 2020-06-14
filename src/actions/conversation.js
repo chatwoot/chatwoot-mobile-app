@@ -30,6 +30,7 @@ import {
 
 import axios from '../helpers/APIHelper';
 
+import { getAllNotifications } from './notification';
 import { ASSIGNEE_TYPE } from '../constants';
 
 // Load all the conversations
@@ -118,7 +119,9 @@ export const addOrUpdateConversation = ({ conversation }) => async (dispatch, ge
   if (conversationExists) {
     return;
   }
+
   dispatch({ type: ADD_CONVERSATION, payload: conversation });
+  dispatch(getAllNotifications({ pageNo: 1 }));
 };
 
 // Add new message to a conversation

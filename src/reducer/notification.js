@@ -5,6 +5,7 @@ import {
   ALL_NOTIFICATIONS_LOADED,
   UPDATE_ALL_NOTIFICATIONS,
   SET_PUSH_TOKEN,
+  ADD_NOTIFICATION,
 } from '../constants/actions';
 
 const initialState = {
@@ -49,6 +50,16 @@ export default (state = initialState, action) => {
         ...state,
         isAllNotificationsLoaded: true,
         isFetching: false,
+      };
+    }
+
+    case ADD_NOTIFICATION: {
+      return {
+        ...state,
+        data: {
+          meta: state.data.meta,
+          payload: [action.payload, ...state.data.payload],
+        },
       };
     }
 

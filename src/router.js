@@ -28,9 +28,7 @@ import { resetConversation } from './actions/conversation';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-  // console.log('Message handled in the background!', remoteMessage);
-});
+messaging().setBackgroundMessageHandler(async (remoteMessage) => {});
 
 const HomeStack = () => (
   <Stack.Navigator initialRouteName="ConversationList" headerMode="none">
@@ -122,22 +120,19 @@ const App = () => {
     dispatch(resetConversation());
     // Notification caused app to open from foreground state
     messaging().onMessage((remoteMessage) => {
-      // handlePush({ remoteMessage });
+      handlePush({ remoteMessage, type: 'foreground' });
     });
 
     // Notification caused app to open from background state
     messaging().onNotificationOpenedApp((remoteMessage) => {
-      // console.log('background', remoteMessage);
-
-      handlePush({ remoteMessage });
+      handlePush({ remoteMessage, type: 'background' });
     });
     // Notification caused app to open from quit state
     messaging()
       .getInitialNotification()
       .then((remoteMessage) => {
         if (remoteMessage) {
-          // console.log('quit', remoteMessage);
-          handlePush({ remoteMessage });
+          handlePush({ remoteMessage, type: 'quite' });
         }
       });
   }, [dispatch]);

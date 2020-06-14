@@ -17,7 +17,11 @@ import { loadInitialMessage, setConversation } from '../../actions/conversation'
 
 import styles from './NotificationScreen.style';
 import NotificationItem from '../../components/NotificationItem';
-import { getAllNotifications, markAllNotificationAsRead } from '../../actions/notification';
+import {
+  getAllNotifications,
+  markAllNotificationAsRead,
+  markNotificationAsRead,
+} from '../../actions/notification';
 import CustomText from '../../components/Text';
 import { getGroupedNotifications } from '../../helpers';
 import NotificationItemLoader from '../../components/NotificationItemLoader';
@@ -46,6 +50,7 @@ class NotificationScreenComponent extends Component {
     getAllNotifications: PropTypes.func,
     markAllNotificationAsRead: PropTypes.func,
     unReadCount: PropTypes.number,
+    markNotificationAsRead: PropTypes.func,
   };
 
   static defaultProps = {
@@ -122,13 +127,12 @@ class NotificationScreenComponent extends Component {
       isAllNotificationsLoaded,
       eva: { style },
     } = this.props;
-
     return (
       <View style={style.loadMoreSpinnerView}>
         {!isAllNotificationsLoaded ? (
           <Spinner size="medium" />
         ) : (
-          <CustomText> {i18n.t('NOTIFICATION.ALL_NOTIFICATION_LOADED')} 🎉</CustomText>
+          <CustomText>{`${i18n.t('NOTIFICATION.ALL_NOTIFICATION_LOADED')} 🎉`}</CustomText>
         )}
       </View>
     );
@@ -145,10 +149,18 @@ class NotificationScreenComponent extends Component {
 
   onSelectNotification = (item) => {
     const {
+      primary_actor_id,
+      primary_actor_type,
       primary_actor: { id: conversationId, meta, messages },
     } = item;
 
     const { navigation, selectConversation, loadInitialMessages } = this.props;
+
+    this.props.markNotificationAsRead({
+      primaryActorId: primary_actor_id,
+      primaryActorType: primary_actor_type,
+    });
+
     selectConversation({ conversationId });
     loadInitialMessages({ messages });
     navigation.navigate('ChatScreen', {
@@ -187,6 +199,8 @@ class NotificationScreenComponent extends Component {
       <SafeAreaView style={style.container}>
         <TopNavigation
           titleStyle={style.headerTitle}
+          alignment="center"
+          title={i18n.t('NOTIFICATION.HEADER_TITLE')}
           {...(groupedNotifications.length &&
             unReadCount && { accessoryRight: this.renderRightActions })}
         />
@@ -238,6 +252,8 @@ function bindAction(dispatch) {
     markAllNotificationAsRead: () => dispatch(markAllNotificationAsRead()),
     selectConversation: ({ conversationId }) => dispatch(setConversation({ conversationId })),
     loadInitialMessages: ({ messages }) => dispatch(loadInitialMessage({ messages })),
+    markNotificationAsRead: ({ primaryActorId, primaryActorType }) =>
+      dispatch(markNotificationAsRead({ primaryActorId, primaryActorType })),
   };
 }
 function mapStateToProps(state) {

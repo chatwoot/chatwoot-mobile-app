@@ -10,6 +10,7 @@ export const handlePush = async ({ remoteMessage, type }) => {
     const { notification_type } = pushData;
     // Check user is logged or not
     if (
+      type !== 'foreground' &&
       isLoggedIn &&
       (notification_type === 'conversation_creation' ||
         notification_type === 'conversation_assignment')

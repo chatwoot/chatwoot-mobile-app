@@ -43,13 +43,10 @@ const NotificationItemComponent = ({ eva, item, onSelectNotification }) => {
       },
     },
   } = item;
-  const backgroundColor = read_at
-    ? theme['background-basic-color-1']
-    : theme['color-background-message'];
   return (
     <TouchableOpacity
       activeOpacity={0.5}
-      style={[style.itemContainer, { backgroundColor }]}
+      style={[style.itemContainer]}
       onPress={() => onSelectNotification(item)}>
       <View style={style.itemView}>
         <View style={style.avatarView}>
@@ -63,6 +60,11 @@ const NotificationItemComponent = ({ eva, item, onSelectNotification }) => {
           <CustomText style={style.content}>{push_message_title}</CustomText>
           <CustomText style={style.time}>{`${timeAgo({ time: created_at })}`}</CustomText>
         </View>
+        {!read_at && (
+          <View style={style.readView}>
+            <View style={style.readBubble} />
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -85,11 +87,11 @@ const styles = (theme) => ({
   },
   avatarView: {
     justifyContent: 'flex-end',
-    marginRight: 16,
-    flex: 2,
+    marginRight: 4,
+    flex: 3,
   },
   contentView: {
-    flex: 12,
+    flex: 14,
   },
 
   readView: {
@@ -105,6 +107,14 @@ const styles = (theme) => ({
     color: theme['text-hint-color'],
     fontSize: theme['font-size-extra-extra-small'],
     fontWeight: theme['font-regular'],
+  },
+  readBubble: {
+    borderRadius: 5,
+    borderColor: theme['color-primary-default'],
+    height: 5,
+    width: 5,
+    borderWidth: 5,
+    marginTop: 8,
   },
 });
 

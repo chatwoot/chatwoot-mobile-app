@@ -213,7 +213,7 @@ export const sendMessage = ({ conversationId, message }) => async (dispatch) => 
   }
 };
 
-export const markMessagesAsRead = ({ conversationId, message }) => async (dispatch, getState) => {
+export const markMessagesAsRead = ({ conversationId }) => async (dispatch, getState) => {
   const {
     data: { payload },
   } = getState().conversation;

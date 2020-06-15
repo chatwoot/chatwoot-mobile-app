@@ -81,7 +81,7 @@ class ChatScreenComponent extends Component {
     isFetching: false,
     isAllMessagesLoaded: false,
     sendMessage: () => {},
-    markAllMessagesAsRead: () => {},
+    markMessagesAsRead: () => {},
     allMessages: [],
     cannedResponses: [],
     conversationTypingUsers: {},
@@ -486,7 +486,7 @@ function bindAction(dispatch) {
     loadCannedResponses: () => dispatch(loadCannedResponses()),
     sendMessage: ({ conversationId, message }) =>
       dispatch(sendMessage({ conversationId, message })),
-    markMessagesAsRead: ({ conversationId }) => dispatch(markMessagesAsRead({ conversationId })),
+    markAllMessagesAsRead: ({ conversationId }) => dispatch(markMessagesAsRead({ conversationId })),
     toggleTypingStatus: ({ conversationId, typingStatus }) =>
       dispatch(toggleTypingStatus({ conversationId, typingStatus })),
     markNotificationAsRead: ({ primaryActorId, primaryActorType }) =>

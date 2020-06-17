@@ -4,8 +4,9 @@ import { BottomNavigation, BottomNavigationTab, withStyles, Icon } from '@ui-kit
 
 import i18n from '../i18n';
 
-const HomeIcon = (style) => <Icon {...style} name="home-outline" />;
+const ConversationIcon = (style) => <Icon {...style} name="message-circle-outline" />;
 const SettingsIcon = (style) => <Icon {...style} name="settings-outline" />;
+const NotificationIcon = (style) => <Icon {...style} name="bell-outline" />;
 
 const propTypes = {
   eva: PropTypes.shape({
@@ -31,7 +32,8 @@ const TabBarComponent = ({ eva, navigation, state }) => {
       onSelect={changeTab}
       appearance="noIndicator"
       style={style.tabBar}>
-      <BottomNavigationTab title={i18n.t('FOOTER.HOME')} icon={HomeIcon} />
+      <BottomNavigationTab title={i18n.t('FOOTER.CONVERSATION')} icon={ConversationIcon} />
+      <BottomNavigationTab title={i18n.t('FOOTER.NOTIFICATION')} icon={NotificationIcon} />
       <BottomNavigationTab title={i18n.t('FOOTER.SETTINGS')} icon={SettingsIcon} />
     </BottomNavigation>
   );

@@ -30,3 +30,8 @@ export const dynamicTime = ({ time }) => {
   }
   return moment(createdAt).format('DD/MM/YYYY');
 };
+
+export const timeAgo = ({ time }) => {
+  const createdAt = moment(time * 1000);
+  return createdAt.fromNow();
+};

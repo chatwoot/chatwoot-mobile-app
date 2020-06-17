@@ -12,9 +12,9 @@ const themedStyles = StyleService.create({
     alignSelf: 'center',
   },
   userThumbNail: {
-    width: 48,
-    height: 48,
-    borderRadius: 48,
+    width: 56,
+    height: 56,
+    borderRadius: 56,
     backgroundColor: 'color-primary-default',
     flexDirection: 'row',
     alignItems: 'center',
@@ -35,14 +35,14 @@ const themedStyles = StyleService.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 48,
-    height: 48,
-    borderRadius: 48,
+    width: 56,
+    height: 56,
+    borderRadius: 56,
   },
   image: {
-    width: 48,
-    height: 48,
-    borderRadius: 48,
+    width: 56,
+    height: 56,
+    borderRadius: 56,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -74,9 +74,7 @@ const UserAvatar = ({ thumbnail, userName, size, defaultBGColor }) => {
           backgroundColor: defaultBGColor || getRandomColor({ userName }),
         },
       ]}>
-      <CustomText style={styles.userName}>
-        {getUserInitial({ userName })}
-      </CustomText>
+      <CustomText style={styles.userName}>{getUserInitial({ userName })}</CustomText>
     </View>
   );
 };

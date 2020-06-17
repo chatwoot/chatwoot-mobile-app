@@ -14,6 +14,7 @@ const styles = (theme) => ({
   loadMoreSpinnerView: {
     alignItems: 'center',
     paddingTop: 16,
+    paddingBottom: 16,
     height: '100%',
     backgroundColor: theme['background-basic-color-1'],
   },

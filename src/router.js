@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Linking } from 'react-native';
-import { navigationRef } from './helpers/NavigationHelper';
 
+import messaging from '@react-native-firebase/messaging';
 import PropTypes from 'prop-types';
 import { createStackNavigator } from '@react-navigation/stack';
 import ConfigureURLScreen from './screens/ConfigureURLScreen/ConfigureURLScreen';
@@ -17,12 +17,18 @@ import ChatScreen from './screens/ChatScreen/ChatScreen';
 import ConversationFilter from './screens/ConversationFilter/ConversationFilter';
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
+import NotificationScreen from './screens/Notification/NotificationScreen';
 import i18n from './i18n';
+import { navigationRef } from './helpers/NavigationHelper';
+import { handlePush } from './helpers/PushHelper';
 
 import { doDeepLinking } from './helpers/DeepLinking';
+import { resetConversation } from './actions/conversation';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
+messaging().setBackgroundMessageHandler(async (remoteMessage) => {});
 
 const HomeStack = () => (
   <Stack.Navigator initialRouteName="ConversationList" headerMode="none">
@@ -36,9 +42,16 @@ const SettingsStack = () => (
   </Stack.Navigator>
 );
 
+const NotificationStack = () => (
+  <Stack.Navigator initialRouteName="Notification" headerMode={'none'}>
+    <Tab.Screen name="Notification" component={NotificationScreen} />
+  </Stack.Navigator>
+);
+
 const TabStack = () => (
   <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
     <Tab.Screen name="Home" component={HomeStack} />
+    <Tab.Screen name="Notification" component={NotificationStack} />
     <Tab.Screen name="Settings" component={SettingsStack} />
   </Tab.Navigator>
 );
@@ -91,14 +104,38 @@ const _handleOpenURL = (event) => {
 };
 
 const App = () => {
+  const dispatch = useDispatch();
+
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const isUrlSet = useSelector((state) => state.settings.isUrlSet);
+
   const locale = useSelector((state) => state.settings.localeValue);
   const { linkedURL, resetURL } = useDeepLinkURL();
 
   useEffect(() => {
     resetURL();
   }, [linkedURL, resetURL]);
+
+  useEffect(() => {
+    dispatch(resetConversation());
+    // Notification caused app to open from foreground state
+    messaging().onMessage((remoteMessage) => {
+      handlePush({ remoteMessage, type: 'foreground' });
+    });
+
+    // Notification caused app to open from background state
+    messaging().onNotificationOpenedApp((remoteMessage) => {
+      handlePush({ remoteMessage, type: 'background' });
+    });
+    // Notification caused app to open from quit state
+    messaging()
+      .getInitialNotification()
+      .then((remoteMessage) => {
+        if (remoteMessage) {
+          handlePush({ remoteMessage, type: 'quite' });
+        }
+      });
+  }, [dispatch]);
 
   if (linkedURL) {
     _handleOpenURL({ url: linkedURL });
@@ -108,17 +145,12 @@ const App = () => {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator
-        initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'}
-        headerMode={'none'}>
+      <Stack.Navigator initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'} headerMode={'none'}>
         {isLoggedIn ? (
           <>
             <Stack.Screen name="Tab" component={TabStack} />
             <Stack.Screen name="ChatScreen" component={ChatScreen} />
-            <Stack.Screen
-              name="ConversationFilter"
-              component={ConversationFilter}
-            />
+            <Stack.Screen name="ConversationFilter" component={ConversationFilter} />
             <Stack.Screen name="ImageScreen" component={ImageScreen} />
             <Stack.Screen name="Language" component={LanguageScreen} />
           </>
@@ -127,10 +159,7 @@ const App = () => {
             <Stack.Screen name="ConfigureURL" component={ConfigureURLScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="ResetPassword" component={ResetPassword} />
-            <Stack.Screen
-              name="ConversationList"
-              component={ConversationList}
-            />
+            <Stack.Screen name="ConversationList" component={ConversationList} />
           </>
         )}
       </Stack.Navigator>

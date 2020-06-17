@@ -17,6 +17,7 @@
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     <activity android:name="com.facebook.flipper.android.diagnostics.FlipperDiagnosticActivity" android:exported="true"/>
+    <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notification" />
   </application>
 
 </manifest>

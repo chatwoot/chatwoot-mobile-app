@@ -8,6 +8,8 @@
   },
   "FOOTER": {
     "HOME": "Home",
+    "CONVERSATION": "Conversations",
+    "NOTIFICATION": "Notifications",
     "SETTINGS": "Settings"
   },
   "CONFIGURE_URL": {
@@ -49,7 +51,8 @@
     "TODAY": "Today",
     "YESTERDAY": "Yesterday",
     "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing"
+    "TYPING": "typing",
+    "ALL_CONVERSATION_LOADED": "All conversations loaded"
   },
   "FILTER": {
     "HEADER_TITLE": "Filter",
@@ -68,6 +71,12 @@
     "CHANGE_LANGUAGE": "Change language",
     "SUBMIT": "Submit",
     "LOG_OUT": "Logout"
+  },
+  "NOTIFICATION": {
+    "HEADER_TITLE": "Notifications",
+    "EMPTY": "No notifications yet",
+    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
+    "MARK_ALL": "Mark all as read"
   },
   "ERRORS": {
     "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",

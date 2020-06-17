@@ -1,4 +1,5 @@
 import md5 from 'md5';
+
 import { GRAVATAR_URL } from '../constants/url';
 import { Linking } from 'react-native';
 import DateHelper from './DateHelper';
@@ -59,10 +60,7 @@ export const getRandomColor = function ({ userName }) {
     color
       .replace(/^#/, '')
       .replace(/../g, (value) =>
-        (
-          '0' +
-          Math.min(255, Math.max(0, parseInt(value, 16) + -20)).toString(16)
-        ).substr(-2),
+        ('0' + Math.min(255, Math.max(0, parseInt(value, 16) + -20)).toString(16)).substr(-2),
       )
   );
 };
@@ -91,9 +89,8 @@ export const getInboxName = ({ inboxes, inboxId }) => {
 };
 
 export const getGroupedConversation = ({ conversations }) => {
-  const conversationGroupedByDate = groupBy(
-    Object.values(conversations),
-    (message) => new DateHelper(message.created_at).format(),
+  const conversationGroupedByDate = groupBy(Object.values(conversations), (message) =>
+    new DateHelper(message.created_at).format(),
   );
   return Object.keys(conversationGroupedByDate).map((date) => {
     const messages = conversationGroupedByDate[date].map((message, index) => {
@@ -105,8 +102,7 @@ export const getGroupedConversation = ({ conversations }) => {
         const currentSender = message.sender ? message.sender.name : '';
         const nextSender = nextMessage.sender ? nextMessage.sender.name : '';
         showAvatar =
-          currentSender !== nextSender ||
-          message.message_type !== nextMessage.message_type;
+          currentSender !== nextSender || message.message_type !== nextMessage.message_type;
       }
       return { showAvatar, ...message };
     });
@@ -118,10 +114,7 @@ export const getGroupedConversation = ({ conversations }) => {
   });
 };
 
-export const getTypingUsersText = ({
-  conversationId,
-  conversationTypingUsers,
-}) => {
+export const getTypingUsersText = ({ conversationId, conversationTypingUsers }) => {
   const userList = conversationTypingUsers[conversationId];
   const isAnyoneTyping = userList && userList.length !== 0;
   if (isAnyoneTyping) {
@@ -133,18 +126,14 @@ export const getTypingUsersText = ({
       if (type === 'contact') {
         return 'typing...';
       }
-      return `${user.name
-        .toString()
-        .replace(/^./, (str) => str.toUpperCase())} is typing...`;
+      return `${user.name.toString().replace(/^./, (str) => str.toUpperCase())} is typing...`;
     }
 
     if (count === 2) {
       const [first, second] = userList;
       return `${first.name
         .toString()
-        .replace(/^./, (str) =>
-          str.toUpperCase(),
-        )} and ${second.name
+        .replace(/^./, (str) => str.toUpperCase())} and ${second.name
         .toString()
         .replace(/^./, (str) => str.toUpperCase())} are typing...`;
     }
@@ -153,9 +142,21 @@ export const getTypingUsersText = ({
     const rest = userList.length - 1;
     return `${user.name
       .toString()
-      .replace(/^./, (str) =>
-        str.toUpperCase(),
-      )} and ${rest} others are typing...`;
+      .replace(/^./, (str) => str.toUpperCase())} and ${rest} others are typing...`;
   }
   return false;
+};
+
+export const getGroupedNotifications = ({ notifications }) => {
+  const notificationGroupedByDate = groupBy(Object.values(notifications), (notification) =>
+    new DateHelper(notification.created_at).format(),
+  );
+  return Object.keys(notificationGroupedByDate).map((date) => {
+    const data = notificationGroupedByDate[date];
+
+    return {
+      data,
+      title: date,
+    };
+  });
 };

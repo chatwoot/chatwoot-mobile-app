@@ -23,6 +23,12 @@ import HeaderBar from '../../components/HeaderBar';
 
 const settingsData = [
   {
+    text: 'SWITCH_ACCOUNT',
+    checked: false,
+    iconName: 'people-outline',
+    itemName: 'switch-account',
+  },
+  {
     text: 'HELP',
     checked: true,
     iconName: 'question-mark-circle-outline',
@@ -65,34 +71,6 @@ class SettingsComponent extends Component {
     user: { email: null, name: null },
     onLogOut: () => {},
   };
-  componentDidMount = () => {
-    const {
-      user: { accounts },
-    } = this.props;
-    if (accounts && accounts.length > 1) {
-      this.makeSettingsMenu({ showAccountItem: true });
-    } else {
-      this.makeSettingsMenu({ showAccountItem: false });
-    }
-  };
-
-  makeSettingsMenu = ({ showAccountItem }) => {
-    if (showAccountItem) {
-      settingsData.unshift({
-        text: 'SWITCH_ACCOUNT',
-        checked: false,
-        iconName: 'people-outline',
-        itemName: 'switch-account',
-      });
-      this.setState({
-        settingsMenu: settingsData,
-      });
-    } else {
-      this.setState({
-        settingsMenu: settingsData,
-      });
-    }
-  };
 
   onPressItem = ({ itemName }) => {
     const {
@@ -124,10 +102,14 @@ class SettingsComponent extends Component {
 
   render() {
     const {
-      user: { email, name, avatar_url },
+      user: { email, name, avatar_url, accounts },
       eva: { style, theme },
     } = this.props;
-    const { settingsMenu } = this.state;
+
+    const showAccountMenu = accounts && accounts.length > 1;
+    if (!showAccountMenu) {
+      settingsData.shift();
+    }
 
     return (
       <SafeAreaView style={style.container}>
@@ -144,7 +126,7 @@ class SettingsComponent extends Component {
           </View>
         </View>
         <View style={style.itemListView}>
-          {settingsMenu.map((item, index) => (
+          {settingsData.map((item, index) => (
             <SettingsItem
               key={item.text}
               text={i18n.t(`SETTINGS.${item.text}`)}

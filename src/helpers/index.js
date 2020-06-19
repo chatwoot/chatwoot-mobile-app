@@ -160,3 +160,16 @@ export const getGroupedNotifications = ({ notifications }) => {
     };
   });
 };
+
+export const findUniqueConversations = ({ payload }) => {
+  const filterConversations = payload.filter((item) => item.messages.length !== 0);
+  const uniqueConversations = filterConversations.reduce((acc, current) => {
+    const x = acc.find((item) => item.id === current.id);
+    if (!x) {
+      return acc.concat([current]);
+    } else {
+      return acc;
+    }
+  }, []);
+  return uniqueConversations;
+};

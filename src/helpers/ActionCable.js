@@ -10,8 +10,8 @@ import {
 import { store } from '../store';
 
 class ActionCableConnector extends BaseActionCableConnector {
-  constructor(pubsubToken, webSocketUrl) {
-    super(pubsubToken, webSocketUrl);
+  constructor(pubsubToken, webSocketUrl, accountId) {
+    super(pubsubToken, webSocketUrl, accountId);
     this.CancelTyping = [];
     this.events = {
       'message.created': this.onMessageCreated,
@@ -64,8 +64,7 @@ class ActionCableConnector extends BaseActionCableConnector {
   };
 
   clearTimer = (conversationId) => {
-    const timerEvent =
-      this.CancelTyping.length && this.CancelTyping[conversationId];
+    const timerEvent = this.CancelTyping.length && this.CancelTyping[conversationId];
 
     if (timerEvent) {
       clearTimeout(timerEvent);
@@ -81,8 +80,8 @@ class ActionCableConnector extends BaseActionCableConnector {
 }
 
 export default {
-  init({ pubSubToken, webSocketUrl }) {
-    const actionCable = new ActionCableConnector(pubSubToken, webSocketUrl);
+  init({ pubSubToken, webSocketUrl, accountId }) {
+    const actionCable = new ActionCableConnector(pubSubToken, webSocketUrl, accountId);
 
     return actionCable;
   },

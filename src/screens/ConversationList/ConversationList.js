@@ -27,9 +27,10 @@ const LoaderData = new Array(24).fill(0);
 const renderItemLoader = () => <ConversationItemLoader />;
 
 import ActionCable from '../../helpers/ActionCable';
-import { getPubSubToken } from '../../helpers/AuthHelper';
+import { getPubSubToken, getAccountId } from '../../helpers/AuthHelper';
 import { onLogOut } from '../../actions/auth';
 import HeaderBar from '../../components/HeaderBar';
+import { findUniqueConversations } from '../../helpers';
 
 class ConversationListComponent extends Component {
   static propTypes = {
@@ -93,9 +94,10 @@ class ConversationListComponent extends Component {
 
   initActionCable = async () => {
     const pubSubToken = await getPubSubToken();
+    const accountId = await getAccountId();
     const { webSocketUrl } = this.props;
 
-    ActionCable.init({ pubSubToken, webSocketUrl });
+    ActionCable.init({ pubSubToken, webSocketUrl, accountId });
   };
 
   loadConversations = () => {
@@ -192,13 +194,12 @@ class ConversationListComponent extends Component {
 
     const { payload } = conversations;
 
-    const filterConversations = payload.filter((item) => item.messages.length !== 0);
-
+    const uniqueConversations = findUniqueConversations({ payload });
     return (
       <Layout style={style.tabContainer}>
         <List
           keyboardShouldPersistTaps="handled"
-          data={filterConversations}
+          data={uniqueConversations}
           renderItem={this.renderItem}
           ref={(ref) => {
             this.myFlatListRef = ref;

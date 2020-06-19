@@ -55,7 +55,7 @@
     "ALL_CONVERSATION_LOADED": "All conversations loaded"
   },
   "FILTER": {
-    "HEADER_TITLE": "Filter",
+    "HEADER_TITLE": "Conversation Filter",
     "CHOOSE_INBOX": "Choose Inbox",
     "CHOOSE_STATUS": "Conversation Status",
     "OPEN": "Open",

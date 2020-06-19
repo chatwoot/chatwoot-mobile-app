@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TopNavigation, TopNavigationAction, withStyles, Icon } from '@ui-kitten/components';
 
+import CustomText from './Text';
+
 const BackIcon = (props) => {
   return <Icon {...props} name="arrow-ios-back-outline" height={32} width={32} />;
 };
@@ -46,9 +48,14 @@ class HeaderBarComponent extends Component {
       alignment,
       showRightButton,
     } = this.props;
+
     return (
       <TopNavigation
-        title={title}
+        title={(evaProps) => (
+          <CustomText {...evaProps} style={style.headerTitle}>
+            {title}
+          </CustomText>
+        )}
         alignment={alignment}
         titleStyle={style.headerTitle}
         {...(showLeftButton && { accessoryLeft: this.renderLeftControl })}

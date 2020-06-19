@@ -115,7 +115,6 @@ class FilterScreenComponent extends Component {
       <SafeAreaView style={themedStyle.container}>
         <HeaderBar
           showLeftButton
-          alignment="left"
           title={i18n.t('FILTER.HEADER_TITLE')}
           onBackPress={this.onBackPress}
         />

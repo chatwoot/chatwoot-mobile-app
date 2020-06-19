@@ -25,7 +25,7 @@ const settingsData = [
   {
     text: 'SWITCH_ACCOUNT',
     checked: false,
-    iconName: 'people-outline',
+    iconName: 'briefcase-outline',
     itemName: 'switch-account',
   },
   {
@@ -106,10 +106,11 @@ class SettingsComponent extends Component {
       eva: { style, theme },
     } = this.props;
 
-    const showAccountMenu = accounts && accounts.length > 1;
-    if (!showAccountMenu) {
-      settingsData.shift();
-    }
+    // Show  switch account option only if number of accounts is greater than one
+    const settingsMenu =
+      accounts && accounts.length > 1
+        ? settingsData
+        : settingsData.filter((e) => e.itemName !== 'switch-account');
 
     return (
       <SafeAreaView style={style.container}>
@@ -126,7 +127,7 @@ class SettingsComponent extends Component {
           </View>
         </View>
         <View style={style.itemListView}>
-          {settingsData.map((item, index) => (
+          {settingsMenu.map((item, index) => (
             <SettingsItem
               key={item.text}
               text={i18n.t(`SETTINGS.${item.text}`)}

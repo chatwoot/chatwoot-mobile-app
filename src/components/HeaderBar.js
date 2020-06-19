@@ -19,7 +19,7 @@ const MoreIcon = (props) => {
 const styles = (theme) => ({
   headerTitle: {
     marginVertical: 8,
-    fontSize: theme['font-size-large'],
+    fontSize: theme['font-size-medium'],
     fontWeight: theme['font-semi-bold'],
   },
 });

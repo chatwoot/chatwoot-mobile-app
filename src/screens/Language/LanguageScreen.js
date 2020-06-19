@@ -1,21 +1,19 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { withStyles, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import { withStyles } from '@ui-kitten/components';
 import { StackActions } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { SafeAreaView, View } from 'react-native';
 import LoaderButton from '../../components/LoaderButton';
+import HeaderBar from '../../components/HeaderBar';
 
 import i18n from '../../i18n';
 import styles from './LanguageScreen.style';
 import LanguageItem from '../../components/LanguageItem';
-import Icon from '../../components/Icon';
+
 import { setLocale } from '../../actions/settings';
 import { LANGUAGES } from '../../constants';
 
-const BackIcon = ({ style: { tintColor } }) => {
-  return <Icon name="arrow-ios-back-outline" color={tintColor} />;
-};
 const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
   const settings = useSelector((state) => state.settings);
 
@@ -27,19 +25,15 @@ const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
     dispatch(setLocale(item));
   };
 
-  const renderLeftControl = () => (
-    <TopNavigationAction onPress={() => navigation.goBack()} icon={BackIcon} />
-  );
+  const goBack = () => {
+    navigation.goBack();
+  };
 
   const languages = Object.keys(i18n.translations);
 
   return (
     <SafeAreaView style={style.container}>
-      <TopNavigation
-        accessoryLeft={renderLeftControl}
-        title={i18n.t('SETTINGS.CHANGE_LANGUAGE')}
-        titleStyle={style.headerTitle}
-      />
+      <HeaderBar title={i18n.t('SETTINGS.SWITCH_ACCOUNT')} showLeftButton onBackPress={goBack} />
       <View style={style.itemMainView}>
         {languages.map((item) => {
           return (

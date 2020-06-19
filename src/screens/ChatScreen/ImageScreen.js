@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Image, Dimensions, SafeAreaView } from 'react-native';
-import {
-  Layout,
-  TopNavigation,
-  Icon,
-  TopNavigationAction,
-  withStyles,
-} from '@ui-kitten/components';
+import { Layout, TopNavigation, TopNavigationAction, withStyles } from '@ui-kitten/components';
 
 import ImageZoom from 'react-native-image-pan-zoom';
 
 import ImageLoader from '../../components/ImageLoader';
+import Icon from '../../components/Icon';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -43,8 +38,10 @@ const styles = (theme) => ({
   },
 });
 
-const BackIcon = (style) => <Icon {...style} name="close-outline" />;
-
+// eslint-disable-next-line react/prop-types
+const BackIcon = ({ style: { tintColor } }) => {
+  return <Icon name="close-outline" color={tintColor} />;
+};
 const propTypes = {
   eva: PropTypes.shape({
     style: PropTypes.object,

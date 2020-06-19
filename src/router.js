@@ -121,7 +121,7 @@ const App = () => {
     dispatch(resetConversation());
     // Notification caused app to open from foreground state
     messaging().onMessage((remoteMessage) => {
-      handlePush({ remoteMessage, type: 'foreground' });
+      // handlePush({ remoteMessage, type: 'foreground' });
     });
 
     // Notification caused app to open from background state

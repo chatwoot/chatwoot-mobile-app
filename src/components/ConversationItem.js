@@ -196,16 +196,16 @@ const styles = (theme) => ({
     color: theme['color-success-default'],
     fontSize: theme['text-primary-size'],
     fontWeight: theme['font-medium'],
-    paddingTop: 4,
+    paddingTop: 8,
   },
   messageActive: {
     fontSize: theme['text-primary-size'],
     fontWeight: theme['font-medium'],
-    paddingTop: 2,
+    paddingTop: 8,
   },
   messageNotActive: {
     fontSize: theme['text-primary-size'],
-    paddingTop: 2,
+    paddingTop: 8,
     color: theme['text-light-color'],
   },
   nameView: {

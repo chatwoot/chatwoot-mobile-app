@@ -43,6 +43,7 @@ const settingsData = [
 ];
 
 class SettingsComponent extends Component {
+  state = { settingsMenu: [] };
   static propTypes = {
     eva: PropTypes.shape({
       style: PropTypes.object,
@@ -63,6 +64,34 @@ class SettingsComponent extends Component {
   static defaultProps = {
     user: { email: null, name: null },
     onLogOut: () => {},
+  };
+  componentDidMount = () => {
+    const {
+      user: { accounts },
+    } = this.props;
+    if (accounts && accounts.length > 1) {
+      this.makeSettingsMenu({ showAccountItem: true });
+    } else {
+      this.makeSettingsMenu({ showAccountItem: false });
+    }
+  };
+
+  makeSettingsMenu = ({ showAccountItem }) => {
+    if (showAccountItem) {
+      settingsData.unshift({
+        text: 'SWITCH_ACCOUNT',
+        checked: false,
+        iconName: 'people-outline',
+        itemName: 'switch-account',
+      });
+      this.setState({
+        settingsMenu: settingsData,
+      });
+    } else {
+      this.setState({
+        settingsMenu: settingsData,
+      });
+    }
   };
 
   onPressItem = ({ itemName }) => {
@@ -95,18 +124,11 @@ class SettingsComponent extends Component {
 
   render() {
     const {
-      user: { email, name, avatar_url, accounts },
+      user: { email, name, avatar_url },
       eva: { style, theme },
     } = this.props;
+    const { settingsMenu } = this.state;
 
-    if (accounts && accounts.length >= 1 && settingsData[0].itemName !== 'switch-account') {
-      settingsData.unshift({
-        text: 'SWITCH_ACCOUNT',
-        checked: false,
-        iconName: 'people-outline',
-        itemName: 'switch-account',
-      });
-    }
     return (
       <SafeAreaView style={style.container}>
         <HeaderBar title={i18n.t('SETTINGS.HEADER_TITLE')} />
@@ -122,7 +144,7 @@ class SettingsComponent extends Component {
           </View>
         </View>
         <View style={style.itemListView}>
-          {settingsData.map((item, index) => (
+          {settingsMenu.map((item, index) => (
             <SettingsItem
               key={item.text}
               text={i18n.t(`SETTINGS.${item.text}`)}

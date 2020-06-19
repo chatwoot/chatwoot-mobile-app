@@ -17,7 +17,7 @@ const styles = (theme) => ({
   },
 
   sectionText: {
-    fontSize: theme['font-size-medium'],
+    fontSize: theme['font-size-small'],
     fontWeight: theme['font-medium'],
   },
 });

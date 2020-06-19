@@ -26,7 +26,7 @@ const styles = (theme) => ({
   text: {
     color: theme['text-hint-color'],
     fontWeight: theme['font-semi-bold'],
-    fontSize: theme['font-size-medium'],
+    fontSize: theme['font-size-small'],
     textAlign: 'left',
   },
   radioView: {

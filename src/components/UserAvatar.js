@@ -23,7 +23,7 @@ const themedStyles = StyleService.create({
   userName: {
     color: 'text-control-color',
     fontWeight: 'font-bold',
-    fontSize: 'font-size-extra-large',
+    fontSize: 20,
   },
   imageLoader: {
     position: 'absolute',

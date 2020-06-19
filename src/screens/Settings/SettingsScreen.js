@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TopNavigation, withStyles } from '@ui-kitten/components';
+import { withStyles } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-native';
@@ -19,6 +19,7 @@ import styles from './SettingsScreen.style';
 import SettingsItem from '../../components/SettingsItem';
 import { openURL } from '../../helpers/index.js';
 import { HELP_URL } from '../../constants/url.js';
+import HeaderBar from '../../components/HeaderBar';
 
 const settingsData = [
   {
@@ -51,6 +52,7 @@ class SettingsComponent extends Component {
       name: PropTypes.string,
       email: PropTypes.string,
       avatar_url: PropTypes.string,
+      accounts: PropTypes.array,
     }).isRequired,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
@@ -64,14 +66,22 @@ class SettingsComponent extends Component {
   };
 
   onPressItem = ({ itemName }) => {
+    const {
+      navigation,
+      user: { accounts },
+    } = this.props;
+
     switch (itemName) {
       case 'language':
-        const { navigation } = this.props;
         navigation.navigate('Language');
         break;
 
       case 'logout':
         this.props.onLogOut();
+        break;
+
+      case 'switch-account':
+        navigation.navigate('Account', { accounts });
         break;
 
       case 'help':
@@ -85,17 +95,21 @@ class SettingsComponent extends Component {
 
   render() {
     const {
-      user: { email, name, avatar_url },
+      user: { email, name, avatar_url, accounts },
       eva: { style, theme },
     } = this.props;
 
+    if (accounts && accounts.length >= 1 && settingsData[0].itemName !== 'switch-account') {
+      settingsData.unshift({
+        text: 'SWITCH_ACCOUNT',
+        checked: false,
+        iconName: 'people-outline',
+        itemName: 'switch-account',
+      });
+    }
     return (
       <SafeAreaView style={style.container}>
-        <TopNavigation
-          title={i18n.t('SETTINGS.HEADER_TITLE')}
-          titleStyle={style.headerTitle}
-          alignment="center"
-        />
+        <HeaderBar title={i18n.t('SETTINGS.HEADER_TITLE')} />
         <View style={style.profileContainer}>
           <UserAvatar
             userName={name}

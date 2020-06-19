@@ -11,6 +11,7 @@ import {
   RESET_PASSWORD_ERROR,
   RESET_AUTH,
   SET_LOCALE,
+  SET_ACCOUNT,
 } from '../constants/actions';
 import { showToast } from '../helpers/ToastHelper';
 import I18n from '../i18n';
@@ -24,7 +25,6 @@ export const doLogin = ({ email, password }) => async (dispatch) => {
     Sentry.setUser({ email, username, id });
     dispatch({ type: SET_AUTH_HEADER, payload: response.headers });
     dispatch({ type: LOGIN_SUCCESS, payload: data });
-    dispatch(getAccountDetails());
   } catch (error) {
     if (error && error.status === 401) {
       showToast({ message: I18n.t('ERRORS.AUTH') });
@@ -64,4 +64,8 @@ export const resetAuth = () => async (dispatch) => {
 export const onLogOut = () => async (dispatch) => {
   dispatch({ type: SET_LOCALE, payload: 'en' });
   dispatch({ type: USER_LOGOUT });
+};
+
+export const setAccount = ({ accountId }) => async (dispatch) => {
+  dispatch({ type: SET_ACCOUNT, payload: accountId });
 };

@@ -87,7 +87,7 @@ const styles = (theme) => ({
   },
   avatarView: {
     justifyContent: 'flex-end',
-    marginRight: 4,
+    marginRight: 16,
     flex: 3,
   },
   contentView: {
@@ -102,6 +102,7 @@ const styles = (theme) => ({
   content: {
     fontSize: theme['font-size-extra-small'],
     fontWeight: theme['font-medium'],
+    paddingTop: 4,
   },
   time: {
     color: theme['text-hint-color'],

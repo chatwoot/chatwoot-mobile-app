@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Layout,
-  TopNavigation,
-  TopNavigationAction,
-  Tab,
-  TabView,
-  List,
-  Spinner,
-  withStyles,
-  Icon,
-} from '@ui-kitten/components';
+import { Layout, Tab, TabView, List, Spinner, withStyles } from '@ui-kitten/components';
 
 import { SafeAreaView, View } from 'react-native';
 import PropTypes from 'prop-types';
@@ -32,14 +22,15 @@ import CustomText from '../../components/Text';
 
 import i18n from '../../i18n';
 
-const MenuIcon = (style) => <Icon {...style} name="funnel-outline" />;
-
 const LoaderData = new Array(24).fill(0);
 
 const renderItemLoader = () => <ConversationItemLoader />;
 
 import ActionCable from '../../helpers/ActionCable';
-import { getPubSubToken } from '../../helpers/AuthHelper';
+import { getPubSubToken, getAccountId } from '../../helpers/AuthHelper';
+import { onLogOut } from '../../actions/auth';
+import HeaderBar from '../../components/HeaderBar';
+import { findUniqueConversations } from '../../helpers';
 
 class ConversationListComponent extends Component {
   static propTypes = {
@@ -89,6 +80,7 @@ class ConversationListComponent extends Component {
   };
 
   componentDidMount = () => {
+    // this.props.onLogOut();
     this.props.getInboxes();
     this.loadConversations();
     this.initActionCable();
@@ -102,9 +94,10 @@ class ConversationListComponent extends Component {
 
   initActionCable = async () => {
     const pubSubToken = await getPubSubToken();
+    const accountId = await getAccountId();
     const { webSocketUrl } = this.props;
 
-    ActionCable.init({ pubSubToken, webSocketUrl });
+    ActionCable.init({ pubSubToken, webSocketUrl, accountId });
   };
 
   loadConversations = () => {
@@ -159,10 +152,6 @@ class ConversationListComponent extends Component {
     });
   };
 
-  renderRightControls = () => {
-    return <TopNavigationAction icon={MenuIcon} onPress={this.openFilter} />;
-  };
-
   onChangeTab = async (index) => {
     await this.setState({
       selectedIndex: index,
@@ -205,13 +194,12 @@ class ConversationListComponent extends Component {
 
     const { payload } = conversations;
 
-    const filterConversations = payload.filter((item) => item.messages.length !== 0);
-
+    const uniqueConversations = findUniqueConversations({ payload });
     return (
       <Layout style={style.tabContainer}>
         <List
           keyboardShouldPersistTaps="handled"
-          data={filterConversations}
+          data={uniqueConversations}
           renderItem={this.renderItem}
           ref={(ref) => {
             this.myFlatListRef = ref;
@@ -293,11 +281,11 @@ class ConversationListComponent extends Component {
 
     return (
       <SafeAreaView style={style.container}>
-        <TopNavigation
+        <HeaderBar
           title={headerTitle}
-          alignment="center"
-          accessoryRight={this.renderRightControls}
-          titleStyle={style.headerTitle}
+          showRightButton
+          onRightPress={this.openFilter}
+          buttonType="menu"
         />
 
         <TabView
@@ -352,6 +340,7 @@ function bindAction(dispatch) {
     loadInitialMessages: ({ messages }) => dispatch(loadInitialMessage({ messages })),
     saveDeviceDetails: ({ token }) => dispatch(saveDeviceDetails({ token })),
     getAllNotifications: ({ pageNo }) => dispatch(getAllNotifications({ pageNo })),
+    onLogOut: () => dispatch(onLogOut()),
   };
 }
 function mapStateToProps(state) {

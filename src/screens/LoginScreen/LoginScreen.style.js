@@ -43,6 +43,9 @@ export default (theme) => ({
     fontSize: theme['font-size-large'],
   },
 
+  separator: {
+    color: theme['text-hint-color'],
+  },
   accountView: {
     paddingTop: 16,
     flexDirection: 'row',

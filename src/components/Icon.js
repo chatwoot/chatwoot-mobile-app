@@ -14,8 +14,8 @@ const propTypes = {
 };
 
 const defaultProps = {
-  height: 24,
-  width: 24,
+  height: 32,
+  width: 32,
 };
 
 CustomIcon.propTypes = propTypes;

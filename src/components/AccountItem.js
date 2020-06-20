@@ -39,17 +39,17 @@ const propTypes = {
   eva: PropTypes.shape({
     style: PropTypes.object,
   }).isRequired,
-  title: PropTypes.string,
-  item: PropTypes.string,
+  name: PropTypes.string,
+  item: PropTypes.object,
   onCheckedChange: PropTypes.func,
   isChecked: PropTypes.bool,
 };
 
-const LanguageItemComponent = ({ title, item, onCheckedChange, isChecked, eva: { style } }) => {
+const AccountItemComponent = ({ name, item, onCheckedChange, isChecked, eva: { style } }) => {
   return (
     <TouchableOpacity style={style.itemView} onPress={() => onCheckedChange({ item })}>
       <View style={style.textView}>
-        <CustomText style={style.text}>{title}</CustomText>
+        <CustomText style={style.text}>{name}</CustomText>
       </View>
 
       <View style={style.radioView}>
@@ -59,7 +59,7 @@ const LanguageItemComponent = ({ title, item, onCheckedChange, isChecked, eva: {
   );
 };
 
-LanguageItemComponent.propTypes = propTypes;
+AccountItemComponent.propTypes = propTypes;
 
-const LanguageItem = withStyles(LanguageItemComponent, styles);
-export default LanguageItem;
+const AccountItem = withStyles(AccountItemComponent, styles);
+export default AccountItem;

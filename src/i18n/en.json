@@ -55,7 +55,7 @@
     "ALL_CONVERSATION_LOADED": "All conversations loaded"
   },
   "FILTER": {
-    "HEADER_TITLE": "Filter",
+    "HEADER_TITLE": "Conversation Filter",
     "CHOOSE_INBOX": "Choose Inbox",
     "CHOOSE_STATUS": "Conversation Status",
     "OPEN": "Open",
@@ -66,17 +66,18 @@
     "HEADER_TITLE": "Settings",
     "AVAILABILITY": "Your Availability",
     "PUSH": "Push notification",
-    "HELP": "Help docs",
-    "SWITCH_THEME": "Switch Theme",
-    "CHANGE_LANGUAGE": "Change language",
-    "SUBMIT": "Submit",
-    "LOG_OUT": "Logout"
+    "HELP": "Help Docs",
+    "LOG_OUT": "Logout",
+    "SWITCH_ACCOUNT": "Switch Account",
+    "CHANGE_LANGUAGE": "Change Language",
+    "SUBMIT": "Submit"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",
     "EMPTY": "No notifications yet",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read"
+    "MARK_ALL": "Mark all as read",
+    "CANCEL": "Cancel"
   },
   "ERRORS": {
     "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",

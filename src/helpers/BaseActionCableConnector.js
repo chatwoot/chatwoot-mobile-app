@@ -5,7 +5,7 @@ const cable = new Cable({});
 const channelName = 'RoomChannel';
 
 class BaseActionCableConnector {
-  constructor(pubSubToken, webSocketUrl) {
+  constructor(pubSubToken, webSocketUrl, accountId) {
     const connectActionCable = ActionCable.createConsumer(webSocketUrl);
 
     const channel = cable.setChannel(
@@ -16,13 +16,17 @@ class BaseActionCableConnector {
       }),
     );
     channel.on('received', this.onReceived);
-
     this.events = {};
+    this.accountId = accountId;
   }
 
   onReceived = ({ event, data } = {}) => {
     if (this.events[event] && typeof this.events[event] === 'function') {
-      this.events[event](data);
+      const { account_id } = data;
+      // Check account in incoming data  is matching to currently using account
+      if (this.accountId === account_id) {
+        this.events[event](data);
+      }
     }
   };
 }

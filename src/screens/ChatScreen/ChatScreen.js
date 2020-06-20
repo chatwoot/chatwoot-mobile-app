@@ -40,7 +40,9 @@ import { getGroupedConversation, getTypingUsersText } from '../../helpers';
 import i18n from '../../i18n';
 import CustomText from '../../components/Text';
 
-const BackIcon = (style) => <Icon {...style} name="arrow-ios-back-outline" />;
+const BackIcon = (style) => (
+  <Icon {...style} name="arrow-ios-back-outline" height={32} width={32} />
+);
 
 const BackAction = (props) => <TopNavigationAction {...props} icon={BackIcon} />;
 
@@ -223,13 +225,15 @@ class ChatScreenComponent extends Component {
     );
   };
 
-  onItemSelect = (index) => {
+  onItemSelect = (itemSelected) => {
     const { filteredCannedResponses } = this.state;
-    const selectedItem = filteredCannedResponses[index];
+    const indexSelected = itemSelected.row;
+
+    const selectedItem = filteredCannedResponses[indexSelected];
 
     const { content } = selectedItem;
     this.setState({
-      selectedIndex: index,
+      selectedIndex: indexSelected,
       menuVisible: false,
       message: content,
     });
@@ -349,13 +353,7 @@ class ChatScreenComponent extends Component {
   };
 
   renderTopNavigation = () => {
-    return (
-      <TopNavigation
-        title={this.renderTitle}
-        accessoryRight={this.renderRightControl}
-        accessoryLeft={this.renderLeftControl}
-      />
-    );
+    return <TopNavigation title={this.renderTitle} accessoryLeft={this.renderLeftControl} />;
   };
 
   onBlur = () => {

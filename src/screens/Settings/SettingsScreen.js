@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TopNavigation, withStyles } from '@ui-kitten/components';
+import { withStyles } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-native';
@@ -19,8 +19,15 @@ import styles from './SettingsScreen.style';
 import SettingsItem from '../../components/SettingsItem';
 import { openURL } from '../../helpers/index.js';
 import { HELP_URL } from '../../constants/url.js';
+import HeaderBar from '../../components/HeaderBar';
 
 const settingsData = [
+  {
+    text: 'SWITCH_ACCOUNT',
+    checked: false,
+    iconName: 'briefcase-outline',
+    itemName: 'switch-account',
+  },
   {
     text: 'HELP',
     checked: true,
@@ -42,6 +49,7 @@ const settingsData = [
 ];
 
 class SettingsComponent extends Component {
+  state = { settingsMenu: [] };
   static propTypes = {
     eva: PropTypes.shape({
       style: PropTypes.object,
@@ -51,6 +59,7 @@ class SettingsComponent extends Component {
       name: PropTypes.string,
       email: PropTypes.string,
       avatar_url: PropTypes.string,
+      accounts: PropTypes.array,
     }).isRequired,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
@@ -64,14 +73,22 @@ class SettingsComponent extends Component {
   };
 
   onPressItem = ({ itemName }) => {
+    const {
+      navigation,
+      user: { accounts },
+    } = this.props;
+
     switch (itemName) {
       case 'language':
-        const { navigation } = this.props;
         navigation.navigate('Language');
         break;
 
       case 'logout':
         this.props.onLogOut();
+        break;
+
+      case 'switch-account':
+        navigation.navigate('Account', { accounts });
         break;
 
       case 'help':
@@ -85,17 +102,19 @@ class SettingsComponent extends Component {
 
   render() {
     const {
-      user: { email, name, avatar_url },
+      user: { email, name, avatar_url, accounts },
       eva: { style, theme },
     } = this.props;
 
+    // Show  switch account option only if number of accounts is greater than one
+    const settingsMenu =
+      accounts && accounts.length > 1
+        ? settingsData
+        : settingsData.filter((e) => e.itemName !== 'switch-account');
+
     return (
       <SafeAreaView style={style.container}>
-        <TopNavigation
-          title={i18n.t('SETTINGS.HEADER_TITLE')}
-          titleStyle={style.headerTitle}
-          alignment="center"
-        />
+        <HeaderBar title={i18n.t('SETTINGS.HEADER_TITLE')} />
         <View style={style.profileContainer}>
           <UserAvatar
             userName={name}
@@ -108,7 +127,7 @@ class SettingsComponent extends Component {
           </View>
         </View>
         <View style={style.itemListView}>
-          {settingsData.map((item, index) => (
+          {settingsMenu.map((item, index) => (
             <SettingsItem
               key={item.text}
               text={i18n.t(`SETTINGS.${item.text}`)}

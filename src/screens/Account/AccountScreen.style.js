@@ -29,24 +29,20 @@ const styles = (theme) => ({
     fontSize: theme['font-size-medium'],
   },
 
-  filterButtonView: {
+  accountButtonView: {
     paddingLeft: 24,
     paddingRight: 24,
     paddingTop: 32,
   },
-  filterButton: {
+  accountButton: {
     flex: 1,
+    paddingVertical: 0,
+    paddingHorizontal: 0,
   },
 
-  filterButtonText: {
+  accountButtonText: {
     fontWeight: theme['font-medium'],
     fontSize: theme['font-size-large'],
-  },
-  text: {
-    marginVertical: 8,
-  },
-  radio: {
-    marginVertical: 8,
   },
 });
 

@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Layout,
-  TopNavigation,
-  Icon,
-  TopNavigationAction,
-  Text,
-  withStyles,
-} from '@ui-kitten/components';
+import { Layout, Text, withStyles } from '@ui-kitten/components';
 
 import { connect } from 'react-redux';
 
@@ -21,12 +14,10 @@ import { setConversationStatus, getConversations } from '../../actions/conversat
 import CustomText from '../../components/Text';
 import FilterItem from '../../components/FilterItem';
 
+import HeaderBar from '../../components/HeaderBar';
+
 import styles from './ConversationFilter.style';
 import { INBOX_ICON } from '../../constants';
-
-const BackIcon = (style) => <Icon {...style} name="arrow-ios-back-outline" />;
-
-const BackAction = (props) => <TopNavigationAction {...props} icon={BackIcon} />;
 
 const statusOptions = [
   {
@@ -102,8 +93,6 @@ class FilterScreenComponent extends Component {
     this.submitFilters();
   };
 
-  renderLeftControl = () => <BackAction onPress={this.onBackPress} />;
-
   processEntries = ({ inboxSelected }) => {
     const { inboxes } = this.props;
     const allInboxes = inboxes.map((inbox) => ({
@@ -124,10 +113,10 @@ class FilterScreenComponent extends Component {
 
     return (
       <SafeAreaView style={themedStyle.container}>
-        <TopNavigation
-          accessoryLeft={this.renderLeftControl}
+        <HeaderBar
+          showLeftButton
           title={i18n.t('FILTER.HEADER_TITLE')}
-          titleStyle={themedStyle.headerTitle}
+          onBackPress={this.onBackPress}
         />
         <Layout>
           <View style={themedStyle.itemMainView}>

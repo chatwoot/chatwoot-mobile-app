@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Image, KeyboardAvoidingView, Dimensions, Platform, Text } from 'react-native';
+import { View, Image, KeyboardAvoidingView, Dimensions, Platform } from 'react-native';
 import { Button, withStyles } from '@ui-kitten/components';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
@@ -18,6 +18,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import { openURL } from '../../helpers';
 import { SIGNUP_URL } from '../../constants/url';
+import CustomText from '../../components/Text';
 
 const { Form } = t.form;
 const LoginForm = t.struct({
@@ -151,7 +152,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
                 onPress={() => openURL({ URL: `${installationUrl}${SIGNUP_URL}` })}>
                 {i18n.t('LOGIN.CREATE_ACCOUNT')}
               </Button>
-              <Text>|</Text>
+              <CustomText style={style.separator}>|</CustomText>
               <Button
                 style={style.button}
                 appearance="ghost"

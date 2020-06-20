@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
-import {
-  TopNavigation,
-  withStyles,
-  TopNavigationAction,
-  Icon,
-  Layout,
-  List,
-  Spinner,
-} from '@ui-kitten/components';
+import { withStyles, Layout, List, Spinner } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { SafeAreaView, SectionList, View } from 'react-native';
+
+import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet';
 
 import i18n from '../../i18n';
 import { loadInitialMessage, setConversation } from '../../actions/conversation';
@@ -26,12 +20,10 @@ import CustomText from '../../components/Text';
 import { getGroupedNotifications } from '../../helpers';
 import NotificationItemLoader from '../../components/NotificationItemLoader';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import HeaderBar from '../../components/HeaderBar';
 
 const LoaderData = new Array(24).fill(0);
-
 const renderItemLoader = () => <NotificationItemLoader />;
-
-const MenuIcon = (style) => <Icon {...style} name="more-horizontal-outline" />;
 
 class NotificationScreenComponent extends Component {
   static propTypes = {
@@ -82,10 +74,6 @@ class NotificationScreenComponent extends Component {
     if (!isAllNotificationsLoaded) {
       this.loadNotifications();
     }
-  };
-
-  renderRightControls = () => {
-    return <TopNavigationAction icon={MenuIcon} />;
   };
 
   onEndReached = ({ distanceFromEnd }) => {
@@ -143,7 +131,6 @@ class NotificationScreenComponent extends Component {
   };
 
   markAllNotificationAsRead = () => {
-    this.toggleMenu();
     this.props.markAllNotificationAsRead();
   };
 
@@ -170,19 +157,21 @@ class NotificationScreenComponent extends Component {
     });
   };
 
-  renderMenuAction = () => <TopNavigationAction icon={MenuIcon} onPress={this.toggleMenu} />;
-
   renderRightActions = () => {
     const {
       eva: { style },
     } = this.props;
     return (
       <React.Fragment>
-        <TouchableOpacity onPress={this.markAllNotificationAsRead}>
+        <TouchableOpacity onPress={this.showActionSheet}>
           <CustomText style={style.markAllText}>{i18n.t('NOTIFICATION.MARK_ALL')}</CustomText>
         </TouchableOpacity>
       </React.Fragment>
     );
+  };
+
+  showActionSheet = () => {
+    this.ActionSheet.show();
   };
 
   render() {
@@ -197,12 +186,11 @@ class NotificationScreenComponent extends Component {
 
     return (
       <SafeAreaView style={style.container}>
-        <TopNavigation
-          titleStyle={style.headerTitle}
-          alignment="center"
+        <HeaderBar
           title={i18n.t('NOTIFICATION.HEADER_TITLE')}
-          {...(groupedNotifications.length &&
-            unReadCount && { accessoryRight: this.renderRightActions })}
+          {...(groupedNotifications.length && unReadCount && { showRightButton: true })}
+          onRightPress={this.showActionSheet}
+          buttonType="more"
         />
         <View>
           {!isFetching || groupedNotifications.length ? (
@@ -241,6 +229,17 @@ class NotificationScreenComponent extends Component {
             this.renderEmptyList()
           )}
         </View>
+        <ActionSheet
+          ref={(o) => (this.ActionSheet = o)}
+          options={[i18n.t('NOTIFICATION.CANCEL'), i18n.t('NOTIFICATION.MARK_ALL')]}
+          cancelButtonIndex={0}
+          destructiveButtonIndex={4}
+          onPress={(index) => {
+            if (index === 1) {
+              this.markAllNotificationAsRead();
+            }
+          }}
+        />
       </SafeAreaView>
     );
   }

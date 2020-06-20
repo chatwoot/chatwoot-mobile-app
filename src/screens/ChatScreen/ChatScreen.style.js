@@ -17,7 +17,7 @@ const styles = (theme) => ({
     marginHorizontal: 4,
   },
   titleView: {
-    marginHorizontal: 8,
+    marginHorizontal: 12,
   },
   headerTitle: {
     fontWeight: theme['font-semi-bold'],

@@ -8,50 +8,46 @@ import LoaderButton from '../../components/LoaderButton';
 import HeaderBar from '../../components/HeaderBar';
 
 import i18n from '../../i18n';
-import styles from './LanguageScreen.style';
-import LanguageItem from '../../components/LanguageItem';
+import styles from './AccountScreen.style';
+import AccountItem from '../../components/AccountItem';
 
-import { setLocale } from '../../actions/settings';
-import { LANGUAGES } from '../../constants';
+import { setAccount } from '../../actions/auth';
 
-const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
-  const settings = useSelector((state) => state.settings);
-
-  const localeValue = settings.localeValue || 'en';
+const AccountScreenComponent = ({ eva: { style }, navigation }) => {
+  const { user } = useSelector((state) => state.auth);
+  const { account_id, accounts } = user;
 
   const dispatch = useDispatch();
 
   const onCheckedChange = ({ item }) => {
-    dispatch(setLocale(item));
+    dispatch(setAccount({ accountId: item.id }));
   };
 
   const goBack = () => {
     navigation.goBack();
   };
 
-  const languages = Object.keys(i18n.translations);
-
   return (
     <SafeAreaView style={style.container}>
       <HeaderBar title={i18n.t('SETTINGS.SWITCH_ACCOUNT')} showLeftButton onBackPress={goBack} />
       <View style={style.itemMainView}>
-        {languages.map((item) => {
+        {accounts.map((item) => {
           return (
-            <LanguageItem
-              key={LANGUAGES[item]}
+            <AccountItem
+              key={item.name}
               item={item}
-              title={LANGUAGES[item]}
-              isChecked={localeValue === item ? true : false}
+              name={item.name}
+              isChecked={account_id === item.id ? true : false}
               onCheckedChange={onCheckedChange}
             />
           );
         })}
       </View>
-      <View style={style.languageButtonView}>
+      <View style={style.accountButtonView}>
         <LoaderButton
-          style={style.languageButton}
+          style={style.accountButton}
           size="large"
-          textStyle={style.languageButtonText}
+          textStyle={style.accountButtonText}
           onPress={() => navigation.dispatch(StackActions.replace('Tab'))}
           text={i18n.t('SETTINGS.SUBMIT')}
         />
@@ -60,5 +56,5 @@ const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
   );
 };
 
-const LanguageScreen = withStyles(LanguageScreenComponent, styles);
-export default LanguageScreen;
+const AccountScreen = withStyles(AccountScreenComponent, styles);
+export default AccountScreen;

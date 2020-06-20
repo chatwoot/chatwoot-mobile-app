@@ -18,6 +18,7 @@ import ConversationFilter from './screens/ConversationFilter/ConversationFilter'
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
 import NotificationScreen from './screens/Notification/NotificationScreen';
+import AccountScreen from './screens/Account/AccountScreen';
 import i18n from './i18n';
 import { navigationRef } from './helpers/NavigationHelper';
 import { handlePush } from './helpers/PushHelper';
@@ -120,7 +121,7 @@ const App = () => {
     dispatch(resetConversation());
     // Notification caused app to open from foreground state
     messaging().onMessage((remoteMessage) => {
-      handlePush({ remoteMessage, type: 'foreground' });
+      // handlePush({ remoteMessage, type: 'foreground' });
     });
 
     // Notification caused app to open from background state
@@ -153,6 +154,7 @@ const App = () => {
             <Stack.Screen name="ConversationFilter" component={ConversationFilter} />
             <Stack.Screen name="ImageScreen" component={ImageScreen} />
             <Stack.Screen name="Language" component={LanguageScreen} />
+            <Stack.Screen name="Account" component={AccountScreen} />
           </>
         ) : (
           <>

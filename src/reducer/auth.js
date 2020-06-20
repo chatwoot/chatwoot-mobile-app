@@ -7,6 +7,7 @@ import {
   RESET_PASSWORD_ERROR,
   RESET_PASSWORD,
   RESET_AUTH,
+  SET_ACCOUNT,
 } from '../constants/actions';
 
 export const initialState = {
@@ -68,6 +69,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         headers: action.payload,
+      };
+
+    case SET_ACCOUNT:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          account_id: action.payload,
+        },
       };
 
     default:

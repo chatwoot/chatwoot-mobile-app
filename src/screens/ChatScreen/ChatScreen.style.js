@@ -20,6 +20,7 @@ const styles = (theme) => ({
     marginHorizontal: 12,
   },
   headerTitle: {
+    textTransform: 'capitalize',
     fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-large'],
   },

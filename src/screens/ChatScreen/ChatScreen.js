@@ -36,7 +36,7 @@ import {
   toggleTypingStatus,
 } from '../../actions/conversation';
 import { markNotificationAsRead } from '../../actions/notification';
-import { getGroupedConversation, getTypingUsersText } from '../../helpers';
+import { getGroupedConversation, getTypingUsersText, findUniqueMessages } from '../../helpers';
 import i18n from '../../i18n';
 import CustomText from '../../components/Text';
 
@@ -382,12 +382,9 @@ class ChatScreenComponent extends Component {
       selectedIndex,
     } = this.state;
 
-    const completeMessages = []
-      .concat(allMessages)
-      .reverse()
-      .filter((item) => item.content !== '');
+    const uniqueMessages = findUniqueMessages({ allMessages });
     const groupedConversationList = getGroupedConversation({
-      conversations: completeMessages,
+      conversations: uniqueMessages,
     });
     return (
       <SafeAreaView style={style.mainContainer}>

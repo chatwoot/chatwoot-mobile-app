@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { View, Image } from 'react-native';
-import { useStyleSheet, StyleService } from '@ui-kitten/components';
+import { withStyles } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
-import { getRandomColor, getUserInitial } from '../helpers';
+import LinearGradient from 'react-native-linear-gradient';
+
+import { getUserInitial } from '../helpers';
 import CustomText from './Text';
 
 import ImageLoader from './ImageLoader';
 
-const themedStyles = StyleService.create({
+const styles = (theme) => ({
   avatar: {
     alignSelf: 'center',
   },
@@ -21,9 +23,9 @@ const themedStyles = StyleService.create({
     justifyContent: 'center',
   },
   userName: {
-    color: 'text-control-color',
-    fontWeight: 'font-bold',
-    fontSize: 20,
+    color: theme['color-basic-100'],
+    fontWeight: theme['font-semi-bold'],
+    fontSize: theme['font-size-extra-large'],
   },
   imageLoader: {
     position: 'absolute',
@@ -49,10 +51,8 @@ const themedStyles = StyleService.create({
   },
 });
 
-const UserAvatar = ({ thumbnail, userName, size, defaultBGColor }) => {
+const UserAvatar = ({ thumbnail, userName, size, defaultBGColor, eva: { style } }) => {
   const [imageLoading, onLoadImage] = useState(false);
-
-  const styles = useStyleSheet(themedStyles);
 
   return thumbnail ? (
     <View>
@@ -60,22 +60,16 @@ const UserAvatar = ({ thumbnail, userName, size, defaultBGColor }) => {
         source={{
           uri: thumbnail,
         }}
-        style={styles.image}
+        style={style.image}
         onLoadStart={() => onLoadImage(true)}
         onLoadEnd={() => onLoadImage(false)}
       />
-      {imageLoading && <ImageLoader style={styles.imageLoader} />}
+      {imageLoading && <ImageLoader style={style.imageLoader} />}
     </View>
   ) : (
-    <View
-      style={[
-        styles.userThumbNail,
-        {
-          backgroundColor: defaultBGColor || getRandomColor({ userName }),
-        },
-      ]}>
-      <CustomText style={styles.userName}>{getUserInitial({ userName })}</CustomText>
-    </View>
+    <LinearGradient colors={['#04befe', '#4481eb']} style={[style.userThumbNail]}>
+      <CustomText style={style.userName}>{getUserInitial({ userName })}</CustomText>
+    </LinearGradient>
   );
 };
 
@@ -84,6 +78,10 @@ const propTypes = {
   userName: PropTypes.string,
   size: PropTypes.string,
   defaultBGColor: PropTypes.string,
+  eva: PropTypes.shape({
+    style: PropTypes.object,
+    theme: PropTypes.object,
+  }).isRequired,
 };
 
 const defaultProps = {
@@ -95,4 +93,5 @@ const defaultProps = {
 UserAvatar.defaultProps = defaultProps;
 UserAvatar.propTypes = propTypes;
 
-export default UserAvatar;
+UserAvatar.propTypes = propTypes;
+export default withStyles(UserAvatar, styles);

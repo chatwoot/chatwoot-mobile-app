@@ -25,7 +25,7 @@ const styles = (theme) => ({
   userName: {
     color: theme['color-basic-100'],
     fontWeight: theme['font-semi-bold'],
-    fontSize: 22,
+    fontSize: theme['font-size-extra-large'],
   },
   imageLoader: {
     position: 'absolute',

@@ -1,3 +1,5 @@
+import images from './images';
+
 export const CONVERSATION_STATUS = {
   OPEN: 'Open',
   RESOLVED: 'resolved',
@@ -28,6 +30,11 @@ export const INBOX_ICON = {
   'Channel::TwitterProfile': 'twitter-outline',
   'Channel::FacebookPage': 'facebook-outline',
   'Channel::TwilioSms': 'message-circle-outline',
+};
+
+export const INBOX_IMAGES = {
+  'Channel::TwitterProfile': images.twitterBadge,
+  'Channel::FacebookPage': images.fbBadge,
 };
 
 export const LANGUAGES = {

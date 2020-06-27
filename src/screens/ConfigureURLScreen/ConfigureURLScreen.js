@@ -43,7 +43,7 @@ const ConfigureURLScreenComponent = ({ eva }) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const [values, setValues] = useState({
-    url: 'chatwoot-mobile-app-test.herokuapp.com',
+    url: 'app.chatwoot.com',
   });
 
   const options = {

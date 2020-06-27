@@ -25,6 +25,7 @@ const propTypes = {
       sender: PropTypes.shape({
         name: PropTypes.string,
         thumbnail: PropTypes.string,
+        channel: PropTypes.string,
       }),
     }),
     messages: PropTypes.array.isRequired,
@@ -39,9 +40,10 @@ const ConversationItemComponent = ({
   conversationTypingUsers,
 }) => {
   const { style, theme } = eva;
+
   const {
     meta: {
-      sender: { name, thumbnail },
+      sender: { name, thumbnail, channel },
     },
     messages,
     inbox_id: inboxId,
@@ -70,6 +72,7 @@ const ConversationItemComponent = ({
             thumbnail={thumbnail}
             userName={name}
             defaultBGColor={theme['color-primary-default']}
+            channel={channel}
           />
         </View>
         <View>

@@ -35,6 +35,7 @@ export const INBOX_ICON = {
 export const INBOX_IMAGES = {
   'Channel::TwitterProfile': images.twitterBadge,
   'Channel::FacebookPage': images.fbBadge,
+  'Channel::TwilioSms': images.whatsAppBadge,
 };
 
 export const LANGUAGES = {

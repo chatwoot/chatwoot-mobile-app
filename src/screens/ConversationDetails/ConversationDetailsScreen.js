@@ -55,9 +55,7 @@ class ConversationDetailsComponent extends Component {
 
     const {
       conversationDetails: { contact, additional_attributes },
-      meta: {
-        sender: { channel },
-      },
+      meta,
     } = route.params;
 
     return (
@@ -70,7 +68,7 @@ class ConversationDetailsComponent extends Component {
             size={86}
             fontSize={42}
             defaultBGColor={theme['color-primary-default']}
-            channel={channel}
+            channel={meta && meta.sender && meta.sender.channel}
           />
         </View>
         <View style={style.userNameContainer}>

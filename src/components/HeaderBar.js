@@ -7,6 +7,9 @@ import CustomText from './Text';
 const BackIcon = (props) => {
   return <Icon {...props} name="arrow-ios-back-outline" height={24} width={24} />;
 };
+const CloseIcon = (props) => {
+  return <Icon {...props} name="close-outline" height={32} width={32} />;
+};
 
 const MenuIcon = (props) => {
   return <Icon {...props} name="funnel-outline" />;
@@ -26,7 +29,10 @@ const styles = (theme) => ({
 
 class HeaderBarComponent extends Component {
   renderLeftControl = () => {
-    const { onBackPress } = this.props;
+    const { onBackPress, leftButtonIcon } = this.props;
+    if (leftButtonIcon) {
+      return <TopNavigationAction icon={CloseIcon} onPress={onBackPress} />;
+    }
     return <TopNavigationAction icon={BackIcon} onPress={onBackPress} />;
   };
 
@@ -78,6 +84,7 @@ const propTypes = {
   alignment: PropTypes.string,
   iconName: PropTypes.string,
   buttonType: PropTypes.string,
+  leftButtonIcon: PropTypes.string,
 };
 
 const defaultProps = {

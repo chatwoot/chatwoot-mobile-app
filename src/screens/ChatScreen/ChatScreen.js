@@ -20,6 +20,7 @@ import {
   Platform,
   SectionList,
   Linking,
+  TouchableOpacity,
 } from 'react-native';
 
 import ChatMessage from '../../components/ChatMessage';
@@ -289,6 +290,15 @@ class ChatScreenComponent extends Component {
     }
   }
 
+  showConversationDetails = () => {
+    const { conversationDetails, navigation, route } = this.props;
+    const { meta } = route.params;
+
+    if (conversationDetails) {
+      navigation.navigate('ConversationDetails', { conversationDetails, meta });
+    }
+  };
+
   renderTitle = () => {
     const senderDetails = {
       name: null,
@@ -313,26 +323,33 @@ class ChatScreenComponent extends Component {
     const { meta } = route.params;
     if (meta) {
       const {
-        sender: { name, thumbnail },
+        sender: { name, thumbnail, channel },
       } = meta;
       senderDetails.name = name;
       senderDetails.thumbnail = thumbnail;
+      senderDetails.channel = channel;
     }
     if (!senderDetails.name && conversationDetails) {
       const {
-        contact: { name, thumbnail },
+        contact: { name, thumbnail, channel },
       } = conversationDetails;
       senderDetails.name = name;
       senderDetails.thumbnail = thumbnail;
+      senderDetails.channel = channel;
     }
+
     if (senderDetails.name) {
       return (
-        <View style={style.headerView}>
+        <TouchableOpacity
+          style={style.headerView}
+          onPress={this.showConversationDetails}
+          activeOpacity={0.5}>
           <UserAvatar
             style={style.avatarView}
             userName={senderDetails.name}
             thumbnail={senderDetails.thumbnail}
             defaultBGColor={theme['color-primary-default']}
+            channel={senderDetails.channel}
           />
           <View style={style.titleView}>
             <View>
@@ -346,7 +363,7 @@ class ChatScreenComponent extends Component {
               </View>
             ) : null}
           </View>
-        </View>
+        </TouchableOpacity>
       );
     }
     return null;

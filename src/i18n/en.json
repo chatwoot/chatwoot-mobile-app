@@ -79,6 +79,12 @@
     "MARK_ALL": "Mark all as read",
     "CANCEL": "Cancel"
   },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Browser",
+    "OPERATING_SYSTEM": "Operating System",
+    "INITIATED_AT": "Initiated at",
+    "INITIATED_FROM": "Initiated from"
+  },
   "ERRORS": {
     "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",

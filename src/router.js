@@ -19,6 +19,7 @@ import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
 import NotificationScreen from './screens/Notification/NotificationScreen';
 import AccountScreen from './screens/Account/AccountScreen';
+import ConversationDetailsScreen from './screens/ConversationDetails/ConversationDetailsScreen';
 import i18n from './i18n';
 import { navigationRef } from './helpers/NavigationHelper';
 import { handlePush } from './helpers/PushHelper';
@@ -167,6 +168,7 @@ const App = ({ eva: { style } }) => {
               <Stack.Screen name="Login" component={LoginScreen} />
               <Stack.Screen name="ResetPassword" component={ResetPassword} />
               <Stack.Screen name="ConversationList" component={ConversationList} />
+              <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
             </Fragment>
           )}
         </Stack.Navigator>

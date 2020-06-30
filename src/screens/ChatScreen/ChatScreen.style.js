@@ -17,7 +17,7 @@ const styles = (theme) => ({
     marginHorizontal: 4,
   },
   titleView: {
-    marginHorizontal: 12,
+    marginHorizontal: 8,
   },
   headerTitle: {
     textTransform: 'capitalize',
@@ -27,6 +27,7 @@ const styles = (theme) => ({
   subHeaderTitle: {
     fontSize: theme['font-size-extra-small'],
     color: theme['color-gray'],
+    paddingTop: 1,
   },
 
   container: {

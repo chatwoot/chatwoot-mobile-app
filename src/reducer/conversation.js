@@ -161,6 +161,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         allMessages: [],
+        conversationDetails: null,
       };
     }
 

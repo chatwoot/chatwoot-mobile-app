@@ -9,13 +9,14 @@ import CustomText from './Text';
 
 import ImageLoader from './ImageLoader';
 
-import { INBOX_IMAGES } from '../constants';
-
 const styles = (theme) => ({
   avatar: {
     alignSelf: 'center',
   },
   userThumbNail: {
+    width: 56,
+    height: 56,
+    borderRadius: 56,
     backgroundColor: 'color-primary-default',
     flexDirection: 'row',
     alignItems: 'center',
@@ -24,6 +25,7 @@ const styles = (theme) => ({
   userName: {
     color: theme['color-basic-100'],
     fontWeight: theme['font-semi-bold'],
+    fontSize: theme['font-size-extra-large'],
   },
   imageLoader: {
     position: 'absolute',
@@ -35,46 +37,21 @@ const styles = (theme) => ({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    width: 56,
+    height: 56,
+    borderRadius: 56,
   },
   image: {
+    width: 56,
+    height: 56,
+    borderRadius: 56,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  badge: {
-    position: 'absolute',
-    alignSelf: 'flex-end',
-  },
 });
 
-// eslint-disable-next-line react/prop-types
-const Badge = ({ source, size, badgeStyle }) => {
-  return (
-    <Image
-      style={[
-        badgeStyle,
-        {
-          width: size / 4,
-          height: size / 4,
-          borderRadius: size / 4,
-          bottom: size / 32,
-          right: size / 32,
-        },
-      ]}
-      source={source}
-    />
-  );
-};
-
-const UserAvatar = ({
-  thumbnail,
-  userName,
-  size,
-  fontSize,
-  defaultBGColor,
-  channel,
-  eva: { style },
-}) => {
+const UserAvatar = ({ thumbnail, userName, size, defaultBGColor, eva: { style } }) => {
   const [imageLoading, onLoadImage] = useState(false);
 
   return thumbnail ? (
@@ -83,64 +60,24 @@ const UserAvatar = ({
         source={{
           uri: thumbnail,
         }}
-        style={
-          ([style.image],
-          {
-            width: size,
-            height: size,
-            borderRadius: size,
-          })
-        }
+        style={style.image}
         onLoadStart={() => onLoadImage(true)}
         onLoadEnd={() => onLoadImage(false)}
       />
-      {INBOX_IMAGES[channel] && (
-        <Badge source={INBOX_IMAGES[channel]} size={size} badgeStyle={style.badge} />
-      )}
-
-      {imageLoading && (
-        <ImageLoader
-          style={[
-            style.imageLoader,
-            {
-              width: size,
-              height: size,
-              borderRadius: size,
-            },
-          ]}
-        />
-      )}
+      {imageLoading && <ImageLoader style={style.imageLoader} />}
     </View>
   ) : (
-    <View>
-      <LinearGradient
-        colors={['#04befe', '#4481eb']}
-        style={[
-          style.userThumbNail,
-          {
-            width: size,
-            height: size,
-            borderRadius: size,
-          },
-        ]}>
-        <CustomText style={[style.userName, { fontSize: fontSize }]}>
-          {getUserInitial({ userName })}
-        </CustomText>
-      </LinearGradient>
-      {INBOX_IMAGES[channel] && (
-        <Badge source={INBOX_IMAGES[channel]} size={size} badgeStyle={style.badge} />
-      )}
-    </View>
+    <LinearGradient colors={['#04befe', '#4481eb']} style={[style.userThumbNail]}>
+      <CustomText style={style.userName}>{getUserInitial({ userName })}</CustomText>
+    </LinearGradient>
   );
 };
 
 const propTypes = {
   thumbnail: PropTypes.string,
   userName: PropTypes.string,
-  size: PropTypes.number,
-  fontSize: PropTypes.number,
+  size: PropTypes.string,
   defaultBGColor: PropTypes.string,
-  channel: PropTypes.string,
   eva: PropTypes.shape({
     style: PropTypes.object,
     theme: PropTypes.object,
@@ -150,8 +87,7 @@ const propTypes = {
 const defaultProps = {
   thumbnail: null,
   userName: null,
-  size: 56,
-  fontSize: 20,
+  size: 'large',
 };
 
 UserAvatar.defaultProps = defaultProps;

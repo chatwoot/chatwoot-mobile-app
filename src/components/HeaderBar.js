@@ -5,7 +5,7 @@ import { TopNavigation, TopNavigationAction, withStyles, Icon } from '@ui-kitten
 import CustomText from './Text';
 
 const BackIcon = (props) => {
-  return <Icon {...props} name="arrow-ios-back-outline" height={32} width={32} />;
+  return <Icon {...props} name="arrow-ios-back-outline" height={24} width={24} />;
 };
 
 const MenuIcon = (props) => {

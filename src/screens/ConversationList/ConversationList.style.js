@@ -23,11 +23,11 @@ const styles = (theme) => ({
   },
 
   tabActiveTitle: {
-    fontWeight: theme['font-medium'],
+    fontWeight: theme['font-regular'],
     fontSize: theme['font-size-small'],
   },
   tabNotActiveTitle: {
-    fontWeight: theme['font-medium'],
+    fontWeight: theme['font-regular'],
     fontSize: theme['font-size-small'],
   },
   emptyView: {
@@ -36,7 +36,7 @@ const styles = (theme) => ({
     marginTop: 16,
   },
   emptyText: {
-    fontSize: theme['font-size-medium'],
+    fontSize: theme['font-size-small'],
   },
 });
 

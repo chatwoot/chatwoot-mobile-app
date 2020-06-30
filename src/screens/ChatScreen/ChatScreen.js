@@ -41,7 +41,7 @@ import i18n from '../../i18n';
 import CustomText from '../../components/Text';
 
 const BackIcon = (style) => (
-  <Icon {...style} name="arrow-ios-back-outline" height={32} width={32} />
+  <Icon {...style} name="arrow-ios-back-outline" height={24} width={24} />
 );
 
 const BackAction = (props) => <TopNavigationAction {...props} icon={BackIcon} />;

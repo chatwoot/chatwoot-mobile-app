@@ -7,9 +7,9 @@ import { BottomNavigation, BottomNavigationTab, withStyles, Icon } from '@ui-kit
 
 import i18n from '../i18n';
 
-const ConversationIcon = (style) => <Icon {...style} name="message-circle-outline" />;
-const SettingsIcon = (style) => <Icon {...style} name="settings-outline" />;
-const NotificationIcon = (style) => <Icon {...style} name="bell-outline" />;
+const ConversationIcon = (style) => <Icon {...style} name="message-circle" />;
+const SettingsIcon = (style) => <Icon {...style} name="settings" />;
+const NotificationIcon = (style) => <Icon {...style} name="bell" />;
 
 const propTypes = {
   eva: PropTypes.shape({
@@ -27,12 +27,6 @@ const TabBarComponent = ({ eva, navigation, state }) => {
     navigation.navigate(selectedTabRoute.name);
   };
 
-  /*const {
-    data: {
-      meta: { unread_count },
-    },
-  } = useSelector((store) => store.notification);*/
-
   const { style } = eva;
   const { index: selectedIndex } = state;
   return (
@@ -42,15 +36,8 @@ const TabBarComponent = ({ eva, navigation, state }) => {
       appearance="noIndicator"
       style={style.tabBar}>
       <BottomNavigationTab title={i18n.t('FOOTER.CONVERSATION')} icon={ConversationIcon} />
-
       <BottomNavigationTab title={i18n.t('FOOTER.NOTIFICATION')} icon={NotificationIcon} />
-
       <BottomNavigationTab title={i18n.t('FOOTER.SETTINGS')} icon={SettingsIcon} />
-      {/*{unread_count ? (
-        <View style={style.tabBadge}>
-          <Text style={style.tabBadgeText}>{unread_count}</Text>
-        </View>
-      ) : null}*/}
     </BottomNavigation>
   );
 };

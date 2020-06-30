@@ -86,13 +86,13 @@ export const theme = {
   'color-border': '$color-basic-active',
   'loader-color': '$color-basic-100',
 
-  'color-background': '#EFF2F7',
+  'color-background': '#f4f6fb',
   'color-background-light': '#F9FAFC',
   'color-background-message': '#c7e3ff',
   'color-background-activity': '#fff3d5',
   'color-border-activity': '#ffe5a2',
   'color-message-left': '#3c4858',
-  'color-gray': '#999a9b',
+  'color-gray': '#6e6f73',
   'color-background-inbox': '#ebf5ff',
 
   'color-background-date': '#e1f5feeb',

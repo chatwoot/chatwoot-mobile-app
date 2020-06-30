@@ -31,7 +31,7 @@ const styles = (theme) => ({
     marginTop: 16,
   },
   emptyText: {
-    fontSize: theme['font-size-medium'],
+    fontSize: theme['font-size-small'],
   },
   loadMoreSpinnerView: {
     alignItems: 'center',

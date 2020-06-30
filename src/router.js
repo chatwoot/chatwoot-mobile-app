@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Linking } from 'react-native';
+import { Linking, SafeAreaView } from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
 import PropTypes from 'prop-types';
@@ -25,6 +25,7 @@ import { handlePush } from './helpers/PushHelper';
 
 import { doDeepLinking } from './helpers/DeepLinking';
 import { resetConversation } from './actions/conversation';
+import { withStyles } from '@ui-kitten/components';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -60,6 +61,9 @@ const TabStack = () => (
 const propTypes = {
   isLoggedIn: PropTypes.bool,
   isUrlSet: PropTypes.bool,
+  eva: PropTypes.shape({
+    style: PropTypes.object,
+  }).isRequired,
 };
 
 const defaultProps = {
@@ -104,7 +108,7 @@ const _handleOpenURL = (event) => {
   doDeepLinking({ url: event.url });
 };
 
-const App = () => {
+const App = ({ eva: { style } }) => {
   const dispatch = useDispatch();
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -145,30 +149,39 @@ const App = () => {
   i18n.locale = locale;
 
   return (
-    <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'} headerMode={'none'}>
-        {isLoggedIn ? (
-          <>
-            <Stack.Screen name="Tab" component={TabStack} />
-            <Stack.Screen name="ChatScreen" component={ChatScreen} />
-            <Stack.Screen name="ConversationFilter" component={ConversationFilter} />
-            <Stack.Screen name="ImageScreen" component={ImageScreen} />
-            <Stack.Screen name="Language" component={LanguageScreen} />
-            <Stack.Screen name="Account" component={AccountScreen} />
-          </>
-        ) : (
-          <>
-            <Stack.Screen name="ConfigureURL" component={ConfigureURLScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="ResetPassword" component={ResetPassword} />
-            <Stack.Screen name="ConversationList" component={ConversationList} />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaView style={style.container}>
+      <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'} headerMode={'none'}>
+          {isLoggedIn ? (
+            <Fragment>
+              <Stack.Screen name="Tab" component={TabStack} />
+              <Stack.Screen name="ChatScreen" component={ChatScreen} />
+              <Stack.Screen name="ConversationFilter" component={ConversationFilter} />
+              <Stack.Screen name="ImageScreen" component={ImageScreen} />
+              <Stack.Screen name="Language" component={LanguageScreen} />
+              <Stack.Screen name="Account" component={AccountScreen} />
+            </Fragment>
+          ) : (
+            <Fragment>
+              <Stack.Screen name="ConfigureURL" component={ConfigureURLScreen} />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="ResetPassword" component={ResetPassword} />
+              <Stack.Screen name="ConversationList" component={ConversationList} />
+            </Fragment>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaView>
   );
 };
 
+const styles = (theme) => ({
+  container: {
+    flex: 1,
+  },
+});
+
 App.propTypes = propTypes;
 App.defaultProps = defaultProps;
-export default App;
+
+export default withStyles(App, styles);

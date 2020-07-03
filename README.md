@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://storage.googleapis.com/chatwoot-assets/woot-logo.svg" alt="Woot-logo" width="240">
+  <img src="https://s3.us-west-2.amazonaws.com/gh-assets.chatwoot.com/brand.svg" alt="Woot-logo" width="240">
 
   <div align="center">Mobile app for chatwoot platform. Built with React Native</div>
   <div align="center">Chatwoot is an opensource alternative to Intercom, Zendesk, Drift, Crisp etc.</div>
@@ -26,11 +26,12 @@
 - ... and more to come!
 
 <p float="left">
-  <img src=".github/login.jpg" alt="screenshot-1" width="150">
-  <img src=".github/list.jpg" alt="screenshot-2" width="150">
-  <img src=".github/chat.jpg" alt="screenshot-3"width="150">
-  <img src=".github/filter.jpg" alt="screenshot-4" width="150">
-  <img src=".github/settings.jpg" alt="screenshot-5"width="150">
+  <img src=".github/login.png" alt="screenshot-1" width="250">
+  <img src=".github/list.png" alt="screenshot-2" width="250">
+  <img src=".github/chat.png" alt="screenshot-3"width="250">
+  <img src=".github/details.png" alt="screenshot-3"width="250">
+  <img src=".github/filter.png" alt="screenshot-4" width="250">
+  <img src=".github/settings.png" alt="screenshot-5"width="250">
   
 </p>
 

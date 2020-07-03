@@ -16,12 +16,12 @@ const styles = (theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
     borderBottomLeftRadius: 8,
     borderTopLeftRadius: 8,
     maxWidth: Dimensions.get('window').width - 120,
-    left: 4,
-    backgroundColor: theme['color-background-message'],
+    backgroundColor: theme['color-primary-default'],
     elevation: 1,
   },
 
@@ -29,11 +29,11 @@ const styles = (theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
     borderBottomRightRadius: 8,
     borderTopRightRadius: 8,
     maxWidth: Dimensions.get('window').width - 120,
-    left: -4,
     backgroundColor: theme['background-basic-color-1'],
     elevation: 1,
   },
@@ -92,16 +92,30 @@ const styles = (theme) => ({
     justifyContent: 'center',
   },
 
-  filenameText: {
-    color: theme['text-basic-color'],
+  filenameRightText: {
+    color: theme['color-basic-100'],
     fontSize: theme['font-size-small'],
     fontWeight: theme['font-medium'],
     textAlign: 'left',
   },
 
-  downloadText: {
-    color: theme['color-primary-default'],
+  filenameLeftText: {
+    color: theme['color-message-left'],
     fontSize: theme['font-size-small'],
+    fontWeight: theme['font-medium'],
+    textAlign: 'left',
+  },
+
+  downloadRightText: {
+    color: theme['color-background-message'],
+    fontSize: theme['font-size-extra-small'],
+    fontWeight: theme['font-medium'],
+    textAlign: 'left',
+    alignSelf: 'stretch',
+  },
+  downloadLeftText: {
+    color: '#005fb8',
+    fontSize: theme['font-size-extra-small'],
     fontWeight: theme['font-medium'],
     textAlign: 'left',
     alignSelf: 'stretch',
@@ -119,7 +133,7 @@ const propTypes = {
 };
 
 const FileIcon = (style) => {
-  return <Icon {...style} name="file-text-outline" width={48} height={48} />;
+  return <Icon {...style} name="file-text-outline" width={32} height={32} />;
 };
 
 const ChatAttachmentItemComponent = ({
@@ -156,16 +170,22 @@ const ChatAttachmentItemComponent = ({
           <View style={style.fileAttachmentContainer}>
             <View style={style.fileAttachmentView}>
               <View style={style.attachmentIconView}>
-                <FileIcon style={style.icon} fill={theme['color-primary-default']} />
+                <FileIcon
+                  fill={
+                    type === 'outgoing' ? theme['color-basic-100'] : theme['color-primary-default']
+                  }
+                />
               </View>
               <View style={style.attachmentTexView}>
-                <CustomText style={style.filenameText}>
-                  {fileName.length < 30
+                <CustomText
+                  style={type === 'outgoing' ? style.filenameRightText : style.filenameLeftText}>
+                  {fileName.length < 25
                     ? `${fileName}`
                     : `...${fileName.substr(fileName.length - 15)}`}
                 </CustomText>
                 <TouchableOpacity onPress={() => showAttachment({ type: 'file', dataUrl })}>
-                  <CustomText style={style.downloadText}>
+                  <CustomText
+                    style={type === 'outgoing' ? style.downloadRightText : style.downloadLeftText}>
                     {i18n.t('CONVERSATION.DOWNLOAD')}
                   </CustomText>
                 </TouchableOpacity>

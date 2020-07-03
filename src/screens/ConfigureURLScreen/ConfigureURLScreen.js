@@ -107,7 +107,7 @@ const ConfigureURLScreenComponent = ({ eva }) => {
               onPress={() => onSubmit()}
               size="large"
               textStyle={style.nextButtonText}
-              text={i18n.t('CONFIGURE_URL.NEXT')}
+              text={i18n.t('CONFIGURE_URL.CONNECT')}
             />
           </View>
         </View>

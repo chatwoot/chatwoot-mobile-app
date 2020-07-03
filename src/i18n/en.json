@@ -15,7 +15,7 @@
   "CONFIGURE_URL": {
     "ENTER_URL": "Chatwoot installation URL",
     "URL_ERROR": "Enter a valid URL",
-    "NEXT": "Next",
+    "CONNECT": "Connect",
     "CHANGE_LANGUAGE": "Change language",
     "ERROR": "Invalid chatwoot installation url"
   },

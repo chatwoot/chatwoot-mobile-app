@@ -71,7 +71,7 @@ const UserAvatar = ({
   thumbnail,
   userName,
   size,
-  fontSize = 20,
+  fontSize,
   defaultBGColor,
   channel,
   eva: { style },
@@ -151,7 +151,8 @@ const propTypes = {
 const defaultProps = {
   thumbnail: null,
   userName: null,
-  size: 40,
+  size: 48,
+  fontSize: 20,
 };
 
 UserAvatar.defaultProps = defaultProps;

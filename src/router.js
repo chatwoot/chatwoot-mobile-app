@@ -161,6 +161,7 @@ const App = ({ eva: { style } }) => {
               <Stack.Screen name="ImageScreen" component={ImageScreen} />
               <Stack.Screen name="Language" component={LanguageScreen} />
               <Stack.Screen name="Account" component={AccountScreen} />
+              <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
             </Fragment>
           ) : (
             <Fragment>
@@ -168,7 +169,6 @@ const App = ({ eva: { style } }) => {
               <Stack.Screen name="Login" component={LoginScreen} />
               <Stack.Screen name="ResetPassword" component={ResetPassword} />
               <Stack.Screen name="ConversationList" component={ConversationList} />
-              <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
             </Fragment>
           )}
         </Stack.Navigator>

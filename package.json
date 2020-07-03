@@ -43,6 +43,7 @@
     "react-native-device-info": "^5.6.1",
     "react-native-exception-handler": "^2.10.8",
     "react-native-gesture-handler": "^1.6.1",
+    "react-native-hyperlink": "^0.0.19",
     "react-native-image-pan-zoom": "^2.1.12",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-reanimated": "^1.9.0",

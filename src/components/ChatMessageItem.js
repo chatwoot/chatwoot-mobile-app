@@ -2,9 +2,11 @@ import React from 'react';
 import { TouchableOpacity, Dimensions, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { withStyles, Icon } from '@ui-kitten/components';
+import Hyperlink from 'react-native-hyperlink';
 
 import CustomText from './Text';
 import { messageStamp } from '../helpers/TimeHelper';
+import { openURL } from '../helpers';
 
 const LockIcon = (style) => {
   return <Icon {...style} name="lock" />;
@@ -83,6 +85,9 @@ const styles = (theme) => ({
     width: 16,
     height: 16,
   },
+  linkStyle: {
+    textDecorationLine: 'underline',
+  },
 });
 
 const propTypes = {
@@ -134,7 +139,9 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
             <LockIcon style={style.icon} fill={theme['text-basic-color']} />
           </View>
         ) : (
-          <CustomText style={messageTextStyle}>{message.content}</CustomText>
+          <Hyperlink linkStyle={style.linkStyle} onPress={(url) => openURL({ URL: url })}>
+            <CustomText style={messageTextStyle}>{message.content}</CustomText>
+          </Hyperlink>
         )}
 
         <CustomText

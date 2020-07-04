@@ -51,7 +51,9 @@ To help with testing Chatwoot updates before they're released, you can install t
 
 ## Feedback & Contributing
 
-Feel free to send us feedback on [Twitter](https://twitter.com/chatwootapp) or [file an issue](https://github.com/chatwoot/chatwoot-mobile-app/issues). If you wish to contribute, please take a quick look at the [CONTRIBUTING.md](CONTRIBUTING.md) guide.
+Feel free to send us feedback on [Twitter](https://twitter.com/chatwootapp) or [file an issue](https://github.com/chatwoot/chatwoot-mobile-app/issues).
+
+If you wish to contribute, please take a quick look at the [CONTRIBUTING.md](CONTRIBUTING.md) guide.
 
 If you want to self deploy the Chatwoot mobile app, please take a look at the [CUSTOM_RELEASE_GUIDE.md](CUSTOM_RELEASE_GUIDE.md) guide.
 

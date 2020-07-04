@@ -34,18 +34,17 @@ And install dependencies
 
 #### Setup firebase for push notification
 
-- Create a new project in [firebase](https://console.firebase.google.com/) console
+- Create a new project in [firebase console](https://console.firebase.google.com/).
 - Generate [android credentials](https://rnfirebase.io/#generating-android-credentials) from firebase console. Then download the `google-services.json` file and place it inside of your project at the following location: `android/app/`.
-
-- Generating [iOS credentials](https://rnfirebase.io/#generating-ios-credentials) from firebase console. Then download the `GoogleService-Info.plist` file . Then add this file to project using `Xcode`. More details can be found [here](https://rnfirebase.io/#3-ios-setup)
+- Generating [iOS credentials](https://rnfirebase.io/#generating-ios-credentials) from firebase console. Then download the `GoogleService-Info.plist` file . Then add this file to project using `Xcode`. More details can be found [here](https://rnfirebase.io/#3-ios-setup).
 
 #### Setup Sentry for error reporting
 
 Create a new project in [Sentry](https://sentry.io/for/react-native/)
 
-Create file sentry under `sentry.js` in root of the project
+Create file sentry under `sentry.js` in root of the project.
 
-Add the following contents
+Add the following contents.
 
 ```
 export const SENTRY_TOKEN_URL =<SENTRY_TOKEN_URL>;
@@ -59,7 +58,7 @@ yarn sentry-wizard -i reactNative -p ios android
 
 ```
 
-It will connect the native project with sentry project
+It will connect the native project with sentry project.
 
 - cd ios
 - pod install
@@ -74,7 +73,7 @@ It will connect the native project with sentry project
 
 OR
 
-Open `Chatwoot.xcworkspace` file under `ios` folder. Choose your target device and click on playbutton
+Open `Chatwoot.xcworkspace` file under `ios` folder. Choose your target device and click on playbutton.
 
 ### Android
 

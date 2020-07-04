@@ -1,25 +1,3 @@
-## Push notification
-
-Refer [rnfirebase](https://rnfirebase.io/) for more details
-
-### Android
-
-1. Create a new [firebase](https://console.firebase.google.com/) project
-
-2. In he Firebase console, add a new Android application and enter your projects details. The "Android package name" must match your local projects package name which can be found inside of the manifest tag within the `/android/app/src/main/AndroidManifest.xml` file within your project.
-
-3. Place `google-services.json` (Firebase) under `android/app` folder
-
-### ios
-
-1. Create a new [firebase](https://console.firebase.google.com/) project
-
-2. In he Firebase console, add a new iOS application and enter your projects details. The "iOS bundle id " must match your local projects package name which can be found inside of the manifest tag within the `info.plist` file within your project.
-
-3. Place `GoogleService-Info.plist` (Firebase) under `ios/` folder
-
-3) Download the `google-services.json` file and place it inside of your project at the following location: `/android/app`
-
 ## Deep linking
 
 ### Android
@@ -43,34 +21,13 @@ adb shell am start -W -a android.intent.action.VIEW -d "https://app.chatwoot.com
 
 ```
 
-## Sentry
+## Deployment
 
-Create a new project in [Sentry](https://sentry.io/for/react-native/)
-
-Create file sentry under `sentry.js` in root of the project
-
-Add the following contents
-
-```
-export const SENTRY_TOKEN_URL =<SENTRY_TOKEN_URL>;
-```
-
-If you want to supports native crashes, link the sentry SDK to your native projects.
-Run the command
-
-```
-yarn sentry-wizard -i reactNative -p ios android
-
-```
-
-It will connect the native project with sentry project
-
-- cd ios
-- pod install
-
-### Deployment
+Detailed guide for [Publishing a React Native App to the App Store](https://www.reactnativeschool.com/publishing-react-native-app/)
 
 ### Android
+
+In order to distribute your Android application via Google Play store it needs to be signed with a release key that then needs to be used for all future updates. More details can be found [here](https://reactnative.dev/docs/signed-apk-android)
 
 Update `gradle.properties` file under `android/app` folder with following contents
 
@@ -82,3 +39,5 @@ RELEASE_KEY_PASSWORD=<RELEASE_KEY_PASSWORD>
 ```
 
 For releasing the android follow the [guide](https://reactnative.dev/docs/signed-apk-android)
+
+- Important - We are using [Fastlane](https://docs.fastlane.tools/getting-started/cross-platform/react-native/) for deploying Chatwoot official application.

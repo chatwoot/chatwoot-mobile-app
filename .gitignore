@@ -78,4 +78,3 @@ ios/GoogleService-Info.plist
 sentry.js
 ios/sentry.properties
 android/sentry.properties
-CUSTOM_RELEASE_GUIDE.md

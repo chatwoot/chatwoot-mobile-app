@@ -18,12 +18,12 @@
 
 ## Features
 
-- Log your Chatwoot account
-- See all conversations
-- Chat screen
-- Filter conversations
-- Settings
-- ... and more to come!
+- Do not miss out on the new customers
+- Follow up on customer conversations on go
+- Receive realtime notifications about system activities
+- Communicate with other team members via private notes
+- Assign statuses to your conversations
+  ... and more to come!
 
 <p float="left">
   <img src=".github/login.png" alt="screenshot-1" width="250">
@@ -35,9 +35,27 @@
   
 </p>
 
+## Download Android/iOS application
+
+To help with testing Chatwoot updates before they're released, you can install the Android/iOS beta version.
+
+<p >
+  <a href="https://testflight.apple.com/join/Pt7YxCBh">
+    <img alt="Download on the App Store" title="App Store" src="http://i.imgur.com/0n2zqHD.png" width="140">
+  </a>
+
+  <a href="https://play.google.com/store/apps/details?id=com.chatwoot.app&hl=en">
+    <img alt="Get it on Google Play" title="Google Play" src="http://i.imgur.com/mtGRPuM.png" width="140">
+  </a>
+</p>
+
 ## Feedback & Contributing
 
-Feel free to send us feedback on [Twitter](https://twitter.com/chatwootapp) or [file an issue](https://github.com/chatwoot/chatwoot-mobile-app/issues). If you wish to contribute, please take a quick look at the [CONTRIBUTING.md](CONTRIBUTING.md) guide.
+Feel free to send us feedback on [Twitter](https://twitter.com/chatwootapp) or [file an issue](https://github.com/chatwoot/chatwoot-mobile-app/issues).
+
+If you wish to contribute, please take a quick look at the [CONTRIBUTING.md](CONTRIBUTING.md) guide.
+
+If you want to self deploy the Chatwoot mobile app, please take a look at the [CUSTOM_RELEASE_GUIDE.md](CUSTOM_RELEASE_GUIDE.md) guide.
 
 If there's anything you'd like to chat about, please feel free to join our [Discord](https://discord.gg/cJXdrwS) chat!
 

@@ -41,11 +41,11 @@ const propTypes = {
 };
 
 const ImagePreviewIcon = (style) => {
-  return <Icon {...style} name="image-outline" />;
+  return <Icon {...style} name="image" />;
 };
 
 const FilePreviewIcon = (style) => {
-  return <Icon {...style} name="file-text-outline" />;
+  return <Icon {...style} name="file-text" />;
 };
 
 const ConversationAttachmentItemComponent = ({ eva, unReadCount, attachment }) => {

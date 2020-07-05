@@ -13,7 +13,7 @@ const ImageLoader = ({ style }) => {
 };
 
 const propTypes = {
-  style: PropTypes.object,
+  style: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 const styles = () => ({});

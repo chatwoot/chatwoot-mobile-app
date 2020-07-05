@@ -52,38 +52,39 @@ class ConversationDetailsComponent extends Component {
       eva: { style, theme },
       route,
     } = this.props;
-
+    const { conversationDetails } = route.params;
     const {
-      conversationDetails: { contact, additional_attributes },
-      meta,
-    } = route.params;
+      additional_attributes,
+      meta: {
+        sender: { name, thumbnail, email, additional_attributes: senderAdditionalInfo },
+        channel,
+      },
+    } = conversationDetails;
 
     return (
       <SafeAreaView style={style.container}>
         <HeaderBar showLeftButton onBackPress={this.onBackPress} leftButtonIcon="close-outline" />
         <View style={style.avatarContainer}>
           <UserAvatar
-            userName={contact.name}
-            thumbnail={contact.thumbnail}
+            userName={name}
+            thumbnail={thumbnail}
             size={86}
             fontSize={42}
             defaultBGColor={theme['color-primary-default']}
-            channel={meta && meta.sender && meta.sender.channel}
+            channel={channel}
           />
         </View>
         <View style={style.userNameContainer}>
-          <CustomText style={style.nameLabel}>{contact.name}</CustomText>
+          <CustomText style={style.nameLabel}>{name}</CustomText>
         </View>
-        {contact && contact.email && (
+        {email && (
           <View style={style.userNameContainer}>
-            <CustomText style={style.emailLabel}>{contact.email}</CustomText>
+            <CustomText style={style.emailLabel}>{email}</CustomText>
           </View>
         )}
-        {contact && contact.additional_attributes && contact.additional_attributes.description && (
+        {senderAdditionalInfo && senderAdditionalInfo.description && (
           <View style={style.descriptionContainer}>
-            <CustomText style={style.description}>
-              {contact.additional_attributes.description}
-            </CustomText>
+            <CustomText style={style.description}>{senderAdditionalInfo.description}</CustomText>
           </View>
         )}
 

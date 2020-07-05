@@ -35,6 +35,7 @@ import {
   loadCannedResponses,
   resetConversation,
   toggleTypingStatus,
+  getConversationDetails,
 } from '../../actions/conversation';
 import { markNotificationAsRead } from '../../actions/notification';
 import { getGroupedConversation, getTypingUsersText, findUniqueMessages } from '../../helpers';
@@ -77,6 +78,7 @@ class ChatScreenComponent extends Component {
     toggleTypingStatus: PropTypes.func,
     markMessagesAsRead: PropTypes.func,
     markNotificationAsRead: PropTypes.func,
+    getConversationDetails: PropTypes.func,
     conversationTypingUsers: PropTypes.shape({}),
   };
 
@@ -121,6 +123,8 @@ class ChatScreenComponent extends Component {
       beforeId = id;
     }
     this.props.loadMessages({ conversationId, beforeId });
+
+    this.props.getConversationDetails({ conversationId });
 
     this.props.loadCannedResponses();
     markAllMessagesAsRead({ conversationId });
@@ -291,11 +295,10 @@ class ChatScreenComponent extends Component {
   }
 
   showConversationDetails = () => {
-    const { conversationDetails, navigation, route } = this.props;
-    const { meta } = route.params;
+    const { conversationDetails, navigation } = this.props;
 
     if (conversationDetails) {
-      navigation.navigate('ConversationDetails', { conversationDetails, meta });
+      navigation.navigate('ConversationDetails', { conversationDetails });
     }
   };
 
@@ -323,7 +326,8 @@ class ChatScreenComponent extends Component {
     const { meta } = route.params;
     if (meta) {
       const {
-        sender: { name, thumbnail, channel },
+        sender: { name, thumbnail },
+        channel,
       } = meta;
       senderDetails.name = name;
       senderDetails.thumbnail = thumbnail;
@@ -331,7 +335,10 @@ class ChatScreenComponent extends Component {
     }
     if (!senderDetails.name && conversationDetails) {
       const {
-        contact: { name, thumbnail, channel },
+        meta: {
+          sender: { name, thumbnail },
+          channel,
+        },
       } = conversationDetails;
       senderDetails.name = name;
       senderDetails.thumbnail = thumbnail;
@@ -496,6 +503,8 @@ function bindAction(dispatch) {
     loadMessages: ({ conversationId, beforeId }) =>
       dispatch(loadMessages({ conversationId, beforeId })),
     loadCannedResponses: () => dispatch(loadCannedResponses()),
+    getConversationDetails: ({ conversationId }) =>
+      dispatch(getConversationDetails({ conversationId })),
     sendMessage: ({ conversationId, message }) =>
       dispatch(sendMessage({ conversationId, message })),
     markAllMessagesAsRead: ({ conversationId }) => dispatch(markMessagesAsRead({ conversationId })),

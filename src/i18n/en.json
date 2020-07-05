@@ -89,7 +89,8 @@
     "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
     "CANNOT_FETCH": "There was an error fetching the information, please try again",
-    "AUTH": "Username / Password Incorrect. Please try again"
+    "AUTH": "Username / Password Incorrect. Please try again",
+    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
   },
   "SUCCESS": {
     "AUTH": "Login Successful"

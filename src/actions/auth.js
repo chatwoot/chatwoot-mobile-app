@@ -21,10 +21,16 @@ export const doLogin = ({ email, password }) => async (dispatch) => {
     dispatch({ type: LOGIN });
     const response = await axios.post('auth/sign_in', { email, password });
     const { data } = response.data;
-    const { name: username, id } = data;
-    Sentry.setUser({ email, username, id });
-    dispatch({ type: SET_AUTH_HEADER, payload: response.headers });
-    dispatch({ type: LOGIN_SUCCESS, payload: data });
+    const { name: username, id, account_id } = data;
+    // Check user has any account
+    if (account_id) {
+      Sentry.setUser({ email, username, id });
+      dispatch({ type: SET_AUTH_HEADER, payload: response.headers });
+      dispatch({ type: LOGIN_SUCCESS, payload: data });
+    } else {
+      showToast({ message: I18n.t('ERRORS.NO_ACCOUNTS_MESSAGE') });
+      dispatch({ type: LOGIN_ERROR, payload: '' });
+    }
   } catch (error) {
     if (error && error.status === 401) {
       showToast({ message: I18n.t('ERRORS.AUTH') });

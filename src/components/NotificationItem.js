@@ -25,6 +25,7 @@ const propTypes = {
           thumbnail: PropTypes.string,
         }),
       }),
+      channel: PropTypes.string,
     }),
     read_at: PropTypes.string,
   }).isRequired,
@@ -41,6 +42,7 @@ const NotificationItemComponent = ({ eva, item, onSelectNotification }) => {
       meta: {
         sender: { name, thumbnail },
       },
+      channel,
     },
   } = item;
   return (
@@ -54,6 +56,7 @@ const NotificationItemComponent = ({ eva, item, onSelectNotification }) => {
             thumbnail={thumbnail}
             userName={name}
             defaultBGColor={theme['color-primary-default']}
+            channel={channel}
           />
         </View>
         <View style={style.contentView}>
@@ -91,7 +94,7 @@ const styles = (theme) => ({
     flex: 3,
   },
   contentView: {
-    flex: 14,
+    flex: 18,
   },
 
   readView: {

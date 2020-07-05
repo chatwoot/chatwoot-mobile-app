@@ -175,12 +175,7 @@ export const loadMessages = ({ conversationId, beforeId }) => async (dispatch) =
 
     const response = await axios.get(apiUrl, { params });
 
-    const { payload, meta } = response.data;
-
-    dispatch({
-      type: SET_CONVERSATION_DETAILS,
-      payload: meta,
-    });
+    const { payload } = response.data;
 
     dispatch({
       type: GET_MESSAGES_SUCCESS,
@@ -195,6 +190,17 @@ export const loadMessages = ({ conversationId, beforeId }) => async (dispatch) =
   } catch (error) {
     dispatch({ type: GET_MESSAGES_ERROR, payload: error });
   }
+};
+
+export const getConversationDetails = ({ conversationId }) => async (dispatch) => {
+  try {
+    const apiUrl = `conversations/${conversationId}`;
+    const response = await axios.get(apiUrl);
+    dispatch({
+      type: SET_CONVERSATION_DETAILS,
+      payload: response.data,
+    });
+  } catch {}
 };
 
 // Send message

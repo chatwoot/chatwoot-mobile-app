@@ -9,6 +9,7 @@ import { dynamicTime } from '../helpers/TimeHelper';
 import { findLastMessage, getUnreadCount, getInboxName, getTypingUsersText } from '../helpers';
 
 import ConversationAttachmentItem from './ConversationAttachmentItem';
+import ConversationContentItem from './ConversationContentItem';
 
 const propTypes = {
   eva: PropTypes.shape({
@@ -25,8 +26,8 @@ const propTypes = {
       sender: PropTypes.shape({
         name: PropTypes.string,
         thumbnail: PropTypes.string,
-        channel: PropTypes.string,
       }),
+      channel: PropTypes.string,
     }),
     messages: PropTypes.array.isRequired,
     inbox_id: PropTypes.number,
@@ -43,7 +44,8 @@ const ConversationItemComponent = ({
 
   const {
     meta: {
-      sender: { name, thumbnail, channel },
+      sender: { name, thumbnail },
+      channel,
     },
     messages,
     inbox_id: inboxId,
@@ -54,7 +56,7 @@ const ConversationItemComponent = ({
   const unread_count = getUnreadCount(item);
 
   const lastMessage = findLastMessage({ messages });
-  const { content, created_at, attachments } = lastMessage;
+  const { content, created_at, attachments, message_type } = lastMessage;
 
   const typingUser = getTypingUsersText({
     conversationTypingUsers,
@@ -97,12 +99,11 @@ const ConversationItemComponent = ({
                 attachment={attachments[0]}
               />
             ) : (
-              <CustomText
-                style={unread_count ? style.messageActive : style.messageNotActive}
-                numberOfLines={1}
-                maxLength={8}>
-                {content && content.length > 30 ? `${content.substring(0, 30)}...` : `${content}`}
-              </CustomText>
+              <ConversationContentItem
+                content={content}
+                unReadCount={unread_count}
+                messageType={message_type}
+              />
             )
           ) : (
             <CustomText style={style.typingText}>
@@ -205,16 +206,6 @@ const styles = (theme) => ({
     fontWeight: theme['font-medium'],
     paddingTop: 4,
   },
-  messageActive: {
-    fontSize: theme['text-primary-size'],
-    fontWeight: theme['font-medium'],
-    paddingTop: 4,
-  },
-  messageNotActive: {
-    fontSize: theme['text-primary-size'],
-    paddingTop: 4,
-    color: theme['text-light-color'],
-  },
   nameView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -227,6 +218,7 @@ const styles = (theme) => ({
     paddingLeft: 2,
     paddingRight: 2,
     marginLeft: 4,
+    marginTop: 2,
     backgroundColor: theme['color-background-inbox'],
   },
 });

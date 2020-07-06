@@ -36,8 +36,7 @@ PODS:
     - FirebaseCoreDiagnosticsInterop (~> 1.2)
     - GoogleUtilities/Environment (~> 6.5)
     - GoogleUtilities/Logger (~> 6.5)
-  - FirebaseCoreDiagnostics (1.3.0):
-    - FirebaseCoreDiagnosticsInterop (~> 1.2)
+  - FirebaseCoreDiagnostics (1.4.0):
     - GoogleDataTransportCCTSupport (~> 3.1)
     - GoogleUtilities/Environment (~> 6.5)
     - GoogleUtilities/Logger (~> 6.5)
@@ -79,7 +78,7 @@ PODS:
     - "GoogleUtilities/NSData+zlib (~> 6.0)"
     - nanopb (~> 1.30905.0)
   - GoogleDataTransport (6.2.1)
-  - GoogleDataTransportCCTSupport (3.1.0):
+  - GoogleDataTransportCCTSupport (3.2.0):
     - GoogleDataTransport (~> 6.1)
     - nanopb (~> 1.30905.0)
   - GoogleUtilities/AppDelegateSwizzler (6.6.0):
@@ -106,7 +105,7 @@ PODS:
     - nanopb/encode (= 1.30905.0)
   - nanopb/decode (1.30905.0)
   - nanopb/encode (1.30905.0)
-  - PromisesObjC (1.2.8)
+  - PromisesObjC (1.2.9)
   - Protobuf (3.12.0)
   - RCTRequired (0.62.2)
   - RCTTypeSafety (0.62.2):
@@ -271,9 +270,9 @@ PODS:
     - React-cxxreact (= 0.62.2)
     - React-jsi (= 0.62.2)
   - React-jsinspector (0.62.2)
-  - react-native-netinfo (5.9.2):
+  - react-native-netinfo (5.9.4):
     - React
-  - react-native-safe-area-context (3.0.2):
+  - react-native-safe-area-context (3.0.7):
     - React
   - React-RCTActionSheet (0.62.2):
     - React-Core/RCTActionSheetHeaders (= 0.62.2)
@@ -340,12 +339,14 @@ PODS:
     - React
   - RNCMaskedView (0.1.10):
     - React
+  - RNCPushNotificationIOS (1.3.0):
+    - React
   - RNDeviceInfo (5.6.1):
     - React
-  - RNFBApp (7.2.0):
+  - RNFBApp (8.0.1):
     - Firebase/CoreOnly (~> 6.25.0)
     - React
-  - RNFBMessaging (7.1.4):
+  - RNFBMessaging (7.3.2):
     - Firebase/Analytics (~> 6.25.0)
     - Firebase/Messaging (~> 6.25.0)
     - React
@@ -354,18 +355,18 @@ PODS:
     - React
   - RNReanimated (1.9.0):
     - React
-  - RNScreens (2.8.0):
+  - RNScreens (2.9.0):
     - React
-  - RNSentry (1.4.2):
+  - RNSentry (1.6.0):
     - React
-    - Sentry (~> 5.1.1)
-  - RNSnackbar (2.2.2):
+    - Sentry (~> 5.1.6)
+  - RNSnackbar (2.2.3):
     - React
   - RNSVG (12.1.0):
     - React
-  - Sentry (5.1.2):
-    - Sentry/Core (= 5.1.2)
-  - Sentry/Core (5.1.2)
+  - Sentry (5.1.7):
+    - Sentry/Core (= 5.1.7)
+  - Sentry/Core (5.1.7)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -402,6 +403,7 @@ DEPENDENCIES:
   - ReactNativeExceptionHandler (from `../node_modules/react-native-exception-handler`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
@@ -495,6 +497,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNCPushNotificationIOS:
+    :path: "../node_modules/@react-native-community/push-notification-ios"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNFBApp:
@@ -526,7 +530,7 @@ SPEC CHECKSUMS:
   FirebaseAnalytics: 93565f3f0f0f50a5d8770850bfe6a82eaba5db27
   FirebaseAnalyticsInterop: 3f86269c38ae41f47afeb43ebf32a001f58fcdae
   FirebaseCore: 6023faeada5afa95a349fccafb40900e32e9ac42
-  FirebaseCoreDiagnostics: 4a773a47bd83bbd5a9b1ccf1ce7caa8b2d535e67
+  FirebaseCoreDiagnostics: 4505e4d4009b1d93f605088ee7d7764d5f0d1c84
   FirebaseCoreDiagnosticsInterop: 296e2c5f5314500a850ad0b83e9e7c10b011a850
   FirebaseInstallations: 6f5f680e65dc374397a483c32d1799ba822a395b
   FirebaseInstanceID: cef67c4967c7cecb56ea65d8acbb4834825c587b
@@ -535,10 +539,10 @@ SPEC CHECKSUMS:
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   GoogleAppMeasurement: 137afe68bfa406c3f4221b9395253d9e5d4654cf
   GoogleDataTransport: 9a8a16f79feffc7f42096743de2a7c4815e84020
-  GoogleDataTransportCCTSupport: d70a561f7d236af529fee598835caad5e25f6d3d
+  GoogleDataTransportCCTSupport: 489c1265d2c85b68187a83a911913d190012158d
   GoogleUtilities: 39530bc0ad980530298e9c4af8549e991fd033b1
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
-  PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
+  PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
   Protobuf: 2793fcd0622a00b546c60e7cbbcc493e043e9bb9
   RCTRequired: cec6a34b3ac8a9915c37e7e4ad3aa74726ce4035
   RCTTypeSafety: 93006131180074cffa227a1075802c89a49dd4ce
@@ -549,8 +553,8 @@ SPEC CHECKSUMS:
   React-jsi: b6dc94a6a12ff98e8877287a0b7620d365201161
   React-jsiexecutor: 1540d1c01bb493ae3124ed83351b1b6a155db7da
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
-  react-native-netinfo: cb74e17062b2af5a16a4b137f32495f241df1a8e
-  react-native-safe-area-context: b11a34881faac509cad5578726c98161ad4d275c
+  react-native-netinfo: cd479ab1b67cdd1cb1403a99ecdb24190a6dd7ef
+  react-native-safe-area-context: ef6f16c66b0797ecae1bf86c103dfb3dc16fc33d
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
   React-RCTAnimation: 49ab98b1c1ff4445148b72a3d61554138565bad0
   React-RCTBlob: a332773f0ebc413a0ce85942a55b064471587a71
@@ -564,16 +568,17 @@ SPEC CHECKSUMS:
   ReactNativeExceptionHandler: 8025d98049c25f186835a3af732dd7c9974d6dce
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNCPushNotificationIOS: d5fd66aed4e03c6491ca0c6111a03d4f6455ff6c
   RNDeviceInfo: b6e650fbd234732c759544218657d549b4339038
-  RNFBApp: 09caf098f066a44cf6f7ce9ea7dbc8b980ca10ec
-  RNFBMessaging: a914f734937d45855ea8b63d5fd198e2c5ee3972
+  RNFBApp: 49e1b8ce7e7d175b751c5b8568eafd51eac59b42
+  RNFBMessaging: 0891dd5bb7c5ffaa9d7670819fc934714883e316
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
-  RNScreens: 62211832af51e0aebcf6e8c36bcf7dd65592f244
-  RNSentry: c4bdecef182912b8d8bb5b626f45da314f047dbd
-  RNSnackbar: 8694815358c8a7fa0b75d0698d7bbfaa4d8babf2
+  RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
+  RNSentry: 888dd890845f27e5c4cd71ac0178f1028b6815c7
+  RNSnackbar: a08d0d7e1e18c7312cd2b9c6f476211267855bce
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
-  Sentry: 7ee9a34a2c075a5e9306a1501d61c93a4b5c2333
+  Sentry: f16ff9ed0d862a9f1dc75aa030a08a76f8b50730
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
 
 PODFILE CHECKSUM: 50cf41b195f988d309ece502347fd21dfe790b2f

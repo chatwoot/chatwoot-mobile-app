@@ -1,5 +1,9 @@
+import PushNotification from 'react-native-push-notification';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+
 import { store } from '../store';
 import { navigate } from './NavigationHelper';
+import { Platform } from 'react-native';
 
 export const handlePush = async ({ remoteMessage, type }) => {
   try {
@@ -33,4 +37,12 @@ export const handlePush = async ({ remoteMessage, type }) => {
     }
     return isLoggedIn;
   } catch {}
+};
+
+export const clearAllDeliveredNotifications = () => {
+  if (Platform.OS === 'android') {
+    PushNotification.cancelAllLocalNotifications();
+  } else {
+    PushNotificationIOS.removeAllDeliveredNotifications();
+  }
 };

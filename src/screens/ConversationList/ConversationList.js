@@ -31,6 +31,7 @@ import { getPubSubToken, getAccountId } from '../../helpers/AuthHelper';
 import { onLogOut } from '../../actions/auth';
 import HeaderBar from '../../components/HeaderBar';
 import { findUniqueConversations } from '../../helpers';
+import { clearAllDeliveredNotifications } from '../../helpers/PushHelper';
 
 class ConversationListComponent extends Component {
   static propTypes = {
@@ -80,7 +81,7 @@ class ConversationListComponent extends Component {
   };
 
   componentDidMount = () => {
-    // this.props.onLogOut();
+    clearAllDeliveredNotifications();
     this.props.getInboxes();
     this.loadConversations();
     this.initActionCable();

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { Alert, BackHandler, Platform } from 'react-native';
 import BackgroundColor from 'react-native-background-color';
+import SplashScreen from 'react-native-splash-screen';
 import { PersistGate } from 'redux-persist/integration/react';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
@@ -22,6 +23,7 @@ export default class Chatwoot extends Component {
   componentDidMount() {
     ErrorHelper.init();
     // To hide splash screen
+    SplashScreen.hide();
     if (Platform.OS === 'android') {
       BackgroundColor.setColor('#FFFFFF');
     }

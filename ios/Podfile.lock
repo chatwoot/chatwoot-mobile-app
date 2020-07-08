@@ -274,6 +274,8 @@ PODS:
     - React
   - react-native-safe-area-context (3.0.7):
     - React
+  - react-native-splash-screen (3.2.0):
+    - React
   - React-RCTActionSheet (0.62.2):
     - React-Core/RCTActionSheetHeaders (= 0.62.2)
   - React-RCTAnimation (0.62.2):
@@ -357,16 +359,16 @@ PODS:
     - React
   - RNScreens (2.9.0):
     - React
-  - RNSentry (1.6.0):
+  - RNSentry (1.6.1):
     - React
-    - Sentry (~> 5.1.6)
+    - Sentry (~> 5.1.8)
   - RNSnackbar (2.2.3):
     - React
   - RNSVG (12.1.0):
     - React
-  - Sentry (5.1.7):
-    - Sentry/Core (= 5.1.7)
-  - Sentry/Core (5.1.7)
+  - Sentry (5.1.8):
+    - Sentry/Core (= 5.1.8)
+  - Sentry/Core (5.1.8)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -389,6 +391,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
   - React-RCTBlob (from `../node_modules/react-native/Libraries/Blob`)
@@ -471,6 +474,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
   React-RCTActionSheet:
     :path: "../node_modules/react-native/Libraries/ActionSheetIOS"
   React-RCTAnimation:
@@ -555,6 +560,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
   react-native-netinfo: cd479ab1b67cdd1cb1403a99ecdb24190a6dd7ef
   react-native-safe-area-context: ef6f16c66b0797ecae1bf86c103dfb3dc16fc33d
+  react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
   React-RCTAnimation: 49ab98b1c1ff4445148b72a3d61554138565bad0
   React-RCTBlob: a332773f0ebc413a0ce85942a55b064471587a71
@@ -575,10 +581,10 @@ SPEC CHECKSUMS:
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
   RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
-  RNSentry: 888dd890845f27e5c4cd71ac0178f1028b6815c7
+  RNSentry: 57824da1293d03966605d682d5868b11aa1b6e5a
   RNSnackbar: a08d0d7e1e18c7312cd2b9c6f476211267855bce
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
-  Sentry: f16ff9ed0d862a9f1dc75aa030a08a76f8b50730
+  Sentry: 795e8ffe1c45d9d20b3aa398774d7ea6a443fb05
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
 
 PODFILE CHECKSUM: 50cf41b195f988d309ece502347fd21dfe790b2f

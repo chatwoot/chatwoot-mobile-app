@@ -74,7 +74,8 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",
-    "EMPTY": "No notifications yet",
+    "EMPTY": "No notifications yet.",
+    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
     "CANCEL": "Cancel"

@@ -1,4 +1,4 @@
-import PushNotification from 'react-native-push-notification';
+// import PushNotification from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 import { store } from '../store';
@@ -41,7 +41,7 @@ export const handlePush = async ({ remoteMessage, type }) => {
 
 export const clearAllDeliveredNotifications = () => {
   if (Platform.OS === 'android') {
-    PushNotification.cancelAllLocalNotifications();
+    // PushNotification.cancelAllLocalNotifications();
   } else {
     PushNotificationIOS.removeAllDeliveredNotifications();
   }

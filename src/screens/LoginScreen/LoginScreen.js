@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Image, KeyboardAvoidingView, Dimensions, Platform } from 'react-native';
-import { Button, withStyles } from '@ui-kitten/components';
+import {
+  View,
+  Image,
+  KeyboardAvoidingView,
+  Dimensions,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
+import { withStyles } from '@ui-kitten/components';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
 
@@ -114,7 +121,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
           height: Dimensions.get('window').height,
         }}>
         <View style={style.logoView}>
-          <Image style={style.logo} source={images.appLogo} />
+          <Image style={style.logo} source={images.login} />
         </View>
 
         <View style={style.contentView}>
@@ -126,40 +133,30 @@ const LoginScreenComponent = ({ navigation, eva }) => {
               value={values}
               onChange={(value) => onChange(value)}
             />
+            <TouchableOpacity style={style.forgotView} onPress={() => navigate('ResetPassword')}>
+              <CustomText style={style.textStyle}>{i18n.t('LOGIN.FORGOT_PASSWORD')}</CustomText>
+            </TouchableOpacity>
             <View style={style.loginButtonView}>
               <LoaderButton
                 style={style.loginButton}
                 loading={isLoggingIn}
+                textStyle={style.buttonTextStyle}
                 onPress={() => onPress()}
                 size="large"
                 text={i18n.t('LOGIN.LOGIN')}
-                textStyle={style.loginButtonText}
               />
             </View>
           </View>
 
           <View>
-            <View style={style.forgotView}>
-              <Button appearance="ghost" status="basic" onPress={() => navigate('ResetPassword')}>
-                {i18n.t('LOGIN.FORGOT_PASSWORD')}
-              </Button>
-            </View>
             <View style={style.accountView}>
-              <Button
-                style={style.button}
-                appearance="ghost"
-                status="basic"
-                onPress={() => openURL({ URL: `${installationUrl}${SIGNUP_URL}` })}>
-                {i18n.t('LOGIN.CREATE_ACCOUNT')}
-              </Button>
-              <CustomText style={style.separator}>|</CustomText>
-              <Button
-                style={style.button}
-                appearance="ghost"
-                status="basic"
-                onPress={() => navigate('ConfigureURL')}>
-                {i18n.t('LOGIN.CHANGE_URL')}
-              </Button>
+              <TouchableOpacity onPress={() => openURL({ URL: `${installationUrl}${SIGNUP_URL}` })}>
+                <CustomText style={style.textStyle}>{i18n.t('LOGIN.CREATE_ACCOUNT')}</CustomText>
+              </TouchableOpacity>
+              <CustomText style={style.textStyle}>{'   |   '}</CustomText>
+              <TouchableOpacity onPress={() => navigate('ConfigureURL')}>
+                <CustomText style={style.textStyle}> {i18n.t('LOGIN.CHANGE_URL')}</CustomText>
+              </TouchableOpacity>
             </View>
           </View>
         </View>

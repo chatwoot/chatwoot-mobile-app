@@ -28,7 +28,7 @@ const styles = (theme) => ({
   undoIcon: {
     width: 16,
     height: 16,
-    marginTop: 4,
+    marginTop: 6,
   },
 });
 

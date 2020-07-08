@@ -21,6 +21,8 @@ import { getGroupedNotifications } from '../../helpers';
 import NotificationItemLoader from '../../components/NotificationItemLoader';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import HeaderBar from '../../components/HeaderBar';
+import images from '../../constants/images';
+import Empty from '../../components/Empty';
 
 const LoaderData = new Array(24).fill(0);
 const renderItemLoader = () => <NotificationItemLoader />;
@@ -87,15 +89,12 @@ class NotificationScreenComponent extends Component {
   };
 
   renderEmptyMessage = () => {
-    const {
-      eva: { style },
-    } = this.props;
     return (
-      <Layout style={style.emptyView}>
-        <CustomText appearance="hint" style={style.emptyText}>
-          {i18n.t('NOTIFICATION.EMPTY')}
-        </CustomText>
-      </Layout>
+      <Empty
+        image={images.emptyNotifications}
+        title={i18n.t('NOTIFICATION.EMPTY')}
+        subTitle={i18n.t('NOTIFICATION.EMPTY_MORE_TEXT')}
+      />
     );
   };
 
@@ -210,6 +209,7 @@ class NotificationScreenComponent extends Component {
                   renderItem={({ item, index }) => (
                     <NotificationItem
                       item={item}
+                      read_at={item.read_at}
                       index={index}
                       onSelectNotification={this.onSelectNotification}
                     />

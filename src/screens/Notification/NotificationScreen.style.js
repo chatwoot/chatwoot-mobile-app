@@ -25,14 +25,7 @@ const styles = (theme) => ({
   title: {
     fontSize: 24,
   },
-  emptyView: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 16,
-  },
-  emptyText: {
-    fontSize: theme['font-size-small'],
-  },
+
   loadMoreSpinnerView: {
     alignItems: 'center',
     paddingTop: 16,

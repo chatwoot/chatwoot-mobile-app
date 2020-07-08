@@ -24,6 +24,21 @@ export default (theme) => ({
     aspectRatio: 2,
     resizeMode: 'contain',
   },
+  titleView: {
+    marginTop: Dimensions.get('window').height * 0.01,
+    paddingLeft: 40,
+    paddingRight: 40,
+  },
+  titleText: {
+    width: '100%',
+    textAlign: 'center',
+    fontSize: theme['font-size-large'],
+    fontWeight: theme['font-semi-bold'],
+  },
+  subTitleText: {
+    fontSize: theme['font-size-small'],
+    textAlign: 'center',
+  },
 
   contentView: {
     flex: 6,
@@ -31,7 +46,7 @@ export default (theme) => ({
   formView: {
     paddingLeft: 40,
     paddingRight: 40,
-    marginTop: Dimensions.get('window').height * 0.02,
+    marginTop: Dimensions.get('window').height * 0.04,
   },
 
   textStyle: {

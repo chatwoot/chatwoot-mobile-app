@@ -16,6 +16,7 @@ import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
 import Icon from '../../components/Icon';
 import images from '../../constants/images';
+import CustomText from '../../components/Text';
 
 // eslint-disable-next-line react/prop-types
 const BackIcon = ({ style: { tintColor } }) => {
@@ -101,6 +102,15 @@ const ForgotPasswordComponent = ({ eva, navigation }) => {
       />
       <View style={style.logoView}>
         <Image style={style.logo} source={images.forgotPassword} />
+      </View>
+
+      <View style={style.titleView}>
+        <CustomText style={style.titleText}>{i18n.t('FORGOT_PASSWORD.TITLE')}</CustomText>
+      </View>
+      <View style={style.titleView}>
+        <CustomText appearance="hint" style={style.subTitleText}>
+          {i18n.t('FORGOT_PASSWORD.SUB_TITLE')}
+        </CustomText>
       </View>
 
       <View style={style.contentView}>

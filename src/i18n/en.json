@@ -37,7 +37,9 @@
     "EMAIL": "Please enter your email",
     "EMAIL_ERROR": "Enter a valid email",
     "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password"
+    "HEADER_TITLE": "Reset password",
+    "TITLE": "Forgot Password?",
+    "SUB_TITLE": "Don't worry! We got your back"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversations",

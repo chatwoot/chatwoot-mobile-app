@@ -63,16 +63,37 @@ export const getAllNotifications = ({ pageNo = 1 }) => async (dispatch) => {
 
 export const markNotificationAsRead = ({ primaryActorId, primaryActorType }) => async (
   dispatch,
+  getState,
 ) => {
+  const {
+    data: { payload, meta },
+  } = getState().notification;
   try {
     const apiUrl = 'notifications/read_all';
     await APIHelper.post(apiUrl, {
       primary_actor_type: primaryActorType,
       primary_actor_id: primaryActorId,
     });
-    setTimeout(() => {
-      dispatch(getAllNotifications({ pageNo: 1 }));
-    }, 500);
+
+    const updatedNotifications = payload.map((item, index) => {
+      if (item.primary_actor_id === primaryActorId) {
+        item.read_at = 'read_at';
+        item.mass = 'mass';
+      }
+      return item;
+    });
+
+    const { unread_count } = meta;
+
+    const updatedUnReadCount = unread_count ? unread_count - 1 : unread_count;
+
+    dispatch({
+      type: UPDATE_ALL_NOTIFICATIONS,
+      payload: {
+        notifications: updatedNotifications,
+        meta: { unread_count: updatedUnReadCount },
+      },
+    });
   } catch {}
 };
 
@@ -88,8 +109,6 @@ export const markAllNotificationAsRead = () => async (dispatch, getState) => {
       item.read_at = 'read_at';
       return item;
     });
-
-    dispatch(getAllNotifications({ pageNo: 1 }));
 
     dispatch({
       type: UPDATE_ALL_NOTIFICATIONS,

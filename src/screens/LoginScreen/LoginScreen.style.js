@@ -12,7 +12,7 @@ export default (theme) => ({
   logoView: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: Dimensions.get('window').height * 0.03,
+    marginTop: Dimensions.get('window').height * 0.07,
   },
   logo: {
     width: deviceWidth * 0.2,

@@ -12,23 +12,35 @@ export default (theme) => ({
   logoView: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: Dimensions.get('window').height * 0.13,
+    marginTop: Dimensions.get('window').height * 0.03,
   },
   logo: {
-    width: deviceWidth * 0.819,
-    height: deviceWidth * 0.4,
+    width: deviceWidth * 0.2,
+    height: deviceWidth * 0.7,
     aspectRatio: 2,
     resizeMode: 'contain',
+  },
+
+  titleView: {
+    marginTop: Dimensions.get('window').height * 0.03,
+    paddingLeft: 40,
+    paddingRight: 40,
+  },
+  titleText: {
+    width: '100%',
+    textAlign: 'center',
+    fontSize: theme['font-size-large'],
+    fontWeight: theme['font-medium'],
   },
 
   formView: {
     paddingLeft: 40,
     paddingRight: 40,
-    marginTop: Dimensions.get('window').height * 0.07,
+    marginTop: Dimensions.get('window').height * 0.02,
   },
 
   nextButtonView: {
-    paddingTop: 64,
+    paddingTop: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

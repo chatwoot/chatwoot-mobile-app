@@ -1,7 +1,8 @@
-import { Button, useTheme } from '@ui-kitten/components';
+import { Button, useTheme, withStyles } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
+import CustomText from './Text';
 
 const LoadingIndicator = () => {
   const theme = useTheme();
@@ -9,9 +10,15 @@ const LoadingIndicator = () => {
 };
 
 const LoaderButton = ({ loading, text, ...customProps }) => {
+  const {
+    eva: {
+      style: { textStyle },
+    },
+  } = customProps;
+
   return (
     <Button {...customProps} {...(loading && { accessoryLeft: LoadingIndicator })}>
-      {loading ? null : text}
+      {loading ? null : <CustomText style={textStyle}>{text}</CustomText>}
     </Button>
   );
 };
@@ -28,4 +35,12 @@ const defaultProps = {
 LoaderButton.propTypes = propTypes;
 LoaderButton.defaultProps = defaultProps;
 
-export default LoaderButton;
+const styles = (theme) => ({
+  textStyle: {
+    color: theme['color-basic-100'],
+    fontWeight: theme['font-semi-bold'],
+    fontSize: theme['font-size-medium'],
+  },
+});
+
+export default withStyles(LoaderButton, styles);

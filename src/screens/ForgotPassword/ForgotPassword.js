@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { View, SafeAreaView } from 'react-native';
+import { View, SafeAreaView, Image } from 'react-native';
 import { TopNavigation, TopNavigationAction, withStyles } from '@ui-kitten/components';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
@@ -15,6 +15,7 @@ import TextInputField from '../../components/TextInputField';
 import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
 import Icon from '../../components/Icon';
+import images from '../../constants/images';
 
 // eslint-disable-next-line react/prop-types
 const BackIcon = ({ style: { tintColor } }) => {
@@ -89,17 +90,21 @@ const ForgotPasswordComponent = ({ eva, navigation }) => {
     }
   };
 
-  const { style: themedStyle } = eva;
+  const { style } = eva;
 
   return (
-    <SafeAreaView style={themedStyle.mainView}>
+    <SafeAreaView style={style.mainView}>
       <TopNavigation
-        titleStyle={themedStyle.headerTitle}
+        titleStyle={style.headerTitle}
         title={i18n.t('FORGOT_PASSWORD.HEADER_TITLE')}
         accessoryLeft={renderLeftControl}
       />
-      <View style={themedStyle.contentView}>
-        <View style={themedStyle.formView}>
+      <View style={style.logoView}>
+        <Image style={style.logo} source={images.forgotPassword} />
+      </View>
+
+      <View style={style.contentView}>
+        <View style={style.formView}>
           <Form
             ref={inputRef}
             type={LoginForm}
@@ -108,14 +113,14 @@ const ForgotPasswordComponent = ({ eva, navigation }) => {
             onChange={(value) => onChange(value)}
           />
 
-          <View style={themedStyle.loginButtonView}>
+          <View style={style.forgotButtonView}>
             <LoaderButton
-              style={themedStyle.loginButton}
+              style={style.forgotButton}
               loading={isResettingPassword}
               onPress={() => doResetPassword()}
               size="large"
               text={i18n.t('FORGOT_PASSWORD.RESET_HERE')}
-              textStyle={themedStyle.loginButtonText}
+              textStyle={style.forgotButtonText}
             />
           </View>
         </View>

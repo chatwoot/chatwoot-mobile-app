@@ -2,7 +2,7 @@ import React, { useEffect, useState, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Linking, SafeAreaView } from 'react-native';
+import { Linking } from 'react-native';
 
 import messaging from '@react-native-firebase/messaging';
 import PropTypes from 'prop-types';
@@ -150,30 +150,28 @@ const App = ({ eva: { style } }) => {
   i18n.locale = locale;
 
   return (
-    <SafeAreaView style={style.container}>
-      <NavigationContainer ref={navigationRef}>
-        <Stack.Navigator initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'} headerMode={'none'}>
-          {isLoggedIn ? (
-            <Fragment>
-              <Stack.Screen name="Tab" component={TabStack} />
-              <Stack.Screen name="ChatScreen" component={ChatScreen} />
-              <Stack.Screen name="ConversationFilter" component={ConversationFilter} />
-              <Stack.Screen name="ImageScreen" component={ImageScreen} />
-              <Stack.Screen name="Language" component={LanguageScreen} />
-              <Stack.Screen name="Account" component={AccountScreen} />
-              <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
-            </Fragment>
-          ) : (
-            <Fragment>
-              <Stack.Screen name="ConfigureURL" component={ConfigureURLScreen} />
-              <Stack.Screen name="Login" component={LoginScreen} />
-              <Stack.Screen name="ResetPassword" component={ResetPassword} />
-              <Stack.Screen name="ConversationList" component={ConversationList} />
-            </Fragment>
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaView>
+    <NavigationContainer ref={navigationRef}>
+      <Stack.Navigator initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'} headerMode={'none'}>
+        {isLoggedIn ? (
+          <Fragment>
+            <Stack.Screen name="Tab" component={TabStack} />
+            <Stack.Screen name="ChatScreen" component={ChatScreen} />
+            <Stack.Screen name="ConversationFilter" component={ConversationFilter} />
+            <Stack.Screen name="ImageScreen" component={ImageScreen} />
+            <Stack.Screen name="Language" component={LanguageScreen} />
+            <Stack.Screen name="Account" component={AccountScreen} />
+            <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
+          </Fragment>
+        ) : (
+          <Fragment>
+            <Stack.Screen name="ConfigureURL" component={ConfigureURLScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="ResetPassword" component={ResetPassword} />
+            <Stack.Screen name="ConversationList" component={ConversationList} />
+          </Fragment>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 

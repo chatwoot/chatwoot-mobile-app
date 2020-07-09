@@ -14,6 +14,7 @@ import images from '../../constants/images';
 import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
 import { ScrollView } from 'react-native-gesture-handler';
+import CustomText from '../../components/Text';
 
 const { Form } = t.form;
 const URLForm = t.struct({
@@ -43,7 +44,7 @@ const ConfigureURLScreenComponent = ({ eva }) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const [values, setValues] = useState({
-    url: 'chatwoot-mobile-app-test.herokuapp.com',
+    url: 'app.chatwoot.com',
   });
 
   const options = {
@@ -54,7 +55,7 @@ const ConfigureURLScreenComponent = ({ eva }) => {
         error: i18n.t('CONFIGURE_URL.URL_ERROR'),
         autoCapitalize: 'none',
         config: {
-          label: i18n.t('CONFIGURE_URL.ENTER_URL'),
+          label: '',
         },
       },
     },
@@ -89,7 +90,11 @@ const ConfigureURLScreenComponent = ({ eva }) => {
           height: Dimensions.get('window').height,
         }}>
         <View style={style.logoView}>
-          <Image style={style.logo} source={images.appLogo} />
+          <Image style={style.logo} source={images.URL} />
+        </View>
+
+        <View style={style.titleView}>
+          <CustomText style={style.titleText}>{i18n.t('CONFIGURE_URL.ENTER_URL')}</CustomText>
         </View>
 
         <View style={style.formView}>

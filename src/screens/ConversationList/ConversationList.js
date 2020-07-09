@@ -32,6 +32,8 @@ import { onLogOut } from '../../actions/auth';
 import HeaderBar from '../../components/HeaderBar';
 import { findUniqueConversations } from '../../helpers';
 import { clearAllDeliveredNotifications } from '../../helpers/PushHelper';
+import Empty from '../../components/Empty';
+import images from '../../constants/images';
 
 class ConversationListComponent extends Component {
   static propTypes = {
@@ -231,16 +233,7 @@ class ConversationListComponent extends Component {
   };
 
   renderEmptyMessage = () => {
-    const {
-      eva: { style },
-    } = this.props;
-    return (
-      <Layout style={style.emptyView}>
-        <CustomText appearance="hint" style={style.emptyText}>
-          {i18n.t('CONVERSATION.EMPTY')}
-        </CustomText>
-      </Layout>
-    );
+    return <Empty image={images.emptyConversations} title={i18n.t('CONVERSATION.EMPTY')} />;
   };
 
   renderTab = ({ tabIndex, selectedIndex, tabTitle, payload, isFetching, renderList, style }) => {

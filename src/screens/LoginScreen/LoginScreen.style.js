@@ -12,11 +12,11 @@ export default (theme) => ({
   logoView: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: Dimensions.get('window').height * 0.13,
+    marginTop: Dimensions.get('window').height * 0.07,
   },
   logo: {
-    width: deviceWidth * 0.819,
-    height: deviceWidth * 0.4,
+    width: deviceWidth * 0.2,
+    height: deviceWidth * 0.7,
     aspectRatio: 2,
     resizeMode: 'contain',
   },
@@ -24,11 +24,11 @@ export default (theme) => ({
   formView: {
     paddingLeft: 40,
     paddingRight: 40,
-    marginTop: Dimensions.get('window').height * 0.07,
+    marginTop: Dimensions.get('window').height * 0.02,
   },
 
   loginButtonView: {
-    paddingTop: 32,
+    paddingTop: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -46,23 +46,20 @@ export default (theme) => ({
   separator: {
     color: theme['text-hint-color'],
   },
+  forgotView: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+
   accountView: {
     paddingTop: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
-
-  forgotView: {
-    paddingTop: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    padding: 0,
-    minWidth: 2,
-    paddingHorizontal: 0,
-    paddingVertical: 0,
+  textStyle: {
+    fontSize: theme['font-size-extra-small'],
+    color: theme['text-hint-color'],
+    fontWeight: theme['font-medium'],
   },
 });

@@ -5,6 +5,7 @@ import {
   addMessageToConversation,
   addUserTypingToConversation,
   removeUserFromTypingConversation,
+  addOrUpdateConversationBasedOnStatus,
 } from '../actions/conversation';
 
 import { store } from '../store';
@@ -14,12 +15,16 @@ class ActionCableConnector extends BaseActionCableConnector {
     super(pubsubToken, webSocketUrl, accountId);
     this.CancelTyping = [];
     this.events = {
+      'conversation.opened': this.onConversationStatusChange,
+      'conversation.resolved': this.onConversationStatusChange,
       'message.created': this.onMessageCreated,
       'conversation.created': this.onConversationCreated,
       'conversation.typing_on': this.onTypingOn,
       'conversation.typing_off': this.onTypingOff,
     };
   }
+
+  onConversationStatusChange = () => {};
 
   onConversationCreated = (conversation) => {
     store.dispatch(addOrUpdateConversation({ conversation }));

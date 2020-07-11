@@ -1,7 +1,7 @@
 import images from './images';
 
 export const CONVERSATION_STATUS = {
-  OPEN: 'Open',
+  OPEN: 'open',
   RESOLVED: 'resolved',
 };
 
@@ -45,4 +45,9 @@ export const LANGUAGES = {
 
 export const URL_REGEX = {
   CONVERSATION: 'app/accounts/[-0-9]+/conversations/[-0-9]',
+};
+
+export const CONVERSATION_TOGGLE_STATUS = {
+  open: 'RESOLVE',
+  resolved: 'RE_OPEN',
 };

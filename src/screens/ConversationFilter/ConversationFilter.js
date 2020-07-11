@@ -22,11 +22,13 @@ import { INBOX_ICON } from '../../constants';
 const statusOptions = [
   {
     name: i18n.t('FILTER.OPEN'),
+    key: 'open',
     itemType: 'status',
     icon: 'book-open-outline',
   },
   {
     name: i18n.t('FILTER.RESOLVED'),
+    key: 'resolved',
     itemType: 'status',
     icon: 'done-all-outline',
   },
@@ -64,26 +66,24 @@ class FilterScreenComponent extends Component {
   };
 
   onCheckedChange = ({ item }) => {
-    const { itemType, name } = item;
+    const { itemType, key } = item;
 
     if (itemType === 'inbox') {
       this.processEntries({ inboxSelected: item });
       this.props.setInbox({ inbox: item });
     } else {
-      this.props.setConversationStatus({ status: name });
+      this.props.setConversationStatus({ status: key });
     }
   };
 
   submitFilters = () => {
-    const { navigation, conversationStatus, inboxSelected, route } = this.props;
+    const { navigation, route } = this.props;
     const {
       params: { assigneeType },
     } = route;
 
     this.props.getConversations({
       assigneeType,
-      conversationStatus,
-      inboxSelected,
     });
 
     navigation.goBack();
@@ -147,7 +147,7 @@ class FilterScreenComponent extends Component {
                     item={item}
                     key={item.name}
                     iconName={item.icon}
-                    isChecked={conversationStatus === item.name ? true : false}
+                    isChecked={conversationStatus === item.key ? true : false}
                     onCheckedChange={this.onCheckedChange}
                   />
                 );
@@ -173,8 +173,7 @@ function bindAction(dispatch) {
   return {
     setInbox: ({ inbox }) => dispatch(setInbox({ inbox })),
     setConversationStatus: ({ status }) => dispatch(setConversationStatus({ status })),
-    getConversations: ({ assigneeType, conversationStatus, inboxSelected }) =>
-      dispatch(getConversations({ assigneeType, conversationStatus, inboxSelected })),
+    getConversations: ({ assigneeType }) => dispatch(getConversations({ assigneeType })),
   };
 }
 function mapStateToProps(state) {

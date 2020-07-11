@@ -54,7 +54,10 @@
     "YESTERDAY": "Yesterday",
     "TYPE_MESSAGE": "Type message",
     "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded"
+    "ALL_CONVERSATION_LOADED": "All conversations loaded",
+    "RESOLVE":"Resolve conversation",
+    "RE_OPEN":"Reopen conversation",
+    "CANCEL":"Cancel"
   },
   "FILTER": {
     "HEADER_TITLE": "Conversation Filter",

@@ -3,7 +3,6 @@ import {
   GET_CONVERSATION_ERROR,
   GET_CONVERSATION_SUCCESS,
   SET_CONVERSATION_STATUS,
-  ADD_CONVERSATION,
   GET_MESSAGES,
   GET_MESSAGES_SUCCESS,
   GET_MESSAGES_ERROR,
@@ -26,45 +25,37 @@ import {
   ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
   RESET_USER_TYPING_CONVERSATION,
   ADD_MESSAGE,
+  SET_ASSIGNEE_TYPE,
+  SET_CONVERSATION_META,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
 
 import { getAllNotifications } from './notification';
-import { ASSIGNEE_TYPE } from '../constants';
+
+import { findAssigneeType, findConversationStatus } from '../helpers';
 
 // Load all the conversations
-export const getConversations = ({
-  assigneeType,
-  conversationStatus,
-  inboxSelected,
-  pageNumber = 1,
-}) => async (dispatch) => {
+export const getConversations = ({ assigneeType, pageNumber = 1 }) => async (
+  dispatch,
+  getState,
+) => {
   if (pageNumber === 1) {
     dispatch({ type: GET_CONVERSATION });
   }
 
+  const {
+    conversation: { conversationStatus },
+    inbox: { inboxSelected },
+  } = getState();
+
   try {
-    let assignee;
-    switch (assigneeType) {
-      case 0:
-        assignee = ASSIGNEE_TYPE.ME;
-        break;
-      case 1:
-        assignee = ASSIGNEE_TYPE.UN_ASSIGNED;
-        break;
-      default:
-        assignee = ASSIGNEE_TYPE.ALL;
-    }
-
-    const status = conversationStatus === 'Open' ? 'open' : 'resolved';
-
     const inboxId = inboxSelected.id || null;
 
     const params = {
       inbox_id: inboxId,
-      status,
-      assignee_type: assignee,
+      status: findConversationStatus({ conversationStatus }),
+      assignee_type: findAssigneeType({ assigneeType }),
       page: pageNumber,
     };
 
@@ -97,10 +88,42 @@ export const getConversations = ({
     dispatch({ type: GET_CONVERSATION_ERROR, payload: error });
   }
 };
+// Get conversation meta info [Mainly for displaying counts]
+export const getConversationsMeta = () => async (dispatch, getState) => {
+  const {
+    conversation: { conversationStatus, assigneeType },
+    inbox: { inboxSelected },
+  } = getState();
+
+  try {
+    const inboxId = inboxSelected.id || null;
+
+    const params = {
+      inbox_id: inboxId,
+      status: findConversationStatus({ conversationStatus }),
+      assignee_type: findAssigneeType({ assigneeType }),
+    };
+
+    const response = await axios.get('conversations/meta', {
+      params,
+    });
+
+    const { meta } = response.data;
+    dispatch({
+      type: SET_CONVERSATION_META,
+      payload: meta,
+    });
+  } catch (error) {}
+};
 
 // Set conversation status (Open or Resolved)
 export const setConversationStatus = ({ status }) => async (dispatch) => {
   dispatch({ type: SET_CONVERSATION_STATUS, payload: status });
+};
+
+// Set conversation assignee type (Me, Unassigned, All)
+export const setAssigneeType = ({ assigneeType }) => async (dispatch) => {
+  dispatch({ type: SET_ASSIGNEE_TYPE, payload: assigneeType });
 };
 
 export const setConversation = ({ conversationId }) => async (dispatch) => {
@@ -111,17 +134,26 @@ export const setConversation = ({ conversationId }) => async (dispatch) => {
 export const addOrUpdateConversation = ({ conversation }) => async (dispatch, getState) => {
   const {
     data: { payload },
+    conversationStatus,
   } = getState().conversation;
-
-  // Check conversation is already exists or not
-  const [conversationExists] = payload.filter((c) => c.id === conversation.id);
-
-  if (conversationExists) {
-    return;
+  const { status } = conversation;
+  // Add only if incoming conversation status matches currently using conversation status (open or resolved)
+  if (conversationStatus === status) {
+    // Check conversation is already exists or not
+    const [conversationExists] = payload.filter((c) => c.id === conversation.id);
+    let updatedConversations = payload;
+    if (conversationExists) {
+      updatedConversations = payload.filter((c) => c.id !== conversation.id);
+    } else {
+      updatedConversations.unshift(conversation);
+    }
+    dispatch({ type: UPDATE_CONVERSATION, payload: updatedConversations });
   }
 
-  dispatch({ type: ADD_CONVERSATION, payload: conversation });
   dispatch(getAllNotifications({ pageNo: 1 }));
+  setTimeout(() => {
+    dispatch(getConversationsMeta());
+  }, 100);
 };
 
 // Add new message to a conversation
@@ -130,6 +162,7 @@ export const addMessageToConversation = ({ message }) => async (dispatch, getSta
     data: { payload },
     selectedConversationId,
     allMessages,
+    conversationStatus,
   } = getState().conversation;
 
   const { conversation_id, id: messageId } = message;
@@ -138,31 +171,41 @@ export const addMessageToConversation = ({ message }) => async (dispatch, getSta
   if (selectedConversationId === conversation_id && !isMessageAlreadyExist) {
     dispatch({ type: UPDATE_MESSAGE, payload: message });
   }
-  // Check conversation exist or not in conversation state
   const [chat] = payload.filter((c) => c.id === message.conversation_id);
+  const apiUrl = `conversations/${conversation_id}`;
+  const response = await axios.get(apiUrl);
+  const conversation = response.data;
 
+  // Check conversation exist or not in conversation state
   if (!chat) {
-    // Add conversation if it is not exist conversation state
-    const apiUrl = `conversations/${conversation_id}`;
-    const response = await axios.get(apiUrl);
-    const conversation = response.data;
+    // Add conversation if it is not exist in conversation list
     dispatch(addOrUpdateConversation({ conversation }));
     return;
   }
-  const previousMessageIds = chat.messages.map((m) => m.id);
-  if (!previousMessageIds.includes(message.id)) {
-    chat.messages.push(message);
+  // If conversation is already exist, check the conversation status
+  const { status } = conversation;
+
+  let updatedConversations = payload;
+
+  if (status === conversationStatus) {
+    const previousMessageIds = chat.messages.map((m) => m.id);
+    if (!previousMessageIds.includes(message.id)) {
+      chat.messages.push(message);
+    }
+
+    const index = payload.findIndex((c) => c.id === message.conversation_id);
+    updatedConversations = payload.map((content, i) => (i === index ? { ...content } : content));
+    updatedConversations.unshift(...updatedConversations.splice(index, 1));
+  } else {
+    updatedConversations = payload.filter((c) => c.id !== conversation.id);
   }
 
-  const index = payload.findIndex((c) => c.id === message.conversation_id);
-
-  let updatedConversations = payload.map((content, i) => (i === index ? { ...content } : content));
-
-  updatedConversations.unshift(...updatedConversations.splice(index, 1));
-
   dispatch({ type: UPDATE_CONVERSATION, payload: updatedConversations });
+  setTimeout(() => {
+    dispatch(getConversationsMeta());
+  }, 100);
 };
-
+// Load all the conversation messages
 export const loadMessages = ({ conversationId, beforeId }) => async (dispatch) => {
   dispatch({ type: GET_MESSAGES });
 
@@ -208,6 +251,7 @@ export const sendMessage = ({ conversationId, message }) => async (dispatch) => 
   dispatch({ type: SEND_MESSAGE });
   try {
     const apiUrl = `conversations/${conversationId}/messages`;
+
     const response = await axios.post(apiUrl, message);
 
     dispatch({
@@ -339,4 +383,16 @@ export const loadInitialMessage = ({ messages }) => async (dispatch) => {
   } catch (error) {
     dispatch({ type: GET_MESSAGES_ERROR, payload: error });
   }
+};
+
+export const toggleConversationStatus = ({ conversationId }) => async (dispatch, getState) => {
+  try {
+    const apiUrl = `conversations/${conversationId}/toggle_status`;
+    setTimeout(() => {
+      dispatch(getConversationsMeta());
+    }, 100);
+
+    await axios.post(apiUrl);
+    dispatch(getConversationDetails({ conversationId }));
+  } catch (error) {}
 };

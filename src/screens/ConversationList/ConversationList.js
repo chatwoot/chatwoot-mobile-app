@@ -7,7 +7,12 @@ import { connect } from 'react-redux';
 
 import { getInboxes } from '../../actions/inbox';
 
-import { getConversations, loadInitialMessage, setConversation } from '../../actions/conversation';
+import {
+  getConversations,
+  loadInitialMessage,
+  setConversation,
+  setAssigneeType,
+} from '../../actions/conversation';
 
 import { saveDeviceDetails } from '../../actions/notification';
 
@@ -53,6 +58,7 @@ class ConversationListComponent extends Component {
     selectConversation: PropTypes.func,
     saveDeviceDetails: PropTypes.func,
     getAllNotifications: PropTypes.func,
+    setAssigneeType: PropTypes.func,
     inboxSelected: PropTypes.shape({
       name: PropTypes.string,
     }),
@@ -71,9 +77,10 @@ class ConversationListComponent extends Component {
     getConversations: () => {},
     loadInitialMessages: () => {},
     selectConversation: () => {},
+    setAssigneeType: () => {},
     item: {},
     inboxes: [],
-    conversationStatus: 'Open',
+    conversationStatus: 'open',
   };
 
   state = {
@@ -106,12 +113,8 @@ class ConversationListComponent extends Component {
   loadConversations = () => {
     const { selectedIndex, pageNumber } = this.state;
 
-    const { conversationStatus, inboxSelected } = this.props;
-
     this.props.getConversations({
       assigneeType: selectedIndex,
-      conversationStatus,
-      inboxSelected,
       pageNumber,
     });
   };
@@ -160,6 +163,7 @@ class ConversationListComponent extends Component {
       selectedIndex: index,
       pageNumber: 1,
     });
+    this.props.setAssigneeType({ assigneeType: index });
     this.loadConversations();
   };
 
@@ -320,20 +324,18 @@ class ConversationListComponent extends Component {
 function bindAction(dispatch) {
   return {
     getInboxes: () => dispatch(getInboxes()),
-    getConversations: ({ assigneeType, conversationStatus, inboxSelected, pageNumber }) =>
+    getConversations: ({ assigneeType, pageNumber }) =>
       dispatch(
         getConversations({
           assigneeType,
-          conversationStatus,
-          inboxSelected,
           pageNumber,
         }),
       ),
-
     selectConversation: ({ conversationId }) => dispatch(setConversation({ conversationId })),
     loadInitialMessages: ({ messages }) => dispatch(loadInitialMessage({ messages })),
     saveDeviceDetails: ({ token }) => dispatch(saveDeviceDetails({ token })),
     getAllNotifications: ({ pageNo }) => dispatch(getAllNotifications({ pageNo })),
+    setAssigneeType: ({ assigneeType }) => dispatch(setAssigneeType({ assigneeType })),
     onLogOut: () => dispatch(onLogOut()),
   };
 }

@@ -5,7 +5,6 @@ import {
   addMessageToConversation,
   addUserTypingToConversation,
   removeUserFromTypingConversation,
-  addOrUpdateConversationBasedOnStatus,
 } from '../actions/conversation';
 
 import { store } from '../store';

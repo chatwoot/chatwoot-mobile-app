@@ -3,8 +3,30 @@ import md5 from 'md5';
 import { GRAVATAR_URL } from '../constants/url';
 import { Linking } from 'react-native';
 import DateHelper from './DateHelper';
+import { ASSIGNEE_TYPE, CONVERSATION_STATUS } from '../constants';
 
 const groupBy = require('lodash.groupby');
+
+export function findAssigneeType({ assigneeType }) {
+  let assignee;
+  switch (assigneeType) {
+    case 0:
+      assignee = ASSIGNEE_TYPE.ME;
+      break;
+    case 1:
+      assignee = ASSIGNEE_TYPE.UN_ASSIGNED;
+      break;
+    default:
+      assignee = ASSIGNEE_TYPE.ALL;
+  }
+  return assignee;
+}
+
+export function findConversationStatus({ conversationStatus }) {
+  return conversationStatus === CONVERSATION_STATUS.OPEN
+    ? CONVERSATION_STATUS.OPEN
+    : CONVERSATION_STATUS.RESOLVED;
+}
 
 export function getUserInitial({ userName }) {
   const parts = userName ? userName.split(/[ -]/) : [];

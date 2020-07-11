@@ -11,6 +11,7 @@ import {
 } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet';
 
 import {
   View,
@@ -36,15 +37,21 @@ import {
   resetConversation,
   toggleTypingStatus,
   getConversationDetails,
+  toggleConversationStatus,
 } from '../../actions/conversation';
 import { markNotificationAsRead } from '../../actions/notification';
 import { getGroupedConversation, getTypingUsersText, findUniqueMessages } from '../../helpers';
 import i18n from '../../i18n';
 import CustomText from '../../components/Text';
+import { CONVERSATION_TOGGLE_STATUS } from '../../constants';
 
 const BackIcon = (style) => (
   <Icon {...style} name="arrow-ios-back-outline" height={24} width={24} />
 );
+
+const MenuIcon = (style) => {
+  return <Icon {...style} name="more-vertical" height={24} width={24} />;
+};
 
 const BackAction = (props) => <TopNavigationAction {...props} icon={BackIcon} />;
 
@@ -79,6 +86,7 @@ class ChatScreenComponent extends Component {
     markMessagesAsRead: PropTypes.func,
     markNotificationAsRead: PropTypes.func,
     getConversationDetails: PropTypes.func,
+    toggleConversationStatus: PropTypes.func,
     conversationTypingUsers: PropTypes.shape({}),
   };
 
@@ -99,6 +107,7 @@ class ChatScreenComponent extends Component {
     selectedIndex: null,
     filteredCannedResponses: [],
     showScrollToButton: false,
+    conversationStatus: null,
   };
 
   componentDidMount = () => {
@@ -376,8 +385,41 @@ class ChatScreenComponent extends Component {
     return null;
   };
 
+  showActionSheet = () => {
+    const {
+      conversationDetails: { status },
+    } = this.props;
+    this.setState({
+      conversationStatus: status,
+    });
+    this.ActionSheet.show();
+  };
+
+  toggleConversation = async () => {
+    const { route } = this.props;
+    const {
+      params: { conversationId },
+    } = route;
+    this.props.toggleConversationStatus({ conversationId });
+  };
+
+  renderRightControl = () => {
+    const { conversationDetails } = this.props;
+
+    if (conversationDetails) {
+      return <TopNavigationAction onPress={this.showActionSheet} icon={MenuIcon} />;
+    }
+    return null;
+  };
+
   renderTopNavigation = () => {
-    return <TopNavigation title={this.renderTitle} accessoryLeft={this.renderLeftControl} />;
+    return (
+      <TopNavigation
+        title={this.renderTitle}
+        accessoryLeft={this.renderLeftControl}
+        accessoryRight={this.renderRightControl}
+      />
+    );
   };
 
   onBlur = () => {
@@ -404,12 +446,14 @@ class ChatScreenComponent extends Component {
       filteredCannedResponses,
       menuVisible,
       selectedIndex,
+      conversationStatus,
     } = this.state;
 
     const uniqueMessages = findUniqueMessages({ allMessages });
     const groupedConversationList = getGroupedConversation({
       conversations: uniqueMessages,
     });
+
     return (
       <SafeAreaView style={style.mainContainer}>
         <KeyboardAvoidingView
@@ -491,6 +535,20 @@ class ChatScreenComponent extends Component {
               />
             </View>
           </View>
+          <ActionSheet
+            ref={(o) => (this.ActionSheet = o)}
+            options={[
+              i18n.t('CONVERSATION.CANCEL'),
+              i18n.t(`CONVERSATION.${CONVERSATION_TOGGLE_STATUS[conversationStatus]}`),
+            ]}
+            cancelButtonIndex={0}
+            destructiveButtonIndex={4}
+            onPress={(index) => {
+              if (index === 1) {
+                this.toggleConversation();
+              }
+            }}
+          />
         </KeyboardAvoidingView>
       </SafeAreaView>
     );
@@ -507,6 +565,8 @@ function bindAction(dispatch) {
       dispatch(getConversationDetails({ conversationId })),
     sendMessage: ({ conversationId, message }) =>
       dispatch(sendMessage({ conversationId, message })),
+    toggleConversationStatus: ({ conversationId, message }) =>
+      dispatch(toggleConversationStatus({ conversationId })),
     markAllMessagesAsRead: ({ conversationId }) => dispatch(markMessagesAsRead({ conversationId })),
     toggleTypingStatus: ({ conversationId, typingStatus }) =>
       dispatch(toggleTypingStatus({ conversationId, typingStatus })),

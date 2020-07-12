@@ -50,11 +50,13 @@ const TabBarComponent = ({ eva, navigation, state }) => {
       <BottomNavigationTab title={i18n.t('FOOTER.CONVERSATION')} icon={ConversationIcon} />
       <BottomNavigationTab title={i18n.t('FOOTER.NOTIFICATION')} icon={NotificationIcon} />
       <BottomNavigationTab title={i18n.t('FOOTER.SETTINGS')} icon={SettingsIcon} />
-      <View style={style.badgeContainer}>
-        <View style={style.badgeWrapper}>
-          <View style={style.badgeView}>
+      <View style={style.badgeContainer(unReadCount)}>
+        <View style={style.badgeWrapper(unReadCount)}>
+          <View style={style.badgeView(unReadCount)}>
             {unReadCount ? (
-              <Text style={style.badgeText}>{unReadCount < 100 ? '1' : '99+'}</Text>
+              <Text style={style.badgeText(unReadCount)}>
+                {unReadCount < 100 ? unReadCount : '99+'}
+              </Text>
             ) : null}
           </View>
         </View>
@@ -72,33 +74,33 @@ export default withStyles(TabBarComponent, (theme) => ({
     paddingBottom: Platform.OS === 'ios' && height >= 812 ? 12 : 0,
   },
 
-  badgeContainer: {
+  badgeContainer: (unReadCount) => ({
     position: 'absolute',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-  },
-  badgeWrapper: {
+  }),
+  badgeWrapper: (unReadCount) => ({
     padding: 2,
-    borderRadius: 18,
+    borderRadius: unReadCount > 10 ? 20 : 18,
     backgroundColor: theme['color-basic-100'],
-    left: 10,
-  },
-  badgeView: {
-    borderRadius: 18,
-    minWidth: 18,
+    left: unReadCount > 99 ? 14 : 10,
+  }),
+  badgeView: (unReadCount) => ({
+    borderRadius: unReadCount > 10 ? 20 : 18,
+    minWidth: unReadCount > 10 ? 20 : 18,
     backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  badgeText: {
+  }),
+  badgeText: (unReadCount) => ({
     fontSize: theme['font-size-extra-small'],
     color: theme['color-basic-100'],
-    paddingVertical: 2,
-    paddingHorizontal: 2,
+    paddingVertical: unReadCount > 10 ? 2 : 1,
+    paddingHorizontal: unReadCount > 10 ? 2 : 1,
     textAlignVertical: 'center',
     textAlign: 'center',
     fontWeight: theme['font-semi-bold'],
-  },
+  }),
 }));

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Tab, TabView, List, Spinner, withStyles } from '@ui-kitten/components';
 
-import { SafeAreaView, View } from 'react-native';
+import { ScrollView, SafeAreaView, View, RefreshControl } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -39,6 +39,12 @@ import { findUniqueConversations } from '../../helpers';
 import { clearAllDeliveredNotifications } from '../../helpers/PushHelper';
 import Empty from '../../components/Empty';
 import images from '../../constants/images';
+
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+};
 
 class ConversationListComponent extends Component {
   static propTypes = {
@@ -87,6 +93,7 @@ class ConversationListComponent extends Component {
     selectedIndex: 0,
     onEndReachedCalledDuringMomentum: true,
     pageNumber: 1,
+    refreshing: false,
   };
 
   componentDidMount = () => {
@@ -237,7 +244,20 @@ class ConversationListComponent extends Component {
   };
 
   renderEmptyMessage = () => {
-    return <Empty image={images.emptyConversations} title={i18n.t('CONVERSATION.EMPTY')} />;
+    const {
+      eva: { style },
+    } = this.props;
+    return (
+      <Layout style={style.tabContainer}>
+        <Empty image={images.emptyConversations} title={i18n.t('CONVERSATION.EMPTY')} />
+      </Layout>
+    );
+  };
+
+  onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.loadConversations();
+    wait(1000).then(() => this.setState({ refreshing: false }));
   };
 
   renderTab = ({ tabIndex, selectedIndex, tabTitle, payload, isFetching, renderList, style }) => {
@@ -245,7 +265,11 @@ class ConversationListComponent extends Component {
       <Tab
         title={tabTitle}
         titleStyle={selectedIndex === tabIndex ? style.tabActiveTitle : style.tabNotActiveTitle}>
-        <View style={style.tabView}>
+        <ScrollView
+          style={style.tabView}
+          refreshControl={
+            <RefreshControl onRefresh={this.onRefresh} refreshing={this.state.refreshing} />
+          }>
           {!isFetching || payload.length ? (
             <React.Fragment>
               {payload && payload.length ? this.renderList() : this.renderEmptyMessage()}
@@ -253,7 +277,7 @@ class ConversationListComponent extends Component {
           ) : (
             this.renderEmptyList()
           )}
-        </View>
+        </ScrollView>
       </Tab>
     );
   };

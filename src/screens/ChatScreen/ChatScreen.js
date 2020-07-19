@@ -16,9 +16,7 @@ import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet';
 import {
   View,
   SafeAreaView,
-  KeyboardAvoidingView,
   TextInput,
-  Platform,
   SectionList,
   Linking,
   TouchableOpacity,
@@ -456,100 +454,95 @@ class ChatScreenComponent extends Component {
 
     return (
       <SafeAreaView style={style.mainContainer}>
-        <KeyboardAvoidingView
-          style={style.keyboardView}
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          enabled>
-          {this.renderTopNavigation()}
+        {this.renderTopNavigation()}
 
-          <View style={style.container} autoDismiss={false}>
-            <View style={style.chatView}>
-              {groupedConversationList.length ? (
-                <SectionList
-                  scrollEventThrottle={1900}
-                  onScroll={(event) => this.setCurrentReadOffset(event)}
-                  ref={(ref) => {
-                    this.SectionListReference = ref;
-                  }}
-                  inverted
-                  onEndReached={this.onEndReached.bind(this)}
-                  onEndReachedThreshold={0.5}
-                  onMomentumScrollBegin={() => {
-                    this.setState({
-                      onEndReachedCalledDuringMomentum: false,
-                    });
-                  }}
-                  sections={groupedConversationList}
-                  keyExtractor={(item, index) => item + index}
-                  renderItem={this.renderMessage}
-                  renderSectionFooter={({ section: { date } }) => <ChatMessageDate date={date} />}
-                  style={style.chatContainer}
-                  ListFooterComponent={this.renderMoreLoader}
-                />
-              ) : null}
-              {showScrollToButton && (
-                <ScrollToBottomButton scrollToBottom={() => this.scrollToBottom()} />
-              )}
-              {isFetching && !groupedConversationList.length && (
-                <View style={style.loadMoreSpinnerView}>
-                  <Spinner size="medium" />
-                </View>
-              )}
-            </View>
-
-            <View style={style.inputView}>
-              <TextInput
-                style={style.input}
-                placeholder={`${i18n.t('CONVERSATION.TYPE_MESSAGE')}...`}
-                isFocused={this.onFocused}
-                onBlur={this.onBlur}
-                onFocus={this.onFocus}
-                value={message}
-                placeholderTextColor={theme['text-basic-color']}
-                onChangeText={this.onNewMessageChange}
+        <View style={style.container} autoDismiss={false}>
+          <View style={style.chatView}>
+            {groupedConversationList.length ? (
+              <SectionList
+                scrollEventThrottle={1900}
+                onScroll={(event) => this.setCurrentReadOffset(event)}
+                ref={(ref) => {
+                  this.SectionListReference = ref;
+                }}
+                inverted
+                onEndReached={this.onEndReached.bind(this)}
+                onEndReachedThreshold={0.5}
+                onMomentumScrollBegin={() => {
+                  this.setState({
+                    onEndReachedCalledDuringMomentum: false,
+                  });
+                }}
+                sections={groupedConversationList}
+                keyExtractor={(item, index) => item + index}
+                renderItem={this.renderMessage}
+                renderSectionFooter={({ section: { date } }) => <ChatMessageDate date={date} />}
+                style={style.chatContainer}
+                ListFooterComponent={this.renderMoreLoader}
               />
-
-              {filteredCannedResponses && (
-                <OverflowMenu
-                  anchor={renderAnchor}
-                  data={filteredCannedResponses}
-                  visible={menuVisible}
-                  selectedIndex={selectedIndex}
-                  onSelect={this.onItemSelect}
-                  placement="top"
-                  style={style.overflowMenu}
-                  backdropStyle={style.backdrop}
-                  onBackdropPress={this.toggleOverFlowMenu}>
-                  {filteredCannedResponses.map((item) => (
-                    <MenuItem title={item.title} key={item.id} />
-                  ))}
-                </OverflowMenu>
-              )}
-              <Button
-                style={style.addMessageButton}
-                appearance="ghost"
-                size="large"
-                accessoryLeft={PaperPlaneIconFill}
-                onPress={this.onNewMessageAdd}
-                disabled={message === '' ? true : false}
-              />
-            </View>
+            ) : null}
+            {showScrollToButton && (
+              <ScrollToBottomButton scrollToBottom={() => this.scrollToBottom()} />
+            )}
+            {isFetching && !groupedConversationList.length && (
+              <View style={style.loadMoreSpinnerView}>
+                <Spinner size="medium" />
+              </View>
+            )}
           </View>
-          <ActionSheet
-            ref={(o) => (this.ActionSheet = o)}
-            options={[
-              i18n.t('CONVERSATION.CANCEL'),
-              i18n.t(`CONVERSATION.${CONVERSATION_TOGGLE_STATUS[conversationStatus]}`),
-            ]}
-            cancelButtonIndex={0}
-            destructiveButtonIndex={4}
-            onPress={(index) => {
-              if (index === 1) {
-                this.toggleConversation();
-              }
-            }}
-          />
-        </KeyboardAvoidingView>
+
+          <View style={style.inputView}>
+            <TextInput
+              style={style.input}
+              placeholder={`${i18n.t('CONVERSATION.TYPE_MESSAGE')}...`}
+              isFocused={this.onFocused}
+              onBlur={this.onBlur}
+              onFocus={this.onFocus}
+              value={message}
+              placeholderTextColor={theme['text-basic-color']}
+              onChangeText={this.onNewMessageChange}
+            />
+
+            {filteredCannedResponses && (
+              <OverflowMenu
+                anchor={renderAnchor}
+                data={filteredCannedResponses}
+                visible={menuVisible}
+                selectedIndex={selectedIndex}
+                onSelect={this.onItemSelect}
+                placement="top"
+                style={style.overflowMenu}
+                backdropStyle={style.backdrop}
+                onBackdropPress={this.toggleOverFlowMenu}>
+                {filteredCannedResponses.map((item) => (
+                  <MenuItem title={item.title} key={item.id} />
+                ))}
+              </OverflowMenu>
+            )}
+            <Button
+              style={style.addMessageButton}
+              appearance="ghost"
+              size="large"
+              accessoryLeft={PaperPlaneIconFill}
+              onPress={this.onNewMessageAdd}
+              disabled={message === '' ? true : false}
+            />
+          </View>
+        </View>
+        <ActionSheet
+          ref={(o) => (this.ActionSheet = o)}
+          options={[
+            i18n.t('CONVERSATION.CANCEL'),
+            i18n.t(`CONVERSATION.${CONVERSATION_TOGGLE_STATUS[conversationStatus]}`),
+          ]}
+          cancelButtonIndex={0}
+          destructiveButtonIndex={4}
+          onPress={(index) => {
+            if (index === 1) {
+              this.toggleConversation();
+            }
+          }}
+        />
       </SafeAreaView>
     );
   }

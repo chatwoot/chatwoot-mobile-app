@@ -3,13 +3,9 @@ import PropTypes from 'prop-types';
 import { BottomNavigation, BottomNavigationTab, withStyles, Icon } from '@ui-kitten/components';
 import { useSelector } from 'react-redux';
 
-import { Platform, Dimensions } from 'react-native';
-
 import { View, Text } from 'react-native';
 
 import i18n from '../i18n';
-
-const { height } = Dimensions.get('window');
 
 const ConversationIcon = (style) => <Icon {...style} name="message-circle" />;
 const SettingsIcon = (style) => <Icon {...style} name="settings" />;
@@ -71,7 +67,6 @@ export default withStyles(TabBarComponent, (theme) => ({
   tabBar: {
     borderTopWidth: 1,
     borderTopColor: theme['color-border'],
-    paddingBottom: Platform.OS === 'ios' && height >= 812 ? 12 : 0,
   },
 
   badgeContainer: (unReadCount) => ({

@@ -1,13 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  View,
-  Image,
-  KeyboardAvoidingView,
-  Dimensions,
-  Platform,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Image, Dimensions, TouchableOpacity, SafeAreaView } from 'react-native';
 import { withStyles } from '@ui-kitten/components';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
@@ -112,10 +105,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
   const { style } = eva;
 
   return (
-    <KeyboardAvoidingView
-      style={style.keyboardView}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      enabled>
+    <SafeAreaView style={style.keyboardView}>
       <ScrollView
         style={{
           height: Dimensions.get('window').height,
@@ -161,7 +151,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
           </View>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

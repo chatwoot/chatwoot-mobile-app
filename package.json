@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "0.0.47",
+  "version": "0.0.48",
   "private": true,
   "scripts": {
     "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",

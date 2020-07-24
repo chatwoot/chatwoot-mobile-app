@@ -702,13 +702,13 @@
 				CODE_SIGN_ENTITLEMENTS = Chatwoot/Chatwoot.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 47;
+				CURRENT_PROJECT_VERSION = 48;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 6C953F3RX2;
 				INFOPLIST_FILE = Chatwoot/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.0.47;
+				MARKETING_VERSION = 0.0.48;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -730,12 +730,12 @@
 				CODE_SIGN_ENTITLEMENTS = Chatwoot/Chatwoot.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 47;
+				CURRENT_PROJECT_VERSION = 48;
 				DEVELOPMENT_TEAM = 6C953F3RX2;
 				INFOPLIST_FILE = Chatwoot/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.0.47;
+				MARKETING_VERSION = 0.0.48;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

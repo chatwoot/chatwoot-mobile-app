@@ -27,12 +27,12 @@ export const getPubSubToken = async () => {
   } catch (error) {}
 };
 
-export const getAccountId = async () => {
+export const getUserDetails = async () => {
   try {
     const state = await store.getState();
     const {
-      user: { account_id: accountId },
+      user: { id: userId, account_id: accountId },
     } = state.auth;
-    return accountId;
+    return { accountId, userId };
   } catch (error) {}
 };

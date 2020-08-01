@@ -12,6 +12,7 @@ import {
   RESET_AUTH,
   SET_LOCALE,
   SET_ACCOUNT,
+  UPDATE_USER,
 } from '../constants/actions';
 import { showToast } from '../helpers/ToastHelper';
 import I18n from '../i18n';
@@ -74,4 +75,17 @@ export const onLogOut = () => async (dispatch) => {
 
 export const setAccount = ({ accountId }) => async (dispatch) => {
   dispatch({ type: SET_ACCOUNT, payload: accountId });
+};
+// Add/Update availability status of agents
+export const addOrUpdateActiveUsers = ({ users }) => async (dispatch, getState) => {
+  const { user: loggedUser } = await getState().auth;
+  Object.keys(users).forEach((user) => {
+    if (parseInt(user) === loggedUser.id) {
+      loggedUser.availability_status = users[user];
+      dispatch({
+        type: UPDATE_USER,
+        payload: loggedUser,
+      });
+    }
+  });
 };

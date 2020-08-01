@@ -51,3 +51,8 @@ export const CONVERSATION_TOGGLE_STATUS = {
   open: 'RESOLVE',
   resolved: 'RE_OPEN',
 };
+
+export const PRESENCE_STATUS_COLORS = {
+  online: '#44ce4b',
+  busy: '#ffc532',
+};

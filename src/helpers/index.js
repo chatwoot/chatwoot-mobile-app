@@ -28,6 +28,26 @@ export function findConversationStatus({ conversationStatus }) {
     : CONVERSATION_STATUS.RESOLVED;
 }
 
+export function checkConversationMatch({
+  assignee,
+  user,
+  assigneeType,
+  status,
+  conversationStatus,
+}) {
+  const { email: userEmail } = user;
+  if (conversationStatus !== status) {
+    return false;
+  }
+  if (!assignee && assigneeType !== 1) {
+    return false;
+  }
+  if (assignee && assignee.email && userEmail !== assignee.email && assigneeType === 0) {
+    return false;
+  }
+  return true;
+}
+
 export function getUserInitial({ userName }) {
   const parts = userName ? userName.split(/[ -]/) : [];
   let initials = '';

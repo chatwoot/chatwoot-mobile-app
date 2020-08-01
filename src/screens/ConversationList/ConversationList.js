@@ -219,7 +219,7 @@ class ConversationListComponent extends Component {
             this.myFlatListRef = ref;
           }}
           onEndReached={this.onEndReached.bind(this)}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={10}
           onMomentumScrollBegin={() => {
             this.setState({
               onEndReachedCalledDuringMomentum: false,

@@ -65,6 +65,7 @@ class SettingsComponent extends Component {
       navigate: PropTypes.func.isRequired,
     }).isRequired,
     onLogOut: PropTypes.func,
+    availabilityStatus: PropTypes.string,
   };
 
   static defaultProps = {
@@ -104,6 +105,7 @@ class SettingsComponent extends Component {
     const {
       user: { email, name, avatar_url, accounts },
       eva: { style, theme },
+      availabilityStatus,
     } = this.props;
 
     // Show  switch account option only if number of accounts is greater than one
@@ -120,6 +122,7 @@ class SettingsComponent extends Component {
             userName={name}
             thumbnail={avatar_url}
             defaultBGColor={theme['color-primary-default']}
+            availabilityStatus={availabilityStatus}
           />
           <View style={style.detailsContainer}>
             <CustomText style={style.nameLabel}>{name}</CustomText>
@@ -160,6 +163,7 @@ function bindAction(dispatch) {
 function mapStateToProps(state) {
   return {
     user: state.auth.user,
+    availabilityStatus: state.auth.user ? state.auth.user.availability_status : '',
   };
 }
 

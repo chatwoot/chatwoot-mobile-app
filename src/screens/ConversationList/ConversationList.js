@@ -32,7 +32,7 @@ const LoaderData = new Array(24).fill(0);
 const renderItemLoader = () => <ConversationItemLoader />;
 
 import ActionCable from '../../helpers/ActionCable';
-import { getPubSubToken, getAccountId } from '../../helpers/AuthHelper';
+import { getPubSubToken, getUserDetails } from '../../helpers/AuthHelper';
 import { onLogOut } from '../../actions/auth';
 import HeaderBar from '../../components/HeaderBar';
 import { findUniqueConversations } from '../../helpers';
@@ -111,10 +111,10 @@ class ConversationListComponent extends Component {
 
   initActionCable = async () => {
     const pubSubToken = await getPubSubToken();
-    const accountId = await getAccountId();
+    const { accountId, userId } = await getUserDetails();
     const { webSocketUrl } = this.props;
 
-    ActionCable.init({ pubSubToken, webSocketUrl, accountId });
+    ActionCable.init({ pubSubToken, webSocketUrl, accountId, userId });
   };
 
   loadConversations = () => {

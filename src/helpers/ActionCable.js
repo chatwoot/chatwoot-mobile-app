@@ -5,13 +5,16 @@ import {
   addMessageToConversation,
   addUserTypingToConversation,
   removeUserFromTypingConversation,
+  addOrUpdateActiveContacts,
 } from '../actions/conversation';
+
+import { addOrUpdateActiveUsers } from '../actions/auth';
 
 import { store } from '../store';
 
 class ActionCableConnector extends BaseActionCableConnector {
-  constructor(pubsubToken, webSocketUrl, accountId) {
-    super(pubsubToken, webSocketUrl, accountId);
+  constructor(pubsubToken, webSocketUrl, accountId, userId) {
+    super(pubsubToken, webSocketUrl, accountId, userId);
     this.CancelTyping = [];
     this.events = {
       'conversation.opened': this.onConversationStatusChange,
@@ -20,6 +23,7 @@ class ActionCableConnector extends BaseActionCableConnector {
       'conversation.created': this.onConversationCreated,
       'conversation.typing_on': this.onTypingOn,
       'conversation.typing_off': this.onTypingOff,
+      'presence.update': this.onPresenceUpdate,
     };
   }
 
@@ -75,6 +79,18 @@ class ActionCableConnector extends BaseActionCableConnector {
       this.CancelTyping[conversationId] = null;
     }
   };
+  onPresenceUpdate = ({ contacts, users }) => {
+    store.dispatch(
+      addOrUpdateActiveContacts({
+        contacts,
+      }),
+    );
+    store.dispatch(
+      addOrUpdateActiveUsers({
+        users,
+      }),
+    );
+  };
 
   onAssigneeChanged = (payload) => {};
 
@@ -84,8 +100,8 @@ class ActionCableConnector extends BaseActionCableConnector {
 }
 
 export default {
-  init({ pubSubToken, webSocketUrl, accountId }) {
-    const actionCable = new ActionCableConnector(pubSubToken, webSocketUrl, accountId);
+  init({ pubSubToken, webSocketUrl, accountId, userId }) {
+    const actionCable = new ActionCableConnector(pubSubToken, webSocketUrl, accountId, userId);
 
     return actionCable;
   },

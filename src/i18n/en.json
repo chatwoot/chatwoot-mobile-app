@@ -85,6 +85,11 @@
     "MARK_ALL": "Mark all as read",
     "CANCEL": "Cancel"
   },
+  "AVAILABILITY": {
+    "ONLINE": "Online",
+    "BUSY": "Busy",
+    "OFFLINE": "Offline"
+  },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Notification Preference",
     "EMAIL": "Email",

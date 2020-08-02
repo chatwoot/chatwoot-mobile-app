@@ -24,7 +24,7 @@ const AvailabilityScreenComponent = ({ eva: { style }, navigation }) => {
   const dispatch = useDispatch();
 
   const onCheckedChange = ({ item }) => {
-    setAvailabilityStatus(AVAILABILITY_TYPES[item]);
+    setAvailabilityStatus(item);
   };
 
   const goBack = () => {
@@ -48,7 +48,7 @@ const AvailabilityScreenComponent = ({ eva: { style }, navigation }) => {
               key={item}
               item={item}
               title={AVAILABILITY_TYPES[item]}
-              isChecked={availabilityStatus === AVAILABILITY_TYPES[item] ? true : false}
+              isChecked={availabilityStatus === item ? true : false}
               onCheckedChange={onCheckedChange}
             />
           );

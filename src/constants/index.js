@@ -58,9 +58,9 @@ export const PRESENCE_STATUS_COLORS = {
 };
 
 export const AVAILABILITY_TYPES = {
-  BUSY: 'busy',
-  ONLINE: 'online',
-  OFFLINE: 'offline',
+  online: 'ONLINE',
+  busy: 'BUSY',
+  offline: 'OFFLINE',
 };
 
 export const NOTIFICATION_PREFERENCE_TYPES = {

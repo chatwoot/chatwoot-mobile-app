@@ -232,3 +232,13 @@ export const findUniqueMessages = ({ allMessages }) => {
   }, []);
   return uniqueMessages;
 };
+
+export const addOrRemoveItemFromArray = (array, key) => {
+  const index = array.findIndex((o) => o === key);
+  if (index === -1) {
+    array.push(key);
+  } else {
+    array.splice(index, 1);
+  }
+  return array;
+};

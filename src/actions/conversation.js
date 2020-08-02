@@ -160,12 +160,11 @@ export const addOrUpdateConversation = ({ conversation }) => async (dispatch, ge
     // Check conversation is already exists or not
     const [conversationExists] = payload.filter((c) => c.id === conversation.id);
     let updatedConversations = payload;
-    if (conversationExists) {
-      updatedConversations = payload.filter((c) => c.id !== conversation.id);
-    } else {
+
+    if (!conversationExists) {
       updatedConversations.unshift(conversation);
+      dispatch({ type: UPDATE_CONVERSATION, payload: updatedConversations });
     }
-    dispatch({ type: UPDATE_CONVERSATION, payload: updatedConversations });
   }
 
   dispatch(getAllNotifications({ pageNo: 1 }));

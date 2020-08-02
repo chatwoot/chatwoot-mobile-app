@@ -56,3 +56,16 @@ export const PRESENCE_STATUS_COLORS = {
   online: '#44ce4b',
   busy: '#ffc532',
 };
+
+export const AVAILABILITY_TYPES = {
+  BUSY: 'busy',
+  ONLINE: 'online',
+  OFFLINE: 'offline',
+};
+
+export const NOTIFICATION_PREFERENCE_TYPES = {
+  push_conversation_creation: 'CONVERSATION_CREATE_PUSH',
+  push_conversation_assignment: 'CONVERSATION_ASSIGNEE_PUSH',
+  email_conversation_creation: 'CONVERSATION_CREATE_EMAIL',
+  email_conversation_assignment: 'CONVERSATION_ASSIGNEE_EMAIL',
+};

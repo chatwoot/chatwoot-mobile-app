@@ -162,7 +162,6 @@ const styles = (theme) => ({
   conversationUserNotActive: {
     textTransform: 'capitalize',
     fontSize: theme['font-size-small'],
-    fontWeight: theme['font-medium'],
     paddingTop: 4,
     color: theme['text-basic-color'],
   },

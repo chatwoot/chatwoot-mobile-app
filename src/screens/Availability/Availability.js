@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useState } from 'react';
 import { withStyles } from '@ui-kitten/components';
-import { StackActions } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { SafeAreaView, View } from 'react-native';
 import LoaderButton from '../../components/LoaderButton';
@@ -11,21 +10,29 @@ import i18n from '../../i18n';
 import styles from './Availability.style';
 import AvailabilityItem from '../../components/AvailabilityItem';
 
-import { updateProfile } from '../../actions/auth';
+import { updateAvailabilityStatus } from '../../actions/auth';
 import { AVAILABILITY_TYPES } from '../../constants';
 
 const AvailabilityScreenComponent = ({ eva: { style }, navigation }) => {
   const {
-    user: { availability_status: availabilityStatus },
+    user: { availability_status },
+    isUpdating,
   } = useSelector((state) => state.auth);
+
+  const [availabilityStatus, setAvailabilityStatus] = useState(availability_status);
 
   const dispatch = useDispatch();
 
   const onCheckedChange = ({ item }) => {
-    dispatch(updateProfile());
+    setAvailabilityStatus(AVAILABILITY_TYPES[item]);
   };
 
   const goBack = () => {
+    navigation.goBack();
+  };
+
+  const saveAvailabilityStatus = () => {
+    dispatch(updateAvailabilityStatus({ availability: availabilityStatus }));
     navigation.goBack();
   };
 
@@ -51,8 +58,9 @@ const AvailabilityScreenComponent = ({ eva: { style }, navigation }) => {
         <LoaderButton
           style={style.availabilityButton}
           size="large"
+          loading={isUpdating}
           textStyle={style.availabilityButtonText}
-          onPress={() => navigation.dispatch(StackActions.replace('Tab'))}
+          onPress={saveAvailabilityStatus}
           text={i18n.t('SETTINGS.SUBMIT')}
         />
       </View>

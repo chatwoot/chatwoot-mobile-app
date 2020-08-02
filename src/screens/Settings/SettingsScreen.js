@@ -28,17 +28,31 @@ const settingsData = [
     iconName: 'briefcase-outline',
     itemName: 'switch-account',
   },
+
   {
-    text: 'HELP',
+    text: 'AVAILABILITY',
     checked: true,
-    iconName: 'question-mark-circle-outline',
-    itemName: 'help',
+    iconName: 'radio-outline',
+    itemName: 'availability',
+  },
+
+  {
+    text: 'NOTIFICATION',
+    checked: true,
+    iconName: 'bell-outline',
+    itemName: 'notification',
   },
   {
     text: 'CHANGE_LANGUAGE',
     checked: true,
     iconName: 'globe-outline',
     itemName: 'language',
+  },
+  {
+    text: 'HELP',
+    checked: true,
+    iconName: 'question-mark-circle-outline',
+    itemName: 'help',
   },
   {
     text: 'LOG_OUT',
@@ -90,6 +104,14 @@ class SettingsComponent extends Component {
 
       case 'switch-account':
         navigation.navigate('Account', { accounts });
+        break;
+
+      case 'availability':
+        navigation.navigate('Availability');
+        break;
+
+      case 'notification':
+        navigation.navigate('NotificationPreference', { accounts });
         break;
 
       case 'help':

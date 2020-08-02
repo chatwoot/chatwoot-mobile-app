@@ -21,6 +21,8 @@ import { openURL } from '../../helpers/index.js';
 import { HELP_URL } from '../../constants/url.js';
 import HeaderBar from '../../components/HeaderBar';
 
+import { getNotificationSettings } from '../../actions/settings';
+
 const settingsData = [
   {
     text: 'SWITCH_ACCOUNT',
@@ -80,6 +82,7 @@ class SettingsComponent extends Component {
     }).isRequired,
     onLogOut: PropTypes.func,
     availabilityStatus: PropTypes.string,
+    getNotificationSettings: PropTypes.func,
   };
 
   static defaultProps = {
@@ -121,6 +124,10 @@ class SettingsComponent extends Component {
       default:
         break;
     }
+  };
+
+  componentDidMount = () => {
+    this.props.getNotificationSettings();
   };
 
   render() {
@@ -180,6 +187,7 @@ class SettingsComponent extends Component {
 function bindAction(dispatch) {
   return {
     onLogOut: () => dispatch(onLogOut()),
+    getNotificationSettings: () => dispatch(getNotificationSettings()),
   };
 }
 function mapStateToProps(state) {

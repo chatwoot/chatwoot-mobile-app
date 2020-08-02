@@ -39,7 +39,6 @@ import { findUniqueConversations } from '../../helpers';
 import { clearAllDeliveredNotifications } from '../../helpers/PushHelper';
 import Empty from '../../components/Empty';
 import images from '../../constants/images';
-import { getNotificationSettings } from '../../actions/settings';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -66,7 +65,6 @@ class ConversationListComponent extends Component {
     saveDeviceDetails: PropTypes.func,
     getAllNotifications: PropTypes.func,
     setAssigneeType: PropTypes.func,
-    getNotificationSettings: PropTypes.func,
 
     inboxSelected: PropTypes.shape({
       name: PropTypes.string,
@@ -87,7 +85,7 @@ class ConversationListComponent extends Component {
     loadInitialMessages: () => {},
     selectConversation: () => {},
     setAssigneeType: () => {},
-    getNotificationSettings: () => {},
+
     item: {},
     inboxes: [],
     conversationStatus: 'open',
@@ -105,7 +103,6 @@ class ConversationListComponent extends Component {
     this.props.getInboxes();
     this.loadConversations();
     this.initActionCable();
-    this.props.getNotificationSettings();
     this.props.getAllNotifications({ pageNo: 1 });
     const { pushToken } = this.props;
     this.props.saveDeviceDetails({ token: null });
@@ -365,7 +362,7 @@ function bindAction(dispatch) {
     saveDeviceDetails: ({ token }) => dispatch(saveDeviceDetails({ token })),
     getAllNotifications: ({ pageNo }) => dispatch(getAllNotifications({ pageNo })),
     setAssigneeType: ({ assigneeType }) => dispatch(setAssigneeType({ assigneeType })),
-    getNotificationSettings: () => dispatch(getNotificationSettings()),
+
     onLogOut: () => dispatch(onLogOut()),
   };
 }

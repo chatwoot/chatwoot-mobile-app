@@ -182,7 +182,7 @@ const propTypes = {
 };
 
 const badgePropTypes = {
-  source: PropTypes.string,
+  source: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   size: PropTypes.number,
   badgeStyle: PropTypes.object,
   activeBadgeColor: PropTypes.string,

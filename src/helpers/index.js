@@ -217,10 +217,7 @@ export const findUniqueConversations = ({ payload }) => {
 };
 
 export const findUniqueMessages = ({ allMessages }) => {
-  const completeMessages = []
-    .concat(allMessages)
-    .reverse()
-    .filter((item) => item.content !== '');
+  const completeMessages = [].concat(allMessages).reverse();
 
   const uniqueMessages = completeMessages.reduce((acc, current) => {
     const x = acc.find((item) => item.id === current.id);

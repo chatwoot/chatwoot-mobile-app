@@ -46,19 +46,17 @@ const propTypes = {
   isChecked: PropTypes.bool,
 };
 
-const AvailabilityItemComponent = ({ title, item, onCheckedChange, isChecked, eva: { style } }) => {
-  return (
-    <TouchableOpacity style={style.itemView} onPress={() => onCheckedChange({ item })}>
-      <View style={style.textView}>
-        <CustomText style={style.text}>{title}</CustomText>
-      </View>
+const AvailabilityItemComponent = ({ title, item, onCheckedChange, isChecked, eva: { style } }) => (
+  <TouchableOpacity style={style.itemView} onPress={() => onCheckedChange({ item })}>
+    <View style={style.textView}>
+      <CustomText style={style.text}>{title}</CustomText>
+    </View>
 
-      <View style={style.radioView}>
-        <Radio checked={isChecked} onChange={() => onCheckedChange({ item })} />
-      </View>
-    </TouchableOpacity>
-  );
-};
+    <View style={style.radioView}>
+      <Radio checked={isChecked} onChange={() => onCheckedChange({ item })} />
+    </View>
+  </TouchableOpacity>
+);
 
 AvailabilityItemComponent.propTypes = propTypes;
 

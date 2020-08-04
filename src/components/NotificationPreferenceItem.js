@@ -45,19 +45,17 @@ const NotificationPreferenceItemComponent = ({
   onCheckedChange,
   isChecked,
   eva: { style },
-}) => {
-  return (
-    <TouchableOpacity style={style.itemView} onPress={() => onCheckedChange({ item })}>
-      <View style={style.textView}>
-        <CustomText style={style.text}>{title}</CustomText>
-      </View>
+}) => (
+  <TouchableOpacity style={style.itemView} onPress={() => onCheckedChange({ item })}>
+    <View style={style.textView}>
+      <CustomText style={style.text}>{title}</CustomText>
+    </View>
 
-      <View style={style.radioView}>
-        <CheckBox checked={isChecked} onChange={() => onCheckedChange({ item })} />
-      </View>
-    </TouchableOpacity>
-  );
-};
+    <View style={style.radioView}>
+      <CheckBox checked={isChecked} onChange={() => onCheckedChange({ item })} />
+    </View>
+  </TouchableOpacity>
+);
 
 NotificationPreferenceItemComponent.propTypes = propTypes;
 

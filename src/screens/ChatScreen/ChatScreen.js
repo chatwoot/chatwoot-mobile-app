@@ -132,7 +132,7 @@ class ChatScreenComponent extends Component {
     this.props.loadMessages({ conversationId, beforeId });
 
     this.props.getConversationDetails({ conversationId });
-
+    this.props.markMessagesAsRead({ conversationId });
     this.props.loadCannedResponses();
     markAllMessagesAsRead({ conversationId });
   };

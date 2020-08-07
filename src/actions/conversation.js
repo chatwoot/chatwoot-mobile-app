@@ -303,16 +303,14 @@ export const markMessagesAsRead = ({ conversationId }) => async (dispatch, getSt
   dispatch({ type: MARK_MESSAGES_AS_READ });
   try {
     const apiUrl = `conversations/${conversationId}/update_last_seen`;
-    const agent_last_seen_at = new Date().getTime() / 1000;
-    const response = await axios.post(apiUrl, {
-      agent_last_seen_at,
-    });
 
+    const response = await axios.post(apiUrl);
     dispatch({
       type: MARK_MESSAGES_AS_READ_SUCCESS,
       payload: response.data,
     });
 
+    const agent_last_seen_at = new Date().getTime() / 1000;
     const updatedConversations = payload.map((item) =>
       item.id === conversationId ? { ...item, agent_last_seen_at } : item,
     );

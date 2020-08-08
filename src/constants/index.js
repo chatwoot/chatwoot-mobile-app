@@ -51,3 +51,21 @@ export const CONVERSATION_TOGGLE_STATUS = {
   open: 'RESOLVE',
   resolved: 'RE_OPEN',
 };
+
+export const PRESENCE_STATUS_COLORS = {
+  online: '#44ce4b',
+  busy: '#ffc532',
+};
+
+export const AVAILABILITY_TYPES = {
+  online: 'ONLINE',
+  busy: 'BUSY',
+  offline: 'OFFLINE',
+};
+
+export const NOTIFICATION_PREFERENCE_TYPES = {
+  push_conversation_creation: 'CONVERSATION_CREATE_PUSH',
+  push_conversation_assignment: 'CONVERSATION_ASSIGNEE_PUSH',
+  email_conversation_creation: 'CONVERSATION_CREATE_EMAIL',
+  email_conversation_assignment: 'CONVERSATION_ASSIGNEE_EMAIL',
+};

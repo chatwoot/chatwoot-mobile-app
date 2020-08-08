@@ -132,7 +132,7 @@ class ChatScreenComponent extends Component {
     this.props.loadMessages({ conversationId, beforeId });
 
     this.props.getConversationDetails({ conversationId });
-
+    this.props.markMessagesAsRead({ conversationId });
     this.props.loadCannedResponses();
     markAllMessagesAsRead({ conversationId });
   };
@@ -290,7 +290,8 @@ class ChatScreenComponent extends Component {
 
   setCurrentReadOffset(event) {
     const scrollHight = Math.floor(event.nativeEvent.contentOffset.y);
-    if (scrollHight > 0) {
+
+    if (scrollHight > 50) {
       this.setState({
         showScrollToButton: false,
       });
@@ -460,7 +461,8 @@ class ChatScreenComponent extends Component {
           <View style={style.chatView}>
             {groupedConversationList.length ? (
               <SectionList
-                scrollEventThrottle={1900}
+                keyboardShouldPersistTaps="never"
+                scrollEventThrottle={16}
                 onScroll={(event) => this.setCurrentReadOffset(event)}
                 ref={(ref) => {
                   this.SectionListReference = ref;
@@ -481,9 +483,7 @@ class ChatScreenComponent extends Component {
                 ListFooterComponent={this.renderMoreLoader}
               />
             ) : null}
-            {showScrollToButton && (
-              <ScrollToBottomButton scrollToBottom={() => this.scrollToBottom()} />
-            )}
+            {showScrollToButton && <ScrollToBottomButton scrollToBottom={this.scrollToBottom} />}
             {isFetching && !groupedConversationList.length && (
               <View style={style.loadMoreSpinnerView}>
                 <Spinner size="medium" />

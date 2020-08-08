@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Tab, TabView, List, Spinner, withStyles } from '@ui-kitten/components';
 
-import { ScrollView, SafeAreaView, View, RefreshControl } from 'react-native';
+import { SafeAreaView, View, RefreshControl } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -32,7 +32,7 @@ const LoaderData = new Array(24).fill(0);
 const renderItemLoader = () => <ConversationItemLoader />;
 
 import ActionCable from '../../helpers/ActionCable';
-import { getPubSubToken, getAccountId } from '../../helpers/AuthHelper';
+import { getPubSubToken, getUserDetails } from '../../helpers/AuthHelper';
 import { onLogOut } from '../../actions/auth';
 import HeaderBar from '../../components/HeaderBar';
 import { findUniqueConversations } from '../../helpers';
@@ -65,6 +65,7 @@ class ConversationListComponent extends Component {
     saveDeviceDetails: PropTypes.func,
     getAllNotifications: PropTypes.func,
     setAssigneeType: PropTypes.func,
+
     inboxSelected: PropTypes.shape({
       name: PropTypes.string,
     }),
@@ -84,6 +85,7 @@ class ConversationListComponent extends Component {
     loadInitialMessages: () => {},
     selectConversation: () => {},
     setAssigneeType: () => {},
+
     item: {},
     inboxes: [],
     conversationStatus: 'open',
@@ -111,10 +113,10 @@ class ConversationListComponent extends Component {
 
   initActionCable = async () => {
     const pubSubToken = await getPubSubToken();
-    const accountId = await getAccountId();
+    const { accountId, userId } = await getUserDetails();
     const { webSocketUrl } = this.props;
 
-    ActionCable.init({ pubSubToken, webSocketUrl, accountId });
+    ActionCable.init({ pubSubToken, webSocketUrl, accountId, userId });
   };
 
   loadConversations = () => {
@@ -265,7 +267,7 @@ class ConversationListComponent extends Component {
       <Tab
         title={tabTitle}
         titleStyle={selectedIndex === tabIndex ? style.tabActiveTitle : style.tabNotActiveTitle}>
-        <ScrollView
+        <View
           style={style.tabView}
           refreshControl={
             <RefreshControl onRefresh={this.onRefresh} refreshing={this.state.refreshing} />
@@ -277,7 +279,7 @@ class ConversationListComponent extends Component {
           ) : (
             this.renderEmptyList()
           )}
-        </ScrollView>
+        </View>
       </Tab>
     );
   };
@@ -360,6 +362,7 @@ function bindAction(dispatch) {
     saveDeviceDetails: ({ token }) => dispatch(saveDeviceDetails({ token })),
     getAllNotifications: ({ pageNo }) => dispatch(getAllNotifications({ pageNo })),
     setAssigneeType: ({ assigneeType }) => dispatch(setAssigneeType({ assigneeType })),
+
     onLogOut: () => dispatch(onLogOut()),
   };
 }

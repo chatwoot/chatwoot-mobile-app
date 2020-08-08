@@ -8,6 +8,10 @@ import {
   RESET_PASSWORD,
   RESET_AUTH,
   SET_ACCOUNT,
+  UPDATE_USER,
+  UPDATE_ACTIVITY_STATUS,
+  UPDATE_ACTIVITY_STATUS_SUCCESS,
+  UPDATE_ACTIVITY_STATUS_ERROR,
 } from '../constants/actions';
 
 export const initialState = {
@@ -16,6 +20,7 @@ export const initialState = {
   isLoggedIn: false,
   isLoggingIn: false,
   isResettingPassword: false,
+  isUpdating: true,
   error: {},
   success: {},
 };
@@ -79,6 +84,37 @@ export default (state = initialState, action) => {
           account_id: action.payload,
         },
       };
+
+    case UPDATE_USER:
+      return {
+        ...state,
+        user: action.payload,
+      };
+
+    case UPDATE_ACTIVITY_STATUS: {
+      return {
+        ...state,
+        isUpdating: true,
+      };
+    }
+
+    case UPDATE_ACTIVITY_STATUS_SUCCESS: {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          availability_status: action.payload,
+        },
+        isUpdating: false,
+      };
+    }
+
+    case UPDATE_ACTIVITY_STATUS_ERROR: {
+      return {
+        ...state,
+        isUpdating: false,
+      };
+    }
 
     default:
       return state;

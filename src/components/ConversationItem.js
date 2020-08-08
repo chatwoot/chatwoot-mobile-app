@@ -26,6 +26,7 @@ const propTypes = {
       sender: PropTypes.shape({
         name: PropTypes.string,
         thumbnail: PropTypes.string,
+        availability_status: PropTypes.string,
       }),
       channel: PropTypes.string,
     }),
@@ -44,7 +45,7 @@ const ConversationItemComponent = ({
 
   const {
     meta: {
-      sender: { name, thumbnail },
+      sender: { name, thumbnail, availability_status: availabilityStatus },
       channel,
     },
     messages,
@@ -63,6 +64,8 @@ const ConversationItemComponent = ({
     conversationId: id,
   });
 
+  const isActive = availabilityStatus === 'online' ? true : false;
+
   return (
     <TouchableOpacity
       activeOpacity={0.5}
@@ -75,6 +78,8 @@ const ConversationItemComponent = ({
             userName={name}
             defaultBGColor={theme['color-primary-default']}
             channel={channel}
+            isActive={isActive}
+            availabilityStatus={availabilityStatus}
           />
         </View>
         <View>
@@ -157,7 +162,6 @@ const styles = (theme) => ({
   conversationUserNotActive: {
     textTransform: 'capitalize',
     fontSize: theme['font-size-small'],
-    fontWeight: theme['font-medium'],
     paddingTop: 4,
     color: theme['text-basic-color'],
   },

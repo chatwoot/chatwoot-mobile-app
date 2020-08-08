@@ -4,6 +4,12 @@ import {
   SET_URL_ERROR,
   RESET_SETTINGS,
   SET_LOCALE,
+  GET_NOTIFICATION_SETTINGS,
+  GET_NOTIFICATION_SETTINGS_SUCCESS,
+  GET_NOTIFICATION_SETTINGS_ERROR,
+  UPDATE_NOTIFICATION_SETTINGS,
+  UPDATE_NOTIFICATION_SETTINGS_SUCCESS,
+  UPDATE_NOTIFICATION_SETTINGS_ERROR,
 } from '../constants/actions';
 const initialState = {
   installationUrl: null,
@@ -12,6 +18,8 @@ const initialState = {
   isSettingUrl: false,
   localeValue: 'en',
   isLocaleSet: false,
+  notificationSettings: {},
+  isUpdating: false,
   error: {},
 };
 export default (state = initialState, action) => {
@@ -46,6 +54,51 @@ export default (state = initialState, action) => {
 
     case RESET_SETTINGS:
       return initialState;
+
+    case GET_NOTIFICATION_SETTINGS: {
+      return {
+        ...state,
+      };
+    }
+
+    case GET_NOTIFICATION_SETTINGS_SUCCESS: {
+      return {
+        ...state,
+        notificationSettings: action.payload,
+      };
+    }
+
+    case GET_NOTIFICATION_SETTINGS_ERROR: {
+      return {
+        ...state,
+        isFetching: false,
+        notificationSettings: {},
+      };
+    }
+
+    case UPDATE_NOTIFICATION_SETTINGS: {
+      return {
+        ...state,
+        isUpdating: true,
+      };
+    }
+
+    case UPDATE_NOTIFICATION_SETTINGS_SUCCESS: {
+      return {
+        ...state,
+        notificationSettings: action.payload,
+        isUpdating: false,
+      };
+    }
+
+    case UPDATE_NOTIFICATION_SETTINGS_ERROR: {
+      return {
+        ...state,
+        isFetching: false,
+        isUpdating: false,
+        notificationSettings: {},
+      };
+    }
 
     default:
       return state;

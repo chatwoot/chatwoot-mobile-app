@@ -217,10 +217,7 @@ export const findUniqueConversations = ({ payload }) => {
 };
 
 export const findUniqueMessages = ({ allMessages }) => {
-  const completeMessages = []
-    .concat(allMessages)
-    .reverse()
-    .filter((item) => item.content !== '');
+  const completeMessages = [].concat(allMessages).reverse();
 
   const uniqueMessages = completeMessages.reduce((acc, current) => {
     const x = acc.find((item) => item.id === current.id);
@@ -231,4 +228,14 @@ export const findUniqueMessages = ({ allMessages }) => {
     }
   }, []);
   return uniqueMessages;
+};
+
+export const addOrRemoveItemFromArray = (array, key) => {
+  const index = array.findIndex((o) => o === key);
+  if (index === -1) {
+    array.push(key);
+  } else {
+    array.splice(index, 1);
+  }
+  return array;
 };

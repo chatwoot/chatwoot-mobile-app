@@ -1,3 +1,5 @@
+const lodashFilter = require('lodash.filter');
+
 import {
   GET_CONVERSATION,
   GET_CONVERSATION_ERROR,
@@ -27,6 +29,7 @@ import {
   ADD_MESSAGE,
   SET_ASSIGNEE_TYPE,
   SET_CONVERSATION_META,
+  UPDATE_SINGLE_CONVERSATION,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -157,12 +160,11 @@ export const addOrUpdateConversation = ({ conversation }) => async (dispatch, ge
     // Check conversation is already exists or not
     const [conversationExists] = payload.filter((c) => c.id === conversation.id);
     let updatedConversations = payload;
-    if (conversationExists) {
-      updatedConversations = payload.filter((c) => c.id !== conversation.id);
-    } else {
+
+    if (!conversationExists) {
       updatedConversations.unshift(conversation);
+      dispatch({ type: UPDATE_CONVERSATION, payload: updatedConversations });
     }
-    dispatch({ type: UPDATE_CONVERSATION, payload: updatedConversations });
   }
 
   dispatch(getAllNotifications({ pageNo: 1 }));
@@ -301,16 +303,14 @@ export const markMessagesAsRead = ({ conversationId }) => async (dispatch, getSt
   dispatch({ type: MARK_MESSAGES_AS_READ });
   try {
     const apiUrl = `conversations/${conversationId}/update_last_seen`;
-    const agent_last_seen_at = new Date().getTime();
-    const response = await axios.post(apiUrl, {
-      agent_last_seen_at,
-    });
 
+    const response = await axios.post(apiUrl);
     dispatch({
       type: MARK_MESSAGES_AS_READ_SUCCESS,
       payload: response.data,
     });
 
+    const agent_last_seen_at = new Date().getTime() / 1000;
     const updatedConversations = payload.map((item) =>
       item.id === conversationId ? { ...item, agent_last_seen_at } : item,
     );
@@ -425,4 +425,20 @@ export const toggleConversationStatus = ({ conversationId }) => async (dispatch,
     await axios.post(apiUrl);
     dispatch(getConversationDetails({ conversationId }));
   } catch (error) {}
+};
+
+export const addOrUpdateActiveContacts = ({ contacts }) => async (dispatch, getState) => {
+  const { data } = await getState().conversation;
+  Object.keys(contacts).forEach((contact) => {
+    let conversations = lodashFilter(data.payload, { meta: { sender: { id: parseInt(contact) } } });
+    conversations.forEach((item) => {
+      const updatedConversation = item;
+      updatedConversation.meta.sender.availability = contacts[contact];
+      updatedConversation.meta.sender.availability_status = contacts[contact];
+      dispatch({
+        type: UPDATE_SINGLE_CONVERSATION,
+        payload: updatedConversation,
+      });
+    });
+  });
 };

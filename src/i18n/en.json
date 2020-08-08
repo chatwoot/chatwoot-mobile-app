@@ -91,7 +91,7 @@
     "OFFLINE": "Offline"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preference",
+    "TITLE": "Notification Preferences",
     "EMAIL": "Email",
     "PUSH": "Push",
     "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",

@@ -1,3 +1,5 @@
+const lodashFilter = require('lodash.filter');
+
 import {
   GET_CONVERSATION,
   GET_CONVERSATION_ERROR,
@@ -27,13 +29,14 @@ import {
   ADD_MESSAGE,
   SET_ASSIGNEE_TYPE,
   SET_CONVERSATION_META,
+  UPDATE_SINGLE_CONVERSATION,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
 
 import { getAllNotifications } from './notification';
 
-import { findAssigneeType, findConversationStatus } from '../helpers';
+import { findAssigneeType, findConversationStatus, checkConversationMatch } from '../helpers';
 
 // Load all the conversations
 export const getConversations = ({ assigneeType, pageNumber = 1 }) => async (
@@ -116,16 +119,17 @@ export const getConversationsMeta = () => async (dispatch, getState) => {
   } catch (error) {}
 };
 
-// Set conversation status (Open or Resolved)
+// Set selected conversation status  (Open or Resolved)
 export const setConversationStatus = ({ status }) => async (dispatch) => {
   dispatch({ type: SET_CONVERSATION_STATUS, payload: status });
 };
 
-// Set conversation assignee type (Me, Unassigned, All)
+// Set selected conversation assignee type (Me, Unassigned, All)
 export const setAssigneeType = ({ assigneeType }) => async (dispatch) => {
   dispatch({ type: SET_ASSIGNEE_TYPE, payload: assigneeType });
 };
 
+// Set selected conversation
 export const setConversation = ({ conversationId }) => async (dispatch) => {
   dispatch({ type: SET_CONVERSATION, payload: conversationId });
 };
@@ -135,25 +139,38 @@ export const addOrUpdateConversation = ({ conversation }) => async (dispatch, ge
   const {
     data: { payload },
     conversationStatus,
+    assigneeType,
   } = getState().conversation;
-  const { status } = conversation;
-  // Add only if incoming conversation status matches currently using conversation status (open or resolved)
-  if (conversationStatus === status) {
+  const { user } = getState().auth;
+
+  const {
+    status,
+    meta: { assignee },
+  } = conversation;
+  // Add only if incoming conversation matching the conditions of current selected conversation list [Mine, UnAssigned, All ]
+  // and conversation status should matches to currently using conversation status (open or resolved)
+  const isMatching = checkConversationMatch({
+    assignee,
+    user,
+    assigneeType,
+    conversationStatus,
+    status,
+  });
+  if (isMatching) {
     // Check conversation is already exists or not
     const [conversationExists] = payload.filter((c) => c.id === conversation.id);
     let updatedConversations = payload;
-    if (conversationExists) {
-      updatedConversations = payload.filter((c) => c.id !== conversation.id);
-    } else {
+
+    if (!conversationExists) {
       updatedConversations.unshift(conversation);
+      dispatch({ type: UPDATE_CONVERSATION, payload: updatedConversations });
     }
-    dispatch({ type: UPDATE_CONVERSATION, payload: updatedConversations });
   }
 
   dispatch(getAllNotifications({ pageNo: 1 }));
   setTimeout(() => {
     dispatch(getConversationsMeta());
-  }, 100);
+  }, 10);
 };
 
 // Add new message to a conversation
@@ -163,7 +180,9 @@ export const addMessageToConversation = ({ message }) => async (dispatch, getSta
     selectedConversationId,
     allMessages,
     conversationStatus,
+    assigneeType,
   } = getState().conversation;
+  const { user } = getState().auth;
 
   const { conversation_id, id: messageId } = message;
   const isMessageAlreadyExist = allMessages.find((item) => item.id === messageId);
@@ -183,11 +202,24 @@ export const addMessageToConversation = ({ message }) => async (dispatch, getSta
     return;
   }
   // If conversation is already exist, check the conversation status
-  const { status } = conversation;
+  const {
+    status,
+    meta: { assignee },
+  } = conversation;
 
   let updatedConversations = payload;
 
-  if (status === conversationStatus) {
+  // Add only if incoming conversation matching the conditions of current selected conversation list [Mine, UnAssigned, All ]
+  // and conversation status should matches to currently using conversation status (open or resolved)
+  const isMatching = checkConversationMatch({
+    assignee,
+    user,
+    assigneeType,
+    status,
+    conversationStatus,
+  });
+
+  if (isMatching) {
     const previousMessageIds = chat.messages.map((m) => m.id);
     if (!previousMessageIds.includes(message.id)) {
       chat.messages.push(message);
@@ -203,7 +235,7 @@ export const addMessageToConversation = ({ message }) => async (dispatch, getSta
   dispatch({ type: UPDATE_CONVERSATION, payload: updatedConversations });
   setTimeout(() => {
     dispatch(getConversationsMeta());
-  }, 100);
+  }, 10);
 };
 // Load all the conversation messages
 export const loadMessages = ({ conversationId, beforeId }) => async (dispatch) => {
@@ -271,16 +303,14 @@ export const markMessagesAsRead = ({ conversationId }) => async (dispatch, getSt
   dispatch({ type: MARK_MESSAGES_AS_READ });
   try {
     const apiUrl = `conversations/${conversationId}/update_last_seen`;
-    const agent_last_seen_at = new Date().getTime();
-    const response = await axios.post(apiUrl, {
-      agent_last_seen_at,
-    });
 
+    const response = await axios.post(apiUrl);
     dispatch({
       type: MARK_MESSAGES_AS_READ_SUCCESS,
       payload: response.data,
     });
 
+    const agent_last_seen_at = new Date().getTime() / 1000;
     const updatedConversations = payload.map((item) =>
       item.id === conversationId ? { ...item, agent_last_seen_at } : item,
     );
@@ -390,9 +420,25 @@ export const toggleConversationStatus = ({ conversationId }) => async (dispatch,
     const apiUrl = `conversations/${conversationId}/toggle_status`;
     setTimeout(() => {
       dispatch(getConversationsMeta());
-    }, 100);
+    }, 10);
 
     await axios.post(apiUrl);
     dispatch(getConversationDetails({ conversationId }));
   } catch (error) {}
+};
+
+export const addOrUpdateActiveContacts = ({ contacts }) => async (dispatch, getState) => {
+  const { data } = await getState().conversation;
+  Object.keys(contacts).forEach((contact) => {
+    let conversations = lodashFilter(data.payload, { meta: { sender: { id: parseInt(contact) } } });
+    conversations.forEach((item) => {
+      const updatedConversation = item;
+      updatedConversation.meta.sender.availability = contacts[contact];
+      updatedConversation.meta.sender.availability_status = contacts[contact];
+      dispatch({
+        type: UPDATE_SINGLE_CONVERSATION,
+        payload: updatedConversation,
+      });
+    });
+  });
 };

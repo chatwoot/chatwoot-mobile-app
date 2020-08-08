@@ -55,9 +55,9 @@
     "TYPE_MESSAGE": "Type message",
     "TYPING": "typing",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "RESOLVE":"Resolve conversation",
-    "RE_OPEN":"Reopen conversation",
-    "CANCEL":"Cancel"
+    "RESOLVE": "Resolve conversation",
+    "RE_OPEN": "Reopen conversation",
+    "CANCEL": "Cancel"
   },
   "FILTER": {
     "HEADER_TITLE": "Conversation Filter",
@@ -69,8 +69,8 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "Settings",
-    "AVAILABILITY": "Your Availability",
-    "PUSH": "Push notification",
+    "AVAILABILITY": "Availability",
+    "NOTIFICATION": "Notification Preferences",
     "HELP": "Help Docs",
     "LOG_OUT": "Logout",
     "SWITCH_ACCOUNT": "Switch Account",
@@ -84,6 +84,20 @@
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
     "CANCEL": "Cancel"
+  },
+  "AVAILABILITY": {
+    "ONLINE": "Online",
+    "BUSY": "Busy",
+    "OFFLINE": "Offline"
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "TITLE": "Notification Preferences",
+    "EMAIL": "Email",
+    "PUSH": "Push",
+    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
+    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me"
   },
   "CONVERSATION_DETAILS": {
     "BROWSER": "Browser",

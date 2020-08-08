@@ -6,10 +6,9 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import { getUserInitial } from '../helpers';
 import CustomText from './Text';
-
 import ImageLoader from './ImageLoader';
 
-import { INBOX_IMAGES } from '../constants';
+import { INBOX_IMAGES, PRESENCE_STATUS_COLORS } from '../constants';
 
 const styles = (theme) => ({
   avatar: {
@@ -46,11 +45,14 @@ const styles = (theme) => ({
     position: 'absolute',
     alignSelf: 'flex-end',
   },
+  activeCircle: {
+    borderColor: 'white',
+    borderWidth: 2,
+  },
 });
 
-// eslint-disable-next-line react/prop-types
-const Badge = ({ source, size, badgeStyle }) => {
-  return (
+const Badge = ({ source, size, badgeStyle, activeBadgeColor, activeCircle }) => {
+  return source ? (
     <Image
       style={[
         badgeStyle,
@@ -64,6 +66,22 @@ const Badge = ({ source, size, badgeStyle }) => {
       ]}
       source={source}
     />
+  ) : (
+    <View
+      style={[
+        badgeStyle,
+        activeCircle,
+        {
+          width: size / 4,
+          height: size / 4,
+          borderRadius: size / 4,
+          bottom: size / 32,
+          right: size / 32,
+
+          backgroundColor: activeBadgeColor,
+        },
+      ]}
+    />
   );
 };
 
@@ -74,7 +92,8 @@ const UserAvatar = ({
   fontSize,
   defaultBGColor,
   channel,
-  eva: { style },
+  availabilityStatus,
+  eva: { style, theme },
 }) => {
   const [imageLoading, onLoadImage] = useState(false);
 
@@ -95,8 +114,15 @@ const UserAvatar = ({
         onLoadStart={() => onLoadImage(true)}
         onLoadEnd={() => onLoadImage(false)}
       />
-      {INBOX_IMAGES[channel] && (
-        <Badge source={INBOX_IMAGES[channel]} size={size} badgeStyle={style.badge} />
+
+      {(PRESENCE_STATUS_COLORS[availabilityStatus] || INBOX_IMAGES[channel]) && (
+        <Badge
+          source={INBOX_IMAGES[channel] ? INBOX_IMAGES[channel] : null}
+          size={size}
+          badgeStyle={style.badge}
+          activeBadgeColor={PRESENCE_STATUS_COLORS[availabilityStatus]}
+          activeCircle={style.activeCircle}
+        />
       )}
 
       {imageLoading && (
@@ -128,8 +154,14 @@ const UserAvatar = ({
           {getUserInitial({ userName })}
         </CustomText>
       </LinearGradient>
-      {INBOX_IMAGES[channel] && (
-        <Badge source={INBOX_IMAGES[channel]} size={size} badgeStyle={style.badge} />
+      {(PRESENCE_STATUS_COLORS[availabilityStatus] || INBOX_IMAGES[channel]) && (
+        <Badge
+          source={INBOX_IMAGES[channel] ? INBOX_IMAGES[channel] : null}
+          size={size}
+          badgeStyle={style.badge}
+          activeBadgeColor={PRESENCE_STATUS_COLORS[availabilityStatus]}
+          activeCircle={style.activeCircle}
+        />
       )}
     </View>
   );
@@ -146,6 +178,15 @@ const propTypes = {
     style: PropTypes.object,
     theme: PropTypes.object,
   }).isRequired,
+  availabilityStatus: PropTypes.string,
+};
+
+const badgePropTypes = {
+  source: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  size: PropTypes.number,
+  badgeStyle: PropTypes.object,
+  activeBadgeColor: PropTypes.string,
+  activeCircle: PropTypes.object,
 };
 
 const defaultProps = {
@@ -157,6 +198,7 @@ const defaultProps = {
 
 UserAvatar.defaultProps = defaultProps;
 UserAvatar.propTypes = propTypes;
+Badge.propTypes = badgePropTypes;
 
 UserAvatar.propTypes = propTypes;
 export default withStyles(UserAvatar, styles);

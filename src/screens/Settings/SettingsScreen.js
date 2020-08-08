@@ -21,6 +21,8 @@ import { openURL } from '../../helpers/index.js';
 import { HELP_URL } from '../../constants/url.js';
 import HeaderBar from '../../components/HeaderBar';
 
+import { getNotificationSettings } from '../../actions/settings';
+
 const settingsData = [
   {
     text: 'SWITCH_ACCOUNT',
@@ -28,17 +30,31 @@ const settingsData = [
     iconName: 'briefcase-outline',
     itemName: 'switch-account',
   },
+
   {
-    text: 'HELP',
+    text: 'AVAILABILITY',
     checked: true,
-    iconName: 'question-mark-circle-outline',
-    itemName: 'help',
+    iconName: 'radio-outline',
+    itemName: 'availability',
+  },
+
+  {
+    text: 'NOTIFICATION',
+    checked: true,
+    iconName: 'bell-outline',
+    itemName: 'notification',
   },
   {
     text: 'CHANGE_LANGUAGE',
     checked: true,
     iconName: 'globe-outline',
     itemName: 'language',
+  },
+  {
+    text: 'HELP',
+    checked: true,
+    iconName: 'question-mark-circle-outline',
+    itemName: 'help',
   },
   {
     text: 'LOG_OUT',
@@ -65,6 +81,8 @@ class SettingsComponent extends Component {
       navigate: PropTypes.func.isRequired,
     }).isRequired,
     onLogOut: PropTypes.func,
+    availabilityStatus: PropTypes.string,
+    getNotificationSettings: PropTypes.func,
   };
 
   static defaultProps = {
@@ -91,6 +109,14 @@ class SettingsComponent extends Component {
         navigation.navigate('Account', { accounts });
         break;
 
+      case 'availability':
+        navigation.navigate('Availability');
+        break;
+
+      case 'notification':
+        navigation.navigate('NotificationPreference', { accounts });
+        break;
+
       case 'help':
         openURL({ URL: HELP_URL });
         break;
@@ -100,10 +126,15 @@ class SettingsComponent extends Component {
     }
   };
 
+  componentDidMount = () => {
+    this.props.getNotificationSettings();
+  };
+
   render() {
     const {
       user: { email, name, avatar_url, accounts },
       eva: { style, theme },
+      availabilityStatus,
     } = this.props;
 
     // Show  switch account option only if number of accounts is greater than one
@@ -120,6 +151,7 @@ class SettingsComponent extends Component {
             userName={name}
             thumbnail={avatar_url}
             defaultBGColor={theme['color-primary-default']}
+            availabilityStatus={availabilityStatus}
           />
           <View style={style.detailsContainer}>
             <CustomText style={style.nameLabel}>{name}</CustomText>
@@ -155,11 +187,13 @@ class SettingsComponent extends Component {
 function bindAction(dispatch) {
   return {
     onLogOut: () => dispatch(onLogOut()),
+    getNotificationSettings: () => dispatch(getNotificationSettings()),
   };
 }
 function mapStateToProps(state) {
   return {
     user: state.auth.user,
+    availabilityStatus: state.auth.user ? state.auth.user.availability_status : '',
   };
 }
 

@@ -22,6 +22,7 @@ import {
   RESET_USER_TYPING_CONVERSATION,
   SET_ASSIGNEE_TYPE,
   SET_CONVERSATION_META,
+  UPDATE_SINGLE_CONVERSATION,
 } from '../constants/actions';
 
 const initialState = {
@@ -42,6 +43,7 @@ const initialState = {
   conversationDetails: null,
   selectedConversationId: null,
   conversationTypingUsers: {},
+  activeUsers: {},
   assigneeType: 0,
 };
 export default (state = initialState, action) => {
@@ -225,6 +227,17 @@ export default (state = initialState, action) => {
         conversationTypingUsers: {
           ...state.conversationTypingUsers,
           [action.payload.conversationId]: action.payload.users,
+        },
+      };
+    }
+    case UPDATE_SINGLE_CONVERSATION: {
+      return {
+        ...state,
+        data: {
+          meta: state.data.meta,
+          payload: state.data.payload.map((content, i) =>
+            action.payload.id === content.id ? { ...action.payload } : content,
+          ),
         },
       };
     }

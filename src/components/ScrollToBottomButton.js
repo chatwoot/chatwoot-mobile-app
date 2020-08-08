@@ -4,7 +4,7 @@ import { useStyleSheet, StyleService, Icon } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import { theme } from '../theme';
 
-const themedStyles = StyleService.create({
+const styles = StyleService.create({
   button: {
     shadowColor: '#000',
     shadowOffset: {
@@ -31,13 +31,10 @@ const propTypes = {
 };
 
 const ScrollToButton = ({ scrollToBottom }) => {
-  const styles = useStyleSheet(themedStyles);
+  const style = useStyleSheet(styles);
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.95}
-      onPress={scrollToBottom}
-      style={styles.button}>
+    <TouchableOpacity onPress={scrollToBottom} style={style.button} activeOpacity={0.95}>
       <Icon
         name="arrowhead-down-outline"
         width={16}

@@ -19,6 +19,8 @@ import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
 import NotificationScreen from './screens/Notification/NotificationScreen';
 import AccountScreen from './screens/Account/AccountScreen';
+import AvailabilityScreen from './screens/Availability/Availability';
+import NotificationPreference from './screens/NotificationPreference/NotificationPreference';
 import ConversationDetailsScreen from './screens/ConversationDetails/ConversationDetailsScreen';
 import i18n from './i18n';
 import { navigationRef } from './helpers/NavigationHelper';
@@ -168,6 +170,8 @@ const App = ({ eva: { style } }) => {
                 <Stack.Screen name="Language" component={LanguageScreen} />
                 <Stack.Screen name="Account" component={AccountScreen} />
                 <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
+                <Stack.Screen name="Availability" component={AvailabilityScreen} />
+                <Stack.Screen name="NotificationPreference" component={NotificationPreference} />
               </Fragment>
             ) : (
               <Fragment>

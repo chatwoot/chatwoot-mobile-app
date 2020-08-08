@@ -129,7 +129,12 @@ const propTypes = {
   }).isRequired,
   type: PropTypes.string,
   showAttachment: PropTypes.func,
-  attachment: PropTypes.shape({}),
+  attachment: PropTypes.arrayOf(
+    PropTypes.shape({
+      file_type: PropTypes.string,
+      data_url: PropTypes.string,
+    }),
+  ),
 };
 
 const FileIcon = (style) => {

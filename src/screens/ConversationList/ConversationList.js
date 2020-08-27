@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Tab, TabView, List, Spinner, withStyles } from '@ui-kitten/components';
 
-import { SafeAreaView, View, RefreshControl } from 'react-native';
+import { SafeAreaView, View, RefreshControl, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -267,7 +267,7 @@ class ConversationListComponent extends Component {
       <Tab
         title={tabTitle}
         titleStyle={selectedIndex === tabIndex ? style.tabActiveTitle : style.tabNotActiveTitle}>
-        <View
+        <ScrollView
           style={style.tabView}
           refreshControl={
             <RefreshControl onRefresh={this.onRefresh} refreshing={this.state.refreshing} />
@@ -279,7 +279,7 @@ class ConversationListComponent extends Component {
           ) : (
             this.renderEmptyList()
           )}
-        </View>
+        </ScrollView>
       </Tab>
     );
   };

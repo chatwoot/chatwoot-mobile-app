@@ -120,6 +120,9 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
         message.private && {
           backgroundColor: theme['color-background-activity'],
           color: theme['text-basic-color'],
+          borderWidth: 1,
+          borderColor: theme['color-border-activity'],
+          padding: 12,
         },
       ]}
       activeOpacity={0.95}>

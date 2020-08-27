@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { View, StatusBar, Animated, Easing } from 'react-native';
+import { SafeAreaView, StatusBar, Animated, Easing } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import { withStyles } from '@ui-kitten/components';
 
@@ -85,12 +85,12 @@ class OfflineBar extends Component {
     const { isConnected } = this.state;
 
     return !isConnected ? (
-      <View style={style.container}>
+      <SafeAreaView style={style.container}>
         <StatusBar backgroundColor={theme['color-danger-800']} />
         <Animated.Text style={[style.offlineText, animationStyle]}>
           {i18n.t('ERRORS.OfFLINE')}
         </Animated.Text>
-      </View>
+      </SafeAreaView>
     ) : null;
   }
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-import { View, Image, KeyboardAvoidingView, Dimensions, Platform } from 'react-native';
+import { View, Image, SafeAreaView, Dimensions, Platform } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { withStyles } from '@ui-kitten/components';
 import t from 'tcomb-form-native';
@@ -81,7 +81,7 @@ const ConfigureURLScreenComponent = ({ eva }) => {
   };
 
   return (
-    <KeyboardAvoidingView
+    <SafeAreaView
       style={style.keyboardView}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       enabled>
@@ -117,7 +117,7 @@ const ConfigureURLScreenComponent = ({ eva }) => {
           </View>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

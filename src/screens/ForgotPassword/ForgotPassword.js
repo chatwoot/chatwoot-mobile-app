@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { View, SafeAreaView, Image } from 'react-native';
+import { View, SafeAreaView, Image, ScrollView } from 'react-native';
 import { TopNavigation, TopNavigationAction, withStyles } from '@ui-kitten/components';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
@@ -100,41 +100,43 @@ const ForgotPasswordComponent = ({ eva, navigation }) => {
         title={i18n.t('FORGOT_PASSWORD.HEADER_TITLE')}
         accessoryLeft={renderLeftControl}
       />
-      <View style={style.logoView}>
-        <Image style={style.logo} source={images.forgotPassword} />
-      </View>
+      <ScrollView>
+        <View style={style.logoView}>
+          <Image style={style.logo} source={images.forgotPassword} />
+        </View>
 
-      <View style={style.titleView}>
-        <CustomText style={style.titleText}>{i18n.t('FORGOT_PASSWORD.TITLE')}</CustomText>
-      </View>
-      <View style={style.titleView}>
-        <CustomText appearance="hint" style={style.subTitleText}>
-          {i18n.t('FORGOT_PASSWORD.SUB_TITLE')}
-        </CustomText>
-      </View>
+        <View style={style.titleView}>
+          <CustomText style={style.titleText}>{i18n.t('FORGOT_PASSWORD.TITLE')}</CustomText>
+        </View>
+        <View style={style.titleView}>
+          <CustomText appearance="hint" style={style.subTitleText}>
+            {i18n.t('FORGOT_PASSWORD.SUB_TITLE')}
+          </CustomText>
+        </View>
 
-      <View style={style.contentView}>
-        <View style={style.formView}>
-          <Form
-            ref={inputRef}
-            type={LoginForm}
-            options={options}
-            value={values}
-            onChange={(value) => onChange(value)}
-          />
-
-          <View style={style.forgotButtonView}>
-            <LoaderButton
-              style={style.forgotButton}
-              loading={isResettingPassword}
-              onPress={() => doResetPassword()}
-              size="large"
-              text={i18n.t('FORGOT_PASSWORD.RESET_HERE')}
-              textStyle={style.forgotButtonText}
+        <View style={style.contentView}>
+          <View style={style.formView}>
+            <Form
+              ref={inputRef}
+              type={LoginForm}
+              options={options}
+              value={values}
+              onChange={(value) => onChange(value)}
             />
+
+            <View style={style.forgotButtonView}>
+              <LoaderButton
+                style={style.forgotButton}
+                loading={isResettingPassword}
+                onPress={() => doResetPassword()}
+                size="large"
+                text={i18n.t('FORGOT_PASSWORD.RESET_HERE')}
+                textStyle={style.forgotButtonText}
+              />
+            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

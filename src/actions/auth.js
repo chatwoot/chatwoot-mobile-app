@@ -1,6 +1,6 @@
 import APIHelper from '../helpers/APIHelper';
 import axios from 'axios';
-// import * as Sentry from '@sentry/react-native';
+import * as Sentry from '@sentry/react-native';
 import {
   LOGIN,
   LOGIN_ERROR,

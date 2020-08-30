@@ -33,7 +33,7 @@ export const doLogin = ({ email, password }) => async (dispatch) => {
     const { name: username, id, account_id } = data;
     // Check user has any account
     if (account_id) {
-      // Sentry.setUser({ email, username, id });
+      Sentry.setUser({ email, username, id });
       dispatch({ type: SET_AUTH_HEADER, payload: response.headers });
       dispatch({ type: LOGIN_SUCCESS, payload: data });
     } else {

@@ -134,8 +134,8 @@ android {
         applicationId "com.chatwoot.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 51
-        versionName "0.0.51"
+        versionCode 52
+        versionName "0.0.52"
         multiDexEnabled true 
     }
     splits {
@@ -204,8 +204,6 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.8.0'
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

@@ -368,7 +368,11 @@ class ChatScreenComponent extends Component {
           />
           <View style={style.titleView}>
             <View>
-              <CustomText style={style.headerTitle}>{senderDetails.name}</CustomText>
+              <CustomText style={style.headerTitle}>
+                {senderDetails.name.length > 24
+                  ? ` ${senderDetails.name.substring(0, 20)}...`
+                  : ` ${senderDetails.name}`}
+              </CustomText>
             </View>
             {typingUser ? (
               <View>

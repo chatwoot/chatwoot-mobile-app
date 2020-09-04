@@ -76,6 +76,13 @@ const styles = (theme) => ({
     color: theme['color-gray'],
     fontSize: theme['font-size-extra-extra-small'],
   },
+  privateMessageContainer: {
+    backgroundColor: theme['color-background-activity'],
+    color: theme['text-basic-color'],
+    borderWidth: 1,
+    borderColor: theme['color-border-activity'],
+    padding: 12,
+  },
   privateMessageView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -115,13 +122,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
 
   return (
     <TouchableOpacity
-      style={[
-        messageViewStyle,
-        message.private && {
-          backgroundColor: theme['color-background-activity'],
-          color: theme['text-basic-color'],
-        },
-      ]}
+      style={[messageViewStyle, message.private && style.privateMessageContainer]}
       activeOpacity={0.95}>
       <View>
         {message.private ? (

@@ -27,12 +27,11 @@ const styles = (theme) => ({
   },
 
   nameLabel: {
-    color: theme['color-heading'],
     fontSize: theme['font-size-medium'],
     fontWeight: theme['font-medium'],
   },
   emailLabel: {
-    paddingTop: 8,
+    paddingTop: 4,
     fontSize: theme['font-size-small'],
     fontWeight: theme['font-regular'],
     color: theme['text-basic-color'],

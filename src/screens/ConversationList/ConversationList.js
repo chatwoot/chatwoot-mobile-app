@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Tab, TabView, List, Spinner, withStyles } from '@ui-kitten/components';
 
-import { SafeAreaView, View, RefreshControl } from 'react-native';
+import { SafeAreaView, View, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -213,7 +213,9 @@ class ConversationListComponent extends Component {
     const uniqueConversations = findUniqueConversations({ payload });
     return (
       <Layout style={style.tabContainer}>
-        <List
+        <FlatList
+          onRefresh={() => this.onRefresh()}
+          refreshing={this.state.refreshing}
           keyboardShouldPersistTaps="handled"
           data={uniqueConversations}
           renderItem={this.renderItem}
@@ -221,7 +223,7 @@ class ConversationListComponent extends Component {
             this.myFlatListRef = ref;
           }}
           onEndReached={this.onEndReached.bind(this)}
-          onEndReachedThreshold={10}
+          onEndReachedThreshold={0.01}
           onMomentumScrollBegin={() => {
             this.setState({
               onEndReachedCalledDuringMomentum: false,
@@ -267,11 +269,7 @@ class ConversationListComponent extends Component {
       <Tab
         title={tabTitle}
         titleStyle={selectedIndex === tabIndex ? style.tabActiveTitle : style.tabNotActiveTitle}>
-        <View
-          style={style.tabView}
-          refreshControl={
-            <RefreshControl onRefresh={this.onRefresh} refreshing={this.state.refreshing} />
-          }>
+        <View style={style.tabView}>
           {!isFetching || payload.length ? (
             <React.Fragment>
               {payload && payload.length ? this.renderList() : this.renderEmptyMessage()}

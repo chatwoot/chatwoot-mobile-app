@@ -82,9 +82,15 @@ class ConversationDetailsComponent extends Component {
             <CustomText style={style.emailLabel}>{email}</CustomText>
           </View>
         )}
-        {senderAdditionalInfo && senderAdditionalInfo.description && (
+
+        {senderAdditionalInfo && senderAdditionalInfo.description !== '' && (
           <View style={style.descriptionContainer}>
             <CustomText style={style.description}>{senderAdditionalInfo.description}</CustomText>
+          </View>
+        )}
+        {senderAdditionalInfo && senderAdditionalInfo.location !== '' && (
+          <View style={style.descriptionContainer}>
+            <CustomText style={style.description}>{senderAdditionalInfo.location}</CustomText>
           </View>
         )}
 

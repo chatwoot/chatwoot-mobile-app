@@ -20,19 +20,19 @@
 
 - Do not miss out on the new customers
 - Follow up on customer conversations on go
+- Reply easily with canned responses
 - Receive realtime notifications about system activities
 - Communicate with other team members via private notes
 - Assign statuses to your conversations
   ... and more to come!
 
 <p float="left">
-  <img src=".github/login.png" alt="screenshot-1" width="250">
-  <img src=".github/list.png" alt="screenshot-2" width="250">
-  <img src=".github/chat.png" alt="screenshot-3"width="250">
-  <img src=".github/details.png" alt="screenshot-3"width="250">
-  <img src=".github/filter.png" alt="screenshot-4" width="250">
-  <img src=".github/settings.png" alt="screenshot-5"width="250">
-  
+  <img src=".github/conversation.png" alt="conversations" width="250">
+  <img src=".github/chat.png" alt="chat" width="250">
+  <img src=".github/details.png" alt="details"width="250">
+  <img src=".github/filter.png" alt="filter" width="250">
+  <img src=".github/notification.png" alt="notification"width="250">
+  <img src=".github/settings.png" alt="settings"width="250">
 </p>
 
 ## Download Android/iOS application

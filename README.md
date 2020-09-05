@@ -29,7 +29,6 @@
 <p float="left">
   <img src=".github/conversation.png" alt="conversations" width="250">
   <img src=".github/chat.png" alt="chat" width="250">
-  <img src=".github/canned.png" alt="canned"width="250">
   <img src=".github/details.png" alt="details"width="250">
   <img src=".github/filter.png" alt="filter" width="250">
   <img src=".github/notification.png" alt="notification"width="250">

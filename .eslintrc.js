@@ -7,4 +7,12 @@ module.exports = {
     'prettier/prettier': 'off',
     radix: 'off',
   },
+  overrides: [
+    {
+      files: ['e2e/*.e2e.js'],
+      rules: {
+        'no-undef': 'off',
+      },
+    },
+  ],
 };

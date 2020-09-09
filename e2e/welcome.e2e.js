@@ -1,3 +1,5 @@
+/* eslint-env detox/detox, jest */
+
 describe('Example', () => {
   beforeEach(async () => {
     await device.reloadReactNative();

@@ -4,7 +4,8 @@
   "configurations": {
     "ios": {
       "type": "ios.simulator",
-      "binaryPath": "/Users/artem.rufanov/Library/Developer/Xcode/DerivedData/Chatwoot-dgttgjlcefsniccfyhgahjfytowa/Build/Products/Debug-iphonesimulator/Chatwoot.app",
+      "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/Chatwoot.app",
+      "build": "xcodebuild -workspace ios/Chatwoot.xcworkspace -scheme Chatwoot -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
       "device": {
         "type": "iPhone 11"
       }

@@ -41,6 +41,7 @@
 - Install simulators: brew install wix/applesimutils
 - Build application: detox build --configuration ios
 - Run tests: detox test --configuration ios --loglevel trace
+- Manage simulators: /usr/bin/xcrun simctl list
 
 
 ## Download Android/iOS application

@@ -13,7 +13,7 @@
     "SETTINGS": "Settings"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Chatwoot installation URL",
+    "ENTER_URL": "Installation URL",
     "URL_ERROR": "Enter a valid URL",
     "CONNECT": "Connect",
     "CHANGE_LANGUAGE": "Change language",

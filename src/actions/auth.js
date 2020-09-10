@@ -87,15 +87,17 @@ export const setAccount = ({ accountId }) => async (dispatch) => {
 // Add/Update availability status of agents
 export const addOrUpdateActiveUsers = ({ users }) => async (dispatch, getState) => {
   const { user: loggedUser } = await getState().auth;
-  Object.keys(users).forEach((user) => {
-    if (parseInt(user) === loggedUser.id) {
-      loggedUser.availability_status = users[user];
-      dispatch({
-        type: UPDATE_USER,
-        payload: loggedUser,
-      });
-    }
-  });
+  if (loggedUser) {
+    Object.keys(users).forEach((user) => {
+      if (parseInt(user) === loggedUser.id) {
+        loggedUser.availability_status = users[user];
+        dispatch({
+          type: UPDATE_USER,
+          payload: loggedUser,
+        });
+      }
+    });
+  }
 };
 
 export const updateAvailabilityStatus = ({ availability }) => async (dispatch) => {

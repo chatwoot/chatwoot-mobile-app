@@ -119,7 +119,7 @@ export const getConversationsMeta = () => async (dispatch, getState) => {
   } catch (error) {}
 };
 
-// Set selected conversation status  (Open or Resolved)
+// Set selected conversation status  (Open or Resolved or Bot)
 export const setConversationStatus = ({ status }) => async (dispatch) => {
   dispatch({ type: SET_CONVERSATION_STATUS, payload: status });
 };

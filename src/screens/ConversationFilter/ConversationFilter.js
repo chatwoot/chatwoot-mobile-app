@@ -32,6 +32,12 @@ const statusOptions = [
     itemType: 'status',
     icon: 'done-all-outline',
   },
+  {
+    name: i18n.t('FILTER.BOT'),
+    key: 'bot',
+    itemType: 'status',
+    icon: 'tv-outline',
+  },
 ];
 
 const propTypes = {

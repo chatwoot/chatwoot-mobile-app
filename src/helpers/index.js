@@ -23,9 +23,18 @@ export function findAssigneeType({ assigneeType }) {
 }
 
 export function findConversationStatus({ conversationStatus }) {
-  return conversationStatus === CONVERSATION_STATUS.OPEN
-    ? CONVERSATION_STATUS.OPEN
-    : CONVERSATION_STATUS.RESOLVED;
+  let status;
+  switch (conversationStatus) {
+    case CONVERSATION_STATUS.OPEN:
+      status = CONVERSATION_STATUS.OPEN;
+      break;
+    case CONVERSATION_STATUS.BOT:
+      status = CONVERSATION_STATUS.BOT;
+      break;
+    default:
+      status = CONVERSATION_STATUS.RESOLVED;
+  }
+  return status;
 }
 
 export function checkConversationMatch({

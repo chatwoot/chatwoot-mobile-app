@@ -3,6 +3,7 @@ import images from './images';
 export const CONVERSATION_STATUS = {
   OPEN: 'open',
   RESOLVED: 'resolved',
+  BOT: 'bot',
 };
 
 export const MESSAGE_TYPES = {

@@ -60,7 +60,9 @@ const LoginScreenComponent = ({ navigation, eva }) => {
         template: (props) => <TextInputField {...props} />,
         keyboardType: 'email-address',
         error: i18n.t('LOGIN.EMAIL_ERROR'),
-        autoCapitalize: 'none',
+
+        autoCompleteType: false,
+        autoCorrect: false,
         config: {
           label: i18n.t('LOGIN.EMAIL'),
         },
@@ -70,6 +72,8 @@ const LoginScreenComponent = ({ navigation, eva }) => {
         template: (props) => <TextInputField {...props} />,
         keyboardType: 'default',
         autoCapitalize: 'none',
+        autoCompleteType: false,
+        autoCorrect: false,
         error: i18n.t('LOGIN.PASSWORD_ERROR'),
         config: {
           label: i18n.t('LOGIN.PASSWORD'),

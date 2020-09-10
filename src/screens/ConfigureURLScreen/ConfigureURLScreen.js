@@ -54,6 +54,8 @@ const ConfigureURLScreenComponent = ({ eva }) => {
         template: (props) => <TextInputField {...props} />,
         error: i18n.t('CONFIGURE_URL.URL_ERROR'),
         autoCapitalize: 'none',
+        autoCompleteType: false,
+        autoCorrect: false,
         config: {
           label: '',
         },

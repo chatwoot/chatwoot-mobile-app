@@ -61,6 +61,8 @@ const ForgotPasswordComponent = ({ eva, navigation }) => {
         keyboardType: 'email-address',
         error: i18n.t('FORGOT_PASSWORD.EMAIL_ERROR'),
         autoCapitalize: 'none',
+        autoCompleteType: false,
+        autoCorrect: false,
         config: {
           label: i18n.t('FORGOT_PASSWORD.EMAIL'),
         },

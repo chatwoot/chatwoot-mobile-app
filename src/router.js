@@ -27,7 +27,7 @@ import { navigationRef } from './helpers/NavigationHelper';
 import { handlePush } from './helpers/PushHelper';
 
 import { doDeepLinking } from './helpers/DeepLinking';
-import { resetConversation } from './actions/conversation';
+import { resetConversation, getConversations } from './actions/conversation';
 import { withStyles } from '@ui-kitten/components';
 
 const Tab = createBottomTabNavigator();
@@ -141,6 +141,9 @@ const App = ({ eva: { style } }) => {
       .then((remoteMessage) => {
         if (remoteMessage) {
           handlePush({ remoteMessage, type: 'quite' });
+          setTimeout(() => {
+            dispatch(getConversations({ assigneeType: 0 }));
+          }, 500);
         }
       });
   }, [dispatch]);

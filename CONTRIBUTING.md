@@ -87,3 +87,35 @@ org.gradle.jvmargs=-Xmx4608m
 ```
 
 - `yarn android`
+
+## Configure and run tests
+
+Add a new brew formula
+
+```
+brew tap wix/brew
+```
+
+Install simulators
+
+```
+brew install wix/applesimutils
+```
+
+Build application:
+
+```
+detox build --configuration ios
+```
+
+Run tests:
+
+```
+detox test --configuration ios --loglevel trace
+```
+
+Manage simulators:
+
+```
+/usr/bin/xcrun simctl list
+```

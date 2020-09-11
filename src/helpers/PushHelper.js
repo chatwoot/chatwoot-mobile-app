@@ -12,12 +12,14 @@ export const handlePush = async ({ remoteMessage, type }) => {
     const state = await store.getState();
     const { isLoggedIn } = state.auth;
     const { notification_type } = pushData;
+
     // Check user is logged or not
     if (
       type !== 'foreground' &&
       isLoggedIn &&
       (notification_type === 'conversation_creation' ||
-        notification_type === 'conversation_assignment')
+        notification_type === 'conversation_assignment' ||
+        notification_type === 'assigned_conversation_new_message')
     ) {
       const {
         primary_actor: { id: conversationId },

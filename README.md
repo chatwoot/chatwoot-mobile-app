@@ -39,6 +39,15 @@
   <img src=".github/settings.png" alt="settings"width="250">
 </p>
 
+## Configure and run tests
+
+- Add a new brew formula: brew tap wix/brew
+- Install simulators: brew install wix/applesimutils
+- Build application: detox build --configuration ios
+- Run tests: detox test --configuration ios --loglevel trace
+- Manage simulators: /usr/bin/xcrun simctl list
+
+
 ## Download Android/iOS application
 
 To help with testing Chatwoot updates before they're released, you can install the Android/iOS beta version.

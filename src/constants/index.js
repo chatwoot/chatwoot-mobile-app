@@ -67,6 +67,8 @@ export const AVAILABILITY_TYPES = {
 export const NOTIFICATION_PREFERENCE_TYPES = {
   push_conversation_creation: 'CONVERSATION_CREATE_PUSH',
   push_conversation_assignment: 'CONVERSATION_ASSIGNEE_PUSH',
+  push_assigned_conversation_new_message: 'CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH',
   email_conversation_creation: 'CONVERSATION_CREATE_EMAIL',
   email_conversation_assignment: 'CONVERSATION_ASSIGNEE_EMAIL',
+  email_assigned_conversation_new_message: 'CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL',
 };

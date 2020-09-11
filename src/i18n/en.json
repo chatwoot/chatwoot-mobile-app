@@ -65,6 +65,7 @@
     "CHOOSE_STATUS": "Conversation Status",
     "OPEN": "Open",
     "RESOLVED": "Resolved",
+    "BOT": "Bot",
     "SUBMIT": "Submit"
   },
   "SETTINGS": {

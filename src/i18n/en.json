@@ -17,7 +17,7 @@
     "URL_ERROR": "Enter a valid URL",
     "CONNECT": "Connect",
     "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid chatwoot installation url"
+    "ERROR": "Invalid installation url"
   },
   "LOGIN": {
     "EMAIL": "Email",

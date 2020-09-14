@@ -91,15 +91,32 @@ org.gradle.jvmargs=-Xmx4608m
 
 ## Testing
 
-### iOS
+Add a new brew formula
 
-- `detox build --configuration ios`
+```
+brew tap wix/brew
+```
 
-- `detox test --configuration ios --loglevel trace`
+Install simulators
 
+```
+brew install wix/applesimutils
+```
 
-### Android
+Build application:
 
-- `detox build --configuration android`
+```
+detox build --configuration ios
+```
 
-- `detox test --configuration android --loglevel trace`
+Run tests:
+
+```
+detox test --configuration ios --loglevel trace
+```
+
+Manage simulators:
+
+```
+/usr/bin/xcrun simctl list
+```

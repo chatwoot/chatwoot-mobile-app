@@ -17,7 +17,7 @@
     "URL_ERROR": "Enter a valid URL",
     "CONNECT": "Connect",
     "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid chatwoot installation url"
+    "ERROR": "Invalid installation url"
   },
   "LOGIN": {
     "EMAIL": "Email",
@@ -97,8 +97,10 @@
     "PUSH": "Push",
     "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
     "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
     "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me"
+    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
   },
   "CONVERSATION_DETAILS": {
     "BROWSER": "Browser",

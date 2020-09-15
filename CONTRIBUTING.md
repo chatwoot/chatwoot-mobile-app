@@ -18,6 +18,7 @@ We use [git-flow](https://nvie.com/posts/a-successful-git-branching-model/) bran
 - [Node.js](https://nodejs.org/en/download/)
 - [Watchman](https://facebook.github.io/watchman/docs/install.html)
 - [Install Yarn](https://yarnpkg.com/en/docs/install)
+- [Install sim utils on MacOS](https://github.com/wix/homebrew-brew)
 - `$ yarn global add react-native-cli`
 
 More information on getting started can be found here: https://facebook.github.io/react-native/docs/getting-started.html under the `React Native CLI Quickstart` tab.
@@ -88,7 +89,7 @@ org.gradle.jvmargs=-Xmx4608m
 
 - `yarn android`
 
-## Configure and run tests
+## Testing
 
 Add a new brew formula
 

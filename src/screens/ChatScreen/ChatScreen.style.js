@@ -27,7 +27,8 @@ const styles = (theme) => ({
   subHeaderTitle: {
     fontSize: theme['font-size-extra-small'],
     color: theme['color-gray'],
-    paddingTop: 1,
+    paddingTop: 4,
+    paddingLeft: 4,
   },
 
   container: {

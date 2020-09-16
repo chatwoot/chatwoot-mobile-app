@@ -290,6 +290,7 @@ export const sendMessage = ({ conversationId, message }) => async (dispatch) => 
       type: SEND_MESSAGE_SUCCESS,
       payload: response.data,
     });
+    dispatch(addMessageToConversation({ message: response.data }));
   } catch (error) {
     dispatch({ type: SEND_MESSAGE_ERROR, payload: error });
   }

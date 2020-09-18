@@ -147,7 +147,7 @@ class SettingsComponent extends Component {
         : settingsData.filter((e) => e.itemName !== 'switch-account');
 
     settingsMenu =
-      appName === '!Chatwoot' ? settingsData : settingsData.filter((e) => e.itemName !== 'help');
+      appName === 'Chatwoot' ? settingsData : settingsData.filter((e) => e.itemName !== 'help');
 
     return (
       <SafeAreaView style={style.container}>

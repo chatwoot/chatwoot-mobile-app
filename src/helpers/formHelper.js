@@ -4,7 +4,6 @@ import validator from 'validator';
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const nameRegex = /^.{2}/;
 const passwordRegex = /^.{6}/;
-// const urlRegex = /^(?:(http|https):\/\/)?(?:[\w-]+\.)+[a-z]{2,6}$/;
 const mobileNumberValidator = (mobileNumber) => {
   const regex = /^(?:(?:\+|0{0,2})91(\s*[-]\s*)?|[0]?)?[789]\d{9}$/g;
   return regex.test(mobileNumber);
@@ -24,8 +23,6 @@ export const isStringName = (name) => {
 export const Name = t.refinement(t.String, (name) => isStringName(name));
 
 export const isStringUrl = (url) => {
-  // const re = urlRegex;
-  // return re.test(url);
   return validator.isURL(url);
 };
 export const URL = t.refinement(t.String, (url) => isStringUrl(url));

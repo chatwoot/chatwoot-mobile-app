@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 import { doLogin, resetAuth } from '../../actions/auth';
 
+import DeviceInfo from 'react-native-device-info';
 import styles from './LoginScreen.style';
 import { Email, Password } from '../../helpers/formHelper';
 import TextInputField from '../../components/TextInputField';
@@ -25,6 +26,8 @@ const LoginForm = t.struct({
   email: Email,
   password: Password,
 });
+
+const appName = DeviceInfo.getApplicationName();
 
 const propTypes = {
   eva: PropTypes.shape({
@@ -144,10 +147,18 @@ const LoginScreenComponent = ({ navigation, eva }) => {
 
           <View>
             <View style={style.accountView}>
-              <TouchableOpacity onPress={() => openURL({ URL: `${installationUrl}${SIGNUP_URL}` })}>
-                <CustomText style={style.textStyle}>{i18n.t('LOGIN.CREATE_ACCOUNT')}</CustomText>
-              </TouchableOpacity>
-              <CustomText style={style.textStyle}>{'   |   '}</CustomText>
+              {appName === 'Chatwoot' && (
+                <>
+                  <TouchableOpacity
+                    onPress={() => openURL({ URL: `${installationUrl}${SIGNUP_URL}` })}>
+                    <CustomText style={style.textStyle}>
+                      {i18n.t('LOGIN.CREATE_ACCOUNT')}
+                    </CustomText>
+                  </TouchableOpacity>
+                  <CustomText style={style.textStyle}>{'   |   '}</CustomText>
+                </>
+              )}
+
               <TouchableOpacity onPress={() => navigate('ConfigureURL')}>
                 <CustomText style={style.textStyle}> {i18n.t('LOGIN.CHANGE_URL')}</CustomText>
               </TouchableOpacity>

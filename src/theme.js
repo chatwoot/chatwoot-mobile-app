@@ -5,7 +5,8 @@ export const theme = {
   'color-primary-default': '#1F93FF',
 
   'color-basic-transparent-300': '$color-primary-500',
-
+  'color-primary-focus': '$color-primary-default',
+  'color-primary-active': '$color-primary-default',
   'color-primary-100': '#D2F2FF',
   'color-primary-200': '#A5E1FF',
   'color-primary-300': '#78CCFF',

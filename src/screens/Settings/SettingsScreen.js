@@ -3,6 +3,7 @@ import { withStyles } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 import { View, Image } from 'react-native';
 import packageFile from '../../../package.json';
@@ -22,6 +23,8 @@ import { HELP_URL } from '../../constants/url.js';
 import HeaderBar from '../../components/HeaderBar';
 
 import { getNotificationSettings } from '../../actions/settings';
+
+const appName = DeviceInfo.getApplicationName();
 
 const settingsData = [
   {
@@ -138,10 +141,13 @@ class SettingsComponent extends Component {
     } = this.props;
 
     // Show  switch account option only if number of accounts is greater than one
-    const settingsMenu =
+    let settingsMenu =
       accounts && accounts.length > 1
         ? settingsData
         : settingsData.filter((e) => e.itemName !== 'switch-account');
+
+    settingsMenu =
+      appName === 'Chatwoot' ? settingsData : settingsData.filter((e) => e.itemName !== 'help');
 
     return (
       <SafeAreaView style={style.container}>

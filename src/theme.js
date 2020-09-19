@@ -5,7 +5,8 @@ export const theme = {
   'color-primary-default': '#1F93FF',
 
   'color-basic-transparent-300': '$color-primary-500',
-
+  'color-primary-focus': '$color-primary-default',
+  'color-primary-active': '$color-primary-default',
   'color-primary-100': '#D2F2FF',
   'color-primary-200': '#A5E1FF',
   'color-primary-300': '#78CCFF',
@@ -92,6 +93,7 @@ export const theme = {
   'color-background-activity': '#fff3d5',
   'color-border-activity': '#ffe5a2',
   'color-message-left': '#3c4858',
+  'item-border-color': '#f0f4f5',
   'color-gray': '#6e6f73',
   'color-background-inbox': '#ebf5ff',
 

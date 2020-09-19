@@ -81,7 +81,7 @@ const styles = (theme) => ({
     color: theme['text-basic-color'],
     borderWidth: 1,
     borderColor: theme['color-border-activity'],
-    padding: 12,
+    padding: 16,
   },
   privateMessageView: {
     flexDirection: 'row',

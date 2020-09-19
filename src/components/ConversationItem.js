@@ -146,8 +146,8 @@ const styles = (theme) => ({
     paddingBottom: 12,
     backgroundColor: theme['background-basic-color-1'],
     marginVertical: 0.5,
-    borderColor: theme['color-border'],
-    borderBottomWidth: 0,
+    borderColor: theme['item-border-color'],
+    borderBottomWidth: 1,
   },
   itemView: {
     flexDirection: 'row',

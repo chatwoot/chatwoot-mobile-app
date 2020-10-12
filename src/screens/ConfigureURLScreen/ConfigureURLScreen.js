@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withStyles } from '@ui-kitten/components';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
+import DeviceInfo from 'react-native-device-info';
 
 import { setInstallationUrl, resetSettings } from '../../actions/settings';
 import styles from './ConfigureURLScreen.style';
@@ -20,6 +21,8 @@ const { Form } = t.form;
 const URLForm = t.struct({
   url: URL,
 });
+
+const appName = DeviceInfo.getApplicationName();
 
 const propTypes = {
   eva: PropTypes.shape({
@@ -44,7 +47,7 @@ const ConfigureURLScreenComponent = ({ eva }) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const [values, setValues] = useState({
-    url: 'app.chatwoot.com',
+    url: appName === 'Chatwoot' ? 'app.chatwoot.com' : null,
   });
 
   const options = {

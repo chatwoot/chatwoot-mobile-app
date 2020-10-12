@@ -22,6 +22,8 @@ import {
 } from '../constants/actions';
 import APIHelper from '../helpers/APIHelper';
 
+import { updateBadgeCount } from '../helpers/PushHelper';
+
 import {
   GET_NOTIFICATION,
   GET_NOTIFICATION_SUCCESS,
@@ -42,6 +44,8 @@ export const getAllNotifications = ({ pageNo = 1 }) => async (dispatch) => {
     const updatedPayload = payload.sort((a, b) => {
       return b.created_at - a.created_at;
     });
+    const { unread_count } = meta;
+    updateBadgeCount({ count: unread_count });
 
     dispatch({
       type: GET_NOTIFICATION_SUCCESS,
@@ -87,6 +91,8 @@ export const markNotificationAsRead = ({ primaryActorId, primaryActorType }) => 
 
     const updatedUnReadCount = unread_count ? unread_count - 1 : unread_count;
 
+    updateBadgeCount({ count: updatedUnReadCount });
+
     dispatch({
       type: UPDATE_ALL_NOTIFICATIONS,
       payload: {
@@ -109,7 +115,7 @@ export const markAllNotificationAsRead = () => async (dispatch, getState) => {
       item.read_at = 'read_at';
       return item;
     });
-
+    updateBadgeCount({ count: 0 });
     dispatch({
       type: UPDATE_ALL_NOTIFICATIONS,
       payload: {

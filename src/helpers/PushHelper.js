@@ -43,8 +43,14 @@ export const handlePush = async ({ remoteMessage, type }) => {
 
 export const clearAllDeliveredNotifications = () => {
   if (Platform.OS === 'android') {
-    // PushNotification.cancelAllLocalNotifications();
   } else {
     PushNotificationIOS.removeAllDeliveredNotifications();
+  }
+};
+
+export const updateBadgeCount = ({ count }) => {
+  if (Platform.OS === 'android') {
+  } else {
+    PushNotificationIOS.setApplicationIconBadgeNumber(count);
   }
 };

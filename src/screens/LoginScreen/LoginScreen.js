@@ -17,7 +17,6 @@ import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import { openURL } from '../../helpers';
 import { SIGNUP_URL } from '../../constants/url';
 import CustomText from '../../components/Text';
 
@@ -100,6 +99,10 @@ const LoginScreenComponent = ({ navigation, eva }) => {
     setValues(value);
   };
 
+  const doSignup = () => {
+    navigation.navigate('WebView', { url: `${installationUrl}${SIGNUP_URL}` });
+  };
+
   const onPress = () => {
     const value = inputRef.current.getValue();
     if (value) {
@@ -149,8 +152,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
             <View style={style.accountView}>
               {appName === 'Chatwoot' && (
                 <>
-                  <TouchableOpacity
-                    onPress={() => openURL({ URL: `${installationUrl}${SIGNUP_URL}` })}>
+                  <TouchableOpacity onPress={doSignup}>
                     <CustomText style={style.textStyle}>
                       {i18n.t('LOGIN.CREATE_ACCOUNT')}
                     </CustomText>

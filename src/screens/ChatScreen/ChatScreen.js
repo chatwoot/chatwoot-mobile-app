@@ -182,15 +182,15 @@ class ChatScreenComponent extends Component {
   };
 
   showAttachment = ({ type, dataUrl }) => {
+    const { navigation } = this.props;
     if (type === 'image') {
-      const { navigation } = this.props;
       navigation.navigate('ImageScreen', {
         imageUrl: dataUrl,
       });
     } else {
       Linking.canOpenURL(dataUrl).then((supported) => {
         if (supported) {
-          Linking.openURL(dataUrl);
+          navigation.navigate('WebView', { url: dataUrl });
         }
       });
     }

@@ -18,7 +18,7 @@ import images from '../../constants/images';
 import styles from './SettingsScreen.style';
 
 import SettingsItem from '../../components/SettingsItem';
-import { openURL } from '../../helpers/index.js';
+
 import { HELP_URL } from '../../constants/url.js';
 import HeaderBar from '../../components/HeaderBar';
 
@@ -121,7 +121,7 @@ class SettingsComponent extends Component {
         break;
 
       case 'help':
-        openURL({ URL: HELP_URL });
+        navigation.navigate('WebView', { url: HELP_URL });
         break;
 
       default:

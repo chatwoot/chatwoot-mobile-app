@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",
@@ -53,6 +53,7 @@
     "react-native-snackbar": "^2.2.3",
     "react-native-splash-screen": "^3.2.0",
     "react-native-svg": "^12.1.0",
+    "react-native-webview": "^10.9.2",
     "react-redux": "^7.2.1",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",

@@ -22,7 +22,7 @@ import AccountScreen from './screens/Account/AccountScreen';
 import AvailabilityScreen from './screens/Availability/Availability';
 import NotificationPreference from './screens/NotificationPreference/NotificationPreference';
 import ConversationDetailsScreen from './screens/ConversationDetails/ConversationDetailsScreen';
-import WebView from './screens/WebView/WebView';
+
 import i18n from './i18n';
 import { navigationRef } from './helpers/NavigationHelper';
 import { handlePush } from './helpers/PushHelper';
@@ -176,7 +176,6 @@ const App = ({ eva: { style } }) => {
                 <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
                 <Stack.Screen name="Availability" component={AvailabilityScreen} />
                 <Stack.Screen name="NotificationPreference" component={NotificationPreference} />
-                <Stack.Screen name="WebView" component={WebView} />
               </Fragment>
             ) : (
               <Fragment>
@@ -184,7 +183,6 @@ const App = ({ eva: { style } }) => {
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="ResetPassword" component={ResetPassword} />
                 <Stack.Screen name="ConversationList" component={ConversationList} />
-                <Stack.Screen name="WebView" component={WebView} />
               </Fragment>
             )}
           </Stack.Navigator>

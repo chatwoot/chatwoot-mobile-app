@@ -7404,6 +7404,11 @@ react-native-reanimated@^1.13.0:
   dependencies:
     fbjs "^1.0.0"
 
+react-native-safari-view@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-safari-view/-/react-native-safari-view-2.1.0.tgz#1e0cd12c62bce79bc1759c7e281646b08b61c959"
+  integrity sha1-HgzRLGK855vBdZx+KBZGsIthyVk=
+
 react-native-safe-area-context@^3.1.7:
   version "3.1.7"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-3.1.7.tgz#fc9e636dfb168f992a2172d363509ce0611a8403"

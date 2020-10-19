@@ -19,6 +19,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import { SIGNUP_URL } from '../../constants/url';
 import CustomText from '../../components/Text';
+import { openURL } from '../../helpers/UrlHelper';
 
 const { Form } = t.form;
 const LoginForm = t.struct({
@@ -100,7 +101,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
   };
 
   const doSignup = () => {
-    navigation.navigate('WebView', { url: `${installationUrl}${SIGNUP_URL}` });
+    openURL({ URL: `${installationUrl}${SIGNUP_URL}` });
   };
 
   const onPress = () => {

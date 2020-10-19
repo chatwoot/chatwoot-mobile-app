@@ -27,6 +27,8 @@ import ChatMessageDate from '../../components/ChatMessageDate';
 import ScrollToBottomButton from '../../components/ScrollToBottomButton';
 import styles from './ChatScreen.style';
 import UserAvatar from '../../components/UserAvatar';
+import { openURL } from '../../helpers/UrlHelper';
+
 import {
   loadMessages,
   sendMessage,
@@ -190,7 +192,7 @@ class ChatScreenComponent extends Component {
     } else {
       Linking.canOpenURL(dataUrl).then((supported) => {
         if (supported) {
-          navigation.navigate('WebView', { url: dataUrl });
+          openURL({ URL: dataUrl });
         }
       });
     }

@@ -4,10 +4,9 @@ import PropTypes from 'prop-types';
 import { withStyles, Icon } from '@ui-kitten/components';
 import Hyperlink from 'react-native-hyperlink';
 
-import { useNavigation } from '@react-navigation/native';
-
 import CustomText from './Text';
 import { messageStamp } from '../helpers/TimeHelper';
+import { openURL } from '../helpers/UrlHelper';
 
 const LockIcon = (style) => {
   return <Icon {...style} name="lock" />;
@@ -116,12 +115,16 @@ const propTypes = {
 };
 
 const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, created_at }) => {
-  const navigation = useNavigation();
-
   const messageViewStyle = type === 'outgoing' ? style.messageRight : style.messageLeft;
   const messageTextStyle =
     type === 'outgoing' ? style.messageContentRight : style.messageContentLeft;
   const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
+
+  const handleURL = ({ URL }) => {
+    if (/\b(http|https)/.test(URL)) {
+      openURL({ URL });
+    }
+  };
 
   return (
     <TouchableOpacity
@@ -143,9 +146,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
             <LockIcon style={style.icon} fill={theme['text-basic-color']} />
           </View>
         ) : (
-          <Hyperlink
-            linkStyle={style.linkStyle}
-            onPress={(url) => navigation.navigate('WebView', { url })}>
+          <Hyperlink linkStyle={style.linkStyle} onPress={(url) => handleURL({ URL: url })}>
             <CustomText style={messageTextStyle}>{message.content}</CustomText>
           </Hyperlink>
         )}

@@ -41,10 +41,8 @@
 
 ## Download Android/iOS application
 
-To help with testing Chatwoot updates before they're released, you can install the Android/iOS beta version.
-
 <p >
-  <a href="https://testflight.apple.com/join/Pt7YxCBh">
+  <a href="https://apps.apple.com/app/id1495796682">
     <img alt="Download on the App Store" title="App Store" src="http://i.imgur.com/0n2zqHD.png" width="140">
   </a>
 

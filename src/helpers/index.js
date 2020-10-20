@@ -1,7 +1,7 @@
 import md5 from 'md5';
 
 import { GRAVATAR_URL } from '../constants/url';
-import { Linking } from 'react-native';
+
 import DateHelper from './DateHelper';
 import { ASSIGNEE_TYPE, CONVERSATION_STATUS } from '../constants';
 
@@ -128,10 +128,6 @@ export const checkImageExist = ({ thumbnail }) => {
     .catch(() => {
       return false;
     });
-};
-
-export const openURL = ({ URL }) => {
-  Linking.openURL(URL);
 };
 
 export const getInboxName = ({ inboxes, inboxId }) => {

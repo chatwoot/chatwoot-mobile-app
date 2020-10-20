@@ -10,16 +10,12 @@ import packageFile from '../../../package.json';
 import UserAvatar from '../../components/UserAvatar';
 import CustomText from '../../components/Text';
 import { onLogOut } from '../../actions/auth';
-
 import i18n from '../../i18n';
-
 import images from '../../constants/images';
-
 import styles from './SettingsScreen.style';
-
 import SettingsItem from '../../components/SettingsItem';
-import { openURL } from '../../helpers/index.js';
 import { HELP_URL } from '../../constants/url.js';
+import { openURL } from '../../helpers/UrlHelper';
 import HeaderBar from '../../components/HeaderBar';
 
 import { getNotificationSettings } from '../../actions/settings';

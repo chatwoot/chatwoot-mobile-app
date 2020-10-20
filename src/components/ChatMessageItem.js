@@ -6,7 +6,7 @@ import Hyperlink from 'react-native-hyperlink';
 
 import CustomText from './Text';
 import { messageStamp } from '../helpers/TimeHelper';
-import { openURL } from '../helpers';
+import { openURL } from '../helpers/UrlHelper';
 
 const LockIcon = (style) => {
   return <Icon {...style} name="lock" />;
@@ -120,6 +120,12 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     type === 'outgoing' ? style.messageContentRight : style.messageContentLeft;
   const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
 
+  const handleURL = ({ URL }) => {
+    if (/\b(http|https)/.test(URL)) {
+      openURL({ URL });
+    }
+  };
+
   return (
     <TouchableOpacity
       style={[messageViewStyle, message.private && style.privateMessageContainer]}
@@ -140,7 +146,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
             <LockIcon style={style.icon} fill={theme['text-basic-color']} />
           </View>
         ) : (
-          <Hyperlink linkStyle={style.linkStyle} onPress={(url) => openURL({ URL: url })}>
+          <Hyperlink linkStyle={style.linkStyle} onPress={(url) => handleURL({ URL: url })}>
             <CustomText style={messageTextStyle}>{message.content}</CustomText>
           </Hyperlink>
         )}

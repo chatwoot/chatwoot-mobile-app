@@ -27,6 +27,8 @@ import ChatMessageDate from '../../components/ChatMessageDate';
 import ScrollToBottomButton from '../../components/ScrollToBottomButton';
 import styles from './ChatScreen.style';
 import UserAvatar from '../../components/UserAvatar';
+import { openURL } from '../../helpers/UrlHelper';
+
 import {
   loadMessages,
   sendMessage,
@@ -182,15 +184,15 @@ class ChatScreenComponent extends Component {
   };
 
   showAttachment = ({ type, dataUrl }) => {
+    const { navigation } = this.props;
     if (type === 'image') {
-      const { navigation } = this.props;
       navigation.navigate('ImageScreen', {
         imageUrl: dataUrl,
       });
     } else {
       Linking.canOpenURL(dataUrl).then((supported) => {
         if (supported) {
-          Linking.openURL(dataUrl);
+          openURL({ URL: dataUrl });
         }
       });
     }

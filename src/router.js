@@ -22,6 +22,7 @@ import AccountScreen from './screens/Account/AccountScreen';
 import AvailabilityScreen from './screens/Availability/Availability';
 import NotificationPreference from './screens/NotificationPreference/NotificationPreference';
 import ConversationDetailsScreen from './screens/ConversationDetails/ConversationDetailsScreen';
+
 import i18n from './i18n';
 import { navigationRef } from './helpers/NavigationHelper';
 import { handlePush } from './helpers/PushHelper';

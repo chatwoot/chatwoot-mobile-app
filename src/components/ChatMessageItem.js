@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Dimensions, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { withStyles, Icon } from '@ui-kitten/components';
+import { withStyles, Icon, Tooltip } from '@ui-kitten/components';
 import Hyperlink from 'react-native-hyperlink';
 
 import CustomText from './Text';
@@ -112,9 +112,18 @@ const propTypes = {
     private: PropTypes.bool,
   }),
   attachment: PropTypes.object,
+  tooltip: PropTypes.bool,
 };
 
-const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, created_at }) => {
+const ChatMessageItemComponent = ({
+  type,
+  message,
+  eva: { style, theme },
+  created_at,
+  tooltip,
+}) => {
+  const { sender } = message;
+  const [visible, setVisible] = React.useState(false);
   const messageViewStyle = type === 'outgoing' ? style.messageRight : style.messageLeft;
   const messageTextStyle =
     type === 'outgoing' ? style.messageContentRight : style.messageContentLeft;
@@ -126,42 +135,51 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     }
   };
 
+  const renderToggleButton = () => {
+    return (
+      <TouchableOpacity
+        style={[messageViewStyle, message.private && style.privateMessageContainer]}
+        onLongPress={() => setVisible(true && tooltip)}
+        onPressOut={() => setVisible(false)}
+        activeOpacity={0.95}>
+        <View>
+          {message.private ? (
+            <View style={style.privateMessageView}>
+              <CustomText
+                style={[
+                  style.messageContentRight,
+                  message.private && {
+                    color: theme['text-basic-color'],
+                  },
+                ]}>
+                {message.content}
+              </CustomText>
+              <LockIcon style={style.icon} fill={theme['text-basic-color']} />
+            </View>
+          ) : (
+            <Hyperlink linkStyle={style.linkStyle} onPress={(url) => handleURL({ URL: url })}>
+              <CustomText style={messageTextStyle}>{message.content}</CustomText>
+            </Hyperlink>
+          )}
+
+          <CustomText
+            style={[
+              dateStyle,
+              message.private && {
+                color: theme['color-gray'],
+              },
+            ]}>
+            {messageStamp({ time: created_at })}
+          </CustomText>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
-    <TouchableOpacity
-      style={[messageViewStyle, message.private && style.privateMessageContainer]}
-      activeOpacity={0.95}>
-      <View>
-        {message.private ? (
-          <View style={style.privateMessageView}>
-            <CustomText
-              style={[
-                style.messageContentRight,
-                message.private && {
-                  color: theme['text-basic-color'],
-                },
-              ]}>
-              {message.content}
-            </CustomText>
-
-            <LockIcon style={style.icon} fill={theme['text-basic-color']} />
-          </View>
-        ) : (
-          <Hyperlink linkStyle={style.linkStyle} onPress={(url) => handleURL({ URL: url })}>
-            <CustomText style={messageTextStyle}>{message.content}</CustomText>
-          </Hyperlink>
-        )}
-
-        <CustomText
-          style={[
-            dateStyle,
-            message.private && {
-              color: theme['color-gray'],
-            },
-          ]}>
-          {messageStamp({ time: created_at })}
-        </CustomText>
-      </View>
-    </TouchableOpacity>
+    <Tooltip anchor={renderToggleButton} visible={visible} placement="top end">
+      {`Sent by: ${sender.name}`}
+    </Tooltip>
   );
 };
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { withStyles } from '@ui-kitten/components';
+import { withStyles, Button, Tooltip } from '@ui-kitten/components';
 
 import CustomText from './Text';
 
@@ -57,13 +57,19 @@ const styles = (theme) => ({
   },
 });
 
-const MessageContentComponent = ({ message, type, showAttachment, created_at }) => {
-  const { attachments } = message;
+const MessageContentComponent = ({ message, type, showAttachment, created_at, tooltip }) => {
+  const { attachments, sender } = message;
 
   return attachments ? (
-    <ChatAttachmentItem attachment={attachments} type={type} showAttachment={showAttachment} />
+    <ChatAttachmentItem
+      attachment={attachments}
+      type={type}
+      showAttachment={showAttachment}
+      name={sender.name}
+      tooltip={tooltip}
+    />
   ) : (
-    <ChatMessageItem message={message} type={type} created_at={created_at} />
+    <ChatMessageItem message={message} type={type} created_at={created_at} tooltip={tooltip} />
   );
 };
 
@@ -76,6 +82,7 @@ const OutGoingMessageComponent = ({ message, created_at, showAttachment }) => (
       created_at={created_at}
       type="outgoing"
       showAttachment={showAttachment}
+      tooltip={true}
     />
   </React.Fragment>
 );
@@ -89,6 +96,7 @@ const IncomingMessageComponent = ({ message, created_at, showAttachment }) => (
       created_at={created_at}
       type="incoming"
       showAttachment={showAttachment}
+      tooltip={false}
     />
   </React.Fragment>
 );

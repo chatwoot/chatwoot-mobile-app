@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, View, Dimensions, Image } from 'react-native';
 import PropTypes from 'prop-types';
-import { withStyles, Icon } from '@ui-kitten/components';
+import { withStyles, Icon, Tooltip } from '@ui-kitten/components';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -135,6 +135,8 @@ const propTypes = {
       data_url: PropTypes.string,
     }),
   ),
+  name: PropTypes.string,
+  tooltip: PropTypes.bool,
 };
 
 const FileIcon = (style) => {
@@ -145,60 +147,79 @@ const ChatAttachmentItemComponent = ({
   type,
   attachment,
   showAttachment,
+  name,
+  tooltip,
   eva: { style, theme },
 }) => {
   const [imageLoading, onLoadImage] = useState(false);
+  const [visible, setVisible] = React.useState(false);
 
   const { file_type: fileType, data_url: dataUrl } = attachment[0];
   const fileName = dataUrl ? dataUrl.split('/').reverse()[0] : '';
 
-  return (
-    <React.Fragment>
-      {fileType !== 'file' ? (
-        <TouchableOpacity
-          onPress={() => showAttachment({ type: 'image', dataUrl })}
-          style={type === 'outgoing' ? style.imageViewRight : style.imageViewLeft}>
-          <Image
-            style={style.image}
-            source={{
-              uri: dataUrl,
-            }}
-            onLoadStart={() => onLoadImage(true)}
-            onLoadEnd={() => {
-              onLoadImage(false);
-            }}
-          />
-          {imageLoading && <ImageLoader style={style.imageLoader} />}
-        </TouchableOpacity>
-      ) : (
-        <View style={type === 'outgoing' ? style.fileViewRight : style.fileViewLeft}>
-          <View style={style.fileAttachmentContainer}>
-            <View style={style.fileAttachmentView}>
-              <View style={style.attachmentIconView}>
-                <FileIcon
-                  fill={
-                    type === 'outgoing' ? theme['color-basic-100'] : theme['color-primary-default']
-                  }
-                />
-              </View>
-              <View style={style.attachmentTexView}>
-                <CustomText
-                  style={type === 'outgoing' ? style.filenameRightText : style.filenameLeftText}>
-                  {fileName.length < 25
-                    ? `${fileName}`
-                    : `...${fileName.substr(fileName.length - 15)}`}
-                </CustomText>
-                <TouchableOpacity onPress={() => showAttachment({ type: 'file', dataUrl })}>
+  const renderToggleButton = () => {
+    return (
+      <View>
+        {fileType !== 'file' ? (
+          <TouchableOpacity
+            onPress={() => showAttachment({ type: 'image', dataUrl })}
+            onLongPress={() => setVisible(true)}
+            onPressOut={() => setVisible(false)}
+            style={type === 'outgoing' ? style.imageViewRight : style.imageViewLeft}>
+            <Image
+              style={style.image}
+              source={{
+                uri: dataUrl,
+              }}
+              onLoadStart={() => onLoadImage(true)}
+              onLoadEnd={() => {
+                onLoadImage(false);
+              }}
+            />
+            {imageLoading && <ImageLoader style={style.imageLoader} />}
+          </TouchableOpacity>
+        ) : (
+          <View style={type === 'outgoing' ? style.fileViewRight : style.fileViewLeft}>
+            <View style={style.fileAttachmentContainer}>
+              <View style={style.fileAttachmentView}>
+                <View style={style.attachmentIconView}>
+                  <FileIcon
+                    fill={
+                      type === 'outgoing'
+                        ? theme['color-basic-100']
+                        : theme['color-primary-default']
+                    }
+                  />
+                </View>
+                <View style={style.attachmentTexView}>
                   <CustomText
-                    style={type === 'outgoing' ? style.downloadRightText : style.downloadLeftText}>
-                    {i18n.t('CONVERSATION.DOWNLOAD')}
+                    style={type === 'outgoing' ? style.filenameRightText : style.filenameLeftText}>
+                    {fileName.length < 25
+                      ? `${fileName}`
+                      : `...${fileName.substr(fileName.length - 15)}`}
                   </CustomText>
-                </TouchableOpacity>
+                  <TouchableOpacity onPress={() => showAttachment({ type: 'file', dataUrl })}>
+                    <CustomText
+                      style={
+                        type === 'outgoing' ? style.downloadRightText : style.downloadLeftText
+                      }>
+                      {i18n.t('CONVERSATION.DOWNLOAD')}
+                    </CustomText>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>
-        </View>
-      )}
+        )}
+      </View>
+    );
+  };
+
+  return (
+    <React.Fragment>
+      <Tooltip anchor={renderToggleButton} visible={visible} placement="top end">
+        {`Sent by: ${name}`}
+      </Tooltip>
     </React.Fragment>
   );
 };

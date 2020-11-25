@@ -1,8 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { Text, TouchableOpacity, Dimensions, View } from 'react-native';
-import { Tooltip } from 'react-native-elements';
 import PropTypes from 'prop-types';
-import { withStyles, Icon } from '@ui-kitten/components';
+import { withStyles, Icon, Tooltip } from '@ui-kitten/components';
 import Hyperlink from 'react-native-hyperlink';
 
 import CustomText from './Text';
@@ -98,6 +97,7 @@ const styles = (theme) => ({
   },
   tooltipText: {
     color: theme['text-tooltip-color'],
+    fontSize: theme['font-size-small'],
   },
 });
 
@@ -123,7 +123,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
   const messageTextStyle =
     type === 'outgoing' ? style.messageContentRight : style.messageContentLeft;
   const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
-  const tooltipRef = useRef(null);
+  const [tooltipVisible, setTooltipVisible] = useState(false);
 
   const handleURL = ({ URL }) => {
     if (/\b(http|https)/.test(URL)) {
@@ -131,56 +131,59 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     }
   };
 
-  const showToolTip = () => {
+  const showTooltip = () => {
     if (type === 'outgoing') {
-      tooltipRef.current.toggleTooltip();
+      setTooltipVisible(true);
     }
   };
 
+  const renderChatMessageIconComponent = () => (
+    <TouchableOpacity
+      onLongPress={showTooltip}
+      style={[messageViewStyle, message.private && style.privateMessageContainer]}
+      activeOpacity={0.95}>
+      <View>
+        {message.private ? (
+          <View style={style.privateMessageView}>
+            <CustomText
+              style={[
+                style.messageContentRight,
+                message.private && {
+                  color: theme['text-basic-color'],
+                },
+              ]}>
+              {message.content}
+            </CustomText>
+
+            <LockIcon style={style.icon} fill={theme['text-basic-color']} />
+          </View>
+        ) : (
+          <Hyperlink linkStyle={style.linkStyle} onPress={(url) => handleURL({ URL: url })}>
+            <CustomText style={messageTextStyle}>{message.content}</CustomText>
+          </Hyperlink>
+        )}
+
+        <CustomText
+          style={[
+            dateStyle,
+            message.private && {
+              color: theme['color-gray'],
+            },
+          ]}>
+          {messageStamp({ time: created_at })}
+        </CustomText>
+      </View>
+    </TouchableOpacity>
+  );
+
   return (
-    <React.Fragment>
-      <Tooltip
-        backgroundColor="#000"
-        popover={<Text style={style.tooltipText}>Sent by: {message.sender.name}</Text>}
-        ref={tooltipRef}
-      />
-      <TouchableOpacity
-        onLongPress={showToolTip}
-        style={[messageViewStyle, message.private && style.privateMessageContainer]}
-        activeOpacity={0.95}>
-        <View>
-          {message.private ? (
-            <View style={style.privateMessageView}>
-              <CustomText
-                style={[
-                  style.messageContentRight,
-                  message.private && {
-                    color: theme['text-basic-color'],
-                  },
-                ]}>
-                {message.content}
-              </CustomText>
-
-              <LockIcon style={style.icon} fill={theme['text-basic-color']} />
-            </View>
-          ) : (
-            <Hyperlink linkStyle={style.linkStyle} onPress={(url) => handleURL({ URL: url })}>
-              <CustomText style={messageTextStyle}>{message.content}</CustomText>
-            </Hyperlink>
-          )}
-
-          <CustomText
-            style={[
-              dateStyle,
-              message.private && {
-                color: theme['color-gray'],
-              },
-            ]}>
-            {messageStamp({ time: created_at })}
-          </CustomText>
-        </View>
-      </TouchableOpacity>
-    </React.Fragment>
+    <Tooltip
+      anchor={renderChatMessageIconComponent}
+      visible={tooltipVisible}
+      onBackdropPress={() => setTooltipVisible(false)}
+      placement="top">
+      <Text style={style.tooltipText}>Sent by: {message.sender.name}</Text>
+    </Tooltip>
   );
 };
 

@@ -176,15 +176,19 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     </TouchableOpacity>
   );
 
-  return (
-    <Tooltip
-      anchor={renderChatMessageIconComponent}
-      visible={tooltipVisible}
-      onBackdropPress={() => setTooltipVisible(false)}
-      placement="top">
-      <Text style={style.tooltipText}>Sent by: {message.sender.name}</Text>
-    </Tooltip>
-  );
+  if ('sender' in message && 'name' in message.sender) {
+    return (
+      <Tooltip
+        anchor={renderChatMessageIconComponent}
+        visible={tooltipVisible}
+        onBackdropPress={() => setTooltipVisible(false)}
+        placement="top">
+        <Text style={style.tooltipText}>Sent by: {message.sender.name}</Text>
+      </Tooltip>
+    );
+  }
+
+  return renderChatMessageIconComponent();
 };
 
 ChatMessageItemComponent.propTypes = propTypes;

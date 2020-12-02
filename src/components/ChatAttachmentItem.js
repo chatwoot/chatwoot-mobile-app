@@ -16,12 +16,12 @@ const styles = (theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
     borderBottomLeftRadius: 8,
     borderTopLeftRadius: 8,
     maxWidth: Dimensions.get('window').width - 120,
-    left: 4,
-    backgroundColor: theme['color-background-message'],
+    backgroundColor: theme['color-primary-default'],
     elevation: 1,
   },
 
@@ -29,11 +29,11 @@ const styles = (theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
     borderBottomRightRadius: 8,
     borderTopRightRadius: 8,
     maxWidth: Dimensions.get('window').width - 120,
-    left: -4,
     backgroundColor: theme['background-basic-color-1'],
     elevation: 1,
   },
@@ -92,16 +92,30 @@ const styles = (theme) => ({
     justifyContent: 'center',
   },
 
-  filenameText: {
-    color: theme['text-basic-color'],
+  filenameRightText: {
+    color: theme['color-basic-100'],
     fontSize: theme['font-size-small'],
     fontWeight: theme['font-medium'],
     textAlign: 'left',
   },
 
-  downloadText: {
-    color: theme['color-primary-default'],
+  filenameLeftText: {
+    color: theme['color-message-left'],
     fontSize: theme['font-size-small'],
+    fontWeight: theme['font-medium'],
+    textAlign: 'left',
+  },
+
+  downloadRightText: {
+    color: theme['color-background-message'],
+    fontSize: theme['font-size-extra-small'],
+    fontWeight: theme['font-medium'],
+    textAlign: 'left',
+    alignSelf: 'stretch',
+  },
+  downloadLeftText: {
+    color: '#005fb8',
+    fontSize: theme['font-size-extra-small'],
     fontWeight: theme['font-medium'],
     textAlign: 'left',
     alignSelf: 'stretch',
@@ -109,23 +123,29 @@ const styles = (theme) => ({
 });
 
 const propTypes = {
-  themedStyle: PropTypes.object,
-  theme: PropTypes.object,
+  eva: PropTypes.shape({
+    style: PropTypes.object,
+    theme: PropTypes.object,
+  }).isRequired,
   type: PropTypes.string,
   showAttachment: PropTypes.func,
-  attachment: PropTypes.shape([]),
+  attachment: PropTypes.arrayOf(
+    PropTypes.shape({
+      file_type: PropTypes.string,
+      data_url: PropTypes.string,
+    }),
+  ),
 };
 
 const FileIcon = (style) => {
-  return <Icon {...style} name="file-text-outline" width={48} height={48} />;
+  return <Icon {...style} name="file-text-outline" width={32} height={32} />;
 };
 
 const ChatAttachmentItemComponent = ({
   type,
   attachment,
   showAttachment,
-  themedStyle,
-  theme,
+  eva: { style, theme },
 }) => {
   const [imageLoading, onLoadImage] = useState(false);
 
@@ -137,13 +157,9 @@ const ChatAttachmentItemComponent = ({
       {fileType !== 'file' ? (
         <TouchableOpacity
           onPress={() => showAttachment({ type: 'image', dataUrl })}
-          style={
-            type === 'outgoing'
-              ? themedStyle.imageViewRight
-              : themedStyle.imageViewLeft
-          }>
+          style={type === 'outgoing' ? style.imageViewRight : style.imageViewLeft}>
           <Image
-            style={themedStyle.image}
+            style={style.image}
             source={{
               uri: dataUrl,
             }}
@@ -152,32 +168,29 @@ const ChatAttachmentItemComponent = ({
               onLoadImage(false);
             }}
           />
-          {imageLoading && <ImageLoader style={themedStyle.imageLoader} />}
+          {imageLoading && <ImageLoader style={style.imageLoader} />}
         </TouchableOpacity>
       ) : (
-        <View
-          style={
-            type === 'outgoing'
-              ? themedStyle.fileViewRight
-              : themedStyle.fileViewLeft
-          }>
-          <View style={themedStyle.fileAttachmentContainer}>
-            <View style={themedStyle.fileAttachmentView}>
-              <View style={themedStyle.attachmentIconView}>
+        <View style={type === 'outgoing' ? style.fileViewRight : style.fileViewLeft}>
+          <View style={style.fileAttachmentContainer}>
+            <View style={style.fileAttachmentView}>
+              <View style={style.attachmentIconView}>
                 <FileIcon
-                  style={themedStyle.icon}
-                  fill={theme['color-primary-default']}
+                  fill={
+                    type === 'outgoing' ? theme['color-basic-100'] : theme['color-primary-default']
+                  }
                 />
               </View>
-              <View style={themedStyle.attachmentTexView}>
-                <CustomText style={themedStyle.filenameText}>
-                  {fileName.length < 30
+              <View style={style.attachmentTexView}>
+                <CustomText
+                  style={type === 'outgoing' ? style.filenameRightText : style.filenameLeftText}>
+                  {fileName.length < 25
                     ? `${fileName}`
                     : `...${fileName.substr(fileName.length - 15)}`}
                 </CustomText>
-                <TouchableOpacity
-                  onPress={() => showAttachment({ type: 'file', dataUrl })}>
-                  <CustomText style={themedStyle.downloadText}>
+                <TouchableOpacity onPress={() => showAttachment({ type: 'file', dataUrl })}>
+                  <CustomText
+                    style={type === 'outgoing' ? style.downloadRightText : style.downloadLeftText}>
                     {i18n.t('CONVERSATION.DOWNLOAD')}
                   </CustomText>
                 </TouchableOpacity>

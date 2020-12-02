@@ -26,3 +26,13 @@ export const getPubSubToken = async () => {
     return pubSubToken;
   } catch (error) {}
 };
+
+export const getUserDetails = async () => {
+  try {
+    const state = await store.getState();
+    const {
+      user: { id: userId, account_id: accountId },
+    } = state.auth;
+    return { accountId, userId };
+  } catch (error) {}
+};

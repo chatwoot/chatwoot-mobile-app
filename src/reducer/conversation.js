@@ -18,13 +18,18 @@ import {
   GET_CANNED_RESPONSES_ERROR,
   SET_CONVERSATION_DETAILS,
   RESET_CONVERSATION,
+  ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
+  RESET_USER_TYPING_CONVERSATION,
+  SET_ASSIGNEE_TYPE,
+  SET_CONVERSATION_META,
+  UPDATE_SINGLE_CONVERSATION,
 } from '../constants/actions';
 
 const initialState = {
   isFetching: false,
   isAllConversationsLoaded: false,
   isAllMessagesLoaded: false,
-  conversationStatus: 'Open',
+  conversationStatus: 'open',
   data: {
     meta: {
       mine_count: 0,
@@ -37,6 +42,9 @@ const initialState = {
   cannedResponses: [],
   conversationDetails: null,
   selectedConversationId: null,
+  conversationTypingUsers: {},
+  activeUsers: {},
+  assigneeType: 0,
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -64,6 +72,12 @@ export default (state = initialState, action) => {
         conversationStatus: action.payload,
       };
 
+    case SET_ASSIGNEE_TYPE:
+      return {
+        ...state,
+        assigneeType: action.payload,
+      };
+
     case SET_CONVERSATION:
       return {
         ...state,
@@ -83,6 +97,16 @@ export default (state = initialState, action) => {
         ...state,
         allMessages: action.payload,
         isAllMessagesLoaded: false,
+      };
+    }
+
+    case SET_CONVERSATION_META: {
+      return {
+        ...state,
+        data: {
+          payload: state.data.payload,
+          meta: action.payload,
+        },
       };
     }
 
@@ -158,6 +182,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         allMessages: [],
+        conversationDetails: null,
       };
     }
 
@@ -187,6 +212,33 @@ export default (state = initialState, action) => {
       return {
         ...state,
         cannedResponses: [],
+      };
+    }
+
+    case RESET_USER_TYPING_CONVERSATION: {
+      return {
+        ...state,
+        conversationTypingUsers: {},
+      };
+    }
+    case ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION: {
+      return {
+        ...state,
+        conversationTypingUsers: {
+          ...state.conversationTypingUsers,
+          [action.payload.conversationId]: action.payload.users,
+        },
+      };
+    }
+    case UPDATE_SINGLE_CONVERSATION: {
+      return {
+        ...state,
+        data: {
+          meta: state.data.meta,
+          payload: state.data.payload.map((content, i) =>
+            action.payload.id === content.id ? { ...action.payload } : content,
+          ),
+        },
       };
     }
 

@@ -5,15 +5,30 @@ const styles = (theme) => ({
     flex: 1,
     backgroundColor: theme['background-basic-color-1'],
   },
+
   keyboardView: {
     flex: 1,
   },
+  headerView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatarView: {
+    marginHorizontal: 4,
+  },
+  titleView: {
+    marginHorizontal: 8,
+  },
   headerTitle: {
+    textTransform: 'capitalize',
     fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-large'],
   },
   subHeaderTitle: {
     fontSize: theme['font-size-extra-small'],
+    color: theme['color-gray'],
+    paddingTop: 4,
+    paddingLeft: 4,
   },
 
   container: {
@@ -31,7 +46,7 @@ const styles = (theme) => ({
   loadMoreSpinnerView: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 8,
+    paddingBottom: 8,
   },
 
   spinnerView: {
@@ -67,9 +82,8 @@ const styles = (theme) => ({
     height: 48,
   },
   addMessageButton: {
-    width: 12,
-    height: 12,
-    borderRadius: 12,
+    paddingHorizontal: 0,
+    backgroundColor: 'transparent',
   },
   backdrop: {
     backgroundColor: theme['back-drop-color'],

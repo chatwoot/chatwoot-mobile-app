@@ -5,20 +5,21 @@ import {
   TopNavigationAction,
   Button,
   Spinner,
-  OverflowMenu,
   withStyles,
+  OverflowMenu,
+  MenuItem,
 } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet';
 
 import {
   View,
   SafeAreaView,
-  KeyboardAvoidingView,
   TextInput,
-  Platform,
   SectionList,
   Linking,
+  TouchableOpacity,
 } from 'react-native';
 
 import ChatMessage from '../../components/ChatMessage';
@@ -26,29 +27,46 @@ import ChatMessageDate from '../../components/ChatMessageDate';
 import ScrollToBottomButton from '../../components/ScrollToBottomButton';
 import styles from './ChatScreen.style';
 import UserAvatar from '../../components/UserAvatar';
+import { openURL } from '../../helpers/UrlHelper';
+
 import {
   loadMessages,
   sendMessage,
   markMessagesAsRead,
   loadCannedResponses,
   resetConversation,
+  toggleTypingStatus,
+  getConversationDetails,
+  toggleConversationStatus,
 } from '../../actions/conversation';
-import { getGroupedConversation } from '../../helpers';
+import { markNotificationAsRead } from '../../actions/notification';
+import { getGroupedConversation, getTypingUsersText, findUniqueMessages } from '../../helpers';
+import i18n from '../../i18n';
+import CustomText from '../../components/Text';
+import { CONVERSATION_TOGGLE_STATUS } from '../../constants';
 
-const BackIcon = (style) => <Icon {...style} name="arrow-ios-back-outline" />;
-
-const BackAction = (props) => (
-  <TopNavigationAction {...props} icon={BackIcon} />
+const BackIcon = (style) => (
+  <Icon {...style} name="arrow-ios-back-outline" height={24} width={24} />
 );
+
+const MenuIcon = (style) => {
+  return <Icon {...style} name="more-vertical" height={24} width={24} />;
+};
+
+const BackAction = (props) => <TopNavigationAction {...props} icon={BackIcon} />;
 
 const PaperPlaneIconFill = (style) => {
   return <Icon {...style} name="paper-plane" />;
 };
 
+const renderAnchor = () => <View />;
+
 class ChatScreenComponent extends Component {
   static propTypes = {
-    themedStyle: PropTypes.object,
-    theme: PropTypes.object,
+    eva: PropTypes.shape({
+      style: PropTypes.object,
+      theme: PropTypes.object,
+    }).isRequired,
     route: PropTypes.object,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
@@ -64,15 +82,22 @@ class ChatScreenComponent extends Component {
     isFetching: PropTypes.bool,
     isAllMessagesLoaded: PropTypes.bool,
     markAllMessagesAsRead: PropTypes.func,
+    toggleTypingStatus: PropTypes.func,
+    markMessagesAsRead: PropTypes.func,
+    markNotificationAsRead: PropTypes.func,
+    getConversationDetails: PropTypes.func,
+    toggleConversationStatus: PropTypes.func,
+    conversationTypingUsers: PropTypes.shape({}),
   };
 
   static defaultProps = {
     isFetching: false,
     isAllMessagesLoaded: false,
     sendMessage: () => {},
-    markAllMessagesAsRead: () => {},
+    markMessagesAsRead: () => {},
     allMessages: [],
     cannedResponses: [],
+    conversationTypingUsers: {},
   };
 
   state = {
@@ -82,18 +107,35 @@ class ChatScreenComponent extends Component {
     selectedIndex: null,
     filteredCannedResponses: [],
     showScrollToButton: false,
+    conversationStatus: null,
   };
 
   componentDidMount = () => {
     const { markAllMessagesAsRead, route } = this.props;
+    const { conversationId, meta, messages, primaryActorDetails } = route.params;
+    // Clear all notification related the conversation
+    if (primaryActorDetails) {
+      this.props.markNotificationAsRead({
+        primaryActorId: primaryActorDetails.primary_actor_id,
+        primaryActorType: primaryActorDetails.primary_actor_type,
+      });
+    }
 
-    const { conversationId, meta } = route.params;
     // Reset all messages if app is opening from external link (Deep linking or Push)
     if (!meta) {
       this.props.resetConversation();
     }
+    let beforeId = null;
+    if (messages && messages.length) {
+      const [lastMessage] = messages;
+      const { id } = lastMessage;
+      beforeId = id;
+    }
+    this.props.loadMessages({ conversationId, beforeId });
+
+    this.props.getConversationDetails({ conversationId });
+    this.props.markMessagesAsRead({ conversationId });
     this.props.loadCannedResponses();
-    this.props.loadMessages({ conversationId });
     markAllMessagesAsRead({ conversationId });
   };
 
@@ -141,28 +183,16 @@ class ChatScreenComponent extends Component {
     }
   };
 
-  renderSendButton = () => {
-    return (
-      <Button
-        style={this.props.themedStyle.addMessageButton}
-        appearance="ghost"
-        size="large"
-        icon={PaperPlaneIconFill}
-        onPress={this.onNewMessageAdd}
-      />
-    );
-  };
-
   showAttachment = ({ type, dataUrl }) => {
+    const { navigation } = this.props;
     if (type === 'image') {
-      const { navigation } = this.props;
       navigation.navigate('ImageScreen', {
         imageUrl: dataUrl,
       });
     } else {
       Linking.canOpenURL(dataUrl).then((supported) => {
         if (supported) {
-          Linking.openURL(dataUrl);
+          openURL({ URL: dataUrl });
         }
       });
     }
@@ -196,24 +226,28 @@ class ChatScreenComponent extends Component {
   };
 
   renderMoreLoader = () => {
-    const { isAllMessagesLoaded, isFetching } = this.props;
+    const {
+      isAllMessagesLoaded,
+      isFetching,
+      eva: { style },
+    } = this.props;
 
     return (
-      <View style={this.props.themedStyle.loadMoreSpinnerView}>
-        {!isAllMessagesLoaded && isFetching ? (
-          <Spinner size="medium" color="red" />
-        ) : null}
+      <View style={style.loadMoreSpinnerView}>
+        {!isAllMessagesLoaded && isFetching ? <Spinner size="medium" color="red" /> : null}
       </View>
     );
   };
 
-  onItemSelect = (index) => {
+  onItemSelect = (itemSelected) => {
     const { filteredCannedResponses } = this.state;
-    const selectedItem = filteredCannedResponses[index];
+    const indexSelected = itemSelected.row;
+
+    const selectedItem = filteredCannedResponses[indexSelected];
 
     const { content } = selectedItem;
     this.setState({
-      selectedIndex: index,
+      selectedIndex: indexSelected,
       menuVisible: false,
       message: content,
     });
@@ -242,11 +276,7 @@ class ChatScreenComponent extends Component {
   };
 
   renderMessage = (item) => (
-    <ChatMessage
-      message={item.item}
-      key={item.index}
-      showAttachment={this.showAttachment}
-    />
+    <ChatMessage message={item.item} key={item.index} showAttachment={this.showAttachment} />
   );
 
   scrollToBottom = () => {
@@ -262,9 +292,10 @@ class ChatScreenComponent extends Component {
 
   setCurrentReadOffset(event) {
     const scrollHight = Math.floor(event.nativeEvent.contentOffset.y);
-    if (scrollHight > 0) {
+
+    if (scrollHight > 50) {
       this.setState({
-        showScrollToButton: true,
+        showScrollToButton: false,
       });
     } else {
       this.setState({
@@ -273,151 +304,251 @@ class ChatScreenComponent extends Component {
     }
   }
 
-  renderTopNavigation = () => {
+  showConversationDetails = () => {
+    const { conversationDetails, navigation } = this.props;
+
+    if (conversationDetails) {
+      navigation.navigate('ConversationDetails', { conversationDetails });
+    }
+  };
+
+  renderTitle = () => {
     const senderDetails = {
       name: null,
       thumbnail: null,
     };
 
-    const { themedStyle, conversationDetails, route } = this.props;
+    const {
+      conversationDetails,
+      route,
+      conversationTypingUsers,
+      eva: { style, theme },
+    } = this.props;
 
+    const {
+      params: { conversationId },
+    } = route;
+
+    const typingUser = getTypingUsersText({
+      conversationTypingUsers,
+      conversationId,
+    });
     const { meta } = route.params;
     if (meta) {
       const {
         sender: { name, thumbnail },
+        channel,
       } = meta;
       senderDetails.name = name;
       senderDetails.thumbnail = thumbnail;
+      senderDetails.channel = channel;
     }
     if (!senderDetails.name && conversationDetails) {
       const {
-        contact: { name, thumbnail },
+        meta: {
+          sender: { name, thumbnail },
+          channel,
+        },
       } = conversationDetails;
       senderDetails.name = name;
       senderDetails.thumbnail = thumbnail;
+      senderDetails.channel = channel;
     }
+
     if (senderDetails.name) {
       return (
-        <TopNavigation
-          alignment="center"
-          title={senderDetails.name}
-          rightControls={
-            <TopNavigationAction
-              icon={() => (
-                <UserAvatar
-                  userName={senderDetails.name}
-                  thumbnail={senderDetails.thumbnail}
-                />
-              )}
-            />
-          }
-          leftControl={this.renderLeftControl()}
-          titleStyle={themedStyle.headerTitle}
-          subtitleStyle={themedStyle.subHeaderTitle}
-        />
+        <TouchableOpacity
+          style={style.headerView}
+          onPress={this.showConversationDetails}
+          activeOpacity={0.5}>
+          <UserAvatar
+            style={style.avatarView}
+            userName={senderDetails.name}
+            thumbnail={senderDetails.thumbnail}
+            defaultBGColor={theme['color-primary-default']}
+            channel={senderDetails.channel}
+          />
+          <View style={style.titleView}>
+            <View>
+              <CustomText style={style.headerTitle}>
+                {senderDetails.name.length > 24
+                  ? ` ${senderDetails.name.substring(0, 20)}...`
+                  : ` ${senderDetails.name}`}
+              </CustomText>
+            </View>
+            {typingUser ? (
+              <View>
+                <CustomText style={style.subHeaderTitle}>
+                  {typingUser ? `${typingUser}` : ''}
+                </CustomText>
+              </View>
+            ) : null}
+          </View>
+        </TouchableOpacity>
       );
     }
+    return null;
+  };
+
+  showActionSheet = () => {
+    const {
+      conversationDetails: { status },
+    } = this.props;
+    this.setState({
+      conversationStatus: status,
+    });
+    this.ActionSheet.show();
+  };
+
+  toggleConversation = async () => {
+    const { route } = this.props;
+    const {
+      params: { conversationId },
+    } = route;
+    this.props.toggleConversationStatus({ conversationId });
+  };
+
+  renderRightControl = () => {
+    const { conversationDetails } = this.props;
+
+    if (conversationDetails) {
+      return <TopNavigationAction onPress={this.showActionSheet} icon={MenuIcon} />;
+    }
+    return null;
+  };
+
+  renderTopNavigation = () => {
+    return (
+      <TopNavigation
+        title={this.renderTitle}
+        accessoryLeft={this.renderLeftControl}
+        accessoryRight={this.renderRightControl}
+      />
+    );
+  };
+
+  onBlur = () => {
+    const { route } = this.props;
+    const { conversationId } = route.params;
+    this.props.toggleTypingStatus({ conversationId, typingStatus: 'off' });
+  };
+  onFocus = () => {
+    const { route } = this.props;
+    const { conversationId } = route.params;
+    this.props.toggleTypingStatus({ conversationId, typingStatus: 'on' });
   };
 
   render() {
     const {
       allMessages,
       isFetching,
-      themedStyle,
-      theme,
-      conversationDetails,
+      eva: { style, theme },
     } = this.props;
 
     const {
       message,
+      showScrollToButton,
       filteredCannedResponses,
       menuVisible,
       selectedIndex,
-      showScrollToButton,
+      conversationStatus,
     } = this.state;
 
-    const completeMessages = []
-      .concat(allMessages)
-      .reverse()
-      .filter((item) => item.content !== '');
+    const uniqueMessages = findUniqueMessages({ allMessages });
     const groupedConversationList = getGroupedConversation({
-      conversations: completeMessages,
+      conversations: uniqueMessages,
     });
 
     return (
-      <SafeAreaView style={themedStyle.mainContainer}>
-        <KeyboardAvoidingView
-          style={themedStyle.keyboardView}
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          enabled>
-          {this.renderTopNavigation()}
+      <SafeAreaView style={style.mainContainer}>
+        {this.renderTopNavigation()}
 
-          <View style={themedStyle.container} autoDismiss={false}>
-            <View style={themedStyle.chatView}>
-              {groupedConversationList.length ? (
-                <SectionList
-                  scrollEventThrottle={1900}
-                  onScroll={(event) => this.setCurrentReadOffset(event)}
-                  ref={(ref) => {
-                    this.SectionListReference = ref;
-                  }}
-                  inverted
-                  onEndReached={this.onEndReached.bind(this)}
-                  onEndReachedThreshold={0.5}
-                  onMomentumScrollBegin={() => {
-                    this.setState({
-                      onEndReachedCalledDuringMomentum: false,
-                    });
-                  }}
-                  sections={groupedConversationList}
-                  keyExtractor={(item, index) => item + index}
-                  renderItem={this.renderMessage}
-                  renderSectionFooter={({ section: { date } }) => (
-                    <ChatMessageDate date={date} />
-                  )}
-                  style={themedStyle.chatContainer}
-                  ListFooterComponent={this.renderMoreLoader}
-                />
-              ) : null}
-              {showScrollToButton && (
-                <ScrollToBottomButton
-                  scrollToBottom={() => this.scrollToBottom()}
-                />
-              )}
-              {isFetching && !groupedConversationList.length && (
-                <View style={themedStyle.loadMoreSpinnerView}>
-                  <Spinner size="medium" />
-                </View>
-              )}
-            </View>
+        <View style={style.container} autoDismiss={false}>
+          <View style={style.chatView}>
+            {groupedConversationList.length ? (
+              <SectionList
+                keyboardShouldPersistTaps="never"
+                scrollEventThrottle={16}
+                onScroll={(event) => this.setCurrentReadOffset(event)}
+                ref={(ref) => {
+                  this.SectionListReference = ref;
+                }}
+                inverted
+                onEndReached={this.onEndReached.bind(this)}
+                onEndReachedThreshold={0.5}
+                onMomentumScrollBegin={() => {
+                  this.setState({
+                    onEndReachedCalledDuringMomentum: false,
+                  });
+                }}
+                sections={groupedConversationList}
+                keyExtractor={(item, index) => item + index}
+                renderItem={this.renderMessage}
+                renderSectionFooter={({ section: { date } }) => <ChatMessageDate date={date} />}
+                style={style.chatContainer}
+                ListFooterComponent={this.renderMoreLoader}
+              />
+            ) : null}
+            {showScrollToButton && <ScrollToBottomButton scrollToBottom={this.scrollToBottom} />}
+            {isFetching && !groupedConversationList.length && (
+              <View style={style.loadMoreSpinnerView}>
+                <Spinner size="medium" />
+              </View>
+            )}
+          </View>
+
+          <View style={style.inputView}>
+            <TextInput
+              style={style.input}
+              placeholder={`${i18n.t('CONVERSATION.TYPE_MESSAGE')}...`}
+              isFocused={this.onFocused}
+              onBlur={this.onBlur}
+              onFocus={this.onFocus}
+              value={message}
+              placeholderTextColor={theme['text-basic-color']}
+              onChangeText={this.onNewMessageChange}
+            />
+
             {filteredCannedResponses && (
               <OverflowMenu
+                anchor={renderAnchor}
                 data={filteredCannedResponses}
                 visible={menuVisible}
                 selectedIndex={selectedIndex}
                 onSelect={this.onItemSelect}
                 placement="top"
-                style={themedStyle.overflowMenu}
-                backdropStyle={themedStyle.backdrop}
+                style={style.overflowMenu}
+                backdropStyle={style.backdrop}
                 onBackdropPress={this.toggleOverFlowMenu}>
-                <View />
+                {filteredCannedResponses.map((item) => (
+                  <MenuItem title={item.title} key={item.id} />
+                ))}
               </OverflowMenu>
             )}
-
-            <View style={themedStyle.inputView}>
-              <TextInput
-                style={themedStyle.input}
-                placeholder="Type message..."
-                isFocused={this.onFocused}
-                value={message}
-                placeholderTextColor={theme['text-basic-color']}
-                onChangeText={this.onNewMessageChange}
-              />
-
-              {this.renderSendButton()}
-            </View>
+            <Button
+              style={style.addMessageButton}
+              appearance="ghost"
+              size="large"
+              accessoryLeft={PaperPlaneIconFill}
+              onPress={this.onNewMessageAdd}
+              disabled={message === '' ? true : false}
+            />
           </View>
-        </KeyboardAvoidingView>
+        </View>
+        <ActionSheet
+          ref={(o) => (this.ActionSheet = o)}
+          options={[
+            i18n.t('CONVERSATION.CANCEL'),
+            i18n.t(`CONVERSATION.${CONVERSATION_TOGGLE_STATUS[conversationStatus]}`),
+          ]}
+          cancelButtonIndex={0}
+          destructiveButtonIndex={4}
+          onPress={(index) => {
+            if (index === 1) {
+              this.toggleConversation();
+            }
+          }}
+        />
       </SafeAreaView>
     );
   }
@@ -428,12 +559,18 @@ function bindAction(dispatch) {
     resetConversation: () => dispatch(resetConversation()),
     loadMessages: ({ conversationId, beforeId }) =>
       dispatch(loadMessages({ conversationId, beforeId })),
-
     loadCannedResponses: () => dispatch(loadCannedResponses()),
+    getConversationDetails: ({ conversationId }) =>
+      dispatch(getConversationDetails({ conversationId })),
     sendMessage: ({ conversationId, message }) =>
       dispatch(sendMessage({ conversationId, message })),
-    markAllMessagesAsRead: ({ conversationId }) =>
-      dispatch(markMessagesAsRead({ conversationId })),
+    toggleConversationStatus: ({ conversationId, message }) =>
+      dispatch(toggleConversationStatus({ conversationId })),
+    markAllMessagesAsRead: ({ conversationId }) => dispatch(markMessagesAsRead({ conversationId })),
+    toggleTypingStatus: ({ conversationId, typingStatus }) =>
+      dispatch(toggleTypingStatus({ conversationId, typingStatus })),
+    markNotificationAsRead: ({ primaryActorId, primaryActorType }) =>
+      dispatch(markNotificationAsRead({ primaryActorId, primaryActorType })),
   };
 }
 function mapStateToProps(state) {
@@ -443,6 +580,7 @@ function mapStateToProps(state) {
     cannedResponses: state.conversation.cannedResponses,
     isFetching: state.conversation.isFetching,
     isAllMessagesLoaded: state.conversation.isAllMessagesLoaded,
+    conversationTypingUsers: state.conversation.conversationTypingUsers,
   };
 }
 

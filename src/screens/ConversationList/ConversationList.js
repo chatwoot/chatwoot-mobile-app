@@ -1,16 +1,7 @@
 import React, { Component } from 'react';
-import {
-  Icon,
-  Layout,
-  TopNavigation,
-  TopNavigationAction,
-  Tab,
-  TabView,
-  List,
-  Spinner,
-  withStyles,
-} from '@ui-kitten/components';
-import { SafeAreaView, View } from 'react-native';
+import { Layout, Tab, TabView, List, Spinner, withStyles } from '@ui-kitten/components';
+
+import { SafeAreaView, View, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -20,9 +11,12 @@ import {
   getConversations,
   loadInitialMessage,
   setConversation,
+  setAssigneeType,
 } from '../../actions/conversation';
 
-import { getAccountDetails } from '../../actions/auth';
+import { saveDeviceDetails } from '../../actions/notification';
+
+import { getAllNotifications } from '../../actions/notification';
 
 import ConversationItem from '../../components/ConversationItem';
 import ConversationItemLoader from '../../components/ConversationItemLoader';
@@ -33,19 +27,31 @@ import CustomText from '../../components/Text';
 
 import i18n from '../../i18n';
 
-const MenuIcon = (style) => <Icon {...style} name="funnel-outline" />;
-
 const LoaderData = new Array(24).fill(0);
 
 const renderItemLoader = () => <ConversationItemLoader />;
 
 import ActionCable from '../../helpers/ActionCable';
-import { getPubSubToken } from '../../helpers/AuthHelper';
+import { getPubSubToken, getUserDetails } from '../../helpers/AuthHelper';
+import { onLogOut } from '../../actions/auth';
+import HeaderBar from '../../components/HeaderBar';
+import { findUniqueConversations } from '../../helpers';
+import { clearAllDeliveredNotifications } from '../../helpers/PushHelper';
+import Empty from '../../components/Empty';
+import images from '../../constants/images';
+
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+};
 
 class ConversationListComponent extends Component {
   static propTypes = {
-    themedStyle: PropTypes.object,
-    theme: PropTypes.object,
+    eva: PropTypes.shape({
+      style: PropTypes.object,
+      theme: PropTypes.object,
+    }).isRequired,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
@@ -56,13 +62,18 @@ class ConversationListComponent extends Component {
     loadInitialMessages: PropTypes.func,
     getConversations: PropTypes.func,
     selectConversation: PropTypes.func,
-    getAccountDetails: PropTypes.func,
+    saveDeviceDetails: PropTypes.func,
+    getAllNotifications: PropTypes.func,
+    setAssigneeType: PropTypes.func,
+
     inboxSelected: PropTypes.shape({
       name: PropTypes.string,
     }),
+    conversationTypingUsers: PropTypes.shape({}),
     inboxes: PropTypes.array.isRequired,
     conversationStatus: PropTypes.string,
     webSocketUrl: PropTypes.string,
+    pushToken: PropTypes.string,
     item: PropTypes.shape({}),
   };
 
@@ -73,40 +84,46 @@ class ConversationListComponent extends Component {
     getConversations: () => {},
     loadInitialMessages: () => {},
     selectConversation: () => {},
+    setAssigneeType: () => {},
+
     item: {},
     inboxes: [],
-    conversationStatus: 'Open',
+    conversationStatus: 'open',
   };
 
   state = {
     selectedIndex: 0,
     onEndReachedCalledDuringMomentum: true,
     pageNumber: 1,
+    refreshing: false,
   };
 
   componentDidMount = () => {
-    this.props.getAccountDetails();
+    clearAllDeliveredNotifications();
     this.props.getInboxes();
     this.loadConversations();
     this.initActionCable();
+    this.props.getAllNotifications({ pageNo: 1 });
+    const { pushToken } = this.props;
+    this.props.saveDeviceDetails({ token: null });
+    if (!pushToken) {
+      this.props.saveDeviceDetails({ token: pushToken });
+    }
   };
 
   initActionCable = async () => {
     const pubSubToken = await getPubSubToken();
+    const { accountId, userId } = await getUserDetails();
     const { webSocketUrl } = this.props;
 
-    ActionCable.init({ pubSubToken, webSocketUrl });
+    ActionCable.init({ pubSubToken, webSocketUrl, accountId, userId });
   };
 
   loadConversations = () => {
     const { selectedIndex, pageNumber } = this.state;
 
-    const { conversationStatus, inboxSelected } = this.props;
-
     this.props.getConversations({
       assigneeType: selectedIndex,
-      conversationStatus,
-      inboxSelected,
       pageNumber,
     });
   };
@@ -131,8 +148,9 @@ class ConversationListComponent extends Component {
 
     const conversationId = item.id;
 
-    const { navigation, selectConversation } = this.props;
+    const { navigation, selectConversation, loadInitialMessages } = this.props;
     selectConversation({ conversationId });
+    loadInitialMessages({ messages });
     navigation.navigate('ChatScreen', {
       conversationId,
       meta,
@@ -149,15 +167,12 @@ class ConversationListComponent extends Component {
     });
   };
 
-  renderRightControls = () => {
-    return <TopNavigationAction icon={MenuIcon} onPress={this.openFilter} />;
-  };
-
-  onChangeTab = (index) => {
-    this.setState({
+  onChangeTab = async (index) => {
+    await this.setState({
       selectedIndex: index,
       pageNumber: 1,
     });
+    this.props.setAssigneeType({ assigneeType: index });
     this.loadConversations();
   };
 
@@ -166,38 +181,49 @@ class ConversationListComponent extends Component {
       item={item}
       onSelectConversation={this.onSelectConversation}
       inboxes={this.props.inboxes}
+      conversationTypingUsers={this.props.conversationTypingUsers}
     />
   );
 
   renderMoreLoader = () => {
-    const { isAllConversationsLoaded, themedStyle } = this.props;
+    const {
+      isAllConversationsLoaded,
+      eva: { style },
+    } = this.props;
 
     return (
-      <View style={themedStyle.loadMoreSpinnerView}>
-        {!isAllConversationsLoaded ? <Spinner size="medium" /> : null}
+      <View style={style.loadMoreSpinnerView}>
+        {!isAllConversationsLoaded ? (
+          <Spinner size="medium" />
+        ) : (
+          <CustomText> {i18n.t('CONVERSATION.ALL_CONVERSATION_LOADED')} 🎉</CustomText>
+        )}
       </View>
     );
   };
 
   renderList = () => {
-    const { conversations, themedStyle } = this.props;
+    const {
+      conversations,
+      eva: { style },
+    } = this.props;
 
     const { payload } = conversations;
 
-    const filterConversations = payload.filter(
-      (item) => item.messages.length !== 0,
-    );
-
+    const uniqueConversations = findUniqueConversations({ payload });
     return (
-      <Layout style={themedStyle.tabContainer}>
-        <List
-          data={filterConversations}
+      <Layout style={style.tabContainer}>
+        <FlatList
+          onRefresh={() => this.onRefresh()}
+          refreshing={this.state.refreshing}
+          keyboardShouldPersistTaps="handled"
+          data={uniqueConversations}
           renderItem={this.renderItem}
           ref={(ref) => {
             this.myFlatListRef = ref;
           }}
           onEndReached={this.onEndReached.bind(this)}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={0.01}
           onMomentumScrollBegin={() => {
             this.setState({
               onEndReachedCalledDuringMomentum: false,
@@ -211,49 +237,42 @@ class ConversationListComponent extends Component {
   };
 
   renderEmptyList = () => {
-    const { themedStyle } = this.props;
+    const {
+      eva: { style },
+    } = this.props;
     return (
-      <Layout style={themedStyle.tabContainer}>
+      <Layout style={style.tabContainer}>
         <List data={LoaderData} renderItem={renderItemLoader} />
       </Layout>
     );
   };
 
   renderEmptyMessage = () => {
-    const { themedStyle } = this.props;
+    const {
+      eva: { style },
+    } = this.props;
     return (
-      <Layout style={themedStyle.emptyView}>
-        <CustomText appearance="hint" style={themedStyle.emptyText}>
-          {i18n.t('CONVERSATION.EMPTY')}
-        </CustomText>
+      <Layout style={style.tabContainer}>
+        <Empty image={images.emptyConversations} title={i18n.t('CONVERSATION.EMPTY')} />
       </Layout>
     );
   };
 
-  renderTab = ({
-    tabIndex,
-    selectedIndex,
-    tabTitle,
-    payload,
-    isFetching,
-    renderList,
-  }) => {
-    const { themedStyle } = this.props;
+  onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.loadConversations();
+    wait(1000).then(() => this.setState({ refreshing: false }));
+  };
 
+  renderTab = ({ tabIndex, selectedIndex, tabTitle, payload, isFetching, renderList, style }) => {
     return (
       <Tab
         title={tabTitle}
-        titleStyle={
-          selectedIndex === tabIndex
-            ? themedStyle.tabActiveTitle
-            : themedStyle.tabNotActiveTitle
-        }>
-        <View style={themedStyle.tabView}>
+        titleStyle={selectedIndex === tabIndex ? style.tabActiveTitle : style.tabNotActiveTitle}>
+        <View style={style.tabView}>
           {!isFetching || payload.length ? (
             <React.Fragment>
-              {payload && payload.length
-                ? this.renderList()
-                : this.renderEmptyMessage()}
+              {payload && payload.length ? this.renderList() : this.renderEmptyMessage()}
             </React.Fragment>
           ) : (
             this.renderEmptyList()
@@ -270,7 +289,7 @@ class ConversationListComponent extends Component {
       isFetching,
       inboxSelected,
       conversationStatus,
-      themedStyle,
+      eva: { style },
     } = this.props;
 
     const { payload, meta } = conversations;
@@ -283,34 +302,34 @@ class ConversationListComponent extends Component {
     const headerTitle = inBoxName ? `${inBoxName} (${conversationStatus})` : '';
 
     return (
-      <SafeAreaView style={themedStyle.container}>
-        <TopNavigation
+      <SafeAreaView style={style.container}>
+        <HeaderBar
           title={headerTitle}
-          alignment="center"
-          rightControls={this.renderRightControls()}
-          titleStyle={themedStyle.headerTitle}
+          showRightButton
+          onRightPress={this.openFilter}
+          buttonType="menu"
         />
 
         <TabView
           selectedIndex={selectedIndex}
-          indicatorStyle={themedStyle.tabViewIndicator}
+          indicatorStyle={style.tabViewIndicator}
           onSelect={this.onChangeTab}
-          tabBarStyle={themedStyle.tabBar}>
+          tabBarStyle={style.tabBar}>
           {this.renderTab({
             tabIndex: 0,
             selectedIndex,
             tabTitle: `${i18n.t('CONVERSATION.MINE')} ${mineCount}`,
             payload,
             isFetching,
+            style,
           })}
           {this.renderTab({
             tabIndex: 1,
             selectedIndex,
-            tabTitle: `${i18n.t(
-              'CONVERSATION.UN_ASSIGNED',
-            )} ${unAssignedCount}`,
+            tabTitle: `${i18n.t('CONVERSATION.UN_ASSIGNED')} ${unAssignedCount}`,
             payload,
             isFetching,
+            style,
           })}
           {this.renderTab({
             tabIndex: 2,
@@ -318,6 +337,7 @@ class ConversationListComponent extends Component {
             tabTitle: `${i18n.t('CONVERSATION.ALL')} ${allCount}`,
             payload,
             isFetching,
+            style,
           })}
         </TabView>
       </SafeAreaView>
@@ -328,26 +348,20 @@ class ConversationListComponent extends Component {
 function bindAction(dispatch) {
   return {
     getInboxes: () => dispatch(getInboxes()),
-    getAccountDetails: () => dispatch(getAccountDetails()),
-    getConversations: ({
-      assigneeType,
-      conversationStatus,
-      inboxSelected,
-      pageNumber,
-    }) =>
+    getConversations: ({ assigneeType, pageNumber }) =>
       dispatch(
         getConversations({
           assigneeType,
-          conversationStatus,
-          inboxSelected,
           pageNumber,
         }),
       ),
+    selectConversation: ({ conversationId }) => dispatch(setConversation({ conversationId })),
+    loadInitialMessages: ({ messages }) => dispatch(loadInitialMessage({ messages })),
+    saveDeviceDetails: ({ token }) => dispatch(saveDeviceDetails({ token })),
+    getAllNotifications: ({ pageNo }) => dispatch(getAllNotifications({ pageNo })),
+    setAssigneeType: ({ assigneeType }) => dispatch(setAssigneeType({ assigneeType })),
 
-    selectConversation: ({ conversationId }) =>
-      dispatch(setConversation({ conversationId })),
-    loadInitialMessages: ({ messages }) =>
-      dispatch(loadInitialMessage({ messages })),
+    onLogOut: () => dispatch(onLogOut()),
   };
 }
 function mapStateToProps(state) {
@@ -359,6 +373,8 @@ function mapStateToProps(state) {
     conversationStatus: state.conversation.conversationStatus,
     inboxSelected: state.inbox.inboxSelected,
     inboxes: state.inbox.data,
+    conversationTypingUsers: state.conversation.conversationTypingUsers,
+    pushToken: state.notification.pushToken,
   };
 }
 

@@ -2,7 +2,7 @@ import { Dimensions } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width;
 
-const styles = theme => ({
+const styles = (theme) => ({
   container: {
     flex: 1,
     backgroundColor: theme['background-basic-color-1'],
@@ -27,15 +27,14 @@ const styles = theme => ({
   },
 
   nameLabel: {
-    color: theme['color-heading'],
     fontSize: theme['font-size-medium'],
     fontWeight: theme['font-medium'],
   },
   emailLabel: {
-    paddingTop: 8,
+    paddingTop: 4,
     fontSize: theme['font-size-small'],
     fontWeight: theme['font-regular'],
-    color: theme['text-active-color'],
+    color: theme['text-basic-color'],
   },
 
   itemListView: {

@@ -1,19 +1,13 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import {
-  View,
-  Image,
-  KeyboardAvoidingView,
-  Dimensions,
-  Platform,
-  Text,
-} from 'react-native';
-import { Button, withStyles } from '@ui-kitten/components';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { View, Image, Dimensions, TouchableOpacity, SafeAreaView } from 'react-native';
+import { withStyles } from '@ui-kitten/components';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
 
-import { onLogin, resetAuth } from '../../actions/auth';
+import { doLogin, resetAuth } from '../../actions/auth';
 
+import DeviceInfo from 'react-native-device-info';
 import styles from './LoginScreen.style';
 import { Email, Password } from '../../helpers/formHelper';
 import TextInputField from '../../components/TextInputField';
@@ -23,8 +17,9 @@ import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import { openURL } from '../../helpers';
 import { SIGNUP_URL } from '../../constants/url';
+import CustomText from '../../components/Text';
+import { openURL } from '../../helpers/UrlHelper';
 
 const { Form } = t.form;
 const LoginForm = t.struct({
@@ -32,168 +27,154 @@ const LoginForm = t.struct({
   password: Password,
 });
 
-class LoginScreenComponent extends Component {
-  static propTypes = {
-    themedStyle: PropTypes.object,
-    theme: PropTypes.object,
-    onLogin: PropTypes.func,
-    isLoggingIn: PropTypes.bool,
-    navigation: PropTypes.shape({
-      navigate: PropTypes.func.isRequired,
-    }).isRequired,
-    resetAuth: PropTypes.func,
-    installationUrl: PropTypes.string,
-  };
+const appName = DeviceInfo.getApplicationName();
 
-  static defaultProps = {
-    onLogin: () => {},
-    isLoggingIn: false,
-  };
+const propTypes = {
+  eva: PropTypes.shape({
+    style: PropTypes.object,
+  }).isRequired,
+  onLogin: PropTypes.func,
+  isLoggingIn: PropTypes.bool,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+  resetAuth: PropTypes.func,
+  installationUrl: PropTypes.string,
+};
 
-  state = {
-    values: {
-      email: '',
-      password: '',
-    },
-    options: {
-      fields: {
-        email: {
-          placeholder: '',
-          template: (props) => <TextInputField {...props} />,
-          keyboardType: 'email-address',
-          error: i18n.t('LOGIN.EMAIL_ERROR'),
-          autoCapitalize: 'none',
-          config: {
-            label: i18n.t('LOGIN.EMAIL'),
-          },
+const defaultProps = {
+  onLogin: () => {},
+  isLoggingIn: false,
+};
+
+const LoginScreenComponent = ({ navigation, eva }) => {
+  const dispatch = useDispatch();
+  const inputRef = useRef(null);
+
+  const [values, setValues] = useState({
+    email: '',
+    password: '',
+  });
+
+  const options = {
+    fields: {
+      email: {
+        placeholder: '',
+        template: (props) => <TextInputField {...props} />,
+        keyboardType: 'email-address',
+        error: i18n.t('LOGIN.EMAIL_ERROR'),
+
+        autoCompleteType: false,
+        autoCorrect: false,
+        config: {
+          label: i18n.t('LOGIN.EMAIL'),
         },
-        password: {
-          placeholder: '',
-          template: (props) => <TextInputField {...props} />,
-          keyboardType: 'default',
-          autoCapitalize: 'none',
-          error: i18n.t('LOGIN.PASSWORD_ERROR'),
-          config: {
-            label: i18n.t('LOGIN.PASSWORD'),
-          },
-          secureTextEntry: true,
+      },
+      password: {
+        placeholder: '',
+        template: (props) => <TextInputField {...props} />,
+        keyboardType: 'default',
+        autoCapitalize: 'none',
+        autoCompleteType: false,
+        autoCorrect: false,
+        error: i18n.t('LOGIN.PASSWORD_ERROR'),
+        config: {
+          label: i18n.t('LOGIN.PASSWORD'),
         },
+        secureTextEntry: true,
       },
     },
   };
 
-  componentDidMount() {
-    this.props.resetAuth();
-    const { installationUrl, navigation } = this.props;
+  const isLoggingIn = useSelector((state) => state.auth.isLoggingIn);
+  const installationUrl = useSelector((state) => state.settings.installationUrl);
+
+  useEffect(() => {
+    dispatch(resetAuth());
     if (!installationUrl) {
       navigation.navigate('ConfigureURL');
     }
-  }
+  }, [installationUrl, navigation, dispatch]);
 
-  onChange(values) {
-    this.setState({
-      values,
-    });
-  }
+  const onChange = (value) => {
+    setValues(value);
+  };
 
-  doLogin() {
-    const value = this.formRef.getValue();
+  const doSignup = () => {
+    openURL({ URL: `${installationUrl}${SIGNUP_URL}` });
+  };
 
+  const onPress = () => {
+    const value = inputRef.current.getValue();
     if (value) {
-      const { email, password } = value;
-      this.props.onLogin({ email, password });
+      const { email, password } = values;
+      dispatch(doLogin({ email, password }));
     }
-  }
+  };
 
-  render() {
-    const { navigate } = this.props.navigation;
-    const { options, values } = this.state;
-    const { isLoggingIn, themedStyle, installationUrl } = this.props;
+  const { navigate } = navigation;
+  const { style } = eva;
 
-    return (
-      <KeyboardAvoidingView
-        style={themedStyle.keyboardView}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        enabled>
-        <ScrollView
-          style={{
-            height: Dimensions.get('window').height,
-          }}>
-          <View style={themedStyle.logoView}>
-            <Image style={themedStyle.logo} source={images.appLogo} />
-          </View>
+  return (
+    <SafeAreaView style={style.keyboardView}>
+      <ScrollView
+        style={{
+          height: Dimensions.get('window').height,
+        }}>
+        <View style={style.logoView}>
+          <Image style={style.logo} source={images.login} />
+        </View>
 
-          <View style={themedStyle.contentView}>
-            <View style={themedStyle.formView}>
-              <Form
-                ref={(ref) => {
-                  this.formRef = ref;
-                }}
-                type={LoginForm}
-                options={options}
-                value={values}
-                onChange={(value) => this.onChange(value)}
+        <View style={style.contentView}>
+          <View style={style.formView}>
+            <Form
+              ref={inputRef}
+              type={LoginForm}
+              options={options}
+              value={values}
+              onChange={(value) => onChange(value)}
+            />
+            <TouchableOpacity style={style.forgotView} onPress={() => navigate('ResetPassword')}>
+              <CustomText style={style.textStyle}>{i18n.t('LOGIN.FORGOT_PASSWORD')}</CustomText>
+            </TouchableOpacity>
+            <View style={style.loginButtonView}>
+              <LoaderButton
+                style={style.loginButton}
+                loading={isLoggingIn}
+                textStyle={style.buttonTextStyle}
+                onPress={() => onPress()}
+                size="large"
+                text={i18n.t('LOGIN.LOGIN')}
               />
-              <View style={themedStyle.loginButtonView}>
-                <LoaderButton
-                  style={themedStyle.loginButton}
-                  loading={isLoggingIn}
-                  onPress={() => this.doLogin()}
-                  size="large"
-                  textStyle={themedStyle.loginButtonText}>
-                  {i18n.t('LOGIN.LOGIN')}
-                </LoaderButton>
-              </View>
-            </View>
-
-            <View>
-              <View style={themedStyle.forgotView}>
-                <Button
-                  appearance="ghost"
-                  status="basic"
-                  onPress={() => navigate('ResetPassword')}>
-                  {i18n.t('LOGIN.FORGOT_PASSWORD')}
-                </Button>
-              </View>
-              <View style={themedStyle.accountView}>
-                <Button
-                  style={themedStyle.button}
-                  appearance="ghost"
-                  status="basic"
-                  onPress={() =>
-                    openURL({ URL: `${installationUrl}${SIGNUP_URL}` })
-                  }>
-                  {i18n.t('LOGIN.CREATE_ACCOUNT')}
-                </Button>
-                <Text>|</Text>
-                <Button
-                  style={themedStyle.button}
-                  appearance="ghost"
-                  status="basic"
-                  onPress={() => navigate('ConfigureURL')}>
-                  Change URL
-                </Button>
-              </View>
             </View>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    );
-  }
-}
 
-function bindAction(dispatch) {
-  return {
-    resetAuth: () => dispatch(resetAuth()),
-    onLogin: (data) => dispatch(onLogin(data)),
-  };
-}
-function mapStateToProps(state) {
-  return {
-    isLoggingIn: state.auth.isLoggingIn,
-    installationUrl: state.settings.installationUrl,
-  };
-}
+          <View>
+            <View style={style.accountView}>
+              {appName === 'Chatwoot' && (
+                <>
+                  <TouchableOpacity onPress={doSignup}>
+                    <CustomText style={style.textStyle}>
+                      {i18n.t('LOGIN.CREATE_ACCOUNT')}
+                    </CustomText>
+                  </TouchableOpacity>
+                  <CustomText style={style.textStyle}>{'   |   '}</CustomText>
+                </>
+              )}
 
+              <TouchableOpacity onPress={() => navigate('ConfigureURL')}>
+                <CustomText style={style.textStyle}> {i18n.t('LOGIN.CHANGE_URL')}</CustomText>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+LoginScreenComponent.propTypes = propTypes;
+LoginScreenComponent.defaultProps = defaultProps;
 const LoginScreen = withStyles(LoginScreenComponent, styles);
-export default connect(mapStateToProps, bindAction)(LoginScreen);
+
+export default LoginScreen;

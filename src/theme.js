@@ -5,7 +5,8 @@ export const theme = {
   'color-primary-default': '#1F93FF',
 
   'color-basic-transparent-300': '$color-primary-500',
-
+  'color-primary-focus': '$color-primary-default',
+  'color-primary-active': '$color-primary-default',
   'color-primary-100': '#D2F2FF',
   'color-primary-200': '#A5E1FF',
   'color-primary-300': '#78CCFF',
@@ -86,12 +87,19 @@ export const theme = {
   'color-border': '$color-basic-active',
   'loader-color': '$color-basic-100',
 
-  'color-background': '#EFF2F7',
+  'color-background': '#f4f6fb',
   'color-background-light': '#F9FAFC',
   'color-background-message': '#c7e3ff',
-  'color-background-activity': '#fff3cf',
-  'color-background-date': '#eaf5feeb',
+  'color-background-activity': '#fff3d5',
+  'color-border-activity': '#ffe5a2',
+  'color-message-left': '#3c4858',
+  'item-border-color': '#f0f4f5',
+  'color-gray': '#6e6f73',
+  'color-background-inbox': '#ebf5ff',
+
+  'color-background-date': '#e1f5feeb',
   'text-basic-color': '#1f2d3d',
+  'text-light-color': '#3c4858',
   'text-hint-color': '#8492a6',
 
   'back-drop-color': 'rgba(0, 0, 0, 0.5)',

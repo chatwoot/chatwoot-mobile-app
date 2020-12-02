@@ -1,29 +1,20 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import {
-  withStyles,
-  TopNavigation,
-  TopNavigationAction,
-  Icon,
-} from '@ui-kitten/components';
+import { withStyles } from '@ui-kitten/components';
 import { StackActions } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { SafeAreaView, View } from 'react-native';
 import LoaderButton from '../../components/LoaderButton';
+import HeaderBar from '../../components/HeaderBar';
 
 import i18n from '../../i18n';
 import styles from './LanguageScreen.style';
 import LanguageItem from '../../components/LanguageItem';
+
 import { setLocale } from '../../actions/settings';
 import { LANGUAGES } from '../../constants';
 
-const BackIcon = (style) => <Icon {...style} name="arrow-ios-back-outline" />;
-
-const BackAction = (props) => (
-  <TopNavigationAction {...props} icon={BackIcon} />
-);
-
-const LanguageScreenComponent = ({ themedStyle, navigation }) => {
+const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
   const settings = useSelector((state) => state.settings);
 
   const localeValue = settings.localeValue || 'en';
@@ -34,16 +25,16 @@ const LanguageScreenComponent = ({ themedStyle, navigation }) => {
     dispatch(setLocale(item));
   };
 
+  const goBack = () => {
+    navigation.goBack();
+  };
+
   const languages = Object.keys(i18n.translations);
 
   return (
-    <SafeAreaView style={themedStyle.container}>
-      <TopNavigation
-        leftControl={<BackAction onPress={() => navigation.goBack()} />}
-        title={i18n.t('SETTINGS.CHANGE_LANGUAGE')}
-        titleStyle={themedStyle.headerTitle}
-      />
-      <View style={themedStyle.itemMainView}>
+    <SafeAreaView style={style.container}>
+      <HeaderBar title={i18n.t('SETTINGS.SWITCH_ACCOUNT')} showLeftButton onBackPress={goBack} />
+      <View style={style.itemMainView}>
         {languages.map((item) => {
           return (
             <LanguageItem
@@ -56,14 +47,14 @@ const LanguageScreenComponent = ({ themedStyle, navigation }) => {
           );
         })}
       </View>
-      <View style={themedStyle.languageButtonView}>
+      <View style={style.languageButtonView}>
         <LoaderButton
-          style={themedStyle.languageButton}
+          style={style.languageButton}
           size="large"
-          textStyle={themedStyle.languageButtonText}
-          onPress={() => navigation.dispatch(StackActions.replace('Tab'))}>
-          {i18n.t('SETTINGS.SUBMIT')}
-        </LoaderButton>
+          textStyle={style.languageButtonText}
+          onPress={() => navigation.dispatch(StackActions.replace('Tab'))}
+          text={i18n.t('SETTINGS.SUBMIT')}
+        />
       </View>
     </SafeAreaView>
   );

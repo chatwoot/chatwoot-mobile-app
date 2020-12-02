@@ -1,39 +1,59 @@
 import React, { Component } from 'react';
-import { TopNavigation, withStyles } from '@ui-kitten/components';
+import { withStyles } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 import { View, Image } from 'react-native';
 import packageFile from '../../../package.json';
 import UserAvatar from '../../components/UserAvatar';
 import CustomText from '../../components/Text';
 import { onLogOut } from '../../actions/auth';
-
 import i18n from '../../i18n';
-
 import images from '../../constants/images';
-
 import styles from './SettingsScreen.style';
-
 import SettingsItem from '../../components/SettingsItem';
-import { openURL } from '../../helpers/index.js';
 import { HELP_URL } from '../../constants/url.js';
+import { openURL } from '../../helpers/UrlHelper';
+import HeaderBar from '../../components/HeaderBar';
 
-import { theme } from '../../theme';
+import { getNotificationSettings } from '../../actions/settings';
+
+const appName = DeviceInfo.getApplicationName();
 
 const settingsData = [
   {
-    text: 'HELP',
+    text: 'SWITCH_ACCOUNT',
+    checked: false,
+    iconName: 'briefcase-outline',
+    itemName: 'switch-account',
+  },
+
+  {
+    text: 'AVAILABILITY',
     checked: true,
-    iconName: 'question-mark-circle-outline',
-    itemName: 'help',
+    iconName: 'radio-outline',
+    itemName: 'availability',
+  },
+
+  {
+    text: 'NOTIFICATION',
+    checked: true,
+    iconName: 'bell-outline',
+    itemName: 'notification',
   },
   {
     text: 'CHANGE_LANGUAGE',
     checked: true,
     iconName: 'globe-outline',
     itemName: 'language',
+  },
+  {
+    text: 'HELP',
+    checked: true,
+    iconName: 'question-mark-circle-outline',
+    itemName: 'help',
   },
   {
     text: 'LOG_OUT',
@@ -44,40 +64,56 @@ const settingsData = [
 ];
 
 class SettingsComponent extends Component {
+  state = { settingsMenu: [] };
   static propTypes = {
-    themedStyle: PropTypes.object,
-    theme: PropTypes.object,
+    eva: PropTypes.shape({
+      style: PropTypes.object,
+      theme: PropTypes.object,
+    }).isRequired,
     user: PropTypes.shape({
       name: PropTypes.string,
       email: PropTypes.string,
       avatar_url: PropTypes.string,
+      accounts: PropTypes.array,
     }).isRequired,
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
-    switchTheme: PropTypes.func,
     onLogOut: PropTypes.func,
+    availabilityStatus: PropTypes.string,
+    getNotificationSettings: PropTypes.func,
   };
 
   static defaultProps = {
     user: { email: null, name: null },
-    switchTheme: () => {},
     onLogOut: () => {},
   };
 
   onPressItem = ({ itemName }) => {
+    const {
+      navigation,
+      user: { accounts },
+    } = this.props;
+
     switch (itemName) {
       case 'language':
-        const { navigation } = this.props;
         navigation.navigate('Language');
-        break;
-
-      case 'theme':
-        this.props.switchTheme();
         break;
 
       case 'logout':
         this.props.onLogOut();
+        break;
+
+      case 'switch-account':
+        navigation.navigate('Account', { accounts });
+        break;
+
+      case 'availability':
+        navigation.navigate('Availability');
+        break;
+
+      case 'notification':
+        navigation.navigate('NotificationPreference', { accounts });
         break;
 
       case 'help':
@@ -89,32 +125,43 @@ class SettingsComponent extends Component {
     }
   };
 
+  componentDidMount = () => {
+    this.props.getNotificationSettings();
+  };
+
   render() {
     const {
-      user: { email, name, avatar_url },
-      themedStyle,
+      user: { email, name, avatar_url, accounts },
+      eva: { style, theme },
+      availabilityStatus,
     } = this.props;
 
+    // Show  switch account option only if number of accounts is greater than one
+    let settingsMenu =
+      accounts && accounts.length > 1
+        ? settingsData
+        : settingsData.filter((e) => e.itemName !== 'switch-account');
+
+    settingsMenu =
+      appName === 'Chatwoot' ? settingsData : settingsData.filter((e) => e.itemName !== 'help');
+
     return (
-      <SafeAreaView style={themedStyle.container}>
-        <TopNavigation
-          title={i18n.t('SETTINGS.HEADER_TITLE')}
-          titleStyle={themedStyle.headerTitle}
-          alignment="center"
-        />
-        <View style={themedStyle.profileContainer}>
+      <SafeAreaView style={style.container}>
+        <HeaderBar title={i18n.t('SETTINGS.HEADER_TITLE')} />
+        <View style={style.profileContainer}>
           <UserAvatar
             userName={name}
             thumbnail={avatar_url}
             defaultBGColor={theme['color-primary-default']}
+            availabilityStatus={availabilityStatus}
           />
-          <View style={themedStyle.detailsContainer}>
-            <CustomText style={themedStyle.nameLabel}>{name}</CustomText>
-            <CustomText style={themedStyle.emailLabel}>{email}</CustomText>
+          <View style={style.detailsContainer}>
+            <CustomText style={style.nameLabel}>{name}</CustomText>
+            <CustomText style={style.emailLabel}>{email}</CustomText>
           </View>
         </View>
-        <View style={themedStyle.itemListView}>
-          {settingsData.map((item, index) => (
+        <View style={style.itemListView}>
+          {settingsMenu.map((item, index) => (
             <SettingsItem
               key={item.text}
               text={i18n.t(`SETTINGS.${item.text}`)}
@@ -127,14 +174,12 @@ class SettingsComponent extends Component {
             />
           ))}
         </View>
-        <View style={themedStyle.aboutView}>
-          <Image style={themedStyle.aboutImage} source={images.appLogo} />
+        <View style={style.aboutView}>
+          <Image style={style.aboutImage} source={images.appLogo} />
         </View>
 
-        <View style={themedStyle.appDescriptionView}>
-          <CustomText style={themedStyle.appDescriptionText}>
-            {`v${packageFile.version}`}
-          </CustomText>
+        <View style={style.appDescriptionView}>
+          <CustomText style={style.appDescriptionText}>{`v${packageFile.version}`}</CustomText>
         </View>
       </SafeAreaView>
     );
@@ -144,11 +189,13 @@ class SettingsComponent extends Component {
 function bindAction(dispatch) {
   return {
     onLogOut: () => dispatch(onLogOut()),
+    getNotificationSettings: () => dispatch(getNotificationSettings()),
   };
 }
 function mapStateToProps(state) {
   return {
     user: state.auth.user,
+    availabilityStatus: state.auth.user ? state.auth.user.availability_status : '',
   };
 }
 

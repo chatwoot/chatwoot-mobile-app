@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { Icon, withStyles } from '@ui-kitten/components';
+import { withStyles } from '@ui-kitten/components';
 
 import CustomText from './Text';
 
@@ -28,6 +28,8 @@ const styles = (theme) => ({
     borderRadius: 8,
     maxWidth: Dimensions.get('window').width - 50,
     backgroundColor: theme['color-background-activity'],
+    borderWidth: 1,
+    borderColor: theme['color-border-activity'],
   },
   activityDateView: {
     alignItems: 'flex-end',
@@ -44,55 +46,31 @@ const styles = (theme) => ({
   },
 
   messageContent: {
-    color: theme['text-active-color'],
     fontSize: theme['font-size-regular'],
     fontWeight: theme['font-regular'],
+    color: theme['text-basic-color'],
   },
 
   date: {
-    fontStyle: 'italic',
     color: theme['text-hint-color'],
     fontSize: theme['font-size-extra-extra-small'],
   },
 });
 
-const PersonIcon = (style) => {
-  return <Icon {...style} name="person-outline" />;
-};
-
-const MessageContentComponent = ({
-  themedStyle,
-  message,
-  type,
-  showAttachment,
-  theme,
-}) => {
+const MessageContentComponent = ({ message, type, showAttachment, created_at }) => {
   const { attachments } = message;
 
   return attachments ? (
-    <ChatAttachmentItem
-      attachment={attachments}
-      type={type}
-      showAttachment={showAttachment}
-    />
+    <ChatAttachmentItem attachment={attachments} type={type} showAttachment={showAttachment} />
   ) : (
-    <ChatMessageItem message={message} type={type} />
+    <ChatMessageItem message={message} type={type} created_at={created_at} />
   );
 };
 
 const MessageContent = withStyles(MessageContentComponent, styles);
 
-const OutGoingMessageComponent = ({
-  themedStyle,
-  message,
-  created_at,
-  showAttachment,
-}) => (
+const OutGoingMessageComponent = ({ message, created_at, showAttachment }) => (
   <React.Fragment>
-    <CustomText style={themedStyle.date}>
-      {messageStamp({ time: created_at })}
-    </CustomText>
-
     <MessageContent
       message={message}
       created_at={created_at}
@@ -104,13 +82,7 @@ const OutGoingMessageComponent = ({
 
 const OutGoingMessage = withStyles(OutGoingMessageComponent, styles);
 
-const IncomingMessageComponent = ({
-  themedStyle,
-  message,
-  created_at,
-
-  showAttachment,
-}) => (
+const IncomingMessageComponent = ({ message, created_at, showAttachment }) => (
   <React.Fragment>
     <MessageContent
       message={message}
@@ -118,31 +90,18 @@ const IncomingMessageComponent = ({
       type="incoming"
       showAttachment={showAttachment}
     />
-    <CustomText style={themedStyle.date}>
-      {messageStamp({ time: created_at })}
-    </CustomText>
   </React.Fragment>
 );
 
 const IncomingMessage = withStyles(IncomingMessageComponent, styles);
 
-const ActivityMessageComponent = ({
-  themedStyle,
-  message,
-  created_at,
-  theme,
-}) => (
-  <View style={themedStyle.activityView}>
-    <View style={themedStyle.activityDateView}>
-      <CustomText style={themedStyle.date}>
-        {messageStamp({ time: created_at })}
-      </CustomText>
+const ActivityMessageComponent = ({ eva: { style }, message, created_at }) => (
+  <View style={style.activityView}>
+    <View style={style.messageActivity}>
+      <CustomText style={style.messageContent}>{message.content}</CustomText>
     </View>
-    <View style={themedStyle.messageActivity}>
-      <PersonIcon style={themedStyle.icon} fill={theme['text-hint-color']} />
-      <CustomText style={themedStyle.messageContent}>
-        {message.content}
-      </CustomText>
+    <View style={style.activityDateView}>
+      <CustomText style={style.date}>{messageStamp({ time: created_at })}</CustomText>
     </View>
   </View>
 );
@@ -150,11 +109,14 @@ const ActivityMessageComponent = ({
 const ActivityMessage = withStyles(ActivityMessageComponent, styles);
 
 const propTypes = {
+  eva: PropTypes.shape({
+    style: PropTypes.object,
+    theme: PropTypes.object,
+  }),
   message: PropTypes.shape({
     content: PropTypes.string,
     date: PropTypes.string,
   }),
-  themedStyle: PropTypes.object,
   showAttachment: PropTypes.func,
 };
 
@@ -162,12 +124,7 @@ const defaultProps = {
   message: { content: null, date: null },
 };
 
-const ChatMessageComponent = ({
-  message,
-  themedStyle,
-
-  showAttachment,
-}) => {
+const ChatMessageComponent = ({ message, eva: { style }, showAttachment }) => {
   const { message_type, created_at } = message;
 
   let alignment = message_type ? 'flex-end' : 'flex-start';
@@ -176,8 +133,8 @@ const ChatMessageComponent = ({
   }
 
   return (
-    <View style={[themedStyle.message, { justifyContent: alignment }]}>
-      <View style={themedStyle.messageContainer}>
+    <View style={[style.message, { justifyContent: alignment }]}>
+      <View style={style.messageContainer}>
         {alignment === 'flex-start' ? (
           <IncomingMessage
             message={message}
@@ -186,11 +143,7 @@ const ChatMessageComponent = ({
             showAttachment={showAttachment}
           />
         ) : alignment === 'center' ? (
-          <ActivityMessage
-            message={message}
-            created_at={created_at}
-            type="activity"
-          />
+          <ActivityMessage message={message} created_at={created_at} type="activity" />
         ) : (
           <OutGoingMessage
             message={message}
@@ -209,4 +162,4 @@ const ChatMessage = withStyles(ChatMessageComponent, styles);
 ChatMessage.defaultProps = defaultProps;
 ChatMessage.propTypes = propTypes;
 
-export default ChatMessage;
+export default React.memo(ChatMessage);

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://storage.googleapis.com/chatwoot-assets/woot-logo.svg" alt="Woot-logo" width="240">
+  <img src="https://s3.us-west-2.amazonaws.com/gh-assets.chatwoot.com/brand.svg" alt="Woot-logo" width="240">
 
   <div align="center">Mobile app for chatwoot platform. Built with React Native</div>
   <div align="center">Chatwoot is an opensource alternative to Intercom, Zendesk, Drift, Crisp etc.</div>
@@ -16,27 +16,48 @@
  <img src="https://img.shields.io/github/license/chatwoot/chatwoot" alt="License">
 </p>
 
+- **Supported Chatwoot version:** 1.7.0+
+- **Supported iOS versions**: 11+
+- **Supported Android versions**: 5.0+
+
 ## Features
 
-- Log your Chatwoot account
-- See all conversations
-- Chat screen
-- Filter conversations
-- Settings
-- ... and more to come!
+- Do not miss out on the new customers
+- Follow up on customer conversations on go
+- Reply easily with canned responses
+- Receive realtime notifications about system activities
+- Communicate with other team members via private notes
+- Assign statuses to your conversations
+  ... and more to come!
 
 <p float="left">
-  <img src=".github/login.jpg" alt="screenshot-1" width="150">
-  <img src=".github/list.jpg" alt="screenshot-2" width="150">
-  <img src=".github/chat.jpg" alt="screenshot-3"width="150">
-  <img src=".github/filter.jpg" alt="screenshot-4" width="150">
-  <img src=".github/settings.jpg" alt="screenshot-5"width="150">
-  
+  <img src=".github/conversation.png" alt="conversations" width="250">
+  <img src=".github/chat.png" alt="chat" width="250">
+  <img src=".github/details.png" alt="details"width="250">
+  <img src=".github/filter.png" alt="filter" width="250">
+  <img src=".github/notification.png" alt="notification"width="250">
+  <img src=".github/settings.png" alt="settings"width="250">
+</p>
+
+## Download Android/iOS application
+
+<p >
+  <a href="https://apps.apple.com/app/id1495796682">
+    <img alt="Download on the App Store" title="App Store" src="http://i.imgur.com/0n2zqHD.png" width="140">
+  </a>
+
+  <a href="https://play.google.com/store/apps/details?id=com.chatwoot.app&hl=en">
+    <img alt="Get it on Google Play" title="Google Play" src="http://i.imgur.com/mtGRPuM.png" width="140">
+  </a>
 </p>
 
 ## Feedback & Contributing
 
-Feel free to send us feedback on [Twitter](https://twitter.com/chatwootapp) or [file an issue](https://github.com/chatwoot/chatwoot-mobile-app/issues). If you wish to contribute, please take a quick look at the [CONTRIBUTING.md](CONTRIBUTING.md) guide.
+Feel free to send us feedback on [Twitter](https://twitter.com/chatwootapp) or [file an issue](https://github.com/chatwoot/chatwoot-mobile-app/issues).
+
+If you wish to contribute, please take a quick look at the [CONTRIBUTING.md](CONTRIBUTING.md) guide.
+
+If you want to self deploy the Chatwoot mobile app, please take a look at the [CUSTOM_RELEASE_GUIDE.md](CUSTOM_RELEASE_GUIDE.md) guide.
 
 If there's anything you'd like to chat about, please feel free to join our [Discord](https://discord.gg/cJXdrwS) chat!
 

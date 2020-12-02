@@ -1,12 +1,8 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { View, SafeAreaView } from 'react-native';
-import {
-  TopNavigation,
-  TopNavigationAction,
-  Icon,
-  withStyles,
-} from '@ui-kitten/components';
+import React, { useEffect, useState, useRef } from 'react';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { View, SafeAreaView, Image, ScrollView } from 'react-native';
+import { TopNavigation, TopNavigationAction, withStyles } from '@ui-kitten/components';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
 
@@ -18,127 +14,137 @@ import TextInputField from '../../components/TextInputField';
 
 import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
-const BackIcon = (style) => <Icon {...style} name="arrow-ios-back-outline" />;
-const BackAction = (props) => (
-  <TopNavigationAction {...props} icon={BackIcon} />
-);
+import Icon from '../../components/Icon';
+import images from '../../constants/images';
+import CustomText from '../../components/Text';
+
+// eslint-disable-next-line react/prop-types
+const BackIcon = ({ style: { tintColor } }) => {
+  return <Icon name="arrow-ios-back-outline" color={tintColor} />;
+};
+
 const { Form } = t.form;
 const LoginForm = t.struct({
   email: Email,
 });
 
-class ForgotPasswordComponent extends Component {
-  static propTypes = {
-    themedStyle: PropTypes.object,
+const propTypes = {
+  eva: PropTypes.shape({
+    style: PropTypes.object,
     theme: PropTypes.object,
-    onResetPassword: PropTypes.func,
-    isLoading: PropTypes.bool,
-    navigation: PropTypes.shape({
-      navigate: PropTypes.func.isRequired,
-      goBack: PropTypes.func.isRequired,
-    }).isRequired,
-    resetAuth: PropTypes.func,
-  };
+  }).isRequired,
+  onResetPassword: PropTypes.func,
+  isLoading: PropTypes.bool,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
+  resetAuth: PropTypes.func,
+};
 
-  static defaultProps = {
-    doResetPassword: () => {},
-    isLoading: false,
-  };
+const defaultProps = {
+  doResetPassword: () => {},
+  isLoading: false,
+};
 
-  state = {
-    values: {
-      email: '',
-    },
-    options: {
-      fields: {
-        email: {
-          placeholder: '',
-          template: (props) => <TextInputField {...props} />,
-          keyboardType: 'email-address',
-          error: i18n.t('FORGOT_PASSWORD.EMAIL_ERROR'),
-          autoCapitalize: 'none',
-          config: {
-            label: i18n.t('FORGOT_PASSWORD.EMAIL'),
-          },
+const ForgotPasswordComponent = ({ eva, navigation }) => {
+  const dispatch = useDispatch();
+  const inputRef = useRef(null);
+
+  const [values, setValues] = useState({ email: '' });
+
+  const options = {
+    fields: {
+      email: {
+        placeholder: '',
+        template: (props) => <TextInputField {...props} />,
+        keyboardType: 'email-address',
+        error: i18n.t('FORGOT_PASSWORD.EMAIL_ERROR'),
+        autoCapitalize: 'none',
+        autoCompleteType: false,
+        autoCorrect: false,
+        config: {
+          label: i18n.t('FORGOT_PASSWORD.EMAIL'),
         },
       },
     },
   };
 
-  componentDidMount() {
-    this.props.resetAuth();
-  }
+  const isResettingPassword = useSelector((state) => state.auth.isResettingPassword);
 
-  onBackPress = () => {
-    const { navigation } = this.props;
+  useEffect(() => {
+    dispatch(resetAuth());
+  }, [dispatch]);
+
+  const onBackPress = () => {
     navigation.goBack();
   };
 
-  renderLeftControl = () => <BackAction onPress={this.onBackPress} />;
+  const renderLeftControl = () => <TopNavigationAction onPress={onBackPress} icon={BackIcon} />;
 
-  onChange(values) {
-    this.setState({
-      values,
-    });
-  }
+  const onChange = (value) => {
+    setValues(value);
+  };
 
-  doResetPassword() {
-    const value = this.formRef.getValue();
+  const doResetPassword = () => {
+    const value = inputRef.current.getValue();
     if (value) {
-      this.props.onResetPassword(value);
+      dispatch(onResetPassword(value));
     }
-  }
+  };
 
-  render() {
-    const { options, values } = this.state;
-    const { isLoading, themedStyle } = this.props;
-    return (
-      <SafeAreaView style={themedStyle.mainView}>
-        <TopNavigation
-          titleStyle={themedStyle.headerTitle}
-          title={i18n.t('FORGOT_PASSWORD.HEADER_TITLE')}
-          leftControl={this.renderLeftControl()}
-        />
-        <View style={themedStyle.contentView}>
-          <View style={themedStyle.formView}>
+  const { style } = eva;
+
+  return (
+    <SafeAreaView style={style.mainView}>
+      <TopNavigation
+        titleStyle={style.headerTitle}
+        title={i18n.t('FORGOT_PASSWORD.HEADER_TITLE')}
+        accessoryLeft={renderLeftControl}
+      />
+      <ScrollView>
+        <View style={style.logoView}>
+          <Image style={style.logo} source={images.forgotPassword} />
+        </View>
+
+        <View style={style.titleView}>
+          <CustomText style={style.titleText}>{i18n.t('FORGOT_PASSWORD.TITLE')}</CustomText>
+        </View>
+        <View style={style.titleView}>
+          <CustomText appearance="hint" style={style.subTitleText}>
+            {i18n.t('FORGOT_PASSWORD.SUB_TITLE')}
+          </CustomText>
+        </View>
+
+        <View style={style.contentView}>
+          <View style={style.formView}>
             <Form
-              ref={(ref) => {
-                this.formRef = ref;
-              }}
+              ref={inputRef}
               type={LoginForm}
               options={options}
               value={values}
-              onChange={(value) => this.onChange(value)}
+              onChange={(value) => onChange(value)}
             />
 
-            <View style={themedStyle.loginButtonView}>
+            <View style={style.forgotButtonView}>
               <LoaderButton
-                style={themedStyle.loginButton}
-                loading={isLoading}
-                onPress={() => this.doResetPassword()}
+                style={style.forgotButton}
+                loading={isResettingPassword}
+                onPress={() => doResetPassword()}
                 size="large"
-                textStyle={themedStyle.loginButtonText}>
-                {i18n.t('FORGOT_PASSWORD.RESET_HERE')}
-              </LoaderButton>
+                text={i18n.t('FORGOT_PASSWORD.RESET_HERE')}
+                textStyle={style.forgotButtonText}
+              />
             </View>
           </View>
         </View>
-      </SafeAreaView>
-    );
-  }
-}
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
-function bindAction(dispatch) {
-  return {
-    resetAuth: () => dispatch(resetAuth()),
-    onResetPassword: (data) => dispatch(onResetPassword(data)),
-  };
-}
-function mapStateToProps(state) {
-  return {
-    isLoading: state.auth.isResettingPassword,
-  };
-}
+ForgotPasswordComponent.propTypes = propTypes;
+ForgotPasswordComponent.defaultProps = defaultProps;
 
 const ForgotPassword = withStyles(ForgotPasswordComponent, styles);
-export default connect(mapStateToProps, bindAction)(ForgotPassword);
+export default ForgotPassword;

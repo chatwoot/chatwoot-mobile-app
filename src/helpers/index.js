@@ -1,9 +1,61 @@
 import md5 from 'md5';
+
 import { GRAVATAR_URL } from '../constants/url';
-import { Linking } from 'react-native';
+
 import DateHelper from './DateHelper';
+import { ASSIGNEE_TYPE, CONVERSATION_STATUS } from '../constants';
 
 const groupBy = require('lodash.groupby');
+
+export function findAssigneeType({ assigneeType }) {
+  let assignee;
+  switch (assigneeType) {
+    case 0:
+      assignee = ASSIGNEE_TYPE.ME;
+      break;
+    case 1:
+      assignee = ASSIGNEE_TYPE.UN_ASSIGNED;
+      break;
+    default:
+      assignee = ASSIGNEE_TYPE.ALL;
+  }
+  return assignee;
+}
+
+export function findConversationStatus({ conversationStatus }) {
+  let status;
+  switch (conversationStatus) {
+    case CONVERSATION_STATUS.OPEN:
+      status = CONVERSATION_STATUS.OPEN;
+      break;
+    case CONVERSATION_STATUS.BOT:
+      status = CONVERSATION_STATUS.BOT;
+      break;
+    default:
+      status = CONVERSATION_STATUS.RESOLVED;
+  }
+  return status;
+}
+
+export function checkConversationMatch({
+  assignee,
+  user,
+  assigneeType,
+  status,
+  conversationStatus,
+}) {
+  const { email: userEmail } = user;
+  if (conversationStatus !== status) {
+    return false;
+  }
+  if (!assignee && assigneeType !== 1) {
+    return false;
+  }
+  if (assignee && assignee.email && userEmail !== assignee.email && assigneeType === 0) {
+    return false;
+  }
+  return true;
+}
 
 export function getUserInitial({ userName }) {
   const parts = userName ? userName.split(/[ -]/) : [];
@@ -59,10 +111,7 @@ export const getRandomColor = function ({ userName }) {
     color
       .replace(/^#/, '')
       .replace(/../g, (value) =>
-        (
-          '0' +
-          Math.min(255, Math.max(0, parseInt(value, 16) + -20)).toString(16)
-        ).substr(-2),
+        ('0' + Math.min(255, Math.max(0, parseInt(value, 16) + -20)).toString(16)).substr(-2),
       )
   );
 };
@@ -81,19 +130,14 @@ export const checkImageExist = ({ thumbnail }) => {
     });
 };
 
-export const openURL = ({ URL }) => {
-  Linking.openURL(URL);
-};
-
 export const getInboxName = ({ inboxes, inboxId }) => {
   const inbox = inboxes.find((item) => item.id === inboxId);
   return inbox ? inbox.name : null;
 };
 
 export const getGroupedConversation = ({ conversations }) => {
-  const conversationGroupedByDate = groupBy(
-    Object.values(conversations),
-    (message) => new DateHelper(message.created_at).format(),
+  const conversationGroupedByDate = groupBy(Object.values(conversations), (message) =>
+    new DateHelper(message.created_at).format(),
   );
   return Object.keys(conversationGroupedByDate).map((date) => {
     const messages = conversationGroupedByDate[date].map((message, index) => {
@@ -105,8 +149,7 @@ export const getGroupedConversation = ({ conversations }) => {
         const currentSender = message.sender ? message.sender.name : '';
         const nextSender = nextMessage.sender ? nextMessage.sender.name : '';
         showAvatar =
-          currentSender !== nextSender ||
-          message.message_type !== nextMessage.message_type;
+          currentSender !== nextSender || message.message_type !== nextMessage.message_type;
       }
       return { showAvatar, ...message };
     });
@@ -116,4 +159,88 @@ export const getGroupedConversation = ({ conversations }) => {
       date,
     };
   });
+};
+
+export const getTypingUsersText = ({ conversationId, conversationTypingUsers }) => {
+  const userList = conversationTypingUsers[conversationId];
+  const isAnyoneTyping = userList && userList.length !== 0;
+  if (isAnyoneTyping) {
+    const count = userList.length;
+    if (count === 1) {
+      const [user] = userList;
+      const { type } = user;
+      // Check user is typing
+      if (type === 'contact') {
+        return 'typing...';
+      }
+      return `${user.name.toString().replace(/^./, (str) => str.toUpperCase())} is typing...`;
+    }
+
+    if (count === 2) {
+      const [first, second] = userList;
+      return `${first.name
+        .toString()
+        .replace(/^./, (str) => str.toUpperCase())} and ${second.name
+        .toString()
+        .replace(/^./, (str) => str.toUpperCase())} are typing...`;
+    }
+
+    const [user] = userList;
+    const rest = userList.length - 1;
+    return `${user.name
+      .toString()
+      .replace(/^./, (str) => str.toUpperCase())} and ${rest} others are typing...`;
+  }
+  return false;
+};
+
+export const getGroupedNotifications = ({ notifications }) => {
+  const notificationGroupedByDate = groupBy(Object.values(notifications), (notification) =>
+    new DateHelper(notification.created_at).format(),
+  );
+  return Object.keys(notificationGroupedByDate).map((date) => {
+    const data = notificationGroupedByDate[date];
+
+    return {
+      data,
+      title: date,
+    };
+  });
+};
+
+export const findUniqueConversations = ({ payload }) => {
+  const filterConversations = payload.filter((item) => item.messages.length !== 0);
+  const uniqueConversations = filterConversations.reduce((acc, current) => {
+    const x = acc.find((item) => item.id === current.id);
+    if (!x) {
+      return acc.concat([current]);
+    } else {
+      return acc;
+    }
+  }, []);
+  return uniqueConversations;
+};
+
+export const findUniqueMessages = ({ allMessages }) => {
+  const completeMessages = [].concat(allMessages).reverse();
+
+  const uniqueMessages = completeMessages.reduce((acc, current) => {
+    const x = acc.find((item) => item.id === current.id);
+    if (!x) {
+      return acc.concat([current]);
+    } else {
+      return acc;
+    }
+  }, []);
+  return uniqueMessages;
+};
+
+export const addOrRemoveItemFromArray = (array, key) => {
+  const index = array.findIndex((o) => o === key);
+  if (index === -1) {
+    array.push(key);
+  } else {
+    array.splice(index, 1);
+  }
+  return array;
 };

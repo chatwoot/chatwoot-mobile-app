@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { View, StatusBar, Animated, Easing } from 'react-native';
+import { SafeAreaView, StatusBar, Animated, Easing } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import { withStyles } from '@ui-kitten/components';
 
 import i18n from '../i18n';
 
-const styles = theme => ({
+const styles = (theme) => ({
   container: {
     backgroundColor: theme['color-danger-800'],
+    paddingTop: 16,
   },
   offlineText: {
     // For texts displayed on contrast backgrounds (color-danger-800 in this case)
@@ -22,8 +23,10 @@ const styles = theme => ({
 });
 
 const propTypes = {
-  themedStyle: PropTypes.object,
-  theme: PropTypes.object,
+  eva: PropTypes.shape({
+    style: PropTypes.object,
+    theme: PropTypes.object,
+  }).isRequired,
 };
 
 class OfflineBar extends Component {
@@ -43,15 +46,14 @@ class OfflineBar extends Component {
     this.animation = new Animated.Value(0);
   }
 
-  componentWillMount() {
-    NetInfo.addEventListener(state => {
+  componentDidMount() {
+    NetInfo.addEventListener((state) => {
       const { isConnected } = state;
-
       this.setNetworkStatus(isConnected);
     });
   }
 
-  setNetworkStatus = status => {
+  setNetworkStatus = (status) => {
     this.setState({ isConnected: status });
     if (status) {
       this.triggerAnimation();
@@ -70,7 +72,9 @@ class OfflineBar extends Component {
   };
 
   render() {
-    const { themedStyle, theme } = this.props;
+    const {
+      eva: { style, theme },
+    } = this.props;
     const interpolated = this.animation.interpolate({
       inputRange: this.animationConstants.INPUT_RANGE,
       outputRange: this.animationConstants.OUTPUT_RANGE,
@@ -79,13 +83,14 @@ class OfflineBar extends Component {
       transform: [{ translateX: interpolated }],
     };
     const { isConnected } = this.state;
+
     return !isConnected ? (
-      <View style={themedStyle.container}>
+      <SafeAreaView style={style.container}>
         <StatusBar backgroundColor={theme['color-danger-800']} />
-        <Animated.Text style={[themedStyle.offlineText, animationStyle]}>
+        <Animated.Text style={[style.offlineText, animationStyle]}>
           {i18n.t('ERRORS.OfFLINE')}
         </Animated.Text>
-      </View>
+      </SafeAreaView>
     ) : null;
   }
 }

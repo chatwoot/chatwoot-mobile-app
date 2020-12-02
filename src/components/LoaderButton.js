@@ -1,51 +1,46 @@
-import { Button as UIKittenButton, withStyles } from '@ui-kitten/components';
+import { Button, useTheme, withStyles } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { ActivityIndicator } from 'react-native';
+import CustomText from './Text';
 
-class ButtonComponent extends Component {
-  static propTypes = {
-    theme: PropTypes.object,
-    loading: PropTypes.bool,
-    children: PropTypes.string,
-  };
+const LoadingIndicator = () => {
+  const theme = useTheme();
+  return <ActivityIndicator size="small" color={theme['loader-color']} />;
+};
 
-  static defaultProps = {
-    loading: false,
-  };
+const LoaderButton = ({ loading, text, ...customProps }) => {
+  const {
+    eva: {
+      style: { textStyle },
+    },
+  } = customProps;
 
-  renderChildren() {
-    const { loading, children } = this.props;
+  return (
+    <Button {...customProps} {...(loading && { accessoryLeft: LoadingIndicator })}>
+      {loading ? null : <CustomText style={textStyle}>{text}</CustomText>}
+    </Button>
+  );
+};
 
-    if (loading) {
-      return null;
-    }
+const propTypes = {
+  loading: PropTypes.bool,
+  text: PropTypes.string.isRequired,
+};
 
-    return children;
-  }
+const defaultProps = {
+  loading: false,
+};
 
-  renderLoading() {
-    const { theme } = this.props;
-    return <ActivityIndicator color={theme['loader-color']} />;
-  }
+LoaderButton.propTypes = propTypes;
+LoaderButton.defaultProps = defaultProps;
 
-  render() {
-    const { loading } = this.props;
+const styles = (theme) => ({
+  textStyle: {
+    color: theme['color-basic-100'],
+    fontWeight: theme['font-semi-bold'],
+    fontSize: theme['font-size-medium'],
+  },
+});
 
-    let customProps;
-    if (loading) {
-      customProps = {
-        icon: () => this.renderLoading(),
-        disabled: true,
-      };
-    }
-
-    return (
-      <UIKittenButton {...this.props} {...customProps}>
-        {this.renderChildren()}
-      </UIKittenButton>
-    );
-  }
-}
-
-export default withStyles(ButtonComponent);
+export default withStyles(LoaderButton, styles);

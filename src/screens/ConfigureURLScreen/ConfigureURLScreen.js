@@ -1,142 +1,133 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import {
-  View,
-  Image,
-  KeyboardAvoidingView,
-  Dimensions,
-  Platform,
-} from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+
+import { View, Image, SafeAreaView, Dimensions, Platform } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import { withStyles } from '@ui-kitten/components';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
+import DeviceInfo from 'react-native-device-info';
 
 import { setInstallationUrl, resetSettings } from '../../actions/settings';
-
 import styles from './ConfigureURLScreen.style';
 import { URL } from '../../helpers/formHelper';
 import TextInputField from '../../components/TextInputField';
 import images from '../../constants/images';
-
 import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
 import { ScrollView } from 'react-native-gesture-handler';
+import CustomText from '../../components/Text';
 
 const { Form } = t.form;
 const URLForm = t.struct({
   url: URL,
 });
 
-class ConfigureURLScreenComponent extends Component {
-  static propTypes = {
-    themedStyle: PropTypes.object,
-    theme: PropTypes.object,
-    setInstallationUrl: PropTypes.func,
-    resetSettings: PropTypes.func,
-    isSettingUrl: PropTypes.bool,
-    navigation: PropTypes.shape({
-      navigate: PropTypes.func.isRequired,
-    }).isRequired,
-  };
+const appName = DeviceInfo.getApplicationName();
 
-  static defaultProps = {
-    setInstallationUrl: () => {},
-    isSettingUrl: false,
-  };
+const propTypes = {
+  eva: PropTypes.shape({
+    style: PropTypes.object,
+  }).isRequired,
+  theme: PropTypes.object,
+  setInstallationUrl: PropTypes.func,
+  resetSettings: PropTypes.func,
+  isSettingUrl: PropTypes.bool,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
-  state = {
-    values: {
-      url: '',
-    },
-    options: {
-      fields: {
-        url: {
-          placeholder: 'Ex: app.chatwoot.com',
-          template: (props) => <TextInputField {...props} />,
-          error: i18n.t('CONFIGURE_URL.URL_ERROR'),
-          autoCapitalize: 'none',
-          config: {
-            label: i18n.t('CONFIGURE_URL.ENTER_URL'),
-          },
+const defaultProps = {
+  setInstallationUrl: () => {},
+  isSettingUrl: false,
+};
+
+const ConfigureURLScreenComponent = ({ eva }) => {
+  const isSettingUrl = useSelector((state) => state.settings.isSettingUrl);
+  const dispatch = useDispatch();
+  const inputRef = useRef(null);
+  const [values, setValues] = useState({
+    url: appName === 'Chatwoot' ? 'app.chatwoot.com' : null,
+  });
+
+  const options = {
+    fields: {
+      url: {
+        placeholder: 'Ex: app.chatwoot.com',
+        template: (props) => <TextInputField {...props} />,
+        error: i18n.t('CONFIGURE_URL.URL_ERROR'),
+        autoCapitalize: 'none',
+        autoCompleteType: false,
+        autoCorrect: false,
+        config: {
+          label: '',
         },
       },
     },
   };
 
-  componentDidMount = () => {
-    this.props.resetSettings();
+  const { style } = eva;
+
+  useEffect(() => {
+    dispatch(resetSettings());
+  }, [dispatch]);
+
+  const onChange = (value) => {
+    setValues(value);
   };
 
-  onChange(values) {
-    this.setState({
-      values,
-    });
-  }
-
-  onSubmit() {
-    const value = this.formRef.getValue();
+  const onSubmit = () => {
+    const value = inputRef.current.getValue();
 
     if (value) {
       const { url } = value;
-      this.props.setInstallationUrl({ url });
+      dispatch(setInstallationUrl({ url }));
     }
-  }
+  };
 
-  render() {
-    const { options, values } = this.state;
-    const { isSettingUrl, themedStyle } = this.props;
+  return (
+    <SafeAreaView
+      style={style.keyboardView}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      enabled>
+      <ScrollView
+        style={{
+          height: Dimensions.get('window').height,
+        }}>
+        <View style={style.logoView}>
+          <Image style={style.logo} source={images.URL} />
+        </View>
 
-    return (
-      <KeyboardAvoidingView
-        style={themedStyle.keyboardView}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        enabled>
-        <ScrollView
-          style={{
-            height: Dimensions.get('window').height,
-          }}>
-          <View style={themedStyle.logoView}>
-            <Image style={themedStyle.logo} source={images.appLogo} />
-          </View>
+        <View style={style.titleView}>
+          <CustomText style={style.titleText}>{i18n.t('CONFIGURE_URL.ENTER_URL')}</CustomText>
+        </View>
 
-          <View style={themedStyle.formView}>
-            <Form
-              ref={(ref) => {
-                this.formRef = ref;
-              }}
-              type={URLForm}
-              options={options}
-              value={values}
-              onChange={(value) => this.onChange(value)}
+        <View style={style.formView}>
+          <Form
+            ref={inputRef}
+            type={URLForm}
+            options={options}
+            value={values}
+            onChange={(value) => onChange(value)}
+          />
+          <View style={style.nextButtonView}>
+            <LoaderButton
+              style={style.nextButton}
+              loading={isSettingUrl}
+              onPress={() => onSubmit()}
+              size="large"
+              textStyle={style.nextButtonText}
+              text={i18n.t('CONFIGURE_URL.CONNECT')}
             />
-            <View style={themedStyle.nextButtonView}>
-              <LoaderButton
-                style={themedStyle.nextButton}
-                loading={isSettingUrl}
-                onPress={() => this.onSubmit()}
-                size="large"
-                textStyle={themedStyle.nextButtonText}>
-                {i18n.t('CONFIGURE_URL.NEXT')}
-              </LoaderButton>
-            </View>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    );
-  }
-}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
-function bindAction(dispatch) {
-  return {
-    setInstallationUrl: (data) => dispatch(setInstallationUrl(data)),
-    resetSettings: () => dispatch(resetSettings()),
-  };
-}
-function mapStateToProps(state) {
-  return {
-    isSettingUrl: state.settings.isSettingUrl,
-  };
-}
+ConfigureURLScreenComponent.propTypes = propTypes;
+ConfigureURLScreenComponent.defaultProps = defaultProps;
 
 const ConfigureURLScreen = withStyles(ConfigureURLScreenComponent, styles);
-export default connect(mapStateToProps, bindAction)(ConfigureURLScreen);
+export default ConfigureURLScreen;

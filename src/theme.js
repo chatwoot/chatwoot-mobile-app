@@ -101,6 +101,7 @@ export const theme = {
   'text-basic-color': '#1f2d3d',
   'text-light-color': '#3c4858',
   'text-hint-color': '#8492a6',
+  'text-tooltip-color': '#ffffff',
 
   'back-drop-color': 'rgba(0, 0, 0, 0.5)',
   // Text color

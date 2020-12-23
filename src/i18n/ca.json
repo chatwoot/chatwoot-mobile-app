@@ -1,0 +1,127 @@
+{
+  "WELCOME": "Benvingut",
+  "COMMON": {
+    "ERROR": "Error",
+    "ERROR_TITLE": "S'ha produït un error inesperat",
+    "REPORT_MESSAGE": "Ho hem comunicat al nostre equip! Tanqueu l'aplicació i torneu a començar!",
+    "CLOSE": "Tancar"
+  },
+  "FOOTER": {
+    "HOME": "Inici",
+    "CONVERSATION": "Converses",
+    "NOTIFICATION": "Notificacions",
+    "SETTINGS": "Configuració"
+  },
+  "CONFIGURE_URL": {
+    "ENTER_URL": "URL d'instal·lació",
+    "URL_ERROR": "Introduïu un URL vàlid",
+    "CONNECT": "Connectar",
+    "CHANGE_LANGUAGE": "Canviar d'idioma",
+    "ERROR": "URL d'instal·lació no vàlid"
+  },
+  "LOGIN": {
+    "EMAIL": "Correu electrònic",
+    "PASSWORD": "Contrasenya",
+    "EMAIL_ERROR": "Introduïu un correu electrònic vàlid",
+    "PASSWORD_ERROR": "Introduïu una contrasenya vàlida",
+    "LOGIN": "Inicia la sessió",
+    "FORGOT_PASSWORD": "Has oblidat la teva contrasenya?",
+    "RESET_HERE": "Restableix aquí",
+    "NO_ACCOUNT": "No teniu compte?",
+    "CREATE_ACCOUNT": "Crear un nou compte",
+    "SETTINGS": "Configuració",
+    "TERMS": "Termes i Condicions",
+    "CHANGE_URL": "Canviar URL"
+  },
+  "FORGOT_PASSWORD": {
+    "EMAIL": "Introduïu el vostre correu electrònic",
+    "EMAIL_ERROR": "Introduïu un correu electrònic vàlid",
+    "RESET_HERE": "Restablir la contrasenya",
+    "HEADER_TITLE": "Restablir la contrasenya",
+    "TITLE": "Has oblidat la contrasenya?",
+    "SUB_TITLE": "No et preocupis! T'ajudarem"
+  },
+  "CONVERSATION": {
+    "DEFAULT_HEADER_TITLE": "Converses",
+    "MINE": "Les meves",
+    "UN_ASSIGNED": "Sense assignar",
+    "ALL": "Totes",
+    "EMPTY": "No hi ha converses actives en aquest grup.",
+    "PICTURE_CONTENT": "Missatge amb imatge",
+    "ATTACHMENT_CONTENT": "Fitxer adjunt",
+    "DOWNLOAD": "Descarregar",
+    "TODAY": "Avui",
+    "YESTERDAY": "Ahir",
+    "TYPE_MESSAGE": "Escriu un missatge",
+    "TYPING": "escrivint",
+    "ALL_CONVERSATION_LOADED": "S'han carregat totes les converses",
+    "RESOLVE": "Resol la conversa",
+    "RE_OPEN": "Torna a obrir la conversa",
+    "CANCEL": "Cancel·lar"
+  },
+  "FILTER": {
+    "HEADER_TITLE": "Filtre de converses",
+    "CHOOSE_INBOX": "Trieu Safata d'entrada",
+    "CHOOSE_STATUS": "Estat de la conversa",
+    "OPEN": "Obrir",
+    "RESOLVED": "Resolt",
+    "BOT": "Bot",
+    "SUBMIT": "Trametre"
+  },
+  "SETTINGS": {
+    "HEADER_TITLE": "Configuració",
+    "AVAILABILITY": "Disponibilitat",
+    "NOTIFICATION": "Preferències de notificació",
+    "HELP": "Documents d’ajuda",
+    "LOG_OUT": "Tancar sessió",
+    "SWITCH_ACCOUNT": "Canvia de compte",
+    "CHANGE_LANGUAGE": "Canviar d'idioma",
+    "SUBMIT": "Trametre"
+  },
+  "NOTIFICATION": {
+    "HEADER_TITLE": "Notificacions",
+    "EMPTY": "Encara no hi ha notificacions.",
+    "EMPTY_MORE_TEXT": "Un cop comencis a rebre notificacions, apareixeran aquí.",
+    "ALL_NOTIFICATION_LOADED": "S'han carregat totes les notificacions",
+    "MARK_ALL": "Marcar tots com a llegits",
+    "CANCEL": "Cancel·lar"
+  },
+  "AVAILABILITY": {
+    "ONLINE": "En línia",
+    "BUSY": "Ocupat",
+    "OFFLINE": "Fora de línia"
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "TITLE": "Preferències de notificació",
+    "EMAIL": "Correu electrònic",
+    "PUSH": "Activa",
+    "CONVERSATION_CREATE_PUSH": "Envia notificacions automàtiques quan es creï una conversa nova",
+    "CONVERSATION_ASSIGNEE_PUSH": "Envia notificacions automàtiques quan se m'assigna una conversa",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Envia notificacions automàtiques quan es creï un missatge nou en una conversa assignada",
+    "CONVERSATION_CREATE_EMAIL": "Envia notificacions per correu electrònic quan es creï una conversa nova",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Envia notificacions per correu electrònic quan se m'assigna una conversa",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Envia notificacions per correu electrònic quan es creï un missatge nou en una conversa assignada"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Navegador",
+    "OPERATING_SYSTEM": "Sistema operatiu",
+    "INITIATED_AT": "Iniciada a",
+    "INITIATED_FROM": "Iniciat des de"
+  },
+  "ERRORS": {
+    "COMMON_ERROR": "No s'ha pogut connectar al servidor Woot. Torneu-ho a provar més tard",
+    "OfFLINE": "Has de connectar a la xarxa Wi-Fi o a una xarxa mòbil per tornar a connectar-te",
+    "CANNOT_FETCH": "S'ha produït un error en obtenir la informació. Torna-ho a provar",
+    "AUTH": "Nom d’usuari / contrasenya incorrecte. Si us plau torna-ho a provar",
+    "NO_ACCOUNTS_MESSAGE": "No tens accés a cap compte de chatwoot"
+  },
+  "SUCCESS": {
+    "AUTH": "Inici de sessió correcte"
+  },
+  "EXIT": {
+    "TITLE": "Sortir",
+    "SUBTITLE": "Estar segur que vols sortir?",
+    "CANCEL": "Cancel·lar",
+    "OK": "D'acord"
+  }
+}

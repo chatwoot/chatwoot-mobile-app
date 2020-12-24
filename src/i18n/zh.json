@@ -46,82 +46,82 @@
     "MINE": "我的",
     "UN_ASSIGNED": "未分配的",
     "ALL": "全部",
-    "EMPTY": "There are no active conversations in this group.",
-    "PICTURE_CONTENT": "Picture message",
-    "ATTACHMENT_CONTENT": "File Attachment",
-    "DOWNLOAD": "Download",
-    "TODAY": "Today",
-    "YESTERDAY": "Yesterday",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "RESOLVE": "Resolve conversation",
-    "RE_OPEN": "Reopen conversation",
-    "CANCEL": "Cancel"
+    "EMPTY": "此群组中没有活动的会话。",
+    "PICTURE_CONTENT": "图片消息",
+    "ATTACHMENT_CONTENT": "附件",
+    "DOWNLOAD": "下载",
+    "TODAY": "今日",
+    "YESTERDAY": "昨日",
+    "TYPE_MESSAGE": "输入消息",
+    "TYPING": "正在输入",
+    "ALL_CONVERSATION_LOADED": "已加载所有会话",
+    "RESOLVE": "解决会话",
+    "RE_OPEN": "重新打开会话",
+    "CANCEL": "取消"
   },
   "FILTER": {
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
-    "OPEN": "Open",
-    "RESOLVED": "Resolved",
-    "BOT": "Bot",
-    "SUBMIT": "Submit"
+    "HEADER_TITLE": "会话过滤器",
+    "CHOOSE_INBOX": "选择收件箱",
+    "CHOOSE_STATUS": "会话状态",
+    "OPEN": "打开",
+    "RESOLVED": "已解决",
+    "BOT": "机器人",
+    "SUBMIT": "提交"
   },
   "SETTINGS": {
-    "HEADER_TITLE": "Settings",
-    "AVAILABILITY": "Availability",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "LOG_OUT": "Logout",
-    "SWITCH_ACCOUNT": "Switch Account",
-    "CHANGE_LANGUAGE": "Change Language",
-    "SUBMIT": "Submit"
+    "HEADER_TITLE": "设置",
+    "AVAILABILITY": "可用性",
+    "NOTIFICATION": "通知设置",
+    "HELP": "帮助文档",
+    "LOG_OUT": "注销",
+    "SWITCH_ACCOUNT": "切换账户",
+    "CHANGE_LANGUAGE": "更改语言",
+    "SUBMIT": "提交"
   },
   "NOTIFICATION": {
-    "HEADER_TITLE": "Notifications",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
-    "CANCEL": "Cancel"
+    "HEADER_TITLE": "消息通知",
+    "EMPTY": "还没有消息通知",
+    "EMPTY_MORE_TEXT": "一旦你收到通知，它们将出现在这里。",
+    "ALL_NOTIFICATION_LOADED": "所有通知已加载",
+    "MARK_ALL": "全部标记为已读",
+    "CANCEL": "取消"
   },
   "AVAILABILITY": {
-    "ONLINE": "Online",
-    "BUSY": "Busy",
-    "OFFLINE": "Offline"
+    "ONLINE": "在线",
+    "BUSY": "忙碌中",
+    "OFFLINE": "离线"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
+    "TITLE": "通知设置",
     "EMAIL": "Email",
-    "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "PUSH": "推送",
+    "CONVERSATION_CREATE_PUSH": "创建新会话时发送推送通知",
+    "CONVERSATION_ASSIGNEE_PUSH": "当会话分配给我时发送推送通知",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "在已分配的会话中创建新消息时发送推送通知",
+    "CONVERSATION_CREATE_EMAIL": "创建新会话时发送电子邮件通知",
+    "CONVERSATION_ASSIGNEE_EMAIL": "当会话分配给我时发送电子邮件通知",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "在已分配的会话中创建新消息时发送电子邮件通知"
   },
   "CONVERSATION_DETAILS": {
-    "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Operating System",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "BROWSER": "浏览器",
+    "OPERATING_SYSTEM": "操作系统",
+    "INITIATED_AT": "发起于",
+    "INITIATED_FROM": "发起自"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
-    "AUTH": "Username / Password Incorrect. Please try again",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "COMMON_ERROR": "无法连接到服务器，请稍后再试",
+    "OfFLINE": "您必须连接到 Wi-Fi 或蜂窝网络才能重新上线。",
+    "CANNOT_FETCH": "获取信息时出现错误，请重试",
+    "AUTH": "用户名 / 密码不正确。请重试",
+    "NO_ACCOUNTS_MESSAGE": "您无权访问任何账户"
   },
   "SUCCESS": {
-    "AUTH": "Login Successful"
+    "AUTH": "登录成功"
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
-    "CANCEL": "Cancel",
-    "OK": "Ok"
+    "TITLE": "退出",
+    "SUBTITLE": "您确定要退出吗？",
+    "CANCEL": "取消",
+    "OK": "确定"
   }
 }

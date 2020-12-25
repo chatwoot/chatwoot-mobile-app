@@ -13,11 +13,11 @@
     "SETTINGS": "الإعدادات"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
+    "ENTER_URL": "رابط التثبيت",
     "URL_ERROR": "الرجاء إدخال عنوان صحيح",
     "CONNECT": "اتصل",
     "CHANGE_LANGUAGE": "تغيير اللغة",
-    "ERROR": "Invalid installation url"
+    "ERROR": "رابط التثبيت غير صحيح"
   },
   "LOGIN": {
     "EMAIL": "البريد الإلكتروني",
@@ -65,7 +65,7 @@
     "CHOOSE_STATUS": "حالة المحادثة",
     "OPEN": "فتح",
     "RESOLVED": "إغلاق",
-    "BOT": "Bot",
+    "BOT": "الروبوت",
     "SUBMIT": "إرسال"
   },
   "SETTINGS": {
@@ -94,7 +94,7 @@
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "تفضيلات الإشعارات",
     "EMAIL": "البريد الإلكتروني",
-    "PUSH": "Push",
+    "PUSH": "ارسال",
     "CONVERSATION_CREATE_PUSH": "إرسال إشعارات عند إنشاء محادثة جديدة",
     "CONVERSATION_ASSIGNEE_PUSH": "إرسال إشعارات عند تعيين محادثة لي",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",

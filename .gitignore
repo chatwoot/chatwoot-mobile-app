@@ -35,6 +35,7 @@ android/app/.settings
 android/app/bin
 android/app/.project
 android/app/.classpath
+android/app/gradle.properties
 
 # node.js
 #

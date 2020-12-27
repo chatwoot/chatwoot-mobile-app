@@ -1,5 +1,5 @@
 {
-  "WELCOME": "Verwelkoming",
+  "WELCOME": "Welcome",
   "COMMON": {
     "ERROR": "Error",
     "ERROR_TITLE": "Unexpected error occurred",
@@ -7,49 +7,49 @@
     "CLOSE": "Close"
   },
   "FOOTER": {
-    "HOME": "Startpagina",
-    "CONVERSATION": "Gesprekken",
+    "HOME": "Home",
+    "CONVERSATION": "Conversations",
     "NOTIFICATION": "Notifications",
-    "SETTINGS": "Instellingen"
+    "SETTINGS": "Settings"
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installation URL",
-    "URL_ERROR": "Voer een geldige URL in",
+    "URL_ERROR": "Enter a valid URL",
     "CONNECT": "Connect",
-    "CHANGE_LANGUAGE": "Taal wijzigen",
+    "CHANGE_LANGUAGE": "Change language",
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
-    "EMAIL": "E-mailadres",
-    "PASSWORD": "Wachtwoord",
-    "EMAIL_ERROR": "Voer een geldig e-mailadres in",
-    "PASSWORD_ERROR": "Voer een geldig wachtwoord in",
-    "LOGIN": "Log in",
-    "FORGOT_PASSWORD": "Wachtwoord vergeten?",
-    "RESET_HERE": "Hier resetten",
-    "NO_ACCOUNT": "Nog geen account?",
-    "CREATE_ACCOUNT": "Nieuw account aanmaken",
-    "SETTINGS": "Instellingen",
-    "TERMS": "Algemene Voorwaarden",
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "EMAIL_ERROR": "Enter a valid email",
+    "PASSWORD_ERROR": "Enter a valid password",
+    "LOGIN": "Sign In",
+    "FORGOT_PASSWORD": "Forgot your password?",
+    "RESET_HERE": "Reset here",
+    "NO_ACCOUNT": "Don't have an account?",
+    "CREATE_ACCOUNT": "Create new account",
+    "SETTINGS": "Settings",
+    "TERMS": "Terms & Conditions",
     "CHANGE_URL": "Change URL"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "Voer uw e-mailadres in",
-    "EMAIL_ERROR": "Voer een geldig e-mailadres in",
-    "RESET_HERE": "Wachtwoord opnieuw instellen",
-    "HEADER_TITLE": "Wachtwoord opnieuw instellen",
+    "EMAIL": "Please enter your email",
+    "EMAIL_ERROR": "Enter a valid email",
+    "RESET_HERE": "Reset password",
+    "HEADER_TITLE": "Reset password",
     "TITLE": "Forgot Password?",
     "SUB_TITLE": "Don't worry! We got your back"
   },
   "CONVERSATION": {
-    "DEFAULT_HEADER_TITLE": "Gesprekken",
-    "MINE": "Mijn",
-    "UN_ASSIGNED": "Niet-toegewezen",
-    "ALL": "Allemaal",
-    "EMPTY": "Er zijn geen actieve gesprekken in deze groep.",
-    "PICTURE_CONTENT": "Bericht met foto",
-    "ATTACHMENT_CONTENT": "Bestand bijlage",
-    "DOWNLOAD": "downloaden",
+    "DEFAULT_HEADER_TITLE": "Conversations",
+    "MINE": "Mine",
+    "UN_ASSIGNED": "Unassigned",
+    "ALL": "All",
+    "EMPTY": "There are no active conversations in this group.",
+    "PICTURE_CONTENT": "Picture message",
+    "ATTACHMENT_CONTENT": "File Attachment",
+    "DOWNLOAD": "Download",
     "TODAY": "Today",
     "YESTERDAY": "Yesterday",
     "TYPE_MESSAGE": "Type message",
@@ -57,26 +57,26 @@
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "RESOLVE": "Resolve conversation",
     "RE_OPEN": "Reopen conversation",
-    "CANCEL": "annuleren"
+    "CANCEL": "Cancel"
   },
   "FILTER": {
     "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Postvak In kiezen",
-    "CHOOSE_STATUS": "Gesprek status",
+    "CHOOSE_INBOX": "Choose Inbox",
+    "CHOOSE_STATUS": "Conversation Status",
     "OPEN": "Open",
-    "RESOLVED": "Opgelost",
+    "RESOLVED": "Resolved",
     "BOT": "Bot",
-    "SUBMIT": "Bevestigen"
+    "SUBMIT": "Submit"
   },
   "SETTINGS": {
-    "HEADER_TITLE": "Instellingen",
+    "HEADER_TITLE": "Settings",
     "AVAILABILITY": "Availability",
     "NOTIFICATION": "Notification Preferences",
     "HELP": "Help Docs",
-    "LOG_OUT": "Afmelden",
+    "LOG_OUT": "Logout",
     "SWITCH_ACCOUNT": "Switch Account",
     "CHANGE_LANGUAGE": "Change Language",
-    "SUBMIT": "Bevestigen"
+    "SUBMIT": "Submit"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",
@@ -84,7 +84,7 @@
     "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
-    "CANCEL": "annuleren"
+    "CANCEL": "Cancel"
   },
   "AVAILABILITY": {
     "ONLINE": "Online",
@@ -93,7 +93,7 @@
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Notification Preferences",
-    "EMAIL": "E-mailadres",
+    "EMAIL": "Email",
     "PUSH": "Push",
     "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
     "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
@@ -109,19 +109,19 @@
     "INITIATED_FROM": "Initiated from"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Kan geen verbinding maken met Woot Server, probeer het later opnieuw",
-    "OfFLINE": "U moet verbinding maken met Wi-Fi of een mobiel netwerk om weer online te kunnen komen",
-    "CANNOT_FETCH": "Er is een fout opgetreden bij het ophalen van de informatie, probeer het opnieuw",
-    "AUTH": "Gebruikersnaam / wachtwoord onjuist. Probeer het opnieuw",
+    "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
+    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
+    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "AUTH": "Username / Password Incorrect. Please try again",
     "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
   },
   "SUCCESS": {
-    "AUTH": "Login succesvol"
+    "AUTH": "Login Successful"
   },
   "EXIT": {
-    "TITLE": "Afsluiten",
-    "SUBTITLE": "Weet u zeker dat u wilt afsluiten?",
-    "CANCEL": "annuleren",
-    "OK": "OK"
+    "TITLE": "Exit",
+    "SUBTITLE": "Are you sure you want to quit?",
+    "CANCEL": "Cancel",
+    "OK": "Ok"
   }
 }

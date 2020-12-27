@@ -1,0 +1,127 @@
+{
+  "WELCOME": "Bem-vindo",
+  "COMMON": {
+    "ERROR": "Erro",
+    "ERROR_TITLE": "Ocorreu um erro inesperado",
+    "REPORT_MESSAGE": "Já relatamos isso para nossa equipe! Por favor, feche o aplicativo e comece novamente!",
+    "CLOSE": "Fechar"
+  },
+  "FOOTER": {
+    "HOME": "Principal",
+    "CONVERSATION": "Conversas",
+    "NOTIFICATION": "Notificações",
+    "SETTINGS": "Confirgurações"
+  },
+  "CONFIGURE_URL": {
+    "ENTER_URL": "URL de instalação",
+    "URL_ERROR": "Insira uma URL válida",
+    "CONNECT": "Conectar",
+    "CHANGE_LANGUAGE": "Alterar idioma",
+    "ERROR": "Url de instalação inválida"
+  },
+  "LOGIN": {
+    "EMAIL": "e-mail",
+    "PASSWORD": "Senha",
+    "EMAIL_ERROR": "Digite um e-mail válido",
+    "PASSWORD_ERROR": "Digite uma senha válida",
+    "LOGIN": "Entrar",
+    "FORGOT_PASSWORD": "Esqueceu sua senha?",
+    "RESET_HERE": "Redefinir aqui",
+    "NO_ACCOUNT": "Não possui uma conta?",
+    "CREATE_ACCOUNT": "Criar nova conta",
+    "SETTINGS": "Confirgurações",
+    "TERMS": "Termos & Condições",
+    "CHANGE_URL": "Alterar URL"
+  },
+  "FORGOT_PASSWORD": {
+    "EMAIL": "Por favor, digite seu e-mail",
+    "EMAIL_ERROR": "Digite um e-mail válido",
+    "RESET_HERE": "Redefinir senha",
+    "HEADER_TITLE": "Redefinir senha",
+    "TITLE": "Esqueceu a Senha?",
+    "SUB_TITLE": "Não se preocupe! Nós te protegemos"
+  },
+  "CONVERSATION": {
+    "DEFAULT_HEADER_TITLE": "Conversas",
+    "MINE": "Minha",
+    "UN_ASSIGNED": "Não atribuída",
+    "ALL": "Todas",
+    "EMPTY": "Não há conversas ativas neste grupo.",
+    "PICTURE_CONTENT": "Mensagem de imagem",
+    "ATTACHMENT_CONTENT": "Anexo",
+    "DOWNLOAD": "Download",
+    "TODAY": "Hoje",
+    "YESTERDAY": "Ontem",
+    "TYPE_MESSAGE": "Tipo da Mensagem",
+    "TYPING": "digitando",
+    "ALL_CONVERSATION_LOADED": "Todas as conversas foram carregadas",
+    "RESOLVE": "Reabrir conversa",
+    "RE_OPEN": "Reabrir conversa",
+    "CANCEL": "Cancelar"
+  },
+  "FILTER": {
+    "HEADER_TITLE": "Filtro da Conversa",
+    "CHOOSE_INBOX": "Selecionar Caixa de Entrada",
+    "CHOOSE_STATUS": "Status da conversa",
+    "OPEN": "Abrir",
+    "RESOLVED": "Resolvida",
+    "BOT": "Bot",
+    "SUBMIT": "Enviar"
+  },
+  "SETTINGS": {
+    "HEADER_TITLE": "Confirgurações",
+    "AVAILABILITY": "Disponibilidade",
+    "NOTIFICATION": "Preferências de Notificação",
+    "HELP": "Documentação de Ajuda",
+    "LOG_OUT": "Sair",
+    "SWITCH_ACCOUNT": "Alterar conta",
+    "CHANGE_LANGUAGE": "Alterar Idioma",
+    "SUBMIT": "Enviar"
+  },
+  "NOTIFICATION": {
+    "HEADER_TITLE": "Notificações",
+    "EMPTY": "Ainda não há notificações.",
+    "EMPTY_MORE_TEXT": "Quando você começar a receber notificações, elas aparecerão aqui.",
+    "ALL_NOTIFICATION_LOADED": "Todas as notificações carregadas",
+    "MARK_ALL": "Marcar todas como lidas",
+    "CANCEL": "Cancelar"
+  },
+  "AVAILABILITY": {
+    "ONLINE": "Online",
+    "BUSY": "Ocupado",
+    "OFFLINE": "Offline"
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "TITLE": "Preferências de Notificação",
+    "EMAIL": "e-mail",
+    "PUSH": "Push",
+    "CONVERSATION_CREATE_PUSH": "Enviar notificações push quando uma nova conversa é criada",
+    "CONVERSATION_ASSIGNEE_PUSH": "Enviar notificações push quando uma conversa é atribuída para mim",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Enviar notificações push quando uma nova mensagem é criada em uma conversa atribuída",
+    "CONVERSATION_CREATE_EMAIL": "Enviar notificações push quando uma nova conversa é criada",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Enviar notificações por email quando uma conversa é atribuída a mim",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Enviar notificações por email quando uma nova mensagem é criada em uma conversa atribuída"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Navegador",
+    "OPERATING_SYSTEM": "Sistema Operacional",
+    "INITIATED_AT": "Iniciada em",
+    "INITIATED_FROM": "Iniciado por"
+  },
+  "ERRORS": {
+    "COMMON_ERROR": "Não foi possível conectar ao servidor Woot, por favor tente novamente mais tarde",
+    "OfFLINE": "Você precisa se conectar ao Wi-Fi ou a uma rede celular para ficar online novamente",
+    "CANNOT_FETCH": "Ocorreu um erro ao buscar as informações, por favor, tente novamente",
+    "AUTH": "Nome de usuário / senha incorreta. Por favor, tente novamente",
+    "NO_ACCOUNTS_MESSAGE": "Você não tem acesso a nenhuma conta no chatwoot"
+  },
+  "SUCCESS": {
+    "AUTH": "Acesso bem sucedido"
+  },
+  "EXIT": {
+    "TITLE": "Sair",
+    "SUBTITLE": "Tem certeza de que deseja sair?",
+    "CANCEL": "Cancelar",
+    "OK": "Ok"
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "WELCOME": "Bienvenue",
+  "COMMON": {
+    "ERROR": "Erreur",
+    "ERROR_TITLE": "Une erreur inattendue est survenue",
+    "REPORT_MESSAGE": "Nous avons signalé ceci a notre équipe ! Merci de redémarrer l'application !",
+    "CLOSE": "Fermer"
+  },
+  "FOOTER": {
+    "HOME": "Accueil",
+    "CONVERSATION": "Conversations",
+    "NOTIFICATION": "Notifications",
+    "SETTINGS": "Paramètres"
+  },
+  "CONFIGURE_URL": {
+    "ENTER_URL": "Lien d'installation",
+    "URL_ERROR": "Saisissez une URL valide",
+    "CONNECT": "Connexion",
+    "CHANGE_LANGUAGE": "Modifier la langue",
+    "ERROR": "Lien d'installation invalide"
+  },
+  "LOGIN": {
+    "EMAIL": "Courriel",
+    "PASSWORD": "Mot de passe",
+    "EMAIL_ERROR": "Saisissez une adresse de courriel valide",
+    "PASSWORD_ERROR": "Saisissez un mot de passe valide",
+    "LOGIN": "Se connecter",
+    "FORGOT_PASSWORD": "Mot de passe oublié ?",
+    "RESET_HERE": "Réinitialiser ici",
+    "NO_ACCOUNT": "Vous n'avez pas de compte ?",
+    "CREATE_ACCOUNT": "Créer un nouveau compte",
+    "SETTINGS": "Paramètres",
+    "TERMS": "Conditions Générales",
+    "CHANGE_URL": "Modifier l'URL"
+  },
+  "FORGOT_PASSWORD": {
+    "EMAIL": "Veuillez saisir votre adresse de courriel",
+    "EMAIL_ERROR": "Saisissez une adresse de courriel valide",
+    "RESET_HERE": "Réinitialiser le mot de passe",
+    "HEADER_TITLE": "Réinitialiser le mot de passe",
+    "TITLE": "Mot de passe oublié ?",
+    "SUB_TITLE": "Ne vous inquiétes pas ! Nous avons récupéré"
+  },
+  "CONVERSATION": {
+    "DEFAULT_HEADER_TITLE": "Conversations",
+    "MINE": "Les miennes",
+    "UN_ASSIGNED": "Non assignées",
+    "ALL": "Toutes",
+    "EMPTY": "Il n'y a aucune conversation active dans ce groupe.",
+    "PICTURE_CONTENT": "Message image",
+    "ATTACHMENT_CONTENT": "Pièce jointe",
+    "DOWNLOAD": "Télécharger",
+    "TODAY": "Aujourd'hui",
+    "YESTERDAY": "Hier",
+    "TYPE_MESSAGE": "Tapez un message",
+    "TYPING": "en cours d'écriture",
+    "ALL_CONVERSATION_LOADED": "Toutes les conversations ont été chargées",
+    "RESOLVE": "Reprendre la conversation",
+    "RE_OPEN": "Reprendre la conversation",
+    "CANCEL": "Annuler"
+  },
+  "FILTER": {
+    "HEADER_TITLE": "Filtrer les conversations",
+    "CHOOSE_INBOX": "Choisir la boîte de réception",
+    "CHOOSE_STATUS": "Statut de la conversation",
+    "OPEN": "Ouverte",
+    "RESOLVED": "Résolue",
+    "BOT": "Bot",
+    "SUBMIT": "Envoyer"
+  },
+  "SETTINGS": {
+    "HEADER_TITLE": "Paramètres",
+    "AVAILABILITY": "Disponibilité",
+    "NOTIFICATION": "Préférences de notifications",
+    "HELP": "Documentation",
+    "LOG_OUT": "Se déconnecter",
+    "SWITCH_ACCOUNT": "Changer de compte",
+    "CHANGE_LANGUAGE": "Changer de langue",
+    "SUBMIT": "Envoyer"
+  },
+  "NOTIFICATION": {
+    "HEADER_TITLE": "Notifications",
+    "EMPTY": "Aucune notifications pour le moment.",
+    "EMPTY_MORE_TEXT": "Lorsque vous recevrez des notifications, elles apparaîtront ici.",
+    "ALL_NOTIFICATION_LOADED": "Toutes les notifications ont été chargées",
+    "MARK_ALL": "Tout marquer comme lu",
+    "CANCEL": "Annuler"
+  },
+  "AVAILABILITY": {
+    "ONLINE": "En ligne",
+    "BUSY": "Occupé",
+    "OFFLINE": "Hors ligne"
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "TITLE": "Préférences de notifications",
+    "EMAIL": "Courriel",
+    "PUSH": "Sauvegarder",
+    "CONVERSATION_CREATE_PUSH": "Envoyer une notifications lors de la création d'une conversation",
+    "CONVERSATION_ASSIGNEE_PUSH": "Envoyer une notification lors qu'une discussion m'est assignée",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Envoyer une notification lors de la réception d'un message dans une discussion m'étant assignée",
+    "CONVERSATION_CREATE_EMAIL": "Envoyer une notification par e-mail lors de la création d'une conversation",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Envoyer une notification par e-mail lors qu'une discussion m'est assignée",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Envoyer une notification par e-mail lors de la réception d'un message dans une discussion qui m'est assignée"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Navigateur",
+    "OPERATING_SYSTEM": "Système d'explitation",
+    "INITIATED_AT": "Crée a",
+    "INITIATED_FROM": "Crée depuis"
+  },
+  "ERRORS": {
+    "COMMON_ERROR": "Impossible de se connecter au serveur Woot, veuillez réessayer ultérieurement",
+    "OfFLINE": "Vous devez vous connecter au Wi-Fi ou à un réseau cellulaire pour vous reconnecter",
+    "CANNOT_FETCH": "Une erreur s'est produite lors de la récupération des informations, veuillez réessayer",
+    "AUTH": "Nom d'utilisateur / mot de passe incorrect. Veuillez réessayer",
+    "NO_ACCOUNTS_MESSAGE": "Vous n'avez accès a aucun compte chatwoot"
+  },
+  "SUCCESS": {
+    "AUTH": "Connexion réussie"
+  },
+  "EXIT": {
+    "TITLE": "Quitter",
+    "SUBTITLE": "Voulez-vous vraiment quitter ?",
+    "CANCEL": "Annuler",
+    "OK": "OK"
+  }
+}

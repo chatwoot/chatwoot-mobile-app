@@ -29,7 +29,7 @@
     "@ui-kitten/components": "^5.0.0",
     "@ui-kitten/eva-icons": "^5.0.0",
     "@ui-kitten/metro-config": "^5.0.0",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "i18n-js": "^3.7.1",
     "lodash.filter": "^4.6.0",
     "lodash.groupby": "^4.6.0",

@@ -13,11 +13,11 @@
     "SETTINGS": "Preferencias"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
+    "ENTER_URL": "URL de instalación",
     "URL_ERROR": "Introduzca una URL válida",
-    "CONNECT": "Connect",
+    "CONNECT": "Conectar",
     "CHANGE_LANGUAGE": "Cambiar idioma",
-    "ERROR": "Invalid installation url"
+    "ERROR": "Url de instalación inválida"
   },
   "LOGIN": {
     "EMAIL": "Email",
@@ -38,7 +38,7 @@
     "EMAIL_ERROR": "Introduce un email válido",
     "RESET_HERE": "Restablecer contraseña",
     "HEADER_TITLE": "Restablecer contraseña",
-    "TITLE": "Forgot Password?",
+    "TITLE": "¿Olvidaste tu contraseña?",
     "SUB_TITLE": "Don't worry! We got your back"
   },
   "CONVERSATION": {
@@ -55,12 +55,12 @@
     "TYPE_MESSAGE": "Escribir mensaje",
     "TYPING": "escribiendo",
     "ALL_CONVERSATION_LOADED": "Todas las conversaciones cargadas",
-    "RESOLVE": "Resolve conversation",
-    "RE_OPEN": "Reopen conversation",
+    "RESOLVE": "Resolver conversación",
+    "RE_OPEN": "Resolver conversación",
     "CANCEL": "Cancelar"
   },
   "FILTER": {
-    "HEADER_TITLE": "Conversation Filter",
+    "HEADER_TITLE": "Filtro de conversación",
     "CHOOSE_INBOX": "Elegir bandeja de entrada",
     "CHOOSE_STATUS": "Estado de la conversación",
     "OPEN": "Abrir",
@@ -70,9 +70,9 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "Preferencias",
-    "AVAILABILITY": "Availability",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
+    "AVAILABILITY": "Disponible",
+    "NOTIFICATION": "Preferencias de Notificación",
+    "HELP": "Ayuda",
     "LOG_OUT": "Cerrar sesión",
     "SWITCH_ACCOUNT": "Switch Account",
     "CHANGE_LANGUAGE": "Change Language",

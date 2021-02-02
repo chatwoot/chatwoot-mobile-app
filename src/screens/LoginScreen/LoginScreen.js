@@ -124,6 +124,9 @@ const LoginScreenComponent = ({ navigation, eva }) => {
         <View style={style.logoView}>
           <Image style={style.logo} source={images.login} />
         </View>
+        <View style={style.titleView}>
+          <CustomText style={style.titleText}>{i18n.t('LOGIN.TITLE')}</CustomText>
+        </View>
 
         <View style={style.contentView}>
           <View style={style.formView}>

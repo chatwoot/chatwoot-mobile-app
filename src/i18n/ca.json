@@ -20,6 +20,7 @@
     "ERROR": "URL d'instal·lació no vàlid"
   },
   "LOGIN": {
+    "TITLE": "Login to your account",
     "EMAIL": "Correu electrònic",
     "PASSWORD": "Contrasenya",
     "EMAIL_ERROR": "Introduïu un correu electrònic vàlid",

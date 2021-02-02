@@ -69,6 +69,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
         config: {
           label: i18n.t('LOGIN.EMAIL'),
         },
+        autoCapitalize: 'none',
       },
       password: {
         placeholder: '',

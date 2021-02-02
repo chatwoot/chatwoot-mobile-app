@@ -20,6 +20,7 @@
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
+    "TITLE": "Login to your account",
     "EMAIL": "ஈ-மெயில்",
     "PASSWORD": "பாஸ்வேர்டு",
     "EMAIL_ERROR": "சரியான ஈ-மெயில் முகவரியை உள்ளிடவும்",

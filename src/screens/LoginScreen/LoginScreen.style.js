@@ -20,6 +20,17 @@ export default (theme) => ({
     aspectRatio: 2,
     resizeMode: 'contain',
   },
+  titleView: {
+    marginTop: Dimensions.get('window').height * 0.01,
+    paddingLeft: 40,
+    paddingRight: 40,
+  },
+  titleText: {
+    width: '100%',
+    textAlign: 'center',
+    fontSize: theme['font-size-large'],
+    fontWeight: theme['font-medium'],
+  },
 
   formView: {
     paddingLeft: 40,

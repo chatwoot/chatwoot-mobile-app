@@ -20,6 +20,7 @@
     "ERROR": "Geçersiz yükleme url'si"
   },
   "LOGIN": {
+    "TITLE": "hesabınıza giriş yapın",
     "EMAIL": "E-posta",
     "PASSWORD": "Parola",
     "EMAIL_ERROR": "Geçerli bir e-posta giriniz",

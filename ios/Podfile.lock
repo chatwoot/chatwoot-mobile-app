@@ -296,12 +296,12 @@ PODS:
     - React-cxxreact (= 0.63.2)
     - React-jsi (= 0.63.2)
   - React-jsinspector (0.63.2)
-  - react-native-netinfo (5.9.6):
-    - React
+  - react-native-netinfo (5.9.10):
+    - React-Core
   - react-native-safari-view (1.0.0):
     - React
-  - react-native-safe-area-context (3.1.7):
-    - React
+  - react-native-safe-area-context (3.1.9):
+    - React-Core
   - react-native-splash-screen (3.2.0):
     - React
   - React-RCTActionSheet (0.63.2):
@@ -364,14 +364,14 @@ PODS:
     - React-Core (= 0.63.2)
     - React-cxxreact (= 0.63.2)
     - React-jsi (= 0.63.2)
-  - ReactNativeExceptionHandler (2.10.8):
-    - React
+  - ReactNativeExceptionHandler (2.10.9):
+    - React-Core
   - RNCAsyncStorage (1.12.0):
     - React
   - RNCMaskedView (0.1.10):
     - React
-  - RNCPushNotificationIOS (1.4.1):
-    - React
+  - RNCPushNotificationIOS (1.8.0):
+    - React-Core
   - RNDeviceInfo (5.6.5):
     - React
   - RNFBApp (8.4.0):
@@ -381,17 +381,17 @@ PODS:
     - Firebase/Messaging (~> 6.30.0)
     - React
     - RNFBApp
-  - RNGestureHandler (1.7.0):
-    - React
-  - RNReanimated (1.13.0):
-    - React
+  - RNGestureHandler (1.9.0):
+    - React-Core
+  - RNReanimated (1.13.2):
+    - React-Core
   - RNScreens (2.10.1):
     - React
   - RNSentry (1.7.2):
     - React
     - Sentry (~> 5.2.0)
-  - RNSnackbar (2.2.3):
-    - React
+  - RNSnackbar (2.3.2):
+    - React-Core
   - RNSVG (12.1.0):
     - React
   - Sentry (5.2.2):
@@ -624,9 +624,9 @@ SPEC CHECKSUMS:
   React-jsi: 54245e1d5f4b690dec614a73a3795964eeef13a8
   React-jsiexecutor: 8ca588cc921e70590820ce72b8789b02c67cce38
   React-jsinspector: b14e62ebe7a66e9231e9581279909f2fc3db6606
-  react-native-netinfo: 38a1e0b3e89b48e4b5833ed475d8df5f049f6f90
+  react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
   react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd
-  react-native-safe-area-context: 955ecfce672683b495d9294d2f154a9ad1d9796b
+  react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   React-RCTActionSheet: 910163b6b09685a35c4ebbc52b66d1bfbbe39fc5
   React-RCTAnimation: 9a883bbe1e9d2e158d4fb53765ed64c8dc2200c6
@@ -638,18 +638,18 @@ SPEC CHECKSUMS:
   React-RCTText: 1b6773e776e4b33f90468c20fe3b16ca3e224bb8
   React-RCTVibration: 4d2e726957f4087449739b595f107c0d4b6c2d2d
   ReactCommon: a0a1edbebcac5e91338371b72ffc66aa822792ce
-  ReactNativeExceptionHandler: 8025d98049c25f186835a3af732dd7c9974d6dce
+  ReactNativeExceptionHandler: f1638ffd507ef1b1794af25884fa0eb30dd5c551
   RNCAsyncStorage: 2a692bcb9b69b76a2f1a95f33db057129700af64
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNCPushNotificationIOS: c145c6253ea016e5efeff604f2720736b4a596f7
+  RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
   RNDeviceInfo: c5f8f3a456adcbba405ace475254b08febc4c095
   RNFBApp: 807094313ffdc79fc45c4cb14489c8b0ea23f935
   RNFBMessaging: 4afdcd2fe27714ef3f7539a61b1700e3fa0ccfca
-  RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
-  RNReanimated: 89f5e0a04d1dd52fbf27e7e7030d8f80a646a3fc
+  RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b
+  RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: b748efec66e095134c7166ca333b628cd7e6f3e2
   RNSentry: 2d4a0e18c6dfe93b647c360e0d15c9391d24e9d1
-  RNSnackbar: a08d0d7e1e18c7312cd2b9c6f476211267855bce
+  RNSnackbar: 2f790a7b5b685e9d3525968990ba3f82354b064c
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   Sentry: 8fa58a051237554f22507fb483b9a1de0171a2dc
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598

@@ -20,6 +20,7 @@
     "ERROR": "Url de instalación inválida"
   },
   "LOGIN": {
+    "TITLE": "Login to your account",
     "EMAIL": "Email",
     "PASSWORD": "Contraseña",
     "EMAIL_ERROR": "Introduce un email válido",

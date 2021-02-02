@@ -20,6 +20,7 @@
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
+    "TITLE": "Log in op jouw account",
     "EMAIL": "E-mailadres",
     "PASSWORD": "Wachtwoord",
     "EMAIL_ERROR": "Voer een geldig e-mailadres in",

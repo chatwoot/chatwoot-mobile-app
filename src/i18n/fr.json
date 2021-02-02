@@ -20,6 +20,7 @@
     "ERROR": "Lien d'installation invalide"
   },
   "LOGIN": {
+    "TITLE": "Login to your account",
     "EMAIL": "Courriel",
     "PASSWORD": "Mot de passe",
     "EMAIL_ERROR": "Saisissez une adresse de courriel valide",

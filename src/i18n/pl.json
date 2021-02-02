@@ -20,6 +20,7 @@
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
+    "TITLE": "Login to your account",
     "EMAIL": "Email",
     "PASSWORD": "Password",
     "EMAIL_ERROR": "Enter a valid email",

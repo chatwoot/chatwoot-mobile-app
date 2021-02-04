@@ -76,12 +76,14 @@ const ConversationActionItem = ({
             />
           )}
           <CustomText style={style.sectionText}>{name}</CustomText>
-          <Icon
-            name="arrow-ios-forward-outline"
-            fill={theme['color-primary-default']}
-            width={26}
-            height={26}
-          />
+          {itemType === 'assignee' && (
+            <Icon
+              name="arrow-ios-forward-outline"
+              fill={theme['color-primary-default']}
+              width={26}
+              height={26}
+            />
+          )}
         </View>
       </TouchableOpacity>
       <Divider />

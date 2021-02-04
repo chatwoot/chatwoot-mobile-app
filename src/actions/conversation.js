@@ -458,7 +458,7 @@ export const assignConversation = ({ conversationId, assigneeId }) => async (
     await axios.post(apiUrl);
     dispatch({ type: ASSIGN_CONVERSATION_SUCCESS });
     dispatch(getConversationDetails({ conversationId }));
-    pop(2);
+    pop(1);
   } catch (error) {
     dispatch({ type: ASSIGN_CONVERSATION_ERROR });
   }

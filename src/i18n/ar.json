@@ -114,7 +114,7 @@
     "TITLE": "Actions"
   },
   "AGENT": {
-    "TITLE": "Agents"
+    "TITLE": "Select Agent"
   },
   "ERRORS": {
     "COMMON_ERROR": "تعذر الاتصال بخادم Chatwoot، الرجاء المحاولة مرة أخرى لاحقاً",

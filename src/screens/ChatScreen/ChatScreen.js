@@ -11,7 +11,6 @@ import {
 } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet';
 import ActionSheet from 'react-native-actions-sheet';
 import {
   View,

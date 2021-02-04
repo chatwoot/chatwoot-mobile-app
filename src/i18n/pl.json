@@ -58,6 +58,7 @@
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "RESOLVE": "Resolve conversation",
     "RE_OPEN": "Reopen conversation",
+    "ASSIGN": "Assign conversation",
     "CANCEL": "Cancel"
   },
   "FILTER": {
@@ -108,6 +109,12 @@
     "OPERATING_SYSTEM": "Operating System",
     "INITIATED_AT": "Initiated at",
     "INITIATED_FROM": "Initiated from"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Actions"
+  },
+  "AGENT": {
+    "TITLE": "Agents"
   },
   "ERRORS": {
     "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",

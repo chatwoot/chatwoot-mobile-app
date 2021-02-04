@@ -58,6 +58,7 @@
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "RESOLVE": "Resolve conversation",
     "RE_OPEN": "Reopen conversation",
+    "ASSIGN": "Assign conversation",
     "CANCEL": "annuleren"
   },
   "FILTER": {
@@ -108,6 +109,12 @@
     "OPERATING_SYSTEM": "Operating System",
     "INITIATED_AT": "Initiated at",
     "INITIATED_FROM": "Initiated from"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Actions"
+  },
+  "AGENT": {
+    "TITLE": "Select Agent"
   },
   "ERRORS": {
     "COMMON_ERROR": "Kan geen verbinding maken met Woot Server, probeer het later opnieuw",

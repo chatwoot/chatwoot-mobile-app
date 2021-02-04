@@ -20,6 +20,7 @@
     "ERROR": "无效的安装链接"
   },
   "LOGIN": {
+    "TITLE": "Login to your account",
     "EMAIL": "Email",
     "PASSWORD": "密码",
     "EMAIL_ERROR": "输入有效的电子邮件",
@@ -57,6 +58,7 @@
     "ALL_CONVERSATION_LOADED": "已加载所有会话",
     "RESOLVE": "解决会话",
     "RE_OPEN": "重新打开会话",
+    "ASSIGN": "Assign conversation",
     "CANCEL": "取消"
   },
   "FILTER": {
@@ -107,6 +109,12 @@
     "OPERATING_SYSTEM": "操作系统",
     "INITIATED_AT": "发起于",
     "INITIATED_FROM": "发起自"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Actions"
+  },
+  "AGENT": {
+    "TITLE": "Select Agent"
   },
   "ERRORS": {
     "COMMON_ERROR": "无法连接到服务器，请稍后再试",

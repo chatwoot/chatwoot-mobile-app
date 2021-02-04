@@ -20,6 +20,7 @@
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
+    "TITLE": "Login to your account",
     "EMAIL": "ஈ-மெயில்",
     "PASSWORD": "பாஸ்வேர்டு",
     "EMAIL_ERROR": "சரியான ஈ-மெயில் முகவரியை உள்ளிடவும்",
@@ -57,6 +58,7 @@
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "RESOLVE": "Resolve conversation",
     "RE_OPEN": "Reopen conversation",
+    "ASSIGN": "Assign conversation",
     "CANCEL": "ரத்துசெய்"
   },
   "FILTER": {
@@ -107,6 +109,12 @@
     "OPERATING_SYSTEM": "Operating System",
     "INITIATED_AT": "Initiated at",
     "INITIATED_FROM": "Initiated from"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Actions"
+  },
+  "AGENT": {
+    "TITLE": "Select Agent"
   },
   "ERRORS": {
     "COMMON_ERROR": "வூட் சர்வருடன் இணைக்க முடியவில்லை, பின்னர் மீண்டும் முயற்சிக்கவும்",

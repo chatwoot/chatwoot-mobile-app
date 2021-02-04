@@ -58,6 +58,7 @@
     "ALL_CONVERSATION_LOADED": "Tüm görüşmeler yüklendi",
     "RESOLVE": "Görüşmeyi çöz",
     "RE_OPEN": "Görüşmeyi yeniden açın",
+    "ASSIGN": "Assign conversation",
     "CANCEL": "İptal et"
   },
   "FILTER": {
@@ -108,6 +109,12 @@
     "OPERATING_SYSTEM": "İşletim sistemi",
     "INITIATED_AT": "Başlatıldı",
     "INITIATED_FROM": "Başlatıldı"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Actions"
+  },
+  "AGENT": {
+    "TITLE": "Select Agent"
   },
   "ERRORS": {
     "COMMON_ERROR": "Woot Sunucusuna bağlanılamadı, Lütfen daha sonra tekrar deneyin",

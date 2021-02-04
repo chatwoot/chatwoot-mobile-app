@@ -20,6 +20,7 @@
     "ERROR": "URL d'instal·lació no vàlid"
   },
   "LOGIN": {
+    "TITLE": "Login to your account",
     "EMAIL": "Correu electrònic",
     "PASSWORD": "Contrasenya",
     "EMAIL_ERROR": "Introduïu un correu electrònic vàlid",
@@ -57,6 +58,7 @@
     "ALL_CONVERSATION_LOADED": "S'han carregat totes les converses",
     "RESOLVE": "Resol la conversa",
     "RE_OPEN": "Torna a obrir la conversa",
+    "ASSIGN": "Assign conversation",
     "CANCEL": "Cancel·lar"
   },
   "FILTER": {
@@ -107,6 +109,12 @@
     "OPERATING_SYSTEM": "Sistema operatiu",
     "INITIATED_AT": "Iniciada a",
     "INITIATED_FROM": "Iniciat des de"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Actions"
+  },
+  "AGENT": {
+    "TITLE": "Select Agent"
   },
   "ERRORS": {
     "COMMON_ERROR": "No s'ha pogut connectar al servidor Woot. Torneu-ho a provar més tard",

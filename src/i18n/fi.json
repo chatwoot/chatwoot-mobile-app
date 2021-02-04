@@ -20,6 +20,7 @@
     "ERROR": "Virheellinen asennusosoite"
   },
   "LOGIN": {
+    "TITLE": "Login to your account",
     "EMAIL": "Sähköposti",
     "PASSWORD": "Salasana",
     "EMAIL_ERROR": "Syötä kelvollinen sähköpostiosoite",
@@ -57,6 +58,7 @@
     "ALL_CONVERSATION_LOADED": "Kaikki keskustelut ladattu",
     "RESOLVE": "Selvitä keskustelu",
     "RE_OPEN": "Avaa keskustelu uudelleen",
+    "ASSIGN": "Assign conversation",
     "CANCEL": "Peruuta"
   },
   "FILTER": {
@@ -107,6 +109,12 @@
     "OPERATING_SYSTEM": "Käyttöjärjestelmä",
     "INITIATED_AT": "Aloitettu klo",
     "INITIATED_FROM": "Aloitettu osoitteesta"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Actions"
+  },
+  "AGENT": {
+    "TITLE": "Select Agent"
   },
   "ERRORS": {
     "COMMON_ERROR": "Ei voitu yhdistää Woot-palvelimeen, yritä myöhemmin uudelleen",

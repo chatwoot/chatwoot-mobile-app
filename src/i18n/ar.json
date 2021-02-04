@@ -20,6 +20,7 @@
     "ERROR": "رابط التثبيت غير صحيح"
   },
   "LOGIN": {
+    "TITLE": "Login to your account",
     "EMAIL": "البريد الإلكتروني",
     "PASSWORD": "كلمة المرور",
     "EMAIL_ERROR": "أدخل بريد إلكتروني صحيح",
@@ -57,6 +58,7 @@
     "ALL_CONVERSATION_LOADED": "تم تحميل كافة المحادثات",
     "RESOLVE": "حل المحادثة",
     "RE_OPEN": "إعادة فتح المحادثة",
+    "ASSIGN": "Assign conversation",
     "CANCEL": "إلغاء"
   },
   "FILTER": {
@@ -107,6 +109,12 @@
     "OPERATING_SYSTEM": "نظام التشغيل",
     "INITIATED_AT": "بدأت في",
     "INITIATED_FROM": "بدأت من"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Actions"
+  },
+  "AGENT": {
+    "TITLE": "Select Agent"
   },
   "ERRORS": {
     "COMMON_ERROR": "تعذر الاتصال بخادم Chatwoot، الرجاء المحاولة مرة أخرى لاحقاً",

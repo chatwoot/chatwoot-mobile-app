@@ -30,6 +30,9 @@ import {
   SET_ASSIGNEE_TYPE,
   SET_CONVERSATION_META,
   UPDATE_SINGLE_CONVERSATION,
+  ASSIGN_CONVERSATION,
+  ASSIGN_CONVERSATION_SUCCESS,
+  ASSIGN_CONVERSATION_ERROR,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -37,6 +40,7 @@ import axios from '../helpers/APIHelper';
 import { getAllNotifications } from './notification';
 
 import { findAssigneeType, findConversationStatus, checkConversationMatch } from '../helpers';
+import { pop } from '../helpers/NavigationHelper';
 
 // Load all the conversations
 export const getConversations = ({ assigneeType, pageNumber = 1 }) => async (
@@ -442,4 +446,20 @@ export const addOrUpdateActiveContacts = ({ contacts }) => async (dispatch, getS
       });
     });
   });
+};
+
+export const assignConversation = ({ conversationId, assigneeId }) => async (
+  dispatch,
+  getState,
+) => {
+  dispatch({ type: ASSIGN_CONVERSATION });
+  try {
+    const apiUrl = `conversations/${conversationId}/assignments?assignee_id=${assigneeId}`;
+    await axios.post(apiUrl);
+    dispatch({ type: ASSIGN_CONVERSATION_SUCCESS });
+    dispatch(getConversationDetails({ conversationId }));
+    pop(2);
+  } catch (error) {
+    dispatch({ type: ASSIGN_CONVERSATION_ERROR });
+  }
 };

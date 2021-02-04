@@ -397,6 +397,7 @@ class ChatScreenComponent extends Component {
     this.setState({
       conversationStatus: status,
     });
+
     this.ActionSheet.show();
   };
 
@@ -540,12 +541,19 @@ class ChatScreenComponent extends Component {
           options={[
             i18n.t('CONVERSATION.CANCEL'),
             i18n.t(`CONVERSATION.${CONVERSATION_TOGGLE_STATUS[conversationStatus]}`),
+            i18n.t('CONVERSATION.ASSIGN'),
           ]}
           cancelButtonIndex={0}
           destructiveButtonIndex={4}
           onPress={(index) => {
             if (index === 1) {
               this.toggleConversation();
+            }
+            if (index === 2) {
+              const { conversationDetails, navigation } = this.props;
+              if (conversationDetails) {
+                navigation.navigate('ConversationAction', { conversationDetails });
+              }
             }
           }}
         />

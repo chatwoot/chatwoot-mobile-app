@@ -5,6 +5,7 @@ import inbox from './inbox';
 import conversation from './conversation';
 import settings from './settings';
 import notification from './notification';
+import agent from './agent';
 
 const rootReducer = combineReducers({
   auth,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   conversation,
   settings,
   notification,
+  agent,
 });
 
 export default (state, action) =>

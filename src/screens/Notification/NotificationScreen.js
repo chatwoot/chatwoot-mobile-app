@@ -191,7 +191,7 @@ class NotificationScreenComponent extends Component {
       <SafeAreaView style={style.container}>
         <HeaderBar
           title={i18n.t('NOTIFICATION.HEADER_TITLE')}
-          {...(groupedNotifications.length && !unReadCount && { showRightButton: true })}
+          {...(groupedNotifications.length && unReadCount && { showRightButton: true })}
           onRightPress={this.showActionSheet}
           buttonType="more"
         />

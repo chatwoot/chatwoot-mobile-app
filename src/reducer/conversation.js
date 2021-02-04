@@ -23,6 +23,9 @@ import {
   SET_ASSIGNEE_TYPE,
   SET_CONVERSATION_META,
   UPDATE_SINGLE_CONVERSATION,
+  ASSIGN_CONVERSATION,
+  ASSIGN_CONVERSATION_SUCCESS,
+  ASSIGN_CONVERSATION_ERROR,
 } from '../constants/actions';
 
 const initialState = {
@@ -30,6 +33,7 @@ const initialState = {
   isAllConversationsLoaded: false,
   isAllMessagesLoaded: false,
   conversationStatus: 'open',
+  isAssigneeUpdating: false,
   data: {
     meta: {
       mine_count: 0,
@@ -239,6 +243,26 @@ export default (state = initialState, action) => {
             action.payload.id === content.id ? { ...action.payload } : content,
           ),
         },
+      };
+    }
+    case ASSIGN_CONVERSATION: {
+      return {
+        ...state,
+        isAssigneeUpdating: true,
+      };
+    }
+
+    case ASSIGN_CONVERSATION_SUCCESS: {
+      return {
+        ...state,
+        isAssigneeUpdating: false,
+      };
+    }
+
+    case ASSIGN_CONVERSATION_ERROR: {
+      return {
+        ...state,
+        isAssigneeUpdating: false,
       };
     }
 

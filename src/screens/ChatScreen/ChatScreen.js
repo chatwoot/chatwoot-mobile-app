@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import {
   Icon,
   TopNavigation,
@@ -11,8 +11,7 @@ import {
 } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet';
-
+import ActionSheet from 'react-native-actions-sheet';
 import {
   View,
   SafeAreaView,
@@ -43,7 +42,7 @@ import { markNotificationAsRead } from '../../actions/notification';
 import { getGroupedConversation, getTypingUsersText, findUniqueMessages } from '../../helpers';
 import i18n from '../../i18n';
 import CustomText from '../../components/Text';
-import { CONVERSATION_TOGGLE_STATUS } from '../../constants';
+import ConversationAction from '../ConversationAction/ConversationAction';
 
 const BackIcon = (style) => (
   <Icon {...style} name="arrow-ios-back-outline" height={24} width={24} />
@@ -58,6 +57,7 @@ const BackAction = (props) => <TopNavigationAction {...props} icon={BackIcon} />
 const PaperPlaneIconFill = (style) => {
   return <Icon {...style} name="paper-plane" />;
 };
+const actionSheetRef = createRef();
 
 const renderAnchor = () => <View />;
 
@@ -391,22 +391,7 @@ class ChatScreenComponent extends Component {
   };
 
   showActionSheet = () => {
-    const {
-      conversationDetails: { status },
-    } = this.props;
-    this.setState({
-      conversationStatus: status,
-    });
-
-    this.ActionSheet.show();
-  };
-
-  toggleConversation = async () => {
-    const { route } = this.props;
-    const {
-      params: { conversationId },
-    } = route;
-    this.props.toggleConversationStatus({ conversationId });
+    actionSheetRef.current?.setModalVisible();
   };
 
   renderRightControl = () => {
@@ -439,6 +424,22 @@ class ChatScreenComponent extends Component {
     this.props.toggleTypingStatus({ conversationId, typingStatus: 'on' });
   };
 
+  onPressAction = ({ itemType }) => {
+    actionSheetRef.current?.hide();
+    const { conversationDetails, navigation, route } = this.props;
+    if (itemType === 'assignee') {
+      if (conversationDetails) {
+        navigation.navigate('AgentScreen', { conversationDetails });
+      }
+    }
+    if (itemType === 'toggle_status') {
+      const {
+        params: { conversationId },
+      } = route;
+      this.props.toggleConversationStatus({ conversationId });
+    }
+  };
+
   render() {
     const {
       allMessages,
@@ -452,14 +453,13 @@ class ChatScreenComponent extends Component {
       filteredCannedResponses,
       menuVisible,
       selectedIndex,
-      conversationStatus,
     } = this.state;
 
     const uniqueMessages = findUniqueMessages({ allMessages });
     const groupedConversationList = getGroupedConversation({
       conversations: uniqueMessages,
     });
-
+    const { conversationDetails } = this.props;
     return (
       <SafeAreaView style={style.mainContainer}>
         {this.renderTopNavigation()}
@@ -536,27 +536,12 @@ class ChatScreenComponent extends Component {
             />
           </View>
         </View>
-        <ActionSheet
-          ref={(o) => (this.ActionSheet = o)}
-          options={[
-            i18n.t('CONVERSATION.CANCEL'),
-            i18n.t(`CONVERSATION.${CONVERSATION_TOGGLE_STATUS[conversationStatus]}`),
-            i18n.t('CONVERSATION.ASSIGN'),
-          ]}
-          cancelButtonIndex={0}
-          destructiveButtonIndex={4}
-          onPress={(index) => {
-            if (index === 1) {
-              this.toggleConversation();
-            }
-            if (index === 2) {
-              const { conversationDetails, navigation } = this.props;
-              if (conversationDetails) {
-                navigation.navigate('ConversationAction', { conversationDetails });
-              }
-            }
-          }}
-        />
+        <ActionSheet ref={actionSheetRef} initialOffsetFromBottom={0.6} defaultOverlayOpacity={0.3}>
+          <ConversationAction
+            conversationDetails={conversationDetails}
+            onPressAction={this.onPressAction}
+          />
+        </ActionSheet>
       </SafeAreaView>
     );
   }

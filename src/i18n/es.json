@@ -114,7 +114,7 @@
     "TITLE": "Actions"
   },
   "AGENT": {
-    "TITLE": "Agents"
+    "TITLE": "Select Agent"
   },
   "ERRORS": {
     "COMMON_ERROR": "No se pudo conectar al servidor Woot, por favor inténtalo de nuevo más tarde",

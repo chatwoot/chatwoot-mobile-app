@@ -88,13 +88,8 @@ const ConversationItemComponent = ({
               style={unread_count ? style.conversationUserActive : style.conversationUserNotActive}>
               {name.length < 26 ? `${name}` : `${name.substring(0, 20)}...`}
             </CustomText>
-
-            {inboxName && (
-              <CustomText style={style.labelText}>
-                {inboxName.length < 10 ? `${inboxName}` : `${inboxName.substring(0, 7)}...`}
-              </CustomText>
-            )}
           </View>
+
           {!typingUser ? (
             attachments && attachments.length ? (
               <ConversationAttachmentItem
@@ -117,6 +112,10 @@ const ConversationItemComponent = ({
                 : `${typingUser}`}
             </CustomText>
           )}
+          <View style={style.nameView}>
+            <CustomText style={style.conversationId}>#{id}</CustomText>
+            {inboxName && <CustomText style={style.channelText}>{inboxName}</CustomText>}
+          </View>
         </View>
       </View>
       <View>
@@ -214,15 +213,27 @@ const styles = (theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  labelText: {
+
+  conversationId: {
     color: theme['color-primary-default'],
     fontSize: theme['font-size-extra-extra-small'],
     fontWeight: theme['font-semi-bold'],
     borderRadius: 3,
-    paddingLeft: 2,
     paddingRight: 2,
-    marginLeft: 4,
-    marginTop: 2,
+    marginLeft: 2,
+    marginTop: 4,
+    paddingTop: 4,
+    backgroundColor: theme['color-background-inbox'],
+  },
+  channelText: {
+    color: theme['color-primary-default'],
+    fontSize: theme['font-size-extra-extra-small'],
+    fontWeight: theme['font-semi-bold'],
+    borderRadius: 3,
+    paddingRight: 2,
+    marginLeft: 8,
+    marginTop: 4,
+    paddingTop: 4,
     backgroundColor: theme['color-background-inbox'],
   },
 });

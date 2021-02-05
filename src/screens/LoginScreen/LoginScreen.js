@@ -52,8 +52,8 @@ const LoginScreenComponent = ({ navigation, eva }) => {
   const inputRef = useRef(null);
 
   const [values, setValues] = useState({
-    email: '',
-    password: '',
+    email: 'muhsin@thoughtwoot.com',
+    password: 'MUHSINk916',
   });
 
   const options = {

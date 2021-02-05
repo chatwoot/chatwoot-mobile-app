@@ -47,7 +47,7 @@ const ConfigureURLScreenComponent = ({ eva }) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const [values, setValues] = useState({
-    url: appName === 'Chatwoot' ? 'app.chatwoot.com' : null,
+    url: appName === 'Chatwoot' ? 'staging.chatwoot.com' : null,
   });
 
   const options = {

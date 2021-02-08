@@ -17,7 +17,7 @@ const styles = (theme) => ({
     flex: 8,
   },
   iconView: {
-    paddingLeft: 6
+    paddingLeft: 6,
   },
   sectionText: {
     fontSize: theme['font-size-small'],
@@ -38,25 +38,12 @@ const propTypes = {
     theme: PropTypes.object,
   }).isRequired,
   name: PropTypes.string,
-  thumbnail: PropTypes.string,
   text: PropTypes.string,
-  checked: PropTypes.bool,
-  iconSize: PropTypes.string,
   itemType: PropTypes.string,
   onPressItem: PropTypes.func,
-  availabilityStatus: PropTypes.string,
 };
 
-const ChatMessageActionItem = ({
-  text,
-  checked,
-  iconSize,
-  itemType,
-  name,
-  thumbnail,
-  onPressItem,
-  eva: { style, theme },
-}) => {
+const ChatMessageActionItem = ({ text, itemType, name, onPressItem, eva: { style, theme } }) => {
   return (
     <React.Fragment>
       <TouchableOpacity style={style.section} onPress={() => onPressItem({ itemType })}>

@@ -173,9 +173,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
           </View>
         ) : (
           <Hyperlink linkStyle={style.linkStyle} onPress={(url) => handleURL({ URL: url })}>
-            <CustomText style={messageTextStyle}>
-              {message.content}
-            </CustomText>
+            <CustomText style={messageTextStyle}>{message.content}</CustomText>
           </Hyperlink>
         )}
 
@@ -189,13 +187,13 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
           {messageStamp({ time: created_at })}
         </CustomText>
         <ActionSheet ref={actionSheetRef} defaultOverlayOpacity={0.3}>
-          {senderName && (
+          {senderName ? (
             <ChatMessageActionItem
               text={`Sent by: ${senderName}`}
               itemType="author"
               onPressItem={onPressItem}
             />
-          )}
+          ) : null}
           <ChatMessageActionItem text="Copy" itemType="copy" onPressItem={onPressItem} />
         </ActionSheet>
       </View>

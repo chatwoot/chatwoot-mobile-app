@@ -536,7 +536,7 @@ class ChatScreenComponent extends Component {
             />
           </View>
         </View>
-        <ActionSheet ref={actionSheetRef} initialOffsetFromBottom={0.6} defaultOverlayOpacity={0.3}>
+        <ActionSheet ref={actionSheetRef} gestureEnabled defaultOverlayOpacity={0.3}>
           <ConversationAction
             conversationDetails={conversationDetails}
             onPressAction={this.onPressAction}

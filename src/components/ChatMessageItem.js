@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
-import { Text, TouchableOpacity, Dimensions, View } from 'react-native';
+import React, { createRef } from 'react';
+import { TouchableOpacity, Dimensions, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { withStyles, Icon, Tooltip } from '@ui-kitten/components';
+import { withStyles, Icon } from '@ui-kitten/components';
 import Hyperlink from 'react-native-hyperlink';
+import Clipboard from '@react-native-clipboard/clipboard';
+
+import ActionSheet from 'react-native-actions-sheet';
 
 import CustomText from './Text';
 import { messageStamp } from '../helpers/TimeHelper';
 import { openURL } from '../helpers/UrlHelper';
+import ChatMessageActionItem from './ChatMessageActionItem';
+import { showToast } from '../helpers/ToastHelper';
 
 const LockIcon = (style) => {
   return <Icon {...style} name="lock" />;
@@ -119,11 +124,12 @@ const propTypes = {
 };
 
 const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, created_at }) => {
+  const actionSheetRef = createRef();
+  const senderName = message && message.sender && message.sender.name ? message.sender.name : '';
   const messageViewStyle = type === 'outgoing' ? style.messageRight : style.messageLeft;
   const messageTextStyle =
     type === 'outgoing' ? style.messageContentRight : style.messageContentLeft;
   const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
-  const [tooltipVisible, setTooltipVisible] = useState(false);
 
   const handleURL = ({ URL }) => {
     if (/\b(http|https)/.test(URL)) {
@@ -132,14 +138,22 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
   };
 
   const showTooltip = () => {
-    if (type === 'outgoing') {
-      setTooltipVisible(true);
+    actionSheetRef.current?.setModalVisible();
+  };
+
+  const onPressItem = ({ itemType }) => {
+    actionSheetRef.current?.setModalVisible(false);
+
+    if (itemType === 'copy') {
+      Clipboard.setString(message.content);
+      showToast({ message: 'Message copied to clipboard' });
     }
   };
 
-  const renderChatMessageIconComponent = () => (
+  return (
     <TouchableOpacity
-      onLongPress={showTooltip}
+      // onLongPress={showTooltip}
+      onPress={showTooltip}
       style={[messageViewStyle, message.private && style.privateMessageContainer]}
       activeOpacity={0.95}>
       <View>
@@ -172,23 +186,19 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
           ]}>
           {messageStamp({ time: created_at })}
         </CustomText>
+        <ActionSheet ref={actionSheetRef} defaultOverlayOpacity={0.3}>
+          {senderName ? (
+            <ChatMessageActionItem
+              text={`Sent by: ${senderName}`}
+              itemType="author"
+              onPressItem={onPressItem}
+            />
+          ) : null}
+          <ChatMessageActionItem text="Copy" itemType="copy" onPressItem={onPressItem} />
+        </ActionSheet>
       </View>
     </TouchableOpacity>
   );
-
-  if ('sender' in message && 'name' in message.sender) {
-    return (
-      <Tooltip
-        anchor={renderChatMessageIconComponent}
-        visible={tooltipVisible}
-        onBackdropPress={() => setTooltipVisible(false)}
-        placement="top">
-        <Text style={style.tooltipText}>Sent by: {message.sender.name}</Text>
-      </Tooltip>
-    );
-  }
-
-  return renderChatMessageIconComponent();
 };
 
 ChatMessageItemComponent.propTypes = propTypes;

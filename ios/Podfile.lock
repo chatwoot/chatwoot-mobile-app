@@ -368,6 +368,8 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.12.0):
     - React
+  - RNCClipboard (1.6.0):
+    - React-Core
   - RNCMaskedView (0.1.10):
     - React
   - RNCPushNotificationIOS (1.8.0):
@@ -455,6 +457,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeExceptionHandler (from `../node_modules/react-native-exception-handler`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
@@ -560,6 +563,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-exception-handler"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  RNCClipboard:
+    :path: "../node_modules/@react-native-clipboard/clipboard"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
   RNCPushNotificationIOS:
@@ -640,6 +645,7 @@ SPEC CHECKSUMS:
   ReactCommon: a0a1edbebcac5e91338371b72ffc66aa822792ce
   ReactNativeExceptionHandler: f1638ffd507ef1b1794af25884fa0eb30dd5c551
   RNCAsyncStorage: 2a692bcb9b69b76a2f1a95f33db057129700af64
+  RNCClipboard: c9cf8b4eba73c55aa9726ed3536e05503bef441d
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
   RNDeviceInfo: c5f8f3a456adcbba405ace475254b08febc4c095

@@ -17,7 +17,7 @@ const styles = (theme) => ({
     flex: 8,
   },
   iconView: {
-    paddingLeft: 6,
+    paddingLeft: 6
   },
   sectionText: {
     fontSize: theme['font-size-small'],

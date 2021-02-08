@@ -173,7 +173,9 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
           </View>
         ) : (
           <Hyperlink linkStyle={style.linkStyle} onPress={(url) => handleURL({ URL: url })}>
-            <CustomText style={messageTextStyle}>{message.content}</CustomText>
+            <CustomText style={messageTextStyle}>
+              {message.content}
+            </CustomText>
           </Hyperlink>
         )}
 

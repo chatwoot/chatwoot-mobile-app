@@ -31,6 +31,8 @@ export const INBOX_ICON = {
   'Channel::TwitterProfile': 'twitter-outline',
   'Channel::FacebookPage': 'facebook-outline',
   'Channel::TwilioSms': 'message-circle-outline',
+  'Channel::Api': 'inbox-outline',
+  'Channel::Email': 'email-outline',
 };
 
 export const INBOX_IMAGES = {

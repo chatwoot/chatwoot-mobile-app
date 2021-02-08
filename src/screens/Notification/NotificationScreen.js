@@ -28,6 +28,12 @@ const LoaderData = new Array(24).fill(0);
 const renderItemLoader = () => <NotificationItemLoader />;
 const actionSheetRef = createRef();
 
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+};
+
 class NotificationScreenComponent extends Component {
   static propTypes = {
     eva: PropTypes.shape({
@@ -60,6 +66,7 @@ class NotificationScreenComponent extends Component {
     onEndReachedCalledDuringMomentum: true,
     pageNo: 1,
     menuVisible: false,
+    refreshing: false,
   };
 
   loadNotifications = () => {
@@ -177,6 +184,12 @@ class NotificationScreenComponent extends Component {
     }
   };
 
+  onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.loadNotifications();
+    wait(1000).then(() => this.setState({ refreshing: false }));
+  };
+
   render() {
     const {
       eva: { style },
@@ -200,6 +213,8 @@ class NotificationScreenComponent extends Component {
             <React.Fragment>
               {groupedNotifications && groupedNotifications.length ? (
                 <SectionList
+                  onRefresh={() => this.onRefresh()}
+                  refreshing={this.state.refreshing}
                   scrollEventThrottle={1900}
                   onEndReached={this.onEndReached.bind(this)}
                   onEndReachedThreshold={0.5}

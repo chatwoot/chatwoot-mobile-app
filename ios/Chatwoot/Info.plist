@@ -37,8 +37,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>For taking a photo</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Access user location</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>For choosing a photo</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Inter-Bold.otf</string>

@@ -463,3 +463,19 @@ export const assignConversation = ({ conversationId, assigneeId }) => async (
     dispatch({ type: ASSIGN_CONVERSATION_ERROR });
   }
 };
+
+// Send attachment message
+export const sendAttachement = ({ conversationId, data }) => async (dispatch) => {
+  dispatch({ type: SEND_MESSAGE });
+  try {
+    const apiUrl = `conversations/${conversationId}/messages`;
+    const response = await axios.post(apiUrl, data);
+    dispatch({
+      type: SEND_MESSAGE_SUCCESS,
+      payload: response.data,
+    });
+    dispatch(addMessageToConversation({ message: response.data }));
+  } catch (error) {
+    dispatch({ type: SEND_MESSAGE_ERROR, payload: error });
+  }
+};

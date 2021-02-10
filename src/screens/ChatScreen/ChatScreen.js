@@ -26,6 +26,7 @@ import ChatMessageDate from '../../components/ChatMessageDate';
 import ScrollToBottomButton from '../../components/ScrollToBottomButton';
 import styles from './ChatScreen.style';
 import UserAvatar from '../../components/UserAvatar';
+import Attachemnt from './components/Attachement';
 import { openURL } from '../../helpers/UrlHelper';
 
 import {
@@ -57,6 +58,7 @@ const BackAction = (props) => <TopNavigationAction {...props} icon={BackIcon} />
 const PaperPlaneIconFill = (style) => {
   return <Icon {...style} name="paper-plane" />;
 };
+
 const actionSheetRef = createRef();
 
 const renderAnchor = () => <View />;
@@ -440,12 +442,19 @@ class ChatScreenComponent extends Component {
     }
   };
 
+  handleChoosePhoto = () => {};
+
   render() {
     const {
       allMessages,
       isFetching,
       eva: { style, theme },
+      route,
     } = this.props;
+
+    const {
+      params: { conversationId },
+    } = route;
 
     const {
       message,
@@ -499,6 +508,7 @@ class ChatScreenComponent extends Component {
           </View>
 
           <View style={style.inputView}>
+            <Attachemnt conversationId={conversationId} />
             <TextInput
               style={style.input}
               placeholder={`${i18n.t('CONVERSATION.TYPE_MESSAGE')}...`}

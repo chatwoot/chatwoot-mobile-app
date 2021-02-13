@@ -84,31 +84,31 @@
     "HEADER_TITLE": "Aviseringar",
     "EMPTY": "Inga aviseringar ännu.",
     "EMPTY_MORE_TEXT": "När du väl börjat att ta emot aviseringar, kommer de att visas här.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
-    "CANCEL": "Cancel"
+    "ALL_NOTIFICATION_LOADED": "Alla aviseringar laddade",
+    "MARK_ALL": "Markera alla som lästa",
+    "CANCEL": "Avbryt"
   },
   "AVAILABILITY": {
     "ONLINE": "Online",
-    "BUSY": "Busy",
+    "BUSY": "Upptagen",
     "OFFLINE": "Offline"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
-    "EMAIL": "Email",
+    "TITLE": "Aviseringsinställningar",
+    "EMAIL": "E-post",
     "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "CONVERSATION_CREATE_PUSH": "Skicka push-aviseringar när en ny konversation skapas",
+    "CONVERSATION_ASSIGNEE_PUSH": "Skicka push-aviseringar när en konversation är tilldelad till mig",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Skicka push-aviseringar när ett nytt meddelande skapas i en tilldelad konversation",
+    "CONVERSATION_CREATE_EMAIL": "Skicka e-postaviseringar när en ny konversation skapas",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Skicka e-postaviseringar när en konversation är tilldelad till mig",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Skicka e-postaviseringar när ett nytt meddelande skapas i en tilldelad konversation"
   },
   "CONVERSATION_DETAILS": {
-    "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Operating System",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "BROWSER": "Webbläsare",
+    "OPERATING_SYSTEM": "Operativsystem",
+    "INITIATED_AT": "Initierad",
+    "INITIATED_FROM": "Initierad från"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Åtgärder"
@@ -117,19 +117,19 @@
     "TITLE": "Välj agent"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
-    "AUTH": "Username / Password Incorrect. Please try again",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "COMMON_ERROR": "Kunde inte ansluta till Woot Server, försök igen senare",
+    "OfFLINE": "Du måste ansluta till Wi-Fi eller ett mobilnätverk för att gå online igen",
+    "CANNOT_FETCH": "Det uppstod ett fel när informationen skulle hämtas, försök igen",
+    "AUTH": "Användarnamn / Lösenord felaktigt. Försök igen",
+    "NO_ACCOUNTS_MESSAGE": "Du har inte tillgång till några chatwoot-konton"
   },
   "SUCCESS": {
-    "AUTH": "Login Successful"
+    "AUTH": "Inloggning lyckades"
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
-    "CANCEL": "Cancel",
-    "OK": "Ok"
+    "TITLE": "Avsluta",
+    "SUBTITLE": "Är du säker på att du vill avsluta?",
+    "CANCEL": "Avbryt",
+    "OK": "Okej"
   }
 }

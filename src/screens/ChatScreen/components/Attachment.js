@@ -33,6 +33,7 @@ const Attachment = ({ conversationId, eva: { style }, onSelectAttachment }) => {
     if (itemType === 'upload_camera') {
       launchCamera(options, (response) => {
         if (response.uri) {
+          onSelectAttachment({ attachement: response });
         }
       });
     }
@@ -41,7 +42,6 @@ const Attachment = ({ conversationId, eva: { style }, onSelectAttachment }) => {
         actionSheetRef.current?.hide();
         if (response.uri) {
           onSelectAttachment({ attachement: response });
-          // dispatch(sendAttachement({ conversationId, data: formdata }));
         }
       });
     }

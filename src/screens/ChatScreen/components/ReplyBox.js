@@ -3,10 +3,10 @@ import { Button, withStyles, Icon, OverflowMenu, MenuItem } from '@ui-kitten/com
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Dimensions, TextInput, View } from 'react-native';
+import AttachmentPreview from './AttachmentPreview';
 import Attachment from './Attachment';
 import i18n from '../../../i18n';
 import { sendMessage, toggleTypingStatus } from '../../../actions/conversation';
-import AttachmentPreview from './AttachmentPreview';
 
 const renderAnchor = () => <View />;
 

@@ -138,6 +138,7 @@ const ReplyBox = ({ conversationId, eva: { theme, style }, cannedResponses }) =>
             ))}
           </OverflowMenu>
         )}
+
         <Button
           style={style.addMessageButton}
           appearance="ghost"
@@ -156,7 +157,7 @@ ReplyBox.propTypes = propTypes;
 const styles = (theme) => ({
   inputView: {
     flex: 1,
-    padding: 12,
+    padding: 8,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -166,8 +167,6 @@ const styles = (theme) => ({
     flex: 1,
     fontSize: theme['text-primary-size'],
     color: theme['text-basic-color'],
-    margin: 0,
-    marginHorizontal: 4,
     paddingTop: 4,
     paddingLeft: 4,
     paddingRight: 4,

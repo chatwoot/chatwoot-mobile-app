@@ -283,13 +283,25 @@ export const getConversationDetails = ({ conversationId }) => async (dispatch) =
 };
 
 // Send message
-export const sendMessage = ({ conversationId, message }) => async (dispatch) => {
+export const sendMessage = ({ conversationId, message, isPrivate = false, file }) => async (
+  dispatch,
+) => {
   dispatch({ type: SEND_MESSAGE });
   try {
+    const formData = new FormData();
+    if (file) {
+      formData.append('attachments[]', {
+        uri: file.uri,
+        name: file.fileName,
+        type: 'image/jpeg',
+      });
+    }
+    if (message) {
+      formData.append('content', message);
+    }
+    formData.append('private', isPrivate);
     const apiUrl = `conversations/${conversationId}/messages`;
-
-    const response = await axios.post(apiUrl, message);
-
+    const response = await axios.post(apiUrl, formData);
     dispatch({
       type: SEND_MESSAGE_SUCCESS,
       payload: response.data,
@@ -461,21 +473,5 @@ export const assignConversation = ({ conversationId, assigneeId }) => async (
     pop(1);
   } catch (error) {
     dispatch({ type: ASSIGN_CONVERSATION_ERROR });
-  }
-};
-
-// Send attachment message
-export const sendAttachement = ({ conversationId, data }) => async (dispatch) => {
-  dispatch({ type: SEND_MESSAGE });
-  try {
-    const apiUrl = `conversations/${conversationId}/messages`;
-    const response = await axios.post(apiUrl, data);
-    dispatch({
-      type: SEND_MESSAGE_SUCCESS,
-      payload: response.data,
-    });
-    dispatch(addMessageToConversation({ message: response.data }));
-  } catch (error) {
-    dispatch({ type: SEND_MESSAGE_ERROR, payload: error });
   }
 };

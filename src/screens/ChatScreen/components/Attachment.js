@@ -24,30 +24,38 @@ const propTypes = {
   onSelectAttachment: PropTypes.func,
 };
 
+const imagePickerOptions = {
+  noData: true,
+};
 const Attachment = ({ conversationId, eva: { style }, onSelectAttachment }) => {
   const actionSheetRef = createRef();
-  const onPressItem = ({ itemType }) => {
-    const options = {
-      noData: true,
-    };
-    if (itemType === 'upload_camera') {
-      launchCamera(options, (response) => {
-        if (response.uri) {
-          onSelectAttachment({ attachement: response });
-        }
-      });
-    }
-    if (itemType === 'upload_gallery') {
-      launchImageLibrary(options, (response) => {
-        actionSheetRef.current?.hide();
-        if (response.uri) {
-          onSelectAttachment({ attachement: response });
-        }
-      });
-    }
-  };
   const handleChoosePhoto = () => {
     actionSheetRef.current?.setModalVisible();
+  };
+  const openCamera = () => {
+    launchCamera(imagePickerOptions, (response) => {
+      if (response.uri) {
+        onSelectAttachment({ attachement: response });
+      }
+    });
+  };
+  const openGallery = () => {
+    launchImageLibrary(imagePickerOptions, (response) => {
+      if (response.uri) {
+        onSelectAttachment({ attachement: response });
+      }
+    });
+  };
+  const onPressItem = ({ itemType }) => {
+    actionSheetRef.current?.hide();
+    setTimeout(() => {
+      if (itemType === 'upload_camera') {
+        openCamera();
+      }
+      if (itemType === 'upload_gallery') {
+        openGallery();
+      }
+    }, 500);
   };
 
   return (
@@ -70,12 +78,6 @@ const Attachment = ({ conversationId, eva: { style }, onSelectAttachment }) => {
           text="Photo Library"
           iconName="image-outline"
           itemType="upload_gallery"
-          onPressItem={onPressItem}
-        />
-        <AttachmentActionItem
-          text="Document"
-          iconName="file-outline"
-          itemType="upload_file"
           onPressItem={onPressItem}
         />
       </ActionSheet>

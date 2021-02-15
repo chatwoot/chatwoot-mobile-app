@@ -1,11 +1,9 @@
 import React, { createRef } from 'react';
 import { Button, withStyles, Icon } from '@ui-kitten/components';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { useDispatch } from 'react-redux';
 import ActionSheet from 'react-native-actions-sheet';
 import PropTypes from 'prop-types';
 import AttachmentActionItem from './AttachmentActionItem';
-import { sendAttachement } from '../../../actions/conversation';
 
 const PlusIcon = (style) => {
   return <Icon {...style} name="plus" />;
@@ -18,11 +16,15 @@ const styles = (theme) => ({
   },
 });
 const propTypes = {
+  eva: PropTypes.shape({
+    style: PropTypes.object,
+    theme: PropTypes.object,
+  }).isRequired,
   conversationId: PropTypes.number,
+  onSelectAttachment: PropTypes.func,
 };
 
-const Attachment = ({ conversationId }) => {
-  const dispatch = useDispatch();
+const Attachment = ({ conversationId, eva: { style }, onSelectAttachment }) => {
   const actionSheetRef = createRef();
   const onPressItem = ({ itemType }) => {
     const options = {
@@ -38,16 +40,8 @@ const Attachment = ({ conversationId }) => {
       launchImageLibrary(options, (response) => {
         actionSheetRef.current?.hide();
         if (response.uri) {
-          let photo = { uri: response.uri };
-          let formdata = new FormData();
-          formdata.append('private', false);
-          formdata.append('content', '');
-          formdata.append('attachments[]', {
-            uri: photo.uri,
-            name: response.fileName,
-            type: 'image/jpeg',
-          });
-          dispatch(sendAttachement({ conversationId, data: formdata }));
+          onSelectAttachment({ attachement: response });
+          // dispatch(sendAttachement({ conversationId, data: formdata }));
         }
       });
     }
@@ -59,7 +53,7 @@ const Attachment = ({ conversationId }) => {
   return (
     <React.Fragment>
       <Button
-        style={styles.button}
+        style={style.button}
         appearance="ghost"
         size="large"
         accessoryLeft={PlusIcon}

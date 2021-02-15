@@ -63,7 +63,7 @@ const ReplyBox = ({ conversationId, eva: { theme, style }, cannedResponses }) =>
   };
 
   const onNewMessageAdd = () => {
-    if (message) {
+    if (message || attachementDetails) {
       dispatch(
         sendMessage({
           conversationId,
@@ -144,7 +144,7 @@ const ReplyBox = ({ conversationId, eva: { theme, style }, cannedResponses }) =>
           size="large"
           accessoryLeft={PaperPlaneIconFill}
           onPress={onNewMessageAdd}
-          disabled={message === '' ? true : false}
+          disabled={!message && !attachementDetails}
         />
       </View>
     </React.Fragment>

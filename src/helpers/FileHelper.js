@@ -15,3 +15,11 @@ export const formatBytes = (bytes, decimals = 2) => {
 export const isTypeImage = (type) => {
   return type.includes('image');
 };
+
+export const findFileSize = (bytes) => {
+  if (bytes === 0) {
+    return 0;
+  }
+  const sizeInMB = (bytes / (1024 * 1024)).toFixed(2);
+  return sizeInMB;
+};

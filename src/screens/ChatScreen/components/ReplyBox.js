@@ -7,6 +7,9 @@ import AttachmentPreview from './AttachmentPreview';
 import Attachment from './Attachment';
 import i18n from '../../../i18n';
 import { sendMessage, toggleTypingStatus } from '../../../actions/conversation';
+import { findFileSize } from '../../../helpers/FileHelper';
+import { MAXIMUM_FILE_UPLOAD_SIZE } from '../../../constants';
+import { showToast } from '../../../helpers/ToastHelper';
 
 const renderAnchor = () => <View />;
 
@@ -95,7 +98,12 @@ const ReplyBox = ({ conversationId, eva: { theme, style }, cannedResponses }) =>
   };
 
   const onSelectAttachment = ({ attachement }) => {
-    setAttachmentDetails(attachement);
+    const { fileSize } = attachement;
+    if (findFileSize(fileSize) <= MAXIMUM_FILE_UPLOAD_SIZE) {
+      setAttachmentDetails(attachement);
+    } else {
+      showToast({ message: i18n.t('CONVERSATION.FILE_SIZE_LIMIT_MESSAGE') });
+    }
   };
 
   const onRemoveAttachment = () => {

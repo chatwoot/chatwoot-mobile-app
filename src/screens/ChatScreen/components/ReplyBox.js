@@ -20,7 +20,7 @@ const propTypes = {
     theme: PropTypes.object,
     style: PropTypes.object,
   }).isRequired,
-  cannedResponses: [],
+  cannedResponses: PropTypes.array.isRequired,
 };
 
 const ReplyBox = ({ conversationId, eva: { theme, style }, cannedResponses }) => {

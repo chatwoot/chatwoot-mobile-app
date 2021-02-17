@@ -59,6 +59,7 @@
     "RESOLVE": "Lös konversationen",
     "RE_OPEN": "Återöppna konversationen",
     "ASSIGN": "Tilldela konversation",
+    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
     "CANCEL": "Avbryt"
   },
   "FILTER": {

@@ -83,7 +83,7 @@ const ConversationItemComponent = ({
           />
         </View>
         <View>
-          <View style={style.nameView}>
+          <View style={style.labelView}>
             <CustomText
               style={unread_count ? style.conversationUserActive : style.conversationUserNotActive}>
               {name.length < 26 ? `${name}` : `${name.substring(0, 20)}...`}
@@ -213,27 +213,28 @@ const styles = (theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  labelView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 
   conversationId: {
     color: theme['color-primary-default'],
     fontSize: theme['font-size-extra-extra-small'],
     fontWeight: theme['font-semi-bold'],
-    borderRadius: 3,
-    paddingRight: 2,
-    marginLeft: 2,
+    borderRadius: 8,
+    padding: 4,
     marginTop: 4,
-    paddingTop: 4,
     backgroundColor: theme['color-background-inbox'],
   },
   channelText: {
     color: theme['color-primary-default'],
     fontSize: theme['font-size-extra-extra-small'],
     fontWeight: theme['font-semi-bold'],
-    borderRadius: 3,
-    paddingRight: 2,
-    marginLeft: 8,
+    borderRadius: 8,
     marginTop: 4,
-    paddingTop: 4,
+    marginLeft: 8,
+    padding: 4,
     backgroundColor: theme['color-background-inbox'],
   },
 });

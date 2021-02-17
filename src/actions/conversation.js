@@ -283,13 +283,25 @@ export const getConversationDetails = ({ conversationId }) => async (dispatch) =
 };
 
 // Send message
-export const sendMessage = ({ conversationId, message }) => async (dispatch) => {
+export const sendMessage = ({ conversationId, message, isPrivate = false, file }) => async (
+  dispatch,
+) => {
   dispatch({ type: SEND_MESSAGE });
   try {
+    const formData = new FormData();
+    if (file) {
+      formData.append('attachments[]', {
+        uri: file.uri,
+        name: file.fileName,
+        type: 'image/jpeg',
+      });
+    }
+    if (message) {
+      formData.append('content', message);
+    }
+    formData.append('private', isPrivate);
     const apiUrl = `conversations/${conversationId}/messages`;
-
-    const response = await axios.post(apiUrl, message);
-
+    const response = await axios.post(apiUrl, formData);
     dispatch({
       type: SEND_MESSAGE_SUCCESS,
       payload: response.data,

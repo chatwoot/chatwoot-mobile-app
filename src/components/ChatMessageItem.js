@@ -152,8 +152,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
 
   return (
     <TouchableOpacity
-      // onLongPress={showTooltip}
-      onPress={showTooltip}
+      onLongPress={showTooltip}
       style={[messageViewStyle, message.private && style.privateMessageContainer]}
       activeOpacity={0.95}>
       <View>

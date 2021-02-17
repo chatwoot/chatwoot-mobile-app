@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "private": true,
   "scripts": {
     "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",
@@ -38,7 +38,7 @@
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
-    "react-native": "0.63.2",
+    "react-native": "0.63.3",
     "react-native-actions-sheet": "^0.4.2",
     "react-native-animatable": "^1.3.3",
     "react-native-background-color": "^0.0.8",
@@ -47,6 +47,7 @@
     "react-native-gesture-handler": "^1.9.0",
     "react-native-hyperlink": "^0.0.19",
     "react-native-image-pan-zoom": "^2.1.12",
+    "react-native-image-picker": "^3.1.4",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-reanimated": "^1.13.2",
     "react-native-safari-view": "^2.1.0",

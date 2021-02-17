@@ -59,6 +59,7 @@
     "RESOLVE": "Selvitä keskustelu",
     "RE_OPEN": "Avaa keskustelu uudelleen",
     "ASSIGN": "Assign conversation",
+    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
     "CANCEL": "Peruuta"
   },
   "FILTER": {

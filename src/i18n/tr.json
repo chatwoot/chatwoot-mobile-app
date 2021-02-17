@@ -20,7 +20,7 @@
     "ERROR": "Geçersiz yükleme url'si"
   },
   "LOGIN": {
-    "TITLE": "hesabınıza giriş yapın",
+    "TITLE": "Login to your account",
     "EMAIL": "E-posta",
     "PASSWORD": "Parola",
     "EMAIL_ERROR": "Geçerli bir e-posta giriniz",
@@ -59,6 +59,7 @@
     "RESOLVE": "Görüşmeyi çöz",
     "RE_OPEN": "Görüşmeyi yeniden açın",
     "ASSIGN": "Assign conversation",
+    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
     "CANCEL": "İptal et"
   },
   "FILTER": {

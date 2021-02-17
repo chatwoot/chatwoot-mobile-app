@@ -20,7 +20,7 @@
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
-    "TITLE": "Log in op jouw account",
+    "TITLE": "Login to your account",
     "EMAIL": "E-mailadres",
     "PASSWORD": "Wachtwoord",
     "EMAIL_ERROR": "Voer een geldig e-mailadres in",
@@ -59,6 +59,7 @@
     "RESOLVE": "Resolve conversation",
     "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
+    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
     "CANCEL": "annuleren"
   },
   "FILTER": {

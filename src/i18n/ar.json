@@ -59,6 +59,7 @@
     "RESOLVE": "حل المحادثة",
     "RE_OPEN": "إعادة فتح المحادثة",
     "ASSIGN": "Assign conversation",
+    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
     "CANCEL": "إلغاء"
   },
   "FILTER": {

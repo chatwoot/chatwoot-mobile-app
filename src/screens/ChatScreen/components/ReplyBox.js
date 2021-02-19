@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import { TextInput, View } from 'react-native';
 import { Button, withStyles, Icon, OverflowMenu, MenuItem } from '@ui-kitten/components';
-import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Dimensions, TextInput, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 import AttachmentPreview from './AttachmentPreview';
 import Attachment from './Attachment';
 import i18n from '../../../i18n';
@@ -13,8 +13,12 @@ import { showToast } from '../../../helpers/ToastHelper';
 
 const renderAnchor = () => <View />;
 
+const LockIcon = (style) => {
+  return <Icon {...style} name="lock-outline" />;
+};
+
 const PaperPlaneIconFill = (style) => {
-  return <Icon {...style} name="paper-plane" />;
+  return <Icon {...style} name="paper-plane" height={32} width={32} />;
 };
 
 const propTypes = {
@@ -26,7 +30,8 @@ const propTypes = {
   cannedResponses: PropTypes.array.isRequired,
 };
 
-const ReplyBox = ({ conversationId, eva: { theme, style }, cannedResponses }) => {
+const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) => {
+  const [isPrivate, setPrivateMode] = useState(false);
   const [message, setMessage] = useState('');
   const [filteredCannedResponses, setFilteredCannedResponses] = useState([]);
   const [menuVisible, setMenuVisible] = useState(false);
@@ -71,7 +76,7 @@ const ReplyBox = ({ conversationId, eva: { theme, style }, cannedResponses }) =>
         sendMessage({
           conversationId,
           message,
-          isPrivate: false,
+          isPrivate,
           file: attachementDetails,
         }),
       );
@@ -109,7 +114,6 @@ const ReplyBox = ({ conversationId, eva: { theme, style }, cannedResponses }) =>
   const onRemoveAttachment = () => {
     setAttachmentDetails(null);
   };
-
   return (
     <React.Fragment>
       {attachementDetails && (
@@ -118,82 +122,108 @@ const ReplyBox = ({ conversationId, eva: { theme, style }, cannedResponses }) =>
           onRemoveAttachment={onRemoveAttachment}
         />
       )}
-      <View style={style.inputView}>
-        <Attachment conversationId={conversationId} onSelectAttachment={onSelectAttachment} />
-        <TextInput
-          style={style.input}
-          placeholder={`${i18n.t('CONVERSATION.TYPE_MESSAGE')}...`}
-          onBlur={onBlur}
-          onFocus={onFocus}
-          value={message}
-          placeholderTextColor={theme['text-basic-color']}
-          onChangeText={onNewMessageChange}
-        />
-
-        {filteredCannedResponses && (
-          <OverflowMenu
-            anchor={renderAnchor}
-            data={filteredCannedResponses}
-            visible={menuVisible}
-            selectedIndex={selectedIndex}
-            onSelect={onItemSelect}
-            placement="top"
-            style={style.overflowMenu}
-            backdropStyle={style.backdrop}
-            onBackdropPress={toggleOverFlowMenu}>
-            {filteredCannedResponses.map((item) => (
-              <MenuItem title={item.title} key={item.id} />
-            ))}
-          </OverflowMenu>
-        )}
-
-        <Button
-          style={style.addMessageButton}
-          appearance="ghost"
-          size="large"
-          accessoryLeft={PaperPlaneIconFill}
-          onPress={onNewMessageAdd}
-          disabled={!message && !attachementDetails}
-        />
+      {filteredCannedResponses && (
+        <OverflowMenu
+          anchor={renderAnchor}
+          data={filteredCannedResponses}
+          visible={menuVisible}
+          selectedIndex={selectedIndex}
+          onSelect={onItemSelect}
+          placement="top"
+          style={style.overflowMenu}
+          backdropStyle={style.backdrop}
+          onBackdropPress={toggleOverFlowMenu}>
+          {filteredCannedResponses.map((item) => (
+            <MenuItem title={item.title} key={item.id} />
+          ))}
+        </OverflowMenu>
+      )}
+      <View style={isPrivate ? style.privateView : style.replyView}>
+        <View>
+          <TextInput
+            style={style.inputView}
+            multiline={true}
+            placeholderTextColor={theme['text-basic-color']}
+            placeholder={`${i18n.t('CONVERSATION.TYPE_MESSAGE')}...`}
+            onBlur={onBlur}
+            onFocus={onFocus}
+            value={message}
+            onChangeText={onNewMessageChange}
+          />
+        </View>
+        <View style={style.buttonViews}>
+          <View style={style.attachIconView}>
+            <Attachment conversationId={conversationId} onSelectAttachment={onSelectAttachment} />
+            <Button
+              style={style.lockButton}
+              appearance="ghost"
+              size="large"
+              accessoryLeft={LockIcon}
+              onPress={() => setPrivateMode(!isPrivate)}
+            />
+          </View>
+          <View style={style.spacerView} />
+          <View style={style.sendButtonView}>
+            <Button
+              style={style.sendButton}
+              appearance="ghost"
+              size="large"
+              accessoryLeft={PaperPlaneIconFill}
+              onPress={onNewMessageAdd}
+              disabled={!message && !attachementDetails}
+            />
+          </View>
+        </View>
       </View>
     </React.Fragment>
   );
 };
 
-ReplyBox.propTypes = propTypes;
-
 const styles = (theme) => ({
-  inputView: {
-    flex: 1,
+  replyView: {
     padding: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     backgroundColor: theme['background-basic-color-1'],
   },
-  input: {
-    flex: 1,
+  privateView: {
+    padding: 8,
+    backgroundColor: '#fffcf4',
+  },
+  inputView: {
     fontSize: theme['text-primary-size'],
     color: theme['text-basic-color'],
-    paddingTop: 4,
-    paddingLeft: 4,
-    paddingRight: 4,
-    paddingBottom: 4,
-    height: 48,
+    padding: 4,
+    maxHeight: 256,
+    textAlignVertical: 'top',
   },
-  addMessageButton: {
+  buttonViews: {
+    flexDirection: 'row',
+  },
+  attachIconView: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
+  privateNoteView: {
+    paddingLeft: 8,
+  },
+  spacerView: {
+    flexGrow: 2,
+  },
+  sendButtonView: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
+  lockButton: {
     paddingHorizontal: 0,
+    paddingVertical: 0,
+  },
+  sendButton: {
+    paddingHorizontal: 0,
+    paddingVertical: 0,
     backgroundColor: 'transparent',
   },
-  backdrop: {
-    backgroundColor: theme['back-drop-color'],
-  },
-  overflowMenu: {
-    padding: 8,
-    borderRadius: 8,
-    width: Dimensions.get('window').width / 1.5,
-  },
 });
+
+ReplyBox.propTypes = propTypes;
 
 const ReplyBoxItem = withStyles(ReplyBox, styles);
 export default ReplyBoxItem;

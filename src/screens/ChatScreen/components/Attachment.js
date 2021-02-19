@@ -1,18 +1,20 @@
 import React, { createRef } from 'react';
-import { Button, withStyles, Icon } from '@ui-kitten/components';
+import { withStyles, Icon, Button } from '@ui-kitten/components';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import ActionSheet from 'react-native-actions-sheet';
 import PropTypes from 'prop-types';
 import AttachmentActionItem from './AttachmentActionItem';
 
-const PlusIcon = (style) => {
-  return <Icon {...style} name="plus" />;
+const AttachIcon = (style) => {
+  return <Icon {...style} name="attach-outline" />;
 };
 
 const styles = (theme) => ({
   button: {
     paddingHorizontal: 0,
+    paddingVertical: 0,
     backgroundColor: 'transparent',
+    flex: 1,
   },
 });
 const propTypes = {
@@ -27,7 +29,7 @@ const propTypes = {
 const imagePickerOptions = {
   noData: true,
 };
-const Attachment = ({ conversationId, eva: { style }, onSelectAttachment }) => {
+const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment }) => {
   const actionSheetRef = createRef();
   const handleChoosePhoto = () => {
     actionSheetRef.current?.setModalVisible();
@@ -64,7 +66,7 @@ const Attachment = ({ conversationId, eva: { style }, onSelectAttachment }) => {
         style={style.button}
         appearance="ghost"
         size="large"
-        accessoryLeft={PlusIcon}
+        accessoryLeft={AttachIcon}
         onPress={handleChoosePhoto}
       />
       <ActionSheet ref={actionSheetRef} gestureEnabled defaultOverlayOpacity={0.3}>

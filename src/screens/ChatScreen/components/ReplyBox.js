@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextInput, View } from 'react-native';
+import { TextInput, View, Dimensions } from 'react-native';
 import { Button, withStyles, Icon, OverflowMenu, MenuItem } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
@@ -230,6 +230,11 @@ const styles = (theme) => ({
     paddingHorizontal: 0,
     paddingVertical: 0,
     backgroundColor: 'transparent',
+  },
+  overflowMenu: {
+    padding: 8,
+    borderRadius: 8,
+    width: Dimensions.get('window').width / 1.5,
   },
 });
 

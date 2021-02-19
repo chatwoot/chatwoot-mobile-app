@@ -111,7 +111,10 @@ const useDeepLinkURL = () => {
 };
 
 const _handleOpenURL = (event) => {
-  doDeepLinking({ url: event.url });
+  const { url } = event;
+  if (url) {
+    doDeepLinking({ url });
+  }
 };
 
 const App = ({ eva: { style } }) => {

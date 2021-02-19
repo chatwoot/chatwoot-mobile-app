@@ -1,13 +1,9 @@
 import React, { createRef } from 'react';
-import { withStyles, Icon, Button } from '@ui-kitten/components';
+import { withStyles, Icon } from '@ui-kitten/components';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import ActionSheet from 'react-native-actions-sheet';
 import PropTypes from 'prop-types';
 import AttachmentActionItem from './AttachmentActionItem';
-
-const AttachIcon = (style) => {
-  return <Icon {...style} name="attach-outline" />;
-};
 
 const styles = (theme) => ({
   button: {
@@ -15,6 +11,8 @@ const styles = (theme) => ({
     paddingVertical: 0,
     backgroundColor: 'transparent',
     flex: 1,
+    alignSelf: 'flex-start',
+    justifyContent: 'flex-start',
   },
 });
 const propTypes = {
@@ -62,13 +60,14 @@ const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment 
 
   return (
     <React.Fragment>
-      <Button
-        style={style.button}
-        appearance="ghost"
-        size="large"
-        accessoryLeft={AttachIcon}
+      <Icon
+        name="attach-outline"
+        width={28}
+        height={28}
+        fill={theme['color-primary-default']}
         onPress={handleChoosePhoto}
       />
+
       <ActionSheet ref={actionSheetRef} gestureEnabled defaultOverlayOpacity={0.3}>
         <AttachmentActionItem
           text="Camera"

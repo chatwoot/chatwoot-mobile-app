@@ -13,10 +13,6 @@ import { showToast } from '../../../helpers/ToastHelper';
 
 const renderAnchor = () => <View />;
 
-const LockIcon = (style) => {
-  return <Icon {...style} name="lock-outline" />;
-};
-
 const PaperPlaneIconFill = (style) => {
   return <Icon {...style} name="paper-plane" height={32} width={32} />;
 };
@@ -70,21 +66,6 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
     setMenuVisible(!menuVisible);
   };
 
-  const onNewMessageAdd = () => {
-    if (message || attachementDetails) {
-      dispatch(
-        sendMessage({
-          conversationId,
-          message,
-          isPrivate,
-          file: attachementDetails,
-        }),
-      );
-
-      setMessage('');
-      setAttachmentDetails(null);
-    }
-  };
   const onBlur = () => {
     dispatch(toggleTypingStatus({ conversationId, typingStatus: 'off' }));
   };
@@ -114,6 +95,27 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
   const onRemoveAttachment = () => {
     setAttachmentDetails(null);
   };
+
+  const togglePrivateMode = () => {
+    setPrivateMode(!isPrivate);
+  };
+
+  const onNewMessageAdd = () => {
+    if (message || attachementDetails) {
+      dispatch(
+        sendMessage({
+          conversationId,
+          message,
+          isPrivate,
+          file: attachementDetails,
+        }),
+      );
+
+      setMessage('');
+      setAttachmentDetails(null);
+    }
+  };
+
   return (
     <React.Fragment>
       {attachementDetails && (
@@ -144,7 +146,11 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
             style={style.inputView}
             multiline={true}
             placeholderTextColor={theme['text-basic-color']}
-            placeholder={`${i18n.t('CONVERSATION.TYPE_MESSAGE')}...`}
+            placeholder={
+              isPrivate
+                ? `${i18n.t('CONVERSATION.PRIVATE_MSG_INPUT')}`
+                : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}...`
+            }
             onBlur={onBlur}
             onFocus={onFocus}
             value={message}
@@ -154,13 +160,15 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
         <View style={style.buttonViews}>
           <View style={style.attachIconView}>
             <Attachment conversationId={conversationId} onSelectAttachment={onSelectAttachment} />
-            <Button
-              style={style.lockButton}
-              appearance="ghost"
-              size="large"
-              accessoryLeft={LockIcon}
-              onPress={() => setPrivateMode(!isPrivate)}
-            />
+            <View style={style.privateNoteView}>
+              <Icon
+                name="lock-outline"
+                width={28}
+                height={28}
+                fill={theme['color-primary-default']}
+                onPress={togglePrivateMode}
+              />
+            </View>
           </View>
           <View style={style.spacerView} />
           <View style={style.sendButtonView}>
@@ -186,7 +194,7 @@ const styles = (theme) => ({
   },
   privateView: {
     padding: 8,
-    backgroundColor: '#fffcf4',
+    backgroundColor: theme['color-background-private'],
   },
   inputView: {
     fontSize: theme['text-primary-size'],
@@ -199,6 +207,7 @@ const styles = (theme) => ({
     flexDirection: 'row',
   },
   attachIconView: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'flex-end',
   },
@@ -215,6 +224,7 @@ const styles = (theme) => ({
   lockButton: {
     paddingHorizontal: 0,
     paddingVertical: 0,
+    justifyContent: 'flex-start',
   },
   sendButton: {
     paddingHorizontal: 0,

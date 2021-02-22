@@ -18,11 +18,11 @@ const styles = (theme) => ({
   messageActive: {
     fontSize: theme['text-primary-size'],
     fontWeight: theme['font-medium'],
-    paddingTop: 4,
+    paddingTop: 6,
   },
   messageNotActive: {
     fontSize: theme['text-primary-size'],
-    paddingTop: 4,
+    paddingTop: 6,
     color: theme['text-light-color'],
   },
   undoIcon: {
@@ -44,6 +44,7 @@ const propTypes = {
 
 const ConversationContentItemComponent = ({ eva, unReadCount, content, messageType }) => {
   const { style, theme } = eva;
+  const message = content.replace(/\[(@[\w_.]+)\]\(mention:\/\/user\/\d+\/[\w_.]+\)/gi, '$1');
   return (
     <Fragment>
       {messageType === MESSAGE_TYPES.OUTGOING ? (
@@ -53,7 +54,7 @@ const ConversationContentItemComponent = ({ eva, unReadCount, content, messageTy
             style={unReadCount ? style.messageActive : style.messageNotActive}
             numberOfLines={1}
             maxLength={8}>
-            {content && content.length > 30 ? ` ${content.substring(0, 28)}...` : ` ${content}`}
+            {message && message.length > 30 ? ` ${message.substring(0, 28)}...` : ` ${message}`}
           </CustomText>
         </View>
       ) : (
@@ -61,7 +62,7 @@ const ConversationContentItemComponent = ({ eva, unReadCount, content, messageTy
           style={unReadCount ? style.messageActive : style.messageNotActive}
           numberOfLines={1}
           maxLength={8}>
-          {content && content.length > 30 ? `${content.substring(0, 28)}...` : `${content}`}
+          {message && message.length > 30 ? `${message.substring(0, 28)}...` : `${message}`}
         </CustomText>
       )}
     </Fragment>

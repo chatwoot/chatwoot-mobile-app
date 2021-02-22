@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import { withStyles, Icon } from '@ui-kitten/components';
 import Hyperlink from 'react-native-hyperlink';
 import Clipboard from '@react-native-clipboard/clipboard';
+import Markdown from 'react-native-markdown-display';
 
 import ActionSheet from 'react-native-actions-sheet';
-
 import CustomText from './Text';
 import { messageStamp } from '../helpers/TimeHelper';
 import { openURL } from '../helpers/UrlHelper';
@@ -134,7 +134,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     type === 'outgoing' ? style.messageContentRight : style.messageContentLeft;
   const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
 
-  const handleURL = ({ URL }) => {
+  const handleURL = (URL) => {
     if (/\b(http|https)/.test(URL)) {
       openURL({ URL });
     }
@@ -161,21 +161,28 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
       <View>
         {message.private ? (
           <View style={style.privateMessageView}>
-            <CustomText
-              style={[
-                style.messageContentRight,
-                message.private && {
+            <Markdown
+              onLinkPress={handleURL}
+              style={{
+                body: {
                   color: theme['text-basic-color'],
+                  fontSize: theme['font-size-small'],
+                  fontWeight: theme['font-regular'],
                 },
-              ]}>
+                link: {
+                  fontSize: theme['font-size-medium'],
+                  color: theme['text-light-color'],
+                  fontWeight: theme['font-bold'],
+                },
+              }}>
               {message.content}
-            </CustomText>
+            </Markdown>
             <View style={style.iconView}>
               <LockIcon style={style.icon} fill={theme['text-basic-color']} />
             </View>
           </View>
         ) : (
-          <Hyperlink linkStyle={style.linkStyle} onPress={(url) => handleURL({ URL: url })}>
+          <Hyperlink linkStyle={style.linkStyle} onPress={(url) => handleURL(url)}>
             <CustomText style={messageTextStyle}>{message.content}</CustomText>
           </Hyperlink>
         )}

@@ -60,7 +60,8 @@
     "RE_OPEN": "Reprendre la conversation",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
-    "CANCEL": "Annuler"
+    "CANCEL": "Annuler",
+    "PRIVATE_MSG_INPUT": "This will be visible only to Agents"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtrer les conversations",

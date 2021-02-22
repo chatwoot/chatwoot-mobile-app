@@ -4,6 +4,7 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import ActionSheet from 'react-native-actions-sheet';
 import PropTypes from 'prop-types';
 import AttachmentActionItem from './AttachmentActionItem';
+import { Keyboard } from 'react-native';
 
 const styles = (theme) => ({
   button: {
@@ -30,7 +31,10 @@ const imagePickerOptions = {
 const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment }) => {
   const actionSheetRef = createRef();
   const handleChoosePhoto = () => {
-    actionSheetRef.current?.setModalVisible();
+    Keyboard.dismiss();
+    setTimeout(() => {
+      actionSheetRef.current?.setModalVisible();
+    }, 10);
   };
   const openCamera = () => {
     launchCamera(imagePickerOptions, (response) => {
@@ -62,10 +66,11 @@ const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment 
     <React.Fragment>
       <Icon
         name="attach-outline"
-        width={28}
-        height={28}
-        fill={theme['color-primary-default']}
+        width={24}
+        height={24}
         onPress={handleChoosePhoto}
+        isAttachmentMode
+        fill={theme['text-hint-color']}
       />
 
       <ActionSheet ref={actionSheetRef} gestureEnabled defaultOverlayOpacity={0.3}>

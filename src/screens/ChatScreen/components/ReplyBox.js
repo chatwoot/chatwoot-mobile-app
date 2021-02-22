@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextInput, View, Dimensions } from 'react-native';
-import { Button, withStyles, Icon, OverflowMenu, MenuItem } from '@ui-kitten/components';
+import { withStyles, Icon, OverflowMenu, MenuItem } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import AttachmentPreview from './AttachmentPreview';
@@ -12,10 +12,6 @@ import { MAXIMUM_FILE_UPLOAD_SIZE } from '../../../constants';
 import { showToast } from '../../../helpers/ToastHelper';
 
 const renderAnchor = () => <View />;
-
-const PaperPlaneIconFill = (style) => {
-  return <Icon {...style} name="paper-plane" height={32} width={32} />;
-};
 
 const propTypes = {
   conversationId: PropTypes.number,
@@ -113,6 +109,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
 
       setMessage('');
       setAttachmentDetails(null);
+      setPrivateMode(false);
     }
   };
 
@@ -163,22 +160,25 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
             <View style={style.privateNoteView}>
               <Icon
                 name="lock-outline"
-                width={28}
-                height={28}
-                fill={theme['color-primary-default']}
+                width={24}
+                height={24}
+                fill={isPrivate ? theme['color-primary-default'] : theme['text-hint-color']}
                 onPress={togglePrivateMode}
               />
             </View>
           </View>
           <View style={style.spacerView} />
           <View style={style.sendButtonView}>
-            <Button
-              style={style.sendButton}
-              appearance="ghost"
-              size="large"
-              accessoryLeft={PaperPlaneIconFill}
+            <Icon
+              name="paper-plane"
+              width={32}
+              height={32}
+              fill={
+                !(!message && !attachementDetails)
+                  ? theme['color-primary-default']
+                  : theme['text-hint-color']
+              }
               onPress={onNewMessageAdd}
-              disabled={!message && !attachementDetails}
             />
           </View>
         </View>
@@ -230,6 +230,7 @@ const styles = (theme) => ({
     paddingHorizontal: 0,
     paddingVertical: 0,
     backgroundColor: 'transparent',
+    alignItems: 'flex-end',
   },
   overflowMenu: {
     padding: 8,

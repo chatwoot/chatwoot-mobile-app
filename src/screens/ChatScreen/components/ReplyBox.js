@@ -199,12 +199,14 @@ const styles = (theme) => ({
   inputView: {
     fontSize: theme['text-primary-size'],
     color: theme['text-basic-color'],
-    padding: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
     maxHeight: 256,
     textAlignVertical: 'top',
   },
   buttonViews: {
     flexDirection: 'row',
+    paddingHorizontal: 4,
   },
   attachIconView: {
     flex: 1,

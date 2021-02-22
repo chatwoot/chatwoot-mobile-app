@@ -1,18 +1,19 @@
 import React, { createRef } from 'react';
-import { Button, withStyles, Icon } from '@ui-kitten/components';
+import { withStyles, Icon } from '@ui-kitten/components';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import ActionSheet from 'react-native-actions-sheet';
 import PropTypes from 'prop-types';
 import AttachmentActionItem from './AttachmentActionItem';
-
-const PlusIcon = (style) => {
-  return <Icon {...style} name="plus" />;
-};
+import { Keyboard } from 'react-native';
 
 const styles = (theme) => ({
   button: {
     paddingHorizontal: 0,
+    paddingVertical: 0,
     backgroundColor: 'transparent',
+    flex: 1,
+    alignSelf: 'flex-start',
+    justifyContent: 'flex-start',
   },
 });
 const propTypes = {
@@ -27,10 +28,13 @@ const propTypes = {
 const imagePickerOptions = {
   noData: true,
 };
-const Attachment = ({ conversationId, eva: { style }, onSelectAttachment }) => {
+const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment }) => {
   const actionSheetRef = createRef();
   const handleChoosePhoto = () => {
-    actionSheetRef.current?.setModalVisible();
+    Keyboard.dismiss();
+    setTimeout(() => {
+      actionSheetRef.current?.setModalVisible();
+    }, 10);
   };
   const openCamera = () => {
     launchCamera(imagePickerOptions, (response) => {
@@ -60,13 +64,15 @@ const Attachment = ({ conversationId, eva: { style }, onSelectAttachment }) => {
 
   return (
     <React.Fragment>
-      <Button
-        style={style.button}
-        appearance="ghost"
-        size="large"
-        accessoryLeft={PlusIcon}
+      <Icon
+        name="attach-outline"
+        width={24}
+        height={24}
         onPress={handleChoosePhoto}
+        isAttachmentMode
+        fill={theme['text-hint-color']}
       />
+
       <ActionSheet ref={actionSheetRef} gestureEnabled defaultOverlayOpacity={0.3}>
         <AttachmentActionItem
           text="Camera"

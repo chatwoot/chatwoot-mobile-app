@@ -93,6 +93,9 @@ const styles = (theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  iconView: {
+    paddingLeft: 8,
+  },
   icon: {
     width: 16,
     height: 16,
@@ -167,8 +170,9 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
               ]}>
               {message.content}
             </CustomText>
-
-            <LockIcon style={style.icon} fill={theme['text-basic-color']} />
+            <View style={style.iconView}>
+              <LockIcon style={style.icon} fill={theme['text-basic-color']} />
+            </View>
           </View>
         ) : (
           <Hyperlink linkStyle={style.linkStyle} onPress={(url) => handleURL({ URL: url })}>

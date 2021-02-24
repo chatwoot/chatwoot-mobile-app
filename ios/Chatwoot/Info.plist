@@ -38,11 +38,9 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>For taking a photo</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Access user location</string>
+	<string>This allows us to capture a photo and send it as an attachment in the conversation</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>For choosing a photo</string>
+	<string>This allows us to select a photo from gallery and send it as an attachment in the conversation</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Inter-Bold.otf</string>

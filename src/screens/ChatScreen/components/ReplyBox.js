@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextInput, View, Dimensions } from 'react-native';
-import { withStyles, Icon, OverflowMenu, MenuItem } from '@ui-kitten/components';
+import { withStyles, Icon } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import AttachmentPreview from './AttachmentPreview';
@@ -10,8 +10,7 @@ import { sendMessage, toggleTypingStatus } from '../../../actions/conversation';
 import { findFileSize } from '../../../helpers/FileHelper';
 import { MAXIMUM_FILE_UPLOAD_SIZE } from '../../../constants';
 import { showToast } from '../../../helpers/ToastHelper';
-
-const renderAnchor = () => <View />;
+import CannedResponses from './CannedResponses';
 
 const propTypes = {
   conversationId: PropTypes.number,
@@ -26,8 +25,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
   const [isPrivate, setPrivateMode] = useState(false);
   const [message, setMessage] = useState('');
   const [filteredCannedResponses, setFilteredCannedResponses] = useState([]);
-  const [menuVisible, setMenuVisible] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(null);
+
   const [attachementDetails, setAttachmentDetails] = useState(null);
   const dispatch = useDispatch();
 
@@ -47,19 +45,11 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
     }
   };
   const showCannedResponses = ({ responses }) => {
-    setMenuVisible(true);
-    setSelectedIndex(null);
     setFilteredCannedResponses(responses);
   };
 
   const hideCannedResponses = () => {
-    setMenuVisible(false);
-    setSelectedIndex(null);
     setFilteredCannedResponses([]);
-  };
-
-  const toggleOverFlowMenu = () => {
-    setMenuVisible(!menuVisible);
   };
 
   const onBlur = () => {
@@ -69,12 +59,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
     dispatch(toggleTypingStatus({ conversationId, typingStatus: 'on' }));
   };
 
-  const onItemSelect = (itemSelected) => {
-    const indexSelected = itemSelected.row;
-    const selectedItem = filteredCannedResponses[indexSelected];
-    const { content } = selectedItem;
-    setMenuVisible(false);
-    setSelectedIndex(indexSelected);
+  const onCannedReponseSelect = (content) => {
     setFilteredCannedResponses([]);
     setMessage(content);
   };
@@ -121,21 +106,12 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
           onRemoveAttachment={onRemoveAttachment}
         />
       )}
+
       {filteredCannedResponses && (
-        <OverflowMenu
-          anchor={renderAnchor}
-          data={filteredCannedResponses}
-          visible={menuVisible}
-          selectedIndex={selectedIndex}
-          onSelect={onItemSelect}
-          placement="top"
-          style={style.overflowMenu}
-          backdropStyle={style.backdrop}
-          onBackdropPress={toggleOverFlowMenu}>
-          {filteredCannedResponses.map((item) => (
-            <MenuItem title={item.title} key={item.id} />
-          ))}
-        </OverflowMenu>
+        <CannedResponses
+          cannedResponses={filteredCannedResponses}
+          onCannedReponseSelect={onCannedReponseSelect}
+        />
       )}
       <View style={isPrivate ? style.privateView : style.replyView}>
         <View>
@@ -146,7 +122,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
             placeholder={
               isPrivate
                 ? `${i18n.t('CONVERSATION.PRIVATE_MSG_INPUT')}`
-                : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}...`
+                : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`
             }
             onBlur={onBlur}
             onFocus={onFocus}
@@ -191,10 +167,14 @@ const styles = (theme) => ({
   replyView: {
     padding: 8,
     backgroundColor: theme['background-basic-color-1'],
+    borderTopColor: theme['color-border'],
+    borderTopWidth: 1,
   },
   privateView: {
     padding: 8,
     backgroundColor: theme['color-background-private'],
+    borderTopColor: theme['color-border'],
+    borderTopWidth: 1,
   },
   inputView: {
     fontSize: theme['text-primary-size'],

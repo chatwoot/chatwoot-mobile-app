@@ -1,45 +1,45 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "Benvenuto",
   "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Close"
+    "ERROR": "Errore",
+    "ERROR_TITLE": "Errore inatteso",
+    "REPORT_MESSAGE": "Lo abbiamo segnalato alla nostra squadra! Chiudere l'app e ricominciare!",
+    "CLOSE": "Chiudi"
   },
   "FOOTER": {
     "HOME": "Home",
-    "CONVERSATION": "Conversations",
-    "NOTIFICATION": "Notifications",
-    "SETTINGS": "Settings"
+    "CONVERSATION": "Conversazioni",
+    "NOTIFICATION": "Notifiche",
+    "SETTINGS": "Impostazioni"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "URL_ERROR": "Enter a valid URL",
-    "CONNECT": "Connect",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "ENTER_URL": "URL Di Installazione",
+    "URL_ERROR": "Inserisci un URL valido",
+    "CONNECT": "Connetti",
+    "CHANGE_LANGUAGE": "Cambia lingua",
+    "ERROR": "Url installazione non valido"
   },
   "LOGIN": {
     "TITLE": "Login to your account",
     "EMAIL": "Email",
     "PASSWORD": "Password",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
-    "FORGOT_PASSWORD": "Forgot your password?",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "Create new account",
-    "SETTINGS": "Settings",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "EMAIL_ERROR": "Inserisci una email valida",
+    "PASSWORD_ERROR": "Inserisci una password valida",
+    "LOGIN": "Accedi",
+    "FORGOT_PASSWORD": "Hai dimenticato la password?",
+    "RESET_HERE": "Reimposta qui",
+    "NO_ACCOUNT": "Non hai un account?",
+    "CREATE_ACCOUNT": "Crea un nuovo account",
+    "SETTINGS": "Impostazioni",
+    "TERMS": "Termini E Condizioni",
+    "CHANGE_URL": "Cambia URL"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "Please enter your email",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
+    "EMAIL": "Inserisci il tuo indirizzo e-mail",
+    "EMAIL_ERROR": "Inserisci un'e-mail valida",
+    "RESET_HERE": "Reimposta password",
+    "HEADER_TITLE": "Reimposta password",
+    "TITLE": "Hai dimenticato la password?",
     "SUB_TITLE": "Don't worry! We got your back"
   },
   "CONVERSATION": {

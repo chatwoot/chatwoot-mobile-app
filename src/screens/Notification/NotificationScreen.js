@@ -141,22 +141,19 @@ class NotificationScreenComponent extends Component {
     const {
       primary_actor_id,
       primary_actor_type,
-      primary_actor: { id: conversationId, meta, messages },
+      primary_actor: { id: conversationId, meta },
     } = item;
 
-    const { navigation, selectConversation, loadInitialMessages } = this.props;
+    const { navigation, selectConversation } = this.props;
 
     this.props.markNotificationAsRead({
       primaryActorId: primary_actor_id,
       primaryActorType: primary_actor_type,
     });
-
     selectConversation({ conversationId });
-    loadInitialMessages({ messages });
     navigation.navigate('ChatScreen', {
       conversationId,
       meta,
-      messages,
     });
   };
 

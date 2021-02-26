@@ -1,0 +1,135 @@
+{
+  "WELCOME": "Bienvenido",
+  "COMMON": {
+    "ERROR": "Error",
+    "ERROR_TITLE": "Ocurrió un error inesperado",
+    "REPORT_MESSAGE": "¡Hemos reportado esto a nuestro equipo! ¡Por favor, cierra la aplicación y empieza de nuevo!",
+    "CLOSE": "Cerrar"
+  },
+  "FOOTER": {
+    "HOME": "Inicio",
+    "CONVERSATION": "Conversaciones",
+    "NOTIFICATION": "Notificaciones",
+    "SETTINGS": "Preferencias"
+  },
+  "CONFIGURE_URL": {
+    "ENTER_URL": "URL de instalación",
+    "URL_ERROR": "Introduzca una URL válida",
+    "CONNECT": "Conectar",
+    "CHANGE_LANGUAGE": "Cambiar idioma",
+    "ERROR": "Url de instalación inválida"
+  },
+  "LOGIN": {
+    "TITLE": "Login to your account",
+    "EMAIL": "Email",
+    "PASSWORD": "Contraseña",
+    "EMAIL_ERROR": "Introduce un email válido",
+    "PASSWORD_ERROR": "Introduce una contraseña válida",
+    "LOGIN": "Iniciar sesión",
+    "FORGOT_PASSWORD": "¿Olvidaste tu contraseña?",
+    "RESET_HERE": "Restablecer aquí",
+    "NO_ACCOUNT": "¿No tienes una cuenta?",
+    "CREATE_ACCOUNT": "Crear nueva cuenta",
+    "SETTINGS": "Preferencias",
+    "TERMS": "Términos y condiciones",
+    "CHANGE_URL": "Cambiar URL"
+  },
+  "FORGOT_PASSWORD": {
+    "EMAIL": "Por favor ingrese su email",
+    "EMAIL_ERROR": "Introduce un email válido",
+    "RESET_HERE": "Restablecer contraseña",
+    "HEADER_TITLE": "Restablecer contraseña",
+    "TITLE": "¿Olvidaste tu contraseña?",
+    "SUB_TITLE": "Don't worry! We got your back"
+  },
+  "CONVERSATION": {
+    "DEFAULT_HEADER_TITLE": "Conversaciones",
+    "MINE": "Para mí",
+    "UN_ASSIGNED": "Sin asignar",
+    "ALL": "Todo",
+    "EMPTY": "No hay conversaciones activas en este grupo.",
+    "PICTURE_CONTENT": "Mensaje de imagen",
+    "ATTACHMENT_CONTENT": "Archivo adjunto",
+    "DOWNLOAD": "Descargar",
+    "TODAY": "Hoy",
+    "YESTERDAY": "Ayer",
+    "TYPE_MESSAGE": "Escribir mensaje",
+    "TYPING": "escribiendo",
+    "ALL_CONVERSATION_LOADED": "Todas las conversaciones cargadas",
+    "RESOLVE": "Resolver conversación",
+    "RE_OPEN": "Resolver conversación",
+    "ASSIGN": "Assign conversation",
+    "CANCEL": "Cancelar"
+  },
+  "FILTER": {
+    "HEADER_TITLE": "Filtro de conversación",
+    "CHOOSE_INBOX": "Elegir bandeja de entrada",
+    "CHOOSE_STATUS": "Estado de la conversación",
+    "OPEN": "Abrir",
+    "RESOLVED": "Resuelto",
+    "BOT": "Bot",
+    "SUBMIT": "Enviar"
+  },
+  "SETTINGS": {
+    "HEADER_TITLE": "Preferencias",
+    "AVAILABILITY": "Disponible",
+    "NOTIFICATION": "Preferencias de Notificación",
+    "HELP": "Ayuda",
+    "LOG_OUT": "Cerrar sesión",
+    "SWITCH_ACCOUNT": "Switch Account",
+    "CHANGE_LANGUAGE": "Change Language",
+    "SUBMIT": "Enviar"
+  },
+  "NOTIFICATION": {
+    "HEADER_TITLE": "Notificaciones",
+    "EMPTY": "Aún no hay notificaciones.",
+    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
+    "ALL_NOTIFICATION_LOADED": "Todas las notificaciones cargadas",
+    "MARK_ALL": "Marcar todo como leído",
+    "CANCEL": "Cancelar"
+  },
+  "AVAILABILITY": {
+    "ONLINE": "Online",
+    "BUSY": "Busy",
+    "OFFLINE": "Offline"
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "TITLE": "Notification Preferences",
+    "EMAIL": "Email",
+    "PUSH": "Push",
+    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
+    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Browser",
+    "OPERATING_SYSTEM": "Operating System",
+    "INITIATED_AT": "Initiated at",
+    "INITIATED_FROM": "Initiated from"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Actions"
+  },
+  "AGENT": {
+    "TITLE": "Select Agent"
+  },
+  "ERRORS": {
+    "COMMON_ERROR": "No se pudo conectar al servidor Woot, por favor inténtalo de nuevo más tarde",
+    "OfFLINE": "Debe conectarse a Wi-Fi o a una red móvil para conectarse de nuevo",
+    "CANNOT_FETCH": "Hubo un error al recuperar la información, por favor inténtalo de nuevo",
+    "AUTH": "Nombre de usuario / Contraseña incorrecto. Inténtalo de nuevo",
+    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+  },
+  "SUCCESS": {
+    "AUTH": "Inicio de sesión exitoso"
+  },
+  "EXIT": {
+    "TITLE": "Salir",
+    "SUBTITLE": "¿Estás seguro que quieres salir?",
+    "CANCEL": "Cancelar",
+    "OK": "De acuerdo"
+  }
+}

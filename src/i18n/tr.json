@@ -1,0 +1,135 @@
+{
+  "WELCOME": "Hoşgeldiniz",
+  "COMMON": {
+    "ERROR": "Hata",
+    "ERROR_TITLE": "Beklenmedik hata oluştu",
+    "REPORT_MESSAGE": "Bunu ekibimize bildirdik! Lütfen uygulamayı kapatın ve tekrar başlayın!",
+    "CLOSE": "Kapat"
+  },
+  "FOOTER": {
+    "HOME": "Anasayfa",
+    "CONVERSATION": "Konuşmalar",
+    "NOTIFICATION": "Bildirimler",
+    "SETTINGS": "Ayarlar"
+  },
+  "CONFIGURE_URL": {
+    "ENTER_URL": "Kurulum URL'si",
+    "URL_ERROR": "Geçerli bir URL girin",
+    "CONNECT": "Bağlan",
+    "CHANGE_LANGUAGE": "Dili değiştir",
+    "ERROR": "Geçersiz yükleme url'si"
+  },
+  "LOGIN": {
+    "TITLE": "hesabınıza giriş yapın",
+    "EMAIL": "E-posta",
+    "PASSWORD": "Parola",
+    "EMAIL_ERROR": "Geçerli bir e-posta giriniz",
+    "PASSWORD_ERROR": "Geçerli bir parola girin",
+    "LOGIN": "Oturum aç",
+    "FORGOT_PASSWORD": "Parolanızı mı unuttunuz?",
+    "RESET_HERE": "Buradan sıfırlayın",
+    "NO_ACCOUNT": "Hesabın yok mu?",
+    "CREATE_ACCOUNT": "Yeni hesap oluştur",
+    "SETTINGS": "Ayarlar",
+    "TERMS": "şartlar ve koşullar",
+    "CHANGE_URL": "URL'yi değiştir"
+  },
+  "FORGOT_PASSWORD": {
+    "EMAIL": "Lütfen E-postanızı girin",
+    "EMAIL_ERROR": "Geçerli bir e-posta giriniz",
+    "RESET_HERE": "Parola yenile",
+    "HEADER_TITLE": "Parola yenile",
+    "TITLE": "Parolanızı mı unuttunuz?",
+    "SUB_TITLE": "Merak etmeyin! Arkanı kolluyoruz"
+  },
+  "CONVERSATION": {
+    "DEFAULT_HEADER_TITLE": "Konuşmalar",
+    "MINE": "Benim",
+    "UN_ASSIGNED": "Atanmamış",
+    "ALL": "Hepsi",
+    "EMPTY": "Bu grupta aktif görüşme yok.",
+    "PICTURE_CONTENT": "Görsel mesaj",
+    "ATTACHMENT_CONTENT": "Dosya eklentisi",
+    "DOWNLOAD": "İndir",
+    "TODAY": "Bugün",
+    "YESTERDAY": "Dün",
+    "TYPE_MESSAGE": "Mesajınızı yazın",
+    "TYPING": "yazıyor...",
+    "ALL_CONVERSATION_LOADED": "Tüm görüşmeler yüklendi",
+    "RESOLVE": "Görüşmeyi çöz",
+    "RE_OPEN": "Görüşmeyi yeniden açın",
+    "ASSIGN": "Assign conversation",
+    "CANCEL": "İptal et"
+  },
+  "FILTER": {
+    "HEADER_TITLE": "Görüşme Filtresi",
+    "CHOOSE_INBOX": "Gelen Kutusu Seçin",
+    "CHOOSE_STATUS": "Görüşme Durumu",
+    "OPEN": "Açık",
+    "RESOLVED": "Çözüldü",
+    "BOT": "Bot",
+    "SUBMIT": "Yolla"
+  },
+  "SETTINGS": {
+    "HEADER_TITLE": "Ayarlar",
+    "AVAILABILITY": "Uygun",
+    "NOTIFICATION": "Bildirim Tercihleri",
+    "HELP": "Yardım Dokümanları",
+    "LOG_OUT": "Çıkış Yap",
+    "SWITCH_ACCOUNT": "Hesap değiştir",
+    "CHANGE_LANGUAGE": "Dili değiştir",
+    "SUBMIT": "Yolla"
+  },
+  "NOTIFICATION": {
+    "HEADER_TITLE": "Bildirimler",
+    "EMPTY": "Henüz bildirim yok.",
+    "EMPTY_MORE_TEXT": "Bildirimler almaya başladığınızda burada görünecekler.",
+    "ALL_NOTIFICATION_LOADED": "Tüm bildirimler yüklendi",
+    "MARK_ALL": "Tümünü okundu olarak işaretle",
+    "CANCEL": "İptal etmek"
+  },
+  "AVAILABILITY": {
+    "ONLINE": "Çevirimiçi",
+    "BUSY": "Meşgul",
+    "OFFLINE": "Çevirimdışı"
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "TITLE": "Bildirim Tercihleri",
+    "EMAIL": "E-posta",
+    "PUSH": "Push",
+    "CONVERSATION_CREATE_PUSH": "Yeni bir görüşme oluşturulduğunda anlık bildirimler gönderin",
+    "CONVERSATION_ASSIGNEE_PUSH": "Bana bir konuşma atandığında anında bildirim gönder",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Atanan bir görüşmede yeni bir mesaj oluşturulduğunda anlık bildirimler gönderin",
+    "CONVERSATION_CREATE_EMAIL": "Yeni bir görüşme oluşturulduğunda e-posta bildirimleri gönderin",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Bana bir konuşma atandığında e-posta bildirimleri gönder",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Atanmış bir görüşmede yeni bir mesaj oluşturulduğunda e-posta bildirimleri gönderin"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Tarayıcı",
+    "OPERATING_SYSTEM": "İşletim sistemi",
+    "INITIATED_AT": "Başlatıldı",
+    "INITIATED_FROM": "Başlatıldı"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Actions"
+  },
+  "AGENT": {
+    "TITLE": "Select Agent"
+  },
+  "ERRORS": {
+    "COMMON_ERROR": "Woot Sunucusuna bağlanılamadı, Lütfen daha sonra tekrar deneyin",
+    "OfFLINE": "Tekrar çevrimiçi olmak için kablosuz ağa veya hücresel ağa bağlanmanız gerekir",
+    "CANNOT_FETCH": "Bilgi alınırken bir hata oluştu, lütfen tekrar deneyin",
+    "AUTH": "Kullanıcı Adı / Parola Yanlış. Lütfen tekrar deneyin",
+    "NO_ACCOUNTS_MESSAGE": "Herhangi bir chatwoot hesabına erişiminiz yok"
+  },
+  "SUCCESS": {
+    "AUTH": "Giriş başarılı"
+  },
+  "EXIT": {
+    "TITLE": "Çıkış",
+    "SUBTITLE": "Çıkmak istediğinden emin misin?",
+    "CANCEL": "İptal et",
+    "OK": "Tamam"
+  }
+}

@@ -22,6 +22,8 @@ import AccountScreen from './screens/Account/AccountScreen';
 import AvailabilityScreen from './screens/Availability/Availability';
 import NotificationPreference from './screens/NotificationPreference/NotificationPreference';
 import ConversationDetailsScreen from './screens/ConversationDetails/ConversationDetailsScreen';
+import ConversationAction from './screens/ConversationAction/ConversationAction';
+import AgentScreen from './screens/AgentScreen/AgentScreen';
 
 import i18n from './i18n';
 import { navigationRef } from './helpers/NavigationHelper';
@@ -109,7 +111,10 @@ const useDeepLinkURL = () => {
 };
 
 const _handleOpenURL = (event) => {
-  doDeepLinking({ url: event.url });
+  const { url } = event;
+  if (url) {
+    doDeepLinking({ url });
+  }
 };
 
 const App = ({ eva: { style } }) => {
@@ -174,6 +179,8 @@ const App = ({ eva: { style } }) => {
                 <Stack.Screen name="Language" component={LanguageScreen} />
                 <Stack.Screen name="Account" component={AccountScreen} />
                 <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
+                <Stack.Screen name="ConversationAction" component={ConversationAction} />
+                <Stack.Screen name="AgentScreen" component={AgentScreen} />
                 <Stack.Screen name="Availability" component={AvailabilityScreen} />
                 <Stack.Screen name="NotificationPreference" component={NotificationPreference} />
               </Fragment>

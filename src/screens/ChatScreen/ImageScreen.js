@@ -17,7 +17,6 @@ const styles = (theme) => ({
     backgroundColor: theme['background-basic-color-1'],
   },
   imageContainer: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

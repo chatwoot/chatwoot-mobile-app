@@ -91,6 +91,7 @@ export const theme = {
   'color-background-light': '#F9FAFC',
   'color-background-message': '#c7e3ff',
   'color-background-activity': '#fff3d5',
+  'color-background-private': '#fffcf4',
   'color-border-activity': '#ffe5a2',
   'color-message-left': '#3c4858',
   'item-border-color': '#f0f4f5',
@@ -101,6 +102,7 @@ export const theme = {
   'text-basic-color': '#1f2d3d',
   'text-light-color': '#3c4858',
   'text-hint-color': '#8492a6',
+  'text-tooltip-color': '#ffffff',
 
   'back-drop-color': 'rgba(0, 0, 0, 0.5)',
   // Text color

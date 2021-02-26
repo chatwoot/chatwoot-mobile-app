@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import { TouchableOpacity, Dimensions, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { withStyles, Icon } from '@ui-kitten/components';
 import Hyperlink from 'react-native-hyperlink';
+import Clipboard from '@react-native-clipboard/clipboard';
+import Markdown from 'react-native-markdown-display';
 
+import ActionSheet from 'react-native-actions-sheet';
 import CustomText from './Text';
 import { messageStamp } from '../helpers/TimeHelper';
 import { openURL } from '../helpers/UrlHelper';
+import ChatMessageActionItem from './ChatMessageActionItem';
+import { showToast } from '../helpers/ToastHelper';
 
 const LockIcon = (style) => {
   return <Icon {...style} name="lock" />;
@@ -88,12 +93,19 @@ const styles = (theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  iconView: {
+    paddingLeft: 8,
+  },
   icon: {
     width: 16,
     height: 16,
   },
   linkStyle: {
     textDecorationLine: 'underline',
+  },
+  tooltipText: {
+    color: theme['text-tooltip-color'],
+    fontSize: theme['font-size-small'],
   },
 });
 
@@ -115,38 +127,62 @@ const propTypes = {
 };
 
 const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, created_at }) => {
+  const actionSheetRef = createRef();
+  const senderName = message && message.sender && message.sender.name ? message.sender.name : '';
   const messageViewStyle = type === 'outgoing' ? style.messageRight : style.messageLeft;
   const messageTextStyle =
     type === 'outgoing' ? style.messageContentRight : style.messageContentLeft;
   const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
 
-  const handleURL = ({ URL }) => {
+  const handleURL = (URL) => {
     if (/\b(http|https)/.test(URL)) {
       openURL({ URL });
     }
   };
 
+  const showTooltip = () => {
+    actionSheetRef.current?.setModalVisible();
+  };
+
+  const onPressItem = ({ itemType }) => {
+    actionSheetRef.current?.setModalVisible(false);
+
+    if (itemType === 'copy') {
+      Clipboard.setString(message.content);
+      showToast({ message: 'Message copied to clipboard' });
+    }
+  };
+
   return (
     <TouchableOpacity
+      onLongPress={showTooltip}
       style={[messageViewStyle, message.private && style.privateMessageContainer]}
       activeOpacity={0.95}>
       <View>
         {message.private ? (
           <View style={style.privateMessageView}>
-            <CustomText
-              style={[
-                style.messageContentRight,
-                message.private && {
+            <Markdown
+              onLinkPress={handleURL}
+              style={{
+                body: {
                   color: theme['text-basic-color'],
+                  fontSize: theme['font-size-small'],
+                  fontWeight: theme['font-regular'],
                 },
-              ]}>
+                link: {
+                  fontSize: theme['font-size-medium'],
+                  color: theme['text-light-color'],
+                  fontWeight: theme['font-bold'],
+                },
+              }}>
               {message.content}
-            </CustomText>
-
-            <LockIcon style={style.icon} fill={theme['text-basic-color']} />
+            </Markdown>
+            <View style={style.iconView}>
+              <LockIcon style={style.icon} fill={theme['text-basic-color']} />
+            </View>
           </View>
         ) : (
-          <Hyperlink linkStyle={style.linkStyle} onPress={(url) => handleURL({ URL: url })}>
+          <Hyperlink linkStyle={style.linkStyle} onPress={(url) => handleURL(url)}>
             <CustomText style={messageTextStyle}>{message.content}</CustomText>
           </Hyperlink>
         )}
@@ -160,6 +196,16 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
           ]}>
           {messageStamp({ time: created_at })}
         </CustomText>
+        <ActionSheet ref={actionSheetRef} defaultOverlayOpacity={0.3}>
+          {senderName ? (
+            <ChatMessageActionItem
+              text={`Sent by: ${senderName}`}
+              itemType="author"
+              onPressItem={onPressItem}
+            />
+          ) : null}
+          <ChatMessageActionItem text="Copy" itemType="copy" onPressItem={onPressItem} />
+        </ActionSheet>
       </View>
     </TouchableOpacity>
   );

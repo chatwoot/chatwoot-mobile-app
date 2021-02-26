@@ -20,6 +20,7 @@
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
+    "TITLE": "Login to your account",
     "EMAIL": "Email",
     "PASSWORD": "Password",
     "EMAIL_ERROR": "Enter a valid email",
@@ -57,7 +58,10 @@
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "RESOLVE": "Resolve conversation",
     "RE_OPEN": "Reopen conversation",
-    "CANCEL": "Cancel"
+    "ASSIGN": "Assign conversation",
+    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
+    "CANCEL": "Cancel",
+    "PRIVATE_MSG_INPUT": "This will be visible only to Agents"
   },
   "FILTER": {
     "HEADER_TITLE": "Conversation Filter",
@@ -107,6 +111,12 @@
     "OPERATING_SYSTEM": "Operating System",
     "INITIATED_AT": "Initiated at",
     "INITIATED_FROM": "Initiated from"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Actions"
+  },
+  "AGENT": {
+    "TITLE": "Select Agent"
   },
   "ERRORS": {
     "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",

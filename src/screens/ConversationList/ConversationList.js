@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { getInboxes } from '../../actions/inbox';
+import { getAgents } from '../../actions/agent';
 
 import {
   getConversations,
@@ -59,6 +60,7 @@ class ConversationListComponent extends Component {
     isFetching: PropTypes.bool,
     isAllConversationsLoaded: PropTypes.bool,
     getInboxes: PropTypes.func,
+    getAgents: PropTypes.func,
     loadInitialMessages: PropTypes.func,
     getConversations: PropTypes.func,
     selectConversation: PropTypes.func,
@@ -81,6 +83,7 @@ class ConversationListComponent extends Component {
     isFetching: false,
     isAllConversationsLoaded: false,
     getInboxes: () => {},
+    getAgents: () => {},
     getConversations: () => {},
     loadInitialMessages: () => {},
     selectConversation: () => {},
@@ -101,6 +104,7 @@ class ConversationListComponent extends Component {
   componentDidMount = () => {
     clearAllDeliveredNotifications();
     this.props.getInboxes();
+    this.props.getAgents();
     this.loadConversations();
     this.initActionCable();
     this.props.getAllNotifications({ pageNo: 1 });
@@ -348,6 +352,7 @@ class ConversationListComponent extends Component {
 function bindAction(dispatch) {
   return {
     getInboxes: () => dispatch(getInboxes()),
+    getAgents: () => dispatch(getAgents()),
     getConversations: ({ assigneeType, pageNumber }) =>
       dispatch(
         getConversations({

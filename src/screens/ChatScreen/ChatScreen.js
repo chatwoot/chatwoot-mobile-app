@@ -1,26 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import {
   Icon,
   TopNavigation,
   TopNavigationAction,
-  Button,
   Spinner,
   withStyles,
-  OverflowMenu,
-  MenuItem,
 } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet';
-
-import {
-  View,
-  SafeAreaView,
-  TextInput,
-  SectionList,
-  Linking,
-  TouchableOpacity,
-} from 'react-native';
+import ActionSheet from 'react-native-actions-sheet';
+import { View, SafeAreaView, SectionList, Linking, TouchableOpacity } from 'react-native';
 
 import ChatMessage from '../../components/ChatMessage';
 import ChatMessageDate from '../../components/ChatMessageDate';
@@ -41,9 +30,9 @@ import {
 } from '../../actions/conversation';
 import { markNotificationAsRead } from '../../actions/notification';
 import { getGroupedConversation, getTypingUsersText, findUniqueMessages } from '../../helpers';
-import i18n from '../../i18n';
 import CustomText from '../../components/Text';
-import { CONVERSATION_TOGGLE_STATUS } from '../../constants';
+import ConversationAction from '../ConversationAction/ConversationAction';
+import ReplyBox from './components/ReplyBox';
 
 const BackIcon = (style) => (
   <Icon {...style} name="arrow-ios-back-outline" height={24} width={24} />
@@ -55,11 +44,7 @@ const MenuIcon = (style) => {
 
 const BackAction = (props) => <TopNavigationAction {...props} icon={BackIcon} />;
 
-const PaperPlaneIconFill = (style) => {
-  return <Icon {...style} name="paper-plane" />;
-};
-
-const renderAnchor = () => <View />;
+const actionSheetRef = createRef();
 
 class ChatScreenComponent extends Component {
   static propTypes = {
@@ -139,50 +124,6 @@ class ChatScreenComponent extends Component {
     markAllMessagesAsRead({ conversationId });
   };
 
-  onNewMessageChange = (text) => {
-    this.setState({
-      message: text,
-    });
-
-    const { cannedResponses } = this.props;
-
-    if (text.charAt(0) === '/') {
-      const query = text.substring(1).toLowerCase();
-      const filteredCannedResponses = cannedResponses.filter((item) =>
-        item.title.toLowerCase().includes(query),
-      );
-      if (filteredCannedResponses.length) {
-        this.showCannedResponses({ filteredCannedResponses });
-      } else {
-        this.hideCannedResponses();
-      }
-    } else {
-      this.hideCannedResponses();
-    }
-  };
-
-  onNewMessageAdd = () => {
-    const { message } = this.state;
-
-    if (message) {
-      const { route } = this.props;
-      const {
-        params: { conversationId },
-      } = route;
-
-      this.props.sendMessage({
-        conversationId,
-        message: {
-          content: message,
-          private: false,
-        },
-      });
-      this.setState({
-        message: '',
-      });
-    }
-  };
-
   showAttachment = ({ type, dataUrl }) => {
     const { navigation } = this.props;
     if (type === 'image') {
@@ -237,42 +178,6 @@ class ChatScreenComponent extends Component {
         {!isAllMessagesLoaded && isFetching ? <Spinner size="medium" color="red" /> : null}
       </View>
     );
-  };
-
-  onItemSelect = (itemSelected) => {
-    const { filteredCannedResponses } = this.state;
-    const indexSelected = itemSelected.row;
-
-    const selectedItem = filteredCannedResponses[indexSelected];
-
-    const { content } = selectedItem;
-    this.setState({
-      selectedIndex: indexSelected,
-      menuVisible: false,
-      message: content,
-    });
-  };
-
-  toggleOverFlowMenu = () => {
-    this.setState({
-      menuVisible: !this.state.menuVisible,
-    });
-  };
-
-  showCannedResponses = ({ filteredCannedResponses }) => {
-    this.setState({
-      selectedIndex: null,
-      filteredCannedResponses,
-      menuVisible: true,
-    });
-  };
-
-  hideCannedResponses = () => {
-    this.setState({
-      selectedIndex: null,
-      filteredCannedResponses: [],
-      menuVisible: false,
-    });
   };
 
   renderMessage = (item) => (
@@ -391,21 +296,7 @@ class ChatScreenComponent extends Component {
   };
 
   showActionSheet = () => {
-    const {
-      conversationDetails: { status },
-    } = this.props;
-    this.setState({
-      conversationStatus: status,
-    });
-    this.ActionSheet.show();
-  };
-
-  toggleConversation = async () => {
-    const { route } = this.props;
-    const {
-      params: { conversationId },
-    } = route;
-    this.props.toggleConversationStatus({ conversationId });
+    actionSheetRef.current?.setModalVisible();
   };
 
   renderRightControl = () => {
@@ -427,38 +318,44 @@ class ChatScreenComponent extends Component {
     );
   };
 
-  onBlur = () => {
-    const { route } = this.props;
-    const { conversationId } = route.params;
-    this.props.toggleTypingStatus({ conversationId, typingStatus: 'off' });
+  onPressAction = ({ itemType }) => {
+    actionSheetRef.current?.hide();
+    const { conversationDetails, navigation, route } = this.props;
+    if (itemType === 'assignee') {
+      if (conversationDetails) {
+        navigation.navigate('AgentScreen', { conversationDetails });
+      }
+    }
+    if (itemType === 'toggle_status') {
+      const {
+        params: { conversationId },
+      } = route;
+      this.props.toggleConversationStatus({ conversationId });
+    }
   };
-  onFocus = () => {
-    const { route } = this.props;
-    const { conversationId } = route.params;
-    this.props.toggleTypingStatus({ conversationId, typingStatus: 'on' });
-  };
+
+  handleChoosePhoto = () => {};
 
   render() {
     const {
       allMessages,
       isFetching,
-      eva: { style, theme },
+      eva: { style },
+      route,
+      cannedResponses,
     } = this.props;
 
     const {
-      message,
-      showScrollToButton,
-      filteredCannedResponses,
-      menuVisible,
-      selectedIndex,
-      conversationStatus,
-    } = this.state;
+      params: { conversationId },
+    } = route;
+
+    const { showScrollToButton } = this.state;
 
     const uniqueMessages = findUniqueMessages({ allMessages });
     const groupedConversationList = getGroupedConversation({
       conversations: uniqueMessages,
     });
-
+    const { conversationDetails } = this.props;
     return (
       <SafeAreaView style={style.mainContainer}>
         {this.renderTopNavigation()}
@@ -496,59 +393,14 @@ class ChatScreenComponent extends Component {
               </View>
             )}
           </View>
-
-          <View style={style.inputView}>
-            <TextInput
-              style={style.input}
-              placeholder={`${i18n.t('CONVERSATION.TYPE_MESSAGE')}...`}
-              isFocused={this.onFocused}
-              onBlur={this.onBlur}
-              onFocus={this.onFocus}
-              value={message}
-              placeholderTextColor={theme['text-basic-color']}
-              onChangeText={this.onNewMessageChange}
-            />
-
-            {filteredCannedResponses && (
-              <OverflowMenu
-                anchor={renderAnchor}
-                data={filteredCannedResponses}
-                visible={menuVisible}
-                selectedIndex={selectedIndex}
-                onSelect={this.onItemSelect}
-                placement="top"
-                style={style.overflowMenu}
-                backdropStyle={style.backdrop}
-                onBackdropPress={this.toggleOverFlowMenu}>
-                {filteredCannedResponses.map((item) => (
-                  <MenuItem title={item.title} key={item.id} />
-                ))}
-              </OverflowMenu>
-            )}
-            <Button
-              style={style.addMessageButton}
-              appearance="ghost"
-              size="large"
-              accessoryLeft={PaperPlaneIconFill}
-              onPress={this.onNewMessageAdd}
-              disabled={message === '' ? true : false}
-            />
-          </View>
+          <ReplyBox conversationId={conversationId} cannedResponses={cannedResponses} />
         </View>
-        <ActionSheet
-          ref={(o) => (this.ActionSheet = o)}
-          options={[
-            i18n.t('CONVERSATION.CANCEL'),
-            i18n.t(`CONVERSATION.${CONVERSATION_TOGGLE_STATUS[conversationStatus]}`),
-          ]}
-          cancelButtonIndex={0}
-          destructiveButtonIndex={4}
-          onPress={(index) => {
-            if (index === 1) {
-              this.toggleConversation();
-            }
-          }}
-        />
+        <ActionSheet ref={actionSheetRef} gestureEnabled defaultOverlayOpacity={0.3}>
+          <ConversationAction
+            conversationDetails={conversationDetails}
+            onPressAction={this.onPressAction}
+          />
+        </ActionSheet>
       </SafeAreaView>
     );
   }

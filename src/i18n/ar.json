@@ -1,0 +1,135 @@
+{
+  "WELCOME": "مرحباً",
+  "COMMON": {
+    "ERROR": "خطأ",
+    "ERROR_TITLE": "حدث خطأ غير متوقع",
+    "REPORT_MESSAGE": "لقد تم إبلاغ فريقنا بهذا الأمر! الرجاء إغلاق التطبيق وفتحه مرة أخرى!",
+    "CLOSE": "إغلاق"
+  },
+  "FOOTER": {
+    "HOME": "الرئيسية",
+    "CONVERSATION": "المحادثات",
+    "NOTIFICATION": "الإشعارات",
+    "SETTINGS": "الإعدادات"
+  },
+  "CONFIGURE_URL": {
+    "ENTER_URL": "رابط التثبيت",
+    "URL_ERROR": "الرجاء إدخال عنوان صحيح",
+    "CONNECT": "اتصل",
+    "CHANGE_LANGUAGE": "تغيير اللغة",
+    "ERROR": "رابط التثبيت غير صحيح"
+  },
+  "LOGIN": {
+    "TITLE": "Login to your account",
+    "EMAIL": "البريد الإلكتروني",
+    "PASSWORD": "كلمة المرور",
+    "EMAIL_ERROR": "أدخل بريد إلكتروني صحيح",
+    "PASSWORD_ERROR": "أدخل كلمة مرور صالحة",
+    "LOGIN": "تسجيل الدخول",
+    "FORGOT_PASSWORD": "نسيت كلمة المرور؟",
+    "RESET_HERE": "إعادة تعيين من هنا",
+    "NO_ACCOUNT": "ليس لديك حساب؟",
+    "CREATE_ACCOUNT": "إنشاء حساب جديد",
+    "SETTINGS": "الإعدادات",
+    "TERMS": "الشروط والأحكام",
+    "CHANGE_URL": "تغيير عنوان URL"
+  },
+  "FORGOT_PASSWORD": {
+    "EMAIL": "الرجاء إدخال بريدك الإلكتروني",
+    "EMAIL_ERROR": "أدخل بريد إلكتروني صحيح",
+    "RESET_HERE": "إعادة تعيين كلمة المرور",
+    "HEADER_TITLE": "إعادة تعيين كلمة المرور",
+    "TITLE": "هل نسيت كلمة المرور؟",
+    "SUB_TITLE": "لاتقلق، سنهتم بذلك"
+  },
+  "CONVERSATION": {
+    "DEFAULT_HEADER_TITLE": "المحادثات",
+    "MINE": "محادثاتي",
+    "UN_ASSIGNED": "غير مسند",
+    "ALL": "الكل",
+    "EMPTY": "لا توجد محادثات نشطة في هذه المجموعة.",
+    "PICTURE_CONTENT": "رسالة صورة",
+    "ATTACHMENT_CONTENT": "مرفقات",
+    "DOWNLOAD": "تحميل",
+    "TODAY": "اليوم",
+    "YESTERDAY": "الأمس",
+    "TYPE_MESSAGE": "اكتب رسالة",
+    "TYPING": "جار الكتابة",
+    "ALL_CONVERSATION_LOADED": "تم تحميل كافة المحادثات",
+    "RESOLVE": "حل المحادثة",
+    "RE_OPEN": "إعادة فتح المحادثة",
+    "ASSIGN": "Assign conversation",
+    "CANCEL": "إلغاء"
+  },
+  "FILTER": {
+    "HEADER_TITLE": "تصفية المحادثات",
+    "CHOOSE_INBOX": "اختر صندوق الوارد",
+    "CHOOSE_STATUS": "حالة المحادثة",
+    "OPEN": "فتح",
+    "RESOLVED": "إغلاق",
+    "BOT": "الروبوت",
+    "SUBMIT": "إرسال"
+  },
+  "SETTINGS": {
+    "HEADER_TITLE": "الإعدادات",
+    "AVAILABILITY": "التوفر",
+    "NOTIFICATION": "تفضيلات الإشعارات",
+    "HELP": "وثائق المساعدة",
+    "LOG_OUT": "تسجيل الخروج",
+    "SWITCH_ACCOUNT": "تبديل الحساب",
+    "CHANGE_LANGUAGE": "تغيير اللغة",
+    "SUBMIT": "إرسال"
+  },
+  "NOTIFICATION": {
+    "HEADER_TITLE": "الإشعارات",
+    "EMPTY": "لا توجد إشعارات بعد.",
+    "EMPTY_MORE_TEXT": "بمجرد أن تبدأ في تلقي الإشعارات، ستظهر هنا.",
+    "ALL_NOTIFICATION_LOADED": "تم تحميل كافة الإشعارات",
+    "MARK_ALL": "تحديد الكل كمقروء",
+    "CANCEL": "إلغاء"
+  },
+  "AVAILABILITY": {
+    "ONLINE": "متصل",
+    "BUSY": "مشغول",
+    "OFFLINE": "غير متصل"
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "TITLE": "تفضيلات الإشعارات",
+    "EMAIL": "البريد الإلكتروني",
+    "PUSH": "ارسال",
+    "CONVERSATION_CREATE_PUSH": "إرسال إشعارات عند إنشاء محادثة جديدة",
+    "CONVERSATION_ASSIGNEE_PUSH": "إرسال إشعارات عند تعيين محادثة لي",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
+    "CONVERSATION_CREATE_EMAIL": "إرسال إشعار بالبريد الإلكتروني عند إنشاء محادثة جديدة",
+    "CONVERSATION_ASSIGNEE_EMAIL": "إرسال إشعار بالبريد الإلكتروني عند تعيين محادثة لي",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "المتصفح",
+    "OPERATING_SYSTEM": "نظام التشغيل",
+    "INITIATED_AT": "بدأت في",
+    "INITIATED_FROM": "بدأت من"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Actions"
+  },
+  "AGENT": {
+    "TITLE": "Select Agent"
+  },
+  "ERRORS": {
+    "COMMON_ERROR": "تعذر الاتصال بخادم Chatwoot، الرجاء المحاولة مرة أخرى لاحقاً",
+    "OfFLINE": "يجب عليك التوصيل بشبكة Wi-Fi، أو بشبكة البيانات للاتصال مجدداً",
+    "CANNOT_FETCH": "حدث خطأ أثناء جلب المعلومات، الرجاء المحاولة مرة أخرى",
+    "AUTH": "اسم المستخدم / كلمة المرور غير صحيحة. الرجاء المحاولة مرة أخرى",
+    "NO_ACCOUNTS_MESSAGE": "ليس لديك حق الوصول إلى أي حسابات في Chatwoot"
+  },
+  "SUCCESS": {
+    "AUTH": "تم تسجيل الدخول بنجاح"
+  },
+  "EXIT": {
+    "TITLE": "خروج",
+    "SUBTITLE": "هل أنت متأكد من رغبتك في الخروج؟",
+    "CANCEL": "إلغاء",
+    "OK": "موافق"
+  }
+}

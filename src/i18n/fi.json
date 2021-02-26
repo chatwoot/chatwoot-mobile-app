@@ -1,0 +1,135 @@
+{
+  "WELCOME": "Tervetuloa",
+  "COMMON": {
+    "ERROR": "Virhe",
+    "ERROR_TITLE": "Odottamaton virhe tapahtui",
+    "REPORT_MESSAGE": "Olemme ilmoittaneet tästä tiimillemme! Ole hyvä ja sulje sovellus ja aloita uudelleen!",
+    "CLOSE": "Sulje"
+  },
+  "FOOTER": {
+    "HOME": "Etusivu",
+    "CONVERSATION": "Keskustelut",
+    "NOTIFICATION": "Ilmoitukset",
+    "SETTINGS": "Asetukset"
+  },
+  "CONFIGURE_URL": {
+    "ENTER_URL": "Asennuksen URL",
+    "URL_ERROR": "Anna kelvollinen URL-osoite",
+    "CONNECT": "Yhdistä",
+    "CHANGE_LANGUAGE": "Vaihda kieli",
+    "ERROR": "Virheellinen asennusosoite"
+  },
+  "LOGIN": {
+    "TITLE": "Login to your account",
+    "EMAIL": "Sähköposti",
+    "PASSWORD": "Salasana",
+    "EMAIL_ERROR": "Syötä kelvollinen sähköpostiosoite",
+    "PASSWORD_ERROR": "Anna kelvollinen salasana",
+    "LOGIN": "Kirjaudu sisään",
+    "FORGOT_PASSWORD": "Salasana unohtunut?",
+    "RESET_HERE": "Palauta täällä",
+    "NO_ACCOUNT": "Eikö sinulla ole tiliä?",
+    "CREATE_ACCOUNT": "Luo uusi tili",
+    "SETTINGS": "Asetukset",
+    "TERMS": "Käyttöehdot ja säännöt",
+    "CHANGE_URL": "Vaihda URL-osoite"
+  },
+  "FORGOT_PASSWORD": {
+    "EMAIL": "Ole hyvä ja syötä sähköpostiosoitteesi",
+    "EMAIL_ERROR": "Syötä kelvollinen sähköpostiosoite",
+    "RESET_HERE": "Nollaa salasana",
+    "HEADER_TITLE": "Nollaa salasana",
+    "TITLE": "Salasana unohtunut?",
+    "SUB_TITLE": "Älä huoli! Takaamme selustasi."
+  },
+  "CONVERSATION": {
+    "DEFAULT_HEADER_TITLE": "Keskustelut",
+    "MINE": "Minun",
+    "UN_ASSIGNED": "Osoittamaton",
+    "ALL": "Kaikki",
+    "EMPTY": "Tässä ryhmässä ei ole aktiivisia keskusteluja.",
+    "PICTURE_CONTENT": "Kuvaviesti",
+    "ATTACHMENT_CONTENT": "Liitetiedosto",
+    "DOWNLOAD": "Lataa",
+    "TODAY": "Tänään",
+    "YESTERDAY": "Eilen",
+    "TYPE_MESSAGE": "Kirjoita viesti",
+    "TYPING": "kirjoittaa",
+    "ALL_CONVERSATION_LOADED": "Kaikki keskustelut ladattu",
+    "RESOLVE": "Selvitä keskustelu",
+    "RE_OPEN": "Avaa keskustelu uudelleen",
+    "ASSIGN": "Assign conversation",
+    "CANCEL": "Peruuta"
+  },
+  "FILTER": {
+    "HEADER_TITLE": "Keskustelusuodatin",
+    "CHOOSE_INBOX": "Valitse saapuneet",
+    "CHOOSE_STATUS": "Keskustelun Tila",
+    "OPEN": "Avaa",
+    "RESOLVED": "Ratkaistu",
+    "BOT": "Botti",
+    "SUBMIT": "Lähetä"
+  },
+  "SETTINGS": {
+    "HEADER_TITLE": "Asetukset",
+    "AVAILABILITY": "Saatavuus",
+    "NOTIFICATION": "Ilmoitusasetukset",
+    "HELP": "Ohjedokumentit",
+    "LOG_OUT": "Kirjaudu ulos",
+    "SWITCH_ACCOUNT": "Vaihda tiliä",
+    "CHANGE_LANGUAGE": "Vaihda kieli",
+    "SUBMIT": "Lähetä"
+  },
+  "NOTIFICATION": {
+    "HEADER_TITLE": "Ilmoitukset",
+    "EMPTY": "Ei ilmoituksia vielä.",
+    "EMPTY_MORE_TEXT": "Kun alat vastaanottaa ilmoituksia, ne ilmestyvät tänne.",
+    "ALL_NOTIFICATION_LOADED": "Kaikki ilmoitukset ladattu",
+    "MARK_ALL": "Merkitse kaikki luetuiksi",
+    "CANCEL": "Peruuta"
+  },
+  "AVAILABILITY": {
+    "ONLINE": "Paikalla",
+    "BUSY": "Varattu",
+    "OFFLINE": "Offline"
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "TITLE": "Ilmoitusasetukset",
+    "EMAIL": "Sähköposti",
+    "PUSH": "Push",
+    "CONVERSATION_CREATE_PUSH": "Lähetä push-ilmoitukset kun uusi keskustelu on luotu",
+    "CONVERSATION_ASSIGNEE_PUSH": "Lähetä push-ilmoitus, kun keskustelu on määritetty minulle",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Lähetä push-ilmoitus, kun uusi viesti on luotu määritettyyn keskusteluun",
+    "CONVERSATION_CREATE_EMAIL": "Lähetä sähköposti-ilmoitus, kun uusi keskustelu luodaan",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Lähetä sähköposti-ilmoitus, kun keskustelu on määritetty minulle",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Lähetä sähköposti-ilmoitus, kun uusi viesti on luotu määritetyssä keskustelussa"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Selain",
+    "OPERATING_SYSTEM": "Käyttöjärjestelmä",
+    "INITIATED_AT": "Aloitettu klo",
+    "INITIATED_FROM": "Aloitettu osoitteesta"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Actions"
+  },
+  "AGENT": {
+    "TITLE": "Select Agent"
+  },
+  "ERRORS": {
+    "COMMON_ERROR": "Ei voitu yhdistää Woot-palvelimeen, yritä myöhemmin uudelleen",
+    "OfFLINE": "Sinun on yhdistettävä Wi-Fi- tai matkapuhelinverkkoon, jotta voit olla taas paikalla",
+    "CANNOT_FETCH": "Tietojen haussa tapahtui virhe. Ole hyvä ja yritä uudelleen",
+    "AUTH": "Käyttäjätunnus / salasana virheellinen. Yritä uudelleen",
+    "NO_ACCOUNTS_MESSAGE": "Sinulla ei ole pääsyä mihinkään Chatwoot-tiliin"
+  },
+  "SUCCESS": {
+    "AUTH": "Kirjautuminen onnistui"
+  },
+  "EXIT": {
+    "TITLE": "Poistu",
+    "SUBTITLE": "Oletko varma, että haluat poistua?",
+    "CANCEL": "Peruuta",
+    "OK": "OK"
+  }
+}

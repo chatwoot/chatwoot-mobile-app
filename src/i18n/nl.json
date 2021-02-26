@@ -1,17 +1,26 @@
 {
   "WELCOME": "Verwelkoming",
+  "COMMON": {
+    "ERROR": "Error",
+    "ERROR_TITLE": "Unexpected error occurred",
+    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
+    "CLOSE": "Close"
+  },
   "FOOTER": {
     "HOME": "Startpagina",
+    "CONVERSATION": "Gesprekken",
+    "NOTIFICATION": "Notifications",
     "SETTINGS": "Instellingen"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "URL installatie chatwoot",
+    "ENTER_URL": "Installation URL",
     "URL_ERROR": "Voer een geldige URL in",
-    "NEXT": "Volgende",
+    "CONNECT": "Connect",
     "CHANGE_LANGUAGE": "Taal wijzigen",
-    "ERROR": "Ongeldige chatwoot installatie url"
+    "ERROR": "Invalid installation url"
   },
   "LOGIN": {
+    "TITLE": "Log in op jouw account",
     "EMAIL": "E-mailadres",
     "PASSWORD": "Wachtwoord",
     "EMAIL_ERROR": "Voer een geldig e-mailadres in",
@@ -22,13 +31,16 @@
     "NO_ACCOUNT": "Nog geen account?",
     "CREATE_ACCOUNT": "Nieuw account aanmaken",
     "SETTINGS": "Instellingen",
-    "TERMS": "Algemene Voorwaarden"
+    "TERMS": "Algemene Voorwaarden",
+    "CHANGE_URL": "Change URL"
   },
   "FORGOT_PASSWORD": {
     "EMAIL": "Voer uw e-mailadres in",
     "EMAIL_ERROR": "Voer een geldig e-mailadres in",
     "RESET_HERE": "Wachtwoord opnieuw instellen",
-    "HEADER_TITLE": "Wachtwoord opnieuw instellen"
+    "HEADER_TITLE": "Wachtwoord opnieuw instellen",
+    "TITLE": "Forgot Password?",
+    "SUB_TITLE": "Don't worry! We got your back"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Gesprekken",
@@ -39,32 +51,77 @@
     "PICTURE_CONTENT": "Bericht met foto",
     "ATTACHMENT_CONTENT": "Bestand bijlage",
     "DOWNLOAD": "downloaden",
-    "TYPE_MESSAGE": "Typ bericht",
-    "TYPING": "typen"
+    "TODAY": "Today",
+    "YESTERDAY": "Yesterday",
+    "TYPE_MESSAGE": "Type message",
+    "TYPING": "typing",
+    "ALL_CONVERSATION_LOADED": "All conversations loaded",
+    "RESOLVE": "Resolve conversation",
+    "RE_OPEN": "Reopen conversation",
+    "ASSIGN": "Assign conversation",
+    "CANCEL": "annuleren"
   },
   "FILTER": {
-    "HEADER_TITLE": "Filteren",
+    "HEADER_TITLE": "Conversation Filter",
     "CHOOSE_INBOX": "Postvak In kiezen",
     "CHOOSE_STATUS": "Gesprek status",
     "OPEN": "Open",
     "RESOLVED": "Opgelost",
+    "BOT": "Bot",
     "SUBMIT": "Bevestigen"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Instellingen",
-    "AVAILABILITY": "Je beschikbaarheid",
-    "PUSH": "Push-melding",
-    "HELP": "Helpen documenten",
-    "SWITCH_THEME": "Wissel thema",
+    "AVAILABILITY": "Availability",
+    "NOTIFICATION": "Notification Preferences",
+    "HELP": "Help Docs",
     "LOG_OUT": "Afmelden",
-    "CHANGE_LANGUAGE": "Taal wijzigen",
+    "SWITCH_ACCOUNT": "Switch Account",
+    "CHANGE_LANGUAGE": "Change Language",
     "SUBMIT": "Bevestigen"
+  },
+  "NOTIFICATION": {
+    "HEADER_TITLE": "Notifications",
+    "EMPTY": "No notifications yet.",
+    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
+    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
+    "MARK_ALL": "Mark all as read",
+    "CANCEL": "annuleren"
+  },
+  "AVAILABILITY": {
+    "ONLINE": "Online",
+    "BUSY": "Busy",
+    "OFFLINE": "Offline"
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "TITLE": "Notification Preferences",
+    "EMAIL": "E-mailadres",
+    "PUSH": "Push",
+    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
+    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Browser",
+    "OPERATING_SYSTEM": "Operating System",
+    "INITIATED_AT": "Initiated at",
+    "INITIATED_FROM": "Initiated from"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Actions"
+  },
+  "AGENT": {
+    "TITLE": "Select Agent"
   },
   "ERRORS": {
     "COMMON_ERROR": "Kan geen verbinding maken met Woot Server, probeer het later opnieuw",
     "OfFLINE": "U moet verbinding maken met Wi-Fi of een mobiel netwerk om weer online te kunnen komen",
     "CANNOT_FETCH": "Er is een fout opgetreden bij het ophalen van de informatie, probeer het opnieuw",
-    "AUTH": "Gebruikersnaam / wachtwoord onjuist. Probeer het opnieuw"
+    "AUTH": "Gebruikersnaam / wachtwoord onjuist. Probeer het opnieuw",
+    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
   },
   "SUCCESS": {
     "AUTH": "Login succesvol"

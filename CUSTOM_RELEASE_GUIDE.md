@@ -21,6 +21,14 @@ adb shell am start -W -a android.intent.action.VIEW -d "https://app.chatwoot.com
 
 ```
 
+### iOS
+
+Set `IOS_APP_ID` in chatwoot server
+
+Open `Chatwoot.entitlements` file under `ios/` folder.
+
+Replace `*.chatwoot.com` with your installation url
+
 ## Deployment
 
 Detailed guide for [Publishing a React Native App to the App Store](https://www.reactnativeschool.com/publishing-react-native-app/)

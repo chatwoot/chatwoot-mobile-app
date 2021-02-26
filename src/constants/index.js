@@ -1,5 +1,7 @@
 import images from './images';
 
+export const MAXIMUM_FILE_UPLOAD_SIZE = 5;
+
 export const CONVERSATION_STATUS = {
   OPEN: 'open',
   RESOLVED: 'resolved',
@@ -31,6 +33,8 @@ export const INBOX_ICON = {
   'Channel::TwitterProfile': 'twitter-outline',
   'Channel::FacebookPage': 'facebook-outline',
   'Channel::TwilioSms': 'message-circle-outline',
+  'Channel::Api': 'inbox-outline',
+  'Channel::Email': 'email-outline',
 };
 
 export const INBOX_IMAGES = {
@@ -42,6 +46,7 @@ export const INBOX_IMAGES = {
 export const LANGUAGES = {
   en: 'English',
   nl: 'Dutch',
+  tr: 'Turkish',
 };
 
 export const URL_REGEX = {

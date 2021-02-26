@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import { withStyles, Layout, List, Spinner } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { SafeAreaView, SectionList, View } from 'react-native';
 
-import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet';
-
+import ActionSheet from 'react-native-actions-sheet';
 import i18n from '../../i18n';
 import { loadInitialMessage, setConversation } from '../../actions/conversation';
 
@@ -23,9 +22,17 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import HeaderBar from '../../components/HeaderBar';
 import images from '../../constants/images';
 import Empty from '../../components/Empty';
+import NotificationActionItem from '../../components/NotificationActionItem';
 
 const LoaderData = new Array(24).fill(0);
 const renderItemLoader = () => <NotificationItemLoader />;
+const actionSheetRef = createRef();
+
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+};
 
 class NotificationScreenComponent extends Component {
   static propTypes = {
@@ -59,6 +66,7 @@ class NotificationScreenComponent extends Component {
     onEndReachedCalledDuringMomentum: true,
     pageNo: 1,
     menuVisible: false,
+    refreshing: false,
   };
 
   loadNotifications = () => {
@@ -129,10 +137,6 @@ class NotificationScreenComponent extends Component {
     this.setState({ menuVisible: !this.state.menuVisible });
   };
 
-  markAllNotificationAsRead = () => {
-    this.props.markAllNotificationAsRead();
-  };
-
   onSelectNotification = (item) => {
     const {
       primary_actor_id,
@@ -170,7 +174,20 @@ class NotificationScreenComponent extends Component {
   };
 
   showActionSheet = () => {
-    this.ActionSheet.show();
+    actionSheetRef.current?.setModalVisible();
+  };
+
+  onPressAction = ({ itemType }) => {
+    actionSheetRef.current?.hide();
+    if (itemType === 'mark_all') {
+      this.props.markAllNotificationAsRead();
+    }
+  };
+
+  onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.loadNotifications();
+    wait(1000).then(() => this.setState({ refreshing: false }));
   };
 
   render() {
@@ -196,6 +213,8 @@ class NotificationScreenComponent extends Component {
             <React.Fragment>
               {groupedNotifications && groupedNotifications.length ? (
                 <SectionList
+                  onRefresh={() => this.onRefresh()}
+                  refreshing={this.state.refreshing}
                   scrollEventThrottle={1900}
                   onEndReached={this.onEndReached.bind(this)}
                   onEndReachedThreshold={0.5}
@@ -229,17 +248,18 @@ class NotificationScreenComponent extends Component {
             this.renderEmptyList()
           )}
         </View>
-        <ActionSheet
-          ref={(o) => (this.ActionSheet = o)}
-          options={[i18n.t('NOTIFICATION.CANCEL'), i18n.t('NOTIFICATION.MARK_ALL')]}
-          cancelButtonIndex={0}
-          destructiveButtonIndex={4}
-          onPress={(index) => {
-            if (index === 1) {
-              this.markAllNotificationAsRead();
-            }
-          }}
-        />
+        <ActionSheet ref={actionSheetRef} initialOffsetFromBottom={0.6} defaultOverlayOpacity={0.3}>
+          <NotificationActionItem
+            onPressItem={this.onPressAction}
+            text={i18n.t('NOTIFICATION.MARK_ALL')}
+            itemType="mark_all"
+          />
+          <NotificationActionItem
+            onPressItem={this.onPressAction}
+            text={i18n.t('NOTIFICATION.CANCEL')}
+            itemType="cancel"
+          />
+        </ActionSheet>
       </SafeAreaView>
     );
   }

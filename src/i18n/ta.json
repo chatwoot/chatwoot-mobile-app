@@ -1,0 +1,135 @@
+{
+  "WELCOME": "வரவேற்கிறோம்",
+  "COMMON": {
+    "ERROR": "பிழை",
+    "ERROR_TITLE": "எதிர்பாராத பிழை ஏற்பட்டது",
+    "REPORT_MESSAGE": "இதை எங்கள் அணிக்கு புகாரளித்துள்ளோம்! பயன்பாட்டை மூடிவிட்டு மீண்டும் தொடங்கவும்!",
+    "CLOSE": "மூடவும்"
+  },
+  "FOOTER": {
+    "HOME": "முகப்பு",
+    "CONVERSATION": "உரையாடல்கள்",
+    "NOTIFICATION": "Notifications",
+    "SETTINGS": "அமைப்புகள்"
+  },
+  "CONFIGURE_URL": {
+    "ENTER_URL": "Installation URL",
+    "URL_ERROR": "சரியான URL ஐ உள்ளிடவும்",
+    "CONNECT": "Connect",
+    "CHANGE_LANGUAGE": "மொழியை மாற்றவும்",
+    "ERROR": "Invalid installation url"
+  },
+  "LOGIN": {
+    "TITLE": "Login to your account",
+    "EMAIL": "ஈ-மெயில்",
+    "PASSWORD": "பாஸ்வேர்டு",
+    "EMAIL_ERROR": "சரியான ஈ-மெயில் முகவரியை உள்ளிடவும்",
+    "PASSWORD_ERROR": "சரியான பாஸ்வேர்ட்டை உள்ளிடவும்",
+    "LOGIN": "உல் நுழையவும்",
+    "FORGOT_PASSWORD": "உங்கள் பாஸ்வேர்ட்டை மறந்து விட்டீர்களா?",
+    "RESET_HERE": "இங்கே மீட்டமைக்கவும்",
+    "NO_ACCOUNT": "கணக்கு இல்லையா?",
+    "CREATE_ACCOUNT": "புதிய கணக்கை உருவாக்க",
+    "SETTINGS": "அமைப்புகள்",
+    "TERMS": "விதிமுறைகளும் நிபந்தனைகளும்",
+    "CHANGE_URL": "URL ஐ மாற்ற"
+  },
+  "FORGOT_PASSWORD": {
+    "EMAIL": "உங்கள் ஈ-மெயில் முகவரியை உள்ளிடவும்",
+    "EMAIL_ERROR": "சரியான ஈ-மெயில் முகவரியை உள்ளிடவும்",
+    "RESET_HERE": "பாஸ்வேர்ட்டை மீட்டமைக்கவும்",
+    "HEADER_TITLE": "பாஸ்வேர்ட்டை மீட்டமைக்கவும்",
+    "TITLE": "Forgot Password?",
+    "SUB_TITLE": "Don't worry! We got your back"
+  },
+  "CONVERSATION": {
+    "DEFAULT_HEADER_TITLE": "உரையாடல்கள்",
+    "MINE": "என்னுடைய",
+    "UN_ASSIGNED": "ஒதுக்கப்படாதது",
+    "ALL": "எல்லாம்",
+    "EMPTY": "இந்த குழுவில் செயலில் உள்ள உரையாடல்கள் எதுவும் இல்லை.",
+    "PICTURE_CONTENT": "பட செய்தி",
+    "ATTACHMENT_CONTENT": "பைல் இணைப்பு",
+    "DOWNLOAD": "பதிவிறக்கம்",
+    "TODAY": "இன்று",
+    "YESTERDAY": "நேற்று",
+    "TYPE_MESSAGE": "செய்தியைத் பதிவிடவும்",
+    "TYPING": "பதிவிடப்படுகிறது",
+    "ALL_CONVERSATION_LOADED": "All conversations loaded",
+    "RESOLVE": "Resolve conversation",
+    "RE_OPEN": "Reopen conversation",
+    "ASSIGN": "Assign conversation",
+    "CANCEL": "ரத்துசெய்"
+  },
+  "FILTER": {
+    "HEADER_TITLE": "Conversation Filter",
+    "CHOOSE_INBOX": "இன்பாக்ஸைத் தேர்வுசெய்க",
+    "CHOOSE_STATUS": "உரையாடலின் நிலை",
+    "OPEN": "திறக்கவும்",
+    "RESOLVED": "தீர்க்கப்பட்டது",
+    "BOT": "Bot",
+    "SUBMIT": "சமர்ப்பிக்கவும்"
+  },
+  "SETTINGS": {
+    "HEADER_TITLE": "அமைப்புகள்",
+    "AVAILABILITY": "Availability",
+    "NOTIFICATION": "Notification Preferences",
+    "HELP": "Help Docs",
+    "LOG_OUT": "வெளியேறு",
+    "SWITCH_ACCOUNT": "Switch Account",
+    "CHANGE_LANGUAGE": "Change Language",
+    "SUBMIT": "சமர்ப்பிக்கவும்"
+  },
+  "NOTIFICATION": {
+    "HEADER_TITLE": "Notifications",
+    "EMPTY": "No notifications yet.",
+    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
+    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
+    "MARK_ALL": "Mark all as read",
+    "CANCEL": "ரத்துசெய்"
+  },
+  "AVAILABILITY": {
+    "ONLINE": "Online",
+    "BUSY": "Busy",
+    "OFFLINE": "Offline"
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "TITLE": "Notification Preferences",
+    "EMAIL": "ஈ-மெயில்",
+    "PUSH": "Push",
+    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
+    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Browser",
+    "OPERATING_SYSTEM": "Operating System",
+    "INITIATED_AT": "Initiated at",
+    "INITIATED_FROM": "Initiated from"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Actions"
+  },
+  "AGENT": {
+    "TITLE": "Select Agent"
+  },
+  "ERRORS": {
+    "COMMON_ERROR": "வூட் சர்வருடன் இணைக்க முடியவில்லை, பின்னர் மீண்டும் முயற்சிக்கவும்",
+    "OfFLINE": "மீண்டும் ஆன்லைனில் செல்ல நீங்கள் வைஃபை அல்லது செல்லுலார் நெட்வொர்க்குடன் இணைக்க வேண்டும்",
+    "CANNOT_FETCH": "தகவலைப் பெறுவதில் பிழை ஏற்பட்டது, தயவுசெய்து மீண்டும் முயற்சிக்கவும்",
+    "AUTH": "யூசர் நேம் / பாஸ்வேர்டு தவறானது. தயவு செய்து மீண்டும் முயற்சிக்கவும்",
+    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+  },
+  "SUCCESS": {
+    "AUTH": "வெற்றிகரமான உள்நுழைவு"
+  },
+  "EXIT": {
+    "TITLE": "வெளியேறு",
+    "SUBTITLE": "நீங்கள் நிச்சயம் வெளியேற வேண்டுமா?",
+    "CANCEL": "ரத்துசெய்",
+    "OK": "சரி"
+  }
+}

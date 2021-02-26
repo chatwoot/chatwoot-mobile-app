@@ -96,12 +96,12 @@ const UserAvatar = ({
   eva: { style, theme },
 }) => {
   const [imageLoading, onLoadImage] = useState(false);
-
-  return thumbnail ? (
+  const [imagePath, setImagePath] = useState(thumbnail);
+  return imagePath ? (
     <View>
       <Image
         source={{
-          uri: thumbnail,
+          uri: imagePath,
         }}
         style={
           ([style.image],
@@ -113,6 +113,9 @@ const UserAvatar = ({
         }
         onLoadStart={() => onLoadImage(true)}
         onLoadEnd={() => onLoadImage(false)}
+        onError={() => {
+          setImagePath(null);
+        }}
       />
 
       {(PRESENCE_STATUS_COLORS[availabilityStatus] || INBOX_IMAGES[channel]) && (

@@ -11,8 +11,8 @@ import PropTypes from 'prop-types';
 import ActionSheet from 'react-native-actions-sheet';
 import { View, SafeAreaView, SectionList, Linking, TouchableOpacity } from 'react-native';
 
-import ChatMessage from '../../components/ChatMessage';
-import ChatMessageDate from '../../components/ChatMessageDate';
+import ChatMessage from './components/ChatMessage';
+import ChatMessageDate from './components/ChatMessageDate';
 import ScrollToBottomButton from '../../components/ScrollToBottomButton';
 import styles from './ChatScreen.style';
 import UserAvatar from '../../components/UserAvatar';

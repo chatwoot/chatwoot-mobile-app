@@ -2,9 +2,11 @@ import React, { createRef } from 'react';
 import { withStyles, Icon } from '@ui-kitten/components';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import ActionSheet from 'react-native-actions-sheet';
-import PropTypes from 'prop-types';
-import AttachmentActionItem from './AttachmentActionItem';
 import { Keyboard } from 'react-native';
+import DocumentPicker from 'react-native-document-picker';
+import PropTypes from 'prop-types';
+
+import AttachmentActionItem from './AttachmentActionItem';
 
 const styles = (theme) => ({
   button: {
@@ -50,6 +52,28 @@ const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment 
       }
     });
   };
+  const openDocument = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [
+          DocumentPicker.types.audio,
+          DocumentPicker.types.pdf,
+          DocumentPicker.types.plainText,
+          DocumentPicker.types.doc,
+          DocumentPicker.types.docx,
+          DocumentPicker.types.xls,
+          DocumentPicker.types.csv,
+        ],
+      });
+      const attachement = { uri: res.uri, type: res.type, fileSize: res.size, fileName: res.name };
+      onSelectAttachment({ attachement });
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+      } else {
+        throw err;
+      }
+    }
+  };
   const onPressItem = ({ itemType }) => {
     actionSheetRef.current?.hide();
     setTimeout(() => {
@@ -58,6 +82,9 @@ const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment 
       }
       if (itemType === 'upload_gallery') {
         openGallery();
+      }
+      if (itemType === 'upload_file') {
+        openDocument();
       }
     }, 500);
   };
@@ -84,6 +111,12 @@ const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment 
           text="Photo Library"
           iconName="image-outline"
           itemType="upload_gallery"
+          onPressItem={onPressItem}
+        />
+        <AttachmentActionItem
+          text="Document"
+          iconName="file-outline"
+          itemType="upload_file"
           onPressItem={onPressItem}
         />
       </ActionSheet>

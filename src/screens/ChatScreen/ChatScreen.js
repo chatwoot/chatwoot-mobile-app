@@ -1,21 +1,14 @@
-import React, { Component, createRef } from 'react';
-import {
-  Icon,
-  TopNavigation,
-  TopNavigationAction,
-  Spinner,
-  withStyles,
-} from '@ui-kitten/components';
+import React, { Component } from 'react';
+import { Spinner, withStyles } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import ActionSheet from 'react-native-actions-sheet';
-import { View, SafeAreaView, SectionList, Linking, TouchableOpacity } from 'react-native';
-
-import ChatMessage from '../../components/ChatMessage';
-import ChatMessageDate from '../../components/ChatMessageDate';
+import { View, SafeAreaView, SectionList, Linking } from 'react-native';
+import ChatMessage from './components/ChatMessage';
+import ChatMessageDate from './components/ChatMessageDate';
+import ReplyBox from './components/ReplyBox';
+import ChatHeader from './components/ChatHeader';
 import ScrollToBottomButton from '../../components/ScrollToBottomButton';
 import styles from './ChatScreen.style';
-import UserAvatar from '../../components/UserAvatar';
 import { openURL } from '../../helpers/UrlHelper';
 
 import {
@@ -26,25 +19,9 @@ import {
   resetConversation,
   toggleTypingStatus,
   getConversationDetails,
-  toggleConversationStatus,
 } from '../../actions/conversation';
 import { markNotificationAsRead } from '../../actions/notification';
-import { getGroupedConversation, getTypingUsersText, findUniqueMessages } from '../../helpers';
-import CustomText from '../../components/Text';
-import ConversationAction from '../ConversationAction/ConversationAction';
-import ReplyBox from './components/ReplyBox';
-
-const BackIcon = (style) => (
-  <Icon {...style} name="arrow-ios-back-outline" height={24} width={24} />
-);
-
-const MenuIcon = (style) => {
-  return <Icon {...style} name="more-vertical" height={24} width={24} />;
-};
-
-const BackAction = (props) => <TopNavigationAction {...props} icon={BackIcon} />;
-
-const actionSheetRef = createRef();
+import { getGroupedConversation, findUniqueMessages } from '../../helpers';
 
 class ChatScreenComponent extends Component {
   static propTypes = {
@@ -143,9 +120,6 @@ class ChatScreenComponent extends Component {
     const { navigation } = this.props;
     navigation.goBack();
   };
-
-  renderLeftControl = () => <BackAction onPress={this.onBackPress} />;
-
   loadMoreMessages = () => {
     const { allMessages, isAllMessagesLoaded } = this.props;
 
@@ -217,125 +191,6 @@ class ChatScreenComponent extends Component {
     }
   };
 
-  renderTitle = () => {
-    const senderDetails = {
-      name: null,
-      thumbnail: null,
-    };
-
-    const {
-      conversationDetails,
-      route,
-      conversationTypingUsers,
-      eva: { style, theme },
-    } = this.props;
-
-    const {
-      params: { conversationId },
-    } = route;
-
-    const typingUser = getTypingUsersText({
-      conversationTypingUsers,
-      conversationId,
-    });
-    const { meta } = route.params;
-    if (meta) {
-      const {
-        sender: { name, thumbnail },
-        channel,
-      } = meta;
-      senderDetails.name = name;
-      senderDetails.thumbnail = thumbnail;
-      senderDetails.channel = channel;
-    }
-    if (!senderDetails.name && conversationDetails) {
-      const {
-        meta: {
-          sender: { name, thumbnail },
-          channel,
-        },
-      } = conversationDetails;
-      senderDetails.name = name;
-      senderDetails.thumbnail = thumbnail;
-      senderDetails.channel = channel;
-    }
-
-    if (senderDetails.name) {
-      return (
-        <TouchableOpacity
-          style={style.headerView}
-          onPress={this.showConversationDetails}
-          activeOpacity={0.5}>
-          <UserAvatar
-            style={style.avatarView}
-            userName={senderDetails.name}
-            thumbnail={senderDetails.thumbnail}
-            defaultBGColor={theme['color-primary-default']}
-            channel={senderDetails.channel}
-          />
-          <View style={style.titleView}>
-            <View>
-              <CustomText style={style.headerTitle}>
-                {senderDetails.name.length > 24
-                  ? ` ${senderDetails.name.substring(0, 20)}...`
-                  : ` ${senderDetails.name}`}
-              </CustomText>
-            </View>
-            {typingUser ? (
-              <View>
-                <CustomText style={style.subHeaderTitle}>
-                  {typingUser ? `${typingUser}` : ''}
-                </CustomText>
-              </View>
-            ) : null}
-          </View>
-        </TouchableOpacity>
-      );
-    }
-    return null;
-  };
-
-  showActionSheet = () => {
-    actionSheetRef.current?.setModalVisible();
-  };
-
-  renderRightControl = () => {
-    const { conversationDetails } = this.props;
-
-    if (conversationDetails) {
-      return <TopNavigationAction onPress={this.showActionSheet} icon={MenuIcon} />;
-    }
-    return null;
-  };
-
-  renderTopNavigation = () => {
-    return (
-      <TopNavigation
-        title={this.renderTitle}
-        accessoryLeft={this.renderLeftControl}
-        accessoryRight={this.renderRightControl}
-      />
-    );
-  };
-
-  onPressAction = ({ itemType }) => {
-    actionSheetRef.current?.hide();
-    const { conversationDetails, navigation, route } = this.props;
-    if (itemType === 'assignee') {
-      if (conversationDetails) {
-        navigation.navigate('AgentScreen', { conversationDetails });
-      }
-    }
-    if (itemType === 'toggle_status') {
-      const {
-        params: { conversationId },
-      } = route;
-      this.props.toggleConversationStatus({ conversationId });
-    }
-  };
-
-  handleChoosePhoto = () => {};
-
   render() {
     const {
       allMessages,
@@ -343,10 +198,12 @@ class ChatScreenComponent extends Component {
       eva: { style },
       route,
       cannedResponses,
+      conversationTypingUsers,
+      conversationDetails,
     } = this.props;
 
     const {
-      params: { conversationId },
+      params: { conversationId, meta },
     } = route;
 
     const { showScrollToButton } = this.state;
@@ -355,10 +212,17 @@ class ChatScreenComponent extends Component {
     const groupedConversationList = getGroupedConversation({
       conversations: uniqueMessages,
     });
-    const { conversationDetails } = this.props;
+
     return (
       <SafeAreaView style={style.mainContainer}>
-        {this.renderTopNavigation()}
+        <ChatHeader
+          conversationId={conversationId}
+          conversationTypingUsers={conversationTypingUsers}
+          conversationDetails={conversationDetails}
+          conversationMetaDetails={meta}
+          showConversationDetails={this.showConversationDetails}
+          onBackPress={this.onBackPress}
+        />
 
         <View style={style.container} autoDismiss={false}>
           <View style={style.chatView}>
@@ -395,12 +259,6 @@ class ChatScreenComponent extends Component {
           </View>
           <ReplyBox conversationId={conversationId} cannedResponses={cannedResponses} />
         </View>
-        <ActionSheet ref={actionSheetRef} gestureEnabled defaultOverlayOpacity={0.3}>
-          <ConversationAction
-            conversationDetails={conversationDetails}
-            onPressAction={this.onPressAction}
-          />
-        </ActionSheet>
       </SafeAreaView>
     );
   }
@@ -416,8 +274,6 @@ function bindAction(dispatch) {
       dispatch(getConversationDetails({ conversationId })),
     sendMessage: ({ conversationId, message }) =>
       dispatch(sendMessage({ conversationId, message })),
-    toggleConversationStatus: ({ conversationId, message }) =>
-      dispatch(toggleConversationStatus({ conversationId })),
     markAllMessagesAsRead: ({ conversationId }) => dispatch(markMessagesAsRead({ conversationId })),
     toggleTypingStatus: ({ conversationId, typingStatus }) =>
       dispatch(toggleTypingStatus({ conversationId, typingStatus })),

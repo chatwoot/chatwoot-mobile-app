@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { withStyles } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
-import CustomText from './Text';
+import CustomText from '../../../components/Text';
 
 const styles = (theme) => ({
   mainView: {

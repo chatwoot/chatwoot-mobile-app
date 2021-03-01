@@ -5,13 +5,13 @@ import { withStyles, Icon } from '@ui-kitten/components';
 import Hyperlink from 'react-native-hyperlink';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Markdown from 'react-native-markdown-display';
-
 import ActionSheet from 'react-native-actions-sheet';
-import CustomText from './Text';
-import { messageStamp } from '../helpers/TimeHelper';
-import { openURL } from '../helpers/UrlHelper';
+
+import CustomText from '../../../components/Text';
+import { messageStamp } from '../../../helpers/TimeHelper';
+import { openURL } from '../../../helpers/UrlHelper';
 import ChatMessageActionItem from './ChatMessageActionItem';
-import { showToast } from '../helpers/ToastHelper';
+import { showToast } from '../../../helpers/ToastHelper';
 
 const LockIcon = (style) => {
   return <Icon {...style} name="lock" />;

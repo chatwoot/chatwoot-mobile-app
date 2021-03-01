@@ -2,14 +2,12 @@
 import React from 'react';
 import { View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
-
 import { withStyles } from '@ui-kitten/components';
 
-import CustomText from './Text';
-
-import { messageStamp } from '../helpers/TimeHelper';
-import ChatAttachmentItem from '../components/ChatAttachmentItem';
-import ChatMessageItem from '../components/ChatMessageItem';
+import CustomText from '../../../components/Text';
+import { messageStamp } from '../../../helpers/TimeHelper';
+import ChatAttachmentItem from './ChatAttachmentItem';
+import ChatMessageItem from './ChatMessageItem';
 
 const styles = (theme) => ({
   message: {
@@ -61,7 +59,12 @@ const MessageContentComponent = ({ message, type, showAttachment, created_at }) 
   const { attachments } = message;
 
   return attachments ? (
-    <ChatAttachmentItem attachment={attachments} type={type} showAttachment={showAttachment} />
+    <ChatAttachmentItem
+      attachments={attachments}
+      message={message}
+      type={type}
+      showAttachment={showAttachment}
+    />
   ) : (
     <ChatMessageItem message={message} type={type} created_at={created_at} />
   );

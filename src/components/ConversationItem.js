@@ -91,7 +91,7 @@ const ConversationItemComponent = ({
           </View>
 
           {!typingUser ? (
-            attachments && attachments.length ? (
+            !content && attachments && attachments.length ? (
               <ConversationAttachmentItem
                 style={style}
                 theme={theme}

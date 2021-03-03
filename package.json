@@ -72,6 +72,7 @@
     "@bam.tech/react-native-make": "^3.0.0",
     "@react-native-community/eslint-config": "^1.1.0",
     "babel-jest": "^25.1.0",
+    "babel-plugin-module-resolver": "^4.1.0",
     "detox": "^17.4.6",
     "eslint": "^6.5.1",
     "eslint-plugin-detox": "^1.0.0",

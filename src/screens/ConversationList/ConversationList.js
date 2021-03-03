@@ -1,45 +1,36 @@
 import React, { Component } from 'react';
 import { Layout, Tab, TabView, List, Spinner, withStyles } from '@ui-kitten/components';
-
 import { SafeAreaView, View, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { getInboxes } from '../../actions/inbox';
-import { getAgents } from '../../actions/agent';
-
+import { getInboxes } from 'actions/inbox';
+import { getAgents } from 'actions/agent';
 import {
   getConversations,
   loadInitialMessage,
   setConversation,
   setAssigneeType,
-} from '../../actions/conversation';
-
-import { saveDeviceDetails } from '../../actions/notification';
-
-import { getAllNotifications } from '../../actions/notification';
-
+} from 'actions/conversation';
+import CustomText from 'components/Text';
+import { saveDeviceDetails } from 'actions/notification';
+import { getAllNotifications } from 'actions/notification';
 import ConversationItem from '../../components/ConversationItem';
-import ConversationItemLoader from '../../components/ConversationItemLoader';
-
+import ConversationItemLoader from 'components/ConversationItemLoader';
 import styles from './ConversationList.style';
-
-import CustomText from '../../components/Text';
-
-import i18n from '../../i18n';
+import i18n from 'i18n';
+import ActionCable from 'helpers/ActionCable';
+import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
+import { onLogOut } from 'actions/auth';
+import HeaderBar from 'components/HeaderBar';
+import { findUniqueConversations } from 'helpers';
+import { clearAllDeliveredNotifications } from 'helpers/PushHelper';
+import Empty from 'components/Empty';
+import images from 'constants/images';
 
 const LoaderData = new Array(24).fill(0);
 
 const renderItemLoader = () => <ConversationItemLoader />;
-
-import ActionCable from '../../helpers/ActionCable';
-import { getPubSubToken, getUserDetails } from '../../helpers/AuthHelper';
-import { onLogOut } from '../../actions/auth';
-import HeaderBar from '../../components/HeaderBar';
-import { findUniqueConversations } from '../../helpers';
-import { clearAllDeliveredNotifications } from '../../helpers/PushHelper';
-import Empty from '../../components/Empty';
-import images from '../../constants/images';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {

@@ -1,68 +1,68 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "Köszöntünk",
   "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Close"
+    "ERROR": "Hiba",
+    "ERROR_TITLE": "Váratlan hiba történt",
+    "REPORT_MESSAGE": "Jeleztük a csapatunknak! Kérjük csukd be az appot és kezdd előröl!",
+    "CLOSE": "Bezár"
   },
   "FOOTER": {
-    "HOME": "Home",
-    "CONVERSATION": "Conversations",
-    "NOTIFICATION": "Notifications",
-    "SETTINGS": "Settings"
+    "HOME": "Kezdőlap",
+    "CONVERSATION": "Beszélgetések",
+    "NOTIFICATION": "Értesítések",
+    "SETTINGS": "Beállítások"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "URL_ERROR": "Enter a valid URL",
-    "CONNECT": "Connect",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "ENTER_URL": "Installációs URL",
+    "URL_ERROR": "Kérjük helyes URL-t adj meg",
+    "CONNECT": "Kapcsolódás",
+    "CHANGE_LANGUAGE": "Nyelvválasztás",
+    "ERROR": "Helytelen installációs Url"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "EMAIL": "Email",
-    "PASSWORD": "Password",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
-    "FORGOT_PASSWORD": "Forgot your password?",
+    "TITLE": "Belépés",
+    "EMAIL": "E-mail",
+    "PASSWORD": "Jelszó",
+    "EMAIL_ERROR": "Kérjük helyes E-mailt adj meg",
+    "PASSWORD_ERROR": "Kérjük helyes jelszót adj meg",
+    "LOGIN": "Belépés",
+    "FORGOT_PASSWORD": "Elfelejtetted a jelszavad?",
     "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "Create new account",
-    "SETTINGS": "Settings",
-    "CHANGE_LANGUAGE": "Change language",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "NO_ACCOUNT": "Nincs még fiókod?",
+    "CREATE_ACCOUNT": "Fiók létrehozása",
+    "SETTINGS": "Beállítások",
+    "CHANGE_LANGUAGE": "Nyelvválasztás",
+    "TERMS": "Felhasználási feltételek",
+    "CHANGE_URL": "URL megváltoztatása"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "Please enter your email",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
+    "EMAIL": "Kérjük add meg az e-mailcímed",
+    "EMAIL_ERROR": "Kérjük helyes E-mailt adj meg",
+    "RESET_HERE": "Jelszó megváltoztatása",
+    "HEADER_TITLE": "Jelszó megváltoztatása",
+    "TITLE": "Elfelejtetted a jelszavad?",
     "SUB_TITLE": "Don't worry! We got your back"
   },
   "CONVERSATION": {
-    "DEFAULT_HEADER_TITLE": "Conversations",
-    "MINE": "Mine",
-    "UN_ASSIGNED": "Unassigned",
-    "ALL": "All",
-    "EMPTY": "There are no active conversations in this group.",
-    "PICTURE_CONTENT": "Picture message",
-    "ATTACHMENT_CONTENT": "File Attachment",
-    "DOWNLOAD": "Download",
-    "TODAY": "Today",
+    "DEFAULT_HEADER_TITLE": "Beszélgetések",
+    "MINE": "Sajátom",
+    "UN_ASSIGNED": "Gazdátlan",
+    "ALL": "Mind",
+    "EMPTY": "Nincs aktív beszélgetés ebben a csoportban.",
+    "PICTURE_CONTENT": "Képüzenet",
+    "ATTACHMENT_CONTENT": "Csatolt file",
+    "DOWNLOAD": "Letöltés",
+    "TODAY": "Ma",
     "YESTERDAY": "Yesterday",
     "TYPE_MESSAGE": "Type message",
     "TYPING": "typing",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "RESOLVE": "Resolve conversation",
     "RE_OPEN": "Reopen conversation",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
+    "ASSIGN": "Beszélgetés hozzárendelése",
+    "FILE_SIZE_LIMIT_MESSAGE": "A csatolt file maximum 5 MB lehet",
     "CANCEL": "Cancel",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents"
+    "PRIVATE_MSG_INPUT": "Ezt csak ügynökök láthatják"
   },
   "FILTER": {
     "HEADER_TITLE": "Conversation Filter",
@@ -114,10 +114,10 @@
     "INITIATED_FROM": "Initiated from"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "Lehetőségek"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Ügynök kiválasztása"
   },
   "ERRORS": {
     "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",

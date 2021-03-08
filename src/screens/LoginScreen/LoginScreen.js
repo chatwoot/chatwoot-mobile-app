@@ -170,6 +170,11 @@ const LoginScreenComponent = ({ navigation, eva }) => {
                 <CustomText style={style.textStyle}> {i18n.t('LOGIN.CHANGE_URL')}</CustomText>
               </TouchableOpacity>
             </View>
+            <View style={style.accountView}>
+              <TouchableOpacity onPress={() => navigate('Language')}> 
+                <CustomText style={style.textStyle}> {i18n.t('LOGIN.CHANGE_LANGUAGE')}</CustomText>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </ScrollView>

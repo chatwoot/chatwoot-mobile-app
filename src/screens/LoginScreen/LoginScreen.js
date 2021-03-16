@@ -171,7 +171,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
               </TouchableOpacity>
             </View>
             <View style={style.accountView}>
-              <TouchableOpacity onPress={() => navigate('Language')}> 
+              <TouchableOpacity onPress={() => navigate('Language')}>
                 <CustomText style={style.textStyle}> {i18n.t('LOGIN.CHANGE_LANGUAGE')}</CustomText>
               </TouchableOpacity>
             </View>

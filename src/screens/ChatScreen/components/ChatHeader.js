@@ -9,7 +9,7 @@ import ConversationAction from '../../ConversationAction/ConversationAction';
 import UserAvatar from '../../../components/UserAvatar';
 import { getTypingUsersText } from '../../../helpers';
 import CustomText from '../../../components/Text';
-import { toggleConversationStatus } from '../../../actions/conversation';
+import { unAssignConversation, toggleConversationStatus } from '../../../actions/conversation';
 
 const styles = (theme) => ({
   headerView: {
@@ -147,6 +147,14 @@ const ChatHeader = ({
     }
     if (itemType === 'toggle_status') {
       dispatch(toggleConversationStatus({ conversationId }));
+    }
+    if (itemType === 'unassign') {
+      dispatch(
+        unAssignConversation({
+          conversationId: conversationDetails.id,
+          assigneeId: 0,
+        }),
+      );
     }
   };
   return (

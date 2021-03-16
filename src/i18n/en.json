@@ -62,7 +62,8 @@
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
     "CANCEL": "Cancel",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents"
+    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "UN_ASSIGN":"Unassign conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Conversation Filter",

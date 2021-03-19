@@ -178,7 +178,7 @@ const ChatAttachmentItemComponent = ({ type, showAttachment, message, eva: { sty
 
   return (
     <React.Fragment>
-      {fileType !== 'file' ? (
+      {fileType === 'image' ? (
         <TouchableOpacity
           onPress={() => showAttachment({ type: 'image', dataUrl })}
           style={[

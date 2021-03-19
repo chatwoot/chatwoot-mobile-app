@@ -475,3 +475,17 @@ export const assignConversation = ({ conversationId, assigneeId }) => async (
     dispatch({ type: ASSIGN_CONVERSATION_ERROR });
   }
 };
+export const unAssignConversation = ({ conversationId, assigneeId }) => async (
+  dispatch,
+  getState,
+) => {
+  dispatch({ type: ASSIGN_CONVERSATION });
+  try {
+    const apiUrl = `conversations/${conversationId}/assignments?assignee_id=${assigneeId}`;
+    await axios.post(apiUrl);
+    dispatch({ type: ASSIGN_CONVERSATION_SUCCESS });
+    dispatch(getConversationDetails({ conversationId }));
+  } catch (error) {
+    dispatch({ type: ASSIGN_CONVERSATION_ERROR });
+  }
+};

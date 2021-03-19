@@ -16,7 +16,16 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
   const {
     meta: { assignee },
   } = conversationDetails;
-  const assignedAgent = agents.find((item) => item.id === assignee.id);
+
+  let assignedAgent = null;
+  if (assignee) {
+    assignedAgent = agents.find((item) => item.id === assignee.id);
+  } else {
+    assignedAgent = {
+      name: 'Select Agent',
+      thumbnail: '',
+    };
+  }
 
   return (
     <React.Fragment>
@@ -28,11 +37,19 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
         thumbnail={assignedAgent.thumbnail}
         availabilityStatus={assignedAgent.availability_status}
       />
+      {assignee && (
+        <ConversationActionItem
+          onPressItem={onPressAction}
+          text={i18n.t('CONVERSATION.UN_ASSIGN')}
+          itemType="unassign"
+        />
+      )}
       <ConversationActionItem
         onPressItem={onPressAction}
         text={i18n.t(`CONVERSATION.${CONVERSATION_TOGGLE_STATUS[conversationStatus]}`)}
         itemType="toggle_status"
       />
+
       <ConversationActionItem
         onPressItem={onPressAction}
         text={i18n.t('CONVERSATION.CANCEL')}

@@ -62,7 +62,8 @@
     "ASSIGN": "Affecter une conversation",
     "FILE_SIZE_LIMIT_MESSAGE": "La taille de la pièce jointe doit être inférieure à 5 Mo",
     "CANCEL": "Annuler",
-    "PRIVATE_MSG_INPUT": "Ceci ne sera visible qu'aux Agents"
+    "PRIVATE_MSG_INPUT": "Ceci ne sera visible qu'aux Agents",
+    "UN_ASSIGN": "Unassign conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtrer les conversations",

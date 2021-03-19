@@ -62,7 +62,8 @@
     "ASSIGN": "Назначить ответсвенного",
     "FILE_SIZE_LIMIT_MESSAGE": "Размер вложения должен быть меньше 5МБ",
     "CANCEL": "Отмена",
-    "PRIVATE_MSG_INPUT": "Это будет видно только сотрудникам"
+    "PRIVATE_MSG_INPUT": "Это будет видно только сотрудникам",
+    "UN_ASSIGN": "Unassign conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Фильтр сообщений",

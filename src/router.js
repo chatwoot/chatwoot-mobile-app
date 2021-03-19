@@ -111,7 +111,10 @@ const useDeepLinkURL = () => {
 };
 
 const _handleOpenURL = (event) => {
-  doDeepLinking({ url: event.url });
+  const { url } = event;
+  if (url) {
+    doDeepLinking({ url });
+  }
 };
 
 const App = ({ eva: { style } }) => {
@@ -187,6 +190,7 @@ const App = ({ eva: { style } }) => {
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="ResetPassword" component={ResetPassword} />
                 <Stack.Screen name="ConversationList" component={ConversationList} />
+                <Stack.Screen name="Language" component={LanguageScreen} />
               </Fragment>
             )}
           </Stack.Navigator>

@@ -42,13 +42,8 @@ And install dependencies
 
 Create a new project in [Sentry](https://sentry.io/for/react-native/)
 
-Create file sentry under `sentry.js` in root of the project.
 
-Add the following contents.
-
-```
-export const SENTRY_TOKEN_URL =<SENTRY_TOKEN_URL>;
-```
+Add `SENTRY_DSN` value in `.env` file.
 
 If you want to supports native crashes, link the sentry SDK to your native projects.
 Run the command

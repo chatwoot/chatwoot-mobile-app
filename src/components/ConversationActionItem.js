@@ -57,7 +57,6 @@ const ConversationActionItem = ({
   eva: { style, theme },
 }) => {
   const isActive = availabilityStatus === 'online' ? true : false;
-
   return (
     <React.Fragment>
       <TouchableOpacity style={style.section} onPress={() => onPressItem({ itemType })}>
@@ -65,7 +64,7 @@ const ConversationActionItem = ({
           <CustomText style={style.sectionText}>{text}</CustomText>
         </View>
         <View style={style.sectionActionView}>
-          {itemType === 'assignee' && (
+          {itemType === 'assignee' && thumbnail !== '' && (
             <UserAvatar
               thumbnail={thumbnail}
               userName={name}

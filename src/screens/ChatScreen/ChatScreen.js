@@ -1,31 +1,14 @@
-import React, { Component, createRef } from 'react';
-import {
-  Icon,
-  TopNavigation,
-  TopNavigationAction,
-  Button,
-  Spinner,
-  withStyles,
-  OverflowMenu,
-  MenuItem,
-} from '@ui-kitten/components';
+import React, { Component } from 'react';
+import { Spinner, withStyles } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import ActionSheet from 'react-native-actions-sheet';
-import {
-  View,
-  SafeAreaView,
-  TextInput,
-  SectionList,
-  Linking,
-  TouchableOpacity,
-} from 'react-native';
-
-import ChatMessage from '../../components/ChatMessage';
-import ChatMessageDate from '../../components/ChatMessageDate';
+import { View, SafeAreaView, SectionList, Linking } from 'react-native';
+import ChatMessage from './components/ChatMessage';
+import ChatMessageDate from './components/ChatMessageDate';
+import ReplyBox from './components/ReplyBox';
+import ChatHeader from './components/ChatHeader';
 import ScrollToBottomButton from '../../components/ScrollToBottomButton';
 import styles from './ChatScreen.style';
-import UserAvatar from '../../components/UserAvatar';
 import { openURL } from '../../helpers/UrlHelper';
 
 import {
@@ -36,30 +19,9 @@ import {
   resetConversation,
   toggleTypingStatus,
   getConversationDetails,
-  toggleConversationStatus,
 } from '../../actions/conversation';
 import { markNotificationAsRead } from '../../actions/notification';
-import { getGroupedConversation, getTypingUsersText, findUniqueMessages } from '../../helpers';
-import i18n from '../../i18n';
-import CustomText from '../../components/Text';
-import ConversationAction from '../ConversationAction/ConversationAction';
-
-const BackIcon = (style) => (
-  <Icon {...style} name="arrow-ios-back-outline" height={24} width={24} />
-);
-
-const MenuIcon = (style) => {
-  return <Icon {...style} name="more-vertical" height={24} width={24} />;
-};
-
-const BackAction = (props) => <TopNavigationAction {...props} icon={BackIcon} />;
-
-const PaperPlaneIconFill = (style) => {
-  return <Icon {...style} name="paper-plane" />;
-};
-const actionSheetRef = createRef();
-
-const renderAnchor = () => <View />;
+import { getGroupedConversation, findUniqueMessages } from '../../helpers';
 
 class ChatScreenComponent extends Component {
   static propTypes = {
@@ -139,50 +101,6 @@ class ChatScreenComponent extends Component {
     markAllMessagesAsRead({ conversationId });
   };
 
-  onNewMessageChange = (text) => {
-    this.setState({
-      message: text,
-    });
-
-    const { cannedResponses } = this.props;
-
-    if (text.charAt(0) === '/') {
-      const query = text.substring(1).toLowerCase();
-      const filteredCannedResponses = cannedResponses.filter((item) =>
-        item.title.toLowerCase().includes(query),
-      );
-      if (filteredCannedResponses.length) {
-        this.showCannedResponses({ filteredCannedResponses });
-      } else {
-        this.hideCannedResponses();
-      }
-    } else {
-      this.hideCannedResponses();
-    }
-  };
-
-  onNewMessageAdd = () => {
-    const { message } = this.state;
-
-    if (message) {
-      const { route } = this.props;
-      const {
-        params: { conversationId },
-      } = route;
-
-      this.props.sendMessage({
-        conversationId,
-        message: {
-          content: message,
-          private: false,
-        },
-      });
-      this.setState({
-        message: '',
-      });
-    }
-  };
-
   showAttachment = ({ type, dataUrl }) => {
     const { navigation } = this.props;
     if (type === 'image') {
@@ -202,9 +120,6 @@ class ChatScreenComponent extends Component {
     const { navigation } = this.props;
     navigation.goBack();
   };
-
-  renderLeftControl = () => <BackAction onPress={this.onBackPress} />;
-
   loadMoreMessages = () => {
     const { allMessages, isAllMessagesLoaded } = this.props;
 
@@ -237,42 +152,6 @@ class ChatScreenComponent extends Component {
         {!isAllMessagesLoaded && isFetching ? <Spinner size="medium" color="red" /> : null}
       </View>
     );
-  };
-
-  onItemSelect = (itemSelected) => {
-    const { filteredCannedResponses } = this.state;
-    const indexSelected = itemSelected.row;
-
-    const selectedItem = filteredCannedResponses[indexSelected];
-
-    const { content } = selectedItem;
-    this.setState({
-      selectedIndex: indexSelected,
-      menuVisible: false,
-      message: content,
-    });
-  };
-
-  toggleOverFlowMenu = () => {
-    this.setState({
-      menuVisible: !this.state.menuVisible,
-    });
-  };
-
-  showCannedResponses = ({ filteredCannedResponses }) => {
-    this.setState({
-      selectedIndex: null,
-      filteredCannedResponses,
-      menuVisible: true,
-    });
-  };
-
-  hideCannedResponses = () => {
-    this.setState({
-      selectedIndex: null,
-      filteredCannedResponses: [],
-      menuVisible: false,
-    });
   };
 
   renderMessage = (item) => (
@@ -312,157 +191,38 @@ class ChatScreenComponent extends Component {
     }
   };
 
-  renderTitle = () => {
-    const senderDetails = {
-      name: null,
-      thumbnail: null,
-    };
-
-    const {
-      conversationDetails,
-      route,
-      conversationTypingUsers,
-      eva: { style, theme },
-    } = this.props;
-
-    const {
-      params: { conversationId },
-    } = route;
-
-    const typingUser = getTypingUsersText({
-      conversationTypingUsers,
-      conversationId,
-    });
-    const { meta } = route.params;
-    if (meta) {
-      const {
-        sender: { name, thumbnail },
-        channel,
-      } = meta;
-      senderDetails.name = name;
-      senderDetails.thumbnail = thumbnail;
-      senderDetails.channel = channel;
-    }
-    if (!senderDetails.name && conversationDetails) {
-      const {
-        meta: {
-          sender: { name, thumbnail },
-          channel,
-        },
-      } = conversationDetails;
-      senderDetails.name = name;
-      senderDetails.thumbnail = thumbnail;
-      senderDetails.channel = channel;
-    }
-
-    if (senderDetails.name) {
-      return (
-        <TouchableOpacity
-          style={style.headerView}
-          onPress={this.showConversationDetails}
-          activeOpacity={0.5}>
-          <UserAvatar
-            style={style.avatarView}
-            userName={senderDetails.name}
-            thumbnail={senderDetails.thumbnail}
-            defaultBGColor={theme['color-primary-default']}
-            channel={senderDetails.channel}
-          />
-          <View style={style.titleView}>
-            <View>
-              <CustomText style={style.headerTitle}>
-                {senderDetails.name.length > 24
-                  ? ` ${senderDetails.name.substring(0, 20)}...`
-                  : ` ${senderDetails.name}`}
-              </CustomText>
-            </View>
-            {typingUser ? (
-              <View>
-                <CustomText style={style.subHeaderTitle}>
-                  {typingUser ? `${typingUser}` : ''}
-                </CustomText>
-              </View>
-            ) : null}
-          </View>
-        </TouchableOpacity>
-      );
-    }
-    return null;
-  };
-
-  showActionSheet = () => {
-    actionSheetRef.current?.setModalVisible();
-  };
-
-  renderRightControl = () => {
-    const { conversationDetails } = this.props;
-
-    if (conversationDetails) {
-      return <TopNavigationAction onPress={this.showActionSheet} icon={MenuIcon} />;
-    }
-    return null;
-  };
-
-  renderTopNavigation = () => {
-    return (
-      <TopNavigation
-        title={this.renderTitle}
-        accessoryLeft={this.renderLeftControl}
-        accessoryRight={this.renderRightControl}
-      />
-    );
-  };
-
-  onBlur = () => {
-    const { route } = this.props;
-    const { conversationId } = route.params;
-    this.props.toggleTypingStatus({ conversationId, typingStatus: 'off' });
-  };
-  onFocus = () => {
-    const { route } = this.props;
-    const { conversationId } = route.params;
-    this.props.toggleTypingStatus({ conversationId, typingStatus: 'on' });
-  };
-
-  onPressAction = ({ itemType }) => {
-    actionSheetRef.current?.hide();
-    const { conversationDetails, navigation, route } = this.props;
-    if (itemType === 'assignee') {
-      if (conversationDetails) {
-        navigation.navigate('AgentScreen', { conversationDetails });
-      }
-    }
-    if (itemType === 'toggle_status') {
-      const {
-        params: { conversationId },
-      } = route;
-      this.props.toggleConversationStatus({ conversationId });
-    }
-  };
-
   render() {
     const {
       allMessages,
       isFetching,
-      eva: { style, theme },
+      eva: { style },
+      route,
+      cannedResponses,
+      conversationTypingUsers,
+      conversationDetails,
     } = this.props;
 
     const {
-      message,
-      showScrollToButton,
-      filteredCannedResponses,
-      menuVisible,
-      selectedIndex,
-    } = this.state;
+      params: { conversationId, meta },
+    } = route;
+
+    const { showScrollToButton } = this.state;
 
     const uniqueMessages = findUniqueMessages({ allMessages });
     const groupedConversationList = getGroupedConversation({
       conversations: uniqueMessages,
     });
-    const { conversationDetails } = this.props;
+
     return (
       <SafeAreaView style={style.mainContainer}>
-        {this.renderTopNavigation()}
+        <ChatHeader
+          conversationId={conversationId}
+          conversationTypingUsers={conversationTypingUsers}
+          conversationDetails={conversationDetails}
+          conversationMetaDetails={meta}
+          showConversationDetails={this.showConversationDetails}
+          onBackPress={this.onBackPress}
+        />
 
         <View style={style.container} autoDismiss={false}>
           <View style={style.chatView}>
@@ -497,51 +257,8 @@ class ChatScreenComponent extends Component {
               </View>
             )}
           </View>
-
-          <View style={style.inputView}>
-            <TextInput
-              style={style.input}
-              placeholder={`${i18n.t('CONVERSATION.TYPE_MESSAGE')}...`}
-              isFocused={this.onFocused}
-              onBlur={this.onBlur}
-              onFocus={this.onFocus}
-              value={message}
-              placeholderTextColor={theme['text-basic-color']}
-              onChangeText={this.onNewMessageChange}
-            />
-
-            {filteredCannedResponses && (
-              <OverflowMenu
-                anchor={renderAnchor}
-                data={filteredCannedResponses}
-                visible={menuVisible}
-                selectedIndex={selectedIndex}
-                onSelect={this.onItemSelect}
-                placement="top"
-                style={style.overflowMenu}
-                backdropStyle={style.backdrop}
-                onBackdropPress={this.toggleOverFlowMenu}>
-                {filteredCannedResponses.map((item) => (
-                  <MenuItem title={item.title} key={item.id} />
-                ))}
-              </OverflowMenu>
-            )}
-            <Button
-              style={style.addMessageButton}
-              appearance="ghost"
-              size="large"
-              accessoryLeft={PaperPlaneIconFill}
-              onPress={this.onNewMessageAdd}
-              disabled={message === '' ? true : false}
-            />
-          </View>
+          <ReplyBox conversationId={conversationId} cannedResponses={cannedResponses} />
         </View>
-        <ActionSheet ref={actionSheetRef} gestureEnabled defaultOverlayOpacity={0.3}>
-          <ConversationAction
-            conversationDetails={conversationDetails}
-            onPressAction={this.onPressAction}
-          />
-        </ActionSheet>
       </SafeAreaView>
     );
   }
@@ -557,8 +274,6 @@ function bindAction(dispatch) {
       dispatch(getConversationDetails({ conversationId })),
     sendMessage: ({ conversationId, message }) =>
       dispatch(sendMessage({ conversationId, message })),
-    toggleConversationStatus: ({ conversationId, message }) =>
-      dispatch(toggleConversationStatus({ conversationId })),
     markAllMessagesAsRead: ({ conversationId }) => dispatch(markMessagesAsRead({ conversationId })),
     toggleTypingStatus: ({ conversationId, typingStatus }) =>
       dispatch(toggleTypingStatus({ conversationId, typingStatus })),

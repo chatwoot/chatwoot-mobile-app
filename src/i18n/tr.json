@@ -20,7 +20,7 @@
     "ERROR": "Geçersiz yükleme url'si"
   },
   "LOGIN": {
-    "TITLE": "hesabınıza giriş yapın",
+    "TITLE": "Login to your account",
     "EMAIL": "E-posta",
     "PASSWORD": "Parola",
     "EMAIL_ERROR": "Geçerli bir e-posta giriniz",
@@ -31,6 +31,7 @@
     "NO_ACCOUNT": "Hesabın yok mu?",
     "CREATE_ACCOUNT": "Yeni hesap oluştur",
     "SETTINGS": "Ayarlar",
+    "CHANGE_LANGUAGE": "Dili değiştir",
     "TERMS": "şartlar ve koşullar",
     "CHANGE_URL": "URL'yi değiştir"
   },
@@ -59,7 +60,10 @@
     "RESOLVE": "Görüşmeyi çöz",
     "RE_OPEN": "Görüşmeyi yeniden açın",
     "ASSIGN": "Assign conversation",
-    "CANCEL": "İptal et"
+    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
+    "CANCEL": "İptal et",
+    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "UN_ASSIGN": "Unassign conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Görüşme Filtresi",

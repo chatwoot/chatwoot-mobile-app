@@ -4,66 +4,70 @@
     "ERROR": "Error",
     "ERROR_TITLE": "Unexpected error occurred",
     "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Close"
+    "CLOSE": "Закрыть"
   },
   "FOOTER": {
-    "HOME": "Home",
-    "CONVERSATION": "Conversations",
-    "NOTIFICATION": "Notifications",
-    "SETTINGS": "Settings"
+    "HOME": "Главная",
+    "CONVERSATION": "Сообщения",
+    "NOTIFICATION": "Уведомления",
+    "SETTINGS": "Настройки"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "URL_ERROR": "Enter a valid URL",
-    "CONNECT": "Connect",
-    "CHANGE_LANGUAGE": "Change language",
+    "ENTER_URL": "URL установки",
+    "URL_ERROR": "Введите правильный URL",
+    "CONNECT": "Подключиться",
+    "CHANGE_LANGUAGE": "Изменить язык",
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "EMAIL": "Email",
-    "PASSWORD": "Password",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
-    "FORGOT_PASSWORD": "Forgot your password?",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "Create new account",
+    "TITLE": "Войти в свой аккаунт",
+    "EMAIL": "Почта",
+    "PASSWORD": "Пароль",
+    "EMAIL_ERROR": "Введите правильный email",
+    "PASSWORD_ERROR": "Введите корректный пароль",
+    "LOGIN": "Войти",
+    "FORGOT_PASSWORD": "Забыли пароль?",
+    "RESET_HERE": "Сбросить здесь",
+    "NO_ACCOUNT": "Нет учетной записи?",
+    "CREATE_ACCOUNT": "Создать новый аккаунт",
     "SETTINGS": "Settings",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "CHANGE_LANGUAGE": "Изменить язык",
+    "TERMS": "Условия использования",
+    "CHANGE_URL": "Изменить URL"
   },
   "FORGOT_PASSWORD": {
     "EMAIL": "Please enter your email",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back"
+    "EMAIL_ERROR": "Введите правильный email",
+    "RESET_HERE": "Сбросить пароль",
+    "HEADER_TITLE": "Сбросить пароль",
+    "TITLE": "Забыли пароль?",
+    "SUB_TITLE": "Не волнуйтесь! Все нормально"
   },
   "CONVERSATION": {
-    "DEFAULT_HEADER_TITLE": "Conversations",
-    "MINE": "Mine",
-    "UN_ASSIGNED": "Unassigned",
-    "ALL": "All",
-    "EMPTY": "There are no active conversations in this group.",
-    "PICTURE_CONTENT": "Picture message",
-    "ATTACHMENT_CONTENT": "File Attachment",
-    "DOWNLOAD": "Download",
+    "DEFAULT_HEADER_TITLE": "Разговоры",
+    "MINE": "Мои",
+    "UN_ASSIGNED": "Неназначен",
+    "ALL": "Все",
+    "EMPTY": "В этой группе нет активных разговоров.",
+    "PICTURE_CONTENT": "Фото сообщение",
+    "ATTACHMENT_CONTENT": "Вложение файла",
+    "DOWNLOAD": "Скачать",
     "TODAY": "Today",
-    "YESTERDAY": "Yesterday",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "RESOLVE": "Resolve conversation",
-    "RE_OPEN": "Reopen conversation",
-    "ASSIGN": "Assign conversation",
-    "CANCEL": "Cancel"
+    "YESTERDAY": "Вчера",
+    "TYPE_MESSAGE": "Введите сообщение",
+    "TYPING": "печатает",
+    "ALL_CONVERSATION_LOADED": "Все беседы загружены",
+    "RESOLVE": "Решить разговор",
+    "RE_OPEN": "Переоткрыть разговор",
+    "ASSIGN": "Назначить ответсвенного",
+    "FILE_SIZE_LIMIT_MESSAGE": "Размер вложения должен быть меньше 5МБ",
+    "CANCEL": "Отмена",
+    "PRIVATE_MSG_INPUT": "Это будет видно только сотрудникам",
+    "UN_ASSIGN": "Unassign conversation"
   },
   "FILTER": {
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
+    "HEADER_TITLE": "Фильтр сообщений",
+    "CHOOSE_INBOX": "Выбрать входящие",
     "CHOOSE_STATUS": "Conversation Status",
     "OPEN": "Open",
     "RESOLVED": "Resolved",
@@ -105,16 +109,16 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
   },
   "CONVERSATION_DETAILS": {
-    "BROWSER": "Browser",
+    "BROWSER": "Браузер",
     "OPERATING_SYSTEM": "Operating System",
     "INITIATED_AT": "Initiated at",
     "INITIATED_FROM": "Initiated from"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "Действия"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Выбрать Агента"
   },
   "ERRORS": {
     "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
@@ -127,9 +131,9 @@
     "AUTH": "Login Successful"
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
-    "CANCEL": "Cancel",
-    "OK": "Ok"
+    "TITLE": "Выйти",
+    "SUBTITLE": "Вы уверены, что хотите выйти?",
+    "CANCEL": "Отмена",
+    "OK": "Ок"
   }
 }

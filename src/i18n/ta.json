@@ -31,6 +31,7 @@
     "NO_ACCOUNT": "கணக்கு இல்லையா?",
     "CREATE_ACCOUNT": "புதிய கணக்கை உருவாக்க",
     "SETTINGS": "அமைப்புகள்",
+    "CHANGE_LANGUAGE": "மொழியை மாற்றவும்",
     "TERMS": "விதிமுறைகளும் நிபந்தனைகளும்",
     "CHANGE_URL": "URL ஐ மாற்ற"
   },
@@ -59,7 +60,10 @@
     "RESOLVE": "Resolve conversation",
     "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
-    "CANCEL": "ரத்துசெய்"
+    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
+    "CANCEL": "ரத்துசெய்",
+    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "UN_ASSIGN": "Unassign conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Conversation Filter",

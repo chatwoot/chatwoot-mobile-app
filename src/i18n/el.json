@@ -31,6 +31,7 @@
     "NO_ACCOUNT": "Don't have an account?",
     "CREATE_ACCOUNT": "Create new account",
     "SETTINGS": "Settings",
+    "CHANGE_LANGUAGE": "Change language",
     "TERMS": "Terms & Conditions",
     "CHANGE_URL": "Change URL"
   },
@@ -59,7 +60,10 @@
     "RESOLVE": "Resolve conversation",
     "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
-    "CANCEL": "Cancel"
+    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
+    "CANCEL": "Cancel",
+    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "UN_ASSIGN": "Unassign conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Conversation Filter",

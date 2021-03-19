@@ -20,7 +20,7 @@
     "ERROR": "Lien d'installation invalide"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
+    "TITLE": "Connectez-vous à votre compte",
     "EMAIL": "Courriel",
     "PASSWORD": "Mot de passe",
     "EMAIL_ERROR": "Saisissez une adresse de courriel valide",
@@ -31,6 +31,7 @@
     "NO_ACCOUNT": "Vous n'avez pas de compte ?",
     "CREATE_ACCOUNT": "Créer un nouveau compte",
     "SETTINGS": "Paramètres",
+    "CHANGE_LANGUAGE": "Modifier la langue",
     "TERMS": "Conditions Générales",
     "CHANGE_URL": "Modifier l'URL"
   },
@@ -58,8 +59,11 @@
     "ALL_CONVERSATION_LOADED": "Toutes les conversations ont été chargées",
     "RESOLVE": "Reprendre la conversation",
     "RE_OPEN": "Reprendre la conversation",
-    "ASSIGN": "Assign conversation",
-    "CANCEL": "Annuler"
+    "ASSIGN": "Affecter une conversation",
+    "FILE_SIZE_LIMIT_MESSAGE": "La taille de la pièce jointe doit être inférieure à 5 Mo",
+    "CANCEL": "Annuler",
+    "PRIVATE_MSG_INPUT": "Ceci ne sera visible qu'aux Agents",
+    "UN_ASSIGN": "Unassign conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtrer les conversations",
@@ -114,7 +118,7 @@
     "TITLE": "Actions"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Sélectionner un agent"
   },
   "ERRORS": {
     "COMMON_ERROR": "Impossible de se connecter au serveur Woot, veuillez réessayer ultérieurement",

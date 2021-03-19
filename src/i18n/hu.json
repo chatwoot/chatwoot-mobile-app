@@ -1,135 +1,139 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "Köszöntünk",
   "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Close"
+    "ERROR": "Hiba",
+    "ERROR_TITLE": "Váratlan hiba történt",
+    "REPORT_MESSAGE": "Jeleztük a csapatunknak! Kérjük csukd be az alkalmazást és kezdd előröl!",
+    "CLOSE": "Bezár"
   },
   "FOOTER": {
-    "HOME": "Home",
-    "CONVERSATION": "Conversations",
-    "NOTIFICATION": "Notifications",
-    "SETTINGS": "Settings"
+    "HOME": "Kezdőlap",
+    "CONVERSATION": "Beszélgetések",
+    "NOTIFICATION": "Értesítések",
+    "SETTINGS": "Beállítások"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "URL_ERROR": "Enter a valid URL",
-    "CONNECT": "Connect",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "ENTER_URL": "Installációs URL",
+    "URL_ERROR": "Kérjük helyes URL-t adj meg",
+    "CONNECT": "Kapcsolódás",
+    "CHANGE_LANGUAGE": "Nyelvválasztás",
+    "ERROR": "Helytelen installációs Url"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "EMAIL": "Email",
-    "PASSWORD": "Password",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
-    "FORGOT_PASSWORD": "Forgot your password?",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "Create new account",
-    "SETTINGS": "Settings",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "TITLE": "Belépés",
+    "EMAIL": "E-mail",
+    "PASSWORD": "Jelszó",
+    "EMAIL_ERROR": "Kérjük helyes E-mailt adj meg",
+    "PASSWORD_ERROR": "Kérjük helyes jelszót adj meg",
+    "LOGIN": "Belépés",
+    "FORGOT_PASSWORD": "Elfelejtetted a jelszavad?",
+    "RESET_HERE": "Megváltoztatni itt",
+    "NO_ACCOUNT": "Nincs még fiókod?",
+    "CREATE_ACCOUNT": "Fiók létrehozása",
+    "SETTINGS": "Beállítások",
+    "CHANGE_LANGUAGE": "Nyelvválasztás",
+    "TERMS": "Felhasználási feltételek",
+    "CHANGE_URL": "URL megváltoztatása"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "Please enter your email",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back"
+    "EMAIL": "Kérjük add meg az e-mailcímed",
+    "EMAIL_ERROR": "Kérjük helyes E-mailt adj meg",
+    "RESET_HERE": "Jelszó megváltoztatása",
+    "HEADER_TITLE": "Jelszó megváltoztatása",
+    "TITLE": "Elfelejtetted a jelszavad?",
+    "SUB_TITLE": "Ne aggódj, segítünk"
   },
   "CONVERSATION": {
-    "DEFAULT_HEADER_TITLE": "Conversations",
-    "MINE": "Mine",
-    "UN_ASSIGNED": "Unassigned",
-    "ALL": "All",
-    "EMPTY": "There are no active conversations in this group.",
-    "PICTURE_CONTENT": "Picture message",
-    "ATTACHMENT_CONTENT": "File Attachment",
-    "DOWNLOAD": "Download",
-    "TODAY": "Today",
-    "YESTERDAY": "Yesterday",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "RESOLVE": "Resolve conversation",
-    "RE_OPEN": "Reopen conversation",
-    "ASSIGN": "Assign conversation",
-    "CANCEL": "Cancel"
+    "DEFAULT_HEADER_TITLE": "Beszélgetések",
+    "MINE": "Sajátom",
+    "UN_ASSIGNED": "Gazdátlan",
+    "ALL": "Mind",
+    "EMPTY": "Nincs aktív beszélgetés ebben a csoportban.",
+    "PICTURE_CONTENT": "Képüzenet",
+    "ATTACHMENT_CONTENT": "Csatolt file",
+    "DOWNLOAD": "Letöltés",
+    "TODAY": "Ma",
+    "YESTERDAY": "Tegnap",
+    "TYPE_MESSAGE": "Gépeld az üzeneted",
+    "TYPING": "gépel",
+    "ALL_CONVERSATION_LOADED": "Minden beszélgetés betöltve",
+    "RESOLVE": "Beszélgetés megoldása",
+    "RE_OPEN": "Beszélgetés újranyitása",
+    "ASSIGN": "Beszélgetés hozzárendelése",
+    "FILE_SIZE_LIMIT_MESSAGE": "A csatolt file maximum 5 MB lehet",
+    "CANCEL": "Mégse",
+    "PRIVATE_MSG_INPUT": "Ezt csak ügynökök láthatják",
+    "UN_ASSIGN": "Unassign conversation"
   },
   "FILTER": {
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
-    "OPEN": "Open",
-    "RESOLVED": "Resolved",
+    "HEADER_TITLE": "Beszélgetés szűrő",
+    "CHOOSE_INBOX": "Inbox kiválasztása",
+    "CHOOSE_STATUS": "Beszélgetés státusz",
+    "OPEN": "Megnyitva",
+    "RESOLVED": "Megoldva",
     "BOT": "Bot",
-    "SUBMIT": "Submit"
+    "SUBMIT": "Elküld"
   },
   "SETTINGS": {
-    "HEADER_TITLE": "Settings",
-    "AVAILABILITY": "Availability",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "LOG_OUT": "Logout",
-    "SWITCH_ACCOUNT": "Switch Account",
-    "CHANGE_LANGUAGE": "Change Language",
-    "SUBMIT": "Submit"
+    "HEADER_TITLE": "Beállítások",
+    "AVAILABILITY": "Elérhetőség",
+    "NOTIFICATION": "Értesítési beállítások",
+    "HELP": "Súgó",
+    "LOG_OUT": "Kilépés",
+    "SWITCH_ACCOUNT": "Fiókváltás",
+    "CHANGE_LANGUAGE": "Nyelvválasztás",
+    "SUBMIT": "Elküld"
   },
   "NOTIFICATION": {
-    "HEADER_TITLE": "Notifications",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
-    "CANCEL": "Cancel"
+    "HEADER_TITLE": "Értesítések",
+    "EMPTY": "Még nem érkezett értesítés.",
+    "EMPTY_MORE_TEXT": "Amint kapsz értesítést, itt fogod találni őket.",
+    "ALL_NOTIFICATION_LOADED": "Minden értesítés betöltve",
+    "MARK_ALL": "Mindent olvasottra állít",
+    "CANCEL": "Mégse"
   },
   "AVAILABILITY": {
     "ONLINE": "Online",
-    "BUSY": "Busy",
+    "BUSY": "Foglalt",
     "OFFLINE": "Offline"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
-    "EMAIL": "Email",
-    "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "TITLE": "Értesítési beállítások",
+    "EMAIL": "E-mail",
+    "PUSH": "Push üzenet",
+    "CONVERSATION_CREATE_PUSH": "Kapj push értesítéseket amikor egy új beszélgetés létrejön",
+    "CONVERSATION_ASSIGNEE_PUSH": "Kapj push értesítéseket amikor hozzád rendelnek egy beszélgetést",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Kapj push értesítést amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben",
+    "CONVERSATION_CREATE_EMAIL": "Kapj e-mailt amikor egy új beszélgetés létrejön",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Kapj e-mailt amikor hozzád rendelnek egy beszélgetést",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Kapj e-mailt amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben"
   },
   "CONVERSATION_DETAILS": {
-    "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Operating System",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "BROWSER": "Böngésző",
+    "OPERATING_SYSTEM": "Operációs rendszer",
+    "INITIATED_AT": "Kezdeményezve ekkor:",
+    "INITIATED_FROM": "Kezdeményezve innen:"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "Lehetőségek"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Ügynök kiválasztása"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
-    "AUTH": "Username / Password Incorrect. Please try again",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "COMMON_ERROR": "Nem sikerült csatlakozni a Woot szerverhez, kérjük próbáld később",
+    "OfFLINE": "Wi-Fi vagy mobilhálózat szükséges hogy ismét online legyél",
+    "CANNOT_FETCH": "Hiba történt az információ lekérése során, kérjük próbált újra",
+    "AUTH": "Felhasználó / Jelszó nem jó. Kérjük próbáld újra.",
+    "NO_ACCOUNTS_MESSAGE": "Nincs hozzáférésed Chatwoot fiókhoz"
   },
   "SUCCESS": {
-    "AUTH": "Login Successful"
+    "AUTH": "Sikeres bejelentkezés"
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
-    "CANCEL": "Cancel",
+    "TITLE": "Kilép",
+    "SUBTITLE": "Biztos vagy benne, hogy kilépsz?",
+    "CANCEL": "Mégse",
     "OK": "Ok"
   }
 }

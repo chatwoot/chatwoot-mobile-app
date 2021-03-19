@@ -31,6 +31,7 @@
     "NO_ACCOUNT": "Não possui uma conta?",
     "CREATE_ACCOUNT": "Criar nova conta",
     "SETTINGS": "Confirgurações",
+    "CHANGE_LANGUAGE": "Alterar idioma",
     "TERMS": "Termos & Condições",
     "CHANGE_URL": "Alterar URL"
   },
@@ -59,7 +60,10 @@
     "RESOLVE": "Reabrir conversa",
     "RE_OPEN": "Reabrir conversa",
     "ASSIGN": "Assign conversation",
-    "CANCEL": "Cancelar"
+    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
+    "CANCEL": "Cancelar",
+    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "UN_ASSIGN": "Unassign conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtro da Conversa",

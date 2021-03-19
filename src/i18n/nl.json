@@ -20,7 +20,7 @@
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
-    "TITLE": "Log in op jouw account",
+    "TITLE": "Login to your account",
     "EMAIL": "E-mailadres",
     "PASSWORD": "Wachtwoord",
     "EMAIL_ERROR": "Voer een geldig e-mailadres in",
@@ -31,6 +31,7 @@
     "NO_ACCOUNT": "Nog geen account?",
     "CREATE_ACCOUNT": "Nieuw account aanmaken",
     "SETTINGS": "Instellingen",
+    "CHANGE_LANGUAGE": "Taal wijzigen",
     "TERMS": "Algemene Voorwaarden",
     "CHANGE_URL": "Change URL"
   },
@@ -59,7 +60,10 @@
     "RESOLVE": "Resolve conversation",
     "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
-    "CANCEL": "annuleren"
+    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
+    "CANCEL": "annuleren",
+    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "UN_ASSIGN": "Unassign conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Conversation Filter",

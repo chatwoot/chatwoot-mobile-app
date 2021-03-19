@@ -63,7 +63,7 @@
     "FILE_SIZE_LIMIT_MESSAGE": "A csatolt file maximum 5 MB lehet",
     "CANCEL": "Mégse",
     "PRIVATE_MSG_INPUT": "Ezt csak ügynökök láthatják",
-    "UN_ASSIGN": "Unassign conversation"
+    "UN_ASSIGN": "Beszélgetés hozzárendelés törlése"
   },
   "FILTER": {
     "HEADER_TITLE": "Beszélgetés szűrő",

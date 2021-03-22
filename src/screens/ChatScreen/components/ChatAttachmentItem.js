@@ -6,10 +6,9 @@ import { withStyles, Icon } from '@ui-kitten/components';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-import ImageLoader from './ImageLoader';
-
-import CustomText from './Text';
-import i18n from '../i18n';
+import ImageLoader from '../../../components/ImageLoader';
+import CustomText from '../../../components/Text';
+import i18n from '../../../i18n';
 
 const styles = (theme) => ({
   fileViewRight: {
@@ -41,12 +40,23 @@ const styles = (theme) => ({
     borderRadius: 8,
     borderTopRightRadius: 8,
     left: -4,
+    backgroundColor: theme['color-primary-default'],
+    padding: 2,
   },
 
   imageViewRight: {
     borderRadius: 8,
     borderTopLeftRadius: 8,
     left: 4,
+    padding: 2,
+    backgroundColor: theme['color-primary-default'],
+  },
+  privateMessageContainer: {
+    backgroundColor: theme['color-background-activity'],
+    color: theme['text-basic-color'],
+    borderWidth: 1,
+    borderColor: theme['color-border-activity'],
+    paddingTop: 8,
   },
   imageLoader: {
     position: 'absolute',
@@ -55,7 +65,6 @@ const styles = (theme) => ({
     top: 0,
     bottom: 0,
     opacity: 0.7,
-    backgroundColor: theme['color-background-message'],
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
@@ -120,6 +129,20 @@ const styles = (theme) => ({
     textAlign: 'left',
     alignSelf: 'stretch',
   },
+  attachmentText: {
+    fontSize: theme['text-primary-size'],
+    fontWeight: theme['font-medium'],
+    color: 'white',
+    paddingBottom: 4,
+    paddingLeft: 8,
+  },
+  attachmentPrivateText: {
+    fontSize: theme['text-primary-size'],
+    fontWeight: theme['font-medium'],
+    color: theme['text-basic-color'],
+    paddingBottom: 4,
+    paddingLeft: 8,
+  },
 });
 
 const propTypes = {
@@ -129,35 +152,45 @@ const propTypes = {
   }).isRequired,
   type: PropTypes.string,
   showAttachment: PropTypes.func,
-  attachment: PropTypes.arrayOf(
-    PropTypes.shape({
-      file_type: PropTypes.string,
-      data_url: PropTypes.string,
-    }),
-  ),
+  message: PropTypes.shape({
+    content: PropTypes.string,
+    private: PropTypes.bool,
+    attachments: PropTypes.arrayOf(
+      PropTypes.shape({
+        file_type: PropTypes.string,
+        data_url: PropTypes.string,
+      }),
+    ),
+  }),
 };
 
 const FileIcon = (style) => {
   return <Icon {...style} name="file-text-outline" width={32} height={32} />;
 };
 
-const ChatAttachmentItemComponent = ({
-  type,
-  attachment,
-  showAttachment,
-  eva: { style, theme },
-}) => {
+const ChatAttachmentItemComponent = ({ type, showAttachment, message, eva: { style, theme } }) => {
+  const { attachments, content } = message;
+
   const [imageLoading, onLoadImage] = useState(false);
 
-  const { file_type: fileType, data_url: dataUrl } = attachment[0];
+  const { file_type: fileType, data_url: dataUrl } = attachments[0];
   const fileName = dataUrl ? dataUrl.split('/').reverse()[0] : '';
 
   return (
     <React.Fragment>
-      {fileType !== 'file' ? (
+      {fileType === 'image' ? (
         <TouchableOpacity
           onPress={() => showAttachment({ type: 'image', dataUrl })}
-          style={type === 'outgoing' ? style.imageViewRight : style.imageViewLeft}>
+          style={[
+            type === 'outgoing' ? style.imageViewRight : style.imageViewLeft,
+            message.private && style.privateMessageContainer,
+          ]}>
+          {content && (
+            <CustomText
+              style={message.private ? style.attachmentPrivateText : style.attachmentText}>
+              {content}
+            </CustomText>
+          )}
           <Image
             style={style.image}
             source={{
@@ -168,6 +201,7 @@ const ChatAttachmentItemComponent = ({
               onLoadImage(false);
             }}
           />
+
           {imageLoading && <ImageLoader style={style.imageLoader} />}
         </TouchableOpacity>
       ) : (

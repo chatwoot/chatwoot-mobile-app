@@ -31,6 +31,7 @@
     "NO_ACCOUNT": "没有注册？",
     "CREATE_ACCOUNT": "注册新用户",
     "SETTINGS": "设置",
+    "CHANGE_LANGUAGE": "更改语言",
     "TERMS": "服务条款",
     "CHANGE_URL": "更改网址"
   },
@@ -59,7 +60,10 @@
     "RESOLVE": "解决会话",
     "RE_OPEN": "重新打开会话",
     "ASSIGN": "Assign conversation",
-    "CANCEL": "取消"
+    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
+    "CANCEL": "取消",
+    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "UN_ASSIGN": "Unassign conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "会话过滤器",

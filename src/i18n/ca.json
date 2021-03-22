@@ -31,6 +31,7 @@
     "NO_ACCOUNT": "No teniu compte?",
     "CREATE_ACCOUNT": "Crear un nou compte",
     "SETTINGS": "Configuració",
+    "CHANGE_LANGUAGE": "Canviar d'idioma",
     "TERMS": "Termes i Condicions",
     "CHANGE_URL": "Canviar URL"
   },
@@ -59,7 +60,10 @@
     "RESOLVE": "Resol la conversa",
     "RE_OPEN": "Torna a obrir la conversa",
     "ASSIGN": "Assign conversation",
-    "CANCEL": "Cancel·lar"
+    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
+    "CANCEL": "Cancel·lar",
+    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "UN_ASSIGN": "Unassign conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtre de converses",

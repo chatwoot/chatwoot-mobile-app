@@ -13,7 +13,7 @@ const styles = (theme) => ({
     borderTopColor: theme['color-border'],
     borderTopWidth: 1,
   },
-  itemView: { 
+  itemView: {
     flex: 1,
     flexDirection: 'row',
     paddingVertical: 8,

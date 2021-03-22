@@ -3,8 +3,7 @@ import { TouchableOpacity, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { Divider, Icon, withStyles } from '@ui-kitten/components';
 
-import CustomText from './Text';
-
+import CustomText from '../../../components/Text';
 const styles = (theme) => ({
   section: {
     justifyContent: 'space-between',

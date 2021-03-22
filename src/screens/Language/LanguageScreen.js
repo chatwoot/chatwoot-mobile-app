@@ -16,13 +16,23 @@ import { LANGUAGES } from '../../constants';
 
 const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
   const settings = useSelector((state) => state.settings);
+  const auth = useSelector((state) => state.auth);
 
   const localeValue = settings.localeValue || 'en';
+  const isLoggedIn = auth.isLoggedIn;
 
   const dispatch = useDispatch();
 
   const onCheckedChange = ({ item }) => {
     dispatch(setLocale(item));
+  };
+
+  const onSubmitLanguage = () => {
+    if (isLoggedIn) {
+      navigation.dispatch(StackActions.replace('Tab'));
+    } else {
+      navigation.dispatch(StackActions.replace('Login'));
+    }
   };
 
   const goBack = () => {
@@ -52,7 +62,7 @@ const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
           style={style.languageButton}
           size="large"
           textStyle={style.languageButtonText}
-          onPress={() => navigation.dispatch(StackActions.replace('Tab'))}
+          onPress={() => onSubmitLanguage()}
           text={i18n.t('SETTINGS.SUBMIT')}
         />
       </View>

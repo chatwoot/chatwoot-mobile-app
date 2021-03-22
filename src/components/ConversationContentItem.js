@@ -44,7 +44,9 @@ const propTypes = {
 
 const ConversationContentItemComponent = ({ eva, unReadCount, content, messageType }) => {
   const { style, theme } = eva;
-  const message = content.replace(/\[(@[\w_.]+)\]\(mention:\/\/user\/\d+\/[\w_.]+\)/gi, '$1');
+  const message = content
+    ? content.replace(/\[(@[\w_.]+)\]\(mention:\/\/user\/\d+\/[\w_.]+\)/gi, '$1')
+    : '';
   return (
     <Fragment>
       {messageType === MESSAGE_TYPES.OUTGOING ? (

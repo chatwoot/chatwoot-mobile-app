@@ -69,7 +69,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
     if (findFileSize(fileSize) <= MAXIMUM_FILE_UPLOAD_SIZE) {
       setAttachmentDetails(attachement);
     } else {
-      showToast({ message: i18n.t('CONVERSATION.FILE_SIZE_LIMIT_MESSAGE') });
+      showToast({ message: i18n.t('CONVERSATION.FILE_SIZE_LIMIT') });
     }
   };
 

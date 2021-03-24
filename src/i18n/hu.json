@@ -60,7 +60,7 @@
     "RESOLVE": "Beszélgetés megoldása",
     "RE_OPEN": "Beszélgetés újranyitása",
     "ASSIGN": "Beszélgetés hozzárendelése",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "FILE_SIZE_LIMIT": "A file nagyobb az 5MB-os limitnél",
     "CANCEL": "Mégse",
     "PRIVATE_MSG_INPUT": "Ezt csak ügynökök láthatják",
     "UN_ASSIGN": "Beszélgetés hozzárendelés törlése"
@@ -79,7 +79,7 @@
     "AVAILABILITY": "Elérhetőség",
     "NOTIFICATION": "Értesítési beállítások",
     "HELP": "Súgó",
-    "CHAT_WITH_US": "Chat with Us",
+    "CHAT_WITH_US": "Chatelj velünk",
     "LOG_OUT": "Kilépés",
     "SWITCH_ACCOUNT": "Fiókváltás",
     "CHANGE_LANGUAGE": "Nyelvválasztás",

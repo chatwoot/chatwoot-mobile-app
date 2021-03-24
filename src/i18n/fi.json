@@ -60,7 +60,7 @@
     "RESOLVE": "Selvitä keskustelu",
     "RE_OPEN": "Avaa keskustelu uudelleen",
     "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
+    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
     "CANCEL": "Peruuta",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"
@@ -79,6 +79,7 @@
     "AVAILABILITY": "Saatavuus",
     "NOTIFICATION": "Ilmoitusasetukset",
     "HELP": "Ohjedokumentit",
+    "CHAT_WITH_US": "Chat with Us",
     "LOG_OUT": "Kirjaudu ulos",
     "SWITCH_ACCOUNT": "Vaihda tiliä",
     "CHANGE_LANGUAGE": "Vaihda kieli",

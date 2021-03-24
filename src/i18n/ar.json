@@ -60,7 +60,7 @@
     "RESOLVE": "حل المحادثة",
     "RE_OPEN": "إعادة فتح المحادثة",
     "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
+    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
     "CANCEL": "إلغاء",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"
@@ -79,6 +79,7 @@
     "AVAILABILITY": "التوفر",
     "NOTIFICATION": "تفضيلات الإشعارات",
     "HELP": "وثائق المساعدة",
+    "CHAT_WITH_US": "Chat with Us",
     "LOG_OUT": "تسجيل الخروج",
     "SWITCH_ACCOUNT": "تبديل الحساب",
     "CHANGE_LANGUAGE": "تغيير اللغة",

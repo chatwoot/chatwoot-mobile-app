@@ -60,10 +60,10 @@
     "RESOLVE": "Reprendre la conversation",
     "RE_OPEN": "Reprendre la conversation",
     "ASSIGN": "Affecter une conversation",
-    "FILE_SIZE_LIMIT_MESSAGE": "La taille de la pièce jointe doit être inférieure à 5 Mo",
+    "FILE_SIZE_LIMIT": "Le fichier dépasse la limite de 5 Mo des pièces jointes",
     "CANCEL": "Annuler",
     "PRIVATE_MSG_INPUT": "Ceci ne sera visible qu'aux Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "UN_ASSIGN": "Retirer la conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtrer les conversations",
@@ -79,6 +79,7 @@
     "AVAILABILITY": "Disponibilité",
     "NOTIFICATION": "Préférences de notifications",
     "HELP": "Documentation",
+    "CHAT_WITH_US": "Discuter avec nous",
     "LOG_OUT": "Se déconnecter",
     "SWITCH_ACCOUNT": "Changer de compte",
     "CHANGE_LANGUAGE": "Changer de langue",

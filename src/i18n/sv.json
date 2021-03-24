@@ -60,7 +60,7 @@
     "RESOLVE": "Lös konversationen",
     "RE_OPEN": "Återöppna konversationen",
     "ASSIGN": "Tilldela konversation",
-    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
+    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
     "CANCEL": "Avbryt",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"
@@ -79,6 +79,7 @@
     "AVAILABILITY": "Tillgänglighet",
     "NOTIFICATION": "Aviseringsinställningar",
     "HELP": "Hjälpdokumentation",
+    "CHAT_WITH_US": "Chat with Us",
     "LOG_OUT": "Logga ut",
     "SWITCH_ACCOUNT": "Byt konto",
     "CHANGE_LANGUAGE": "Byt språk",

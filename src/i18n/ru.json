@@ -60,7 +60,7 @@
     "RESOLVE": "Решить разговор",
     "RE_OPEN": "Переоткрыть разговор",
     "ASSIGN": "Назначить ответсвенного",
-    "FILE_SIZE_LIMIT_MESSAGE": "Размер вложения должен быть меньше 5МБ",
+    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
     "CANCEL": "Отмена",
     "PRIVATE_MSG_INPUT": "Это будет видно только сотрудникам",
     "UN_ASSIGN": "Unassign conversation"
@@ -79,6 +79,7 @@
     "AVAILABILITY": "Availability",
     "NOTIFICATION": "Notification Preferences",
     "HELP": "Help Docs",
+    "CHAT_WITH_US": "Chat with Us",
     "LOG_OUT": "Logout",
     "SWITCH_ACCOUNT": "Switch Account",
     "CHANGE_LANGUAGE": "Change Language",

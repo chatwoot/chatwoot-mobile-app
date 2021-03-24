@@ -21,6 +21,7 @@ import { SETTINGS_ITEMS } from 'constants';
 import HeaderBar from 'components/HeaderBar';
 import { getNotificationSettings } from 'actions/settings';
 import packageFile from '../../../package.json';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const appName = DeviceInfo.getApplicationName();
 
@@ -28,12 +29,6 @@ const propTypes = {
   eva: PropTypes.shape({
     style: PropTypes.object,
     theme: PropTypes.object,
-  }).isRequired,
-  user: PropTypes.shape({
-    name: PropTypes.string,
-    email: PropTypes.string,
-    avatar_url: PropTypes.string,
-    accounts: PropTypes.array,
   }).isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
@@ -43,7 +38,6 @@ const propTypes = {
   getNotificationSettings: PropTypes.func,
 };
 const defaultProps = {
-  user: { email: null, name: null },
   onLogOut: () => {},
 };
 
@@ -53,11 +47,14 @@ const Settings = ({ eva: { theme, style } }) => {
   const navigation = useNavigation();
   const user = useSelector((store) => store.auth.user);
   const availabilityStatus = user ? user.availability_status : '';
-  const { email, name, avatar_url, accounts } = user;
+  const email = user ? user.email : '';
+  const accounts = user ? user.accounts : [];
+  const avatar_url = user ? user.avatar_url : '';
+  const name = user ? user.name : '';
 
   const userDetails = {
     identifier: email,
-    name: name,
+    name,
     avatar_url,
     email,
     identifier_hash: '',
@@ -69,13 +66,14 @@ const Settings = ({ eva: { theme, style } }) => {
     dispatch(getNotificationSettings());
   }, [dispatch]);
 
-  const onPressItem = ({ itemName }) => {
+  const onPressItem = async ({ itemName }) => {
     switch (itemName) {
       case 'language':
         navigation.navigate('Language');
         break;
 
       case 'logout':
+        await AsyncStorage.removeItem('cwCookie');
         dispatch(onLogOut());
         break;
 

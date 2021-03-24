@@ -60,7 +60,7 @@
     "RESOLVE": "Resolve conversation",
     "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT_MESSAGE": "Attachment size should be less than 5MB",
+    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
     "CANCEL": "Cancel",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"
@@ -79,6 +79,7 @@
     "AVAILABILITY": "Availability",
     "NOTIFICATION": "Notification Preferences",
     "HELP": "Help Docs",
+    "CHAT_WITH_US": "Chat with Us",
     "LOG_OUT": "Logout",
     "SWITCH_ACCOUNT": "Switch Account",
     "CHANGE_LANGUAGE": "Change Language",

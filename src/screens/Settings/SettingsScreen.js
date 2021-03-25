@@ -60,7 +60,7 @@ const Settings = ({ eva: { theme, style } }) => {
     identifier_hash: '',
   };
 
-  const customAttributes = { origiantedFrom: 'chatwoot-mobile-app' };
+  const customAttributes = { originatedFrom: 'chatwoot-mobile-app' };
 
   useEffect(() => {
     dispatch(getNotificationSettings());

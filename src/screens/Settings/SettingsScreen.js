@@ -60,7 +60,7 @@ const Settings = ({ eva: { theme, style } }) => {
     identifier_hash: '',
   };
 
-  const customAttributes = { origiantedFrom: 'chatwoot-mobile-app' };
+  const customAttributes = { originatedFrom: 'chatwoot-mobile-app' };
 
   useEffect(() => {
     dispatch(getNotificationSettings());
@@ -146,7 +146,7 @@ const Settings = ({ eva: { theme, style } }) => {
       <View style={style.appDescriptionView}>
         <CustomText style={style.appDescriptionText}>{`v${packageFile.version}`}</CustomText>
       </View>
-      {Config.CHATWOOT_WEBSITE_TOKEN && Config.CHATWOOT_BASE_URL && (
+      {Config.CHATWOOT_WEBSITE_TOKEN && Config.CHATWOOT_BASE_URL && showWidget && (
         <ChatWootWidget
           websiteToken={Config.CHATWOOT_WEBSITE_TOKEN}
           locale="en"

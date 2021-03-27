@@ -6,9 +6,9 @@ import { withStyles, Icon } from '@ui-kitten/components';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-import ImageLoader from '../../../components/ImageLoader';
-import CustomText from '../../../components/Text';
-import i18n from '../../../i18n';
+import ImageLoader from 'components/ImageLoader';
+import CustomText from 'components/Text';
+import i18n from 'i18n';
 
 const styles = (theme) => ({
   fileViewRight: {
@@ -175,7 +175,6 @@ const ChatAttachmentItemComponent = ({ type, showAttachment, message, eva: { sty
 
   const { file_type: fileType, data_url: dataUrl } = attachments[0];
   const fileName = dataUrl ? dataUrl.split('/').reverse()[0] : '';
-
   return (
     <React.Fragment>
       {fileType === 'image' ? (
@@ -185,7 +184,7 @@ const ChatAttachmentItemComponent = ({ type, showAttachment, message, eva: { sty
             type === 'outgoing' ? style.imageViewRight : style.imageViewLeft,
             message.private && style.privateMessageContainer,
           ]}>
-          {content && (
+          {content !== '' && (
             <CustomText
               style={message.private ? style.attachmentPrivateText : style.attachmentText}>
               {content}

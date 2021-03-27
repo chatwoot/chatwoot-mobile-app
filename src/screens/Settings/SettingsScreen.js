@@ -57,7 +57,7 @@ const Settings = ({ eva: { theme, style } }) => {
     name,
     avatar_url,
     email,
-    identifier_hash: '',
+    identifier_hash: Config.CHATWOOT_IDENTITY_VALIDATION || '',
   };
 
   const customAttributes = { originatedFrom: 'chatwoot-mobile-app' };

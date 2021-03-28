@@ -1,50 +1,50 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "ברוכים הבאים",
   "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Close"
+    "ERROR": "תקלה",
+    "ERROR_TITLE": "אירעה תקלה לא צפויה",
+    "REPORT_MESSAGE": "דיווחנו על כך לצוות שלנו! סגור את האפליקציה והפעל אותה מחדש שוב!",
+    "CLOSE": "סגור"
   },
   "FOOTER": {
-    "HOME": "Home",
-    "CONVERSATION": "Conversations",
-    "NOTIFICATION": "Notifications",
-    "SETTINGS": "Settings"
+    "HOME": "בית",
+    "CONVERSATION": "שיחות",
+    "NOTIFICATION": "התראות",
+    "SETTINGS": "הגדרות"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "URL_ERROR": "Enter a valid URL",
-    "CONNECT": "Connect",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "ENTER_URL": "קישור התקנה",
+    "URL_ERROR": "הזן URL חוקי",
+    "CONNECT": "התחבר",
+    "CHANGE_LANGUAGE": "שנה שפה",
+    "ERROR": "קישור התקנה לא חוקי"
   },
   "LOGIN": {
     "TITLE": "Login to your account",
-    "EMAIL": "Email",
-    "PASSWORD": "Password",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
-    "FORGOT_PASSWORD": "Forgot your password?",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "Create new account",
-    "SETTINGS": "Settings",
-    "CHANGE_LANGUAGE": "Change language",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "EMAIL": "אימייל",
+    "PASSWORD": "סיסמה",
+    "EMAIL_ERROR": "הזן אימייל חוקי",
+    "PASSWORD_ERROR": "הזן סיסמה תקינה",
+    "LOGIN": "כניסה",
+    "FORGOT_PASSWORD": "שכחת את הסיסמה?",
+    "RESET_HERE": "אפס כאן",
+    "NO_ACCOUNT": "אין לך חשבון?",
+    "CREATE_ACCOUNT": "צור חשבון",
+    "SETTINGS": "הגדרות",
+    "CHANGE_LANGUAGE": "שנה שפה",
+    "TERMS": "תנאי שימוש",
+    "CHANGE_URL": "שנה כתובת URL"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "Please enter your email",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
+    "EMAIL": "הזן בבקשה את האימייל שלך",
+    "EMAIL_ERROR": "הזן אימייל תקף",
+    "RESET_HERE": "אפס את הסיסמה",
+    "HEADER_TITLE": "אפס את הסיסמה",
+    "TITLE": "שכחת את הסיסמה?",
     "SUB_TITLE": "Don't worry! We got your back"
   },
   "CONVERSATION": {
-    "DEFAULT_HEADER_TITLE": "Conversations",
+    "DEFAULT_HEADER_TITLE": "שיחות",
     "MINE": "Mine",
     "UN_ASSIGNED": "Unassigned",
     "ALL": "All",

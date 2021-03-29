@@ -372,7 +372,7 @@ PODS:
     - React-Core (= 0.63.3)
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
-  - ReactNativeExceptionHandler (2.10.9):
+  - ReactNativeExceptionHandler (2.10.10):
     - React-Core
   - RNCAsyncStorage (1.14.1):
     - React-Core
@@ -667,7 +667,7 @@ SPEC CHECKSUMS:
   React-RCTText: 65a6de06a7389098ce24340d1d3556015c38f746
   React-RCTVibration: 8e9fb25724a0805107fc1acc9075e26f814df454
   ReactCommon: 4167844018c9ed375cc01a843e9ee564399e53c3
-  ReactNativeExceptionHandler: f1638ffd507ef1b1794af25884fa0eb30dd5c551
+  ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
   RNCAsyncStorage: fe58eec522885718d6b297b7b658bf87d7ca557b
   RNCClipboard: 245417a78ab585e0d4d83926c28907e7b2bc24bd
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f

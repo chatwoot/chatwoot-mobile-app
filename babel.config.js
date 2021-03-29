@@ -23,6 +23,7 @@ module.exports = {
           helpers: './src/helpers',
           i18n: './src/i18n',
           reducer: './src/reducer',
+          screens: './src/screens',
         },
       },
     ],

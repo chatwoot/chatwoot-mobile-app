@@ -7,11 +7,11 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Markdown from 'react-native-markdown-display';
 import ActionSheet from 'react-native-actions-sheet';
 
-import CustomText from '../../../components/Text';
-import { messageStamp } from '../../../helpers/TimeHelper';
-import { openURL } from '../../../helpers/UrlHelper';
+import CustomText from 'components/Text';
+import { messageStamp } from 'helpers/TimeHelper';
+import { openURL } from 'helpers/UrlHelper';
 import ChatMessageActionItem from './ChatMessageActionItem';
-import { showToast } from '../../../helpers/ToastHelper';
+import { showToast } from 'helpers/ToastHelper';
 
 const LockIcon = (style) => {
   return <Icon {...style} name="lock" />;
@@ -86,12 +86,16 @@ const styles = (theme) => ({
     color: theme['text-basic-color'],
     borderWidth: 1,
     borderColor: theme['color-border-activity'],
-    padding: 16,
-  },
-  privateMessageView: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 8,
+    borderBottomRightRadius: 8,
+    borderTopRightRadius: 8,
+    borderBottomLeftRadius: 4,
+    borderTopLeftRadius: 4,
+    maxWidth: Dimensions.get('window').width - 120,
+    left: -4,
   },
   iconView: {
     paddingLeft: 8,
@@ -160,7 +164,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
       activeOpacity={0.95}>
       <View>
         {message.private ? (
-          <View style={style.privateMessageView}>
+          <React.Fragment>
             <Markdown
               onLinkPress={handleURL}
               style={{
@@ -177,10 +181,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
               }}>
               {message.content}
             </Markdown>
-            <View style={style.iconView}>
-              <LockIcon style={style.icon} fill={theme['text-basic-color']} />
-            </View>
-          </View>
+          </React.Fragment>
         ) : (
           <Hyperlink linkStyle={style.linkStyle} onPress={(url) => handleURL(url)}>
             <CustomText style={messageTextStyle}>{message.content}</CustomText>
@@ -195,6 +196,11 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
             },
           ]}>
           {messageStamp({ time: created_at })}
+          {message.private && (
+            <View style={style.iconView}>
+              <LockIcon style={style.icon} fill={theme['text-basic-color']} />
+            </View>
+          )}
         </CustomText>
         <ActionSheet ref={actionSheetRef} defaultOverlayOpacity={0.3}>
           {senderName ? (

@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "private": true,
   "scripts": {
     "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",
@@ -46,7 +46,7 @@
     "react-native-config": "^1.4.2",
     "react-native-device-info": "^5.6.5",
     "react-native-document-picker": "^5.0.0",
-    "react-native-exception-handler": "^2.10.9",
+    "react-native-exception-handler": "^2.10.10",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-hyperlink": "^0.0.19",
     "react-native-image-pan-zoom": "^2.1.12",

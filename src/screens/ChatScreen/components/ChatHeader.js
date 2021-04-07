@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, View } from 'react-native';
 import UserAvatar from 'components/UserAvatar';
-import { getTypingUsersText } from 'helpers';
+import { getTypingUsersText, getCustomerDetails } from 'helpers';
 import CustomText from 'components/Text';
 import { unAssignConversation, toggleConversationStatus } from 'actions/conversation';
 import ConversationAction from '../../ConversationAction/ConversationAction';
@@ -85,7 +85,6 @@ const ChatHeader = ({
 
   const onPressAction = ({ itemType }) => {
     actionSheetRef.current?.hide();
-
     if (itemType === 'assignee') {
       if (conversationDetails) {
         navigation.navigate('AgentScreen', { conversationDetails });
@@ -103,24 +102,13 @@ const ChatHeader = ({
       );
     }
   };
-  const senderDetails = {
-    name: null,
-    thumbnail: null,
-  };
+
   const typingUser = getTypingUsersText({
     conversationTypingUsers,
     conversationId,
   });
 
-  if (conversationMetaDetails) {
-    const {
-      sender: { name, thumbnail },
-      channel,
-    } = conversationMetaDetails;
-    senderDetails.name = name;
-    senderDetails.thumbnail = thumbnail;
-    senderDetails.channel = channel;
-  }
+  const customerDetails = getCustomerDetails({ conversationDetails, conversationMetaDetails });
   return (
     <React.Fragment>
       <TopNavigation
@@ -129,20 +117,25 @@ const ChatHeader = ({
             style={style.headerView}
             onPress={showConversationDetails}
             activeOpacity={0.5}>
-            <UserAvatar
-              style={style.avatarView}
-              userName={senderDetails.name}
-              thumbnail={senderDetails.thumbnail}
-              defaultBGColor={theme['color-primary-default']}
-              channel={senderDetails.channel}
-            />
+            {customerDetails.name && (
+              <UserAvatar
+                style={style.avatarView}
+                userName={customerDetails.name}
+                thumbnail={customerDetails.thumbnail}
+                defaultBGColor={theme['color-primary-default']}
+                channel={customerDetails.channel}
+              />
+            )}
+
             <View style={style.titleView}>
               <View>
-                <CustomText style={style.headerTitle}>
-                  {senderDetails.name.length > 24
-                    ? ` ${senderDetails.name.substring(0, 20)}...`
-                    : ` ${senderDetails.name}`}
-                </CustomText>
+                {customerDetails.name && (
+                  <CustomText style={style.headerTitle}>
+                    {customerDetails.name && customerDetails.name.length > 24
+                      ? ` ${customerDetails.name.substring(0, 20)}...`
+                      : ` ${customerDetails.name}`}
+                  </CustomText>
+                )}
               </View>
               {typingUser ? (
                 <View>

@@ -244,3 +244,29 @@ export const addOrRemoveItemFromArray = (array, key) => {
   }
   return array;
 };
+
+export const getCustomerDetails = ({ conversationMetaDetails, conversationDetails }) => {
+  const customer = {
+    name: null,
+    thumbnail: null,
+  };
+
+  if (conversationMetaDetails) {
+    const {
+      sender: { name, thumbnail },
+      channel,
+    } = conversationMetaDetails;
+    customer.name = name;
+    customer.thumbnail = thumbnail;
+    customer.channel = channel;
+  } else if (conversationDetails) {
+    const {
+      sender: { name, thumbnail },
+      channel,
+    } = conversationDetails.meta;
+    customer.name = name;
+    customer.thumbnail = thumbnail;
+    customer.channel = channel;
+  }
+  return customer;
+};

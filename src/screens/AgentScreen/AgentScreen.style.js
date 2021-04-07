@@ -18,10 +18,14 @@ const styles = (theme) => ({
     paddingVertical: 0,
     paddingHorizontal: 0,
   },
-
   submitButtonText: {
     fontWeight: theme['font-medium'],
     fontSize: theme['font-size-large'],
+  },
+  spinnerView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 16,
   },
 });
 

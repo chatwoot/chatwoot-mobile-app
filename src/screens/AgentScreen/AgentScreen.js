@@ -22,6 +22,7 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
   const isInboxAgentsFetching = useSelector((state) => state.inbox.isInboxAgentsFetching);
   const conversation = useSelector((state) => state.conversation);
   const { isAssigneeUpdating } = conversation;
+  const verifiedAgents = agents.filter((agent) => agent.confirmed);
 
   const goBack = () => {
     navigation.goBack();
@@ -47,7 +48,7 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
 
       {!isInboxAgentsFetching ? (
         <Fragment>
-          {agents.map((item) => (
+          {verifiedAgents.map((item) => (
             <AgentItem
               name={item.name}
               thumbnail={item.thumbnail}

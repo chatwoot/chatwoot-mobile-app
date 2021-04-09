@@ -83,12 +83,12 @@ class ConversationDetailsComponent extends Component {
           </View>
         )}
 
-        {senderAdditionalInfo && senderAdditionalInfo.description !== '' && (
+        {senderAdditionalInfo && senderAdditionalInfo.description && (
           <View style={style.descriptionContainer}>
             <CustomText style={style.description}>{senderAdditionalInfo.description}</CustomText>
           </View>
         )}
-        {senderAdditionalInfo && senderAdditionalInfo.location !== '' && (
+        {senderAdditionalInfo && senderAdditionalInfo.location && (
           <View style={style.descriptionContainer}>
             <CustomText style={style.description}>{senderAdditionalInfo.location}</CustomText>
           </View>
@@ -115,7 +115,7 @@ class ConversationDetailsComponent extends Component {
               />
             )}
 
-          {additional_attributes && additional_attributes.referer !== '' && (
+          {additional_attributes && additional_attributes.referer && (
             <ConversationDetailsItem
               title={i18n.t('CONVERSATION_DETAILS.INITIATED_FROM')}
               value={additional_attributes.referer}

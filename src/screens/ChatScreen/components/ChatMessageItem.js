@@ -76,16 +76,18 @@ const styles = (theme) => ({
   dateRight: {
     color: theme['color-background-message'],
     fontSize: theme['font-size-extra-extra-small'],
+    paddingTop: 4,
   },
   dateLeft: {
     color: theme['color-gray'],
     fontSize: theme['font-size-extra-extra-small'],
+    paddingTop: 4,
   },
   privateMessageContainer: {
-    backgroundColor: theme['color-background-activity'],
+    backgroundColor: theme['color-background-private'],
     color: theme['text-basic-color'],
     borderWidth: 1,
-    borderColor: theme['color-border-activity'],
+    borderColor: theme['color-border-private'],
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -110,6 +112,10 @@ const styles = (theme) => ({
   tooltipText: {
     color: theme['text-tooltip-color'],
     fontSize: theme['font-size-small'],
+  },
+  dateView: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 
@@ -187,21 +193,22 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
             <CustomText style={messageTextStyle}>{message.content}</CustomText>
           </Hyperlink>
         )}
-
-        <CustomText
-          style={[
-            dateStyle,
-            message.private && {
-              color: theme['color-gray'],
-            },
-          ]}>
-          {messageStamp({ time: created_at })}
+        <View style={style.dateView}>
+          <CustomText
+            style={[
+              dateStyle,
+              message.private && {
+                color: theme['color-gray'],
+              },
+            ]}>
+            {messageStamp({ time: created_at })}
+          </CustomText>
           {message.private && (
             <View style={style.iconView}>
               <LockIcon style={style.icon} fill={theme['text-basic-color']} />
             </View>
           )}
-        </CustomText>
+        </View>
         <ActionSheet ref={actionSheetRef} defaultOverlayOpacity={0.3}>
           {senderName ? (
             <ChatMessageActionItem

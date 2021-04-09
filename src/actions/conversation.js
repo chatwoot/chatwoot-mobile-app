@@ -39,6 +39,8 @@ import axios from '../helpers/APIHelper';
 
 import { getAllNotifications } from './notification';
 
+import { getInboxAgents } from './inbox';
+
 import { findAssigneeType, findConversationStatus, checkConversationMatch } from '../helpers';
 import { pop } from '../helpers/NavigationHelper';
 
@@ -275,10 +277,13 @@ export const getConversationDetails = ({ conversationId }) => async (dispatch) =
   try {
     const apiUrl = `conversations/${conversationId}`;
     const response = await axios.get(apiUrl);
+    const payload = response.data;
     dispatch({
       type: SET_CONVERSATION_DETAILS,
-      payload: response.data,
+      payload,
     });
+    const { inbox_id: inboxId } = payload;
+    dispatch(getInboxAgents({ inboxId }));
   } catch {}
 };
 

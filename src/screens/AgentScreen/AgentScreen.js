@@ -41,7 +41,6 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
       );
     }
   };
-  // agents.map((item) =>
   return (
     <SafeAreaView style={style.container}>
       <HeaderBar title={i18n.t('AGENT.TITLE')} showLeftButton onBackPress={goBack} />

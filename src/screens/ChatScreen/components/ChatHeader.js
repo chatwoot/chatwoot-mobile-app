@@ -107,12 +107,11 @@ const ChatHeader = ({
     conversationTypingUsers,
     conversationId,
   });
-
   const customerDetails = getCustomerDetails({ conversationDetails, conversationMetaDetails });
   return (
     <React.Fragment>
       <TopNavigation
-        title={
+        title={() => (
           <TouchableOpacity
             style={style.headerView}
             onPress={showConversationDetails}
@@ -146,7 +145,7 @@ const ChatHeader = ({
               ) : null}
             </View>
           </TouchableOpacity>
-        }
+        )}
         accessoryLeft={renderLeftControl}
         accessoryRight={renderRightControl}
       />

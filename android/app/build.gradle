@@ -134,8 +134,8 @@ android {
         applicationId "com.chatwoot.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 116
-        versionName "1.0.16"
+        versionCode 120
+        versionName "1.0.20"
         multiDexEnabled true 
     }
     splits {

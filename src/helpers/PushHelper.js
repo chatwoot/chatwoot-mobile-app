@@ -19,23 +19,27 @@ export const handlePush = async ({ remoteMessage, type }) => {
       isLoggedIn &&
       (notification_type === 'conversation_creation' ||
         notification_type === 'conversation_assignment' ||
-        notification_type === 'assigned_conversation_new_message')
+        notification_type === 'assigned_conversation_new_message' ||
+        notification_type === 'conversation_mention')
     ) {
-      const {
-        primary_actor: { id: conversationId },
-        primary_actor_id,
-        primary_actor_type,
-      } = pushData;
+      const { primary_actor, primary_actor_id, primary_actor_type } = pushData;
+      let conversationId = null;
+      if (primary_actor_type === 'Conversation') {
+        conversationId = primary_actor.id;
+      } else if (primary_actor_type === 'Message') {
+        conversationId = primary_actor.conversation_id;
+      }
+      if (conversationId) {
+        navigate(
+          'ChatScreen',
+          {
+            conversationId,
+            primaryActorDetails: { primary_actor_id, primary_actor_type },
+          },
 
-      navigate(
-        'ChatScreen',
-        {
-          conversationId,
-          primaryActorDetails: { primary_actor_id, primary_actor_type },
-        },
-
-        `ChatScreen+${conversationId}`,
-      );
+          `ChatScreen+${conversationId}`,
+        );
+      }
     }
     return isLoggedIn;
   } catch {}

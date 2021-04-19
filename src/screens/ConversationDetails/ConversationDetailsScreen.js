@@ -114,7 +114,8 @@ class ConversationDetailsComponent extends Component {
                 iconName="hard-drive-outline"
               />
             )}
-          {additional_attributes && additional_attributes.referer && (
+
+          {additional_attributes && additional_attributes.referer !== '' && (
             <ConversationDetailsItem
               title={i18n.t('CONVERSATION_DETAILS.INITIATED_FROM')}
               value={additional_attributes.referer}

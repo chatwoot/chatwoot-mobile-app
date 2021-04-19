@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "1.0.13",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",
@@ -14,10 +14,11 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@chatwoot/react-native-widget": "^0.0.5",
     "@eva-design/eva": "^2.0.0",
     "@kesha-antonov/react-native-action-cable": "^1.1.0",
+    "@react-native-async-storage/async-storage": "^1.14.1",
     "@react-native-clipboard/clipboard": "^1.6.0",
-    "@react-native-community/async-storage": "^1.12.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.10",
     "@react-native-community/push-notification-ios": "^1.8.0",
@@ -26,7 +27,7 @@
     "@react-navigation/bottom-tabs": "^5.11.7",
     "@react-navigation/native": "^5.9.2",
     "@react-navigation/stack": "^5.14.2",
-    "@sentry/react-native": "^1.7.2",
+    "@sentry/react-native": "2.3.0",
     "@ui-kitten/components": "^5.0.0",
     "@ui-kitten/eva-icons": "^5.0.0",
     "@ui-kitten/metro-config": "^5.0.0",
@@ -45,7 +46,7 @@
     "react-native-config": "^1.4.2",
     "react-native-device-info": "^5.6.5",
     "react-native-document-picker": "^5.0.0",
-    "react-native-exception-handler": "^2.10.9",
+    "react-native-exception-handler": "^2.10.10",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-hyperlink": "^0.0.19",
     "react-native-image-pan-zoom": "^2.1.12",
@@ -59,6 +60,7 @@
     "react-native-snackbar": "^2.3.2",
     "react-native-splash-screen": "^3.2.0",
     "react-native-svg": "^12.1.0",
+    "react-native-webview": "^11.3.1",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",

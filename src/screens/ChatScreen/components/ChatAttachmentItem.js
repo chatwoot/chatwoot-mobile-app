@@ -6,9 +6,14 @@ import { withStyles, Icon } from '@ui-kitten/components';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-import ImageLoader from '../../../components/ImageLoader';
-import CustomText from '../../../components/Text';
-import i18n from '../../../i18n';
+import ImageLoader from 'components/ImageLoader';
+import { messageStamp } from 'helpers/TimeHelper';
+import CustomText from 'components/Text';
+import i18n from 'i18n';
+
+const LockIcon = (style) => {
+  return <Icon {...style} name="lock" />;
+};
 
 const styles = (theme) => ({
   fileViewRight: {
@@ -52,7 +57,7 @@ const styles = (theme) => ({
     backgroundColor: theme['color-primary-default'],
   },
   privateMessageContainer: {
-    backgroundColor: theme['color-background-activity'],
+    backgroundColor: theme['color-background-private'],
     color: theme['text-basic-color'],
     borderWidth: 1,
     borderColor: theme['color-border-activity'],
@@ -143,6 +148,28 @@ const styles = (theme) => ({
     paddingBottom: 4,
     paddingLeft: 8,
   },
+  dateView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 4,
+  },
+  dateRight: {
+    color: theme['color-background-message'],
+    fontSize: theme['font-size-extra-extra-small'],
+    paddingTop: 4,
+  },
+  dateLeft: {
+    color: theme['color-gray'],
+    fontSize: theme['font-size-extra-extra-small'],
+    paddingTop: 4,
+  },
+  iconView: {
+    paddingLeft: 8,
+  },
+  icon: {
+    width: 16,
+    height: 16,
+  },
 });
 
 const propTypes = {
@@ -162,20 +189,27 @@ const propTypes = {
       }),
     ),
   }),
+  created_at: PropTypes.number,
 };
 
 const FileIcon = (style) => {
   return <Icon {...style} name="file-text-outline" width={32} height={32} />;
 };
 
-const ChatAttachmentItemComponent = ({ type, showAttachment, message, eva: { style, theme } }) => {
+const ChatAttachmentItemComponent = ({
+  type,
+  showAttachment,
+  created_at,
+  message,
+  eva: { style, theme },
+}) => {
   const { attachments, content } = message;
 
   const [imageLoading, onLoadImage] = useState(false);
+  const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
 
   const { file_type: fileType, data_url: dataUrl } = attachments[0];
   const fileName = dataUrl ? dataUrl.split('/').reverse()[0] : '';
-
   return (
     <React.Fragment>
       {fileType === 'image' ? (
@@ -185,7 +219,7 @@ const ChatAttachmentItemComponent = ({ type, showAttachment, message, eva: { sty
             type === 'outgoing' ? style.imageViewRight : style.imageViewLeft,
             message.private && style.privateMessageContainer,
           ]}>
-          {content && (
+          {content !== '' && (
             <CustomText
               style={message.private ? style.attachmentPrivateText : style.attachmentText}>
               {content}
@@ -203,6 +237,22 @@ const ChatAttachmentItemComponent = ({ type, showAttachment, message, eva: { sty
           />
 
           {imageLoading && <ImageLoader style={style.imageLoader} />}
+          <View style={style.dateView}>
+            <CustomText
+              style={[
+                dateStyle,
+                message.private && {
+                  color: theme['color-gray'],
+                },
+              ]}>
+              {messageStamp({ time: created_at })}
+            </CustomText>
+            {message.private && (
+              <View style={style.iconView}>
+                <LockIcon style={style.icon} fill={theme['text-basic-color']} />
+              </View>
+            )}
+          </View>
         </TouchableOpacity>
       ) : (
         <View style={type === 'outgoing' ? style.fileViewRight : style.fileViewLeft}>

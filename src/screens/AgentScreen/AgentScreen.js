@@ -17,7 +17,8 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
   const {
     meta: { assignee },
   } = conversationDetails;
-  const [assigneeId, setAssignee] = useState(assignee.id);
+
+  const [assigneeId, setAssignee] = useState(assignee ? assignee.id : null);
   const agents = useSelector((state) => state.inbox.inboxAgents);
   const isInboxAgentsFetching = useSelector((state) => state.inbox.isInboxAgentsFetching);
   const conversation = useSelector((state) => state.conversation);
@@ -32,13 +33,15 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
     setAssignee(item.id);
   };
   const updateAssignee = () => {
-    if (assignee.id !== assigneeId) {
+    if (!assignee || assignee.id !== assigneeId) {
       dispatch(
         assignConversation({
           conversationId: conversationDetails.id,
           assigneeId: assigneeId,
         }),
       );
+    } else {
+      navigation.goBack();
     }
   };
   return (

@@ -150,6 +150,8 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
           onChange={onNewMessageChange}
           partTypes={[
             {
+              allowedSpacesCount: 0,
+              isInsertSpaceAfterMention: true,
               trigger: '@',
               renderSuggestions,
               textStyle: { fontWeight: 'bold', color: 'white', backgroundColor: '#8c9eb6' },

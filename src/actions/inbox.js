@@ -31,7 +31,7 @@ export const getInboxes = () => async (dispatch) => {
 export const getInboxAgents = ({ inboxId }) => async (dispatch) => {
   dispatch({ type: GET_INBOX_AGENTS });
   try {
-    const response = await axios.get(`inbox_members/${inboxId}`);
+    const response = await axios.get(`inboxes/${inboxId}/assignable_agents`);
     let { payload } = response.data;
     dispatch({
       type: GET_INBOX_AGENTS_SUCCESS,

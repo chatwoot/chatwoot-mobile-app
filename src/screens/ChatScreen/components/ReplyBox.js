@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import { TextInput, View, Dimensions } from 'react-native';
+import { View, Dimensions } from 'react-native';
+import { MentionInput } from 'react-native-controlled-mentions';
 import { withStyles, Icon } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AttachmentPreview from './AttachmentPreview';
 import Attachment from './Attachment';
-import i18n from '../../../i18n';
-import { sendMessage, toggleTypingStatus } from '../../../actions/conversation';
-import { findFileSize } from '../../../helpers/FileHelper';
-import { MAXIMUM_FILE_UPLOAD_SIZE } from '../../../constants';
-import { showToast } from '../../../helpers/ToastHelper';
+import i18n from 'i18n';
+import { sendMessage, toggleTypingStatus } from 'actions/conversation';
+import { findFileSize } from 'helpers/FileHelper';
+import { MAXIMUM_FILE_UPLOAD_SIZE } from 'constants';
+import { showToast } from 'helpers/ToastHelper';
 import CannedResponses from './CannedResponses';
-
+import MentionUser from './MentionUser.js';
 const propTypes = {
   conversationId: PropTypes.number,
   eva: PropTypes.shape({
@@ -24,14 +25,14 @@ const propTypes = {
 const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) => {
   const [isPrivate, setPrivateMode] = useState(false);
   const [message, setMessage] = useState('');
+  const agents = useSelector((state) => state.agent.data);
+  const verifiedAgents = agents.filter((agent) => agent.confirmed);
   const [filteredCannedResponses, setFilteredCannedResponses] = useState([]);
-
   const [attachementDetails, setAttachmentDetails] = useState(null);
   const dispatch = useDispatch();
 
   const onNewMessageChange = (text) => {
     setMessage(text);
-
     if (text.charAt(0) === '/') {
       const query = text.substring(1).toLowerCase();
       const responses = cannedResponses.filter((item) => item.title.toLowerCase().includes(query));
@@ -82,11 +83,15 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
   };
 
   const onNewMessageAdd = () => {
+    const updatedMessage = message.replace(
+      /@\[([\w\d.-]+)\]\((\d+)\)/g,
+      '[@$1](mention://user/$2/$1)',
+    );
     if (message || attachementDetails) {
       dispatch(
         sendMessage({
           conversationId,
-          message,
+          message: updatedMessage,
           isPrivate,
           file: attachementDetails,
         }),
@@ -96,6 +101,31 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
       setAttachmentDetails(null);
       setPrivateMode(false);
     }
+  };
+
+  // eslint-disable-next-line react/prop-types
+  const renderSuggestions = ({ keyword, onSuggestionPress }) => {
+    if (keyword == null || !isPrivate) {
+      return null;
+    }
+    return (
+      <View>
+        {verifiedAgents
+          // eslint-disable-next-line react/prop-types
+          .filter((one) => one.name.toLocaleLowerCase().includes(keyword.toLocaleLowerCase()))
+          .map((item, index) => (
+            <MentionUser
+              name={item.name}
+              thumbnail={item.thumbnail}
+              availabilityStatus={item.availability_status}
+              email={item.email}
+              key={item.id}
+              lastItem={agents.length - 1 === index}
+              onUserSelect={() => onSuggestionPress(item)}
+            />
+          ))}
+      </View>
+    );
   };
 
   return (
@@ -114,22 +144,30 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
         />
       )}
       <View style={isPrivate ? style.privateView : style.replyView}>
-        <View>
-          <TextInput
-            style={style.inputView}
-            multiline={true}
-            placeholderTextColor={theme['text-basic-color']}
-            placeholder={
-              isPrivate
-                ? `${i18n.t('CONVERSATION.PRIVATE_MSG_INPUT')}`
-                : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`
-            }
-            onBlur={onBlur}
-            onFocus={onFocus}
-            value={message}
-            onChangeText={onNewMessageChange}
-          />
-        </View>
+        <MentionInput
+          style={style.inputView}
+          value={message}
+          onChange={onNewMessageChange}
+          partTypes={[
+            {
+              allowedSpacesCount: 0,
+              isInsertSpaceAfterMention: true,
+              trigger: '@',
+              renderSuggestions,
+              textStyle: { fontWeight: 'bold', color: 'white', backgroundColor: '#8c9eb6' },
+            },
+          ]}
+          multiline={true}
+          placeholderTextColor={theme['text-basic-color']}
+          placeholder={
+            isPrivate
+              ? `${i18n.t('CONVERSATION.PRIVATE_MSG_INPUT')}`
+              : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`
+          }
+          onBlur={onBlur}
+          onFocus={onFocus}
+        />
+
         <View style={style.buttonViews}>
           <View style={style.attachIconView}>
             <Attachment conversationId={conversationId} onSelectAttachment={onSelectAttachment} />
@@ -181,7 +219,7 @@ const styles = (theme) => ({
     color: theme['text-basic-color'],
     paddingHorizontal: 8,
     paddingVertical: 8,
-    maxHeight: 256,
+    // maxHeight: 256,
     textAlignVertical: 'top',
   },
   buttonViews: {

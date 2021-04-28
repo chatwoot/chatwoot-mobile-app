@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withStyles } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, Platform } from 'react-native';
 import Config from 'react-native-config';
 import { useNavigation } from '@react-navigation/native';
 import DeviceInfo from 'react-native-device-info';
@@ -60,7 +60,14 @@ const Settings = ({ eva: { theme, style } }) => {
     identifier_hash: Config.CHATWOOT_IDENTITY_VALIDATION || '',
   };
 
-  const customAttributes = { originatedFrom: 'chatwoot-mobile-app' };
+  const customAttributes = {
+    originatedFrom: 'mobile-app',
+    appName,
+    appVersion: packageFile.version,
+    deviceId: DeviceInfo.getDeviceId(),
+    packageName: packageFile.name,
+    operatingSystem: Platform.OS, // android/ios
+  };
 
   useEffect(() => {
     dispatch(getNotificationSettings());

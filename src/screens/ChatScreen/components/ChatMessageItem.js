@@ -7,11 +7,11 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Markdown from 'react-native-markdown-display';
 import ActionSheet from 'react-native-actions-sheet';
 
-import CustomText from '../../../components/Text';
-import { messageStamp } from '../../../helpers/TimeHelper';
-import { openURL } from '../../../helpers/UrlHelper';
+import CustomText from 'components/Text';
+import { messageStamp } from 'helpers/TimeHelper';
+import { openURL } from 'helpers/UrlHelper';
 import ChatMessageActionItem from './ChatMessageActionItem';
-import { showToast } from '../../../helpers/ToastHelper';
+import { showToast } from 'helpers/ToastHelper';
 
 const LockIcon = (style) => {
   return <Icon {...style} name="lock" />;
@@ -76,22 +76,28 @@ const styles = (theme) => ({
   dateRight: {
     color: theme['color-background-message'],
     fontSize: theme['font-size-extra-extra-small'],
+    paddingTop: 4,
   },
   dateLeft: {
     color: theme['color-gray'],
     fontSize: theme['font-size-extra-extra-small'],
+    paddingTop: 4,
   },
   privateMessageContainer: {
-    backgroundColor: theme['color-background-activity'],
+    backgroundColor: theme['color-background-private'],
     color: theme['text-basic-color'],
     borderWidth: 1,
-    borderColor: theme['color-border-activity'],
-    padding: 16,
-  },
-  privateMessageView: {
+    borderColor: theme['color-border-private'],
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 8,
+    borderBottomRightRadius: 8,
+    borderTopRightRadius: 8,
+    borderBottomLeftRadius: 4,
+    borderTopLeftRadius: 4,
+    maxWidth: Dimensions.get('window').width - 120,
+    left: -4,
   },
   iconView: {
     paddingLeft: 8,
@@ -106,6 +112,10 @@ const styles = (theme) => ({
   tooltipText: {
     color: theme['text-tooltip-color'],
     fontSize: theme['font-size-small'],
+  },
+  dateView: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 
@@ -160,7 +170,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
       activeOpacity={0.95}>
       <View>
         {message.private ? (
-          <View style={style.privateMessageView}>
+          <React.Fragment>
             <Markdown
               onLinkPress={handleURL}
               style={{
@@ -177,25 +187,28 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
               }}>
               {message.content}
             </Markdown>
-            <View style={style.iconView}>
-              <LockIcon style={style.icon} fill={theme['text-basic-color']} />
-            </View>
-          </View>
+          </React.Fragment>
         ) : (
           <Hyperlink linkStyle={style.linkStyle} onPress={(url) => handleURL(url)}>
             <CustomText style={messageTextStyle}>{message.content}</CustomText>
           </Hyperlink>
         )}
-
-        <CustomText
-          style={[
-            dateStyle,
-            message.private && {
-              color: theme['color-gray'],
-            },
-          ]}>
-          {messageStamp({ time: created_at })}
-        </CustomText>
+        <View style={style.dateView}>
+          <CustomText
+            style={[
+              dateStyle,
+              message.private && {
+                color: theme['color-gray'],
+              },
+            ]}>
+            {messageStamp({ time: created_at })}
+          </CustomText>
+          {message.private && (
+            <View style={style.iconView}>
+              <LockIcon style={style.icon} fill={theme['text-basic-color']} />
+            </View>
+          )}
+        </View>
         <ActionSheet ref={actionSheetRef} defaultOverlayOpacity={0.3}>
           {senderName ? (
             <ChatMessageActionItem

@@ -75,6 +75,7 @@ class ChatScreenComponent extends Component {
   componentDidMount = () => {
     const { markAllMessagesAsRead, route } = this.props;
     const { conversationId, meta, messages, primaryActorDetails } = route.params;
+
     // Clear all notification related the conversation
     if (primaryActorDetails) {
       this.props.markNotificationAsRead({
@@ -82,7 +83,6 @@ class ChatScreenComponent extends Component {
         primaryActorType: primaryActorDetails.primary_actor_type,
       });
     }
-
     // Reset all messages if app is opening from external link (Deep linking or Push)
     if (!meta) {
       this.props.resetConversation();
@@ -94,7 +94,6 @@ class ChatScreenComponent extends Component {
       beforeId = id;
     }
     this.props.loadMessages({ conversationId, beforeId });
-
     this.props.getConversationDetails({ conversationId });
     this.props.markMessagesAsRead({ conversationId });
     this.props.loadCannedResponses();
@@ -201,13 +200,11 @@ class ChatScreenComponent extends Component {
       conversationTypingUsers,
       conversationDetails,
     } = this.props;
-
     const {
       params: { conversationId, meta },
     } = route;
 
     const { showScrollToButton } = this.state;
-
     const uniqueMessages = findUniqueMessages({ allMessages });
     const groupedConversationList = getGroupedConversation({
       conversations: uniqueMessages,

@@ -1,6 +1,6 @@
 import images from './images';
 
-export const MAXIMUM_FILE_UPLOAD_SIZE = 5;
+export const MAXIMUM_FILE_UPLOAD_SIZE = 40;
 
 export const CONVERSATION_STATUS = {
   OPEN: 'open',

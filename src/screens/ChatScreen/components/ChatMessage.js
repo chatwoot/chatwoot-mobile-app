@@ -64,6 +64,7 @@ const MessageContentComponent = ({ message, type, showAttachment, created_at }) 
       message={message}
       type={type}
       showAttachment={showAttachment}
+      created_at={created_at}
     />
   ) : (
     <ChatMessageItem message={message} type={type} created_at={created_at} />

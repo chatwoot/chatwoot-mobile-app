@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
-import { withStyles } from '@ui-kitten/components';
+import React, { useState, Fragment } from 'react';
+import { Spinner, withStyles } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
 import { SafeAreaView, View } from 'react-native';
 
@@ -17,10 +17,13 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
   const {
     meta: { assignee },
   } = conversationDetails;
-  const [assigneeId, setAssignee] = useState(assignee.id);
-  const agents = useSelector((state) => state.agent.data);
+
+  const [assigneeId, setAssignee] = useState(assignee ? assignee.id : null);
+  const agents = useSelector((state) => state.inbox.inboxAgents);
+  const isInboxAgentsFetching = useSelector((state) => state.inbox.isInboxAgentsFetching);
   const conversation = useSelector((state) => state.conversation);
   const { isAssigneeUpdating } = conversation;
+  const verifiedAgents = agents.filter((agent) => agent.confirmed);
 
   const goBack = () => {
     navigation.goBack();
@@ -30,39 +33,49 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
     setAssignee(item.id);
   };
   const updateAssignee = () => {
-    if (assignee.id !== assigneeId) {
+    if (!assignee || assignee.id !== assigneeId) {
       dispatch(
         assignConversation({
           conversationId: conversationDetails.id,
           assigneeId: assigneeId,
         }),
       );
+    } else {
+      navigation.goBack();
     }
   };
-
   return (
     <SafeAreaView style={style.container}>
       <HeaderBar title={i18n.t('AGENT.TITLE')} showLeftButton onBackPress={goBack} />
-      {agents.map((item) => (
-        <AgentItem
-          name={item.name}
-          thumbnail={item.thumbnail}
-          availabilityStatus={item.availability_status}
-          key={item.id}
-          assigned={item.id === assigneeId}
-          onCheckedChange={() => onCheckedChange(item)}
-        />
-      ))}
-      <View style={style.submitButtonView}>
-        <LoaderButton
-          style={style.submitButton}
-          size="large"
-          textStyle={style.submitButtonText}
-          onPress={() => updateAssignee()}
-          text={i18n.t('SETTINGS.SUBMIT')}
-          loading={isAssigneeUpdating}
-        />
-      </View>
+
+      {!isInboxAgentsFetching ? (
+        <Fragment>
+          {verifiedAgents.map((item) => (
+            <AgentItem
+              name={item.name}
+              thumbnail={item.thumbnail}
+              availabilityStatus={item.availability_status}
+              key={item.id}
+              assigned={item.id === assigneeId}
+              onCheckedChange={() => onCheckedChange(item)}
+            />
+          ))}
+          <View style={style.submitButtonView}>
+            <LoaderButton
+              style={style.submitButton}
+              size="large"
+              textStyle={style.submitButtonText}
+              onPress={() => updateAssignee()}
+              text={i18n.t('SETTINGS.SUBMIT')}
+              loading={isAssigneeUpdating}
+            />
+          </View>
+        </Fragment>
+      ) : (
+        <View style={style.spinnerView}>
+          <Spinner size="medium" />
+        </View>
+      )}
     </SafeAreaView>
   );
 };

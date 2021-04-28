@@ -112,8 +112,8 @@
   "CONVERSATION_DETAILS": {
     "BROWSER": "Navegador",
     "OPERATING_SYSTEM": "Sistema operativo",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "INITIATED_AT": "Iniciado a las",
+    "INITIATED_FROM": "Iniciado desde"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Acciones"
@@ -126,7 +126,7 @@
     "OfFLINE": "Debe conectarse a Wi-Fi o a una red móvil para conectarse de nuevo",
     "CANNOT_FETCH": "Hubo un error al recuperar la información, por favor inténtalo de nuevo",
     "AUTH": "Nombre de usuario / Contraseña incorrecto. Inténtalo de nuevo",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "NO_ACCOUNTS_MESSAGE": "No tienes acceso a ninguna cuenta de chatwoot"
   },
   "SUCCESS": {
     "AUTH": "Inicio de sesión exitoso"

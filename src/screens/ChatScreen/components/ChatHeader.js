@@ -10,6 +10,7 @@ import { getTypingUsersText, getCustomerDetails } from 'helpers';
 import CustomText from 'components/Text';
 import { unAssignConversation, toggleConversationStatus } from 'actions/conversation';
 import ConversationAction from '../../ConversationAction/ConversationAction';
+import { GRAVATAR_URL } from 'constants/url';
 
 const styles = (theme) => ({
   headerView: {
@@ -108,6 +109,10 @@ const ChatHeader = ({
     conversationId,
   });
   const customerDetails = getCustomerDetails({ conversationDetails, conversationMetaDetails });
+
+  const avatarUrl = !customerDetails.thumbnail.includes(GRAVATAR_URL)
+    ? customerDetails.thumbnail
+    : '';
   return (
     <React.Fragment>
       <TopNavigation
@@ -120,7 +125,7 @@ const ChatHeader = ({
               <UserAvatar
                 style={style.avatarView}
                 userName={customerDetails.name}
-                thumbnail={customerDetails.thumbnail}
+                thumbnail={avatarUrl}
                 defaultBGColor={theme['color-primary-default']}
                 channel={customerDetails.channel}
               />

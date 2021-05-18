@@ -12,6 +12,7 @@ import {
   setConversation,
   setAssigneeType,
 } from 'actions/conversation';
+import { getInstallationVersion } from 'actions/settings';
 import CustomText from 'components/Text';
 import { saveDeviceDetails } from 'actions/notification';
 import { getAllNotifications } from 'actions/notification';
@@ -55,10 +56,11 @@ class ConversationListComponent extends Component {
     loadInitialMessages: PropTypes.func,
     getConversations: PropTypes.func,
     selectConversation: PropTypes.func,
+    getInstallationVersion: PropTypes.func,
     saveDeviceDetails: PropTypes.func,
     getAllNotifications: PropTypes.func,
     setAssigneeType: PropTypes.func,
-
+    minimumChatwootVersion: PropTypes.number,
     inboxSelected: PropTypes.shape({
       name: PropTypes.string,
     }),
@@ -77,9 +79,9 @@ class ConversationListComponent extends Component {
     getAgents: () => {},
     getConversations: () => {},
     loadInitialMessages: () => {},
+    getInstallationVersion: () => {},
     selectConversation: () => {},
     setAssigneeType: () => {},
-
     item: {},
     inboxes: [],
     conversationStatus: 'open',
@@ -94,12 +96,14 @@ class ConversationListComponent extends Component {
 
   componentDidMount = () => {
     clearAllDeliveredNotifications();
+    this.props.getInstallationVersion();
     this.props.getInboxes();
     this.props.getAgents();
     this.loadConversations();
     this.initActionCable();
     this.props.getAllNotifications({ pageNo: 1 });
     const { pushToken } = this.props;
+
     this.props.saveDeviceDetails({ token: null });
     if (!pushToken) {
       this.props.saveDeviceDetails({ token: pushToken });
@@ -110,7 +114,6 @@ class ConversationListComponent extends Component {
     const pubSubToken = await getPubSubToken();
     const { accountId, userId } = await getUserDetails();
     const { webSocketUrl } = this.props;
-
     ActionCable.init({ pubSubToken, webSocketUrl, accountId, userId });
   };
 
@@ -344,6 +347,7 @@ function bindAction(dispatch) {
   return {
     getInboxes: () => dispatch(getInboxes()),
     getAgents: () => dispatch(getAgents()),
+    getInstallationVersion: () => dispatch(getInstallationVersion()),
     getConversations: ({ assigneeType, pageNumber }) =>
       dispatch(
         getConversations({

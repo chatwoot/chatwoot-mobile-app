@@ -60,7 +60,6 @@ class ConversationListComponent extends Component {
     saveDeviceDetails: PropTypes.func,
     getAllNotifications: PropTypes.func,
     setAssigneeType: PropTypes.func,
-    minimumChatwootVersion: PropTypes.number,
     inboxSelected: PropTypes.shape({
       name: PropTypes.string,
     }),

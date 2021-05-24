@@ -20,7 +20,7 @@
     "ERROR": "无效的安装链接"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
+    "TITLE": "登录到您的帐户",
     "EMAIL": "Email",
     "PASSWORD": "密码",
     "EMAIL_ERROR": "输入有效的电子邮件",
@@ -59,11 +59,11 @@
     "ALL_CONVERSATION_LOADED": "已加载所有会话",
     "RESOLVE": "解决会话",
     "RE_OPEN": "重新打开会话",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "ASSIGN": "重新打开会话",
+    "FILE_SIZE_LIMIT": "文件超过 5MB 附件限制",
     "CANCEL": "取消",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "PRIVATE_MSG_INPUT": "此操作仅对代理人可见",
+    "UN_ASSIGN": "取消分配对话"
   },
   "FILTER": {
     "HEADER_TITLE": "会话过滤器",
@@ -79,7 +79,7 @@
     "AVAILABILITY": "可用性",
     "NOTIFICATION": "通知设置",
     "HELP": "帮助文档",
-    "CHAT_WITH_US": "Chat with Us",
+    "CHAT_WITH_US": "与我们聊天",
     "LOG_OUT": "注销",
     "SWITCH_ACCOUNT": "切换账户",
     "CHANGE_LANGUAGE": "更改语言",
@@ -116,10 +116,10 @@
     "INITIATED_FROM": "发起自"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "操作"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "选择代理"
   },
   "ERRORS": {
     "COMMON_ERROR": "无法连接到服务器，请稍后再试",

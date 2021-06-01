@@ -1,16 +1,20 @@
 import Config from 'react-native-config';
 import { Alert } from 'react-native';
+import I18n from '../i18n';
 export function checkServerSupport({ installedVersion, userRole }) {
   const minimumVersion = Config.MINIMUM_CHATWOOT_VERSION;
-  const title = 'Server upgrade required';
-  let message = `It seems like  the chatwoot server version is unsupported for this app. Upgrading to server version ${minimumVersion} or later is required`;
   if (installedVersion < minimumVersion) {
     if (userRole === 'administrator') {
-      Alert.alert(title, message, [{ text: 'OK' }]);
+      Alert.alert(
+        I18n.t('SERVER_UPGRADE.TITLE'),
+        I18n.t('SERVER_UPGRADE.WARNING_FOR_ADMIN', { minimumVersion }),
+        [{ text: 'OK' }],
+      );
     } else {
-      message =
-        'It seems like the chatwoot server version is unsupported for this app. Please contact your administrator to upgrade your Chatwoot server.';
-      Alert.alert(title, message, [{ text: 'OK' }]);
+      Alert.alert(I18n.t('SERVER_UPGRADE.TITLE'), I18n.t('SERVER_UPGRADE.WARNING_FOR_AGENT'), [
+        { text: 'OK' },
+      ]);
     }
   }
 }
+ 

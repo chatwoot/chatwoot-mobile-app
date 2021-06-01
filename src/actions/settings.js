@@ -24,7 +24,7 @@ export const setLocale = (value) => (dispatch) => {
   dispatch({ type: SET_LOCALE, payload: value });
 };
 
-export const getInstallationVersion = () => async (dispatch, getState) => {
+export const getInstalledVersion = () => async (dispatch, getState) => {
   try {
     const { installationUrl } = await getState().settings;
     const {

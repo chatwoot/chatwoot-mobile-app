@@ -1,7 +1,6 @@
 import axios from 'axios';
-
 import APIHelper from '../helpers/APIHelper';
-
+import { checkServerSupport } from 'helpers/ServerHelper';
 import {
   SET_URL,
   SET_URL_ERROR,
@@ -23,6 +22,18 @@ import { URL_TYPE } from '../constants/url';
 
 export const setLocale = (value) => (dispatch) => {
   dispatch({ type: SET_LOCALE, payload: value });
+};
+
+export const getInstalledVersion = () => async (dispatch, getState) => {
+  try {
+    const { installationUrl } = await getState().settings;
+    const {
+      user: { role: userRole },
+    } = await getState().auth;
+    const result = await axios.get(`${installationUrl}api`);
+    const { version: installedVersion } = result.data;
+    checkServerSupport({ installedVersion, userRole });
+  } catch (error) {}
 };
 
 export const setInstallationUrl = ({ url }) => async (dispatch) => {

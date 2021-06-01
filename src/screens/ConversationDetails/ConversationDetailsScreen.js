@@ -83,11 +83,13 @@ class ConversationDetailsComponent extends Component {
           </View>
         )}
 
-        {senderAdditionalInfo && senderAdditionalInfo.description && (
-          <View style={style.descriptionContainer}>
-            <CustomText style={style.description}>{senderAdditionalInfo.description}</CustomText>
-          </View>
-        )}
+        {senderAdditionalInfo &&
+          senderAdditionalInfo.description !== '' &&
+          senderAdditionalInfo.description && (
+            <View style={style.descriptionContainer}>
+              <CustomText style={style.description}>{senderAdditionalInfo.description}</CustomText>
+            </View>
+          )}
         {senderAdditionalInfo && senderAdditionalInfo.location && (
           <View style={style.descriptionContainer}>
             <CustomText style={style.description}>{senderAdditionalInfo.location}</CustomText>

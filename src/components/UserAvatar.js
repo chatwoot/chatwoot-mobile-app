@@ -7,6 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { getUserInitial } from '../helpers';
 import CustomText from './Text';
 import ImageLoader from './ImageLoader';
+import { GRAVATAR_URL } from 'constants/url';
 
 import { INBOX_IMAGES, PRESENCE_STATUS_COLORS } from '../constants';
 
@@ -95,8 +96,9 @@ const UserAvatar = ({
   availabilityStatus,
   eva: { style, theme },
 }) => {
+  const avatarUrl = !thumbnail.includes(GRAVATAR_URL) ? thumbnail : '';
   const [imageLoading, onLoadImage] = useState(false);
-  const [imagePath, setImagePath] = useState(thumbnail);
+  const [imagePath, setImagePath] = useState(avatarUrl);
   return imagePath ? (
     <View>
       <Image

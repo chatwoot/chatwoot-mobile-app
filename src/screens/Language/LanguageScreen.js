@@ -13,6 +13,7 @@ import LanguageItem from '../../components/LanguageItem';
 
 import { setLocale } from '../../actions/settings';
 import { LANGUAGES } from '../../constants';
+import { captureEvent } from 'helpers/Analytics';
 
 const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
   const settings = useSelector((state) => state.settings);
@@ -28,6 +29,7 @@ const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
   };
 
   const onSubmitLanguage = () => {
+    captureEvent({ eventName: `Changed the language to ${localeValue}` });
     if (isLoggedIn) {
       navigation.dispatch(StackActions.replace('Tab'));
     } else {

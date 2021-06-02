@@ -9,7 +9,7 @@ import HeaderBar from '../../components/HeaderBar';
 import i18n from '../../i18n';
 import styles from './NotificationPreference.style';
 import NotificationPreferenceItem from '../../components/NotificationPreferenceItem';
-
+import { captureEvent } from 'helpers/Analytics';
 import { NOTIFICATION_PREFERENCE_TYPES } from '../../constants';
 import CustomText from '../../components/Text';
 import { updateNotificationSettings } from '../../actions/settings';
@@ -43,6 +43,7 @@ const NotificationPreferenceScreenComponent = ({ eva: { style }, navigation }) =
   };
 
   const savePreferences = () => {
+    captureEvent({ eventName: 'Updated notification preferences' });
     dispatch(
       updateNotificationSettings({
         notification_settings: {

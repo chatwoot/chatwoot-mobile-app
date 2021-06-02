@@ -10,7 +10,7 @@ import HeaderBar from '../../components/HeaderBar';
 import i18n from '../../i18n';
 import styles from './AccountScreen.style';
 import AccountItem from '../../components/AccountItem';
-
+import { captureEvent } from 'helpers/Analytics';
 import { setAccount } from '../../actions/auth';
 
 const AccountScreenComponent = ({ eva: { style }, navigation }) => {
@@ -20,6 +20,7 @@ const AccountScreenComponent = ({ eva: { style }, navigation }) => {
   const dispatch = useDispatch();
 
   const onCheckedChange = ({ item }) => {
+    captureEvent({ eventName: 'Changed the account' });
     dispatch(setAccount({ accountId: item.id }));
   };
 

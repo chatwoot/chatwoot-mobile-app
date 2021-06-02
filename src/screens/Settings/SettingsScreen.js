@@ -22,6 +22,7 @@ import HeaderBar from 'components/HeaderBar';
 import { getNotificationSettings } from 'actions/settings';
 import packageFile from '../../../package.json';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { captureEvent } from 'helpers/Analytics';
 
 const appName = DeviceInfo.getApplicationName();
 
@@ -96,10 +97,12 @@ const Settings = ({ eva: { theme, style } }) => {
         navigation.navigate('NotificationPreference', { accounts });
         break;
       case 'chat_with_us':
+        captureEvent({ eventName: 'Opened help support button' });
         toggleWidget(true);
         break;
 
       case 'help':
+        captureEvent({ eventName: 'Opened help docs' });
         openURL({ URL: HELP_URL });
 
         break;

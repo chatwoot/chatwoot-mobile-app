@@ -52,13 +52,14 @@ const Settings = ({ eva: { theme, style } }) => {
   const accounts = user ? user.accounts : [];
   const avatar_url = user ? user.avatar_url : '';
   const name = user ? user.name : '';
+  const identifierHash = user ? user.identifier_hash : '';
 
   const userDetails = {
     identifier: email,
     name,
     avatar_url,
     email,
-    identifier_hash: Config.CHATWOOT_IDENTITY_VALIDATION || '',
+    identifier_hash: identifierHash,
   };
 
   const customAttributes = {

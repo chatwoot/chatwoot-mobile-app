@@ -132,9 +132,9 @@
     "AUTH": "Anmeldung erfolgreich"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "Server-Upgrade erforderlich",
+    "WARNING_FOR_AGENT": "Es scheint, als ob Sie einen nicht unterstützten Chatwoot-Server für Ihre mobile App verwenden. Bitte kontaktieren Sie Ihren Administrator, um Ihren Chatwoot-Server zu aktualisieren.",
+    "WARNING_FOR_ADMIN": "Es scheint, als ob Sie den nicht unterstützten Chatwoot-Server für Ihre mobile App verwenden. Ein Upgrade auf die Serverversion %{minimumVersion} oder höher ist erforderlich."
   },
   "EXIT": {
     "TITLE": "Beenden",

@@ -9,7 +9,7 @@ import HeaderBar from '../../components/HeaderBar';
 import i18n from '../../i18n';
 import styles from './Availability.style';
 import AvailabilityItem from '../../components/AvailabilityItem';
-
+import { captureEvent } from 'helpers/Analytics';
 import { updateAvailabilityStatus } from '../../actions/auth';
 import { AVAILABILITY_TYPES } from '../../constants';
 
@@ -32,6 +32,7 @@ const AvailabilityScreenComponent = ({ eva: { style }, navigation }) => {
   };
 
   const saveAvailabilityStatus = () => {
+    captureEvent({ eventName: 'Updated availability status' });
     dispatch(updateAvailabilityStatus({ availability: availabilityStatus }));
     navigation.goBack();
   };

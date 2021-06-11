@@ -10,6 +10,7 @@ import i18n from '../../i18n';
 import styles from './AgentScreen.style';
 import AgentItem from '../../components/AgentItem';
 import { assignConversation } from '../../actions/conversation';
+import { captureEvent } from 'helpers/Analytics';
 
 const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
   };
   const updateAssignee = () => {
     if (!assignee || assignee.id !== assigneeId) {
+      captureEvent({ eventName: 'Conversation assignee changed' });
       dispatch(
         assignConversation({
           conversationId: conversationDetails.id,

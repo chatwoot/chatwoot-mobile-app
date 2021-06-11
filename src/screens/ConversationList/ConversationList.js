@@ -28,6 +28,7 @@ import { findUniqueConversations } from 'helpers';
 import { clearAllDeliveredNotifications } from 'helpers/PushHelper';
 import Empty from 'components/Empty';
 import images from 'constants/images';
+import { identifyUser, captureEvent } from 'helpers/Analytics';
 
 const LoaderData = new Array(24).fill(0);
 
@@ -67,6 +68,7 @@ class ConversationListComponent extends Component {
     inboxes: PropTypes.array.isRequired,
     conversationStatus: PropTypes.string,
     webSocketUrl: PropTypes.string,
+    installationUrl: PropTypes.string,
     pushToken: PropTypes.string,
     item: PropTypes.shape({}),
   };
@@ -93,7 +95,7 @@ class ConversationListComponent extends Component {
     refreshing: false,
   };
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     clearAllDeliveredNotifications();
     this.props.getInstalledVersion();
     this.props.getInboxes();
@@ -102,11 +104,13 @@ class ConversationListComponent extends Component {
     this.initActionCable();
     this.props.getAllNotifications({ pageNo: 1 });
     const { pushToken } = this.props;
-
     this.props.saveDeviceDetails({ token: null });
     if (!pushToken) {
       this.props.saveDeviceDetails({ token: pushToken });
     }
+    const { userId, email, name } = await getUserDetails();
+    const { installationUrl } = this.props;
+    identifyUser({ userId, email, name, installationUrl });
   };
 
   initActionCable = async () => {
@@ -118,7 +122,6 @@ class ConversationListComponent extends Component {
 
   loadConversations = () => {
     const { selectedIndex, pageNumber } = this.state;
-
     this.props.getConversations({
       assigneeType: selectedIndex,
       pageNumber,
@@ -156,6 +159,7 @@ class ConversationListComponent extends Component {
   };
 
   openFilter = () => {
+    captureEvent({ eventName: 'Open conversation filter menu' });
     const { navigation, inboxSelected } = this.props;
     const { selectedIndex } = this.state;
     navigation.navigate('ConversationFilter', {
@@ -165,6 +169,8 @@ class ConversationListComponent extends Component {
   };
 
   onChangeTab = async (index) => {
+    const tabName = index === 0 ? 'Mine' : index === 1 ? 'Unassgined' : 'All';
+    captureEvent({ eventName: `Conversation tab ${tabName} clicked` });
     await this.setState({
       selectedIndex: index,
       pageNumber: 1,
@@ -366,6 +372,7 @@ function bindAction(dispatch) {
 function mapStateToProps(state) {
   return {
     webSocketUrl: state.settings.webSocketUrl,
+    installationUrl: state.settings.installationUrl,
     isFetching: state.conversation.isFetching,
     isAllConversationsLoaded: state.conversation.isAllConversationsLoaded,
     conversations: state.conversation.data,

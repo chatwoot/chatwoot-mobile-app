@@ -22,8 +22,8 @@ import { showToast } from '../helpers/ToastHelper';
 import I18n from '../i18n';
 import { getHeaders } from '../helpers/AuthHelper';
 import { getBaseUrl } from '../helpers/UrlHelper';
-
 import { API_URL } from '../constants/url';
+import { identifyUser, resetAnalytics } from '../helpers/Analytics';
 
 export const doLogin = ({ email, password }) => async (dispatch) => {
   try {
@@ -34,6 +34,7 @@ export const doLogin = ({ email, password }) => async (dispatch) => {
     // Check user has any account
     if (account_id) {
       Sentry.setUser({ email, username, id });
+      identifyUser({ userId: id, email, name: username });
       dispatch({ type: SET_AUTH_HEADER, payload: response.headers });
       dispatch({ type: LOGIN_SUCCESS, payload: data });
     } else {
@@ -77,6 +78,7 @@ export const resetAuth = () => async (dispatch) => {
 };
 
 export const onLogOut = () => async (dispatch) => {
+  resetAnalytics();
   dispatch({ type: SET_LOCALE, payload: 'en' });
   dispatch({ type: USER_LOGOUT });
 };

@@ -14,7 +14,7 @@ module.exports = MetroConfig.create(evaConfig, {
     getTransformOptions: async () => ({
       transform: {
         experimentalImportSupport: false,
-        inlineRequires: false,
+        inlineRequires: true,
       },
     }),
   },

@@ -4,22 +4,22 @@ import { TopNavigation, TopNavigationAction, withStyles, Icon } from '@ui-kitten
 
 import CustomText from './Text';
 
-const BackIcon = (props) => {
-  return <Icon {...props} name="arrow-ios-back-outline" height={24} width={24} />;
+const BackIcon = props => {
+  return <Icon {...props} name="arrow-back-outline" height={24} width={24} />;
 };
-const CloseIcon = (props) => {
+const CloseIcon = props => {
   return <Icon {...props} name="close-outline" height={32} width={32} />;
 };
 
-const MenuIcon = (props) => {
+const MenuIcon = props => {
   return <Icon {...props} name="funnel-outline" />;
 };
 
-const MoreIcon = (props) => {
+const MoreIcon = props => {
   return <Icon {...props} name="more-horizontal-outline" />;
 };
 
-const styles = (theme) => ({
+const styles = theme => ({
   headerTitle: {
     marginVertical: 8,
     fontSize: theme['font-size-medium'],
@@ -57,7 +57,7 @@ class HeaderBarComponent extends Component {
 
     return (
       <TopNavigation
-        title={(evaProps) => (
+        title={evaProps => (
           <CustomText {...evaProps} style={style.headerTitle}>
             {title}
           </CustomText>

@@ -47,6 +47,50 @@ class ConversationDetailsComponent extends Component {
     navigation.goBack();
   };
 
+  renderAdditionalAttributes() {
+    const {
+      eva: { style },
+      route,
+    } = this.props;
+    const { conversationDetails } = route.params;
+    const { additional_attributes: additionalAttributes } = conversationDetails;
+    if (!additionalAttributes) {
+      return null;
+    }
+    return (
+      <View style={style.itemListView}>
+        {!!additionalAttributes.browser && !!additionalAttributes.browser.browser_name && (
+          <ConversationDetailsItem
+            title={i18n.t('CONVERSATION_DETAILS.BROWSER')}
+            value={`${additionalAttributes.browser.browser_name} ${additionalAttributes.browser.browser_version}`}
+            iconName="globe-outline"
+          />
+        )}
+        {!!additionalAttributes.browser && !!additionalAttributes.browser.platform_name && (
+          <ConversationDetailsItem
+            title={i18n.t('CONVERSATION_DETAILS.OPERATING_SYSTEM')}
+            value={`${additionalAttributes.browser.platform_name} ${additionalAttributes.browser.platform_version}`}
+            iconName="hard-drive-outline"
+          />
+        )}
+        {!!additionalAttributes.referer && (
+          <ConversationDetailsItem
+            title={i18n.t('CONVERSATION_DETAILS.INITIATED_FROM')}
+            value={additionalAttributes.referer}
+            iconName="link-outline"
+          />
+        )}
+        {!!additionalAttributes.initiated_at && !!additionalAttributes.initiated_at.timestamp && (
+          <ConversationDetailsItem
+            title={i18n.t('CONVERSATION_DETAILS.INITIATED_AT')}
+            value={additionalAttributes.initiated_at.timestamp}
+            iconName="clock-outline"
+          />
+        )}
+      </View>
+    );
+  }
+
   render() {
     const {
       eva: { style, theme },
@@ -54,7 +98,6 @@ class ConversationDetailsComponent extends Component {
     } = this.props;
     const { conversationDetails } = route.params;
     const {
-      additional_attributes,
       meta: {
         sender: { name, thumbnail, email, additional_attributes: senderAdditionalInfo },
         channel,
@@ -77,12 +120,11 @@ class ConversationDetailsComponent extends Component {
         <View style={style.userNameContainer}>
           <CustomText style={style.nameLabel}>{name}</CustomText>
         </View>
-        {email && (
+        {!!email && (
           <View style={style.userNameContainer}>
             <CustomText style={style.emailLabel}>{email}</CustomText>
           </View>
         )}
-
         {senderAdditionalInfo &&
           senderAdditionalInfo.description !== '' &&
           senderAdditionalInfo.description && (
@@ -95,45 +137,8 @@ class ConversationDetailsComponent extends Component {
             <CustomText style={style.description}>{senderAdditionalInfo.location}</CustomText>
           </View>
         )}
-
         <View style={style.separationView} />
-        <View style={style.itemListView}>
-          {additional_attributes &&
-            additional_attributes.browser &&
-            additional_attributes.browser.browser_name && (
-              <ConversationDetailsItem
-                title={i18n.t('CONVERSATION_DETAILS.BROWSER')}
-                value={`${additional_attributes.browser.browser_name} ${additional_attributes.browser.browser_version}`}
-                iconName="globe-outline"
-              />
-            )}
-          {additional_attributes &&
-            additional_attributes.browser &&
-            additional_attributes.browser.platform_name && (
-              <ConversationDetailsItem
-                title={i18n.t('CONVERSATION_DETAILS.OPERATING_SYSTEM')}
-                value={`${additional_attributes.browser.platform_name} ${additional_attributes.browser.platform_version}`}
-                iconName="hard-drive-outline"
-              />
-            )}
-
-          {additional_attributes && additional_attributes.referer && (
-            <ConversationDetailsItem
-              title={i18n.t('CONVERSATION_DETAILS.INITIATED_FROM')}
-              value={additional_attributes.referer}
-              iconName="link-outline"
-            />
-          )}
-          {additional_attributes &&
-            additional_attributes.initiated_at &&
-            additional_attributes.initiated_at.timestamp && (
-              <ConversationDetailsItem
-                title={i18n.t('CONVERSATION_DETAILS.INITIATED_AT')}
-                value={additional_attributes.initiated_at.timestamp}
-                iconName="clock-outline"
-              />
-            )}
-        </View>
+        {this.renderAdditionalAttributes()}
       </SafeAreaView>
     );
   }

@@ -20,7 +20,7 @@ import CustomText from '../../components/Text';
 
 // eslint-disable-next-line react/prop-types
 const BackIcon = ({ style: { tintColor } }) => {
-  return <Icon name="arrow-ios-back-outline" color={tintColor} />;
+  return <Icon name="arrow-back-outline" color={tintColor} />;
 };
 
 const { Form } = t.form;
@@ -57,7 +57,7 @@ const ForgotPasswordComponent = ({ eva, navigation }) => {
     fields: {
       email: {
         placeholder: '',
-        template: (props) => <TextInputField {...props} />,
+        template: props => <TextInputField {...props} />,
         keyboardType: 'email-address',
         error: i18n.t('FORGOT_PASSWORD.EMAIL_ERROR'),
         autoCapitalize: 'none',
@@ -70,7 +70,7 @@ const ForgotPasswordComponent = ({ eva, navigation }) => {
     },
   };
 
-  const isResettingPassword = useSelector((state) => state.auth.isResettingPassword);
+  const isResettingPassword = useSelector(state => state.auth.isResettingPassword);
 
   useEffect(() => {
     dispatch(resetAuth());
@@ -82,7 +82,7 @@ const ForgotPasswordComponent = ({ eva, navigation }) => {
 
   const renderLeftControl = () => <TopNavigationAction onPress={onBackPress} icon={BackIcon} />;
 
-  const onChange = (value) => {
+  const onChange = value => {
     setValues(value);
   };
 
@@ -123,7 +123,7 @@ const ForgotPasswordComponent = ({ eva, navigation }) => {
               type={LoginForm}
               options={options}
               value={values}
-              onChange={(value) => onChange(value)}
+              onChange={value => onChange(value)}
             />
 
             <View style={style.forgotButtonView}>

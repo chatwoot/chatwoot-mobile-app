@@ -12,15 +12,16 @@ import {
   UPDATE_NOTIFICATION_SETTINGS_ERROR,
 } from '../constants/actions';
 const initialState = {
-  installationUrl: null,
-  webSocketUrl: null,
-  isUrlSet: false,
-  isSettingUrl: false,
-  localeValue: 'en',
-  isLocaleSet: false,
-  notificationSettings: {},
-  isUpdating: false,
+  baseUrl: '',
   error: {},
+  installationUrl: null,
+  isLocaleSet: false,
+  isSettingUrl: false,
+  isUpdating: false,
+  isUrlSet: false,
+  localeValue: 'en',
+  notificationSettings: {},
+  webSocketUrl: null,
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -40,6 +41,7 @@ export default (state = initialState, action) => {
         isSettingUrl: false,
         isUrlSet: true,
         installationUrl: action.payload.installationUrl,
+        baseUrl: action.payload.baseUrl,
         webSocketUrl: action.payload.webSocketUrl,
         error: {},
       };
@@ -50,6 +52,7 @@ export default (state = initialState, action) => {
         isUrlSet: false,
         error: action.payload,
         installationUrl: null,
+        baseUrl: '',
       };
 
     case RESET_SETTINGS:

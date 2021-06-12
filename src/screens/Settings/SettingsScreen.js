@@ -46,7 +46,7 @@ const Settings = ({ eva: { theme, style } }) => {
   const dispatch = useDispatch();
   const [showWidget, toggleWidget] = useState(false);
   const navigation = useNavigation();
-  const user = useSelector((store) => store.auth.user);
+  const user = useSelector(store => store.auth.user);
   const availabilityStatus = user ? user.availability_status : '';
   const email = user ? user.email : '';
   const accounts = user ? user.accounts : [];
@@ -116,10 +116,10 @@ const Settings = ({ eva: { theme, style } }) => {
   let settingsMenu =
     accounts && accounts.length > 1
       ? SETTINGS_ITEMS
-      : SETTINGS_ITEMS.filter((e) => e.itemName !== 'switch-account');
+      : SETTINGS_ITEMS.filter(e => e.itemName !== 'switch-account');
 
   settingsMenu =
-    appName === 'Chatwoot' ? SETTINGS_ITEMS : SETTINGS_ITEMS.filter((e) => e.itemName !== 'help');
+    appName === 'Chatwoot' ? SETTINGS_ITEMS : SETTINGS_ITEMS.filter(e => e.itemName !== 'help');
 
   return (
     <SafeAreaView style={style.container}>
@@ -157,7 +157,7 @@ const Settings = ({ eva: { theme, style } }) => {
       <View style={style.appDescriptionView}>
         <CustomText style={style.appDescriptionText}>{`v${packageFile.version}`}</CustomText>
       </View>
-      {Config.CHATWOOT_WEBSITE_TOKEN && Config.CHATWOOT_BASE_URL && showWidget && (
+      {!!Config.CHATWOOT_WEBSITE_TOKEN && !!Config.CHATWOOT_BASE_URL && !!showWidget && (
         <ChatWootWidget
           websiteToken={Config.CHATWOOT_WEBSITE_TOKEN}
           locale="en"

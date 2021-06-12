@@ -11,7 +11,7 @@ import { GRAVATAR_URL } from 'constants/url';
 
 import { INBOX_IMAGES, PRESENCE_STATUS_COLORS } from '../constants';
 
-const styles = (theme) => ({
+const styles = theme => ({
   avatar: {
     alignSelf: 'center',
   },
@@ -96,7 +96,7 @@ const UserAvatar = ({
   availabilityStatus,
   eva: { style, theme },
 }) => {
-  const avatarUrl = !thumbnail.includes(GRAVATAR_URL) ? thumbnail : '';
+  const avatarUrl = thumbnail && !thumbnail.includes(GRAVATAR_URL) ? thumbnail : '';
   const [imageLoading, onLoadImage] = useState(false);
   const [imagePath, setImagePath] = useState(avatarUrl);
   return imagePath ? (

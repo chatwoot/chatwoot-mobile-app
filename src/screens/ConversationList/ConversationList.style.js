@@ -1,4 +1,4 @@
-const styles = (theme) => ({
+const styles = theme => ({
   container: {
     flex: 1,
     backgroundColor: theme['background-basic-color-1'],
@@ -21,7 +21,6 @@ const styles = (theme) => ({
   tabView: {
     height: '100%',
   },
-
   tabActiveTitle: {
     fontWeight: theme['font-regular'],
     fontSize: theme['font-size-small'],

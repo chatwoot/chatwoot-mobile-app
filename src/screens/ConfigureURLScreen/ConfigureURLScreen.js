@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-import { View, Image, SafeAreaView, Dimensions, Platform } from 'react-native';
+import { View, Image, SafeAreaView, Platform } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { withStyles } from '@ui-kitten/components';
 import t from 'tcomb-form-native';
@@ -43,7 +43,7 @@ const defaultProps = {
 };
 
 const ConfigureURLScreenComponent = ({ eva }) => {
-  const isSettingUrl = useSelector((state) => state.settings.isSettingUrl);
+  const isSettingUrl = useSelector(state => state.settings.isSettingUrl);
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const [values, setValues] = useState({
@@ -53,8 +53,8 @@ const ConfigureURLScreenComponent = ({ eva }) => {
   const options = {
     fields: {
       url: {
-        placeholder: 'Ex: app.chatwoot.com',
-        template: (props) => <TextInputField {...props} />,
+        placeholder: 'Eg: app.chatwoot.com',
+        template: props => <TextInputField {...props} />,
         error: i18n.t('CONFIGURE_URL.URL_ERROR'),
         autoCapitalize: 'none',
         autoCompleteType: false,
@@ -72,7 +72,7 @@ const ConfigureURLScreenComponent = ({ eva }) => {
     dispatch(resetSettings());
   }, [dispatch]);
 
-  const onChange = (value) => {
+  const onChange = value => {
     setValues(value);
   };
 
@@ -90,16 +90,16 @@ const ConfigureURLScreenComponent = ({ eva }) => {
       style={style.keyboardView}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       enabled>
-      <ScrollView
-        style={{
-          height: Dimensions.get('window').height,
-        }}>
+      <ScrollView contentContainerStyle={style.scrollView}>
         <View style={style.logoView}>
           <Image style={style.logo} source={images.URL} />
         </View>
 
         <View style={style.titleView}>
           <CustomText style={style.titleText}>{i18n.t('CONFIGURE_URL.ENTER_URL')}</CustomText>
+          <CustomText appearance="hint" style={style.subTitleText}>
+            {i18n.t('CONFIGURE_URL.DESCRIPTION')}
+          </CustomText>
         </View>
 
         <View style={style.formView}>
@@ -108,7 +108,7 @@ const ConfigureURLScreenComponent = ({ eva }) => {
             type={URLForm}
             options={options}
             value={values}
-            onChange={(value) => onChange(value)}
+            onChange={value => onChange(value)}
           />
           <View style={style.nextButtonView}>
             <LoaderButton

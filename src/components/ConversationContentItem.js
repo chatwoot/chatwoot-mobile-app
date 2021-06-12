@@ -6,11 +6,11 @@ import { withStyles, Icon } from '@ui-kitten/components';
 import CustomText from './Text';
 import { MESSAGE_TYPES } from '../constants';
 
-const UndoIcon = (style) => {
+const UndoIcon = style => {
   return <Icon {...style} name="undo" />;
 };
 
-const styles = (theme) => ({
+const styles = theme => ({
   itemView: {
     flex: 1,
     flexDirection: 'row',
@@ -18,16 +18,16 @@ const styles = (theme) => ({
   messageActive: {
     fontSize: theme['text-primary-size'],
     fontWeight: theme['font-medium'],
-    paddingTop: 6,
+    paddingTop: 4,
   },
   messageNotActive: {
     fontSize: theme['text-primary-size'],
-    paddingTop: 6,
+    paddingTop: 4,
     color: theme['text-light-color'],
   },
   undoIcon: {
-    width: 16,
-    height: 16,
+    width: 14,
+    height: 14,
     marginTop: 6,
   },
 });

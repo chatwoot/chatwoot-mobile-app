@@ -20,7 +20,7 @@ import { showToast } from '../helpers/ToastHelper';
 import I18n from '../i18n';
 import { URL_TYPE } from '../constants/url';
 
-export const setLocale = (value) => (dispatch) => {
+export const setLocale = value => dispatch => {
   dispatch({ type: SET_LOCALE, payload: value });
 };
 
@@ -36,15 +36,15 @@ export const getInstalledVersion = () => async (dispatch, getState) => {
   } catch (error) {}
 };
 
-export const setInstallationUrl = ({ url }) => async (dispatch) => {
+export const setInstallationUrl = ({ url }) => async dispatch => {
   try {
-    const BASE_URL = `${URL_TYPE}${url}/`;
+    const INSTALLATION_URL = `${URL_TYPE}${url}/`;
     const WEB_SOCKET_URL = `wss://${url}/cable`;
     dispatch({ type: SET_URL });
-    await axios.get(`${BASE_URL}api`);
+    await axios.get(`${INSTALLATION_URL}api`);
     dispatch({
       type: SET_URL_SUCCESS,
-      payload: { installationUrl: BASE_URL, webSocketUrl: WEB_SOCKET_URL },
+      payload: { installationUrl: INSTALLATION_URL, webSocketUrl: WEB_SOCKET_URL, baseUrl: url },
     });
 
     RootNavigation.navigate('Login');
@@ -54,7 +54,7 @@ export const setInstallationUrl = ({ url }) => async (dispatch) => {
   }
 };
 
-export const getNotificationSettings = () => async (dispatch) => {
+export const getNotificationSettings = () => async dispatch => {
   dispatch({ type: GET_NOTIFICATION_SETTINGS });
   try {
     const response = await APIHelper.get('notification_settings');
@@ -68,7 +68,7 @@ export const getNotificationSettings = () => async (dispatch) => {
   }
 };
 
-export const updateNotificationSettings = (preferences) => async (dispatch) => {
+export const updateNotificationSettings = preferences => async dispatch => {
   dispatch({ type: UPDATE_NOTIFICATION_SETTINGS });
   try {
     const response = await APIHelper.patch('notification_settings', preferences);
@@ -82,6 +82,6 @@ export const updateNotificationSettings = (preferences) => async (dispatch) => {
   }
 };
 
-export const resetSettings = () => async (dispatch) => {
+export const resetSettings = () => async dispatch => {
   dispatch({ type: RESET_SETTINGS });
 };

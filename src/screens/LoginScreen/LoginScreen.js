@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Image, Dimensions, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import { withStyles } from '@ui-kitten/components';
 import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
@@ -60,7 +60,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
     fields: {
       email: {
         placeholder: '',
-        template: (props) => <TextInputField {...props} />,
+        template: props => <TextInputField {...props} />,
         keyboardType: 'email-address',
         error: i18n.t('LOGIN.EMAIL_ERROR'),
 
@@ -73,7 +73,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
       },
       password: {
         placeholder: '',
-        template: (props) => <TextInputField {...props} />,
+        template: props => <TextInputField {...props} />,
         keyboardType: 'default',
         autoCapitalize: 'none',
         autoCompleteType: false,
@@ -87,8 +87,9 @@ const LoginScreenComponent = ({ navigation, eva }) => {
     },
   };
 
-  const isLoggingIn = useSelector((state) => state.auth.isLoggingIn);
-  const installationUrl = useSelector((state) => state.settings.installationUrl);
+  const isLoggingIn = useSelector(state => state.auth.isLoggingIn);
+  const installationUrl = useSelector(state => state.settings.installationUrl);
+  const baseUrl = useSelector(state => state.settings.baseUrl);
 
   useEffect(() => {
     dispatch(resetAuth());
@@ -97,7 +98,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
     }
   }, [installationUrl, navigation, dispatch]);
 
-  const onChange = (value) => {
+  const onChange = value => {
     setValues(value);
   };
 
@@ -118,17 +119,18 @@ const LoginScreenComponent = ({ navigation, eva }) => {
 
   return (
     <SafeAreaView style={style.keyboardView}>
-      <ScrollView
-        style={{
-          height: Dimensions.get('window').height,
-        }}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={style.logoView}>
           <Image style={style.logo} source={images.login} />
         </View>
         <View style={style.titleView}>
           <CustomText style={style.titleText}>{i18n.t('LOGIN.TITLE')}</CustomText>
+          {baseUrl ? (
+            <CustomText appearance="hint" style={style.subTitleText}>
+              {i18n.t('LOGIN.DESCRIPTION', { baseUrl })}
+            </CustomText>
+          ) : null}
         </View>
-
         <View style={style.contentView}>
           <View style={style.formView}>
             <Form
@@ -136,7 +138,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
               type={LoginForm}
               options={options}
               value={values}
-              onChange={(value) => onChange(value)}
+              onChange={value => onChange(value)}
             />
             <TouchableOpacity style={style.forgotView} onPress={() => navigate('ResetPassword')}>
               <CustomText style={style.textStyle}>{i18n.t('LOGIN.FORGOT_PASSWORD')}</CustomText>
@@ -153,7 +155,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
             </View>
           </View>
 
-          <View>
+          <View style={style.linksContainer}>
             <View style={style.accountView}>
               {appName === 'Chatwoot' && (
                 <>

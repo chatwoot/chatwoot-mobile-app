@@ -7,9 +7,9 @@ import { View, Text } from 'react-native';
 
 import i18n from '../i18n';
 
-const ConversationIcon = (style) => <Icon {...style} name="message-circle" />;
-const SettingsIcon = (style) => <Icon {...style} name="settings" />;
-const NotificationIcon = (style) => <Icon {...style} name="bell" />;
+const ConversationIcon = style => <Icon {...style} name="message-circle" />;
+const SettingsIcon = style => <Icon {...style} name="settings" />;
+const NotificationIcon = style => <Icon {...style} name="bell" />;
 
 const propTypes = {
   eva: PropTypes.shape({
@@ -22,12 +22,12 @@ const propTypes = {
 };
 
 const TabBarComponent = ({ eva, navigation, state }) => {
-  const changeTab = (index) => {
+  const changeTab = index => {
     const selectedTabRoute = state.routes[index];
     navigation.navigate(selectedTabRoute.name);
   };
 
-  const notification = useSelector((store) => store.notification);
+  const notification = useSelector(store => store.notification);
 
   const {
     data: {
@@ -63,33 +63,33 @@ const TabBarComponent = ({ eva, navigation, state }) => {
 
 TabBarComponent.propTypes = propTypes;
 
-export default withStyles(TabBarComponent, (theme) => ({
+export default withStyles(TabBarComponent, theme => ({
   tabBar: {
     borderTopWidth: 1,
     borderTopColor: theme['color-border'],
   },
 
-  badgeContainer: (unReadCount) => ({
+  badgeContainer: unReadCount => ({
     position: 'absolute',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
   }),
-  badgeWrapper: (unReadCount) => ({
+  badgeWrapper: unReadCount => ({
     padding: 2,
     borderRadius: unReadCount > 10 ? 20 : 18,
     backgroundColor: theme['color-basic-100'],
     left: unReadCount > 99 ? 14 : 10,
   }),
-  badgeView: (unReadCount) => ({
+  badgeView: unReadCount => ({
     borderRadius: unReadCount > 10 ? 20 : 18,
     minWidth: unReadCount > 10 ? 20 : 18,
     backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
   }),
-  badgeText: (unReadCount) => ({
+  badgeText: unReadCount => ({
     fontSize: theme['font-size-extra-small'],
     color: theme['color-basic-100'],
     paddingVertical: unReadCount > 10 ? 2 : 1,

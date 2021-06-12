@@ -9,11 +9,11 @@ import { messageStamp } from '../../../helpers/TimeHelper';
 import ChatAttachmentItem from './ChatAttachmentItem';
 import ChatMessageItem from './ChatMessageItem';
 
-const styles = (theme) => ({
+const styles = theme => ({
   message: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 6,
+    marginBottom: 4,
   },
 
   messageContainer: {

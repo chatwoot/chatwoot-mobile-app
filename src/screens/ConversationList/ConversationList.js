@@ -34,8 +34,8 @@ const LoaderData = new Array(24).fill(0);
 
 const renderItemLoader = () => <ConversationItemLoader />;
 
-const wait = (timeout) => {
-  return new Promise((resolve) => {
+const wait = timeout => {
+  return new Promise(resolve => {
     setTimeout(resolve, timeout);
   });
 };
@@ -132,7 +132,7 @@ class ConversationListComponent extends Component {
     const { onEndReachedCalledDuringMomentum } = this.state;
 
     if (!onEndReachedCalledDuringMomentum) {
-      await this.setState((state) => ({
+      await this.setState(state => ({
         pageNumber: state.pageNumber + 1,
       }));
 
@@ -143,7 +143,7 @@ class ConversationListComponent extends Component {
     }
   };
 
-  onSelectConversation = (item) => {
+  onSelectConversation = item => {
     const { messages, meta } = item;
 
     const conversationId = item.id;
@@ -168,7 +168,7 @@ class ConversationListComponent extends Component {
     });
   };
 
-  onChangeTab = async (index) => {
+  onChangeTab = async index => {
     const tabName = index === 0 ? 'Mine' : index === 1 ? 'Unassgined' : 'All';
     captureEvent({ eventName: `Conversation tab ${tabName} clicked` });
     await this.setState({
@@ -222,7 +222,7 @@ class ConversationListComponent extends Component {
           keyboardShouldPersistTaps="handled"
           data={uniqueConversations}
           renderItem={this.renderItem}
-          ref={(ref) => {
+          ref={ref => {
             this.myFlatListRef = ref;
           }}
           onEndReached={this.onEndReached.bind(this)}
@@ -233,7 +233,7 @@ class ConversationListComponent extends Component {
             });
           }}
           ListFooterComponent={this.renderMoreLoader}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={item => item.id.toString()}
         />
       </Layout>
     );
@@ -316,8 +316,7 @@ class ConversationListComponent extends Component {
         <TabView
           selectedIndex={selectedIndex}
           indicatorStyle={style.tabViewIndicator}
-          onSelect={this.onChangeTab}
-          tabBarStyle={style.tabBar}>
+          onSelect={this.onChangeTab}>
           {this.renderTab({
             tabIndex: 0,
             selectedIndex,

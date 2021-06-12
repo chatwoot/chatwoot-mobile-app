@@ -54,7 +54,7 @@ const ConversationItemComponent = ({
   } = item;
   const inboxName = getInboxName({ inboxes, inboxId });
 
-  const unread_count = getUnreadCount(item);
+  const unreadCount = getUnreadCount(item);
 
   const lastMessage = findLastMessage({ messages });
   const { content, created_at, attachments, message_type } = lastMessage;
@@ -76,6 +76,8 @@ const ConversationItemComponent = ({
           <UserAvatar
             thumbnail={thumbnail}
             userName={name}
+            size={40}
+            fontSize={14}
             defaultBGColor={theme['color-primary-default']}
             channel={channel}
             isActive={isActive}
@@ -85,7 +87,7 @@ const ConversationItemComponent = ({
         <View>
           <View style={style.labelView}>
             <CustomText
-              style={unread_count ? style.conversationUserActive : style.conversationUserNotActive}>
+              style={unreadCount ? style.conversationUserActive : style.conversationUserNotActive}>
               {name.length < 26 ? `${name}` : `${name.substring(0, 20)}...`}
             </CustomText>
           </View>
@@ -95,13 +97,13 @@ const ConversationItemComponent = ({
               <ConversationAttachmentItem
                 style={style}
                 theme={theme}
-                unReadCount={unread_count}
+                unReadCount={unreadCount}
                 attachment={attachments[0]}
               />
             ) : (
               <ConversationContentItem
                 content={content}
-                unReadCount={unread_count}
+                unReadCount={unreadCount}
                 messageType={message_type}
               />
             )
@@ -118,14 +120,14 @@ const ConversationItemComponent = ({
           </View>
         </View>
       </View>
-      <View>
+      <View style={style.timestampContainer}>
         <View>
           <CustomText style={style.timeStamp}>{dynamicTime({ time: created_at })}</CustomText>
         </View>
-        {unread_count ? (
+        {unreadCount ? (
           <View style={style.badgeView}>
             <View style={style.badge}>
-              <Text style={style.badgeCount}>{unread_count.toString()}</Text>
+              <Text style={style.badgeCount}>{unreadCount.toString()}</Text>
             </View>
           </View>
         ) : null}
@@ -134,10 +136,10 @@ const ConversationItemComponent = ({
   );
 };
 
-const styles = (theme) => ({
+const styles = theme => ({
   container: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
     paddingLeft: 16,
     paddingRight: 16,
@@ -150,18 +152,17 @@ const styles = (theme) => ({
   },
   itemView: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   conversationUserActive: {
     textTransform: 'capitalize',
     fontSize: theme['font-size-small'],
     fontWeight: theme['font-medium'],
-    paddingTop: 4,
   },
   conversationUserNotActive: {
     textTransform: 'capitalize',
     fontSize: theme['font-size-small'],
-    paddingTop: 4,
+    fontWeight: theme['font-medium'],
     color: theme['text-basic-color'],
   },
   avatarView: {
@@ -178,7 +179,6 @@ const styles = (theme) => ({
     bottom: 2,
     right: 2,
   },
-
   timeStamp: {
     color: theme['text-hint-color'],
     fontSize: theme['font-size-extra-extra-small'],
@@ -188,7 +188,7 @@ const styles = (theme) => ({
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
-    paddingTop: 16,
+    paddingTop: 8,
   },
   badge: {
     width: 16,
@@ -205,11 +205,11 @@ const styles = (theme) => ({
   },
   typingText: {
     color: theme['color-success-default'],
-    fontSize: theme['text-primary-size'],
-    fontWeight: theme['font-medium'],
+    fontSize: theme['font-size-small'],
     paddingTop: 4,
   },
   nameView: {
+    paddingTop: 4,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -217,14 +217,12 @@ const styles = (theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
   },
-
   conversationId: {
     color: theme['color-primary-default'],
     fontSize: theme['font-size-extra-extra-small'],
     fontWeight: theme['font-semi-bold'],
     borderRadius: 4,
     padding: 4,
-    marginTop: 4,
     backgroundColor: theme['color-background-inbox'],
   },
   channelText: {
@@ -232,10 +230,13 @@ const styles = (theme) => ({
     fontSize: theme['font-size-extra-extra-small'],
     fontWeight: theme['font-semi-bold'],
     borderRadius: 4,
-    marginTop: 4,
     marginLeft: 8,
     padding: 4,
     backgroundColor: theme['color-background-inbox'],
+  },
+  timestampContainer: {
+    marginTop: 4,
+    alignItems: 'flex-end',
   },
 });
 

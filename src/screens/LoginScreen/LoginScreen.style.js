@@ -2,12 +2,14 @@ import { Dimensions } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width;
 
-export default (theme) => ({
+export default theme => ({
   keyboardView: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
     backgroundColor: theme['background-basic-color-1'],
+  },
+  scrollView: {
+    flex: 1,
+    alignItems: 'center',
   },
   logoView: {
     alignItems: 'center',
@@ -16,12 +18,11 @@ export default (theme) => ({
   },
   logo: {
     width: deviceWidth * 0.2,
-    height: deviceWidth * 0.7,
+    height: deviceWidth * 0.5,
     aspectRatio: 2,
     resizeMode: 'contain',
   },
   titleView: {
-    marginTop: Dimensions.get('window').height * 0.01,
     paddingLeft: 40,
     paddingRight: 40,
   },
@@ -31,20 +32,23 @@ export default (theme) => ({
     fontSize: theme['font-size-large'],
     fontWeight: theme['font-medium'],
   },
-
+  subTitleText: {
+    textAlign: 'center',
+    fontSize: theme['font-size-small'],
+    lineHeight: 20,
+    marginVertical: 16,
+  },
   formView: {
     paddingLeft: 40,
     paddingRight: 40,
-    marginTop: Dimensions.get('window').height * 0.02,
+    marginTop: 16,
   },
-
   loginButtonView: {
     paddingTop: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
-
   loginButton: {
     flex: 1,
   },
@@ -53,7 +57,6 @@ export default (theme) => ({
     fontWeight: theme['font-medium'],
     fontSize: theme['font-size-large'],
   },
-
   separator: {
     color: theme['text-hint-color'],
   },
@@ -61,12 +64,14 @@ export default (theme) => ({
     flex: 1,
     alignItems: 'flex-end',
   },
-
   accountView: {
     paddingTop: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  linksContainer: {
+    paddingBottom: 64,
   },
   textStyle: {
     fontSize: theme['font-size-extra-small'],

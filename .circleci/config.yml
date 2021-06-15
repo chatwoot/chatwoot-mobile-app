@@ -4,7 +4,7 @@ orbs:
 jobs:
   test:
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:16
     steps:
       - checkout
       - node/install-packages:

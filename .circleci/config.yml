@@ -3,7 +3,7 @@ orbs:
   node: circleci/node@2.0.2
       
 jobs:
-  test:
+  build-and-test:
     docker:
       - image: circleci/node:12.5.0
     steps:
@@ -27,4 +27,4 @@ jobs:
 workflows:
   test_my_app:
     jobs:
-      - test
+      - build-and-test

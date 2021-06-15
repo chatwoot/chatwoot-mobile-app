@@ -3,9 +3,8 @@ orbs:
   node: circleci/node@2.0.2
 jobs:
   test:
-    executor:
-      name: node/default
-      tag: '13'
+    docker:
+      - image: circleci/node:10
     steps:
       - checkout
       - node/install-packages:

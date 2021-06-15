@@ -22,6 +22,7 @@ import HeaderBar from 'components/HeaderBar';
 import { getNotificationSettings } from 'actions/settings';
 import packageFile from '../../../package.json';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { captureEvent } from 'helpers/Analytics';
 
 const appName = DeviceInfo.getApplicationName();
 
@@ -51,13 +52,14 @@ const Settings = ({ eva: { theme, style } }) => {
   const accounts = user ? user.accounts : [];
   const avatar_url = user ? user.avatar_url : '';
   const name = user ? user.name : '';
+  const identifierHash = user ? user.identifier_hash : '';
 
   const userDetails = {
     identifier: email,
     name,
     avatar_url,
     email,
-    identifier_hash: Config.CHATWOOT_IDENTITY_VALIDATION || '',
+    identifier_hash: identifierHash,
   };
 
   const customAttributes = {
@@ -96,10 +98,12 @@ const Settings = ({ eva: { theme, style } }) => {
         navigation.navigate('NotificationPreference', { accounts });
         break;
       case 'chat_with_us':
+        captureEvent({ eventName: 'Opened help support button' });
         toggleWidget(true);
         break;
 
       case 'help':
+        captureEvent({ eventName: 'Opened help docs' });
         openURL({ URL: HELP_URL });
 
         break;

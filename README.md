@@ -55,9 +55,9 @@
 
 Feel free to send us feedback on [Twitter](https://twitter.com/chatwootapp) or [file an issue](https://github.com/chatwoot/chatwoot-mobile-app/issues).
 
-If you wish to contribute, please take a quick look at the [CONTRIBUTING.md](CONTRIBUTING.md) guide.
-
-If you want to self deploy the Chatwoot mobile app, please take a look at the [CUSTOM_RELEASE_GUIDE.md](CUSTOM_RELEASE_GUIDE.md) guide.
+If you wish to contribute, please take a quick look at the [CONTRIBUTING.md](https://www.chatwoot.com/docs/contributing-guide) and [SETUP_GUIDE.md](https://www.chatwoot.com/docs/contributing-guide/mobile-app/setup-guide).
+ 
+If you want to self deploy the Chatwoot mobile app, please take a look at the [CUSTOM_RELEASE_GUIDE.md](https://www.chatwoot.com/docs/contributing-guide/mobile-app/custom-release-guide) guide.
 
 If there's anything you'd like to chat about, please feel free to join our [Discord](https://discord.gg/cJXdrwS) chat!
 

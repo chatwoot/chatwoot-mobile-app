@@ -10,6 +10,7 @@ import { getTypingUsersText, getCustomerDetails } from 'helpers';
 import CustomText from 'components/Text';
 import { unAssignConversation, toggleConversationStatus } from 'actions/conversation';
 import ConversationAction from '../../ConversationAction/ConversationAction';
+import { captureEvent } from '../../../helpers/Analytics';
 
 const styles = (theme) => ({
   headerView: {
@@ -91,9 +92,11 @@ const ChatHeader = ({
       }
     }
     if (itemType === 'toggle_status') {
+      captureEvent({ eventName: 'Toggle conversation status' });
       dispatch(toggleConversationStatus({ conversationId }));
     }
     if (itemType === 'unassign') {
+      captureEvent({ eventName: 'Toggle conversation status' });
       dispatch(
         unAssignConversation({
           conversationId: conversationDetails.id,
@@ -108,6 +111,7 @@ const ChatHeader = ({
     conversationId,
   });
   const customerDetails = getCustomerDetails({ conversationDetails, conversationMetaDetails });
+
   return (
     <React.Fragment>
       <TopNavigation

@@ -13,6 +13,7 @@ import { MAXIMUM_FILE_UPLOAD_SIZE } from 'constants';
 import { showToast } from 'helpers/ToastHelper';
 import CannedResponses from './CannedResponses';
 import MentionUser from './MentionUser.js';
+import { captureEvent } from 'helpers/Analytics';
 const propTypes = {
   conversationId: PropTypes.number,
   eva: PropTypes.shape({
@@ -61,11 +62,13 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
   };
 
   const onCannedReponseSelect = (content) => {
+    captureEvent({ eventName: 'Canned response selected' });
     setFilteredCannedResponses([]);
     setMessage(content);
   };
 
   const onSelectAttachment = ({ attachement }) => {
+    captureEvent({ eventName: 'Attachement selected' });
     const { fileSize } = attachement;
     if (findFileSize(fileSize) <= MAXIMUM_FILE_UPLOAD_SIZE) {
       setAttachmentDetails(attachement);
@@ -79,6 +82,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
   };
 
   const togglePrivateMode = () => {
+    captureEvent({ eventName: 'Toggle private mode' });
     setPrivateMode(!isPrivate);
   };
 
@@ -88,6 +92,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
       '[@$1](mention://user/$2/$1)',
     );
     if (message || attachementDetails) {
+      captureEvent({ eventName: 'Messaged sent' });
       dispatch(
         sendMessage({
           conversationId,

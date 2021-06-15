@@ -1,9 +1,8 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useRef, useState, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Linking, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
-
 import messaging from '@react-native-firebase/messaging';
 import PropTypes from 'prop-types';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -32,6 +31,7 @@ import { handlePush } from './helpers/PushHelper';
 import { doDeepLinking } from './helpers/DeepLinking';
 import { resetConversation, getConversations } from './actions/conversation';
 import { withStyles } from '@ui-kitten/components';
+import { captureScreen } from './helpers/Analytics';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -119,6 +119,7 @@ const _handleOpenURL = (event) => {
 
 const App = ({ eva: { style } }) => {
   const dispatch = useDispatch();
+  const routeNameRef = useRef();
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const isUrlSet = useSelector((state) => state.settings.isUrlSet);
@@ -166,7 +167,18 @@ const App = ({ eva: { style } }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       enabled>
       <SafeAreaView style={style.container}>
-        <NavigationContainer ref={navigationRef}>
+        <NavigationContainer
+          ref={navigationRef}
+          onReady={() => (routeNameRef.current = navigationRef.current.getCurrentRoute().name)}
+          onStateChange={async () => {
+            const previousRouteName = routeNameRef.current;
+            const currentRouteName = navigationRef.current.getCurrentRoute().name;
+            if (previousRouteName !== currentRouteName) {
+              captureScreen({ screenName: currentRouteName });
+            }
+            // Save the current route name for later comparison
+            routeNameRef.current = currentRouteName;
+          }}>
           <Stack.Navigator
             initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'}
             headerMode={'none'}>

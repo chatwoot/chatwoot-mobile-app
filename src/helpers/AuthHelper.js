@@ -31,8 +31,8 @@ export const getUserDetails = async () => {
   try {
     const state = await store.getState();
     const {
-      user: { id: userId, account_id: accountId },
+      user: { id: userId, account_id: accountId, name, email },
     } = state.auth;
-    return { accountId, userId };
+    return { accountId, userId, name, email };
   } catch (error) {}
 };

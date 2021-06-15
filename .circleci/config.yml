@@ -1,6 +1,6 @@
 version: '2.1'
 orbs:
-  node: circleci/node@x.y
+  node: circleci/node:latest
 jobs:
   test:
     executor:

@@ -20,7 +20,7 @@
     "ERROR": "Url de instalación inválida"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
+    "TITLE": "Inicia sesión en tu cuenta",
     "EMAIL": "Email",
     "PASSWORD": "Contraseña",
     "EMAIL_ERROR": "Introduce un email válido",
@@ -41,7 +41,7 @@
     "RESET_HERE": "Restablecer contraseña",
     "HEADER_TITLE": "Restablecer contraseña",
     "TITLE": "¿Olvidaste tu contraseña?",
-    "SUB_TITLE": "Don't worry! We got your back"
+    "SUB_TITLE": "¡No te preocupes! Te cubrimos las espaldas"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversaciones",
@@ -59,11 +59,11 @@
     "ALL_CONVERSATION_LOADED": "Todas las conversaciones cargadas",
     "RESOLVE": "Resolver conversación",
     "RE_OPEN": "Resolver conversación",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "ASSIGN": "Asignar conversación",
+    "FILE_SIZE_LIMIT": "El archivo supera el límite de 5MB de archivos adjuntos",
     "CANCEL": "Cancelar",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "PRIVATE_MSG_INPUT": "Esto será visible sólo para los agentes",
+    "UN_ASSIGN": "Desasignar conversación"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtro de conversación",
@@ -79,57 +79,62 @@
     "AVAILABILITY": "Disponible",
     "NOTIFICATION": "Preferencias de Notificación",
     "HELP": "Ayuda",
-    "CHAT_WITH_US": "Chat with Us",
+    "CHAT_WITH_US": "Chatea con nosotros",
     "LOG_OUT": "Cerrar sesión",
-    "SWITCH_ACCOUNT": "Switch Account",
-    "CHANGE_LANGUAGE": "Change Language",
+    "SWITCH_ACCOUNT": "Cambiar de cuenta",
+    "CHANGE_LANGUAGE": "Cambiar idioma",
     "SUBMIT": "Enviar"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notificaciones",
     "EMPTY": "Aún no hay notificaciones.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
+    "EMPTY_MORE_TEXT": "Una vez que empieces a recibir notificaciones, aparecerán aquí.",
     "ALL_NOTIFICATION_LOADED": "Todas las notificaciones cargadas",
     "MARK_ALL": "Marcar todo como leído",
     "CANCEL": "Cancelar"
   },
   "AVAILABILITY": {
-    "ONLINE": "Online",
-    "BUSY": "Busy",
-    "OFFLINE": "Offline"
+    "ONLINE": "En línea",
+    "BUSY": "Ocupado",
+    "OFFLINE": "Desconectado"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
+    "TITLE": "Preferencias de notificación",
     "EMAIL": "Email",
     "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "CONVERSATION_CREATE_PUSH": "Enviar notificaciones push cuando se crea una nueva conversación",
+    "CONVERSATION_ASSIGNEE_PUSH": "Enviar notificaciones push cuando se me asigne una conversación",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Enviar notificaciones push cuando se crea un nuevo mensaje en una conversación asignada",
+    "CONVERSATION_CREATE_EMAIL": "Enviar notificaciones por email cuando se crea una nueva conversación",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Enviar notificaciones por email cuando se me ha asignado una conversación",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Enviar notificaciones por email cuando se crea un nuevo mensaje en una conversación asignada"
   },
   "CONVERSATION_DETAILS": {
-    "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Operating System",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "BROWSER": "Navegador",
+    "OPERATING_SYSTEM": "Sistema operativo",
+    "INITIATED_AT": "Iniciado a las",
+    "INITIATED_FROM": "Iniciado desde"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "Acciones"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Seleccionar agente"
   },
   "ERRORS": {
     "COMMON_ERROR": "No se pudo conectar al servidor Woot, por favor inténtalo de nuevo más tarde",
     "OfFLINE": "Debe conectarse a Wi-Fi o a una red móvil para conectarse de nuevo",
     "CANNOT_FETCH": "Hubo un error al recuperar la información, por favor inténtalo de nuevo",
     "AUTH": "Nombre de usuario / Contraseña incorrecto. Inténtalo de nuevo",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "NO_ACCOUNTS_MESSAGE": "No tienes acceso a ninguna cuenta de chatwoot"
   },
   "SUCCESS": {
     "AUTH": "Inicio de sesión exitoso"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "Server upgrade required",
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
   "EXIT": {
     "TITLE": "Salir",

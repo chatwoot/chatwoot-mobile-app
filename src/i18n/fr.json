@@ -131,6 +131,11 @@
   "SUCCESS": {
     "AUTH": "Connexion réussie"
   },
+  "SERVER_UPGRADE": {
+    "TITLE": "Server upgrade required",
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+  },
   "EXIT": {
     "TITLE": "Quitter",
     "SUBTITLE": "Voulez-vous vraiment quitter ?",

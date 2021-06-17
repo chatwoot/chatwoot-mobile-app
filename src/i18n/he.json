@@ -1,140 +1,145 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "ברוכים הבאים",
   "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Close"
+    "ERROR": "תקלה",
+    "ERROR_TITLE": "אירעה תקלה לא צפויה",
+    "REPORT_MESSAGE": "דיווחנו על כך לצוות שלנו! סגור את האפליקציה והפעל אותה מחדש שוב!",
+    "CLOSE": "סגור"
   },
   "FOOTER": {
-    "HOME": "Home",
-    "CONVERSATION": "Conversations",
-    "NOTIFICATION": "Notifications",
-    "SETTINGS": "Settings"
+    "HOME": "בית",
+    "CONVERSATION": "שיחות",
+    "NOTIFICATION": "התראות",
+    "SETTINGS": "הגדרות"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "URL_ERROR": "Enter a valid URL",
-    "CONNECT": "Connect",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "ENTER_URL": "קישור התקנה",
+    "URL_ERROR": "הזן URL חוקי",
+    "CONNECT": "התחבר",
+    "CHANGE_LANGUAGE": "שנה שפה",
+    "ERROR": "קישור התקנה לא חוקי"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "EMAIL": "Email",
-    "PASSWORD": "Password",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
-    "FORGOT_PASSWORD": "Forgot your password?",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "Create new account",
-    "SETTINGS": "Settings",
-    "CHANGE_LANGUAGE": "Change language",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "TITLE": "היכנס לחשבון שלך",
+    "EMAIL": "אימייל",
+    "PASSWORD": "סיסמה",
+    "EMAIL_ERROR": "הזן אימייל חוקי",
+    "PASSWORD_ERROR": "הזן סיסמה תקינה",
+    "LOGIN": "כניסה",
+    "FORGOT_PASSWORD": "שכחת את הסיסמה?",
+    "RESET_HERE": "אפס כאן",
+    "NO_ACCOUNT": "אין לך חשבון?",
+    "CREATE_ACCOUNT": "צור חשבון",
+    "SETTINGS": "הגדרות",
+    "CHANGE_LANGUAGE": "שנה שפה",
+    "TERMS": "תנאי שימוש",
+    "CHANGE_URL": "שנה כתובת URL"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "Please enter your email",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back"
+    "EMAIL": "הזן בבקשה את האימייל שלך",
+    "EMAIL_ERROR": "הזן אימייל תקף",
+    "RESET_HERE": "אפס את הסיסמה",
+    "HEADER_TITLE": "אפס את הסיסמה",
+    "TITLE": "שכחת את הסיסמה?",
+    "SUB_TITLE": "אל תדאג! אנחנו דואגים לך"
   },
   "CONVERSATION": {
-    "DEFAULT_HEADER_TITLE": "Conversations",
+    "DEFAULT_HEADER_TITLE": "שיחות",
     "MINE": "Mine",
-    "UN_ASSIGNED": "Unassigned",
-    "ALL": "All",
-    "EMPTY": "There are no active conversations in this group.",
-    "PICTURE_CONTENT": "Picture message",
-    "ATTACHMENT_CONTENT": "File Attachment",
-    "DOWNLOAD": "Download",
-    "TODAY": "Today",
-    "YESTERDAY": "Yesterday",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "RESOLVE": "Resolve conversation",
-    "RE_OPEN": "Reopen conversation",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "CANCEL": "Cancel",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "UN_ASSIGNED": "לא הוקצתה",
+    "ALL": "הכל",
+    "EMPTY": "אין שיחות פעילות בקבוצה הזו.",
+    "PICTURE_CONTENT": "הודעת תמונה",
+    "ATTACHMENT_CONTENT": "קובץ מצורף",
+    "DOWNLOAD": "הורד",
+    "TODAY": "היום",
+    "YESTERDAY": "אתמול",
+    "TYPE_MESSAGE": "כתוב הודעה",
+    "TYPING": "מקליד",
+    "ALL_CONVERSATION_LOADED": "כל השיחות נטענו",
+    "RESOLVE": "פתור את השיחה",
+    "RE_OPEN": "פתח מחדש את השיחה",
+    "ASSIGN": "הקצה שיחה",
+    "FILE_SIZE_LIMIT": "הקובץ עובר את מגבלת 5MB לקבצים מצורפים",
+    "CANCEL": "ביטול",
+    "PRIVATE_MSG_INPUT": "זה יהיה גלוי רק לסוכנים",
+    "UN_ASSIGN": "שיחה שלא הוקצתה"
   },
   "FILTER": {
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
-    "OPEN": "Open",
-    "RESOLVED": "Resolved",
-    "BOT": "Bot",
-    "SUBMIT": "Submit"
+    "HEADER_TITLE": "סינון שיחות",
+    "CHOOSE_INBOX": "בחר בתיבת דואר נכנס",
+    "CHOOSE_STATUS": "סטטוס שיחה",
+    "OPEN": "פתח",
+    "RESOLVED": "נפתרה",
+    "BOT": "בוט",
+    "SUBMIT": "שלח"
   },
   "SETTINGS": {
-    "HEADER_TITLE": "Settings",
-    "AVAILABILITY": "Availability",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "Logout",
-    "SWITCH_ACCOUNT": "Switch Account",
-    "CHANGE_LANGUAGE": "Change Language",
-    "SUBMIT": "Submit"
+    "HEADER_TITLE": "הגדרות",
+    "AVAILABILITY": "זמינות",
+    "NOTIFICATION": "הגדרות התראות",
+    "HELP": "עזרה",
+    "CHAT_WITH_US": "שוחח איתנו",
+    "LOG_OUT": "התנתק",
+    "SWITCH_ACCOUNT": "החלף חשבון",
+    "CHANGE_LANGUAGE": "שנה שפה",
+    "SUBMIT": "שלח"
   },
   "NOTIFICATION": {
-    "HEADER_TITLE": "Notifications",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
-    "CANCEL": "Cancel"
+    "HEADER_TITLE": "התראות",
+    "EMPTY": "אין עדיין התראות.",
+    "EMPTY_MORE_TEXT": "ברגע שתתחיל לקבל התראות, הן יופיעו כאן.",
+    "ALL_NOTIFICATION_LOADED": "כל ההתראות נטענו",
+    "MARK_ALL": "סמן הכל כנקרא",
+    "CANCEL": "ביטול"
   },
   "AVAILABILITY": {
-    "ONLINE": "Online",
-    "BUSY": "Busy",
-    "OFFLINE": "Offline"
+    "ONLINE": "מחובר",
+    "BUSY": "עסוק",
+    "OFFLINE": "לא מחובר"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
-    "EMAIL": "Email",
-    "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "TITLE": "הגדרות התראות",
+    "EMAIL": "אימייל",
+    "PUSH": "התראות פוש",
+    "CONVERSATION_CREATE_PUSH": "שלח התראת פוש כאשר נפתחת שיחה חדשה",
+    "CONVERSATION_ASSIGNEE_PUSH": "שלח התראת פוש כאשר שיחה מוקצית עבורי",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "שלח התראת פוש כאשר יש הודעה חדשה בשיחה המוקצית עבורי",
+    "CONVERSATION_CREATE_EMAIL": "שלח התראה באימייל כאשר נפתחת שיחה חדשה",
+    "CONVERSATION_ASSIGNEE_EMAIL": "שלח התראה באימייל כאשר שיחה מוקצית עבורי",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "שלח התראה באימייל כאשר יש הודעה חדשה בשיחה המוקצית עבורי"
   },
   "CONVERSATION_DETAILS": {
-    "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Operating System",
+    "BROWSER": "דפדפן",
+    "OPERATING_SYSTEM": "מערכת הפעלה",
     "INITIATED_AT": "Initiated at",
     "INITIATED_FROM": "Initiated from"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "פעולות"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "בחר סוכן"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
-    "AUTH": "Username / Password Incorrect. Please try again",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "COMMON_ERROR": "לא ניתן להתחבר לשרת Woot, נסה שוב מאוחר יותר",
+    "OfFLINE": "עליך להתחבר ל- Wi-Fi או לרשת סלולרית כדי להתחבר מחדש",
+    "CANNOT_FETCH": "אירעה שגיאה בניסיון לקבל את המידע, נסה שוב",
+    "AUTH": "שם משתמש / סיסמה שגויים. נסה שוב",
+    "NO_ACCOUNTS_MESSAGE": "אין לך גישה לשום חשבון chatwoot"
   },
   "SUCCESS": {
-    "AUTH": "Login Successful"
+    "AUTH": "נכנסת בהצלחה"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "Server upgrade required",
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
-    "CANCEL": "Cancel",
-    "OK": "Ok"
+    "TITLE": "יציאה",
+    "SUBTITLE": "האם אתה בטוח שאתה רוצה לסגור את התכנה?",
+    "CANCEL": "ביטול",
+    "OK": "אישור"
   }
 }

@@ -26,17 +26,17 @@ const propTypes = {
 const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) => {
   const [isPrivate, setPrivateMode] = useState(false);
   const [message, setMessage] = useState('');
-  const agents = useSelector((state) => state.agent.data);
-  const verifiedAgents = agents.filter((agent) => agent.confirmed);
+  const agents = useSelector(state => state.agent.data);
+  const verifiedAgents = agents.filter(agent => agent.confirmed);
   const [filteredCannedResponses, setFilteredCannedResponses] = useState([]);
-  const [attachementDetails, setAttachmentDetails] = useState(null);
+  const [attachmentDetails, setAttachmentDetails] = useState(null);
   const dispatch = useDispatch();
 
-  const onNewMessageChange = (text) => {
+  const onNewMessageChange = text => {
     setMessage(text);
     if (text.charAt(0) === '/') {
       const query = text.substring(1).toLowerCase();
-      const responses = cannedResponses.filter((item) => item.title.toLowerCase().includes(query));
+      const responses = cannedResponses.filter(item => item.title.toLowerCase().includes(query));
       if (responses.length) {
         showCannedResponses({ responses });
       } else {
@@ -61,7 +61,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
     dispatch(toggleTypingStatus({ conversationId, typingStatus: 'on' }));
   };
 
-  const onCannedReponseSelect = (content) => {
+  const onCannedReponseSelect = content => {
     captureEvent({ eventName: 'Canned response selected' });
     setFilteredCannedResponses([]);
     setMessage(content);
@@ -91,14 +91,14 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
       /@\[([\w\d.-]+)\]\((\d+)\)/g,
       '[@$1](mention://user/$2/$1)',
     );
-    if (message || attachementDetails) {
+    if (message || attachmentDetails) {
       captureEvent({ eventName: 'Messaged sent' });
       dispatch(
         sendMessage({
           conversationId,
           message: updatedMessage,
           isPrivate,
-          file: attachementDetails,
+          file: attachmentDetails,
         }),
       );
 
@@ -117,7 +117,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
       <View>
         {verifiedAgents
           // eslint-disable-next-line react/prop-types
-          .filter((one) => one.name.toLocaleLowerCase().includes(keyword.toLocaleLowerCase()))
+          .filter(one => one.name.toLocaleLowerCase().includes(keyword.toLocaleLowerCase()))
           .map((item, index) => (
             <MentionUser
               name={item.name}
@@ -135,9 +135,9 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
 
   return (
     <React.Fragment>
-      {attachementDetails && (
+      {attachmentDetails && (
         <AttachmentPreview
-          attachementDetails={attachementDetails}
+          attachmentDetails={attachmentDetails}
           onRemoveAttachment={onRemoveAttachment}
         />
       )}
@@ -179,21 +179,20 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
             <View style={style.privateNoteView}>
               <Icon
                 name="lock-outline"
-                width={24}
-                height={24}
+                width={32}
+                height={32}
                 fill={isPrivate ? theme['color-primary-default'] : theme['text-hint-color']}
                 onPress={togglePrivateMode}
               />
             </View>
           </View>
-          <View style={style.spacerView} />
           <View style={style.sendButtonView}>
             <Icon
               name="paper-plane"
               width={32}
               height={32}
               fill={
-                !(!message && !attachementDetails)
+                !(!message && !attachmentDetails)
                   ? theme['color-primary-default']
                   : theme['text-hint-color']
               }
@@ -206,7 +205,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
   );
 };
 
-const styles = (theme) => ({
+const styles = theme => ({
   replyView: {
     padding: 8,
     backgroundColor: theme['background-basic-color-1'],
@@ -220,15 +219,16 @@ const styles = (theme) => ({
     borderTopWidth: 1,
   },
   inputView: {
-    fontSize: theme['text-primary-size'],
+    fontSize: theme['font-size-medium'],
     color: theme['text-basic-color'],
     paddingHorizontal: 8,
-    paddingVertical: 8,
-    // maxHeight: 256,
+    paddingVertical: 16,
     textAlignVertical: 'top',
   },
   buttonViews: {
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 4,
   },
   attachIconView: {
@@ -238,9 +238,6 @@ const styles = (theme) => ({
   },
   privateNoteView: {
     paddingLeft: 8,
-  },
-  spacerView: {
-    flexGrow: 2,
   },
   sendButtonView: {
     flexDirection: 'row',

@@ -17,4 +17,3 @@ export function checkServerSupport({ installedVersion, userRole }) {
     }
   }
 }
- 

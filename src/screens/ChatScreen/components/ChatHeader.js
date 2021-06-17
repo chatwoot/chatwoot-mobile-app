@@ -12,7 +12,7 @@ import { unAssignConversation, toggleConversationStatus } from 'actions/conversa
 import ConversationAction from '../../ConversationAction/ConversationAction';
 import { captureEvent } from '../../../helpers/Analytics';
 
-const styles = (theme) => ({
+const styles = theme => ({
   headerView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -26,7 +26,7 @@ const styles = (theme) => ({
   headerTitle: {
     textTransform: 'capitalize',
     fontWeight: theme['font-semi-bold'],
-    fontSize: theme['font-size-large'],
+    fontSize: theme['font-size-medium'],
   },
   subHeaderTitle: {
     fontSize: theme['font-size-extra-small'],
@@ -34,17 +34,19 @@ const styles = (theme) => ({
     paddingTop: 4,
     paddingLeft: 4,
   },
+  chatHeader: {
+    borderBottomWidth: 1,
+    borderBottomColor: theme['color-border'],
+  },
 });
 
-const BackIcon = (style) => (
-  <Icon {...style} name="arrow-ios-back-outline" height={24} width={24} />
-);
+const BackIcon = style => <Icon {...style} name="arrow-back-outline" height={40} width={24} />;
 
-const MenuIcon = (style) => {
-  return <Icon {...style} name="more-vertical" height={24} width={24} />;
+const MenuIcon = style => {
+  return <Icon {...style} name="more-vertical" height={40} width={20} />;
 };
 
-const BackAction = (props) => <TopNavigationAction {...props} icon={BackIcon} />;
+const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
 
 const propTypes = {
   eva: PropTypes.shape({
@@ -115,6 +117,7 @@ const ChatHeader = ({
   return (
     <React.Fragment>
       <TopNavigation
+        style={style.chatHeader}
         title={() => (
           <TouchableOpacity
             style={style.headerView}
@@ -124,6 +127,8 @@ const ChatHeader = ({
               <UserAvatar
                 style={style.avatarView}
                 userName={customerDetails.name}
+                size={40}
+                fontSize={14}
                 thumbnail={customerDetails.thumbnail}
                 defaultBGColor={theme['color-primary-default']}
                 channel={customerDetails.channel}
@@ -165,5 +170,5 @@ const ChatHeader = ({
 
 ChatHeader.propTypes = propTypes;
 
-const ChatHeaderItem = withStyles(ChatHeader, styles);
+const ChatHeaderItem = React.memo(withStyles(ChatHeader, styles));
 export default ChatHeaderItem;

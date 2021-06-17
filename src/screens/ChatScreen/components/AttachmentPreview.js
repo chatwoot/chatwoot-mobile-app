@@ -5,7 +5,7 @@ import { Icon, withStyles } from '@ui-kitten/components';
 import CustomText from '../../../components/Text';
 import { formatBytes, isTypeImage } from '../../../helpers/FileHelper';
 
-const styles = (theme) => ({
+const styles = theme => ({
   preview: {
     flex: 1,
     flexDirection: 'row',
@@ -27,7 +27,7 @@ const styles = (theme) => ({
 });
 
 const propTypes = {
-  attachementDetails: PropTypes.shape({
+  attachmentDetails: PropTypes.shape({
     uri: PropTypes.string,
     fileName: PropTypes.string,
     type: PropTypes.string,
@@ -40,8 +40,8 @@ const propTypes = {
   onRemoveAttachment: PropTypes.func,
 };
 
-const AttachmentPreview = ({ attachementDetails, eva: { style, theme }, onRemoveAttachment }) => {
-  const { uri, fileName, fileSize, type } = attachementDetails;
+const AttachmentPreview = ({ attachmentDetails, eva: { style, theme }, onRemoveAttachment }) => {
+  const { uri, fileName, fileSize, type } = attachmentDetails;
   const formattedFileSize = formatBytes(fileSize, 0);
   return (
     <View style={style.preview}>

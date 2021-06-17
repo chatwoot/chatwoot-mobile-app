@@ -1,6 +1,6 @@
 {
   "strict": {
-    "text-font-family": "Inter-Regular"
+    "text-font-family": "System"
   },
   "components": {
     "Text": {
@@ -36,31 +36,31 @@
           "variantGroups": {
             "weight": {
               "300": {
-                "fontFamily": "Inter-Light",
+                "fontFamily": "System",
                 "fontWeight": "300"
               },
               "400": {
-                "fontFamily": "Inter-Regular",
+                "fontFamily": "System",
                 "fontWeight": "400"
               },
               "500": {
-                "fontFamily": "Inter-Medium",
+                "fontFamily": "System",
                 "fontWeight": "500"
               },
               "600": {
-                "fontFamily": "Inter-Semibold",
+                "fontFamily": "System",
                 "fontWeight": "600"
               },
               "700": {
-                "fontFamily": "Inter-Bold",
+                "fontFamily": "System",
                 "fontWeight": "700"
               },
               "800": {
-                "fontFamily": "Inter-Bold",
+                "fontFamily": "System",
                 "fontWeight": "800"
               },
               "900": {
-                "fontFamily": "Inter-Bold",
+                "fontFamily": "System",
                 "fontWeight": "900"
               }
             }

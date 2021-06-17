@@ -4,7 +4,7 @@ import { withStyles } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import CustomText from '../../../components/Text';
 
-const styles = (theme) => ({
+const styles = theme => ({
   mainView: {
     flex: 1,
     flexDirection: 'row',
@@ -16,11 +16,6 @@ const styles = (theme) => ({
     padding: 8,
     borderRadius: 8,
     backgroundColor: theme['color-background-date'],
-    elevation: 4,
-    shadowOffset: { width: 5, height: 5 },
-    shadowColor: 'grey',
-    shadowOpacity: 0.5,
-    shadowRadius: 10,
   },
   text: {
     fontSize: theme['font-size-extra-small'],

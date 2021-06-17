@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 
 import AttachmentActionItem from './AttachmentActionItem';
 
-const styles = (theme) => ({
+const styles = theme => ({
   button: {
     paddingHorizontal: 0,
     paddingVertical: 0,
@@ -39,14 +39,14 @@ const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment 
     }, 10);
   };
   const openCamera = () => {
-    launchCamera(imagePickerOptions, (response) => {
+    launchCamera(imagePickerOptions, response => {
       if (response.uri) {
         onSelectAttachment({ attachement: response });
       }
     });
   };
   const openGallery = () => {
-    launchImageLibrary(imagePickerOptions, (response) => {
+    launchImageLibrary(imagePickerOptions, response => {
       if (response.uri) {
         onSelectAttachment({ attachement: response });
       }
@@ -93,14 +93,17 @@ const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment 
     <React.Fragment>
       <Icon
         name="attach-outline"
-        width={24}
-        height={24}
+        width={32}
+        height={32}
         onPress={handleChoosePhoto}
         isAttachmentMode
         fill={theme['text-hint-color']}
       />
-
-      <ActionSheet ref={actionSheetRef} gestureEnabled defaultOverlayOpacity={0.3}>
+      <ActionSheet
+        openAnimationSpeed={40}
+        ref={actionSheetRef}
+        gestureEnabled
+        defaultOverlayOpacity={0.6}>
         <AttachmentActionItem
           text="Camera"
           iconName="camera-outline"

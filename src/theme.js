@@ -109,7 +109,7 @@ export const theme = {
   'back-drop-color': 'rgba(0, 0, 0, 0.5)',
   // Text color
   'text-primary-size': 14,
-
+  'input-font-size': 16,
   // Font Weight
   'font-thin': '100',
   'font-ultra-light': '200',

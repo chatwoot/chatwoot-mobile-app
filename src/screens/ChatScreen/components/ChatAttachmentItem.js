@@ -11,76 +11,75 @@ import { messageStamp } from 'helpers/TimeHelper';
 import CustomText from 'components/Text';
 import i18n from 'i18n';
 
-const LockIcon = (style) => {
+const LockIcon = style => {
   return <Icon {...style} name="lock" />;
 };
 
-const styles = (theme) => ({
-  fileViewRight: {
-    flexDirection: 'row',
+const styles = theme => ({
+  fileView: {
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'center',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderBottomLeftRadius: 8,
-    borderTopLeftRadius: 8,
-    maxWidth: Dimensions.get('window').width - 120,
-    backgroundColor: theme['color-primary-default'],
-    elevation: 1,
+    maxWidth: Dimensions.get('window').width - 40,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
   },
-
+  fileViewRight: {
+    backgroundColor: theme['color-primary-default'],
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 4,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 4,
+  },
   fileViewLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderBottomRightRadius: 8,
-    borderTopRightRadius: 8,
-    maxWidth: Dimensions.get('window').width - 120,
     backgroundColor: theme['background-basic-color-1'],
-    elevation: 1,
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 8,
+    borderColor: theme['color-border'],
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 8,
+    borderWidth: 1,
   },
   imageViewLeft: {
-    borderRadius: 8,
+    backgroundColor: theme['background-basic-color-1'],
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 8,
+    borderColor: theme['color-border'],
+    borderTopLeftRadius: 4,
     borderTopRightRadius: 8,
-    left: -4,
-    backgroundColor: theme['color-primary-default'],
-    padding: 2,
+    borderWidth: 1,
+    padding: 4,
   },
-
   imageViewRight: {
-    borderRadius: 8,
-    borderTopLeftRadius: 8,
-    left: 4,
-    padding: 2,
     backgroundColor: theme['color-primary-default'],
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 4,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 4,
+    padding: 4,
   },
   privateMessageContainer: {
     backgroundColor: theme['color-background-private'],
-    color: theme['text-basic-color'],
-    borderWidth: 1,
     borderColor: theme['color-border-activity'],
+    borderWidth: 1,
+    color: theme['text-basic-color'],
     paddingTop: 8,
   },
   imageLoader: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    opacity: 0.7,
-    justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
     borderTopLeftRadius: 8,
+    bottom: 0,
+    justifyContent: 'center',
+    left: 0,
+    opacity: 0.7,
+    position: 'absolute',
+    right: 0,
+    top: 0,
   },
-
   image: {
     height: deviceHeight / 5,
     width: deviceWidth / 2,
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
     alignSelf: 'center',
   },
   fileAttachmentContainer: {
@@ -92,11 +91,7 @@ const styles = (theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 8,
-  },
-  attachmentTexView: {
-    alignItems: 'flex-start',
-    justifyContent: 'center',
+    paddingRight: 16,
   },
   fileAttachmentView: {
     flexDirection: 'row',
@@ -192,8 +187,8 @@ const propTypes = {
   created_at: PropTypes.number,
 };
 
-const FileIcon = (style) => {
-  return <Icon {...style} name="file-text-outline" width={32} height={32} />;
+const FileIcon = style => {
+  return <Icon {...style} name="file-text-outline" width={24} height={24} />;
 };
 
 const ChatAttachmentItemComponent = ({
@@ -255,7 +250,8 @@ const ChatAttachmentItemComponent = ({
           </View>
         </TouchableOpacity>
       ) : (
-        <View style={type === 'outgoing' ? style.fileViewRight : style.fileViewLeft}>
+        <View
+          style={[type === 'outgoing' ? style.fileViewRight : style.fileViewLeft, style.fileView]}>
           <View style={style.fileAttachmentContainer}>
             <View style={style.fileAttachmentView}>
               <View style={style.attachmentIconView}>
@@ -265,7 +261,7 @@ const ChatAttachmentItemComponent = ({
                   }
                 />
               </View>
-              <View style={style.attachmentTexView}>
+              <View style={style.attachmentTextView}>
                 <CustomText
                   style={type === 'outgoing' ? style.filenameRightText : style.filenameLeftText}>
                   {fileName.length < 25
@@ -289,5 +285,5 @@ const ChatAttachmentItemComponent = ({
 
 ChatAttachmentItemComponent.propTypes = propTypes;
 
-const ChatAttachmentItem = withStyles(ChatAttachmentItemComponent, styles);
+const ChatAttachmentItem = React.memo(withStyles(ChatAttachmentItemComponent, styles));
 export default ChatAttachmentItem;

@@ -14,6 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "קישור התקנה",
+    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "הזן URL חוקי",
     "CONNECT": "התחבר",
     "CHANGE_LANGUAGE": "שנה שפה",
@@ -21,6 +22,7 @@
   },
   "LOGIN": {
     "TITLE": "היכנס לחשבון שלך",
+    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "אימייל",
     "PASSWORD": "סיסמה",
     "EMAIL_ERROR": "הזן אימייל חוקי",

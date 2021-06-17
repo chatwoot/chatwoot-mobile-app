@@ -1,135 +1,137 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "欢迎",
   "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Close"
+    "ERROR": "错误",
+    "ERROR_TITLE": "发生了意外错误",
+    "REPORT_MESSAGE": "我们已经上报此错误，请关闭并重启应用。",
+    "CLOSE": "关闭"
   },
   "FOOTER": {
-    "HOME": "Home",
-    "CONVERSATION": "Conversations",
-    "NOTIFICATION": "Notifications",
-    "SETTINGS": "Settings"
+    "HOME": "主页",
+    "CONVERSATION": "会话",
+    "NOTIFICATION": "消息通知",
+    "SETTINGS": "设置"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "URL_ERROR": "Enter a valid URL",
-    "CONNECT": "Connect",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "ENTER_URL": "安装链接",
+    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "URL_ERROR": "输入有效网址",
+    "CONNECT": "连接",
+    "CHANGE_LANGUAGE": "更改语言",
+    "ERROR": "无效的安装链接"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
+    "TITLE": "登录到您的帐户",
+    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "Email",
-    "PASSWORD": "Password",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
-    "FORGOT_PASSWORD": "Forgot your password?",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "Create new account",
-    "SETTINGS": "Settings",
-    "CHANGE_LANGUAGE": "Change language",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "PASSWORD": "密码",
+    "EMAIL_ERROR": "输入有效的电子邮件",
+    "PASSWORD_ERROR": "输入有效的密码",
+    "LOGIN": "登录",
+    "FORGOT_PASSWORD": "忘记密码？",
+    "RESET_HERE": "重置",
+    "NO_ACCOUNT": "没有注册？",
+    "CREATE_ACCOUNT": "注册新用户",
+    "SETTINGS": "设置",
+    "CHANGE_LANGUAGE": "更改语言",
+    "TERMS": "服务条款",
+    "CHANGE_URL": "更改网址"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "Please enter your email",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back"
+    "EMAIL": "请输入 Email 地址",
+    "EMAIL_ERROR": "输入有效的 Email",
+    "RESET_HERE": "重置密码",
+    "HEADER_TITLE": "重置密码",
+    "TITLE": "忘记密码？",
+    "SUB_TITLE": "别担心，我们会支持你的"
   },
   "CONVERSATION": {
-    "DEFAULT_HEADER_TITLE": "Conversations",
-    "MINE": "Mine",
-    "UN_ASSIGNED": "Unassigned",
-    "ALL": "All",
-    "EMPTY": "There are no active conversations in this group.",
-    "PICTURE_CONTENT": "Picture message",
-    "ATTACHMENT_CONTENT": "File Attachment",
-    "DOWNLOAD": "Download",
-    "TODAY": "Today",
-    "YESTERDAY": "Yesterday",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "RESOLVE": "Resolve conversation",
-    "RE_OPEN": "Reopen conversation",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "CANCEL": "Cancel",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "DEFAULT_HEADER_TITLE": "会话",
+    "MINE": "我的",
+    "UN_ASSIGNED": "未分配的",
+    "ALL": "全部",
+    "EMPTY": "此群组中没有活动的会话。",
+    "PICTURE_CONTENT": "图片消息",
+    "ATTACHMENT_CONTENT": "附件",
+    "DOWNLOAD": "下载",
+    "TODAY": "今日",
+    "YESTERDAY": "昨日",
+    "TYPE_MESSAGE": "输入消息",
+    "TYPING": "正在输入",
+    "ALL_CONVERSATION_LOADED": "已加载所有会话",
+    "RESOLVE": "解决会话",
+    "RE_OPEN": "重新打开会话",
+    "ASSIGN": "重新打开会话",
+    "FILE_SIZE_LIMIT": "文件超过 5MB 附件限制",
+    "CANCEL": "取消",
+    "PRIVATE_MSG_INPUT": "此操作仅对代理人可见",
+    "UN_ASSIGN": "取消分配对话"
   },
   "FILTER": {
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
-    "OPEN": "Open",
-    "RESOLVED": "Resolved",
-    "BOT": "Bot",
-    "SUBMIT": "Submit"
+    "HEADER_TITLE": "会话过滤器",
+    "CHOOSE_INBOX": "选择收件箱",
+    "CHOOSE_STATUS": "会话状态",
+    "OPEN": "打开",
+    "RESOLVED": "已解决",
+    "BOT": "机器人",
+    "SUBMIT": "提交"
   },
   "SETTINGS": {
-    "HEADER_TITLE": "Settings",
-    "AVAILABILITY": "Availability",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "Logout",
-    "SWITCH_ACCOUNT": "Switch Account",
-    "CHANGE_LANGUAGE": "Change Language",
-    "SUBMIT": "Submit"
+    "HEADER_TITLE": "设置",
+    "AVAILABILITY": "可用性",
+    "NOTIFICATION": "通知设置",
+    "HELP": "帮助文档",
+    "CHAT_WITH_US": "与我们聊天",
+    "LOG_OUT": "注销",
+    "SWITCH_ACCOUNT": "切换账户",
+    "CHANGE_LANGUAGE": "更改语言",
+    "SUBMIT": "提交"
   },
   "NOTIFICATION": {
-    "HEADER_TITLE": "Notifications",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
-    "CANCEL": "Cancel"
+    "HEADER_TITLE": "消息通知",
+    "EMPTY": "还没有消息通知",
+    "EMPTY_MORE_TEXT": "一旦你收到通知，它们将出现在这里。",
+    "ALL_NOTIFICATION_LOADED": "所有通知已加载",
+    "MARK_ALL": "全部标记为已读",
+    "CANCEL": "取消"
   },
   "AVAILABILITY": {
-    "ONLINE": "Online",
-    "BUSY": "Busy",
-    "OFFLINE": "Offline"
+    "ONLINE": "在线",
+    "BUSY": "忙碌中",
+    "OFFLINE": "离线"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
+    "TITLE": "通知设置",
     "EMAIL": "Email",
-    "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "PUSH": "推送",
+    "CONVERSATION_CREATE_PUSH": "创建新会话时发送推送通知",
+    "CONVERSATION_ASSIGNEE_PUSH": "当会话分配给我时发送推送通知",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "在已分配的会话中创建新消息时发送推送通知",
+    "CONVERSATION_CREATE_EMAIL": "创建新会话时发送电子邮件通知",
+    "CONVERSATION_ASSIGNEE_EMAIL": "当会话分配给我时发送电子邮件通知",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "在已分配的会话中创建新消息时发送电子邮件通知"
   },
   "CONVERSATION_DETAILS": {
-    "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Operating System",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "BROWSER": "浏览器",
+    "OPERATING_SYSTEM": "操作系统",
+    "INITIATED_AT": "发起于",
+    "INITIATED_FROM": "发起自"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "操作"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "选择代理"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
-    "AUTH": "Username / Password Incorrect. Please try again",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "COMMON_ERROR": "无法连接到服务器，请稍后再试",
+    "OfFLINE": "您必须连接到 Wi-Fi 或蜂窝网络才能重新上线。",
+    "CANNOT_FETCH": "获取信息时出现错误，请重试",
+    "AUTH": "用户名 / 密码不正确。请重试",
+    "NO_ACCOUNTS_MESSAGE": "您无权访问任何账户"
   },
   "SUCCESS": {
-    "AUTH": "Login Successful"
+    "AUTH": "登录成功"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server upgrade required",
@@ -137,9 +139,9 @@
     "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
-    "CANCEL": "Cancel",
-    "OK": "Ok"
+    "TITLE": "退出",
+    "SUBTITLE": "您确定要退出吗？",
+    "CANCEL": "取消",
+    "OK": "确定"
   }
 }

@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import { Spinner, withStyles } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView, View, ScrollView } from 'react-native';
 
 import LoaderButton from '../../components/LoaderButton';
 import HeaderBar from '../../components/HeaderBar';
@@ -20,17 +20,17 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
   } = conversationDetails;
 
   const [assigneeId, setAssignee] = useState(assignee ? assignee.id : null);
-  const agents = useSelector((state) => state.inbox.inboxAgents);
-  const isInboxAgentsFetching = useSelector((state) => state.inbox.isInboxAgentsFetching);
-  const conversation = useSelector((state) => state.conversation);
+  const agents = useSelector(state => state.inbox.inboxAgents);
+  const isInboxAgentsFetching = useSelector(state => state.inbox.isInboxAgentsFetching);
+  const conversation = useSelector(state => state.conversation);
   const { isAssigneeUpdating } = conversation;
-  const verifiedAgents = agents.filter((agent) => agent.confirmed);
+  const verifiedAgents = agents.filter(agent => agent.confirmed);
 
   const goBack = () => {
     navigation.goBack();
   };
 
-  const onCheckedChange = (item) => {
+  const onCheckedChange = item => {
     setAssignee(item.id);
   };
   const updateAssignee = () => {
@@ -51,8 +51,8 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
       <HeaderBar title={i18n.t('AGENT.TITLE')} showLeftButton onBackPress={goBack} />
 
       {!isInboxAgentsFetching ? (
-        <Fragment>
-          {verifiedAgents.map((item) => (
+        <ScrollView>
+          {verifiedAgents.map(item => (
             <AgentItem
               name={item.name}
               thumbnail={item.thumbnail}
@@ -72,7 +72,7 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
               loading={isAssigneeUpdating}
             />
           </View>
-        </Fragment>
+        </ScrollView>
       ) : (
         <View style={style.spinnerView}>
           <Spinner size="medium" />

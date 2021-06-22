@@ -3,7 +3,7 @@ import { Layout, Text, withStyles } from '@ui-kitten/components';
 
 import { connect } from 'react-redux';
 
-import { View, SafeAreaView } from 'react-native';
+import { View, SafeAreaView, ScrollView } from 'react-native';
 
 import PropTypes from 'prop-types';
 
@@ -101,7 +101,7 @@ class FilterScreenComponent extends Component {
 
   processEntries = ({ inboxSelected }) => {
     const { inboxes } = this.props;
-    const allInboxes = inboxes.map((inbox) => ({
+    const allInboxes = inboxes.map(inbox => ({
       ...inbox,
       itemType: 'inbox',
       isChecked: inboxSelected && inboxSelected.id === inbox.id ? true : false,
@@ -124,52 +124,54 @@ class FilterScreenComponent extends Component {
           title={i18n.t('FILTER.HEADER_TITLE')}
           onBackPress={this.onBackPress}
         />
-        <Layout>
-          <View style={themedStyle.itemMainView}>
-            <View>
-              <CustomText style={themedStyle.itemHeaderTitle}>
-                {i18n.t('FILTER.CHOOSE_INBOX')}
-              </CustomText>
+        <ScrollView>
+          <Layout>
+            <View style={themedStyle.itemMainView}>
+              <View>
+                <CustomText style={themedStyle.itemHeaderTitle}>
+                  {i18n.t('FILTER.CHOOSE_INBOX')}
+                </CustomText>
 
-              {allInboxes.map((item, index) => {
-                return (
-                  <FilterItem
-                    key={item.id.toString()}
-                    item={item}
-                    isChecked={item.isChecked}
-                    iconName={INBOX_ICON[item.channel_type]}
-                    onCheckedChange={this.onCheckedChange}
-                  />
-                );
-              })}
+                {allInboxes.map((item, index) => {
+                  return (
+                    <FilterItem
+                      key={item.id.toString()}
+                      item={item}
+                      isChecked={item.isChecked}
+                      iconName={INBOX_ICON[item.channel_type]}
+                      onCheckedChange={this.onCheckedChange}
+                    />
+                  );
+                })}
+              </View>
             </View>
-          </View>
-          <View style={themedStyle.itemMainView}>
-            <View>
-              <Text style={themedStyle.itemHeaderTitle}>{i18n.t('FILTER.CHOOSE_STATUS')}</Text>
-              {statusOptions.map((item, index) => {
-                return (
-                  <FilterItem
-                    item={item}
-                    key={item.name}
-                    iconName={item.icon}
-                    isChecked={conversationStatus === item.key ? true : false}
-                    onCheckedChange={this.onCheckedChange}
-                  />
-                );
-              })}
+            <View style={themedStyle.itemMainView}>
+              <View>
+                <Text style={themedStyle.itemHeaderTitle}>{i18n.t('FILTER.CHOOSE_STATUS')}</Text>
+                {statusOptions.map((item, index) => {
+                  return (
+                    <FilterItem
+                      item={item}
+                      key={item.name}
+                      iconName={item.icon}
+                      isChecked={conversationStatus === item.key ? true : false}
+                      onCheckedChange={this.onCheckedChange}
+                    />
+                  );
+                })}
+              </View>
             </View>
+          </Layout>
+          <View style={themedStyle.filterButtonView}>
+            <LoaderButton
+              style={themedStyle.filterButton}
+              size="large"
+              textStyle={themedStyle.filterButtonText}
+              onPress={() => this.submitFilters()}
+              text={i18n.t('FILTER.SUBMIT')}
+            />
           </View>
-        </Layout>
-        <View style={themedStyle.filterButtonView}>
-          <LoaderButton
-            style={themedStyle.filterButton}
-            size="large"
-            textStyle={themedStyle.filterButtonText}
-            onPress={() => this.submitFilters()}
-            text={i18n.t('FILTER.SUBMIT')}
-          />
-        </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }

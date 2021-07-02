@@ -14,6 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "رابط التثبيت",
+    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "الرجاء إدخال عنوان صحيح",
     "CONNECT": "اتصل",
     "CHANGE_LANGUAGE": "تغيير اللغة",
@@ -21,6 +22,7 @@
   },
   "LOGIN": {
     "TITLE": "Login to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "البريد الإلكتروني",
     "PASSWORD": "كلمة المرور",
     "EMAIL_ERROR": "أدخل بريد إلكتروني صحيح",

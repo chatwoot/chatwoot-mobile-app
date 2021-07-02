@@ -14,6 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installation URL",
+    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Enter a valid URL",
     "CONNECT": "Connect",
     "CHANGE_LANGUAGE": "Change language",
@@ -21,6 +22,7 @@
   },
   "LOGIN": {
     "TITLE": "Login to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "Email",
     "PASSWORD": "Password",
     "EMAIL_ERROR": "Enter a valid email",

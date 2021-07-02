@@ -14,6 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Asennuksen URL",
+    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Anna kelvollinen URL-osoite",
     "CONNECT": "Yhdistä",
     "CHANGE_LANGUAGE": "Vaihda kieli",
@@ -21,6 +22,7 @@
   },
   "LOGIN": {
     "TITLE": "Login to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "Sähköposti",
     "PASSWORD": "Salasana",
     "EMAIL_ERROR": "Syötä kelvollinen sähköpostiosoite",

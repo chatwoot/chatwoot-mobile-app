@@ -126,17 +126,17 @@ export const getConversationsMeta = () => async (dispatch, getState) => {
 };
 
 // Set selected conversation status  (Open or Resolved or Bot)
-export const setConversationStatus = ({ status }) => async (dispatch) => {
+export const setConversationStatus = ({ status }) => async dispatch => {
   dispatch({ type: SET_CONVERSATION_STATUS, payload: status });
 };
 
 // Set selected conversation assignee type (Me, Unassigned, All)
-export const setAssigneeType = ({ assigneeType }) => async (dispatch) => {
+export const setAssigneeType = ({ assigneeType }) => async dispatch => {
   dispatch({ type: SET_ASSIGNEE_TYPE, payload: assigneeType });
 };
 
 // Set selected conversation
-export const setConversation = ({ conversationId }) => async (dispatch) => {
+export const setConversation = ({ conversationId }) => async dispatch => {
   dispatch({ type: SET_CONVERSATION, payload: conversationId });
 };
 
@@ -164,7 +164,7 @@ export const addOrUpdateConversation = ({ conversation }) => async (dispatch, ge
   });
   if (isMatching) {
     // Check conversation is already exists or not
-    const [conversationExists] = payload.filter((c) => c.id === conversation.id);
+    const [conversationExists] = payload.filter(c => c.id === conversation.id);
     let updatedConversations = payload;
 
     if (!conversationExists) {
@@ -180,7 +180,10 @@ export const addOrUpdateConversation = ({ conversation }) => async (dispatch, ge
 };
 
 // Add new message to a conversation
-export const addMessageToConversation = ({ message }) => async (dispatch, getState) => {
+export const addMessageToConversation = ({ message, conversationId }) => async (
+  dispatch,
+  getState,
+) => {
   const {
     data: { payload },
     selectedConversationId,
@@ -191,12 +194,14 @@ export const addMessageToConversation = ({ message }) => async (dispatch, getSta
   const { user } = getState().auth;
 
   const { conversation_id, id: messageId } = message;
-  const isMessageAlreadyExist = allMessages.find((item) => item.id === messageId);
-
-  if (selectedConversationId === conversation_id && !isMessageAlreadyExist) {
+  const isMessageAlreadyExist = allMessages.find(item => item.id === messageId);
+  if (
+    (selectedConversationId === conversation_id || conversationId === conversation_id) &&
+    !isMessageAlreadyExist
+  ) {
     dispatch({ type: UPDATE_MESSAGE, payload: message });
   }
-  const [chat] = payload.filter((c) => c.id === message.conversation_id);
+  const [chat] = payload.filter(c => c.id === message.conversation_id);
   const apiUrl = `conversations/${conversation_id}`;
   const response = await axios.get(apiUrl);
   const conversation = response.data;
@@ -226,16 +231,16 @@ export const addMessageToConversation = ({ message }) => async (dispatch, getSta
   });
 
   if (isMatching) {
-    const previousMessageIds = chat.messages.map((m) => m.id);
+    const previousMessageIds = chat.messages.map(m => m.id);
     if (!previousMessageIds.includes(message.id)) {
       chat.messages.push(message);
     }
 
-    const index = payload.findIndex((c) => c.id === message.conversation_id);
+    const index = payload.findIndex(c => c.id === message.conversation_id);
     updatedConversations = payload.map((content, i) => (i === index ? { ...content } : content));
     updatedConversations.unshift(...updatedConversations.splice(index, 1));
   } else {
-    updatedConversations = payload.filter((c) => c.id !== conversation.id);
+    updatedConversations = payload.filter(c => c.id !== conversation.id);
   }
 
   dispatch({ type: UPDATE_CONVERSATION, payload: updatedConversations });
@@ -244,7 +249,7 @@ export const addMessageToConversation = ({ message }) => async (dispatch, getSta
   }, 10);
 };
 // Load all the conversation messages
-export const loadMessages = ({ conversationId, beforeId }) => async (dispatch) => {
+export const loadMessages = ({ conversationId, beforeId }) => async dispatch => {
   dispatch({ type: GET_MESSAGES });
 
   try {
@@ -273,7 +278,7 @@ export const loadMessages = ({ conversationId, beforeId }) => async (dispatch) =
   }
 };
 
-export const getConversationDetails = ({ conversationId }) => async (dispatch) => {
+export const getConversationDetails = ({ conversationId }) => async dispatch => {
   try {
     const apiUrl = `conversations/${conversationId}`;
     const response = await axios.get(apiUrl);
@@ -288,9 +293,12 @@ export const getConversationDetails = ({ conversationId }) => async (dispatch) =
 };
 
 // Send message
-export const sendMessage = ({ conversationId, message, isPrivate = false, file }) => async (
-  dispatch,
-) => {
+export const sendMessage = ({
+  conversationId,
+  message,
+  isPrivate = false,
+  file,
+}) => async dispatch => {
   dispatch({ type: SEND_MESSAGE });
   try {
     const formData = new FormData();
@@ -311,7 +319,7 @@ export const sendMessage = ({ conversationId, message, isPrivate = false, file }
       type: SEND_MESSAGE_SUCCESS,
       payload: response.data,
     });
-    dispatch(addMessageToConversation({ message: response.data }));
+    dispatch(addMessageToConversation({ message: response.data, conversationId }));
   } catch (error) {
     dispatch({ type: SEND_MESSAGE_ERROR, payload: error });
   }
@@ -333,7 +341,7 @@ export const markMessagesAsRead = ({ conversationId }) => async (dispatch, getSt
     });
 
     const agent_last_seen_at = new Date().getTime() / 1000;
-    const updatedConversations = payload.map((item) =>
+    const updatedConversations = payload.map(item =>
       item.id === conversationId ? { ...item, agent_last_seen_at } : item,
     );
 
@@ -342,7 +350,7 @@ export const markMessagesAsRead = ({ conversationId }) => async (dispatch, getSt
     dispatch({ type: MARK_MESSAGES_AS_READ_ERROR, payload: error });
   }
 };
-export const loadCannedResponses = () => async (dispatch) => {
+export const loadCannedResponses = () => async dispatch => {
   dispatch({ type: GET_CANNED_RESPONSES });
 
   try {
@@ -350,7 +358,7 @@ export const loadCannedResponses = () => async (dispatch) => {
 
     const { data } = response;
 
-    const payload = data.map((item) => ({
+    const payload = data.map(item => ({
       ...item,
       title: `${item.short_code} - ${item.content.substring(0, 40)}`,
     }));
@@ -364,11 +372,11 @@ export const loadCannedResponses = () => async (dispatch) => {
   }
 };
 
-export const resetConversation = () => async (dispatch) => {
+export const resetConversation = () => async dispatch => {
   dispatch({ type: RESET_CONVERSATION });
 };
 
-export const resetTypingToConversation = () => async (dispatch) => {
+export const resetTypingToConversation = () => async dispatch => {
   dispatch({
     type: RESET_USER_TYPING_CONVERSATION,
   });
@@ -382,7 +390,7 @@ export const addUserTypingToConversation = ({ conversation, user }) => async (
   const { conversationTypingUsers } = await getState().conversation;
   const records = conversationTypingUsers[conversationId] || [];
   const hasUserRecordAlready = !!records.filter(
-    (record) => record.id === user.id && record.type === user.type,
+    record => record.id === user.id && record.type === user.type,
   ).length;
   if (!hasUserRecordAlready) {
     dispatch({
@@ -402,9 +410,7 @@ export const removeUserFromTypingConversation = ({ conversation, user }) => asyn
   const { id: conversationId } = conversation;
   const { conversationTypingUsers } = await getState().conversation;
   const records = conversationTypingUsers[conversationId] || [];
-  const updatedUsers = records.filter(
-    (record) => record.id !== user.id || record.type !== user.type,
-  );
+  const updatedUsers = records.filter(record => record.id !== user.id || record.type !== user.type);
 
   dispatch({
     type: ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
@@ -415,7 +421,7 @@ export const removeUserFromTypingConversation = ({ conversation, user }) => asyn
   });
 };
 
-export const toggleTypingStatus = ({ conversationId, typingStatus }) => async (dispatch) => {
+export const toggleTypingStatus = ({ conversationId, typingStatus }) => async dispatch => {
   const apiUrl = `conversations/${conversationId}/toggle_typing_status`;
 
   await axios
@@ -426,7 +432,7 @@ export const toggleTypingStatus = ({ conversationId, typingStatus }) => async (d
 };
 
 // Load initial messages [While opening chat screen from conversation list]
-export const loadInitialMessage = ({ messages }) => async (dispatch) => {
+export const loadInitialMessage = ({ messages }) => async dispatch => {
   try {
     dispatch({
       type: ADD_MESSAGE,
@@ -451,9 +457,9 @@ export const toggleConversationStatus = ({ conversationId }) => async (dispatch,
 
 export const addOrUpdateActiveContacts = ({ contacts }) => async (dispatch, getState) => {
   const { data } = await getState().conversation;
-  Object.keys(contacts).forEach((contact) => {
+  Object.keys(contacts).forEach(contact => {
     let conversations = lodashFilter(data.payload, { meta: { sender: { id: parseInt(contact) } } });
-    conversations.forEach((item) => {
+    conversations.forEach(item => {
       const updatedConversation = item;
       updatedConversation.meta.sender.availability = contacts[contact];
       updatedConversation.meta.sender.availability_status = contacts[contact];

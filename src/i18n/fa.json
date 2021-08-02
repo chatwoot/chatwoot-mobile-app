@@ -1,8 +1,8 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "خوش آمدید",
   "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
+    "ERROR": "خطا",
+    "ERROR_TITLE": "خطای غیرمنتظره رخ داده است",
     "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
     "CLOSE": "بستن"
   },

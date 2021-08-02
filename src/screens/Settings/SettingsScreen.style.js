@@ -2,7 +2,7 @@ import { Dimensions } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width;
 
-const styles = (theme) => ({
+const styles = theme => ({
   container: {
     flex: 1,
     backgroundColor: theme['background-basic-color-1'],
@@ -61,7 +61,6 @@ const styles = (theme) => ({
   aboutView: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 16,
   },
   aboutImage: {
     width: deviceWidth * 0.82391,

@@ -19,7 +19,7 @@
 		64D9625575F77BD47C5851DF /* libPods-Chatwoot-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2B1FFDA6E6343B47BC9E453 /* libPods-Chatwoot-tvOS.a */; };
 		7E685E9D9DDC49E9BA58EB30 /* Inter-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1657932CABA047399278A2E6 /* Inter-SemiBold.otf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		838D47DE25C7F96300D43A3E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 838D47DD25C7F96300D43A3E /* GoogleService-Info.plist */; };
+		83752DBE26B7F8AA005BDBBE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 83752DBD26B7F8AA005BDBBE /* GoogleService-Info.plist */; };
 		83956CC224F976FB0003A30E /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83956CC124F976FB0003A30E /* SplashScreen.storyboard */; };
 		8E2A250F569B47F086A90867 /* Inter-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 14CA8ED9FD7F4A98A9489302 /* Inter-Regular.otf */; };
 		8FBF7560704C5C2D98655077 /* libPods-Chatwoot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BA2DA5BE3430A90F49C925 /* libPods-Chatwoot.a */; };
@@ -72,7 +72,7 @@
 		5A455B5B324B4ED38F4F3D6E /* Inter-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Light.otf"; path = "../assets/Inter-Light.otf"; sourceTree = "<group>"; };
 		68C4886F5FE94640BB89B6C9 /* Inter-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Bold.otf"; path = "../assets/Inter-Bold.otf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Chatwoot/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		838D47DD25C7F96300D43A3E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		83752DBD26B7F8AA005BDBBE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		83956CC124F976FB0003A30E /* SplashScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		83D084B924F942850025AECA /* Chatwoot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Chatwoot.entitlements; path = Chatwoot/Chatwoot.entitlements; sourceTree = "<group>"; };
 		94E7ACE34E06465C9425AC50 /* Inter-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Italic.otf"; path = "../assets/Inter-Italic.otf"; sourceTree = "<group>"; };
@@ -205,8 +205,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				83752DBD26B7F8AA005BDBBE /* GoogleService-Info.plist */,
 				83956CC124F976FB0003A30E /* SplashScreen.storyboard */,
-				838D47DD25C7F96300D43A3E /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Chatwoot */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ChatwootTests */,
@@ -269,6 +269,7 @@
 				5B7BE4557BEA652A4E7694F7 /* [CP-User] [RNFB] Core Configuration */,
 				68972FD48F9A4106ABFB7160 /* Upload Debug Symbols to Sentry */,
 				41EE3E736DCDFDF141B32493 /* [CP] Embed Pods Frameworks */,
+				B66079D4829A4E919D196FF2 /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -385,7 +386,7 @@
 				FF3996F6DCE949368ACEA001 /* Inter-Italic.otf in Resources */,
 				F18A87F7463F4EFB8421C4C2 /* Inter-Light.otf in Resources */,
 				D9DE12D61C5641488B613496 /* Inter-Medium.otf in Resources */,
-				838D47DE25C7F96300D43A3E /* GoogleService-Info.plist in Resources */,
+				83752DBE26B7F8AA005BDBBE /* GoogleService-Info.plist in Resources */,
 				8E2A250F569B47F086A90867 /* Inter-Regular.otf in Resources */,
 				7E685E9D9DDC49E9BA58EB30 /* Inter-SemiBold.otf in Resources */,
 			);
@@ -510,6 +511,20 @@
 			showEnvVarsInLog = 0;
 		};
 		68972FD48F9A4106ABFB7160 /* Upload Debug Symbols to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Upload Debug Symbols to Sentry";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# First set the path to sentry.properties\nexport SENTRY_PROPERTIES=sentry.properties\n\n# Setup nvm and set node\n[ -z \"$NVM_DIR\" ] && export NVM_DIR=\"$HOME/.nvm\"\n\nif [[ -s \"$HOME/.nvm/nvm.sh\" ]]; then\n. \"$HOME/.nvm/nvm.sh\"\nelif [[ -x \"$(command -v brew)\" && -s \"$(brew --prefix nvm)/nvm.sh\" ]]; then\n. \"$(brew --prefix nvm)/nvm.sh\"\nfi\n\n# Set up the nodenv node version manager if present\nif [[ -x \"$HOME/.nodenv/bin/nodenv\" ]]; then\neval \"$(\"$HOME/.nodenv/bin/nodenv\" init -)\"\nfi\n\n# Set up the fnm node version manager if present\nif [[ -s \"$HOME/.fnm/fnm\" ]]; then\n  eval \"`$HOME/.fnm/fnm env --multi`\"\nfi\n\n# Trying notion\nif [ -z \"$NODE_BINARY\" ]; then\nif [[ -s \"$HOME/.notion/bin/node\" ]]; then\nexport NODE_BINARY=\"$HOME/.notion/bin/node\"\nfi\nfi\n\n[ -z \"$NODE_BINARY\" ] && export NODE_BINARY=\"node\"\n\n# Run sentry cli script to upload debug symbols\n$NODE_BINARY ../node_modules/@sentry/cli/bin/sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\"\n";
+		};
+		B66079D4829A4E919D196FF2 /* Upload Debug Symbols to Sentry */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -765,6 +780,8 @@
 				CURRENT_PROJECT_VERSION = 128;
 				DEVELOPMENT_TEAM = 6C953F3RX2;
 				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = arm64;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = Chatwoot/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -791,6 +808,8 @@
 				CODE_SIGN_ENTITLEMENTS = Chatwoot/Chatwoot.entitlements;
 				CURRENT_PROJECT_VERSION = 128;
 				DEVELOPMENT_TEAM = 6C953F3RX2;
+				EXCLUDED_ARCHS = arm64;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = Chatwoot/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

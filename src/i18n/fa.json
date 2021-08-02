@@ -3,7 +3,7 @@
   "COMMON": {
     "ERROR": "خطا",
     "ERROR_TITLE": "خطای غیرمنتظره رخ داده است",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
+    "REPORT_MESSAGE": "ما این مورد را به تیم خود گزارش داده ایم! لطفاً برنامه را ببندید و دوباره اجرا کنید!",
     "CLOSE": "بستن"
   },
   "FOOTER": {
@@ -13,37 +13,37 @@
     "SETTINGS": "تنظیمات"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
-    "URL_ERROR": "Enter a valid URL",
+    "ENTER_URL": "نصب با URL",
+    "DESCRIPTION": "اگر از نرم افزار روی سرورهای شخصی استفاده می کنید ، آدرس سرور خود را وارد کنید. در غیر این صورت ، از app.chatwoot.com استفاده کنید.",
+    "URL_ERROR": "نشانی وب معتبری وارد کنید",
     "CONNECT": "اتصال",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "CHANGE_LANGUAGE": "تغییر زبان",
+    "ERROR": "نشانی اینترنتی نصب نامعتبر است"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "وارد حساب کاربری خود شوید",
+    "DESCRIPTION": "شما به {{baseUrl}} متصل هستید. با آدرس ایمیل و رمز ورود خود وارد شوید.",
     "EMAIL": "ایمیل",
     "PASSWORD": "رمز عبور",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
+    "EMAIL_ERROR": "یک ایمیل معتبر وارد کنید",
+    "PASSWORD_ERROR": "رمز عبور معتبر وارد کنید",
+    "LOGIN": "ورود",
     "FORGOT_PASSWORD": "رمز عبورتان را فراموش کردید؟",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
+    "RESET_HERE": "اینجا ریست کنید",
+    "NO_ACCOUNT": "حساب کاربری ندارید؟",
     "CREATE_ACCOUNT": "حساب جدید بسازید",
     "SETTINGS": "تنظیمات",
-    "CHANGE_LANGUAGE": "Change language",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "CHANGE_LANGUAGE": "تغییر زبان",
+    "TERMS": "شرایط و ضوابط",
+    "CHANGE_URL": "تغییر URL"
   },
   "FORGOT_PASSWORD": {
     "EMAIL": "لطفا ایمیل خود را وارد کنید",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back"
+    "EMAIL_ERROR": "یک ایمیل معتبر وارد کنید",
+    "RESET_HERE": "تغییر رمز عبور",
+    "HEADER_TITLE": "تغییر رمز عبور",
+    "TITLE": "رمز عبورتان را فراموش کردید؟",
+    "SUB_TITLE": "نگران نباش! ما پشتت رو گرفتیم"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "گفتگوها",
@@ -56,21 +56,21 @@
     "DOWNLOAD": "دانلود",
     "TODAY": "امروز",
     "YESTERDAY": "دیروز",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
+    "TYPE_MESSAGE": "پیام خود را وارد کنید",
+    "TYPING": "تایپ کردن",
     "ALL_CONVERSATION_LOADED": "همه گفتگوها دریافت شدند",
-    "RESOLVE": "Resolve conversation",
-    "RE_OPEN": "Reopen conversation",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "RESOLVE": "گفتگو حل شده",
+    "RE_OPEN": "مکالمه را دوباره باز کنید",
+    "ASSIGN": "اختصاص مکالمه",
+    "FILE_SIZE_LIMIT": "محدودیت حجم فایل پیوست 5MB می باشد",
     "CANCEL": "انصراف",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "PRIVATE_MSG_INPUT": "این فقط برای ایجنت ها قابل مشاهده خواهد بود",
+    "UN_ASSIGN": "لغو اختصاص مکالمه"
   },
   "FILTER": {
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
+    "HEADER_TITLE": "فیلتر مکالمه",
+    "CHOOSE_INBOX": "صندوق ورودی را انتخاب کنید",
+    "CHOOSE_STATUS": "وضعیت مکالمه",
     "OPEN": "باز",
     "RESOLVED": "حل شده",
     "BOT": "ربات",
@@ -79,20 +79,20 @@
   "SETTINGS": {
     "HEADER_TITLE": "تنظیمات",
     "AVAILABILITY": "در دسترس",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
+    "NOTIFICATION": "تنظیمات اعلان",
+    "HELP": "کتاب راهنما",
+    "CHAT_WITH_US": "با ما چت کنید",
     "LOG_OUT": "خروج از حساب",
     "SWITCH_ACCOUNT": "سوییچ به یک حساب دیگر",
-    "CHANGE_LANGUAGE": "Change Language",
+    "CHANGE_LANGUAGE": "تغییر زبان",
     "SUBMIT": "ثبت"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "اعلان ها",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
+    "EMPTY": "اعلانی وجود ندارد.",
+    "EMPTY_MORE_TEXT": "هنگامی که اعلان جدیدی دریافت می کنید ، آنها در اینجا نمایش داده می شوند.",
+    "ALL_NOTIFICATION_LOADED": "همه اعلان ها بارگیری شدند",
+    "MARK_ALL": "همه را به عنوان خوانده شده علامت بزن",
     "CANCEL": "انصراف"
   },
   "AVAILABILITY": {
@@ -101,9 +101,9 @@
     "OFFLINE": "آفلاین"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
+    "TITLE": "تنظیمات اعلان",
     "EMAIL": "ایمیل",
-    "PUSH": "Push",
+    "PUSH": "پوش نوتیفیکیشن",
     "CONVERSATION_CREATE_PUSH": "هر وقت گفتگوی جدیدی شروع شد برای من پوش نوتیفیکیشن بفرست",
     "CONVERSATION_ASSIGNEE_PUSH": "هر وقت گفتگویی به من اختصاص داده شد، برای من پوش نوتیفیکیشن بفرست",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "وقتی پیام جدیدی در مکالمه اختصاص داده شده ایجاد می شود ، پوش نوتیفیکیشن را ارسال کنید",
@@ -125,23 +125,23 @@
   },
   "ERRORS": {
     "COMMON_ERROR": "متاسفانه ارتباط با سرور برقرار نشد، مجددا امتحان کنید",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "OfFLINE": "برای اتصال مجدد باید به وای فای یا شبکه تلفن همراه متصل شوید",
+    "CANNOT_FETCH": "هنگام دریافت اطلاعات خطایی روی داد ، لطفاً دوباره امتحان کنید",
     "AUTH": "این نام کاربری و رمز عبور صحیح نیست",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "NO_ACCOUNTS_MESSAGE": "شما به هیچ حسابی دسترسی ندارید"
   },
   "SUCCESS": {
     "AUTH": "ورود موفق"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "سرور باید بروزرسانی شود",
+    "WARNING_FOR_AGENT": "به نظر می رسد که از سرور پشتیبانی نشده Chatwoot برای برنامه تلفن همراه خود استفاده می کنید. لطفاً برای ارتقاء سرور Chatwoot با مدیر سرور خود تماس بگیرید.",
+    "WARNING_FOR_ADMIN": "به نظر می رسد که از سرور پشتیبانی نشده Chatwoot برای برنامه تلفن همراه خود استفاده می کنید. ارتقاء به نسخه سرور %{minimumVersion} یا بالاتر مورد نیاز است."
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
+    "TITLE": "خروج",
+    "SUBTITLE": "آیا مطمئن هستید که می خواهید خارج شوید؟",
     "CANCEL": "انصراف",
-    "OK": "Ok"
+    "OK": "باشه"
   }
 }

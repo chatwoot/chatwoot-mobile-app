@@ -4,7 +4,7 @@ import Config from 'react-native-config';
 const POSTHOG_API_KEY = Config.POSTHOG_API_KEY;
 const POSTHOG_API_HOST = Config.POSTHOG_API_HOST;
 export const checkAnalyticsEnabled = () => {
-  if (__DEV__ && POSTHOG_API_KEY && POSTHOG_API_HOST) {
+  if (!__DEV__ && POSTHOG_API_KEY && POSTHOG_API_HOST) {
     return true;
   }
   return false;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withStyles } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { SafeAreaView, Platform } from 'react-native';
+import { SafeAreaView, Platform, ScrollView } from 'react-native';
 import Config from 'react-native-config';
 import { useNavigation } from '@react-navigation/native';
 import DeviceInfo from 'react-native-device-info';
@@ -124,50 +124,52 @@ const Settings = ({ eva: { theme, style } }) => {
   return (
     <SafeAreaView style={style.container}>
       <HeaderBar title={i18n.t('SETTINGS.HEADER_TITLE')} />
-      <View style={style.profileContainer}>
-        <UserAvatar
-          userName={name}
-          thumbnail={avatar_url}
-          defaultBGColor={theme['color-primary-default']}
-          availabilityStatus={availabilityStatus}
-        />
-        <View style={style.detailsContainer}>
-          <CustomText style={style.nameLabel}>{name}</CustomText>
-          <CustomText style={style.emailLabel}>{email}</CustomText>
-        </View>
-      </View>
-      <View style={style.itemListView}>
-        {settingsMenu.map((item, index) => (
-          <SettingsItem
-            key={item.text}
-            text={i18n.t(`SETTINGS.${item.text}`)}
-            checked={item.checked}
-            iconSize={item.iconSize}
-            itemType={item.itemType}
-            iconName={item.iconName}
-            itemName={item.itemName}
-            onPressItem={onPressItem}
+      <ScrollView>
+        <View style={style.profileContainer}>
+          <UserAvatar
+            userName={name}
+            thumbnail={avatar_url}
+            defaultBGColor={theme['color-primary-default']}
+            availabilityStatus={availabilityStatus}
           />
-        ))}
-      </View>
-      <View style={style.aboutView}>
-        <Image style={style.aboutImage} source={images.appLogo} />
-      </View>
+          <View style={style.detailsContainer}>
+            <CustomText style={style.nameLabel}>{name}</CustomText>
+            <CustomText style={style.emailLabel}>{email}</CustomText>
+          </View>
+        </View>
+        <View style={style.itemListView}>
+          {settingsMenu.map((item, index) => (
+            <SettingsItem
+              key={item.text}
+              text={i18n.t(`SETTINGS.${item.text}`)}
+              checked={item.checked}
+              iconSize={item.iconSize}
+              itemType={item.itemType}
+              iconName={item.iconName}
+              itemName={item.itemName}
+              onPressItem={onPressItem}
+            />
+          ))}
+        </View>
+        <View style={style.aboutView}>
+          <Image style={style.aboutImage} source={images.appLogo} />
+        </View>
 
-      <View style={style.appDescriptionView}>
-        <CustomText style={style.appDescriptionText}>{`v${packageFile.version}`}</CustomText>
-      </View>
-      {!!Config.CHATWOOT_WEBSITE_TOKEN && !!Config.CHATWOOT_BASE_URL && !!showWidget && (
-        <ChatWootWidget
-          websiteToken={Config.CHATWOOT_WEBSITE_TOKEN}
-          locale="en"
-          baseUrl={Config.CHATWOOT_BASE_URL}
-          closeModal={() => toggleWidget(false)}
-          isModalVisible={showWidget}
-          user={userDetails}
-          customAttributes={customAttributes}
-        />
-      )}
+        <View style={style.appDescriptionView}>
+          <CustomText style={style.appDescriptionText}>{`v${packageFile.version}`}</CustomText>
+        </View>
+        {!!Config.CHATWOOT_WEBSITE_TOKEN && !!Config.CHATWOOT_BASE_URL && !!showWidget && (
+          <ChatWootWidget
+            websiteToken={Config.CHATWOOT_WEBSITE_TOKEN}
+            locale="en"
+            baseUrl={Config.CHATWOOT_BASE_URL}
+            closeModal={() => toggleWidget(false)}
+            isModalVisible={showWidget}
+            user={userDetails}
+            customAttributes={customAttributes}
+          />
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 };

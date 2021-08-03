@@ -126,17 +126,19 @@ class ConversationDetailsComponent extends Component {
           </View>
         )}
         {senderAdditionalInfo &&
-          senderAdditionalInfo.description !== '' &&
-          senderAdditionalInfo.description && (
+          senderAdditionalInfo.description &&
+          senderAdditionalInfo.description !== '' && (
             <View style={style.descriptionContainer}>
               <CustomText style={style.description}>{senderAdditionalInfo.description}</CustomText>
             </View>
           )}
-        {senderAdditionalInfo && senderAdditionalInfo.location && (
-          <View style={style.descriptionContainer}>
-            <CustomText style={style.description}>{senderAdditionalInfo.location}</CustomText>
-          </View>
-        )}
+        {senderAdditionalInfo &&
+          senderAdditionalInfo.location &&
+          senderAdditionalInfo.location !== '' && (
+            <View style={style.descriptionContainer}>
+              <CustomText style={style.description}>{senderAdditionalInfo.location}</CustomText>
+            </View>
+          )}
         <View style={style.separationView} />
         {this.renderAdditionalAttributes()}
       </SafeAreaView>

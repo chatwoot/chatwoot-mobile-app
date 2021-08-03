@@ -4,41 +4,41 @@
     "ERROR": "Error",
     "ERROR_TITLE": "Unexpected error occurred",
     "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Close"
+    "CLOSE": "അടയ്ക്കുക"
   },
   "FOOTER": {
-    "HOME": "Home",
-    "CONVERSATION": "Conversations",
+    "HOME": "ഹോം",
+    "CONVERSATION": "സംഭാഷണങ്ങൾ",
     "NOTIFICATION": "Notifications",
-    "SETTINGS": "Settings"
+    "SETTINGS": "ക്രമീകരണങ്ങൾ"
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installation URL",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Enter a valid URL",
-    "CONNECT": "Connect",
+    "CONNECT": "ബന്ധിപ്പിക്കുക",
     "CHANGE_LANGUAGE": "Change language",
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
     "TITLE": "Login to your account",
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
-    "EMAIL": "Email",
-    "PASSWORD": "Password",
+    "EMAIL": "ഇമെയിൽ",
+    "PASSWORD": "പാസ്‌വേഡ്",
     "EMAIL_ERROR": "Enter a valid email",
     "PASSWORD_ERROR": "Enter a valid password",
     "LOGIN": "Sign In",
-    "FORGOT_PASSWORD": "Forgot your password?",
+    "FORGOT_PASSWORD": "നിങ്ങളുടെ പാസ്‌വേഡ് മറന്നോ?",
     "RESET_HERE": "Reset here",
     "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "Create new account",
-    "SETTINGS": "Settings",
+    "CREATE_ACCOUNT": "പുതിയ അക്കൗണ്ട് സൃഷ്ടിക്കുക",
+    "SETTINGS": "ക്രമീകരണങ്ങൾ",
     "CHANGE_LANGUAGE": "Change language",
     "TERMS": "Terms & Conditions",
     "CHANGE_URL": "Change URL"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "Please enter your email",
+    "EMAIL": "ദയവായി നിങ്ങളുടെ ഇമെയിൽ നൽകുക",
     "EMAIL_ERROR": "Enter a valid email",
     "RESET_HERE": "Reset password",
     "HEADER_TITLE": "Reset password",
@@ -46,16 +46,16 @@
     "SUB_TITLE": "Don't worry! We got your back"
   },
   "CONVERSATION": {
-    "DEFAULT_HEADER_TITLE": "Conversations",
-    "MINE": "Mine",
-    "UN_ASSIGNED": "Unassigned",
-    "ALL": "All",
-    "EMPTY": "There are no active conversations in this group.",
-    "PICTURE_CONTENT": "Picture message",
-    "ATTACHMENT_CONTENT": "File Attachment",
-    "DOWNLOAD": "Download",
-    "TODAY": "Today",
-    "YESTERDAY": "Yesterday",
+    "DEFAULT_HEADER_TITLE": "സംഭാഷണങ്ങൾ",
+    "MINE": "എന്റേത്",
+    "UN_ASSIGNED": "നിയുക്തമാക്കാത്തത്",
+    "ALL": "എല്ലാം",
+    "EMPTY": "ഈ ഗ്രൂപ്പിൽ സജീവ സംഭാഷണങ്ങളൊന്നുമില്ല.",
+    "PICTURE_CONTENT": "ചിത്ര സന്ദേശം",
+    "ATTACHMENT_CONTENT": "ഫയൽ അറ്റാച്ചുമെന്റ്",
+    "DOWNLOAD": "ഡൗൺലോഡ്",
+    "TODAY": "ഇന്ന്",
+    "YESTERDAY": "ഇന്നലെ",
     "TYPE_MESSAGE": "Type message",
     "TYPING": "typing",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
@@ -63,7 +63,7 @@
     "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "CANCEL": "Cancel",
+    "CANCEL": "റദ്ദാക്കുക",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"
   },
@@ -71,21 +71,21 @@
     "HEADER_TITLE": "Conversation Filter",
     "CHOOSE_INBOX": "Choose Inbox",
     "CHOOSE_STATUS": "Conversation Status",
-    "OPEN": "Open",
-    "RESOLVED": "Resolved",
-    "BOT": "Bot",
-    "SUBMIT": "Submit"
+    "OPEN": "സജീവം",
+    "RESOLVED": "പരിഹരിച്ചത്",
+    "BOT": "ബോട്ട്",
+    "SUBMIT": "സമർപ്പിക്കുക"
   },
   "SETTINGS": {
-    "HEADER_TITLE": "Settings",
-    "AVAILABILITY": "Availability",
+    "HEADER_TITLE": "ക്രമീകരണങ്ങൾ",
+    "AVAILABILITY": "ലഭ്യത",
     "NOTIFICATION": "Notification Preferences",
     "HELP": "Help Docs",
     "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "Logout",
-    "SWITCH_ACCOUNT": "Switch Account",
+    "LOG_OUT": "ലോഗൗട്ട്",
+    "SWITCH_ACCOUNT": "അക്കൗണ്ട് സ്വിച്ചുചെയ്യുക",
     "CHANGE_LANGUAGE": "Change Language",
-    "SUBMIT": "Submit"
+    "SUBMIT": "സമർപ്പിക്കുക"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",
@@ -93,45 +93,45 @@
     "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
-    "CANCEL": "Cancel"
+    "CANCEL": "റദ്ദാക്കുക"
   },
   "AVAILABILITY": {
-    "ONLINE": "Online",
-    "BUSY": "Busy",
-    "OFFLINE": "Offline"
+    "ONLINE": "ഓൺ‌ലൈൻ",
+    "BUSY": "തിരക്ക്",
+    "OFFLINE": "ഓഫ്‌ലൈൻ"
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Notification Preferences",
-    "EMAIL": "Email",
+    "EMAIL": "ഇമെയിൽ",
     "PUSH": "Push",
     "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
     "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
+    "CONVERSATION_CREATE_EMAIL": "ഒരു പുതിയ സംഭാഷണം സൃഷ്ടിക്കുമ്പോൾ ഇമെയിൽ അറിയിപ്പുകൾ അയയ്ക്കുക",
+    "CONVERSATION_ASSIGNEE_EMAIL": "ഒരു സംഭാഷണം എനിക്ക് നിയോഗിക്കുമ്പോൾ ഇമെയിൽ അറിയിപ്പുകൾ അയയ്‌ക്കുക",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
   },
   "CONVERSATION_DETAILS": {
-    "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Operating System",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "BROWSER": "ബ്രൗസർ",
+    "OPERATING_SYSTEM": "ഓപ്പറേറ്റിംഗ് സിസ്റ്റം",
+    "INITIATED_AT": "ആരംഭിച്ച സമയം ",
+    "INITIATED_FROM": "ആരംഭിച്ച ആൾ "
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "പ്രവർത്തനങ്ങൾ"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "ഏജന്റ് തിരഞ്ഞെടുക്കുക"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
+    "COMMON_ERROR": "വൂട്ട് സെർവറിലേക്ക് കണക്റ്റുചെയ്യാനായില്ല, ദയവായി പിന്നീട് വീണ്ടും ശ്രമിക്കുക",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
     "CANNOT_FETCH": "There was an error fetching the information, please try again",
-    "AUTH": "Username / Password Incorrect. Please try again",
+    "AUTH": "ഉപയോക്തൃനാമം / പാസ്‌വേഡ് തെറ്റാണ്. ദയവായി വീണ്ടും ശ്രമിക്കുക",
     "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
   },
   "SUCCESS": {
-    "AUTH": "Login Successful"
+    "AUTH": "ലോഗിൻ വിജയകരം"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server upgrade required",
@@ -141,7 +141,7 @@
   "EXIT": {
     "TITLE": "Exit",
     "SUBTITLE": "Are you sure you want to quit?",
-    "CANCEL": "Cancel",
+    "CANCEL": "റദ്ദാക്കുക",
     "OK": "Ok"
   }
 }

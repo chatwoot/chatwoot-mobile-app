@@ -4,41 +4,41 @@
     "ERROR": "Error",
     "ERROR_TITLE": "Unexpected error occurred",
     "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Close"
+    "CLOSE": "닫기"
   },
   "FOOTER": {
-    "HOME": "Home",
-    "CONVERSATION": "Conversations",
-    "NOTIFICATION": "Notifications",
-    "SETTINGS": "Settings"
+    "HOME": "홈",
+    "CONVERSATION": "대화",
+    "NOTIFICATION": "알림",
+    "SETTINGS": "설정"
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installation URL",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Enter a valid URL",
-    "CONNECT": "Connect",
+    "CONNECT": "연결",
     "CHANGE_LANGUAGE": "Change language",
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
     "TITLE": "Login to your account",
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
-    "EMAIL": "Email",
-    "PASSWORD": "Password",
+    "EMAIL": "이메일",
+    "PASSWORD": "비밀번호",
     "EMAIL_ERROR": "Enter a valid email",
     "PASSWORD_ERROR": "Enter a valid password",
     "LOGIN": "Sign In",
-    "FORGOT_PASSWORD": "Forgot your password?",
+    "FORGOT_PASSWORD": "암호를 잊으셨나요?",
     "RESET_HERE": "Reset here",
     "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "Create new account",
-    "SETTINGS": "Settings",
+    "CREATE_ACCOUNT": "계정 생성",
+    "SETTINGS": "설정",
     "CHANGE_LANGUAGE": "Change language",
     "TERMS": "Terms & Conditions",
     "CHANGE_URL": "Change URL"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "Please enter your email",
+    "EMAIL": "이메일 주소를 입력하세요.",
     "EMAIL_ERROR": "Enter a valid email",
     "RESET_HERE": "Reset password",
     "HEADER_TITLE": "Reset password",
@@ -46,16 +46,16 @@
     "SUB_TITLE": "Don't worry! We got your back"
   },
   "CONVERSATION": {
-    "DEFAULT_HEADER_TITLE": "Conversations",
-    "MINE": "Mine",
-    "UN_ASSIGNED": "Unassigned",
-    "ALL": "All",
-    "EMPTY": "There are no active conversations in this group.",
-    "PICTURE_CONTENT": "Picture message",
-    "ATTACHMENT_CONTENT": "File Attachment",
-    "DOWNLOAD": "Download",
-    "TODAY": "Today",
-    "YESTERDAY": "Yesterday",
+    "DEFAULT_HEADER_TITLE": "대화",
+    "MINE": "나에게 할당",
+    "UN_ASSIGNED": "지정되지 않음",
+    "ALL": "모두",
+    "EMPTY": "이 그룹에는 활성 대화가 없습니다.",
+    "PICTURE_CONTENT": "사진 메시지",
+    "ATTACHMENT_CONTENT": "파일 첨부",
+    "DOWNLOAD": "다운로드",
+    "TODAY": "오늘",
+    "YESTERDAY": "어제",
     "TYPE_MESSAGE": "Type message",
     "TYPING": "typing",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
@@ -63,7 +63,7 @@
     "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "CANCEL": "Cancel",
+    "CANCEL": "취소",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"
   },
@@ -71,67 +71,67 @@
     "HEADER_TITLE": "Conversation Filter",
     "CHOOSE_INBOX": "Choose Inbox",
     "CHOOSE_STATUS": "Conversation Status",
-    "OPEN": "Open",
-    "RESOLVED": "Resolved",
-    "BOT": "Bot",
-    "SUBMIT": "Submit"
+    "OPEN": "열기",
+    "RESOLVED": "해결됨",
+    "BOT": "봇",
+    "SUBMIT": "보내기"
   },
   "SETTINGS": {
-    "HEADER_TITLE": "Settings",
-    "AVAILABILITY": "Availability",
+    "HEADER_TITLE": "설정",
+    "AVAILABILITY": "유용성",
     "NOTIFICATION": "Notification Preferences",
     "HELP": "Help Docs",
     "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "Logout",
-    "SWITCH_ACCOUNT": "Switch Account",
+    "LOG_OUT": "로그아웃",
+    "SWITCH_ACCOUNT": "계정 전환",
     "CHANGE_LANGUAGE": "Change Language",
-    "SUBMIT": "Submit"
+    "SUBMIT": "보내기"
   },
   "NOTIFICATION": {
-    "HEADER_TITLE": "Notifications",
+    "HEADER_TITLE": "알림",
     "EMPTY": "No notifications yet.",
     "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
-    "CANCEL": "Cancel"
+    "CANCEL": "취소"
   },
   "AVAILABILITY": {
-    "ONLINE": "Online",
-    "BUSY": "Busy",
-    "OFFLINE": "Offline"
+    "ONLINE": "온라인",
+    "BUSY": "바쁨",
+    "OFFLINE": "오프라인"
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Notification Preferences",
-    "EMAIL": "Email",
+    "EMAIL": "이메일",
     "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "CONVERSATION_CREATE_PUSH": "새 대화가 만들어질 때 푸시 알림 보내기",
+    "CONVERSATION_ASSIGNEE_PUSH": "대화가 할당되면 푸시 알림 보내기",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "할당된 대화에서 새 메시지가 생성될 때 푸시 알림 보내기",
+    "CONVERSATION_CREATE_EMAIL": "새 대화가 생성될 때 이메일 알림 보내기",
+    "CONVERSATION_ASSIGNEE_EMAIL": "대화가 할당될 때 이메일 알림 보내기",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "할당된 대화에서 새 메시지가 생성될 때 이메일 알림 보내기"
   },
   "CONVERSATION_DETAILS": {
-    "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Operating System",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "BROWSER": "브라우저",
+    "OPERATING_SYSTEM": "운영 체제",
+    "INITIATED_AT": "시작 시간",
+    "INITIATED_FROM": "시작 위치"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "액션"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "에이전트 선택"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
+    "COMMON_ERROR": "Woot 서버에 연결할 수 없음. 나중에 다시 시도하십시오.",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
     "CANNOT_FETCH": "There was an error fetching the information, please try again",
-    "AUTH": "Username / Password Incorrect. Please try again",
+    "AUTH": "사용자 이름/암호가 잘못됨. 다시 시도하십시오.",
     "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
   },
   "SUCCESS": {
-    "AUTH": "Login Successful"
+    "AUTH": "로그인 성공"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server upgrade required",
@@ -141,7 +141,7 @@
   "EXIT": {
     "TITLE": "Exit",
     "SUBTITLE": "Are you sure you want to quit?",
-    "CANCEL": "Cancel",
+    "CANCEL": "취소",
     "OK": "Ok"
   }
 }

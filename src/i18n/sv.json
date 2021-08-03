@@ -14,6 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL för installationen",
+    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Ange en giltig URL",
     "CONNECT": "Anslut",
     "CHANGE_LANGUAGE": "Byt språk",
@@ -21,6 +22,7 @@
   },
   "LOGIN": {
     "TITLE": "Logga in på ditt konto",
+    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "E-post",
     "PASSWORD": "Lösenord",
     "EMAIL_ERROR": "Ange en giltig e-postadress",
@@ -79,7 +81,7 @@
     "AVAILABILITY": "Tillgänglighet",
     "NOTIFICATION": "Aviseringsinställningar",
     "HELP": "Hjälpdokumentation",
-    "CHAT_WITH_US": "Chat with Us",
+    "CHAT_WITH_US": "Chatta med oss",
     "LOG_OUT": "Logga ut",
     "SWITCH_ACCOUNT": "Byt konto",
     "CHANGE_LANGUAGE": "Byt språk",

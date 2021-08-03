@@ -1,0 +1,147 @@
+{
+  "WELCOME": "خوش آمدید",
+  "COMMON": {
+    "ERROR": "خطا",
+    "ERROR_TITLE": "خطای غیرمنتظره رخ داده است",
+    "REPORT_MESSAGE": "ما این مورد را به تیم خود گزارش داده ایم! لطفاً برنامه را ببندید و دوباره اجرا کنید!",
+    "CLOSE": "بستن"
+  },
+  "FOOTER": {
+    "HOME": "صفحه اصلی",
+    "CONVERSATION": "گفتگوها",
+    "NOTIFICATION": "اعلان ها",
+    "SETTINGS": "تنظیمات"
+  },
+  "CONFIGURE_URL": {
+    "ENTER_URL": "نصب با URL",
+    "DESCRIPTION": "اگر از نرم افزار روی سرورهای شخصی استفاده می کنید ، آدرس سرور خود را وارد کنید. در غیر این صورت ، از app.chatwoot.com استفاده کنید.",
+    "URL_ERROR": "نشانی وب معتبری وارد کنید",
+    "CONNECT": "اتصال",
+    "CHANGE_LANGUAGE": "تغییر زبان",
+    "ERROR": "نشانی اینترنتی نصب نامعتبر است"
+  },
+  "LOGIN": {
+    "TITLE": "وارد حساب کاربری خود شوید",
+    "DESCRIPTION": "شما به {{baseUrl}} متصل هستید. با آدرس ایمیل و رمز ورود خود وارد شوید.",
+    "EMAIL": "ایمیل",
+    "PASSWORD": "رمز عبور",
+    "EMAIL_ERROR": "یک ایمیل معتبر وارد کنید",
+    "PASSWORD_ERROR": "رمز عبور معتبر وارد کنید",
+    "LOGIN": "ورود",
+    "FORGOT_PASSWORD": "رمز عبورتان را فراموش کردید؟",
+    "RESET_HERE": "اینجا ریست کنید",
+    "NO_ACCOUNT": "حساب کاربری ندارید؟",
+    "CREATE_ACCOUNT": "حساب جدید بسازید",
+    "SETTINGS": "تنظیمات",
+    "CHANGE_LANGUAGE": "تغییر زبان",
+    "TERMS": "شرایط و ضوابط",
+    "CHANGE_URL": "تغییر URL"
+  },
+  "FORGOT_PASSWORD": {
+    "EMAIL": "لطفا ایمیل خود را وارد کنید",
+    "EMAIL_ERROR": "یک ایمیل معتبر وارد کنید",
+    "RESET_HERE": "تغییر رمز عبور",
+    "HEADER_TITLE": "تغییر رمز عبور",
+    "TITLE": "رمز عبورتان را فراموش کردید؟",
+    "SUB_TITLE": "نگران نباش! ما پشتت رو گرفتیم"
+  },
+  "CONVERSATION": {
+    "DEFAULT_HEADER_TITLE": "گفتگوها",
+    "MINE": "من",
+    "UN_ASSIGNED": "تخصیص داده نشده",
+    "ALL": "همه",
+    "EMPTY": "هیچ گفتگوی فعالی در این گروه نیست",
+    "PICTURE_CONTENT": "پیام تصویری",
+    "ATTACHMENT_CONTENT": "فایل الصاقی",
+    "DOWNLOAD": "دانلود",
+    "TODAY": "امروز",
+    "YESTERDAY": "دیروز",
+    "TYPE_MESSAGE": "پیام خود را وارد کنید",
+    "TYPING": "تایپ کردن",
+    "ALL_CONVERSATION_LOADED": "همه گفتگوها دریافت شدند",
+    "RESOLVE": "گفتگو حل شده",
+    "RE_OPEN": "مکالمه را دوباره باز کنید",
+    "ASSIGN": "اختصاص مکالمه",
+    "FILE_SIZE_LIMIT": "محدودیت حجم فایل پیوست 5MB می باشد",
+    "CANCEL": "انصراف",
+    "PRIVATE_MSG_INPUT": "این فقط برای ایجنت ها قابل مشاهده خواهد بود",
+    "UN_ASSIGN": "لغو اختصاص مکالمه"
+  },
+  "FILTER": {
+    "HEADER_TITLE": "فیلتر مکالمه",
+    "CHOOSE_INBOX": "صندوق ورودی را انتخاب کنید",
+    "CHOOSE_STATUS": "وضعیت مکالمه",
+    "OPEN": "باز",
+    "RESOLVED": "حل شده",
+    "BOT": "ربات",
+    "SUBMIT": "ثبت"
+  },
+  "SETTINGS": {
+    "HEADER_TITLE": "تنظیمات",
+    "AVAILABILITY": "در دسترس",
+    "NOTIFICATION": "تنظیمات اعلان",
+    "HELP": "کتاب راهنما",
+    "CHAT_WITH_US": "با ما چت کنید",
+    "LOG_OUT": "خروج از حساب",
+    "SWITCH_ACCOUNT": "سوییچ به یک حساب دیگر",
+    "CHANGE_LANGUAGE": "تغییر زبان",
+    "SUBMIT": "ثبت"
+  },
+  "NOTIFICATION": {
+    "HEADER_TITLE": "اعلان ها",
+    "EMPTY": "اعلانی وجود ندارد.",
+    "EMPTY_MORE_TEXT": "هنگامی که اعلان جدیدی دریافت می کنید ، آنها در اینجا نمایش داده می شوند.",
+    "ALL_NOTIFICATION_LOADED": "همه اعلان ها بارگیری شدند",
+    "MARK_ALL": "همه را به عنوان خوانده شده علامت بزن",
+    "CANCEL": "انصراف"
+  },
+  "AVAILABILITY": {
+    "ONLINE": "آنلاین",
+    "BUSY": "مشغول",
+    "OFFLINE": "آفلاین"
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "TITLE": "تنظیمات اعلان",
+    "EMAIL": "ایمیل",
+    "PUSH": "پوش نوتیفیکیشن",
+    "CONVERSATION_CREATE_PUSH": "هر وقت گفتگوی جدیدی شروع شد برای من پوش نوتیفیکیشن بفرست",
+    "CONVERSATION_ASSIGNEE_PUSH": "هر وقت گفتگویی به من اختصاص داده شد، برای من پوش نوتیفیکیشن بفرست",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "وقتی پیام جدیدی در مکالمه اختصاص داده شده ایجاد می شود ، پوش نوتیفیکیشن را ارسال کنید",
+    "CONVERSATION_CREATE_EMAIL": "هر وقت گفتگوی جدیدی شروع شد برای من ایمیل بفرست",
+    "CONVERSATION_ASSIGNEE_EMAIL": "هر وقت گفتگویی به من اختصاص داده شد،‌ ایمیل بفرست",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "با ایجاد پیام جدید در مکالمه اختصاصی ، اعلان های ایمیل را ارسال کنید"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "مرورگر",
+    "OPERATING_SYSTEM": "سیستم عامل",
+    "INITIATED_AT": "شروع شده در",
+    "INITIATED_FROM": "شروع شده از"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "عملیات"
+  },
+  "AGENT": {
+    "TITLE": "انتخاب ایجنت"
+  },
+  "ERRORS": {
+    "COMMON_ERROR": "متاسفانه ارتباط با سرور برقرار نشد، مجددا امتحان کنید",
+    "OfFLINE": "برای اتصال مجدد باید به وای فای یا شبکه تلفن همراه متصل شوید",
+    "CANNOT_FETCH": "هنگام دریافت اطلاعات خطایی روی داد ، لطفاً دوباره امتحان کنید",
+    "AUTH": "این نام کاربری و رمز عبور صحیح نیست",
+    "NO_ACCOUNTS_MESSAGE": "شما به هیچ حسابی دسترسی ندارید"
+  },
+  "SUCCESS": {
+    "AUTH": "ورود موفق"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "سرور باید بروزرسانی شود",
+    "WARNING_FOR_AGENT": "به نظر می رسد که از سرور پشتیبانی نشده Chatwoot برای برنامه تلفن همراه خود استفاده می کنید. لطفاً برای ارتقاء سرور Chatwoot با مدیر سرور خود تماس بگیرید.",
+    "WARNING_FOR_ADMIN": "به نظر می رسد که از سرور پشتیبانی نشده Chatwoot برای برنامه تلفن همراه خود استفاده می کنید. ارتقاء به نسخه سرور %{minimumVersion} یا بالاتر مورد نیاز است."
+  },
+  "EXIT": {
+    "TITLE": "خروج",
+    "SUBTITLE": "آیا مطمئن هستید که می خواهید خارج شوید؟",
+    "CANCEL": "انصراف",
+    "OK": "باشه"
+  }
+}

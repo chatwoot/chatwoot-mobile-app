@@ -14,6 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Kurulum URL'si",
+    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Geçerli bir URL girin",
     "CONNECT": "Bağlan",
     "CHANGE_LANGUAGE": "Dili değiştir",
@@ -21,6 +22,7 @@
   },
   "LOGIN": {
     "TITLE": "Login to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "E-posta",
     "PASSWORD": "Parola",
     "EMAIL_ERROR": "Geçerli bir e-posta giriniz",

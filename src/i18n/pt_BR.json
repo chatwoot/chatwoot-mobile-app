@@ -14,13 +14,15 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL de instalação",
+    "DESCRIPTION": "Se você estiver usando uma instalação auto-hospedada do Chatwoot, insira o URL do servidor. Caso contrário, use app.chatwoot.com.",
     "URL_ERROR": "Insira uma URL válida",
     "CONNECT": "Conectar",
     "CHANGE_LANGUAGE": "Alterar idioma",
     "ERROR": "Url de instalação inválida"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
+    "TITLE": "Acesse sua conta",
+    "DESCRIPTION": "Você está conectado a {{baseUrl}}. Entre com seu endereço de e-mail e senha.",
     "EMAIL": "e-mail",
     "PASSWORD": "Senha",
     "EMAIL_ERROR": "Digite um e-mail válido",
@@ -59,11 +61,11 @@
     "ALL_CONVERSATION_LOADED": "Todas as conversas foram carregadas",
     "RESOLVE": "Reabrir conversa",
     "RE_OPEN": "Reabrir conversa",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "ASSIGN": "Atribuir conversa",
+    "FILE_SIZE_LIMIT": "O arquivo excede o limite de anexos de 5MB",
     "CANCEL": "Cancelar",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "PRIVATE_MSG_INPUT": "Isto será visível apenas para Agentes",
+    "UN_ASSIGN": "Desassociar conversa"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtro da Conversa",
@@ -79,7 +81,7 @@
     "AVAILABILITY": "Disponibilidade",
     "NOTIFICATION": "Preferências de Notificação",
     "HELP": "Documentação de Ajuda",
-    "CHAT_WITH_US": "Chat with Us",
+    "CHAT_WITH_US": "Fale conosco no chat",
     "LOG_OUT": "Sair",
     "SWITCH_ACCOUNT": "Alterar conta",
     "CHANGE_LANGUAGE": "Alterar Idioma",
@@ -116,10 +118,10 @@
     "INITIATED_FROM": "Iniciado por"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "Ações"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Selecione o Agent"
   },
   "ERRORS": {
     "COMMON_ERROR": "Não foi possível conectar ao servidor Woot, por favor tente novamente mais tarde",
@@ -132,9 +134,9 @@
     "AUTH": "Acesso bem sucedido"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "Atualização do servidor necessária",
+    "WARNING_FOR_AGENT": "Parece que você está usando um servidor Chatwoot não suportado para o seu aplicativo móvel. Por favor, entre em contato com seu administrador para atualizar o servidor Chatwoot.",
+    "WARNING_FOR_ADMIN": "Parece que você está usando um servidor Chatwoot não suportado para o seu aplicativo móvel. Fazer o upgrade para a versão do servidor %{minimumVersion} ou posterior é necessário."
   },
   "EXIT": {
     "TITLE": "Sair",

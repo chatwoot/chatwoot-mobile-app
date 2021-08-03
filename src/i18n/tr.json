@@ -118,10 +118,10 @@
     "INITIATED_FROM": "Başlatıldı"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "Hareketler"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Temsilci Seçin"
   },
   "ERRORS": {
     "COMMON_ERROR": "Woot Sunucusuna bağlanılamadı, Lütfen daha sonra tekrar deneyin",

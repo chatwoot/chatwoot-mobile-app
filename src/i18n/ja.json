@@ -4,41 +4,41 @@
     "ERROR": "Error",
     "ERROR_TITLE": "Unexpected error occurred",
     "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Close"
+    "CLOSE": "閉じる"
   },
   "FOOTER": {
-    "HOME": "Home",
-    "CONVERSATION": "Conversations",
+    "HOME": "ホーム",
+    "CONVERSATION": "会話データ",
     "NOTIFICATION": "Notifications",
-    "SETTINGS": "Settings"
+    "SETTINGS": "設定"
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installation URL",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Enter a valid URL",
-    "CONNECT": "Connect",
+    "CONNECT": "接続",
     "CHANGE_LANGUAGE": "Change language",
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
     "TITLE": "Login to your account",
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
-    "EMAIL": "Email",
-    "PASSWORD": "Password",
+    "EMAIL": "Eメール",
+    "PASSWORD": "パスワード",
     "EMAIL_ERROR": "Enter a valid email",
     "PASSWORD_ERROR": "Enter a valid password",
     "LOGIN": "Sign In",
-    "FORGOT_PASSWORD": "Forgot your password?",
+    "FORGOT_PASSWORD": "パスワードをお忘れですか?",
     "RESET_HERE": "Reset here",
     "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "Create new account",
-    "SETTINGS": "Settings",
+    "CREATE_ACCOUNT": "新しいアカウントを作成",
+    "SETTINGS": "設定",
     "CHANGE_LANGUAGE": "Change language",
     "TERMS": "Terms & Conditions",
     "CHANGE_URL": "Change URL"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "Please enter your email",
+    "EMAIL": "メールアドレスを入力してください。",
     "EMAIL_ERROR": "Enter a valid email",
     "RESET_HERE": "Reset password",
     "HEADER_TITLE": "Reset password",
@@ -46,16 +46,16 @@
     "SUB_TITLE": "Don't worry! We got your back"
   },
   "CONVERSATION": {
-    "DEFAULT_HEADER_TITLE": "Conversations",
-    "MINE": "Mine",
-    "UN_ASSIGNED": "Unassigned",
-    "ALL": "All",
-    "EMPTY": "There are no active conversations in this group.",
-    "PICTURE_CONTENT": "Picture message",
-    "ATTACHMENT_CONTENT": "File Attachment",
-    "DOWNLOAD": "Download",
-    "TODAY": "Today",
-    "YESTERDAY": "Yesterday",
+    "DEFAULT_HEADER_TITLE": "会話データ",
+    "MINE": "自分",
+    "UN_ASSIGNED": "未割当",
+    "ALL": "すべて",
+    "EMPTY": "このグループには有効な会話データがありません",
+    "PICTURE_CONTENT": "画像メッセージ",
+    "ATTACHMENT_CONTENT": "添付ファイル",
+    "DOWNLOAD": "ダウンロード",
+    "TODAY": "今日",
+    "YESTERDAY": "昨日",
     "TYPE_MESSAGE": "Type message",
     "TYPING": "typing",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
@@ -63,7 +63,7 @@
     "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "CANCEL": "Cancel",
+    "CANCEL": "キャンセル",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"
   },
@@ -71,21 +71,21 @@
     "HEADER_TITLE": "Conversation Filter",
     "CHOOSE_INBOX": "Choose Inbox",
     "CHOOSE_STATUS": "Conversation Status",
-    "OPEN": "Open",
-    "RESOLVED": "Resolved",
+    "OPEN": "開く",
+    "RESOLVED": "解決済み",
     "BOT": "Bot",
-    "SUBMIT": "Submit"
+    "SUBMIT": "送信"
   },
   "SETTINGS": {
-    "HEADER_TITLE": "Settings",
-    "AVAILABILITY": "Availability",
+    "HEADER_TITLE": "設定",
+    "AVAILABILITY": "利用可能期間",
     "NOTIFICATION": "Notification Preferences",
     "HELP": "Help Docs",
     "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "Logout",
-    "SWITCH_ACCOUNT": "Switch Account",
+    "LOG_OUT": "ログアウト",
+    "SWITCH_ACCOUNT": "アカウントの切り替え",
     "CHANGE_LANGUAGE": "Change Language",
-    "SUBMIT": "Submit"
+    "SUBMIT": "送信"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",
@@ -93,45 +93,45 @@
     "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
-    "CANCEL": "Cancel"
+    "CANCEL": "キャンセル"
   },
   "AVAILABILITY": {
-    "ONLINE": "Online",
-    "BUSY": "Busy",
-    "OFFLINE": "Offline"
+    "ONLINE": "オンライン",
+    "BUSY": "取り込み中",
+    "OFFLINE": "オフライン"
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Notification Preferences",
-    "EMAIL": "Email",
+    "EMAIL": "Eメール",
     "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "CONVERSATION_CREATE_PUSH": "新しい会話が作成されたときにプッシュ通知を送信する",
+    "CONVERSATION_ASSIGNEE_PUSH": "会話が自分に割り当てられたときにプッシュ通知を送信する",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "割り当てられた会話で新しいメッセージが作成されたときにプッシュ通知を送信する",
+    "CONVERSATION_CREATE_EMAIL": "新しい会話が作成されたときにメールで通知を送信する",
+    "CONVERSATION_ASSIGNEE_EMAIL": "会話が自分に割り当てられたときにメールで通知を送信する",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "割り当てられた会話で新しいメッセージが作成されたときにメールで通知を送信します"
   },
   "CONVERSATION_DETAILS": {
-    "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Operating System",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "BROWSER": "ブラウザ",
+    "OPERATING_SYSTEM": "OS",
+    "INITIATED_AT": "開始場所",
+    "INITIATED_FROM": "開始元"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "操作"
   },
   "AGENT": {
     "TITLE": "Select Agent"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
+    "COMMON_ERROR": "Woot Serverに接続できませんでした。後でもう一度お試しください。",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
     "CANNOT_FETCH": "There was an error fetching the information, please try again",
-    "AUTH": "Username / Password Incorrect. Please try again",
+    "AUTH": "ユーザー名/パスワードが正しくありません。もう一度やり直してください",
     "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
   },
   "SUCCESS": {
-    "AUTH": "Login Successful"
+    "AUTH": "ログインしました"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server upgrade required",
@@ -141,7 +141,7 @@
   "EXIT": {
     "TITLE": "Exit",
     "SUBTITLE": "Are you sure you want to quit?",
-    "CANCEL": "Cancel",
+    "CANCEL": "キャンセル",
     "OK": "Ok"
   }
 }

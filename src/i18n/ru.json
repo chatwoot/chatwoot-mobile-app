@@ -32,13 +32,13 @@
     "RESET_HERE": "Сбросить здесь",
     "NO_ACCOUNT": "Нет учетной записи?",
     "CREATE_ACCOUNT": "Создать новый аккаунт",
-    "SETTINGS": "Settings",
+    "SETTINGS": "Настройки",
     "CHANGE_LANGUAGE": "Изменить язык",
     "TERMS": "Условия использования",
     "CHANGE_URL": "Изменить URL"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "Please enter your email",
+    "EMAIL": "Пожалуйста, введите ваш email",
     "EMAIL_ERROR": "Введите правильный email",
     "RESET_HERE": "Сбросить пароль",
     "HEADER_TITLE": "Сбросить пароль",
@@ -54,7 +54,7 @@
     "PICTURE_CONTENT": "Фото сообщение",
     "ATTACHMENT_CONTENT": "Вложение файла",
     "DOWNLOAD": "Скачать",
-    "TODAY": "Today",
+    "TODAY": "Сегодня",
     "YESTERDAY": "Вчера",
     "TYPE_MESSAGE": "Введите сообщение",
     "TYPING": "печатает",
@@ -71,51 +71,51 @@
     "HEADER_TITLE": "Фильтр сообщений",
     "CHOOSE_INBOX": "Выбрать входящие",
     "CHOOSE_STATUS": "Conversation Status",
-    "OPEN": "Open",
-    "RESOLVED": "Resolved",
-    "BOT": "Bot",
-    "SUBMIT": "Submit"
+    "OPEN": "Открытые",
+    "RESOLVED": "Закрыт",
+    "BOT": "Бот",
+    "SUBMIT": "Отправить"
   },
   "SETTINGS": {
-    "HEADER_TITLE": "Settings",
-    "AVAILABILITY": "Availability",
+    "HEADER_TITLE": "Настройки",
+    "AVAILABILITY": "Доступность",
     "NOTIFICATION": "Notification Preferences",
     "HELP": "Help Docs",
     "CHAT_WITH_US": "Chat with Us",
     "LOG_OUT": "Logout",
-    "SWITCH_ACCOUNT": "Switch Account",
+    "SWITCH_ACCOUNT": "Сменить Аккаунт",
     "CHANGE_LANGUAGE": "Change Language",
-    "SUBMIT": "Submit"
+    "SUBMIT": "Отправить"
   },
   "NOTIFICATION": {
-    "HEADER_TITLE": "Notifications",
+    "HEADER_TITLE": "Уведомления",
     "EMPTY": "No notifications yet.",
     "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
-    "CANCEL": "Cancel"
+    "CANCEL": "Отменить"
   },
   "AVAILABILITY": {
-    "ONLINE": "Online",
-    "BUSY": "Busy",
-    "OFFLINE": "Offline"
+    "ONLINE": "В сети",
+    "BUSY": "Занят",
+    "OFFLINE": "Оффлайн"
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Notification Preferences",
     "EMAIL": "Email",
     "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "CONVERSATION_CREATE_PUSH": "Отправлять push уведомление, когда новый диалог создан",
+    "CONVERSATION_ASSIGNEE_PUSH": "Отправлять push уведомление при назначении мне диалога",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Отправлять push уведомления при создании нового сообщения в назначенном диалоге",
+    "CONVERSATION_CREATE_EMAIL": "Отправлять email уведомление, когда новый диалог создан",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Отправлять email уведомление, когда мне назначен диалог",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Отправлять email уведомления при создании нового сообщения в назначенном диалоге"
   },
   "CONVERSATION_DETAILS": {
     "BROWSER": "Браузер",
-    "OPERATING_SYSTEM": "Operating System",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "OPERATING_SYSTEM": "Операционная система",
+    "INITIATED_AT": "Начат в",
+    "INITIATED_FROM": "Начат из"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Действия"
@@ -124,14 +124,14 @@
     "TITLE": "Выбрать Агента"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
+    "COMMON_ERROR": "Не удается соединиться с сервером Woot, попробуйте позже",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
     "CANNOT_FETCH": "There was an error fetching the information, please try again",
-    "AUTH": "Username / Password Incorrect. Please try again",
+    "AUTH": "Неверное имя пользователя / пароль. Пожалуйста, попробуйте еще раз",
     "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
   },
   "SUCCESS": {
-    "AUTH": "Login Successful"
+    "AUTH": "Вход выполнен"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server upgrade required",

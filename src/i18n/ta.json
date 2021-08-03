@@ -83,7 +83,7 @@
     "HELP": "Help Docs",
     "CHAT_WITH_US": "Chat with Us",
     "LOG_OUT": "வெளியேறு",
-    "SWITCH_ACCOUNT": "Switch Account",
+    "SWITCH_ACCOUNT": "கணக்கை மாற்றவும்",
     "CHANGE_LANGUAGE": "Change Language",
     "SUBMIT": "சமர்ப்பிக்கவும்"
   },
@@ -104,21 +104,21 @@
     "TITLE": "Notification Preferences",
     "EMAIL": "ஈ-மெயில்",
     "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
+    "CONVERSATION_CREATE_PUSH": "புதிய உரையாடல் உருவாக்கப்படும்போது புஷ் அறிவிப்புகளை அனுப்பவும்",
+    "CONVERSATION_ASSIGNEE_PUSH": "ஒரு உரையாடல் எனக்கு ஒதுக்கப்படும் போது புஷ் அறிவிப்புகளை அனுப்பவும்",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
+    "CONVERSATION_CREATE_EMAIL": "புதிய உரையாடல் உருவாக்கப்படும்போது ஈ-மெயிலில் அறிவிப்புகளை அனுப்பவும்",
+    "CONVERSATION_ASSIGNEE_EMAIL": "ஒரு உரையாடல் எனக்கு ஒதுக்கப்பட்டால் ஈமெயிலில் அறிவிப்புகளை அனுப்பவும்",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
   },
   "CONVERSATION_DETAILS": {
-    "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Operating System",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "BROWSER": "புரவுஸர்",
+    "OPERATING_SYSTEM": "ஆப்பரேட்டிங் சிஸ்டம்",
+    "INITIATED_AT": "இல் தொடங்கப்பட்டது",
+    "INITIATED_FROM": "இருந்து தொடங்கப்பட்டது"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "செயல்கள்"
   },
   "AGENT": {
     "TITLE": "Select Agent"

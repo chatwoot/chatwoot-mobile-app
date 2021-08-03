@@ -118,10 +118,10 @@
     "INITIATED_FROM": "Aloitettu osoitteesta"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "Toiminnot"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Valitse edustaja"
   },
   "ERRORS": {
     "COMMON_ERROR": "Ei voitu yhdistää Woot-palvelimeen, yritä myöhemmin uudelleen",

@@ -118,10 +118,10 @@
     "INITIATED_FROM": "Iniciat des de"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "Accions"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Seleccionar Agent"
   },
   "ERRORS": {
     "COMMON_ERROR": "No s'ha pogut connectar al servidor Woot. Torneu-ho a provar més tard",

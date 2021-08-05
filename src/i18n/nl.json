@@ -4,7 +4,7 @@
     "ERROR": "Error",
     "ERROR_TITLE": "Unexpected error occurred",
     "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Close"
+    "CLOSE": "Sluiten"
   },
   "FOOTER": {
     "HOME": "Startpagina",
@@ -54,8 +54,8 @@
     "PICTURE_CONTENT": "Bericht met foto",
     "ATTACHMENT_CONTENT": "Bestand bijlage",
     "DOWNLOAD": "downloaden",
-    "TODAY": "Today",
-    "YESTERDAY": "Yesterday",
+    "TODAY": "Vandaag",
+    "YESTERDAY": "Gisteren",
     "TYPE_MESSAGE": "Type message",
     "TYPING": "typing",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
@@ -104,21 +104,21 @@
     "TITLE": "Notification Preferences",
     "EMAIL": "E-mailadres",
     "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
+    "CONVERSATION_CREATE_PUSH": "Stuur pushberichten wanneer een nieuw gesprek is aangemaakt",
+    "CONVERSATION_ASSIGNEE_PUSH": "Stuur pushberichten wanneer een gesprek aan mij is toegewezen",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
+    "CONVERSATION_CREATE_EMAIL": "E-mailberichten verzenden wanneer een nieuw gesprek is gemaakt",
+    "CONVERSATION_ASSIGNEE_EMAIL": "E-mailberichten verzenden wanneer een gesprek aan mij is toegewezen",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
   },
   "CONVERSATION_DETAILS": {
     "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Operating System",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "OPERATING_SYSTEM": "Besturingssysteem",
+    "INITIATED_AT": "Geïnitieerd op",
+    "INITIATED_FROM": "Geïnitieerd vanuit"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "Acties"
   },
   "AGENT": {
     "TITLE": "Select Agent"

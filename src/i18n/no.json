@@ -4,41 +4,41 @@
     "ERROR": "Error",
     "ERROR_TITLE": "Unexpected error occurred",
     "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Close"
+    "CLOSE": "Lukk"
   },
   "FOOTER": {
-    "HOME": "Home",
-    "CONVERSATION": "Conversations",
-    "NOTIFICATION": "Notifications",
-    "SETTINGS": "Settings"
+    "HOME": "Hjem",
+    "CONVERSATION": "Samtaler",
+    "NOTIFICATION": "Varsler",
+    "SETTINGS": "Innstillinger"
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installation URL",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Enter a valid URL",
-    "CONNECT": "Connect",
+    "CONNECT": "Koble til",
     "CHANGE_LANGUAGE": "Change language",
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
     "TITLE": "Login to your account",
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
-    "EMAIL": "Email",
-    "PASSWORD": "Password",
+    "EMAIL": "E-post",
+    "PASSWORD": "Passord",
     "EMAIL_ERROR": "Enter a valid email",
     "PASSWORD_ERROR": "Enter a valid password",
     "LOGIN": "Sign In",
-    "FORGOT_PASSWORD": "Forgot your password?",
+    "FORGOT_PASSWORD": "Glemt passord?",
     "RESET_HERE": "Reset here",
     "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "Create new account",
-    "SETTINGS": "Settings",
+    "CREATE_ACCOUNT": "Opprett ny konto",
+    "SETTINGS": "Innstillinger",
     "CHANGE_LANGUAGE": "Change language",
     "TERMS": "Terms & Conditions",
     "CHANGE_URL": "Change URL"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "Please enter your email",
+    "EMAIL": "Skriv inn din e-post",
     "EMAIL_ERROR": "Enter a valid email",
     "RESET_HERE": "Reset password",
     "HEADER_TITLE": "Reset password",
@@ -46,16 +46,16 @@
     "SUB_TITLE": "Don't worry! We got your back"
   },
   "CONVERSATION": {
-    "DEFAULT_HEADER_TITLE": "Conversations",
+    "DEFAULT_HEADER_TITLE": "Samtaler",
     "MINE": "Mine",
-    "UN_ASSIGNED": "Unassigned",
-    "ALL": "All",
-    "EMPTY": "There are no active conversations in this group.",
-    "PICTURE_CONTENT": "Picture message",
-    "ATTACHMENT_CONTENT": "File Attachment",
-    "DOWNLOAD": "Download",
-    "TODAY": "Today",
-    "YESTERDAY": "Yesterday",
+    "UN_ASSIGNED": "Ikke tildelt",
+    "ALL": "Alle",
+    "EMPTY": "Det er ingen aktive samtaler i denne gruppen.",
+    "PICTURE_CONTENT": "Bildemelding",
+    "ATTACHMENT_CONTENT": "Vedlegg",
+    "DOWNLOAD": "Last ned",
+    "TODAY": "I dag",
+    "YESTERDAY": "I går",
     "TYPE_MESSAGE": "Type message",
     "TYPING": "typing",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
@@ -63,7 +63,7 @@
     "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "CANCEL": "Cancel",
+    "CANCEL": "Avbryt",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"
   },
@@ -71,67 +71,67 @@
     "HEADER_TITLE": "Conversation Filter",
     "CHOOSE_INBOX": "Choose Inbox",
     "CHOOSE_STATUS": "Conversation Status",
-    "OPEN": "Open",
-    "RESOLVED": "Resolved",
+    "OPEN": "Åpne",
+    "RESOLVED": "Løst",
     "BOT": "Bot",
-    "SUBMIT": "Submit"
+    "SUBMIT": "Send"
   },
   "SETTINGS": {
-    "HEADER_TITLE": "Settings",
-    "AVAILABILITY": "Availability",
+    "HEADER_TITLE": "Innstillinger",
+    "AVAILABILITY": "Tilgjengelighet",
     "NOTIFICATION": "Notification Preferences",
     "HELP": "Help Docs",
     "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "Logout",
-    "SWITCH_ACCOUNT": "Switch Account",
+    "LOG_OUT": "Logg ut",
+    "SWITCH_ACCOUNT": "Bytt konto",
     "CHANGE_LANGUAGE": "Change Language",
-    "SUBMIT": "Submit"
+    "SUBMIT": "Send"
   },
   "NOTIFICATION": {
-    "HEADER_TITLE": "Notifications",
+    "HEADER_TITLE": "Varsler",
     "EMPTY": "No notifications yet.",
     "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
-    "CANCEL": "Cancel"
+    "CANCEL": "Avbryt"
   },
   "AVAILABILITY": {
-    "ONLINE": "Online",
-    "BUSY": "Busy",
-    "OFFLINE": "Offline"
+    "ONLINE": "Pålogget",
+    "BUSY": "Opptatt",
+    "OFFLINE": "Frakoblet"
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Notification Preferences",
-    "EMAIL": "Email",
+    "EMAIL": "E-post",
     "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "CONVERSATION_CREATE_PUSH": "Send push-varsler når en ny samtale opprettes",
+    "CONVERSATION_ASSIGNEE_PUSH": "Send push-varsler når en samtale er tildelt meg",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push-varsler når en ny melding opprettes i en tilordnet samtale",
+    "CONVERSATION_CREATE_EMAIL": "Send e-postvarsler når en ny samtale opprettes",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Send e-postvarsler når en samtale er tildelt meg",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send e-postvarsler når en ny melding opprettes i en tilordnet samtale"
   },
   "CONVERSATION_DETAILS": {
-    "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Operating System",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "BROWSER": "Nettleser",
+    "OPERATING_SYSTEM": "Operativsystem",
+    "INITIATED_AT": "Started",
+    "INITIATED_FROM": "Startet fra"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "Handlinger"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Velg agent"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
+    "COMMON_ERROR": "Kunne ikke koble til Woot Server, vennligst prøv igjen senere",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
     "CANNOT_FETCH": "There was an error fetching the information, please try again",
-    "AUTH": "Username / Password Incorrect. Please try again",
+    "AUTH": "Brukernavn eller passord er feil. Prøv igjen",
     "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
   },
   "SUCCESS": {
-    "AUTH": "Login Successful"
+    "AUTH": "Innlogging vellykket"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server upgrade required",
@@ -141,7 +141,7 @@
   "EXIT": {
     "TITLE": "Exit",
     "SUBTITLE": "Are you sure you want to quit?",
-    "CANCEL": "Cancel",
+    "CANCEL": "Avbryt",
     "OK": "Ok"
   }
 }

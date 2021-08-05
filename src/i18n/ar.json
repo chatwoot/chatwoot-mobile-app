@@ -106,10 +106,10 @@
     "PUSH": "ارسال",
     "CONVERSATION_CREATE_PUSH": "إرسال إشعارات عند إنشاء محادثة جديدة",
     "CONVERSATION_ASSIGNEE_PUSH": "إرسال إشعارات عند تعيين محادثة لي",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "إرسال إشعارات التنية عند إنشاء رسالة جديدة في محادثة موكلة",
     "CONVERSATION_CREATE_EMAIL": "إرسال إشعار بالبريد الإلكتروني عند إنشاء محادثة جديدة",
     "CONVERSATION_ASSIGNEE_EMAIL": "إرسال إشعار بالبريد الإلكتروني عند تعيين محادثة لي",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "إرسال إشعارات البريد الإلكتروني عند إنشاء رسالة جديدة في محادثة موكلة"
   },
   "CONVERSATION_DETAILS": {
     "BROWSER": "المتصفح",
@@ -118,10 +118,10 @@
     "INITIATED_FROM": "بدأت من"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "الإجراءات"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "اختر وكيل"
   },
   "ERRORS": {
     "COMMON_ERROR": "تعذر الاتصال بخادم Chatwoot، الرجاء المحاولة مرة أخرى لاحقاً",

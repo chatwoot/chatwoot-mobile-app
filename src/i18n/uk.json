@@ -4,13 +4,13 @@
     "ERROR": "Error",
     "ERROR_TITLE": "Unexpected error occurred",
     "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Close"
+    "CLOSE": "Закрити"
   },
   "FOOTER": {
-    "HOME": "Home",
-    "CONVERSATION": "Conversations",
+    "HOME": "Головна",
+    "CONVERSATION": "Бесіди",
     "NOTIFICATION": "Notifications",
-    "SETTINGS": "Settings"
+    "SETTINGS": "Налаштування"
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installation URL",
@@ -24,21 +24,21 @@
     "TITLE": "Login to your account",
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "Email",
-    "PASSWORD": "Password",
+    "PASSWORD": "Пароль",
     "EMAIL_ERROR": "Enter a valid email",
     "PASSWORD_ERROR": "Enter a valid password",
     "LOGIN": "Sign In",
-    "FORGOT_PASSWORD": "Forgot your password?",
+    "FORGOT_PASSWORD": "Забули пароль?",
     "RESET_HERE": "Reset here",
     "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "Create new account",
-    "SETTINGS": "Settings",
+    "CREATE_ACCOUNT": "Створити новий обліковий запис",
+    "SETTINGS": "Налаштування",
     "CHANGE_LANGUAGE": "Change language",
     "TERMS": "Terms & Conditions",
     "CHANGE_URL": "Change URL"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "Please enter your email",
+    "EMAIL": "Введіть адресу електронної пошти",
     "EMAIL_ERROR": "Enter a valid email",
     "RESET_HERE": "Reset password",
     "HEADER_TITLE": "Reset password",
@@ -46,14 +46,14 @@
     "SUB_TITLE": "Don't worry! We got your back"
   },
   "CONVERSATION": {
-    "DEFAULT_HEADER_TITLE": "Conversations",
-    "MINE": "Mine",
-    "UN_ASSIGNED": "Unassigned",
-    "ALL": "All",
+    "DEFAULT_HEADER_TITLE": "Бесіди",
+    "MINE": "Мої",
+    "UN_ASSIGNED": "Непризначені",
+    "ALL": "Всі",
     "EMPTY": "There are no active conversations in this group.",
-    "PICTURE_CONTENT": "Picture message",
-    "ATTACHMENT_CONTENT": "File Attachment",
-    "DOWNLOAD": "Download",
+    "PICTURE_CONTENT": "Повідомлення з картинкою",
+    "ATTACHMENT_CONTENT": "Повідомлення з файлом",
+    "DOWNLOAD": "Звантажити",
     "TODAY": "Today",
     "YESTERDAY": "Yesterday",
     "TYPE_MESSAGE": "Type message",
@@ -63,7 +63,7 @@
     "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "CANCEL": "Cancel",
+    "CANCEL": "Скасувати",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"
   },
@@ -71,21 +71,21 @@
     "HEADER_TITLE": "Conversation Filter",
     "CHOOSE_INBOX": "Choose Inbox",
     "CHOOSE_STATUS": "Conversation Status",
-    "OPEN": "Open",
-    "RESOLVED": "Resolved",
+    "OPEN": "Відкриті",
+    "RESOLVED": "Вирішений",
     "BOT": "Bot",
-    "SUBMIT": "Submit"
+    "SUBMIT": "Додати"
   },
   "SETTINGS": {
-    "HEADER_TITLE": "Settings",
+    "HEADER_TITLE": "Налаштування",
     "AVAILABILITY": "Availability",
     "NOTIFICATION": "Notification Preferences",
     "HELP": "Help Docs",
     "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "Logout",
+    "LOG_OUT": "Вийти",
     "SWITCH_ACCOUNT": "Switch Account",
     "CHANGE_LANGUAGE": "Change Language",
-    "SUBMIT": "Submit"
+    "SUBMIT": "Додати"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",
@@ -93,7 +93,7 @@
     "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
-    "CANCEL": "Cancel"
+    "CANCEL": "Скасувати"
   },
   "AVAILABILITY": {
     "ONLINE": "Online",
@@ -107,27 +107,27 @@
     "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
     "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
+    "CONVERSATION_CREATE_EMAIL": "Надсилати сповіщення при створенні нової бесіди",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Надсилати сповіщення коли бесіду призначають мені",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
   },
   "CONVERSATION_DETAILS": {
-    "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Operating System",
-    "INITIATED_AT": "Initiated at",
+    "BROWSER": "Браузер",
+    "OPERATING_SYSTEM": "Операційна система",
+    "INITIATED_AT": "Час початку",
     "INITIATED_FROM": "Initiated from"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "Дії"
   },
   "AGENT": {
     "TITLE": "Select Agent"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
+    "COMMON_ERROR": "Не вдалося підключитися до Woot Server, спробуйте ще раз пізніше",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
     "CANNOT_FETCH": "There was an error fetching the information, please try again",
-    "AUTH": "Username / Password Incorrect. Please try again",
+    "AUTH": "Неправильне ім'я користувача / пароль. Будь ласка, спробуйте ще раз",
     "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
   },
   "SUCCESS": {
@@ -141,7 +141,7 @@
   "EXIT": {
     "TITLE": "Exit",
     "SUBTITLE": "Are you sure you want to quit?",
-    "CANCEL": "Cancel",
+    "CANCEL": "Скасувати",
     "OK": "Ok"
   }
 }

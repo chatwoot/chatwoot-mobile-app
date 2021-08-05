@@ -4,13 +4,13 @@
     "ERROR": "Error",
     "ERROR_TITLE": "Unexpected error occurred",
     "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Close"
+    "CLOSE": "Zavřít"
   },
   "FOOTER": {
-    "HOME": "Home",
-    "CONVERSATION": "Conversations",
-    "NOTIFICATION": "Notifications",
-    "SETTINGS": "Settings"
+    "HOME": "Domů",
+    "CONVERSATION": "Konverzace",
+    "NOTIFICATION": "Oznámení",
+    "SETTINGS": "Nastavení"
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installation URL",
@@ -23,7 +23,7 @@
   "LOGIN": {
     "TITLE": "Login to your account",
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
-    "EMAIL": "Email",
+    "EMAIL": "E-mailová adresa",
     "PASSWORD": "Password",
     "EMAIL_ERROR": "Enter a valid email",
     "PASSWORD_ERROR": "Enter a valid password",
@@ -32,13 +32,13 @@
     "RESET_HERE": "Reset here",
     "NO_ACCOUNT": "Don't have an account?",
     "CREATE_ACCOUNT": "Create new account",
-    "SETTINGS": "Settings",
+    "SETTINGS": "Nastavení",
     "CHANGE_LANGUAGE": "Change language",
     "TERMS": "Terms & Conditions",
     "CHANGE_URL": "Change URL"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "Please enter your email",
+    "EMAIL": "Prosím, zadejte svůj e-mail",
     "EMAIL_ERROR": "Enter a valid email",
     "RESET_HERE": "Reset password",
     "HEADER_TITLE": "Reset password",
@@ -46,16 +46,16 @@
     "SUB_TITLE": "Don't worry! We got your back"
   },
   "CONVERSATION": {
-    "DEFAULT_HEADER_TITLE": "Conversations",
+    "DEFAULT_HEADER_TITLE": "Konverzace",
     "MINE": "Mine",
     "UN_ASSIGNED": "Unassigned",
     "ALL": "All",
     "EMPTY": "There are no active conversations in this group.",
     "PICTURE_CONTENT": "Picture message",
     "ATTACHMENT_CONTENT": "File Attachment",
-    "DOWNLOAD": "Download",
-    "TODAY": "Today",
-    "YESTERDAY": "Yesterday",
+    "DOWNLOAD": "Stáhnout",
+    "TODAY": "Dnes",
+    "YESTERDAY": "Včera",
     "TYPE_MESSAGE": "Type message",
     "TYPING": "typing",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
@@ -63,7 +63,7 @@
     "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "CANCEL": "Cancel",
+    "CANCEL": "Zrušit",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"
   },
@@ -71,45 +71,45 @@
     "HEADER_TITLE": "Conversation Filter",
     "CHOOSE_INBOX": "Choose Inbox",
     "CHOOSE_STATUS": "Conversation Status",
-    "OPEN": "Open",
+    "OPEN": "Otevřít",
     "RESOLVED": "Resolved",
     "BOT": "Bot",
-    "SUBMIT": "Submit"
+    "SUBMIT": "Odeslat"
   },
   "SETTINGS": {
-    "HEADER_TITLE": "Settings",
-    "AVAILABILITY": "Availability",
+    "HEADER_TITLE": "Nastavení",
+    "AVAILABILITY": "Dostupnost",
     "NOTIFICATION": "Notification Preferences",
     "HELP": "Help Docs",
     "CHAT_WITH_US": "Chat with Us",
     "LOG_OUT": "Logout",
-    "SWITCH_ACCOUNT": "Switch Account",
+    "SWITCH_ACCOUNT": "Přepnout účet",
     "CHANGE_LANGUAGE": "Change Language",
-    "SUBMIT": "Submit"
+    "SUBMIT": "Odeslat"
   },
   "NOTIFICATION": {
-    "HEADER_TITLE": "Notifications",
+    "HEADER_TITLE": "Oznámení",
     "EMPTY": "No notifications yet.",
     "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
-    "CANCEL": "Cancel"
+    "CANCEL": "Zrušit"
   },
   "AVAILABILITY": {
     "ONLINE": "Online",
-    "BUSY": "Busy",
+    "BUSY": "Zaneprázdněn",
     "OFFLINE": "Offline"
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Notification Preferences",
-    "EMAIL": "Email",
+    "EMAIL": "E-mailová adresa",
     "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
+    "CONVERSATION_CREATE_PUSH": "Odeslat push oznámení při vytváření nové konverzace",
+    "CONVERSATION_ASSIGNEE_PUSH": "Odeslat push oznámení, když je mi přiřazena konverzace",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Odeslat push oznámení, když je nová zpráva vytvořena v přiřazené konverzaci",
     "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
     "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Odeslat oznámení e-mailem, když je nová zpráva vytvořena v přiřazené konverzaci"
   },
   "CONVERSATION_DETAILS": {
     "BROWSER": "Browser",
@@ -121,10 +121,10 @@
     "TITLE": "Actions"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Vybrat agenta"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
+    "COMMON_ERROR": "Nelze se připojit k Woot serveru, opakujte akci později",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
     "CANNOT_FETCH": "There was an error fetching the information, please try again",
     "AUTH": "Username / Password Incorrect. Please try again",
@@ -141,7 +141,7 @@
   "EXIT": {
     "TITLE": "Exit",
     "SUBTITLE": "Are you sure you want to quit?",
-    "CANCEL": "Cancel",
+    "CANCEL": "Zrušit",
     "OK": "Ok"
   }
 }

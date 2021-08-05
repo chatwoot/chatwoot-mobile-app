@@ -45,7 +45,7 @@ const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
 
   return (
     <SafeAreaView style={style.container}>
-      <HeaderBar title={i18n.t('SETTINGS.SWITCH_ACCOUNT')} showLeftButton onBackPress={goBack} />
+      <HeaderBar title={i18n.t('SETTINGS.CHANGE_LANGUAGE')} showLeftButton onBackPress={goBack} />
       <View style={style.itemMainView}>
         {languages.map((item) => {
           return (

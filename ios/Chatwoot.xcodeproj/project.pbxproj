@@ -243,7 +243,6 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				F2805A5DABF18531D22B8EC3 /* [CP] Copy Pods Resources */,
-				E74141499BC3DDBE9A14FA9B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -268,7 +267,6 @@
 				CD2A7E9C767B5EB4887664C9 /* [CP] Copy Pods Resources */,
 				5B7BE4557BEA652A4E7694F7 /* [CP-User] [RNFB] Core Configuration */,
 				68972FD48F9A4106ABFB7160 /* Upload Debug Symbols to Sentry */,
-				41EE3E736DCDFDF141B32493 /* [CP] Embed Pods Frameworks */,
 				B66079D4829A4E919D196FF2 /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
@@ -460,24 +458,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		41EE3E736DCDFDF141B32493 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Chatwoot/Pods-Chatwoot-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Chatwoot/Pods-Chatwoot-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		5B7BE4557BEA652A4E7694F7 /* [CP-User] [RNFB] Core Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -576,24 +556,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Chatwoot/Pods-Chatwoot-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E74141499BC3DDBE9A14FA9B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Chatwoot-ChatwootTests/Pods-Chatwoot-ChatwootTests-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Chatwoot-ChatwootTests/Pods-Chatwoot-ChatwootTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F2805A5DABF18531D22B8EC3 /* [CP] Copy Pods Resources */ = {

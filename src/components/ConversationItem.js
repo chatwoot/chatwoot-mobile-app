@@ -86,10 +86,14 @@ const ConversationItemComponent = ({
         </View>
         <View>
           <View style={style.labelView}>
-            <CustomText
-              style={unreadCount ? style.conversationUserActive : style.conversationUserNotActive}>
-              {name.length < 26 ? `${name}` : `${name.substring(0, 20)}...`}
-            </CustomText>
+            {name && (
+              <CustomText
+                style={
+                  unreadCount ? style.conversationUserActive : style.conversationUserNotActive
+                }>
+                {name.length < 26 ? `${name}` : `${name.substring(0, 20)}...`}
+              </CustomText>
+            )}
           </View>
 
           {!typingUser ? (

@@ -74,7 +74,9 @@
     "OPEN": "Obrir",
     "RESOLVED": "Resolt",
     "BOT": "Bot",
-    "SUBMIT": "Trametre"
+    "SUBMIT": "Trametre",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Configuració",
@@ -107,6 +109,7 @@
     "CONVERSATION_CREATE_PUSH": "Envia notificacions automàtiques quan es creï una conversa nova",
     "CONVERSATION_ASSIGNEE_PUSH": "Envia notificacions automàtiques quan se m'assigna una conversa",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Envia notificacions automàtiques quan es creï un missatge nou en una conversa assignada",
+    "CONVERSATION_MENTION": "Enviar notificacions push quan siguis esmentat en una conversació",
     "CONVERSATION_CREATE_EMAIL": "Envia notificacions per correu electrònic quan es creï una conversa nova",
     "CONVERSATION_ASSIGNEE_EMAIL": "Envia notificacions per correu electrònic quan se m'assigna una conversa",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Envia notificacions per correu electrònic quan es creï un missatge nou en una conversa assignada"

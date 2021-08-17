@@ -33,6 +33,7 @@ const styles = (theme) => ({
     paddingLeft: 24,
     paddingRight: 24,
     paddingTop: 32,
+    paddingBottom: 32,
   },
   filterButton: {
     flex: 1,

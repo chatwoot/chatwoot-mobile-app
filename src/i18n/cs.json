@@ -74,7 +74,9 @@
     "OPEN": "Otevřít",
     "RESOLVED": "Resolved",
     "BOT": "Bot",
-    "SUBMIT": "Odeslat"
+    "SUBMIT": "Odeslat",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Nastavení",
@@ -107,6 +109,7 @@
     "CONVERSATION_CREATE_PUSH": "Odeslat push oznámení při vytváření nové konverzace",
     "CONVERSATION_ASSIGNEE_PUSH": "Odeslat push oznámení, když je mi přiřazena konverzace",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Odeslat push oznámení, když je nová zpráva vytvořena v přiřazené konverzaci",
+    "CONVERSATION_MENTION": "Poslat push oznámení, když jste zmíněni v konverzaci",
     "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
     "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Odeslat oznámení e-mailem, když je nová zpráva vytvořena v přiřazené konverzaci"

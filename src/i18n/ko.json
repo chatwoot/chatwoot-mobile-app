@@ -74,7 +74,9 @@
     "OPEN": "열기",
     "RESOLVED": "해결됨",
     "BOT": "봇",
-    "SUBMIT": "보내기"
+    "SUBMIT": "보내기",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "설정",
@@ -107,6 +109,7 @@
     "CONVERSATION_CREATE_PUSH": "새 대화가 만들어질 때 푸시 알림 보내기",
     "CONVERSATION_ASSIGNEE_PUSH": "대화가 할당되면 푸시 알림 보내기",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "할당된 대화에서 새 메시지가 생성될 때 푸시 알림 보내기",
+    "CONVERSATION_MENTION": "대화에서 멘션될 때 푸시 알림 보내기",
     "CONVERSATION_CREATE_EMAIL": "새 대화가 생성될 때 이메일 알림 보내기",
     "CONVERSATION_ASSIGNEE_EMAIL": "대화가 할당될 때 이메일 알림 보내기",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "할당된 대화에서 새 메시지가 생성될 때 이메일 알림 보내기"

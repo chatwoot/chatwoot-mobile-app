@@ -74,7 +74,9 @@
     "OPEN": "Abrir",
     "RESOLVED": "Resolvida",
     "BOT": "Bot",
-    "SUBMIT": "Enviar"
+    "SUBMIT": "Enviar",
+    "PENDING": "Pendente",
+    "SNOOZED": "Adiado"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Confirgurações",
@@ -107,6 +109,7 @@
     "CONVERSATION_CREATE_PUSH": "Enviar notificações push quando uma nova conversa é criada",
     "CONVERSATION_ASSIGNEE_PUSH": "Enviar notificações push quando uma conversa é atribuída para mim",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Enviar notificações push quando uma nova mensagem é criada em uma conversa atribuída",
+    "CONVERSATION_MENTION": "Enviar notificações push quando você for mencionado em uma conversa",
     "CONVERSATION_CREATE_EMAIL": "Enviar notificações push quando uma nova conversa é criada",
     "CONVERSATION_ASSIGNEE_EMAIL": "Enviar notificações por email quando uma conversa é atribuída a mim",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Enviar notificações por email quando uma nova mensagem é criada em uma conversa atribuída"

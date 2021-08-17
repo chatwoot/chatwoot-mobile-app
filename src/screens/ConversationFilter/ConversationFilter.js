@@ -38,6 +38,18 @@ const statusOptions = [
     itemType: 'status',
     icon: 'tv-outline',
   },
+  {
+    name: i18n.t('FILTER.PENDING'),
+    key: 'pending',
+    itemType: 'status',
+    icon: 'activity-outline',
+  },
+  {
+    name: i18n.t('FILTER.SNOOZED'),
+    key: 'snoozed',
+    itemType: 'status',
+    icon: 'clock-outline',
+  },
 ];
 
 const propTypes = {

@@ -74,7 +74,9 @@
     "OPEN": "Öffnen",
     "RESOLVED": "Gelöst",
     "BOT": "Bot",
-    "SUBMIT": "Senden"
+    "SUBMIT": "Senden",
+    "PENDING": "Ausstehend",
+    "SNOOZED": "Erinnern"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Einstellungen",
@@ -107,6 +109,7 @@
     "CONVERSATION_CREATE_PUSH": "Sende Push-Benachrichtigungen, wenn eine neue Unterhaltung erstellt wird",
     "CONVERSATION_ASSIGNEE_PUSH": "Sende Push-Benachrichtigungen, wenn mir eine Unterhaltung zugewiesen ist",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Sende Push-Benachrichtigungen, wenn eine neue Nachricht in einer zugewiesenen Unterhaltung erstellt wird",
+    "CONVERSATION_MENTION": "Sende Push-Benachrichtigungen, wenn du in einer Unterhaltung erwähnt wirst",
     "CONVERSATION_CREATE_EMAIL": "Sende Push-Benachrichtigungen, wenn eine neue Unterhaltung erstellt wird",
     "CONVERSATION_ASSIGNEE_EMAIL": "Sende Push-Benachrichtigungen, wenn mir eine Unterhaltung zugewiesen ist",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Sende Push-Benachrichtigungen, wenn eine neue Nachricht in einer zugewiesenen Unterhaltung erstellt wird"

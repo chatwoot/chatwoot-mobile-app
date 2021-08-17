@@ -74,7 +74,9 @@
     "OPEN": "Открытые",
     "RESOLVED": "Закрыт",
     "BOT": "Бот",
-    "SUBMIT": "Отправить"
+    "SUBMIT": "Отправить",
+    "PENDING": "В ожидании",
+    "SNOOZED": "Отложено"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Настройки",
@@ -107,6 +109,7 @@
     "CONVERSATION_CREATE_PUSH": "Отправлять push уведомление, когда новый диалог создан",
     "CONVERSATION_ASSIGNEE_PUSH": "Отправлять push уведомление при назначении мне диалога",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Отправлять push уведомления при создании нового сообщения в назначенном диалоге",
+    "CONVERSATION_MENTION": "Отправлять уведомления при упоминании в разговоре",
     "CONVERSATION_CREATE_EMAIL": "Отправлять email уведомление, когда новый диалог создан",
     "CONVERSATION_ASSIGNEE_EMAIL": "Отправлять email уведомление, когда мне назначен диалог",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Отправлять email уведомления при создании нового сообщения в назначенном диалоге"

@@ -74,7 +74,9 @@
     "OPEN": "Ανοιχτές",
     "RESOLVED": "Επιλύθηκαν",
     "BOT": "Bot",
-    "SUBMIT": "Καταχώρηση"
+    "SUBMIT": "Καταχώρηση",
+    "PENDING": "Εκκρεμεί",
+    "SNOOZED": "Αναβολή"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Ρυθμίσεις",
@@ -107,6 +109,7 @@
     "CONVERSATION_CREATE_PUSH": "Να ειδοποιούμαι με push όταν δημιουργείται μια νέα συνομιλία",
     "CONVERSATION_ASSIGNEE_PUSH": "Να ειδοποιούμαι με push όταν μια συνομιλία μου ανατείθεται",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Αποστολή ειδοποίησης push όταν ένα νέο μήνυμα δημιουργείται σε συνομιλία που έχει αναληφθεί",
+    "CONVERSATION_MENTION": "Αποστολή ειδοποιήσεων push όταν αναφέρεστε σε μια συνομιλία",
     "CONVERSATION_CREATE_EMAIL": "Να στέλνεται ειδοποίηση όταν δημιουργείται μια νέα συνομιλία",
     "CONVERSATION_ASSIGNEE_EMAIL": "Να στέλνεται ειδοποίηση email όταν μια συνομιλία αντιστοιχίζεται σε μένα",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Αποστολή ειδοποίησης email όταν ένα νέο μήνυμα δημιουργείται σε συνομιλία που έχει αναληφθεί"

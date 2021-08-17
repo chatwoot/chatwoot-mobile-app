@@ -74,7 +74,9 @@
     "OPEN": "Deschide",
     "RESOLVED": "Rezolvat",
     "BOT": "Bot",
-    "SUBMIT": "Trimite"
+    "SUBMIT": "Trimite",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Setări",
@@ -107,6 +109,7 @@
     "CONVERSATION_CREATE_PUSH": "Trimite notificări push atunci când o conversație nouă este creată",
     "CONVERSATION_ASSIGNEE_PUSH": "Trimite notificări push atunci când o conversație îmi este atribuită",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
+    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
     "CONVERSATION_CREATE_EMAIL": "Trimite notificări prin e-mail atunci când o conversație nouă este creată",
     "CONVERSATION_ASSIGNEE_EMAIL": "Trimite notificări prin e-mail atunci când o conversație îmi este atribuită",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"

@@ -74,7 +74,9 @@
     "OPEN": "Open",
     "RESOLVED": "Opgelost",
     "BOT": "Bot",
-    "SUBMIT": "Bevestigen"
+    "SUBMIT": "Bevestigen",
+    "PENDING": "Afwachtend",
+    "SNOOZED": "Gesluimerd"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Instellingen",
@@ -107,6 +109,7 @@
     "CONVERSATION_CREATE_PUSH": "Stuur pushberichten wanneer een nieuw gesprek is aangemaakt",
     "CONVERSATION_ASSIGNEE_PUSH": "Stuur pushberichten wanneer een gesprek aan mij is toegewezen",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
+    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
     "CONVERSATION_CREATE_EMAIL": "E-mailberichten verzenden wanneer een nieuw gesprek is gemaakt",
     "CONVERSATION_ASSIGNEE_EMAIL": "E-mailberichten verzenden wanneer een gesprek aan mij is toegewezen",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"

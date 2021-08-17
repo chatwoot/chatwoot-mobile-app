@@ -74,7 +74,9 @@
     "OPEN": "Ouverte",
     "RESOLVED": "Résolue",
     "BOT": "Bot",
-    "SUBMIT": "Envoyer"
+    "SUBMIT": "Envoyer",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Paramètres",
@@ -107,6 +109,7 @@
     "CONVERSATION_CREATE_PUSH": "Envoyer une notifications lors de la création d'une conversation",
     "CONVERSATION_ASSIGNEE_PUSH": "Envoyer une notification lors qu'une discussion m'est assignée",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Envoyer une notification lors de la réception d'un message dans une discussion m'étant assignée",
+    "CONVERSATION_MENTION": "Envoyer des notifications push lorsque vous êtes mentionné dans une conversation",
     "CONVERSATION_CREATE_EMAIL": "Envoyer une notification par e-mail lors de la création d'une conversation",
     "CONVERSATION_ASSIGNEE_EMAIL": "Envoyer une notification par e-mail lors qu'une discussion m'est assignée",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Envoyer une notification par e-mail lors de la réception d'un message dans une discussion qui m'est assignée"

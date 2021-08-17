@@ -74,7 +74,9 @@
     "OPEN": "Åpne",
     "RESOLVED": "Løst",
     "BOT": "Bot",
-    "SUBMIT": "Send"
+    "SUBMIT": "Send",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Innstillinger",
@@ -107,6 +109,7 @@
     "CONVERSATION_CREATE_PUSH": "Send push-varsler når en ny samtale opprettes",
     "CONVERSATION_ASSIGNEE_PUSH": "Send push-varsler når en samtale er tildelt meg",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push-varsler når en ny melding opprettes i en tilordnet samtale",
+    "CONVERSATION_MENTION": "Send pushvarslinger når du er nevnt i en samtale",
     "CONVERSATION_CREATE_EMAIL": "Send e-postvarsler når en ny samtale opprettes",
     "CONVERSATION_ASSIGNEE_EMAIL": "Send e-postvarsler når en samtale er tildelt meg",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send e-postvarsler når en ny melding opprettes i en tilordnet samtale"

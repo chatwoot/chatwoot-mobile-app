@@ -74,7 +74,9 @@
     "OPEN": "فتح",
     "RESOLVED": "إغلاق",
     "BOT": "الروبوت",
-    "SUBMIT": "إرسال"
+    "SUBMIT": "إرسال",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "الإعدادات",
@@ -107,6 +109,7 @@
     "CONVERSATION_CREATE_PUSH": "إرسال إشعارات عند إنشاء محادثة جديدة",
     "CONVERSATION_ASSIGNEE_PUSH": "إرسال إشعارات عند تعيين محادثة لي",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "إرسال إشعارات التنية عند إنشاء رسالة جديدة في محادثة موكلة",
+    "CONVERSATION_MENTION": "إرسال إشعارات بالبريد الإلكتروني عندما يتم ذكرك او الاشارة اليك في محادثة",
     "CONVERSATION_CREATE_EMAIL": "إرسال إشعار بالبريد الإلكتروني عند إنشاء محادثة جديدة",
     "CONVERSATION_ASSIGNEE_EMAIL": "إرسال إشعار بالبريد الإلكتروني عند تعيين محادثة لي",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "إرسال إشعارات البريد الإلكتروني عند إنشاء رسالة جديدة في محادثة موكلة"

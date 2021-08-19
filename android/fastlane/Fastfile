@@ -6,8 +6,16 @@ platform :android do
     gradle(task: "test")
   end
 
-  desc "Submit a new Beta Build to Beta"
-  lane :beta do
+  desc "Submit a new Beta Build to Beta(Internal)"
+  lane :beta_internal do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store(
+      track: 'internal'
+    )
+  end
+
+  desc "Submit a new Beta Build to Beta(Open)"
+  lane :beta_open do
     gradle(task: "clean assembleRelease")
     upload_to_play_store(track: 'beta')
   end

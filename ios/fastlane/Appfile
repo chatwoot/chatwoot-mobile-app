@@ -1,0 +1,8 @@
+app_identifier("com.chatwoot.app") # The bundle identifier of your app
+apple_id("muhsinkeramam@gmail.com") # Your Apple email address
+
+itc_team_id("119682494") # App Store Connect Team ID
+team_id("6C953F3RX2") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile

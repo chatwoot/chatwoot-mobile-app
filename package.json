@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "1.3.3",
+  "version": "1.3.6",
   "private": true,
   "scripts": {
     "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",
@@ -11,7 +11,7 @@
     "android:release": "react-native run-android --variant=release",
     "android:publish-internal": "cd android && ./gradlew clean && fastlane android beta_internal",
     "android:publish-open": "cd android && ./gradlew clean && fastlane android beta_open",
-    "ios:beta":"cd ios && fastlane ios beta",
+    "ios:publish-internal":"cd ios && fastlane ios beta",
     "ios": "react-native run-ios",
     "ios:clean-derived-data": "rm -rf ~/Library/Developer/Xcode/DerivedData/*",
     "start": "react-native start",

@@ -3,10 +3,10 @@ import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
-import CustomText from './Text';
-import UserAvatar from './UserAvatar';
-import { dynamicTime } from '../helpers/TimeHelper';
-import { findLastMessage, getUnreadCount, getInboxName, getTypingUsersText } from '../helpers';
+import CustomText from 'components/Text';
+import UserAvatar from 'components/UserAvatar';
+import { dynamicTime } from 'helpers/TimeHelper';
+import { findLastMessage, getUnreadCount, getInboxName, getTypingUsersText } from 'helpers';
 
 import ConversationAttachmentItem from './ConversationAttachmentItem';
 import ConversationContentItem from './ConversationContentItem';

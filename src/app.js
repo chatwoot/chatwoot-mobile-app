@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { Alert, BackHandler, Platform } from 'react-native';
 import BackgroundColor from 'react-native-background-color';
@@ -8,34 +8,29 @@ import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
-import ErrorHelper from './helpers/ErrorHelper';
-
+import NoNetworkBar from 'components/NoNetworkBar';
+import ErrorHelper from 'helpers/ErrorHelper';
 import { theme } from './theme';
-
-import NoNetworkBar from './components/NoNetworkBar';
-
 import Router from './router';
 import { store, persistor } from './store';
-
 import i18n from './i18n';
 
-export default class Chatwoot extends Component {
-  componentDidMount() {
+const Chatwoot = () => { 
+  useEffect(() => {
     ErrorHelper.init();
     // To hide splash screen
     SplashScreen.hide();
     if (Platform.OS === 'android') {
       BackgroundColor.setColor('#FFFFFF');
     }
-
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
-  }
-
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
-  }
-
-  handleBackButtonClick = () => {
+  }, []);
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
+    };
+  }, []);
+  const handleBackButtonClick = () => {
     Alert.alert(
       i18n.t('EXIT.TITLE'),
       i18n.t('EXIT.SUBTITLE'),
@@ -52,19 +47,18 @@ export default class Chatwoot extends Component {
     return true;
   };
 
-  render() {
-    return (
-      <React.Fragment>
-        <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider {...eva} theme={theme}>
-          <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-              <NoNetworkBar />
-              <Router />
-            </PersistGate>
-          </Provider>
-        </ApplicationProvider>
-      </React.Fragment>
-    );
-  }
-}
+  return (
+    <React.Fragment>
+      <IconRegistry icons={EvaIconsPack} />
+      <ApplicationProvider {...eva} theme={theme}>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <NoNetworkBar />
+            <Router />
+          </PersistGate>
+        </Provider>
+      </ApplicationProvider>
+    </React.Fragment>
+  );
+};
+export default Chatwoot;

@@ -1,10 +1,10 @@
 import PostHog from 'posthog-react-native';
 import Config from 'react-native-config';
 
-const POSTHOG_API_KEY = Config.POSTHOG_API_KEY;
-const POSTHOG_API_HOST = Config.POSTHOG_API_HOST;
+const POST_HOG_API_KEY = Config.POSTHOG_API_KEY;
+const POST_HOG_API_HOST = Config.POSTHOG_API_HOST;
 export const checkAnalyticsEnabled = () => {
-  if (!__DEV__ && POSTHOG_API_KEY && POSTHOG_API_HOST) {
+  if (!__DEV__ && POST_HOG_API_KEY && POST_HOG_API_HOST) {
     return true;
   }
   return false;
@@ -13,9 +13,9 @@ const IS_ANALYTICS_ENABLED = checkAnalyticsEnabled();
 
 export const initAnalytics = async () => {
   if (IS_ANALYTICS_ENABLED) {
-    await PostHog.setup(POSTHOG_API_KEY, {
+    await PostHog.setup(POST_HOG_API_KEY, {
       // PostHog API host
-      host: POSTHOG_API_HOST,
+      host: POST_HOG_API_HOST,
       // Record certain application events automatically! (off/false by default)
       captureApplicationLifecycleEvents: true,
 

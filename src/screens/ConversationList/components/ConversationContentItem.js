@@ -3,8 +3,8 @@ import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { withStyles, Icon } from '@ui-kitten/components';
 
-import CustomText from './Text';
-import { MESSAGE_TYPES } from '../constants';
+import CustomText from 'components/Text';
+import { MESSAGE_TYPES } from 'constants';
 
 const UndoIcon = style => {
   return <Icon {...style} name="undo" />;

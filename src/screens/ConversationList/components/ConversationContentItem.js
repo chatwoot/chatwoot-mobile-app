@@ -10,6 +10,10 @@ const UndoIcon = style => {
   return <Icon {...style} name="undo" />;
 };
 
+const LockIcon = style => {
+  return <Icon {...style} name="lock" />;
+};
+
 const styles = theme => ({
   itemView: {
     flex: 1,
@@ -40,9 +44,16 @@ const propTypes = {
   unReadCount: PropTypes.number,
   content: PropTypes.string,
   messageType: PropTypes.number,
+  isPrivate: PropTypes.bool,
 };
 
-const ConversationContentItemComponent = ({ eva, unReadCount, content, messageType }) => {
+const ConversationContentItemComponent = ({
+  eva,
+  unReadCount,
+  content,
+  messageType,
+  isPrivate,
+}) => {
   const { style, theme } = eva;
   const message = content
     ? content.replace(/\[(@[\w_. ]+)\]\(mention:\/\/(?:user|team)\/\d+\/(.*?)+\)/gi, '$1').trim()
@@ -51,7 +62,11 @@ const ConversationContentItemComponent = ({ eva, unReadCount, content, messageTy
     <Fragment>
       {messageType === MESSAGE_TYPES.OUTGOING ? (
         <View style={style.itemView}>
-          <UndoIcon style={style.undoIcon} fill={theme['text-hint-color']} />
+          {isPrivate ? (
+            <LockIcon style={style.undoIcon} fill={theme['text-hint-color']} />
+          ) : (
+            <UndoIcon style={style.undoIcon} fill={theme['text-hint-color']} />
+          )}
           <CustomText
             style={unReadCount ? style.messageActive : style.messageNotActive}
             numberOfLines={1}

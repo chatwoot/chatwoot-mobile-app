@@ -57,7 +57,7 @@ const ConversationItemComponent = ({
   const unreadCount = getUnreadCount(item);
 
   const lastMessage = findLastMessage({ messages });
-  const { content, created_at, attachments, message_type } = lastMessage;
+  const { content, created_at, attachments, message_type, private: isPrivate } = lastMessage;
 
   const typingUser = getTypingUsersText({
     conversationTypingUsers,
@@ -109,6 +109,7 @@ const ConversationItemComponent = ({
                 content={content}
                 unReadCount={unreadCount}
                 messageType={message_type}
+                isPrivate={isPrivate}
               />
             )
           ) : (

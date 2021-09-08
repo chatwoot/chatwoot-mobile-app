@@ -39,7 +39,6 @@ const ConversationList = ({ eva: { style }, navigation }) => {
   const conversations = useSelector(state => state.conversation.data);
   const conversationStatus = useSelector(state => state.conversation.conversationStatus);
   const inboxSelected = useSelector(state => state.inbox.inboxSelected);
-  const pushToken = useSelector(state => state.notification.pushToken);
 
   useEffect(() => {
     clearAllDeliveredNotifications();
@@ -47,15 +46,14 @@ const ConversationList = ({ eva: { style }, navigation }) => {
     dispatch(getInstalledVersion());
     dispatch(getInboxes());
     dispatch(getAgents());
-    // loadConversations();
-    dispatch(getAllNotifications({ pageNo: 1 }));
-    // TODO: Check this logic later
-    dispatch(saveDeviceDetails({ token: null }));
-    if (!pushToken) {
-      dispatch(saveDeviceDetails({ token: pushToken }));
-    }
+    dispatch(saveDeviceDetails());
     storeUser();
-  }, [dispatch, initActionCable, loadConversations, storeUser, pushToken]);
+  }, [dispatch, initActionCable, storeUser]);
+
+  useEffect(() => {
+    loadConversations();
+    dispatch(getAllNotifications({ pageNo: 1 }));
+  }, [dispatch, initActionCable, loadConversations]);
 
   const loadConversations = useCallback(() => {
     dispatch(

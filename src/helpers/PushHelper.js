@@ -53,8 +53,7 @@ export const clearAllDeliveredNotifications = () => {
 };
 
 export const updateBadgeCount = ({ count }) => {
-  if (Platform.OS === 'android') {
-  } else {
+  if (Platform.OS === 'ios' && count) {
     PushNotificationIOS.setApplicationIconBadgeNumber(count);
   }
 };

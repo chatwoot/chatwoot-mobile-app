@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Lien d'installation",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "Si vous utilisez une installation de Chatwoot auto-hébergée, saisissez l'URL de votre serveur. Sinon, utilisez app.chatwoot.com.",
     "URL_ERROR": "Saisissez une URL valide",
     "CONNECT": "Connexion",
     "CHANGE_LANGUAGE": "Modifier la langue",
@@ -22,7 +22,7 @@
   },
   "LOGIN": {
     "TITLE": "Connectez-vous à votre compte",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "DESCRIPTION": "Vous êtes connecté à {{baseUrl}}. Connectez-vous avec votre adresse e-mail et votre mot de passe.",
     "EMAIL": "Courriel",
     "PASSWORD": "Mot de passe",
     "EMAIL_ERROR": "Saisissez une adresse de courriel valide",
@@ -75,8 +75,8 @@
     "RESOLVED": "Résolue",
     "BOT": "Bot",
     "SUBMIT": "Envoyer",
-    "PENDING": "Pending",
-    "SNOOZED": "Snoozed"
+    "PENDING": "En attente",
+    "SNOOZED": "Reporté"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Paramètres",
@@ -137,9 +137,9 @@
     "AUTH": "Connexion réussie"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "Mise à jour du serveur requise",
+    "WARNING_FOR_AGENT": "Il semble que vous utilisez un serveur Chatwoot non pris en charge pour votre application mobile. Veuillez contacter votre administrateur pour mettre à jour votre serveur Chatwoot.",
+    "WARNING_FOR_ADMIN": "Il semble que vous utilisez un serveur Chatwoot non pris en charge pour votre application mobile. La mise à jour vers la version %{minimumVersion} du serveur ou ultérieure est requise."
   },
   "EXIT": {
     "TITLE": "Quitter",

@@ -275,3 +275,17 @@ export const getCustomerDetails = ({ conversationMetaDetails, conversationDetail
   }
   return customer;
 };
+
+export const isEmptyObject = obj => Object.keys(obj).length === 0;
+
+export const getCurrentUserAvailabilityStatus = ({ user }) => {
+  if (user && !isEmptyObject(user)) {
+    const { account_id: accountId } = user;
+    const accounts = user ? user.accounts : [];
+    const currentAccount = accounts.length
+      ? accounts.filter(account => account.id === accountId)
+      : {};
+    return currentAccount.availability_status || user.availability_status || '';
+  }
+  return '';
+};

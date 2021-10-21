@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { SafeAreaView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { View } from 'react-native';
 
 import UserAvatar from '../../components/UserAvatar';
@@ -108,7 +108,7 @@ class ConversationDetailsComponent extends Component {
       },
     } = conversationDetails;
     return (
-      <SafeAreaView style={style.container}>
+      <ScrollView style={style.container}>
         <HeaderBar showLeftButton onBackPress={this.onBackPress} leftButtonIcon="close-outline" />
         <View style={style.avatarContainer}>
           <UserAvatar
@@ -140,7 +140,7 @@ class ConversationDetailsComponent extends Component {
         ) : null}
         <View style={style.separationView} />
         {this.renderAdditionalAttributes()}
-      </SafeAreaView>
+      </ScrollView>
     );
   }
 }

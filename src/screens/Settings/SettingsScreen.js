@@ -23,6 +23,7 @@ import { getNotificationSettings } from 'actions/settings';
 import packageFile from '../../../package.json';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { captureEvent } from 'helpers/Analytics';
+import { getCurrentUserAvailabilityStatus } from '../../helpers';
 
 const appName = DeviceInfo.getApplicationName();
 
@@ -35,7 +36,6 @@ const propTypes = {
     navigate: PropTypes.func.isRequired,
   }).isRequired,
   onLogOut: PropTypes.func,
-  availabilityStatus: PropTypes.string,
   getNotificationSettings: PropTypes.func,
 };
 const defaultProps = {
@@ -47,12 +47,13 @@ const Settings = ({ eva: { theme, style } }) => {
   const [showWidget, toggleWidget] = useState(false);
   const navigation = useNavigation();
   const user = useSelector(store => store.auth.user);
-  const availabilityStatus = user ? user.availability_status : '';
   const email = user ? user.email : '';
   const accounts = user ? user.accounts : [];
   const avatar_url = user ? user.avatar_url : '';
   const name = user ? user.name : '';
   const identifierHash = user ? user.identifier_hash : '';
+
+  const availabilityStatus = getCurrentUserAvailabilityStatus({ user });
 
   const userDetails = {
     identifier: email,

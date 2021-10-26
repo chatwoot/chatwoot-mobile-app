@@ -133,11 +133,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.chatwoot.app"
+        applicationId "com.mokhatbat.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5015
-        versionName "1.3.15"
+        versionCode 2
+        versionName "1.0.1"
         multiDexEnabled true 
     }
     splits {
@@ -147,6 +147,10 @@ android {
             universalApk false  // If true, also generate a universal APK
             include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
     }
 
     lintOptions {

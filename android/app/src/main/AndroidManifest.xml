@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.chatwoot.app">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.mokhatbat.app">
 
   <uses-permission android:name="android.permission.INTERNET" />
 

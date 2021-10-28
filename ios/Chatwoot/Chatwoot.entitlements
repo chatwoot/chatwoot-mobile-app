@@ -7,7 +7,7 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:staging.chatwoot.com</string>
-		<string>applinks:app.chatwoot.com</string>
+		<string>applinks:app.mokhatbat.com</string>
 	</array>
 </dict>
 </plist>

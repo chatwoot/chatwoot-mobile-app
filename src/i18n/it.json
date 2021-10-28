@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL Di Installazione",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "If you are using a self-hosted Mokhatbat installation, input your server URL. Otherwise, use app.mokhatbat.com.",
     "URL_ERROR": "Inserisci un URL valido",
     "CONNECT": "Connetti",
     "CHANGE_LANGUAGE": "Cambia lingua",
@@ -135,8 +135,8 @@
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Mokhatbat server for your mobile app. Please contact your admin to upgrade your Mokhatbat server.",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Mokhatbat server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
   "EXIT": {
     "TITLE": "Esci",

@@ -108,18 +108,18 @@ export const SETTINGS_ITEMS = [
     iconName: 'globe-outline',
     itemName: 'language',
   },
-  {
-    text: 'HELP',
-    checked: true,
-    iconName: 'question-mark-circle-outline',
-    itemName: 'help',
-  },
-  {
-    text: 'CHAT_WITH_US',
-    checked: true,
-    iconName: 'headphones-outline',
-    itemName: 'chat_with_us',
-  },
+  // {
+  //   text: 'HELP',
+  //   checked: true,
+  //   iconName: 'question-mark-circle-outline',
+  //   itemName: 'help',
+  // },
+  // {
+  //   text: 'CHAT_WITH_US',
+  //   checked: true,
+  //   iconName: 'headphones-outline',
+  //   itemName: 'chat_with_us',
+  // },
   {
     text: 'LOG_OUT',
     checked: false,

@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Lien d'installation",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "If you are using a self-hosted Mokhatbat installation, input your server URL. Otherwise, use app.mokhatbat.com.",
     "URL_ERROR": "Saisissez une URL valide",
     "CONNECT": "Connexion",
     "CHANGE_LANGUAGE": "Modifier la langue",
@@ -128,15 +128,15 @@
     "OfFLINE": "Vous devez vous connecter au Wi-Fi ou à un réseau cellulaire pour vous reconnecter",
     "CANNOT_FETCH": "Une erreur s'est produite lors de la récupération des informations, veuillez réessayer",
     "AUTH": "Nom d'utilisateur / mot de passe incorrect. Veuillez réessayer",
-    "NO_ACCOUNTS_MESSAGE": "Vous n'avez accès a aucun compte chatwoot"
+    "NO_ACCOUNTS_MESSAGE": "Vous n'avez accès a aucun compte Mokhatbat"
   },
   "SUCCESS": {
     "AUTH": "Connexion réussie"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Mokhatbat server for your mobile app. Please contact your admin to upgrade your Mokhatbat server.",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Mokhatbat server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
   "EXIT": {
     "TITLE": "Quitter",

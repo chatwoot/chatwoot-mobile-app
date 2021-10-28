@@ -105,7 +105,6 @@ const Settings = ({ eva: { theme, style } }) => {
       case 'help':
         captureEvent({ eventName: 'Opened help docs' });
         openURL({ URL: HELP_URL });
-
         break;
 
       default:
@@ -119,7 +118,7 @@ const Settings = ({ eva: { theme, style } }) => {
       : SETTINGS_ITEMS.filter(e => e.itemName !== 'switch-account');
 
   settingsMenu =
-    appName === 'Chatwoot' ? SETTINGS_ITEMS : SETTINGS_ITEMS.filter(e => e.itemName !== 'help');
+    appName === 'Mokhatbat' ? SETTINGS_ITEMS : SETTINGS_ITEMS.filter(e => e.itemName !== 'help');
 
   return (
     <SafeAreaView style={style.container}>

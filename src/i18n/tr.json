@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Kurulum URL'si",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "If you are using a self-hosted Mokhatbat installation, input your server URL. Otherwise, use app.mokhatbat.com.",
     "URL_ERROR": "Geçerli bir URL girin",
     "CONNECT": "Bağlan",
     "CHANGE_LANGUAGE": "Dili değiştir",
@@ -128,15 +128,15 @@
     "OfFLINE": "Tekrar çevrimiçi olmak için kablosuz ağa veya hücresel ağa bağlanmanız gerekir",
     "CANNOT_FETCH": "Bilgi alınırken bir hata oluştu, lütfen tekrar deneyin",
     "AUTH": "Kullanıcı Adı / Parola Yanlış. Lütfen tekrar deneyin",
-    "NO_ACCOUNTS_MESSAGE": "Herhangi bir chatwoot hesabına erişiminiz yok"
+    "NO_ACCOUNTS_MESSAGE": "Herhangi bir Mokhatbat hesabına erişiminiz yok"
   },
   "SUCCESS": {
     "AUTH": "Giriş başarılı"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Mokhatbat server for your mobile app. Please contact your admin to upgrade your Mokhatbat server.",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Mokhatbat server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
   "EXIT": {
     "TITLE": "Çıkış",

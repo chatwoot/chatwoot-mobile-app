@@ -198,7 +198,7 @@ const App = ({ eva: { style } }) => {
               </Fragment>
             ) : (
               <Fragment>
-                <Stack.Screen name="ConfigureURL" component={ConfigureURLScreen} />
+                {/* <Stack.Screen name="ConfigureURL" component={ConfigureURLScreen} /> */}
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="ResetPassword" component={ResetPassword} />
                 <Stack.Screen name="ConversationList" component={ConversationList} />

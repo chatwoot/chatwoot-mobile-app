@@ -20,6 +20,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { SIGNUP_URL } from '../../constants/url';
 import CustomText from '../../components/Text';
 import { openURL } from '../../helpers/UrlHelper';
+import { setInstallationUrl } from '../../actions/settings';
 
 const { Form } = t.form;
 const LoginForm = t.struct({
@@ -43,7 +44,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  onLogin: () => {},
+  onLogin: () => { },
   isLoggingIn: false,
 };
 
@@ -93,6 +94,8 @@ const LoginScreenComponent = ({ navigation, eva }) => {
 
   useEffect(() => {
     dispatch(resetAuth());
+    dispatch(setInstallationUrl({ url: "app.mokhatbat.com" }));
+
     if (!installationUrl) {
       navigation.navigate('ConfigureURL');
     }
@@ -156,8 +159,8 @@ const LoginScreenComponent = ({ navigation, eva }) => {
           </View>
 
           <View style={style.linksContainer}>
-            <View style={style.accountView}>
-              {appName === 'Chatwoot' && (
+            {/* <View style={style.accountView}>
+              {appName === 'Mokhatbat' && (
                 <>
                   <TouchableOpacity onPress={doSignup}>
                     <CustomText style={style.textStyle}>
@@ -171,7 +174,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
               <TouchableOpacity onPress={() => navigate('ConfigureURL')}>
                 <CustomText style={style.textStyle}> {i18n.t('LOGIN.CHANGE_URL')}</CustomText>
               </TouchableOpacity>
-            </View>
+            </View> */}
             <View style={style.accountView}>
               <TouchableOpacity onPress={() => navigate('Language')}>
                 <CustomText style={style.textStyle}> {i18n.t('LOGIN.CHANGE_LANGUAGE')}</CustomText>

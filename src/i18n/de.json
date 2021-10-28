@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installations URL",
-    "DESCRIPTION": "Wenn Sie eine selbst gehostete Chatwoot-Installation verwenden, geben Sie Ihre Server-URL ein. Andernfalls verwenden Sie app.chatwoot.com.",
+    "DESCRIPTION": "Wenn Sie eine selbst gehostete Mokhatbat-Installation verwenden, geben Sie Ihre Server-URL ein. Andernfalls verwenden Sie app.mokhatbat.com.",
     "URL_ERROR": "Geben Sie eine gültige URL ein",
     "CONNECT": "Verbinden",
     "CHANGE_LANGUAGE": "Sprache ändern",
@@ -128,15 +128,15 @@
     "OfFLINE": "Du musst dich mit WLAN oder einem Mobilfunknetz verbinden, um wieder online zu werden",
     "CANNOT_FETCH": "Beim Abrufen der Informationen ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut",
     "AUTH": "Benutzername / Passwort falsch. Bitte versuchen Sie es erneut",
-    "NO_ACCOUNTS_MESSAGE": "Sie haben keinen Zugriff auf Chatwoot-Konten"
+    "NO_ACCOUNTS_MESSAGE": "Sie haben keinen Zugriff auf Mokhatbat-Konten"
   },
   "SUCCESS": {
     "AUTH": "Anmeldung erfolgreich"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server-Upgrade erforderlich",
-    "WARNING_FOR_AGENT": "Es scheint, als ob Sie einen nicht unterstützten Chatwoot-Server für Ihre mobile App verwenden. Bitte kontaktieren Sie Ihren Administrator, um Ihren Chatwoot-Server zu aktualisieren.",
-    "WARNING_FOR_ADMIN": "Es scheint, als ob Sie den nicht unterstützten Chatwoot-Server für Ihre mobile App verwenden. Ein Upgrade auf die Serverversion %{minimumVersion} oder höher ist erforderlich."
+    "WARNING_FOR_AGENT": "Es scheint, als ob Sie einen nicht unterstützten Mokhatbat-Server für Ihre mobile App verwenden. Bitte kontaktieren Sie Ihren Administrator, um Ihren Mokhatbat-Server zu aktualisieren.",
+    "WARNING_FOR_ADMIN": "Es scheint, als ob Sie den nicht unterstützten Mokhatbat-Server für Ihre mobile App verwenden. Ein Upgrade auf die Serverversion %{minimumVersion} oder höher ist erforderlich."
   },
   "EXIT": {
     "TITLE": "Beenden",

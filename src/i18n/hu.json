@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installációs URL",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "If you are using a self-hosted Mokhatbat installation, input your server URL. Otherwise, use app.mokhatbat.com.",
     "URL_ERROR": "Kérjük helyes URL-t adj meg",
     "CONNECT": "Kapcsolódás",
     "CHANGE_LANGUAGE": "Nyelvválasztás",
@@ -128,15 +128,15 @@
     "OfFLINE": "Wi-Fi vagy mobilhálózat szükséges hogy ismét online legyél",
     "CANNOT_FETCH": "Hiba történt az információ lekérése során, kérjük próbált újra",
     "AUTH": "Felhasználó / Jelszó nem jó. Kérjük próbáld újra.",
-    "NO_ACCOUNTS_MESSAGE": "Nincs hozzáférésed Chatwoot fiókhoz"
+    "NO_ACCOUNTS_MESSAGE": "Nincs hozzáférésed Mokhatbat fiókhoz"
   },
   "SUCCESS": {
     "AUTH": "Sikeres bejelentkezés"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Mokhatbat server for your mobile app. Please contact your admin to upgrade your Mokhatbat server.",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Mokhatbat server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
   "EXIT": {
     "TITLE": "Kilép",

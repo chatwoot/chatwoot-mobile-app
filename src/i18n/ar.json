@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "رابط التثبيت",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "If you are using a self-hosted Mokhatbat installation, input your server URL. Otherwise, use app.mokhatbat.com.",
     "URL_ERROR": "الرجاء إدخال عنوان صحيح",
     "CONNECT": "اتصل",
     "CHANGE_LANGUAGE": "تغيير اللغة",
@@ -124,19 +124,19 @@
     "TITLE": "اختر وكيل"
   },
   "ERRORS": {
-    "COMMON_ERROR": "تعذر الاتصال بخادم Chatwoot، الرجاء المحاولة مرة أخرى لاحقاً",
+    "COMMON_ERROR": "تعذر الاتصال بخادم Mokhatbat، الرجاء المحاولة مرة أخرى لاحقاً",
     "OfFLINE": "يجب عليك التوصيل بشبكة Wi-Fi، أو بشبكة البيانات للاتصال مجدداً",
     "CANNOT_FETCH": "حدث خطأ أثناء جلب المعلومات، الرجاء المحاولة مرة أخرى",
     "AUTH": "اسم المستخدم / كلمة المرور غير صحيحة. الرجاء المحاولة مرة أخرى",
-    "NO_ACCOUNTS_MESSAGE": "ليس لديك حق الوصول إلى أي حسابات في Chatwoot"
+    "NO_ACCOUNTS_MESSAGE": "ليس لديك حق الوصول إلى أي حسابات في Mokhatbat"
   },
   "SUCCESS": {
     "AUTH": "تم تسجيل الدخول بنجاح"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Mokhatbat server for your mobile app. Please contact your admin to upgrade your Mokhatbat server.",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Mokhatbat server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
   "EXIT": {
     "TITLE": "خروج",

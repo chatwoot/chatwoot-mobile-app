@@ -47,13 +47,13 @@ const ConfigureURLScreenComponent = ({ eva }) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const [values, setValues] = useState({
-    url: appName === 'Chatwoot' ? 'app.chatwoot.com' : null,
+    url: appName === 'Mokhatbat' ? 'app.mokhatbat.com' : null,
   });
 
   const options = {
     fields: {
       url: {
-        placeholder: 'Eg: app.chatwoot.com',
+        placeholder: 'Eg: app.mokhatbat.com',
         template: props => <TextInputField {...props} />,
         error: i18n.t('CONFIGURE_URL.URL_ERROR'),
         autoCapitalize: 'none',
@@ -78,6 +78,8 @@ const ConfigureURLScreenComponent = ({ eva }) => {
 
   const onSubmit = () => {
     const value = inputRef.current.getValue();
+    console.log("value",value)
+    return
 
     if (value) {
       const { url } = value;

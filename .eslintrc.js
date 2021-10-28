@@ -5,7 +5,6 @@ module.exports = {
   rules: {
     'no-console': 2,
     'react/prop-types': 2,
-    'prettier/prettier': 'off',
     radix: 'off',
   },
 };

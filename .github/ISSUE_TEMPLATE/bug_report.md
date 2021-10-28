@@ -32,7 +32,7 @@ What did you see happen? Please include relevant error messages, screenshots and
 
 **Environment**
 
-  - Describe whether you are using Chatwoot Cloud (app.chatwoot.com) or a self hosted installation of Chatwoot.
+  - Describe whether you are using Chatwoot Cloud (app.mokhatbat.com) or a self hosted installation of Chatwoot.
   - Device Name:  [e.g. iPhone6]
   - OS Version: [e.g. iOS8.1]
   - Chatwoot App Version: [e.g. 1.2.0]

@@ -47,7 +47,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "שיחות",
-    "MINE": "Mine",
+    "MINE": "שלי",
     "UN_ASSIGNED": "לא הוקצתה",
     "ALL": "הכל",
     "EMPTY": "אין שיחות פעילות בקבוצה הזו.",

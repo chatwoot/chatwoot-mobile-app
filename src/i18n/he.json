@@ -117,8 +117,8 @@
   "CONVERSATION_DETAILS": {
     "BROWSER": "דפדפן",
     "OPERATING_SYSTEM": "מערכת הפעלה",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "INITIATED_AT": "יזם ב",
+    "INITIATED_FROM": "יזם מ"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "פעולות"

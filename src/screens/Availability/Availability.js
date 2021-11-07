@@ -17,7 +17,7 @@ const AvailabilityScreenComponent = ({ eva: { style }, navigation }) => {
   const {
     user: { availability_status },
     isUpdating,
-  } = useSelector((state) => state.auth);
+  } = useSelector(state => state.auth);
 
   const [availabilityStatus, setAvailabilityStatus] = useState(availability_status);
 
@@ -43,12 +43,12 @@ const AvailabilityScreenComponent = ({ eva: { style }, navigation }) => {
     <SafeAreaView style={style.container}>
       <HeaderBar title={i18n.t('SETTINGS.AVAILABILITY')} showLeftButton onBackPress={goBack} />
       <View style={style.itemMainView}>
-        {availabilityTypes.map((item) => {
+        {availabilityTypes.map(item => {
           return (
             <AvailabilityItem
               key={item}
               item={item}
-              title={AVAILABILITY_TYPES[item]}
+              title={i18n.t(`AVAILABILITY.${AVAILABILITY_TYPES[item]}`)}
               isChecked={availabilityStatus === item ? true : false}
               onCheckedChange={onCheckedChange}
             />

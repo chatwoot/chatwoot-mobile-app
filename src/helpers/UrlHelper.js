@@ -23,7 +23,7 @@ export const getConversationUrl = async () => {
     const accountId = state.conversation.conversationDetails.account_id;
     const conversationId = state.conversation.conversationDetails.id;
     const conversationURL = await Share.share({
-      url: baseURL + 'app/accounts/' + accountId + '/conversations/' + conversationId,
+      url: `${baseURL}app/accounts/${accountId}/conversations/${conversationId}`,
     });
     return conversationURL;
   } catch (error) {

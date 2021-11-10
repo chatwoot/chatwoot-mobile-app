@@ -4,8 +4,6 @@ import { Platform, Linking } from 'react-native';
 
 import { store } from '../store';
 
-import { Share } from 'react-native';
-
 import { URL_REGEX } from '../constants';
 
 export const getBaseUrl = async () => {
@@ -22,9 +20,7 @@ export const getConversationUrl = async () => {
     const baseURL = await getBaseUrl();
     const accountId = state.conversation.conversationDetails.account_id;
     const conversationId = state.conversation.conversationDetails.id;
-    const conversationURL = await Share.share({
-      url: `${baseURL}app/accounts/${accountId}/conversations/${conversationId}`,
-    });
+    const conversationURL = `${baseURL}app/accounts/${accountId}/conversations/${conversationId}`;
     return conversationURL;
   } catch (error) {
     // error

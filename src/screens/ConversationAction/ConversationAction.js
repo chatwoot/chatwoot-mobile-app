@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { withStyles } from '@ui-kitten/components';
 import { getConversationUrl } from 'src/helpers/UrlHelper';
+import { Share } from 'react-native';
 import { useSelector } from 'react-redux';
 import styles from './ConversationAction.style';
 import ConversationActionItem from '../../components/ConversationActionItem';
@@ -9,7 +10,7 @@ import i18n from '../../i18n';
 import { CONVERSATION_TOGGLE_STATUS } from '../../constants';
 
 const ConversationActionComponent = ({ eva: { style }, onPressAction, conversationDetails }) => {
-  const agents = useSelector((state) => state.agent.data);
+  const agents = useSelector(state => state.agent.data);
   const [conversationStatus, setConversationStatus] = useState(null);
   useEffect(() => {
     setConversationStatus(conversationDetails.status);
@@ -20,7 +21,7 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
 
   let assignedAgent = null;
   if (assignee) {
-    assignedAgent = agents.find((item) => item.id === assignee.id);
+    assignedAgent = agents.find(item => item.id === assignee.id);
   } else {
     assignedAgent = {
       name: 'Select Agent',
@@ -30,7 +31,9 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
   const onShare = async () => {
     try {
       const conversationURL = await getConversationUrl();
-      return conversationURL;
+      await Share.share({
+        url: conversationURL,
+      });
     } catch (error) {
       //error
     }

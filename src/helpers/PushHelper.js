@@ -52,8 +52,8 @@ export const clearAllDeliveredNotifications = () => {
   }
 };
 
-export const updateBadgeCount = ({ count }) => {
-  if (Platform.OS === 'ios' && count) {
+export const updateBadgeCount = ({ count = 0 }) => {
+  if (Platform.OS === 'ios') {
     PushNotificationIOS.setApplicationIconBadgeNumber(count);
   }
 };

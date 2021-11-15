@@ -58,9 +58,9 @@ export default function TextInputField(locals) {
       <TextInput
         style={locals.hasError ? styles.errorInputStyle : styles.inputStyle}
         accessibilityLabel={locals.label}
-        ref={c => {
-          this.input = c;
-        }}
+        // ref={c => {
+        //   this.input = c;
+        // }}
         autoCapitalize={locals.autoCapitalize}
         autoCorrect={locals.autoCorrect}
         autoFocus={locals.autoFocus}

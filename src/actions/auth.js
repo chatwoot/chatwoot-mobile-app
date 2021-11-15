@@ -10,6 +10,9 @@ import {
   RESET_PASSWORD,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_ERROR,
+  CHANGE_PASSWORD,
+  CHANGE_PASSWORD_SUCCESS,
+  CHANGE_PASSWORD_ERROR,
   RESET_AUTH,
   SET_LOCALE,
   SET_ACCOUNT,
@@ -63,6 +66,36 @@ export const onResetPassword =
       dispatch({ type: RESET_PASSWORD_SUCCESS, payload: data });
     } catch (error) {
       dispatch({ type: RESET_PASSWORD_ERROR, payload: error });
+    }
+  };
+
+export const profileUpdate =
+  ({ password, password_confirmation, displayName, ...current_value }) =>
+  async dispatch => {
+    dispatch({ type: CHANGE_PASSWORD });
+    try {
+      const baseUrl = await getBaseUrl();
+      const formData = new FormData();
+      Object.keys(current_value).forEach(key => {
+        const value = current_value[key];
+        if (value) {
+          formData.append(`profile[${key}]`, value);
+        }
+      });
+      formData.append('profile[display_name]', displayName || '');
+      if (password && password_confirmation) {
+        formData.append('profile[password]', password);
+        formData.append('profile[password_confirmation]', password_confirmation);
+      }
+      const response = await axios.put(`${baseUrl}${API_URL}profile`, formData);
+      const { data } = response;
+      showToast(data);
+      dispatch({
+        type: CHANGE_PASSWORD_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({ type: CHANGE_PASSWORD_ERROR, payload: error });
     }
   };
 

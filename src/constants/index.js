@@ -109,6 +109,12 @@ export const SETTINGS_ITEMS = [
     itemName: 'language',
   },
   {
+    text: 'CHANGE_PASSWORD',
+    checked: true,
+    iconName: 'credit-card-outline',
+    itemName: 'change_password',
+  },
+  {
     text: 'HELP',
     checked: true,
     iconName: 'question-mark-circle-outline',

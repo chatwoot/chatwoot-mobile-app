@@ -45,6 +45,15 @@
     "TITLE": "Forgot Password?",
     "SUB_TITLE": "Don't worry! We got your back"
   },
+  "CHANGE_PASSWORD": {
+    "CURRENT": "Current password",
+    "NEW": "Password",
+    "CONFIRM_NEW": "Confirm new password",
+    "UPDATE": "Update password",
+    "PASSWORD_ERROR": "Enter a valid password",
+    "NEW_PASSWORD": "Please enter a password of length 6 or more",
+    "PASSWORD_NOT_MATCH": "Confirm password should match the password"
+  },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversations",
     "MINE": "Mine",
@@ -87,6 +96,7 @@
     "LOG_OUT": "Logout",
     "SWITCH_ACCOUNT": "Switch Account",
     "CHANGE_LANGUAGE": "Change Language",
+    "CHANGE_PASSWORD": "Change password",
     "SUBMIT": "Submit"
   },
   "NOTIFICATION": {

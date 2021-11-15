@@ -15,6 +15,7 @@ const themedStyles = StyleService.create({
     // For `every text in app`, the reserved variable is text-basic-color
     color: 'text-basic-color',
     paddingBottom: 6,
+    paddingTop: 6,
     fontSize: 'text-primary-size',
     fontWeight: 'font-medium',
   },
@@ -57,9 +58,9 @@ export default function TextInputField(locals) {
       <TextInput
         style={locals.hasError ? styles.errorInputStyle : styles.inputStyle}
         accessibilityLabel={locals.label}
-        ref={c => {
-          this.input = c;
-        }}
+        // ref={c => {
+        //   this.input = c;
+        // }}
         autoCapitalize={locals.autoCapitalize}
         autoCorrect={locals.autoCorrect}
         autoFocus={locals.autoFocus}

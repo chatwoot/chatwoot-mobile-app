@@ -82,6 +82,10 @@ const Settings = ({ eva: { theme, style } }) => {
         navigation.navigate('Language');
         break;
 
+      case 'change_password':
+        navigation.navigate('ChangePassword');
+        break;
+
       case 'logout':
         await AsyncStorage.removeItem('cwCookie');
         dispatch(onLogOut());

@@ -12,6 +12,7 @@ import TabBar from './components/TabBar';
 import ConversationList from './screens/ConversationList/ConversationList';
 import SettingsScreen from './screens/Settings/SettingsScreen';
 import LanguageScreen from './screens/Language/LanguageScreen';
+import ChangePasswordScreen from './screens/ChangePassword/ChangePasswordScreen.js';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
 import ConversationFilter from './screens/ConversationFilter/ConversationFilter';
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
@@ -36,7 +37,7 @@ import { captureScreen } from './helpers/Analytics';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-messaging().setBackgroundMessageHandler(async (remoteMessage) => {});
+messaging().setBackgroundMessageHandler(async remoteMessage => {});
 
 const HomeStack = () => (
   <Stack.Navigator initialRouteName="ConversationList" headerMode="none">
@@ -57,7 +58,7 @@ const NotificationStack = () => (
 );
 
 const TabStack = () => (
-  <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
+  <Tab.Navigator tabBar={props => <TabBar {...props} />}>
     <Tab.Screen name="Home" component={HomeStack} />
     <Tab.Screen name="Notification" component={NotificationStack} />
     <Tab.Screen name="Settings" component={SettingsStack} />
@@ -110,7 +111,7 @@ const useDeepLinkURL = () => {
   return { linkedURL, resetURL };
 };
 
-const _handleOpenURL = (event) => {
+const _handleOpenURL = event => {
   const { url } = event;
   if (url) {
     doDeepLinking({ url });
@@ -121,10 +122,10 @@ const App = ({ eva: { style } }) => {
   const dispatch = useDispatch();
   const routeNameRef = useRef();
 
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const isUrlSet = useSelector((state) => state.settings.isUrlSet);
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const isUrlSet = useSelector(state => state.settings.isUrlSet);
 
-  const locale = useSelector((state) => state.settings.localeValue);
+  const locale = useSelector(state => state.settings.localeValue);
   const { linkedURL, resetURL } = useDeepLinkURL();
 
   useEffect(() => {
@@ -134,18 +135,18 @@ const App = ({ eva: { style } }) => {
   useEffect(() => {
     dispatch(resetConversation());
     // Notification caused app to open from foreground state
-    messaging().onMessage((remoteMessage) => {
+    messaging().onMessage(remoteMessage => {
       // handlePush({ remoteMessage, type: 'foreground' });
     });
 
     // Notification caused app to open from background state
-    messaging().onNotificationOpenedApp((remoteMessage) => {
+    messaging().onNotificationOpenedApp(remoteMessage => {
       handlePush({ remoteMessage, type: 'background' });
     });
     // Notification caused app to open from quit state
     messaging()
       .getInitialNotification()
-      .then((remoteMessage) => {
+      .then(remoteMessage => {
         if (remoteMessage) {
           handlePush({ remoteMessage, type: 'quite' });
           setTimeout(() => {
@@ -189,6 +190,7 @@ const App = ({ eva: { style } }) => {
                 <Stack.Screen name="ConversationFilter" component={ConversationFilter} />
                 <Stack.Screen name="ImageScreen" component={ImageScreen} />
                 <Stack.Screen name="Language" component={LanguageScreen} />
+                <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
                 <Stack.Screen name="Account" component={AccountScreen} />
                 <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
                 <Stack.Screen name="ConversationAction" component={ConversationAction} />
@@ -212,7 +214,7 @@ const App = ({ eva: { style } }) => {
   );
 };
 
-const styles = (theme) => ({
+const styles = theme => ({
   container: {
     flex: 1,
   },

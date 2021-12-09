@@ -14,15 +14,15 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installation URL",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "നിങ്ങൾ സ്വയം ഹോസ്റ്റ് ചെയ്‌ത Chatwoot ഇൻസ്റ്റാളേഷനാണ് ഉപയോഗിക്കുന്നതെങ്കിൽ, നിങ്ങളുടെ സെർവർ URL നൽകുക. അല്ലെങ്കിൽ, app.chatwoot.com ഉപയോഗിക്കുക.",
     "URL_ERROR": "Enter a valid URL",
     "CONNECT": "ബന്ധിപ്പിക്കുക",
     "CHANGE_LANGUAGE": "Change language",
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "നിങ്ങളുടെ അക്കൗണ്ടിൽ ലോഗിൻ ചെയ്യുക",
+    "DESCRIPTION": "നിങ്ങൾ {{baseUrl}}-ലേക്ക് ബന്ധിപ്പിച്ചിരിക്കുന്നു. നിങ്ങളുടെ ഇമെയിൽ വിലാസവും പാസ്‌വേഡും ഉപയോഗിച്ച് ലോഗിൻ ചെയ്യുക.",
     "EMAIL": "ഇമെയിൽ",
     "PASSWORD": "പാസ്‌വേഡ്",
     "EMAIL_ERROR": "Enter a valid email",
@@ -61,10 +61,10 @@
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "RESOLVE": "Resolve conversation",
     "RE_OPEN": "Reopen conversation",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "ASSIGN": "സംഭാഷണം നിയോഗിക്കുക",
+    "FILE_SIZE_LIMIT": "ഫയൽ 5MB അറ്റാച്ച്‌മെന്റ് പരിധി കവിഞ്ഞു",
     "CANCEL": "റദ്ദാക്കുക",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "PRIVATE_MSG_INPUT": "ഇത് ഏജന്റുമാർക്ക് മാത്രമേ ദൃശ്യമാകൂ",
     "UN_ASSIGN": "Unassign conversation"
   },
   "FILTER": {
@@ -75,15 +75,15 @@
     "RESOLVED": "പരിഹരിച്ചത്",
     "BOT": "ബോട്ട്",
     "SUBMIT": "സമർപ്പിക്കുക",
-    "PENDING": "Pending",
-    "SNOOZED": "Snoozed"
+    "PENDING": "തീർപ്പാക്കാത്തത്",
+    "SNOOZED": "സ്‌നൂസ് ചെയ്തു"
   },
   "SETTINGS": {
     "HEADER_TITLE": "ക്രമീകരണങ്ങൾ",
     "AVAILABILITY": "ലഭ്യത",
     "NOTIFICATION": "Notification Preferences",
     "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
+    "CHAT_WITH_US": "ഞങ്ങളുമായി ചാറ്റ് ചെയ്യുക",
     "LOG_OUT": "ലോഗൗട്ട്",
     "SWITCH_ACCOUNT": "അക്കൗണ്ട് സ്വിച്ചുചെയ്യുക",
     "CHANGE_LANGUAGE": "Change Language",
@@ -109,7 +109,7 @@
     "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
     "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
+    "CONVERSATION_MENTION": "ഒരു സംഭാഷണത്തിൽ നിങ്ങളെ പരാമർശിക്കുമ്പോൾ പുഷ് അറിയിപ്പുകൾ അയയ്‌ക്കുക",
     "CONVERSATION_CREATE_EMAIL": "ഒരു പുതിയ സംഭാഷണം സൃഷ്ടിക്കുമ്പോൾ ഇമെയിൽ അറിയിപ്പുകൾ അയയ്ക്കുക",
     "CONVERSATION_ASSIGNEE_EMAIL": "ഒരു സംഭാഷണം എനിക്ക് നിയോഗിക്കുമ്പോൾ ഇമെയിൽ അറിയിപ്പുകൾ അയയ്‌ക്കുക",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
@@ -137,9 +137,9 @@
     "AUTH": "ലോഗിൻ വിജയകരം"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "ഒരു സംഭാഷണത്തിൽ നിങ്ങളെ പരാമർശിക്കുമ്പോൾ പുഷ് അറിയിപ്പുകൾ അയക്കുക",
+    "WARNING_FOR_AGENT": "നിങ്ങളുടെ മൊബൈൽ ആപ്പിനായി നിങ്ങൾ പിന്തുണയ്ക്കാത്ത Chatwoot സെർവർ ഉപയോഗിക്കുന്നതായി തോന്നുന്നു. നിങ്ങളുടെ Chatwoot സെർവർ അപ്‌ഗ്രേഡ് ചെയ്യാൻ നിങ്ങളുടെ അഡ്മിനെ ബന്ധപ്പെടുക.",
+    "WARNING_FOR_ADMIN": "നിങ്ങളുടെ മൊബൈൽ ആപ്പിനായി നിങ്ങൾ പിന്തുണയ്ക്കാത്ത Chatwoot സെർവർ ഉപയോഗിക്കുന്നതായി തോന്നുന്നു. സെർവർ പതിപ്പ് %{minimumVersion} അല്ലെങ്കിൽ അതിന് ശേഷമുള്ള പതിപ്പിലേക്ക് അപ്‌ഗ്രേഡ് ചെയ്യേണ്ടതുണ്ട്."
   },
   "EXIT": {
     "TITLE": "Exit",

@@ -69,8 +69,8 @@
   },
   "FILTER": {
     "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
+    "CHOOSE_INBOX": "ഇൻബോക്സ് തിരഞ്ഞെടുക്കുക",
+    "CHOOSE_STATUS": "സംഭാഷണ നില",
     "OPEN": "സജീവം",
     "RESOLVED": "പരിഹരിച്ചത്",
     "BOT": "ബോട്ട്",
@@ -81,7 +81,7 @@
   "SETTINGS": {
     "HEADER_TITLE": "ക്രമീകരണങ്ങൾ",
     "AVAILABILITY": "ലഭ്യത",
-    "NOTIFICATION": "Notification Preferences",
+    "NOTIFICATION": "അറിയിപ്പ് മുൻഗണനകൾ",
     "HELP": "Help Docs",
     "CHAT_WITH_US": "ഞങ്ങളുമായി ചാറ്റ് ചെയ്യുക",
     "LOG_OUT": "ലോഗൗട്ട്",
@@ -93,8 +93,8 @@
     "HEADER_TITLE": "അറിയിപ്പുകൾ",
     "EMPTY": "ഇതുവരെ അറിയിപ്പുകളൊന്നുമില്ല.",
     "EMPTY_MORE_TEXT": "നിങ്ങൾക്ക് അറിയിപ്പുകൾ ലഭിച്ചുതുടങ്ങിയാൽ, അവ ഇവിടെ ദൃശ്യമാകും.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
+    "ALL_NOTIFICATION_LOADED": "എല്ലാ അറിയിപ്പുകളും ലോഡ് ചെയ്തു",
+    "MARK_ALL": "എല്ലാം വായിച്ചതായി അടയാളപ്പെടുത്തുക",
     "CANCEL": "റദ്ദാക്കുക"
   },
   "AVAILABILITY": {
@@ -103,7 +103,7 @@
     "OFFLINE": "ഓഫ്‌ലൈൻ"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
+    "TITLE": "അറിയിപ്പ് മുൻഗണനകൾ",
     "EMAIL": "ഇമെയിൽ",
     "PUSH": "Push",
     "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",

@@ -1,5 +1,5 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "സ്വാഗതം",
   "COMMON": {
     "ERROR": "തെറ്റ്",
     "ERROR_TITLE": "അപ്രതീക്ഷിത തെറ്റ് സംഭവിച്ചു",
@@ -29,7 +29,7 @@
     "PASSWORD_ERROR": "സാധുവായ ഒരു പാസ്‌വേഡ് നൽകുക",
     "LOGIN": "സൈൻ ഇൻ",
     "FORGOT_PASSWORD": "നിങ്ങളുടെ പാസ്‌വേഡ് മറന്നോ?",
-    "RESET_HERE": "Reset here",
+    "RESET_HERE": "ഇവിടെ പുനഃസജ്ജമാക്കുക",
     "NO_ACCOUNT": "അക്കൗണ്ട് ഇല്ലേ?",
     "CREATE_ACCOUNT": "പുതിയ അക്കൗണ്ട് സൃഷ്ടിക്കുക",
     "SETTINGS": "ക്രമീകരണങ്ങൾ",
@@ -40,8 +40,8 @@
   "FORGOT_PASSWORD": {
     "EMAIL": "ദയവായി നിങ്ങളുടെ ഇമെയിൽ നൽകുക",
     "EMAIL_ERROR": "സാധുവായ ഒരു ഇമെയിൽ നൽകുക",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
+    "RESET_HERE": "പാസ്‌വേഡ് പുനഃസജ്ജമാക്കുക",
+    "HEADER_TITLE": "പാസ്‌വേഡ് പുനഃസജ്ജമാക്കുക",
     "TITLE": "പാസ്സ്‌വേർഡ് മറന്നോ?",
     "SUB_TITLE": "വിഷമിക്കേണ്ട! ഞങ്ങൾക്ക് നിങ്ങളുടെ പിൻബലം ലഭിച്ചു"
   },

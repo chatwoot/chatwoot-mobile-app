@@ -68,7 +68,7 @@
     "UN_ASSIGN": "സംഭാഷണം നിയോഗിക്കാതിരിക്കുക"
   },
   "FILTER": {
-    "HEADER_TITLE": "Conversation Filter",
+    "HEADER_TITLE": "സംഭാഷണ ഫിൽട്ടർ",
     "CHOOSE_INBOX": "ഇൻബോക്സ് തിരഞ്ഞെടുക്കുക",
     "CHOOSE_STATUS": "സംഭാഷണ നില",
     "OPEN": "സജീവം",
@@ -82,7 +82,7 @@
     "HEADER_TITLE": "ക്രമീകരണങ്ങൾ",
     "AVAILABILITY": "ലഭ്യത",
     "NOTIFICATION": "അറിയിപ്പ് മുൻഗണനകൾ",
-    "HELP": "Help Docs",
+    "HELP": "സഹായ പുസ്തകം",
     "CHAT_WITH_US": "ഞങ്ങളുമായി ചാറ്റ് ചെയ്യുക",
     "LOG_OUT": "ലോഗൗട്ട്",
     "SWITCH_ACCOUNT": "അക്കൗണ്ട് സ്വിച്ചുചെയ്യുക",
@@ -105,14 +105,14 @@
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "അറിയിപ്പ് മുൻഗണനകൾ",
     "EMAIL": "ഇമെയിൽ",
-    "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
+    "PUSH": "തള്ളുക",
+    "CONVERSATION_CREATE_PUSH": "ഒരു പുതിയ സംഭാഷണം സൃഷ്‌ടിക്കുമ്പോൾ പുഷ് അറിയിപ്പുകൾ അയയ്‌ക്കുക",
+    "CONVERSATION_ASSIGNEE_PUSH": "ഒരു സംഭാഷണം എനിക്ക് അസൈൻ ചെയ്യുമ്പോൾ പുഷ് അറിയിപ്പുകൾ അയയ്‌ക്കുക",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "നിയുക്ത സംഭാഷണത്തിൽ ഒരു പുതിയ സന്ദേശം സൃഷ്‌ടിക്കുമ്പോൾ പുഷ് അറിയിപ്പുകൾ അയയ്‌ക്കുക",
     "CONVERSATION_MENTION": "ഒരു സംഭാഷണത്തിൽ നിങ്ങളെ പരാമർശിക്കുമ്പോൾ പുഷ് അറിയിപ്പുകൾ അയയ്‌ക്കുക",
     "CONVERSATION_CREATE_EMAIL": "ഒരു പുതിയ സംഭാഷണം സൃഷ്ടിക്കുമ്പോൾ ഇമെയിൽ അറിയിപ്പുകൾ അയയ്ക്കുക",
     "CONVERSATION_ASSIGNEE_EMAIL": "ഒരു സംഭാഷണം എനിക്ക് നിയോഗിക്കുമ്പോൾ ഇമെയിൽ അറിയിപ്പുകൾ അയയ്‌ക്കുക",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "നിയുക്ത സംഭാഷണത്തിൽ ഒരു പുതിയ സന്ദേശം സൃഷ്ടിക്കുമ്പോൾ ഇമെയിൽ അറിയിപ്പുകൾ അയയ്ക്കുക"
   },
   "CONVERSATION_DETAILS": {
     "BROWSER": "ബ്രൗസർ",
@@ -128,10 +128,10 @@
   },
   "ERRORS": {
     "COMMON_ERROR": "വൂട്ട് സെർവറിലേക്ക് കണക്റ്റുചെയ്യാനായില്ല, ദയവായി പിന്നീട് വീണ്ടും ശ്രമിക്കുക",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "OfFLINE": "വീണ്ടും ഓൺലൈനാകാൻ നിങ്ങൾ വൈഫൈയിലേക്കോ സെല്ലുലാർ നെറ്റ്‌വർക്കിലേക്കോ കണക്‌റ്റ് ചെയ്യണം",
+    "CANNOT_FETCH": "വിവരങ്ങൾ ലഭ്യമാക്കുന്നതിൽ ഒരു തെറ്റുണ്ടായി, ദയവായി വീണ്ടും ശ്രമിക്കുക",
     "AUTH": "ഉപയോക്തൃനാമം / പാസ്‌വേഡ് തെറ്റാണ്. ദയവായി വീണ്ടും ശ്രമിക്കുക",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "NO_ACCOUNTS_MESSAGE": "നിങ്ങൾക്ക് ഒരു ചാറ്റ്‌വൂട്ട് അക്കൗണ്ടുകളിലേക്കും ആക്‌സസ് ഇല്ല"
   },
   "SUCCESS": {
     "AUTH": "ലോഗിൻ വിജയകരം"
@@ -142,8 +142,8 @@
     "WARNING_FOR_ADMIN": "നിങ്ങളുടെ മൊബൈൽ ആപ്പിനായി നിങ്ങൾ പിന്തുണയ്ക്കാത്ത Chatwoot സെർവർ ഉപയോഗിക്കുന്നതായി തോന്നുന്നു. സെർവർ പതിപ്പ് %{minimumVersion} അല്ലെങ്കിൽ അതിന് ശേഷമുള്ള പതിപ്പിലേക്ക് അപ്‌ഗ്രേഡ് ചെയ്യേണ്ടതുണ്ട്."
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
+    "TITLE": "പുറത്ത്",
+    "SUBTITLE": "നിങ്ങള് പുറത്തു പോകുകയാണ് എന്ന് ഉറപ്പാണോ?",
     "CANCEL": "റദ്ദാക്കുക",
     "OK": "ശരി"
   }

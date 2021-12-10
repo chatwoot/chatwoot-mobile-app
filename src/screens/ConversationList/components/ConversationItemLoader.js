@@ -37,7 +37,7 @@ const ConversationItemLoaderComponent = ({ eva }) => {
   );
 };
 ConversationItemLoaderComponent.propTypes = propTypes;
-export default withStyles(ConversationItemLoaderComponent, (theme) => ({
+export default withStyles(ConversationItemLoaderComponent, theme => ({
   container: {
     padding: 16,
     flexDirection: 'row',

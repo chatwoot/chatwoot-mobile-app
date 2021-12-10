@@ -30,78 +30,79 @@ import {
   GET_NOTIFICATION_ERROR,
 } from '../constants/actions';
 
-export const getAllNotifications = ({ pageNo = 1 }) => async (dispatch) => {
-  try {
-    if (pageNo === 1) {
-      dispatch({ type: GET_NOTIFICATION });
-    }
+export const getAllNotifications =
+  ({ pageNo = 1 }) =>
+  async dispatch => {
+    try {
+      if (pageNo === 1) {
+        dispatch({ type: GET_NOTIFICATION });
+      }
 
-    const response = await APIHelper.get(`notifications?page=${pageNo}`);
+      const response = await APIHelper.get(`notifications?page=${pageNo}`);
+      const {
+        data: { payload, meta },
+      } = response.data;
+
+      const updatedPayload = payload.sort((a, b) => {
+        return b.created_at - a.created_at;
+      });
+      const { unread_count } = meta;
+      updateBadgeCount({ count: unread_count });
+
+      dispatch({
+        type: GET_NOTIFICATION_SUCCESS,
+        payload: {
+          notifications: updatedPayload,
+          meta,
+        },
+      });
+
+      if (payload.length < 25) {
+        dispatch({
+          type: ALL_NOTIFICATIONS_LOADED,
+        });
+      }
+    } catch (error) {
+      dispatch({ type: GET_NOTIFICATION_ERROR, payload: error });
+    }
+  };
+
+export const markNotificationAsRead =
+  ({ primaryActorId, primaryActorType }) =>
+  async (dispatch, getState) => {
     const {
       data: { payload, meta },
-    } = response.data;
-
-    const updatedPayload = payload.sort((a, b) => {
-      return b.created_at - a.created_at;
-    });
-    const { unread_count } = meta;
-    updateBadgeCount({ count: unread_count });
-
-    dispatch({
-      type: GET_NOTIFICATION_SUCCESS,
-      payload: {
-        notifications: updatedPayload,
-        meta,
-      },
-    });
-
-    if (payload.length < 25) {
-      dispatch({
-        type: ALL_NOTIFICATIONS_LOADED,
+    } = getState().notification;
+    try {
+      const apiUrl = 'notifications/read_all';
+      await APIHelper.post(apiUrl, {
+        primary_actor_type: primaryActorType,
+        primary_actor_id: primaryActorId,
       });
-    }
-  } catch (error) {
-    dispatch({ type: GET_NOTIFICATION_ERROR, payload: error });
-  }
-};
 
-export const markNotificationAsRead = ({ primaryActorId, primaryActorType }) => async (
-  dispatch,
-  getState,
-) => {
-  const {
-    data: { payload, meta },
-  } = getState().notification;
-  try {
-    const apiUrl = 'notifications/read_all';
-    await APIHelper.post(apiUrl, {
-      primary_actor_type: primaryActorType,
-      primary_actor_id: primaryActorId,
-    });
+      const updatedNotifications = payload.map((item, index) => {
+        if (item.primary_actor_id === primaryActorId) {
+          item.read_at = 'read_at';
+          item.mass = 'mass';
+        }
+        return item;
+      });
 
-    const updatedNotifications = payload.map((item, index) => {
-      if (item.primary_actor_id === primaryActorId) {
-        item.read_at = 'read_at';
-        item.mass = 'mass';
-      }
-      return item;
-    });
+      const { unread_count } = meta;
 
-    const { unread_count } = meta;
+      const updatedUnReadCount = unread_count ? unread_count - 1 : unread_count;
 
-    const updatedUnReadCount = unread_count ? unread_count - 1 : unread_count;
+      updateBadgeCount({ count: updatedUnReadCount });
 
-    updateBadgeCount({ count: updatedUnReadCount });
-
-    dispatch({
-      type: UPDATE_ALL_NOTIFICATIONS,
-      payload: {
-        notifications: updatedNotifications,
-        meta: { unread_count: updatedUnReadCount },
-      },
-    });
-  } catch {}
-};
+      dispatch({
+        type: UPDATE_ALL_NOTIFICATIONS,
+        payload: {
+          notifications: updatedNotifications,
+          meta: { unread_count: updatedUnReadCount },
+        },
+      });
+    } catch {}
+  };
 
 export const markAllNotificationAsRead = () => async (dispatch, getState) => {
   const {
@@ -126,18 +127,13 @@ export const markAllNotificationAsRead = () => async (dispatch, getState) => {
   } catch (error) {}
 };
 
-export const saveDeviceDetails = ({ token }) => async (dispatch) => {
+export const saveDeviceDetails = () => async dispatch => {
   try {
-    const checkPermission = await messaging().hasPermission();
-    if (!checkPermission || checkPermission === -1) {
+    const permissionEnabled = await messaging().hasPermission();
+    if (!permissionEnabled || permissionEnabled === -1) {
       await messaging().requestPermission();
     }
-
-    if (Platform.os === 'ios') {
-      await messaging().registerForRemoteNotifications();
-    }
-    // Check refresh token or create new fcm token
-    const fcmToken = token || (await messaging().getToken());
+    const fcmToken = await messaging().getToken();
     const deviceId = getUniqueId();
     const devicePlatform = getSystemName();
     const manufacturer = await getManufacturer();
@@ -161,23 +157,27 @@ export const saveDeviceDetails = ({ token }) => async (dispatch) => {
     };
     const headers = await getHeaders();
     const baseURL = await getBaseUrl();
+
     await axios.post(`${baseURL}${API_URL}notification_subscriptions`, pushData, {
       headers: headers,
     });
+
     dispatch({ type: SET_PUSH_TOKEN, payload: fcmToken });
   } catch (err) {}
 };
 
-export const addNotification = ({ notification }) => async (dispatch, getState) => {
-  const {
-    data: { payload },
-  } = getState().notification;
+export const addNotification =
+  ({ notification }) =>
+  async (dispatch, getState) => {
+    const {
+      data: { payload },
+    } = getState().notification;
 
-  // Check notification is already exists or not
-  const [notificationExists] = payload.filter((c) => c.id === notification.id);
+    // Check notification is already exists or not
+    const [notificationExists] = payload.filter(c => c.id === notification.id);
 
-  if (notificationExists) {
-    return;
-  }
-  dispatch({ type: ADD_NOTIFICATION, payload: notification });
-};
+    if (notificationExists) {
+      return;
+    }
+    dispatch({ type: ADD_NOTIFICATION, payload: notification });
+  };

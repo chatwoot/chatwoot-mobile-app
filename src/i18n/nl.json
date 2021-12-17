@@ -9,7 +9,7 @@
   "FOOTER": {
     "HOME": "Startpagina",
     "CONVERSATION": "Gesprekken",
-    "NOTIFICATION": "Notifications",
+    "NOTIFICATION": "Notificaties",
     "SETTINGS": "Instellingen"
   },
   "CONFIGURE_URL": {
@@ -81,7 +81,7 @@
   "SETTINGS": {
     "HEADER_TITLE": "Instellingen",
     "AVAILABILITY": "Availability",
-    "NOTIFICATION": "Notification Preferences",
+    "NOTIFICATION": "Notificatie voorkeuren",
     "HELP": "Help Docs",
     "CHAT_WITH_US": "Chat with Us",
     "LOG_OUT": "Afmelden",
@@ -90,10 +90,10 @@
     "SUBMIT": "Bevestigen"
   },
   "NOTIFICATION": {
-    "HEADER_TITLE": "Notifications",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
+    "HEADER_TITLE": "Notificaties",
+    "EMPTY": "Er zijn nog geen notificaties.",
+    "EMPTY_MORE_TEXT": "Wanneer je notificaties ontvangt, zullen deze hier worden weergegeven.",
+    "ALL_NOTIFICATION_LOADED": "Alle notificaties geladen",
     "MARK_ALL": "Mark all as read",
     "CANCEL": "annuleren"
   },
@@ -103,7 +103,7 @@
     "OFFLINE": "Offline"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
+    "TITLE": "Notificatie voorkeuren",
     "EMAIL": "E-mailadres",
     "PUSH": "Push",
     "CONVERSATION_CREATE_PUSH": "Stuur pushberichten wanneer een nieuw gesprek is aangemaakt",

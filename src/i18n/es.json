@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL de instalación",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "Si estás usando una instalación de Chatwoot autoalojada, introduce la URL de tu servidor. De lo contrario, usa app.chatwoot.com.",
     "URL_ERROR": "Introduzca una URL válida",
     "CONNECT": "Conectar",
     "CHANGE_LANGUAGE": "Cambiar idioma",
@@ -22,7 +22,7 @@
   },
   "LOGIN": {
     "TITLE": "Inicia sesión en tu cuenta",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "DESCRIPTION": "Estás conectado a {{baseUrl}}. Inicia sesión con tu dirección de correo electrónico y contraseña.",
     "EMAIL": "Email",
     "PASSWORD": "Contraseña",
     "EMAIL_ERROR": "Introduce un email válido",
@@ -75,8 +75,8 @@
     "RESOLVED": "Resuelto",
     "BOT": "Bot",
     "SUBMIT": "Enviar",
-    "PENDING": "Pending",
-    "SNOOZED": "Snoozed"
+    "PENDING": "Pendiente",
+    "SNOOZED": "Pospuesto"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Preferencias",
@@ -137,9 +137,9 @@
     "AUTH": "Inicio de sesión exitoso"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "Actualización de servidor necesaria",
+    "WARNING_FOR_AGENT": "Parece que estás usando un servidor de Chatwoot no soportado para tu aplicación móvil. Por favor, contacta con tu administrador para actualizar tu servidor de Chatwoot.",
+    "WARNING_FOR_ADMIN": "Parece que estás usando un servidor de Chatwoot no compatible para tu aplicación móvil. Se requiere actualizar a la versión del servidor %{minimumVersion} o posterior."
   },
   "EXIT": {
     "TITLE": "Salir",

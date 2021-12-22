@@ -107,11 +107,7 @@ class ChatScreenComponent extends Component {
         imageUrl: dataUrl,
       });
     } else {
-      Linking.canOpenURL(dataUrl).then((supported) => {
-        if (supported) {
-          openURL({ URL: dataUrl });
-        }
-      });
+      openURL({ URL: dataUrl });
     }
   };
 
@@ -153,7 +149,7 @@ class ChatScreenComponent extends Component {
     );
   };
 
-  renderMessage = (item) => (
+  renderMessage = item => (
     <ChatMessage message={item.item} key={item.index} showAttachment={this.showAttachment} />
   );
 
@@ -227,8 +223,8 @@ class ChatScreenComponent extends Component {
               <SectionList
                 keyboardShouldPersistTaps="never"
                 scrollEventThrottle={16}
-                onScroll={(event) => this.setCurrentReadOffset(event)}
-                ref={(ref) => {
+                onScroll={event => this.setCurrentReadOffset(event)}
+                ref={ref => {
                   this.SectionListReference = ref;
                 }}
                 inverted

@@ -41,14 +41,14 @@ const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment 
   const openCamera = () => {
     launchCamera(imagePickerOptions, response => {
       if (response.uri) {
-        onSelectAttachment({ attachement: response });
+        onSelectAttachment({ attachment: response });
       }
     });
   };
   const openGallery = () => {
     launchImageLibrary(imagePickerOptions, response => {
       if (response.uri) {
-        onSelectAttachment({ attachement: response });
+        onSelectAttachment({ attachment: response });
       }
     });
   };
@@ -71,6 +71,8 @@ const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment 
           DocumentPicker.types.xlsx,
         ],
       });
+      console.log('attachment', res);
+
       const attachment = { uri: res.uri, type: res.type, fileSize: res.size, fileName: res.name };
       onSelectAttachment({ attachment });
     } catch (err) {

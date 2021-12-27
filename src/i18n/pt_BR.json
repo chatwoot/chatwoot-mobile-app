@@ -63,6 +63,7 @@
     "RE_OPEN": "Reabrir conversa",
     "ASSIGN": "Atribuir conversa",
     "FILE_SIZE_LIMIT": "O arquivo excede o limite de anexos de 5MB",
+    "SHARE": "Share conversation",
     "CANCEL": "Cancelar",
     "PRIVATE_MSG_INPUT": "Isto será visível apenas para Agentes",
     "UN_ASSIGN": "Desassociar conversa"

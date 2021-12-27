@@ -63,6 +63,7 @@
     "RE_OPEN": "Reprendre la conversation",
     "ASSIGN": "Affecter une conversation",
     "FILE_SIZE_LIMIT": "Le fichier dépasse la limite de 5 Mo des pièces jointes",
+    "SHARE": "Share conversation",
     "CANCEL": "Annuler",
     "PRIVATE_MSG_INPUT": "Ceci ne sera visible qu'aux Agents",
     "UN_ASSIGN": "Retirer la conversation"

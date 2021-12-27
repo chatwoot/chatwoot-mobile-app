@@ -63,6 +63,7 @@
     "RE_OPEN": "Unterhaltung wieder öffnen",
     "ASSIGN": "Unterhaltung zuweisen",
     "FILE_SIZE_LIMIT": "Datei überschreitet das Limit von 5 MB",
+    "SHARE": "Share conversation",
     "CANCEL": "Abbrechen",
     "PRIVATE_MSG_INPUT": "Dies ist nur für Agenten sichtbar",
     "UN_ASSIGN": "Zuweisung entfernen"

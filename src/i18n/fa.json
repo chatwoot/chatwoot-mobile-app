@@ -63,6 +63,7 @@
     "RE_OPEN": "مکالمه را دوباره باز کنید",
     "ASSIGN": "اختصاص مکالمه",
     "FILE_SIZE_LIMIT": "محدودیت حجم فایل پیوست 5MB می باشد",
+    "SHARE": "Share conversation",
     "CANCEL": "انصراف",
     "PRIVATE_MSG_INPUT": "این فقط برای ایجنت ها قابل مشاهده خواهد بود",
     "UN_ASSIGN": "لغو اختصاص مکالمه"

@@ -63,6 +63,7 @@
     "RE_OPEN": "Beszélgetés újranyitása",
     "ASSIGN": "Beszélgetés hozzárendelése",
     "FILE_SIZE_LIMIT": "A file nagyobb az 5MB-os limitnél",
+    "SHARE": "Share conversation",
     "CANCEL": "Mégse",
     "PRIVATE_MSG_INPUT": "Ezt csak ügynökök láthatják",
     "UN_ASSIGN": "Beszélgetés hozzárendelés törlése"

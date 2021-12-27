@@ -14,12 +14,9 @@ export const getBaseUrl = async () => {
   } catch (error) {}
 };
 
-export const getConversationUrl = async () => {
+export const getConversationUrl = async ({ conversationId, accountId }) => {
   try {
-    const state = await store.getState();
     const baseURL = await getBaseUrl();
-    const accountId = state.conversation.conversationDetails.account_id;
-    const conversationId = state.conversation.conversationDetails.id;
     const conversationURL = `${baseURL}app/accounts/${accountId}/conversations/${conversationId}`;
     return conversationURL;
   } catch (error) {
@@ -28,9 +25,7 @@ export const getConversationUrl = async () => {
 };
 
 export const checkUrlIsConversation = async ({ url }) => {
-  const state = await store.getState();
-  const { installationUrl } = state.settings;
-
+  const installationUrl = await getBaseUrl();
   const conversationsUrlRegex = new RegExp(`^${installationUrl}${URL_REGEX.CONVERSATION}`);
   return conversationsUrlRegex.test(url);
 };

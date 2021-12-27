@@ -14,6 +14,8 @@ const styles = theme => ({
   },
   dateView: {
     padding: 8,
+    marginTop: 2,
+    marginBottom: 6,
     borderRadius: 8,
     backgroundColor: theme['color-background-date'],
   },

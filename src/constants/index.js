@@ -31,12 +31,14 @@ export const ASSIGNEE_TYPE = {
 
 export const INBOX_ICON = {
   'Channel::All': 'copy-outline',
+  'Channel::Api': 'inbox-outline',
+  'Channel::Email': 'email-outline',
   'Channel::WebWidget': 'globe-outline',
   'Channel::TwitterProfile': 'twitter-outline',
   'Channel::FacebookPage': 'facebook-outline',
-  'Channel::TwilioSms': 'message-circle-outline',
-  'Channel::Api': 'inbox-outline',
-  'Channel::Email': 'email-outline',
+  'Channel::TwilioSms': 'message-square-outline',
+  'Channel::Telegram': 'paper-plane-outline',
+  'Channel::Line': 'message-circle-outline',
 };
 
 export const INBOX_IMAGES = {

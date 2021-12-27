@@ -14,10 +14,18 @@ export const getBaseUrl = async () => {
   } catch (error) {}
 };
 
-export const checkUrlIsConversation = async ({ url }) => {
-  const state = await store.getState();
-  const { installationUrl } = state.settings;
+export const getConversationUrl = async ({ conversationId, accountId }) => {
+  try {
+    const baseURL = await getBaseUrl();
+    const conversationURL = `${baseURL}app/accounts/${accountId}/conversations/${conversationId}`;
+    return conversationURL;
+  } catch (error) {
+    // error
+  }
+};
 
+export const checkUrlIsConversation = async ({ url }) => {
+  const installationUrl = await getBaseUrl();
   const conversationsUrlRegex = new RegExp(`^${installationUrl}${URL_REGEX.CONVERSATION}`);
   return conversationsUrlRegex.test(url);
 };

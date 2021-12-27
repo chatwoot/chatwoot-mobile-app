@@ -63,6 +63,7 @@
     "RE_OPEN": "פתח מחדש את השיחה",
     "ASSIGN": "הקצה שיחה",
     "FILE_SIZE_LIMIT": "הקובץ עובר את מגבלת 5MB לקבצים מצורפים",
+    "SHARE": "Share conversation",
     "CANCEL": "ביטול",
     "PRIVATE_MSG_INPUT": "זה יהיה גלוי רק לסוכנים",
     "UN_ASSIGN": "שיחה שלא הוקצתה"

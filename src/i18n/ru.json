@@ -63,6 +63,7 @@
     "RE_OPEN": "Переоткрыть разговор",
     "ASSIGN": "Назначить ответсвенного",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "SHARE": "Share conversation",
     "CANCEL": "Отмена",
     "PRIVATE_MSG_INPUT": "Это будет видно только сотрудникам",
     "UN_ASSIGN": "Unassign conversation"

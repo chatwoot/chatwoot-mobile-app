@@ -43,7 +43,7 @@ export function findConversationStatus({ conversationStatus }) {
   }
   return status;
 }
-
+// Check conversation is matching to current filters
 export function checkConversationMatch({
   assignee,
   user,
@@ -53,6 +53,10 @@ export function checkConversationMatch({
 }) {
   const { email: userEmail } = user;
   if (conversationStatus !== status) {
+    return false;
+  }
+  // If assignee type is unassigned, check assignee is not null
+  if (!isEmptyObject(assignee) && assigneeType === 1) {
     return false;
   }
   if (!assignee && assigneeType !== 1) {

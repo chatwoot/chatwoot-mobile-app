@@ -41,7 +41,11 @@ import { getAllNotifications } from './notification';
 
 import { getInboxAgents } from './inbox';
 
-import { findAssigneeType, findConversationStatus, checkConversationMatch } from '../helpers';
+import {
+  findAssigneeType,
+  findConversationStatus,
+  checkConversationMatchToFilters,
+} from '../helpers';
 import { pop } from '../helpers/NavigationHelper';
 
 // Load all the conversations
@@ -162,13 +166,14 @@ export const addOrUpdateConversation =
     } = conversation;
     // Add only if incoming conversation matching the conditions of current selected conversation list [Mine, UnAssigned, All ]
     // and conversation status should matches to currently using conversation status (open or resolved)
-    const isMatching = checkConversationMatch({
+    const isMatching = checkConversationMatchToFilters({
       assignee,
       user,
       assigneeType,
       conversationStatus,
       status,
     });
+
     if (isMatching) {
       // Check conversation is already exists or not
       const [conversationExists] = payload.filter(c => c.id === conversation.id);
@@ -197,28 +202,32 @@ export const addMessageToConversation =
       conversationStatus,
       assigneeType,
     } = getState().conversation;
+    // Fetch user details
     const { user } = getState().auth;
 
     const { conversation_id, id: messageId } = message;
+    // Check message is already exists or not in the selected conversation
     const isMessageAlreadyExist = allMessages.find(item => item.id === messageId);
+    // Check the incoming message is belongs to selected conversation or not
     if (
       (selectedConversationId === conversation_id || conversationId === conversation_id) &&
       !isMessageAlreadyExist
     ) {
+      // Updates all the messages in the selected conversation (Chat screen)
       dispatch({ type: UPDATE_MESSAGE, payload: message });
     }
-    const [chat] = payload.filter(c => c.id === message.conversation_id);
+
     const apiUrl = `conversations/${conversation_id}`;
     const response = await axios.get(apiUrl);
     const conversation = response.data;
-
+    const [conversationExist] = payload.filter(c => c.id === message.conversation_id);
     // Check conversation exist or not in conversation state
-    if (!chat) {
-      // Add conversation if it is not exist in conversation list
+    if (!conversationExist) {
+      // Add conversation if it is not exist in conversation list and add based on the filter conditions
       dispatch(addOrUpdateConversation({ conversation }));
       return;
     }
-    // If conversation is already exist, check the conversation status
+    // If conversation is already exist, update the conversation with latest message
     const {
       status,
       meta: { assignee },
@@ -226,9 +235,9 @@ export const addMessageToConversation =
 
     let updatedConversations = payload;
 
-    // Add only if incoming conversation matching the conditions of current selected conversation list [Mine, UnAssigned, All ]
+    // Add only if incoming conversation matching the conditions of current selected conversation list [Mine, UnAssigned, All]
     // and conversation status should matches to currently using conversation status (open or resolved)
-    const isMatching = checkConversationMatch({
+    const isMatching = checkConversationMatchToFilters({
       assignee,
       user,
       assigneeType,
@@ -237,15 +246,17 @@ export const addMessageToConversation =
     });
 
     if (isMatching) {
-      const previousMessageIds = chat.messages.map(m => m.id);
+      // Add message to the conversation
+      const previousMessageIds = conversationExist.messages.map(m => m.id);
       if (!previousMessageIds.includes(message.id)) {
-        chat.messages.push(message);
+        conversationExist.messages.push(message);
       }
-
+      // Find conversation index in the conversation list
       const index = payload.findIndex(c => c.id === message.conversation_id);
       updatedConversations = payload.map((content, i) => (i === index ? { ...content } : content));
       updatedConversations.unshift(...updatedConversations.splice(index, 1));
     } else {
+      // Remove conversation from the list if it is not matching the filter conditions
       updatedConversations = payload.filter(c => c.id !== conversation.id);
     }
 

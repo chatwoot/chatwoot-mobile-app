@@ -139,7 +139,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
                     label={i18n.t('LOGIN.PASSWORD')}
                     keyboardType="default"
                     errorMessage={i18n.t('LOGIN.PASSWORD_ERROR')}
-                    secureTextEntry={false}
+                    secureTextEntry={true}
                   />
                 )}
                 name="password"

@@ -121,6 +121,8 @@ const LoginScreenComponent = ({ navigation, eva }) => {
                 )}
                 name="email"
               />
+              <View style={style.spacer} />
+              <View />
               <Controller
                 control={control}
                 rules={{
@@ -143,7 +145,6 @@ const LoginScreenComponent = ({ navigation, eva }) => {
                 name="password"
               />
             </View>
-
             <TouchableOpacity style={style.forgotView} onPress={() => navigate('ResetPassword')}>
               <CustomText style={style.textStyle}>{i18n.t('LOGIN.FORGOT_PASSWORD')}</CustomText>
             </TouchableOpacity>

@@ -44,9 +44,13 @@ export const doLogin =
         dispatch({ type: LOGIN_ERROR, payload: '' });
       }
     } catch (error) {
-      if (error && error.status === 401) {
-        showToast({ message: I18n.t('ERRORS.AUTH') });
-      }
+      const {
+        response: {
+          data: { errors },
+        },
+      } = error;
+      const errorMessage = errors[0] ? errors[0] : I18n.t('ERRORS.AUTH');
+      showToast({ message: errorMessage });
       dispatch({ type: LOGIN_ERROR, payload: error });
     }
   };

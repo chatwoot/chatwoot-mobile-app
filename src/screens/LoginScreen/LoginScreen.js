@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Image, TouchableOpacity, SafeAreaView, Text } from 'react-native';
 import { withStyles } from '@ui-kitten/components';
-import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -169,17 +168,17 @@ const LoginScreenComponent = ({ navigation, eva }) => {
                       {i18n.t('LOGIN.CREATE_ACCOUNT')}
                     </CustomText>
                   </TouchableOpacity>
-                  <CustomText style={style.textStyle}>{'   |   '}</CustomText>
+                  <Text style={style.textStyle}>{'   |   '}</Text>
                 </>
               )}
 
               <TouchableOpacity onPress={() => navigate('ConfigureURL')}>
-                <CustomText style={style.textStyle}> {i18n.t('LOGIN.CHANGE_URL')}</CustomText>
+                <CustomText style={style.textStyle}>{i18n.t('LOGIN.CHANGE_URL')}</CustomText>
               </TouchableOpacity>
             </View>
             <View style={style.accountView}>
               <TouchableOpacity onPress={() => navigate('Language')}>
-                <CustomText style={style.textStyle}> {i18n.t('LOGIN.CHANGE_LANGUAGE')}</CustomText>
+                <CustomText style={style.textStyle}>{i18n.t('LOGIN.CHANGE_LANGUAGE')}</CustomText>
               </TouchableOpacity>
             </View>
           </View>

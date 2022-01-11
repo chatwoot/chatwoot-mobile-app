@@ -16,6 +16,7 @@
     "ENTER_URL": "Installation URL",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Enter a valid URL",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Connect",
     "CHANGE_LANGUAGE": "Change language",
     "ERROR": "Invalid installation url"

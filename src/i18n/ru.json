@@ -16,6 +16,7 @@
     "ENTER_URL": "URL установки",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Введите правильный URL",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Подключиться",
     "CHANGE_LANGUAGE": "Изменить язык",
     "ERROR": "Invalid installation url"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "Почта",
     "PASSWORD": "Пароль",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Введите правильный email",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Введите корректный пароль",
     "LOGIN": "Войти",
     "FORGOT_PASSWORD": "Забыли пароль?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Сбросить пароль",
     "HEADER_TITLE": "Сбросить пароль",
     "TITLE": "Забыли пароль?",
-    "SUB_TITLE": "Не волнуйтесь! Все нормально"
+    "SUB_TITLE": "Не волнуйтесь! Все нормально",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Разговоры",

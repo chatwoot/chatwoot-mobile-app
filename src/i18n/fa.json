@@ -16,6 +16,7 @@
     "ENTER_URL": "نصب با URL",
     "DESCRIPTION": "اگر از نرم افزار روی سرورهای شخصی استفاده می کنید ، آدرس سرور خود را وارد کنید. در غیر این صورت ، از app.chatwoot.com استفاده کنید.",
     "URL_ERROR": "نشانی وب معتبری وارد کنید",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "اتصال",
     "CHANGE_LANGUAGE": "تغییر زبان",
     "ERROR": "نشانی اینترنتی نصب نامعتبر است"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "شما به {{baseUrl}} متصل هستید. با آدرس ایمیل و رمز ورود خود وارد شوید.",
     "EMAIL": "ایمیل",
     "PASSWORD": "رمز عبور",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "یک ایمیل معتبر وارد کنید",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "رمز عبور معتبر وارد کنید",
     "LOGIN": "ورود",
     "FORGOT_PASSWORD": "رمز عبورتان را فراموش کردید؟",
@@ -43,7 +46,8 @@
     "RESET_HERE": "تغییر رمز عبور",
     "HEADER_TITLE": "تغییر رمز عبور",
     "TITLE": "رمز عبورتان را فراموش کردید؟",
-    "SUB_TITLE": "نگران نباش! ما پشتت رو گرفتیم"
+    "SUB_TITLE": "نگران نباش! ما پشتت رو گرفتیم",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "گفتگوها",

@@ -16,6 +16,7 @@
     "ENTER_URL": "Installation URL",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "சரியான URL ஐ உள்ளிடவும்",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Connect",
     "CHANGE_LANGUAGE": "மொழியை மாற்றவும்",
     "ERROR": "Invalid installation url"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "ஈ-மெயில்",
     "PASSWORD": "பாஸ்வேர்டு",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "சரியான ஈ-மெயில் முகவரியை உள்ளிடவும்",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "சரியான பாஸ்வேர்ட்டை உள்ளிடவும்",
     "LOGIN": "உல் நுழையவும்",
     "FORGOT_PASSWORD": "உங்கள் பாஸ்வேர்ட்டை மறந்து விட்டீர்களா?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "பாஸ்வேர்ட்டை மீட்டமைக்கவும்",
     "HEADER_TITLE": "பாஸ்வேர்ட்டை மீட்டமைக்கவும்",
     "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back"
+    "SUB_TITLE": "Don't worry! We got your back",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "உரையாடல்கள்",

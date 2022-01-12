@@ -16,6 +16,7 @@
     "ENTER_URL": "رابط التثبيت",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "الرجاء إدخال عنوان صحيح",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "اتصل",
     "CHANGE_LANGUAGE": "تغيير اللغة",
     "ERROR": "رابط التثبيت غير صحيح"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "البريد الإلكتروني",
     "PASSWORD": "كلمة المرور",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "أدخل بريد إلكتروني صحيح",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "أدخل كلمة مرور صالحة",
     "LOGIN": "تسجيل الدخول",
     "FORGOT_PASSWORD": "نسيت كلمة المرور؟",
@@ -43,7 +46,8 @@
     "RESET_HERE": "إعادة تعيين كلمة المرور",
     "HEADER_TITLE": "إعادة تعيين كلمة المرور",
     "TITLE": "هل نسيت كلمة المرور؟",
-    "SUB_TITLE": "لاتقلق، سنهتم بذلك"
+    "SUB_TITLE": "لاتقلق، سنهتم بذلك",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "المحادثات",

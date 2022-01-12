@@ -43,11 +43,20 @@ export const doLogin =
         showToast({ message: I18n.t('ERRORS.NO_ACCOUNTS_MESSAGE') });
         dispatch({ type: LOGIN_ERROR, payload: '' });
       }
-    } catch (error) {
-      if (error && error.status === 401) {
-        showToast({ message: I18n.t('ERRORS.AUTH') });
+    } catch ({ response }) {
+      dispatch({ type: LOGIN_ERROR, payload: response });
+      if (response && response.status === 401) {
+        const { errors } = response.data;
+        const hasAuthErrorMsg =
+          errors && errors.length && errors[0] && typeof errors[0] === 'string';
+        if (hasAuthErrorMsg) {
+          showToast({ message: errors[0] });
+        } else {
+          showToast({ message: I18n.t('ERRORS.AUTH') });
+        }
+        return;
       }
-      dispatch({ type: LOGIN_ERROR, payload: error });
+      showToast({ message: I18n.t('ERRORS.COMMON_ERROR') });
     }
   };
 
@@ -57,11 +66,19 @@ export const onResetPassword =
     try {
       dispatch({ type: RESET_PASSWORD });
       const response = await APIHelper.post('auth/password', { email });
+      let successMessage = I18n.t('FORGOT_PASSWORD.API_SUCCESS');
+      if (response.data && response.data.message) {
+        successMessage = response.data.message;
+      }
+      showToast({ message: successMessage });
       const { data } = response;
-      showToast(data);
-
       dispatch({ type: RESET_PASSWORD_SUCCESS, payload: data });
     } catch (error) {
+      let errorMessage = I18n.t('ERRORS.AUTH');
+      if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      }
+      showToast({ message: errorMessage });
       dispatch({ type: RESET_PASSWORD_ERROR, payload: error });
     }
   };

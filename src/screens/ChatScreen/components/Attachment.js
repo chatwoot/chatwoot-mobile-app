@@ -71,8 +71,6 @@ const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment 
           DocumentPicker.types.xlsx,
         ],
       });
-      console.log('attachment', res);
-
       const attachment = { uri: res.uri, type: res.type, fileSize: res.size, fileName: res.name };
       onSelectAttachment({ attachment });
     } catch (err) {

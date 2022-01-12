@@ -16,6 +16,7 @@
     "ENTER_URL": "קישור התקנה",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "הזן URL חוקי",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "התחבר",
     "CHANGE_LANGUAGE": "שנה שפה",
     "ERROR": "קישור התקנה לא חוקי"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "אימייל",
     "PASSWORD": "סיסמה",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "הזן אימייל חוקי",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "הזן סיסמה תקינה",
     "LOGIN": "כניסה",
     "FORGOT_PASSWORD": "שכחת את הסיסמה?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "אפס את הסיסמה",
     "HEADER_TITLE": "אפס את הסיסמה",
     "TITLE": "שכחת את הסיסמה?",
-    "SUB_TITLE": "אל תדאג! אנחנו דואגים לך"
+    "SUB_TITLE": "אל תדאג! אנחנו דואגים לך",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "שיחות",

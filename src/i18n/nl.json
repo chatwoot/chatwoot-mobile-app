@@ -16,6 +16,7 @@
     "ENTER_URL": "Installatie url",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Voer een geldige URL in",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Koppelen",
     "CHANGE_LANGUAGE": "Taal wijzigen",
     "ERROR": "Ongeldige installatie-url"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "E-mailadres",
     "PASSWORD": "Wachtwoord",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Voer een geldig e-mailadres in",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Voer een geldig wachtwoord in",
     "LOGIN": "Log in",
     "FORGOT_PASSWORD": "Wachtwoord vergeten?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Wachtwoord opnieuw instellen",
     "HEADER_TITLE": "Wachtwoord opnieuw instellen",
     "TITLE": "Wachtwoord vergeten?",
-    "SUB_TITLE": "Maak je geen zorgen!"
+    "SUB_TITLE": "Maak je geen zorgen!",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Gesprekken",

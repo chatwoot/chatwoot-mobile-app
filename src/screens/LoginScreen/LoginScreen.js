@@ -1,16 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Image, TouchableOpacity, SafeAreaView, Text } from 'react-native';
 import { withStyles } from '@ui-kitten/components';
-import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
+import { useForm, Controller } from 'react-hook-form';
 
 import { doLogin, resetAuth } from '../../actions/auth';
 
 import DeviceInfo from 'react-native-device-info';
 import styles from './LoginScreen.style';
-import { Email, Password } from '../../helpers/formHelper';
-import TextInputField from '../../components/TextInputField';
+import TextInput from '../../components/TextInput';
 import images from '../../constants/images';
 
 import i18n from '../../i18n';
@@ -20,12 +19,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { SIGNUP_URL } from '../../constants/url';
 import CustomText from '../../components/Text';
 import { openURL } from '../../helpers/UrlHelper';
-
-const { Form } = t.form;
-const LoginForm = t.struct({
-  email: Email,
-  password: Password,
-});
+import { EMAIL_REGEX } from '../../helpers/formHelper';
 
 const appName = DeviceInfo.getApplicationName();
 
@@ -49,43 +43,6 @@ const defaultProps = {
 
 const LoginScreenComponent = ({ navigation, eva }) => {
   const dispatch = useDispatch();
-  const inputRef = useRef(null);
-
-  const [values, setValues] = useState({
-    email: '',
-    password: '',
-  });
-
-  const options = {
-    fields: {
-      email: {
-        placeholder: '',
-        template: props => <TextInputField {...props} />,
-        keyboardType: 'email-address',
-        error: i18n.t('LOGIN.EMAIL_ERROR'),
-
-        autoCompleteType: false,
-        autoCorrect: false,
-        config: {
-          label: i18n.t('LOGIN.EMAIL'),
-        },
-        autoCapitalize: 'none',
-      },
-      password: {
-        placeholder: '',
-        template: props => <TextInputField {...props} />,
-        keyboardType: 'default',
-        autoCapitalize: 'none',
-        autoCompleteType: false,
-        autoCorrect: false,
-        error: i18n.t('LOGIN.PASSWORD_ERROR'),
-        config: {
-          label: i18n.t('LOGIN.PASSWORD'),
-        },
-        secureTextEntry: true,
-      },
-    },
-  };
 
   const isLoggingIn = useSelector(state => state.auth.isLoggingIn);
   const installationUrl = useSelector(state => state.settings.installationUrl);
@@ -98,24 +55,27 @@ const LoginScreenComponent = ({ navigation, eva }) => {
     }
   }, [installationUrl, navigation, dispatch]);
 
-  const onChange = value => {
-    setValues(value);
-  };
-
   const doSignup = () => {
     openURL({ URL: `${installationUrl}${SIGNUP_URL}` });
   };
 
-  const onPress = () => {
-    const value = inputRef.current.getValue();
-    if (value) {
-      const { email, password } = values;
-      dispatch(doLogin({ email, password }));
-    }
-  };
-
   const { navigate } = navigation;
   const { style } = eva;
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+  const onSubmit = data => {
+    const { email, password } = data;
+    dispatch(doLogin({ email, password }));
+  };
 
   return (
     <SafeAreaView style={style.keyboardView}>
@@ -131,15 +91,59 @@ const LoginScreenComponent = ({ navigation, eva }) => {
             </CustomText>
           ) : null}
         </View>
+
         <View style={style.contentView}>
           <View style={style.formView}>
-            <Form
-              ref={inputRef}
-              type={LoginForm}
-              options={options}
-              value={values}
-              onChange={value => onChange(value)}
-            />
+            <View>
+              <Controller
+                control={control}
+                rules={{
+                  required: i18n.t('LOGIN.EMAIL_REQUIRED'),
+                  pattern: {
+                    value: EMAIL_REGEX,
+                    message: i18n.t('LOGIN.EMAIL_ERROR'),
+                  },
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    style={styles.input}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    errors={errors}
+                    error={errors.email}
+                    label={i18n.t('LOGIN.EMAIL')}
+                    keyboardType="email-address"
+                    errorMessage={i18n.t('LOGIN.EMAIL_ERROR')}
+                    secureTextEntry={false}
+                  />
+                )}
+                name="email"
+              />
+              <View style={style.spacer} />
+              <View />
+              <Controller
+                control={control}
+                rules={{
+                  required: i18n.t('LOGIN.PASSWORD_REQUIRED'),
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    style={styles.input}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    errors={errors}
+                    error={errors.password}
+                    label={i18n.t('LOGIN.PASSWORD')}
+                    keyboardType="default"
+                    errorMessage={i18n.t('LOGIN.PASSWORD_ERROR')}
+                    secureTextEntry={true}
+                  />
+                )}
+                name="password"
+              />
+            </View>
             <TouchableOpacity style={style.forgotView} onPress={() => navigate('ResetPassword')}>
               <CustomText style={style.textStyle}>{i18n.t('LOGIN.FORGOT_PASSWORD')}</CustomText>
             </TouchableOpacity>
@@ -148,7 +152,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
                 style={style.loginButton}
                 loading={isLoggingIn}
                 textStyle={style.buttonTextStyle}
-                onPress={() => onPress()}
+                onPress={handleSubmit(onSubmit)}
                 size="large"
                 text={i18n.t('LOGIN.LOGIN')}
               />
@@ -164,17 +168,17 @@ const LoginScreenComponent = ({ navigation, eva }) => {
                       {i18n.t('LOGIN.CREATE_ACCOUNT')}
                     </CustomText>
                   </TouchableOpacity>
-                  <CustomText style={style.textStyle}>{'   |   '}</CustomText>
+                  <Text style={style.textStyle}>{'   |   '}</Text>
                 </>
               )}
 
               <TouchableOpacity onPress={() => navigate('ConfigureURL')}>
-                <CustomText style={style.textStyle}> {i18n.t('LOGIN.CHANGE_URL')}</CustomText>
+                <CustomText style={style.textStyle}>{i18n.t('LOGIN.CHANGE_URL')}</CustomText>
               </TouchableOpacity>
             </View>
             <View style={style.accountView}>
               <TouchableOpacity onPress={() => navigate('Language')}>
-                <CustomText style={style.textStyle}> {i18n.t('LOGIN.CHANGE_LANGUAGE')}</CustomText>
+                <CustomText style={style.textStyle}>{i18n.t('LOGIN.CHANGE_LANGUAGE')}</CustomText>
               </TouchableOpacity>
             </View>
           </View>

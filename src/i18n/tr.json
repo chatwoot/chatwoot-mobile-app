@@ -16,6 +16,7 @@
     "ENTER_URL": "Kurulum URL'si",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Geçerli bir URL girin",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Bağlan",
     "CHANGE_LANGUAGE": "Dili değiştir",
     "ERROR": "Geçersiz yükleme url'si"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "E-posta",
     "PASSWORD": "Parola",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Geçerli bir e-posta giriniz",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Geçerli bir parola girin",
     "LOGIN": "Oturum aç",
     "FORGOT_PASSWORD": "Parolanızı mı unuttunuz?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Parola yenile",
     "HEADER_TITLE": "Parola yenile",
     "TITLE": "Parolanızı mı unuttunuz?",
-    "SUB_TITLE": "Merak etmeyin! Arkanı kolluyoruz"
+    "SUB_TITLE": "Merak etmeyin! Arkanı kolluyoruz",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Konuşmalar",

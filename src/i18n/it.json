@@ -16,6 +16,7 @@
     "ENTER_URL": "URL Di Installazione",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Inserisci un URL valido",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Connetti",
     "CHANGE_LANGUAGE": "Cambia lingua",
     "ERROR": "Url installazione non valido"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "Email",
     "PASSWORD": "Password",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Inserisci una email valida",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Inserisci una password valida",
     "LOGIN": "Accedi",
     "FORGOT_PASSWORD": "Hai dimenticato la password?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Reimposta password",
     "HEADER_TITLE": "Reimposta password",
     "TITLE": "Hai dimenticato la password?",
-    "SUB_TITLE": "Non preoccuparti! Ti copriamo le spalle"
+    "SUB_TITLE": "Non preoccuparti! Ti copriamo le spalle",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversazioni",

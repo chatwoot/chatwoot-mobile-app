@@ -16,6 +16,7 @@
     "ENTER_URL": "ഇൻസ്റ്റലേഷൻ URL",
     "DESCRIPTION": "നിങ്ങൾ സ്വയം ഹോസ്റ്റ് ചെയ്‌ത ചാറ്റ്‌വൂട്ട് ഇൻസ്റ്റാളേഷനാണ് ഉപയോഗിക്കുന്നതെങ്കിൽ, നിങ്ങളുടെ സെർവർ URL നൽകുക. അല്ലെങ്കിൽ, app.chatwoot.com ഉപയോഗിക്കുക.",
     "URL_ERROR": "സാധുവായ ഒരു URL നൽകുക",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "ബന്ധിപ്പിക്കുക",
     "CHANGE_LANGUAGE": "ഭാഷ മാറ്റുക",
     "ERROR": "അസാധുവായ ഇൻസ്റ്റാളേഷൻ url"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "നിങ്ങൾ {{baseUrl}}-ലേക്ക് ബന്ധിപ്പിച്ചിരിക്കുന്നു. നിങ്ങളുടെ ഇമെയിൽ വിലാസവും പാസ്‌വേഡും ഉപയോഗിച്ച് ലോഗിൻ ചെയ്യുക.",
     "EMAIL": "ഇമെയിൽ",
     "PASSWORD": "പാസ്‌വേഡ്",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "സാധുവായ ഒരു ഇമെയിൽ നൽകുക",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "സാധുവായ ഒരു പാസ്‌വേഡ് നൽകുക",
     "LOGIN": "സൈൻ ഇൻ",
     "FORGOT_PASSWORD": "നിങ്ങളുടെ പാസ്‌വേഡ് മറന്നോ?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "പാസ്‌വേഡ് പുനഃസജ്ജമാക്കുക",
     "HEADER_TITLE": "പാസ്‌വേഡ് പുനഃസജ്ജമാക്കുക",
     "TITLE": "പാസ്സ്‌വേർഡ് മറന്നോ?",
-    "SUB_TITLE": "വിഷമിക്കേണ്ട! ഞങ്ങൾക്ക് നിങ്ങളുടെ പിൻബലം ലഭിച്ചു"
+    "SUB_TITLE": "വിഷമിക്കേണ്ട! ഞങ്ങൾക്ക് നിങ്ങളുടെ പിൻബലം ലഭിച്ചു",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "സംഭാഷണങ്ങൾ",

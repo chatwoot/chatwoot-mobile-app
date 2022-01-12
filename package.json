@@ -40,7 +40,7 @@
     "i18n-js": "^3.8.0",
     "lodash.filter": "^4.6.0",
     "lodash.groupby": "^4.6.0",
-    "markdown-it": "^12.0.6",
+    "markdown-it": "^12.3.2",
     "md5": "^2.3.0",
     "moment": "^2.29.1",
     "posthog-react-native": "^1.1.3",

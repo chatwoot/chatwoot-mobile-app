@@ -16,6 +16,7 @@
     "ENTER_URL": "URL d'instal·lació",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Introduïu un URL vàlid",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Connectar",
     "CHANGE_LANGUAGE": "Canviar d'idioma",
     "ERROR": "URL d'instal·lació no vàlid"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "Correu electrònic",
     "PASSWORD": "Contrasenya",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Introduïu un correu electrònic vàlid",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Introduïu una contrasenya vàlida",
     "LOGIN": "Inicia la sessió",
     "FORGOT_PASSWORD": "Has oblidat la teva contrasenya?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Restablir la contrasenya",
     "HEADER_TITLE": "Restablir la contrasenya",
     "TITLE": "Has oblidat la contrasenya?",
-    "SUB_TITLE": "No et preocupis! T'ajudarem"
+    "SUB_TITLE": "No et preocupis! T'ajudarem",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Converses",

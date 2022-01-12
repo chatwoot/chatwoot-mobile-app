@@ -16,6 +16,7 @@
     "ENTER_URL": "URL för installationen",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Ange en giltig URL",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Anslut",
     "CHANGE_LANGUAGE": "Byt språk",
     "ERROR": "Ogiltig installations-URL"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "E-post",
     "PASSWORD": "Lösenord",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Ange en giltig e-postadress",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Ange ett giltigt lösenord",
     "LOGIN": "Logga in",
     "FORGOT_PASSWORD": "Glömt ditt lösenord?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Återställ lösenord",
     "HEADER_TITLE": "Återställ lösenord",
     "TITLE": "Glömt lösenordet?",
-    "SUB_TITLE": "Oroa dig inte! Vi löser det"
+    "SUB_TITLE": "Oroa dig inte! Vi löser det",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Konversationer",

@@ -128,4 +128,10 @@ export const SETTINGS_ITEMS = [
     iconName: 'log-out-outline',
     itemName: 'logout',
   },
+  {
+    text: 'SWITCH_VIEW',
+    checked: false,
+    iconName: 'toggle-left-outline',
+    itemName: 'switch-view',
+  },
 ];

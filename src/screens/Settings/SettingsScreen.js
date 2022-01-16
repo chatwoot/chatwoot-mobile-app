@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { withStyles } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -24,6 +24,7 @@ import packageFile from '../../../package.json';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { captureEvent } from 'helpers/Analytics';
 import { getCurrentUserAvailabilityStatus } from '../../helpers';
+import { ThemeContext } from '../../theme-context';
 
 const appName = DeviceInfo.getApplicationName();
 
@@ -45,6 +46,7 @@ const defaultProps = {
 const Settings = ({ eva: { theme, style } }) => {
   const dispatch = useDispatch();
   const [showWidget, toggleWidget] = useState(false);
+  const themeContext = useContext(ThemeContext);
   const navigation = useNavigation();
   const user = useSelector(store => store.auth.user);
   const email = user ? user.email : '';
@@ -80,6 +82,10 @@ const Settings = ({ eva: { theme, style } }) => {
     switch (itemName) {
       case 'language':
         navigation.navigate('Language');
+        break;
+
+      case 'switch-view':
+        themeContext.toggleTheme;
         break;
 
       case 'logout':

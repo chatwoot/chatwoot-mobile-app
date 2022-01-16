@@ -15,7 +15,9 @@ import Router from './router';
 import { store, persistor } from './store';
 import i18n from './i18n';
 
-const Chatwoot = () => { 
+import { ThemeContext } from './theme-context';
+
+const Chatwoot = () => {
   useEffect(() => {
     ErrorHelper.init();
     // To hide splash screen
@@ -47,17 +49,26 @@ const Chatwoot = () => {
     return true;
   };
 
+  const [theme, setTheme] = React.useState('light');
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(nextTheme);
+  };
+
   return (
     <React.Fragment>
       <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={theme}>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <NoNetworkBar />
-            <Router />
-          </PersistGate>
-        </Provider>
-      </ApplicationProvider>
+      <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <ApplicationProvider {...eva} theme={eva[theme]}>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <NoNetworkBar />
+              <Router />
+            </PersistGate>
+          </Provider>
+        </ApplicationProvider>
+      </ThemeContext.Provider>
     </React.Fragment>
   );
 };

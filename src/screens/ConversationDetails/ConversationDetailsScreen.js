@@ -7,7 +7,6 @@ import { View } from 'react-native';
 
 import UserAvatar from '../../components/UserAvatar';
 import CustomText from '../../components/Text';
-import { onLogOut } from '../../actions/auth';
 
 import i18n from '../../i18n';
 
@@ -34,12 +33,10 @@ class ConversationDetailsComponent extends Component {
       goBack: PropTypes.func.isRequired,
     }).isRequired,
     route: PropTypes.object,
-    onLogOut: PropTypes.func,
   };
 
   static defaultProps = {
     user: { email: null, name: null },
-    onLogOut: () => {},
   };
 
   onBackPress = () => {
@@ -146,9 +143,7 @@ class ConversationDetailsComponent extends Component {
 }
 
 function bindAction(dispatch) {
-  return {
-    onLogOut: () => dispatch(onLogOut()),
-  };
+  return {};
 }
 function mapStateToProps(state) {
   return {

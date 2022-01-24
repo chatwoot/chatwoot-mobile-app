@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import {
   getUniqueId,
@@ -19,6 +18,7 @@ import {
   ALL_NOTIFICATIONS_LOADED,
   UPDATE_ALL_NOTIFICATIONS,
   ADD_NOTIFICATION,
+  CLEAR_PUSH_TOKEN,
 } from '../constants/actions';
 import APIHelper from '../helpers/APIHelper';
 
@@ -157,14 +157,33 @@ export const saveDeviceDetails = () => async dispatch => {
     };
     const headers = await getHeaders();
     const baseURL = await getBaseUrl();
-
     await axios.post(`${baseURL}${API_URL}notification_subscriptions`, pushData, {
       headers: headers,
     });
 
     dispatch({ type: SET_PUSH_TOKEN, payload: fcmToken });
-  } catch (err) {}
+  } catch (error) {}
 };
+
+export const clearDeviceDetails =
+  ({ pushToken }) =>
+  async dispatch => {
+    try {
+      const headers = await getHeaders();
+      const baseURL = await getBaseUrl();
+      const data = { push_token: pushToken };
+      await axios({
+        method: 'DELETE',
+        url: `${baseURL}${API_URL}notification_subscriptions`,
+        data: data,
+        headers: headers,
+      });
+
+      dispatch({ type: CLEAR_PUSH_TOKEN });
+    } catch (error) {
+      // error
+    }
+  };
 
 export const addNotification =
   ({ notification }) =>

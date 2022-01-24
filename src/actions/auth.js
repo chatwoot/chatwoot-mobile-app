@@ -24,6 +24,7 @@ import { getHeaders } from '../helpers/AuthHelper';
 import { getBaseUrl } from '../helpers/UrlHelper';
 import { API_URL } from '../constants/url';
 import { identifyUser, resetAnalytics } from '../helpers/Analytics';
+import { clearDeviceDetails } from './notification';
 
 export const doLogin =
   ({ email, password }) =>
@@ -98,7 +99,9 @@ export const resetAuth = () => async dispatch => {
   dispatch({ type: RESET_AUTH });
 };
 
-export const onLogOut = () => async dispatch => {
+export const onLogOut = () => async (dispatch, getState) => {
+  const { pushToken } = await getState().notification;
+  dispatch(clearDeviceDetails({ pushToken }));
   resetAnalytics();
   dispatch({ type: SET_LOCALE, payload: 'en' });
   dispatch({ type: USER_LOGOUT });

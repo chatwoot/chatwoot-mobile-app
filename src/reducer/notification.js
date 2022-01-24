@@ -6,6 +6,7 @@ import {
   UPDATE_ALL_NOTIFICATIONS,
   SET_PUSH_TOKEN,
   ADD_NOTIFICATION,
+  CLEAR_PUSH_TOKEN,
 } from '../constants/actions';
 
 const initialState = {
@@ -21,6 +22,8 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case SET_PUSH_TOKEN:
       return { ...state, pushToken: action.payload };
+    case CLEAR_PUSH_TOKEN:
+      return { ...state, pushToken: null };
 
     case GET_NOTIFICATION: {
       return {

@@ -22,7 +22,7 @@
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
+    "TITLE": "Apke account mein login kare",
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "Email",
     "PASSWORD": "Password",

@@ -2,7 +2,7 @@
   "WELCOME": "Benvenuto",
   "COMMON": {
     "ERROR": "Errore",
-    "ERROR_TITLE": "Errore inatteso",
+    "ERROR_TITLE": "Si è verificato un errore imprevisto",
     "REPORT_MESSAGE": "Lo abbiamo segnalato alla nostra squadra! Chiudere l'app e ricominciare!",
     "CLOSE": "Chiudi"
   },
@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL Di Installazione",
-    "DESCRIPTION": "Se stai usando un'installazione di Chatwoot autohosted, inserisci l'URL del tuo server. Altrimenti, usa app.chatwoot.com.",
+    "DESCRIPTION": "Se stai usando un'installazione di Chatwoot auto-ospitata, inserisci l'URL del tuo server. Altrimenti, usa app.chatwoot.com.",
     "URL_ERROR": "Inserisci un URL valido",
     "URL_REQUIRED": "URL obbligatorio",
     "CONNECT": "Connetti",

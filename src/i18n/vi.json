@@ -14,21 +14,21 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installation URL",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "Nếu bạn đang dùng Chatwoot tự chủ, điền URL máy chủ của bạn. Nếu không, dùng app.chatwoot.com.",
     "URL_ERROR": "Enter a valid URL",
-    "URL_REQUIRED": "URL is required",
+    "URL_REQUIRED": "URL bắt buộc có",
     "CONNECT": "Kết nối",
     "CHANGE_LANGUAGE": "Change language",
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "Đăng nhập vào tài khoản của bạn",
+    "DESCRIPTION": "Bạn được kết nối đến {{baseUrl}}. \bĐăng nhập với địa chỉ email và mật khẩu.",
     "EMAIL": "Email",
     "PASSWORD": "Mật khẩu",
-    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_REQUIRED": "Email bắt buộc có",
     "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_REQUIRED": "Mật khẩu bắt buộc có",
     "PASSWORD_ERROR": "Enter a valid password",
     "LOGIN": "Sign In",
     "FORGOT_PASSWORD": "Quên mật khẩu?",
@@ -47,7 +47,7 @@
     "HEADER_TITLE": "Reset password",
     "TITLE": "Forgot Password?",
     "SUB_TITLE": "Don't worry! We got your back",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "API_SUCCESS": "Liên kết đặt lại mật khẩu đã được gửi đến địa chỉ email của bạn"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Các cuộc hội thoại",
@@ -65,9 +65,9 @@
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "RESOLVE": "Resolve conversation",
     "RE_OPEN": "Reopen conversation",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share conversation",
+    "ASSIGN": "Phân công cuộc trò chuyện",
+    "FILE_SIZE_LIMIT": "File vượt quá giới hạn tối đa 5MB",
+    "SHARE": "Chia sẻ cuộc trò chuyện",
     "CANCEL": "Huỷ",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"

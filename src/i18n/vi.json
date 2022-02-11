@@ -1,7 +1,7 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "Chào mừng",
   "COMMON": {
-    "ERROR": "Error",
+    "ERROR": "Lỗi",
     "ERROR_TITLE": "Unexpected error occurred",
     "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
     "CLOSE": "Đóng"
@@ -69,8 +69,8 @@
     "FILE_SIZE_LIMIT": "File vượt quá giới hạn tối đa 5MB",
     "SHARE": "Chia sẻ cuộc trò chuyện",
     "CANCEL": "Huỷ",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "PRIVATE_MSG_INPUT": "Chỉ hiện cho nhà cung cấp",
+    "UN_ASSIGN": "Bỏ phân công cuộc trò chuyện"
   },
   "FILTER": {
     "HEADER_TITLE": "Conversation Filter",
@@ -80,15 +80,15 @@
     "RESOLVED": "Đã được giải quyết",
     "BOT": "Bot",
     "SUBMIT": "Gửi",
-    "PENDING": "Pending",
-    "SNOOZED": "Snoozed"
+    "PENDING": "Chờ giải quyết",
+    "SNOOZED": "Tạm dừng"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Cài đặt",
     "AVAILABILITY": "Khả dụng",
     "NOTIFICATION": "Notification Preferences",
     "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
+    "CHAT_WITH_US": "Trò chuyện với Chúng tôi",
     "LOG_OUT": "Đăng xuất",
     "SWITCH_ACCOUNT": "Chuyển tài khoản",
     "CHANGE_LANGUAGE": "Change Language",
@@ -114,7 +114,7 @@
     "CONVERSATION_CREATE_PUSH": "Gửi thông báo khi cuộc trò chuyện mới được tạo",
     "CONVERSATION_ASSIGNEE_PUSH": "Gửi thông báo khi cuộc trò chuyện được chỉ định cho tôi",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
+    "CONVERSATION_MENTION": "Gửi thông báo đẩy khi bạn được nhắc đến trong 1 cuộc trò chuyện",
     "CONVERSATION_CREATE_EMAIL": "Gửi thông báo qua email khi cuộc trò chuyện mới được tạo",
     "CONVERSATION_ASSIGNEE_EMAIL": "Gửi thông báo qua email khi cuộc trò chuyện được chỉ định cho tôi",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
@@ -129,7 +129,7 @@
     "TITLE": "Hành động"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Chọn đại lý"
   },
   "ERRORS": {
     "COMMON_ERROR": "Không thể kết nối với Máy chủ Woot, Vui lòng thử lại sau",
@@ -142,9 +142,9 @@
     "AUTH": "Đăng nhập thành công"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "Cần nâng cấp máy chủ",
+    "WARNING_FOR_AGENT": "Có vẻ như bạn đang dùng máy chủ Chatwoot không hỗ trợ ứng dụng di động. Vui lòng liên hệ với quản trị viên để nâng cấp server Chatwoot của bạn.",
+    "WARNING_FOR_ADMIN": "Có vẻ như bạn đang dùng máy chủ Chatwoot không hỗ trợ ứng dụng di động. Cần nâng cấp máy chủ lên phiên bản %{minimumVersion} hoặc lớn hơn."
   },
   "EXIT": {
     "TITLE": "Exit",

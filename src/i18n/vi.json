@@ -87,19 +87,19 @@
     "HEADER_TITLE": "Cài đặt",
     "AVAILABILITY": "Khả dụng",
     "NOTIFICATION": "Tuỳ chọn thông báo",
-    "HELP": "Help Docs",
+    "HELP": "Tài liệu trợ giúp",
     "CHAT_WITH_US": "Trò chuyện với Chúng tôi",
     "LOG_OUT": "Đăng xuất",
     "SWITCH_ACCOUNT": "Chuyển tài khoản",
-    "CHANGE_LANGUAGE": "Change Language",
+    "CHANGE_LANGUAGE": "Thay đổi ngôn ngữ",
     "SUBMIT": "Gửi"
   },
   "NOTIFICATION": {
-    "HEADER_TITLE": "Notifications",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
+    "HEADER_TITLE": "Thông báo",
+    "EMPTY": "Không có thông báo.",
+    "EMPTY_MORE_TEXT": "Khi bạn bắt đầu nhận được thông báo, chúng sẽ xuất hiện ở đây.",
+    "ALL_NOTIFICATION_LOADED": "Tất cả thông báo đã được tải",
+    "MARK_ALL": "Đánh dấu tất cả đã đọc",
     "CANCEL": "Huỷ"
   },
   "AVAILABILITY": {
@@ -108,16 +108,16 @@
     "OFFLINE": "Không Trực Tuyến"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
+    "TITLE": "Tuỳ chọn thông báo",
     "EMAIL": "Email",
-    "PUSH": "Push",
+    "PUSH": "Đẩy",
     "CONVERSATION_CREATE_PUSH": "Gửi thông báo khi cuộc trò chuyện mới được tạo",
     "CONVERSATION_ASSIGNEE_PUSH": "Gửi thông báo khi cuộc trò chuyện được chỉ định cho tôi",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Gửi thông báo đẩy khi có một tin nhắn mới được tạo trong cuộc trò chuyện được phân công",
     "CONVERSATION_MENTION": "Gửi thông báo đẩy khi bạn được nhắc đến trong 1 cuộc trò chuyện",
     "CONVERSATION_CREATE_EMAIL": "Gửi thông báo qua email khi cuộc trò chuyện mới được tạo",
     "CONVERSATION_ASSIGNEE_EMAIL": "Gửi thông báo qua email khi cuộc trò chuyện được chỉ định cho tôi",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Gửi thông báo email khi có một tin nhắn mới được tạo trong cuộc trò chuyện được phân công"
   },
   "CONVERSATION_DETAILS": {
     "BROWSER": "Trình duyệt",
@@ -133,10 +133,10 @@
   },
   "ERRORS": {
     "COMMON_ERROR": "Không thể kết nối với Máy chủ Woot, Vui lòng thử lại sau",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "OfFLINE": "Bạn phải kết nối với Wi-fi hoặc mạng di động để trực tuyến trở lại",
+    "CANNOT_FETCH": "Đã xảy ra lỗi khi lấy thông tin, vui lòng thử lại",
     "AUTH": "Tài khoản/Mật khẩu không đúng. Vui lòng thử lại",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "NO_ACCOUNTS_MESSAGE": "Bạn không có quyền truy cập vào bất kỳ tài khoản chatwoot nào"
   },
   "SUCCESS": {
     "AUTH": "Đăng nhập thành công"
@@ -147,9 +147,9 @@
     "WARNING_FOR_ADMIN": "Có vẻ như bạn đang dùng máy chủ Chatwoot không hỗ trợ ứng dụng di động. Cần nâng cấp máy chủ lên phiên bản %{minimumVersion} hoặc lớn hơn."
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
+    "TITLE": "Thoát",
+    "SUBTITLE": "Bạn có chắc muốn thoát?",
     "CANCEL": "Huỷ",
-    "OK": "Ok"
+    "OK": "Có"
   }
 }

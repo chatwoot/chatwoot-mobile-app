@@ -16,7 +16,7 @@
  <img src="https://img.shields.io/github/license/chatwoot/chatwoot" alt="License">
 </p>
 
-- **Supported Chatwoot version:** 1.18+
+- **Supported Chatwoot version:** 2.0.0+
 - **Supported iOS versions**: 11+ 
 - **Supported Android versions**: 5.0+
 

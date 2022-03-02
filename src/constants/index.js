@@ -6,6 +6,8 @@ export const CONVERSATION_STATUS = {
   OPEN: 'open',
   RESOLVED: 'resolved',
   BOT: 'bot',
+  PENDING: 'pending',
+  SNOOZED: 'snoozed',
 };
 
 export const MESSAGE_TYPES = {
@@ -29,12 +31,14 @@ export const ASSIGNEE_TYPE = {
 
 export const INBOX_ICON = {
   'Channel::All': 'copy-outline',
+  'Channel::Api': 'inbox-outline',
+  'Channel::Email': 'email-outline',
   'Channel::WebWidget': 'globe-outline',
   'Channel::TwitterProfile': 'twitter-outline',
   'Channel::FacebookPage': 'facebook-outline',
-  'Channel::TwilioSms': 'message-circle-outline',
-  'Channel::Api': 'inbox-outline',
-  'Channel::Email': 'email-outline',
+  'Channel::TwilioSms': 'message-square-outline',
+  'Channel::Telegram': 'paper-plane-outline',
+  'Channel::Line': 'message-circle-outline',
 };
 
 export const INBOX_IMAGES = {
@@ -47,6 +51,7 @@ export const LANGUAGES = {
   en: 'English',
   nl: 'Dutch',
   tr: 'Turkish',
+  fr: 'French',
 };
 
 export const URL_REGEX = {
@@ -73,6 +78,7 @@ export const NOTIFICATION_PREFERENCE_TYPES = {
   push_conversation_creation: 'CONVERSATION_CREATE_PUSH',
   push_conversation_assignment: 'CONVERSATION_ASSIGNEE_PUSH',
   push_assigned_conversation_new_message: 'CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH',
+  push_conversation_mention: 'CONVERSATION_MENTION',
   email_conversation_creation: 'CONVERSATION_CREATE_EMAIL',
   email_conversation_assignment: 'CONVERSATION_ASSIGNEE_EMAIL',
   email_assigned_conversation_new_message: 'CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL',

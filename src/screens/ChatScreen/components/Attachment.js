@@ -41,14 +41,14 @@ const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment 
   const openCamera = () => {
     launchCamera(imagePickerOptions, response => {
       if (response.uri) {
-        onSelectAttachment({ attachement: response });
+        onSelectAttachment({ attachment: response });
       }
     });
   };
   const openGallery = () => {
     launchImageLibrary(imagePickerOptions, response => {
       if (response.uri) {
-        onSelectAttachment({ attachement: response });
+        onSelectAttachment({ attachment: response });
       }
     });
   };
@@ -56,17 +56,23 @@ const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment 
     try {
       const res = await DocumentPicker.pick({
         type: [
+          DocumentPicker.types.allFiles,
+          DocumentPicker.types.images,
+          DocumentPicker.types.plainText,
           DocumentPicker.types.audio,
           DocumentPicker.types.pdf,
-          DocumentPicker.types.plainText,
+          DocumentPicker.types.zip,
+          DocumentPicker.types.csv,
           DocumentPicker.types.doc,
           DocumentPicker.types.docx,
+          DocumentPicker.types.ppt,
+          DocumentPicker.types.pptx,
           DocumentPicker.types.xls,
-          DocumentPicker.types.csv,
+          DocumentPicker.types.xlsx,
         ],
       });
-      const attachement = { uri: res.uri, type: res.type, fileSize: res.size, fileName: res.name };
-      onSelectAttachment({ attachement });
+      const attachment = { uri: res.uri, type: res.type, fileSize: res.size, fileName: res.name };
+      onSelectAttachment({ attachment });
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
       } else {

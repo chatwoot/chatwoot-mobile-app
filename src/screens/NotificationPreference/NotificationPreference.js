@@ -24,7 +24,7 @@ const NotificationPreferenceScreenComponent = ({ eva: { style }, navigation }) =
       selected_push_flags,
     },
     isUpdating,
-  } = useSelector((state) => state.settings);
+  } = useSelector(state => state.settings);
   const [selectedEmailFlags, setEmailFlags] = useState(selected_email_flags);
   const [selectedPushFlags, setPushFlags] = useState(selected_push_flags);
 
@@ -66,7 +66,7 @@ const NotificationPreferenceScreenComponent = ({ eva: { style }, navigation }) =
           {i18n.t('NOTIFICATION_PREFERENCE.EMAIL')}
         </CustomText>
         {emailFlags.map(
-          (item) =>
+          item =>
             NOTIFICATION_PREFERENCE_TYPES[item] && (
               <NotificationPreferenceItem
                 key={item}
@@ -83,7 +83,7 @@ const NotificationPreferenceScreenComponent = ({ eva: { style }, navigation }) =
           {i18n.t('NOTIFICATION_PREFERENCE.PUSH')}
         </CustomText>
         {pushFlags.map(
-          (item) =>
+          item =>
             NOTIFICATION_PREFERENCE_TYPES[item] && (
               <NotificationPreferenceItem
                 key={item}

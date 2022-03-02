@@ -43,6 +43,7 @@ export default theme => ({
     paddingRight: 40,
     marginTop: 16,
   },
+  spacer: { paddingTop: 16 },
   loginButtonView: {
     paddingTop: 16,
     flexDirection: 'row',
@@ -61,6 +62,7 @@ export default theme => ({
     color: theme['text-hint-color'],
   },
   forgotView: {
+    paddingTop: 4,
     flex: 1,
     alignItems: 'flex-end',
   },

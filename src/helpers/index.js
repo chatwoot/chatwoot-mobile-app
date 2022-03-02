@@ -25,19 +25,26 @@ export function findAssigneeType({ assigneeType }) {
 export function findConversationStatus({ conversationStatus }) {
   let status;
   switch (conversationStatus) {
-    case CONVERSATION_STATUS.OPEN:
-      status = CONVERSATION_STATUS.OPEN;
+    case CONVERSATION_STATUS.RESOLVED:
+      status = CONVERSATION_STATUS.RESOLVED;
       break;
     case CONVERSATION_STATUS.BOT:
       status = CONVERSATION_STATUS.BOT;
       break;
+    case CONVERSATION_STATUS.PENDING:
+      status = CONVERSATION_STATUS.PENDING;
+      break;
+    case CONVERSATION_STATUS.SNOOZED:
+      status = CONVERSATION_STATUS.SNOOZED;
+      break;
+
     default:
-      status = CONVERSATION_STATUS.RESOLVED;
+      status = CONVERSATION_STATUS.OPEN;
   }
   return status;
 }
-
-export function checkConversationMatch({
+// Check conversation is matching to current filters
+export function checkConversationMatchToFilters({
   assignee,
   user,
   assigneeType,
@@ -46,6 +53,10 @@ export function checkConversationMatch({
 }) {
   const { email: userEmail } = user;
   if (conversationStatus !== status) {
+    return false;
+  }
+  // If assignee type is unassigned, check assignee is not null
+  if (!isEmptyObject(assignee) && assigneeType === 1) {
     return false;
   }
   if (!assignee && assigneeType !== 1) {
@@ -83,7 +94,7 @@ export function findLastMessage({ messages }) {
 
 export function getUnreadCount(conversation) {
   return conversation.messages.filter(
-    (chatMessage) =>
+    chatMessage =>
       chatMessage.created_at * 1000 > conversation.agent_last_seen_at * 1000 &&
       chatMessage.message_type === 0 &&
       chatMessage.private !== true,
@@ -110,7 +121,7 @@ export const getRandomColor = function ({ userName }) {
     '#' +
     color
       .replace(/^#/, '')
-      .replace(/../g, (value) =>
+      .replace(/../g, value =>
         ('0' + Math.min(255, Math.max(0, parseInt(value, 16) + -20)).toString(16)).substr(-2),
       )
   );
@@ -118,7 +129,7 @@ export const getRandomColor = function ({ userName }) {
 
 export const checkImageExist = ({ thumbnail }) => {
   fetch(thumbnail)
-    .then((res) => {
+    .then(res => {
       if (res.status === 404) {
         return false;
       } else {
@@ -131,15 +142,15 @@ export const checkImageExist = ({ thumbnail }) => {
 };
 
 export const getInboxName = ({ inboxes, inboxId }) => {
-  const inbox = inboxes.find((item) => item.id === inboxId);
+  const inbox = inboxes.find(item => item.id === inboxId);
   return inbox ? inbox.name : null;
 };
 
 export const getGroupedConversation = ({ conversations }) => {
-  const conversationGroupedByDate = groupBy(Object.values(conversations), (message) =>
+  const conversationGroupedByDate = groupBy(Object.values(conversations), message =>
     new DateHelper(message.created_at).format(),
   );
-  return Object.keys(conversationGroupedByDate).map((date) => {
+  return Object.keys(conversationGroupedByDate).map(date => {
     const messages = conversationGroupedByDate[date].map((message, index) => {
       let showAvatar = false;
       if (index === conversationGroupedByDate[date].length - 1) {
@@ -173,32 +184,30 @@ export const getTypingUsersText = ({ conversationId, conversationTypingUsers }) 
       if (type === 'contact') {
         return 'typing...';
       }
-      return `${user.name.toString().replace(/^./, (str) => str.toUpperCase())} is typing...`;
+      return `${user.name.toString().replace(/^./, str => str.toUpperCase())} is typing...`;
     }
 
     if (count === 2) {
       const [first, second] = userList;
-      return `${first.name
+      return `${first.name.toString().replace(/^./, str => str.toUpperCase())} and ${second.name
         .toString()
-        .replace(/^./, (str) => str.toUpperCase())} and ${second.name
-        .toString()
-        .replace(/^./, (str) => str.toUpperCase())} are typing...`;
+        .replace(/^./, str => str.toUpperCase())} are typing...`;
     }
 
     const [user] = userList;
     const rest = userList.length - 1;
     return `${user.name
       .toString()
-      .replace(/^./, (str) => str.toUpperCase())} and ${rest} others are typing...`;
+      .replace(/^./, str => str.toUpperCase())} and ${rest} others are typing...`;
   }
   return false;
 };
 
 export const getGroupedNotifications = ({ notifications }) => {
-  const notificationGroupedByDate = groupBy(Object.values(notifications), (notification) =>
+  const notificationGroupedByDate = groupBy(Object.values(notifications), notification =>
     new DateHelper(notification.created_at).format(),
   );
-  return Object.keys(notificationGroupedByDate).map((date) => {
+  return Object.keys(notificationGroupedByDate).map(date => {
     const data = notificationGroupedByDate[date];
 
     return {
@@ -209,9 +218,9 @@ export const getGroupedNotifications = ({ notifications }) => {
 };
 
 export const findUniqueConversations = ({ payload }) => {
-  const filterConversations = payload.filter((item) => item.messages.length !== 0);
+  const filterConversations = payload.filter(item => item.messages.length !== 0);
   const uniqueConversations = filterConversations.reduce((acc, current) => {
-    const x = acc.find((item) => item.id === current.id);
+    const x = acc.find(item => item.id === current.id);
     if (!x) {
       return acc.concat([current]);
     } else {
@@ -225,7 +234,7 @@ export const findUniqueMessages = ({ allMessages }) => {
   const completeMessages = [].concat(allMessages).reverse();
 
   const uniqueMessages = completeMessages.reduce((acc, current) => {
-    const x = acc.find((item) => item.id === current.id);
+    const x = acc.find(item => item.id === current.id);
     if (!x) {
       return acc.concat([current]);
     } else {
@@ -236,7 +245,7 @@ export const findUniqueMessages = ({ allMessages }) => {
 };
 
 export const addOrRemoveItemFromArray = (array, key) => {
-  const index = array.findIndex((o) => o === key);
+  const index = array.findIndex(o => o === key);
   if (index === -1) {
     array.push(key);
   } else {
@@ -269,4 +278,20 @@ export const getCustomerDetails = ({ conversationMetaDetails, conversationDetail
     customer.channel = channel;
   }
   return customer;
+};
+
+export const isEmptyObject = obj => {
+  return !obj || Object.keys(obj).length === 0;
+};
+
+export const getCurrentUserAvailabilityStatus = ({ user }) => {
+  if (user && !isEmptyObject(user)) {
+    const { account_id: accountId } = user;
+    const accounts = user ? user.accounts : [];
+    const currentAccount = accounts.length
+      ? accounts.filter(account => account.id === accountId)
+      : {};
+    return currentAccount.availability_status || user.availability_status || '';
+  }
+  return '';
 };

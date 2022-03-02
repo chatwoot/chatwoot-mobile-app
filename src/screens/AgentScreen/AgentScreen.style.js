@@ -1,4 +1,4 @@
-const styles = (theme) => ({
+const styles = theme => ({
   container: {
     flex: 1,
     backgroundColor: theme['background-basic-color-1'],
@@ -12,6 +12,7 @@ const styles = (theme) => ({
     paddingLeft: 24,
     paddingRight: 24,
     paddingTop: 32,
+    paddingBottom: 32,
   },
   submitButton: {
     flex: 1,

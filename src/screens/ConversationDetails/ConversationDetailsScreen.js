@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { withStyles } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { SafeAreaView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { View } from 'react-native';
 
 import UserAvatar from '../../components/UserAvatar';
 import CustomText from '../../components/Text';
-import { onLogOut } from '../../actions/auth';
 
 import i18n from '../../i18n';
 
@@ -34,12 +33,10 @@ class ConversationDetailsComponent extends Component {
       goBack: PropTypes.func.isRequired,
     }).isRequired,
     route: PropTypes.object,
-    onLogOut: PropTypes.func,
   };
 
   static defaultProps = {
     user: { email: null, name: null },
-    onLogOut: () => {},
   };
 
   onBackPress = () => {
@@ -57,36 +54,40 @@ class ConversationDetailsComponent extends Component {
     if (!additionalAttributes) {
       return null;
     }
+    const {
+      browser: { browser_name, browser_version, platform_name, platform_version } = {},
+      initiated_at = {},
+    } = additionalAttributes;
     return (
       <View style={style.itemListView}>
-        {!!additionalAttributes.browser && !!additionalAttributes.browser.browser_name && (
+        {browser_name ? (
           <ConversationDetailsItem
             title={i18n.t('CONVERSATION_DETAILS.BROWSER')}
-            value={`${additionalAttributes.browser.browser_name} ${additionalAttributes.browser.browser_version}`}
+            value={`${browser_name} ${browser_version}`}
             iconName="globe-outline"
           />
-        )}
-        {!!additionalAttributes.browser && !!additionalAttributes.browser.platform_name && (
+        ) : null}
+        {platform_name ? (
           <ConversationDetailsItem
             title={i18n.t('CONVERSATION_DETAILS.OPERATING_SYSTEM')}
-            value={`${additionalAttributes.browser.platform_name} ${additionalAttributes.browser.platform_version}`}
+            value={`${platform_name} ${platform_version}`}
             iconName="hard-drive-outline"
           />
-        )}
-        {!!additionalAttributes.referer && (
+        ) : null}
+        {additionalAttributes.referer ? (
           <ConversationDetailsItem
             title={i18n.t('CONVERSATION_DETAILS.INITIATED_FROM')}
             value={additionalAttributes.referer}
             iconName="link-outline"
           />
-        )}
-        {!!additionalAttributes.initiated_at && !!additionalAttributes.initiated_at.timestamp && (
+        ) : null}
+        {initiated_at.timestamp ? (
           <ConversationDetailsItem
             title={i18n.t('CONVERSATION_DETAILS.INITIATED_AT')}
-            value={additionalAttributes.initiated_at.timestamp}
+            value={initiated_at.timestamp}
             iconName="clock-outline"
           />
-        )}
+        ) : null}
       </View>
     );
   }
@@ -99,13 +100,12 @@ class ConversationDetailsComponent extends Component {
     const { conversationDetails } = route.params;
     const {
       meta: {
-        sender: { name, thumbnail, email, additional_attributes: senderAdditionalInfo },
+        sender: { name, thumbnail, email, additional_attributes: senderAdditionalInfo = {} },
         channel,
       },
     } = conversationDetails;
-
     return (
-      <SafeAreaView style={style.container}>
+      <ScrollView style={style.container}>
         <HeaderBar showLeftButton onBackPress={this.onBackPress} leftButtonIcon="close-outline" />
         <View style={style.avatarContainer}>
           <UserAvatar
@@ -125,31 +125,25 @@ class ConversationDetailsComponent extends Component {
             <CustomText style={style.emailLabel}>{email}</CustomText>
           </View>
         )}
-        {senderAdditionalInfo &&
-          senderAdditionalInfo.description &&
-          senderAdditionalInfo.description !== '' && (
-            <View style={style.descriptionContainer}>
-              <CustomText style={style.description}>{senderAdditionalInfo.description}</CustomText>
-            </View>
-          )}
-        {senderAdditionalInfo &&
-          senderAdditionalInfo.location &&
-          senderAdditionalInfo.location !== '' && (
-            <View style={style.descriptionContainer}>
-              <CustomText style={style.description}>{senderAdditionalInfo.location}</CustomText>
-            </View>
-          )}
+        {senderAdditionalInfo.description ? (
+          <View style={style.descriptionContainer}>
+            <CustomText style={style.description}>{senderAdditionalInfo.description}</CustomText>
+          </View>
+        ) : null}
+        {senderAdditionalInfo.location ? (
+          <View style={style.descriptionContainer}>
+            <CustomText style={style.description}>{senderAdditionalInfo.location}</CustomText>
+          </View>
+        ) : null}
         <View style={style.separationView} />
         {this.renderAdditionalAttributes()}
-      </SafeAreaView>
+      </ScrollView>
     );
   }
 }
 
 function bindAction(dispatch) {
-  return {
-    onLogOut: () => dispatch(onLogOut()),
-  };
+  return {};
 }
 function mapStateToProps(state) {
   return {

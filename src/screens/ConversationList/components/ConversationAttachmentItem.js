@@ -3,10 +3,10 @@ import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { withStyles, Icon } from '@ui-kitten/components';
 
-import CustomText from './Text';
-import i18n from '../i18n';
+import CustomText from 'components/Text';
+import i18n from 'i18n';
 
-const styles = (theme) => ({
+const styles = theme => ({
   imageView: {
     flex: 1,
     flexDirection: 'row',
@@ -40,11 +40,11 @@ const propTypes = {
   attachment: PropTypes.object,
 };
 
-const ImagePreviewIcon = (style) => {
+const ImagePreviewIcon = style => {
   return <Icon {...style} name="image" />;
 };
 
-const FilePreviewIcon = (style) => {
+const FilePreviewIcon = style => {
   return <Icon {...style} name="file-text" />;
 };
 

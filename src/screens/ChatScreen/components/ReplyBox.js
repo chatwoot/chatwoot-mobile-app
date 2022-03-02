@@ -67,11 +67,11 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
     setMessage(content);
   };
 
-  const onSelectAttachment = ({ attachement }) => {
-    captureEvent({ eventName: 'Attachement selected' });
-    const { fileSize } = attachement;
+  const onSelectAttachment = ({ attachment }) => {
+    captureEvent({ eventName: 'Attachment selected' });
+    const { fileSize } = attachment;
     if (findFileSize(fileSize) <= MAXIMUM_FILE_UPLOAD_SIZE) {
-      setAttachmentDetails(attachement);
+      setAttachmentDetails(attachment);
     } else {
       showToast({ message: i18n.t('CONVERSATION.FILE_SIZE_LIMIT') });
     }

@@ -16,6 +16,7 @@
     "ENTER_URL": "Installations URL",
     "DESCRIPTION": "Wenn Sie eine selbst gehostete Chatwoot-Installation verwenden, geben Sie Ihre Server-URL ein. Andernfalls verwenden Sie app.chatwoot.com.",
     "URL_ERROR": "Geben Sie eine gültige URL ein",
+    "URL_REQUIRED": "URL ist erforderlich",
     "CONNECT": "Verbinden",
     "CHANGE_LANGUAGE": "Sprache ändern",
     "ERROR": "Ungültige Installations URL"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "Sie sind mit {{baseUrl}} verbunden. Melden Sie sich mit Ihrer E-Mail-Adresse und Ihrem Passwort an.",
     "EMAIL": "Email",
     "PASSWORD": "Passwort",
+    "EMAIL_REQUIRED": "E-Mail ist erforderlich",
     "EMAIL_ERROR": "Geben Sie eine gültige Email ein",
+    "PASSWORD_REQUIRED": "Passwort ist erforderlich",
     "PASSWORD_ERROR": "Geben Sie ein gültiges Passwort ein",
     "LOGIN": "Anmelden",
     "FORGOT_PASSWORD": "Passwort vergessen?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Passwort zurücksetzen",
     "HEADER_TITLE": "Passwort zurücksetzen",
     "TITLE": "Passwort vergessen?",
-    "SUB_TITLE": "Keine Sorge! Wir passen auf"
+    "SUB_TITLE": "Keine Sorge! Wir passen auf",
+    "API_SUCCESS": "Der Link zum Zurücksetzen des Passworts wurde an Ihre E-Mail-Adresse gesendet"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Gespräche",
@@ -63,6 +67,7 @@
     "RE_OPEN": "Unterhaltung wieder öffnen",
     "ASSIGN": "Unterhaltung zuweisen",
     "FILE_SIZE_LIMIT": "Datei überschreitet das Limit von 5 MB",
+    "SHARE": "Konversation teilen",
     "CANCEL": "Abbrechen",
     "PRIVATE_MSG_INPUT": "Dies ist nur für Agenten sichtbar",
     "UN_ASSIGN": "Zuweisung entfernen"
@@ -74,7 +79,9 @@
     "OPEN": "Öffnen",
     "RESOLVED": "Gelöst",
     "BOT": "Bot",
-    "SUBMIT": "Senden"
+    "SUBMIT": "Senden",
+    "PENDING": "Ausstehend",
+    "SNOOZED": "Erinnern"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Einstellungen",
@@ -107,6 +114,7 @@
     "CONVERSATION_CREATE_PUSH": "Sende Push-Benachrichtigungen, wenn eine neue Unterhaltung erstellt wird",
     "CONVERSATION_ASSIGNEE_PUSH": "Sende Push-Benachrichtigungen, wenn mir eine Unterhaltung zugewiesen ist",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Sende Push-Benachrichtigungen, wenn eine neue Nachricht in einer zugewiesenen Unterhaltung erstellt wird",
+    "CONVERSATION_MENTION": "Sende Push-Benachrichtigungen, wenn du in einer Unterhaltung erwähnt wirst",
     "CONVERSATION_CREATE_EMAIL": "Sende Push-Benachrichtigungen, wenn eine neue Unterhaltung erstellt wird",
     "CONVERSATION_ASSIGNEE_EMAIL": "Sende Push-Benachrichtigungen, wenn mir eine Unterhaltung zugewiesen ist",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Sende Push-Benachrichtigungen, wenn eine neue Nachricht in einer zugewiesenen Unterhaltung erstellt wird"

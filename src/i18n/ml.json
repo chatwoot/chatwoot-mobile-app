@@ -1,49 +1,53 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "സ്വാഗതം",
   "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
+    "ERROR": "തെറ്റ്",
+    "ERROR_TITLE": "അപ്രതീക്ഷിത തെറ്റ് സംഭവിച്ചു",
+    "REPORT_MESSAGE": "ഞങ്ങൾ ഇത് ഞങ്ങളുടെ ടീമിന് റിപ്പോർട്ട് ചെയ്തിട്ടുണ്ട്! ദയവായി ആപ്പ് അടച്ച് വീണ്ടും ആരംഭിക്കുക!",
     "CLOSE": "അടയ്ക്കുക"
   },
   "FOOTER": {
     "HOME": "ഹോം",
     "CONVERSATION": "സംഭാഷണങ്ങൾ",
-    "NOTIFICATION": "Notifications",
+    "NOTIFICATION": "അറിയിപ്പുകൾ",
     "SETTINGS": "ക്രമീകരണങ്ങൾ"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
-    "URL_ERROR": "Enter a valid URL",
+    "ENTER_URL": "ഇൻസ്റ്റലേഷൻ URL",
+    "DESCRIPTION": "നിങ്ങൾ സ്വയം ഹോസ്റ്റ് ചെയ്‌ത ചാറ്റ്‌വൂട്ട് ഇൻസ്റ്റാളേഷനാണ് ഉപയോഗിക്കുന്നതെങ്കിൽ, നിങ്ങളുടെ സെർവർ URL നൽകുക. അല്ലെങ്കിൽ, app.chatwoot.com ഉപയോഗിക്കുക.",
+    "URL_ERROR": "സാധുവായ ഒരു URL നൽകുക",
+    "URL_REQUIRED": "URL ആവശ്യമാണ്",
     "CONNECT": "ബന്ധിപ്പിക്കുക",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "CHANGE_LANGUAGE": "ഭാഷ മാറ്റുക",
+    "ERROR": "അസാധുവായ ഇൻസ്റ്റാളേഷൻ url"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "നിങ്ങളുടെ അക്കൗണ്ടിൽ ലോഗിൻ ചെയ്യുക",
+    "DESCRIPTION": "നിങ്ങൾ {{baseUrl}}-ലേക്ക് ബന്ധിപ്പിച്ചിരിക്കുന്നു. നിങ്ങളുടെ ഇമെയിൽ വിലാസവും പാസ്‌വേഡും ഉപയോഗിച്ച് ലോഗിൻ ചെയ്യുക.",
     "EMAIL": "ഇമെയിൽ",
     "PASSWORD": "പാസ്‌വേഡ്",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
+    "EMAIL_REQUIRED": "ഇമെയിൽ ആവശ്യമാണ്",
+    "EMAIL_ERROR": "സാധുവായ ഒരു ഇമെയിൽ നൽകുക",
+    "PASSWORD_REQUIRED": "പാസ്‌വേഡ് ആവശ്യമാണ്",
+    "PASSWORD_ERROR": "സാധുവായ ഒരു പാസ്‌വേഡ് നൽകുക",
+    "LOGIN": "സൈൻ ഇൻ",
     "FORGOT_PASSWORD": "നിങ്ങളുടെ പാസ്‌വേഡ് മറന്നോ?",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
+    "RESET_HERE": "ഇവിടെ പുനഃസജ്ജമാക്കുക",
+    "NO_ACCOUNT": "അക്കൗണ്ട് ഇല്ലേ?",
     "CREATE_ACCOUNT": "പുതിയ അക്കൗണ്ട് സൃഷ്ടിക്കുക",
     "SETTINGS": "ക്രമീകരണങ്ങൾ",
-    "CHANGE_LANGUAGE": "Change language",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "CHANGE_LANGUAGE": "ഭാഷ മാറ്റുക",
+    "TERMS": "നിബന്ധനകളും വ്യവസ്ഥകളും",
+    "CHANGE_URL": "URL മാറ്റുക"
   },
   "FORGOT_PASSWORD": {
     "EMAIL": "ദയവായി നിങ്ങളുടെ ഇമെയിൽ നൽകുക",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back"
+    "EMAIL_ERROR": "സാധുവായ ഒരു ഇമെയിൽ നൽകുക",
+    "RESET_HERE": "പാസ്‌വേഡ് പുനഃസജ്ജമാക്കുക",
+    "HEADER_TITLE": "പാസ്‌വേഡ് പുനഃസജ്ജമാക്കുക",
+    "TITLE": "പാസ്സ്‌വേർഡ് മറന്നോ?",
+    "SUB_TITLE": "വിഷമിക്കേണ്ട! ഞങ്ങൾക്ക് നിങ്ങളുടെ പിൻബലം ലഭിച്ചു",
+    "API_SUCCESS": "പാസ്‌വേഡ് പുനഃസജ്ജീകരണ ലിങ്ക് നിങ്ങളുടെ ഇമെയിലിലേക്ക് അയച്ചു"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "സംഭാഷണങ്ങൾ",
@@ -56,43 +60,46 @@
     "DOWNLOAD": "ഡൗൺലോഡ്",
     "TODAY": "ഇന്ന്",
     "YESTERDAY": "ഇന്നലെ",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "RESOLVE": "Resolve conversation",
-    "RE_OPEN": "Reopen conversation",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "TYPE_MESSAGE": "സന്ദേശം ടൈപ്പ് ചെയ്യുക",
+    "TYPING": "ടൈപ്പിംഗ്",
+    "ALL_CONVERSATION_LOADED": "എല്ലാ സംഭാഷണങ്ങളും ലോഡ് ചെയ്തു",
+    "RESOLVE": "സംഭാഷണം പരിഹരിക്കുക",
+    "RE_OPEN": "സംഭാഷണം വീണ്ടും തുറക്കുക",
+    "ASSIGN": "സംഭാഷണം നിയോഗിക്കുക",
+    "FILE_SIZE_LIMIT": "ഫയൽ 5MB അറ്റാച്ച്‌മെന്റ് പരിധി കവിഞ്ഞു",
+    "SHARE": "സംഭാഷണം പങ്കിടുക",
     "CANCEL": "റദ്ദാക്കുക",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "PRIVATE_MSG_INPUT": "ഇത് ഏജന്റുമാർക്ക് മാത്രമേ ദൃശ്യമാകൂ",
+    "UN_ASSIGN": "സംഭാഷണം നിയോഗിക്കാതിരിക്കുക"
   },
   "FILTER": {
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
+    "HEADER_TITLE": "സംഭാഷണ ഫിൽട്ടർ",
+    "CHOOSE_INBOX": "ഇൻബോക്സ് തിരഞ്ഞെടുക്കുക",
+    "CHOOSE_STATUS": "സംഭാഷണ നില",
     "OPEN": "സജീവം",
     "RESOLVED": "പരിഹരിച്ചത്",
     "BOT": "ബോട്ട്",
-    "SUBMIT": "സമർപ്പിക്കുക"
+    "SUBMIT": "സമർപ്പിക്കുക",
+    "PENDING": "തീർപ്പാക്കാത്തത്",
+    "SNOOZED": "സ്‌നൂസ് ചെയ്തു"
   },
   "SETTINGS": {
     "HEADER_TITLE": "ക്രമീകരണങ്ങൾ",
     "AVAILABILITY": "ലഭ്യത",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
+    "NOTIFICATION": "അറിയിപ്പ് മുൻഗണനകൾ",
+    "HELP": "സഹായ പുസ്തകം",
+    "CHAT_WITH_US": "ഞങ്ങളുമായി ചാറ്റ് ചെയ്യുക",
     "LOG_OUT": "ലോഗൗട്ട്",
     "SWITCH_ACCOUNT": "അക്കൗണ്ട് സ്വിച്ചുചെയ്യുക",
-    "CHANGE_LANGUAGE": "Change Language",
+    "CHANGE_LANGUAGE": "ഭാഷ മാറ്റുക",
     "SUBMIT": "സമർപ്പിക്കുക"
   },
   "NOTIFICATION": {
-    "HEADER_TITLE": "Notifications",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
+    "HEADER_TITLE": "അറിയിപ്പുകൾ",
+    "EMPTY": "ഇതുവരെ അറിയിപ്പുകളൊന്നുമില്ല.",
+    "EMPTY_MORE_TEXT": "നിങ്ങൾക്ക് അറിയിപ്പുകൾ ലഭിച്ചുതുടങ്ങിയാൽ, അവ ഇവിടെ ദൃശ്യമാകും.",
+    "ALL_NOTIFICATION_LOADED": "എല്ലാ അറിയിപ്പുകളും ലോഡ് ചെയ്തു",
+    "MARK_ALL": "എല്ലാം വായിച്ചതായി അടയാളപ്പെടുത്തുക",
     "CANCEL": "റദ്ദാക്കുക"
   },
   "AVAILABILITY": {
@@ -101,15 +108,16 @@
     "OFFLINE": "ഓഫ്‌ലൈൻ"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
+    "TITLE": "അറിയിപ്പ് മുൻഗണനകൾ",
     "EMAIL": "ഇമെയിൽ",
-    "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
+    "PUSH": "തള്ളുക",
+    "CONVERSATION_CREATE_PUSH": "ഒരു പുതിയ സംഭാഷണം സൃഷ്‌ടിക്കുമ്പോൾ പുഷ് അറിയിപ്പുകൾ അയയ്‌ക്കുക",
+    "CONVERSATION_ASSIGNEE_PUSH": "ഒരു സംഭാഷണം എനിക്ക് അസൈൻ ചെയ്യുമ്പോൾ പുഷ് അറിയിപ്പുകൾ അയയ്‌ക്കുക",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "നിയുക്ത സംഭാഷണത്തിൽ ഒരു പുതിയ സന്ദേശം സൃഷ്‌ടിക്കുമ്പോൾ പുഷ് അറിയിപ്പുകൾ അയയ്‌ക്കുക",
+    "CONVERSATION_MENTION": "ഒരു സംഭാഷണത്തിൽ നിങ്ങളെ പരാമർശിക്കുമ്പോൾ പുഷ് അറിയിപ്പുകൾ അയയ്‌ക്കുക",
     "CONVERSATION_CREATE_EMAIL": "ഒരു പുതിയ സംഭാഷണം സൃഷ്ടിക്കുമ്പോൾ ഇമെയിൽ അറിയിപ്പുകൾ അയയ്ക്കുക",
     "CONVERSATION_ASSIGNEE_EMAIL": "ഒരു സംഭാഷണം എനിക്ക് നിയോഗിക്കുമ്പോൾ ഇമെയിൽ അറിയിപ്പുകൾ അയയ്‌ക്കുക",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "നിയുക്ത സംഭാഷണത്തിൽ ഒരു പുതിയ സന്ദേശം സൃഷ്ടിക്കുമ്പോൾ ഇമെയിൽ അറിയിപ്പുകൾ അയയ്ക്കുക"
   },
   "CONVERSATION_DETAILS": {
     "BROWSER": "ബ്രൗസർ",
@@ -125,23 +133,23 @@
   },
   "ERRORS": {
     "COMMON_ERROR": "വൂട്ട് സെർവറിലേക്ക് കണക്റ്റുചെയ്യാനായില്ല, ദയവായി പിന്നീട് വീണ്ടും ശ്രമിക്കുക",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "OfFLINE": "വീണ്ടും ഓൺലൈനാകാൻ നിങ്ങൾ വൈഫൈയിലേക്കോ സെല്ലുലാർ നെറ്റ്‌വർക്കിലേക്കോ കണക്‌റ്റ് ചെയ്യണം",
+    "CANNOT_FETCH": "വിവരങ്ങൾ ലഭ്യമാക്കുന്നതിൽ ഒരു തെറ്റുണ്ടായി, ദയവായി വീണ്ടും ശ്രമിക്കുക",
     "AUTH": "ഉപയോക്തൃനാമം / പാസ്‌വേഡ് തെറ്റാണ്. ദയവായി വീണ്ടും ശ്രമിക്കുക",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "NO_ACCOUNTS_MESSAGE": "നിങ്ങൾക്ക് ഒരു ചാറ്റ്‌വൂട്ട് അക്കൗണ്ടുകളിലേക്കും ആക്‌സസ് ഇല്ല"
   },
   "SUCCESS": {
     "AUTH": "ലോഗിൻ വിജയകരം"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "ഒരു സംഭാഷണത്തിൽ നിങ്ങളെ പരാമർശിക്കുമ്പോൾ പുഷ് അറിയിപ്പുകൾ അയക്കുക",
+    "WARNING_FOR_AGENT": "നിങ്ങളുടെ മൊബൈൽ ആപ്പിനായി നിങ്ങൾ പിന്തുണയ്ക്കാത്ത Chatwoot സെർവർ ഉപയോഗിക്കുന്നതായി തോന്നുന്നു. നിങ്ങളുടെ Chatwoot സെർവർ അപ്‌ഗ്രേഡ് ചെയ്യാൻ നിങ്ങളുടെ അഡ്മിനെ ബന്ധപ്പെടുക.",
+    "WARNING_FOR_ADMIN": "നിങ്ങളുടെ മൊബൈൽ ആപ്പിനായി നിങ്ങൾ പിന്തുണയ്ക്കാത്ത Chatwoot സെർവർ ഉപയോഗിക്കുന്നതായി തോന്നുന്നു. സെർവർ പതിപ്പ് %{minimumVersion} അല്ലെങ്കിൽ അതിന് ശേഷമുള്ള പതിപ്പിലേക്ക് അപ്‌ഗ്രേഡ് ചെയ്യേണ്ടതുണ്ട്."
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
+    "TITLE": "പുറത്ത്",
+    "SUBTITLE": "നിങ്ങള് പുറത്തു പോകുകയാണ് എന്ന് ഉറപ്പാണോ?",
     "CANCEL": "റദ്ദാക്കുക",
-    "OK": "Ok"
+    "OK": "ശരി"
   }
 }

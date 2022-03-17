@@ -16,6 +16,7 @@
     "ENTER_URL": "Installation URL",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Enter a valid URL",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "接続",
     "CHANGE_LANGUAGE": "Change language",
     "ERROR": "Invalid installation url"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "Eメール",
     "PASSWORD": "パスワード",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Enter a valid email",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Enter a valid password",
     "LOGIN": "Sign In",
     "FORGOT_PASSWORD": "パスワードをお忘れですか?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Reset password",
     "HEADER_TITLE": "Reset password",
     "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back"
+    "SUB_TITLE": "Don't worry! We got your back",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "会話データ",
@@ -63,6 +67,7 @@
     "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "SHARE": "Share conversation",
     "CANCEL": "キャンセル",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"
@@ -74,7 +79,9 @@
     "OPEN": "開く",
     "RESOLVED": "解決済み",
     "BOT": "Bot",
-    "SUBMIT": "送信"
+    "SUBMIT": "送信",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "設定",
@@ -107,6 +114,7 @@
     "CONVERSATION_CREATE_PUSH": "新しい会話が作成されたときにプッシュ通知を送信する",
     "CONVERSATION_ASSIGNEE_PUSH": "会話が自分に割り当てられたときにプッシュ通知を送信する",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "割り当てられた会話で新しいメッセージが作成されたときにプッシュ通知を送信する",
+    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
     "CONVERSATION_CREATE_EMAIL": "新しい会話が作成されたときにメールで通知を送信する",
     "CONVERSATION_ASSIGNEE_EMAIL": "会話が自分に割り当てられたときにメールで通知を送信する",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "割り当てられた会話で新しいメッセージが作成されたときにメールで通知を送信します"

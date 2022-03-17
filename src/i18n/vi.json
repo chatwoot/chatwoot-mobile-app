@@ -147,8 +147,8 @@
     "WARNING_FOR_ADMIN": "Có vẻ như bạn đang dùng máy chủ Chatwoot không hỗ trợ ứng dụng di động. Cần nâng cấp máy chủ lên phiên bản %{minimumVersion} hoặc lớn hơn."
   },
   "EXIT": {
-    "TITLE": "Thoát",
-    "SUBTITLE": "Bạn có chắc muốn thoát?",
+    "TITLE": "Lối ra",
+    "SUBTITLE": "Khỏi bạn chắc chắn bạn muốn bỏ thuốc lá?",
     "CANCEL": "Huỷ",
     "OK": "Có"
   }

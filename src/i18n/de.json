@@ -65,7 +65,7 @@
     "ALL_CONVERSATION_LOADED": "Alle Unterhaltungen geladen",
     "RESOLVE": "Unterhaltung lösen",
     "RE_OPEN": "Unterhaltung wieder öffnen",
-    "ASSIGN": "Unterhaltung zuweisen",
+    "ASSIGN": "Konversation zuweisen",
     "FILE_SIZE_LIMIT": "Datei überschreitet das Limit von 5 MB",
     "SHARE": "Konversation teilen",
     "CANCEL": "Abbrechen",
@@ -88,7 +88,7 @@
     "AVAILABILITY": "Verfügbarkeit",
     "NOTIFICATION": "Benachrichtigungs-Einstellungen",
     "HELP": "Hilfe Dokumente",
-    "CHAT_WITH_US": "Chatte mit uns",
+    "CHAT_WITH_US": "Chatten Sie mit uns",
     "LOG_OUT": "Abmelden",
     "SWITCH_ACCOUNT": "Konto wechseln",
     "CHANGE_LANGUAGE": "Sprache ändern",
@@ -114,7 +114,7 @@
     "CONVERSATION_CREATE_PUSH": "Sende Push-Benachrichtigungen, wenn eine neue Unterhaltung erstellt wird",
     "CONVERSATION_ASSIGNEE_PUSH": "Sende Push-Benachrichtigungen, wenn mir eine Unterhaltung zugewiesen ist",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Sende Push-Benachrichtigungen, wenn eine neue Nachricht in einer zugewiesenen Unterhaltung erstellt wird",
-    "CONVERSATION_MENTION": "Sende Push-Benachrichtigungen, wenn du in einer Unterhaltung erwähnt wirst",
+    "CONVERSATION_MENTION": "Senden Sie Push-Benachrichtigungen, wenn Sie in einer Konversation erwähnt werden",
     "CONVERSATION_CREATE_EMAIL": "Sende Push-Benachrichtigungen, wenn eine neue Unterhaltung erstellt wird",
     "CONVERSATION_ASSIGNEE_EMAIL": "Sende Push-Benachrichtigungen, wenn mir eine Unterhaltung zugewiesen ist",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Sende Push-Benachrichtigungen, wenn eine neue Nachricht in einer zugewiesenen Unterhaltung erstellt wird"
@@ -143,8 +143,8 @@
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server-Upgrade erforderlich",
-    "WARNING_FOR_AGENT": "Es scheint, als ob Sie einen nicht unterstützten Chatwoot-Server für Ihre mobile App verwenden. Bitte kontaktieren Sie Ihren Administrator, um Ihren Chatwoot-Server zu aktualisieren.",
-    "WARNING_FOR_ADMIN": "Es scheint, als ob Sie den nicht unterstützten Chatwoot-Server für Ihre mobile App verwenden. Ein Upgrade auf die Serverversion %{minimumVersion} oder höher ist erforderlich."
+    "WARNING_FOR_AGENT": "Anscheinend verwenden Sie einen nicht unterstützten Chatwoot-Server für Ihre mobile App. Bitte wenden Sie sich an Ihren Administrator, um Ihren Chatwoot-Server zu aktualisieren.",
+    "WARNING_FOR_ADMIN": "Anscheinend verwenden Sie einen nicht unterstützten Chatwoot-Server für Ihre mobile App. Ein Upgrade auf die Serverversion %{minimumVersion} oder höher ist erforderlich."
   },
   "EXIT": {
     "TITLE": "Beenden",

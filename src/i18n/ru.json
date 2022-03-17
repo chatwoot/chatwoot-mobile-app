@@ -16,6 +16,7 @@
     "ENTER_URL": "URL установки",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Введите правильный URL",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Подключиться",
     "CHANGE_LANGUAGE": "Изменить язык",
     "ERROR": "Invalid installation url"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "Почта",
     "PASSWORD": "Пароль",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Введите правильный email",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Введите корректный пароль",
     "LOGIN": "Войти",
     "FORGOT_PASSWORD": "Забыли пароль?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Сбросить пароль",
     "HEADER_TITLE": "Сбросить пароль",
     "TITLE": "Забыли пароль?",
-    "SUB_TITLE": "Не волнуйтесь! Все нормально"
+    "SUB_TITLE": "Не волнуйтесь! Все нормально",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Разговоры",
@@ -63,6 +67,7 @@
     "RE_OPEN": "Переоткрыть разговор",
     "ASSIGN": "Назначить ответсвенного",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "SHARE": "Share conversation",
     "CANCEL": "Отмена",
     "PRIVATE_MSG_INPUT": "Это будет видно только сотрудникам",
     "UN_ASSIGN": "Unassign conversation"
@@ -74,7 +79,9 @@
     "OPEN": "Открытые",
     "RESOLVED": "Закрыт",
     "BOT": "Бот",
-    "SUBMIT": "Отправить"
+    "SUBMIT": "Отправить",
+    "PENDING": "В ожидании",
+    "SNOOZED": "Отложено"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Настройки",
@@ -107,6 +114,7 @@
     "CONVERSATION_CREATE_PUSH": "Отправлять push уведомление, когда новый диалог создан",
     "CONVERSATION_ASSIGNEE_PUSH": "Отправлять push уведомление при назначении мне диалога",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Отправлять push уведомления при создании нового сообщения в назначенном диалоге",
+    "CONVERSATION_MENTION": "Отправлять уведомления при упоминании в разговоре",
     "CONVERSATION_CREATE_EMAIL": "Отправлять email уведомление, когда новый диалог создан",
     "CONVERSATION_ASSIGNEE_EMAIL": "Отправлять email уведомление, когда мне назначен диалог",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Отправлять email уведомления при создании нового сообщения в назначенном диалоге"

@@ -16,7 +16,7 @@
     "ENTER_URL": "URL de instalación",
     "DESCRIPTION": "Si estás usando una instalación de Chatwoot autoalojada, introduce la URL de tu servidor. De lo contrario, usa app.chatwoot.com.",
     "URL_ERROR": "Introduzca una URL válida",
-    "URL_REQUIRED": "URL is required",
+    "URL_REQUIRED": "La URL es requerida",
     "CONNECT": "Conectar",
     "CHANGE_LANGUAGE": "Cambiar idioma",
     "ERROR": "Url de instalación inválida"
@@ -26,9 +26,9 @@
     "DESCRIPTION": "Estás conectado a {{baseUrl}}. Inicia sesión con tu dirección de correo electrónico y contraseña.",
     "EMAIL": "Email",
     "PASSWORD": "Contraseña",
-    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_REQUIRED": "El Email es requerido",
     "EMAIL_ERROR": "Introduce un email válido",
-    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_REQUIRED": "Contraseña requerida",
     "PASSWORD_ERROR": "Introduce una contraseña válida",
     "LOGIN": "Iniciar sesión",
     "FORGOT_PASSWORD": "¿Olvidaste tu contraseña?",
@@ -47,7 +47,7 @@
     "HEADER_TITLE": "Restablecer contraseña",
     "TITLE": "¿Olvidaste tu contraseña?",
     "SUB_TITLE": "¡No te preocupes! Te cubrimos las espaldas",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "API_SUCCESS": "El enlace para restablecer la contraseña ha sido enviado a tu correo electrónico"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversaciones",
@@ -67,7 +67,7 @@
     "RE_OPEN": "Resolver conversación",
     "ASSIGN": "Asignar conversación",
     "FILE_SIZE_LIMIT": "El archivo supera el límite de 5MB de archivos adjuntos",
-    "SHARE": "Share conversation",
+    "SHARE": "Compartir la conversación",
     "CANCEL": "Cancelar",
     "PRIVATE_MSG_INPUT": "Esto será visible sólo para los agentes",
     "UN_ASSIGN": "Desasignar conversación"

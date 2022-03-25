@@ -14,18 +14,21 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Lien d'installation",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "Si vous utilisez une installation de Chatwoot auto-hébergée, saisissez l'URL de votre serveur. Sinon, utilisez app.chatwoot.com.",
     "URL_ERROR": "Saisissez une URL valide",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Connexion",
     "CHANGE_LANGUAGE": "Modifier la langue",
     "ERROR": "Lien d'installation invalide"
   },
   "LOGIN": {
     "TITLE": "Connectez-vous à votre compte",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "DESCRIPTION": "Vous êtes connecté à {{baseUrl}}. Connectez-vous avec votre adresse e-mail et votre mot de passe.",
     "EMAIL": "Courriel",
     "PASSWORD": "Mot de passe",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Saisissez une adresse de courriel valide",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Saisissez un mot de passe valide",
     "LOGIN": "Se connecter",
     "FORGOT_PASSWORD": "Mot de passe oublié ?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Réinitialiser le mot de passe",
     "HEADER_TITLE": "Réinitialiser le mot de passe",
     "TITLE": "Mot de passe oublié ?",
-    "SUB_TITLE": "Ne vous inquiétes pas ! Nous avons récupéré"
+    "SUB_TITLE": "Ne vous inquiétes pas ! Nous avons récupéré",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversations",
@@ -63,6 +67,7 @@
     "RE_OPEN": "Reprendre la conversation",
     "ASSIGN": "Affecter une conversation",
     "FILE_SIZE_LIMIT": "Le fichier dépasse la limite de 5 Mo des pièces jointes",
+    "SHARE": "Share conversation",
     "CANCEL": "Annuler",
     "PRIVATE_MSG_INPUT": "Ceci ne sera visible qu'aux Agents",
     "UN_ASSIGN": "Retirer la conversation"
@@ -74,7 +79,9 @@
     "OPEN": "Ouverte",
     "RESOLVED": "Résolue",
     "BOT": "Bot",
-    "SUBMIT": "Envoyer"
+    "SUBMIT": "Envoyer",
+    "PENDING": "En attente",
+    "SNOOZED": "Reporté"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Paramètres",
@@ -107,6 +114,7 @@
     "CONVERSATION_CREATE_PUSH": "Envoyer une notifications lors de la création d'une conversation",
     "CONVERSATION_ASSIGNEE_PUSH": "Envoyer une notification lors qu'une discussion m'est assignée",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Envoyer une notification lors de la réception d'un message dans une discussion m'étant assignée",
+    "CONVERSATION_MENTION": "Envoyer des notifications push lorsque vous êtes mentionné dans une conversation",
     "CONVERSATION_CREATE_EMAIL": "Envoyer une notification par e-mail lors de la création d'une conversation",
     "CONVERSATION_ASSIGNEE_EMAIL": "Envoyer une notification par e-mail lors qu'une discussion m'est assignée",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Envoyer une notification par e-mail lors de la réception d'un message dans une discussion qui m'est assignée"
@@ -134,9 +142,9 @@
     "AUTH": "Connexion réussie"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "Mise à jour du serveur requise",
+    "WARNING_FOR_AGENT": "Il semble que vous utilisez un serveur Chatwoot non pris en charge pour votre application mobile. Veuillez contacter votre administrateur pour mettre à jour votre serveur Chatwoot.",
+    "WARNING_FOR_ADMIN": "Il semble que vous utilisez un serveur Chatwoot non pris en charge pour votre application mobile. La mise à jour vers la version %{minimumVersion} du serveur ou ultérieure est requise."
   },
   "EXIT": {
     "TITLE": "Quitter",

@@ -16,6 +16,7 @@
     "ENTER_URL": "Kurulum URL'si",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Geçerli bir URL girin",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Bağlan",
     "CHANGE_LANGUAGE": "Dili değiştir",
     "ERROR": "Geçersiz yükleme url'si"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "E-posta",
     "PASSWORD": "Parola",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Geçerli bir e-posta giriniz",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Geçerli bir parola girin",
     "LOGIN": "Oturum aç",
     "FORGOT_PASSWORD": "Parolanızı mı unuttunuz?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Parola yenile",
     "HEADER_TITLE": "Parola yenile",
     "TITLE": "Parolanızı mı unuttunuz?",
-    "SUB_TITLE": "Merak etmeyin! Arkanı kolluyoruz"
+    "SUB_TITLE": "Merak etmeyin! Arkanı kolluyoruz",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Konuşmalar",
@@ -63,6 +67,7 @@
     "RE_OPEN": "Görüşmeyi yeniden açın",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "SHARE": "Share conversation",
     "CANCEL": "İptal et",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"
@@ -74,7 +79,9 @@
     "OPEN": "Açık",
     "RESOLVED": "Çözüldü",
     "BOT": "Bot",
-    "SUBMIT": "Yolla"
+    "SUBMIT": "Yolla",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Ayarlar",
@@ -107,6 +114,7 @@
     "CONVERSATION_CREATE_PUSH": "Yeni bir görüşme oluşturulduğunda anlık bildirimler gönderin",
     "CONVERSATION_ASSIGNEE_PUSH": "Bana bir konuşma atandığında anında bildirim gönder",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Atanan bir görüşmede yeni bir mesaj oluşturulduğunda anlık bildirimler gönderin",
+    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
     "CONVERSATION_CREATE_EMAIL": "Yeni bir görüşme oluşturulduğunda e-posta bildirimleri gönderin",
     "CONVERSATION_ASSIGNEE_EMAIL": "Bana bir konuşma atandığında e-posta bildirimleri gönder",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Atanmış bir görüşmede yeni bir mesaj oluşturulduğunda e-posta bildirimleri gönderin"

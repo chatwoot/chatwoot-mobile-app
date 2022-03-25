@@ -16,6 +16,7 @@
     "ENTER_URL": "Asennuksen URL",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Anna kelvollinen URL-osoite",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Yhdistä",
     "CHANGE_LANGUAGE": "Vaihda kieli",
     "ERROR": "Virheellinen asennusosoite"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "Sähköposti",
     "PASSWORD": "Salasana",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Syötä kelvollinen sähköpostiosoite",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Anna kelvollinen salasana",
     "LOGIN": "Kirjaudu sisään",
     "FORGOT_PASSWORD": "Salasana unohtunut?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Nollaa salasana",
     "HEADER_TITLE": "Nollaa salasana",
     "TITLE": "Salasana unohtunut?",
-    "SUB_TITLE": "Älä huoli! Takaamme selustasi."
+    "SUB_TITLE": "Älä huoli! Takaamme selustasi.",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Keskustelut",
@@ -63,6 +67,7 @@
     "RE_OPEN": "Avaa keskustelu uudelleen",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "SHARE": "Share conversation",
     "CANCEL": "Peruuta",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"
@@ -74,7 +79,9 @@
     "OPEN": "Avaa",
     "RESOLVED": "Ratkaistu",
     "BOT": "Botti",
-    "SUBMIT": "Lähetä"
+    "SUBMIT": "Lähetä",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Asetukset",
@@ -107,6 +114,7 @@
     "CONVERSATION_CREATE_PUSH": "Lähetä push-ilmoitukset kun uusi keskustelu on luotu",
     "CONVERSATION_ASSIGNEE_PUSH": "Lähetä push-ilmoitus, kun keskustelu on määritetty minulle",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Lähetä push-ilmoitus, kun uusi viesti on luotu määritettyyn keskusteluun",
+    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
     "CONVERSATION_CREATE_EMAIL": "Lähetä sähköposti-ilmoitus, kun uusi keskustelu luodaan",
     "CONVERSATION_ASSIGNEE_EMAIL": "Lähetä sähköposti-ilmoitus, kun keskustelu on määritetty minulle",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Lähetä sähköposti-ilmoitus, kun uusi viesti on luotu määritetyssä keskustelussa"

@@ -16,6 +16,7 @@
     "ENTER_URL": "رابط التثبيت",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "الرجاء إدخال عنوان صحيح",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "اتصل",
     "CHANGE_LANGUAGE": "تغيير اللغة",
     "ERROR": "رابط التثبيت غير صحيح"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "البريد الإلكتروني",
     "PASSWORD": "كلمة المرور",
+    "EMAIL_REQUIRED": "الايميل مطلوب",
     "EMAIL_ERROR": "أدخل بريد إلكتروني صحيح",
+    "PASSWORD_REQUIRED": "كلمة المرور مطلوبة",
     "PASSWORD_ERROR": "أدخل كلمة مرور صالحة",
     "LOGIN": "تسجيل الدخول",
     "FORGOT_PASSWORD": "نسيت كلمة المرور؟",
@@ -43,7 +46,8 @@
     "RESET_HERE": "إعادة تعيين كلمة المرور",
     "HEADER_TITLE": "إعادة تعيين كلمة المرور",
     "TITLE": "هل نسيت كلمة المرور؟",
-    "SUB_TITLE": "لاتقلق، سنهتم بذلك"
+    "SUB_TITLE": "لاتقلق، سنهتم بذلك",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "المحادثات",
@@ -63,6 +67,7 @@
     "RE_OPEN": "إعادة فتح المحادثة",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "SHARE": "Share conversation",
     "CANCEL": "إلغاء",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"
@@ -74,14 +79,16 @@
     "OPEN": "فتح",
     "RESOLVED": "إغلاق",
     "BOT": "الروبوت",
-    "SUBMIT": "إرسال"
+    "SUBMIT": "إرسال",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "الإعدادات",
     "AVAILABILITY": "التوفر",
     "NOTIFICATION": "تفضيلات الإشعارات",
     "HELP": "وثائق المساعدة",
-    "CHAT_WITH_US": "Chat with Us",
+    "CHAT_WITH_US": "تواصل معنا",
     "LOG_OUT": "تسجيل الخروج",
     "SWITCH_ACCOUNT": "تبديل الحساب",
     "CHANGE_LANGUAGE": "تغيير اللغة",
@@ -107,6 +114,7 @@
     "CONVERSATION_CREATE_PUSH": "إرسال إشعارات عند إنشاء محادثة جديدة",
     "CONVERSATION_ASSIGNEE_PUSH": "إرسال إشعارات عند تعيين محادثة لي",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "إرسال إشعارات التنية عند إنشاء رسالة جديدة في محادثة موكلة",
+    "CONVERSATION_MENTION": "إرسال إشعارات بالبريد الإلكتروني عندما يتم ذكرك او الاشارة اليك في محادثة",
     "CONVERSATION_CREATE_EMAIL": "إرسال إشعار بالبريد الإلكتروني عند إنشاء محادثة جديدة",
     "CONVERSATION_ASSIGNEE_EMAIL": "إرسال إشعار بالبريد الإلكتروني عند تعيين محادثة لي",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "إرسال إشعارات البريد الإلكتروني عند إنشاء رسالة جديدة في محادثة موكلة"

@@ -16,6 +16,7 @@
     "ENTER_URL": "Installációs URL",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Kérjük helyes URL-t adj meg",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Kapcsolódás",
     "CHANGE_LANGUAGE": "Nyelvválasztás",
     "ERROR": "Helytelen installációs Url"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "E-mail",
     "PASSWORD": "Jelszó",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Kérjük helyes E-mailt adj meg",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Kérjük helyes jelszót adj meg",
     "LOGIN": "Belépés",
     "FORGOT_PASSWORD": "Elfelejtetted a jelszavad?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Jelszó megváltoztatása",
     "HEADER_TITLE": "Jelszó megváltoztatása",
     "TITLE": "Elfelejtetted a jelszavad?",
-    "SUB_TITLE": "Ne aggódj, segítünk"
+    "SUB_TITLE": "Ne aggódj, segítünk",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Beszélgetések",
@@ -63,6 +67,7 @@
     "RE_OPEN": "Beszélgetés újranyitása",
     "ASSIGN": "Beszélgetés hozzárendelése",
     "FILE_SIZE_LIMIT": "A file nagyobb az 5MB-os limitnél",
+    "SHARE": "Share conversation",
     "CANCEL": "Mégse",
     "PRIVATE_MSG_INPUT": "Ezt csak ügynökök láthatják",
     "UN_ASSIGN": "Beszélgetés hozzárendelés törlése"
@@ -74,7 +79,9 @@
     "OPEN": "Megnyitva",
     "RESOLVED": "Megoldva",
     "BOT": "Bot",
-    "SUBMIT": "Elküld"
+    "SUBMIT": "Elküld",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Beállítások",
@@ -107,6 +114,7 @@
     "CONVERSATION_CREATE_PUSH": "Kapj push értesítéseket amikor egy új beszélgetés létrejön",
     "CONVERSATION_ASSIGNEE_PUSH": "Kapj push értesítéseket amikor hozzád rendelnek egy beszélgetést",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Kapj push értesítést amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben",
+    "CONVERSATION_MENTION": "Küldj push üzeneteket, amikor egy beszélgetésben megemlítenek",
     "CONVERSATION_CREATE_EMAIL": "Kapj e-mailt amikor egy új beszélgetés létrejön",
     "CONVERSATION_ASSIGNEE_EMAIL": "Kapj e-mailt amikor hozzád rendelnek egy beszélgetést",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Kapj e-mailt amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben"

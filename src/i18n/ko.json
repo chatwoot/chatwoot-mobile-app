@@ -16,6 +16,7 @@
     "ENTER_URL": "Installation URL",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Enter a valid URL",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "연결",
     "CHANGE_LANGUAGE": "Change language",
     "ERROR": "Invalid installation url"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "이메일",
     "PASSWORD": "비밀번호",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Enter a valid email",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Enter a valid password",
     "LOGIN": "Sign In",
     "FORGOT_PASSWORD": "암호를 잊으셨나요?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Reset password",
     "HEADER_TITLE": "Reset password",
     "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back"
+    "SUB_TITLE": "Don't worry! We got your back",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "대화",
@@ -63,6 +67,7 @@
     "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "SHARE": "Share conversation",
     "CANCEL": "취소",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"
@@ -74,7 +79,9 @@
     "OPEN": "열기",
     "RESOLVED": "해결됨",
     "BOT": "봇",
-    "SUBMIT": "보내기"
+    "SUBMIT": "보내기",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "설정",
@@ -107,6 +114,7 @@
     "CONVERSATION_CREATE_PUSH": "새 대화가 만들어질 때 푸시 알림 보내기",
     "CONVERSATION_ASSIGNEE_PUSH": "대화가 할당되면 푸시 알림 보내기",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "할당된 대화에서 새 메시지가 생성될 때 푸시 알림 보내기",
+    "CONVERSATION_MENTION": "대화에서 멘션될 때 푸시 알림 보내기",
     "CONVERSATION_CREATE_EMAIL": "새 대화가 생성될 때 이메일 알림 보내기",
     "CONVERSATION_ASSIGNEE_EMAIL": "대화가 할당될 때 이메일 알림 보내기",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "할당된 대화에서 새 메시지가 생성될 때 이메일 알림 보내기"

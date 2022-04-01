@@ -1,49 +1,53 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "Chào mừng",
   "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
+    "ERROR": "Lỗi",
+    "ERROR_TITLE": "Đã xảy ra lỗi không mong muốn",
+    "REPORT_MESSAGE": "Chúng tôi đã báo cáo điều này cho nhóm của chúng tôi! Vui lòng đóng ứng dụng và bắt đầu lại!",
     "CLOSE": "Đóng"
   },
   "FOOTER": {
     "HOME": "Trang Chủ",
     "CONVERSATION": "Các cuộc hội thoại",
-    "NOTIFICATION": "Notifications",
+    "NOTIFICATION": "Thông báo",
     "SETTINGS": "Cài đặt"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
-    "URL_ERROR": "Enter a valid URL",
+    "ENTER_URL": "URL cài đặt",
+    "DESCRIPTION": "Nếu bạn đang dùng Chatwoot tự chủ, điền URL máy chủ của bạn. Nếu không, dùng app.chatwoot.com.",
+    "URL_ERROR": "Điền URL hợp lệ",
+    "URL_REQUIRED": "URL bắt buộc có",
     "CONNECT": "Kết nối",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "CHANGE_LANGUAGE": "Thay đổi ngôn ngữ",
+    "ERROR": "Url cài đặt không hợp lệ"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "Đăng nhập vào tài khoản của bạn",
+    "DESCRIPTION": "Bạn được kết nối đến {{baseUrl}}. \bĐăng nhập với địa chỉ email và mật khẩu.",
     "EMAIL": "Email",
     "PASSWORD": "Mật khẩu",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
+    "EMAIL_REQUIRED": "Email bắt buộc có",
+    "EMAIL_ERROR": "Điền email hợp lệ",
+    "PASSWORD_REQUIRED": "Mật khẩu bắt buộc có",
+    "PASSWORD_ERROR": "Điền password hợp lệ",
+    "LOGIN": "Đăng nhập",
     "FORGOT_PASSWORD": "Quên mật khẩu?",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
+    "RESET_HERE": "Đặt lại ở đây",
+    "NO_ACCOUNT": "Không có tài khoản?",
     "CREATE_ACCOUNT": "Tạo mới tài khoản",
     "SETTINGS": "Cài đặt",
-    "CHANGE_LANGUAGE": "Change language",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "CHANGE_LANGUAGE": "Thay đổi ngôn ngữ",
+    "TERMS": "Điều khoản và điều kiện",
+    "CHANGE_URL": "Thay đổi URL"
   },
   "FORGOT_PASSWORD": {
     "EMAIL": "Vui lòng nhập email",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back"
+    "EMAIL_ERROR": "Điền email hợp lệ",
+    "RESET_HERE": "Đặt lại mật khẩu",
+    "HEADER_TITLE": "Đặt lại mật khẩu",
+    "TITLE": "Quên mật khẩu?",
+    "SUB_TITLE": "Đừng lo! Chúng tôi sẽ canh chừng cho bạn",
+    "API_SUCCESS": "Liên kết đặt lại mật khẩu đã được gửi đến địa chỉ email của bạn"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Các cuộc hội thoại",
@@ -56,43 +60,46 @@
     "DOWNLOAD": "Tải xuống",
     "TODAY": "Hôm nay",
     "YESTERDAY": "Hôm qua",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "RESOLVE": "Resolve conversation",
-    "RE_OPEN": "Reopen conversation",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "TYPE_MESSAGE": "Gõ tin nhắn",
+    "TYPING": "đang gõ",
+    "ALL_CONVERSATION_LOADED": "Tất cả các cuộc trò chuyện đã được tải",
+    "RESOLVE": "Giải quyết cuộc trò chuyện",
+    "RE_OPEN": "Mở lại cuộc trò chuyện",
+    "ASSIGN": "Phân công cuộc trò chuyện",
+    "FILE_SIZE_LIMIT": "File vượt quá giới hạn tối đa 5MB",
+    "SHARE": "Chia sẻ cuộc trò chuyện",
     "CANCEL": "Huỷ",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "PRIVATE_MSG_INPUT": "Chỉ hiện cho nhà cung cấp",
+    "UN_ASSIGN": "Bỏ phân công cuộc trò chuyện"
   },
   "FILTER": {
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
+    "HEADER_TITLE": "Bộ lọc Cuộc trò chuyện",
+    "CHOOSE_INBOX": "Chọn Hộp thư đến",
+    "CHOOSE_STATUS": "Trạng thái cuộc trò chuyện",
     "OPEN": "Mở",
     "RESOLVED": "Đã được giải quyết",
     "BOT": "Bot",
-    "SUBMIT": "Gửi"
+    "SUBMIT": "Gửi",
+    "PENDING": "Chờ giải quyết",
+    "SNOOZED": "Tạm dừng"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Cài đặt",
     "AVAILABILITY": "Khả dụng",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
+    "NOTIFICATION": "Tuỳ chọn thông báo",
+    "HELP": "Tài liệu trợ giúp",
+    "CHAT_WITH_US": "Trò chuyện với Chúng tôi",
     "LOG_OUT": "Đăng xuất",
     "SWITCH_ACCOUNT": "Chuyển tài khoản",
-    "CHANGE_LANGUAGE": "Change Language",
+    "CHANGE_LANGUAGE": "Thay đổi ngôn ngữ",
     "SUBMIT": "Gửi"
   },
   "NOTIFICATION": {
-    "HEADER_TITLE": "Notifications",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
+    "HEADER_TITLE": "Thông báo",
+    "EMPTY": "Không có thông báo.",
+    "EMPTY_MORE_TEXT": "Khi bạn bắt đầu nhận được thông báo, chúng sẽ xuất hiện ở đây.",
+    "ALL_NOTIFICATION_LOADED": "Tất cả thông báo đã được tải",
+    "MARK_ALL": "Đánh dấu tất cả đã đọc",
     "CANCEL": "Huỷ"
   },
   "AVAILABILITY": {
@@ -101,15 +108,16 @@
     "OFFLINE": "Không Trực Tuyến"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
+    "TITLE": "Tuỳ chọn thông báo",
     "EMAIL": "Email",
-    "PUSH": "Push",
+    "PUSH": "Đẩy",
     "CONVERSATION_CREATE_PUSH": "Gửi thông báo khi cuộc trò chuyện mới được tạo",
     "CONVERSATION_ASSIGNEE_PUSH": "Gửi thông báo khi cuộc trò chuyện được chỉ định cho tôi",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Gửi thông báo đẩy khi có một tin nhắn mới được tạo trong cuộc trò chuyện được phân công",
+    "CONVERSATION_MENTION": "Gửi thông báo đẩy khi bạn được nhắc đến trong 1 cuộc trò chuyện",
     "CONVERSATION_CREATE_EMAIL": "Gửi thông báo qua email khi cuộc trò chuyện mới được tạo",
     "CONVERSATION_ASSIGNEE_EMAIL": "Gửi thông báo qua email khi cuộc trò chuyện được chỉ định cho tôi",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Gửi thông báo email khi có một tin nhắn mới được tạo trong cuộc trò chuyện được phân công"
   },
   "CONVERSATION_DETAILS": {
     "BROWSER": "Trình duyệt",
@@ -121,27 +129,27 @@
     "TITLE": "Hành động"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Chọn đại lý"
   },
   "ERRORS": {
     "COMMON_ERROR": "Không thể kết nối với Máy chủ Woot, Vui lòng thử lại sau",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "OfFLINE": "Bạn phải kết nối với Wi-fi hoặc mạng di động để trực tuyến trở lại",
+    "CANNOT_FETCH": "Đã xảy ra lỗi khi lấy thông tin, vui lòng thử lại",
     "AUTH": "Tài khoản/Mật khẩu không đúng. Vui lòng thử lại",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "NO_ACCOUNTS_MESSAGE": "Bạn không có quyền truy cập vào bất kỳ tài khoản chatwoot nào"
   },
   "SUCCESS": {
     "AUTH": "Đăng nhập thành công"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "Cần nâng cấp máy chủ",
+    "WARNING_FOR_AGENT": "Có vẻ như bạn đang dùng máy chủ Chatwoot không hỗ trợ ứng dụng di động. Vui lòng liên hệ với quản trị viên để nâng cấp server Chatwoot của bạn.",
+    "WARNING_FOR_ADMIN": "Có vẻ như bạn đang dùng máy chủ Chatwoot không hỗ trợ ứng dụng di động. Cần nâng cấp máy chủ lên phiên bản %{minimumVersion} hoặc lớn hơn."
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
+    "TITLE": "Lối ra",
+    "SUBTITLE": "Khỏi bạn chắc chắn bạn muốn bỏ thuốc lá?",
     "CANCEL": "Huỷ",
-    "OK": "Ok"
+    "OK": "Có"
   }
 }

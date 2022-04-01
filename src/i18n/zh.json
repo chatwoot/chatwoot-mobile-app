@@ -14,18 +14,21 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "安装链接",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "如果您正在使用自己托管的Chatwoot 安装，请输入您的服务器URL。否则，请使用 app.chatwoot.com。",
     "URL_ERROR": "输入有效网址",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "连接",
     "CHANGE_LANGUAGE": "更改语言",
     "ERROR": "无效的安装链接"
   },
   "LOGIN": {
     "TITLE": "登录到您的帐户",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "DESCRIPTION": "您已连接到 {{baseUrl}}。使用您的电子邮件地址和密码登录。",
     "EMAIL": "Email",
     "PASSWORD": "密码",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "输入有效的电子邮件",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "输入有效的密码",
     "LOGIN": "登录",
     "FORGOT_PASSWORD": "忘记密码？",
@@ -43,7 +46,8 @@
     "RESET_HERE": "重置密码",
     "HEADER_TITLE": "重置密码",
     "TITLE": "忘记密码？",
-    "SUB_TITLE": "别担心，我们会支持你的"
+    "SUB_TITLE": "别担心，我们会支持你的",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "会话",
@@ -63,6 +67,7 @@
     "RE_OPEN": "重新打开会话",
     "ASSIGN": "重新打开会话",
     "FILE_SIZE_LIMIT": "文件超过 5MB 附件限制",
+    "SHARE": "Share conversation",
     "CANCEL": "取消",
     "PRIVATE_MSG_INPUT": "此操作仅对代理人可见",
     "UN_ASSIGN": "取消分配对话"
@@ -74,7 +79,9 @@
     "OPEN": "打开",
     "RESOLVED": "已解决",
     "BOT": "机器人",
-    "SUBMIT": "提交"
+    "SUBMIT": "提交",
+    "PENDING": "等待中",
+    "SNOOZED": "已关闭"
   },
   "SETTINGS": {
     "HEADER_TITLE": "设置",
@@ -107,6 +114,7 @@
     "CONVERSATION_CREATE_PUSH": "创建新会话时发送推送通知",
     "CONVERSATION_ASSIGNEE_PUSH": "当会话分配给我时发送推送通知",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "在已分配的会话中创建新消息时发送推送通知",
+    "CONVERSATION_MENTION": "当您在对话中被提及时发送推送通知",
     "CONVERSATION_CREATE_EMAIL": "创建新会话时发送电子邮件通知",
     "CONVERSATION_ASSIGNEE_EMAIL": "当会话分配给我时发送电子邮件通知",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "在已分配的会话中创建新消息时发送电子邮件通知"
@@ -134,9 +142,9 @@
     "AUTH": "登录成功"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "需要更新服务器",
+    "WARNING_FOR_AGENT": "您的手机应用似乎正在使用不受支持的Chatwoot 服务器。请联系您的管理员升级您的Chatwoot 服务器。",
+    "WARNING_FOR_ADMIN": "您的手机应用似乎正在使用不支持的Chatwoot 服务器。需要升级到服务器版本 %{minimumVersion} 或更高版本。"
   },
   "EXIT": {
     "TITLE": "退出",

@@ -51,6 +51,7 @@ export const LANGUAGES = {
   en: 'English',
   nl: 'Dutch',
   tr: 'Turkish',
+  fr: 'French',
 };
 
 export const URL_REGEX = {

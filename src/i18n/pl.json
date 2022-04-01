@@ -16,6 +16,7 @@
     "ENTER_URL": "Installation URL",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Enter a valid URL",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Połącz",
     "CHANGE_LANGUAGE": "Change language",
     "ERROR": "Invalid installation url"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "E-mail",
     "PASSWORD": "Password",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Enter a valid email",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Enter a valid password",
     "LOGIN": "Sign In",
     "FORGOT_PASSWORD": "Forgot your password?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Reset password",
     "HEADER_TITLE": "Reset password",
     "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back"
+    "SUB_TITLE": "Don't worry! We got your back",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Rozmowy",
@@ -63,6 +67,7 @@
     "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "SHARE": "Share conversation",
     "CANCEL": "Anuluj",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation"
@@ -74,7 +79,9 @@
     "OPEN": "Otwórz",
     "RESOLVED": "Resolved",
     "BOT": "Bot",
-    "SUBMIT": "Prześlij"
+    "SUBMIT": "Prześlij",
+    "PENDING": "Oczekujące",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Ustawienia",
@@ -107,6 +114,7 @@
     "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
     "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
+    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
     "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
     "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Wysyłaj powiadomienia e-mail, gdy nowa wiadomość zostanie utworzona w przypisanej konwersacji"

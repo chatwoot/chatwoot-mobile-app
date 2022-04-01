@@ -16,7 +16,7 @@
  <img src="https://img.shields.io/github/license/chatwoot/chatwoot" alt="License">
 </p>
 
-- **Supported Chatwoot version:** 1.18+
+- **Supported Chatwoot version:** 2.0.0+
 - **Supported iOS versions**: 11+ 
 - **Supported Android versions**: 5.0+
 
@@ -74,4 +74,4 @@ If you want to self deploy the Chatwoot mobile app, please take a look at the [C
 
 If there's anything you'd like to chat about, please feel free to join our [Discord](https://discord.gg/cJXdrwS) chat!
 
-_Chatwoot_ &copy; 2017-2021, Chatwoot Inc - Released under the MIT License.
+_Chatwoot_ &copy; 2017-2022, Chatwoot Inc - Released under the MIT License.

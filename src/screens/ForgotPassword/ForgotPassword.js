@@ -1,32 +1,26 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { View, SafeAreaView, Image, ScrollView } from 'react-native';
 import { TopNavigation, TopNavigationAction, withStyles } from '@ui-kitten/components';
-import t from 'tcomb-form-native';
 import PropTypes from 'prop-types';
+import { useForm, Controller } from 'react-hook-form';
 
 import { onResetPassword, resetAuth } from '../../actions/auth';
 
 import styles from './ForgotPassword.style';
-import { Email } from '../../helpers/formHelper';
-import TextInputField from '../../components/TextInputField';
-
+import TextInput from '../../components/TextInput';
 import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
 import Icon from '../../components/Icon';
 import images from '../../constants/images';
 import CustomText from '../../components/Text';
+import { EMAIL_REGEX } from '../../helpers/formHelper';
 
 // eslint-disable-next-line react/prop-types
 const BackIcon = ({ style: { tintColor } }) => {
   return <Icon name="arrow-back-outline" color={tintColor} />;
 };
-
-const { Form } = t.form;
-const LoginForm = t.struct({
-  email: Email,
-});
 
 const propTypes = {
   eva: PropTypes.shape({
@@ -49,25 +43,19 @@ const defaultProps = {
 
 const ForgotPasswordComponent = ({ eva, navigation }) => {
   const dispatch = useDispatch();
-  const inputRef = useRef(null);
 
-  const [values, setValues] = useState({ email: '' });
-
-  const options = {
-    fields: {
-      email: {
-        placeholder: '',
-        template: props => <TextInputField {...props} />,
-        keyboardType: 'email-address',
-        error: i18n.t('FORGOT_PASSWORD.EMAIL_ERROR'),
-        autoCapitalize: 'none',
-        autoCompleteType: false,
-        autoCorrect: false,
-        config: {
-          label: i18n.t('FORGOT_PASSWORD.EMAIL'),
-        },
-      },
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      email: '',
     },
+  });
+  const onSubmit = data => {
+    const { email } = data;
+    dispatch(onResetPassword(email));
   };
 
   const isResettingPassword = useSelector(state => state.auth.isResettingPassword);
@@ -81,17 +69,6 @@ const ForgotPasswordComponent = ({ eva, navigation }) => {
   };
 
   const renderLeftControl = () => <TopNavigationAction onPress={onBackPress} icon={BackIcon} />;
-
-  const onChange = value => {
-    setValues(value);
-  };
-
-  const doResetPassword = () => {
-    const value = inputRef.current.getValue();
-    if (value) {
-      dispatch(onResetPassword(value));
-    }
-  };
 
   const { style } = eva;
 
@@ -118,19 +95,37 @@ const ForgotPasswordComponent = ({ eva, navigation }) => {
 
         <View style={style.contentView}>
           <View style={style.formView}>
-            <Form
-              ref={inputRef}
-              type={LoginForm}
-              options={options}
-              value={values}
-              onChange={value => onChange(value)}
+            <Controller
+              control={control}
+              rules={{
+                required: i18n.t('LOGIN.EMAIL_REQUIRED'),
+                pattern: {
+                  value: EMAIL_REGEX,
+                  message: i18n.t('LOGIN.EMAIL_ERROR'),
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  errors={errors}
+                  error={errors.email}
+                  label={i18n.t('LOGIN.EMAIL')}
+                  keyboardType="email-address"
+                  errorMessage={i18n.t('LOGIN.EMAIL_ERROR')}
+                  secureTextEntry={false}
+                />
+              )}
+              name="email"
             />
 
             <View style={style.forgotButtonView}>
               <LoaderButton
                 style={style.forgotButton}
                 loading={isResettingPassword}
-                onPress={() => doResetPassword()}
+                onPress={handleSubmit(onSubmit)}
                 size="large"
                 text={i18n.t('FORGOT_PASSWORD.RESET_HERE')}
                 textStyle={style.forgotButtonText}

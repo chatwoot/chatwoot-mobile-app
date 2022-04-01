@@ -43,8 +43,8 @@ export function findConversationStatus({ conversationStatus }) {
   }
   return status;
 }
-
-export function checkConversationMatch({
+// Check conversation is matching to current filters
+export function checkConversationMatchToFilters({
   assignee,
   user,
   assigneeType,
@@ -53,6 +53,10 @@ export function checkConversationMatch({
 }) {
   const { email: userEmail } = user;
   if (conversationStatus !== status) {
+    return false;
+  }
+  // If assignee type is unassigned, check assignee is not null
+  if (!isEmptyObject(assignee) && assigneeType === 1) {
     return false;
   }
   if (!assignee && assigneeType !== 1) {
@@ -276,7 +280,9 @@ export const getCustomerDetails = ({ conversationMetaDetails, conversationDetail
   return customer;
 };
 
-export const isEmptyObject = obj => Object.keys(obj).length === 0;
+export const isEmptyObject = obj => {
+  return !obj || Object.keys(obj).length === 0;
+};
 
 export const getCurrentUserAvailabilityStatus = ({ user }) => {
   if (user && !isEmptyObject(user)) {

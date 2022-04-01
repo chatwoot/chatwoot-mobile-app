@@ -14,18 +14,21 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL de instalación",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "Si estás usando una instalación de Chatwoot autoalojada, introduce la URL de tu servidor. De lo contrario, usa app.chatwoot.com.",
     "URL_ERROR": "Introduzca una URL válida",
+    "URL_REQUIRED": "La URL es requerida",
     "CONNECT": "Conectar",
     "CHANGE_LANGUAGE": "Cambiar idioma",
     "ERROR": "Url de instalación inválida"
   },
   "LOGIN": {
     "TITLE": "Inicia sesión en tu cuenta",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "DESCRIPTION": "Estás conectado a {{baseUrl}}. Inicia sesión con tu dirección de correo electrónico y contraseña.",
     "EMAIL": "Email",
     "PASSWORD": "Contraseña",
+    "EMAIL_REQUIRED": "El Email es requerido",
     "EMAIL_ERROR": "Introduce un email válido",
+    "PASSWORD_REQUIRED": "Contraseña requerida",
     "PASSWORD_ERROR": "Introduce una contraseña válida",
     "LOGIN": "Iniciar sesión",
     "FORGOT_PASSWORD": "¿Olvidaste tu contraseña?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Restablecer contraseña",
     "HEADER_TITLE": "Restablecer contraseña",
     "TITLE": "¿Olvidaste tu contraseña?",
-    "SUB_TITLE": "¡No te preocupes! Te cubrimos las espaldas"
+    "SUB_TITLE": "¡No te preocupes! Te cubrimos las espaldas",
+    "API_SUCCESS": "El enlace para restablecer la contraseña ha sido enviado a tu correo electrónico"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversaciones",
@@ -63,6 +67,7 @@
     "RE_OPEN": "Resolver conversación",
     "ASSIGN": "Asignar conversación",
     "FILE_SIZE_LIMIT": "El archivo supera el límite de 5MB de archivos adjuntos",
+    "SHARE": "Compartir la conversación",
     "CANCEL": "Cancelar",
     "PRIVATE_MSG_INPUT": "Esto será visible sólo para los agentes",
     "UN_ASSIGN": "Desasignar conversación"
@@ -74,7 +79,9 @@
     "OPEN": "Abrir",
     "RESOLVED": "Resuelto",
     "BOT": "Bot",
-    "SUBMIT": "Enviar"
+    "SUBMIT": "Enviar",
+    "PENDING": "Pendiente",
+    "SNOOZED": "Pospuesto"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Preferencias",
@@ -107,6 +114,7 @@
     "CONVERSATION_CREATE_PUSH": "Enviar notificaciones push cuando se crea una nueva conversación",
     "CONVERSATION_ASSIGNEE_PUSH": "Enviar notificaciones push cuando se me asigne una conversación",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Enviar notificaciones push cuando se crea un nuevo mensaje en una conversación asignada",
+    "CONVERSATION_MENTION": "Enviar notificaciones push cuando sea mencionado en una conversación",
     "CONVERSATION_CREATE_EMAIL": "Enviar notificaciones por email cuando se crea una nueva conversación",
     "CONVERSATION_ASSIGNEE_EMAIL": "Enviar notificaciones por email cuando se me ha asignado una conversación",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Enviar notificaciones por email cuando se crea un nuevo mensaje en una conversación asignada"
@@ -134,9 +142,9 @@
     "AUTH": "Inicio de sesión exitoso"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "Actualización de servidor necesaria",
+    "WARNING_FOR_AGENT": "Parece que estás usando un servidor de Chatwoot no soportado para tu aplicación móvil. Por favor, contacta con tu administrador para actualizar tu servidor de Chatwoot.",
+    "WARNING_FOR_ADMIN": "Parece que estás usando un servidor de Chatwoot no compatible para tu aplicación móvil. Se requiere actualizar a la versión del servidor %{minimumVersion} o posterior."
   },
   "EXIT": {
     "TITLE": "Salir",

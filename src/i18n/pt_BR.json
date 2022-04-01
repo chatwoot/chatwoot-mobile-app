@@ -16,6 +16,7 @@
     "ENTER_URL": "URL de instalação",
     "DESCRIPTION": "Se você estiver usando uma instalação auto-hospedada do Chatwoot, insira o URL do servidor. Caso contrário, use app.chatwoot.com.",
     "URL_ERROR": "Insira uma URL válida",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Conectar",
     "CHANGE_LANGUAGE": "Alterar idioma",
     "ERROR": "Url de instalação inválida"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "Você está conectado a {{baseUrl}}. Entre com seu endereço de e-mail e senha.",
     "EMAIL": "e-mail",
     "PASSWORD": "Senha",
+    "EMAIL_REQUIRED": "E-mail é obrigatório",
     "EMAIL_ERROR": "Digite um e-mail válido",
+    "PASSWORD_REQUIRED": "Senha Obrigatória",
     "PASSWORD_ERROR": "Digite uma senha válida",
     "LOGIN": "Entrar",
     "FORGOT_PASSWORD": "Esqueceu sua senha?",
@@ -43,7 +46,8 @@
     "RESET_HERE": "Redefinir senha",
     "HEADER_TITLE": "Redefinir senha",
     "TITLE": "Esqueceu a Senha?",
-    "SUB_TITLE": "Não se preocupe! Nós te protegemos"
+    "SUB_TITLE": "Não se preocupe! Nós te protegemos",
+    "API_SUCCESS": "O link de redefinição de senha foi enviado para seu endereço de e-mail"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversas",
@@ -63,6 +67,7 @@
     "RE_OPEN": "Reabrir conversa",
     "ASSIGN": "Atribuir conversa",
     "FILE_SIZE_LIMIT": "O arquivo excede o limite de anexos de 5MB",
+    "SHARE": "Compartilhar conversa",
     "CANCEL": "Cancelar",
     "PRIVATE_MSG_INPUT": "Isto será visível apenas para Agentes",
     "UN_ASSIGN": "Desassociar conversa"
@@ -74,7 +79,9 @@
     "OPEN": "Abrir",
     "RESOLVED": "Resolvida",
     "BOT": "Bot",
-    "SUBMIT": "Enviar"
+    "SUBMIT": "Enviar",
+    "PENDING": "Pendente",
+    "SNOOZED": "Adiado"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Confirgurações",
@@ -107,6 +114,7 @@
     "CONVERSATION_CREATE_PUSH": "Enviar notificações push quando uma nova conversa é criada",
     "CONVERSATION_ASSIGNEE_PUSH": "Enviar notificações push quando uma conversa é atribuída para mim",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Enviar notificações push quando uma nova mensagem é criada em uma conversa atribuída",
+    "CONVERSATION_MENTION": "Enviar notificações push quando você for mencionado em uma conversa",
     "CONVERSATION_CREATE_EMAIL": "Enviar notificações push quando uma nova conversa é criada",
     "CONVERSATION_ASSIGNEE_EMAIL": "Enviar notificações por email quando uma conversa é atribuída a mim",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Enviar notificações por email quando uma nova mensagem é criada em uma conversa atribuída"

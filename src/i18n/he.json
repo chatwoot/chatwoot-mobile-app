@@ -16,6 +16,7 @@
     "ENTER_URL": "קישור התקנה",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "הזן URL חוקי",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "התחבר",
     "CHANGE_LANGUAGE": "שנה שפה",
     "ERROR": "קישור התקנה לא חוקי"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "אימייל",
     "PASSWORD": "סיסמה",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "הזן אימייל חוקי",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "הזן סיסמה תקינה",
     "LOGIN": "כניסה",
     "FORGOT_PASSWORD": "שכחת את הסיסמה?",
@@ -43,11 +46,12 @@
     "RESET_HERE": "אפס את הסיסמה",
     "HEADER_TITLE": "אפס את הסיסמה",
     "TITLE": "שכחת את הסיסמה?",
-    "SUB_TITLE": "אל תדאג! אנחנו דואגים לך"
+    "SUB_TITLE": "אל תדאג! אנחנו דואגים לך",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "שיחות",
-    "MINE": "Mine",
+    "MINE": "שלי",
     "UN_ASSIGNED": "לא הוקצתה",
     "ALL": "הכל",
     "EMPTY": "אין שיחות פעילות בקבוצה הזו.",
@@ -63,6 +67,7 @@
     "RE_OPEN": "פתח מחדש את השיחה",
     "ASSIGN": "הקצה שיחה",
     "FILE_SIZE_LIMIT": "הקובץ עובר את מגבלת 5MB לקבצים מצורפים",
+    "SHARE": "Share conversation",
     "CANCEL": "ביטול",
     "PRIVATE_MSG_INPUT": "זה יהיה גלוי רק לסוכנים",
     "UN_ASSIGN": "שיחה שלא הוקצתה"
@@ -74,7 +79,9 @@
     "OPEN": "פתח",
     "RESOLVED": "נפתרה",
     "BOT": "בוט",
-    "SUBMIT": "שלח"
+    "SUBMIT": "שלח",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "הגדרות",
@@ -107,6 +114,7 @@
     "CONVERSATION_CREATE_PUSH": "שלח התראת פוש כאשר נפתחת שיחה חדשה",
     "CONVERSATION_ASSIGNEE_PUSH": "שלח התראת פוש כאשר שיחה מוקצית עבורי",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "שלח התראת פוש כאשר יש הודעה חדשה בשיחה המוקצית עבורי",
+    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
     "CONVERSATION_CREATE_EMAIL": "שלח התראה באימייל כאשר נפתחת שיחה חדשה",
     "CONVERSATION_ASSIGNEE_EMAIL": "שלח התראה באימייל כאשר שיחה מוקצית עבורי",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "שלח התראה באימייל כאשר יש הודעה חדשה בשיחה המוקצית עבורי"
@@ -114,8 +122,8 @@
   "CONVERSATION_DETAILS": {
     "BROWSER": "דפדפן",
     "OPERATING_SYSTEM": "מערכת הפעלה",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "INITIATED_AT": "יזם ב",
+    "INITIATED_FROM": "יזם מ"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "פעולות"

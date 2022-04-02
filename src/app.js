@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
-import { Alert, BackHandler, Platform } from 'react-native';
+import { Alert, BackHandler, Platform, StatusBar } from 'react-native';
 import BackgroundColor from 'react-native-background-color';
 import SplashScreen from 'react-native-splash-screen';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -15,7 +15,7 @@ import Router from './router';
 import { store, persistor } from './store';
 import i18n from './i18n';
 
-const Chatwoot = () => { 
+const Chatwoot = () => {
   useEffect(() => {
     ErrorHelper.init();
     // To hide splash screen
@@ -49,6 +49,7 @@ const Chatwoot = () => {
 
   return (
     <React.Fragment>
+      <StatusBar barStyle="dark-content" />
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={theme}>
         <Provider store={store}>

@@ -16,7 +16,7 @@
     "ENTER_URL": "Lien d'installation",
     "DESCRIPTION": "Si vous utilisez une installation de Chatwoot auto-hébergée, saisissez l'URL de votre serveur. Sinon, utilisez app.chatwoot.com.",
     "URL_ERROR": "Saisissez une URL valide",
-    "URL_REQUIRED": "URL is required",
+    "URL_REQUIRED": "L'URL est requise",
     "CONNECT": "Connexion",
     "CHANGE_LANGUAGE": "Modifier la langue",
     "ERROR": "Lien d'installation invalide"
@@ -26,9 +26,9 @@
     "DESCRIPTION": "Vous êtes connecté à {{baseUrl}}. Connectez-vous avec votre adresse e-mail et votre mot de passe.",
     "EMAIL": "Courriel",
     "PASSWORD": "Mot de passe",
-    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_REQUIRED": "L'e-mail est requis",
     "EMAIL_ERROR": "Saisissez une adresse de courriel valide",
-    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_REQUIRED": "Le mot de passe est requis",
     "PASSWORD_ERROR": "Saisissez un mot de passe valide",
     "LOGIN": "Se connecter",
     "FORGOT_PASSWORD": "Mot de passe oublié ?",
@@ -47,7 +47,7 @@
     "HEADER_TITLE": "Réinitialiser le mot de passe",
     "TITLE": "Mot de passe oublié ?",
     "SUB_TITLE": "Ne vous inquiétes pas ! Nous avons récupéré",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "API_SUCCESS": "Le lien de réinitialisation du mot de passe a été envoyé à votre adresse e-mail"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversations",
@@ -67,7 +67,7 @@
     "RE_OPEN": "Reprendre la conversation",
     "ASSIGN": "Affecter une conversation",
     "FILE_SIZE_LIMIT": "Le fichier dépasse la limite de 5 Mo des pièces jointes",
-    "SHARE": "Share conversation",
+    "SHARE": "Partager la conversation",
     "CANCEL": "Annuler",
     "PRIVATE_MSG_INPUT": "Ceci ne sera visible qu'aux Agents",
     "UN_ASSIGN": "Retirer la conversation"

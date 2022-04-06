@@ -1,53 +1,53 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "Bine ați venit",
   "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
+    "ERROR": "Eroare",
+    "ERROR_TITLE": "Eroare neașteptată",
+    "REPORT_MESSAGE": "Am raportat acest lucru echipei noastre! Vă rugăm să închideți aplicația și să începeți din nou!",
     "CLOSE": "Închide"
   },
   "FOOTER": {
-    "HOME": "Acasa",
+    "HOME": "Acasă",
     "CONVERSATION": "Conversații",
-    "NOTIFICATION": "Notifications",
+    "NOTIFICATION": "Notificări",
     "SETTINGS": "Setări"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
-    "URL_ERROR": "Enter a valid URL",
-    "URL_REQUIRED": "URL is required",
+    "ENTER_URL": "Instalare URL",
+    "DESCRIPTION": "Dacă folosiți o instalare de Chatwoot auto-găzduită, introduceți URL-ul serverului. Altfel, folosiți app.chatwoot.com.",
+    "URL_ERROR": "Introduceți o adresă URL validă",
+    "URL_REQUIRED": "URL-ul este necesar",
     "CONNECT": "Conectează-te",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "CHANGE_LANGUAGE": "Modificare limbă",
+    "ERROR": "URL instalare nevalid"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "Conectează-te la contul tău",
+    "DESCRIPTION": "Ești conectat la {{baseUrl}}. Autentifică-te cu adresa ta de e-mail și parola.",
     "EMAIL": "Email",
     "PASSWORD": "Parola",
-    "EMAIL_REQUIRED": "Email is required",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_REQUIRED": "Password is required",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
+    "EMAIL_REQUIRED": "E-mailul este necesar",
+    "EMAIL_ERROR": "Introduceți un e-mail valid",
+    "PASSWORD_REQUIRED": "Parola este necesară",
+    "PASSWORD_ERROR": "Introduceți o parolă validă",
+    "LOGIN": "Autentificare",
     "FORGOT_PASSWORD": "Ai uitat parola?",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
+    "RESET_HERE": "Resetați aici",
+    "NO_ACCOUNT": "Nu aveți un cont?",
     "CREATE_ACCOUNT": "Creează un cont nou",
     "SETTINGS": "Setări",
-    "CHANGE_LANGUAGE": "Change language",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "CHANGE_LANGUAGE": "Modificare limbă",
+    "TERMS": "Termeni și Condiții",
+    "CHANGE_URL": "Modificarea adresei URL"
   },
   "FORGOT_PASSWORD": {
     "EMAIL": "Te rugăm să introduci adresa de e-mail",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "EMAIL_ERROR": "Introduceți un e-mail valid",
+    "RESET_HERE": "Resetare parolă",
+    "HEADER_TITLE": "Resetare parolă",
+    "TITLE": "Parolă uitată?",
+    "SUB_TITLE": "Nu-ți face griji! Iți avem grija",
+    "API_SUCCESS": "Linkul de resetare a parolei a fost trimis la adresa de e-mail"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversații",
@@ -60,46 +60,46 @@
     "DOWNLOAD": "Descărcare",
     "TODAY": "Astăzi",
     "YESTERDAY": "Ieri",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "RESOLVE": "Resolve conversation",
-    "RE_OPEN": "Reopen conversation",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share conversation",
+    "TYPE_MESSAGE": "Tastați mesajul aici",
+    "TYPING": "tastează",
+    "ALL_CONVERSATION_LOADED": "Toate conversațiile încărcate",
+    "RESOLVE": "Rezolvarea conversației",
+    "RE_OPEN": "Redeschiderea conversației",
+    "ASSIGN": "Atribuirea conversației",
+    "FILE_SIZE_LIMIT": "Fișierul depășește limita de atașare de 5MB",
+    "SHARE": "Partajarea conversației",
     "CANCEL": "Renunță",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "PRIVATE_MSG_INPUT": "Acest lucru va fi vizibil numai agenților",
+    "UN_ASSIGN": "Anularea atribuirii conversației"
   },
   "FILTER": {
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
+    "HEADER_TITLE": "Filtru conversație",
+    "CHOOSE_INBOX": "Alege Inboxul",
+    "CHOOSE_STATUS": "Starea conversației",
     "OPEN": "Deschide",
     "RESOLVED": "Rezolvat",
     "BOT": "Bot",
     "SUBMIT": "Trimite",
-    "PENDING": "Pending",
-    "SNOOZED": "Snoozed"
+    "PENDING": "În aşteptare",
+    "SNOOZED": "Amânat"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Setări",
     "AVAILABILITY": "Disponibilitate",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
+    "NOTIFICATION": "Preferințe de notificare",
+    "HELP": "Documente de ajutor",
+    "CHAT_WITH_US": "Discută cu noi",
     "LOG_OUT": "Deconectare",
     "SWITCH_ACCOUNT": "Comută contul",
-    "CHANGE_LANGUAGE": "Change Language",
+    "CHANGE_LANGUAGE": "Schimbarea limbii",
     "SUBMIT": "Trimite"
   },
   "NOTIFICATION": {
-    "HEADER_TITLE": "Notifications",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
+    "HEADER_TITLE": "Notificări",
+    "EMPTY": "Nu există notificări încă.",
+    "EMPTY_MORE_TEXT": "După ce începeți să primiți notificări, acestea vor apărea aici.",
+    "ALL_NOTIFICATION_LOADED": "Toate notificările încărcate",
+    "MARK_ALL": "Marcare totală ca citit",
     "CANCEL": "Renunță"
   },
   "AVAILABILITY": {
@@ -108,16 +108,16 @@
     "OFFLINE": "Deconectat"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
+    "TITLE": "Preferințe de notificare",
     "EMAIL": "Email",
     "PUSH": "Push",
     "CONVERSATION_CREATE_PUSH": "Trimite notificări push atunci când o conversație nouă este creată",
     "CONVERSATION_ASSIGNEE_PUSH": "Trimite notificări push atunci când o conversație îmi este atribuită",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Trimiterea notificărilor push atunci când se creează un mesaj nou într-o conversație atribuită",
+    "CONVERSATION_MENTION": "Trimiterea notificărilor push atunci când sunteți menționat într-o conversație",
     "CONVERSATION_CREATE_EMAIL": "Trimite notificări prin e-mail atunci când o conversație nouă este creată",
     "CONVERSATION_ASSIGNEE_EMAIL": "Trimite notificări prin e-mail atunci când o conversație îmi este atribuită",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Trimiterea notificărilor prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită"
   },
   "CONVERSATION_DETAILS": {
     "BROWSER": "Navigator",
@@ -129,27 +129,27 @@
     "TITLE": "Acțiuni"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Selectează agent"
   },
   "ERRORS": {
     "COMMON_ERROR": "Nu s-a putut conecta la Woot Server, încercați din nou mai târziu",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "OfFLINE": "Trebuie să vă conectați la Wi-Fi sau la o rețea celulară pentru a intra din nou online",
+    "CANNOT_FETCH": "A existat o eroare la preluarea informațiilor, vă rugăm să încercați din nou",
     "AUTH": "Nume utilizator / parolă incorectă. Vă rugăm să încercaţi din nou",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "NO_ACCOUNTS_MESSAGE": "Nu aveți acces la niciun cont de chatwoot"
   },
   "SUCCESS": {
     "AUTH": "Autentificare reușită"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "Este necesar upgrade-ul serverului",
+    "WARNING_FOR_AGENT": "Se pare că utilizați serverul Chatwoot neacceptat pentru aplicația mobilă. Vă rugăm să contactați administratorul pentru a vă actualiza serverul Chatwoot.",
+    "WARNING_FOR_ADMIN": "Se pare că utilizați serverul Chatwoot neacceptat pentru aplicația mobilă. Este necesar upgrade-ul la versiunea de server %{minimumVersion} sau o versiune ulterioară."
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
+    "TITLE": "Ieșire",
+    "SUBTITLE": "Ești sigur că vrei să renunți?",
     "CANCEL": "Renunță",
-    "OK": "Ok"
+    "OK": "Da"
   }
 }

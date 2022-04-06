@@ -2,28 +2,28 @@
   "WELCOME": "Bine ați venit",
   "COMMON": {
     "ERROR": "Eroare",
-    "ERROR_TITLE": "A apărut o eroare. Te rugăm să încerci din nou.",
+    "ERROR_TITLE": "Eroare neașteptată",
     "REPORT_MESSAGE": "Am raportat acest lucru echipei noastre! Vă rugăm să închideți aplicația și să începeți din nou!",
     "CLOSE": "Închide"
   },
   "FOOTER": {
-    "HOME": "Acasa",
+    "HOME": "Acasă",
     "CONVERSATION": "Conversații",
     "NOTIFICATION": "Notificări",
     "SETTINGS": "Setări"
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Instalare URL",
-    "DESCRIPTION": "Dacă utilizați o instalare chatwoot auto-găzduită, introduceți adresa URL a serverului. În caz contrar, utilizați app.chatwoot.com.",
+    "DESCRIPTION": "Dacă folosiți o instalare de Chatwoot auto-găzduită, introduceți URL-ul serverului. Altfel, folosiți app.chatwoot.com.",
     "URL_ERROR": "Introduceți o adresă URL validă",
     "URL_REQUIRED": "URL-ul este necesar",
     "CONNECT": "Conectează-te",
     "CHANGE_LANGUAGE": "Modificare limbă",
-    "ERROR": "Url de instalare nevalidă"
+    "ERROR": "URL instalare nevalid"
   },
   "LOGIN": {
     "TITLE": "Conectează-te la contul tău",
-    "DESCRIPTION": "Sunteți conectat la {{baseUrl}}. Conectați-vă cu adresa de e-mail și parola.",
+    "DESCRIPTION": "Ești conectat la {{baseUrl}}. Autentifică-te cu adresa ta de e-mail și parola.",
     "EMAIL": "Email",
     "PASSWORD": "Parola",
     "EMAIL_REQUIRED": "E-mailul este necesar",
@@ -45,8 +45,8 @@
     "EMAIL_ERROR": "Introduceți un e-mail valid",
     "RESET_HERE": "Resetare parolă",
     "HEADER_TITLE": "Resetare parolă",
-    "TITLE": "Aţi uitat parola?",
-    "SUB_TITLE": "Nu îţi face griji! V-am luat spatele",
+    "TITLE": "Parolă uitată?",
+    "SUB_TITLE": "Nu-ți face griji! Iți avem grija",
     "API_SUCCESS": "Linkul de resetare a parolei a fost trimis la adresa de e-mail"
   },
   "CONVERSATION": {
@@ -66,7 +66,7 @@
     "RESOLVE": "Rezolvarea conversației",
     "RE_OPEN": "Redeschiderea conversației",
     "ASSIGN": "Atribuirea conversației",
-    "FILE_SIZE_LIMIT": "Fișierul depășește limita de atașare de 5 MB",
+    "FILE_SIZE_LIMIT": "Fișierul depășește limita de atașare de 5MB",
     "SHARE": "Partajarea conversației",
     "CANCEL": "Renunță",
     "PRIVATE_MSG_INPUT": "Acest lucru va fi vizibil numai agenților",
@@ -74,13 +74,13 @@
   },
   "FILTER": {
     "HEADER_TITLE": "Filtru conversație",
-    "CHOOSE_INBOX": "Alegeți Inbox",
+    "CHOOSE_INBOX": "Alege Inboxul",
     "CHOOSE_STATUS": "Starea conversației",
     "OPEN": "Deschide",
     "RESOLVED": "Rezolvat",
     "BOT": "Bot",
     "SUBMIT": "Trimite",
-    "PENDING": "Asteptare",
+    "PENDING": "În aşteptare",
     "SNOOZED": "Amânat"
   },
   "SETTINGS": {
@@ -147,7 +147,7 @@
     "WARNING_FOR_ADMIN": "Se pare că utilizați serverul Chatwoot neacceptat pentru aplicația mobilă. Este necesar upgrade-ul la versiunea de server %{minimumVersion} sau o versiune ulterioară."
   },
   "EXIT": {
-    "TITLE": "Iesire",
+    "TITLE": "Ieșire",
     "SUBTITLE": "Ești sigur că vrei să renunți?",
     "CANCEL": "Renunță",
     "OK": "Da"

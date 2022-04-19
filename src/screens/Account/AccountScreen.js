@@ -3,7 +3,7 @@ import React from 'react';
 import { withStyles } from '@ui-kitten/components';
 import { StackActions } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView, View, ScrollView } from 'react-native';
 import LoaderButton from '../../components/LoaderButton';
 import HeaderBar from '../../components/HeaderBar';
 
@@ -14,7 +14,7 @@ import { captureEvent } from 'helpers/Analytics';
 import { setAccount } from '../../actions/auth';
 
 const AccountScreenComponent = ({ eva: { style }, navigation }) => {
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector(state => state.auth);
   const { account_id, accounts } = user;
 
   const dispatch = useDispatch();
@@ -32,17 +32,19 @@ const AccountScreenComponent = ({ eva: { style }, navigation }) => {
     <SafeAreaView style={style.container}>
       <HeaderBar title={i18n.t('SETTINGS.SWITCH_ACCOUNT')} showLeftButton onBackPress={goBack} />
       <View style={style.itemMainView}>
-        {accounts.map((item) => {
-          return (
-            <AccountItem
-              key={item.name}
-              item={item}
-              name={item.name}
-              isChecked={account_id === item.id ? true : false}
-              onCheckedChange={onCheckedChange}
-            />
-          );
-        })}
+        <ScrollView>
+          {accounts.map(item => {
+            return (
+              <AccountItem
+                key={item.name}
+                item={item}
+                name={item.name}
+                isChecked={account_id === item.id ? true : false}
+                onCheckedChange={onCheckedChange}
+              />
+            );
+          })}
+        </ScrollView>
       </View>
       <View style={style.accountButtonView}>
         <LoaderButton

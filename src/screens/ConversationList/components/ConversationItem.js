@@ -86,7 +86,7 @@ const ConversationItemComponent = ({
         </View>
         <View>
           <View style={style.labelView}>
-            {name && (
+            {!!name && (
               <CustomText
                 style={
                   unreadCount ? style.conversationUserActive : style.conversationUserNotActive
@@ -95,7 +95,6 @@ const ConversationItemComponent = ({
               </CustomText>
             )}
           </View>
-
           {!typingUser ? (
             !content && attachments && attachments.length ? (
               <ConversationAttachmentItem

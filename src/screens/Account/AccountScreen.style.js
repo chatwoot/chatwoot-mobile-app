@@ -1,4 +1,4 @@
-const styles = (theme) => ({
+const styles = theme => ({
   container: {
     flex: 1,
     backgroundColor: theme['background-basic-color-1'],
@@ -30,8 +30,6 @@ const styles = (theme) => ({
   },
 
   accountButtonView: {
-    paddingLeft: 24,
-    paddingRight: 24,
     paddingTop: 32,
   },
   accountButton: {

@@ -16,7 +16,7 @@
     "ENTER_URL": "URL de instalação",
     "DESCRIPTION": "Se você estiver usando uma instalação auto-hospedada do Chatwoot, insira o URL do servidor. Caso contrário, use app.chatwoot.com.",
     "URL_ERROR": "Insira uma URL válida",
-    "URL_REQUIRED": "URL is required",
+    "URL_REQUIRED": "O URL é obrigatório",
     "CONNECT": "Conectar",
     "CHANGE_LANGUAGE": "Alterar idioma",
     "ERROR": "Url de instalação inválida"
@@ -28,7 +28,7 @@
     "PASSWORD": "Senha",
     "EMAIL_REQUIRED": "E-mail é obrigatório",
     "EMAIL_ERROR": "Digite um e-mail válido",
-    "PASSWORD_REQUIRED": "Senha Obrigatória",
+    "PASSWORD_REQUIRED": "Senha obrigatória",
     "PASSWORD_ERROR": "Digite uma senha válida",
     "LOGIN": "Entrar",
     "FORGOT_PASSWORD": "Esqueceu sua senha?",
@@ -67,7 +67,7 @@
     "RE_OPEN": "Reabrir conversa",
     "ASSIGN": "Atribuir conversa",
     "FILE_SIZE_LIMIT": "O arquivo excede o limite de anexos de 5MB",
-    "SHARE": "Compartilhar conversa",
+    "SHARE": "Compartilhar conversas",
     "CANCEL": "Cancelar",
     "PRIVATE_MSG_INPUT": "Isto será visível apenas para Agentes",
     "UN_ASSIGN": "Desassociar conversa"

@@ -3,7 +3,7 @@ import React from 'react';
 import { withStyles } from '@ui-kitten/components';
 import { StackActions } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView, ScrollView, View } from 'react-native';
 import LoaderButton from '../../components/LoaderButton';
 import HeaderBar from '../../components/HeaderBar';
 
@@ -16,8 +16,8 @@ import { LANGUAGES } from '../../constants';
 import { captureEvent } from 'helpers/Analytics';
 
 const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
-  const settings = useSelector((state) => state.settings);
-  const auth = useSelector((state) => state.auth);
+  const settings = useSelector(state => state.settings);
+  const auth = useSelector(state => state.auth);
 
   const localeValue = settings.localeValue || 'en';
   const isLoggedIn = auth.isLoggedIn;
@@ -46,8 +46,8 @@ const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
   return (
     <SafeAreaView style={style.container}>
       <HeaderBar title={i18n.t('SETTINGS.CHANGE_LANGUAGE')} showLeftButton onBackPress={goBack} />
-      <View style={style.itemMainView}>
-        {languages.map((item) => {
+      <ScrollView style={style.itemMainView}>
+        {languages.map(item => {
           return (
             <LanguageItem
               key={LANGUAGES[item]}
@@ -58,16 +58,16 @@ const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
             />
           );
         })}
-      </View>
-      <View style={style.languageButtonView}>
-        <LoaderButton
-          style={style.languageButton}
-          size="large"
-          textStyle={style.languageButtonText}
-          onPress={() => onSubmitLanguage()}
-          text={i18n.t('SETTINGS.SUBMIT')}
-        />
-      </View>
+        <View style={style.languageButtonView}>
+          <LoaderButton
+            style={style.languageButton}
+            size="large"
+            textStyle={style.languageButtonText}
+            onPress={() => onSubmitLanguage()}
+            text={i18n.t('SETTINGS.SUBMIT')}
+          />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

@@ -31,30 +31,29 @@ const AccountScreenComponent = ({ eva: { style }, navigation }) => {
   return (
     <SafeAreaView style={style.container}>
       <HeaderBar title={i18n.t('SETTINGS.SWITCH_ACCOUNT')} showLeftButton onBackPress={goBack} />
-      <View style={style.itemMainView}>
-        <ScrollView>
-          {accounts.map(item => {
-            return (
-              <AccountItem
-                key={item.name}
-                item={item}
-                name={item.name}
-                isChecked={account_id === item.id ? true : false}
-                onCheckedChange={onCheckedChange}
-              />
-            );
-          })}
-        </ScrollView>
-      </View>
-      <View style={style.accountButtonView}>
-        <LoaderButton
-          style={style.accountButton}
-          size="large"
-          textStyle={style.accountButtonText}
-          onPress={() => navigation.dispatch(StackActions.replace('Tab'))}
-          text={i18n.t('SETTINGS.SUBMIT')}
-        />
-      </View>
+      <ScrollView style={style.itemMainView}>
+        {accounts.map(item => {
+          return (
+            <AccountItem
+              key={item.name}
+              item={item}
+              name={item.name}
+              isChecked={account_id === item.id ? true : false}
+              onCheckedChange={onCheckedChange}
+            />
+          );
+        })}
+
+        <View style={style.accountButtonView}>
+          <LoaderButton
+            style={style.accountButton}
+            size="large"
+            textStyle={style.accountButtonText}
+            onPress={() => navigation.dispatch(StackActions.replace('Tab'))}
+            text={i18n.t('SETTINGS.SUBMIT')}
+          />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

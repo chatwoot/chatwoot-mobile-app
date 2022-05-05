@@ -40,6 +40,7 @@ import axios from '../helpers/APIHelper';
 import { getAllNotifications } from './notification';
 
 import { getInboxAgents } from './inbox';
+import { onLogOut } from './auth';
 
 import {
   findAssigneeType,
@@ -85,7 +86,6 @@ export const getConversations =
         meta,
         conversations: updatedPayload,
       };
-
       dispatch({
         type: GET_CONVERSATION_SUCCESS,
         payload: allConversations,
@@ -97,6 +97,13 @@ export const getConversations =
         });
       }
     } catch (error) {
+      const {
+        response: { status },
+      } = error;
+
+      if (status === 401) {
+        dispatch(onLogOut());
+      }
       dispatch({ type: GET_CONVERSATION_ERROR, payload: error });
     }
   };

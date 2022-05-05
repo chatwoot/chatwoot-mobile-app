@@ -202,85 +202,95 @@ const ChatAttachmentItemComponent = ({
 
   const [imageLoading, onLoadImage] = useState(false);
   const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
+  if (attachments[0]) {
+    const { file_type: fileType, data_url: dataUrl } = attachments[0];
 
-  const { file_type: fileType, data_url: dataUrl } = attachments[0];
-  const fileName = dataUrl ? dataUrl.split('/').reverse()[0] : '';
-  return (
-    <React.Fragment>
-      {fileType === 'image' ? (
-        <TouchableOpacity
-          onPress={() => showAttachment({ type: 'image', dataUrl })}
-          style={[
-            type === 'outgoing' ? style.imageViewRight : style.imageViewLeft,
-            message.private && style.privateMessageContainer,
-          ]}>
-          {content !== '' && (
-            <CustomText
-              style={message.private ? style.attachmentPrivateText : style.attachmentText}>
-              {content}
-            </CustomText>
-          )}
-          <Image
-            style={style.image}
-            source={{
-              uri: dataUrl,
-            }}
-            onLoadStart={() => onLoadImage(true)}
-            onLoadEnd={() => {
-              onLoadImage(false);
-            }}
-          />
-
-          {imageLoading && <ImageLoader style={style.imageLoader} />}
-          <View style={style.dateView}>
-            <CustomText
-              style={[
-                dateStyle,
-                message.private && {
-                  color: theme['color-gray'],
-                },
-              ]}>
-              {messageStamp({ time: created_at })}
-            </CustomText>
-            {message.private && (
-              <View style={style.iconView}>
-                <LockIcon style={style.icon} fill={theme['text-basic-color']} />
-              </View>
+    const fileName = dataUrl ? dataUrl.split('/').reverse()[0] : '';
+    return (
+      <React.Fragment>
+        {fileType === 'image' ? (
+          <TouchableOpacity
+            onPress={() => showAttachment({ type: 'image', dataUrl })}
+            style={[
+              type === 'outgoing' ? style.imageViewRight : style.imageViewLeft,
+              message.private && style.privateMessageContainer,
+            ]}>
+            {content !== '' && (
+              <CustomText
+                style={message.private ? style.attachmentPrivateText : style.attachmentText}>
+                {content}
+              </CustomText>
             )}
-          </View>
-        </TouchableOpacity>
-      ) : (
-        <View
-          style={[type === 'outgoing' ? style.fileViewRight : style.fileViewLeft, style.fileView]}>
-          <View style={style.fileAttachmentContainer}>
-            <View style={style.fileAttachmentView}>
-              <View style={style.attachmentIconView}>
-                <FileIcon
-                  fill={
-                    type === 'outgoing' ? theme['color-basic-100'] : theme['color-primary-default']
-                  }
-                />
-              </View>
-              <View style={style.attachmentTextView}>
-                <CustomText
-                  style={type === 'outgoing' ? style.filenameRightText : style.filenameLeftText}>
-                  {fileName.length < 25
-                    ? `${fileName}`
-                    : `...${fileName.substr(fileName.length - 15)}`}
-                </CustomText>
-                <TouchableOpacity onPress={() => showAttachment({ type: 'file', dataUrl })}>
+            <Image
+              style={style.image}
+              source={{
+                uri: dataUrl,
+              }}
+              onLoadStart={() => onLoadImage(true)}
+              onLoadEnd={() => {
+                onLoadImage(false);
+              }}
+            />
+
+            {imageLoading && <ImageLoader style={style.imageLoader} />}
+            <View style={style.dateView}>
+              <CustomText
+                style={[
+                  dateStyle,
+                  message.private && {
+                    color: theme['color-gray'],
+                  },
+                ]}>
+                {messageStamp({ time: created_at })}
+              </CustomText>
+              {message.private && (
+                <View style={style.iconView}>
+                  <LockIcon style={style.icon} fill={theme['text-basic-color']} />
+                </View>
+              )}
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <View
+            style={[
+              type === 'outgoing' ? style.fileViewRight : style.fileViewLeft,
+              style.fileView,
+            ]}>
+            <View style={style.fileAttachmentContainer}>
+              <View style={style.fileAttachmentView}>
+                <View style={style.attachmentIconView}>
+                  <FileIcon
+                    fill={
+                      type === 'outgoing'
+                        ? theme['color-basic-100']
+                        : theme['color-primary-default']
+                    }
+                  />
+                </View>
+                <View style={style.attachmentTextView}>
                   <CustomText
-                    style={type === 'outgoing' ? style.downloadRightText : style.downloadLeftText}>
-                    {i18n.t('CONVERSATION.DOWNLOAD')}
+                    style={type === 'outgoing' ? style.filenameRightText : style.filenameLeftText}>
+                    {fileName.length < 25
+                      ? `${fileName}`
+                      : `...${fileName.substr(fileName.length - 15)}`}
                   </CustomText>
-                </TouchableOpacity>
+                  <TouchableOpacity onPress={() => showAttachment({ type: 'file', dataUrl })}>
+                    <CustomText
+                      style={
+                        type === 'outgoing' ? style.downloadRightText : style.downloadLeftText
+                      }>
+                      {i18n.t('CONVERSATION.DOWNLOAD')}
+                    </CustomText>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>
-        </View>
-      )}
-    </React.Fragment>
-  );
+        )}
+      </React.Fragment>
+    );
+  }
+  return null;
 };
 
 ChatAttachmentItemComponent.propTypes = propTypes;

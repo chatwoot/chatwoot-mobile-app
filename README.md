@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/discord/647412545203994635" alt="Discord">
   <a href="https://discord.gg/cJXdrwS"><img src="https://img.shields.io/badge/chat-Discord-violet?logo=discord" alt="Chat on Discord"></a>
    <a href="http://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="Chat on Discord"></a>
- <img src="https://img.shields.io/github/license/chatwoot/chatwoot" alt="License">
+ <img src="https://img.shields.io/github/license/chatwoot/chatwoot-mobile-app" alt="License">
 </p>
 
 - **Supported Chatwoot version:** 2.0.0+

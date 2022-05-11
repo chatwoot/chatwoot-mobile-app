@@ -7,7 +7,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
-
+import * as Sentry from '@sentry/react-native';
 import NoNetworkBar from 'components/NoNetworkBar';
 import ErrorHelper from 'helpers/ErrorHelper';
 import { theme } from './theme';
@@ -62,4 +62,4 @@ const Chatwoot = () => {
     </React.Fragment>
   );
 };
-export default Chatwoot;
+export default Sentry.wrap(Chatwoot);

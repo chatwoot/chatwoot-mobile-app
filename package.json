@@ -110,9 +110,5 @@
       "eslint --fix",
       "git add"
     ]
-  },
-  "jest": {
-    "preset": "react-native",
-    "testRegex": "src/.*.spec.(js|jsx)$"
   }
 }

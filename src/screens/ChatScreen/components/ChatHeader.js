@@ -8,7 +8,12 @@ import { TouchableOpacity, View } from 'react-native';
 import UserAvatar from 'components/UserAvatar';
 import { getTypingUsersText, getCustomerDetails } from 'helpers';
 import CustomText from 'components/Text';
-import { unAssignConversation, toggleConversationStatus } from 'actions/conversation';
+import {
+  unAssignConversation,
+  toggleConversationStatus,
+  muteConversation,
+  unmuteConversation,
+} from 'actions/conversation';
 import ConversationAction from '../../ConversationAction/ConversationAction';
 import { captureEvent } from '../../../helpers/Analytics';
 
@@ -38,12 +43,24 @@ const styles = theme => ({
     borderBottomWidth: 1,
     borderBottomColor: theme['color-border'],
   },
+  actionIcon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
 
 const BackIcon = style => <Icon {...style} name="arrow-back-outline" height={40} width={24} />;
 
 const MenuIcon = style => {
   return <Icon {...style} name="more-vertical" height={40} width={20} />;
+};
+
+const ResolveIcon = style => {
+  return <Icon {...style} fill="#13ce66" name="checkmark-circle-outline" height={40} width={20} />;
+};
+
+const UnresolveIcon = style => {
+  return <Icon {...style} fill="#DBA224" name="undo-outline" height={40} width={20} />;
 };
 
 const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
@@ -81,7 +98,24 @@ const ChatHeader = ({
   const renderLeftControl = () => <BackAction onPress={onBackPress} />;
   const renderRightControl = () => {
     if (conversationDetails) {
-      return <TopNavigationAction onPress={showActionSheet} icon={MenuIcon} />;
+      const { status } = conversationDetails;
+      const openConversation = status === 'open';
+      const resolvedConversation = status === 'resolved';
+      return (
+        <View style={style.actionIcon}>
+          {openConversation && (
+            <TopNavigationAction
+              style={style.resolveIcon}
+              onPress={toggleStatusForConversations}
+              icon={ResolveIcon}
+            />
+          )}
+          {resolvedConversation && (
+            <TopNavigationAction onPress={toggleStatusForConversations} icon={UnresolveIcon} />
+          )}
+          <TopNavigationAction onPress={showActionSheet} icon={MenuIcon} />
+        </View>
+      );
     }
     return null;
   };
@@ -93,10 +127,6 @@ const ChatHeader = ({
         navigation.navigate('AgentScreen', { conversationDetails });
       }
     }
-    if (itemType === 'toggle_status') {
-      captureEvent({ eventName: 'Toggle conversation status' });
-      dispatch(toggleConversationStatus({ conversationId }));
-    }
     if (itemType === 'unassign') {
       captureEvent({ eventName: 'Toggle conversation status' });
       dispatch(
@@ -106,6 +136,25 @@ const ChatHeader = ({
         }),
       );
     }
+    if (itemType === 'mute_conversation') {
+      const { muted } = conversationDetails;
+      if (!muted) {
+        dispatch(muteConversation({ conversationId }));
+      }
+    }
+    if (itemType === 'unmute_conversation') {
+      const { muted } = conversationDetails;
+      if (muted) {
+        dispatch(unmuteConversation({ conversationId }));
+      }
+    }
+  };
+
+  const toggleStatusForConversations = () => {
+    try {
+      captureEvent({ eventName: 'Toggle conversation status' });
+      dispatch(toggleConversationStatus({ conversationId }));
+    } catch (error) {}
   };
 
   const typingUser = getTypingUsersText({

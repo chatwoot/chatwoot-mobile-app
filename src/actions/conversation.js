@@ -488,6 +488,26 @@ export const toggleConversationStatus =
     } catch (error) {}
   };
 
+export const muteConversation =
+  ({ conversationId }) =>
+  async dispatch => {
+    try {
+      const muteApiUrl = `conversations/${conversationId}/mute`;
+      await axios.post(muteApiUrl);
+      dispatch(getConversationDetails({ conversationId }));
+    } catch (error) {}
+  };
+
+export const unmuteConversation =
+  ({ conversationId }) =>
+  async dispatch => {
+    try {
+      const unmuteApiUrl = `conversations/${conversationId}/unmute`;
+      await axios.post(unmuteApiUrl);
+      dispatch(getConversationDetails({ conversationId }));
+    } catch (error) {}
+  };
+
 export const addOrUpdateActiveContacts =
   ({ contacts }) =>
   async (dispatch, getState) => {

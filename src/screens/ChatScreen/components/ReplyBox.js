@@ -26,6 +26,7 @@ const propTypes = {
 const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) => {
   const [isPrivate, setPrivateMode] = useState(false);
   const [message, setMessage] = useState('');
+  const [isExpanded, setExpandedView] = useState(false);
   const agents = useSelector(state => state.agent.data);
   const verifiedAgents = agents.filter(agent => agent.confirmed);
   const [filteredCannedResponses, setFilteredCannedResponses] = useState([]);
@@ -108,6 +109,30 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
     }
   };
 
+  const expandedInputFieldHeight = () => {
+    if (isExpanded) {
+      return {
+        height: 400,
+      };
+    } else {
+      return {
+        height: 40,
+      };
+    }
+  };
+
+  const expandedInputButtonIcons = () => {
+    if (isExpanded) {
+      return 'collapse-outline';
+    } else {
+      return 'expand-outline';
+    }
+  };
+
+  const onClickExpandReplyBox = () => {
+    setExpandedView(!isExpanded);
+  };
+
   // eslint-disable-next-line react/prop-types
   const renderSuggestions = ({ keyword, onSuggestionPress }) => {
     if (keyword == null || !isPrivate) {
@@ -150,7 +175,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
       )}
       <View style={isPrivate ? style.privateView : style.replyView}>
         <MentionInput
-          style={style.inputView}
+          style={[style.inputView, expandedInputFieldHeight()]}
           value={message}
           onChange={onNewMessageChange}
           partTypes={[
@@ -185,6 +210,15 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
                 onPress={togglePrivateMode}
               />
             </View>
+          </View>
+          <View style={style.expandButton}>
+            <Icon
+              name={expandedInputButtonIcons()}
+              width={32}
+              height={32}
+              fill={theme['text-hint-color']}
+              onPress={onClickExpandReplyBox}
+            />
           </View>
           <View style={style.sendButtonView}>
             <Icon
@@ -253,6 +287,9 @@ const styles = theme => ({
     paddingVertical: 0,
     backgroundColor: 'transparent',
     alignItems: 'flex-end',
+  },
+  expandButton: {
+    marginRight: 10,
   },
   overflowMenu: {
     padding: 8,

@@ -59,7 +59,7 @@ const ResolveIcon = style => {
   return <Icon {...style} fill="#13ce66" name="checkmark-circle-outline" height={40} width={20} />;
 };
 
-const UnresolveIcon = style => {
+const ReopenIcon = style => {
   return <Icon {...style} fill="#DBA224" name="undo-outline" height={40} width={20} />;
 };
 
@@ -111,7 +111,7 @@ const ChatHeader = ({
             />
           )}
           {resolvedConversation && (
-            <TopNavigationAction onPress={toggleStatusForConversations} icon={UnresolveIcon} />
+            <TopNavigationAction onPress={toggleStatusForConversations} icon={ReopenIcon} />
           )}
           <TopNavigationAction onPress={showActionSheet} icon={MenuIcon} />
         </View>

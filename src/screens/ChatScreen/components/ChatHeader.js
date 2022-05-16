@@ -64,14 +64,6 @@ const MenuIcon = style => {
   return <Icon {...style} name="more-vertical" height={40} width={20} />;
 };
 
-const ResolveIcon = style => {
-  return <Icon {...style} fill="#13ce66" name="checkmark-circle-outline" height={40} width={20} />;
-};
-
-const ReopenIcon = style => {
-  return <Icon {...style} fill="#DBA224" name="undo-outline" height={40} width={20} />;
-};
-
 const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
 
 const propTypes = {
@@ -104,6 +96,21 @@ const ChatHeader = ({
 
   const showActionSheet = () => {
     actionSheetRef.current?.setModalVisible();
+  };
+
+  const ResolveIcon = () => {
+    return (
+      <Icon
+        fill={theme['color-success-500']}
+        name="checkmark-circle-outline"
+        height={40}
+        width={20}
+      />
+    );
+  };
+
+  const ReopenIcon = () => {
+    return <Icon fill={theme['color-warning-600']} name="undo-outline" height={40} width={20} />;
   };
 
   const renderLeftControl = () => <BackAction onPress={onBackPress} />;

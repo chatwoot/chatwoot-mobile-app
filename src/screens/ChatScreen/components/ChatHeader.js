@@ -1,5 +1,11 @@
-import React, { createRef } from 'react';
-import { withStyles, Icon, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import React, { createRef, useState } from 'react';
+import {
+  withStyles,
+  Icon,
+  TopNavigation,
+  TopNavigationAction,
+  Spinner,
+} from '@ui-kitten/components';
 import ActionSheet from 'react-native-actions-sheet';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
@@ -47,6 +53,9 @@ const styles = theme => ({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  loadingSpinner: {
+    marginRight: 8,
+  },
 });
 
 const BackIcon = style => <Icon {...style} name="arrow-back-outline" height={40} width={24} />;
@@ -91,6 +100,8 @@ const ChatHeader = ({
   const actionSheetRef = createRef();
   const dispatch = useDispatch();
 
+  const [isLoading, setLoadingStatus] = useState(false);
+
   const showActionSheet = () => {
     actionSheetRef.current?.setModalVisible();
   };
@@ -103,15 +114,23 @@ const ChatHeader = ({
       const resolvedConversation = status === 'resolved';
       return (
         <View style={style.actionIcon}>
-          {openConversation && (
-            <TopNavigationAction
-              style={style.resolveIcon}
-              onPress={toggleStatusForConversations}
-              icon={ResolveIcon}
-            />
-          )}
-          {resolvedConversation && (
-            <TopNavigationAction onPress={toggleStatusForConversations} icon={ReopenIcon} />
+          {isLoading ? (
+            <View style={style.loadingSpinner}>
+              <Spinner size="small" />
+            </View>
+          ) : (
+            <View>
+              {openConversation && (
+                <TopNavigationAction
+                  style={style.resolveIcon}
+                  onPress={toggleStatusForConversations}
+                  icon={ResolveIcon}
+                />
+              )}
+              {resolvedConversation && (
+                <TopNavigationAction onPress={toggleStatusForConversations} icon={ReopenIcon} />
+              )}
+            </View>
           )}
           <TopNavigationAction onPress={showActionSheet} icon={MenuIcon} />
         </View>
@@ -151,10 +170,16 @@ const ChatHeader = ({
   };
 
   const toggleStatusForConversations = () => {
+    setLoadingStatus(true);
     try {
       captureEvent({ eventName: 'Toggle conversation status' });
       dispatch(toggleConversationStatus({ conversationId }));
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setTimeout(() => {
+        setLoadingStatus(false);
+      }, 1000);
+    }
   };
 
   const typingUser = getTypingUsersText({

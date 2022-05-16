@@ -68,10 +68,10 @@ const ReplyBox = ({
     setFilteredCannedResponses([]);
   };
 
-  const isEmailChannel = () => {
+  const isAnEmailChannelAndNotInPivateNote = () => {
     if (conversationDetails && conversationDetails.meta) {
       const channel = conversationDetails.meta.channel;
-      return channel === 'Channel::Email';
+      return channel === 'Channel::Email' && !isPrivate;
     }
     return false;
   };
@@ -177,7 +177,7 @@ const ReplyBox = ({
           onCannedReponseSelect={onCannedReponseSelect}
         />
       )}
-      {isEmailChannel() && (
+      {isAnEmailChannelAndNotInPivateNote() && (
         <View style={style.emailFields}>
           <View style={style.emailFieldsTextWrap}>
             <Text style={style.emailFieldLabel}>{'CC'}</Text>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Spinner, withStyles } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, SafeAreaView, SectionList, Linking } from 'react-native';
+import { View, SafeAreaView, SectionList } from 'react-native';
 import ChatMessage from './components/ChatMessage';
 import ChatMessageDate from './components/ChatMessageDate';
 import ReplyBox from './components/ReplyBox';
@@ -250,7 +250,11 @@ class ChatScreenComponent extends Component {
               </View>
             )}
           </View>
-          <ReplyBox conversationId={conversationId} cannedResponses={cannedResponses} />
+          <ReplyBox
+            conversationId={conversationId}
+            conversationDetails={conversationDetails}
+            cannedResponses={cannedResponses}
+          />
         </View>
       </SafeAreaView>
     );

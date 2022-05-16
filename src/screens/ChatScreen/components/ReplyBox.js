@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, TextInput, Text } from 'react-native';
 import { MentionInput } from 'react-native-controlled-mentions';
 import { withStyles, Icon } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
@@ -16,6 +16,7 @@ import MentionUser from './MentionUser.js';
 import { captureEvent } from 'helpers/Analytics';
 const propTypes = {
   conversationId: PropTypes.number,
+  conversationDetails: PropTypes.object,
   eva: PropTypes.shape({
     theme: PropTypes.object,
     style: PropTypes.object,
@@ -23,8 +24,15 @@ const propTypes = {
   cannedResponses: PropTypes.array.isRequired,
 };
 
-const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) => {
+const ReplyBox = ({
+  eva: { theme, style },
+  conversationId,
+  conversationDetails,
+  cannedResponses,
+}) => {
   const [isPrivate, setPrivateMode] = useState(false);
+  const [ccEmails, setCCEmails] = useState([]);
+  const [bccEmails, setBCCEmails] = useState([]);
   const [message, setMessage] = useState('');
   const agents = useSelector(state => state.agent.data);
   const verifiedAgents = agents.filter(agent => agent.confirmed);
@@ -46,12 +54,26 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
       hideCannedResponses();
     }
   };
+  const onCCMailChange = mail => {
+    setCCEmails(mail);
+  };
+  const onBCCMailChange = mail => {
+    setBCCEmails(mail);
+  };
   const showCannedResponses = ({ responses }) => {
     setFilteredCannedResponses(responses);
   };
 
   const hideCannedResponses = () => {
     setFilteredCannedResponses([]);
+  };
+
+  const isEmailChannel = () => {
+    if (conversationDetails && conversationDetails.meta) {
+      const channel = conversationDetails.meta.channel;
+      return channel === 'Channel::Email';
+    }
+    return false;
   };
 
   const onBlur = () => {
@@ -92,17 +114,24 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
       '[@$1](mention://user/$2/$1)',
     );
     if (message || attachmentDetails) {
+      const payload = {
+        conversationId,
+        message: { content: updatedMessage },
+        isPrivate,
+        file: attachmentDetails,
+      };
+      if (ccEmails) {
+        payload.message.cc_emails = ccEmails;
+      }
+      if (bccEmails) {
+        payload.message.bcc_emails = bccEmails;
+      }
       captureEvent({ eventName: 'Messaged sent' });
-      dispatch(
-        sendMessage({
-          conversationId,
-          message: updatedMessage,
-          isPrivate,
-          file: attachmentDetails,
-        }),
-      );
+      dispatch(sendMessage(payload));
 
       setMessage('');
+      setCCEmails('');
+      setBCCEmails('');
       setAttachmentDetails(null);
       setPrivateMode(false);
     }
@@ -148,6 +177,29 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
           onCannedReponseSelect={onCannedReponseSelect}
         />
       )}
+      {isEmailChannel() && (
+        <View style={style.emailFields}>
+          <View style={style.emailFieldsTextWrap}>
+            <Text style={style.emailFieldLabel}>{'CC'}</Text>
+            <TextInput
+              style={style.ccInputView}
+              value={ccEmails}
+              onChangeText={onCCMailChange}
+              placeholder="Emails separeted by commas"
+            />
+          </View>
+          <View style={style.emailFieldsTextWrap}>
+            <Text style={style.emailFieldLabel}>{'BCC'}</Text>
+            <TextInput
+              style={style.bccInputView}
+              value={bccEmails}
+              onChangeText={onBCCMailChange}
+              placeholder="Emails separeted by commas"
+            />
+          </View>
+        </View>
+      )}
+
       <View style={isPrivate ? style.privateView : style.replyView}>
         <MentionInput
           style={style.inputView}
@@ -223,6 +275,33 @@ const styles = theme => ({
     color: theme['text-basic-color'],
     paddingHorizontal: 8,
     paddingVertical: 16,
+    textAlignVertical: 'top',
+  },
+  emailFields: {
+    paddingRight: 8,
+    paddingLeft: 8,
+  },
+  emailFieldsTextWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    backgroundColor: theme['color-background-light'],
+  },
+  ccInputView: {
+    fontSize: theme['font-size-small'],
+    color: theme['text-basic-color'],
+    paddingHorizontal: 8,
+    paddingVertical: 10,
+    textAlignVertical: 'top',
+  },
+  bccInputView: {
+    fontSize: theme['font-size-small'],
+    color: theme['text-basic-color'],
+    borderTopColor: theme['color-border'],
+    borderTopWidth: 0.5,
+    width: '100%',
+    paddingHorizontal: 8,
+    paddingVertical: 10,
     textAlignVertical: 'top',
   },
   buttonViews: {

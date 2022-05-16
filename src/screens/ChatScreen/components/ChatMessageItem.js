@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { TouchableOpacity, Dimensions, View } from 'react-native';
+import { TouchableOpacity, Dimensions, View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import { withStyles, Icon } from '@ui-kitten/components';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -84,6 +84,32 @@ const styles = theme => ({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  mailHeadWrap: {
+    paddingBottom: 8,
+  },
+  emailFields: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 2,
+  },
+  emailFieldsLabelLeft: {
+    color: theme['text-light-color'],
+    fontSize: theme['font-size-extra-small'],
+    fontWeight: theme['font-semi-bold'],
+  },
+  emailFieldsLabelRight: {
+    color: theme['color-background'],
+    fontSize: theme['font-size-extra-small'],
+    fontWeight: theme['font-semi-bold'],
+  },
+  emailFieldsValueLeft: {
+    color: theme['text-light-color'],
+    fontSize: theme['font-size-extra-small'],
+  },
+  emailFieldsValueRight: {
+    color: theme['color-background'],
+    fontSize: theme['font-size-extra-small'],
+  },
 });
 
 const propTypes = {
@@ -98,6 +124,7 @@ const propTypes = {
       name: PropTypes.string,
     }),
     content: PropTypes.string,
+    content_attributes: PropTypes.object,
     private: PropTypes.bool,
   }),
   attachment: PropTypes.object,
@@ -109,6 +136,10 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
   const messageViewStyle = type === 'outgoing' ? style.messageRight : style.messageLeft;
   const messageTextStyle =
     type === 'outgoing' ? style.messageContentRight : style.messageContentLeft;
+  const emailHeadLabelStyle =
+    type === 'outgoing' ? style.emailFieldsLabelRight : style.emailFieldsLabelLeft;
+  const emailHeadTextStyle =
+    type === 'outgoing' ? style.emailFieldsValueRight : style.emailFieldsValueLeft;
   const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
 
   const handleURL = URL => {
@@ -141,12 +172,111 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     lineHeight: 20,
   };
 
+  const fromEmail = () => {
+    const from =
+      (message.content_attributes &&
+        message.content_attributes.email &&
+        message.content_attributes.email.from) ||
+      [];
+    return from.join(', ');
+  };
+
+  const toEmail = () => {
+    const from =
+      (message.content_attributes &&
+        message.content_attributes.email &&
+        message.content_attributes.email.to) ||
+      [];
+    return from.join(', ');
+  };
+
+  const ccEmail = () => {
+    if (type === 'incoming') {
+      const cc = (message.content_attributes && message.content_attributes.cc_email) || [];
+      return cc.join(', ');
+    }
+    if (type === 'outgoing') {
+      const cc = (message.content_attributes && message.content_attributes.cc_emails) || [];
+      return cc.join(', ');
+    }
+  };
+
+  const bccEmail = () => {
+    if (type === 'incoming') {
+      const bcc = (message.content_attributes && message.content_attributes.bcc_email) || [];
+      return bcc.join(', ');
+    }
+    if (type === 'outgoing') {
+      const bcc = (message.content_attributes && message.content_attributes.bcc_emails) || [];
+      return bcc.join(', ');
+    }
+  };
+
+  const subjectText = () => {
+    return (
+      (message.content_attributes &&
+        message.content_attributes.email &&
+        message.content_attributes.email.subject) ||
+      ''
+    );
+  };
+
+  const hasAnyEmailValues = () => {
+    return subjectText() || fromEmail() || toEmail() || ccEmail() || bccEmail();
+  };
+
   return (
     <TouchableOpacity
       onLongPress={showTooltip}
       style={[style.message, messageViewStyle, message.private && style.privateMessageContainer]}
       activeOpacity={0.95}>
       <View>
+        {hasAnyEmailValues() ? (
+          <View style={style.mailHeadWrap}>
+            {fromEmail() ? (
+              <View style={style.emailFields}>
+                <Text style={emailHeadLabelStyle}>{'From: '}</Text>
+                <CustomText style={emailHeadTextStyle}>{fromEmail()}</CustomText>
+              </View>
+            ) : null}
+
+            {toEmail() ? (
+              <View style={style.emailFields}>
+                <Text style={emailHeadLabelStyle}>{'To: '}</Text>
+                <CustomText style={emailHeadTextStyle}>{toEmail()}</CustomText>
+              </View>
+            ) : null}
+
+            {ccEmail() ? (
+              <View style={style.emailFields}>
+                <Text style={emailHeadLabelStyle}>{'CC: '}</Text>
+                <CustomText style={emailHeadTextStyle}>{ccEmail()}</CustomText>
+              </View>
+            ) : null}
+
+            {bccEmail() ? (
+              <View style={style.emailFields}>
+                <Text style={emailHeadLabelStyle}>{'BCC: '}</Text>
+                <CustomText style={emailHeadTextStyle}>{bccEmail()}</CustomText>
+              </View>
+            ) : null}
+
+            {subjectText() ? (
+              <View style={style.emailFields}>
+                <Text style={emailHeadLabelStyle}>{'Subject: '}</Text>
+                <CustomText style={emailHeadTextStyle}>{subjectText()}</CustomText>
+              </View>
+            ) : null}
+
+            <View style={style.dateView}>
+              {message.private && (
+                <View style={style.iconView}>
+                  <LockIcon style={style.icon} fill={theme['text-basic-color']} />
+                </View>
+              )}
+            </View>
+          </View>
+        ) : null}
         <Markdown
           debugPrintTree
           markdownit={md}

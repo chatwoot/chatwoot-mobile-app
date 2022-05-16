@@ -210,15 +210,15 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
                 onPress={togglePrivateMode}
               />
             </View>
-          </View>
-          <View style={style.expandButton}>
-            <Icon
-              name={expandedInputButtonIcons()}
-              width={32}
-              height={32}
-              fill={theme['text-hint-color']}
-              onPress={onClickExpandReplyBox}
-            />
+            <View style={style.expandButton}>
+              <Icon
+                name={expandedInputButtonIcons()}
+                width={32}
+                height={32}
+                fill={theme['text-hint-color']}
+                onPress={onClickExpandReplyBox}
+              />
+            </View>
           </View>
           <View style={style.sendButtonView}>
             <Icon
@@ -289,7 +289,7 @@ const styles = theme => ({
     alignItems: 'flex-end',
   },
   expandButton: {
-    marginRight: 10,
+    paddingLeft: 8,
   },
   overflowMenu: {
     padding: 8,

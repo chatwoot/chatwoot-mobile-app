@@ -109,7 +109,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
     }
   };
 
-  const inputFieldHeight = () => (isExpanded ? { height: 400 } : { height: 40 });
+  const inputFieldHeight = () => (isExpanded ? { height: 450 } : { maxHeight: 150 });
 
   const expandedInputButtonIcon = () => (isExpanded ? 'collapse-outline' : 'expand-outline');
 

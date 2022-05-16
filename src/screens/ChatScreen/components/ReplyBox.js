@@ -109,25 +109,9 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
     }
   };
 
-  const expandedInputFieldHeight = () => {
-    if (isExpanded) {
-      return {
-        height: 400,
-      };
-    } else {
-      return {
-        height: 40,
-      };
-    }
-  };
+  const inputFieldHeight = () => (isExpanded ? { height: 400 } : { height: 40 });
 
-  const expandedInputButtonIcons = () => {
-    if (isExpanded) {
-      return 'collapse-outline';
-    } else {
-      return 'expand-outline';
-    }
-  };
+  const expandedInputButtonIcon = () => (isExpanded ? 'collapse-outline' : 'expand-outline');
 
   const onClickExpandReplyBox = () => {
     setExpandedView(!isExpanded);
@@ -175,7 +159,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
       )}
       <View style={isPrivate ? style.privateView : style.replyView}>
         <MentionInput
-          style={[style.inputView, expandedInputFieldHeight()]}
+          style={[style.inputView, inputFieldHeight()]}
           value={message}
           onChange={onNewMessageChange}
           partTypes={[
@@ -204,17 +188,17 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
             <View style={style.privateNoteView}>
               <Icon
                 name="lock-outline"
-                width={32}
-                height={32}
+                width={24}
+                height={24}
                 fill={isPrivate ? theme['color-primary-default'] : theme['text-hint-color']}
                 onPress={togglePrivateMode}
               />
             </View>
             <View style={style.expandButton}>
               <Icon
-                name={expandedInputButtonIcons()}
-                width={32}
-                height={32}
+                name={expandedInputButtonIcon()}
+                width={24}
+                height={24}
                 fill={theme['text-hint-color']}
                 onPress={onClickExpandReplyBox}
               />
@@ -223,8 +207,8 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
           <View style={style.sendButtonView}>
             <Icon
               name="paper-plane"
-              width={32}
-              height={32}
+              width={24}
+              height={24}
               fill={
                 !(!message && !attachmentDetails)
                   ? theme['color-primary-default']
@@ -263,7 +247,8 @@ const styles = theme => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 6,
   },
   attachIconView: {
     flex: 1,
@@ -271,7 +256,7 @@ const styles = theme => ({
     alignItems: 'flex-end',
   },
   privateNoteView: {
-    paddingLeft: 8,
+    paddingLeft: 10,
   },
   sendButtonView: {
     flexDirection: 'row',
@@ -289,7 +274,7 @@ const styles = theme => ({
     alignItems: 'flex-end',
   },
   expandButton: {
-    paddingLeft: 8,
+    paddingLeft: 10,
   },
   overflowMenu: {
     padding: 8,

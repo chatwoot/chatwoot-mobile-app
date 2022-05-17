@@ -111,10 +111,21 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
 
   const inputFieldHeight = () => (isExpanded ? { height: 450 } : { maxHeight: 150 });
 
+  const inputFieldColor = () =>
+    !isPrivate
+      ? { backgroundColor: theme['color-background'] }
+      : { backgroundColor: theme['color-background-private'] };
+
   const expandedInputButtonIcon = () => (isExpanded ? 'collapse-outline' : 'expand-outline');
 
   const onClickExpandReplyBox = () => {
     setExpandedView(!isExpanded);
+  };
+
+  const sendMessageButtonWrapStyles = () => {
+    return !(!message && !attachmentDetails)
+      ? { backgroundColor: theme['color-info-100'] }
+      : { backgroundColor: theme['color-info-200'] };
   };
 
   // eslint-disable-next-line react/prop-types
@@ -159,7 +170,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
       )}
       <View style={isPrivate ? style.privateView : style.replyView}>
         <MentionInput
-          style={[style.inputView, inputFieldHeight()]}
+          style={[style.inputView, inputFieldHeight(), inputFieldColor()]}
           value={message}
           onChange={onNewMessageChange}
           partTypes={[
@@ -204,15 +215,16 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
               />
             </View>
           </View>
-          <View style={style.sendButtonView}>
+          <View style={[style.sendButtonView, sendMessageButtonWrapStyles()]}>
             <Icon
               name="paper-plane"
+              style={style.sendButton}
               width={24}
               height={24}
               fill={
                 !(!message && !attachmentDetails)
                   ? theme['color-primary-default']
-                  : theme['text-hint-color']
+                  : theme['color-background']
               }
               onPress={onNewMessageAdd}
             />
@@ -226,28 +238,32 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
 const styles = theme => ({
   replyView: {
     padding: 8,
+    paddingHorizontal: 14,
     backgroundColor: theme['background-basic-color-1'],
     borderTopColor: theme['color-border'],
     borderTopWidth: 1,
   },
   privateView: {
     padding: 8,
-    backgroundColor: theme['color-background-private'],
+    paddingHorizontal: 14,
+    backgroundColor: theme['color-background-private-light'],
     borderTopColor: theme['color-border'],
     borderTopWidth: 1,
   },
   inputView: {
     fontSize: theme['font-size-medium'],
     color: theme['text-basic-color'],
-    paddingHorizontal: 8,
-    paddingVertical: 16,
+    borderRadius: 16,
+    paddingTop: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 12,
     textAlignVertical: 'top',
+    textAlign: 'left',
   },
   buttonViews: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 6,
     paddingVertical: 6,
   },
   attachIconView: {
@@ -259,8 +275,8 @@ const styles = theme => ({
     paddingLeft: 10,
   },
   sendButtonView: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
+    padding: 8,
+    borderRadius: 30,
   },
   lockButton: {
     paddingHorizontal: 0,
@@ -268,10 +284,9 @@ const styles = theme => ({
     justifyContent: 'flex-start',
   },
   sendButton: {
-    paddingHorizontal: 0,
-    paddingVertical: 0,
+    padding: 12,
+    transform: [{ rotate: '45deg' }],
     backgroundColor: 'transparent',
-    alignItems: 'flex-end',
   },
   expandButton: {
     paddingLeft: 10,

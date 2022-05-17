@@ -59,7 +59,7 @@ const styles = theme => ({
     padding: 4,
   },
   privateMessageContainer: {
-    backgroundColor: theme['color-background-private'],
+    backgroundColor: theme['color-background-private-light'],
     borderColor: theme['color-border-activity'],
     borderWidth: 1,
     color: theme['text-basic-color'],

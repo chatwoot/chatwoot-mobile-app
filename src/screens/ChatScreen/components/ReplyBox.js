@@ -77,6 +77,10 @@ const ReplyBox = ({
     return false;
   };
 
+  const inputBorderColor = () => {
+    isAnEmailChannelAndNotInPivateNote() ? { borderTopWidth: 0 } : { borderTopWidth: 1 };
+  };
+
   const onBlur = () => {
     dispatch(toggleTypingStatus({ conversationId, typingStatus: 'off' }));
   };
@@ -220,7 +224,7 @@ const ReplyBox = ({
         </View>
       )}
 
-      <View style={isPrivate ? style.privateView : style.replyView}>
+      <View style={[isPrivate ? style.privateView : style.replyView, inputBorderColor()]}>
         <MentionInput
           style={[style.inputView, inputFieldHeight(), inputFieldColor()]}
           value={message}
@@ -293,7 +297,6 @@ const styles = theme => ({
     paddingHorizontal: 14,
     backgroundColor: theme['background-basic-color-1'],
     borderTopColor: theme['color-border'],
-    borderTopWidth: 1,
   },
   privateView: {
     padding: 6,
@@ -305,7 +308,7 @@ const styles = theme => ({
   inputView: {
     fontSize: theme['font-size-medium'],
     color: theme['text-basic-color'],
-    borderRadius: 12,
+    borderRadius: 8,
     paddingTop: 10,
     paddingHorizontal: 10,
     paddingVertical: 12,
@@ -332,7 +335,7 @@ const styles = theme => ({
     color: theme['text-basic-color'],
     backgroundColor: theme['color-background-light'],
     width: '92%',
-    borderRadius: 12,
+    borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 8,
     textAlignVertical: 'top',
@@ -340,7 +343,7 @@ const styles = theme => ({
   bccInputView: {
     backgroundColor: theme['color-background-light'],
     width: '92%',
-    borderRadius: 12,
+    borderRadius: 8,
     fontSize: theme['font-size-small'],
     color: theme['text-basic-color'],
     paddingHorizontal: 10,

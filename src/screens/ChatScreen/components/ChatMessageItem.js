@@ -61,7 +61,7 @@ const styles = theme => ({
     paddingTop: 4,
   },
   privateMessageContainer: {
-    backgroundColor: theme['color-background-private'],
+    backgroundColor: theme['color-background-private-light'],
     borderWidth: 1,
     borderColor: theme['color-border-private'],
     maxWidth: Dimensions.get('window').width - 40,

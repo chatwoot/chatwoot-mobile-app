@@ -1,4 +1,4 @@
-import React, { createRef, useState } from 'react';
+import React, { createRef } from 'react';
 import {
   withStyles,
   Icon,
@@ -8,7 +8,7 @@ import {
 } from '@ui-kitten/components';
 import ActionSheet from 'react-native-actions-sheet';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, View } from 'react-native';
 import UserAvatar from 'components/UserAvatar';
@@ -92,11 +92,12 @@ const ChatHeader = ({
   const actionSheetRef = createRef();
   const dispatch = useDispatch();
 
-  const [isLoading, setLoadingStatus] = useState(false);
-
   const showActionSheet = () => {
     actionSheetRef.current?.setModalVisible();
   };
+
+  const conversation = useSelector(state => state.conversation);
+  const { isChangingConversationStatus } = conversation;
 
   const ResolveIcon = () => {
     return (
@@ -121,7 +122,7 @@ const ChatHeader = ({
       const resolvedConversation = status === 'resolved';
       return (
         <View style={style.actionIcon}>
-          {isLoading ? (
+          {isChangingConversationStatus ? (
             <View style={style.loadingSpinner}>
               <Spinner size="small" />
             </View>
@@ -177,16 +178,10 @@ const ChatHeader = ({
   };
 
   const toggleStatusForConversations = () => {
-    setLoadingStatus(true);
     try {
       captureEvent({ eventName: 'Toggle conversation status' });
       dispatch(toggleConversationStatus({ conversationId }));
-    } catch (error) {
-    } finally {
-      setTimeout(() => {
-        setLoadingStatus(false);
-      }, 1000);
-    }
+    } catch (error) {}
   };
 
   const typingUser = getTypingUsersText({

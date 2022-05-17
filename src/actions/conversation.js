@@ -12,6 +12,8 @@ import {
   UPDATE_MESSAGE,
   ALL_MESSAGES_LOADED,
   ALL_CONVERSATIONS_LOADED,
+  CHANGING_CONVERSATION_STATUS,
+  CHANGED_CONVERSATION_STATUS,
   SEND_MESSAGE,
   SEND_MESSAGE_SUCCESS,
   SEND_MESSAGE_ERROR,
@@ -477,6 +479,7 @@ export const loadInitialMessage =
 export const toggleConversationStatus =
   ({ conversationId }) =>
   async (dispatch, getState) => {
+    dispatch({ type: CHANGING_CONVERSATION_STATUS });
     try {
       const apiUrl = `conversations/${conversationId}/toggle_status`;
       setTimeout(() => {
@@ -484,6 +487,7 @@ export const toggleConversationStatus =
       }, 10);
 
       await axios.post(apiUrl);
+      dispatch({ type: CHANGED_CONVERSATION_STATUS });
       dispatch(getConversationDetails({ conversationId }));
     } catch (error) {}
   };

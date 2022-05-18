@@ -74,6 +74,7 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
         />
       )}
 
+
       <ConversationActionItem
         onPressItem={onShare}
         text={i18n.t('CONVERSATION.SHARE')}

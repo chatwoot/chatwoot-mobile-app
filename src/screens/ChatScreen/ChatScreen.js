@@ -149,9 +149,17 @@ class ChatScreenComponent extends Component {
     );
   };
 
-  renderMessage = item => (
-    <ChatMessage message={item.item} key={item.index} showAttachment={this.showAttachment} />
-  );
+  renderMessage = item => {
+    const { meta } = this.props.route.params;
+    return (
+      <ChatMessage
+        meta={meta}
+        message={item.item}
+        key={item.index}
+        showAttachment={this.showAttachment}
+      />
+    );
+  };
 
   scrollToBottom = () => {
     this.setState({

@@ -88,8 +88,6 @@ const styles = theme => ({
     paddingBottom: 8,
   },
   emailFields: {
-    flexDirection: 'row',
-    alignItems: 'center',
     paddingVertical: 2,
   },
   emailFieldsLabelLeft: {
@@ -235,36 +233,46 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
           <View style={style.mailHeadWrap}>
             {fromEmail() ? (
               <View style={style.emailFields}>
-                <Text style={emailHeadLabelStyle}>{'From: '}</Text>
-                <CustomText style={emailHeadTextStyle}>{fromEmail()}</CustomText>
+                <Text style={emailHeadLabelStyle}>
+                  {'From: '}
+                  <CustomText style={emailHeadTextStyle}>{fromEmail()}</CustomText>
+                </Text>
               </View>
             ) : null}
 
             {toEmail() ? (
               <View style={style.emailFields}>
-                <Text style={emailHeadLabelStyle}>{'To: '}</Text>
-                <CustomText style={emailHeadTextStyle}>{toEmail()}</CustomText>
+                <Text style={emailHeadLabelStyle}>
+                  {'To: '}
+                  <CustomText style={emailHeadTextStyle}>{toEmail()}</CustomText>
+                </Text>
               </View>
             ) : null}
 
             {ccEmail() ? (
               <View style={style.emailFields}>
-                <Text style={emailHeadLabelStyle}>{'CC: '}</Text>
-                <CustomText style={emailHeadTextStyle}>{ccEmail()}</CustomText>
+                <Text style={emailHeadLabelStyle}>
+                  {'CC: '}
+                  <CustomText style={emailHeadTextStyle}>{ccEmail()}</CustomText>
+                </Text>
               </View>
             ) : null}
 
             {bccEmail() ? (
               <View style={style.emailFields}>
-                <Text style={emailHeadLabelStyle}>{'BCC: '}</Text>
-                <CustomText style={emailHeadTextStyle}>{bccEmail()}</CustomText>
+                <Text style={emailHeadLabelStyle}>
+                  {'BCC: '}
+                  <CustomText style={emailHeadTextStyle}>{bccEmail()}</CustomText>
+                </Text>
               </View>
             ) : null}
 
             {subjectText() ? (
               <View style={style.emailFields}>
-                <Text style={emailHeadLabelStyle}>{'Subject: '}</Text>
-                <CustomText style={emailHeadTextStyle}>{subjectText()}</CustomText>
+                <Text style={emailHeadLabelStyle}>
+                  {'Subject: '}
+                  <CustomText style={emailHeadTextStyle}>{subjectText()}</CustomText>
+                </Text>
               </View>
             ) : null}
 

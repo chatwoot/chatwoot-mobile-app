@@ -99,8 +99,8 @@ const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment 
     <React.Fragment>
       <Icon
         name="attach-outline"
-        width={32}
-        height={32}
+        width={24}
+        height={24}
         onPress={handleChoosePhoto}
         isAttachmentMode
         fill={theme['text-hint-color']}

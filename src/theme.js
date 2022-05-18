@@ -93,7 +93,8 @@ export const theme = {
   'color-background-activity': '#e7eefb',
   'color-border-activity': '#c8d6e6',
   'color-border-private': '#ffdb7f',
-  'color-background-private': '#fff3d5',
+  'color-background-private': '#FFEDBF',
+  'color-background-private-light': '#FFF4D9',
 
   'color-message-left': '#3c4858',
   'item-border-color': '#f0f4f5',

@@ -8,7 +8,7 @@ import CustomText from '../../../components/Text';
 import { View } from 'react-native-animatable';
 
 const styles = theme => ({
-  bannerWraper: {
+  bannerWrapper: {
     alignItems: 'flex-start',
     flexDirection: 'row',
     padding: 8,

@@ -93,7 +93,7 @@ const BannerComponent = ({
 
   return (
     <React.Fragment>
-      <TouchableOpacity style={[style.bannerWraper, bannerColor()]}>
+      <TouchableOpacity style={[style.bannerWrapper, bannerColor()]}>
         <View style={style.bannerWrap}>
           <View>
             <CustomText style={[style.bannerText, bannerTextColor()]}>

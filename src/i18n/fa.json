@@ -154,12 +154,12 @@
   },
   "BANNER": {
     "TWILIO_WHATSAPP": {
-      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "TEXT": "شما فقط با استفاده از یک پیام الگو به این مکالمه می‌توانید پاسخ دهید ",
       "HREF_TEXT": "محدودیت ۲۴ ساعته پنجره پیام",
       "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
     },
     "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
+      "TEXT": "شما نمی‌توانید پاسخ بدهید به دلیل ",
       "HREF_TEXT": "محدودیت ۲۴ ساعته پنجره پیام",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }

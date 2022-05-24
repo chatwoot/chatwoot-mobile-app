@@ -22,6 +22,8 @@ import {
 } from 'actions/conversation';
 import ConversationAction from '../../ConversationAction/ConversationAction';
 import { captureEvent } from '../../../helpers/Analytics';
+import Banner from 'src/screens/ChatScreen/components/Banner.js';
+import i18n from 'i18n';
 
 const styles = theme => ({
   headerView: {
@@ -147,6 +149,11 @@ const ChatHeader = ({
     return null;
   };
 
+  const isAWhatsappChannel =
+    conversationMetaDetails && conversationMetaDetails.channel === 'Channel::Whatsapp';
+
+  const canReplyInCurrentChat = conversationDetails && conversationDetails.can_reply === true;
+
   const onPressAction = ({ itemType }) => {
     actionSheetRef.current?.hide();
     if (itemType === 'assignee') {
@@ -234,6 +241,28 @@ const ChatHeader = ({
         accessoryLeft={renderLeftControl}
         accessoryRight={renderRightControl}
       />
+      {conversationDetails ? (
+        <View>
+          {!canReplyInCurrentChat && isAWhatsappChannel ? (
+            <Banner
+              text={i18n.t('BANNER.TWILIO_WHATSAPP.TEXT')}
+              hrefText={i18n.t('BANNER.TWILIO_WHATSAPP.HREF_TEXT')}
+              hrefLink={i18n.t('BANNER.TWILIO_WHATSAPP.HREF_LINK')}
+              color={'alert'}
+              closeButton={false}
+            />
+          ) : null}
+          {!canReplyInCurrentChat && !isAWhatsappChannel ? (
+            <Banner
+              text={i18n.t('BANNER.FACEBOOK.TEXT')}
+              hrefText={i18n.t('BANNER.FACEBOOK.HREF_TEXT')}
+              hrefLink={i18n.t('BANNER.FACEBOOK.HREF_LINK')}
+              color={'alert'}
+              closeButton={false}
+            />
+          ) : null}
+        </View>
+      ) : null}
       <ActionSheet ref={actionSheetRef} gestureEnabled defaultOverlayOpacity={0.3}>
         <ConversationAction
           conversationDetails={conversationDetails}

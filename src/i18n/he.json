@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "כתוב הודעה",
     "TYPING": "מקליד",
     "ALL_CONVERSATION_LOADED": "כל השיחות נטענו",
-    "RESOLVE": "פתור את השיחה",
-    "RE_OPEN": "פתח מחדש את השיחה",
     "ASSIGN": "הקצה שיחה",
     "FILE_SIZE_LIMIT": "הקובץ עובר את מגבלת 5MB לקבצים מצורפים",
     "SHARE": "Share conversation",
     "CANCEL": "ביטול",
     "PRIVATE_MSG_INPUT": "זה יהיה גלוי רק לסוכנים",
-    "UN_ASSIGN": "שיחה שלא הוקצתה"
+    "UN_ASSIGN": "שיחה שלא הוקצתה",
+    "MUTE_CONVERSATION": "Mute conversation",
+    "UNMUTE_CONVERSATION": "בטל השתקת שיחה"
   },
   "FILTER": {
     "HEADER_TITLE": "סינון שיחות",

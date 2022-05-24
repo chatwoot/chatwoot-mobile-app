@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Gõ tin nhắn",
     "TYPING": "đang gõ",
     "ALL_CONVERSATION_LOADED": "Tất cả các cuộc trò chuyện đã được tải",
-    "RESOLVE": "Giải quyết cuộc trò chuyện",
-    "RE_OPEN": "Mở lại cuộc trò chuyện",
     "ASSIGN": "Phân công cuộc trò chuyện",
     "FILE_SIZE_LIMIT": "File vượt quá giới hạn tối đa 5MB",
     "SHARE": "Chia sẻ cuộc trò chuyện",
     "CANCEL": "Huỷ",
     "PRIVATE_MSG_INPUT": "Chỉ hiện cho nhà cung cấp",
-    "UN_ASSIGN": "Bỏ phân công cuộc trò chuyện"
+    "UN_ASSIGN": "Bỏ phân công cuộc trò chuyện",
+    "MUTE_CONVERSATION": "Tắt tiếng",
+    "UNMUTE_CONVERSATION": "Bật tiếng cuộc trò chuyện"
   },
   "FILTER": {
     "HEADER_TITLE": "Bộ lọc Cuộc trò chuyện",

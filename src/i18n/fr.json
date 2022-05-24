@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Tapez un message",
     "TYPING": "en cours d'écriture",
     "ALL_CONVERSATION_LOADED": "Toutes les conversations ont été chargées",
-    "RESOLVE": "Reprendre la conversation",
-    "RE_OPEN": "Reprendre la conversation",
     "ASSIGN": "Affecter une conversation",
     "FILE_SIZE_LIMIT": "Le fichier dépasse la limite de 5 Mo des pièces jointes",
     "SHARE": "Partager la conversation",
     "CANCEL": "Annuler",
     "PRIVATE_MSG_INPUT": "Ceci ne sera visible qu'aux Agents",
-    "UN_ASSIGN": "Retirer la conversation"
+    "UN_ASSIGN": "Retirer la conversation",
+    "MUTE_CONVERSATION": "Mute conversation",
+    "UNMUTE_CONVERSATION": "Unmute conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtrer les conversations",

@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Tastați mesajul aici",
     "TYPING": "tastează",
     "ALL_CONVERSATION_LOADED": "Toate conversațiile încărcate",
-    "RESOLVE": "Rezolvarea conversației",
-    "RE_OPEN": "Redeschiderea conversației",
     "ASSIGN": "Atribuirea conversației",
     "FILE_SIZE_LIMIT": "Fișierul depășește limita de atașare de 5MB",
     "SHARE": "Partajarea conversației",
     "CANCEL": "Renunță",
     "PRIVATE_MSG_INPUT": "Acest lucru va fi vizibil numai agenților",
-    "UN_ASSIGN": "Anularea atribuirii conversației"
+    "UN_ASSIGN": "Anularea atribuirii conversației",
+    "MUTE_CONVERSATION": "Silențios conversația",
+    "UNMUTE_CONVERSATION": "Sunet conversația"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtru conversație",

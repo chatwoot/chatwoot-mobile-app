@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Digita messaggio",
     "TYPING": "digitando",
     "ALL_CONVERSATION_LOADED": "Tutte le conversazioni sono caricate",
-    "RESOLVE": "Risolvi la conversazione",
-    "RE_OPEN": "Riapri la conversazione",
     "ASSIGN": "Assegna conversazione",
     "FILE_SIZE_LIMIT": "Il file supera il limite di 5MB per l'allegato",
     "SHARE": "Condividi conversazione",
     "CANCEL": "Annulla",
     "PRIVATE_MSG_INPUT": "Questo sarà visibile solo agli agenti",
-    "UN_ASSIGN": "Annulla l'assegnazione della conversazione"
+    "UN_ASSIGN": "Annulla l'assegnazione della conversazione",
+    "MUTE_CONVERSATION": "Silenzia conversazione",
+    "UNMUTE_CONVERSATION": "Riattiva conversazione"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtro conversazione",

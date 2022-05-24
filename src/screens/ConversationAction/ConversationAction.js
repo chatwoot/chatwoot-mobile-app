@@ -63,7 +63,13 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
       )}
       <ConversationActionItem
         onPressItem={onPressAction}
-        text={i18n.t(`CONVERSATION.${CONVERSATION_TOGGLE_STATUS[conversationStatus]}`)}
+        text={i18n.t(
+          `CONVERSATION.${
+            CONVERSATION_TOGGLE_STATUS[conversationStatus]
+              ? CONVERSATION_TOGGLE_STATUS[conversationStatus]
+              : CONVERSATION_TOGGLE_STATUS.open
+          }`,
+        )}
         itemType="toggle_status"
       />
 

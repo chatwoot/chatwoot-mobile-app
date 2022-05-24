@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "സന്ദേശം ടൈപ്പ് ചെയ്യുക",
     "TYPING": "ടൈപ്പിംഗ്",
     "ALL_CONVERSATION_LOADED": "എല്ലാ സംഭാഷണങ്ങളും ലോഡ് ചെയ്തു",
-    "RESOLVE": "സംഭാഷണം പരിഹരിക്കുക",
-    "RE_OPEN": "സംഭാഷണം വീണ്ടും തുറക്കുക",
     "ASSIGN": "സംഭാഷണം നിയോഗിക്കുക",
     "FILE_SIZE_LIMIT": "ഫയൽ 5MB അറ്റാച്ച്‌മെന്റ് പരിധി കവിഞ്ഞു",
     "SHARE": "സംഭാഷണം പങ്കിടുക",
     "CANCEL": "റദ്ദാക്കുക",
     "PRIVATE_MSG_INPUT": "ഇത് ഏജന്റുമാർക്ക് മാത്രമേ ദൃശ്യമാകൂ",
-    "UN_ASSIGN": "സംഭാഷണം നിയോഗിക്കാതിരിക്കുക"
+    "UN_ASSIGN": "സംഭാഷണം നിയോഗിക്കാതിരിക്കുക",
+    "MUTE_CONVERSATION": "Mute conversation",
+    "UNMUTE_CONVERSATION": "Unmute conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "സംഭാഷണ ഫിൽട്ടർ",

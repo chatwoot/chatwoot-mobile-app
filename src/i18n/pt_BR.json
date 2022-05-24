@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Tipo da Mensagem",
     "TYPING": "digitando",
     "ALL_CONVERSATION_LOADED": "Todas as conversas foram carregadas",
-    "RESOLVE": "Reabrir conversa",
-    "RE_OPEN": "Reabrir conversa",
     "ASSIGN": "Atribuir conversa",
     "FILE_SIZE_LIMIT": "O arquivo excede o limite de anexos de 5MB",
     "SHARE": "Compartilhar conversas",
     "CANCEL": "Cancelar",
     "PRIVATE_MSG_INPUT": "Isto será visível apenas para Agentes",
-    "UN_ASSIGN": "Desassociar conversa"
+    "UN_ASSIGN": "Desassociar conversa",
+    "MUTE_CONVERSATION": "Silenciar conversa",
+    "UNMUTE_CONVERSATION": "Não silenciar conversa"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtro da Conversa",

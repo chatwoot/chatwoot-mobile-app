@@ -1,22 +1,22 @@
 import React, { useEffect, useRef, useState, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Linking, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import PropTypes from 'prop-types';
-import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ConfigureURLScreen from './screens/ConfigureURLScreen/ConfigureURLScreen';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import TabBar from './components/TabBar';
 import ConversationList from './screens/ConversationList/ConversationList';
+import NotificationScreen from './screens/Notification/NotificationScreen';
 import SettingsScreen from './screens/Settings/SettingsScreen';
 import LanguageScreen from './screens/Language/LanguageScreen';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
 import ConversationFilter from './screens/ConversationFilter/ConversationFilter';
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
-import NotificationScreen from './screens/Notification/NotificationScreen';
 import AccountScreen from './screens/Account/AccountScreen';
 import AvailabilityScreen from './screens/Availability/Availability';
 import NotificationPreference from './screens/NotificationPreference/NotificationPreference';
@@ -34,33 +34,33 @@ import { withStyles } from '@ui-kitten/components';
 import { captureScreen } from './helpers/Analytics';
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
-messaging().setBackgroundMessageHandler(async (remoteMessage) => {});
+messaging().setBackgroundMessageHandler(async remoteMessage => {});
 
 const HomeStack = () => (
-  <Stack.Navigator initialRouteName="ConversationList" headerMode="none">
+  <Stack.Navigator initialRouteName="ConversationList" screenOptions={{ headerShown: false }}>
     <Stack.Screen name="ConversationList" component={ConversationList} />
   </Stack.Navigator>
 );
 
 const SettingsStack = () => (
-  <Stack.Navigator initialRouteName="Settings" headerMode={'none'}>
+  <Stack.Navigator initialRouteName="Settings" screenOptions={{ headerShown: false }}>
     <Stack.Screen name="Settings" component={SettingsScreen} />
   </Stack.Navigator>
 );
 
 const NotificationStack = () => (
-  <Stack.Navigator initialRouteName="Notification" headerMode={'none'}>
+  <Stack.Navigator initialRouteName="Notification" screenOptions={{ headerShown: false }}>
     <Tab.Screen name="Notification" component={NotificationScreen} />
   </Stack.Navigator>
 );
 
 const TabStack = () => (
-  <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
-    <Tab.Screen name="Home" component={HomeStack} />
-    <Tab.Screen name="Notification" component={NotificationStack} />
-    <Tab.Screen name="Settings" component={SettingsStack} />
+  <Tab.Navigator screenOptions={{ headerShown: false }} tabBar={props => <TabBar {...props} />}>
+    <Tab.Screen name="HomeTab" component={HomeStack} />
+    <Tab.Screen name="NotificationTab" component={NotificationStack} />
+    <Tab.Screen name="SettingsTab" component={SettingsStack} />
   </Tab.Navigator>
 );
 
@@ -110,7 +110,7 @@ const useDeepLinkURL = () => {
   return { linkedURL, resetURL };
 };
 
-const _handleOpenURL = (event) => {
+const _handleOpenURL = event => {
   const { url } = event;
   if (url) {
     doDeepLinking({ url });
@@ -121,10 +121,10 @@ const App = ({ eva: { style } }) => {
   const dispatch = useDispatch();
   const routeNameRef = useRef();
 
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const isUrlSet = useSelector((state) => state.settings.isUrlSet);
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const isUrlSet = useSelector(state => state.settings.isUrlSet);
 
-  const locale = useSelector((state) => state.settings.localeValue);
+  const locale = useSelector(state => state.settings.localeValue);
   const { linkedURL, resetURL } = useDeepLinkURL();
 
   useEffect(() => {
@@ -134,18 +134,18 @@ const App = ({ eva: { style } }) => {
   useEffect(() => {
     dispatch(resetConversation());
     // Notification caused app to open from foreground state
-    messaging().onMessage((remoteMessage) => {
+    messaging().onMessage(remoteMessage => {
       // handlePush({ remoteMessage, type: 'foreground' });
     });
 
     // Notification caused app to open from background state
-    messaging().onNotificationOpenedApp((remoteMessage) => {
+    messaging().onNotificationOpenedApp(remoteMessage => {
       handlePush({ remoteMessage, type: 'background' });
     });
     // Notification caused app to open from quit state
     messaging()
       .getInitialNotification()
-      .then((remoteMessage) => {
+      .then(remoteMessage => {
         if (remoteMessage) {
           handlePush({ remoteMessage, type: 'quite' });
           setTimeout(() => {
@@ -160,7 +160,6 @@ const App = ({ eva: { style } }) => {
   }
 
   i18n.locale = locale;
-
   return (
     <KeyboardAvoidingView
       style={style.container}
@@ -181,7 +180,7 @@ const App = ({ eva: { style } }) => {
           }}>
           <Stack.Navigator
             initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'}
-            headerMode={'none'}>
+            screenOptions={{ headerShown: false }}>
             {isLoggedIn ? (
               <Fragment>
                 <Stack.Screen name="Tab" component={TabStack} />
@@ -212,7 +211,7 @@ const App = ({ eva: { style } }) => {
   );
 };
 
-const styles = (theme) => ({
+const styles = theme => ({
   container: {
     flex: 1,
   },

@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Escribir mensaje",
     "TYPING": "escribiendo",
     "ALL_CONVERSATION_LOADED": "Todas las conversaciones cargadas",
-    "RESOLVE": "Resolver conversación",
-    "RE_OPEN": "Resolver conversación",
     "ASSIGN": "Asignar conversación",
     "FILE_SIZE_LIMIT": "El archivo supera el límite de 5MB de archivos adjuntos",
     "SHARE": "Compartir la conversación",
     "CANCEL": "Cancelar",
     "PRIVATE_MSG_INPUT": "Esto será visible sólo para los agentes",
-    "UN_ASSIGN": "Desasignar conversación"
+    "UN_ASSIGN": "Desasignar conversación",
+    "MUTE_CONVERSATION": "Silenciar conversación",
+    "UNMUTE_CONVERSATION": "Quitar silencio de conversación"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtro de conversación",

@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Gépeld az üzeneted",
     "TYPING": "gépel",
     "ALL_CONVERSATION_LOADED": "Minden beszélgetés betöltve",
-    "RESOLVE": "Beszélgetés megoldása",
-    "RE_OPEN": "Beszélgetés újranyitása",
     "ASSIGN": "Beszélgetés hozzárendelése",
     "FILE_SIZE_LIMIT": "A file nagyobb az 5MB-os limitnél",
     "SHARE": "Share conversation",
     "CANCEL": "Mégse",
     "PRIVATE_MSG_INPUT": "Ezt csak ügynökök láthatják",
-    "UN_ASSIGN": "Beszélgetés hozzárendelés törlése"
+    "UN_ASSIGN": "Beszélgetés hozzárendelés törlése",
+    "MUTE_CONVERSATION": "Mute conversation",
+    "UNMUTE_CONVERSATION": "Unmute conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Beszélgetés szűrő",

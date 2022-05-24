@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Nachricht eingeben",
     "TYPING": "tippt",
     "ALL_CONVERSATION_LOADED": "Alle Konversationen geladen",
-    "RESOLVE": "Konversation lösen",
-    "RE_OPEN": "Konversation wieder öffnen",
     "ASSIGN": "Konversation zuweisen",
     "FILE_SIZE_LIMIT": "Datei überschreitet das Limit von 5 MB",
     "SHARE": "Konversation teilen",
     "CANCEL": "Abbrechen",
     "PRIVATE_MSG_INPUT": "Dies ist nur für Agenten sichtbar",
-    "UN_ASSIGN": "Zuweisung entfernen"
+    "UN_ASSIGN": "Zuweisung entfernen",
+    "MUTE_CONVERSATION": "Konversation stummschalten",
+    "UNMUTE_CONVERSATION": "Konversation entstummen"
   },
   "FILTER": {
     "HEADER_TITLE": "Konversations-Filter",

@@ -334,14 +334,16 @@ export const sendMessage = payload => async dispatch => {
         type: file.type,
       });
     }
-    if (message && message.content) {
-      formData.append('content', message.content);
-    }
-    if (message && message.cc_emails) {
-      formData.append('cc_emails', message.cc_emails);
-    }
-    if (message && message.bcc_emails) {
-      formData.append('bcc_emails', message.bcc_emails);
+    if (message) {
+      if (message.content) {
+        formData.append('content', message.content);
+      }
+      if (message.cc_emails) {
+        formData.append('cc_emails', message.cc_emails);
+      }
+      if (message.bcc_emails) {
+        formData.append('bcc_emails', message.bcc_emails);
+      }
     }
     formData.append('private', isPrivate);
     const apiUrl = `conversations/${conversationId}/messages`;

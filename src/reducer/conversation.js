@@ -12,6 +12,8 @@ import {
   UPDATE_MESSAGE,
   ALL_MESSAGES_LOADED,
   ALL_CONVERSATIONS_LOADED,
+  CHANGING_CONVERSATION_STATUS,
+  CHANGED_CONVERSATION_STATUS,
   SET_CONVERSATION,
   GET_CANNED_RESPONSES,
   GET_CANNED_RESPONSES_SUCCESS,
@@ -32,6 +34,7 @@ const initialState = {
   isFetching: false,
   isAllConversationsLoaded: false,
   isAllMessagesLoaded: false,
+  isChangingConversationStatus: false,
   conversationStatus: 'open',
   isAssigneeUpdating: false,
   data: {
@@ -179,6 +182,20 @@ export default (state = initialState, action) => {
         ...state,
         isAllConversationsLoaded: true,
         isFetching: false,
+      };
+    }
+
+    case CHANGING_CONVERSATION_STATUS: {
+      return {
+        ...state,
+        isChangingConversationStatus: true,
+      };
+    }
+
+    case CHANGED_CONVERSATION_STATUS: {
+      return {
+        ...state,
+        isChangingConversationStatus: false,
       };
     }
 

@@ -34,7 +34,6 @@ const ReplyBox = ({
   const [ccEmails, setCCEmails] = useState([]);
   const [bccEmails, setBCCEmails] = useState([]);
   const [message, setMessage] = useState('');
-  const [isExpanded, setExpandedView] = useState(false);
   const agents = useSelector(state => state.agent.data);
   const verifiedAgents = agents.filter(agent => agent.confirmed);
   const [filteredCannedResponses, setFilteredCannedResponses] = useState([]);
@@ -142,18 +141,10 @@ const ReplyBox = ({
     }
   };
 
-  const inputFieldHeight = () => (isExpanded ? { height: 450 } : { maxHeight: 150 });
-
   const inputFieldColor = () =>
     !isPrivate
       ? { backgroundColor: theme['color-background'] }
       : { backgroundColor: theme['color-background-private'] };
-
-  const expandedInputButtonIcon = () => (isExpanded ? 'collapse-outline' : 'expand-outline');
-
-  const onClickExpandReplyBox = () => {
-    setExpandedView(!isExpanded);
-  };
 
   const sendMessageButtonWrapStyles = () => {
     return !(!message && !attachmentDetails)
@@ -226,7 +217,7 @@ const ReplyBox = ({
 
       <View style={[isPrivate ? style.privateView : style.replyView, inputBorderColor()]}>
         <MentionInput
-          style={[style.inputView, inputFieldHeight(), inputFieldColor()]}
+          style={[style.inputView, inputFieldColor()]}
           value={message}
           onChange={onNewMessageChange}
           partTypes={[
@@ -259,15 +250,6 @@ const ReplyBox = ({
                 height={24}
                 fill={isPrivate ? theme['color-primary-default'] : theme['text-hint-color']}
                 onPress={togglePrivateMode}
-              />
-            </View>
-            <View style={style.expandButton}>
-              <Icon
-                name={expandedInputButtonIcon()}
-                width={24}
-                height={24}
-                fill={theme['text-hint-color']}
-                onPress={onClickExpandReplyBox}
               />
             </View>
           </View>
@@ -314,6 +296,7 @@ const styles = theme => ({
     paddingVertical: 12,
     textAlignVertical: 'top',
     textAlign: 'left',
+    maxHeight: 160,
   },
   emailFields: {
     paddingHorizontal: 12,
@@ -362,7 +345,7 @@ const styles = theme => ({
     alignItems: 'flex-end',
   },
   privateNoteView: {
-    paddingLeft: 10,
+    paddingLeft: 12,
   },
   sendButtonView: {
     padding: 8,
@@ -377,9 +360,6 @@ const styles = theme => ({
     padding: 12,
     transform: [{ rotate: '45deg' }],
     backgroundColor: 'transparent',
-  },
-  expandButton: {
-    paddingLeft: 10,
   },
   overflowMenu: {
     padding: 8,

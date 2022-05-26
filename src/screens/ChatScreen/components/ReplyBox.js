@@ -195,7 +195,7 @@ const ReplyBox = ({
       {isAnEmailChannelAndNotInPivateNote() && (
         <View style={style.emailFields}>
           <View style={style.emailFieldsTextWrap}>
-            <Text style={style.emailFieldLabel}>{'CC'}</Text>
+            <Text style={style.emailFieldLabel}>{'Cc'}</Text>
             <TextInput
               style={style.ccInputView}
               value={ccEmails}
@@ -204,7 +204,7 @@ const ReplyBox = ({
             />
           </View>
           <View style={style.emailFieldsTextWrap}>
-            <Text style={style.emailFieldLabel}>{'BCC'}</Text>
+            <Text style={style.emailFieldLabel}>{'Bcc'}</Text>
             <TextInput
               style={style.bccInputView}
               value={bccEmails}

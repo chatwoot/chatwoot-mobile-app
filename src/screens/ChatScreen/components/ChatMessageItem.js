@@ -170,53 +170,42 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     lineHeight: 20,
   };
 
+  const contentAttributes = (message && message.content_attributes) || {};
+
   const fromEmail = () => {
-    const from =
-      (message.content_attributes &&
-        message.content_attributes.email &&
-        message.content_attributes.email.from) ||
-      [];
+    const from = (contentAttributes.email && contentAttributes.email.from) || [];
     return from.join(', ');
   };
 
   const toEmail = () => {
-    const from =
-      (message.content_attributes &&
-        message.content_attributes.email &&
-        message.content_attributes.email.to) ||
-      [];
+    const from = (contentAttributes.email && contentAttributes.email.to) || [];
     return from.join(', ');
   };
 
   const ccEmail = () => {
     if (type === 'incoming') {
-      const cc = (message.content_attributes && message.content_attributes.cc_email) || [];
+      const cc = contentAttributes.cc_email || [];
       return cc.join(', ');
     }
     if (type === 'outgoing') {
-      const cc = (message.content_attributes && message.content_attributes.cc_emails) || [];
+      const cc = contentAttributes.cc_emails || [];
       return cc.join(', ');
     }
   };
 
   const bccEmail = () => {
     if (type === 'incoming') {
-      const bcc = (message.content_attributes && message.content_attributes.bcc_email) || [];
+      const bcc = contentAttributes.bcc_email || [];
       return bcc.join(', ');
     }
     if (type === 'outgoing') {
-      const bcc = (message.content_attributes && message.content_attributes.bcc_emails) || [];
+      const bcc = contentAttributes.bcc_emails || [];
       return bcc.join(', ');
     }
   };
 
   const subjectText = () => {
-    return (
-      (message.content_attributes &&
-        message.content_attributes.email &&
-        message.content_attributes.email.subject) ||
-      ''
-    );
+    return (contentAttributes.email && contentAttributes.email.subject) || '';
   };
 
   const hasAnyEmailValues = () => {
@@ -252,7 +241,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
             {ccEmail() ? (
               <View style={style.emailFields}>
                 <Text style={emailHeadLabelStyle}>
-                  {'CC: '}
+                  {'Cc: '}
                   <CustomText style={emailHeadTextStyle}>{ccEmail()}</CustomText>
                 </Text>
               </View>
@@ -261,7 +250,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
             {bccEmail() ? (
               <View style={style.emailFields}>
                 <Text style={emailHeadLabelStyle}>
-                  {'BCC: '}
+                  {'Bcc: '}
                   <CustomText style={emailHeadTextStyle}>{bccEmail()}</CustomText>
                 </Text>
               </View>

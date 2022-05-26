@@ -46,9 +46,8 @@ const styles = theme => ({
   },
   subHeaderTitle: {
     fontSize: theme['font-size-extra-small'],
-    color: theme['color-gray'],
-    paddingTop: 4,
-    paddingLeft: 4,
+    color: theme['color-success-500'],
+    paddingLeft: 6,
   },
   chatHeader: {
     borderBottomWidth: 1,
@@ -71,6 +70,9 @@ const styles = theme => ({
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 4,
+  },
+  inboxNameTypingWrap: {
+    flexDirection: 'row',
   },
 });
 
@@ -249,6 +251,8 @@ const ChatHeader = ({
                       : ` ${customerDetails.name}`}
                   </CustomText>
                 )}
+              </View>
+              <View style={style.inboxNameTypingWrap}>
                 {conversationDetails && (
                   <View style={style.inboxDetails}>
                     {iconName ? (
@@ -264,14 +268,14 @@ const ChatHeader = ({
                     ) : null}
                   </View>
                 )}
+                {typingUser ? (
+                  <View>
+                    <CustomText style={style.subHeaderTitle}>
+                      {typingUser ? `${typingUser}` : ''}
+                    </CustomText>
+                  </View>
+                ) : null}
               </View>
-              {typingUser ? (
-                <View>
-                  <CustomText style={style.subHeaderTitle}>
-                    {typingUser ? `${typingUser}` : ''}
-                  </CustomText>
-                </View>
-              ) : null}
             </View>
           </TouchableOpacity>
         )}

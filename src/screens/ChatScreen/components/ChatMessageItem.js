@@ -10,6 +10,7 @@ import { messageStamp } from 'helpers/TimeHelper';
 import { openURL } from 'helpers/UrlHelper';
 import ChatMessageActionItem from './ChatMessageActionItem';
 import { showToast } from 'helpers/ToastHelper';
+// import { TweetContext } from '../contexts/TweetContext';
 
 const LockIcon = style => {
   return <Icon {...style} name="lock" />;
@@ -80,9 +81,22 @@ const styles = theme => ({
     color: theme['text-tooltip-color'],
     fontSize: theme['font-size-small'],
   },
+  bottomIconWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   dateView: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  twitterActionIcons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 4,
+    paddingVertical: 4,
+    paddingLeft: 16,
+    width: 60,
+    justifyContent: 'space-between',
   },
 });
 
@@ -93,17 +107,19 @@ const propTypes = {
   }),
   type: PropTypes.string,
   created_at: PropTypes.number,
+  meta: PropTypes.object,
   message: PropTypes.shape({
     sender: PropTypes.shape({
       name: PropTypes.string,
     }),
+    id: PropTypes.number,
     content: PropTypes.string,
     private: PropTypes.bool,
   }),
   attachment: PropTypes.object,
 };
 
-const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, created_at }) => {
+const ChatMessageItemComponent = ({ type, meta, message, eva: { style, theme }, created_at }) => {
   const actionSheetRef = createRef();
   const senderName = message && message.sender && message.sender.name ? message.sender.name : '';
   const messageViewStyle = type === 'outgoing' ? style.messageRight : style.messageLeft;
@@ -116,6 +132,8 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
       openURL({ URL });
     }
   };
+
+  // const { setTweetContent } = useContext(TweetContext);
 
   const showTooltip = () => {
     actionSheetRef.current?.setModalVisible();
@@ -130,10 +148,21 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     }
   };
 
+  const isTwitterChannel = () => {
+    return meta && meta.channel === 'Channel::TwitterProfile';
+  };
+
+  const selectedTweet = tweet => {
+    // setTweetContent(tweet.content);
+    // setTweetId(tweet.id);
+  };
+
   const md = require('markdown-it')({
     html: true,
     linkify: true,
   });
+
+  const isPrivate = message && message.private;
 
   const messageContentStyle = {
     ...messageTextStyle,
@@ -171,21 +200,42 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
           }}>
           {message.content}
         </Markdown>
-        <View style={style.dateView}>
-          <CustomText
-            style={[
-              dateStyle,
-              message.private && {
-                color: theme['color-gray'],
-              },
-            ]}>
-            {messageStamp({ time: created_at })}
-          </CustomText>
-          {message.private && (
-            <View style={style.iconView}>
-              <LockIcon style={style.icon} fill={theme['text-basic-color']} />
+        <View style={style.bottomIconWrap}>
+          <View style={style.dateView}>
+            <CustomText
+              style={[
+                dateStyle,
+                message.private && {
+                  color: theme['color-gray'],
+                },
+              ]}>
+              {messageStamp({ time: created_at })}
+            </CustomText>
+            {message.private && (
+              <View style={style.iconView}>
+                <LockIcon style={style.icon} fill={theme['text-basic-color']} />
+              </View>
+            )}
+          </View>
+          {isTwitterChannel() && !isPrivate ? (
+            <View style={style.twitterActionIcons}>
+              <Icon
+                name="corner-up-left-outline"
+                width={16}
+                height={16}
+                fill={theme['text-basic-color']}
+                onPress={() => {
+                  selectedTweet(message);
+                }}
+              />
+              <Icon
+                name="external-link-outline"
+                width={14}
+                height={14}
+                fill={theme['text-basic-color']}
+              />
             </View>
-          )}
+          ) : null}
         </View>
         <ActionSheet ref={actionSheetRef} defaultOverlayOpacity={0.3}>
           {senderName ? (

@@ -25,6 +25,8 @@ import { captureEvent } from '../../../helpers/Analytics';
 import Banner from 'src/screens/ChatScreen/components/Banner.js';
 import i18n from 'i18n';
 
+// import { TweetContext } from '../contexts/TweetContext';
+
 const styles = theme => ({
   headerView: {
     flexDirection: 'row',
@@ -115,6 +117,8 @@ const ChatHeader = ({
   const ReopenIcon = () => {
     return <Icon fill={theme['color-warning-600']} name="undo-outline" height={40} width={20} />;
   };
+  // const [selectedTweetContent, setTweetContent] = useState('');
+  // const [selectedTweetId, setTweetId] = useState(null);
 
   const renderLeftControl = () => <BackAction onPress={onBackPress} />;
   const renderRightControl = () => {
@@ -148,6 +152,14 @@ const ChatHeader = ({
     }
     return null;
   };
+
+  // const tweetBannerText = () => {
+  //   return selectedTweetContent === ''
+  //     ? 'Please select a tweet to reply to.'
+  //     : `
+  //         ${'You are replying to: '}
+  //         ${selectedTweetContent}` || '';
+  // };
 
   const isAWhatsappChannel =
     conversationMetaDetails && conversationMetaDetails.channel === 'Channel::Whatsapp';
@@ -261,6 +273,8 @@ const ChatHeader = ({
               closeButton={false}
             />
           ) : null}
+
+          {/* <Banner text={tweetBannerText()} color={'gray'} closeButton={true} /> */}
         </View>
       ) : null}
       <ActionSheet ref={actionSheetRef} gestureEnabled defaultOverlayOpacity={0.3}>

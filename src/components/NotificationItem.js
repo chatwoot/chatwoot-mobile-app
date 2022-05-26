@@ -105,7 +105,7 @@ const styles = theme => ({
     alignItems: 'center',
   },
   content: {
-    fontSize: theme['font-size-small'],
+    fontSize: theme['font-size-extra-small'],
     paddingTop: 4,
     paddingBottom: 4,
   },

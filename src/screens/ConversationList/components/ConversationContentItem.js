@@ -79,7 +79,7 @@ const ConversationContentItemComponent = ({
           style={unReadCount ? style.messageActive : style.messageNotActive}
           numberOfLines={1}
           maxLength={8}>
-          {message && message.length > 30 ? `${message.substring(0, 28)}...` : `${message}`}
+          {message && message.length > 36 ? `${message.substring(0, 34)}...` : `${message}`}
         </CustomText>
       )}
     </Fragment>

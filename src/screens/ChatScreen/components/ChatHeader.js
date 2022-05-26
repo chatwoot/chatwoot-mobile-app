@@ -20,10 +20,13 @@ import {
   muteConversation,
   unmuteConversation,
 } from 'actions/conversation';
+import { getInboxName } from 'helpers';
 import ConversationAction from '../../ConversationAction/ConversationAction';
 import { captureEvent } from '../../../helpers/Analytics';
 import Banner from 'src/screens/ChatScreen/components/Banner.js';
 import i18n from 'i18n';
+
+import { INBOX_ICON } from 'src/constants/index';
 
 const styles = theme => ({
   headerView: {
@@ -57,6 +60,17 @@ const styles = theme => ({
   },
   loadingSpinner: {
     marginRight: 8,
+  },
+  channelText: {
+    color: theme['color-secondary-500'],
+    fontSize: theme['font-size-extra-extra-small'],
+    fontWeight: theme['font-medium'],
+    padding: 2,
+  },
+  inboxDetails: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 4,
   },
 });
 
@@ -97,6 +111,11 @@ const ChatHeader = ({
   const showActionSheet = () => {
     actionSheetRef.current?.setModalVisible();
   };
+
+  const inboxes = useSelector(state => state.inbox.data);
+  const inboxId = conversationDetails && conversationDetails.inbox_id;
+  const channelType =
+    conversationDetails && conversationDetails.meta && conversationDetails.meta.channel;
 
   const conversation = useSelector(state => state.conversation);
   const { isChangingConversationStatus } = conversation;
@@ -153,6 +172,9 @@ const ChatHeader = ({
     conversationMetaDetails && conversationMetaDetails.channel === 'Channel::Whatsapp';
 
   const canReplyInCurrentChat = conversationDetails && conversationDetails.can_reply === true;
+
+  const iconName = INBOX_ICON[channelType];
+  const inboxName = getInboxName({ inboxes, inboxId });
 
   const onPressAction = ({ itemType }) => {
     actionSheetRef.current?.hide();
@@ -226,6 +248,21 @@ const ChatHeader = ({
                       ? ` ${customerDetails.name.substring(0, 20)}...`
                       : ` ${customerDetails.name}`}
                   </CustomText>
+                )}
+                {conversationDetails && (
+                  <View style={style.inboxDetails}>
+                    {iconName ? (
+                      <Icon
+                        fill={theme['color-secondary-500']}
+                        name={iconName}
+                        height={12}
+                        width={12}
+                      />
+                    ) : null}
+                    {inboxName ? (
+                      <CustomText style={style.channelText}>{inboxName}</CustomText>
+                    ) : null}
+                  </View>
                 )}
               </View>
               {typingUser ? (

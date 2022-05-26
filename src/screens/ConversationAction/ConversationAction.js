@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { withStyles } from '@ui-kitten/components';
 import { getConversationUrl } from 'src/helpers/UrlHelper';
 import { Share } from 'react-native';
@@ -7,14 +7,10 @@ import { useSelector } from 'react-redux';
 import styles from './ConversationAction.style';
 import ConversationActionItem from '../../components/ConversationActionItem';
 import i18n from '../../i18n';
-import { CONVERSATION_TOGGLE_STATUS } from '../../constants';
 
 const ConversationActionComponent = ({ eva: { style }, onPressAction, conversationDetails }) => {
   const agents = useSelector(state => state.agent.data);
-  const [conversationStatus, setConversationStatus] = useState(null);
-  useEffect(() => {
-    setConversationStatus(conversationDetails.status);
-  }, [conversationDetails]);
+
   const {
     meta: { assignee },
   } = conversationDetails;
@@ -44,6 +40,8 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
     }
   };
 
+  const { muted } = conversationDetails;
+
   return (
     <React.Fragment>
       <ConversationActionItem
@@ -61,17 +59,20 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
           itemType="unassign"
         />
       )}
-      <ConversationActionItem
-        onPressItem={onPressAction}
-        text={i18n.t(
-          `CONVERSATION.${
-            CONVERSATION_TOGGLE_STATUS[conversationStatus]
-              ? CONVERSATION_TOGGLE_STATUS[conversationStatus]
-              : CONVERSATION_TOGGLE_STATUS.open
-          }`,
-        )}
-        itemType="toggle_status"
-      />
+
+      {!muted ? (
+        <ConversationActionItem
+          onPressItem={onPressAction}
+          text={i18n.t('CONVERSATION.MUTE_CONVERSATION')}
+          itemType="mute_conversation"
+        />
+      ) : (
+        <ConversationActionItem
+          onPressItem={onPressAction}
+          text={i18n.t('CONVERSATION.UNMUTE_CONVERSATION')}
+          itemType="unmute_conversation"
+        />
+      )}
 
       <ConversationActionItem
         onPressItem={onShare}

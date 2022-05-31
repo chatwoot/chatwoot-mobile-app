@@ -12,7 +12,7 @@ import i18n from '../../i18n';
 
 import styles from './ConversationDetailsScreen.style';
 
-import { openURL } from 'src/helpers/UrlHelper';
+import { openURL, openNumber } from 'src/helpers/UrlHelper';
 
 import HeaderBar from '../../components/HeaderBar';
 import ConversationDetailsItem from '../../components/ConversationDetailsItem';
@@ -234,8 +234,11 @@ class ConversationDetailsComponent extends Component {
                 height={14}
                 width={14}
                 fill={theme['color-primary-default']}
+                onPress={() => openNumber(phoneNumber)}
               />
-              <CustomText style={style.label}>{phoneNumber}</CustomText>
+              <CustomText style={style.label} onPress={() => openNumber(phoneNumber)}>
+                {phoneNumber}
+              </CustomText>
             </View>
           )}
           {senderAdditionalInfo.company_name ? (

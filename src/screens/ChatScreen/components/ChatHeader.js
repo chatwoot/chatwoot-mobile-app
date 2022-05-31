@@ -23,7 +23,9 @@ import {
 import { getInboxName } from 'helpers';
 import ConversationAction from '../../ConversationAction/ConversationAction';
 import { captureEvent } from '../../../helpers/Analytics';
-import Banner from 'src/screens/ChatScreen/components/Banner.js';
+import Banner from 'src/screens/ChatScreen/components/Banner';
+import InboxName from 'src/screens/ChatScreen/components/InboxName';
+import TypingStatus from 'src/screens/ChatScreen/components/UserTypingStatus';
 import i18n from 'i18n';
 
 import { INBOX_ICON } from 'src/constants/index';
@@ -44,11 +46,6 @@ const styles = theme => ({
     fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-medium'],
   },
-  subHeaderTitle: {
-    fontSize: theme['font-size-extra-small'],
-    color: theme['color-success-500'],
-    paddingLeft: 6,
-  },
   chatHeader: {
     borderBottomWidth: 1,
     borderBottomColor: theme['color-border'],
@@ -59,17 +56,6 @@ const styles = theme => ({
   },
   loadingSpinner: {
     marginRight: 8,
-  },
-  channelText: {
-    color: theme['color-secondary-500'],
-    fontSize: theme['font-size-extra-extra-small'],
-    fontWeight: theme['font-medium'],
-    padding: 2,
-  },
-  inboxDetails: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 4,
   },
   inboxNameTypingWrap: {
     flexDirection: 'row',
@@ -254,27 +240,9 @@ const ChatHeader = ({
               </View>
               <View style={style.inboxNameTypingWrap}>
                 {conversationDetails && (
-                  <View style={style.inboxDetails}>
-                    {iconName ? (
-                      <Icon
-                        fill={theme['color-secondary-500']}
-                        name={iconName}
-                        height={12}
-                        width={12}
-                      />
-                    ) : null}
-                    {inboxName ? (
-                      <CustomText style={style.channelText}>{inboxName}</CustomText>
-                    ) : null}
-                  </View>
+                  <InboxName iconName={iconName} inboxName={inboxName} size={'small'} />
                 )}
-                {typingUser ? (
-                  <View>
-                    <CustomText style={style.subHeaderTitle}>
-                      {typingUser ? `${typingUser}` : ''}
-                    </CustomText>
-                  </View>
-                ) : null}
+                {typingUser ? <TypingStatus typingUser={typingUser} /> : null}
               </View>
             </View>
           </TouchableOpacity>

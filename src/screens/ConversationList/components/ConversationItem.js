@@ -1,7 +1,6 @@
 import { withStyles } from '@ui-kitten/components';
 import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
-import { Icon } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 
 import CustomText from 'components/Text';
@@ -11,6 +10,7 @@ import { findLastMessage, getUnreadCount, getInboxName, getTypingUsersText } fro
 
 import ConversationAttachmentItem from './ConversationAttachmentItem';
 import ConversationContentItem from './ConversationContentItem';
+import InboxName from 'src/screens/ChatScreen/components/InboxName';
 
 import { INBOX_ICON } from 'src/constants/index';
 
@@ -95,10 +95,7 @@ const ConversationItemComponent = ({
               <CustomText style={style.conversationId}>#{id}</CustomText>
             </View>
             <View style={style.inboxDetails}>
-              {iconName ? (
-                <Icon fill={theme['color-secondary-500']} name={iconName} height={12} width={12} />
-              ) : null}
-              {inboxName ? <CustomText style={style.channelText}>{inboxName}</CustomText> : null}
+              <InboxName iconName={iconName} inboxName={inboxName} />
             </View>
           </View>
           <View style={style.conversationContainer}>
@@ -251,21 +248,10 @@ const styles = theme => ({
     fontWeight: theme['font-medium'],
     padding: 4,
   },
-  channelText: {
-    color: theme['color-secondary-500'],
-    fontSize: theme['font-size-extra-small'],
-    fontWeight: theme['font-medium'],
-    padding: 2,
-  },
   timestampContainer: {
     marginTop: 4,
     justifyContent: 'flex-end',
     flexDirection: 'column',
-  },
-  inboxDetails: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 8,
   },
 });
 

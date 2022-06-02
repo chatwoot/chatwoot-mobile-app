@@ -71,7 +71,7 @@ const ConversationContentItemComponent = ({
             style={unReadCount ? style.messageActive : style.messageNotActive}
             numberOfLines={1}
             maxLength={8}>
-            {message && message.length > 32 ? ` ${message.substring(0, 30)}...` : ` ${message}`}
+            {message && message.length > 36 ? ` ${message.substring(0, 34)}...` : ` ${message}`}
           </CustomText>
         </View>
       ) : (
@@ -79,7 +79,7 @@ const ConversationContentItemComponent = ({
           style={unReadCount ? style.messageActive : style.messageNotActive}
           numberOfLines={1}
           maxLength={8}>
-          {message && message.length > 34 ? `${message.substring(0, 32)}...` : `${message}`}
+          {message && message.length > 36 ? `${message.substring(0, 34)}...` : `${message}`}
         </CustomText>
       )}
     </Fragment>

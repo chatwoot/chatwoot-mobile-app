@@ -251,6 +251,8 @@ const styles = theme => ({
     marginTop: 2,
     justifyContent: 'flex-end',
     flexDirection: 'column',
+    position: 'absolute',
+    right: 0,
   },
 });
 

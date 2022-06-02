@@ -18,6 +18,10 @@ const styles = theme => ({
     fontWeight: theme['font-regular'],
     fontSize: theme['font-size-small'],
   },
+  tabViewIndicator: {
+    backgroundColor: theme['color-primary-500'],
+    height: 2.5,
+  },
 });
 
 export default styles;

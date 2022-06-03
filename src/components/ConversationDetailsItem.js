@@ -31,13 +31,14 @@ const propTypes = {
   }).isRequired,
   title: PropTypes.string,
   value: PropTypes.string,
-  link: PropTypes.bool,
+  type: PropTypes.string,
 };
 
-const ConversationDetailsItem = ({ value, title, link, eva: { style, theme } }) => {
+const ConversationDetailsItem = ({ value, title, type, eva: { style, theme } }) => {
+  const link = type === 'referer';
   return (
     <React.Fragment>
-      <View>
+      <View key={type}>
         <View style={style.itemTitleView}>
           <CustomText style={style.itemTitle}>{title}</CustomText>
         </View>

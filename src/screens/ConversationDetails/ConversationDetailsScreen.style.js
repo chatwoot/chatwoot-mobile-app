@@ -39,13 +39,6 @@ const styles = theme => ({
     paddingVertical: 8,
   },
 
-  socialIconWrap: {
-    marginRight: 10,
-    backgroundColor: theme['color-secondary-100'],
-    padding: 4,
-    borderRadius: 20,
-  },
-
   detailsContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',

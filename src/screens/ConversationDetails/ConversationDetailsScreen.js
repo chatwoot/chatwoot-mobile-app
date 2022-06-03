@@ -12,10 +12,11 @@ import i18n from '../../i18n';
 
 import styles from './ConversationDetailsScreen.style';
 
-import { openURL, openNumber } from 'src/helpers/UrlHelper';
+import { openNumber } from 'src/helpers/UrlHelper';
 
 import HeaderBar from '../../components/HeaderBar';
 import ConversationDetailsItem from '../../components/ConversationDetailsItem';
+import SocialProfileIcons from './components/SocialProfileIcons';
 
 class ConversationDetailsComponent extends Component {
   state = { settingsMenu: [] };
@@ -46,26 +47,6 @@ class ConversationDetailsComponent extends Component {
     navigation.goBack();
   };
 
-  openFacebook = userName => {
-    const URL = `https://www.facebook.com/${userName}`;
-    return openURL({ URL: URL });
-  };
-
-  openTwitter = userName => {
-    const URL = `https://twitter.com/${userName}`;
-    return openURL({ URL: URL });
-  };
-
-  openLinkedIn = userName => {
-    const URL = `https://www.linkedin.com/${userName}`;
-    return openURL({ URL: URL });
-  };
-
-  openGitHub = userName => {
-    const URL = `https://github.com/${userName}`;
-    return openURL({ URL: URL });
-  };
-
   renderAdditionalAttributes() {
     const {
       eva: { style },
@@ -79,45 +60,52 @@ class ConversationDetailsComponent extends Component {
       return null;
     }
     const {
-      browser: { browser_name, browser_version, platform_name, platform_version } = {},
-      initiated_at = {},
+      browser: {
+        browser_name: browserName,
+        browser_version: browserVersion,
+        platform_name: platformName,
+        platform_version: platformVersion,
+      } = {},
+      initiated_at: { timestamp } = {},
+      referer,
     } = additionalAttributes;
-    const { additional_attributes: { created_at_ip } = {} } = sender;
-    return (
-      <View style={style.itemListView}>
-        {initiated_at.timestamp ? (
-          <ConversationDetailsItem
-            title={i18n.t('CONVERSATION_DETAILS.INITIATED_AT')}
-            value={initiated_at.timestamp}
-          />
-        ) : null}
-        {additionalAttributes.referer ? (
-          <ConversationDetailsItem
-            title={i18n.t('CONVERSATION_DETAILS.INITIATED_FROM')}
-            value={additionalAttributes.referer}
-            link
-          />
-        ) : null}
-        {browser_name ? (
-          <ConversationDetailsItem
-            title={i18n.t('CONVERSATION_DETAILS.BROWSER')}
-            value={`${browser_name} ${browser_version}`}
-          />
-        ) : null}
-        {platform_name ? (
-          <ConversationDetailsItem
-            title={i18n.t('CONVERSATION_DETAILS.OPERATING_SYSTEM')}
-            value={`${platform_name} ${platform_version}`}
-          />
-        ) : null}
-        {created_at_ip ? (
-          <ConversationDetailsItem
-            title={i18n.t('CONVERSATION_DETAILS.IP_ADDRESS')}
-            value={created_at_ip}
-          />
-        ) : null}
-      </View>
-    );
+    const { additional_attributes: { created_at_ip: createdAtIp } = {} } = sender;
+
+    const displayKeys = [
+      {
+        key: 'timestamp',
+        value: timestamp,
+        title: i18n.t('CONVERSATION_DETAILS.INITIATED_AT'),
+      },
+      {
+        key: 'referer',
+        value: referer,
+        title: i18n.t('CONVERSATION_DETAILS.INITIATED_FROM'),
+      },
+      {
+        key: 'browserName',
+        value: `${browserName} ${browserVersion}`,
+        title: i18n.t('CONVERSATION_DETAILS.BROWSER'),
+      },
+      {
+        key: 'platformName',
+        value: `${platformName} ${platformVersion}`,
+        title: i18n.t('CONVERSATION_DETAILS.OPERATING_SYSTEM'),
+      },
+      {
+        key: 'createdAtIp',
+        value: createdAtIp,
+        title: i18n.t('CONVERSATION_DETAILS.IP_ADDRESS'),
+      },
+    ];
+
+    const displayItems = displayKeys
+      .map(({ key, value, title }) =>
+        value ? <ConversationDetailsItem title={title} value={value} type={key} /> : null,
+      )
+      .filter(displayItem => !!displayItem);
+
+    return <View style={style.itemListView}>{displayItems}</View>;
   }
 
   render() {
@@ -140,7 +128,41 @@ class ConversationDetailsComponent extends Component {
       },
     } = conversationDetails;
 
-    const { social_profiles: socialProfiles } = senderAdditionalInfo;
+    const {
+      social_profiles: socialProfiles,
+      company_name: companyName,
+      location,
+    } = senderAdditionalInfo;
+    const { facebook, twitter, linkedin, github } = socialProfiles;
+
+    const socialProfileTypes = [
+      {
+        key: 'facebook',
+        value: facebook,
+        iconName: 'facebook-outline',
+      },
+      {
+        key: 'twitter',
+        value: twitter,
+        iconName: 'twitter-outline',
+      },
+      {
+        key: 'linkedin',
+        value: linkedin,
+        iconName: 'linkedin-outline',
+      },
+      {
+        key: 'github',
+        value: github,
+        iconName: 'github-outline',
+      },
+    ];
+
+    const getSocialProfileValue = socialProfileTypes
+      .map(({ key, value, iconName }) =>
+        value ? <SocialProfileIcons type={key} value={value} iconName={iconName} /> : null,
+      )
+      .filter(profile => !!profile);
 
     return (
       <ScrollView style={style.container}>
@@ -164,58 +186,7 @@ class ConversationDetailsComponent extends Component {
               <CustomText style={style.description}>{senderAdditionalInfo.description}</CustomText>
             </View>
           ) : null}
-          {socialProfiles ? (
-            <View style={style.socialIconsContainer}>
-              {socialProfiles.facebook ? (
-                <View style={style.socialIconWrap}>
-                  <Icon
-                    style={style.socialIcon}
-                    name="facebook-outline"
-                    height={16}
-                    width={16}
-                    fill={theme['text-light-color']}
-                    onPress={() => this.openFacebook(socialProfiles.facebook)}
-                  />
-                </View>
-              ) : null}
-              {socialProfiles.twitter ? (
-                <View style={style.socialIconWrap}>
-                  <Icon
-                    style={style.socialIcon}
-                    name="twitter-outline"
-                    height={16}
-                    width={16}
-                    fill={theme['text-light-color']}
-                    onPress={() => this.openTwitter(socialProfiles.twitter)}
-                  />
-                </View>
-              ) : null}
-              {socialProfiles.linkedin ? (
-                <View style={style.socialIconWrap}>
-                  <Icon
-                    style={style.socialIcon}
-                    name="linkedin-outline"
-                    height={16}
-                    width={16}
-                    fill={theme['text-light-color']}
-                    onPress={() => this.openLinkedIn(socialProfiles.linkedin)}
-                  />
-                </View>
-              ) : null}
-              {socialProfiles.github ? (
-                <View style={style.socialIconWrap}>
-                  <Icon
-                    style={style.socialIcon}
-                    name="github-outline"
-                    height={16}
-                    width={16}
-                    fill={theme['text-light-color']}
-                    onPress={() => this.openGitHub(socialProfiles.github)}
-                  />
-                </View>
-              ) : null}
-            </View>
-          ) : null}
+          <View style={style.socialIconsContainer}>{getSocialProfileValue}</View>
           {!!email && (
             <View style={style.detailsContainer}>
               <Icon
@@ -241,7 +212,7 @@ class ConversationDetailsComponent extends Component {
               </CustomText>
             </View>
           )}
-          {senderAdditionalInfo.company_name ? (
+          {companyName ? (
             <View style={style.detailsContainer}>
               <Icon
                 name="home-outline"
@@ -249,10 +220,10 @@ class ConversationDetailsComponent extends Component {
                 width={14}
                 fill={theme['color-primary-default']}
               />
-              <CustomText style={style.label}>{senderAdditionalInfo.company_name}</CustomText>
+              <CustomText style={style.label}>{companyName}</CustomText>
             </View>
           ) : null}
-          {senderAdditionalInfo.location || (city && country) ? (
+          {location || (city && country) ? (
             <View style={style.detailsContainer}>
               <Icon
                 name="map-outline"
@@ -260,9 +231,7 @@ class ConversationDetailsComponent extends Component {
                 width={14}
                 fill={theme['color-primary-default']}
               />
-              <CustomText style={style.label}>
-                {senderAdditionalInfo.location || `${city}, ${country}`}
-              </CustomText>
+              <CustomText style={style.label}>{location || `${city}, ${country}`}</CustomText>
             </View>
           ) : null}
           <View style={style.separationView} />

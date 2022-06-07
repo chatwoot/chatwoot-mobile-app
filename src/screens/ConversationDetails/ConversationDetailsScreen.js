@@ -18,6 +18,8 @@ import HeaderBar from '../../components/HeaderBar';
 import ConversationDetailsItem from '../../components/ConversationDetailsItem';
 import SocialProfileIcons from './components/SocialProfileIcons';
 
+import { getAllCustomAttributes } from 'actions/conversation';
+
 class ConversationDetailsComponent extends Component {
   state = { settingsMenu: [] };
   static propTypes = {
@@ -36,10 +38,17 @@ class ConversationDetailsComponent extends Component {
       goBack: PropTypes.func.isRequired,
     }).isRequired,
     route: PropTypes.object,
+    attributes: PropTypes.array.isRequired,
+    getAllCustomAttributes: PropTypes.func,
   };
 
   static defaultProps = {
     user: { email: null, name: null },
+    attributes: [],
+  };
+
+  componentDidMount = () => {
+    this.props.getAllCustomAttributes();
   };
 
   onBackPress = () => {
@@ -47,10 +56,11 @@ class ConversationDetailsComponent extends Component {
     navigation.goBack();
   };
 
-  renderAdditionalAttributes() {
+  renderConversationAttributes() {
     const {
       eva: { style },
       route,
+      attributes,
     } = this.props;
     const { conversationDetails } = route.params;
     const { additional_attributes: additionalAttributes } = conversationDetails;
@@ -59,6 +69,9 @@ class ConversationDetailsComponent extends Component {
     if (!additionalAttributes) {
       return null;
     }
+
+    const { custom_attributes: conversationAttributes } = conversationDetails;
+
     const {
       browser: {
         browser_name: browserName,
@@ -105,7 +118,64 @@ class ConversationDetailsComponent extends Component {
       )
       .filter(displayItem => !!displayItem);
 
-    return <View style={style.itemListView}>{displayItems}</View>;
+    const getConversationAttributes = () => {
+      return attributes
+        .filter(attribute => attribute.attribute_model === 'conversation_attribute')
+        .map(attribute => {
+          const { attribute_key: attributeKey, attribute_display_name: displayName } = attribute;
+          return (
+            <ConversationDetailsItem
+              title={displayName}
+              value={String(conversationAttributes[attributeKey])}
+              type={attributeKey}
+            />
+          );
+        });
+    };
+
+    return (
+      <View>
+        <CustomText style={style.itemListViewTitle}>{'Conversation Information'}</CustomText>
+        <View style={style.itemListView}>
+          {displayItems}
+          {getConversationAttributes()}
+        </View>
+        <View style={style.separationView} />
+      </View>
+    );
+  }
+
+  renderContactAttributes() {
+    const {
+      eva: { style },
+      route,
+    } = this.props;
+    const { conversationDetails } = route.params;
+    const { meta } = conversationDetails;
+    const { sender } = meta;
+    const { custom_attributes: contactAttributes } = sender;
+
+    if (contactAttributes === {}) {
+      return null;
+    }
+
+    return (
+      <View>
+        <CustomText style={style.itemListViewTitle}>{'Contact Attributes'}</CustomText>
+        <View style={style.itemListView}>
+          {Object.keys(contactAttributes).map(key => {
+            return (
+              <ConversationDetailsItem
+                title={key}
+                value={String(contactAttributes[key])}
+                type={key}
+              />
+            );
+          })}
+        </View>
+        <View style={style.separationView} />
+      </View>
+    );
   }
 
   render() {
@@ -235,7 +305,8 @@ class ConversationDetailsComponent extends Component {
             </View>
           ) : null}
           <View style={style.separationView} />
-          {this.renderAdditionalAttributes()}
+          {this.renderConversationAttributes()}
+          {this.renderContactAttributes()}
         </View>
       </ScrollView>
     );
@@ -243,11 +314,14 @@ class ConversationDetailsComponent extends Component {
 }
 
 function bindAction(dispatch) {
-  return {};
+  return {
+    getAllCustomAttributes: () => dispatch(getAllCustomAttributes()),
+  };
 }
 function mapStateToProps(state) {
   return {
     user: state.auth.user,
+    attributes: state.conversation.customAttributes,
   };
 }
 

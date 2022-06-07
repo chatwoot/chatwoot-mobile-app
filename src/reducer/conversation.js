@@ -28,6 +28,9 @@ import {
   ASSIGN_CONVERSATION,
   ASSIGN_CONVERSATION_SUCCESS,
   ASSIGN_CONVERSATION_ERROR,
+  GET_ALL_CUSTOM_ATTRIBUTES,
+  GET_ALL_CUSTOM_ATTRIBUTES_SUCCESS,
+  GET_ALL_CUSTOM_ATTRIBUTES_ERROR,
 } from '../constants/actions';
 
 const initialState = {
@@ -52,6 +55,7 @@ const initialState = {
   conversationTypingUsers: {},
   activeUsers: {},
   assigneeType: 0,
+  customAttributes: [],
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -280,6 +284,27 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isAssigneeUpdating: false,
+      };
+    }
+
+    case GET_ALL_CUSTOM_ATTRIBUTES: {
+      return {
+        ...state,
+        customAttributes: [],
+      };
+    }
+
+    case GET_ALL_CUSTOM_ATTRIBUTES_SUCCESS: {
+      return {
+        ...state,
+        customAttributes: action.payload,
+      };
+    }
+
+    case GET_ALL_CUSTOM_ATTRIBUTES_ERROR: {
+      return {
+        ...state,
+        customAttributes: [],
       };
     }
 

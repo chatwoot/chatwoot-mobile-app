@@ -33,6 +33,7 @@ const ReplyBox = ({
   const [isPrivate, setPrivateMode] = useState(false);
   const [ccEmails, setCCEmails] = useState([]);
   const [bccEmails, setBCCEmails] = useState([]);
+  const [emailFields, toggleEmailFields] = useState(false);
   const [message, setMessage] = useState('');
   const agents = useSelector(state => state.agent.data);
   const verifiedAgents = agents.filter(agent => agent.confirmed);
@@ -74,6 +75,10 @@ const ReplyBox = ({
       return channel === 'Channel::Email' && !isPrivate;
     }
     return false;
+  };
+
+  const toggleCcBccInputs = () => {
+    toggleEmailFields(true);
   };
 
   const inputBorderColor = () => {
@@ -192,7 +197,7 @@ const ReplyBox = ({
           onCannedReponseSelect={onCannedReponseSelect}
         />
       )}
-      {isAnEmailChannelAndNotInPivateNote() && (
+      {isAnEmailChannelAndNotInPivateNote() && emailFields && (
         <View style={style.emailFields}>
           <View style={style.emailFieldsTextWrap}>
             <Text style={style.emailFieldLabel}>{'Cc'}</Text>
@@ -216,6 +221,11 @@ const ReplyBox = ({
       )}
 
       <View style={[isPrivate ? style.privateView : style.replyView, inputBorderColor()]}>
+        {isAnEmailChannelAndNotInPivateNote() && !emailFields && (
+          <Text style={style.emailFieldToggleButton} onPress={toggleCcBccInputs}>
+            {'Cc/Bcc'}
+          </Text>
+        )}
         <MentionInput
           style={[style.inputView, inputFieldColor()]}
           value={message}
@@ -312,6 +322,16 @@ const styles = theme => ({
   emailFieldLabel: {
     fontSize: theme['font-size-extra-small'],
     width: '8%',
+  },
+  emailFieldToggleButton: {
+    position: 'absolute',
+    backgroundColor: theme['color-background'],
+    color: theme['color-primary-500'],
+    fontWeight: theme['font-semi-bold'],
+    padding: 4,
+    right: 24,
+    top: 14,
+    zIndex: 1,
   },
   ccInputView: {
     fontSize: theme['font-size-small'],

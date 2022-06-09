@@ -39,13 +39,6 @@ const styles = theme => ({
     paddingVertical: 8,
   },
 
-  detailsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingTop: 10,
-  },
-
   separationView: {
     padding: 8,
     borderBottomWidth: 1,
@@ -56,12 +49,6 @@ const styles = theme => ({
     textTransform: 'capitalize',
     fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-large'],
-  },
-
-  label: {
-    paddingLeft: 8,
-    fontSize: theme['font-size-small'],
-    color: theme['text-light-color'],
   },
 });
 

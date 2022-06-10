@@ -35,6 +35,8 @@ const AgentItemComponent = ({
         <View style={style.avatarView}>
           <UserAvatar
             thumbnail={thumbnail}
+            size={30}
+            fontSize={12}
             userName={name}
             defaultBGColor={theme['color-primary-default']}
             isActive={isActive}
@@ -56,19 +58,16 @@ const AgentItemComponent = ({
   );
 };
 
-const styles = (theme) => ({
+const styles = theme => ({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 12,
-    paddingBottom: 12,
+    paddingHorizontal: 20,
+    paddingVertical: 14,
     backgroundColor: theme['background-basic-color-1'],
-    marginVertical: 0.5,
     borderColor: theme['item-border-color'],
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
   },
   itemView: {
     flexDirection: 'row',
@@ -78,7 +77,7 @@ const styles = (theme) => ({
     textTransform: 'capitalize',
     fontSize: theme['font-size-small'],
     fontWeight: theme['font-medium'],
-    paddingTop: 4,
+    padding: 2,
   },
   avatarView: {
     justifyContent: 'flex-end',

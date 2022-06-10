@@ -12,7 +12,7 @@ const styles = theme => ({
     alignItems: 'center',
     flexDirection: 'row',
     padding: 16,
-    height: 60,
+    height: 54,
   },
   sectionTitleView: {
     flex: 8,
@@ -27,6 +27,10 @@ const styles = theme => ({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     flex: 4,
+  },
+  sectionDivider: {
+    backgroundColor: theme['item-border-color'],
+    marginHorizontal: 18,
   },
 });
 
@@ -70,7 +74,7 @@ const ConversationActionItem = ({
               userName={name}
               defaultBGColor={theme['color-primary-default']}
               isActive={isActive}
-              size={36}
+              size={30}
               availabilityStatus={availabilityStatus}
             />
           )}
@@ -85,7 +89,7 @@ const ConversationActionItem = ({
           )}
         </View>
       </TouchableOpacity>
-      <Divider />
+      <Divider style={style.sectionDivider} />
     </React.Fragment>
   );
 };

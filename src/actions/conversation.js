@@ -587,8 +587,8 @@ export const assignTeam =
     dispatch({ type: ASSIGN_TEAM });
     try {
       const params = { team_id: teamId };
-      const apiUrl = (`conversations/${conversationId}/assignments`, params);
-      await axios.post(apiUrl);
+      const apiUrl = `conversations/${conversationId}/assignments`;
+      await axios.post(apiUrl, params);
       dispatch({ type: ASSIGN_TEAM_SUCCESS });
       dispatch(getConversationDetails({ conversationId }));
       pop(1);

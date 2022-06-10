@@ -16,7 +16,7 @@ const propTypes = {
   onClickCheckedChange: PropTypes.func,
 };
 const TeamListComponent = ({ eva, key, name, selectedTeam, onClickCheckedChange }) => {
-  const { style, theme } = eva;
+  const { style } = eva;
 
   return (
     <TouchableOpacity activeOpacity={0.5} style={style.container}>

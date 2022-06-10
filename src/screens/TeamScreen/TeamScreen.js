@@ -36,7 +36,7 @@ const TeamScreenComponent = ({ eva: { style }, navigation, route }) => {
   };
 
   const teamsList = () => {
-    if (team.id) {
+    if (team && team.id) {
       return [
         {
           id: 0,
@@ -58,7 +58,7 @@ const TeamScreenComponent = ({ eva: { style }, navigation, route }) => {
         }),
       );
     } else {
-      // navigation.goBack();
+      navigation.goBack();
     }
   };
   return (

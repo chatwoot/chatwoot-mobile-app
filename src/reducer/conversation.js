@@ -316,30 +316,6 @@ export default (state = initialState, action) => {
       };
     }
 
-    case GET_ALL_TEAMS: {
-      return {
-        ...state,
-        availableTeams: [],
-        isAllAvailableTeamsLoaded: true,
-      };
-    }
-
-    case GET_ALL_TEAMS_SUCCESS: {
-      return {
-        ...state,
-        availableTeams: action.payload,
-        isAllAvailableTeamsLoaded: false,
-      };
-    }
-
-    case GET_ALL_TEAMS_ERROR: {
-      return {
-        ...state,
-        availableTeams: [],
-        isAllAvailableTeamsLoaded: false,
-      };
-    }
-
     case ASSIGN_TEAM: {
       return {
         ...state,

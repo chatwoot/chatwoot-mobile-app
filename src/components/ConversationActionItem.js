@@ -74,7 +74,7 @@ const ConversationActionItem = ({
               userName={name}
               defaultBGColor={theme['color-primary-default']}
               isActive={isActive}
-              size={30}
+              size={28}
               availabilityStatus={availabilityStatus}
             />
           )}

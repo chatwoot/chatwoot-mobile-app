@@ -6,7 +6,7 @@ import { Divider, Icon, withStyles } from '@ui-kitten/components';
 import CustomText from './Text';
 import UserAvatar from './UserAvatar';
 
-const styles = (theme) => ({
+const styles = theme => ({
   section: {
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -75,7 +75,7 @@ const ConversationActionItem = ({
             />
           )}
           <CustomText style={style.sectionText}>{name}</CustomText>
-          {itemType === 'assignee' && (
+          {(itemType === 'assignee' || itemType === 'team') && (
             <Icon
               name="arrow-ios-forward-outline"
               fill={theme['color-primary-default']}

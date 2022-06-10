@@ -35,6 +35,12 @@ import {
   ASSIGN_CONVERSATION,
   ASSIGN_CONVERSATION_SUCCESS,
   ASSIGN_CONVERSATION_ERROR,
+  GET_ALL_TEAMS,
+  GET_ALL_TEAMS_SUCCESS,
+  GET_ALL_TEAMS_ERROR,
+  ASSIGN_TEAM,
+  ASSIGN_TEAM_SUCCESS,
+  ASSIGN_TEAM_ERROR,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -557,5 +563,36 @@ export const unAssignConversation =
       dispatch(getConversationDetails({ conversationId }));
     } catch (error) {
       dispatch({ type: ASSIGN_CONVERSATION_ERROR });
+    }
+  };
+
+export const getAllTeams = () => async dispatch => {
+  dispatch({ type: GET_ALL_TEAMS });
+  try {
+    const apiUrl = 'teams';
+    const response = await axios.get(apiUrl);
+    const { data } = response;
+    dispatch({
+      type: GET_ALL_TEAMS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({ type: GET_ALL_TEAMS_ERROR, payload: error });
+  }
+};
+
+export const assignTeam =
+  ({ conversationId, teamId }) =>
+  async (dispatch, getState) => {
+    dispatch({ type: ASSIGN_TEAM });
+    try {
+      const params = { team_id: teamId };
+      const apiUrl = (`conversations/${conversationId}/assignments`, params);
+      await axios.post(apiUrl);
+      dispatch({ type: ASSIGN_TEAM_SUCCESS });
+      dispatch(getConversationDetails({ conversationId }));
+      pop(1);
+    } catch (error) {
+      dispatch({ type: ASSIGN_TEAM_ERROR });
     }
   };

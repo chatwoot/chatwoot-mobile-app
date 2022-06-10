@@ -12,7 +12,7 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
   const agents = useSelector(state => state.agent.data);
 
   const {
-    meta: { assignee },
+    meta: { assignee, team },
   } = conversationDetails;
 
   let assignedAgent = null;
@@ -59,6 +59,13 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
           itemType="unassign"
         />
       )}
+
+      <ConversationActionItem
+        onPressItem={onPressAction}
+        text="Team"
+        itemType="team"
+        name={team ? team.name : 'Select Team'}
+      />
 
       {!muted ? (
         <ConversationActionItem

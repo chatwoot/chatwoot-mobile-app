@@ -9,7 +9,7 @@ import HeaderBar from '../../components/HeaderBar';
 import i18n from '../../i18n';
 import styles from './TeamScreen.style';
 import TeamList from 'src/components/TeamList';
-import { getAllTeams, assignTeam } from '../../actions/conversation';
+import { getAllTeams, assignTeam } from '../../actions/team';
 import { captureEvent } from 'helpers/Analytics';
 
 const TeamScreenComponent = ({ eva: { style }, navigation, route }) => {

@@ -36,7 +36,6 @@ const styles = theme => ({
 
   socialIconsContainer: {
     flexDirection: 'row',
-    paddingVertical: 8,
   },
 
   detailsContainer: {

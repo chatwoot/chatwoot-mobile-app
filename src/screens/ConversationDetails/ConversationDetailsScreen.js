@@ -18,7 +18,7 @@ import HeaderBar from '../../components/HeaderBar';
 import ConversationDetailsItem from '../../components/ConversationDetailsItem';
 import SocialProfileIcons from './components/SocialProfileIcons';
 
-import { getAllCustomAttributes } from 'actions/conversation';
+import { getAllCustomAttributes } from 'actions/attributes';
 
 class ConversationDetailsComponent extends Component {
   state = { settingsMenu: [] };
@@ -123,24 +123,34 @@ class ConversationDetailsComponent extends Component {
         .filter(attribute => attribute.attribute_model === 'conversation_attribute')
         .map(attribute => {
           const { attribute_key: attributeKey, attribute_display_name: displayName } = attribute;
-          return (
-            <ConversationDetailsItem
-              title={displayName}
-              value={String(conversationAttributes[attributeKey])}
-              type={attributeKey}
-            />
-          );
+          if (conversationAttributes[attributeKey] !== undefined) {
+            return (
+              <ConversationDetailsItem
+                title={displayName}
+                value={String(conversationAttributes[attributeKey])}
+                type={attributeKey}
+              />
+            );
+          }
         });
     };
 
+    const conversationAttributesHasValue = Object.keys(conversationAttributes).length > 0;
+
     return (
       <View>
-        <CustomText style={style.itemListViewTitle}>{'Conversation Information'}</CustomText>
-        <View style={style.itemListView}>
-          {displayItems}
-          {getConversationAttributes()}
-        </View>
-        <View style={style.separationView} />
+        {displayItems.length > 0 || conversationAttributesHasValue ? (
+          <View>
+            <CustomText style={style.itemListViewTitle}>
+              {i18n.t('CONVERSATION_DETAILS.TITLE')}
+            </CustomText>
+            <View style={style.itemListView}>
+              {displayItems}
+              {getConversationAttributes()}
+            </View>
+            <View style={style.separationView} />
+          </View>
+        ) : null}
       </View>
     );
   }
@@ -159,21 +169,29 @@ class ConversationDetailsComponent extends Component {
       return null;
     }
 
+    const contactAttributesHasValue = Object.keys(contactAttributes).length > 0;
+
     return (
       <View>
-        <CustomText style={style.itemListViewTitle}>{'Contact Attributes'}</CustomText>
-        <View style={style.itemListView}>
-          {Object.keys(contactAttributes).map(key => {
-            return (
-              <ConversationDetailsItem
-                title={key}
-                value={String(contactAttributes[key])}
-                type={key}
-              />
-            );
-          })}
-        </View>
-        <View style={style.separationView} />
+        {contactAttributesHasValue ? (
+          <View>
+            <CustomText style={style.itemListViewTitle}>
+              {i18n.t('CONTACT_ATTRIBUTES.TITLE')}
+            </CustomText>
+            <View style={style.itemListView}>
+              {Object.keys(contactAttributes).map(key => {
+                return (
+                  <ConversationDetailsItem
+                    title={key}
+                    value={String(contactAttributes[key])}
+                    type={key}
+                  />
+                );
+              })}
+            </View>
+            <View style={style.separationView} />
+          </View>
+        ) : null}
       </View>
     );
   }
@@ -199,7 +217,7 @@ class ConversationDetailsComponent extends Component {
     } = conversationDetails;
 
     const {
-      social_profiles: socialProfiles,
+      social_profiles: socialProfiles = {},
       company_name: companyName,
       location,
     } = senderAdditionalInfo;

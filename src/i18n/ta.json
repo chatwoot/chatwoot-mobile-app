@@ -123,7 +123,8 @@
     "BROWSER": "புரவுஸர்",
     "OPERATING_SYSTEM": "ஆப்பரேட்டிங் சிஸ்டம்",
     "INITIATED_AT": "இல் தொடங்கப்பட்டது",
-    "INITIATED_FROM": "இருந்து தொடங்கப்பட்டது"
+    "INITIATED_FROM": "இருந்து தொடங்கப்பட்டது",
+    "IP_ADDRESS": "IP Address"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "செயல்கள்"

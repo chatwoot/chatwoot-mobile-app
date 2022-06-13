@@ -12,6 +12,8 @@ import ConversationAttachmentItem from './ConversationAttachmentItem';
 import ConversationContentItem from './ConversationContentItem';
 import InboxName from 'src/screens/ChatScreen/components/InboxName';
 
+import { getTextSubstringWithEllipsis } from 'src/helpers/TextSubstring';
+
 import { INBOX_ICON } from 'src/constants/index';
 
 const propTypes = {
@@ -106,7 +108,7 @@ const ConversationItemComponent = ({
                     style={
                       unreadCount ? style.conversationUserActive : style.conversationUserNotActive
                     }>
-                    {name.length < 26 ? `${name}` : `${name.substring(0, 22)}...`}
+                    {getTextSubstringWithEllipsis(name, 26)}
                   </CustomText>
                 )}
               </View>
@@ -128,9 +130,7 @@ const ConversationItemComponent = ({
                 )
               ) : (
                 <CustomText style={style.typingText}>
-                  {typingUser && typingUser.length > 25
-                    ? `${typingUser.substring(0, 25)}...`
-                    : `${typingUser}`}
+                  {getTextSubstringWithEllipsis(typingUser, 25)}
                 </CustomText>
               )}
             </View>

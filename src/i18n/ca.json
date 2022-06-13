@@ -123,7 +123,8 @@
     "BROWSER": "Navegador",
     "OPERATING_SYSTEM": "Sistema operatiu",
     "INITIATED_AT": "Iniciada a",
-    "INITIATED_FROM": "Iniciat des de"
+    "INITIATED_FROM": "Iniciat des de",
+    "IP_ADDRESS": "Adreça IP"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Accions"

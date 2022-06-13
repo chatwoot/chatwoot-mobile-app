@@ -123,7 +123,8 @@
     "BROWSER": "المتصفح",
     "OPERATING_SYSTEM": "نظام التشغيل",
     "INITIATED_AT": "بدأت في",
-    "INITIATED_FROM": "بدأت من"
+    "INITIATED_FROM": "بدأت من",
+    "IP_ADDRESS": "عنوان IP"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "الإجراءات"

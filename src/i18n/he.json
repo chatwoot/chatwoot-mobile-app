@@ -123,7 +123,8 @@
     "BROWSER": "דפדפן",
     "OPERATING_SYSTEM": "מערכת הפעלה",
     "INITIATED_AT": "יזם ב",
-    "INITIATED_FROM": "יזם מ"
+    "INITIATED_FROM": "יזם מ",
+    "IP_ADDRESS": "כתובת IP"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "פעולות"

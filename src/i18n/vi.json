@@ -123,7 +123,8 @@
     "BROWSER": "Trình duyệt",
     "OPERATING_SYSTEM": "Hệ điều hành",
     "INITIATED_AT": "Bắt đầu lúc",
-    "INITIATED_FROM": "Bắt đầu từ"
+    "INITIATED_FROM": "Bắt đầu từ",
+    "IP_ADDRESS": "Địa chỉ IP"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Hành động"

@@ -133,7 +133,8 @@
     "TITLE": "Select Agent"
   },
   "TEAMS": {
-    "TITLE": "Select Team"
+    "TITLE": "Select Team",
+    "EMPTY": "Please add teams to your account to assign conversations to teams."
   },
   "ERRORS": {
     "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",

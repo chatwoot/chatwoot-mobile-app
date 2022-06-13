@@ -123,7 +123,8 @@
     "BROWSER": "Tarayıcı",
     "OPERATING_SYSTEM": "İşletim sistemi",
     "INITIATED_AT": "Başlatıldı",
-    "INITIATED_FROM": "Başlatıldı"
+    "INITIATED_FROM": "Başlatıldı",
+    "IP_ADDRESS": "IP Adresi"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Hareketler"

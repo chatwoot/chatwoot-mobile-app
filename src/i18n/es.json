@@ -123,7 +123,8 @@
     "BROWSER": "Navegador",
     "OPERATING_SYSTEM": "Sistema operativo",
     "INITIATED_AT": "Iniciado a las",
-    "INITIATED_FROM": "Iniciado desde"
+    "INITIATED_FROM": "Iniciado desde",
+    "IP_ADDRESS": "Dirección IP"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Acciones"

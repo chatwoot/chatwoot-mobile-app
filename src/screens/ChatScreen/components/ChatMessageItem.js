@@ -11,6 +11,7 @@ import { openURL } from 'helpers/UrlHelper';
 import UserAvatar from 'src/components/UserAvatar';
 import ChatMessageActionItem from './ChatMessageActionItem';
 import { showToast } from 'helpers/ToastHelper';
+import { useRoute } from '@react-navigation/native';
 
 const LockIcon = style => {
   return <Icon {...style} name="lock" />;
@@ -104,7 +105,6 @@ const propTypes = {
   }),
   type: PropTypes.string,
   created_at: PropTypes.number,
-  meta: PropTypes.object,
   message: PropTypes.shape({
     sender: PropTypes.shape({
       name: PropTypes.string,
@@ -115,13 +115,18 @@ const propTypes = {
   attachment: PropTypes.object,
 };
 
-const ChatMessageItemComponent = ({ type, meta, message, eva: { style, theme }, created_at }) => {
+const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, created_at }) => {
+  const route = useRoute();
   const actionSheetRef = createRef();
+  const { meta } = route.params;
   const senderName = message && message.sender && message.sender.name ? message.sender.name : '';
   const messageViewStyle = type === 'outgoing' ? style.messageRight : style.messageLeft;
   const messageTextStyle =
     type === 'outgoing' ? style.messageContentRight : style.messageContentLeft;
   const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
+
+  const { additional_attributes: additionalAttributes = {} } = meta.sender;
+  const { screen_name: screenName } = additionalAttributes;
 
   const handleURL = URL => {
     if (/\b(http|https)/.test(URL)) {
@@ -133,23 +138,20 @@ const ChatMessageItemComponent = ({ type, meta, message, eva: { style, theme }, 
     actionSheetRef.current?.setModalVisible();
   };
 
-  const twitterSenderAvatar = () => {
-    return meta.sender.thumbnail || {};
-  };
+  const twitterSenderAvatarUrl = meta.sender.thumbnail || '';
 
   const isTwitterChannel = () => {
     return meta && meta.channel === 'Channel::TwitterProfile';
   };
 
-  const twitterSenderScreenName = () => {
-    const additionalAttributes = meta.sender.additional_attributes || {};
-    const { screen_name: screenName } = additionalAttributes;
-    return screenName;
-  };
+  const twitterSenderScreenName = screenName || '';
 
   const openTwitterSenderProfile = () => {
-    const url = `https://twitter.com/${twitterSenderScreenName}`;
-    return openURL({ url });
+    if (isTwitterChannel()) {
+      openURL({
+        URL: `https://twitter.com/${twitterSenderScreenName}`,
+      });
+    }
   };
 
   const onPressItem = ({ itemType }) => {
@@ -231,8 +233,8 @@ const ChatMessageItemComponent = ({ type, meta, message, eva: { style, theme }, 
       {isTwitterChannel() && !isPrivate ? (
         <View style={style.screenNameWithAvatar}>
           <UserAvatar
-            thumbnail={twitterSenderAvatar()}
-            userName={twitterSenderScreenName()}
+            thumbnail={twitterSenderAvatarUrl}
+            userName={twitterSenderScreenName}
             defaultBGColor={theme['color-primary-default']}
             size={14}
           />

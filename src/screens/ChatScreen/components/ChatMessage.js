@@ -55,7 +55,7 @@ const styles = theme => ({
   },
 });
 
-const MessageContentComponent = ({ meta, message, type, showAttachment, created_at }) => {
+const MessageContentComponent = ({ message, type, showAttachment, created_at }) => {
   const { attachments } = message;
 
   return attachments ? (
@@ -67,16 +67,15 @@ const MessageContentComponent = ({ meta, message, type, showAttachment, created_
       created_at={created_at}
     />
   ) : (
-    <ChatMessageItem meta={meta} message={message} type={type} created_at={created_at} />
+    <ChatMessageItem message={message} type={type} created_at={created_at} />
   );
 };
 
 const MessageContent = withStyles(MessageContentComponent, styles);
 
-const OutGoingMessageComponent = ({ meta, message, created_at, showAttachment }) => (
+const OutGoingMessageComponent = ({ message, created_at, showAttachment }) => (
   <React.Fragment>
     <MessageContent
-      meta={meta}
       message={message}
       created_at={created_at}
       type="outgoing"
@@ -87,10 +86,9 @@ const OutGoingMessageComponent = ({ meta, message, created_at, showAttachment })
 
 const OutGoingMessage = withStyles(OutGoingMessageComponent, styles);
 
-const IncomingMessageComponent = ({ meta, message, created_at, showAttachment }) => (
+const IncomingMessageComponent = ({ message, created_at, showAttachment }) => (
   <React.Fragment>
     <MessageContent
-      meta={meta}
       message={message}
       created_at={created_at}
       type="incoming"
@@ -130,7 +128,7 @@ const defaultProps = {
   message: { content: null, date: null },
 };
 
-const ChatMessageComponent = ({ meta, message, eva: { style }, showAttachment }) => {
+const ChatMessageComponent = ({ message, eva: { style }, showAttachment }) => {
   const { message_type, created_at } = message;
 
   let alignment = message_type ? 'flex-end' : 'flex-start';
@@ -143,7 +141,6 @@ const ChatMessageComponent = ({ meta, message, eva: { style }, showAttachment })
       <View style={style.messageContainer}>
         {alignment === 'flex-start' ? (
           <IncomingMessage
-            meta={meta}
             message={message}
             created_at={created_at}
             type="incoming"
@@ -153,7 +150,6 @@ const ChatMessageComponent = ({ meta, message, eva: { style }, showAttachment })
           <ActivityMessage message={message} created_at={created_at} type="activity" />
         ) : (
           <OutGoingMessage
-            meta={meta}
             message={message}
             created_at={created_at}
             type="outgoing"

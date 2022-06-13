@@ -37,7 +37,10 @@ class HeaderBarComponent extends Component {
   };
 
   renderRightControl = () => {
-    const { buttonType, onRightPress } = this.props;
+    const { buttonType, onRightPress, rightButtonIcon, onBackPress } = this.props;
+    if (rightButtonIcon) {
+      return <TopNavigationAction icon={CloseIcon} onPress={onBackPress} />;
+    }
     return (
       <TopNavigationAction
         icon={buttonType === 'menu' ? MenuIcon : MoreIcon}
@@ -85,6 +88,7 @@ const propTypes = {
   iconName: PropTypes.string,
   buttonType: PropTypes.string,
   leftButtonIcon: PropTypes.string,
+  rightButtonIcon: PropTypes.string,
 };
 
 const defaultProps = {

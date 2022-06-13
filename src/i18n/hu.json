@@ -123,7 +123,8 @@
     "BROWSER": "Böngésző",
     "OPERATING_SYSTEM": "Operációs rendszer",
     "INITIATED_AT": "Kezdeményezve ekkor:",
-    "INITIATED_FROM": "Kezdeményezve innen:"
+    "INITIATED_FROM": "Kezdeményezve innen:",
+    "IP_ADDRESS": "IP cím"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Lehetőségek"

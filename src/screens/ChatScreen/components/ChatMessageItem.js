@@ -212,68 +212,54 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     return subjectText() || fromEmail() || toEmail() || ccEmail() || bccEmail();
   };
 
+  const emailHeaderValues = [
+    {
+      key: 'from',
+      value: fromEmail(),
+      title: 'From: ',
+    },
+    {
+      key: 'to',
+      value: toEmail(),
+      title: 'To: ',
+    },
+    {
+      key: 'cc',
+      value: ccEmail(),
+      title: 'Cc: ',
+    },
+    {
+      key: 'bcc',
+      value: bccEmail(),
+      title: 'Bcc: ',
+    },
+    {
+      key: 'subject',
+      value: subjectText(),
+      title: 'Subject: ',
+    },
+  ];
+
+  const emailHeader = emailHeaderValues
+    .map(({ key, value, title }) =>
+      value ? (
+        <View style={style.emailFields} key={key}>
+          <Text style={emailHeadLabelStyle}>
+            {title}
+            <CustomText style={emailHeadTextStyle}>{value}</CustomText>
+          </Text>
+        </View>
+      ) : null,
+    )
+    .filter(displayItem => !!displayItem);
+
   return (
     <TouchableOpacity
       onLongPress={showTooltip}
       style={[style.message, messageViewStyle, message.private && style.privateMessageContainer]}
       activeOpacity={0.95}>
       <View>
-        {hasAnyEmailValues() ? (
-          <View style={style.mailHeadWrap}>
-            {fromEmail() ? (
-              <View style={style.emailFields}>
-                <Text style={emailHeadLabelStyle}>
-                  {'From: '}
-                  <CustomText style={emailHeadTextStyle}>{fromEmail()}</CustomText>
-                </Text>
-              </View>
-            ) : null}
-
-            {toEmail() ? (
-              <View style={style.emailFields}>
-                <Text style={emailHeadLabelStyle}>
-                  {'To: '}
-                  <CustomText style={emailHeadTextStyle}>{toEmail()}</CustomText>
-                </Text>
-              </View>
-            ) : null}
-
-            {ccEmail() ? (
-              <View style={style.emailFields}>
-                <Text style={emailHeadLabelStyle}>
-                  {'Cc: '}
-                  <CustomText style={emailHeadTextStyle}>{ccEmail()}</CustomText>
-                </Text>
-              </View>
-            ) : null}
-
-            {bccEmail() ? (
-              <View style={style.emailFields}>
-                <Text style={emailHeadLabelStyle}>
-                  {'Bcc: '}
-                  <CustomText style={emailHeadTextStyle}>{bccEmail()}</CustomText>
-                </Text>
-              </View>
-            ) : null}
-
-            {subjectText() ? (
-              <View style={style.emailFields}>
-                <Text style={emailHeadLabelStyle}>
-                  {'Subject: '}
-                  <CustomText style={emailHeadTextStyle}>{subjectText()}</CustomText>
-                </Text>
-              </View>
-            ) : null}
-
-            <View style={style.dateView}>
-              {message.private && (
-                <View style={style.iconView}>
-                  <LockIcon style={style.icon} fill={theme['text-basic-color']} />
-                </View>
-              )}
-            </View>
-          </View>
-        ) : null}
+        {hasAnyEmailValues() ? <View style={style.mailHeadWrap}>{emailHeader}</View> : null}
         <Markdown
           debugPrintTree
           markdownit={md}

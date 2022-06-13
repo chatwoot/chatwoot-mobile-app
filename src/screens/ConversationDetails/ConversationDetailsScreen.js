@@ -20,6 +20,8 @@ import SocialProfileIcons from './components/SocialProfileIcons';
 
 import { getAllCustomAttributes } from 'actions/attributes';
 
+import ContactDetails from './components/ContactDetails';
+
 class ConversationDetailsComponent extends Component {
   state = { settingsMenu: [] };
   static propTypes = {
@@ -97,12 +99,16 @@ class ConversationDetailsComponent extends Component {
       },
       {
         key: 'browserName',
-        value: `${browserName} ${browserVersion}`,
+        value:
+          browserName && browserVersion !== undefined ? `${browserName} ${browserVersion}` : null,
         title: i18n.t('CONVERSATION_DETAILS.BROWSER'),
       },
       {
         key: 'platformName',
-        value: `${platformName} ${platformVersion}`,
+        value:
+          platformName && platformVersion !== undefined
+            ? `${platformName} ${platformVersion}`
+            : null,
         title: i18n.t('CONVERSATION_DETAILS.OPERATING_SYSTEM'),
       },
       {
@@ -221,6 +227,7 @@ class ConversationDetailsComponent extends Component {
       company_name: companyName,
       location,
     } = senderAdditionalInfo;
+
     const { facebook, twitter, linkedin, github } = socialProfiles;
 
     const socialProfileTypes = [
@@ -252,6 +259,35 @@ class ConversationDetailsComponent extends Component {
       )
       .filter(profile => !!profile);
 
+    const contactDetails = [
+      {
+        key: 'email',
+        value: email,
+        iconName: 'email-outline',
+      },
+      {
+        key: 'phoneNumber',
+        value: phoneNumber,
+        iconName: 'phone-call-outline',
+      },
+      {
+        key: 'company',
+        value: companyName,
+        iconName: 'home-outline',
+      },
+      {
+        key: 'location',
+        value: location || city || country !== undefined ? location || `${city}, ${country}` : null,
+        iconName: 'map-outline',
+      },
+    ];
+
+    const getContactDetails = contactDetails
+      .map(({ key, value, iconName }) =>
+        value ? <ContactDetails type={key} value={value} iconName={iconName} /> : null,
+      )
+      .filter(details => !!details);
+
     return (
       <ScrollView style={style.container}>
         <HeaderBar showLeftButton onBackPress={this.onBackPress} />
@@ -275,53 +311,8 @@ class ConversationDetailsComponent extends Component {
             </View>
           ) : null}
           <View style={style.socialIconsContainer}>{getSocialProfileValue}</View>
-          {!!email && (
-            <View style={style.detailsContainer}>
-              <Icon
-                name="email-outline"
-                height={14}
-                width={14}
-                fill={theme['color-primary-default']}
-              />
-              <CustomText style={style.label}>{email}</CustomText>
-            </View>
-          )}
-          {!!phoneNumber && (
-            <View style={style.detailsContainer}>
-              <Icon
-                name="phone-call-outline"
-                height={14}
-                width={14}
-                fill={theme['color-primary-default']}
-                onPress={() => openNumber(phoneNumber)}
-              />
-              <CustomText style={style.label} onPress={() => openNumber(phoneNumber)}>
-                {phoneNumber}
-              </CustomText>
-            </View>
-          )}
-          {companyName ? (
-            <View style={style.detailsContainer}>
-              <Icon
-                name="home-outline"
-                height={14}
-                width={14}
-                fill={theme['color-primary-default']}
-              />
-              <CustomText style={style.label}>{companyName}</CustomText>
-            </View>
-          ) : null}
-          {location || (city && country) ? (
-            <View style={style.detailsContainer}>
-              <Icon
-                name="map-outline"
-                height={14}
-                width={14}
-                fill={theme['color-primary-default']}
-              />
-              <CustomText style={style.label}>{location || `${city}, ${country}`}</CustomText>
-            </View>
-          ) : null}
+          <View style={style.separationView} />
+          <View>{getContactDetails}</View>
           <View style={style.separationView} />
           {this.renderConversationAttributes()}
           {this.renderContactAttributes()}

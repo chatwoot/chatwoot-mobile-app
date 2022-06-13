@@ -43,6 +43,18 @@ const styles = theme => ({
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingTop: 10,
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+
+  description: {
+    fontSize: theme['font-size-small'],
+    color: theme['text-light-color'],
+    lineHeight: 20,
+  },
+
+  socialIconsContainer: {
+    flexDirection: 'row',
   },
 
   separationView: {

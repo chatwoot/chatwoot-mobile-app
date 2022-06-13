@@ -123,7 +123,8 @@
     "BROWSER": "مرورگر",
     "OPERATING_SYSTEM": "سیستم عامل",
     "INITIATED_AT": "شروع شده در",
-    "INITIATED_FROM": "شروع شده از"
+    "INITIATED_FROM": "شروع شده از",
+    "IP_ADDRESS": "آدرس آی‌پی"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "عملیات"

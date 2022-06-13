@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Spinner, withStyles } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
-import { SafeAreaView, View, ScrollView } from 'react-native';
+import { SafeAreaView, View, ScrollView, Text } from 'react-native';
 
 import LoaderButton from '../../components/LoaderButton';
 import HeaderBar from '../../components/HeaderBar';
@@ -65,31 +65,37 @@ const TeamScreenComponent = ({ eva: { style }, navigation, route }) => {
     <SafeAreaView style={style.container}>
       <HeaderBar title={i18n.t('TEAMS.TITLE')} showLeftButton onBackPress={goBack} />
 
-      <ScrollView>
-        {teamsList().map(item => (
-          <TeamList
-            name={item.name}
-            key={item.id}
-            selectedTeam={item.id === selectedTeamId}
-            onClickCheckedChange={() => onClickCheckedChange(item)}
-          />
-        ))}
-        {isAllAvailableTeamsLoaded && (
-          <View style={style.spinnerView}>
-            <Spinner size="medium" />
+      {teams ? (
+        <ScrollView>
+          {teamsList().map(item => (
+            <TeamList
+              name={item.name}
+              key={item.id}
+              selectedTeam={item.id === selectedTeamId}
+              onClickCheckedChange={() => onClickCheckedChange(item)}
+            />
+          ))}
+          {isAllAvailableTeamsLoaded && (
+            <View style={style.spinnerView}>
+              <Spinner size="medium" />
+            </View>
+          )}
+          <View style={style.submitButtonView}>
+            <LoaderButton
+              style={style.submitButton}
+              size="large"
+              textStyle={style.submitButtonText}
+              onPress={() => onClickAssignTeam()}
+              text={i18n.t('SETTINGS.SUBMIT')}
+              loading={isTeamUpdating}
+            />
           </View>
-        )}
-        <View style={style.submitButtonView}>
-          <LoaderButton
-            style={style.submitButton}
-            size="large"
-            textStyle={style.submitButtonText}
-            onPress={() => onClickAssignTeam()}
-            text={i18n.t('SETTINGS.SUBMIT')}
-            loading={isTeamUpdating}
-          />
+        </ScrollView>
+      ) : (
+        <View>
+          <Text style={style.emptyTeamsLabel}>{i18n.t('TEAMS.EMPTY')}</Text>
         </View>
-      </ScrollView>
+      )}
     </SafeAreaView>
   );
 };

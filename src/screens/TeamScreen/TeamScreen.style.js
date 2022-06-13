@@ -23,6 +23,12 @@ const styles = theme => ({
     justifyContent: 'center',
     marginTop: 16,
   },
+  emptyTeamsLabel: {
+    fontSize: theme['font-size-medium'],
+    textAlign: 'center',
+    paddingHorizontal: 10,
+    marginTop: 28,
+  },
 });
 
 export default styles;

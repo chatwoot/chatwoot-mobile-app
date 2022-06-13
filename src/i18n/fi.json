@@ -123,7 +123,8 @@
     "BROWSER": "Selain",
     "OPERATING_SYSTEM": "Käyttöjärjestelmä",
     "INITIATED_AT": "Aloitettu klo",
-    "INITIATED_FROM": "Aloitettu osoitteesta"
+    "INITIATED_FROM": "Aloitettu osoitteesta",
+    "IP_ADDRESS": "IP-osoite"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Toiminnot"

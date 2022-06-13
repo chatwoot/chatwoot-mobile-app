@@ -153,7 +153,7 @@ const ReplyBox = ({
 
   const sendMessageButtonWrapStyles = () => {
     return !(!message && !attachmentDetails)
-      ? { backgroundColor: theme['color-info-100'] }
+      ? { backgroundColor: theme['color-info-75'] }
       : { backgroundColor: theme['color-info-200'] };
   };
 

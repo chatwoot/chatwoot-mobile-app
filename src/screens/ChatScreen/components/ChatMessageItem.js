@@ -8,8 +8,10 @@ import ActionSheet from 'react-native-actions-sheet';
 import CustomText from 'components/Text';
 import { messageStamp } from 'helpers/TimeHelper';
 import { openURL } from 'helpers/UrlHelper';
+import UserAvatar from 'src/components/UserAvatar';
 import ChatMessageActionItem from './ChatMessageActionItem';
 import { showToast } from 'helpers/ToastHelper';
+import { useRoute } from '@react-navigation/native';
 
 const LockIcon = style => {
   return <Icon {...style} name="lock" />;
@@ -108,6 +110,16 @@ const styles = theme => ({
     color: theme['color-background'],
     fontSize: theme['font-size-extra-small'],
   },
+  screenNameWithAvatar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 4,
+  },
+  senderScreenName: {
+    paddingHorizontal: 4,
+    color: theme['color-primary-500'],
+    fontSize: theme['font-size-extra-small'],
+  },
 });
 
 const propTypes = {
@@ -129,7 +141,9 @@ const propTypes = {
 };
 
 const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, created_at }) => {
+  const route = useRoute();
   const actionSheetRef = createRef();
+  const { meta } = route.params;
   const senderName = message && message.sender && message.sender.name ? message.sender.name : '';
   const messageViewStyle = type === 'outgoing' ? style.messageRight : style.messageLeft;
   const messageTextStyle =
@@ -139,6 +153,9 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
   const emailHeadTextStyle =
     type === 'outgoing' ? style.emailFieldsValueRight : style.emailFieldsValueLeft;
   const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
+
+  const { additional_attributes: additionalAttributes = {} } = meta.sender;
+  const { screen_name: screenName } = additionalAttributes;
 
   const handleURL = URL => {
     if (/\b(http|https)/.test(URL)) {
@@ -150,6 +167,22 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     actionSheetRef.current?.setModalVisible();
   };
 
+  const twitterSenderAvatarUrl = meta.sender.thumbnail || '';
+
+  const isTwitterChannel = () => {
+    return meta && meta.channel === 'Channel::TwitterProfile';
+  };
+
+  const twitterSenderScreenName = screenName || '';
+
+  const openTwitterSenderProfile = () => {
+    if (isTwitterChannel()) {
+      openURL({
+        URL: `https://twitter.com/${twitterSenderScreenName}`,
+      });
+    }
+  };
+
   const onPressItem = ({ itemType }) => {
     actionSheetRef.current?.setModalVisible(false);
 
@@ -159,6 +192,8 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     }
   };
 
+  const isPrivate = message.private;
+
   const md = require('markdown-it')({
     html: true,
     linkify: true,
@@ -166,7 +201,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
 
   const messageContentStyle = {
     ...messageTextStyle,
-    ...(message.private ? style.messagePrivate : {}),
+    ...(isPrivate ? style.messagePrivate : {}),
     lineHeight: 20,
   };
 
@@ -268,7 +303,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
           style={{
             link: {
               color: theme['text-light-color'],
-              fontWeight: message.private ? theme['font-semi-bold'] : theme['font-regular'],
+              fontWeight: isPrivate ? theme['font-semi-bold'] : theme['font-regular'],
             },
             text: messageContentStyle,
             strong: {
@@ -288,13 +323,13 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
           <CustomText
             style={[
               dateStyle,
-              message.private && {
+              isPrivate && {
                 color: theme['color-gray'],
               },
             ]}>
             {messageStamp({ time: created_at })}
           </CustomText>
-          {message.private && (
+          {isPrivate && (
             <View style={style.iconView}>
               <LockIcon style={style.icon} fill={theme['text-basic-color']} />
             </View>
@@ -311,6 +346,19 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
           <ChatMessageActionItem text="Copy" itemType="copy" onPressItem={onPressItem} />
         </ActionSheet>
       </View>
+      {isTwitterChannel() && !isPrivate ? (
+        <View style={style.screenNameWithAvatar}>
+          <UserAvatar
+            thumbnail={twitterSenderAvatarUrl}
+            userName={twitterSenderScreenName}
+            defaultBGColor={theme['color-primary-default']}
+            size={14}
+          />
+          <Text onPress={openTwitterSenderProfile} style={style.senderScreenName}>
+            {senderName}
+          </Text>
+        </View>
+      ) : null}
     </TouchableOpacity>
   );
 };

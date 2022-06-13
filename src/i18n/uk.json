@@ -123,7 +123,8 @@
     "BROWSER": "Браузер",
     "OPERATING_SYSTEM": "Операційна система",
     "INITIATED_AT": "Час початку",
-    "INITIATED_FROM": "Initiated from"
+    "INITIATED_FROM": "Initiated from",
+    "IP_ADDRESS": "IP-адреса"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Дії"

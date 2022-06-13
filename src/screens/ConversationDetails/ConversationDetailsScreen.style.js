@@ -38,25 +38,6 @@ const styles = theme => ({
     flexDirection: 'row',
   },
 
-  detailsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingTop: 10,
-    alignItems: 'center',
-    paddingVertical: 8,
-  },
-
-  description: {
-    fontSize: theme['font-size-small'],
-    color: theme['text-light-color'],
-    lineHeight: 20,
-  },
-
-  socialIconsContainer: {
-    flexDirection: 'row',
-  },
-
   separationView: {
     padding: 8,
     borderBottomWidth: 1,
@@ -67,12 +48,6 @@ const styles = theme => ({
     textTransform: 'capitalize',
     fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-large'],
-  },
-
-  label: {
-    paddingLeft: 8,
-    fontSize: theme['font-size-small'],
-    color: theme['text-light-color'],
   },
 
   itemListViewTitle: {

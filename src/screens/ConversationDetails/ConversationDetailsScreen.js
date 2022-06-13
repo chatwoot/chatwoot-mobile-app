@@ -147,6 +147,7 @@ class ConversationDetailsComponent extends Component {
       <View>
         {displayItems.length > 0 || conversationAttributesHasValue ? (
           <View>
+            <View style={style.separationView} />
             <CustomText style={style.itemListViewTitle}>
               {i18n.t('CONVERSATION_DETAILS.TITLE')}
             </CustomText>
@@ -154,7 +155,6 @@ class ConversationDetailsComponent extends Component {
               {displayItems}
               {getConversationAttributes()}
             </View>
-            <View style={style.separationView} />
           </View>
         ) : null}
       </View>
@@ -181,6 +181,7 @@ class ConversationDetailsComponent extends Component {
       <View>
         {contactAttributesHasValue ? (
           <View>
+            <View style={style.separationView} />
             <CustomText style={style.itemListViewTitle}>
               {i18n.t('CONTACT_ATTRIBUTES.TITLE')}
             </CustomText>
@@ -195,7 +196,6 @@ class ConversationDetailsComponent extends Component {
                 );
               })}
             </View>
-            <View style={style.separationView} />
           </View>
         ) : null}
       </View>
@@ -277,7 +277,10 @@ class ConversationDetailsComponent extends Component {
       },
       {
         key: 'location',
-        value: location || city || country !== undefined ? location || `${city}, ${country}` : null,
+        value:
+          location || city || country !== undefined
+            ? location || `${city}${city ? ',' : ''} ${country}`
+            : null,
         iconName: 'map-outline',
       },
     ];
@@ -311,9 +314,7 @@ class ConversationDetailsComponent extends Component {
             </View>
           ) : null}
           <View style={style.socialIconsContainer}>{getSocialProfileValue}</View>
-          <View style={style.separationView} />
           <View>{getContactDetails}</View>
-          <View style={style.separationView} />
           {this.renderConversationAttributes()}
           {this.renderContactAttributes()}
         </View>

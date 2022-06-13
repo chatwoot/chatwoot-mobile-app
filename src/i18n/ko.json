@@ -123,7 +123,8 @@
     "BROWSER": "브라우저",
     "OPERATING_SYSTEM": "운영 체제",
     "INITIATED_AT": "시작 시간",
-    "INITIATED_FROM": "시작 위치"
+    "INITIATED_FROM": "시작 위치",
+    "IP_ADDRESS": "IP 주소"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "액션"

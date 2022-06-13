@@ -56,6 +56,7 @@ export const theme = {
   'color-success-transparent-400': 'rgba(19, 206, 102, 0.32)',
   'color-success-transparent-500': 'rgba(19, 206, 102, 0.4)',
   'color-success-transparent-600': 'rgba(19, 206, 102, 0.48)',
+  'color-info-75': '#C2E1FF',
   'color-info-100': '#CDEDFF',
   'color-info-200': '#9BD8FF',
   'color-info-300': '#6ABDFF',

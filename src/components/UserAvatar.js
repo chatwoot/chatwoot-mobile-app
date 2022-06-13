@@ -22,7 +22,7 @@ const styles = theme => ({
     justifyContent: 'center',
   },
   userName: {
-    color: theme['color-basic-100'],
+    color: theme['color-primary-600'],
     fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-small'],
   },
@@ -146,7 +146,7 @@ const UserAvatar = ({
   ) : (
     <View>
       <LinearGradient
-        colors={['#04befe', '#4481eb']}
+        colors={['#D6EBFF', '#C2E1FF']}
         style={[
           style.userThumbNail,
           {

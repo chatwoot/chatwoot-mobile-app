@@ -123,7 +123,8 @@
     "BROWSER": "Браузер",
     "OPERATING_SYSTEM": "Операционная система",
     "INITIATED_AT": "Начат в",
-    "INITIATED_FROM": "Начат из"
+    "INITIATED_FROM": "Начат из",
+    "IP_ADDRESS": "IP адрес"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Действия"

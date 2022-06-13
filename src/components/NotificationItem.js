@@ -55,6 +55,8 @@ const NotificationItemComponent = ({ eva, item, onSelectNotification }) => {
           <UserAvatar
             thumbnail={thumbnail}
             userName={name}
+            size={38}
+            fontSize={14}
             defaultBGColor={theme['color-primary-default']}
             channel={channel}
           />
@@ -73,15 +75,15 @@ const NotificationItemComponent = ({ eva, item, onSelectNotification }) => {
   );
 };
 
-const styles = (theme) => ({
+const styles = theme => ({
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingLeft: 16,
     paddingRight: 16,
-    paddingBottom: 12,
-    paddingTop: 12,
+    paddingBottom: 10,
+    paddingTop: 10,
   },
   itemView: {
     flexDirection: 'row',
@@ -90,7 +92,7 @@ const styles = (theme) => ({
   },
   avatarView: {
     justifyContent: 'flex-end',
-    marginRight: 16,
+    marginRight: 4,
     flex: 3,
   },
   contentView: {
@@ -104,8 +106,8 @@ const styles = (theme) => ({
   },
   content: {
     fontSize: theme['font-size-extra-small'],
-    fontWeight: theme['font-medium'],
     paddingTop: 4,
+    paddingBottom: 4,
   },
   time: {
     color: theme['text-hint-color'],

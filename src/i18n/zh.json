@@ -123,7 +123,8 @@
     "BROWSER": "浏览器",
     "OPERATING_SYSTEM": "操作系统",
     "INITIATED_AT": "发起于",
-    "INITIATED_FROM": "发起自"
+    "INITIATED_FROM": "发起自",
+    "IP_ADDRESS": "IP 地址"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "操作"

@@ -129,6 +129,9 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Actions"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Conversation Labels"
+  },
   "AGENT": {
     "TITLE": "Select Agent"
   },

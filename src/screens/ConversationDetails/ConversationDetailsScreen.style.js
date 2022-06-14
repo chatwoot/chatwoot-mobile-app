@@ -50,6 +50,11 @@ const styles = theme => ({
     fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-large'],
   },
+
+  itemListViewTitle: {
+    paddingTop: 12,
+    fontWeight: theme['font-semi-bold'],
+  },
 });
 
 export default styles;

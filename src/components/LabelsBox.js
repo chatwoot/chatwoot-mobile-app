@@ -36,9 +36,9 @@ const propTypes = {
 };
 
 const LabelBox = ({ id, title, color, onClickRemoveLabel, eva: { style, theme } }) => {
-  const getLabelBackgroundColor = code => {
+  const getLabelBackgroundColor = clr => {
     return {
-      backgroundColor: code,
+      backgroundColor: clr,
       flexDirection: 'row',
       alignItems: 'center',
       borderRadius: 4,

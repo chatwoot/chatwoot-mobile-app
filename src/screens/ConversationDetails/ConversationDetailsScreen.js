@@ -18,8 +18,6 @@ import SocialProfileIcons from './components/SocialProfileIcons';
 import ContactDetails from './components/ContactDetails';
 import LabelView from 'src/screens/ConversationDetails/components/LabelView';
 
-import { getConversationLabels } from 'src/actions/label';
-
 class ConversationDetailsComponent extends Component {
   state = { settingsMenu: [] };
   static propTypes = {
@@ -38,16 +36,11 @@ class ConversationDetailsComponent extends Component {
       goBack: PropTypes.func.isRequired,
     }).isRequired,
     route: PropTypes.object,
-    // getConversationLabels: PropTypes.func,
   };
 
   static defaultProps = {
     user: { email: null, name: null },
   };
-
-  // componentDidMount = () => {
-  //   this.props.getConversationLabels();
-  // };
 
   onBackPress = () => {
     const { navigation } = this.props;
@@ -139,8 +132,6 @@ class ConversationDetailsComponent extends Component {
       },
     } = conversationDetails;
 
-    const { labels: labels = [] } = conversationDetails;
-
     const { id: conversationId } = conversationDetails;
 
     const {
@@ -209,9 +200,6 @@ class ConversationDetailsComponent extends Component {
       )
       .filter(details => !!details);
 
-    // const [getLabelsNames] = Object.values(labels);
-    // console.log('labelsssss', getLabelsNames);
-
     return (
       <ScrollView style={style.container}>
         <HeaderBar showLeftButton onBackPress={this.onBackPress} />
@@ -241,7 +229,7 @@ class ConversationDetailsComponent extends Component {
             <CustomText style={style.itemListViewTitle}>
               {i18n.t('CONVERSATION_LABELS.TITLE')}
             </CustomText>
-            <LabelView conversationId={conversationId} labels={labels} />
+            <LabelView conversationId={conversationId} />
           </View>
           <View style={style.separationView} />
           {this.renderAdditionalAttributes()}

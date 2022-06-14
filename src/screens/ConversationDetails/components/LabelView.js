@@ -31,10 +31,9 @@ const propTypes = {
     theme: PropTypes.object,
   }).isRequired,
   conversationId: PropTypes.number,
-  labels: PropTypes.array,
 };
 
-const LabelView = ({ conversationId, eva: { style, theme }, labels = [] }) => {
+const LabelView = ({ conversationId, eva: { style, theme } }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllLabels());

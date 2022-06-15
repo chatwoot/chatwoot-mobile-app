@@ -25,8 +25,8 @@ const LabelScreen = ({ eva: { style }, navigation, route }) => {
 
   const labels = useSelector(state => state.conversation.availableLabels);
   const conversationLabels = useSelector(state => state.conversation.conversationLabels);
-  const accountLabels = labels.payload;
-  const savedLabels = conversationLabels.payload;
+  const accountLabels = labels && labels.payload;
+  const savedLabels = conversationLabels && conversationLabels.payload;
 
   const { isAllLabelsLoaded, isUpdatingConversationLabels } = conversation;
 

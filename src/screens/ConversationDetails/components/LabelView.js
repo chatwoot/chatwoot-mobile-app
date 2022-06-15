@@ -46,8 +46,8 @@ const LabelView = ({ conversationId, eva: { style, theme } }) => {
   const availableLabels = useSelector(state => state.conversation.availableLabels);
   const conversationLabels = useSelector(state => state.conversation.conversationLabels);
 
-  const accountLabels = availableLabels.payload;
-  const savedLabels = conversationLabels.payload;
+  const accountLabels = availableLabels && availableLabels.payload;
+  const savedLabels = conversationLabels && conversationLabels.payload;
 
   const activeLabels =
     accountLabels && savedLabels

@@ -232,7 +232,7 @@ class ConversationDetailsComponent extends Component {
             <CustomText style={style.itemListViewTitle}>
               {i18n.t('CONVERSATION_LABELS.TITLE')}
             </CustomText>
-            {labels && labels.length === 0 ? (
+            {labels && labels.length !== 0 ? (
               <LabelView conversationId={conversationId} />
             ) : (
               <CustomText style={style.itemValue}>

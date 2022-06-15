@@ -1,9 +1,9 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "Добро пожаловать",
   "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
+    "ERROR": "Ошибка",
+    "ERROR_TITLE": "Произошла непредвиденная ошибка",
+    "REPORT_MESSAGE": "Мы сообщили об этом нашей команде! Пожалуйста, закройте приложение и зайдите заново",
     "CLOSE": "Закрыть"
   },
   "FOOTER": {
@@ -14,12 +14,12 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL установки",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "Если вы используете установку Chatwoot, введите URL вашего сервера. В противном случае используйте app.chatwoot.com.",
     "URL_ERROR": "Введите правильный URL",
     "URL_REQUIRED": "Необходимо указать URL",
     "CONNECT": "Подключиться",
     "CHANGE_LANGUAGE": "Изменить язык",
-    "ERROR": "Invalid installation url"
+    "ERROR": "Неправильный URL установки"
   },
   "LOGIN": {
     "TITLE": "Войти в свой аккаунт",
@@ -68,14 +68,14 @@
     "SHARE": "Поделиться разговором",
     "CANCEL": "Отмена",
     "PRIVATE_MSG_INPUT": "Это будет видно только сотрудникам",
-    "UN_ASSIGN": "Unassign conversation",
+    "UN_ASSIGN": "Отменить беседу",
     "MUTE_CONVERSATION": "Заглушить диалог",
     "UNMUTE_CONVERSATION": "Включить диалог"
   },
   "FILTER": {
     "HEADER_TITLE": "Фильтр сообщений",
     "CHOOSE_INBOX": "Выбрать входящие",
-    "CHOOSE_STATUS": "Conversation Status",
+    "CHOOSE_STATUS": "Статус разговора",
     "OPEN": "Открытые",
     "RESOLVED": "Закрыт",
     "BOT": "Бот",
@@ -86,20 +86,20 @@
   "SETTINGS": {
     "HEADER_TITLE": "Настройки",
     "AVAILABILITY": "Доступность",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
+    "NOTIFICATION": "Настройки уведомлений",
+    "HELP": "Справочные документы",
     "CHAT_WITH_US": "Чат с нами",
-    "LOG_OUT": "Logout",
+    "LOG_OUT": "Выход",
     "SWITCH_ACCOUNT": "Сменить Аккаунт",
-    "CHANGE_LANGUAGE": "Change Language",
+    "CHANGE_LANGUAGE": "Изменить язык",
     "SUBMIT": "Отправить"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Уведомления",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
+    "EMPTY": "Уведомлений пока нет.",
+    "EMPTY_MORE_TEXT": "Как только вы начнете получать уведомления, они появятся здесь.",
+    "ALL_NOTIFICATION_LOADED": "Все уведомления загружены",
+    "MARK_ALL": "Отметить все как прочитанные",
     "CANCEL": "Отменить"
   },
   "AVAILABILITY": {
@@ -108,7 +108,7 @@
     "OFFLINE": "Оффлайн"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
+    "TITLE": "Настройки уведомлений",
     "EMAIL": "Email",
     "PUSH": "Push",
     "CONVERSATION_CREATE_PUSH": "Отправлять push уведомление, когда новый диалог создан",
@@ -134,18 +134,18 @@
   },
   "ERRORS": {
     "COMMON_ERROR": "Не удается соединиться с сервером Woot, попробуйте позже",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "OfFLINE": "Вы должны подключиться к Wi-Fi или сотовой сети, чтобы снова войти в Интернет",
+    "CANNOT_FETCH": "При получении информации произошла ошибка. Повторите попытку",
     "AUTH": "Неверное имя пользователя / пароль. Пожалуйста, попробуйте еще раз",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "NO_ACCOUNTS_MESSAGE": "У вас нет доступа ни к одной учетной записи chatwoot"
   },
   "SUCCESS": {
     "AUTH": "Вход выполнен"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Требуется обновить сервер",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "WARNING_FOR_AGENT": "Похоже, вы используете неподдерживаемый сервер Chatwoot для своего мобильного приложения. Обратитесь к администратору, чтобы обновить сервер Chatwoot.",
+    "WARNING_FOR_ADMIN": "Похоже, вы используете неподдерживаемый сервер Chatwoot для своего мобильного приложения. Требуется обновление до версии сервера %{minimumVersion} или новее."
   },
   "EXIT": {
     "TITLE": "Выйти",
@@ -155,12 +155,12 @@
   },
   "BANNER": {
     "TWILIO_WHATSAPP": {
-      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "TEXT": "Вы можете ответить на этот разговор только с помощью шаблона ",
       "HREF_TEXT": "Ограничение на 24 часа",
       "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
     },
     "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
+      "TEXT": "Вы не можете ответить из-за ",
       "HREF_TEXT": "Ограничение на 24 часа",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }

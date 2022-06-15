@@ -62,16 +62,15 @@ const LabelView = ({ conversationId, eva: { style, theme } }) => {
       accountLabels && savedLabels
         ? activeLabels.map(label => label.title).filter(label => label !== value)
         : [];
-    captureEvent({ eventName: 'Conversation team changed' });
+    captureEvent({ eventName: 'Conversation label removed from contact details page' });
     dispatch(
       updateConversationLabels({
         conversationId: conversationId,
         labels: result,
       }),
-    );
-    setTimeout(() => {
+    ).then(() => {
       dispatch(getConversationLabels({ conversationId }));
-    }, 100);
+    });
   };
 
   return (

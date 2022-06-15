@@ -56,8 +56,9 @@ export const updateConversationLabels =
       await axios.post(apiUrl, params);
       dispatch({
         type: UPDATE_CONVERSATION_LABELS_SUCCESS,
+      }).then(() => {
+        dispatch(getConversationDetails({ conversationId }));
       });
-      dispatch(getConversationDetails({ conversationId }));
     } catch (error) {
       dispatch({ type: UPDATE_CONVERSATION_LABELS_ERROR, payload: error });
     }

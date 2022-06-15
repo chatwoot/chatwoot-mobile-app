@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
 import { withStyles } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
 import LabelBox from 'src/components/LabelsBox';
 import { captureEvent } from 'helpers/Analytics';
-import { Spinner } from '@ui-kitten/components';
+import { Spinner, Icon } from '@ui-kitten/components';
 import { View, Text } from 'react-native';
 import i18n from '../../../i18n';
 import Snackbar from 'react-native-snackbar';
@@ -29,6 +30,23 @@ const styles = theme => ({
     fontSize: theme['font-size-small'],
     fontWeight: theme['font-regular'],
   },
+  addLabelButtonWrap: {
+    padding: 2,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    borderColor: theme['color-secondary-600'],
+    borderRadius: 4,
+    borderWidth: 0.5,
+    paddingHorizontal: 8,
+    marginBottom: 6,
+    marginRight: 6,
+  },
+  addLabelButton: {
+    color: theme['color-secondary-800'],
+    marginRight: 6,
+    fontSize: theme['font-size-extra-small'],
+  },
 });
 
 const propTypes = {
@@ -36,10 +54,12 @@ const propTypes = {
     style: PropTypes.object,
     theme: PropTypes.object,
   }).isRequired,
+  conversationDetails: PropTypes.object,
   conversationId: PropTypes.number,
 };
 
-const LabelView = ({ conversationId, eva: { style, theme } }) => {
+const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } }) => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllLabels());
@@ -83,10 +103,23 @@ const LabelView = ({ conversationId, eva: { style, theme } }) => {
     });
   };
 
+  const onClickOpenLabelScreen = () => {
+    navigation.navigate('LabelScreen', { conversationDetails });
+  };
+
   return (
     <React.Fragment>
       {!isUpdatingConversationLabels && !isAllLabelsLoaded && !isConversationLabelsLoaded ? (
         <TouchableOpacity style={style.labelView}>
+          <TouchableOpacity style={style.addLabelButtonWrap} onPress={onClickOpenLabelScreen}>
+            <Text style={style.addLabelButton}>{i18n.t('CONVERSATION_LABELS.ADD_LABEL')}</Text>
+            <Icon
+              name="plus-circle-outline"
+              height={14}
+              width={14}
+              fill={theme['color-secondary-600']}
+            />
+          </TouchableOpacity>
           {activeLabels.map(({ id, title, color }) => (
             <LabelBox
               id={id}

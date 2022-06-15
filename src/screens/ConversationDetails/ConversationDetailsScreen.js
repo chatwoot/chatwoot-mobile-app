@@ -232,7 +232,7 @@ class ConversationDetailsComponent extends Component {
             <CustomText style={style.itemListViewTitle}>
               {i18n.t('CONVERSATION_LABELS.TITLE')}
             </CustomText>
-            <LabelView conversationId={conversationId} />
+            <LabelView conversationDetails={conversationDetails} conversationId={conversationId} />
           </View>
           <View style={style.separationViewLabels} />
           {this.renderAdditionalAttributes()}

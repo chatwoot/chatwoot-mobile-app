@@ -15,7 +15,6 @@ const styles = theme => ({
     flexDirection: 'row',
     marginVertical: 2,
     flexWrap: 'wrap',
-    marginTop: 12,
   },
   spinnerView: {
     flexDirection: 'row',

@@ -118,6 +118,9 @@ class ConversationDetailsComponent extends Component {
       route,
     } = this.props;
     const { conversationDetails } = route.params;
+
+    const { labels } = conversationDetails;
+
     const {
       meta: {
         sender: {
@@ -229,9 +232,15 @@ class ConversationDetailsComponent extends Component {
             <CustomText style={style.itemListViewTitle}>
               {i18n.t('CONVERSATION_LABELS.TITLE')}
             </CustomText>
-            <LabelView conversationId={conversationId} />
+            {labels && labels.length === 0 ? (
+              <LabelView conversationId={conversationId} />
+            ) : (
+              <CustomText style={style.itemValue}>
+                {i18n.t('CONVERSATION_LABELS.NO_LABEL')}
+              </CustomText>
+            )}
           </View>
-          <View style={style.separationView} />
+          <View style={style.separationViewLabels} />
           {this.renderAdditionalAttributes()}
         </View>
       </ScrollView>

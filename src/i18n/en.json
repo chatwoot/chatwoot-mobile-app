@@ -130,7 +130,9 @@
     "TITLE": "Actions"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "Conversation Labels"
+    "TITLE": "Conversation Labels",
+    "ADD_LABEL": "Add Label",
+    "EMPTY_LIST": "Please add labels to your account"
   },
   "AGENT": {
     "TITLE": "Select Agent"

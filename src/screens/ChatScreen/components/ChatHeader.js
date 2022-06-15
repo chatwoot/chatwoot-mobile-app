@@ -180,6 +180,11 @@ const ChatHeader = ({
         }),
       );
     }
+    if (itemType === 'label') {
+      if (conversationDetails) {
+        navigation.navigate('LabelScreen', { conversationDetails });
+      }
+    }
     if (itemType === 'mute_conversation') {
       const { muted } = conversationDetails;
       if (!muted) {

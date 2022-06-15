@@ -62,12 +62,6 @@ const styles = theme => ({
     paddingBottom: 8,
     fontWeight: theme['font-semi-bold'],
   },
-
-  itemValue: {
-    color: theme['text-light-color'],
-    fontSize: theme['font-size-small'],
-    fontWeight: theme['font-regular'],
-  },
 });
 
 export default styles;

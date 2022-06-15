@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import LabelBox from 'src/components/LabelsBox';
 import { captureEvent } from 'helpers/Analytics';
 import { Spinner } from '@ui-kitten/components';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
+import i18n from '../../../i18n';
 
 import { getAllLabels, getConversationLabels, updateConversationLabels } from 'src/actions/label';
 
@@ -18,9 +19,14 @@ const styles = theme => ({
   },
   spinnerView: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    paddingTop: 20,
-    margin: 30,
+    justifyContent: 'flex-start',
+    paddingTop: 6,
+    paddingBottom: 6,
+  },
+  itemValue: {
+    color: theme['text-light-color'],
+    fontSize: theme['font-size-small'],
+    fontWeight: theme['font-regular'],
   },
 });
 
@@ -87,9 +93,16 @@ const LabelView = ({ conversationId, eva: { style, theme } }) => {
         </TouchableOpacity>
       ) : (
         <View style={style.spinnerView}>
-          <Spinner size="large" />
+          <Spinner size="small" />
         </View>
       )}
+      {savedLabels &&
+        savedLabels.length === 0 &&
+        !isUpdatingConversationLabels &&
+        !isAllLabelsLoaded &&
+        !isConversationLabelsLoaded && (
+          <Text style={style.itemValue}>{i18n.t('CONVERSATION_LABELS.NO_LABEL')}</Text>
+        )}
     </React.Fragment>
   );
 };

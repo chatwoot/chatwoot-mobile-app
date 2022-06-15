@@ -10,6 +10,7 @@ import styles from './LabelScreen.style';
 import LabelList from 'src/components/LabelList';
 import { getAllLabels, getConversationLabels, updateConversationLabels } from '../../actions/label';
 import { captureEvent } from 'helpers/Analytics';
+import Snackbar from 'react-native-snackbar';
 
 const LabelScreen = ({ eva: { style }, navigation, route }) => {
   const { conversationDetails } = route.params;
@@ -48,6 +49,10 @@ const LabelScreen = ({ eva: { style }, navigation, route }) => {
         labels: value,
       }),
     ).then(() => {
+      Snackbar.show({
+        text: i18n.t('CONVERSATION_LABELS.UPDATE_LABEL'),
+        duration: Snackbar.LENGTH_SHORT,
+      });
       dispatch(getConversationLabels({ conversationId }));
     });
   };

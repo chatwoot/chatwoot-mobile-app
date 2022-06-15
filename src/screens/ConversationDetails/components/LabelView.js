@@ -62,7 +62,7 @@ const LabelView = ({ conversationId, eva: { style, theme } }) => {
       accountLabels && savedLabels
         ? activeLabels.map(label => label.title).filter(label => label !== value)
         : [];
-    captureEvent({ eventName: 'Conversation label removed from contact details page' });
+    captureEvent({ eventName: 'Conversation label removed through the contact details page' });
     dispatch(
       updateConversationLabels({
         conversationId: conversationId,

@@ -16,19 +16,19 @@
     "ENTER_URL": "URL установки",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Введите правильный URL",
-    "URL_REQUIRED": "URL is required",
+    "URL_REQUIRED": "Необходимо указать URL",
     "CONNECT": "Подключиться",
     "CHANGE_LANGUAGE": "Изменить язык",
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
     "TITLE": "Войти в свой аккаунт",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "DESCRIPTION": "Вы подключены к {{baseUrl}}. Войдите с вашим адресом электронной почты и паролем.",
     "EMAIL": "Почта",
     "PASSWORD": "Пароль",
-    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_REQUIRED": "Необходимо указать Email",
     "EMAIL_ERROR": "Введите правильный email",
-    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_REQUIRED": "Необходимо указать пароль",
     "PASSWORD_ERROR": "Введите корректный пароль",
     "LOGIN": "Войти",
     "FORGOT_PASSWORD": "Забыли пароль?",
@@ -47,7 +47,7 @@
     "HEADER_TITLE": "Сбросить пароль",
     "TITLE": "Забыли пароль?",
     "SUB_TITLE": "Не волнуйтесь! Все нормально",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "API_SUCCESS": "Ссылка для сброса пароля была отправлена на ваш email"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Разговоры",
@@ -64,8 +64,8 @@
     "TYPING": "печатает",
     "ALL_CONVERSATION_LOADED": "Все беседы загружены",
     "ASSIGN": "Назначить ответсвенного",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share conversation",
+    "FILE_SIZE_LIMIT": "Файл превышает 5mb",
+    "SHARE": "Поделиться разговором",
     "CANCEL": "Отмена",
     "PRIVATE_MSG_INPUT": "Это будет видно только сотрудникам",
     "UN_ASSIGN": "Unassign conversation",
@@ -88,7 +88,7 @@
     "AVAILABILITY": "Доступность",
     "NOTIFICATION": "Notification Preferences",
     "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
+    "CHAT_WITH_US": "Чат с нами",
     "LOG_OUT": "Logout",
     "SWITCH_ACCOUNT": "Сменить Аккаунт",
     "CHANGE_LANGUAGE": "Change Language",
@@ -143,7 +143,7 @@
     "AUTH": "Вход выполнен"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
+    "TITLE": "Требуется обновить сервер",
     "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
     "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },

@@ -130,7 +130,8 @@
     "TITLE": "Actions"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "Conversation Labels"
+    "TITLE": "Conversation Labels",
+    "NO_LABEL": "No labels assigned to this conversation"
   },
   "AGENT": {
     "TITLE": "Select Agent"

@@ -47,10 +47,9 @@ const LabelScreen = ({ eva: { style }, navigation, route }) => {
         conversationId: conversationId,
         labels: value,
       }),
-    );
-    setTimeout(() => {
+    ).then(() => {
       dispatch(getConversationLabels({ conversationId }));
-    }, 100);
+    });
   };
 
   const onClickAddLabel = value => {

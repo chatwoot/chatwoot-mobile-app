@@ -69,7 +69,7 @@
     "CANCEL": "Abbrechen",
     "PRIVATE_MSG_INPUT": "Dies ist nur für Agenten sichtbar",
     "UN_ASSIGN": "Zuweisung entfernen",
-    "MUTE_CONVERSATION": "Konversation stummschalten",
+    "MUTE_CONVERSATION": "Konversation stumm schalten",
     "UNMUTE_CONVERSATION": "Konversation entstummen"
   },
   "FILTER": {
@@ -156,12 +156,12 @@
   "BANNER": {
     "TWILIO_WHATSAPP": {
       "TEXT": "You can only reply to this conversation using a template message due to ",
-      "HREF_TEXT": "24-Stunden-Nachrichtenfenster-Beschränkung",
+      "HREF_TEXT": "Beschränkung des 24-Stunden-Nachrichtenfensters",
       "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
     },
     "FACEBOOK": {
       "TEXT": "You cannot reply due to ",
-      "HREF_TEXT": "24-Stunden-Nachrichtenfenster-Beschränkung",
+      "HREF_TEXT": "Beschränkung des 24-Stunden-Nachrichtenfensters",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }
   }

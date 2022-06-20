@@ -18,6 +18,7 @@ import i18n from 'i18n';
 import ActionCable from 'helpers/ActionCable';
 import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
 import HeaderBar from 'components/HeaderBar';
+import LoadingBar from 'components/LoadingBar';
 import { clearAllDeliveredNotifications } from 'helpers/PushHelper';
 import { identifyUser, captureEvent } from 'helpers/Analytics';
 const propTypes = {
@@ -95,34 +96,34 @@ const ConversationList = ({ eva: { style }, navigation }) => {
     loadConversations(pageNumber);
   }, [loadConversations, pageNumber]);
   const { payload, meta } = conversations;
+  const shouldShowConversationList = !!(payload && payload.length);
+  const shouldShowConversationEmptyList = isFetching && payload.length === 0;
+  const shouldShowEmptyMessage = !isFetching && payload.length === 0;
+
   // eslint-disable-next-line react/prop-types
   const renderTab = ({ tabIndex, tabTitle }) => {
     return (
       <Tab
         title={tabTitle}
-        style={selectedIndex === tabIndex ? style.tabActiveTitle : style.tabNotActiveTitle}>
+        titleStyle={selectedIndex === tabIndex ? style.tabActiveTitle : style.tabNotActiveTitle}>
         <View style={style.tabView}>
-          {!isFetching || payload.length ? (
-            <React.Fragment>
-              {payload && payload.length ? (
-                <ConversationItems
-                  payload={payload}
-                  isFetching={isFetching}
-                  loadConversations={loadConversations}
-                  onChangePageNumber={() => setPageNumber(pageNumber + 1)}
-                  navigation={navigation}
-                />
-              ) : (
-                <ConversationEmptyMessage />
-              )}
-            </React.Fragment>
-          ) : (
-            <ConversationEmptyList />
+          {shouldShowConversationList && (
+            <ConversationItems
+              payload={payload}
+              isFetching={isFetching}
+              loadConversations={loadConversations}
+              onChangePageNumber={() => setPageNumber(pageNumber + 1)}
+              navigation={navigation}
+            />
           )}
+
+          {shouldShowConversationEmptyList && <ConversationEmptyList />}
+          {shouldShowEmptyMessage && <ConversationEmptyMessage />}
         </View>
       </Tab>
     );
   };
+  const shouldShowLoader = isFetching && !payload.length;
   const { name: inBoxName } = inboxSelected;
   const mineCount = meta ? `(${meta.mine_count})` : '';
   const unAssignedCount = meta ? `(${meta.unassigned_count})` : '';
@@ -131,6 +132,7 @@ const ConversationList = ({ eva: { style }, navigation }) => {
   const headerTitle = inBoxName ? `${inBoxName} (${conversationStatus})` : '';
   return (
     <SafeAreaView style={style.container}>
+      {shouldShowLoader && <LoadingBar />}
       <HeaderBar title={headerTitle} showRightButton onRightPress={openFilter} buttonType="menu" />
 
       <TabView

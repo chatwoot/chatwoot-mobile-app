@@ -35,6 +35,7 @@ import {
   ASSIGN_CONVERSATION,
   ASSIGN_CONVERSATION_SUCCESS,
   ASSIGN_CONVERSATION_ERROR,
+  RESET_CONVERSATIONS,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -53,12 +54,12 @@ import { pop } from '../helpers/NavigationHelper';
 
 // Load all the conversations
 export const getConversations =
-  ({ assigneeType, pageNumber = 1 }) =>
+  ({ assigneeType, pageNumber = 1, resetConversation = false }) =>
   async (dispatch, getState) => {
-    if (pageNumber === 1) {
-      dispatch({ type: GET_CONVERSATION });
+    if (resetConversation) {
+      dispatch({ type: RESET_CONVERSATIONS });
     }
-
+    dispatch({ type: GET_CONVERSATION });
     const {
       conversation: { conversationStatus },
       inbox: { inboxSelected },

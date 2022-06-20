@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { SafeAreaView, StatusBar, Animated, Easing } from 'react-native';
+import { SafeAreaView, StatusBar, Text } from 'react-native';
 import { withStyles } from '@ui-kitten/components';
+import { connect } from 'react-redux';
 
 const styles = theme => ({
   container: {
     backgroundColor: theme['color-primary-default'],
-    paddingTop: 16,
   },
   offlineText: {
     // For texts displayed on contrast backgrounds (color-danger-800 in this case)
@@ -24,9 +24,10 @@ const propTypes = {
     style: PropTypes.object,
     theme: PropTypes.object,
   }).isRequired,
+  isUpdating: PropTypes.bool.isRequired,
 };
 
-class LoadingBar extends Component {
+class LoadingBarComponent extends Component {
   animationConstants = {
     DURATION: 800,
     TO_VALUE: 4,
@@ -34,49 +35,37 @@ class LoadingBar extends Component {
     OUTPUT_RANGE: [0, -15, 0, 15, 0, -15, 0, 15, 0],
   };
 
-  constructor() {
-    super();
-    this.animation = new Animated.Value(0);
-  }
-
-  setNetworkStatus = status => {
-    this.setState({ isConnected: status });
-    if (status) {
-      this.triggerAnimation();
-    }
-  };
-
-  // Took Reference from https://egghead.io/lessons/react-create-a-button-shake-animation-in-react-native#/tab-code
-  triggerAnimation = () => {
-    this.animation.setValue(0);
-    Animated.timing(this.animation, {
-      duration: this.animationConstants.DURATION,
-      toValue: this.animationConstants.TO_VALUE,
-      useNativeDriver: true,
-      ease: Easing.bounce,
-    }).start();
-  };
-
   render() {
     const {
       eva: { style, theme },
+      isUpdating,
     } = this.props;
-    const interpolated = this.animation.interpolate({
-      inputRange: this.animationConstants.INPUT_RANGE,
-      outputRange: this.animationConstants.OUTPUT_RANGE,
-    });
-    const animationStyle = {
-      transform: [{ translateX: interpolated }],
-    };
-    return (
+
+    return isUpdating ? (
       <SafeAreaView style={style.container}>
         <StatusBar backgroundColor={theme['color-primary-default']} />
-        <Animated.Text style={[style.offlineText, animationStyle]}>Refreshing</Animated.Text>
+        <Text style={[style.offlineText]}>Refreshing</Text>
       </SafeAreaView>
-    );
+    ) : null;
+    // return (
+    //   <SafeAreaView style={style.container}>
+    //     <StatusBar backgroundColor={theme['color-primary-default']} />
+    //     <Text style={[style.offlineText]}>Refreshing</Text>
+    //   </SafeAreaView>
+    // );
   }
 }
 
-LoadingBar.propTypes = propTypes;
+LoadingBarComponent.propTypes = propTypes;
 
-export default withStyles(LoadingBar, styles);
+function bindAction(dispatch) {
+  return {};
+}
+function mapStateToProps(state) {
+  return {
+    isUpdating: state.conversation.isUpdating,
+  };
+}
+
+const LoadingBar = withStyles(LoadingBarComponent, styles);
+export default connect(mapStateToProps, bindAction)(LoadingBar);

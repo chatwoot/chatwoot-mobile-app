@@ -21,6 +21,7 @@ import HeaderBar from 'components/HeaderBar';
 import LoadingBar from 'components/LoadingBar';
 import { clearAllDeliveredNotifications } from 'helpers/PushHelper';
 import { identifyUser, captureEvent } from 'helpers/Analytics';
+import { getMineConversations, getUnAssignedChats } from '../../helpers';
 const propTypes = {
   eva: PropTypes.shape({
     style: PropTypes.object,
@@ -35,8 +36,10 @@ const ConversationList = ({ eva: { style }, navigation }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const webSocketUrl = useSelector(state => state.settings.webSocketUrl);
+  const userDetails = useSelector(state => state.auth);
   const installationUrl = useSelector(state => state.settings.installationUrl);
   const isFetching = useSelector(state => state.conversation.isFetching);
+  const isUpdating = useSelector(state => state.conversation.isUpdating);
   const conversations = useSelector(state => state.conversation.data);
   const conversationStatus = useSelector(state => state.conversation.conversationStatus);
   const inboxSelected = useSelector(state => state.inbox.inboxSelected);
@@ -52,18 +55,22 @@ const ConversationList = ({ eva: { style }, navigation }) => {
   }, [dispatch, initActionCable, storeUser]);
 
   useEffect(() => {
-    loadConversations();
+    loadConversations({ resetConversation: true });
     dispatch(getAllNotifications({ pageNo: 1 }));
   }, [dispatch, initActionCable, loadConversations]);
 
-  const loadConversations = useCallback(() => {
-    dispatch(
-      getConversations({
-        assigneeType: selectedIndex,
-        pageNumber,
-      }),
-    );
-  }, [dispatch, selectedIndex, pageNumber]);
+  const loadConversations = useCallback(
+    ({ resetConversation }) => {
+      dispatch(
+        getConversations({
+          assigneeType: selectedIndex,
+          pageNumber,
+          resetConversation,
+        }),
+      );
+    },
+    [dispatch, selectedIndex, pageNumber],
+  );
 
   const initActionCable = useCallback(async () => {
     const pubSubToken = await getPubSubToken();
@@ -96,9 +103,20 @@ const ConversationList = ({ eva: { style }, navigation }) => {
     loadConversations(pageNumber);
   }, [loadConversations, pageNumber]);
   const { payload, meta } = conversations;
-  const shouldShowConversationList = !!(payload && payload.length);
-  const shouldShowConversationEmptyList = isFetching && payload.length === 0;
-  const shouldShowEmptyMessage = !isFetching && payload.length === 0;
+  let allConversations = payload;
+  if (selectedIndex === 0) {
+    const {
+      user: { id: userId },
+    } = userDetails;
+    allConversations = getMineConversations({ conversations: payload, userId });
+  }
+  if (selectedIndex === 1) {
+    allConversations = getUnAssignedChats({ conversations: payload });
+  }
+
+  const shouldShowConversationList = !!(allConversations && allConversations.length);
+  const shouldShowConversationEmptyList = isFetching && allConversations.length === 0;
+  const shouldShowEmptyMessage = !isFetching && allConversations.length === 0;
 
   // eslint-disable-next-line react/prop-types
   const renderTab = ({ tabIndex, tabTitle }) => {
@@ -109,7 +127,7 @@ const ConversationList = ({ eva: { style }, navigation }) => {
         <View style={style.tabView}>
           {shouldShowConversationList && (
             <ConversationItems
-              payload={payload}
+              payload={allConversations}
               isFetching={isFetching}
               loadConversations={loadConversations}
               onChangePageNumber={() => setPageNumber(pageNumber + 1)}
@@ -123,7 +141,8 @@ const ConversationList = ({ eva: { style }, navigation }) => {
       </Tab>
     );
   };
-  const shouldShowLoader = isFetching && !payload.length;
+
+  const shouldShowLoader = isUpdating;
   const { name: inBoxName } = inboxSelected;
   const mineCount = meta ? `(${meta.mine_count})` : '';
   const unAssignedCount = meta ? `(${meta.unassigned_count})` : '';
@@ -142,18 +161,18 @@ const ConversationList = ({ eva: { style }, navigation }) => {
         {renderTab({
           tabIndex: 0,
           tabTitle: `${i18n.t('CONVERSATION.MINE')} ${mineCount}`,
-          payload,
+          payload: allConversations,
         })}
         {renderTab({
           tabIndex: 1,
           tabTitle: `${i18n.t('CONVERSATION.UN_ASSIGNED')} ${unAssignedCount}`,
-          payload,
+          payload: allConversations,
         })}
         {renderTab({
           tabIndex: 2,
           selectedIndex,
           tabTitle: `${i18n.t('CONVERSATION.ALL')} ${allCount}`,
-          payload,
+          payload: allConversations,
         })}
       </TabView>
     </SafeAreaView>

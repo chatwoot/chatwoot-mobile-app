@@ -2,6 +2,7 @@ import {
   GET_CONVERSATION,
   GET_CONVERSATION_ERROR,
   GET_CONVERSATION_SUCCESS,
+  RESET_CONVERSATIONS,
   SET_CONVERSATION_STATUS,
   ADD_CONVERSATION,
   UPDATE_CONVERSATION,
@@ -32,6 +33,7 @@ import {
 
 const initialState = {
   isFetching: false,
+  isUpdating: false,
   isAllConversationsLoaded: false,
   isAllMessagesLoaded: false,
   isChangingConversationStatus: false,
@@ -55,6 +57,43 @@ const initialState = {
 };
 export default (state = initialState, action) => {
   switch (action.type) {
+    case RESET_CONVERSATIONS: {
+      return {
+        ...state,
+        isFetching: true,
+        isAllConversationsLoaded: false,
+        data: {
+          meta: state.data.meta,
+          payload: [],
+        },
+      };
+    }
+    case GET_CONVERSATION: {
+      return {
+        ...state,
+        isUpdating: true,
+      };
+    }
+
+    case GET_CONVERSATION_SUCCESS: {
+      return {
+        ...state,
+        isFetching: false,
+        isUpdating: false,
+        data: {
+          meta: action.payload.meta,
+          payload: [...state.data.payload, ...action.payload.conversations],
+        },
+      };
+    }
+
+    case GET_CONVERSATION_ERROR: {
+      return {
+        ...initialState,
+        isFetching: false,
+        isUpdating: false,
+      };
+    }
     case ADD_CONVERSATION: {
       return {
         ...state,
@@ -114,36 +153,6 @@ export default (state = initialState, action) => {
           payload: state.data.payload,
           meta: action.payload,
         },
-      };
-    }
-
-    case GET_CONVERSATION: {
-      return {
-        ...state,
-        isFetching: true,
-        isAllConversationsLoaded: false,
-        data: {
-          meta: state.data.meta,
-          payload: [],
-        },
-      };
-    }
-
-    case GET_CONVERSATION_SUCCESS: {
-      return {
-        ...state,
-        isFetching: false,
-        data: {
-          meta: action.payload.meta,
-          payload: [...state.data.payload, ...action.payload.conversations],
-        },
-      };
-    }
-
-    case GET_CONVERSATION_ERROR: {
-      return {
-        ...initialState,
-        isFetching: false,
       };
     }
 

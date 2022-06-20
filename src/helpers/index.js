@@ -295,3 +295,18 @@ export const getCurrentUserAvailabilityStatus = ({ user }) => {
   }
   return '';
 };
+
+export const getMineConversations = ({ conversations, userId }) => {
+  return conversations.filter(conversation => {
+    const { assignee } = conversation.meta;
+    const isAssignedToMe = assignee && assignee.id === userId;
+    return isAssignedToMe;
+  });
+};
+
+export const getUnAssignedChats = ({ conversations, userId }) => {
+  return conversations.filter(conversation => {
+    const isUnAssigned = !conversation.meta.assignee;
+    return isUnAssigned;
+  });
+};

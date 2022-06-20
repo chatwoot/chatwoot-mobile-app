@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "സന്ദേശം ടൈപ്പ് ചെയ്യുക",
     "TYPING": "ടൈപ്പിംഗ്",
     "ALL_CONVERSATION_LOADED": "എല്ലാ സംഭാഷണങ്ങളും ലോഡ് ചെയ്തു",
-    "RESOLVE": "സംഭാഷണം പരിഹരിക്കുക",
-    "RE_OPEN": "സംഭാഷണം വീണ്ടും തുറക്കുക",
     "ASSIGN": "സംഭാഷണം നിയോഗിക്കുക",
     "FILE_SIZE_LIMIT": "ഫയൽ 5MB അറ്റാച്ച്‌മെന്റ് പരിധി കവിഞ്ഞു",
     "SHARE": "സംഭാഷണം പങ്കിടുക",
     "CANCEL": "റദ്ദാക്കുക",
     "PRIVATE_MSG_INPUT": "ഇത് ഏജന്റുമാർക്ക് മാത്രമേ ദൃശ്യമാകൂ",
-    "UN_ASSIGN": "സംഭാഷണം നിയോഗിക്കാതിരിക്കുക"
+    "UN_ASSIGN": "സംഭാഷണം നിയോഗിക്കാതിരിക്കുക",
+    "MUTE_CONVERSATION": "Mute conversation",
+    "UNMUTE_CONVERSATION": "Unmute conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "സംഭാഷണ ഫിൽട്ടർ",
@@ -123,7 +123,8 @@
     "BROWSER": "ബ്രൗസർ",
     "OPERATING_SYSTEM": "ഓപ്പറേറ്റിംഗ് സിസ്റ്റം",
     "INITIATED_AT": "ആരംഭിച്ച സമയം ",
-    "INITIATED_FROM": "ആരംഭിച്ച ആൾ "
+    "INITIATED_FROM": "ആരംഭിച്ച ആൾ ",
+    "IP_ADDRESS": "IP വിലാസം"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "പ്രവർത്തനങ്ങൾ"
@@ -151,5 +152,17 @@
     "SUBTITLE": "നിങ്ങള് പുറത്തു പോകുകയാണ് എന്ന് ഉറപ്പാണോ?",
     "CANCEL": "റദ്ദാക്കുക",
     "OK": "ശരി"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "HREF_TEXT": "24 മണിക്കൂർ സന്ദേശ വിൻഡോ നിയന്ത്രണം",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "You cannot reply due to ",
+      "HREF_TEXT": "24 മണിക്കൂർ സന്ദേശ വിൻഡോ നിയന്ത്രണം",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

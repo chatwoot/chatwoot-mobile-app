@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Tastați mesajul aici",
     "TYPING": "tastează",
     "ALL_CONVERSATION_LOADED": "Toate conversațiile încărcate",
-    "RESOLVE": "Rezolvarea conversației",
-    "RE_OPEN": "Redeschiderea conversației",
     "ASSIGN": "Atribuirea conversației",
     "FILE_SIZE_LIMIT": "Fișierul depășește limita de atașare de 5MB",
     "SHARE": "Partajarea conversației",
     "CANCEL": "Renunță",
     "PRIVATE_MSG_INPUT": "Acest lucru va fi vizibil numai agenților",
-    "UN_ASSIGN": "Anularea atribuirii conversației"
+    "UN_ASSIGN": "Anularea atribuirii conversației",
+    "MUTE_CONVERSATION": "Silențios conversația",
+    "UNMUTE_CONVERSATION": "Sunet conversația"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtru conversație",
@@ -123,7 +123,8 @@
     "BROWSER": "Navigator",
     "OPERATING_SYSTEM": "Sistem de operare",
     "INITIATED_AT": "Iniţiat la",
-    "INITIATED_FROM": "Inițiat de la"
+    "INITIATED_FROM": "Inițiat de la",
+    "IP_ADDRESS": "Adresă IP"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Acțiuni"
@@ -151,5 +152,17 @@
     "SUBTITLE": "Ești sigur că vrei să renunți?",
     "CANCEL": "Renunță",
     "OK": "Da"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "HREF_TEXT": "Restricţie fereastră mesaj 24 de ore",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "You cannot reply due to ",
+      "HREF_TEXT": "Restricţie fereastră mesaj 24 de ore",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

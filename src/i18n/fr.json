@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Tapez un message",
     "TYPING": "en cours d'écriture",
     "ALL_CONVERSATION_LOADED": "Toutes les conversations ont été chargées",
-    "RESOLVE": "Reprendre la conversation",
-    "RE_OPEN": "Reprendre la conversation",
     "ASSIGN": "Affecter une conversation",
     "FILE_SIZE_LIMIT": "Le fichier dépasse la limite de 5 Mo des pièces jointes",
     "SHARE": "Partager la conversation",
     "CANCEL": "Annuler",
     "PRIVATE_MSG_INPUT": "Ceci ne sera visible qu'aux Agents",
-    "UN_ASSIGN": "Retirer la conversation"
+    "UN_ASSIGN": "Retirer la conversation",
+    "MUTE_CONVERSATION": "Mute conversation",
+    "UNMUTE_CONVERSATION": "Unmute conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtrer les conversations",
@@ -123,7 +123,8 @@
     "BROWSER": "Navigateur",
     "OPERATING_SYSTEM": "Système d'explitation",
     "INITIATED_AT": "Crée a",
-    "INITIATED_FROM": "Crée depuis"
+    "INITIATED_FROM": "Crée depuis",
+    "IP_ADDRESS": "Adresse IP"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Actions"
@@ -151,5 +152,17 @@
     "SUBTITLE": "Voulez-vous vraiment quitter ?",
     "CANCEL": "Annuler",
     "OK": "OK"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "HREF_TEXT": "Restriction de fenêtre de message de 24 heures",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "You cannot reply due to ",
+      "HREF_TEXT": "Restriction de fenêtre de message de 24 heures",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

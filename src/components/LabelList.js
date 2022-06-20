@@ -69,7 +69,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 18,
-    paddingVertical: 12,
+    paddingVertical: 16,
     backgroundColor: theme['background-basic-color-1'],
     borderColor: theme['item-border-color'],
     borderBottomWidth: 0.5,
@@ -82,6 +82,7 @@ const styles = theme => ({
   },
   labelDetailsView: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   radioView: {
     flex: 1,

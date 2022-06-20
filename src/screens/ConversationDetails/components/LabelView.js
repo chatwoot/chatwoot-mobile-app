@@ -14,7 +14,12 @@ import Snackbar from 'react-native-snackbar';
 import { getAllLabels, getConversationLabels, updateConversationLabels } from 'src/actions/label';
 
 const styles = theme => ({
-  labelView: {
+  labelWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    minHeight: 34,
+  },
+  labelViews: {
     flexDirection: 'row',
     marginVertical: 2,
     flexWrap: 'wrap',
@@ -23,22 +28,26 @@ const styles = theme => ({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     paddingTop: 6,
-    paddingBottom: 7.4,
+    paddingBottom: 6,
   },
   itemValue: {
     color: theme['text-light-color'],
     fontSize: theme['font-size-small'],
     fontWeight: theme['font-regular'],
+    paddingHorizontal: 2,
+    marginBottom: 4,
   },
   addLabelButtonWrap: {
-    padding: 2,
     flexDirection: 'row',
+    height: 24,
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: theme['color-primary-50'],
+    borderColor: theme['color-primary-75'],
+    borderWidth: 0.5,
     borderRadius: 4,
     paddingHorizontal: 8,
-    marginBottom: 6,
+    marginBottom: 4,
     marginRight: 6,
   },
   addLabelButton: {
@@ -108,38 +117,40 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
 
   return (
     <React.Fragment>
-      {!isUpdatingConversationLabels && !isAllLabelsLoaded && !isConversationLabelsLoaded ? (
-        <View style={style.labelView}>
-          <TouchableOpacity style={style.addLabelButtonWrap} onPress={onClickOpenLabelScreen}>
-            <Text style={style.addLabelButton}>{i18n.t('CONVERSATION_LABELS.ADD_LABEL')}</Text>
-            <Icon
-              name="plus-circle-outline"
-              height={14}
-              width={14}
-              fill={theme['color-primary-700']}
-            />
-          </TouchableOpacity>
-          {activeLabels.map(({ id, title, color }) => (
-            <LabelBox
-              id={id}
-              title={title}
-              color={color}
-              onClickRemoveLabel={() => onClickRemoveLabel(title)}
-            />
-          ))}
-        </View>
-      ) : (
-        <View style={style.spinnerView}>
-          <Spinner size="small" />
-        </View>
-      )}
-      {savedLabels &&
-        savedLabels.length === 0 &&
-        !isUpdatingConversationLabels &&
-        !isAllLabelsLoaded &&
-        !isConversationLabelsLoaded && (
-          <Text style={style.itemValue}>{i18n.t('CONVERSATION_LABELS.NO_LABEL')}</Text>
+      <View style={style.labelWrapper}>
+        {!isUpdatingConversationLabels && !isAllLabelsLoaded && !isConversationLabelsLoaded ? (
+          <View style={style.labelViews}>
+            <TouchableOpacity style={style.addLabelButtonWrap} onPress={onClickOpenLabelScreen}>
+              <Text style={style.addLabelButton}>{i18n.t('CONVERSATION_LABELS.ADD_LABEL')}</Text>
+              <Icon
+                name="plus-circle-outline"
+                height={14}
+                width={14}
+                fill={theme['color-primary-700']}
+              />
+            </TouchableOpacity>
+            {activeLabels.map(({ id, title, color }) => (
+              <LabelBox
+                id={id}
+                title={title}
+                color={color}
+                onClickRemoveLabel={() => onClickRemoveLabel(title)}
+              />
+            ))}
+          </View>
+        ) : (
+          <View style={style.spinnerView}>
+            <Spinner size="small" />
+          </View>
         )}
+        {savedLabels &&
+          savedLabels.length === 0 &&
+          !isUpdatingConversationLabels &&
+          !isAllLabelsLoaded &&
+          !isConversationLabelsLoaded && (
+            <Text style={style.itemValue}>{i18n.t('CONVERSATION_LABELS.NO_LABEL')}</Text>
+          )}
+      </View>
     </React.Fragment>
   );
 };

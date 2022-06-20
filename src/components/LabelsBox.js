@@ -12,7 +12,7 @@ const styles = theme => ({
     justifyContent: 'flex-start',
     marginBottom: 6,
     paddingHorizontal: 6,
-    color: theme['text-light-color'],
+    height: 24,
     marginRight: 4,
     backgroundColor: theme['color-secondary-50'],
     borderColor: theme['color-secondary-75'],
@@ -22,7 +22,9 @@ const styles = theme => ({
   label: {
     paddingHorizontal: 4,
     paddingVertical: 4,
+    color: theme['color-secondary-700'],
     fontSize: theme['font-size-extra-small'],
+    fontWeight: theme['font-medium'],
   },
   labelCloseIcon: {
     marginLeft: 2,
@@ -62,7 +64,7 @@ const LabelBox = ({ id, title, color, onClickRemoveLabel, eva: { style, theme } 
             name="close-outline"
             height={16}
             width={16}
-            fill={theme['color-secondary-600']}
+            fill={theme['color-secondary-700']}
             style={style.labelCloseIcon}
             onPress={() => onClickRemoveLabel()}
           />

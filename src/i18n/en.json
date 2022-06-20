@@ -133,7 +133,7 @@
     "TITLE": "Conversation Labels",
     "ADD_LABEL": "Add Labels",
     "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned to this conversation",
+    "NO_LABEL": "No labels assigned",
     "UPDATE_LABEL": "Label updated successfully"
   },
   "AGENT": {

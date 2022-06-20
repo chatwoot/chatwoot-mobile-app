@@ -41,16 +41,14 @@ const InboxNameComponent = ({ iconName, inboxName, size, eva: { style, theme } }
   };
   return (
     <React.Fragment>
-      <TouchableOpacity>
-        <View style={style.inboxDetails}>
-          {iconName ? (
-            <Icon fill={theme['color-secondary-500']} name={iconName} height={12} width={12} />
-          ) : null}
-          {inboxName ? (
-            <CustomText style={[style.channelText, textSize()]}>{inboxName}</CustomText>
-          ) : null}
-        </View>
-      </TouchableOpacity>
+      <View style={style.inboxDetails}>
+        {iconName ? (
+          <Icon fill={theme['color-secondary-500']} name={iconName} height={12} width={12} />
+        ) : null}
+        {inboxName ? (
+          <CustomText style={[style.channelText, textSize()]}>{inboxName}</CustomText>
+        ) : null}
+      </View>
     </React.Fragment>
   );
 };

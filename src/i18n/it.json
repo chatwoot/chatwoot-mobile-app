@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Digita messaggio",
     "TYPING": "digitando",
     "ALL_CONVERSATION_LOADED": "Tutte le conversazioni sono caricate",
-    "RESOLVE": "Risolvi la conversazione",
-    "RE_OPEN": "Riapri la conversazione",
     "ASSIGN": "Assegna conversazione",
     "FILE_SIZE_LIMIT": "Il file supera il limite di 5MB per l'allegato",
     "SHARE": "Condividi conversazione",
     "CANCEL": "Annulla",
     "PRIVATE_MSG_INPUT": "Questo sarà visibile solo agli agenti",
-    "UN_ASSIGN": "Annulla l'assegnazione della conversazione"
+    "UN_ASSIGN": "Annulla l'assegnazione della conversazione",
+    "MUTE_CONVERSATION": "Silenzia conversazione",
+    "UNMUTE_CONVERSATION": "Riattiva conversazione"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtro conversazione",
@@ -123,7 +123,8 @@
     "BROWSER": "Browser",
     "OPERATING_SYSTEM": "Sistema operativo",
     "INITIATED_AT": "Avviato il",
-    "INITIATED_FROM": "Avviato da"
+    "INITIATED_FROM": "Avviato da",
+    "IP_ADDRESS": "Indirizzo IP"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Azioni"
@@ -151,5 +152,17 @@
     "SUBTITLE": "Sei sicuro di voler uscire?",
     "CANCEL": "Annulla",
     "OK": "Ok"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "È possibile rispondere a questa conversazione solo utilizzando un messaggio modello a causa di ",
+      "HREF_TEXT": "Restrizione della finestra del messaggio a 24 ore",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "Non puoi rispondere a causa di ",
+      "HREF_TEXT": "Restrizione della finestra del messaggio a 24 ore",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

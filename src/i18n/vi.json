@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Gõ tin nhắn",
     "TYPING": "đang gõ",
     "ALL_CONVERSATION_LOADED": "Tất cả các cuộc trò chuyện đã được tải",
-    "RESOLVE": "Giải quyết cuộc trò chuyện",
-    "RE_OPEN": "Mở lại cuộc trò chuyện",
     "ASSIGN": "Phân công cuộc trò chuyện",
     "FILE_SIZE_LIMIT": "File vượt quá giới hạn tối đa 5MB",
     "SHARE": "Chia sẻ cuộc trò chuyện",
     "CANCEL": "Huỷ",
     "PRIVATE_MSG_INPUT": "Chỉ hiện cho nhà cung cấp",
-    "UN_ASSIGN": "Bỏ phân công cuộc trò chuyện"
+    "UN_ASSIGN": "Bỏ phân công cuộc trò chuyện",
+    "MUTE_CONVERSATION": "Tắt tiếng",
+    "UNMUTE_CONVERSATION": "Bật tiếng cuộc trò chuyện"
   },
   "FILTER": {
     "HEADER_TITLE": "Bộ lọc Cuộc trò chuyện",
@@ -123,7 +123,8 @@
     "BROWSER": "Trình duyệt",
     "OPERATING_SYSTEM": "Hệ điều hành",
     "INITIATED_AT": "Bắt đầu lúc",
-    "INITIATED_FROM": "Bắt đầu từ"
+    "INITIATED_FROM": "Bắt đầu từ",
+    "IP_ADDRESS": "Địa chỉ IP"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Hành động"
@@ -151,5 +152,17 @@
     "SUBTITLE": "Khỏi bạn chắc chắn bạn muốn bỏ thuốc lá?",
     "CANCEL": "Huỷ",
     "OK": "Có"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "HREF_TEXT": "Giới hạn thời lượng tin nhắn 24 giờ",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "You cannot reply due to ",
+      "HREF_TEXT": "Giới hạn thời lượng tin nhắn 24 giờ",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

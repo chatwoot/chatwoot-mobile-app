@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Gépeld az üzeneted",
     "TYPING": "gépel",
     "ALL_CONVERSATION_LOADED": "Minden beszélgetés betöltve",
-    "RESOLVE": "Beszélgetés megoldása",
-    "RE_OPEN": "Beszélgetés újranyitása",
     "ASSIGN": "Beszélgetés hozzárendelése",
     "FILE_SIZE_LIMIT": "A file nagyobb az 5MB-os limitnél",
     "SHARE": "Share conversation",
     "CANCEL": "Mégse",
     "PRIVATE_MSG_INPUT": "Ezt csak ügynökök láthatják",
-    "UN_ASSIGN": "Beszélgetés hozzárendelés törlése"
+    "UN_ASSIGN": "Beszélgetés hozzárendelés törlése",
+    "MUTE_CONVERSATION": "Mute conversation",
+    "UNMUTE_CONVERSATION": "Unmute conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Beszélgetés szűrő",
@@ -123,7 +123,8 @@
     "BROWSER": "Böngésző",
     "OPERATING_SYSTEM": "Operációs rendszer",
     "INITIATED_AT": "Kezdeményezve ekkor:",
-    "INITIATED_FROM": "Kezdeményezve innen:"
+    "INITIATED_FROM": "Kezdeményezve innen:",
+    "IP_ADDRESS": "IP cím"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Lehetőségek"
@@ -151,5 +152,17 @@
     "SUBTITLE": "Biztos vagy benne, hogy kilépsz?",
     "CANCEL": "Mégse",
     "OK": "Ok"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "HREF_TEXT": "24 órás üzeneti ablak megkötés",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "You cannot reply due to ",
+      "HREF_TEXT": "24 órás üzeneti ablak megkötés",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

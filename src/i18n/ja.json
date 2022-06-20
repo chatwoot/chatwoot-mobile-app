@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Type message",
     "TYPING": "typing",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "RESOLVE": "Resolve conversation",
-    "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
     "SHARE": "Share conversation",
     "CANCEL": "キャンセル",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "UN_ASSIGN": "Unassign conversation",
+    "MUTE_CONVERSATION": "Mute conversation",
+    "UNMUTE_CONVERSATION": "Unmute conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Conversation Filter",
@@ -123,7 +123,8 @@
     "BROWSER": "ブラウザ",
     "OPERATING_SYSTEM": "OS",
     "INITIATED_AT": "開始場所",
-    "INITIATED_FROM": "開始元"
+    "INITIATED_FROM": "開始元",
+    "IP_ADDRESS": "IP Address"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "操作"
@@ -151,5 +152,17 @@
     "SUBTITLE": "Are you sure you want to quit?",
     "CANCEL": "キャンセル",
     "OK": "Ok"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "HREF_TEXT": "24 hour message window restriction",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "You cannot reply due to ",
+      "HREF_TEXT": "24 hour message window restriction",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

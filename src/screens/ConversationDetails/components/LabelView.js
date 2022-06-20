@@ -23,7 +23,7 @@ const styles = theme => ({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     paddingTop: 6,
-    paddingBottom: 6,
+    paddingBottom: 7.4,
   },
   itemValue: {
     color: theme['text-light-color'],
@@ -35,16 +35,15 @@ const styles = theme => ({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    borderColor: theme['color-secondary-600'],
+    backgroundColor: theme['color-primary-50'],
     borderRadius: 4,
-    borderWidth: 0.5,
     paddingHorizontal: 8,
     marginBottom: 6,
     marginRight: 6,
   },
   addLabelButton: {
-    color: theme['color-secondary-800'],
     marginRight: 6,
+    color: theme['color-primary-700'],
     fontSize: theme['font-size-extra-small'],
   },
 });
@@ -117,7 +116,7 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
               name="plus-circle-outline"
               height={14}
               width={14}
-              fill={theme['color-secondary-600']}
+              fill={theme['color-primary-700']}
             />
           </TouchableOpacity>
           {activeLabels.map(({ id, title, color }) => (

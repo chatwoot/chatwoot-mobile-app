@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Tab, TabView, withStyles } from '@ui-kitten/components';
 import { SafeAreaView, View } from 'react-native';
@@ -100,7 +100,7 @@ const ConversationList = ({ eva: { style }, navigation }) => {
     return (
       <Tab
         title={tabTitle}
-        titleStyle={selectedIndex === tabIndex ? style.tabActiveTitle : style.tabNotActiveTitle}>
+        style={selectedIndex === tabIndex ? style.tabActiveTitle : style.tabNotActiveTitle}>
         <View style={style.tabView}>
           {!isFetching || payload.length ? (
             <React.Fragment>

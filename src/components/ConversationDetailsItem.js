@@ -1,24 +1,21 @@
 import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import { Icon, withStyles } from '@ui-kitten/components';
+import { withStyles } from '@ui-kitten/components';
+import { openURL } from 'src/helpers/UrlHelper';
 
 import CustomText from './Text';
 
-const styles = (theme) => ({
+const styles = theme => ({
   itemTitleView: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    paddingBottom: 8,
+    paddingTop: 16,
   },
   itemTitle: {
     fontSize: theme['font-size-small'],
     fontWeight: theme['font-medium'],
-    marginLeft: 4,
-  },
-  itemValueView: {
-    paddingLeft: 16,
-    paddingRight: 16,
   },
   itemValue: {
     color: theme['text-light-color'],
@@ -34,19 +31,27 @@ const propTypes = {
   }).isRequired,
   title: PropTypes.string,
   value: PropTypes.string,
-  iconName: PropTypes.string,
+  type: PropTypes.string,
 };
 
-const ConversationDetailsItem = ({ iconName, value, title, eva: { style, theme } }) => {
+const ConversationDetailsItem = ({ value, title, type, eva: { style, theme } }) => {
+  const link = type === 'referer';
   return (
     <React.Fragment>
-      <View>
+      <View key={type}>
         <View style={style.itemTitleView}>
-          <Icon name={iconName} height={18} width={18} fill={theme['color-primary-default']} />
           <CustomText style={style.itemTitle}>{title}</CustomText>
         </View>
-        <View style={style.itemValueView}>
-          <CustomText style={style.itemValue}>{value}</CustomText>
+        <View>
+          {link ? (
+            <CustomText
+              style={[style.itemValue, { color: theme['color-primary-500'] }]}
+              onPress={() => openURL({ URL: value })}>
+              {value}
+            </CustomText>
+          ) : (
+            <CustomText style={style.itemValue}>{value}</CustomText>
+          )}
         </View>
       </View>
     </React.Fragment>

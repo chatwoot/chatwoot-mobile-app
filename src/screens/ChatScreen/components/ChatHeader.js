@@ -20,10 +20,15 @@ import {
   muteConversation,
   unmuteConversation,
 } from 'actions/conversation';
+import { getInboxName } from 'helpers';
 import ConversationAction from '../../ConversationAction/ConversationAction';
 import { captureEvent } from '../../../helpers/Analytics';
-import Banner from 'src/screens/ChatScreen/components/Banner.js';
+import Banner from 'src/screens/ChatScreen/components/Banner';
+import InboxName from 'src/screens/ChatScreen/components/InboxName';
+import TypingStatus from 'src/screens/ChatScreen/components/UserTypingStatus';
 import i18n from 'i18n';
+
+import { INBOX_ICON } from 'src/constants/index';
 
 const styles = theme => ({
   headerView: {
@@ -41,12 +46,6 @@ const styles = theme => ({
     fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-medium'],
   },
-  subHeaderTitle: {
-    fontSize: theme['font-size-extra-small'],
-    color: theme['color-gray'],
-    paddingTop: 4,
-    paddingLeft: 4,
-  },
   chatHeader: {
     borderBottomWidth: 1,
     borderBottomColor: theme['color-border'],
@@ -57,6 +56,9 @@ const styles = theme => ({
   },
   loadingSpinner: {
     marginRight: 8,
+  },
+  inboxNameTypingWrap: {
+    flexDirection: 'row',
   },
 });
 
@@ -97,6 +99,11 @@ const ChatHeader = ({
   const showActionSheet = () => {
     actionSheetRef.current?.setModalVisible();
   };
+
+  const inboxes = useSelector(state => state.inbox.data);
+  const inboxId = conversationDetails && conversationDetails.inbox_id;
+  const channelType =
+    conversationDetails && conversationDetails.meta && conversationDetails.meta.channel;
 
   const conversation = useSelector(state => state.conversation);
   const { isChangingConversationStatus } = conversation;
@@ -153,6 +160,9 @@ const ChatHeader = ({
     conversationMetaDetails && conversationMetaDetails.channel === 'Channel::Whatsapp';
 
   const canReplyInCurrentChat = conversationDetails && conversationDetails.can_reply === true;
+
+  const iconName = INBOX_ICON[channelType];
+  const inboxName = getInboxName({ inboxes, inboxId });
 
   const onPressAction = ({ itemType }) => {
     actionSheetRef.current?.hide();
@@ -228,13 +238,12 @@ const ChatHeader = ({
                   </CustomText>
                 )}
               </View>
-              {typingUser ? (
-                <View>
-                  <CustomText style={style.subHeaderTitle}>
-                    {typingUser ? `${typingUser}` : ''}
-                  </CustomText>
-                </View>
-              ) : null}
+              <View style={style.inboxNameTypingWrap}>
+                {conversationDetails && (
+                  <InboxName iconName={iconName} inboxName={inboxName} size={'small'} />
+                )}
+                {typingUser ? <TypingStatus typingUser={typingUser} /> : null}
+              </View>
             </View>
           </TouchableOpacity>
         )}

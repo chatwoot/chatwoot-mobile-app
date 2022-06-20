@@ -115,7 +115,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
 
   const sendMessageButtonWrapStyles = () => {
     return !(!message && !attachmentDetails)
-      ? { backgroundColor: theme['color-info-100'] }
+      ? { backgroundColor: theme['color-info-75'] }
       : { backgroundColor: theme['color-info-200'] };
   };
 
@@ -235,7 +235,7 @@ const styles = theme => ({
   inputView: {
     fontSize: theme['font-size-medium'],
     color: theme['text-basic-color'],
-    borderRadius: 16,
+    borderRadius: 8,
     paddingTop: 10,
     paddingHorizontal: 10,
     paddingVertical: 12,

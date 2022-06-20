@@ -109,7 +109,7 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
   return (
     <React.Fragment>
       {!isUpdatingConversationLabels && !isAllLabelsLoaded && !isConversationLabelsLoaded ? (
-        <TouchableOpacity style={style.labelView}>
+        <View style={style.labelView}>
           <TouchableOpacity style={style.addLabelButtonWrap} onPress={onClickOpenLabelScreen}>
             <Text style={style.addLabelButton}>{i18n.t('CONVERSATION_LABELS.ADD_LABEL')}</Text>
             <Icon
@@ -127,7 +127,7 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
               onClickRemoveLabel={() => onClickRemoveLabel(title)}
             />
           ))}
-        </TouchableOpacity>
+        </View>
       ) : (
         <View style={style.spinnerView}>
           <Spinner size="small" />

@@ -25,7 +25,7 @@ const styles = theme => ({
     fontSize: theme['font-size-extra-small'],
   },
   labelCloseIcon: {
-    marginLeft: 4,
+    marginLeft: 2,
   },
 });
 

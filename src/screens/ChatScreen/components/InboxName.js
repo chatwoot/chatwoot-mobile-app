@@ -10,12 +10,11 @@ const styles = theme => ({
   inboxDetails: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 4,
   },
   channelText: {
     color: theme['color-secondary-500'],
     fontWeight: theme['font-medium'],
-    padding: 2,
+    marginLeft: 2,
   },
 });
 

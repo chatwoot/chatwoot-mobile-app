@@ -12,8 +12,6 @@ import i18n from '../../i18n';
 
 import styles from './ConversationDetailsScreen.style';
 
-import { openNumber } from 'src/helpers/UrlHelper';
-
 import HeaderBar from '../../components/HeaderBar';
 import ConversationDetailsItem from '../../components/ConversationDetailsItem';
 import SocialProfileIcons from './components/SocialProfileIcons';
@@ -300,7 +298,7 @@ class ConversationDetailsComponent extends Component {
               userName={name}
               thumbnail={thumbnail}
               size={76}
-              fontSize={40}
+              fontSize={30}
               defaultBGColor={theme['color-primary-default']}
               channel={channel}
             />

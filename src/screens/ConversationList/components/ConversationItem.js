@@ -228,7 +228,7 @@ const styles = theme => ({
     paddingTop: 4,
   },
   nameView: {
-    paddingBottom: 2,
+    paddingBottom: 4,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -245,7 +245,7 @@ const styles = theme => ({
     color: theme['color-secondary-500'],
     fontSize: theme['font-size-extra-small'],
     fontWeight: theme['font-medium'],
-    paddingRight: 4,
+    marginRight: 6,
   },
   timestampContainer: {
     marginTop: 2,

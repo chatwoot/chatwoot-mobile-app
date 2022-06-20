@@ -53,6 +53,7 @@ const styles = theme => ({
   addLabelButton: {
     marginRight: 6,
     color: theme['color-primary-700'],
+    fontWeight: theme['font-medium'],
     fontSize: theme['font-size-extra-small'],
   },
 });

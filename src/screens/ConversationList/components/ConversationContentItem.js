@@ -6,6 +6,8 @@ import { withStyles, Icon } from '@ui-kitten/components';
 import CustomText from 'components/Text';
 import { MESSAGE_TYPES } from 'constants';
 
+import { getTextSubstringWithEllipsis } from 'src/helpers/TextSubstring';
+
 const UndoIcon = style => {
   return <Icon {...style} name="undo" />;
 };
@@ -71,7 +73,7 @@ const ConversationContentItemComponent = ({
             style={unReadCount ? style.messageActive : style.messageNotActive}
             numberOfLines={1}
             maxLength={8}>
-            {message && message.length > 30 ? ` ${message.substring(0, 28)}...` : ` ${message}`}
+            {getTextSubstringWithEllipsis(message, 34)}
           </CustomText>
         </View>
       ) : (
@@ -79,7 +81,7 @@ const ConversationContentItemComponent = ({
           style={unReadCount ? style.messageActive : style.messageNotActive}
           numberOfLines={1}
           maxLength={8}>
-          {message && message.length > 30 ? `${message.substring(0, 28)}...` : `${message}`}
+          {getTextSubstringWithEllipsis(message, 34)}
         </CustomText>
       )}
     </Fragment>

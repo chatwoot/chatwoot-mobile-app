@@ -132,6 +132,11 @@
   "AGENT": {
     "TITLE": "選擇客服"
   },
+  "TEAMS": {
+    "TITLE": "Select Team",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Conversation team changed"
+  },
   "ERRORS": {
     "COMMON_ERROR": "無法連接伺服器，請稍後再試",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",

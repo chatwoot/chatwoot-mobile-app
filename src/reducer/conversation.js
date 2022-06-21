@@ -315,7 +315,7 @@ export default (state = initialState, action) => {
         ...state,
         customAttributes: [],
       };
-   }
+    }
 
     case GET_ALL_TEAMS: {
       return {

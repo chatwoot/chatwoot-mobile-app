@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Type message",
     "TYPING": "typing",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "RESOLVE": "Resolve conversation",
-    "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
     "SHARE": "Share conversation",
     "CANCEL": "Скасувати",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "UN_ASSIGN": "Unassign conversation",
+    "MUTE_CONVERSATION": "Вимкнути звук для розмови",
+    "UNMUTE_CONVERSATION": "Увімкнути звук для розмови"
   },
   "FILTER": {
     "HEADER_TITLE": "Conversation Filter",
@@ -123,7 +123,8 @@
     "BROWSER": "Браузер",
     "OPERATING_SYSTEM": "Операційна система",
     "INITIATED_AT": "Час початку",
-    "INITIATED_FROM": "Initiated from"
+    "INITIATED_FROM": "Initiated from",
+    "IP_ADDRESS": "IP-адреса"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Дії"
@@ -151,5 +152,17 @@
     "SUBTITLE": "Are you sure you want to quit?",
     "CANCEL": "Скасувати",
     "OK": "Ok"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "HREF_TEXT": "24-годинне обмеження на повідомлення",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "You cannot reply due to ",
+      "HREF_TEXT": "24-годинне обмеження на повідомлення",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

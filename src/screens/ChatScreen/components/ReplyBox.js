@@ -108,6 +108,17 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
     }
   };
 
+  const inputFieldColor = () =>
+    !isPrivate
+      ? { backgroundColor: theme['color-background'] }
+      : { backgroundColor: theme['color-background-private'] };
+
+  const sendMessageButtonWrapStyles = () => {
+    return !(!message && !attachmentDetails)
+      ? { backgroundColor: theme['color-info-75'] }
+      : { backgroundColor: theme['color-info-200'] };
+  };
+
   // eslint-disable-next-line react/prop-types
   const renderSuggestions = ({ keyword, onSuggestionPress }) => {
     if (keyword == null || !isPrivate) {
@@ -150,7 +161,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
       )}
       <View style={isPrivate ? style.privateView : style.replyView}>
         <MentionInput
-          style={style.inputView}
+          style={[style.inputView, inputFieldColor()]}
           value={message}
           onChange={onNewMessageChange}
           partTypes={[
@@ -179,22 +190,23 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
             <View style={style.privateNoteView}>
               <Icon
                 name="lock-outline"
-                width={32}
-                height={32}
+                width={24}
+                height={24}
                 fill={isPrivate ? theme['color-primary-default'] : theme['text-hint-color']}
                 onPress={togglePrivateMode}
               />
             </View>
           </View>
-          <View style={style.sendButtonView}>
+          <View style={[style.sendButtonView, sendMessageButtonWrapStyles()]}>
             <Icon
               name="paper-plane"
-              width={32}
-              height={32}
+              style={style.sendButton}
+              width={24}
+              height={24}
               fill={
                 !(!message && !attachmentDetails)
                   ? theme['color-primary-default']
-                  : theme['text-hint-color']
+                  : theme['color-background']
               }
               onPress={onNewMessageAdd}
             />
@@ -208,28 +220,34 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
 const styles = theme => ({
   replyView: {
     padding: 8,
+    paddingHorizontal: 14,
     backgroundColor: theme['background-basic-color-1'],
     borderTopColor: theme['color-border'],
     borderTopWidth: 1,
   },
   privateView: {
     padding: 8,
-    backgroundColor: theme['color-background-private'],
+    paddingHorizontal: 14,
+    backgroundColor: theme['color-background-private-light'],
     borderTopColor: theme['color-border'],
     borderTopWidth: 1,
   },
   inputView: {
     fontSize: theme['font-size-medium'],
     color: theme['text-basic-color'],
-    paddingHorizontal: 8,
-    paddingVertical: 16,
+    borderRadius: 8,
+    paddingTop: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 12,
     textAlignVertical: 'top',
+    textAlign: 'left',
+    maxHeight: 160,
   },
   buttonViews: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 4,
+    paddingVertical: 6,
   },
   attachIconView: {
     flex: 1,
@@ -237,11 +255,11 @@ const styles = theme => ({
     alignItems: 'flex-end',
   },
   privateNoteView: {
-    paddingLeft: 8,
+    paddingLeft: 12,
   },
   sendButtonView: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
+    padding: 8,
+    borderRadius: 30,
   },
   lockButton: {
     paddingHorizontal: 0,
@@ -249,10 +267,9 @@ const styles = theme => ({
     justifyContent: 'flex-start',
   },
   sendButton: {
-    paddingHorizontal: 0,
-    paddingVertical: 0,
+    padding: 12,
+    transform: [{ rotate: '45deg' }],
     backgroundColor: 'transparent',
-    alignItems: 'flex-end',
   },
   overflowMenu: {
     padding: 8,

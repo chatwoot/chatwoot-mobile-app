@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Escribir mensaje",
     "TYPING": "escribiendo",
     "ALL_CONVERSATION_LOADED": "Todas las conversaciones cargadas",
-    "RESOLVE": "Resolver conversación",
-    "RE_OPEN": "Resolver conversación",
     "ASSIGN": "Asignar conversación",
     "FILE_SIZE_LIMIT": "El archivo supera el límite de 5MB de archivos adjuntos",
     "SHARE": "Compartir la conversación",
     "CANCEL": "Cancelar",
     "PRIVATE_MSG_INPUT": "Esto será visible sólo para los agentes",
-    "UN_ASSIGN": "Desasignar conversación"
+    "UN_ASSIGN": "Desasignar conversación",
+    "MUTE_CONVERSATION": "Silenciar conversación",
+    "UNMUTE_CONVERSATION": "Quitar silencio de conversación"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtro de conversación",
@@ -123,7 +123,8 @@
     "BROWSER": "Navegador",
     "OPERATING_SYSTEM": "Sistema operativo",
     "INITIATED_AT": "Iniciado a las",
-    "INITIATED_FROM": "Iniciado desde"
+    "INITIATED_FROM": "Iniciado desde",
+    "IP_ADDRESS": "Dirección IP"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Acciones"
@@ -151,5 +152,17 @@
     "SUBTITLE": "¿Estás seguro que quieres salir?",
     "CANCEL": "Cancelar",
     "OK": "De acuerdo"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "Sólo puede responder a esta conversación utilizando un mensaje de plantilla debido a ",
+      "HREF_TEXT": "Restricción de la ventana de mensajes de 24 horas",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "No puede responder debido a ",
+      "HREF_TEXT": "Restricción de la ventana de mensajes de 24 horas",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

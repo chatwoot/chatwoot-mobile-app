@@ -132,6 +132,11 @@
   "AGENT": {
     "TITLE": "Chọn đại lý"
   },
+  "TEAMS": {
+    "TITLE": "Chọn nhóm",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Nhóm của cuộc trò chuyện đã được thay đổi"
+  },
   "ERRORS": {
     "COMMON_ERROR": "Không thể kết nối với Máy chủ Woot, Vui lòng thử lại sau",
     "OfFLINE": "Bạn phải kết nối với Wi-fi hoặc mạng di động để trực tuyến trở lại",

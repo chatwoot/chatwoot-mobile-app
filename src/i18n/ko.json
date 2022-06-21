@@ -132,6 +132,11 @@
   "AGENT": {
     "TITLE": "에이전트 선택"
   },
+  "TEAMS": {
+    "TITLE": "Select Team",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "대화 담당자가 변경됨"
+  },
   "ERRORS": {
     "COMMON_ERROR": "Woot 서버에 연결할 수 없음. 나중에 다시 시도하십시오.",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",

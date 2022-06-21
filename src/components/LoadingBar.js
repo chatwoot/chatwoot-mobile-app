@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { SafeAreaView, StatusBar, Text } from 'react-native';
+import { SafeAreaView, StatusBar } from 'react-native';
 import { withStyles } from '@ui-kitten/components';
 import { connect } from 'react-redux';
+
+import CustomText from './Text';
 
 const styles = theme => ({
   container: {
@@ -28,13 +30,6 @@ const propTypes = {
 };
 
 class LoadingBarComponent extends Component {
-  animationConstants = {
-    DURATION: 800,
-    TO_VALUE: 4,
-    INPUT_RANGE: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4],
-    OUTPUT_RANGE: [0, -15, 0, 15, 0, -15, 0, 15, 0],
-  };
-
   render() {
     const {
       eva: { style, theme },
@@ -44,15 +39,9 @@ class LoadingBarComponent extends Component {
     return isUpdating ? (
       <SafeAreaView style={style.container}>
         <StatusBar backgroundColor={theme['color-primary-default']} />
-        <Text style={[style.offlineText]}>Refreshing</Text>
+        <CustomText style={[style.offlineText]}>Refreshing</CustomText>
       </SafeAreaView>
     ) : null;
-    // return (
-    //   <SafeAreaView style={style.container}>
-    //     <StatusBar backgroundColor={theme['color-primary-default']} />
-    //     <Text style={[style.offlineText]}>Refreshing</Text>
-    //   </SafeAreaView>
-    // );
   }
 }
 

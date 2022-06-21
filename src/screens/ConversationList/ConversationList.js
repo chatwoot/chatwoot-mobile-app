@@ -18,7 +18,6 @@ import i18n from 'i18n';
 import ActionCable from 'helpers/ActionCable';
 import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
 import HeaderBar from 'components/HeaderBar';
-import LoadingBar from 'components/LoadingBar';
 import { clearAllDeliveredNotifications } from 'helpers/PushHelper';
 import { identifyUser, captureEvent } from 'helpers/Analytics';
 import { getMineConversations, getUnAssignedChats } from '../../helpers';
@@ -124,7 +123,6 @@ const ConversationList = ({ eva: { style }, navigation }) => {
   const shouldShowConversationList = !!(allConversations && allConversations.length);
   const shouldShowConversationEmptyList = isFetching && allConversations.length === 0;
   const shouldShowEmptyMessage = !isFetching && allConversations.length === 0;
-
   // eslint-disable-next-line react/prop-types
   const renderTab = ({ tabIndex, tabTitle }) => {
     return (
@@ -149,7 +147,6 @@ const ConversationList = ({ eva: { style }, navigation }) => {
     );
   };
 
-  const shouldShowLoader = isUpdating;
   const { name: inBoxName } = inboxSelected;
   const mineCount = meta ? `(${meta.mine_count})` : '';
   const unAssignedCount = meta ? `(${meta.unassigned_count})` : '';
@@ -158,7 +155,6 @@ const ConversationList = ({ eva: { style }, navigation }) => {
   const headerTitle = inBoxName ? `${inBoxName} (${conversationStatus})` : '';
   return (
     <SafeAreaView style={style.container}>
-      {shouldShowLoader && <LoadingBar />}
       <HeaderBar title={headerTitle} showRightButton onRightPress={openFilter} buttonType="menu" />
 
       <TabView

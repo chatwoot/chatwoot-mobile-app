@@ -9,6 +9,7 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as Sentry from '@sentry/react-native';
 import NoNetworkBar from 'components/NoNetworkBar';
+import LoadingBar from 'components/LoadingBar';
 import ErrorHelper from 'helpers/ErrorHelper';
 import { theme } from './theme';
 import Router from './router';
@@ -55,6 +56,7 @@ const Chatwoot = () => {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <NoNetworkBar />
+            <LoadingBar />
             <Router />
           </PersistGate>
         </Provider>

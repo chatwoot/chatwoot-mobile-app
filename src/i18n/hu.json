@@ -132,6 +132,11 @@
   "AGENT": {
     "TITLE": "Ügynök kiválasztása"
   },
+  "TEAMS": {
+    "TITLE": "Select Team",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "A beszélgetés csapata megváltozott"
+  },
   "ERRORS": {
     "COMMON_ERROR": "Nem sikerült csatlakozni a Woot szerverhez, kérjük próbáld később",
     "OfFLINE": "Wi-Fi vagy mobilhálózat szükséges hogy ismét online legyél",

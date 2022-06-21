@@ -132,6 +132,11 @@
   "AGENT": {
     "TITLE": "انتخاب ایجنت"
   },
+  "TEAMS": {
+    "TITLE": "تیم را انتخاب کنید",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "تیم مکالمه تغییر کرد"
+  },
   "ERRORS": {
     "COMMON_ERROR": "متاسفانه ارتباط با سرور برقرار نشد، مجددا امتحان کنید",
     "OfFLINE": "برای اتصال مجدد باید به وای فای یا شبکه تلفن همراه متصل شوید",

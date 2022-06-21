@@ -132,6 +132,11 @@
   "AGENT": {
     "TITLE": "Επιλογή πράκτορα"
   },
+  "TEAMS": {
+    "TITLE": "Επιλογή Ομάδας",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Η ομάδα συνομιλίας άλλαξε"
+  },
   "ERRORS": {
     "COMMON_ERROR": "Αδυναμία σύνδεσης με τον Woot Server, Παρακαλώ προσπαθήστε αργότερα",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",

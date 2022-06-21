@@ -44,21 +44,6 @@ const ConversationList = ({ eva: { style }, navigation }) => {
   const conversationStatus = useSelector(state => state.conversation.conversationStatus);
   const inboxSelected = useSelector(state => state.inbox.inboxSelected);
 
-  useEffect(() => {
-    clearAllDeliveredNotifications();
-    initActionCable();
-    dispatch(getInstalledVersion());
-    dispatch(getInboxes());
-    dispatch(getAgents());
-    dispatch(saveDeviceDetails());
-    storeUser();
-  }, [dispatch, initActionCable, storeUser]);
-
-  useEffect(() => {
-    loadConversations({ resetConversation: true });
-    dispatch(getAllNotifications({ pageNo: 1 }));
-  }, [dispatch, initActionCable, loadConversations]);
-
   const loadConversations = useCallback(
     ({ resetConversation }) => {
       dispatch(
@@ -72,12 +57,32 @@ const ConversationList = ({ eva: { style }, navigation }) => {
     [dispatch, selectedIndex, pageNumber],
   );
 
+  useEffect(() => {
+    clearAllDeliveredNotifications();
+    initActionCable();
+    dispatch(getInstalledVersion());
+    dispatch(getInboxes());
+    dispatch(getAgents());
+    dispatch(saveDeviceDetails());
+    storeUser();
+  }, [dispatch, initActionCable, storeUser]);
+
+  useEffect(() => {
+    loadConversations({ resetConversation: true });
+    dispatch(getAllNotifications({ pageNo: 1 }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  React.useEffect(() => {
+    loadConversations({ resetConversation: false });
+  }, [loadConversations, pageNumber]);
+
   const initActionCable = useCallback(async () => {
     const pubSubToken = await getPubSubToken();
     const { accountId, userId } = await getUserDetails();
     ActionCable.init({ pubSubToken, webSocketUrl, accountId, userId });
   }, [webSocketUrl]);
-
+  // Identify the user and send to analytics
   const storeUser = useCallback(async () => {
     const { userId, email, name } = await getUserDetails();
     identifyUser({ userId, email, name, installationUrl });
@@ -99,9 +104,6 @@ const ConversationList = ({ eva: { style }, navigation }) => {
     dispatch(setAssigneeType({ assigneeType: index }));
   };
 
-  React.useEffect(() => {
-    loadConversations(pageNumber);
-  }, [loadConversations, pageNumber]);
   const { payload, meta } = conversations;
   let allConversations = payload;
   if (selectedIndex === 0) {
@@ -109,9 +111,14 @@ const ConversationList = ({ eva: { style }, navigation }) => {
       user: { id: userId },
     } = userDetails;
     allConversations = getMineConversations({ conversations: payload, userId });
-  }
-  if (selectedIndex === 1) {
+  } else if (selectedIndex === 1) {
     allConversations = getUnAssignedChats({ conversations: payload });
+  } else {
+    allConversations = payload.sort(
+      (a, b) =>
+        b.messages[b.messages.length - 1]?.created_at -
+        a.messages[a.messages.length - 1]?.created_at,
+    );
   }
 
   const shouldShowConversationList = !!(allConversations && allConversations.length);

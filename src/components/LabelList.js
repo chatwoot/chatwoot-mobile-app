@@ -92,6 +92,6 @@ const styles = theme => ({
 
 LabelListComponent.propTypes = propTypes;
 
-const ChatMessageItem = withStyles(LabelListComponent, styles);
+const LabelList = withStyles(LabelListComponent, styles);
 
-export default React.memo(ChatMessageItem);
+export default React.memo(LabelList);

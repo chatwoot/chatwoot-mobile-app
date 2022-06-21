@@ -81,6 +81,9 @@ const LabelScreen = ({ eva: { style }, navigation, route }) => {
     }
   };
 
+  const shouldShowEmptyMessage =
+    labels && labels.length === 0 && !isAllLabelsLoaded && !isUpdatingConversationLabels;
+
   return (
     <SafeAreaView style={style.container}>
       <HeaderBar
@@ -108,7 +111,7 @@ const LabelScreen = ({ eva: { style }, navigation, route }) => {
             <Spinner size="medium" />
           </View>
         )}
-        {labels && labels.length === 0 && !isAllLabelsLoaded && !isUpdatingConversationLabels && (
+        {shouldShowEmptyMessage && (
           <View>
             <Text style={style.emptyList}>{i18n.t('CONVERSATION_LABELS.EMPTY_LIST')}</Text>
           </View>

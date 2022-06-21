@@ -31,6 +31,12 @@ import {
   GET_ALL_CUSTOM_ATTRIBUTES,
   GET_ALL_CUSTOM_ATTRIBUTES_SUCCESS,
   GET_ALL_CUSTOM_ATTRIBUTES_ERROR,
+  GET_ALL_TEAMS,
+  GET_ALL_TEAMS_SUCCESS,
+  GET_ALL_TEAMS_ERROR,
+  ASSIGN_TEAM,
+  ASSIGN_TEAM_SUCCESS,
+  ASSIGN_TEAM_ERROR,
 } from '../constants/actions';
 
 const initialState = {
@@ -40,6 +46,8 @@ const initialState = {
   isChangingConversationStatus: false,
   conversationStatus: 'open',
   isAssigneeUpdating: false,
+  isAllAvailableTeamsLoaded: false,
+  isTeamUpdating: false,
   data: {
     meta: {
       mine_count: 0,
@@ -56,6 +64,7 @@ const initialState = {
   activeUsers: {},
   assigneeType: 0,
   customAttributes: [],
+  availableTeams: [],
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -305,6 +314,51 @@ export default (state = initialState, action) => {
       return {
         ...state,
         customAttributes: [],
+      };
+   }
+
+    case GET_ALL_TEAMS: {
+      return {
+        ...state,
+        availableTeams: [],
+        isAllAvailableTeamsLoaded: true,
+      };
+    }
+
+    case GET_ALL_TEAMS_SUCCESS: {
+      return {
+        ...state,
+        availableTeams: action.payload,
+        isAllAvailableTeamsLoaded: false,
+      };
+    }
+
+    case GET_ALL_TEAMS_ERROR: {
+      return {
+        ...state,
+        availableTeams: [],
+        isAllAvailableTeamsLoaded: false,
+      };
+    }
+
+    case ASSIGN_TEAM: {
+      return {
+        ...state,
+        isTeamUpdating: true,
+      };
+    }
+
+    case ASSIGN_TEAM_SUCCESS: {
+      return {
+        ...state,
+        isTeamUpdating: false,
+      };
+    }
+
+    case ASSIGN_TEAM_ERROR: {
+      return {
+        ...state,
+        isTeamUpdating: false,
       };
     }
 

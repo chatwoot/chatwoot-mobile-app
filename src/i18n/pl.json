@@ -132,6 +132,11 @@
   "AGENT": {
     "TITLE": "Wybierz Agenta"
   },
+  "TEAMS": {
+    "TITLE": "Wybierz zespół",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Zespół konwersacji został zmieniony"
+  },
   "ERRORS": {
     "COMMON_ERROR": "Nie można połączyć się z Woot Server, spróbuj ponownie później",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",

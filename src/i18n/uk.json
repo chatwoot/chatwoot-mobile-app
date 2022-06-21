@@ -132,6 +132,11 @@
   "AGENT": {
     "TITLE": "Select Agent"
   },
+  "TEAMS": {
+    "TITLE": "Оберіть команду",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Команда змінена"
+  },
   "ERRORS": {
     "COMMON_ERROR": "Не вдалося підключитися до Woot Server, спробуйте ще раз пізніше",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",

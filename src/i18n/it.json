@@ -134,7 +134,7 @@
   },
   "TEAMS": {
     "TITLE": "Seleziona team",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "EMPTY": "Aggiungi dei team al tuo account per assegnare conversazioni ai team.",
     "CHANGE_TEAMS": "Team conversazione cambiato"
   },
   "ERRORS": {

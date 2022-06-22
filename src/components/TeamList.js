@@ -4,45 +4,23 @@ import { View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
 import CustomText from './Text';
-import UserAvatar from './UserAvatar';
 
 const propTypes = {
   eva: PropTypes.shape({
     style: PropTypes.object,
     theme: PropTypes.object,
   }).isRequired,
+  key: PropTypes.number,
   name: PropTypes.string,
-  thumbnail: PropTypes.string,
-  availabilityStatus: PropTypes.string,
-  assigned: PropTypes.bool,
-  onCheckedChange: PropTypes.func,
+  selectedTeam: PropTypes.bool,
+  onClickCheckedChange: PropTypes.func,
 };
-const AgentItemComponent = ({
-  eva,
-  name,
-  thumbnail,
-  availabilityStatus,
-  assigned,
-  onCheckedChange,
-}) => {
-  const { style, theme } = eva;
-
-  const isActive = availabilityStatus === 'online' ? true : false;
+const TeamListComponent = ({ eva, key, name, selectedTeam, onClickCheckedChange }) => {
+  const { style } = eva;
 
   return (
     <TouchableOpacity activeOpacity={0.5} style={style.container}>
-      <View style={style.itemView}>
-        <View style={style.avatarView}>
-          <UserAvatar
-            thumbnail={thumbnail}
-            size={30}
-            fontSize={12}
-            userName={name}
-            defaultBGColor={theme['color-primary-default']}
-            isActive={isActive}
-            availabilityStatus={availabilityStatus}
-          />
-        </View>
+      <View style={style.itemView} key={key}>
         <View>
           <View style={style.nameView}>
             <CustomText style={style.name}>
@@ -52,7 +30,7 @@ const AgentItemComponent = ({
         </View>
       </View>
       <View style={style.radioView}>
-        <Radio checked={assigned} onChange={onCheckedChange} />
+        <Radio checked={selectedTeam} onChange={onClickCheckedChange} />
       </View>
     </TouchableOpacity>
   );
@@ -63,8 +41,8 @@ const styles = theme => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 14,
+    paddingHorizontal: 18,
+    paddingVertical: 16,
     backgroundColor: theme['background-basic-color-1'],
     borderColor: theme['item-border-color'],
     borderBottomWidth: 0.5,
@@ -79,10 +57,6 @@ const styles = theme => ({
     fontWeight: theme['font-medium'],
     padding: 2,
   },
-  avatarView: {
-    justifyContent: 'flex-end',
-    marginRight: 16,
-  },
   nameView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -93,8 +67,8 @@ const styles = theme => ({
   },
 });
 
-AgentItemComponent.propTypes = propTypes;
+TeamListComponent.propTypes = propTypes;
 
-const ChatMessageItem = withStyles(AgentItemComponent, styles);
+const ChatMessageItem = withStyles(TeamListComponent, styles);
 
 export default React.memo(ChatMessageItem);

@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "כתוב הודעה",
     "TYPING": "מקליד",
     "ALL_CONVERSATION_LOADED": "כל השיחות נטענו",
-    "RESOLVE": "פתור את השיחה",
-    "RE_OPEN": "פתח מחדש את השיחה",
     "ASSIGN": "הקצה שיחה",
     "FILE_SIZE_LIMIT": "הקובץ עובר את מגבלת 5MB לקבצים מצורפים",
     "SHARE": "Share conversation",
     "CANCEL": "ביטול",
     "PRIVATE_MSG_INPUT": "זה יהיה גלוי רק לסוכנים",
-    "UN_ASSIGN": "שיחה שלא הוקצתה"
+    "UN_ASSIGN": "שיחה שלא הוקצתה",
+    "MUTE_CONVERSATION": "Mute conversation",
+    "UNMUTE_CONVERSATION": "בטל השתקת שיחה"
   },
   "FILTER": {
     "HEADER_TITLE": "סינון שיחות",
@@ -123,7 +123,8 @@
     "BROWSER": "דפדפן",
     "OPERATING_SYSTEM": "מערכת הפעלה",
     "INITIATED_AT": "יזם ב",
-    "INITIATED_FROM": "יזם מ"
+    "INITIATED_FROM": "יזם מ",
+    "IP_ADDRESS": "כתובת IP"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "פעולות"
@@ -151,5 +152,17 @@
     "SUBTITLE": "האם אתה בטוח שאתה רוצה לסגור את התכנה?",
     "CANCEL": "ביטול",
     "OK": "אישור"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "HREF_TEXT": "הגבלת חלון הודעות של 24 שעות",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "You cannot reply due to ",
+      "HREF_TEXT": "הגבלת חלון הודעות של 24 שעות",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

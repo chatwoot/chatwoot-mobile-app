@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "پیام خود را وارد کنید",
     "TYPING": "تایپ کردن",
     "ALL_CONVERSATION_LOADED": "همه گفتگوها دریافت شدند",
-    "RESOLVE": "گفتگو حل شده",
-    "RE_OPEN": "مکالمه را دوباره باز کنید",
     "ASSIGN": "اختصاص مکالمه",
     "FILE_SIZE_LIMIT": "محدودیت حجم فایل پیوست 5MB می باشد",
     "SHARE": "اشتراک گذاری گفتگو",
     "CANCEL": "انصراف",
     "PRIVATE_MSG_INPUT": "این فقط برای ایجنت ها قابل مشاهده خواهد بود",
-    "UN_ASSIGN": "لغو اختصاص مکالمه"
+    "UN_ASSIGN": "لغو اختصاص مکالمه",
+    "MUTE_CONVERSATION": "صدای گفتگو را قطع کن",
+    "UNMUTE_CONVERSATION": "مکالمه را باصدا کنید"
   },
   "FILTER": {
     "HEADER_TITLE": "فیلتر مکالمه",
@@ -123,7 +123,8 @@
     "BROWSER": "مرورگر",
     "OPERATING_SYSTEM": "سیستم عامل",
     "INITIATED_AT": "شروع شده در",
-    "INITIATED_FROM": "شروع شده از"
+    "INITIATED_FROM": "شروع شده از",
+    "IP_ADDRESS": "آدرس آی‌پی"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "عملیات"
@@ -151,5 +152,17 @@
     "SUBTITLE": "آیا مطمئن هستید که می خواهید خارج شوید؟",
     "CANCEL": "انصراف",
     "OK": "باشه"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "شما فقط با استفاده از یک پیام الگو به این مکالمه می‌توانید پاسخ دهید ",
+      "HREF_TEXT": "محدودیت ۲۴ ساعته پنجره پیام",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "شما نمی‌توانید پاسخ بدهید به دلیل ",
+      "HREF_TEXT": "محدودیت ۲۴ ساعته پنجره پیام",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

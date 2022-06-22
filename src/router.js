@@ -33,6 +33,7 @@ import { doDeepLinking } from './helpers/DeepLinking';
 import { resetConversation, getConversations } from './actions/conversation';
 import { withStyles } from '@ui-kitten/components';
 import { captureScreen } from './helpers/Analytics';
+import TeamScreen from './screens/TeamScreen/TeamScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -194,6 +195,7 @@ const App = ({ eva: { style } }) => {
                 <Stack.Screen name="ConversationAction" component={ConversationAction} />
                 <Stack.Screen name="AgentScreen" component={AgentScreen} />
                 <Stack.Screen name="LabelScreen" component={LabelScreen} />
+                <Stack.Screen name="TeamScreen" component={TeamScreen} />
                 <Stack.Screen name="Availability" component={AvailabilityScreen} />
                 <Stack.Screen name="NotificationPreference" component={NotificationPreference} />
               </Fragment>

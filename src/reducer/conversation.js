@@ -349,7 +349,7 @@ export default (state = initialState, action) => {
         isConversationLabelsLoaded: false,
       };
     }
-      
+
     case GET_ALL_TEAMS: {
       return {
         ...state,

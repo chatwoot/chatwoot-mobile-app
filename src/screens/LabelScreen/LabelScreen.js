@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Spinner, withStyles } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
 import { SafeAreaView, View, ScrollView, Text } from 'react-native';
@@ -7,7 +7,7 @@ import { SafeAreaView, View, ScrollView, Text } from 'react-native';
 import HeaderBar from '../../components/HeaderBar';
 import i18n from '../../i18n';
 import styles from './LabelScreen.style';
-import LabelList from 'src/components/LabelList';
+import LabelItem from 'src/components/LabelItem';
 import { getAllLabels, getConversationLabels, updateConversationLabels } from '../../actions/label';
 import { captureEvent } from 'helpers/Analytics';
 import Snackbar from 'react-native-snackbar';
@@ -29,60 +29,53 @@ const LabelScreen = ({ eva: { style }, navigation, route }) => {
   const accountLabels = labels && labels.payload;
   const savedLabels = conversationLabels && conversationLabels.payload;
 
-  const { isAllLabelsLoaded, isUpdatingConversationLabels } = conversation;
+  const { isAllLabelsLoaded } = conversation;
 
-  const goBack = () => {
-    navigation.goBack();
-  };
-
-  const activeLabels =
-    accountLabels && savedLabels
-      ? accountLabels.filter(({ title }) => {
-          return savedLabels.includes(title);
-        })
-      : [];
+  const [selectedLabels, setSelectedlabels] = useState(savedLabels);
 
   const onUpdateLabels = value => {
-    dispatch(
-      updateConversationLabels({
-        conversationId: conversationId,
-        labels: value,
-      }),
-    ).then(() => {
-      Snackbar.show({
-        text: i18n.t('CONVERSATION_LABELS.UPDATE_LABEL'),
-        duration: Snackbar.LENGTH_SHORT,
+    if (value) {
+      dispatch(
+        updateConversationLabels({
+          conversationId: conversationId,
+          labels: value,
+        }),
+      ).then(() => {
+        Snackbar.show({
+          text: i18n.t('CONVERSATION_LABELS.UPDATE_LABEL'),
+          duration: Snackbar.LENGTH_SHORT,
+        });
+        dispatch(getConversationLabels({ conversationId }));
+        setSelectedlabels(savedLabels);
       });
-      dispatch(getConversationLabels({ conversationId }));
-    });
+    }
   };
 
-  const onClickAddLabel = value => {
-    const result = activeLabels.map(item => item.title);
-    result.push(value.title);
-    captureEvent({ eventName: 'Conversation label added' });
-    onUpdateLabels(result);
-  };
-
-  const onClickRemoveLabel = value => {
-    const result =
-      accountLabels && savedLabels
-        ? activeLabels.map(label => label.title).filter(label => label !== value)
-        : [];
-    captureEvent({ eventName: 'Conversation label removed' });
-    onUpdateLabels(result);
+  const goBack = () => {
+    onUpdateLabels(selectedLabels);
+    navigation.goBack();
   };
 
   const onClickAddRemoveLabels = value => {
     if (savedLabels.includes(value.title)) {
-      return onClickRemoveLabel(value.title);
+      const array = [...selectedLabels];
+      const index = array.indexOf(value.title);
+      if (index !== -1) {
+        array.splice(index, 1);
+        savedLabels.splice(index, 1);
+      }
+      setSelectedlabels(array);
+      captureEvent({ eventName: 'Conversation label removed' });
     } else {
-      return onClickAddLabel(value);
+      const array = [...selectedLabels];
+      array.push(value.title);
+      savedLabels.push(value.title);
+      setSelectedlabels(array);
+      captureEvent({ eventName: 'Conversation label added' });
     }
   };
 
-  const shouldShowEmptyMessage =
-    labels && labels.length === 0 && !isAllLabelsLoaded && !isUpdatingConversationLabels;
+  const shouldShowEmptyMessage = labels && labels.length === 0 && !isAllLabelsLoaded;
 
   return (
     <SafeAreaView style={style.container}>
@@ -92,12 +85,12 @@ const LabelScreen = ({ eva: { style }, navigation, route }) => {
         onBackPress={goBack}
       />
       <ScrollView>
-        {!isAllLabelsLoaded && !isUpdatingConversationLabels ? (
+        {!isAllLabelsLoaded ? (
           <View>
             {accountLabels &&
               savedLabels &&
               accountLabels.map(item => (
-                <LabelList
+                <LabelItem
                   key={item.id}
                   title={item.title}
                   color={item.color}

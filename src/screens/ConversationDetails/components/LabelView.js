@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import { withStyles } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
-import LabelBox from 'src/components/LabelsBox';
+import LabelBox from 'src/components/LabelBox';
+import AddLabelbutton from './AddButton';
 import { captureEvent } from 'helpers/Analytics';
 import { Spinner, Icon } from '@ui-kitten/components';
 import { View, Text } from 'react-native';
@@ -76,8 +77,7 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
   }, [conversationId, dispatch]);
 
   const conversation = useSelector(state => state.conversation);
-  const { isAllLabelsLoaded, isConversationLabelsLoaded, isUpdatingConversationLabels } =
-    conversation;
+  const { isAllLabelsLoaded, isConversationLabelsLoaded } = conversation;
 
   const availableLabels = useSelector(state => state.conversation.availableLabels);
   const conversationLabels = useSelector(state => state.conversation.conversationLabels);
@@ -116,26 +116,25 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
     navigation.navigate('LabelScreen', { conversationDetails });
   };
 
+  const shouldShowEmptyMessage =
+    savedLabels && savedLabels.length === 0 && !isAllLabelsLoaded && !isConversationLabelsLoaded;
+
   return (
     <React.Fragment>
       <View style={style.labelWrapper}>
-        {!isUpdatingConversationLabels && !isAllLabelsLoaded && !isConversationLabelsLoaded ? (
+        {!isAllLabelsLoaded && !isConversationLabelsLoaded ? (
           <View style={style.labelViews}>
-            <TouchableOpacity style={style.addLabelButtonWrap} onPress={onClickOpenLabelScreen}>
-              <Text style={style.addLabelButton}>{i18n.t('CONVERSATION_LABELS.ADD_LABEL')}</Text>
-              <Icon
-                name="plus-circle-outline"
-                height={14}
-                width={14}
-                fill={theme['color-primary-700']}
-              />
-            </TouchableOpacity>
-            {activeLabels.map(({ id, title, color }) => (
+            <AddLabelbutton
+              buttonLabel={i18n.t('CONVERSATION_LABELS.ADD_LABEL')}
+              iconName="plus-circle-outline"
+              onClickOpen={onClickOpenLabelScreen}
+            />
+            {activeLabels.map(item => (
               <LabelBox
-                id={id}
-                title={title}
-                color={color}
-                onClickRemoveLabel={() => onClickRemoveLabel(title)}
+                id={item.id}
+                title={item.title}
+                color={item.color}
+                onClickRemoveLabel={() => onClickRemoveLabel(item.title)}
               />
             ))}
           </View>
@@ -144,13 +143,9 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
             <Spinner size="small" />
           </View>
         )}
-        {savedLabels &&
-          savedLabels.length === 0 &&
-          !isUpdatingConversationLabels &&
-          !isAllLabelsLoaded &&
-          !isConversationLabelsLoaded && (
-            <Text style={style.itemValue}>{i18n.t('CONVERSATION_LABELS.NO_LABEL')}</Text>
-          )}
+        {shouldShowEmptyMessage && (
+          <Text style={style.itemValue}>{i18n.t('CONVERSATION_LABELS.NO_LABEL')}</Text>
+        )}
       </View>
     </React.Fragment>
   );

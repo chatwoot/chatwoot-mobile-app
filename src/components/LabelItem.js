@@ -18,7 +18,7 @@ const propTypes = {
   onClickAddRemoveLabels: PropTypes.func,
   activeLabel: PropTypes.bool,
 };
-const LabelListComponent = ({ eva, key, title, color, onClickAddRemoveLabels, activeLabel }) => {
+const LabelItem = ({ eva, key, title, color, onClickAddRemoveLabels, activeLabel }) => {
   const { style, theme } = eva;
 
   const getLabelColor = clr => {
@@ -43,21 +43,12 @@ const LabelListComponent = ({ eva, key, title, color, onClickAddRemoveLabels, ac
         </View>
       </View>
       <View style={style.radioView}>
-        {activeLabel ? (
-          <Icon
-            name="radio-button-on"
-            height={20}
-            width={20}
-            fill={theme['color-primary-default']}
-          />
-        ) : (
-          <Icon
-            name="radio-button-off"
-            height={20}
-            width={20}
-            fill={theme['color-primary-default']}
-          />
-        )}
+        <Icon
+          name={activeLabel ? 'radio-button-on' : 'radio-button-off'}
+          height={20}
+          width={20}
+          fill={theme['color-primary-default']}
+        />
       </View>
     </TouchableOpacity>
   );
@@ -90,8 +81,8 @@ const styles = theme => ({
   },
 });
 
-LabelListComponent.propTypes = propTypes;
+LabelItem.propTypes = propTypes;
 
-const LabelList = withStyles(LabelListComponent, styles);
+const LabelItemComponent = withStyles(LabelItem, styles);
 
-export default React.memo(LabelList);
+export default React.memo(LabelItemComponent);

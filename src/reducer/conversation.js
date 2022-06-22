@@ -34,9 +34,6 @@ import {
   GET_CONVERSATION_LABELS,
   GET_CONVERSATION_LABELS_SUCCESS,
   GET_CONVERSATION_LABELS_ERROR,
-  UPDATE_CONVERSATION_LABELS,
-  UPDATE_CONVERSATION_LABELS_SUCCESS,
-  UPDATE_CONVERSATION_LABELS_ERROR,
 } from '../constants/actions';
 
 const initialState = {
@@ -48,7 +45,6 @@ const initialState = {
   isAssigneeUpdating: false,
   isAllLabelsLoaded: false,
   isConversationLabelsLoaded: false,
-  isUpdatingConversationLabels: false,
   data: {
     meta: {
       mine_count: 0,
@@ -65,7 +61,7 @@ const initialState = {
   activeUsers: {},
   assigneeType: 0,
   availableLabels: [],
-  conversationLabels: {},
+  conversationLabels: [],
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -324,7 +320,7 @@ export default (state = initialState, action) => {
     case GET_CONVERSATION_LABELS: {
       return {
         ...state,
-        conversationLabels: {},
+        conversationLabels: [],
         isConversationLabelsLoaded: true,
       };
     }
@@ -340,29 +336,8 @@ export default (state = initialState, action) => {
     case GET_CONVERSATION_LABELS_ERROR: {
       return {
         ...state,
-        conversationLabels: {},
+        conversationLabels: [],
         isConversationLabelsLoaded: false,
-      };
-    }
-
-    case UPDATE_CONVERSATION_LABELS: {
-      return {
-        ...state,
-        isUpdatingConversationLabels: true,
-      };
-    }
-
-    case UPDATE_CONVERSATION_LABELS_SUCCESS: {
-      return {
-        ...state,
-        isUpdatingConversationLabels: false,
-      };
-    }
-
-    case UPDATE_CONVERSATION_LABELS_ERROR: {
-      return {
-        ...state,
-        isUpdatingConversationLabels: false,
       };
     }
 

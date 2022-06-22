@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import { withStyles } from '@ui-kitten/components';
@@ -7,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import LabelBox from 'src/components/LabelBox';
 import AddLabelbutton from './AddButton';
 import { captureEvent } from 'helpers/Analytics';
-import { Spinner, Icon } from '@ui-kitten/components';
+import { Spinner } from '@ui-kitten/components';
 import { View, Text } from 'react-native';
 import i18n from '../../../i18n';
 import Snackbar from 'react-native-snackbar';
@@ -23,13 +22,14 @@ const styles = theme => ({
   labelViews: {
     flexDirection: 'row',
     marginVertical: 2,
+    minHeight: 30,
     flexWrap: 'wrap',
   },
   spinnerView: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    paddingTop: 6,
-    paddingBottom: 6,
+    paddingTop: 4,
+    paddingLeft: 4,
   },
   itemValue: {
     color: theme['text-light-color'],
@@ -122,27 +122,26 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
   return (
     <React.Fragment>
       <View style={style.labelWrapper}>
-        {!isAllLabelsLoaded && !isConversationLabelsLoaded ? (
-          <View style={style.labelViews}>
-            <AddLabelbutton
-              buttonLabel={i18n.t('CONVERSATION_LABELS.ADD_LABEL')}
-              iconName="plus-circle-outline"
-              onClickOpen={onClickOpenLabelScreen}
+        <View style={style.labelViews}>
+          <AddLabelbutton
+            buttonLabel={i18n.t('CONVERSATION_LABELS.ADD_LABEL')}
+            iconName="plus-circle-outline"
+            onClickOpen={onClickOpenLabelScreen}
+          />
+          {activeLabels.map(item => (
+            <LabelBox
+              id={item.id}
+              title={item.title}
+              color={item.color}
+              onClickRemoveLabel={() => onClickRemoveLabel(item.title)}
             />
-            {activeLabels.map(item => (
-              <LabelBox
-                id={item.id}
-                title={item.title}
-                color={item.color}
-                onClickRemoveLabel={() => onClickRemoveLabel(item.title)}
-              />
-            ))}
-          </View>
-        ) : (
-          <View style={style.spinnerView}>
-            <Spinner size="small" />
-          </View>
-        )}
+          ))}
+          {isConversationLabelsLoaded && (
+            <View style={style.spinnerView}>
+              <Spinner size="tiny" />
+            </View>
+          )}
+        </View>
         {shouldShowEmptyMessage && (
           <Text style={style.itemValue}>{i18n.t('CONVERSATION_LABELS.NO_LABEL')}</Text>
         )}

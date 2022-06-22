@@ -214,6 +214,11 @@ export const addMessageToConversation =
     } = getState().conversation;
     // Fetch user details
     const { user } = getState().auth;
+    const { account_id } = message;
+    const { account_id: currentAccountId } = user;
+    if (account_id !== currentAccountId) {
+      return;
+    }
 
     const { conversation_id, id: messageId } = message;
     // Check message is already exists or not in the selected conversation
@@ -226,7 +231,6 @@ export const addMessageToConversation =
       // Updates all the messages in the selected conversation (Chat screen)
       dispatch({ type: UPDATE_MESSAGE, payload: message });
     }
-
     const apiUrl = `conversations/${conversation_id}`;
     const response = await axios.get(apiUrl);
     const conversation = response.data;

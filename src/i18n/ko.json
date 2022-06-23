@@ -129,6 +129,13 @@
   "CONVERSATION_ACTION": {
     "TITLE": "액션"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "대화 라벨",
+    "ADD_LABEL": "Add Labels",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "라벨이 성공적으로 업데이트됨"
+  },
   "AGENT": {
     "TITLE": "에이전트 선택"
   },

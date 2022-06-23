@@ -131,7 +131,10 @@
   },
   "CONVERSATION_LABELS": {
     "TITLE": "Conversation Labels",
-    "NO_LABEL": "No labels assigned to this conversation"
+    "ADD_LABEL": "Add Labels",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Label updated successfully"
   },
   "AGENT": {
     "TITLE": "Select Agent"

@@ -32,11 +32,9 @@ import {
   GET_ALL_LABELS_SUCCESS,
   GET_ALL_LABELS_ERROR,
   GET_CONVERSATION_LABELS,
+  UPDATE_CONVERSATION_LABELS_SUCCESS,
   GET_CONVERSATION_LABELS_SUCCESS,
   GET_CONVERSATION_LABELS_ERROR,
-  UPDATE_CONVERSATION_LABELS,
-  UPDATE_CONVERSATION_LABELS_SUCCESS,
-  UPDATE_CONVERSATION_LABELS_ERROR,
   GET_ALL_TEAMS,
   GET_ALL_TEAMS_SUCCESS,
   GET_ALL_TEAMS_ERROR,
@@ -54,7 +52,6 @@ const initialState = {
   isAssigneeUpdating: false,
   isAllLabelsLoaded: false,
   isConversationLabelsLoaded: false,
-  isUpdatingConversationLabels: false,
   isAllAvailableTeamsLoaded: false,
   isTeamUpdating: false,
   data: {
@@ -73,7 +70,7 @@ const initialState = {
   activeUsers: {},
   assigneeType: 0,
   availableLabels: [],
-  conversationLabels: {},
+  conversationLabels: [],
   availableTeams: [],
 };
 export default (state = initialState, action) => {
@@ -333,7 +330,7 @@ export default (state = initialState, action) => {
     case GET_CONVERSATION_LABELS: {
       return {
         ...state,
-        conversationLabels: {},
+        conversationLabels: [],
         isConversationLabelsLoaded: true,
       };
     }
@@ -346,35 +343,21 @@ export default (state = initialState, action) => {
       };
     }
 
+    case UPDATE_CONVERSATION_LABELS_SUCCESS: {
+      return {
+        ...state,
+        conversationLabels: action.payload,
+      };
+    }
+
     case GET_CONVERSATION_LABELS_ERROR: {
       return {
         ...state,
-        conversationLabels: {},
+        conversationLabels: [],
         isConversationLabelsLoaded: false,
       };
     }
 
-    case UPDATE_CONVERSATION_LABELS: {
-      return {
-        ...state,
-        isUpdatingConversationLabels: true,
-      };
-    }
-
-    case UPDATE_CONVERSATION_LABELS_SUCCESS: {
-      return {
-        ...state,
-        isUpdatingConversationLabels: false,
-      };
-    }
-
-    case UPDATE_CONVERSATION_LABELS_ERROR: {
-      return {
-        ...state,
-        isUpdatingConversationLabels: false,
-      };
-    }
-      
     case GET_ALL_TEAMS: {
       return {
         ...state,

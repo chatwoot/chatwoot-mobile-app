@@ -105,7 +105,7 @@ class ConversationDetailsComponent extends Component {
 
     const displayItems = displayKeys
       .map(({ key, value, title }) =>
-        value ? <ConversationDetailsItem title={title} value={value} type={key} /> : null,
+        value ? <ConversationDetailsItem key={key} title={title} value={value} type={key} /> : null,
       )
       .filter(displayItem => !!displayItem);
 
@@ -170,7 +170,9 @@ class ConversationDetailsComponent extends Component {
 
     const getSocialProfileValue = socialProfileTypes
       .map(({ key, value, iconName }) =>
-        value ? <SocialProfileIcons type={key} value={value} iconName={iconName} /> : null,
+        value ? (
+          <SocialProfileIcons key={key} type={key} value={value} iconName={iconName} />
+        ) : null,
       )
       .filter(profile => !!profile);
 
@@ -199,7 +201,7 @@ class ConversationDetailsComponent extends Component {
 
     const getContactDetails = contactDetails
       .map(({ key, value, iconName }) =>
-        value ? <ContactDetails type={key} value={value} iconName={iconName} /> : null,
+        value ? <ContactDetails key={key} type={key} value={value} iconName={iconName} /> : null,
       )
       .filter(details => !!details);
 
@@ -232,13 +234,7 @@ class ConversationDetailsComponent extends Component {
             <CustomText style={style.itemListViewTitle}>
               {i18n.t('CONVERSATION_LABELS.TITLE')}
             </CustomText>
-            {labels && labels.length === 0 ? (
-              <LabelView conversationId={conversationId} />
-            ) : (
-              <CustomText style={style.itemValue}>
-                {i18n.t('CONVERSATION_LABELS.NO_LABEL')}
-              </CustomText>
-            )}
+            <LabelView conversationDetails={conversationDetails} conversationId={conversationId} />
           </View>
           <View style={style.separationViewLabels} />
           {this.renderAdditionalAttributes()}

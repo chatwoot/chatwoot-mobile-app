@@ -5,21 +5,29 @@ import { Icon, withStyles } from '@ui-kitten/components';
 import CustomText from 'src/components/Text';
 import { View } from 'react-native-animatable';
 
-import { getContrastingTextColor } from 'src/helpers/ColorHelper';
-
 const styles = theme => ({
   labelView: {
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     marginBottom: 6,
+    paddingHorizontal: 6,
+    height: 24,
     marginRight: 4,
+    backgroundColor: theme['color-secondary-50'],
+    borderColor: theme['color-secondary-75'],
+    borderRadius: 4,
+    borderWidth: 0.5,
   },
   label: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 4,
     paddingVertical: 4,
+    color: theme['color-secondary-700'],
     fontSize: theme['font-size-extra-small'],
+    fontWeight: theme['font-medium'],
   },
   labelCloseIcon: {
-    marginRight: 4,
+    marginLeft: 2,
   },
 });
 
@@ -36,13 +44,13 @@ const propTypes = {
 };
 
 const LabelBox = ({ id, title, color, onClickRemoveLabel, eva: { style, theme } }) => {
-  const getLabelBackgroundColor = clr => {
+  const getLabelColor = clr => {
     return {
       backgroundColor: clr,
-      flexDirection: 'row',
-      alignItems: 'center',
-      borderRadius: 4,
-      justifyContent: 'flex-start',
+      width: 14,
+      height: 14,
+      borderRadius: 5,
+      marginRight: 2,
     };
   };
 
@@ -50,19 +58,16 @@ const LabelBox = ({ id, title, color, onClickRemoveLabel, eva: { style, theme } 
     <React.Fragment>
       <TouchableOpacity>
         <View style={style.labelView} key={id}>
-          <View style={[getLabelBackgroundColor(color)]}>
-            <CustomText style={[style.label, { color: getContrastingTextColor(color) }]}>
-              {title}
-            </CustomText>
-            <Icon
-              name="close-outline"
-              height={14}
-              width={14}
-              fill={`${getContrastingTextColor(color)}`}
-              style={style.labelCloseIcon}
-              onPress={() => onClickRemoveLabel()}
-            />
-          </View>
+          <View style={[getLabelColor(color)]} />
+          <CustomText style={style.label}>{title}</CustomText>
+          <Icon
+            name="close-outline"
+            height={16}
+            width={16}
+            fill={theme['color-secondary-700']}
+            style={style.labelCloseIcon}
+            onPress={() => onClickRemoveLabel()}
+          />
         </View>
       </TouchableOpacity>
     </React.Fragment>

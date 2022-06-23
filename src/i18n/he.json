@@ -129,6 +129,13 @@
   "CONVERSATION_ACTION": {
     "TITLE": "פעולות"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "תוויות שיחה",
+    "ADD_LABEL": "הוסף תוויות",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Label updated successfully"
+  },
   "AGENT": {
     "TITLE": "בחר סוכן"
   },

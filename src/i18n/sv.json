@@ -129,6 +129,13 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Åtgärder"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Etiketter för konversation",
+    "ADD_LABEL": "Lägg till etiketter",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Etiketten har uppdaterats"
+  },
   "AGENT": {
     "TITLE": "Välj agent"
   },

@@ -129,6 +129,13 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Accions"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Etiquetes de converses",
+    "ADD_LABEL": "Add Labels",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "L'etiqueta s'ha actualitzat correctament"
+  },
   "AGENT": {
     "TITLE": "Seleccionar Agent"
   },

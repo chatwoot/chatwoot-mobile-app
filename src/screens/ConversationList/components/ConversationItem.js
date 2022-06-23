@@ -84,7 +84,7 @@ const ConversationItemComponent = ({
             thumbnail={thumbnail}
             userName={name}
             size={40}
-            fontSize={14}
+            fontSize={16}
             defaultBGColor={theme['color-primary-default']}
             channel={channel}
             isActive={isActive}
@@ -228,7 +228,7 @@ const styles = theme => ({
     paddingTop: 4,
   },
   nameView: {
-    paddingBottom: 4,
+    paddingBottom: 2,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -245,7 +245,7 @@ const styles = theme => ({
     color: theme['color-secondary-500'],
     fontSize: theme['font-size-extra-small'],
     fontWeight: theme['font-medium'],
-    marginRight: 6,
+    paddingRight: 4,
   },
   timestampContainer: {
     marginTop: 2,

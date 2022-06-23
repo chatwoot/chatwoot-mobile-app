@@ -19,6 +19,7 @@ import SocialProfileIcons from './components/SocialProfileIcons';
 import { getAllCustomAttributes } from 'actions/attributes';
 
 import ContactDetails from './components/ContactDetails';
+import LabelView from 'src/screens/ConversationDetails/components/LabelView';
 
 class ConversationDetailsComponent extends Component {
   state = { settingsMenu: [] };
@@ -118,7 +119,7 @@ class ConversationDetailsComponent extends Component {
 
     const displayItems = displayKeys
       .map(({ key, value, title }) =>
-        value ? <ConversationDetailsItem title={title} value={value} type={key} /> : null,
+        value ? <ConversationDetailsItem key={key} title={title} value={value} type={key} /> : null,
       )
       .filter(displayItem => !!displayItem);
 
@@ -206,6 +207,9 @@ class ConversationDetailsComponent extends Component {
       route,
     } = this.props;
     const { conversationDetails } = route.params;
+
+    const { labels } = conversationDetails;
+
     const {
       meta: {
         sender: {
@@ -219,6 +223,8 @@ class ConversationDetailsComponent extends Component {
         channel,
       },
     } = conversationDetails;
+
+    const { id: conversationId } = conversationDetails;
 
     const {
       social_profiles: socialProfiles = {},
@@ -253,7 +259,9 @@ class ConversationDetailsComponent extends Component {
 
     const getSocialProfileValue = socialProfileTypes
       .map(({ key, value, iconName }) =>
-        value ? <SocialProfileIcons type={key} value={value} iconName={iconName} /> : null,
+        value ? (
+          <SocialProfileIcons key={key} type={key} value={value} iconName={iconName} />
+        ) : null,
       )
       .filter(profile => !!profile);
 
@@ -285,7 +293,7 @@ class ConversationDetailsComponent extends Component {
 
     const getContactDetails = contactDetails
       .map(({ key, value, iconName }) =>
-        value ? <ContactDetails type={key} value={value} iconName={iconName} /> : null,
+        value ? <ContactDetails key={key} type={key} value={value} iconName={iconName} /> : null,
       )
       .filter(details => !!details);
 
@@ -313,6 +321,14 @@ class ConversationDetailsComponent extends Component {
           ) : null}
           <View style={style.socialIconsContainer}>{getSocialProfileValue}</View>
           <View>{getContactDetails}</View>
+          <View style={style.separationView} />
+          <View style={style.labelView}>
+            <CustomText style={style.itemListViewTitle}>
+              {i18n.t('CONVERSATION_LABELS.TITLE')}
+            </CustomText>
+            <LabelView conversationDetails={conversationDetails} conversationId={conversationId} />
+          </View>
+          <View style={style.separationViewLabels} />
           {this.renderConversationAttributes()}
           {this.renderContactAttributes()}
         </View>

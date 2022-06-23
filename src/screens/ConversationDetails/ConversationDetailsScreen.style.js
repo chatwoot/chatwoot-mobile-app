@@ -44,6 +44,12 @@ const styles = theme => ({
     borderBottomColor: theme['color-border'],
   },
 
+  separationViewLabels: {
+    padding: 6,
+    borderBottomWidth: 1,
+    borderBottomColor: theme['color-border'],
+  },
+
   nameLabel: {
     textTransform: 'capitalize',
     fontWeight: theme['font-semi-bold'],
@@ -52,6 +58,7 @@ const styles = theme => ({
 
   itemListViewTitle: {
     paddingTop: 12,
+    paddingBottom: 8,
     fontWeight: theme['font-semi-bold'],
   },
 });

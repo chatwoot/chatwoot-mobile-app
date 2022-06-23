@@ -28,15 +28,22 @@ import {
   ASSIGN_CONVERSATION,
   ASSIGN_CONVERSATION_SUCCESS,
   ASSIGN_CONVERSATION_ERROR,
-  GET_ALL_CUSTOM_ATTRIBUTES,
-  GET_ALL_CUSTOM_ATTRIBUTES_SUCCESS,
-  GET_ALL_CUSTOM_ATTRIBUTES_ERROR,
+  GET_ALL_LABELS,
+  GET_ALL_LABELS_SUCCESS,
+  GET_ALL_LABELS_ERROR,
+  GET_CONVERSATION_LABELS,
+  UPDATE_CONVERSATION_LABELS_SUCCESS,
+  GET_CONVERSATION_LABELS_SUCCESS,
+  GET_CONVERSATION_LABELS_ERROR,
   GET_ALL_TEAMS,
   GET_ALL_TEAMS_SUCCESS,
   GET_ALL_TEAMS_ERROR,
   ASSIGN_TEAM,
   ASSIGN_TEAM_SUCCESS,
   ASSIGN_TEAM_ERROR,
+  GET_ALL_CUSTOM_ATTRIBUTES,
+  GET_ALL_CUSTOM_ATTRIBUTES_SUCCESS,
+  GET_ALL_CUSTOM_ATTRIBUTES_ERROR,
 } from '../constants/actions';
 
 const initialState = {
@@ -46,6 +53,8 @@ const initialState = {
   isChangingConversationStatus: false,
   conversationStatus: 'open',
   isAssigneeUpdating: false,
+  isAllLabelsLoaded: false,
+  isConversationLabelsLoaded: false,
   isAllAvailableTeamsLoaded: false,
   isTeamUpdating: false,
   data: {
@@ -63,8 +72,10 @@ const initialState = {
   conversationTypingUsers: {},
   activeUsers: {},
   assigneeType: 0,
-  customAttributes: [],
+  availableLabels: [],
+  conversationLabels: [],
   availableTeams: [],
+  customAttributes: [],
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -296,24 +307,58 @@ export default (state = initialState, action) => {
       };
     }
 
-    case GET_ALL_CUSTOM_ATTRIBUTES: {
+    case GET_ALL_LABELS: {
       return {
         ...state,
-        customAttributes: [],
+        availableLabels: [],
+        isAllLabelsLoaded: true,
       };
     }
 
-    case GET_ALL_CUSTOM_ATTRIBUTES_SUCCESS: {
+    case GET_ALL_LABELS_SUCCESS: {
       return {
         ...state,
-        customAttributes: action.payload,
+        availableLabels: action.payload,
+        isAllLabelsLoaded: false,
       };
     }
 
-    case GET_ALL_CUSTOM_ATTRIBUTES_ERROR: {
+    case GET_ALL_LABELS_ERROR: {
       return {
         ...state,
-        customAttributes: [],
+        availableLabels: [],
+        isAllLabelsLoaded: false,
+      };
+    }
+
+    case GET_CONVERSATION_LABELS: {
+      return {
+        ...state,
+        conversationLabels: [],
+        isConversationLabelsLoaded: true,
+      };
+    }
+
+    case GET_CONVERSATION_LABELS_SUCCESS: {
+      return {
+        ...state,
+        conversationLabels: action.payload,
+        isConversationLabelsLoaded: false,
+      };
+    }
+
+    case UPDATE_CONVERSATION_LABELS_SUCCESS: {
+      return {
+        ...state,
+        conversationLabels: action.payload,
+      };
+    }
+
+    case GET_CONVERSATION_LABELS_ERROR: {
+      return {
+        ...state,
+        conversationLabels: [],
+        isConversationLabelsLoaded: false,
       };
     }
 
@@ -359,6 +404,27 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isTeamUpdating: false,
+      };
+    }
+      
+    case GET_ALL_CUSTOM_ATTRIBUTES: {
+      return {
+        ...state,
+        customAttributes: [],
+      };
+    }
+
+    case GET_ALL_CUSTOM_ATTRIBUTES_SUCCESS: {
+      return {
+        ...state,
+        customAttributes: action.payload,
+      };
+    }
+
+    case GET_ALL_CUSTOM_ATTRIBUTES_ERROR: {
+      return {
+        ...state,
+        customAttributes: [],
       };
     }
 

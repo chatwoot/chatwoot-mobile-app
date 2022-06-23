@@ -129,6 +129,13 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Действия"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Категории Диалога",
+    "ADD_LABEL": "Добавить метки",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Категория сохранена"
+  },
   "AGENT": {
     "TITLE": "Выбрать Агента"
   },

@@ -134,7 +134,7 @@
   },
   "TEAMS": {
     "TITLE": "Выберите команду",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "EMPTY": "Пожалуйста, добавьте команды в свою учетную запись для назначения разговоров командам.",
     "CHANGE_TEAMS": "Команда назначенная в беседу изменена"
   },
   "ERRORS": {

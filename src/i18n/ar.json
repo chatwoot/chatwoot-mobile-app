@@ -129,6 +129,13 @@
   "CONVERSATION_ACTION": {
     "TITLE": "الإجراءات"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "وسوم المحادثة",
+    "ADD_LABEL": "اضافة تصنيف جديد",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "تم تحديث الوسم بنجاح"
+  },
   "AGENT": {
     "TITLE": "اختر وكيل"
   },

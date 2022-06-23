@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { withStyles } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
 import LabelBox from 'src/components/LabelBox';
-import AddLabelbutton from './AddButton';
+import AddLabelButton from './AddButton';
 import { captureEvent } from 'helpers/Analytics';
 import { Spinner } from '@ui-kitten/components';
 import { View, Text } from 'react-native';
@@ -122,13 +122,14 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
     <React.Fragment>
       <View style={style.labelWrapper}>
         <View style={style.labelViews}>
-          <AddLabelbutton
+          <AddLabelButton
             buttonLabel={i18n.t('CONVERSATION_LABELS.ADD_LABEL')}
             iconName="plus-circle-outline"
             onClickOpen={onClickOpenLabelScreen}
           />
           {activeLabels.map(item => (
             <LabelBox
+              key={item.title}
               id={item.id}
               title={item.title}
               color={item.color}

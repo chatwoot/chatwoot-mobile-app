@@ -323,34 +323,42 @@ export const getConversationDetails =
   };
 
 // Send message
-export const sendMessage =
-  ({ conversationId, message, isPrivate = false, file }) =>
-  async dispatch => {
-    dispatch({ type: SEND_MESSAGE });
-    try {
-      const formData = new FormData();
-      if (file) {
-        formData.append('attachments[]', {
-          uri: file.uri,
-          name: file.fileName,
-          type: file.type,
-        });
-      }
-      if (message) {
-        formData.append('content', message);
-      }
-      formData.append('private', isPrivate);
-      const apiUrl = `conversations/${conversationId}/messages`;
-      const response = await axios.post(apiUrl, formData);
-      dispatch({
-        type: SEND_MESSAGE_SUCCESS,
-        payload: response.data,
+export const sendMessage = payload => async dispatch => {
+  const { conversationId, message, isPrivate = false, file } = payload;
+
+  dispatch({ type: SEND_MESSAGE });
+  try {
+    const formData = new FormData();
+    if (file) {
+      formData.append('attachments[]', {
+        uri: file.uri,
+        name: file.fileName,
+        type: file.type,
       });
-      dispatch(addMessageToConversation({ message: response.data, conversationId }));
-    } catch (error) {
-      dispatch({ type: SEND_MESSAGE_ERROR, payload: error });
     }
-  };
+    if (message) {
+      if (message.content) {
+        formData.append('content', message.content);
+      }
+      if (message.cc_emails) {
+        formData.append('cc_emails', message.cc_emails);
+      }
+      if (message.bcc_emails) {
+        formData.append('bcc_emails', message.bcc_emails);
+      }
+    }
+    formData.append('private', isPrivate);
+    const apiUrl = `conversations/${conversationId}/messages`;
+    const response = await axios.post(apiUrl, formData);
+    dispatch({
+      type: SEND_MESSAGE_SUCCESS,
+      payload: response.data,
+    });
+    dispatch(addMessageToConversation({ message: response.data, conversationId }));
+  } catch (error) {
+    dispatch({ type: SEND_MESSAGE_ERROR, payload: error });
+  }
+};
 
 export const markMessagesAsRead =
   ({ conversationId }) =>

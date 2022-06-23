@@ -132,8 +132,8 @@
   "CONVERSATION_LABELS": {
     "TITLE": "Категории Диалога",
     "ADD_LABEL": "Добавить метки",
-    "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
+    "EMPTY_LIST": "Пожалуйста, добавьте ярлыки в свой аккаунт",
+    "NO_LABEL": "Ярлыки не назначены",
     "UPDATE_LABEL": "Категория сохранена"
   },
   "AGENT": {

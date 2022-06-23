@@ -129,6 +129,13 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Hareketler"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Konuşma Etiketleri",
+    "ADD_LABEL": "Etiketler ekleyin",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Etiket başarıyla güncellendi"
+  },
   "AGENT": {
     "TITLE": "Temsilci Seçin"
   },

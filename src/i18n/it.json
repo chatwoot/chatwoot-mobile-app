@@ -130,11 +130,11 @@
     "TITLE": "Azioni"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "Etichette di conversazione",
+    "TITLE": "Etichette conversazione",
     "ADD_LABEL": "Aggiungi etichette",
-    "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Campagna aggiornata con successo"
+    "EMPTY_LIST": "Si prega di aggiungere le etichette al tuo account",
+    "NO_LABEL": "Nessuna etichetta assegnata",
+    "UPDATE_LABEL": "Etichetta aggiornata con successo"
   },
   "AGENT": {
     "TITLE": "Seleziona agente"

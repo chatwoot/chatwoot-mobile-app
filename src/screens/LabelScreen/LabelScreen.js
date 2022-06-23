@@ -12,7 +12,7 @@ import { getAllLabels, getConversationLabels, updateConversationLabels } from '.
 import { captureEvent } from 'helpers/Analytics';
 import Snackbar from 'react-native-snackbar';
 
-const LabelScreen = ({ eva: { style }, navigation, route }) => {
+const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
   const { conversationDetails } = route.params;
   const { id: conversationId } = conversationDetails;
 
@@ -114,4 +114,5 @@ const LabelScreen = ({ eva: { style }, navigation, route }) => {
   );
 };
 
-export default withStyles(LabelScreen, styles);
+const LabelScreen = withStyles(LabelScreenComponent, styles);
+export default LabelScreen;

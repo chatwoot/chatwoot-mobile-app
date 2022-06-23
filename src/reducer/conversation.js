@@ -32,6 +32,7 @@ import {
   GET_ALL_LABELS_SUCCESS,
   GET_ALL_LABELS_ERROR,
   GET_CONVERSATION_LABELS,
+  UPDATE_CONVERSATION_LABELS_SUCCESS,
   GET_CONVERSATION_LABELS_SUCCESS,
   GET_CONVERSATION_LABELS_ERROR,
   GET_ALL_TEAMS,
@@ -339,6 +340,13 @@ export default (state = initialState, action) => {
         ...state,
         conversationLabels: action.payload,
         isConversationLabelsLoaded: false,
+      };
+    }
+
+    case UPDATE_CONVERSATION_LABELS_SUCCESS: {
+      return {
+        ...state,
+        conversationLabels: action.payload,
       };
     }
 

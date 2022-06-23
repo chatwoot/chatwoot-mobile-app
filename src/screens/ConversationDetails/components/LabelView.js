@@ -108,7 +108,6 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
         text: i18n.t('CONVERSATION_LABELS.UPDATE_LABEL'),
         duration: Snackbar.LENGTH_SHORT,
       });
-      dispatch(getConversationLabels({ conversationId }));
     });
   };
 

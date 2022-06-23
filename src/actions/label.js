@@ -5,6 +5,7 @@ import {
   GET_ALL_LABELS_SUCCESS,
   GET_ALL_LABELS_ERROR,
   GET_CONVERSATION_LABELS,
+  UPDATE_CONVERSATION_LABELS_SUCCESS,
   GET_CONVERSATION_LABELS_SUCCESS,
   GET_CONVERSATION_LABELS_ERROR,
 } from '../constants/actions';
@@ -46,19 +47,16 @@ export const getConversationLabels =
 export const updateConversationLabels =
   ({ conversationId, labels }) =>
   async dispatch => {
-    dispatch({ type: GET_CONVERSATION_LABELS });
     try {
       const params = { labels: labels };
       const apiUrl = `conversations/${conversationId}/labels`;
       const response = await axios.post(apiUrl, params);
       const { data } = response;
       dispatch({
-        type: GET_CONVERSATION_LABELS_SUCCESS,
+        type: UPDATE_CONVERSATION_LABELS_SUCCESS,
         payload: data,
       }).then(() => {
         dispatch(getConversationDetails({ conversationId }));
       });
-    } catch (error) {
-      dispatch({ type: GET_CONVERSATION_LABELS_ERROR, payload: error });
-    }
+    } catch (error) {}
   };

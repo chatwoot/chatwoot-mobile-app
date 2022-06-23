@@ -129,6 +129,13 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Toiminnot"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Keskustelutunnisteet",
+    "ADD_LABEL": "Add Labels",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Tunniste päivitetty onnistuneesti"
+  },
   "AGENT": {
     "TITLE": "Valitse edustaja"
   },

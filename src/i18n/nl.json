@@ -129,6 +129,13 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Acties"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Labels voor gesprekken",
+    "ADD_LABEL": "Labels toevoegen",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Label succesvol bijgewerkt"
+  },
   "AGENT": {
     "TITLE": "Select Agent"
   },

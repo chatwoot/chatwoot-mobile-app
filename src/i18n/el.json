@@ -129,6 +129,13 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Ενέργειες"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Ετικέτες συνομιλίας",
+    "ADD_LABEL": "Προσθήκη Ετικετών",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Η ετικέτα ενημερώθηκε επιτυχώς"
+  },
   "AGENT": {
     "TITLE": "Επιλογή πράκτορα"
   },

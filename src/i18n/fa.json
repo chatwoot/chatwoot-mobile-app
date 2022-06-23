@@ -129,6 +129,13 @@
   "CONVERSATION_ACTION": {
     "TITLE": "عملیات"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "برچسب‌های گفتگو",
+    "ADD_LABEL": "افزودن برچسب‌ها",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "برچسب با موفقیت به روز شد"
+  },
   "AGENT": {
     "TITLE": "انتخاب ایجنت"
   },

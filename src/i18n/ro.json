@@ -129,6 +129,13 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Acțiuni"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Etichete conversație",
+    "ADD_LABEL": "Adaugă etichete",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Etichetă actualizată cu succes"
+  },
   "AGENT": {
     "TITLE": "Selectează agent"
   },

@@ -129,6 +129,13 @@
   "CONVERSATION_ACTION": {
     "TITLE": "操作"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "会話のラベル",
+    "ADD_LABEL": "Add Labels",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "ラベルが正常に更新されました"
+  },
   "AGENT": {
     "TITLE": "Select Agent"
   },

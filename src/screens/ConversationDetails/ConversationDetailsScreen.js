@@ -146,7 +146,7 @@ class ConversationDetailsComponent extends Component {
       <View>
         {displayItems.length > 0 || conversationAttributesHasValue ? (
           <View>
-            <View style={style.separationView} />
+            <View style={style.separationViewLabels} />
             <CustomText style={style.itemListViewTitle}>
               {i18n.t('CONVERSATION_DETAILS.TITLE')}
             </CustomText>
@@ -207,8 +207,6 @@ class ConversationDetailsComponent extends Component {
       route,
     } = this.props;
     const { conversationDetails } = route.params;
-
-    const { labels } = conversationDetails;
 
     const {
       meta: {
@@ -328,7 +326,6 @@ class ConversationDetailsComponent extends Component {
             </CustomText>
             <LabelView conversationDetails={conversationDetails} conversationId={conversationId} />
           </View>
-          <View style={style.separationViewLabels} />
           {this.renderConversationAttributes()}
           {this.renderContactAttributes()}
         </View>

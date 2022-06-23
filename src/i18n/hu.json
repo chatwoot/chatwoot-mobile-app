@@ -129,6 +129,13 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Lehetőségek"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Beszélgetés cimkék",
+    "ADD_LABEL": "Címkék hozzáadása",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Cimke sikeresen frissítve"
+  },
   "AGENT": {
     "TITLE": "Ügynök kiválasztása"
   },

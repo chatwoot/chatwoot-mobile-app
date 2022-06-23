@@ -132,8 +132,8 @@
   "CONVERSATION_LABELS": {
     "TITLE": "برچسب‌های گفتگو",
     "ADD_LABEL": "افزودن برچسب‌ها",
-    "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
+    "EMPTY_LIST": "لطفا برچسب‌ها را به حساب‌کاربری خود اضافه کنید",
+    "NO_LABEL": "هیچ برچسبی اختصاص داده نشده است",
     "UPDATE_LABEL": "برچسب با موفقیت به روز شد"
   },
   "AGENT": {

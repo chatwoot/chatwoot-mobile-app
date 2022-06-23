@@ -129,6 +129,13 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Hành động"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Nhãn hội thoại",
+    "ADD_LABEL": "Thêm nhãn",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Nhãn được cập nhật thành công"
+  },
   "AGENT": {
     "TITLE": "Chọn đại lý"
   },

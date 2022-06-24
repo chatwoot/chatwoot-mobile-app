@@ -141,7 +141,7 @@
   },
   "TEAMS": {
     "TITLE": "تیم را انتخاب کنید",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "EMPTY": "لطفا تیم‌ها را به حساب‌کاربری خود اضافه کنید تا گفتگوها را به تیم‌ها اختصاص دهید.",
     "CHANGE_TEAMS": "تیم مکالمه تغییر کرد"
   },
   "ERRORS": {

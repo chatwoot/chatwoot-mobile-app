@@ -132,8 +132,8 @@
   "CONVERSATION_LABELS": {
     "TITLE": "Etiquetas de conversación",
     "ADD_LABEL": "Añadir etiquetas",
-    "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
+    "EMPTY_LIST": "Por favor, agregue etiquetas a su cuenta",
+    "NO_LABEL": "Etiquetas no asignadas",
     "UPDATE_LABEL": "Etiqueta actualizada correctamente"
   },
   "AGENT": {
@@ -141,7 +141,7 @@
   },
   "TEAMS": {
     "TITLE": "Seleccionar equipo",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "EMPTY": "Por favor, agregue equipos a su cuenta para asignar conversaciones a los equipos.",
     "CHANGE_TEAMS": "Equipo de conversación cambiado"
   },
   "ERRORS": {

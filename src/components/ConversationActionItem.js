@@ -6,13 +6,13 @@ import { Divider, Icon, withStyles } from '@ui-kitten/components';
 import CustomText from './Text';
 import UserAvatar from './UserAvatar';
 
-const styles = (theme) => ({
+const styles = theme => ({
   section: {
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
     padding: 16,
-    height: 60,
+    height: 54,
   },
   sectionTitleView: {
     flex: 8,
@@ -27,6 +27,10 @@ const styles = (theme) => ({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     flex: 4,
+  },
+  sectionDivider: {
+    backgroundColor: theme['item-border-color'],
+    marginHorizontal: 18,
   },
 });
 
@@ -70,12 +74,12 @@ const ConversationActionItem = ({
               userName={name}
               defaultBGColor={theme['color-primary-default']}
               isActive={isActive}
-              size={36}
+              size={28}
               availabilityStatus={availabilityStatus}
             />
           )}
           <CustomText style={style.sectionText}>{name}</CustomText>
-          {itemType === 'assignee' && (
+          {(itemType === 'assignee' || itemType === 'team') && (
             <Icon
               name="arrow-ios-forward-outline"
               fill={theme['color-primary-default']}
@@ -85,7 +89,7 @@ const ConversationActionItem = ({
           )}
         </View>
       </TouchableOpacity>
-      <Divider />
+      <Divider style={style.sectionDivider} />
     </React.Fragment>
   );
 };

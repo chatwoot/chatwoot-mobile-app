@@ -23,6 +23,7 @@ import NotificationPreference from './screens/NotificationPreference/Notificatio
 import ConversationDetailsScreen from './screens/ConversationDetails/ConversationDetailsScreen';
 import ConversationAction from './screens/ConversationAction/ConversationAction';
 import AgentScreen from './screens/AgentScreen/AgentScreen';
+import LabelScreen from './screens/LabelScreen/LabelScreen';
 
 import i18n from './i18n';
 import { navigationRef } from './helpers/NavigationHelper';
@@ -32,6 +33,7 @@ import { doDeepLinking } from './helpers/DeepLinking';
 import { resetConversation, getConversations } from './actions/conversation';
 import { withStyles } from '@ui-kitten/components';
 import { captureScreen } from './helpers/Analytics';
+import TeamScreen from './screens/TeamScreen/TeamScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -192,6 +194,8 @@ const App = ({ eva: { style } }) => {
                 <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
                 <Stack.Screen name="ConversationAction" component={ConversationAction} />
                 <Stack.Screen name="AgentScreen" component={AgentScreen} />
+                <Stack.Screen name="LabelScreen" component={LabelScreen} />
+                <Stack.Screen name="TeamScreen" component={TeamScreen} />
                 <Stack.Screen name="Availability" component={AvailabilityScreen} />
                 <Stack.Screen name="NotificationPreference" component={NotificationPreference} />
               </Fragment>

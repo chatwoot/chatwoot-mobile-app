@@ -29,6 +29,19 @@ import {
   ASSIGN_CONVERSATION,
   ASSIGN_CONVERSATION_SUCCESS,
   ASSIGN_CONVERSATION_ERROR,
+  GET_ALL_LABELS,
+  GET_ALL_LABELS_SUCCESS,
+  GET_ALL_LABELS_ERROR,
+  GET_CONVERSATION_LABELS,
+  UPDATE_CONVERSATION_LABELS_SUCCESS,
+  GET_CONVERSATION_LABELS_SUCCESS,
+  GET_CONVERSATION_LABELS_ERROR,
+  GET_ALL_TEAMS,
+  GET_ALL_TEAMS_SUCCESS,
+  GET_ALL_TEAMS_ERROR,
+  ASSIGN_TEAM,
+  ASSIGN_TEAM_SUCCESS,
+  ASSIGN_TEAM_ERROR,
 } from '../constants/actions';
 
 const initialState = {
@@ -39,6 +52,10 @@ const initialState = {
   isChangingConversationStatus: false,
   conversationStatus: 'open',
   isAssigneeUpdating: false,
+  isAllLabelsLoaded: false,
+  isConversationLabelsLoaded: false,
+  isAllAvailableTeamsLoaded: false,
+  isTeamUpdating: false,
   data: {
     meta: {
       mine_count: 0,
@@ -54,6 +71,9 @@ const initialState = {
   conversationTypingUsers: {},
   activeUsers: {},
   assigneeType: 0,
+  availableLabels: [],
+  conversationLabels: [],
+  availableTeams: [],
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -289,6 +309,106 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isAssigneeUpdating: false,
+      };
+    }
+
+    case GET_ALL_LABELS: {
+      return {
+        ...state,
+        availableLabels: [],
+        isAllLabelsLoaded: true,
+      };
+    }
+
+    case GET_ALL_LABELS_SUCCESS: {
+      return {
+        ...state,
+        availableLabels: action.payload,
+        isAllLabelsLoaded: false,
+      };
+    }
+
+    case GET_ALL_LABELS_ERROR: {
+      return {
+        ...state,
+        availableLabels: [],
+        isAllLabelsLoaded: false,
+      };
+    }
+
+    case GET_CONVERSATION_LABELS: {
+      return {
+        ...state,
+        conversationLabels: [],
+        isConversationLabelsLoaded: true,
+      };
+    }
+
+    case GET_CONVERSATION_LABELS_SUCCESS: {
+      return {
+        ...state,
+        conversationLabels: action.payload,
+        isConversationLabelsLoaded: false,
+      };
+    }
+
+    case UPDATE_CONVERSATION_LABELS_SUCCESS: {
+      return {
+        ...state,
+        conversationLabels: action.payload,
+      };
+    }
+
+    case GET_CONVERSATION_LABELS_ERROR: {
+      return {
+        ...state,
+        conversationLabels: [],
+        isConversationLabelsLoaded: false,
+      };
+    }
+
+    case GET_ALL_TEAMS: {
+      return {
+        ...state,
+        availableTeams: [],
+        isAllAvailableTeamsLoaded: true,
+      };
+    }
+
+    case GET_ALL_TEAMS_SUCCESS: {
+      return {
+        ...state,
+        availableTeams: action.payload,
+        isAllAvailableTeamsLoaded: false,
+      };
+    }
+
+    case GET_ALL_TEAMS_ERROR: {
+      return {
+        ...state,
+        availableTeams: [],
+        isAllAvailableTeamsLoaded: false,
+      };
+    }
+
+    case ASSIGN_TEAM: {
+      return {
+        ...state,
+        isTeamUpdating: true,
+      };
+    }
+
+    case ASSIGN_TEAM_SUCCESS: {
+      return {
+        ...state,
+        isTeamUpdating: false,
+      };
+    }
+
+    case ASSIGN_TEAM_ERROR: {
+      return {
+        ...state,
+        isTeamUpdating: false,
       };
     }
 

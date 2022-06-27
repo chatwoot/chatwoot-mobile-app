@@ -86,6 +86,30 @@ const styles = theme => ({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  mailHeadWrap: {
+    paddingBottom: 8,
+  },
+  emailFields: {
+    paddingVertical: 2,
+  },
+  emailFieldsLabelLeft: {
+    color: theme['text-light-color'],
+    fontSize: theme['font-size-extra-small'],
+    fontWeight: theme['font-semi-bold'],
+  },
+  emailFieldsLabelRight: {
+    color: theme['color-background'],
+    fontSize: theme['font-size-extra-small'],
+    fontWeight: theme['font-semi-bold'],
+  },
+  emailFieldsValueLeft: {
+    color: theme['text-light-color'],
+    fontSize: theme['font-size-extra-small'],
+  },
+  emailFieldsValueRight: {
+    color: theme['color-background'],
+    fontSize: theme['font-size-extra-small'],
+  },
   screenNameWithAvatar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -110,6 +134,7 @@ const propTypes = {
       name: PropTypes.string,
     }),
     content: PropTypes.string,
+    content_attributes: PropTypes.object,
     private: PropTypes.bool,
   }),
   attachment: PropTypes.object,
@@ -123,6 +148,10 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
   const messageViewStyle = type === 'outgoing' ? style.messageRight : style.messageLeft;
   const messageTextStyle =
     type === 'outgoing' ? style.messageContentRight : style.messageContentLeft;
+  const emailHeadLabelStyle =
+    type === 'outgoing' ? style.emailFieldsLabelRight : style.emailFieldsLabelLeft;
+  const emailHeadTextStyle =
+    type === 'outgoing' ? style.emailFieldsValueRight : style.emailFieldsValueLeft;
   const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
 
   const { additional_attributes: additionalAttributes = {} } = meta.sender;
@@ -176,9 +205,96 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     lineHeight: 20,
   };
 
+  const contentAttributes = (message && message.content_attributes) || {};
+
+  const fromEmail = () => {
+    const from = (contentAttributes.email && contentAttributes.email.from) || [];
+    return from.join(', ');
+  };
+
+  const toEmail = () => {
+    const from = (contentAttributes.email && contentAttributes.email.to) || [];
+    return from.join(', ');
+  };
+
+  const ccEmail = () => {
+    if (type === 'incoming') {
+      const cc = contentAttributes.cc_email || [];
+      return cc.join(', ');
+    }
+    if (type === 'outgoing') {
+      const cc = contentAttributes.cc_emails || [];
+      return cc.join(', ');
+    }
+  };
+
+  const bccEmail = () => {
+    if (type === 'incoming') {
+      const bcc = contentAttributes.bcc_email || [];
+      return bcc.join(', ');
+    }
+    if (type === 'outgoing') {
+      const bcc = contentAttributes.bcc_emails || [];
+      return bcc.join(', ');
+    }
+  };
+
+  const subjectText = () => {
+    return (contentAttributes.email && contentAttributes.email.subject) || '';
+  };
+
+  const hasAnyEmailValues = () => {
+    return subjectText() || fromEmail() || toEmail() || ccEmail() || bccEmail();
+  };
+
+  const emailHeaderValues = [
+    {
+      key: 'from',
+      value: fromEmail(),
+      title: 'From: ',
+    },
+    {
+      key: 'to',
+      value: toEmail(),
+      title: 'To: ',
+    },
+    {
+      key: 'cc',
+      value: ccEmail(),
+      title: 'Cc: ',
+    },
+    {
+      key: 'bcc',
+      value: bccEmail(),
+      title: 'Bcc: ',
+    },
+    {
+      key: 'subject',
+      value: subjectText(),
+      title: 'Subject: ',
+    },
+  ];
+
+  const emailHeader = emailHeaderValues
+    .map(({ key, value, title }) =>
+      value ? (
+        <View style={style.emailFields} key={key}>
+          <Text style={emailHeadLabelStyle}>
+            {title}
+            <CustomText style={emailHeadTextStyle}>{value}</CustomText>
+          </Text>
+        </View>
+      ) : null,
+    )
+    .filter(displayItem => !!displayItem);
+
   return (
-    <TouchableOpacity onLongPress={showTooltip} activeOpacity={0.95}>
-      <View style={[style.message, messageViewStyle, isPrivate && style.privateMessageContainer]}>
+    <TouchableOpacity
+      onLongPress={showTooltip}
+      style={[style.message, messageViewStyle, message.private && style.privateMessageContainer]}
+      activeOpacity={0.95}>
+      <View>
+        {hasAnyEmailValues() ? <View style={style.mailHeadWrap}>{emailHeader}</View> : null}
         <Markdown
           debugPrintTree
           markdownit={md}

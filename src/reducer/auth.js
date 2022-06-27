@@ -12,6 +12,9 @@ import {
   UPDATE_ACTIVITY_STATUS,
   UPDATE_ACTIVITY_STATUS_SUCCESS,
   UPDATE_ACTIVITY_STATUS_ERROR,
+  UPDATE_PROFILE_DETAILS,
+  UPDATE_PROFILE_DETAILS_SUCCESS,
+  UPDATE_PROFILE_DETAILS_ERROR,
 } from '../constants/actions';
 
 export const initialState = {
@@ -21,8 +24,10 @@ export const initialState = {
   isLoggingIn: false,
   isResettingPassword: false,
   isUpdating: true,
+  isUpdatingProfile: true,
   error: {},
   success: {},
+  profileDetails: {},
 };
 
 export default (state = initialState, action) => {
@@ -113,6 +118,31 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isUpdating: false,
+      };
+    }
+
+    case UPDATE_PROFILE_DETAILS: {
+      return {
+        ...state,
+        isUpdatingProfile: true,
+      };
+    }
+
+    case UPDATE_PROFILE_DETAILS_SUCCESS: {
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          profileDetails: action.payload,
+        },
+        isUpdatingProfile: false,
+      };
+    }
+
+    case UPDATE_PROFILE_DETAILS_ERROR: {
+      return {
+        ...state,
+        isUpdatingProfile: false,
       };
     }
 

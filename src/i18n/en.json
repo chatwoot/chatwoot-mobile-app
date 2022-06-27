@@ -92,7 +92,14 @@
     "LOG_OUT": "Logout",
     "SWITCH_ACCOUNT": "Switch Account",
     "CHANGE_LANGUAGE": "Change Language",
-    "SUBMIT": "Submit"
+    "SUBMIT": "Submit",
+    "PROFILE_SETTINGS": {
+      "HEADER_TITLE": "Profile Settings",
+      "FULLNAME": "Your full Name",
+      "DISPLAY_NAME": "Display Name",
+      "EMAIL": "Your email address",
+      "UPDATE_BUTTON": "Update Profile"
+    }
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",

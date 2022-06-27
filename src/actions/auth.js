@@ -17,6 +17,9 @@ import {
   UPDATE_ACTIVITY_STATUS,
   UPDATE_ACTIVITY_STATUS_SUCCESS,
   UPDATE_ACTIVITY_STATUS_ERROR,
+  UPDATE_PROFILE_DETAILS,
+  UPDATE_PROFILE_DETAILS_SUCCESS,
+  UPDATE_PROFILE_DETAILS_ERROR,
 } from '../constants/actions';
 import { showToast } from '../helpers/ToastHelper';
 import I18n from '../i18n';
@@ -150,3 +153,28 @@ export const updateAvailabilityStatus =
       dispatch({ type: UPDATE_ACTIVITY_STATUS_ERROR, payload: error });
     }
   };
+
+export const profileUpdate = payload => async dispatch => {
+  const { displayName, profileAttributes } = payload;
+  dispatch({ type: UPDATE_PROFILE_DETAILS });
+  try {
+    const formData = new FormData();
+    Object.keys(profileAttributes).forEach(key => {
+      const hasProfileValue = profileAttributes[key] !== undefined;
+      if (hasProfileValue) {
+        formData.append(`profile[${key}]`, profileAttributes[key]);
+      }
+    });
+    formData.append('profile[display_name]', displayName || '');
+    const apiUrl = 'profile';
+    const response = await APIHelper.put(apiUrl, formData);
+    dispatch({
+      type: UPDATE_PROFILE_DETAILS_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PROFILE_DETAILS_ERROR,
+    });
+  }
+};

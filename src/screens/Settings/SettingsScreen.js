@@ -3,6 +3,7 @@ import { withStyles } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { SafeAreaView, Platform, ScrollView } from 'react-native';
+import { Icon } from '@ui-kitten/components';
 import Config from 'react-native-config';
 import { useNavigation } from '@react-navigation/native';
 import DeviceInfo from 'react-native-device-info';
@@ -51,6 +52,7 @@ const Settings = ({ eva: { theme, style } }) => {
   const accounts = user ? user.accounts : [];
   const avatar_url = user ? user.avatar_url : '';
   const name = user ? user.name : '';
+  const displayName = user ? user.display_name : '';
   const identifierHash = user ? user.identifier_hash : '';
 
   const availabilityStatus = getCurrentUserAvailabilityStatus({ user });
@@ -58,6 +60,7 @@ const Settings = ({ eva: { theme, style } }) => {
   const userDetails = {
     identifier: email,
     name,
+    displayName,
     avatar_url,
     email,
     identifier_hash: identifierHash,
@@ -114,6 +117,10 @@ const Settings = ({ eva: { theme, style } }) => {
     }
   };
 
+  const onPressOpenProfileSettings = () => {
+    navigation.navigate('ProfileSettingsScreen', { userDetails });
+  };
+
   let settingsMenu =
     accounts && accounts.length > 1
       ? SETTINGS_ITEMS
@@ -126,17 +133,26 @@ const Settings = ({ eva: { theme, style } }) => {
     <SafeAreaView style={style.container}>
       <HeaderBar title={i18n.t('SETTINGS.HEADER_TITLE')} />
       <ScrollView>
-        <View style={style.profileContainer}>
-          <UserAvatar
-            userName={name}
-            thumbnail={avatar_url}
-            defaultBGColor={theme['color-primary-default']}
-            availabilityStatus={availabilityStatus}
-          />
-          <View style={style.detailsContainer}>
-            <CustomText style={style.nameLabel}>{name}</CustomText>
-            <CustomText style={style.emailLabel}>{email}</CustomText>
+        <View style={style.profileContainerWrap}>
+          <View style={style.profileContainer}>
+            <UserAvatar
+              userName={name}
+              thumbnail={avatar_url}
+              defaultBGColor={theme['color-primary-default']}
+              availabilityStatus={availabilityStatus}
+            />
+            <View style={style.detailsContainer}>
+              <CustomText style={style.nameLabel}>{name}</CustomText>
+              <CustomText style={style.emailLabel}>{email}</CustomText>
+            </View>
           </View>
+          <Icon
+            name="settings-outline"
+            height={28}
+            width={28}
+            fill={theme['color-primary-default']}
+            onPress={() => onPressOpenProfileSettings({})}
+          />
         </View>
         <View style={style.itemListView}>
           {settingsMenu.map((item, index) => (

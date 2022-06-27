@@ -12,15 +12,22 @@ const styles = theme => ({
     fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-large'],
   },
-  profileContainer: {
+
+  profileContainerWrap: {
     flexDirection: 'row',
-    padding: 16,
+    alignItems: 'center',
+    justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderBottomColor: theme['color-border'],
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+
+  profileContainer: {
+    flexDirection: 'row',
   },
 
   detailsContainer: {
-    flex: 1,
     paddingLeft: 16,
     flexDirection: 'column',
     justifyContent: 'center',

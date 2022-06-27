@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { TopNavigation, TopNavigationAction, withStyles, Icon } from '@ui-kitten/components';
 
@@ -27,17 +27,26 @@ const styles = theme => ({
   },
 });
 
-class HeaderBarComponent extends Component {
-  renderLeftControl = () => {
-    const { onBackPress, leftButtonIcon } = this.props;
+const HeaderBarComponent = ({
+  eva: { style },
+  onBackPress,
+  leftButtonIcon,
+  buttonType,
+  onRightPress,
+  rightButtonIcon,
+  title,
+  showLeftButton,
+  showRightButton,
+  alignment,
+}) => {
+  const renderLeftControl = () => {
     if (leftButtonIcon) {
       return <TopNavigationAction icon={CloseIcon} onPress={onBackPress} />;
     }
     return <TopNavigationAction icon={BackIcon} onPress={onBackPress} />;
   };
 
-  renderRightControl = () => {
-    const { buttonType, onRightPress, rightButtonIcon, onBackPress } = this.props;
+  const renderRightControl = () => {
     if (rightButtonIcon) {
       return <TopNavigationAction icon={CloseIcon} onPress={onBackPress} />;
     }
@@ -48,31 +57,20 @@ class HeaderBarComponent extends Component {
       />
     );
   };
-
-  render() {
-    const {
-      title,
-      showLeftButton,
-      eva: { style },
-      alignment,
-      showRightButton,
-    } = this.props;
-
-    return (
-      <TopNavigation
-        title={evaProps => (
-          <CustomText {...evaProps} style={style.headerTitle}>
-            {title}
-          </CustomText>
-        )}
-        alignment={alignment}
-        titleStyle={style.headerTitle}
-        {...(showLeftButton && { accessoryLeft: this.renderLeftControl })}
-        {...(showRightButton && { accessoryRight: this.renderRightControl })}
-      />
-    );
-  }
-}
+  return (
+    <TopNavigation
+      title={evaProps => (
+        <CustomText {...evaProps} style={style.headerTitle}>
+          {title}
+        </CustomText>
+      )}
+      alignment={alignment}
+      titleStyle={style.headerTitle}
+      {...(showLeftButton && { accessoryLeft: renderLeftControl })}
+      {...(showRightButton && { accessoryRight: renderRightControl })}
+    />
+  );
+};
 
 const propTypes = {
   eva: PropTypes.shape({

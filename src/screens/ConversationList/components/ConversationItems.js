@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { Layout, withStyles, Spinner } from '@ui-kitten/components';
@@ -47,17 +47,20 @@ const ConversationItems = ({
     state => state.conversation.isAllConversationsLoaded,
   );
 
-  const onSelectConversation = item => {
-    const { messages, meta } = item;
-    const conversationId = item.id;
-    dispatch(setConversation({ conversationId }));
-    dispatch(loadInitialMessage({ messages }));
-    navigation.navigate('ChatScreen', {
-      conversationId,
-      meta,
-      messages,
-    });
-  };
+  const onSelectConversation = useCallback(
+    item => {
+      const { messages, meta } = item;
+      const conversationId = item.id;
+      dispatch(setConversation({ conversationId }));
+      dispatch(loadInitialMessage({ messages }));
+      navigation.navigate('ChatScreen', {
+        conversationId,
+        meta,
+        messages,
+      });
+    },
+    [dispatch, navigation],
+  );
 
   const onEndReached = async ({ distanceFromEnd }) => {
     if (!onEndReachedCalledDuringMomentum) {
@@ -66,11 +69,11 @@ const ConversationItems = ({
     }
   };
 
-  const onRefresh = () => {
+  const onRefresh = useCallback(() => {
     setRefreshing(true);
     loadConversations();
     wait(1000).then(() => setRefreshing(false));
-  };
+  }, [loadConversations]);
 
   const renderMoreLoader = () => {
     return (

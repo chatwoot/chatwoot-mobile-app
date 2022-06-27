@@ -38,7 +38,6 @@ const ConversationList = ({ eva: { style }, navigation }) => {
   const userDetails = useSelector(state => state.auth);
   const installationUrl = useSelector(state => state.settings.installationUrl);
   const isFetching = useSelector(state => state.conversation.isFetching);
-  const isUpdating = useSelector(state => state.conversation.isUpdating);
   const conversations = useSelector(state => state.conversation.data);
   const conversationStatus = useSelector(state => state.conversation.conversationStatus);
   const inboxSelected = useSelector(state => state.inbox.inboxSelected);
@@ -87,13 +86,13 @@ const ConversationList = ({ eva: { style }, navigation }) => {
     identifyUser({ userId, email, name, installationUrl });
   }, [installationUrl]);
 
-  const openFilter = () => {
+  const openFilter = useCallback(() => {
     captureEvent({ eventName: 'Open conversation filter menu' });
     navigation.navigate('ConversationFilter', {
       assigneeType: selectedIndex,
       inboxSelected,
     });
-  };
+  }, [selectedIndex, inboxSelected, navigation]);
 
   const onChangeTab = async index => {
     const tabName = index === 0 ? 'Mine' : index === 1 ? 'UnAssigned' : 'All';
@@ -156,11 +155,7 @@ const ConversationList = ({ eva: { style }, navigation }) => {
   return (
     <SafeAreaView style={style.container}>
       <HeaderBar title={headerTitle} showRightButton onRightPress={openFilter} buttonType="menu" />
-
-      <TabView
-        selectedIndex={selectedIndex}
-        indicatorStyle={style.tabViewIndicator}
-        onSelect={onChangeTab}>
+      <TabView selectedIndex={selectedIndex} onSelect={onChangeTab}>
         {renderTab({
           tabIndex: 0,
           tabTitle: `${i18n.t('CONVERSATION.MINE')} ${mineCount}`,

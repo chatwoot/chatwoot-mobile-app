@@ -23,7 +23,7 @@ const propTypes = {
     style: PropTypes.object,
     theme: PropTypes.object,
   }).isRequired,
-  isUpdating: PropTypes.bool.isRequired,
+  isUpdating: PropTypes.bool,
 };
 
 const LoadingBarComponent = ({ eva: { style, theme } }) => {

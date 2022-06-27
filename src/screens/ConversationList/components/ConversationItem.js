@@ -228,7 +228,7 @@ const styles = theme => ({
     paddingTop: 4,
   },
   nameView: {
-    paddingBottom: 2,
+    paddingBottom: 4,
     flexDirection: 'row',
     alignItems: 'center',
   },

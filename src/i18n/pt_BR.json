@@ -132,8 +132,8 @@
   "CONVERSATION_LABELS": {
     "TITLE": "Marcador da conversa",
     "ADD_LABEL": "Adicionar marcador",
-    "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
+    "EMPTY_LIST": "Por favor, adicione marcadores à sua conta",
+    "NO_LABEL": "Nenhum marcador atribuído",
     "UPDATE_LABEL": "Marcador atualizado com sucesso"
   },
   "AGENT": {
@@ -141,7 +141,7 @@
   },
   "TEAMS": {
     "TITLE": "Selecionar time",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "EMPTY": "Adicione equipes à sua conta para atribuir conversas a equipes.",
     "CHANGE_TEAMS": "Estado da conversa mudou"
   },
   "ERRORS": {
@@ -167,12 +167,12 @@
   },
   "BANNER": {
     "TWILIO_WHATSAPP": {
-      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "TEXT": "Você só pode responder a esta conversa usando um template de mensagem devido ",
       "HREF_TEXT": "Restrições de janela de mensagem de 24 horas",
-      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-session"
     },
     "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
+      "TEXT": "Você não pode responder devido a ",
       "HREF_TEXT": "Restrições de janela de mensagem de 24 horas",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }

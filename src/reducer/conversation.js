@@ -57,7 +57,7 @@ const initialState = {
   isConversationLabelsLoaded: false,
   isAllAvailableTeamsLoaded: false,
   isTeamUpdating: false,
-  isPreviousConversationsLoading: false,
+  isContactConversationsLoading: false,
   data: {
     meta: {
       mine_count: 0,
@@ -412,7 +412,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         contactConversations: [],
-        isPreviousConversationsLoading: true,
+        isContactConversationsLoading: true,
       };
     }
 
@@ -420,7 +420,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         contactConversations: action.payload,
-        isPreviousConversationsLoading: false,
+        isContactConversationsLoading: false,
       };
     }
 
@@ -428,7 +428,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         contactConversations: [],
-        isPreviousConversationsLoading: false,
+        isContactConversationsLoading: false,
       };
     }
 

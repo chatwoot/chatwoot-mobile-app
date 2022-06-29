@@ -28,7 +28,7 @@ const PreviousConversationsScreenComponent = ({ eva: { style }, navigation, rout
   const inboxes = useSelector(state => state.inbox.data);
   const conversationTypingUsers = useSelector(state => state.conversation.conversationTypingUsers);
   const conversations = useSelector(state => state.conversation);
-  const { isPreviousConversationsLoading } = conversations;
+  const { isContactConversationsLoading } = conversations;
 
   const contactConversations =
     conversations &&
@@ -56,7 +56,7 @@ const PreviousConversationsScreenComponent = ({ eva: { style }, navigation, rout
   };
 
   const showEmptyList =
-    previousConversations && previousConversations.length === 0 && !isPreviousConversationsLoading;
+    previousConversations && previousConversations.length === 0 && !isContactConversationsLoading;
 
   return (
     <SafeAreaView style={style.container}>
@@ -76,7 +76,7 @@ const PreviousConversationsScreenComponent = ({ eva: { style }, navigation, rout
               hasThumbnail={false}
             />
           ))}
-        {isPreviousConversationsLoading && (
+        {isContactConversationsLoading && (
           <View style={style.spinnerView}>
             <Spinner size="medium" />
           </View>

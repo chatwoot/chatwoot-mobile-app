@@ -196,6 +196,11 @@ const ChatHeader = ({
         dispatch(muteConversation({ conversationId }));
       }
     }
+    if (itemType === 'previous_conversations') {
+      if (conversationDetails) {
+        navigation.navigate('PreviousConversationsScreen', { conversationDetails });
+      }
+    }
     if (itemType === 'unmute_conversation') {
       const { muted } = conversationDetails;
       if (muted) {

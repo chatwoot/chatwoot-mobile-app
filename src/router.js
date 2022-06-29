@@ -24,6 +24,7 @@ import ConversationDetailsScreen from './screens/ConversationDetails/Conversatio
 import ConversationAction from './screens/ConversationAction/ConversationAction';
 import AgentScreen from './screens/AgentScreen/AgentScreen';
 import LabelScreen from './screens/LabelScreen/LabelScreen';
+import PreviousConversationsScreen from './screens/PreviousConversations/PreviousConversations';
 
 import i18n from './i18n';
 import { navigationRef } from './helpers/NavigationHelper';
@@ -196,6 +197,10 @@ const App = ({ eva: { style } }) => {
                 <Stack.Screen name="AgentScreen" component={AgentScreen} />
                 <Stack.Screen name="LabelScreen" component={LabelScreen} />
                 <Stack.Screen name="TeamScreen" component={TeamScreen} />
+                <Stack.Screen
+                  name="PreviousConversationsScreen"
+                  component={PreviousConversationsScreen}
+                />
                 <Stack.Screen name="Availability" component={AvailabilityScreen} />
                 <Stack.Screen name="NotificationPreference" component={NotificationPreference} />
               </Fragment>

@@ -88,6 +88,12 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
       )}
 
       <ConversationActionItem
+        onPressItem={onPressAction}
+        text={i18n.t('CONVERSATION.PREVIOUS_CONVERSATION')}
+        itemType="previous_conversations"
+      />
+
+      <ConversationActionItem
         onPressItem={onShare}
         text={i18n.t('CONVERSATION.SHARE')}
         itemType="share"

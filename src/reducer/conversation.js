@@ -41,6 +41,9 @@ import {
   ASSIGN_TEAM,
   ASSIGN_TEAM_SUCCESS,
   ASSIGN_TEAM_ERROR,
+  GET_CONTACT_CONVERSATIONS,
+  GET_CONTACT_CONVERSATIONS_SUCCESS,
+  GET_CONTACT_CONVERSATIONS_ERROR,
 } from '../constants/actions';
 
 const initialState = {
@@ -54,6 +57,7 @@ const initialState = {
   isConversationLabelsLoaded: false,
   isAllAvailableTeamsLoaded: false,
   isTeamUpdating: false,
+  isPreviousConversationsLoading: false,
   data: {
     meta: {
       mine_count: 0,
@@ -72,6 +76,7 @@ const initialState = {
   availableLabels: [],
   conversationLabels: [],
   availableTeams: [],
+  contactConversations: [],
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -400,6 +405,30 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isTeamUpdating: false,
+      };
+    }
+
+    case GET_CONTACT_CONVERSATIONS: {
+      return {
+        ...state,
+        contactConversations: [],
+        isPreviousConversationsLoading: true,
+      };
+    }
+
+    case GET_CONTACT_CONVERSATIONS_SUCCESS: {
+      return {
+        ...state,
+        contactConversations: action.payload,
+        isPreviousConversationsLoading: false,
+      };
+    }
+
+    case GET_CONTACT_CONVERSATIONS_ERROR: {
+      return {
+        ...state,
+        contactConversations: [],
+        isPreviousConversationsLoading: false,
       };
     }
 

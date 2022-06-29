@@ -38,6 +38,7 @@ const propTypes = {
     messages: PropTypes.array.isRequired,
     inbox_id: PropTypes.number,
   }).isRequired,
+  hasThumbnail: PropTypes.bool,
 };
 const ConversationItemComponent = ({
   eva,
@@ -45,6 +46,7 @@ const ConversationItemComponent = ({
   onSelectConversation,
   inboxes,
   conversationTypingUsers,
+  hasThumbnail = true,
 }) => {
   const { style, theme } = eva;
 
@@ -79,27 +81,35 @@ const ConversationItemComponent = ({
       style={style.container}
       onPress={() => onSelectConversation(item)}>
       <View style={style.itemView}>
-        <View style={style.avatarView}>
-          <UserAvatar
-            thumbnail={thumbnail}
-            userName={name}
-            size={40}
-            fontSize={14}
-            defaultBGColor={theme['color-primary-default']}
-            channel={channel}
-            isActive={isActive}
-            availabilityStatus={availabilityStatus}
-          />
-        </View>
-        <View style={style.listWrap}>
-          <View style={style.nameView}>
-            <View>
-              <CustomText style={style.conversationId}>#{id}</CustomText>
-            </View>
-            <View style={style.inboxDetails}>
-              <InboxName iconName={iconName} inboxName={inboxName} />
-            </View>
+        {hasThumbnail && (
+          <View style={style.avatarView}>
+            <UserAvatar
+              thumbnail={thumbnail}
+              userName={name}
+              size={40}
+              fontSize={14}
+              defaultBGColor={theme['color-primary-default']}
+              channel={channel}
+              isActive={isActive}
+              availabilityStatus={availabilityStatus}
+            />
           </View>
+        )}
+        <View style={style.listWrap}>
+          {(id || inboxName) && (
+            <View style={style.nameView}>
+              {id && (
+                <View>
+                  <CustomText style={style.conversationId}>#{id}</CustomText>
+                </View>
+              )}
+              {inboxName && (
+                <View style={style.inboxDetails}>
+                  <InboxName iconName={iconName} inboxName={inboxName} />
+                </View>
+              )}
+            </View>
+          )}
           <View style={style.conversationContainer}>
             <View>
               <View style={style.labelView}>

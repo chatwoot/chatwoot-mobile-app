@@ -70,7 +70,8 @@
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation",
     "MUTE_CONVERSATION": "Mute conversation",
-    "UNMUTE_CONVERSATION": "Unmute conversation"
+    "UNMUTE_CONVERSATION": "Unmute conversation",
+    "PREVIOUS_CONVERSATION": "Previous conversations"
   },
   "FILTER": {
     "HEADER_TITLE": "Conversation Filter",
@@ -143,6 +144,10 @@
     "TITLE": "Select Team",
     "EMPTY": "Please add teams to your account to assign conversations to teams.",
     "CHANGE_TEAMS": "Conversation team changed"
+  },
+  "PREVIOUS_CONVERSATION": {
+    "TITLE": "Previous Conversations",
+    "EMPTY": "There are no previous conversations associated to this contact."
   },
   "ERRORS": {
     "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",

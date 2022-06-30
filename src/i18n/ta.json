@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "புரவுஸர்",
     "OPERATING_SYSTEM": "ஆப்பரேட்டிங் சிஸ்டம்",
     "INITIATED_AT": "இல் தொடங்கப்பட்டது",
     "INITIATED_FROM": "இருந்து தொடங்கப்பட்டது",
     "IP_ADDRESS": "IP Address"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "செயல்கள்"

@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Atanmış bir görüşmede yeni bir mesaj oluşturulduğunda e-posta bildirimleri gönderin"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "Tarayıcı",
     "OPERATING_SYSTEM": "İşletim sistemi",
     "INITIATED_AT": "Başlatıldı",
     "INITIATED_FROM": "Başlatıldı",
     "IP_ADDRESS": "IP Adresi"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Hareketler"

@@ -65,7 +65,7 @@ const PreviousConversationsScreenComponent = ({ eva: { style }, navigation, rout
         showLeftButton
         onBackPress={goBack}
       />
-      <ScrollView>
+      <ScrollView style={style.scrollView}>
         {previousConversations &&
           previousConversations.map(conversation => (
             <ConversationItem

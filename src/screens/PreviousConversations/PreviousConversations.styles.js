@@ -3,6 +3,9 @@ const styles = theme => ({
     flex: 1,
     backgroundColor: theme['background-basic-color-1'],
   },
+  scrollView: {
+    paddingHorizontal: 6,
+  },
   spinnerView: {
     marginTop: 16,
     justifyContent: 'center',

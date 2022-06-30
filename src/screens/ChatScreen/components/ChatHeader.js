@@ -59,6 +59,8 @@ const styles = theme => ({
   },
   inboxNameTypingWrap: {
     flexDirection: 'row',
+    marginLeft: 4,
+    marginTop: 2,
   },
 });
 

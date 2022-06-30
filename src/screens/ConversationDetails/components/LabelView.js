@@ -17,7 +17,7 @@ const styles = theme => ({
   labelWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    minHeight: 34,
+    paddingTop: 10,
   },
   labelViews: {
     flexDirection: 'row',

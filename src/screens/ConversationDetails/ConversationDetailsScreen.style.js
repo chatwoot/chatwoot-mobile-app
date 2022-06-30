@@ -36,7 +36,6 @@ const styles = theme => ({
 
   socialIconsContainer: {
     flexDirection: 'row',
-    paddingVertical: 8,
   },
 
   separationView: {
@@ -59,7 +58,6 @@ const styles = theme => ({
 
   itemListViewTitle: {
     paddingTop: 12,
-    paddingBottom: 8,
     fontWeight: theme['font-semi-bold'],
   },
 });

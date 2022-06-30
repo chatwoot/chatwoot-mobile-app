@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Отправлять email уведомления при создании нового сообщения в назначенном диалоге"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Информация о беседе",
     "BROWSER": "Браузер",
     "OPERATING_SYSTEM": "Операционная система",
     "INITIATED_AT": "Начат в",
     "INITIATED_FROM": "Начат из",
     "IP_ADDRESS": "IP адрес"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Атрибуты контакта"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Действия"

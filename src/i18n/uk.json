@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Інформація про бесіду",
     "BROWSER": "Браузер",
     "OPERATING_SYSTEM": "Операційна система",
     "INITIATED_AT": "Час початку",
     "INITIATED_FROM": "Initiated from",
     "IP_ADDRESS": "IP-адреса"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Атрибути контакту"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Дії"

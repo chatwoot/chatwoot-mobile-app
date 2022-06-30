@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send e-postvarsler når en ny melding opprettes i en tilordnet samtale"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "Nettleser",
     "OPERATING_SYSTEM": "Operativsystem",
     "INITIATED_AT": "Started",
     "INITIATED_FROM": "Startet fra",
     "IP_ADDRESS": "IP Adresse"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Handlinger"

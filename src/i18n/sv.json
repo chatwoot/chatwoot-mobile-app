@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Skicka e-postaviseringar när ett nytt meddelande skapas i en tilldelad konversation"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "Webbläsare",
     "OPERATING_SYSTEM": "Operativsystem",
     "INITIATED_AT": "Initierad",
     "INITIATED_FROM": "Initierad från",
     "IP_ADDRESS": "IP-adress"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Åtgärder"

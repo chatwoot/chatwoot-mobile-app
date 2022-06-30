@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "שלח התראה באימייל כאשר יש הודעה חדשה בשיחה המוקצית עבורי"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "דפדפן",
     "OPERATING_SYSTEM": "מערכת הפעלה",
     "INITIATED_AT": "יזם ב",
     "INITIATED_FROM": "יזם מ",
     "IP_ADDRESS": "כתובת IP"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "פעולות"

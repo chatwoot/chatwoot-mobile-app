@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "할당된 대화에서 새 메시지가 생성될 때 이메일 알림 보내기"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "브라우저",
     "OPERATING_SYSTEM": "운영 체제",
     "INITIATED_AT": "시작 시간",
     "INITIATED_FROM": "시작 위치",
     "IP_ADDRESS": "IP 주소"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "액션"

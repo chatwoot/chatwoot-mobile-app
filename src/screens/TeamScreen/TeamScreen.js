@@ -11,7 +11,7 @@ import styles from './TeamScreen.style';
 import TeamList from 'src/components/TeamList';
 import { getAllTeams, assignTeam } from '../../actions/team';
 import { captureEvent } from 'helpers/Analytics';
-import Snackbar from 'react-native-snackbar';
+import { showToast } from 'src/helpers/ToastHelper';
 
 const TeamScreenComponent = ({ eva: { style }, navigation, route }) => {
   const dispatch = useDispatch();
@@ -58,10 +58,7 @@ const TeamScreenComponent = ({ eva: { style }, navigation, route }) => {
           teamId: selectedTeamId,
         }),
       ).then(() => {
-        Snackbar.show({
-          text: i18n.t('TEAMS.CHANGE_TEAMS'),
-          duration: Snackbar.LENGTH_SHORT,
-        });
+        showToast({ message: i18n.t('TEAMS.CHANGE_TEAMS') });
       });
     } else {
       navigation.goBack();

@@ -27,7 +27,6 @@ export const initialState = {
   isUpdatingProfile: true,
   error: {},
   success: {},
-  profileDetails: {},
 };
 
 export default (state = initialState, action) => {

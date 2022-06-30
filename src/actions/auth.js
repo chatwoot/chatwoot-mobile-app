@@ -176,6 +176,7 @@ export const profileUpdate = payload => async dispatch => {
       type: UPDATE_PROFILE_DETAILS_SUCCESS,
       payload: response.data,
     });
+    showToast({ message: I18n.t('SETTINGS.PROFILE_SETTINGS.UPDATE_SUCCESS') });
   } catch (error) {
     dispatch({
       type: UPDATE_PROFILE_DETAILS_ERROR,

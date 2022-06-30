@@ -98,6 +98,9 @@
       "FULLNAME": "Your full Name",
       "DISPLAY_NAME": "Display Name",
       "EMAIL": "Your email address",
+      "EMAIL_ERROR": "Please enter a valid email",
+      "UPDATE_SUCCESS": "Profile updated successfully",
+      "UPDATE_VALIDATION": "Please enter valid details",
       "UPDATE_BUTTON": "Update Profile"
     }
   },

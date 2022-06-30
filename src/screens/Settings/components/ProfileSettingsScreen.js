@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, View, ScrollView } from 'react-native';
+import { SafeAreaView, View, ScrollView, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { captureEvent } from 'helpers/Analytics';
@@ -10,6 +10,8 @@ import LoaderButton from 'src/components/LoaderButton';
 import UserAvatar from 'src/components/UserAvatar';
 import { useNavigation } from '@react-navigation/native';
 import { profileUpdate } from 'src/actions/auth';
+import { EMAIL_REGEX } from 'src/helpers/formHelper';
+import { showToast } from 'src/helpers/ToastHelper';
 import i18n from 'i18n';
 
 const styles = theme => ({
@@ -29,6 +31,13 @@ const styles = theme => ({
   },
   inputField: {
     marginBottom: 12,
+  },
+  errorLabel: {
+    color: theme['color-danger-900'],
+    textAlign: 'left',
+    paddingTop: 2,
+    paddingBottom: 2,
+    fontSize: theme['font-size-small'],
   },
 });
 
@@ -56,6 +65,7 @@ const ProfileSettings = ({ route, eva: { style, theme } }) => {
   const [updatedFullName, setFullName] = useState('Full name');
   const [updatedDisplayName, setDisplayName] = useState('Display name');
   const [updatedEmail, setEmailId] = useState('Your email address');
+  const [error, setError] = useState(false);
 
   const goBack = () => {
     navigation.goBack();
@@ -70,18 +80,23 @@ const ProfileSettings = ({ route, eva: { style, theme } }) => {
   };
 
   const onChangeEmailId = value => {
+    !EMAIL_REGEX.test(value) ? setError(true) : setError(false);
     setEmailId(value);
   };
 
   const onClickUpdateProfile = () => {
-    const payload = {
-      displayName: updatedDisplayName,
-      profileAttributes: { email: updatedEmail, name: updatedFullName },
-    };
-    captureEvent({ eventName: 'Profile updated' });
-    dispatch(profileUpdate(payload)).then(() => {
-      navigation.goBack();
-    });
+    if (!error) {
+      const payload = {
+        displayName: updatedDisplayName,
+        profileAttributes: { email: updatedEmail, name: updatedFullName },
+      };
+      captureEvent({ eventName: 'Profile updated' });
+      dispatch(profileUpdate(payload)).then(() => {
+        navigation.goBack();
+      });
+    } else {
+      showToast({ message: i18n.t('SETTINGS.PROFILE_SETTINGS.UPDATE_VALIDATION') });
+    }
   };
 
   return (
@@ -110,6 +125,7 @@ const ProfileSettings = ({ route, eva: { style, theme } }) => {
                 onChangeText={onChangeFullName}
                 value={updatedFullName}
                 keyboardType="default"
+                secureTextEntry={false}
               />
             </View>
             <View style={style.inputField}>
@@ -119,6 +135,7 @@ const ProfileSettings = ({ route, eva: { style, theme } }) => {
                 onChangeText={onChangeDisplayName}
                 value={updatedDisplayName}
                 keyboardType="default"
+                secureTextEntry={false}
               />
             </View>
             <View style={style.inputField}>
@@ -127,9 +144,15 @@ const ProfileSettings = ({ route, eva: { style, theme } }) => {
                 placeholder="useless placeholder"
                 onChangeText={onChangeEmailId}
                 value={updatedEmail}
-                // error={'error'}
                 keyboardType="email-address"
+                error={error}
+                secureTextEntry={false}
               />
+              {error && (
+                <Text style={style.errorLabel}>
+                  {i18n.t('SETTINGS.PROFILE_SETTINGS.EMAIL_ERROR')}
+                </Text>
+              )}
             </View>
             <View style={style.forgotButtonView}>
               <LoaderButton

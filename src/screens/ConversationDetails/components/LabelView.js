@@ -9,7 +9,7 @@ import { captureEvent } from 'helpers/Analytics';
 import { Spinner } from '@ui-kitten/components';
 import { View, Text } from 'react-native';
 import i18n from '../../../i18n';
-import Snackbar from 'react-native-snackbar';
+import { showToast } from 'src/helpers/ToastHelper';
 
 import { getAllLabels, getConversationLabels, updateConversationLabels } from 'src/actions/label';
 
@@ -104,10 +104,7 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
         labels: result,
       }),
     ).then(() => {
-      Snackbar.show({
-        text: i18n.t('CONVERSATION_LABELS.UPDATE_LABEL'),
-        duration: Snackbar.LENGTH_SHORT,
-      });
+      showToast({ message: i18n.t('CONVERSATION_LABELS.UPDATE_LABEL') });
     });
   };
 

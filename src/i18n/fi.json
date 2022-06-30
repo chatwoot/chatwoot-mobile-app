@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Lähetä sähköposti-ilmoitus, kun uusi viesti on luotu määritetyssä keskustelussa"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "Selain",
     "OPERATING_SYSTEM": "Käyttöjärjestelmä",
     "INITIATED_AT": "Aloitettu klo",
     "INITIATED_FROM": "Aloitettu osoitteesta",
     "IP_ADDRESS": "IP-osoite"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Toiminnot"

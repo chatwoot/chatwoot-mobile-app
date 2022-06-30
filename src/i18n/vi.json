@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Gửi thông báo email khi có một tin nhắn mới được tạo trong cuộc trò chuyện được phân công"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Thông tin cuộc trò chuyện",
     "BROWSER": "Trình duyệt",
     "OPERATING_SYSTEM": "Hệ điều hành",
     "INITIATED_AT": "Bắt đầu lúc",
     "INITIATED_FROM": "Bắt đầu từ",
     "IP_ADDRESS": "Địa chỉ IP"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Thuộc tính của liên hệ"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Hành động"

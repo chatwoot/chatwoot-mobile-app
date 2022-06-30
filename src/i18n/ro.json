@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Trimiterea notificărilor prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Informații despre conversație",
     "BROWSER": "Navigator",
     "OPERATING_SYSTEM": "Sistem de operare",
     "INITIATED_AT": "Iniţiat la",
     "INITIATED_FROM": "Inițiat de la",
     "IP_ADDRESS": "Adresă IP"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Atribute Contacte"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Acțiuni"

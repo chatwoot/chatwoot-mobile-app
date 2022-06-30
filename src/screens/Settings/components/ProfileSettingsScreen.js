@@ -9,7 +9,8 @@ import TextInput from 'src/components/TextInput';
 import LoaderButton from 'src/components/LoaderButton';
 import UserAvatar from 'src/components/UserAvatar';
 import { useNavigation } from '@react-navigation/native';
-import { profileUpdate } from 'src/actions/auth';
+import { profileUpdate, onLogOut } from 'src/actions/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { EMAIL_REGEX } from 'src/helpers/formHelper';
 import { showToast } from 'src/helpers/ToastHelper';
 import i18n from 'i18n';
@@ -91,9 +92,16 @@ const ProfileSettings = ({ route, eva: { style, theme } }) => {
         profileAttributes: { email: updatedEmail, name: updatedFullName },
       };
       captureEvent({ eventName: 'Profile updated' });
-      dispatch(profileUpdate(payload)).then(() => {
-        navigation.goBack();
-      });
+      if (email !== updatedEmail) {
+        dispatch(profileUpdate(payload)).then(() => {
+          AsyncStorage.removeItem('cwCookie');
+          dispatch(onLogOut());
+        });
+      } else {
+        dispatch(profileUpdate(payload)).then(() => {
+          navigation.goBack();
+        });
+      }
     } else {
       showToast({ message: i18n.t('SETTINGS.PROFILE_SETTINGS.UPDATE_VALIDATION') });
     }

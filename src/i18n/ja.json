@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "割り当てられた会話で新しいメッセージが作成されたときにメールで通知を送信します"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "ブラウザ",
     "OPERATING_SYSTEM": "OS",
     "INITIATED_AT": "開始場所",
     "INITIATED_FROM": "開始元",
     "IP_ADDRESS": "IP Address"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "操作"

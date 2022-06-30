@@ -41,6 +41,9 @@ import {
   ASSIGN_TEAM,
   ASSIGN_TEAM_SUCCESS,
   ASSIGN_TEAM_ERROR,
+  GET_ALL_CUSTOM_ATTRIBUTES,
+  GET_ALL_CUSTOM_ATTRIBUTES_SUCCESS,
+  GET_ALL_CUSTOM_ATTRIBUTES_ERROR,
   GET_CONTACT_CONVERSATIONS,
   GET_CONTACT_CONVERSATIONS_SUCCESS,
   GET_CONTACT_CONVERSATIONS_ERROR,
@@ -76,6 +79,7 @@ const initialState = {
   availableLabels: [],
   conversationLabels: [],
   availableTeams: [],
+  customAttributes: [],
   contactConversations: [],
 };
 export default (state = initialState, action) => {
@@ -405,6 +409,27 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isTeamUpdating: false,
+      };
+    }
+      
+    case GET_ALL_CUSTOM_ATTRIBUTES: {
+      return {
+        ...state,
+        customAttributes: [],
+      };
+    }
+
+    case GET_ALL_CUSTOM_ATTRIBUTES_SUCCESS: {
+      return {
+        ...state,
+        customAttributes: action.payload,
+      };
+    }
+
+    case GET_ALL_CUSTOM_ATTRIBUTES_ERROR: {
+      return {
+        ...state,
+        customAttributes: [],
       };
     }
 

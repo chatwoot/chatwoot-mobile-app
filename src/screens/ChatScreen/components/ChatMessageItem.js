@@ -289,11 +289,9 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     .filter(displayItem => !!displayItem);
 
   return (
-    <TouchableOpacity
-      onLongPress={showTooltip}
-      style={[style.message, messageViewStyle, message.private && style.privateMessageContainer]}
-      activeOpacity={0.95}>
-      <View>
+    <TouchableOpacity onLongPress={showTooltip} activeOpacity={0.95}>
+      <View
+        style={[style.message, messageViewStyle, message.private && style.privateMessageContainer]}>
         {hasAnyEmailValues() ? <View style={style.mailHeadWrap}>{emailHeader}</View> : null}
         <Markdown
           debugPrintTree

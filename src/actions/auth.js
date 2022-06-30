@@ -166,8 +166,9 @@ export const profileUpdate = payload => async dispatch => {
       }
     });
     formData.append('profile[display_name]', displayName || '');
-    const apiUrl = 'profile';
-    const response = await APIHelper.put(apiUrl, formData);
+    const baseUrl = await getBaseUrl();
+    const apiUrl = `${baseUrl}${API_URL}profile`;
+    const response = await axios.put(apiUrl, formData);
     dispatch({
       type: UPDATE_PROFILE_DETAILS_SUCCESS,
       payload: response.data,

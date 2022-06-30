@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Αποστολή ειδοποίησης email όταν ένα νέο μήνυμα δημιουργείται σε συνομιλία που έχει αναληφθεί"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Πληροφορίες Συνομιλίας",
     "BROWSER": "Browser",
     "OPERATING_SYSTEM": "Λειτουργικό",
     "INITIATED_AT": "Αρχικοποίηση τις",
     "INITIATED_FROM": "Αρχικοποίηση από",
     "IP_ADDRESS": "Διεύθυνση IP"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Ιδιότητες Επαφής"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Ενέργειες"

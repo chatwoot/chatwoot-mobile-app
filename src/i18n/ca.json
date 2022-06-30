@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Envia notificacions per correu electrònic quan es creï un missatge nou en una conversa assignada"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "Navegador",
     "OPERATING_SYSTEM": "Sistema operatiu",
     "INITIATED_AT": "Iniciada a",
     "INITIATED_FROM": "Iniciat des de",
     "IP_ADDRESS": "Adreça IP"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Accions"

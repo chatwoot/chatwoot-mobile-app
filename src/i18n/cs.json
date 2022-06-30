@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Odeslat oznámení e-mailem, když je nová zpráva vytvořena v přiřazené konverzaci"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Informace o konverzaci",
     "BROWSER": "Browser",
     "OPERATING_SYSTEM": "Operating System",
     "INITIATED_AT": "Initiated at",
     "INITIATED_FROM": "Initiated from",
     "IP_ADDRESS": "IP adresa"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Atributy kontaktu"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Actions"

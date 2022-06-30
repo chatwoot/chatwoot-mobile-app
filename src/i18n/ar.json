@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "إرسال إشعارات البريد الإلكتروني عند إنشاء رسالة جديدة في محادثة موكلة"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "معلومات المحادثة",
     "BROWSER": "المتصفح",
     "OPERATING_SYSTEM": "نظام التشغيل",
     "INITIATED_AT": "بدأت في",
     "INITIATED_FROM": "بدأت من",
     "IP_ADDRESS": "عنوان IP"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "سمات جهة الاتصال"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "الإجراءات"

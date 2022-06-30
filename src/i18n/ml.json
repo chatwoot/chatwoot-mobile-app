@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "നിയുക്ത സംഭാഷണത്തിൽ ഒരു പുതിയ സന്ദേശം സൃഷ്ടിക്കുമ്പോൾ ഇമെയിൽ അറിയിപ്പുകൾ അയയ്ക്കുക"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "ബ്രൗസർ",
     "OPERATING_SYSTEM": "ഓപ്പറേറ്റിംഗ് സിസ്റ്റം",
     "INITIATED_AT": "ആരംഭിച്ച സമയം ",
     "INITIATED_FROM": "ആരംഭിച്ച ആൾ ",
     "IP_ADDRESS": "IP വിലാസം"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "പ്രവർത്തനങ്ങൾ"

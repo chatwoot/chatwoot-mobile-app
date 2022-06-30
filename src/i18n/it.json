@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Invia notifiche email quando viene creato un nuovo messaggio in una conversazione assegnata"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Informazioni conversazione",
     "BROWSER": "Browser",
     "OPERATING_SYSTEM": "Sistema operativo",
     "INITIATED_AT": "Avviato il",
     "INITIATED_FROM": "Avviato da",
     "IP_ADDRESS": "Indirizzo IP"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Attributi contatti"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Azioni"

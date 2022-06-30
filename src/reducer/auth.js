@@ -131,10 +131,7 @@ export default (state = initialState, action) => {
     case UPDATE_PROFILE_DETAILS_SUCCESS: {
       return {
         ...state,
-        user: {
-          ...state.user,
-          profileDetails: action.payload,
-        },
+        user: action.payload,
         isUpdatingProfile: false,
       };
     }

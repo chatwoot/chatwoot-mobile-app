@@ -79,7 +79,9 @@ const ProfileSettings = ({ route, eva: { style, theme } }) => {
       profileAttributes: { email: updatedEmail, name: updatedFullName },
     };
     captureEvent({ eventName: 'Profile updated' });
-    dispatch(profileUpdate(payload));
+    dispatch(profileUpdate(payload)).then(() => {
+      navigation.goBack();
+    });
   };
 
   return (

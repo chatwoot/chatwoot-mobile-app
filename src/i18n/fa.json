@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "با ایجاد پیام جدید در مکالمه اختصاصی ، اعلان های ایمیل را ارسال کنید"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "اطلاعات مکالمه",
     "BROWSER": "مرورگر",
     "OPERATING_SYSTEM": "سیستم عامل",
     "INITIATED_AT": "شروع شده در",
     "INITIATED_FROM": "شروع شده از",
     "IP_ADDRESS": "آدرس آی‌پی"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "ویژگی‌های تماس"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "عملیات"

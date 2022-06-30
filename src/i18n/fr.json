@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Envoyer une notification par e-mail lors de la réception d'un message dans une discussion qui m'est assignée"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Informations de la conversation",
     "BROWSER": "Navigateur",
     "OPERATING_SYSTEM": "Système d'explitation",
     "INITIATED_AT": "Crée a",
     "INITIATED_FROM": "Crée depuis",
     "IP_ADDRESS": "Adresse IP"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Attributs du contact"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Actions"

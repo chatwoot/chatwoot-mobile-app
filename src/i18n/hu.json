@@ -120,11 +120,15 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Kapj e-mailt amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "Böngésző",
     "OPERATING_SYSTEM": "Operációs rendszer",
     "INITIATED_AT": "Kezdeményezve ekkor:",
     "INITIATED_FROM": "Kezdeményezve innen:",
     "IP_ADDRESS": "IP cím"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Lehetőségek"

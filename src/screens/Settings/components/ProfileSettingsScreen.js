@@ -40,6 +40,9 @@ const styles = theme => ({
     paddingBottom: 2,
     fontSize: theme['font-size-small'],
   },
+  updateButtonView: {
+    marginTop: 24,
+  },
 });
 
 const propTypes = {
@@ -162,16 +165,16 @@ const ProfileSettings = ({ route, eva: { style, theme } }) => {
                 </Text>
               )}
             </View>
-            <View style={style.forgotButtonView}>
-              <LoaderButton
-                style={style.forgotButton}
-                loading={isUpdatingProfile}
-                onPress={onClickUpdateProfile}
-                size="large"
-                text={i18n.t('SETTINGS.PROFILE_SETTINGS.UPDATE_BUTTON')}
-                textStyle={style.forgotButtonText}
-              />
-            </View>
+          </View>
+          <View style={style.updateButtonView}>
+            <LoaderButton
+              style={style.updateButton}
+              loading={isUpdatingProfile}
+              onPress={onClickUpdateProfile}
+              size="large"
+              text={i18n.t('SETTINGS.PROFILE_SETTINGS.UPDATE_BUTTON')}
+              textStyle={style.forgotButtonText}
+            />
           </View>
         </View>
       </ScrollView>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withStyles } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { SafeAreaView, Platform, ScrollView } from 'react-native';
+import { SafeAreaView, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { Icon } from '@ui-kitten/components';
 import Config from 'react-native-config';
 import { useNavigation } from '@react-navigation/native';
@@ -133,27 +133,28 @@ const Settings = ({ eva: { theme, style } }) => {
     <SafeAreaView style={style.container}>
       <HeaderBar title={i18n.t('SETTINGS.HEADER_TITLE')} />
       <ScrollView>
-        <View style={style.profileContainerWrap}>
-          <View style={style.profileContainer}>
-            <UserAvatar
-              userName={name}
-              thumbnail={avatar_url}
-              defaultBGColor={theme['color-primary-default']}
-              availabilityStatus={availabilityStatus}
-            />
-            <View style={style.detailsContainer}>
-              <CustomText style={style.nameLabel}>{name}</CustomText>
-              <CustomText style={style.emailLabel}>{email}</CustomText>
+        <TouchableOpacity onPress={() => onPressOpenProfileSettings()}>
+          <View style={style.profileContainerWrap}>
+            <View style={style.profileContainer}>
+              <UserAvatar
+                userName={name}
+                thumbnail={avatar_url}
+                defaultBGColor={theme['color-primary-default']}
+                availabilityStatus={availabilityStatus}
+              />
+              <View style={style.detailsContainer}>
+                <CustomText style={style.nameLabel}>{name}</CustomText>
+                <CustomText style={style.emailLabel}>{email}</CustomText>
+              </View>
             </View>
+            <Icon
+              name="chevron-right-outline"
+              height={28}
+              width={28}
+              fill={theme['color-primary-default']}
+            />
           </View>
-          <Icon
-            name="settings-outline"
-            height={28}
-            width={28}
-            fill={theme['color-primary-default']}
-            onPress={() => onPressOpenProfileSettings({})}
-          />
-        </View>
+        </TouchableOpacity>
         <View style={style.itemListView}>
           {settingsMenu.map((item, index) => (
             <SettingsItem

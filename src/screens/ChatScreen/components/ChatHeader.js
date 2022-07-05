@@ -39,7 +39,11 @@ const styles = theme => ({
     marginHorizontal: 4,
   },
   titleView: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
     marginHorizontal: 8,
+    height: 34,
   },
   headerTitle: {
     textTransform: 'capitalize',
@@ -59,9 +63,10 @@ const styles = theme => ({
   },
   inboxNameTypingWrap: {
     flexDirection: 'row',
-    marginTop: 2,
+    alignItems: 'center',
   },
   inboxNameWrap: {
+    marginTop: 2,
     marginLeft: 4,
   },
 });

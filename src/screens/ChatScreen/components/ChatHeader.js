@@ -59,8 +59,10 @@ const styles = theme => ({
   },
   inboxNameTypingWrap: {
     flexDirection: 'row',
-    marginLeft: 4,
     marginTop: 2,
+  },
+  inboxNameWrap: {
+    marginLeft: 4,
   },
 });
 
@@ -251,10 +253,15 @@ const ChatHeader = ({
                 )}
               </View>
               <View style={style.inboxNameTypingWrap}>
-                {conversationDetails && (
-                  <InboxName iconName={iconName} inboxName={inboxName} size={'small'} />
+                {typingUser ? (
+                  <TypingStatus typingUser={typingUser} />
+                ) : (
+                  <View style={style.inboxNameWrap}>
+                    {conversationDetails && (
+                      <InboxName iconName={iconName} inboxName={inboxName} size={'small'} />
+                    )}
+                  </View>
                 )}
-                {typingUser ? <TypingStatus typingUser={typingUser} /> : null}
               </View>
             </View>
           </TouchableOpacity>

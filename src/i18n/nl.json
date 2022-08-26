@@ -16,19 +16,19 @@
     "ENTER_URL": "Installatie url",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Voer een geldige URL in",
-    "URL_REQUIRED": "URL is required",
+    "URL_REQUIRED": "URL is vereist",
     "CONNECT": "Koppelen",
     "CHANGE_LANGUAGE": "Taal wijzigen",
     "ERROR": "Ongeldige installatie-url"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
+    "TITLE": "Log in op je account",
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "E-mailadres",
     "PASSWORD": "Wachtwoord",
-    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_REQUIRED": "E-mail is vereist",
     "EMAIL_ERROR": "Voer een geldig e-mailadres in",
-    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_REQUIRED": "Wachtwoord vereist",
     "PASSWORD_ERROR": "Voer een geldig wachtwoord in",
     "LOGIN": "Log in",
     "FORGOT_PASSWORD": "Wachtwoord vergeten?",
@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Typ een bericht",
     "TYPING": "typen",
     "ALL_CONVERSATION_LOADED": "Alle gesprekken geladen",
-    "ASSIGN": "Assign conversation",
+    "ASSIGN": "Gesprek toewijzen",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share conversation",
+    "SHARE": "Deel gesprek",
     "CANCEL": "annuleren",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation",
-    "MUTE_CONVERSATION": "Mute conversation",
-    "UNMUTE_CONVERSATION": "Unmute conversation"
+    "MUTE_CONVERSATION": "Demp gesprek",
+    "UNMUTE_CONVERSATION": "Dempen opheffen"
   },
   "FILTER": {
     "HEADER_TITLE": "Gespreksfilter",
@@ -88,7 +88,7 @@
     "AVAILABILITY": "Beschikbaarheid",
     "NOTIFICATION": "Notificatie voorkeuren",
     "HELP": "Helpdocumentatie",
-    "CHAT_WITH_US": "Chat with Us",
+    "CHAT_WITH_US": "Chat met ons",
     "LOG_OUT": "Afmelden",
     "SWITCH_ACCOUNT": "Switch account",
     "CHANGE_LANGUAGE": "Wijzig taal",
@@ -128,7 +128,7 @@
     "IP_ADDRESS": "IP-adres"
   },
   "CONTACT_ATTRIBUTES": {
-    "TITLE": "Contact Attributes"
+    "TITLE": "Contact-eigenschappen"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Acties"
@@ -136,17 +136,17 @@
   "CONVERSATION_LABELS": {
     "TITLE": "Labels voor gesprekken",
     "ADD_LABEL": "Labels toevoegen",
-    "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
+    "EMPTY_LIST": "Voeg labels toe aan je account",
+    "NO_LABEL": "Geen labels toegewezen",
     "UPDATE_LABEL": "Label succesvol bijgewerkt"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Selecteer agent"
   },
   "TEAMS": {
-    "TITLE": "Select Team",
+    "TITLE": "Selecteer team",
     "EMPTY": "Please add teams to your account to assign conversations to teams.",
-    "CHANGE_TEAMS": "Conversation team changed"
+    "CHANGE_TEAMS": "Gespreksteam gewijzigd"
   },
   "ERRORS": {
     "COMMON_ERROR": "Kan geen verbinding maken met Woot Server, probeer het later opnieuw",
@@ -159,8 +159,8 @@
     "AUTH": "Login succesvol"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
+    "TITLE": "Server-upgrade vereist",
+    "WARNING_FOR_AGENT": "Je gebruikt een niet-ondersteunde Chatwoot-server voor je mobiele app. Neem contact op met de je beheerder om de Chatwoot-server mogelijk te upgraden.",
     "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
   "EXIT": {
@@ -172,12 +172,12 @@
   "BANNER": {
     "TWILIO_WHATSAPP": {
       "TEXT": "You can only reply to this conversation using a template message due to ",
-      "HREF_TEXT": "24 hour message window restriction",
+      "HREF_TEXT": "Beperking van 24-uur berichtenvenster",
       "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
     },
     "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
-      "HREF_TEXT": "24 hour message window restriction",
+      "TEXT": "Je kunt niet reageren vanwege ",
+      "HREF_TEXT": "Beperking van 24-uur berichtenvenster",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }
   }

@@ -132,6 +132,7 @@ const propTypes = {
   message: PropTypes.shape({
     sender: PropTypes.shape({
       name: PropTypes.string,
+      thumbnail: PropTypes.string,
     }),
     content: PropTypes.string,
     content_attributes: PropTypes.object,
@@ -154,9 +155,6 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     type === 'outgoing' ? style.emailFieldsValueRight : style.emailFieldsValueLeft;
   const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
 
-  const { additional_attributes: additionalAttributes = {} } = meta.sender;
-  const { screen_name: screenName } = additionalAttributes;
-
   const handleURL = URL => {
     if (/\b(http|https)/.test(URL)) {
       openURL({ URL });
@@ -167,19 +165,41 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     actionSheetRef.current?.setModalVisible();
   };
 
-  const twitterSenderAvatarUrl = meta.sender.thumbnail || '';
-
   const isTwitterChannel = () => {
-    return meta && meta.channel === 'Channel::TwitterProfile';
+    if (meta) {
+      return meta && meta.channel === 'Channel::TwitterProfile';
+    }
   };
 
-  const twitterSenderScreenName = screenName || '';
+  const twitterSenderNameView = () => {
+    if (meta) {
+      const { thumbnail, additional_attributes: additionalAttributes } = message && message.sender;
+      const { screen_name: screenName } = additionalAttributes;
 
-  const openTwitterSenderProfile = () => {
-    if (isTwitterChannel()) {
-      openURL({
-        URL: `https://twitter.com/${twitterSenderScreenName}`,
-      });
+      const twitterSenderScreenName = screenName || '';
+      const twitterSenderAvatarUrl = thumbnail || '';
+
+      const openTwitterSenderProfile = name => {
+        if (isTwitterChannel()) {
+          openURL({
+            URL: `https://twitter.com/${name}`,
+          });
+        }
+      };
+
+      return (
+        <TouchableOpacity onPress={() => openTwitterSenderProfile(twitterSenderScreenName)}>
+          <View style={style.screenNameWithAvatar}>
+            <UserAvatar
+              thumbnail={twitterSenderAvatarUrl}
+              userName={twitterSenderScreenName}
+              defaultBGColor={theme['color-primary-default']}
+              size={14}
+            />
+            <Text style={style.senderScreenName}>{senderName}</Text>
+          </View>
+        </TouchableOpacity>
+      );
     }
   };
 
@@ -344,19 +364,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
           <ChatMessageActionItem text="Copy" itemType="copy" onPressItem={onPressItem} />
         </ActionSheet>
       </View>
-      {isTwitterChannel() && !isPrivate ? (
-        <View style={style.screenNameWithAvatar}>
-          <UserAvatar
-            thumbnail={twitterSenderAvatarUrl}
-            userName={twitterSenderScreenName}
-            defaultBGColor={theme['color-primary-default']}
-            size={14}
-          />
-          <Text onPress={openTwitterSenderProfile} style={style.senderScreenName}>
-            {senderName}
-          </Text>
-        </View>
-      ) : null}
+      {!isPrivate && isTwitterChannel() ? twitterSenderNameView() : null}
     </TouchableOpacity>
   );
 };

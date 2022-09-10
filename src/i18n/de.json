@@ -136,8 +136,8 @@
   "CONVERSATION_LABELS": {
     "TITLE": "Konversationsetiketten",
     "ADD_LABEL": "Label hinzufügen",
-    "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
+    "EMPTY_LIST": "Bitte fügen Sie Labels zu Ihrem Konto hinzu",
+    "NO_LABEL": "Keine Labels zugewiesen",
     "UPDATE_LABEL": "Label wurde erfolgreich aktualisiert"
   },
   "AGENT": {
@@ -145,7 +145,7 @@
   },
   "TEAMS": {
     "TITLE": "Team auswählen",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "EMPTY": "Bitte fügen Sie Teams zu Ihrem Konto hinzu, um Teams Unterhaltungen zuzuweisen.",
     "CHANGE_TEAMS": "Das Konversationsteam hat sich geändert"
   },
   "ERRORS": {
@@ -171,12 +171,12 @@
   },
   "BANNER": {
     "TWILIO_WHATSAPP": {
-      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "TEXT": "Sie können auf diese Konversation nur mit einer Nachrichtenvorlage antworten wegen ",
       "HREF_TEXT": "Beschränkung des 24-Stunden-Nachrichtenfensters",
       "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
     },
     "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
+      "TEXT": "Sie können nicht antworten, weil ",
       "HREF_TEXT": "Beschränkung des 24-Stunden-Nachrichtenfensters",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }

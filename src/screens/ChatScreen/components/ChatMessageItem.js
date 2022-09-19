@@ -303,25 +303,6 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     )
     .filter(displayItem => !!displayItem);
 
-  // const content = `# Hello
-
-  // **This is some bold text!**
-
-  // Ordered List:
-  // 1. First item
-  // 2. Second item
-  // 3. Third item
-
-  // Unordered List:
-  // - First item
-  // - Second item
-  // - Third item
-  // `;
-  const content = `
-  - ABC
-  - DEF
-  - GHIDFDFDFD`;
-
   return (
     <TouchableOpacity onLongPress={showTooltip} activeOpacity={0.95}>
       <View
@@ -335,8 +316,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
           })}
           onLinkPress={handleURL}
           style={{
-            // body: { flex: 1 },
-            // textgroup: { width: '100%' },
+            body: { flex: 1, minWidth: 100 },
             link: {
               color: theme['text-light-color'],
               fontWeight: isPrivate ? theme['font-semi-bold'] : theme['font-regular'],
@@ -359,7 +339,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
               color: theme['color-white'],
             },
           }}>
-          {content}
+          {message.content}
         </Markdown>
         <View style={style.dateView}>
           <CustomText

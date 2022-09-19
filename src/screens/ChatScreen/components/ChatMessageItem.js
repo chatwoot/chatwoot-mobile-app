@@ -3,7 +3,6 @@ import { TouchableOpacity, Dimensions, View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import { withStyles, Icon } from '@ui-kitten/components';
 import Clipboard from '@react-native-clipboard/clipboard';
-import Markdown from 'react-native-markdown-display';
 import ActionSheet from 'react-native-actions-sheet';
 import CustomText from 'components/Text';
 import { messageStamp } from 'helpers/TimeHelper';
@@ -11,6 +10,7 @@ import { openURL } from 'helpers/UrlHelper';
 import UserAvatar from 'src/components/UserAvatar';
 import ChatMessageActionItem from './ChatMessageActionItem';
 import { showToast } from 'helpers/ToastHelper';
+import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { useRoute } from '@react-navigation/native';
 
 const LockIcon = style => {
@@ -214,11 +214,6 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
 
   const isPrivate = message.private;
 
-  const md = require('markdown-it')({
-    html: true,
-    linkify: true,
-  });
-
   const messageContentStyle = {
     ...messageTextStyle,
     ...(isPrivate ? style.messagePrivate : {}),
@@ -308,17 +303,40 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     )
     .filter(displayItem => !!displayItem);
 
+  // const content = `# Hello
+
+  // **This is some bold text!**
+
+  // Ordered List:
+  // 1. First item
+  // 2. Second item
+  // 3. Third item
+
+  // Unordered List:
+  // - First item
+  // - Second item
+  // - Third item
+  // `;
+  const content = `
+  - ABC
+  - DEF
+  - GHIDFDFDFD`;
+
   return (
     <TouchableOpacity onLongPress={showTooltip} activeOpacity={0.95}>
       <View
         style={[style.message, messageViewStyle, message.private && style.privateMessageContainer]}>
         {hasAnyEmailValues() ? <View style={style.mailHeadWrap}>{emailHeader}</View> : null}
         <Markdown
-          debugPrintTree
-          markdownit={md}
           mergeStyle
+          markdownit={MarkdownIt({
+            linkify: true,
+            typographer: true,
+          })}
           onLinkPress={handleURL}
           style={{
+            // body: { flex: 1 },
+            // textgroup: { width: '100%' },
             link: {
               color: theme['text-light-color'],
               fontWeight: isPrivate ? theme['font-semi-bold'] : theme['font-regular'],
@@ -334,8 +352,14 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
             code_inline: {
               fontFamily: 'System',
             },
+            bullet_list_icon: {
+              color: theme['color-white'],
+            },
+            ordered_list_icon: {
+              color: theme['color-white'],
+            },
           }}>
-          {message.content}
+          {content}
         </Markdown>
         <View style={style.dateView}>
           <CustomText

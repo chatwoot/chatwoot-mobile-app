@@ -99,9 +99,7 @@ export const getConversations =
         });
       }
     } catch (error) {
-      const {
-        response: { status },
-      } = error;
+      const { response: { status = null } = {} } = error;
 
       if (status === 401) {
         dispatch(onLogOut());

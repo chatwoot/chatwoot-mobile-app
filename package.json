@@ -24,6 +24,7 @@
     "@chatwoot/react-native-widget": "^0.0.5",
     "@eva-design/eva": "^2.0.0",
     "@kesha-antonov/react-native-action-cable": "^1.1.0",
+    "@native-html/table-plugin": "^5.3.1",
     "@react-native-async-storage/async-storage": "^1.14.1",
     "@react-native-clipboard/clipboard": "^1.6.0",
     "@react-native-community/masked-view": "^0.1.10",

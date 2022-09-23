@@ -814,6 +814,11 @@
     xmlbuilder "^14.0.0"
     xmldom "~0.5.0"
 
+"@formidable-webview/webshell@2.6.0":
+  version "2.6.0"
+  resolved "https://registry.npmjs.org/@formidable-webview/webshell/-/webshell-2.6.0.tgz#64704c0b513206e71b23118b3c9d096f0d545005"
+  integrity sha512-FwQQDajg1xs7W3CUiUNJMvdjgLjKLDGzs0XPzoVg0Dunhold1Jg7w5pihUdvVugFlNtkSpXMA+du9QDHE8lmpg==
+
 "@hapi/hoek@^9.0.0":
   version "9.2.0"
   resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-9.2.0.tgz#f3933a44e365864f4dad5db94158106d511e8131"
@@ -1146,6 +1151,21 @@
   dependencies:
     css-to-react-native "^3.0.0"
     csstype "^3.0.8"
+
+"@native-html/plugins-core@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.npmjs.org/@native-html/plugins-core/-/plugins-core-1.3.0.tgz#f1f24622097551930d9dab0214c4929d00f7446e"
+  integrity sha512-vce35gqGJKa2oPDZVa2sKjucFFVK+3g8quLayeXiJtj5LzuS8TWGrBFTS5O4ToUtE02AJkCDOLwAguCzK2HWdQ==
+
+"@native-html/table-plugin@^5.3.1":
+  version "5.3.1"
+  resolved "https://registry.npmjs.org/@native-html/table-plugin/-/table-plugin-5.3.1.tgz#12d34869c2ff3e5f45de6ff6a8b5aba1471a8a03"
+  integrity sha512-zz1ww7tUgIY6fMnKYejKHacaUBV+yjuWDBWDwSp4SP0CFiLAbmLIER0UGw0kI58lAVgbWzdEJUX0dmeBG0qevA==
+  dependencies:
+    "@formidable-webview/webshell" "2.6.0"
+    "@native-html/plugins-core" "1.3.0"
+    "@types/prop-types" "^15.7.4"
+    prop-types "^15.7.2"
 
 "@native-html/transient-render-engine@11.2.3":
   version "11.2.3"
@@ -1715,6 +1735,11 @@
   version "15.7.4"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.4.tgz#fcf7205c25dff795ee79af1e30da2c9790808f11"
   integrity sha512-rZ5drC/jWjrArrS8BR6SIr4cWpW09RNTYt9AMZo3Jwwif+iacXAqgVjm0B0Bv/S1jhDXKHqRVNCbACkJ89RAnQ==
+
+"@types/prop-types@^15.7.4":
+  version "15.7.5"
+  resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.5.tgz#5f19d2b85a98e9558036f6a3cacc8819420f05cf"
+  integrity sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==
 
 "@types/ramda@^0.27.40", "@types/ramda@^0.27.44":
   version "0.27.66"

@@ -303,18 +303,20 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     )
     .filter(displayItem => !!displayItem);
 
-  const {
-    html_content: { full: fullHTMLContent } = {},
-    text_content: { full: fullTextContent } = {},
-  } = message.content_attributes.email || {};
-  const emailMessageContent = fullHTMLContent || fullTextContent || '';
+  const emailMessageContent = () => {
+    const {
+      html_content: { full: fullHTMLContent } = {},
+      text_content: { full: fullTextContent } = {},
+    } = message.content_attributes.email || {};
+    return fullHTMLContent || fullTextContent || '';
+  };
 
   return (
     <TouchableOpacity onLongPress={showTooltip} activeOpacity={0.95}>
       <View
         style={[style.message, messageViewStyle, message.private && style.privateMessageContainer]}>
         {hasAnyEmailValues() ? <View style={style.mailHeadWrap}>{emailHeader}</View> : null}
-        {emailMessageContent ? (
+        {emailMessageContent() ? (
           <Email emailContent={emailMessageContent()} />
         ) : (
           <Markdown

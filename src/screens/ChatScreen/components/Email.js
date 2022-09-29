@@ -5,6 +5,9 @@ import { WebView } from 'react-native-webview';
 import TableRenderer, { tableModel } from '@native-html/table-plugin';
 import HTML, { HTMLContentModel, HTMLElementModel } from 'react-native-render-html';
 const imagesMaxWidth = Dimensions.get('window').width;
+// import { sanitize } from './EmailParser';
+// import { sanitize } from 'lettersanitizer';
+import { extract } from 'letterparser';
 const htmlProps = {
   WebView,
   renderers: {
@@ -47,6 +50,16 @@ const propTypes = {
 };
 
 const Email = ({ emailContent }) => {
+  // const sanitizedHtml = sanitize(emailContent, '', {
+  // rewriteExternalResources,
+  // rewriteExternalLinks,
+  // allowedSchemas,
+  // preserveCssPriority
+  // });
+
+  // const sanitizedHtml = sanitize(emailContent, '', {});
+  // console.log('emailContent', emailContent);
+
   const { width } = useWindowDimensions();
 
   return <HTML source={{ html: emailContent || '' }} {...htmlProps} contentWidth={width} />;

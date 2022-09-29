@@ -6076,10 +6076,20 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
-lettersanitizer@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/lettersanitizer/-/lettersanitizer-1.0.4.tgz#ff0b70b0224da7187c69ab3ec0bf94999a229042"
-  integrity sha512-kQmcAvPF291KnljrsZa6d7v+LawuBLtUIaVd7c0FgD+198RNnBWZDkOJ3wOS4R4ls1xlLBWLY4+g6g3O7lHzng==
+lettercoder@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/lettercoder/-/lettercoder-0.0.5.tgz#da6df02e5b3d2929b3c41369c5769d954e91ad5a"
+  integrity sha512-t/AQgvlY5U8mBnxY4968nSxj+YRfP1MM0h6GgR5lcw2PpBhkAf7SuRxug1i+KgJAk5q0CvOVe1j3xMg+oI80/g==
+  dependencies:
+    base64-js "^1.5.1"
+
+letterparser@^0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/letterparser/-/letterparser-0.0.10.tgz#f3678831bf3e96b0528a17e5376ac9bf3157ec7e"
+  integrity sha512-wJih0lnMrgEwTt4fyaoLDTb6lyn07KO6Od+1SP7h4zdP07z2baGLvWAIogYzL5kNLgcZf7F9kt4ie2zQHpvCpg==
+  dependencies:
+    base64-js "^1.5.1"
+    lettercoder "^0.0.5"
 
 leven@^3.1.0:
   version "3.1.0"

@@ -39,7 +39,11 @@ const styles = theme => ({
     marginHorizontal: 4,
   },
   titleView: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
     marginHorizontal: 8,
+    height: 34,
   },
   headerTitle: {
     textTransform: 'capitalize',
@@ -59,8 +63,11 @@ const styles = theme => ({
   },
   inboxNameTypingWrap: {
     flexDirection: 'row',
-    marginLeft: 4,
+    alignItems: 'center',
+  },
+  inboxNameWrap: {
     marginTop: 2,
+    marginLeft: 4,
   },
 });
 
@@ -251,10 +258,15 @@ const ChatHeader = ({
                 )}
               </View>
               <View style={style.inboxNameTypingWrap}>
-                {conversationDetails && (
-                  <InboxName iconName={iconName} inboxName={inboxName} size={'small'} />
+                {typingUser ? (
+                  <TypingStatus typingUser={typingUser} />
+                ) : (
+                  <View style={style.inboxNameWrap}>
+                    {conversationDetails && (
+                      <InboxName iconName={iconName} inboxName={inboxName} size={'small'} />
+                    )}
+                  </View>
                 )}
-                {typingUser ? <TypingStatus typingUser={typingUser} /> : null}
               </View>
             </View>
           </TouchableOpacity>

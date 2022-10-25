@@ -7,7 +7,7 @@ import HTML, { HTMLContentModel, HTMLElementModel } from 'react-native-render-ht
 const imagesMaxWidth = Dimensions.get('window').width;
 // import { sanitize } from './EmailParser';
 // import { sanitize } from 'lettersanitizer';
-import { extract } from 'letterparser';
+// import { extract } from 'letterparser';
 const htmlProps = {
   WebView,
   renderers: {

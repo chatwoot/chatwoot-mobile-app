@@ -1,7 +1,7 @@
 PODS:
   - boost-for-react-native (1.63.0)
-  - BVLinearGradient (2.5.6):
-    - React
+  - BVLinearGradient (2.6.2):
+    - React-Core
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.64.2)
   - FBReactNativeSpec (0.64.2):
@@ -64,7 +64,7 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
-  - PostHog (1.2.3)
+  - PostHog (1.4.4)
   - PromisesObjC (2.1.1)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
@@ -259,11 +259,11 @@ PODS:
     - React-jsi (= 0.64.2)
     - React-perflogger (= 0.64.2)
   - React-jsinspector (0.64.2)
-  - react-native-config (1.4.2):
-    - react-native-config/App (= 1.4.2)
-  - react-native-config/App (1.4.2):
+  - react-native-config (1.4.11):
+    - react-native-config/App (= 1.4.11)
+  - react-native-config/App (1.4.11):
     - React-Core
-  - react-native-document-picker (5.2.0):
+  - react-native-document-picker (5.0.0):
     - React-Core
   - react-native-image-picker (3.8.1):
     - React-Core
@@ -273,9 +273,9 @@ PODS:
     - React
   - react-native-safe-area-context (3.2.0):
     - React-Core
-  - react-native-splash-screen (3.2.0):
-    - React
-  - react-native-webview (11.6.5):
+  - react-native-splash-screen (3.3.0):
+    - React-Core
+  - react-native-webview (11.23.1):
     - React-Core
   - React-perflogger (0.64.2)
   - React-RCTActionSheet (0.64.2):
@@ -343,13 +343,13 @@ PODS:
     - React-perflogger (= 0.64.2)
   - ReactNativeExceptionHandler (2.10.10):
     - React-Core
-  - RNCAsyncStorage (1.15.5):
+  - RNCAsyncStorage (1.17.10):
     - React-Core
-  - RNCClipboard (1.8.2):
+  - RNCClipboard (1.11.1):
     - React-Core
   - RNCMaskedView (0.1.11):
     - React
-  - RNCPushNotificationIOS (1.8.0):
+  - RNCPushNotificationIOS (1.10.1):
     - React-Core
   - RNDeviceInfo (5.6.5):
     - React
@@ -362,46 +362,21 @@ PODS:
     - RNFBApp
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNPostHog (1.1.3):
-    - PostHog (~> 1.2.3)
+  - RNPostHog (1.1.5):
+    - PostHog (~> 1.4.4)
     - React
-  - RNReanimated (2.11.0):
-    - DoubleConversion
-    - FBLazyVector
-    - FBReactNativeSpec
-    - glog
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
-    - React-callinvoker
+  - RNReanimated (1.13.4):
     - React-Core
-    - React-Core/DevSupport
-    - React-Core/RCTWebSocket
-    - React-CoreModules
-    - React-cxxreact
-    - React-jsi
-    - React-jsiexecutor
-    - React-jsinspector
-    - React-RCTActionSheet
-    - React-RCTAnimation
-    - React-RCTBlob
-    - React-RCTImage
-    - React-RCTLinking
-    - React-RCTNetwork
-    - React-RCTSettings
-    - React-RCTText
-    - ReactCommon/turbomodule/core
-    - Yoga
   - RNScreens (3.4.0):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.4.2):
+  - RNSentry (3.4.3):
     - React-Core
     - Sentry (= 7.11.0)
   - RNSnackbar (2.4.0):
     - React-Core
-  - RNSVG (12.1.1):
-    - React
+  - RNSVG (12.4.4):
+    - React-Core
   - Sentry (7.11.0):
     - Sentry/Core (= 7.11.0)
   - Sentry/Core (7.11.0)
@@ -586,7 +561,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
+  BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
   FBReactNativeSpec: dc7ea88bb1edf12662aa4060f14fc073c978785a
@@ -599,7 +574,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
   GoogleUtilities: 1d20a6ad97ef46f67bbdec158ce00563a671ebb7
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
-  PostHog: aef610cc639c5d26a5a88e00867245ebf47f7bbd
+  PostHog: 4b6321b521569092d4ef3a02238d9435dbaeb99f
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: 6d3e854f0e7260a648badd0d44fc364bc9da9728
@@ -612,14 +587,14 @@ SPEC CHECKSUMS:
   React-jsi: 67747b9722f6dab2ffe15b011bcf6b3f2c3f1427
   React-jsiexecutor: 80c46bd381fd06e418e0d4f53672dc1d1945c4c3
   React-jsinspector: cc614ec18a9ca96fd275100c16d74d62ee11f0ae
-  react-native-config: c98128a72bc2c3a1ca72caec0b021f0fa944aa29
-  react-native-document-picker: f1b5398801b332c77bc62ae0eae2116f49bdff26
+  react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
+  react-native-document-picker: ca0c8769c3848866970dc9164e809c6ea45cb5d6
   react-native-image-picker: 31971f6184e7c1dcb4fc1f122e1ba2c3fb11ef1e
   react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
   react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
-  react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
-  react-native-webview: 2e8fe70dc32b50d3231c23043f8e8b5a5525d346
+  react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
+  react-native-webview: d33e2db8925d090871ffeb232dfa50cb3a727581
   React-perflogger: 25373e382fed75ce768a443822f07098a15ab737
   React-RCTActionSheet: af7796ba49ffe4ca92e7277a5d992d37203f7da5
   React-RCTAnimation: 6a2e76ab50c6f25b428d81b76a5a45351c4d77aa
@@ -633,20 +608,20 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: a9904c6d0218fb9f8b19d6dd88607225927668f9
   ReactCommon: 149906e01aa51142707a10665185db879898e966
   ReactNativeExceptionHandler: b11ff67c78802b2f62eed0e10e75cb1ef7947c60
-  RNCAsyncStorage: 56a3355a10b5d660c48c6e37325ac85ebfd09885
-  RNCClipboard: 18e2e6048edf841b1225b81025969ba8330f3251
+  RNCAsyncStorage: 0c357f3156fcb16c8589ede67cc036330b6698ca
+  RNCClipboard: 2834e1c4af68697089cdd455ee4a4cdd198fa7dd
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
-  RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
+  RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
   RNDeviceInfo: c5f8f3a456adcbba405ace475254b08febc4c095
   RNFBApp: 6fbdb0d684c16507c4eb51689d4ff4cfef3bf11f
   RNFBMessaging: 18158b22e06e2297df9628486193455eb619b46d
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNPostHog: 074d1c384a53b5de4c2313a5d9e19e880ea571f9
-  RNReanimated: 3c1a9e4cc792a307e62c1c7f0bb22ff27fa87272
+  RNPostHog: 5ad77e4a4d52ca151da444f11095125681d0cf68
+  RNReanimated: c1b56d030d1616239861534d9adb531f8cffab68
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
-  RNSentry: 2cd1daa124b0d9fd0dfc2cb6094fdd168cb579bc
+  RNSentry: 85f6525b5fe8d2ada065858026b338605b3c09da
   RNSnackbar: be3333a21a453ccc272f41a8add5a71f7d44dfcd
-  RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
+  RNSVG: ecd661f380a07ba690c9c5929c475a44f432d674
   Sentry: 0c5cd63d714187b4a39c331c1f0eb04ba7868341
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
 

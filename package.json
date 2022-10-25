@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "1.6.12",
+  "version": "1.6.13",
   "private": true,
   "scripts": {
     "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",
@@ -21,7 +21,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@chatwoot/react-native-widget": "^0.0.5",
+    "@chatwoot/react-native-widget": "^0.0.7",
     "@eva-design/eva": "^2.0.0",
     "@kesha-antonov/react-native-action-cable": "^1.1.0",
     "@native-html/table-plugin": "^5.3.1",

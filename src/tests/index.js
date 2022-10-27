@@ -6,7 +6,7 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as eva from '@eva-design/eva';
 import { theme } from 'src/theme';
-import { LightTheme } from 'src/theme/index';
+import { LightTheme } from 'src/theme.v2';
 
 const propTypes = {
   children: PropTypes.node.isRequired,

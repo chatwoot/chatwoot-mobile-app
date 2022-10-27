@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Linking, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import PropTypes from 'prop-types';
-import { LightTheme } from './theme/index';
+import { LightTheme } from 'src/theme.v2';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';

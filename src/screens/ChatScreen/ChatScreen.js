@@ -22,7 +22,7 @@ import {
 
 import { markNotificationAsRead } from '../../actions/notification';
 import { getGroupedConversation, findUniqueMessages } from '../../helpers';
-import { actions as CannedResponseActions } from '../../reducer/cannedResponses';
+import { actions as CannedResponseActions } from '../../reducer/cannedResponseSlice';
 
 class ChatScreenComponent extends Component {
   static propTypes = {

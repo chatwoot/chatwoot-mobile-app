@@ -1,7 +1,7 @@
 import CannedResponses from '../components/CannedResponses';
 
 import { connect } from 'react-redux';
-import { selectors as CannedResponseSelectors } from '../../../reducer/cannedResponses';
+import { selectors as CannedResponseSelectors } from '../../../reducer/cannedResponseSlice';
 
 const mapStateToProps = (state, props) => ({
   cannedResponses: CannedResponseSelectors.getFilteredCannedResponses(state, props.searchKey),

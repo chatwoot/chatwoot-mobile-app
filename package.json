@@ -63,7 +63,7 @@
     "react-native-image-picker": "^3.1.4",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-markdown-display": "^7.0.0-alpha.2",
-    "react-native-reanimated": "^1.13.2",
+    "react-native-reanimated": "^2.10.0",
     "react-native-render-html": "^6.3.4",
     "react-native-safari-view": "^2.1.0",
     "react-native-safe-area-context": "3.2.0",

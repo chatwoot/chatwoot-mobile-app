@@ -83,6 +83,8 @@
     "@babel/core": "^7.8.4",
     "@babel/runtime": "^7.8.4",
     "@react-native-community/eslint-config": "^1.1.0",
+    "@testing-library/jest-native": "^5.1.2",
+    "@testing-library/react-native": "^11.3.0",
     "babel-jest": "^25.1.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "detox": "^17.4.6",
@@ -112,6 +114,9 @@
   },
   "jest": {
     "preset": "react-native",
-    "testRegex": "src/.*.spec.(js|jsx)$"
+    "testRegex": "src/.*.spec.(js|jsx)$",
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-native/extend-expect"
+    ]
   }
 }

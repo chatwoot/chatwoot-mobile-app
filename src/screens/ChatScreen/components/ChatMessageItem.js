@@ -12,7 +12,7 @@ import ChatMessageActionItem from './ChatMessageActionItem';
 import { showToast } from 'helpers/ToastHelper';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { useRoute } from '@react-navigation/native';
-
+import Email from '../components/Email';
 const LockIcon = style => {
   return <Icon {...style} name="lock" />;
 };
@@ -303,44 +303,54 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     )
     .filter(displayItem => !!displayItem);
 
+  const emailMessageContent = () => {
+    const {
+      html_content: { full: fullHTMLContent } = {},
+      text_content: { full: fullTextContent } = {},
+    } = message.content_attributes.email || {};
+    return fullHTMLContent || fullTextContent || '';
+  };
+
   return (
     <TouchableOpacity onLongPress={showTooltip} activeOpacity={0.95}>
       <View
         style={[style.message, messageViewStyle, message.private && style.privateMessageContainer]}>
         {hasAnyEmailValues() ? <View style={style.mailHeadWrap}>{emailHeader}</View> : null}
-        <Markdown
-          mergeStyle
-          markdownit={MarkdownIt({
-            linkify: true,
-            typographer: true,
-          })}
-          onLinkPress={handleURL}
-          style={{
-            body: { flex: 1, minWidth: 100 },
-            link: {
-              color: theme['text-light-color'],
-              fontWeight: isPrivate ? theme['font-semi-bold'] : theme['font-regular'],
-            },
-            text: messageContentStyle,
-            strong: {
-              fontWeight: theme['font-semi-bold'],
-            },
-            paragraph: {
-              marginTop: 0,
-              marginBottom: 0,
-            },
-            code_inline: {
-              fontFamily: 'System',
-            },
-            bullet_list_icon: {
-              color: theme['color-white'],
-            },
-            ordered_list_icon: {
-              color: theme['color-white'],
-            },
-          }}>
-          {message.content}
-        </Markdown>
+        {emailMessageContent() ? (
+          <Email emailContent={emailMessageContent()} />
+        ) : (
+          <Markdown
+            mergeStyle
+            markdownit={MarkdownIt({
+              linkify: true,
+              typographer: true,
+            })}
+            onLinkPress={handleURL}
+            style={{
+              body: { flex: 1, minWidth: 100 },
+              link: {
+                color: theme['text-light-color'],
+                fontWeight: isPrivate ? theme['font-semi-bold'] : theme['font-regular'],
+              },
+              text: messageContentStyle,
+              strong: {
+                fontWeight: theme['font-semi-bold'],
+              },
+              paragraph: {
+                marginTop: 0,
+                marginBottom: 0,
+              },
+              bullet_list_icon: {
+                color: theme['color-white'],
+              },
+              ordered_list_icon: {
+                color: theme['color-white'],
+              },
+            }}>
+            {message.content}
+          </Markdown>
+        )}
+
         <View style={style.dateView}>
           <CustomText
             style={[

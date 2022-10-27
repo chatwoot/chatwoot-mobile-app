@@ -5,6 +5,9 @@
       location = "group:Chatwoot.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:/Users/muhsink/Documents/projects/chatwoot-mobile-app/ios/Pods/Pods.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>

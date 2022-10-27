@@ -53,7 +53,6 @@ const Text = ({
 }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
-
   return (
     <NativeText
       style={StyleSheet.flatten([

@@ -4,7 +4,7 @@ import { withStyles } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import CustomText from '../../../components/Text';
 
-const styles = (theme) => ({
+const styles = theme => ({
   mainView: {
     backgroundColor: 'white',
     borderRadius: 4,
@@ -36,12 +36,12 @@ const CannedResponseComponent = ({
   shortCode,
   content,
   lastItem,
-  onCannedReponseSelect,
+  onClick,
   eva: { theme, style },
 }) => (
   <TouchableOpacity
     style={[style.itemView, !lastItem && style.lastItemView]}
-    onPress={() => onCannedReponseSelect(content)}>
+    onPress={() => onClick(content)}>
     <CustomText style={style.shortCode}>{shortCode} - </CustomText>
     <CustomText style={style.content}>{content}</CustomText>
   </TouchableOpacity>
@@ -55,7 +55,7 @@ CannedResponseComponent.propTypes = {
     theme: PropTypes.object,
     style: PropTypes.object,
   }).isRequired,
-  onCannedReponseSelect: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 const CannedResponse = withStyles(CannedResponseComponent, styles);
@@ -66,23 +66,23 @@ const propTypes = {
     style: PropTypes.object,
   }).isRequired,
   cannedResponses: PropTypes.array.isRequired,
-  onCannedReponseSelect: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
-const CannedResponses = ({ eva: { theme, style }, cannedResponses, onCannedReponseSelect }) => {
+const CannedResponses = ({ eva: { theme, style }, cannedResponses, onClick }) => {
   return (
     <View style={style.mainView}>
       <FlatList
         data={cannedResponses}
         renderItem={({ item, index }) => (
           <CannedResponse
-            shortCode={item.short_code}
+            shortCode={item.shortCode}
             content={item.content}
             lastItem={cannedResponses.length - 1 === index}
-            onCannedReponseSelect={onCannedReponseSelect}
+            onClick={onClick}
           />
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
       />
     </View>
   );

@@ -11,9 +11,10 @@ import { sendMessage, toggleTypingStatus } from 'actions/conversation';
 import { findFileSize } from 'helpers/FileHelper';
 import { MAXIMUM_FILE_UPLOAD_SIZE } from 'constants';
 import { showToast } from 'helpers/ToastHelper';
-import CannedResponses from './CannedResponses';
 import MentionUser from './MentionUser.js';
 import { captureEvent } from 'helpers/Analytics';
+import CannedResponsesContainer from '../containers/CannedResponsesContainer';
+
 const propTypes = {
   conversationId: PropTypes.number,
   conversationDetails: PropTypes.object,
@@ -21,15 +22,9 @@ const propTypes = {
     theme: PropTypes.object,
     style: PropTypes.object,
   }).isRequired,
-  cannedResponses: PropTypes.array.isRequired,
 };
 
-const ReplyBox = ({
-  eva: { theme, style },
-  conversationId,
-  conversationDetails,
-  cannedResponses,
-}) => {
+const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }) => {
   const [isPrivate, setPrivateMode] = useState(false);
   const [ccEmails, setCCEmails] = useState([]);
   const [bccEmails, setBCCEmails] = useState([]);
@@ -37,22 +32,17 @@ const ReplyBox = ({
   const [message, setMessage] = useState('');
   const agents = useSelector(state => state.agent.data);
   const verifiedAgents = agents.filter(agent => agent.confirmed);
-  const [filteredCannedResponses, setFilteredCannedResponses] = useState([]);
+  const [cannedResponseSearchKey, setCannedResponseSearchKey] = useState('');
   const [attachmentDetails, setAttachmentDetails] = useState(null);
   const dispatch = useDispatch();
 
   const onNewMessageChange = text => {
     setMessage(text);
     if (text.charAt(0) === '/') {
-      const query = text.substring(1).toLowerCase();
-      const responses = cannedResponses.filter(item => item.title.toLowerCase().includes(query));
-      if (responses.length) {
-        showCannedResponses({ responses });
-      } else {
-        hideCannedResponses();
-      }
+      const query = text.substring(1) ? text.substring(1).toLowerCase() : ' ';
+      setCannedResponseSearchKey(query);
     } else {
-      hideCannedResponses();
+      setCannedResponseSearchKey('');
     }
   };
   const onCCMailChange = mail => {
@@ -61,15 +51,8 @@ const ReplyBox = ({
   const onBCCMailChange = mail => {
     setBCCEmails(mail);
   };
-  const showCannedResponses = ({ responses }) => {
-    setFilteredCannedResponses(responses);
-  };
 
-  const hideCannedResponses = () => {
-    setFilteredCannedResponses([]);
-  };
-
-  const isAnEmailChannelAndNotInPivateNote = () => {
+  const isAnEmailChannelAndNotInPrivateNote = () => {
     if (conversationDetails && conversationDetails.meta) {
       const channel = conversationDetails.meta.channel;
       return channel === 'Channel::Email' && !isPrivate;
@@ -82,7 +65,7 @@ const ReplyBox = ({
   };
 
   const inputBorderColor = () => {
-    isAnEmailChannelAndNotInPivateNote() ? { borderTopWidth: 0 } : { borderTopWidth: 1 };
+    isAnEmailChannelAndNotInPrivateNote() ? { borderTopWidth: 0 } : { borderTopWidth: 1 };
   };
 
   const onBlur = () => {
@@ -94,7 +77,7 @@ const ReplyBox = ({
 
   const onCannedReponseSelect = content => {
     captureEvent({ eventName: 'Canned response selected' });
-    setFilteredCannedResponses([]);
+    setCannedResponseSearchKey('');
     setMessage(content);
   };
 
@@ -181,6 +164,7 @@ const ReplyBox = ({
       </View>
     );
   };
+  // console.log('cannedResponseSearchKey', cannedResponseSearchKey);
 
   return (
     <React.Fragment>
@@ -190,14 +174,13 @@ const ReplyBox = ({
           onRemoveAttachment={onRemoveAttachment}
         />
       )}
-
-      {filteredCannedResponses && (
-        <CannedResponses
-          cannedResponses={filteredCannedResponses}
-          onCannedReponseSelect={onCannedReponseSelect}
+      {cannedResponseSearchKey ? (
+        <CannedResponsesContainer
+          onClick={onCannedReponseSelect}
+          searchKey={cannedResponseSearchKey}
         />
-      )}
-      {isAnEmailChannelAndNotInPivateNote() && emailFields && (
+      ) : null}
+      {isAnEmailChannelAndNotInPrivateNote() && emailFields && (
         <View style={style.emailFields}>
           <View style={style.emailFieldsTextWrap}>
             <Text style={style.emailFieldLabel}>{'Cc'}</Text>
@@ -221,7 +204,7 @@ const ReplyBox = ({
       )}
 
       <View style={[isPrivate ? style.privateView : style.replyView, inputBorderColor()]}>
-        {isAnEmailChannelAndNotInPivateNote() && !emailFields && (
+        {isAnEmailChannelAndNotInPrivateNote() && !emailFields && (
           <Text style={style.emailFieldToggleButton} onPress={toggleCcBccInputs}>
             {'Cc/Bcc'}
           </Text>

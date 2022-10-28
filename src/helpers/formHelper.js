@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+
 export const URL_WITHOUT_HTTP_REGEX =
   /([\w+]+\:\/\/)?([\w\d-]+\.)*[\w-]+[\.\:]\w+([\/\?\=\&\#\.]?[\w-]+)*\/?/gm;
 

@@ -9,7 +9,7 @@ import CustomText from './Text';
 
 const deviceWidth = Dimensions.get('window').width;
 
-const styles = (theme) => ({
+const styles = theme => ({
   emptyView: {
     alignItems: 'center',
     justifyContent: 'center',

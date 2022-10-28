@@ -11,7 +11,7 @@ import Icon from '../../components/Icon';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-const styles = (theme) => ({
+const styles = theme => ({
   container: {
     flex: 1,
     backgroundColor: theme['background-basic-color-1'],

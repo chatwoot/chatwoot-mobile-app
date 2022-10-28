@@ -29,8 +29,8 @@ const LoaderData = new Array(24).fill(0);
 const renderItemLoader = () => <NotificationItemLoader />;
 const actionSheetRef = createRef();
 
-const wait = (timeout) => {
-  return new Promise((resolve) => {
+const wait = timeout => {
+  return new Promise(resolve => {
     setTimeout(resolve, timeout);
   });
 };
@@ -79,7 +79,7 @@ class NotificationScreenComponent extends Component {
 
   loadMoreNotifications = async () => {
     const { isAllNotificationsLoaded } = this.props;
-    await this.setState((state) => ({
+    await this.setState(state => ({
       pageNo: state.pageNo + 1,
     }));
     if (!isAllNotificationsLoaded) {
@@ -138,7 +138,7 @@ class NotificationScreenComponent extends Component {
     this.setState({ menuVisible: !this.state.menuVisible });
   };
 
-  onSelectNotification = (item) => {
+  onSelectNotification = item => {
     const {
       primary_actor_id,
       primary_actor_type,

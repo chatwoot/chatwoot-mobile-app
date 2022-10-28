@@ -15,13 +15,14 @@ import {
   loadMessages,
   sendMessage,
   markMessagesAsRead,
-  loadCannedResponses,
   resetConversation,
   toggleTypingStatus,
   getConversationDetails,
 } from '../../actions/conversation';
+
 import { markNotificationAsRead } from '../../actions/notification';
 import { getGroupedConversation, findUniqueMessages } from '../../helpers';
+import { actions as CannedResponseActions } from '../../reducer/cannedResponseSlice';
 
 class ChatScreenComponent extends Component {
   static propTypes = {
@@ -40,7 +41,7 @@ class ChatScreenComponent extends Component {
     conversationDetails: PropTypes.object,
     sendMessage: PropTypes.func,
     loadMessages: PropTypes.func,
-    loadCannedResponses: PropTypes.func,
+    fetchCannedResponses: PropTypes.func,
     isFetching: PropTypes.bool,
     isAllMessagesLoaded: PropTypes.bool,
     markAllMessagesAsRead: PropTypes.func,
@@ -67,7 +68,6 @@ class ChatScreenComponent extends Component {
     onEndReachedCalledDuringMomentum: true,
     menuVisible: false,
     selectedIndex: null,
-    filteredCannedResponses: [],
     showScrollToButton: false,
     conversationStatus: null,
   };
@@ -96,7 +96,7 @@ class ChatScreenComponent extends Component {
     this.props.loadMessages({ conversationId, beforeId });
     this.props.getConversationDetails({ conversationId });
     this.props.markMessagesAsRead({ conversationId });
-    this.props.loadCannedResponses();
+    this.props.fetchCannedResponses();
     markAllMessagesAsRead({ conversationId });
   };
 
@@ -192,7 +192,6 @@ class ChatScreenComponent extends Component {
       isFetching,
       eva: { style },
       route,
-      cannedResponses,
       conversationTypingUsers,
       conversationDetails,
     } = this.props;
@@ -250,11 +249,7 @@ class ChatScreenComponent extends Component {
               </View>
             )}
           </View>
-          <ReplyBox
-            conversationId={conversationId}
-            conversationDetails={conversationDetails}
-            cannedResponses={cannedResponses}
-          />
+          <ReplyBox conversationId={conversationId} conversationDetails={conversationDetails} />
         </View>
       </SafeAreaView>
     );
@@ -266,7 +261,7 @@ function bindAction(dispatch) {
     resetConversation: () => dispatch(resetConversation()),
     loadMessages: ({ conversationId, beforeId }) =>
       dispatch(loadMessages({ conversationId, beforeId })),
-    loadCannedResponses: () => dispatch(loadCannedResponses()),
+    fetchCannedResponses: () => dispatch(CannedResponseActions.index()),
     getConversationDetails: ({ conversationId }) =>
       dispatch(getConversationDetails({ conversationId })),
     sendMessage: ({ conversationId, message }) =>
@@ -282,7 +277,6 @@ function mapStateToProps(state) {
   return {
     conversationDetails: state.conversation.conversationDetails,
     allMessages: state.conversation.allMessages,
-    cannedResponses: state.conversation.cannedResponses,
     isFetching: state.conversation.isFetching,
     isAllMessagesLoaded: state.conversation.isAllMessagesLoaded,
     conversationTypingUsers: state.conversation.conversationTypingUsers,

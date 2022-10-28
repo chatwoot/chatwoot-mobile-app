@@ -10,7 +10,7 @@ import { store } from '../store';
 import { onLogOut } from '../actions/auth';
 import { getBaseUrl } from './UrlHelper';
 
-const parseErrorCode = (error) => {
+const parseErrorCode = error => {
   if (error.response) {
     if (error.response.status === 401) {
       store.dispatch(onLogOut());
@@ -29,7 +29,7 @@ const API = axios.create();
 
 // Request parsing interceptor
 API.interceptors.request.use(
-  async (config) => {
+  async config => {
     const headers = await getHeaders();
     config.baseURL = await getBaseUrl();
     if (headers) {
@@ -41,13 +41,13 @@ API.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error),
+  error => Promise.reject(error),
 );
 
 // Response parsing interceptor
 API.interceptors.response.use(
-  (response) => response,
-  (error) => parseErrorCode(error),
+  response => response,
+  error => parseErrorCode(error),
 );
 
 export default API;

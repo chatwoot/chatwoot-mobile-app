@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withStyles, Icon } from '@ui-kitten/components';
+import { withStyles } from '@ui-kitten/components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native';

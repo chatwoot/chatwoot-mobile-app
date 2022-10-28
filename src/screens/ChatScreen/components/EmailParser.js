@@ -1,4 +1,5 @@
-/* eslint-disable */
+/* eslint-disable eslint-comments/no-unlimited-disable */
+/* eslint-disable  */
 import { allowedTags, allowedCssProperties, removeWithContents } from './constants';
 const DomParser = require('react-native-html-parser').DOMParser;
 function prependIdToSelectorText(selectorText, id) {

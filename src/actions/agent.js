@@ -2,7 +2,7 @@ import { GET_AGENTS, GET_AGENTS_ERROR, GET_AGENTS_SUCCESS, SET_AGENTS } from '..
 
 import axios from '../helpers/APIHelper';
 
-export const getAgents = () => async (dispatch) => {
+export const getAgents = () => async dispatch => {
   dispatch({ type: GET_AGENTS });
   try {
     const response = await axios.get('agents');
@@ -16,6 +16,8 @@ export const getAgents = () => async (dispatch) => {
   }
 };
 
-export const setInbox = ({ inbox }) => async (dispatch) => {
-  dispatch({ type: SET_AGENTS, payload: inbox });
-};
+export const setInbox =
+  ({ inbox }) =>
+  async dispatch => {
+    dispatch({ type: SET_AGENTS, payload: inbox });
+  };

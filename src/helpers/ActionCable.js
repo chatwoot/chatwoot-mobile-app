@@ -29,11 +29,11 @@ class ActionCableConnector extends BaseActionCableConnector {
 
   onConversationStatusChange = () => {};
 
-  onConversationCreated = (conversation) => {
+  onConversationCreated = conversation => {
     store.dispatch(addOrUpdateConversation({ conversation }));
   };
 
-  onMessageCreated = (message) => {
+  onMessageCreated = message => {
     store.dispatch(addMessageToConversation({ message }));
   };
 
@@ -71,7 +71,7 @@ class ActionCableConnector extends BaseActionCableConnector {
     }, 30000);
   };
 
-  clearTimer = (conversationId) => {
+  clearTimer = conversationId => {
     const timerEvent = this.CancelTyping.length && this.CancelTyping[conversationId];
 
     if (timerEvent) {
@@ -92,11 +92,11 @@ class ActionCableConnector extends BaseActionCableConnector {
     );
   };
 
-  onAssigneeChanged = (payload) => {};
+  onAssigneeChanged = payload => {};
 
-  onStatusChange = (data) => {};
+  onStatusChange = data => {};
 
-  handleReceived = (data) => {};
+  handleReceived = data => {};
 }
 
 export default {

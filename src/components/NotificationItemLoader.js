@@ -33,7 +33,7 @@ const NotificationItemLoaderComponent = ({ eva }) => {
   );
 };
 NotificationItemLoaderComponent.propTypes = propTypes;
-export default withStyles(NotificationItemLoaderComponent, (theme) => ({
+export default withStyles(NotificationItemLoaderComponent, theme => ({
   container: {
     padding: 16,
     flexDirection: 'row',

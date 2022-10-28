@@ -21,9 +21,6 @@ import {
   MARK_MESSAGES_AS_READ_SUCCESS,
   MARK_MESSAGES_AS_READ_ERROR,
   SET_CONVERSATION,
-  GET_CANNED_RESPONSES,
-  GET_CANNED_RESPONSES_SUCCESS,
-  GET_CANNED_RESPONSES_ERROR,
   SET_CONVERSATION_DETAILS,
   RESET_CONVERSATION,
   ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
@@ -385,27 +382,6 @@ export const markMessagesAsRead =
       dispatch({ type: MARK_MESSAGES_AS_READ_ERROR, payload: error });
     }
   };
-export const loadCannedResponses = () => async dispatch => {
-  dispatch({ type: GET_CANNED_RESPONSES });
-
-  try {
-    const response = await axios.get('canned_responses');
-
-    const { data } = response;
-
-    const payload = data.map(item => ({
-      ...item,
-      title: `${item.short_code} - ${item.content.substring(0, 40)}`,
-    }));
-
-    dispatch({
-      type: GET_CANNED_RESPONSES_SUCCESS,
-      payload,
-    });
-  } catch (error) {
-    dispatch({ type: GET_CANNED_RESPONSES_ERROR, payload: error });
-  }
-};
 
 export const resetConversation = () => async dispatch => {
   dispatch({ type: RESET_CONVERSATION });

@@ -15,9 +15,6 @@ import {
   CHANGING_CONVERSATION_STATUS,
   CHANGED_CONVERSATION_STATUS,
   SET_CONVERSATION,
-  GET_CANNED_RESPONSES,
-  GET_CANNED_RESPONSES_SUCCESS,
-  GET_CANNED_RESPONSES_ERROR,
   SET_CONVERSATION_DETAILS,
   RESET_CONVERSATION,
   ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
@@ -66,7 +63,6 @@ const initialState = {
     payload: [],
   },
   allMessages: [],
-  cannedResponses: [],
   conversationDetails: null,
   selectedConversationId: null,
   conversationTypingUsers: {},
@@ -239,27 +235,6 @@ export default (state = initialState, action) => {
       };
     }
 
-    case GET_CANNED_RESPONSES: {
-      return {
-        ...state,
-        cannedResponses: [],
-      };
-    }
-
-    case GET_CANNED_RESPONSES_SUCCESS: {
-      return {
-        ...state,
-        cannedResponses: action.payload,
-      };
-    }
-
-    case GET_CANNED_RESPONSES_ERROR: {
-      return {
-        ...state,
-        cannedResponses: [],
-      };
-    }
-
     case RESET_USER_TYPING_CONVERSATION: {
       return {
         ...state,
@@ -406,7 +381,7 @@ export default (state = initialState, action) => {
         isTeamUpdating: false,
       };
     }
-      
+
     case GET_ALL_CUSTOM_ATTRIBUTES: {
       return {
         ...state,

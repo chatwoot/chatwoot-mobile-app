@@ -6,7 +6,7 @@ import { withStyles } from '@ui-kitten/components';
 
 import i18n from '../i18n';
 
-const styles = (theme) => ({
+const styles = theme => ({
   container: {
     backgroundColor: theme['color-danger-800'],
     paddingTop: 16,
@@ -47,13 +47,13 @@ class OfflineBar extends Component {
   }
 
   componentDidMount() {
-    NetInfo.addEventListener((state) => {
+    NetInfo.addEventListener(state => {
       const { isConnected } = state;
       this.setNetworkStatus(isConnected);
     });
   }
 
-  setNetworkStatus = (status) => {
+  setNetworkStatus = status => {
     this.setState({ isConnected: status });
     if (status) {
       this.triggerAnimation();

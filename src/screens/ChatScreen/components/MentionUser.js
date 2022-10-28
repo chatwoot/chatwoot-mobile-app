@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import CustomText from 'components/Text';
 import UserAvatar from 'components/UserAvatar';
 
-const styles = (theme) => ({
+const styles = theme => ({
   itemView: {
     flexDirection: 'row',
     paddingVertical: 8,

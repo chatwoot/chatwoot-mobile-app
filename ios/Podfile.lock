@@ -414,8 +414,33 @@ PODS:
   - RNPostHog (1.1.5):
     - PostHog (~> 1.4.4)
     - React
-  - RNReanimated (1.13.4):
+  - RNReanimated (2.11.0):
+    - DoubleConversion
+    - FBLazyVector
+    - FBReactNativeSpec
+    - glog
+    - RCT-Folly
+    - RCTRequired
+    - RCTTypeSafety
+    - React-callinvoker
     - React-Core
+    - React-Core/DevSupport
+    - React-Core/RCTWebSocket
+    - React-CoreModules
+    - React-cxxreact
+    - React-jsi
+    - React-jsiexecutor
+    - React-jsinspector
+    - React-RCTActionSheet
+    - React-RCTAnimation
+    - React-RCTBlob
+    - React-RCTImage
+    - React-RCTLinking
+    - React-RCTNetwork
+    - React-RCTSettings
+    - React-RCTText
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNScreens (3.4.0):
     - React-Core
     - React-RCTImage
@@ -646,7 +671,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: 7d538b9c80c40fb6c58a8e1ac6c83c1a0d1d65db
+  FBReactNativeSpec: dc7ea88bb1edf12662aa4060f14fc073c978785a
   Firebase: ff8c73105b90e33e1dc6c8e5445d7adc2ccdc7c1
   FirebaseCore: 1c1ca72483b59b17050f5b4cec4fb748425a3901
   FirebaseCoreDiagnostics: 92e07a649aeb66352b319d43bdd2ee3942af84cb
@@ -708,7 +733,7 @@ SPEC CHECKSUMS:
   RNFBMessaging: 18158b22e06e2297df9628486193455eb619b46d
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNPostHog: 5ad77e4a4d52ca151da444f11095125681d0cf68
-  RNReanimated: c1b56d030d1616239861534d9adb531f8cffab68
+  RNReanimated: 3c1a9e4cc792a307e62c1c7f0bb22ff27fa87272
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
   RNSentry: 85f6525b5fe8d2ada065858026b338605b3c09da
   RNSnackbar: be3333a21a453ccc272f41a8add5a71f7d44dfcd

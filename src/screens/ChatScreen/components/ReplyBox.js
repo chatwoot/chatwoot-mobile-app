@@ -38,9 +38,8 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
 
   const onNewMessageChange = text => {
     setMessage(text);
-
     if (text.charAt(0) === '/') {
-      const query = text.substring(1).toLowerCase();
+      const query = text.substring(1) ? text.substring(1).toLowerCase() : ' ';
       setCannedResponseSearchKey(query);
     } else {
       setCannedResponseSearchKey('');
@@ -53,7 +52,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
     setBCCEmails(mail);
   };
 
-  const isAnEmailChannelAndNotInPivateNote = () => {
+  const isAnEmailChannelAndNotInPrivateNote = () => {
     if (conversationDetails && conversationDetails.meta) {
       const channel = conversationDetails.meta.channel;
       return channel === 'Channel::Email' && !isPrivate;
@@ -66,7 +65,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
   };
 
   const inputBorderColor = () => {
-    isAnEmailChannelAndNotInPivateNote() ? { borderTopWidth: 0 } : { borderTopWidth: 1 };
+    isAnEmailChannelAndNotInPrivateNote() ? { borderTopWidth: 0 } : { borderTopWidth: 1 };
   };
 
   const onBlur = () => {
@@ -165,6 +164,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
       </View>
     );
   };
+  // console.log('cannedResponseSearchKey', cannedResponseSearchKey);
 
   return (
     <React.Fragment>
@@ -180,7 +180,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
           searchKey={cannedResponseSearchKey}
         />
       ) : null}
-      {isAnEmailChannelAndNotInPivateNote() && emailFields && (
+      {isAnEmailChannelAndNotInPrivateNote() && emailFields && (
         <View style={style.emailFields}>
           <View style={style.emailFieldsTextWrap}>
             <Text style={style.emailFieldLabel}>{'Cc'}</Text>
@@ -204,7 +204,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
       )}
 
       <View style={[isPrivate ? style.privateView : style.replyView, inputBorderColor()]}>
-        {isAnEmailChannelAndNotInPivateNote() && !emailFields && (
+        {isAnEmailChannelAndNotInPrivateNote() && !emailFields && (
           <Text style={style.emailFieldToggleButton} onPress={toggleCcBccInputs}>
             {'Cc/Bcc'}
           </Text>

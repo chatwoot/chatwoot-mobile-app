@@ -29,7 +29,7 @@
     "EMAIL_REQUIRED": "이메일이 필요합니다",
     "EMAIL_ERROR": "유효한 이메일을 입력해주세요",
     "PASSWORD_REQUIRED": "비밀번호가 필요합니다",
-    "PASSWORD_ERROR": "Enter a valid password",
+    "PASSWORD_ERROR": "유효한 비밀번호를 입력해주세요",
     "LOGIN": "가입하기",
     "FORGOT_PASSWORD": "암호를 잊으셨나요?",
     "RESET_HERE": "리셋 시키기",
@@ -62,7 +62,7 @@
     "YESTERDAY": "어제",
     "TYPE_MESSAGE": "메시지 쓰기",
     "TYPING": "쓰는 중",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
+    "ALL_CONVERSATION_LOADED": "모든 대화가 불러와졌음",
     "ASSIGN": "대화에 참여시키기",
     "FILE_SIZE_LIMIT": "파일이 5MB 첨부 파일 제한을 초과했습니다.",
     "SHARE": "대화 공유하기",
@@ -73,9 +73,9 @@
     "UNMUTE_CONVERSATION": "대화 음소거 해제하기"
   },
   "FILTER": {
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
+    "HEADER_TITLE": "대화 필터",
+    "CHOOSE_INBOX": "받은 편지함 선택하기",
+    "CHOOSE_STATUS": "대화 상태",
     "OPEN": "열기",
     "RESOLVED": "해결됨",
     "BOT": "봇",
@@ -86,20 +86,20 @@
   "SETTINGS": {
     "HEADER_TITLE": "설정",
     "AVAILABILITY": "유용성",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
+    "NOTIFICATION": "알림 기본 설정",
+    "HELP": "도움말 문서",
     "CHAT_WITH_US": "채팅하기",
     "LOG_OUT": "로그아웃",
     "SWITCH_ACCOUNT": "계정 전환",
-    "CHANGE_LANGUAGE": "Change Language",
+    "CHANGE_LANGUAGE": "언어 바꾸기",
     "SUBMIT": "보내기"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "알림",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
+    "EMPTY": "알림 없음.",
+    "EMPTY_MORE_TEXT": "알림이 온다면, 여기서 나타날 겁니다",
+    "ALL_NOTIFICATION_LOADED": "모든 알림이 불러와졌음",
+    "MARK_ALL": "전부 읽음으로 바꾸기",
     "CANCEL": "취소"
   },
   "AVAILABILITY": {
@@ -108,9 +108,9 @@
     "OFFLINE": "오프라인"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
+    "TITLE": "알림 기본 설정",
     "EMAIL": "이메일",
-    "PUSH": "Push",
+    "PUSH": "푸쉬알림",
     "CONVERSATION_CREATE_PUSH": "새 대화가 만들어질 때 푸시 알림 보내기",
     "CONVERSATION_ASSIGNEE_PUSH": "대화가 할당되면 푸시 알림 보내기",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "할당된 대화에서 새 메시지가 생성될 때 푸시 알림 보내기",
@@ -150,10 +150,10 @@
   },
   "ERRORS": {
     "COMMON_ERROR": "Woot 서버에 연결할 수 없음. 나중에 다시 시도하십시오.",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "OfFLINE": "온라인에 다시 연결하려면 와이파이나 이동통신망에 연결되어야 합니다",
+    "CANNOT_FETCH": "설명 불러오는 동안 오류가 발생했습니다. 다시 시도하십시오.",
     "AUTH": "사용자 이름/암호가 잘못됨. 다시 시도하십시오.",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "NO_ACCOUNTS_MESSAGE": "모든 Chatwoot 계정에 접근 권한이 없습니다"
   },
   "SUCCESS": {
     "AUTH": "로그인 성공"
@@ -164,10 +164,10 @@
     "WARNING_FOR_ADMIN": "모바일 앱에 지원되지 않는 Chatwoot 서버를 사용하고 있는 것 같습니다. 서버 버전 %{minimumVersion} 이상으로 업그레이드해야 합니다."
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
+    "TITLE": "나가기",
+    "SUBTITLE": "정말로 종료하시겠습니까?",
     "CANCEL": "취소",
-    "OK": "Ok"
+    "OK": "네"
   },
   "BANNER": {
     "TWILIO_WHATSAPP": {

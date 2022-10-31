@@ -15,9 +15,6 @@ import {
   CHANGING_CONVERSATION_STATUS,
   CHANGED_CONVERSATION_STATUS,
   SET_CONVERSATION,
-  GET_CANNED_RESPONSES,
-  GET_CANNED_RESPONSES_SUCCESS,
-  GET_CANNED_RESPONSES_ERROR,
   SET_CONVERSATION_DETAILS,
   RESET_CONVERSATION,
   ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
@@ -28,12 +25,22 @@ import {
   ASSIGN_CONVERSATION,
   ASSIGN_CONVERSATION_SUCCESS,
   ASSIGN_CONVERSATION_ERROR,
+  GET_ALL_LABELS,
+  GET_ALL_LABELS_SUCCESS,
+  GET_ALL_LABELS_ERROR,
+  GET_CONVERSATION_LABELS,
+  UPDATE_CONVERSATION_LABELS_SUCCESS,
+  GET_CONVERSATION_LABELS_SUCCESS,
+  GET_CONVERSATION_LABELS_ERROR,
   GET_ALL_TEAMS,
   GET_ALL_TEAMS_SUCCESS,
   GET_ALL_TEAMS_ERROR,
   ASSIGN_TEAM,
   ASSIGN_TEAM_SUCCESS,
   ASSIGN_TEAM_ERROR,
+  GET_ALL_CUSTOM_ATTRIBUTES,
+  GET_ALL_CUSTOM_ATTRIBUTES_SUCCESS,
+  GET_ALL_CUSTOM_ATTRIBUTES_ERROR,
 } from '../constants/actions';
 
 const initialState = {
@@ -43,6 +50,8 @@ const initialState = {
   isChangingConversationStatus: false,
   conversationStatus: 'open',
   isAssigneeUpdating: false,
+  isAllLabelsLoaded: false,
+  isConversationLabelsLoaded: false,
   isAllAvailableTeamsLoaded: false,
   isTeamUpdating: false,
   data: {
@@ -54,13 +63,15 @@ const initialState = {
     payload: [],
   },
   allMessages: [],
-  cannedResponses: [],
   conversationDetails: null,
   selectedConversationId: null,
   conversationTypingUsers: {},
   activeUsers: {},
   assigneeType: 0,
+  availableLabels: [],
+  conversationLabels: [],
   availableTeams: [],
+  customAttributes: [],
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -224,27 +235,6 @@ export default (state = initialState, action) => {
       };
     }
 
-    case GET_CANNED_RESPONSES: {
-      return {
-        ...state,
-        cannedResponses: [],
-      };
-    }
-
-    case GET_CANNED_RESPONSES_SUCCESS: {
-      return {
-        ...state,
-        cannedResponses: action.payload,
-      };
-    }
-
-    case GET_CANNED_RESPONSES_ERROR: {
-      return {
-        ...state,
-        cannedResponses: [],
-      };
-    }
-
     case RESET_USER_TYPING_CONVERSATION: {
       return {
         ...state,
@@ -292,6 +282,61 @@ export default (state = initialState, action) => {
       };
     }
 
+    case GET_ALL_LABELS: {
+      return {
+        ...state,
+        availableLabels: [],
+        isAllLabelsLoaded: true,
+      };
+    }
+
+    case GET_ALL_LABELS_SUCCESS: {
+      return {
+        ...state,
+        availableLabels: action.payload,
+        isAllLabelsLoaded: false,
+      };
+    }
+
+    case GET_ALL_LABELS_ERROR: {
+      return {
+        ...state,
+        availableLabels: [],
+        isAllLabelsLoaded: false,
+      };
+    }
+
+    case GET_CONVERSATION_LABELS: {
+      return {
+        ...state,
+        conversationLabels: [],
+        isConversationLabelsLoaded: true,
+      };
+    }
+
+    case GET_CONVERSATION_LABELS_SUCCESS: {
+      return {
+        ...state,
+        conversationLabels: action.payload,
+        isConversationLabelsLoaded: false,
+      };
+    }
+
+    case UPDATE_CONVERSATION_LABELS_SUCCESS: {
+      return {
+        ...state,
+        conversationLabels: action.payload,
+      };
+    }
+
+    case GET_CONVERSATION_LABELS_ERROR: {
+      return {
+        ...state,
+        conversationLabels: [],
+        isConversationLabelsLoaded: false,
+      };
+    }
+
     case GET_ALL_TEAMS: {
       return {
         ...state,
@@ -334,6 +379,27 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isTeamUpdating: false,
+      };
+    }
+
+    case GET_ALL_CUSTOM_ATTRIBUTES: {
+      return {
+        ...state,
+        customAttributes: [],
+      };
+    }
+
+    case GET_ALL_CUSTOM_ATTRIBUTES_SUCCESS: {
+      return {
+        ...state,
+        customAttributes: action.payload,
+      };
+    }
+
+    case GET_ALL_CUSTOM_ATTRIBUTES_ERROR: {
+      return {
+        ...state,
+        customAttributes: [],
       };
     }
 

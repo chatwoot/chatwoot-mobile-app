@@ -7,6 +7,9 @@ import { openURL } from 'src/helpers/UrlHelper';
 import { View } from 'react-native-animatable';
 
 const styles = theme => ({
+  container: {
+    paddingVertical: 8,
+  },
   socialIconWrap: {
     marginRight: 10,
     backgroundColor: theme['color-secondary-100'],
@@ -46,14 +49,16 @@ const SocialProfileIcons = ({ type, value, iconName, eva: { style, theme } }) =>
   return (
     <React.Fragment>
       <TouchableOpacity>
-        <View style={style.socialIconWrap}>
-          <Icon
-            name={iconName}
-            height={16}
-            width={16}
-            fill={theme['text-light-color']}
-            onPress={() => openURL({ URL: url })}
-          />
+        <View style={style.container}>
+          <View style={style.socialIconWrap}>
+            <Icon
+              name={iconName}
+              height={16}
+              width={16}
+              fill={theme['text-light-color']}
+              onPress={() => openURL({ URL: url })}
+            />
+          </View>
         </View>
       </TouchableOpacity>
     </React.Fragment>

@@ -15,7 +15,11 @@ import styles from './ConversationDetailsScreen.style';
 import HeaderBar from '../../components/HeaderBar';
 import ConversationDetailsItem from '../../components/ConversationDetailsItem';
 import SocialProfileIcons from './components/SocialProfileIcons';
+
+import { getAllCustomAttributes } from 'actions/attributes';
+
 import ContactDetails from './components/ContactDetails';
+import LabelView from 'src/screens/ConversationDetails/components/LabelView';
 
 class ConversationDetailsComponent extends Component {
   state = { settingsMenu: [] };
@@ -35,10 +39,17 @@ class ConversationDetailsComponent extends Component {
       goBack: PropTypes.func.isRequired,
     }).isRequired,
     route: PropTypes.object,
+    attributes: PropTypes.array.isRequired,
+    getAllCustomAttributes: PropTypes.func,
   };
 
   static defaultProps = {
     user: { email: null, name: null },
+    attributes: [],
+  };
+
+  componentDidMount = () => {
+    this.props.getAllCustomAttributes();
   };
 
   onBackPress = () => {
@@ -46,10 +57,11 @@ class ConversationDetailsComponent extends Component {
     navigation.goBack();
   };
 
-  renderAdditionalAttributes() {
+  renderConversationAttributes() {
     const {
       eva: { style },
       route,
+      attributes,
     } = this.props;
     const { conversationDetails } = route.params;
     const { additional_attributes: additionalAttributes } = conversationDetails;
@@ -58,6 +70,9 @@ class ConversationDetailsComponent extends Component {
     if (!additionalAttributes) {
       return null;
     }
+
+    const { custom_attributes: conversationAttributes } = conversationDetails;
+
     const {
       browser: {
         browser_name: browserName,
@@ -104,11 +119,86 @@ class ConversationDetailsComponent extends Component {
 
     const displayItems = displayKeys
       .map(({ key, value, title }) =>
-        value ? <ConversationDetailsItem title={title} value={value} type={key} /> : null,
+        value ? <ConversationDetailsItem key={key} title={title} value={value} type={key} /> : null,
       )
       .filter(displayItem => !!displayItem);
 
-    return <View style={style.itemListView}>{displayItems}</View>;
+    const getConversationAttributes = () => {
+      return attributes
+        .filter(attribute => attribute.attribute_model === 'conversation_attribute')
+        .map(attribute => {
+          const { attribute_key: attributeKey, attribute_display_name: displayName } = attribute;
+          if (conversationAttributes[attributeKey] !== undefined) {
+            return (
+              <ConversationDetailsItem
+                title={displayName}
+                value={String(conversationAttributes[attributeKey])}
+                type={attributeKey}
+              />
+            );
+          }
+        });
+    };
+
+    const conversationAttributesHasValue = Object.keys(conversationAttributes).length > 0;
+
+    return (
+      <View>
+        {displayItems.length > 0 || conversationAttributesHasValue ? (
+          <View>
+            <View style={style.separationViewLabels} />
+            <CustomText style={style.itemListViewTitle}>
+              {i18n.t('CONVERSATION_DETAILS.TITLE')}
+            </CustomText>
+            <View style={style.itemListView}>
+              {displayItems}
+              {getConversationAttributes()}
+            </View>
+          </View>
+        ) : null}
+      </View>
+    );
+  }
+
+  renderContactAttributes() {
+    const {
+      eva: { style },
+      route,
+    } = this.props;
+    const { conversationDetails } = route.params;
+    const { meta } = conversationDetails;
+    const { sender } = meta;
+    const { custom_attributes: contactAttributes } = sender;
+
+    if (contactAttributes === {}) {
+      return null;
+    }
+
+    const contactAttributesHasValue = Object.keys(contactAttributes).length > 0;
+
+    return (
+      <View>
+        {contactAttributesHasValue ? (
+          <View>
+            <View style={style.separationView} />
+            <CustomText style={style.itemListViewTitle}>
+              {i18n.t('CONTACT_ATTRIBUTES.TITLE')}
+            </CustomText>
+            <View style={style.itemListView}>
+              {Object.keys(contactAttributes).map(key => {
+                return (
+                  <ConversationDetailsItem
+                    title={key}
+                    value={String(contactAttributes[key])}
+                    type={key}
+                  />
+                );
+              })}
+            </View>
+          </View>
+        ) : null}
+      </View>
+    );
   }
 
   render() {
@@ -117,6 +207,7 @@ class ConversationDetailsComponent extends Component {
       route,
     } = this.props;
     const { conversationDetails } = route.params;
+
     const {
       meta: {
         sender: {
@@ -130,6 +221,8 @@ class ConversationDetailsComponent extends Component {
         channel,
       },
     } = conversationDetails;
+
+    const { id: conversationId } = conversationDetails;
 
     const {
       social_profiles: socialProfiles = {},
@@ -164,7 +257,9 @@ class ConversationDetailsComponent extends Component {
 
     const getSocialProfileValue = socialProfileTypes
       .map(({ key, value, iconName }) =>
-        value ? <SocialProfileIcons type={key} value={value} iconName={iconName} /> : null,
+        value ? (
+          <SocialProfileIcons key={key} type={key} value={value} iconName={iconName} />
+        ) : null,
       )
       .filter(profile => !!profile);
 
@@ -186,14 +281,17 @@ class ConversationDetailsComponent extends Component {
       },
       {
         key: 'location',
-        value: location || city || country !== undefined ? location || `${city}, ${country}` : null,
+        value:
+          location || city || country !== undefined
+            ? location || `${city}${city ? ',' : ''} ${country}`
+            : null,
         iconName: 'map-outline',
       },
     ];
 
     const getContactDetails = contactDetails
       .map(({ key, value, iconName }) =>
-        value ? <ContactDetails type={key} value={value} iconName={iconName} /> : null,
+        value ? <ContactDetails key={key} type={key} value={value} iconName={iconName} /> : null,
       )
       .filter(details => !!details);
 
@@ -206,7 +304,7 @@ class ConversationDetailsComponent extends Component {
               userName={name}
               thumbnail={thumbnail}
               size={76}
-              fontSize={40}
+              fontSize={30}
               defaultBGColor={theme['color-primary-default']}
               channel={channel}
             />
@@ -222,7 +320,14 @@ class ConversationDetailsComponent extends Component {
           <View style={style.socialIconsContainer}>{getSocialProfileValue}</View>
           <View>{getContactDetails}</View>
           <View style={style.separationView} />
-          {this.renderAdditionalAttributes()}
+          <View style={style.labelView}>
+            <CustomText style={style.itemListViewTitle}>
+              {i18n.t('CONVERSATION_LABELS.TITLE')}
+            </CustomText>
+            <LabelView conversationDetails={conversationDetails} conversationId={conversationId} />
+          </View>
+          {this.renderConversationAttributes()}
+          {this.renderContactAttributes()}
         </View>
       </ScrollView>
     );
@@ -230,11 +335,14 @@ class ConversationDetailsComponent extends Component {
 }
 
 function bindAction(dispatch) {
-  return {};
+  return {
+    getAllCustomAttributes: () => dispatch(getAllCustomAttributes()),
+  };
 }
 function mapStateToProps(state) {
   return {
     user: state.auth.user,
+    attributes: state.conversation.customAttributes,
   };
 }
 

@@ -36,7 +36,6 @@ const styles = theme => ({
 
   socialIconsContainer: {
     flexDirection: 'row',
-    paddingVertical: 8,
   },
 
   separationView: {
@@ -45,10 +44,21 @@ const styles = theme => ({
     borderBottomColor: theme['color-border'],
   },
 
+  separationViewLabels: {
+    padding: 6,
+    borderBottomWidth: 1,
+    borderBottomColor: theme['color-border'],
+  },
+
   nameLabel: {
     textTransform: 'capitalize',
     fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-large'],
+  },
+
+  itemListViewTitle: {
+    paddingTop: 12,
+    fontWeight: theme['font-semi-bold'],
   },
 });
 

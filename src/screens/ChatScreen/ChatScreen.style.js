@@ -1,6 +1,6 @@
 import { Dimensions } from 'react-native';
 
-const styles = (theme) => ({
+const styles = theme => ({
   mainContainer: {
     flex: 1,
     backgroundColor: theme['background-basic-color-1'],

@@ -5,7 +5,7 @@ import { Divider, Icon, withStyles } from '@ui-kitten/components';
 
 import CustomText from '../../../components/Text';
 
-const styles = (theme) => ({
+const styles = theme => ({
   section: {
     alignItems: 'center',
     flexDirection: 'row',

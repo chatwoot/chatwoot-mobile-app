@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Divider, Icon, withStyles } from '@ui-kitten/components';
 
 import CustomText from '../../../components/Text';
-const styles = (theme) => ({
+const styles = theme => ({
   section: {
     justifyContent: 'space-between',
     alignItems: 'center',

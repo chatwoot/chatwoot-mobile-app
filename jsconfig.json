@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "esnext", // define to your liking
+    "baseUrl": "./",
+    "paths": {
+      "helpers/*": ["src/helpers"],
+      "actions/*": ["src/actions"],
+      "components/*": ["src/components"],
+      "i18n/*": ["src/i18n"],
+      "screens/*": ["src/screens"],
+      "reducer/*": ["src/reducer"],
+    }
+  },
+  "exclude": ["node_modules"] // Optional
+}

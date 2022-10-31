@@ -18,7 +18,7 @@ class CustomText extends Component {
     // style: PropTypes.arrayOf(PropTypes.object),
     weight: PropTypes.oneOf(['300', '400', '500', '600', '700', '800', '900']),
     locale: PropTypes.string,
-    children: PropTypes.string,
+    children: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   };
 
   findWeightVariant = props => {

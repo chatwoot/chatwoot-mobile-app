@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Linking, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import PropTypes from 'prop-types';
+import { LightTheme } from 'src/theme.v2';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -120,6 +121,9 @@ const _handleOpenURL = event => {
 };
 
 const App = ({ eva: { style } }) => {
+  // TODO: Lets use light theme for now, add dark theme later
+  const theme = LightTheme;
+
   const dispatch = useDispatch();
   const routeNameRef = useRef();
 
@@ -166,7 +170,8 @@ const App = ({ eva: { style } }) => {
     <KeyboardAvoidingView
       style={style.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      enabled>
+      enabled
+    >
       <SafeAreaView style={style.container}>
         <NavigationContainer
           ref={navigationRef}
@@ -179,10 +184,13 @@ const App = ({ eva: { style } }) => {
             }
             // Save the current route name for later comparison
             routeNameRef.current = currentRouteName;
-          }}>
+          }}
+          theme={theme}
+        >
           <Stack.Navigator
             initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'}
-            screenOptions={{ headerShown: false }}>
+            screenOptions={{ headerShown: false }}
+          >
             {isLoggedIn ? (
               <Fragment>
                 <Stack.Screen name="Tab" component={TabStack} />

@@ -18,7 +18,8 @@
     "ios:setup": "./react-native-setup-ios.sh setup",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@chatwoot/react-native-widget": "^0.0.7",
@@ -84,35 +85,28 @@
     "@babel/core": "^7.8.4",
     "@babel/runtime": "^7.8.4",
     "@react-native-community/eslint-config": "^1.1.0",
+    "@testing-library/jest-native": "^5.1.2",
+    "@testing-library/react-native": "^11.3.0",
     "babel-jest": "^25.1.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "detox": "^17.4.6",
     "eslint": "^6.5.1",
     "eslint-plugin-detox": "^1.0.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "husky": "^4.2.5",
     "jest": "^25.1.0",
     "jest-circus": "^26.4.2",
     "lint-staged": "^10.2.13",
     "metro-react-native-babel-preset": "^0.59.0",
     "prettier": "^2.1.1",
     "react-native-clean-project": "^3.6.4",
-    "react-test-renderer": "16.13.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "eslint --fix",
-      "git add"
-    ]
+    "react-test-renderer": "16.13.1",
+    "husky": "^8.0.0"
   },
   "jest": {
     "preset": "react-native",
-    "testRegex": "src/.*.spec.(js|jsx)$"
+    "testRegex": "src/.*.spec.(js|jsx)$",
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-native/extend-expect"
+    ]
   }
 }

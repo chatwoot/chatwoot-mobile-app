@@ -414,7 +414,7 @@ PODS:
   - RNPostHog (1.1.5):
     - PostHog (~> 1.4.4)
     - React
-  - RNReanimated (2.11.0):
+  - RNReanimated (2.12.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -733,7 +733,7 @@ SPEC CHECKSUMS:
   RNFBMessaging: 18158b22e06e2297df9628486193455eb619b46d
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNPostHog: 5ad77e4a4d52ca151da444f11095125681d0cf68
-  RNReanimated: 3c1a9e4cc792a307e62c1c7f0bb22ff27fa87272
+  RNReanimated: 69f427ef749f923934a9c1485ad439dd001fb73c
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
   RNSentry: 85f6525b5fe8d2ada065858026b338605b3c09da
   RNSnackbar: be3333a21a453ccc272f41a8add5a71f7d44dfcd

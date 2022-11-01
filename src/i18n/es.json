@@ -26,7 +26,7 @@
     "DESCRIPTION": "Estás conectado a {{baseUrl}}. Inicia sesión con tu dirección de correo electrónico y contraseña.",
     "EMAIL": "Email",
     "PASSWORD": "Contraseña",
-    "EMAIL_REQUIRED": "El Email es requerido",
+    "EMAIL_REQUIRED": "El email es requerido",
     "EMAIL_ERROR": "Introduce un email válido",
     "PASSWORD_REQUIRED": "Contraseña requerida",
     "PASSWORD_ERROR": "Introduce una contraseña válida",
@@ -176,7 +176,7 @@
       "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
     },
     "FACEBOOK": {
-      "TEXT": "No puede responder debido a ",
+      "TEXT": "No puedes responder debido a ",
       "HREF_TEXT": "Restricción de la ventana de mensajes de 24 horas",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }

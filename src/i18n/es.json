@@ -80,8 +80,8 @@
     "RESOLVED": "Resuelto",
     "BOT": "Bot",
     "SUBMIT": "Enviar",
-    "PENDING": "Pendiente",
-    "SNOOZED": "Pospuesto"
+    "PENDING": "En espera",
+    "SNOOZED": "Postpuestas"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Preferencias",
@@ -136,8 +136,8 @@
   "CONVERSATION_LABELS": {
     "TITLE": "Etiquetas de conversación",
     "ADD_LABEL": "Añadir etiquetas",
-    "EMPTY_LIST": "Por favor, agregue etiquetas a su cuenta",
-    "NO_LABEL": "Etiquetas no asignadas",
+    "EMPTY_LIST": "Por favor, añade etiquetas a tu cuenta",
+    "NO_LABEL": "No hay etiquetas asignadas",
     "UPDATE_LABEL": "Etiqueta actualizada correctamente"
   },
   "AGENT": {

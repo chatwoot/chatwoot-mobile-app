@@ -170,8 +170,7 @@ const App = ({ eva: { style } }) => {
     <KeyboardAvoidingView
       style={style.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      enabled
-    >
+      enabled>
       <SafeAreaView style={style.container}>
         <NavigationContainer
           ref={navigationRef}
@@ -185,12 +184,10 @@ const App = ({ eva: { style } }) => {
             // Save the current route name for later comparison
             routeNameRef.current = currentRouteName;
           }}
-          theme={theme}
-        >
+          theme={theme}>
           <Stack.Navigator
             initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'}
-            screenOptions={{ headerShown: false }}
-          >
+            screenOptions={{ headerShown: false }}>
             {isLoggedIn ? (
               <Fragment>
                 <Stack.Screen name="Tab" component={TabStack} />

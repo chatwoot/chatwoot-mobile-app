@@ -5,10 +5,15 @@
 
 function loadStories() {
   require('../src/components/Header/Header.stories');
+  require('../src/components/Icon/Icon.stories');
   require('../src/components/Text/Text.stories');
 }
 
-const stories = ['../src/components/Header/Header.stories', '../src/components/Text/Text.stories'];
+const stories = [
+  '../src/components/Header/Header.stories',
+  '../src/components/Icon/Icon.stories',
+  '../src/components/Text/Text.stories',
+];
 
 module.exports = {
   loadStories,

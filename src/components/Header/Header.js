@@ -3,7 +3,7 @@ import { View, Pressable, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
 import Icon from 'src/components/Icon/Icon';
-import Text from '../../components/Text/Text';
+import Text from 'components/Text/Text';
 
 import { StyleSheet } from 'react-native';
 

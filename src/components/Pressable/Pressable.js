@@ -10,6 +10,7 @@ const propTypes = {
 const Pressable = ({ onPress, children, style: customStyle }) => {
   return (
     <NativePressable
+      testID="pressable"
       style={({ pressed }) => [
         {
           opacity: pressed ? 0.6 : 1,

@@ -1,21 +1,24 @@
 import React, { useMemo } from 'react';
-import { View, Pressable, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
 import Icon from 'components/Icon/Icon';
 import Text from 'components/Text/Text';
+import Pressable from 'components/Pressable/Pressable';
 
 import { StyleSheet } from 'react-native';
 
-const createStyles = () => {
+const createStyles = theme => {
+  const { spacing, colors } = theme;
   return StyleSheet.create({
     headerContainer: {
-      paddingHorizontal: 16,
-      paddingVertical: 16,
+      paddingHorizontal: spacing.small,
+      paddingVertical: spacing.small,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
       width: '100%',
+      backgroundColor: colors.background,
     },
     headerLeft: {
       flexDirection: 'row',
@@ -25,9 +28,14 @@ const createStyles = () => {
       flexDirection: 'row',
       alignItems: 'center',
     },
+    headerLeftIcon: {
+      marginRight: 16,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
     headerLoader: {
-      marginLeft: 8,
-      paddingRight: 8,
+      marginLeft: spacing.smaller,
+      paddingRight: spacing.smaller,
     },
   });
 };
@@ -57,16 +65,7 @@ const Header = ({ leftIcon, rightIcon, loading, headerText, onPressLeft, onPress
     <View style={styles.headerContainer}>
       <View style={styles.headerLeft}>
         {leftIcon ? (
-          <Pressable
-            style={({ pressed }) => [
-              {
-                opacity: pressed ? 0.6 : 1,
-                marginRight: 16,
-                flexDirection: 'row',
-                alignItems: 'center',
-              },
-            ]}
-            onPress={onPressLeft}>
+          <Pressable style={styles.headerLeftIcon} onPress={onPressLeft}>
             <Icon icon={leftIcon} color={colors.textDark} size={20} />
           </Pressable>
         ) : null}
@@ -85,13 +84,7 @@ const Header = ({ leftIcon, rightIcon, loading, headerText, onPressLeft, onPress
         </View>
       </View>
       {rightIcon ? (
-        <Pressable
-          onPress={onPressRight}
-          style={({ pressed }) => [
-            {
-              opacity: pressed ? 0.6 : 1,
-            },
-          ]}>
+        <Pressable onPress={onPressRight}>
           <Icon icon={rightIcon} color={colors.textDark} size={20} />
         </Pressable>
       ) : null}

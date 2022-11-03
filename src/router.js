@@ -10,6 +10,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ConfigureURLScreen from './screens/ConfigureURLScreen/ConfigureURLScreen';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import TabBar from './components/TabBar';
+import ConversationScreen from './screens/Conversation/ConversationScreen';
 import ConversationList from './screens/ConversationList/ConversationList';
 import NotificationScreen from './screens/Notification/NotificationScreen';
 import SettingsScreen from './screens/Settings/SettingsScreen';
@@ -40,32 +41,6 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {});
-
-const HomeStack = () => (
-  <Stack.Navigator initialRouteName="ConversationList" screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="ConversationList" component={ConversationList} />
-  </Stack.Navigator>
-);
-
-const SettingsStack = () => (
-  <Stack.Navigator initialRouteName="Settings" screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="Settings" component={SettingsScreen} />
-  </Stack.Navigator>
-);
-
-const NotificationStack = () => (
-  <Stack.Navigator initialRouteName="Notification" screenOptions={{ headerShown: false }}>
-    <Tab.Screen name="Notification" component={NotificationScreen} />
-  </Stack.Navigator>
-);
-
-const TabStack = () => (
-  <Tab.Navigator screenOptions={{ headerShown: false }} tabBar={props => <TabBar {...props} />}>
-    <Tab.Screen name="HomeTab" component={HomeStack} />
-    <Tab.Screen name="NotificationTab" component={NotificationStack} />
-    <Tab.Screen name="SettingsTab" component={SettingsStack} />
-  </Tab.Navigator>
-);
 
 const propTypes = {
   isLoggedIn: PropTypes.bool,
@@ -165,7 +140,38 @@ const App = ({ eva: { style } }) => {
     _handleOpenURL({ url: linkedURL });
   }
 
+  const isMobileV2 = false;
+
+  const conversationScreen = isMobileV2 ? ConversationScreen : ConversationList;
+
   i18n.locale = locale;
+
+  const HomeStack = () => (
+    <Stack.Navigator initialRouteName="ConversationScreen" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="ConversationScreen" component={conversationScreen} />
+    </Stack.Navigator>
+  );
+
+  const SettingsStack = () => (
+    <Stack.Navigator initialRouteName="Settings" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Settings" component={SettingsScreen} />
+    </Stack.Navigator>
+  );
+
+  const NotificationStack = () => (
+    <Stack.Navigator initialRouteName="Notification" screenOptions={{ headerShown: false }}>
+      <Tab.Screen name="Notification" component={NotificationScreen} />
+    </Stack.Navigator>
+  );
+
+  const TabStack = () => (
+    <Tab.Navigator screenOptions={{ headerShown: false }} tabBar={props => <TabBar {...props} />}>
+      <Tab.Screen name="HomeTab" component={HomeStack} />
+      <Tab.Screen name="NotificationTab" component={NotificationStack} />
+      <Tab.Screen name="SettingsTab" component={SettingsStack} />
+    </Tab.Navigator>
+  );
+
   return (
     <KeyboardAvoidingView
       style={style.container}
@@ -209,7 +215,7 @@ const App = ({ eva: { style } }) => {
                 <Stack.Screen name="ConfigureURL" component={ConfigureURLScreen} />
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="ResetPassword" component={ResetPassword} />
-                <Stack.Screen name="ConversationList" component={ConversationList} />
+                <Stack.Screen name="ConversationScreen" component={conversationScreen} />
                 <Stack.Screen name="Language" component={LanguageScreen} />
               </Fragment>
             )}

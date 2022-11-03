@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
 
 const isAndroid = Platform.OS === 'android';
@@ -101,13 +100,6 @@ const createStyles = theme => {
       justifyContent: 'center',
     },
   });
-};
-
-const propTypes = {
-  unReadCount: PropTypes.number,
-  content: PropTypes.string,
-  messageType: PropTypes.number,
-  isPrivate: PropTypes.bool,
 };
 
 const ConversationItemLoader = () => {

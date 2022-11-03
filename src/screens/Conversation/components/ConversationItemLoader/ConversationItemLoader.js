@@ -6,7 +6,7 @@ import * as Animatable from 'react-native-animatable';
 const isAndroid = Platform.OS === 'android';
 
 const createStyles = theme => {
-  const { colors, spacing } = theme;
+  const { colors, spacing, borderRadius } = theme;
   return StyleSheet.create({
     container: {
       flexDirection: 'row',
@@ -22,7 +22,7 @@ const createStyles = theme => {
     },
     avatarView: {
       alignSelf: 'center',
-      marginRight: 10,
+      marginRight: spacing.half,
     },
     contentView: {
       flex: 1,
@@ -32,9 +32,9 @@ const createStyles = theme => {
       borderBottomWidth: 1,
     },
     avatarLoader: {
-      width: 46,
-      height: 46,
-      borderRadius: 50,
+      width: spacing.full,
+      height: spacing.full,
+      borderRadius: borderRadius.full,
       backgroundColor: colors.loaderContentBackground,
       flexDirection: 'row',
       alignItems: 'center',
@@ -42,12 +42,12 @@ const createStyles = theme => {
     },
     idInboxNameView: {
       width: 100,
-      borderRadius: 4,
+      borderRadius: borderRadius.micro,
       height: spacing.half,
       backgroundColor: colors.loaderContentBackground,
     },
     labelView: {
-      marginBottom: isAndroid ? 7.4 : spacing.micro,
+      marginBottom: isAndroid ? spacing.small : spacing.micro,
       flexDirection: 'row',
       alignItems: 'center',
     },
@@ -57,9 +57,9 @@ const createStyles = theme => {
       alignItems: 'flex-start',
     },
     nameView: {
-      marginBottom: isAndroid ? 7.4 : spacing.micro,
+      marginBottom: isAndroid ? spacing.small : spacing.micro,
       width: 160,
-      borderRadius: 4,
+      borderRadius: borderRadius.micro,
       height: spacing.small,
       backgroundColor: colors.loaderContentBackground,
       flexDirection: 'row',
@@ -68,7 +68,7 @@ const createStyles = theme => {
     chatContentView: {
       flexDirection: 'row',
       width: 200,
-      borderRadius: 4,
+      borderRadius: borderRadius.micro,
       height: spacing.small,
       backgroundColor: colors.loaderContentBackground,
     },
@@ -77,19 +77,19 @@ const createStyles = theme => {
       justifyContent: 'flex-end',
       flexDirection: 'column',
       position: 'absolute',
-      right: 0,
+      right: spacing.zero,
     },
     timestampView: {
       width: 60,
-      height: 10,
-      borderRadius: 4,
+      height: spacing.half,
+      borderRadius: borderRadius.micro,
       backgroundColor: colors.loaderContentBackground,
     },
     badgeView: {
       flexDirection: 'row',
       alignItems: 'flex-end',
       justifyContent: 'flex-end',
-      paddingTop: 10,
+      paddingTop: spacing.half,
     },
     badge: {
       width: spacing.small,
@@ -139,5 +139,4 @@ const ConversationItemLoader = () => {
   );
 };
 
-ConversationItemLoader.propTypes = propTypes;
 export default ConversationItemLoader;

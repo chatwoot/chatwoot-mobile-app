@@ -120,17 +120,33 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Wysyłaj powiadomienia e-mail, gdy nowa wiadomość zostanie utworzona w przypisanej konwersacji"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "Browser",
     "OPERATING_SYSTEM": "Operating System",
     "INITIATED_AT": "Initiated at",
     "INITIATED_FROM": "Initiated from",
     "IP_ADDRESS": "Adres IP"
   },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
+  },
   "CONVERSATION_ACTION": {
     "TITLE": "Akcje"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Etykiety rozmowy",
+    "ADD_LABEL": "Dodaj etykiety",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Etykieta została pomyślnie zaktualizowana"
+  },
   "AGENT": {
     "TITLE": "Wybierz Agenta"
+  },
+  "TEAMS": {
+    "TITLE": "Wybierz zespół",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Zespół konwersacji został zmieniony"
   },
   "ERRORS": {
     "COMMON_ERROR": "Nie można połączyć się z Woot Server, spróbuj ponownie później",

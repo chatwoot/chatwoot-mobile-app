@@ -120,17 +120,33 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "E-Mail-Benachrichtigungen senden, wenn eine neue Nachricht in einer zugewiesenen Konversation erstellt wird"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Konversationsinformationen",
     "BROWSER": "Browser",
     "OPERATING_SYSTEM": "Betriebssystem",
     "INITIATED_AT": "Initiiert am",
     "INITIATED_FROM": "Initiiert von",
     "IP_ADDRESS": "IP-Adresse"
   },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Kontakt-Attribute"
+  },
   "CONVERSATION_ACTION": {
     "TITLE": "Aktionen"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Konversationsetiketten",
+    "ADD_LABEL": "Label hinzufügen",
+    "EMPTY_LIST": "Bitte fügen Sie Labels zu Ihrem Konto hinzu",
+    "NO_LABEL": "Keine Labels zugewiesen",
+    "UPDATE_LABEL": "Label wurde erfolgreich aktualisiert"
+  },
   "AGENT": {
     "TITLE": "Agent auswählen"
+  },
+  "TEAMS": {
+    "TITLE": "Team auswählen",
+    "EMPTY": "Bitte fügen Sie Teams zu Ihrem Konto hinzu, um Teams Unterhaltungen zuzuweisen.",
+    "CHANGE_TEAMS": "Das Konversationsteam hat sich geändert"
   },
   "ERRORS": {
     "COMMON_ERROR": "Konnte keine Verbindung zum Woot-Server herstellen, bitte versuchen Sie es später erneut",
@@ -155,12 +171,12 @@
   },
   "BANNER": {
     "TWILIO_WHATSAPP": {
-      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "TEXT": "Sie können auf diese Konversation nur mit einer Nachrichtenvorlage antworten wegen ",
       "HREF_TEXT": "Beschränkung des 24-Stunden-Nachrichtenfensters",
       "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
     },
     "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
+      "TEXT": "Sie können nicht antworten, weil ",
       "HREF_TEXT": "Beschränkung des 24-Stunden-Nachrichtenfensters",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }

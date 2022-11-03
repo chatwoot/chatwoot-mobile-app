@@ -1,9 +1,9 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "어서오세요",
   "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
+    "ERROR": "에러",
+    "ERROR_TITLE": "예상치 못한 에러 발견",
+    "REPORT_MESSAGE": "저희 팀으로 신고접수가 완료되었습니다! 곧 처리될 예정이며, 어플을 닫고 다시 시작해주세요!",
     "CLOSE": "닫기"
   },
   "FOOTER": {
@@ -13,41 +13,41 @@
     "SETTINGS": "설정"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
-    "URL_ERROR": "Enter a valid URL",
-    "URL_REQUIRED": "URL is required",
+    "ENTER_URL": "설치 URL",
+    "DESCRIPTION": "만약 자체 호스팅한 Chatwoot 설치를 사용하는 경우 서버 링크를 입력하세요. 그렇지 않으면 app.chatwoot.com을 사용하세요.",
+    "URL_ERROR": "유효한 URL을 입력해주세요",
+    "URL_REQUIRED": "링크가 필요합니다",
     "CONNECT": "연결",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "CHANGE_LANGUAGE": "언어 바꾸기",
+    "ERROR": "유효하지 않은 설치 URL"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "당신의 계정으로 로그인합니다",
+    "DESCRIPTION": "{{baseUrl}} 와/과 연결되어 있습니다. 이메일과 비밀번호로 로그인해주세요.",
     "EMAIL": "이메일",
     "PASSWORD": "비밀번호",
-    "EMAIL_REQUIRED": "Email is required",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_REQUIRED": "Password is required",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
+    "EMAIL_REQUIRED": "이메일이 필요합니다",
+    "EMAIL_ERROR": "유효한 이메일을 입력해주세요",
+    "PASSWORD_REQUIRED": "비밀번호가 필요합니다",
+    "PASSWORD_ERROR": "유효한 비밀번호를 입력해주세요",
+    "LOGIN": "가입하기",
     "FORGOT_PASSWORD": "암호를 잊으셨나요?",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
+    "RESET_HERE": "리셋 시키기",
+    "NO_ACCOUNT": "계정이 없으신가요?",
     "CREATE_ACCOUNT": "계정 생성",
     "SETTINGS": "설정",
-    "CHANGE_LANGUAGE": "Change language",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "CHANGE_LANGUAGE": "언어 바꾸기",
+    "TERMS": "이용약관",
+    "CHANGE_URL": "URL 바꾸기"
   },
   "FORGOT_PASSWORD": {
     "EMAIL": "이메일 주소를 입력하세요.",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "EMAIL_ERROR": "유효한 이메일을 입력해주세요",
+    "RESET_HERE": "비밀번호 재설정하기",
+    "HEADER_TITLE": "비밀번호 재설정하기",
+    "TITLE": "비밀번호를 잊으셨나요?",
+    "SUB_TITLE": "걱정마세요! 저희가 있잖아요",
+    "API_SUCCESS": "비밀번호 재설정 링크가 이메일로 전송되었습니다"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "대화",
@@ -60,46 +60,46 @@
     "DOWNLOAD": "다운로드",
     "TODAY": "오늘",
     "YESTERDAY": "어제",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share conversation",
+    "TYPE_MESSAGE": "메시지 쓰기",
+    "TYPING": "쓰는 중",
+    "ALL_CONVERSATION_LOADED": "모든 대화가 불러와졌음",
+    "ASSIGN": "대화에 참여시키기",
+    "FILE_SIZE_LIMIT": "파일이 5MB 첨부 파일 제한을 초과했습니다.",
+    "SHARE": "대화 공유하기",
     "CANCEL": "취소",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation",
-    "MUTE_CONVERSATION": "Mute conversation",
-    "UNMUTE_CONVERSATION": "Unmute conversation"
+    "PRIVATE_MSG_INPUT": "이건 에이전트에게만 보일것입니다",
+    "UN_ASSIGN": "대화에서 제외시키기",
+    "MUTE_CONVERSATION": "대화 음소거하기",
+    "UNMUTE_CONVERSATION": "대화 음소거 해제하기"
   },
   "FILTER": {
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
+    "HEADER_TITLE": "대화 필터",
+    "CHOOSE_INBOX": "받은 편지함 선택하기",
+    "CHOOSE_STATUS": "대화 상태",
     "OPEN": "열기",
     "RESOLVED": "해결됨",
     "BOT": "봇",
     "SUBMIT": "보내기",
-    "PENDING": "Pending",
-    "SNOOZED": "Snoozed"
+    "PENDING": "보내는 중",
+    "SNOOZED": "일시 중지됨"
   },
   "SETTINGS": {
     "HEADER_TITLE": "설정",
     "AVAILABILITY": "유용성",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
+    "NOTIFICATION": "알림 기본 설정",
+    "HELP": "도움말 문서",
+    "CHAT_WITH_US": "채팅하기",
     "LOG_OUT": "로그아웃",
     "SWITCH_ACCOUNT": "계정 전환",
-    "CHANGE_LANGUAGE": "Change Language",
+    "CHANGE_LANGUAGE": "언어 바꾸기",
     "SUBMIT": "보내기"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "알림",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
+    "EMPTY": "알림 없음.",
+    "EMPTY_MORE_TEXT": "알림이 온다면, 여기서 나타날 겁니다",
+    "ALL_NOTIFICATION_LOADED": "모든 알림이 불러와졌음",
+    "MARK_ALL": "전부 읽음으로 바꾸기",
     "CANCEL": "취소"
   },
   "AVAILABILITY": {
@@ -108,9 +108,9 @@
     "OFFLINE": "오프라인"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
+    "TITLE": "알림 기본 설정",
     "EMAIL": "이메일",
-    "PUSH": "Push",
+    "PUSH": "푸쉬알림",
     "CONVERSATION_CREATE_PUSH": "새 대화가 만들어질 때 푸시 알림 보내기",
     "CONVERSATION_ASSIGNEE_PUSH": "대화가 할당되면 푸시 알림 보내기",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "할당된 대화에서 새 메시지가 생성될 때 푸시 알림 보내기",
@@ -120,47 +120,63 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "할당된 대화에서 새 메시지가 생성될 때 이메일 알림 보내기"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "대화 설명",
     "BROWSER": "브라우저",
     "OPERATING_SYSTEM": "운영 체제",
     "INITIATED_AT": "시작 시간",
     "INITIATED_FROM": "시작 위치",
     "IP_ADDRESS": "IP 주소"
   },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "연락처 속성"
+  },
   "CONVERSATION_ACTION": {
     "TITLE": "액션"
+  },
+  "CONVERSATION_LABELS": {
+    "TITLE": "대화 라벨",
+    "ADD_LABEL": "라벨 추가하기",
+    "EMPTY_LIST": "계정에 라벨을 추가해주세요",
+    "NO_LABEL": "할당된 라벨 없음",
+    "UPDATE_LABEL": "라벨이 성공적으로 업데이트됨"
   },
   "AGENT": {
     "TITLE": "에이전트 선택"
   },
+  "TEAMS": {
+    "TITLE": "팀 선택하기",
+    "EMPTY": "대화에 팀을 추가하려면 계정에 팀을 추가해주세요",
+    "CHANGE_TEAMS": "대화 담당자가 변경됨"
+  },
   "ERRORS": {
     "COMMON_ERROR": "Woot 서버에 연결할 수 없음. 나중에 다시 시도하십시오.",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "OfFLINE": "온라인에 다시 연결하려면 와이파이나 이동통신망에 연결되어야 합니다",
+    "CANNOT_FETCH": "설명 불러오는 동안 오류가 발생했습니다. 다시 시도하십시오.",
     "AUTH": "사용자 이름/암호가 잘못됨. 다시 시도하십시오.",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "NO_ACCOUNTS_MESSAGE": "모든 Chatwoot 계정에 접근 권한이 없습니다"
   },
   "SUCCESS": {
     "AUTH": "로그인 성공"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "서버 업그레이드가 필요합니다",
+    "WARNING_FOR_AGENT": "모바일 앱에 지원되지 않는 Chatwoot 서버를 사용하고 있는 것 같습니다. Chatwoot 서버를 업그레이드하려면 관리자에게 문의하세요.",
+    "WARNING_FOR_ADMIN": "모바일 앱에 지원되지 않는 Chatwoot 서버를 사용하고 있는 것 같습니다. 서버 버전 %{minimumVersion} 이상으로 업그레이드해야 합니다."
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
+    "TITLE": "나가기",
+    "SUBTITLE": "정말로 종료하시겠습니까?",
     "CANCEL": "취소",
-    "OK": "Ok"
+    "OK": "네"
   },
   "BANNER": {
     "TWILIO_WHATSAPP": {
-      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "TEXT": "다음으로 인해 형식 메시지를 사용해서만 이 대화에 답장 할 수 있습니다.",
       "HREF_TEXT": "24시간 메시지 창 제한",
       "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
     },
     "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
+      "TEXT": "다음으로 인해 답장 할 수 없습니다.",
       "HREF_TEXT": "24시간 메시지 창 제한",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }

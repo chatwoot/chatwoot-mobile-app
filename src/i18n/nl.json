@@ -14,21 +14,21 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installatie url",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "Als je een zelf gehoste Chatwoot-installatie gebruikt, voer dan de URL van jouw server in. Gebruik anders: app.chatwoot.com.",
     "URL_ERROR": "Voer een geldige URL in",
-    "URL_REQUIRED": "URL is required",
+    "URL_REQUIRED": "URL is vereist",
     "CONNECT": "Koppelen",
     "CHANGE_LANGUAGE": "Taal wijzigen",
     "ERROR": "Ongeldige installatie-url"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "Log in op je account",
+    "DESCRIPTION": "Je bent verbonden met {{baseUrl}}. Log in met je e-mailadres en wachtwoord.",
     "EMAIL": "E-mailadres",
     "PASSWORD": "Wachtwoord",
-    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_REQUIRED": "E-mail is vereist",
     "EMAIL_ERROR": "Voer een geldig e-mailadres in",
-    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_REQUIRED": "Wachtwoord vereist",
     "PASSWORD_ERROR": "Voer een geldig wachtwoord in",
     "LOGIN": "Log in",
     "FORGOT_PASSWORD": "Wachtwoord vergeten?",
@@ -47,7 +47,7 @@
     "HEADER_TITLE": "Wachtwoord opnieuw instellen",
     "TITLE": "Wachtwoord vergeten?",
     "SUB_TITLE": "Maak je geen zorgen!",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "API_SUCCESS": "Een link om je wachtwoord te resetten is naar jouw e-mailadres gestuurd"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Gesprekken",
@@ -63,14 +63,14 @@
     "TYPE_MESSAGE": "Typ een bericht",
     "TYPING": "typen",
     "ALL_CONVERSATION_LOADED": "Alle gesprekken geladen",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share conversation",
+    "ASSIGN": "Gesprek toewijzen",
+    "FILE_SIZE_LIMIT": "Het bestand overschrijdt de limiet van 5 MB",
+    "SHARE": "Deel gesprek",
     "CANCEL": "annuleren",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation",
-    "MUTE_CONVERSATION": "Mute conversation",
-    "UNMUTE_CONVERSATION": "Unmute conversation"
+    "PRIVATE_MSG_INPUT": "Dit zal alleen zichtbaar zijn voor medewerkers",
+    "UN_ASSIGN": "Toewijzing ongedaan maken",
+    "MUTE_CONVERSATION": "Demp gesprek",
+    "UNMUTE_CONVERSATION": "Dempen opheffen"
   },
   "FILTER": {
     "HEADER_TITLE": "Gespreksfilter",
@@ -88,7 +88,7 @@
     "AVAILABILITY": "Beschikbaarheid",
     "NOTIFICATION": "Notificatie voorkeuren",
     "HELP": "Helpdocumentatie",
-    "CHAT_WITH_US": "Chat with Us",
+    "CHAT_WITH_US": "Chat met ons",
     "LOG_OUT": "Afmelden",
     "SWITCH_ACCOUNT": "Switch account",
     "CHANGE_LANGUAGE": "Wijzig taal",
@@ -114,23 +114,39 @@
     "CONVERSATION_CREATE_PUSH": "Stuur pushberichten wanneer een nieuw gesprek is aangemaakt",
     "CONVERSATION_ASSIGNEE_PUSH": "Stuur pushberichten wanneer een gesprek aan mij is toegewezen",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
+    "CONVERSATION_MENTION": "Ontvang pushmeldingen wanneer je wordt genoemd in een gesprek",
     "CONVERSATION_CREATE_EMAIL": "E-mailberichten verzenden wanneer een nieuw gesprek is gemaakt",
     "CONVERSATION_ASSIGNEE_EMAIL": "E-mailberichten verzenden wanneer een gesprek aan mij is toegewezen",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Gespreksinformatie",
     "BROWSER": "Browser",
     "OPERATING_SYSTEM": "Besturingssysteem",
     "INITIATED_AT": "Geïnitieerd op",
     "INITIATED_FROM": "Geïnitieerd vanuit",
     "IP_ADDRESS": "IP-adres"
   },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact-eigenschappen"
+  },
   "CONVERSATION_ACTION": {
     "TITLE": "Acties"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Labels voor gesprekken",
+    "ADD_LABEL": "Labels toevoegen",
+    "EMPTY_LIST": "Voeg labels toe aan je account",
+    "NO_LABEL": "Geen labels toegewezen",
+    "UPDATE_LABEL": "Label succesvol bijgewerkt"
+  },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Selecteer medewerker"
+  },
+  "TEAMS": {
+    "TITLE": "Selecteer team",
+    "EMPTY": "Voeg teams toe aan je account om gesprekken aan teams toe te kunnen wijzen.",
+    "CHANGE_TEAMS": "Gespreksteam gewijzigd"
   },
   "ERRORS": {
     "COMMON_ERROR": "Kan geen verbinding maken met Woot Server, probeer het later opnieuw",
@@ -143,9 +159,9 @@
     "AUTH": "Login succesvol"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "Server-upgrade vereist",
+    "WARNING_FOR_AGENT": "Je gebruikt een niet-ondersteunde Chatwoot-server voor je mobiele app. Neem contact op met de je beheerder om de Chatwoot-server mogelijk te upgraden.",
+    "WARNING_FOR_ADMIN": "Je gebruikt een niet-ondersteunde Chatwoot-server voor je mobiele app. Upgrade naar serverversie %{minimumVersion} of hoger."
   },
   "EXIT": {
     "TITLE": "Afsluiten",
@@ -155,13 +171,13 @@
   },
   "BANNER": {
     "TWILIO_WHATSAPP": {
-      "TEXT": "You can only reply to this conversation using a template message due to ",
-      "HREF_TEXT": "24 hour message window restriction",
+      "TEXT": "Je kunt dit gesprek alleen beantwoorden met een sjabloonbericht vanwege ",
+      "HREF_TEXT": "Beperking van 24-uur berichtenvenster",
       "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
     },
     "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
-      "HREF_TEXT": "24 hour message window restriction",
+      "TEXT": "Je kunt niet reageren vanwege ",
+      "HREF_TEXT": "Beperking van 24-uur berichtenvenster",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }
   }

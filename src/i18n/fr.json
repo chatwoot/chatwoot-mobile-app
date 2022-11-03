@@ -120,17 +120,33 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Envoyer une notification par e-mail lors de la réception d'un message dans une discussion qui m'est assignée"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Informations de la conversation",
     "BROWSER": "Navigateur",
     "OPERATING_SYSTEM": "Système d'explitation",
     "INITIATED_AT": "Crée a",
     "INITIATED_FROM": "Crée depuis",
     "IP_ADDRESS": "Adresse IP"
   },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Attributs du contact"
+  },
   "CONVERSATION_ACTION": {
     "TITLE": "Actions"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Étiquettes de conversation",
+    "ADD_LABEL": "Ajouter une étiquette",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Étiquette mise à jour avec succès"
+  },
   "AGENT": {
     "TITLE": "Sélectionner un agent"
+  },
+  "TEAMS": {
+    "TITLE": "Choisis une équipe",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "L'équipe de conversation a été modifiée"
   },
   "ERRORS": {
     "COMMON_ERROR": "Impossible de se connecter au serveur Woot, veuillez réessayer ultérieurement",

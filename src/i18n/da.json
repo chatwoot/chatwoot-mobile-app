@@ -120,17 +120,33 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send e-mail notifikationer når en ny besked er oprettet i en tildelt samtale"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "Browser",
     "OPERATING_SYSTEM": "Operativsystem",
     "INITIATED_AT": "Startet fra",
     "INITIATED_FROM": "Startet fra",
     "IP_ADDRESS": "IP Address"
   },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
+  },
   "CONVERSATION_ACTION": {
     "TITLE": "Handlinger"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Samtale Etiketter",
+    "ADD_LABEL": "Add Labels",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Etiket blev opdateret"
+  },
   "AGENT": {
     "TITLE": "Select Agent"
+  },
+  "TEAMS": {
+    "TITLE": "Select Team",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Conversation team changed"
   },
   "ERRORS": {
     "COMMON_ERROR": "Kunne ikke oprette forbindelse til Woot Server, Prøv igen senere",

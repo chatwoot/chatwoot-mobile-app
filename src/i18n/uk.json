@@ -1,5 +1,5 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "Вітаємо",
   "COMMON": {
     "ERROR": "Error",
     "ERROR_TITLE": "Unexpected error occurred",
@@ -120,17 +120,33 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Інформація про бесіду",
     "BROWSER": "Браузер",
     "OPERATING_SYSTEM": "Операційна система",
     "INITIATED_AT": "Час початку",
     "INITIATED_FROM": "Initiated from",
     "IP_ADDRESS": "IP-адреса"
   },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Атрибути контакту"
+  },
   "CONVERSATION_ACTION": {
     "TITLE": "Дії"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Мітки бесіди",
+    "ADD_LABEL": "Додати мітки",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Мітку успішно оновлено"
+  },
   "AGENT": {
     "TITLE": "Select Agent"
+  },
+  "TEAMS": {
+    "TITLE": "Оберіть команду",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Команда змінена"
   },
   "ERRORS": {
     "COMMON_ERROR": "Не вдалося підключитися до Woot Server, спробуйте ще раз пізніше",

@@ -120,17 +120,33 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Отправлять email уведомления при создании нового сообщения в назначенном диалоге"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Информация о беседе",
     "BROWSER": "Браузер",
     "OPERATING_SYSTEM": "Операционная система",
     "INITIATED_AT": "Начат в",
     "INITIATED_FROM": "Начат из",
     "IP_ADDRESS": "IP адрес"
   },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Атрибуты контакта"
+  },
   "CONVERSATION_ACTION": {
     "TITLE": "Действия"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Категории Диалога",
+    "ADD_LABEL": "Добавить метки",
+    "EMPTY_LIST": "Пожалуйста, добавьте ярлыки в свой аккаунт",
+    "NO_LABEL": "Ярлыки не назначены",
+    "UPDATE_LABEL": "Категория сохранена"
+  },
   "AGENT": {
     "TITLE": "Выбрать Агента"
+  },
+  "TEAMS": {
+    "TITLE": "Выберите команду",
+    "EMPTY": "Пожалуйста, добавьте команды в свою учетную запись для назначения разговоров командам.",
+    "CHANGE_TEAMS": "Команда назначенная в беседу изменена"
   },
   "ERRORS": {
     "COMMON_ERROR": "Не удается соединиться с сервером Woot, попробуйте позже",

@@ -120,17 +120,33 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Αποστολή ειδοποίησης email όταν ένα νέο μήνυμα δημιουργείται σε συνομιλία που έχει αναληφθεί"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Πληροφορίες Συνομιλίας",
     "BROWSER": "Browser",
     "OPERATING_SYSTEM": "Λειτουργικό",
     "INITIATED_AT": "Αρχικοποίηση τις",
     "INITIATED_FROM": "Αρχικοποίηση από",
     "IP_ADDRESS": "Διεύθυνση IP"
   },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Ιδιότητες Επαφής"
+  },
   "CONVERSATION_ACTION": {
     "TITLE": "Ενέργειες"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Ετικέτες συνομιλίας",
+    "ADD_LABEL": "Προσθήκη Ετικετών",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Η ετικέτα ενημερώθηκε επιτυχώς"
+  },
   "AGENT": {
     "TITLE": "Επιλογή πράκτορα"
+  },
+  "TEAMS": {
+    "TITLE": "Επιλογή Ομάδας",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Η ομάδα συνομιλίας άλλαξε"
   },
   "ERRORS": {
     "COMMON_ERROR": "Αδυναμία σύνδεσης με τον Woot Server, Παρακαλώ προσπαθήστε αργότερα",

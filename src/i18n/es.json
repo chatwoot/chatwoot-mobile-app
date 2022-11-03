@@ -26,7 +26,7 @@
     "DESCRIPTION": "Estás conectado a {{baseUrl}}. Inicia sesión con tu dirección de correo electrónico y contraseña.",
     "EMAIL": "Email",
     "PASSWORD": "Contraseña",
-    "EMAIL_REQUIRED": "El Email es requerido",
+    "EMAIL_REQUIRED": "El email es requerido",
     "EMAIL_ERROR": "Introduce un email válido",
     "PASSWORD_REQUIRED": "Contraseña requerida",
     "PASSWORD_ERROR": "Introduce una contraseña válida",
@@ -80,8 +80,8 @@
     "RESOLVED": "Resuelto",
     "BOT": "Bot",
     "SUBMIT": "Enviar",
-    "PENDING": "Pendiente",
-    "SNOOZED": "Pospuesto"
+    "PENDING": "En espera",
+    "SNOOZED": "Postpuestas"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Preferencias",
@@ -120,17 +120,33 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Enviar notificaciones por email cuando se crea un nuevo mensaje en una conversación asignada"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Información de la conversación",
     "BROWSER": "Navegador",
     "OPERATING_SYSTEM": "Sistema operativo",
     "INITIATED_AT": "Iniciado a las",
     "INITIATED_FROM": "Iniciado desde",
     "IP_ADDRESS": "Dirección IP"
   },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Atributos de contacto"
+  },
   "CONVERSATION_ACTION": {
     "TITLE": "Acciones"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Etiquetas de conversación",
+    "ADD_LABEL": "Añadir etiquetas",
+    "EMPTY_LIST": "Por favor, añade etiquetas a tu cuenta",
+    "NO_LABEL": "No hay etiquetas asignadas",
+    "UPDATE_LABEL": "Etiqueta actualizada correctamente"
+  },
   "AGENT": {
     "TITLE": "Seleccionar agente"
+  },
+  "TEAMS": {
+    "TITLE": "Seleccionar equipo",
+    "EMPTY": "Por favor, agregue equipos a su cuenta para asignar conversaciones a los equipos.",
+    "CHANGE_TEAMS": "Equipo de conversación cambiado"
   },
   "ERRORS": {
     "COMMON_ERROR": "No se pudo conectar al servidor Woot, por favor inténtalo de nuevo más tarde",
@@ -160,7 +176,7 @@
       "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
     },
     "FACEBOOK": {
-      "TEXT": "No puede responder debido a ",
+      "TEXT": "No puedes responder debido a ",
       "HREF_TEXT": "Restricción de la ventana de mensajes de 24 horas",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }

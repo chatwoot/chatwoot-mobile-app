@@ -120,17 +120,33 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "إرسال إشعارات البريد الإلكتروني عند إنشاء رسالة جديدة في محادثة موكلة"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "معلومات المحادثة",
     "BROWSER": "المتصفح",
     "OPERATING_SYSTEM": "نظام التشغيل",
     "INITIATED_AT": "بدأت في",
     "INITIATED_FROM": "بدأت من",
     "IP_ADDRESS": "عنوان IP"
   },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "سمات جهة الاتصال"
+  },
   "CONVERSATION_ACTION": {
     "TITLE": "الإجراءات"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "وسوم المحادثة",
+    "ADD_LABEL": "اضافة تصنيف جديد",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "تم تحديث الوسم بنجاح"
+  },
   "AGENT": {
     "TITLE": "اختر وكيل"
+  },
+  "TEAMS": {
+    "TITLE": "اختيار فريق",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "تم تغيير فريق المحادثة"
   },
   "ERRORS": {
     "COMMON_ERROR": "تعذر الاتصال بخادم Chatwoot، الرجاء المحاولة مرة أخرى لاحقاً",

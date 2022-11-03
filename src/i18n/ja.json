@@ -120,17 +120,33 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "割り当てられた会話で新しいメッセージが作成されたときにメールで通知を送信します"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "ブラウザ",
     "OPERATING_SYSTEM": "OS",
     "INITIATED_AT": "開始場所",
     "INITIATED_FROM": "開始元",
     "IP_ADDRESS": "IP Address"
   },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
+  },
   "CONVERSATION_ACTION": {
     "TITLE": "操作"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "会話のラベル",
+    "ADD_LABEL": "Add Labels",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "ラベルが正常に更新されました"
+  },
   "AGENT": {
     "TITLE": "Select Agent"
+  },
+  "TEAMS": {
+    "TITLE": "Select Team",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Conversation team changed"
   },
   "ERRORS": {
     "COMMON_ERROR": "Woot Serverに接続できませんでした。後でもう一度お試しください。",

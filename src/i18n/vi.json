@@ -120,17 +120,33 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Gửi thông báo email khi có một tin nhắn mới được tạo trong cuộc trò chuyện được phân công"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Thông tin cuộc trò chuyện",
     "BROWSER": "Trình duyệt",
     "OPERATING_SYSTEM": "Hệ điều hành",
     "INITIATED_AT": "Bắt đầu lúc",
     "INITIATED_FROM": "Bắt đầu từ",
     "IP_ADDRESS": "Địa chỉ IP"
   },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Thuộc tính của liên hệ"
+  },
   "CONVERSATION_ACTION": {
     "TITLE": "Hành động"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Nhãn hội thoại",
+    "ADD_LABEL": "Thêm nhãn",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Nhãn được cập nhật thành công"
+  },
   "AGENT": {
     "TITLE": "Chọn đại lý"
+  },
+  "TEAMS": {
+    "TITLE": "Chọn nhóm",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Nhóm của cuộc trò chuyện đã được thay đổi"
   },
   "ERRORS": {
     "COMMON_ERROR": "Không thể kết nối với Máy chủ Woot, Vui lòng thử lại sau",

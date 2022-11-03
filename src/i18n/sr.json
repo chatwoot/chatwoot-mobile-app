@@ -120,17 +120,33 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "Browser",
     "OPERATING_SYSTEM": "Operating System",
     "INITIATED_AT": "Initiated at",
     "INITIATED_FROM": "Initiated from",
     "IP_ADDRESS": "IP Address"
   },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
+  },
   "CONVERSATION_ACTION": {
     "TITLE": "Actions"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Conversation Labels",
+    "ADD_LABEL": "Add Labels",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Label updated successfully"
+  },
   "AGENT": {
     "TITLE": "Select Agent"
+  },
+  "TEAMS": {
+    "TITLE": "Select Team",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Conversation team changed"
   },
   "ERRORS": {
     "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",

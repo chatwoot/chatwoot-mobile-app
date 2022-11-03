@@ -1,167 +1,183 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "欢迎",
   "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "關閉"
+    "ERROR": "错误",
+    "ERROR_TITLE": "发生了意外错误",
+    "REPORT_MESSAGE": "我们已经上报此错误，请关闭并重启应用。",
+    "CLOSE": "关闭"
   },
   "FOOTER": {
-    "HOME": "首頁",
-    "CONVERSATION": "對話",
-    "NOTIFICATION": "通知",
-    "SETTINGS": "設定"
+    "HOME": "主页",
+    "CONVERSATION": "会话",
+    "NOTIFICATION": "消息通知",
+    "SETTINGS": "设置"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
-    "URL_ERROR": "Enter a valid URL",
+    "ENTER_URL": "安装链接",
+    "DESCRIPTION": "如果您正在使用自己托管的Chatwoot 安装，请输入您的服务器URL。否则，请使用 app.chatwoot.com。",
+    "URL_ERROR": "输入有效网址",
     "URL_REQUIRED": "URL is required",
-    "CONNECT": "連接",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "CONNECT": "连接",
+    "CHANGE_LANGUAGE": "更改语言",
+    "ERROR": "无效的安装链接"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "登录到您的帐户",
+    "DESCRIPTION": "您已连接到 {{baseUrl}}。使用您的电子邮件地址和密码登录。",
     "EMAIL": "Email",
-    "PASSWORD": "密碼",
+    "PASSWORD": "密码",
     "EMAIL_REQUIRED": "Email is required",
-    "EMAIL_ERROR": "Enter a valid email",
+    "EMAIL_ERROR": "输入有效的电子邮件",
     "PASSWORD_REQUIRED": "Password is required",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
-    "FORGOT_PASSWORD": "忘記密碼了？",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "建立新帳戶",
-    "SETTINGS": "設定",
-    "CHANGE_LANGUAGE": "Change language",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "PASSWORD_ERROR": "输入有效的密码",
+    "LOGIN": "登录",
+    "FORGOT_PASSWORD": "忘记密码？",
+    "RESET_HERE": "重置",
+    "NO_ACCOUNT": "没有注册？",
+    "CREATE_ACCOUNT": "注册新用户",
+    "SETTINGS": "设置",
+    "CHANGE_LANGUAGE": "更改语言",
+    "TERMS": "服务条款",
+    "CHANGE_URL": "更改网址"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "請輸入您的電子信箱",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back",
+    "EMAIL": "请输入 Email 地址",
+    "EMAIL_ERROR": "输入有效的 Email",
+    "RESET_HERE": "重置密码",
+    "HEADER_TITLE": "重置密码",
+    "TITLE": "忘记密码？",
+    "SUB_TITLE": "别担心，我们会支持你的",
     "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
-    "DEFAULT_HEADER_TITLE": "對話",
+    "DEFAULT_HEADER_TITLE": "会话",
     "MINE": "我的",
-    "UN_ASSIGNED": "未指派的",
-    "ALL": "所有的",
-    "EMPTY": "這個群組中無有效對話",
-    "PICTURE_CONTENT": "圖片訊息",
+    "UN_ASSIGNED": "未分配的",
+    "ALL": "全部",
+    "EMPTY": "此群组中没有活动的会话。",
+    "PICTURE_CONTENT": "图片消息",
     "ATTACHMENT_CONTENT": "附件",
-    "DOWNLOAD": "下載",
-    "TODAY": "今天",
-    "YESTERDAY": "昨天",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "DOWNLOAD": "下载",
+    "TODAY": "今日",
+    "YESTERDAY": "昨日",
+    "TYPE_MESSAGE": "输入消息",
+    "TYPING": "正在输入",
+    "ALL_CONVERSATION_LOADED": "已加载所有会话",
+    "ASSIGN": "重新打开会话",
+    "FILE_SIZE_LIMIT": "文件超过 5MB 附件限制",
     "SHARE": "Share conversation",
     "CANCEL": "取消",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation",
+    "PRIVATE_MSG_INPUT": "此操作仅对代理人可见",
+    "UN_ASSIGN": "取消分配对话",
     "MUTE_CONVERSATION": "Mute conversation",
     "UNMUTE_CONVERSATION": "Unmute conversation"
   },
   "FILTER": {
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
-    "OPEN": "正在進行的\n",
-    "RESOLVED": "已解決",
-    "BOT": "機器人",
-    "SUBMIT": "送出",
-    "PENDING": "待處理",
-    "SNOOZED": "Snoozed"
+    "HEADER_TITLE": "会话过滤器",
+    "CHOOSE_INBOX": "选择收件箱",
+    "CHOOSE_STATUS": "会话状态",
+    "OPEN": "打开",
+    "RESOLVED": "已解决",
+    "BOT": "机器人",
+    "SUBMIT": "提交",
+    "PENDING": "等待中",
+    "SNOOZED": "已关闭"
   },
   "SETTINGS": {
-    "HEADER_TITLE": "設定",
-    "AVAILABILITY": "有效的",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "退出登入",
-    "SWITCH_ACCOUNT": "切換帳戶",
-    "CHANGE_LANGUAGE": "Change Language",
-    "SUBMIT": "送出"
+    "HEADER_TITLE": "设置",
+    "AVAILABILITY": "可用性",
+    "NOTIFICATION": "通知设置",
+    "HELP": "帮助文档",
+    "CHAT_WITH_US": "与我们聊天",
+    "LOG_OUT": "注销",
+    "SWITCH_ACCOUNT": "切换账户",
+    "CHANGE_LANGUAGE": "更改语言",
+    "SUBMIT": "提交"
   },
   "NOTIFICATION": {
-    "HEADER_TITLE": "通知",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
+    "HEADER_TITLE": "消息通知",
+    "EMPTY": "还没有消息通知",
+    "EMPTY_MORE_TEXT": "一旦你收到通知，它们将出现在这里。",
+    "ALL_NOTIFICATION_LOADED": "所有通知已加载",
+    "MARK_ALL": "全部标记为已读",
     "CANCEL": "取消"
   },
   "AVAILABILITY": {
-    "ONLINE": "線上的",
+    "ONLINE": "在线",
     "BUSY": "忙碌中",
-    "OFFLINE": "離線的"
+    "OFFLINE": "离线"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
+    "TITLE": "通知设置",
     "EMAIL": "Email",
-    "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "建立新對話時發送推送通知",
-    "CONVERSATION_ASSIGNEE_PUSH": "當對話被分配給我時發送推送通知",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "當被指派的對話中有新訊息時以推播通知",
-    "CONVERSATION_MENTION": "當你在對話中被提及時以推播通知",
-    "CONVERSATION_CREATE_EMAIL": "當對話分配給我時發送電子信箱通知",
-    "CONVERSATION_ASSIGNEE_EMAIL": "當對話分配給我時發送電子信箱通知",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "當被指派的對話中有新訊息時以 Email 通知"
+    "PUSH": "推送",
+    "CONVERSATION_CREATE_PUSH": "创建新会话时发送推送通知",
+    "CONVERSATION_ASSIGNEE_PUSH": "当会话分配给我时发送推送通知",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "在已分配的会话中创建新消息时发送推送通知",
+    "CONVERSATION_MENTION": "当您在对话中被提及时发送推送通知",
+    "CONVERSATION_CREATE_EMAIL": "创建新会话时发送电子邮件通知",
+    "CONVERSATION_ASSIGNEE_EMAIL": "当会话分配给我时发送电子邮件通知",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "在已分配的会话中创建新消息时发送电子邮件通知"
   },
   "CONVERSATION_DETAILS": {
-    "BROWSER": "瀏覽器",
-    "OPERATING_SYSTEM": "作業系统",
-    "INITIATED_AT": "發起於",
-    "INITIATED_FROM": "發起自：",
-    "IP_ADDRESS": "IP 位置"
+    "TITLE": "Conversation Information",
+    "BROWSER": "浏览器",
+    "OPERATING_SYSTEM": "操作系统",
+    "INITIATED_AT": "发起于",
+    "INITIATED_FROM": "发起自",
+    "IP_ADDRESS": "IP 地址"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "操作"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "对话标记",
+    "ADD_LABEL": "添加标签",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "标签已成功更新"
+  },
   "AGENT": {
-    "TITLE": "選擇客服"
+    "TITLE": "选择代理"
+  },
+  "TEAMS": {
+    "TITLE": "Select Team",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Conversation team changed"
   },
   "ERRORS": {
-    "COMMON_ERROR": "無法連接伺服器，請稍後再試",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
-    "AUTH": "用户名/密碼不正確。請重試",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "COMMON_ERROR": "无法连接到服务器，请稍后再试",
+    "OfFLINE": "您必须连接到 Wi-Fi 或蜂窝网络才能重新上线。",
+    "CANNOT_FETCH": "获取信息时出现错误，请重试",
+    "AUTH": "用户名 / 密码不正确。请重试",
+    "NO_ACCOUNTS_MESSAGE": "您无权访问任何账户"
   },
   "SUCCESS": {
-    "AUTH": "登入成功"
+    "AUTH": "登录成功"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "需要更新服务器",
+    "WARNING_FOR_AGENT": "您的手机应用似乎正在使用不受支持的Chatwoot 服务器。请联系您的管理员升级您的Chatwoot 服务器。",
+    "WARNING_FOR_ADMIN": "您的手机应用似乎正在使用不支持的Chatwoot 服务器。需要升级到服务器版本 %{minimumVersion} 或更高版本。"
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
+    "TITLE": "退出",
+    "SUBTITLE": "您确定要退出吗？",
     "CANCEL": "取消",
-    "OK": "Ok"
+    "OK": "确定"
   },
   "BANNER": {
     "TWILIO_WHATSAPP": {
       "TEXT": "You can only reply to this conversation using a template message due to ",
-      "HREF_TEXT": "24 小時消息視窗限制",
+      "HREF_TEXT": "24 小时消息窗口限制",
       "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
     },
     "FACEBOOK": {
       "TEXT": "You cannot reply due to ",
-      "HREF_TEXT": "24 小時消息視窗限制",
+      "HREF_TEXT": "24 小时消息窗口限制",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }
   }

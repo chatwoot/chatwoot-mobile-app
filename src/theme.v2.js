@@ -4,6 +4,8 @@ export const palette = {
   background: '#FFFFFF',
   backgroundLight: '#F8FAFC',
   primaryColor: '#1F93FF',
+
+  loaderContentBackground: '#E4EBF1',
 };
 
 export const spacing = {
@@ -68,6 +70,9 @@ export const DarkTheme = {
     ...LightTheme.colors,
     background: '#0D1721',
     backgroundLight: '#1F2D3D',
+    primaryColor: '#1F93FF',
+
+    loaderContentBackground: '#314155',
   },
   spacing,
   fontSize,

@@ -8,6 +8,7 @@ function loadStories() {
   require('../src/components/Icon/Icon.stories');
   require('../src/components/Pressable/Pressable.stories');
   require('../src/components/Text/Text.stories');
+  require('../src/screens/Conversation/components/ConversationItemLoader/ConversationItemLoader.stories');
 }
 
 const stories = [
@@ -15,6 +16,7 @@ const stories = [
   '../src/components/Icon/Icon.stories',
   '../src/components/Pressable/Pressable.stories',
   '../src/components/Text/Text.stories',
+  '../src/screens/Conversation/components/ConversationItemLoader/ConversationItemLoader.stories',
 ];
 
 module.exports = {

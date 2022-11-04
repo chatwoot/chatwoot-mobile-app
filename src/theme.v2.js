@@ -3,7 +3,21 @@ import { DefaultTheme } from '@react-navigation/native';
 export const palette = {
   background: '#FFFFFF',
   backgroundLight: '#F8FAFC',
+  backgroundDark: '#E4EBF1',
+
   primaryColor: '#1F93FF',
+
+  textLight: '#446888',
+  text: '#37546D',
+  textDark: '#293F51',
+
+  borderDark: '#37546D',
+  border: '#C9D7E3',
+  borderLight: '#EBF0F5',
+
+  iconDark: '#293F51',
+  icon: '#37546D',
+  iconLight: '#446888',
 };
 
 export const spacing = {
@@ -68,6 +82,21 @@ export const DarkTheme = {
     ...LightTheme.colors,
     background: '#0D1721',
     backgroundLight: '#1F2D3D',
+    backgroundDark: '#314155',
+
+    primaryColor: '#1F93FF',
+
+    textLight: '#C9D7E3',
+    text: '#F1F5F8',
+    textDark: '#F8FAFC',
+
+    borderDark: '#EBF0F5',
+    border: '#C9D7E3',
+    borderLight: '#293F51',
+
+    iconDark: '#F8FAFC',
+    icon: '#F1F5F8',
+    iconLight: '#C9D7E3',
   },
   spacing,
   fontSize,

@@ -6,6 +6,20 @@ export const palette = {
   backgroundDark: '#E4EBF1',
 
   primaryColor: '#1F93FF',
+  primaryColorLight: '#C2E1FF',
+
+  secondaryColor: '#5d7592',
+  successColor: '#44CE4B',
+  violetColor: '#AC52FF',
+
+  dangerColor: '#ff382d',
+  dangerColorLight: '#FFCCD1',
+
+  warningColor: '#ffc532',
+  warningColorLight: '#FFEDBF',
+
+  colorWhite: '#FFFFFF',
+  colorBlack: '#000000',
 
   textLight: '#446888',
   text: '#37546D',
@@ -85,6 +99,20 @@ export const DarkTheme = {
     backgroundDark: '#314155',
 
     primaryColor: '#1F93FF',
+    primaryColorLight: '#1976CC',
+
+    secondaryColor: '#5d7592',
+    successColor: '#00C41D',
+    violetColor: '#AC52FF',
+
+    dangerColor: '#ff382d',
+    dangerColorLight: '#FFCCD1',
+
+    warningColor: '#ffc532',
+    warningColorLight: '#FFEDBF',
+
+    colorWhite: '#FFFFFF',
+    colorBlack: '#000000',
 
     textLight: '#C9D7E3',
     text: '#F1F5F8',

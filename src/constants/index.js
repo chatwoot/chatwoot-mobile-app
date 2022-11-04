@@ -8,6 +8,7 @@ export const CONVERSATION_STATUS = {
   BOT: 'bot',
   PENDING: 'pending',
   SNOOZED: 'snoozed',
+  ALL: 'all',
 };
 
 export const MESSAGE_TYPES = {

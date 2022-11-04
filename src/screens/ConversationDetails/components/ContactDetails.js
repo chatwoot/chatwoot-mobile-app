@@ -35,12 +35,11 @@ const propTypes = {
 const ContactDetails = ({ type, value, iconName, eva: { style, theme } }) => {
   const onClickOpen = () => {
     if (type === 'phoneNumber') {
-      openNumber(value);
+      openNumber({ phoneNumber: value });
     } else {
       return;
     }
   };
-
   return (
     <React.Fragment>
       <TouchableOpacity>

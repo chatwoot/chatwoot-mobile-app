@@ -40,6 +40,6 @@ export const openURL = ({ URL }) => {
   }
 };
 
-export const openNumber = ({ Number }) => {
-  Linking.openURL(`tel:${Number}`);
+export const openNumber = ({ phoneNumber }) => {
+  Linking.openURL(`tel:${phoneNumber}`);
 };

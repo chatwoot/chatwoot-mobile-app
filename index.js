@@ -8,7 +8,7 @@ import App from './src/app';
 
 let RegisteredApp = App;
 // Comment this line if you don't want to use Storybook
-RegisteredApp = __DEV__ ? require('./storybook').default : App;
+// RegisteredApp = __DEV__ ? require('./storybook').default : App;
 
 AppRegistry.registerComponent(appName, () => RegisteredApp);
 

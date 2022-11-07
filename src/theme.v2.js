@@ -36,6 +36,7 @@ export const palette = {
 
 export const spacing = {
   zero: 0,
+  tiny: 2,
   micro: 4,
   smaller: 8,
   half: 12,

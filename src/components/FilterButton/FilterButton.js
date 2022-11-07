@@ -17,7 +17,7 @@ const propTypes = {
 };
 
 const createStyles = theme => {
-  const { colors } = theme;
+  const { colors, spacing, borderRadius } = theme;
   return StyleSheet.create({
     container: {
       flexDirection: 'row',
@@ -25,18 +25,18 @@ const createStyles = theme => {
       justifyContent: 'center',
       borderColor: colors.borderLight,
       borderWidth: 0.2,
-      paddingHorizontal: 12,
-      paddingVertical: 6,
-      borderRadius: 8,
+      paddingHorizontal: spacing.half,
+      paddingVertical: spacing.micro,
+      borderRadius: borderRadius.small,
       maxWidth: 240,
       width: 'auto',
-      marginRight: 6,
+      marginRight: spacing.micro,
     },
     icon: {
-      marginRight: 4,
+      marginRight: spacing.micro,
     },
     arrowDownIcon: {
-      marginLeft: 4,
+      marginLeft: spacing.micro,
     },
   });
 };

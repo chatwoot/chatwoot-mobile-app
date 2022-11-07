@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
-import Text from './Text';
+import Icon from 'components/Icon/Icon';
+import Text from 'components/Text/Text';
 import { View } from 'react-native';
-import Icon from 'src/components/Icon';
 import { StyleSheet } from 'react-native';
 // import { getInboxIconByType } from 'helpers/inbox';
 const createStyles = theme => {

@@ -10,6 +10,7 @@ function loadStories() {
   require('../src/components/Text/Text.stories');
   require('../src/screens/Conversation/components/ConversationItemLoader/ConversationItemLoader.stories');
   require('../src/components/InboxName/InboxName.stories');
+  require('../src/components/Empty/Empty.stories');
 }
 
 const stories = [
@@ -19,6 +20,7 @@ const stories = [
   '../src/components/Text/Text.stories',
   '../src/screens/Conversation/components/ConversationItemLoader/ConversationItemLoader.stories',
   '../src/components/InboxName/InboxName.stories',
+  '../src/components/Empty/Empty.stories',
 ];
 
 module.exports = {

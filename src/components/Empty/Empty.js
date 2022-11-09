@@ -51,7 +51,7 @@ const Empty = ({ image, title, subTitle }) => {
   return (
     <View style={styles.emptyView}>
       <View style={styles.logoView}>
-        <Image style={styles.image} source={image} alt="empty-image" />
+        <Image style={styles.image} source={image} accessible accessibilityLabel="empty-image" />
       </View>
       <View style={styles.titleView}>
         <Text sm color={colors.textLight} style={styles.titleText}>

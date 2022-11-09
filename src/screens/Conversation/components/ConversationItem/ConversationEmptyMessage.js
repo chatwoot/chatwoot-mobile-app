@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import images from 'constants/images';
 import Empty from 'components/Empty/Empty';
+import i18n from 'i18n';
 const createStyles = theme => ({
   tabContainer: {
     paddingBottom: 120,
@@ -16,10 +17,7 @@ const ConversationEmptyMessage = () => {
 
   return (
     <View style={styles.tabContainer}>
-      <Empty
-        image={images.emptyConversations}
-        title="There are no active conversations in this group."
-      />
+      <Empty image={images.emptyConversations} title={i18n.t('CONVERSATION.EMPTY')} />
     </View>
   );
 };

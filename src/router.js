@@ -140,7 +140,7 @@ const App = ({ eva: { style } }) => {
     _handleOpenURL({ url: linkedURL });
   }
 
-  const isMobileV2 = false;
+  const isMobileV2 = true;
 
   const conversationScreen = isMobileV2 ? ConversationScreen : ConversationList;
 

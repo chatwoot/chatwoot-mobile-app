@@ -2,8 +2,8 @@ import React, { Fragment, useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import Icon from 'components/Icon';
-import Text from 'components/Text';
+import Icon from 'components/Icon/Icon';
+import Text from 'components/Text/Text';
 import { MESSAGE_TYPES } from 'constants';
 
 import { getTextSubstringWithEllipsis } from 'helpers/TextSubstring';

@@ -142,6 +142,13 @@ const conversationSlice = createSlice({
 });
 export const conversationSelector = conversationAdapter.getSelectors(state => state.conversations);
 
+export const selectConversationMeta = state => state.conversations.meta;
+export const selectAllConversationFetched = state => state.conversations.isAllConversationsFetched;
+export const selectConversationStatus = state => state.conversations.conversationStatus;
+export const selectAssigneeType = state => state.conversations.assigneeType;
+export const selectActiveInbox = state => state.conversations.currentInbox;
+export const selectMessagesLoading = state => state.conversations.loadingMessages;
+export const selectAllMessagesFetched = state => state.conversations.isAllMessagesFetched;
 export const selectors = {
   getFilteredConversations: createDraftSafeSelector(
     [conversationSelector.selectAll, (_, filters) => filters],

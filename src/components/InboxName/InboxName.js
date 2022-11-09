@@ -2,10 +2,10 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
 import Icon from 'components/Icon/Icon';
-import Text from 'components/Text/Text';
+import { Text } from 'components';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native';
-// import { getInboxIconByType } from 'helpers/inbox';
+import { getInboxIconByType } from 'helpers/inbox';
 const createStyles = theme => {
   const { spacing } = theme;
   return StyleSheet.create({
@@ -26,8 +26,7 @@ const propTypes = {
 };
 
 const InboxName = ({ inboxName, phoneNumber, channelType }) => {
-  // const iconName = getInboxIconByType({ channelType, phoneNumber });
-  const iconName = '';
+  const iconName = getInboxIconByType({ channelType, phoneNumber });
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;

@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
-import { View, Pressable, StyleSheet, Animated, Platform } from 'react-native';
+import { View, Pressable, StyleSheet, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
-// import { useSelector } from 'react-redux';
-import Icon from 'components/Icon/Icon';
-import Text from 'components/Text/Text';
+import { useSelector } from 'react-redux';
+import { Text } from 'components';
 import UserAvatar from 'components/UserAvatar';
 import InboxName from 'components/InboxName/InboxName';
 import { getTextSubstringWithEllipsis } from 'helpers/TextSubstring';
@@ -39,11 +38,11 @@ const propTypes = {
   onPress: PropTypes.func,
 };
 
-const ConversationItem = ({ inboxes, item, onPress }) => {
+const ConversationItem = ({ item, onPress }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
-  // const inboxes = useSelector(inboxesSelector.selectAll);
+  const inboxes = useSelector(state => state.inbox.data);
   const {
     meta: {
       sender: { name, thumbnail, availability_status: availabilityStatus },
@@ -53,7 +52,7 @@ const ConversationItem = ({ inboxes, item, onPress }) => {
     messages,
     inbox_id: inboxId,
     id,
-    status,
+    // status,
   } = item;
 
   const lastMessage = findLastMessage({ messages });
@@ -70,107 +69,7 @@ const ConversationItem = ({ inboxes, item, onPress }) => {
   const typingUser = '';
   const unReadCount = useMemo(() => getUnreadCount(item), [item]);
 
-  // const renderRightActions = (progress, dragX) => {
-  //   const trans = dragX.interpolate({
-  //     inputRange: [0, 50, 100, 101],
-  //     outputRange: [0, 0, 0, 1],
-  //   });
-  //   return (
-  //     <RectButton style={styles.leftSwipeAction}>
-  //       {status === CONVERSATION_STATUS.OPEN && (
-  //         <Animated.Text
-  //           style={[
-  //             styles.resolveAction,
-  //             {
-  //               transform: [{ translateX: trans }],
-  //             },
-  //           ]}>
-  //           <Pressable
-  //             style={({ pressed }) => [
-  //               {
-  //                 opacity: pressed ? 0.6 : 1,
-  //               },
-  //               styles.actionView,
-  //             ]}>
-  //             <Icon color={colors.colorWhite} icon="checkmark-solid" size={24} />
-  //             <Text sm semiBold color={colors.colorWhite} style={styles.swipeActionText}>
-  //               Resolve
-  //             </Text>
-  //           </Pressable>
-  //         </Animated.Text>
-  //       )}
-  //       {status === CONVERSATION_STATUS.RESOLVED && (
-  //         <Animated.Text
-  //           style={[
-  //             styles.reopenAction,
-  //             {
-  //               transform: [{ translateX: trans }],
-  //             },
-  //           ]}>
-  //           <Pressable
-  //             style={({ pressed }) => [
-  //               {
-  //                 opacity: pressed ? 0.6 : 1,
-  //               },
-  //               styles.actionView,
-  //             ]}>
-  //             <Icon color={colors.colorWhite} icon="arrow-redo-outline" size={24} />
-  //             <Text sm semiBold color={colors.colorWhite} style={styles.swipeActionText}>
-  //               Reopen
-  //             </Text>
-  //           </Pressable>
-  //         </Animated.Text>
-  //       )}
-  //       {(status === CONVERSATION_STATUS.PENDING || status === CONVERSATION_STATUS.SNOOZED) && (
-  //         <Animated.Text
-  //           style={[
-  //             styles.pendingOpenAction,
-  //             {
-  //               transform: [{ translateX: trans }],
-  //             },
-  //           ]}>
-  //           <Pressable
-  //             style={({ pressed }) => [
-  //               {
-  //                 opacity: pressed ? 0.6 : 1,
-  //               },
-  //               styles.actionView,
-  //               styles.openActionView,
-  //             ]}>
-  //             <Icon color={colors.colorWhite} icon="person-outline" size={22} />
-  //             <Text sm semiBold color={colors.colorWhite} style={styles.swipeActionText}>
-  //               Open
-  //             </Text>
-  //           </Pressable>
-  //         </Animated.Text>
-  //       )}
-  //       <Animated.Text
-  //         style={[
-  //           styles.moreAction,
-  //           {
-  //             transform: [{ translateX: trans }],
-  //           },
-  //         ]}>
-  //         <Pressable
-  //           style={({ pressed }) => [
-  //             {
-  //               opacity: pressed ? 0.6 : 1,
-  //             },
-  //             styles.actionView,
-  //             styles.moreActionView,
-  //           ]}>
-  //           <Icon color={colors.colorWhite} icon="more-horizontal" size={24} />
-  //           <Text sm semiBold color={colors.colorWhite} style={styles.swipeActionText}>
-  //             More
-  //           </Text>
-  //         </Pressable>
-  //       </Animated.Text>
-  //     </RectButton>
-  //   );
-  // };
-
   return (
-    // <Swipeable renderRightActions={renderRightActions}>
     <View>
       <Pressable
         activeOpacity={0.5}
@@ -255,7 +154,6 @@ const ConversationItem = ({ inboxes, item, onPress }) => {
           </View>
         </View>
       </Pressable>
-      {/* </Swipeable> */}
     </View>
   );
 };

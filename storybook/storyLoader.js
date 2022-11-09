@@ -11,6 +11,7 @@ function loadStories() {
   require('../src/screens/Conversation/components/ConversationItemLoader/ConversationItemLoader.stories');
   require('../src/components/InboxName/InboxName.stories');
   require('../src/components/Empty/Empty.stories');
+  require('../src/components/FilterButton/FilterButton.stories');
 }
 
 const stories = [
@@ -21,6 +22,7 @@ const stories = [
   '../src/screens/Conversation/components/ConversationItemLoader/ConversationItemLoader.stories',
   '../src/components/InboxName/InboxName.stories',
   '../src/components/Empty/Empty.stories',
+  '../src/components/FilterButton/FilterButton.stories'
 ];
 
 module.exports = {

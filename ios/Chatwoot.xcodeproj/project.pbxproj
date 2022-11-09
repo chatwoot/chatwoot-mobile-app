@@ -19,6 +19,7 @@
 		64D9625575F77BD47C5851DF /* libPods-Chatwoot-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2B1FFDA6E6343B47BC9E453 /* libPods-Chatwoot-tvOS.a */; };
 		7E685E9D9DDC49E9BA58EB30 /* Inter-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1657932CABA047399278A2E6 /* Inter-SemiBold.otf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		8384439D29152FEE00A205F0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8384439C29152FEE00A205F0 /* GoogleService-Info.plist */; };
 		83956CC224F976FB0003A30E /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83956CC124F976FB0003A30E /* SplashScreen.storyboard */; };
 		8E2A250F569B47F086A90867 /* Inter-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 14CA8ED9FD7F4A98A9489302 /* Inter-Regular.otf */; };
 		8FBF7560704C5C2D98655077 /* libPods-Chatwoot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BA2DA5BE3430A90F49C925 /* libPods-Chatwoot.a */; };
@@ -26,7 +27,6 @@
 		D73749B5F7771D7A9E574692 /* libPods-Chatwoot-ChatwootTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1201C7BD7FF2C210E62E4E2D /* libPods-Chatwoot-ChatwootTests.a */; };
 		D9DE12D61C5641488B613496 /* Inter-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0AD98FB660BD40A4B0BE2144 /* Inter-Medium.otf */; };
 		F18A87F7463F4EFB8421C4C2 /* Inter-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5A455B5B324B4ED38F4F3D6E /* Inter-Light.otf */; };
-		FA49FD30291390D400F8AE98 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA49FD2F291390D400F8AE98 /* GoogleService-Info.plist */; };
 		FF3996F6DCE949368ACEA001 /* Inter-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 94E7ACE34E06465C9425AC50 /* Inter-Italic.otf */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +72,7 @@
 		5A455B5B324B4ED38F4F3D6E /* Inter-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Light.otf"; path = "../assets/Inter-Light.otf"; sourceTree = "<group>"; };
 		68C4886F5FE94640BB89B6C9 /* Inter-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Bold.otf"; path = "../assets/Inter-Bold.otf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Chatwoot/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8384439C29152FEE00A205F0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		83956CC124F976FB0003A30E /* SplashScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		83D084B924F942850025AECA /* Chatwoot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Chatwoot.entitlements; path = Chatwoot/Chatwoot.entitlements; sourceTree = "<group>"; };
 		94E7ACE34E06465C9425AC50 /* Inter-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Italic.otf"; path = "../assets/Inter-Italic.otf"; sourceTree = "<group>"; };
@@ -82,7 +83,6 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F2B1FFDA6E6343B47BC9E453 /* libPods-Chatwoot-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Chatwoot-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FA49FD2F291390D400F8AE98 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Library/Group Containers/group.com.apple.notes/Accounts/19EB1099-070F-4230-A22D-1D51CD35A416/Media/92C08D38-DA14-4B2B-BA00-B2B24B833388/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FA66930C47225DB1493DF895 /* Pods-Chatwoot-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatwoot-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Chatwoot-tvOS/Pods-Chatwoot-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -205,7 +205,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				FA49FD2F291390D400F8AE98 /* GoogleService-Info.plist */,
+				8384439C29152FEE00A205F0 /* GoogleService-Info.plist */,
 				83956CC124F976FB0003A30E /* SplashScreen.storyboard */,
 				13B07FAE1A68108700A75B9A /* Chatwoot */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -390,7 +390,7 @@
 				FF3996F6DCE949368ACEA001 /* Inter-Italic.otf in Resources */,
 				F18A87F7463F4EFB8421C4C2 /* Inter-Light.otf in Resources */,
 				D9DE12D61C5641488B613496 /* Inter-Medium.otf in Resources */,
-				FA49FD30291390D400F8AE98 /* GoogleService-Info.plist in Resources */,
+				8384439D29152FEE00A205F0 /* GoogleService-Info.plist in Resources */,
 				8E2A250F569B47F086A90867 /* Inter-Regular.otf in Resources */,
 				7E685E9D9DDC49E9BA58EB30 /* Inter-SemiBold.otf in Resources */,
 			);
@@ -791,14 +791,14 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 186;
+				CURRENT_PROJECT_VERSION = 187;
 				DEVELOPMENT_TEAM = L7YLMN4634;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = Chatwoot/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.6.16;
+				MARKETING_VERSION = 1.6.17;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -825,13 +825,13 @@
 				CODE_SIGN_ENTITLEMENTS = Chatwoot/Chatwoot.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 186;
+				CURRENT_PROJECT_VERSION = 187;
 				DEVELOPMENT_TEAM = L7YLMN4634;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = Chatwoot/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.6.16;
+				MARKETING_VERSION = 1.6.17;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

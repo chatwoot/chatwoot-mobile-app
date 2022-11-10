@@ -63,8 +63,7 @@ const FilterButton = ({ label, onPress, isActive, hasLeftIcon, leftIconName }) =
         {getTextSubstringWithEllipsis(label, 20)}
       </Text>
       <View style={styles.arrowDownIcon}>
-        {/* Fluent "arrow-chevron-down-outline" */}
-        <Icon color={colors.textLight} icon="chevron-down-outline" size={16} />
+        <Icon color={colors.textLight} icon="arrow-chevron-down-outline" size={16} />
       </View>
     </Pressable>
   );

@@ -57,7 +57,7 @@ export const INBOX_ICON = {
 
 export const INBOX_IMAGES = {
   'Channel::TwitterProfile': images.twitterBadge,
-  'Channel::FacebookPage': images.fbBadge,
+  'Channel::FacebookPage': images.messengerBadge,
   'Channel::TwilioSms': images.whatsAppBadge,
 };
 

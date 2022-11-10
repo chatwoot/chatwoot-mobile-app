@@ -4,20 +4,13 @@ import { render } from 'tests';
 import UserAvatar from './UserAvatar';
 
 jest.mock('react-native-linear-gradient', () => 'LinearGradient');
+jest.mock('react-native-fast-image', () => 'FastImage');
 
-describe('Icon', () => {
+describe('UserAvatar', () => {
   it('should render the user avatar', () => {
     render(<UserAvatar userName="John Doe" />);
     expect(screen.getByText('JD')).toBeTruthy();
   });
-  //   it('should render the user avatar with size', () => {
-  //     render(<UserAvatar size={40} />);
-  //     expect(screen.getByTestId('userAvatar')).toHaveStyle({
-  //       width: 40,
-  //       height: 40,
-  //       borderRadius: 40,
-  //     });
-  //   });
   it('should render the availability status', () => {
     render(<UserAvatar availabilityStatus="online" />);
     expect(screen.getByTestId('userAvatarBadge')).toHaveStyle({ backgroundColor: '#44ce4b' });

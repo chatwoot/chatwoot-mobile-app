@@ -118,7 +118,6 @@ const UserAvatar = ({
   availabilityStatus,
 }) => {
   const avatarUrl = findAvatarUrl({ thumbnail });
-  // const imageLoading = false;
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -126,6 +125,7 @@ const UserAvatar = ({
   return avatarUrl ? (
     <View testID="userAvatar">
       <FastImage
+        testID="userImage"
         source={{
           uri: avatarUrl,
         }}
@@ -153,19 +153,6 @@ const UserAvatar = ({
           activeCircle={styles.activeCircle}
         />
       )}
-
-      {/* {imageLoading && (
-        <ImageLoader
-          style={[
-            styles.imageLoader,
-            {
-              width: size,
-              height: size,
-              borderRadius: size,
-            },
-          ]}
-        />
-      )} */}
     </View>
   ) : (
     <View testID="userAvatar">

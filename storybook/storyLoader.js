@@ -14,6 +14,7 @@ function loadStories() {
   require('../src/components/FilterButton/FilterButton.stories');
   require('../src/screens/Conversation/components/ConversationFilter/ConversationFilter.stories');
   require('../src/components/BottomSheetHeader/BottomSheetHeader.stories');
+  require('../src/components/UserAvatar/UserAvatar.stories');
 }
 
 const stories = [
@@ -27,6 +28,7 @@ const stories = [
   '../src/components/FilterButton/FilterButton.stories',
   '../src/screens/Conversation/components/ConversationFilter/ConversationFilter.stories',
   '../src/components/BottomSheetHeader/BottomSheetHeader.stories',
+  '../src/components/UserAvatar/UserAvatar.stories',
 ];
 
 module.exports = {

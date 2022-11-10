@@ -5,4 +5,4 @@ import CenterView from 'components/StoryBookView';
 
 storiesOf('Inbox name', module)
   .addDecorator(getStory => <CenterView>{getStory()}</CenterView>)
-  .add('with out icon', () => <InboxName inboxName="Widget app" />);
+  .add('with icon', () => <InboxName inboxName="Widget app" />);

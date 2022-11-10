@@ -8,16 +8,16 @@ storiesOf('Icon', module)
   .addDecorator(getStory => <CenterView>{getStory()}</CenterView>)
   .add('default icon', () => (
     <View>
-      <Icon icon="options-outline" />
+      <Icon icon="bell-outline" />
     </View>
   ))
   .add('with font size 48', () => (
     <View>
-      <Icon icon="options-outline" size="48" />
+      <Icon icon="bell-outline" size="48" />
     </View>
   ))
   .add('with color red', () => (
     <View>
-      <Icon icon="options-outline" color="red" />
+      <Icon icon="bell-outline" color="red" />
     </View>
   ));

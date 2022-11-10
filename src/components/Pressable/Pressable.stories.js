@@ -5,7 +5,10 @@ import Icon from 'components/Icon/Icon';
 import Text from 'components/Text/Text';
 import { action } from '@storybook/addon-actions';
 import CenterView from 'components/StoryBookView';
-
+const styles = {
+  backgroundColor: 'yellow',
+  padding: 8,
+};
 storiesOf('Pressable', module)
   .addDecorator(getStory => <CenterView>{getStory()}</CenterView>)
   .add('onClick pressable', () => (
@@ -14,12 +17,12 @@ storiesOf('Pressable', module)
     </Pressable>
   ))
   .add('with custom style', () => (
-    <Pressable onPress={action('pressed')} style={{ backgroundColor: 'yellow', padding: 8 }}>
+    <Pressable onPress={action('pressed')} style={styles}>
       <Text>Pressable</Text>
     </Pressable>
   ))
   .add('with custom style and children', () => (
-    <Pressable onPress={action('pressed')} style={{ backgroundColor: 'black', padding: 8 }}>
+    <Pressable onPress={action('pressed')} style={styles}>
       <Icon icon="arrow-back-outline" />
     </Pressable>
   ));

@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react';
-import { View, Pressable, StyleSheet, Animated, Platform } from 'react-native';
+import { View, Pressable, StyleSheet, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
 // import { useSelector } from 'react-redux';
-import Icon from 'components/Icon/Icon';
 import Text from 'components/Text/Text';
 import UserAvatar from 'components/UserAvatar';
 import InboxName from 'components/InboxName/InboxName';
@@ -53,7 +52,7 @@ const ConversationItem = ({ inboxes, item, onPress }) => {
     messages,
     inbox_id: inboxId,
     id,
-    status,
+    // status,
   } = item;
 
   const lastMessage = findLastMessage({ messages });

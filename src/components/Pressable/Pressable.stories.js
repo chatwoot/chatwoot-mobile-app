@@ -23,6 +23,6 @@ storiesOf('Pressable', module)
   ))
   .add('with custom style and children', () => (
     <Pressable onPress={action('pressed')} style={styles}>
-      <Icon icon="arrow-back-outline" />
+      <Icon icon="chat-outline" />
     </Pressable>
   ));

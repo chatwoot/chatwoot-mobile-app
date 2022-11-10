@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import ImageLoader from './ImageLoader';
 import Text from 'components/Text/Text';
-import { getUserInitial } from 'helpers/index';
+import { getUserInitial } from 'helpers';
 
 import { PRESENCE_STATUS_COLORS } from 'constants';
 import { GRAVATAR_URL } from 'constants/url';

@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import ImageLoader from './ImageLoader';
-import Text from 'components/Text/Text';
+import { Text } from 'components';
 import { getUserInitial } from 'helpers';
 
 import { PRESENCE_STATUS_COLORS } from 'constants';

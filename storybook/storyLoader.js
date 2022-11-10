@@ -4,6 +4,7 @@
 // https://github.com/elderfo/react-native-storybook-loader.git
 
 function loadStories() {
+  require('../src/components/BottomSheetHeader/BottomSheetHeader.stories');
   require('../src/components/Empty/Empty.stories');
   require('../src/components/FilterButton/FilterButton.stories');
   require('../src/components/Header/Header.stories');
@@ -13,9 +14,11 @@ function loadStories() {
   require('../src/components/Text/Text.stories');
   require('../src/screens/Conversation/components/ConversationEmptyItem/ConversationEmptyItem.stories');
   require('../src/screens/Conversation/components/ConversationEmptyList/ConversationEmptyList.stories');
+  require('../src/screens/Conversation/components/ConversationFilter/ConversationFilter.stories');
 }
 
 const stories = [
+  '../src/components/BottomSheetHeader/BottomSheetHeader.stories',
   '../src/components/Empty/Empty.stories',
   '../src/components/FilterButton/FilterButton.stories',
   '../src/components/Header/Header.stories',
@@ -25,6 +28,7 @@ const stories = [
   '../src/components/Text/Text.stories',
   '../src/screens/Conversation/components/ConversationEmptyItem/ConversationEmptyItem.stories',
   '../src/screens/Conversation/components/ConversationEmptyList/ConversationEmptyList.stories',
+  '../src/screens/Conversation/components/ConversationFilter/ConversationFilter.stories',
 ];
 
 module.exports = {

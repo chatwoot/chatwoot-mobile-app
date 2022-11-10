@@ -2,23 +2,23 @@ import React, { useMemo } from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import Icon from 'components/Icon/Icon';
-import Text from 'components/Text/Text';
+import { Text, Icon } from 'components';
 import BottomSheetModalHeader from 'components/BottomSheetHeader/BottomSheetHeader';
 
 const createStyles = theme => {
-  const { spacing, borderRadius, colors } = theme;
+  const { spacing, borderRadius } = theme;
   return StyleSheet.create({
     iconNameWrapper: {
       flexDirection: 'row',
       alignItems: 'center',
     },
     bottomSheet: {
-      //to be removed when we use in bottom sheet
+      //TODO: to be removed when we use in bottom sheet
       width: '90%',
     },
     bottomSheetView: {
-      height: 100, //to be changed to '100%' when we use in bottom sheet
+      //TODO: to be changed to '100%' when we use in bottom sheet
+      height: 100,
       paddingVertical: spacing.small,
       paddingBottom: spacing.large,
     },
@@ -60,7 +60,6 @@ const ConversationFilter = ({
   const styles = useMemo(() => createStyles(theme), [theme]);
 
   return (
-    //<View style={styles.bottomSheet}> should be removed when we use in bottom sheet
     <View style={styles.bottomSheet}>
       <View>
         <BottomSheetModalHeader title={title} closeModal={closeFilter} colors={colors} />

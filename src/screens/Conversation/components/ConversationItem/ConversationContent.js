@@ -6,7 +6,7 @@ import Icon from 'components/Icon/Icon';
 import Text from 'components/Text/Text';
 import { MESSAGE_TYPES } from 'constants';
 
-import { getTextSubstringWithEllipsis } from 'helpers/TextSubstring';
+import { getTextSubstringWithEllipsis } from 'helpers';
 
 const createStyles = theme => {
   const { spacing } = theme;

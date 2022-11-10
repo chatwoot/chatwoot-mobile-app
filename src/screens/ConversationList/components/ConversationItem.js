@@ -12,7 +12,7 @@ import ConversationAttachmentItem from './ConversationAttachmentItem';
 import ConversationContentItem from './ConversationContentItem';
 import InboxName from 'src/screens/ChatScreen/components/InboxName';
 
-import { getTextSubstringWithEllipsis } from 'src/helpers/TextSubstring';
+import { getTextSubstringWithEllipsis } from 'helpers';
 
 import { INBOX_ICON } from 'src/constants/index';
 

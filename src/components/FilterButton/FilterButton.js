@@ -4,7 +4,7 @@ import { useTheme } from '@react-navigation/native';
 import Icon from 'components/Icon/Icon';
 import Pressable from 'components/Pressable/Pressable';
 import Text from 'components/Text/Text';
-import { getTextSubstringWithEllipsis } from 'helpers/TextSubstring';
+import { getTextSubstringWithEllipsis } from 'helpers';
 
 import PropTypes from 'prop-types';
 

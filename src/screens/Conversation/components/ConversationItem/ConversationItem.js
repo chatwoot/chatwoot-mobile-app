@@ -5,7 +5,7 @@ import { useTheme } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { Text, InboxName } from 'components';
 import UserAvatar from 'components/UserAvatar';
-import { getTextSubstringWithEllipsis } from 'helpers/TextSubstring';
+import { getTextSubstringWithEllipsis } from 'helpers';
 import { getUnreadCount, findLastMessage, getInboxName } from 'helpers/conversationHelpers';
 import ConversationContent from './ConversationContent';
 import ConversationAttachment from './ConversationAttachment';

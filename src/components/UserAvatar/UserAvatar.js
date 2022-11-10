@@ -118,7 +118,7 @@ const UserAvatar = ({
   availabilityStatus,
 }) => {
   const avatarUrl = findAvatarUrl({ thumbnail });
-  const imageLoading = false;
+  // const imageLoading = false;
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -154,7 +154,7 @@ const UserAvatar = ({
         />
       )}
 
-      {imageLoading && (
+      {/* {imageLoading && (
         <ImageLoader
           style={[
             styles.imageLoader,
@@ -165,7 +165,7 @@ const UserAvatar = ({
             },
           ]}
         />
-      )}
+      )} */}
     </View>
   ) : (
     <View testID="userAvatar">

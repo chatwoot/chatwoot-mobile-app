@@ -20,12 +20,11 @@ import createStyles from './ConversationScreen.style';
 import { identifyUser } from 'helpers/Analytics';
 import i18n from 'i18n';
 import Header from 'components/Header/Header';
-import ConversationList from './components/ConversationList/ConversationList';
+import { ConversationList } from './components';
 
 const ConversationScreen = () => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
-  // const inboxes = useSelector(inboxesSelector.selectAll);
   const conversationStatus = useSelector(selectConversationStatus);
   const assigneeType = useSelector(selectAssigneeType);
   const activeInboxId = useSelector(selectActiveInbox);
@@ -53,12 +52,12 @@ const ConversationScreen = () => {
   }, [webSocketUrl]);
 
   const onChangePage = async () => {
-    // setPage(pageNumber + 1);
+    setPage(pageNumber + 1);
   };
 
   const refreshConversations = async () => {
     setPage(1);
-    // loadConversations({ page: 1 });
+    loadConversations({ page: 1 });
   };
 
   const storeUser = useCallback(async () => {

@@ -3,23 +3,17 @@ import { View, Pressable, StyleSheet, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { Text } from 'components';
+import { Text, InboxName } from 'components';
 import UserAvatar from 'components/UserAvatar';
-import InboxName from 'components/InboxName/InboxName';
 import { getTextSubstringWithEllipsis } from 'helpers/TextSubstring';
 import { getUnreadCount, findLastMessage, getInboxName } from 'helpers/conversationHelpers';
 import ConversationContent from './ConversationContent';
 import ConversationAttachment from './ConversationAttachment';
 import { dynamicTime } from 'helpers/TimeHelper';
-// import { inboxesSelector } from 'store/reducers/inboxSlice';
-// import Swipeable from 'react-native-gesture-handler/Swipeable';
-// import { RectButton } from 'react-native-gesture-handler';
-// import { CONVERSATION_STATUS } from 'src/constants/index';
 
 const isAndroid = Platform.OS === 'android';
 
 const propTypes = {
-  inboxes: PropTypes.array.isRequired,
   item: PropTypes.shape({
     meta: PropTypes.shape({
       sender: PropTypes.shape({

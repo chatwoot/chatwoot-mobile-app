@@ -4,7 +4,7 @@ import { useTheme } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 
 import { Text } from 'components';
 import {
@@ -12,9 +12,11 @@ import {
   selectAllConversationFetched,
   selectConversationMeta,
 } from 'reducer/conversationSlice';
-import ConversationEmptyMessage from '../ConversationItem/ConversationEmptyMessage';
 import ConversationEmptyList from '../ConversationEmptyList/ConversationEmptyList';
 import ConversationItem from '../ConversationItem/ConversationItem';
+import { ConversationEmptyMessage } from '../index';
+import i18n from 'i18n';
+import createStyles from './ConversationList.style';
 
 const propTypes = {
   assigneeType: PropTypes.string,
@@ -23,26 +25,6 @@ const propTypes = {
   onChangePageNumber: PropTypes.func,
   refreshConversations: PropTypes.func,
   isCountEnabled: PropTypes.bool,
-};
-
-const createStyles = theme => {
-  const { colors } = theme;
-  return StyleSheet.create({
-    container: {
-      flex: 1,
-    },
-    loadMoreView: {
-      alignItems: 'center',
-      paddingTop: 16,
-      paddingBottom: 16,
-      height: '100%',
-    },
-    conversationCountView: {
-      paddingVertical: 4,
-      paddingHorizontal: 8,
-      backgroundColor: colors.backgroundLight,
-    },
-  });
 };
 
 const wait = timeout => {
@@ -106,7 +88,7 @@ const ConversationList = ({
       <View style={styles.loadMoreView}>
         {isAllConversationsAreFetched ? (
           <Text sm color={colors.textLight}>
-            All conversations loaded 🎉
+            {i18n.t('CONVERSATION.ALL_CONVERSATION_LOADED')} 🎉
           </Text>
         ) : (
           <ActivityIndicator size="small" />

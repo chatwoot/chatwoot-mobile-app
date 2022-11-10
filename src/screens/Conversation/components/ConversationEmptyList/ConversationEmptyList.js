@@ -2,17 +2,13 @@ import React, { useMemo } from 'react';
 import { View, FlatList } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import ConversationItemLoader from './ConversationItemLoader';
-
+import { ConversationEmptyItem } from '../index';
+import createStyles from './ConversationEmptyList.style';
 const LoaderData = new Array(24).fill(0);
 
-const renderItemLoader = () => <ConversationItemLoader />;
+const keyExtractor = item => item.id;
 
-const createStyles = theme => ({
-  container: {
-    minHeight: 64,
-  },
-});
+const renderItemLoader = (item, index) => <ConversationEmptyItem key={index} />;
 
 const propTypes = {
   unReadCount: PropTypes.number,
@@ -26,7 +22,7 @@ const ConversationEmptyList = () => {
   const styles = useMemo(() => createStyles(theme), [theme]);
   return (
     <View style={styles.container}>
-      <FlatList data={LoaderData} renderItem={renderItemLoader} />
+      <FlatList keyExtractor={keyExtractor} data={LoaderData} renderItem={renderItemLoader} />
     </View>
   );
 };

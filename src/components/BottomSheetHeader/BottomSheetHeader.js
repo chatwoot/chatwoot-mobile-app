@@ -17,8 +17,6 @@ const createStyles = theme => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      paddingHorizontal: spacing.small,
-      height: 50,
       width: '100%',
     },
     headerTitle: {

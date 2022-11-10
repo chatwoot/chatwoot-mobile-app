@@ -11,6 +11,8 @@ function loadStories() {
   require('../src/components/InboxName/InboxName.stories');
   require('../src/components/Pressable/Pressable.stories');
   require('../src/components/Text/Text.stories');
+  require('../src/screens/Conversation/components/ConversationEmptyItem/ConversationEmptyItem.stories');
+  require('../src/screens/Conversation/components/ConversationEmptyList/ConversationEmptyList.stories');
 }
 
 const stories = [
@@ -21,10 +23,8 @@ const stories = [
   '../src/components/InboxName/InboxName.stories',
   '../src/components/Pressable/Pressable.stories',
   '../src/components/Text/Text.stories',
-  '../src/screens/Conversation/components/ConversationItemLoader/ConversationItemLoader.stories',
-  '../src/components/InboxName/InboxName.stories',
-  '../src/components/Empty/Empty.stories',
-  '../src/components/FilterButton/FilterButton.stories',
+  '../src/screens/Conversation/components/ConversationEmptyItem/ConversationEmptyItem.stories',
+  '../src/screens/Conversation/components/ConversationEmptyList/ConversationEmptyList.stories',
 ];
 
 module.exports = {

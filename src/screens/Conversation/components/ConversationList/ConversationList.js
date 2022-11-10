@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, View } from 'react-native';
 
@@ -12,6 +12,7 @@ import {
   selectAllConversationFetched,
   selectConversationMeta,
 } from 'reducer/conversationSlice';
+import { loadInitialMessage, setConversation } from 'actions/conversation';
 import ConversationEmptyList from '../ConversationEmptyList/ConversationEmptyList';
 import ConversationItem from '../ConversationItem/ConversationItem';
 import { ConversationEmptyMessage } from '../index';
@@ -41,6 +42,7 @@ const ConversationList = ({
   onChangePageNumber,
   refreshConversations,
 }) => {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
@@ -104,8 +106,18 @@ const ConversationList = ({
   };
 
   const onSelectConversation = conversation => {
-    const { id } = conversation;
-    navigation.navigate('Chat', { conversationId: id });
+    // TODO: Change this once the chat screen is ready
+    // const { id } = conversation;
+    // navigation.navigate('Chat', { conversationId: id });
+    const { messages, meta } = conversation;
+    const conversationId = conversation.id;
+    dispatch(setConversation({ conversationId }));
+    dispatch(loadInitialMessage({ messages }));
+    navigation.navigate('ChatScreen', {
+      conversationId,
+      meta,
+      messages,
+    });
   };
 
   const isLoading = useSelector(state => state.conversations.loading);

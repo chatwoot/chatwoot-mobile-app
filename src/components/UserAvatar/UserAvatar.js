@@ -4,7 +4,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
-import ImageLoader from './ImageLoader';
 import { Text } from 'components';
 import { getUserInitial } from 'helpers';
 

@@ -7,7 +7,7 @@ import Text from 'components/Text/Text';
 import BottomSheetModalHeader from 'components/BottomSheetHeader/BottomSheetHeader';
 
 const createStyles = theme => {
-  const { spacing, borderRadius } = theme;
+  const { spacing, borderRadius, colors } = theme;
   return StyleSheet.create({
     iconNameWrapper: {
       flexDirection: 'row',

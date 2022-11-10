@@ -13,6 +13,7 @@ function loadStories() {
   require('../src/components/Empty/Empty.stories');
   require('../src/components/FilterButton/FilterButton.stories');
   require('../src/screens/Conversation/components/ConversationFilter/ConversationFilter.stories');
+  require('../src/components/BottomSheetHeader/BottomSheetHeader.stories');
 }
 
 const stories = [
@@ -25,6 +26,7 @@ const stories = [
   '../src/components/Empty/Empty.stories',
   '../src/components/FilterButton/FilterButton.stories',
   '../src/screens/Conversation/components/ConversationFilter/ConversationFilter.stories',
+  '../src/components/BottomSheetHeader/BottomSheetHeader.stories',
 ];
 
 module.exports = {

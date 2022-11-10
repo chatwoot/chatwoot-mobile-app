@@ -9,7 +9,7 @@ import Pressable from 'components/Pressable/Pressable';
 import { StyleSheet } from 'react-native';
 
 const createStyles = theme => {
-  const { spacing, borderRadius } = theme;
+  const { spacing, colors, borderRadius } = theme;
   return StyleSheet.create({
     headerContainer: {
       paddingTop: spacing.tiny,
@@ -17,6 +17,9 @@ const createStyles = theme => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
+      paddingHorizontal: spacing.small,
+      height: 50,
+      width: '100%',
     },
     headerTitle: {
       textAlign: 'center',

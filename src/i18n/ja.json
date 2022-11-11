@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "会話データ",
+    "UPDATING": "Updating...",
     "MINE": "自分",
     "UN_ASSIGNED": "未割当",
     "ALL": "すべて",

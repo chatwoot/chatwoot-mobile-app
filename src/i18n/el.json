@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Συζητήσεις",
+    "UPDATING": "Updating...",
     "MINE": "Mine",
     "UN_ASSIGNED": "Χωρίς Αντιστοίχιση",
     "ALL": "Όλες",

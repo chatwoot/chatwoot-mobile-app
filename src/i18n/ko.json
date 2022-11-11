@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "대화",
+    "UPDATING": "Updating...",
     "MINE": "나에게 할당",
     "UN_ASSIGNED": "지정되지 않음",
     "ALL": "모두",

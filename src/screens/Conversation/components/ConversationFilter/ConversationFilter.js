@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import { Text, Icon } from 'components';
+import { Text, Icon, Pressable } from 'components';
 import BottomSheetModalHeader from 'components/BottomSheetHeader/BottomSheetHeader';
 
 const createStyles = theme => {
@@ -67,9 +67,8 @@ const ConversationFilter = ({
           {items.map(item => (
             <Pressable
               key={item.key}
-              style={({ pressed }) => [
+              style={[
                 {
-                  opacity: pressed ? 0.6 : 1,
                   borderBottomColor: colors.borderLight,
                   backgroundColor:
                     activeValue === item.key ? colors.primaryColorLight : colors.white,

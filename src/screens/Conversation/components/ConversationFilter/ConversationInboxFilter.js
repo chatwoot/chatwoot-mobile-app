@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import { Text, Icon } from 'components';
-import BottomSheetModalHeader from 'components/BottomSheetHeader/BottomSheetHeader';
-import { getInboxIconByType } from 'src/helpers/inbox';
+import { Text, Icon, BottomSheetModalHeader, Pressable } from 'components';
+import { getInboxIconByType } from 'helpers/inbox';
 
 const createStyles = theme => {
   const { spacing, borderRadius } = theme;
@@ -76,9 +75,8 @@ const ConversationInboxFilter = ({
           {items.map(item => (
             <Pressable
               key={item.id}
-              style={({ pressed }) => [
+              style={[
                 {
-                  opacity: pressed ? 0.6 : 1,
                   borderBottomColor: colors.borderLight,
                   backgroundColor:
                     activeValue === item.id ? colors.primaryColorLight : colors.white,

@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { Text, Icon, Pressable } from 'components';
-import BottomSheetModalHeader from 'components/BottomSheetHeader/BottomSheetHeader';
+import { BottomSheetModalHeader } from 'components';
 
 const createStyles = theme => {
   const { spacing, borderRadius } = theme;

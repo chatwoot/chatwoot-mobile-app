@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversații",
+    "UPDATING": "Updating...",
     "MINE": "Ale mele",
     "UN_ASSIGNED": "Neatribuit",
     "ALL": "Toate",

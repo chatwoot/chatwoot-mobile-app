@@ -2,7 +2,7 @@ import React, { Fragment, useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
-import Icon from 'components/Icon';
+import { Icon } from 'components';
 import Text from 'components/Text';
 import i18n from 'i18n';
 

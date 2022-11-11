@@ -4,7 +4,7 @@ import { View, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
 import CustomText from './Text';
-import { getTextSubstringWithEllipsis } from 'src/helpers/TextSubstring';
+import { getTextSubstringWithEllipsis } from 'helpers';
 
 const propTypes = {
   eva: PropTypes.shape({

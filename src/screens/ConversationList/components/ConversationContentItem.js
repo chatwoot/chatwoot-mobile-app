@@ -6,7 +6,7 @@ import { withStyles, Icon } from '@ui-kitten/components';
 import CustomText from 'components/Text';
 import { MESSAGE_TYPES } from 'constants';
 
-import { getTextSubstringWithEllipsis } from 'src/helpers/TextSubstring';
+import { getTextSubstringWithEllipsis } from 'helpers';
 
 const UndoIcon = style => {
   return <Icon {...style} name="undo" />;

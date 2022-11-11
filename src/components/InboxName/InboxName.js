@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
 import Icon from 'components/Icon/Icon';
-import Text from 'components/Text/Text';
+import { Text } from 'components';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { getInboxIconByType } from 'helpers/inbox';

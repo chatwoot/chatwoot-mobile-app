@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "1.6.17",
+  "version": "1.6.18",
   "private": true,
   "scripts": {
     "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",
@@ -27,7 +27,7 @@
   "config": {
     "react-native-storybook-loader": {
       "searchDir": [
-        "./src/components"
+        "./src"
       ],
       "pattern": "**/*.stories.js",
       "outputFile": "./storybook/storyLoader.js"
@@ -50,6 +50,7 @@
     "@react-navigation/native-stack": "^6.6.2",
     "@reduxjs/toolkit": "^1.8.3",
     "@sentry/react-native": "^3.4.2",
+    "@shopify/flash-list": "^1.4.0",
     "@ui-kitten/components": "5.0.0",
     "@ui-kitten/eva-icons": "5.0.0",
     "@ui-kitten/metro-config": "5.0.0",

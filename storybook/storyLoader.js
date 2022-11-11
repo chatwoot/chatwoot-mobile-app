@@ -15,6 +15,7 @@ function loadStories() {
   require('../src/screens/Conversation/components/ConversationEmptyItem/ConversationEmptyItem.stories');
   require('../src/screens/Conversation/components/ConversationEmptyList/ConversationEmptyList.stories');
   require('../src/screens/Conversation/components/ConversationFilter/ConversationFilter.stories');
+  require('../src/screens/Conversation/components/ConversationFilter/ConversationInboxFilter.stories');
   require('../src/components/BottomSheetHeader/BottomSheetHeader.stories');
   require('../src/components/UserAvatar/UserAvatar.stories');
 }
@@ -31,6 +32,7 @@ const stories = [
   '../src/screens/Conversation/components/ConversationEmptyItem/ConversationEmptyItem.stories',
   '../src/screens/Conversation/components/ConversationEmptyList/ConversationEmptyList.stories',
   '../src/screens/Conversation/components/ConversationFilter/ConversationFilter.stories',
+  '../src/screens/Conversation/components/ConversationFilter/ConversationInboxFilter.stories',
   '../src/components/BottomSheetHeader/BottomSheetHeader.stories',
   '../src/components/UserAvatar/UserAvatar.stories',
 ];

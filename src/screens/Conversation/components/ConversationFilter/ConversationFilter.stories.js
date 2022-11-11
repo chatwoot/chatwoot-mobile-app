@@ -28,8 +28,8 @@ const ConversationAssigneeFilterStory = () => {
       colors={colors}
       activeValue="unassigned"
       items={items}
-      closeFilter={() => {}}
-      onChangeFilter={() => {}}
+      closeFilter={action('closed')}
+      onChangeFilter={action('changed')}
     />
   );
 };

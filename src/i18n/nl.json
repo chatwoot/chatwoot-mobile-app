@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Gesprekken",
+    "UPDATING": "Updating...",
     "MINE": "Mijn",
     "UN_ASSIGNED": "Niet-toegewezen",
     "ALL": "Allemaal",

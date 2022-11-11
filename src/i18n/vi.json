@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Các cuộc hội thoại",
+    "UPDATING": "Updating...",
     "MINE": "Của tôi",
     "UN_ASSIGNED": "Chưa được phân công",
     "ALL": "Tất cả",

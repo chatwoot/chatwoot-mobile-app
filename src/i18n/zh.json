@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "会话",
+    "UPDATING": "Updating...",
     "MINE": "我的",
     "UN_ASSIGNED": "未分配的",
     "ALL": "全部",

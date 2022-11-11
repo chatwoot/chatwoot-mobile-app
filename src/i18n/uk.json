@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Бесіди",
+    "UPDATING": "Updating...",
     "MINE": "Мої",
     "UN_ASSIGNED": "Непризначені",
     "ALL": "Всі",

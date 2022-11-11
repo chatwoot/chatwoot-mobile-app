@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "സംഭാഷണങ്ങൾ",
+    "UPDATING": "Updating...",
     "MINE": "എന്റേത്",
     "UN_ASSIGNED": "നിയുക്തമാക്കാത്തത്",
     "ALL": "എല്ലാം",

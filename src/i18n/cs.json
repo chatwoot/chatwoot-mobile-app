@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Konverzace",
+    "UPDATING": "Updating...",
     "MINE": "Mine",
     "UN_ASSIGNED": "Unassigned",
     "ALL": "All",

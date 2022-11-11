@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Converses",
+    "UPDATING": "Updating...",
     "MINE": "Les meves",
     "UN_ASSIGNED": "Sense assignar",
     "ALL": "Totes",

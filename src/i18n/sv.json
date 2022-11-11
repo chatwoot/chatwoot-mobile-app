@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Konversationer",
+    "UPDATING": "Updating...",
     "MINE": "Mina",
     "UN_ASSIGNED": "Otilldelade",
     "ALL": "Alla",

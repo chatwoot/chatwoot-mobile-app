@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Keskustelut",
+    "UPDATING": "Updating...",
     "MINE": "Minun",
     "UN_ASSIGNED": "Osoittamaton",
     "ALL": "Kaikki",

@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Разговоры",
+    "UPDATING": "Updating...",
     "MINE": "Мои",
     "UN_ASSIGNED": "Неназначен",
     "ALL": "Все",

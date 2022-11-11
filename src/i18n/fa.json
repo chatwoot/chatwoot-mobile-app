@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "گفتگوها",
+    "UPDATING": "Updating...",
     "MINE": "من",
     "UN_ASSIGNED": "تخصیص داده نشده",
     "ALL": "همه",

@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversazioni",
+    "UPDATING": "Updating...",
     "MINE": "Mie",
     "UN_ASSIGNED": "Non assegnato",
     "ALL": "Tutti",

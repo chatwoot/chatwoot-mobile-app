@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Beszélgetések",
+    "UPDATING": "Updating...",
     "MINE": "Sajátom",
     "UN_ASSIGNED": "Gazdátlan",
     "ALL": "Mind",

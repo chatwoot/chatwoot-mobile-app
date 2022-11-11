@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversas",
+    "UPDATING": "Updating...",
     "MINE": "Minerar",
     "UN_ASSIGNED": "Não atribuído",
     "ALL": "TODOS",

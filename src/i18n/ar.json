@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "المحادثات",
+    "UPDATING": "Updating...",
     "MINE": "محادثاتي",
     "UN_ASSIGNED": "غير مسند",
     "ALL": "الكل",

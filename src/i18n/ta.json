@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "உரையாடல்கள்",
+    "UPDATING": "Updating...",
     "MINE": "என்னுடைய",
     "UN_ASSIGNED": "ஒதுக்கப்படாதது",
     "ALL": "எல்லாம்",

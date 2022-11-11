@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "שיחות",
+    "UPDATING": "Updating...",
     "MINE": "שלי",
     "UN_ASSIGNED": "לא הוקצתה",
     "ALL": "הכל",

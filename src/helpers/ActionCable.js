@@ -1,14 +1,14 @@
 import BaseActionCableConnector from './BaseActionCableConnector';
 
 import {
-  addOrUpdateConversation,
-  addMessageToConversation,
-  addUserTypingToConversation,
-  removeUserFromTypingConversation,
-  addOrUpdateActiveContacts,
-} from '../actions/conversation';
+  addMessage,
+  addConversation,
+  updateConversation,
+  // updateContactsPresence,
+  actions as conversationActions,
+} from 'reducer/conversationSlice';
 
-import { addOrUpdateActiveUsers } from '../actions/auth';
+// import { addOrUpdateActiveUsers } from '../actions/auth';
 
 import { store } from '../store';
 
@@ -17,36 +17,58 @@ class ActionCableConnector extends BaseActionCableConnector {
     super(pubsubToken, webSocketUrl, accountId, userId);
     this.CancelTyping = [];
     this.events = {
-      'conversation.opened': this.onConversationStatusChange,
-      'conversation.resolved': this.onConversationStatusChange,
       'message.created': this.onMessageCreated,
-      'conversation.created': this.onConversationCreated,
-      'conversation.typing_on': this.onTypingOn,
-      'conversation.typing_off': this.onTypingOff,
-      'presence.update': this.onPresenceUpdate,
+      'message.updated': this.onMessageUpdated,
+      'conversation.created': this.onConversationStatusChange,
+      'conversation.status_changed': this.onStatusChange,
+      'assignee.changed': this.onAssigneeChanged,
+      'conversation.read': this.onConversationRead,
+      // 'conversation.resolved': this.onConversationStatusChange,
+      // 'conversation.typing_on': this.onTypingOn,
+      // 'conversation.typing_off': this.onTypingOff,
+      // 'presence.update': this.onPresenceUpdate,
     };
   }
 
-  onConversationStatusChange = () => {};
-
-  onConversationCreated = conversation => {
-    store.dispatch(addOrUpdateConversation({ conversation }));
+  onMessageCreated = message => {
+    store.dispatch(addMessage(message));
   };
 
-  onMessageCreated = message => {
-    store.dispatch(addMessageToConversation({ message }));
+  onMessageUpdated = data => {
+    store.dispatch(addMessage(data));
+  };
+
+  onConversationCreated = data => {
+    store.dispatch(addConversation(data));
+    store.dispatch(conversationActions.fetchConversationStats({}));
+  };
+
+  onStatusChange = data => {
+    store.dispatch(updateConversation(data));
+  };
+
+  onAssigneeChanged = data => {
+    const { id } = data;
+    if (id) {
+      store.dispatch(updateConversation(data));
+    }
+    store.dispatch(conversationActions.fetchConversationStats({}));
+  };
+
+  onConversationRead = data => {
+    store.dispatch(updateConversation(data));
   };
 
   onTypingOn = ({ conversation, user }) => {
     const conversationId = conversation.id;
 
     this.clearTimer(conversationId);
-    store.dispatch(
-      addUserTypingToConversation({
-        conversation,
-        user,
-      }),
-    );
+    // store.dispatch(
+    //   addUserTypingToConversation({
+    //     conversation,
+    //     user,
+    //   }),
+    // );
     this.initTimer({ conversation, user });
   };
 
@@ -55,12 +77,12 @@ class ActionCableConnector extends BaseActionCableConnector {
 
     this.clearTimer(conversationId);
 
-    store.dispatch(
-      removeUserFromTypingConversation({
-        conversation,
-        user,
-      }),
-    );
+    // store.dispatch(
+    //   removeUserFromTypingConversation({
+    //     conversation,
+    //     user,
+    //   }),
+    // );
   };
 
   initTimer = ({ conversation, user }) => {
@@ -80,16 +102,16 @@ class ActionCableConnector extends BaseActionCableConnector {
     }
   };
   onPresenceUpdate = ({ contacts, users }) => {
-    store.dispatch(
-      addOrUpdateActiveContacts({
-        contacts,
-      }),
-    );
-    store.dispatch(
-      addOrUpdateActiveUsers({
-        users,
-      }),
-    );
+    // store.dispatch(
+    //   addOrUpdateActiveContacts({
+    //     contacts,
+    //   }),
+    // );
+    // store.dispatch(
+    //   addOrUpdateActiveUsers({
+    //     users,
+    //   }),
+    // );
   };
 
   onAssigneeChanged = payload => {};

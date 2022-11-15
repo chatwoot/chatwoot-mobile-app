@@ -50,3 +50,8 @@ export function findLastMessage({ messages }) {
     isPrivate: false,
   };
 }
+
+export const findPendingMessageIndex = (conversation, message) => {
+  const { echo_id: tempMessageId } = message;
+  return conversation.messages.findIndex(m => m.id === message.id || m.id === tempMessageId);
+};

@@ -5,7 +5,7 @@ import {
   createDraftSafeSelector,
 } from '@reduxjs/toolkit';
 import axios from 'helpers/APIHelper';
-import { applyFilters } from 'helpers/conversationHelpers';
+import { applyFilters, findPendingMessageIndex } from 'helpers/conversationHelpers';
 
 export const conversationAdapter = createEntityAdapter({
   selectId: conversation => conversation.id,
@@ -121,6 +121,26 @@ const conversationSlice = createSlice({
         conversationAdapter.addOne(state, conversation);
       }
     },
+    addMessage: (state, action) => {
+      const message = action.payload;
+
+      const { conversation_id: conversationId } = message;
+      if (!conversationId) {
+        return;
+      }
+      const conversation = state.entities[conversationId];
+      // If the conversation is not present in the store, we don't need to add the message
+      if (!conversation) {
+        return;
+      }
+      const pendingMessageIndex = findPendingMessageIndex(conversation, message);
+      if (pendingMessageIndex !== -1) {
+        conversation.messages[pendingMessageIndex] = message;
+      } else {
+        conversation.messages.push(message);
+        conversation.timestamp = message.created_at;
+      }
+    },
   },
   extraReducers: {
     [actions.fetchConversations.pending]: state => {
@@ -181,5 +201,8 @@ export const selectors = {
     },
   ),
 };
+
+export const { addMessage, addConversation, updateConversation, clearAllConversations } =
+  conversationSlice.actions;
 
 export default conversationSlice.reducer;

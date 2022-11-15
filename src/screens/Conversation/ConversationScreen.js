@@ -36,6 +36,7 @@ const ConversationScreen = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // clearAll();
     clearAllDeliveredNotifications();
     initActionCable();
     dispatch(getInstalledVersion());
@@ -44,6 +45,10 @@ const ConversationScreen = () => {
     dispatch(saveDeviceDetails());
     storeUser();
   }, [dispatch, initActionCable, storeUser]);
+
+  // const clearAll = async () => {
+  //   // await dispatch(clearAllConversations());
+  // };
 
   const initActionCable = useCallback(async () => {
     const pubSubToken = await getPubSubToken();

@@ -12,13 +12,7 @@ const createStyles = theme => {
       flexDirection: 'row',
       alignItems: 'center',
     },
-    bottomSheet: {
-      //TODO: to be removed when we use in bottom sheet
-      width: '90%',
-    },
     bottomSheetView: {
-      //TODO: to be changed to '100%' when we use in bottom sheet
-      height: 100,
       paddingVertical: spacing.small,
       paddingBottom: spacing.large,
     },

@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Linking, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+
 import PropTypes from 'prop-types';
 import { LightTheme } from 'src/theme.v2';
 import { NavigationContainer } from '@react-navigation/native';
@@ -140,7 +142,7 @@ const App = ({ eva: { style } }) => {
     _handleOpenURL({ url: linkedURL });
   }
 
-  const isMobileV2 = false;
+  const isMobileV2 = true;
 
   const conversationScreen = isMobileV2 ? ConversationScreen : ConversationList;
 
@@ -191,35 +193,37 @@ const App = ({ eva: { style } }) => {
             routeNameRef.current = currentRouteName;
           }}
           theme={theme}>
-          <Stack.Navigator
-            initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'}
-            screenOptions={{ headerShown: false }}>
-            {isLoggedIn ? (
-              <Fragment>
-                <Stack.Screen name="Tab" component={TabStack} />
-                <Stack.Screen name="ChatScreen" component={ChatScreen} />
-                <Stack.Screen name="ConversationFilter" component={ConversationFilter} />
-                <Stack.Screen name="ImageScreen" component={ImageScreen} />
-                <Stack.Screen name="Language" component={LanguageScreen} />
-                <Stack.Screen name="Account" component={AccountScreen} />
-                <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
-                <Stack.Screen name="ConversationAction" component={ConversationAction} />
-                <Stack.Screen name="AgentScreen" component={AgentScreen} />
-                <Stack.Screen name="LabelScreen" component={LabelScreen} />
-                <Stack.Screen name="TeamScreen" component={TeamScreen} />
-                <Stack.Screen name="Availability" component={AvailabilityScreen} />
-                <Stack.Screen name="NotificationPreference" component={NotificationPreference} />
-              </Fragment>
-            ) : (
-              <Fragment>
-                <Stack.Screen name="ConfigureURL" component={ConfigureURLScreen} />
-                <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="ResetPassword" component={ResetPassword} />
-                <Stack.Screen name="ConversationScreen" component={conversationScreen} />
-                <Stack.Screen name="Language" component={LanguageScreen} />
-              </Fragment>
-            )}
-          </Stack.Navigator>
+          <BottomSheetModalProvider>
+            <Stack.Navigator
+              initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'}
+              screenOptions={{ headerShown: false }}>
+              {isLoggedIn ? (
+                <Fragment>
+                  <Stack.Screen name="Tab" component={TabStack} />
+                  <Stack.Screen name="ChatScreen" component={ChatScreen} />
+                  <Stack.Screen name="ConversationFilter" component={ConversationFilter} />
+                  <Stack.Screen name="ImageScreen" component={ImageScreen} />
+                  <Stack.Screen name="Language" component={LanguageScreen} />
+                  <Stack.Screen name="Account" component={AccountScreen} />
+                  <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
+                  <Stack.Screen name="ConversationAction" component={ConversationAction} />
+                  <Stack.Screen name="AgentScreen" component={AgentScreen} />
+                  <Stack.Screen name="LabelScreen" component={LabelScreen} />
+                  <Stack.Screen name="TeamScreen" component={TeamScreen} />
+                  <Stack.Screen name="Availability" component={AvailabilityScreen} />
+                  <Stack.Screen name="NotificationPreference" component={NotificationPreference} />
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <Stack.Screen name="ConfigureURL" component={ConfigureURLScreen} />
+                  <Stack.Screen name="Login" component={LoginScreen} />
+                  <Stack.Screen name="ResetPassword" component={ResetPassword} />
+                  <Stack.Screen name="ConversationScreen" component={conversationScreen} />
+                  <Stack.Screen name="Language" component={LanguageScreen} />
+                </Fragment>
+              )}
+            </Stack.Navigator>
+          </BottomSheetModalProvider>
         </NavigationContainer>
       </SafeAreaView>
     </KeyboardAvoidingView>

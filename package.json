@@ -36,6 +36,7 @@
   "dependencies": {
     "@chatwoot/react-native-widget": "^0.0.7",
     "@eva-design/eva": "^2.0.0",
+    "@gorhom/bottom-sheet": "^4.4.5",
     "@kesha-antonov/react-native-action-cable": "^1.1.0",
     "@native-html/table-plugin": "^5.3.1",
     "@react-native-async-storage/async-storage": "^1.14.1",
@@ -79,6 +80,7 @@
     "react-native-image-picker": "^3.1.4",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-markdown-display": "^7.0.0-alpha.2",
+    "react-native-reanimated": "^2.12.0",
     "react-native-render-html": "^6.3.4",
     "react-native-safari-view": "^2.1.0",
     "react-native-safe-area-context": "3.2.0",

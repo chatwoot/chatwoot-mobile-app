@@ -182,4 +182,7 @@ export const selectors = {
   ),
 };
 
+export const { clearAllConversations, setConversationStatus, setAssigneeType, setActiveInbox } =
+  conversationSlice.actions;
+
 export default conversationSlice.reducer;

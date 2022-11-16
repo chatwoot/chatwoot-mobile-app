@@ -1,9 +1,13 @@
-import React, { useMemo, useEffect, useCallback, useState } from 'react';
+import React, { useMemo, useEffect, useCallback, useState, useRef } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { clearAllDeliveredNotifications } from 'helpers/PushHelper';
 import { useSelector, useDispatch } from 'react-redux';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
+import { BottomSheetModal, BottomSheetScrollView, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import { useFocusEffect } from '@react-navigation/native';
+
+import { getInboxIconByType } from 'helpers/inbox';
 import { getInboxes } from 'actions/inbox';
 import { getAgents } from 'actions/agent';
 import ActionCable from 'helpers/ActionCable';
@@ -13,6 +17,10 @@ import {
   selectConversationStatus,
   selectAssigneeType,
   selectActiveInbox,
+  setAssigneeType,
+  setConversationStatus,
+  clearAllConversations,
+  setActiveInbox,
 } from 'reducer/conversationSlice';
 import { saveDeviceDetails } from 'actions/notification';
 import { getInstalledVersion } from 'actions/settings';
@@ -20,10 +28,13 @@ import createStyles from './ConversationScreen.style';
 import { identifyUser } from 'helpers/Analytics';
 import i18n from 'i18n';
 import Header from 'components/Header/Header';
-import { ConversationList } from './components';
+import { FilterButton, ClearFilterButton } from 'components';
+import { ConversationList, ConversationFilter, ConversationInboxFilter } from './components';
+import { CONVERSATION_STATUSES, ASSIGNEE_TYPES } from 'constants';
 
 const ConversationScreen = () => {
   const theme = useTheme();
+  const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
   const conversationStatus = useSelector(selectConversationStatus);
   const assigneeType = useSelector(selectAssigneeType);
@@ -31,6 +42,7 @@ const ConversationScreen = () => {
   const installationUrl = useSelector(state => state.settings.installationUrl);
   const webSocketUrl = useSelector(state => state.settings.webSocketUrl);
   const isLoading = useSelector(state => state.conversations.loading);
+  const inboxes = useSelector(state => state.inbox.data);
 
   const [pageNumber, setPage] = useState(1);
   const dispatch = useDispatch();
@@ -88,6 +100,110 @@ const ConversationScreen = () => {
     [dispatch],
   );
 
+  // Filter by assignee type
+  const renderBackdrop = useCallback(
+    props => (
+      <BottomSheetBackdrop
+        {...props}
+        enableTouchThrough={false}
+        pressBehavior={'close'}
+        opacity={0.6}
+        disappearsOnIndex={-1}
+      />
+    ),
+    [],
+  );
+
+  const clearAppliedFilters = async () => {
+    await dispatch(clearAllConversations());
+    await dispatch(setConversationStatus('open'));
+    await dispatch(setAssigneeType('mine'));
+    await dispatch(setActiveInbox(0));
+    setPage(1);
+  };
+
+  // Filter by assignee type
+  const conversationAssigneeModal = useRef(null);
+  const conversationFilterModalSnapPoints = useMemo(() => ['20%', '40%', '60%'], []);
+  const toggleConversationAssigneeModal = useCallback(() => {
+    conversationAssigneeModal.current.present() || conversationAssigneeModal.current?.close();
+  }, []);
+  const closeConversationAssigneeModal = useCallback(() => {
+    conversationAssigneeModal.current?.close();
+  }, []);
+
+  // Filter by conversation status
+  const conversationStatusModal = useRef(null);
+  const toggleConversationStatusModal = useCallback(() => {
+    conversationStatusModal.current.present() || conversationStatusModal.current?.close();
+  }, []);
+  const closeConversationStatusModal = useCallback(() => {
+    conversationStatusModal.current?.close();
+  }, []);
+
+  // Filter by inbox
+  const inboxFilterModal = useRef(null);
+  const inboxFilterModalSnapPoints = useMemo(() => ['40%', '80%', '92%'], []);
+  const toggleInboxFilterModal = useCallback(() => {
+    inboxFilterModal.current.present() || inboxFilterModal.current?.close();
+  }, []);
+  const closeInboxFilterModal = useCallback(() => {
+    inboxFilterModal.current?.close();
+  }, []);
+
+  const hasActiveFilters =
+    conversationStatus !== 'open' || assigneeType !== 'mine' || activeInboxId !== 0;
+
+  const filtersCount =
+    Number(conversationStatus !== 'open') +
+    Number(assigneeType !== 'mine') +
+    Number(activeInboxId !== 0);
+
+  const onSelectAssigneeType = async item => {
+    await dispatch(setAssigneeType(item.key));
+    setPage(1);
+    closeConversationAssigneeModal();
+  };
+
+  const onSelectConversationStatus = async item => {
+    await dispatch(clearAllConversations());
+    await dispatch(setConversationStatus(item.key));
+    setPage(1);
+    closeConversationStatusModal();
+  };
+
+  const onChangeInbox = async item => {
+    await dispatch(clearAllConversations());
+    await dispatch(setActiveInbox(item.id));
+    setPage(1);
+    closeInboxFilterModal();
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        closeInboxFilterModal();
+        closeConversationStatusModal();
+        closeConversationAssigneeModal();
+      };
+    }, [closeConversationAssigneeModal, closeConversationStatusModal, closeInboxFilterModal]),
+  );
+
+  const activeInboxDetails = inboxes.find(inbox => inbox.id === activeInboxId);
+  const iconNameByInboxType = () => {
+    if (!activeInboxId) {
+      return 'chat-outline';
+    }
+    const { channel_type: channelType, phone_number: phoneNumber } = activeInboxDetails;
+    if (!channelType) {
+      return '';
+    }
+    return getInboxIconByType({ channelType, phoneNumber });
+  };
+
+  const inboxName =
+    activeInboxDetails?.name === 'All' ? 'All Inboxes' : activeInboxDetails?.name || 'All Inboxes';
+
   const headerText = isLoading
     ? i18n.t('CONVERSATION.UPDATING')
     : i18n.t('CONVERSATION.DEFAULT_HEADER_TITLE');
@@ -95,6 +211,97 @@ const ConversationScreen = () => {
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <Header headerText={headerText} />
+      <View style={styles.filterContainer}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {hasActiveFilters && (
+            <ClearFilterButton count={filtersCount} onSelectItem={clearAppliedFilters} />
+          )}
+          <FilterButton
+            label={ASSIGNEE_TYPES.map(item => (item.key === assigneeType ? item.name : null))}
+            hasLeftIcon={false}
+            onPress={toggleConversationAssigneeModal}
+            isActive={assigneeType !== 'mine'}
+          />
+          <FilterButton
+            label={CONVERSATION_STATUSES.map(item =>
+              item.key === conversationStatus ? item.name : null,
+            )}
+            hasLeftIcon={false}
+            onPress={toggleConversationStatusModal}
+            isActive={conversationStatus !== 'open'}
+          />
+          <FilterButton
+            label={inboxName}
+            hasLeftIcon={true}
+            leftIconName={iconNameByInboxType()}
+            onPress={toggleInboxFilterModal}
+            isActive={activeInboxId !== 0}
+          />
+        </ScrollView>
+        <BottomSheetModal
+          ref={conversationAssigneeModal}
+          index={1}
+          snapPoints={conversationFilterModalSnapPoints}
+          backdropComponent={renderBackdrop}
+          enablePanDownToClose={true}
+          backgroundStyle={{ backgroundColor: colors.background }}
+          handleIndicatorStyle={{ backgroundColor: colors.secondaryColor }}
+          style={styles.bottomSheet}>
+          <BottomSheetScrollView>
+            <ConversationFilter
+              title="Filter by Assignee type"
+              closeFilter={closeConversationAssigneeModal}
+              activeValue={assigneeType}
+              items={ASSIGNEE_TYPES}
+              onChangeFilter={onSelectAssigneeType}
+              colors={colors}
+            />
+          </BottomSheetScrollView>
+        </BottomSheetModal>
+
+        <BottomSheetModal
+          ref={conversationStatusModal}
+          index={1}
+          snapPoints={conversationFilterModalSnapPoints}
+          backdropComponent={renderBackdrop}
+          backgroundStyle={{ backgroundColor: colors.background }}
+          enablePanDownToClose={true}
+          handleIndicatorStyle={{ backgroundColor: colors.secondaryColor }}
+          style={styles.bottomSheet}>
+          <BottomSheetScrollView>
+            <ConversationFilter
+              title="Filter by Conversation status"
+              closeFilter={closeConversationStatusModal}
+              activeValue={conversationStatus}
+              items={CONVERSATION_STATUSES}
+              onChangeFilter={onSelectConversationStatus}
+              colors={colors}
+            />
+          </BottomSheetScrollView>
+        </BottomSheetModal>
+
+        <BottomSheetModal
+          ref={inboxFilterModal}
+          index={1}
+          snapPoints={inboxFilterModalSnapPoints}
+          backdropComponent={renderBackdrop}
+          backgroundStyle={{ backgroundColor: colors.background }}
+          handleIndicatorStyle={{ backgroundColor: colors.secondaryColor }}
+          enablePanDownToClose={true}
+          style={styles.bottomSheet}>
+          <BottomSheetScrollView>
+            <ConversationInboxFilter
+              title="Filter by Inbox"
+              closeFilter={closeInboxFilterModal}
+              activeValue={activeInboxId}
+              hasLeftIcon={true}
+              items={inboxes}
+              onChangeFilter={onChangeInbox}
+              colors={colors}
+            />
+          </BottomSheetScrollView>
+        </BottomSheetModal>
+      </View>
       <View style={styles.container}>
         <ConversationList
           onChangePageNumber={onChangePage}

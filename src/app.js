@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { Alert, BackHandler, Platform, StatusBar } from 'react-native';
 import BackgroundColor from 'react-native-background-color';
+
 import SplashScreen from 'react-native-splash-screen';
 import { PersistGate } from 'redux-persist/integration/react';
 import * as eva from '@eva-design/eva';
@@ -55,6 +56,7 @@ const Chatwoot = () => {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <NoNetworkBar />
+
             <Router />
           </PersistGate>
         </Provider>

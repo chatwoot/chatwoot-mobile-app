@@ -13,7 +13,6 @@ const createStyles = theme => {
   return StyleSheet.create({
     itemView: {
       flex: 1,
-      marginTop: spacing.tiny,
       flexDirection: 'row',
       alignItems: 'center',
     },

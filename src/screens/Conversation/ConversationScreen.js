@@ -108,7 +108,7 @@ const ConversationScreen = () => {
         enableTouchThrough={false}
         pressBehavior={'close'}
         opacity={0.6}
-        disappearsOnIndex={-1}
+        disappearsOnIndex={0} // this should be changed to -1 when the memory leak bug is fixed
       />
     ),
     [],

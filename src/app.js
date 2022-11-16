@@ -56,7 +56,6 @@ const Chatwoot = () => {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <NoNetworkBar />
-
             <Router />
           </PersistGate>
         </Provider>

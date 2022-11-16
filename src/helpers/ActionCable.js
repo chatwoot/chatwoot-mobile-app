@@ -19,14 +19,20 @@ class ActionCableConnector extends BaseActionCableConnector {
     this.events = {
       'message.created': this.onMessageCreated,
       'message.updated': this.onMessageUpdated,
-      'conversation.created': this.onConversationStatusChange,
+      'conversation.created': this.onConversationCreated,
       'conversation.status_changed': this.onStatusChange,
       'assignee.changed': this.onAssigneeChanged,
       'conversation.read': this.onConversationRead,
-      // 'conversation.resolved': this.onConversationStatusChange,
+      // 'presence.update': this.onPresenceUpdate,
+      // TODO: Handle all these events
       // 'conversation.typing_on': this.onTypingOn,
       // 'conversation.typing_off': this.onTypingOff,
-      // 'presence.update': this.onPresenceUpdate,
+      //   'conversation.contact_changed': this.onConversationContactChange,
+      //   'contact.deleted': this.onContactDelete,
+      //   'contact.updated': this.onContactUpdate,
+      //   'conversation.mentioned': this.onConversationMentioned,
+      //   'notification.created': this.onNotificationCreated,
+      //   'first.reply.created': this.onFirstReplyCreated,
     };
   }
 
@@ -113,10 +119,6 @@ class ActionCableConnector extends BaseActionCableConnector {
     //   }),
     // );
   };
-
-  onAssigneeChanged = payload => {};
-
-  onStatusChange = data => {};
 
   handleReceived = data => {};
 }

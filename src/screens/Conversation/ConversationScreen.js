@@ -43,24 +43,18 @@ const ConversationScreen = () => {
   const webSocketUrl = useSelector(state => state.settings.webSocketUrl);
   const isLoading = useSelector(state => state.conversations.loading);
   const inboxes = useSelector(state => state.inbox.data);
-
   const [pageNumber, setPage] = useState(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // clearAll();
-    clearAllDeliveredNotifications();
     initActionCable();
-    dispatch(getInstalledVersion());
     dispatch(getInboxes());
+    clearAllDeliveredNotifications();
+    dispatch(getInstalledVersion());
     dispatch(getAgents());
     dispatch(saveDeviceDetails());
     storeUser();
   }, [dispatch, initActionCable, storeUser]);
-
-  // const clearAll = async () => {
-  //   // await dispatch(clearAllConversations());
-  // };
 
   const initActionCable = useCallback(async () => {
     const pubSubToken = await getPubSubToken();

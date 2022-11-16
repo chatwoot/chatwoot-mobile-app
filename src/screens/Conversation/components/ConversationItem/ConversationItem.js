@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { View, Pressable, StyleSheet, Platform } from 'react-native';
+import { View, Pressable, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
@@ -10,8 +10,6 @@ import { getUnreadCount, findLastMessage, getInboxName } from 'helpers/conversat
 import ConversationContent from './ConversationContent';
 import ConversationAttachment from './ConversationAttachment';
 import { dynamicTime } from 'helpers/TimeHelper';
-
-const isAndroid = Platform.OS === 'android';
 
 const propTypes = {
   item: PropTypes.shape({
@@ -216,8 +214,8 @@ const createStyles = theme => {
       paddingTop: spacing.smaller,
     },
     badge: {
-      width: spacing.small,
-      height: spacing.small,
+      width: 18,
+      height: 18,
       borderRadius: 16,
       backgroundColor: colors.successColor,
       alignItems: 'center',
@@ -225,45 +223,6 @@ const createStyles = theme => {
     },
     typingText: {
       paddingTop: spacing.micro,
-    },
-    leftSwipeAction: {
-      flex: 0.4,
-      backgroundColor: colors.background,
-      flexDirection: 'row',
-    },
-    resolveAction: {
-      flex: 0.5,
-      backgroundColor: colors.successColor,
-    },
-    reopenAction: {
-      flex: 0.5,
-      backgroundColor: colors.warningColor,
-    },
-    moreAction: {
-      flex: 0.5,
-      backgroundColor: colors.secondaryColor,
-    },
-    pendingOpenAction: {
-      flex: 0.5,
-      backgroundColor: colors.primaryColor,
-    },
-    actionView: {
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100%',
-      width: '100%',
-      paddingTop: !isAndroid ? spacing.micro : spacing.small,
-      paddingHorizontal: spacing.half,
-    },
-    moreActionView: {
-      paddingHorizontal: spacing.small,
-    },
-    openActionView: {
-      paddingHorizontal: spacing.small,
-    },
-    swipeActionText: {
-      marginTop: spacing.micro,
     },
   });
 };

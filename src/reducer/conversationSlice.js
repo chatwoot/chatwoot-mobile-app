@@ -201,8 +201,7 @@ export const selectors = {
     },
   ),
 };
-
-export const { addMessage, addConversation, updateConversation, clearAllConversations } =
+export const { addMessage, addConversation, updateConversation, clearAllConversations, setConversationStatus, setAssigneeType, setActiveInbox } =
   conversationSlice.actions;
 
 export default conversationSlice.reducer;

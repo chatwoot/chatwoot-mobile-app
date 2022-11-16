@@ -11,3 +11,6 @@
 -keep class com.facebook.jni.** { *; }
 -keep public class com.horcrux.svg.** {*;}
 -keep class com.chatwoot.app.BuildConfig { *; }
+-keep class com.chatwoot.app.BuildConfig { *; }
+-keep class com.swmansion.reanimated.** { *; }
+-keep class com.facebook.react.turbomodule.** { *; }

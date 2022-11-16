@@ -17,7 +17,16 @@ export default theme => {
     },
     avatarView: {
       alignSelf: 'center',
-      marginRight: spacing.half,
+      marginRight: spacing.smaller,
+    },
+    avatarLoader: {
+      width: spacing.larger,
+      height: spacing.larger,
+      borderRadius: borderRadius.full,
+      backgroundColor: colors.backgroundDark,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     contentView: {
       flex: 1,
@@ -25,15 +34,6 @@ export default theme => {
       paddingBottom: spacing.small,
       borderColor: colors.backgroundDark,
       borderBottomWidth: 1,
-    },
-    avatarLoader: {
-      width: spacing.full,
-      height: spacing.full,
-      borderRadius: borderRadius.full,
-      backgroundColor: colors.backgroundDark,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
     },
     idInboxNameView: {
       width: 100,
@@ -65,6 +65,7 @@ export default theme => {
       width: 200,
       borderRadius: borderRadius.micro,
       height: spacing.small,
+      marginTop: spacing.tiny,
       backgroundColor: colors.backgroundDark,
     },
     unreadTimestampContainer: {

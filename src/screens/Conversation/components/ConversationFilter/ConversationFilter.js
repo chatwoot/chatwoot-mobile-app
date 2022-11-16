@@ -8,17 +8,15 @@ import { BottomSheetModalHeader } from 'components';
 const createStyles = theme => {
   const { spacing, borderRadius } = theme;
   return StyleSheet.create({
+    bottomSheet: {
+      flex: 1,
+      padding: spacing.small,
+    },
     iconNameWrapper: {
       flexDirection: 'row',
       alignItems: 'center',
     },
-    bottomSheet: {
-      //TODO: to be removed when we use in bottom sheet
-      width: '90%',
-    },
     bottomSheetView: {
-      //TODO: to be changed to '100%' when we use in bottom sheet
-      height: 100,
       paddingVertical: spacing.small,
       paddingBottom: spacing.large,
     },

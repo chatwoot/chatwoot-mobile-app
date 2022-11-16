@@ -1,9 +1,7 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import Icon from 'components/Icon/Icon';
-import Pressable from 'components/Pressable/Pressable';
-import Text from 'components/Text/Text';
+import { Text, Icon, Pressable } from 'components';
 import { getTextSubstringWithEllipsis } from 'helpers';
 
 import PropTypes from 'prop-types';
@@ -25,7 +23,7 @@ const createStyles = theme => {
       justifyContent: 'center',
       borderColor: colors.borderLight,
       borderWidth: 0.2,
-      paddingHorizontal: spacing.half,
+      paddingHorizontal: spacing.smaller,
       paddingVertical: spacing.micro,
       borderRadius: borderRadius.small,
       maxWidth: 240,
@@ -36,7 +34,7 @@ const createStyles = theme => {
       marginRight: spacing.micro,
     },
     arrowDownIcon: {
-      marginLeft: spacing.micro,
+      marginLeft: spacing.smaller,
     },
   });
 };

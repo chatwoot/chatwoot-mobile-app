@@ -54,6 +54,7 @@ export const MESSAGE_TYPES = {
   INCOMING: 0,
   OUTGOING: 1,
   ACTIVITY: 2,
+  TEMPLATE: 3,
 };
 
 export const MESSAGE_STATUS = {
@@ -61,6 +62,12 @@ export const MESSAGE_STATUS = {
   DELIVERED: 1,
   READ: 2,
   FAILED: 3,
+};
+
+export const MESSAGE_RESPONSE_STATUS = {
+  FAILED: 'failed',
+  SENT: 'sent',
+  PROGRESS: 'progress',
 };
 
 //TODO: Remove this later

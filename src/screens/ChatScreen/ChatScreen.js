@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Spinner, withStyles } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -7,20 +7,19 @@ import ChatMessage from './components/ChatMessage';
 import ChatMessageDate from './components/ChatMessageDate';
 import ReplyBox from './components/ReplyBox';
 import ChatHeader from './components/ChatHeader';
-import ScrollToBottomButton from '../../components/ScrollToBottomButton';
 import styles from './ChatScreen.style';
 import { openURL } from '../../helpers/UrlHelper';
-
-import {
-  loadMessages,
-  markMessagesAsRead,
-  resetConversation,
-  getConversationDetails,
-} from '../../actions/conversation';
 
 import { markNotificationAsRead } from '../../actions/notification';
 import { getGroupedConversation, findUniqueMessages } from '../../helpers';
 import { actions as CannedResponseActions } from '../../reducer/cannedResponseSlice';
+
+import {
+  selectors as conversationSelectors,
+  actions as conversationActions,
+  selectMessagesLoading,
+  selectAllMessagesFetched,
+} from 'reducer/conversationSlice';
 
 const propTypes = {
   eva: PropTypes.shape({
@@ -39,7 +38,6 @@ const propTypes = {
   loadMessages: PropTypes.func,
   fetchCannedResponses: PropTypes.func,
   isFetching: PropTypes.bool,
-  isAllMessagesLoaded: PropTypes.bool,
   markAllMessagesAsRead: PropTypes.func,
   toggleTypingStatus: PropTypes.func,
   markMessagesAsRead: PropTypes.func,
@@ -50,7 +48,6 @@ const propTypes = {
 
 const defaultProps = {
   isFetching: false,
-  isAllMessagesLoaded: false,
   markMessagesAsRead: () => {},
   allMessages: [],
   cannedResponses: [],
@@ -60,29 +57,57 @@ const defaultProps = {
 const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   const dispatch = useDispatch();
   const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState(true);
-  const conversationDetails = useSelector(state => state.conversation.conversationDetails);
-  const allMessages = useSelector(state => state.conversation.allMessages);
-  const isFetching = useSelector(state => state.conversation.isFetching);
-  const isAllMessagesLoaded = useSelector(state => state.conversation.isAllMessagesLoaded);
   const conversationTypingUsers = useSelector(state => state.conversation.conversationTypingUsers);
-  const showScrollToButton = false;
 
-  useEffect(() => {
-    const { conversationId, meta, messages, primaryActorDetails } = route.params;
+  const isFetching = useSelector(selectMessagesLoading);
+  const isAllMessagesFetched = useSelector(selectAllMessagesFetched);
 
-    if (!meta) {
-      dispatch(resetConversation());
-    }
+  const { conversationId, messages, primaryActorDetails } = route.params;
+
+  const conversation = useSelector(state =>
+    conversationSelectors.getConversationById(state, conversationId),
+  );
+
+  const allMessages = useSelector(state =>
+    conversationSelectors.getMessagesByConversationId(state, conversationId),
+  );
+
+  const { meta: conversationMetaDetails = {} } = conversation || {};
+
+  const lastMessageId = useCallback(() => {
     let beforeId = null;
-    if (messages && messages.length) {
-      const [lastMessage] = messages;
+    if (allMessages && allMessages.length) {
+      const [lastMessage] = allMessages;
       const { id } = lastMessage;
       beforeId = id;
     }
-    dispatch(loadMessages({ conversationId, beforeId }));
-    dispatch(getConversationDetails({ conversationId }));
-    dispatch(markMessagesAsRead({ conversationId }));
+    return beforeId;
+  }, [allMessages]);
+
+  useEffect(() => {
     dispatch(CannedResponseActions.index());
+    dispatch(conversationActions.markMessagesAsRead({ conversationId }));
+  }, [dispatch, conversationId]);
+
+  useEffect(() => {
+    loadMessages();
+  }, [loadMessages]);
+
+  const loadMessages = useCallback(() => {
+    // Fetch conversation if not present
+    if (!conversation) {
+      dispatch(conversationActions.fetchConversation({ conversationId }));
+    } else {
+      dispatch(
+        conversationActions.fetchPreviousMessages({
+          conversationId,
+          beforeId: lastMessageId(),
+        }),
+      );
+    }
+  }, [conversation, conversationId, dispatch, lastMessageId]);
+
+  useEffect(() => {
     if (primaryActorDetails && primaryActorDetails.primary_actor_id) {
       dispatch(
         markNotificationAsRead({
@@ -91,7 +116,7 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
         }),
       );
     }
-  }, [dispatch, route.params]);
+  }, [conversationId, dispatch, messages, primaryActorDetails]);
 
   const showAttachment = ({ type, dataUrl }) => {
     if (type === 'image') {
@@ -106,11 +131,11 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   const onBackPress = () => {
     navigation.goBack();
   };
+
   const loadMoreMessages = () => {
-    if (!isAllMessagesLoaded) {
-      const [lastMessage] = allMessages;
-      const { conversation_id: conversationId, id: beforeId } = lastMessage;
-      dispatch(loadMessages({ conversationId, beforeId }));
+    const shouldFetchMoreMessages = !isAllMessagesFetched;
+    if (shouldFetchMoreMessages) {
+      loadMessages();
     }
   };
 
@@ -122,50 +147,25 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   };
 
   const renderMoreLoader = () => {
-    return (
-      <View style={style.loadMoreSpinnerView}>
-        {!isAllMessagesLoaded && isFetching ? <Spinner size="medium" color="red" /> : null}
-      </View>
-    );
+    if (isFetching) {
+      return (
+        <View style={style.loadMoreSpinnerView}>
+          <Spinner size="medium" color="red" />
+        </View>
+      );
+    }
+    return null;
   };
 
   const renderMessage = item => (
     <ChatMessage message={item.item} key={item.index} showAttachment={showAttachment} />
   );
 
-  const scrollToBottom = () => {
-    // this.setState({
-    //   showScrollToButton: false,
-    // });
-    // this.SectionListReference.scrollToLocation({
-    //   animated: true,
-    //   itemIndex: 0,
-    //   viewPosition: 0,
-    // });
-  };
-
-  const setCurrentReadOffset = event => {
-    // const scrollHight = Math.floor(event.nativeEvent.contentOffset.y);
-    // if (scrollHight > 50) {
-    //   this.setState({
-    //     showScrollToButton: false,
-    //   });
-    // } else {
-    //   this.setState({
-    //     showScrollToButton: false,
-    //   });
-    // }
-  };
-
   const showConversationDetails = () => {
-    if (conversationDetails) {
-      navigation.navigate('ConversationDetails', { conversationDetails });
+    if (conversation) {
+      navigation.navigate('ConversationDetails', { conversationDetails: conversation });
     }
   };
-
-  const {
-    params: { conversationId, meta },
-  } = route;
 
   const uniqueMessages = findUniqueMessages({ allMessages });
   const groupedConversationList = getGroupedConversation({
@@ -177,8 +177,8 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
       <ChatHeader
         conversationId={conversationId}
         conversationTypingUsers={conversationTypingUsers}
-        conversationDetails={conversationDetails}
-        conversationMetaDetails={meta}
+        conversationDetails={conversation}
+        conversationMetaDetails={conversationMetaDetails}
         showConversationDetails={showConversationDetails}
         onBackPress={onBackPress}
       />
@@ -189,7 +189,6 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
             <SectionList
               keyboardShouldPersistTaps="never"
               scrollEventThrottle={16}
-              onScroll={event => setCurrentReadOffset(event)}
               inverted
               onEndReached={onEndReached.bind(this)}
               onEndReachedThreshold={0.5}
@@ -204,14 +203,13 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
               ListFooterComponent={renderMoreLoader}
             />
           ) : null}
-          {showScrollToButton && <ScrollToBottomButton scrollToBottom={scrollToBottom} />}
           {isFetching && !groupedConversationList.length && (
             <View style={style.loadMoreSpinnerView}>
               <Spinner size="medium" />
             </View>
           )}
         </View>
-        <ReplyBox conversationId={conversationId} conversationDetails={conversationDetails} />
+        <ReplyBox conversationId={conversationId} conversationDetails={conversation} />
       </View>
     </SafeAreaView>
   );

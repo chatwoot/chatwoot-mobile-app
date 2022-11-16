@@ -69,6 +69,9 @@ class NotificationScreenComponent extends Component {
     menuVisible: false,
     refreshing: false,
   };
+  componentDidMount() {
+    this.loadNotifications();
+  }
 
   loadNotifications = () => {
     const { pageNo } = this.state;

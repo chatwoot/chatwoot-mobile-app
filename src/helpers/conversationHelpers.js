@@ -1,3 +1,14 @@
+import { MESSAGE_RESPONSE_STATUS, MESSAGE_TYPES } from 'constants';
+const getUuid = () =>
+  'xxxxxxxx4xxx'.replace(/[xy]/g, c => {
+    // eslint-disable-next-line no-bitwise
+    const r = (Math.random() * 16) | 0;
+    // eslint-disable-next-line no-bitwise
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+
+export default getUuid;
 const filterByStatus = (chatStatus, filterStatus) =>
   filterStatus === 'all' ? true : chatStatus === filterStatus;
 
@@ -51,7 +62,70 @@ export function findLastMessage({ messages }) {
   };
 }
 
+export const createPendingMessage = data => {
+  const timestamp = Math.floor(new Date().getTime() / 1000);
+  const tempMessageId = getUuid();
+
+  const { message, files } = data;
+  // const tempAttachments = [{ id: tempMessageId }];
+  const pendingMessage = {
+    ...data,
+    content: message || null,
+    id: tempMessageId,
+    echo_id: tempMessageId,
+    status: MESSAGE_RESPONSE_STATUS.PROGRESS,
+    created_at: timestamp,
+    message_type: MESSAGE_TYPES.OUTGOING,
+    conversation_id: data.conversationId,
+    attachments: files,
+  };
+
+  return pendingMessage;
+};
+
 export const findPendingMessageIndex = (conversation, message) => {
   const { echo_id: tempMessageId } = message;
   return conversation.messages.findIndex(m => m.id === message.id || m.id === tempMessageId);
+};
+
+export const buildCreatePayload = ({
+  conversationId,
+  message,
+  private: isPrivate,
+  contentAttributes,
+  echo_id: echoId,
+  files,
+  ccEmails = '',
+  bccEmails = '',
+  templateParams,
+}) => {
+  let payload;
+  if (files && files.length !== 0) {
+    payload = new FormData();
+    if (message) {
+      payload.append('content', message);
+    }
+    files.forEach(file => {
+      payload.append('attachments[]', {
+        uri: file.uri,
+        name: file.fileName,
+        type: file.type,
+      });
+    });
+    payload.append('private', isPrivate);
+    payload.append('echo_id', echoId);
+    payload.append('cc_emails', ccEmails);
+    payload.append('bcc_emails', bccEmails);
+  } else {
+    payload = {
+      content: message,
+      private: isPrivate,
+      echo_id: echoId,
+      content_attributes: contentAttributes,
+      cc_emails: ccEmails,
+      bcc_emails: bccEmails,
+      template_params: templateParams,
+    };
+  }
+  return payload;
 };

@@ -6,6 +6,10 @@ import {
 } from '@reduxjs/toolkit';
 import axios from 'helpers/APIHelper';
 import { applyFilters, findPendingMessageIndex } from 'helpers/conversationHelpers';
+import I18n from 'i18n';
+import { showToast } from 'helpers/ToastHelper';
+
+import * as RootNavigation from 'helpers/NavigationHelper';
 
 export const conversationAdapter = createEntityAdapter({
   selectId: conversation => conversation.id,
@@ -67,6 +71,66 @@ export const actions = {
         if (!error.response) {
           throw error;
         }
+      }
+    },
+  ),
+  fetchPreviousMessages: createAsyncThunk(
+    'conversations/fetchPreviousMessages',
+    async ({ conversationId, beforeId }, { rejectWithValue }) => {
+      try {
+        const response = await axios.get(`conversations/${conversationId}/messages`, {
+          params: {
+            before: beforeId,
+          },
+        });
+        const {
+          data: { payload, meta },
+        } = response;
+        // TODO: Commit meta to store
+        return { data: payload, meta, conversationId };
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
+  fetchConversation: createAsyncThunk(
+    'conversations/fetchConversation',
+    async ({ conversationId }, { rejectWithValue }) => {
+      try {
+        const response = await axios.get(`conversations/${conversationId}`);
+        const { data } = response;
+        return data;
+      } catch (error) {
+        const errorMessage =
+          error?.response?.data?.error?.message || I18n.t('CONVERSATION.CONVERSATION_NOT_FOUND');
+        if (!error.response) {
+          throw error;
+        }
+        showToast({
+          type: 'error',
+          title: errorMessage,
+        });
+        RootNavigation.navigate('ConversationScreen');
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
+  markMessagesAsRead: createAsyncThunk(
+    'conversations/markMessagesAsRead',
+    async ({ conversationId }, { rejectWithValue }) => {
+      try {
+        const {
+          data: { id, agent_last_seen_at: lastSeen },
+        } = await axios.post(`conversations/${conversationId}/update_last_seen`);
+        return { id, lastSeen };
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
       }
     },
   ),
@@ -158,6 +222,27 @@ const conversationSlice = createSlice({
     [actions.fetchConversationStats.fulfilled]: (state, { payload }) => {
       state.meta = payload.meta;
     },
+    [actions.fetchConversation.fulfilled]: (state, { payload }) => {
+      conversationAdapter.upsertOne(state, payload);
+    },
+    [actions.fetchPreviousMessages.pending]: state => {
+      state.loadingMessages = true;
+    },
+    [actions.fetchPreviousMessages.fulfilled]: (state, { payload }) => {
+      const { data, conversationId } = payload;
+      const conversation = state.entities[conversationId];
+      conversation.messages.unshift(...data);
+      state.loadingMessages = false;
+      state.isAllMessagesFetched = data.length < 20;
+    },
+    [actions.fetchPreviousMessages.rejected]: state => {
+      state.loadingMessages = false;
+    },
+    [actions.markMessagesAsRead.fulfilled]: (state, { payload }) => {
+      const { id, lastSeen } = payload;
+      const conversation = state.entities[id];
+      conversation.agent_last_seen_at = lastSeen;
+    },
   },
 });
 export const conversationSelector = conversationAdapter.getSelectors(state => state.conversations);
@@ -200,15 +285,32 @@ export const selectors = {
       });
     },
   ),
+  getMessagesByConversationId: createDraftSafeSelector(
+    [conversationSelector.selectEntities, (_, conversationId) => conversationId],
+    (conversations, conversationId) => {
+      const conversation = conversations[conversationId];
+      if (!conversation) {
+        return [];
+      }
+      return conversation.messages;
+    },
+  ),
+  getConversationById: createDraftSafeSelector(
+    [conversationSelector.selectEntities, (_, conversationId) => conversationId],
+    (conversations, conversationId) => {
+      return conversations[conversationId];
+    },
+  ),
 };
 export const {
-  addMessage,
-  addConversation,
-  updateConversation,
   clearAllConversations,
   setConversationStatus,
   setAssigneeType,
   setActiveInbox,
+  addConversation,
+  addMessage,
+  updateConversation,
+  updateContactsPresence,
 } = conversationSlice.actions;
 
 export default conversationSlice.reducer;

@@ -166,7 +166,7 @@ const UserAvatar = ({
             borderRadius: size,
           },
         ]}>
-        <Text bold color={colors.avatarColor} style={{ fontSize: fontSize }}>
+        <Text bold color={colors.primaryColor} style={{ fontSize: fontSize }}>
           {getUserInitial({ userName })}
         </Text>
       </LinearGradient>

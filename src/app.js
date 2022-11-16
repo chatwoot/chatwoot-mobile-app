@@ -15,6 +15,7 @@ import { theme } from './theme';
 import Router from './router';
 import { store, persistor } from './store';
 import i18n from './i18n';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 const Chatwoot = () => {
   useEffect(() => {
@@ -56,8 +57,9 @@ const Chatwoot = () => {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <NoNetworkBar />
-
-            <Router />
+            <BottomSheetModalProvider>
+              <Router />
+            </BottomSheetModalProvider>
           </PersistGate>
         </Provider>
       </ApplicationProvider>

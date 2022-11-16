@@ -28,7 +28,7 @@ import createStyles from './ConversationScreen.style';
 import { identifyUser } from 'helpers/Analytics';
 import i18n from 'i18n';
 import Header from 'components/Header/Header';
-import { FilterButton } from 'components';
+import { FilterButton, ClearFilterButton } from 'components';
 import { ConversationList, ConversationFilter, ConversationInboxFilter } from './components';
 import { CONVERSATION_STATUSES, ASSIGNEE_TYPES } from 'constants';
 
@@ -114,6 +114,14 @@ const ConversationScreen = () => {
     [],
   );
 
+  const clearAppliedFilters = async () => {
+    await dispatch(clearAllConversations());
+    await dispatch(setConversationStatus('open'));
+    await dispatch(setAssigneeType('mine'));
+    await dispatch(setActiveInbox(0));
+    setPage(1);
+  };
+
   // Filter by assignee type
   const conversationAssigneeModal = useRef(null);
   const conversationFilterModalSnapPoints = useMemo(() => ['20%', '40%', '60%'], []);
@@ -142,6 +150,14 @@ const ConversationScreen = () => {
   const closeInboxFilterModal = useCallback(() => {
     inboxFilterModal.current?.close();
   }, []);
+
+  const hasActiveFilters =
+    conversationStatus !== 'open' || assigneeType !== 'mine' || activeInboxId !== 0;
+
+  const filtersCount =
+    Number(conversationStatus !== 'open') +
+    Number(assigneeType !== 'mine') +
+    Number(activeInboxId !== 0);
 
   const onSelectAssigneeType = async item => {
     await dispatch(setAssigneeType(item.key));
@@ -197,6 +213,9 @@ const ConversationScreen = () => {
       <Header headerText={headerText} />
       <View style={styles.filterContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {hasActiveFilters && (
+            <ClearFilterButton count={filtersCount} onSelectItem={clearAppliedFilters} />
+          )}
           <FilterButton
             label={ASSIGNEE_TYPES.map(item => (item.key === assigneeType ? item.name : null))}
             hasLeftIcon={false}

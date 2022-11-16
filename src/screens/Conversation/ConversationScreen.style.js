@@ -1,15 +1,14 @@
 import { StyleSheet } from 'react-native';
 
 export default theme => {
-  const { colors } = theme;
+  const { colors, spacing } = theme;
   return StyleSheet.create({
     container: {
       flex: 1,
     },
     filterContainer: {
-      paddingHorizontal: 16,
-      paddingTop: 2,
-      paddingBottom: 18,
+      paddingHorizontal: spacing.small,
+      paddingBottom: spacing.small,
       flexDirection: 'row',
       alignItems: 'center',
       borderBottomWidth: 0.4,

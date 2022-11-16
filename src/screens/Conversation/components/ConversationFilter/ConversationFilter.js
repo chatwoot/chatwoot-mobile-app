@@ -8,6 +8,10 @@ import { BottomSheetModalHeader } from 'components';
 const createStyles = theme => {
   const { spacing, borderRadius } = theme;
   return StyleSheet.create({
+    bottomSheet: {
+      flex: 1,
+      padding: spacing.small,
+    },
     iconNameWrapper: {
       flexDirection: 'row',
       alignItems: 'center',

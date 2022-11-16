@@ -8,6 +8,10 @@ import { getInboxIconByType } from 'helpers/inbox';
 const createStyles = theme => {
   const { spacing, borderRadius } = theme;
   return StyleSheet.create({
+    bottomSheet: {
+      flex: 1,
+      padding: spacing.small,
+    },
     iconNameWrapper: {
       flexDirection: 'row',
       alignItems: 'center',

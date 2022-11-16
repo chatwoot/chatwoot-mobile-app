@@ -68,8 +68,8 @@ const LoginScreenComponent = ({ navigation, eva }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: 'muhsin@chatwoot.com',
-      password: '9.sxx!2nEbr**mhqVu*a',
+      email: '',
+      password: '',
     },
   });
   const onSubmit = data => {

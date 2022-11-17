@@ -5,7 +5,6 @@ import { FlashList } from '@shopify/flash-list';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, View } from 'react-native';
-
 import { Text } from 'components';
 import {
   selectors as conversationSelectors,
@@ -14,7 +13,7 @@ import {
 } from 'reducer/conversationSlice';
 import ConversationEmptyList from '../ConversationEmptyList/ConversationEmptyList';
 import ConversationItem from '../ConversationItem/ConversationItem';
-import { ConversationEmptyMessage } from '../index';
+import ConversationEmptyMessage from '../ConversationEmptyMessage/ConversationEmptyMessage';
 import i18n from 'i18n';
 import createStyles from './ConversationList.style';
 
@@ -47,6 +46,7 @@ const ConversationList = ({
   const [refreshing, setRefreshing] = useState(false);
   const userId = useSelector(store => store.auth.user.id);
   const navigation = useNavigation();
+  const conversationTypingUsers = useSelector(state => state.conversation.conversationTypingUsers);
 
   const filters = {
     assigneeType,
@@ -108,6 +108,8 @@ const ConversationList = ({
     navigation.navigate('ChatScreen', { conversationId: id });
   };
 
+  console.log('Typing', conversationTypingUsers);
+
   const isLoading = useSelector(state => state.conversations.loading);
   const shouldShowEmptyList = allConversations.length === 0 && isLoading;
   if (shouldShowEmptyList) {
@@ -127,7 +129,11 @@ const ConversationList = ({
         keyExtractor={keyExtractor}
         data={allConversations}
         renderItem={({ item }) => (
-          <ConversationItem item={item} onPress={() => onSelectConversation(item)} />
+          <ConversationItem
+            item={item}
+            conversationTypingUsers={conversationTypingUsers}
+            onPress={() => onSelectConversation(item)}
+          />
         )}
         estimatedItemSize={20}
         contentInsetAdjustmentBehavior="automatic"

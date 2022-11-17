@@ -27,8 +27,7 @@ import { getInstalledVersion } from 'actions/settings';
 import createStyles from './ConversationScreen.style';
 import { identifyUser } from 'helpers/Analytics';
 import i18n from 'i18n';
-import Header from 'components/Header/Header';
-import { FilterButton, ClearFilterButton } from 'components';
+import { FilterButton, ClearFilterButton, Header } from 'components';
 import { ConversationList, ConversationFilter, ConversationInboxFilter } from './components';
 import { CONVERSATION_STATUSES, ASSIGNEE_TYPES } from 'constants';
 
@@ -201,7 +200,9 @@ const ConversationScreen = () => {
   };
 
   const inboxName =
-    activeInboxDetails?.name === 'All' ? 'All Inboxes' : activeInboxDetails?.name || 'All Inboxes';
+    activeInboxDetails?.name === 'All'
+      ? i18n.t('FILTER.ALL_INBOXES')
+      : activeInboxDetails?.name || i18n.t('FILTER.ALL_INBOXES');
 
   const headerText = isLoading
     ? i18n.t('CONVERSATION.UPDATING')
@@ -209,7 +210,7 @@ const ConversationScreen = () => {
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
-      <Header headerText={headerText} />
+      <Header headerText={headerText} loading={isLoading} />
       <View style={styles.filterContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {hasActiveFilters && (
@@ -248,7 +249,7 @@ const ConversationScreen = () => {
           style={styles.bottomSheet}>
           <BottomSheetScrollView>
             <ConversationFilter
-              title="Filter by Assignee type"
+              title={i18n.t('FILTER.FILTER_BY_ASSIGNEE_TYPE')}
               closeFilter={closeConversationAssigneeModal}
               activeValue={assigneeType}
               items={ASSIGNEE_TYPES}
@@ -269,7 +270,7 @@ const ConversationScreen = () => {
           style={styles.bottomSheet}>
           <BottomSheetScrollView>
             <ConversationFilter
-              title="Filter by Conversation status"
+              title={i18n.t('FILTER.FILTER_BY_CONVERSATION_STATUS')}
               closeFilter={closeConversationStatusModal}
               activeValue={conversationStatus}
               items={CONVERSATION_STATUSES}
@@ -290,7 +291,7 @@ const ConversationScreen = () => {
           style={styles.bottomSheet}>
           <BottomSheetScrollView>
             <ConversationInboxFilter
-              title="Filter by Inbox"
+              title={i18n.t('FILTER.FILTER_BY_INBOX')}
               closeFilter={closeInboxFilterModal}
               activeValue={activeInboxId}
               hasLeftIcon={true}

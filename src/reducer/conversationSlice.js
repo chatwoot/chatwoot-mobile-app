@@ -4,6 +4,9 @@ import {
   createEntityAdapter,
   createDraftSafeSelector,
 } from '@reduxjs/toolkit';
+const lodashFilter = require('lodash.filter');
+
+
 import axios from 'helpers/APIHelper';
 import { applyFilters, findPendingMessageIndex } from 'helpers/conversationHelpers';
 import I18n from 'i18n';
@@ -204,6 +207,18 @@ const conversationSlice = createSlice({
         conversation.messages.push(message);
         conversation.timestamp = message.created_at;
       }
+    },
+    updateContactsPresence: (state, action) => {
+      const { contacts } = action.payload;
+      const allConversations = state.entities;
+      Object.keys(contacts).forEach(contactId => {
+        let filteredConversations = lodashFilter(allConversations, {
+          meta: { sender: { id: parseInt(contactId) } },
+        });
+        filteredConversations.forEach(item => {
+          state.entities[item.id].meta.sender.availability_status = contacts[contactId];
+        });
+      });
     },
   },
   extraReducers: {

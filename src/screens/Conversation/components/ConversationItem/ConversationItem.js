@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { Text, InboxName, UserAvatar } from 'components';
 import { getTextSubstringWithEllipsis } from 'helpers';
 import { getUnreadCount, findLastMessage, getInboxName } from 'helpers/conversationHelpers';
+import { getTypingUsersText } from 'helpers';
 import ConversationContent from './ConversationContent';
 import ConversationAttachment from './ConversationAttachment';
 import { dynamicTime } from 'helpers/TimeHelper';
@@ -26,10 +27,11 @@ const propTypes = {
     id: PropTypes.number,
     status: PropTypes.string,
   }).isRequired,
+  conversationTypingUsers: PropTypes.shape({}),
   onPress: PropTypes.func,
 };
 
-const ConversationItem = ({ item, onPress }) => {
+const ConversationItem = ({ item, conversationTypingUsers, onPress }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
@@ -43,7 +45,6 @@ const ConversationItem = ({ item, onPress }) => {
     messages,
     inbox_id: inboxId,
     id,
-    // status,
   } = item;
 
   const lastMessage = findLastMessage({ messages });
@@ -57,8 +58,12 @@ const ConversationItem = ({ item, onPress }) => {
     inboxId,
   });
   const inboxDetails = inboxes ? inboxes.find(inbox => inbox.id === inboxId) : {};
-  const typingUser = '';
   const unReadCount = useMemo(() => getUnreadCount(item), [item]);
+
+  const typingUser = getTypingUsersText({
+    conversationTypingUsers,
+    conversationId: id,
+  });
 
   return (
     <View>
@@ -120,7 +125,7 @@ const ConversationItem = ({ item, onPress }) => {
                     />
                   )
                 ) : (
-                  <Text sm color={colors.text} style={styles.typingText}>
+                  <Text sm color={colors.successColor}>
                     {getTextSubstringWithEllipsis(typingUser, 25)}
                   </Text>
                 )}
@@ -219,9 +224,6 @@ const createStyles = theme => {
       backgroundColor: colors.successColor,
       alignItems: 'center',
       justifyContent: 'center',
-    },
-    typingText: {
-      paddingTop: spacing.micro,
     },
   });
 };

@@ -6,7 +6,6 @@ import {
 } from '@reduxjs/toolkit';
 const lodashFilter = require('lodash.filter');
 
-
 import axios from 'helpers/APIHelper';
 import { applyFilters, findPendingMessageIndex } from 'helpers/conversationHelpers';
 import I18n from 'i18n';
@@ -237,11 +236,15 @@ const conversationSlice = createSlice({
     [actions.fetchConversationStats.fulfilled]: (state, { payload }) => {
       state.meta = payload.meta;
     },
+    [actions.fetchConversation.pending]: state => {
+      state.isAllMessagesFetched = false;
+    },
     [actions.fetchConversation.fulfilled]: (state, { payload }) => {
       conversationAdapter.upsertOne(state, payload);
     },
     [actions.fetchPreviousMessages.pending]: state => {
       state.loadingMessages = true;
+      state.isAllMessagesFetched = false;
     },
     [actions.fetchPreviousMessages.fulfilled]: (state, { payload }) => {
       const { data, conversationId } = payload;
@@ -256,6 +259,9 @@ const conversationSlice = createSlice({
     [actions.markMessagesAsRead.fulfilled]: (state, { payload }) => {
       const { id, lastSeen } = payload;
       const conversation = state.entities[id];
+      if (!conversation) {
+        return;
+      }
       conversation.agent_last_seen_at = lastSeen;
     },
   },

@@ -108,8 +108,6 @@ const ConversationList = ({
     navigation.navigate('ChatScreen', { conversationId: id });
   };
 
-  console.log('Typing', conversationTypingUsers);
-
   const isLoading = useSelector(state => state.conversations.loading);
   const shouldShowEmptyList = allConversations.length === 0 && isLoading;
   if (shouldShowEmptyList) {

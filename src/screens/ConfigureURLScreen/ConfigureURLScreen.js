@@ -49,7 +49,7 @@ const ConfigureURLScreenComponent = ({ eva }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      url: appName === 'Chatwoot' ? 'app.chatwoot.com' : null,
+      url: appName === 'Chatwoot' ? 'staging.chatwoot.com' : null,
     },
   });
 

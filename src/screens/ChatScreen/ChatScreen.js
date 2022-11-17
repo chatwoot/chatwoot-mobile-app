@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Spinner, withStyles } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -56,7 +56,6 @@ const defaultProps = {
 
 const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   const dispatch = useDispatch();
-  const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState(true);
   const conversationTypingUsers = useSelector(state => state.conversation.conversationTypingUsers);
 
   const isFetching = useSelector(selectMessagesLoading);
@@ -93,7 +92,7 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
     loadMessages();
   }, [loadMessages]);
 
-  const loadMessages = useCallback(() => {
+  const loadMessages = useCallback(async () => {
     // Fetch conversation if not present
     if (!conversation) {
       dispatch(conversationActions.fetchConversation({ conversationId }));
@@ -132,17 +131,10 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
     navigation.goBack();
   };
 
-  const loadMoreMessages = () => {
+  const onEndReached = ({ distanceFromEnd }) => {
     const shouldFetchMoreMessages = !isAllMessagesFetched;
     if (shouldFetchMoreMessages) {
       loadMessages();
-    }
-  };
-
-  const onEndReached = ({ distanceFromEnd }) => {
-    if (!onEndReachedCalledDuringMomentum) {
-      loadMoreMessages();
-      setOnEndReachedCalledDuringMomentum(true);
     }
   };
 
@@ -174,14 +166,16 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
 
   return (
     <SafeAreaView style={style.mainContainer}>
-      <ChatHeader
-        conversationId={conversationId}
-        conversationTypingUsers={conversationTypingUsers}
-        conversationDetails={conversation}
-        conversationMetaDetails={conversationMetaDetails}
-        showConversationDetails={showConversationDetails}
-        onBackPress={onBackPress}
-      />
+      {conversation && (
+        <ChatHeader
+          conversationId={conversationId}
+          conversationTypingUsers={conversationTypingUsers}
+          conversationDetails={conversation}
+          conversationMetaDetails={conversationMetaDetails}
+          showConversationDetails={showConversationDetails}
+          onBackPress={onBackPress}
+        />
+      )}
 
       <View style={style.container} autoDismiss={false}>
         <View style={style.chatView}>
@@ -190,11 +184,7 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
               keyboardShouldPersistTaps="never"
               scrollEventThrottle={16}
               inverted
-              onEndReached={onEndReached.bind(this)}
-              onEndReachedThreshold={0.5}
-              onMomentumScrollBegin={() => {
-                setOnEndReachedCalledDuringMomentum(false);
-              }}
+              onEndReached={onEndReached}
               sections={groupedConversationList}
               keyExtractor={(item, index) => item + index}
               renderItem={renderMessage}

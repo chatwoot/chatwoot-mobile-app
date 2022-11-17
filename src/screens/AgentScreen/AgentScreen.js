@@ -10,25 +10,32 @@ import i18n from '../../i18n';
 import styles from './AgentScreen.style';
 import AgentItem from '../../components/AgentItem';
 import { assignConversation } from '../../actions/conversation';
+import { getInboxAgents } from '../../actions/inbox';
 import { captureEvent } from 'helpers/Analytics';
+import { useEffect } from 'react';
 
 const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
   const dispatch = useDispatch();
   const { conversationDetails } = route.params;
   const {
     meta: { assignee },
+    inbox_id: inboxId,
   } = conversationDetails;
 
   const [assigneeId, setAssignee] = useState(assignee ? assignee.id : null);
-  const agents = useSelector(state => state.inbox.inboxAgents);
   const isInboxAgentsFetching = useSelector(state => state.inbox.isInboxAgentsFetching);
   const conversation = useSelector(state => state.conversation);
   const { isAssigneeUpdating } = conversation;
-  const verifiedAgents = agents.filter(agent => agent.confirmed);
+  const agents = useSelector(state => state.inbox.inboxAgents);
+  const verifiedAgents = agents.length ? agents.filter(agent => agent.confirmed) : [];
 
   const goBack = () => {
     navigation.goBack();
   };
+
+  useEffect(() => {
+    dispatch(getInboxAgents({ inboxId }));
+  }, [dispatch, inboxId]);
 
   const onCheckedChange = item => {
     setAssignee(item.id);

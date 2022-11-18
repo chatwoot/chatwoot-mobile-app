@@ -2,6 +2,7 @@ import React from 'react';
 import { screen } from '@testing-library/react-native';
 import { render } from 'tests';
 import Header from './Header';
+jest.mock('react-native-linear-gradient', () => 'LinearGradient');
 
 describe('Header', () => {
   it('should render the header with text', () => {

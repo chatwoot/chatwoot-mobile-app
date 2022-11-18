@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
 import Icon from 'components/Icon/Icon';
 import { Text } from 'components';
-import { View } from 'react-native';
-import { StyleSheet } from 'react-native';
-import { getInboxIconByType } from 'helpers/inbox';
+import { View, StyleSheet } from 'react-native';
+import { getInboxIconByType } from 'src/helpers/inboxHelpers';
 const createStyles = theme => {
   const { spacing } = theme;
   return StyleSheet.create({

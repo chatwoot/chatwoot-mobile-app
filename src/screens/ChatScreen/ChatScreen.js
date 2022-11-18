@@ -8,11 +8,11 @@ import ChatMessageDate from './components/ChatMessageDate';
 import ReplyBox from './components/ReplyBox';
 import ChatHeader from './components/ChatHeader';
 import styles from './ChatScreen.style';
-import { openURL } from '../../helpers/UrlHelper';
+import { openURL } from 'helpers/UrlHelper';
 
-import { markNotificationAsRead } from '../../actions/notification';
-import { getGroupedConversation, findUniqueMessages } from '../../helpers';
-import { actions as CannedResponseActions } from '../../reducer/cannedResponseSlice';
+import { markNotificationAsRead } from 'actions/notification';
+import { getGroupedConversation, findUniqueMessages } from 'helpers';
+import { actions as CannedResponseActions } from 'reducer/cannedResponseSlice';
 
 import {
   selectors as conversationSelectors,

@@ -7,7 +7,7 @@ import { View, ScrollView } from 'react-native';
 import { BottomSheetModal, BottomSheetScrollView, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { getInboxIconByType } from 'helpers/inbox';
+import { getInboxIconByType } from 'helpers/inboxHelpers';
 import { getInboxes } from 'actions/inbox';
 import { getAgents } from 'actions/agent';
 import ActionCable from 'helpers/ActionCable';

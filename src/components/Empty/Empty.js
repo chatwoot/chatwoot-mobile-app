@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
-import Text from 'components/Text/Text';
+import { Text } from 'components';
 import { Image, View, Dimensions } from 'react-native';
 import { StyleSheet } from 'react-native';
 

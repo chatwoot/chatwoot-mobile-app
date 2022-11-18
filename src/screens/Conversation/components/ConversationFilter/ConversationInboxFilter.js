@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { Text, Icon, BottomSheetModalHeader, Pressable } from 'components';
-import { getInboxIconByType } from 'helpers/inbox';
+import { getInboxIconByType } from 'helpers/inboxHelpers';
 
 const createStyles = theme => {
   const { spacing, borderRadius } = theme;

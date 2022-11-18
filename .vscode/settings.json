@@ -1,6 +1,11 @@
 {
-    "cSpell.words": [
-        "reduxjs"
-        "pressable"
-    ]
+  "cSpell.words": [
+    "linkify",
+    "markdownit",
+    "middlewares",
+    "persistor",
+    "Pressable",
+    "Swipeable",
+    "Chatwoot"
+  ]
 }

@@ -13,7 +13,6 @@ import { getAgents } from 'actions/agent';
 import ActionCable from 'helpers/ActionCable';
 import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
 import {
-  actions as conversationActions,
   selectConversationStatus,
   selectAssigneeType,
   selectActiveInbox,
@@ -22,6 +21,7 @@ import {
   clearAllConversations,
   setActiveInbox,
 } from 'reducer/conversationSlice';
+import conversationActions from 'reducer/conversationSlice.action';
 import { saveDeviceDetails } from 'actions/notification';
 import { getInstalledVersion } from 'actions/settings';
 import createStyles from './ConversationScreen.style';

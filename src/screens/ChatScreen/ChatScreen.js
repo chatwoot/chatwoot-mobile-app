@@ -16,11 +16,10 @@ import { actions as CannedResponseActions } from 'reducer/cannedResponseSlice';
 
 import {
   selectors as conversationSelectors,
-  actions as conversationActions,
   selectMessagesLoading,
   selectAllMessagesFetched,
 } from 'reducer/conversationSlice';
-
+import conversationActions from 'reducer/conversationSlice.action';
 const propTypes = {
   eva: PropTypes.shape({
     style: PropTypes.object,

@@ -5,9 +5,9 @@ import {
   addConversation,
   updateConversation,
   updateContactsPresence,
-  actions as conversationActions,
 } from 'reducer/conversationSlice';
 
+import conversationActions from 'reducer/conversationSlice.action';
 import {
   addUserTypingToConversation,
   removeUserFromTypingConversation,

@@ -22,7 +22,7 @@ const createStyles = theme => {
     bottomSheetItem: {
       flexDirection: 'row',
       paddingVertical: spacing.half,
-      paddingHorizontal: spacing.small,
+      paddingHorizontal: spacing.half,
       borderBottomWidth: 0.4,
       borderRadius: borderRadius.small,
       alignItems: 'center',
@@ -57,7 +57,7 @@ const ConversationInboxFilter = ({ colors, activeValue, hasLeftIcon, items, onCh
   };
 
   const fullWidth = '100%';
-  const notFullWidth = '90%';
+  const notFullWidth = '86%';
 
   return (
     <View style={styles.bottomSheet}>

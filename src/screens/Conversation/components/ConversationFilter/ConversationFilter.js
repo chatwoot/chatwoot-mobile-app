@@ -21,7 +21,7 @@ const createStyles = theme => {
     bottomSheetItem: {
       flexDirection: 'row',
       paddingVertical: spacing.half,
-      paddingHorizontal: spacing.small,
+      paddingHorizontal: spacing.half,
       borderBottomWidth: 0.4,
       borderRadius: borderRadius.small,
       alignItems: 'center',

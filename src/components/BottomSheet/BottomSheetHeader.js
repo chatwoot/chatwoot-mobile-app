@@ -10,8 +10,8 @@ const createStyles = theme => {
   const { spacing, borderRadius } = theme;
   return StyleSheet.create({
     headerContainer: {
-      paddingTop: spacing.tiny,
-      paddingBottom: spacing.tiny,
+      paddingVertical: spacing.small,
+      paddingHorizontal: spacing.small,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',

@@ -17,7 +17,7 @@ const createStyles = theme => {
       alignItems: 'center',
     },
     icon: {
-      marginRight: spacing.smaller,
+      marginRight: spacing.micro,
     },
   });
 };

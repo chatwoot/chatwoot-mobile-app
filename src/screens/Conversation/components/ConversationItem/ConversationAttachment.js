@@ -54,7 +54,7 @@ const createStyles = theme => {
       marginTop: spacing.tiny,
     },
     icon: {
-      marginRight: spacing.smaller,
+      marginRight: spacing.micro,
     },
   });
 };

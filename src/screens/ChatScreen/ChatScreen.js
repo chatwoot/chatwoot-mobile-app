@@ -38,7 +38,6 @@ const propTypes = {
   fetchCannedResponses: PropTypes.func,
   isFetching: PropTypes.bool,
   markAllMessagesAsRead: PropTypes.func,
-  toggleTypingStatus: PropTypes.func,
   markMessagesAsRead: PropTypes.func,
   markNotificationAsRead: PropTypes.func,
   getConversationDetails: PropTypes.func,

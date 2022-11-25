@@ -58,7 +58,6 @@ class NotificationScreenComponent extends Component {
   static defaultProps = {
     allNotifications: [],
     isFetching: false,
-    getConversations: () => {},
     selectConversation: () => {},
     isAllNotificationsLoaded: false,
   };

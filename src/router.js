@@ -157,6 +157,7 @@ const App = ({ eva: { style } }) => {
         if (remoteMessage) {
           handlePush({ remoteMessage, type: 'quite' });
           setTimeout(() => {
+            // TODO: Load all the conversations
             dispatch(getConversations({ assigneeType: 0 }));
           }, 500);
         }

@@ -71,9 +71,14 @@
     "PRIVATE_MSG_INPUT": "Dit zal alleen zichtbaar zijn voor medewerkers",
     "UN_ASSIGN": "Toewijzing ongedaan maken",
     "MUTE_CONVERSATION": "Demp gesprek",
-    "UNMUTE_CONVERSATION": "Dempen opheffen"
+    "UNMUTE_CONVERSATION": "Dempen opheffen",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
   },
   "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "Gespreksfilter",
     "CHOOSE_INBOX": "Postvak In kiezen",
     "CHOOSE_STATUS": "Gesprek status",

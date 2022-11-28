@@ -71,9 +71,14 @@
     "PRIVATE_MSG_INPUT": "Acest lucru va fi vizibil numai agenților",
     "UN_ASSIGN": "Anularea atribuirii conversației",
     "MUTE_CONVERSATION": "Silențios conversația",
-    "UNMUTE_CONVERSATION": "Sunet conversația"
+    "UNMUTE_CONVERSATION": "Sunet conversația",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
   },
   "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "Filtru conversație",
     "CHOOSE_INBOX": "Alege Inboxul",
     "CHOOSE_STATUS": "Starea conversației",

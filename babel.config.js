@@ -17,6 +17,7 @@ module.exports = {
           '.json',
         ],
         alias: {
+          src: './src',
           components: './src/components',
           actions: './src/actions',
           constants: './src/constants',
@@ -24,8 +25,10 @@ module.exports = {
           i18n: './src/i18n',
           reducer: './src/reducer',
           screens: './src/screens',
+          tests: './src/tests',
         },
       },
     ],
+    ['react-native-reanimated/plugin'],
   ],
 };

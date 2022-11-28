@@ -16,6 +16,7 @@
     "ENTER_URL": "Installation URL",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Enter a valid URL",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Σύνδεση",
     "CHANGE_LANGUAGE": "Change language",
     "ERROR": "Invalid installation url"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "Email",
     "PASSWORD": "Κωδικός",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Enter a valid email",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Enter a valid password",
     "LOGIN": "Sign In",
     "FORGOT_PASSWORD": "Ξεχάσατε τον κωδικό;",
@@ -43,10 +46,12 @@
     "RESET_HERE": "Reset password",
     "HEADER_TITLE": "Reset password",
     "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back"
+    "SUB_TITLE": "Don't worry! We got your back",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Συζητήσεις",
+    "UPDATING": "Updating...",
     "MINE": "Mine",
     "UN_ASSIGNED": "Χωρίς Αντιστοίχιση",
     "ALL": "Όλες",
@@ -59,13 +64,14 @@
     "TYPE_MESSAGE": "Type message",
     "TYPING": "typing",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "RESOLVE": "Resolve conversation",
-    "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "SHARE": "Share conversation",
     "CANCEL": "Άκυρο",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "UN_ASSIGN": "Unassign conversation",
+    "MUTE_CONVERSATION": "Σίγαση Συνομιλίας",
+    "UNMUTE_CONVERSATION": "Επαναφορά Συνομιλίας"
   },
   "FILTER": {
     "HEADER_TITLE": "Conversation Filter",
@@ -74,7 +80,9 @@
     "OPEN": "Ανοιχτές",
     "RESOLVED": "Επιλύθηκαν",
     "BOT": "Bot",
-    "SUBMIT": "Καταχώρηση"
+    "SUBMIT": "Καταχώρηση",
+    "PENDING": "Εκκρεμεί",
+    "SNOOZED": "Αναβολή"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Ρυθμίσεις",
@@ -107,21 +115,39 @@
     "CONVERSATION_CREATE_PUSH": "Να ειδοποιούμαι με push όταν δημιουργείται μια νέα συνομιλία",
     "CONVERSATION_ASSIGNEE_PUSH": "Να ειδοποιούμαι με push όταν μια συνομιλία μου ανατείθεται",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Αποστολή ειδοποίησης push όταν ένα νέο μήνυμα δημιουργείται σε συνομιλία που έχει αναληφθεί",
+    "CONVERSATION_MENTION": "Αποστολή ειδοποιήσεων push όταν αναφέρεστε σε μια συνομιλία",
     "CONVERSATION_CREATE_EMAIL": "Να στέλνεται ειδοποίηση όταν δημιουργείται μια νέα συνομιλία",
     "CONVERSATION_ASSIGNEE_EMAIL": "Να στέλνεται ειδοποίηση email όταν μια συνομιλία αντιστοιχίζεται σε μένα",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Αποστολή ειδοποίησης email όταν ένα νέο μήνυμα δημιουργείται σε συνομιλία που έχει αναληφθεί"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Πληροφορίες Συνομιλίας",
     "BROWSER": "Browser",
     "OPERATING_SYSTEM": "Λειτουργικό",
     "INITIATED_AT": "Αρχικοποίηση τις",
-    "INITIATED_FROM": "Αρχικοποίηση από"
+    "INITIATED_FROM": "Αρχικοποίηση από",
+    "IP_ADDRESS": "Διεύθυνση IP"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Ιδιότητες Επαφής"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Ενέργειες"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Ετικέτες συνομιλίας",
+    "ADD_LABEL": "Προσθήκη Ετικετών",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Η ετικέτα ενημερώθηκε επιτυχώς"
+  },
   "AGENT": {
     "TITLE": "Επιλογή πράκτορα"
+  },
+  "TEAMS": {
+    "TITLE": "Επιλογή Ομάδας",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Η ομάδα συνομιλίας άλλαξε"
   },
   "ERRORS": {
     "COMMON_ERROR": "Αδυναμία σύνδεσης με τον Woot Server, Παρακαλώ προσπαθήστε αργότερα",
@@ -143,5 +169,17 @@
     "SUBTITLE": "Are you sure you want to quit?",
     "CANCEL": "Άκυρο",
     "OK": "Ok"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "HREF_TEXT": "του περιορισμού των 24 ωρών",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "You cannot reply due to ",
+      "HREF_TEXT": "του περιορισμού των 24 ωρών",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

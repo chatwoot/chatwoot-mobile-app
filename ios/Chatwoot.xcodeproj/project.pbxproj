@@ -19,7 +19,7 @@
 		64D9625575F77BD47C5851DF /* libPods-Chatwoot-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2B1FFDA6E6343B47BC9E453 /* libPods-Chatwoot-tvOS.a */; };
 		7E685E9D9DDC49E9BA58EB30 /* Inter-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1657932CABA047399278A2E6 /* Inter-SemiBold.otf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		83752DBE26B7F8AA005BDBBE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 83752DBD26B7F8AA005BDBBE /* GoogleService-Info.plist */; };
+		8384439D29152FEE00A205F0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8384439C29152FEE00A205F0 /* GoogleService-Info.plist */; };
 		83956CC224F976FB0003A30E /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83956CC124F976FB0003A30E /* SplashScreen.storyboard */; };
 		8E2A250F569B47F086A90867 /* Inter-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 14CA8ED9FD7F4A98A9489302 /* Inter-Regular.otf */; };
 		8FBF7560704C5C2D98655077 /* libPods-Chatwoot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BA2DA5BE3430A90F49C925 /* libPods-Chatwoot.a */; };
@@ -72,7 +72,7 @@
 		5A455B5B324B4ED38F4F3D6E /* Inter-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Light.otf"; path = "../assets/Inter-Light.otf"; sourceTree = "<group>"; };
 		68C4886F5FE94640BB89B6C9 /* Inter-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Bold.otf"; path = "../assets/Inter-Bold.otf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Chatwoot/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		83752DBD26B7F8AA005BDBBE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8384439C29152FEE00A205F0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		83956CC124F976FB0003A30E /* SplashScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		83D084B924F942850025AECA /* Chatwoot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Chatwoot.entitlements; path = Chatwoot/Chatwoot.entitlements; sourceTree = "<group>"; };
 		94E7ACE34E06465C9425AC50 /* Inter-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Italic.otf"; path = "../assets/Inter-Italic.otf"; sourceTree = "<group>"; };
@@ -205,7 +205,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				83752DBD26B7F8AA005BDBBE /* GoogleService-Info.plist */,
+				8384439C29152FEE00A205F0 /* GoogleService-Info.plist */,
 				83956CC124F976FB0003A30E /* SplashScreen.storyboard */,
 				13B07FAE1A68108700A75B9A /* Chatwoot */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -243,6 +243,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				F2805A5DABF18531D22B8EC3 /* [CP] Copy Pods Resources */,
+				ADFAA882DC3A881EC6E99BF9 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -268,6 +269,7 @@
 				5B7BE4557BEA652A4E7694F7 /* [CP-User] [RNFB] Core Configuration */,
 				68972FD48F9A4106ABFB7160 /* Upload Debug Symbols to Sentry */,
 				B66079D4829A4E919D196FF2 /* Upload Debug Symbols to Sentry */,
+				1C91C3F2D5F2B936DFB36F9A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -388,7 +390,7 @@
 				FF3996F6DCE949368ACEA001 /* Inter-Italic.otf in Resources */,
 				F18A87F7463F4EFB8421C4C2 /* Inter-Light.otf in Resources */,
 				D9DE12D61C5641488B613496 /* Inter-Medium.otf in Resources */,
-				83752DBE26B7F8AA005BDBBE /* GoogleService-Info.plist in Resources */,
+				8384439D29152FEE00A205F0 /* GoogleService-Info.plist in Resources */,
 				8E2A250F569B47F086A90867 /* Inter-Regular.otf in Resources */,
 				7E685E9D9DDC49E9BA58EB30 /* Inter-SemiBold.otf in Resources */,
 			);
@@ -425,6 +427,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# First set the path to sentry.properties\nexport SENTRY_PROPERTIES=sentry.properties\n\n# Setup nvm and set node\n[ -z \"$NVM_DIR\" ] && export NVM_DIR=\"$HOME/.nvm\"\n\nif [[ -s \"$HOME/.nvm/nvm.sh\" ]]; then\n. \"$HOME/.nvm/nvm.sh\"\nelif [[ -x \"$(command -v brew)\" && -s \"$(brew --prefix nvm)/nvm.sh\" ]]; then\n. \"$(brew --prefix nvm)/nvm.sh\"\nfi\n\n# Set up the nodenv node version manager if present\nif [[ -x \"$HOME/.nodenv/bin/nodenv\" ]]; then\neval \"$(\"$HOME/.nodenv/bin/nodenv\" init -)\"\nfi\n\n# Set up the fnm node version manager if present\nif [[ -s \"$HOME/.fnm/fnm\" ]]; then\n  eval \"`$HOME/.fnm/fnm env --multi`\"\nfi\n\n# Trying notion\nif [ -z \"$NODE_BINARY\" ]; then\nif [[ -s \"$HOME/.notion/bin/node\" ]]; then\nexport NODE_BINARY=\"$HOME/.notion/bin/node\"\nfi\nfi\n\n[ -z \"$NODE_BINARY\" ] && export NODE_BINARY=\"node\"\n\n$NODE_BINARY ../node_modules/@sentry/cli/bin/sentry-cli react-native xcode \\\n  ../node_modules/react-native/scripts/react-native-xcode.sh\n";
+		};
+		1C91C3F2D5F2B936DFB36F9A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Chatwoot/Pods-Chatwoot-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Chatwoot/Pods-Chatwoot-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		1CB90654FF6C9BCFBD6B241D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -510,6 +530,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# First set the path to sentry.properties\nexport SENTRY_PROPERTIES=sentry.properties\n\n# Setup nvm and set node\n[ -z \"$NVM_DIR\" ] && export NVM_DIR=\"$HOME/.nvm\"\n\nif [[ -s \"$HOME/.nvm/nvm.sh\" ]]; then\n. \"$HOME/.nvm/nvm.sh\"\nelif [[ -x \"$(command -v brew)\" && -s \"$(brew --prefix nvm)/nvm.sh\" ]]; then\n. \"$(brew --prefix nvm)/nvm.sh\"\nfi\n\n# Set up the nodenv node version manager if present\nif [[ -x \"$HOME/.nodenv/bin/nodenv\" ]]; then\neval \"$(\"$HOME/.nodenv/bin/nodenv\" init -)\"\nfi\n\n# Set up the fnm node version manager if present\nif [[ -s \"$HOME/.fnm/fnm\" ]]; then\n  eval \"`$HOME/.fnm/fnm env --multi`\"\nfi\n\n# Trying notion\nif [ -z \"$NODE_BINARY\" ]; then\nif [[ -s \"$HOME/.notion/bin/node\" ]]; then\nexport NODE_BINARY=\"$HOME/.notion/bin/node\"\nfi\nfi\n\n[ -z \"$NODE_BINARY\" ] && export NODE_BINARY=\"node\"\n\n# Run sentry cli script to upload debug symbols\n$NODE_BINARY ../node_modules/@sentry/cli/bin/sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\"\n";
+		};
+		ADFAA882DC3A881EC6E99BF9 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Chatwoot-ChatwootTests/Pods-Chatwoot-ChatwootTests-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Chatwoot-ChatwootTests/Pods-Chatwoot-ChatwootTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		B66079D4829A4E919D196FF2 /* Upload Debug Symbols to Sentry */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -753,14 +791,14 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 152;
+				CURRENT_PROJECT_VERSION = 195;
 				DEVELOPMENT_TEAM = L7YLMN4634;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = Chatwoot/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -771,6 +809,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7";
 				"VALID_ARCHS[sdk=iphonesimulator*]" = x86_64;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -786,13 +825,13 @@
 				CODE_SIGN_ENTITLEMENTS = Chatwoot/Chatwoot.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 152;
+				CURRENT_PROJECT_VERSION = 195;
 				DEVELOPMENT_TEAM = L7YLMN4634;
 				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = Chatwoot/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -803,6 +842,7 @@
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7";
 				"VALID_ARCHS[sdk=iphonesimulator*]" = x86_64;
 				VERSIONING_SYSTEM = "apple-generic";

@@ -16,6 +16,7 @@
     "ENTER_URL": "Installációs URL",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Kérjük helyes URL-t adj meg",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Kapcsolódás",
     "CHANGE_LANGUAGE": "Nyelvválasztás",
     "ERROR": "Helytelen installációs Url"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "E-mail",
     "PASSWORD": "Jelszó",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Kérjük helyes E-mailt adj meg",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Kérjük helyes jelszót adj meg",
     "LOGIN": "Belépés",
     "FORGOT_PASSWORD": "Elfelejtetted a jelszavad?",
@@ -43,10 +46,12 @@
     "RESET_HERE": "Jelszó megváltoztatása",
     "HEADER_TITLE": "Jelszó megváltoztatása",
     "TITLE": "Elfelejtetted a jelszavad?",
-    "SUB_TITLE": "Ne aggódj, segítünk"
+    "SUB_TITLE": "Ne aggódj, segítünk",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Beszélgetések",
+    "UPDATING": "Updating...",
     "MINE": "Sajátom",
     "UN_ASSIGNED": "Gazdátlan",
     "ALL": "Mind",
@@ -59,13 +64,14 @@
     "TYPE_MESSAGE": "Gépeld az üzeneted",
     "TYPING": "gépel",
     "ALL_CONVERSATION_LOADED": "Minden beszélgetés betöltve",
-    "RESOLVE": "Beszélgetés megoldása",
-    "RE_OPEN": "Beszélgetés újranyitása",
     "ASSIGN": "Beszélgetés hozzárendelése",
     "FILE_SIZE_LIMIT": "A file nagyobb az 5MB-os limitnél",
+    "SHARE": "Share conversation",
     "CANCEL": "Mégse",
     "PRIVATE_MSG_INPUT": "Ezt csak ügynökök láthatják",
-    "UN_ASSIGN": "Beszélgetés hozzárendelés törlése"
+    "UN_ASSIGN": "Beszélgetés hozzárendelés törlése",
+    "MUTE_CONVERSATION": "Mute conversation",
+    "UNMUTE_CONVERSATION": "Unmute conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Beszélgetés szűrő",
@@ -74,7 +80,9 @@
     "OPEN": "Megnyitva",
     "RESOLVED": "Megoldva",
     "BOT": "Bot",
-    "SUBMIT": "Elküld"
+    "SUBMIT": "Elküld",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Beállítások",
@@ -107,21 +115,39 @@
     "CONVERSATION_CREATE_PUSH": "Kapj push értesítéseket amikor egy új beszélgetés létrejön",
     "CONVERSATION_ASSIGNEE_PUSH": "Kapj push értesítéseket amikor hozzád rendelnek egy beszélgetést",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Kapj push értesítést amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben",
+    "CONVERSATION_MENTION": "Küldj push üzeneteket, amikor egy beszélgetésben megemlítenek",
     "CONVERSATION_CREATE_EMAIL": "Kapj e-mailt amikor egy új beszélgetés létrejön",
     "CONVERSATION_ASSIGNEE_EMAIL": "Kapj e-mailt amikor hozzád rendelnek egy beszélgetést",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Kapj e-mailt amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "Böngésző",
     "OPERATING_SYSTEM": "Operációs rendszer",
     "INITIATED_AT": "Kezdeményezve ekkor:",
-    "INITIATED_FROM": "Kezdeményezve innen:"
+    "INITIATED_FROM": "Kezdeményezve innen:",
+    "IP_ADDRESS": "IP cím"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Lehetőségek"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Beszélgetés cimkék",
+    "ADD_LABEL": "Címkék hozzáadása",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Cimke sikeresen frissítve"
+  },
   "AGENT": {
     "TITLE": "Ügynök kiválasztása"
+  },
+  "TEAMS": {
+    "TITLE": "Select Team",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "A beszélgetés csapata megváltozott"
   },
   "ERRORS": {
     "COMMON_ERROR": "Nem sikerült csatlakozni a Woot szerverhez, kérjük próbáld később",
@@ -143,5 +169,17 @@
     "SUBTITLE": "Biztos vagy benne, hogy kilépsz?",
     "CANCEL": "Mégse",
     "OK": "Ok"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "HREF_TEXT": "24 órás üzeneti ablak megkötés",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "You cannot reply due to ",
+      "HREF_TEXT": "24 órás üzeneti ablak megkötés",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

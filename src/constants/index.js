@@ -2,18 +2,58 @@ import images from './images';
 
 export const MAXIMUM_FILE_UPLOAD_SIZE = 40;
 
+export const CONVERSATION_STATUSES = [
+  {
+    key: 'open',
+    name: 'Open',
+  },
+  {
+    key: 'resolved',
+    name: 'Resolved',
+  },
+  {
+    key: 'pending',
+    name: 'Pending',
+  },
+  {
+    key: 'snoozed',
+    name: 'Snoozed',
+  },
+  {
+    key: 'all',
+    name: 'All',
+  },
+];
+
+export const ASSIGNEE_TYPES = [
+  {
+    key: 'mine',
+    name: 'Mine',
+  },
+  {
+    key: 'unassigned',
+    name: 'Unassigned',
+  },
+  {
+    key: 'all',
+    name: 'All',
+  },
+];
+
 export const CONVERSATION_STATUS = {
   OPEN: 'open',
   RESOLVED: 'resolved',
   BOT: 'bot',
   PENDING: 'pending',
   SNOOZED: 'snoozed',
+  ALL: 'all',
 };
 
 export const MESSAGE_TYPES = {
   INCOMING: 0,
   OUTGOING: 1,
   ACTIVITY: 2,
+  TEMPLATE: 3,
 };
 
 export const MESSAGE_STATUS = {
@@ -27,6 +67,19 @@ export const ASSIGNEE_TYPE = {
   ME: 'me',
   UN_ASSIGNED: 'unassigned',
   ALL: 'all',
+};
+
+export const INBOX_TYPES = {
+  WEB: 'Channel::WebWidget',
+  FB: 'Channel::FacebookPage',
+  TWITTER: 'Channel::TwitterProfile',
+  TWILIO: 'Channel::TwilioSms',
+  WHATSAPP: 'Channel::Whatsapp',
+  API: 'Channel::Api',
+  EMAIL: 'Channel::Email',
+  TELEGRAM: 'Channel::Telegram',
+  LINE: 'Channel::Line',
+  SMS: 'Channel::Sms',
 };
 
 export const INBOX_ICON = {
@@ -43,15 +96,42 @@ export const INBOX_ICON = {
 
 export const INBOX_IMAGES = {
   'Channel::TwitterProfile': images.twitterBadge,
-  'Channel::FacebookPage': images.fbBadge,
+  'Channel::FacebookPage': images.messengerBadge,
   'Channel::TwilioSms': images.whatsAppBadge,
 };
 
 export const LANGUAGES = {
+  af: 'Afrikaans',
+  ar: 'Arabic',
+  ca: 'Catalan',
+  cs: 'Czech',
+  da: 'Danish',
+  de: 'German',
   en: 'English',
-  nl: 'Dutch',
-  tr: 'Turkish',
+  el: 'Greek',
+  es: 'Spanish',
+  fa: 'Farsi',
+  fi: 'Finnish',
   fr: 'French',
+  hu: 'Hungarian',
+  it: 'Italian',
+  ja: 'Japanese',
+  ko: 'Korean',
+  ml: 'Malayalam',
+  nl: 'Dutch',
+  no: 'Norwegian',
+  pl: 'Polish',
+  pt_BR: 'Portuguese (Brazil)',
+  pt: 'Portuguese (Portugal)',
+  ro: 'Romanian',
+  ru: 'Russian',
+  sr: 'Serbian',
+  sv: 'Swedish',
+  ta: 'Tamil',
+  tr: 'Turkish',
+  uk: 'Ukrainian',
+  vi: 'Vietnamese',
+  zh: 'Chinese',
 };
 
 export const URL_REGEX = {

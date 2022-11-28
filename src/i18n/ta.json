@@ -16,6 +16,7 @@
     "ENTER_URL": "Installation URL",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "சரியான URL ஐ உள்ளிடவும்",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Connect",
     "CHANGE_LANGUAGE": "மொழியை மாற்றவும்",
     "ERROR": "Invalid installation url"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "ஈ-மெயில்",
     "PASSWORD": "பாஸ்வேர்டு",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "சரியான ஈ-மெயில் முகவரியை உள்ளிடவும்",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "சரியான பாஸ்வேர்ட்டை உள்ளிடவும்",
     "LOGIN": "உல் நுழையவும்",
     "FORGOT_PASSWORD": "உங்கள் பாஸ்வேர்ட்டை மறந்து விட்டீர்களா?",
@@ -43,10 +46,12 @@
     "RESET_HERE": "பாஸ்வேர்ட்டை மீட்டமைக்கவும்",
     "HEADER_TITLE": "பாஸ்வேர்ட்டை மீட்டமைக்கவும்",
     "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back"
+    "SUB_TITLE": "Don't worry! We got your back",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "உரையாடல்கள்",
+    "UPDATING": "Updating...",
     "MINE": "என்னுடைய",
     "UN_ASSIGNED": "ஒதுக்கப்படாதது",
     "ALL": "எல்லாம்",
@@ -59,13 +64,14 @@
     "TYPE_MESSAGE": "செய்தியைத் பதிவிடவும்",
     "TYPING": "பதிவிடப்படுகிறது",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "RESOLVE": "Resolve conversation",
-    "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "SHARE": "Share conversation",
     "CANCEL": "ரத்துசெய்",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "UN_ASSIGN": "Unassign conversation",
+    "MUTE_CONVERSATION": "Mute conversation",
+    "UNMUTE_CONVERSATION": "Unmute conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Conversation Filter",
@@ -74,7 +80,9 @@
     "OPEN": "திறக்கவும்",
     "RESOLVED": "தீர்க்கப்பட்டது",
     "BOT": "Bot",
-    "SUBMIT": "சமர்ப்பிக்கவும்"
+    "SUBMIT": "சமர்ப்பிக்கவும்",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "அமைப்புகள்",
@@ -107,21 +115,39 @@
     "CONVERSATION_CREATE_PUSH": "புதிய உரையாடல் உருவாக்கப்படும்போது புஷ் அறிவிப்புகளை அனுப்பவும்",
     "CONVERSATION_ASSIGNEE_PUSH": "ஒரு உரையாடல் எனக்கு ஒதுக்கப்படும் போது புஷ் அறிவிப்புகளை அனுப்பவும்",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
+    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
     "CONVERSATION_CREATE_EMAIL": "புதிய உரையாடல் உருவாக்கப்படும்போது ஈ-மெயிலில் அறிவிப்புகளை அனுப்பவும்",
     "CONVERSATION_ASSIGNEE_EMAIL": "ஒரு உரையாடல் எனக்கு ஒதுக்கப்பட்டால் ஈமெயிலில் அறிவிப்புகளை அனுப்பவும்",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "புரவுஸர்",
     "OPERATING_SYSTEM": "ஆப்பரேட்டிங் சிஸ்டம்",
     "INITIATED_AT": "இல் தொடங்கப்பட்டது",
-    "INITIATED_FROM": "இருந்து தொடங்கப்பட்டது"
+    "INITIATED_FROM": "இருந்து தொடங்கப்பட்டது",
+    "IP_ADDRESS": "IP Address"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "செயல்கள்"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "உரையாடல் லேபிள்கள்",
+    "ADD_LABEL": "Add Labels",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Label updated successfully"
+  },
   "AGENT": {
     "TITLE": "Select Agent"
+  },
+  "TEAMS": {
+    "TITLE": "Select Team",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Conversation team changed"
   },
   "ERRORS": {
     "COMMON_ERROR": "வூட் சர்வருடன் இணைக்க முடியவில்லை, பின்னர் மீண்டும் முயற்சிக்கவும்",
@@ -143,5 +169,17 @@
     "SUBTITLE": "நீங்கள் நிச்சயம் வெளியேற வேண்டுமா?",
     "CANCEL": "ரத்துசெய்",
     "OK": "சரி"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "HREF_TEXT": "24 hour message window restriction",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "You cannot reply due to ",
+      "HREF_TEXT": "24 hour message window restriction",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

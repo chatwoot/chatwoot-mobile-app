@@ -6,8 +6,16 @@ import { initAnalytics } from './src/helpers/Analytics';
 
 import App from './src/app';
 
-AppRegistry.registerComponent(appName, () => App);
-Sentry.init({
-  dsn: Config.SENTRY_DSN,
-});
+let RegisteredApp = App;
+// Comment this line if you don't want to use Storybook
+// RegisteredApp = __DEV__ ? require('./storybook').default : App;
+
+AppRegistry.registerComponent(appName, () => RegisteredApp);
+
+if (!__DEV__) {
+  Sentry.init({
+    dsn: Config.SENTRY_DSN,
+    tracesSampleRate: 1.0,
+  });
+}
 initAnalytics();

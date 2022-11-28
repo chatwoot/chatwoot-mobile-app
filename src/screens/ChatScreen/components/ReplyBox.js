@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, TextInput, Text } from 'react-native';
 import { MentionInput } from 'react-native-controlled-mentions';
 import { withStyles, Icon } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
@@ -11,47 +11,61 @@ import { sendMessage, toggleTypingStatus } from 'actions/conversation';
 import { findFileSize } from 'helpers/FileHelper';
 import { MAXIMUM_FILE_UPLOAD_SIZE } from 'constants';
 import { showToast } from 'helpers/ToastHelper';
-import CannedResponses from './CannedResponses';
 import MentionUser from './MentionUser.js';
 import { captureEvent } from 'helpers/Analytics';
+import CannedResponsesContainer from '../containers/CannedResponsesContainer';
+
 const propTypes = {
   conversationId: PropTypes.number,
+  conversationDetails: PropTypes.object,
   eva: PropTypes.shape({
     theme: PropTypes.object,
     style: PropTypes.object,
   }).isRequired,
-  cannedResponses: PropTypes.array.isRequired,
 };
 
-const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) => {
+const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }) => {
   const [isPrivate, setPrivateMode] = useState(false);
+  const [ccEmails, setCCEmails] = useState([]);
+  const [bccEmails, setBCCEmails] = useState([]);
+  const [emailFields, toggleEmailFields] = useState(false);
   const [message, setMessage] = useState('');
   const agents = useSelector(state => state.agent.data);
   const verifiedAgents = agents.filter(agent => agent.confirmed);
-  const [filteredCannedResponses, setFilteredCannedResponses] = useState([]);
+  const [cannedResponseSearchKey, setCannedResponseSearchKey] = useState('');
   const [attachmentDetails, setAttachmentDetails] = useState(null);
   const dispatch = useDispatch();
 
   const onNewMessageChange = text => {
     setMessage(text);
     if (text.charAt(0) === '/') {
-      const query = text.substring(1).toLowerCase();
-      const responses = cannedResponses.filter(item => item.title.toLowerCase().includes(query));
-      if (responses.length) {
-        showCannedResponses({ responses });
-      } else {
-        hideCannedResponses();
-      }
+      const query = text.substring(1) ? text.substring(1).toLowerCase() : ' ';
+      setCannedResponseSearchKey(query);
     } else {
-      hideCannedResponses();
+      setCannedResponseSearchKey('');
     }
   };
-  const showCannedResponses = ({ responses }) => {
-    setFilteredCannedResponses(responses);
+  const onCCMailChange = mail => {
+    setCCEmails(mail);
+  };
+  const onBCCMailChange = mail => {
+    setBCCEmails(mail);
   };
 
-  const hideCannedResponses = () => {
-    setFilteredCannedResponses([]);
+  const isAnEmailChannelAndNotInPrivateNote = () => {
+    if (conversationDetails && conversationDetails.meta) {
+      const channel = conversationDetails.meta.channel;
+      return channel === 'Channel::Email' && !isPrivate;
+    }
+    return false;
+  };
+
+  const toggleCcBccInputs = () => {
+    toggleEmailFields(true);
+  };
+
+  const inputBorderColor = () => {
+    isAnEmailChannelAndNotInPrivateNote() ? { borderTopWidth: 0 } : { borderTopWidth: 1 };
   };
 
   const onBlur = () => {
@@ -63,7 +77,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
 
   const onCannedReponseSelect = content => {
     captureEvent({ eventName: 'Canned response selected' });
-    setFilteredCannedResponses([]);
+    setCannedResponseSearchKey('');
     setMessage(content);
   };
 
@@ -92,20 +106,38 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
       '[@$1](mention://user/$2/$1)',
     );
     if (message || attachmentDetails) {
+      const payload = {
+        conversationId,
+        message: { content: updatedMessage },
+        isPrivate,
+        file: attachmentDetails,
+      };
+      if (ccEmails) {
+        payload.message.cc_emails = ccEmails;
+      }
+      if (bccEmails) {
+        payload.message.bcc_emails = bccEmails;
+      }
       captureEvent({ eventName: 'Messaged sent' });
-      dispatch(
-        sendMessage({
-          conversationId,
-          message: updatedMessage,
-          isPrivate,
-          file: attachmentDetails,
-        }),
-      );
+      dispatch(sendMessage(payload));
 
       setMessage('');
+      setCCEmails('');
+      setBCCEmails('');
       setAttachmentDetails(null);
       setPrivateMode(false);
     }
+  };
+
+  const inputFieldColor = () =>
+    !isPrivate
+      ? { backgroundColor: theme['color-background'] }
+      : { backgroundColor: theme['color-background-private'] };
+
+  const sendMessageButtonWrapStyles = () => {
+    return !(!message && !attachmentDetails)
+      ? { backgroundColor: theme['color-info-75'] }
+      : { backgroundColor: theme['color-info-200'] };
   };
 
   // eslint-disable-next-line react/prop-types
@@ -132,6 +164,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
       </View>
     );
   };
+  // console.log('cannedResponseSearchKey', cannedResponseSearchKey);
 
   return (
     <React.Fragment>
@@ -141,16 +174,43 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
           onRemoveAttachment={onRemoveAttachment}
         />
       )}
-
-      {filteredCannedResponses && (
-        <CannedResponses
-          cannedResponses={filteredCannedResponses}
-          onCannedReponseSelect={onCannedReponseSelect}
+      {cannedResponseSearchKey ? (
+        <CannedResponsesContainer
+          onClick={onCannedReponseSelect}
+          searchKey={cannedResponseSearchKey}
         />
+      ) : null}
+      {isAnEmailChannelAndNotInPrivateNote() && emailFields && (
+        <View style={style.emailFields}>
+          <View style={style.emailFieldsTextWrap}>
+            <Text style={style.emailFieldLabel}>{'Cc'}</Text>
+            <TextInput
+              style={style.ccInputView}
+              value={ccEmails}
+              onChangeText={onCCMailChange}
+              placeholder="Emails separeted by commas"
+            />
+          </View>
+          <View style={style.emailFieldsTextWrap}>
+            <Text style={style.emailFieldLabel}>{'Bcc'}</Text>
+            <TextInput
+              style={style.bccInputView}
+              value={bccEmails}
+              onChangeText={onBCCMailChange}
+              placeholder="Emails separeted by commas"
+            />
+          </View>
+        </View>
       )}
-      <View style={isPrivate ? style.privateView : style.replyView}>
+
+      <View style={[isPrivate ? style.privateView : style.replyView, inputBorderColor()]}>
+        {isAnEmailChannelAndNotInPrivateNote() && !emailFields && (
+          <Text style={style.emailFieldToggleButton} onPress={toggleCcBccInputs}>
+            {'Cc/Bcc'}
+          </Text>
+        )}
         <MentionInput
-          style={style.inputView}
+          style={[style.inputView, inputFieldColor()]}
           value={message}
           onChange={onNewMessageChange}
           partTypes={[
@@ -179,22 +239,23 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
             <View style={style.privateNoteView}>
               <Icon
                 name="lock-outline"
-                width={32}
-                height={32}
+                width={24}
+                height={24}
                 fill={isPrivate ? theme['color-primary-default'] : theme['text-hint-color']}
                 onPress={togglePrivateMode}
               />
             </View>
           </View>
-          <View style={style.sendButtonView}>
+          <View style={[style.sendButtonView, sendMessageButtonWrapStyles()]}>
             <Icon
               name="paper-plane"
-              width={32}
-              height={32}
+              style={style.sendButton}
+              width={24}
+              height={24}
               fill={
                 !(!message && !attachmentDetails)
                   ? theme['color-primary-default']
-                  : theme['text-hint-color']
+                  : theme['color-background']
               }
               onPress={onNewMessageAdd}
             />
@@ -207,29 +268,79 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, cannedResponses }) =>
 
 const styles = theme => ({
   replyView: {
-    padding: 8,
+    padding: 6,
+    paddingHorizontal: 14,
     backgroundColor: theme['background-basic-color-1'],
     borderTopColor: theme['color-border'],
-    borderTopWidth: 1,
   },
   privateView: {
-    padding: 8,
-    backgroundColor: theme['color-background-private'],
+    padding: 6,
+    paddingHorizontal: 14,
+    backgroundColor: theme['color-background-private-light'],
     borderTopColor: theme['color-border'],
     borderTopWidth: 1,
   },
   inputView: {
     fontSize: theme['font-size-medium'],
     color: theme['text-basic-color'],
-    paddingHorizontal: 8,
-    paddingVertical: 16,
+    borderRadius: 8,
+    paddingTop: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 12,
+    textAlignVertical: 'top',
+    textAlign: 'left',
+    maxHeight: 160,
+  },
+  emailFields: {
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    backgroundColor: theme['background-basic-color-1'],
+  },
+  emailFieldsTextWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 2,
+  },
+  emailFieldLabel: {
+    fontSize: theme['font-size-extra-small'],
+    width: '8%',
+  },
+  emailFieldToggleButton: {
+    position: 'absolute',
+    backgroundColor: theme['color-background'],
+    color: theme['color-primary-500'],
+    fontWeight: theme['font-semi-bold'],
+    padding: 4,
+    right: 24,
+    top: 14,
+    zIndex: 1,
+  },
+  ccInputView: {
+    fontSize: theme['font-size-small'],
+    color: theme['text-basic-color'],
+    backgroundColor: theme['color-background-light'],
+    width: '92%',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    textAlignVertical: 'top',
+  },
+  bccInputView: {
+    backgroundColor: theme['color-background-light'],
+    width: '92%',
+    borderRadius: 8,
+    fontSize: theme['font-size-small'],
+    color: theme['text-basic-color'],
+    paddingHorizontal: 10,
+    paddingVertical: 8,
     textAlignVertical: 'top',
   },
   buttonViews: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 4,
+    paddingVertical: 6,
   },
   attachIconView: {
     flex: 1,
@@ -237,11 +348,11 @@ const styles = theme => ({
     alignItems: 'flex-end',
   },
   privateNoteView: {
-    paddingLeft: 8,
+    paddingLeft: 12,
   },
   sendButtonView: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
+    padding: 8,
+    borderRadius: 30,
   },
   lockButton: {
     paddingHorizontal: 0,
@@ -249,10 +360,9 @@ const styles = theme => ({
     justifyContent: 'flex-start',
   },
   sendButton: {
-    paddingHorizontal: 0,
-    paddingVertical: 0,
+    padding: 12,
+    transform: [{ rotate: '45deg' }],
     backgroundColor: 'transparent',
-    alignItems: 'flex-end',
   },
   overflowMenu: {
     padding: 8,

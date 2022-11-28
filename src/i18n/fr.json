@@ -14,18 +14,21 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Lien d'installation",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "Si vous utilisez une installation de Chatwoot auto-hébergée, saisissez l'URL de votre serveur. Sinon, utilisez app.chatwoot.com.",
     "URL_ERROR": "Saisissez une URL valide",
+    "URL_REQUIRED": "L'URL est requise",
     "CONNECT": "Connexion",
     "CHANGE_LANGUAGE": "Modifier la langue",
     "ERROR": "Lien d'installation invalide"
   },
   "LOGIN": {
     "TITLE": "Connectez-vous à votre compte",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "DESCRIPTION": "Vous êtes connecté à {{baseUrl}}. Connectez-vous avec votre adresse e-mail et votre mot de passe.",
     "EMAIL": "Courriel",
     "PASSWORD": "Mot de passe",
+    "EMAIL_REQUIRED": "L'e-mail est requis",
     "EMAIL_ERROR": "Saisissez une adresse de courriel valide",
+    "PASSWORD_REQUIRED": "Le mot de passe est requis",
     "PASSWORD_ERROR": "Saisissez un mot de passe valide",
     "LOGIN": "Se connecter",
     "FORGOT_PASSWORD": "Mot de passe oublié ?",
@@ -43,10 +46,12 @@
     "RESET_HERE": "Réinitialiser le mot de passe",
     "HEADER_TITLE": "Réinitialiser le mot de passe",
     "TITLE": "Mot de passe oublié ?",
-    "SUB_TITLE": "Ne vous inquiétes pas ! Nous avons récupéré"
+    "SUB_TITLE": "Ne vous inquiétes pas ! Nous avons récupéré",
+    "API_SUCCESS": "Le lien de réinitialisation du mot de passe a été envoyé à votre adresse e-mail"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversations",
+    "UPDATING": "Updating...",
     "MINE": "Les miennes",
     "UN_ASSIGNED": "Non assignées",
     "ALL": "Toutes",
@@ -59,13 +64,14 @@
     "TYPE_MESSAGE": "Tapez un message",
     "TYPING": "en cours d'écriture",
     "ALL_CONVERSATION_LOADED": "Toutes les conversations ont été chargées",
-    "RESOLVE": "Reprendre la conversation",
-    "RE_OPEN": "Reprendre la conversation",
     "ASSIGN": "Affecter une conversation",
     "FILE_SIZE_LIMIT": "Le fichier dépasse la limite de 5 Mo des pièces jointes",
+    "SHARE": "Partager la conversation",
     "CANCEL": "Annuler",
     "PRIVATE_MSG_INPUT": "Ceci ne sera visible qu'aux Agents",
-    "UN_ASSIGN": "Retirer la conversation"
+    "UN_ASSIGN": "Retirer la conversation",
+    "MUTE_CONVERSATION": "Mute conversation",
+    "UNMUTE_CONVERSATION": "Unmute conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtrer les conversations",
@@ -74,7 +80,9 @@
     "OPEN": "Ouverte",
     "RESOLVED": "Résolue",
     "BOT": "Bot",
-    "SUBMIT": "Envoyer"
+    "SUBMIT": "Envoyer",
+    "PENDING": "En attente",
+    "SNOOZED": "Reporté"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Paramètres",
@@ -107,21 +115,39 @@
     "CONVERSATION_CREATE_PUSH": "Envoyer une notifications lors de la création d'une conversation",
     "CONVERSATION_ASSIGNEE_PUSH": "Envoyer une notification lors qu'une discussion m'est assignée",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Envoyer une notification lors de la réception d'un message dans une discussion m'étant assignée",
+    "CONVERSATION_MENTION": "Envoyer des notifications push lorsque vous êtes mentionné dans une conversation",
     "CONVERSATION_CREATE_EMAIL": "Envoyer une notification par e-mail lors de la création d'une conversation",
     "CONVERSATION_ASSIGNEE_EMAIL": "Envoyer une notification par e-mail lors qu'une discussion m'est assignée",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Envoyer une notification par e-mail lors de la réception d'un message dans une discussion qui m'est assignée"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Informations de la conversation",
     "BROWSER": "Navigateur",
     "OPERATING_SYSTEM": "Système d'explitation",
     "INITIATED_AT": "Crée a",
-    "INITIATED_FROM": "Crée depuis"
+    "INITIATED_FROM": "Crée depuis",
+    "IP_ADDRESS": "Adresse IP"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Attributs du contact"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Actions"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Étiquettes de conversation",
+    "ADD_LABEL": "Ajouter une étiquette",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Étiquette mise à jour avec succès"
+  },
   "AGENT": {
     "TITLE": "Sélectionner un agent"
+  },
+  "TEAMS": {
+    "TITLE": "Choisis une équipe",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "L'équipe de conversation a été modifiée"
   },
   "ERRORS": {
     "COMMON_ERROR": "Impossible de se connecter au serveur Woot, veuillez réessayer ultérieurement",
@@ -134,14 +160,26 @@
     "AUTH": "Connexion réussie"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "Mise à jour du serveur requise",
+    "WARNING_FOR_AGENT": "Il semble que vous utilisez un serveur Chatwoot non pris en charge pour votre application mobile. Veuillez contacter votre administrateur pour mettre à jour votre serveur Chatwoot.",
+    "WARNING_FOR_ADMIN": "Il semble que vous utilisez un serveur Chatwoot non pris en charge pour votre application mobile. La mise à jour vers la version %{minimumVersion} du serveur ou ultérieure est requise."
   },
   "EXIT": {
     "TITLE": "Quitter",
     "SUBTITLE": "Voulez-vous vraiment quitter ?",
     "CANCEL": "Annuler",
     "OK": "OK"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "HREF_TEXT": "Restriction de fenêtre de message de 24 heures",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "You cannot reply due to ",
+      "HREF_TEXT": "Restriction de fenêtre de message de 24 heures",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

@@ -16,6 +16,7 @@
     "ENTER_URL": "URL de instalação",
     "DESCRIPTION": "Se você estiver usando uma instalação auto-hospedada do Chatwoot, insira o URL do servidor. Caso contrário, use app.chatwoot.com.",
     "URL_ERROR": "Insira uma URL válida",
+    "URL_REQUIRED": "O URL é obrigatório",
     "CONNECT": "Conectar",
     "CHANGE_LANGUAGE": "Alterar idioma",
     "ERROR": "Url de instalação inválida"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "Você está conectado a {{baseUrl}}. Entre com seu endereço de e-mail e senha.",
     "EMAIL": "e-mail",
     "PASSWORD": "Senha",
+    "EMAIL_REQUIRED": "E-mail é obrigatório",
     "EMAIL_ERROR": "Digite um e-mail válido",
+    "PASSWORD_REQUIRED": "Senha obrigatória",
     "PASSWORD_ERROR": "Digite uma senha válida",
     "LOGIN": "Entrar",
     "FORGOT_PASSWORD": "Esqueceu sua senha?",
@@ -43,10 +46,12 @@
     "RESET_HERE": "Redefinir senha",
     "HEADER_TITLE": "Redefinir senha",
     "TITLE": "Esqueceu a Senha?",
-    "SUB_TITLE": "Não se preocupe! Nós te protegemos"
+    "SUB_TITLE": "Não se preocupe! Nós te protegemos",
+    "API_SUCCESS": "O link de redefinição de senha foi enviado para seu endereço de e-mail"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversas",
+    "UPDATING": "Updating...",
     "MINE": "Minha",
     "UN_ASSIGNED": "Não atribuída",
     "ALL": "Todas",
@@ -59,13 +64,14 @@
     "TYPE_MESSAGE": "Tipo da Mensagem",
     "TYPING": "digitando",
     "ALL_CONVERSATION_LOADED": "Todas as conversas foram carregadas",
-    "RESOLVE": "Reabrir conversa",
-    "RE_OPEN": "Reabrir conversa",
     "ASSIGN": "Atribuir conversa",
     "FILE_SIZE_LIMIT": "O arquivo excede o limite de anexos de 5MB",
+    "SHARE": "Compartilhar conversas",
     "CANCEL": "Cancelar",
     "PRIVATE_MSG_INPUT": "Isto será visível apenas para Agentes",
-    "UN_ASSIGN": "Desassociar conversa"
+    "UN_ASSIGN": "Desassociar conversa",
+    "MUTE_CONVERSATION": "Silenciar conversa",
+    "UNMUTE_CONVERSATION": "Não silenciar conversa"
   },
   "FILTER": {
     "HEADER_TITLE": "Filtro da Conversa",
@@ -74,7 +80,9 @@
     "OPEN": "Abrir",
     "RESOLVED": "Resolvida",
     "BOT": "Bot",
-    "SUBMIT": "Enviar"
+    "SUBMIT": "Enviar",
+    "PENDING": "Pendente",
+    "SNOOZED": "Adiado"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Confirgurações",
@@ -107,21 +115,39 @@
     "CONVERSATION_CREATE_PUSH": "Enviar notificações push quando uma nova conversa é criada",
     "CONVERSATION_ASSIGNEE_PUSH": "Enviar notificações push quando uma conversa é atribuída para mim",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Enviar notificações push quando uma nova mensagem é criada em uma conversa atribuída",
+    "CONVERSATION_MENTION": "Enviar notificações push quando você for mencionado em uma conversa",
     "CONVERSATION_CREATE_EMAIL": "Enviar notificações push quando uma nova conversa é criada",
     "CONVERSATION_ASSIGNEE_EMAIL": "Enviar notificações por email quando uma conversa é atribuída a mim",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Enviar notificações por email quando uma nova mensagem é criada em uma conversa atribuída"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Informação da conversa",
     "BROWSER": "Navegador",
     "OPERATING_SYSTEM": "Sistema Operacional",
     "INITIATED_AT": "Iniciada em",
-    "INITIATED_FROM": "Iniciado por"
+    "INITIATED_FROM": "Iniciado por",
+    "IP_ADDRESS": "Endereço IP"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Atributos do contato"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Ações"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Marcador da conversa",
+    "ADD_LABEL": "Adicionar marcador",
+    "EMPTY_LIST": "Por favor, adicione marcadores à sua conta",
+    "NO_LABEL": "Nenhum marcador atribuído",
+    "UPDATE_LABEL": "Marcador atualizado com sucesso"
+  },
   "AGENT": {
     "TITLE": "Selecione o Agent"
+  },
+  "TEAMS": {
+    "TITLE": "Selecionar time",
+    "EMPTY": "Adicione equipes à sua conta para atribuir conversas a equipes.",
+    "CHANGE_TEAMS": "Estado da conversa mudou"
   },
   "ERRORS": {
     "COMMON_ERROR": "Não foi possível conectar ao servidor Woot, por favor tente novamente mais tarde",
@@ -143,5 +169,17 @@
     "SUBTITLE": "Tem certeza de que deseja sair?",
     "CANCEL": "Cancelar",
     "OK": "Ok"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "Você só pode responder a esta conversa usando um template de mensagem devido ",
+      "HREF_TEXT": "Restrições de janela de mensagem de 24 horas",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "Você não pode responder devido a ",
+      "HREF_TEXT": "Restrições de janela de mensagem de 24 horas",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

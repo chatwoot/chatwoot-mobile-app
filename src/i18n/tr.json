@@ -16,6 +16,7 @@
     "ENTER_URL": "Kurulum URL'si",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Geçerli bir URL girin",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Bağlan",
     "CHANGE_LANGUAGE": "Dili değiştir",
     "ERROR": "Geçersiz yükleme url'si"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "E-posta",
     "PASSWORD": "Parola",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Geçerli bir e-posta giriniz",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Geçerli bir parola girin",
     "LOGIN": "Oturum aç",
     "FORGOT_PASSWORD": "Parolanızı mı unuttunuz?",
@@ -43,10 +46,12 @@
     "RESET_HERE": "Parola yenile",
     "HEADER_TITLE": "Parola yenile",
     "TITLE": "Parolanızı mı unuttunuz?",
-    "SUB_TITLE": "Merak etmeyin! Arkanı kolluyoruz"
+    "SUB_TITLE": "Merak etmeyin! Arkanı kolluyoruz",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Konuşmalar",
+    "UPDATING": "Updating...",
     "MINE": "Benim",
     "UN_ASSIGNED": "Atanmamış",
     "ALL": "Hepsi",
@@ -59,13 +64,14 @@
     "TYPE_MESSAGE": "Mesajınızı yazın",
     "TYPING": "yazıyor...",
     "ALL_CONVERSATION_LOADED": "Tüm görüşmeler yüklendi",
-    "RESOLVE": "Görüşmeyi çöz",
-    "RE_OPEN": "Görüşmeyi yeniden açın",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "SHARE": "Share conversation",
     "CANCEL": "İptal et",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "UN_ASSIGN": "Unassign conversation",
+    "MUTE_CONVERSATION": "Mute conversation",
+    "UNMUTE_CONVERSATION": "Unmute conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Görüşme Filtresi",
@@ -74,7 +80,9 @@
     "OPEN": "Açık",
     "RESOLVED": "Çözüldü",
     "BOT": "Bot",
-    "SUBMIT": "Yolla"
+    "SUBMIT": "Yolla",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Ayarlar",
@@ -107,21 +115,39 @@
     "CONVERSATION_CREATE_PUSH": "Yeni bir görüşme oluşturulduğunda anlık bildirimler gönderin",
     "CONVERSATION_ASSIGNEE_PUSH": "Bana bir konuşma atandığında anında bildirim gönder",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Atanan bir görüşmede yeni bir mesaj oluşturulduğunda anlık bildirimler gönderin",
+    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
     "CONVERSATION_CREATE_EMAIL": "Yeni bir görüşme oluşturulduğunda e-posta bildirimleri gönderin",
     "CONVERSATION_ASSIGNEE_EMAIL": "Bana bir konuşma atandığında e-posta bildirimleri gönder",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Atanmış bir görüşmede yeni bir mesaj oluşturulduğunda e-posta bildirimleri gönderin"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "Tarayıcı",
     "OPERATING_SYSTEM": "İşletim sistemi",
     "INITIATED_AT": "Başlatıldı",
-    "INITIATED_FROM": "Başlatıldı"
+    "INITIATED_FROM": "Başlatıldı",
+    "IP_ADDRESS": "IP Adresi"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Hareketler"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Konuşma Etiketleri",
+    "ADD_LABEL": "Etiketler ekleyin",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Etiket başarıyla güncellendi"
+  },
   "AGENT": {
     "TITLE": "Temsilci Seçin"
+  },
+  "TEAMS": {
+    "TITLE": "Select Team",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Görüşme takımı değişti"
   },
   "ERRORS": {
     "COMMON_ERROR": "Woot Sunucusuna bağlanılamadı, Lütfen daha sonra tekrar deneyin",
@@ -143,5 +169,17 @@
     "SUBTITLE": "Çıkmak istediğinden emin misin?",
     "CANCEL": "İptal et",
     "OK": "Tamam"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "HREF_TEXT": "24 saat mesaj penceresi kısıtlaması",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "You cannot reply due to ",
+      "HREF_TEXT": "24 saat mesaj penceresi kısıtlaması",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

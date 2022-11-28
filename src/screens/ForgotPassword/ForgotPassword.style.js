@@ -2,7 +2,7 @@ import { Dimensions } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width;
 
-export default (theme) => ({
+const styles = theme => ({
   mainView: {
     flex: 1,
     backgroundColor: theme['background-basic-color-1'],
@@ -70,3 +70,4 @@ export default (theme) => ({
     fontSize: theme['font-size-large'],
   },
 });
+export default styles;

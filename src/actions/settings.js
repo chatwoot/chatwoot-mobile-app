@@ -36,23 +36,25 @@ export const getInstalledVersion = () => async (dispatch, getState) => {
   } catch (error) {}
 };
 
-export const setInstallationUrl = ({ url }) => async dispatch => {
-  try {
-    const INSTALLATION_URL = `${URL_TYPE}${url}/`;
-    const WEB_SOCKET_URL = `wss://${url}/cable`;
-    dispatch({ type: SET_URL });
-    await axios.get(`${INSTALLATION_URL}api`);
-    dispatch({
-      type: SET_URL_SUCCESS,
-      payload: { installationUrl: INSTALLATION_URL, webSocketUrl: WEB_SOCKET_URL, baseUrl: url },
-    });
+export const setInstallationUrl =
+  ({ url }) =>
+  async dispatch => {
+    try {
+      const INSTALLATION_URL = `${URL_TYPE}${url}/`;
+      const WEB_SOCKET_URL = `wss://${url}/cable`;
+      dispatch({ type: SET_URL });
+      await axios.get(`${INSTALLATION_URL}api`);
+      dispatch({
+        type: SET_URL_SUCCESS,
+        payload: { installationUrl: INSTALLATION_URL, webSocketUrl: WEB_SOCKET_URL, baseUrl: url },
+      });
 
-    RootNavigation.navigate('Login');
-  } catch (error) {
-    showToast({ message: I18n.t('CONFIGURE_URL.ERROR') });
-    dispatch({ type: SET_URL_ERROR, payload: error });
-  }
-};
+      RootNavigation.navigate('Login');
+    } catch (error) {
+      showToast({ message: I18n.t('CONFIGURE_URL.ERROR') });
+      dispatch({ type: SET_URL_ERROR, payload: error });
+    }
+  };
 
 export const getNotificationSettings = () => async dispatch => {
   dispatch({ type: GET_NOTIFICATION_SETTINGS });

@@ -35,7 +35,7 @@ const defaultProps = {
 LoaderButton.propTypes = propTypes;
 LoaderButton.defaultProps = defaultProps;
 
-const styles = (theme) => ({
+const styles = theme => ({
   textStyle: {
     color: theme['color-basic-100'],
     fontWeight: theme['font-semi-bold'],

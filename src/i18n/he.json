@@ -16,6 +16,7 @@
     "ENTER_URL": "קישור התקנה",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "הזן URL חוקי",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "התחבר",
     "CHANGE_LANGUAGE": "שנה שפה",
     "ERROR": "קישור התקנה לא חוקי"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "אימייל",
     "PASSWORD": "סיסמה",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "הזן אימייל חוקי",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "הזן סיסמה תקינה",
     "LOGIN": "כניסה",
     "FORGOT_PASSWORD": "שכחת את הסיסמה?",
@@ -43,11 +46,13 @@
     "RESET_HERE": "אפס את הסיסמה",
     "HEADER_TITLE": "אפס את הסיסמה",
     "TITLE": "שכחת את הסיסמה?",
-    "SUB_TITLE": "אל תדאג! אנחנו דואגים לך"
+    "SUB_TITLE": "אל תדאג! אנחנו דואגים לך",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "שיחות",
-    "MINE": "Mine",
+    "UPDATING": "Updating...",
+    "MINE": "שלי",
     "UN_ASSIGNED": "לא הוקצתה",
     "ALL": "הכל",
     "EMPTY": "אין שיחות פעילות בקבוצה הזו.",
@@ -59,13 +64,14 @@
     "TYPE_MESSAGE": "כתוב הודעה",
     "TYPING": "מקליד",
     "ALL_CONVERSATION_LOADED": "כל השיחות נטענו",
-    "RESOLVE": "פתור את השיחה",
-    "RE_OPEN": "פתח מחדש את השיחה",
     "ASSIGN": "הקצה שיחה",
     "FILE_SIZE_LIMIT": "הקובץ עובר את מגבלת 5MB לקבצים מצורפים",
+    "SHARE": "Share conversation",
     "CANCEL": "ביטול",
     "PRIVATE_MSG_INPUT": "זה יהיה גלוי רק לסוכנים",
-    "UN_ASSIGN": "שיחה שלא הוקצתה"
+    "UN_ASSIGN": "שיחה שלא הוקצתה",
+    "MUTE_CONVERSATION": "Mute conversation",
+    "UNMUTE_CONVERSATION": "בטל השתקת שיחה"
   },
   "FILTER": {
     "HEADER_TITLE": "סינון שיחות",
@@ -74,7 +80,9 @@
     "OPEN": "פתח",
     "RESOLVED": "נפתרה",
     "BOT": "בוט",
-    "SUBMIT": "שלח"
+    "SUBMIT": "שלח",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "הגדרות",
@@ -107,21 +115,39 @@
     "CONVERSATION_CREATE_PUSH": "שלח התראת פוש כאשר נפתחת שיחה חדשה",
     "CONVERSATION_ASSIGNEE_PUSH": "שלח התראת פוש כאשר שיחה מוקצית עבורי",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "שלח התראת פוש כאשר יש הודעה חדשה בשיחה המוקצית עבורי",
+    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
     "CONVERSATION_CREATE_EMAIL": "שלח התראה באימייל כאשר נפתחת שיחה חדשה",
     "CONVERSATION_ASSIGNEE_EMAIL": "שלח התראה באימייל כאשר שיחה מוקצית עבורי",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "שלח התראה באימייל כאשר יש הודעה חדשה בשיחה המוקצית עבורי"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "דפדפן",
     "OPERATING_SYSTEM": "מערכת הפעלה",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "INITIATED_AT": "יזם ב",
+    "INITIATED_FROM": "יזם מ",
+    "IP_ADDRESS": "כתובת IP"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "פעולות"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "תוויות שיחה",
+    "ADD_LABEL": "הוסף תוויות",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Label updated successfully"
+  },
   "AGENT": {
     "TITLE": "בחר סוכן"
+  },
+  "TEAMS": {
+    "TITLE": "Select Team",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "שיחת קבוצה השתנתה"
   },
   "ERRORS": {
     "COMMON_ERROR": "לא ניתן להתחבר לשרת Woot, נסה שוב מאוחר יותר",
@@ -143,5 +169,17 @@
     "SUBTITLE": "האם אתה בטוח שאתה רוצה לסגור את התכנה?",
     "CANCEL": "ביטול",
     "OK": "אישור"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "HREF_TEXT": "הגבלת חלון הודעות של 24 שעות",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "You cannot reply due to ",
+      "HREF_TEXT": "הגבלת חלון הודעות של 24 שעות",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

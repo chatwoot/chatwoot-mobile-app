@@ -10,6 +10,11 @@ import { findLastMessage, getUnreadCount, getInboxName, getTypingUsersText } fro
 
 import ConversationAttachmentItem from './ConversationAttachmentItem';
 import ConversationContentItem from './ConversationContentItem';
+import InboxName from 'src/screens/ChatScreen/components/InboxName';
+
+import { getTextSubstringWithEllipsis } from 'helpers';
+
+import { INBOX_ICON } from 'src/constants/index';
 
 const propTypes = {
   eva: PropTypes.shape({
@@ -64,6 +69,8 @@ const ConversationItemComponent = ({
     conversationId: id,
   });
 
+  const iconName = INBOX_ICON[channel];
+
   const isActive = availabilityStatus === 'online' ? true : false;
 
   return (
@@ -77,65 +84,70 @@ const ConversationItemComponent = ({
             thumbnail={thumbnail}
             userName={name}
             size={40}
-            fontSize={14}
+            fontSize={16}
             defaultBGColor={theme['color-primary-default']}
             channel={channel}
             isActive={isActive}
             availabilityStatus={availabilityStatus}
           />
         </View>
-        <View>
-          <View style={style.labelView}>
-            {name && (
-              <CustomText
-                style={
-                  unreadCount ? style.conversationUserActive : style.conversationUserNotActive
-                }>
-                {name.length < 26 ? `${name}` : `${name.substring(0, 20)}...`}
-              </CustomText>
-            )}
-          </View>
-
-          {!typingUser ? (
-            !content && attachments && attachments.length ? (
-              <ConversationAttachmentItem
-                style={style}
-                theme={theme}
-                unReadCount={unreadCount}
-                attachment={attachments[0]}
-              />
-            ) : (
-              <ConversationContentItem
-                content={content}
-                unReadCount={unreadCount}
-                messageType={message_type}
-                isPrivate={isPrivate}
-              />
-            )
-          ) : (
-            <CustomText style={style.typingText}>
-              {typingUser && typingUser.length > 25
-                ? `${typingUser.substring(0, 25)}...`
-                : `${typingUser}`}
-            </CustomText>
-          )}
+        <View style={style.listWrap}>
           <View style={style.nameView}>
-            <CustomText style={style.conversationId}>#{id}</CustomText>
-            {inboxName && <CustomText style={style.channelText}>{inboxName}</CustomText>}
-          </View>
-        </View>
-      </View>
-      <View style={style.timestampContainer}>
-        <View>
-          <CustomText style={style.timeStamp}>{dynamicTime({ time: created_at })}</CustomText>
-        </View>
-        {unreadCount ? (
-          <View style={style.badgeView}>
-            <View style={style.badge}>
-              <Text style={style.badgeCount}>{unreadCount.toString()}</Text>
+            <View>
+              <CustomText style={style.conversationId}>#{id}</CustomText>
+            </View>
+            <View style={style.inboxDetails}>
+              <InboxName iconName={iconName} inboxName={inboxName} />
             </View>
           </View>
-        ) : null}
+          <View style={style.conversationContainer}>
+            <View>
+              <View style={style.labelView}>
+                {!!name && (
+                  <CustomText
+                    style={
+                      unreadCount ? style.conversationUserActive : style.conversationUserNotActive
+                    }>
+                    {getTextSubstringWithEllipsis(name, 26)}
+                  </CustomText>
+                )}
+              </View>
+              {!typingUser ? (
+                !content && attachments && attachments.length ? (
+                  <ConversationAttachmentItem
+                    style={style}
+                    theme={theme}
+                    unReadCount={unreadCount}
+                    attachment={attachments[0]}
+                  />
+                ) : (
+                  <ConversationContentItem
+                    content={content}
+                    unReadCount={unreadCount}
+                    messageType={message_type}
+                    isPrivate={isPrivate}
+                  />
+                )
+              ) : (
+                <CustomText style={style.typingText}>
+                  {getTextSubstringWithEllipsis(typingUser, 25)}
+                </CustomText>
+              )}
+            </View>
+            <View style={style.timestampContainer}>
+              <View>
+                <CustomText style={style.timeStamp}>{dynamicTime({ time: created_at })}</CustomText>
+              </View>
+              {unreadCount ? (
+                <View style={style.badgeView}>
+                  <View style={style.badge}>
+                    <Text style={style.badgeCount}>{unreadCount.toString()}</Text>
+                  </View>
+                </View>
+              ) : null}
+            </View>
+          </View>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -151,9 +163,11 @@ const styles = theme => ({
     paddingTop: 12,
     paddingBottom: 12,
     backgroundColor: theme['background-basic-color-1'],
-    marginVertical: 0.5,
     borderColor: theme['item-border-color'],
     borderBottomWidth: 1,
+  },
+  listWrap: {
+    flex: 1,
   },
   itemView: {
     flexDirection: 'row',
@@ -171,8 +185,8 @@ const styles = theme => ({
     color: theme['text-basic-color'],
   },
   avatarView: {
-    justifyContent: 'flex-end',
-    marginRight: 16,
+    alignSelf: 'flex-end',
+    marginRight: 10,
   },
   userActive: {
     width: 8,
@@ -193,7 +207,7 @@ const styles = theme => ({
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
-    paddingTop: 8,
+    paddingTop: 4,
   },
   badge: {
     width: 16,
@@ -214,34 +228,31 @@ const styles = theme => ({
     paddingTop: 4,
   },
   nameView: {
-    paddingTop: 4,
+    paddingBottom: 4,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  conversationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
   },
   labelView: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   conversationId: {
-    color: theme['color-primary-default'],
-    fontSize: theme['font-size-extra-extra-small'],
-    fontWeight: theme['font-semi-bold'],
-    borderRadius: 4,
-    padding: 4,
-    backgroundColor: theme['color-background-inbox'],
-  },
-  channelText: {
-    color: theme['color-primary-default'],
-    fontSize: theme['font-size-extra-extra-small'],
-    fontWeight: theme['font-semi-bold'],
-    borderRadius: 4,
-    marginLeft: 8,
-    padding: 4,
-    backgroundColor: theme['color-background-inbox'],
+    color: theme['color-secondary-500'],
+    fontSize: theme['font-size-extra-small'],
+    fontWeight: theme['font-medium'],
+    paddingRight: 4,
   },
   timestampContainer: {
-    marginTop: 4,
-    alignItems: 'flex-end',
+    marginTop: 2,
+    justifyContent: 'flex-end',
+    flexDirection: 'column',
+    position: 'absolute',
+    right: 0,
   },
 });
 

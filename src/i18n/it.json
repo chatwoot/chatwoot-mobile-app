@@ -2,8 +2,8 @@
   "WELCOME": "Benvenuto",
   "COMMON": {
     "ERROR": "Errore",
-    "ERROR_TITLE": "Errore inatteso",
-    "REPORT_MESSAGE": "Lo abbiamo segnalato alla nostra squadra! Chiudere l'app e ricominciare!",
+    "ERROR_TITLE": "Si è verificato un errore imprevisto",
+    "REPORT_MESSAGE": "Lo abbiamo segnalato al nostro team! Chiudi l'app e ricomincia!",
     "CLOSE": "Chiudi"
   },
   "FOOTER": {
@@ -13,19 +13,22 @@
     "SETTINGS": "Impostazioni"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "URL Di Installazione",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "ENTER_URL": "URL dell'installazione",
+    "DESCRIPTION": "Se stai usando un'installazione di Chatwoot auto-ospitata, inserisci l'URL del tuo server. Altrimenti, usa app.chatwoot.com.",
     "URL_ERROR": "Inserisci un URL valido",
+    "URL_REQUIRED": "URL obbligatorio",
     "CONNECT": "Connetti",
     "CHANGE_LANGUAGE": "Cambia lingua",
-    "ERROR": "Url installazione non valido"
+    "ERROR": "URL installazione non valido"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "Accedi al tuo account",
+    "DESCRIPTION": "Sei connesso a {{baseUrl}}. Accedi con il tuo indirizzo email e la password.",
     "EMAIL": "Email",
     "PASSWORD": "Password",
+    "EMAIL_REQUIRED": "L'email è obbligatoria",
     "EMAIL_ERROR": "Inserisci una email valida",
+    "PASSWORD_REQUIRED": "La password è obbligatoria",
     "PASSWORD_ERROR": "Inserisci una password valida",
     "LOGIN": "Accedi",
     "FORGOT_PASSWORD": "Hai dimenticato la password?",
@@ -34,56 +37,61 @@
     "CREATE_ACCOUNT": "Crea un nuovo account",
     "SETTINGS": "Impostazioni",
     "CHANGE_LANGUAGE": "Cambia lingua",
-    "TERMS": "Termini E Condizioni",
+    "TERMS": "Termini e condizioni",
     "CHANGE_URL": "Cambia URL"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "Inserisci il tuo indirizzo e-mail",
-    "EMAIL_ERROR": "Inserisci un'e-mail valida",
+    "EMAIL": "Inserisci il tuo indirizzo email",
+    "EMAIL_ERROR": "Inserisci un'email valida",
     "RESET_HERE": "Reimposta password",
     "HEADER_TITLE": "Reimposta password",
     "TITLE": "Hai dimenticato la password?",
-    "SUB_TITLE": "Non preoccuparti! Ti copriamo le spalle"
+    "SUB_TITLE": "Non preoccuparti! Ti copriamo le spalle",
+    "API_SUCCESS": "Il link per reimpostare la password è stato inviato al tuo indirizzo email"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversazioni",
-    "MINE": "Mio",
-    "UN_ASSIGNED": "Non Assegnato",
+    "UPDATING": "Updating...",
+    "MINE": "Mie",
+    "UN_ASSIGNED": "Non assegnato",
     "ALL": "Tutti",
     "EMPTY": "Non ci sono conversazioni attive in questo gruppo.",
     "PICTURE_CONTENT": "Messaggio con foto",
-    "ATTACHMENT_CONTENT": "File Allegato",
+    "ATTACHMENT_CONTENT": "File allegato",
     "DOWNLOAD": "Download",
     "TODAY": "Oggi",
     "YESTERDAY": "Ieri",
     "TYPE_MESSAGE": "Digita messaggio",
-    "TYPING": "digitazione",
+    "TYPING": "digitando",
     "ALL_CONVERSATION_LOADED": "Tutte le conversazioni sono caricate",
-    "RESOLVE": "Risolvi la conversazione",
-    "RE_OPEN": "Riaprire la conversazione",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "ASSIGN": "Assegna conversazione",
+    "FILE_SIZE_LIMIT": "Il file supera il limite di 5MB per l'allegato",
+    "SHARE": "Condividi conversazione",
     "CANCEL": "Annulla",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "PRIVATE_MSG_INPUT": "Questo sarà visibile solo agli agenti",
+    "UN_ASSIGN": "Annulla l'assegnazione della conversazione",
+    "MUTE_CONVERSATION": "Silenzia conversazione",
+    "UNMUTE_CONVERSATION": "Riattiva conversazione"
   },
   "FILTER": {
-    "HEADER_TITLE": "Filtro Conversazione",
-    "CHOOSE_INBOX": "Scegli Inbox",
-    "CHOOSE_STATUS": "Stato Della Conversazione",
+    "HEADER_TITLE": "Filtro conversazione",
+    "CHOOSE_INBOX": "Scegli Posta in arrivo",
+    "CHOOSE_STATUS": "Stato della conversazione",
     "OPEN": "Apri",
     "RESOLVED": "Risolto",
     "BOT": "Bot",
-    "SUBMIT": "Invia"
+    "SUBMIT": "Invia",
+    "PENDING": "In sospeso",
+    "SNOOZED": "Posticipato"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Impostazioni",
     "AVAILABILITY": "Disponibilità",
-    "NOTIFICATION": "Preferenze Notifiche",
-    "HELP": "Documenti Di Aiuto",
-    "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "Esci",
-    "SWITCH_ACCOUNT": "Cambia Account",
+    "NOTIFICATION": "Preferenze notifiche",
+    "HELP": "Documentazione di aiuto",
+    "CHAT_WITH_US": "Chatta con noi",
+    "LOG_OUT": "Disconnettiti",
+    "SWITCH_ACCOUNT": "Cambia account",
     "CHANGE_LANGUAGE": "Cambia lingua",
     "SUBMIT": "Invia"
   },
@@ -101,47 +109,77 @@
     "OFFLINE": "Offline"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Preferenze Notifiche",
+    "TITLE": "Preferenze notifiche",
     "EMAIL": "Email",
     "PUSH": "Push",
     "CONVERSATION_CREATE_PUSH": "Invia notifiche push quando viene creata una nuova conversazione",
     "CONVERSATION_ASSIGNEE_PUSH": "Invia notifiche push quando una conversazione è assegnata a me",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Invia notifiche push quando viene creato un nuovo messaggio in una conversazione assegnata",
+    "CONVERSATION_MENTION": "Invia notifiche push quando sei menzionato in una conversazione",
     "CONVERSATION_CREATE_EMAIL": "Invia notifiche email quando viene creata una nuova conversazione",
     "CONVERSATION_ASSIGNEE_EMAIL": "Invia notifiche email quando una conversazione mi viene assegnata",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Invia notifiche via e-mail quando viene creato un nuovo messaggio in una conversazione assegnata"
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Invia notifiche email quando viene creato un nuovo messaggio in una conversazione assegnata"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Informazioni conversazione",
     "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Sistema Operativo",
+    "OPERATING_SYSTEM": "Sistema operativo",
     "INITIATED_AT": "Avviato il",
-    "INITIATED_FROM": "Avviato da"
+    "INITIATED_FROM": "Avviato da",
+    "IP_ADDRESS": "Indirizzo IP"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Attributi contatti"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "Azioni"
+  },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Etichette conversazione",
+    "ADD_LABEL": "Aggiungi etichette",
+    "EMPTY_LIST": "Si prega di aggiungere le etichette al tuo account",
+    "NO_LABEL": "Nessuna etichetta assegnata",
+    "UPDATE_LABEL": "Etichetta aggiornata con successo"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Seleziona agente"
+  },
+  "TEAMS": {
+    "TITLE": "Seleziona team",
+    "EMPTY": "Aggiungi dei team al tuo account per assegnare conversazioni ai team.",
+    "CHANGE_TEAMS": "Team conversazione cambiato"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Impossibile connettersi al Woot Server, riprova più tardi",
+    "COMMON_ERROR": "Impossibile connettersi al server Woot, riprova più tardi",
     "OfFLINE": "Devi connetterti al Wi-Fi o a una rete cellulare per tornare online",
     "CANNOT_FETCH": "Si è verificato un errore nel recupero delle informazioni, si prega di riprovare",
     "AUTH": "Nome utente / Password non corretta. Si prega di riprovare",
-    "NO_ACCOUNTS_MESSAGE": "Non hai accesso ad alcun account chatwood"
+    "NO_ACCOUNTS_MESSAGE": "Non hai accesso ad alcun account chatwoot"
   },
   "SUCCESS": {
-    "AUTH": "Accesso Riuscito"
+    "AUTH": "Accesso eseguito correttamente"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "Aggiornamento del server richiesto",
+    "WARNING_FOR_AGENT": "Sembra che tu stia usando il server Chatwoot non supportato per la tua app mobile. Contatta il tuo amministratore per aggiornare il tuo server Chatwoot.",
+    "WARNING_FOR_ADMIN": "Sembra che tu stia usando il server Chatwoot non supportato per la tua app mobile. È necessario aggiornare alla versione del server %{minimumVersion} o successivo."
   },
   "EXIT": {
     "TITLE": "Esci",
     "SUBTITLE": "Sei sicuro di voler uscire?",
     "CANCEL": "Annulla",
     "OK": "Ok"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "È possibile rispondere a questa conversazione solo utilizzando un messaggio modello a causa di ",
+      "HREF_TEXT": "Restrizione della finestra del messaggio a 24 ore",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "Non puoi rispondere a causa di ",
+      "HREF_TEXT": "Restrizione della finestra del messaggio a 24 ore",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

@@ -51,6 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversations",
+    "UPDATING": "Updating...",
     "MINE": "Mine",
     "UN_ASSIGNED": "Unassigned",
     "ALL": "All",
@@ -63,16 +64,21 @@
     "TYPE_MESSAGE": "Type message",
     "TYPING": "typing",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "RESOLVE": "Resolve conversation",
-    "RE_OPEN": "Reopen conversation",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
     "SHARE": "Share conversation",
     "CANCEL": "Cancel",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "UN_ASSIGN": "Unassign conversation",
+    "MUTE_CONVERSATION": "Mute conversation",
+    "UNMUTE_CONVERSATION": "Unmute conversation",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
   },
   "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "Conversation Filter",
     "CHOOSE_INBOX": "Choose Inbox",
     "CHOOSE_STATUS": "Conversation Status",
@@ -120,16 +126,33 @@
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "Browser",
     "OPERATING_SYSTEM": "Operating System",
     "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from"
+    "INITIATED_FROM": "Initiated from",
+    "IP_ADDRESS": "IP Address"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Actions"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Conversation Labels",
+    "ADD_LABEL": "Add Labels",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Label updated successfully"
+  },
   "AGENT": {
     "TITLE": "Select Agent"
+  },
+  "TEAMS": {
+    "TITLE": "Select Team",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Conversation team changed"
   },
   "ERRORS": {
     "COMMON_ERROR": "Could not connect to Woot Server, Please try again later",
@@ -151,5 +174,17 @@
     "SUBTITLE": "Are you sure you want to quit?",
     "CANCEL": "Cancel",
     "OK": "Ok"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "HREF_TEXT": "24 hour message window restriction",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "You cannot reply due to ",
+      "HREF_TEXT": "24 hour message window restriction",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

@@ -16,6 +16,7 @@
     "ENTER_URL": "نصب با URL",
     "DESCRIPTION": "اگر از نرم افزار روی سرورهای شخصی استفاده می کنید ، آدرس سرور خود را وارد کنید. در غیر این صورت ، از app.chatwoot.com استفاده کنید.",
     "URL_ERROR": "نشانی وب معتبری وارد کنید",
+    "URL_REQUIRED": "نشانی اینترنتی الزامی است",
     "CONNECT": "اتصال",
     "CHANGE_LANGUAGE": "تغییر زبان",
     "ERROR": "نشانی اینترنتی نصب نامعتبر است"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "شما به {{baseUrl}} متصل هستید. با آدرس ایمیل و رمز ورود خود وارد شوید.",
     "EMAIL": "ایمیل",
     "PASSWORD": "رمز عبور",
+    "EMAIL_REQUIRED": "ایمیل الزامی است",
     "EMAIL_ERROR": "یک ایمیل معتبر وارد کنید",
+    "PASSWORD_REQUIRED": "رمز عبور الزامی است",
     "PASSWORD_ERROR": "رمز عبور معتبر وارد کنید",
     "LOGIN": "ورود",
     "FORGOT_PASSWORD": "رمز عبورتان را فراموش کردید؟",
@@ -43,10 +46,12 @@
     "RESET_HERE": "تغییر رمز عبور",
     "HEADER_TITLE": "تغییر رمز عبور",
     "TITLE": "رمز عبورتان را فراموش کردید؟",
-    "SUB_TITLE": "نگران نباش! ما پشتت رو گرفتیم"
+    "SUB_TITLE": "نگران نباش! ما پشتت رو گرفتیم",
+    "API_SUCCESS": "پیوند بازنشانی رمز عبور به ایمیل شما ارسال شد"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "گفتگوها",
+    "UPDATING": "در حال به‌روزرسانی...",
     "MINE": "من",
     "UN_ASSIGNED": "تخصیص داده نشده",
     "ALL": "همه",
@@ -59,13 +64,14 @@
     "TYPE_MESSAGE": "پیام خود را وارد کنید",
     "TYPING": "تایپ کردن",
     "ALL_CONVERSATION_LOADED": "همه گفتگوها دریافت شدند",
-    "RESOLVE": "گفتگو حل شده",
-    "RE_OPEN": "مکالمه را دوباره باز کنید",
     "ASSIGN": "اختصاص مکالمه",
     "FILE_SIZE_LIMIT": "محدودیت حجم فایل پیوست 5MB می باشد",
+    "SHARE": "اشتراک گذاری گفتگو",
     "CANCEL": "انصراف",
     "PRIVATE_MSG_INPUT": "این فقط برای ایجنت ها قابل مشاهده خواهد بود",
-    "UN_ASSIGN": "لغو اختصاص مکالمه"
+    "UN_ASSIGN": "لغو اختصاص مکالمه",
+    "MUTE_CONVERSATION": "صدای گفتگو را قطع کن",
+    "UNMUTE_CONVERSATION": "مکالمه را باصدا کنید"
   },
   "FILTER": {
     "HEADER_TITLE": "فیلتر مکالمه",
@@ -74,7 +80,9 @@
     "OPEN": "باز",
     "RESOLVED": "حل شده",
     "BOT": "ربات",
-    "SUBMIT": "ثبت"
+    "SUBMIT": "ثبت",
+    "PENDING": "در انتظار",
+    "SNOOZED": "به تعویق افتاد"
   },
   "SETTINGS": {
     "HEADER_TITLE": "تنظیمات",
@@ -107,21 +115,39 @@
     "CONVERSATION_CREATE_PUSH": "هر وقت گفتگوی جدیدی شروع شد برای من پوش نوتیفیکیشن بفرست",
     "CONVERSATION_ASSIGNEE_PUSH": "هر وقت گفتگویی به من اختصاص داده شد، برای من پوش نوتیفیکیشن بفرست",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "وقتی پیام جدیدی در مکالمه اختصاص داده شده ایجاد می شود ، پوش نوتیفیکیشن را ارسال کنید",
+    "CONVERSATION_MENTION": "هنگامی که از شما در مکالمه نام برده می شود پوش نوتیفیکیشن ارسال کنید",
     "CONVERSATION_CREATE_EMAIL": "هر وقت گفتگوی جدیدی شروع شد برای من ایمیل بفرست",
     "CONVERSATION_ASSIGNEE_EMAIL": "هر وقت گفتگویی به من اختصاص داده شد،‌ ایمیل بفرست",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "با ایجاد پیام جدید در مکالمه اختصاصی ، اعلان های ایمیل را ارسال کنید"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "اطلاعات مکالمه",
     "BROWSER": "مرورگر",
     "OPERATING_SYSTEM": "سیستم عامل",
     "INITIATED_AT": "شروع شده در",
-    "INITIATED_FROM": "شروع شده از"
+    "INITIATED_FROM": "شروع شده از",
+    "IP_ADDRESS": "آدرس آی‌پی"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "ویژگی‌های تماس"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "عملیات"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "برچسب‌های گفتگو",
+    "ADD_LABEL": "افزودن برچسب‌ها",
+    "EMPTY_LIST": "لطفا برچسب‌ها را به حساب‌کاربری خود اضافه کنید",
+    "NO_LABEL": "هیچ برچسبی اختصاص داده نشده است",
+    "UPDATE_LABEL": "برچسب با موفقیت به روز شد"
+  },
   "AGENT": {
     "TITLE": "انتخاب ایجنت"
+  },
+  "TEAMS": {
+    "TITLE": "تیم را انتخاب کنید",
+    "EMPTY": "لطفا تیم‌ها را به حساب‌کاربری خود اضافه کنید تا گفتگوها را به تیم‌ها اختصاص دهید.",
+    "CHANGE_TEAMS": "تیم مکالمه تغییر کرد"
   },
   "ERRORS": {
     "COMMON_ERROR": "متاسفانه ارتباط با سرور برقرار نشد، مجددا امتحان کنید",
@@ -143,5 +169,17 @@
     "SUBTITLE": "آیا مطمئن هستید که می خواهید خارج شوید؟",
     "CANCEL": "انصراف",
     "OK": "باشه"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "شما فقط با استفاده از یک پیام الگو به این مکالمه می‌توانید پاسخ دهید ",
+      "HREF_TEXT": "محدودیت ۲۴ ساعته پنجره پیام",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "شما نمی‌توانید پاسخ بدهید به دلیل ",
+      "HREF_TEXT": "محدودیت ۲۴ ساعته پنجره پیام",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

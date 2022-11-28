@@ -5,7 +5,7 @@ import { Radio, Icon, withStyles } from '@ui-kitten/components';
 
 import CustomText from './Text';
 
-const styles = (theme) => ({
+const styles = theme => ({
   itemView: {
     flexDirection: 'row',
     alignItems: 'center',

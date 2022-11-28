@@ -6,6 +6,8 @@ import conversation from './conversation';
 import settings from './settings';
 import notification from './notification';
 import agent from './agent';
+import cannedResponseSlice from './cannedResponseSlice';
+import conversationSlice from './conversationSlice';
 
 const rootReducer = combineReducers({
   auth,
@@ -14,6 +16,8 @@ const rootReducer = combineReducers({
   settings,
   notification,
   agent,
+  cannedResponses: cannedResponseSlice,
+  conversations: conversationSlice,
 });
 
 export default (state, action) =>

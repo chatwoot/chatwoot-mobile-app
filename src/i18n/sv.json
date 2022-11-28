@@ -16,6 +16,7 @@
     "ENTER_URL": "URL för installationen",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Ange en giltig URL",
+    "URL_REQUIRED": "URL is required",
     "CONNECT": "Anslut",
     "CHANGE_LANGUAGE": "Byt språk",
     "ERROR": "Ogiltig installations-URL"
@@ -25,7 +26,9 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "E-post",
     "PASSWORD": "Lösenord",
+    "EMAIL_REQUIRED": "Email is required",
     "EMAIL_ERROR": "Ange en giltig e-postadress",
+    "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Ange ett giltigt lösenord",
     "LOGIN": "Logga in",
     "FORGOT_PASSWORD": "Glömt ditt lösenord?",
@@ -43,10 +46,12 @@
     "RESET_HERE": "Återställ lösenord",
     "HEADER_TITLE": "Återställ lösenord",
     "TITLE": "Glömt lösenordet?",
-    "SUB_TITLE": "Oroa dig inte! Vi löser det"
+    "SUB_TITLE": "Oroa dig inte! Vi löser det",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Konversationer",
+    "UPDATING": "Updating...",
     "MINE": "Mina",
     "UN_ASSIGNED": "Otilldelade",
     "ALL": "Alla",
@@ -59,13 +64,14 @@
     "TYPE_MESSAGE": "Skriv ett meddelande",
     "TYPING": "skriver",
     "ALL_CONVERSATION_LOADED": "Alla konversationer laddade",
-    "RESOLVE": "Lös konversationen",
-    "RE_OPEN": "Återöppna konversationen",
     "ASSIGN": "Tilldela konversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "SHARE": "Share conversation",
     "CANCEL": "Avbryt",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UN_ASSIGN": "Unassign conversation"
+    "UN_ASSIGN": "Unassign conversation",
+    "MUTE_CONVERSATION": "Mute conversation",
+    "UNMUTE_CONVERSATION": "Unmute conversation"
   },
   "FILTER": {
     "HEADER_TITLE": "Konversationsfilter",
@@ -74,7 +80,9 @@
     "OPEN": "Öppna",
     "RESOLVED": "Löst",
     "BOT": "Bot",
-    "SUBMIT": "Skicka"
+    "SUBMIT": "Skicka",
+    "PENDING": "Pending",
+    "SNOOZED": "Snoozed"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Inställningar",
@@ -107,21 +115,39 @@
     "CONVERSATION_CREATE_PUSH": "Skicka push-aviseringar när en ny konversation skapas",
     "CONVERSATION_ASSIGNEE_PUSH": "Skicka push-aviseringar när en konversation är tilldelad till mig",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Skicka push-aviseringar när ett nytt meddelande skapas i en tilldelad konversation",
+    "CONVERSATION_MENTION": "Skicka push-meddelanden när du nämns i en konversation",
     "CONVERSATION_CREATE_EMAIL": "Skicka e-postaviseringar när en ny konversation skapas",
     "CONVERSATION_ASSIGNEE_EMAIL": "Skicka e-postaviseringar när en konversation är tilldelad till mig",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Skicka e-postaviseringar när ett nytt meddelande skapas i en tilldelad konversation"
   },
   "CONVERSATION_DETAILS": {
+    "TITLE": "Conversation Information",
     "BROWSER": "Webbläsare",
     "OPERATING_SYSTEM": "Operativsystem",
     "INITIATED_AT": "Initierad",
-    "INITIATED_FROM": "Initierad från"
+    "INITIATED_FROM": "Initierad från",
+    "IP_ADDRESS": "IP-adress"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Åtgärder"
   },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Etiketter för konversation",
+    "ADD_LABEL": "Lägg till etiketter",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Etiketten har uppdaterats"
+  },
   "AGENT": {
     "TITLE": "Välj agent"
+  },
+  "TEAMS": {
+    "TITLE": "Select Team",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Konversationsteamet har ändrats"
   },
   "ERRORS": {
     "COMMON_ERROR": "Kunde inte ansluta till Woot Server, försök igen senare",
@@ -143,5 +169,17 @@
     "SUBTITLE": "Är du säker på att du vill avsluta?",
     "CANCEL": "Avbryt",
     "OK": "Okej"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "HREF_TEXT": "24 timmars meddelandebegränsning",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "You cannot reply due to ",
+      "HREF_TEXT": "24 timmars meddelandebegränsning",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
   }
 }

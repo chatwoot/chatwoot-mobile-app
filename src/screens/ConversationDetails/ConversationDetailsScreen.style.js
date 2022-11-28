@@ -1,33 +1,51 @@
-const styles = (theme) => ({
+const styles = theme => ({
   container: {
     flex: 1,
     backgroundColor: theme['background-basic-color-1'],
   },
 
+  wrapper: {
+    paddingHorizontal: 20,
+  },
+
   avatarContainer: {
     flexDirection: 'row',
-    padding: 8,
-    justifyContent: 'center',
+    paddingVertical: 8,
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
 
   userNameContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingTop: 2,
   },
 
   descriptionContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingLeft: 16,
-    paddingRight: 16,
+    paddingVertical: 8,
+  },
+
+  description: {
+    fontSize: theme['font-size-small'],
+    color: theme['text-light-color'],
+    lineHeight: 20,
+  },
+
+  socialIconsContainer: {
+    flexDirection: 'row',
   },
 
   separationView: {
     padding: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: theme['color-border'],
+  },
+
+  separationViewLabels: {
+    padding: 6,
     borderBottomWidth: 1,
     borderBottomColor: theme['color-border'],
   },
@@ -37,18 +55,10 @@ const styles = (theme) => ({
     fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-large'],
   },
-  emailLabel: {
-    paddingTop: 8,
-    fontSize: theme['font-size-extra-small'],
-    color: theme['color-gray'],
-  },
-  description: {
-    paddingTop: 8,
-    fontSize: theme['font-size-extra-small'],
-    color: theme['color-gray'],
-  },
-  itemListView: {
-    padding: 16,
+
+  itemListViewTitle: {
+    paddingTop: 12,
+    fontWeight: theme['font-semi-bold'],
   },
 });
 

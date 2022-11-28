@@ -71,9 +71,14 @@
     "PRIVATE_MSG_INPUT": "Chỉ hiện cho nhà cung cấp",
     "UN_ASSIGN": "Bỏ phân công cuộc trò chuyện",
     "MUTE_CONVERSATION": "Tắt tiếng",
-    "UNMUTE_CONVERSATION": "Bật tiếng cuộc trò chuyện"
+    "UNMUTE_CONVERSATION": "Bật tiếng cuộc trò chuyện",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
   },
   "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "Bộ lọc Cuộc trò chuyện",
     "CHOOSE_INBOX": "Chọn Hộp thư đến",
     "CHOOSE_STATUS": "Trạng thái cuộc trò chuyện",

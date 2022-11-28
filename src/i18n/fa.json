@@ -71,9 +71,14 @@
     "PRIVATE_MSG_INPUT": "این فقط برای ایجنت ها قابل مشاهده خواهد بود",
     "UN_ASSIGN": "لغو اختصاص مکالمه",
     "MUTE_CONVERSATION": "صدای گفتگو را قطع کن",
-    "UNMUTE_CONVERSATION": "مکالمه را باصدا کنید"
+    "UNMUTE_CONVERSATION": "مکالمه را باصدا کنید",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
   },
   "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "فیلتر مکالمه",
     "CHOOSE_INBOX": "صندوق ورودی را انتخاب کنید",
     "CHOOSE_STATUS": "وضعیت مکالمه",

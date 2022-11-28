@@ -4,9 +4,9 @@ import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { ConversationEmptyItem } from '../index';
 import createStyles from './ConversationEmptyList.style';
-const LoaderData = new Array(24).fill(0);
+const LoaderData = new Array(24).fill(0).map((item, index) => index);
 
-const keyExtractor = item => item.id;
+const keyExtractor = item => item;
 
 const renderItemLoader = (item, index) => <ConversationEmptyItem key={index} />;
 

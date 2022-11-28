@@ -3,29 +3,25 @@ import { View, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { Text, Icon, Pressable } from 'components';
-import { BottomSheetModalHeader } from 'components';
 
 const createStyles = theme => {
   const { spacing, borderRadius } = theme;
   return StyleSheet.create({
+    bottomSheet: {
+      flex: 1,
+      paddingHorizontal: spacing.small,
+    },
     iconNameWrapper: {
       flexDirection: 'row',
       alignItems: 'center',
     },
-    bottomSheet: {
-      //TODO: to be removed when we use in bottom sheet
-      width: '90%',
-    },
     bottomSheetView: {
-      //TODO: to be changed to '100%' when we use in bottom sheet
-      height: 100,
-      paddingVertical: spacing.small,
       paddingBottom: spacing.large,
     },
     bottomSheetItem: {
       flexDirection: 'row',
       paddingVertical: spacing.half,
-      paddingHorizontal: spacing.small,
+      paddingHorizontal: spacing.half,
       borderBottomWidth: 0.4,
       borderRadius: borderRadius.small,
       alignItems: 'center',
@@ -47,55 +43,43 @@ const propTypes = {
   colors: PropTypes.object,
 };
 
-const ConversationFilter = ({
-  title,
-  colors,
-  activeValue,
-  leftIcon,
-  items,
-  closeFilter,
-  onChangeFilter,
-}) => {
+const ConversationFilter = ({ colors, activeValue, leftIcon, items, onChangeFilter }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
 
   return (
     <View style={styles.bottomSheet}>
-      <View>
-        <BottomSheetModalHeader title={title} closeModal={closeFilter} colors={colors} />
-        <View style={styles.bottomSheetView}>
-          {items.map(item => (
-            <Pressable
-              key={item.key}
-              style={[
-                {
-                  borderBottomColor: colors.borderLight,
-                  backgroundColor:
-                    activeValue === item.key ? colors.primaryColorLight : colors.white,
-                },
-                styles.bottomSheetItem,
-              ]}
-              onPress={() => {
-                onChangeFilter(item);
-              }}>
-              <View style={styles.iconNameWrapper}>
-                {leftIcon && (
-                  <View style={styles.iconWrapper}>
-                    <Icon icon={leftIcon} color={colors.text} size={16} />
-                  </View>
-                )}
-                <Text sm medium color={colors.text}>
-                  {item.name}
-                </Text>
-              </View>
-              <View>
-                {activeValue === item.key && (
-                  <Icon icon="checkmark-outline" color={colors.textDark} size={16} />
-                )}
-              </View>
-            </Pressable>
-          ))}
-        </View>
+      <View style={styles.bottomSheetView}>
+        {items.map(item => (
+          <Pressable
+            key={item.key}
+            style={[
+              {
+                borderBottomColor: colors.borderLight,
+                backgroundColor: activeValue === item.key ? colors.primaryColorLight : colors.white,
+              },
+              styles.bottomSheetItem,
+            ]}
+            onPress={() => {
+              onChangeFilter(item);
+            }}>
+            <View style={styles.iconNameWrapper}>
+              {leftIcon && (
+                <View style={styles.iconWrapper}>
+                  <Icon icon={leftIcon} color={colors.text} size={16} />
+                </View>
+              )}
+              <Text sm medium color={colors.text}>
+                {item.name}
+              </Text>
+            </View>
+            <View>
+              {activeValue === item.key && (
+                <Icon icon="checkmark-outline" color={colors.textDark} size={16} />
+              )}
+            </View>
+          </Pressable>
+        ))}
       </View>
     </View>
   );

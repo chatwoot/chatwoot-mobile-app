@@ -6,7 +6,7 @@ export const palette = {
   backgroundDark: '#E4EBF1',
 
   primaryColor: '#1F93FF',
-  primaryColorLight: '#C2E1FF',
+  primaryColorLight: '#EBF5FF',
 
   secondaryColor: '#5d7592',
   successColor: '#44CE4B',

@@ -1,5 +1,5 @@
 import { createSlice, createEntityAdapter, createDraftSafeSelector } from '@reduxjs/toolkit';
-import API from '../helpers/APIHelper';
+import API from 'helpers/APIHelper';
 
 const cannedResponseAdapter = createEntityAdapter();
 

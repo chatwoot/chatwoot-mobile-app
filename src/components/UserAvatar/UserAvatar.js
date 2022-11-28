@@ -9,8 +9,7 @@ import { getUserInitial } from 'helpers';
 
 import { PRESENCE_STATUS_COLORS } from 'constants';
 import { GRAVATAR_URL } from 'constants/url';
-
-import { getInboxBadgeImages } from 'helpers/inbox';
+import { getInboxBadgeImages } from 'helpers/inboxHelpers';
 
 const createStyles = theme => {
   const { colors } = theme;
@@ -166,7 +165,7 @@ const UserAvatar = ({
             borderRadius: size,
           },
         ]}>
-        <Text bold color={colors.avatarColor} style={{ fontSize: fontSize }}>
+        <Text bold color={colors.primaryColor} style={{ fontSize: fontSize }}>
           {getUserInitial({ userName })}
         </Text>
       </LinearGradient>

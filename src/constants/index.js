@@ -2,6 +2,44 @@ import images from './images';
 
 export const MAXIMUM_FILE_UPLOAD_SIZE = 40;
 
+export const CONVERSATION_STATUSES = [
+  {
+    key: 'open',
+    name: 'Open',
+  },
+  {
+    key: 'resolved',
+    name: 'Resolved',
+  },
+  {
+    key: 'pending',
+    name: 'Pending',
+  },
+  {
+    key: 'snoozed',
+    name: 'Snoozed',
+  },
+  {
+    key: 'all',
+    name: 'All',
+  },
+];
+
+export const ASSIGNEE_TYPES = [
+  {
+    key: 'mine',
+    name: 'Mine',
+  },
+  {
+    key: 'unassigned',
+    name: 'Unassigned',
+  },
+  {
+    key: 'all',
+    name: 'All',
+  },
+];
+
 export const CONVERSATION_STATUS = {
   OPEN: 'open',
   RESOLVED: 'resolved',
@@ -15,6 +53,7 @@ export const MESSAGE_TYPES = {
   INCOMING: 0,
   OUTGOING: 1,
   ACTIVITY: 2,
+  TEMPLATE: 3,
 };
 
 export const MESSAGE_STATUS = {

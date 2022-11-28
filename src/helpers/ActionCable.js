@@ -1,15 +1,18 @@
 import BaseActionCableConnector from './BaseActionCableConnector';
 
 import {
-  addOrUpdateConversation,
-  addMessageToConversation,
+  addMessage,
+  addConversation,
+  updateConversation,
+  updateContactsPresence,
+} from 'reducer/conversationSlice';
+
+import conversationActions from 'reducer/conversationSlice.action';
+import {
   addUserTypingToConversation,
   removeUserFromTypingConversation,
-  addOrUpdateActiveContacts,
 } from '../actions/conversation';
-
 import { addOrUpdateActiveUsers } from '../actions/auth';
-
 import { store } from '../store';
 
 class ActionCableConnector extends BaseActionCableConnector {
@@ -17,27 +20,71 @@ class ActionCableConnector extends BaseActionCableConnector {
     super(pubsubToken, webSocketUrl, accountId, userId);
     this.CancelTyping = [];
     this.events = {
-      'conversation.opened': this.onConversationStatusChange,
-      'conversation.resolved': this.onConversationStatusChange,
       'message.created': this.onMessageCreated,
+      'message.updated': this.onMessageUpdated,
       'conversation.created': this.onConversationCreated,
+      'conversation.status_changed': this.onStatusChange,
+      'assignee.changed': this.onAssigneeChanged,
+      'conversation.read': this.onConversationRead,
+      'presence.update': this.onPresenceUpdate,
       'conversation.typing_on': this.onTypingOn,
       'conversation.typing_off': this.onTypingOff,
-      'presence.update': this.onPresenceUpdate,
+      // TODO: Handle all these events
+      //   'conversation.contact_changed': this.onConversationContactChange,
+      //   'contact.deleted': this.onContactDelete,
+      //   'contact.updated': this.onContactUpdate,
+      //   'conversation.mentioned': this.onConversationMentioned,
+      //   'notification.created': this.onNotificationCreated,
+      //   'first.reply.created': this.onFirstReplyCreated,
     };
   }
 
-  onConversationStatusChange = () => {};
-
-  onConversationCreated = conversation => {
-    store.dispatch(addOrUpdateConversation({ conversation }));
+  onMessageCreated = message => {
+    store.dispatch(addMessage(message));
   };
 
-  onMessageCreated = message => {
-    store.dispatch(addMessageToConversation({ message }));
+  onMessageUpdated = data => {
+    store.dispatch(addMessage(data));
+  };
+
+  onConversationCreated = data => {
+    store.dispatch(addConversation(data));
+    store.dispatch(conversationActions.fetchConversationStats({}));
+  };
+
+  onStatusChange = data => {
+    store.dispatch(updateConversation(data));
+  };
+
+  onAssigneeChanged = data => {
+    const { id } = data;
+    if (id) {
+      store.dispatch(updateConversation(data));
+    }
+    store.dispatch(conversationActions.fetchConversationStats({}));
+  };
+
+  onConversationRead = data => {
+    store.dispatch(updateConversation(data));
+  };
+
+  onPresenceUpdate = ({ contacts, users }) => {
+    //TODO: Move this to agentSlice and authSlice
+    store.dispatch(
+      addOrUpdateActiveUsers({
+        users,
+      }),
+    );
+
+    store.dispatch(
+      updateContactsPresence({
+        contacts,
+      }),
+    );
   };
 
   onTypingOn = ({ conversation, user }) => {
+    //TODO: Move this to typingSlice
     const conversationId = conversation.id;
 
     this.clearTimer(conversationId);
@@ -51,6 +98,7 @@ class ActionCableConnector extends BaseActionCableConnector {
   };
 
   onTypingOff = ({ conversation, user }) => {
+    //TODO: Move this to typingSlice
     const conversationId = conversation.id;
 
     this.clearTimer(conversationId);
@@ -79,24 +127,6 @@ class ActionCableConnector extends BaseActionCableConnector {
       this.CancelTyping[conversationId] = null;
     }
   };
-  onPresenceUpdate = ({ contacts, users }) => {
-    store.dispatch(
-      addOrUpdateActiveContacts({
-        contacts,
-      }),
-    );
-    store.dispatch(
-      addOrUpdateActiveUsers({
-        users,
-      }),
-    );
-  };
-
-  onAssigneeChanged = payload => {};
-
-  onStatusChange = data => {};
-
-  handleReceived = data => {};
 }
 
 export default {

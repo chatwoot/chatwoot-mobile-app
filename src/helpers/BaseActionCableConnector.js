@@ -3,7 +3,7 @@ import { ActionCable, Cable } from '@kesha-antonov/react-native-action-cable';
 const cable = new Cable({});
 
 const channelName = 'RoomChannel';
-const PRESENCE_INTERVAL = 60000;
+const PRESENCE_INTERVAL = 20000;
 
 class BaseActionCableConnector {
   constructor(pubSubToken, webSocketUrl, accountId, userId) {
@@ -26,9 +26,14 @@ class BaseActionCableConnector {
       ),
     );
     channel.on('received', this.onReceived);
+    channel.on('connected', this.handleConnected);
+    channel.on('disconnect', this.handleDisconnected);
     this.events = {};
     this.accountId = accountId;
-    this.isAValidEvent = () => true;
+    this.isAValidEvent = data => {
+      const { account_id } = data;
+      return this.accountId === account_id;
+    };
     setInterval(() => {
       cable.channel(channelName).perform('update_presence');
     }, PRESENCE_INTERVAL);
@@ -37,13 +42,16 @@ class BaseActionCableConnector {
   onReceived = ({ event, data } = {}) => {
     if (this.isAValidEvent(data)) {
       if (this.events[event] && typeof this.events[event] === 'function') {
-        const { account_id } = data;
-        // Check account in incoming data  is matching to currently using account
-        if (this.accountId === account_id) {
-          this.events[event](data);
-        }
+        this.events[event](data);
       }
     }
+  };
+  handleConnected = () => {
+    // console.log('Connected to ActionCable');
+  };
+  // TODO: handle disconnected
+  handleDisconnected = () => {
+    // console.log('Disconnected from ActionCable');
   };
 }
 

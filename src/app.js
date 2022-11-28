@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
-import { Alert, BackHandler, Platform, StatusBar } from 'react-native';
+import { Alert, BackHandler, Platform, StatusBar, StyleSheet } from 'react-native';
 import BackgroundColor from 'react-native-background-color';
-
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import SplashScreen from 'react-native-splash-screen';
 import { PersistGate } from 'redux-persist/integration/react';
 import * as eva from '@eva-design/eva';
@@ -15,6 +15,12 @@ import { theme } from './theme';
 import Router from './router';
 import { store, persistor } from './store';
 import i18n from './i18n';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 const Chatwoot = () => {
   useEffect(() => {
@@ -49,18 +55,20 @@ const Chatwoot = () => {
   };
 
   return (
-    <React.Fragment>
-      <StatusBar barStyle="dark-content" />
-      <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={theme}>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <NoNetworkBar />
-            <Router />
-          </PersistGate>
-        </Provider>
-      </ApplicationProvider>
-    </React.Fragment>
+    <GestureHandlerRootView style={styles.container}>
+      <React.Fragment>
+        <StatusBar barStyle="dark-content" />
+        <IconRegistry icons={EvaIconsPack} />
+        <ApplicationProvider {...eva} theme={theme}>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <NoNetworkBar />
+              <Router />
+            </PersistGate>
+          </Provider>
+        </ApplicationProvider>
+      </React.Fragment>
+    </GestureHandlerRootView>
   );
 };
 export default Sentry.wrap(Chatwoot);

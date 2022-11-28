@@ -320,29 +320,31 @@ export const getConversationDetails =
 // Send message
 export const sendMessage = payload => async dispatch => {
   const { conversationId, message, isPrivate = false, file } = payload;
-
   dispatch({ type: SEND_MESSAGE });
   try {
-    const formData = new FormData();
+    let formData;
     if (file) {
+      formData = new FormData();
+      if (message) {
+        formData.append('content', message.content);
+      }
       formData.append('attachments[]', {
         uri: file.uri,
         name: file.fileName,
         type: file.type,
       });
+      formData.append('private', isPrivate);
+      formData.append('cc_emails', message.cc_emails);
+      formData.append('bcc_emails', message.bcc_emails);
+    } else {
+      formData = {
+        content: message.content,
+        private: isPrivate,
+        cc_emails: message.cc_emails,
+        bcc_emails: message.bcc_emails,
+      };
     }
-    if (message) {
-      if (message.content) {
-        formData.append('content', message.content);
-      }
-      if (message.cc_emails) {
-        formData.append('cc_emails', message.cc_emails);
-      }
-      if (message.bcc_emails) {
-        formData.append('bcc_emails', message.bcc_emails);
-      }
-    }
-    formData.append('private', isPrivate);
+
     const apiUrl = `conversations/${conversationId}/messages`;
     const response = await axios.post(apiUrl, formData);
     dispatch({

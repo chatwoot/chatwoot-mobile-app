@@ -34,7 +34,7 @@ const createStyles = theme => {
       marginRight: spacing.micro,
     },
     arrowDownIcon: {
-      marginLeft: spacing.smaller,
+      marginLeft: spacing.micro,
     },
   });
 };

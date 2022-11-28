@@ -4,16 +4,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { clearAllDeliveredNotifications } from 'helpers/PushHelper';
 import { useSelector, useDispatch } from 'react-redux';
 import { View, ScrollView } from 'react-native';
-import { BottomSheetModal, BottomSheetScrollView, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { getInboxIconByType } from 'helpers/inbox';
+import { getInboxIconByType } from 'helpers/inboxHelpers';
 import { getInboxes } from 'actions/inbox';
 import { getAgents } from 'actions/agent';
 import ActionCable from 'helpers/ActionCable';
 import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
 import {
-  actions as conversationActions,
   selectConversationStatus,
   selectAssigneeType,
   selectActiveInbox,
@@ -22,13 +21,13 @@ import {
   clearAllConversations,
   setActiveInbox,
 } from 'reducer/conversationSlice';
+import conversationActions from 'reducer/conversationSlice.action';
 import { saveDeviceDetails } from 'actions/notification';
 import { getInstalledVersion } from 'actions/settings';
 import createStyles from './ConversationScreen.style';
 import { identifyUser } from 'helpers/Analytics';
 import i18n from 'i18n';
-import Header from 'components/Header/Header';
-import { FilterButton, ClearFilterButton } from 'components';
+import { FilterButton, ClearFilterButton, Header } from 'components';
 import { ConversationList, ConversationFilter, ConversationInboxFilter } from './components';
 import { CONVERSATION_STATUSES, ASSIGNEE_TYPES } from 'constants';
 
@@ -43,15 +42,14 @@ const ConversationScreen = () => {
   const webSocketUrl = useSelector(state => state.settings.webSocketUrl);
   const isLoading = useSelector(state => state.conversations.loading);
   const inboxes = useSelector(state => state.inbox.data);
-
   const [pageNumber, setPage] = useState(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    clearAllDeliveredNotifications();
     initActionCable();
-    dispatch(getInstalledVersion());
     dispatch(getInboxes());
+    clearAllDeliveredNotifications();
+    dispatch(getInstalledVersion());
     dispatch(getAgents());
     dispatch(saveDeviceDetails());
     storeUser();
@@ -100,20 +98,6 @@ const ConversationScreen = () => {
     [dispatch],
   );
 
-  // Filter by assignee type
-  const renderBackdrop = useCallback(
-    props => (
-      <BottomSheetBackdrop
-        {...props}
-        enableTouchThrough={false}
-        pressBehavior={'close'}
-        opacity={0.6}
-        disappearsOnIndex={0} // this should be changed to -1 when the memory leak bug is fixed
-      />
-    ),
-    [],
-  );
-
   const clearAppliedFilters = async () => {
     await dispatch(clearAllConversations());
     await dispatch(setConversationStatus('open'));
@@ -121,43 +105,6 @@ const ConversationScreen = () => {
     await dispatch(setActiveInbox(0));
     setPage(1);
   };
-
-  // Filter by assignee type
-  const conversationAssigneeModal = useRef(null);
-  const conversationFilterModalSnapPoints = useMemo(() => ['20%', '40%', '60%'], []);
-  const toggleConversationAssigneeModal = useCallback(() => {
-    conversationAssigneeModal.current.present() || conversationAssigneeModal.current?.close();
-  }, []);
-  const closeConversationAssigneeModal = useCallback(() => {
-    conversationAssigneeModal.current?.close();
-  }, []);
-
-  // Filter by conversation status
-  const conversationStatusModal = useRef(null);
-  const toggleConversationStatusModal = useCallback(() => {
-    conversationStatusModal.current.present() || conversationStatusModal.current?.close();
-  }, []);
-  const closeConversationStatusModal = useCallback(() => {
-    conversationStatusModal.current?.close();
-  }, []);
-
-  // Filter by inbox
-  const inboxFilterModal = useRef(null);
-  const inboxFilterModalSnapPoints = useMemo(() => ['40%', '80%', '92%'], []);
-  const toggleInboxFilterModal = useCallback(() => {
-    inboxFilterModal.current.present() || inboxFilterModal.current?.close();
-  }, []);
-  const closeInboxFilterModal = useCallback(() => {
-    inboxFilterModal.current?.close();
-  }, []);
-
-  const hasActiveFilters =
-    conversationStatus !== 'open' || assigneeType !== 'mine' || activeInboxId !== 0;
-
-  const filtersCount =
-    Number(conversationStatus !== 'open') +
-    Number(assigneeType !== 'mine') +
-    Number(activeInboxId !== 0);
 
   const onSelectAssigneeType = async item => {
     await dispatch(setAssigneeType(item.key));
@@ -189,6 +136,45 @@ const ConversationScreen = () => {
     }, [closeConversationAssigneeModal, closeConversationStatusModal, closeInboxFilterModal]),
   );
 
+  // Conversation filter modal
+  const conversationFilterModalSnapPoints = useMemo(() => ['40%', '60%', '60%'], []);
+
+  // Filter by assignee type
+  const conversationAssigneeModal = useRef(null);
+  const toggleConversationAssigneeModal = useCallback(() => {
+    conversationAssigneeModal.current.present() || conversationAssigneeModal.current?.close();
+  }, []);
+  const closeConversationAssigneeModal = useCallback(() => {
+    conversationAssigneeModal.current?.close();
+  }, []);
+
+  // Filter by conversation status
+  const conversationStatusModal = useRef(null);
+  const toggleConversationStatusModal = useCallback(() => {
+    conversationStatusModal.current.present() || conversationStatusModal.current?.close();
+  }, []);
+  const closeConversationStatusModal = useCallback(() => {
+    conversationStatusModal.current?.close();
+  }, []);
+
+  // Inbox filter modal
+  const inboxFilterModal = useRef(null);
+  const inboxFilterModalSnapPoints = useMemo(() => ['40%', '80%', '92%'], []);
+  const toggleInboxFilterModal = useCallback(() => {
+    inboxFilterModal.current.present() || inboxFilterModal.current?.close();
+  }, []);
+  const closeInboxFilterModal = useCallback(() => {
+    inboxFilterModal.current?.close();
+  }, []);
+
+  const hasActiveFilters =
+    conversationStatus !== 'open' || assigneeType !== 'mine' || activeInboxId !== 0;
+
+  const filtersCount =
+    Number(conversationStatus !== 'open') +
+    Number(assigneeType !== 'mine') +
+    Number(activeInboxId !== 0);
+
   const activeInboxDetails = inboxes.find(inbox => inbox.id === activeInboxId);
   const iconNameByInboxType = () => {
     if (!activeInboxId) {
@@ -202,7 +188,9 @@ const ConversationScreen = () => {
   };
 
   const inboxName =
-    activeInboxDetails?.name === 'All' ? 'All Inboxes' : activeInboxDetails?.name || 'All Inboxes';
+    activeInboxDetails?.name === 'All'
+      ? i18n.t('FILTER.ALL_INBOXES')
+      : activeInboxDetails?.name || i18n.t('FILTER.ALL_INBOXES');
 
   const headerText = isLoading
     ? i18n.t('CONVERSATION.UPDATING')
@@ -210,7 +198,7 @@ const ConversationScreen = () => {
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
-      <Header headerText={headerText} />
+      <Header headerText={headerText} loading={isLoading} />
       <View style={styles.filterContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {hasActiveFilters && (
@@ -239,68 +227,48 @@ const ConversationScreen = () => {
           />
         </ScrollView>
         <BottomSheetModal
-          ref={conversationAssigneeModal}
-          index={1}
-          snapPoints={conversationFilterModalSnapPoints}
-          backdropComponent={renderBackdrop}
-          enablePanDownToClose={true}
-          backgroundStyle={{ backgroundColor: colors.background }}
-          handleIndicatorStyle={{ backgroundColor: colors.secondaryColor }}
-          style={styles.bottomSheet}>
-          <BottomSheetScrollView>
+          bottomSheetModalRef={conversationAssigneeModal}
+          initialSnapPoints={conversationFilterModalSnapPoints}
+          headerTitle={i18n.t('FILTER.FILTER_BY_ASSIGNEE_TYPE')}
+          closeFilter={closeConversationAssigneeModal}
+          children={
             <ConversationFilter
-              title="Filter by Assignee type"
-              closeFilter={closeConversationAssigneeModal}
               activeValue={assigneeType}
               items={ASSIGNEE_TYPES}
               onChangeFilter={onSelectAssigneeType}
               colors={colors}
             />
-          </BottomSheetScrollView>
-        </BottomSheetModal>
-
+          }
+        />
         <BottomSheetModal
-          ref={conversationStatusModal}
-          index={1}
-          snapPoints={conversationFilterModalSnapPoints}
-          backdropComponent={renderBackdrop}
-          backgroundStyle={{ backgroundColor: colors.background }}
-          enablePanDownToClose={true}
-          handleIndicatorStyle={{ backgroundColor: colors.secondaryColor }}
-          style={styles.bottomSheet}>
-          <BottomSheetScrollView>
+          bottomSheetModalRef={conversationStatusModal}
+          initialSnapPoints={conversationFilterModalSnapPoints}
+          headerTitle={i18n.t('FILTER.FILTER_BY_CONVERSATION_STATUS')}
+          closeFilter={closeConversationStatusModal}
+          children={
             <ConversationFilter
-              title="Filter by Conversation status"
-              closeFilter={closeConversationStatusModal}
               activeValue={conversationStatus}
               items={CONVERSATION_STATUSES}
               onChangeFilter={onSelectConversationStatus}
               colors={colors}
             />
-          </BottomSheetScrollView>
-        </BottomSheetModal>
-
+          }
+        />
         <BottomSheetModal
-          ref={inboxFilterModal}
-          index={1}
-          snapPoints={inboxFilterModalSnapPoints}
-          backdropComponent={renderBackdrop}
-          backgroundStyle={{ backgroundColor: colors.background }}
-          handleIndicatorStyle={{ backgroundColor: colors.secondaryColor }}
-          enablePanDownToClose={true}
-          style={styles.bottomSheet}>
-          <BottomSheetScrollView>
+          bottomSheetModalRef={inboxFilterModal}
+          initialSnapPoints={inboxFilterModalSnapPoints}
+          headerTitle={i18n.t('FILTER.FILTER_BY_INBOX')}
+          closeFilter={closeInboxFilterModal}
+          children={
             <ConversationInboxFilter
-              title="Filter by Inbox"
-              closeFilter={closeInboxFilterModal}
               activeValue={activeInboxId}
               hasLeftIcon={true}
               items={inboxes}
               onChangeFilter={onChangeInbox}
               colors={colors}
             />
-          </BottomSheetScrollView>
-        </BottomSheetModal>
+          }
+        />
       </View>
       <View style={styles.container}>
         <ConversationList

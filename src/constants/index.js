@@ -40,7 +40,6 @@ export const ASSIGNEE_TYPES = [
   },
 ];
 
-//TODO: Remove this later
 export const CONVERSATION_STATUS = {
   OPEN: 'open',
   RESOLVED: 'resolved',
@@ -54,6 +53,7 @@ export const MESSAGE_TYPES = {
   INCOMING: 0,
   OUTGOING: 1,
   ACTIVITY: 2,
+  TEMPLATE: 3,
 };
 
 export const MESSAGE_STATUS = {
@@ -63,7 +63,6 @@ export const MESSAGE_STATUS = {
   FAILED: 3,
 };
 
-//TODO: Remove this later
 export const ASSIGNEE_TYPE = {
   ME: 'me',
   UN_ASSIGNED: 'unassigned',

@@ -1,12 +1,10 @@
 import React, { useMemo } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
-import { useTheme } from '@react-navigation/native';
-import Icon from 'components/Icon/Icon';
-import Text from 'components/Text/Text';
-import Pressable from 'components/Pressable/Pressable';
-
 import { StyleSheet } from 'react-native';
+import { useTheme } from '@react-navigation/native';
+
+import { Icon, Text, Pressable } from 'components';
 
 const createStyles = theme => {
   const { spacing, colors } = theme;

@@ -1,76 +1,11 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  createEntityAdapter,
-  createDraftSafeSelector,
-} from '@reduxjs/toolkit';
-import axios from 'helpers/APIHelper';
-import { applyFilters } from 'helpers/conversationHelpers';
+import { createSlice, createEntityAdapter, createDraftSafeSelector } from '@reduxjs/toolkit';
+const lodashFilter = require('lodash.filter');
+import actions from './conversationSlice.action';
+import { applyFilters, findPendingMessageIndex } from 'helpers/conversationHelpers';
 
 export const conversationAdapter = createEntityAdapter({
   selectId: conversation => conversation.id,
 });
-
-export const actions = {
-  fetchConversations: createAsyncThunk(
-    'conversations/fetchConversations',
-    async (
-      { pageNumber = 1, assigneeType = 'mine', conversationStatus = 'open', inboxId = 0 },
-      { rejectWithValue },
-    ) => {
-      try {
-        const params = {
-          inbox_id: inboxId || null,
-          assignee_type: assigneeType === 'mine' ? 'me' : assigneeType,
-          status: conversationStatus,
-          page: pageNumber,
-        };
-        const response = await axios.get('conversations', {
-          params,
-        });
-        const {
-          data: { meta, payload },
-        } = response.data;
-        return {
-          conversations: payload,
-          meta,
-        };
-      } catch (error) {
-        if (!error.response) {
-          throw error;
-        }
-        return rejectWithValue(error.response.data);
-      }
-    },
-  ),
-  fetchConversationStats: createAsyncThunk(
-    'conversations/fetchConversationStats',
-    async (_, { getState }) => {
-      try {
-        const {
-          conversations: { currentInbox, assigneeType, conversationStatus },
-        } = getState();
-        // TODO: Move to helpers since this is used in multiple places
-        const params = {
-          inbox_id: currentInbox || null,
-          assignee_type: assigneeType === 'mine' ? 'me' : assigneeType,
-          status: conversationStatus,
-        };
-        const response = await axios.get('conversations/meta', {
-          params,
-        });
-        const {
-          data: { meta },
-        } = response;
-        return { meta };
-      } catch (error) {
-        if (!error.response) {
-          throw error;
-        }
-      }
-    },
-  ),
-};
 
 const conversationSlice = createSlice({
   name: 'conversations',
@@ -121,6 +56,38 @@ const conversationSlice = createSlice({
         conversationAdapter.addOne(state, conversation);
       }
     },
+    addMessage: (state, action) => {
+      const message = action.payload;
+
+      const { conversation_id: conversationId } = message;
+      if (!conversationId) {
+        return;
+      }
+      const conversation = state.entities[conversationId];
+      // If the conversation is not present in the store, we don't need to add the message
+      if (!conversation) {
+        return;
+      }
+      const pendingMessageIndex = findPendingMessageIndex(conversation, message);
+      if (pendingMessageIndex !== -1) {
+        conversation.messages[pendingMessageIndex] = message;
+      } else {
+        conversation.messages.push(message);
+        conversation.timestamp = message.created_at;
+      }
+    },
+    updateContactsPresence: (state, action) => {
+      const { contacts } = action.payload;
+      const allConversations = state.entities;
+      Object.keys(contacts).forEach(contactId => {
+        let filteredConversations = lodashFilter(allConversations, {
+          meta: { sender: { id: parseInt(contactId) } },
+        });
+        filteredConversations.forEach(item => {
+          state.entities[item.id].meta.sender.availability_status = contacts[contactId];
+        });
+      });
+    },
   },
   extraReducers: {
     [actions.fetchConversations.pending]: state => {
@@ -137,6 +104,34 @@ const conversationSlice = createSlice({
     },
     [actions.fetchConversationStats.fulfilled]: (state, { payload }) => {
       state.meta = payload.meta;
+    },
+    [actions.fetchConversation.pending]: state => {
+      state.isAllMessagesFetched = false;
+    },
+    [actions.fetchConversation.fulfilled]: (state, { payload }) => {
+      conversationAdapter.upsertOne(state, payload);
+    },
+    [actions.fetchPreviousMessages.pending]: state => {
+      state.loadingMessages = true;
+      state.isAllMessagesFetched = false;
+    },
+    [actions.fetchPreviousMessages.fulfilled]: (state, { payload }) => {
+      const { data, conversationId } = payload;
+      const conversation = state.entities[conversationId];
+      conversation.messages.unshift(...data);
+      state.loadingMessages = false;
+      state.isAllMessagesFetched = data.length < 20;
+    },
+    [actions.fetchPreviousMessages.rejected]: state => {
+      state.loadingMessages = false;
+    },
+    [actions.markMessagesAsRead.fulfilled]: (state, { payload }) => {
+      const { id, lastSeen } = payload;
+      const conversation = state.entities[id];
+      if (!conversation) {
+        return;
+      }
+      conversation.agent_last_seen_at = lastSeen;
     },
   },
 });
@@ -180,9 +175,32 @@ export const selectors = {
       });
     },
   ),
+  getMessagesByConversationId: createDraftSafeSelector(
+    [conversationSelector.selectEntities, (_, conversationId) => conversationId],
+    (conversations, conversationId) => {
+      const conversation = conversations[conversationId];
+      if (!conversation) {
+        return [];
+      }
+      return conversation.messages;
+    },
+  ),
+  getConversationById: createDraftSafeSelector(
+    [conversationSelector.selectEntities, (_, conversationId) => conversationId],
+    (conversations, conversationId) => {
+      return conversations[conversationId];
+    },
+  ),
 };
-
-export const { clearAllConversations, setConversationStatus, setAssigneeType, setActiveInbox } =
-  conversationSlice.actions;
+export const {
+  clearAllConversations,
+  setConversationStatus,
+  setAssigneeType,
+  setActiveInbox,
+  addConversation,
+  addMessage,
+  updateConversation,
+  updateContactsPresence,
+} = conversationSlice.actions;
 
 export default conversationSlice.reducer;

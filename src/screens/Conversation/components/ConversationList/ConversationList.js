@@ -2,20 +2,18 @@ import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, View } from 'react-native';
-
 import { Text } from 'components';
 import {
   selectors as conversationSelectors,
   selectAllConversationFetched,
   selectConversationMeta,
 } from 'reducer/conversationSlice';
-import { loadInitialMessage, setConversation } from 'actions/conversation';
 import ConversationEmptyList from '../ConversationEmptyList/ConversationEmptyList';
 import ConversationItem from '../ConversationItem/ConversationItem';
-import { ConversationEmptyMessage } from '../index';
+import ConversationEmptyMessage from '../ConversationEmptyMessage/ConversationEmptyMessage';
 import i18n from 'i18n';
 import createStyles from './ConversationList.style';
 
@@ -42,13 +40,13 @@ const ConversationList = ({
   onChangePageNumber,
   refreshConversations,
 }) => {
-  const dispatch = useDispatch();
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
   const [refreshing, setRefreshing] = useState(false);
   const userId = useSelector(store => store.auth.user.id);
   const navigation = useNavigation();
+  const conversationTypingUsers = useSelector(state => state.conversation.conversationTypingUsers);
 
   const filters = {
     assigneeType,
@@ -106,18 +104,8 @@ const ConversationList = ({
   };
 
   const onSelectConversation = conversation => {
-    // TODO: Change this once the chat screen is ready
-    // const { id } = conversation;
-    // navigation.navigate('Chat', { conversationId: id });
-    const { messages, meta } = conversation;
-    const conversationId = conversation.id;
-    dispatch(setConversation({ conversationId }));
-    dispatch(loadInitialMessage({ messages }));
-    navigation.navigate('ChatScreen', {
-      conversationId,
-      meta,
-      messages,
-    });
+    const { id } = conversation;
+    navigation.navigate('ChatScreen', { conversationId: id });
   };
 
   const isLoading = useSelector(state => state.conversations.loading);
@@ -139,7 +127,11 @@ const ConversationList = ({
         keyExtractor={keyExtractor}
         data={allConversations}
         renderItem={({ item }) => (
-          <ConversationItem item={item} onPress={() => onSelectConversation(item)} />
+          <ConversationItem
+            item={item}
+            conversationTypingUsers={conversationTypingUsers}
+            onPress={() => onSelectConversation(item)}
+          />
         )}
         estimatedItemSize={20}
         contentInsetAdjustmentBehavior="automatic"

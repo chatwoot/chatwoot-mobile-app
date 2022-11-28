@@ -3,6 +3,8 @@ import { screen } from '@testing-library/react-native';
 import { render } from 'tests';
 import FilterButton from './FilterButton';
 
+jest.mock('react-native-linear-gradient', () => 'LinearGradient');
+
 describe('FilterButton', () => {
   it('should render without active view', () => {
     render(<FilterButton label="Inbox" />);

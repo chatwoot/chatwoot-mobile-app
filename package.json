@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "1.6.18",
+  "version": "1.6.24",
   "private": true,
   "scripts": {
     "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",
@@ -34,7 +34,7 @@
     }
   },
   "dependencies": {
-    "@chatwoot/react-native-widget": "^0.0.7",
+    "@chatwoot/react-native-widget": "^0.0.8",
     "@eva-design/eva": "^2.0.0",
     "@gorhom/bottom-sheet": "^4.4.5",
     "@kesha-antonov/react-native-action-cable": "^1.1.0",

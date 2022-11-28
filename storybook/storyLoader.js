@@ -4,7 +4,7 @@
 // https://github.com/elderfo/react-native-storybook-loader.git
 
 function loadStories() {
-  require('../src/components/BottomSheetHeader/BottomSheetHeader.stories');
+  require('../src/components/BottomSheet/BottomSheetHeader.stories');
   require('../src/components/Empty/Empty.stories');
   require('../src/components/FilterButton/FilterButton.stories');
   require('../src/components/Header/Header.stories');
@@ -16,12 +16,11 @@ function loadStories() {
   require('../src/screens/Conversation/components/ConversationEmptyList/ConversationEmptyList.stories');
   require('../src/screens/Conversation/components/ConversationFilter/ConversationFilter.stories');
   require('../src/screens/Conversation/components/ConversationFilter/ConversationInboxFilter.stories');
-  require('../src/components/BottomSheetHeader/BottomSheetHeader.stories');
   require('../src/components/UserAvatar/UserAvatar.stories');
 }
 
 const stories = [
-  '../src/components/BottomSheetHeader/BottomSheetHeader.stories',
+  '../src/components/BottomSheet/BottomSheetHeader.stories',
   '../src/components/Empty/Empty.stories',
   '../src/components/FilterButton/FilterButton.stories',
   '../src/components/Header/Header.stories',
@@ -33,7 +32,6 @@ const stories = [
   '../src/screens/Conversation/components/ConversationEmptyList/ConversationEmptyList.stories',
   '../src/screens/Conversation/components/ConversationFilter/ConversationFilter.stories',
   '../src/screens/Conversation/components/ConversationFilter/ConversationInboxFilter.stories',
-  '../src/components/BottomSheetHeader/BottomSheetHeader.stories',
   '../src/components/UserAvatar/UserAvatar.stories',
 ];
 

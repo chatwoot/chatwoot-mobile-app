@@ -71,9 +71,14 @@
     "PRIVATE_MSG_INPUT": "이건 에이전트에게만 보일것입니다",
     "UN_ASSIGN": "대화에서 제외시키기",
     "MUTE_CONVERSATION": "대화 음소거하기",
-    "UNMUTE_CONVERSATION": "대화 음소거 해제하기"
+    "UNMUTE_CONVERSATION": "대화 음소거 해제하기",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
   },
   "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "대화 필터",
     "CHOOSE_INBOX": "받은 편지함 선택하기",
     "CHOOSE_STATUS": "대화 상태",

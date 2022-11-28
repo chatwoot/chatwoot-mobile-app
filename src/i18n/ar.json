@@ -71,9 +71,14 @@
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation",
     "MUTE_CONVERSATION": "كتم المحادثة",
-    "UNMUTE_CONVERSATION": "إلغاء كتم المحادثة"
+    "UNMUTE_CONVERSATION": "إلغاء كتم المحادثة",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
   },
   "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "تصفية المحادثات",
     "CHOOSE_INBOX": "اختر صندوق الوارد",
     "CHOOSE_STATUS": "حالة المحادثة",

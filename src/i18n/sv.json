@@ -71,9 +71,14 @@
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "UN_ASSIGN": "Unassign conversation",
     "MUTE_CONVERSATION": "Mute conversation",
-    "UNMUTE_CONVERSATION": "Unmute conversation"
+    "UNMUTE_CONVERSATION": "Unmute conversation",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
   },
   "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "Konversationsfilter",
     "CHOOSE_INBOX": "Välj inkorg",
     "CHOOSE_STATUS": "Konversationsstatus",

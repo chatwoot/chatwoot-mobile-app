@@ -71,9 +71,14 @@
     "PRIVATE_MSG_INPUT": "Isto será visível apenas para Agentes",
     "UN_ASSIGN": "Desassociar conversa",
     "MUTE_CONVERSATION": "Silenciar conversa",
-    "UNMUTE_CONVERSATION": "Não silenciar conversa"
+    "UNMUTE_CONVERSATION": "Não silenciar conversa",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
   },
   "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "Filtro da Conversa",
     "CHOOSE_INBOX": "Selecionar Caixa de Entrada",
     "CHOOSE_STATUS": "Status da conversa",

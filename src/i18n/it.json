@@ -71,9 +71,14 @@
     "PRIVATE_MSG_INPUT": "Questo sarà visibile solo agli agenti",
     "UN_ASSIGN": "Annulla l'assegnazione della conversazione",
     "MUTE_CONVERSATION": "Silenzia conversazione",
-    "UNMUTE_CONVERSATION": "Riattiva conversazione"
+    "UNMUTE_CONVERSATION": "Riattiva conversazione",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
   },
   "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "Filtro conversazione",
     "CHOOSE_INBOX": "Scegli Posta in arrivo",
     "CHOOSE_STATUS": "Stato della conversazione",

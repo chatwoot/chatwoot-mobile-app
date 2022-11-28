@@ -71,9 +71,14 @@
     "PRIVATE_MSG_INPUT": "此操作仅对代理人可见",
     "UN_ASSIGN": "取消分配对话",
     "MUTE_CONVERSATION": "Mute conversation",
-    "UNMUTE_CONVERSATION": "Unmute conversation"
+    "UNMUTE_CONVERSATION": "Unmute conversation",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
   },
   "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "会话过滤器",
     "CHOOSE_INBOX": "选择收件箱",
     "CHOOSE_STATUS": "会话状态",

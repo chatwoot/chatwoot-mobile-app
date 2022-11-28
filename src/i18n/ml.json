@@ -71,9 +71,14 @@
     "PRIVATE_MSG_INPUT": "ഇത് ഏജന്റുമാർക്ക് മാത്രമേ ദൃശ്യമാകൂ",
     "UN_ASSIGN": "സംഭാഷണം നിയോഗിക്കാതിരിക്കുക",
     "MUTE_CONVERSATION": "Mute conversation",
-    "UNMUTE_CONVERSATION": "Unmute conversation"
+    "UNMUTE_CONVERSATION": "Unmute conversation",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
   },
   "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "സംഭാഷണ ഫിൽട്ടർ",
     "CHOOSE_INBOX": "ഇൻബോക്സ് തിരഞ്ഞെടുക്കുക",
     "CHOOSE_STATUS": "സംഭാഷണ നില",

@@ -307,7 +307,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     const {
       html_content: { full: fullHTMLContent } = {},
       text_content: { full: fullTextContent } = {},
-    } = message.content_attributes.email || {};
+    } = (message && message.content_attributes && message.content_attributes.email) || {};
     return fullHTMLContent || fullTextContent || '';
   };
 

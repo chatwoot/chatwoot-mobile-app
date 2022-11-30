@@ -2,9 +2,11 @@ import I18n from 'i18n';
 import { showToast } from 'helpers/ToastHelper';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { createPendingMessage, buildCreatePayload } from 'helpers/conversationHelpers';
+import { addMessage } from 'reducer/conversationSlice';
 import axios from 'helpers/APIHelper';
 import * as RootNavigation from 'helpers/NavigationHelper';
-
+import { MESSAGE_STATUS } from 'constants';
 const actions = {
   fetchConversations: createAsyncThunk(
     'conversations/fetchConversations',
@@ -117,6 +119,43 @@ const actions = {
         } = await axios.post(`conversations/${conversationId}/update_last_seen`);
         return { id, lastSeen };
       } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
+  sendMessage: createAsyncThunk(
+    'conversations/sendMessage',
+    async ({ data }, { dispatch, rejectWithValue }) => {
+      const { conversationId } = data;
+      let payload;
+      const pendingMessage = createPendingMessage(data);
+
+      try {
+        dispatch(
+          addMessage({
+            ...pendingMessage,
+            status: MESSAGE_STATUS.PROGRESS,
+          }),
+        );
+        payload = buildCreatePayload(pendingMessage);
+
+        const response = await axios.post(`conversations/${conversationId}/messages`, payload);
+        dispatch(
+          addMessage({
+            ...response.data,
+            status: MESSAGE_STATUS.SENT,
+          }),
+        );
+      } catch (error) {
+        dispatch(
+          addMessage({
+            ...pendingMessage,
+            status: MESSAGE_STATUS.FAILED,
+          }),
+        );
         if (!error.response) {
           throw error;
         }

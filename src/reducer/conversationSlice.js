@@ -2,7 +2,6 @@ import { createSlice, createEntityAdapter, createDraftSafeSelector } from '@redu
 const lodashFilter = require('lodash.filter');
 import actions from './conversationSlice.action';
 import { applyFilters, findPendingMessageIndex } from 'helpers/conversationHelpers';
-// import { navigationRef } from 'helpers/NavigationHelper';
 export const conversationAdapter = createEntityAdapter({
   selectId: conversation => conversation.id,
 });
@@ -94,7 +93,6 @@ const conversationSlice = createSlice({
       state.loading = true;
     },
     [actions.fetchConversations.fulfilled]: (state, { payload }) => {
-      // console.log('navigationRef', navigationRef.current?.getCurrentRoute());
       conversationAdapter.upsertMany(state, payload.conversations);
       state.meta = payload.meta;
       state.loading = false;
@@ -154,7 +152,6 @@ export const selectors = {
       const sortedConversations = conversations.sort((a, b) => {
         return b.timestamp - a.timestamp;
       });
-
       if (assigneeType === 'mine') {
         return sortedConversations.filter(conversation => {
           const { assignee } = conversation.meta;

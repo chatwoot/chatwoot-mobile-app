@@ -58,7 +58,7 @@ To help with testing app updates before they're released, you can:
 Sign up to be a beta tester
 
    - [Android](https://play.google.com/apps/testing/com.chatwoot.app) -  Open this link from your Android device
-   - [iOS](https://testflight.apple.com/join/ji5H8iSJ) - Open this link from your iOS device
+   - [iOS](https://testflight.apple.com/join/yQ4yoSx4) - Open this link from your iOS device
    
 You can leave the Beta testing program at any time:
 - On Android, [click this link](https://play.google.com/apps/testing/com.chatwoot.app) while logged in with your Google Play email address used to opt-in for the Beta program, then click **Leave the program**. 

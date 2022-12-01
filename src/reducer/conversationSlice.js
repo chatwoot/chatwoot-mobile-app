@@ -33,6 +33,13 @@ const conversationSlice = createSlice({
     setActiveInbox: (state, action) => {
       state.currentInbox = action.payload;
     },
+    clearConversation: (state, action) => {
+      const conversationId = action.payload;
+      const conversation = state.entities[conversationId];
+      if (conversation) {
+        conversationAdapter.removeOne(state, conversationId);
+      }
+    },
     addConversation: (state, action) => {
       const { currentInbox } = state;
       const conversation = action.payload;
@@ -194,6 +201,7 @@ export const selectors = {
 };
 export const {
   clearAllConversations,
+  clearConversation,
   setConversationStatus,
   setAssigneeType,
   setActiveInbox,

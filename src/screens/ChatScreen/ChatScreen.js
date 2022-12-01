@@ -13,8 +13,8 @@ import { openURL } from 'helpers/UrlHelper';
 import { markNotificationAsRead } from 'actions/notification';
 import { getGroupedConversation, findUniqueMessages } from 'helpers';
 import { actions as CannedResponseActions } from 'reducer/cannedResponseSlice';
-
 import {
+  clearConversation,
   selectors as conversationSelectors,
   selectMessagesLoading,
   selectAllMessagesFetched,
@@ -30,26 +30,6 @@ const propTypes = {
     navigate: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
   }).isRequired,
-  resetConversation: PropTypes.func,
-  cannedResponses: PropTypes.array.isRequired,
-  allMessages: PropTypes.array.isRequired,
-  conversationDetails: PropTypes.object,
-  loadMessages: PropTypes.func,
-  fetchCannedResponses: PropTypes.func,
-  isFetching: PropTypes.bool,
-  markAllMessagesAsRead: PropTypes.func,
-  markMessagesAsRead: PropTypes.func,
-  markNotificationAsRead: PropTypes.func,
-  getConversationDetails: PropTypes.func,
-  conversationTypingUsers: PropTypes.shape({}),
-};
-
-const defaultProps = {
-  isFetching: false,
-  markMessagesAsRead: () => {},
-  allMessages: [],
-  cannedResponses: [],
-  conversationTypingUsers: {},
 };
 
 const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
@@ -59,7 +39,8 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   const isFetching = useSelector(selectMessagesLoading);
   const isAllMessagesFetched = useSelector(selectAllMessagesFetched);
 
-  const { conversationId, messages, primaryActorDetails } = route.params;
+  const { conversationId, messages, primaryActorDetails, isConversationOpenedExternally } =
+    route.params;
 
   const conversation = useSelector(state =>
     conversationSelectors.getConversationById(state, conversationId),
@@ -87,13 +68,22 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   }, [dispatch, conversationId]);
 
   useEffect(() => {
-    loadMessages();
-  }, [loadMessages]);
+    if (isConversationOpenedExternally) {
+      dispatch(clearConversation(conversationId));
+      loadConversation();
+    } else {
+      loadMessages();
+    }
+  }, [conversationId, isConversationOpenedExternally, loadConversation, loadMessages, dispatch]);
+
+  const loadConversation = useCallback(() => {
+    dispatch(conversationActions.fetchConversation({ conversationId }));
+  }, [conversationId, dispatch]);
 
   const loadMessages = useCallback(async () => {
     // Fetch conversation if not present
     if (!conversation) {
-      dispatch(conversationActions.fetchConversation({ conversationId }));
+      loadConversation();
     } else {
       dispatch(
         conversationActions.fetchPreviousMessages({
@@ -102,7 +92,7 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
         }),
       );
     }
-  }, [conversation, conversationId, dispatch, lastMessageId]);
+  }, [conversation, conversationId, dispatch, lastMessageId, loadConversation]);
 
   useEffect(() => {
     if (primaryActorDetails && primaryActorDetails.primary_actor_id) {
@@ -204,6 +194,5 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
 };
 
 ChatScreenComponent.propTypes = propTypes;
-ChatScreenComponent.defaultProps = defaultProps;
 const ChatScreen = withStyles(ChatScreenComponent, styles);
 export default ChatScreen;

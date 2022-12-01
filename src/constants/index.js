@@ -57,10 +57,9 @@ export const MESSAGE_TYPES = {
 };
 
 export const MESSAGE_STATUS = {
-  SENT: 0,
-  DELIVERED: 1,
-  READ: 2,
-  FAILED: 3,
+  FAILED: 'failed',
+  SENT: 'sent',
+  PROGRESS: 'progress',
 };
 
 export const ASSIGNEE_TYPE = {

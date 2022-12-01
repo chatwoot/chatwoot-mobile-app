@@ -44,7 +44,7 @@ export const doLogin =
         showToast({ message: I18n.t('ERRORS.NO_ACCOUNTS_MESSAGE') });
         dispatch({ type: LOGIN_ERROR, payload: '' });
       }
-    } catch ({ response }) {
+    } catch (response) {
       dispatch({ type: LOGIN_ERROR, payload: response });
       if (response && response.status === 401) {
         const { errors } = response.data;

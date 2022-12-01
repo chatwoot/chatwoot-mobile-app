@@ -35,6 +35,7 @@ export const handlePush = async ({ remoteMessage, type }) => {
           {
             conversationId,
             primaryActorDetails: { primary_actor_id, primary_actor_type },
+            isConversationOpenedExternally: true,
           },
 
           `ChatScreen+${conversationId}`,

@@ -2,7 +2,6 @@ import { createSlice, createEntityAdapter, createDraftSafeSelector } from '@redu
 const lodashFilter = require('lodash.filter');
 import actions from './conversationSlice.action';
 import { applyFilters, findPendingMessageIndex } from 'helpers/conversationHelpers';
-
 export const conversationAdapter = createEntityAdapter({
   selectId: conversation => conversation.id,
 });
@@ -33,6 +32,13 @@ const conversationSlice = createSlice({
     },
     setActiveInbox: (state, action) => {
       state.currentInbox = action.payload;
+    },
+    clearConversation: (state, action) => {
+      const conversationId = action.payload;
+      const conversation = state.entities[conversationId];
+      if (conversation) {
+        conversationAdapter.removeOne(state, conversationId);
+      }
     },
     addConversation: (state, action) => {
       const { currentInbox } = state;
@@ -149,6 +155,7 @@ export const selectors = {
     [conversationSelector.selectAll, (_, filters) => filters],
     (conversations, filters) => {
       const { assigneeType, userId } = filters;
+
       const sortedConversations = conversations.sort((a, b) => {
         return b.timestamp - a.timestamp;
       });
@@ -194,6 +201,7 @@ export const selectors = {
 };
 export const {
   clearAllConversations,
+  clearConversation,
   setConversationStatus,
   setAssigneeType,
   setActiveInbox,

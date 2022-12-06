@@ -10,6 +10,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { getInboxIconByType } from 'helpers/inboxHelpers';
 import { getInboxes } from 'actions/inbox';
 import { getAgents } from 'actions/agent';
+import { getAllNotifications } from 'actions/notification';
 import ActionCable from 'helpers/ActionCable';
 import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
 import {
@@ -52,6 +53,7 @@ const ConversationScreen = () => {
     dispatch(getInstalledVersion());
     dispatch(getAgents());
     dispatch(saveDeviceDetails());
+    dispatch(getAllNotifications({ pageNo: 1 }));
     storeUser();
   }, [dispatch, initActionCable, storeUser]);
 

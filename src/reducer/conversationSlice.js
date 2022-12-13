@@ -100,7 +100,7 @@ const conversationSlice = createSlice({
       state.loading = true;
     },
     [actions.fetchConversations.fulfilled]: (state, { payload }) => {
-      conversationAdapter.upsertMany(state, payload.conversations);
+      conversationAdapter.setAll(state, payload.conversations);
       state.meta = payload.meta;
       state.loading = false;
       state.isAllConversationsFetched = payload.conversations.length < 20;

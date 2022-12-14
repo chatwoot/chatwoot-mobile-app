@@ -21,6 +21,8 @@ const conversationSlice = createSlice({
     assigneeType: 'mine',
     currentInbox: 0,
     loadingMessages: false,
+    isChangingConversationStatus: false,
+    isChangingConversationAssignee: false,
   }),
   reducers: {
     clearAllConversations: conversationAdapter.removeAll,
@@ -139,6 +141,24 @@ const conversationSlice = createSlice({
       }
       conversation.agent_last_seen_at = lastSeen;
     },
+    [actions.toggleConversationStatus.pending]: (state, action) => {
+      state.isChangingConversationStatus = true;
+    },
+    [actions.toggleConversationStatus.fulfilled]: (state, { payload }) => {
+      state.isChangingConversationStatus = false;
+    },
+    [actions.toggleConversationStatus.rejected]: (state, { error }) => {
+      state.isChangingConversationStatus = false;
+    },
+    [actions.toggleConversationStatus.pending]: (state, action) => {
+      state.isChangingConversationAssignee = true;
+    },
+    [actions.toggleConversationStatus.fulfilled]: (state, { payload }) => {
+      state.isChangingConversationAssignee = false;
+    },
+    [actions.toggleConversationStatus.rejected]: (state, { error }) => {
+      state.isChangingConversationAssignee = false;
+    },
   },
 });
 export const conversationSelector = conversationAdapter.getSelectors(state => state.conversations);
@@ -150,6 +170,10 @@ export const selectAssigneeType = state => state.conversations.assigneeType;
 export const selectActiveInbox = state => state.conversations.currentInbox;
 export const selectMessagesLoading = state => state.conversations.loadingMessages;
 export const selectAllMessagesFetched = state => state.conversations.isAllMessagesFetched;
+export const selectConversationToggleStatus = state =>
+  state.conversations.isChangingConversationStatus;
+export const selectConversationAssigneeStatus = state =>
+  state.conversations.isChangingConversationAssignee;
 export const selectors = {
   getFilteredConversations: createDraftSafeSelector(
     [conversationSelector.selectAll, (_, filters) => filters],

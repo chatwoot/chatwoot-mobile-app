@@ -13,12 +13,8 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { getTypingUsersText, getCustomerDetails } from 'helpers';
 import CustomText from 'components/Text';
-import {
-  unAssignConversation,
-  toggleConversationStatus,
-  muteConversation,
-  unmuteConversation,
-} from 'actions/conversation';
+import { selectConversationToggleStatus } from 'reducer/conversationSlice';
+import conversationActions from 'reducer/conversationSlice.action';
 import { UserAvatar, Pressable } from 'components';
 import { getInboxName } from 'helpers';
 import ConversationAction from '../../ConversationAction/ConversationAction';
@@ -104,6 +100,7 @@ const ChatHeader = ({
   const navigation = useNavigation();
   const actionSheetRef = createRef();
   const dispatch = useDispatch();
+  const conversationToggleStatus = useSelector(selectConversationToggleStatus);
 
   const showActionSheet = () => {
     actionSheetRef.current?.setModalVisible();
@@ -121,9 +118,6 @@ const ChatHeader = ({
     },
     additional_attributes: additionalAttributes = {},
   } = conversationDetails;
-
-  const conversation = useSelector(state => state.conversation);
-  const { isChangingConversationStatus } = conversation;
 
   const ResolveIcon = () => {
     return (
@@ -148,7 +142,7 @@ const ChatHeader = ({
       const resolvedConversation = status === 'resolved';
       return (
         <View style={style.actionIcon}>
-          {isChangingConversationStatus ? (
+          {conversationToggleStatus ? (
             <View style={style.loadingSpinner}>
               <Spinner size="small" />
             </View>
@@ -191,7 +185,7 @@ const ChatHeader = ({
     if (itemType === 'unassign') {
       captureEvent({ eventName: 'Toggle conversation status' });
       dispatch(
-        unAssignConversation({
+        conversationActions.assignConversation({
           conversationId: conversationDetails.id,
           assigneeId: 0,
         }),
@@ -210,13 +204,13 @@ const ChatHeader = ({
     if (itemType === 'mute_conversation') {
       const { muted } = conversationDetails;
       if (!muted) {
-        dispatch(muteConversation({ conversationId }));
+        dispatch(conversationActions.muteConversation({ conversationId }));
       }
     }
     if (itemType === 'unmute_conversation') {
       const { muted } = conversationDetails;
       if (muted) {
-        dispatch(unmuteConversation({ conversationId }));
+        dispatch(conversationActions.unmuteConversation({ conversationId }));
       }
     }
   };
@@ -224,7 +218,7 @@ const ChatHeader = ({
   const toggleStatusForConversations = () => {
     try {
       captureEvent({ eventName: 'Toggle conversation status' });
-      dispatch(toggleConversationStatus({ conversationId }));
+      dispatch(conversationActions.toggleConversationStatus({ conversationId }));
     } catch (error) {}
   };
 

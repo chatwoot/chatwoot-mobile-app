@@ -17,7 +17,6 @@ import NotificationScreen from './screens/Notification/NotificationScreen';
 import SettingsScreen from './screens/Settings/SettingsScreen';
 import LanguageScreen from './screens/Language/LanguageScreen';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
-import ConversationFilter from './screens/ConversationFilter/ConversationFilter';
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
 import AccountScreen from './screens/Account/AccountScreen';
@@ -204,7 +203,6 @@ const App = ({ eva: { style } }) => {
                 <Fragment>
                   <Stack.Screen name="Tab" component={TabStack} />
                   <Stack.Screen name="ChatScreen" component={ChatScreen} />
-                  <Stack.Screen name="ConversationFilter" component={ConversationFilter} />
                   <Stack.Screen name="ImageScreen" component={ImageScreen} />
                   <Stack.Screen name="Language" component={LanguageScreen} />
                   <Stack.Screen name="Account" component={AccountScreen} />

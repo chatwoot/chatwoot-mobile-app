@@ -61,7 +61,6 @@ class NotificationScreenComponent extends Component {
   };
 
   state = {
-    onEndReachedCalledDuringMomentum: true,
     pageNo: 1,
     menuVisible: false,
     refreshing: false,
@@ -88,13 +87,7 @@ class NotificationScreenComponent extends Component {
   };
 
   onEndReached = ({ distanceFromEnd }) => {
-    const { onEndReachedCalledDuringMomentum } = this.state;
-    if (!onEndReachedCalledDuringMomentum) {
-      this.loadMoreNotifications();
-      this.setState({
-        onEndReachedCalledDuringMomentum: true,
-      });
-    }
+    this.loadMoreNotifications();
   };
 
   renderEmptyMessage = () => {
@@ -214,14 +207,9 @@ class NotificationScreenComponent extends Component {
                 <SectionList
                   onRefresh={() => this.onRefresh()}
                   refreshing={this.state.refreshing}
-                  scrollEventThrottle={1900}
+                  scrollEventThrottle={16}
                   onEndReached={this.onEndReached.bind(this)}
                   onEndReachedThreshold={0.5}
-                  onMomentumScrollBegin={() => {
-                    this.setState({
-                      onEndReachedCalledDuringMomentum: false,
-                    });
-                  }}
                   sections={groupedNotifications}
                   keyExtractor={(item, index) => item + index}
                   renderItem={({ item, index }) => (

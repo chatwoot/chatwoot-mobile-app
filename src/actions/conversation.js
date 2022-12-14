@@ -1,9 +1,6 @@
-const lodashFilter = require('lodash.filter');
-
 import {
   SET_CONVERSATION_DETAILS,
   ADD_OR_UPDATE_USER_TYPING_IN_CONVERSATION,
-  UPDATE_SINGLE_CONVERSATION,
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
@@ -74,24 +71,4 @@ export const toggleTypingStatus =
         typing_status: typingStatus,
       })
       .catch();
-  };
-
-export const addOrUpdateActiveContacts =
-  ({ contacts }) =>
-  async (dispatch, getState) => {
-    const { data } = await getState().conversation;
-    Object.keys(contacts).forEach(contact => {
-      let conversations = lodashFilter(data.payload, {
-        meta: { sender: { id: parseInt(contact) } },
-      });
-      conversations.forEach(item => {
-        const updatedConversation = item;
-        updatedConversation.meta.sender.availability = contacts[contact];
-        updatedConversation.meta.sender.availability_status = contacts[contact];
-        dispatch({
-          type: UPDATE_SINGLE_CONVERSATION,
-          payload: updatedConversation,
-        });
-      });
-    });
   };

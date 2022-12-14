@@ -87,10 +87,12 @@ const conversationSlice = createSlice({
     updateContactsPresence: (state, action) => {
       const { contacts } = action.payload;
       const allConversations = state.entities;
+
       Object.keys(contacts).forEach(contactId => {
         let filteredConversations = lodashFilter(allConversations, {
           meta: { sender: { id: parseInt(contactId) } },
         });
+        // TODO: This is a temporary fix for the issue of contact presence not updating if the contact goes offline
         filteredConversations.forEach(item => {
           state.entities[item.id].meta.sender.availability_status = contacts[contactId];
         });

@@ -9,7 +9,7 @@ import agent from './agent';
 import cannedResponseSlice from './cannedResponseSlice';
 import conversationSlice from './conversationSlice';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   auth,
   inbox,
   conversation,
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
   conversations: conversationSlice,
 });
 
-export default (state, action) =>
-  action.type === 'USER_LOGOUT'
-    ? rootReducer({ settings: state.settings }, action)
-    : rootReducer(state, action);
+// export default (state, action) =>
+//   action.type === 'USER_LOGOUT'
+//     ? rootReducer({ settings: state.settings }, action)
+//     : rootReducer(state, action);

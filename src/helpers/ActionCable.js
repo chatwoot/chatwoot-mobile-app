@@ -54,6 +54,7 @@ class ActionCableConnector extends BaseActionCableConnector {
 
   onStatusChange = data => {
     store.dispatch(updateConversation(data));
+    store.dispatch(conversationActions.fetchConversationStats({}));
   };
 
   onAssigneeChanged = data => {

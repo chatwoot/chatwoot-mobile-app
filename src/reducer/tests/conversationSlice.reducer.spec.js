@@ -29,6 +29,8 @@ describe('conversations reducer', () => {
       assigneeType: 'mine',
       currentInbox: 0,
       loadingMessages: false,
+      isChangingConversationAssignee: false,
+      isChangingConversationStatus: false,
     });
   });
   it('sets loading true when fetchConversations is pending', () => {

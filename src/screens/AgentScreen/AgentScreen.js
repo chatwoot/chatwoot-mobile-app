@@ -9,7 +9,8 @@ import HeaderBar from '../../components/HeaderBar';
 import i18n from '../../i18n';
 import styles from './AgentScreen.style';
 import AgentItem from '../../components/AgentItem';
-import { assignConversation } from '../../actions/conversation';
+import conversationActions from 'reducer/conversationSlice.action';
+import { selectConversationAssigneeStatus } from 'reducer/conversationSlice';
 import { getInboxAgents } from '../../actions/inbox';
 import { captureEvent } from 'helpers/Analytics';
 import { useEffect } from 'react';
@@ -24,8 +25,8 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
 
   const [assigneeId, setAssignee] = useState(assignee ? assignee.id : null);
   const isInboxAgentsFetching = useSelector(state => state.inbox.isInboxAgentsFetching);
-  const conversation = useSelector(state => state.conversation);
-  const { isAssigneeUpdating } = conversation;
+  const isAssigneeUpdating = useSelector(selectConversationAssigneeStatus);
+
   const agents = useSelector(state => state.inbox.inboxAgents);
   const verifiedAgents = agents.length ? agents.filter(agent => agent.confirmed) : [];
 
@@ -44,11 +45,12 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
     if (!assignee || assignee.id !== assigneeId) {
       captureEvent({ eventName: 'Conversation assignee changed' });
       dispatch(
-        assignConversation({
+        conversationActions.assignConversation({
           conversationId: conversationDetails.id,
-          assigneeId: assigneeId,
+          assigneeId,
         }),
       );
+      navigation.goBack();
     } else {
       navigation.goBack();
     }

@@ -172,6 +172,67 @@ const actions = {
       }
     },
   ),
+
+  toggleConversationStatus: createAsyncThunk(
+    'conversations/toggleConversationStatus',
+    async ({ conversationId }, { rejectWithValue }) => {
+      try {
+        const apiUrl = `conversations/${conversationId}/toggle_status`;
+        const response = await axios.post(apiUrl);
+        return response.data;
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
+  muteConversation: createAsyncThunk(
+    'conversations/muteConversation',
+    async ({ conversationId }, { rejectWithValue }) => {
+      try {
+        const apiUrl = `conversations/${conversationId}/mute`;
+        const response = await axios.post(apiUrl);
+        return response.data;
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
+  unmuteConversation: createAsyncThunk(
+    'conversations/unmuteConversation',
+    async ({ conversationId }, { rejectWithValue }) => {
+      try {
+        const apiUrl = `conversations/${conversationId}/unmute`;
+        const response = await axios.post(apiUrl);
+        return response.data;
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
+  assignConversation: createAsyncThunk(
+    'conversations/assignConversation',
+    async ({ conversationId, assigneeId }, { rejectWithValue }) => {
+      try {
+        const apiUrl = `conversations/${conversationId}/assignments?assignee_id=${assigneeId}`;
+        const response = await axios.post(apiUrl);
+        return response.data;
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
 };
 
 export default actions;

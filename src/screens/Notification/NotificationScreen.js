@@ -6,7 +6,6 @@ import { SafeAreaView, SectionList, View } from 'react-native';
 
 import ActionSheet from 'react-native-actions-sheet';
 import i18n from '../../i18n';
-import { loadInitialMessage, setConversation } from '../../actions/conversation';
 
 import styles from './NotificationScreen.style';
 import NotificationItem from '../../components/NotificationItem';
@@ -44,7 +43,6 @@ class NotificationScreenComponent extends Component {
     navigation: PropTypes.shape({
       navigate: PropTypes.func.isRequired,
     }).isRequired,
-    loadInitialMessages: PropTypes.func,
     selectConversation: PropTypes.func,
     allNotifications: PropTypes.array.isRequired,
     isFetching: PropTypes.bool,
@@ -270,8 +268,6 @@ function bindAction(dispatch) {
   return {
     getAllNotifications: ({ pageNo }) => dispatch(getAllNotifications({ pageNo })),
     markAllNotificationAsRead: () => dispatch(markAllNotificationAsRead()),
-    selectConversation: ({ conversationId }) => dispatch(setConversation({ conversationId })),
-    loadInitialMessages: ({ messages }) => dispatch(loadInitialMessage({ messages })),
     markNotificationAsRead: ({ primaryActorId, primaryActorType }) =>
       dispatch(markNotificationAsRead({ primaryActorId, primaryActorType })),
   };

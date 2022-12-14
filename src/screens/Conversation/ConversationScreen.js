@@ -68,6 +68,7 @@ const ConversationScreen = () => {
   };
 
   const refreshConversations = async () => {
+    await dispatch(clearAllConversations());
     setPage(1);
     loadConversations({ page: 1 });
   };

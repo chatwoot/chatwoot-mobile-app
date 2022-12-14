@@ -76,7 +76,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
     dispatch(toggleTypingStatus({ conversationId, typingStatus: 'on' }));
   };
 
-  const onCannedReponseSelect = content => {
+  const onCannedResponseSelect = content => {
     captureEvent({ eventName: 'Canned response selected' });
     setCannedResponseSearchKey('');
     setMessage(content);
@@ -165,7 +165,6 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
       </View>
     );
   };
-  // console.log('cannedResponseSearchKey', cannedResponseSearchKey);
 
   return (
     <React.Fragment>
@@ -177,7 +176,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
       )}
       {cannedResponseSearchKey ? (
         <CannedResponsesContainer
-          onClick={onCannedReponseSelect}
+          onClick={onCannedResponseSelect}
           searchKey={cannedResponseSearchKey}
         />
       ) : null}

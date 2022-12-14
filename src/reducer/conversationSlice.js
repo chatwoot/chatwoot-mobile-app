@@ -21,6 +21,8 @@ const conversationSlice = createSlice({
     assigneeType: 'mine',
     currentInbox: 0,
     loadingMessages: false,
+    isChangingConversationStatus: false,
+    isChangingConversationAssignee: false,
   }),
   reducers: {
     clearAllConversations: conversationAdapter.removeAll,
@@ -85,10 +87,12 @@ const conversationSlice = createSlice({
     updateContactsPresence: (state, action) => {
       const { contacts } = action.payload;
       const allConversations = state.entities;
+
       Object.keys(contacts).forEach(contactId => {
         let filteredConversations = lodashFilter(allConversations, {
           meta: { sender: { id: parseInt(contactId) } },
         });
+        // TODO: This is a temporary fix for the issue of contact presence not updating if the contact goes offline
         filteredConversations.forEach(item => {
           state.entities[item.id].meta.sender.availability_status = contacts[contactId];
         });
@@ -100,7 +104,7 @@ const conversationSlice = createSlice({
       state.loading = true;
     },
     [actions.fetchConversations.fulfilled]: (state, { payload }) => {
-      conversationAdapter.upsertMany(state, payload.conversations);
+      conversationAdapter.setAll(state, payload.conversations);
       state.meta = payload.meta;
       state.loading = false;
       state.isAllConversationsFetched = payload.conversations.length < 20;
@@ -139,6 +143,24 @@ const conversationSlice = createSlice({
       }
       conversation.agent_last_seen_at = lastSeen;
     },
+    [actions.toggleConversationStatus.pending]: (state, action) => {
+      state.isChangingConversationStatus = true;
+    },
+    [actions.toggleConversationStatus.fulfilled]: (state, { payload }) => {
+      state.isChangingConversationStatus = false;
+    },
+    [actions.toggleConversationStatus.rejected]: (state, { error }) => {
+      state.isChangingConversationStatus = false;
+    },
+    [actions.toggleConversationStatus.pending]: (state, action) => {
+      state.isChangingConversationAssignee = true;
+    },
+    [actions.toggleConversationStatus.fulfilled]: (state, { payload }) => {
+      state.isChangingConversationAssignee = false;
+    },
+    [actions.toggleConversationStatus.rejected]: (state, { error }) => {
+      state.isChangingConversationAssignee = false;
+    },
   },
 });
 export const conversationSelector = conversationAdapter.getSelectors(state => state.conversations);
@@ -150,6 +172,10 @@ export const selectAssigneeType = state => state.conversations.assigneeType;
 export const selectActiveInbox = state => state.conversations.currentInbox;
 export const selectMessagesLoading = state => state.conversations.loadingMessages;
 export const selectAllMessagesFetched = state => state.conversations.isAllMessagesFetched;
+export const selectConversationToggleStatus = state =>
+  state.conversations.isChangingConversationStatus;
+export const selectConversationAssigneeStatus = state =>
+  state.conversations.isChangingConversationAssignee;
 export const selectors = {
   getFilteredConversations: createDraftSafeSelector(
     [conversationSelector.selectAll, (_, filters) => filters],

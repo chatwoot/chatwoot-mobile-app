@@ -17,7 +17,6 @@ import NotificationScreen from './screens/Notification/NotificationScreen';
 import SettingsScreen from './screens/Settings/SettingsScreen';
 import LanguageScreen from './screens/Language/LanguageScreen';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
-import ConversationFilter from './screens/ConversationFilter/ConversationFilter';
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
 import AccountScreen from './screens/Account/AccountScreen';
@@ -27,16 +26,19 @@ import ConversationDetailsScreen from './screens/ConversationDetails/Conversatio
 import ConversationAction from './screens/ConversationAction/ConversationAction';
 import AgentScreen from './screens/AgentScreen/AgentScreen';
 import LabelScreen from './screens/LabelScreen/LabelScreen';
-
-import i18n from './i18n';
-import { navigationRef } from './helpers/NavigationHelper';
-import { handlePush } from './helpers/PushHelper';
-
-import { doDeepLinking } from './helpers/DeepLinking';
-import { resetConversation, getConversations } from './actions/conversation';
+import TeamScreen from 'screens/TeamScreen/TeamScreen';
+import i18n from 'i18n';
+import { navigationRef } from 'helpers/NavigationHelper';
+import { handlePush } from 'helpers/PushHelper';
+import { doDeepLinking } from 'helpers/DeepLinking';
 import { withStyles } from '@ui-kitten/components';
-import { captureScreen } from './helpers/Analytics';
-import TeamScreen from './screens/TeamScreen/TeamScreen';
+import { captureScreen } from 'helpers/Analytics';
+import conversationActions from 'reducer/conversationSlice.action';
+import {
+  selectConversationStatus,
+  selectAssigneeType,
+  selectActiveInbox,
+} from 'reducer/conversationSlice';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -131,6 +133,9 @@ const App = ({ eva: { style } }) => {
 
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   const isUrlSet = useSelector(state => state.settings.isUrlSet);
+  const conversationStatus = useSelector(selectConversationStatus);
+  const assigneeType = useSelector(selectAssigneeType);
+  const activeInboxId = useSelector(selectActiveInbox);
 
   const locale = useSelector(state => state.settings.localeValue);
   const { linkedURL, resetURL } = useDeepLinkURL();
@@ -140,7 +145,6 @@ const App = ({ eva: { style } }) => {
   }, [linkedURL, resetURL]);
 
   useEffect(() => {
-    dispatch(resetConversation());
     // Notification caused app to open from foreground state
     messaging().onMessage(remoteMessage => {
       // handlePush({ remoteMessage, type: 'foreground' });
@@ -156,13 +160,16 @@ const App = ({ eva: { style } }) => {
       .then(remoteMessage => {
         if (remoteMessage) {
           handlePush({ remoteMessage, type: 'quite' });
-          setTimeout(() => {
-            // TODO: Load all the conversations
-            dispatch(getConversations({ assigneeType: 0 }));
-          }, 500);
+          dispatch(
+            conversationActions.fetchConversations({
+              assigneeType,
+              conversationStatus,
+              activeInboxId,
+            }),
+          );
         }
       });
-  }, [dispatch]);
+  }, [activeInboxId, assigneeType, conversationStatus, dispatch]);
 
   if (linkedURL) {
     _handleOpenURL({ url: linkedURL });
@@ -196,7 +203,6 @@ const App = ({ eva: { style } }) => {
                 <Fragment>
                   <Stack.Screen name="Tab" component={TabStack} />
                   <Stack.Screen name="ChatScreen" component={ChatScreen} />
-                  <Stack.Screen name="ConversationFilter" component={ConversationFilter} />
                   <Stack.Screen name="ImageScreen" component={ImageScreen} />
                   <Stack.Screen name="Language" component={LanguageScreen} />
                   <Stack.Screen name="Account" component={AccountScreen} />

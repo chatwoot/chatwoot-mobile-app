@@ -10,16 +10,12 @@ import ActionSheet from 'react-native-actions-sheet';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { TouchableOpacity, View } from 'react-native';
-import UserAvatar from 'components/UserAvatar';
+import { View } from 'react-native';
 import { getTypingUsersText, getCustomerDetails } from 'helpers';
 import CustomText from 'components/Text';
-import {
-  unAssignConversation,
-  toggleConversationStatus,
-  muteConversation,
-  unmuteConversation,
-} from 'actions/conversation';
+import { selectConversationToggleStatus } from 'reducer/conversationSlice';
+import conversationActions from 'reducer/conversationSlice.action';
+import { UserAvatar, Pressable } from 'components';
 import { getInboxName } from 'helpers';
 import ConversationAction from '../../ConversationAction/ConversationAction';
 import { captureEvent } from '../../../helpers/Analytics';
@@ -104,6 +100,7 @@ const ChatHeader = ({
   const navigation = useNavigation();
   const actionSheetRef = createRef();
   const dispatch = useDispatch();
+  const conversationToggleStatus = useSelector(selectConversationToggleStatus);
 
   const showActionSheet = () => {
     actionSheetRef.current?.setModalVisible();
@@ -111,11 +108,16 @@ const ChatHeader = ({
 
   const inboxes = useSelector(state => state.inbox.data);
   const inboxId = conversationDetails && conversationDetails.inbox_id;
+  const inboxDetails = inboxes ? inboxes.find(inbox => inbox.id === inboxId) : {};
   const channelType =
     conversationDetails && conversationDetails.meta && conversationDetails.meta.channel;
 
-  const conversation = useSelector(state => state.conversation);
-  const { isChangingConversationStatus } = conversation;
+  const {
+    meta: {
+      sender: { availability_status: availabilityStatus },
+    },
+    additional_attributes: additionalAttributes = {},
+  } = conversationDetails;
 
   const ResolveIcon = () => {
     return (
@@ -140,7 +142,7 @@ const ChatHeader = ({
       const resolvedConversation = status === 'resolved';
       return (
         <View style={style.actionIcon}>
-          {isChangingConversationStatus ? (
+          {conversationToggleStatus ? (
             <View style={style.loadingSpinner}>
               <Spinner size="small" />
             </View>
@@ -183,7 +185,7 @@ const ChatHeader = ({
     if (itemType === 'unassign') {
       captureEvent({ eventName: 'Toggle conversation status' });
       dispatch(
-        unAssignConversation({
+        conversationActions.assignConversation({
           conversationId: conversationDetails.id,
           assigneeId: 0,
         }),
@@ -202,13 +204,13 @@ const ChatHeader = ({
     if (itemType === 'mute_conversation') {
       const { muted } = conversationDetails;
       if (!muted) {
-        dispatch(muteConversation({ conversationId }));
+        dispatch(conversationActions.muteConversation({ conversationId }));
       }
     }
     if (itemType === 'unmute_conversation') {
       const { muted } = conversationDetails;
       if (muted) {
-        dispatch(unmuteConversation({ conversationId }));
+        dispatch(conversationActions.unmuteConversation({ conversationId }));
       }
     }
   };
@@ -216,7 +218,7 @@ const ChatHeader = ({
   const toggleStatusForConversations = () => {
     try {
       captureEvent({ eventName: 'Toggle conversation status' });
-      dispatch(toggleConversationStatus({ conversationId }));
+      dispatch(conversationActions.toggleConversationStatus({ conversationId }));
     } catch (error) {}
   };
 
@@ -231,19 +233,17 @@ const ChatHeader = ({
       <TopNavigation
         style={style.chatHeader}
         title={() => (
-          <TouchableOpacity
-            style={style.headerView}
-            onPress={showConversationDetails}
-            activeOpacity={0.5}>
+          <Pressable style={style.headerView} onPress={showConversationDetails}>
             {customerDetails.name && (
               <UserAvatar
-                style={style.avatarView}
-                userName={customerDetails.name}
-                size={40}
-                fontSize={14}
                 thumbnail={customerDetails.thumbnail}
-                defaultBGColor={theme['color-primary-default']}
+                userName={customerDetails.name}
+                size={42}
+                fontSize={14}
                 channel={customerDetails.channel}
+                inboxInfo={inboxDetails}
+                chatAdditionalInfo={additionalAttributes}
+                availabilityStatus={availabilityStatus !== 'offline' ? availabilityStatus : ''}
               />
             )}
 
@@ -269,7 +269,7 @@ const ChatHeader = ({
                 )}
               </View>
             </View>
-          </TouchableOpacity>
+          </Pressable>
         )}
         accessoryLeft={renderLeftControl}
         accessoryRight={renderRightControl}

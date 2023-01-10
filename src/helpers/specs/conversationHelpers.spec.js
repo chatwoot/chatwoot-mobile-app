@@ -1,4 +1,4 @@
-import { applyFilters } from 'helpers/conversationHelpers';
+import { applyFilters, getUuid } from 'helpers/conversationHelpers';
 
 describe('conversation helpers', () => {
   it('should return true if conversation status matches filter status', () => {
@@ -67,5 +67,8 @@ describe('conversation helpers', () => {
       inboxId: 2,
     };
     expect(applyFilters(conversation, filters)).toBe(false);
+  });
+  it('return uuid', () => {
+    expect(getUuid()).toBeDefined();
   });
 });

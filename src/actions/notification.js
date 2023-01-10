@@ -57,7 +57,7 @@ export const getAllNotifications =
         },
       });
 
-      if (payload.length < 25) {
+      if (payload.length < 15) {
         dispatch({
           type: ALL_NOTIFICATIONS_LOADED,
         });

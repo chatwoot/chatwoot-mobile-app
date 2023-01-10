@@ -1,28 +1,28 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "1.7.0",
+  "version": "1.7.11",
   "private": true,
   "scripts": {
-    "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",
-    "pod-install": "cd ios && bundle exec pod install",
-    "clean:hard": "react-native-clean-project",
     "android": "react-native run-android",
     "android:clean": "cd android && ./gradlew clean",
-    "android:release": "react-native run-android --variant=release",
     "android:publish-internal": "cd android && ./gradlew clean && fastlane android beta_internal",
     "android:publish-open": "cd android && ./gradlew clean && fastlane android beta_open",
-    "ios:publish-internal": "cd ios && fastlane ios beta",
+    "android:release": "react-native run-android --variant=release",
+    "build-storybook": "build-storybook",
+    "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && npm cache clean --force",
+    "clean:hard": "react-native-clean-project",
     "ios": "react-native run-ios",
     "ios:clean": "./react-native-setup-ios.sh clean",
     "ios:install": "./react-native-setup-ios.sh install",
+    "ios:publish-internal": "cd ios && fastlane ios beta",
     "ios:setup": "./react-native-setup-ios.sh setup",
-    "start": "yarn clean && react-native start",
-    "test": "jest",
     "lint": "eslint .",
+    "pod-install": "cd ios && bundle exec pod install",
     "prepare": "husky install",
+    "start": "yarn clean && react-native start",
     "prestorybook": "rnstl",
     "storybook": "start-storybook -p 7007",
-    "build-storybook": "build-storybook"
+    "test": "jest"
   },
   "config": {
     "react-native-storybook-loader": {
@@ -33,13 +33,20 @@
       "outputFile": "./storybook/storyLoader.js"
     }
   },
+  "jest": {
+    "preset": "react-native",
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-native/extend-expect"
+    ],
+    "testRegex": "src/.*.spec.(js|jsx)$"
+  },
   "dependencies": {
-    "@chatwoot/react-native-widget": "^0.0.8",
+    "@chatwoot/react-native-widget": "^0.0.9",
     "@eva-design/eva": "^2.0.0",
     "@gorhom/bottom-sheet": "^4.4.5",
     "@kesha-antonov/react-native-action-cable": "^1.1.0",
     "@native-html/table-plugin": "^5.3.1",
-    "@react-native-async-storage/async-storage": "^1.14.1",
+    "@react-native-async-storage/async-storage": "^1.17.10",
     "@react-native-clipboard/clipboard": "^1.6.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^5.9.10",
@@ -89,11 +96,9 @@
     "react-native-splash-screen": "^3.2.0",
     "react-native-svg": "^12.1.0",
     "react-native-webview": "^11.3.1",
-    "react-redux": "^7.2.2",
+    "react-redux": "^8.0.2",
     "redux": "^4.0.5",
-    "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.3.0",
     "validator": "^13.7.0"
   },
   "devDependencies": {
@@ -126,12 +131,5 @@
     "react-native-clean-project": "^3.6.4",
     "react-native-storybook-loader": "^2.0.5",
     "react-test-renderer": "16.13.1"
-  },
-  "jest": {
-    "preset": "react-native",
-    "testRegex": "src/.*.spec.(js|jsx)$",
-    "setupFilesAfterEnv": [
-      "@testing-library/jest-native/extend-expect"
-    ]
   }
 }

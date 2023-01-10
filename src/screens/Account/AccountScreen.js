@@ -12,7 +12,7 @@ import styles from './AccountScreen.style';
 import AccountItem from '../../components/AccountItem';
 import { captureEvent } from 'helpers/Analytics';
 import { setAccount } from '../../actions/auth';
-
+import { clearAllConversations } from 'reducer/conversationSlice';
 const AccountScreenComponent = ({ eva: { style }, navigation }) => {
   const { user } = useSelector(state => state.auth);
   const { account_id, accounts } = user;
@@ -21,6 +21,7 @@ const AccountScreenComponent = ({ eva: { style }, navigation }) => {
 
   const onCheckedChange = ({ item }) => {
     captureEvent({ eventName: 'Changed the account' });
+    dispatch(clearAllConversations());
     dispatch(setAccount({ accountId: item.id }));
   };
 

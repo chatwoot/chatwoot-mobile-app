@@ -7,12 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import AttachmentPreview from './AttachmentPreview';
 import Attachment from './Attachment';
 import i18n from 'i18n';
-import { sendMessage, toggleTypingStatus } from 'actions/conversation';
+import { toggleTypingStatus } from 'actions/conversation';
 import { findFileSize } from 'helpers/FileHelper';
 import { MAXIMUM_FILE_UPLOAD_SIZE } from 'constants';
 import { showToast } from 'helpers/ToastHelper';
 import MentionUser from './MentionUser.js';
 import { captureEvent } from 'helpers/Analytics';
+import conversationActions from 'reducer/conversationSlice.action';
 import CannedResponsesContainer from '../containers/CannedResponsesContainer';
 
 const propTypes = {
@@ -75,7 +76,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
     dispatch(toggleTypingStatus({ conversationId, typingStatus: 'on' }));
   };
 
-  const onCannedReponseSelect = content => {
+  const onCannedResponseSelect = content => {
     captureEvent({ eventName: 'Canned response selected' });
     setCannedResponseSearchKey('');
     setMessage(content);
@@ -108,8 +109,8 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
     if (message || attachmentDetails) {
       const payload = {
         conversationId,
-        message: { content: updatedMessage },
-        isPrivate,
+        message: updatedMessage,
+        private: isPrivate,
         file: attachmentDetails,
       };
       if (ccEmails) {
@@ -119,7 +120,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
         payload.message.bcc_emails = bccEmails;
       }
       captureEvent({ eventName: 'Messaged sent' });
-      dispatch(sendMessage(payload));
+      dispatch(conversationActions.sendMessage({ data: payload }));
 
       setMessage('');
       setCCEmails('');
@@ -164,7 +165,6 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
       </View>
     );
   };
-  // console.log('cannedResponseSearchKey', cannedResponseSearchKey);
 
   return (
     <React.Fragment>
@@ -176,7 +176,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
       )}
       {cannedResponseSearchKey ? (
         <CannedResponsesContainer
-          onClick={onCannedReponseSelect}
+          onClick={onCannedResponseSelect}
           searchKey={cannedResponseSearchKey}
         />
       ) : null}

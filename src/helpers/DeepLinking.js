@@ -22,6 +22,7 @@ export const doDeepLinking = async ({ url }) => {
             'ChatScreen',
             {
               conversationId,
+              isConversationOpenedExternally: true,
             },
             `ChatScreen+${conversationId}`,
           );

@@ -51,7 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Konversationen",
-    "UPDATING": "Updating...",
+    "UPDATING": "Aktualisiere...",
     "MINE": "Meine",
     "UN_ASSIGNED": "Nicht zugeordnet",
     "ALL": "Alle",
@@ -72,13 +72,13 @@
     "UN_ASSIGN": "Zuweisung entfernen",
     "MUTE_CONVERSATION": "Konversation stumm schalten",
     "UNMUTE_CONVERSATION": "Konversation entstummen",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
+    "CONVERSATION_NOT_FOUND": "Unterhaltung konnte nicht abgerufen werden"
   },
   "FILTER": {
-    "ALL_INBOXES": "All inboxes",
+    "ALL_INBOXES": "Alle Posteingänge",
     "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
-    "FILTER_BY_INBOX": "Filter by inbox",
+    "FILTER_BY_CONVERSATION_STATUS": "Filtern nach Konversationsstatus",
+    "FILTER_BY_INBOX": "Filtern nach Posteingang",
     "HEADER_TITLE": "Konversations-Filter",
     "CHOOSE_INBOX": "Posteingang auswählen",
     "CHOOSE_STATUS": "Konversationsstatus",

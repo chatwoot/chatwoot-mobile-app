@@ -52,7 +52,7 @@ export const setInstallationUrl =
       RootNavigation.navigate('Login');
     } catch (error) {
       showToast({ message: I18n.t('CONFIGURE_URL.ERROR') });
-      dispatch({ type: SET_URL_ERROR, payload: error });
+      dispatch({ type: SET_URL_ERROR });
     }
   };
 
@@ -66,7 +66,7 @@ export const getNotificationSettings = () => async dispatch => {
       payload: data,
     });
   } catch (error) {
-    dispatch({ type: GET_NOTIFICATION_SETTINGS_ERROR, payload: error });
+    dispatch({ type: GET_NOTIFICATION_SETTINGS_ERROR });
   }
 };
 
@@ -80,7 +80,7 @@ export const updateNotificationSettings = preferences => async dispatch => {
       payload: data,
     });
   } catch (error) {
-    dispatch({ type: UPDATE_NOTIFICATION_SETTINGS_ERROR, payload: error });
+    dispatch({ type: UPDATE_NOTIFICATION_SETTINGS_ERROR });
   }
 };
 

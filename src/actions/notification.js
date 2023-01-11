@@ -63,7 +63,7 @@ export const getAllNotifications =
         });
       }
     } catch (error) {
-      dispatch({ type: GET_NOTIFICATION_ERROR, payload: error });
+      dispatch({ type: GET_NOTIFICATION_ERROR });
     }
   };
 
@@ -130,10 +130,12 @@ export const markAllNotificationAsRead = () => async (dispatch, getState) => {
 export const saveDeviceDetails = () => async dispatch => {
   try {
     const permissionEnabled = await messaging().hasPermission();
+
     if (!permissionEnabled || permissionEnabled === -1) {
       await messaging().requestPermission();
     }
     const fcmToken = await messaging().getToken();
+
     const deviceId = getUniqueId();
     const devicePlatform = getSystemName();
     const manufacturer = await getManufacturer();
@@ -142,7 +144,6 @@ export const saveDeviceDetails = () => async dispatch => {
     const deviceName = `${manufacturer} ${model}`;
     const brandName = await getBrand();
     const buildNumber = await getBuildNumber();
-
     const pushData = {
       subscription_type: 'fcm',
       subscription_attributes: {
@@ -160,7 +161,6 @@ export const saveDeviceDetails = () => async dispatch => {
     await axios.post(`${baseURL}${API_URL}notification_subscriptions`, pushData, {
       headers: headers,
     });
-
     dispatch({ type: SET_PUSH_TOKEN, payload: fcmToken });
   } catch (error) {}
 };

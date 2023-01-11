@@ -1,4 +1,4 @@
-import PostHog from 'posthog-react-native';
+// import PostHog from 'posthog-react-native';
 import Config from 'react-native-config';
 
 const POST_HOG_API_KEY = Config.POSTHOG_API_KEY;
@@ -60,28 +60,28 @@ export const initAnalytics = async () => {
 
 export const identifyUser = ({ userId, email, name, installationUrl = '' }) => {
   if (IS_ANALYTICS_ENABLED) {
-    PostHog.identify(userId.toString(), {
-      email,
-      name,
-      installationUrl,
-    });
+    // PostHog.identify(userId.toString(), {
+    //   email,
+    //   name,
+    //   installationUrl,
+    // });
   }
 };
 
 export const captureEvent = ({ eventName, properties = {} }) => {
   if (IS_ANALYTICS_ENABLED) {
-    PostHog.capture(eventName, properties);
+    // PostHog.capture(eventName, properties);
   }
 };
 
 export const resetAnalytics = () => {
   if (IS_ANALYTICS_ENABLED) {
-    PostHog.reset();
+    // PostHog.reset();
   }
 };
 
 export const captureScreen = ({ screenName }) => {
   if (IS_ANALYTICS_ENABLED) {
-    PostHog.screen(screenName);
+    // PostHog.screen(screenName);
   }
 };

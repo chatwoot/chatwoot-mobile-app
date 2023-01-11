@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Dimensions, TextInput, Text } from 'react-native';
+import { View, Dimensions, TextInput, Text, TouchableOpacity } from 'react-native';
 import { MentionInput } from 'react-native-controlled-mentions';
 import { withStyles, Icon } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
@@ -27,8 +27,8 @@ const propTypes = {
 
 const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }) => {
   const [isPrivate, setPrivateMode] = useState(false);
-  const [ccEmails, setCCEmails] = useState([]);
-  const [bccEmails, setBCCEmails] = useState([]);
+  const [ccEmails, setCCEmails] = useState('');
+  const [bccEmails, setBCCEmails] = useState('');
   const [emailFields, toggleEmailFields] = useState(false);
   const [message, setMessage] = useState('');
   const agents = useSelector(state => state.agent.data);
@@ -246,7 +246,9 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
               />
             </View>
           </View>
-          <View style={[style.sendButtonView, sendMessageButtonWrapStyles()]}>
+          <TouchableOpacity
+            style={[style.sendButtonView, sendMessageButtonWrapStyles()]}
+            onPress={onNewMessageAdd}>
             <Icon
               name="paper-plane"
               style={style.sendButton}
@@ -257,9 +259,8 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
                   ? theme['color-primary-default']
                   : theme['color-background']
               }
-              onPress={onNewMessageAdd}
             />
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     </React.Fragment>

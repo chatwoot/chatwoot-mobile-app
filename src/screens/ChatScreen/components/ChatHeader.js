@@ -10,7 +10,7 @@ import ActionSheet from 'react-native-actions-sheet';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { getTypingUsersText, getCustomerDetails } from 'helpers';
 import CustomText from 'components/Text';
 import { selectConversationToggleStatus } from 'reducer/conversationSlice';
@@ -64,6 +64,12 @@ const styles = theme => ({
   inboxNameWrap: {
     marginTop: 2,
     marginLeft: 4,
+  },
+  statusView: {
+    width: 24,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
@@ -121,17 +127,23 @@ const ChatHeader = ({
 
   const ResolveIcon = () => {
     return (
-      <Icon
-        fill={theme['color-success-500']}
-        name="checkmark-circle-outline"
-        height={40}
-        width={20}
-      />
+      <TouchableOpacity style={style.statusView} onPress={toggleStatusForConversations}>
+        <Icon
+          fill={theme['color-success-500']}
+          name="checkmark-circle-outline"
+          height={40}
+          width={22}
+        />
+      </TouchableOpacity>
     );
   };
 
   const ReopenIcon = () => {
-    return <Icon fill={theme['color-warning-600']} name="undo-outline" height={40} width={20} />;
+    return (
+      <TouchableOpacity style={style.statusView} onPress={toggleStatusForConversations}>
+        <Icon fill={theme['color-warning-600']} name="undo-outline" height={40} width={22} />
+      </TouchableOpacity>
+    );
   };
 
   const renderLeftControl = () => <BackAction onPress={onBackPress} />;

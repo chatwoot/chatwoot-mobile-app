@@ -23,7 +23,7 @@ export const getAllLabels = () => async dispatch => {
       payload: data,
     });
   } catch (error) {
-    dispatch({ type: GET_ALL_LABELS_ERROR, payload: error });
+    dispatch({ type: GET_ALL_LABELS_ERROR });
   }
 };
 
@@ -40,7 +40,7 @@ export const getConversationLabels =
         payload: data,
       });
     } catch (error) {
-      dispatch({ type: GET_CONVERSATION_LABELS_ERROR, payload: error });
+      dispatch({ type: GET_CONVERSATION_LABELS_ERROR });
     }
   };
 

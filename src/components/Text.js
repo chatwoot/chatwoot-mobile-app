@@ -28,6 +28,7 @@ class CustomText extends Component {
 
   render() {
     const weightVariant = this.findWeightVariant(this.props);
+
     if (this.props.children) {
       return <Text {...this.props} weight={weightVariant} />;
     }

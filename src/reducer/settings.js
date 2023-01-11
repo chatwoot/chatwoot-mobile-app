@@ -13,7 +13,6 @@ import {
 } from '../constants/actions';
 const initialState = {
   baseUrl: '',
-  error: {},
   installationUrl: null,
   isLocaleSet: false,
   isSettingUrl: false,
@@ -43,14 +42,12 @@ export default (state = initialState, action) => {
         installationUrl: action.payload.installationUrl,
         baseUrl: action.payload.baseUrl,
         webSocketUrl: action.payload.webSocketUrl,
-        error: {},
       };
     case SET_URL_ERROR:
       return {
         ...state,
         isSettingUrl: false,
         isUrlSet: false,
-        error: action.payload,
         installationUrl: null,
         baseUrl: '',
       };

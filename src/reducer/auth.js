@@ -21,8 +21,6 @@ export const initialState = {
   isLoggingIn: false,
   isResettingPassword: false,
   isUpdating: true,
-  error: {},
-  success: {},
 };
 
 export default (state = initialState, action) => {
@@ -36,17 +34,13 @@ export default (state = initialState, action) => {
         isLoggingIn: false,
         isLoggedIn: true,
         user: action.payload,
-        error: {},
-        success: {},
       };
     case LOGIN_ERROR:
       return {
         ...state,
         isLoggingIn: false,
         isLoggedIn: false,
-        error: action.payload,
         user: null,
-        success: {},
       };
 
     case RESET_PASSWORD:
@@ -64,7 +58,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isResettingPassword: false,
-        error: action.payload,
       };
     case RESET_AUTH:
       return {

@@ -23,7 +23,7 @@ export const getAllTeams = () => async dispatch => {
       payload: data,
     });
   } catch (error) {
-    dispatch({ type: GET_ALL_TEAMS_ERROR, payload: error });
+    dispatch({ type: GET_ALL_TEAMS_ERROR });
   }
 };
 

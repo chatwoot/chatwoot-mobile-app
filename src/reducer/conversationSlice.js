@@ -1,7 +1,7 @@
 import { createSlice, createEntityAdapter, createDraftSafeSelector } from '@reduxjs/toolkit';
 const lodashFilter = require('lodash.filter');
 import actions from './conversationSlice.action';
-import { applyFilters, findPendingMessageIndex } from 'helpers/conversationHelpers';
+import { applyFilters, findPendingMessageIndex } from '../helpers/conversationHelpers';
 export const conversationAdapter = createEntityAdapter({
   selectId: conversation => conversation.id,
 });
@@ -104,7 +104,7 @@ const conversationSlice = createSlice({
       state.loading = true;
     },
     [actions.fetchConversations.fulfilled]: (state, { payload }) => {
-      conversationAdapter.setAll(state, payload.conversations);
+      conversationAdapter.upsertMany(state, payload.conversations);
       state.meta = payload.meta;
       state.loading = false;
       state.isAllConversationsFetched = payload.conversations.length < 20;
@@ -151,15 +151,6 @@ const conversationSlice = createSlice({
     },
     [actions.toggleConversationStatus.rejected]: (state, { error }) => {
       state.isChangingConversationStatus = false;
-    },
-    [actions.toggleConversationStatus.pending]: (state, action) => {
-      state.isChangingConversationAssignee = true;
-    },
-    [actions.toggleConversationStatus.fulfilled]: (state, { payload }) => {
-      state.isChangingConversationAssignee = false;
-    },
-    [actions.toggleConversationStatus.rejected]: (state, { error }) => {
-      state.isChangingConversationAssignee = false;
     },
   },
 });

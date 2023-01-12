@@ -24,7 +24,7 @@ export const getInboxes = () => async dispatch => {
     });
     dispatch(setInbox({ inbox: defaultInbox }));
   } catch (error) {
-    dispatch({ type: GET_INBOX_ERROR, payload: error });
+    dispatch({ type: GET_INBOX_ERROR });
   }
 };
 
@@ -40,7 +40,7 @@ export const getInboxAgents =
         payload,
       });
     } catch (error) {
-      dispatch({ type: GET_INBOX_AGENTS_ERROR, payload: error });
+      dispatch({ type: GET_INBOX_AGENTS_ERROR });
     }
   };
 

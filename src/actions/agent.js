@@ -12,7 +12,7 @@ export const getAgents = () => async dispatch => {
       payload: data,
     });
   } catch (error) {
-    dispatch({ type: GET_AGENTS_ERROR, payload: error });
+    dispatch({ type: GET_AGENTS_ERROR });
   }
 };
 

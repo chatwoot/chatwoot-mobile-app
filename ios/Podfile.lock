@@ -459,9 +459,9 @@ PODS:
   - RNScreens (3.4.0):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.4.3):
+  - RNSentry (5.0.0-alpha.10):
     - React-Core
-    - Sentry (= 7.11.0)
+    - Sentry/HybridSDK (= 7.31.2)
   - RNSnackbar (2.4.0):
     - React-Core
   - RNSVG (12.4.4):
@@ -472,9 +472,7 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - Sentry (7.11.0):
-    - Sentry/Core (= 7.11.0)
-  - Sentry/Core (7.11.0)
+  - Sentry/HybridSDK (7.31.2)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -701,7 +699,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: dc7ea88bb1edf12662aa4060f14fc073c978785a
+  FBReactNativeSpec: e628cbc2502865b00f62f7dac25f929386fb3c95
   Firebase: ff8c73105b90e33e1dc6c8e5445d7adc2ccdc7c1
   FirebaseCore: 1c1ca72483b59b17050f5b4cec4fb748425a3901
   FirebaseCoreDiagnostics: 92e07a649aeb66352b319d43bdd2ee3942af84cb
@@ -768,12 +766,12 @@ SPEC CHECKSUMS:
   RNPostHog: 5ad77e4a4d52ca151da444f11095125681d0cf68
   RNReanimated: 69f427ef749f923934a9c1485ad439dd001fb73c
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
-  RNSentry: 85f6525b5fe8d2ada065858026b338605b3c09da
+  RNSentry: 56e67020e45e81cc94231819df968dbc41890364
   RNSnackbar: be3333a21a453ccc272f41a8add5a71f7d44dfcd
   RNSVG: ecd661f380a07ba690c9c5929c475a44f432d674
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
-  Sentry: 0c5cd63d714187b4a39c331c1f0eb04ba7868341
+  Sentry: b15765d11769852fe78c9add942f7df60ed5dbf5
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

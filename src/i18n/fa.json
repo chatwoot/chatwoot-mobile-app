@@ -72,13 +72,13 @@
     "UN_ASSIGN": "لغو اختصاص مکالمه",
     "MUTE_CONVERSATION": "صدای گفتگو را قطع کن",
     "UNMUTE_CONVERSATION": "مکالمه را باصدا کنید",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
+    "CONVERSATION_NOT_FOUND": "گفتگو را نمی‌تواند دریافت کرد"
   },
   "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
-    "FILTER_BY_INBOX": "Filter by inbox",
+    "ALL_INBOXES": "همه صندوق‌های‌ورودی",
+    "FILTER_BY_ASSIGNEE_TYPE": "فیلتر براساس نوع اختصاص شده",
+    "FILTER_BY_CONVERSATION_STATUS": "فیلتر براساس وضعیت گفتگو",
+    "FILTER_BY_INBOX": "فیلتر براساس صندوق‌ورودی",
     "HEADER_TITLE": "فیلتر مکالمه",
     "CHOOSE_INBOX": "صندوق ورودی را انتخاب کنید",
     "CHOOSE_STATUS": "وضعیت مکالمه",

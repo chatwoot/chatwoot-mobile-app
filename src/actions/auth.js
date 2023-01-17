@@ -36,8 +36,6 @@ export const doLogin =
       // Check user has any account
       if (account_id) {
         Sentry.setUser({ email, username, id });
-        // TODO
-        // identifyUser({ userId: id, email, name: username });
         dispatch({ type: SET_AUTH_HEADER, payload: response.headers });
         dispatch({ type: LOGIN_SUCCESS, payload: data });
       } else {
@@ -102,8 +100,6 @@ export const resetAuth = () => async dispatch => {
 export const onLogOut = () => async (dispatch, getState) => {
   const { pushToken } = await getState().notification;
   dispatch(clearDeviceDetails({ pushToken }));
-  // TODO
-  // resetAnalytics();
   dispatch({ type: SET_LOCALE, payload: 'en' });
   dispatch({ type: USER_LOGOUT });
 };

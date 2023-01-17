@@ -142,7 +142,6 @@ const App = ({ eva: { style } }) => {
   useEffect(() => {
     resetURL();
   }, [linkedURL, resetURL]);
-  // TODO
   useEffect(() => {
     // Notification caused app to open from foreground state
     messaging().onMessage(remoteMessage => {

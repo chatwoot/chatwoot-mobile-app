@@ -13,7 +13,6 @@ import {
   RESET_AUTH,
   SET_LOCALE,
   SET_ACCOUNT,
-  UPDATE_USER,
   UPDATE_ACTIVITY_STATUS,
   UPDATE_ACTIVITY_STATUS_SUCCESS,
   UPDATE_ACTIVITY_STATUS_ERROR,
@@ -122,10 +121,9 @@ export const addOrUpdateActiveUsers =
     if (loggedUser) {
       Object.keys(users).forEach(user => {
         if (parseInt(user) === loggedUser.id) {
-          loggedUser.availability_status = users[user];
           dispatch({
-            type: UPDATE_USER,
-            payload: loggedUser,
+            type: UPDATE_ACTIVITY_STATUS_SUCCESS,
+            payload: users[user],
           });
         }
       });

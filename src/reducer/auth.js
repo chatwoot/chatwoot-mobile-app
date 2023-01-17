@@ -8,7 +8,6 @@ import {
   RESET_PASSWORD,
   RESET_AUTH,
   SET_ACCOUNT,
-  UPDATE_USER,
   UPDATE_ACTIVITY_STATUS,
   UPDATE_ACTIVITY_STATUS_SUCCESS,
   UPDATE_ACTIVITY_STATUS_ERROR,
@@ -76,12 +75,6 @@ export default (state = initialState, action) => {
           ...state.user,
           account_id: action.payload,
         },
-      };
-
-    case UPDATE_USER:
-      return {
-        ...state,
-        user: action.payload,
       };
 
     case UPDATE_ACTIVITY_STATUS: {

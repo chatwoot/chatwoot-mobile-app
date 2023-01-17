@@ -6,8 +6,10 @@ import { PersistGate } from 'redux-persist/integration/react';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import * as Sentry from '@sentry/react-native';
 import { theme } from './theme';
 import NoNetworkBar from 'components/NoNetworkBar';
+import ErrorHelper from 'helpers/ErrorHelper';
 import Router from './router';
 import { store, persistor } from './store';
 import i18n from './i18n/index';
@@ -18,6 +20,9 @@ const styles = StyleSheet.create({
 });
 
 const Chatwoot = () => {
+  useEffect(() => {
+    ErrorHelper.init();
+  }, []);
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
     return () => {
@@ -57,5 +62,4 @@ const Chatwoot = () => {
     </GestureHandlerRootView>
   );
 };
-// export default Sentry.wrap(Chatwoot);
-export default Chatwoot;
+export default Sentry.wrap(Chatwoot);

@@ -11427,10 +11427,10 @@ react-native-background-color@^0.0.8:
   resolved "https://registry.yarnpkg.com/react-native-background-color/-/react-native-background-color-0.0.8.tgz#661f737156a18a86ece362126e9c97e33fa42ed2"
   integrity sha512-Or89KCBNyFsD0234g/MgWyRrhwtd5egHXdqUwal1e5FKpum8d/x1y5PQqF3OUFR0W/ztp5Vt3FaLc/LEY0Fy+Q==
 
-react-native-bootsplash@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/react-native-bootsplash/-/react-native-bootsplash-4.4.0.tgz#aa4cb8bdd66d4c3a844018fa9b4b5d66e7cc8220"
-  integrity sha512-vqZhCMPcAD+1sScCppFnMfks77GENJsiU11nnYkLwc6isEHKJgj1NSbmxzi1W/Qpj0YZ8okXxk4PiljD9Iz2bg==
+react-native-bootsplash@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-bootsplash/-/react-native-bootsplash-4.4.1.tgz#c9a8af36666879a3f6c413c73180833721374de4"
+  integrity sha512-TgDIih5HHuvcMO97ayjgYBSlUcEJwUnxw3xP4wz7epO+dJQAvMaNqtI1uQNcy6JzagM9q7xExR+1KFRv/4kxQg==
   dependencies:
     fs-extra "^11.1.0"
     jimp "^0.16.2"

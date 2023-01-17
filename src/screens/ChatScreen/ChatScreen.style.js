@@ -10,6 +10,11 @@ const styles = theme => ({
     flex: 1,
     backgroundColor: theme['color-background'],
   },
+  emptyContainer: {
+    flex: 1,
+    backgroundColor: theme['color-background'],
+    alignItems: 'center',
+  },
   chatView: {
     flex: 13,
   },

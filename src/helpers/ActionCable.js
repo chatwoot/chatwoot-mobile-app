@@ -76,7 +76,6 @@ class ActionCableConnector extends BaseActionCableConnector {
         users,
       }),
     );
-
     store.dispatch(
       updateContactsPresence({
         contacts,

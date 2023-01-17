@@ -15,6 +15,7 @@ const conversationSlice = createSlice({
       unassigned_count: 0,
       all_count: 0,
     },
+    isConversationFetching: false,
     isAllConversationsFetched: false,
     isAllMessagesFetched: false,
     conversationStatus: 'open',
@@ -116,10 +117,15 @@ const conversationSlice = createSlice({
       state.meta = payload.meta;
     },
     [actions.fetchConversation.pending]: state => {
-      state.isAllMessagesFetched = false;
+      state.isConversationFetching = true;
     },
     [actions.fetchConversation.fulfilled]: (state, { payload }) => {
       conversationAdapter.upsertOne(state, payload);
+      state.isAllMessagesFetched = false;
+      state.isConversationFetching = false;
+    },
+    [actions.fetchConversation.rejected]: (state, { payload }) => {
+      state.isConversationFetching = false;
     },
     [actions.fetchPreviousMessages.pending]: state => {
       state.loadingMessages = true;
@@ -162,6 +168,7 @@ export const selectConversationStatus = state => state.conversations.conversatio
 export const selectAssigneeType = state => state.conversations.assigneeType;
 export const selectActiveInbox = state => state.conversations.currentInbox;
 export const selectMessagesLoading = state => state.conversations.loadingMessages;
+export const selectConversationFetching = state => state.conversations.isConversationFetching;
 export const selectAllMessagesFetched = state => state.conversations.isAllMessagesFetched;
 export const selectConversationToggleStatus = state =>
   state.conversations.isChangingConversationStatus;

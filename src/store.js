@@ -32,8 +32,8 @@ const allReducer = (state, action) => {
 // middlewares.push(createLogger());
 
 if (__DEV__) {
-  // const createDebugger = require('redux-flipper').default;
-  // middlewares.push(createDebugger());
+  const createDebugger = require('redux-flipper').default;
+  middlewares.push(createDebugger());
 }
 
 const persistedReducer = persistReducer(persistConfig, allReducer);
@@ -44,7 +44,7 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        warnAfter: 128,
+        // warnAfter: 128,
       },
       immutableCheck: { warnAfter: 128 },
     }).concat(middlewares),

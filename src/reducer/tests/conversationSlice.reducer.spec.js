@@ -31,6 +31,7 @@ describe('conversations reducer', () => {
       loadingMessages: false,
       isChangingConversationAssignee: false,
       isChangingConversationStatus: false,
+      isConversationFetching: false,
     });
   });
   it('sets loading true when fetchConversations is pending', () => {

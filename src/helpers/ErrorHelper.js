@@ -1,11 +1,11 @@
-import * as Sentry from '@sentry/react-native';
+// import * as Sentry from '@sentry/react-native';
 import { Alert } from 'react-native';
 import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
 
 import i18n from '../i18n';
 
 const errorHandler = (e, isFatal) => {
-  Sentry.captureException(e);
+  // Sentry.captureException(e);
   if (isFatal) {
     Alert.alert(
       i18n.t('COMMON.ERROR_TITLE'),
@@ -28,9 +28,10 @@ export default {
   init() {
     setNativeExceptionHandler(exceptionString => {
       // log error to Sentry
-      Sentry.captureException(new Error(exceptionString), {
-        logger: 'NativeExceptionHandler',
-      });
+      // TODO
+      // Sentry.captureException(new Error(exceptionString), {
+      //   logger: 'NativeExceptionHandler',
+      // });
     }, false);
 
     setJSExceptionHandler(errorHandler, false);

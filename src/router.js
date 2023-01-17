@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Linking, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-
+import RNBootSplash from 'react-native-bootsplash';
 import PropTypes from 'prop-types';
 import { LightTheme } from 'src/theme.v2';
 import { NavigationContainer } from '@react-navigation/native';
@@ -32,7 +32,6 @@ import { navigationRef } from 'helpers/NavigationHelper';
 import { handlePush } from 'helpers/PushHelper';
 import { doDeepLinking } from 'helpers/DeepLinking';
 import { withStyles } from '@ui-kitten/components';
-import { captureScreen } from 'helpers/Analytics';
 import conversationActions from 'reducer/conversationSlice.action';
 import {
   selectConversationStatus,
@@ -68,7 +67,7 @@ const TabStack = () => (
     <Tab.Screen name="SettingsTab" component={SettingsStack} />
   </Tab.Navigator>
 );
-
+// TODO
 messaging().setBackgroundMessageHandler(async remoteMessage => {});
 
 const propTypes = {
@@ -143,7 +142,7 @@ const App = ({ eva: { style } }) => {
   useEffect(() => {
     resetURL();
   }, [linkedURL, resetURL]);
-
+  // TODO
   useEffect(() => {
     // Notification caused app to open from foreground state
     messaging().onMessage(remoteMessage => {
@@ -184,12 +183,16 @@ const App = ({ eva: { style } }) => {
       <SafeAreaView style={style.container}>
         <NavigationContainer
           ref={navigationRef}
-          onReady={() => (routeNameRef.current = navigationRef.current.getCurrentRoute().name)}
+          onReady={() => {
+            routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+            RNBootSplash.hide();
+          }}
           onStateChange={async () => {
             const previousRouteName = routeNameRef.current;
             const currentRouteName = navigationRef.current.getCurrentRoute().name;
             if (previousRouteName !== currentRouteName) {
-              captureScreen({ screenName: currentRouteName });
+              // TODO
+              // captureScreen({ screenName: currentRouteName });
             }
             // Save the current route name for later comparison
             routeNameRef.current = currentRouteName;

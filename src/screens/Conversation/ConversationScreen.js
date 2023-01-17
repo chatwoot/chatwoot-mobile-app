@@ -26,7 +26,7 @@ import conversationActions from 'reducer/conversationSlice.action';
 import { saveDeviceDetails } from 'actions/notification';
 import { getInstalledVersion } from 'actions/settings';
 import createStyles from './ConversationScreen.style';
-import { identifyUser } from 'helpers/Analytics';
+// import { identifyUser } from 'helpers/Analytics';
 import i18n from 'i18n';
 import { FilterButton, ClearFilterButton, Header } from 'components';
 import { ConversationList, ConversationFilter, ConversationInboxFilter } from './components';
@@ -39,7 +39,7 @@ const ConversationScreen = () => {
   const conversationStatus = useSelector(selectConversationStatus);
   const assigneeType = useSelector(selectAssigneeType);
   const activeInboxId = useSelector(selectActiveInbox);
-  const installationUrl = useSelector(state => state.settings.installationUrl);
+  // const installationUrl = useSelector(state => state.settings.installationUrl);
   const webSocketUrl = useSelector(state => state.settings.webSocketUrl);
   const isLoading = useSelector(state => state.conversations.loading);
   const inboxes = useSelector(state => state.inbox.data);
@@ -54,8 +54,8 @@ const ConversationScreen = () => {
     dispatch(getAgents());
     dispatch(saveDeviceDetails());
     dispatch(getAllNotifications({ pageNo: 1 }));
-    storeUser();
-  }, [dispatch, initActionCable, storeUser]);
+    // storeUser();
+  }, [dispatch, initActionCable]);
 
   const initActionCable = useCallback(async () => {
     const pubSubToken = await getPubSubToken();
@@ -70,13 +70,18 @@ const ConversationScreen = () => {
   const refreshConversations = async () => {
     await dispatch(clearAllConversations());
     setPage(1);
-    loadConversations({ page: 1 });
+    loadConversations({
+      page: 1,
+      assignee: assigneeType,
+      status: conversationStatus,
+      inboxId: activeInboxId,
+    });
   };
-
-  const storeUser = useCallback(async () => {
-    const { userId, email, name } = await getUserDetails();
-    identifyUser({ userId, email, name, installationUrl });
-  }, [installationUrl]);
+  // TODO
+  // const storeUser = useCallback(async () => {
+  //   const { userId, email, name } = await getUserDetails();
+  //   // identifyUser({ userId, email, name, installationUrl });
+  // }, [installationUrl]);
 
   useEffect(() => {
     loadConversations({

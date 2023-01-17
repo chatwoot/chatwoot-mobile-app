@@ -52,10 +52,11 @@ const styles = theme => ({
   },
   actionIcon: {
     flexDirection: 'row',
-    alignItems: 'center',
   },
   loadingSpinner: {
-    marginRight: 8,
+    marginTop: 2,
+    marginRight: 4,
+    padding: 4,
   },
   inboxNameTypingWrap: {
     flexDirection: 'row',
@@ -66,18 +67,11 @@ const styles = theme => ({
     marginLeft: 4,
   },
   statusView: {
-    width: 24,
-    height: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 4,
   },
 });
 
 const BackIcon = style => <Icon {...style} name="arrow-back-outline" height={40} width={24} />;
-
-const MenuIcon = style => {
-  return <Icon {...style} name="more-vertical" height={40} width={20} />;
-};
 
 const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
 
@@ -131,8 +125,8 @@ const ChatHeader = ({
         <Icon
           fill={theme['color-success-500']}
           name="checkmark-circle-outline"
-          height={40}
-          width={22}
+          height={24}
+          width={24}
         />
       </TouchableOpacity>
     );
@@ -141,7 +135,15 @@ const ChatHeader = ({
   const ReopenIcon = () => {
     return (
       <TouchableOpacity style={style.statusView} onPress={toggleStatusForConversations}>
-        <Icon fill={theme['color-warning-600']} name="undo-outline" height={40} width={22} />
+        <Icon fill={theme['color-warning-600']} name="undo-outline" height={24} width={24} />
+      </TouchableOpacity>
+    );
+  };
+
+  const MenuIcon = () => {
+    return (
+      <TouchableOpacity style={style.statusView} onPress={showActionSheet}>
+        <Icon fill={theme['text-hint-color']} name="more-vertical" height={24} width={24} />
       </TouchableOpacity>
     );
   };
@@ -159,7 +161,7 @@ const ChatHeader = ({
               <Spinner size="small" />
             </View>
           ) : (
-            <View>
+            <React.Fragment>
               {openConversation && (
                 <TopNavigationAction
                   style={style.resolveIcon}
@@ -170,7 +172,7 @@ const ChatHeader = ({
               {resolvedConversation && (
                 <TopNavigationAction onPress={toggleStatusForConversations} icon={ReopenIcon} />
               )}
-            </View>
+            </React.Fragment>
           )}
           <TopNavigationAction onPress={showActionSheet} icon={MenuIcon} />
         </View>

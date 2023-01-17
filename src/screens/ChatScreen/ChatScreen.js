@@ -7,6 +7,7 @@ import ChatMessage from './components/ChatMessage';
 import ChatMessageDate from './components/ChatMessageDate';
 import ReplyBox from './components/ReplyBox';
 import ChatHeader from './components/ChatHeader';
+import ChatHeaderLoader from './components/ChatHeaderLoader';
 import styles from './ChatScreen.style';
 import { openURL } from 'helpers/UrlHelper';
 
@@ -154,7 +155,7 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
 
   return (
     <SafeAreaView style={style.mainContainer}>
-      {conversation && (
+      {conversation ? (
         <ChatHeader
           conversationId={conversationId}
           conversationTypingUsers={conversationTypingUsers}
@@ -163,7 +164,15 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
           showConversationDetails={showConversationDetails}
           onBackPress={onBackPress}
         />
+      ) : (
+        <ChatHeaderLoader />
       )}
+
+      {!conversation ? (
+        <View style={style.emptyContainer}>
+          <Spinner size="medium" />
+        </View>
+      ) : null}
 
       <View style={style.container} autoDismiss={false}>
         <View style={style.chatView}>

@@ -1,6 +1,6 @@
 import APIHelper from '../helpers/APIHelper';
 import axios from 'axios';
-// import * as Sentry from '@sentry/react-native';
+import * as Sentry from '@sentry/react-native';
 import {
   LOGIN,
   LOGIN_ERROR,
@@ -33,11 +33,10 @@ export const doLogin =
       dispatch({ type: LOGIN });
       const response = await APIHelper.post('auth/sign_in', { email, password });
       const { data } = response.data;
-      const { account_id } = data;
+      const { name: username, id, account_id } = data;
       // Check user has any account
       if (account_id) {
-        // TODO
-        // Sentry.setUser({ email, username, id });
+        Sentry.setUser({ email, username, id });
         // TODO
         // identifyUser({ userId: id, email, name: username });
         dispatch({ type: SET_AUTH_HEADER, payload: response.headers });

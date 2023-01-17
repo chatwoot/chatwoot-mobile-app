@@ -68,8 +68,6 @@ const TextInputField = ({ onChangeText, error, keyboardType, secureTextEntry, la
         onChangeText={onChangeText}
         value={value}
         autoCapitalize="none"
-        autoComplete={false}
-        autoCorrect={false}
       />
       {error && <Text style={styles.errorLabel}>{error.message}</Text>}
     </View>

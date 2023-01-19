@@ -209,3 +209,10 @@ export const SETTINGS_ITEMS = [
     itemName: 'logout',
   },
 ];
+
+export const NOTIFICATION_TYPES = [
+  'conversation_creation',
+  'conversation_assignment',
+  'assigned_conversation_new_message',
+  'conversation_mention',
+];

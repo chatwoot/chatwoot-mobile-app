@@ -26,7 +26,6 @@ import conversationActions from 'reducer/conversationSlice.action';
 import { saveDeviceDetails } from 'actions/notification';
 import { getInstalledVersion } from 'actions/settings';
 import createStyles from './ConversationScreen.style';
-// import { identifyUser } from 'helpers/Analytics';
 import i18n from 'i18n';
 import { FilterButton, ClearFilterButton, Header } from 'components';
 import { ConversationList, ConversationFilter, ConversationInboxFilter } from './components';
@@ -48,6 +47,7 @@ const ConversationScreen = () => {
 
   useEffect(() => {
     initActionCable();
+    dispatch(clearAllConversations());
     dispatch(getInboxes());
     clearAllDeliveredNotifications();
     dispatch(getInstalledVersion());
@@ -77,11 +77,6 @@ const ConversationScreen = () => {
       inboxId: activeInboxId,
     });
   };
-  // TODO
-  // const storeUser = useCallback(async () => {
-  //   const { userId, email, name } = await getUserDetails();
-  //   // identifyUser({ userId, email, name, installationUrl });
-  // }, [installationUrl]);
 
   useEffect(() => {
     loadConversations({

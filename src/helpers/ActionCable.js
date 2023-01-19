@@ -70,7 +70,7 @@ class ActionCableConnector extends BaseActionCableConnector {
   };
 
   onPresenceUpdate = ({ contacts, users }) => {
-    //TODO: Move this to agentSlice and authSlice
+    //TODO: Move this to agentSlice and authSlice, https://github.com/chatwoot/chatwoot-mobile-next/blob/main/src/helpers/ActionCable.js#L64
     store.dispatch(
       addOrUpdateActiveUsers({
         users,

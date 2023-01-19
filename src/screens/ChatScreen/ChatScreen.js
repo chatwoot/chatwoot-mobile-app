@@ -3,6 +3,7 @@ import { Spinner, withStyles } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { View, SafeAreaView, SectionList } from 'react-native';
+import { StackActions } from '@react-navigation/native';
 import ChatMessage from './components/ChatMessage';
 import ChatMessageDate from './components/ChatMessageDate';
 import ReplyBox from './components/ReplyBox';
@@ -30,6 +31,8 @@ const propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
+    canGoBack: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
   }).isRequired,
 };
 
@@ -40,8 +43,12 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   const isFetching = useSelector(selectMessagesLoading);
   const isAllMessagesFetched = useSelector(selectAllMessagesFetched);
 
-  const { conversationId, messages, primaryActorDetails, isConversationOpenedExternally } =
-    route.params;
+  const {
+    conversationId,
+    primaryActorId,
+    primaryActorType,
+    isConversationOpenedExternally = true,
+  } = route.params;
 
   const conversation = useSelector(state =>
     conversationSelectors.getConversationById(state, conversationId),
@@ -96,15 +103,15 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   }, [conversation, conversationId, dispatch, lastMessageId, loadConversation]);
 
   useEffect(() => {
-    if (primaryActorDetails && primaryActorDetails.primary_actor_id) {
+    if (primaryActorId && primaryActorType) {
       dispatch(
         markNotificationAsRead({
-          primaryActorId: primaryActorDetails.primary_actor_id,
-          primaryActorType: primaryActorDetails.primary_actor_type,
+          primaryActorId,
+          primaryActorType,
         }),
       );
     }
-  }, [conversationId, dispatch, messages, primaryActorDetails]);
+  }, [conversationId, dispatch, primaryActorId, primaryActorType]);
 
   const showAttachment = ({ type, dataUrl }) => {
     if (type === 'image') {
@@ -117,7 +124,11 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   };
 
   const onBackPress = () => {
-    navigation.goBack();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      navigation.dispatch(StackActions.replace('Tab'));
+    }
   };
 
   const onEndReached = ({ distanceFromEnd }) => {
@@ -167,12 +178,6 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
       ) : (
         <ChatHeaderLoader />
       )}
-
-      {!conversation ? (
-        <View style={style.emptyContainer}>
-          <Spinner size="medium" />
-        </View>
-      ) : null}
 
       <View style={style.container} autoDismiss={false}>
         <View style={style.chatView}>

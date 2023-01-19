@@ -1,12 +1,13 @@
-import React, { useEffect, useRef, useState, Fragment } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Linking, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useRef, Fragment } from 'react';
+import { useSelector } from 'react-redux';
+import { SafeAreaView, KeyboardAvoidingView, Platform, Linking } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import RNBootSplash from 'react-native-bootsplash';
 import PropTypes from 'prop-types';
+import { useFlipper } from '@react-navigation/devtools';
 import { LightTheme } from 'src/theme.v2';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ConfigureURLScreen from './screens/ConfigureURLScreen/ConfigureURLScreen';
@@ -29,15 +30,9 @@ import LabelScreen from './screens/LabelScreen/LabelScreen';
 import TeamScreen from 'screens/TeamScreen/TeamScreen';
 import i18n from 'i18n';
 import { navigationRef } from 'helpers/NavigationHelper';
-import { handlePush } from 'helpers/PushHelper';
-import { doDeepLinking } from 'helpers/DeepLinking';
 import { withStyles } from '@ui-kitten/components';
-import conversationActions from 'reducer/conversationSlice.action';
-import {
-  selectConversationStatus,
-  selectAssigneeType,
-  selectActiveInbox,
-} from 'reducer/conversationSlice';
+import { NOTIFICATION_TYPES } from 'constants';
+import { findConversationLinkFromPush } from './helpers/PushHelper';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -67,8 +62,6 @@ const TabStack = () => (
     <Tab.Screen name="SettingsTab" component={SettingsStack} />
   </Tab.Navigator>
 );
-// TODO
-messaging().setBackgroundMessageHandler(async remoteMessage => {});
 
 const propTypes = {
   isLoggedIn: PropTypes.bool,
@@ -82,97 +75,82 @@ const defaultProps = {
   isLoggedIn: false,
   isUrlSet: false,
 };
-
-const useDeepLinkURL = () => {
-  const [linkedURL, setLinkedURL] = useState(null);
-
-  // 1. If the app is not already open, it is opened and the url is passed in as the initialURL
-  // You can handle these events with Linking.getInitialURL(url) -- it returns a Promise that
-  // resolves to the url, if there is one.
-  // Get the deep link used to open the app in minimized state
-  useEffect(() => {
-    const getUrlAsync = async () => {
-      // Get the deep link used to open the app
-      const initialUrl = await Linking.getInitialURL();
-      setLinkedURL(decodeURI(initialUrl));
-    };
-
-    getUrlAsync();
-  }, []);
-
-  // 2. If the app is already open, the app is foregrounded and a Linking event is fired
-  // You can handle these events with Linking.addEventListener(url, callback)
-  // Get the deep link used to open the app in closed state
-  useEffect(() => {
-    const callback = ({ url }) => setLinkedURL(decodeURI(url));
-    Linking.addEventListener('url', callback);
-    return () => {
-      Linking.removeEventListener('url', callback);
-    };
-  }, []);
-
-  const resetURL = () => setLinkedURL(null);
-
-  return { linkedURL, resetURL };
-};
-
-const _handleOpenURL = event => {
-  const { url } = event;
-  if (url) {
-    doDeepLinking({ url });
-  }
-};
+// TODO
+messaging().setBackgroundMessageHandler(async remoteMessage => {});
 
 const App = ({ eva: { style } }) => {
   // TODO: Lets use light theme for now, add dark theme later
   const theme = LightTheme;
 
-  const dispatch = useDispatch();
+  const routerReference = useNavigationContainerRef();
+
+  useFlipper(routerReference);
+
   const routeNameRef = useRef();
 
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   const isUrlSet = useSelector(state => state.settings.isUrlSet);
-  const conversationStatus = useSelector(selectConversationStatus);
-  const assigneeType = useSelector(selectAssigneeType);
-  const activeInboxId = useSelector(selectActiveInbox);
-
+  const installationUrl = useSelector(state => state.settings.installationUrl);
   const locale = useSelector(state => state.settings.localeValue);
-  const { linkedURL, resetURL } = useDeepLinkURL();
 
-  useEffect(() => {
-    resetURL();
-  }, [linkedURL, resetURL]);
-  // TODO
-  useEffect(() => {
-    // Notification caused app to open from foreground state
-    messaging().onMessage(remoteMessage => {
-      // handlePush({ remoteMessage, type: 'foreground' });
-    });
+  const linking = {
+    prefixes: [installationUrl],
+    config: {
+      screens: {
+        ChatScreen: {
+          path: 'app/accounts/:accountId/conversations/:conversationId/:primaryActorId?/:primaryActorType?',
+          parse: {
+            conversationId: conversationId => parseInt(conversationId),
+          },
+        },
+      },
+    },
+    async getInitialURL() {
+      // Check if app was opened from a deep link
+      const url = await Linking.getInitialURL();
 
-    // Notification caused app to open from background state
-    messaging().onNotificationOpenedApp(remoteMessage => {
-      handlePush({ remoteMessage, type: 'background' });
-    });
-    // Notification caused app to open from quit state
-    messaging()
-      .getInitialNotification()
-      .then(remoteMessage => {
-        if (remoteMessage) {
-          handlePush({ remoteMessage, type: 'quite' });
-          dispatch(
-            conversationActions.fetchConversations({
-              assigneeType,
-              conversationStatus,
-              activeInboxId,
-            }),
-          );
+      if (url != null) {
+        return url;
+      }
+
+      // Handle notification caused app to open from quit state:
+      const message = await messaging().getInitialNotification();
+
+      if (message) {
+        const { notification } = message.data;
+
+        const conversationLink = findConversationLinkFromPush({ notification, installationUrl });
+        if (conversationLink) {
+          return conversationLink;
+        }
+      }
+      return undefined;
+    },
+    subscribe(listener) {
+      const onReceiveURL = ({ url }) => listener(url);
+
+      // Listen to incoming links from deep linking
+      const subscription = Linking.addEventListener('url', onReceiveURL);
+
+      // Handle notification caused app to open from background state
+      const unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
+        if (message) {
+          const { notification } = message.data;
+
+          const conversationLink = findConversationLinkFromPush({ notification, installationUrl });
+          if (conversationLink) {
+            listener(conversationLink);
+          }
         }
       });
-  }, [activeInboxId, assigneeType, conversationStatus, dispatch]);
 
-  if (linkedURL) {
-    _handleOpenURL({ url: linkedURL });
-  }
+      return () => {
+        subscription.remove();
+        unsubscribeNotification();
+      };
+    },
+  };
+
   i18n.locale = locale;
 
   return (
@@ -182,10 +160,11 @@ const App = ({ eva: { style } }) => {
       enabled>
       <SafeAreaView style={style.container}>
         <NavigationContainer
+          linking={linking}
           ref={navigationRef}
           onReady={() => {
             routeNameRef.current = navigationRef.current.getCurrentRoute().name;
-            RNBootSplash.hide();
+            RNBootSplash.hide({ fade: true });
           }}
           onStateChange={async () => {
             const previousRouteName = routeNameRef.current;
@@ -222,7 +201,6 @@ const App = ({ eva: { style } }) => {
                   <Stack.Screen name="ConfigureURL" component={ConfigureURLScreen} />
                   <Stack.Screen name="Login" component={LoginScreen} />
                   <Stack.Screen name="ResetPassword" component={ResetPassword} />
-                  <Stack.Screen name="ConversationScreen" component={ConversationScreen} />
                   <Stack.Screen name="Language" component={LanguageScreen} />
                 </Fragment>
               )}

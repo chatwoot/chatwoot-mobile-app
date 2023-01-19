@@ -8,7 +8,7 @@
       "components/*": ["src/components"],
       "i18n/*": ["src/i18n"],
       "screens/*": ["src/screens"],
-      "reducer/*": ["src/reducer"],
+      "reducer/*": ["src/reducer"]
     }
   },
   "exclude": ["node_modules"] // Optional

@@ -1,6 +1,6 @@
 import APIHelper from '../helpers/APIHelper';
 import axios from 'axios';
-// import * as Sentry from '@sentry/react-native';
+import * as Sentry from '@sentry/react-native';
 import {
   LOGIN,
   LOGIN_ERROR,
@@ -13,7 +13,6 @@ import {
   RESET_AUTH,
   SET_LOCALE,
   SET_ACCOUNT,
-  UPDATE_USER,
   UPDATE_ACTIVITY_STATUS,
   UPDATE_ACTIVITY_STATUS_SUCCESS,
   UPDATE_ACTIVITY_STATUS_ERROR,
@@ -33,13 +32,10 @@ export const doLogin =
       dispatch({ type: LOGIN });
       const response = await APIHelper.post('auth/sign_in', { email, password });
       const { data } = response.data;
-      const { account_id } = data;
+      const { name: username, id, account_id } = data;
       // Check user has any account
       if (account_id) {
-        // TODO
-        // Sentry.setUser({ email, username, id });
-        // TODO
-        // identifyUser({ userId: id, email, name: username });
+        Sentry.setUser({ email, username, id });
         dispatch({ type: SET_AUTH_HEADER, payload: response.headers });
         dispatch({ type: LOGIN_SUCCESS, payload: data });
       } else {
@@ -104,8 +100,6 @@ export const resetAuth = () => async dispatch => {
 export const onLogOut = () => async (dispatch, getState) => {
   const { pushToken } = await getState().notification;
   dispatch(clearDeviceDetails({ pushToken }));
-  // TODO
-  // resetAnalytics();
   dispatch({ type: SET_LOCALE, payload: 'en' });
   dispatch({ type: USER_LOGOUT });
 };
@@ -123,10 +117,9 @@ export const addOrUpdateActiveUsers =
     if (loggedUser) {
       Object.keys(users).forEach(user => {
         if (parseInt(user) === loggedUser.id) {
-          loggedUser.availability_status = users[user];
           dispatch({
-            type: UPDATE_USER,
-            payload: loggedUser,
+            type: UPDATE_ACTIVITY_STATUS_SUCCESS,
+            payload: users[user],
           });
         }
       });

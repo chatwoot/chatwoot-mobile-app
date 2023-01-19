@@ -1,0 +1,29 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/Inter-Bold.otf",
+      "sha1": "620a6285414dd270fb35f9b41be98ff9048c7c39"
+    },
+    {
+      "path": "assets/Inter-Italic.otf",
+      "sha1": "291128c6fbb6579d042c16ea5110902fe613a0ef"
+    },
+    {
+      "path": "assets/Inter-Light.otf",
+      "sha1": "1b2863ecfd47aabb9256337da632909907b70f24"
+    },
+    {
+      "path": "assets/Inter-Medium.otf",
+      "sha1": "0f31ff0c14caaa43dd8b9fc4ebaf3ff4573ae2f7"
+    },
+    {
+      "path": "assets/Inter-Regular.otf",
+      "sha1": "389bb3dbdb1bc81c96b000688ed672180b3ee78d"
+    },
+    {
+      "path": "assets/Inter-SemiBold.otf",
+      "sha1": "c15d9033e1f6311a5c8693517ee4692e0b7ccae0"
+    }
+  ]
+}

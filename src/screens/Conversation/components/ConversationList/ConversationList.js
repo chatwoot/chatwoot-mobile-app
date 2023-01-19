@@ -105,7 +105,10 @@ const ConversationList = ({
 
   const onSelectConversation = conversation => {
     const { id } = conversation;
-    navigation.navigate('ChatScreen', { conversationId: id });
+    navigation.navigate('ChatScreen', {
+      conversationId: id,
+      isConversationOpenedExternally: false,
+    });
   };
 
   const isLoading = useSelector(state => state.conversations.loading);

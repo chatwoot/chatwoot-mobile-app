@@ -47,6 +47,7 @@ const ConversationScreen = () => {
 
   useEffect(() => {
     initActionCable();
+    dispatch(clearAllConversations());
     dispatch(getInboxes());
     clearAllDeliveredNotifications();
     dispatch(getInstalledVersion());

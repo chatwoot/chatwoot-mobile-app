@@ -69,11 +69,10 @@ const styles = theme => ({
   statusView: {
     padding: 4,
   },
+  backButtonView: {
+    padding: 2,
+  },
 });
-
-const BackIcon = style => <Icon {...style} name="arrow-back-outline" height={40} width={24} />;
-
-const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
 
 const propTypes = {
   eva: PropTypes.shape({
@@ -143,10 +142,18 @@ const ChatHeader = ({
   const MenuIcon = () => {
     return (
       <TouchableOpacity style={style.statusView} onPress={showActionSheet}>
-        <Icon fill={theme['text-hint-color']} name="more-vertical" height={24} width={24} />
+        <Icon fill={theme['color-black-900']} name="more-vertical" height={24} width={24} />
       </TouchableOpacity>
     );
   };
+
+  const BackIcon = () => (
+    <TouchableOpacity style={style.backButtonView} onPress={onBackPress}>
+      <Icon fill={theme['color-black-900']} name="arrow-ios-back-outline" height={24} width={24} />
+    </TouchableOpacity>
+  );
+
+  const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
 
   const renderLeftControl = () => <BackAction onPress={onBackPress} />;
   const renderRightControl = () => {

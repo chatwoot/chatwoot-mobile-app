@@ -2,11 +2,7 @@ import I18n from 'i18n';
 import { showToast } from 'helpers/ToastHelper';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import {
-  createPendingMessage,
-  buildCreatePayload,
-  getFilterConversations,
-} from 'helpers/conversationHelpers';
+import { createPendingMessage, buildCreatePayload } from 'helpers/conversationHelpers';
 import { addMessage } from 'reducer/conversationSlice';
 
 import axios from 'helpers/APIHelper';
@@ -32,12 +28,8 @@ const actions = {
         const {
           data: { meta, payload },
         } = response.data;
-        const conversations = getFilterConversations({
-          payload,
-        });
-
         return {
-          conversations,
+          conversations: payload,
           meta,
         };
       } catch (error) {

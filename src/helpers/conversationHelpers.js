@@ -1,5 +1,4 @@
 import { MESSAGE_STATUS, MESSAGE_TYPES } from 'constants';
-import { navigationRef } from 'helpers/NavigationHelper';
 export const getUuid = () =>
   'xxxxxxxx4xxx'.replace(/[xy]/g, c => {
     // eslint-disable-next-line no-bitwise
@@ -124,16 +123,6 @@ export const buildCreatePayload = ({
       bcc_emails: bccEmails,
       template_params: templateParams,
     };
-  }
-  return payload;
-};
-
-export const getFilterConversations = ({ payload }) => {
-  const { name: routeName, params: { conversationId = null } = {} } =
-    navigationRef.current?.getCurrentRoute();
-  // Remove the conversation which is currently open
-  if (conversationId && routeName === 'ChatScreen') {
-    return payload.filter(conversation => conversation.id !== conversationId);
   }
   return payload;
 };

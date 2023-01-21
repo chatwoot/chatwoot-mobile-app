@@ -76,7 +76,7 @@
   },
   "FILTER": {
     "ALL_INBOXES": "Alle Posteingänge",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filtern Sie nach Mitarbeitertyp",
     "FILTER_BY_CONVERSATION_STATUS": "Filtern nach Konversationsstatus",
     "FILTER_BY_INBOX": "Filtern nach Posteingang",
     "HEADER_TITLE": "Konversations-Filter",

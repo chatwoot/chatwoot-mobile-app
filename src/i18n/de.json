@@ -51,7 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Konversationen",
-    "UPDATING": "Aktualisiere...",
+    "UPDATING": "Aktualisieren...",
     "MINE": "Meine",
     "UN_ASSIGNED": "Nicht zugeordnet",
     "ALL": "Alle",
@@ -184,7 +184,7 @@
     "FACEBOOK": {
       "TEXT": "Sie können nicht antworten, weil ",
       "HREF_TEXT": "Beschränkung des 24-Stunden-Nachrichtenfensters",
-      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/?translation"
     }
   }
 }

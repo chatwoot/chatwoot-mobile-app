@@ -2,14 +2,15 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import { withStyles } from '@ui-kitten/components';
+import Snackbar from 'react-native-snackbar';
 import { useDispatch, useSelector } from 'react-redux';
 import LabelBox from 'src/components/LabelBox';
 import AddLabelButton from './AddButton';
-import { captureEvent } from 'helpers/Analytics';
 import { Spinner } from '@ui-kitten/components';
 import { View, Text } from 'react-native';
 import i18n from '../../../i18n';
-import Snackbar from 'react-native-snackbar';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { LABEL_EVENTS } from 'constants/analyticsEvents';
 
 import { getAllLabels, getConversationLabels, updateConversationLabels } from 'src/actions/label';
 
@@ -97,7 +98,7 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
       accountLabels && savedLabels
         ? activeLabels.map(label => label.title).filter(label => label !== value)
         : [];
-    captureEvent({ eventName: 'Conversation label removed through the contact details page' });
+    AnalyticsHelper.track(LABEL_EVENTS.DELETED);
     dispatch(
       updateConversationLabels({
         conversationId: conversationId,

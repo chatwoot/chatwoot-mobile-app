@@ -13,7 +13,8 @@ import LanguageItem from '../../components/LanguageItem';
 
 import { setLocale } from '../../actions/settings';
 import { LANGUAGES } from '../../constants';
-import { captureEvent } from 'helpers/Analytics';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
 
 const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
   const settings = useSelector(state => state.settings);
@@ -29,7 +30,10 @@ const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
   };
 
   const onSubmitLanguage = () => {
-    captureEvent({ eventName: `Changed the language to ${localeValue}` });
+    AnalyticsHelper.track(ACCOUNT_EVENTS.CHANGE_LANGUAGE, {
+      language: localeValue,
+    });
+
     if (isLoggedIn) {
       navigation.dispatch(StackActions.replace('Tab'));
     } else {

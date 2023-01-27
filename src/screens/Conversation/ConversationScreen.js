@@ -30,6 +30,8 @@ import i18n from 'i18n';
 import { FilterButton, ClearFilterButton, Header } from 'components';
 import { ConversationList, ConversationFilter, ConversationInboxFilter } from './components';
 import { CONVERSATION_STATUSES, ASSIGNEE_TYPES } from 'constants';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
 const ConversationScreen = () => {
   const theme = useTheme();
@@ -42,6 +44,8 @@ const ConversationScreen = () => {
   const webSocketUrl = useSelector(state => state.settings.webSocketUrl);
   const isLoading = useSelector(state => state.conversations.loading);
   const inboxes = useSelector(state => state.inbox.data);
+  const user = useSelector(store => store.auth.user);
+
   const [pageNumber, setPage] = useState(1);
   const dispatch = useDispatch();
 
@@ -54,8 +58,12 @@ const ConversationScreen = () => {
     dispatch(getAgents());
     dispatch(saveDeviceDetails());
     dispatch(getAllNotifications({ pageNo: 1 }));
-    // storeUser();
-  }, [dispatch, initActionCable]);
+    initAnalytics();
+  }, [dispatch, initActionCable, initAnalytics]);
+
+  const initAnalytics = useCallback(async () => {
+    AnalyticsHelper.identify(user);
+  }, [user]);
 
   const initActionCable = useCallback(async () => {
     const pubSubToken = await getPubSubToken();
@@ -68,6 +76,7 @@ const ConversationScreen = () => {
   };
 
   const refreshConversations = async () => {
+    AnalyticsHelper.track(CONVERSATION_EVENTS.REFRESH_CONVERSATIONS);
     await dispatch(clearAllConversations());
     setPage(1);
     loadConversations({
@@ -102,6 +111,7 @@ const ConversationScreen = () => {
   );
 
   const clearAppliedFilters = async () => {
+    AnalyticsHelper.track(CONVERSATION_EVENTS.CLEAR_FILTERS);
     await dispatch(clearAllConversations());
     await dispatch(setConversationStatus('open'));
     await dispatch(setAssigneeType('mine'));
@@ -110,12 +120,20 @@ const ConversationScreen = () => {
   };
 
   const onSelectAssigneeType = async item => {
+    AnalyticsHelper.track(CONVERSATION_EVENTS.APPLY_FILTER, {
+      type: 'assignee-type',
+      value: item.key,
+    });
     await dispatch(setAssigneeType(item.key));
     setPage(1);
     closeConversationAssigneeModal();
   };
 
   const onSelectConversationStatus = async item => {
+    AnalyticsHelper.track(CONVERSATION_EVENTS.APPLY_FILTER, {
+      type: 'status',
+      value: item.key,
+    });
     await dispatch(clearAllConversations());
     await dispatch(setConversationStatus(item.key));
     setPage(1);
@@ -123,6 +141,9 @@ const ConversationScreen = () => {
   };
 
   const onChangeInbox = async item => {
+    AnalyticsHelper.track(CONVERSATION_EVENTS.APPLY_FILTER, {
+      type: 'inbox',
+    });
     await dispatch(clearAllConversations());
     await dispatch(setActiveInbox(item.id));
     setPage(1);

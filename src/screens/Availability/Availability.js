@@ -9,9 +9,10 @@ import HeaderBar from '../../components/HeaderBar';
 import i18n from '../../i18n';
 import styles from './Availability.style';
 import AvailabilityItem from '../../components/AvailabilityItem';
-import { captureEvent } from 'helpers/Analytics';
 import { updateAvailabilityStatus } from '../../actions/auth';
 import { AVAILABILITY_TYPES } from '../../constants';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { PROFILE_EVENTS } from 'constants/analyticsEvents';
 
 const AvailabilityScreenComponent = ({ eva: { style }, navigation }) => {
   const {
@@ -24,6 +25,10 @@ const AvailabilityScreenComponent = ({ eva: { style }, navigation }) => {
   const dispatch = useDispatch();
 
   const onCheckedChange = ({ item }) => {
+    AnalyticsHelper.track(PROFILE_EVENTS.TOGGLE_AVAILABILITY_STATUS, {
+      from: availability_status,
+      to: item,
+    });
     setAvailabilityStatus(item);
   };
 
@@ -32,7 +37,6 @@ const AvailabilityScreenComponent = ({ eva: { style }, navigation }) => {
   };
 
   const saveAvailabilityStatus = () => {
-    captureEvent({ eventName: 'Updated availability status' });
     dispatch(updateAvailabilityStatus({ availability: availabilityStatus }));
     navigation.goBack();
   };

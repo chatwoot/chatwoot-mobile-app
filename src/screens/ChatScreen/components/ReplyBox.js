@@ -12,7 +12,9 @@ import { findFileSize } from 'helpers/FileHelper';
 import { MAXIMUM_FILE_UPLOAD_SIZE } from 'constants';
 import { showToast } from 'helpers/ToastHelper';
 import MentionUser from './MentionUser.js';
-import { captureEvent } from 'helpers/Analytics';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
+
 import conversationActions from 'reducer/conversationSlice.action';
 import CannedResponsesContainer from '../containers/CannedResponsesContainer';
 
@@ -77,13 +79,13 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
   };
 
   const onCannedResponseSelect = content => {
-    captureEvent({ eventName: 'Canned response selected' });
+    AnalyticsHelper.track(CONVERSATION_EVENTS.INSERTED_A_CANNED_RESPONSE);
     setCannedResponseSearchKey('');
     setMessage(content);
   };
 
   const onSelectAttachment = ({ attachment }) => {
-    captureEvent({ eventName: 'Attachment selected' });
+    AnalyticsHelper.track(CONVERSATION_EVENTS.SELECTED_ATTACHMENT);
     const { fileSize } = attachment;
     if (findFileSize(fileSize) <= MAXIMUM_FILE_UPLOAD_SIZE) {
       setAttachmentDetails(attachment);
@@ -97,7 +99,6 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
   };
 
   const togglePrivateMode = () => {
-    captureEvent({ eventName: 'Toggle private mode' });
     setPrivateMode(!isPrivate);
   };
 
@@ -119,7 +120,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
       if (bccEmails) {
         payload.message.bcc_emails = bccEmails;
       }
-      captureEvent({ eventName: 'Messaged sent' });
+      AnalyticsHelper.track(CONVERSATION_EVENTS.SENT_MESSAGE);
       dispatch(conversationActions.sendMessage({ data: payload }));
 
       setMessage('');
@@ -188,7 +189,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
               style={style.ccInputView}
               value={ccEmails}
               onChangeText={onCCMailChange}
-              placeholder="Emails separeted by commas"
+              placeholder="Emails separated by commas"
             />
           </View>
           <View style={style.emailFieldsTextWrap}>
@@ -197,7 +198,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
               style={style.bccInputView}
               value={bccEmails}
               onChangeText={onBCCMailChange}
-              placeholder="Emails separeted by commas"
+              placeholder="Emails separated by commas"
             />
           </View>
         </View>

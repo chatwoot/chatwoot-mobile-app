@@ -22,7 +22,6 @@ import I18n from '../i18n';
 import { getHeaders } from '../helpers/AuthHelper';
 import { getBaseUrl } from '../helpers/UrlHelper';
 import { API_URL } from '../constants/url';
-// import { identifyUser, resetAnalytics } from '../helpers/Analytics';
 import { clearDeviceDetails } from './notification';
 
 export const doLogin =

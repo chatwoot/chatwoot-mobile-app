@@ -9,8 +9,9 @@ import i18n from '../../i18n';
 import styles from './LabelScreen.style';
 import LabelItem from 'src/components/LabelItem';
 import { getAllLabels, getConversationLabels, updateConversationLabels } from '../../actions/label';
-import { captureEvent } from 'helpers/Analytics';
 import Snackbar from 'react-native-snackbar';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { LABEL_EVENTS } from 'constants/analyticsEvents';
 
 const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
   const { conversationDetails } = route.params;
@@ -65,13 +66,13 @@ const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
         savedLabels.splice(index, 1);
       }
       setSelectedlabels(array);
-      captureEvent({ eventName: 'Conversation label removed' });
+      AnalyticsHelper.track(LABEL_EVENTS.DELETED);
     } else {
       const array = [...selectedLabels];
       array.push(value.title);
       savedLabels.push(value.title);
       setSelectedlabels(array);
-      captureEvent({ eventName: 'Conversation label added' });
+      AnalyticsHelper.track(LABEL_EVENTS.CREATE);
     }
   };
 

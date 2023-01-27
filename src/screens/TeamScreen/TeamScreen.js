@@ -10,8 +10,9 @@ import i18n from '../../i18n';
 import styles from './TeamScreen.style';
 import TeamList from 'src/components/TeamList';
 import { getAllTeams, assignTeam } from '../../actions/team';
-import { captureEvent } from 'helpers/Analytics';
 import Snackbar from 'react-native-snackbar';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
 const TeamScreenComponent = ({ eva: { style }, navigation, route }) => {
   const dispatch = useDispatch();
@@ -51,7 +52,7 @@ const TeamScreenComponent = ({ eva: { style }, navigation, route }) => {
 
   const onClickAssignTeam = () => {
     if (!team || team.id !== selectedTeamId) {
-      captureEvent({ eventName: 'Conversation team changed' });
+      AnalyticsHelper.track(CONVERSATION_EVENTS.CHANGE_TEAM);
       dispatch(
         assignTeam({
           conversationId: conversationDetails.id,

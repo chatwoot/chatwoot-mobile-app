@@ -22,7 +22,6 @@ import HeaderBar from '../../components/HeaderBar';
 import images from '../../constants/images';
 import Empty from '../../components/Empty';
 import NotificationActionItem from '../../components/NotificationActionItem';
-import { captureEvent } from 'helpers/Analytics';
 
 const LoaderData = new Array(24).fill(0);
 const renderItemLoader = () => <NotificationItemLoader />;
@@ -171,7 +170,6 @@ class NotificationScreenComponent extends Component {
   onPressAction = ({ itemType }) => {
     actionSheetRef.current?.hide();
     if (itemType === 'mark_all') {
-      captureEvent({ eventName: 'All notifications are read' });
       this.props.markAllNotificationAsRead();
     }
   };

@@ -9,11 +9,12 @@ import HeaderBar from '../../components/HeaderBar';
 import i18n from '../../i18n';
 import styles from './NotificationPreference.style';
 import NotificationPreferenceItem from '../../components/NotificationPreferenceItem';
-import { captureEvent } from 'helpers/Analytics';
 import { NOTIFICATION_PREFERENCE_TYPES } from '../../constants';
 import CustomText from '../../components/Text';
 import { updateNotificationSettings } from '../../actions/settings';
 import { addOrRemoveItemFromArray } from '../../helpers';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { PROFILE_EVENTS } from 'constants/analyticsEvents';
 
 const NotificationPreferenceScreenComponent = ({ eva: { style }, navigation }) => {
   const {
@@ -43,7 +44,7 @@ const NotificationPreferenceScreenComponent = ({ eva: { style }, navigation }) =
   };
 
   const savePreferences = () => {
-    captureEvent({ eventName: 'Updated notification preferences' });
+    AnalyticsHelper.track(PROFILE_EVENTS.CHANGE_PREFERENCES);
     dispatch(
       updateNotificationSettings({
         notification_settings: {

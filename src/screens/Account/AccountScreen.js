@@ -6,13 +6,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { SafeAreaView, View, ScrollView } from 'react-native';
 import LoaderButton from '../../components/LoaderButton';
 import HeaderBar from '../../components/HeaderBar';
-
 import i18n from '../../i18n';
 import styles from './AccountScreen.style';
 import AccountItem from '../../components/AccountItem';
-import { captureEvent } from 'helpers/Analytics';
 import { setAccount } from '../../actions/auth';
 import { clearAllConversations } from 'reducer/conversationSlice';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
 const AccountScreenComponent = ({ eva: { style }, navigation }) => {
   const { user } = useSelector(state => state.auth);
   const { account_id, accounts } = user;
@@ -20,7 +20,11 @@ const AccountScreenComponent = ({ eva: { style }, navigation }) => {
   const dispatch = useDispatch();
 
   const onCheckedChange = ({ item }) => {
-    captureEvent({ eventName: 'Changed the account' });
+    const [currentAccount] = accounts.filter(account => account.id === account_id);
+    AnalyticsHelper.track(ACCOUNT_EVENTS.CHANGE_ACCOUNT, {
+      from: currentAccount.name,
+      to: item.name,
+    });
     dispatch(clearAllConversations());
     dispatch(setAccount({ accountId: item.id }));
   };

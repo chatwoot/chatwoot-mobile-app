@@ -16,12 +16,12 @@ import { LANGUAGES } from '../../constants';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
 
+import { selectLoggedIn } from 'reducer/authSlice';
+
 const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
   const settings = useSelector(state => state.settings);
-  const auth = useSelector(state => state.auth);
-
+  const isLoggedIn = useSelector(selectLoggedIn);
   const localeValue = settings.localeValue || 'en';
-  const isLoggedIn = auth.isLoggedIn;
 
   const dispatch = useDispatch();
 

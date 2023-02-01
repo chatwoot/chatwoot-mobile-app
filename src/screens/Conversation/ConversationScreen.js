@@ -33,6 +33,8 @@ import { CONVERSATION_STATUSES, ASSIGNEE_TYPES } from 'constants';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
+import { selectUser } from 'reducer/authSlice';
+
 const ConversationScreen = () => {
   const theme = useTheme();
   const { colors } = theme;
@@ -44,7 +46,7 @@ const ConversationScreen = () => {
   const webSocketUrl = useSelector(state => state.settings.webSocketUrl);
   const isLoading = useSelector(state => state.conversations.loading);
   const inboxes = useSelector(state => state.inbox.data);
-  const user = useSelector(store => store.auth.user);
+  const user = useSelector(selectUser);
 
   const [pageNumber, setPage] = useState(1);
   const dispatch = useDispatch();

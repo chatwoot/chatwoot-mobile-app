@@ -341,7 +341,7 @@ function bindAction(dispatch) {
 }
 function mapStateToProps(state) {
   return {
-    user: state.auth.user,
+    user: state.auth.currentUser,
     attributes: state.conversation.customAttributes,
   };
 }

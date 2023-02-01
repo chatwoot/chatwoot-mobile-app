@@ -22,9 +22,14 @@ const persistConfig = {
 const middlewares = [];
 
 const allReducer = (state, action) => {
-  if (action.type === 'USER_LOGOUT') {
-    state = { settings: state.settings };
+  if (action.type === 'auth/logout') {
+    state = undefined;
   }
+  // TODO: Add more reducers here
+  // export default (state, action) =>
+  // action.type === 'USER_LOGOUT'
+  //   ? rootReducer({ settings: state.settings }, action)
+  //   : rootReducer(state, action);
 
   return rootReducer(state, action);
 };

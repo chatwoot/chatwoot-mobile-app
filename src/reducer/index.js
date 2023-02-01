@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import auth from './auth';
+import auth from './authSlice';
 import inbox from './inbox';
 import conversation from './conversation';
 import settings from './settings';

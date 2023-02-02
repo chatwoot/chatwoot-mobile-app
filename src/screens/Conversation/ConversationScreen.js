@@ -6,10 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { View, ScrollView } from 'react-native';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { useFocusEffect } from '@react-navigation/native';
-
 import { getInboxIconByType } from 'helpers/inboxHelpers';
 import { getInboxes } from 'actions/inbox';
-import { getAgents } from 'actions/agent';
 import { getAllNotifications } from 'actions/notification';
 import ActionCable from 'helpers/ActionCable';
 import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
@@ -57,7 +55,6 @@ const ConversationScreen = () => {
     dispatch(getInboxes());
     clearAllDeliveredNotifications();
     dispatch(getInstalledVersion());
-    dispatch(getAgents());
     dispatch(saveDeviceDetails());
     dispatch(getAllNotifications({ pageNo: 1 }));
     initAnalytics();

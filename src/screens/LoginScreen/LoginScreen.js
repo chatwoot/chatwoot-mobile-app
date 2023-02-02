@@ -18,7 +18,7 @@ import { SIGNUP_URL } from '../../constants/url';
 import CustomText from '../../components/Text';
 import { openURL } from '../../helpers/UrlHelper';
 import { EMAIL_REGEX } from '../../helpers/formHelper';
-import { actions as authActions, resetAuth, selectLoggedIn } from 'reducer/authSlice';
+import { actions as authActions, resetAuth } from 'reducer/authSlice';
 
 const appName = DeviceInfo.getApplicationName();
 
@@ -42,8 +42,8 @@ const defaultProps = {
 
 const LoginScreenComponent = ({ navigation, eva }) => {
   const dispatch = useDispatch();
+  const { isLoggingIn } = useSelector(state => state.auth);
 
-  const isLoggingIn = useSelector(selectLoggedIn);
   const installationUrl = useSelector(state => state.settings.installationUrl);
   const baseUrl = useSelector(state => state.settings.baseUrl);
 

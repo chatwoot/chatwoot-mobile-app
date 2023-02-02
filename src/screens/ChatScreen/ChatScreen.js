@@ -11,7 +11,7 @@ import ChatHeader from './components/ChatHeader';
 import ChatHeaderLoader from './components/ChatHeaderLoader';
 import styles from './ChatScreen.style';
 import { openURL } from 'helpers/UrlHelper';
-
+import { actions as inboxAgentActions } from 'reducer/inboxAgentsSlice';
 import { markNotificationAsRead } from 'actions/notification';
 import { getGroupedConversation, findUniqueMessages } from 'helpers';
 import { actions as CannedResponseActions } from 'reducer/cannedResponseSlice';

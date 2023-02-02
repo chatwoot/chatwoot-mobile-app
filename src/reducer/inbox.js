@@ -1,19 +1,8 @@
-import {
-  GET_INBOX,
-  GET_INBOX_AGENTS,
-  GET_INBOX_AGENTS_ERROR,
-  GET_INBOX_AGENTS_SUCCESS,
-  GET_INBOX_ERROR,
-  GET_INBOX_SUCCESS,
-  SET_INBOX,
-} from '../constants/actions';
+import { GET_INBOX, GET_INBOX_ERROR, GET_INBOX_SUCCESS } from '../constants/actions';
 
 const initialState = {
   isFetching: false,
   data: [],
-  inboxSelected: {},
-  inboxAgents: {},
-  isInboxAgentsFetching: false,
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -39,32 +28,6 @@ export default (state = initialState, action) => {
       };
     }
 
-    case SET_INBOX:
-      return {
-        ...state,
-        inboxSelected: action.payload,
-      };
-
-    case GET_INBOX_AGENTS: {
-      return {
-        ...state,
-        isInboxAgentsFetching: true,
-      };
-    }
-
-    case GET_INBOX_AGENTS_SUCCESS: {
-      return {
-        ...state,
-        isInboxAgentsFetching: false,
-        inboxAgents: action.payload,
-      };
-    }
-    case GET_INBOX_AGENTS_ERROR: {
-      return {
-        ...state,
-        isInboxAgentsFetching: false,
-      };
-    }
     default:
       return state;
   }

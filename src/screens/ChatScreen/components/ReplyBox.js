@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Dimensions, TextInput, Text, TouchableOpacity } from 'react-native';
 import { MentionInput } from 'react-native-controlled-mentions';
 import { withStyles, Icon } from '@ui-kitten/components';
@@ -14,9 +14,9 @@ import { showToast } from 'helpers/ToastHelper';
 import MentionUser from './MentionUser.js';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
-
 import conversationActions from 'reducer/conversationSlice.action';
 import CannedResponsesContainer from '../containers/CannedResponsesContainer';
+import { inboxAgentSelectors, actions as inboxAgentActions } from 'reducer/inboxAgentsSlice';
 
 const propTypes = {
   conversationId: PropTypes.number,
@@ -33,11 +33,17 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
   const [bccEmails, setBCCEmails] = useState('');
   const [emailFields, toggleEmailFields] = useState(false);
   const [message, setMessage] = useState('');
-  const agents = useSelector(state => state.agent.data);
-  const verifiedAgents = agents.filter(agent => agent.confirmed);
+  const agents = useSelector(state => inboxAgentSelectors.inboxAssignedAgents(state));
   const [cannedResponseSearchKey, setCannedResponseSearchKey] = useState('');
   const [attachmentDetails, setAttachmentDetails] = useState(null);
+  const inboxId = conversationDetails?.inbox_id;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (inboxId) {
+      dispatch(inboxAgentActions.fetchInboxAgents({ inboxId }));
+    }
+  }, [dispatch, inboxId]);
 
   const onNewMessageChange = text => {
     setMessage(text);
@@ -149,7 +155,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
     }
     return (
       <View>
-        {verifiedAgents
+        {agents
           // eslint-disable-next-line react/prop-types
           .filter(one => one.name.toLocaleLowerCase().includes(keyword.toLocaleLowerCase()))
           .map((item, index) => (

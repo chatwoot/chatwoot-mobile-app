@@ -40,29 +40,22 @@ export const actions = {
         },
         headers: response.headers,
       };
-    } catch (error) {
-      const { response } = error;
+    } catch (response) {
       if (response && response.status === 401) {
         const { errors } = response.data;
         const hasAuthErrorMsg =
           errors && errors.length && errors[0] && typeof errors[0] === 'string';
-
         if (hasAuthErrorMsg) {
-          showToast({ title: errors[0], type: 'error' });
+          showToast({ message: errors[0] });
         } else {
-          showToast({ title: I18n.t('ERRORS.AUTH'), type: 'error' });
+          showToast({ message: I18n.t('ERRORS.AUTH') });
         }
-      } else {
-        showToast({ title: I18n.t('ERRORS.COMMON_ERROR'), type: 'error' });
+        if (!errors) {
+          throw errors;
+        }
+        return rejectWithValue(errors);
       }
-
-      if (!error.response) {
-        throw error;
-      }
-      if (!error.response) {
-        throw error;
-      }
-      return rejectWithValue(error.response.data);
+      showToast({ message: I18n.t('ERRORS.COMMON_ERROR') });
     }
   }),
   onResetPassword: createAsyncThunk(

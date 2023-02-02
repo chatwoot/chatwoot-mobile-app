@@ -7,6 +7,8 @@ import {
   updateContactsPresence,
 } from 'reducer/conversationSlice';
 
+import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
+
 import conversationActions from 'reducer/conversationSlice.action';
 import {
   addUserTypingToConversation,
@@ -70,12 +72,11 @@ class ActionCableConnector extends BaseActionCableConnector {
   };
 
   onPresenceUpdate = ({ contacts, users }) => {
-    //TODO: Move this to agentSlice https://github.com/chatwoot/chatwoot-mobile-next/blob/main/src/helpers/ActionCable.js#L64
-    // store.dispatch(
-    //  updateAgentsPresence({
-    //     users,
-    //   }),
-    // );
+    store.dispatch(
+      updateAgentsPresence({
+        users,
+      }),
+    );
     store.dispatch(
       updateContactsPresence({
         contacts,

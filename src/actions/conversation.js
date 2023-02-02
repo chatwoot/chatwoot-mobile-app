@@ -4,7 +4,7 @@ import {
 } from '../constants/actions';
 
 import axios from '../helpers/APIHelper';
-import { getInboxAgents } from './inbox';
+import { actions as inboxAgentActions } from 'reducer/inboxAgentsSlice';
 
 export const getConversationDetails =
   ({ conversationId }) =>
@@ -18,7 +18,7 @@ export const getConversationDetails =
         payload,
       });
       const { inbox_id: inboxId } = payload;
-      dispatch(getInboxAgents({ inboxId }));
+      dispatch(inboxAgentActions.fetchInboxAgents({ inboxId }));
     } catch {}
   };
 

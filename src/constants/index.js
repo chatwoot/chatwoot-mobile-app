@@ -102,6 +102,7 @@ export const INBOX_IMAGES = {
 export const LANGUAGES = {
   af: 'Afrikaans',
   ar: 'Arabic',
+  id: 'Bahasa Indonesia',
   ca: 'Catalan',
   cs: 'Czech',
   da: 'Danish',

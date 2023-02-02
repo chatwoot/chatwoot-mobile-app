@@ -1,0 +1,191 @@
+{
+  "WELCOME": "Selamat Datang",
+  "COMMON": {
+    "ERROR": "Error",
+    "ERROR_TITLE": "Terjadi kesalahan yang tidak terduga",
+    "REPORT_MESSAGE": "Kami telah melaporkan ini kepada tim! Silakan tutup aplikasi dan mulai lagi!",
+    "CLOSE": "Tutup"
+  },
+  "FOOTER": {
+    "HOME": "Beranda",
+    "CONVERSATION": "Percakapan",
+    "NOTIFICATION": "Notifikasi",
+    "SETTINGS": "Pengaturan"
+  },
+  "CONFIGURE_URL": {
+    "ENTER_URL": "URL Instalasi",
+    "DESCRIPTION": "Jika Anda menggunakan instalasi Chatwoot yang di server anda sendiri, masukkan URL server Anda. Jika tidak, gunakan app.chatwoot.com.",
+    "URL_ERROR": "Masukkan URL yang valid",
+    "URL_REQUIRED": "URL wajib diisi",
+    "CONNECT": "Hubungkan",
+    "CHANGE_LANGUAGE": "Ganti bahasa",
+    "ERROR": "Url instalasi tidak valid"
+  },
+  "LOGIN": {
+    "TITLE": "Login ke akun Anda",
+    "DESCRIPTION": "Anda terhubung ke {{baseUrl}}. Login dengan alamat email dan kata sandi Anda.",
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "EMAIL_REQUIRED": "Email wajib diisi",
+    "EMAIL_ERROR": "Masukkan email yang valid",
+    "PASSWORD_REQUIRED": "Password wajib diisi",
+    "PASSWORD_ERROR": "Masukkan kata sandi yang valid",
+    "LOGIN": "Masuk",
+    "FORGOT_PASSWORD": "Lupa kata sandi?",
+    "RESET_HERE": "Atur disini",
+    "NO_ACCOUNT": "Belum punya akun?",
+    "CREATE_ACCOUNT": "Daftar akun baru",
+    "SETTINGS": "Pengaturan",
+    "CHANGE_LANGUAGE": "Ganti bahasa",
+    "TERMS": "Syarat & Ketentuan",
+    "CHANGE_URL": "Ganti URL"
+  },
+  "FORGOT_PASSWORD": {
+    "EMAIL": "Silakan masukkan email Anda",
+    "EMAIL_ERROR": "Masukkan email yang valid",
+    "RESET_HERE": "Atur kata sandi",
+    "HEADER_TITLE": "Atur kata sandi",
+    "TITLE": "Lupa kata sandi?",
+    "SUB_TITLE": "Jangan khawatir! Kami mendukung Anda",
+    "API_SUCCESS": "Link reset kata sandi telah dikirim ke alamat email Anda"
+  },
+  "CONVERSATION": {
+    "DEFAULT_HEADER_TITLE": "Percakapan",
+    "UPDATING": "Mengambil...",
+    "MINE": "Saya",
+    "UN_ASSIGNED": "Belum Diambil",
+    "ALL": "Semua",
+    "EMPTY": "Tidak ada percakapan aktif di grup ini.",
+    "PICTURE_CONTENT": "Pesan gambar",
+    "ATTACHMENT_CONTENT": "Lampiran File",
+    "DOWNLOAD": "Unduh",
+    "TODAY": "Hari ini",
+    "YESTERDAY": "Kemarin",
+    "TYPE_MESSAGE": "Ketik pesan",
+    "TYPING": "mengetik",
+    "ALL_CONVERSATION_LOADED": "Semua percakapan dimuat",
+    "ASSIGN": "Tetapkan percakapan",
+    "FILE_SIZE_LIMIT": "File melebihi batas lampiran 5MB",
+    "SHARE": "Bagikan percakapan",
+    "CANCEL": "Batal",
+    "PRIVATE_MSG_INPUT": "Ini hanya akan terlihat oleh Agen",
+    "UN_ASSIGN": "Menghapus penetapan percakapan",
+    "MUTE_CONVERSATION": "Bisukan percakapan",
+    "UNMUTE_CONVERSATION": "Menyalakan suara percakapan",
+    "CONVERSATION_NOT_FOUND": "Tidak dapat mengambil percakapan"
+  },
+  "FILTER": {
+    "ALL_INBOXES": "Semua kotak masuk",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter menurut jenis penerima tugas",
+    "FILTER_BY_CONVERSATION_STATUS": "Memfilter menurut status percakapan",
+    "FILTER_BY_INBOX": "Filter menurut kotak masuk",
+    "HEADER_TITLE": "Filter Percakapan",
+    "CHOOSE_INBOX": "Pilih Kotak Masuk",
+    "CHOOSE_STATUS": "Status Percakapan",
+    "OPEN": "Buka",
+    "RESOLVED": "Diselesaikan",
+    "BOT": "Robot",
+    "SUBMIT": "Submit",
+    "PENDING": "Tertunda",
+    "SNOOZED": "Ditunda"
+  },
+  "SETTINGS": {
+    "HEADER_TITLE": "Pengaturan",
+    "AVAILABILITY": "Ketersediaan",
+    "NOTIFICATION": "Preferensi Pemberitahuan",
+    "HELP": "Dokumen Bantuan",
+    "CHAT_WITH_US": "Ngobrol dengan Kami",
+    "LOG_OUT": "Keluar",
+    "SWITCH_ACCOUNT": "Ganti Akun",
+    "CHANGE_LANGUAGE": "Ganti Bahasa",
+    "SUBMIT": "Submit"
+  },
+  "NOTIFICATION": {
+    "HEADER_TITLE": "Notifikasi",
+    "EMPTY": "Belum ada notifikasi saat ini.",
+    "EMPTY_MORE_TEXT": "Setelah Anda mulai menerima pemberitahuan, semua akan muncul di sini.",
+    "ALL_NOTIFICATION_LOADED": "Semua notifikasi dimuat",
+    "MARK_ALL": "Menandai semua sebagai sudah dibaca",
+    "CANCEL": "Batal"
+  },
+  "AVAILABILITY": {
+    "ONLINE": "Online",
+    "BUSY": "Sibuk",
+    "OFFLINE": "Offline"
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "TITLE": "Preferensi Pemberitahuan",
+    "EMAIL": "Email",
+    "PUSH": "Push",
+    "CONVERSATION_CREATE_PUSH": "Mengirim pemberitahuan push saat percakapan baru dibuat",
+    "CONVERSATION_ASSIGNEE_PUSH": "Mengirim pemberitahuan push saat percakapan ditetapkan kepada saya",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Mengirim pemberitahuan push saat pesan baru dibuat dalam percakapan yang ditetapkan",
+    "CONVERSATION_MENTION": "Mengirim pemberitahuan push saat Anda disebutkan dalam percakapan",
+    "CONVERSATION_CREATE_EMAIL": "Mengirim pemberitahuan email saat percakapan baru dibuat",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Mengirim pemberitahuan email saat percakapan ditetapkan kepada saya",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Mengirim pemberitahuan email saat pesan baru dibuat dalam percakapan yang ditetapkan"
+  },
+  "CONVERSATION_DETAILS": {
+    "TITLE": "Informasi Percakapan",
+    "BROWSER": "Peramban",
+    "OPERATING_SYSTEM": "Sistem operasi",
+    "INITIATED_AT": "Diprakarsai di",
+    "INITIATED_FROM": "Diprakarsai dari",
+    "IP_ADDRESS": "Alamat IP"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Atribut Kontak"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Tindakan"
+  },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Label Percakapan",
+    "ADD_LABEL": "Tambahkan Label",
+    "EMPTY_LIST": "Harap tambahkan label ke akun Anda",
+    "NO_LABEL": "Tidak ada label yang ditetapkan",
+    "UPDATE_LABEL": "Label berhasil diperbarui"
+  },
+  "AGENT": {
+    "TITLE": "Pilih Agen"
+  },
+  "TEAMS": {
+    "TITLE": "Pilih Tim",
+    "EMPTY": "Tambahkan tim ke akun Anda untuk menetapkan percakapan ke tim.",
+    "CHANGE_TEAMS": "Tim percakapan berubah"
+  },
+  "ERRORS": {
+    "COMMON_ERROR": "Tidak dapat terhubung ke Woot Server, Silakan coba lagi nanti",
+    "OfFLINE": "Anda harus terhubung ke Wi-fi atau jaringan seluler untuk online kembali",
+    "OFFLINE": "Anda harus terhubung ke Wi-fi atau jaringan seluler untuk online kembali",
+    "CANNOT_FETCH": "Ada kesalahan saat mengambil informasi, silakan coba lagi",
+    "AUTH": "Nama pengguna / kata sandi salah. Silakan coba lagi",
+    "NO_ACCOUNTS_MESSAGE": "Anda tidak memiliki akses ke akun chatwoot apa pun"
+  },
+  "SUCCESS": {
+    "AUTH": "Login Berhasil"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "Peningkatan server diperlukan",
+    "WARNING_FOR_AGENT": "Sepertinya Anda menggunakan server Chatwoot yang tidak didukung perangkat seluler Anda. Silakan hubungi admin Anda untuk meningkatkan server Chatwoot Anda.",
+    "WARNING_FOR_ADMIN": "Sepertinya Anda menggunakan server Chatwoot yang tidak didukung perangkat seluler Anda. Diperlukan peningkatan ke versi server %{minimumVersion} atau yang lebih baru."
+  },
+  "EXIT": {
+    "TITLE": "Keluar",
+    "SUBTITLE": "Apakah Anda yakin ingin berhenti?",
+    "CANCEL": "Batal",
+    "OK": "Ok"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP": {
+      "TEXT": "Anda hanya dapat membalas percakapan ini menggunakan pesan templat karena ",
+      "HREF_TEXT": "pembatasan jendela pesan 24 jam",
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    },
+    "FACEBOOK": {
+      "TEXT": "Anda tidak dapat membalas karena ",
+      "HREF_TEXT": "pembatasan jendela pesan 24 jam",
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
+  }
+}

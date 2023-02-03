@@ -10,8 +10,6 @@ import {
 } from '../constants/actions';
 import { pop } from '../helpers/NavigationHelper';
 
-import { getConversationDetails } from './conversation';
-
 export const getAllTeams = () => async dispatch => {
   dispatch({ type: GET_ALL_TEAMS });
   try {
@@ -36,7 +34,6 @@ export const assignTeam =
       const apiUrl = `conversations/${conversationId}/assignments`;
       await axios.post(apiUrl, params);
       dispatch({ type: ASSIGN_TEAM_SUCCESS });
-      dispatch(getConversationDetails({ conversationId }));
       pop(1);
     } catch (error) {
       dispatch({ type: ASSIGN_TEAM_ERROR });

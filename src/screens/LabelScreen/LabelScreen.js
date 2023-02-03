@@ -32,7 +32,7 @@ const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
 
   const { isAllLabelsLoaded } = conversation;
 
-  const [selectedLabels, setSelectedlabels] = useState(savedLabels);
+  const [selectedLabels, setLabels] = useState(savedLabels);
 
   const onUpdateLabels = value => {
     if (value) {
@@ -47,7 +47,7 @@ const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
           duration: Snackbar.LENGTH_SHORT,
         });
         dispatch(getConversationLabels({ conversationId }));
-        setSelectedlabels(savedLabels);
+        setLabels(savedLabels);
       });
     }
   };
@@ -65,13 +65,13 @@ const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
         array.splice(index, 1);
         savedLabels.splice(index, 1);
       }
-      setSelectedlabels(array);
+      setLabels(array);
       AnalyticsHelper.track(LABEL_EVENTS.DELETED);
     } else {
       const array = [...selectedLabels];
       array.push(value.title);
       savedLabels.push(value.title);
-      setSelectedlabels(array);
+      setLabels(array);
       AnalyticsHelper.track(LABEL_EVENTS.CREATE);
     }
   };

@@ -10,8 +10,6 @@ import {
   GET_CONVERSATION_LABELS_ERROR,
 } from '../constants/actions';
 
-import { getConversationDetails } from './conversation';
-
 export const getAllLabels = () => async dispatch => {
   dispatch({ type: GET_ALL_LABELS });
   try {
@@ -55,8 +53,6 @@ export const updateConversationLabels =
       dispatch({
         type: UPDATE_CONVERSATION_LABELS_SUCCESS,
         payload: data,
-      }).then(() => {
-        dispatch(getConversationDetails({ conversationId }));
-      });
+      }).then(() => {});
     } catch (error) {}
   };

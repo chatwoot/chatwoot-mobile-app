@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
 import auth from './authSlice';
-import inbox from './inbox';
+import inboxSlice from './inboxSlice';
 import conversation from './conversation';
 import settings from './settings';
 import notification from './notification';
@@ -11,7 +11,7 @@ import inboxAgentsSlice from './inboxAgentsSlice';
 import conversationTypingSlice from './conversationTypingSlice';
 export const rootReducer = combineReducers({
   auth,
-  inbox,
+  inbox: inboxSlice,
   conversation,
   settings,
   notification,

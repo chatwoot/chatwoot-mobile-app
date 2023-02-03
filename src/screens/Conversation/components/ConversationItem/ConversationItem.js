@@ -10,6 +10,7 @@ import { getTypingUsersText } from 'helpers';
 import ConversationContent from './ConversationContent';
 import ConversationAttachment from './ConversationAttachment';
 import { dynamicTime } from 'helpers/TimeHelper';
+import { inboxesSelector } from 'reducer/inboxSlice';
 
 const propTypes = {
   item: PropTypes.shape({
@@ -35,7 +36,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
-  const inboxes = useSelector(state => state.inbox.data);
+  const inboxes = useSelector(inboxesSelector.selectAll);
   const {
     meta: {
       sender: { name, thumbnail, availability_status: availabilityStatus },

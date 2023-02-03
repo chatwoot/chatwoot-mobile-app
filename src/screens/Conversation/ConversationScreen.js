@@ -7,7 +7,7 @@ import { View, ScrollView } from 'react-native';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { useFocusEffect } from '@react-navigation/native';
 import { getInboxIconByType } from 'helpers/inboxHelpers';
-import { getInboxes } from 'actions/inbox';
+import { actions as inboxActions } from 'reducer/inboxSlice';
 import { getAllNotifications } from 'actions/notification';
 import ActionCable from 'helpers/ActionCable';
 import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
@@ -32,6 +32,7 @@ import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
 import { selectUser } from 'reducer/authSlice';
+import { inboxesSelector } from 'reducer/inboxSlice';
 
 const ConversationScreen = () => {
   const theme = useTheme();
@@ -43,7 +44,7 @@ const ConversationScreen = () => {
   // const installationUrl = useSelector(state => state.settings.installationUrl);
   const webSocketUrl = useSelector(state => state.settings.webSocketUrl);
   const isLoading = useSelector(state => state.conversations.loading);
-  const inboxes = useSelector(state => state.inbox.data);
+  const inboxes = useSelector(inboxesSelector.selectAll);
   const user = useSelector(selectUser);
 
   const [pageNumber, setPage] = useState(1);
@@ -52,7 +53,7 @@ const ConversationScreen = () => {
   useEffect(() => {
     initActionCable();
     dispatch(clearAllConversations());
-    dispatch(getInboxes());
+    dispatch(inboxActions.fetchInboxes());
     clearAllDeliveredNotifications();
     dispatch(getInstalledVersion());
     dispatch(saveDeviceDetails());

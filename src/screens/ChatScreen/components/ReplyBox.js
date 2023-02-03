@@ -78,10 +78,10 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
   };
 
   const onBlur = () => {
-    dispatch(toggleTypingStatus({ conversationId, typingStatus: 'off' }));
+    dispatch(conversationActions.toggleTypingStatus({ conversationId, typingStatus: 'off' }));
   };
   const onFocus = () => {
-    dispatch(toggleTypingStatus({ conversationId, typingStatus: 'on' }));
+    dispatch(conversationActions.toggleTypingStatus({ conversationId, typingStatus: 'on' }));
   };
 
   const onCannedResponseSelect = content => {

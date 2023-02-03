@@ -8,19 +8,15 @@ import notification from './notification';
 import cannedResponseSlice from './cannedResponseSlice';
 import conversationSlice from './conversationSlice';
 import inboxAgentsSlice from './inboxAgentsSlice';
-
+import conversationTypingSlice from './conversationTypingSlice';
 export const rootReducer = combineReducers({
   auth,
   inbox,
   conversation,
   settings,
   notification,
+  conversationTypingStatus: conversationTypingSlice,
   cannedResponses: cannedResponseSlice,
   conversations: conversationSlice,
   inboxAgents: inboxAgentsSlice,
 });
-
-// export default (state, action) =>
-//   action.type === 'USER_LOGOUT'
-//     ? rootReducer({ settings: state.settings }, action)
-//     : rootReducer(state, action);

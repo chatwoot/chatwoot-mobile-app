@@ -37,7 +37,6 @@ const AvailabilityScreenComponent = ({ eva: { style }, navigation }) => {
   };
 
   const saveAvailabilityStatus = () => {
-    // TODO: move this authSlice
     dispatch(authActions.updateAvailability({ availability: availabilityStatus }));
     navigation.goBack();
   };

@@ -7,6 +7,8 @@ import { showToast } from 'helpers/ToastHelper';
 import { getHeaders } from 'helpers/AuthHelper';
 import { getBaseUrl } from 'helpers/UrlHelper';
 import { API_URL } from 'constants/url';
+import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
+
 export const actions = {
   doLogin: createAsyncThunk('auth/doLogin', async ({ email, password }, { rejectWithValue }) => {
     try {
@@ -93,22 +95,22 @@ export const actions = {
   ),
   updateAvailability: createAsyncThunk(
     'auth/updateAvailability',
-    async ({ availability }, { rejectWithValue }) => {
+    async ({ availability }, { dispatch, rejectWithValue }) => {
       try {
         const headers = await getHeaders();
         const baseUrl = await getBaseUrl();
         const { accountId } = headers;
-        const data = { profile: { availability, account_id: accountId } };
-        const response = await axios.post(`${baseUrl}${API_URL}profile/availability`, data, {
+        const payload = { profile: { availability, account_id: accountId } };
+        const { data } = await axios.post(`${baseUrl}${API_URL}profile/availability`, payload, {
           headers: headers,
         });
-        // TODO: Update the current user's availability in the agents slice
-        // dispatch('agents/updateSingleAgentPresence', {
-        //   id,
-        //   availabilityStatus: params.availability,
-        // });
-        const userData = response.data;
-        return userData;
+        const users = { [data.id]: availability };
+        dispatch(
+          updateAgentsPresence({
+            users,
+          }),
+        );
+        return data;
       } catch (error) {}
     },
   ),

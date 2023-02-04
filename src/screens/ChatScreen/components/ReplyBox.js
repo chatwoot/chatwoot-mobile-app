@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import AttachmentPreview from './AttachmentPreview';
 import Attachment from './Attachment';
 import i18n from 'i18n';
-import { toggleTypingStatus } from 'actions/conversation';
 import { findFileSize } from 'helpers/FileHelper';
 import { MAXIMUM_FILE_UPLOAD_SIZE } from 'constants';
 import { showToast } from 'helpers/ToastHelper';

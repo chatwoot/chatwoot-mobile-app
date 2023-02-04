@@ -9,9 +9,10 @@ import cannedResponseSlice from './cannedResponseSlice';
 import conversationSlice from './conversationSlice';
 import inboxAgentsSlice from './inboxAgentsSlice';
 import conversationTypingSlice from './conversationTypingSlice';
+import labelSlice from './labelSlice';
+import conversationLabelsSlice from './conversationLabelSlice';
 export const rootReducer = combineReducers({
   auth,
-  inbox: inboxSlice,
   conversation,
   settings,
   notification,
@@ -19,4 +20,7 @@ export const rootReducer = combineReducers({
   cannedResponses: cannedResponseSlice,
   conversations: conversationSlice,
   inboxAgents: inboxAgentsSlice,
+  labels: labelSlice,
+  inbox: inboxSlice,
+  conversationLabels: conversationLabelsSlice,
 });

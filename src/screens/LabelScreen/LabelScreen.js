@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Spinner, withStyles } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
 import { SafeAreaView, View, ScrollView, Text } from 'react-native';
@@ -8,10 +8,14 @@ import HeaderBar from '../../components/HeaderBar';
 import i18n from '../../i18n';
 import styles from './LabelScreen.style';
 import LabelItem from 'src/components/LabelItem';
-import { getAllLabels, getConversationLabels, updateConversationLabels } from '../../actions/label';
-import Snackbar from 'react-native-snackbar';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { LABEL_EVENTS } from 'constants/analyticsEvents';
+
+import { actions as labelActions, labelsSelector } from 'reducer/labelSlice';
+import {
+  actions as conversationLabelActions,
+  selectConversationLabels,
+} from 'reducer/conversationLabelSlice';
 
 const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
   const { conversationDetails } = route.params;
@@ -19,59 +23,43 @@ const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllLabels());
-    dispatch(getConversationLabels({ conversationId }));
+    dispatch(labelActions.fetchAllLabels());
+    dispatch(conversationLabelActions.fetchConversationLabels({ conversationId }));
   }, [conversationId, dispatch]);
 
+  const conversationLabels = useSelector(selectConversationLabels);
   const conversation = useSelector(state => state.conversation);
-
-  const labels = useSelector(state => state.conversation.availableLabels);
-  const conversationLabels = useSelector(state => state.conversation.conversationLabels);
-  const accountLabels = labels && labels.payload;
-  const savedLabels = conversationLabels && conversationLabels.payload;
+  const labels = useSelector(labelsSelector.selectAll);
+  const savedLabels = conversationLabels[conversationId] || [];
 
   const { isAllLabelsLoaded } = conversation;
 
-  const [selectedLabels, setLabels] = useState(savedLabels);
-
-  const onUpdateLabels = value => {
-    if (value) {
-      dispatch(
-        updateConversationLabels({
-          conversationId: conversationId,
-          labels: value,
-        }),
-      ).then(() => {
-        Snackbar.show({
-          text: i18n.t('CONVERSATION_LABELS.UPDATE_LABEL'),
-          duration: Snackbar.LENGTH_SHORT,
-        });
-        dispatch(getConversationLabels({ conversationId }));
-        setLabels(savedLabels);
-      });
-    }
+  const onUpdateLabels = selectedLabels => {
+    dispatch(
+      conversationLabelActions.updateConversationLabels({
+        conversationId: conversationId,
+        labels: selectedLabels,
+      }),
+    );
   };
 
   const goBack = () => {
-    onUpdateLabels(selectedLabels);
     navigation.goBack();
   };
 
   const onClickAddRemoveLabels = value => {
     if (savedLabels.includes(value.title)) {
-      const array = [...selectedLabels];
+      const array = [...savedLabels];
       const index = array.indexOf(value.title);
       if (index !== -1) {
         array.splice(index, 1);
-        savedLabels.splice(index, 1);
       }
-      setLabels(array);
+      onUpdateLabels(array);
       AnalyticsHelper.track(LABEL_EVENTS.DELETED);
     } else {
-      const array = [...selectedLabels];
+      const array = [...savedLabels];
       array.push(value.title);
-      savedLabels.push(value.title);
-      setLabels(array);
+      onUpdateLabels(array);
       AnalyticsHelper.track(LABEL_EVENTS.CREATE);
     }
   };
@@ -88,9 +76,9 @@ const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
       <ScrollView>
         {!isAllLabelsLoaded ? (
           <View>
-            {accountLabels &&
+            {labels &&
               savedLabels &&
-              accountLabels.map(item => (
+              labels.map(item => (
                 <LabelItem
                   key={item.id}
                   title={item.title}

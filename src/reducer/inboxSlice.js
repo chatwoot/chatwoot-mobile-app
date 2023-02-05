@@ -16,7 +16,7 @@ export const inboxAdapter = createEntityAdapter({
 });
 
 const inboxSlice = createSlice({
-  name: 'inbox',
+  name: 'inboxes',
   initialState: inboxAdapter.getInitialState({
     loading: false,
   }),
@@ -35,6 +35,6 @@ const inboxSlice = createSlice({
   },
 });
 
-export const inboxesSelector = inboxAdapter.getSelectors(state => state.inbox);
+export const inboxesSelector = inboxAdapter.getSelectors(state => state.inboxes);
 
 export default inboxSlice.reducer;

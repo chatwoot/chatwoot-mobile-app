@@ -33,6 +33,7 @@ import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
 import { selectUser } from 'reducer/authSlice';
 import { inboxesSelector } from 'reducer/inboxSlice';
+import { selectWebSocketUrl } from 'reducer/settingsSlice';
 
 const ConversationScreen = () => {
   const theme = useTheme();
@@ -41,8 +42,7 @@ const ConversationScreen = () => {
   const conversationStatus = useSelector(selectConversationStatus);
   const assigneeType = useSelector(selectAssigneeType);
   const activeInboxId = useSelector(selectActiveInbox);
-  // const installationUrl = useSelector(state => state.settings.installationUrl);
-  const webSocketUrl = useSelector(state => state.settings.webSocketUrl);
+  const webSocketUrl = useSelector(selectWebSocketUrl);
   const isLoading = useSelector(state => state.conversations.loading);
   const inboxes = useSelector(inboxesSelector.selectAll);
   const user = useSelector(selectUser);

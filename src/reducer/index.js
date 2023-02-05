@@ -2,8 +2,7 @@ import { combineReducers } from 'redux';
 
 import auth from './authSlice';
 import inboxSlice from './inboxSlice';
-import conversation from './conversation';
-import settings from './settings';
+import settingsSlice from './settingsSlice';
 import notification from './notification';
 import cannedResponseSlice from './cannedResponseSlice';
 import conversationSlice from './conversationSlice';
@@ -15,15 +14,14 @@ import teamSlice from './teamSlice';
 import customAttributeSlice from './customAttributeSlice';
 export const rootReducer = combineReducers({
   auth,
-  conversation,
-  settings,
+  settings: settingsSlice,
   notification,
   conversationTypingStatus: conversationTypingSlice,
   cannedResponses: cannedResponseSlice,
   conversations: conversationSlice,
   inboxAgents: inboxAgentsSlice,
   labels: labelSlice,
-  inbox: inboxSlice,
+  inboxes: inboxSlice,
   conversationLabels: conversationLabelsSlice,
   teams: teamSlice,
   customAttributes: customAttributeSlice,

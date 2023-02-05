@@ -34,6 +34,7 @@ import { withStyles } from '@ui-kitten/components';
 import { findConversationLinkFromPush } from './helpers/PushHelper';
 
 import { selectLoggedIn } from 'reducer/authSlice';
+import { selectUrlSet, selectInstallationUrl, selectLocale } from 'reducer/settingsSlice';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -90,9 +91,9 @@ const App = ({ eva: { style } }) => {
   const routeNameRef = useRef();
 
   const isLoggedIn = useSelector(selectLoggedIn);
-  const isUrlSet = useSelector(state => state.settings.isUrlSet);
-  const installationUrl = useSelector(state => state.settings.installationUrl);
-  const locale = useSelector(state => state.settings.localeValue);
+  const isUrlSet = useSelector(selectUrlSet);
+  const installationUrl = useSelector(selectInstallationUrl);
+  const locale = useSelector(selectLocale);
 
   const linking = {
     prefixes: [installationUrl],

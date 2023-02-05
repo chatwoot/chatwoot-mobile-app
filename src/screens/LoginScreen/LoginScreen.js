@@ -20,6 +20,8 @@ import { openURL } from '../../helpers/UrlHelper';
 import { EMAIL_REGEX } from '../../helpers/formHelper';
 import { actions as authActions, resetAuth } from 'reducer/authSlice';
 
+import { selectInstallationUrl, selectBaseUrl } from 'reducer/settingsSlice';
+
 const appName = DeviceInfo.getApplicationName();
 
 const propTypes = {
@@ -44,8 +46,8 @@ const LoginScreenComponent = ({ navigation, eva }) => {
   const dispatch = useDispatch();
   const { isLoggingIn } = useSelector(state => state.auth);
 
-  const installationUrl = useSelector(state => state.settings.installationUrl);
-  const baseUrl = useSelector(state => state.settings.baseUrl);
+  const installationUrl = useSelector(selectInstallationUrl);
+  const baseUrl = useSelector(selectBaseUrl);
 
   useEffect(() => {
     dispatch(resetAuth());

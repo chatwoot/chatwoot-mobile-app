@@ -19,10 +19,10 @@ import { HELP_URL } from 'constants/url.js';
 import { openURL } from 'helpers/UrlHelper';
 import { SETTINGS_ITEMS } from 'constants';
 import HeaderBar from 'components/HeaderBar';
-import { getNotificationSettings } from 'actions/settings';
 import packageFile from '../../../package.json';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { actions as settingsActions } from 'reducer/settingsSlice';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
 import { selectUser } from 'reducer/authSlice';
@@ -73,7 +73,7 @@ const Settings = ({ eva: { theme, style } }) => {
   };
 
   useEffect(() => {
-    dispatch(getNotificationSettings());
+    dispatch(settingsActions.getNotificationSettings());
   }, [dispatch]);
 
   const onPressItem = async ({ itemName }) => {

@@ -8,7 +8,6 @@ import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { useFocusEffect } from '@react-navigation/native';
 import { getInboxIconByType } from 'helpers/inboxHelpers';
 import { actions as inboxActions } from 'reducer/inboxSlice';
-import { getAllNotifications } from 'actions/notification';
 import ActionCable from 'helpers/ActionCable';
 import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
 import {
@@ -21,7 +20,6 @@ import {
   setActiveInbox,
 } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';
-import { saveDeviceDetails } from 'actions/notification';
 import { getInstalledVersion } from 'actions/settings';
 import createStyles from './ConversationScreen.style';
 import i18n from 'i18n';
@@ -34,6 +32,7 @@ import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import { selectUser } from 'reducer/authSlice';
 import { inboxesSelector } from 'reducer/inboxSlice';
 import { selectWebSocketUrl } from 'reducer/settingsSlice';
+import { actions as notificationActions } from 'reducer/notificationSlice';
 
 const ConversationScreen = () => {
   const theme = useTheme();
@@ -56,8 +55,8 @@ const ConversationScreen = () => {
     dispatch(inboxActions.fetchInboxes());
     clearAllDeliveredNotifications();
     dispatch(getInstalledVersion());
-    dispatch(saveDeviceDetails());
-    dispatch(getAllNotifications({ pageNo: 1 }));
+    dispatch(notificationActions.saveDeviceDetails());
+    dispatch(notificationActions.getAllNotifications({ pageNo: 1 }));
     initAnalytics();
   }, [dispatch, initActionCable, initAnalytics]);
 

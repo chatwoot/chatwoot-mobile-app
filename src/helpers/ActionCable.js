@@ -29,6 +29,7 @@ class ActionCableConnector extends BaseActionCableConnector {
       'conversation.typing_on': this.onTypingOn,
       'conversation.typing_off': this.onTypingOff,
       // TODO: Handle all these events
+      // 'notification.created': this.onNotificationCreated,
       //   'conversation.contact_changed': this.onConversationContactChange,
       //   'contact.deleted': this.onContactDelete,
       //   'contact.updated': this.onContactUpdate,

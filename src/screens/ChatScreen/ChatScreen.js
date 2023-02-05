@@ -11,7 +11,7 @@ import ChatHeader from './components/ChatHeader';
 import ChatHeaderLoader from './components/ChatHeaderLoader';
 import styles from './ChatScreen.style';
 import { openURL } from 'helpers/UrlHelper';
-import { markNotificationAsRead } from 'actions/notification';
+import { actions as notificationsActions } from 'reducer/notificationSlice';
 import { getGroupedConversation, findUniqueMessages } from 'helpers';
 import { actions as CannedResponseActions } from 'reducer/cannedResponseSlice';
 import { selectAllTypingUsers } from 'reducer/conversationTypingSlice';
@@ -72,7 +72,7 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
 
   useEffect(() => {
     dispatch(CannedResponseActions.index());
-    dispatch(conversationActions.markMessagesAsRead({ conversationId }));
+    dispatch(notificationsActions.markMessagesAsRead({ conversationId }));
   }, [dispatch, conversationId]);
 
   useEffect(() => {

@@ -12,6 +12,7 @@ import conversationTypingSlice from './conversationTypingSlice';
 import labelSlice from './labelSlice';
 import conversationLabelsSlice from './conversationLabelSlice';
 import teamSlice from './teamSlice';
+import customAttributeSlice from './customAttributeSlice';
 export const rootReducer = combineReducers({
   auth,
   conversation,
@@ -25,4 +26,5 @@ export const rootReducer = combineReducers({
   inbox: inboxSlice,
   conversationLabels: conversationLabelsSlice,
   teams: teamSlice,
+  customAttributes: customAttributeSlice,
 });

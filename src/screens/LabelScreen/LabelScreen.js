@@ -15,6 +15,7 @@ import { actions as labelActions, labelsSelector } from 'reducer/labelSlice';
 import {
   actions as conversationLabelActions,
   selectConversationLabels,
+  selectConversationLabelsLoading,
 } from 'reducer/conversationLabelSlice';
 
 const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
@@ -28,11 +29,10 @@ const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
   }, [conversationId, dispatch]);
 
   const conversationLabels = useSelector(selectConversationLabels);
+  const isLoading = useSelector(selectConversationLabelsLoading);
   const conversation = useSelector(state => state.conversation);
   const labels = useSelector(labelsSelector.selectAll);
   const savedLabels = conversationLabels[conversationId] || [];
-
-  const { isAllLabelsLoaded } = conversation;
 
   const onUpdateLabels = selectedLabels => {
     dispatch(
@@ -64,7 +64,7 @@ const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
     }
   };
 
-  const shouldShowEmptyMessage = labels && labels.length === 0 && !isAllLabelsLoaded;
+  const shouldShowEmptyMessage = labels && labels.length === 0 && !isLoading;
 
   return (
     <SafeAreaView style={style.container}>
@@ -74,7 +74,7 @@ const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
         onBackPress={goBack}
       />
       <ScrollView>
-        {!isAllLabelsLoaded ? (
+        {!isLoading ? (
           <View>
             {labels &&
               savedLabels &&

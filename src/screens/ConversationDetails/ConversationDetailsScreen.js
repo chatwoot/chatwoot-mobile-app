@@ -64,6 +64,8 @@ class ConversationDetailsComponent extends Component {
       attributes,
     } = this.props;
     const { conversationDetails } = route.params;
+    console.log('conversationDetails', conversationDetails);
+
     const { additional_attributes: additionalAttributes } = conversationDetails;
     const { meta } = conversationDetails;
     const { sender } = meta;

@@ -30,7 +30,6 @@ const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
 
   const conversationLabels = useSelector(selectConversationLabels);
   const isLoading = useSelector(selectConversationLabelsLoading);
-  const conversation = useSelector(state => state.conversation);
   const labels = useSelector(labelsSelector.selectAll);
   const savedLabels = conversationLabels[conversationId] || [];
 

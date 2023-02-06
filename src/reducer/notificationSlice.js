@@ -30,9 +30,6 @@ export const actions = {
         const {
           data: { payload, meta },
         } = response.data;
-        // const updatedPayload = payload.sort((a, b) => {
-        //   return b.created_at - a.created_at;
-        // });
         const { unread_count } = meta;
         updateBadgeCount({ count: unread_count });
         return {

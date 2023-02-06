@@ -20,7 +20,6 @@ import {
   setActiveInbox,
 } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';
-import { getInstalledVersion } from 'actions/settings';
 import createStyles from './ConversationScreen.style';
 import i18n from 'i18n';
 import { FilterButton, ClearFilterButton, Header } from 'components';
@@ -31,7 +30,11 @@ import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
 import { selectUser } from 'reducer/authSlice';
 import { inboxesSelector } from 'reducer/inboxSlice';
-import { selectWebSocketUrl } from 'reducer/settingsSlice';
+import {
+  selectWebSocketUrl,
+  selectInstallationUrl,
+  actions as settingsActions,
+} from 'reducer/settingsSlice';
 import { actions as notificationActions } from 'reducer/notificationSlice';
 
 const ConversationScreen = () => {
@@ -42,6 +45,7 @@ const ConversationScreen = () => {
   const assigneeType = useSelector(selectAssigneeType);
   const activeInboxId = useSelector(selectActiveInbox);
   const webSocketUrl = useSelector(selectWebSocketUrl);
+  const installationUrl = useSelector(selectInstallationUrl);
   const isLoading = useSelector(state => state.conversations.loading);
   const inboxes = useSelector(inboxesSelector.selectAll);
   const user = useSelector(selectUser);
@@ -53,16 +57,24 @@ const ConversationScreen = () => {
     initActionCable();
     dispatch(clearAllConversations());
     dispatch(inboxActions.fetchInboxes());
-    clearAllDeliveredNotifications();
-    dispatch(getInstalledVersion());
-    dispatch(notificationActions.saveDeviceDetails());
     dispatch(notificationActions.getAllNotifications({ pageNo: 1 }));
     initAnalytics();
-  }, [dispatch, initActionCable, initAnalytics]);
+    checkAppVersion();
+    initPushNotifications();
+  }, [dispatch, initActionCable, initAnalytics, initPushNotifications, checkAppVersion]);
+
+  const initPushNotifications = useCallback(async () => {
+    dispatch(notificationActions.saveDeviceDetails());
+    clearAllDeliveredNotifications();
+  }, [dispatch]);
 
   const initAnalytics = useCallback(async () => {
     AnalyticsHelper.identify(user);
   }, [user]);
+
+  const checkAppVersion = useCallback(async () => {
+    dispatch(settingsActions.checkInstallationVersion({ user, installationUrl }));
+  }, [dispatch, user, installationUrl]);
 
   const initActionCable = useCallback(async () => {
     const pubSubToken = await getPubSubToken();

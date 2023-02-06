@@ -6,6 +6,7 @@ import { URL_TYPE } from 'constants/url';
 import { showToast } from 'helpers/ToastHelper';
 import I18n from 'i18n';
 import * as RootNavigation from 'helpers/NavigationHelper';
+import { checkServerSupport } from 'helpers/ServerHelper';
 
 const settingAdapter = createEntityAdapter();
 export const actions = {
@@ -35,6 +36,19 @@ export const actions = {
       const response = await APIHelper.put('notification_settings', preferences);
       const { data } = response;
       return data;
+    },
+  ),
+  checkInstallationVersion: createAsyncThunk(
+    'settings/checkInstallationVersion',
+    async ({ user, installationUrl }) => {
+      if (user && user.accounts.length) {
+        const { accounts, account_id: accountId } = user;
+        const [currentAccount] = accounts.filter(account => account.id === accountId);
+        const { role: userRole } = currentAccount;
+        const result = await axios.get(`${installationUrl}api`);
+        const { version: installedVersion } = result.data;
+        checkServerSupport({ installedVersion, userRole });
+      }
     },
   ),
 };

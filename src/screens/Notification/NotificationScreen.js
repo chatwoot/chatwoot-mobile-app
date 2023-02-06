@@ -2,15 +2,14 @@ import React, { createRef, useState } from 'react';
 import { withStyles, Layout, List, Spinner } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { SafeAreaView, SectionList, View } from 'react-native';
-
+import { SafeAreaView, View } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import ActionSheet from 'react-native-actions-sheet';
 import i18n from 'i18n';
 
 import styles from './NotificationScreen.style';
 import NotificationItem from '../../components/NotificationItem';
 import CustomText from '../../components/Text';
-import { getGroupedNotifications } from '../../helpers';
 import NotificationItemLoader from '../../components/NotificationItemLoader';
 import HeaderBar from '../../components/HeaderBar';
 import images from '../../constants/images';
@@ -50,14 +49,10 @@ const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
     dispatch(notificationsActions.getAllNotifications({ pageNo }));
   }, [dispatch, pageNo]);
 
-  const loadMoreNotifications = async () => {
+  const onEndReached = () => {
     if (!isAllNotificationsLoaded) {
-      await setPageNo(pageNo + 1);
+      setPageNo(pageNo + 1);
     }
-  };
-
-  const onEndReached = ({ distanceFromEnd }) => {
-    loadMoreNotifications();
   };
 
   const renderEmptyMessage = () => {
@@ -126,28 +121,21 @@ const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
     wait(1000).then(() => setRefreshing(false));
   };
 
-  const groupedNotifications = getGroupedNotifications({ notifications: allNotifications });
-
   return (
     <SafeAreaView style={style.container}>
       <HeaderBar
         title={i18n.t('NOTIFICATION.HEADER_TITLE')}
-        {...(groupedNotifications.length && unReadCount && { showRightButton: true })}
+        {...(allNotifications.length && unReadCount && { showRightButton: true })}
         onRightPress={showActionSheet}
         buttonType="more"
       />
-      <View>
-        {!isFetching || groupedNotifications.length ? (
+      <View style={style.container}>
+        {!isFetching || allNotifications.length ? (
           <React.Fragment>
-            {groupedNotifications && groupedNotifications.length ? (
-              <SectionList
-                onRefresh={() => onRefresh()}
-                refreshing={refreshing}
-                scrollEventThrottle={16}
-                onEndReached={onEndReached.bind(this)}
-                onEndReachedThreshold={0.5}
-                sections={groupedNotifications}
+            {allNotifications && allNotifications.length ? (
+              <FlashList
                 keyExtractor={(item, index) => item + index}
+                data={allNotifications}
                 renderItem={({ item, index }) => (
                   <NotificationItem
                     item={item}
@@ -156,12 +144,13 @@ const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
                     onSelectNotification={onSelectNotification}
                   />
                 )}
-                renderSectionHeader={({ section: { title } }) => (
-                  <View style={style.sectionView}>
-                    <CustomText style={style.sectionHeader}>{title}</CustomText>
-                  </View>
-                )}
+                estimatedItemSize={20}
+                contentInsetAdjustmentBehavior="automatic"
+                onRefresh={onRefresh}
+                refreshing={refreshing}
+                onEndReachedThreshold={0.5}
                 ListFooterComponent={renderMoreLoader}
+                onEndReached={onEndReached}
               />
             ) : (
               renderEmptyMessage()

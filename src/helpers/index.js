@@ -194,33 +194,6 @@ export const getTypingUsersText = ({ conversationId, conversationTypingUsers }) 
   return false;
 };
 
-export const getGroupedNotifications = ({ notifications }) => {
-  const notificationGroupedByDate = groupBy(Object.values(notifications), notification =>
-    new DateHelper(notification.created_at).format(),
-  );
-  return Object.keys(notificationGroupedByDate).map(date => {
-    const data = notificationGroupedByDate[date];
-
-    return {
-      data,
-      title: date,
-    };
-  });
-};
-
-export const findUniqueConversations = ({ payload }) => {
-  const filterConversations = payload.filter(item => item.messages.length !== 0);
-  const uniqueConversations = filterConversations.reduce((acc, current) => {
-    const x = acc.find(item => item.id === current.id);
-    if (!x) {
-      return acc.concat([current]);
-    } else {
-      return acc;
-    }
-  }, []);
-  return uniqueConversations;
-};
-
 export const findUniqueMessages = ({ allMessages }) => {
   const completeMessages = [].concat(allMessages).reverse();
 

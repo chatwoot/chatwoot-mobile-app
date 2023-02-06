@@ -72,7 +72,7 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
 
   useEffect(() => {
     dispatch(CannedResponseActions.index());
-    dispatch(notificationsActions.markMessagesAsRead({ conversationId }));
+    dispatch(conversationActions.markMessagesAsRead({ conversationId }));
   }, [dispatch, conversationId]);
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   useEffect(() => {
     if (primaryActorId && primaryActorType) {
       dispatch(
-        markNotificationAsRead({
+        notificationsActions.markNotificationAsRead({
           primaryActorId,
           primaryActorType,
         }),

@@ -30,13 +30,13 @@ export const actions = {
         const {
           data: { payload, meta },
         } = response.data;
-        const updatedPayload = payload.sort((a, b) => {
-          return b.created_at - a.created_at;
-        });
+        // const updatedPayload = payload.sort((a, b) => {
+        //   return b.created_at - a.created_at;
+        // });
         const { unread_count } = meta;
         updateBadgeCount({ count: unread_count });
         return {
-          notifications: updatedPayload,
+          notifications: payload,
           meta,
         };
       } catch (error) {
@@ -46,13 +46,18 @@ export const actions = {
   ),
   markNotificationAsRead: createAsyncThunk(
     'notifications/markNotificationAsRead',
-    async ({ primaryActorId, primaryActorType }, { rejectWithValue }) => {
+    async ({ primaryActorId, primaryActorType }, { getState, rejectWithValue }) => {
       try {
+        const {
+          meta: { unread_count },
+        } = getState().notifications;
         const apiUrl = 'notifications/read_all';
+        const unreadCount = unread_count ? unread_count - 1 : 0;
         await APIHelper.post(apiUrl, {
           primary_actor_type: primaryActorType,
           primary_actor_id: primaryActorId,
         });
+        updateBadgeCount({ count: unreadCount });
         return {
           primaryActorId,
         };
@@ -157,7 +162,7 @@ const notificationSlice = createSlice({
     [actions.getAllNotifications.fulfilled]: (state, action) => {
       state.loading = false;
       state.meta = action.payload.meta;
-      notificationAdapter.setAll(state, action.payload.notifications);
+      notificationAdapter.upsertMany(state, action.payload.notifications);
       state.isAllNotificationsLoaded = action.payload.notifications.length < 15;
     },
     [actions.getAllNotifications.rejected]: state => {
@@ -167,16 +172,14 @@ const notificationSlice = createSlice({
       const { primaryActorId } = action.payload;
       const notification = state.entities[primaryActorId];
       if (notification) {
-        notification.read_at = new Date();
+        notification.read_at = 'read_at';
       }
-      // TODO: Update badge count
       state.meta.unread_count = state.meta.unread_count ? state.meta.unread_count - 1 : 0;
     },
     [actions.markAllNotificationAsRead.fulfilled]: (state, action) => {
       state.meta.unread_count = 0;
-      // TODO: Iterate over all notifications and mark them as read
       Object.keys(state.entities).forEach(key => {
-        state.entities[key].read_at = new Date();
+        state.entities[key].read_at = 'read_at';
       });
     },
     [actions.saveDeviceDetails.fulfilled]: (state, action) => {

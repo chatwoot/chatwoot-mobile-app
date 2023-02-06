@@ -13,6 +13,7 @@ import fa from './fa.json';
 import fi from './fi.json';
 import fr from './fr.json';
 import hu from './hu.json';
+import id from './id.json';
 import it from './it.json';
 import ja from './ja.json';
 import ko from './ko.json';
@@ -48,6 +49,7 @@ i18n.translations = {
   fi,
   fr,
   hu,
+  id,
   it,
   ja,
   ko,

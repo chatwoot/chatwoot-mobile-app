@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "1.7.30",
+  "version": "1.7.34",
   "private": true,
   "scripts": {
     "android": "react-native run-android",

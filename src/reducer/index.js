@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import auth from './authSlice';
+import authSlice from './authSlice';
 import inboxSlice from './inboxSlice';
 import settingsSlice from './settingsSlice';
 import cannedResponseSlice from './cannedResponseSlice';
@@ -13,7 +13,7 @@ import teamSlice from './teamSlice';
 import customAttributeSlice from './customAttributeSlice';
 import notificationSlice from './notificationSlice';
 export const rootReducer = combineReducers({
-  auth,
+  auth: authSlice,
   settings: settingsSlice,
   conversationTypingStatus: conversationTypingSlice,
   cannedResponses: cannedResponseSlice,

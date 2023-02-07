@@ -45,22 +45,23 @@ const conversationLabelSlice = createSlice({
   name: 'conversationLabels',
   initialState,
   reducers: {},
-  extraReducers: {
-    [actions.fetchConversationLabels.pending]: (state, action) => {
-      state.loading = true;
-    },
-    [actions.fetchConversationLabels.fulfilled]: (state, action) => {
-      state.loading = false;
-      const { conversationId, labels } = action.payload;
-      state.records[conversationId] = labels;
-    },
-    [actions.fetchConversationLabels.rejected]: (state, action) => {
-      state.loading = false;
-    },
-    [actions.updateConversationLabels.fulfilled]: (state, action) => {
-      const { conversationId, labels } = action.payload;
-      state.records[conversationId] = labels;
-    },
+  extraReducers: builder => {
+    builder
+      .addCase(actions.fetchConversationLabels.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(actions.fetchConversationLabels.fulfilled, (state, action) => {
+        state.loading = false;
+        const { conversationId, labels } = action.payload;
+        state.records[conversationId] = labels;
+      })
+      .addCase(actions.fetchConversationLabels.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(actions.updateConversationLabels.fulfilled, (state, action) => {
+        const { conversationId, labels } = action.payload;
+        state.records[conversationId] = labels;
+      });
   },
 });
 

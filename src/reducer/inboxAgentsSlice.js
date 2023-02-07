@@ -48,17 +48,18 @@ const inboxAgentSlice = createSlice({
       });
     },
   },
-  extraReducers: {
-    [actions.fetchInboxAgents.pending]: state => {
-      state.isFetching = true;
-    },
-    [actions.fetchInboxAgents.fulfilled]: (state, action) => {
-      state.isFetching = false;
-      inboxAgentAdapter.setAll(state, action.payload);
-    },
-    [actions.fetchInboxAgents.rejected]: state => {
-      state.isFetching = false;
-    },
+  extraReducers: builder => {
+    builder
+      .addCase(actions.fetchInboxAgents.pending, state => {
+        state.isFetching = true;
+      })
+      .addCase(actions.fetchInboxAgents.fulfilled, (state, action) => {
+        state.isFetching = false;
+        inboxAgentAdapter.setAll(state, action.payload);
+      })
+      .addCase(actions.fetchInboxAgents.rejected, state => {
+        state.isFetching = false;
+      });
   },
 });
 

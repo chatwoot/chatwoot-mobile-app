@@ -31,17 +31,18 @@ const customAttributeSlice = createSlice({
   name: 'customAttributes',
   initialState,
   reducers: {},
-  extraReducers: {
-    [actions.getAllCustomAttributes.pending]: state => {
-      state.loading = true;
-    },
-    [actions.getAllCustomAttributes.fulfilled]: (state, action) => {
-      state.loading = false;
-      customAttributesAdapter.setAll(state, action.payload);
-    },
-    [actions.getAllCustomAttributes.rejected]: state => {
-      state.loading = false;
-    },
+  extraReducers: builder => {
+    builder
+      .addCase(actions.getAllCustomAttributes.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(actions.getAllCustomAttributes.fulfilled, (state, action) => {
+        state.loading = false;
+        customAttributesAdapter.setAll(state, action.payload);
+      })
+      .addCase(actions.getAllCustomAttributes.rejected, (state, action) => {
+        state.loading = false;
+      });
   },
 });
 

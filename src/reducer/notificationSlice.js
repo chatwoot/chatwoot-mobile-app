@@ -152,39 +152,40 @@ const notificationSlice = createSlice({
     pushToken: null,
   }),
   reducers: {},
-  extraReducers: {
-    [actions.getAllNotifications.pending]: state => {
-      state.loading = true;
-    },
-    [actions.getAllNotifications.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.meta = action.payload.meta;
-      notificationAdapter.upsertMany(state, action.payload.notifications);
-      state.isAllNotificationsLoaded = action.payload.notifications.length < 15;
-    },
-    [actions.getAllNotifications.rejected]: state => {
-      state.loading = false;
-    },
-    [actions.markNotificationAsRead.fulfilled]: (state, action) => {
-      const { primaryActorId } = action.payload;
-      const notification = state.entities[primaryActorId];
-      if (notification) {
-        notification.read_at = 'read_at';
-      }
-      state.meta.unread_count = state.meta.unread_count ? state.meta.unread_count - 1 : 0;
-    },
-    [actions.markAllNotificationAsRead.fulfilled]: (state, action) => {
-      state.meta.unread_count = 0;
-      Object.keys(state.entities).forEach(key => {
-        state.entities[key].read_at = 'read_at';
+  extraReducers: builder => {
+    builder
+      .addCase(actions.getAllNotifications.pending, state => {
+        state.loading = true;
+      })
+      .addCase(actions.getAllNotifications.fulfilled, (state, action) => {
+        state.loading = false;
+        state.meta = action.payload.meta;
+        notificationAdapter.upsertMany(state, action.payload.notifications);
+        state.isAllNotificationsLoaded = action.payload.notifications.length < 15;
+      })
+      .addCase(actions.getAllNotifications.rejected, state => {
+        state.loading = false;
+      })
+      .addCase(actions.markNotificationAsRead.fulfilled, (state, action) => {
+        const { primaryActorId } = action.payload;
+        const notification = state.entities[primaryActorId];
+        if (notification) {
+          notification.read_at = 'read_at';
+        }
+        state.meta.unread_count = state.meta.unread_count ? state.meta.unread_count - 1 : 0;
+      })
+      .addCase(actions.markAllNotificationAsRead.fulfilled, (state, action) => {
+        state.meta.unread_count = 0;
+        Object.keys(state.entities).forEach(key => {
+          state.entities[key].read_at = 'read_at';
+        });
+      })
+      .addCase(actions.saveDeviceDetails.fulfilled, (state, action) => {
+        state.pushToken = action.payload.fcmToken;
+      })
+      .addCase(actions.clearDeviceDetails.fulfilled, state => {
+        state.pushToken = null;
       });
-    },
-    [actions.saveDeviceDetails.fulfilled]: (state, action) => {
-      state.pushToken = action.payload.fcmToken;
-    },
-    [actions.clearDeviceDetails.fulfilled]: state => {
-      state.pushToken = null;
-    },
   },
 });
 

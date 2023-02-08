@@ -48,6 +48,7 @@ const ContactAttributes = ({ conversationDetails, eva: { style, theme } }) => {
             {Object.keys(contactAttributes).map(key => {
               return (
                 <ConversationDetailsItem
+                  key={key}
                   title={key}
                   value={String(contactAttributes[key])}
                   type={key}

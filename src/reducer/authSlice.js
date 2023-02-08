@@ -160,30 +160,31 @@ const authSlice = createSlice({
       }
     },
   },
-  extraReducers: {
-    [actions.doLogin.pending]: state => {
-      state.isLoggingIn = true;
-    },
-    [actions.doLogin.fulfilled]: (state, { payload }) => {
-      state.currentUser = payload.user;
-      state.headers = payload.headers;
-      state.isLoggingIn = false;
-    },
-    [actions.doLogin.rejected]: (state, error) => {
-      state.isLoggingIn = false;
-    },
-    [actions.onResetPassword.pending]: state => {
-      state.isResettingPassword = true;
-    },
-    [actions.onResetPassword.fulfilled]: (state, { payload }) => {
-      state.isResettingPassword = false;
-    },
-    [actions.onResetPassword.rejected]: (state, error) => {
-      state.isResettingPassword = false;
-    },
-    [actions.updateAvailability.fulfilled]: (state, { payload }) => {
-      state.currentUser = payload;
-    },
+  extraReducers: builder => {
+    builder
+      .addCase(actions.doLogin.pending, state => {
+        state.isLoggingIn = true;
+      })
+      .addCase(actions.doLogin.fulfilled, (state, { payload }) => {
+        state.currentUser = payload.user;
+        state.headers = payload.headers;
+        state.isLoggingIn = false;
+      })
+      .addCase(actions.doLogin.rejected, (state, error) => {
+        state.isLoggingIn = false;
+      })
+      .addCase(actions.onResetPassword.pending, state => {
+        state.isResettingPassword = true;
+      })
+      .addCase(actions.onResetPassword.fulfilled, (state, { payload }) => {
+        state.isResettingPassword = false;
+      })
+      .addCase(actions.onResetPassword.rejected, (state, error) => {
+        state.isResettingPassword = false;
+      })
+      .addCase(actions.updateAvailability.fulfilled, (state, { payload }) => {
+        state.currentUser = payload;
+      });
   },
 });
 

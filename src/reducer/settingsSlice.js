@@ -76,35 +76,36 @@ export const settingsSlice = createSlice({
       state.isLocaleSet = true;
     },
   },
-  extraReducers: {
-    [actions.setInstallationUrl.pending]: state => {
-      state.isSettingUrl = true;
-    },
-    [actions.setInstallationUrl.fulfilled]: (state, action) => {
-      state.isSettingUrl = false;
-      state.isUrlSet = true;
-      state.installationUrl = action.payload.installationUrl;
-      state.baseUrl = action.payload.baseUrl;
-      state.webSocketUrl = action.payload.webSocketUrl;
-    },
-    [actions.setInstallationUrl.rejected]: state => {
-      state.isSettingUrl = false;
-      state.isUrlSet = false;
-      state.installationUrl = null;
-      state.baseUrl = '';
-    },
-    [actions.getNotificationSettings.fulfilled]: (state, action) => {
-      state.notification = action.payload;
-    },
-    [actions.updateNotificationSettings.pending]: (state, action) => {
-      state.isUpdating = false;
-    },
-    [actions.updateNotificationSettings.fulfilled]: (state, action) => {
-      state.notification = action.payload;
-    },
-    [actions.updateNotificationSettings.rejected]: (state, action) => {
-      state.isUpdating = false;
-    },
+  extraReducers: builder => {
+    builder
+      .addCase(actions.setInstallationUrl.pending, state => {
+        state.isSettingUrl = true;
+      })
+      .addCase(actions.setInstallationUrl.fulfilled, (state, action) => {
+        state.isSettingUrl = false;
+        state.isUrlSet = true;
+        state.installationUrl = action.payload.installationUrl;
+        state.baseUrl = action.payload.baseUrl;
+        state.webSocketUrl = action.payload.webSocketUrl;
+      })
+      .addCase(actions.setInstallationUrl.rejected, state => {
+        state.isSettingUrl = false;
+        state.isUrlSet = false;
+        state.installationUrl = null;
+        state.baseUrl = '';
+      })
+      .addCase(actions.getNotificationSettings.fulfilled, (state, action) => {
+        state.notification = action.payload;
+      })
+      .addCase(actions.updateNotificationSettings.pending, (state, action) => {
+        state.isUpdating = false;
+      })
+      .addCase(actions.updateNotificationSettings.fulfilled, (state, action) => {
+        state.notification = action.payload;
+      })
+      .addCase(actions.updateNotificationSettings.rejected, (state, action) => {
+        state.isUpdating = false;
+      });
   },
 });
 

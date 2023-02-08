@@ -146,6 +146,7 @@ const ConversationAttributes = ({ conversationDetails, eva: { style, theme } }) 
         if (conversationAttributes[attributeKey] !== undefined) {
           return (
             <ConversationDetailsItem
+              key={attributeKey}
               title={displayName}
               value={String(conversationAttributes[attributeKey])}
               type={attributeKey}

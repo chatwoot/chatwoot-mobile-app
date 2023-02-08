@@ -16,9 +16,7 @@ export const actions = {
   }),
 };
 
-const labelsAdapter = createEntityAdapter({
-  selectId: label => label.id,
-});
+const labelsAdapter = createEntityAdapter();
 
 const initialState = labelsAdapter.getInitialState({
   loading: false,
@@ -28,17 +26,18 @@ const labelsSlice = createSlice({
   name: 'labels',
   initialState,
   reducers: {},
-  extraReducers: {
-    [actions.fetchAllLabels.pending]: state => {
-      state.loading = true;
-    },
-    [actions.fetchAllLabels.fulfilled]: (state, action) => {
-      state.loading = false;
-      labelsAdapter.setAll(state, action.payload);
-    },
-    [actions.fetchAllLabels.rejected]: (state, action) => {
-      state.loading = false;
-    },
+  extraReducers: builder => {
+    builder
+      .addCase(actions.fetchAllLabels.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(actions.fetchAllLabels.fulfilled, (state, action) => {
+        state.loading = false;
+        labelsAdapter.setAll(state, action.payload);
+      })
+      .addCase(actions.fetchAllLabels.rejected, (state, action) => {
+        state.loading = false;
+      });
   },
 });
 

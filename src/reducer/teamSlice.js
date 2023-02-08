@@ -47,27 +47,28 @@ const teamSlice = createSlice({
   name: 'teams',
   initialState,
   reducers: {},
-  extraReducers: {
-    [actions.fetchAllTeams.pending]: state => {
-      state.loading = true;
-    },
-    [actions.fetchAllTeams.fulfilled]: (state, action) => {
-      state.loading = false;
-      teamsAdapter.setAll(state, action.payload);
-    },
-    [actions.fetchAllTeams.rejected]: state => {
-      state.loading = false;
-    },
-    [actions.assignTeam.pending]: state => {
-      state.isTeamUpdating = true;
-    },
-    [actions.assignTeam.fulfilled]: (state, action) => {
-      state.isTeamUpdating = false;
-      pop(1);
-    },
-    [actions.assignTeam.rejected]: state => {
-      state.isTeamUpdating = false;
-    },
+  extraReducers: builder => {
+    builder
+      .addCase(actions.fetchAllTeams.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(actions.fetchAllTeams.fulfilled, (state, action) => {
+        state.loading = false;
+        teamsAdapter.setAll(state, action.payload);
+      })
+      .addCase(actions.fetchAllTeams.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(actions.assignTeam.pending, (state, action) => {
+        state.isTeamUpdating = true;
+      })
+      .addCase(actions.assignTeam.fulfilled, (state, action) => {
+        state.isTeamUpdating = false;
+        pop(1);
+      })
+      .addCase(actions.assignTeam.rejected, (state, action) => {
+        state.isTeamUpdating = false;
+      });
   },
 });
 

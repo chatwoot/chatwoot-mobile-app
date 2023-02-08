@@ -1,4 +1,7 @@
-import customAttributeSlice, { actions as customAttributeActions } from '../customAttributeSlice';
+import customAttributeSlice, {
+  actions as customAttributeActions,
+  customAttributeSelector,
+} from '../customAttributeSlice';
 
 jest.mock('axios');
 
@@ -77,6 +80,24 @@ describe('customAttributeSlice', () => {
         },
         ids: [1, 2],
       });
+    });
+  });
+  describe('selectors', () => {
+    const state = {
+      customAttributes: {
+        entities: {
+          1: customAttributes[0],
+          2: customAttributes[1],
+        },
+        ids: [1, 2],
+      },
+    };
+
+    it('returns customAttributes', () => {
+      expect(customAttributeSelector.selectAll(state)).toEqual([
+        customAttributes[0],
+        customAttributes[1],
+      ]);
     });
   });
 });

@@ -20,18 +20,18 @@ const inboxSlice = createSlice({
   initialState: inboxAdapter.getInitialState({
     loading: false,
   }),
-
-  extraReducers: {
-    [actions.fetchInboxes.pending]: state => {
-      state.loading = true;
-    },
-    [actions.fetchInboxes.fulfilled]: (state, { payload }) => {
-      inboxAdapter.setAll(state, payload);
-      state.loading = false;
-    },
-    [actions.fetchInboxes.rejected]: (state, { error }) => {
-      state.loading = false;
-    },
+  extraReducers: builder => {
+    builder
+      .addCase(actions.fetchInboxes.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(actions.fetchInboxes.fulfilled, (state, action) => {
+        inboxAdapter.setAll(state, action.payload);
+        state.loading = false;
+      })
+      .addCase(actions.fetchInboxes.rejected, (state, action) => {
+        state.loading = false;
+      });
   },
 });
 

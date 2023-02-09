@@ -58,16 +58,19 @@ const styles = theme => ({
 const MessageContentComponent = ({ message, type, showAttachment, created_at }) => {
   const { attachments } = message;
 
-  return attachments ? (
-    <ChatAttachmentItem
-      attachments={attachments}
-      message={message}
-      type={type}
-      showAttachment={showAttachment}
-      created_at={created_at}
-    />
-  ) : (
-    <ChatMessageItem message={message} type={type} created_at={created_at} />
+  return (
+    <View>
+      <ChatMessageItem message={message} type={type} created_at={created_at} />
+      {attachments && attachments.length > 0 && (
+        <ChatAttachmentItem
+          attachments={attachments}
+          message={message}
+          type={type}
+          showAttachment={showAttachment}
+          created_at={created_at}
+        />
+      )}
+    </View>
   );
 };
 

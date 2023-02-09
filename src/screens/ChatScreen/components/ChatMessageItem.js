@@ -310,7 +310,9 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     } = (message && message.content_attributes && message.content_attributes.email) || {};
     return fullHTMLContent || fullTextContent || '';
   };
-
+  if (!(emailMessageContent() || message.content)) {
+    return;
+  }
   return (
     <TouchableOpacity onLongPress={showTooltip} activeOpacity={0.95}>
       <View

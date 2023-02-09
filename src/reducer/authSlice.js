@@ -69,7 +69,7 @@ export const actions = {
         if (response.data && response.data.message) {
           successMessage = response.data.message;
         }
-        showToast({ title: successMessage, type: 'success' });
+        showToast({ message: successMessage, type: 'success' });
         const { data } = response;
         return data;
       } catch (error) {
@@ -79,12 +79,12 @@ export const actions = {
           const hasAuthErrorMsg =
             errors && errors.length && errors[0] && typeof errors[0] === 'string';
           if (hasAuthErrorMsg) {
-            showToast({ title: errors[0], type: 'error' });
+            showToast({ message: errors[0], type: 'error' });
           } else {
-            showToast({ title: I18n.t('ERRORS.AUTH'), type: 'error' });
+            showToast({ message: I18n.t('ERRORS.AUTH'), type: 'error' });
           }
         } else {
-          showToast({ title: I18n.t('ERRORS.COMMON_ERROR'), type: 'error' });
+          showToast({ message: I18n.t('ERRORS.COMMON_ERROR'), type: 'error' });
         }
         if (!error.response) {
           throw error;

@@ -6,7 +6,6 @@ import { withStyles } from '@ui-kitten/components';
 
 import CustomText from '../../../components/Text';
 import { messageStamp } from '../../../helpers/TimeHelper';
-import ChatAttachmentItem from './ChatAttachmentItem';
 import ChatMessageItem from './ChatMessageItem';
 
 const styles = theme => ({
@@ -56,20 +55,14 @@ const styles = theme => ({
 });
 
 const MessageContentComponent = ({ message, type, showAttachment, created_at }) => {
-  const { attachments } = message;
-
   return (
     <View>
-      <ChatMessageItem message={message} type={type} created_at={created_at} />
-      {attachments && attachments.length > 0 && (
-        <ChatAttachmentItem
-          attachments={attachments}
-          message={message}
-          type={type}
-          showAttachment={showAttachment}
-          created_at={created_at}
-        />
-      )}
+      <ChatMessageItem
+        message={message}
+        type={type}
+        created_at={created_at}
+        showAttachment={showAttachment}
+      />
     </View>
   );
 };

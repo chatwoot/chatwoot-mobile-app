@@ -198,7 +198,7 @@ const ChatAttachmentItemComponent = ({
   message,
   eva: { style, theme },
 }) => {
-  const { attachments, content } = message;
+  const { attachments } = message;
 
   const [imageLoading, onLoadImage] = useState(false);
   const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
@@ -215,12 +215,6 @@ const ChatAttachmentItemComponent = ({
               type === 'outgoing' ? style.imageViewRight : style.imageViewLeft,
               message.private && style.privateMessageContainer,
             ]}>
-            {content !== '' && (
-              <CustomText
-                style={message.private ? style.attachmentPrivateText : style.attachmentText}>
-                {content}
-              </CustomText>
-            )}
             <Image
               style={style.image}
               source={{

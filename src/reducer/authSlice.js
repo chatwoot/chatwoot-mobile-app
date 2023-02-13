@@ -198,7 +198,7 @@ export const selectUser = state => state.auth.currentUser;
 
 export const selectUserId = state => state.auth.currentUser.id;
 
-export const selectLoggedIn = state => state.auth.currentUser.id !== null;
+export const selectLoggedIn = state => state.auth.currentUser?.id;
 
 export const selectIsLoggingIn = state => state.auth.isLoggingIn;
 

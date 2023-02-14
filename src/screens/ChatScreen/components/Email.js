@@ -24,12 +24,6 @@ const Email = ({ emailContent, eva: { style, theme } }) => {
       <AutoHeightWebView
         style={style.container}
         customStyle={`
-        * {
-          color: '#3c4858',
-        }
-        p {
-          font-size: 12px;
-        }
         img{
           width: 50px !important; height: 50px !important;
         }

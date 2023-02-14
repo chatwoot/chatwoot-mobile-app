@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import { withStyles } from '@ui-kitten/components';
+import { View } from 'react-native';
 
 const propTypes = {
   emailContent: PropTypes.string,
@@ -13,29 +14,32 @@ const propTypes = {
 
 const styles = () => ({
   container: {
-    width: 225,
+    width: '100%',
   },
 });
 
 const Email = ({ emailContent, eva: { style, theme } }) => {
   return (
-    <AutoHeightWebView
-      style={style.container}
-      scrollEnabled={true}
-      customStyle={`
-      * {
-        color: '#3c4858',
-      }
-      p {
-        font-size: 14px;
-      }
-    `}
-      source={{
-        html: emailContent,
-      }}
-      scalesPageToFit={false}
-      viewportContent={'width=device-width, user-scalable=no'}
-    />
+    <View>
+      <AutoHeightWebView
+        style={style.container}
+        customStyle={`
+        * {
+          color: '#3c4858',
+        }
+        p {
+          font-size: 12px;
+        }
+        img{
+          width: 50px !important; height: 50px !important;
+        }
+      `}
+        source={{
+          html: emailContent,
+        }}
+        viewportContent={'width=device-width, user-scalable=no'}
+      />
+    </View>
   );
 };
 

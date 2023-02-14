@@ -13,6 +13,8 @@ import { showToast } from 'helpers/ToastHelper';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { useRoute } from '@react-navigation/native';
 import Email from '../components/Email';
+import ChatAttachmentItem from './ChatAttachmentItem';
+
 const LockIcon = style => {
   return <Icon {...style} name="lock" />;
 };
@@ -23,7 +25,7 @@ const styles = theme => ({
     paddingRight: 16,
     paddingTop: 8,
     paddingBottom: 8,
-    maxWidth: Dimensions.get('window').width - 60,
+    maxWidth: Dimensions.get('window').width - 70,
   },
   messageLeft: {
     borderBottomLeftRadius: 4,
@@ -134,17 +136,25 @@ const propTypes = {
       name: PropTypes.string,
       thumbnail: PropTypes.string,
     }),
+    attachments: PropTypes.array,
     content: PropTypes.string,
     content_attributes: PropTypes.object,
     private: PropTypes.bool,
   }),
-  attachment: PropTypes.object,
+  showAttachment: PropTypes.func,
 };
 
-const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, created_at }) => {
+const ChatMessageItemComponent = ({
+  type,
+  message,
+  eva: { style, theme },
+  created_at,
+  showAttachment,
+}) => {
   const route = useRoute();
   const actionSheetRef = createRef();
   const { meta } = route.params;
+  const { attachments } = message;
   const senderName = message && message.sender && message.sender.name ? message.sender.name : '';
   const messageViewStyle = type === 'outgoing' ? style.messageRight : style.messageLeft;
   const messageTextStyle =
@@ -310,7 +320,9 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     } = (message && message.content_attributes && message.content_attributes.email) || {};
     return fullHTMLContent || fullTextContent || '';
   };
-
+  if (!(emailMessageContent() || message)) {
+    return;
+  }
   return (
     <TouchableOpacity onLongPress={showTooltip} activeOpacity={0.95}>
       <View
@@ -350,6 +362,13 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
             {message.content}
           </Markdown>
         )}
+
+        <ChatAttachmentItem
+          attachments={attachments}
+          message={message}
+          type={type}
+          showAttachment={showAttachment}
+        />
 
         <View style={style.dateView}>
           <CustomText

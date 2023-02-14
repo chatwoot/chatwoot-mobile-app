@@ -15,9 +15,9 @@ class AnalyticsHelper {
   }
 
   getCurrentAccount() {
-    if (this.user && this.user.accounts.length) {
-      const { accounts, account_id: accountId } = this.user;
-      const [currentAccount] = accounts.filter(account => account.id === accountId);
+    const { accounts = [], account_id = null } = this.user;
+    if (account_id && accounts.length) {
+      const [currentAccount] = accounts.filter(account => account.id === account_id);
       return currentAccount;
     }
   }

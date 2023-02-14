@@ -10,10 +10,6 @@ import ImageLoader from 'components/ImageLoader';
 import CustomText from 'components/Text';
 import i18n from 'i18n';
 
-const LockIcon = style => {
-  return <Icon {...style} name="lock" />;
-};
-
 const styles = theme => ({
   fileView: {
     alignItems: 'center',

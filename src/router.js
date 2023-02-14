@@ -31,7 +31,6 @@ import TeamScreen from 'screens/TeamScreen/TeamScreen';
 import i18n from 'i18n';
 import { navigationRef } from 'helpers/NavigationHelper';
 import { withStyles } from '@ui-kitten/components';
-import { NOTIFICATION_TYPES } from 'constants';
 import { findConversationLinkFromPush } from './helpers/PushHelper';
 
 const Tab = createBottomTabNavigator();

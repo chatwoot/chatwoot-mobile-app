@@ -25,8 +25,11 @@ const styles = theme => ({
     paddingRight: 16,
     paddingTop: 8,
     paddingBottom: 8,
+  },
+  messageBody: {
     maxWidth: Dimensions.get('window').width - 70,
   },
+
   messageLeft: {
     borderBottomLeftRadius: 4,
     borderTopLeftRadius: 4,
@@ -142,6 +145,7 @@ const propTypes = {
     private: PropTypes.bool,
   }),
   showAttachment: PropTypes.func,
+  isEmailChannel: PropTypes.bool,
 };
 
 const ChatMessageItemComponent = ({
@@ -150,6 +154,7 @@ const ChatMessageItemComponent = ({
   eva: { style, theme },
   created_at,
   showAttachment,
+  isEmailChannel,
 }) => {
   const route = useRoute();
   const actionSheetRef = createRef();
@@ -323,10 +328,21 @@ const ChatMessageItemComponent = ({
   if (!(emailMessageContent() || message)) {
     return;
   }
+  const { content_attributes: { external_created_at = null } = {} } = message;
+  const readableTime = messageStamp({
+    time: external_created_at || created_at,
+    dateFormat: 'LLL d, h:mm a',
+  });
+
   return (
     <TouchableOpacity onLongPress={showTooltip} activeOpacity={0.95}>
       <View
-        style={[style.message, messageViewStyle, message.private && style.privateMessageContainer]}>
+        style={[
+          style.message,
+          messageViewStyle,
+          message.private && style.privateMessageContainer,
+          !isEmailChannel && style.messageBody,
+        ]}>
         {hasAnyEmailValues() ? <View style={style.mailHeadWrap}>{emailHeader}</View> : null}
         {emailMessageContent() ? (
           <Email emailContent={emailMessageContent()} />
@@ -378,7 +394,7 @@ const ChatMessageItemComponent = ({
                 color: theme['color-gray'],
               },
             ]}>
-            {messageStamp({ time: created_at })}
+            {readableTime}
           </CustomText>
           {isPrivate && (
             <View style={style.iconView}>

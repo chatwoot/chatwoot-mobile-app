@@ -23,7 +23,12 @@ const Email = ({ emailContent, eva: { style, theme } }) => {
     <View>
       <AutoHeightWebView
         style={style.container}
+        scrollEnabled={false}
         customStyle={`
+        * {
+          font-family: system,-apple-system,".SFNSText-Regular","San Francisco",Roboto,"Segoe UI","Helvetica Neue","Lucida Grande",sans-serif;
+          font-size: 14px;
+        } 
         img{
           width: 100% !important;
         }

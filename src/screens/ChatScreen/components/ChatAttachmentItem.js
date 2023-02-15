@@ -189,65 +189,66 @@ const ChatAttachmentItemComponent = ({
   };
 
   if (attachments && attachments.length > 0) {
-    const { file_type: fileType, data_url: dataUrl } = attachments[0];
-
-    const fileName = dataUrl ? dataUrl.split('/').pop() : '';
-    const fileNameWithOutExt = fileName.split('.').shift();
-    const fileTypeFromName = fileName.split('.').pop();
-
-    return (
-      <React.Fragment>
-        {fileType === 'image' ? (
-          <TouchableOpacity
-            onPress={() => showAttachment({ type: 'image', dataUrl })}
-            style={[
-              type === 'outgoing' ? style.imageViewRight : style.imageViewLeft,
-              isPrivate && style.privateMessageContainer,
-            ]}>
-            <Image
-              style={style.image}
-              source={{
-                uri: dataUrl,
-              }}
-              onLoadStart={() => onLoadImage(true)}
-              onLoadEnd={() => {
-                onLoadImage(false);
-              }}
-            />
-
-            {imageLoading && <ImageLoader style={style.imageLoader} />}
-          </TouchableOpacity>
-        ) : (
-          <View
-            style={[
-              type === 'outgoing' ? style.fileViewRight : style.fileViewLeft,
-              style.fileView,
-            ]}>
-            <View style={style.fileAttachmentContainer}>
-              <View style={style.fileAttachmentView}>
-                <View style={style.attachmentIconView}>
-                  <FileIcon
-                    fill={isPrivate ? theme['color-primary-default'] : attachmentIconColor}
-                  />
-                </View>
-                <View style={style.attachmentTextView}>
-                  <CustomText style={attachmentContentStyle}>
-                    {fileName.length < 30
-                      ? `${fileName}`
-                      : `${fileNameWithOutExt.substr(fileName.length - 30)}...${fileTypeFromName}`}
-                  </CustomText>
-                  <TouchableOpacity onPress={() => showAttachment({ type: 'file', dataUrl })}>
-                    <CustomText style={downloadAttachmentContentStyle}>
-                      {i18n.t('CONVERSATION.DOWNLOAD')}
+    return attachments.map((attachment, index) => {
+      const { file_type: fileType, data_url: dataUrl } = attachment;
+      const fileName = dataUrl ? dataUrl.split('/').pop() : '';
+      const fileNameWithOutExt = fileName.split('.').shift();
+      const fileTypeFromName = fileName.split('.').pop();
+      return (
+        <React.Fragment key={index}>
+          {fileType === 'image' ? (
+            <TouchableOpacity
+              onPress={() => showAttachment({ type: 'image', dataUrl })}
+              style={[
+                type === 'outgoing' ? style.imageViewRight : style.imageViewLeft,
+                isPrivate && style.privateMessageContainer,
+              ]}>
+              <Image
+                style={style.image}
+                source={{
+                  uri: dataUrl,
+                }}
+                onLoadStart={() => onLoadImage(true)}
+                onLoadEnd={() => {
+                  onLoadImage(false);
+                }}
+              />
+              {imageLoading && <ImageLoader style={style.imageLoader} />}
+            </TouchableOpacity>
+          ) : (
+            <View
+              style={[
+                type === 'outgoing' ? style.fileViewRight : style.fileViewLeft,
+                style.fileView,
+              ]}>
+              <View style={style.fileAttachmentContainer}>
+                <View style={style.fileAttachmentView}>
+                  <View style={style.attachmentIconView}>
+                    <FileIcon
+                      fill={isPrivate ? theme['color-primary-default'] : attachmentIconColor}
+                    />
+                  </View>
+                  <View style={style.attachmentTextView}>
+                    <CustomText style={attachmentContentStyle}>
+                      {fileName.length < 30
+                        ? `${fileName}`
+                        : `${fileNameWithOutExt.substr(
+                            fileName.length - 30,
+                          )}...${fileTypeFromName}`}
                     </CustomText>
-                  </TouchableOpacity>
+                    <TouchableOpacity onPress={() => showAttachment({ type: 'file', dataUrl })}>
+                      <CustomText style={downloadAttachmentContentStyle}>
+                        {i18n.t('CONVERSATION.DOWNLOAD')}
+                      </CustomText>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
-        )}
-      </React.Fragment>
-    );
+          )}
+        </React.Fragment>
+      );
+    });
   }
   return null;
 };

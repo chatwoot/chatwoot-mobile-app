@@ -25,7 +25,7 @@ const Email = ({ emailContent, eva: { style, theme } }) => {
         style={style.container}
         customStyle={`
         img{
-          width: 50px !important; height: 50px !important;
+          width: 100% !important;
         }
       `}
         source={{

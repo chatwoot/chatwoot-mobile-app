@@ -30,7 +30,7 @@ const Email = ({ emailContent, eva: { style, theme } }) => {
           font-size: 14px;
         } 
         img{
-          width: 100% !important;
+          max-width: 100% !important;
         }
       `}
         source={{

@@ -318,6 +318,45 @@ const ChatMessageItemComponent = ({
     )
     .filter(displayItem => !!displayItem);
 
+  const MessageContent = () => {
+    if (emailMessageContent()) {
+      return <Email emailContent={emailMessageContent()} />;
+    } else {
+      return (
+        <Markdown
+          mergeStyle
+          markdownit={MarkdownIt({
+            linkify: true,
+            typographer: true,
+          })}
+          onLinkPress={handleURL}
+          style={{
+            body: { flex: 1, minWidth: 100 },
+            link: {
+              color: theme['text-light-color'],
+              fontWeight: isPrivate ? theme['font-semi-bold'] : theme['font-regular'],
+            },
+            text: messageContentStyle,
+            strong: {
+              fontWeight: theme['font-semi-bold'],
+            },
+            paragraph: {
+              marginTop: 0,
+              marginBottom: 0,
+            },
+            bullet_list_icon: {
+              color: theme['color-white'],
+            },
+            ordered_list_icon: {
+              color: theme['color-white'],
+            },
+          }}>
+          {message.content}
+        </Markdown>
+      );
+    }
+  };
+
   const emailMessageContent = () => {
     const {
       html_content: { full: fullHTMLContent } = {},
@@ -325,14 +364,13 @@ const ChatMessageItemComponent = ({
     } = (message && message.content_attributes && message.content_attributes.email) || {};
     return fullHTMLContent || fullTextContent || '';
   };
-  if (!(emailMessageContent() || message)) {
-    return;
-  }
+
   const { content_attributes: { external_created_at = null } = {} } = message;
   const readableTime = messageStamp({
     time: external_created_at || created_at,
     dateFormat: 'LLL d, h:mm a',
   });
+  const isMessageContentExist = emailMessageContent() || message.content;
 
   return (
     <TouchableOpacity onLongPress={showTooltip} activeOpacity={0.95}>
@@ -344,40 +382,7 @@ const ChatMessageItemComponent = ({
           !isEmailChannel && style.messageBody,
         ]}>
         {hasAnyEmailValues() ? <View style={style.mailHeadWrap}>{emailHeader}</View> : null}
-        {emailMessageContent() ? (
-          <Email emailContent={emailMessageContent()} />
-        ) : (
-          <Markdown
-            mergeStyle
-            markdownit={MarkdownIt({
-              linkify: true,
-              typographer: true,
-            })}
-            onLinkPress={handleURL}
-            style={{
-              body: { flex: 1, minWidth: 100 },
-              link: {
-                color: theme['text-light-color'],
-                fontWeight: isPrivate ? theme['font-semi-bold'] : theme['font-regular'],
-              },
-              text: messageContentStyle,
-              strong: {
-                fontWeight: theme['font-semi-bold'],
-              },
-              paragraph: {
-                marginTop: 0,
-                marginBottom: 0,
-              },
-              bullet_list_icon: {
-                color: theme['color-white'],
-              },
-              ordered_list_icon: {
-                color: theme['color-white'],
-              },
-            }}>
-            {message.content}
-          </Markdown>
-        )}
+        {isMessageContentExist && <MessageContent />}
 
         <ChatAttachmentItem
           attachments={attachments}

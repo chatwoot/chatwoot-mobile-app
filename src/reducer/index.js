@@ -8,6 +8,7 @@ import notification from './notification';
 import agent from './agent';
 import cannedResponseSlice from './cannedResponseSlice';
 import conversationSlice from './conversationSlice';
+import conversationTypingSlice from './conversationTypingSlice';
 
 export const rootReducer = combineReducers({
   auth,
@@ -18,6 +19,7 @@ export const rootReducer = combineReducers({
   agent,
   cannedResponses: cannedResponseSlice,
   conversations: conversationSlice,
+  conversationTypingStatus: conversationTypingSlice,
 });
 
 // export default (state, action) =>

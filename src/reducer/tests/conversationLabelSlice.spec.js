@@ -20,18 +20,18 @@ jest.mock('helpers/APIHelper', () => {
 
 describe('conversationLabelSlice', () => {
   describe('reducers', () => {
-    const initialState = { entities: {}, ids: [], loading: false, records: {} };
+    const initialState = { entities: {}, ids: [], uiFlags: { loading: false }, records: {} };
 
     it('sets loading true when fetch conversation labels is pending', () => {
       const action = { type: conversationLabelActions.index.pending };
       const state = conversationLabelSlice(initialState, action);
-      expect(state).toEqual({ loading: true, entities: {}, ids: [], records: {} });
+      expect(state).toEqual({ uiFlags: { loading: true }, entities: {}, ids: [], records: {} });
     });
 
     it('sets loading false when fetch conversation labels is rejected', () => {
       const action = { type: conversationLabelActions.index.rejected };
       const state = conversationLabelSlice(initialState, action);
-      expect(state).toEqual({ loading: false, entities: {}, ids: [], records: {} });
+      expect(state).toEqual({ uiFlags: { loading: false }, entities: {}, ids: [], records: {} });
     });
 
     it('sets labels when fetch conversation labels is fulfilled', () => {
@@ -44,7 +44,7 @@ describe('conversationLabelSlice', () => {
       };
       const state = conversationLabelSlice(initialState, action);
       expect(state).toEqual({
-        loading: false,
+        uiFlags: { loading: false },
         entities: {},
         ids: [],
         records: {
@@ -63,7 +63,7 @@ describe('conversationLabelSlice', () => {
       };
       const state = conversationLabelSlice(initialState, action);
       expect(state).toEqual({
-        loading: false,
+        uiFlags: { loading: false },
         entities: {},
         ids: [],
         records: {
@@ -87,7 +87,9 @@ describe('conversationLabelSlice', () => {
     it('should return conversation labels loading', () => {
       const state = {
         conversationLabels: {
-          loading: true,
+          uiFlags: {
+            loading: true,
+          },
         },
       };
       expect(selectConversationLabelsLoading(state)).toEqual(true);

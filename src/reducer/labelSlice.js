@@ -19,7 +19,9 @@ export const actions = {
 const labelsAdapter = createEntityAdapter();
 
 const initialState = labelsAdapter.getInitialState({
-  loading: false,
+  uiFlags: {
+    loading: false,
+  },
 });
 
 const labelsSlice = createSlice({
@@ -29,20 +31,20 @@ const labelsSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(actions.index.pending, (state, action) => {
-        state.loading = true;
+        state.uiFlags.loading = true;
       })
       .addCase(actions.index.fulfilled, (state, action) => {
-        state.loading = false;
+        state.uiFlags.loading = false;
         labelsAdapter.setAll(state, action.payload);
       })
       .addCase(actions.index.rejected, (state, action) => {
-        state.loading = false;
+        state.uiFlags.loading = false;
       });
   },
 });
 
 export const labelsSelector = labelsAdapter.getSelectors(state => state.labels);
 
-export const selectLabelLoading = state => state.labels.loading;
+export const selectLabelLoading = state => state.labels.uiFlags.loading;
 
 export default labelsSlice.reducer;

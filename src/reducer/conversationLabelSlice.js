@@ -34,7 +34,9 @@ export const actions = {
 const conversationLabelAdapter = createEntityAdapter();
 
 const initialState = conversationLabelAdapter.getInitialState({
-  loading: false,
+  uiFlags: {
+    loading: false,
+  },
   records: {},
 });
 
@@ -45,15 +47,15 @@ const conversationLabelSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(actions.index.pending, (state, action) => {
-        state.loading = true;
+        state.uiFlags.loading = true;
       })
       .addCase(actions.index.fulfilled, (state, action) => {
-        state.loading = false;
+        state.uiFlags.loading = false;
         const { conversationId, labels } = action.payload;
         state.records[conversationId] = labels;
       })
       .addCase(actions.index.rejected, (state, action) => {
-        state.loading = false;
+        state.uiFlags.loading = false;
       })
       .addCase(actions.update.fulfilled, (state, action) => {
         const { conversationId, labels } = action.payload;
@@ -64,6 +66,6 @@ const conversationLabelSlice = createSlice({
 
 export const selectConversationLabels = state => state.conversationLabels.records;
 
-export const selectConversationLabelsLoading = state => state.conversationLabels.loading;
+export const selectConversationLabelsLoading = state => state.conversationLabels.uiFlags.loading;
 
 export default conversationLabelSlice.reducer;

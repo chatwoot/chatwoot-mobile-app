@@ -39,19 +39,21 @@ describe('labelSlice', () => {
     const initialState = {
       entities: {},
       ids: [],
-      loading: false,
+      uiFlags: {
+        loading: false,
+      },
     };
 
     it('sets loading true when fetch all labels is pending', () => {
       const action = { type: labelActions.index.pending };
       const state = labelSlice(initialState, action);
-      expect(state).toEqual({ loading: true, entities: {}, ids: [] });
+      expect(state).toEqual({ uiFlags: { loading: true }, entities: {}, ids: [] });
     });
 
     it('sets loading false when fetch all labels is rejected', () => {
       const action = { type: labelActions.index.rejected };
       const state = labelSlice(initialState, action);
-      expect(state).toEqual({ loading: false, entities: {}, ids: [] });
+      expect(state).toEqual({ uiFlags: { loading: false }, entities: {}, ids: [] });
     });
 
     it('sets labels when fetch all labels is fulfilled', () => {
@@ -61,7 +63,7 @@ describe('labelSlice', () => {
       };
       const state = labelSlice(initialState, action);
       expect(state).toEqual({
-        loading: false,
+        uiFlags: { loading: false },
         entities: {
           1: labels[0],
           2: labels[1],
@@ -79,7 +81,7 @@ describe('labelSlice', () => {
           2: labels[1],
         },
         ids: [1, 2],
-        loading: false,
+        uiFlags: { loading: false },
       },
     };
 

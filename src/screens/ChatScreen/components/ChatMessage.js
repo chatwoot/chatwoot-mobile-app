@@ -6,8 +6,9 @@ import { withStyles } from '@ui-kitten/components';
 
 import CustomText from '../../../components/Text';
 import { messageStamp } from '../../../helpers/TimeHelper';
-import ChatAttachmentItem from './ChatAttachmentItem';
 import ChatMessageItem from './ChatMessageItem';
+
+import { INBOX_TYPES } from 'constants';
 
 const styles = theme => ({
   message: {
@@ -16,9 +17,8 @@ const styles = theme => ({
     marginBottom: 4,
   },
 
-  messageContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  emailContainer: {
+    width: '100%',
   },
 
   activityView: {
@@ -55,44 +55,44 @@ const styles = theme => ({
   },
 });
 
-const MessageContentComponent = ({ message, type, showAttachment, created_at }) => {
-  const { attachments } = message;
-
-  return attachments ? (
-    <ChatAttachmentItem
-      attachments={attachments}
-      message={message}
-      type={type}
-      showAttachment={showAttachment}
-      created_at={created_at}
-    />
-  ) : (
-    <ChatMessageItem message={message} type={type} created_at={created_at} />
+const MessageContentComponent = ({ message, type, showAttachment, created_at, isEmailChannel }) => {
+  return (
+    <View>
+      <ChatMessageItem
+        message={message}
+        type={type}
+        created_at={created_at}
+        showAttachment={showAttachment}
+        isEmailChannel={isEmailChannel}
+      />
+    </View>
   );
 };
 
 const MessageContent = withStyles(MessageContentComponent, styles);
 
-const OutGoingMessageComponent = ({ message, created_at, showAttachment }) => (
+const OutGoingMessageComponent = ({ message, created_at, showAttachment, isEmailChannel }) => (
   <React.Fragment>
     <MessageContent
       message={message}
       created_at={created_at}
       type="outgoing"
       showAttachment={showAttachment}
+      isEmailChannel={isEmailChannel}
     />
   </React.Fragment>
 );
 
 const OutGoingMessage = withStyles(OutGoingMessageComponent, styles);
 
-const IncomingMessageComponent = ({ message, created_at, showAttachment }) => (
+const IncomingMessageComponent = ({ message, created_at, showAttachment, isEmailChannel }) => (
   <React.Fragment>
     <MessageContent
       message={message}
       created_at={created_at}
       type="incoming"
       showAttachment={showAttachment}
+      isEmailChannel={isEmailChannel}
     />
   </React.Fragment>
 );
@@ -122,14 +122,22 @@ const propTypes = {
     date: PropTypes.string,
   }),
   showAttachment: PropTypes.func,
+  conversation: PropTypes.object,
 };
 
 const defaultProps = {
   message: { content: null, date: null },
 };
 
-const ChatMessageComponent = ({ message, eva: { style }, showAttachment }) => {
+const ChatMessageComponent = ({ message, eva: { style }, showAttachment, conversation }) => {
   const { message_type, created_at } = message;
+  const channel = conversation?.meta?.channel;
+
+  const isPrivate = message?.private;
+
+  const isEmailChannel = channel === INBOX_TYPES.EMAIL;
+
+  const shouldShowFullWidth = isEmailChannel && message_type !== 2 && !isPrivate;
 
   let alignment = message_type ? 'flex-end' : 'flex-start';
   if (message_type === 2) {
@@ -137,14 +145,15 @@ const ChatMessageComponent = ({ message, eva: { style }, showAttachment }) => {
   }
 
   return (
-    <View style={[style.message, { justifyContent: alignment }]}>
-      <View style={style.messageContainer}>
+    <View style={[style.message, !shouldShowFullWidth ? { justifyContent: alignment } : null]}>
+      <View style={[shouldShowFullWidth ? style.emailContainer : {}]}>
         {alignment === 'flex-start' ? (
           <IncomingMessage
             message={message}
             created_at={created_at}
             type="incoming"
             showAttachment={showAttachment}
+            isEmailChannel={isEmailChannel}
           />
         ) : alignment === 'center' ? (
           <ActivityMessage message={message} created_at={created_at} type="activity" />
@@ -154,6 +163,7 @@ const ChatMessageComponent = ({ message, eva: { style }, showAttachment }) => {
             created_at={created_at}
             type="outgoing"
             showAttachment={showAttachment}
+            isEmailChannel={isEmailChannel}
           />
         )}
       </View>

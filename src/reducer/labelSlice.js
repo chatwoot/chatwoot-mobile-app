@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import APIHelper from 'helpers/APIHelper';
 
 export const actions = {
-  fetchAllLabels: createAsyncThunk('labels/fetchAllLabels', async (params, { rejectWithValue }) => {
+  index: createAsyncThunk('labels/index', async (params, { rejectWithValue }) => {
     try {
       const response = await APIHelper.get('labels');
       const { payload } = response.data;
@@ -28,14 +28,14 @@ const labelsSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
-      .addCase(actions.fetchAllLabels.pending, (state, action) => {
+      .addCase(actions.index.pending, (state, action) => {
         state.loading = true;
       })
-      .addCase(actions.fetchAllLabels.fulfilled, (state, action) => {
+      .addCase(actions.index.fulfilled, (state, action) => {
         state.loading = false;
         labelsAdapter.setAll(state, action.payload);
       })
-      .addCase(actions.fetchAllLabels.rejected, (state, action) => {
+      .addCase(actions.index.rejected, (state, action) => {
         state.loading = false;
       });
   },

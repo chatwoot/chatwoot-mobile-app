@@ -78,7 +78,7 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
   const navigation = useNavigation();
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(labelActions.fetchAllLabels());
+    dispatch(labelActions.index());
     dispatch(conversationLabelActions.fetchConversationLabels({ conversationId }));
   }, [conversationId, dispatch]);
 

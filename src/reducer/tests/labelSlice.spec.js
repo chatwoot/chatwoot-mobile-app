@@ -42,21 +42,21 @@ describe('labelSlice', () => {
       loading: false,
     };
 
-    it('sets loading true when fetchAllLabels is pending', () => {
-      const action = { type: labelActions.fetchAllLabels.pending };
+    it('sets loading true when fetch all labels is pending', () => {
+      const action = { type: labelActions.index.pending };
       const state = labelSlice(initialState, action);
       expect(state).toEqual({ loading: true, entities: {}, ids: [] });
     });
 
-    it('sets loading false when fetchAllLabels is rejected', () => {
-      const action = { type: labelActions.fetchAllLabels.rejected };
+    it('sets loading false when fetch all labels is rejected', () => {
+      const action = { type: labelActions.index.rejected };
       const state = labelSlice(initialState, action);
       expect(state).toEqual({ loading: false, entities: {}, ids: [] });
     });
 
-    it('sets labels when fetchAllLabels is fulfilled', () => {
+    it('sets labels when fetch all labels is fulfilled', () => {
       const action = {
-        type: labelActions.fetchAllLabels.fulfilled,
+        type: labelActions.index.fulfilled,
         payload: labels,
       };
       const state = labelSlice(initialState, action);

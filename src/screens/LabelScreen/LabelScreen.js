@@ -24,7 +24,7 @@ const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(labelActions.fetchAllLabels());
+    dispatch(labelActions.index());
     dispatch(conversationLabelActions.fetchConversationLabels({ conversationId }));
   }, [conversationId, dispatch]);
 

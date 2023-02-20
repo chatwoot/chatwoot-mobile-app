@@ -2,23 +2,20 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import APIHelper from 'helpers/APIHelper';
 
 export const actions = {
-  fetchConversationLabels: createAsyncThunk(
-    'labels/fetchConversationLabels',
-    async ({ conversationId }, { rejectWithValue }) => {
-      try {
-        const response = await APIHelper.get(`conversations/${conversationId}/labels`);
-        const { payload } = response.data;
-        return { labels: payload, conversationId };
-      } catch (error) {
-        if (!error.response) {
-          throw error;
-        }
-        return rejectWithValue(error.response.data);
+  index: createAsyncThunk('labels/index', async ({ conversationId }, { rejectWithValue }) => {
+    try {
+      const response = await APIHelper.get(`conversations/${conversationId}/labels`);
+      const { payload } = response.data;
+      return { labels: payload, conversationId };
+    } catch (error) {
+      if (!error.response) {
+        throw error;
       }
-    },
-  ),
-  updateConversationLabels: createAsyncThunk(
-    'labels/updateConversationLabels',
+      return rejectWithValue(error.response.data);
+    }
+  }),
+  update: createAsyncThunk(
+    'labels/update',
     async ({ conversationId, labels }, { rejectWithValue }) => {
       try {
         const response = await APIHelper.post(`conversations/${conversationId}/labels`, { labels });
@@ -47,18 +44,18 @@ const conversationLabelSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
-      .addCase(actions.fetchConversationLabels.pending, (state, action) => {
+      .addCase(actions.index.pending, (state, action) => {
         state.loading = true;
       })
-      .addCase(actions.fetchConversationLabels.fulfilled, (state, action) => {
+      .addCase(actions.index.fulfilled, (state, action) => {
         state.loading = false;
         const { conversationId, labels } = action.payload;
         state.records[conversationId] = labels;
       })
-      .addCase(actions.fetchConversationLabels.rejected, (state, action) => {
+      .addCase(actions.index.rejected, (state, action) => {
         state.loading = false;
       })
-      .addCase(actions.updateConversationLabels.fulfilled, (state, action) => {
+      .addCase(actions.update.fulfilled, (state, action) => {
         const { conversationId, labels } = action.payload;
         state.records[conversationId] = labels;
       });

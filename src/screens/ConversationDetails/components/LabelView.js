@@ -79,7 +79,7 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(labelActions.index());
-    dispatch(conversationLabelActions.fetchConversationLabels({ conversationId }));
+    dispatch(conversationLabelActions.index({ conversationId }));
   }, [conversationId, dispatch]);
 
   const conversationLabels = useSelector(selectConversationLabels);
@@ -102,7 +102,7 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
         : [];
     AnalyticsHelper.track(LABEL_EVENTS.DELETED);
     dispatch(
-      conversationLabelActions.updateConversationLabels({
+      conversationLabelActions.update({
         conversationId: conversationId,
         labels: result,
       }),

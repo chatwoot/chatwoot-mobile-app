@@ -13,6 +13,8 @@ import { showToast } from 'helpers/ToastHelper';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { useRoute } from '@react-navigation/native';
 import Email from '../components/Email';
+import ChatAttachmentItem from './ChatAttachmentItem';
+
 const LockIcon = style => {
   return <Icon {...style} name="lock" />;
 };
@@ -23,8 +25,11 @@ const styles = theme => ({
     paddingRight: 16,
     paddingTop: 8,
     paddingBottom: 8,
-    maxWidth: Dimensions.get('window').width - 60,
   },
+  messageBody: {
+    maxWidth: Dimensions.get('window').width - 70,
+  },
+
   messageLeft: {
     borderBottomLeftRadius: 4,
     borderTopLeftRadius: 4,
@@ -134,17 +139,27 @@ const propTypes = {
       name: PropTypes.string,
       thumbnail: PropTypes.string,
     }),
+    attachments: PropTypes.array,
     content: PropTypes.string,
     content_attributes: PropTypes.object,
     private: PropTypes.bool,
   }),
-  attachment: PropTypes.object,
+  showAttachment: PropTypes.func,
+  isEmailChannel: PropTypes.bool,
 };
 
-const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, created_at }) => {
+const ChatMessageItemComponent = ({
+  type,
+  message,
+  eva: { style, theme },
+  created_at,
+  showAttachment,
+  isEmailChannel,
+}) => {
   const route = useRoute();
   const actionSheetRef = createRef();
   const { meta } = route.params;
+  const { attachments } = message;
   const senderName = message && message.sender && message.sender.name ? message.sender.name : '';
   const messageViewStyle = type === 'outgoing' ? style.messageRight : style.messageLeft;
   const messageTextStyle =
@@ -303,6 +318,45 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     )
     .filter(displayItem => !!displayItem);
 
+  const MessageContent = () => {
+    if (emailMessageContent()) {
+      return <Email emailContent={emailMessageContent()} />;
+    } else {
+      return (
+        <Markdown
+          mergeStyle
+          markdownit={MarkdownIt({
+            linkify: true,
+            typographer: true,
+          })}
+          onLinkPress={handleURL}
+          style={{
+            body: { flex: 1, minWidth: 100 },
+            link: {
+              color: theme['text-light-color'],
+              fontWeight: isPrivate ? theme['font-semi-bold'] : theme['font-regular'],
+            },
+            text: messageContentStyle,
+            strong: {
+              fontWeight: theme['font-semi-bold'],
+            },
+            paragraph: {
+              marginTop: 0,
+              marginBottom: 0,
+            },
+            bullet_list_icon: {
+              color: theme['color-white'],
+            },
+            ordered_list_icon: {
+              color: theme['color-white'],
+            },
+          }}>
+          {message.content}
+        </Markdown>
+      );
+    }
+  };
+
   const emailMessageContent = () => {
     const {
       html_content: { full: fullHTMLContent } = {},
@@ -311,45 +365,31 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
     return fullHTMLContent || fullTextContent || '';
   };
 
+  const { content_attributes: { external_created_at = null } = {} } = message;
+  const readableTime = messageStamp({
+    time: external_created_at || created_at,
+    dateFormat: 'LLL d, h:mm a',
+  });
+  const isMessageContentExist = emailMessageContent() || message.content;
+
   return (
     <TouchableOpacity onLongPress={showTooltip} activeOpacity={0.95}>
       <View
-        style={[style.message, messageViewStyle, message.private && style.privateMessageContainer]}>
+        style={[
+          style.message,
+          messageViewStyle,
+          message.private && style.privateMessageContainer,
+          !isEmailChannel && style.messageBody,
+        ]}>
         {hasAnyEmailValues() ? <View style={style.mailHeadWrap}>{emailHeader}</View> : null}
-        {emailMessageContent() ? (
-          <Email emailContent={emailMessageContent()} />
-        ) : (
-          <Markdown
-            mergeStyle
-            markdownit={MarkdownIt({
-              linkify: true,
-              typographer: true,
-            })}
-            onLinkPress={handleURL}
-            style={{
-              body: { flex: 1, minWidth: 100 },
-              link: {
-                color: theme['text-light-color'],
-                fontWeight: isPrivate ? theme['font-semi-bold'] : theme['font-regular'],
-              },
-              text: messageContentStyle,
-              strong: {
-                fontWeight: theme['font-semi-bold'],
-              },
-              paragraph: {
-                marginTop: 0,
-                marginBottom: 0,
-              },
-              bullet_list_icon: {
-                color: theme['color-white'],
-              },
-              ordered_list_icon: {
-                color: theme['color-white'],
-              },
-            }}>
-            {message.content}
-          </Markdown>
-        )}
+        {isMessageContentExist && <MessageContent />}
+
+        <ChatAttachmentItem
+          attachments={attachments}
+          message={message}
+          type={type}
+          showAttachment={showAttachment}
+        />
 
         <View style={style.dateView}>
           <CustomText
@@ -359,7 +399,7 @@ const ChatMessageItemComponent = ({ type, message, eva: { style, theme }, create
                 color: theme['color-gray'],
               },
             ]}>
-            {messageStamp({ time: created_at })}
+            {readableTime}
           </CustomText>
           {isPrivate && (
             <View style={style.iconView}>

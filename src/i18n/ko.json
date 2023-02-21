@@ -69,6 +69,7 @@
     "SHARE": "대화 공유하기",
     "CANCEL": "취소",
     "PRIVATE_MSG_INPUT": "이건 에이전트에게만 보일것입니다",
+    "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "대화에서 제외시키기",
     "MUTE_CONVERSATION": "대화 음소거하기",
     "UNMUTE_CONVERSATION": "대화 음소거 해제하기",

@@ -69,6 +69,7 @@
     "SHARE": "Partajarea conversației",
     "CANCEL": "Renunță",
     "PRIVATE_MSG_INPUT": "Acest lucru va fi vizibil numai agenților",
+    "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Anularea atribuirii conversației",
     "MUTE_CONVERSATION": "Silențios conversația",
     "UNMUTE_CONVERSATION": "Sunet conversația",

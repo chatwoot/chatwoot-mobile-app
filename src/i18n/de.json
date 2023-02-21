@@ -69,6 +69,7 @@
     "SHARE": "Konversation teilen",
     "CANCEL": "Abbrechen",
     "PRIVATE_MSG_INPUT": "Dies ist nur für Agenten sichtbar",
+    "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Zuweisung entfernen",
     "MUTE_CONVERSATION": "Konversation stumm schalten",
     "UNMUTE_CONVERSATION": "Konversation entstummen",

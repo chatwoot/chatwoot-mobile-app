@@ -150,7 +150,12 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   };
 
   const renderMessage = item => (
-    <ChatMessage message={item.item} key={item.index} showAttachment={showAttachment} />
+    <ChatMessage
+      message={item.item}
+      key={item.index}
+      showAttachment={showAttachment}
+      conversation={conversation}
+    />
   );
 
   const showConversationDetails = () => {

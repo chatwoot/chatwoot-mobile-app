@@ -69,6 +69,7 @@
     "SHARE": "Share conversation",
     "CANCEL": "Mégse",
     "PRIVATE_MSG_INPUT": "Ezt csak ügynökök láthatják",
+    "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Beszélgetés hozzárendelés törlése",
     "MUTE_CONVERSATION": "Mute conversation",
     "UNMUTE_CONVERSATION": "Unmute conversation",

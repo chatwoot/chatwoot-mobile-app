@@ -21,7 +21,7 @@ import {
 const TeamScreenComponent = ({ eva: { style }, navigation, route }) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(teamActions.fetchAllTeams());
+    dispatch(teamActions.index());
   }, [dispatch]);
   const { conversationDetails } = route.params;
   const {
@@ -58,7 +58,7 @@ const TeamScreenComponent = ({ eva: { style }, navigation, route }) => {
     if (!team || team.id !== selectedTeamId) {
       AnalyticsHelper.track(CONVERSATION_EVENTS.CHANGE_TEAM);
       dispatch(
-        teamActions.assignTeam({
+        teamActions.update({
           conversationId: conversationDetails.id,
           teamId: selectedTeamId,
         }),

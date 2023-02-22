@@ -2,20 +2,23 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import APIHelper from 'helpers/APIHelper';
 
 export const actions = {
-  index: createAsyncThunk('labels/index', async ({ conversationId }, { rejectWithValue }) => {
-    try {
-      const response = await APIHelper.get(`conversations/${conversationId}/labels`);
-      const { payload } = response.data;
-      return { labels: payload, conversationId };
-    } catch (error) {
-      if (!error.response) {
-        throw error;
+  index: createAsyncThunk(
+    'conversationLabels/index',
+    async ({ conversationId }, { rejectWithValue }) => {
+      try {
+        const response = await APIHelper.get(`conversations/${conversationId}/labels`);
+        const { payload } = response.data;
+        return { labels: payload, conversationId };
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
       }
-      return rejectWithValue(error.response.data);
-    }
-  }),
+    },
+  ),
   update: createAsyncThunk(
-    'labels/update',
+    'conversationLabels/update',
     async ({ conversationId, labels }, { rejectWithValue }) => {
       try {
         const response = await APIHelper.post(`conversations/${conversationId}/labels`, { labels });

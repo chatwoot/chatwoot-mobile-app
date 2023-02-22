@@ -18,6 +18,7 @@ import i18n from 'i18n';
 import createStyles from './ConversationList.style';
 import { selectUserId } from 'reducer/authSlice';
 import { selectAllTypingUsers } from 'reducer/conversationTypingSlice';
+
 const propTypes = {
   assigneeType: PropTypes.string,
   conversationStatus: PropTypes.string,
@@ -47,9 +48,7 @@ const ConversationList = ({
   const [refreshing, setRefreshing] = useState(false);
   const userId = useSelector(selectUserId);
   const navigation = useNavigation();
-
   const conversationTypingUsers = useSelector(selectAllTypingUsers);
-
   const filters = {
     assigneeType,
     conversationStatus,

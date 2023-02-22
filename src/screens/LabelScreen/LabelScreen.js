@@ -24,8 +24,8 @@ const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(labelActions.fetchAllLabels());
-    dispatch(conversationLabelActions.fetchConversationLabels({ conversationId }));
+    dispatch(labelActions.index());
+    dispatch(conversationLabelActions.index({ conversationId }));
   }, [conversationId, dispatch]);
 
   const conversationLabels = useSelector(selectConversationLabels);
@@ -35,7 +35,7 @@ const LabelScreenComponent = ({ eva: { style }, navigation, route }) => {
 
   const onUpdateLabels = selectedLabels => {
     dispatch(
-      conversationLabelActions.updateConversationLabels({
+      conversationLabelActions.update({
         conversationId: conversationId,
         labels: selectedLabels,
       }),

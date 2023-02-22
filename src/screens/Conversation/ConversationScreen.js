@@ -7,7 +7,6 @@ import { View, ScrollView } from 'react-native';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { useFocusEffect } from '@react-navigation/native';
 import { getInboxIconByType } from 'helpers/inboxHelpers';
-import { actions as inboxActions } from 'reducer/inboxSlice';
 import ActionCable from 'helpers/ActionCable';
 import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
 import {
@@ -27,9 +26,8 @@ import { ConversationList, ConversationFilter, ConversationInboxFilter } from '.
 import { CONVERSATION_STATUSES, ASSIGNEE_TYPES } from 'constants';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
-
+import { actions as inboxActions, inboxesSelector } from 'reducer/inboxSlice';
 import { selectUser } from 'reducer/authSlice';
-import { inboxesSelector } from 'reducer/inboxSlice';
 import {
   selectWebSocketUrl,
   selectInstallationUrl,

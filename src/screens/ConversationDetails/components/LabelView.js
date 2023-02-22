@@ -7,7 +7,7 @@ import LabelBox from 'src/components/LabelBox';
 import AddLabelButton from './AddButton';
 import { Spinner } from '@ui-kitten/components';
 import { View, Text } from 'react-native';
-import i18n from '../../../i18n';
+import i18n from 'i18n';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { LABEL_EVENTS } from 'constants/analyticsEvents';
 
@@ -78,8 +78,8 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
   const navigation = useNavigation();
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(labelActions.fetchAllLabels());
-    dispatch(conversationLabelActions.fetchConversationLabels({ conversationId }));
+    dispatch(labelActions.index());
+    dispatch(conversationLabelActions.index({ conversationId }));
   }, [conversationId, dispatch]);
 
   const conversationLabels = useSelector(selectConversationLabels);
@@ -102,7 +102,7 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
         : [];
     AnalyticsHelper.track(LABEL_EVENTS.DELETED);
     dispatch(
-      conversationLabelActions.updateConversationLabels({
+      conversationLabelActions.update({
         conversationId: conversationId,
         labels: result,
       }),

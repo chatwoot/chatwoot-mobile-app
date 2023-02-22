@@ -13,16 +13,16 @@ import teamSlice from './teamSlice';
 import customAttributeSlice from './customAttributeSlice';
 import notificationSlice from './notificationSlice';
 export const rootReducer = combineReducers({
-  auth: authSlice,
-  settings: settingsSlice,
-  conversationTypingStatus: conversationTypingSlice,
   cannedResponses: cannedResponseSlice,
   conversations: conversationSlice,
-  inboxAgents: inboxAgentsSlice,
   labels: labelSlice,
-  inboxes: inboxSlice,
   conversationLabels: conversationLabelsSlice,
-  teams: teamSlice,
   customAttributes: customAttributeSlice,
+  inboxes: inboxSlice,
+  inboxAgents: inboxAgentsSlice,
+  conversationTypingStatus: conversationTypingSlice,
+  settings: settingsSlice,
+  teams: teamSlice,
+  auth: authSlice,
   notifications: notificationSlice,
 });

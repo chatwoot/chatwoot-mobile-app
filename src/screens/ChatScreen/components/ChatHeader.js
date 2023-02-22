@@ -100,6 +100,7 @@ const ChatHeader = ({
   const actionSheetRef = createRef();
   const dispatch = useDispatch();
   const conversationToggleStatus = useSelector(selectConversationToggleStatus);
+  const { id: userId = null } = useSelector(store => store.auth.user);
 
   const showActionSheet = () => {
     actionSheetRef.current?.setModalVisible();
@@ -198,6 +199,17 @@ const ChatHeader = ({
 
   const onPressAction = ({ itemType }) => {
     actionSheetRef.current?.hide();
+    if (itemType === 'self_assign') {
+      if (conversationDetails) {
+        AnalyticsHelper.track(CONVERSATION_EVENTS.SELF_ASSIGN_CONVERSATION);
+        dispatch(
+          conversationActions.assignConversation({
+            conversationId: conversationDetails.id,
+            assigneeId: userId,
+          }),
+        );
+      }
+    }
     if (itemType === 'assignee') {
       if (conversationDetails) {
         navigation.navigate('AgentScreen', { conversationDetails });

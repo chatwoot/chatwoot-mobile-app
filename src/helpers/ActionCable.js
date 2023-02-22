@@ -8,12 +8,11 @@ import {
 } from 'reducer/conversationSlice';
 
 import conversationActions from 'reducer/conversationSlice.action';
-import {
-  addUserTypingToConversation,
-  removeUserFromTypingConversation,
-} from '../actions/conversation';
 import { addOrUpdateActiveUsers } from '../actions/auth';
 import { store } from '../store';
+import { addUserToTyping, destroyUserFromTyping } from 'reducer/conversationTypingSlice';
+
+import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
 
 class ActionCableConnector extends BaseActionCableConnector {
   constructor(pubsubToken, webSocketUrl, accountId, userId) {
@@ -70,7 +69,11 @@ class ActionCableConnector extends BaseActionCableConnector {
   };
 
   onPresenceUpdate = ({ contacts, users }) => {
-    //TODO: Move this to agentSlice and authSlice, https://github.com/chatwoot/chatwoot-mobile-next/blob/main/src/helpers/ActionCable.js#L64
+    store.dispatch(
+      updateAgentsPresence({
+        users,
+      }),
+    );
     store.dispatch(
       addOrUpdateActiveUsers({
         users,
@@ -84,13 +87,13 @@ class ActionCableConnector extends BaseActionCableConnector {
   };
 
   onTypingOn = ({ conversation, user }) => {
-    //TODO: Move this to typingSlice
     const conversationId = conversation.id;
 
     this.clearTimer(conversationId);
+
     store.dispatch(
-      addUserTypingToConversation({
-        conversation,
+      addUserToTyping({
+        conversationId,
         user,
       }),
     );
@@ -98,14 +101,13 @@ class ActionCableConnector extends BaseActionCableConnector {
   };
 
   onTypingOff = ({ conversation, user }) => {
-    //TODO: Move this to typingSlice
     const conversationId = conversation.id;
 
     this.clearTimer(conversationId);
 
     store.dispatch(
-      removeUserFromTypingConversation({
-        conversation,
+      destroyUserFromTyping({
+        conversationId,
         user,
       }),
     );

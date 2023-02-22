@@ -25,6 +25,7 @@ import i18n from 'i18n';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import { INBOX_ICON } from 'src/constants/index';
+import { inboxesSelector } from 'reducer/inboxSlice';
 
 const styles = theme => ({
   headerView: {
@@ -106,7 +107,7 @@ const ChatHeader = ({
     actionSheetRef.current?.setModalVisible();
   };
 
-  const inboxes = useSelector(state => state.inbox.data);
+  const inboxes = useSelector(inboxesSelector.selectAll);
   const inboxId = conversationDetails && conversationDetails.inbox_id;
   const inboxDetails = inboxes ? inboxes.find(inbox => inbox.id === inboxId) : {};
   const channelType =

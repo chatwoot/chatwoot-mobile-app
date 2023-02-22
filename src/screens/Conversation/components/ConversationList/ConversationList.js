@@ -16,6 +16,7 @@ import ConversationItem from '../ConversationItem/ConversationItem';
 import ConversationEmptyMessage from '../ConversationEmptyMessage/ConversationEmptyMessage';
 import i18n from 'i18n';
 import createStyles from './ConversationList.style';
+import { selectAllTypingUsers } from 'reducer/conversationTypingSlice';
 
 const propTypes = {
   assigneeType: PropTypes.string,
@@ -46,8 +47,7 @@ const ConversationList = ({
   const [refreshing, setRefreshing] = useState(false);
   const userId = useSelector(store => store.auth.user.id);
   const navigation = useNavigation();
-  const conversationTypingUsers = useSelector(state => state.conversation.conversationTypingUsers);
-
+  const conversationTypingUsers = useSelector(selectAllTypingUsers);
   const filters = {
     assigneeType,
     conversationStatus,

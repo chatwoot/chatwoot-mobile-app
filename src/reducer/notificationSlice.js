@@ -22,25 +22,22 @@ export const notificationAdapter = createEntityAdapter({
 });
 
 export const actions = {
-  getAllNotifications: createAsyncThunk(
-    'notifications/getAllNotifications',
-    async ({ pageNo = 1 }, { rejectWithValue }) => {
-      try {
-        const response = await APIHelper.get(`notifications?page=${pageNo}`);
-        const {
-          data: { payload, meta },
-        } = response.data;
-        const { unread_count } = meta;
-        updateBadgeCount({ count: unread_count });
-        return {
-          notifications: payload,
-          meta,
-        };
-      } catch (error) {
-        return rejectWithValue(error);
-      }
-    },
-  ),
+  index: createAsyncThunk('notifications/index', async ({ pageNo = 1 }, { rejectWithValue }) => {
+    try {
+      const response = await APIHelper.get(`notifications?page=${pageNo}`);
+      const {
+        data: { payload, meta },
+      } = response.data;
+      const { unread_count } = meta;
+      updateBadgeCount({ count: unread_count });
+      return {
+        notifications: payload,
+        meta,
+      };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }),
   markNotificationAsRead: createAsyncThunk(
     'notifications/markNotificationAsRead',
     async ({ primaryActorId, primaryActorType }, { getState, rejectWithValue }) => {
@@ -162,16 +159,16 @@ const notificationSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(actions.getAllNotifications.pending, state => {
+      .addCase(actions.index.pending, state => {
         state.uiFlags.loading = true;
       })
-      .addCase(actions.getAllNotifications.fulfilled, (state, action) => {
+      .addCase(actions.index.fulfilled, (state, action) => {
         state.uiFlags.loading = false;
         state.meta = action.payload.meta;
         notificationAdapter.upsertMany(state, action.payload.notifications);
         state.uiFlags.isAllNotificationsLoaded = action.payload.notifications.length < 15;
       })
-      .addCase(actions.getAllNotifications.rejected, state => {
+      .addCase(actions.index.rejected, state => {
         state.uiFlags.loading = false;
       })
       .addCase(actions.markNotificationAsRead.fulfilled, (state, action) => {

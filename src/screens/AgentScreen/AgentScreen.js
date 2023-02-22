@@ -59,7 +59,6 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
       navigation.goBack();
     }
   };
-
   return (
     <SafeAreaView style={style.container}>
       <HeaderBar title={i18n.t('AGENT.TITLE')} showLeftButton onBackPress={goBack} />

@@ -123,7 +123,6 @@ const conversationSlice = createSlice({
       })
       .addCase(actions.fetchConversation.fulfilled, (state, { payload }) => {
         conversationAdapter.upsertOne(state, payload);
-        //
         state.isAllMessagesFetched = false;
         state.isConversationFetching = false;
       })

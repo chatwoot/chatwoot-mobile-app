@@ -9,6 +9,7 @@ import cannedResponseSlice from './cannedResponseSlice';
 import conversationSlice from './conversationSlice';
 import inboxSlice from './inboxSlice';
 import inboxAgentsSlice from './inboxAgentsSlice';
+import conversationTypingSlice from './conversationTypingSlice';
 
 export const rootReducer = combineReducers({
   auth,
@@ -20,6 +21,7 @@ export const rootReducer = combineReducers({
   conversations: conversationSlice,
   inboxes: inboxSlice,
   inboxAgents: inboxAgentsSlice,
+  conversationTypingStatus: conversationTypingSlice,
 });
 
 // export default (state, action) =>

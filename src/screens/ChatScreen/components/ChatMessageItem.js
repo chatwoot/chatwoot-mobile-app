@@ -328,7 +328,7 @@ const ChatMessageItemComponent = ({
           markdownit={MarkdownIt({
             linkify: true,
             typographer: true,
-          })}
+          }).disable('blockquote')} // disable code block
           onLinkPress={handleURL}
           style={{
             body: { flex: 1, minWidth: 100 },

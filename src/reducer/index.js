@@ -13,6 +13,7 @@ import customAttributeSlice from './customAttributeSlice';
 import inboxSlice from './inboxSlice';
 import inboxAgentsSlice from './inboxAgentsSlice';
 import conversationTypingSlice from './conversationTypingSlice';
+import teamSlice from './teamSlice';
 export const rootReducer = combineReducers({
   auth,
   conversation,
@@ -27,6 +28,7 @@ export const rootReducer = combineReducers({
   inboxes: inboxSlice,
   inboxAgents: inboxAgentsSlice,
   conversationTypingStatus: conversationTypingSlice,
+  teams: teamSlice,
 });
 
 // export default (state, action) =>

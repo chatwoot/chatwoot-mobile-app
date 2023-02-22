@@ -8,12 +8,9 @@ import {
 } from 'reducer/conversationSlice';
 
 import conversationActions from 'reducer/conversationSlice.action';
-import {
-  addUserTypingToConversation,
-  removeUserFromTypingConversation,
-} from '../actions/conversation';
 import { addOrUpdateActiveUsers } from '../actions/auth';
 import { store } from '../store';
+import { addUserToTyping, destroyUserFromTyping } from 'reducer/conversationTypingSlice';
 
 class ActionCableConnector extends BaseActionCableConnector {
   constructor(pubsubToken, webSocketUrl, accountId, userId) {
@@ -84,13 +81,13 @@ class ActionCableConnector extends BaseActionCableConnector {
   };
 
   onTypingOn = ({ conversation, user }) => {
-    //TODO: Move this to typingSlice
     const conversationId = conversation.id;
 
     this.clearTimer(conversationId);
+
     store.dispatch(
-      addUserTypingToConversation({
-        conversation,
+      addUserToTyping({
+        conversationId,
         user,
       }),
     );
@@ -98,14 +95,13 @@ class ActionCableConnector extends BaseActionCableConnector {
   };
 
   onTypingOff = ({ conversation, user }) => {
-    //TODO: Move this to typingSlice
     const conversationId = conversation.id;
 
     this.clearTimer(conversationId);
 
     store.dispatch(
-      removeUserFromTypingConversation({
-        conversation,
+      destroyUserFromTyping({
+        conversationId,
         user,
       }),
     );

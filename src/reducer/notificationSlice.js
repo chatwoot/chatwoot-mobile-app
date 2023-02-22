@@ -143,28 +143,30 @@ export const actions = {
 const notificationSlice = createSlice({
   name: 'notifications',
   initialState: notificationAdapter.getInitialState({
-    loading: false,
+    uiFlags: {
+      loading: false,
+      isAllNotificationsLoaded: false,
+    },
     meta: {
       unread_count: 0,
     },
-    isAllNotificationsLoaded: false,
-    isFetching: false,
+
     pushToken: null,
   }),
   reducers: {},
   extraReducers: builder => {
     builder
       .addCase(actions.getAllNotifications.pending, state => {
-        state.loading = true;
+        state.uiFlags.loading = true;
       })
       .addCase(actions.getAllNotifications.fulfilled, (state, action) => {
-        state.loading = false;
+        state.uiFlags.loading = false;
         state.meta = action.payload.meta;
         notificationAdapter.upsertMany(state, action.payload.notifications);
-        state.isAllNotificationsLoaded = action.payload.notifications.length < 15;
+        state.uiFlags.isAllNotificationsLoaded = action.payload.notifications.length < 15;
       })
       .addCase(actions.getAllNotifications.rejected, state => {
-        state.loading = false;
+        state.uiFlags.loading = false;
       })
       .addCase(actions.markNotificationAsRead.fulfilled, (state, action) => {
         const { primaryActorId } = action.payload;
@@ -191,9 +193,10 @@ const notificationSlice = createSlice({
 
 export const notificationSelector = notificationAdapter.getSelectors(state => state.notifications);
 
-export const selectAllNotificationsLoaded = state => state.notifications.isAllNotificationsLoaded;
+export const selectAllNotificationsLoaded = state =>
+  state.notifications.uiFlags.isAllNotificationsLoaded;
 
-export const selectIsFetching = state => state.notifications.isFetching;
+export const selectIsFetching = state => state.notifications.uiFlags.loading;
 
 export const selectUnreadCount = state => state.notifications.meta.unread_count;
 

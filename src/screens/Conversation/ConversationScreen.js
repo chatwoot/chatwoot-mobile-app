@@ -8,8 +8,6 @@ import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { getInboxIconByType } from 'helpers/inboxHelpers';
-import { getInboxes } from 'actions/inbox';
-import { getAgents } from 'actions/agent';
 import { getAllNotifications } from 'actions/notification';
 import ActionCable from 'helpers/ActionCable';
 import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
@@ -32,6 +30,7 @@ import { ConversationList, ConversationFilter, ConversationInboxFilter } from '.
 import { CONVERSATION_STATUSES, ASSIGNEE_TYPES } from 'constants';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
+import { actions as inboxActions, inboxesSelector } from 'reducer/inboxSlice';
 
 const ConversationScreen = () => {
   const theme = useTheme();
@@ -43,7 +42,7 @@ const ConversationScreen = () => {
   // const installationUrl = useSelector(state => state.settings.installationUrl);
   const webSocketUrl = useSelector(state => state.settings.webSocketUrl);
   const isLoading = useSelector(state => state.conversations.loading);
-  const inboxes = useSelector(state => state.inbox.data);
+  const inboxes = useSelector(inboxesSelector.selectAll);
   const user = useSelector(store => store.auth.user);
 
   const [pageNumber, setPage] = useState(1);
@@ -52,13 +51,13 @@ const ConversationScreen = () => {
   useEffect(() => {
     initActionCable();
     dispatch(clearAllConversations());
-    dispatch(getInboxes());
     clearAllDeliveredNotifications();
     dispatch(getInstalledVersion());
-    dispatch(getAgents());
+
     dispatch(saveDeviceDetails());
     dispatch(getAllNotifications({ pageNo: 1 }));
     initAnalytics();
+    dispatch(inboxActions.fetchInboxes());
   }, [dispatch, initActionCable, initAnalytics]);
 
   const initAnalytics = useCallback(async () => {

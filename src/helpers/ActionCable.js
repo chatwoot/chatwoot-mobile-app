@@ -12,6 +12,8 @@ import { addOrUpdateActiveUsers } from '../actions/auth';
 import { store } from '../store';
 import { addUserToTyping, destroyUserFromTyping } from 'reducer/conversationTypingSlice';
 
+import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
+
 class ActionCableConnector extends BaseActionCableConnector {
   constructor(pubsubToken, webSocketUrl, accountId, userId) {
     super(pubsubToken, webSocketUrl, accountId, userId);
@@ -67,7 +69,11 @@ class ActionCableConnector extends BaseActionCableConnector {
   };
 
   onPresenceUpdate = ({ contacts, users }) => {
-    //TODO: Move this to agentSlice and authSlice, https://github.com/chatwoot/chatwoot-mobile-next/blob/main/src/helpers/ActionCable.js#L64
+    store.dispatch(
+      updateAgentsPresence({
+        users,
+      }),
+    );
     store.dispatch(
       addOrUpdateActiveUsers({
         users,

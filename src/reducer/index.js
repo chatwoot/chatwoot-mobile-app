@@ -25,5 +25,4 @@ export const rootReducer = combineReducers({
   teams: teamSlice,
   auth: authSlice,
   notifications: notificationSlice,
-  teams: teamSlice,
 });

@@ -40,6 +40,10 @@ const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
   const isFetching = useSelector(selectIsFetching);
   const isAllNotificationsLoaded = useSelector(selectAllNotificationsLoaded);
 
+  const notifications = allNotifications.sort((a, b) => {
+    return new Date(b.created_at) - new Date(a.created_at);
+  });
+
   const [pageNo, setPageNo] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -125,17 +129,17 @@ const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
     <SafeAreaView style={style.container}>
       <HeaderBar
         title={i18n.t('NOTIFICATION.HEADER_TITLE')}
-        {...(allNotifications.length && unReadCount && { showRightButton: true })}
+        {...(notifications.length && unReadCount && { showRightButton: true })}
         onRightPress={showActionSheet}
         buttonType="more"
       />
       <View style={style.container}>
-        {!isFetching || allNotifications.length ? (
+        {!isFetching || notifications.length ? (
           <React.Fragment>
-            {allNotifications && allNotifications.length ? (
+            {notifications && notifications.length ? (
               <FlashList
                 keyExtractor={(item, index) => item + index}
-                data={allNotifications}
+                data={notifications}
                 renderItem={({ item, index }) => (
                   <NotificationItem
                     item={item}

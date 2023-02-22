@@ -150,10 +150,16 @@ const notificationSlice = createSlice({
     meta: {
       unread_count: 0,
     },
-
     pushToken: null,
   }),
-  reducers: {},
+  reducers: {
+    addNotification(state, action) {
+      const { notification, unread_count: unreadCount } = action.payload;
+      notificationAdapter.addOne(state, notification);
+      state.meta.unread_count = unreadCount;
+      updateBadgeCount({ count: unreadCount });
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(actions.getAllNotifications.pending, state => {
@@ -201,5 +207,7 @@ export const selectIsFetching = state => state.notifications.uiFlags.loading;
 export const selectUnreadCount = state => state.notifications.meta.unread_count;
 
 export const selectPushToken = state => state.notifications.pushToken;
+
+export const { addNotification } = notificationSlice.actions;
 
 export default notificationSlice.reducer;

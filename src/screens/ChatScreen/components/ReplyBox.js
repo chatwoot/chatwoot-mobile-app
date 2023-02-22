@@ -142,7 +142,6 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
       : { backgroundColor: theme['color-info-200'] };
   };
 
-  // eslint-disable-next-line react/prop-types
   const renderSuggestions = ({ keyword, onSuggestionPress }) => {
     if (keyword == null || !isPrivate) {
       return null;
@@ -150,7 +149,6 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
     return (
       <View>
         {verifiedAgents
-          // eslint-disable-next-line react/prop-types
           .filter(one => one.name.toLocaleLowerCase().includes(keyword.toLocaleLowerCase()))
           .map((item, index) => (
             <MentionUser

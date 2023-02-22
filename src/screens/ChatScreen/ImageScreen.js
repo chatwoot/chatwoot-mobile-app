@@ -31,7 +31,7 @@ const styles = theme => ({
     alignItems: 'center',
   },
   bannerImage: {
-    height: deviceHeight,
+    height: deviceHeight - 180,
     width: deviceWidth,
     resizeMode: 'contain',
   },

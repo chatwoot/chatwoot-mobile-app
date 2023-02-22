@@ -202,6 +202,7 @@ const ChatHeader = ({
     actionSheetRef.current?.hide();
     if (itemType === 'self_assign') {
       if (conversationDetails) {
+        AnalyticsHelper.track(CONVERSATION_EVENTS.SELF_ASSIGN_CONVERSATION);
         dispatch(
           conversationActions.assignConversation({
             conversationId: conversationDetails.id,

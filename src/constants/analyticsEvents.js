@@ -14,6 +14,7 @@ export const CONVERSATION_EVENTS = Object.freeze({
   REFRESH_CONVERSATIONS: 'Refreshed conversations',
   CLEAR_FILTERS: 'Clear conversation filters',
   APPLY_FILTER: 'Conversation filter applied',
+  SELF_ASSIGN_CONVERSATION: 'Self assigned conversation',
 });
 
 export const ACCOUNT_EVENTS = Object.freeze({

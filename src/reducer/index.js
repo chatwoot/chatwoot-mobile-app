@@ -7,6 +7,8 @@ import notification from './notification';
 import agent from './agent';
 import cannedResponseSlice from './cannedResponseSlice';
 import conversationSlice from './conversationSlice';
+import labelSlice from './labelSlice';
+import conversationLabelsSlice from './conversationLabelSlice';
 import customAttributeSlice from './customAttributeSlice';
 import inboxSlice from './inboxSlice';
 import inboxAgentsSlice from './inboxAgentsSlice';
@@ -19,6 +21,8 @@ export const rootReducer = combineReducers({
   agent,
   cannedResponses: cannedResponseSlice,
   conversations: conversationSlice,
+  labels: labelSlice,
+  conversationLabels: conversationLabelsSlice,
   customAttributes: customAttributeSlice,
   inboxes: inboxSlice,
   inboxAgents: inboxAgentsSlice,

@@ -2,17 +2,22 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import { withStyles } from '@ui-kitten/components';
-import Snackbar from 'react-native-snackbar';
 import { useDispatch, useSelector } from 'react-redux';
 import LabelBox from 'src/components/LabelBox';
 import AddLabelButton from './AddButton';
 import { Spinner } from '@ui-kitten/components';
 import { View, Text } from 'react-native';
-import i18n from '../../../i18n';
+import i18n from 'i18n';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { LABEL_EVENTS } from 'constants/analyticsEvents';
 
-import { getAllLabels, getConversationLabels, updateConversationLabels } from 'src/actions/label';
+import {
+  actions as conversationLabelActions,
+  selectConversationLabels,
+  selectConversationLabelsLoading,
+} from 'reducer/conversationLabelSlice';
+
+import { actions as labelActions, labelsSelector, selectLabelLoading } from 'reducer/labelSlice';
 
 const styles = theme => ({
   labelWrapper: {
@@ -73,43 +78,35 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
   const navigation = useNavigation();
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllLabels());
-    dispatch(getConversationLabels({ conversationId }));
+    dispatch(labelActions.index());
+    dispatch(conversationLabelActions.index({ conversationId }));
   }, [conversationId, dispatch]);
 
-  const conversation = useSelector(state => state.conversation);
-  const { isAllLabelsLoaded, isConversationLabelsLoaded } = conversation;
-
-  const availableLabels = useSelector(state => state.conversation.availableLabels);
-  const conversationLabels = useSelector(state => state.conversation.conversationLabels);
-
-  const accountLabels = availableLabels && availableLabels.payload;
-  const savedLabels = conversationLabels && conversationLabels.payload;
+  const conversationLabels = useSelector(selectConversationLabels);
+  const labels = useSelector(labelsSelector.selectAll);
+  const isConversationLabelsLoading = useSelector(selectConversationLabelsLoading);
+  const isLabelsLoading = useSelector(selectLabelLoading);
+  const savedLabels = conversationLabels[conversationId] || [];
 
   const activeLabels =
-    accountLabels && savedLabels
-      ? accountLabels.filter(({ title }) => {
+    labels && savedLabels
+      ? labels.filter(({ title }) => {
           return savedLabels.includes(title);
         })
       : [];
 
   const onClickRemoveLabel = value => {
     const result =
-      accountLabels && savedLabels
+      labels && savedLabels
         ? activeLabels.map(label => label.title).filter(label => label !== value)
         : [];
     AnalyticsHelper.track(LABEL_EVENTS.DELETED);
     dispatch(
-      updateConversationLabels({
+      conversationLabelActions.update({
         conversationId: conversationId,
         labels: result,
       }),
-    ).then(() => {
-      Snackbar.show({
-        text: i18n.t('CONVERSATION_LABELS.UPDATE_LABEL'),
-        duration: Snackbar.LENGTH_SHORT,
-      });
-    });
+    );
   };
 
   const onClickOpenLabelScreen = () => {
@@ -117,8 +114,7 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
   };
 
   const shouldShowEmptyMessage =
-    savedLabels && savedLabels.length === 0 && !isAllLabelsLoaded && !isConversationLabelsLoaded;
-
+    savedLabels && savedLabels.length === 0 && !isConversationLabelsLoading && !isLabelsLoading;
   return (
     <React.Fragment>
       <View style={style.labelWrapper}>
@@ -137,7 +133,7 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
               onClickRemoveLabel={() => onClickRemoveLabel(item.title)}
             />
           ))}
-          {isConversationLabelsLoaded && (
+          {isConversationLabelsLoading && (
             <View style={style.spinnerView}>
               <Spinner size="tiny" />
             </View>

@@ -129,7 +129,10 @@ describe('teamSlice', () => {
     it('selects loading', () => {
       const state = {
         teams: {
-          loading: true,
+          uiFlags: {
+            loading: true,
+            isTeamUpdating: false,
+          },
         },
       };
       expect(selectLoading(state)).toEqual(true);
@@ -138,7 +141,10 @@ describe('teamSlice', () => {
     it('selects isTeamUpdating', () => {
       const state = {
         teams: {
-          isTeamUpdating: true,
+          uiFlags: {
+            loading: false,
+            isTeamUpdating: true,
+          },
         },
       };
       expect(selectIsTeamUpdating(state)).toEqual(true);

@@ -76,8 +76,8 @@ const teamSlice = createSlice({
 
 export const teamSelector = teamsAdapter.getSelectors(state => state.teams);
 
-export const selectLoading = state => state.teams.loading;
+export const selectLoading = state => state.teams.uiFlags.loading;
 
-export const selectIsTeamUpdating = state => state.teams.isTeamUpdating;
+export const selectIsTeamUpdating = state => state.teams.uiFlags.isTeamUpdating;
 
 export default teamSlice.reducer;

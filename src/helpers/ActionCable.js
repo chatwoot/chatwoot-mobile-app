@@ -25,6 +25,7 @@ class ActionCableConnector extends BaseActionCableConnector {
       'conversation.status_changed': this.onStatusChange,
       'assignee.changed': this.onAssigneeChanged,
       'conversation.read': this.onConversationRead,
+      'conversation.updated': this.onConversationUpdated,
       'presence.update': this.onPresenceUpdate,
       'conversation.typing_on': this.onTypingOn,
       'conversation.typing_off': this.onTypingOff,
@@ -66,6 +67,14 @@ class ActionCableConnector extends BaseActionCableConnector {
 
   onConversationRead = data => {
     store.dispatch(updateConversation(data));
+  };
+
+  onConversationUpdated = data => {
+    const { id } = data;
+    if (id) {
+      store.dispatch(updateConversation(data));
+    }
+    store.dispatch(conversationActions.fetchConversationStats({}));
   };
 
   onPresenceUpdate = ({ contacts, users }) => {

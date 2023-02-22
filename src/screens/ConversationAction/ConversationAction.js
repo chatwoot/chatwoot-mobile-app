@@ -7,10 +7,10 @@ import { useSelector } from 'react-redux';
 import styles from './ConversationAction.style';
 import ConversationActionItem from '../../components/ConversationActionItem';
 import i18n from '../../i18n';
+import { inboxAgentSelectors } from 'reducer/inboxAgentsSlice';
 
 const ConversationActionComponent = ({ eva: { style }, onPressAction, conversationDetails }) => {
-  const agents = useSelector(state => state.agent.data);
-
+  const agents = useSelector(state => inboxAgentSelectors.inboxAssignedAgents(state));
   const { id: userId = null } = useSelector(store => store.auth.user);
 
   const {

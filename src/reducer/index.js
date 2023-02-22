@@ -9,10 +9,10 @@ import cannedResponseSlice from './cannedResponseSlice';
 import conversationSlice from './conversationSlice';
 import labelSlice from './labelSlice';
 import conversationLabelsSlice from './conversationLabelSlice';
+import customAttributeSlice from './customAttributeSlice';
 import inboxSlice from './inboxSlice';
 import inboxAgentsSlice from './inboxAgentsSlice';
 import conversationTypingSlice from './conversationTypingSlice';
-
 export const rootReducer = combineReducers({
   auth,
   conversation,
@@ -23,6 +23,7 @@ export const rootReducer = combineReducers({
   conversations: conversationSlice,
   labels: labelSlice,
   conversationLabels: conversationLabelsSlice,
+  customAttributes: customAttributeSlice,
   inboxes: inboxSlice,
   inboxAgents: inboxAgentsSlice,
   conversationTypingStatus: conversationTypingSlice,

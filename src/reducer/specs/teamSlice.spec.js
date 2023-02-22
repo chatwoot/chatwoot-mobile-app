@@ -39,29 +39,40 @@ describe('teamSlice', () => {
     const initialState = {
       entities: {},
       ids: [],
-      loading: false,
+      uiFlags: {
+        loading: false,
+        isTeamUpdating: false,
+      },
     };
 
-    it('sets loading true when fetchAllTeams is pending', () => {
-      const action = { type: teamActions.fetchAllTeams.pending };
+    it('sets loading true when fetch all team is pending', () => {
+      const action = { type: teamActions.index.pending };
       const state = teamSlice(initialState, action);
-      expect(state).toEqual({ loading: true, entities: {}, ids: [] });
+      expect(state).toEqual({
+        uiFlags: { loading: true, isTeamUpdating: false },
+        entities: {},
+        ids: [],
+      });
     });
 
-    it('sets loading false when fetchAllTeams is rejected', () => {
-      const action = { type: teamActions.fetchAllTeams.rejected };
+    it('sets loading false when fetch all team is rejected', () => {
+      const action = { type: teamActions.index.rejected };
       const state = teamSlice(initialState, action);
-      expect(state).toEqual({ loading: false, entities: {}, ids: [] });
+      expect(state).toEqual({
+        uiFlags: { loading: false, isTeamUpdating: false },
+        entities: {},
+        ids: [],
+      });
     });
 
-    it('sets teams when fetchAllTeams is fulfilled', () => {
+    it('sets teams when when fetch all team is fulfilled', () => {
       const action = {
-        type: teamActions.fetchAllTeams.fulfilled,
+        type: teamActions.index.fulfilled,
         payload: teams,
       };
       const state = teamSlice(initialState, action);
       expect(state).toEqual({
-        loading: false,
+        uiFlags: { loading: false, isTeamUpdating: false },
         entities: {
           1: teams[0],
           2: teams[1],
@@ -70,22 +81,34 @@ describe('teamSlice', () => {
       });
     });
 
-    it('sets loading true when assignTeam is pending', () => {
-      const action = { type: teamActions.assignTeam.pending };
+    it('sets loading true when assign team is pending', () => {
+      const action = { type: teamActions.update.pending };
       const state = teamSlice(initialState, action);
-      expect(state).toEqual({ loading: false, entities: {}, ids: [], isTeamUpdating: true });
+      expect(state).toEqual({
+        uiFlags: { loading: false, isTeamUpdating: true },
+        entities: {},
+        ids: [],
+      });
     });
 
-    it('sets loading false when assignTeam is rejected', () => {
-      const action = { type: teamActions.assignTeam.rejected };
+    it('sets loading false when assign team is rejected', () => {
+      const action = { type: teamActions.update.rejected };
       const state = teamSlice(initialState, action);
-      expect(state).toEqual({ loading: false, entities: {}, ids: [], isTeamUpdating: false });
+      expect(state).toEqual({
+        entities: {},
+        ids: [],
+        uiFlags: { loading: false, isTeamUpdating: false },
+      });
     });
 
-    it('sets loading false when assignTeam is fulfilled', () => {
-      const action = { type: teamActions.assignTeam.fulfilled };
+    it('sets loading false when assign team is fulfilled', () => {
+      const action = { type: teamActions.update.fulfilled };
       const state = teamSlice(initialState, action);
-      expect(state).toEqual({ loading: false, entities: {}, ids: [], isTeamUpdating: false });
+      expect(state).toEqual({
+        entities: {},
+        ids: [],
+        uiFlags: { loading: false, isTeamUpdating: false },
+      });
     });
   });
 

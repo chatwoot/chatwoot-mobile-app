@@ -3,7 +3,7 @@ import { pop } from 'helpers/NavigationHelper';
 import APIHelper from 'helpers/APIHelper';
 
 export const actions = {
-  fetchAllTeams: createAsyncThunk('teams/fetchAllTeams', async (params, { rejectWithValue }) => {
+  index: createAsyncThunk('teams/index', async (params, { rejectWithValue }) => {
     try {
       const response = await APIHelper.get('teams');
       const { data } = response;
@@ -15,8 +15,8 @@ export const actions = {
       return rejectWithValue(error.response.data);
     }
   }),
-  assignTeam: createAsyncThunk(
-    'teams/assignTeam',
+  update: createAsyncThunk(
+    'teams/update',
     async ({ conversationId, teamId }, { rejectWithValue }) => {
       try {
         const params = { team_id: teamId };
@@ -39,8 +39,10 @@ const teamsAdapter = createEntityAdapter({
 });
 
 const initialState = teamsAdapter.getInitialState({
-  loading: false,
-  isTeamUpdating: false,
+  uiFlags: {
+    loading: false,
+    isTeamUpdating: false,
+  },
 });
 
 const teamSlice = createSlice({
@@ -49,25 +51,25 @@ const teamSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
-      .addCase(actions.fetchAllTeams.pending, (state, action) => {
-        state.loading = true;
+      .addCase(actions.index.pending, (state, action) => {
+        state.uiFlags.loading = true;
       })
-      .addCase(actions.fetchAllTeams.fulfilled, (state, action) => {
-        state.loading = false;
+      .addCase(actions.index.fulfilled, (state, action) => {
+        state.uiFlags.loading = false;
         teamsAdapter.setAll(state, action.payload);
       })
-      .addCase(actions.fetchAllTeams.rejected, (state, action) => {
-        state.loading = false;
+      .addCase(actions.index.rejected, (state, action) => {
+        state.uiFlags.loading = false;
       })
-      .addCase(actions.assignTeam.pending, (state, action) => {
-        state.isTeamUpdating = true;
+      .addCase(actions.update.pending, (state, action) => {
+        state.uiFlags.isTeamUpdating = true;
       })
-      .addCase(actions.assignTeam.fulfilled, (state, action) => {
-        state.isTeamUpdating = false;
+      .addCase(actions.update.fulfilled, (state, action) => {
+        state.uiFlags.isTeamUpdating = false;
         pop(1);
       })
-      .addCase(actions.assignTeam.rejected, (state, action) => {
-        state.isTeamUpdating = false;
+      .addCase(actions.update.rejected, (state, action) => {
+        state.uiFlags.isTeamUpdating = false;
       });
   },
 });

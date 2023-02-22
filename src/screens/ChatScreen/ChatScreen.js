@@ -15,6 +15,7 @@ import { openURL } from 'helpers/UrlHelper';
 import { markNotificationAsRead } from 'actions/notification';
 import { getGroupedConversation, findUniqueMessages } from 'helpers';
 import { actions as CannedResponseActions } from 'reducer/cannedResponseSlice';
+import { selectAllTypingUsers } from 'reducer/conversationTypingSlice';
 import {
   clearConversation,
   selectors as conversationSelectors,
@@ -38,7 +39,7 @@ const propTypes = {
 
 const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   const dispatch = useDispatch();
-  const conversationTypingUsers = useSelector(state => state.conversation.conversationTypingUsers);
+  const conversationTypingUsers = useSelector(selectAllTypingUsers);
 
   const isFetching = useSelector(selectMessagesLoading);
   const isAllMessagesFetched = useSelector(selectAllMessagesFetched);

@@ -19,6 +19,7 @@ const styles = () => ({
 });
 
 const Email = ({ emailContent, eva: { style, theme } }) => {
+  const FormattedEmail = emailContent.replace('height:100%;', '');
   return (
     <View>
       <AutoHeightWebView
@@ -34,7 +35,7 @@ const Email = ({ emailContent, eva: { style, theme } }) => {
         }
       `}
         source={{
-          html: emailContent,
+          html: FormattedEmail,
         }}
         viewportContent={'width=device-width, user-scalable=no'}
       />

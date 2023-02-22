@@ -176,9 +176,11 @@ const notificationSlice = createSlice({
       })
       .addCase(actions.markNotificationAsRead.fulfilled, (state, action) => {
         const { primaryActorId } = action.payload;
-        const notification = state.entities[primaryActorId];
+        const notification = Object.values(state.entities).find(
+          n => n.primary_actor_id === primaryActorId,
+        );
         if (notification) {
-          notification.read_at = 'read_at';
+          state.entities[notification.id].read_at = 'read_at';
         }
         state.meta.unread_count = state.meta.unread_count ? state.meta.unread_count - 1 : 0;
       })

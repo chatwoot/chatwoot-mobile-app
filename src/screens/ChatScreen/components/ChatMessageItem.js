@@ -47,7 +47,6 @@ const styles = theme => ({
     backgroundColor: theme['color-primary-default'],
   },
   messageContentRight: {
-    color: theme['color-basic-100'],
     fontSize: theme['font-size-small'],
   },
   messagePrivate: {
@@ -58,7 +57,7 @@ const styles = theme => ({
     fontSize: theme['font-size-small'],
   },
   dateRight: {
-    color: theme['color-background-message'],
+    color: theme['color-white'],
     fontSize: theme['font-size-extra-extra-small'],
     paddingTop: 4,
   },
@@ -138,6 +137,7 @@ const propTypes = {
     sender: PropTypes.shape({
       name: PropTypes.string,
       thumbnail: PropTypes.string,
+      type: PropTypes.string,
     }),
     attachments: PropTypes.array,
     content: PropTypes.string,
@@ -160,10 +160,23 @@ const ChatMessageItemComponent = ({
   const actionSheetRef = createRef();
   const { meta } = route.params;
   const { attachments } = message;
+  const isSentByBot = !message?.sender?.type || message?.sender?.type === 'agent_bot';
+
   const senderName = message && message.sender && message.sender.name ? message.sender.name : '';
-  const messageViewStyle = type === 'outgoing' ? style.messageRight : style.messageLeft;
+  const messageViewStyle =
+    type === 'outgoing'
+      ? {
+          ...style.messageLeft,
+          backgroundColor: isSentByBot ? '#AC52FF' : theme['color-primary-default'],
+        }
+      : style.messageLeft;
   const messageTextStyle =
-    type === 'outgoing' ? style.messageContentRight : style.messageContentLeft;
+    type === 'outgoing'
+      ? {
+          ...style.messageContentRight,
+          color: isSentByBot ? theme['color-white'] : theme['color-basic-100'],
+        }
+      : style.messageContentLeft;
   const emailHeadLabelStyle =
     type === 'outgoing' ? style.emailFieldsLabelRight : style.emailFieldsLabelLeft;
   const emailHeadTextStyle =

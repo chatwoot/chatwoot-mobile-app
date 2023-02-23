@@ -43,15 +43,15 @@ export const actions = {
     async ({ primaryActorId, primaryActorType }, { getState, rejectWithValue }) => {
       try {
         const {
-          meta: { unread_count },
+          meta: { unread_count: unreadCount },
         } = getState().notifications;
         const apiUrl = 'notifications/read_all';
-        const unreadCount = unread_count ? unread_count - 1 : 0;
+        const notificationUnreadCount = unreadCount ? unreadCount - 1 : 0;
         await APIHelper.post(apiUrl, {
           primary_actor_type: primaryActorType,
           primary_actor_id: primaryActorId,
         });
-        updateBadgeCount({ count: unreadCount });
+        updateBadgeCount({ count: notificationUnreadCount });
         return {
           primaryActorId,
         };

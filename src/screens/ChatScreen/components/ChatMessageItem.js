@@ -170,6 +170,8 @@ const ChatMessageItemComponent = ({
     type === 'outgoing' ? style.emailFieldsValueRight : style.emailFieldsValueLeft;
   const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
 
+  const listIconColor = type === 'outgoing' ? theme['color-white'] : theme['text-light-color'];
+
   const handleURL = URL => {
     if (/\b(http|https)/.test(URL)) {
       openURL({ URL });
@@ -345,10 +347,10 @@ const ChatMessageItemComponent = ({
               marginBottom: 0,
             },
             bullet_list_icon: {
-              color: theme['color-white'],
+              color: listIconColor,
             },
             ordered_list_icon: {
-              color: theme['color-white'],
+              color: listIconColor,
             },
           }}>
           {message.content}

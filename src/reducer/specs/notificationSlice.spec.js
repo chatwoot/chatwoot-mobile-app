@@ -3,7 +3,6 @@ import notificationSlice, {
   selectIsFetching,
   selectUnreadCount,
   selectPushToken,
-  addNotification,
   actions as notificationActions,
 } from '../notificationSlice';
 

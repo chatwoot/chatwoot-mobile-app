@@ -55,7 +55,7 @@ const ConversationScreen = () => {
     initActionCable();
     dispatch(clearAllConversations());
     dispatch(inboxActions.fetchInboxes());
-    dispatch(notificationActions.getAllNotifications({ pageNo: 1 }));
+    dispatch(notificationActions.index({ pageNo: 1 }));
     initAnalytics();
     checkAppVersion();
     initPushNotifications();

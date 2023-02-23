@@ -50,7 +50,7 @@ const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(notificationsActions.getAllNotifications({ pageNo }));
+    dispatch(notificationsActions.index({ pageNo }));
   }, [dispatch, pageNo]);
 
   const onEndReached = () => {
@@ -121,7 +121,7 @@ const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
 
   const onRefresh = () => {
     setRefreshing(true);
-    dispatch(notificationsActions.getAllNotifications({ pageNo }));
+    dispatch(notificationsActions.index({ pageNo }));
     wait(1000).then(() => setRefreshing(false));
   };
 

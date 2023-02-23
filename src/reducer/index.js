@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 import auth from './auth';
 import conversation from './conversation';
 import settings from './settings';
-import notification from './notification';
 import agent from './agent';
 import cannedResponseSlice from './cannedResponseSlice';
 import conversationSlice from './conversationSlice';
@@ -14,11 +13,11 @@ import inboxSlice from './inboxSlice';
 import inboxAgentsSlice from './inboxAgentsSlice';
 import conversationTypingSlice from './conversationTypingSlice';
 import teamSlice from './teamSlice';
+import notificationSlice from './notificationSlice';
 export const rootReducer = combineReducers({
   auth,
   conversation,
   settings,
-  notification,
   agent,
   cannedResponses: cannedResponseSlice,
   conversations: conversationSlice,
@@ -29,6 +28,7 @@ export const rootReducer = combineReducers({
   inboxAgents: inboxAgentsSlice,
   conversationTypingStatus: conversationTypingSlice,
   teams: teamSlice,
+  notifications: notificationSlice,
 });
 
 // export default (state, action) =>

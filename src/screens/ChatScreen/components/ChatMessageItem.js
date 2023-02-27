@@ -45,7 +45,6 @@ const styles = theme => ({
     borderTopLeftRadius: 8,
     borderTopRightRadius: 4,
     borderBottomRightRadius: 4,
-    backgroundColor: theme['color-primary-default'],
   },
   messageContentRight: {
     fontSize: theme['font-size-small'],
@@ -177,7 +176,7 @@ const ChatMessageItemComponent = ({
   const messageViewStyle =
     type === 'outgoing'
       ? {
-          ...style.messageLeft,
+          ...style.messageRight,
           backgroundColor: isSentByBot ? '#AC52FF' : theme['color-primary-default'],
         }
       : style.messageLeft;

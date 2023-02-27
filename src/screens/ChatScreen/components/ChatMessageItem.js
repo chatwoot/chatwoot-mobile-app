@@ -14,6 +14,7 @@ import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { useRoute } from '@react-navigation/native';
 import Email from '../components/Email';
 import ChatAttachmentItem from './ChatAttachmentItem';
+import { MESSAGE_STATUS } from 'constants';
 
 const LockIcon = style => {
   return <Icon {...style} name="lock" />;
@@ -143,6 +144,7 @@ const propTypes = {
     content: PropTypes.string,
     content_attributes: PropTypes.object,
     private: PropTypes.bool,
+    status: PropTypes.string,
   }),
   showAttachment: PropTypes.func,
   isEmailChannel: PropTypes.bool,
@@ -160,7 +162,16 @@ const ChatMessageItemComponent = ({
   const actionSheetRef = createRef();
   const { meta } = route.params;
   const { attachments } = message;
-  const isSentByBot = !message?.sender?.type || message?.sender?.type === 'agent_bot';
+
+  const checkMessageSentByBot = () => {
+    const { status } = message;
+    if (status === MESSAGE_STATUS.PROGRESS || status === MESSAGE_STATUS.FAILED) {
+      return false;
+    }
+    return !message?.sender?.type || message?.sender?.type === 'agent_bot';
+  };
+
+  const isSentByBot = checkMessageSentByBot();
 
   const senderName = message && message.sender && message.sender.name ? message.sender.name : '';
   const messageViewStyle =

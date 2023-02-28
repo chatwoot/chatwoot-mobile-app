@@ -69,6 +69,7 @@
     "SHARE": "Share conversation",
     "CANCEL": "ביטול",
     "PRIVATE_MSG_INPUT": "זה יהיה גלוי רק לסוכנים",
+    "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "שיחה שלא הוקצתה",
     "MUTE_CONVERSATION": "Mute conversation",
     "UNMUTE_CONVERSATION": "בטל השתקת שיחה",

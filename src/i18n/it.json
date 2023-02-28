@@ -69,6 +69,7 @@
     "SHARE": "Condividi conversazione",
     "CANCEL": "Annulla",
     "PRIVATE_MSG_INPUT": "Questo sarà visibile solo agli agenti",
+    "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Annulla l'assegnazione della conversazione",
     "MUTE_CONVERSATION": "Silenzia conversazione",
     "UNMUTE_CONVERSATION": "Riattiva conversazione",

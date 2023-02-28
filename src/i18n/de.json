@@ -51,7 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Konversationen",
-    "UPDATING": "Aktualisiere...",
+    "UPDATING": "Aktualisieren...",
     "MINE": "Meine",
     "UN_ASSIGNED": "Nicht zugeordnet",
     "ALL": "Alle",
@@ -69,6 +69,7 @@
     "SHARE": "Konversation teilen",
     "CANCEL": "Abbrechen",
     "PRIVATE_MSG_INPUT": "Dies ist nur für Agenten sichtbar",
+    "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Zuweisung entfernen",
     "MUTE_CONVERSATION": "Konversation stumm schalten",
     "UNMUTE_CONVERSATION": "Konversation entstummen",
@@ -76,7 +77,7 @@
   },
   "FILTER": {
     "ALL_INBOXES": "Alle Posteingänge",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filtern Sie nach Mitarbeitertyp",
     "FILTER_BY_CONVERSATION_STATUS": "Filtern nach Konversationsstatus",
     "FILTER_BY_INBOX": "Filtern nach Posteingang",
     "HEADER_TITLE": "Konversations-Filter",
@@ -184,7 +185,7 @@
     "FACEBOOK": {
       "TEXT": "Sie können nicht antworten, weil ",
       "HREF_TEXT": "Beschränkung des 24-Stunden-Nachrichtenfensters",
-      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/?translation"
     }
   }
 }

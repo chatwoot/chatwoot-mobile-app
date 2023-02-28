@@ -7,12 +7,14 @@ import {
   updateContactsPresence,
 } from 'reducer/conversationSlice';
 
+import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
+
 import conversationActions from 'reducer/conversationSlice.action';
-import { addOrUpdateActiveUsers } from '../actions/auth';
 import { store } from '../store';
+import { setCurrentUserAvailability } from 'reducer/authSlice';
 import { addUserToTyping, destroyUserFromTyping } from 'reducer/conversationTypingSlice';
 
-import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
+import { addNotification } from 'reducer/notificationSlice';
 
 class ActionCableConnector extends BaseActionCableConnector {
   constructor(pubsubToken, webSocketUrl, accountId, userId) {
@@ -29,6 +31,7 @@ class ActionCableConnector extends BaseActionCableConnector {
       'presence.update': this.onPresenceUpdate,
       'conversation.typing_on': this.onTypingOn,
       'conversation.typing_off': this.onTypingOff,
+      'notification.created': this.onNotificationCreated,
       // TODO: Handle all these events
       //   'conversation.contact_changed': this.onConversationContactChange,
       //   'contact.deleted': this.onContactDelete,
@@ -77,6 +80,10 @@ class ActionCableConnector extends BaseActionCableConnector {
     store.dispatch(conversationActions.fetchConversationStats({}));
   };
 
+  onNotificationCreated = data => {
+    store.dispatch(addNotification(data));
+  };
+
   onPresenceUpdate = ({ contacts, users }) => {
     store.dispatch(
       updateAgentsPresence({
@@ -84,13 +91,13 @@ class ActionCableConnector extends BaseActionCableConnector {
       }),
     );
     store.dispatch(
-      addOrUpdateActiveUsers({
-        users,
+      updateContactsPresence({
+        contacts,
       }),
     );
     store.dispatch(
-      updateContactsPresence({
-        contacts,
+      setCurrentUserAvailability({
+        users,
       }),
     );
   };

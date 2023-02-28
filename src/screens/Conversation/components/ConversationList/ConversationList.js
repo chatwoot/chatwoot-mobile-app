@@ -16,6 +16,7 @@ import ConversationItem from '../ConversationItem/ConversationItem';
 import ConversationEmptyMessage from '../ConversationEmptyMessage/ConversationEmptyMessage';
 import i18n from 'i18n';
 import createStyles from './ConversationList.style';
+import { selectUserId } from 'reducer/authSlice';
 import { selectAllTypingUsers } from 'reducer/conversationTypingSlice';
 
 const propTypes = {
@@ -45,7 +46,7 @@ const ConversationList = ({
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
   const [refreshing, setRefreshing] = useState(false);
-  const userId = useSelector(store => store.auth.user.id);
+  const userId = useSelector(selectUserId);
   const navigation = useNavigation();
   const conversationTypingUsers = useSelector(selectAllTypingUsers);
   const filters = {

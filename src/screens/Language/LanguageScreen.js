@@ -11,17 +11,18 @@ import i18n from '../../i18n';
 import styles from './LanguageScreen.style';
 import LanguageItem from '../../components/LanguageItem';
 
-import { setLocale } from '../../actions/settings';
+import { setLocale } from 'reducer/settingsSlice';
+
 import { LANGUAGES } from '../../constants';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
 
-const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
-  const settings = useSelector(state => state.settings);
-  const auth = useSelector(state => state.auth);
+import { selectLoggedIn } from 'reducer/authSlice';
+import { selectLocale } from 'reducer/settingsSlice';
 
-  const localeValue = settings.localeValue || 'en';
-  const isLoggedIn = auth.isLoggedIn;
+const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
+  const localeValue = useSelector(selectLocale) || 'en';
+  const isLoggedIn = useSelector(selectLoggedIn);
 
   const dispatch = useDispatch();
 

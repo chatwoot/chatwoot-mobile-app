@@ -26,7 +26,7 @@ import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import { INBOX_ICON } from 'src/constants/index';
 import { inboxesSelector } from 'reducer/inboxSlice';
-
+import { selectUserId } from 'reducer/authSlice';
 const styles = theme => ({
   headerView: {
     flexDirection: 'row',
@@ -101,7 +101,7 @@ const ChatHeader = ({
   const actionSheetRef = createRef();
   const dispatch = useDispatch();
   const conversationToggleStatus = useSelector(selectConversationToggleStatus);
-  const { id: userId = null } = useSelector(store => store.auth.user);
+  const userId = useSelector(selectUserId);
 
   const showActionSheet = () => {
     actionSheetRef.current?.setModalVisible();

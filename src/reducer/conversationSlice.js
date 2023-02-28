@@ -100,64 +100,66 @@ const conversationSlice = createSlice({
       });
     },
   },
-  extraReducers: {
-    [actions.fetchConversations.pending]: state => {
-      state.loading = true;
-    },
-    [actions.fetchConversations.fulfilled]: (state, { payload }) => {
-      conversationAdapter.upsertMany(state, payload.conversations);
-      state.meta = payload.meta;
-      state.loading = false;
-      state.isAllConversationsFetched = payload.conversations.length < 20;
-    },
-    [actions.fetchConversations.rejected]: (state, { error }) => {
-      state.loading = false;
-    },
-    [actions.fetchConversationStats.fulfilled]: (state, { payload }) => {
-      state.meta = payload.meta;
-    },
-    [actions.fetchConversation.pending]: state => {
-      state.isConversationFetching = true;
-    },
-    [actions.fetchConversation.fulfilled]: (state, { payload }) => {
-      conversationAdapter.upsertOne(state, payload);
-      state.isAllMessagesFetched = false;
-      state.isConversationFetching = false;
-    },
-    [actions.fetchConversation.rejected]: (state, { payload }) => {
-      state.isConversationFetching = false;
-    },
-    [actions.fetchPreviousMessages.pending]: state => {
-      state.loadingMessages = true;
-      state.isAllMessagesFetched = false;
-    },
-    [actions.fetchPreviousMessages.fulfilled]: (state, { payload }) => {
-      const { data, conversationId } = payload;
-      const conversation = state.entities[conversationId];
-      conversation.messages.unshift(...data);
-      state.loadingMessages = false;
-      state.isAllMessagesFetched = data.length < 20;
-    },
-    [actions.fetchPreviousMessages.rejected]: state => {
-      state.loadingMessages = false;
-    },
-    [actions.markMessagesAsRead.fulfilled]: (state, { payload }) => {
-      const { id, lastSeen } = payload;
-      const conversation = state.entities[id];
-      if (!conversation) {
-        return;
-      }
-      conversation.agent_last_seen_at = lastSeen;
-    },
-    [actions.toggleConversationStatus.pending]: (state, action) => {
-      state.isChangingConversationStatus = true;
-    },
-    [actions.toggleConversationStatus.fulfilled]: (state, { payload }) => {
-      state.isChangingConversationStatus = false;
-    },
-    [actions.toggleConversationStatus.rejected]: (state, { error }) => {
-      state.isChangingConversationStatus = false;
-    },
+
+  extraReducers: builder => {
+    builder
+      .addCase(actions.fetchConversations.pending, state => {
+        state.loading = true;
+      })
+      .addCase(actions.fetchConversations.fulfilled, (state, { payload }) => {
+        conversationAdapter.upsertMany(state, payload.conversations);
+        state.meta = payload.meta;
+        state.loading = false;
+        state.isAllConversationsFetched = payload.conversations.length < 20;
+      })
+      .addCase(actions.fetchConversations.rejected, (state, { error }) => {
+        state.loading = false;
+      })
+      .addCase(actions.fetchConversationStats.fulfilled, (state, { payload }) => {
+        state.meta = payload.meta;
+      })
+      .addCase(actions.fetchConversation.pending, state => {
+        state.isConversationFetching = true;
+      })
+      .addCase(actions.fetchConversation.fulfilled, (state, { payload }) => {
+        conversationAdapter.upsertOne(state, payload);
+        state.isAllMessagesFetched = false;
+        state.isConversationFetching = false;
+      })
+      .addCase(actions.fetchConversation.rejected, (state, { payload }) => {
+        state.isConversationFetching = false;
+      })
+      .addCase(actions.fetchPreviousMessages.pending, state => {
+        state.loadingMessages = true;
+        state.isAllMessagesFetched = false;
+      })
+      .addCase(actions.fetchPreviousMessages.fulfilled, (state, { payload }) => {
+        const { data, conversationId } = payload;
+        const conversation = state.entities[conversationId];
+        conversation.messages.unshift(...data);
+        state.loadingMessages = false;
+        state.isAllMessagesFetched = data.length < 20;
+      })
+      .addCase(actions.fetchPreviousMessages.rejected, state => {
+        state.loadingMessages = false;
+      })
+      .addCase(actions.markMessagesAsRead.fulfilled, (state, { payload }) => {
+        const { id, lastSeen } = payload;
+        const conversation = state.entities[id];
+        if (!conversation) {
+          return;
+        }
+        conversation.agent_last_seen_at = lastSeen;
+      })
+      .addCase(actions.toggleConversationStatus.pending, (state, action) => {
+        state.isChangingConversationStatus = true;
+      })
+      .addCase(actions.toggleConversationStatus.fulfilled, (state, { payload }) => {
+        state.isChangingConversationStatus = false;
+      })
+      .addCase(actions.toggleConversationStatus.rejected, state => {
+        state.isChangingConversationStatus = false;
+      });
   },
 });
 export const conversationSelector = conversationAdapter.getSelectors(state => state.conversations);

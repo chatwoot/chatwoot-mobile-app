@@ -14,6 +14,7 @@ import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { useRoute } from '@react-navigation/native';
 import Email from '../components/Email';
 import ChatAttachmentItem from './ChatAttachmentItem';
+import { MESSAGE_STATUS } from 'constants';
 
 const LockIcon = style => {
   return <Icon {...style} name="lock" />;
@@ -44,10 +45,8 @@ const styles = theme => ({
     borderTopLeftRadius: 8,
     borderTopRightRadius: 4,
     borderBottomRightRadius: 4,
-    backgroundColor: theme['color-primary-default'],
   },
   messageContentRight: {
-    color: theme['color-basic-100'],
     fontSize: theme['font-size-small'],
   },
   messagePrivate: {
@@ -58,7 +57,7 @@ const styles = theme => ({
     fontSize: theme['font-size-small'],
   },
   dateRight: {
-    color: theme['color-background-message'],
+    color: theme['color-white'],
     fontSize: theme['font-size-extra-extra-small'],
     paddingTop: 4,
   },
@@ -138,11 +137,13 @@ const propTypes = {
     sender: PropTypes.shape({
       name: PropTypes.string,
       thumbnail: PropTypes.string,
+      type: PropTypes.string,
     }),
     attachments: PropTypes.array,
     content: PropTypes.string,
     content_attributes: PropTypes.object,
     private: PropTypes.bool,
+    status: PropTypes.string,
   }),
   showAttachment: PropTypes.func,
   isEmailChannel: PropTypes.bool,
@@ -160,10 +161,32 @@ const ChatMessageItemComponent = ({
   const actionSheetRef = createRef();
   const { meta } = route.params;
   const { attachments } = message;
+
+  const checkMessageSentByBot = () => {
+    const { status } = message;
+    if (status === MESSAGE_STATUS.PROGRESS || status === MESSAGE_STATUS.FAILED) {
+      return false;
+    }
+    return !message?.sender?.type || message?.sender?.type === 'agent_bot';
+  };
+
+  const isSentByBot = checkMessageSentByBot();
+
   const senderName = message && message.sender && message.sender.name ? message.sender.name : '';
-  const messageViewStyle = type === 'outgoing' ? style.messageRight : style.messageLeft;
+  const messageViewStyle =
+    type === 'outgoing'
+      ? {
+          ...style.messageRight,
+          backgroundColor: isSentByBot ? '#AC52FF' : theme['color-primary-default'],
+        }
+      : style.messageLeft;
   const messageTextStyle =
-    type === 'outgoing' ? style.messageContentRight : style.messageContentLeft;
+    type === 'outgoing'
+      ? {
+          ...style.messageContentRight,
+          color: isSentByBot ? theme['color-white'] : theme['color-basic-100'],
+        }
+      : style.messageContentLeft;
   const emailHeadLabelStyle =
     type === 'outgoing' ? style.emailFieldsLabelRight : style.emailFieldsLabelLeft;
   const emailHeadTextStyle =

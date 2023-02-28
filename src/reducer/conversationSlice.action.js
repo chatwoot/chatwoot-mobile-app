@@ -225,6 +225,18 @@ const actions = {
       }
     },
   ),
+  toggleTypingStatus: createAsyncThunk(
+    'conversations/toggleTypingStatus',
+    async ({ conversationId, typingStatus }, { rejectWithValue }) => {
+      const apiUrl = `conversations/${conversationId}/toggle_typing_status`;
+
+      await axios
+        .post(apiUrl, {
+          typing_status: typingStatus,
+        })
+        .catch();
+    },
+  ),
 };
 
 export default actions;

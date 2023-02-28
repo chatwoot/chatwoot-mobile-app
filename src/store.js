@@ -10,7 +10,6 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-// import { createLogger } from 'redux-logger';
 import { rootReducer } from './reducer';
 
 const persistConfig = {
@@ -22,10 +21,9 @@ const persistConfig = {
 const middlewares = [];
 
 const allReducer = (state, action) => {
-  if (action.type === 'USER_LOGOUT') {
+  if (action.type === 'auth/logout') {
     state = { settings: state.settings };
   }
-
   return rootReducer(state, action);
 };
 

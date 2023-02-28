@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { View, Text } from 'react-native';
 
 import i18n from '../i18n';
+import { selectUnreadCount } from 'reducer/notificationSlice';
 
 const ConversationIcon = style => <Icon {...style} name="message-circle" />;
 const SettingsIcon = style => <Icon {...style} name="settings" />;
@@ -26,14 +27,7 @@ const TabBarComponent = ({ eva, navigation, state }) => {
     const selectedTabRoute = state.routes[index];
     navigation.navigate(selectedTabRoute.name);
   };
-
-  const notification = useSelector(store => store.notification);
-
-  const {
-    data: {
-      meta: { unread_count: unReadCount },
-    },
-  } = notification;
+  const unReadCount = useSelector(selectUnreadCount);
   const { style } = eva;
 
   const { index: selectedIndex } = state;

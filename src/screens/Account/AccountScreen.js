@@ -9,13 +9,14 @@ import HeaderBar from '../../components/HeaderBar';
 import i18n from '../../i18n';
 import styles from './AccountScreen.style';
 import AccountItem from '../../components/AccountItem';
-import { setAccount } from '../../actions/auth';
+import { setAccount } from 'reducer/authSlice';
 import { clearAllConversations } from 'reducer/conversationSlice';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
+
 const AccountScreenComponent = ({ eva: { style }, navigation }) => {
-  const { user } = useSelector(state => state.auth);
-  const { account_id, accounts } = user;
+  const { currentUser } = useSelector(state => state.auth);
+  const { account_id, accounts } = currentUser;
 
   const dispatch = useDispatch();
 
@@ -26,7 +27,7 @@ const AccountScreenComponent = ({ eva: { style }, navigation }) => {
       to: item.name,
     });
     dispatch(clearAllConversations());
-    dispatch(setAccount({ accountId: item.id }));
+    dispatch(setAccount(item.id));
   };
 
   const goBack = () => {

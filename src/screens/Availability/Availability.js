@@ -9,20 +9,20 @@ import HeaderBar from '../../components/HeaderBar';
 import i18n from '../../i18n';
 import styles from './Availability.style';
 import AvailabilityItem from '../../components/AvailabilityItem';
-import { updateAvailabilityStatus } from '../../actions/auth';
 import { AVAILABILITY_TYPES } from '../../constants';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { PROFILE_EVENTS } from 'constants/analyticsEvents';
 
+import { actions as authActions } from 'reducer/authSlice';
+
+import { selectCurrentUserAvailability } from 'reducer/authSlice';
+
 const AvailabilityScreenComponent = ({ eva: { style }, navigation }) => {
-  const {
-    user: { availability_status },
-    isUpdating,
-  } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+
+  const availability_status = useSelector(selectCurrentUserAvailability) || 'offline';
 
   const [availabilityStatus, setAvailabilityStatus] = useState(availability_status);
-
-  const dispatch = useDispatch();
 
   const onCheckedChange = ({ item }) => {
     AnalyticsHelper.track(PROFILE_EVENTS.TOGGLE_AVAILABILITY_STATUS, {
@@ -37,7 +37,7 @@ const AvailabilityScreenComponent = ({ eva: { style }, navigation }) => {
   };
 
   const saveAvailabilityStatus = () => {
-    dispatch(updateAvailabilityStatus({ availability: availabilityStatus }));
+    dispatch(authActions.updateAvailability({ availability: availabilityStatus }));
     navigation.goBack();
   };
 
@@ -63,7 +63,6 @@ const AvailabilityScreenComponent = ({ eva: { style }, navigation }) => {
         <LoaderButton
           style={style.availabilityButton}
           size="large"
-          loading={isUpdating}
           textStyle={style.availabilityButtonText}
           onPress={saveAvailabilityStatus}
           text={i18n.t('SETTINGS.SUBMIT')}

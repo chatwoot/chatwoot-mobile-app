@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Dimensions, TextInput, Text, TouchableOpacity } from 'react-native';
 import { MentionInput } from 'react-native-controlled-mentions';
 import { withStyles, Icon } from '@ui-kitten/components';
@@ -7,14 +7,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import AttachmentPreview from './AttachmentPreview';
 import Attachment from './Attachment';
 import i18n from 'i18n';
-import { toggleTypingStatus } from 'actions/conversation';
 import { findFileSize } from 'helpers/FileHelper';
 import { MAXIMUM_FILE_UPLOAD_SIZE } from 'constants';
 import { showToast } from 'helpers/ToastHelper';
 import MentionUser from './MentionUser.js';
-import { captureEvent } from 'helpers/Analytics';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import conversationActions from 'reducer/conversationSlice.action';
 import CannedResponsesContainer from '../containers/CannedResponsesContainer';
+import { inboxAgentSelectors, actions as inboxAgentActions } from 'reducer/inboxAgentsSlice';
 
 const propTypes = {
   conversationId: PropTypes.number,
@@ -31,11 +32,17 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
   const [bccEmails, setBCCEmails] = useState('');
   const [emailFields, toggleEmailFields] = useState(false);
   const [message, setMessage] = useState('');
-  const agents = useSelector(state => state.agent.data);
-  const verifiedAgents = agents.filter(agent => agent.confirmed);
+  const agents = useSelector(state => inboxAgentSelectors.inboxAssignedAgents(state));
   const [cannedResponseSearchKey, setCannedResponseSearchKey] = useState('');
   const [attachmentDetails, setAttachmentDetails] = useState(null);
+  const inboxId = conversationDetails?.inbox_id;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (inboxId) {
+      dispatch(inboxAgentActions.fetchInboxAgents({ inboxId }));
+    }
+  }, [dispatch, inboxId]);
 
   const onNewMessageChange = text => {
     setMessage(text);
@@ -70,20 +77,20 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
   };
 
   const onBlur = () => {
-    dispatch(toggleTypingStatus({ conversationId, typingStatus: 'off' }));
+    dispatch(conversationActions.toggleTypingStatus({ conversationId, typingStatus: 'off' }));
   };
   const onFocus = () => {
-    dispatch(toggleTypingStatus({ conversationId, typingStatus: 'on' }));
+    dispatch(conversationActions.toggleTypingStatus({ conversationId, typingStatus: 'on' }));
   };
 
   const onCannedResponseSelect = content => {
-    captureEvent({ eventName: 'Canned response selected' });
+    AnalyticsHelper.track(CONVERSATION_EVENTS.INSERTED_A_CANNED_RESPONSE);
     setCannedResponseSearchKey('');
     setMessage(content);
   };
 
   const onSelectAttachment = ({ attachment }) => {
-    captureEvent({ eventName: 'Attachment selected' });
+    AnalyticsHelper.track(CONVERSATION_EVENTS.SELECTED_ATTACHMENT);
     const { fileSize } = attachment;
     if (findFileSize(fileSize) <= MAXIMUM_FILE_UPLOAD_SIZE) {
       setAttachmentDetails(attachment);
@@ -97,7 +104,6 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
   };
 
   const togglePrivateMode = () => {
-    captureEvent({ eventName: 'Toggle private mode' });
     setPrivateMode(!isPrivate);
   };
 
@@ -119,7 +125,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
       if (bccEmails) {
         payload.message.bcc_emails = bccEmails;
       }
-      captureEvent({ eventName: 'Messaged sent' });
+      AnalyticsHelper.track(CONVERSATION_EVENTS.SENT_MESSAGE);
       dispatch(conversationActions.sendMessage({ data: payload }));
 
       setMessage('');
@@ -141,15 +147,13 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
       : { backgroundColor: theme['color-info-200'] };
   };
 
-  // eslint-disable-next-line react/prop-types
   const renderSuggestions = ({ keyword, onSuggestionPress }) => {
     if (keyword == null || !isPrivate) {
       return null;
     }
     return (
       <View>
-        {verifiedAgents
-          // eslint-disable-next-line react/prop-types
+        {agents
           .filter(one => one.name.toLocaleLowerCase().includes(keyword.toLocaleLowerCase()))
           .map((item, index) => (
             <MentionUser
@@ -188,7 +192,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
               style={style.ccInputView}
               value={ccEmails}
               onChangeText={onCCMailChange}
-              placeholder="Emails separeted by commas"
+              placeholder="Emails separated by commas"
             />
           </View>
           <View style={style.emailFieldsTextWrap}>
@@ -197,7 +201,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
               style={style.bccInputView}
               value={bccEmails}
               onChangeText={onBCCMailChange}
-              placeholder="Emails separeted by commas"
+              placeholder="Emails separated by commas"
             />
           </View>
         </View>

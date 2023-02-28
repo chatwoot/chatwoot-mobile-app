@@ -7,13 +7,13 @@ import { showToast } from './ToastHelper';
 import { getHeaders } from './AuthHelper';
 
 import { store } from '../store';
-import { onLogOut } from '../actions/auth';
+import { logout } from 'reducer/authSlice';
 import { getBaseUrl } from './UrlHelper';
 
 const parseErrorCode = error => {
   if (error.response) {
     if (error.response.status === 401) {
-      store.dispatch(onLogOut());
+      store.dispatch(logout());
     } else if (error.response.status === 404) {
       const { message } = error.response.data;
       showToast({ message });

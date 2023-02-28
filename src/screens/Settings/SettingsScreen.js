@@ -10,7 +10,7 @@ import ChatWootWidget from '@chatwoot/react-native-widget';
 import { View, Image } from 'react-native';
 import UserAvatar from 'components/UserAvatar';
 import CustomText from 'components/Text';
-import { onLogOut } from 'actions/auth';
+import { logout } from 'reducer/authSlice';
 import i18n from 'i18n';
 import images from 'constants/images';
 import styles from './SettingsScreen.style';
@@ -19,11 +19,15 @@ import { HELP_URL } from 'constants/url.js';
 import { openURL } from 'helpers/UrlHelper';
 import { SETTINGS_ITEMS } from 'constants';
 import HeaderBar from 'components/HeaderBar';
-import { getNotificationSettings } from 'actions/settings';
 import packageFile from '../../../package.json';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { captureEvent } from 'helpers/Analytics';
-import { getCurrentUserAvailabilityStatus } from '../../helpers';
+
+import { actions as settingsActions } from 'reducer/settingsSlice';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
+import { selectUser } from 'reducer/authSlice';
+
+import { selectCurrentUserAvailability } from 'reducer/authSlice';
 
 const appName = DeviceInfo.getApplicationName();
 
@@ -35,25 +39,21 @@ const propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
-  onLogOut: PropTypes.func,
   getNotificationSettings: PropTypes.func,
-};
-const defaultProps = {
-  onLogOut: () => {},
 };
 
 const Settings = ({ eva: { theme, style } }) => {
   const dispatch = useDispatch();
   const [showWidget, toggleWidget] = useState(false);
   const navigation = useNavigation();
-  const user = useSelector(store => store.auth.user);
+  const user = useSelector(selectUser);
   const email = user ? user.email : '';
   const accounts = user ? user.accounts : [];
   const avatar_url = user ? user.avatar_url : '';
   const name = user ? user.name : '';
   const identifierHash = user ? user.identifier_hash : '';
 
-  const availabilityStatus = getCurrentUserAvailabilityStatus({ user });
+  const availabilityStatus = useSelector(selectCurrentUserAvailability) || 'offline';
 
   const userDetails = {
     identifier: email,
@@ -73,7 +73,7 @@ const Settings = ({ eva: { theme, style } }) => {
   };
 
   useEffect(() => {
-    dispatch(getNotificationSettings());
+    dispatch(settingsActions.getNotificationSettings());
   }, [dispatch]);
 
   const onPressItem = async ({ itemName }) => {
@@ -84,7 +84,7 @@ const Settings = ({ eva: { theme, style } }) => {
 
       case 'logout':
         await AsyncStorage.removeItem('cwCookie');
-        dispatch(onLogOut());
+        dispatch(logout());
         break;
 
       case 'switch-account':
@@ -99,14 +99,12 @@ const Settings = ({ eva: { theme, style } }) => {
         navigation.navigate('NotificationPreference', { accounts });
         break;
       case 'chat_with_us':
-        captureEvent({ eventName: 'Opened help support button' });
+        AnalyticsHelper.track(ACCOUNT_EVENTS.OPEN_SUPPORT);
         toggleWidget(true);
         break;
 
       case 'help':
-        captureEvent({ eventName: 'Opened help docs' });
         openURL({ URL: HELP_URL });
-
         break;
 
       default:
@@ -176,7 +174,6 @@ const Settings = ({ eva: { theme, style } }) => {
 };
 
 Settings.propTypes = propTypes;
-Settings.defaultProps = defaultProps;
 
 const SettingsScreen = withStyles(Settings, styles);
 export default SettingsScreen;

@@ -11,16 +11,18 @@ import i18n from '../../i18n';
 import styles from './LanguageScreen.style';
 import LanguageItem from '../../components/LanguageItem';
 
-import { setLocale } from '../../actions/settings';
+import { setLocale } from 'reducer/settingsSlice';
+
 import { LANGUAGES } from '../../constants';
-import { captureEvent } from 'helpers/Analytics';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
+
+import { selectLoggedIn } from 'reducer/authSlice';
+import { selectLocale } from 'reducer/settingsSlice';
 
 const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
-  const settings = useSelector(state => state.settings);
-  const auth = useSelector(state => state.auth);
-
-  const localeValue = settings.localeValue || 'en';
-  const isLoggedIn = auth.isLoggedIn;
+  const localeValue = useSelector(selectLocale) || 'en';
+  const isLoggedIn = useSelector(selectLoggedIn);
 
   const dispatch = useDispatch();
 
@@ -29,7 +31,10 @@ const LanguageScreenComponent = ({ eva: { style }, navigation }) => {
   };
 
   const onSubmitLanguage = () => {
-    captureEvent({ eventName: `Changed the language to ${localeValue}` });
+    AnalyticsHelper.track(ACCOUNT_EVENTS.CHANGE_LANGUAGE, {
+      language: localeValue,
+    });
+
     if (isLoggedIn) {
       navigation.dispatch(StackActions.replace('Tab'));
     } else {

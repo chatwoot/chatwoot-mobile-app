@@ -18,14 +18,15 @@ import conversationActions from 'reducer/conversationSlice.action';
 import { UserAvatar, Pressable } from 'components';
 import { getInboxName } from 'helpers';
 import ConversationAction from '../../ConversationAction/ConversationAction';
-import { captureEvent } from '../../../helpers/Analytics';
 import Banner from 'src/screens/ChatScreen/components/Banner';
 import InboxName from 'src/screens/ChatScreen/components/InboxName';
 import TypingStatus from 'src/screens/ChatScreen/components/UserTypingStatus';
 import i18n from 'i18n';
-
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import { INBOX_ICON } from 'src/constants/index';
-
+import { inboxesSelector } from 'reducer/inboxSlice';
+import { selectUserId } from 'reducer/authSlice';
 const styles = theme => ({
   headerView: {
     flexDirection: 'row',
@@ -100,12 +101,13 @@ const ChatHeader = ({
   const actionSheetRef = createRef();
   const dispatch = useDispatch();
   const conversationToggleStatus = useSelector(selectConversationToggleStatus);
+  const userId = useSelector(selectUserId);
 
   const showActionSheet = () => {
     actionSheetRef.current?.setModalVisible();
   };
 
-  const inboxes = useSelector(state => state.inbox.data);
+  const inboxes = useSelector(inboxesSelector.selectAll);
   const inboxId = conversationDetails && conversationDetails.inbox_id;
   const inboxDetails = inboxes ? inboxes.find(inbox => inbox.id === inboxId) : {};
   const channelType =
@@ -198,13 +200,24 @@ const ChatHeader = ({
 
   const onPressAction = ({ itemType }) => {
     actionSheetRef.current?.hide();
+    if (itemType === 'self_assign') {
+      if (conversationDetails) {
+        AnalyticsHelper.track(CONVERSATION_EVENTS.SELF_ASSIGN_CONVERSATION);
+        dispatch(
+          conversationActions.assignConversation({
+            conversationId: conversationDetails.id,
+            assigneeId: userId,
+          }),
+        );
+      }
+    }
     if (itemType === 'assignee') {
       if (conversationDetails) {
         navigation.navigate('AgentScreen', { conversationDetails });
       }
     }
     if (itemType === 'unassign') {
-      captureEvent({ eventName: 'Toggle conversation status' });
+      AnalyticsHelper.track(CONVERSATION_EVENTS.UNASSIGN_CONVERSATION);
       dispatch(
         conversationActions.assignConversation({
           conversationId: conversationDetails.id,
@@ -225,10 +238,12 @@ const ChatHeader = ({
     if (itemType === 'mute_conversation') {
       const { muted } = conversationDetails;
       if (!muted) {
+        AnalyticsHelper.track(CONVERSATION_EVENTS.MUTE_CONVERSATION);
         dispatch(conversationActions.muteConversation({ conversationId }));
       }
     }
     if (itemType === 'unmute_conversation') {
+      AnalyticsHelper.track(CONVERSATION_EVENTS.UN_MUTE_CONVERSATION);
       const { muted } = conversationDetails;
       if (muted) {
         dispatch(conversationActions.unmuteConversation({ conversationId }));
@@ -238,7 +253,7 @@ const ChatHeader = ({
 
   const toggleStatusForConversations = () => {
     try {
-      captureEvent({ eventName: 'Toggle conversation status' });
+      AnalyticsHelper.track(CONVERSATION_EVENTS.TOGGLE_STATUS);
       dispatch(conversationActions.toggleConversationStatus({ conversationId }));
     } catch (error) {}
   };

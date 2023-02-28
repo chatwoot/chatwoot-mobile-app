@@ -5,8 +5,6 @@ import { withStyles } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
 
-import { doLogin, resetAuth } from '../../actions/auth';
-
 import DeviceInfo from 'react-native-device-info';
 import styles from './LoginScreen.style';
 import TextInput from '../../components/TextInput';
@@ -20,6 +18,9 @@ import { SIGNUP_URL } from '../../constants/url';
 import CustomText from '../../components/Text';
 import { openURL } from '../../helpers/UrlHelper';
 import { EMAIL_REGEX } from '../../helpers/formHelper';
+import { actions as authActions, resetAuth } from 'reducer/authSlice';
+
+import { selectInstallationUrl, selectBaseUrl } from 'reducer/settingsSlice';
 
 const appName = DeviceInfo.getApplicationName();
 
@@ -43,10 +44,10 @@ const defaultProps = {
 
 const LoginScreenComponent = ({ navigation, eva }) => {
   const dispatch = useDispatch();
+  const { isLoggingIn } = useSelector(state => state.auth);
 
-  const isLoggingIn = useSelector(state => state.auth.isLoggingIn);
-  const installationUrl = useSelector(state => state.settings.installationUrl);
-  const baseUrl = useSelector(state => state.settings.baseUrl);
+  const installationUrl = useSelector(selectInstallationUrl);
+  const baseUrl = useSelector(selectBaseUrl);
 
   useEffect(() => {
     dispatch(resetAuth());
@@ -74,7 +75,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
   });
   const onSubmit = data => {
     const { email, password } = data;
-    dispatch(doLogin({ email, password }));
+    dispatch(authActions.doLogin({ email, password }));
   };
 
   return (

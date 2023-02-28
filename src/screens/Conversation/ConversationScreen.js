@@ -6,11 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { View, ScrollView } from 'react-native';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { useFocusEffect } from '@react-navigation/native';
-
 import { getInboxIconByType } from 'helpers/inboxHelpers';
-import { getInboxes } from 'actions/inbox';
-import { getAgents } from 'actions/agent';
-import { getAllNotifications } from 'actions/notification';
 import ActionCable from 'helpers/ActionCable';
 import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
 import {
@@ -23,13 +19,21 @@ import {
   setActiveInbox,
 } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';
-import { saveDeviceDetails } from 'actions/notification';
-import { getInstalledVersion } from 'actions/settings';
 import createStyles from './ConversationScreen.style';
 import i18n from 'i18n';
 import { FilterButton, ClearFilterButton, Header } from 'components';
 import { ConversationList, ConversationFilter, ConversationInboxFilter } from './components';
 import { CONVERSATION_STATUSES, ASSIGNEE_TYPES } from 'constants';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
+import { actions as inboxActions, inboxesSelector } from 'reducer/inboxSlice';
+import { selectUser } from 'reducer/authSlice';
+import {
+  selectWebSocketUrl,
+  selectInstallationUrl,
+  actions as settingsActions,
+} from 'reducer/settingsSlice';
+import { actions as notificationActions } from 'reducer/notificationSlice';
 
 const ConversationScreen = () => {
   const theme = useTheme();
@@ -38,24 +42,37 @@ const ConversationScreen = () => {
   const conversationStatus = useSelector(selectConversationStatus);
   const assigneeType = useSelector(selectAssigneeType);
   const activeInboxId = useSelector(selectActiveInbox);
-  // const installationUrl = useSelector(state => state.settings.installationUrl);
-  const webSocketUrl = useSelector(state => state.settings.webSocketUrl);
+  const webSocketUrl = useSelector(selectWebSocketUrl);
+  const installationUrl = useSelector(selectInstallationUrl);
   const isLoading = useSelector(state => state.conversations.loading);
-  const inboxes = useSelector(state => state.inbox.data);
+  const inboxes = useSelector(inboxesSelector.selectAll);
+  const user = useSelector(selectUser);
+
   const [pageNumber, setPage] = useState(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
     initActionCable();
     dispatch(clearAllConversations());
-    dispatch(getInboxes());
+    dispatch(inboxActions.fetchInboxes());
+    dispatch(notificationActions.index({ pageNo: 1 }));
+    initAnalytics();
+    checkAppVersion();
+    initPushNotifications();
+  }, [dispatch, initActionCable, initAnalytics, initPushNotifications, checkAppVersion]);
+
+  const initPushNotifications = useCallback(async () => {
+    dispatch(notificationActions.saveDeviceDetails());
     clearAllDeliveredNotifications();
-    dispatch(getInstalledVersion());
-    dispatch(getAgents());
-    dispatch(saveDeviceDetails());
-    dispatch(getAllNotifications({ pageNo: 1 }));
-    // storeUser();
-  }, [dispatch, initActionCable]);
+  }, [dispatch]);
+
+  const initAnalytics = useCallback(async () => {
+    AnalyticsHelper.identify(user);
+  }, [user]);
+
+  const checkAppVersion = useCallback(async () => {
+    dispatch(settingsActions.checkInstallationVersion({ user, installationUrl }));
+  }, [dispatch, user, installationUrl]);
 
   const initActionCable = useCallback(async () => {
     const pubSubToken = await getPubSubToken();
@@ -68,6 +85,7 @@ const ConversationScreen = () => {
   };
 
   const refreshConversations = async () => {
+    AnalyticsHelper.track(CONVERSATION_EVENTS.REFRESH_CONVERSATIONS);
     await dispatch(clearAllConversations());
     setPage(1);
     loadConversations({
@@ -102,6 +120,7 @@ const ConversationScreen = () => {
   );
 
   const clearAppliedFilters = async () => {
+    AnalyticsHelper.track(CONVERSATION_EVENTS.CLEAR_FILTERS);
     await dispatch(clearAllConversations());
     await dispatch(setConversationStatus('open'));
     await dispatch(setAssigneeType('mine'));
@@ -110,12 +129,20 @@ const ConversationScreen = () => {
   };
 
   const onSelectAssigneeType = async item => {
+    AnalyticsHelper.track(CONVERSATION_EVENTS.APPLY_FILTER, {
+      type: 'assignee-type',
+      value: item.key,
+    });
     await dispatch(setAssigneeType(item.key));
     setPage(1);
     closeConversationAssigneeModal();
   };
 
   const onSelectConversationStatus = async item => {
+    AnalyticsHelper.track(CONVERSATION_EVENTS.APPLY_FILTER, {
+      type: 'status',
+      value: item.key,
+    });
     await dispatch(clearAllConversations());
     await dispatch(setConversationStatus(item.key));
     setPage(1);
@@ -123,6 +150,9 @@ const ConversationScreen = () => {
   };
 
   const onChangeInbox = async item => {
+    AnalyticsHelper.track(CONVERSATION_EVENTS.APPLY_FILTER, {
+      type: 'inbox',
+    });
     await dispatch(clearAllConversations());
     await dispatch(setActiveInbox(item.id));
     setPage(1);

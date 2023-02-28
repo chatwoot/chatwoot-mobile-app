@@ -46,7 +46,7 @@ const MentionUserComponent = ({
         userName={name}
         size={32}
         defaultBGColor={theme['color-primary-default']}
-        isActive={availabilityStatus === 'online' ? true : false}
+        availabilityStatus={availabilityStatus}
       />
       <CustomText style={style.name}>{`${name} - `}</CustomText>
       <CustomText style={style.email}>{email}</CustomText>

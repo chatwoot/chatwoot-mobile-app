@@ -69,6 +69,7 @@
     "SHARE": "اشتراک گذاری گفتگو",
     "CANCEL": "انصراف",
     "PRIVATE_MSG_INPUT": "این فقط برای ایجنت ها قابل مشاهده خواهد بود",
+    "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "لغو اختصاص مکالمه",
     "MUTE_CONVERSATION": "صدای گفتگو را قطع کن",
     "UNMUTE_CONVERSATION": "مکالمه را باصدا کنید",

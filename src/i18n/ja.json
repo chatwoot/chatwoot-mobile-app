@@ -69,6 +69,7 @@
     "SHARE": "Share conversation",
     "CANCEL": "キャンセル",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Unassign conversation",
     "MUTE_CONVERSATION": "Mute conversation",
     "UNMUTE_CONVERSATION": "Unmute conversation",

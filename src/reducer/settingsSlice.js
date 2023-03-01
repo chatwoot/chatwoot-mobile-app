@@ -7,6 +7,7 @@ import { showToast } from 'helpers/ToastHelper';
 import I18n from 'i18n';
 import * as RootNavigation from 'helpers/NavigationHelper';
 import { checkServerSupport } from 'helpers/ServerHelper';
+import { extractDomain } from 'src/helpers/settingsHelper';
 
 const settingAdapter = createEntityAdapter();
 export const actions = {
@@ -14,14 +15,19 @@ export const actions = {
     'settings/setInstallationUrl',
     async ({ url }, { rejectWithValue }) => {
       try {
-        const INSTALLATION_URL = `${URL_TYPE}${url}/`;
+        const installationUrl = extractDomain({ url });
+        const INSTALLATION_URL = `${URL_TYPE}${installationUrl}/`;
         const WEB_SOCKET_URL = `wss://${url}/cable`;
         await axios.get(`${INSTALLATION_URL}api`);
         RootNavigation.navigate('Login');
-        return { installationUrl: INSTALLATION_URL, webSocketUrl: WEB_SOCKET_URL, baseUrl: url };
+        return {
+          installationUrl: INSTALLATION_URL,
+          webSocketUrl: WEB_SOCKET_URL,
+          baseUrl: installationUrl,
+        };
       } catch (error) {
         showToast({ message: I18n.t('CONFIGURE_URL.ERROR') });
-        return rejectWithValue(error);
+        return rejectWithValue();
       }
     },
   ),

@@ -16,6 +16,7 @@ import TextInput from '../../components/TextInput';
 import { URL_WITHOUT_HTTP_REGEX } from '../../helpers/formHelper';
 import {
   selectIsSettingUrl,
+  selectBaseUrl,
   actions as settingsActions,
   resetSettings,
 } from 'reducer/settingsSlice';
@@ -41,6 +42,7 @@ const defaultProps = {
 };
 
 const ConfigureURLScreenComponent = ({ eva }) => {
+  const baseUrl = useSelector(selectBaseUrl);
   const isSettingUrl = useSelector(selectIsSettingUrl);
   const dispatch = useDispatch();
 
@@ -52,7 +54,7 @@ const ConfigureURLScreenComponent = ({ eva }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      url: appName === 'Chatwoot' ? 'app.chatwoot.com' : null,
+      url: baseUrl ? baseUrl : appName === 'Chatwoot' ? 'app.chatwoot.com' : '',
     },
   });
 

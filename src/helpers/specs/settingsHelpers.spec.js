@@ -3,9 +3,9 @@ import { extractDomain, checkValidUrl } from '../settingsHelper';
 describe('SettingsHelper', () => {
   describe('extractDomain', () => {
     it('should return the domain from a https url', () => {
-      const url = 'https://www.chatwoot.com';
+      const url = 'https://www.app.chatwoot.com';
       const domain = extractDomain({ url });
-      expect(domain).toEqual('chatwoot.com');
+      expect(domain).toEqual('app.chatwoot.com');
     });
 
     it('should return the domain', () => {

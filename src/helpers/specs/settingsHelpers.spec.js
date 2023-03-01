@@ -31,6 +31,18 @@ describe('SettingsHelper', () => {
       const domain = extractDomain({ url });
       expect(domain).toEqual('mobile.chatwoot.app');
     });
+
+    it('should return the domain from subdomain 4', () => {
+      const url = 'subdomain.domain.tld';
+      const domain = extractDomain({ url });
+      expect(domain).toEqual('subdomain.domain.tld');
+    });
+
+    it('should return the domain from subdomain 5', () => {
+      const url = 'sub1.sub2.domain.tld';
+      const domain = extractDomain({ url });
+      expect(domain).toEqual('sub1.sub2.domain.tld');
+    });
   });
 
   describe('checkValidUrl', () => {

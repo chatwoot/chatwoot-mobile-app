@@ -135,6 +135,9 @@ const conversationSlice = createSlice({
       })
       .addCase(actions.fetchPreviousMessages.fulfilled, (state, { payload }) => {
         const { data, conversationId } = payload;
+        if (!state.entities[conversationId]) {
+          return;
+        }
         const conversation = state.entities[conversationId];
         conversation.messages.unshift(...data);
         state.loadingMessages = false;

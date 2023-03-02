@@ -3,7 +3,7 @@ import { useTheme } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { clearAllDeliveredNotifications } from 'helpers/PushHelper';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, AppState } from 'react-native';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { useFocusEffect } from '@react-navigation/native';
 import { getInboxIconByType } from 'helpers/inboxHelpers';
@@ -34,8 +34,11 @@ import {
   actions as settingsActions,
 } from 'reducer/settingsSlice';
 import { actions as notificationActions } from 'reducer/notificationSlice';
+import { getCurrentRouteName } from 'helpers/NavigationHelper';
+import { SCREENS } from 'src/router';
 
 const ConversationScreen = () => {
+  const [appState, setAppState] = useState(AppState.currentState);
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -79,6 +82,26 @@ const ConversationScreen = () => {
     const { accountId, userId } = await getUserDetails();
     ActionCable.init({ pubSubToken, webSocketUrl, accountId, userId });
   }, [webSocketUrl]);
+
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener('change', nextAppState => {
+      if (appState === 'background' && nextAppState === 'active') {
+        const routeName = getCurrentRouteName();
+        if (routeName === SCREENS.CONVERSATION) {
+          loadConversations({
+            page: pageNumber,
+            assignee: assigneeType,
+            status: conversationStatus,
+            inboxId: activeInboxId,
+          });
+        }
+      }
+      setAppState(nextAppState);
+    });
+    return () => {
+      appStateListener?.remove();
+    };
+  }, [appState, pageNumber, assigneeType, conversationStatus, activeInboxId, loadConversations]);
 
   const onChangePage = async () => {
     setPage(pageNumber + 1);

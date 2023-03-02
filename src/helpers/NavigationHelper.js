@@ -9,3 +9,7 @@ export function navigate(name, params, key) {
 export function pop(n) {
   navigationRef.current?.dispatch(StackActions.pop(n));
 }
+
+export function getCurrentRouteName() {
+  return navigationRef.current?.getCurrentRoute().name;
+}

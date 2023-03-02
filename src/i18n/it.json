@@ -51,7 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversazioni",
-    "UPDATING": "Updating...",
+    "UPDATING": "Aggiornamento...",
     "MINE": "Mie",
     "UN_ASSIGNED": "Non assegnato",
     "ALL": "Tutti",
@@ -69,11 +69,17 @@
     "SHARE": "Condividi conversazione",
     "CANCEL": "Annulla",
     "PRIVATE_MSG_INPUT": "Questo sarà visibile solo agli agenti",
+    "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Annulla l'assegnazione della conversazione",
     "MUTE_CONVERSATION": "Silenzia conversazione",
-    "UNMUTE_CONVERSATION": "Riattiva conversazione"
+    "UNMUTE_CONVERSATION": "Riattiva conversazione",
+    "CONVERSATION_NOT_FOUND": "Impossibile recuperare la conversazione"
   },
   "FILTER": {
+    "ALL_INBOXES": "Tutte le caselle di posta",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filtra per tipo di assegnatario",
+    "FILTER_BY_CONVERSATION_STATUS": "Filtra per stato della conversazione",
+    "FILTER_BY_INBOX": "Filtra per caselle di posta",
     "HEADER_TITLE": "Filtro conversazione",
     "CHOOSE_INBOX": "Scegli Posta in arrivo",
     "CHOOSE_STATUS": "Stato della conversazione",

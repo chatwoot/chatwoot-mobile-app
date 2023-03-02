@@ -57,10 +57,9 @@ export const MESSAGE_TYPES = {
 };
 
 export const MESSAGE_STATUS = {
-  SENT: 0,
-  DELIVERED: 1,
-  READ: 2,
-  FAILED: 3,
+  FAILED: 'failed',
+  SENT: 'sent',
+  PROGRESS: 'progress',
 };
 
 export const ASSIGNEE_TYPE = {
@@ -103,6 +102,7 @@ export const INBOX_IMAGES = {
 export const LANGUAGES = {
   af: 'Afrikaans',
   ar: 'Arabic',
+  id: 'Bahasa Indonesia',
   ca: 'Catalan',
   cs: 'Czech',
   da: 'Danish',
@@ -209,4 +209,11 @@ export const SETTINGS_ITEMS = [
     iconName: 'log-out-outline',
     itemName: 'logout',
   },
+];
+
+export const NOTIFICATION_TYPES = [
+  'conversation_creation',
+  'conversation_assignment',
+  'assigned_conversation_new_message',
+  'conversation_mention',
 ];

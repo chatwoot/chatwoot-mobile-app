@@ -1,34 +1,16 @@
 import moment from 'moment';
-import i18n from '../i18n';
+import fromUnixTime from 'date-fns/fromUnixTime';
+import format from 'date-fns/format';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 
-export const messageStamp = ({ time }) => {
-  const createdAt = time * 1000;
-  return moment(createdAt).format('h:mm A');
-};
-
-export const wootTime = ({ time }) => {
-  const createdAt = time * 1000;
-  return moment(createdAt);
+export const messageStamp = ({ time, dateFormat = 'h:mm a' }) => {
+  const unixTime = fromUnixTime(time);
+  return format(unixTime, dateFormat);
 };
 
 export const dynamicTime = ({ time }) => {
-  const createdAt = moment(time * 1000);
-  const today = moment();
-  const oneWeekOld = moment().subtract(6, 'days').startOf('day');
-
-  const yesterday = moment(today).subtract(1, 'day');
-
-  if (moment(createdAt).isSame(today, 'day')) {
-    return createdAt.format('hh:mm a');
-  }
-
-  if (moment(createdAt).isSame(yesterday, 'day')) {
-    return i18n.t('CONVERSATION.YESTERDAY');
-  }
-  if (createdAt.isAfter(oneWeekOld)) {
-    return moment(createdAt).format('dddd');
-  }
-  return moment(createdAt).format('DD/MM/YYYY');
+  const unixTime = fromUnixTime(time);
+  return formatDistanceToNow(unixTime, { addSuffix: true });
 };
 
 export const timeAgo = ({ time }) => {

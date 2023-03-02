@@ -27,7 +27,6 @@ const errorHandler = (e, isFatal) => {
 export default {
   init() {
     setNativeExceptionHandler(exceptionString => {
-      // log error to Sentry
       Sentry.captureException(new Error(exceptionString), {
         logger: 'NativeExceptionHandler',
       });

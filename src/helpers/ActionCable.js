@@ -7,13 +7,14 @@ import {
   updateContactsPresence,
 } from 'reducer/conversationSlice';
 
+import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
+
 import conversationActions from 'reducer/conversationSlice.action';
-import {
-  addUserTypingToConversation,
-  removeUserFromTypingConversation,
-} from '../actions/conversation';
-import { addOrUpdateActiveUsers } from '../actions/auth';
 import { store } from '../store';
+import { setCurrentUserAvailability } from 'reducer/authSlice';
+import { addUserToTyping, destroyUserFromTyping } from 'reducer/conversationTypingSlice';
+
+import { addNotification } from 'reducer/notificationSlice';
 
 class ActionCableConnector extends BaseActionCableConnector {
   constructor(pubsubToken, webSocketUrl, accountId, userId) {
@@ -26,9 +27,11 @@ class ActionCableConnector extends BaseActionCableConnector {
       'conversation.status_changed': this.onStatusChange,
       'assignee.changed': this.onAssigneeChanged,
       'conversation.read': this.onConversationRead,
+      'conversation.updated': this.onConversationUpdated,
       'presence.update': this.onPresenceUpdate,
       'conversation.typing_on': this.onTypingOn,
       'conversation.typing_off': this.onTypingOff,
+      'notification.created': this.onNotificationCreated,
       // TODO: Handle all these events
       //   'conversation.contact_changed': this.onConversationContactChange,
       //   'contact.deleted': this.onContactDelete,
@@ -54,6 +57,7 @@ class ActionCableConnector extends BaseActionCableConnector {
 
   onStatusChange = data => {
     store.dispatch(updateConversation(data));
+    store.dispatch(conversationActions.fetchConversationStats({}));
   };
 
   onAssigneeChanged = data => {
@@ -68,29 +72,44 @@ class ActionCableConnector extends BaseActionCableConnector {
     store.dispatch(updateConversation(data));
   };
 
+  onConversationUpdated = data => {
+    const { id } = data;
+    if (id) {
+      store.dispatch(updateConversation(data));
+    }
+    store.dispatch(conversationActions.fetchConversationStats({}));
+  };
+
+  onNotificationCreated = data => {
+    store.dispatch(addNotification(data));
+  };
+
   onPresenceUpdate = ({ contacts, users }) => {
-    //TODO: Move this to agentSlice and authSlice
     store.dispatch(
-      addOrUpdateActiveUsers({
+      updateAgentsPresence({
         users,
       }),
     );
-
     store.dispatch(
       updateContactsPresence({
         contacts,
       }),
     );
+    store.dispatch(
+      setCurrentUserAvailability({
+        users,
+      }),
+    );
   };
 
   onTypingOn = ({ conversation, user }) => {
-    //TODO: Move this to typingSlice
     const conversationId = conversation.id;
 
     this.clearTimer(conversationId);
+
     store.dispatch(
-      addUserTypingToConversation({
-        conversation,
+      addUserToTyping({
+        conversationId,
         user,
       }),
     );
@@ -98,14 +117,13 @@ class ActionCableConnector extends BaseActionCableConnector {
   };
 
   onTypingOff = ({ conversation, user }) => {
-    //TODO: Move this to typingSlice
     const conversationId = conversation.id;
 
     this.clearTimer(conversationId);
 
     store.dispatch(
-      removeUserFromTypingConversation({
-        conversation,
+      destroyUserFromTyping({
+        conversationId,
         user,
       }),
     );

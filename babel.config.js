@@ -19,7 +19,6 @@ module.exports = {
         alias: {
           src: './src',
           components: './src/components',
-          actions: './src/actions',
           constants: './src/constants',
           helpers: './src/helpers',
           i18n: './src/i18n',

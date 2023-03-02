@@ -51,7 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversaciones",
-    "UPDATING": "Updating...",
+    "UPDATING": "Actualizando...",
     "MINE": "Para mí",
     "UN_ASSIGNED": "Sin asignar",
     "ALL": "Todo",
@@ -69,11 +69,17 @@
     "SHARE": "Compartir la conversación",
     "CANCEL": "Cancelar",
     "PRIVATE_MSG_INPUT": "Esto será visible sólo para los agentes",
+    "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Desasignar conversación",
     "MUTE_CONVERSATION": "Silenciar conversación",
-    "UNMUTE_CONVERSATION": "Quitar silencio de conversación"
+    "UNMUTE_CONVERSATION": "Quitar silencio de conversación",
+    "CONVERSATION_NOT_FOUND": "No se pudo obtener la conversación"
   },
   "FILTER": {
+    "ALL_INBOXES": "Todas las bandejas",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filtrar por tipo de asignado",
+    "FILTER_BY_CONVERSATION_STATUS": "Filtrar por estado de conversación",
+    "FILTER_BY_INBOX": "Filtrar por bandeja de entrada",
     "HEADER_TITLE": "Filtro de conversación",
     "CHOOSE_INBOX": "Elegir bandeja de entrada",
     "CHOOSE_STATUS": "Estado de la conversación",

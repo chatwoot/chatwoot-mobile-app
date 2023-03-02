@@ -6,8 +6,6 @@ import { TopNavigation, TopNavigationAction, withStyles } from '@ui-kitten/compo
 import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
 
-import { onResetPassword, resetAuth } from '../../actions/auth';
-
 import styles from './ForgotPassword.style';
 import TextInput from '../../components/TextInput';
 import i18n from '../../i18n';
@@ -16,6 +14,8 @@ import Icon from '../../components/Icon';
 import images from '../../constants/images';
 import CustomText from '../../components/Text';
 import { EMAIL_REGEX } from '../../helpers/formHelper';
+
+import { actions as authActions, resetAuth, selectIsResettingPassword } from 'reducer/authSlice';
 
 // eslint-disable-next-line react/prop-types
 const BackIcon = ({ style: { tintColor } }) => {
@@ -55,10 +55,10 @@ const ForgotPasswordComponent = ({ eva, navigation }) => {
   });
   const onSubmit = data => {
     const { email } = data;
-    dispatch(onResetPassword(email));
+    dispatch(authActions.onResetPassword({ email }));
   };
 
-  const isResettingPassword = useSelector(state => state.auth.isResettingPassword);
+  const isResettingPassword = useSelector(selectIsResettingPassword);
 
   useEffect(() => {
     dispatch(resetAuth());

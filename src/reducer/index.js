@@ -1,26 +1,28 @@
 import { combineReducers } from 'redux';
 
-import auth from './auth';
-import inbox from './inbox';
-import conversation from './conversation';
-import settings from './settings';
-import notification from './notification';
-import agent from './agent';
+import authSlice from './authSlice';
+import inboxSlice from './inboxSlice';
+import settingsSlice from './settingsSlice';
 import cannedResponseSlice from './cannedResponseSlice';
 import conversationSlice from './conversationSlice';
-
-const rootReducer = combineReducers({
-  auth,
-  inbox,
-  conversation,
-  settings,
-  notification,
-  agent,
+import inboxAgentsSlice from './inboxAgentsSlice';
+import conversationTypingSlice from './conversationTypingSlice';
+import labelSlice from './labelSlice';
+import conversationLabelsSlice from './conversationLabelSlice';
+import teamSlice from './teamSlice';
+import customAttributeSlice from './customAttributeSlice';
+import notificationSlice from './notificationSlice';
+export const rootReducer = combineReducers({
   cannedResponses: cannedResponseSlice,
   conversations: conversationSlice,
+  labels: labelSlice,
+  conversationLabels: conversationLabelsSlice,
+  customAttributes: customAttributeSlice,
+  inboxes: inboxSlice,
+  inboxAgents: inboxAgentsSlice,
+  conversationTypingStatus: conversationTypingSlice,
+  settings: settingsSlice,
+  teams: teamSlice,
+  auth: authSlice,
+  notifications: notificationSlice,
 });
-
-export default (state, action) =>
-  action.type === 'USER_LOGOUT'
-    ? rootReducer({ settings: state.settings }, action)
-    : rootReducer(state, action);

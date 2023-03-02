@@ -7,10 +7,12 @@ import { useSelector } from 'react-redux';
 import styles from './ConversationAction.style';
 import ConversationActionItem from '../../components/ConversationActionItem';
 import i18n from '../../i18n';
+import { selectUserId } from 'reducer/authSlice';
+import { inboxAgentSelectors } from 'reducer/inboxAgentsSlice';
 
 const ConversationActionComponent = ({ eva: { style }, onPressAction, conversationDetails }) => {
-  const agents = useSelector(state => state.agent.data);
-
+  const agents = useSelector(state => inboxAgentSelectors.inboxAssignedAgents(state));
+  const userId = useSelector(selectUserId);
   const {
     meta: { assignee, team },
   } = conversationDetails;
@@ -24,6 +26,8 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
       thumbnail: '',
     };
   }
+
+  const shouldShowSelfAssign = assignee && assignee.id !== userId;
   const onShare = async () => {
     const { id, account_id } = conversationDetails;
     try {
@@ -52,13 +56,6 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
         thumbnail={assignedAgent.thumbnail}
         availabilityStatus={assignedAgent.availability_status}
       />
-      {assignee && (
-        <ConversationActionItem
-          onPressItem={onPressAction}
-          text={i18n.t('CONVERSATION.UN_ASSIGN')}
-          itemType="unassign"
-        />
-      )}
 
       <ConversationActionItem
         onPressItem={onPressAction}
@@ -66,6 +63,20 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
         itemType="team"
         name={team ? team.name : 'Select Team'}
       />
+      {shouldShowSelfAssign && (
+        <ConversationActionItem
+          onPressItem={onPressAction}
+          text={i18n.t('CONVERSATION.SELF_ASSIGN')}
+          itemType="self_assign"
+        />
+      )}
+      {assignee && (
+        <ConversationActionItem
+          onPressItem={onPressAction}
+          text={i18n.t('CONVERSATION.UN_ASSIGN')}
+          itemType="unassign"
+        />
+      )}
 
       <ConversationActionItem
         onPressItem={onPressAction}

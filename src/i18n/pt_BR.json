@@ -16,7 +16,7 @@
     "ENTER_URL": "URL de instalação",
     "DESCRIPTION": "Se você estiver usando uma instalação auto-hospedada do Chatwoot, insira o URL do servidor. Caso contrário, use app.chatwoot.com.",
     "URL_ERROR": "Insira uma URL válida",
-    "URL_REQUIRED": "O URL é obrigatório",
+    "URL_REQUIRED": "URL é obrigatório",
     "CONNECT": "Conectar",
     "CHANGE_LANGUAGE": "Alterar idioma",
     "ERROR": "Url de instalação inválida"
@@ -47,11 +47,11 @@
     "HEADER_TITLE": "Redefinir senha",
     "TITLE": "Esqueceu a Senha?",
     "SUB_TITLE": "Não se preocupe! Nós te protegemos",
-    "API_SUCCESS": "O link de redefinição de senha foi enviado para seu endereço de e-mail"
+    "API_SUCCESS": "O link de redefinição de senha foi enviado para o seu endereço de e-mail"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversas",
-    "UPDATING": "Updating...",
+    "UPDATING": "Atualizando...",
     "MINE": "Minha",
     "UN_ASSIGNED": "Não atribuída",
     "ALL": "Todas",
@@ -66,14 +66,20 @@
     "ALL_CONVERSATION_LOADED": "Todas as conversas foram carregadas",
     "ASSIGN": "Atribuir conversa",
     "FILE_SIZE_LIMIT": "O arquivo excede o limite de anexos de 5MB",
-    "SHARE": "Compartilhar conversas",
+    "SHARE": "Compartilhar conversa",
     "CANCEL": "Cancelar",
     "PRIVATE_MSG_INPUT": "Isto será visível apenas para Agentes",
+    "SELF_ASSIGN": "Autoatribuir conversa",
     "UN_ASSIGN": "Desassociar conversa",
     "MUTE_CONVERSATION": "Silenciar conversa",
-    "UNMUTE_CONVERSATION": "Não silenciar conversa"
+    "UNMUTE_CONVERSATION": "Não silenciar conversa",
+    "CONVERSATION_NOT_FOUND": "Não foi possível obter a conversa"
   },
   "FILTER": {
+    "ALL_INBOXES": "Todas as caixas de entrada",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filtrar por tipo de responsável",
+    "FILTER_BY_CONVERSATION_STATUS": "Filtrar por estado da conversa",
+    "FILTER_BY_INBOX": "Filtrar por caixa de entrada",
     "HEADER_TITLE": "Filtro da Conversa",
     "CHOOSE_INBOX": "Selecionar Caixa de Entrada",
     "CHOOSE_STATUS": "Status da conversa",

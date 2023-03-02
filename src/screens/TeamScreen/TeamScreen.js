@@ -9,14 +9,19 @@ import HeaderBar from '../../components/HeaderBar';
 import i18n from '../../i18n';
 import styles from './TeamScreen.style';
 import TeamList from 'src/components/TeamList';
-import { getAllTeams, assignTeam } from '../../actions/team';
-import { captureEvent } from 'helpers/Analytics';
 import Snackbar from 'react-native-snackbar';
-
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
+import {
+  actions as teamActions,
+  teamSelector,
+  selectLoading,
+  selectIsTeamUpdating,
+} from 'reducer/teamSlice';
 const TeamScreenComponent = ({ eva: { style }, navigation, route }) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllTeams());
+    dispatch(teamActions.index());
   }, [dispatch]);
   const { conversationDetails } = route.params;
   const {
@@ -24,9 +29,9 @@ const TeamScreenComponent = ({ eva: { style }, navigation, route }) => {
   } = conversationDetails;
 
   const [selectedTeamId, setTeam] = useState(team ? team.id : null);
-  const teams = useSelector(state => state.conversation.availableTeams);
-  const conversation = useSelector(state => state.conversation);
-  const { isAllAvailableTeamsLoaded, isTeamUpdating } = conversation;
+  const teams = useSelector(teamSelector.selectAll);
+  const isLoading = useSelector(selectLoading);
+  const isTeamUpdating = useSelector(selectIsTeamUpdating);
 
   const goBack = () => {
     navigation.goBack();
@@ -51,9 +56,9 @@ const TeamScreenComponent = ({ eva: { style }, navigation, route }) => {
 
   const onClickAssignTeam = () => {
     if (!team || team.id !== selectedTeamId) {
-      captureEvent({ eventName: 'Conversation team changed' });
+      AnalyticsHelper.track(CONVERSATION_EVENTS.CHANGE_TEAM);
       dispatch(
-        assignTeam({
+        teamActions.update({
           conversationId: conversationDetails.id,
           teamId: selectedTeamId,
         }),
@@ -81,7 +86,7 @@ const TeamScreenComponent = ({ eva: { style }, navigation, route }) => {
               onClickCheckedChange={() => onClickCheckedChange(item)}
             />
           ))}
-          {isAllAvailableTeamsLoaded && (
+          {isLoading && (
             <View style={style.spinnerView}>
               <Spinner size="medium" />
             </View>

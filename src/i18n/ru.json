@@ -69,11 +69,17 @@
     "SHARE": "Поделиться разговором",
     "CANCEL": "Отмена",
     "PRIVATE_MSG_INPUT": "Это будет видно только сотрудникам",
+    "SELF_ASSIGN": "Личное назначение разговора",
     "UN_ASSIGN": "Отменить беседу",
     "MUTE_CONVERSATION": "Заглушить диалог",
-    "UNMUTE_CONVERSATION": "Включить диалог"
+    "UNMUTE_CONVERSATION": "Включить диалог",
+    "CONVERSATION_NOT_FOUND": "Не удалось получить диалог"
   },
   "FILTER": {
+    "ALL_INBOXES": "Все письма",
+    "FILTER_BY_ASSIGNEE_TYPE": "Фильтр по типу исполнителя",
+    "FILTER_BY_CONVERSATION_STATUS": "Фильтр по статусу разговора",
+    "FILTER_BY_INBOX": "Фильтр по входящим",
     "HEADER_TITLE": "Фильтр сообщений",
     "CHOOSE_INBOX": "Выбрать входящие",
     "CHOOSE_STATUS": "Статус разговора",

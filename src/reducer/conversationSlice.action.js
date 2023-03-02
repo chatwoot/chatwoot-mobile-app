@@ -2,9 +2,12 @@ import I18n from 'i18n';
 import { showToast } from 'helpers/ToastHelper';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+import { createPendingMessage, buildCreatePayload } from 'helpers/conversationHelpers';
+import { addMessage } from 'reducer/conversationSlice';
+
 import axios from 'helpers/APIHelper';
 import * as RootNavigation from 'helpers/NavigationHelper';
-
+import { MESSAGE_STATUS } from 'constants';
 const actions = {
   fetchConversations: createAsyncThunk(
     'conversations/fetchConversations',
@@ -122,6 +125,116 @@ const actions = {
         }
         return rejectWithValue(error.response.data);
       }
+    },
+  ),
+  sendMessage: createAsyncThunk(
+    'conversations/sendMessage',
+    async ({ data }, { dispatch, rejectWithValue }) => {
+      const { conversationId } = data;
+      let payload;
+      const pendingMessage = createPendingMessage(data);
+
+      try {
+        dispatch(
+          addMessage({
+            ...pendingMessage,
+            status: MESSAGE_STATUS.PROGRESS,
+          }),
+        );
+        payload = buildCreatePayload(pendingMessage);
+
+        const response = await axios.post(`conversations/${conversationId}/messages`, payload);
+        dispatch(
+          addMessage({
+            ...response.data,
+            status: MESSAGE_STATUS.SENT,
+          }),
+        );
+      } catch (error) {
+        dispatch(
+          addMessage({
+            ...pendingMessage,
+            status: MESSAGE_STATUS.FAILED,
+          }),
+        );
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
+
+  toggleConversationStatus: createAsyncThunk(
+    'conversations/toggleConversationStatus',
+    async ({ conversationId }, { rejectWithValue }) => {
+      try {
+        const apiUrl = `conversations/${conversationId}/toggle_status`;
+        const response = await axios.post(apiUrl);
+        return response.data;
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
+  muteConversation: createAsyncThunk(
+    'conversations/muteConversation',
+    async ({ conversationId }, { rejectWithValue }) => {
+      try {
+        const apiUrl = `conversations/${conversationId}/mute`;
+        const response = await axios.post(apiUrl);
+        return response.data;
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
+  unmuteConversation: createAsyncThunk(
+    'conversations/unmuteConversation',
+    async ({ conversationId }, { rejectWithValue }) => {
+      try {
+        const apiUrl = `conversations/${conversationId}/unmute`;
+        const response = await axios.post(apiUrl);
+        return response.data;
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
+  assignConversation: createAsyncThunk(
+    'conversations/assignConversation',
+    async ({ conversationId, assigneeId }, { rejectWithValue }) => {
+      try {
+        const apiUrl = `conversations/${conversationId}/assignments?assignee_id=${assigneeId}`;
+        const response = await axios.post(apiUrl);
+        return response.data;
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
+  toggleTypingStatus: createAsyncThunk(
+    'conversations/toggleTypingStatus',
+    async ({ conversationId, typingStatus }, { rejectWithValue }) => {
+      const apiUrl = `conversations/${conversationId}/toggle_typing_status`;
+
+      await axios
+        .post(apiUrl, {
+          typing_status: typingStatus,
+        })
+        .catch();
     },
   ),
 };

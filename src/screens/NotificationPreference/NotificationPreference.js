@@ -9,22 +9,26 @@ import HeaderBar from '../../components/HeaderBar';
 import i18n from '../../i18n';
 import styles from './NotificationPreference.style';
 import NotificationPreferenceItem from '../../components/NotificationPreferenceItem';
-import { captureEvent } from 'helpers/Analytics';
 import { NOTIFICATION_PREFERENCE_TYPES } from '../../constants';
 import CustomText from '../../components/Text';
-import { updateNotificationSettings } from '../../actions/settings';
 import { addOrRemoveItemFromArray } from '../../helpers';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { PROFILE_EVENTS } from 'constants/analyticsEvents';
+import {
+  actions as settingsActions,
+  selectNotificationSettings,
+  selectIsUpdating,
+} from 'reducer/settingsSlice';
 
 const NotificationPreferenceScreenComponent = ({ eva: { style }, navigation }) => {
+  const isUpdating = useSelector(selectIsUpdating);
+
   const {
-    notificationSettings: {
-      all_email_flags: emailFlags,
-      all_push_flags: pushFlags,
-      selected_email_flags,
-      selected_push_flags,
-    },
-    isUpdating,
-  } = useSelector(state => state.settings);
+    all_email_flags: emailFlags,
+    all_push_flags: pushFlags,
+    selected_email_flags,
+    selected_push_flags,
+  } = useSelector(selectNotificationSettings);
   const [selectedEmailFlags, setEmailFlags] = useState(selected_email_flags);
   const [selectedPushFlags, setPushFlags] = useState(selected_push_flags);
 
@@ -43,9 +47,9 @@ const NotificationPreferenceScreenComponent = ({ eva: { style }, navigation }) =
   };
 
   const savePreferences = () => {
-    captureEvent({ eventName: 'Updated notification preferences' });
+    AnalyticsHelper.track(PROFILE_EVENTS.CHANGE_PREFERENCES);
     dispatch(
-      updateNotificationSettings({
+      settingsActions.updateNotificationSettings({
         notification_settings: {
           selected_email_flags: selectedEmailFlags,
           selected_push_flags: selectedPushFlags,

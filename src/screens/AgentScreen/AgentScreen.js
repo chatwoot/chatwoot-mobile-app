@@ -9,10 +9,16 @@ import HeaderBar from '../../components/HeaderBar';
 import i18n from '../../i18n';
 import styles from './AgentScreen.style';
 import AgentItem from '../../components/AgentItem';
-import { assignConversation } from '../../actions/conversation';
-import { getInboxAgents } from '../../actions/inbox';
-import { captureEvent } from 'helpers/Analytics';
+import conversationActions from 'reducer/conversationSlice.action';
+import { selectConversationAssigneeStatus } from 'reducer/conversationSlice';
+import {
+  actions as inboxAgentActions,
+  selectInboxFetching,
+  inboxAgentSelectors,
+} from 'reducer/inboxAgentsSlice';
 import { useEffect } from 'react';
+import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
 
 const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
   const dispatch = useDispatch();
@@ -23,18 +29,17 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
   } = conversationDetails;
 
   const [assigneeId, setAssignee] = useState(assignee ? assignee.id : null);
-  const isInboxAgentsFetching = useSelector(state => state.inbox.isInboxAgentsFetching);
-  const conversation = useSelector(state => state.conversation);
-  const { isAssigneeUpdating } = conversation;
-  const agents = useSelector(state => state.inbox.inboxAgents);
-  const verifiedAgents = agents.length ? agents.filter(agent => agent.confirmed) : [];
+  const isInboxAgentsFetching = useSelector(selectInboxFetching);
+  const isAssigneeUpdating = useSelector(selectConversationAssigneeStatus);
+
+  const agents = useSelector(state => inboxAgentSelectors.inboxAssignedAgents(state));
 
   const goBack = () => {
     navigation.goBack();
   };
 
   useEffect(() => {
-    dispatch(getInboxAgents({ inboxId }));
+    dispatch(inboxAgentActions.fetchInboxAgents({ inboxId }));
   }, [dispatch, inboxId]);
 
   const onCheckedChange = item => {
@@ -42,13 +47,14 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
   };
   const updateAssignee = () => {
     if (!assignee || assignee.id !== assigneeId) {
-      captureEvent({ eventName: 'Conversation assignee changed' });
+      AnalyticsHelper.track(CONVERSATION_EVENTS.ASSIGNEE_CHANGED);
       dispatch(
-        assignConversation({
+        conversationActions.assignConversation({
           conversationId: conversationDetails.id,
-          assigneeId: assigneeId,
+          assigneeId,
         }),
       );
+      navigation.goBack();
     } else {
       navigation.goBack();
     }
@@ -59,7 +65,7 @@ const AgentScreenComponent = ({ eva: { style }, navigation, route }) => {
 
       {!isInboxAgentsFetching ? (
         <ScrollView>
-          {verifiedAgents.map(item => (
+          {agents.map(item => (
             <AgentItem
               name={item.name}
               thumbnail={item.thumbnail}

@@ -6,8 +6,6 @@ import { withStyles } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import DeviceInfo from 'react-native-device-info';
 import { useForm, Controller } from 'react-hook-form';
-
-import { setInstallationUrl, resetSettings } from '../../actions/settings';
 import styles from './ConfigureURLScreen.style';
 import images from '../../constants/images';
 import i18n from '../../i18n';
@@ -16,6 +14,12 @@ import { ScrollView } from 'react-native-gesture-handler';
 import CustomText from '../../components/Text';
 import TextInput from '../../components/TextInput';
 import { URL_WITHOUT_HTTP_REGEX } from '../../helpers/formHelper';
+import {
+  selectIsSettingUrl,
+  selectBaseUrl,
+  actions as settingsActions,
+  resetSettings,
+} from 'reducer/settingsSlice';
 
 const appName = DeviceInfo.getApplicationName();
 
@@ -38,7 +42,8 @@ const defaultProps = {
 };
 
 const ConfigureURLScreenComponent = ({ eva }) => {
-  const isSettingUrl = useSelector(state => state.settings.isSettingUrl);
+  const baseUrl = useSelector(selectBaseUrl);
+  const isSettingUrl = useSelector(selectIsSettingUrl);
   const dispatch = useDispatch();
 
   const { style } = eva;
@@ -49,7 +54,7 @@ const ConfigureURLScreenComponent = ({ eva }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      url: appName === 'Chatwoot' ? 'app.chatwoot.com' : null,
+      url: baseUrl ? baseUrl : appName === 'Chatwoot' ? 'app.chatwoot.com' : '',
     },
   });
 
@@ -60,7 +65,7 @@ const ConfigureURLScreenComponent = ({ eva }) => {
   const onSubmit = data => {
     const { url } = data;
     if (url) {
-      dispatch(setInstallationUrl({ url }));
+      dispatch(settingsActions.setInstallationUrl({ url }));
     }
   };
 

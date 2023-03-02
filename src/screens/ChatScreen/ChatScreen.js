@@ -3,18 +3,20 @@ import { Spinner, withStyles } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { View, SafeAreaView, SectionList } from 'react-native';
+import { StackActions } from '@react-navigation/native';
 import ChatMessage from './components/ChatMessage';
 import ChatMessageDate from './components/ChatMessageDate';
 import ReplyBox from './components/ReplyBox';
 import ChatHeader from './components/ChatHeader';
+import ChatHeaderLoader from './components/ChatHeaderLoader';
 import styles from './ChatScreen.style';
 import { openURL } from 'helpers/UrlHelper';
-
-import { markNotificationAsRead } from 'actions/notification';
+import { actions as notificationsActions } from 'reducer/notificationSlice';
 import { getGroupedConversation, findUniqueMessages } from 'helpers';
 import { actions as CannedResponseActions } from 'reducer/cannedResponseSlice';
-
+import { selectAllTypingUsers } from 'reducer/conversationTypingSlice';
 import {
+  clearConversation,
   selectors as conversationSelectors,
   selectMessagesLoading,
   selectAllMessagesFetched,
@@ -29,37 +31,24 @@ const propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
+    canGoBack: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
   }).isRequired,
-  resetConversation: PropTypes.func,
-  cannedResponses: PropTypes.array.isRequired,
-  allMessages: PropTypes.array.isRequired,
-  conversationDetails: PropTypes.object,
-  loadMessages: PropTypes.func,
-  fetchCannedResponses: PropTypes.func,
-  isFetching: PropTypes.bool,
-  markAllMessagesAsRead: PropTypes.func,
-  markMessagesAsRead: PropTypes.func,
-  markNotificationAsRead: PropTypes.func,
-  getConversationDetails: PropTypes.func,
-  conversationTypingUsers: PropTypes.shape({}),
-};
-
-const defaultProps = {
-  isFetching: false,
-  markMessagesAsRead: () => {},
-  allMessages: [],
-  cannedResponses: [],
-  conversationTypingUsers: {},
 };
 
 const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   const dispatch = useDispatch();
-  const conversationTypingUsers = useSelector(state => state.conversation.conversationTypingUsers);
+  const conversationTypingUsers = useSelector(selectAllTypingUsers);
 
   const isFetching = useSelector(selectMessagesLoading);
   const isAllMessagesFetched = useSelector(selectAllMessagesFetched);
 
-  const { conversationId, messages, primaryActorDetails } = route.params;
+  const {
+    conversationId,
+    primaryActorId,
+    primaryActorType,
+    isConversationOpenedExternally = true,
+  } = route.params;
 
   const conversation = useSelector(state =>
     conversationSelectors.getConversationById(state, conversationId),
@@ -87,13 +76,22 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   }, [dispatch, conversationId]);
 
   useEffect(() => {
-    loadMessages();
-  }, [loadMessages]);
+    if (isConversationOpenedExternally) {
+      dispatch(clearConversation(conversationId));
+      loadConversation();
+    } else {
+      loadMessages();
+    }
+  }, [conversationId, isConversationOpenedExternally, loadConversation, loadMessages, dispatch]);
+
+  const loadConversation = useCallback(() => {
+    dispatch(conversationActions.fetchConversation({ conversationId }));
+  }, [conversationId, dispatch]);
 
   const loadMessages = useCallback(async () => {
     // Fetch conversation if not present
     if (!conversation) {
-      dispatch(conversationActions.fetchConversation({ conversationId }));
+      loadConversation();
     } else {
       dispatch(
         conversationActions.fetchPreviousMessages({
@@ -102,18 +100,18 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
         }),
       );
     }
-  }, [conversation, conversationId, dispatch, lastMessageId]);
+  }, [conversation, conversationId, dispatch, lastMessageId, loadConversation]);
 
   useEffect(() => {
-    if (primaryActorDetails && primaryActorDetails.primary_actor_id) {
+    if (primaryActorId && primaryActorType) {
       dispatch(
-        markNotificationAsRead({
-          primaryActorId: primaryActorDetails.primary_actor_id,
-          primaryActorType: primaryActorDetails.primary_actor_type,
+        notificationsActions.markNotificationAsRead({
+          primaryActorId,
+          primaryActorType,
         }),
       );
     }
-  }, [conversationId, dispatch, messages, primaryActorDetails]);
+  }, [conversationId, dispatch, primaryActorId, primaryActorType]);
 
   const showAttachment = ({ type, dataUrl }) => {
     if (type === 'image') {
@@ -126,7 +124,11 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   };
 
   const onBackPress = () => {
-    navigation.goBack();
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      navigation.dispatch(StackActions.replace('Tab'));
+    }
   };
 
   const onEndReached = ({ distanceFromEnd }) => {
@@ -148,7 +150,12 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   };
 
   const renderMessage = item => (
-    <ChatMessage message={item.item} key={item.index} showAttachment={showAttachment} />
+    <ChatMessage
+      message={item.item}
+      key={item.index}
+      showAttachment={showAttachment}
+      conversation={conversation}
+    />
   );
 
   const showConversationDetails = () => {
@@ -164,7 +171,7 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
 
   return (
     <SafeAreaView style={style.mainContainer}>
-      {conversation && (
+      {conversation ? (
         <ChatHeader
           conversationId={conversationId}
           conversationTypingUsers={conversationTypingUsers}
@@ -173,6 +180,8 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
           showConversationDetails={showConversationDetails}
           onBackPress={onBackPress}
         />
+      ) : (
+        <ChatHeaderLoader />
       )}
 
       <View style={style.container} autoDismiss={false}>
@@ -204,6 +213,5 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
 };
 
 ChatScreenComponent.propTypes = propTypes;
-ChatScreenComponent.defaultProps = defaultProps;
 const ChatScreen = withStyles(ChatScreenComponent, styles);
 export default ChatScreen;

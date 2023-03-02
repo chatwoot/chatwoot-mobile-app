@@ -10,26 +10,23 @@ import ActionSheet from 'react-native-actions-sheet';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { TouchableOpacity, View } from 'react-native';
-import UserAvatar from 'components/UserAvatar';
+import { View, TouchableOpacity } from 'react-native';
 import { getTypingUsersText, getCustomerDetails } from 'helpers';
 import CustomText from 'components/Text';
-import {
-  unAssignConversation,
-  toggleConversationStatus,
-  muteConversation,
-  unmuteConversation,
-} from 'actions/conversation';
+import { selectConversationToggleStatus } from 'reducer/conversationSlice';
+import conversationActions from 'reducer/conversationSlice.action';
+import { UserAvatar, Pressable } from 'components';
 import { getInboxName } from 'helpers';
 import ConversationAction from '../../ConversationAction/ConversationAction';
-import { captureEvent } from '../../../helpers/Analytics';
 import Banner from 'src/screens/ChatScreen/components/Banner';
 import InboxName from 'src/screens/ChatScreen/components/InboxName';
 import TypingStatus from 'src/screens/ChatScreen/components/UserTypingStatus';
 import i18n from 'i18n';
-
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import { INBOX_ICON } from 'src/constants/index';
-
+import { inboxesSelector } from 'reducer/inboxSlice';
+import { selectUserId } from 'reducer/authSlice';
 const styles = theme => ({
   headerView: {
     flexDirection: 'row',
@@ -56,10 +53,11 @@ const styles = theme => ({
   },
   actionIcon: {
     flexDirection: 'row',
-    alignItems: 'center',
   },
   loadingSpinner: {
-    marginRight: 8,
+    marginTop: 2,
+    marginRight: 4,
+    padding: 4,
   },
   inboxNameTypingWrap: {
     flexDirection: 'row',
@@ -69,15 +67,13 @@ const styles = theme => ({
     marginTop: 2,
     marginLeft: 4,
   },
+  statusView: {
+    padding: 4,
+  },
+  backButtonView: {
+    padding: 2,
+  },
 });
-
-const BackIcon = style => <Icon {...style} name="arrow-back-outline" height={40} width={24} />;
-
-const MenuIcon = style => {
-  return <Icon {...style} name="more-vertical" height={40} width={20} />;
-};
-
-const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
 
 const propTypes = {
   eva: PropTypes.shape({
@@ -104,33 +100,62 @@ const ChatHeader = ({
   const navigation = useNavigation();
   const actionSheetRef = createRef();
   const dispatch = useDispatch();
+  const conversationToggleStatus = useSelector(selectConversationToggleStatus);
+  const userId = useSelector(selectUserId);
 
   const showActionSheet = () => {
     actionSheetRef.current?.setModalVisible();
   };
 
-  const inboxes = useSelector(state => state.inbox.data);
+  const inboxes = useSelector(inboxesSelector.selectAll);
   const inboxId = conversationDetails && conversationDetails.inbox_id;
+  const inboxDetails = inboxes ? inboxes.find(inbox => inbox.id === inboxId) : {};
   const channelType =
     conversationDetails && conversationDetails.meta && conversationDetails.meta.channel;
 
-  const conversation = useSelector(state => state.conversation);
-  const { isChangingConversationStatus } = conversation;
+  const {
+    meta: {
+      sender: { availability_status: availabilityStatus },
+    },
+    additional_attributes: additionalAttributes = {},
+  } = conversationDetails;
 
   const ResolveIcon = () => {
     return (
-      <Icon
-        fill={theme['color-success-500']}
-        name="checkmark-circle-outline"
-        height={40}
-        width={20}
-      />
+      <TouchableOpacity style={style.statusView} onPress={toggleStatusForConversations}>
+        <Icon
+          fill={theme['color-success-500']}
+          name="checkmark-circle-outline"
+          height={24}
+          width={24}
+        />
+      </TouchableOpacity>
     );
   };
 
   const ReopenIcon = () => {
-    return <Icon fill={theme['color-warning-600']} name="undo-outline" height={40} width={20} />;
+    return (
+      <TouchableOpacity style={style.statusView} onPress={toggleStatusForConversations}>
+        <Icon fill={theme['color-warning-600']} name="undo-outline" height={24} width={24} />
+      </TouchableOpacity>
+    );
   };
+
+  const MenuIcon = () => {
+    return (
+      <TouchableOpacity style={style.statusView} onPress={showActionSheet}>
+        <Icon fill={theme['color-black-900']} name="more-vertical" height={24} width={24} />
+      </TouchableOpacity>
+    );
+  };
+
+  const BackIcon = () => (
+    <TouchableOpacity style={style.backButtonView} onPress={onBackPress}>
+      <Icon fill={theme['color-black-900']} name="arrow-ios-back-outline" height={24} width={24} />
+    </TouchableOpacity>
+  );
+
+  const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
 
   const renderLeftControl = () => <BackAction onPress={onBackPress} />;
   const renderRightControl = () => {
@@ -140,12 +165,12 @@ const ChatHeader = ({
       const resolvedConversation = status === 'resolved';
       return (
         <View style={style.actionIcon}>
-          {isChangingConversationStatus ? (
+          {conversationToggleStatus ? (
             <View style={style.loadingSpinner}>
               <Spinner size="small" />
             </View>
           ) : (
-            <View>
+            <React.Fragment>
               {openConversation && (
                 <TopNavigationAction
                   style={style.resolveIcon}
@@ -156,7 +181,7 @@ const ChatHeader = ({
               {resolvedConversation && (
                 <TopNavigationAction onPress={toggleStatusForConversations} icon={ReopenIcon} />
               )}
-            </View>
+            </React.Fragment>
           )}
           <TopNavigationAction onPress={showActionSheet} icon={MenuIcon} />
         </View>
@@ -175,15 +200,26 @@ const ChatHeader = ({
 
   const onPressAction = ({ itemType }) => {
     actionSheetRef.current?.hide();
+    if (itemType === 'self_assign') {
+      if (conversationDetails) {
+        AnalyticsHelper.track(CONVERSATION_EVENTS.SELF_ASSIGN_CONVERSATION);
+        dispatch(
+          conversationActions.assignConversation({
+            conversationId: conversationDetails.id,
+            assigneeId: userId,
+          }),
+        );
+      }
+    }
     if (itemType === 'assignee') {
       if (conversationDetails) {
         navigation.navigate('AgentScreen', { conversationDetails });
       }
     }
     if (itemType === 'unassign') {
-      captureEvent({ eventName: 'Toggle conversation status' });
+      AnalyticsHelper.track(CONVERSATION_EVENTS.UNASSIGN_CONVERSATION);
       dispatch(
-        unAssignConversation({
+        conversationActions.assignConversation({
           conversationId: conversationDetails.id,
           assigneeId: 0,
         }),
@@ -202,21 +238,23 @@ const ChatHeader = ({
     if (itemType === 'mute_conversation') {
       const { muted } = conversationDetails;
       if (!muted) {
-        dispatch(muteConversation({ conversationId }));
+        AnalyticsHelper.track(CONVERSATION_EVENTS.MUTE_CONVERSATION);
+        dispatch(conversationActions.muteConversation({ conversationId }));
       }
     }
     if (itemType === 'unmute_conversation') {
+      AnalyticsHelper.track(CONVERSATION_EVENTS.UN_MUTE_CONVERSATION);
       const { muted } = conversationDetails;
       if (muted) {
-        dispatch(unmuteConversation({ conversationId }));
+        dispatch(conversationActions.unmuteConversation({ conversationId }));
       }
     }
   };
 
   const toggleStatusForConversations = () => {
     try {
-      captureEvent({ eventName: 'Toggle conversation status' });
-      dispatch(toggleConversationStatus({ conversationId }));
+      AnalyticsHelper.track(CONVERSATION_EVENTS.TOGGLE_STATUS);
+      dispatch(conversationActions.toggleConversationStatus({ conversationId }));
     } catch (error) {}
   };
 
@@ -231,19 +269,17 @@ const ChatHeader = ({
       <TopNavigation
         style={style.chatHeader}
         title={() => (
-          <TouchableOpacity
-            style={style.headerView}
-            onPress={showConversationDetails}
-            activeOpacity={0.5}>
+          <Pressable style={style.headerView} onPress={showConversationDetails}>
             {customerDetails.name && (
               <UserAvatar
-                style={style.avatarView}
-                userName={customerDetails.name}
-                size={40}
-                fontSize={14}
                 thumbnail={customerDetails.thumbnail}
-                defaultBGColor={theme['color-primary-default']}
+                userName={customerDetails.name}
+                size={42}
+                fontSize={14}
                 channel={customerDetails.channel}
+                inboxInfo={inboxDetails}
+                chatAdditionalInfo={additionalAttributes}
+                availabilityStatus={availabilityStatus !== 'offline' ? availabilityStatus : ''}
               />
             )}
 
@@ -269,7 +305,7 @@ const ChatHeader = ({
                 )}
               </View>
             </View>
-          </TouchableOpacity>
+          </Pressable>
         )}
         accessoryLeft={renderLeftControl}
         accessoryRight={renderRightControl}

@@ -1,14 +1,14 @@
 import React, { useMemo, useEffect, useCallback, useState, useRef } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { clearAllDeliveredNotifications } from 'helpers/PushHelper';
 import { useSelector, useDispatch } from 'react-redux';
 import { View, ScrollView, AppState } from 'react-native';
-import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { useFocusEffect } from '@react-navigation/native';
+
 import { getInboxIconByType } from 'helpers/inboxHelpers';
 import ActionCable from 'helpers/ActionCable';
 import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
+import { clearAllDeliveredNotifications } from 'helpers/PushHelper';
 import {
   selectConversationStatus,
   selectAssigneeType,
@@ -21,7 +21,7 @@ import {
 import conversationActions from 'reducer/conversationSlice.action';
 import createStyles from './ConversationScreen.style';
 import i18n from 'i18n';
-import { FilterButton, ClearFilterButton, Header } from 'components';
+import { FilterButton, ClearFilterButton, Header, BottomSheetModal } from 'components';
 import { ConversationList, ConversationFilter, ConversationInboxFilter } from './components';
 import { CONVERSATION_STATUSES, ASSIGNEE_TYPES } from 'constants';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
@@ -58,13 +58,13 @@ const ConversationScreen = () => {
     initActionCable();
     dispatch(clearAllConversations());
     dispatch(inboxActions.fetchInboxes());
-    dispatch(notificationActions.index({ pageNo: 1 }));
     initAnalytics();
     checkAppVersion();
     initPushNotifications();
   }, [dispatch, initActionCable, initAnalytics, initPushNotifications, checkAppVersion]);
 
   const initPushNotifications = useCallback(async () => {
+    dispatch(notificationActions.index({ pageNo: 1 }));
     dispatch(notificationActions.saveDeviceDetails());
     clearAllDeliveredNotifications();
   }, [dispatch]);
@@ -82,7 +82,7 @@ const ConversationScreen = () => {
     const { accountId, userId } = await getUserDetails();
     ActionCable.init({ pubSubToken, webSocketUrl, accountId, userId });
   }, [webSocketUrl]);
-
+  // Update conversations when app comes to foreground from background
   useEffect(() => {
     const appStateListener = AppState.addEventListener('change', nextAppState => {
       if (appState === 'background' && nextAppState === 'active') {

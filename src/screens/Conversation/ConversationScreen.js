@@ -35,7 +35,10 @@ import {
 } from 'reducer/settingsSlice';
 import { actions as notificationActions } from 'reducer/notificationSlice';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
-import { SCREENS } from 'src/router';
+import { SCREENS } from 'constants';
+
+// The screen list thats need to be checked for refresh conversation list
+const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.NOTIFICATION, SCREENS.SETTINGS];
 
 const ConversationScreen = () => {
   const [appState, setAppState] = useState(AppState.currentState);
@@ -87,7 +90,7 @@ const ConversationScreen = () => {
     const appStateListener = AppState.addEventListener('change', nextAppState => {
       if (appState === 'background' && nextAppState === 'active') {
         const routeName = getCurrentRouteName();
-        if (routeName === SCREENS.CONVERSATION) {
+        if (REFRESH_SCREEN_LIST.includes(routeName)) {
           loadConversations({
             page: pageNumber,
             assignee: assigneeType,

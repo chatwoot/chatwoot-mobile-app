@@ -39,16 +39,6 @@ import { selectUrlSet, selectInstallationUrl, selectLocale } from 'reducer/setti
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-export const SCREENS = {
-  LOGIN: 'Login',
-  CONFIG_URL: 'ConfigureURL',
-  CONVERSATION: 'ConversationScreen',
-  NOTIFICATION: 'Notification',
-  SETTING: 'Setting',
-  DETAIL: 'Detail',
-  CHAT: 'ChatScreen',
-};
-
 const HomeStack = () => (
   <Stack.Navigator initialRouteName="ConversationScreen" screenOptions={{ headerShown: false }}>
     <Stack.Screen name="ConversationScreen" component={ConversationScreen} />

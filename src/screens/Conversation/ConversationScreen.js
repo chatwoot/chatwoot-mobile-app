@@ -21,7 +21,8 @@ import {
 import conversationActions from 'reducer/conversationSlice.action';
 import createStyles from './ConversationScreen.style';
 import i18n from 'i18n';
-import { FilterButton, ClearFilterButton, Header, BottomSheetModal } from 'components';
+import { FilterButton, ClearFilterButton, Header } from 'components';
+import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { ConversationList, ConversationFilter, ConversationInboxFilter } from './components';
 import { CONVERSATION_STATUSES, ASSIGNEE_TYPES } from 'constants';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';

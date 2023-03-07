@@ -7,7 +7,6 @@ import UserAvatar from './UserAvatar/UserAvatar';
 import BottomSheetModalHeader from './BottomSheet/BottomSheetHeader';
 import FilterButton from './FilterButton/FilterButton';
 import ClearFilterButton from './FilterButton/ClearFilterButton';
-import BottomSheetModal from './BottomSheet/BottomSheet';
 
 export {
   Text,
@@ -19,5 +18,4 @@ export {
   FilterButton,
   ClearFilterButton,
   UserAvatar,
-  BottomSheetModal,
 };

@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { Icon, Pressable } from 'components';
 
@@ -49,13 +48,11 @@ const SocialProfileIcons = ({ type, value, iconName }) => {
 
   return (
     <React.Fragment>
-      <TouchableOpacity>
-        <View style={styles.container}>
-          <Pressable style={styles.socialIconWrap} onPress={() => openURL({ URL: url })}>
-            <Icon icon={iconName} color={colors.textDark} size={16} />
-          </Pressable>
-        </View>
-      </TouchableOpacity>
+      <View style={styles.container}>
+        <Pressable style={styles.socialIconWrap} onPress={() => openURL({ URL: url })}>
+          <Icon icon={iconName} color={colors.textDark} size={16} />
+        </Pressable>
+      </View>
     </React.Fragment>
   );
 };

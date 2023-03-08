@@ -61,10 +61,10 @@ const UserInformation = ({ status, thumbnail, name, email }) => {
       </View>
       <Pressable style={styles.profileDetailsView}>
         <View style={styles.nameView}>
-          <Text bold xl color={colors.text} style={styles.nameText}>
+          <Text bold xl color={colors.textDark} style={styles.nameText}>
             {name}
           </Text>
-          <Text medium sm color={colors.textLight} style={styles.emailText}>
+          <Text medium sm color={colors.text} style={styles.emailText}>
             {email}
           </Text>
         </View>

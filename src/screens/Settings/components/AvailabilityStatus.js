@@ -97,7 +97,7 @@ const AvailabilityStatus = ({ status }) => {
           <View>
             <Icon icon="circle-filled" color={item.color} size={14} />
           </View>
-          <Text medium sm color={colors.text} style={styles.statusText}>
+          <Text medium sm color={colors.textDark} style={styles.statusText}>
             {item.status}
           </Text>
         </Pressable>

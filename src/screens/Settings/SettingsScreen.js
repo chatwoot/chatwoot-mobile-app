@@ -167,7 +167,7 @@ const SettingsScreen = () => {
         />
         <View style={styles.separatorView}>
           <View style={styles.separator}>
-            <Text bold sm color={colors.text}>
+            <Text bold sm color={colors.textDark}>
               {i18n.t('SETTINGS.SET_AVAILABILITY')}
             </Text>
           </View>
@@ -175,7 +175,7 @@ const SettingsScreen = () => {
         </View>
         <View style={styles.separatorView}>
           <View style={styles.separator}>
-            <Text bold sm color={colors.text}>
+            <Text bold sm color={colors.textDark}>
               {i18n.t('SETTINGS.PREFERENCES')}
             </Text>
           </View>
@@ -237,7 +237,7 @@ const SettingsScreen = () => {
         </View>
         <View style={styles.separatorView}>
           <View style={styles.separator}>
-            <Text bold sm color={colors.text}>
+            <Text bold sm color={colors.textDark}>
               {i18n.t('SETTINGS.SUPPORT')}
             </Text>
           </View>
@@ -264,7 +264,7 @@ const SettingsScreen = () => {
         </View>
         <View style={styles.separatorView}>
           <View style={styles.separator}>
-            <Text bold sm color={colors.text}>
+            <Text bold sm color={colors.textDark}>
               {i18n.t('SETTINGS.ABOUT')}
             </Text>
           </View>

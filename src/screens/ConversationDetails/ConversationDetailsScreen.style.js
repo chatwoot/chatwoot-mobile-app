@@ -1,65 +1,55 @@
-const styles = theme => ({
-  container: {
-    flex: 1,
-    backgroundColor: theme['background-basic-color-1'],
-  },
+import { StyleSheet } from 'react-native';
 
-  wrapper: {
-    paddingHorizontal: 20,
-  },
+export default theme => {
+  const { colors, spacing } = theme;
 
-  avatarContainer: {
-    flexDirection: 'row',
-    paddingVertical: 8,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
 
-  userNameContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
+    avatarContainer: {
+      paddingTop: spacing.smaller,
+      paddingBottom: spacing.small,
+    },
 
-  descriptionContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingVertical: 8,
-  },
+    detailsWrap: {
+      paddingBottom: spacing.small,
+      paddingLeft: spacing.small,
+      paddingRight: spacing.small,
+    },
 
-  description: {
-    fontSize: theme['font-size-small'],
-    color: theme['text-light-color'],
-    lineHeight: 20,
-  },
+    descriptionContainer: {
+      paddingVertical: spacing.micro,
+    },
 
-  socialIconsContainer: {
-    flexDirection: 'row',
-  },
+    description: {
+      lineHeight: 20,
+    },
 
-  separationView: {
-    padding: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: theme['color-border'],
-  },
+    socialIconsContainer: {
+      flexDirection: 'row',
+    },
 
-  separationViewLabels: {
-    padding: 6,
-    borderBottomWidth: 1,
-    borderBottomColor: theme['color-border'],
-  },
+    separator: {
+      backgroundColor: colors.backgroundLight,
+      width: '100%',
+      paddingVertical: spacing.smaller,
+      paddingLeft: spacing.small,
+    },
 
-  nameLabel: {
-    textTransform: 'capitalize',
-    fontWeight: theme['font-semi-bold'],
-    fontSize: theme['font-size-large'],
-  },
+    separatorView: {
+      width: '100%',
+    },
 
-  itemListViewTitle: {
-    paddingTop: 12,
-    fontWeight: theme['font-semi-bold'],
-  },
-});
-
-export default styles;
+    accordionItemWrapper: {
+      flexDirection: 'column',
+      paddingTop: spacing.small,
+      paddingBottom: 10,
+      paddingLeft: spacing.small,
+      paddingRight: spacing.small,
+      width: '100%',
+    },
+  });
+};

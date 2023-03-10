@@ -19,7 +19,6 @@ import { useEffect } from 'react';
 import {
   notificationSelector,
   selectIsFetching,
-  selectUnreadCount,
   selectAllNotificationsLoaded,
   actions as notificationsActions,
 } from 'reducer/notificationSlice';
@@ -36,7 +35,6 @@ const wait = timeout => {
 
 const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
   const allNotifications = useSelector(notificationSelector.selectAll);
-  const unReadCount = useSelector(selectUnreadCount);
   const isFetching = useSelector(selectIsFetching);
   const isAllNotificationsLoaded = useSelector(selectAllNotificationsLoaded);
 
@@ -193,7 +191,6 @@ const propTypes = {
   isAllNotificationsLoaded: PropTypes.bool,
   getAllNotifications: PropTypes.func,
   markAllNotificationAsRead: PropTypes.func,
-  unReadCount: PropTypes.number,
   markNotificationAsRead: PropTypes.func,
 };
 

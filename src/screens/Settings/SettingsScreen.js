@@ -227,7 +227,6 @@ const SettingsScreen = () => {
             closeFilter={closeChangeLanguageModal}
             children={
               <LanguageSelector
-                accounts={accounts}
                 activeValue={activeLocale}
                 colors={colors}
                 onPress={onChangeLanguage}

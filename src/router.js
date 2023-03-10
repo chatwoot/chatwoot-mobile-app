@@ -16,7 +16,6 @@ import TabBar from './components/TabBar';
 import ConversationScreen from './screens/Conversation/ConversationScreen';
 import NotificationScreen from './screens/Notification/NotificationScreen';
 import SettingsScreen from './screens/Settings/SettingsScreen';
-import LanguageScreen from './screens/Language/LanguageScreen';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
@@ -188,7 +187,6 @@ const App = ({ eva: { style } }) => {
                   <Stack.Screen name="Tab" component={TabStack} />
                   <Stack.Screen name="ChatScreen" component={ChatScreen} />
                   <Stack.Screen name="ImageScreen" component={ImageScreen} />
-                  <Stack.Screen name="Language" component={LanguageScreen} />
                   <Stack.Screen name="Account" component={AccountScreen} />
                   <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
                   <Stack.Screen name="ConversationAction" component={ConversationAction} />
@@ -203,7 +201,6 @@ const App = ({ eva: { style } }) => {
                   <Stack.Screen name="ConfigureURL" component={ConfigureURLScreen} />
                   <Stack.Screen name="Login" component={LoginScreen} />
                   <Stack.Screen name="ResetPassword" component={ResetPassword} />
-                  <Stack.Screen name="Language" component={LanguageScreen} />
                 </Fragment>
               )}
             </Stack.Navigator>

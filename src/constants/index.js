@@ -1,5 +1,15 @@
 import images from './images';
 
+export const SCREENS = {
+  LOGIN: 'Login',
+  CONFIG_URL: 'ConfigureURL',
+  CONVERSATION: 'ConversationScreen',
+  NOTIFICATION: 'Notification',
+  SETTINGS: 'Settings',
+  DETAIL: 'Detail',
+  CHAT: 'ChatScreen',
+};
+
 export const MAXIMUM_FILE_UPLOAD_SIZE = 40;
 
 export const CONVERSATION_STATUSES = [

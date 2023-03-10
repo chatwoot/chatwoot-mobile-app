@@ -1,14 +1,14 @@
 import React, { useMemo, useEffect, useCallback, useState, useRef } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { clearAllDeliveredNotifications } from 'helpers/PushHelper';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, ScrollView } from 'react-native';
-import BottomSheetModal from 'components/BottomSheet/BottomSheet';
+import { View, ScrollView, AppState } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+
 import { getInboxIconByType } from 'helpers/inboxHelpers';
 import ActionCable from 'helpers/ActionCable';
 import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
+import { clearAllDeliveredNotifications } from 'helpers/PushHelper';
 import {
   selectConversationStatus,
   selectAssigneeType,
@@ -22,6 +22,7 @@ import conversationActions from 'reducer/conversationSlice.action';
 import createStyles from './ConversationScreen.style';
 import i18n from 'i18n';
 import { FilterButton, ClearFilterButton, Header } from 'components';
+import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { ConversationList, ConversationFilter, ConversationInboxFilter } from './components';
 import { CONVERSATION_STATUSES, ASSIGNEE_TYPES } from 'constants';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
@@ -34,8 +35,14 @@ import {
   actions as settingsActions,
 } from 'reducer/settingsSlice';
 import { actions as notificationActions } from 'reducer/notificationSlice';
+import { getCurrentRouteName } from 'helpers/NavigationHelper';
+import { SCREENS } from 'constants';
+
+// The screen list thats need to be checked for refresh conversation list
+const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.NOTIFICATION, SCREENS.SETTINGS];
 
 const ConversationScreen = () => {
+  const [appState, setAppState] = useState(AppState.currentState);
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -55,13 +62,13 @@ const ConversationScreen = () => {
     initActionCable();
     dispatch(clearAllConversations());
     dispatch(inboxActions.fetchInboxes());
-    dispatch(notificationActions.index({ pageNo: 1 }));
     initAnalytics();
     checkAppVersion();
     initPushNotifications();
   }, [dispatch, initActionCable, initAnalytics, initPushNotifications, checkAppVersion]);
 
   const initPushNotifications = useCallback(async () => {
+    dispatch(notificationActions.index({ pageNo: 1 }));
     dispatch(notificationActions.saveDeviceDetails());
     clearAllDeliveredNotifications();
   }, [dispatch]);
@@ -79,6 +86,26 @@ const ConversationScreen = () => {
     const { accountId, userId } = await getUserDetails();
     ActionCable.init({ pubSubToken, webSocketUrl, accountId, userId });
   }, [webSocketUrl]);
+  // Update conversations when app comes to foreground from background
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener('change', nextAppState => {
+      if (appState === 'background' && nextAppState === 'active') {
+        const routeName = getCurrentRouteName();
+        if (REFRESH_SCREEN_LIST.includes(routeName)) {
+          loadConversations({
+            page: pageNumber,
+            assignee: assigneeType,
+            status: conversationStatus,
+            inboxId: activeInboxId,
+          });
+        }
+      }
+      setAppState(nextAppState);
+    });
+    return () => {
+      appStateListener?.remove();
+    };
+  }, [appState, pageNumber, assigneeType, conversationStatus, activeInboxId, loadConversations]);
 
   const onChangePage = async () => {
     setPage(pageNumber + 1);

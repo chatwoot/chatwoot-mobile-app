@@ -20,6 +20,10 @@ const LockIcon = style => {
   return <Icon {...style} name="lock" />;
 };
 
+const ReadIcon = style => {
+  return <Icon {...style} name="done-all-outline" />;
+};
+
 const styles = theme => ({
   message: {
     paddingLeft: 16,
@@ -395,6 +399,14 @@ const ChatMessageItemComponent = ({
     time: external_created_at || created_at,
     dateFormat: 'LLL d, h:mm a',
   });
+
+  const showStatusIndicators = () => {
+    const isTemplate = message.template === 3;
+    if ((type === 'outgoing' || isTemplate) && !message.private) {
+      return true;
+    }
+    return false;
+  };
   const isMessageContentExist = emailMessageContent() || message.content;
 
   return (
@@ -429,6 +441,15 @@ const ChatMessageItemComponent = ({
           {isPrivate && (
             <View style={style.iconView}>
               <LockIcon style={style.icon} fill={theme['text-basic-color']} />
+            </View>
+          )}
+          {showStatusIndicators() && (
+            <View
+              style={{
+                paddingTop: 2,
+                paddingRight: 2,
+              }}>
+              <ReadIcon style={style.icon} fill={theme['color-white']} />
             </View>
           )}
         </View>

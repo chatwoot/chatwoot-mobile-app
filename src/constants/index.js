@@ -60,6 +60,8 @@ export const MESSAGE_STATUS = {
   FAILED: 'failed',
   SENT: 'sent',
   PROGRESS: 'progress',
+  DELIVERED: 'delivered',
+  READ: 'read',
 };
 
 export const ASSIGNEE_TYPE = {

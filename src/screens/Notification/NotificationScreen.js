@@ -6,12 +6,12 @@ import { SafeAreaView, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import ActionSheet from 'react-native-actions-sheet';
 import i18n from 'i18n';
+import { Header } from 'components';
 
 import styles from './NotificationScreen.style';
 import NotificationItem from '../../components/NotificationItem';
 import CustomText from '../../components/Text';
 import NotificationItemLoader from '../../components/NotificationItemLoader';
-import HeaderBar from '../../components/HeaderBar';
 import images from '../../constants/images';
 import Empty from '../../components/Empty';
 import NotificationActionItem from '../../components/NotificationActionItem';
@@ -19,7 +19,6 @@ import { useEffect } from 'react';
 import {
   notificationSelector,
   selectIsFetching,
-  selectUnreadCount,
   selectAllNotificationsLoaded,
   actions as notificationsActions,
 } from 'reducer/notificationSlice';
@@ -36,7 +35,6 @@ const wait = timeout => {
 
 const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
   const allNotifications = useSelector(notificationSelector.selectAll);
-  const unReadCount = useSelector(selectUnreadCount);
   const isFetching = useSelector(selectIsFetching);
   const isAllNotificationsLoaded = useSelector(selectAllNotificationsLoaded);
 
@@ -127,11 +125,10 @@ const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
 
   return (
     <SafeAreaView style={style.container}>
-      <HeaderBar
-        title={i18n.t('NOTIFICATION.HEADER_TITLE')}
-        {...(notifications.length && unReadCount && { showRightButton: true })}
-        onRightPress={showActionSheet}
-        buttonType="more"
+      <Header
+        headerText={i18n.t('NOTIFICATION.HEADER_TITLE')}
+        rightIcon="more-horizontal"
+        onPressRight={showActionSheet}
       />
       <View style={style.container}>
         {!isFetching || notifications.length ? (
@@ -194,7 +191,6 @@ const propTypes = {
   isAllNotificationsLoaded: PropTypes.bool,
   getAllNotifications: PropTypes.func,
   markAllNotificationAsRead: PropTypes.func,
-  unReadCount: PropTypes.number,
   markNotificationAsRead: PropTypes.func,
 };
 

@@ -10,8 +10,8 @@ const createStyles = theme => {
   const { spacing, colors } = theme;
   return StyleSheet.create({
     headerContainer: {
-      paddingHorizontal: spacing.small,
-      paddingVertical: spacing.small,
+      paddingHorizontal: spacing.half,
+      paddingVertical: spacing.half,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -23,11 +23,19 @@ const createStyles = theme => {
       alignItems: 'center',
     },
     headerCenter: {
+      padding: spacing.micro,
       flexDirection: 'row',
       alignItems: 'center',
     },
     headerLeftIcon: {
-      marginRight: 16,
+      marginRight: spacing.small,
+      padding: spacing.micro,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    headerRightIcon: {
+      marginLeft: spacing.small,
+      padding: spacing.micro,
       flexDirection: 'row',
       alignItems: 'center',
     },
@@ -82,7 +90,7 @@ const Header = ({ leftIcon, rightIcon, loading, headerText, onPressLeft, onPress
         </View>
       </View>
       {rightIcon ? (
-        <Pressable onPress={onPressRight}>
+        <Pressable style={styles.headerRightIcon} onPress={onPressRight}>
           <Icon icon={rightIcon} color={colors.textDark} size={20} />
         </Pressable>
       ) : null}

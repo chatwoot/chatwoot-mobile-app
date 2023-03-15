@@ -24,12 +24,6 @@ const preferencesSections = [
   //   rightIcon: 'arrow-chevron-right-outline',
   //   routeName: 'ChangeAppearance',
   // },
-  {
-    leftIcon: 'power-outline',
-    title: 'Logout',
-    rightIcon: '',
-    routeName: 'Logout',
-  },
 ];
 
 const supportSection = [

@@ -26,7 +26,7 @@ const BottomSheetModal = ({
         enableTouchThrough={false}
         pressBehavior={'close'}
         opacity={0.6}
-        disappearsOnIndex={0} // this should be changed to -1 when the memory leak bug is fixed
+        disappearsOnIndex={-1}
         appearsOnIndex={1}
       />
     ),

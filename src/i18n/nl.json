@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "Instellingen",
-    "AVAILABILITY": "Beschikbaarheid",
-    "NOTIFICATION": "Notificatie voorkeuren",
-    "HELP": "Helpdocumentatie",
-    "CHAT_WITH_US": "Chat met ons",
-    "LOG_OUT": "Afmelden",
+    "SET_AVAILABILITY": "Set your self as",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Switch account",
     "CHANGE_LANGUAGE": "Wijzig taal",
+    "LOGOUT": "Afmelden",
     "SUBMIT": "Bevestigen"
   },
   "NOTIFICATION": {

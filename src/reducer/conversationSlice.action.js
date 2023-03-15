@@ -237,6 +237,21 @@ const actions = {
         .catch();
     },
   ),
+  updateConversationAndMessages: createAsyncThunk(
+    'conversations/updateConversationAndMessages',
+    async ({ conversationId }, { rejectWithValue }) => {
+      try {
+        const response = await axios.get(`conversations/${conversationId}`);
+        const { data } = response;
+        return { data, conversationId };
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
 };
 
 export default actions;

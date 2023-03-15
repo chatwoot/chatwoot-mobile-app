@@ -16,6 +16,8 @@ export default theme => {
     },
     separator: {
       backgroundColor: colors.backgroundLight,
+      borderWidth: 0.4,
+      borderColor: colors.borderLight,
       width: '100%',
       paddingVertical: spacing.smaller,
       paddingLeft: spacing.small,

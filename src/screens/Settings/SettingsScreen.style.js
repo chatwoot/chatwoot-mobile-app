@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 const deviceWidth = Dimensions.get('window').width;
 
 export default theme => {
-  const { colors, spacing } = theme;
+  const { colors, borderRadius, spacing } = theme;
 
   return StyleSheet.create({
     container: {
@@ -29,15 +29,14 @@ export default theme => {
       width: '100%',
     },
     aboutView: {
-      paddingLeft: spacing.small,
-      paddingRight: spacing.small,
+      paddingHorizontal: spacing.small,
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: 'column',
     },
     aboutImage: {
       width: deviceWidth * 0.8,
-      height: deviceWidth * 0.16,
+      height: deviceWidth * 0.134,
       aspectRatio: 2,
       resizeMode: 'contain',
     },
@@ -48,6 +47,24 @@ export default theme => {
     },
     bottomSheet: {
       padding: spacing.small,
+    },
+    logoutSection: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      paddingVertical: spacing.medium,
+    },
+    logoutButton: {
+      flexDirection: 'row',
+      paddingVertical: spacing.smaller,
+      paddingHorizontal: spacing.half,
+      borderRadius: borderRadius.small,
+      borderColor: colors.border,
+      borderWidth: 1,
+    },
+    logoutText: {
+      marginLeft: spacing.micro,
     },
   });
 };

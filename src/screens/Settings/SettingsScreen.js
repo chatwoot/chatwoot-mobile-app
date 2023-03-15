@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import DeviceInfo from 'react-native-device-info';
 import ChatWootWidget from '@chatwoot/react-native-widget';
 import { View, Image } from 'react-native';
-import { Header, Text } from 'components';
+import { Header, Text, Pressable, Icon } from 'components';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { useFocusEffect } from '@react-navigation/native';
 import UserInformation from './components/UserInformation';
@@ -155,6 +155,11 @@ const SettingsScreen = () => {
     }
   };
 
+  const onClickLogout = useCallback(async () => {
+    await AsyncStorage.removeItem('cwCookie');
+    dispatch(logout());
+  }, [dispatch]);
+
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <Header headerText={i18n.t('SETTINGS.HEADER_TITLE')} />
@@ -197,10 +202,6 @@ const SettingsScreen = () => {
                   }
                   if (item.routeName === 'ChangeLanguage') {
                     toggleChangeLanguageModal();
-                  }
-                  if (item.routeName === 'Logout') {
-                    await AsyncStorage.removeItem('cwCookie');
-                    dispatch(logout());
                   }
                 }}
               />
@@ -262,21 +263,22 @@ const SettingsScreen = () => {
           </View>
         </View>
         <View style={styles.separatorView}>
-          <View style={styles.separator}>
-            <Text bold sm color={colors.textDark}>
-              {i18n.t('SETTINGS.ABOUT')}
+          <View style={styles.aboutView}>
+            <Image style={styles.aboutImage} source={images.appLogo} />
+          </View>
+          <View style={styles.appDescriptionView}>
+            <Text color={colors.textLight} xs medium style={styles.appDescriptionText}>
+              {`Version ${packageFile.version}`}
             </Text>
           </View>
-          <View style={styles.accordionItemWrapper}>
-            <View style={styles.aboutView}>
-              <Image style={styles.aboutImage} source={images.appLogo} />
-            </View>
-            <View style={styles.appDescriptionView}>
-              <Text color={colors.textLight} xs medium style={styles.appDescriptionText}>
-                {`Version ${packageFile.version}`}
-              </Text>
-            </View>
-          </View>
+        </View>
+        <View style={styles.logoutSection}>
+          <Pressable style={styles.logoutButton} onPress={onClickLogout}>
+            <Icon icon="power-outline" color={colors.textDark} size={16} />
+            <Text semiBold sm color={colors.textDark} style={styles.logoutText}>
+              {i18n.t('SETTINGS.LOGOUT')}
+            </Text>
+          </Pressable>
         </View>
         {!!Config.CHATWOOT_WEBSITE_TOKEN && !!Config.CHATWOOT_BASE_URL && !!showWidget && (
           <ChatWootWidget

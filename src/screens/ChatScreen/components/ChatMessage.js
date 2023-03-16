@@ -55,49 +55,21 @@ const styles = theme => ({
   },
 });
 
-const MessageContentComponent = ({ message, type, showAttachment, created_at, isEmailChannel }) => {
+const MessageContentComponent = ({ conversation, message, type, showAttachment, created_at }) => {
   return (
     <View>
       <ChatMessageItem
+        conversation={conversation}
         message={message}
         type={type}
         created_at={created_at}
         showAttachment={showAttachment}
-        isEmailChannel={isEmailChannel}
       />
     </View>
   );
 };
 
 const MessageContent = withStyles(MessageContentComponent, styles);
-
-const OutGoingMessageComponent = ({ message, created_at, showAttachment, isEmailChannel }) => (
-  <React.Fragment>
-    <MessageContent
-      message={message}
-      created_at={created_at}
-      type="outgoing"
-      showAttachment={showAttachment}
-      isEmailChannel={isEmailChannel}
-    />
-  </React.Fragment>
-);
-
-const OutGoingMessage = withStyles(OutGoingMessageComponent, styles);
-
-const IncomingMessageComponent = ({ message, created_at, showAttachment, isEmailChannel }) => (
-  <React.Fragment>
-    <MessageContent
-      message={message}
-      created_at={created_at}
-      type="incoming"
-      showAttachment={showAttachment}
-      isEmailChannel={isEmailChannel}
-    />
-  </React.Fragment>
-);
-
-const IncomingMessage = withStyles(IncomingMessageComponent, styles);
 
 const ActivityMessageComponent = ({ eva: { style }, message, created_at }) => (
   <View style={style.activityView}>
@@ -148,22 +120,22 @@ const ChatMessageComponent = ({ message, eva: { style }, showAttachment, convers
     <View style={[style.message, !shouldShowFullWidth ? { justifyContent: alignment } : null]}>
       <View style={[shouldShowFullWidth ? style.emailContainer : {}]}>
         {alignment === 'flex-start' ? (
-          <IncomingMessage
+          <MessageContent
+            conversation={conversation}
             message={message}
             created_at={created_at}
             type="incoming"
             showAttachment={showAttachment}
-            isEmailChannel={isEmailChannel}
           />
         ) : alignment === 'center' ? (
           <ActivityMessage message={message} created_at={created_at} type="activity" />
         ) : (
-          <OutGoingMessage
+          <MessageContent
+            conversation={conversation}
             message={message}
             created_at={created_at}
             type="outgoing"
             showAttachment={showAttachment}
-            isEmailChannel={isEmailChannel}
           />
         )}
       </View>

@@ -23,7 +23,6 @@ const styles = theme => ({
   labelWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 10,
   },
   labelViews: {
     flexDirection: 'row',

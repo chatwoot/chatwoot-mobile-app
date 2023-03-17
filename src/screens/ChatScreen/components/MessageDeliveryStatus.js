@@ -26,7 +26,7 @@ const propTypes = {
     template: PropTypes.number,
     private: PropTypes.bool,
     source_id: PropTypes.string,
-    created_at: PropTypes.string,
+    created_at: PropTypes.number,
     status: PropTypes.string,
   }),
   channel: PropTypes.string.isRequired,

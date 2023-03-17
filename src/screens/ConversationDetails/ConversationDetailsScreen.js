@@ -1,17 +1,12 @@
-import React, { useEffect } from 'react';
-import { withStyles } from '@ui-kitten/components';
+import React, { useEffect, useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native';
 import { View } from 'react-native';
-
-import UserAvatar from 'components/UserAvatar';
-import CustomText from 'components/Text';
 import i18n from 'i18n';
-
-import styles from './ConversationDetailsScreen.style';
-
-import HeaderBar from '../../components/HeaderBar';
+import { Text, UserAvatar, Header } from 'components';
+import createStyles from './ConversationDetailsScreen.style';
 import SocialProfileIcons from './components/SocialProfileIcons';
 import ContactDetails from './components/ContactDetails';
 import LabelView from 'src/screens/ConversationDetails/components/LabelView';
@@ -19,7 +14,10 @@ import ConversationAttributes from './components/ConversationAttributes';
 import ContactAttributes from './components/ContactAttributes';
 import { actions as customAttributeActions } from 'reducer/customAttributeSlice';
 
-const ConversationDetailsScreen = ({ eva: { style }, navigation, route }) => {
+const ConversationDetailsScreen = ({ navigation, route }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const dispatch = useDispatch();
 
   const onBackPress = () => {
@@ -39,6 +37,7 @@ const ConversationDetailsScreen = ({ eva: { style }, navigation, route }) => {
         name,
         thumbnail,
         email,
+        identifier,
         phone_number: phoneNumber,
         additional_attributes: senderAdditionalInfo = {},
       },
@@ -60,22 +59,22 @@ const ConversationDetailsScreen = ({ eva: { style }, navigation, route }) => {
     {
       key: 'facebook',
       value: facebook,
-      iconName: 'facebook-outline',
+      iconName: 'brand-facebook',
     },
     {
       key: 'twitter',
       value: twitter,
-      iconName: 'twitter-outline',
+      iconName: 'brand-twitter',
     },
     {
       key: 'linkedin',
       value: linkedin,
-      iconName: 'linkedin-outline',
+      iconName: 'brand-linkedin',
     },
     {
       key: 'github',
       value: github,
-      iconName: 'github-outline',
+      iconName: 'brand-github',
     },
   ];
 
@@ -89,17 +88,22 @@ const ConversationDetailsScreen = ({ eva: { style }, navigation, route }) => {
     {
       key: 'email',
       value: email,
-      iconName: 'email-outline',
+      iconName: 'mail-outline',
     },
     {
       key: 'phoneNumber',
       value: phoneNumber,
-      iconName: 'phone-call-outline',
+      iconName: 'call-outline',
+    },
+    {
+      key: 'identifier',
+      value: identifier,
+      iconName: 'contact-identify-outline',
     },
     {
       key: 'company',
       value: companyName,
-      iconName: 'home-outline',
+      iconName: 'building-bank-outline',
     },
     {
       key: 'location',
@@ -118,34 +122,43 @@ const ConversationDetailsScreen = ({ eva: { style }, navigation, route }) => {
     .filter(details => !!details);
 
   return (
-    <ScrollView style={style.container}>
-      <HeaderBar showLeftButton onBackPress={onBackPress} />
-      <View style={style.wrapper}>
-        <View style={style.avatarContainer}>
-          <UserAvatar
-            userName={name}
-            thumbnail={thumbnail}
-            size={76}
-            fontSize={30}
-            channel={channel}
-          />
-        </View>
-        <View style={style.userNameContainer}>
-          <CustomText style={style.nameLabel}>{name}</CustomText>
-        </View>
-        {senderAdditionalInfo.description ? (
-          <View style={style.descriptionContainer}>
-            <CustomText style={style.description}>{senderAdditionalInfo.description}</CustomText>
+    <ScrollView style={styles.container}>
+      <Header leftIcon="arrow-chevron-left-outline" onPressLeft={onBackPress} />
+      <View style={styles.wrapper}>
+        <View style={styles.detailsWrap}>
+          <View style={styles.avatarContainer}>
+            <UserAvatar
+              thumbnail={thumbnail}
+              userName={name}
+              size={76}
+              fontSize={30}
+              defaultBGColor={colors.primary}
+            />
           </View>
-        ) : null}
-        <View style={style.socialIconsContainer}>{getSocialProfileValue}</View>
-        <View>{getContactDetails}</View>
-        <View style={style.separationView} />
-        <View style={style.labelView}>
-          <CustomText style={style.itemListViewTitle}>
-            {i18n.t('CONVERSATION_LABELS.TITLE')}
-          </CustomText>
-          <LabelView conversationDetails={conversationDetails} conversationId={conversationId} />
+          <View>
+            <Text bold lg color={colors.textDark}>
+              {name}
+            </Text>
+          </View>
+          {senderAdditionalInfo.description ? (
+            <View style={styles.descriptionContainer}>
+              <Text regular sm color={colors.textDark} style={styles.description}>
+                {senderAdditionalInfo.description}
+              </Text>
+            </View>
+          ) : null}
+          <View style={styles.socialIconsContainer}>{getSocialProfileValue}</View>
+          <View>{getContactDetails}</View>
+        </View>
+        <View style={styles.separatorView}>
+          <View style={styles.separator}>
+            <Text bold sm color={colors.textDark}>
+              {i18n.t('CONVERSATION_LABELS.TITLE')}
+            </Text>
+          </View>
+          <View style={styles.accordionItemWrapper}>
+            <LabelView conversationDetails={conversationDetails} conversationId={conversationId} />
+          </View>
         </View>
         <ConversationAttributes conversationDetails={conversationDetails} />
         <ContactAttributes conversationDetails={conversationDetails} />
@@ -155,9 +168,6 @@ const ConversationDetailsScreen = ({ eva: { style }, navigation, route }) => {
 };
 
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-  }).isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
@@ -170,5 +180,4 @@ const propTypes = {
   theme: PropTypes.object,
 };
 ConversationDetailsScreen.propTypes = propTypes;
-const ConversationDetails = withStyles(ConversationDetailsScreen, styles);
-export default ConversationDetails;
+export default ConversationDetailsScreen;

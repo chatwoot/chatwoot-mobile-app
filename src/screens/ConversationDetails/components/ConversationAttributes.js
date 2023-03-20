@@ -1,85 +1,47 @@
-import React from 'react';
-import { withStyles } from '@ui-kitten/components';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Text } from 'components';
 import ConversationDetailsItem from '../../../components/ConversationDetailsItem';
-import CustomText from 'components/Text';
 import i18n from 'i18n';
 import { customAttributeSelector } from 'reducer/customAttributeSlice';
-const styles = theme => ({
-  container: {
-    flex: 1,
-    backgroundColor: theme['background-basic-color-1'],
-  },
 
-  wrapper: {
-    paddingHorizontal: 20,
-  },
+const createStyles = theme => {
+  const { colors, spacing } = theme;
 
-  avatarContainer: {
-    flexDirection: 'row',
-    paddingVertical: 8,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
+  return StyleSheet.create({
+    separator: {
+      backgroundColor: colors.backgroundLight,
+      width: '100%',
+      paddingVertical: spacing.smaller,
+      paddingLeft: spacing.small,
+    },
 
-  userNameContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
+    separatorView: {
+      width: '100%',
+    },
 
-  descriptionContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingVertical: 8,
-  },
-
-  description: {
-    fontSize: theme['font-size-small'],
-    color: theme['text-light-color'],
-    lineHeight: 20,
-  },
-
-  socialIconsContainer: {
-    flexDirection: 'row',
-  },
-
-  separationView: {
-    padding: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: theme['color-border'],
-  },
-
-  a: {
-    padding: 6,
-    borderBottomWidth: 1,
-    borderBottomColor: theme['color-border'],
-  },
-
-  nameLabel: {
-    textTransform: 'capitalize',
-    fontWeight: theme['font-semi-bold'],
-    fontSize: theme['font-size-large'],
-  },
-
-  itemListViewTitle: {
-    paddingTop: 12,
-    fontWeight: theme['font-semi-bold'],
-  },
-});
+    accordionItemWrapper: {
+      flexDirection: 'column',
+      paddingBottom: spacing.small,
+      paddingLeft: spacing.small,
+      paddingRight: spacing.small,
+      width: '100%',
+    },
+  });
+};
 
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   conversationDetails: PropTypes.object.isRequired,
 };
 
-const ConversationAttributes = ({ conversationDetails, eva: { style, theme } }) => {
+const ConversationAttributes = ({ conversationDetails }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
+
   const { additional_attributes: additionalAttributes } = conversationDetails;
   const attributes = useSelector(customAttributeSelector.selectAll);
   const { meta } = conversationDetails;
@@ -161,13 +123,16 @@ const ConversationAttributes = ({ conversationDetails, eva: { style, theme } }) 
     <View>
       {displayItems.length > 0 || conversationAttributesHasValue ? (
         <View>
-          <View style={style.separationViewLabels} />
-          <CustomText style={style.itemListViewTitle}>
-            {i18n.t('CONVERSATION_DETAILS.TITLE')}
-          </CustomText>
-          <View style={style.itemListView}>
-            {displayItems}
-            {getConversationAttributes()}
+          <View style={styles.separatorView}>
+            <View style={styles.separator}>
+              <Text bold sm color={colors.textDark}>
+                {i18n.t('CONVERSATION_DETAILS.TITLE')}
+              </Text>
+            </View>
+            <View style={styles.accordionItemWrapper}>
+              {displayItems}
+              {getConversationAttributes()}
+            </View>
           </View>
         </View>
       ) : null}
@@ -176,5 +141,4 @@ const ConversationAttributes = ({ conversationDetails, eva: { style, theme } }) 
 };
 
 ConversationAttributes.propTypes = propTypes;
-
-export default withStyles(ConversationAttributes, styles);
+export default ConversationAttributes;

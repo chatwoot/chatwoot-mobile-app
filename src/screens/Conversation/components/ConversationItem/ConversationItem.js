@@ -153,9 +153,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
                     {getTextSubstringWithEllipsis(typingUser, 25)}
                   </Text>
                 )}
-                <Pressable>
-                  <CardLabel conversationDetails={item} conversationId={id} />
-                </Pressable>
+                <CardLabel conversationDetails={item} conversationId={id} />
               </View>
             </View>
             <View style={styles.unreadTimestampContainer}>

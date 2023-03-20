@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Text } from 'components';
 import { useDispatch, useSelector } from 'react-redux';
 import { View, StyleSheet } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
 
 import {
   actions as conversationLabelActions,
@@ -16,17 +15,17 @@ import { actions as labelActions, labelsSelector } from 'reducer/labelSlice';
 const createStyles = theme => {
   const { spacing, colors } = theme;
   return StyleSheet.create({
-    scrollView: {
+    cardLabelWrap: {
       marginTop: spacing.micro,
       paddingTop: spacing.tiny,
       flexDirection: 'row',
-      overflow: 'scroll',
-      flex: 1,
+      flexWrap: 'wrap',
     },
     labelView: {
       flexDirection: 'row',
       alignItems: 'center',
       marginRight: 4,
+      marginBottom: 4,
       paddingHorizontal: 4,
       paddingVertical: 2,
       borderRadius: 4,
@@ -73,27 +72,16 @@ const CardLabel = ({ conversationDetails, conversationId }) => {
         })
       : [];
 
-  const renderItem = ({ item }) => (
-    <View style={styles.labelView} key={item.id}>
-      <View style={[getLabelColor(item.color)]} />
-      <Text xs medium color={colors.text}>
-        {item.title}
-      </Text>
-    </View>
-  );
-
-  const keyExtractor = item => item.id.toString();
-
   return (
-    <View style={styles.scrollView}>
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        scrollEnabled={true}
-        data={activeLabels}
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
-      />
+    <View style={styles.cardLabelWrap}>
+      {activeLabels.map(({ id, title, color }) => (
+        <View style={styles.labelView} key={id}>
+          <View style={[getLabelColor(color)]} />
+          <Text xs medium color={colors.text}>
+            {title}
+          </Text>
+        </View>
+      ))}
     </View>
   );
 };

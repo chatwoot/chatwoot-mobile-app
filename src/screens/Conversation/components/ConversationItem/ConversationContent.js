@@ -14,7 +14,6 @@ const createStyles = theme => {
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
-      paddingTop: spacing.tiny,
     },
     icon: {
       marginRight: spacing.micro,
@@ -26,10 +25,9 @@ const propTypes = {
   content: PropTypes.string,
   messageType: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   isPrivate: PropTypes.bool,
-  unReadCount: PropTypes.number,
 };
 
-const ConversationContent = ({ content, messageType, isPrivate, unReadCount }) => {
+const ConversationContent = ({ content, messageType, isPrivate }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
@@ -51,15 +49,9 @@ const ConversationContent = ({ content, messageType, isPrivate, unReadCount }) =
                   <Icon color={colors.text} icon="arrow-reply-outline" size={14} />
                 </View>
               )}
-              {unReadCount ? (
-                <Text semiBold sm numberOfLines={1} maxLength={8} color={colors.text}>
-                  {getTextSubstringWithEllipsis(message, 34)}
-                </Text>
-              ) : (
-                <Text sm numberOfLines={1} maxLength={8} color={colors.text}>
-                  {getTextSubstringWithEllipsis(message, 34)}
-                </Text>
-              )}
+              <Text sm medium numberOfLines={1} maxLength={8} color={colors.text}>
+                {getTextSubstringWithEllipsis(message, 34)}
+              </Text>
             </View>
           )}
           {messageType === MESSAGE_TYPES.ACTIVITY && (
@@ -67,29 +59,17 @@ const ConversationContent = ({ content, messageType, isPrivate, unReadCount }) =
               <View style={styles.icon}>
                 <Icon color={colors.text} icon="info-outline" size={14} />
               </View>
-              {unReadCount ? (
-                <Text semiBold sm numberOfLines={1} maxLength={8} color={colors.text}>
-                  {getTextSubstringWithEllipsis(message, 32)}
-                </Text>
-              ) : (
-                <Text sm numberOfLines={1} maxLength={8} color={colors.text}>
-                  {getTextSubstringWithEllipsis(message, 32)}
-                </Text>
-              )}
+              <Text sm medium numberOfLines={1} maxLength={8} color={colors.text}>
+                {getTextSubstringWithEllipsis(message, 34)}
+              </Text>
             </View>
           )}
         </View>
       ) : (
         <View style={styles.itemView}>
-          {unReadCount ? (
-            <Text semiBold sm numberOfLines={1} maxLength={8} color={colors.text}>
-              {getTextSubstringWithEllipsis(message, 34)}
-            </Text>
-          ) : (
-            <Text sm numberOfLines={1} maxLength={8} color={colors.text}>
-              {getTextSubstringWithEllipsis(message, 34)}
-            </Text>
-          )}
+          <Text sm medium numberOfLines={1} maxLength={8} color={colors.text}>
+            {getTextSubstringWithEllipsis(message, 34)}
+          </Text>
         </View>
       )}
     </Fragment>

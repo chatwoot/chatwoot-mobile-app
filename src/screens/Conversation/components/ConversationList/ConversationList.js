@@ -134,7 +134,6 @@ const ConversationList = ({
           <ConversationItem
             item={item}
             conversationTypingUsers={conversationTypingUsers}
-            showAssigneeLabel={assigneeType === 'all'}
             onPress={() => onSelectConversation(item)}
           />
         )}

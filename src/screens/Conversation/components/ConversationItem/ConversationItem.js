@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
-import { View, Pressable, StyleSheet } from 'react-native';
+import { View, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { Text, InboxName, UserAvatar } from 'components';
+import { Text, Icon, InboxName, UserAvatar } from 'components';
 import { getTextSubstringWithEllipsis } from 'helpers';
 import { getUnreadCount, findLastMessage, getInboxName } from 'helpers/conversationHelpers';
 import { getTypingUsersText } from 'helpers';
@@ -11,10 +11,14 @@ import ConversationContent from './ConversationContent';
 import ConversationAttachment from './ConversationAttachment';
 import { dynamicTime } from 'helpers/TimeHelper';
 import { inboxesSelector } from 'reducer/inboxSlice';
+import CardLabel from './CardLabels';
 
 const propTypes = {
   item: PropTypes.shape({
     meta: PropTypes.shape({
+      assignee: PropTypes.shape({
+        name: PropTypes.string,
+      }),
       sender: PropTypes.shape({
         name: PropTypes.string,
         thumbnail: PropTypes.string,
@@ -22,6 +26,7 @@ const propTypes = {
       }),
       channel: PropTypes.string,
     }),
+    labels: PropTypes.array,
     additional_attributes: PropTypes.object,
     messages: PropTypes.array,
     inbox_id: PropTypes.number,
@@ -29,16 +34,18 @@ const propTypes = {
     status: PropTypes.string,
   }).isRequired,
   conversationTypingUsers: PropTypes.shape({}),
+  showAssigneeLabel: PropTypes.bool,
   onPress: PropTypes.func,
 };
 
-const ConversationItem = ({ item, conversationTypingUsers, onPress }) => {
+const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssigneeLabel }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
   const inboxes = useSelector(inboxesSelector.selectAll);
   const {
     meta: {
+      assignee: { name: assigneeName } = {},
       sender: { name, thumbnail, availability_status: availabilityStatus },
       channel,
     },
@@ -92,28 +99,43 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress }) => {
             />
           </View>
           <View style={styles.contentView}>
-            <View style={styles.labelView}>
-              <View style={styles.idView}>
-                <Text xxs medium color={colors.textLight}>
-                  #{id}
-                </Text>
+            <View style={styles.conversationMeta}>
+              <View style={styles.metaDetails}>
+                <View style={styles.idView}>
+                  <Text xs medium color={colors.textLight}>
+                    #{id}
+                  </Text>
+                </View>
+                <View>
+                  <InboxName
+                    inboxName={inboxName}
+                    channelType={channelType}
+                    phoneNumber={phoneNumber}
+                  />
+                </View>
               </View>
-              <View>
-                <InboxName
-                  inboxName={inboxName}
-                  channelType={channelType}
-                  phoneNumber={phoneNumber}
-                />
-              </View>
+              {showAssigneeLabel && assigneeName && (
+                <View style={styles.assigneeLabel}>
+                  <Icon icon="person-outline" color={colors.textLighter} size={12} />
+                  <Text xs color={colors.textLighter}>
+                    {assigneeName}
+                  </Text>
+                </View>
+              )}
             </View>
             <View style={styles.conversationDetails}>
               <View>
                 <View style={styles.nameView}>
-                  {!!name && (
-                    <Text sm semiBold color={unReadCount ? colors.textDark : colors.textDark}>
-                      {getTextSubstringWithEllipsis(name, 26)}
-                    </Text>
-                  )}
+                  {!!name &&
+                    (unReadCount ? (
+                      <Text sm semiBold color={colors.textDark}>
+                        {getTextSubstringWithEllipsis(name, 22)}
+                      </Text>
+                    ) : (
+                      <Text sm medium color={colors.textDark}>
+                        {getTextSubstringWithEllipsis(name, 22)}
+                      </Text>
+                    ))}
                 </View>
                 {!typingUser ? (
                   !content && attachments && attachments.length ? (
@@ -123,6 +145,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress }) => {
                       content={content}
                       messageType={message_type}
                       isPrivate={isPrivate}
+                      unReadCount={unReadCount}
                     />
                   )
                 ) : (
@@ -130,11 +153,12 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress }) => {
                     {getTextSubstringWithEllipsis(typingUser, 25)}
                   </Text>
                 )}
+                <CardLabel conversationDetails={item} conversationId={id} />
               </View>
             </View>
             <View style={styles.unreadTimestampContainer}>
               <View>
-                <Text xxs regular color={colors.textLight}>
+                <Text xxs color={colors.textLight}>
                   {dynamicTime({ time: created_at })}
                 </Text>
               </View>
@@ -177,25 +201,35 @@ const createStyles = theme => {
     },
     contentView: {
       flex: 1,
-      paddingTop: spacing.small,
-      paddingBottom: spacing.small,
+      paddingTop: spacing.half,
+      paddingBottom: spacing.half,
       borderColor: colors.borderLight,
       borderBottomWidth: 1,
     },
     nameView: {
-      marginBottom: spacing.micro,
+      marginBottom: spacing.tiny,
       color: colors.textLight,
       fontSize: fontSize.md,
       flexDirection: 'row',
       alignItems: 'center',
     },
     conversationDetails: {
+      paddingTop: spacing.tiny,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
     },
-    labelView: {
-      marginBottom: spacing.micro,
+    conversationMeta: {
+      marginBottom: spacing.tiny,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    metaDetails: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    assigneeLabel: {
       flexDirection: 'row',
       alignItems: 'center',
     },
@@ -207,6 +241,7 @@ const createStyles = theme => {
     },
     unreadTimestampContainer: {
       paddingTop: spacing.large,
+      marginTop: spacing.tiny,
       justifyContent: 'flex-end',
       flexDirection: 'column',
       position: 'absolute',

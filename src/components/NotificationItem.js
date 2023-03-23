@@ -38,12 +38,7 @@ const NotificationItemComponent = ({ eva, item, onSelectNotification }) => {
     push_message_title,
     read_at,
     created_at,
-    primary_actor: {
-      meta: {
-        sender: { name, thumbnail },
-      },
-      channel,
-    },
+    primary_actor: { meta: { sender: { name = null, thumbnail = null } = {} } = {}, channel },
   } = item;
   return (
     <TouchableOpacity

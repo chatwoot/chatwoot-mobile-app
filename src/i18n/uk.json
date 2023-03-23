@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "Налаштування",
-    "AVAILABILITY": "Availability",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "Вийти",
+    "SET_AVAILABILITY": "Позначити себе як",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Switch Account",
     "CHANGE_LANGUAGE": "Change Language",
+    "LOGOUT": "Вийти",
     "SUBMIT": "Додати"
   },
   "NOTIFICATION": {

@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "அமைப்புகள்",
-    "AVAILABILITY": "Availability",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "வெளியேறு",
+    "SET_AVAILABILITY": "Set yourself as",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "கணக்கை மாற்றவும்",
     "CHANGE_LANGUAGE": "Change Language",
+    "LOGOUT": "வெளியேறு",
     "SUBMIT": "சமர்ப்பிக்கவும்"
   },
   "NOTIFICATION": {

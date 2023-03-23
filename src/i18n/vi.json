@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "Cài đặt",
-    "AVAILABILITY": "Khả dụng",
-    "NOTIFICATION": "Tuỳ chọn thông báo",
-    "HELP": "Tài liệu trợ giúp",
-    "CHAT_WITH_US": "Trò chuyện với Chúng tôi",
-    "LOG_OUT": "Đăng xuất",
+    "SET_AVAILABILITY": "Đặt chính mình như",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Chuyển tài khoản",
     "CHANGE_LANGUAGE": "Thay đổi ngôn ngữ",
+    "LOGOUT": "Đăng xuất",
     "SUBMIT": "Gửi"
   },
   "NOTIFICATION": {

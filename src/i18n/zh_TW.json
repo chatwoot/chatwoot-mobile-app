@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "設定",
-    "AVAILABILITY": "有效的",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "CHAT_WITH_US": "与我们聊天",
-    "LOG_OUT": "退出登入",
+    "SET_AVAILABILITY": "Set yourself as",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "切換帳戶",
     "CHANGE_LANGUAGE": "Change Language",
+    "LOGOUT": "退出登入",
     "SUBMIT": "送出"
   },
   "NOTIFICATION": {

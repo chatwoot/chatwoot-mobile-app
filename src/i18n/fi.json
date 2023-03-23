@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "Asetukset",
-    "AVAILABILITY": "Saatavuus",
-    "NOTIFICATION": "Ilmoitusasetukset",
-    "HELP": "Ohjedokumentit",
-    "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "Kirjaudu ulos",
+    "SET_AVAILABILITY": "Set yourself as",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Vaihda tiliä",
     "CHANGE_LANGUAGE": "Vaihda kieli",
+    "LOGOUT": "Kirjaudu ulos",
     "SUBMIT": "Lähetä"
   },
   "NOTIFICATION": {

@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "Ρυθμίσεις",
-    "AVAILABILITY": "Διαθεσιμότητα",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "Έξοδος (Logout)",
+    "SET_AVAILABILITY": "Ορίστε τον εαυτό σας ως",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Αλλαγή Λογαριασμού",
     "CHANGE_LANGUAGE": "Change Language",
+    "LOGOUT": "Έξοδος (Logout)",
     "SUBMIT": "Καταχώρηση"
   },
   "NOTIFICATION": {

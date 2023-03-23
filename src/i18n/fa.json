@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "تنظیمات",
-    "AVAILABILITY": "در دسترس",
-    "NOTIFICATION": "تنظیمات اعلان",
-    "HELP": "کتاب راهنما",
-    "CHAT_WITH_US": "با ما چت کنید",
-    "LOG_OUT": "خروج از حساب",
+    "SET_AVAILABILITY": "خود را به عنوان",
+    "PREFERENCES": "تنظیمات",
+    "ABOUT": "درباره",
+    "SUPPORT": "پشتیبانی",
     "SWITCH_ACCOUNT": "سوییچ به یک حساب دیگر",
     "CHANGE_LANGUAGE": "تغییر زبان",
+    "LOGOUT": "خروج از حساب",
     "SUBMIT": "ثبت"
   },
   "NOTIFICATION": {

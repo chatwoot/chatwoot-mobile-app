@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "Ayarlar",
-    "AVAILABILITY": "Uygun",
-    "NOTIFICATION": "Bildirim Tercihleri",
-    "HELP": "Yardım Dokümanları",
-    "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "Çıkış Yap",
+    "SET_AVAILABILITY": "Set yourself as",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Hesap değiştir",
     "CHANGE_LANGUAGE": "Dili değiştir",
+    "LOGOUT": "Çıkış Yap",
     "SUBMIT": "Yolla"
   },
   "NOTIFICATION": {

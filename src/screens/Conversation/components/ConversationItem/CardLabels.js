@@ -51,9 +51,8 @@ const CardLabel = ({ conversationDetails, conversationId }) => {
     dispatch(conversationLabelActions.index({ conversationId }));
   }, [conversationId, dispatch]);
 
-  const conversationLabels = useSelector(selectConversationLabels);
   const labels = useSelector(labelsSelector.selectAll);
-  const savedLabels = conversationLabels[conversationId] || [];
+  const savedLabels = conversationDetails.labels || [];
 
   const getLabelColor = clr => {
     return {

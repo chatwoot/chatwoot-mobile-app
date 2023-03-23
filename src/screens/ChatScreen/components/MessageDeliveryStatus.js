@@ -30,7 +30,7 @@ const propTypes = {
     status: PropTypes.string,
   }),
   channel: PropTypes.string.isRequired,
-  contactLastSeenAt: PropTypes.string,
+  contactLastSeenAt: PropTypes.number,
 };
 
 const ReadIcon = style => {

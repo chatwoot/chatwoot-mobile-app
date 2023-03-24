@@ -1,8 +1,9 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { Spinner, withStyles } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import PropTypes from 'prop-types';
-import { View, SafeAreaView, SectionList, AppState } from 'react-native';
+import { View, SafeAreaView, SectionList, AppState, useWindowDimensions } from 'react-native';
 import { StackActions } from '@react-navigation/native';
 import ChatMessage from './components/ChatMessage';
 import ChatMessageDate from './components/ChatMessageDate';
@@ -21,6 +22,7 @@ import {
   selectMessagesLoading,
   selectAllMessagesFetched,
 } from 'reducer/conversationSlice';
+import { dashboardAppSelector } from 'reducer/dashboardAppSlice';
 import conversationActions from 'reducer/conversationSlice.action';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
 import { SCREENS } from 'constants';
@@ -39,11 +41,37 @@ const propTypes = {
 };
 
 const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
+  const layout = useWindowDimensions();
+
+  const [index, setIndex] = React.useState(0);
+
   const dispatch = useDispatch();
   const conversationTypingUsers = useSelector(selectAllTypingUsers);
+
+  const dashboardApps = useSelector(dashboardAppSelector.selectAll);
+  const isDashboardAppsEmpty = dashboardApps?.length === 0;
+
   const [appState, setAppState] = useState(AppState.currentState);
   const isFetching = useSelector(selectMessagesLoading);
   const isAllMessagesFetched = useSelector(selectAllMessagesFetched);
+
+  const dashboardRoutes = [];
+
+  if (!isDashboardAppsEmpty) {
+    dashboardApps.forEach(element => {
+      dashboardRoutes.push({
+        key: element.id,
+        title: element.title,
+        route: 'DashboardRoute',
+        content: element.content,
+      });
+    });
+  }
+
+  const [routes] = React.useState([
+    { key: 'first', title: 'Messages', route: 'MessageRoute' },
+    ...dashboardRoutes,
+  ]);
 
   const {
     conversationId,
@@ -187,6 +215,59 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
     conversations: uniqueMessages,
   });
 
+  const MessageRoute = () => (
+    <View style={style.container} autoDismiss={false}>
+      <View style={style.chatView}>
+        {groupedConversationList.length ? (
+          <SectionList
+            keyboardShouldPersistTaps="never"
+            scrollEventThrottle={16}
+            inverted
+            onEndReached={onEndReached}
+            sections={groupedConversationList}
+            keyExtractor={(item, i) => item + i}
+            renderItem={renderMessage}
+            renderSectionFooter={({ section: { date } }) => <ChatMessageDate date={date} />}
+            style={style.chatContainer}
+            ListFooterComponent={renderMoreLoader}
+          />
+        ) : null}
+        {isFetching && !groupedConversationList.length && (
+          <View style={style.loadMoreSpinnerView}>
+            <Spinner size="medium" />
+          </View>
+        )}
+      </View>
+      <ReplyBox conversationId={conversationId} conversationDetails={conversation} />
+    </View>
+  );
+
+  const DashboardRoute = props => {
+    return <View />;
+  };
+
+  const dashboardScenes = {
+    first: MessageRoute,
+  };
+  if (!isDashboardAppsEmpty) {
+    dashboardRoutes.forEach(item => {
+      dashboardScenes[item.key] = DashboardRoute;
+    });
+  }
+  const renderScene = SceneMap(dashboardScenes);
+  const renderTabBar = props => (
+    <TabBar
+      {...props}
+      labelStyle={style.tabLabel}
+      activeColor="#1F93FF"
+      inactiveColor="#8492a6"
+      indicatorStyle={style.tabIndicator}
+      style={style.tabBar}
+      tabStyle={style.tabStyle}
+      scrollEnabled
+    />
+  );
+
   return (
     <SafeAreaView style={style.mainContainer}>
       {conversation ? (
@@ -203,28 +284,13 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
       )}
 
       <View style={style.container} autoDismiss={false}>
-        <View style={style.chatView}>
-          {groupedConversationList.length ? (
-            <SectionList
-              keyboardShouldPersistTaps="never"
-              scrollEventThrottle={16}
-              inverted
-              onEndReached={onEndReached}
-              sections={groupedConversationList}
-              keyExtractor={(item, index) => item + index}
-              renderItem={renderMessage}
-              renderSectionFooter={({ section: { date } }) => <ChatMessageDate date={date} />}
-              style={style.chatContainer}
-              ListFooterComponent={renderMoreLoader}
-            />
-          ) : null}
-          {isFetching && !groupedConversationList.length && (
-            <View style={style.loadMoreSpinnerView}>
-              <Spinner size="medium" />
-            </View>
-          )}
-        </View>
-        <ReplyBox conversationId={conversationId} conversationDetails={conversation} />
+        <TabView
+          renderTabBar={renderTabBar}
+          navigationState={{ index, routes }}
+          renderScene={renderScene}
+          onIndexChange={setIndex}
+          initialLayout={{ width: layout.width }}
+        />
       </View>
     </SafeAreaView>
   );

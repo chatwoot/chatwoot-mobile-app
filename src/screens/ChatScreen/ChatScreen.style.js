@@ -68,6 +68,19 @@ const styles = theme => ({
   backdrop: {
     backgroundColor: theme['back-drop-color'],
   },
+  tabBar: {
+    backgroundColor: theme['color-white'],
+  },
+  tabStyle: {
+    width: 'auto',
+  },
+  tabIndicator: {
+    backgroundColor: theme['color-primary-default'],
+  },
+  tabLabel: {
+    textTransform: 'capitalize',
+    fontSize: theme['font-size-small'],
+  },
 });
 
 export default styles;

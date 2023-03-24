@@ -35,6 +35,7 @@ import {
   actions as settingsActions,
 } from 'reducer/settingsSlice';
 import { actions as notificationActions } from 'reducer/notificationSlice';
+import { actions as dashboardAppActions } from 'reducer/dashboardAppSlice';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
 import { SCREENS } from 'constants';
 
@@ -65,6 +66,7 @@ const ConversationScreen = () => {
     initAnalytics();
     checkAppVersion();
     initPushNotifications();
+    dispatch(dashboardAppActions.index());
   }, [dispatch, initActionCable, initAnalytics, initPushNotifications, checkAppVersion]);
 
   const initPushNotifications = useCallback(async () => {

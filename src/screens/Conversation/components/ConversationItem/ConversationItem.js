@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { View, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Pressable, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
 import { useSelector } from 'react-redux';

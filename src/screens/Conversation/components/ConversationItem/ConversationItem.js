@@ -229,7 +229,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
                 <View style={styles.badgeView}>
                   <View style={styles.badge}>
                     <Text xxs medium color={colors.colorWhite}>
-                      {unreadCount.toString()}
+                      {unreadCount > 9 ? '9+' : unreadCount.toString()}
                     </Text>
                   </View>
                 </View>

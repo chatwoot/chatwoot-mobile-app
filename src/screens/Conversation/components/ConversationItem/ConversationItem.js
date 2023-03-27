@@ -326,12 +326,12 @@ const createStyles = theme => {
     },
     leftSwipeActionView: {
       backgroundColor: colors.primary,
-      width: 80,
+      width: 90,
     },
     leftSwipeAction: {
       justifyContent: 'center',
       alignItems: 'center',
-      width: 80,
+      width: 90,
       height: '100%',
     },
     readUnreadMessageSwipeAction: {

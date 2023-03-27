@@ -15,6 +15,8 @@ export const CONVERSATION_EVENTS = Object.freeze({
   CLEAR_FILTERS: 'Clear conversation filters',
   APPLY_FILTER: 'Conversation filter applied',
   SELF_ASSIGN_CONVERSATION: 'Self assigned conversation',
+  MARK_AS_UNREAD: 'Mark as unread',
+  MARK_AS_READ: 'Mark as read',
 });
 
 export const ACCOUNT_EVENTS = Object.freeze({

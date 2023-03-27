@@ -14,6 +14,8 @@ import ConversationAttachment from './ConversationAttachment';
 import { dynamicTime } from 'helpers/TimeHelper';
 import { inboxesSelector } from 'reducer/inboxSlice';
 import conversationActions from 'reducer/conversationSlice.action';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
 import CardLabel from './CardLabels';
 
@@ -84,11 +86,13 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
   const swipeableRef = useRef(null);
 
   const markAsUnreadAndClose = () => {
+    AnalyticsHelper.track(CONVERSATION_EVENTS.MARK_AS_UNREAD);
     dispatch(conversationActions.markMessagesAsUnread({ conversationId: id }));
     swipeableRef.current.close();
   };
 
   const markAsReadAndClose = () => {
+    AnalyticsHelper.track(CONVERSATION_EVENTS.MARK_AS_READ);
     dispatch(conversationActions.markMessagesAsRead({ conversationId: id }));
     swipeableRef.current.close();
   };

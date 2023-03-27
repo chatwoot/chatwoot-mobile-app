@@ -127,9 +127,8 @@ const ChatMessageComponent = ({ message, eva: { style }, showAttachment, convers
 
   const isTwitterChannel = channel === INBOX_TYPES.TWITTER;
 
-  const senderName = message && message.sender && message.sender.name ? message.sender.name : 'Bot';
-  const senderThumbnail =
-    message && message.sender && message.sender.thumbnail ? message.sender.thumbnail : '';
+  const senderName = message?.sender?.name || 'Bot';
+  const senderThumbnail = message?.sender?.thumbnail || '';
 
   let alignment = message_type ? 'flex-end' : 'flex-start';
   if (message_type === 2) {

@@ -27,7 +27,8 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
     };
   }
 
-  const shouldShowSelfAssign = assignee && assignee.id !== userId;
+  const shouldShowSelfAssign = !assignee || (assignee && assignee.id !== userId);
+
   const onShare = async () => {
     const { id, account_id } = conversationDetails;
     try {

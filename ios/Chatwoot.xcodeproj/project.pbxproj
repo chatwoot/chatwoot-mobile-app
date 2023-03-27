@@ -15,12 +15,12 @@
 		53077FAF7CD115E295E171D8 /* libPods-Chatwoot-ChatwootTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 875392EC3EF039A1E720197A /* libPods-Chatwoot-ChatwootTests.a */; };
 		6AA3B65B7A73D308C0C8AF58 /* libPods-Chatwoot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11B915B57FF88F3E0ABDEB4B /* libPods-Chatwoot.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		836B13142951DA3B00F6CA5D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 836B13132951DA3B00F6CA5D /* GoogleService-Info.plist */; };
 		83825EEF2951AB4D00541182 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83825EEE2951AB4D00541182 /* BootSplash.storyboard */; };
 		94DF9C9310914210BEF2AB8F /* Inter-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9CC87D95EA794EB0ACA7524E /* Inter-Regular.otf */; };
 		A39A49FB2C1A432083FF8800 /* Inter-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 145468411567454A86ED99E8 /* Inter-Medium.otf */; };
 		C86429AC5C5B4DADB0053668 /* Inter-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4107D98C080F4803B9289B8F /* Inter-SemiBold.otf */; };
 		E06A836A7B4D4BFC92E5889C /* Inter-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0092D53505C34B0BBC963C65 /* Inter-Bold.otf */; };
+		FAAE35B529A53C7C009BFC1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FAAE35B429A53C7C009BFC1E /* GoogleService-Info.plist */; };
 		FF521FE0D89841A885B699EE /* Inter-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = F36B8B94257B46E58A97135A /* Inter-Light.otf */; };
 /* End PBXBuildFile section */
 
@@ -52,7 +52,6 @@
 		5709B34CF0A7D63546082F79 /* Pods-Chatwoot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatwoot.release.xcconfig"; path = "Target Support Files/Pods-Chatwoot/Pods-Chatwoot.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-Chatwoot-ChatwootTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatwoot-ChatwootTests.debug.xcconfig"; path = "Target Support Files/Pods-Chatwoot-ChatwootTests/Pods-Chatwoot-ChatwootTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Chatwoot/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		836B13132951DA3B00F6CA5D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		836B13152951DD3000F6CA5D /* Chatwoot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Chatwoot.entitlements; path = Chatwoot/Chatwoot.entitlements; sourceTree = "<group>"; };
 		83825EEE2951AB4D00541182 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = Chatwoot/BootSplash.storyboard; sourceTree = "<group>"; };
 		875392EC3EF039A1E720197A /* libPods-Chatwoot-ChatwootTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Chatwoot-ChatwootTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,6 +60,7 @@
 		C45A4944250D4E928EC54E5E /* Inter-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Italic.otf"; path = "../assets/Inter-Italic.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F36B8B94257B46E58A97135A /* Inter-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Light.otf"; path = "../assets/Inter-Light.otf"; sourceTree = "<group>"; };
+		FAAE35B429A53C7C009BFC1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Library/Group Containers/group.com.apple.notes/Accounts/19EB1099-070F-4230-A22D-1D51CD35A416/Media/92C08D38-DA14-4B2B-BA00-B2B24B833388/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,7 +148,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				836B13132951DA3B00F6CA5D /* GoogleService-Info.plist */,
+				FAAE35B429A53C7C009BFC1E /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Chatwoot */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ChatwootTests */,
@@ -285,7 +285,7 @@
 				1546019631854864B8C53390 /* Inter-Italic.otf in Resources */,
 				FF521FE0D89841A885B699EE /* Inter-Light.otf in Resources */,
 				A39A49FB2C1A432083FF8800 /* Inter-Medium.otf in Resources */,
-				836B13142951DA3B00F6CA5D /* GoogleService-Info.plist in Resources */,
+				FAAE35B529A53C7C009BFC1E /* GoogleService-Info.plist in Resources */,
 				94DF9C9310914210BEF2AB8F /* Inter-Regular.otf in Resources */,
 				C86429AC5C5B4DADB0053668 /* Inter-SemiBold.otf in Resources */,
 			);

@@ -1,16 +1,20 @@
-import React, { useMemo } from 'react';
-import { View, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useMemo, useRef } from 'react';
+import { View, Pressable, StyleSheet, Animated } from 'react-native';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Text, Icon, InboxName, UserAvatar } from 'components';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { RectButton } from 'react-native-gesture-handler';
 import { getTextSubstringWithEllipsis } from 'helpers';
-import { getUnreadCount, findLastMessage, getInboxName } from 'helpers/conversationHelpers';
+import { findLastMessage, getInboxName } from 'helpers/conversationHelpers';
 import { getTypingUsersText } from 'helpers';
 import ConversationContent from './ConversationContent';
 import ConversationAttachment from './ConversationAttachment';
 import { dynamicTime } from 'helpers/TimeHelper';
 import { inboxesSelector } from 'reducer/inboxSlice';
+import conversationActions from 'reducer/conversationSlice.action';
+
 import CardLabel from './CardLabels';
 
 const propTypes = {
@@ -31,6 +35,7 @@ const propTypes = {
     messages: PropTypes.array,
     inbox_id: PropTypes.number,
     id: PropTypes.number,
+    unread_count: PropTypes.number,
     status: PropTypes.string,
   }).isRequired,
   conversationTypingUsers: PropTypes.shape({}),
@@ -42,6 +47,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
+  const dispatch = useDispatch();
   const inboxes = useSelector(inboxesSelector.selectAll);
   const {
     meta: {
@@ -53,6 +59,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
     messages,
     inbox_id: inboxId,
     id,
+    unread_count: unreadCount,
   } = item;
 
   const lastMessage = findLastMessage({ messages });
@@ -66,15 +73,71 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
     inboxId,
   });
   const inboxDetails = inboxes ? inboxes.find(inbox => inbox.id === inboxId) : {};
-  const unReadCount = useMemo(() => getUnreadCount(item), [item]);
 
   const typingUser = getTypingUsersText({
     conversationTypingUsers,
     conversationId: id,
   });
 
+  const swipeableRef = useRef(null);
+
+  const markAsUnreadAndClose = () => {
+    dispatch(conversationActions.markMessagesAsUnread({ conversationId: id }));
+    swipeableRef.current.close();
+  };
+
+  const markAsReadAndClose = () => {
+    dispatch(conversationActions.markMessagesAsRead({ conversationId: id }));
+    swipeableRef.current.close();
+  };
+
+  const renderRightActions = (progress, dragX) => {
+    const trans = dragX.interpolate({
+      inputRange: [0, 50, 100],
+      outputRange: [-20, 1, 0],
+      extrapolate: 'clamp',
+    });
+    return (
+      <View style={styles.leftSwipeActionView}>
+        {!unreadCount ? (
+          <RectButton style={styles.leftSwipeAction} onPress={() => markAsUnreadAndClose()}>
+            <Animated.Text
+              style={[
+                {
+                  transform: [{ translateX: trans }],
+                },
+              ]}>
+              <Pressable style={styles.readUnreadMessageSwipeAction}>
+                <Icon color={colors.colorWhite} icon="mail-unread-outline" size={24} />
+                <Text sm semiBold color={colors.colorWhite} style={styles.swipeActionText}>
+                  Unread
+                </Text>
+              </Pressable>
+            </Animated.Text>
+          </RectButton>
+        ) : (
+          <RectButton style={styles.leftSwipeAction} onPress={() => markAsReadAndClose()}>
+            <Animated.Text
+              style={[
+                {
+                  transform: [{ translateX: trans }],
+                },
+              ]}>
+              <Pressable style={styles.readUnreadMessageSwipeAction}>
+                <Icon color={colors.colorWhite} icon="mail-outline" size={24} />
+                <Text sm semiBold color={colors.colorWhite} style={styles.swipeActionText}>
+                  Read
+                </Text>
+              </Pressable>
+            </Animated.Text>
+          </RectButton>
+        )}
+      </View>
+    );
+  };
+
   return (
-    <View>
+    <Swipeable renderLeftActions={renderRightActions} friction={2} ref={swipeableRef}>
       <Pressable
         activeOpacity={0.5}
         style={({ pressed }) => [
@@ -127,7 +190,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
               <View>
                 <View style={styles.nameView}>
                   {!!name &&
-                    (unReadCount ? (
+                    (unreadCount ? (
                       <Text sm semiBold color={colors.textDark}>
                         {getTextSubstringWithEllipsis(name, 22)}
                       </Text>
@@ -145,7 +208,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
                       content={content}
                       messageType={message_type}
                       isPrivate={isPrivate}
-                      unReadCount={unReadCount}
+                      unReadCount={unreadCount}
                     />
                   )
                 ) : (
@@ -162,11 +225,11 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
                   {dynamicTime({ time: created_at })}
                 </Text>
               </View>
-              {unReadCount ? (
+              {unreadCount ? (
                 <View style={styles.badgeView}>
                   <View style={styles.badge}>
                     <Text xxs medium color={colors.colorWhite}>
-                      {unReadCount.toString()}
+                      {unreadCount.toString()}
                     </Text>
                   </View>
                 </View>
@@ -175,7 +238,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
           </View>
         </View>
       </Pressable>
-    </View>
+    </Swipeable>
   );
 };
 ConversationItem.propTypes = propTypes;
@@ -258,6 +321,21 @@ const createStyles = theme => {
       height: 18,
       borderRadius: 16,
       backgroundColor: colors.successColor,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    leftSwipeActionView: {
+      backgroundColor: colors.primary,
+      width: 80,
+    },
+    leftSwipeAction: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: 80,
+      height: '100%',
+    },
+    readUnreadMessageSwipeAction: {
+      flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
     },

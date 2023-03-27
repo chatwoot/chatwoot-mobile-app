@@ -116,9 +116,25 @@ const actions = {
     async ({ conversationId }, { rejectWithValue }) => {
       try {
         const {
-          data: { id, agent_last_seen_at: lastSeen },
+          data: { id, unread_count: unreadCount, agent_last_seen_at: lastSeen },
         } = await axios.post(`conversations/${conversationId}/update_last_seen`);
-        return { id, lastSeen };
+        return { id, unreadCount, lastSeen };
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
+  markMessagesAsUnread: createAsyncThunk(
+    'conversations/markMessagesAsUnread',
+    async ({ conversationId }, { rejectWithValue }) => {
+      try {
+        const {
+          data: { id, unread_count: unreadCount, agent_last_seen_at: lastSeen },
+        } = await axios.post(`conversations/${conversationId}/unread`);
+        return { id, unreadCount, lastSeen };
       } catch (error) {
         if (!error.response) {
           throw error;

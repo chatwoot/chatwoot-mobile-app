@@ -147,11 +147,21 @@ const conversationSlice = createSlice({
         state.loadingMessages = false;
       })
       .addCase(actions.markMessagesAsRead.fulfilled, (state, { payload }) => {
-        const { id, lastSeen } = payload;
+        const { id, unreadCount, lastSeen } = payload;
         const conversation = state.entities[id];
         if (!conversation) {
           return;
         }
+        conversation.unread_count = unreadCount;
+        conversation.agent_last_seen_at = lastSeen;
+      })
+      .addCase(actions.markMessagesAsUnread.fulfilled, (state, { payload }) => {
+        const { id, unreadCount, lastSeen } = payload;
+        const conversation = state.entities[id];
+        if (!conversation) {
+          return;
+        }
+        conversation.unread_count = unreadCount;
         conversation.agent_last_seen_at = lastSeen;
       })
       .addCase(actions.toggleConversationStatus.pending, (state, action) => {

@@ -118,7 +118,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
                 <View style={styles.assigneeLabel}>
                   <Icon icon="person-outline" color={colors.textLighter} size={12} />
                   <Text xs color={colors.textLighter}>
-                    {assigneeName}
+                    {getTextSubstringWithEllipsis(assigneeName, 14)}
                   </Text>
                 </View>
               )}

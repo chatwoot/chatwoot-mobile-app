@@ -7,6 +7,7 @@ import { withStyles } from '@ui-kitten/components';
 import CustomText from '../../../components/Text';
 import { messageStamp } from '../../../helpers/TimeHelper';
 import ChatMessageItem from './ChatMessageItem';
+import { UserAvatar } from 'components';
 
 import { INBOX_TYPES } from 'constants';
 
@@ -52,6 +53,19 @@ const styles = theme => ({
   date: {
     color: theme['text-hint-color'],
     fontSize: theme['font-size-extra-extra-small'],
+  },
+
+  messageBubble: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
+
+  outgoingMessageThumbnail: {
+    marginLeft: 8,
+  },
+
+  incomingMessageThumbnail: {
+    marginRight: 8,
   },
 });
 
@@ -111,6 +125,11 @@ const ChatMessageComponent = ({ message, eva: { style }, showAttachment, convers
 
   const shouldShowFullWidth = isEmailChannel && message_type !== 2 && !isPrivate;
 
+  const isTwitterChannel = channel === INBOX_TYPES.TWITTER;
+
+  const senderName = message?.sender?.name || 'Bot';
+  const senderThumbnail = message?.sender?.thumbnail || '';
+
   let alignment = message_type ? 'flex-end' : 'flex-start';
   if (message_type === 2) {
     alignment = 'center';
@@ -120,23 +139,47 @@ const ChatMessageComponent = ({ message, eva: { style }, showAttachment, convers
     <View style={[style.message, !shouldShowFullWidth ? { justifyContent: alignment } : null]}>
       <View style={[shouldShowFullWidth ? style.emailContainer : {}]}>
         {alignment === 'flex-start' ? (
-          <MessageContent
-            conversation={conversation}
-            message={message}
-            created_at={created_at}
-            type="incoming"
-            showAttachment={showAttachment}
-          />
+          <View style={style.messageBubble}>
+            {!isTwitterChannel ? (
+              <View style={style.incomingMessageThumbnail}>
+                <UserAvatar
+                  thumbnail={senderThumbnail}
+                  userName={senderName}
+                  size={16}
+                  fontSize={8}
+                />
+              </View>
+            ) : null}
+            <MessageContent
+              conversation={conversation}
+              message={message}
+              created_at={created_at}
+              type="incoming"
+              showAttachment={showAttachment}
+            />
+          </View>
         ) : alignment === 'center' ? (
           <ActivityMessage message={message} created_at={created_at} type="activity" />
         ) : (
-          <MessageContent
-            conversation={conversation}
-            message={message}
-            created_at={created_at}
-            type="outgoing"
-            showAttachment={showAttachment}
-          />
+          <View style={style.messageBubble}>
+            <MessageContent
+              conversation={conversation}
+              message={message}
+              created_at={created_at}
+              type="outgoing"
+              showAttachment={showAttachment}
+            />
+            {!isTwitterChannel ? (
+              <View style={style.outgoingMessageThumbnail}>
+                <UserAvatar
+                  thumbnail={senderThumbnail}
+                  userName={senderName}
+                  size={16}
+                  fontSize={8}
+                />
+              </View>
+            ) : null}
+          </View>
         )}
       </View>
     </View>

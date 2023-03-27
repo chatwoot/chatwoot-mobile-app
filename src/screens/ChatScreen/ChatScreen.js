@@ -1,9 +1,17 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useState, useRef } from 'react';
 import { Spinner, withStyles } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { WebView } from 'react-native-webview';
 import PropTypes from 'prop-types';
-import { View, SafeAreaView, SectionList, AppState, useWindowDimensions } from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  SectionList,
+  AppState,
+  useWindowDimensions,
+  ActivityIndicator,
+} from 'react-native';
 import { StackActions } from '@react-navigation/native';
 import ChatMessage from './components/ChatMessage';
 import ChatMessageDate from './components/ChatMessageDate';
@@ -42,6 +50,7 @@ const propTypes = {
 
 const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   const layout = useWindowDimensions();
+  const webviewRef = useRef(null);
 
   const [index, setIndex] = React.useState(0);
 
@@ -242,8 +251,61 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
     </View>
   );
 
+  const Spinner = () => (
+    <View
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        height: '100%',
+        width: '100%',
+      }}>
+      <ActivityIndicator size="large" />
+    </View>
+  );
+
   const DashboardRoute = props => {
-    return <View />;
+    // console.log('props', props);
+    // const urlDetails = props.content[0];
+
+    const data = {
+      conversation: {
+        id: 1,
+        messages: [],
+        account_id: 1,
+      },
+      contact: {
+        email: 'jane@example.com',
+        id: 1,
+        name: 'jane keloth',
+      },
+      currentAgent: {
+        id: 1,
+        name: 'John',
+        email: 'john@acme.inc',
+      },
+    };
+
+    const INJECTED_JAVASCRIPT = `window.postMessage(JSON.stringify({"event":"appContext","data":${JSON.stringify(
+      data,
+    )}}));`;
+
+    return (
+      <WebView
+        ref={webviewRef}
+        originWhitelist={['*']}
+        style={{ flex: 1 }}
+        source={{ uri: 'https://chatwoot-dashboard-apps-muhsin-k.vercel.app/' }}
+        startInLoadingState={true}
+        renderLoading={Spinner}
+        injectedJavaScript={INJECTED_JAVASCRIPT}
+        onMessage={event => {
+          webviewRef.current.injectJavaScript(INJECTED_JAVASCRIPT);
+        }}
+      />
+    );
   };
 
   const dashboardScenes = {

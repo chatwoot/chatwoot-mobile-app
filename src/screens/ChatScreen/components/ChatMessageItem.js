@@ -7,7 +7,7 @@ import ActionSheet from 'react-native-actions-sheet';
 import CustomText from 'components/Text';
 import { messageStamp } from 'helpers/TimeHelper';
 import { openURL } from 'helpers/UrlHelper';
-import UserAvatar from 'src/components/UserAvatar';
+import { UserAvatar } from 'components';
 import ChatMessageActionItem from './ChatMessageActionItem';
 import { showToast } from 'helpers/ToastHelper';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
@@ -28,7 +28,7 @@ const styles = theme => ({
     paddingBottom: 8,
   },
   messageBody: {
-    maxWidth: Dimensions.get('window').width - 70,
+    maxWidth: Dimensions.get('window').width - 100,
   },
 
   messageLeft: {

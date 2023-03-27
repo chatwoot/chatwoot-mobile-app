@@ -45,7 +45,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
   const inboxes = useSelector(inboxesSelector.selectAll);
   const {
     meta: {
-      assignee: { name: assigneeName } = {},
+      assignee,
       sender: { name, thumbnail, availability_status: availabilityStatus },
       channel,
     },
@@ -54,6 +54,8 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
     inbox_id: inboxId,
     id,
   } = item;
+
+  const assigneeName = assignee?.name;
 
   const lastMessage = findLastMessage({ messages });
   const { content, created_at, attachments, message_type, private: isPrivate } = lastMessage;

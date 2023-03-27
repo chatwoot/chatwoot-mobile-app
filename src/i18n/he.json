@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "הגדרות",
-    "AVAILABILITY": "זמינות",
-    "NOTIFICATION": "הגדרות התראות",
-    "HELP": "עזרה",
-    "CHAT_WITH_US": "שוחח איתנו",
-    "LOG_OUT": "התנתק",
+    "SET_AVAILABILITY": "Set yourself as",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "החלף חשבון",
     "CHANGE_LANGUAGE": "שנה שפה",
+    "LOGOUT": "התנתק",
     "SUBMIT": "שלח"
   },
   "NOTIFICATION": {

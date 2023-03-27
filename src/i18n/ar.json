@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "الإعدادات",
-    "AVAILABILITY": "التوفر",
-    "NOTIFICATION": "تفضيلات الإشعارات",
-    "HELP": "وثائق المساعدة",
-    "CHAT_WITH_US": "تواصل معنا",
-    "LOG_OUT": "تسجيل الخروج",
+    "SET_AVAILABILITY": "تعيين نفسك كـ",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "تبديل الحساب",
     "CHANGE_LANGUAGE": "تغيير اللغة",
+    "LOGOUT": "تسجيل الخروج",
     "SUBMIT": "إرسال"
   },
   "NOTIFICATION": {

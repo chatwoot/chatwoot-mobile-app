@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "Beállítások",
-    "AVAILABILITY": "Elérhetőség",
-    "NOTIFICATION": "Értesítési beállítások",
-    "HELP": "Súgó",
-    "CHAT_WITH_US": "Chatelj velünk",
-    "LOG_OUT": "Kilépés",
+    "SET_AVAILABILITY": "Set yourself as",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Fiókváltás",
     "CHANGE_LANGUAGE": "Nyelvválasztás",
+    "LOGOUT": "Kilépés",
     "SUBMIT": "Elküld"
   },
   "NOTIFICATION": {

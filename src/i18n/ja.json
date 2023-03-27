@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "設定",
-    "AVAILABILITY": "利用可能期間",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "ログアウト",
+    "SET_AVAILABILITY": "Set yourself as",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "アカウントの切り替え",
     "CHANGE_LANGUAGE": "Change Language",
+    "LOGOUT": "ログアウト",
     "SUBMIT": "送信"
   },
   "NOTIFICATION": {

@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "Indstillinger",
-    "AVAILABILITY": "Tilgængelighed",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "Log Ud",
+    "SET_AVAILABILITY": "Sæt dig selv som",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Skift Konto",
     "CHANGE_LANGUAGE": "Change Language",
+    "LOGOUT": "Log Ud",
     "SUBMIT": "Send"
   },
   "NOTIFICATION": {

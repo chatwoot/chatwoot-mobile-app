@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "설정",
-    "AVAILABILITY": "유용성",
-    "NOTIFICATION": "알림 기본 설정",
-    "HELP": "도움말 문서",
-    "CHAT_WITH_US": "채팅하기",
-    "LOG_OUT": "로그아웃",
+    "SET_AVAILABILITY": "Set yourself as",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "계정 전환",
     "CHANGE_LANGUAGE": "언어 바꾸기",
+    "LOGOUT": "로그아웃",
     "SUBMIT": "보내기"
   },
   "NOTIFICATION": {

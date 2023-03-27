@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "Configuració",
-    "AVAILABILITY": "Disponibilitat",
-    "NOTIFICATION": "Preferències de notificació",
-    "HELP": "Documents d’ajuda",
-    "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "Tancar sessió",
+    "SET_AVAILABILITY": "Set yourself as",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Canvia de compte",
     "CHANGE_LANGUAGE": "Canviar d'idioma",
+    "LOGOUT": "Tancar sessió",
     "SUBMIT": "Trametre"
   },
   "NOTIFICATION": {

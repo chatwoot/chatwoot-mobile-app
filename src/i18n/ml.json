@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "ക്രമീകരണങ്ങൾ",
-    "AVAILABILITY": "ലഭ്യത",
-    "NOTIFICATION": "അറിയിപ്പ് മുൻഗണനകൾ",
-    "HELP": "സഹായ പുസ്തകം",
-    "CHAT_WITH_US": "ഞങ്ങളുമായി ചാറ്റ് ചെയ്യുക",
-    "LOG_OUT": "ലോഗൗട്ട്",
+    "SET_AVAILABILITY": "Set yourself as",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "അക്കൗണ്ട് സ്വിച്ചുചെയ്യുക",
     "CHANGE_LANGUAGE": "ഭാഷ മാറ്റുക",
+    "LOGOUT": "ലോഗൗട്ട്",
     "SUBMIT": "സമർപ്പിക്കുക"
   },
   "NOTIFICATION": {

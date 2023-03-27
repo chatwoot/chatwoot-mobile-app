@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "Setări",
-    "AVAILABILITY": "Disponibilitate",
-    "NOTIFICATION": "Preferințe de notificare",
-    "HELP": "Documente de ajutor",
-    "CHAT_WITH_US": "Discută cu noi",
-    "LOG_OUT": "Deconectare",
+    "SET_AVAILABILITY": "Setați-vă ca",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Comută contul",
     "CHANGE_LANGUAGE": "Schimbarea limbii",
+    "LOGOUT": "Deconectare",
     "SUBMIT": "Trimite"
   },
   "NOTIFICATION": {

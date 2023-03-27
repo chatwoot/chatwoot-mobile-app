@@ -92,13 +92,13 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "Ustawienia",
-    "AVAILABILITY": "Availability",
-    "NOTIFICATION": "Notification Preferences",
-    "HELP": "Help Docs",
-    "CHAT_WITH_US": "Chat with Us",
-    "LOG_OUT": "Logout",
+    "SET_AVAILABILITY": "Set yourself as",
+    "PREFERENCES": "Preferences",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Switch Account",
     "CHANGE_LANGUAGE": "Change Language",
+    "LOGOUT": "Logout",
     "SUBMIT": "Prześlij"
   },
   "NOTIFICATION": {

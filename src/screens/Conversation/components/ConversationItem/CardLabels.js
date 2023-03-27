@@ -5,10 +5,7 @@ import { Text } from 'components';
 import { useDispatch, useSelector } from 'react-redux';
 import { View, StyleSheet } from 'react-native';
 
-import {
-  actions as conversationLabelActions,
-  selectConversationLabels,
-} from 'reducer/conversationLabelSlice';
+import { actions as conversationLabelActions } from 'reducer/conversationLabelSlice';
 
 import { actions as labelActions, labelsSelector } from 'reducer/labelSlice';
 
@@ -60,7 +57,7 @@ const CardLabel = ({ conversationDetails, conversationId }) => {
       width: 8,
       height: 8,
       borderRadius: 3,
-      marginRight: 2,
+      marginRight: 4,
     };
   };
 

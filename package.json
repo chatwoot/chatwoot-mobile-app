@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "1.8.8",
+  "version": "1.8.11",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -84,7 +84,7 @@
     "react-native-document-picker": "5.0.0",
     "react-native-exception-handler": "^2.10.10",
     "react-native-fast-image": "^8.6.3",
-    "react-native-gesture-handler": "^1.9.0",
+    "react-native-gesture-handler": "^2.9.0",
     "react-native-html-parser": "^0.1.0",
     "react-native-image-pan-zoom": "^2.1.12",
     "react-native-image-picker": "^3.1.4",

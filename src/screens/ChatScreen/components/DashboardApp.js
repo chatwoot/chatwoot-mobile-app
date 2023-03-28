@@ -10,8 +10,6 @@ const createStyles = theme => {
     container: {
       flex: 1,
       backgroundColor: colors.backgroundChat,
-      borderWidth: 1,
-      borderColor: 'red',
     },
     spinnerView: {
       alignItems: 'center',

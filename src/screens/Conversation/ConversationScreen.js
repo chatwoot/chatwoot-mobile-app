@@ -2,7 +2,7 @@ import React, { useMemo, useEffect, useCallback, useState, useRef } from 'react'
 import { useTheme } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, ScrollView, AppState } from 'react-native';
+import { View, ScrollView, AppState, Dimensions } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { getInboxIconByType } from 'helpers/inboxHelpers';
@@ -37,6 +37,7 @@ import {
 import { actions as notificationActions } from 'reducer/notificationSlice';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
 import { SCREENS } from 'constants';
+const deviceHeight = Dimensions.get('window').height;
 
 // The screen list thats need to be checked for refresh conversation list
 const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.NOTIFICATION, SCREENS.SETTINGS];
@@ -197,7 +198,10 @@ const ConversationScreen = () => {
   );
 
   // Conversation filter modal
-  const conversationFilterModalSnapPoints = useMemo(() => ['40%', '60%', '60%'], []);
+  const conversationFilterModalSnapPoints = useMemo(
+    () => [deviceHeight - 520, deviceHeight - 400],
+    [],
+  );
 
   // Filter by assignee type
   const conversationAssigneeModal = useRef(null);
@@ -219,7 +223,7 @@ const ConversationScreen = () => {
 
   // Inbox filter modal
   const inboxFilterModal = useRef(null);
-  const inboxFilterModalSnapPoints = useMemo(() => ['40%', '80%', '92%'], []);
+  const inboxFilterModalSnapPoints = useMemo(() => [deviceHeight - 400, deviceHeight - 210], []);
   const toggleInboxFilterModal = useCallback(() => {
     inboxFilterModal.current.present() || inboxFilterModal.current?.close();
   }, []);

@@ -84,7 +84,7 @@ const Header = ({ leftIcon, rightIcon, loading, headerText, onPressLeft, onPress
               style={styles.headerLoader}
             />
           ) : null}
-          <Text lg bold color={colors.textDark} style={styles.headerTitle}>
+          <Text xl bold color={colors.textDark} style={styles.headerTitle}>
             {headerText}
           </Text>
         </View>

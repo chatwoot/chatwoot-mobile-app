@@ -40,7 +40,7 @@ const BottomSheetModalHeader = ({ title, closeModal, colors }) => {
 
   return (
     <View style={styles.headerContainer}>
-      <Text lg bold color={colors.textDark} style={styles.headerTitle}>
+      <Text md bold color={colors.textDark} style={styles.headerTitle}>
         {title}
       </Text>
       <Pressable

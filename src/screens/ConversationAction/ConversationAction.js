@@ -1,16 +1,20 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
-import { withStyles } from '@ui-kitten/components';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
 import { getConversationUrl } from 'src/helpers/UrlHelper';
-import { Share } from 'react-native';
+import { Share, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import styles from './ConversationAction.style';
+import createStyles from './ConversationAction.style';
 import ConversationActionItem from '../../components/ConversationActionItem';
+import ConversationActionSquareItem from '../../components/ConversationActionSquareItem';
 import i18n from '../../i18n';
 import { selectUserId } from 'reducer/authSlice';
 import { inboxAgentSelectors } from 'reducer/inboxAgentsSlice';
 
-const ConversationActionComponent = ({ eva: { style }, onPressAction, conversationDetails }) => {
+const ConversationActionComponent = ({ onPressAction, conversationDetails }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const agents = useSelector(state => inboxAgentSelectors.inboxAssignedAgents(state));
   const userId = useSelector(selectUserId);
   const {
@@ -49,10 +53,55 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
 
   return (
     <React.Fragment>
+      <View style={styles.squareLayoutWrap}>
+        {!muted ? (
+          <ConversationActionSquareItem
+            onPressItem={onPressAction}
+            iconName="speaker-mute-outline"
+            colors={colors}
+            text={i18n.t('CONVERSATION.MUTE_CONVERSATION')}
+            itemType="mute_conversation"
+          />
+        ) : (
+          <ConversationActionSquareItem
+            onPressItem={onPressAction}
+            iconName="speaker-1-outline"
+            text={i18n.t('CONVERSATION.UNMUTE_CONVERSATION')}
+            colors={colors}
+            itemType="unmute_conversation"
+          />
+        )}
+
+        <ConversationActionSquareItem
+          onPressItem={onPressAction}
+          iconName="tag-outline"
+          text={i18n.t('CONVERSATION.LABELS')}
+          colors={colors}
+          itemType="label"
+        />
+
+        <ConversationActionSquareItem
+          onPressItem={onShare}
+          iconName="share-outline"
+          text={i18n.t('CONVERSATION.SHARE')}
+          colors={colors}
+          itemType="share"
+        />
+
+        <ConversationActionSquareItem
+          onPressItem={onPressAction}
+          iconName="info-outline"
+          text={i18n.t('CONVERSATION.DETAILS')}
+          colors={colors}
+          itemType="details"
+        />
+      </View>
       <ConversationActionItem
         onPressItem={onPressAction}
-        text="Assignee"
+        text="Assigned Agent"
         itemType="assignee"
+        iconName="people-outline"
+        colors={colors}
         name={assignedAgent.name}
         thumbnail={assignedAgent.thumbnail}
         availabilityStatus={assignedAgent.availability_status}
@@ -62,18 +111,25 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
         onPressItem={onPressAction}
         text="Team"
         itemType="team"
+        colors={colors}
+        iconName="people-team-outline"
         name={team ? team.name : 'Select Team'}
       />
+
       {shouldShowSelfAssign && (
         <ConversationActionItem
           onPressItem={onPressAction}
+          iconName="person-arrow-left-outline"
           text={i18n.t('CONVERSATION.SELF_ASSIGN')}
+          colors={colors}
           itemType="self_assign"
         />
       )}
       {assignee && (
         <ConversationActionItem
           onPressItem={onPressAction}
+          iconName="person-arrow-right-outline"
+          colors={colors}
           text={i18n.t('CONVERSATION.UN_ASSIGN')}
           itemType="unassign"
         />
@@ -81,38 +137,13 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
 
       <ConversationActionItem
         onPressItem={onPressAction}
-        text={i18n.t('CONVERSATION_LABELS.TITLE')}
+        iconName="snooze-outline"
+        text={i18n.t('CONVERSATION.SNOOZE')}
+        colors={colors}
         itemType="label"
-      />
-
-      {!muted ? (
-        <ConversationActionItem
-          onPressItem={onPressAction}
-          text={i18n.t('CONVERSATION.MUTE_CONVERSATION')}
-          itemType="mute_conversation"
-        />
-      ) : (
-        <ConversationActionItem
-          onPressItem={onPressAction}
-          text={i18n.t('CONVERSATION.UNMUTE_CONVERSATION')}
-          itemType="unmute_conversation"
-        />
-      )}
-
-      <ConversationActionItem
-        onPressItem={onShare}
-        text={i18n.t('CONVERSATION.SHARE')}
-        itemType="share"
-      />
-
-      <ConversationActionItem
-        onPressItem={onPressAction}
-        text={i18n.t('CONVERSATION.CANCEL')}
-        itemType="cancel"
       />
     </React.Fragment>
   );
 };
 
-const ConversationAction = withStyles(ConversationActionComponent, styles);
-export default ConversationAction;
+export default ConversationActionComponent;

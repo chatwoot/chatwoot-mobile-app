@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import i18n from 'i18n';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { Text, Icon, Pressable } from 'components';
-import { StyleSheet } from 'react-native';
 import { LANGUAGES } from 'constants';
 
 const propTypes = {

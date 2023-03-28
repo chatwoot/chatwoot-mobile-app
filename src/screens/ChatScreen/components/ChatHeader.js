@@ -1,4 +1,4 @@
-import React, { createRef } from 'react';
+import React, { useRef, useCallback, useMemo } from 'react';
 import {
   withStyles,
   Icon,
@@ -6,11 +6,11 @@ import {
   TopNavigationAction,
   Spinner,
 } from '@ui-kitten/components';
-import ActionSheet from 'react-native-actions-sheet';
+import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Dimensions } from 'react-native';
 import { getTypingUsersText, getCustomerDetails } from 'helpers';
 import CustomText from 'components/Text';
 import { selectConversationToggleStatus } from 'reducer/conversationSlice';
@@ -27,6 +27,8 @@ import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import { INBOX_ICON } from 'src/constants/index';
 import { inboxesSelector } from 'reducer/inboxSlice';
 import { selectUserId } from 'reducer/authSlice';
+const deviceHeight = Dimensions.get('window').height;
+
 const styles = theme => ({
   headerView: {
     flexDirection: 'row',
@@ -98,14 +100,9 @@ const ChatHeader = ({
   onBackPress,
 }) => {
   const navigation = useNavigation();
-  const actionSheetRef = createRef();
   const dispatch = useDispatch();
   const conversationToggleStatus = useSelector(selectConversationToggleStatus);
   const userId = useSelector(selectUserId);
-
-  const showActionSheet = () => {
-    actionSheetRef.current?.setModalVisible();
-  };
 
   const inboxes = useSelector(inboxesSelector.selectAll);
   const inboxId = conversationDetails && conversationDetails.inbox_id;
@@ -143,7 +140,7 @@ const ChatHeader = ({
 
   const MenuIcon = () => {
     return (
-      <TouchableOpacity style={style.statusView} onPress={showActionSheet}>
+      <TouchableOpacity style={style.statusView} onPress={toggleActionModal}>
         <Icon fill={theme['color-black-900']} name="more-vertical" height={24} width={24} />
       </TouchableOpacity>
     );
@@ -183,7 +180,7 @@ const ChatHeader = ({
               )}
             </React.Fragment>
           )}
-          <TopNavigationAction onPress={showActionSheet} icon={MenuIcon} />
+          <TopNavigationAction onPress={toggleActionModal} icon={MenuIcon} />
         </View>
       );
     }
@@ -199,7 +196,7 @@ const ChatHeader = ({
   const inboxName = getInboxName({ inboxes, inboxId });
 
   const onPressAction = ({ itemType }) => {
-    actionSheetRef.current?.hide();
+    closeActionModal();
     if (itemType === 'self_assign') {
       if (conversationDetails) {
         AnalyticsHelper.track(CONVERSATION_EVENTS.SELF_ASSIGN_CONVERSATION);
@@ -224,6 +221,11 @@ const ChatHeader = ({
           assigneeId: 0,
         }),
       );
+    }
+    if (itemType === 'details') {
+      if (conversationDetails) {
+        navigation.navigate('ConversationDetails', { conversationDetails });
+      }
     }
     if (itemType === 'label') {
       if (conversationDetails) {
@@ -263,6 +265,16 @@ const ChatHeader = ({
     conversationId,
   });
   const customerDetails = getCustomerDetails({ conversationDetails, conversationMetaDetails });
+
+  // Conversation action modal
+  const actionModal = useRef(null);
+  const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 640, deviceHeight - 440], []);
+  const toggleActionModal = useCallback(() => {
+    actionModal.current.present() || actionModal.current?.close();
+  }, []);
+  const closeActionModal = useCallback(() => {
+    actionModal.current?.close();
+  }, []);
 
   return (
     <React.Fragment>
@@ -332,12 +344,18 @@ const ChatHeader = ({
           ) : null}
         </View>
       ) : null}
-      <ActionSheet ref={actionSheetRef} gestureEnabled defaultOverlayOpacity={0.3}>
-        <ConversationAction
-          conversationDetails={conversationDetails}
-          onPressAction={onPressAction}
-        />
-      </ActionSheet>
+      <BottomSheetModal
+        bottomSheetModalRef={actionModal}
+        initialSnapPoints={actionModalModalSnapPoints}
+        headerTitle="Conversation Actions"
+        closeFilter={closeActionModal}
+        children={
+          <ConversationAction
+            conversationDetails={conversationDetails}
+            onPressAction={onPressAction}
+          />
+        }
+      />
     </React.Fragment>
   );
 };

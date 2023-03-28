@@ -26,6 +26,7 @@ export const palette = {
   textLight: '#446888',
   text: '#37546D',
   textDark: '#293F51',
+  textDarker: '#1f2d3d',
 
   borderDark: '#37546D',
   border: '#C9D7E3',
@@ -122,6 +123,7 @@ export const DarkTheme = {
     textLight: '#C9D7E3',
     text: '#F1F5F8',
     textDark: '#F8FAFC',
+    textDarker: '#FFFFFF',
 
     borderDark: '#EBF0F5',
     border: '#C9D7E3',

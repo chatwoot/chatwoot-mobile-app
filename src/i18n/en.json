@@ -66,14 +66,16 @@
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share conversation",
-    "CANCEL": "Cancel",
+    "SHARE": "Share",
+    "DETAILS": "Details",
+    "LABELS": "Labels",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Unassign conversation",
-    "MUTE_CONVERSATION": "Mute conversation",
-    "UNMUTE_CONVERSATION": "Unmute conversation",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
+    "MUTE_CONVERSATION": "Mute",
+    "UNMUTE_CONVERSATION": "Unmute",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "SNOOZE": "Snooze Conversation"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

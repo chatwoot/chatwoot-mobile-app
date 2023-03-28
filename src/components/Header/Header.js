@@ -7,7 +7,7 @@ import { useTheme } from '@react-navigation/native';
 import { Icon, Text, Pressable } from 'components';
 
 const createStyles = theme => {
-  const { spacing, colors } = theme;
+  const { spacing, borderRadius, colors } = theme;
   return StyleSheet.create({
     headerContainer: {
       paddingHorizontal: spacing.half,
@@ -43,12 +43,31 @@ const createStyles = theme => {
       marginLeft: spacing.smaller,
       paddingRight: spacing.smaller,
     },
+    headerCountView: {
+      marginLeft: spacing.micro,
+      paddingVertical: spacing.tiny,
+      paddingHorizontal: spacing.micro,
+      minWidth: 20,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.backgroundLight,
+      borderRadius: borderRadius.small,
+      borderColor: colors.borderLight,
+      borderWidth: 0.16,
+    },
+    headerCount: {
+      textAlign: 'center',
+      lineHeight: spacing.small,
+    },
   });
 };
 
 const propTypes = {
   loading: PropTypes.bool,
   headerText: PropTypes.string,
+  showCount: PropTypes.bool,
+  count: PropTypes.number,
   leftIcon: PropTypes.string,
   rightIcon: PropTypes.string,
   onPressLeft: PropTypes.func,
@@ -62,7 +81,16 @@ const defaultProps = {
   rightIcon: '',
 };
 
-const Header = ({ leftIcon, rightIcon, loading, headerText, onPressLeft, onPressRight }) => {
+const Header = ({
+  leftIcon,
+  rightIcon,
+  count,
+  showCount,
+  loading,
+  headerText,
+  onPressLeft,
+  onPressRight,
+}) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
@@ -84,9 +112,16 @@ const Header = ({ leftIcon, rightIcon, loading, headerText, onPressLeft, onPress
               style={styles.headerLoader}
             />
           ) : null}
-          <Text xl bold color={colors.textDark} style={styles.headerTitle}>
+          <Text xl bold color={colors.textDark}>
             {headerText}
           </Text>
+          {showCount && !loading && count !== 0 && (
+            <View style={styles.headerCountView}>
+              <Text xs medium color={colors.textDark} style={styles.headerCount}>
+                {`(${count})`}
+              </Text>
+            </View>
+          )}
         </View>
       </View>
       {rightIcon ? (

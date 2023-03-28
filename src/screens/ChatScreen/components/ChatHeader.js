@@ -268,7 +268,7 @@ const ChatHeader = ({
 
   // Conversation action modal
   const actionModal = useRef(null);
-  const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 640, deviceHeight - 440], []);
+  const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 640, deviceHeight - 410], []);
   const toggleActionModal = useCallback(() => {
     actionModal.current.present() || actionModal.current?.close();
   }, []);

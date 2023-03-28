@@ -17,6 +17,7 @@ import {
   setConversationStatus,
   clearAllConversations,
   setActiveInbox,
+  selectConversationMeta,
 } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';
 import createStyles from './ConversationScreen.style';
@@ -156,6 +157,21 @@ const ConversationScreen = () => {
     setPage(1);
   };
 
+  const conversationMetaDetails = useSelector(selectConversationMeta);
+
+  const conversationCount = () => {
+    switch (assigneeType) {
+      case 'mine':
+        return conversationMetaDetails.mine_count;
+      case 'unassigned':
+        return conversationMetaDetails.unassigned_count;
+      case 'all':
+        return conversationMetaDetails.all_count;
+      default:
+        return 0;
+    }
+  };
+
   const onSelectAssigneeType = async item => {
     AnalyticsHelper.track(CONVERSATION_EVENTS.APPLY_FILTER, {
       type: 'assignee-type',
@@ -262,7 +278,7 @@ const ConversationScreen = () => {
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
-      <Header headerText={headerText} loading={isLoading} />
+      <Header headerText={headerText} loading={isLoading} showCount count={conversationCount()} />
       <View style={styles.filterContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {hasActiveFilters && (

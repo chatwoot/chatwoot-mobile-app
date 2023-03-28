@@ -72,7 +72,9 @@ const DashboardApp = ({ route }) => {
       renderLoading={Spinner}
       injectedJavaScript={INJECTED_JAVASCRIPT}
       onMessage={event => {
-        webviewRef.current.injectJavaScript(INJECTED_JAVASCRIPT);
+        if (event?.nativeEvent?.data === 'chatwoot-dashboard-app:fetch-info') {
+          webviewRef.current.injectJavaScript(INJECTED_JAVASCRIPT);
+        }
       }}
     />
   );

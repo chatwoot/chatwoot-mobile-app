@@ -44,7 +44,6 @@ const propTypes = {
 
 const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   const layout = useWindowDimensions();
-
   const [index, setIndex] = React.useState(0);
 
   const dispatch = useDispatch();
@@ -292,13 +291,17 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
       )}
 
       <View style={style.container} autoDismiss={false}>
-        <TabView
-          renderTabBar={renderTabBar}
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-        />
+        {isDashboardAppsEmpty ? (
+          <MessageRoute />
+        ) : (
+          <TabView
+            renderTabBar={renderTabBar}
+            navigationState={{ index, routes }}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            initialLayout={{ width: layout.width }}
+          />
+        )}
       </View>
     </SafeAreaView>
   );

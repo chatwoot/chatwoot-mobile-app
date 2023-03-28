@@ -379,4 +379,4 @@ const styles = theme => ({
 ReplyBox.propTypes = propTypes;
 
 const ReplyBoxItem = withStyles(ReplyBox, styles);
-export default ReplyBoxItem;
+export default React.memo(ReplyBoxItem);

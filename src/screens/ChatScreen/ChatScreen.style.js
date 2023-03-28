@@ -15,20 +15,6 @@ const styles = theme => ({
     backgroundColor: theme['color-background'],
     alignItems: 'center',
   },
-  chatView: {
-    flex: 13,
-  },
-  chatContainer: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    paddingTop: 8,
-  },
-  loadMoreSpinnerView: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingBottom: 8,
-  },
-
   spinnerView: {
     flex: 1,
     alignItems: 'center',

@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, SafeAreaView } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
 import PropTypes from 'prop-types';
@@ -10,6 +10,8 @@ const createStyles = theme => {
     container: {
       flex: 1,
       backgroundColor: colors.backgroundChat,
+      borderWidth: 1,
+      borderColor: 'red',
     },
     spinnerView: {
       alignItems: 'center',
@@ -63,22 +65,23 @@ const DashboardApp = ({ route }) => {
   );
 
   return (
-    <WebView
-      ref={webviewRef}
-      originWhitelist={['*']}
-      style={styles.container}
-      source={{ uri: urlDetails.url }}
-      startInLoadingState={true}
-      renderLoading={Spinner}
-      injectedJavaScript={INJECTED_JAVASCRIPT}
-      onMessage={event => {
-        if (event?.nativeEvent?.data === 'chatwoot-dashboard-app:fetch-info') {
-          webviewRef.current.injectJavaScript(INJECTED_JAVASCRIPT);
-        }
-      }}
-    />
+    <SafeAreaView style={styles.container}>
+      <WebView
+        ref={webviewRef}
+        originWhitelist={['*']}
+        source={{ uri: urlDetails.url }}
+        startInLoadingState={true}
+        renderLoading={Spinner}
+        injectedJavaScript={INJECTED_JAVASCRIPT}
+        onMessage={event => {
+          if (event?.nativeEvent?.data === 'chatwoot-dashboard-app:fetch-info') {
+            webviewRef.current.injectJavaScript(INJECTED_JAVASCRIPT);
+          }
+        }}
+      />
+    </SafeAreaView>
   );
 };
 
 DashboardApp.propTypes = propTypes;
-export default DashboardApp;
+export default React.memo(DashboardApp);

@@ -34,7 +34,7 @@ const propTypes = {
   conversationId: PropTypes.number,
 };
 
-const CardLabel = ({ conversationDetails, conversationId }) => {
+const ConversationLabel = ({ conversationDetails, conversationId }) => {
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -73,5 +73,5 @@ const CardLabel = ({ conversationDetails, conversationId }) => {
   );
 };
 
-CardLabel.propTypes = propTypes;
-export default CardLabel;
+ConversationLabel.propTypes = propTypes;
+export default ConversationLabel;

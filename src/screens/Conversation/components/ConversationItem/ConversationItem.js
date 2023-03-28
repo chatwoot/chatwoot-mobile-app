@@ -17,7 +17,7 @@ import conversationActions from 'reducer/conversationSlice.action';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
-import CardLabel from './CardLabels';
+import ConversationLabel from './ConversationLabels';
 
 const propTypes = {
   item: PropTypes.shape({
@@ -222,7 +222,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
                     {getTextSubstringWithEllipsis(typingUser, 25)}
                   </Text>
                 )}
-                <CardLabel conversationDetails={item} conversationId={id} />
+                <ConversationLabel conversationDetails={item} conversationId={id} />
               </View>
             </View>
             <View style={styles.unreadTimestampContainer}>

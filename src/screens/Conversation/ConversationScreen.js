@@ -37,6 +37,7 @@ import {
 import { actions as notificationActions } from 'reducer/notificationSlice';
 import { actions as dashboardAppActions } from 'reducer/dashboardAppSlice';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
+import { actions as labelActions } from 'reducer/labelSlice';
 import { SCREENS } from 'constants';
 
 // The screen list thats need to be checked for refresh conversation list
@@ -67,6 +68,7 @@ const ConversationScreen = () => {
     checkAppVersion();
     initPushNotifications();
     dispatch(dashboardAppActions.index());
+    dispatch(labelActions.index());
   }, [dispatch, initActionCable, initAnalytics, initPushNotifications, checkAppVersion]);
 
   const initPushNotifications = useCallback(async () => {

@@ -164,10 +164,33 @@ const conversationSlice = createSlice({
         conversation.unread_count = unreadCount;
         conversation.agent_last_seen_at = lastSeen;
       })
+      .addCase(actions.muteConversation.fulfilled, (state, { payload }) => {
+        const { id } = payload;
+        const conversation = state.entities[id];
+        if (!conversation) {
+          return;
+        }
+        conversation.muted = true;
+      })
+      .addCase(actions.unmuteConversation.fulfilled, (state, { payload }) => {
+        const { id } = payload;
+        const conversation = state.entities[id];
+        if (!conversation) {
+          return;
+        }
+        conversation.muted = false;
+      })
       .addCase(actions.toggleConversationStatus.pending, (state, action) => {
         state.isChangingConversationStatus = true;
       })
       .addCase(actions.toggleConversationStatus.fulfilled, (state, { payload }) => {
+        const { id, updatedStatus, updatedSnoozedUntil } = payload;
+        const conversation = state.entities[id];
+        if (!conversation) {
+          return;
+        }
+        conversation.status = updatedStatus;
+        conversation.snoozed_until = updatedSnoozedUntil;
         state.isChangingConversationStatus = false;
       })
       .addCase(actions.toggleConversationStatus.rejected, state => {

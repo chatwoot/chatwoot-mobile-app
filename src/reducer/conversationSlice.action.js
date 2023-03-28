@@ -183,11 +183,22 @@ const actions = {
 
   toggleConversationStatus: createAsyncThunk(
     'conversations/toggleConversationStatus',
-    async ({ conversationId }, { rejectWithValue }) => {
+    async ({ conversationId, status, snoozedUntil = null }, { rejectWithValue }) => {
       try {
-        const apiUrl = `conversations/${conversationId}/toggle_status`;
-        const response = await axios.post(apiUrl);
-        return response.data;
+        const response = axios.post(`conversations/${conversationId}/toggle_status`, {
+          status,
+          snoozed_until: snoozedUntil,
+        });
+        const {
+          conversation_id: id,
+          current_status: updatedStatus,
+          snoozed_until: updatedSnoozedUntil,
+        } = response.data.payload;
+        return {
+          id,
+          updatedStatus,
+          updatedSnoozedUntil,
+        };
       } catch (error) {
         if (!error.response) {
           throw error;
@@ -201,8 +212,9 @@ const actions = {
     async ({ conversationId }, { rejectWithValue }) => {
       try {
         const apiUrl = `conversations/${conversationId}/mute`;
-        const response = await axios.post(apiUrl);
-        return response.data;
+        await axios.post(apiUrl);
+        const id = conversationId;
+        return { id };
       } catch (error) {
         if (!error.response) {
           throw error;
@@ -216,8 +228,9 @@ const actions = {
     async ({ conversationId }, { rejectWithValue }) => {
       try {
         const apiUrl = `conversations/${conversationId}/unmute`;
-        const response = await axios.post(apiUrl);
-        return response.data;
+        await axios.post(apiUrl);
+        const id = conversationId;
+        return { id };
       } catch (error) {
         if (!error.response) {
           throw error;

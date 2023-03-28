@@ -25,7 +25,7 @@ import i18n from 'i18n';
 import { getConversationUrl } from 'src/helpers/UrlHelper';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
-import { INBOX_ICON } from 'src/constants/index';
+import { INBOX_ICON, CONVERSATION_STATUS } from 'src/constants/index';
 import { inboxesSelector } from 'reducer/inboxSlice';
 import { selectUserId } from 'reducer/authSlice';
 const deviceHeight = Dimensions.get('window').height;
@@ -120,7 +120,9 @@ const ChatHeader = ({
 
   const ResolveIcon = () => {
     return (
-      <TouchableOpacity style={style.statusView} onPress={toggleStatusForConversations}>
+      <TouchableOpacity
+        style={style.statusView}
+        onPress={() => toggleStatusForConversations(CONVERSATION_STATUS.RESOLVED)}>
         <Icon
           fill={theme['color-success-500']}
           name="checkmark-circle-outline"
@@ -133,7 +135,9 @@ const ChatHeader = ({
 
   const ReopenIcon = () => {
     return (
-      <TouchableOpacity style={style.statusView} onPress={toggleStatusForConversations}>
+      <TouchableOpacity
+        style={style.statusView}
+        onPress={() => toggleStatusForConversations(CONVERSATION_STATUS.OPEN)}>
         <Icon fill={theme['color-warning-600']} name="undo-outline" height={24} width={24} />
       </TouchableOpacity>
     );
@@ -275,10 +279,18 @@ const ChatHeader = ({
     }
   };
 
-  const toggleStatusForConversations = () => {
+  const toggleStatusForConversations = status => {
     try {
       AnalyticsHelper.track(CONVERSATION_EVENTS.TOGGLE_STATUS);
-      dispatch(conversationActions.toggleConversationStatus({ conversationId }));
+      dispatch(
+        conversationActions.toggleConversationStatus({
+          conversationId: conversationId,
+          status:
+            status === CONVERSATION_STATUS.RESOLVED
+              ? CONVERSATION_STATUS.RESOLVED
+              : CONVERSATION_STATUS.OPEN,
+        }),
+      );
     } catch (error) {}
   };
 

@@ -1,17 +1,9 @@
-import React, { useEffect, useCallback, useState, useRef } from 'react';
-import { Spinner, withStyles } from '@ui-kitten/components';
+import React, { useEffect, useCallback, useState } from 'react';
+import { withStyles, Spinner } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import { WebView } from 'react-native-webview';
 import PropTypes from 'prop-types';
-import {
-  View,
-  SafeAreaView,
-  SectionList,
-  AppState,
-  useWindowDimensions,
-  ActivityIndicator,
-} from 'react-native';
+import { View, SafeAreaView, SectionList, AppState, useWindowDimensions } from 'react-native';
 import { StackActions } from '@react-navigation/native';
 import ChatMessage from './components/ChatMessage';
 import ChatMessageDate from './components/ChatMessageDate';
@@ -31,9 +23,11 @@ import {
   selectAllMessagesFetched,
 } from 'reducer/conversationSlice';
 import { dashboardAppSelector } from 'reducer/dashboardAppSlice';
+import { selectUser } from 'reducer/authSlice';
 import conversationActions from 'reducer/conversationSlice.action';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
 import { SCREENS } from 'constants';
+import DashboardApp from './components/DashboardApp';
 const propTypes = {
   eva: PropTypes.shape({
     style: PropTypes.object,
@@ -50,12 +44,12 @@ const propTypes = {
 
 const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   const layout = useWindowDimensions();
-  const webviewRef = useRef(null);
 
   const [index, setIndex] = React.useState(0);
 
   const dispatch = useDispatch();
   const conversationTypingUsers = useSelector(selectAllTypingUsers);
+  const currentUser = useSelector(selectUser);
 
   const dashboardApps = useSelector(dashboardAppSelector.selectAll);
   const isDashboardAppsEmpty = dashboardApps?.length === 0;
@@ -65,22 +59,6 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   const isAllMessagesFetched = useSelector(selectAllMessagesFetched);
 
   const dashboardRoutes = [];
-
-  if (!isDashboardAppsEmpty) {
-    dashboardApps.forEach(element => {
-      dashboardRoutes.push({
-        key: element.id,
-        title: element.title,
-        route: 'DashboardRoute',
-        content: element.content,
-      });
-    });
-  }
-
-  const [routes] = React.useState([
-    { key: 'first', title: 'Messages', route: 'MessageRoute' },
-    ...dashboardRoutes,
-  ]);
 
   const {
     conversationId,
@@ -96,6 +74,26 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   const allMessages = useSelector(state =>
     conversationSelectors.getMessagesByConversationId(state, conversationId),
   );
+
+  const inboxId = conversation?.inbox_id;
+
+  if (!isDashboardAppsEmpty) {
+    dashboardApps.forEach(element => {
+      dashboardRoutes.push({
+        key: element.id,
+        title: element.title,
+        route: 'DashboardRoute',
+        content: element.content,
+        conversation: conversation,
+        currentUser: currentUser,
+      });
+    });
+  }
+
+  const [routes] = React.useState([
+    { key: 'first', title: 'Messages', route: 'MessageRoute' },
+    ...dashboardRoutes,
+  ]);
 
   const { meta: conversationMetaDetails = {} } = conversation || {};
 
@@ -247,73 +245,21 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
           </View>
         )}
       </View>
-      <ReplyBox conversationId={conversationId} conversationDetails={conversation} />
-    </View>
-  );
-
-  const Spinner = () => (
-    <View
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        height: '100%',
-        width: '100%',
-      }}>
-      <ActivityIndicator size="large" />
-    </View>
-  );
-
-  const DashboardRoute = props => {
-    // console.log('props', props);
-    // const urlDetails = props.content[0];
-
-    const data = {
-      conversation: {
-        id: 1,
-        messages: [],
-        account_id: 1,
-      },
-      contact: {
-        email: 'jane@example.com',
-        id: 1,
-        name: 'jane keloth',
-      },
-      currentAgent: {
-        id: 1,
-        name: 'John',
-        email: 'john@acme.inc',
-      },
-    };
-
-    const INJECTED_JAVASCRIPT = `window.postMessage(JSON.stringify({"event":"appContext","data":${JSON.stringify(
-      data,
-    )}}));`;
-
-    return (
-      <WebView
-        ref={webviewRef}
-        originWhitelist={['*']}
-        style={{ flex: 1 }}
-        source={{ uri: 'https://chatwoot-dashboard-apps-muhsin-k.vercel.app/' }}
-        startInLoadingState={true}
-        renderLoading={Spinner}
-        injectedJavaScript={INJECTED_JAVASCRIPT}
-        onMessage={event => {
-          webviewRef.current.injectJavaScript(INJECTED_JAVASCRIPT);
-        }}
+      <ReplyBox
+        conversationId={conversationId}
+        conversationDetails={conversation}
+        inboxId={inboxId}
+        conversationMetaDetails={conversationMetaDetails}
       />
-    );
-  };
+    </View>
+  );
 
   const dashboardScenes = {
     first: MessageRoute,
   };
   if (!isDashboardAppsEmpty) {
     dashboardRoutes.forEach(item => {
-      dashboardScenes[item.key] = DashboardRoute;
+      dashboardScenes[item.key] = DashboardApp;
     });
   }
   const renderScene = SceneMap(dashboardScenes);

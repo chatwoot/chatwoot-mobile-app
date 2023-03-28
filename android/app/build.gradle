@@ -139,8 +139,8 @@ android {
         applicationId "com.chatwoot.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion 
-        versionCode 5129
-        versionName "1.8.12"
+        versionCode 5130
+        versionName "1.8.13"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         multiDexEnabled true 

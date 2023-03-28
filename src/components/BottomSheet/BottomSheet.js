@@ -12,6 +12,7 @@ const BottomSheetModal = ({
   children,
   headerTitle,
   closeFilter,
+  showHeader,
   initialSnapPoints,
   bottomSheetModalRef,
   onDismiss,
@@ -46,7 +47,9 @@ const BottomSheetModal = ({
       android_keyboardInputMode="adjustResize"
       enablePanDownToClose
       onDismiss={onDismiss}>
-      <BottomSheetModalHeader title={headerTitle} closeModal={closeFilter} colors={colors} />
+      {showHeader && (
+        <BottomSheetModalHeader title={headerTitle} closeModal={closeFilter} colors={colors} />
+      )}
       <BottomSheetScrollView>{children}</BottomSheetScrollView>
     </BottomSheetModalLibrary>
   );
@@ -55,6 +58,7 @@ const BottomSheetModal = ({
 BottomSheetModal.propTypes = {
   children: PropTypes.element.isRequired,
   bottomSheetModalRef: PropTypes.object.isRequired,
+  showHeader: PropTypes.bool,
   onDismiss: PropTypes.func,
   initialSnapPoints: PropTypes.array,
   closeFilter: PropTypes.func,

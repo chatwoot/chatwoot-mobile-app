@@ -222,6 +222,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
             <BottomSheetModal
               bottomSheetModalRef={changeLanguageModal}
               initialSnapPoints={changeLanguageModalModalSnapPoints}
+              showHeader
               headerTitle={i18n.t('LOGIN.CHANGE_LANGUAGE')}
               closeFilter={closeChangeLanguageModal}
               children={

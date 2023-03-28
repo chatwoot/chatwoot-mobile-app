@@ -9,11 +9,8 @@ export default theme => {
       width: '100%',
       justifyContent: 'space-between',
       borderBottomWidth: 0.4,
-      borderTopWidth: 0.4,
       borderRadius: borderRadius.small,
-      borderTopColor: colors.borderLight,
-      borderBottomColor: colors.border,
-      backgroundColor: colors.backgroundLight,
+      borderBottomColor: colors.borderLight,
     },
   });
 };

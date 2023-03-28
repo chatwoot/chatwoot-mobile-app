@@ -10,7 +10,7 @@ import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Share, TouchableOpacity, Dimensions } from 'react-native';
 import { getTypingUsersText, getCustomerDetails } from 'helpers';
 import CustomText from 'components/Text';
 import { selectConversationToggleStatus } from 'reducer/conversationSlice';
@@ -22,6 +22,7 @@ import Banner from 'src/screens/ChatScreen/components/Banner';
 import InboxName from 'src/screens/ChatScreen/components/InboxName';
 import TypingStatus from 'src/screens/ChatScreen/components/UserTypingStatus';
 import i18n from 'i18n';
+import { getConversationUrl } from 'src/helpers/UrlHelper';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import { INBOX_ICON } from 'src/constants/index';
@@ -195,6 +196,22 @@ const ChatHeader = ({
   const iconName = INBOX_ICON[channelType];
   const inboxName = getInboxName({ inboxes, inboxId });
 
+  const onClickShareConversationURL = async () => {
+    const { id, account_id } = conversationDetails;
+    try {
+      const conversationURL = await getConversationUrl({
+        conversationId: id,
+        accountId: account_id,
+      });
+
+      await Share.share({
+        url: conversationURL,
+      });
+    } catch (error) {
+      //error
+    }
+  };
+
   const onPressAction = ({ itemType }) => {
     closeActionModal();
     if (itemType === 'self_assign') {
@@ -237,6 +254,11 @@ const ChatHeader = ({
         navigation.navigate('TeamScreen', { conversationDetails });
       }
     }
+    if (itemType === 'share') {
+      if (conversationDetails) {
+        onClickShareConversationURL();
+      }
+    }
     if (itemType === 'mute_conversation') {
       const { muted } = conversationDetails;
       if (!muted) {
@@ -268,7 +290,7 @@ const ChatHeader = ({
 
   // Conversation action modal
   const actionModal = useRef(null);
-  const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 640, deviceHeight - 410], []);
+  const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 640, deviceHeight - 420], []);
   const toggleActionModal = useCallback(() => {
     actionModal.current.present() || actionModal.current?.close();
   }, []);

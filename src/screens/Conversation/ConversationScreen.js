@@ -309,6 +309,7 @@ const ConversationScreen = () => {
         <BottomSheetModal
           bottomSheetModalRef={conversationAssigneeModal}
           initialSnapPoints={conversationFilterModalSnapPoints}
+          showHeader
           headerTitle={i18n.t('FILTER.FILTER_BY_ASSIGNEE_TYPE')}
           closeFilter={closeConversationAssigneeModal}
           children={
@@ -323,6 +324,7 @@ const ConversationScreen = () => {
         <BottomSheetModal
           bottomSheetModalRef={conversationStatusModal}
           initialSnapPoints={conversationFilterModalSnapPoints}
+          showHeader
           headerTitle={i18n.t('FILTER.FILTER_BY_CONVERSATION_STATUS')}
           closeFilter={closeConversationStatusModal}
           children={
@@ -337,6 +339,7 @@ const ConversationScreen = () => {
         <BottomSheetModal
           bottomSheetModalRef={inboxFilterModal}
           initialSnapPoints={inboxFilterModalSnapPoints}
+          showHeader
           headerTitle={i18n.t('FILTER.FILTER_BY_INBOX')}
           closeFilter={closeInboxFilterModal}
           children={

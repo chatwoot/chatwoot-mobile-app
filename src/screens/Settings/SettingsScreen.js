@@ -214,6 +214,7 @@ const SettingsScreen = () => {
           <BottomSheetModal
             bottomSheetModalRef={switchAccountModal}
             initialSnapPoints={switchAccountModalSnapPoints}
+            showHeader
             headerTitle={i18n.t('SETTINGS.SWITCH_ACCOUNT')}
             closeFilter={closeSwitchAccountModal}
             children={
@@ -228,6 +229,7 @@ const SettingsScreen = () => {
           <BottomSheetModal
             bottomSheetModalRef={changeLanguageModal}
             initialSnapPoints={changeLanguageModalModalSnapPoints}
+            showHeader
             headerTitle={i18n.t('SETTINGS.CHANGE_LANGUAGE')}
             closeFilter={closeChangeLanguageModal}
             children={

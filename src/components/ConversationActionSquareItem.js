@@ -20,7 +20,7 @@ const createStyles = theme => {
       borderRadius: borderRadius.small,
       width: 80,
       height: 68,
-      backgroundColor: colors.background,
+      backgroundColor: colors.backgroundLight,
     },
     sectionTitle: {
       marginLeft: spacing.micro,

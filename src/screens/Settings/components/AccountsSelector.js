@@ -81,7 +81,7 @@ const AccountsSelector = ({ accounts, activeValue, onPress, colors }) => {
             }}>
             <View style={styles.accountDetailsWrapper}>
               <View style={styles.nameIdWrapper}>
-                <Text md semiBold color={colors.text}>
+                <Text md semiBold color={colors.textDark}>
                   {account.name}
                 </Text>
                 <View

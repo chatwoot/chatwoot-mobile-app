@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
-import { getConversationUrl } from 'src/helpers/UrlHelper';
-import { Share, View } from 'react-native';
+import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import createStyles from './ConversationAction.style';
 import ConversationActionItem from '../../components/ConversationActionItem';
@@ -32,22 +31,6 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
   }
 
   const shouldShowSelfAssign = !assignee || (assignee && assignee.id !== userId);
-
-  const onShare = async () => {
-    const { id, account_id } = conversationDetails;
-    try {
-      const conversationURL = await getConversationUrl({
-        conversationId: id,
-        accountId: account_id,
-      });
-
-      await Share.share({
-        url: conversationURL,
-      });
-    } catch (error) {
-      //error
-    }
-  };
 
   const { muted } = conversationDetails;
 
@@ -81,7 +64,7 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
         />
 
         <ConversationActionSquareItem
-          onPressItem={onShare}
+          onPressItem={onPressAction}
           iconName="share-outline"
           text={i18n.t('CONVERSATION.SHARE')}
           colors={colors}
@@ -141,6 +124,14 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
         text={i18n.t('CONVERSATION.SNOOZE')}
         colors={colors}
         itemType="label"
+      />
+
+      <ConversationActionItem
+        onPressItem={onPressAction}
+        iconName="channel-close-outline"
+        text={i18n.t('CONVERSATION.CLOSE')}
+        colors={colors}
+        itemType="close"
       />
     </React.Fragment>
   );

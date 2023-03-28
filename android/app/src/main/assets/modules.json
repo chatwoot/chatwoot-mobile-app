@@ -122,6 +122,8 @@
   "regexp.prototype.flags": "1.4.3",
   "functions-have-names": "1.2.3",
   "diff": "5.0.0",
+  "react-native-tab-view": "3.5.1",
+  "react-native-pager-view": "6.1.4",
   "react-native-image-pan-zoom": "2.1.12",
   "warn-once": "0.1.1",
   "color": "4.2.3",

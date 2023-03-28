@@ -57,7 +57,7 @@ const CardLabel = ({ conversationDetails, conversationId }) => {
       width: 8,
       height: 8,
       borderRadius: 3,
-      marginRight: 2,
+      marginRight: 4,
     };
   };
 

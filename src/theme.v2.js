@@ -6,6 +6,7 @@ export const palette = {
   backgroundDark: '#E4EBF1',
 
   primaryColor: '#1F93FF',
+  primaryColorDark: '#1976CC',
   primaryColorLight: '#EBF5FF',
 
   secondaryColor: '#5d7592',
@@ -103,6 +104,7 @@ export const DarkTheme = {
     backgroundChat: '#f4f6fb',
 
     primaryColor: '#1F93FF',
+    primaryColorDark: '#47A6FF',
     primaryColorLight: '#1976CC',
 
     secondaryColor: '#5d7592',

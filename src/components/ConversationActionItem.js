@@ -87,7 +87,7 @@ const ConversationActionItem = ({
           <Text sm medium color={colors.textLight} style={styles.sectionTitle}>
             {name}
           </Text>
-          {(itemType === 'assignee' || itemType === 'team') && (
+          {(itemType === 'assignee' || itemType === 'team' || itemType === 'snooze') && (
             <Icon icon="arrow-chevron-right-outline" color={colors.text} size={16} />
           )}
         </View>

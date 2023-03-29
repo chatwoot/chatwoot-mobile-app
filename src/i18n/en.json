@@ -75,8 +75,14 @@
     "MUTE_CONVERSATION": "Mute",
     "UNMUTE_CONVERSATION": "Unmute",
     "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "MARK_AS_PENDING": "Mark as pending",
+    "SNOOZE_UNTIL": "Snooze until",
+    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
+    "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
+    "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
     "SNOOZE": "Snooze Conversation",
-    "CLOSE": "Close"
+    "CLOSE": "Close",
+    "UPDATE": "Update"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

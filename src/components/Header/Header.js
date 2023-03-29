@@ -100,7 +100,7 @@ const Header = ({
       <View style={styles.headerLeft}>
         {leftIcon ? (
           <Pressable style={styles.headerLeftIcon} onPress={onPressLeft}>
-            <Icon icon={leftIcon} color={colors.textDark} size={20} />
+            <Icon icon={leftIcon} color={colors.textDark} size={24} />
           </Pressable>
         ) : null}
         <View style={styles.headerCenter}>
@@ -126,7 +126,7 @@ const Header = ({
       </View>
       {rightIcon ? (
         <Pressable style={styles.headerRightIcon} onPress={onPressRight}>
-          <Icon icon={rightIcon} color={colors.textDark} size={20} />
+          <Icon icon={rightIcon} color={colors.textDark} size={24} />
         </Pressable>
       ) : null}
     </View>

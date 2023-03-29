@@ -9,6 +9,8 @@ import ConversationActionSquareItem from '../../components/ConversationActionSqu
 import i18n from '../../i18n';
 import { selectUserId } from 'reducer/authSlice';
 import { inboxAgentSelectors } from 'reducer/inboxAgentsSlice';
+import differenceInHours from 'date-fns/differenceInHours';
+import { CONVERSATION_STATUS } from 'src/constants/index';
 
 const ConversationActionComponent = ({ onPressAction, conversationDetails }) => {
   const theme = useTheme();
@@ -33,6 +35,23 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
   const shouldShowSelfAssign = !assignee || (assignee && assignee.id !== userId);
 
   const { muted } = conversationDetails;
+
+  const isSnoozed = conversationDetails.status === CONVERSATION_STATUS.SNOOZED;
+
+  const snoozeDisplayText = () => {
+    const { snoozed_until: snoozedUntil } = conversationDetails;
+    if (snoozedUntil) {
+      // When the snooze is applied, it schedules the unsnooze event to next day/week 9AM.
+      // By that logic if the time difference is less than or equal to 24 + 9 hours we can consider it tomorrow.
+      const MAX_TIME_DIFFERENCE = 33;
+      const isSnoozedUntilTomorrow =
+        differenceInHours(new Date(snoozedUntil), new Date()) <= MAX_TIME_DIFFERENCE;
+      return isSnoozedUntilTomorrow
+        ? i18n.t('CONVERSATION.SNOOZE_UNTIL_TOMORROW')
+        : i18n.t('CONVERSATION.SNOOZE_UNTIL_NEXT_WEEK');
+    }
+    return i18n.t('CONVERSATION.SNOOZE_UNTIL_NEXT_REPLY');
+  };
 
   return (
     <React.Fragment>
@@ -120,9 +139,18 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
 
       <ConversationActionItem
         onPressItem={onPressAction}
+        iconName="book-clock-outline"
+        text={i18n.t('CONVERSATION.MARK_AS_PENDING')}
+        colors={colors}
+        itemType="pending"
+      />
+
+      <ConversationActionItem
+        onPressItem={onPressAction}
         iconName="snooze-outline"
         text={i18n.t('CONVERSATION.SNOOZE')}
         colors={colors}
+        name={isSnoozed ? snoozeDisplayText() : ''}
         itemType="snooze"
       />
 

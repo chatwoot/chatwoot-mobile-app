@@ -311,6 +311,9 @@ const ChatHeader = ({
         closeActionModal();
       }
     }
+    if (itemType === 'close') {
+      closeActionModal();
+    }
   };
 
   const toggleStatusForConversations = status => {

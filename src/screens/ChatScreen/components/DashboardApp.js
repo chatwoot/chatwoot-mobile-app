@@ -24,19 +24,16 @@ const createStyles = theme => {
 };
 
 const propTypes = {
-  route: PropTypes.shape({
-    content: PropTypes.arrayOf(
-      PropTypes.shape({
-        url: PropTypes.string,
-      }),
-    ),
-    conversation: PropTypes.object,
-    currentUser: PropTypes.object,
-  }),
+  content: PropTypes.arrayOf(
+    PropTypes.shape({
+      url: PropTypes.string,
+    }),
+  ),
+  conversation: PropTypes.object,
+  currentUser: PropTypes.object,
 };
 
-const DashboardApp = ({ route }) => {
-  const { content, conversation, currentUser } = route;
+const DashboardApp = ({ content, conversation, currentUser }) => {
   const [urlDetails] = content;
   const webviewRef = useRef(null);
   const theme = useTheme();

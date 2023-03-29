@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { withStyles } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { TabView, TabBar } from 'react-native-tab-view';
 import PropTypes from 'prop-types';
 import { SafeAreaView, AppState, useWindowDimensions } from 'react-native';
 import { StackActions } from '@react-navigation/native';
@@ -75,7 +75,7 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   }
 
   const [routes] = React.useState([
-    { key: 'first', title: i18n.t('CONVERSATION.MESSAGES'), route: 'MessageRoute' },
+    { key: 'MessageRoute', title: i18n.t('CONVERSATION.MESSAGES'), route: 'MessageRoute' },
     ...dashboardRoutes,
   ]);
 
@@ -165,14 +165,30 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   };
 
   const dashboardScenes = {
-    first: () => <MessageList loadMessages={loadMessages} conversationId={conversationId} />,
+    MessageRoute: () => <MessageList loadMessages={loadMessages} conversationId={conversationId} />,
   };
   if (!isDashboardAppsEmpty) {
     dashboardRoutes.forEach(item => {
       dashboardScenes[item.key] = DashboardApp;
     });
   }
-  const renderScene = SceneMap(dashboardScenes);
+
+  const renderScene = ({ route: tabRoute }) => {
+    if (tabRoute.route === 'MessageRoute') {
+      return <MessageList loadMessages={loadMessages} conversationId={conversationId} />;
+    }
+    if (tabRoute.route === 'DashboardRoute') {
+      return (
+        <DashboardApp
+          content={tabRoute.content}
+          conversation={tabRoute.conversation}
+          currentUser={tabRoute.currentUser}
+        />
+      );
+    }
+    return null;
+  };
+
   const renderTabBar = props => (
     <TabBar
       {...props}
@@ -182,7 +198,7 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
       indicatorStyle={style.tabIndicator}
       style={style.tabBar}
       tabStyle={style.tabStyle}
-      scrollEnabled
+      scrollEnabled={false}
     />
   );
 

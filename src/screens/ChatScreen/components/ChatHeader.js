@@ -17,7 +17,6 @@ import { selectConversationToggleStatus } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';
 import { UserAvatar, Pressable } from 'components';
 import { getInboxName } from 'helpers';
-import ConversationAction from '../../ConversationAction/ConversationAction';
 import Banner from 'src/screens/ChatScreen/components/Banner';
 import InboxName from 'src/screens/ChatScreen/components/InboxName';
 import TypingStatus from 'src/screens/ChatScreen/components/UserTypingStatus';
@@ -30,6 +29,8 @@ import { inboxesSelector } from 'reducer/inboxSlice';
 import { selectUserId } from 'reducer/authSlice';
 const deviceHeight = Dimensions.get('window').height;
 
+// Bottom sheet items
+import ConversationAction from '../../ConversationAction/ConversationAction';
 const styles = theme => ({
   headerView: {
     flexDirection: 'row',
@@ -302,7 +303,7 @@ const ChatHeader = ({
 
   // Conversation action modal
   const actionModal = useRef(null);
-  const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 640, deviceHeight - 420], []);
+  const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 420, deviceHeight - 420.1], []);
   const toggleActionModal = useCallback(() => {
     actionModal.current.present() || actionModal.current?.close();
   }, []);

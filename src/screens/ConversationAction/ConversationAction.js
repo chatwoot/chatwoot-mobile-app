@@ -123,7 +123,7 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
         iconName="snooze-outline"
         text={i18n.t('CONVERSATION.SNOOZE')}
         colors={colors}
-        itemType="label"
+        itemType="snooze"
       />
 
       <ConversationActionItem

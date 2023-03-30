@@ -39,6 +39,7 @@ const propTypes = {
     id: PropTypes.number,
     unread_count: PropTypes.number,
     status: PropTypes.string,
+    last_non_activity_message: PropTypes.object,
   }).isRequired,
   conversationTypingUsers: PropTypes.shape({}),
   showAssigneeLabel: PropTypes.bool,
@@ -62,11 +63,12 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
     inbox_id: inboxId,
     id,
     unread_count: unreadCount,
+    last_non_activity_message: lastNonActivityMessage,
   } = item;
 
   const assigneeName = assignee?.name;
 
-  const lastMessage = findLastMessage({ messages });
+  const lastMessage = findLastMessage({ messages, lastNonActivityMessage });
   const { content, created_at, attachments, message_type, private: isPrivate } = lastMessage;
   const {
     name: inboxName = null,

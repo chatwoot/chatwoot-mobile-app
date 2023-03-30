@@ -47,10 +47,6 @@ const styles = theme => ({
     fontWeight: theme['font-semi-bold'],
     fontSize: theme['font-size-medium'],
   },
-  chatHeader: {
-    borderBottomWidth: 1,
-    borderBottomColor: theme['color-border'],
-  },
   actionIcon: {
     flexDirection: 'row',
   },
@@ -267,7 +263,6 @@ const ChatHeader = ({
   return (
     <React.Fragment>
       <TopNavigation
-        style={style.chatHeader}
         title={() => (
           <Pressable style={style.headerView} onPress={showConversationDetails}>
             {customerDetails.name && (

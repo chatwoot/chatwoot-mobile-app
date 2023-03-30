@@ -19,14 +19,15 @@ import { inboxAgentSelectors, actions as inboxAgentActions } from 'reducer/inbox
 
 const propTypes = {
   conversationId: PropTypes.number,
-  conversationDetails: PropTypes.object,
+  conversationMetaDetails: PropTypes.object,
   eva: PropTypes.shape({
     theme: PropTypes.object,
     style: PropTypes.object,
   }).isRequired,
+  inboxId: PropTypes.number,
 };
 
-const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }) => {
+const ReplyBox = ({ eva: { theme, style }, conversationId, inboxId, conversationMetaDetails }) => {
   const [isPrivate, setPrivateMode] = useState(false);
   const [ccEmails, setCCEmails] = useState('');
   const [bccEmails, setBCCEmails] = useState('');
@@ -35,7 +36,6 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
   const agents = useSelector(state => inboxAgentSelectors.inboxAssignedAgents(state));
   const [cannedResponseSearchKey, setCannedResponseSearchKey] = useState('');
   const [attachmentDetails, setAttachmentDetails] = useState(null);
-  const inboxId = conversationDetails?.inbox_id;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -61,8 +61,8 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
   };
 
   const isAnEmailChannelAndNotInPrivateNote = () => {
-    if (conversationDetails && conversationDetails.meta) {
-      const channel = conversationDetails.meta.channel;
+    if (conversationMetaDetails) {
+      const channel = conversationMetaDetails.channel;
       return channel === 'Channel::Email' && !isPrivate;
     }
     return false;
@@ -108,10 +108,15 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
   };
 
   const onNewMessageAdd = () => {
-    const updatedMessage = message.replace(
-      /@\[([\w\d.-]+)\]\((\d+)\)/g,
-      '[@$1](mention://user/$2/$1)',
-    );
+    let updatedMessage = message;
+    if (isPrivate) {
+      const regex = /@\[([\w\s]+)\]\((\d+)\)/g;
+      updatedMessage = message.replace(
+        regex,
+        '[@$1](mention://user/$2/' + encodeURIComponent('$1') + ')',
+      );
+    }
+
     if (message || attachmentDetails) {
       const payload = {
         conversationId,
@@ -379,4 +384,4 @@ const styles = theme => ({
 ReplyBox.propTypes = propTypes;
 
 const ReplyBoxItem = withStyles(ReplyBox, styles);
-export default ReplyBoxItem;
+export default React.memo(ReplyBoxItem);

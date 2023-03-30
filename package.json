@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "1.8.11",
+  "version": "1.8.15",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -90,6 +90,7 @@
     "react-native-image-picker": "^3.1.4",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-markdown-display": "^7.0.0-alpha.2",
+    "react-native-pager-view": "^6.1.4",
     "react-native-reanimated": "^2.12.0",
     "react-native-render-html": "^6.3.4",
     "react-native-safari-view": "^2.1.0",
@@ -97,6 +98,7 @@
     "react-native-screens": "~3.4.0",
     "react-native-snackbar": "^2.4.0",
     "react-native-svg": "^12.1.0",
+    "react-native-tab-view": "^3.5.1",
     "react-native-webview": "^11.3.1",
     "react-redux": "^8.0.2",
     "redux": "^4.0.5",

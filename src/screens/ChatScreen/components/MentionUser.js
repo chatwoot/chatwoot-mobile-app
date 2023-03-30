@@ -44,7 +44,8 @@ const MentionUserComponent = ({
       <UserAvatar
         thumbnail={thumbnail}
         userName={name}
-        size={32}
+        size={24}
+        fontSize={8}
         defaultBGColor={theme['color-primary-default']}
         availabilityStatus={availabilityStatus}
       />

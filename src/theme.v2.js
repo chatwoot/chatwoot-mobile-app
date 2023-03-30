@@ -101,6 +101,8 @@ export const DarkTheme = {
     backgroundLight: '#1F2D3D',
     backgroundDark: '#314155',
 
+    backgroundChat: '#f4f6fb',
+
     primaryColor: '#1F93FF',
     primaryColorDark: '#47A6FF',
     primaryColorLight: '#1976CC',

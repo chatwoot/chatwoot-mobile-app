@@ -73,7 +73,8 @@
     "UN_ASSIGN": "שיחה שלא הוקצתה",
     "MUTE_CONVERSATION": "Mute conversation",
     "UNMUTE_CONVERSATION": "בטל השתקת שיחה",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "MESSAGES": "הודעות"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

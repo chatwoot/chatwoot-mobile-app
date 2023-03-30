@@ -73,7 +73,8 @@
     "UN_ASSIGN": "Anularea atribuirii conversației",
     "MUTE_CONVERSATION": "Silențios conversația",
     "UNMUTE_CONVERSATION": "Sunet conversația",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "MESSAGES": "Mesaje"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

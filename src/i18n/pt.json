@@ -73,7 +73,8 @@
     "UN_ASSIGN": "Unassign conversation",
     "MUTE_CONVERSATION": "Silenciar Conversa",
     "UNMUTE_CONVERSATION": "Reativar conversa",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "MESSAGES": "Mensagens"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

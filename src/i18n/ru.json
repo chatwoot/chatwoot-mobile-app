@@ -73,7 +73,8 @@
     "UN_ASSIGN": "Отменить беседу",
     "MUTE_CONVERSATION": "Заглушить диалог",
     "UNMUTE_CONVERSATION": "Включить диалог",
-    "CONVERSATION_NOT_FOUND": "Не удалось получить диалог"
+    "CONVERSATION_NOT_FOUND": "Не удалось получить диалог",
+    "MESSAGES": "Сообщения"
   },
   "FILTER": {
     "ALL_INBOXES": "Все письма",

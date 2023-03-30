@@ -2,12 +2,12 @@ import React, { createRef, useState } from 'react';
 import { withStyles, Layout, List, Spinner } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView, View, AppState } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import ActionSheet from 'react-native-actions-sheet';
 import i18n from 'i18n';
 import { Header } from 'components';
-
+import { getCurrentRouteName } from 'helpers/NavigationHelper';
 import styles from './NotificationScreen.style';
 import NotificationItem from '../../components/NotificationItem';
 import CustomText from '../../components/Text';
@@ -26,6 +26,7 @@ import {
 const LoaderData = new Array(24).fill(0);
 const renderItemLoader = () => <NotificationItemLoader />;
 const actionSheetRef = createRef();
+import { SCREENS } from 'constants';
 
 const wait = timeout => {
   return new Promise(resolve => {
@@ -33,7 +34,11 @@ const wait = timeout => {
   });
 };
 
+// The screen list thats need to be checked for refresh conversation list
+const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.NOTIFICATION, SCREENS.SETTINGS];
+
 const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
+  const [appState, setAppState] = useState(AppState.currentState);
   const allNotifications = useSelector(notificationSelector.selectAll);
   const isFetching = useSelector(selectIsFetching);
   const isAllNotificationsLoaded = useSelector(selectAllNotificationsLoaded);
@@ -86,6 +91,22 @@ const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
       </View>
     );
   };
+
+  // Update conversations when app comes to foreground from background
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener('change', nextAppState => {
+      if (appState === 'background' && nextAppState === 'active') {
+        const routeName = getCurrentRouteName();
+        if (REFRESH_SCREEN_LIST.includes(routeName)) {
+          dispatch(notificationsActions.index({ pageNo }));
+        }
+      }
+      setAppState(nextAppState);
+    });
+    return () => {
+      appStateListener?.remove();
+    };
+  }, [appState, pageNo, dispatch]);
 
   const onSelectNotification = item => {
     const {

@@ -198,7 +198,7 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
       indicatorStyle={style.tabIndicator}
       style={style.tabBar}
       tabStyle={style.tabStyle}
-      scrollEnabled={false}
+      scrollEnabled={true}
     />
   );
 

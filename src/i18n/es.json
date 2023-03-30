@@ -73,7 +73,8 @@
     "UN_ASSIGN": "Desasignar conversación",
     "MUTE_CONVERSATION": "Silenciar conversación",
     "UNMUTE_CONVERSATION": "Quitar silencio de conversación",
-    "CONVERSATION_NOT_FOUND": "No se pudo obtener la conversación"
+    "CONVERSATION_NOT_FOUND": "No se pudo obtener la conversación",
+    "MESSAGES": "Mensajes"
   },
   "FILTER": {
     "ALL_INBOXES": "Todas las bandejas",

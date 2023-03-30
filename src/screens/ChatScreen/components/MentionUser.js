@@ -45,7 +45,7 @@ const MentionUserComponent = ({
         thumbnail={thumbnail}
         userName={name}
         size={24}
-        fontSize={8}
+        fontSize={theme['font-size-extra-extra-small']}
         defaultBGColor={theme['color-primary-default']}
         availabilityStatus={availabilityStatus}
       />

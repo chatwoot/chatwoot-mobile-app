@@ -73,7 +73,8 @@
     "UN_ASSIGN": "Unassign conversation",
     "MUTE_CONVERSATION": "كتم المحادثة",
     "UNMUTE_CONVERSATION": "إلغاء كتم المحادثة",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "MESSAGES": "الرسائل"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

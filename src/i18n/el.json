@@ -73,7 +73,8 @@
     "UN_ASSIGN": "Unassign conversation",
     "MUTE_CONVERSATION": "Σίγαση Συνομιλίας",
     "UNMUTE_CONVERSATION": "Επαναφορά Συνομιλίας",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "MESSAGES": "Μηνύματα"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

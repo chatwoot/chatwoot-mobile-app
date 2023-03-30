@@ -73,7 +73,8 @@
     "UN_ASSIGN": "Annulla l'assegnazione della conversazione",
     "MUTE_CONVERSATION": "Silenzia conversazione",
     "UNMUTE_CONVERSATION": "Riattiva conversazione",
-    "CONVERSATION_NOT_FOUND": "Impossibile recuperare la conversazione"
+    "CONVERSATION_NOT_FOUND": "Impossibile recuperare la conversazione",
+    "MESSAGES": "Messaggi"
   },
   "FILTER": {
     "ALL_INBOXES": "Tutte le caselle di posta",

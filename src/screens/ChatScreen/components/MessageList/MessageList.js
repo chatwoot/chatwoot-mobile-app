@@ -41,6 +41,8 @@ const MessagesListComponent = ({ eva: { style }, navigation, conversationId, loa
     conversationSelectors.getMessagesByConversationId(state, conversationId),
   );
 
+  const inboxId = conversation?.inbox_id;
+
   const showAttachment = ({ type, dataUrl }) => {
     if (type === 'image') {
       navigation.navigate('ImageScreen', {
@@ -106,7 +108,11 @@ const MessagesListComponent = ({ eva: { style }, navigation, conversationId, loa
           </View>
         )}
       </View>
-      <ReplyBox conversationId={conversationId} conversationDetails={conversation} />
+      <ReplyBox
+        conversationId={conversationId}
+        conversationDetails={conversation}
+        inboxId={inboxId}
+      />
     </View>
   );
 };

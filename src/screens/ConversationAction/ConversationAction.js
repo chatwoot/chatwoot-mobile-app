@@ -17,16 +17,13 @@ const ConversationActionComponent = ({ eva: { style }, onPressAction, conversati
     meta: { assignee, team },
   } = conversationDetails;
 
-  let assignedAgent = null;
+  let assignedAgent = {
+    name: 'Select Agent',
+    thumbnail: '',
+  };
   if (assignee) {
     assignedAgent = agents.find(item => item.id === assignee.id);
-  } else {
-    assignedAgent = {
-      name: 'Select Agent',
-      thumbnail: '',
-    };
   }
-
   const shouldShowSelfAssign = !assignee || (assignee && assignee.id !== userId);
 
   const onShare = async () => {

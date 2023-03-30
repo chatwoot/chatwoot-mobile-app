@@ -73,7 +73,8 @@
     "UN_ASSIGN": "Unassign conversation",
     "MUTE_CONVERSATION": "Вимкнути звук для розмови",
     "UNMUTE_CONVERSATION": "Увімкнути звук для розмови",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "MESSAGES": "Текст повідомлень"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

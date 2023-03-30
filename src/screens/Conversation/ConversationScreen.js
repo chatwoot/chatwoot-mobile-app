@@ -40,7 +40,7 @@ import { getCurrentRouteName } from 'helpers/NavigationHelper';
 import { actions as labelActions } from 'reducer/labelSlice';
 import { SCREENS } from 'constants';
 
-// The screen list thats need to be checked for refresh conversation list
+// The screen list thats need to be checked for refresh notification list
 const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.NOTIFICATION, SCREENS.SETTINGS];
 
 const ConversationScreen = () => {
@@ -90,7 +90,7 @@ const ConversationScreen = () => {
     const { accountId, userId } = await getUserDetails();
     ActionCable.init({ pubSubToken, webSocketUrl, accountId, userId });
   }, [webSocketUrl]);
-  // Update conversations when app comes to foreground from background
+  // Update notifications when app comes to foreground from background
   useEffect(() => {
     const appStateListener = AppState.addEventListener('change', nextAppState => {
       if (appState === 'background' && nextAppState === 'active') {

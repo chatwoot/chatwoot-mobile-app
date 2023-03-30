@@ -16,6 +16,8 @@ import { updateBadgeCount } from 'helpers/PushHelper';
 import { getHeaders } from 'helpers/AuthHelper';
 import { getBaseUrl } from 'helpers/UrlHelper';
 import { API_URL } from 'constants/url';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
 export const notificationAdapter = createEntityAdapter({
   selectId: notification => notification.id,
@@ -78,12 +80,7 @@ export const actions = {
     async (_, { rejectWithValue }) => {
       try {
         const permissionEnabled = await messaging().hasPermission();
-
-        if (!permissionEnabled || permissionEnabled === -1) {
-          await messaging().requestPermission();
-        }
         const fcmToken = await messaging().getToken();
-
         const deviceId = getUniqueId();
         const devicePlatform = getSystemName();
         const manufacturer = await getManufacturer();
@@ -92,6 +89,17 @@ export const actions = {
         const deviceName = `${manufacturer} ${model}`;
         const brandName = await getBrand();
         const buildNumber = await getBuildNumber();
+
+        if (!permissionEnabled || permissionEnabled === -1) {
+          await messaging().requestPermission();
+          AnalyticsHelper.track(CONVERSATION_EVENTS.APPLY_FILTER, {
+            devicePlatform,
+            deviceName,
+            brandName,
+            buildNumber,
+          });
+        }
+
         const pushData = {
           subscription_type: 'fcm',
           subscription_attributes: {

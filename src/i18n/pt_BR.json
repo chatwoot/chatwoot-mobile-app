@@ -73,7 +73,8 @@
     "UN_ASSIGN": "Desassociar conversa",
     "MUTE_CONVERSATION": "Silenciar conversa",
     "UNMUTE_CONVERSATION": "Não silenciar conversa",
-    "CONVERSATION_NOT_FOUND": "Não foi possível obter a conversa"
+    "CONVERSATION_NOT_FOUND": "Não foi possível obter a conversa",
+    "MESSAGES": "Mensagens"
   },
   "FILTER": {
     "ALL_INBOXES": "Todas as caixas de entrada",

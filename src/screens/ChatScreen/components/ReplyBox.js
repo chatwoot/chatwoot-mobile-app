@@ -108,10 +108,15 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, inboxId, conversation
   };
 
   const onNewMessageAdd = () => {
-    const updatedMessage = message.replace(
-      /@\[([\w\d.-]+)\]\((\d+)\)/g,
-      '[@$1](mention://user/$2/$1)',
-    );
+    let updatedMessage = message;
+    if (isPrivate) {
+      const regex = /@\[([\w\s]+)\]\((\d+)\)/g;
+      updatedMessage = message.replace(
+        regex,
+        '[@$1](mention://user/$2/' + encodeURIComponent('$1') + ')',
+      );
+    }
+
     if (message || attachmentDetails) {
       const payload = {
         conversationId,

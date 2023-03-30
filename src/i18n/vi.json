@@ -73,7 +73,8 @@
     "UN_ASSIGN": "Bỏ phân công cuộc trò chuyện",
     "MUTE_CONVERSATION": "Tắt tiếng",
     "UNMUTE_CONVERSATION": "Bật tiếng cuộc trò chuyện",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation"
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "MESSAGES": "Tin nhắn"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

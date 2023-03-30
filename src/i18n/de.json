@@ -73,7 +73,8 @@
     "UN_ASSIGN": "Zuweisung entfernen",
     "MUTE_CONVERSATION": "Konversation stumm schalten",
     "UNMUTE_CONVERSATION": "Konversation entstummen",
-    "CONVERSATION_NOT_FOUND": "Unterhaltung konnte nicht abgerufen werden"
+    "CONVERSATION_NOT_FOUND": "Unterhaltung konnte nicht abgerufen werden",
+    "MESSAGES": "Nachrichten"
   },
   "FILTER": {
     "ALL_INBOXES": "Alle Posteingänge",

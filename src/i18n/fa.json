@@ -73,7 +73,8 @@
     "UN_ASSIGN": "لغو اختصاص مکالمه",
     "MUTE_CONVERSATION": "صدای گفتگو را قطع کن",
     "UNMUTE_CONVERSATION": "مکالمه را باصدا کنید",
-    "CONVERSATION_NOT_FOUND": "گفتگو را نمی‌تواند دریافت کرد"
+    "CONVERSATION_NOT_FOUND": "گفتگو را نمی‌تواند دریافت کرد",
+    "MESSAGES": "پیام‌ها"
   },
   "FILTER": {
     "ALL_INBOXES": "همه صندوق‌های‌ورودی",

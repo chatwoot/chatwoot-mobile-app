@@ -1,4 +1,5 @@
 import { MESSAGE_STATUS, MESSAGE_TYPES } from 'constants';
+
 export const getUuid = () =>
   'xxxxxxxx4xxx'.replace(/[xy]/g, c => {
     // eslint-disable-next-line no-bitwise
@@ -42,16 +43,15 @@ const getLastNonActivityMessage = (messageInStore, messageFromAPI) => {
   return messageInStore || messageFromAPI;
 };
 
-export function findLastMessage({ messages = [], lastNonActivityMessage = {} }) {
-  let lastMessageIncludingActivity = messages.length ? messages[messages.length - 1] : null;
+export function findLastMessage(m) {
+  let lastMessageIncludingActivity = m.messages[m.messages.length - 1];
 
-  const nonActivityMessages = messages.filter(message => message.message_type !== 2);
+  const nonActivityMessages = m.messages.filter(message => message.message_type !== 2);
   let lastNonActivityMessageInStore = nonActivityMessages[nonActivityMessages.length - 1];
-  let lastNonActivityMessageFromAPI = lastNonActivityMessage;
+  let lastNonActivityMessageFromAPI = m.last_non_activity_message;
   if (!lastNonActivityMessageInStore && !lastNonActivityMessageFromAPI) {
     return lastMessageIncludingActivity;
   }
-
   return getLastNonActivityMessage(lastNonActivityMessageInStore, lastNonActivityMessageFromAPI);
 }
 

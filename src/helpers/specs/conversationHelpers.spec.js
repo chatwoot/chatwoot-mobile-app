@@ -80,12 +80,7 @@ describe('#lastMessage', () => {
       last_non_activity_message: null,
     };
     const { messages } = conversation;
-    expect(
-      findLastMessage({
-        messages,
-        lastNonActivityMessage: conversation.last_non_activity_message,
-      }),
-    ).toEqual(messages[messages.length - 1]);
+    expect(findLastMessage(conversation)).toEqual(messages[messages.length - 1]);
   });
 
   it('should return message from store if store has latest message', () => {
@@ -98,12 +93,7 @@ describe('#lastMessage', () => {
         content: 'Hey',
       },
     };
-    expect(
-      findLastMessage({
-        messages: conversation.messages,
-        lastNonActivityMessage: conversation.last_non_activity_message,
-      }),
-    ).toEqual(conversation.last_non_activity_message);
+    expect(findLastMessage(conversation)).toEqual(conversation.last_non_activity_message);
   });
 
   it('should return last non activity message from store if api value is empty', () => {
@@ -119,12 +109,7 @@ describe('#lastMessage', () => {
       ],
       last_non_activity_message: null,
     };
-    expect(
-      findLastMessage({
-        messages: conversation.messages,
-        lastNonActivityMessage: conversation.last_non_activity_message,
-      }),
-    ).toEqual(conversation.messages[0]);
+    expect(findLastMessage(conversation)).toEqual(conversation.messages[0]);
   });
 
   it("should return last non activity message from store if store doesn't have any messages", () => {
@@ -150,11 +135,6 @@ describe('#lastMessage', () => {
         content: 'Hey',
       },
     };
-    expect(
-      findLastMessage({
-        messages: conversation.messages,
-        lastNonActivityMessage: conversation.last_non_activity_message,
-      }),
-    ).toEqual(conversation.messages[1]);
+    expect(findLastMessage(conversation)).toEqual(conversation.messages[1]);
   });
 });

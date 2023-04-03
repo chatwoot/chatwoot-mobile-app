@@ -1,6 +1,7 @@
 import React from 'react';
 import { Spinner, withStyles } from '@ui-kitten/components';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { View, SectionList } from 'react-native';
 import ChatMessage from '../ChatMessage';
@@ -19,17 +20,12 @@ const propTypes = {
     style: PropTypes.object,
     theme: PropTypes.object,
   }).isRequired,
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-    goBack: PropTypes.func.isRequired,
-    canGoBack: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired,
-  }),
   loadMessages: PropTypes.func.isRequired,
   conversationId: PropTypes.number.isRequired,
 };
 
-const MessagesListComponent = ({ eva: { style }, navigation, conversationId, loadMessages }) => {
+const MessagesListComponent = ({ eva: { style }, conversationId, loadMessages }) => {
+  const navigation = useNavigation();
   const isFetching = useSelector(selectMessagesLoading);
   const isAllMessagesFetched = useSelector(selectAllMessagesFetched);
 

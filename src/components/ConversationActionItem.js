@@ -75,6 +75,7 @@ const ConversationActionItem = ({
               defaultBGColor={theme['color-primary-default']}
               isActive={isActive}
               size={28}
+              fontSize={theme['font-size-extra-small']}
               availabilityStatus={availabilityStatus}
             />
           )}

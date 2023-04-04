@@ -281,7 +281,7 @@ const SettingsScreen = () => {
         <View style={styles.logoutSection}>
           <Pressable style={styles.logoutButton} onPress={onClickLogout}>
             <Icon icon="power-outline" color={colors.textDark} size={16} />
-            <Text semiBold sm color={colors.textDark} style={styles.logoutText}>
+            <Text medium sm color={colors.textDark} style={styles.logoutText}>
               {i18n.t('SETTINGS.LOGOUT')}
             </Text>
           </Pressable>

@@ -54,7 +54,7 @@ const AccordionItem = ({ title, activeValue, rightIcon, leftIcon, routeName, onP
     <Pressable key={title} style={styles.accordionItem} onPress={() => onPress({ routeName })}>
       <View style={styles.itemView}>
         <Icon icon={leftIcon} color={colors.textDark} size={18} />
-        <Text semiBold sm color={colors.textDark} style={styles.accordionItemText}>
+        <Text medium sm color={colors.textDark} style={styles.accordionItemText}>
           {title}
         </Text>
       </View>

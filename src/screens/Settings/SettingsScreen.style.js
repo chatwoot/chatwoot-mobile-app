@@ -60,6 +60,7 @@ export default theme => {
     },
     logoutButton: {
       flexDirection: 'row',
+      alignItems: 'center',
       paddingVertical: spacing.micro,
       paddingHorizontal: spacing.smaller,
       borderRadius: borderRadius.small,

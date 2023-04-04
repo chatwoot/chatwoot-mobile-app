@@ -27,8 +27,6 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
   }
   const shouldShowSelfAssign = !assignee || (assignee && assignee.id !== userId);
 
-  const { muted } = conversationDetails;
-
   const isSnoozed = conversationDetails.status === CONVERSATION_STATUS.SNOOZED;
 
   const snoozeDisplayText = () => {

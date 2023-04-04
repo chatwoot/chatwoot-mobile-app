@@ -185,7 +185,7 @@ const actions = {
     'conversations/toggleConversationStatus',
     async ({ conversationId, status, snoozedUntil = null }, { rejectWithValue }) => {
       try {
-        const response = axios.post(`conversations/${conversationId}/toggle_status`, {
+        const response = await axios.post(`conversations/${conversationId}/toggle_status`, {
           status,
           snoozed_until: snoozedUntil,
         });
@@ -245,6 +245,7 @@ const actions = {
       try {
         const apiUrl = `conversations/${conversationId}/assignments?assignee_id=${assigneeId}`;
         const response = await axios.post(apiUrl);
+
         return response.data;
       } catch (error) {
         if (!error.response) {

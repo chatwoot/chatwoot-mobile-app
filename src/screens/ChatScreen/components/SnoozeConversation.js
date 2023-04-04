@@ -87,10 +87,6 @@ const SnoozeConversation = ({ colors, conversationId, activeSnoozeValue, closeMo
 
   const [selectedItem, setSelectedItem] = useState('');
 
-  const toggleStatus = key => {
-    setSelectedItem(key);
-  };
-
   const snoozeTimes = {
     reply: null,
     tomorrow: getUnixTime(addHours(startOfTomorrow(), 9)),
@@ -115,19 +111,13 @@ const SnoozeConversation = ({ colors, conversationId, activeSnoozeValue, closeMo
 
   return (
     <View style={styles.bottomSheet}>
-      <BottomSheetPageHeader
-        title={i18n.t('CONVERSATION.SNOOZE')}
-        actionButtonText={i18n.t('CONVERSATION.UPDATE')}
-        actionButtonIcon="checkmark-circle-outline"
-        updateButton={() => toggleStatusForConversations(selectedItem)}
-        colors={colors}
-      />
+      <BottomSheetPageHeader title={i18n.t('CONVERSATION.SNOOZE')} colors={colors} />
       <View style={styles.bottomSheetContent}>
         {snoozeItems.map((item, index) => (
           <Pressable
             style={styles.bottomSheetItem}
             key={item.key}
-            onPress={() => toggleStatus(item.key)}>
+            onPress={() => toggleStatusForConversations(item.key)}>
             <View style={styles.itemView}>
               <Icon icon={item.icon} color={colors.textDark} size={18} />
               <Text sm medium color={colors.textDark} style={styles.itemText}>

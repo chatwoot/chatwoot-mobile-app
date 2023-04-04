@@ -63,12 +63,16 @@ const BottomSheetPageHeader = ({
       <Text md semiBold color={colors.textDark} style={styles.headerTitle}>
         {title}
       </Text>
-      <Pressable onPress={updateButton} style={styles.actionButton}>
-        <Icon icon={actionButtonIcon} size={16} color={colors.primaryColorDarker} />
-        <Text sm medium color={colors.primaryColorDarker} style={styles.actionButtonText}>
-          {actionButtonText}
-        </Text>
-      </Pressable>
+      {actionButtonText && (
+        <Pressable onPress={updateButton} style={styles.actionButton}>
+          {actionButtonIcon && (
+            <Icon icon={actionButtonIcon} size={16} color={colors.primaryColorDarker} />
+          )}
+          <Text sm medium color={colors.primaryColorDarker} style={styles.actionButtonText}>
+            {actionButtonText}
+          </Text>
+        </Pressable>
+      )}
     </View>
   );
 };

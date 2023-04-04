@@ -425,7 +425,7 @@ const ChatHeader = ({
               <View style={styles.customerName}>
                 {customerDetails.name && (
                   <Text md medium color={colors.textDark}>
-                    {getTextSubstringWithEllipsis(customerDetails.name, 14)}
+                    {getTextSubstringWithEllipsis(customerDetails.name, 12)}
                   </Text>
                 )}
                 <View style={styles.infoIcon}>

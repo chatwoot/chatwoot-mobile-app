@@ -384,7 +384,7 @@ const ChatHeader = ({
 
   // Conversation action modal
   const actionModal = useRef(null);
-  const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 420, deviceHeight - 420], []);
+  const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 410, deviceHeight - 410], []);
   const toggleActionModal = useCallback(() => {
     actionModal.current.present() || actionModal.current?.close();
   }, []);
@@ -394,7 +394,7 @@ const ChatHeader = ({
 
   // Conversation action modal
   const snoozeActionModal = useRef(null);
-  const snoozeActionModalSnapPoints = useMemo(() => [deviceHeight - 420, deviceHeight - 420], []);
+  const snoozeActionModalSnapPoints = useMemo(() => [deviceHeight - 410, deviceHeight - 410], []);
   const toggleSnoozeActionModal = useCallback(() => {
     snoozeActionModal.current.present() || snoozeActionModal.current?.close();
   }, []);

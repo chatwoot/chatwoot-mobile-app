@@ -118,6 +118,15 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
         name={team ? team.name : 'Select Team'}
       />
 
+      <ConversationActionItem
+        onPressItem={onPressAction}
+        iconName="snooze-outline"
+        text={i18n.t('CONVERSATION.SNOOZE')}
+        colors={colors}
+        name={isSnoozed ? snoozeDisplayText() : ''}
+        itemType="snooze"
+      />
+
       {shouldShowSelfAssign && (
         <ConversationActionItem
           onPressItem={onPressAction}
@@ -143,15 +152,6 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
         text={i18n.t('CONVERSATION.MARK_AS_PENDING')}
         colors={colors}
         itemType="pending"
-      />
-
-      <ConversationActionItem
-        onPressItem={onPressAction}
-        iconName="snooze-outline"
-        text={i18n.t('CONVERSATION.SNOOZE')}
-        colors={colors}
-        name={isSnoozed ? snoozeDisplayText() : ''}
-        itemType="snooze"
       />
 
       <ConversationActionItem

@@ -104,10 +104,7 @@ const SettingsScreen = () => {
 
   // Switch account bottom sheet
   const switchAccountModal = useRef(null);
-  const switchAccountModalSnapPoints = useMemo(
-    () => [deviceHeight - 210, deviceHeight - 210.1],
-    [],
-  );
+  const switchAccountModalSnapPoints = useMemo(() => [deviceHeight - 210, deviceHeight - 210], []);
   const toggleSwitchAccountModal = useCallback(() => {
     switchAccountModal.current.present() || switchAccountModal.current?.close();
   }, []);
@@ -118,7 +115,7 @@ const SettingsScreen = () => {
   // Language bottom sheet
   const changeLanguageModal = useRef(null);
   const changeLanguageModalModalSnapPoints = useMemo(
-    () => [deviceHeight - 210, deviceHeight - 210.1],
+    () => [deviceHeight - 210, deviceHeight - 210],
     [],
   );
   const toggleChangeLanguageModal = useCallback(() => {

@@ -11573,10 +11573,10 @@ react-native-fit-image@^1.5.5:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-flipper@^0.162.0:
-  version "0.162.0"
-  resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.162.0.tgz#9919adb743dae50a80d914eaa3a53eb33eaf39ec"
-  integrity sha512-htXhzHDKWkMaBivc+SLTxqT1GkJxR2rrXobXlAhFYrvaQ6ws1KA6peqQssEiPSrXQJ2Z2oRXQ+yrlPKaBC/Hjg==
+react-native-flipper@^0.188.0:
+  version "0.188.0"
+  resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.188.0.tgz#cdeb46200dd2adaac95b6f47e115b677fcb7d794"
+  integrity sha512-ElidPqp/zGtn8TB0vxFnXDpqzAT2kQnt+8SrBETHsl5CR5+42Mdnr7fWh7NVUv7tu3wBIQ89TPolaRIAZ7J7Ig==
 
 react-native-gesture-handler@^2.9.0:
   version "2.9.0"

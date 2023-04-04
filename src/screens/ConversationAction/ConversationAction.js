@@ -1,11 +1,8 @@
 /* eslint-disable react/prop-types */
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useTheme } from '@react-navigation/native';
-import { View } from 'react-native';
 import { useSelector } from 'react-redux';
-import createStyles from './ConversationAction.style';
 import ConversationActionItem from '../../components/ConversationActionItem';
-import ConversationActionSquareItem from '../../components/ConversationActionSquareItem';
 import i18n from '../../i18n';
 import { selectUserId } from 'reducer/authSlice';
 import { inboxAgentSelectors } from 'reducer/inboxAgentsSlice';
@@ -15,7 +12,6 @@ import { CONVERSATION_STATUS } from 'src/constants/index';
 const ConversationActionComponent = ({ onPressAction, conversationDetails }) => {
   const theme = useTheme();
   const { colors } = theme;
-  const styles = useMemo(() => createStyles(theme), [theme]);
   const agents = useSelector(state => inboxAgentSelectors.inboxAssignedAgents(state));
   const userId = useSelector(selectUserId);
   const {
@@ -55,49 +51,6 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
 
   return (
     <React.Fragment>
-      <View style={styles.squareLayoutWrap}>
-        {!muted ? (
-          <ConversationActionSquareItem
-            onPressItem={onPressAction}
-            iconName="speaker-mute-outline"
-            colors={colors}
-            text={i18n.t('CONVERSATION.MUTE_CONVERSATION')}
-            itemType="mute_conversation"
-          />
-        ) : (
-          <ConversationActionSquareItem
-            onPressItem={onPressAction}
-            iconName="speaker-1-outline"
-            text={i18n.t('CONVERSATION.UNMUTE_CONVERSATION')}
-            colors={colors}
-            itemType="unmute_conversation"
-          />
-        )}
-
-        <ConversationActionSquareItem
-          onPressItem={onPressAction}
-          iconName="tag-outline"
-          text={i18n.t('CONVERSATION.LABELS')}
-          colors={colors}
-          itemType="label"
-        />
-
-        <ConversationActionSquareItem
-          onPressItem={onPressAction}
-          iconName="share-outline"
-          text={i18n.t('CONVERSATION.SHARE')}
-          colors={colors}
-          itemType="share"
-        />
-
-        <ConversationActionSquareItem
-          onPressItem={onPressAction}
-          iconName="info-outline"
-          text={i18n.t('CONVERSATION.DETAILS')}
-          colors={colors}
-          itemType="details"
-        />
-      </View>
       <ConversationActionItem
         onPressItem={onPressAction}
         text="Assigned Agent"
@@ -116,6 +69,14 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
         colors={colors}
         iconName="people-team-outline"
         name={team ? team.name : 'Select Team'}
+      />
+
+      <ConversationActionItem
+        onPressItem={onPressAction}
+        iconName="tag-outline"
+        text={i18n.t('CONVERSATION.LABELS')}
+        colors={colors}
+        itemType="label"
       />
 
       <ConversationActionItem
@@ -156,10 +117,10 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
 
       <ConversationActionItem
         onPressItem={onPressAction}
-        iconName="channel-close-outline"
-        text={i18n.t('CONVERSATION.CLOSE')}
+        iconName="share-outline"
+        text={i18n.t('CONVERSATION.SHARE')}
         colors={colors}
-        itemType="close"
+        itemType="share"
       />
     </React.Fragment>
   );

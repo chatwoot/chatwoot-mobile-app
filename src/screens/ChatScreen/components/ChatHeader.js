@@ -15,6 +15,7 @@ import Banner from 'src/screens/ChatScreen/components/Banner';
 import InboxName from 'src/screens/ChatScreen/components/InboxName';
 import TypingStatus from 'src/screens/ChatScreen/components/UserTypingStatus';
 import i18n from 'i18n';
+import { getTextSubstringWithEllipsis } from 'helpers';
 import { getConversationUrl } from 'src/helpers/UrlHelper';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
@@ -38,9 +39,16 @@ const createStyles = theme => {
     titleView: {
       flexDirection: 'column',
       alignItems: 'flex-start',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
       marginHorizontal: spacing.smaller,
       height: spacing.large,
+    },
+    customerName: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    infoIcon: {
+      marginLeft: spacing.micro,
     },
     chatHeader: {
       borderBottomWidth: 1,
@@ -60,10 +68,10 @@ const createStyles = theme => {
     },
     inboxNameWrap: {
       marginTop: spacing.tiny,
-      marginLeft: spacing.micro,
     },
     statusView: {
-      padding: spacing.micro,
+      paddingVertical: spacing.smaller,
+      paddingHorizontal: spacing.micro,
     },
     backButtonView: {
       padding: spacing.tiny,
@@ -107,6 +115,7 @@ const ChatHeader = ({
       sender: { availability_status: availabilityStatus },
     },
     additional_attributes: additionalAttributes = {},
+    muted,
   } = conversationDetails;
 
   const snoozedConversation = conversationDetails.status === CONVERSATION_STATUS.SNOOZED;
@@ -117,7 +126,7 @@ const ChatHeader = ({
       <Pressable
         style={styles.statusView}
         onPress={() => toggleStatusForConversations(CONVERSATION_STATUS.RESOLVED)}>
-        <Icon icon="checkmark-double-outline" color={colors.successColor} size={24} />
+        <Icon icon="checkmark-double-outline" color={colors.successColor} size={22} />
       </Pressable>
     );
   };
@@ -127,7 +136,7 @@ const ChatHeader = ({
       <Pressable
         style={styles.statusView}
         onPress={() => toggleStatusForConversations(CONVERSATION_STATUS.OPEN)}>
-        <Icon icon="arrow-redo-outline" color={colors.warningColor} size={24} />
+        <Icon icon="arrow-redo-outline" color={colors.warningColor} size={22} />
       </Pressable>
     );
   };
@@ -137,7 +146,7 @@ const ChatHeader = ({
       <Pressable
         style={styles.statusView}
         onPress={() => toggleStatusForConversations(CONVERSATION_STATUS.OPEN)}>
-        <Icon icon="person-arrow-back-outline" color={colors.primaryColorDarker} size={24} />
+        <Icon icon="person-arrow-back-outline" color={colors.primaryColorDarker} size={22} />
       </Pressable>
     );
   };
@@ -145,7 +154,23 @@ const ChatHeader = ({
   const MenuIcon = () => {
     return (
       <Pressable style={styles.statusView} onPress={toggleActionModal}>
-        <Icon icon="more-vertical" color={colors.textDark} size={24} />
+        <Icon icon="more-vertical" color={colors.textDark} size={22} />
+      </Pressable>
+    );
+  };
+
+  const MuteIcon = () => {
+    return (
+      <Pressable style={styles.statusView} onPress={muteConversation}>
+        <Icon icon="speaker-mute-outline" color={colors.textDark} size={22} />
+      </Pressable>
+    );
+  };
+
+  const UnmuteIcon = () => {
+    return (
+      <Pressable style={styles.statusView} onPress={UnmuteConversation}>
+        <Icon icon="speaker-1-outline" color={colors.textDark} size={22} />
       </Pressable>
     );
   };
@@ -157,6 +182,22 @@ const ChatHeader = ({
   );
 
   const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
+
+  const muteConversation = () => {
+    if (!muted) {
+      AnalyticsHelper.track(CONVERSATION_EVENTS.MUTE_CONVERSATION);
+      dispatch(conversationActions.muteConversation({ conversationId }));
+      closeActionModal();
+    }
+  };
+
+  const UnmuteConversation = () => {
+    if (muted) {
+      AnalyticsHelper.track(CONVERSATION_EVENTS.UN_MUTE_CONVERSATION);
+      dispatch(conversationActions.unmuteConversation({ conversationId }));
+      closeActionModal();
+    }
+  };
 
   const renderLeftControl = () => <BackAction onPress={onBackPress} />;
   const renderRightControl = () => {
@@ -199,6 +240,11 @@ const ChatHeader = ({
                 />
               )}
             </React.Fragment>
+          )}
+          {!muted ? (
+            <TopNavigationAction onPress={toggleActionModal} icon={MuteIcon} />
+          ) : (
+            <TopNavigationAction onPress={toggleActionModal} icon={UnmuteIcon} />
           )}
           <TopNavigationAction onPress={toggleActionModal} icon={MenuIcon} />
         </View>
@@ -292,27 +338,7 @@ const ChatHeader = ({
     if (itemType === 'share') {
       if (conversationDetails) {
         onClickShareConversationURL();
-        closeActionModal();
       }
-    }
-    if (itemType === 'mute_conversation') {
-      const { muted } = conversationDetails;
-      if (!muted) {
-        AnalyticsHelper.track(CONVERSATION_EVENTS.MUTE_CONVERSATION);
-        dispatch(conversationActions.muteConversation({ conversationId }));
-        closeActionModal();
-      }
-    }
-    if (itemType === 'unmute_conversation') {
-      AnalyticsHelper.track(CONVERSATION_EVENTS.UN_MUTE_CONVERSATION);
-      const { muted } = conversationDetails;
-      if (muted) {
-        dispatch(conversationActions.unmuteConversation({ conversationId }));
-        closeActionModal();
-      }
-    }
-    if (itemType === 'close') {
-      closeActionModal();
     }
   };
 
@@ -358,7 +384,7 @@ const ChatHeader = ({
 
   // Conversation action modal
   const actionModal = useRef(null);
-  const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 382, deviceHeight - 382], []);
+  const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 420, deviceHeight - 420], []);
   const toggleActionModal = useCallback(() => {
     actionModal.current.present() || actionModal.current?.close();
   }, []);
@@ -368,7 +394,7 @@ const ChatHeader = ({
 
   // Conversation action modal
   const snoozeActionModal = useRef(null);
-  const snoozeActionModalSnapPoints = useMemo(() => [deviceHeight - 382, deviceHeight - 382], []);
+  const snoozeActionModalSnapPoints = useMemo(() => [deviceHeight - 420, deviceHeight - 420], []);
   const toggleSnoozeActionModal = useCallback(() => {
     snoozeActionModal.current.present() || snoozeActionModal.current?.close();
   }, []);
@@ -396,14 +422,15 @@ const ChatHeader = ({
             )}
 
             <View style={styles.titleView}>
-              <View>
+              <View style={styles.customerName}>
                 {customerDetails.name && (
                   <Text md medium color={colors.textDark}>
-                    {customerDetails.name && customerDetails.name.length > 24
-                      ? ` ${customerDetails.name.substring(0, 20)}...`
-                      : ` ${customerDetails.name}`}
+                    {getTextSubstringWithEllipsis(customerDetails.name, 14)}
                   </Text>
                 )}
+                <View style={styles.infoIcon}>
+                  <Icon icon="info-outline" color={colors.textLighter} size={14} />
+                </View>
               </View>
               <View style={styles.inboxNameTypingWrap}>
                 {typingUser ? (
@@ -411,7 +438,11 @@ const ChatHeader = ({
                 ) : (
                   <View style={styles.inboxNameWrap}>
                     {conversationDetails && (
-                      <InboxName iconName={iconName} inboxName={inboxName} size={'small'} />
+                      <InboxName
+                        iconName={iconName}
+                        inboxName={getTextSubstringWithEllipsis(inboxName, 20)}
+                        size={'small'}
+                      />
                     )}
                   </View>
                 )}

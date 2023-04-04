@@ -48,7 +48,7 @@ const Chatwoot = () => {
   return (
     <GestureHandlerRootView style={styles.container}>
       <React.Fragment>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar barStyle="dark-content" backgroundColor="white" />
         <IconRegistry icons={EvaIconsPack} />
         <ApplicationProvider {...eva} theme={theme}>
           <Provider store={store}>

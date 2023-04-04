@@ -1,29 +1,25 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Spinner, withStyles } from '@ui-kitten/components';
+import { withStyles } from '@ui-kitten/components';
 import { useSelector, useDispatch } from 'react-redux';
+import { TabView, TabBar } from 'react-native-tab-view';
 import PropTypes from 'prop-types';
-import { View, SafeAreaView, SectionList, AppState } from 'react-native';
+import { SafeAreaView, AppState, useWindowDimensions } from 'react-native';
 import { StackActions } from '@react-navigation/native';
-import ChatMessage from './components/ChatMessage';
-import ChatMessageDate from './components/ChatMessageDate';
-import ReplyBox from './components/ReplyBox';
 import ChatHeader from './components/ChatHeader';
 import ChatHeaderLoader from './components/ChatHeaderLoader';
 import styles from './ChatScreen.style';
-import { openURL } from 'helpers/UrlHelper';
 import { actions as notificationsActions } from 'reducer/notificationSlice';
-import { getGroupedConversation, findUniqueMessages } from 'helpers';
+import { selectUser } from 'reducer/authSlice';
 import { actions as CannedResponseActions } from 'reducer/cannedResponseSlice';
+import { dashboardAppSelector } from 'reducer/dashboardAppSlice';
+import DashboardApp from './components/DashboardApp';
 import { selectAllTypingUsers } from 'reducer/conversationTypingSlice';
-import {
-  clearConversation,
-  selectors as conversationSelectors,
-  selectMessagesLoading,
-  selectAllMessagesFetched,
-} from 'reducer/conversationSlice';
+import { clearConversation, selectors as conversationSelectors } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
+import MessageList from './components/MessageList/MessageList';
 import { SCREENS } from 'constants';
+import i18n from 'i18n';
 const propTypes = {
   eva: PropTypes.shape({
     style: PropTypes.object,
@@ -40,10 +36,10 @@ const propTypes = {
 
 const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   const dispatch = useDispatch();
+  const layout = useWindowDimensions();
+  const [index, setIndex] = React.useState(0);
   const conversationTypingUsers = useSelector(selectAllTypingUsers);
   const [appState, setAppState] = useState(AppState.currentState);
-  const isFetching = useSelector(selectMessagesLoading);
-  const isAllMessagesFetched = useSelector(selectAllMessagesFetched);
 
   const {
     conversationId,
@@ -59,6 +55,29 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   const allMessages = useSelector(state =>
     conversationSelectors.getMessagesByConversationId(state, conversationId),
   );
+
+  const currentUser = useSelector(selectUser);
+
+  const dashboardApps = useSelector(dashboardAppSelector.selectAll);
+  const isDashboardAppsEmpty = dashboardApps?.length === 0;
+  const dashboardRoutes = [];
+  if (!isDashboardAppsEmpty) {
+    dashboardApps.forEach(element => {
+      dashboardRoutes.push({
+        key: element.id,
+        title: element.title,
+        route: 'DashboardRoute',
+        content: element.content,
+        conversation: conversation,
+        currentUser: currentUser,
+      });
+    });
+  }
+
+  const [routes] = React.useState([
+    { key: 'MessageRoute', title: i18n.t('CONVERSATION.MESSAGES'), route: 'MessageRoute' },
+    ...dashboardRoutes,
+  ]);
 
   const { meta: conversationMetaDetails = {} } = conversation || {};
 
@@ -115,16 +134,6 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
     }
   }, [conversationId, dispatch, primaryActorId, primaryActorType]);
 
-  const showAttachment = ({ type, dataUrl }) => {
-    if (type === 'image') {
-      navigation.navigate('ImageScreen', {
-        imageUrl: dataUrl,
-      });
-    } else {
-      openURL({ URL: dataUrl });
-    }
-  };
-
   const onBackPress = () => {
     if (navigation.canGoBack()) {
       navigation.goBack();
@@ -149,43 +158,49 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
     };
   }, [appState, loadConversation, conversationId, dispatch]);
 
-  const onEndReached = ({ distanceFromEnd }) => {
-    const shouldFetchMoreMessages = !isAllMessagesFetched && !isFetching;
-    if (shouldFetchMoreMessages) {
-      loadMessages();
-    }
-  };
-
-  const renderMoreLoader = () => {
-    if (isFetching) {
-      return (
-        <View style={style.loadMoreSpinnerView}>
-          <Spinner size="medium" color="red" />
-        </View>
-      );
-    }
-    return null;
-  };
-
-  const renderMessage = item => (
-    <ChatMessage
-      message={item.item}
-      key={item.index}
-      showAttachment={showAttachment}
-      conversation={conversation}
-    />
-  );
-
   const showConversationDetails = () => {
     if (conversation) {
       navigation.navigate('ConversationDetails', { conversationDetails: conversation });
     }
   };
 
-  const uniqueMessages = findUniqueMessages({ allMessages });
-  const groupedConversationList = getGroupedConversation({
-    conversations: uniqueMessages,
-  });
+  const dashboardScenes = {
+    MessageRoute: () => <MessageList loadMessages={loadMessages} conversationId={conversationId} />,
+  };
+  if (!isDashboardAppsEmpty) {
+    dashboardRoutes.forEach(item => {
+      dashboardScenes[item.key] = DashboardApp;
+    });
+  }
+
+  const renderScene = ({ route: tabRoute }) => {
+    if (tabRoute.route === 'MessageRoute') {
+      return <MessageList loadMessages={loadMessages} conversationId={conversationId} />;
+    }
+    if (tabRoute.route === 'DashboardRoute') {
+      return (
+        <DashboardApp
+          content={tabRoute.content}
+          conversation={tabRoute.conversation}
+          currentUser={tabRoute.currentUser}
+        />
+      );
+    }
+    return null;
+  };
+
+  const renderTabBar = props => (
+    <TabBar
+      {...props}
+      labelStyle={style.tabLabel}
+      activeColor="#1F93FF"
+      inactiveColor="#8492a6"
+      indicatorStyle={style.tabIndicator}
+      style={style.tabBar}
+      tabStyle={style.tabStyle}
+      scrollEnabled={true}
+    />
+  );
 
   return (
     <SafeAreaView style={style.mainContainer}>
@@ -201,31 +216,17 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
       ) : (
         <ChatHeaderLoader />
       )}
-
-      <View style={style.container} autoDismiss={false}>
-        <View style={style.chatView}>
-          {groupedConversationList.length ? (
-            <SectionList
-              keyboardShouldPersistTaps="never"
-              scrollEventThrottle={16}
-              inverted
-              onEndReached={onEndReached}
-              sections={groupedConversationList}
-              keyExtractor={(item, index) => item + index}
-              renderItem={renderMessage}
-              renderSectionFooter={({ section: { date } }) => <ChatMessageDate date={date} />}
-              style={style.chatContainer}
-              ListFooterComponent={renderMoreLoader}
-            />
-          ) : null}
-          {isFetching && !groupedConversationList.length && (
-            <View style={style.loadMoreSpinnerView}>
-              <Spinner size="medium" />
-            </View>
-          )}
-        </View>
-        <ReplyBox conversationId={conversationId} conversationDetails={conversation} />
-      </View>
+      {isDashboardAppsEmpty ? (
+        <MessageList loadMessages={loadMessages} conversationId={conversationId} />
+      ) : (
+        <TabView
+          renderTabBar={renderTabBar}
+          navigationState={{ index, routes }}
+          renderScene={renderScene}
+          onIndexChange={setIndex}
+          initialLayout={{ width: layout.width }}
+        />
+      )}
     </SafeAreaView>
   );
 };

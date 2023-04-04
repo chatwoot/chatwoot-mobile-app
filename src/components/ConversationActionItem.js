@@ -82,7 +82,7 @@ const ConversationActionItem = ({
         </View>
         <View style={styles.sectionActionView}>
           {itemType === 'assignee' && thumbnail !== '' && (
-            <UserAvatar thumbnail={thumbnail} userName={name} size={18} />
+            <UserAvatar thumbnail={thumbnail} userName={name} size={18} fontSize={8} />
           )}
           <Text sm medium color={colors.textLight} style={styles.sectionTitle}>
             {name}

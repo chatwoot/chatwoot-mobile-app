@@ -41,7 +41,6 @@ const ConversationDetailsScreen = ({ navigation, route }) => {
         phone_number: phoneNumber,
         additional_attributes: senderAdditionalInfo = {},
       },
-      channel,
     },
   } = conversationDetails;
 

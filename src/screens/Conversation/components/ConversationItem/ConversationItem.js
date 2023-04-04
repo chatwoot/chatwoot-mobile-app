@@ -17,7 +17,7 @@ import conversationActions from 'reducer/conversationSlice.action';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
-import CardLabel from './CardLabels';
+import ConversationLabel from './ConversationLabels';
 
 const propTypes = {
   item: PropTypes.shape({
@@ -39,6 +39,7 @@ const propTypes = {
     id: PropTypes.number,
     unread_count: PropTypes.number,
     status: PropTypes.string,
+    last_non_activity_message: PropTypes.object,
   }).isRequired,
   conversationTypingUsers: PropTypes.shape({}),
   showAssigneeLabel: PropTypes.bool,
@@ -58,7 +59,6 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
       channel,
     },
     additional_attributes: additionalAttributes = {},
-    messages,
     inbox_id: inboxId,
     id,
     unread_count: unreadCount,
@@ -66,7 +66,8 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
 
   const assigneeName = assignee?.name;
 
-  const lastMessage = findLastMessage({ messages });
+  const lastMessage = findLastMessage(item);
+
   const { content, created_at, attachments, message_type, private: isPrivate } = lastMessage;
   const {
     name: inboxName = null,
@@ -222,7 +223,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
                     {getTextSubstringWithEllipsis(typingUser, 25)}
                   </Text>
                 )}
-                <CardLabel conversationDetails={item} conversationId={id} />
+                <ConversationLabel conversationDetails={item} conversationId={id} />
               </View>
             </View>
             <View style={styles.unreadTimestampContainer}>

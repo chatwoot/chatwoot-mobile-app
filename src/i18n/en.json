@@ -72,11 +72,10 @@
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Unassign conversation",
-    "MUTE_CONVERSATION": "Mute",
-    "UNMUTE_CONVERSATION": "Unmute",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
     "SNOOZE": "Snooze Conversation",
-    "CLOSE": "Close"
+    "UNMUTE_CONVERSATION": "Unmute conversation",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "MESSAGES": "Messages"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

@@ -140,16 +140,6 @@ const ChatMessageComponent = ({ message, eva: { style }, showAttachment, convers
       <View style={[shouldShowFullWidth ? style.emailContainer : {}]}>
         {alignment === 'flex-start' ? (
           <View style={style.messageBubble}>
-            {!isTwitterChannel ? (
-              <View style={style.incomingMessageThumbnail}>
-                <UserAvatar
-                  thumbnail={senderThumbnail}
-                  userName={senderName}
-                  size={16}
-                  fontSize={8}
-                />
-              </View>
-            ) : null}
             <MessageContent
               conversation={conversation}
               message={message}

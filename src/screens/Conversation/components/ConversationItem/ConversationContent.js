@@ -29,6 +29,10 @@ const propTypes = {
   unReadCount: PropTypes.number,
 };
 
+const findLastMessage = message => {
+  return message ? getTextSubstringWithEllipsis(message, 34) : 'No content available';
+};
+
 const ConversationContent = ({ content, messageType, isPrivate, unReadCount }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -53,11 +57,11 @@ const ConversationContent = ({ content, messageType, isPrivate, unReadCount }) =
               )}
               {unReadCount ? (
                 <Text semiBold sm numberOfLines={1} maxLength={8} color={colors.text}>
-                  {getTextSubstringWithEllipsis(message, 34)}
+                  {findLastMessage(message)}
                 </Text>
               ) : (
                 <Text sm numberOfLines={1} maxLength={8} color={colors.text}>
-                  {getTextSubstringWithEllipsis(message, 34)}
+                  {findLastMessage(message)}
                 </Text>
               )}
             </View>
@@ -83,11 +87,11 @@ const ConversationContent = ({ content, messageType, isPrivate, unReadCount }) =
         <View style={styles.itemView}>
           {unReadCount ? (
             <Text semiBold sm numberOfLines={1} maxLength={8} color={colors.text}>
-              {getTextSubstringWithEllipsis(message, 34)}
+              {findLastMessage(message)}
             </Text>
           ) : (
             <Text sm numberOfLines={1} maxLength={8} color={colors.text}>
-              {getTextSubstringWithEllipsis(message, 34)}
+              {findLastMessage(message)}
             </Text>
           )}
         </View>

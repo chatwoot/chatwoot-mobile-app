@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "1.8.19",
+  "version": "1.8.20",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -134,7 +134,7 @@
     "prettier": "^2.7.1",
     "react-dom": "17.0.1",
     "react-native-clean-project": "^3.6.4",
-    "react-native-flipper": "^0.162.0",
+    "react-native-flipper": "^0.163.0",
     "react-native-storybook-loader": "^2.0.5",
     "react-test-renderer": "18.1.0",
     "redux-flipper": "^2.0.2"

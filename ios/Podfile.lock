@@ -371,7 +371,7 @@ PODS:
     - React-Core
   - react-native-document-picker (5.0.0):
     - React-Core
-  - react-native-flipper (0.162.0):
+  - react-native-flipper (0.163.0):
     - React-Core
   - react-native-image-picker (3.8.1):
     - React-Core
@@ -479,7 +479,7 @@ PODS:
     - RNFBApp
   - RNFlashList (1.4.0):
     - React-Core
-  - RNGestureHandler (1.10.3):
+  - RNGestureHandler (2.9.0):
     - React-Core
   - RNReanimated (2.13.0):
     - DoubleConversion
@@ -816,7 +816,7 @@ SPEC CHECKSUMS:
   React-logger: 1623c216abaa88974afce404dc8f479406bbc3a0
   react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
   react-native-document-picker: ca0c8769c3848866970dc9164e809c6ea45cb5d6
-  react-native-flipper: 7eeb9b59b667dd0619372c7349cf7c78032d1de2
+  react-native-flipper: 2d552a8178d839ef378220101fb7f0cd5b2a8003
   react-native-image-picker: 31971f6184e7c1dcb4fc1f122e1ba2c3fb11ef1e
   react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
   react-native-pager-view: b58cb9e9f42f64e50cab3040815772c1d119a2e2
@@ -846,7 +846,7 @@ SPEC CHECKSUMS:
   RNFBApp: 9295dac8a4e8857918bcff90328b197807ee0dc1
   RNFBMessaging: 1a84a46789e1ee9820d70839683faff890a22411
   RNFlashList: 399bf6a0db68f594ad2c86aaff3ea39564f39f8a
-  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNReanimated: ce445c233a6ff5600223484a88ad5704945d972a
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
   RNSentry: 56e67020e45e81cc94231819df968dbc41890364
@@ -859,6 +859,6 @@ SPEC CHECKSUMS:
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 08e780ed230a73dfd17af7d4ebac5c938ad15303
+PODFILE CHECKSUM: 02f0625dbd4c9db7de93f5fc42c75524c4f4832e
 
 COCOAPODS: 1.11.3

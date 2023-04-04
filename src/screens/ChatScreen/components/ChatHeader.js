@@ -58,7 +58,7 @@ const createStyles = theme => {
       flexDirection: 'row',
     },
     loadingSpinner: {
-      marginTop: spacing.tiny,
+      marginTop: spacing.micro,
       marginRight: spacing.smaller,
       padding: spacing.micro,
     },
@@ -126,7 +126,7 @@ const ChatHeader = ({
       <Pressable
         style={styles.statusView}
         onPress={() => toggleStatusForConversations(CONVERSATION_STATUS.RESOLVED)}>
-        <Icon icon="checkmark-double-outline" color={colors.successColor} size={22} />
+        <Icon icon="checkmark-double-outline" color={colors.successColor} size={24} />
       </Pressable>
     );
   };
@@ -136,7 +136,7 @@ const ChatHeader = ({
       <Pressable
         style={styles.statusView}
         onPress={() => toggleStatusForConversations(CONVERSATION_STATUS.OPEN)}>
-        <Icon icon="arrow-redo-outline" color={colors.warningColor} size={22} />
+        <Icon icon="arrow-redo-outline" color={colors.warningColor} size={24} />
       </Pressable>
     );
   };
@@ -146,7 +146,7 @@ const ChatHeader = ({
       <Pressable
         style={styles.statusView}
         onPress={() => toggleStatusForConversations(CONVERSATION_STATUS.OPEN)}>
-        <Icon icon="person-arrow-back-outline" color={colors.primaryColorDarker} size={22} />
+        <Icon icon="person-arrow-back-outline" color={colors.primaryColorDarker} size={24} />
       </Pressable>
     );
   };
@@ -154,7 +154,7 @@ const ChatHeader = ({
   const MenuIcon = () => {
     return (
       <Pressable style={styles.statusView} onPress={toggleActionModal}>
-        <Icon icon="more-vertical" color={colors.textDark} size={22} />
+        <Icon icon="more-vertical" color={colors.textDark} size={24} />
       </Pressable>
     );
   };
@@ -162,7 +162,7 @@ const ChatHeader = ({
   const MuteIcon = () => {
     return (
       <Pressable style={styles.statusView} onPress={muteConversation}>
-        <Icon icon="speaker-mute-outline" color={colors.textDark} size={22} />
+        <Icon icon="speaker-mute-outline" color={colors.textDark} size={24} />
       </Pressable>
     );
   };
@@ -170,7 +170,7 @@ const ChatHeader = ({
   const UnmuteIcon = () => {
     return (
       <Pressable style={styles.statusView} onPress={UnmuteConversation}>
-        <Icon icon="speaker-1-outline" color={colors.textDark} size={22} />
+        <Icon icon="speaker-1-outline" color={colors.textDark} size={24} />
       </Pressable>
     );
   };
@@ -425,7 +425,7 @@ const ChatHeader = ({
               <View style={styles.customerName}>
                 {customerDetails.name && (
                   <Text md medium color={colors.textDark}>
-                    {getTextSubstringWithEllipsis(customerDetails.name, 14)}
+                    {getTextSubstringWithEllipsis(customerDetails.name, 12)}
                   </Text>
                 )}
                 <View style={styles.infoIcon}>

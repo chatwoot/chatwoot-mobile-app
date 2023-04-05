@@ -8,7 +8,6 @@ import { Text, Icon, Pressable } from 'components';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import conversationActions from 'reducer/conversationSlice.action';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
-import BottomSheetPageHeader from 'src/components/BottomSheet/BottomSheetPageHeader';
 import { CONVERSATION_STATUS } from 'src/constants/index';
 import { getUnixTime, addHours, addWeeks, startOfTomorrow, startOfWeek } from 'date-fns';
 
@@ -27,22 +26,18 @@ const createStyles = theme => {
       paddingHorizontal: spacing.small,
     },
     bottomSheetContent: {
-      backgroundColor: colors.backgroundLight,
-      borderRadius: borderRadius.small,
       marginTop: spacing.small,
+      marginBottom: spacing.large,
     },
     bottomSheetItem: {
+      alignItems: 'center',
+      justifyContent: 'space-between',
       flexDirection: 'row',
+      borderBottomColor: colors.borderLight,
       paddingVertical: spacing.half,
       paddingHorizontal: spacing.half,
       borderBottomWidth: 0.4,
       borderRadius: borderRadius.small,
-      borderBottomColor: colors.borderLight,
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-    bottomSheetLastItem: {
-      borderBottomWidth: 0,
     },
     itemView: {
       flexDirection: 'row',
@@ -111,11 +106,15 @@ const SnoozeConversation = ({ colors, conversationId, activeSnoozeValue, closeMo
 
   return (
     <View style={styles.bottomSheet}>
-      <BottomSheetPageHeader title={i18n.t('CONVERSATION.SNOOZE')} colors={colors} />
       <View style={styles.bottomSheetContent}>
         {snoozeItems.map((item, index) => (
           <Pressable
-            style={styles.bottomSheetItem}
+            style={[
+              {
+                backgroundColor: selectedItem === item.key && colors.primaryColorLight,
+              },
+              styles.bottomSheetItem,
+            ]}
             key={item.key}
             onPress={() => toggleStatusForConversations(item.key)}>
             <View style={styles.itemView}>

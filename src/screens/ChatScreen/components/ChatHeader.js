@@ -478,7 +478,6 @@ const ChatHeader = ({
       <BottomSheetModal
         bottomSheetModalRef={actionModal}
         initialSnapPoints={actionModalModalSnapPoints}
-        headerTitle="Conversation Actions"
         closeFilter={closeActionModal}
         children={
           <ConversationAction
@@ -490,7 +489,8 @@ const ChatHeader = ({
       <BottomSheetModal
         bottomSheetModalRef={snoozeActionModal}
         initialSnapPoints={snoozeActionModalSnapPoints}
-        headerTitle="Conversation Actions"
+        showHeader
+        headerTitle={i18n.t('CONVERSATION.SNOOZE')}
         closeFilter={closeSnoozeActionModal}
         enablePanDownToClose={false}
         children={

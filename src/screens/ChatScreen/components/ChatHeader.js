@@ -34,6 +34,8 @@ const createStyles = theme => {
     headerView: {
       flexDirection: 'row',
       alignItems: 'center',
+      maxWidth: 200,
+      overflow: 'hidden',
     },
     titleView: {
       flexDirection: 'column',

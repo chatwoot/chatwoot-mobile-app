@@ -197,7 +197,6 @@ const ChatHeader = ({
     if (!muted) {
       AnalyticsHelper.track(CONVERSATION_EVENTS.MUTE_CONVERSATION);
       dispatch(conversationActions.muteConversation({ conversationId }));
-      closeActionModal();
     }
   };
 
@@ -205,7 +204,6 @@ const ChatHeader = ({
     if (muted) {
       AnalyticsHelper.track(CONVERSATION_EVENTS.UN_MUTE_CONVERSATION);
       dispatch(conversationActions.unmuteConversation({ conversationId }));
-      closeActionModal();
     }
   };
 
@@ -266,6 +264,9 @@ const ChatHeader = ({
   };
 
   const onPressAction = ({ itemType }) => {
+    if (itemType !== 'share') {
+      closeActionModal();
+    }
     if (itemType === 'self_assign') {
       if (conversationDetails) {
         AnalyticsHelper.track(CONVERSATION_EVENTS.SELF_ASSIGN_CONVERSATION);
@@ -275,13 +276,11 @@ const ChatHeader = ({
             assigneeId: userId,
           }),
         );
-        closeActionModal();
       }
     }
     if (itemType === 'assignee') {
       if (conversationDetails) {
         navigation.navigate('AgentScreen', { conversationDetails });
-        closeActionModal();
       }
     }
     if (itemType === 'unassign') {
@@ -292,30 +291,25 @@ const ChatHeader = ({
           assigneeId: 0,
         }),
       );
-      closeActionModal();
     }
     if (itemType === 'details') {
       if (conversationDetails) {
         navigation.navigate('ConversationDetails', { conversationDetails });
-        closeActionModal();
       }
     }
     if (itemType === 'label') {
       if (conversationDetails) {
         navigation.navigate('LabelScreen', { conversationDetails });
-        closeActionModal();
       }
     }
     if (itemType === 'team') {
       if (conversationDetails) {
         navigation.navigate('TeamScreen', { conversationDetails });
-        closeActionModal();
       }
     }
     if (itemType === 'pending') {
       if (conversationDetails) {
         toggleStatusForConversations(CONVERSATION_STATUS.PENDING);
-        closeActionModal();
       }
     }
     if (itemType === 'snooze') {
@@ -389,6 +383,11 @@ const ChatHeader = ({
   const closeSnoozeActionModal = useCallback(() => {
     snoozeActionModal.current?.close();
   }, []);
+
+  const closeModals = () => {
+    closeSnoozeActionModal();
+    closeActionModal();
+  };
 
   return (
     <React.Fragment>
@@ -479,13 +478,12 @@ const ChatHeader = ({
         showHeader
         headerTitle={i18n.t('CONVERSATION.SNOOZE')}
         closeFilter={closeSnoozeActionModal}
-        enablePanDownToClose={false}
         children={
           <SnoozeConversationItems
             colors={colors}
             conversationId={conversationId}
             activeSnoozeValue={activeSnoozeValue()}
-            closeModal={closeSnoozeActionModal}
+            closeModal={closeModals}
           />
         }
       />

@@ -44,7 +44,6 @@ const propTypes = {
   thumbnail: PropTypes.string,
   iconName: PropTypes.string,
   text: PropTypes.string,
-  checked: PropTypes.bool,
   itemType: PropTypes.string,
   onPressItem: PropTypes.func,
   availabilityStatus: PropTypes.string,
@@ -53,7 +52,6 @@ const propTypes = {
 
 const ConversationActionItem = ({
   text,
-  checked,
   iconName,
   itemType,
   name,

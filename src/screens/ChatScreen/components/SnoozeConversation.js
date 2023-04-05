@@ -47,9 +47,6 @@ const createStyles = theme => {
     itemText: {
       marginLeft: spacing.smaller,
     },
-    itemBoldText: {
-      marginLeft: spacing.micro,
-    },
   });
 };
 
@@ -120,10 +117,7 @@ const SnoozeConversation = ({ colors, conversationId, activeSnoozeValue, closeMo
             <View style={styles.itemView}>
               <Icon icon={item.icon} color={colors.textDark} size={18} />
               <Text sm medium color={colors.textDark} style={styles.itemText}>
-                {i18n.t('CONVERSATION.SNOOZE_UNTIL')}
-              </Text>
-              <Text sm semiBold color={colors.textDark} style={styles.itemBoldText}>
-                {item.title}
+                {`${i18n.t('CONVERSATION.SNOOZE_UNTIL')} ${item.title}`}
               </Text>
             </View>
             <View>

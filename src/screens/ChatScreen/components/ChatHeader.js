@@ -1,5 +1,4 @@
 import React, { useRef, useCallback, useMemo } from 'react';
-import { TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import { useTheme } from '@react-navigation/native';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { useNavigation } from '@react-navigation/native';
@@ -51,16 +50,26 @@ const createStyles = theme => {
       marginLeft: spacing.micro,
     },
     chatHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
       borderBottomWidth: 1,
       borderBottomColor: colors.borderLight,
+      paddingHorizontal: 12,
+      paddingVertical: 12,
+    },
+    chatHeaderLeft: {
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     actionIcon: {
       flexDirection: 'row',
     },
     loadingSpinner: {
-      marginTop: spacing.micro,
-      marginRight: spacing.smaller,
-      padding: spacing.micro,
+      marginTop: spacing.tiny,
+      paddingVertical: spacing.smaller,
+      paddingHorizontal: spacing.smaller,
+      marginLeft: spacing.micro,
     },
     inboxNameTypingWrap: {
       flexDirection: 'row',
@@ -71,10 +80,13 @@ const createStyles = theme => {
     },
     statusView: {
       paddingVertical: spacing.smaller,
-      paddingHorizontal: spacing.micro,
+      paddingHorizontal: spacing.smaller,
+      marginLeft: spacing.micro,
     },
     backButtonView: {
-      padding: spacing.tiny,
+      paddingVertical: spacing.smaller,
+      paddingLeft: spacing.micro,
+      paddingRight: spacing.smaller,
     },
   });
 };
@@ -181,8 +193,6 @@ const ChatHeader = ({
     </Pressable>
   );
 
-  const BackAction = props => <TopNavigationAction {...props} icon={BackIcon} />;
-
   const muteConversation = () => {
     if (!muted) {
       AnalyticsHelper.track(CONVERSATION_EVENTS.MUTE_CONVERSATION);
@@ -199,7 +209,7 @@ const ChatHeader = ({
     }
   };
 
-  const renderLeftControl = () => <BackAction onPress={onBackPress} />;
+  const renderLeftControl = () => <BackIcon />;
   const renderRightControl = () => {
     if (conversationDetails) {
       const { status } = conversationDetails;
@@ -217,36 +227,14 @@ const ChatHeader = ({
             </View>
           ) : (
             <React.Fragment>
-              {openConversation && (
-                <TopNavigationAction
-                  style={styles.resolveIcon}
-                  onPress={toggleStatusForConversations}
-                  icon={ResolveIcon}
-                />
-              )}
-              {resolvedConversation && (
-                <TopNavigationAction onPress={toggleStatusForConversations} icon={ReopenIcon} />
-              )}
-              {snoozedConversation && (
-                <TopNavigationAction
-                  onPress={toggleStatusForConversations}
-                  icon={SnoozePendingOpenIcon}
-                />
-              )}
-              {pendingConversation && (
-                <TopNavigationAction
-                  onPress={toggleStatusForConversations}
-                  icon={SnoozePendingOpenIcon}
-                />
-              )}
+              {openConversation && <ResolveIcon />}
+              {resolvedConversation && <ReopenIcon />}
+              {snoozedConversation && <SnoozePendingOpenIcon />}
+              {pendingConversation && <SnoozePendingOpenIcon />}
             </React.Fragment>
           )}
-          {!muted ? (
-            <TopNavigationAction onPress={toggleActionModal} icon={MuteIcon} />
-          ) : (
-            <TopNavigationAction onPress={toggleActionModal} icon={UnmuteIcon} />
-          )}
-          <TopNavigationAction onPress={toggleActionModal} icon={MenuIcon} />
+          {!muted ? <MuteIcon /> : <UnmuteIcon />}
+          <MenuIcon />
         </View>
       );
     }
@@ -404,16 +392,16 @@ const ChatHeader = ({
 
   return (
     <React.Fragment>
-      <TopNavigation
-        style={styles.chatHeader}
-        title={() => (
+      <View style={styles.chatHeader}>
+        <View style={styles.chatHeaderLeft}>
+          {renderLeftControl()}
           <Pressable style={styles.headerView} onPress={showConversationDetails}>
             {customerDetails.name && (
               <UserAvatar
                 thumbnail={customerDetails.thumbnail}
                 userName={customerDetails.name}
                 size={40}
-                fontSize={14}
+                fontSize={16}
                 channel={customerDetails.channel}
                 inboxInfo={inboxDetails}
                 chatAdditionalInfo={additionalAttributes}
@@ -425,11 +413,11 @@ const ChatHeader = ({
               <View style={styles.customerName}>
                 {customerDetails.name && (
                   <Text md medium color={colors.textDark}>
-                    {getTextSubstringWithEllipsis(customerDetails.name, 12)}
+                    {getTextSubstringWithEllipsis(customerDetails.name, 14)}
                   </Text>
                 )}
                 <View style={styles.infoIcon}>
-                  <Icon icon="info-outline" color={colors.textLighter} size={14} />
+                  <Icon icon="info-outline" color={colors.textLighter} size={13} />
                 </View>
               </View>
               <View style={styles.inboxNameTypingWrap}>
@@ -440,7 +428,7 @@ const ChatHeader = ({
                     {conversationDetails && (
                       <InboxName
                         iconName={iconName}
-                        inboxName={getTextSubstringWithEllipsis(inboxName, 20)}
+                        inboxName={getTextSubstringWithEllipsis(inboxName, 22)}
                         size={'small'}
                       />
                     )}
@@ -449,10 +437,9 @@ const ChatHeader = ({
               </View>
             </View>
           </Pressable>
-        )}
-        accessoryLeft={renderLeftControl}
-        accessoryRight={renderRightControl}
-      />
+        </View>
+        <View>{renderRightControl()}</View>
+      </View>
       {conversationDetails ? (
         <View>
           {!canReplyInCurrentChat && isAWhatsappChannel ? (

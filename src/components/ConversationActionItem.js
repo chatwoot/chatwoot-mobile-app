@@ -26,6 +26,10 @@ const createStyles = theme => {
       marginLeft: spacing.smaller,
       marginRight: spacing.half,
     },
+    sectionActiveTitle: {
+      marginLeft: spacing.micro,
+      marginRight: spacing.smaller,
+    },
     sectionActionView: {
       alignItems: 'center',
       flexDirection: 'row',
@@ -81,10 +85,10 @@ const ConversationActionItem = ({
           </Text>
         </View>
         <View style={styles.sectionActionView}>
-          {itemType === 'assignee' && thumbnail !== '' && (
+          {itemType === 'assignee' && name !== '' && (
             <UserAvatar thumbnail={thumbnail} userName={name} size={18} fontSize={8} />
           )}
-          <Text sm medium color={colors.textLight} style={styles.sectionTitle}>
+          <Text sm medium color={colors.textLight} style={styles.sectionActiveTitle}>
             {name}
           </Text>
           {(itemType === 'assignee' || itemType === 'team' || itemType === 'snooze') && (

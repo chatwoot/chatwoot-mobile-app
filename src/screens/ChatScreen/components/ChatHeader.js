@@ -154,7 +154,7 @@ const ChatHeader = ({
   const MenuIcon = () => {
     return (
       <Pressable style={styles.statusView} onPress={toggleActionModal}>
-        <Icon icon="more-vertical" color={colors.textDark} size={24} />
+        <Icon icon="more-horizontal" color={colors.textDark} size={24} />
       </Pressable>
     );
   };

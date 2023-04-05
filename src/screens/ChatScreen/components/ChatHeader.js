@@ -140,7 +140,7 @@ const ChatHeader = ({
       <Pressable
         style={styles.statusView}
         onPress={() => toggleStatusForConversations(CONVERSATION_STATUS.RESOLVED)}>
-        <Icon icon="checkmark-double-outline" color={colors.successColor} size={24} />
+        <Icon icon="checkmark-outline" color={colors.successColor} size={24} />
       </Pressable>
     );
   };

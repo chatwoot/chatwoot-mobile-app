@@ -20,9 +20,9 @@ const createStyles = theme => {
       paddingHorizontal: spacing.small,
     },
     bottomSheetContent: {
-      paddingTop: spacing.smaller,
+      marginTop: spacing.small,
       height: '100%',
-      paddingBottom: spacing.large,
+      marginBottom: spacing.large,
     },
     bottomSheetItem: {
       flexDirection: 'row',
@@ -81,7 +81,7 @@ const AccountsSelector = ({ accounts, activeValue, onPress, colors }) => {
             }}>
             <View style={styles.accountDetailsWrapper}>
               <View style={styles.nameIdWrapper}>
-                <Text md semiBold color={colors.text}>
+                <Text md semiBold color={colors.textDark}>
                   {account.name}
                 </Text>
                 <View

@@ -2,7 +2,7 @@ import React, { useMemo, useEffect, useCallback, useState, useRef } from 'react'
 import { useTheme } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, ScrollView, AppState } from 'react-native';
+import { View, ScrollView, AppState, Dimensions } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import * as Sentry from '@sentry/react-native';
 
@@ -18,6 +18,7 @@ import {
   setConversationStatus,
   clearAllConversations,
   setActiveInbox,
+  selectConversationMeta,
 } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';
 import createStyles from './ConversationScreen.style';
@@ -40,6 +41,7 @@ import { actions as dashboardAppActions } from 'reducer/dashboardAppSlice';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
 import { actions as labelActions } from 'reducer/labelSlice';
 import { SCREENS } from 'constants';
+const deviceHeight = Dimensions.get('window').height;
 
 // The screen list thats need to be checked for refresh notification list
 const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.NOTIFICATION, SCREENS.SETTINGS];
@@ -179,6 +181,21 @@ const ConversationScreen = () => {
     setPage(1);
   };
 
+  const conversationMetaDetails = useSelector(selectConversationMeta);
+
+  const conversationCount = () => {
+    switch (assigneeType) {
+      case 'mine':
+        return conversationMetaDetails.mine_count;
+      case 'unassigned':
+        return conversationMetaDetails.unassigned_count;
+      case 'all':
+        return conversationMetaDetails.all_count;
+      default:
+        return 0;
+    }
+  };
+
   const onSelectAssigneeType = async item => {
     AnalyticsHelper.track(CONVERSATION_EVENTS.APPLY_FILTER, {
       type: 'assignee-type',
@@ -221,7 +238,10 @@ const ConversationScreen = () => {
   );
 
   // Conversation filter modal
-  const conversationFilterModalSnapPoints = useMemo(() => ['40%', '60%', '60%'], []);
+  const conversationFilterModalSnapPoints = useMemo(
+    () => [deviceHeight - 400, deviceHeight - 400],
+    [],
+  );
 
   // Filter by assignee type
   const conversationAssigneeModal = useRef(null);
@@ -243,7 +263,7 @@ const ConversationScreen = () => {
 
   // Inbox filter modal
   const inboxFilterModal = useRef(null);
-  const inboxFilterModalSnapPoints = useMemo(() => ['40%', '80%', '92%'], []);
+  const inboxFilterModalSnapPoints = useMemo(() => [deviceHeight - 210, deviceHeight - 210], []);
   const toggleInboxFilterModal = useCallback(() => {
     inboxFilterModal.current.present() || inboxFilterModal.current?.close();
   }, []);
@@ -282,7 +302,7 @@ const ConversationScreen = () => {
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
-      <Header headerText={headerText} loading={isLoading} />
+      <Header headerText={headerText} loading={isLoading} showCount count={conversationCount()} />
       <View style={styles.filterContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {hasActiveFilters && (
@@ -313,6 +333,7 @@ const ConversationScreen = () => {
         <BottomSheetModal
           bottomSheetModalRef={conversationAssigneeModal}
           initialSnapPoints={conversationFilterModalSnapPoints}
+          showHeader
           headerTitle={i18n.t('FILTER.FILTER_BY_ASSIGNEE_TYPE')}
           closeFilter={closeConversationAssigneeModal}
           children={
@@ -327,6 +348,7 @@ const ConversationScreen = () => {
         <BottomSheetModal
           bottomSheetModalRef={conversationStatusModal}
           initialSnapPoints={conversationFilterModalSnapPoints}
+          showHeader
           headerTitle={i18n.t('FILTER.FILTER_BY_CONVERSATION_STATUS')}
           closeFilter={closeConversationStatusModal}
           children={
@@ -341,6 +363,7 @@ const ConversationScreen = () => {
         <BottomSheetModal
           bottomSheetModalRef={inboxFilterModal}
           initialSnapPoints={inboxFilterModalSnapPoints}
+          showHeader
           headerTitle={i18n.t('FILTER.FILTER_BY_INBOX')}
           closeFilter={closeInboxFilterModal}
           children={

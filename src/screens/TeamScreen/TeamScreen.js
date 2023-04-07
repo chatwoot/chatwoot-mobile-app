@@ -76,7 +76,7 @@ const TeamScreenComponent = ({ eva: { style }, navigation, route }) => {
     <SafeAreaView style={style.container}>
       <HeaderBar title={i18n.t('TEAMS.TITLE')} showLeftButton onBackPress={goBack} />
 
-      {teams ? (
+      {teams.length ? (
         <ScrollView>
           {teamsList().map(item => (
             <TeamList

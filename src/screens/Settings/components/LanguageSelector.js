@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import i18n from 'i18n';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { Text, Icon, Pressable } from 'components';
-import { StyleSheet } from 'react-native';
 import { LANGUAGES } from 'constants';
 
 const propTypes = {
@@ -21,9 +20,9 @@ const createStyles = theme => {
       paddingHorizontal: spacing.small,
     },
     bottomSheetContent: {
-      paddingTop: spacing.smaller,
+      marginTop: spacing.small,
       height: '100%',
-      paddingBottom: spacing.large,
+      marginBottom: spacing.large,
     },
     bottomSheetItem: {
       flexDirection: 'row',

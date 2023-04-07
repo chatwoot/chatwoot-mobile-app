@@ -16,6 +16,10 @@ const defaultProps = {
 
 const getPathSource = ({ icon }) => {
   const path = icons[`${icon}`];
+  // Here we check if the path is an array, if it is we join the array into a string to support icons with multiple paths.
+  if (Array.isArray(path)) {
+    return path.join(' ');
+  }
   return path;
 };
 

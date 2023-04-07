@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTheme } from '@react-navigation/native';
-import { View, Image, TouchableOpacity, SafeAreaView, Text } from 'react-native';
+import { View, Image, TouchableOpacity, SafeAreaView, Text, Dimensions } from 'react-native';
 import { withStyles } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
@@ -28,6 +28,7 @@ import { actions as authActions, resetAuth, selectLoggedIn } from 'reducer/authS
 
 import { selectInstallationUrl, selectBaseUrl } from 'reducer/settingsSlice';
 import { selectLocale, setLocale } from 'reducer/settingsSlice';
+const deviceHeight = Dimensions.get('window').height;
 
 const appName = DeviceInfo.getApplicationName();
 
@@ -92,7 +93,10 @@ const LoginScreenComponent = ({ navigation, eva }) => {
   };
 
   const changeLanguageModal = useRef(null);
-  const changeLanguageModalModalSnapPoints = useMemo(() => ['60%', '92%', '92%'], []);
+  const changeLanguageModalModalSnapPoints = useMemo(
+    () => [deviceHeight - 210, deviceHeight - 210],
+    [],
+  );
   const toggleChangeLanguageModal = useCallback(() => {
     changeLanguageModal.current.present() || changeLanguageModal.current?.close();
   }, []);
@@ -222,6 +226,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
             <BottomSheetModal
               bottomSheetModalRef={changeLanguageModal}
               initialSnapPoints={changeLanguageModalModalSnapPoints}
+              showHeader
               headerTitle={i18n.t('LOGIN.CHANGE_LANGUAGE')}
               closeFilter={closeChangeLanguageModal}
               children={

@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useCallback, useEffect, useState } from 'react'
 import { useTheme } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { SafeAreaView, Platform, ScrollView } from 'react-native';
+import { SafeAreaView, Platform, ScrollView, Dimensions } from 'react-native';
 import Config from 'react-native-config';
 import { StackActions } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
@@ -39,6 +39,7 @@ import {
 } from 'reducer/authSlice';
 import { clearAllConversations } from 'reducer/conversationSlice';
 import { selectLocale, setLocale } from 'reducer/settingsSlice';
+const deviceHeight = Dimensions.get('window').height;
 
 const appName = DeviceInfo.getApplicationName();
 
@@ -103,7 +104,7 @@ const SettingsScreen = () => {
 
   // Switch account bottom sheet
   const switchAccountModal = useRef(null);
-  const switchAccountModalSnapPoints = useMemo(() => ['40%', '60%', '60%'], []);
+  const switchAccountModalSnapPoints = useMemo(() => [deviceHeight - 210, deviceHeight - 210], []);
   const toggleSwitchAccountModal = useCallback(() => {
     switchAccountModal.current.present() || switchAccountModal.current?.close();
   }, []);
@@ -113,7 +114,10 @@ const SettingsScreen = () => {
 
   // Language bottom sheet
   const changeLanguageModal = useRef(null);
-  const changeLanguageModalModalSnapPoints = useMemo(() => ['60%', '92%', '92%'], []);
+  const changeLanguageModalModalSnapPoints = useMemo(
+    () => [deviceHeight - 210, deviceHeight - 210],
+    [],
+  );
   const toggleChangeLanguageModal = useCallback(() => {
     changeLanguageModal.current.present() || changeLanguageModal.current?.close();
   }, []);
@@ -210,6 +214,7 @@ const SettingsScreen = () => {
           <BottomSheetModal
             bottomSheetModalRef={switchAccountModal}
             initialSnapPoints={switchAccountModalSnapPoints}
+            showHeader
             headerTitle={i18n.t('SETTINGS.SWITCH_ACCOUNT')}
             closeFilter={closeSwitchAccountModal}
             children={
@@ -224,6 +229,7 @@ const SettingsScreen = () => {
           <BottomSheetModal
             bottomSheetModalRef={changeLanguageModal}
             initialSnapPoints={changeLanguageModalModalSnapPoints}
+            showHeader
             headerTitle={i18n.t('SETTINGS.CHANGE_LANGUAGE')}
             closeFilter={closeChangeLanguageModal}
             children={
@@ -275,7 +281,7 @@ const SettingsScreen = () => {
         <View style={styles.logoutSection}>
           <Pressable style={styles.logoutButton} onPress={onClickLogout}>
             <Icon icon="power-outline" color={colors.textDark} size={16} />
-            <Text semiBold sm color={colors.textDark} style={styles.logoutText}>
+            <Text medium sm color={colors.textDark} style={styles.logoutText}>
               {i18n.t('SETTINGS.LOGOUT')}
             </Text>
           </Pressable>

@@ -10,5 +10,6 @@ if (!__DEV__) {
   Sentry.init({
     dsn: Config.SENTRY_DSN,
     tracesSampleRate: 1.0,
+    attachScreenshot: true,
   });
 }

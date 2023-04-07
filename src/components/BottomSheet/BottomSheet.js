@@ -28,7 +28,7 @@ const BottomSheetModal = ({
         pressBehavior={'close'}
         opacity={0.6}
         disappearsOnIndex={-1}
-        appearsOnIndex={1}
+        appearsOnIndex={0}
       />
     ),
     [],

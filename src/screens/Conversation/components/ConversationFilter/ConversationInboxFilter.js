@@ -17,7 +17,8 @@ const createStyles = theme => {
       alignItems: 'center',
     },
     bottomSheetView: {
-      paddingBottom: spacing.large,
+      marginTop: spacing.small,
+      marginBottom: spacing.large,
     },
     bottomSheetItem: {
       flexDirection: 'row',

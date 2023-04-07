@@ -239,7 +239,7 @@ const ConversationScreen = () => {
 
   // Conversation filter modal
   const conversationFilterModalSnapPoints = useMemo(
-    () => [deviceHeight - 400, deviceHeight - 400.1],
+    () => [deviceHeight - 400, deviceHeight - 400],
     [],
   );
 
@@ -263,7 +263,7 @@ const ConversationScreen = () => {
 
   // Inbox filter modal
   const inboxFilterModal = useRef(null);
-  const inboxFilterModalSnapPoints = useMemo(() => [deviceHeight - 210, deviceHeight - 210.1], []);
+  const inboxFilterModalSnapPoints = useMemo(() => [deviceHeight - 210, deviceHeight - 210], []);
   const toggleInboxFilterModal = useCallback(() => {
     inboxFilterModal.current.present() || inboxFilterModal.current?.close();
   }, []);

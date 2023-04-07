@@ -94,7 +94,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
 
   const changeLanguageModal = useRef(null);
   const changeLanguageModalModalSnapPoints = useMemo(
-    () => [deviceHeight - 210, deviceHeight - 210.1],
+    () => [deviceHeight - 210, deviceHeight - 210],
     [],
   );
   const toggleChangeLanguageModal = useCallback(() => {

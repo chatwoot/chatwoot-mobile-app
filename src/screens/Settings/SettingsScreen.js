@@ -104,10 +104,7 @@ const SettingsScreen = () => {
 
   // Switch account bottom sheet
   const switchAccountModal = useRef(null);
-  const switchAccountModalSnapPoints = useMemo(
-    () => [deviceHeight - 210, deviceHeight - 210.1],
-    [],
-  );
+  const switchAccountModalSnapPoints = useMemo(() => [deviceHeight - 210, deviceHeight - 210], []);
   const toggleSwitchAccountModal = useCallback(() => {
     switchAccountModal.current.present() || switchAccountModal.current?.close();
   }, []);
@@ -118,7 +115,7 @@ const SettingsScreen = () => {
   // Language bottom sheet
   const changeLanguageModal = useRef(null);
   const changeLanguageModalModalSnapPoints = useMemo(
-    () => [deviceHeight - 210, deviceHeight - 210.1],
+    () => [deviceHeight - 210, deviceHeight - 210],
     [],
   );
   const toggleChangeLanguageModal = useCallback(() => {
@@ -284,7 +281,7 @@ const SettingsScreen = () => {
         <View style={styles.logoutSection}>
           <Pressable style={styles.logoutButton} onPress={onClickLogout}>
             <Icon icon="power-outline" color={colors.textDark} size={16} />
-            <Text semiBold sm color={colors.textDark} style={styles.logoutText}>
+            <Text medium sm color={colors.textDark} style={styles.logoutText}>
               {i18n.t('SETTINGS.LOGOUT')}
             </Text>
           </Pressable>

@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { Text, Icon, Pressable, UserAvatar } from 'components';
+import i18n from 'i18n';
 
 const createStyles = theme => {
   const { spacing, borderRadius } = theme;
@@ -26,6 +27,10 @@ const createStyles = theme => {
       marginLeft: spacing.smaller,
       marginRight: spacing.half,
     },
+    sectionActiveTitle: {
+      marginLeft: spacing.micro,
+      marginRight: spacing.smaller,
+    },
     sectionActionView: {
       alignItems: 'center',
       flexDirection: 'row',
@@ -40,7 +45,6 @@ const propTypes = {
   thumbnail: PropTypes.string,
   iconName: PropTypes.string,
   text: PropTypes.string,
-  checked: PropTypes.bool,
   itemType: PropTypes.string,
   onPressItem: PropTypes.func,
   availabilityStatus: PropTypes.string,
@@ -49,7 +53,6 @@ const propTypes = {
 
 const ConversationActionItem = ({
   text,
-  checked,
   iconName,
   itemType,
   name,
@@ -60,6 +63,8 @@ const ConversationActionItem = ({
 }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
+
+  const shouldShowUserAvatar = itemType === 'assignee' && name !== i18n.t('AGENT.TITLE');
 
   return (
     <React.Fragment>
@@ -81,13 +86,13 @@ const ConversationActionItem = ({
           </Text>
         </View>
         <View style={styles.sectionActionView}>
-          {itemType === 'assignee' && thumbnail !== '' && (
+          {shouldShowUserAvatar && (
             <UserAvatar thumbnail={thumbnail} userName={name} size={18} fontSize={8} />
           )}
-          <Text sm medium color={colors.textLight} style={styles.sectionTitle}>
+          <Text sm medium color={colors.textLight} style={styles.sectionActiveTitle}>
             {name}
           </Text>
-          {(itemType === 'assignee' || itemType === 'team') && (
+          {(itemType === 'assignee' || itemType === 'team' || itemType === 'snooze') && (
             <Icon icon="arrow-chevron-right-outline" color={colors.text} size={16} />
           )}
         </View>

@@ -29,13 +29,17 @@ const createStyles = theme => {
     },
     headerLeftIcon: {
       marginRight: spacing.small,
-      padding: spacing.micro,
+      paddingVertical: spacing.micro,
+      paddingLeft: spacing.micro,
+      paddingRight: spacing.smaller,
       flexDirection: 'row',
       alignItems: 'center',
     },
     headerRightIcon: {
       marginLeft: spacing.small,
-      padding: spacing.micro,
+      paddingVertical: spacing.micro,
+      paddingLeft: spacing.smaller,
+      paddingRight: spacing.micro,
       flexDirection: 'row',
       alignItems: 'center',
     },
@@ -100,7 +104,7 @@ const Header = ({
       <View style={styles.headerLeft}>
         {leftIcon ? (
           <Pressable style={styles.headerLeftIcon} onPress={onPressLeft}>
-            <Icon icon={leftIcon} color={colors.textDark} size={20} />
+            <Icon icon={leftIcon} color={colors.textDark} size={24} />
           </Pressable>
         ) : null}
         <View style={styles.headerCenter}>
@@ -126,7 +130,7 @@ const Header = ({
       </View>
       {rightIcon ? (
         <Pressable style={styles.headerRightIcon} onPress={onPressRight}>
-          <Icon icon={rightIcon} color={colors.textDark} size={20} />
+          <Icon icon={rightIcon} color={colors.textDark} size={24} />
         </Pressable>
       ) : null}
     </View>

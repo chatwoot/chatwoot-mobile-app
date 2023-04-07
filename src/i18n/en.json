@@ -72,9 +72,13 @@
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Unassign conversation",
-    "SNOOZE": "Snooze Conversation",
-    "UNMUTE_CONVERSATION": "Unmute conversation",
     "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "MARK_AS_PENDING": "Mark as pending",
+    "SNOOZE_UNTIL": "Snooze until",
+    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
+    "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
+    "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
+    "SNOOZE": "Snooze Conversation",
     "MESSAGES": "Messages"
   },
   "FILTER": {

@@ -20,9 +20,9 @@ const createStyles = theme => {
       paddingHorizontal: spacing.small,
     },
     bottomSheetContent: {
-      paddingTop: spacing.smaller,
+      marginTop: spacing.small,
       height: '100%',
-      paddingBottom: spacing.large,
+      marginBottom: spacing.large,
     },
     bottomSheetItem: {
       flexDirection: 'row',

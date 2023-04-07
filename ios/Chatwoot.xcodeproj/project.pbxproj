@@ -285,7 +285,7 @@
 				1546019631854864B8C53390 /* Inter-Italic.otf in Resources */,
 				FF521FE0D89841A885B699EE /* Inter-Light.otf in Resources */,
 				A39A49FB2C1A432083FF8800 /* Inter-Medium.otf in Resources */,
-			    836B13142951DA3B00F6CA5D /* GoogleService-Info.plist in Resources */,
+				836B13142951DA3B00F6CA5D /* GoogleService-Info.plist in Resources */,
 				94DF9C9310914210BEF2AB8F /* Inter-Regular.otf in Resources */,
 				C86429AC5C5B4DADB0053668 /* Inter-SemiBold.otf in Resources */,
 			);
@@ -567,7 +567,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Chatwoot/Chatwoot.entitlements;
-				CURRENT_PROJECT_VERSION = 271;
+				CURRENT_PROJECT_VERSION = 272;
 				DEVELOPMENT_TEAM = L7YLMN4634;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Chatwoot/Info.plist;
@@ -580,7 +580,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 					"$(inherited)",
 				);
-				MARKETING_VERSION = 1.8.22;
+				MARKETING_VERSION = 1.8.23;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -605,7 +605,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Chatwoot/Chatwoot.entitlements;
-				CURRENT_PROJECT_VERSION = 271;
+				CURRENT_PROJECT_VERSION = 272;
 				DEVELOPMENT_TEAM = L7YLMN4634;
 				INFOPLIST_FILE = Chatwoot/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Chatwoot;
@@ -617,7 +617,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 					"$(inherited)",
 				);
-				MARKETING_VERSION = 1.8.22;
+				MARKETING_VERSION = 1.8.23;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

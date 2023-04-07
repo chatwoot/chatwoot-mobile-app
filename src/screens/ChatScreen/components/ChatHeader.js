@@ -9,89 +9,25 @@ import { selectConversationToggleStatus } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';
 import { UserAvatar, Pressable, Text, Icon } from 'components';
 import { getInboxName } from 'helpers';
-import Banner from 'src/screens/ChatScreen/components/Banner';
-import InboxName from 'src/screens/ChatScreen/components/InboxName';
+import Banner from 'screens/ChatScreen/components/Banner';
+import InboxName from 'screens/ChatScreen/components/InboxName';
 import TypingStatus from 'screens/ChatScreen/components/UserTypingStatus';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import i18n from 'i18n';
 import { getTextSubstringWithEllipsis } from 'helpers';
-import { getConversationUrl } from 'src/helpers/UrlHelper';
+import { getConversationUrl } from 'helpers/UrlHelper';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
-import { INBOX_ICON, CONVERSATION_STATUS } from 'src/constants/index';
+import { INBOX_ICON, CONVERSATION_STATUS } from 'constants/index';
 import { inboxesSelector } from 'reducer/inboxSlice';
 import { selectUserId } from 'reducer/authSlice';
 import differenceInHours from 'date-fns/differenceInHours';
+import createStyles from './ChatHeader.styles.js';
 const deviceHeight = Dimensions.get('window').height;
 
 // Bottom sheet items
 import ConversationAction from '../../ConversationAction/ConversationAction';
 import SnoozeConversationItems from './SnoozeConversation';
-
-const createStyles = theme => {
-  const { spacing, colors } = theme;
-  return StyleSheet.create({
-    headerView: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      maxWidth: 200,
-      overflow: 'hidden',
-    },
-    titleView: {
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-      marginHorizontal: spacing.smaller,
-      height: spacing.large,
-    },
-    customerName: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    infoIcon: {
-      marginLeft: spacing.micro,
-    },
-    chatHeader: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      borderBottomWidth: 1,
-      borderBottomColor: colors.borderLight,
-      paddingHorizontal: 12,
-      paddingVertical: 12,
-    },
-    chatHeaderLeft: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    actionIcon: {
-      flexDirection: 'row',
-    },
-    loadingSpinner: {
-      marginTop: spacing.tiny,
-      paddingVertical: spacing.smaller,
-      paddingHorizontal: spacing.smaller,
-      marginLeft: spacing.micro,
-    },
-    inboxNameTypingWrap: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    inboxNameWrap: {
-      marginTop: spacing.tiny,
-    },
-    statusView: {
-      paddingVertical: spacing.smaller,
-      paddingHorizontal: spacing.smaller,
-      marginLeft: spacing.micro,
-    },
-    backButtonView: {
-      paddingVertical: spacing.smaller,
-      paddingLeft: spacing.micro,
-      paddingRight: spacing.smaller,
-    },
-  });
-};
 
 const propTypes = {
   conversationId: PropTypes.number,
@@ -119,81 +55,24 @@ const ChatHeader = ({
   const userId = useSelector(selectUserId);
 
   const inboxes = useSelector(inboxesSelector.selectAll);
-  const inboxId = conversationDetails && conversationDetails.inbox_id;
   const inboxDetails = inboxes ? inboxes.find(inbox => inbox.id === inboxId) : {};
-  const channelType =
-    conversationDetails && conversationDetails.meta && conversationDetails.meta.channel;
 
   const {
+    id: currentConversationId,
+    account_id: accountId,
+    inbox_id: inboxId,
+    status: conversationStatus,
+    can_reply: canReply,
     meta: {
       sender: { availability_status: availabilityStatus },
+      channel: channelType,
     },
     additional_attributes: additionalAttributes = {},
     muted,
   } = conversationDetails;
 
-  const snoozedConversation = conversationDetails.status === CONVERSATION_STATUS.SNOOZED;
-  const pendingConversation = conversationDetails.status === CONVERSATION_STATUS.PENDING;
-
-  const ResolveIcon = () => {
-    return (
-      <Pressable
-        style={styles.statusView}
-        onPress={() => toggleStatusForConversations(CONVERSATION_STATUS.RESOLVED)}>
-        <Icon icon="checkmark-outline" color={colors.successColor} size={24} />
-      </Pressable>
-    );
-  };
-
-  const ReopenIcon = () => {
-    return (
-      <Pressable
-        style={styles.statusView}
-        onPress={() => toggleStatusForConversations(CONVERSATION_STATUS.OPEN)}>
-        <Icon icon="arrow-redo-outline" color={colors.warningColor} size={24} />
-      </Pressable>
-    );
-  };
-
-  const SnoozePendingOpenIcon = () => {
-    return (
-      <Pressable
-        style={styles.statusView}
-        onPress={() => toggleStatusForConversations(CONVERSATION_STATUS.OPEN)}>
-        <Icon icon="person-arrow-back-outline" color={colors.primaryColorDarker} size={24} />
-      </Pressable>
-    );
-  };
-
-  const MenuIcon = () => {
-    return (
-      <Pressable style={styles.statusView} onPress={toggleActionModal}>
-        <Icon icon="more-horizontal" color={colors.textDark} size={24} />
-      </Pressable>
-    );
-  };
-
-  const MuteIcon = () => {
-    return (
-      <Pressable style={styles.statusView} onPress={muteConversation}>
-        <Icon icon="speaker-mute-outline" color={colors.textDark} size={24} />
-      </Pressable>
-    );
-  };
-
-  const UnmuteIcon = () => {
-    return (
-      <Pressable style={styles.statusView} onPress={UnmuteConversation}>
-        <Icon icon="speaker-1-outline" color={colors.textDark} size={24} />
-      </Pressable>
-    );
-  };
-
-  const BackIcon = () => (
-    <Pressable style={styles.backButtonView} onPress={onBackPress}>
-      <Icon icon="arrow-chevron-left-outline" color={colors.textDark} size={24} />
-    </Pressable>
-  );
+  const snoozedConversation = conversationStatus === CONVERSATION_STATUS.SNOOZED;
+  const pendingConversation = conversationStatus === CONVERSATION_STATUS.PENDING;
 
   const muteConversation = () => {
     if (!muted) {
@@ -209,12 +88,15 @@ const ChatHeader = ({
     }
   };
 
-  const renderLeftControl = () => <BackIcon />;
+  const renderLeftControl = () => (
+    <Pressable style={styles.backButtonView} onPress={onBackPress}>
+      <Icon icon="arrow-chevron-left-outline" color={colors.textDark} size={24} />
+    </Pressable>
+  );
   const renderRightControl = () => {
     if (conversationDetails) {
-      const { status } = conversationDetails;
-      const openConversation = status === 'open';
-      const resolvedConversation = status === 'resolved';
+      const openConversation = conversationStatus === CONVERSATION_STATUS.OPEN;
+      const resolvedConversation = conversationStatus === CONVERSATION_STATUS.RESOLVED;
       return (
         <View style={styles.actionIcon}>
           {conversationToggleStatus ? (
@@ -227,14 +109,56 @@ const ChatHeader = ({
             </View>
           ) : (
             <React.Fragment>
-              {openConversation && <ResolveIcon />}
-              {resolvedConversation && <ReopenIcon />}
-              {snoozedConversation && <SnoozePendingOpenIcon />}
-              {pendingConversation && <SnoozePendingOpenIcon />}
+              {openConversation && (
+                <Pressable
+                  style={styles.statusView}
+                  onPress={() => toggleStatusForConversations(CONVERSATION_STATUS.RESOLVED)}>
+                  <Icon icon="checkmark-outline" color={colors.successColor} size={24} />
+                </Pressable>
+              )}
+              {resolvedConversation && (
+                <Pressable
+                  style={styles.statusView}
+                  onPress={() => toggleStatusForConversations(CONVERSATION_STATUS.OPEN)}>
+                  <Icon icon="arrow-redo-outline" color={colors.warningColor} size={24} />
+                </Pressable>
+              )}
+              {snoozedConversation && (
+                <Pressable
+                  style={styles.statusView}
+                  onPress={() => toggleStatusForConversations(CONVERSATION_STATUS.OPEN)}>
+                  <Icon
+                    icon="person-arrow-back-outline"
+                    color={colors.primaryColorDarker}
+                    size={24}
+                  />
+                </Pressable>
+              )}
+              {pendingConversation && (
+                <Pressable
+                  style={styles.statusView}
+                  onPress={() => toggleStatusForConversations(CONVERSATION_STATUS.OPEN)}>
+                  <Icon
+                    icon="person-arrow-back-outline"
+                    color={colors.primaryColorDarker}
+                    size={24}
+                  />
+                </Pressable>
+              )}
             </React.Fragment>
           )}
-          {!muted ? <MuteIcon /> : <UnmuteIcon />}
-          <MenuIcon />
+          {!muted ? (
+            <Pressable style={styles.statusView} onPress={muteConversation}>
+              <Icon icon="speaker-mute-outline" color={colors.textDark} size={24} />
+            </Pressable>
+          ) : (
+            <Pressable style={styles.statusView} onPress={UnmuteConversation}>
+              <Icon icon="speaker-1-outline" color={colors.textDark} size={24} />
+            </Pressable>
+          )}
+          <Pressable style={styles.statusView} onPress={toggleActionModal}>
+            <Icon icon="more-horizontal" color={colors.textDark} size={24} />
+          </Pressable>
         </View>
       );
     }
@@ -244,17 +168,16 @@ const ChatHeader = ({
   const isAWhatsappChannel =
     conversationMetaDetails && conversationMetaDetails.channel === 'Channel::Whatsapp';
 
-  const canReplyInCurrentChat = conversationDetails && conversationDetails.can_reply === true;
+  const canReplyInCurrentChat = canReply === true;
 
   const iconName = INBOX_ICON[channelType];
   const inboxName = getInboxName({ inboxes, inboxId });
 
   const onClickShareConversationURL = async () => {
-    const { id, account_id } = conversationDetails;
     try {
       const conversationURL = await getConversationUrl({
-        conversationId: id,
-        accountId: account_id,
+        conversationId: currentConversationId,
+        accountId: accountId,
       });
 
       await Share.share({
@@ -269,8 +192,8 @@ const ChatHeader = ({
     if (itemType !== 'share') {
       closeActionModal();
     }
-    if (itemType === 'self_assign') {
-      if (conversationDetails) {
+    if (conversationDetails) {
+      if (itemType === 'self_assign') {
         AnalyticsHelper.track(CONVERSATION_EVENTS.SELF_ASSIGN_CONVERSATION);
         dispatch(
           conversationActions.assignConversation({
@@ -279,68 +202,54 @@ const ChatHeader = ({
           }),
         );
       }
-    }
-    if (itemType === 'assignee') {
-      if (conversationDetails) {
+      if (itemType === 'assignee') {
         navigation.navigate('AgentScreen', { conversationDetails });
       }
-    }
-    if (itemType === 'unassign') {
-      AnalyticsHelper.track(CONVERSATION_EVENTS.UNASSIGN_CONVERSATION);
-      dispatch(
-        conversationActions.assignConversation({
-          conversationId: conversationDetails.id,
-          assigneeId: 0,
-        }),
-      );
-    }
-    if (itemType === 'details') {
-      if (conversationDetails) {
+      if (itemType === 'unassign') {
+        AnalyticsHelper.track(CONVERSATION_EVENTS.UNASSIGN_CONVERSATION);
+        dispatch(
+          conversationActions.assignConversation({
+            conversationId: conversationDetails.id,
+            assigneeId: 0,
+          }),
+        );
+      }
+      if (itemType === 'details') {
         navigation.navigate('ConversationDetails', { conversationDetails });
       }
-    }
-    if (itemType === 'label') {
-      if (conversationDetails) {
+      if (itemType === 'label') {
         navigation.navigate('LabelScreen', { conversationDetails });
       }
-    }
-    if (itemType === 'team') {
-      if (conversationDetails) {
+      if (itemType === 'team') {
         navigation.navigate('TeamScreen', { conversationDetails });
       }
-    }
-    if (itemType === 'pending') {
-      if (conversationDetails) {
+      if (itemType === 'pending') {
         toggleStatusForConversations(CONVERSATION_STATUS.PENDING);
       }
-    }
-    if (itemType === 'snooze') {
-      if (conversationDetails) {
+      if (itemType === 'snooze') {
         toggleSnoozeActionModal();
       }
-    }
-    if (itemType === 'share') {
-      if (conversationDetails) {
+      if (itemType === 'share') {
         onClickShareConversationURL();
       }
     }
   };
 
   const toggleStatusForConversations = status => {
-    let conversationStatus = '';
+    let chatStatus = '';
     if (status === CONVERSATION_STATUS.RESOLVED) {
-      conversationStatus = CONVERSATION_STATUS.RESOLVED;
+      chatStatus = CONVERSATION_STATUS.RESOLVED;
     } else if (status === CONVERSATION_STATUS.OPEN) {
-      conversationStatus = CONVERSATION_STATUS.OPEN;
+      chatStatus = CONVERSATION_STATUS.OPEN;
     } else if (status === CONVERSATION_STATUS.PENDING) {
-      conversationStatus = CONVERSATION_STATUS.PENDING;
+      chatStatus = CONVERSATION_STATUS.PENDING;
     }
     try {
       AnalyticsHelper.track(CONVERSATION_EVENTS.TOGGLE_STATUS);
       dispatch(
         conversationActions.toggleConversationStatus({
           conversationId: conversationId,
-          status: conversationStatus,
+          status: chatStatus,
         }),
       );
     } catch (error) {}

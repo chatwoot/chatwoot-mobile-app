@@ -11,7 +11,7 @@ import { UserAvatar, Pressable, Text, Icon } from 'components';
 import { getInboxName } from 'helpers';
 import Banner from 'src/screens/ChatScreen/components/Banner';
 import InboxName from 'src/screens/ChatScreen/components/InboxName';
-import TypingStatus from 'src/screens/ChatScreen/components/UserTypingStatus';
+import TypingStatus from 'screens/ChatScreen/components/UserTypingStatus';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import i18n from 'i18n';
 import { getTextSubstringWithEllipsis } from 'helpers';

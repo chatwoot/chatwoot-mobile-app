@@ -3,7 +3,7 @@ import React from 'react';
 import { useTheme } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import ConversationActionItem from '../../components/ConversationActionItem';
-import i18n from '../../i18n';
+import i18n from 'i18n';
 import { selectUserId } from 'reducer/authSlice';
 import { inboxAgentSelectors } from 'reducer/inboxAgentsSlice';
 import differenceInHours from 'date-fns/differenceInHours';
@@ -19,7 +19,7 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
   } = conversationDetails;
 
   let assignedAgent = {
-    name: 'Select Agent',
+    name: '',
     thumbnail: '',
   };
   if (assignee) {
@@ -52,9 +52,9 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
         itemType="assignee"
         iconName="people-outline"
         colors={colors}
-        name={assignedAgent.name}
+        name={assignedAgent.name ? assignedAgent.name : i18n.t('AGENT.TITLE')}
         thumbnail={assignedAgent.thumbnail}
-        availabilityStatus={assignedAgent.availability_status}
+        availabilityStatus={assignedAgent?.availability_status}
       />
 
       <ConversationActionItem

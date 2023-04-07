@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { Text, Icon, Pressable, UserAvatar } from 'components';
+import i18n from 'i18n';
 
 const createStyles = theme => {
   const { spacing, borderRadius } = theme;
@@ -63,6 +64,8 @@ const ConversationActionItem = ({
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
 
+  const shouldShowUserAvatar = itemType === 'assignee' && name !== i18n.t('AGENT.TITLE');
+
   return (
     <React.Fragment>
       <Pressable
@@ -83,7 +86,7 @@ const ConversationActionItem = ({
           </Text>
         </View>
         <View style={styles.sectionActionView}>
-          {itemType === 'assignee' && name !== '' && (
+          {shouldShowUserAvatar && (
             <UserAvatar thumbnail={thumbnail} userName={name} size={18} fontSize={8} />
           )}
           <Text sm medium color={colors.textLight} style={styles.sectionActiveTitle}>

@@ -1,6 +1,5 @@
 import React, { useRef, useCallback, useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
-import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -13,6 +12,7 @@ import { getInboxName } from 'helpers';
 import Banner from 'src/screens/ChatScreen/components/Banner';
 import InboxName from 'src/screens/ChatScreen/components/InboxName';
 import TypingStatus from 'src/screens/ChatScreen/components/UserTypingStatus';
+import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import i18n from 'i18n';
 import { getTextSubstringWithEllipsis } from 'helpers';
 import { getConversationUrl } from 'src/helpers/UrlHelper';
@@ -414,7 +414,7 @@ const ChatHeader = ({
               <View style={styles.customerName}>
                 {customerDetails.name && (
                   <Text md medium color={colors.textDark}>
-                    {getTextSubstringWithEllipsis(customerDetails.name, 14)}
+                    {getTextSubstringWithEllipsis(customerDetails.name, 13)}
                   </Text>
                 )}
                 <View style={styles.infoIcon}>

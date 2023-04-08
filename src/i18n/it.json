@@ -76,9 +76,9 @@
     "MARK_AS_PENDING": "Segna come in sospeso",
     "SNOOZE_UNTIL": "Posticipa fino a",
     "SNOOZE_UNTIL_NEXT_REPLY": "Fino alla prossima risposta",
-    "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
+    "SNOOZE_UNTIL_TOMORROW": "Fino a domani",
     "SNOOZE_UNTIL_NEXT_WEEK": "Fino alla prossima settimana",
-    "SNOOZE": "Snooze Conversation",
+    "SNOOZE": "Posticipa conversazione",
     "MESSAGES": "Messaggi"
   },
   "FILTER": {

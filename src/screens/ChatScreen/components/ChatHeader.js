@@ -3,7 +3,7 @@ import { useTheme } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, Share, ActivityIndicator, Dimensions, StyleSheet } from 'react-native';
+import { View, Share, ActivityIndicator, Dimensions } from 'react-native';
 import { getTypingUsersText, getCustomerDetails } from 'helpers';
 import { selectConversationToggleStatus } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';

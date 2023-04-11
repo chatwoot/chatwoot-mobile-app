@@ -14,15 +14,11 @@ const parseErrorCode = error => {
   if (error.response) {
     if (error.response.status === 401) {
       store.dispatch(logout());
-    } else if (error.response.status === 404) {
-      const { message } = error.response.data;
-      showToast({ message });
     }
   } else {
     showToast({ message: I18n.t('ERRORS.COMMON_ERROR') });
   }
-
-  return Promise.reject(error.response);
+  return Promise.reject(error);
 };
 
 const API = axios.create();

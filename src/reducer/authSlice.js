@@ -42,7 +42,9 @@ export const actions = {
         },
         headers: response.headers,
       };
-    } catch (response) {
+    } catch (error) {
+      const { response } = error;
+
       if (response && response.status === 401) {
         const { errors } = response.data;
         const hasAuthErrorMsg =
@@ -74,6 +76,7 @@ export const actions = {
         return data;
       } catch (error) {
         const { response } = error;
+
         if (response && response.status === 401) {
           const { errors } = response.data;
           const hasAuthErrorMsg =

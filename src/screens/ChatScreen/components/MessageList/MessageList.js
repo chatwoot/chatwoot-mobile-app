@@ -108,6 +108,7 @@ const MessagesListComponent = ({ eva: { style }, conversationId, loadMessages })
         conversationId={conversationId}
         conversationDetails={conversation}
         inboxId={inboxId}
+        enableReplyButton={groupedConversationList.length > 0}
       />
     </View>
   );

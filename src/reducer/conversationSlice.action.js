@@ -97,15 +97,9 @@ const actions = {
         const { data } = response;
         return data;
       } catch (error) {
-        const errorMessage =
-          error?.response?.data?.error?.message || I18n.t('CONVERSATION.CONVERSATION_NOT_FOUND');
-        if (!error.response) {
-          throw error;
-        }
-        showToast({
-          type: 'error',
-          title: errorMessage,
-        });
+        const { error: message } = error.response.data;
+        const errorMessage = message || I18n.t('CONVERSATION.CONVERSATION_NOT_FOUND');
+        showToast({ message: errorMessage });
         RootNavigation.navigate('ConversationScreen');
         return rejectWithValue(error.response.data);
       }

@@ -16,18 +16,26 @@ import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import conversationActions from 'reducer/conversationSlice.action';
 import CannedResponsesContainer from '../containers/CannedResponsesContainer';
 import { inboxAgentSelectors, actions as inboxAgentActions } from 'reducer/inboxAgentsSlice';
+import { selectUser } from 'reducer/authSlice';
 
 const propTypes = {
   conversationId: PropTypes.number,
-  conversationMetaDetails: PropTypes.object,
+  conversationDetails: PropTypes.object,
   eva: PropTypes.shape({
     theme: PropTypes.object,
     style: PropTypes.object,
   }).isRequired,
   inboxId: PropTypes.number,
+  enableReplyButton: PropTypes.bool,
 };
 
-const ReplyBox = ({ eva: { theme, style }, conversationId, inboxId, conversationMetaDetails }) => {
+const ReplyBox = ({
+  eva: { theme, style },
+  conversationId,
+  inboxId,
+  conversationDetails,
+  enableReplyButton,
+}) => {
   const [isPrivate, setPrivateMode] = useState(false);
   const [ccEmails, setCCEmails] = useState('');
   const [bccEmails, setBCCEmails] = useState('');
@@ -37,6 +45,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, inboxId, conversation
   const [cannedResponseSearchKey, setCannedResponseSearchKey] = useState('');
   const [attachmentDetails, setAttachmentDetails] = useState(null);
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     if (inboxId) {
@@ -61,8 +70,8 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, inboxId, conversation
   };
 
   const isAnEmailChannelAndNotInPrivateNote = () => {
-    if (conversationMetaDetails) {
-      const channel = conversationMetaDetails.channel;
+    if (conversationDetails) {
+      const channel = conversationDetails.channel;
       return channel === 'Channel::Email' && !isPrivate;
     }
     return false;
@@ -123,6 +132,10 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, inboxId, conversation
         message: updatedMessage,
         private: isPrivate,
         file: attachmentDetails,
+        sender: {
+          id: user.id,
+          thumbnail: user.avatar_url,
+        },
       };
       if (ccEmails) {
         payload.message.cc_emails = ccEmails;
@@ -174,6 +187,8 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, inboxId, conversation
       </View>
     );
   };
+
+  const enableReplyBox = !message && !attachmentDetails && enableReplyButton;
 
   return (
     <React.Fragment>
@@ -257,17 +272,14 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, inboxId, conversation
           </View>
           <TouchableOpacity
             style={[style.sendButtonView, sendMessageButtonWrapStyles()]}
+            disabled={!!enableReplyBox}
             onPress={onNewMessageAdd}>
             <Icon
               name="paper-plane"
               style={style.sendButton}
               width={24}
               height={24}
-              fill={
-                !(!message && !attachmentDetails)
-                  ? theme['color-primary-default']
-                  : theme['color-background']
-              }
+              fill={!enableReplyBox ? theme['color-primary-default'] : theme['color-background']}
             />
           </TouchableOpacity>
         </View>

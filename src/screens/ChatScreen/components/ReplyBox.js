@@ -188,8 +188,7 @@ const ReplyBox = ({
     );
   };
 
-  const enableReplyBox = !message && !attachmentDetails && enableReplyButton;
-
+  const enableReplyBox = (message || attachmentDetails) && enableReplyButton ? true : false;
   return (
     <React.Fragment>
       {attachmentDetails && (
@@ -272,14 +271,14 @@ const ReplyBox = ({
           </View>
           <TouchableOpacity
             style={[style.sendButtonView, sendMessageButtonWrapStyles()]}
-            disabled={!!enableReplyBox}
+            disabled={!enableReplyBox}
             onPress={onNewMessageAdd}>
             <Icon
               name="paper-plane"
               style={style.sendButton}
               width={24}
               height={24}
-              fill={!enableReplyBox ? theme['color-primary-default'] : theme['color-background']}
+              fill={enableReplyBox ? theme['color-primary-default'] : theme['color-background']}
             />
           </TouchableOpacity>
         </View>

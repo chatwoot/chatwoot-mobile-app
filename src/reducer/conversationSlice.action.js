@@ -97,15 +97,9 @@ const actions = {
         const { data } = response;
         return data;
       } catch (error) {
-        const errorMessage =
-          error?.response?.data?.error?.message || I18n.t('CONVERSATION.CONVERSATION_NOT_FOUND');
-        if (!error.response) {
-          throw error;
-        }
-        showToast({
-          type: 'error',
-          title: errorMessage,
-        });
+        const { error: message } = error.response.data;
+        const errorMessage = message || I18n.t('CONVERSATION.CONVERSATION_NOT_FOUND');
+        showToast({ message: errorMessage });
         RootNavigation.navigate('ConversationScreen');
         return rejectWithValue(error.response.data);
       }
@@ -119,6 +113,22 @@ const actions = {
           data: { id, agent_last_seen_at: lastSeen },
         } = await axios.post(`conversations/${conversationId}/update_last_seen`);
         return { id, lastSeen };
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
+  markMessagesAsUnread: createAsyncThunk(
+    'conversations/markMessagesAsUnread',
+    async ({ conversationId }, { rejectWithValue }) => {
+      try {
+        const {
+          data: { id, unread_count: unreadCount, agent_last_seen_at: lastSeen },
+        } = await axios.post(`conversations/${conversationId}/unread`);
+        return { id, unreadCount, lastSeen };
       } catch (error) {
         if (!error.response) {
           throw error;
@@ -167,11 +177,22 @@ const actions = {
 
   toggleConversationStatus: createAsyncThunk(
     'conversations/toggleConversationStatus',
-    async ({ conversationId }, { rejectWithValue }) => {
+    async ({ conversationId, status, snoozedUntil = null }, { rejectWithValue }) => {
       try {
-        const apiUrl = `conversations/${conversationId}/toggle_status`;
-        const response = await axios.post(apiUrl);
-        return response.data;
+        const response = await axios.post(`conversations/${conversationId}/toggle_status`, {
+          status,
+          snoozed_until: snoozedUntil,
+        });
+        const {
+          conversation_id: id,
+          current_status: updatedStatus,
+          snoozed_until: updatedSnoozedUntil,
+        } = response.data.payload;
+        return {
+          id,
+          updatedStatus,
+          updatedSnoozedUntil,
+        };
       } catch (error) {
         if (!error.response) {
           throw error;
@@ -185,8 +206,9 @@ const actions = {
     async ({ conversationId }, { rejectWithValue }) => {
       try {
         const apiUrl = `conversations/${conversationId}/mute`;
-        const response = await axios.post(apiUrl);
-        return response.data;
+        await axios.post(apiUrl);
+        const id = conversationId;
+        return { id };
       } catch (error) {
         if (!error.response) {
           throw error;
@@ -200,8 +222,9 @@ const actions = {
     async ({ conversationId }, { rejectWithValue }) => {
       try {
         const apiUrl = `conversations/${conversationId}/unmute`;
-        const response = await axios.post(apiUrl);
-        return response.data;
+        await axios.post(apiUrl);
+        const id = conversationId;
+        return { id };
       } catch (error) {
         if (!error.response) {
           throw error;
@@ -216,6 +239,7 @@ const actions = {
       try {
         const apiUrl = `conversations/${conversationId}/assignments?assignee_id=${assigneeId}`;
         const response = await axios.post(apiUrl);
+
         return response.data;
       } catch (error) {
         if (!error.response) {
@@ -235,6 +259,21 @@ const actions = {
           typing_status: typingStatus,
         })
         .catch();
+    },
+  ),
+  updateConversationAndMessages: createAsyncThunk(
+    'conversations/updateConversationAndMessages',
+    async ({ conversationId }, { rejectWithValue }) => {
+      try {
+        const response = await axios.get(`conversations/${conversationId}`);
+        const { data } = response;
+        return { data, conversationId };
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
     },
   ),
 };

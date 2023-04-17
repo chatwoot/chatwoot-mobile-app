@@ -9,7 +9,6 @@ import { Text } from 'components';
 import {
   selectors as conversationSelectors,
   selectAllConversationFetched,
-  selectConversationMeta,
 } from 'reducer/conversationSlice';
 import ConversationEmptyList from '../ConversationEmptyList/ConversationEmptyList';
 import ConversationItem from '../ConversationItem/ConversationItem';
@@ -61,21 +60,6 @@ const ConversationList = ({
   );
   const isAllConversationsAreFetched = useSelector(selectAllConversationFetched);
 
-  const conversationMetaDetails = useSelector(selectConversationMeta);
-
-  const conversationCount = () => {
-    switch (assigneeType) {
-      case 'mine':
-        return conversationMetaDetails.mine_count;
-      case 'unassigned':
-        return conversationMetaDetails.unassigned_count;
-      case 'all':
-        return conversationMetaDetails.all_count;
-      default:
-        return 0;
-    }
-  };
-
   const keyExtractor = item => item.id;
 
   const onEndReached = () => {
@@ -119,14 +103,6 @@ const ConversationList = ({
   }
   return allConversations.length ? (
     <View style={styles.container}>
-      {isCountEnabled && (
-        <View style={styles.conversationCountView}>
-          <Text sm semiBold color={colors.text} style={styles.conversationCountView}>
-            Showing {conversationCount()} conversations
-          </Text>
-        </View>
-      )}
-
       <FlashList
         keyExtractor={keyExtractor}
         data={allConversations}
@@ -134,6 +110,7 @@ const ConversationList = ({
           <ConversationItem
             item={item}
             conversationTypingUsers={conversationTypingUsers}
+            showAssigneeLabel={assigneeType === 'all'}
             onPress={() => onSelectConversation(item)}
           />
         )}

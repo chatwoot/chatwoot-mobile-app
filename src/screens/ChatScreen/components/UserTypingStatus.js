@@ -10,7 +10,7 @@ const styles = theme => ({
   subHeaderTitle: {
     fontSize: theme['font-size-extra-small'],
     color: theme['color-success-500'],
-    paddingLeft: 4,
+    paddingLeft: 1,
   },
 });
 

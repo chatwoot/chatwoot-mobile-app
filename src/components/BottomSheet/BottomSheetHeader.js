@@ -7,11 +7,14 @@ import { Text, Icon, Pressable } from 'components';
 import { StyleSheet } from 'react-native';
 
 const createStyles = theme => {
-  const { spacing, borderRadius } = theme;
+  const { spacing, colors, borderRadius } = theme;
   return StyleSheet.create({
     headerContainer: {
-      paddingVertical: spacing.small,
+      paddingBottom: spacing.small,
+      paddingTop: spacing.micro,
       paddingHorizontal: spacing.small,
+      borderBottomColor: colors.border,
+      borderBottomWidth: 0.4,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -40,7 +43,7 @@ const BottomSheetModalHeader = ({ title, closeModal, colors }) => {
 
   return (
     <View style={styles.headerContainer}>
-      <Text lg bold color={colors.textDark} style={styles.headerTitle}>
+      <Text md bold color={colors.textDark} style={styles.headerTitle}>
         {title}
       </Text>
       <Pressable

@@ -7,6 +7,7 @@ import { withStyles } from '@ui-kitten/components';
 import CustomText from '../../../components/Text';
 import { messageStamp } from '../../../helpers/TimeHelper';
 import ChatMessageItem from './ChatMessageItem';
+import { UserAvatar } from 'components';
 
 import { INBOX_TYPES } from 'constants';
 
@@ -53,51 +54,36 @@ const styles = theme => ({
     color: theme['text-hint-color'],
     fontSize: theme['font-size-extra-extra-small'],
   },
+
+  messageBubble: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
+
+  outgoingMessageThumbnail: {
+    marginLeft: 8,
+  },
+
+  incomingMessageThumbnail: {
+    marginRight: 8,
+  },
 });
 
-const MessageContentComponent = ({ message, type, showAttachment, created_at, isEmailChannel }) => {
+const MessageContentComponent = ({ conversation, message, type, showAttachment, created_at }) => {
   return (
     <View>
       <ChatMessageItem
+        conversation={conversation}
         message={message}
         type={type}
         created_at={created_at}
         showAttachment={showAttachment}
-        isEmailChannel={isEmailChannel}
       />
     </View>
   );
 };
 
 const MessageContent = withStyles(MessageContentComponent, styles);
-
-const OutGoingMessageComponent = ({ message, created_at, showAttachment, isEmailChannel }) => (
-  <React.Fragment>
-    <MessageContent
-      message={message}
-      created_at={created_at}
-      type="outgoing"
-      showAttachment={showAttachment}
-      isEmailChannel={isEmailChannel}
-    />
-  </React.Fragment>
-);
-
-const OutGoingMessage = withStyles(OutGoingMessageComponent, styles);
-
-const IncomingMessageComponent = ({ message, created_at, showAttachment, isEmailChannel }) => (
-  <React.Fragment>
-    <MessageContent
-      message={message}
-      created_at={created_at}
-      type="incoming"
-      showAttachment={showAttachment}
-      isEmailChannel={isEmailChannel}
-    />
-  </React.Fragment>
-);
-
-const IncomingMessage = withStyles(IncomingMessageComponent, styles);
 
 const ActivityMessageComponent = ({ eva: { style }, message, created_at }) => (
   <View style={style.activityView}>
@@ -139,6 +125,11 @@ const ChatMessageComponent = ({ message, eva: { style }, showAttachment, convers
 
   const shouldShowFullWidth = isEmailChannel && message_type !== 2 && !isPrivate;
 
+  const isTwitterChannel = channel === INBOX_TYPES.TWITTER;
+
+  const senderName = message?.sender?.name || 'Bot';
+  const senderThumbnail = message?.sender?.thumbnail || '';
+
   let alignment = message_type ? 'flex-end' : 'flex-start';
   if (message_type === 2) {
     alignment = 'center';
@@ -148,23 +139,37 @@ const ChatMessageComponent = ({ message, eva: { style }, showAttachment, convers
     <View style={[style.message, !shouldShowFullWidth ? { justifyContent: alignment } : null]}>
       <View style={[shouldShowFullWidth ? style.emailContainer : {}]}>
         {alignment === 'flex-start' ? (
-          <IncomingMessage
-            message={message}
-            created_at={created_at}
-            type="incoming"
-            showAttachment={showAttachment}
-            isEmailChannel={isEmailChannel}
-          />
+          <View style={style.messageBubble}>
+            <MessageContent
+              conversation={conversation}
+              message={message}
+              created_at={created_at}
+              type="incoming"
+              showAttachment={showAttachment}
+            />
+          </View>
         ) : alignment === 'center' ? (
           <ActivityMessage message={message} created_at={created_at} type="activity" />
         ) : (
-          <OutGoingMessage
-            message={message}
-            created_at={created_at}
-            type="outgoing"
-            showAttachment={showAttachment}
-            isEmailChannel={isEmailChannel}
-          />
+          <View style={style.messageBubble}>
+            <MessageContent
+              conversation={conversation}
+              message={message}
+              created_at={created_at}
+              type="outgoing"
+              showAttachment={showAttachment}
+            />
+            {!isTwitterChannel ? (
+              <View style={style.outgoingMessageThumbnail}>
+                <UserAvatar
+                  thumbnail={senderThumbnail}
+                  userName={senderName}
+                  size={16}
+                  fontSize={8}
+                />
+              </View>
+            ) : null}
+          </View>
         )}
       </View>
     </View>

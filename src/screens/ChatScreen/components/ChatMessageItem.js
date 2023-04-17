@@ -7,14 +7,14 @@ import ActionSheet from 'react-native-actions-sheet';
 import CustomText from 'components/Text';
 import { messageStamp } from 'helpers/TimeHelper';
 import { openURL } from 'helpers/UrlHelper';
-import UserAvatar from 'src/components/UserAvatar';
+import { UserAvatar } from 'components';
 import ChatMessageActionItem from './ChatMessageActionItem';
 import { showToast } from 'helpers/ToastHelper';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
-import { useRoute } from '@react-navigation/native';
 import Email from '../components/Email';
 import ChatAttachmentItem from './ChatAttachmentItem';
-import { MESSAGE_STATUS } from 'constants';
+import MessageDeliveryStatus from './MessageDeliveryStatus';
+import { MESSAGE_STATUS, INBOX_TYPES } from 'constants';
 
 const LockIcon = style => {
   return <Icon {...style} name="lock" />;
@@ -28,7 +28,7 @@ const styles = theme => ({
     paddingBottom: 8,
   },
   messageBody: {
-    maxWidth: Dimensions.get('window').width - 70,
+    maxWidth: Dimensions.get('window').width - 100,
   },
 
   messageLeft: {
@@ -127,6 +127,13 @@ const styles = theme => ({
 });
 
 const propTypes = {
+  conversation: PropTypes.shape({
+    meta: PropTypes.shape({
+      channel: PropTypes.string,
+    }),
+    contact_last_seen_at: PropTypes.number,
+    channel: PropTypes.string,
+  }),
   eva: PropTypes.shape({
     style: PropTypes.object,
     theme: PropTypes.object,
@@ -144,23 +151,31 @@ const propTypes = {
     content_attributes: PropTypes.object,
     private: PropTypes.bool,
     status: PropTypes.string,
+    template: PropTypes.number,
+    created_at: PropTypes.number,
+    source_id: PropTypes.string,
   }),
   showAttachment: PropTypes.func,
   isEmailChannel: PropTypes.bool,
 };
 
 const ChatMessageItemComponent = ({
+  conversation,
   type,
   message,
   eva: { style, theme },
   created_at,
   showAttachment,
-  isEmailChannel,
 }) => {
-  const route = useRoute();
   const actionSheetRef = createRef();
-  const { meta } = route.params;
-  const { attachments } = message;
+  const { attachments, sender = {} } = message;
+
+  const { meta } = conversation;
+  const channel = conversation.channel ? conversation.channel : meta.channel;
+
+  const isEmailChannel = channel === INBOX_TYPES.EMAIL;
+
+  const isTwitterChannel = channel === INBOX_TYPES.TWITTER;
 
   const checkMessageSentByBot = () => {
     const { status } = message;
@@ -172,7 +187,8 @@ const ChatMessageItemComponent = ({
 
   const isSentByBot = checkMessageSentByBot();
 
-  const senderName = message && message.sender && message.sender.name ? message.sender.name : '';
+  const senderName = sender && sender.name ? sender.name : '';
+
   const messageViewStyle =
     type === 'outgoing'
       ? {
@@ -205,12 +221,6 @@ const ChatMessageItemComponent = ({
     actionSheetRef.current?.setModalVisible();
   };
 
-  const isTwitterChannel = () => {
-    if (meta) {
-      return meta && meta.channel === 'Channel::TwitterProfile';
-    }
-  };
-
   const twitterSenderNameView = () => {
     if (meta) {
       const { thumbnail, additional_attributes: additionalAttributes } = message && message.sender;
@@ -220,7 +230,7 @@ const ChatMessageItemComponent = ({
       const twitterSenderAvatarUrl = thumbnail || '';
 
       const openTwitterSenderProfile = name => {
-        if (isTwitterChannel()) {
+        if (isTwitterChannel) {
           openURL({
             URL: `https://twitter.com/${name}`,
           });
@@ -395,6 +405,7 @@ const ChatMessageItemComponent = ({
     time: external_created_at || created_at,
     dateFormat: 'LLL d, h:mm a',
   });
+
   const isMessageContentExist = emailMessageContent() || message.content;
 
   return (
@@ -431,6 +442,12 @@ const ChatMessageItemComponent = ({
               <LockIcon style={style.icon} fill={theme['text-basic-color']} />
             </View>
           )}
+          <MessageDeliveryStatus
+            message={message}
+            type={type}
+            channel={channel}
+            contactLastSeenAt={conversation.contact_last_seen_at}
+          />
         </View>
         <ActionSheet ref={actionSheetRef} defaultOverlayOpacity={0.3}>
           {senderName ? (
@@ -443,7 +460,7 @@ const ChatMessageItemComponent = ({
           <ChatMessageActionItem text="Copy" itemType="copy" onPressItem={onPressItem} />
         </ActionSheet>
       </View>
-      {!isPrivate && isTwitterChannel() ? twitterSenderNameView() : null}
+      {!isPrivate && isTwitterChannel ? twitterSenderNameView() : null}
     </TouchableOpacity>
   );
 };

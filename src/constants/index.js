@@ -1,5 +1,15 @@
 import images from './images';
 
+export const SCREENS = {
+  LOGIN: 'Login',
+  CONFIG_URL: 'ConfigureURL',
+  CONVERSATION: 'ConversationScreen',
+  NOTIFICATION: 'Notification',
+  SETTINGS: 'Settings',
+  DETAIL: 'Detail',
+  CHAT: 'ChatScreen',
+};
+
 export const MAXIMUM_FILE_UPLOAD_SIZE = 40;
 
 export const CONVERSATION_STATUSES = [
@@ -60,6 +70,8 @@ export const MESSAGE_STATUS = {
   FAILED: 'failed',
   SENT: 'sent',
   PROGRESS: 'progress',
+  DELIVERED: 'delivered',
+  READ: 'read',
 };
 
 export const ASSIGNEE_TYPE = {
@@ -146,6 +158,7 @@ export const CONVERSATION_TOGGLE_STATUS = {
 export const PRESENCE_STATUS_COLORS = {
   online: '#44ce4b',
   busy: '#ffc532',
+  offline: '#779bbb',
 };
 
 export const AVAILABILITY_TYPES = {
@@ -163,53 +176,6 @@ export const NOTIFICATION_PREFERENCE_TYPES = {
   email_conversation_assignment: 'CONVERSATION_ASSIGNEE_EMAIL',
   email_assigned_conversation_new_message: 'CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL',
 };
-
-export const SETTINGS_ITEMS = [
-  {
-    text: 'SWITCH_ACCOUNT',
-    checked: false,
-    iconName: 'briefcase-outline',
-    itemName: 'switch-account',
-  },
-
-  {
-    text: 'AVAILABILITY',
-    checked: true,
-    iconName: 'radio-outline',
-    itemName: 'availability',
-  },
-
-  {
-    text: 'NOTIFICATION',
-    checked: true,
-    iconName: 'bell-outline',
-    itemName: 'notification',
-  },
-  {
-    text: 'CHANGE_LANGUAGE',
-    checked: true,
-    iconName: 'globe-outline',
-    itemName: 'language',
-  },
-  {
-    text: 'HELP',
-    checked: true,
-    iconName: 'question-mark-circle-outline',
-    itemName: 'help',
-  },
-  {
-    text: 'CHAT_WITH_US',
-    checked: true,
-    iconName: 'headphones-outline',
-    itemName: 'chat_with_us',
-  },
-  {
-    text: 'LOG_OUT',
-    checked: false,
-    iconName: 'log-out-outline',
-    itemName: 'logout',
-  },
-];
 
 export const NOTIFICATION_TYPES = [
   'conversation_creation',

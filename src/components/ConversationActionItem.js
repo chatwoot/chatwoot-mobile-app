@@ -1,99 +1,105 @@
-import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import React, { useMemo } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import { Divider, Icon, withStyles } from '@ui-kitten/components';
+import { Text, Icon, Pressable, UserAvatar } from 'components';
+import i18n from 'i18n';
 
-import CustomText from './Text';
-import UserAvatar from './UserAvatar';
-
-const styles = theme => ({
-  section: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    padding: 16,
-    height: 54,
-  },
-  sectionTitleView: {
-    flex: 8,
-  },
-  sectionText: {
-    fontSize: theme['font-size-small'],
-    fontWeight: theme['font-medium'],
-    paddingLeft: 8,
-  },
-  sectionActionView: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    flex: 4,
-  },
-  sectionDivider: {
-    backgroundColor: theme['item-border-color'],
-    marginHorizontal: 18,
-  },
-});
+const createStyles = theme => {
+  const { spacing, borderRadius } = theme;
+  return StyleSheet.create({
+    bottomSheetItem: {
+      flexDirection: 'row',
+      paddingVertical: spacing.half,
+      paddingHorizontal: spacing.small,
+      borderBottomWidth: 0.4,
+      height: 48,
+      borderRadius: borderRadius.small,
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    sectionTitleView: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+    },
+    sectionTitle: {
+      marginLeft: spacing.smaller,
+      marginRight: spacing.half,
+    },
+    sectionActiveTitle: {
+      marginLeft: spacing.micro,
+      marginRight: spacing.smaller,
+    },
+    sectionActionView: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      flex: 4,
+    },
+  });
+};
 
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   name: PropTypes.string,
   thumbnail: PropTypes.string,
+  iconName: PropTypes.string,
   text: PropTypes.string,
-  checked: PropTypes.bool,
-  iconSize: PropTypes.string,
   itemType: PropTypes.string,
   onPressItem: PropTypes.func,
   availabilityStatus: PropTypes.string,
+  colors: PropTypes.object,
 };
 
 const ConversationActionItem = ({
   text,
-  checked,
-  iconSize,
+  iconName,
   itemType,
   name,
   thumbnail,
   onPressItem,
   availabilityStatus,
-  eva: { style, theme },
+  colors,
 }) => {
-  const isActive = availabilityStatus === 'online' ? true : false;
+  const theme = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+
+  const shouldShowUserAvatar = itemType === 'assignee' && name !== i18n.t('AGENT.TITLE');
+
   return (
     <React.Fragment>
-      <TouchableOpacity style={style.section} onPress={() => onPressItem({ itemType })}>
-        <View style={style.sectionTitleView}>
-          <CustomText style={style.sectionText}>{text}</CustomText>
+      <Pressable
+        key={text}
+        style={[
+          {
+            borderBottomColor: colors.borderLight,
+          },
+          styles.bottomSheetItem,
+        ]}
+        onPress={() => {
+          onPressItem({ itemType });
+        }}>
+        <View style={styles.sectionTitleView}>
+          <Icon icon={iconName} color={colors.textDark} size={16} />
+          <Text sm medium color={colors.textDark} style={styles.sectionTitle}>
+            {text}
+          </Text>
         </View>
-        <View style={style.sectionActionView}>
-          {itemType === 'assignee' && thumbnail !== '' && (
-            <UserAvatar
-              thumbnail={thumbnail}
-              userName={name}
-              defaultBGColor={theme['color-primary-default']}
-              isActive={isActive}
-              size={28}
-              availabilityStatus={availabilityStatus}
-            />
+        <View style={styles.sectionActionView}>
+          {shouldShowUserAvatar && (
+            <UserAvatar thumbnail={thumbnail} userName={name} size={18} fontSize={8} />
           )}
-          <CustomText style={style.sectionText}>{name}</CustomText>
-          {(itemType === 'assignee' || itemType === 'team') && (
-            <Icon
-              name="arrow-ios-forward-outline"
-              fill={theme['color-primary-default']}
-              width={26}
-              height={26}
-            />
+          <Text sm medium color={colors.textLight} style={styles.sectionActiveTitle}>
+            {name}
+          </Text>
+          {(itemType === 'assignee' || itemType === 'team' || itemType === 'snooze') && (
+            <Icon icon="arrow-chevron-right-outline" color={colors.text} size={16} />
           )}
         </View>
-      </TouchableOpacity>
-      <Divider style={style.sectionDivider} />
+      </Pressable>
     </React.Fragment>
   );
 };
 
 ConversationActionItem.propTypes = propTypes;
-
-export default withStyles(ConversationActionItem, styles);
+export default ConversationActionItem;

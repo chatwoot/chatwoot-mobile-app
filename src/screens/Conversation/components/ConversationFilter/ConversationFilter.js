@@ -16,6 +16,7 @@ const createStyles = theme => {
       alignItems: 'center',
     },
     bottomSheetView: {
+      marginTop: spacing.small,
       paddingBottom: spacing.large,
     },
     bottomSheetItem: {

@@ -1,14 +1,15 @@
 import React, { useMemo, useEffect, useCallback, useState, useRef } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { clearAllDeliveredNotifications } from 'helpers/PushHelper';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, ScrollView } from 'react-native';
-import BottomSheetModal from 'components/BottomSheet/BottomSheet';
+import { View, ScrollView, AppState, Dimensions } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import * as Sentry from '@sentry/react-native';
+
 import { getInboxIconByType } from 'helpers/inboxHelpers';
 import ActionCable from 'helpers/ActionCable';
 import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
+import { clearAllDeliveredNotifications } from 'helpers/PushHelper';
 import {
   selectConversationStatus,
   selectAssigneeType,
@@ -17,11 +18,13 @@ import {
   setConversationStatus,
   clearAllConversations,
   setActiveInbox,
+  selectConversationMeta,
 } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';
 import createStyles from './ConversationScreen.style';
 import i18n from 'i18n';
 import { FilterButton, ClearFilterButton, Header } from 'components';
+import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { ConversationList, ConversationFilter, ConversationInboxFilter } from './components';
 import { CONVERSATION_STATUSES, ASSIGNEE_TYPES } from 'constants';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
@@ -34,8 +37,17 @@ import {
   actions as settingsActions,
 } from 'reducer/settingsSlice';
 import { actions as notificationActions } from 'reducer/notificationSlice';
+import { actions as dashboardAppActions } from 'reducer/dashboardAppSlice';
+import { getCurrentRouteName } from 'helpers/NavigationHelper';
+import { actions as labelActions } from 'reducer/labelSlice';
+import { SCREENS } from 'constants';
+const deviceHeight = Dimensions.get('window').height;
+
+// The screen list thats need to be checked for refresh notification list
+const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.NOTIFICATION, SCREENS.SETTINGS];
 
 const ConversationScreen = () => {
+  const [appState, setAppState] = useState(AppState.currentState);
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -55,13 +67,23 @@ const ConversationScreen = () => {
     initActionCable();
     dispatch(clearAllConversations());
     dispatch(inboxActions.fetchInboxes());
-    dispatch(notificationActions.index({ pageNo: 1 }));
     initAnalytics();
+    initSentry();
     checkAppVersion();
     initPushNotifications();
-  }, [dispatch, initActionCable, initAnalytics, initPushNotifications, checkAppVersion]);
+    dispatch(dashboardAppActions.index());
+    dispatch(labelActions.index());
+  }, [
+    dispatch,
+    initActionCable,
+    initAnalytics,
+    initPushNotifications,
+    checkAppVersion,
+    initSentry,
+  ]);
 
   const initPushNotifications = useCallback(async () => {
+    dispatch(notificationActions.index({ pageNo: 1 }));
     dispatch(notificationActions.saveDeviceDetails());
     clearAllDeliveredNotifications();
   }, [dispatch]);
@@ -69,6 +91,17 @@ const ConversationScreen = () => {
   const initAnalytics = useCallback(async () => {
     AnalyticsHelper.identify(user);
   }, [user]);
+
+  const initSentry = useCallback(async () => {
+    Sentry.setUser({
+      id: user.id,
+      email: user.email,
+      account_id: user.account_id,
+      name: user.name,
+      role: user.role,
+      installation_url: installationUrl,
+    });
+  }, [user, installationUrl]);
 
   const checkAppVersion = useCallback(async () => {
     dispatch(settingsActions.checkInstallationVersion({ user, installationUrl }));
@@ -79,6 +112,26 @@ const ConversationScreen = () => {
     const { accountId, userId } = await getUserDetails();
     ActionCable.init({ pubSubToken, webSocketUrl, accountId, userId });
   }, [webSocketUrl]);
+  // Update notifications when app comes to foreground from background
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener('change', nextAppState => {
+      if (appState === 'background' && nextAppState === 'active') {
+        const routeName = getCurrentRouteName();
+        if (REFRESH_SCREEN_LIST.includes(routeName)) {
+          loadConversations({
+            page: pageNumber,
+            assignee: assigneeType,
+            status: conversationStatus,
+            inboxId: activeInboxId,
+          });
+        }
+      }
+      setAppState(nextAppState);
+    });
+    return () => {
+      appStateListener?.remove();
+    };
+  }, [appState, pageNumber, assigneeType, conversationStatus, activeInboxId, loadConversations]);
 
   const onChangePage = async () => {
     setPage(pageNumber + 1);
@@ -128,6 +181,21 @@ const ConversationScreen = () => {
     setPage(1);
   };
 
+  const conversationMetaDetails = useSelector(selectConversationMeta);
+
+  const conversationCount = () => {
+    switch (assigneeType) {
+      case 'mine':
+        return conversationMetaDetails.mine_count;
+      case 'unassigned':
+        return conversationMetaDetails.unassigned_count;
+      case 'all':
+        return conversationMetaDetails.all_count;
+      default:
+        return 0;
+    }
+  };
+
   const onSelectAssigneeType = async item => {
     AnalyticsHelper.track(CONVERSATION_EVENTS.APPLY_FILTER, {
       type: 'assignee-type',
@@ -170,7 +238,10 @@ const ConversationScreen = () => {
   );
 
   // Conversation filter modal
-  const conversationFilterModalSnapPoints = useMemo(() => ['40%', '60%', '60%'], []);
+  const conversationFilterModalSnapPoints = useMemo(
+    () => [deviceHeight - 400, deviceHeight - 400],
+    [],
+  );
 
   // Filter by assignee type
   const conversationAssigneeModal = useRef(null);
@@ -192,7 +263,7 @@ const ConversationScreen = () => {
 
   // Inbox filter modal
   const inboxFilterModal = useRef(null);
-  const inboxFilterModalSnapPoints = useMemo(() => ['40%', '80%', '92%'], []);
+  const inboxFilterModalSnapPoints = useMemo(() => [deviceHeight - 210, deviceHeight - 210], []);
   const toggleInboxFilterModal = useCallback(() => {
     inboxFilterModal.current.present() || inboxFilterModal.current?.close();
   }, []);
@@ -231,7 +302,7 @@ const ConversationScreen = () => {
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
-      <Header headerText={headerText} loading={isLoading} />
+      <Header headerText={headerText} loading={isLoading} showCount count={conversationCount()} />
       <View style={styles.filterContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {hasActiveFilters && (
@@ -262,6 +333,7 @@ const ConversationScreen = () => {
         <BottomSheetModal
           bottomSheetModalRef={conversationAssigneeModal}
           initialSnapPoints={conversationFilterModalSnapPoints}
+          showHeader
           headerTitle={i18n.t('FILTER.FILTER_BY_ASSIGNEE_TYPE')}
           closeFilter={closeConversationAssigneeModal}
           children={
@@ -276,6 +348,7 @@ const ConversationScreen = () => {
         <BottomSheetModal
           bottomSheetModalRef={conversationStatusModal}
           initialSnapPoints={conversationFilterModalSnapPoints}
+          showHeader
           headerTitle={i18n.t('FILTER.FILTER_BY_CONVERSATION_STATUS')}
           closeFilter={closeConversationStatusModal}
           children={
@@ -290,6 +363,7 @@ const ConversationScreen = () => {
         <BottomSheetModal
           bottomSheetModalRef={inboxFilterModal}
           initialSnapPoints={inboxFilterModalSnapPoints}
+          showHeader
           headerTitle={i18n.t('FILTER.FILTER_BY_INBOX')}
           closeFilter={closeInboxFilterModal}
           children={

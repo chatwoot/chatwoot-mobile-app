@@ -49,7 +49,6 @@ const createStyles = theme => {
     attachmentView: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
       marginTop: spacing.tiny,
     },
     icon: {

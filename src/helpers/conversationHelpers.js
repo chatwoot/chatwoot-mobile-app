@@ -1,4 +1,5 @@
 import { MESSAGE_STATUS, MESSAGE_TYPES } from 'constants';
+
 export const getUuid = () =>
   'xxxxxxxx4xxx'.replace(/[xy]/g, c => {
     // eslint-disable-next-line no-bitwise
@@ -23,42 +24,35 @@ export const applyFilters = (conversation, filters) => {
   return shouldFilter;
 };
 
-export function getUnreadCount(conversation) {
-  const unReadMessages = conversation.messages.filter(
-    chatMessage =>
-      chatMessage.created_at * 1000 > conversation.agent_last_seen_at * 1000 &&
-      chatMessage.message_type === 0 &&
-      chatMessage.private !== true,
-  );
-  const unReadCount = unReadMessages.length;
-  return unReadCount > 9 ? '9+' : unReadCount;
-}
-
 export const getInboxName = ({ inboxes, inboxId }) => {
   const inbox = inboxes.find(item => item.id === inboxId);
   return inbox ? inbox : {};
 };
 
-export function findLastMessage({ messages }) {
-  let [lastMessage] = messages.slice(-1);
-
-  if (lastMessage) {
-    const { content, created_at, attachments, message_type, private: isPrivate } = lastMessage;
-    return {
-      content,
-      created_at,
-      attachments,
-      message_type,
-      isPrivate,
-    };
+const getLastNonActivityMessage = (messageInStore, messageFromAPI) => {
+  // If both API value and store value for last non activity message
+  // are available, then return the latest one.
+  if (messageInStore && messageFromAPI) {
+    if (messageInStore.created_at >= messageFromAPI.created_at) {
+      return messageInStore;
+    }
+    return messageFromAPI;
   }
-  return {
-    content: '',
-    created_at: '',
-    attachments: [],
-    message_type: '',
-    isPrivate: false,
-  };
+
+  // Otherwise, return whichever is available
+  return messageInStore || messageFromAPI;
+};
+
+export function findLastMessage(m) {
+  let lastMessageIncludingActivity = m.messages[m.messages.length - 1];
+
+  const nonActivityMessages = m.messages.filter(message => message.message_type !== 2);
+  let lastNonActivityMessageInStore = nonActivityMessages[nonActivityMessages.length - 1];
+  let lastNonActivityMessageFromAPI = m.last_non_activity_message;
+  if (!lastNonActivityMessageInStore && !lastNonActivityMessageFromAPI) {
+    return lastMessageIncludingActivity;
+  }
+  return getLastNonActivityMessage(lastNonActivityMessageInStore, lastNonActivityMessageFromAPI);
 }
 
 export const findPendingMessageIndex = (conversation, message) => {

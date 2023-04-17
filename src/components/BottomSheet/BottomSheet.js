@@ -12,6 +12,7 @@ const BottomSheetModal = ({
   children,
   headerTitle,
   closeFilter,
+  showHeader,
   initialSnapPoints,
   bottomSheetModalRef,
   onDismiss,
@@ -26,8 +27,8 @@ const BottomSheetModal = ({
         enableTouchThrough={false}
         pressBehavior={'close'}
         opacity={0.6}
-        disappearsOnIndex={0} // this should be changed to -1 when the memory leak bug is fixed
-        appearsOnIndex={1}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
       />
     ),
     [],
@@ -46,7 +47,9 @@ const BottomSheetModal = ({
       android_keyboardInputMode="adjustResize"
       enablePanDownToClose
       onDismiss={onDismiss}>
-      <BottomSheetModalHeader title={headerTitle} closeModal={closeFilter} colors={colors} />
+      {showHeader && (
+        <BottomSheetModalHeader title={headerTitle} closeModal={closeFilter} colors={colors} />
+      )}
       <BottomSheetScrollView>{children}</BottomSheetScrollView>
     </BottomSheetModalLibrary>
   );
@@ -55,6 +58,7 @@ const BottomSheetModal = ({
 BottomSheetModal.propTypes = {
   children: PropTypes.element.isRequired,
   bottomSheetModalRef: PropTypes.object.isRequired,
+  showHeader: PropTypes.bool,
   onDismiss: PropTypes.func,
   initialSnapPoints: PropTypes.array,
   closeFilter: PropTypes.func,

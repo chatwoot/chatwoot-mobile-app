@@ -16,6 +16,7 @@ import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import conversationActions from 'reducer/conversationSlice.action';
 import CannedResponsesContainer from '../containers/CannedResponsesContainer';
 import { inboxAgentSelectors, actions as inboxAgentActions } from 'reducer/inboxAgentsSlice';
+import { selectUser } from 'reducer/authSlice';
 
 const propTypes = {
   conversationId: PropTypes.number,
@@ -24,9 +25,17 @@ const propTypes = {
     theme: PropTypes.object,
     style: PropTypes.object,
   }).isRequired,
+  inboxId: PropTypes.number,
+  enableReplyButton: PropTypes.bool,
 };
 
-const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }) => {
+const ReplyBox = ({
+  eva: { theme, style },
+  conversationId,
+  inboxId,
+  conversationDetails,
+  enableReplyButton,
+}) => {
   const [isPrivate, setPrivateMode] = useState(false);
   const [ccEmails, setCCEmails] = useState('');
   const [bccEmails, setBCCEmails] = useState('');
@@ -35,8 +44,8 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
   const agents = useSelector(state => inboxAgentSelectors.inboxAssignedAgents(state));
   const [cannedResponseSearchKey, setCannedResponseSearchKey] = useState('');
   const [attachmentDetails, setAttachmentDetails] = useState(null);
-  const inboxId = conversationDetails?.inbox_id;
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     if (inboxId) {
@@ -61,8 +70,8 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
   };
 
   const isAnEmailChannelAndNotInPrivateNote = () => {
-    if (conversationDetails && conversationDetails.meta) {
-      const channel = conversationDetails.meta.channel;
+    if (conversationDetails) {
+      const channel = conversationDetails.channel;
       return channel === 'Channel::Email' && !isPrivate;
     }
     return false;
@@ -108,16 +117,25 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
   };
 
   const onNewMessageAdd = () => {
-    const updatedMessage = message.replace(
-      /@\[([\w\d.-]+)\]\((\d+)\)/g,
-      '[@$1](mention://user/$2/$1)',
-    );
+    let updatedMessage = message;
+    if (isPrivate) {
+      const regex = /@\[([\w\s]+)\]\((\d+)\)/g;
+      updatedMessage = message.replace(
+        regex,
+        '[@$1](mention://user/$2/' + encodeURIComponent('$1') + ')',
+      );
+    }
+
     if (message || attachmentDetails) {
       const payload = {
         conversationId,
         message: updatedMessage,
         private: isPrivate,
         file: attachmentDetails,
+        sender: {
+          id: user.id,
+          thumbnail: user.avatar_url,
+        },
       };
       if (ccEmails) {
         payload.message.cc_emails = ccEmails;
@@ -170,6 +188,7 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
     );
   };
 
+  const enableReplyBox = (message || attachmentDetails) && enableReplyButton ? true : false;
   return (
     <React.Fragment>
       {attachmentDetails && (
@@ -252,17 +271,14 @@ const ReplyBox = ({ eva: { theme, style }, conversationId, conversationDetails }
           </View>
           <TouchableOpacity
             style={[style.sendButtonView, sendMessageButtonWrapStyles()]}
+            disabled={!enableReplyBox}
             onPress={onNewMessageAdd}>
             <Icon
               name="paper-plane"
               style={style.sendButton}
               width={24}
               height={24}
-              fill={
-                !(!message && !attachmentDetails)
-                  ? theme['color-primary-default']
-                  : theme['color-background']
-              }
+              fill={enableReplyBox ? theme['color-primary-default'] : theme['color-background']}
             />
           </TouchableOpacity>
         </View>
@@ -379,4 +395,4 @@ const styles = theme => ({
 ReplyBox.propTypes = propTypes;
 
 const ReplyBoxItem = withStyles(ReplyBox, styles);
-export default ReplyBoxItem;
+export default React.memo(ReplyBoxItem);

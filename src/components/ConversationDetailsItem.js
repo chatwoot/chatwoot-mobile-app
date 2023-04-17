@@ -1,56 +1,52 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
+import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { withStyles } from '@ui-kitten/components';
 import { openURL } from 'src/helpers/UrlHelper';
+import { Text } from 'components';
 
-import CustomText from './Text';
+const createStyles = theme => {
+  const { spacing } = theme;
 
-const styles = theme => ({
-  itemTitleView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingBottom: 8,
-    paddingTop: 16,
-  },
-  itemTitle: {
-    fontSize: theme['font-size-small'],
-    fontWeight: theme['font-medium'],
-  },
-  itemValue: {
-    color: theme['text-light-color'],
-    fontSize: theme['font-size-small'],
-    fontWeight: theme['font-regular'],
-  },
-});
+  return StyleSheet.create({
+    itemTitleView: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingBottom: spacing.micro,
+      paddingTop: spacing.small,
+    },
+  });
+};
 
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   title: PropTypes.string,
   value: PropTypes.string,
   type: PropTypes.string,
 };
 
-const ConversationDetailsItem = ({ value, title, type, eva: { style, theme } }) => {
+const ConversationDetailsItem = ({ value, title, type }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
+
   const link = type === 'referer';
   return (
     <React.Fragment>
       <View key={type}>
-        <View style={style.itemTitleView}>
-          <CustomText style={style.itemTitle}>{title}</CustomText>
+        <View style={styles.itemTitleView}>
+          <Text medium sm color={colors.textDark}>
+            {title}
+          </Text>
         </View>
         <View>
           {link ? (
-            <CustomText
-              style={[style.itemValue, { color: theme['color-primary-500'] }]}
-              onPress={() => openURL({ URL: value })}>
+            <Text sm color={colors.primaryColor} onPress={() => openURL({ URL: value })}>
               {value}
-            </CustomText>
+            </Text>
           ) : (
-            <CustomText style={style.itemValue}>{value}</CustomText>
+            <Text sm color={colors.textDark}>
+              {value}
+            </Text>
           )}
         </View>
       </View>
@@ -58,4 +54,4 @@ const ConversationDetailsItem = ({ value, title, type, eva: { style, theme } }) 
   );
 };
 ConversationDetailsItem.propTypes = propTypes;
-export default withStyles(ConversationDetailsItem, styles);
+export default ConversationDetailsItem;

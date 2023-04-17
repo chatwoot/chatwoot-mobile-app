@@ -1,82 +1,74 @@
-import { Dimensions } from 'react-native';
-
+import { StyleSheet, Dimensions } from 'react-native';
 const deviceWidth = Dimensions.get('window').width;
 
-const styles = theme => ({
-  container: {
-    flex: 1,
-    backgroundColor: theme['background-basic-color-1'],
-  },
+export default theme => {
+  const { colors, borderRadius, spacing } = theme;
 
-  headerTitle: {
-    fontWeight: theme['font-semi-bold'],
-    fontSize: theme['font-size-large'],
-  },
-  profileContainer: {
-    flexDirection: 'row',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: theme['color-border'],
-  },
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    itemsContainer: {
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+      marginBottom: spacing.small,
+    },
+    separator: {
+      backgroundColor: colors.backgroundLight,
+      borderWidth: 0.4,
+      borderColor: colors.borderLight,
+      width: '100%',
+      paddingVertical: spacing.smaller,
+      paddingLeft: spacing.small,
+    },
+    separatorView: {
+      width: '100%',
+    },
+    accordionItemWrapper: {
+      flexDirection: 'column',
+      paddingVertical: spacing.small,
+      width: '100%',
+    },
+    aboutView: {
+      paddingHorizontal: spacing.small,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'column',
+    },
+    aboutImage: {
+      width: deviceWidth * 0.8,
+      height: deviceWidth * 0.134,
+      aspectRatio: 2,
+      resizeMode: 'contain',
+    },
 
-  detailsContainer: {
-    flex: 1,
-    paddingLeft: 16,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-
-  nameLabel: {
-    fontSize: theme['font-size-medium'],
-    fontWeight: theme['font-medium'],
-  },
-  emailLabel: {
-    paddingTop: 4,
-    fontSize: theme['font-size-small'],
-    fontWeight: theme['font-regular'],
-    color: theme['text-basic-color'],
-  },
-
-  itemListView: {
-    flex: 1,
-  },
-  section: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: theme['color-border'],
-  },
-
-  enabledSection: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingTop: 16,
-  },
-
-  sectionText: {
-    fontSize: theme['font-size-medium'],
-    fontWeight: theme['font-semi-bold'],
-  },
-
-  aboutView: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  aboutImage: {
-    width: deviceWidth * 0.82391,
-    height: deviceWidth * 0.171,
-    aspectRatio: 2,
-    resizeMode: 'contain',
-  },
-
-  appDescriptionView: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 32,
-  },
-  appDescriptionText: {
-    fontSize: theme['font-size-medium'],
-  },
-});
-
-export default styles;
+    appDescriptionView: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    bottomSheet: {
+      padding: spacing.small,
+    },
+    logoutSection: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      paddingBottom: spacing.medium,
+      paddingTop: spacing.small,
+    },
+    logoutButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: spacing.micro,
+      paddingHorizontal: spacing.smaller,
+      borderRadius: borderRadius.small,
+      borderColor: colors.border,
+      borderWidth: 1,
+    },
+    logoutText: {
+      marginLeft: spacing.micro,
+    },
+  });
+};

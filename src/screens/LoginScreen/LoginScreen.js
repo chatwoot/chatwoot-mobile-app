@@ -1,9 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useMemo, useEffect, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Image, TouchableOpacity, SafeAreaView, Text } from 'react-native';
+import { useTheme } from '@react-navigation/native';
+import { View, Image, TouchableOpacity, SafeAreaView, Text, Dimensions } from 'react-native';
 import { withStyles } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
+import BottomSheetModal from 'components/BottomSheet/BottomSheet';
+import LanguageSelector from '../Settings/components/LanguageSelector';
+import { StackActions } from '@react-navigation/native';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
+import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
 
 import DeviceInfo from 'react-native-device-info';
 import styles from './LoginScreen.style';
@@ -18,9 +24,11 @@ import { SIGNUP_URL } from '../../constants/url';
 import CustomText from '../../components/Text';
 import { openURL } from '../../helpers/UrlHelper';
 import { EMAIL_REGEX } from '../../helpers/formHelper';
-import { actions as authActions, resetAuth } from 'reducer/authSlice';
+import { actions as authActions, resetAuth, selectLoggedIn } from 'reducer/authSlice';
 
 import { selectInstallationUrl, selectBaseUrl } from 'reducer/settingsSlice';
+import { selectLocale, setLocale } from 'reducer/settingsSlice';
+const deviceHeight = Dimensions.get('window').height;
 
 const appName = DeviceInfo.getApplicationName();
 
@@ -32,6 +40,7 @@ const propTypes = {
   isLoggingIn: PropTypes.bool,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
   }).isRequired,
   resetAuth: PropTypes.func,
   installationUrl: PropTypes.string,
@@ -43,11 +52,16 @@ const defaultProps = {
 };
 
 const LoginScreenComponent = ({ navigation, eva }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+
   const dispatch = useDispatch();
   const { isLoggingIn } = useSelector(state => state.auth);
+  const isLoggedIn = useSelector(selectLoggedIn);
 
   const installationUrl = useSelector(selectInstallationUrl);
   const baseUrl = useSelector(selectBaseUrl);
+  const activeLocale = useSelector(selectLocale);
 
   useEffect(() => {
     dispatch(resetAuth());
@@ -77,6 +91,33 @@ const LoginScreenComponent = ({ navigation, eva }) => {
     const { email, password } = data;
     dispatch(authActions.doLogin({ email, password }));
   };
+
+  const changeLanguageModal = useRef(null);
+  const changeLanguageModalModalSnapPoints = useMemo(
+    () => [deviceHeight - 210, deviceHeight - 210],
+    [],
+  );
+  const toggleChangeLanguageModal = useCallback(() => {
+    changeLanguageModal.current.present() || changeLanguageModal.current?.close();
+  }, []);
+  const closeChangeLanguageModal = useCallback(() => {
+    changeLanguageModal.current?.close();
+  }, []);
+  const onChangeLanguage = useCallback(
+    locale => {
+      dispatch(setLocale(locale));
+      AnalyticsHelper.track(ACCOUNT_EVENTS.CHANGE_LANGUAGE, {
+        language: activeLocale,
+      });
+      if (isLoggedIn) {
+        navigation.dispatch(StackActions.replace('Tab'));
+      } else {
+        navigation.dispatch(StackActions.replace('Login'));
+      }
+      closeChangeLanguageModal();
+    },
+    [closeChangeLanguageModal, dispatch, activeLocale, isLoggedIn, navigation],
+  );
 
   return (
     <SafeAreaView style={style.keyboardView}>
@@ -178,10 +219,24 @@ const LoginScreenComponent = ({ navigation, eva }) => {
               </TouchableOpacity>
             </View>
             <View style={style.accountView}>
-              <TouchableOpacity onPress={() => navigate('Language')}>
+              <TouchableOpacity onPress={toggleChangeLanguageModal}>
                 <CustomText style={style.textStyle}>{i18n.t('LOGIN.CHANGE_LANGUAGE')}</CustomText>
               </TouchableOpacity>
             </View>
+            <BottomSheetModal
+              bottomSheetModalRef={changeLanguageModal}
+              initialSnapPoints={changeLanguageModalModalSnapPoints}
+              showHeader
+              headerTitle={i18n.t('LOGIN.CHANGE_LANGUAGE')}
+              closeFilter={closeChangeLanguageModal}
+              children={
+                <LanguageSelector
+                  activeValue={activeLocale}
+                  colors={colors}
+                  onPress={onChangeLanguage}
+                />
+              }
+            />
           </View>
         </View>
       </ScrollView>

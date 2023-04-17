@@ -83,15 +83,6 @@ export function findLastMessage({ messages }) {
   return last;
 }
 
-export function getUnreadCount(conversation) {
-  return conversation.messages.filter(
-    chatMessage =>
-      chatMessage.created_at * 1000 > conversation.agent_last_seen_at * 1000 &&
-      chatMessage.message_type === 0 &&
-      chatMessage.private !== true,
-  ).length;
-}
-
 export const getRandomColor = function ({ userName }) {
   let hash = 0;
 

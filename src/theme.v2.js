@@ -6,6 +6,8 @@ export const palette = {
   backgroundDark: '#E4EBF1',
 
   primaryColor: '#1F93FF',
+  primaryColorDark: '#1976CC',
+  primaryColorDarker: '#135899',
   primaryColorLight: '#EBF5FF',
 
   secondaryColor: '#5d7592',
@@ -21,9 +23,11 @@ export const palette = {
   colorWhite: '#FFFFFF',
   colorBlack: '#000000',
 
+  textLighter: '#779bbb',
   textLight: '#446888',
   text: '#37546D',
   textDark: '#293F51',
+  textDarker: '#1f2d3d',
 
   borderDark: '#37546D',
   border: '#C9D7E3',
@@ -99,7 +103,10 @@ export const DarkTheme = {
     backgroundLight: '#1F2D3D',
     backgroundDark: '#314155',
 
+    backgroundChat: '#f4f6fb',
+
     primaryColor: '#1F93FF',
+    primaryColorDark: '#47A6FF',
     primaryColorLight: '#1976CC',
 
     secondaryColor: '#5d7592',
@@ -115,9 +122,11 @@ export const DarkTheme = {
     colorWhite: '#FFFFFF',
     colorBlack: '#000000',
 
+    textLighter: '#779bbb',
     textLight: '#C9D7E3',
     text: '#F1F5F8',
     textDark: '#F8FAFC',
+    textDarker: '#FFFFFF',
 
     borderDark: '#EBF0F5',
     border: '#C9D7E3',

@@ -37,6 +37,7 @@ const createStyles = theme => {
     },
     spinnerView: {
       marginLeft: spacing.micro,
+      marginTop: spacing.tiny,
     },
   });
 };

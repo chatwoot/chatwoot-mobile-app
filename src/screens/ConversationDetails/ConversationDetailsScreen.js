@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef, useCallback } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { ScrollView } from 'react-native';
+import { ScrollView, Dimensions } from 'react-native';
 import { View } from 'react-native';
 import i18n from 'i18n';
 import { Text, UserAvatar, Header } from 'components';
@@ -13,6 +13,11 @@ import LabelView from 'src/screens/ConversationDetails/components/LabelView';
 import ConversationAttributes from './components/ConversationAttributes';
 import ContactAttributes from './components/ContactAttributes';
 import { actions as customAttributeActions } from 'reducer/customAttributeSlice';
+
+// Bottom sheet items
+const deviceHeight = Dimensions.get('window').height;
+import BottomSheetModal from 'components/BottomSheet/BottomSheet';
+import LabelConversationItems from 'src/screens/ChatScreen/components/ConversationLabels';
 
 const ConversationDetailsScreen = ({ navigation, route }) => {
   const theme = useTheme();
@@ -120,6 +125,15 @@ const ConversationDetailsScreen = ({ navigation, route }) => {
     )
     .filter(details => !!details);
 
+  const labelActionModal = useRef(null);
+  const labelActionModalSnapPoints = useMemo(() => [deviceHeight - 120, deviceHeight - 120], []);
+  const toggleLabelActionModal = useCallback(() => {
+    labelActionModal.current.present() || labelActionModal.current?.close();
+  }, []);
+  const closeLabelActionModal = useCallback(() => {
+    labelActionModal.current?.close();
+  }, []);
+
   return (
     <ScrollView style={styles.container}>
       <Header leftIcon="arrow-chevron-left-outline" onPressLeft={onBackPress} />
@@ -156,12 +170,30 @@ const ConversationDetailsScreen = ({ navigation, route }) => {
             </Text>
           </View>
           <View style={styles.accordionItemWrapper}>
-            <LabelView conversationDetails={conversationDetails} conversationId={conversationId} />
+            <LabelView
+              conversationDetails={conversationDetails}
+              conversationId={conversationId}
+              openLabelsBottomSheet={toggleLabelActionModal}
+            />
           </View>
         </View>
         <ConversationAttributes conversationDetails={conversationDetails} />
         <ContactAttributes conversationDetails={conversationDetails} />
       </View>
+      <BottomSheetModal
+        bottomSheetModalRef={labelActionModal}
+        initialSnapPoints={labelActionModalSnapPoints}
+        showHeader
+        headerTitle={i18n.t('CONVERSATION.LABELS')}
+        closeFilter={closeLabelActionModal}
+        children={
+          <LabelConversationItems
+            colors={colors}
+            conversationDetails={conversationDetails}
+            closeModal={closeLabelActionModal}
+          />
+        }
+      />
     </ScrollView>
   );
 };

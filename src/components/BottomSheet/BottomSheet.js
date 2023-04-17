@@ -42,6 +42,7 @@ const BottomSheetModal = ({
       snapPoints={initialSnapPoints}
       backgroundStyle={{ backgroundColor: colors.background }}
       handleIndicatorStyle={{ backgroundColor: colors.secondaryColor }}
+      topInset={60}
       backdropComponent={renderBackdrop}
       keyboardBlurBehavior="restore"
       android_keyboardInputMode="adjustResize"

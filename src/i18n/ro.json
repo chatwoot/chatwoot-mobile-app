@@ -51,7 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversații",
-    "UPDATING": "Updating...",
+    "UPDATING": "Actualizare...",
     "MINE": "Ale mele",
     "UN_ASSIGNED": "Neatribuit",
     "ALL": "Toate",
@@ -66,7 +66,7 @@
     "ALL_CONVERSATION_LOADED": "Toate conversațiile încărcate",
     "ASSIGN": "Atribuirea conversației",
     "FILE_SIZE_LIMIT": "Fișierul depășește limita de atașare de 5MB",
-    "SHARE": "Share",
+    "SHARE": "Partajarea conversației",
     "DETAILS": "Details",
     "LABELS": "Etichete",
     "PRIVATE_MSG_INPUT": "Acest lucru va fi vizibil numai agenților",

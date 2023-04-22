@@ -67,12 +67,12 @@
     "ASSIGN": "Atribuirea conversației",
     "FILE_SIZE_LIMIT": "Fișierul depășește limita de atașare de 5MB",
     "SHARE": "Partajarea conversației",
-    "DETAILS": "Details",
+    "DETAILS": "Detalii",
     "LABELS": "Etichete",
     "PRIVATE_MSG_INPUT": "Acest lucru va fi vizibil numai agenților",
-    "SELF_ASSIGN": "Self assign conversation",
+    "SELF_ASSIGN": "Auto atribuiți conversație",
     "UN_ASSIGN": "Anularea atribuirii conversației",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "CONVERSATION_NOT_FOUND": "Nu s-a putut aduce conversația",
     "MARK_AS_PENDING": "Marchează ca în așteptare",
     "SNOOZE_UNTIL": "Amânare până la",
     "SNOOZE_UNTIL_NEXT_REPLY": "Până la următorul răspuns",
@@ -82,10 +82,10 @@
     "MESSAGES": "Mesaje"
   },
   "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
-    "FILTER_BY_INBOX": "Filter by inbox",
+    "ALL_INBOXES": "Toate cutiile",
+    "FILTER_BY_ASSIGNEE_TYPE": "Modificarea cesionarului",
+    "FILTER_BY_CONVERSATION_STATUS": "Starea conversației",
+    "FILTER_BY_INBOX": "Filtrarea după inbox",
     "HEADER_TITLE": "Filtru conversație",
     "CHOOSE_INBOX": "Alege Inboxul",
     "CHOOSE_STATUS": "Starea conversației",
@@ -99,9 +99,9 @@
   "SETTINGS": {
     "HEADER_TITLE": "Setări",
     "SET_AVAILABILITY": "Setați-vă ca",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
+    "PREFERENCES": "Preferințe",
+    "ABOUT": "Despre",
+    "SUPPORT": "Suport",
     "SWITCH_ACCOUNT": "Comută contul",
     "CHANGE_LANGUAGE": "Schimbarea limbii",
     "LOGOUT": "Deconectare",
@@ -149,8 +149,8 @@
   "CONVERSATION_LABELS": {
     "TITLE": "Etichete conversație",
     "ADD_LABEL": "Adaugă etichete",
-    "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
+    "EMPTY_LIST": "Te rugăm să introduci ID-ul contului Twilio",
+    "NO_LABEL": "Etichete atribuite cu succes",
     "UPDATE_LABEL": "Etichetă actualizată cu succes"
   },
   "AGENT": {
@@ -158,7 +158,7 @@
   },
   "TEAMS": {
     "TITLE": "Selectați echipa",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "EMPTY": "Vă rugăm să adăugați echipe în cont pentru a atribui conversații echipelor.",
     "CHANGE_TEAMS": "Echipa de conversație schimbată"
   },
   "ERRORS": {
@@ -184,12 +184,12 @@
   },
   "BANNER": {
     "TWILIO_WHATSAPP": {
-      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "TEXT": "Poți răspunde la această conversație doar folosind un mesaj șablon datorat",
       "HREF_TEXT": "Restricţie fereastră mesaj 24 de ore",
       "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
     },
     "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
+      "TEXT": "Nu poți răspunde din cauza",
       "HREF_TEXT": "Restricţie fereastră mesaj 24 de ore",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }

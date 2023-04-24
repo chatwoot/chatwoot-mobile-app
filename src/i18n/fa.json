@@ -68,7 +68,9 @@
     "FILE_SIZE_LIMIT": "محدودیت حجم فایل پیوست 5MB می باشد",
     "SHARE": "اشتراک گذاری گفتگو",
     "DETAILS": "Details",
-    "LABELS": "برچسب‌ها",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "ایجنت تعیین شده",
+    "TEAM": "تیم‌",
     "PRIVATE_MSG_INPUT": "این فقط برای ایجنت ها قابل مشاهده خواهد بود",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "لغو اختصاص مکالمه",
@@ -78,7 +80,7 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "تا پاسخ بعدی",
     "SNOOZE_UNTIL_TOMORROW": "تا فردا",
     "SNOOZE_UNTIL_NEXT_WEEK": "تا هفته بعد",
-    "SNOOZE": "به تعویق انداختن مکالمه",
+    "SNOOZE": "Snooze conversation",
     "MESSAGES": "پیام‌ها"
   },
   "FILTER": {
@@ -151,7 +153,10 @@
     "ADD_LABEL": "افزودن برچسب‌ها",
     "EMPTY_LIST": "لطفا برچسب‌ها را به حساب‌کاربری خود اضافه کنید",
     "NO_LABEL": "هیچ برچسبی اختصاص داده نشده است",
-    "UPDATE_LABEL": "برچسب با موفقیت به روز شد"
+    "UPDATE_LABEL": "برچسب با موفقیت به روز شد",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "هیچ برچسبی یافت نشد"
   },
   "AGENT": {
     "TITLE": "انتخاب ایجنت"

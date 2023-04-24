@@ -68,7 +68,9 @@
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
     "SHARE": "Share conversation",
     "DETAILS": "Details",
-    "LABELS": "Ετικέτες",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Αντιστοιχισμένος πράκτορας",
+    "TEAM": "Ομάδα",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Unassign conversation",
@@ -78,7 +80,7 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Μέχρι την επόμενη απάντηση",
     "SNOOZE_UNTIL_TOMORROW": "Μέχρι αύριο",
     "SNOOZE_UNTIL_NEXT_WEEK": "Έως την επόμενη εβδομάδα",
-    "SNOOZE": "Αναβολή Συνομιλίας",
+    "SNOOZE": "Snooze conversation",
     "MESSAGES": "Μηνύματα"
   },
   "FILTER": {
@@ -151,7 +153,10 @@
     "ADD_LABEL": "Προσθήκη Ετικετών",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Η ετικέτα ενημερώθηκε επιτυχώς"
+    "UPDATE_LABEL": "Η ετικέτα ενημερώθηκε επιτυχώς",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "Δεν βρέθηκαν ετικέτες"
   },
   "AGENT": {
     "TITLE": "Επιλογή πράκτορα"

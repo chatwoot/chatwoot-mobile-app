@@ -68,7 +68,9 @@
     "FILE_SIZE_LIMIT": "O arquivo excede o limite de anexos de 5MB",
     "SHARE": "Compartilhar conversa",
     "DETAILS": "Details",
-    "LABELS": "Marcadores",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Agente atribuído",
+    "TEAM": "Times",
     "PRIVATE_MSG_INPUT": "Isto será visível apenas para Agentes",
     "SELF_ASSIGN": "Autoatribuir conversa",
     "UN_ASSIGN": "Desassociar conversa",
@@ -78,7 +80,7 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Até a próxima resposta",
     "SNOOZE_UNTIL_TOMORROW": "Até amanhã",
     "SNOOZE_UNTIL_NEXT_WEEK": "Até a próxima semana",
-    "SNOOZE": "Adiar conversa",
+    "SNOOZE": "Snooze conversation",
     "MESSAGES": "Mensagens"
   },
   "FILTER": {
@@ -151,7 +153,10 @@
     "ADD_LABEL": "Adicionar marcador",
     "EMPTY_LIST": "Por favor, adicione marcadores à sua conta",
     "NO_LABEL": "Nenhum marcador atribuído",
-    "UPDATE_LABEL": "Marcador atualizado com sucesso"
+    "UPDATE_LABEL": "Marcador atualizado com sucesso",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "Nenhum rótulo encontrado"
   },
   "AGENT": {
     "TITLE": "Selecione o Agent"

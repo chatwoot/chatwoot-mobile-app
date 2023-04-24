@@ -68,7 +68,9 @@
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
     "SHARE": "Share conversation",
     "DETAILS": "Details",
-    "LABELS": "Etiketler",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Assigned agent",
+    "TEAM": "Ekip",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Unassign conversation",
@@ -78,7 +80,7 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Sonraki yanıta kadar",
     "SNOOZE_UNTIL_TOMORROW": "Yarına kadar",
     "SNOOZE_UNTIL_NEXT_WEEK": "Gelecek haftaya kadar",
-    "SNOOZE": "Snooze Conversation",
+    "SNOOZE": "Snooze conversation",
     "MESSAGES": "Mesajlar"
   },
   "FILTER": {
@@ -151,7 +153,10 @@
     "ADD_LABEL": "Etiketler ekleyin",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Etiket başarıyla güncellendi"
+    "UPDATE_LABEL": "Etiket başarıyla güncellendi",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "Etiket bulunamadı"
   },
   "AGENT": {
     "TITLE": "Temsilci Seçin"

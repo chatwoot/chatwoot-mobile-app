@@ -68,7 +68,9 @@
     "FILE_SIZE_LIMIT": "File vượt quá giới hạn tối đa 5MB",
     "SHARE": "Chia sẻ cuộc trò chuyện",
     "DETAILS": "Details",
-    "LABELS": "Nhãn",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Đại lý được phân công",
+    "TEAM": "Nhóm",
     "PRIVATE_MSG_INPUT": "Chỉ hiện cho nhà cung cấp",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Bỏ phân công cuộc trò chuyện",
@@ -78,7 +80,7 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Cho đến phản hồi kế tiếp",
     "SNOOZE_UNTIL_TOMORROW": "Cho đến ngày mai",
     "SNOOZE_UNTIL_NEXT_WEEK": "Cho đến tuần sau",
-    "SNOOZE": "Tạm dừng \bhội thoại",
+    "SNOOZE": "Snooze conversation",
     "MESSAGES": "Tin nhắn"
   },
   "FILTER": {
@@ -151,7 +153,10 @@
     "ADD_LABEL": "Thêm nhãn",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Nhãn được cập nhật thành công"
+    "UPDATE_LABEL": "Nhãn được cập nhật thành công",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "Không tìm thấy nhãn"
   },
   "AGENT": {
     "TITLE": "Chọn đại lý"

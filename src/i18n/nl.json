@@ -68,7 +68,9 @@
     "FILE_SIZE_LIMIT": "Het bestand overschrijdt de limiet van 5 MB",
     "SHARE": "Deel gesprek",
     "DETAILS": "Details",
-    "LABELS": "Labelen",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Assigned agent",
+    "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "Dit zal alleen zichtbaar zijn voor medewerkers",
     "SELF_ASSIGN": "Geef gesprek aan mijzelf",
     "UN_ASSIGN": "Toewijzing ongedaan maken",
@@ -78,7 +80,7 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Tot het volgende antwoord",
     "SNOOZE_UNTIL_TOMORROW": "Tot morgen",
     "SNOOZE_UNTIL_NEXT_WEEK": "Tot volgende week",
-    "SNOOZE": "Demp gesprek",
+    "SNOOZE": "Snooze conversation",
     "MESSAGES": "Berichten"
   },
   "FILTER": {
@@ -151,7 +153,10 @@
     "ADD_LABEL": "Labels toevoegen",
     "EMPTY_LIST": "Voeg labels toe aan je account",
     "NO_LABEL": "Geen labels toegewezen",
-    "UPDATE_LABEL": "Label succesvol bijgewerkt"
+    "UPDATE_LABEL": "Label succesvol bijgewerkt",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "Geen labels gevonden"
   },
   "AGENT": {
     "TITLE": "Selecteer medewerker"

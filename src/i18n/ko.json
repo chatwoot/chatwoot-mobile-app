@@ -68,7 +68,9 @@
     "FILE_SIZE_LIMIT": "파일이 5MB 첨부 파일 제한을 초과했습니다.",
     "SHARE": "대화 공유하기",
     "DETAILS": "Details",
-    "LABELS": "라벨",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Assigned agent",
+    "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "이건 에이전트에게만 보일것입니다",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "대화에서 제외시키기",
@@ -78,7 +80,7 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
     "SNOOZE_UNTIL_TOMORROW": "내일까지",
     "SNOOZE_UNTIL_NEXT_WEEK": "다음 주까지",
-    "SNOOZE": "Snooze Conversation",
+    "SNOOZE": "Snooze conversation",
     "MESSAGES": "메시지"
   },
   "FILTER": {
@@ -151,7 +153,10 @@
     "ADD_LABEL": "라벨 추가하기",
     "EMPTY_LIST": "계정에 라벨을 추가해주세요",
     "NO_LABEL": "할당된 라벨 없음",
-    "UPDATE_LABEL": "라벨이 성공적으로 업데이트됨"
+    "UPDATE_LABEL": "라벨이 성공적으로 업데이트됨",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "라벨을 찾을 수 없습니다"
   },
   "AGENT": {
     "TITLE": "에이전트 선택"

@@ -28,6 +28,7 @@ const deviceHeight = Dimensions.get('window').height;
 // Bottom sheet items
 import ConversationAction from '../../ConversationAction/ConversationAction';
 import SnoozeConversationItems from './SnoozeConversation';
+import LabelConversationItems from './ConversationLabels';
 
 const propTypes = {
   conversationId: PropTypes.number,
@@ -218,7 +219,7 @@ const ChatHeader = ({
         navigation.navigate('ConversationDetails', { conversationDetails });
       }
       if (itemType === 'label') {
-        navigation.navigate('LabelScreen', { conversationDetails });
+        toggleLabelActionModal();
       }
       if (itemType === 'team') {
         navigation.navigate('TeamScreen', { conversationDetails });
@@ -277,7 +278,7 @@ const ChatHeader = ({
 
   // Conversation action modal
   const actionModal = useRef(null);
-  const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 410, deviceHeight - 410], []);
+  const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 400, deviceHeight - 400], []);
   const toggleActionModal = useCallback(() => {
     actionModal.current.present() || actionModal.current?.close();
   }, []);
@@ -287,7 +288,7 @@ const ChatHeader = ({
 
   // Conversation action modal
   const snoozeActionModal = useRef(null);
-  const snoozeActionModalSnapPoints = useMemo(() => [deviceHeight - 410, deviceHeight - 410], []);
+  const snoozeActionModalSnapPoints = useMemo(() => [deviceHeight - 400, deviceHeight - 400], []);
   const toggleSnoozeActionModal = useCallback(() => {
     snoozeActionModal.current.present() || snoozeActionModal.current?.close();
   }, []);
@@ -295,10 +296,14 @@ const ChatHeader = ({
     snoozeActionModal.current?.close();
   }, []);
 
-  const closeModals = () => {
-    closeSnoozeActionModal();
-    closeActionModal();
-  };
+  const labelActionModal = useRef(null);
+  const labelActionModalSnapPoints = useMemo(() => [deviceHeight - 120, deviceHeight - 120], []);
+  const toggleLabelActionModal = useCallback(() => {
+    labelActionModal.current.present() || labelActionModal.current?.close();
+  }, []);
+  const closeLabelActionModal = useCallback(() => {
+    labelActionModal.current?.close();
+  }, []);
 
   return (
     <React.Fragment>
@@ -394,7 +399,21 @@ const ChatHeader = ({
             colors={colors}
             conversationId={conversationId}
             activeSnoozeValue={activeSnoozeValue()}
-            closeModal={closeModals}
+            closeModal={closeSnoozeActionModal}
+          />
+        }
+      />
+      <BottomSheetModal
+        bottomSheetModalRef={labelActionModal}
+        initialSnapPoints={labelActionModalSnapPoints}
+        showHeader
+        headerTitle={i18n.t('CONVERSATION.LABELS')}
+        closeFilter={closeLabelActionModal}
+        children={
+          <LabelConversationItems
+            colors={colors}
+            conversationDetails={conversationDetails}
+            closeModal={closeLabelActionModal}
           />
         }
       />

@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigation } from '@react-navigation/native';
-import { withStyles } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTheme } from '@react-navigation/native';
 import LabelBox from 'src/components/LabelBox';
 import AddLabelButton from './AddButton';
-import { Spinner } from '@ui-kitten/components';
-import { View, Text } from 'react-native';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { Text } from 'components';
 import i18n from 'i18n';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { LABEL_EVENTS } from 'constants/analyticsEvents';
@@ -17,67 +16,45 @@ import {
   selectConversationLabelsLoading,
 } from 'reducer/conversationLabelSlice';
 
-import { actions as labelActions, labelsSelector, selectLabelLoading } from 'reducer/labelSlice';
+import { labelsSelector, selectLabelLoading } from 'reducer/labelSlice';
 
-const styles = theme => ({
-  labelWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  labelViews: {
-    flexDirection: 'row',
-    marginVertical: 2,
-    minHeight: 30,
-    flexWrap: 'wrap',
-  },
-  spinnerView: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    paddingTop: 4,
-    paddingLeft: 4,
-  },
-  itemValue: {
-    color: theme['text-light-color'],
-    fontSize: theme['font-size-small'],
-    fontWeight: theme['font-regular'],
-    paddingHorizontal: 2,
-    marginBottom: 4,
-  },
-  addLabelButtonWrap: {
-    flexDirection: 'row',
-    height: 24,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: theme['color-primary-50'],
-    borderColor: theme['color-primary-75'],
-    borderWidth: 0.5,
-    borderRadius: 4,
-    paddingHorizontal: 8,
-    marginBottom: 4,
-    marginRight: 6,
-  },
-  addLabelButton: {
-    marginRight: 6,
-    color: theme['color-primary-700'],
-    fontWeight: theme['font-medium'],
-    fontSize: theme['font-size-extra-small'],
-  },
-});
-
-const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
-  conversationDetails: PropTypes.object,
-  conversationId: PropTypes.number,
+const createStyles = theme => {
+  const { spacing } = theme;
+  return StyleSheet.create({
+    labelWrapper: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    labelViews: {
+      flexDirection: 'row',
+      marginVertical: spacing.tiny,
+      minHeight: 30,
+      flexWrap: 'wrap',
+    },
+    itemValue: {
+      paddingHorizontal: spacing.micro,
+      marginBottom: spacing.micro,
+    },
+    spinnerView: {
+      marginLeft: spacing.micro,
+      marginTop: spacing.tiny,
+    },
+  });
 };
 
-const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } }) => {
-  const navigation = useNavigation();
+const propTypes = {
+  conversationDetails: PropTypes.object,
+  conversationId: PropTypes.number,
+  openLabelsBottomSheet: PropTypes.func,
+};
+
+const LabelView = ({ conversationDetails, conversationId, openLabelsBottomSheet }) => {
+  const theme = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+  const { colors } = theme;
+
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(labelActions.index());
     dispatch(conversationLabelActions.index({ conversationId }));
   }, [conversationId, dispatch]);
 
@@ -108,20 +85,16 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
     );
   };
 
-  const onClickOpenLabelScreen = () => {
-    navigation.navigate('LabelScreen', { conversationDetails });
-  };
-
   const shouldShowEmptyMessage =
     savedLabels && savedLabels.length === 0 && !isConversationLabelsLoading && !isLabelsLoading;
   return (
     <React.Fragment>
-      <View style={style.labelWrapper}>
-        <View style={style.labelViews}>
+      <View style={styles.labelWrapper}>
+        <View style={styles.labelViews}>
           <AddLabelButton
             buttonLabel={i18n.t('CONVERSATION_LABELS.ADD_LABEL')}
-            iconName="plus-circle-outline"
-            onClickOpen={onClickOpenLabelScreen}
+            iconName="add-circle-outline"
+            onClickOpen={openLabelsBottomSheet}
           />
           {activeLabels.map(item => (
             <LabelBox
@@ -133,13 +106,19 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
             />
           ))}
           {isConversationLabelsLoading && (
-            <View style={style.spinnerView}>
-              <Spinner size="tiny" />
+            <View style={styles.spinnerView}>
+              <ActivityIndicator
+                size="small"
+                color={colors.textDark}
+                animating={isConversationLabelsLoading}
+              />
             </View>
           )}
         </View>
         {shouldShowEmptyMessage && (
-          <Text style={style.itemValue}>{i18n.t('CONVERSATION_LABELS.NO_LABEL')}</Text>
+          <Text sm color={colors.text} style={styles.itemValue}>
+            {i18n.t('CONVERSATION_LABELS.NO_LABEL')}
+          </Text>
         )}
       </View>
     </React.Fragment>
@@ -147,5 +126,4 @@ const LabelView = ({ conversationDetails, conversationId, eva: { style, theme } 
 };
 
 LabelView.propTypes = propTypes;
-
-export default withStyles(LabelView, styles);
+export default LabelView;

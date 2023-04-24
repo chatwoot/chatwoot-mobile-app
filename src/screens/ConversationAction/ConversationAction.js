@@ -48,7 +48,7 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
     <React.Fragment>
       <ConversationActionItem
         onPressItem={onPressAction}
-        text="Assigned Agent"
+        text={i18n.t('CONVERSATION.ASSIGNED_AGENT')}
         itemType="assignee"
         iconName="people-outline"
         colors={colors}
@@ -59,7 +59,7 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
 
       <ConversationActionItem
         onPressItem={onPressAction}
-        text="Team"
+        text={i18n.t('CONVERSATION.TEAM')}
         itemType="team"
         colors={colors}
         iconName="people-team-outline"

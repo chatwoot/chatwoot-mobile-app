@@ -68,7 +68,9 @@
     "FILE_SIZE_LIMIT": "文件超过 5MB 附件限制",
     "SHARE": "Share conversation",
     "DETAILS": "Details",
-    "LABELS": "标签",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Assigned agent",
+    "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "此操作仅对代理人可见",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "取消分配对话",
@@ -78,7 +80,7 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
     "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
     "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
-    "SNOOZE": "Snooze Conversation",
+    "SNOOZE": "Snooze conversation",
     "MESSAGES": "消息"
   },
   "FILTER": {
@@ -151,7 +153,10 @@
     "ADD_LABEL": "添加标签",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "标签已成功更新"
+    "UPDATE_LABEL": "标签已成功更新",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "未找到标签"
   },
   "AGENT": {
     "TITLE": "选择代理"

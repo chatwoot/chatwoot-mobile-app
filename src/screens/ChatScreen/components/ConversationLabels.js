@@ -136,31 +136,38 @@ const ConversationLabels = ({ colors, conversationDetails }) => {
     return label.title.toLowerCase().includes(search.toLowerCase());
   });
 
+  const createLabelEvent = () => {
+    AnalyticsHelper.track(LABEL_EVENTS.CREATE);
+  };
+
+  const deleteLabelEvent = () => {
+    AnalyticsHelper.track(LABEL_EVENTS.DELETED);
+  };
+
   const onClickAddLabel = value => {
     const labelTitle = value.title;
-    const labelArray = [...conversationSavedLabels];
-    labelArray.push(labelTitle);
-    setConversationSavedLabels(labelArray);
+    setConversationSavedLabels(prevLabels => [...prevLabels, labelTitle]);
     const array = [...savedLabels];
     array.push(labelTitle);
     onUpdateLabels(array);
-    AnalyticsHelper.track(LABEL_EVENTS.CREATE);
+    createLabelEvent();
   };
 
   const onClickRemoveLabel = value => {
     const labelTitle = value.title;
-    const labelArray = conversationSavedLabels.slice();
-    const labelIndex = labelArray.indexOf(labelTitle);
-    if (labelIndex !== -1) {
-      labelArray.splice(labelIndex, 1);
-      setConversationSavedLabels(labelArray);
-    }
+    setConversationSavedLabels(prevLabels => {
+      const labelIndex = prevLabels.indexOf(labelTitle);
+      if (labelIndex !== -1) {
+        return prevLabels.slice(0, labelIndex).concat(prevLabels.slice(labelIndex + 1));
+      }
+      return prevLabels;
+    });
     const array = savedLabels.slice();
     const index = array.indexOf(labelTitle);
     if (index !== -1) {
       array.splice(index, 1);
       onUpdateLabels(array);
-      AnalyticsHelper.track(LABEL_EVENTS.DELETED);
+      deleteLabelEvent();
     }
   };
 

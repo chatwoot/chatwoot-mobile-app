@@ -68,7 +68,9 @@
     "FILE_SIZE_LIMIT": "Datei überschreitet das Limit von 5 MB",
     "SHARE": "Konversation teilen",
     "DETAILS": "Details",
-    "LABELS": "Labels",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Zugewiesener Agent",
+    "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "Dies ist nur für Agenten sichtbar",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Zuweisung entfernen",
@@ -78,7 +80,7 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Bis zur nächsten Antwort",
     "SNOOZE_UNTIL_TOMORROW": "Bis morgen",
     "SNOOZE_UNTIL_NEXT_WEEK": "Bis nächste Woche",
-    "SNOOZE": "Snooze-Konversation",
+    "SNOOZE": "Snooze conversation",
     "MESSAGES": "Nachrichten"
   },
   "FILTER": {
@@ -151,7 +153,10 @@
     "ADD_LABEL": "Label hinzufügen",
     "EMPTY_LIST": "Bitte fügen Sie Labels zu Ihrem Konto hinzu",
     "NO_LABEL": "Keine Labels zugewiesen",
-    "UPDATE_LABEL": "Label wurde erfolgreich aktualisiert"
+    "UPDATE_LABEL": "Label wurde erfolgreich aktualisiert",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "Keine Labels gefunden"
   },
   "AGENT": {
     "TITLE": "Agent auswählen"

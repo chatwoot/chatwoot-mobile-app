@@ -68,7 +68,9 @@
     "FILE_SIZE_LIMIT": "Fișierul depășește limita de atașare de 5MB",
     "SHARE": "Partajarea conversației",
     "DETAILS": "Detalii",
-    "LABELS": "Etichete",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Agent atribuit",
+    "TEAM": "Echipa",
     "PRIVATE_MSG_INPUT": "Acest lucru va fi vizibil numai agenților",
     "SELF_ASSIGN": "Auto atribuiți conversație",
     "UN_ASSIGN": "Anularea atribuirii conversației",
@@ -78,7 +80,7 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Până la următorul răspuns",
     "SNOOZE_UNTIL_TOMORROW": "Până mâine",
     "SNOOZE_UNTIL_NEXT_WEEK": "Până săptămâna viitoare",
-    "SNOOZE": "Snooze conversație",
+    "SNOOZE": "Snooze conversation",
     "MESSAGES": "Mesaje"
   },
   "FILTER": {
@@ -151,7 +153,10 @@
     "ADD_LABEL": "Adaugă etichete",
     "EMPTY_LIST": "Te rugăm să introduci ID-ul contului Twilio",
     "NO_LABEL": "Etichete atribuite cu succes",
-    "UPDATE_LABEL": "Etichetă actualizată cu succes"
+    "UPDATE_LABEL": "Etichetă actualizată cu succes",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "Nu s-au găsit etichete"
   },
   "AGENT": {
     "TITLE": "Selectează agent"

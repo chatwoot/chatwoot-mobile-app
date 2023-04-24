@@ -68,7 +68,9 @@
     "FILE_SIZE_LIMIT": "ഫയൽ 5MB അറ്റാച്ച്‌മെന്റ് പരിധി കവിഞ്ഞു",
     "SHARE": "സംഭാഷണം പങ്കിടുക",
     "DETAILS": "Details",
-    "LABELS": "ലേബലുകൾ",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "നിയോഗിച്ച ഏജന്റ്",
+    "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "ഇത് ഏജന്റുമാർക്ക് മാത്രമേ ദൃശ്യമാകൂ",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "സംഭാഷണം നിയോഗിക്കാതിരിക്കുക",
@@ -78,7 +80,7 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
     "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
     "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
-    "SNOOZE": "Snooze Conversation",
+    "SNOOZE": "Snooze conversation",
     "MESSAGES": "Messages"
   },
   "FILTER": {
@@ -151,7 +153,10 @@
     "ADD_LABEL": "ലേബലുകൾ ചേർക്കുക",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "ലേബൽ വിജയകരമായി അപ്‌ഡേറ്റുചെയ്‌തു"
+    "UPDATE_LABEL": "ലേബൽ വിജയകരമായി അപ്‌ഡേറ്റുചെയ്‌തു",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "ലേബലുകളൊന്നും കണ്ടെത്തിയില്ല"
   },
   "AGENT": {
     "TITLE": "ഏജന്റ് തിരഞ്ഞെടുക്കുക"

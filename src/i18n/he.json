@@ -68,7 +68,9 @@
     "FILE_SIZE_LIMIT": "הקובץ עובר את מגבלת 5MB לקבצים מצורפים",
     "SHARE": "Share conversation",
     "DETAILS": "Details",
-    "LABELS": "תוויות",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "סוכן מוקצה",
+    "TEAM": "צוות",
     "PRIVATE_MSG_INPUT": "זה יהיה גלוי רק לסוכנים",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "שיחה שלא הוקצתה",
@@ -78,7 +80,7 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "עד תגובה הבאה",
     "SNOOZE_UNTIL_TOMORROW": "עד מחר",
     "SNOOZE_UNTIL_NEXT_WEEK": "עד שבוע הבא",
-    "SNOOZE": "Snooze Conversation",
+    "SNOOZE": "Snooze conversation",
     "MESSAGES": "הודעות"
   },
   "FILTER": {
@@ -151,7 +153,10 @@
     "ADD_LABEL": "הוסף תוויות",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Label updated successfully"
+    "UPDATE_LABEL": "Label updated successfully",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "לא נמצאו תוויות"
   },
   "AGENT": {
     "TITLE": "בחר סוכן"

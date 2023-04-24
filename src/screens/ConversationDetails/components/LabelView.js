@@ -16,7 +16,7 @@ import {
   selectConversationLabelsLoading,
 } from 'reducer/conversationLabelSlice';
 
-import { actions as labelActions, labelsSelector, selectLabelLoading } from 'reducer/labelSlice';
+import { labelsSelector, selectLabelLoading } from 'reducer/labelSlice';
 
 const createStyles = theme => {
   const { spacing } = theme;
@@ -55,7 +55,6 @@ const LabelView = ({ conversationDetails, conversationId, openLabelsBottomSheet 
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(labelActions.index());
     dispatch(conversationLabelActions.index({ conversationId }));
   }, [conversationId, dispatch]);
 

@@ -7,7 +7,7 @@ import { Text, Icon, Pressable } from 'components';
 import i18n from 'i18n';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { LABEL_EVENTS } from 'constants/analyticsEvents';
-import { actions as labelActions, labelsSelector } from 'reducer/labelSlice';
+import { labelsSelector } from 'reducer/labelSlice';
 import {
   actions as conversationLabelActions,
   selectConversationLabels,
@@ -104,48 +104,64 @@ const ConversationLabels = ({ colors, conversationDetails }) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(labelActions.index());
     dispatch(conversationLabelActions.index({ conversationId }));
   }, [conversationId, dispatch]);
 
   const conversationLabels = useSelector(selectConversationLabels);
   const labels = useSelector(labelsSelector.selectAll);
-  const savedLabels = conversationLabels[conversationId] || [];
+  const savedLabels = conversationLabels[conversationId];
 
   const [search, setSearch] = useState('');
   const onChangeSearch = value => {
     setSearch(value);
   };
 
+  const [conversationSavedLabels, setConversationSavedLabels] = useState([]);
+
+  useEffect(() => {
+    setConversationSavedLabels(savedLabels);
+  }, [savedLabels]);
+
   const activeLabels =
-    labels && savedLabels
+    labels && conversationSavedLabels
       ? labels.filter(({ title }) => {
-          return savedLabels.includes(title);
+          return conversationSavedLabels.includes(title);
         })
       : [];
 
   const filteredLabelsOnSearch = labels.filter(label => {
-    if (savedLabels.includes(label.title)) {
+    if (conversationSavedLabels.includes(label.title)) {
       return false;
     }
     return label.title.toLowerCase().includes(search.toLowerCase());
   });
 
   const onClickAddLabel = value => {
+    const labelTitle = value.title;
+    const labelArray = [...conversationSavedLabels];
+    labelArray.push(labelTitle);
+    setConversationSavedLabels(labelArray);
     const array = [...savedLabels];
-    array.push(value.title);
+    array.push(labelTitle);
     onUpdateLabels(array);
     AnalyticsHelper.track(LABEL_EVENTS.CREATE);
   };
 
   const onClickRemoveLabel = value => {
-    const array = [...savedLabels];
-    const index = array.indexOf(value.title);
+    const labelTitle = value.title;
+    const labelArray = conversationSavedLabels.slice();
+    const labelIndex = labelArray.indexOf(labelTitle);
+    if (labelIndex !== -1) {
+      labelArray.splice(labelIndex, 1);
+      setConversationSavedLabels(labelArray);
+    }
+    const array = savedLabels.slice();
+    const index = array.indexOf(labelTitle);
     if (index !== -1) {
       array.splice(index, 1);
+      onUpdateLabels(array);
+      AnalyticsHelper.track(LABEL_EVENTS.DELETED);
     }
-    onUpdateLabels(array);
-    AnalyticsHelper.track(LABEL_EVENTS.DELETED);
   };
 
   const onUpdateLabels = selectedLabels => {
@@ -176,7 +192,7 @@ const ConversationLabels = ({ colors, conversationDetails }) => {
             </Pressable>
           )}
         </View>
-        {savedLabels && activeLabels && (
+        {conversationSavedLabels && activeLabels && (
           <View style={styles.selectedView}>
             <Text sm medium color={colors.textDark} style={styles.itemText}>
               {i18n.t('CONVERSATION_LABELS.SELECTED')}

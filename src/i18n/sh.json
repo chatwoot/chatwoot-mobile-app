@@ -68,7 +68,9 @@
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
     "SHARE": "Share",
     "DETAILS": "Details",
-    "LABELS": "Labels",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Assigned agent",
+    "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Unassign conversation",
@@ -78,7 +80,7 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
     "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
     "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
-    "SNOOZE": "Snooze Conversation",
+    "SNOOZE": "Snooze conversation",
     "MESSAGES": "Messages"
   },
   "FILTER": {
@@ -151,7 +153,10 @@
     "ADD_LABEL": "Add Labels",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Label updated successfully"
+    "UPDATE_LABEL": "Label updated successfully",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "No labels found"
   },
   "AGENT": {
     "TITLE": "Select Agent"

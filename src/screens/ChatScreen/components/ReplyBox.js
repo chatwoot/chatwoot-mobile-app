@@ -17,6 +17,12 @@ import conversationActions from 'reducer/conversationSlice.action';
 import CannedResponsesContainer from '../containers/CannedResponsesContainer';
 import { inboxAgentSelectors, actions as inboxAgentActions } from 'reducer/inboxAgentsSlice';
 import { selectUser } from 'reducer/authSlice';
+import ModalView from 'components/Modal/ModalView.js';
+import {
+  getMessageVariables,
+  getUndefinedVariablesInMessage,
+  replaceVariablesInMessage,
+} from '@chatwoot/utils';
 
 const propTypes = {
   conversationId: PropTypes.number,
@@ -44,6 +50,8 @@ const ReplyBox = ({
   const agents = useSelector(state => inboxAgentSelectors.inboxAssignedAgents(state));
   const [cannedResponseSearchKey, setCannedResponseSearchKey] = useState('');
   const [attachmentDetails, setAttachmentDetails] = useState(null);
+  const [undefinedVariableText, setUndefinedVariableText] = useState('');
+  const [showUndefinedVariablesModal, setUndefinedVariablesModal] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
@@ -92,10 +100,21 @@ const ReplyBox = ({
     dispatch(conversationActions.toggleTypingStatus({ conversationId, typingStatus: 'on' }));
   };
 
+  const messageVariables = () => {
+    const variables = getMessageVariables({
+      conversation: conversationDetails,
+    });
+    return variables;
+  };
+
   const onCannedResponseSelect = content => {
+    const updatedContent = replaceVariablesInMessage({
+      message: content,
+      variables: messageVariables(),
+    });
     AnalyticsHelper.track(CONVERSATION_EVENTS.INSERTED_A_CANNED_RESPONSE);
     setCannedResponseSearchKey('');
-    setMessage(content);
+    setMessage(updatedContent);
   };
 
   const onSelectAttachment = ({ attachment }) => {
@@ -118,39 +137,53 @@ const ReplyBox = ({
 
   const onNewMessageAdd = () => {
     let updatedMessage = message;
-    if (isPrivate) {
-      const regex = /@\[([\w\s]+)\]\((\d+)\)/g;
-      updatedMessage = message.replace(
-        regex,
-        '[@$1](mention://user/$2/' + encodeURIComponent('$1') + ')',
-      );
-    }
 
-    if (message || attachmentDetails) {
-      const payload = {
-        conversationId,
-        message: updatedMessage,
-        private: isPrivate,
-        file: attachmentDetails,
-        sender: {
-          id: user.id,
-          thumbnail: user.avatar_url,
-        },
-      };
-      if (ccEmails) {
-        payload.message.cc_emails = ccEmails;
-      }
-      if (bccEmails) {
-        payload.message.bcc_emails = bccEmails;
-      }
-      AnalyticsHelper.track(CONVERSATION_EVENTS.SENT_MESSAGE);
-      dispatch(conversationActions.sendMessage({ data: payload }));
+    const undefinedVariables = getUndefinedVariablesInMessage({
+      message: updatedMessage,
+      variables: messageVariables(),
+    });
 
-      setMessage('');
-      setCCEmails('');
-      setBCCEmails('');
-      setAttachmentDetails(null);
-      setPrivateMode(false);
+    if (undefinedVariables.length > 0) {
+      const undefinedVariablesCount = undefinedVariables.length > 1 ? undefinedVariables.length : 1;
+      const undefinedVariablesText = undefinedVariables.join(', ');
+      const undefinedVariablesMessage = `You have ${undefinedVariablesCount} undefined variable(s) in your message: ${undefinedVariablesText}. Please check and try again with valid variables.`;
+      setUndefinedVariableText(undefinedVariablesMessage);
+      setUndefinedVariablesModal(true);
+    } else {
+      if (isPrivate) {
+        const regex = /@\[([\w\s]+)\]\((\d+)\)/g;
+        updatedMessage = message.replace(
+          regex,
+          '[@$1](mention://user/$2/' + encodeURIComponent('$1') + ')',
+        );
+      }
+
+      if (message || attachmentDetails) {
+        const payload = {
+          conversationId,
+          message: updatedMessage,
+          private: isPrivate,
+          file: attachmentDetails,
+          sender: {
+            id: user.id,
+            thumbnail: user.avatar_url,
+          },
+        };
+        if (ccEmails) {
+          payload.message.cc_emails = ccEmails;
+        }
+        if (bccEmails) {
+          payload.message.bcc_emails = bccEmails;
+        }
+        AnalyticsHelper.track(CONVERSATION_EVENTS.SENT_MESSAGE);
+        dispatch(conversationActions.sendMessage({ data: payload }));
+
+        setMessage('');
+        setCCEmails('');
+        setBCCEmails('');
+        setAttachmentDetails(null);
+        setPrivateMode(false);
+      }
     }
   };
 
@@ -203,6 +236,13 @@ const ReplyBox = ({
           searchKey={cannedResponseSearchKey}
         />
       ) : null}
+      <ModalView
+        showModal={showUndefinedVariablesModal}
+        headerText={i18n.t('CONVERSATION.UNDEFINED_VARIABLES_TITLE')}
+        contentText={undefinedVariableText}
+        buttonText={i18n.t('CONVERSATION.UNDEFINED_VARIABLES_CLOSE')}
+        onPressClose={() => setUndefinedVariablesModal(false)}
+      />
       {isAnEmailChannelAndNotInPrivateNote() && emailFields && (
         <View style={style.emailFields}>
           <View style={style.emailFieldsTextWrap}>

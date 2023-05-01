@@ -1087,6 +1087,13 @@
   dependencies:
     react-native-modal "^13.0.1"
 
+"@chatwoot/utils@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@chatwoot/utils/-/utils-0.0.15.tgz#7de3055c3ec269201679aef2351f43a2a250baad"
+  integrity sha512-JYH6cEaiPVjXHTbSAyPkrS3gOyR0W7vpn/9uJfBcWg2m8d5uWi0LXmvX77pq/IsMNK0KK7zqUUkbT0E8VKJDlQ==
+  dependencies:
+    date-fns "^2.29.1"
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -5561,6 +5568,11 @@ date-fns@2.21.1:
   version "2.21.1"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.21.1.tgz#679a4ccaa584c0706ea70b3fa92262ac3009d2b0"
   integrity sha512-m1WR0xGiC6j6jNFAyW4Nvh4WxAi4JF4w9jRJwSI8nBmNcyZXPcP9VUQG+6gHQXAmqaGEKDKhOqAtENDC941UkA==
+
+date-fns@^2.29.1:
+  version "2.29.3"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.29.3.tgz#27402d2fc67eb442b511b70bbdf98e6411cd68a8"
+  integrity sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==
 
 dayjs@^1.8.15, dayjs@^1.8.29:
   version "1.11.7"

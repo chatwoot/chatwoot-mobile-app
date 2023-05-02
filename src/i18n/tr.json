@@ -81,7 +81,9 @@
     "SNOOZE_UNTIL_TOMORROW": "Yarına kadar",
     "SNOOZE_UNTIL_NEXT_WEEK": "Gelecek haftaya kadar",
     "SNOOZE": "Snooze conversation",
-    "MESSAGES": "Mesajlar"
+    "MESSAGES": "Mesajlar",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_CLOSE": "Kapat"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

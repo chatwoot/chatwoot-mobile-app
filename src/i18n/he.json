@@ -81,7 +81,9 @@
     "SNOOZE_UNTIL_TOMORROW": "עד מחר",
     "SNOOZE_UNTIL_NEXT_WEEK": "עד שבוע הבא",
     "SNOOZE": "Snooze conversation",
-    "MESSAGES": "הודעות"
+    "MESSAGES": "הודעות",
+    "UNDEFINED_VARIABLES_TITLE": "משתנים בלתי מזוהים",
+    "UNDEFINED_VARIABLES_CLOSE": "סגור"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

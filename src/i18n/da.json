@@ -81,7 +81,9 @@
     "SNOOZE_UNTIL_TOMORROW": "Indtil i morgen",
     "SNOOZE_UNTIL_NEXT_WEEK": "Indtil næste uge",
     "SNOOZE": "Snooze conversation",
-    "MESSAGES": "Beskeder"
+    "MESSAGES": "Beskeder",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_CLOSE": "Luk"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

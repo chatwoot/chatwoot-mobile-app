@@ -81,7 +81,9 @@
     "SNOOZE_UNTIL_TOMORROW": "Până mâine",
     "SNOOZE_UNTIL_NEXT_WEEK": "Până săptămâna viitoare",
     "SNOOZE": "Snooze conversation",
-    "MESSAGES": "Mesaje"
+    "MESSAGES": "Mesaje",
+    "UNDEFINED_VARIABLES_TITLE": "Variabile nedefinite",
+    "UNDEFINED_VARIABLES_CLOSE": "Închide"
   },
   "FILTER": {
     "ALL_INBOXES": "Toate cutiile",

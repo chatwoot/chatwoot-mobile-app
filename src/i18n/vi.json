@@ -81,7 +81,9 @@
     "SNOOZE_UNTIL_TOMORROW": "Cho đến ngày mai",
     "SNOOZE_UNTIL_NEXT_WEEK": "Cho đến tuần sau",
     "SNOOZE": "Snooze conversation",
-    "MESSAGES": "Tin nhắn"
+    "MESSAGES": "Tin nhắn",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_CLOSE": "Đóng"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

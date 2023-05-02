@@ -81,7 +81,9 @@
     "SNOOZE_UNTIL_TOMORROW": "До завтра",
     "SNOOZE_UNTIL_NEXT_WEEK": "До наступного тижня",
     "SNOOZE": "Snooze conversation",
-    "MESSAGES": "Текст повідомлень"
+    "MESSAGES": "Текст повідомлень",
+    "UNDEFINED_VARIABLES_TITLE": "Невизначені змінні",
+    "UNDEFINED_VARIABLES_CLOSE": "Закрити"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

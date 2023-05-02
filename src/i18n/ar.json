@@ -81,7 +81,9 @@
     "SNOOZE_UNTIL_TOMORROW": "حتى الغد",
     "SNOOZE_UNTIL_NEXT_WEEK": "حتى الأسبوع القادم",
     "SNOOZE": "Snooze conversation",
-    "MESSAGES": "الرسائل"
+    "MESSAGES": "الرسائل",
+    "UNDEFINED_VARIABLES_TITLE": "متغيرات غير معرفة",
+    "UNDEFINED_VARIABLES_CLOSE": "إغلاق"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

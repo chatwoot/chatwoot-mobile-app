@@ -55,6 +55,8 @@ const createStyles = theme => {
     },
     searchInput: {
       backgroundColor: colors.background,
+      borderWidth: 0.4,
+      borderColor: colors.borderLight,
       borderRadius: borderRadius.small,
       paddingRight: spacing.half,
       paddingLeft: spacing.large,

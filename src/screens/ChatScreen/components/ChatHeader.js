@@ -29,6 +29,7 @@ const deviceHeight = Dimensions.get('window').height;
 import ConversationAction from '../../ConversationAction/ConversationAction';
 import SnoozeConversationItems from './SnoozeConversation';
 import LabelConversationItems from './ConversationLabels';
+import AssignAgentConversationItems from './ConversationAgents';
 
 const propTypes = {
   conversationId: PropTypes.number,
@@ -204,7 +205,7 @@ const ChatHeader = ({
         );
       }
       if (itemType === 'assignee') {
-        navigation.navigate('AgentScreen', { conversationDetails });
+        toggleAssignAgentActionModal();
       }
       if (itemType === 'unassign') {
         AnalyticsHelper.track(CONVERSATION_EVENTS.UNASSIGN_CONVERSATION);
@@ -296,13 +297,25 @@ const ChatHeader = ({
     snoozeActionModal.current?.close();
   }, []);
 
+  const conversationActionModalSnapPoints = useMemo(
+    () => [deviceHeight - 120, deviceHeight - 120],
+    [],
+  );
+
   const labelActionModal = useRef(null);
-  const labelActionModalSnapPoints = useMemo(() => [deviceHeight - 120, deviceHeight - 120], []);
   const toggleLabelActionModal = useCallback(() => {
     labelActionModal.current.present() || labelActionModal.current?.close();
   }, []);
   const closeLabelActionModal = useCallback(() => {
     labelActionModal.current?.close();
+  }, []);
+
+  const assignAgentModal = useRef(null);
+  const toggleAssignAgentActionModal = useCallback(() => {
+    assignAgentModal.current.present() || assignAgentModal.current?.close();
+  }, []);
+  const closeAssignAgentActionModal = useCallback(() => {
+    assignAgentModal.current?.close();
   }, []);
 
   return (
@@ -405,7 +418,7 @@ const ChatHeader = ({
       />
       <BottomSheetModal
         bottomSheetModalRef={labelActionModal}
-        initialSnapPoints={labelActionModalSnapPoints}
+        initialSnapPoints={conversationActionModalSnapPoints}
         showHeader
         headerTitle={i18n.t('CONVERSATION.LABELS')}
         closeFilter={closeLabelActionModal}
@@ -414,6 +427,20 @@ const ChatHeader = ({
             colors={colors}
             conversationDetails={conversationDetails}
             closeModal={closeLabelActionModal}
+          />
+        }
+      />
+      <BottomSheetModal
+        bottomSheetModalRef={assignAgentModal}
+        initialSnapPoints={conversationActionModalSnapPoints}
+        showHeader
+        headerTitle={i18n.t('CONVERSATION_AGENTS.TITLE')}
+        closeFilter={closeAssignAgentActionModal}
+        children={
+          <AssignAgentConversationItems
+            colors={colors}
+            conversationDetails={conversationDetails}
+            closeModal={closeAssignAgentActionModal}
           />
         }
       />

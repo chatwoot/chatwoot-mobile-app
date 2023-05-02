@@ -81,7 +81,9 @@
     "SNOOZE_UNTIL_TOMORROW": "Μέχρι αύριο",
     "SNOOZE_UNTIL_NEXT_WEEK": "Έως την επόμενη εβδομάδα",
     "SNOOZE": "Snooze conversation",
-    "MESSAGES": "Μηνύματα"
+    "MESSAGES": "Μηνύματα",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_CLOSE": "Κλείσιμο"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

@@ -81,7 +81,9 @@
     "SNOOZE_UNTIL_TOMORROW": "Do zítřka",
     "SNOOZE_UNTIL_NEXT_WEEK": "Do příštího týdne",
     "SNOOZE": "Snooze conversation",
-    "MESSAGES": "Zprávy"
+    "MESSAGES": "Zprávy",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_CLOSE": "Zavřít"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

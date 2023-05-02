@@ -81,7 +81,9 @@
     "SNOOZE_UNTIL_TOMORROW": "Até amanhã",
     "SNOOZE_UNTIL_NEXT_WEEK": "Até à próxima semana",
     "SNOOZE": "Snooze conversation",
-    "MESSAGES": "Mensagens"
+    "MESSAGES": "Mensagens",
+    "UNDEFINED_VARIABLES_TITLE": "Variáveis indefinidas",
+    "UNDEFINED_VARIABLES_CLOSE": "FECHAR"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

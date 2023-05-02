@@ -81,7 +81,9 @@
     "SNOOZE_UNTIL_TOMORROW": "明日まで",
     "SNOOZE_UNTIL_NEXT_WEEK": "来週まで",
     "SNOOZE": "Snooze conversation",
-    "MESSAGES": "メッセージ"
+    "MESSAGES": "メッセージ",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_CLOSE": "閉じる"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

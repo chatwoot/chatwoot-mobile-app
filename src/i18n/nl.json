@@ -81,7 +81,9 @@
     "SNOOZE_UNTIL_TOMORROW": "Tot morgen",
     "SNOOZE_UNTIL_NEXT_WEEK": "Tot volgende week",
     "SNOOZE": "Snooze conversation",
-    "MESSAGES": "Berichten"
+    "MESSAGES": "Berichten",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_CLOSE": "Sluiten"
   },
   "FILTER": {
     "ALL_INBOXES": "Alle inboxen",

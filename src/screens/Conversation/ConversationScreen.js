@@ -40,6 +40,7 @@ import { actions as notificationActions } from 'reducer/notificationSlice';
 import { actions as dashboardAppActions } from 'reducer/dashboardAppSlice';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
 import { actions as labelActions } from 'reducer/labelSlice';
+import { actions as teamActions } from 'reducer/teamSlice';
 import { SCREENS } from 'constants';
 const deviceHeight = Dimensions.get('window').height;
 
@@ -73,6 +74,7 @@ const ConversationScreen = () => {
     initPushNotifications();
     dispatch(dashboardAppActions.index());
     dispatch(labelActions.index());
+    dispatch(teamActions.index());
   }, [
     dispatch,
     initActionCable,

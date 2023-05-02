@@ -28,6 +28,7 @@ const deviceHeight = Dimensions.get('window').height;
 // Bottom sheet items
 import ConversationAction from '../../ConversationAction/ConversationAction';
 import SnoozeConversationItems from './SnoozeConversation';
+import AssignTeamConversationItems from './ConversationTeams';
 import LabelConversationItems from './ConversationLabels';
 
 const propTypes = {
@@ -222,7 +223,7 @@ const ChatHeader = ({
         toggleLabelActionModal();
       }
       if (itemType === 'team') {
-        navigation.navigate('TeamScreen', { conversationDetails });
+        toggleAssignTeamActionModal();
       }
       if (itemType === 'pending') {
         toggleStatusForConversations(CONVERSATION_STATUS.PENDING);
@@ -296,8 +297,20 @@ const ChatHeader = ({
     snoozeActionModal.current?.close();
   }, []);
 
+  const conversationActionModalSnapPoints = useMemo(
+    () => [deviceHeight - 120, deviceHeight - 120],
+    [],
+  );
+
+  const assignTeamModal = useRef(null);
+  const toggleAssignTeamActionModal = useCallback(() => {
+    assignTeamModal.current.present() || assignTeamModal.current?.close();
+  }, []);
+  const closeAssignTeamActionModal = useCallback(() => {
+    assignTeamModal.current?.close();
+  }, []);
+
   const labelActionModal = useRef(null);
-  const labelActionModalSnapPoints = useMemo(() => [deviceHeight - 120, deviceHeight - 120], []);
   const toggleLabelActionModal = useCallback(() => {
     labelActionModal.current.present() || labelActionModal.current?.close();
   }, []);
@@ -404,8 +417,22 @@ const ChatHeader = ({
         }
       />
       <BottomSheetModal
+        bottomSheetModalRef={assignTeamModal}
+        initialSnapPoints={conversationActionModalSnapPoints}
+        showHeader
+        headerTitle={i18n.t('CONVERSATION_TEAMS.TITLE')}
+        closeFilter={closeAssignTeamActionModal}
+        children={
+          <AssignTeamConversationItems
+            colors={colors}
+            conversationDetails={conversationDetails}
+            closeModal={closeAssignTeamActionModal}
+          />
+        }
+      />
+      <BottomSheetModal
         bottomSheetModalRef={labelActionModal}
-        initialSnapPoints={labelActionModalSnapPoints}
+        initialSnapPoints={conversationActionModalSnapPoints}
         showHeader
         headerTitle={i18n.t('CONVERSATION.LABELS')}
         closeFilter={closeLabelActionModal}

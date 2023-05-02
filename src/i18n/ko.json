@@ -81,7 +81,9 @@
     "SNOOZE_UNTIL_TOMORROW": "내일까지",
     "SNOOZE_UNTIL_NEXT_WEEK": "다음 주까지",
     "SNOOZE": "Snooze conversation",
-    "MESSAGES": "메시지"
+    "MESSAGES": "메시지",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_CLOSE": "닫기"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

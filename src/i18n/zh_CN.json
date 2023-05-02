@@ -81,7 +81,9 @@
     "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
     "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
     "SNOOZE": "Snooze conversation",
-    "MESSAGES": "消息"
+    "MESSAGES": "消息",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_CLOSE": "关闭"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",

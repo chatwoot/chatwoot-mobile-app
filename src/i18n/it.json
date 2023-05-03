@@ -67,8 +67,8 @@
     "ASSIGN": "Assegna conversazione",
     "FILE_SIZE_LIMIT": "Il file supera il limite di 5MB per l'allegato",
     "SHARE": "Condividi conversazione",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
+    "DETAILS": "Dettagli",
+    "LABELS": "Etichette conversazioni",
     "ASSIGNED_AGENT": "Agente assegnato",
     "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "Questo sarà visibile solo agli agenti",
@@ -80,9 +80,9 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Fino alla prossima risposta",
     "SNOOZE_UNTIL_TOMORROW": "Fino a domani",
     "SNOOZE_UNTIL_NEXT_WEEK": "Fino alla prossima settimana",
-    "SNOOZE": "Snooze conversation",
+    "SNOOZE": "Posticipa conversazione",
     "MESSAGES": "Messaggi",
-    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_TITLE": "Variabili indefinite",
     "UNDEFINED_VARIABLES_CLOSE": "Chiudi"
   },
   "FILTER": {
@@ -156,8 +156,8 @@
     "EMPTY_LIST": "Si prega di aggiungere le etichette al tuo account",
     "NO_LABEL": "Nessuna etichetta assegnata",
     "UPDATE_LABEL": "Etichetta aggiornata con successo",
-    "SELECTED": "Selected",
-    "NOT_SELECTED": "No labels selected",
+    "SELECTED": "Selezionato",
+    "NOT_SELECTED": "Nessuna etichetta selezionata",
     "NO_RESULT": "Nessuna etichetta trovata"
   },
   "AGENT": {

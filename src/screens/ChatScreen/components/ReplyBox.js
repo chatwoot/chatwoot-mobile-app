@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Dimensions, TextInput, Text, TouchableOpacity } from 'react-native';
 import { MentionInput } from 'react-native-controlled-mentions';
 import { withStyles, Icon } from '@ui-kitten/components';
@@ -15,7 +15,7 @@ import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import conversationActions from 'reducer/conversationSlice.action';
 import CannedResponsesContainer from '../containers/CannedResponsesContainer';
-import { inboxAgentSelectors } from 'reducer/inboxAgentsSlice';
+import { inboxAgentSelectors, actions as inboxAgentActions } from 'reducer/inboxAgentsSlice';
 import { selectUser } from 'reducer/authSlice';
 import ModalView from 'components/Modal/ModalView.js';
 import {
@@ -54,6 +54,12 @@ const ReplyBox = ({
   const [showUndefinedVariablesModal, setUndefinedVariablesModal] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+
+  useEffect(() => {
+    if (inboxId) {
+      dispatch(inboxAgentActions.fetchInboxAgents({ inboxId }));
+    }
+  }, [dispatch, inboxId]);
 
   const onNewMessageChange = text => {
     setMessage(text);

@@ -68,7 +68,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
 
   const lastMessage = findLastMessage(item);
 
-  const { content, created_at, attachments, message_type, private: isPrivate } = lastMessage;
+  const { content = null, created_at, attachments, message_type, private: isPrivate } = lastMessage;
   const {
     name: inboxName = null,
     channel_type: channelType = null,

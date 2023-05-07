@@ -47,6 +47,8 @@ const propTypes = {
 };
 
 const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssigneeLabel }) => {
+  const swipeableRef = useRef(null);
+
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
@@ -65,10 +67,14 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
   } = item;
 
   const assigneeName = assignee?.name;
-
   const lastMessage = findLastMessage(item);
 
-  const { content = null, created_at, attachments, message_type, private: isPrivate } = lastMessage;
+  if (!lastMessage) {
+    return null;
+  }
+
+  const content = lastMessage?.content;
+  const { created_at, attachments, message_type, private: isPrivate } = lastMessage;
   const {
     name: inboxName = null,
     channel_type: channelType = null,
@@ -83,8 +89,6 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
     conversationTypingUsers,
     conversationId: id,
   });
-
-  const swipeableRef = useRef(null);
 
   const markAsUnreadAndClose = () => {
     AnalyticsHelper.track(CONVERSATION_EVENTS.MARK_AS_UNREAD);

@@ -29,7 +29,7 @@ const deviceHeight = Dimensions.get('window').height;
 import ConversationAction from '../../ConversationAction/ConversationAction';
 import SnoozeConversationItems from './SnoozeConversation';
 import LabelConversationItems from './ConversationLabels';
-import AssignAgentConversationItems from './ConversationAgents';
+import ConversationAgent from './ConversationAgents';
 
 const propTypes = {
   conversationId: PropTypes.number,
@@ -38,6 +38,7 @@ const propTypes = {
   conversationDetails: PropTypes.object,
   conversationMetaDetails: PropTypes.object,
   conversationTypingUsers: PropTypes.shape({}),
+  hasDashboardApps: PropTypes.bool,
 };
 
 const ChatHeader = ({
@@ -46,6 +47,7 @@ const ChatHeader = ({
   conversationId,
   conversationTypingUsers,
   showConversationDetails,
+  hasDashboardApps,
   onBackPress,
 }) => {
   const theme = useTheme();
@@ -320,7 +322,7 @@ const ChatHeader = ({
 
   return (
     <React.Fragment>
-      <View style={styles.chatHeader}>
+      <View style={[styles.chatHeader, hasDashboardApps && styles.chatHeaderWithApps]}>
         <View style={styles.chatHeaderLeft}>
           {renderLeftControl()}
           <Pressable style={styles.headerView} onPress={showConversationDetails}>
@@ -437,7 +439,7 @@ const ChatHeader = ({
         headerTitle={i18n.t('CONVERSATION_AGENTS.TITLE')}
         closeFilter={closeAssignAgentActionModal}
         children={
-          <AssignAgentConversationItems
+          <ConversationAgent
             colors={colors}
             conversationDetails={conversationDetails}
             closeModal={closeAssignAgentActionModal}

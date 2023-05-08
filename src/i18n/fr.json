@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "Aucune étiquette trouvée"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Assign agent",
+    "SELECT_AGENT": "Sélectionner un agent",
+    "NO_RESULT": "No agent found"
+  },
   "AGENT": {
     "TITLE": "Sélectionner un agent"
   },

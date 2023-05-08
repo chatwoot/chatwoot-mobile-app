@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "Geen labels gevonden"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Assign agent",
+    "SELECT_AGENT": "Selecteer agent",
+    "NO_RESULT": "No agent found"
+  },
   "AGENT": {
     "TITLE": "Selecteer medewerker"
   },

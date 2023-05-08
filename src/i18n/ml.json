@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "ലേബലുകളൊന്നും കണ്ടെത്തിയില്ല"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Assign agent",
+    "SELECT_AGENT": "ഏജന്റിനെ തിരഞ്ഞെടുക്കുക",
+    "NO_RESULT": "No agent found"
+  },
   "AGENT": {
     "TITLE": "ഏജന്റ് തിരഞ്ഞെടുക്കുക"
   },

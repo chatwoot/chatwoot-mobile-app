@@ -98,7 +98,7 @@ const createStyles = theme => {
   });
 };
 
-const AssignAgent = ({ colors, conversationDetails }) => {
+const AssignAgent = ({ colors, conversationDetails, closeModal }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
 
@@ -153,6 +153,7 @@ const AssignAgent = ({ colors, conversationDetails }) => {
         }),
       );
     }
+    closeModal();
   };
 
   return (

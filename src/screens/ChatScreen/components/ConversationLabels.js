@@ -127,12 +127,12 @@ const ConversationLabels = ({ colors, conversationDetails }) => {
   const activeLabels =
     labels && conversationSavedLabels
       ? labels.filter(({ title }) => {
-          return conversationSavedLabels.includes(title);
+          return conversationSavedLabels?.includes(title);
         })
       : [];
 
   const filteredLabelsOnSearch = labels.filter(label => {
-    if (conversationSavedLabels.includes(label.title)) {
+    if (conversationSavedLabels?.includes(label.title)) {
       return false;
     }
     return label.title.toLowerCase().includes(search.toLowerCase());

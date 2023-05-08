@@ -9,6 +9,7 @@ import { selectConversationToggleStatus } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';
 import { UserAvatar, Pressable, Text, Icon } from 'components';
 import { getInboxName } from 'helpers';
+import { useFocusEffect } from '@react-navigation/native';
 import Banner from 'screens/ChatScreen/components/Banner';
 import InboxName from 'screens/ChatScreen/components/InboxName';
 import TypingStatus from 'screens/ChatScreen/components/UserTypingStatus';
@@ -278,6 +279,14 @@ const ChatHeader = ({
     conversationId,
   });
   const customerDetails = getCustomerDetails({ conversationDetails, conversationMetaDetails });
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        closeActionModal();
+      };
+    }, [closeActionModal]),
+  );
 
   // Conversation action modal
   const actionModal = useRef(null);

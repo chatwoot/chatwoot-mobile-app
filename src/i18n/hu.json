@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "Nem találtunk címkét"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Assign agent",
+    "SELECT_AGENT": "Ügynök kiválasztása",
+    "NO_RESULT": "No agent found"
+  },
   "AGENT": {
     "TITLE": "Ügynök kiválasztása"
   },

@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "לא נמצאו תוויות"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "שייך סוכן",
+    "SELECT_AGENT": "בחר נציג",
+    "NO_RESULT": "No agent found"
+  },
   "AGENT": {
     "TITLE": "בחר סוכן"
   },

@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "Nu s-au găsit etichete"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Atribuiți agent",
+    "SELECT_AGENT": "Selectați agentul",
+    "NO_RESULT": "No agent found"
+  },
   "AGENT": {
     "TITLE": "Selectează agent"
   },

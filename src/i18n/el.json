@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "Δεν βρέθηκαν ετικέτες"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Ανάθεση σε πράκτορα",
+    "SELECT_AGENT": "Επιλογή πράκτορα",
+    "NO_RESULT": "No agent found"
+  },
   "AGENT": {
     "TITLE": "Επιλογή πράκτορα"
   },

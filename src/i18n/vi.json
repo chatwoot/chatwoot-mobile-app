@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "Không tìm thấy nhãn"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Gán tổng đài viên",
+    "SELECT_AGENT": "Chọn thành viên",
+    "NO_RESULT": "No agent found"
+  },
   "AGENT": {
     "TITLE": "Chọn đại lý"
   },

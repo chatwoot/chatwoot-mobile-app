@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "Etiket bulunamadı"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Temsilci ata",
+    "SELECT_AGENT": "Temsilci seçin",
+    "NO_RESULT": "No agent found"
+  },
   "AGENT": {
     "TITLE": "Temsilci Seçin"
   },

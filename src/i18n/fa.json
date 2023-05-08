@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "هیچ برچسبی یافت نشد"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "ایجنت را تعیین کنید",
+    "SELECT_AGENT": "انتخاب ایجنت",
+    "NO_RESULT": "No agent found"
+  },
   "AGENT": {
     "TITLE": "انتخاب ایجنت"
   },

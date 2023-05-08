@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "라벨을 찾을 수 없습니다"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Assign agent",
+    "SELECT_AGENT": "에이전트 선택",
+    "NO_RESULT": "No agent found"
+  },
   "AGENT": {
     "TITLE": "에이전트 선택"
   },

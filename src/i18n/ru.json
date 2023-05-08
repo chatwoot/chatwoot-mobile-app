@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "Метки не найдены"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Назначить агента",
+    "SELECT_AGENT": "Выбрать Агента",
+    "NO_RESULT": "Агент не найден"
+  },
   "AGENT": {
     "TITLE": "Выбрать Агента"
   },

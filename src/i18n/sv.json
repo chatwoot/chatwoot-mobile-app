@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "Inga etiketter hittades"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Assign agent",
+    "SELECT_AGENT": "Välj agent",
+    "NO_RESULT": "No agent found"
+  },
   "AGENT": {
     "TITLE": "Välj agent"
   },

@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "查無標籤"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Assign agent",
+    "SELECT_AGENT": "選擇客服",
+    "NO_RESULT": "No agent found"
+  },
   "AGENT": {
     "TITLE": "选择代理"
   },

@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "Ingen labels fundet"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Tildel agent",
+    "SELECT_AGENT": "Vælg agent",
+    "NO_RESULT": "No agent found"
+  },
   "AGENT": {
     "TITLE": "Select Agent"
   },

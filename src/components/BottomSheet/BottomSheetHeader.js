@@ -10,7 +10,7 @@ const createStyles = theme => {
   const { spacing, colors, borderRadius } = theme;
   return StyleSheet.create({
     headerContainer: {
-      paddingBottom: spacing.small,
+      paddingBottom: spacing.half,
       paddingTop: spacing.micro,
       paddingHorizontal: spacing.small,
       borderBottomColor: colors.border,
@@ -24,6 +24,10 @@ const createStyles = theme => {
       textAlign: 'center',
     },
     closeButton: {
+      paddingLeft: spacing.small,
+      paddingVertical: spacing.micro,
+    },
+    closeButtonView: {
       padding: spacing.micro,
       borderRadius: borderRadius.largest,
       borderWidth: 0.5,
@@ -46,16 +50,17 @@ const BottomSheetModalHeader = ({ title, closeModal, colors }) => {
       <Text md bold color={colors.textDark} style={styles.headerTitle}>
         {title}
       </Text>
-      <Pressable
-        onPress={closeModal}
-        style={[
-          {
-            backgroundColor: colors.backgroundLight,
-            borderColor: colors.borderLight,
-          },
-          styles.closeButton,
-        ]}>
-        <Icon icon="dismiss-outline" color={colors.textDark} size={16} />
+      <Pressable style={styles.closeButton} onPress={closeModal}>
+        <View
+          style={[
+            {
+              backgroundColor: colors.backgroundLight,
+              borderColor: colors.borderLight,
+            },
+            styles.closeButtonView,
+          ]}>
+          <Icon icon="dismiss-outline" color={colors.textDark} size={16} />
+        </View>
       </Pressable>
     </View>
   );

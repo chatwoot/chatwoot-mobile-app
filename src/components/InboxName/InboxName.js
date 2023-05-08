@@ -37,7 +37,7 @@ const InboxName = ({ inboxName, phoneNumber, channelType }) => {
         {iconName ? <Icon color={colors.textLight} size={10} icon={iconName} /> : null}
         {inboxName ? (
           <Text xs medium color={colors.textLight} style={styles.channelText}>
-            {getTextSubstringWithEllipsis(inboxName, 32)}
+            {getTextSubstringWithEllipsis(inboxName, 26)}
           </Text>
         ) : null}
       </View>

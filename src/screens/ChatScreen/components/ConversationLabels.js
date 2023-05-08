@@ -55,6 +55,8 @@ const createStyles = theme => {
     },
     searchInput: {
       backgroundColor: colors.background,
+      borderWidth: 0.4,
+      borderColor: colors.borderLight,
       borderRadius: borderRadius.small,
       paddingRight: spacing.half,
       paddingLeft: spacing.large,
@@ -125,12 +127,12 @@ const ConversationLabels = ({ colors, conversationDetails }) => {
   const activeLabels =
     labels && conversationSavedLabels
       ? labels.filter(({ title }) => {
-          return conversationSavedLabels.includes(title);
+          return conversationSavedLabels?.includes(title);
         })
       : [];
 
   const filteredLabelsOnSearch = labels.filter(label => {
-    if (conversationSavedLabels.includes(label.title)) {
+    if (conversationSavedLabels?.includes(label.title)) {
       return false;
     }
     return label.title.toLowerCase().includes(search.toLowerCase());

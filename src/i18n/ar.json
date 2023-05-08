@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "لم يتم العثور على تصنيفات"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "تعيين وكيل",
+    "SELECT_AGENT": "اختر وكيل",
+    "NO_RESULT": "No agent found"
+  },
   "AGENT": {
     "TITLE": "اختر وكيل"
   },

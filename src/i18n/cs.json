@@ -160,6 +160,11 @@
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "No labels found"
   },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Přiřadit agenta",
+    "SELECT_AGENT": "Vybrat agenta",
+    "NO_RESULT": "No agent found"
+  },
   "AGENT": {
     "TITLE": "Vybrat agenta"
   },

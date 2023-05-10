@@ -130,11 +130,11 @@
     "PUSH": "Push",
     "CONVERSATION_CREATE_PUSH": "Trimite notificări push atunci când o conversație nouă este creată",
     "CONVERSATION_ASSIGNEE_PUSH": "Trimite notificări push atunci când o conversație îmi este atribuită",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Trimiterea notificărilor push atunci când se creează un mesaj nou într-o conversație atribuită",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Trimite notificări prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită",
     "CONVERSATION_MENTION": "Trimiterea notificărilor push atunci când sunteți menționat într-o conversație",
     "CONVERSATION_CREATE_EMAIL": "Trimite notificări prin e-mail atunci când o conversație nouă este creată",
     "CONVERSATION_ASSIGNEE_EMAIL": "Trimite notificări prin e-mail atunci când o conversație îmi este atribuită",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Trimiterea notificărilor prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită"
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Trimite notificări prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Informații despre conversație",

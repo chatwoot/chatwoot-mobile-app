@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
-import { pop } from 'helpers/NavigationHelper';
 import APIHelper from 'helpers/APIHelper';
 
 export const actions = {

@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { TouchableOpacity, View, Dimensions, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import { withStyles, Icon } from '@ui-kitten/components';
-
+import FastImage from 'react-native-fast-image';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 import ImageLoader from 'components/ImageLoader';
 import CustomText from 'components/Text';
+import { MESSAGE_STATUS } from 'constants';
 import i18n from 'i18n';
 
 const styles = theme => ({
@@ -146,6 +147,7 @@ const propTypes = {
   message: PropTypes.shape({
     content: PropTypes.string,
     private: PropTypes.bool,
+    status: PropTypes.string,
   }),
   attachments: PropTypes.arrayOf(
     PropTypes.shape({
@@ -168,6 +170,7 @@ const ChatAttachmentItemComponent = ({
 }) => {
   const [imageLoading, onLoadImage] = useState(false);
   const isPrivate = message.private;
+  const status = message.status;
 
   const attachmentTextStyle =
     type === 'outgoing' ? style.filenameRightText : style.filenameLeftText;
@@ -187,6 +190,17 @@ const ChatAttachmentItemComponent = ({
     ...attachmentDownloadTextStyle,
     ...(isPrivate ? style.downloadTextPrivate : {}),
   };
+  if (status === MESSAGE_STATUS.PROGRESS) {
+    return (
+      <TouchableOpacity
+        style={[
+          type === 'outgoing' ? style.imageViewRight : style.imageViewLeft,
+          isPrivate && style.privateMessageContainer,
+        ]}>
+        <ImageLoader style={style.imageLoader} />
+      </TouchableOpacity>
+    );
+  }
 
   if (attachments && attachments.length > 0) {
     return attachments.map((attachment, index) => {
@@ -203,7 +217,7 @@ const ChatAttachmentItemComponent = ({
                 type === 'outgoing' ? style.imageViewRight : style.imageViewLeft,
                 isPrivate && style.privateMessageContainer,
               ]}>
-              <Image
+              <FastImage
                 style={style.image}
                 source={{
                   uri: dataUrl,

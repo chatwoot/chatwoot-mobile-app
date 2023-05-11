@@ -97,7 +97,7 @@ const createStyles = theme => {
   });
 };
 
-const ConversationTeams = ({ colors, conversationDetails }) => {
+const ConversationTeams = ({ colors, conversationDetails, closeModal }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
 
@@ -147,6 +147,7 @@ const ConversationTeams = ({ colors, conversationDetails }) => {
         }),
       );
     }
+    closeModal();
   };
 
   return (

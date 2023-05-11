@@ -9,6 +9,7 @@ import { selectConversationToggleStatus } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';
 import { UserAvatar, Pressable, Text, Icon } from 'components';
 import { getInboxName } from 'helpers';
+import { useFocusEffect } from '@react-navigation/native';
 import Banner from 'screens/ChatScreen/components/Banner';
 import InboxName from 'screens/ChatScreen/components/InboxName';
 import TypingStatus from 'screens/ChatScreen/components/UserTypingStatus';
@@ -30,6 +31,7 @@ import ConversationAction from '../../ConversationAction/ConversationAction';
 import SnoozeConversationItems from './SnoozeConversation';
 import AssignTeamConversationItems from './ConversationTeams';
 import LabelConversationItems from './ConversationLabels';
+import ConversationAgent from './ConversationAgents';
 
 const propTypes = {
   conversationId: PropTypes.number,
@@ -38,6 +40,7 @@ const propTypes = {
   conversationDetails: PropTypes.object,
   conversationMetaDetails: PropTypes.object,
   conversationTypingUsers: PropTypes.shape({}),
+  hasDashboardApps: PropTypes.bool,
 };
 
 const ChatHeader = ({
@@ -46,6 +49,7 @@ const ChatHeader = ({
   conversationId,
   conversationTypingUsers,
   showConversationDetails,
+  hasDashboardApps,
   onBackPress,
 }) => {
   const theme = useTheme();
@@ -205,7 +209,7 @@ const ChatHeader = ({
         );
       }
       if (itemType === 'assignee') {
-        navigation.navigate('AgentScreen', { conversationDetails });
+        toggleAssignAgentActionModal();
       }
       if (itemType === 'unassign') {
         AnalyticsHelper.track(CONVERSATION_EVENTS.UNASSIGN_CONVERSATION);
@@ -277,6 +281,14 @@ const ChatHeader = ({
   });
   const customerDetails = getCustomerDetails({ conversationDetails, conversationMetaDetails });
 
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        closeActionModal();
+      };
+    }, [closeActionModal]),
+  );
+
   // Conversation action modal
   const actionModal = useRef(null);
   const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 400, deviceHeight - 400], []);
@@ -318,9 +330,17 @@ const ChatHeader = ({
     labelActionModal.current?.close();
   }, []);
 
+  const assignAgentModal = useRef(null);
+  const toggleAssignAgentActionModal = useCallback(() => {
+    assignAgentModal.current.present() || assignAgentModal.current?.close();
+  }, []);
+  const closeAssignAgentActionModal = useCallback(() => {
+    assignAgentModal.current?.close();
+  }, []);
+
   return (
     <React.Fragment>
-      <View style={styles.chatHeader}>
+      <View style={[styles.chatHeader, hasDashboardApps && styles.chatHeaderWithApps]}>
         <View style={styles.chatHeaderLeft}>
           {renderLeftControl()}
           <Pressable style={styles.headerView} onPress={showConversationDetails}>
@@ -441,6 +461,20 @@ const ChatHeader = ({
             colors={colors}
             conversationDetails={conversationDetails}
             closeModal={closeLabelActionModal}
+          />
+        }
+      />
+      <BottomSheetModal
+        bottomSheetModalRef={assignAgentModal}
+        initialSnapPoints={conversationActionModalSnapPoints}
+        showHeader
+        headerTitle={i18n.t('CONVERSATION_AGENTS.TITLE')}
+        closeFilter={closeAssignAgentActionModal}
+        children={
+          <ConversationAgent
+            colors={colors}
+            conversationDetails={conversationDetails}
+            closeModal={closeAssignAgentActionModal}
           />
         }
       />

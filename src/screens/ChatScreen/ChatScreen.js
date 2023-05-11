@@ -211,6 +211,7 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
           conversationDetails={conversation}
           conversationMetaDetails={conversationMetaDetails}
           showConversationDetails={showConversationDetails}
+          hasDashboardApps={!isDashboardAppsEmpty}
           onBackPress={onBackPress}
         />
       ) : (

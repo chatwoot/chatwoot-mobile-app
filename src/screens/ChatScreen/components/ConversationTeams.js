@@ -120,7 +120,7 @@ const ConversationTeams = ({ colors, conversationDetails }) => {
 
   const teamsList = () => {
     return [
-      ...(isTeamSelected
+      ...(isTeamSelected && teams.length > 0
         ? [
             {
               id: 0,

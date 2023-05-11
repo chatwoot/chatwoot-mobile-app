@@ -65,7 +65,8 @@ export function checkConversationMatchToFilters({
 }
 
 export function getUserInitial({ userName }) {
-  const parts = userName ? userName.split(/[ -]/) : [];
+  const userNameWithoutEmoji = removeEmoji(userName);
+  const parts = userNameWithoutEmoji ? userNameWithoutEmoji.split(/[ -]/) : [];
   let initials = '';
   for (let i = 0; i < parts.length; i += 1) {
     initials += parts[i].charAt(0);
@@ -241,4 +242,17 @@ export const isEmptyObject = obj => {
 
 export const getTextSubstringWithEllipsis = (text, maxLength) => {
   return text && text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+};
+
+export const removeEmoji = text => {
+  if (text) {
+    return text
+      .replace(
+        /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g,
+        '',
+      )
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+  return '';
 };

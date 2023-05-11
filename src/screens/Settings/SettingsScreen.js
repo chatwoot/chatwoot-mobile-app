@@ -106,10 +106,10 @@ const SettingsScreen = () => {
   const switchAccountModal = useRef(null);
   const switchAccountModalSnapPoints = useMemo(() => [deviceHeight - 210, deviceHeight - 210], []);
   const toggleSwitchAccountModal = useCallback(() => {
-    switchAccountModal.current.present() || switchAccountModal.current?.close();
+    switchAccountModal.current.present() || switchAccountModal.current?.dismiss();
   }, []);
   const closeSwitchAccountModal = useCallback(() => {
-    switchAccountModal.current?.close();
+    switchAccountModal.current?.dismiss();
   }, []);
 
   // Language bottom sheet
@@ -119,10 +119,10 @@ const SettingsScreen = () => {
     [],
   );
   const toggleChangeLanguageModal = useCallback(() => {
-    changeLanguageModal.current.present() || changeLanguageModal.current?.close();
+    changeLanguageModal.current.present() || changeLanguageModal.current?.dismiss();
   }, []);
   const closeChangeLanguageModal = useCallback(() => {
-    changeLanguageModal.current?.close();
+    changeLanguageModal.current?.dismiss();
   }, []);
 
   const onChangeAccount = useCallback(

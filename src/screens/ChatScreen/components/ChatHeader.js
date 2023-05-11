@@ -9,7 +9,6 @@ import { selectConversationToggleStatus } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';
 import { UserAvatar, Pressable, Text, Icon } from 'components';
 import { getInboxName } from 'helpers';
-import { useFocusEffect } from '@react-navigation/native';
 import Banner from 'screens/ChatScreen/components/Banner';
 import InboxName from 'screens/ChatScreen/components/InboxName';
 import TypingStatus from 'screens/ChatScreen/components/UserTypingStatus';
@@ -29,6 +28,7 @@ const deviceHeight = Dimensions.get('window').height;
 // Bottom sheet items
 import ConversationAction from '../../ConversationAction/ConversationAction';
 import SnoozeConversationItems from './SnoozeConversation';
+import AssignTeamConversationItems from './ConversationTeams';
 import LabelConversationItems from './ConversationLabels';
 import ConversationAgent from './ConversationAgents';
 
@@ -208,6 +208,7 @@ const ChatHeader = ({
         );
       }
       if (itemType === 'assignee') {
+        closeActionModal();
         toggleAssignAgentActionModal();
       }
       if (itemType === 'unassign') {
@@ -223,15 +224,18 @@ const ChatHeader = ({
         navigation.navigate('ConversationDetails', { conversationDetails });
       }
       if (itemType === 'label') {
+        closeActionModal();
         toggleLabelActionModal();
       }
       if (itemType === 'team') {
-        navigation.navigate('TeamScreen', { conversationDetails });
+        closeActionModal();
+        toggleAssignTeamActionModal();
       }
       if (itemType === 'pending') {
         toggleStatusForConversations(CONVERSATION_STATUS.PENDING);
       }
       if (itemType === 'snooze') {
+        closeActionModal();
         toggleSnoozeActionModal();
       }
       if (itemType === 'share') {
@@ -280,32 +284,24 @@ const ChatHeader = ({
   });
   const customerDetails = getCustomerDetails({ conversationDetails, conversationMetaDetails });
 
-  useFocusEffect(
-    useCallback(() => {
-      return () => {
-        closeActionModal();
-      };
-    }, [closeActionModal]),
-  );
-
   // Conversation action modal
   const actionModal = useRef(null);
   const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 400, deviceHeight - 400], []);
   const toggleActionModal = useCallback(() => {
-    actionModal.current.present() || actionModal.current?.close();
+    actionModal.current.present() || actionModal.current?.dismiss();
   }, []);
   const closeActionModal = useCallback(() => {
-    actionModal.current?.close();
+    actionModal.current?.dismiss();
   }, []);
 
   // Conversation action modal
   const snoozeActionModal = useRef(null);
   const snoozeActionModalSnapPoints = useMemo(() => [deviceHeight - 400, deviceHeight - 400], []);
   const toggleSnoozeActionModal = useCallback(() => {
-    snoozeActionModal.current.present() || snoozeActionModal.current?.close();
+    snoozeActionModal.current.present() || snoozeActionModal.current?.dismiss();
   }, []);
   const closeSnoozeActionModal = useCallback(() => {
-    snoozeActionModal.current?.close();
+    snoozeActionModal.current?.dismiss();
   }, []);
 
   const conversationActionModalSnapPoints = useMemo(
@@ -313,20 +309,28 @@ const ChatHeader = ({
     [],
   );
 
+  const assignTeamModal = useRef(null);
+  const toggleAssignTeamActionModal = useCallback(() => {
+    assignTeamModal.current.present() || assignTeamModal.current?.dismiss();
+  }, []);
+  const closeAssignTeamActionModal = useCallback(() => {
+    assignTeamModal.current?.dismiss();
+  }, []);
+
   const labelActionModal = useRef(null);
   const toggleLabelActionModal = useCallback(() => {
-    labelActionModal.current.present() || labelActionModal.current?.close();
+    labelActionModal.current.present() || labelActionModal.current?.dismiss();
   }, []);
   const closeLabelActionModal = useCallback(() => {
-    labelActionModal.current?.close();
+    labelActionModal.current?.dismiss();
   }, []);
 
   const assignAgentModal = useRef(null);
   const toggleAssignAgentActionModal = useCallback(() => {
-    assignAgentModal.current.present() || assignAgentModal.current?.close();
+    assignAgentModal.current.present() || assignAgentModal.current?.dismiss();
   }, []);
   const closeAssignAgentActionModal = useCallback(() => {
-    assignAgentModal.current?.close();
+    assignAgentModal.current?.dismiss();
   }, []);
 
   return (
@@ -424,6 +428,20 @@ const ChatHeader = ({
             conversationId={conversationId}
             activeSnoozeValue={activeSnoozeValue()}
             closeModal={closeSnoozeActionModal}
+          />
+        }
+      />
+      <BottomSheetModal
+        bottomSheetModalRef={assignTeamModal}
+        initialSnapPoints={conversationActionModalSnapPoints}
+        showHeader
+        headerTitle={i18n.t('CONVERSATION_TEAMS.TITLE')}
+        closeFilter={closeAssignTeamActionModal}
+        children={
+          <AssignTeamConversationItems
+            colors={colors}
+            conversationDetails={conversationDetails}
+            closeModal={closeAssignTeamActionModal}
           />
         }
       />

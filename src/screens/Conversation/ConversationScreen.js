@@ -40,6 +40,7 @@ import { actions as notificationActions } from 'reducer/notificationSlice';
 import { actions as dashboardAppActions } from 'reducer/dashboardAppSlice';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
 import { actions as labelActions } from 'reducer/labelSlice';
+import { actions as teamActions } from 'reducer/teamSlice';
 import { SCREENS } from 'constants';
 const deviceHeight = Dimensions.get('window').height;
 
@@ -73,6 +74,7 @@ const ConversationScreen = () => {
     initPushNotifications();
     dispatch(dashboardAppActions.index());
     dispatch(labelActions.index());
+    dispatch(teamActions.index());
   }, [
     dispatch,
     initActionCable,
@@ -246,29 +248,29 @@ const ConversationScreen = () => {
   // Filter by assignee type
   const conversationAssigneeModal = useRef(null);
   const toggleConversationAssigneeModal = useCallback(() => {
-    conversationAssigneeModal.current.present() || conversationAssigneeModal.current?.close();
+    conversationAssigneeModal.current.present() || conversationAssigneeModal.current?.dismiss();
   }, []);
   const closeConversationAssigneeModal = useCallback(() => {
-    conversationAssigneeModal.current?.close();
+    conversationAssigneeModal.current?.dismiss();
   }, []);
 
   // Filter by conversation status
   const conversationStatusModal = useRef(null);
   const toggleConversationStatusModal = useCallback(() => {
-    conversationStatusModal.current.present() || conversationStatusModal.current?.close();
+    conversationStatusModal.current.present() || conversationStatusModal.current?.dismiss();
   }, []);
   const closeConversationStatusModal = useCallback(() => {
-    conversationStatusModal.current?.close();
+    conversationStatusModal.current?.dismiss();
   }, []);
 
   // Inbox filter modal
   const inboxFilterModal = useRef(null);
   const inboxFilterModalSnapPoints = useMemo(() => [deviceHeight - 210, deviceHeight - 210], []);
   const toggleInboxFilterModal = useCallback(() => {
-    inboxFilterModal.current.present() || inboxFilterModal.current?.close();
+    inboxFilterModal.current.present() || inboxFilterModal.current?.dismiss();
   }, []);
   const closeInboxFilterModal = useCallback(() => {
-    inboxFilterModal.current?.close();
+    inboxFilterModal.current?.dismiss();
   }, []);
 
   const hasActiveFilters =

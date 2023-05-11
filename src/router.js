@@ -24,7 +24,6 @@ import AvailabilityScreen from './screens/Availability/Availability';
 import NotificationPreference from './screens/NotificationPreference/NotificationPreference';
 import ConversationDetailsScreen from './screens/ConversationDetails/ConversationDetailsScreen';
 import ConversationAction from './screens/ConversationAction/ConversationAction';
-import TeamScreen from 'screens/TeamScreen/TeamScreen';
 import i18n from 'i18n';
 import { navigationRef } from 'helpers/NavigationHelper';
 import { withStyles } from '@ui-kitten/components';
@@ -188,7 +187,6 @@ const App = ({ eva: { style } }) => {
                   <Stack.Screen name="Account" component={AccountScreen} />
                   <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
                   <Stack.Screen name="ConversationAction" component={ConversationAction} />
-                  <Stack.Screen name="TeamScreen" component={TeamScreen} />
                   <Stack.Screen name="Availability" component={AvailabilityScreen} />
                   <Stack.Screen name="NotificationPreference" component={NotificationPreference} />
                 </Fragment>

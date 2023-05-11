@@ -98,10 +98,10 @@ const LoginScreenComponent = ({ navigation, eva }) => {
     [],
   );
   const toggleChangeLanguageModal = useCallback(() => {
-    changeLanguageModal.current.present() || changeLanguageModal.current?.close();
+    changeLanguageModal.current.present() || changeLanguageModal.current?.dismiss();
   }, []);
   const closeChangeLanguageModal = useCallback(() => {
-    changeLanguageModal.current?.close();
+    changeLanguageModal.current?.dismiss();
   }, []);
   const onChangeLanguage = useCallback(
     locale => {

@@ -128,10 +128,10 @@ const ConversationDetailsScreen = ({ navigation, route }) => {
   const labelActionModal = useRef(null);
   const labelActionModalSnapPoints = useMemo(() => [deviceHeight - 120, deviceHeight - 120], []);
   const toggleLabelActionModal = useCallback(() => {
-    labelActionModal.current.present() || labelActionModal.current?.close();
+    labelActionModal.current.present() || labelActionModal.current?.dismiss();
   }, []);
   const closeLabelActionModal = useCallback(() => {
-    labelActionModal.current?.close();
+    labelActionModal.current?.dismiss();
   }, []);
 
   return (

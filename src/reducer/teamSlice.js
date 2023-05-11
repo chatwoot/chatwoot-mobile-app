@@ -66,7 +66,6 @@ const teamSlice = createSlice({
       })
       .addCase(actions.update.fulfilled, (state, action) => {
         state.uiFlags.isTeamUpdating = false;
-        pop(1);
       })
       .addCase(actions.update.rejected, (state, action) => {
         state.uiFlags.isTeamUpdating = false;

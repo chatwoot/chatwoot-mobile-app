@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
-import { withStyles } from '@ui-kitten/components';
+import React, { useState, useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { SafeAreaView, View } from 'react-native';
 import LoaderButton from '../../components/LoaderButton';
 import HeaderBar from '../../components/HeaderBar';
 
-import i18n from '../../i18n';
-import styles from './NotificationPreference.style';
+import i18n from 'i18n';
+import createStyles from './NotificationPreference.style';
+import { Text } from 'components';
 import NotificationPreferenceItem from '../../components/NotificationPreferenceItem';
 import { NOTIFICATION_PREFERENCE_TYPES } from '../../constants';
-import CustomText from '../../components/Text';
 import { addOrRemoveItemFromArray } from '../../helpers';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { PROFILE_EVENTS } from 'constants/analyticsEvents';
@@ -20,7 +20,10 @@ import {
   selectIsUpdating,
 } from 'reducer/settingsSlice';
 
-const NotificationPreferenceScreenComponent = ({ eva: { style }, navigation }) => {
+const NotificationPreferenceScreenComponent = ({ navigation }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const isUpdating = useSelector(selectIsUpdating);
 
   const {
@@ -59,16 +62,16 @@ const NotificationPreferenceScreenComponent = ({ eva: { style }, navigation }) =
     navigation.goBack();
   };
   return (
-    <SafeAreaView style={style.container}>
+    <SafeAreaView style={styles.container}>
       <HeaderBar
         title={i18n.t('NOTIFICATION_PREFERENCE.TITLE')}
         showLeftButton
         onBackPress={goBack}
       />
-      <View style={style.itemMainView}>
-        <CustomText style={style.itemHeaderTitle}>
+      <View style={styles.itemMainView}>
+        <Text md semiBold color={colors.textDark}>
           {i18n.t('NOTIFICATION_PREFERENCE.EMAIL')}
-        </CustomText>
+        </Text>
         {emailFlags.map(
           item =>
             NOTIFICATION_PREFERENCE_TYPES[item] && (
@@ -82,10 +85,10 @@ const NotificationPreferenceScreenComponent = ({ eva: { style }, navigation }) =
             ),
         )}
       </View>
-      <View style={style.itemMainView}>
-        <CustomText style={style.itemHeaderTitle}>
+      <View style={styles.itemMainView}>
+        <Text md semiBold color={colors.textDark}>
           {i18n.t('NOTIFICATION_PREFERENCE.PUSH')}
-        </CustomText>
+        </Text>
         {pushFlags.map(
           item =>
             NOTIFICATION_PREFERENCE_TYPES[item] && (
@@ -99,12 +102,11 @@ const NotificationPreferenceScreenComponent = ({ eva: { style }, navigation }) =
             ),
         )}
       </View>
-      <View style={style.notificationButtonView}>
+      <View style={styles.notificationButtonView}>
         <LoaderButton
-          style={style.notificationButton}
+          style={styles.notificationButton}
           loading={isUpdating}
           size="large"
-          textStyle={style.notificationButtonText}
           onPress={savePreferences}
           text={i18n.t('SETTINGS.SUBMIT')}
         />
@@ -113,5 +115,4 @@ const NotificationPreferenceScreenComponent = ({ eva: { style }, navigation }) =
   );
 };
 
-const NotificationPreferenceScreen = withStyles(NotificationPreferenceScreenComponent, styles);
-export default NotificationPreferenceScreen;
+export default NotificationPreferenceScreenComponent;

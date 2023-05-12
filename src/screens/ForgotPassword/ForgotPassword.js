@@ -5,6 +5,7 @@ import { View, SafeAreaView, Image, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
 import { Text, Header } from 'components';
+import { Keyboard } from 'react-native';
 import createStyles from './ForgotPassword.style';
 import TextInput from '../../components/TextInput';
 import i18n from '../../i18n';
@@ -56,6 +57,7 @@ const ForgotPasswordComponent = ({ navigation }) => {
   }, [dispatch]);
 
   const onBackPress = () => {
+    Keyboard.dismiss();
     navigation.goBack();
   };
 

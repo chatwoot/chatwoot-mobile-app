@@ -11,7 +11,6 @@ export default theme => {
       backgroundColor: colors.background,
     },
     scrollView: {
-      flex: 1,
       alignItems: 'center',
     },
     logoView: {

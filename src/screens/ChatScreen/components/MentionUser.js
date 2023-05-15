@@ -58,10 +58,6 @@ MentionUserComponent.propTypes = {
   email: PropTypes.string.isRequired,
   thumbnail: PropTypes.string.isRequired,
   lastItem: PropTypes.bool,
-  eva: PropTypes.shape({
-    theme: PropTypes.object,
-    style: PropTypes.object,
-  }).isRequired,
   onUserSelect: PropTypes.func.isRequired,
   availabilityStatus: PropTypes.string,
 };

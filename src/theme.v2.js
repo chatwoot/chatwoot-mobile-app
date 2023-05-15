@@ -5,10 +5,20 @@ export const palette = {
   backgroundLight: '#F8FAFC',
   backgroundDark: '#E4EBF1',
 
+  backgroundChat: '#f4f6fb',
+  backgroundPrivate: '#FFEDBF',
+  backgroundPrivateLight: '#FFF4D9',
+
   primaryColor: '#1F93FF',
   primaryColorDark: '#1976CC',
   primaryColorDarker: '#135899',
   primaryColorLight: '#EBF5FF',
+
+  infoColor: '#077BFF',
+  infoColorDark: '#055FDB',
+  infoColorDarker: '#0346B7',
+  infoColorLight: '#9BD8FF',
+  infoColorLighter: '#C2E1FF',
 
   secondaryColor: '#5d7592',
   successColor: '#44CE4B',
@@ -104,10 +114,18 @@ export const DarkTheme = {
     backgroundDark: '#314155',
 
     backgroundChat: '#f4f6fb',
+    backgroundPrivate: '#FFEDBF',
+    backgroundPrivateLight: '#FFF4D9',
 
     primaryColor: '#1F93FF',
     primaryColorDark: '#47A6FF',
     primaryColorLight: '#1976CC',
+
+    infoColor: '#077BFF',
+    infoColorDark: '#055FDB',
+    infoColorDarker: '#0346B7',
+    infoColorLight: '#9BD8FF',
+    infoColorLighter: '#C2E1FF',
 
     secondaryColor: '#5d7592',
     successColor: '#00C41D',

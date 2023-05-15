@@ -3,7 +3,7 @@ import { useTheme } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, Share, ActivityIndicator, Dimensions } from 'react-native';
+import { View, Share, ActivityIndicator, Dimensions, Keyboard } from 'react-native';
 import { getTypingUsersText, getCustomerDetails } from 'helpers';
 import { selectConversationToggleStatus } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';
@@ -288,6 +288,7 @@ const ChatHeader = ({
   const actionModal = useRef(null);
   const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 400, deviceHeight - 400], []);
   const toggleActionModal = useCallback(() => {
+    Keyboard.dismiss();
     actionModal.current.present() || actionModal.current?.dismiss();
   }, []);
   const closeActionModal = useCallback(() => {

@@ -1,77 +1,73 @@
-import React from 'react';
-import { View, FlatList, TouchableOpacity } from 'react-native';
-import { withStyles } from '@ui-kitten/components';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
+import { Text, Pressable } from 'components';
+import { View, FlatList, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import CustomText from '../../../components/Text';
 
-const styles = theme => ({
-  mainView: {
-    backgroundColor: 'white',
-    borderRadius: 4,
-    paddingHorizontal: 8,
-    maxHeight: 200,
-    borderTopColor: theme['color-border'],
-    borderTopWidth: 1,
-  },
-  itemView: {
-    flex: 1,
-    flexDirection: 'row',
-    paddingVertical: 8,
-    paddingHorizontal: 2,
-  },
-  lastItemView: {
-    borderBottomWidth: 1,
-    borderBottomColor: theme['color-border'],
-  },
-  shortCode: {
-    color: theme['color-primary-default'],
-    fontWeight: theme['font-bold'],
-  },
-  content: {
-    color: theme['color-primary-default'],
-  },
-});
+const createStyles = theme => {
+  const { spacing, borderRadius, colors } = theme;
+  return StyleSheet.create({
+    mainView: {
+      backgroundColor: colors.colorWhite,
+      borderRadius: borderRadius.micro,
+      paddingHorizontal: spacing.small,
+      maxHeight: 200,
+      borderTopColor: colors.borderLight,
+      borderTopWidth: 1,
+    },
+    itemView: {
+      flex: 1,
+      flexDirection: 'row',
+      paddingVertical: spacing.smaller,
+      paddingHorizontal: spacing.tiny,
+    },
+    lastItemView: {
+      borderBottomWidth: 1,
+      borderBottomColor: colors.borderLight,
+    },
+    content: {
+      flex: 1,
+    },
+  });
+};
 
-const CannedResponseComponent = ({
-  shortCode,
-  content,
-  lastItem,
-  onClick,
-  eva: { theme, style },
-}) => (
-  <TouchableOpacity
-    style={[style.itemView, !lastItem && style.lastItemView]}
-    onPress={() => onClick(content)}>
-    <CustomText style={style.shortCode}>{shortCode} - </CustomText>
-    <CustomText style={style.content}>{content}</CustomText>
-  </TouchableOpacity>
-);
+const CannedResponseComponent = ({ shortCode, content, lastItem, onClick }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
+  return (
+    <Pressable
+      style={[styles.itemView, !lastItem && styles.lastItemView]}
+      onPress={() => onClick(content)}>
+      <Text bold color={colors.primaryColor}>
+        {shortCode} -
+      </Text>
+      <Text medium color={colors.primaryColor} style={styles.content}>
+        {content}
+      </Text>
+    </Pressable>
+  );
+};
 
 CannedResponseComponent.propTypes = {
   shortCode: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
   lastItem: PropTypes.bool,
-  eva: PropTypes.shape({
-    theme: PropTypes.object,
-    style: PropTypes.object,
-  }).isRequired,
   onClick: PropTypes.func.isRequired,
 };
 
-const CannedResponse = withStyles(CannedResponseComponent, styles);
+const CannedResponse = React.memo(CannedResponseComponent);
 
 const propTypes = {
-  eva: PropTypes.shape({
-    theme: PropTypes.object,
-    style: PropTypes.object,
-  }).isRequired,
   cannedResponses: PropTypes.array.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 
-const CannedResponses = ({ eva: { theme, style }, cannedResponses, onClick }) => {
+const CannedResponses = ({ cannedResponses, onClick }) => {
+  const theme = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
   return (
-    <View style={style.mainView}>
+    <View style={styles.mainView}>
       <FlatList
         data={cannedResponses}
         renderItem={({ item, index }) => (
@@ -89,6 +85,4 @@ const CannedResponses = ({ eva: { theme, style }, cannedResponses, onClick }) =>
 };
 
 CannedResponses.propTypes = propTypes;
-
-const CannedResponsesItem = withStyles(CannedResponses, styles);
-export default CannedResponsesItem;
+export default CannedResponses;

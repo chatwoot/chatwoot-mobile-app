@@ -8,6 +8,7 @@ export const palette = {
   backgroundChat: '#f4f6fb',
   backgroundPrivate: '#FFEDBF',
   backgroundPrivateLight: '#FFF4D9',
+  backgroundDate: '#e1f5feeb',
 
   primaryColor: '#1F93FF',
   primaryColorDark: '#1976CC',
@@ -116,6 +117,7 @@ export const DarkTheme = {
     backgroundChat: '#f4f6fb',
     backgroundPrivate: '#FFEDBF',
     backgroundPrivateLight: '#FFF4D9',
+    backgroundDate: '#e1f5feeb',
 
     primaryColor: '#1F93FF',
     primaryColorDark: '#47A6FF',

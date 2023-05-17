@@ -9,6 +9,7 @@ export const palette = {
   backgroundPrivate: '#FFEDBF',
   backgroundPrivateLight: '#FFF4D9',
   backgroundDate: '#e1f5feeb',
+  backgroundActivity: '#e7eefb',
 
   primaryColor: '#1F93FF',
   primaryColorDark: '#1976CC',
@@ -124,6 +125,7 @@ export const DarkTheme = {
     backgroundPrivate: '#FFEDBF',
     backgroundPrivateLight: '#FFF4D9',
     backgroundDate: '#e1f5feeb',
+    backgroundActivity: '#e7eefb',
 
     primaryColor: '#1F93FF',
     primaryColorDark: '#47A6FF',

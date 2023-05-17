@@ -28,7 +28,6 @@ const createStyles = theme => {
     messageBody: {
       maxWidth: Dimensions.get('window').width - 100,
     },
-
     messageLeft: {
       borderBottomLeftRadius: borderRadius.micro,
       borderTopLeftRadius: borderRadius.micro,
@@ -61,7 +60,7 @@ const createStyles = theme => {
       backgroundColor: colors.backgroundPrivateLight,
       borderWidth: 1,
       borderColor: colors.backgroundPrivate,
-      maxWidth: Dimensions.get('window').width - 40,
+      maxWidth: Dimensions.get('window').width - 60,
     },
     iconView: {
       paddingLeft: spacing.smaller,
@@ -145,9 +144,16 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
     return !message?.sender?.type || message?.sender?.type === 'agent_bot';
   };
 
+  const hasLargeMessagesLength = message?.content?.length > 100;
+
   const isSentByBot = checkMessageSentByBot();
 
   const senderName = sender && sender.name ? sender.name : '';
+
+  const messageBodyStyle =
+    hasLargeMessagesLength && !isEmailChannel
+      ? { flex: 1, minWidth: '100%' }
+      : { flex: 1, minWidth: 100 };
 
   const messageViewStyle =
     type === 'outgoing'
@@ -336,7 +342,7 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
           }).disable('blockquote')} // disable code block
           onLinkPress={handleURL}
           style={{
-            body: { flex: 1, minWidth: 100 },
+            body: messageBodyStyle,
             link: {
               color: colors.primaryColor,
               fontWeight: isPrivate ? fontWeight.semiBold : fontWeight.regular,

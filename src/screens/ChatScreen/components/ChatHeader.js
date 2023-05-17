@@ -17,7 +17,7 @@ import { getTextSubstringWithEllipsis } from 'helpers';
 import { getConversationUrl } from 'helpers/UrlHelper';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
-import { INBOX_ICON, CONVERSATION_STATUS } from 'constants/index';
+import { CONVERSATION_STATUS } from 'constants/index';
 import { inboxesSelector } from 'reducer/inboxSlice';
 import { selectUserId } from 'reducer/authSlice';
 import differenceInHours from 'date-fns/differenceInHours';

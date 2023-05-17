@@ -1,14 +1,14 @@
-import React, { createRef, useState } from 'react';
-import { withStyles, Layout, List, Spinner } from '@ui-kitten/components';
+import React, { createRef, useState, useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { SafeAreaView, View, AppState } from 'react-native';
+import { SafeAreaView, View, AppState, FlatList, ActivityIndicator } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import ActionSheet from 'react-native-actions-sheet';
 import i18n from 'i18n';
 import { Header } from 'components';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
-import styles from './NotificationScreen.style';
+import createStyles from './NotificationScreen.style';
 import NotificationItem from '../../components/NotificationItem';
 import CustomText from '../../components/Text';
 import NotificationItemLoader from '../../components/NotificationItemLoader';
@@ -37,8 +37,11 @@ const wait = timeout => {
 // The screen list thats need to be checked for refresh conversation list
 const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.NOTIFICATION, SCREENS.SETTINGS];
 
-const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
+const NotificationScreen = ({ navigation }) => {
   const [appState, setAppState] = useState(AppState.currentState);
+  const theme = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+  const { colors } = theme;
   const allNotifications = useSelector(notificationSelector.selectAll);
   const isFetching = useSelector(selectIsFetching);
   const isAllNotificationsLoaded = useSelector(selectAllNotificationsLoaded);
@@ -74,17 +77,21 @@ const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
 
   const renderEmptyList = () => {
     return (
-      <Layout style={style.tabContainer}>
-        <List data={LoaderData} renderItem={renderItemLoader} />
-      </Layout>
+      <View style={styles.tabContainer}>
+        <FlatList data={LoaderData} renderItem={renderItemLoader} />
+      </View>
     );
   };
 
   const renderMoreLoader = () => {
     return (
-      <View style={style.loadMoreSpinnerView}>
+      <View style={styles.loadMoreSpinnerView}>
         {!isAllNotificationsLoaded ? (
-          <Spinner size="medium" />
+          <ActivityIndicator
+            size="small"
+            color={colors.textDark}
+            animating={!isAllNotificationsLoaded}
+          />
         ) : (
           <CustomText>{`${i18n.t('NOTIFICATION.ALL_NOTIFICATION_LOADED')} 🎉`}</CustomText>
         )}
@@ -145,13 +152,13 @@ const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
   };
 
   return (
-    <SafeAreaView style={style.container}>
+    <SafeAreaView style={styles.container}>
       <Header
         headerText={i18n.t('NOTIFICATION.HEADER_TITLE')}
         rightIcon="more-horizontal"
         onPressRight={showActionSheet}
       />
-      <View style={style.container}>
+      <View style={styles.container}>
         {!isFetching || notifications.length ? (
           <React.Fragment>
             {notifications && notifications.length ? (
@@ -199,10 +206,6 @@ const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
 };
 
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
@@ -225,4 +228,4 @@ const defaultProps = {
 NotificationScreen.propTypes = propTypes;
 NotificationScreen.defaultProps = defaultProps;
 
-export default withStyles(NotificationScreen, styles);
+export default NotificationScreen;

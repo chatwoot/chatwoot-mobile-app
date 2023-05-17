@@ -97,10 +97,6 @@ const propTypes = {
     contact_last_seen_at: PropTypes.number,
     channel: PropTypes.string,
   }),
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }),
   type: PropTypes.string,
   created_at: PropTypes.number,
   message: PropTypes.shape({

@@ -115,7 +115,7 @@ const Attachment = ({ conversationId, onSelectAttachment }) => {
         />
         <AttachmentActionItem
           text="Photo Library"
-          iconName="image-outline"
+          iconName="photo-outline"
           itemType="upload_gallery"
           onPressItem={onPressItem}
         />

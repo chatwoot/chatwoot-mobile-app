@@ -4,7 +4,7 @@ import { useTheme } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { SafeAreaView, View } from 'react-native';
 import LoaderButton from '../../components/LoaderButton';
-import HeaderBar from '../../components/HeaderBar';
+import { Header } from 'components';
 
 import i18n from 'i18n';
 import createStyles from './NotificationPreference.style';
@@ -63,10 +63,10 @@ const NotificationPreferenceScreenComponent = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <HeaderBar
-        title={i18n.t('NOTIFICATION_PREFERENCE.TITLE')}
-        showLeftButton
-        onBackPress={goBack}
+      <Header
+        headerText={i18n.t('NOTIFICATION_PREFERENCE.TITLE')}
+        leftIcon="arrow-chevron-left-outline"
+        onPressLeft={goBack}
       />
       <View style={styles.itemMainView}>
         <Text md semiBold color={colors.textDark}>

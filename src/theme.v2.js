@@ -22,6 +22,9 @@ export const palette = {
   infoColorLighter: '#C2E1FF',
 
   secondaryColor: '#5d7592',
+  secondaryColorLight: '#C9D7E3',
+  secondaryColorDarker: '#293F51',
+
   successColor: '#44CE4B',
   violetColor: '#AC52FF',
 
@@ -30,9 +33,12 @@ export const palette = {
 
   warningColor: '#ffc532',
   warningColorLight: '#FFEDBF',
+  warningColorDarker: '#7A4D09',
 
   colorWhite: '#FFFFFF',
+
   colorBlack: '#000000',
+  colorBlackLight: '#96979C',
 
   textLighter: '#779bbb',
   textLight: '#446888',
@@ -130,6 +136,9 @@ export const DarkTheme = {
     infoColorLighter: '#C2E1FF',
 
     secondaryColor: '#5d7592',
+    secondaryColorLight: '#C9D7E3',
+    secondaryColorDarker: '#293F51',
+
     successColor: '#00C41D',
     violetColor: '#AC52FF',
 
@@ -138,9 +147,12 @@ export const DarkTheme = {
 
     warningColor: '#ffc532',
     warningColorLight: '#FFEDBF',
+    warningColorDarker: '#7A4D09',
 
     colorWhite: '#FFFFFF',
+
     colorBlack: '#000000',
+    colorBlackLight: '#96979C',
 
     textLighter: '#779bbb',
     textLight: '#C9D7E3',

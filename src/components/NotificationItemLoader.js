@@ -2,15 +2,8 @@ import React, { useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { View, Dimensions, StyleSheet } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import PropTypes from 'prop-types';
 
 const deviceWidth = Dimensions.get('window').width;
-
-const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-  }).isRequired,
-};
 
 const createStyles = theme => {
   const { spacing, colors, borderRadius } = theme;
@@ -83,5 +76,5 @@ const NotificationItemLoaderComponent = () => {
     </Animatable.View>
   );
 };
-NotificationItemLoaderComponent.propTypes = propTypes;
+
 export default NotificationItemLoaderComponent;

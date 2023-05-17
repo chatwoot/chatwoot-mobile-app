@@ -2,7 +2,7 @@ import { Button, useTheme, withStyles } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
-import CustomText from './Text';
+import { Text } from 'components';
 
 const LoadingIndicator = () => {
   const theme = useTheme();
@@ -18,7 +18,11 @@ const LoaderButton = ({ loading, text, ...customProps }) => {
 
   return (
     <Button {...customProps} {...(loading && { accessoryLeft: LoadingIndicator })}>
-      {loading ? null : <CustomText style={textStyle}>{text}</CustomText>}
+      {loading ? null : (
+        <Text color="#ffffff" style={textStyle}>
+          {text}
+        </Text>
+      )}
     </Button>
   );
 };

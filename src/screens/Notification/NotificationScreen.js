@@ -10,7 +10,7 @@ import { Header } from 'components';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
 import createStyles from './NotificationScreen.style';
 import NotificationItem from '../../components/NotificationItem';
-import CustomText from '../../components/Text';
+import { Text } from 'components';
 import NotificationItemLoader from '../../components/NotificationItemLoader';
 import images from '../../constants/images';
 import Empty from 'components/Empty/Empty';
@@ -93,7 +93,9 @@ const NotificationScreen = ({ navigation }) => {
             animating={!isAllNotificationsLoaded}
           />
         ) : (
-          <CustomText>{`${i18n.t('NOTIFICATION.ALL_NOTIFICATION_LOADED')} 🎉`}</CustomText>
+          <Text sm color={colors.textLight}>
+            {`${i18n.t('NOTIFICATION.ALL_NOTIFICATION_LOADED')} 🎉`}
+          </Text>
         )}
       </View>
     );
@@ -159,7 +161,7 @@ const NotificationScreen = ({ navigation }) => {
         onPressRight={showActionSheet}
       />
       <View style={styles.container}>
-        {isFetching || !notifications.length ? (
+        {!isFetching || notifications.length ? (
           <React.Fragment>
             {notifications && notifications.length ? (
               <FlashList

@@ -1,39 +1,33 @@
-import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
+import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { Divider, withStyles } from '@ui-kitten/components';
+import { Text, Pressable } from 'components';
 
-import CustomText from './Text';
-
-const styles = theme => ({
-  section: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    padding: 16,
-    height: 60,
-  },
-  sectionTitleView: {
-    flex: 8,
-  },
-  sectionText: {
-    fontSize: theme['font-size-small'],
-    fontWeight: theme['font-medium'],
-    paddingLeft: 8,
-  },
-  sectionActionView: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    flex: 4,
-  },
-});
+const createStyles = theme => {
+  const { spacing, colors } = theme;
+  return StyleSheet.create({
+    section: {
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexDirection: 'row',
+      padding: spacing.small,
+      height: 54,
+      borderBottomWidth: 1,
+      borderColor: colors.borderLight,
+    },
+    sectionText: {
+      paddingLeft: spacing.smaller,
+    },
+    sectionActionView: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+    },
+  });
+};
 
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   name: PropTypes.string,
   text: PropTypes.string,
   itemType: PropTypes.string,
@@ -41,22 +35,28 @@ const propTypes = {
   availabilityStatus: PropTypes.string,
 };
 
-const NotificationActionItem = ({ text, itemType, name, onPressItem, eva: { style, theme } }) => {
+const NotificationActionItem = ({ text, itemType, name, onPressItem }) => {
+  const theme = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+  const { colors } = theme;
   return (
     <React.Fragment>
-      <TouchableOpacity style={style.section} onPress={() => onPressItem({ itemType })}>
-        <View style={style.sectionTitleView}>
-          <CustomText style={style.sectionText}>{text}</CustomText>
+      <Pressable style={styles.section} onPress={() => onPressItem({ itemType })}>
+        <View style={styles.sectionTitleView}>
+          <Text sm medium color={colors.textDark} style={styles.sectionText}>
+            {text}
+          </Text>
         </View>
-        <View style={style.sectionActionView}>
-          <CustomText style={style.sectionText}>{name}</CustomText>
+        <View style={styles.sectionActionView}>
+          <Text sm medium color={colors.textDark} style={styles.sectionText}>
+            {name}
+          </Text>
         </View>
-      </TouchableOpacity>
-      <Divider />
+      </Pressable>
     </React.Fragment>
   );
 };
 
 NotificationActionItem.propTypes = propTypes;
 
-export default withStyles(NotificationActionItem, styles);
+export default NotificationActionItem;

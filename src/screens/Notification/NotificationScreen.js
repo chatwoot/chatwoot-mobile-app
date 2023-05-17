@@ -159,7 +159,7 @@ const NotificationScreen = ({ navigation }) => {
         onPressRight={showActionSheet}
       />
       <View style={styles.container}>
-        {!isFetching || notifications.length ? (
+        {isFetching || !notifications.length ? (
           <React.Fragment>
             {notifications && notifications.length ? (
               <FlashList

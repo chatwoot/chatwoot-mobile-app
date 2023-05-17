@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback, useState } from 'react';
-import { withStyles } from '@ui-kitten/components';
+import React, { useEffect, useCallback, useState, useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
 import PropTypes from 'prop-types';
@@ -7,7 +7,7 @@ import { SafeAreaView, AppState, useWindowDimensions } from 'react-native';
 import { StackActions } from '@react-navigation/native';
 import ChatHeader from './components/ChatHeader';
 import ChatHeaderLoader from './components/ChatHeaderLoader';
-import styles from './ChatScreen.style';
+import createStyles from './ChatScreen.style';
 import { actions as notificationsActions } from 'reducer/notificationSlice';
 import { selectUser } from 'reducer/authSlice';
 import { actions as CannedResponseActions } from 'reducer/cannedResponseSlice';
@@ -21,10 +21,6 @@ import MessageList from './components/MessageList/MessageList';
 import { SCREENS } from 'constants';
 import i18n from 'i18n';
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   route: PropTypes.object,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
@@ -34,7 +30,9 @@ const propTypes = {
   }).isRequired,
 };
 
-const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
+const ChatScreenComponent = ({ navigation, route }) => {
+  const theme = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const dispatch = useDispatch();
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
@@ -192,18 +190,18 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
   const renderTabBar = props => (
     <TabBar
       {...props}
-      labelStyle={style.tabLabel}
+      labelStyle={styles.tabLabel}
       activeColor="#1F93FF"
       inactiveColor="#8492a6"
-      indicatorStyle={style.tabIndicator}
-      style={style.tabBar}
-      tabStyle={style.tabStyle}
+      indicatorStyle={styles.tabIndicator}
+      style={styles.tabBar}
+      tabStyle={styles.tabStyle}
       scrollEnabled={true}
     />
   );
 
   return (
-    <SafeAreaView style={style.mainContainer}>
+    <SafeAreaView style={styles.mainContainer}>
       {conversation ? (
         <ChatHeader
           conversationId={conversationId}
@@ -233,5 +231,4 @@ const ChatScreenComponent = ({ eva: { style }, navigation, route }) => {
 };
 
 ChatScreenComponent.propTypes = propTypes;
-const ChatScreen = withStyles(ChatScreenComponent, styles);
-export default ChatScreen;
+export default ChatScreenComponent;

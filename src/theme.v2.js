@@ -5,6 +5,8 @@ export const palette = {
   backgroundLight: '#F8FAFC',
   backgroundDark: '#E4EBF1',
 
+  backdropColor: 'rgba(0, 0, 0, 0.5)',
+
   backgroundChat: '#f4f6fb',
   backgroundPrivate: '#FFEDBF',
   backgroundPrivateLight: '#FFF4D9',
@@ -120,6 +122,8 @@ export const DarkTheme = {
     background: '#0D1721',
     backgroundLight: '#1F2D3D',
     backgroundDark: '#314155',
+
+    backdropColor: 'rgba(0, 0, 0, 0.5)',
 
     backgroundChat: '#f4f6fb',
     backgroundPrivate: '#FFEDBF',

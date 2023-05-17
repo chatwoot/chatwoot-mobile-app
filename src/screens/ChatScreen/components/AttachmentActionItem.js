@@ -23,10 +23,6 @@ const createStyles = theme => {
 };
 
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   name: PropTypes.string,
   thumbnail: PropTypes.string,
   text: PropTypes.string,

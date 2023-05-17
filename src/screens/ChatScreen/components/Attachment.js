@@ -1,28 +1,27 @@
-import React, { createRef } from 'react';
-import { withStyles, Icon } from '@ui-kitten/components';
+import React, { createRef, useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { Icon, Pressable } from 'components';
 import ActionSheet from 'react-native-actions-sheet';
-import { Keyboard } from 'react-native';
+import { Keyboard, StyleSheet } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import PropTypes from 'prop-types';
 
 import AttachmentActionItem from './AttachmentActionItem';
 
-const styles = theme => ({
-  button: {
-    paddingHorizontal: 0,
-    paddingVertical: 0,
-    backgroundColor: 'transparent',
-    flex: 1,
-    alignSelf: 'flex-start',
-    justifyContent: 'flex-start',
-  },
-});
+const createStyles = theme => {
+  return StyleSheet.create({
+    button: {
+      paddingHorizontal: 0,
+      paddingVertical: 0,
+      backgroundColor: 'transparent',
+      flex: 1,
+      alignSelf: 'flex-start',
+      justifyContent: 'flex-start',
+    },
+  });
+};
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   conversationId: PropTypes.number,
   onSelectAttachment: PropTypes.func,
 };
@@ -30,7 +29,10 @@ const propTypes = {
 const imagePickerOptions = {
   noData: true,
 };
-const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment }) => {
+const Attachment = ({ conversationId, onSelectAttachment }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const actionSheetRef = createRef();
   const handleChoosePhoto = () => {
     Keyboard.dismiss();
@@ -97,14 +99,9 @@ const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment 
 
   return (
     <React.Fragment>
-      <Icon
-        name="attach-outline"
-        width={24}
-        height={24}
-        onPress={handleChoosePhoto}
-        isAttachmentMode
-        fill={theme['text-hint-color']}
-      />
+      <Pressable onPress={handleChoosePhoto}>
+        <Icon icon="attach-outline" style={styles.sendButton} color={colors.textLight} size={24} />
+      </Pressable>
       <ActionSheet
         openAnimationSpeed={40}
         ref={actionSheetRef}
@@ -118,7 +115,7 @@ const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment 
         />
         <AttachmentActionItem
           text="Photo Library"
-          iconName="image-outline"
+          iconName="photo-outline"
           itemType="upload_gallery"
           onPressItem={onPressItem}
         />
@@ -134,6 +131,4 @@ const Attachment = ({ conversationId, eva: { style, theme }, onSelectAttachment 
 };
 
 Attachment.propTypes = propTypes;
-
-const AttachmentItem = withStyles(Attachment, styles);
-export default AttachmentItem;
+export default Attachment;

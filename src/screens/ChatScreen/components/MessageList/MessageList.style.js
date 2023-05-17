@@ -1,22 +1,25 @@
-const styles = theme => ({
-  container: {
-    flex: 1,
-    backgroundColor: theme['color-background'],
-  },
-  chatView: {
-    flex: 13,
-  },
+import { StyleSheet } from 'react-native';
 
-  chatContainer: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    paddingTop: 8,
-  },
-  loadMoreSpinnerView: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingBottom: 8,
-  },
-});
-
-export default styles;
+export default theme => {
+  const { spacing, colors } = theme;
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.backgroundChat,
+    },
+    chatView: {
+      flex: 1,
+    },
+    chatContainer: {
+      paddingHorizontal: spacing.small,
+      paddingVertical: spacing.half,
+      paddingTop: spacing.smaller,
+    },
+    loadMoreSpinnerView: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingBottom: spacing.smaller,
+      paddingTop: spacing.half,
+    },
+  });
+};

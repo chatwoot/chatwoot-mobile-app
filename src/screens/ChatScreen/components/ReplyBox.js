@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { View, Dimensions, TextInput, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
+import { View, Dimensions, TextInput, StyleSheet } from 'react-native';
+import { Text, Icon, Pressable } from 'components';
 import { MentionInput } from 'react-native-controlled-mentions';
-import { withStyles, Icon } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import AttachmentPreview from './AttachmentPreview';
@@ -27,21 +28,14 @@ import {
 const propTypes = {
   conversationId: PropTypes.number,
   conversationDetails: PropTypes.object,
-  eva: PropTypes.shape({
-    theme: PropTypes.object,
-    style: PropTypes.object,
-  }).isRequired,
   inboxId: PropTypes.number,
   enableReplyButton: PropTypes.bool,
 };
 
-const ReplyBox = ({
-  eva: { theme, style },
-  conversationId,
-  inboxId,
-  conversationDetails,
-  enableReplyButton,
-}) => {
+const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyButton }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const [isPrivate, setPrivateMode] = useState(false);
   const [ccEmails, setCCEmails] = useState('');
   const [bccEmails, setBCCEmails] = useState('');
@@ -79,7 +73,7 @@ const ReplyBox = ({
 
   const isAnEmailChannelAndNotInPrivateNote = () => {
     if (conversationDetails) {
-      const channel = conversationDetails.channel;
+      const channel = conversationDetails?.meta?.channel;
       return channel === 'Channel::Email' && !isPrivate;
     }
     return false;
@@ -189,13 +183,13 @@ const ReplyBox = ({
 
   const inputFieldColor = () =>
     !isPrivate
-      ? { backgroundColor: theme['color-background'] }
-      : { backgroundColor: theme['color-background-private'] };
+      ? { backgroundColor: colors.backgroundLight }
+      : { backgroundColor: colors.backgroundPrivate };
 
   const sendMessageButtonWrapStyles = () => {
     return !(!message && !attachmentDetails)
-      ? { backgroundColor: theme['color-info-75'] }
-      : { backgroundColor: theme['color-info-200'] };
+      ? { backgroundColor: colors.infoColorLighter }
+      : { backgroundColor: colors.infoColorLight };
   };
 
   const renderSuggestions = ({ keyword, onSuggestionPress }) => {
@@ -225,10 +219,12 @@ const ReplyBox = ({
   return (
     <React.Fragment>
       {attachmentDetails && (
-        <AttachmentPreview
-          attachmentDetails={attachmentDetails}
-          onRemoveAttachment={onRemoveAttachment}
-        />
+        <View style={styles.attachmentWrap}>
+          <AttachmentPreview
+            attachmentDetails={attachmentDetails}
+            onRemoveAttachment={onRemoveAttachment}
+          />
+        </View>
       )}
       {cannedResponseSearchKey ? (
         <CannedResponsesContainer
@@ -244,36 +240,47 @@ const ReplyBox = ({
         onPressClose={() => setUndefinedVariablesModal(false)}
       />
       {isAnEmailChannelAndNotInPrivateNote() && emailFields && (
-        <View style={style.emailFields}>
-          <View style={style.emailFieldsTextWrap}>
-            <Text style={style.emailFieldLabel}>{'Cc'}</Text>
+        <View style={styles.emailFields}>
+          <View style={styles.emailFieldsTextWrap}>
+            <Text medium sm color={colors.text} style={styles.emailFieldLabel}>
+              {'Cc'}
+            </Text>
             <TextInput
-              style={style.ccInputView}
+              style={styles.ccInputView}
               value={ccEmails}
               onChangeText={onCCMailChange}
               placeholder="Emails separated by commas"
+              placeholderTextColor={colors.textLighter}
             />
           </View>
-          <View style={style.emailFieldsTextWrap}>
-            <Text style={style.emailFieldLabel}>{'Bcc'}</Text>
+          <View style={styles.emailFieldsTextWrap}>
+            <Text medium sm color={colors.text} style={styles.emailFieldLabel}>
+              {'Bcc'}
+            </Text>
             <TextInput
-              style={style.bccInputView}
+              style={styles.bccInputView}
               value={bccEmails}
               onChangeText={onBCCMailChange}
               placeholder="Emails separated by commas"
+              placeholderTextColor={colors.textLighter}
             />
           </View>
         </View>
       )}
 
-      <View style={[isPrivate ? style.privateView : style.replyView, inputBorderColor()]}>
+      <View style={[isPrivate ? styles.privateView : styles.replyView, inputBorderColor()]}>
         {isAnEmailChannelAndNotInPrivateNote() && !emailFields && (
-          <Text style={style.emailFieldToggleButton} onPress={toggleCcBccInputs}>
+          <Text
+            medium
+            sm
+            color={colors.primaryColorDark}
+            style={styles.emailFieldToggleButton}
+            onPress={toggleCcBccInputs}>
             {'Cc/Bcc'}
           </Text>
         )}
         <MentionInput
-          style={[style.inputView, inputFieldColor()]}
+          style={[styles.inputView, inputFieldColor()]}
           value={message}
           onChange={onNewMessageChange}
           partTypes={[
@@ -286,7 +293,7 @@ const ReplyBox = ({
             },
           ]}
           multiline={true}
-          placeholderTextColor={theme['text-basic-color']}
+          placeholderTextColor={colors.textLighter}
           placeholder={
             isPrivate
               ? `${i18n.t('CONVERSATION.PRIVATE_MSG_INPUT')}`
@@ -296,143 +303,139 @@ const ReplyBox = ({
           onFocus={onFocus}
         />
 
-        <View style={style.buttonViews}>
-          <View style={style.attachIconView}>
+        <View style={styles.buttonViews}>
+          <View style={styles.attachIconView}>
             <Attachment conversationId={conversationId} onSelectAttachment={onSelectAttachment} />
-            <View style={style.privateNoteView}>
+            <Pressable style={styles.privateNoteView} onPress={togglePrivateMode}>
               <Icon
-                name="lock-outline"
-                width={24}
-                height={24}
-                fill={isPrivate ? theme['color-primary-default'] : theme['text-hint-color']}
-                onPress={togglePrivateMode}
+                icon="lock-closed-outline"
+                color={isPrivate ? colors.primaryColor : colors.textLight}
+                size={24}
               />
-            </View>
+            </Pressable>
           </View>
-          <TouchableOpacity
-            style={[style.sendButtonView, sendMessageButtonWrapStyles()]}
+          <Pressable
+            style={[styles.sendButtonView, sendMessageButtonWrapStyles()]}
             disabled={!enableReplyBox}
             onPress={onNewMessageAdd}>
             <Icon
-              name="paper-plane"
-              style={style.sendButton}
-              width={24}
-              height={24}
-              fill={enableReplyBox ? theme['color-primary-default'] : theme['color-background']}
+              icon="send-outline"
+              style={styles.sendButton}
+              color={enableReplyBox ? colors.primaryColor : colors.background}
+              size={24}
             />
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
     </React.Fragment>
   );
 };
 
-const styles = theme => ({
-  replyView: {
-    padding: 6,
-    paddingHorizontal: 14,
-    backgroundColor: theme['background-basic-color-1'],
-    borderTopColor: theme['color-border'],
-  },
-  privateView: {
-    padding: 6,
-    paddingHorizontal: 14,
-    backgroundColor: theme['color-background-private-light'],
-    borderTopColor: theme['color-border'],
-    borderTopWidth: 1,
-  },
-  inputView: {
-    fontSize: theme['font-size-medium'],
-    color: theme['text-basic-color'],
-    borderRadius: 8,
-    paddingTop: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 12,
-    textAlignVertical: 'top',
-    textAlign: 'left',
-    maxHeight: 160,
-  },
-  emailFields: {
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    backgroundColor: theme['background-basic-color-1'],
-  },
-  emailFieldsTextWrap: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 2,
-  },
-  emailFieldLabel: {
-    fontSize: theme['font-size-extra-small'],
-    width: '8%',
-  },
-  emailFieldToggleButton: {
-    position: 'absolute',
-    backgroundColor: theme['color-background'],
-    color: theme['color-primary-500'],
-    fontWeight: theme['font-semi-bold'],
-    padding: 4,
-    right: 24,
-    top: 14,
-    zIndex: 1,
-  },
-  ccInputView: {
-    fontSize: theme['font-size-small'],
-    color: theme['text-basic-color'],
-    backgroundColor: theme['color-background-light'],
-    width: '92%',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    textAlignVertical: 'top',
-  },
-  bccInputView: {
-    backgroundColor: theme['color-background-light'],
-    width: '92%',
-    borderRadius: 8,
-    fontSize: theme['font-size-small'],
-    color: theme['text-basic-color'],
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    textAlignVertical: 'top',
-  },
-  buttonViews: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 6,
-  },
-  attachIconView: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-  },
-  privateNoteView: {
-    paddingLeft: 12,
-  },
-  sendButtonView: {
-    padding: 8,
-    borderRadius: 30,
-  },
-  lockButton: {
-    paddingHorizontal: 0,
-    paddingVertical: 0,
-    justifyContent: 'flex-start',
-  },
-  sendButton: {
-    padding: 12,
-    transform: [{ rotate: '45deg' }],
-    backgroundColor: 'transparent',
-  },
-  overflowMenu: {
-    padding: 8,
-    borderRadius: 8,
-    width: Dimensions.get('window').width / 1.5,
-  },
-});
+const createStyles = theme => {
+  const { spacing, borderRadius, fontSize, colors } = theme;
+  return StyleSheet.create({
+    replyView: {
+      paddingVertical: spacing.smaller,
+      paddingHorizontal: spacing.small,
+      backgroundColor: colors.background,
+      borderTopColor: colors.borderLight,
+    },
+    privateView: {
+      paddingVertical: spacing.smaller,
+      paddingHorizontal: spacing.small,
+      backgroundColor: colors.backgroundPrivateLight,
+      borderTopColor: colors.borderLight,
+      borderTopWidth: 1,
+    },
+    inputView: {
+      fontSize: fontSize.md,
+      color: colors.text,
+      borderRadius: borderRadius.small,
+      paddingTop: 10,
+      paddingHorizontal: 10,
+      paddingVertical: spacing.half,
+      textAlignVertical: 'top',
+      textAlign: 'left',
+      maxHeight: 160,
+    },
+    emailFields: {
+      paddingHorizontal: spacing.half,
+      paddingVertical: spacing.micro,
+      backgroundColor: colors.background,
+    },
+    emailFieldsTextWrap: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: spacing.tiny,
+    },
+    emailFieldLabel: {
+      width: '8%',
+    },
+    emailFieldToggleButton: {
+      position: 'absolute',
+      backgroundColor: colors.backgroundLight,
+      padding: spacing.micro,
+      right: 24,
+      top: 14,
+      zIndex: 1,
+    },
+    ccInputView: {
+      fontSize: fontSize.sm,
+      color: colors.text,
+      backgroundColor: colors.background,
+      width: '92%',
+      borderRadius: borderRadius.small,
+      paddingHorizontal: 10,
+      paddingVertical: spacing.smaller,
+      textAlignVertical: 'top',
+    },
+    bccInputView: {
+      backgroundColor: colors.background,
+      width: '92%',
+      borderRadius: borderRadius.small,
+      fontSize: fontSize.sm,
+      color: colors.text,
+      paddingHorizontal: 10,
+      paddingVertical: spacing.smaller,
+      textAlignVertical: 'top',
+    },
+    buttonViews: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: 6,
+    },
+    attachIconView: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+    },
+    privateNoteView: {
+      paddingLeft: spacing.half,
+    },
+    sendButtonView: {
+      padding: spacing.smaller,
+      borderRadius: borderRadius.largest,
+    },
+    lockButton: {
+      paddingHorizontal: 0,
+      paddingVertical: 0,
+      justifyContent: 'flex-start',
+    },
+    sendButton: {
+      padding: spacing.half,
+    },
+    overflowMenu: {
+      padding: spacing.smaller,
+      borderRadius: borderRadius.small,
+      width: Dimensions.get('window').width / 1.5,
+    },
+    attachmentWrap: {
+      height: 48,
+    },
+  });
+};
 
 ReplyBox.propTypes = propTypes;
-
-const ReplyBoxItem = withStyles(ReplyBox, styles);
-export default React.memo(ReplyBoxItem);
+export default ReplyBox;

@@ -13,7 +13,7 @@ import NotificationItem from '../../components/NotificationItem';
 import CustomText from '../../components/Text';
 import NotificationItemLoader from '../../components/NotificationItemLoader';
 import images from '../../constants/images';
-import Empty from '../../components/Empty';
+import Empty from 'components/Empty/Empty';
 import NotificationActionItem from '../../components/NotificationActionItem';
 import { useEffect } from 'react';
 import {

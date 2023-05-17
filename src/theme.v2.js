@@ -5,12 +5,27 @@ export const palette = {
   backgroundLight: '#F8FAFC',
   backgroundDark: '#E4EBF1',
 
+  backgroundChat: '#f4f6fb',
+  backgroundPrivate: '#FFEDBF',
+  backgroundPrivateLight: '#FFF4D9',
+  backgroundDate: '#e1f5feeb',
+  backgroundActivity: '#e7eefb',
+
   primaryColor: '#1F93FF',
   primaryColorDark: '#1976CC',
   primaryColorDarker: '#135899',
   primaryColorLight: '#EBF5FF',
 
+  infoColor: '#077BFF',
+  infoColorDark: '#055FDB',
+  infoColorDarker: '#0346B7',
+  infoColorLight: '#9BD8FF',
+  infoColorLighter: '#C2E1FF',
+
   secondaryColor: '#5d7592',
+  secondaryColorLight: '#C9D7E3',
+  secondaryColorDarker: '#293F51',
+
   successColor: '#44CE4B',
   violetColor: '#AC52FF',
 
@@ -19,9 +34,12 @@ export const palette = {
 
   warningColor: '#ffc532',
   warningColorLight: '#FFEDBF',
+  warningColorDarker: '#7A4D09',
 
   colorWhite: '#FFFFFF',
+
   colorBlack: '#000000',
+  colorBlackLight: '#96979C',
 
   textLighter: '#779bbb',
   textLight: '#446888',
@@ -104,12 +122,25 @@ export const DarkTheme = {
     backgroundDark: '#314155',
 
     backgroundChat: '#f4f6fb',
+    backgroundPrivate: '#FFEDBF',
+    backgroundPrivateLight: '#FFF4D9',
+    backgroundDate: '#e1f5feeb',
+    backgroundActivity: '#e7eefb',
 
     primaryColor: '#1F93FF',
     primaryColorDark: '#47A6FF',
     primaryColorLight: '#1976CC',
 
+    infoColor: '#077BFF',
+    infoColorDark: '#055FDB',
+    infoColorDarker: '#0346B7',
+    infoColorLight: '#9BD8FF',
+    infoColorLighter: '#C2E1FF',
+
     secondaryColor: '#5d7592',
+    secondaryColorLight: '#C9D7E3',
+    secondaryColorDarker: '#293F51',
+
     successColor: '#00C41D',
     violetColor: '#AC52FF',
 
@@ -118,9 +149,12 @@ export const DarkTheme = {
 
     warningColor: '#ffc532',
     warningColorLight: '#FFEDBF',
+    warningColorDarker: '#7A4D09',
 
     colorWhite: '#FFFFFF',
+
     colorBlack: '#000000',
+    colorBlackLight: '#96979C',
 
     textLighter: '#779bbb',
     textLight: '#C9D7E3',

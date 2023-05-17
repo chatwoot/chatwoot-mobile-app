@@ -1,10 +1,10 @@
-import React, { createRef } from 'react';
-import { TouchableOpacity, Dimensions, View, Text } from 'react-native';
+import React, { createRef, useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
+import { Dimensions, View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { withStyles, Icon } from '@ui-kitten/components';
+import { Icon, Pressable, Text } from 'components';
 import Clipboard from '@react-native-clipboard/clipboard';
 import ActionSheet from 'react-native-actions-sheet';
-import CustomText from 'components/Text';
 import { messageStamp } from 'helpers/TimeHelper';
 import { openURL } from 'helpers/UrlHelper';
 import { UserAvatar } from 'components';
@@ -16,115 +16,78 @@ import ChatAttachmentItem from './ChatAttachmentItem';
 import MessageDeliveryStatus from './MessageDeliveryStatus';
 import { MESSAGE_STATUS, INBOX_TYPES } from 'constants';
 
-const LockIcon = style => {
-  return <Icon {...style} name="lock" />;
+const createStyles = theme => {
+  const { spacing, borderRadius, fontSize, colors } = theme;
+  return StyleSheet.create({
+    message: {
+      paddingLeft: spacing.small,
+      paddingRight: spacing.small,
+      paddingTop: spacing.smaller,
+      paddingBottom: spacing.smaller,
+    },
+    messageBody: {
+      maxWidth: Dimensions.get('window').width - 100,
+    },
+    messageLeft: {
+      borderBottomLeftRadius: borderRadius.micro,
+      borderTopLeftRadius: borderRadius.micro,
+      borderTopRightRadius: borderRadius.small,
+      borderBottomRightRadius: borderRadius.small,
+      borderWidth: 1,
+      borderColor: colors.borderLight,
+      backgroundColor: colors.background,
+    },
+    messageRight: {
+      borderBottomLeftRadius: borderRadius.small,
+      borderTopLeftRadius: borderRadius.small,
+      borderTopRightRadius: borderRadius.micro,
+      borderBottomRightRadius: borderRadius.micro,
+    },
+    messageContentRight: {
+      fontSize: fontSize.sm,
+    },
+    messagePrivate: {
+      color: colors.colorBlack,
+    },
+    messageContentLeft: {
+      color: colors.textDarker,
+      fontSize: fontSize.sm,
+    },
+    dateTextView: {
+      paddingTop: spacing.micro,
+    },
+    privateMessageContainer: {
+      backgroundColor: colors.backgroundPrivateLight,
+      borderWidth: 1,
+      borderColor: colors.backgroundPrivate,
+      maxWidth: Dimensions.get('window').width - 60,
+    },
+    iconView: {
+      paddingLeft: spacing.smaller,
+    },
+    linkStyle: {
+      textDecorationLine: 'underline',
+    },
+    dateView: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    mailHeadWrap: {
+      paddingBottom: spacing.smaller,
+    },
+    emailFields: {
+      paddingVertical: spacing.tiny,
+    },
+    screenNameWithAvatar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: spacing.micro,
+    },
+    senderScreenName: {
+      paddingHorizontal: spacing.micro,
+    },
+  });
 };
-
-const styles = theme => ({
-  message: {
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 8,
-    paddingBottom: 8,
-  },
-  messageBody: {
-    maxWidth: Dimensions.get('window').width - 100,
-  },
-
-  messageLeft: {
-    borderBottomLeftRadius: 4,
-    borderTopLeftRadius: 4,
-    borderTopRightRadius: 8,
-    borderBottomRightRadius: 8,
-    borderWidth: 1,
-    borderColor: theme['color-border'],
-    backgroundColor: theme['background-basic-color-1'],
-  },
-  messageRight: {
-    borderBottomLeftRadius: 8,
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 4,
-    borderBottomRightRadius: 4,
-  },
-  messageContentRight: {
-    fontSize: theme['font-size-small'],
-  },
-  messagePrivate: {
-    color: theme['text-basic-color'],
-  },
-  messageContentLeft: {
-    color: theme['text-light-color'],
-    fontSize: theme['font-size-small'],
-  },
-  dateRight: {
-    color: theme['color-white'],
-    fontSize: theme['font-size-extra-extra-small'],
-    paddingTop: 4,
-  },
-  dateLeft: {
-    color: theme['color-gray'],
-    fontSize: theme['font-size-extra-extra-small'],
-    paddingTop: 4,
-  },
-  privateMessageContainer: {
-    backgroundColor: theme['color-background-private-light'],
-    borderWidth: 1,
-    borderColor: theme['color-border-private'],
-    maxWidth: Dimensions.get('window').width - 40,
-  },
-  iconView: {
-    paddingLeft: 8,
-  },
-  icon: {
-    width: 16,
-    height: 16,
-  },
-  linkStyle: {
-    textDecorationLine: 'underline',
-  },
-  tooltipText: {
-    color: theme['text-tooltip-color'],
-    fontSize: theme['font-size-small'],
-  },
-  dateView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  mailHeadWrap: {
-    paddingBottom: 8,
-  },
-  emailFields: {
-    paddingVertical: 2,
-  },
-  emailFieldsLabelLeft: {
-    color: theme['text-light-color'],
-    fontSize: theme['font-size-extra-small'],
-    fontWeight: theme['font-semi-bold'],
-  },
-  emailFieldsLabelRight: {
-    color: theme['color-background'],
-    fontSize: theme['font-size-extra-small'],
-    fontWeight: theme['font-semi-bold'],
-  },
-  emailFieldsValueLeft: {
-    color: theme['text-light-color'],
-    fontSize: theme['font-size-extra-small'],
-  },
-  emailFieldsValueRight: {
-    color: theme['color-background'],
-    fontSize: theme['font-size-extra-small'],
-  },
-  screenNameWithAvatar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 4,
-  },
-  senderScreenName: {
-    paddingHorizontal: 4,
-    color: theme['color-primary-500'],
-    fontSize: theme['font-size-extra-small'],
-  },
-});
 
 const propTypes = {
   conversation: PropTypes.shape({
@@ -159,14 +122,10 @@ const propTypes = {
   isEmailChannel: PropTypes.bool,
 };
 
-const ChatMessageItemComponent = ({
-  conversation,
-  type,
-  message,
-  eva: { style, theme },
-  created_at,
-  showAttachment,
-}) => {
+const ChatMessageItemComponent = ({ conversation, type, message, created_at, showAttachment }) => {
+  const theme = useTheme();
+  const { colors, fontWeight } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const actionSheetRef = createRef();
   const { attachments, sender = {} } = message;
 
@@ -185,31 +144,44 @@ const ChatMessageItemComponent = ({
     return !message?.sender?.type || message?.sender?.type === 'agent_bot';
   };
 
+  const hasLargeMessagesLength = message?.content?.length > 100;
+
   const isSentByBot = checkMessageSentByBot();
 
   const senderName = sender && sender.name ? sender.name : '';
 
+  const messageBodyStyle =
+    hasLargeMessagesLength && !isEmailChannel
+      ? { flex: 1, minWidth: '100%' }
+      : { flex: 1, minWidth: 100 };
+
   const messageViewStyle =
     type === 'outgoing'
       ? {
-          ...style.messageRight,
-          backgroundColor: isSentByBot ? '#AC52FF' : theme['color-primary-default'],
+          ...styles.messageRight,
+          backgroundColor: isSentByBot ? '#AC52FF' : colors.primaryColor,
         }
-      : style.messageLeft;
+      : styles.messageLeft;
   const messageTextStyle =
     type === 'outgoing'
       ? {
-          ...style.messageContentRight,
-          color: isSentByBot ? theme['color-white'] : theme['color-basic-100'],
+          ...styles.messageContentRight,
+          color: isSentByBot ? colors.colorWhite : colors.colorWhite,
         }
-      : style.messageContentLeft;
-  const emailHeadLabelStyle =
-    type === 'outgoing' ? style.emailFieldsLabelRight : style.emailFieldsLabelLeft;
-  const emailHeadTextStyle =
-    type === 'outgoing' ? style.emailFieldsValueRight : style.emailFieldsValueLeft;
-  const dateStyle = type === 'outgoing' ? style.dateRight : style.dateLeft;
+      : styles.messageContentLeft;
+  const emailHeadLabelColor = type === 'outgoing' ? colors.colorWhite : colors.textDarker;
+  const emailHeadTextColor = type === 'outgoing' ? colors.colorWhite : colors.textDarker;
+  const dateStyleColor = () => {
+    if (isPrivate) {
+      return colors.textLighter;
+    }
+    if (type === 'outgoing') {
+      return colors.colorWhite;
+    }
+    return colors.textLight;
+  };
 
-  const listIconColor = type === 'outgoing' ? theme['color-white'] : theme['text-light-color'];
+  const listIconColor = type === 'outgoing' ? colors.colorWhite : colors.textDark;
 
   const handleURL = URL => {
     if (/\b(http|https)/.test(URL)) {
@@ -238,17 +210,19 @@ const ChatMessageItemComponent = ({
       };
 
       return (
-        <TouchableOpacity onPress={() => openTwitterSenderProfile(twitterSenderScreenName)}>
-          <View style={style.screenNameWithAvatar}>
+        <Pressable onPress={() => openTwitterSenderProfile(twitterSenderScreenName)}>
+          <View style={styles.screenNameWithAvatar}>
             <UserAvatar
               thumbnail={twitterSenderAvatarUrl}
               userName={twitterSenderScreenName}
-              defaultBGColor={theme['color-primary-default']}
+              defaultBGColor={colors.primaryColor}
               size={14}
             />
-            <Text style={style.senderScreenName}>{senderName}</Text>
+            <Text xs color={colors.primaryColor} style={styles.senderScreenName}>
+              {senderName}
+            </Text>
           </View>
-        </TouchableOpacity>
+        </Pressable>
       );
     }
   };
@@ -266,7 +240,7 @@ const ChatMessageItemComponent = ({
 
   const messageContentStyle = {
     ...messageTextStyle,
-    ...(isPrivate ? style.messagePrivate : {}),
+    ...(isPrivate ? styles.messagePrivate : {}),
     lineHeight: 20,
   };
 
@@ -343,10 +317,12 @@ const ChatMessageItemComponent = ({
   const emailHeader = emailHeaderValues
     .map(({ key, value, title }) =>
       value ? (
-        <View style={style.emailFields} key={key}>
-          <Text style={emailHeadLabelStyle}>
+        <View style={styles.emailFields} key={key}>
+          <Text xs semiBold color={emailHeadLabelColor}>
             {title}
-            <CustomText style={emailHeadTextStyle}>{value}</CustomText>
+            <Text xs regular color={emailHeadTextColor}>
+              {value}
+            </Text>
           </Text>
         </View>
       ) : null,
@@ -366,14 +342,14 @@ const ChatMessageItemComponent = ({
           }).disable('blockquote')} // disable code block
           onLinkPress={handleURL}
           style={{
-            body: { flex: 1, minWidth: 100 },
+            body: messageBodyStyle,
             link: {
-              color: theme['text-light-color'],
-              fontWeight: isPrivate ? theme['font-semi-bold'] : theme['font-regular'],
+              color: colors.primaryColor,
+              fontWeight: isPrivate ? fontWeight.semiBold : fontWeight.regular,
             },
             text: messageContentStyle,
             strong: {
-              fontWeight: theme['font-semi-bold'],
+              fontWeight: fontWeight.semiBold,
             },
             paragraph: {
               marginTop: 0,
@@ -409,15 +385,15 @@ const ChatMessageItemComponent = ({
   const isMessageContentExist = emailMessageContent() || message.content;
 
   return (
-    <TouchableOpacity onLongPress={showTooltip} activeOpacity={0.95}>
+    <Pressable onLongPress={showTooltip}>
       <View
         style={[
-          style.message,
+          styles.message,
           messageViewStyle,
-          message.private && style.privateMessageContainer,
-          !isEmailChannel && style.messageBody,
+          message.private && styles.privateMessageContainer,
+          !isEmailChannel && styles.messageBody,
         ]}>
-        {hasAnyEmailValues() ? <View style={style.mailHeadWrap}>{emailHeader}</View> : null}
+        {hasAnyEmailValues() ? <View style={styles.mailHeadWrap}>{emailHeader}</View> : null}
         {isMessageContentExist && <MessageContent />}
 
         <ChatAttachmentItem
@@ -427,19 +403,13 @@ const ChatMessageItemComponent = ({
           showAttachment={showAttachment}
         />
 
-        <View style={style.dateView}>
-          <CustomText
-            style={[
-              dateStyle,
-              isPrivate && {
-                color: theme['color-gray'],
-              },
-            ]}>
+        <View style={styles.dateView}>
+          <Text xxs color={dateStyleColor()} style={styles.dateTextView}>
             {readableTime}
-          </CustomText>
+          </Text>
           {isPrivate && (
-            <View style={style.iconView}>
-              <LockIcon style={style.icon} fill={theme['text-basic-color']} />
+            <View style={styles.iconView}>
+              <Icon icon="lock-closed-outline" color={colors.textLight} size={16} />
             </View>
           )}
           <MessageDeliveryStatus
@@ -461,11 +431,9 @@ const ChatMessageItemComponent = ({
         </ActionSheet>
       </View>
       {!isPrivate && isTwitterChannel ? twitterSenderNameView() : null}
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
 ChatMessageItemComponent.propTypes = propTypes;
-
-const ChatMessageItem = React.memo(withStyles(ChatMessageItemComponent, styles));
-export default ChatMessageItem;
+export default ChatMessageItemComponent;

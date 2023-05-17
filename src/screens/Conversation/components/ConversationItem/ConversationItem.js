@@ -83,6 +83,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
     inboxes,
     inboxId,
   });
+
   const inboxDetails = inboxes ? inboxes.find(inbox => inbox.id === inboxId) : {};
 
   const typingUser = getTypingUsersText({

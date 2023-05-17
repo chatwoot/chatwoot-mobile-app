@@ -1,27 +1,23 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import { Icon, withStyles } from '@ui-kitten/components';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Icon } from 'components';
 
 import { INBOX_TYPES, MESSAGE_TYPES, MESSAGE_STATUS } from 'constants';
 
-const styles = theme => ({
-  container: {
-    paddingTop: 2,
-    paddingRight: 2,
-  },
-  icon: {
-    width: 16,
-    height: 16,
-  },
-});
+const createStyles = theme => {
+  const { spacing } = theme;
+  return StyleSheet.create({
+    container: {
+      paddingTop: spacing.tiny,
+      paddingLeft: spacing.tiny,
+    },
+  });
+};
 
 const propTypes = {
   type: PropTypes.string.isRequired,
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   message: PropTypes.shape({
     template: PropTypes.number,
     private: PropTypes.bool,
@@ -33,25 +29,11 @@ const propTypes = {
   contactLastSeenAt: PropTypes.number,
 };
 
-const ReadIcon = style => {
-  return <Icon {...style} name="done-all-outline" />;
-};
+const MessageDeliveryStatus = ({ message, type, channel, contactLastSeenAt }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
-const SendIcon = style => {
-  return <Icon {...style} name="checkmark-outline" />;
-};
-
-const DeliveredIcon = style => {
-  return <Icon {...style} name="done-all-outline" />;
-};
-
-const MessageDeliveryStatus = ({
-  message,
-  type,
-  channel,
-  contactLastSeenAt,
-  eva: { theme, style },
-}) => {
   const isDelivered = message?.status === MESSAGE_STATUS.DELIVERED;
   const isRead = message?.status === MESSAGE_STATUS.READ;
   const isSent = message?.status === MESSAGE_STATUS.SENT;
@@ -105,23 +87,23 @@ const MessageDeliveryStatus = ({
 
   if (showReadIndicator()) {
     return (
-      <View style={style.container}>
-        <DeliveredIcon style={style.icon} fill={'#9DE29A'} />
+      <View style={styles.container}>
+        <Icon icon="checkmark-double-outline" color={'#9DE29A'} size={16} />
       </View>
     );
   }
 
   if (showDeliveredIndicator()) {
     return (
-      <View style={style.container}>
-        <ReadIcon style={style.icon} fill={theme['color-white']} />
+      <View style={styles.container}>
+        <Icon icon="checkmark-double-outline" color={colors.colorWhite} size={16} />
       </View>
     );
   }
   if (showSentIndicator()) {
     return (
-      <View style={style.container}>
-        <SendIcon style={style.icon} fill={theme['color-white']} />
+      <View style={styles.container}>
+        <Icon icon="checkmark-outline" color={colors.colorWhite} size={16} />
       </View>
     );
   }
@@ -130,5 +112,4 @@ const MessageDeliveryStatus = ({
 };
 
 MessageDeliveryStatus.propTypes = propTypes;
-
-export default withStyles(MessageDeliveryStatus, styles);
+export default MessageDeliveryStatus;

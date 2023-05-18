@@ -1,6 +1,6 @@
 import React, { useRef, Fragment } from 'react';
 import { useSelector } from 'react-redux';
-import { SafeAreaView, KeyboardAvoidingView, Platform, Linking } from 'react-native';
+import { SafeAreaView, KeyboardAvoidingView, View, Text, Platform, Linking } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import RNBootSplash from 'react-native-bootsplash';
@@ -12,7 +12,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ConfigureURLScreen from './screens/ConfigureURLScreen/ConfigureURLScreen';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
-import TabBar from './components/TabBar';
 import ConversationScreen from './screens/Conversation/ConversationScreen';
 import NotificationScreen from './screens/Notification/NotificationScreen';
 import SettingsScreen from './screens/Settings/SettingsScreen';
@@ -27,7 +26,6 @@ import i18n from 'i18n';
 import { navigationRef } from 'helpers/NavigationHelper';
 import { withStyles } from '@ui-kitten/components';
 import { findConversationLinkFromPush } from './helpers/PushHelper';
-
 import { selectLoggedIn } from 'reducer/authSlice';
 import { selectUrlSet, selectInstallationUrl, selectLocale } from 'reducer/settingsSlice';
 
@@ -55,13 +53,13 @@ const NotificationStack = () => (
 const renderTabIcon = (route, focused, color, size) => {
   let iconName = 'home';
   switch (route.name) {
-    case 'HomeTab':
+    case 'Conversations':
       iconName = focused ? 'home' : 'home-outline';
       break;
-    case 'NotificationTab':
-      iconName = focused ? 'settings' : 'notifications-outline';
+    case 'Notifications':
+      iconName = focused ? 'notifications' : 'notifications-outline';
       break;
-    case 'SettingsTab':
+    case 'Settings':
       iconName = focused ? 'settings' : 'settings-outline';
       break;
     default:
@@ -71,35 +69,24 @@ const renderTabIcon = (route, focused, color, size) => {
   return <Icon icon={iconName} color={focused ? '#1F93FF' : '#293F51'} />;
 };
 
-// const TabStack = () => (
-//   <Tab.Navigator screenOptions={{ headerShown: false }} tabBar={props => <TabBar {...props} />}>
-//     <Tab.Screen name="HomeTab" component={HomeStack} />
-//     <Tab.Screen name="NotificationTab" component={NotificationStack} />
-//     <Tab.Screen name="SettingsTab" component={SettingsStack} />
-//   </Tab.Navigator>
-// );
-
 const TabStack = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
       headerShown: false,
       tabBarIcon: ({ focused, color, size }) => renderTabIcon(route, focused, color, size),
-      // tabBarActiveTintColor: palette.primary,
-      // tabBarInactiveTintColor: colors.text,
+      tabBarActiveTintColor: '#1F93FF',
+      tabBarInactiveTintColor: '#293F51',
       tabBarStyle: {
-        // backgroundColor: colors.background,
-        // borderTopColor: colors.border,
         paddingTop: 2,
       },
       tabBarLabelStyle: {
         fontSize: 12,
         fontWeight: '500',
-        // marginBottom: isAndroid ? 6 : 0,
       },
     })}>
-    <Tab.Screen name="HomeTab" component={HomeStack} />
-    <Tab.Screen name="NotificationTab" component={NotificationStack} />
-    <Tab.Screen name="SettingsTab" component={SettingsStack} />
+    <Tab.Screen name="Conversations" component={HomeStack} />
+    <Tab.Screen name="Notifications" component={NotificationStack} />
+    <Tab.Screen name="Settings" component={SettingsStack} />
   </Tab.Navigator>
 );
 

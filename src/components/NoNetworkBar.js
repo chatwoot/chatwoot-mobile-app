@@ -1,100 +1,84 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { SafeAreaView, StatusBar, Animated, Easing } from 'react-native';
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import { SafeAreaView, StatusBar, Animated, Easing, StyleSheet } from 'react-native';
+import { useTheme } from '@react-navigation/native';
 import NetInfo from '@react-native-community/netinfo';
-import { withStyles } from '@ui-kitten/components';
+import i18n from 'i18n';
 
-import i18n from '../i18n';
-
-const styles = theme => ({
-  container: {
-    backgroundColor: theme['color-danger-800'],
-    paddingTop: 16,
-  },
-  offlineText: {
-    // For texts displayed on contrast backgrounds (color-danger-800 in this case)
-    // We have predefined text-control-color variable
-    color: theme['text-control-color'],
-    padding: 8,
-    textAlign: 'center',
-    fontWeight: theme['font-medium'],
-    fontSize: theme['text-primary-size'],
-  },
-});
-
-const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
+const createStyles = theme => {
+  return StyleSheet.create({
+    container: {
+      backgroundColor: '#930F1F',
+      paddingTop: 16,
+    },
+    offlineText: {
+      // For texts displayed on contrast backgrounds (color-danger-800 in this case)
+      // We have predefined text-control-color variable
+      color: '#fff',
+      padding: 8,
+      textAlign: 'center',
+      fontWeight: '500',
+      fontSize: 14,
+    },
+  });
 };
 
-class OfflineBar extends Component {
-  animationConstants = {
-    DURATION: 800,
-    TO_VALUE: 4,
-    INPUT_RANGE: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4],
-    OUTPUT_RANGE: [0, -15, 0, 15, 0, -15, 0, 15, 0],
-  };
+const OfflineBar = () => {
+  const theme = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
-  state = {
-    isConnected: true,
-  };
+  const animationConstants = useMemo(
+    () => ({
+      DURATION: 800,
+      TO_VALUE: 4,
+      INPUT_RANGE: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4],
+      OUTPUT_RANGE: [0, -15, 0, 15, 0, -15, 0, 15, 0],
+    }),
+    [],
+  );
 
-  constructor() {
-    super();
-    this.animation = new Animated.Value(0);
-  }
-
-  componentDidMount() {
-    NetInfo.addEventListener(state => {
-      const { isConnected } = state;
-      this.setNetworkStatus(isConnected);
-    });
-  }
-
-  setNetworkStatus = status => {
-    this.setState({ isConnected: status });
-    if (status) {
-      this.triggerAnimation();
-    }
-  };
+  const [connected, setConnected] = useState(true);
+  const animation = useRef(new Animated.Value(0)).current;
 
   // Took Reference from https://egghead.io/lessons/react-create-a-button-shake-animation-in-react-native#/tab-code
-  triggerAnimation = () => {
-    this.animation.setValue(0);
-    Animated.timing(this.animation, {
-      duration: this.animationConstants.DURATION,
-      toValue: this.animationConstants.TO_VALUE,
+  const triggerAnimation = useCallback(() => {
+    animation.setValue(0);
+    Animated.timing(animation, {
+      duration: animationConstants.DURATION,
+      toValue: animationConstants.TO_VALUE,
       useNativeDriver: true,
-      ease: Easing.bounce,
+      easing: Easing.bounce,
     }).start();
+  }, [animation, animationConstants]);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      const { isConnected } = state;
+      setConnected(isConnected);
+      if (isConnected) {
+        triggerAnimation();
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [triggerAnimation]);
+
+  const interpolated = animation.interpolate({
+    inputRange: animationConstants.INPUT_RANGE,
+    outputRange: animationConstants.OUTPUT_RANGE,
+  });
+  const animationStyle = {
+    transform: [{ translateX: interpolated }],
   };
 
-  render() {
-    const {
-      eva: { style, theme },
-    } = this.props;
-    const interpolated = this.animation.interpolate({
-      inputRange: this.animationConstants.INPUT_RANGE,
-      outputRange: this.animationConstants.OUTPUT_RANGE,
-    });
-    const animationStyle = {
-      transform: [{ translateX: interpolated }],
-    };
-    const { isConnected } = this.state;
+  return !connected ? (
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={'#930F1F'} />
+      <Animated.Text style={[styles.offlineText, animationStyle]}>
+        {i18n.t('ERRORS.OfFLINE')}
+      </Animated.Text>
+    </SafeAreaView>
+  ) : null;
+};
 
-    return !isConnected ? (
-      <SafeAreaView style={style.container}>
-        <StatusBar backgroundColor={theme['color-danger-800']} />
-        <Animated.Text style={[style.offlineText, animationStyle]}>
-          {i18n.t('ERRORS.OfFLINE')}
-        </Animated.Text>
-      </SafeAreaView>
-    ) : null;
-  }
-}
-
-OfflineBar.propTypes = propTypes;
-
-export default withStyles(OfflineBar, styles);
+export default OfflineBar;

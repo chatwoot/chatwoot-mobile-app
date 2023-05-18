@@ -33,6 +33,7 @@ export const palette = {
 
   dangerColor: '#ff382d',
   dangerColorDark: '#ed2f2f',
+  dangerColorDarker: '#930F1F',
   dangerColorLight: '#FFCCD1',
 
   warningColor: '#ffc532',
@@ -150,6 +151,8 @@ export const DarkTheme = {
     violetColor: '#AC52FF',
 
     dangerColor: '#ff382d',
+    dangerColorDark: '#ed2f2f',
+    dangerColorDarker: '#930F1F',
     dangerColorLight: '#FFCCD1',
 
     warningColor: '#ffc532',

@@ -39,14 +39,14 @@ const HomeStack = () => (
 );
 
 const SettingsStack = () => (
-  <Stack.Navigator initialRouteName="Settings" screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="Settings" component={SettingsScreen} />
+  <Stack.Navigator initialRouteName="SettingsScreen" screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
   </Stack.Navigator>
 );
 
 const NotificationStack = () => (
-  <Stack.Navigator initialRouteName="Notification" screenOptions={{ headerShown: false }}>
-    <Tab.Screen name="Notification" component={NotificationScreen} />
+  <Stack.Navigator initialRouteName="NotificationScreen" screenOptions={{ headerShown: false }}>
+    <Tab.Screen name="NotificationScreen" component={NotificationScreen} />
   </Stack.Navigator>
 );
 

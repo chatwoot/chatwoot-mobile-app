@@ -6,6 +6,7 @@ import { Text } from 'components';
 import { View, StyleSheet } from 'react-native';
 import { getInboxIconByType } from 'src/helpers/inboxHelpers';
 import { getTextSubstringWithEllipsis } from 'helpers';
+
 const createStyles = theme => {
   const { spacing } = theme;
   return StyleSheet.create({

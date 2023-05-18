@@ -7,10 +7,9 @@ import { View, Share, ActivityIndicator, Dimensions, Keyboard } from 'react-nati
 import { getTypingUsersText, getCustomerDetails } from 'helpers';
 import { selectConversationToggleStatus } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';
-import { UserAvatar, Pressable, Text, Icon } from 'components';
-import { getInboxName } from 'helpers';
+import { UserAvatar, Pressable, Text, Icon, InboxName } from 'components';
+import { getInboxName } from 'helpers/conversationHelpers';
 import Banner from 'screens/ChatScreen/components/Banner';
-import InboxName from 'screens/ChatScreen/components/InboxName';
 import TypingStatus from 'screens/ChatScreen/components/UserTypingStatus';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import i18n from 'i18n';
@@ -18,7 +17,7 @@ import { getTextSubstringWithEllipsis } from 'helpers';
 import { getConversationUrl } from 'helpers/UrlHelper';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
-import { INBOX_ICON, CONVERSATION_STATUS } from 'constants/index';
+import { CONVERSATION_STATUS } from 'constants/index';
 import { inboxesSelector } from 'reducer/inboxSlice';
 import { selectUserId } from 'reducer/authSlice';
 import differenceInHours from 'date-fns/differenceInHours';
@@ -70,7 +69,6 @@ const ChatHeader = ({
     can_reply: canReply,
     meta: {
       sender: { availability_status: availabilityStatus },
-      channel: channelType,
     },
     additional_attributes: additionalAttributes = {},
     muted,
@@ -175,8 +173,14 @@ const ChatHeader = ({
 
   const canReplyInCurrentChat = canReply === true;
 
-  const iconName = INBOX_ICON[channelType];
-  const inboxName = getInboxName({ inboxes, inboxId });
+  const {
+    name: inboxName = null,
+    channel_type: channelType = null,
+    phone_number: phoneNumber = null,
+  } = getInboxName({
+    inboxes,
+    inboxId,
+  });
 
   const onClickShareConversationURL = async () => {
     try {
@@ -371,9 +375,9 @@ const ChatHeader = ({
                   <View style={styles.inboxNameWrap}>
                     {conversationDetails && (
                       <InboxName
-                        iconName={iconName}
-                        inboxName={getTextSubstringWithEllipsis(inboxName, 22)}
-                        size={'small'}
+                        inboxName={getTextSubstringWithEllipsis(inboxName, 18)}
+                        channelType={channelType}
+                        phoneNumber={phoneNumber}
                       />
                     )}
                   </View>

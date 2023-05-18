@@ -2,7 +2,7 @@ import React from 'react';
 import { View, TextInput } from 'react-native';
 import { StyleService, useStyleSheet } from '@ui-kitten/components';
 import PropTypes from 'prop-types';
-import Text from './Text';
+import { Text } from 'components';
 
 const themedStyles = StyleService.create({
   textViewError: {
@@ -12,10 +12,7 @@ const themedStyles = StyleService.create({
     marginTop: 8,
   },
   label: {
-    color: 'text-basic-color',
     paddingBottom: 6,
-    fontSize: 'text-primary-size',
-    fontWeight: 'font-medium',
   },
   errorLabel: {
     color: 'color-danger-900',
@@ -59,7 +56,9 @@ const TextInputField = ({ onChangeText, error, keyboardType, secureTextEntry, la
 
   return (
     <View>
-      <Text style={styles.label}>{label}</Text>
+      <Text sm medium color="#293F51" style={styles.label}>
+        {label}
+      </Text>
       <TextInput
         style={error ? styles.errorInputStyle : styles.inputStyle}
         accessibilityLabel={label}

@@ -1,63 +1,68 @@
-import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
+import { TouchableOpacity, View, Switch, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { CheckBox, withStyles } from '@ui-kitten/components';
+import { Text } from 'components';
 
-import CustomText from './Text';
-
-const styles = theme => ({
-  itemView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 8,
-    marginTop: 8,
-  },
-  textView: {
-    flex: 9,
-  },
-  text: {
-    color: theme['text-hint-color'],
-    fontWeight: theme['font-semi-bold'],
-    fontSize: theme['font-size-small'],
-    textAlign: 'left',
-    // textTransform: 'capitalize',
-  },
-  radioView: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-});
+const createStyles = theme => {
+  const { spacing } = theme;
+  return StyleSheet.create({
+    itemView: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: spacing.smaller,
+      marginTop: spacing.smaller,
+    },
+    textView: {
+      width: '85%',
+    },
+    text: {
+      textAlign: 'left',
+    },
+    radioView: {
+      width: '15%',
+      alignItems: 'flex-end',
+    },
+    radio: {
+      transform: [{ scaleX: 0.6 }, { scaleY: 0.6 }],
+    },
+  });
+};
 
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-  }).isRequired,
   title: PropTypes.string,
   item: PropTypes.string,
   onCheckedChange: PropTypes.func,
   isChecked: PropTypes.bool,
 };
 
-const NotificationPreferenceItemComponent = ({
-  title,
-  item,
-  onCheckedChange,
-  isChecked,
-  eva: { style },
-}) => (
-  <TouchableOpacity style={style.itemView} onPress={() => onCheckedChange({ item })}>
-    <View style={style.textView}>
-      <CustomText style={style.text}>{title}</CustomText>
-    </View>
+const NotificationPreferenceItemComponent = ({ title, item, onCheckedChange, isChecked }) => {
+  const theme = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+  const { colors } = theme;
 
-    <View style={style.radioView}>
-      <CheckBox checked={isChecked} onChange={() => onCheckedChange({ item })} />
-    </View>
-  </TouchableOpacity>
-);
+  return (
+    <TouchableOpacity style={styles.itemView} onPress={() => onCheckedChange({ item })}>
+      <View style={styles.textView}>
+        <Text sm medium color={colors.textLight} style={styles.channelText}>
+          {title}
+        </Text>
+      </View>
+
+      <View style={styles.radioView}>
+        <Switch
+          trackColor={{ false: colors.secondaryColorLight, true: colors.primaryColor }}
+          thumbColor={colors.colorWhite}
+          style={styles.radio}
+          ios_backgroundColor={colors.secondaryColorLight}
+          onValueChange={() => onCheckedChange({ item })}
+          value={isChecked}
+        />
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 NotificationPreferenceItemComponent.propTypes = propTypes;
-
-const NotificationPreferenceItem = withStyles(NotificationPreferenceItemComponent, styles);
-export default NotificationPreferenceItem;
+export default NotificationPreferenceItemComponent;

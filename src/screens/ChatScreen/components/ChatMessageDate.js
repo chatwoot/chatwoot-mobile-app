@@ -41,10 +41,6 @@ const ChatMessageDateComponent = ({ date }) => {
 
 const propTypes = {
   date: PropTypes.string,
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
 };
 
 const defaultProps = {

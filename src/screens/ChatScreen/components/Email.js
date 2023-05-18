@@ -6,10 +6,6 @@ import { View, StyleSheet } from 'react-native';
 
 const propTypes = {
   emailContent: PropTypes.string,
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }),
 };
 
 const createStyles = theme => {

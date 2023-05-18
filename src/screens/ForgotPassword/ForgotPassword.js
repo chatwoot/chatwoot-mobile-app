@@ -117,7 +117,8 @@ const ForgotPasswordComponent = ({ navigation }) => {
                 style={styles.forgotButton}
                 loading={isResettingPassword}
                 onPress={handleSubmit(onSubmit)}
-                size="large"
+                size="expanded"
+                colorScheme="primary"
                 text={i18n.t('FORGOT_PASSWORD.RESET_HERE')}
               />
             </View>

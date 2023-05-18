@@ -1,6 +1,6 @@
 import React, { useRef, Fragment } from 'react';
-import { useSelector } from 'react-redux';
-import { SafeAreaView, KeyboardAvoidingView, Platform, Linking } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { SafeAreaView, KeyboardAvoidingView, Platform, Linking, AppState } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import RNBootSplash from 'react-native-bootsplash';
@@ -31,7 +31,8 @@ import { findConversationLinkFromPush } from './helpers/PushHelper';
 
 import { selectLoggedIn } from 'reducer/authSlice';
 import { selectUrlSet, selectInstallationUrl, selectLocale } from 'reducer/settingsSlice';
-
+import { actions as authActions } from 'reducer/authSlice';
+import { useEffect } from 'react';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -90,7 +91,7 @@ const App = ({ eva: { style } }) => {
   const isUrlSet = useSelector(selectUrlSet);
   const installationUrl = useSelector(selectInstallationUrl);
   const locale = useSelector(selectLocale);
-
+  const dispatch = useDispatch();
   const linking = {
     prefixes: [installationUrl],
     config: {
@@ -150,7 +151,18 @@ const App = ({ eva: { style } }) => {
   };
 
   i18n.locale = locale;
-
+  useEffect(() => {
+    const AppstateEvent = AppState.addEventListener('change', nextAppState => {
+      if (nextAppState === 'active') {
+        dispatch(authActions.updateAvailability({ availability: 'online' }));
+      } else {
+        dispatch(authActions.updateAvailability({ availability: 'offline' }));
+      }
+    });
+    return () => {
+      AppstateEvent.remove();
+    };
+  }, [dispatch]);
   return (
     <KeyboardAvoidingView
       style={style.container}

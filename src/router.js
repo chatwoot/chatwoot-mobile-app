@@ -22,6 +22,7 @@ import ImageScreen from './screens/ChatScreen/ImageScreen';
 import NotificationPreference from './screens/NotificationPreference/NotificationPreference';
 import ConversationDetailsScreen from './screens/ConversationDetails/ConversationDetailsScreen';
 import ConversationAction from './screens/ConversationAction/ConversationAction';
+import { Icon } from 'components';
 import i18n from 'i18n';
 import { navigationRef } from 'helpers/NavigationHelper';
 import { withStyles } from '@ui-kitten/components';
@@ -51,8 +52,51 @@ const NotificationStack = () => (
   </Stack.Navigator>
 );
 
+const renderTabIcon = (route, focused, color, size) => {
+  let iconName = 'home';
+  switch (route.name) {
+    case 'HomeTab':
+      iconName = focused ? 'home' : 'home-outline';
+      break;
+    case 'NotificationTab':
+      iconName = focused ? 'settings' : 'notifications-outline';
+      break;
+    case 'SettingsTab':
+      iconName = focused ? 'settings' : 'settings-outline';
+      break;
+    default:
+      iconName = focused ? 'home' : 'home-outline';
+      break;
+  }
+  return <Icon icon={iconName} color={focused ? '#1F93FF' : '#293F51'} />;
+};
+
+// const TabStack = () => (
+//   <Tab.Navigator screenOptions={{ headerShown: false }} tabBar={props => <TabBar {...props} />}>
+//     <Tab.Screen name="HomeTab" component={HomeStack} />
+//     <Tab.Screen name="NotificationTab" component={NotificationStack} />
+//     <Tab.Screen name="SettingsTab" component={SettingsStack} />
+//   </Tab.Navigator>
+// );
+
 const TabStack = () => (
-  <Tab.Navigator screenOptions={{ headerShown: false }} tabBar={props => <TabBar {...props} />}>
+  <Tab.Navigator
+    screenOptions={({ route }) => ({
+      headerShown: false,
+      tabBarIcon: ({ focused, color, size }) => renderTabIcon(route, focused, color, size),
+      // tabBarActiveTintColor: palette.primary,
+      // tabBarInactiveTintColor: colors.text,
+      tabBarStyle: {
+        // backgroundColor: colors.background,
+        // borderTopColor: colors.border,
+        paddingTop: 2,
+      },
+      tabBarLabelStyle: {
+        fontSize: 12,
+        fontWeight: '500',
+        // marginBottom: isAndroid ? 6 : 0,
+      },
+    })}>
     <Tab.Screen name="HomeTab" component={HomeStack} />
     <Tab.Screen name="NotificationTab" component={NotificationStack} />
     <Tab.Screen name="SettingsTab" component={SettingsStack} />

@@ -1,6 +1,6 @@
-import React, { useRef, Fragment } from 'react';
+import React, { useRef, Fragment, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { SafeAreaView, KeyboardAvoidingView, View, Text, Platform, Linking } from 'react-native';
+import { SafeAreaView, KeyboardAvoidingView, Platform, Linking, StyleSheet } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import RNBootSplash from 'react-native-bootsplash';
@@ -24,7 +24,6 @@ import ConversationAction from './screens/ConversationAction/ConversationAction'
 import { Icon } from 'components';
 import i18n from 'i18n';
 import { navigationRef } from 'helpers/NavigationHelper';
-import { withStyles } from '@ui-kitten/components';
 import { findConversationLinkFromPush } from './helpers/PushHelper';
 import { selectLoggedIn } from 'reducer/authSlice';
 import { selectUrlSet, selectInstallationUrl, selectLocale } from 'reducer/settingsSlice';
@@ -93,9 +92,6 @@ const TabStack = () => (
 const propTypes = {
   isLoggedIn: PropTypes.bool,
   isUrlSet: PropTypes.bool,
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-  }).isRequired,
 };
 
 const defaultProps = {
@@ -105,7 +101,7 @@ const defaultProps = {
 // TODO
 messaging().setBackgroundMessageHandler(async remoteMessage => {});
 
-const App = ({ eva: { style } }) => {
+const App = () => {
   // TODO: Lets use light theme for now, add dark theme later
   const theme = LightTheme;
 
@@ -179,13 +175,14 @@ const App = ({ eva: { style } }) => {
   };
 
   i18n.locale = locale;
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   return (
     <KeyboardAvoidingView
-      style={style.container}
+      style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       enabled>
-      <SafeAreaView style={style.container}>
+      <SafeAreaView style={styles.container}>
         <NavigationContainer
           linking={linking}
           ref={navigationRef}
@@ -232,13 +229,15 @@ const App = ({ eva: { style } }) => {
   );
 };
 
-const styles = theme => ({
-  container: {
-    flex: 1,
-  },
-});
+const createStyles = theme => {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+  });
+};
 
 App.propTypes = propTypes;
 App.defaultProps = defaultProps;
 
-export default withStyles(App, styles);
+export default App;

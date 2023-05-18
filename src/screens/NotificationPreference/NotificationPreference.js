@@ -106,8 +106,9 @@ const NotificationPreferenceScreenComponent = ({ navigation }) => {
         <LoaderButton
           style={styles.notificationButton}
           loading={isUpdating}
-          size="large"
+          colorScheme="primary"
           onPress={savePreferences}
+          size="expanded"
           text={i18n.t('SETTINGS.SUBMIT')}
         />
       </View>

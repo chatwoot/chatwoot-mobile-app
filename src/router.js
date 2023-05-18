@@ -9,85 +9,22 @@ import { useFlipper } from '@react-navigation/devtools';
 import { LightTheme } from 'src/theme.v2';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ConfigureURLScreen from './screens/ConfigureURLScreen/ConfigureURLScreen';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
-import ConversationScreen from './screens/Conversation/ConversationScreen';
-import NotificationScreen from './screens/Notification/NotificationScreen';
-import SettingsScreen from './screens/Settings/SettingsScreen';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
 import NotificationPreference from './screens/NotificationPreference/NotificationPreference';
 import ConversationDetailsScreen from './screens/ConversationDetails/ConversationDetailsScreen';
 import ConversationAction from './screens/ConversationAction/ConversationAction';
-import { Icon } from 'components';
+import TabStack from './components/TabBar';
 import i18n from 'i18n';
 import { navigationRef } from 'helpers/NavigationHelper';
 import { findConversationLinkFromPush } from './helpers/PushHelper';
 import { selectLoggedIn } from 'reducer/authSlice';
 import { selectUrlSet, selectInstallationUrl, selectLocale } from 'reducer/settingsSlice';
 
-const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
-const HomeStack = () => (
-  <Stack.Navigator initialRouteName="ConversationScreen" screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="ConversationScreen" component={ConversationScreen} />
-  </Stack.Navigator>
-);
-
-const SettingsStack = () => (
-  <Stack.Navigator initialRouteName="SettingsScreen" screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
-  </Stack.Navigator>
-);
-
-const NotificationStack = () => (
-  <Stack.Navigator initialRouteName="NotificationScreen" screenOptions={{ headerShown: false }}>
-    <Tab.Screen name="NotificationScreen" component={NotificationScreen} />
-  </Stack.Navigator>
-);
-
-const renderTabIcon = (route, focused, color, size) => {
-  let iconName = 'home';
-  switch (route.name) {
-    case 'Conversations':
-      iconName = focused ? 'home' : 'home-outline';
-      break;
-    case 'Notifications':
-      iconName = focused ? 'notifications' : 'notifications-outline';
-      break;
-    case 'Settings':
-      iconName = focused ? 'settings' : 'settings-outline';
-      break;
-    default:
-      iconName = focused ? 'home' : 'home-outline';
-      break;
-  }
-  return <Icon icon={iconName} color={focused ? '#1F93FF' : '#293F51'} />;
-};
-
-const TabStack = () => (
-  <Tab.Navigator
-    screenOptions={({ route }) => ({
-      headerShown: false,
-      tabBarIcon: ({ focused, color, size }) => renderTabIcon(route, focused, color, size),
-      tabBarActiveTintColor: '#1F93FF',
-      tabBarInactiveTintColor: '#293F51',
-      tabBarStyle: {
-        paddingTop: 2,
-      },
-      tabBarLabelStyle: {
-        fontSize: 12,
-        fontWeight: '500',
-      },
-    })}>
-    <Tab.Screen name="Conversations" component={HomeStack} />
-    <Tab.Screen name="Notifications" component={NotificationStack} />
-    <Tab.Screen name="Settings" component={SettingsStack} />
-  </Tab.Navigator>
-);
 
 const propTypes = {
   isLoggedIn: PropTypes.bool,

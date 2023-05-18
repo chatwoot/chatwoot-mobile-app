@@ -32,6 +32,7 @@ export const palette = {
   violetColor: '#AC52FF',
 
   dangerColor: '#ff382d',
+  dangerColorDark: '#ed2f2f',
   dangerColorLight: '#FFCCD1',
 
   warningColor: '#ffc532',

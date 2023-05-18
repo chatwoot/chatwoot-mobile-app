@@ -1,30 +1,28 @@
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
+import { Icon, Text, Pressable } from 'components';
 import PropTypes from 'prop-types';
-import { Divider, Icon, withStyles } from '@ui-kitten/components';
 
-import CustomText from '../../../components/Text';
-
-const styles = theme => ({
-  section: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    padding: 16,
-    height: 60,
-  },
-  sectionText: {
-    fontSize: theme['font-size-small'],
-    fontWeight: theme['font-medium'],
-    paddingTop: 2,
-    paddingLeft: 8,
-  },
-});
+const createStyles = theme => {
+  const { spacing, colors } = theme;
+  return StyleSheet.create({
+    section: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      padding: spacing.small,
+      height: 54,
+      borderBottomWidth: 1,
+      borderColor: colors.borderLight,
+    },
+    sectionText: {
+      paddingTop: spacing.tiny,
+      paddingLeft: spacing.smaller,
+    },
+  });
+};
 
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   name: PropTypes.string,
   thumbnail: PropTypes.string,
   text: PropTypes.string,
@@ -34,25 +32,22 @@ const propTypes = {
   onPressItem: PropTypes.func,
 };
 
-const AttachmentActionItem = ({
-  text,
-  itemType,
-  name,
-  iconName,
-  onPressItem,
-  eva: { style, theme },
-}) => {
+const AttachmentActionItem = ({ text, itemType, name, iconName, onPressItem }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
+
   return (
     <React.Fragment>
-      <TouchableOpacity style={style.section} onPress={() => onPressItem({ itemType })}>
-        <Icon name={iconName} fill={theme['color-primary-default']} width={26} height={26} />
-        <CustomText style={style.sectionText}>{text}</CustomText>
-      </TouchableOpacity>
-      <Divider />
+      <Pressable style={styles.section} onPress={() => onPressItem({ itemType })}>
+        <Icon icon={iconName} color={colors.primaryColor} size={24} />
+        <Text sm medium color={colors.textDark} style={styles.sectionText}>
+          {text}
+        </Text>
+      </Pressable>
     </React.Fragment>
   );
 };
 
 AttachmentActionItem.propTypes = propTypes;
-
-export default withStyles(AttachmentActionItem, styles);
+export default AttachmentActionItem;

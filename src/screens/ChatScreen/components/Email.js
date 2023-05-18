@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import AutoHeightWebView from 'react-native-autoheight-webview';
-import { withStyles } from '@ui-kitten/components';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 const propTypes = {
   emailContent: PropTypes.string,
@@ -12,18 +12,23 @@ const propTypes = {
   }),
 };
 
-const styles = () => ({
-  container: {
-    width: '100%',
-  },
-});
+const createStyles = theme => {
+  return StyleSheet.create({
+    container: {
+      width: '100%',
+    },
+  });
+};
 
-const Email = ({ emailContent, eva: { style, theme } }) => {
+const EmailComponent = ({ emailContent }) => {
+  const theme = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+
   const FormattedEmail = emailContent.replace('height:100%;', '');
   return (
     <View>
       <AutoHeightWebView
-        style={style.container}
+        style={styles.container}
         scrollEnabled={false}
         customStyle={`
         * {
@@ -43,8 +48,5 @@ const Email = ({ emailContent, eva: { style, theme } }) => {
   );
 };
 
-Email.propTypes = propTypes;
-
-const EmailComponent = React.memo(withStyles(Email, styles));
-
+EmailComponent.propTypes = propTypes;
 export default EmailComponent;

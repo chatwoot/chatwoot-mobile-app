@@ -19,8 +19,6 @@ import SettingsScreen from './screens/Settings/SettingsScreen';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
-import AccountScreen from './screens/Account/AccountScreen';
-import AvailabilityScreen from './screens/Availability/Availability';
 import NotificationPreference from './screens/NotificationPreference/NotificationPreference';
 import ConversationDetailsScreen from './screens/ConversationDetails/ConversationDetailsScreen';
 import ConversationAction from './screens/ConversationAction/ConversationAction';
@@ -196,10 +194,8 @@ const App = ({ eva: { style } }) => {
                   <Stack.Screen name="Tab" component={TabStack} />
                   <Stack.Screen name="ChatScreen" component={ChatScreen} />
                   <Stack.Screen name="ImageScreen" component={ImageScreen} />
-                  <Stack.Screen name="Account" component={AccountScreen} />
                   <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
                   <Stack.Screen name="ConversationAction" component={ConversationAction} />
-                  <Stack.Screen name="Availability" component={AvailabilityScreen} />
                   <Stack.Screen name="NotificationPreference" component={NotificationPreference} />
                 </Fragment>
               ) : (

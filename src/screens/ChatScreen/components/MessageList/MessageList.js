@@ -1,13 +1,13 @@
-import React from 'react';
-import { Spinner, withStyles } from '@ui-kitten/components';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import { View, SectionList } from 'react-native';
+import { View, SectionList, ActivityIndicator } from 'react-native';
 import ChatMessage from '../ChatMessage';
 import ChatMessageDate from '../ChatMessageDate';
 import ReplyBox from '../ReplyBox';
-import styles from './MessageList.style';
+import createStyles from './MessageList.style';
 import { openURL } from 'helpers/UrlHelper';
 import { getGroupedConversation, findUniqueMessages } from 'helpers';
 import {
@@ -16,15 +16,14 @@ import {
   selectAllMessagesFetched,
 } from 'reducer/conversationSlice';
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   loadMessages: PropTypes.func.isRequired,
   conversationId: PropTypes.number.isRequired,
 };
 
-const MessagesListComponent = ({ eva: { style }, conversationId, loadMessages }) => {
+const MessagesListComponent = ({ conversationId, loadMessages }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const navigation = useNavigation();
   const isFetching = useSelector(selectMessagesLoading);
   const isAllMessagesFetched = useSelector(selectAllMessagesFetched);
@@ -59,8 +58,8 @@ const MessagesListComponent = ({ eva: { style }, conversationId, loadMessages })
   const renderMoreLoader = () => {
     if (isFetching) {
       return (
-        <View style={style.loadMoreSpinnerView}>
-          <Spinner size="medium" color="red" />
+        <View style={styles.loadMoreSpinnerView}>
+          <ActivityIndicator size="small" color={colors.textDark} animating={isFetching} />
         </View>
       );
     }
@@ -82,8 +81,8 @@ const MessagesListComponent = ({ eva: { style }, conversationId, loadMessages })
   });
 
   return (
-    <View style={style.container} autoDismiss={false}>
-      <View style={style.chatView}>
+    <View style={styles.container} autoDismiss={false}>
+      <View style={styles.chatView}>
         {groupedConversationList.length ? (
           <SectionList
             keyboardShouldPersistTaps="never"
@@ -94,13 +93,13 @@ const MessagesListComponent = ({ eva: { style }, conversationId, loadMessages })
             keyExtractor={(item, index) => item + index}
             renderItem={renderMessage}
             renderSectionFooter={({ section: { date } }) => <ChatMessageDate date={date} />}
-            style={style.chatContainer}
+            style={styles.chatContainer}
             ListFooterComponent={renderMoreLoader}
           />
         ) : null}
         {isFetching && !groupedConversationList.length && (
-          <View style={style.loadMoreSpinnerView}>
-            <Spinner size="medium" />
+          <View style={styles.loadMoreSpinnerView}>
+            <ActivityIndicator size="small" color={colors.textDark} animating={isFetching} />
           </View>
         )}
       </View>
@@ -115,5 +114,4 @@ const MessagesListComponent = ({ eva: { style }, conversationId, loadMessages })
 };
 
 MessagesListComponent.propTypes = propTypes;
-const MessagesList = withStyles(MessagesListComponent, styles);
-export default MessagesList;
+export default MessagesListComponent;

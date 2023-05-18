@@ -1,34 +1,39 @@
-import React from 'react';
-import { View } from 'react-native';
-import { withStyles } from '@ui-kitten/components';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
+import { Text } from 'components';
+import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import CustomText from '../../../components/Text';
 
-const styles = theme => ({
-  mainView: {
-    flex: 1,
-    flexDirection: 'row',
-    textAlign: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  dateView: {
-    padding: 8,
-    marginTop: 2,
-    marginBottom: 6,
-    borderRadius: 8,
-    backgroundColor: theme['color-background-date'],
-  },
-  text: {
-    fontSize: theme['font-size-extra-small'],
-  },
-});
+const createStyles = theme => {
+  const { spacing, borderRadius, colors } = theme;
+  return StyleSheet.create({
+    mainView: {
+      flex: 1,
+      flexDirection: 'row',
+      textAlign: 'center',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    dateView: {
+      padding: spacing.smaller,
+      marginTop: spacing.tiny,
+      marginBottom: 6,
+      borderRadius: borderRadius.small,
+      backgroundColor: colors.backgroundDate,
+    },
+  });
+};
 
-const ChatMessageDateComponent = ({ date, eva: { style } }) => {
+const ChatMessageDateComponent = ({ date }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
   return (
-    <View style={style.mainView}>
-      <View style={style.dateView}>
-        <CustomText style={style.text}>{date}</CustomText>
+    <View style={styles.mainView}>
+      <View style={styles.dateView}>
+        <Text xs medium color={colors.textDark}>
+          {date}
+        </Text>
       </View>
     </View>
   );
@@ -48,7 +53,4 @@ const defaultProps = {
 
 ChatMessageDateComponent.defaultProps = defaultProps;
 ChatMessageDateComponent.propTypes = propTypes;
-
-const ChatMessageDate = withStyles(ChatMessageDateComponent, styles);
-
-export default ChatMessageDate;
+export default ChatMessageDateComponent;

@@ -1,18 +1,12 @@
-import { withStyles } from '@ui-kitten/components';
-import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
-
-import CustomText from './Text';
-import UserAvatar from './UserAvatar';
-
+import { UserAvatar, Text, Pressable } from 'components';
 import { timeAgo } from '../helpers/TimeHelper';
 
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   item: PropTypes.shape({
     id: PropTypes.number,
     push_message_title: PropTypes.string,
@@ -31,8 +25,10 @@ const propTypes = {
   }).isRequired,
   onSelectNotification: PropTypes.func,
 };
-const NotificationItemComponent = ({ eva, item, onSelectNotification }) => {
-  const { style, theme } = eva;
+const NotificationItemComponent = ({ item, onSelectNotification }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   const {
     push_message_title,
@@ -41,86 +37,86 @@ const NotificationItemComponent = ({ eva, item, onSelectNotification }) => {
     primary_actor: { meta: { sender: { name = null, thumbnail = null } = {} } = {}, channel } = {},
   } = item;
   return (
-    <TouchableOpacity
-      activeOpacity={0.5}
-      style={[style.itemContainer]}
-      onPress={() => onSelectNotification(item)}>
-      <View style={style.itemView}>
-        <View style={style.avatarView}>
+    <Pressable style={styles.itemContainer} onPress={() => onSelectNotification(item)}>
+      <View style={styles.itemView}>
+        <View style={styles.avatarView}>
           <UserAvatar
             thumbnail={thumbnail}
             userName={name}
-            size={38}
+            size={36}
             fontSize={14}
-            defaultBGColor={theme['color-primary-default']}
             channel={channel}
           />
         </View>
-        <View style={style.contentView}>
-          <CustomText style={style.content}>{push_message_title}</CustomText>
-          <CustomText style={style.time}>{`${timeAgo({ time: created_at })}`}</CustomText>
+        <View style={styles.contentView}>
+          {!read_at ? (
+            <Text xs medium color={colors.textDark} style={styles.content}>
+              {push_message_title}
+            </Text>
+          ) : (
+            <Text xs color={colors.textDark} style={styles.content}>
+              {push_message_title}
+            </Text>
+          )}
+          <Text xxs color={colors.textLighter}>
+            {`${timeAgo({ time: created_at })}`}
+          </Text>
         </View>
         {!read_at && (
-          <View style={style.readView}>
-            <View style={style.readBubble} />
+          <View style={styles.readView}>
+            <View style={styles.readBubble} />
           </View>
         )}
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
-const styles = theme => ({
-  itemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingBottom: 10,
-    paddingTop: 10,
-  },
-  itemView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  avatarView: {
-    justifyContent: 'flex-end',
-    marginRight: 4,
-    flex: 3,
-  },
-  contentView: {
-    flex: 18,
-  },
-
-  readView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  content: {
-    fontSize: theme['font-size-extra-small'],
-    paddingTop: 4,
-    paddingBottom: 4,
-  },
-  time: {
-    color: theme['text-hint-color'],
-    fontSize: theme['font-size-extra-extra-small'],
-    fontWeight: theme['font-regular'],
-  },
-  readBubble: {
-    borderRadius: 5,
-    borderColor: theme['color-primary-default'],
-    height: 5,
-    width: 5,
-    borderWidth: 5,
-    marginTop: 8,
-  },
-});
+const createStyles = theme => {
+  const { spacing, colors, borderRadius } = theme;
+  return StyleSheet.create({
+    itemContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingLeft: spacing.small,
+      paddingRight: spacing.small,
+      paddingBottom: spacing.half,
+      paddingTop: spacing.half,
+    },
+    itemView: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flex: 1,
+    },
+    avatarView: {
+      justifyContent: 'flex-end',
+      marginRight: spacing.micro,
+      flex: 3,
+    },
+    contentView: {
+      flex: 18,
+    },
+    readView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    content: {
+      paddingTop: spacing.micro,
+      paddingBottom: spacing.micro,
+    },
+    readBubble: {
+      borderRadius: borderRadius.small,
+      borderColor: colors.primaryColor,
+      backgroundColor: colors.primaryColor,
+      height: spacing.smaller,
+      width: spacing.smaller,
+      borderWidth: spacing.tiny,
+      marginTop: spacing.smaller,
+    },
+  });
+};
 
 NotificationItemComponent.propTypes = propTypes;
-
-const NotificationItem = withStyles(NotificationItemComponent, styles);
-
-export default React.memo(NotificationItem);
+export default NotificationItemComponent;

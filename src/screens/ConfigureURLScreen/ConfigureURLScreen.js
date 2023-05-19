@@ -122,9 +122,9 @@ const ConfigureURLScreenComponent = ({ navigation }) => {
             <LoaderButton
               style={styles.nextButton}
               loading={isSettingUrl}
+              colorScheme="primary"
               onPress={handleSubmit(onSubmit)}
-              size="large"
-              textStyle={styles.nextButtonText}
+              size="expanded"
               text={i18n.t('CONFIGURE_URL.CONNECT')}
             />
           </View>

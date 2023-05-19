@@ -1,6 +1,6 @@
-import React, { useRef, Fragment } from 'react';
+import React, { useRef, Fragment, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { SafeAreaView, KeyboardAvoidingView, Platform, Linking } from 'react-native';
+import { SafeAreaView, KeyboardAvoidingView, Platform, Linking, StyleSheet } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import RNBootSplash from 'react-native-bootsplash';
@@ -9,62 +9,26 @@ import { useFlipper } from '@react-navigation/devtools';
 import { LightTheme } from 'src/theme.v2';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ConfigureURLScreen from './screens/ConfigureURLScreen/ConfigureURLScreen';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
-import TabBar from './components/TabBar';
-import ConversationScreen from './screens/Conversation/ConversationScreen';
-import NotificationScreen from './screens/Notification/NotificationScreen';
-import SettingsScreen from './screens/Settings/SettingsScreen';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
 import NotificationPreference from './screens/NotificationPreference/NotificationPreference';
 import ConversationDetailsScreen from './screens/ConversationDetails/ConversationDetailsScreen';
 import ConversationAction from './screens/ConversationAction/ConversationAction';
+import TabStack from './components/TabBar';
 import i18n from 'i18n';
 import { navigationRef } from 'helpers/NavigationHelper';
-import { withStyles } from '@ui-kitten/components';
 import { findConversationLinkFromPush } from './helpers/PushHelper';
-
 import { selectLoggedIn } from 'reducer/authSlice';
 import { selectUrlSet, selectInstallationUrl, selectLocale } from 'reducer/settingsSlice';
 
-const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
-const HomeStack = () => (
-  <Stack.Navigator initialRouteName="ConversationScreen" screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="ConversationScreen" component={ConversationScreen} />
-  </Stack.Navigator>
-);
-
-const SettingsStack = () => (
-  <Stack.Navigator initialRouteName="Settings" screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="Settings" component={SettingsScreen} />
-  </Stack.Navigator>
-);
-
-const NotificationStack = () => (
-  <Stack.Navigator initialRouteName="Notification" screenOptions={{ headerShown: false }}>
-    <Tab.Screen name="Notification" component={NotificationScreen} />
-  </Stack.Navigator>
-);
-
-const TabStack = () => (
-  <Tab.Navigator screenOptions={{ headerShown: false }} tabBar={props => <TabBar {...props} />}>
-    <Tab.Screen name="HomeTab" component={HomeStack} />
-    <Tab.Screen name="NotificationTab" component={NotificationStack} />
-    <Tab.Screen name="SettingsTab" component={SettingsStack} />
-  </Tab.Navigator>
-);
 
 const propTypes = {
   isLoggedIn: PropTypes.bool,
   isUrlSet: PropTypes.bool,
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-  }).isRequired,
 };
 
 const defaultProps = {
@@ -74,7 +38,7 @@ const defaultProps = {
 // TODO
 messaging().setBackgroundMessageHandler(async remoteMessage => {});
 
-const App = ({ eva: { style } }) => {
+const App = () => {
   // TODO: Lets use light theme for now, add dark theme later
   const theme = LightTheme;
 
@@ -148,13 +112,14 @@ const App = ({ eva: { style } }) => {
   };
 
   i18n.locale = locale;
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   return (
     <KeyboardAvoidingView
-      style={style.container}
+      style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       enabled>
-      <SafeAreaView style={style.container}>
+      <SafeAreaView style={styles.container}>
         <NavigationContainer
           linking={linking}
           ref={navigationRef}
@@ -201,13 +166,15 @@ const App = ({ eva: { style } }) => {
   );
 };
 
-const styles = theme => ({
-  container: {
-    flex: 1,
-  },
-});
+const createStyles = theme => {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+  });
+};
 
 App.propTypes = propTypes;
 App.defaultProps = defaultProps;
 
-export default withStyles(App, styles);
+export default App;

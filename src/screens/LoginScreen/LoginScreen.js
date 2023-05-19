@@ -191,11 +191,11 @@ const LoginScreenComponent = ({ navigation }) => {
             </TouchableOpacity>
             <View style={styles.loginButtonView}>
               <LoaderButton
-                style={styles.loginButton}
+                titleStyle={styles.loginButton}
                 loading={isLoggingIn}
-                textStyle={styles.buttonTextStyle}
+                colorScheme="primary"
                 onPress={handleSubmit(onSubmit)}
-                size="large"
+                size="expanded"
                 text={i18n.t('LOGIN.LOGIN')}
               />
             </View>

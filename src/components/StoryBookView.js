@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { NavigationContainer } from '@react-navigation/native';
 import { View } from 'react-native';
-import { LightTheme } from 'src/theme.v2';
+import { LightTheme } from 'src/theme';
 // import Icon from 'src/components/Icon/Icon';
 
 const styles = {

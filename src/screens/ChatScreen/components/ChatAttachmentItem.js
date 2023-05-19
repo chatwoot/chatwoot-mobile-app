@@ -147,19 +147,18 @@ const ChatAttachmentItemComponent = ({ type, attachments, showAttachment, messag
     return colors.primaryColor;
   };
 
-  if (status === MESSAGE_STATUS.PROGRESS) {
-    return (
-      <TouchableOpacity
-        style={[
-          type === 'outgoing' ? styles.imageViewRight : styles.imageViewLeft,
-          isPrivate && styles.privateMessageContainer,
-        ]}>
-        <ImageLoader style={styles.imageLoader} />
-      </TouchableOpacity>
-    );
-  }
-
   if (attachments && attachments.length > 0) {
+    if (status === MESSAGE_STATUS.PROGRESS) {
+      return (
+        <TouchableOpacity
+          style={[
+            type === 'outgoing' ? styles.imageViewRight : styles.imageViewLeft,
+            isPrivate && styles.privateMessageContainer,
+          ]}>
+          <ImageLoader style={styles.imageLoader} />
+        </TouchableOpacity>
+      );
+    }
     return attachments.map((attachment, index) => {
       const { file_type: fileType, data_url: dataUrl } = attachment;
       const fileName = dataUrl ? dataUrl.split('/').pop() : '';

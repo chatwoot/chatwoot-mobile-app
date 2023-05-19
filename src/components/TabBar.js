@@ -71,6 +71,14 @@ const TabStack = () => {
           fontSize: 12,
           fontWeight: '500',
         },
+        tabBarBadgeStyle: {
+          minWidth: 14,
+          maxHeight: 14,
+          borderRadius: 7,
+          fontSize: 10,
+          lineHeight: 13,
+          alignSelf: undefined,
+        },
       })}>
       <Tab.Screen name="Conversations" component={HomeStack} />
       <Tab.Screen

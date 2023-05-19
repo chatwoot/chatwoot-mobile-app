@@ -35,6 +35,10 @@ const createStyles = theme => {
       paddingTop: spacing.smaller,
       paddingBottom: spacing.smaller,
     },
+    imageLoaderView: {
+      paddingTop: spacing.larger,
+      paddingBottom: spacing.larger,
+    },
     privateMessageContainer: {
       paddingTop: spacing.smaller,
       paddingBottom: spacing.smaller,
@@ -150,11 +154,7 @@ const ChatAttachmentItemComponent = ({ type, attachments, showAttachment, messag
   if (attachments && attachments.length > 0) {
     if (status === MESSAGE_STATUS.PROGRESS) {
       return (
-        <TouchableOpacity
-          style={[
-            type === 'outgoing' ? styles.imageViewRight : styles.imageViewLeft,
-            isPrivate && styles.privateMessageContainer,
-          ]}>
+        <TouchableOpacity style={styles.imageLoaderView}>
           <ImageLoader style={styles.imageLoader} />
         </TouchableOpacity>
       );

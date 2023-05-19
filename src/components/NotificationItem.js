@@ -30,24 +30,22 @@ const NotificationItemComponent = ({ item, onSelectNotification }) => {
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
 
-  const {
-    push_message_title,
-    read_at,
-    created_at,
-    primary_actor: { meta: { sender: { name = null, thumbnail = null } = {} } = {}, channel } = {},
-  } = item;
+  const { push_message_title, read_at, created_at, primary_actor } = item;
+  const hasSender = primary_actor.meta?.sender;
   return (
     <Pressable style={styles.itemContainer} onPress={() => onSelectNotification(item)}>
       <View style={styles.itemView}>
-        <View style={styles.avatarView}>
-          <UserAvatar
-            thumbnail={thumbnail}
-            userName={name}
-            size={36}
-            fontSize={14}
-            channel={channel}
-          />
-        </View>
+        {hasSender && (
+          <View style={styles.avatarView}>
+            <UserAvatar
+              thumbnail={primary_actor.meta.sender.thumbnail}
+              userName={primary_actor.meta.sender.name}
+              size={32}
+              fontSize={14}
+              channel={primary_actor.channel}
+            />
+          </View>
+        )}
         <View style={styles.contentView}>
           {!read_at ? (
             <Text xs medium color={colors.textDark} style={styles.content}>
@@ -62,6 +60,7 @@ const NotificationItemComponent = ({ item, onSelectNotification }) => {
             {`${timeAgo({ time: created_at })}`}
           </Text>
         </View>
+
         {!read_at && (
           <View style={styles.readView}>
             <View style={styles.readBubble} />

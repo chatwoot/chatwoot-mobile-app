@@ -2,6 +2,8 @@ import React, { useEffect, useCallback, useState, useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
+import { Keyboard } from 'react-native';
+
 import PropTypes from 'prop-types';
 import { SafeAreaView, AppState, useWindowDimensions } from 'react-native';
 import { StackActions } from '@react-navigation/native';
@@ -133,6 +135,7 @@ const ChatScreenComponent = ({ navigation, route }) => {
   }, [conversationId, dispatch, primaryActorId, primaryActorType]);
 
   const onBackPress = () => {
+    Keyboard.dismiss();
     if (navigation.canGoBack()) {
       navigation.goBack();
     } else {

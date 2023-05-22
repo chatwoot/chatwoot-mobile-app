@@ -286,7 +286,8 @@ const ConversationScreen = () => {
     if (!activeInboxId) {
       return 'chat-outline';
     }
-    const { channel_type: channelType, phone_number: phoneNumber } = activeInboxDetails;
+    const channelType = activeInboxDetails?.channel_type;
+    const phoneNumber = activeInboxDetails?.phone_number;
     if (!channelType) {
       return '';
     }

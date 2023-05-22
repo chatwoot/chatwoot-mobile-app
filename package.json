@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "1.9.12",
+  "version": "1.9.18",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -43,7 +43,6 @@
   "dependencies": {
     "@chatwoot/react-native-widget": "^0.0.10",
     "@chatwoot/utils": "^0.0.16",
-    "@eva-design/eva": "^2.0.0",
     "@gorhom/bottom-sheet": "^4.4.5",
     "@kesha-antonov/react-native-action-cable": "^1.1.0",
     "@native-html/table-plugin": "^5.3.1",
@@ -60,9 +59,6 @@
     "@reduxjs/toolkit": "^1.8.3",
     "@sentry/react-native": "5.3.0",
     "@shopify/flash-list": "^1.4.0",
-    "@ui-kitten/components": "5.0.0",
-    "@ui-kitten/eva-icons": "5.0.0",
-    "@ui-kitten/metro-config": "5.0.0",
     "axios": "^0.21.2",
     "date-fns": "2.21.1",
     "i18n-js": "^3.8.0",

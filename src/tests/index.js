@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { NavigationContainer } from '@react-navigation/native';
 import { render } from '@testing-library/react-native';
-import { LightTheme } from 'src/theme.v2';
+import { LightTheme } from 'src/theme';
 
 const propTypes = {
   children: PropTypes.node.isRequired,

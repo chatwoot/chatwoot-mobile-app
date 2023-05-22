@@ -155,7 +155,6 @@ const AssignAgent = ({ colors, conversationDetails, closeModal }) => {
     }
     closeModal();
   };
-
   return (
     <View style={styles.bottomSheet}>
       <View style={styles.bottomSheetContent}>
@@ -196,6 +195,7 @@ const AssignAgent = ({ colors, conversationDetails, closeModal }) => {
                   userName={item.name}
                   size={24}
                   fontSize={12}
+                  availabilityStatus={item.availability_status}
                 />
                 <Text sm medium color={colors.text} style={styles.agentName}>
                   {`${item.name}`}

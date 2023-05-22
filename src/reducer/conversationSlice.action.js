@@ -42,7 +42,7 @@ const actions = {
   ),
   fetchConversationStats: createAsyncThunk(
     'conversations/fetchConversationStats',
-    async (_, { getState }) => {
+    async (_, { getState, rejectWithValue }) => {
       try {
         const {
           conversations: { currentInbox, assigneeType, conversationStatus },
@@ -64,6 +64,7 @@ const actions = {
         if (!error.response) {
           throw error;
         }
+        return rejectWithValue(error);
       }
     },
   ),

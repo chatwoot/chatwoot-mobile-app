@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import { useTheme } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
-import { Image, View, Dimensions, SafeAreaView, StyleSheet } from 'react-native';
-import { Header } from 'components';
+import { View, Dimensions, SafeAreaView, StyleSheet } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
-import ImageLoader from '../../components/ImageLoader';
+import { Header, ImageLoader } from 'components';
 
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -73,9 +73,11 @@ const ImageScreen = ({ navigation, route }) => {
           cropHeight={Dimensions.get('window').height}
           imageWidth={Dimensions.get('window').width}
           imageHeight={Dimensions.get('window').height}>
-          <Image
+          <FastImage
             style={styles.bannerImage}
-            source={{ uri: imageUrl }}
+            source={{
+              uri: imageUrl,
+            }}
             onLoadStart={() => onLoadImage(true)}
             onLoadEnd={() => {
               onLoadImage(false);

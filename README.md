@@ -9,7 +9,6 @@
 
 <p align="center">
    <a href="https://github.com/react-native-community/releases/blob/master/CHANGELOG.md"><img src="https://img.shields.io/github/package-json/dependency-version/chatwoot/chatwoot-mobile-app/react-native?color=%2361dafb" alt="Project Dependencies"></a>
-   <a href="https://github.com/akveo/react-native-ui-kitten/releases"><img src="https://img.shields.io/github/package-json/dependency-version/chatwoot/chatwoot-mobile-app/@ui-kitten/components?color=orange" alt="UI Kitten"></a>
   <img src="https://img.shields.io/discord/647412545203994635" alt="Discord">
   <a href="https://discord.gg/cJXdrwS"><img src="https://img.shields.io/badge/chat-Discord-violet?logo=discord" alt="Chat on Discord"></a>
    <a href="http://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="Chat on Discord"></a>

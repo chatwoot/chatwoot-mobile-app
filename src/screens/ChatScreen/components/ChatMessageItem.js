@@ -47,7 +47,7 @@ const createStyles = theme => {
       fontSize: fontSize.sm,
     },
     messagePrivate: {
-      color: colors.colorBlack,
+      color: colors.textDark,
     },
     messageContentLeft: {
       color: colors.textDarker,
@@ -177,7 +177,15 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
     return colors.textLight;
   };
 
-  const listIconColor = type === 'outgoing' ? colors.colorWhite : colors.textDark;
+  const listIconColor = () => {
+    if (isPrivate) {
+      return colors.textDark;
+    }
+    if (type === 'outgoing') {
+      return colors.colorWhite;
+    }
+    return colors.textDark;
+  };
 
   const handleURL = URL => {
     if (/\b(http|https)/.test(URL)) {
@@ -192,9 +200,8 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
   const twitterSenderNameView = () => {
     if (meta) {
       const { thumbnail, additional_attributes: additionalAttributes } = message && message.sender;
-      const { screen_name: screenName } = additionalAttributes;
 
-      const twitterSenderScreenName = screenName || '';
+      const twitterSenderScreenName = additionalAttributes?.screen_name || '';
       const twitterSenderAvatarUrl = thumbnail || '';
 
       const openTwitterSenderProfile = name => {
@@ -352,10 +359,12 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
               marginBottom: 0,
             },
             bullet_list_icon: {
-              color: listIconColor,
+              color: listIconColor(),
+              marginTop: 2,
             },
             ordered_list_icon: {
-              color: listIconColor,
+              color: listIconColor(),
+              marginTop: 1,
             },
           }}>
           {message.content}

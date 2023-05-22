@@ -202,7 +202,7 @@ const conversationSlice = createSlice({
         if (!conversation) {
           return;
         }
-        const lastMessageId = conversation.messages[conversation.messages.length - 1].id;
+        const lastMessageId = conversation?.messages[conversation.messages.length - 1]?.id;
         const messageId = data.messages[data.messages.length - 1].id;
         // If the last message id is same as the message id, we don't need to update the conversation
         if (lastMessageId !== messageId) {

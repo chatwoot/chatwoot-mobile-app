@@ -200,9 +200,8 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
   const twitterSenderNameView = () => {
     if (meta) {
       const { thumbnail, additional_attributes: additionalAttributes } = message && message.sender;
-      const { screen_name: screenName } = additionalAttributes;
 
-      const twitterSenderScreenName = screenName || '';
+      const twitterSenderScreenName = additionalAttributes?.screen_name || '';
       const twitterSenderAvatarUrl = thumbnail || '';
 
       const openTwitterSenderProfile = name => {

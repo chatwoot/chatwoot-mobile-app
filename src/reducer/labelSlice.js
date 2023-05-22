@@ -8,10 +8,7 @@ export const actions = {
       const { payload } = response.data;
       return payload;
     } catch (error) {
-      if (!error.response) {
-        throw error;
-      }
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error);
     }
   }),
 };

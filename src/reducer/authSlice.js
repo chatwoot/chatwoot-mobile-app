@@ -60,6 +60,7 @@ export const actions = {
         return rejectWithValue(errors);
       }
       showToast({ message: I18n.t('ERRORS.COMMON_ERROR') });
+      return rejectWithValue(error);
     }
   }),
   onResetPassword: createAsyncThunk(

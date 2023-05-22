@@ -361,9 +361,11 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
             },
             bullet_list_icon: {
               color: listIconColor(),
+              marginTop: 2,
             },
             ordered_list_icon: {
               color: listIconColor(),
+              marginTop: 1,
             },
           }}>
           {message.content}

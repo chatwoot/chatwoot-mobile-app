@@ -27,8 +27,6 @@ const allReducer = (state, action) => {
   return rootReducer(state, action);
 };
 
-// middlewares.push(createLogger());
-
 if (__DEV__) {
   const createDebugger = require('redux-flipper').default;
   middlewares.push(createDebugger());

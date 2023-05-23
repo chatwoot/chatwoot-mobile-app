@@ -1080,10 +1080,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@chatwoot/react-native-widget@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@chatwoot/react-native-widget/-/react-native-widget-0.0.10.tgz#be636a7bc3fe467b888f9556ebb501267de2f1e2"
-  integrity sha512-lJYtfG2vo5TQYt5aJyKZra5T8Zuwo4rI/Tbu0D3pPcEX5UkE0L2dkXqFgKkm0xi0gCpMELSATQ62IrA5XB5loQ==
+"@chatwoot/react-native-widget@^0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@chatwoot/react-native-widget/-/react-native-widget-0.0.14.tgz#66fa6465ca0c9027023c7ca9562ab27ad1835cb6"
+  integrity sha512-1oOHibUgq8eDLHcSjvrOHtCMIkAvmNN1VR4zv2pwGorNcTAD8eTnBCEQRg9V1z+JkoxmS4vV6GEuNDj1Y6N+Lw==
   dependencies:
     react-native-modal "^13.0.1"
 

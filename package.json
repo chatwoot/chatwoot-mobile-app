@@ -41,7 +41,7 @@
     "testRegex": "src/.*.spec.(js|jsx)$"
   },
   "dependencies": {
-    "@chatwoot/react-native-widget": "^0.0.10",
+    "@chatwoot/react-native-widget": "^0.0.14",
     "@chatwoot/utils": "^0.0.16",
     "@gorhom/bottom-sheet": "^4.4.5",
     "@kesha-antonov/react-native-action-cable": "^1.1.0",

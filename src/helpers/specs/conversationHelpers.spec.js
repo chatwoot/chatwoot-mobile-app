@@ -1,4 +1,9 @@
-import { applyFilters, getUuid, findLastMessage } from 'helpers/conversationHelpers';
+import {
+  applyFilters,
+  getUuid,
+  findLastMessage,
+  replaceMentionsWithUsernames,
+} from 'helpers/conversationHelpers';
 
 describe('conversation helpers', () => {
   it('should return true if conversation status matches filter status', () => {
@@ -136,5 +141,28 @@ describe('#lastMessage', () => {
       },
     };
     expect(findLastMessage(conversation)).toEqual(conversation.messages[1]);
+  });
+});
+
+describe('#replaceMentionsWithUsernames', () => {
+  it('should replace mentions with user name', () => {
+    const message = '[@Peter Don](mention://user/3994/Peter) Are you able to view this content?';
+    expect(replaceMentionsWithUsernames(message)).toEqual(
+      '@Peter Don Are you able to view this content?',
+    );
+  });
+
+  it('should replace mentions with user name have first name and last name', () => {
+    const message = '[@Jane Per](mention://user/21/%241) Are you able to view this content?';
+    expect(replaceMentionsWithUsernames(message)).toEqual(
+      '@Jane Per Are you able to view this content?',
+    );
+  });
+
+  it('should replace mentions with user name have only first name', () => {
+    const message = '[@Jane](mention://user/21/Jane) Are you able to view this content?';
+    expect(replaceMentionsWithUsernames(message)).toEqual(
+      '@Jane Are you able to view this content?',
+    );
   });
 });

@@ -2,10 +2,11 @@ import React, { Fragment, useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
+
 import { Icon, Text } from 'components';
 import { MESSAGE_TYPES } from 'constants';
-
 import { getTextSubstringWithEllipsis } from 'helpers';
+import { replaceMentionsWithUsernames } from 'helpers/conversationHelpers';
 
 const createStyles = theme => {
   const { spacing } = theme;
@@ -37,9 +38,7 @@ const ConversationContent = ({ content, messageType, isPrivate, unReadCount }) =
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
-  const message = content
-    ? content.replace(/\[(@[\w_. ]+)\]\(mention:\/\/(?:user|team)\/\d+\/(.*?)+\)/gi, '$1').trim()
-    : '';
+  const message = replaceMentionsWithUsernames(content);
   return (
     <Fragment>
       {messageType === MESSAGE_TYPES.OUTGOING || messageType === MESSAGE_TYPES.ACTIVITY ? (

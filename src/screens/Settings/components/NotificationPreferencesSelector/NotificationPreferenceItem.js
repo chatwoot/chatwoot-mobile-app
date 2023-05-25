@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
-import { TouchableOpacity, View, Switch, StyleSheet } from 'react-native';
+import { View, Switch, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { Text } from 'components';
+import { Text, Pressable } from 'components';
 
 const createStyles = theme => {
   const { spacing } = theme;
@@ -15,13 +15,13 @@ const createStyles = theme => {
       marginTop: spacing.smaller,
     },
     textView: {
-      width: '85%',
+      width: '84%',
     },
     text: {
       textAlign: 'left',
     },
     radioView: {
-      width: '15%',
+      width: '16%',
       alignItems: 'flex-end',
     },
     radio: {
@@ -43,9 +43,9 @@ const NotificationPreferenceItemComponent = ({ title, item, onCheckedChange, isC
   const { colors } = theme;
 
   return (
-    <TouchableOpacity style={styles.itemView} onPress={() => onCheckedChange({ item })}>
+    <Pressable style={styles.itemView} onPress={() => onCheckedChange({ item })}>
       <View style={styles.textView}>
-        <Text sm medium color={colors.textLight} style={styles.channelText}>
+        <Text sm color={colors.text}>
           {title}
         </Text>
       </View>
@@ -60,7 +60,7 @@ const NotificationPreferenceItemComponent = ({ title, item, onCheckedChange, isC
           value={isChecked}
         />
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

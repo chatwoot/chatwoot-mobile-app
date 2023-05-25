@@ -43,7 +43,7 @@
   "dependencies": {
     "@chatwoot/react-native-widget": "^0.0.14",
     "@chatwoot/utils": "^0.0.16",
-    "@gorhom/bottom-sheet": "^4.4.5",
+    "@gorhom/bottom-sheet": "^4.4.6",
     "@kesha-antonov/react-native-action-cable": "^1.1.0",
     "@native-html/table-plugin": "^5.3.1",
     "@react-native-async-storage/async-storage": "^1.17.10",

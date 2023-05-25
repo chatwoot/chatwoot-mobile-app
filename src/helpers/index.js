@@ -124,11 +124,6 @@ export const checkImageExist = ({ thumbnail }) => {
     });
 };
 
-export const getInboxName = ({ inboxes, inboxId }) => {
-  const inbox = inboxes.find(item => item.id === inboxId);
-  return inbox ? inbox.name : null;
-};
-
 export const getGroupedConversation = ({ conversations }) => {
   const conversationGroupedByDate = groupBy(Object.values(conversations), message =>
     new DateHelper(message.created_at).format(),
@@ -201,7 +196,7 @@ export const findUniqueMessages = ({ allMessages }) => {
 };
 
 export const addOrRemoveItemFromArray = (array, key) => {
-  const index = array.findIndex(o => o === key);
+  const index = array.indexOf(key);
   if (index === -1) {
     array.push(key);
   } else {

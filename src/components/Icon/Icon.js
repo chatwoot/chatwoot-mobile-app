@@ -8,6 +8,7 @@ const propTypes = {
   type: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   icon: PropTypes.string,
   color: PropTypes.string,
+  viewBox: PropTypes.string,
 };
 const defaultProps = {
   size: 22,
@@ -23,12 +24,12 @@ const getPathSource = ({ icon }) => {
   return path;
 };
 
-const Icon = ({ size, icon, color }) => {
+const Icon = ({ size, icon, color, viewBox = '0 0 24 24' }) => {
   const path = getPathSource({ icon });
   return (
     <Svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
+      viewBox={viewBox}
       fill={color}
       aria-hidden="true"
       width={size}

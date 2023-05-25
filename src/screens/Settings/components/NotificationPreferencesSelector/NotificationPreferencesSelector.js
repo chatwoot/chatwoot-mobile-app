@@ -56,21 +56,27 @@ const NotificationPreferenceSelector = ({ activeValue, onPress, colors }) => {
 
   const onEmailItemChange = ({ item }) => {
     setEmailFlags(addOrRemoveItemFromArray([...selectedEmailFlags], item));
-    savePreferences();
+    savePreferences({
+      emailNotification: [...selectedEmailFlags, item],
+      pushNotification: selectedPushFlags,
+    });
   };
 
   const onPushItemChange = ({ item }) => {
     setPushFlags(addOrRemoveItemFromArray([...selectedPushFlags], item));
-    savePreferences();
+    savePreferences({
+      emailNotification: selectedEmailFlags,
+      pushNotification: selectedPushFlags,
+    });
   };
 
-  const savePreferences = () => {
+  const savePreferences = ({ emailNotification, pushNotification }) => {
     AnalyticsHelper.track(PROFILE_EVENTS.CHANGE_PREFERENCES);
     dispatch(
       settingsActions.updateNotificationSettings({
         notification_settings: {
-          selected_email_flags: selectedEmailFlags,
-          selected_push_flags: selectedPushFlags,
+          selected_email_flags: emailNotification,
+          selected_push_flags: pushNotification,
         },
       }),
     );

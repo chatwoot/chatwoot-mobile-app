@@ -24,7 +24,7 @@ const propTypes = {
   priority: PropTypes.string,
 };
 
-const PriorityItems = ({ priority }) => {
+const ConversationPriority = ({ priority }) => {
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -45,5 +45,5 @@ const PriorityItems = ({ priority }) => {
   );
 };
 
-PriorityItems.propTypes = propTypes;
-export default PriorityItems;
+ConversationPriority.propTypes = propTypes;
+export default ConversationPriority;

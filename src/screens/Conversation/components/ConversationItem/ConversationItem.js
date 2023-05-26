@@ -18,7 +18,7 @@ import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
 import ConversationLabel from './ConversationLabels';
-import ConversationPriority from './PriorityItems';
+import ConversationPriority from './ConversationPriority';
 
 const propTypes = {
   item: PropTypes.shape({

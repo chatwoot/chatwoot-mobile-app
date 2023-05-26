@@ -41,7 +41,7 @@ import { Header, Text, Pressable, Icon } from 'components';
 
 // Bottom sheet
 import AccountsSelector from './components/AccountsSelector';
-import NotificationPreferencesSelector from './components/NotificationPreferencesSelector/NotificationPreferencesSelector';
+import NotificationPreferenceSelector from './components/NotificationPreferenceSelector';
 import LanguageSelector from './components/LanguageSelector';
 
 const deviceHeight = Dimensions.get('window').height;
@@ -247,7 +247,7 @@ const SettingsScreen = () => {
             showHeader
             headerTitle={i18n.t('SETTINGS.NOTIFICATION_PREFERENCES')}
             closeFilter={closeNotificationPreferencesModal}
-            children={<NotificationPreferencesSelector colors={colors} />}
+            children={<NotificationPreferenceSelector colors={colors} />}
           />
           <BottomSheetModal
             bottomSheetModalRef={changeLanguageModal}

@@ -45,38 +45,41 @@ const NotificationPreferenceSelector = ({ activeValue, onPress, colors }) => {
   const styles = useMemo(() => createStyles(theme), [theme]);
 
   const {
-    all_email_flags: emailFlags,
-    all_push_flags: pushFlags,
+    all_email_flags: allEmailFlags,
+    all_push_flags: allPushFlags,
     selected_email_flags,
     selected_push_flags,
   } = useSelector(selectNotificationSettings);
+
   const [selectedEmailFlags, setEmailFlags] = useState(selected_email_flags);
   const [selectedPushFlags, setPushFlags] = useState(selected_push_flags);
   const dispatch = useDispatch();
 
   const onEmailItemChange = ({ item }) => {
-    setEmailFlags(addOrRemoveItemFromArray([...selectedEmailFlags], item));
+    const emailFlags = addOrRemoveItemFromArray([...selectedEmailFlags], item);
+    setEmailFlags(emailFlags);
     savePreferences({
-      emailNotification: [...selectedEmailFlags, item],
-      pushNotification: selectedPushFlags,
+      emailFlags,
+      pushFlags: selectedPushFlags,
     });
   };
 
   const onPushItemChange = ({ item }) => {
-    setPushFlags(addOrRemoveItemFromArray([...selectedPushFlags], item));
+    const pushFlags = addOrRemoveItemFromArray([...selectedPushFlags], item);
+    setPushFlags(pushFlags);
     savePreferences({
-      emailNotification: selectedEmailFlags,
-      pushNotification: selectedPushFlags,
+      emailFlags: selectedEmailFlags,
+      pushFlags: pushFlags,
     });
   };
 
-  const savePreferences = ({ emailNotification, pushNotification }) => {
+  const savePreferences = ({ emailFlags, pushFlags }) => {
     AnalyticsHelper.track(PROFILE_EVENTS.CHANGE_PREFERENCES);
     dispatch(
       settingsActions.updateNotificationSettings({
         notification_settings: {
-          selected_email_flags: emailNotification,
-          selected_push_flags: pushNotification,
+          selected_email_flags: emailFlags,
+          selected_push_flags: pushFlags,
         },
       }),
     );
@@ -88,7 +91,7 @@ const NotificationPreferenceSelector = ({ activeValue, onPress, colors }) => {
         <Text semiBold color={colors.textDark} style={styles.itemMainViewItem}>
           {i18n.t('NOTIFICATION_PREFERENCE.EMAIL')}
         </Text>
-        {emailFlags.map(
+        {allEmailFlags.map(
           item =>
             NOTIFICATION_PREFERENCE_TYPES[item] && (
               <NotificationPreferenceItem
@@ -105,7 +108,7 @@ const NotificationPreferenceSelector = ({ activeValue, onPress, colors }) => {
         <Text semiBold color={colors.textDark} style={styles.itemMainViewItem}>
           {i18n.t('NOTIFICATION_PREFERENCE.PUSH')}
         </Text>
-        {pushFlags.map(
+        {allPushFlags.map(
           item =>
             NOTIFICATION_PREFERENCE_TYPES[item] && (
               <NotificationPreferenceItem

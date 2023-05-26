@@ -34,6 +34,20 @@ export const CONVERSATION_STATUSES = [
     name: 'All',
   },
 ];
+export const SORT_TYPES = [
+  {
+    key: 'latest',
+    name: 'Latest',
+  },
+  {
+    key: 'sort_on_created_at',
+    name: 'Created At',
+  },
+  {
+    key: 'sort_on_priority',
+    name: 'Priority',
+  },
+];
 
 export const ASSIGNEE_TYPES = [
   {

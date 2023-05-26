@@ -18,7 +18,9 @@ import {
   setConversationStatus,
   clearAllConversations,
   setActiveInbox,
+  setSortFilter,
   selectConversationMeta,
+  selectSortFilter,
 } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';
 import createStyles from './ConversationScreen.style';
@@ -26,7 +28,7 @@ import i18n from 'i18n';
 import { FilterButton, ClearFilterButton, Header } from 'components';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { ConversationList, ConversationFilter, ConversationInboxFilter } from './components';
-import { CONVERSATION_STATUSES, ASSIGNEE_TYPES } from 'constants';
+import { CONVERSATION_STATUSES, ASSIGNEE_TYPES, SORT_TYPES } from 'constants';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import { actions as inboxActions, inboxesSelector } from 'reducer/inboxSlice';
@@ -54,6 +56,7 @@ const ConversationScreen = () => {
   const styles = useMemo(() => createStyles(theme), [theme]);
   const conversationStatus = useSelector(selectConversationStatus);
   const assigneeType = useSelector(selectAssigneeType);
+  const sortFilter = useSelector(selectSortFilter) || SORT_TYPES[0].key;
   const activeInboxId = useSelector(selectActiveInbox);
   const webSocketUrl = useSelector(selectWebSocketUrl);
   const installationUrl = useSelector(selectInstallationUrl);
@@ -125,6 +128,7 @@ const ConversationScreen = () => {
             assignee: assigneeType,
             status: conversationStatus,
             inboxId: activeInboxId,
+            sortBy: sortFilter,
           });
         }
       }
@@ -133,7 +137,15 @@ const ConversationScreen = () => {
     return () => {
       appStateListener?.remove();
     };
-  }, [appState, pageNumber, assigneeType, conversationStatus, activeInboxId, loadConversations]);
+  }, [
+    appState,
+    pageNumber,
+    assigneeType,
+    conversationStatus,
+    activeInboxId,
+    loadConversations,
+    sortFilter,
+  ]);
 
   const onChangePage = async () => {
     setPage(pageNumber + 1);
@@ -148,6 +160,7 @@ const ConversationScreen = () => {
       assignee: assigneeType,
       status: conversationStatus,
       inboxId: activeInboxId,
+      sortBy: sortFilter,
     });
   };
 
@@ -157,17 +170,19 @@ const ConversationScreen = () => {
       assignee: assigneeType,
       status: conversationStatus,
       inboxId: activeInboxId,
+      sortBy: sortFilter,
     });
-  }, [pageNumber, assigneeType, conversationStatus, activeInboxId, loadConversations]);
+  }, [pageNumber, assigneeType, conversationStatus, activeInboxId, loadConversations, sortFilter]);
 
   const loadConversations = useCallback(
-    ({ page, assignee, status, inboxId }) => {
+    ({ page, assignee, status, inboxId, sortBy }) => {
       dispatch(
         conversationActions.fetchConversations({
           pageNumber: page,
           assigneeType: assignee,
           conversationStatus: status,
           inboxId: inboxId,
+          sortBy,
         }),
       );
     },
@@ -229,6 +244,16 @@ const ConversationScreen = () => {
     closeInboxFilterModal();
   };
 
+  const onSelectSortFilter = async item => {
+    AnalyticsHelper.track(CONVERSATION_EVENTS.APPLY_FILTER, {
+      type: 'sort',
+    });
+    await dispatch(clearAllConversations());
+    await dispatch(setSortFilter(item.key));
+    setPage(1);
+    closeSortFilterModal();
+  };
+
   useFocusEffect(
     useCallback(() => {
       return () => {
@@ -271,6 +296,15 @@ const ConversationScreen = () => {
   }, []);
   const closeInboxFilterModal = useCallback(() => {
     inboxFilterModal.current?.dismiss();
+  }, []);
+
+  // Sort filter modal
+  const sortFilterModal = useRef(null);
+  const toggleSortFilterModal = useCallback(() => {
+    sortFilterModal.current.present() || sortFilterModal.current?.dismiss();
+  }, []);
+  const closeSortFilterModal = useCallback(() => {
+    sortFilterModal.current?.dismiss();
   }, []);
 
   const hasActiveFilters =
@@ -332,6 +366,13 @@ const ConversationScreen = () => {
             onPress={toggleInboxFilterModal}
             isActive={activeInboxId !== 0}
           />
+          <FilterButton
+            label={`Sort: ${
+              SORT_TYPES.find(item => (item.key === sortFilter ? item.name : null)).name
+            }`}
+            onPress={toggleSortFilterModal}
+            isActive={sortFilter !== 'latest'}
+          />
         </ScrollView>
         <BottomSheetModal
           bottomSheetModalRef={conversationAssigneeModal}
@@ -344,6 +385,21 @@ const ConversationScreen = () => {
               activeValue={assigneeType}
               items={ASSIGNEE_TYPES}
               onChangeFilter={onSelectAssigneeType}
+              colors={colors}
+            />
+          }
+        />
+        <BottomSheetModal
+          bottomSheetModalRef={sortFilterModal}
+          initialSnapPoints={conversationFilterModalSnapPoints}
+          showHeader
+          headerTitle={i18n.t('FILTER.FILTER_BY_ASSIGNEE_TYPE')}
+          closeFilter={closeSortFilterModal}
+          children={
+            <ConversationFilter
+              activeValue={sortFilter}
+              items={SORT_TYPES}
+              onChangeFilter={onSelectSortFilter}
               colors={colors}
             />
           }
@@ -387,6 +443,7 @@ const ConversationScreen = () => {
           assigneeType={assigneeType}
           conversationStatus={conversationStatus}
           activeInboxId={activeInboxId}
+          sortBy={sortFilter}
           isCountEnabled
         />
       </View>

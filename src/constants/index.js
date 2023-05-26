@@ -167,6 +167,13 @@ export const AVAILABILITY_TYPES = {
   offline: 'OFFLINE',
 };
 
+export const CONVERSATION_PRIORITY = {
+  URGENT: 'urgent',
+  HIGH: 'high',
+  LOW: 'low',
+  MEDIUM: 'medium',
+};
+
 export const NOTIFICATION_PREFERENCE_TYPES = {
   push_conversation_creation: 'CONVERSATION_CREATE_PUSH',
   push_conversation_assignment: 'CONVERSATION_ASSIGNEE_PUSH',

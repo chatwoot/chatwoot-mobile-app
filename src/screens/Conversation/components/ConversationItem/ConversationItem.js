@@ -169,7 +169,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
             <UserAvatar
               thumbnail={thumbnail}
               userName={name}
-              size={46}
+              size={40}
               fontSize={16}
               defaultBGColor={colors.primary}
               channel={channel}
@@ -283,7 +283,8 @@ const createStyles = theme => {
       alignItems: 'flex-start',
     },
     avatarView: {
-      alignSelf: 'center',
+      alignSelf: 'flex-start',
+      marginTop: spacing.large,
       marginRight: spacing.smaller,
     },
     contentView: {

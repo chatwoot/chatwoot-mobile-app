@@ -18,6 +18,7 @@ import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
 import ConversationLabel from './ConversationLabels';
+import ConversationPriority from './ConversationPriority';
 
 const propTypes = {
   item: PropTypes.shape({
@@ -38,6 +39,7 @@ const propTypes = {
     inbox_id: PropTypes.number,
     id: PropTypes.number,
     unread_count: PropTypes.number,
+    priority: PropTypes.string,
     status: PropTypes.string,
     last_non_activity_message: PropTypes.object,
   }).isRequired,
@@ -64,6 +66,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
     inbox_id: inboxId,
     id,
     unread_count: unreadCount,
+    priority,
   } = item;
 
   const assigneeName = assignee?.name;
@@ -72,6 +75,8 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
   if (!lastMessage) {
     return null;
   }
+
+  const hasPriority = priority !== null;
 
   const content = lastMessage?.content;
   const { created_at, attachments, message_type, private: isPrivate } = lastMessage;
@@ -164,7 +169,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
             <UserAvatar
               thumbnail={thumbnail}
               userName={name}
-              size={46}
+              size={40}
               fontSize={16}
               defaultBGColor={colors.primary}
               channel={channel}
@@ -189,14 +194,21 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
                   />
                 </View>
               </View>
-              {showAssigneeLabel && assigneeName && (
-                <View style={styles.assigneeLabel}>
-                  <Icon icon="person-outline" color={colors.textLighter} size={12} />
-                  <Text xs color={colors.textLighter}>
-                    {getTextSubstringWithEllipsis(assigneeName, 14)}
-                  </Text>
-                </View>
-              )}
+              <View style={styles.metaDetails}>
+                {showAssigneeLabel && assigneeName && (
+                  <View style={styles.assigneeLabel}>
+                    <Icon icon="person-outline" color={colors.textLighter} size={12} />
+                    <Text xs color={colors.textLighter}>
+                      {getTextSubstringWithEllipsis(assigneeName, 14)}
+                    </Text>
+                  </View>
+                )}
+                {hasPriority && (
+                  <View style={styles.priorityView}>
+                    <ConversationPriority priority={priority} />
+                  </View>
+                )}
+              </View>
             </View>
             <View style={styles.conversationDetails}>
               <View>
@@ -271,7 +283,8 @@ const createStyles = theme => {
       alignItems: 'flex-start',
     },
     avatarView: {
-      alignSelf: 'center',
+      alignSelf: 'flex-start',
+      marginTop: spacing.large,
       marginRight: spacing.smaller,
     },
     contentView: {
@@ -350,6 +363,9 @@ const createStyles = theme => {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    priorityView: {
+      marginLeft: spacing.micro,
     },
   });
 };

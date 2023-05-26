@@ -9,14 +9,8 @@ import { useNavigation } from '@react-navigation/native';
 import DeviceInfo from 'react-native-device-info';
 import ChatWootWidget from '@chatwoot/react-native-widget';
 import { View, Image } from 'react-native';
-import { Header, Text, Pressable, Icon } from 'components';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { useFocusEffect } from '@react-navigation/native';
-import UserInformation from './components/UserInformation';
-import AvailabilityStatus from './components/AvailabilityStatus';
-import AccordionItem from './components/AccordionItem';
-import AccountsSelector from './components/AccountsSelector';
-import LanguageSelector from './components/LanguageSelector';
 import settings from './constants/settings';
 import { LANGUAGES } from 'constants';
 import i18n from 'i18n';
@@ -39,6 +33,17 @@ import {
 } from 'reducer/authSlice';
 import { clearAllConversations } from 'reducer/conversationSlice';
 import { selectLocale, setLocale } from 'reducer/settingsSlice';
+
+import UserInformation from './components/UserInformation';
+import AvailabilityStatus from './components/AvailabilityStatus';
+import AccordionItem from './components/AccordionItem';
+import { Header, Text, Pressable, Icon } from 'components';
+
+// Bottom sheet
+import AccountsSelector from './components/AccountsSelector';
+import NotificationPreferenceSelector from './components/NotificationPreferenceSelector';
+import LanguageSelector from './components/LanguageSelector';
+
 const deviceHeight = Dimensions.get('window').height;
 
 const appName = DeviceInfo.getApplicationName();
@@ -112,6 +117,20 @@ const SettingsScreen = () => {
     switchAccountModal.current?.dismiss();
   }, []);
 
+  // Notification Preferences bottom sheet
+  const notificationPreferencesModal = useRef(null);
+  const notificationPreferencesModalSnapPoints = useMemo(
+    () => [deviceHeight - 150, deviceHeight - 150],
+    [],
+  );
+  const toggleNotificationPreferencesModal = useCallback(() => {
+    notificationPreferencesModal.current.present() ||
+      notificationPreferencesModal.current?.dismiss();
+  }, []);
+  const closeNotificationPreferencesModal = useCallback(() => {
+    notificationPreferencesModal.current?.dismiss();
+  }, []);
+
   // Language bottom sheet
   const changeLanguageModal = useRef(null);
   const changeLanguageModalModalSnapPoints = useMemo(
@@ -143,10 +162,6 @@ const SettingsScreen = () => {
     },
     [closeChangeLanguageModal, navigation, dispatch],
   );
-
-  const openNotificationPreferences = useCallback(() => {
-    navigation.navigate('NotificationPreference', { accounts });
-  }, [navigation, accounts]);
 
   const activeValue = item => {
     switch (item.routeName) {
@@ -202,7 +217,7 @@ const SettingsScreen = () => {
                     toggleSwitchAccountModal();
                   }
                   if (item.routeName === 'NotificationPreferences') {
-                    openNotificationPreferences();
+                    toggleNotificationPreferencesModal();
                   }
                   if (item.routeName === 'ChangeLanguage') {
                     toggleChangeLanguageModal();
@@ -225,6 +240,14 @@ const SettingsScreen = () => {
                 onPress={onChangeAccount}
               />
             }
+          />
+          <BottomSheetModal
+            bottomSheetModalRef={notificationPreferencesModal}
+            initialSnapPoints={notificationPreferencesModalSnapPoints}
+            showHeader
+            headerTitle={i18n.t('SETTINGS.NOTIFICATION_PREFERENCES')}
+            closeFilter={closeNotificationPreferencesModal}
+            children={<NotificationPreferenceSelector colors={colors} />}
           />
           <BottomSheetModal
             bottomSheetModalRef={changeLanguageModal}

@@ -38,7 +38,7 @@ const BottomSheetModal = ({
         {...props}
         enableTouchThrough={false}
         pressBehavior={'close'}
-        opacity={0.4}
+        opacity={0.5}
         disappearsOnIndex={-1}
         appearsOnIndex={0}
       />

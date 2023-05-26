@@ -179,9 +179,12 @@ export const NOTIFICATION_PREFERENCE_TYPES = {
   push_conversation_assignment: 'CONVERSATION_ASSIGNEE_PUSH',
   push_assigned_conversation_new_message: 'CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH',
   push_conversation_mention: 'CONVERSATION_MENTION',
+  push_participating_conversation_new_message: 'CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH',
   email_conversation_creation: 'CONVERSATION_CREATE_EMAIL',
   email_conversation_assignment: 'CONVERSATION_ASSIGNEE_EMAIL',
   email_assigned_conversation_new_message: 'CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL',
+  email_conversation_mention: 'CONVERSATION_MENTION_EMAIL',
+  email_participating_conversation_new_message: 'CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL',
 };
 
 export const NOTIFICATION_TYPES = [

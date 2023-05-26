@@ -14,7 +14,6 @@ import LoginScreen from './screens/LoginScreen/LoginScreen';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
 import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
-import NotificationPreference from './screens/NotificationPreference/NotificationPreference';
 import ConversationDetailsScreen from './screens/ConversationDetails/ConversationDetailsScreen';
 import ConversationAction from './screens/ConversationAction/ConversationAction';
 import TabStack from './components/TabBar';
@@ -149,7 +148,6 @@ const App = () => {
                   <Stack.Screen name="ImageScreen" component={ImageScreen} />
                   <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
                   <Stack.Screen name="ConversationAction" component={ConversationAction} />
-                  <Stack.Screen name="NotificationPreference" component={NotificationPreference} />
                 </Fragment>
               ) : (
                 <Fragment>

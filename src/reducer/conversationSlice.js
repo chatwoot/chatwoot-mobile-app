@@ -1,7 +1,7 @@
 import { createSlice, createEntityAdapter, createDraftSafeSelector } from '@reduxjs/toolkit';
 const lodashFilter = require('lodash.filter');
 import actions from './conversationSlice.action';
-import { CONVERSATION_PRIORITY } from 'constants';
+import { CONVERSATION_PRIORITY_ORDER } from 'constants';
 import { applyFilters, findPendingMessageIndex } from '../helpers/conversationHelpers';
 export const conversationAdapter = createEntityAdapter({
   selectId: conversation => conversation.id,
@@ -243,7 +243,7 @@ export const selectors = {
         latest: (a, b) => b.last_activity_at - a.last_activity_at,
         sort_on_created_at: (a, b) => a.created_at - b.created_at,
         sort_on_priority: (a, b) => {
-          return CONVERSATION_PRIORITY[a.priority] - CONVERSATION_PRIORITY[b.priority];
+          return CONVERSATION_PRIORITY_ORDER[a.priority] - CONVERSATION_PRIORITY_ORDER[b.priority];
         },
       };
       const sortedConversations = conversations.sort(comparator[sortBy]);

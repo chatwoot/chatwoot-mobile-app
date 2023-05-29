@@ -188,6 +188,14 @@ export const CONVERSATION_PRIORITY = {
   MEDIUM: 'medium',
 };
 
+export const CONVERSATION_PRIORITY_ORDER = {
+  urgent: 1,
+  high: 2,
+  medium: 3,
+  low: 4,
+  null: 5,
+};
+
 export const NOTIFICATION_PREFERENCE_TYPES = {
   push_conversation_creation: 'CONVERSATION_CREATE_PUSH',
   push_conversation_assignment: 'CONVERSATION_ASSIGNEE_PUSH',

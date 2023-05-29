@@ -195,6 +195,7 @@ const ConversationScreen = () => {
     await dispatch(setConversationStatus('open'));
     await dispatch(setAssigneeType('mine'));
     await dispatch(setActiveInbox(0));
+    await dispatch(setSortFilter('latest'));
     setPage(1);
   };
 
@@ -308,12 +309,16 @@ const ConversationScreen = () => {
   }, []);
 
   const hasActiveFilters =
-    conversationStatus !== 'open' || assigneeType !== 'mine' || activeInboxId !== 0;
+    conversationStatus !== 'open' ||
+    assigneeType !== 'mine' ||
+    activeInboxId !== 0 ||
+    sortFilter !== 'latest';
 
   const filtersCount =
     Number(conversationStatus !== 'open') +
     Number(assigneeType !== 'mine') +
-    Number(activeInboxId !== 0);
+    Number(activeInboxId !== 0) +
+    Number(sortFilter !== 'latest');
 
   const activeInboxDetails = inboxes.find(inbox => inbox.id === activeInboxId);
   const iconNameByInboxType = () => {
@@ -393,7 +398,7 @@ const ConversationScreen = () => {
           bottomSheetModalRef={sortFilterModal}
           initialSnapPoints={conversationFilterModalSnapPoints}
           showHeader
-          headerTitle={i18n.t('FILTER.FILTER_BY_ASSIGNEE_TYPE')}
+          headerTitle={i18n.t('FILTER.SORT_BY')}
           closeFilter={closeSortFilterModal}
           children={
             <ConversationFilter

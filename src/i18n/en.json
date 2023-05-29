@@ -89,6 +89,7 @@
     "ALL_INBOXES": "All inboxes",
     "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
     "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "SORT_BY": "Sort by",
     "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "Conversation Filter",
     "CHOOSE_INBOX": "Choose Inbox",

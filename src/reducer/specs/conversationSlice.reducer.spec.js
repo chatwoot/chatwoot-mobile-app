@@ -27,6 +27,7 @@ describe('conversations reducer', () => {
       isAllMessagesFetched: false,
       conversationStatus: 'open',
       assigneeType: 'mine',
+      sortFilter: 'latest',
       currentInbox: 0,
       loadingMessages: false,
       isChangingConversationAssignee: false,

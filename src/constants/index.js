@@ -34,6 +34,20 @@ export const CONVERSATION_STATUSES = [
     name: 'All',
   },
 ];
+export const SORT_TYPES = [
+  {
+    key: 'latest',
+    name: 'Latest',
+  },
+  {
+    key: 'sort_on_created_at',
+    name: 'Created At',
+  },
+  {
+    key: 'sort_on_priority',
+    name: 'Priority',
+  },
+];
 
 export const ASSIGNEE_TYPES = [
   {
@@ -172,6 +186,14 @@ export const CONVERSATION_PRIORITY = {
   HIGH: 'high',
   LOW: 'low',
   MEDIUM: 'medium',
+};
+
+export const CONVERSATION_PRIORITY_ORDER = {
+  urgent: 1,
+  high: 2,
+  medium: 3,
+  low: 4,
+  null: 5,
 };
 
 export const NOTIFICATION_PREFERENCE_TYPES = {

@@ -12,7 +12,13 @@ const actions = {
   fetchConversations: createAsyncThunk(
     'conversations/fetchConversations',
     async (
-      { pageNumber = 1, assigneeType = 'mine', conversationStatus = 'open', inboxId = 0 },
+      {
+        pageNumber = 1,
+        assigneeType = 'mine',
+        conversationStatus = 'open',
+        inboxId = 0,
+        sortBy = 'latest',
+      },
       { rejectWithValue },
     ) => {
       try {
@@ -21,6 +27,7 @@ const actions = {
           assignee_type: assigneeType === 'mine' ? 'me' : assigneeType,
           status: conversationStatus,
           page: pageNumber,
+          sort_by: sortBy,
         };
         const response = await axios.get('conversations', {
           params,

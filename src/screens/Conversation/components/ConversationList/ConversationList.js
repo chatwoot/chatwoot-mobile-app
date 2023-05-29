@@ -20,6 +20,7 @@ import { selectAllTypingUsers } from 'reducer/conversationTypingSlice';
 
 const propTypes = {
   assigneeType: PropTypes.string,
+  sortBy: PropTypes.string,
   conversationStatus: PropTypes.string,
   activeInboxId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onChangePageNumber: PropTypes.func,
@@ -37,6 +38,7 @@ const ConversationList = ({
   assigneeType,
   conversationStatus,
   activeInboxId,
+  sortBy,
   isCountEnabled,
   onChangePageNumber,
   refreshConversations,
@@ -53,6 +55,7 @@ const ConversationList = ({
     conversationStatus,
     inboxId: activeInboxId,
     userId,
+    sortBy,
   };
 
   const allConversations = useSelector(state =>

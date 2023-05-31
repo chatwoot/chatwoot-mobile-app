@@ -1,10 +1,9 @@
-import React, { createRef, useMemo } from 'react';
+import React, { useMemo, useRef, useCallback } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { Dimensions, View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { Icon, Pressable, Text } from 'components';
 import Clipboard from '@react-native-clipboard/clipboard';
-import ActionSheet from 'react-native-actions-sheet';
 import { messageStamp } from 'helpers/TimeHelper';
 import { openURL } from 'helpers/UrlHelper';
 import { UserAvatar } from 'components';
@@ -15,6 +14,9 @@ import Email from '../components/Email';
 import ChatAttachmentItem from './ChatAttachmentItem';
 import MessageDeliveryStatus from './MessageDeliveryStatus';
 import { MESSAGE_STATUS, INBOX_TYPES } from 'constants';
+
+import BottomSheetModal from 'components/BottomSheet/BottomSheet';
+const deviceHeight = Dimensions.get('window').height;
 
 const createStyles = theme => {
   const { spacing, borderRadius, fontSize, colors } = theme;
@@ -86,6 +88,10 @@ const createStyles = theme => {
     senderScreenName: {
       paddingHorizontal: spacing.micro,
     },
+    bottomSheetView: {
+      flex: 1,
+      paddingHorizontal: spacing.small,
+    },
   });
 };
 
@@ -122,7 +128,6 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
   const theme = useTheme();
   const { colors, fontWeight } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
-  const actionSheetRef = createRef();
   const { attachments, sender = {} } = message;
 
   const { meta } = conversation;
@@ -193,10 +198,6 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
     }
   };
 
-  const showTooltip = () => {
-    actionSheetRef.current?.setModalVisible();
-  };
-
   const twitterSenderNameView = () => {
     if (meta) {
       const { thumbnail, additional_attributes: additionalAttributes } = message && message.sender;
@@ -230,9 +231,17 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
     }
   };
 
-  const onPressItem = ({ itemType }) => {
-    actionSheetRef.current?.setModalVisible(false);
+  const messageActionModal = useRef(null);
+  const messageActionModalSnapPoints = useMemo(() => [deviceHeight - 680, deviceHeight - 680], []);
+  const toggleMessageActionModal = useCallback(() => {
+    messageActionModal.current.present() || messageActionModal.current?.dismiss();
+  }, []);
+  const closeMessageActionModal = useCallback(() => {
+    messageActionModal.current?.dismiss();
+  }, []);
 
+  const onPressItem = ({ itemType }) => {
+    closeMessageActionModal();
     if (itemType === 'copy') {
       Clipboard.setString(message.content);
       showToast({ message: 'Message copied to clipboard' });
@@ -394,7 +403,7 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
   const isMessageContentExist = emailMessageContent() || message.content;
 
   return (
-    <Pressable onLongPress={showTooltip}>
+    <Pressable onLongPress={toggleMessageActionModal}>
       <View
         style={[
           styles.message,
@@ -428,16 +437,23 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
             contactLastSeenAt={conversation.contact_last_seen_at}
           />
         </View>
-        <ActionSheet ref={actionSheetRef} defaultOverlayOpacity={0.3}>
-          {senderName ? (
-            <ChatMessageActionItem
-              text={`Sent by: ${senderName}`}
-              itemType="author"
-              onPressItem={onPressItem}
-            />
-          ) : null}
-          <ChatMessageActionItem text="Copy" itemType="copy" onPressItem={onPressItem} />
-        </ActionSheet>
+        <BottomSheetModal
+          bottomSheetModalRef={messageActionModal}
+          initialSnapPoints={messageActionModalSnapPoints}
+          closeFilter={closeMessageActionModal}
+          children={
+            <View style={styles.bottomSheetView}>
+              {senderName ? (
+                <ChatMessageActionItem
+                  text={`Sent by: ${senderName}`}
+                  itemType="author"
+                  onPressItem={onPressItem}
+                />
+              ) : null}
+              <ChatMessageActionItem text="Copy" itemType="copy" onPressItem={onPressItem} />
+            </View>
+          }
+        />
       </View>
       {!isPrivate && isTwitterChannel ? twitterSenderNameView() : null}
     </Pressable>

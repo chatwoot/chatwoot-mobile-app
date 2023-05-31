@@ -1,10 +1,17 @@
-import React, { createRef, useState, useMemo } from 'react';
+import React, { createRef, useState, useMemo, useRef, useCallback } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { SafeAreaView, View, AppState, FlatList, ActivityIndicator } from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  AppState,
+  FlatList,
+  ActivityIndicator,
+  Dimensions,
+} from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import ActionSheet from 'react-native-actions-sheet';
+import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import i18n from 'i18n';
 import { Header } from 'components';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
@@ -22,6 +29,8 @@ import {
   selectAllNotificationsLoaded,
   actions as notificationsActions,
 } from 'reducer/notificationSlice';
+
+const deviceHeight = Dimensions.get('window').height;
 
 const LoaderData = new Array(24).fill(0);
 const renderItemLoader = () => <NotificationItemLoader />;
@@ -136,12 +145,8 @@ const NotificationScreen = ({ navigation }) => {
     });
   };
 
-  const showActionSheet = () => {
-    actionSheetRef.current?.setModalVisible();
-  };
-
   const onPressAction = ({ itemType }) => {
-    actionSheetRef.current?.hide();
+    closeNotificationActionModal();
     if (itemType === 'mark_all') {
       dispatch(notificationsActions.markAllNotificationAsRead());
     }
@@ -153,12 +158,24 @@ const NotificationScreen = ({ navigation }) => {
     wait(1000).then(() => setRefreshing(false));
   };
 
+  const notificationActionModal = useRef(null);
+  const notificationActionModalSnapPoints = useMemo(
+    () => [deviceHeight - 680, deviceHeight - 680],
+    [],
+  );
+  const toggleNotificationActionModal = useCallback(() => {
+    notificationActionModal.current.present() || notificationActionModal.current?.dismiss();
+  }, []);
+  const closeNotificationActionModal = useCallback(() => {
+    notificationActionModal.current?.dismiss();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
         headerText={i18n.t('NOTIFICATION.HEADER_TITLE')}
         rightIcon="more-horizontal"
-        onPressRight={showActionSheet}
+        onPressRight={toggleNotificationActionModal}
       />
       <View style={styles.container}>
         {!isFetching || notifications.length ? (
@@ -191,18 +208,27 @@ const NotificationScreen = ({ navigation }) => {
           renderEmptyList()
         )}
       </View>
-      <ActionSheet ref={actionSheetRef} initialOffsetFromBottom={0.6} defaultOverlayOpacity={0.3}>
-        <NotificationActionItem
-          onPressItem={onPressAction}
-          text={i18n.t('NOTIFICATION.MARK_ALL')}
-          itemType="mark_all"
-        />
-        <NotificationActionItem
-          onPressItem={onPressAction}
-          text={i18n.t('NOTIFICATION.CANCEL')}
-          itemType="cancel"
-        />
-      </ActionSheet>
+      <BottomSheetModal
+        bottomSheetModalRef={notificationActionModal}
+        initialSnapPoints={notificationActionModalSnapPoints}
+        closeFilter={closeNotificationActionModal}
+        children={
+          <View style={styles.bottomSheetView}>
+            <NotificationActionItem
+              onPressItem={onPressAction}
+              text={i18n.t('NOTIFICATION.MARK_ALL')}
+              iconName="mail-outline"
+              itemType="mark_all"
+            />
+            <NotificationActionItem
+              onPressItem={onPressAction}
+              text={i18n.t('NOTIFICATION.CANCEL')}
+              iconName="dismiss-circle-outline"
+              itemType="cancel"
+            />
+          </View>
+        }
+      />
     </SafeAreaView>
   );
 };

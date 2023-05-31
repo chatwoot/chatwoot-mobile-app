@@ -14,5 +14,9 @@ export default theme => {
       height: '100%',
       backgroundColor: colors.background,
     },
+    bottomSheetView: {
+      flex: 1,
+      paddingHorizontal: spacing.small,
+    },
   });
 };

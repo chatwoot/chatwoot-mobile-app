@@ -10,21 +10,13 @@ const createStyles = theme => {
     section: {
       alignItems: 'center',
       flexDirection: 'row',
-      padding: spacing.small,
-      height: 54,
-      borderBottomWidth: 1,
+      paddingVertical: spacing.small,
+      height: 52,
+      borderBottomWidth: 0.4,
       borderColor: colors.borderLight,
     },
     iconView: {
-      paddingLeft: spacing.micro,
-    },
-    sectionText: {
-      paddingLeft: 8,
-    },
-    sectionActionView: {
-      alignItems: 'center',
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
+      paddingRight: spacing.smaller,
     },
   });
 };
@@ -36,7 +28,7 @@ const propTypes = {
   onPressItem: PropTypes.func,
 };
 
-const ChatMessageActionItem = ({ text, itemType, name, onPressItem }) => {
+const ChatMessageActionItem = ({ text, itemType, onPressItem }) => {
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -48,8 +40,8 @@ const ChatMessageActionItem = ({ text, itemType, name, onPressItem }) => {
             <Icon icon="copy-outline" color={colors.primaryColor} size={22} />
           </View>
         )}
-        <View style={styles.sectionTitleView}>
-          <Text sm medium color={colors.textDark} style={styles.sectionText}>
+        <View>
+          <Text sm medium color={colors.textDark}>
             {text}
           </Text>
         </View>

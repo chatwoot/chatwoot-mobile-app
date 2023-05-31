@@ -50,6 +50,7 @@ export const palette = {
   text: '#37546D',
   textDark: '#293F51',
   textDarker: '#1f2d3d',
+  blockColor: '#d6ebff',
 
   borderDark: '#37546D',
   border: '#C9D7E3',

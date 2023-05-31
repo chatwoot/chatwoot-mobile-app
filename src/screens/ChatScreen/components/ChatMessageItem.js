@@ -342,7 +342,7 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
           markdownit={MarkdownIt({
             linkify: true,
             typographer: true,
-          }).disable('blockquote')} // disable code block
+          })}
           onLinkPress={handleURL}
           style={{
             body: messageBodyStyle,
@@ -365,6 +365,10 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
             ordered_list_icon: {
               color: listIconColor(),
               marginTop: 1,
+            },
+            blockquote: {
+              backgroundColor: colors.primaryColor,
+              color: colors.blockColor,
             },
           }}>
           {message.content}

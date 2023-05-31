@@ -291,6 +291,10 @@ const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyBut
               renderSuggestions,
               textStyle: { fontWeight: 'bold', color: 'white', backgroundColor: '#8c9eb6' },
             },
+            {
+              pattern: /\[([^\]]+)\]\(([^\)]+)\)/g,
+              textStyle: { color: colors.primaryColor },
+            },
           ]}
           multiline={true}
           placeholderTextColor={colors.textLighter}
@@ -348,7 +352,7 @@ const createStyles = theme => {
       borderTopWidth: 1,
     },
     inputView: {
-      fontSize: fontSize.md,
+      fontSize: fontSize.sm,
       color: colors.text,
       borderRadius: borderRadius.small,
       paddingTop: 10,

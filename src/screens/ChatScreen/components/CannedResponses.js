@@ -79,6 +79,7 @@ const CannedResponses = ({ cannedResponses, onClick }) => {
           />
         )}
         keyExtractor={item => item.id}
+        keyboardShouldPersistTaps={'handled'}
       />
     </View>
   );

@@ -66,8 +66,8 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
           itemType="assignee"
           iconName="people-outline"
           colors={colors}
-          name={assignedAgent.name ? assignedAgent.name : i18n.t('AGENT.TITLE')}
-          thumbnail={assignedAgent.thumbnail}
+          name={assignedAgent?.name ? assignedAgent.name : i18n.t('AGENT.TITLE')}
+          thumbnail={assignedAgent?.thumbnail}
           availabilityStatus={assignedAgent?.availability_status}
         />
 

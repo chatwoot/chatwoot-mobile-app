@@ -284,7 +284,7 @@ const createStyles = theme => {
     },
     avatarView: {
       alignSelf: 'flex-start',
-      marginTop: spacing.large,
+      marginTop: 30,
       marginRight: spacing.smaller,
     },
     contentView: {

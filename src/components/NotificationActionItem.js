@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { Text, Pressable } from 'components';
+import { Text, Pressable, Icon } from 'components';
 
 const createStyles = theme => {
   const { spacing, colors } = theme;
@@ -11,15 +11,15 @@ const createStyles = theme => {
       justifyContent: 'space-between',
       alignItems: 'center',
       flexDirection: 'row',
-      padding: spacing.small,
-      height: 54,
-      borderBottomWidth: 1,
+      paddingVertical: spacing.small,
+      height: 52,
+      borderBottomWidth: 0.4,
       borderColor: colors.borderLight,
     },
     sectionText: {
-      paddingLeft: spacing.smaller,
+      marginLeft: spacing.smaller,
     },
-    sectionActionView: {
+    sectionTitleView: {
       alignItems: 'center',
       flexDirection: 'row',
       justifyContent: 'flex-end',
@@ -28,14 +28,14 @@ const createStyles = theme => {
 };
 
 const propTypes = {
-  name: PropTypes.string,
   text: PropTypes.string,
+  iconName: PropTypes.string,
   itemType: PropTypes.string,
   onPressItem: PropTypes.func,
   availabilityStatus: PropTypes.string,
 };
 
-const NotificationActionItem = ({ text, itemType, name, onPressItem }) => {
+const NotificationActionItem = ({ text, iconName, itemType, onPressItem }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
@@ -43,13 +43,9 @@ const NotificationActionItem = ({ text, itemType, name, onPressItem }) => {
     <React.Fragment>
       <Pressable style={styles.section} onPress={() => onPressItem({ itemType })}>
         <View style={styles.sectionTitleView}>
-          <Text sm medium color={colors.textDark} style={styles.sectionText}>
+          <Icon icon={iconName} color={colors.primaryColor} size={22} style={styles.iconWrapper} />
+          <Text sm medium color={colors.text} style={styles.sectionText}>
             {text}
-          </Text>
-        </View>
-        <View style={styles.sectionActionView}>
-          <Text sm medium color={colors.textDark} style={styles.sectionText}>
-            {name}
           </Text>
         </View>
       </Pressable>

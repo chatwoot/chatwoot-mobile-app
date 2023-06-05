@@ -10,14 +10,13 @@ const createStyles = theme => {
     section: {
       alignItems: 'center',
       flexDirection: 'row',
-      padding: spacing.small,
-      height: 54,
-      borderBottomWidth: 1,
+      paddingVertical: spacing.small,
+      height: 52,
+      borderBottomWidth: 0.4,
       borderColor: colors.borderLight,
     },
     sectionText: {
-      paddingTop: spacing.tiny,
-      paddingLeft: spacing.smaller,
+      marginLeft: spacing.smaller,
     },
   });
 };
@@ -32,7 +31,7 @@ const propTypes = {
   onPressItem: PropTypes.func,
 };
 
-const AttachmentActionItem = ({ text, itemType, name, iconName, onPressItem }) => {
+const AttachmentActionItem = ({ text, itemType, iconName, onPressItem }) => {
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -40,7 +39,7 @@ const AttachmentActionItem = ({ text, itemType, name, iconName, onPressItem }) =
   return (
     <React.Fragment>
       <Pressable style={styles.section} onPress={() => onPressItem({ itemType })}>
-        <Icon icon={iconName} color={colors.primaryColor} size={24} />
+        <Icon icon={iconName} color={colors.primaryColor} size={22} />
         <Text sm medium color={colors.textDark} style={styles.sectionText}>
           {text}
         </Text>

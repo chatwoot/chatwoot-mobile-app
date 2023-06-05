@@ -1,15 +1,18 @@
-import React, { createRef, useMemo } from 'react';
+import React, { useMemo, useRef, useCallback } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { Icon, Pressable } from 'components';
-import ActionSheet from 'react-native-actions-sheet';
-import { Keyboard, StyleSheet } from 'react-native';
+import { Keyboard, StyleSheet, Dimensions, View } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import PropTypes from 'prop-types';
 
+import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import AttachmentActionItem from './AttachmentActionItem';
 
+const deviceHeight = Dimensions.get('window').height;
+
 const createStyles = theme => {
+  const { spacing } = theme;
   return StyleSheet.create({
     button: {
       paddingHorizontal: 0,
@@ -18,6 +21,10 @@ const createStyles = theme => {
       flex: 1,
       alignSelf: 'flex-start',
       justifyContent: 'flex-start',
+    },
+    bottomSheetView: {
+      flex: 1,
+      paddingHorizontal: spacing.small,
     },
   });
 };
@@ -33,11 +40,10 @@ const Attachment = ({ conversationId, onSelectAttachment }) => {
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
-  const actionSheetRef = createRef();
   const handleChoosePhoto = () => {
     Keyboard.dismiss();
     setTimeout(() => {
-      actionSheetRef.current?.setModalVisible();
+      toggleAttachmentActionModal();
     }, 10);
   };
   const openCamera = () => {
@@ -83,7 +89,7 @@ const Attachment = ({ conversationId, onSelectAttachment }) => {
     }
   };
   const onPressItem = ({ itemType }) => {
-    actionSheetRef.current?.hide();
+    closeAttachmentActionModal();
     setTimeout(() => {
       if (itemType === 'upload_camera') {
         openCamera();
@@ -97,35 +103,50 @@ const Attachment = ({ conversationId, onSelectAttachment }) => {
     }, 500);
   };
 
+  const attachmentActionModal = useRef(null);
+  const attachmentActionModalSnapPoints = useMemo(
+    () => [deviceHeight - 620, deviceHeight - 620],
+    [],
+  );
+  const toggleAttachmentActionModal = useCallback(() => {
+    attachmentActionModal.current.present() || attachmentActionModal.current?.dismiss();
+  }, []);
+  const closeAttachmentActionModal = useCallback(() => {
+    attachmentActionModal.current?.dismiss();
+  }, []);
+
   return (
     <React.Fragment>
       <Pressable onPress={handleChoosePhoto}>
         <Icon icon="attach-outline" style={styles.sendButton} color={colors.textLight} size={24} />
       </Pressable>
-      <ActionSheet
-        openAnimationSpeed={40}
-        ref={actionSheetRef}
-        gestureEnabled
-        defaultOverlayOpacity={0.6}>
-        <AttachmentActionItem
-          text="Camera"
-          iconName="camera-outline"
-          itemType="upload_camera"
-          onPressItem={onPressItem}
-        />
-        <AttachmentActionItem
-          text="Photo Library"
-          iconName="photo-outline"
-          itemType="upload_gallery"
-          onPressItem={onPressItem}
-        />
-        <AttachmentActionItem
-          text="Document"
-          iconName="file-outline"
-          itemType="upload_file"
-          onPressItem={onPressItem}
-        />
-      </ActionSheet>
+      <BottomSheetModal
+        bottomSheetModalRef={attachmentActionModal}
+        initialSnapPoints={attachmentActionModalSnapPoints}
+        closeFilter={closeAttachmentActionModal}
+        children={
+          <View style={styles.bottomSheetView}>
+            <AttachmentActionItem
+              text="Camera"
+              iconName="camera-outline"
+              itemType="upload_camera"
+              onPressItem={onPressItem}
+            />
+            <AttachmentActionItem
+              text="Photo Library"
+              iconName="photo-outline"
+              itemType="upload_gallery"
+              onPressItem={onPressItem}
+            />
+            <AttachmentActionItem
+              text="Document"
+              iconName="file-outline"
+              itemType="upload_file"
+              onPressItem={onPressItem}
+            />
+          </View>
+        }
+      />
     </React.Fragment>
   );
 };

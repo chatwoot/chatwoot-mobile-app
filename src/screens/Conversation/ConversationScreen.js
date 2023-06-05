@@ -346,7 +346,10 @@ const ConversationScreen = () => {
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <Header headerText={headerText} loading={isLoading} showCount count={conversationCount()} />
       <View style={styles.filterContainer}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          horizontal
+          contentContainerStyle={styles.filterScrollView}
+          showsHorizontalScrollIndicator={false}>
           {hasActiveFilters && (
             <ClearFilterButton count={filtersCount} onSelectItem={clearAppliedFilters} />
           )}

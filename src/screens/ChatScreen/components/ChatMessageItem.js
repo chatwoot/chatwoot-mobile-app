@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Icon, Pressable, Text } from 'components';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { messageStamp } from 'helpers/TimeHelper';
+import { useDispatch } from 'react-redux';
 import { openURL } from 'helpers/UrlHelper';
 import { UserAvatar } from 'components';
 import ChatMessageActionItem from './ChatMessageActionItem';
@@ -14,6 +15,7 @@ import Email from '../components/Email';
 import ChatAttachmentItem from './ChatAttachmentItem';
 import MessageDeliveryStatus from './MessageDeliveryStatus';
 import { MESSAGE_STATUS, INBOX_TYPES } from 'constants';
+import conversationActions from 'reducer/conversationSlice.action';
 
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 const deviceHeight = Dimensions.get('window').height;
@@ -102,10 +104,12 @@ const propTypes = {
     }),
     contact_last_seen_at: PropTypes.number,
     channel: PropTypes.string,
+    id: PropTypes.number,
   }),
   type: PropTypes.string,
   created_at: PropTypes.number,
   message: PropTypes.shape({
+    id: PropTypes.number,
     sender: PropTypes.shape({
       name: PropTypes.string,
       thumbnail: PropTypes.string,
@@ -129,8 +133,10 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
   const { colors, fontWeight } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { attachments, sender = {} } = message;
+  const dispatch = useDispatch();
 
-  const { meta } = conversation;
+  const { meta, id: conversationId } = conversation;
+  const { id: messageId } = message;
   const channel = conversation.channel ? conversation.channel : meta.channel;
 
   const isEmailChannel = channel === INBOX_TYPES.EMAIL;
@@ -245,6 +251,8 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
     if (itemType === 'copy') {
       Clipboard.setString(message.content);
       showToast({ message: 'Message copied to clipboard' });
+    } else if (itemType === 'delete') {
+      dispatch(conversationActions.deleteMessage({ conversationId, messageId }));
     }
   };
 
@@ -451,6 +459,7 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
                 />
               ) : null}
               <ChatMessageActionItem text="Copy" itemType="copy" onPressItem={onPressItem} />
+              <ChatMessageActionItem text="Delete" itemType="delete" onPressItem={onPressItem} />
             </View>
           }
         />

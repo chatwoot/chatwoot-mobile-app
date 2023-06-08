@@ -40,6 +40,11 @@ const ChatMessageActionItem = ({ text, itemType, onPressItem }) => {
             <Icon icon="copy-outline" color={colors.primaryColor} size={22} />
           </View>
         )}
+        {itemType === 'delete' && (
+          <View style={styles.iconView}>
+            <Icon icon="delete-outline" color={colors.primaryColor} size={22} />
+          </View>
+        )}
         <View>
           <Text sm medium color={colors.textDark}>
             {text}

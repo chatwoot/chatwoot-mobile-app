@@ -238,7 +238,7 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
   };
 
   const messageActionModal = useRef(null);
-  const messageActionModalSnapPoints = useMemo(() => [deviceHeight - 650, deviceHeight - 650], []);
+  const messageActionModalSnapPoints = useMemo(() => [deviceHeight - 640, deviceHeight - 640], []);
   const toggleMessageActionModal = useCallback(() => {
     messageActionModal.current.present() || messageActionModal.current?.dismiss();
   }, []);

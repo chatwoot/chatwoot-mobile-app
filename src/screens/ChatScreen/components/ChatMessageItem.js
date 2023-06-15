@@ -241,7 +241,7 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
   const { content_attributes: { external_created_at = null, deleted = false } = {} } = message;
 
   const messageActionModal = useRef(null);
-  const messageActionModalSnapPoints = useMemo(() => [deviceHeight - 650, deviceHeight - 650], []);
+  const messageActionModalSnapPoints = useMemo(() => [deviceHeight - 640, deviceHeight - 640], []);
   const toggleMessageActionModal = useCallback(() => {
     if (deleted) {
       return;

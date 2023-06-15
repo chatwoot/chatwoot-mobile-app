@@ -73,7 +73,6 @@
   "date-fns": "2.21.1",
   "react-native-webview": "11.26.0",
   "@react-native-clipboard/clipboard": "1.11.1",
-  "react-native-actions-sheet": "0.5.8",
   "react-native-markdown-display": "7.0.0-alpha.2",
   "react-native-fit-image": "1.5.5",
   "css-to-react-native": "3.0.0",

@@ -1,10 +1,11 @@
 import React, { useMemo, useRef, useCallback } from 'react';
 import { useTheme } from '@react-navigation/native';
-import { Dimensions, View, StyleSheet } from 'react-native';
+import { Dimensions, View, StyleSheet, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { Icon, Pressable, Text } from 'components';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { messageStamp } from 'helpers/TimeHelper';
+import { useDispatch } from 'react-redux';
 import { openURL } from 'helpers/UrlHelper';
 import { UserAvatar } from 'components';
 import ChatMessageActionItem from './ChatMessageActionItem';
@@ -14,6 +15,8 @@ import Email from '../components/Email';
 import ChatAttachmentItem from './ChatAttachmentItem';
 import MessageDeliveryStatus from './MessageDeliveryStatus';
 import { MESSAGE_STATUS, INBOX_TYPES } from 'constants';
+import conversationActions from 'reducer/conversationSlice.action';
+import i18n from 'i18n';
 
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 const deviceHeight = Dimensions.get('window').height;
@@ -102,10 +105,12 @@ const propTypes = {
     }),
     contact_last_seen_at: PropTypes.number,
     channel: PropTypes.string,
+    id: PropTypes.number,
   }),
   type: PropTypes.string,
   created_at: PropTypes.number,
   message: PropTypes.shape({
+    id: PropTypes.number,
     sender: PropTypes.shape({
       name: PropTypes.string,
       thumbnail: PropTypes.string,
@@ -129,8 +134,10 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
   const { colors, fontWeight } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { attachments, sender = {} } = message;
+  const dispatch = useDispatch();
 
-  const { meta } = conversation;
+  const { meta, id: conversationId } = conversation;
+  const { id: messageId } = message;
   const channel = conversation.channel ? conversation.channel : meta.channel;
 
   const isEmailChannel = channel === INBOX_TYPES.EMAIL;
@@ -231,11 +238,17 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
     }
   };
 
+  const { content_attributes: { external_created_at = null, deleted = false } = {} } = message;
+
   const messageActionModal = useRef(null);
-  const messageActionModalSnapPoints = useMemo(() => [deviceHeight - 680, deviceHeight - 680], []);
+  const messageActionModalSnapPoints = useMemo(() => [deviceHeight - 640, deviceHeight - 640], []);
   const toggleMessageActionModal = useCallback(() => {
+    if (deleted) {
+      return;
+    }
     messageActionModal.current.present() || messageActionModal.current?.dismiss();
-  }, []);
+  }, [deleted]);
+
   const closeMessageActionModal = useCallback(() => {
     messageActionModal.current?.dismiss();
   }, []);
@@ -244,7 +257,27 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
     closeMessageActionModal();
     if (itemType === 'copy') {
       Clipboard.setString(message.content);
-      showToast({ message: 'Message copied to clipboard' });
+      showToast({ message: i18n.t('CONVERSATION.COPY_MESSAGE') });
+    } else if (itemType === 'delete') {
+      Alert.alert(
+        i18n.t('CONVERSATION.DELETE_MESSAGE_TITLE'),
+        i18n.t('CONVERSATION.DELETE_MESSAGE_SUB_TITLE'),
+        [
+          {
+            text: i18n.t('EXIT.CANCEL'),
+            onPress: () => {},
+            style: 'cancel',
+          },
+          {
+            text: i18n.t('EXIT.OK'),
+            onPress: () => {
+              dispatch(conversationActions.deleteMessage({ conversationId, messageId }));
+            },
+          },
+        ],
+        { cancelable: false },
+      );
+      return true;
     }
   };
 
@@ -394,7 +427,6 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
     return fullHTMLContent || fullTextContent || '';
   };
 
-  const { content_attributes: { external_created_at = null } = {} } = message;
   const readableTime = messageStamp({
     time: external_created_at || created_at,
     dateFormat: 'LLL d, h:mm a',
@@ -451,6 +483,7 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
                 />
               ) : null}
               <ChatMessageActionItem text="Copy" itemType="copy" onPressItem={onPressItem} />
+              <ChatMessageActionItem text="Delete" itemType="delete" onPressItem={onPressItem} />
             </View>
           }
         />

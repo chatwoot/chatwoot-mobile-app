@@ -284,6 +284,22 @@ const actions = {
       }
     },
   ),
+  deleteMessage: createAsyncThunk(
+    'conversations/deleteMessage',
+    async ({ conversationId, messageId }, { rejectWithValue }) => {
+      try {
+        const response = await axios.delete(
+          `conversations/${conversationId}/messages/${messageId}`,
+        );
+        return response.data;
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
 };
 
 export default actions;

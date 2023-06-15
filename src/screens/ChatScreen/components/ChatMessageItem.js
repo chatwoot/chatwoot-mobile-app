@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useCallback } from 'react';
 import { useTheme } from '@react-navigation/native';
-import { Dimensions, View, StyleSheet } from 'react-native';
+import { Dimensions, View, StyleSheet, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { Icon, Pressable, Text } from 'components';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -16,6 +16,7 @@ import ChatAttachmentItem from './ChatAttachmentItem';
 import MessageDeliveryStatus from './MessageDeliveryStatus';
 import { MESSAGE_STATUS, INBOX_TYPES } from 'constants';
 import conversationActions from 'reducer/conversationSlice.action';
+import i18n from 'i18n';
 
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 const deviceHeight = Dimensions.get('window').height;
@@ -237,11 +238,17 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
     }
   };
 
+  const { content_attributes: { external_created_at = null, deleted = false } = {} } = message;
+
   const messageActionModal = useRef(null);
   const messageActionModalSnapPoints = useMemo(() => [deviceHeight - 650, deviceHeight - 650], []);
   const toggleMessageActionModal = useCallback(() => {
+    if (deleted) {
+      return;
+    }
     messageActionModal.current.present() || messageActionModal.current?.dismiss();
-  }, []);
+  }, [deleted]);
+
   const closeMessageActionModal = useCallback(() => {
     messageActionModal.current?.dismiss();
   }, []);
@@ -250,9 +257,27 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
     closeMessageActionModal();
     if (itemType === 'copy') {
       Clipboard.setString(message.content);
-      showToast({ message: 'Message copied to clipboard' });
+      showToast({ message: i18n.t('CONVERSATION.COPY_MESSAGE') });
     } else if (itemType === 'delete') {
-      dispatch(conversationActions.deleteMessage({ conversationId, messageId }));
+      Alert.alert(
+        i18n.t('CONVERSATION.DELETE_MESSAGE_TITLE'),
+        i18n.t('CONVERSATION.DELETE_MESSAGE_SUB_TITLE'),
+        [
+          {
+            text: i18n.t('EXIT.CANCEL'),
+            onPress: () => {},
+            style: 'cancel',
+          },
+          {
+            text: i18n.t('EXIT.OK'),
+            onPress: () => {
+              dispatch(conversationActions.deleteMessage({ conversationId, messageId }));
+            },
+          },
+        ],
+        { cancelable: false },
+      );
+      return true;
     }
   };
 
@@ -402,7 +427,6 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
     return fullHTMLContent || fullTextContent || '';
   };
 
-  const { content_attributes: { external_created_at = null } = {} } = message;
   const readableTime = messageStamp({
     time: external_created_at || created_at,
     dateFormat: 'LLL d, h:mm a',

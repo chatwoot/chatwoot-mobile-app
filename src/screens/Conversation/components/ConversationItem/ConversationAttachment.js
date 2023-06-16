@@ -23,7 +23,7 @@ const ConversationAttachmentItem = ({ attachment }) => {
           <View style={styles.icon}>
             <Icon icon="image-outline" color={colors.text} size={14} />
           </View>
-          <Text sm medium color={colors.text}>
+          <Text sm color={colors.text}>
             {i18n.t('CONVERSATION.PICTURE_CONTENT')}
           </Text>
         </View>
@@ -32,7 +32,7 @@ const ConversationAttachmentItem = ({ attachment }) => {
           <View style={styles.icon}>
             <Icon icon="document-outline" color={colors.text} size={14} />
           </View>
-          <Text sm medium color={colors.text}>
+          <Text sm color={colors.text}>
             {i18n.t('CONVERSATION.ATTACHMENT_CONTENT')}
           </Text>
         </View>

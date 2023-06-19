@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
-import { View, Dimensions, TextInput, StyleSheet } from 'react-native';
+import { View, Dimensions, TextInput, StyleSheet, Platform } from 'react-native';
 import { Text, Icon, Pressable } from 'components';
 import { MentionInput } from 'react-native-controlled-mentions';
 import PropTypes from 'prop-types';
@@ -31,6 +31,8 @@ const propTypes = {
   inboxId: PropTypes.number,
   enableReplyButton: PropTypes.bool,
 };
+
+const isAndroid = Platform.OS === 'android';
 
 const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyButton }) => {
   const theme = useTheme();
@@ -218,117 +220,119 @@ const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyBut
   const enableReplyBox = (message || attachmentDetails) && enableReplyButton ? true : false;
   return (
     <React.Fragment>
-      {attachmentDetails && (
-        <View style={styles.attachmentWrap}>
-          <AttachmentPreview
-            attachmentDetails={attachmentDetails}
-            onRemoveAttachment={onRemoveAttachment}
-          />
-        </View>
-      )}
-      {cannedResponseSearchKey ? (
-        <CannedResponsesContainer
-          onClick={onCannedResponseSelect}
-          searchKey={cannedResponseSearchKey}
-        />
-      ) : null}
-      <ModalView
-        showModal={showUndefinedVariablesModal}
-        headerText={i18n.t('CONVERSATION.UNDEFINED_VARIABLES_TITLE')}
-        contentText={undefinedVariableText}
-        buttonText={i18n.t('CONVERSATION.UNDEFINED_VARIABLES_CLOSE')}
-        onPressClose={() => setUndefinedVariablesModal(false)}
-      />
-      {isAnEmailChannelAndNotInPrivateNote() && emailFields && (
-        <View style={styles.emailFields}>
-          <View style={styles.emailFieldsTextWrap}>
-            <Text medium sm color={colors.text} style={styles.emailFieldLabel}>
-              {'Cc'}
-            </Text>
-            <TextInput
-              style={styles.ccInputView}
-              value={ccEmails}
-              onChangeText={onCCMailChange}
-              placeholder="Emails separated by commas"
-              placeholderTextColor={colors.textLighter}
+      <View style={styles.replyBoxContainer}>
+        {attachmentDetails && (
+          <View style={styles.attachmentWrap}>
+            <AttachmentPreview
+              attachmentDetails={attachmentDetails}
+              onRemoveAttachment={onRemoveAttachment}
             />
           </View>
-          <View style={styles.emailFieldsTextWrap}>
-            <Text medium sm color={colors.text} style={styles.emailFieldLabel}>
-              {'Bcc'}
-            </Text>
-            <TextInput
-              style={styles.bccInputView}
-              value={bccEmails}
-              onChangeText={onBCCMailChange}
-              placeholder="Emails separated by commas"
-              placeholderTextColor={colors.textLighter}
-            />
-          </View>
-        </View>
-      )}
-
-      <View style={[isPrivate ? styles.privateView : styles.replyView, inputBorderColor()]}>
-        {isAnEmailChannelAndNotInPrivateNote() && !emailFields && (
-          <Text
-            medium
-            sm
-            color={colors.primaryColorDark}
-            style={styles.emailFieldToggleButton}
-            onPress={toggleCcBccInputs}>
-            {'Cc/Bcc'}
-          </Text>
         )}
-        <MentionInput
-          style={[styles.inputView, inputFieldColor()]}
-          value={message}
-          onChange={onNewMessageChange}
-          partTypes={[
-            {
-              allowedSpacesCount: 0,
-              isInsertSpaceAfterMention: true,
-              trigger: '@',
-              renderSuggestions,
-              textStyle: { fontWeight: 'bold', color: 'white', backgroundColor: '#8c9eb6' },
-            },
-            {
-              pattern: /\[([^\]]+)\]\(([^\)]+)\)/g,
-              textStyle: { color: colors.primaryColor },
-            },
-          ]}
-          multiline={true}
-          placeholderTextColor={colors.textLighter}
-          placeholder={
-            isPrivate
-              ? `${i18n.t('CONVERSATION.PRIVATE_MSG_INPUT')}`
-              : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`
-          }
-          onBlur={onBlur}
-          onFocus={onFocus}
+        {cannedResponseSearchKey ? (
+          <CannedResponsesContainer
+            onClick={onCannedResponseSelect}
+            searchKey={cannedResponseSearchKey}
+          />
+        ) : null}
+        <ModalView
+          showModal={showUndefinedVariablesModal}
+          headerText={i18n.t('CONVERSATION.UNDEFINED_VARIABLES_TITLE')}
+          contentText={undefinedVariableText}
+          buttonText={i18n.t('CONVERSATION.UNDEFINED_VARIABLES_CLOSE')}
+          onPressClose={() => setUndefinedVariablesModal(false)}
         />
+        {isAnEmailChannelAndNotInPrivateNote() && emailFields && (
+          <View style={styles.emailFields}>
+            <View style={styles.emailFieldsTextWrap}>
+              <Text medium sm color={colors.text} style={styles.emailFieldLabel}>
+                {'Cc'}
+              </Text>
+              <TextInput
+                style={styles.ccInputView}
+                value={ccEmails}
+                onChangeText={onCCMailChange}
+                placeholder="Emails separated by commas"
+                placeholderTextColor={colors.textLighter}
+              />
+            </View>
+            <View style={styles.emailFieldsTextWrap}>
+              <Text medium sm color={colors.text} style={styles.emailFieldLabel}>
+                {'Bcc'}
+              </Text>
+              <TextInput
+                style={styles.bccInputView}
+                value={bccEmails}
+                onChangeText={onBCCMailChange}
+                placeholder="Emails separated by commas"
+                placeholderTextColor={colors.textLighter}
+              />
+            </View>
+          </View>
+        )}
 
-        <View style={styles.buttonViews}>
-          <View style={styles.attachIconView}>
-            <Attachment conversationId={conversationId} onSelectAttachment={onSelectAttachment} />
-            <Pressable style={styles.privateNoteView} onPress={togglePrivateMode}>
+        <View style={[isPrivate ? styles.privateView : styles.replyView, inputBorderColor()]}>
+          {isAnEmailChannelAndNotInPrivateNote() && !emailFields && (
+            <Text
+              medium
+              sm
+              color={colors.primaryColorDark}
+              style={styles.emailFieldToggleButton}
+              onPress={toggleCcBccInputs}>
+              {'Cc/Bcc'}
+            </Text>
+          )}
+          <MentionInput
+            style={[styles.inputView, inputFieldColor()]}
+            value={message}
+            onChange={onNewMessageChange}
+            partTypes={[
+              {
+                allowedSpacesCount: 0,
+                isInsertSpaceAfterMention: true,
+                trigger: '@',
+                renderSuggestions,
+                textStyle: { fontWeight: 'bold', color: 'white', backgroundColor: '#8c9eb6' },
+              },
+              {
+                pattern: /\[([^\]]+)\]\(([^\)]+)\)/g,
+                textStyle: { color: colors.primaryColor },
+              },
+            ]}
+            multiline={true}
+            placeholderTextColor={colors.textLighter}
+            placeholder={
+              isPrivate
+                ? `${i18n.t('CONVERSATION.PRIVATE_MSG_INPUT')}`
+                : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`
+            }
+            onBlur={onBlur}
+            onFocus={onFocus}
+          />
+
+          <View style={styles.buttonViews}>
+            <View style={styles.attachIconView}>
+              <Attachment conversationId={conversationId} onSelectAttachment={onSelectAttachment} />
+              <Pressable style={styles.privateNoteView} onPress={togglePrivateMode}>
+                <Icon
+                  icon="lock-closed-outline"
+                  color={isPrivate ? colors.primaryColor : colors.textLight}
+                  size={24}
+                />
+              </Pressable>
+            </View>
+            <Pressable
+              style={[styles.sendButtonView, sendMessageButtonWrapStyles()]}
+              disabled={!enableReplyBox}
+              onPress={onNewMessageAdd}>
               <Icon
-                icon="lock-closed-outline"
-                color={isPrivate ? colors.primaryColor : colors.textLight}
+                icon="send-outline"
+                style={styles.sendButton}
+                color={enableReplyBox ? colors.primaryColor : colors.background}
                 size={24}
               />
             </Pressable>
           </View>
-          <Pressable
-            style={[styles.sendButtonView, sendMessageButtonWrapStyles()]}
-            disabled={!enableReplyBox}
-            onPress={onNewMessageAdd}>
-            <Icon
-              icon="send-outline"
-              style={styles.sendButton}
-              color={enableReplyBox ? colors.primaryColor : colors.background}
-              size={24}
-            />
-          </Pressable>
         </View>
       </View>
     </React.Fragment>
@@ -338,6 +342,9 @@ const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyBut
 const createStyles = theme => {
   const { spacing, borderRadius, fontSize, colors } = theme;
   return StyleSheet.create({
+    replyBoxContainer: {
+      position: 'relative',
+    },
     replyView: {
       paddingVertical: spacing.smaller,
       paddingHorizontal: spacing.small,
@@ -353,12 +360,12 @@ const createStyles = theme => {
     },
     inputView: {
       fontSize: fontSize.sm,
-      color: colors.text,
+      color: colors.textDarker,
+      lineHeight: 18,
       borderRadius: borderRadius.small,
-      paddingTop: 10,
+      paddingTop: !isAndroid ? spacing.half : spacing.smaller,
+      paddingBottom: !isAndroid ? spacing.half : spacing.smaller,
       paddingHorizontal: 10,
-      paddingVertical: spacing.half,
-      textAlignVertical: 'top',
       textAlign: 'left',
       maxHeight: 160,
     },

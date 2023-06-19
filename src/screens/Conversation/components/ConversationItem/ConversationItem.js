@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { View, Pressable, StyleSheet, Animated } from 'react-native';
+import { View, Pressable, StyleSheet, Animated, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,6 +19,8 @@ import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
 import ConversationLabel from './ConversationLabels';
 import ConversationPriority from './ConversationPriority';
+
+const isAndroid = Platform.OS === 'android';
 
 const propTypes = {
   item: PropTypes.shape({
@@ -284,7 +286,7 @@ const createStyles = theme => {
     },
     avatarView: {
       alignSelf: 'flex-start',
-      marginTop: 30,
+      marginTop: !isAndroid ? 30 : 34,
       marginRight: spacing.smaller,
     },
     contentView: {

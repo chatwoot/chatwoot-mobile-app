@@ -1,32 +1,47 @@
 import React, { useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { Text, Pressable } from 'components';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 
 const createStyles = theme => {
   const { spacing, borderRadius, colors } = theme;
+  const { width } = Dimensions.get('window');
   return StyleSheet.create({
     mainView: {
       backgroundColor: colors.colorWhite,
-      borderRadius: borderRadius.micro,
-      paddingHorizontal: spacing.small,
+      marginHorizontal: spacing.smaller,
+      borderRadius: borderRadius.small,
+      shadowColor: colors.backdropColor,
+      shadowOffset: {
+        width: 0,
+        height: 8,
+      },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 6,
       maxHeight: 200,
-      borderTopColor: colors.borderLight,
-      borderTopWidth: 1,
+      borderColor: colors.borderLight,
+      borderWidth: 0.6,
+      position: 'absolute',
+      width: width - spacing.smaller * 2,
+      bottom: 106,
+      zIndex: 1,
+    },
+    contentContainerStyle: {
+      paddingHorizontal: spacing.small,
+      paddingVertical: spacing.smaller,
     },
     itemView: {
-      flex: 1,
       flexDirection: 'row',
       paddingVertical: spacing.smaller,
-      paddingHorizontal: spacing.tiny,
     },
     lastItemView: {
-      borderBottomWidth: 1,
+      borderBottomWidth: 0.4,
       borderBottomColor: colors.borderLight,
     },
     content: {
-      flex: 1,
+      lineHeight: 18,
     },
   });
 };
@@ -39,11 +54,11 @@ const CannedResponseComponent = ({ shortCode, content, lastItem, onClick }) => {
     <Pressable
       style={[styles.itemView, !lastItem && styles.lastItemView]}
       onPress={() => onClick(content)}>
-      <Text bold color={colors.primaryColor}>
-        {shortCode} -
-      </Text>
-      <Text medium color={colors.primaryColor} style={styles.content}>
-        {content}
+      <Text semiBold sm color={colors.primaryColorDark} style={styles.content}>
+        {`${shortCode} - `}
+        <Text regular sm color={colors.textDark} style={styles.content}>
+          {content}
+        </Text>
       </Text>
     </Pressable>
   );
@@ -66,21 +81,26 @@ const propTypes = {
 const CannedResponses = ({ cannedResponses, onClick }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
+  const isCannedResponsesExist = cannedResponses.length > 0;
+
   return (
-    <View style={styles.mainView}>
-      <FlatList
-        data={cannedResponses}
-        renderItem={({ item, index }) => (
-          <CannedResponse
-            shortCode={item.shortCode}
-            content={item.content}
-            lastItem={cannedResponses.length - 1 === index}
-            onClick={onClick}
-          />
-        )}
-        keyExtractor={item => item.id}
-        keyboardShouldPersistTaps={'handled'}
-      />
+    <View style={[isCannedResponsesExist && styles.mainView]}>
+      {isCannedResponsesExist && (
+        <FlatList
+          data={cannedResponses}
+          renderItem={({ item, index }) => (
+            <CannedResponse
+              shortCode={item.shortCode}
+              content={item.content}
+              lastItem={cannedResponses.length - 1 === index}
+              onClick={onClick}
+            />
+          )}
+          contentContainerStyle={styles.contentContainerStyle}
+          keyExtractor={item => item.id}
+          keyboardShouldPersistTaps={'handled'}
+        />
+      )}
     </View>
   );
 };

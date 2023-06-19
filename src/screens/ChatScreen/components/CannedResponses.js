@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { Text, Pressable } from 'components';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 
 const createStyles = theme => {
   const { spacing, borderRadius, colors } = theme;
+  const { width } = Dimensions.get('window');
   return StyleSheet.create({
     mainView: {
       backgroundColor: colors.colorWhite,
@@ -23,6 +24,7 @@ const createStyles = theme => {
       borderColor: colors.borderLight,
       borderWidth: 0.6,
       position: 'absolute',
+      width: width - spacing.smaller * 2,
       bottom: 106,
       zIndex: 1,
     },
@@ -80,21 +82,23 @@ const CannedResponses = ({ cannedResponses, onClick }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   return (
-    <View style={styles.mainView}>
-      <FlatList
-        data={cannedResponses}
-        renderItem={({ item, index }) => (
-          <CannedResponse
-            shortCode={item.shortCode}
-            content={item.content}
-            lastItem={cannedResponses.length - 1 === index}
-            onClick={onClick}
-          />
-        )}
-        contentContainerStyle={styles.contentContainerStyle}
-        keyExtractor={item => item.id}
-        keyboardShouldPersistTaps={'handled'}
-      />
+    <View style={[cannedResponses.length > 0 && styles.mainView]}>
+      {cannedResponses.length > 0 && (
+        <FlatList
+          data={cannedResponses}
+          renderItem={({ item, index }) => (
+            <CannedResponse
+              shortCode={item.shortCode}
+              content={item.content}
+              lastItem={cannedResponses.length - 1 === index}
+              onClick={onClick}
+            />
+          )}
+          contentContainerStyle={styles.contentContainerStyle}
+          keyExtractor={item => item.id}
+          keyboardShouldPersistTaps={'handled'}
+        />
+      )}
     </View>
   );
 };

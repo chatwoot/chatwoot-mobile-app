@@ -81,9 +81,11 @@ const propTypes = {
 const CannedResponses = ({ cannedResponses, onClick }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
+  const isCannedResponsesExist = cannedResponses.length > 0;
+
   return (
-    <View style={[cannedResponses.length > 0 && styles.mainView]}>
-      {cannedResponses.length > 0 && (
+    <View style={[isCannedResponsesExist && styles.mainView]}>
+      {isCannedResponsesExist && (
         <FlatList
           data={cannedResponses}
           renderItem={({ item, index }) => (

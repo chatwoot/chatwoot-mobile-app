@@ -117,7 +117,7 @@ const LoginScreenComponent = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.keyboardView}>
-      <ScrollView contentContainerStyle={styles.scrollView}>
+      <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="handled">
         <View style={styles.logoView}>
           <Image style={styles.logo} source={images.login} />
         </View>

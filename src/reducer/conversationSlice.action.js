@@ -305,10 +305,13 @@ const actions = {
     async ({ conversationId, priority }, { rejectWithValue }) => {
       try {
         const apiUrl = `conversations/${conversationId}/toggle_priority`;
-        const response = await axios.post(apiUrl, {
+        await axios.post(apiUrl, {
           priority,
         });
-        return response.data;
+        return {
+          id: conversationId,
+          priority,
+        };
       } catch (error) {
         if (!error.response) {
           throw error;

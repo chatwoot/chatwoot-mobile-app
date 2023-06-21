@@ -51,6 +51,34 @@ const createStyles = theme => {
   });
 };
 
+const priorityItems = [
+  {
+    id: null,
+    name: i18n.t('CONVERSATION.PRIORITY.OPTIONS.NONE'),
+    icon: NONE,
+  },
+  {
+    id: CONVERSATION_PRIORITY.URGENT,
+    name: i18n.t('CONVERSATION.PRIORITY.OPTIONS.URGENT'),
+    icon: URGENT,
+  },
+  {
+    id: CONVERSATION_PRIORITY.HIGH,
+    name: i18n.t('CONVERSATION.PRIORITY.OPTIONS.HIGH'),
+    icon: HIGH,
+  },
+  {
+    id: CONVERSATION_PRIORITY.MEDIUM,
+    name: i18n.t('CONVERSATION.PRIORITY.OPTIONS.MEDIUM'),
+    icon: MEDIUM,
+  },
+  {
+    id: CONVERSATION_PRIORITY.LOW,
+    name: i18n.t('CONVERSATION.PRIORITY.OPTIONS.LOW'),
+    icon: LOW,
+  },
+];
+
 const SnoozeConversation = ({ colors, conversationId, activePriority, closeModal }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -69,34 +97,6 @@ const SnoozeConversation = ({ colors, conversationId, activePriority, closeModal
     closeModal();
   };
 
-  const priorityItems = [
-    {
-      id: null,
-      name: i18n.t('CONVERSATION.PRIORITY.OPTIONS.NONE'),
-      icon: NONE,
-    },
-    {
-      id: CONVERSATION_PRIORITY.URGENT,
-      name: i18n.t('CONVERSATION.PRIORITY.OPTIONS.URGENT'),
-      icon: URGENT,
-    },
-    {
-      id: CONVERSATION_PRIORITY.HIGH,
-      name: i18n.t('CONVERSATION.PRIORITY.OPTIONS.HIGH'),
-      icon: HIGH,
-    },
-    {
-      id: CONVERSATION_PRIORITY.MEDIUM,
-      name: i18n.t('CONVERSATION.PRIORITY.OPTIONS.MEDIUM'),
-      icon: MEDIUM,
-    },
-    {
-      id: CONVERSATION_PRIORITY.LOW,
-      name: i18n.t('CONVERSATION.PRIORITY.OPTIONS.LOW'),
-      icon: LOW,
-    },
-  ];
-
   return (
     <View style={styles.bottomSheet}>
       <View style={styles.bottomSheetContent}>
@@ -108,7 +108,7 @@ const SnoozeConversation = ({ colors, conversationId, activePriority, closeModal
               },
               styles.bottomSheetItem,
             ]}
-            key={item.key}
+            key={item.id}
             onPress={() => changePriority(item.id)}>
             <View style={styles.itemView}>
               <SvgXml xml={item.icon} width={22} height={22} />

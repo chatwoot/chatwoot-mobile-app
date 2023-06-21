@@ -103,7 +103,7 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
 
         <ConversationActionItem
           onPressItem={onPressAction}
-          iconName="snooze-outline"
+          iconName="priority-outline"
           text={i18n.t('CONVERSATION.CHANGE_PRIORITY')}
           colors={colors}
           name={i18n.t(`CONVERSATION.PRIORITY.OPTIONS.${priority}`)}

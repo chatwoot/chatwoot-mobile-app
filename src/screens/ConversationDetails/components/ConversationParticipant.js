@@ -10,7 +10,7 @@ import { selectUser } from 'reducer/authSlice';
 import { Text, Icon, UserAvatarGroup, Pressable } from 'components';
 
 const createStyles = theme => {
-  const { colors, spacing } = theme;
+  const { colors, spacing, borderRadius } = theme;
   return StyleSheet.create({
     separator: {
       backgroundColor: colors.backgroundLight,
@@ -41,7 +41,7 @@ const createStyles = theme => {
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: colors.backgroundLight,
-      borderRadius: 4,
+      borderRadius: borderRadius.micro,
       paddingVertical: spacing.micro,
       paddingHorizontal: spacing.micro,
     },
@@ -76,8 +76,10 @@ const ConversationParticipant = ({ conversationId }) => {
   const conversationParticipantList = useSelector(selectConversationWatchers);
   const conversationWatchers = conversationId ? conversationParticipantList[conversationId] : null;
 
+  const hasMultipleWatchers = conversationWatchers?.length > 1;
+
   const watchersText = () => {
-    if (conversationWatchers.length > 1) {
+    if (hasMultipleWatchers) {
       return i18n.t('CONVERSATION_PARTICIPANTS.TOTAL_PARTICIPANTS_TEXT', {
         count: conversationWatchers.length,
       });
@@ -88,7 +90,7 @@ const ConversationParticipant = ({ conversationId }) => {
   };
 
   const moreAvatarText = () => {
-    if (conversationWatchers.length > 1) {
+    if (hasMultipleWatchers) {
       return i18n.t('CONVERSATION_PARTICIPANTS.REMAINING_PARTICIPANTS_TEXT');
     }
     return i18n.t('CONVERSATION_PARTICIPANTS.REMAINING_PARTICIPANT_TEXT');
@@ -137,7 +139,7 @@ const ConversationParticipant = ({ conversationId }) => {
               ) : (
                 <View />
               )}
-              {!isCurrentUserWatching() ? (
+              {isCurrentUserWatching() ? (
                 <Text sm color={colors.textGrayLighter}>
                   {i18n.t('CONVERSATION_PARTICIPANTS.YOU_ARE_WATCHING')}
                 </Text>

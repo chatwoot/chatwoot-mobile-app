@@ -13,6 +13,7 @@ import createStyles from './ChatScreen.style';
 import { actions as notificationsActions } from 'reducer/notificationSlice';
 import { selectUser } from 'reducer/authSlice';
 import { actions as CannedResponseActions } from 'reducer/cannedResponseSlice';
+import { actions as conversationWatchersActions } from 'reducer/conversationWatchersSlice';
 import { dashboardAppSelector } from 'reducer/dashboardAppSlice';
 import DashboardApp from './components/DashboardApp';
 import { selectAllTypingUsers } from 'reducer/conversationTypingSlice';
@@ -94,7 +95,8 @@ const ChatScreenComponent = ({ navigation, route }) => {
   useEffect(() => {
     dispatch(CannedResponseActions.index());
     dispatch(conversationActions.markMessagesAsRead({ conversationId }));
-  }, [dispatch, conversationId]);
+    fetchConversationWatchers();
+  }, [dispatch, conversationId, fetchConversationWatchers]);
 
   useEffect(() => {
     if (isConversationOpenedExternally) {
@@ -104,6 +106,10 @@ const ChatScreenComponent = ({ navigation, route }) => {
       loadMessages();
     }
   }, [conversationId, isConversationOpenedExternally, loadConversation, loadMessages, dispatch]);
+
+  const fetchConversationWatchers = useCallback(() => {
+    dispatch(conversationWatchersActions.show({ conversationId }));
+  }, [dispatch, conversationId]);
 
   const loadConversation = useCallback(() => {
     dispatch(conversationActions.fetchConversation({ conversationId }));

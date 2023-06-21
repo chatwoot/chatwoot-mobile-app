@@ -15,7 +15,6 @@ import ConversationAttributes from './components/ConversationAttributes';
 import ConversationParticipant from './components/ConversationParticipant';
 import ContactAttributes from './components/ContactAttributes';
 import { actions as customAttributeActions } from 'reducer/customAttributeSlice';
-import { actions as conversationWatchersActions } from 'reducer/conversationWatchersSlice';
 
 // Bottom sheet items
 const deviceHeight = Dimensions.get('window').height;
@@ -34,8 +33,7 @@ const ConversationDetailsScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     dispatch(customAttributeActions.getAllCustomAttributes());
-    fetchConversationWatchers();
-  }, [dispatch, fetchConversationWatchers]);
+  }, [dispatch]);
 
   const { conversationDetails } = route.params;
 
@@ -54,10 +52,6 @@ const ConversationDetailsScreen = ({ navigation, route }) => {
   } = conversationDetails;
 
   const { id: conversationId } = conversationDetails;
-
-  const fetchConversationWatchers = useCallback(() => {
-    dispatch(conversationWatchersActions.show({ conversationId }));
-  }, [dispatch, conversationId]);
 
   const {
     social_profiles: socialProfiles = {},

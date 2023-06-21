@@ -6,7 +6,7 @@ import { View, StyleSheet } from 'react-native';
 import i18n from 'i18n';
 
 import { selectConversationWatchers } from 'reducer/conversationWatchersSlice';
-import { selectUser } from 'reducer/authSlice';
+import { selectUserId } from 'reducer/authSlice';
 import { Text, Icon, UserAvatarGroup, Pressable } from 'components';
 
 const createStyles = theme => {
@@ -70,7 +70,7 @@ const ConversationParticipant = ({ conversationId }) => {
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
 
-  const currentUser = useSelector(selectUser);
+  const userId = useSelector(selectUserId);
   const conversationParticipantList = useSelector(selectConversationWatchers);
   const conversationWatchers = conversationId ? conversationParticipantList[conversationId] : null;
 
@@ -95,7 +95,7 @@ const ConversationParticipant = ({ conversationId }) => {
   };
 
   const isCurrentUserWatching = () => {
-    return conversationWatchers?.some(user => user.id === currentUser.id);
+    return conversationWatchers?.some(user => user.id === userId);
   };
 
   const isConversationWatchersExist = conversationWatchers?.length > 0;

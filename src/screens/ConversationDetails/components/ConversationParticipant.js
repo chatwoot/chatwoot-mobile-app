@@ -193,7 +193,7 @@ const ConversationParticipant = ({ conversationId }) => {
                   fontSize={10}
                   showMoreText
                   moreText={moreAvatarText()}
-                  length={7}
+                  length={6}
                 />
               ) : (
                 <View />

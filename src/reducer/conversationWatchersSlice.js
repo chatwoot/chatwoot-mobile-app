@@ -21,8 +21,8 @@ export const actions = {
     'conversationWatchers/update',
     async ({ conversationId, userIds }, { rejectWithValue }) => {
       try {
-        const response = await APIHelper.post(`conversations/${conversationId}/participants`, {
-          userIds,
+        const response = await APIHelper.patch(`conversations/${conversationId}/participants`, {
+          user_ids: userIds,
         });
         const payload = response.data;
         return { watchersList: payload, conversationId };
@@ -42,7 +42,7 @@ const initialState = conversationWatchersAdapter.getInitialState({
   uiFlags: {
     loading: false,
   },
-  records: [],
+  records: {},
 });
 
 const conversationWatchersSlice = createSlice({

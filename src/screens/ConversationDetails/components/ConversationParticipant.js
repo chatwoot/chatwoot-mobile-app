@@ -34,7 +34,6 @@ const createStyles = theme => {
       alignItems: 'center',
       justifyContent: 'space-between',
       paddingBottom: spacing.smaller,
-      width: '100%',
     },
     addParticipantsButton: {
       flexDirection: 'row',
@@ -49,7 +48,6 @@ const createStyles = theme => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      width: '100%',
       paddingTop: spacing.tiny,
     },
     watchConversationButton: {

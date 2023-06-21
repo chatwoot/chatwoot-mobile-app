@@ -26,6 +26,7 @@ const deviceHeight = Dimensions.get('window').height;
 
 // Bottom sheet items
 import ConversationAction from '../../ConversationAction/ConversationAction';
+import ConversationPriority from './ConversationPriority';
 import SnoozeConversationItems from './SnoozeConversation';
 import AssignTeamConversationItems from './ConversationTeams';
 import LabelConversationItems from './ConversationLabels';
@@ -242,6 +243,10 @@ const ChatHeader = ({
         closeActionModal();
         toggleSnoozeActionModal();
       }
+      if (itemType === 'priority') {
+        closeActionModal();
+        togglePriorityActionModal();
+      }
       if (itemType === 'share') {
         onClickShareConversationURL();
       }
@@ -299,7 +304,6 @@ const ChatHeader = ({
     actionModal.current?.dismiss();
   }, []);
 
-  // Conversation action modal
   const snoozeActionModal = useRef(null);
   const snoozeActionModalSnapPoints = useMemo(() => [deviceHeight - 400, deviceHeight - 400], []);
   const toggleSnoozeActionModal = useCallback(() => {
@@ -307,6 +311,16 @@ const ChatHeader = ({
   }, []);
   const closeSnoozeActionModal = useCallback(() => {
     snoozeActionModal.current?.dismiss();
+  }, []);
+
+  // Conversation action modal
+  const priorityActionModal = useRef(null);
+  const priorityActionModalSnapPoints = useMemo(() => [deviceHeight - 400, deviceHeight - 400], []);
+  const togglePriorityActionModal = useCallback(() => {
+    priorityActionModal.current.present() || priorityActionModal.current?.dismiss();
+  }, []);
+  const closePriorityActionModal = useCallback(() => {
+    priorityActionModal.current?.dismiss();
   }, []);
 
   const conversationActionModalSnapPoints = useMemo(
@@ -433,6 +447,21 @@ const ChatHeader = ({
             conversationId={conversationId}
             activeSnoozeValue={activeSnoozeValue()}
             closeModal={closeSnoozeActionModal}
+          />
+        }
+      />
+      <BottomSheetModal
+        bottomSheetModalRef={priorityActionModal}
+        initialSnapPoints={priorityActionModalSnapPoints}
+        showHeader
+        headerTitle={i18n.t('CONVERSATION.CHANGE_PRIORITY')}
+        closeFilter={closePriorityActionModal}
+        children={
+          <ConversationPriority
+            colors={colors}
+            conversationId={conversationId}
+            activePriority={conversationDetails.priority}
+            closeModal={closePriorityActionModal}
           />
         }
       />

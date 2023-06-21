@@ -146,16 +146,17 @@ const ConversationParticipant = ({ conversationId }) => {
   };
 
   // Bottom sheet modal actions and snap points
-  const assignAgentModal = useRef(null);
-  const conversationActionModalSnapPoints = useMemo(
+  const conversationParticipantsModal = useRef(null);
+  const conversationParticipantsModalSnapPoints = useMemo(
     () => [deviceHeight - 120, deviceHeight - 120],
     [],
   );
-  const toggleAssignAgentActionModal = useCallback(() => {
-    assignAgentModal.current.present() || assignAgentModal.current?.dismiss();
+  const toggleConversationParticipantsModal = useCallback(() => {
+    conversationParticipantsModal.current.present() ||
+      conversationParticipantsModal.current?.dismiss();
   }, []);
-  const closeAssignAgentActionModal = useCallback(() => {
-    assignAgentModal.current?.dismiss();
+  const closeConversationParticipantsModal = useCallback(() => {
+    conversationParticipantsModal.current?.dismiss();
   }, []);
 
   return (
@@ -180,7 +181,7 @@ const ConversationParticipant = ({ conversationId }) => {
               )}
               <Pressable
                 style={styles.addParticipantsButton}
-                onPress={toggleAssignAgentActionModal}>
+                onPress={toggleConversationParticipantsModal}>
                 <Icon color={colors.text} icon="settings-outline" size={16} />
               </Pressable>
             </View>
@@ -216,11 +217,11 @@ const ConversationParticipant = ({ conversationId }) => {
         </View>
       </View>
       <BottomSheetModal
-        bottomSheetModalRef={assignAgentModal}
-        initialSnapPoints={conversationActionModalSnapPoints}
+        bottomSheetModalRef={conversationParticipantsModal}
+        initialSnapPoints={conversationParticipantsModalSnapPoints}
         showHeader
         headerTitle={i18n.t('CONVERSATION_PARTICIPANTS.ADD_PARTICIPANTS')}
-        closeFilter={closeAssignAgentActionModal}
+        closeFilter={closeConversationParticipantsModal}
         children={
           <ConversationAgentItems
             colors={colors}

@@ -300,6 +300,26 @@ const actions = {
       }
     },
   ),
+  togglePriority: createAsyncThunk(
+    'conversations/togglePriority',
+    async ({ conversationId, priority }, { rejectWithValue }) => {
+      try {
+        const apiUrl = `conversations/${conversationId}/toggle_priority`;
+        await axios.post(apiUrl, {
+          priority,
+        });
+        return {
+          id: conversationId,
+          priority,
+        };
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
 };
 
 export default actions;

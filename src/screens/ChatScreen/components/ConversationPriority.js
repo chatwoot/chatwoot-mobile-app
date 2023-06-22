@@ -34,11 +34,18 @@ const createStyles = theme => {
       alignItems: 'center',
       justifyContent: 'space-between',
       flexDirection: 'row',
-      borderBottomColor: colors.borderLight,
-      paddingVertical: spacing.half,
+      paddingVertical: spacing.smaller,
       paddingHorizontal: spacing.half,
-      borderBottomWidth: 0.4,
+      backgroundColor: colors.background,
+      marginBottom: spacing.tiny,
+      borderWidth: 0.6,
+      height: 42,
+      borderColor: 'transparent',
       borderRadius: borderRadius.small,
+    },
+    bottomSheetItemActive: {
+      backgroundColor: colors.backgroundLight,
+      borderColor: colors.borderLight,
     },
     itemView: {
       flexDirection: 'row',
@@ -103,10 +110,8 @@ const SnoozeConversation = ({ colors, conversationId, activePriority, closeModal
         {priorityItems.map((item, index) => (
           <Pressable
             style={[
-              {
-                backgroundColor: activePriority === item.id && colors.primaryColorLight,
-              },
               styles.bottomSheetItem,
+              activePriority === item.id && styles.bottomSheetItemActive,
             ]}
             key={item.id}
             onPress={() => changePriority(item.id)}>

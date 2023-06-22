@@ -15,7 +15,7 @@ import MentionUser from './MentionUser.js';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import conversationActions from 'reducer/conversationSlice.action';
-import CannedResponsesContainer from '../containers/CannedResponsesContainer';
+import CannedResponses from './CannedResponses';
 import { inboxAgentSelectors, actions as inboxAgentActions } from 'reducer/inboxAgentsSlice';
 import { selectUser } from 'reducer/authSlice';
 import ModalView from 'components/Modal/ModalView.js';
@@ -230,10 +230,7 @@ const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyBut
           </View>
         )}
         {cannedResponseSearchKey ? (
-          <CannedResponsesContainer
-            onClick={onCannedResponseSelect}
-            searchKey={cannedResponseSearchKey}
-          />
+          <CannedResponses onClick={onCannedResponseSelect} searchKey={cannedResponseSearchKey} />
         ) : null}
         <ModalView
           showModal={showUndefinedVariablesModal}

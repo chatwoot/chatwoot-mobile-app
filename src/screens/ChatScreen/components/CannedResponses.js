@@ -1,8 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { Text, Pressable } from 'components';
 import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  actions as CannedResponseActions,
+  cannedResponseSelector,
+} from 'reducer/cannedResponseSlice';
 
 const createStyles = theme => {
   const { spacing, borderRadius, colors } = theme;
@@ -74,33 +79,47 @@ CannedResponseComponent.propTypes = {
 const CannedResponse = React.memo(CannedResponseComponent);
 
 const propTypes = {
-  cannedResponses: PropTypes.array.isRequired,
+  searchKey: PropTypes.string,
   onClick: PropTypes.func.isRequired,
 };
 
-const CannedResponses = ({ cannedResponses, onClick }) => {
+const CannedResponses = ({ onClick, searchKey }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      CannedResponseActions.index({
+        searchKey,
+      }),
+    );
+  }, [dispatch, searchKey]);
+
+  const cannedResponses = useSelector(cannedResponseSelector.selectAll);
+
   const isCannedResponsesExist = cannedResponses.length > 0;
 
+  if (!isCannedResponsesExist) {
+    return null;
+  }
+
   return (
-    <View style={[isCannedResponsesExist && styles.mainView]}>
-      {isCannedResponsesExist && (
-        <FlatList
-          data={cannedResponses}
-          renderItem={({ item, index }) => (
-            <CannedResponse
-              shortCode={item.shortCode}
-              content={item.content}
-              lastItem={cannedResponses.length - 1 === index}
-              onClick={onClick}
-            />
-          )}
-          contentContainerStyle={styles.contentContainerStyle}
-          keyExtractor={item => item.id}
-          keyboardShouldPersistTaps={'handled'}
-        />
-      )}
+    <View style={styles.mainView}>
+      <FlatList
+        data={cannedResponses}
+        renderItem={({ item, index }) => (
+          <CannedResponse
+            shortCode={item.shortCode}
+            content={item.content}
+            lastItem={cannedResponses.length - 1 === index}
+            onClick={onClick}
+          />
+        )}
+        contentContainerStyle={styles.contentContainerStyle}
+        keyExtractor={item => item.id}
+        keyboardShouldPersistTaps={'handled'}
+      />
     </View>
   );
 };

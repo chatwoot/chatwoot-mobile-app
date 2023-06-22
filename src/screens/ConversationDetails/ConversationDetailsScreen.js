@@ -12,7 +12,7 @@ import SocialProfileIcons from './components/SocialProfileIcons';
 import ContactDetails from './components/ContactDetails';
 import LabelView from 'src/screens/ConversationDetails/components/LabelView';
 import ConversationAttributes from './components/ConversationAttributes';
-import ConversationParticipant from './components/ConversationParticipant';
+import ConversationParticipants from './components/ConversationParticipants';
 import ContactAttributes from './components/ContactAttributes';
 import { actions as customAttributeActions } from 'reducer/customAttributeSlice';
 import { actions as conversationWatchersActions } from 'reducer/conversationWatchersSlice';
@@ -34,8 +34,8 @@ const ConversationDetailsScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     dispatch(customAttributeActions.getAllCustomAttributes());
-    fetchConversationWatchers();
-  }, [dispatch, fetchConversationWatchers]);
+    dispatch(conversationWatchersActions.show({ conversationId }));
+  }, [dispatch, conversationId]);
 
   const { conversationDetails } = route.params;
 
@@ -54,10 +54,6 @@ const ConversationDetailsScreen = ({ navigation, route }) => {
   } = conversationDetails;
 
   const { id: conversationId } = conversationDetails;
-
-  const fetchConversationWatchers = useCallback(() => {
-    dispatch(conversationWatchersActions.show({ conversationId }));
-  }, [dispatch, conversationId]);
 
   const {
     social_profiles: socialProfiles = {},
@@ -186,7 +182,7 @@ const ConversationDetailsScreen = ({ navigation, route }) => {
               />
             </View>
           </View>
-          <ConversationParticipant conversationId={conversationId} />
+          <ConversationParticipants conversationId={conversationId} />
           <ConversationAttributes conversationDetails={conversationDetails} />
           <ContactAttributes conversationDetails={conversationDetails} />
         </View>

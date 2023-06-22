@@ -76,27 +76,19 @@ const ConversationParticipant = ({ conversationId }) => {
 
   const hasMultipleWatchers = conversationWatchers?.length > 1;
 
-  const watchersText = () => {
-    if (hasMultipleWatchers) {
-      return i18n.t('CONVERSATION_PARTICIPANTS.TOTAL_PARTICIPANTS_TEXT', {
+  const watchersText = hasMultipleWatchers
+    ? i18n.t('CONVERSATION_PARTICIPANTS.TOTAL_PARTICIPANTS_TEXT', {
         count: conversationWatchers.length,
+      })
+    : i18n.t('CONVERSATION_PARTICIPANTS.TOTAL_PARTICIPANT_TEXT', {
+        count: 1,
       });
-    }
-    return i18n.t('CONVERSATION_PARTICIPANTS.TOTAL_PARTICIPANT_TEXT', {
-      count: 1,
-    });
-  };
 
-  const moreAvatarText = () => {
-    if (hasMultipleWatchers) {
-      return i18n.t('CONVERSATION_PARTICIPANTS.REMAINING_PARTICIPANTS_TEXT');
-    }
-    return i18n.t('CONVERSATION_PARTICIPANTS.REMAINING_PARTICIPANT_TEXT');
-  };
+  const moreAvatarText = hasMultipleWatchers
+    ? i18n.t('CONVERSATION_PARTICIPANTS.REMAINING_PARTICIPANTS_TEXT')
+    : i18n.t('CONVERSATION_PARTICIPANTS.REMAINING_PARTICIPANT_TEXT');
 
-  const isCurrentUserWatching = () => {
-    return conversationWatchers?.some(user => user.id === userId);
-  };
+  const isCurrentUserWatching = conversationWatchers?.some(user => user.id === userId);
 
   const isConversationWatchersExist = conversationWatchers?.length > 0;
 
@@ -117,7 +109,7 @@ const ConversationParticipant = ({ conversationId }) => {
                 </Text>
               ) : (
                 <Text sm color={colors.textDark}>
-                  {watchersText()}
+                  {watchersText}
                 </Text>
               )}
               <Pressable style={styles.addParticipantsButton}>
@@ -131,13 +123,13 @@ const ConversationParticipant = ({ conversationId }) => {
                   size={24}
                   fontSize={10}
                   showMoreText
-                  moreText={moreAvatarText()}
+                  moreText={moreAvatarText}
                   length={7}
                 />
               ) : (
                 <View />
               )}
-              {isCurrentUserWatching() ? (
+              {isCurrentUserWatching ? (
                 <Text sm color={colors.textGrayLighter}>
                   {i18n.t('CONVERSATION_PARTICIPANTS.YOU_ARE_WATCHING')}
                 </Text>

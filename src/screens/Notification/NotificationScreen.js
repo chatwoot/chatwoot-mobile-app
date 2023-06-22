@@ -1,4 +1,4 @@
-import React, { createRef, useState, useMemo, useRef, useCallback } from 'react';
+import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -34,7 +34,7 @@ const deviceHeight = Dimensions.get('window').height;
 
 const LoaderData = new Array(24).fill(0);
 const renderItemLoader = () => <NotificationItemLoader />;
-const actionSheetRef = createRef();
+
 import { SCREENS } from 'constants';
 
 const wait = timeout => {

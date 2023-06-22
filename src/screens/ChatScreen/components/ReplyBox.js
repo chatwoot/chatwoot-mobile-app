@@ -295,6 +295,7 @@ const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyBut
                 textStyle: { fontWeight: 'bold', color: 'white', backgroundColor: '#8c9eb6' },
               },
               {
+                // eslint-disable-next-line no-useless-escape
                 pattern: /\[([^\]]+)\]\(([^\)]+)\)/g,
                 textStyle: { color: colors.primaryColor },
               },

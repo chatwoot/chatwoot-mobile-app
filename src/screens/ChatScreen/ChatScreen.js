@@ -12,7 +12,7 @@ import ChatHeaderLoader from './components/ChatHeaderLoader';
 import createStyles from './ChatScreen.style';
 import { actions as notificationsActions } from 'reducer/notificationSlice';
 import { selectUser } from 'reducer/authSlice';
-import { actions as CannedResponseActions } from 'reducer/cannedResponseSlice';
+
 import { dashboardAppSelector } from 'reducer/dashboardAppSlice';
 import DashboardApp from './components/DashboardApp';
 import { selectAllTypingUsers } from 'reducer/conversationTypingSlice';
@@ -92,7 +92,6 @@ const ChatScreenComponent = ({ navigation, route }) => {
   }, [allMessages]);
 
   useEffect(() => {
-    dispatch(CannedResponseActions.index());
     dispatch(conversationActions.markMessagesAsRead({ conversationId }));
   }, [dispatch, conversationId]);
 

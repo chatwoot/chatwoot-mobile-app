@@ -75,7 +75,7 @@ const propTypes = {
   conversationId: PropTypes.number.isRequired,
 };
 
-const ConversationParticipant = ({ conversationId }) => {
+const ConversationParticipants = ({ conversationId }) => {
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -123,27 +123,19 @@ const ConversationParticipant = ({ conversationId }) => {
 
   const isConversationWatchersExist = watchersList?.length > 0;
 
-  const watchersText = () => {
-    if (hasMultipleWatchers) {
-      return i18n.t('CONVERSATION_PARTICIPANTS.TOTAL_PARTICIPANTS_TEXT', {
-        count: watchersList.length,
+  const watchersText = hasMultipleWatchers
+    ? i18n.t('CONVERSATION_PARTICIPANTS.TOTAL_PARTICIPANTS_TEXT', {
+        count: conversationWatchers.length,
+      })
+    : i18n.t('CONVERSATION_PARTICIPANTS.TOTAL_PARTICIPANT_TEXT', {
+        count: 1,
       });
-    }
-    return i18n.t('CONVERSATION_PARTICIPANTS.TOTAL_PARTICIPANT_TEXT', {
-      count: 1,
-    });
-  };
 
-  const moreAvatarText = () => {
-    if (hasMultipleWatchers) {
-      return i18n.t('CONVERSATION_PARTICIPANTS.REMAINING_PARTICIPANTS_TEXT');
-    }
-    return i18n.t('CONVERSATION_PARTICIPANTS.REMAINING_PARTICIPANT_TEXT');
-  };
+  const moreAvatarText = hasMultipleWatchers
+    ? i18n.t('CONVERSATION_PARTICIPANTS.REMAINING_PARTICIPANTS_TEXT')
+    : i18n.t('CONVERSATION_PARTICIPANTS.REMAINING_PARTICIPANT_TEXT');
 
-  const isCurrentUserWatching = () => {
-    return watchersList?.some(user => user.id === userId);
-  };
+  const isCurrentUserWatching = conversationWatchers?.some(user => user.id === userId);
 
   // Bottom sheet modal actions and snap points
   const conversationParticipantsModal = useRef(null);
@@ -176,7 +168,7 @@ const ConversationParticipant = ({ conversationId }) => {
                 </Text>
               ) : (
                 <Text sm color={colors.textDark}>
-                  {watchersText()}
+                  {watchersText}
                 </Text>
               )}
               <Pressable
@@ -192,13 +184,13 @@ const ConversationParticipant = ({ conversationId }) => {
                   size={24}
                   fontSize={10}
                   showMoreText
-                  moreText={moreAvatarText()}
+                  moreText={moreAvatarText}
                   length={6}
                 />
               ) : (
                 <View />
               )}
-              {isCurrentUserWatching() ? (
+              {isCurrentUserWatching ? (
                 <Text sm color={colors.textGrayLighter}>
                   {i18n.t('CONVERSATION_PARTICIPANTS.YOU_ARE_WATCHING')}
                 </Text>
@@ -236,5 +228,5 @@ const ConversationParticipant = ({ conversationId }) => {
   );
 };
 
-ConversationParticipant.propTypes = propTypes;
-export default ConversationParticipant;
+ConversationParticipants.propTypes = propTypes;
+export default ConversationParticipants;

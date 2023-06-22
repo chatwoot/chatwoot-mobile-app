@@ -2,17 +2,20 @@ import React, { useEffect, useMemo, useRef, useCallback } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { ScrollView, Dimensions } from 'react-native';
+import { ScrollView, Dimensions, SafeAreaView } from 'react-native';
 import { View } from 'react-native';
 import i18n from 'i18n';
+
 import { Text, UserAvatar, Header } from 'components';
 import createStyles from './ConversationDetailsScreen.style';
 import SocialProfileIcons from './components/SocialProfileIcons';
 import ContactDetails from './components/ContactDetails';
 import LabelView from 'src/screens/ConversationDetails/components/LabelView';
 import ConversationAttributes from './components/ConversationAttributes';
+import ConversationParticipants from './components/ConversationParticipants';
 import ContactAttributes from './components/ContactAttributes';
 import { actions as customAttributeActions } from 'reducer/customAttributeSlice';
+import { actions as conversationWatchersActions } from 'reducer/conversationWatchersSlice';
 
 // Bottom sheet items
 const deviceHeight = Dimensions.get('window').height;
@@ -31,7 +34,8 @@ const ConversationDetailsScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     dispatch(customAttributeActions.getAllCustomAttributes());
-  }, [dispatch]);
+    dispatch(conversationWatchersActions.show({ conversationId }));
+  }, [dispatch, conversationId]);
 
   const { conversationDetails } = route.params;
 
@@ -135,66 +139,69 @@ const ConversationDetailsScreen = ({ navigation, route }) => {
   }, []);
 
   return (
-    <ScrollView style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Header leftIcon="arrow-chevron-left-outline" onPressLeft={onBackPress} />
-      <View style={styles.wrapper}>
-        <View style={styles.detailsWrap}>
-          <View style={styles.avatarContainer}>
-            <UserAvatar
-              thumbnail={thumbnail}
-              userName={name}
-              size={76}
-              fontSize={30}
-              defaultBGColor={colors.primary}
-            />
-          </View>
-          <View>
-            <Text bold lg color={colors.textDark}>
-              {name}
-            </Text>
-          </View>
-          {senderAdditionalInfo.description ? (
-            <View style={styles.descriptionContainer}>
-              <Text regular sm color={colors.textDark} style={styles.description}>
-                {senderAdditionalInfo.description}
+      <ScrollView style={styles.container}>
+        <View style={styles.wrapper}>
+          <View style={styles.detailsWrap}>
+            <View style={styles.avatarContainer}>
+              <UserAvatar
+                thumbnail={thumbnail}
+                userName={name}
+                size={76}
+                fontSize={30}
+                defaultBGColor={colors.primary}
+              />
+            </View>
+            <View>
+              <Text bold lg color={colors.textDark}>
+                {name}
               </Text>
             </View>
-          ) : null}
-          <View style={styles.socialIconsContainer}>{getSocialProfileValue}</View>
-          <View>{getContactDetails}</View>
-        </View>
-        <View style={styles.separatorView}>
-          <View style={styles.separator}>
-            <Text bold sm color={colors.textDark}>
-              {i18n.t('CONVERSATION_LABELS.TITLE')}
-            </Text>
+            {senderAdditionalInfo.description ? (
+              <View style={styles.descriptionContainer}>
+                <Text regular sm color={colors.textDark} style={styles.description}>
+                  {senderAdditionalInfo.description}
+                </Text>
+              </View>
+            ) : null}
+            <View style={styles.socialIconsContainer}>{getSocialProfileValue}</View>
+            <View>{getContactDetails}</View>
           </View>
-          <View style={styles.accordionItemWrapper}>
-            <LabelView
+          <View style={styles.separatorView}>
+            <View style={styles.separator}>
+              <Text bold sm color={colors.textDark}>
+                {i18n.t('CONVERSATION_LABELS.TITLE')}
+              </Text>
+            </View>
+            <View style={styles.accordionItemWrapper}>
+              <LabelView
+                conversationDetails={conversationDetails}
+                conversationId={conversationId}
+                openLabelsBottomSheet={toggleLabelActionModal}
+              />
+            </View>
+          </View>
+          <ConversationParticipants conversationId={conversationId} />
+          <ConversationAttributes conversationDetails={conversationDetails} />
+          <ContactAttributes conversationDetails={conversationDetails} />
+        </View>
+        <BottomSheetModal
+          bottomSheetModalRef={labelActionModal}
+          initialSnapPoints={labelActionModalSnapPoints}
+          showHeader
+          headerTitle={i18n.t('CONVERSATION.LABELS')}
+          closeFilter={closeLabelActionModal}
+          children={
+            <LabelConversationItems
+              colors={colors}
               conversationDetails={conversationDetails}
-              conversationId={conversationId}
-              openLabelsBottomSheet={toggleLabelActionModal}
+              closeModal={closeLabelActionModal}
             />
-          </View>
-        </View>
-        <ConversationAttributes conversationDetails={conversationDetails} />
-        <ContactAttributes conversationDetails={conversationDetails} />
-      </View>
-      <BottomSheetModal
-        bottomSheetModalRef={labelActionModal}
-        initialSnapPoints={labelActionModalSnapPoints}
-        showHeader
-        headerTitle={i18n.t('CONVERSATION.LABELS')}
-        closeFilter={closeLabelActionModal}
-        children={
-          <LabelConversationItems
-            colors={colors}
-            conversationDetails={conversationDetails}
-            closeModal={closeLabelActionModal}
-          />
-        }
-      />
-    </ScrollView>
+          }
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

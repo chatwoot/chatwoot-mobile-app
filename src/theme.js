@@ -45,6 +45,7 @@ export const palette = {
   colorBlack: '#000000',
   colorBlackLight: '#96979C',
 
+  textGrayLighter: '#aec3d5',
   textLighter: '#779bbb',
   textLight: '#446888',
   text: '#37546D',

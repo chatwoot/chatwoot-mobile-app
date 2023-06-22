@@ -215,6 +215,14 @@ const conversationSlice = createSlice({
           state.isAllMessagesFetched = false;
           state.isConversationFetching = false;
         }
+      })
+      .addCase(actions.togglePriority.fulfilled, (state, { payload }) => {
+        const { id, priority } = payload;
+        const conversation = state.entities[id];
+        if (!conversation) {
+          return;
+        }
+        conversation.priority = priority;
       });
   },
 });

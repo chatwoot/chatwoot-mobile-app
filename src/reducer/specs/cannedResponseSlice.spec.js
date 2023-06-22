@@ -1,6 +1,6 @@
 import cannedResponsesSlice, {
   actions as cannedResponseActions,
-  selectors as cannedResponseSelectors,
+  cannedResponseSelector,
 } from '../cannedResponseSlice';
 jest.mock('axios');
 const dispatch = jest.fn();
@@ -22,7 +22,9 @@ jest.mock('helpers/APIHelper', () => {
 
 describe('cannedResponses actions', () => {
   it('should create an action to set all canned responses', async () => {
-    await cannedResponseActions.index()(dispatch);
+    await cannedResponseActions.index({
+      searchKey: 'hey',
+    })(dispatch);
     expect(dispatch).toHaveBeenCalledWith({
       type: 'cannedResponses/setAll',
       payload: [
@@ -89,8 +91,7 @@ describe('cannedResponses selectors', () => {
         },
       },
     };
-
-    expect(cannedResponseSelectors.getFilteredCannedResponses(state, 'hey')).toEqual([
+    expect(cannedResponseSelector.selectAll(state)).toEqual([
       {
         id: 1,
         content: 'Hey :) How may I help you?',

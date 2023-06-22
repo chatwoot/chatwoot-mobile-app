@@ -128,4 +128,31 @@ describe('conversations reducer', () => {
       loading: false,
     });
   });
+  it('sets priority when togglePriority is called', () => {
+    expect(
+      conversationSlice(
+        {
+          ids: [conversations[0].id],
+          entities: {
+            1: conversations[0],
+          },
+        },
+        {
+          type: 'conversations/togglePriority/fulfilled',
+          payload: {
+            priority: 'urgent',
+            id: 1,
+          },
+        },
+      ),
+    ).toEqual({
+      entities: {
+        1: {
+          ...conversations[0],
+          priority: 'urgent',
+        },
+      },
+      ids: [conversations[0].id],
+    });
+  });
 });

@@ -179,6 +179,7 @@
     "WATCH_CONVERSATION": "Join conversation",
     "YOU_ARE_WATCHING": "You are participating",
     "NO_RECORDS_FOUND": "No results found",
+    "SELECT_PARTICIPANTS": "Select agents",
     "ADD_PARTICIPANTS": "Select participants",
     "REMAINING_PARTICIPANTS_TEXT": "others",
     "REMAINING_PARTICIPANT_TEXT": "other"

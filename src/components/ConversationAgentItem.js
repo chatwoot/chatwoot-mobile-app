@@ -1,18 +1,16 @@
 import React, { useMemo, useState } from 'react';
 import { useTheme } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
 import { View, StyleSheet, TextInput } from 'react-native';
 import PropTypes from 'prop-types';
 import { Text, Icon, Pressable, UserAvatar } from 'components';
 import i18n from 'i18n';
-import AnalyticsHelper from 'helpers/AnalyticsHelper';
-import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
-import { actions as teamActions, teamSelector } from 'reducer/teamSlice';
 
 const propTypes = {
-  colors: PropTypes.object,
-  conversationDetails: PropTypes.object,
-  closeModal: PropTypes.func,
+  colors: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired,
+  agentsList: PropTypes.array.isRequired,
+  activeValue: PropTypes.array.isRequired,
+  onClick: PropTypes.func,
 };
 
 const createStyles = theme => {
@@ -75,12 +73,12 @@ const createStyles = theme => {
       right: spacing.medium,
       top: 20,
     },
-    teamDetails: {
+    agentDetails: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
     },
-    teamName: {
+    agentName: {
       marginLeft: spacing.smaller,
     },
     emptyView: {
@@ -95,59 +93,22 @@ const createStyles = theme => {
   });
 };
 
-const ConversationTeams = ({ colors, conversationDetails, closeModal }) => {
+const ConversationAgentItem = ({ colors, title, agentsList, activeValue, onClick }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
-
-  const {
-    id: conversationId,
-    meta: { team },
-  } = conversationDetails;
-
-  const dispatch = useDispatch();
 
   const [search, setSearch] = useState('');
   const onChangeSearch = value => {
     setSearch(value);
   };
 
-  const [selectedTeamId, setTeam] = useState(team ? team.id : null);
-  const teams = useSelector(teamSelector.selectAll);
-
-  const isTeamSelected = team !== null;
-
-  const teamsList = () => {
-    return [
-      ...(isTeamSelected && teams.length > 0
-        ? [
-            {
-              id: 0,
-              name: 'None',
-            },
-          ]
-        : []),
-      ...teams,
-    ];
-  };
-
-  const filteredTeamsOnSearch = teamsList().filter(teamItem => {
-    return teamItem.name.toLowerCase().includes(search.toLowerCase());
+  const filteredAgentsOnSearch = agentsList.filter(agent => {
+    return agent.name.toLowerCase().includes(search.toLowerCase());
   });
 
-  const onClickAssignTeam = id => {
-    setTeam(id);
-    if (!team || team.id !== id) {
-      AnalyticsHelper.track(CONVERSATION_EVENTS.CHANGE_TEAM);
-      dispatch(
-        teamActions.update({
-          conversationId: conversationId,
-          teamId: id,
-        }),
-      );
-    }
-    closeModal();
+  const onClickAdd = id => {
+    onClick(id);
   };
-
   return (
     <View style={styles.bottomSheet}>
       <View style={styles.bottomSheetContent}>
@@ -169,36 +130,42 @@ const ConversationTeams = ({ colors, conversationDetails, closeModal }) => {
         </View>
 
         <View style={styles.bottomSheetItemView}>
-          {filteredTeamsOnSearch.length !== 0 && (
+          {filteredAgentsOnSearch.length !== 0 && (
             <Text sm medium color={colors.textDark} style={styles.itemText}>
-              {i18n.t('CONVERSATION_TEAMS.SELECT_TEAM')}
+              {title}
             </Text>
           )}
-          {filteredTeamsOnSearch.map(item => (
+          {filteredAgentsOnSearch.map(item => (
             <Pressable
               style={[
                 styles.bottomSheetItem,
-                selectedTeamId === item.id && styles.bottomSheetItemActive,
+                activeValue.includes(item.id) && styles.bottomSheetItemActive,
               ]}
               key={item.id}
-              onPress={() => onClickAssignTeam(item.id)}>
-              <View style={styles.teamDetails}>
-                <UserAvatar userName={item.name} size={24} fontSize={12} />
-                <Text sm medium color={colors.text} style={styles.teamName}>
+              onPress={() => onClickAdd(item)}>
+              <View style={styles.agentDetails}>
+                <UserAvatar
+                  thumbnail={item.thumbnail}
+                  userName={item.name}
+                  size={24}
+                  fontSize={12}
+                  availabilityStatus={item.availability_status}
+                />
+                <Text sm medium color={colors.text} style={styles.agentName}>
                   {`${item.name}`}
                 </Text>
               </View>
-              {selectedTeamId === item.id && (
+              {activeValue.includes(item.id) && (
                 <View>
                   <Icon icon="checkmark-outline" color={colors.textDark} size={20} />
                 </View>
               )}
             </Pressable>
           ))}
-          {filteredTeamsOnSearch && filteredTeamsOnSearch.length === 0 && (
+          {filteredAgentsOnSearch && filteredAgentsOnSearch.length === 0 && (
             <View style={styles.emptyView}>
               <Text sm medium color={colors.textDark}>
-                {i18n.t('CONVERSATION_TEAMS.NO_RESULT')}
+                {i18n.t('CONVERSATION_AGENTS.NO_RESULT')}
               </Text>
             </View>
           )}
@@ -208,5 +175,5 @@ const ConversationTeams = ({ colors, conversationDetails, closeModal }) => {
   );
 };
 
-ConversationTeams.propTypes = propTypes;
-export default ConversationTeams;
+ConversationAgentItem.propTypes = propTypes;
+export default ConversationAgentItem;

@@ -84,7 +84,7 @@ const createStyles = theme => {
       borderColor: colors.borderLight,
     },
     countContainer: {
-      backgroundColor: colors.secondaryColorLight,
+      backgroundColor: colors.backgroundDark,
       paddingHorizontal: spacing.smaller,
       borderRadius: borderRadius.larger,
       justifyContent: 'center',

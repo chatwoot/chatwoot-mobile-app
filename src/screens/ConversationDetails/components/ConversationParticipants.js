@@ -1,13 +1,22 @@
-import React, { useMemo } from 'react';
+import React, { useRef, useCallback, useMemo, useState, useEffect } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import i18n from 'i18n';
+import { useDispatch } from 'react-redux';
 
-import { selectConversationWatchers } from 'reducer/conversationWatchersSlice';
+import BottomSheetModal from 'components/BottomSheet/BottomSheet';
+import ConversationAgentItems from 'components/ConversationAgentItem';
+import { inboxAgentSelectors } from 'reducer/inboxAgentsSlice';
+import {
+  actions as conversationWatchersActions,
+  selectConversationWatchers,
+} from 'reducer/conversationWatchersSlice';
 import { selectUserId } from 'reducer/authSlice';
 import { Text, Icon, UserAvatarGroup, Pressable } from 'components';
+
+const deviceHeight = Dimensions.get('window').height;
 
 const createStyles = theme => {
   const { colors, spacing, borderRadius } = theme;
@@ -49,6 +58,7 @@ const createStyles = theme => {
       alignItems: 'center',
       justifyContent: 'space-between',
       paddingTop: spacing.tiny,
+      height: 26,
     },
     watchConversationButton: {
       flexDirection: 'row',
@@ -65,16 +75,53 @@ const propTypes = {
   conversationId: PropTypes.number.isRequired,
 };
 
-const ConversationParticipant = ({ conversationId }) => {
+const ConversationParticipants = ({ conversationId }) => {
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
+  const dispatch = useDispatch();
 
   const userId = useSelector(selectUserId);
+  const agents = useSelector(state => inboxAgentSelectors.inboxAssignedAgents(state));
   const conversationParticipantList = useSelector(selectConversationWatchers);
   const conversationWatchers = conversationId ? conversationParticipantList[conversationId] : null;
 
-  const hasMultipleWatchers = conversationWatchers?.length > 1;
+  const currentAgent = agents.find(agent => agent.id === userId);
+
+  const [watchersList, setWatchersList] = useState([]);
+  useEffect(() => {
+    if (conversationWatchers) {
+      setWatchersList(conversationWatchers);
+    }
+  }, [conversationWatchers]);
+
+  const updateConversationWatchers = agent => {
+    setWatchersList(prevList => {
+      const agentId = agent.id;
+      const isAgentSelected = prevList.some(participant => participant.id === agentId);
+      let updatedList;
+      if (isAgentSelected) {
+        updatedList = prevList.filter(participant => participant.id !== agentId);
+      } else {
+        updatedList = [...prevList, agent];
+      }
+      const userIds = updatedList.map(el => el.id);
+      updateConversationParticipant(userIds);
+      return updatedList;
+    });
+  };
+  const updateConversationParticipant = userIds => {
+    dispatch(conversationWatchersActions.update({ conversationId, userIds }));
+  };
+
+  const activeConversationWatchersIds = useMemo(
+    () => watchersList?.map(watcher => watcher.id),
+    [watchersList],
+  );
+
+  const hasMultipleWatchers = watchersList?.length > 1;
+
+  const isConversationWatchersExist = watchersList?.length > 0;
 
   const watchersText = hasMultipleWatchers
     ? i18n.t('CONVERSATION_PARTICIPANTS.TOTAL_PARTICIPANTS_TEXT', {
@@ -90,7 +137,19 @@ const ConversationParticipant = ({ conversationId }) => {
 
   const isCurrentUserWatching = conversationWatchers?.some(user => user.id === userId);
 
-  const isConversationWatchersExist = conversationWatchers?.length > 0;
+  // Bottom sheet modal actions and snap points
+  const conversationParticipantsModal = useRef(null);
+  const conversationParticipantsModalSnapPoints = useMemo(
+    () => [deviceHeight - 120, deviceHeight - 120],
+    [],
+  );
+  const toggleConversationParticipantsModal = useCallback(() => {
+    conversationParticipantsModal.current.present() ||
+      conversationParticipantsModal.current?.dismiss();
+  }, []);
+  const closeConversationParticipantsModal = useCallback(() => {
+    conversationParticipantsModal.current?.dismiss();
+  }, []);
 
   return (
     <View>
@@ -112,19 +171,21 @@ const ConversationParticipant = ({ conversationId }) => {
                   {watchersText}
                 </Text>
               )}
-              <Pressable style={styles.addParticipantsButton}>
+              <Pressable
+                style={styles.addParticipantsButton}
+                onPress={toggleConversationParticipantsModal}>
                 <Icon color={colors.text} icon="settings-outline" size={16} />
               </Pressable>
             </View>
             <View style={styles.watchersWrapper}>
               {isConversationWatchersExist ? (
                 <UserAvatarGroup
-                  users={conversationWatchers}
+                  users={watchersList}
                   size={24}
                   fontSize={10}
                   showMoreText
                   moreText={moreAvatarText}
-                  length={7}
+                  length={6}
                 />
               ) : (
                 <View />
@@ -134,7 +195,9 @@ const ConversationParticipant = ({ conversationId }) => {
                   {i18n.t('CONVERSATION_PARTICIPANTS.YOU_ARE_WATCHING')}
                 </Text>
               ) : (
-                <Pressable style={styles.watchConversationButton}>
+                <Pressable
+                  style={styles.watchConversationButton}
+                  onPress={() => updateConversationWatchers(currentAgent)}>
                   <Icon color={colors.primaryColor} icon="arrow-right" size={12} />
                   <Text xs color={colors.primaryColor} style={styles.watchConversationButtonText}>
                     {i18n.t('CONVERSATION_PARTICIPANTS.WATCH_CONVERSATION')}
@@ -145,9 +208,25 @@ const ConversationParticipant = ({ conversationId }) => {
           </View>
         </View>
       </View>
+      <BottomSheetModal
+        bottomSheetModalRef={conversationParticipantsModal}
+        initialSnapPoints={conversationParticipantsModalSnapPoints}
+        showHeader
+        headerTitle={i18n.t('CONVERSATION_PARTICIPANTS.ADD_PARTICIPANTS')}
+        closeFilter={closeConversationParticipantsModal}
+        children={
+          <ConversationAgentItems
+            colors={colors}
+            title={i18n.t('CONVERSATION_PARTICIPANTS.SELECT_PARTICIPANTS')}
+            agentsList={agents}
+            activeValue={activeConversationWatchersIds}
+            onClick={updateConversationWatchers}
+          />
+        }
+      />
     </View>
   );
 };
 
-ConversationParticipant.propTypes = propTypes;
-export default ConversationParticipant;
+ConversationParticipants.propTypes = propTypes;
+export default ConversationParticipants;

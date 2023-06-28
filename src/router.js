@@ -64,6 +64,23 @@ const App = () => {
         },
       },
     },
+    getStateFromPath: (path, config) => {
+      const conversationIdMatch = path.match(/\/conversations\/(\d+)/);
+      const conversationId = conversationIdMatch ? parseInt(conversationIdMatch[1]) : null;
+      if (!conversationId) {
+        return;
+      }
+      return {
+        routes: [
+          {
+            name: 'ChatScreen',
+            params: {
+              conversationId: conversationId,
+            },
+          },
+        ],
+      };
+    },
     async getInitialURL() {
       // Check if app was opened from a deep link
       const url = await Linking.getInitialURL();

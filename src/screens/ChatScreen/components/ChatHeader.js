@@ -3,14 +3,13 @@ import { useTheme } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, Share, ActivityIndicator, Dimensions } from 'react-native';
+import { View, Share, ActivityIndicator, Dimensions, Keyboard } from 'react-native';
 import { getTypingUsersText, getCustomerDetails } from 'helpers';
 import { selectConversationToggleStatus } from 'reducer/conversationSlice';
 import conversationActions from 'reducer/conversationSlice.action';
-import { UserAvatar, Pressable, Text, Icon } from 'components';
-import { getInboxName } from 'helpers';
+import { UserAvatar, Pressable, Text, Icon, InboxName } from 'components';
+import { getInboxName } from 'helpers/conversationHelpers';
 import Banner from 'screens/ChatScreen/components/Banner';
-import InboxName from 'screens/ChatScreen/components/InboxName';
 import TypingStatus from 'screens/ChatScreen/components/UserTypingStatus';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import i18n from 'i18n';
@@ -18,7 +17,7 @@ import { getTextSubstringWithEllipsis } from 'helpers';
 import { getConversationUrl } from 'helpers/UrlHelper';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
-import { INBOX_ICON, CONVERSATION_STATUS } from 'constants/index';
+import { CONVERSATION_STATUS } from 'constants/index';
 import { inboxesSelector } from 'reducer/inboxSlice';
 import { selectUserId } from 'reducer/authSlice';
 import differenceInHours from 'date-fns/differenceInHours';
@@ -27,7 +26,11 @@ const deviceHeight = Dimensions.get('window').height;
 
 // Bottom sheet items
 import ConversationAction from '../../ConversationAction/ConversationAction';
+import ConversationPriority from './ConversationPriority';
 import SnoozeConversationItems from './SnoozeConversation';
+import AssignTeamConversationItems from './ConversationTeams';
+import LabelConversationItems from './ConversationLabels';
+import ConversationAgent from './ConversationAgents';
 
 const propTypes = {
   conversationId: PropTypes.number,
@@ -36,6 +39,7 @@ const propTypes = {
   conversationDetails: PropTypes.object,
   conversationMetaDetails: PropTypes.object,
   conversationTypingUsers: PropTypes.shape({}),
+  hasDashboardApps: PropTypes.bool,
 };
 
 const ChatHeader = ({
@@ -44,6 +48,7 @@ const ChatHeader = ({
   conversationId,
   conversationTypingUsers,
   showConversationDetails,
+  hasDashboardApps,
   onBackPress,
 }) => {
   const theme = useTheme();
@@ -65,7 +70,6 @@ const ChatHeader = ({
     can_reply: canReply,
     meta: {
       sender: { availability_status: availabilityStatus },
-      channel: channelType,
     },
     additional_attributes: additionalAttributes = {},
     muted,
@@ -170,8 +174,14 @@ const ChatHeader = ({
 
   const canReplyInCurrentChat = canReply === true;
 
-  const iconName = INBOX_ICON[channelType];
-  const inboxName = getInboxName({ inboxes, inboxId });
+  const {
+    name: inboxName = null,
+    channel_type: channelType = null,
+    phone_number: phoneNumber = null,
+  } = getInboxName({
+    inboxes,
+    inboxId,
+  });
 
   const onClickShareConversationURL = async () => {
     try {
@@ -203,7 +213,8 @@ const ChatHeader = ({
         );
       }
       if (itemType === 'assignee') {
-        navigation.navigate('AgentScreen', { conversationDetails });
+        closeActionModal();
+        toggleAssignAgentActionModal();
       }
       if (itemType === 'unassign') {
         AnalyticsHelper.track(CONVERSATION_EVENTS.UNASSIGN_CONVERSATION);
@@ -218,16 +229,23 @@ const ChatHeader = ({
         navigation.navigate('ConversationDetails', { conversationDetails });
       }
       if (itemType === 'label') {
-        navigation.navigate('LabelScreen', { conversationDetails });
+        closeActionModal();
+        toggleLabelActionModal();
       }
       if (itemType === 'team') {
-        navigation.navigate('TeamScreen', { conversationDetails });
+        closeActionModal();
+        toggleAssignTeamActionModal();
       }
       if (itemType === 'pending') {
         toggleStatusForConversations(CONVERSATION_STATUS.PENDING);
       }
       if (itemType === 'snooze') {
+        closeActionModal();
         toggleSnoozeActionModal();
+      }
+      if (itemType === 'priority') {
+        closeActionModal();
+        togglePriorityActionModal();
       }
       if (itemType === 'share') {
         onClickShareConversationURL();
@@ -277,32 +295,66 @@ const ChatHeader = ({
 
   // Conversation action modal
   const actionModal = useRef(null);
-  const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 410, deviceHeight - 410], []);
+  const actionModalModalSnapPoints = useMemo(() => [deviceHeight - 380, deviceHeight - 380], []);
   const toggleActionModal = useCallback(() => {
-    actionModal.current.present() || actionModal.current?.close();
+    Keyboard.dismiss();
+    actionModal.current.present() || actionModal.current?.dismiss();
   }, []);
   const closeActionModal = useCallback(() => {
-    actionModal.current?.close();
+    actionModal.current?.dismiss();
+  }, []);
+
+  const snoozeActionModal = useRef(null);
+  const snoozeActionModalSnapPoints = useMemo(() => [deviceHeight - 400, deviceHeight - 400], []);
+  const toggleSnoozeActionModal = useCallback(() => {
+    snoozeActionModal.current.present() || snoozeActionModal.current?.dismiss();
+  }, []);
+  const closeSnoozeActionModal = useCallback(() => {
+    snoozeActionModal.current?.dismiss();
   }, []);
 
   // Conversation action modal
-  const snoozeActionModal = useRef(null);
-  const snoozeActionModalSnapPoints = useMemo(() => [deviceHeight - 410, deviceHeight - 410], []);
-  const toggleSnoozeActionModal = useCallback(() => {
-    snoozeActionModal.current.present() || snoozeActionModal.current?.close();
+  const priorityActionModal = useRef(null);
+  const priorityActionModalSnapPoints = useMemo(() => [deviceHeight - 400, deviceHeight - 400], []);
+  const togglePriorityActionModal = useCallback(() => {
+    priorityActionModal.current.present() || priorityActionModal.current?.dismiss();
   }, []);
-  const closeSnoozeActionModal = useCallback(() => {
-    snoozeActionModal.current?.close();
+  const closePriorityActionModal = useCallback(() => {
+    priorityActionModal.current?.dismiss();
   }, []);
 
-  const closeModals = () => {
-    closeSnoozeActionModal();
-    closeActionModal();
-  };
+  const conversationActionModalSnapPoints = useMemo(
+    () => [deviceHeight - 120, deviceHeight - 120],
+    [],
+  );
+
+  const assignTeamModal = useRef(null);
+  const toggleAssignTeamActionModal = useCallback(() => {
+    assignTeamModal.current.present() || assignTeamModal.current?.dismiss();
+  }, []);
+  const closeAssignTeamActionModal = useCallback(() => {
+    assignTeamModal.current?.dismiss();
+  }, []);
+
+  const labelActionModal = useRef(null);
+  const toggleLabelActionModal = useCallback(() => {
+    labelActionModal.current.present() || labelActionModal.current?.dismiss();
+  }, []);
+  const closeLabelActionModal = useCallback(() => {
+    labelActionModal.current?.dismiss();
+  }, []);
+
+  const assignAgentModal = useRef(null);
+  const toggleAssignAgentActionModal = useCallback(() => {
+    assignAgentModal.current.present() || assignAgentModal.current?.dismiss();
+  }, []);
+  const closeAssignAgentActionModal = useCallback(() => {
+    assignAgentModal.current?.dismiss();
+  }, []);
 
   return (
     <React.Fragment>
-      <View style={styles.chatHeader}>
+      <View style={[styles.chatHeader, hasDashboardApps && styles.chatHeaderWithApps]}>
         <View style={styles.chatHeaderLeft}>
           {renderLeftControl()}
           <Pressable style={styles.headerView} onPress={showConversationDetails}>
@@ -337,9 +389,9 @@ const ChatHeader = ({
                   <View style={styles.inboxNameWrap}>
                     {conversationDetails && (
                       <InboxName
-                        iconName={iconName}
-                        inboxName={getTextSubstringWithEllipsis(inboxName, 22)}
-                        size={'small'}
+                        inboxName={getTextSubstringWithEllipsis(inboxName, 18)}
+                        channelType={channelType}
+                        phoneNumber={phoneNumber}
                       />
                     )}
                   </View>
@@ -394,7 +446,64 @@ const ChatHeader = ({
             colors={colors}
             conversationId={conversationId}
             activeSnoozeValue={activeSnoozeValue()}
-            closeModal={closeModals}
+            closeModal={closeSnoozeActionModal}
+          />
+        }
+      />
+      <BottomSheetModal
+        bottomSheetModalRef={priorityActionModal}
+        initialSnapPoints={priorityActionModalSnapPoints}
+        showHeader
+        headerTitle={i18n.t('CONVERSATION.CHANGE_PRIORITY')}
+        closeFilter={closePriorityActionModal}
+        children={
+          <ConversationPriority
+            colors={colors}
+            conversationId={conversationId}
+            activePriority={conversationDetails.priority}
+            closeModal={closePriorityActionModal}
+          />
+        }
+      />
+      <BottomSheetModal
+        bottomSheetModalRef={assignTeamModal}
+        initialSnapPoints={conversationActionModalSnapPoints}
+        showHeader
+        headerTitle={i18n.t('CONVERSATION_TEAMS.TITLE')}
+        closeFilter={closeAssignTeamActionModal}
+        children={
+          <AssignTeamConversationItems
+            colors={colors}
+            conversationDetails={conversationDetails}
+            closeModal={closeAssignTeamActionModal}
+          />
+        }
+      />
+      <BottomSheetModal
+        bottomSheetModalRef={labelActionModal}
+        initialSnapPoints={conversationActionModalSnapPoints}
+        showHeader
+        headerTitle={i18n.t('CONVERSATION.LABELS')}
+        closeFilter={closeLabelActionModal}
+        children={
+          <LabelConversationItems
+            colors={colors}
+            conversationDetails={conversationDetails}
+            closeModal={closeLabelActionModal}
+          />
+        }
+      />
+      <BottomSheetModal
+        bottomSheetModalRef={assignAgentModal}
+        initialSnapPoints={conversationActionModalSnapPoints}
+        showHeader
+        headerTitle={i18n.t('CONVERSATION_AGENTS.TITLE')}
+        closeFilter={closeAssignAgentActionModal}
+        children={
+          <ConversationAgent
+            colors={colors}
+            conversationDetails={conversationDetails}
+            closeModal={closeAssignAgentActionModal}
           />
         }
       />

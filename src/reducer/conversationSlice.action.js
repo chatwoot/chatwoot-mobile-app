@@ -12,7 +12,13 @@ const actions = {
   fetchConversations: createAsyncThunk(
     'conversations/fetchConversations',
     async (
-      { pageNumber = 1, assigneeType = 'mine', conversationStatus = 'open', inboxId = 0 },
+      {
+        pageNumber = 1,
+        assigneeType = 'mine',
+        conversationStatus = 'open',
+        inboxId = 0,
+        sortBy = 'latest',
+      },
       { rejectWithValue },
     ) => {
       try {
@@ -21,6 +27,7 @@ const actions = {
           assignee_type: assigneeType === 'mine' ? 'me' : assigneeType,
           status: conversationStatus,
           page: pageNumber,
+          sort_by: sortBy,
         };
         const response = await axios.get('conversations', {
           params,
@@ -42,7 +49,7 @@ const actions = {
   ),
   fetchConversationStats: createAsyncThunk(
     'conversations/fetchConversationStats',
-    async (_, { getState }) => {
+    async (_, { getState, rejectWithValue }) => {
       try {
         const {
           conversations: { currentInbox, assigneeType, conversationStatus },
@@ -64,6 +71,7 @@ const actions = {
         if (!error.response) {
           throw error;
         }
+        return rejectWithValue(error);
       }
     },
   ),
@@ -268,6 +276,42 @@ const actions = {
         const response = await axios.get(`conversations/${conversationId}`);
         const { data } = response;
         return { data, conversationId };
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
+  deleteMessage: createAsyncThunk(
+    'conversations/deleteMessage',
+    async ({ conversationId, messageId }, { rejectWithValue }) => {
+      try {
+        const response = await axios.delete(
+          `conversations/${conversationId}/messages/${messageId}`,
+        );
+        return response.data;
+      } catch (error) {
+        if (!error.response) {
+          throw error;
+        }
+        return rejectWithValue(error.response.data);
+      }
+    },
+  ),
+  togglePriority: createAsyncThunk(
+    'conversations/togglePriority',
+    async ({ conversationId, priority }, { rejectWithValue }) => {
+      try {
+        const apiUrl = `conversations/${conversationId}/toggle_priority`;
+        await axios.post(apiUrl, {
+          priority,
+        });
+        return {
+          id: conversationId,
+          priority,
+        };
       } catch (error) {
         if (!error.response) {
           throw error;

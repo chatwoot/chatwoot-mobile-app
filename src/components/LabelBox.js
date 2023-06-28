@@ -1,41 +1,32 @@
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import { Icon, withStyles } from '@ui-kitten/components';
-import CustomText from 'src/components/Text';
 import { View } from 'react-native-animatable';
+import { StyleSheet } from 'react-native';
+import { Text, Icon, Pressable } from 'components';
 
-const styles = theme => ({
-  labelView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    marginBottom: 6,
-    paddingHorizontal: 6,
-    height: 24,
-    marginRight: 4,
-    backgroundColor: theme['color-secondary-50'],
-    borderColor: theme['color-secondary-75'],
-    borderRadius: 4,
-    borderWidth: 0.5,
-  },
-  label: {
-    paddingHorizontal: 4,
-    paddingVertical: 4,
-    color: theme['color-secondary-700'],
-    fontSize: theme['font-size-extra-small'],
-    fontWeight: theme['font-medium'],
-  },
-  labelCloseIcon: {
-    marginLeft: 2,
-  },
-});
-
+const createStyles = theme => {
+  const { spacing, borderRadius, colors } = theme;
+  return StyleSheet.create({
+    labelView: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      marginBottom: 6,
+      paddingHorizontal: spacing.micro,
+      paddingVertical: spacing.micro,
+      height: spacing.medium,
+      marginRight: spacing.micro,
+      borderColor: colors.borderLight,
+      borderRadius: borderRadius.micro,
+      borderWidth: 0.5,
+    },
+    labelCloseIcon: {
+      marginLeft: spacing.micro,
+    },
+  });
+};
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   id: PropTypes.number,
   title: PropTypes.string,
   color: PropTypes.string,
@@ -43,37 +34,37 @@ const propTypes = {
   onClickRemoveLabel: PropTypes.func,
 };
 
-const LabelBox = ({ id, title, color, onClickRemoveLabel, eva: { style, theme } }) => {
+const LabelBox = ({ id, title, color, onClickRemoveLabel }) => {
+  const theme = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+  const { colors, spacing, borderRadius } = theme;
+
   const getLabelColor = clr => {
     return {
       backgroundColor: clr,
-      width: 14,
-      height: 14,
-      borderRadius: 5,
-      marginRight: 2,
+      width: spacing.half,
+      height: spacing.half,
+      borderRadius: borderRadius.micro,
+      marginRight: spacing.micro,
     };
   };
 
   return (
     <React.Fragment>
-      <TouchableOpacity>
-        <View style={style.labelView} key={id}>
+      <View>
+        <View style={styles.labelView} key={id}>
           <View style={[getLabelColor(color)]} />
-          <CustomText style={style.label}>{title}</CustomText>
-          <Icon
-            name="close-outline"
-            height={16}
-            width={16}
-            fill={theme['color-secondary-700']}
-            style={style.labelCloseIcon}
-            onPress={() => onClickRemoveLabel()}
-          />
+          <Text xs medium color={colors.textDark} style={styles.label}>
+            {title}
+          </Text>
+          <Pressable style={styles.labelCloseIcon} onPress={() => onClickRemoveLabel()}>
+            <Icon icon="dismiss-outline" color={colors.textDark} size={12} />
+          </Pressable>
         </View>
-      </TouchableOpacity>
+      </View>
     </React.Fragment>
   );
 };
 
 LabelBox.propTypes = propTypes;
-
-export default withStyles(LabelBox, styles);
+export default LabelBox;

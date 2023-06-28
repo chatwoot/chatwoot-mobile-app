@@ -17,7 +17,7 @@ const ConversationEmptyMessage = () => {
 
   return (
     <View style={styles.tabContainer}>
-      <Empty image={images.emptyConversations} title={i18n.t('CONVERSATION.EMPTY')} />
+      <Empty image={images.emptyConversations} subTitle={i18n.t('CONVERSATION.EMPTY')} />
     </View>
   );
 };

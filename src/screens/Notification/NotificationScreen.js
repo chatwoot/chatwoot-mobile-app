@@ -1,19 +1,26 @@
-import React, { createRef, useState } from 'react';
-import { withStyles, Layout, List, Spinner } from '@ui-kitten/components';
+import React, { useState, useMemo, useRef, useCallback } from 'react';
+import { useTheme } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { SafeAreaView, View, AppState } from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  AppState,
+  FlatList,
+  ActivityIndicator,
+  Dimensions,
+} from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import ActionSheet from 'react-native-actions-sheet';
+import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import i18n from 'i18n';
 import { Header } from 'components';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
-import styles from './NotificationScreen.style';
+import createStyles from './NotificationScreen.style';
 import NotificationItem from '../../components/NotificationItem';
-import CustomText from '../../components/Text';
+import { Text } from 'components';
 import NotificationItemLoader from '../../components/NotificationItemLoader';
 import images from '../../constants/images';
-import Empty from '../../components/Empty';
+import Empty from 'components/Empty/Empty';
 import NotificationActionItem from '../../components/NotificationActionItem';
 import { useEffect } from 'react';
 import {
@@ -23,9 +30,11 @@ import {
   actions as notificationsActions,
 } from 'reducer/notificationSlice';
 
+const deviceHeight = Dimensions.get('window').height;
+
 const LoaderData = new Array(24).fill(0);
 const renderItemLoader = () => <NotificationItemLoader />;
-const actionSheetRef = createRef();
+
 import { SCREENS } from 'constants';
 
 const wait = timeout => {
@@ -37,8 +46,11 @@ const wait = timeout => {
 // The screen list thats need to be checked for refresh conversation list
 const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.NOTIFICATION, SCREENS.SETTINGS];
 
-const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
+const NotificationScreen = ({ navigation }) => {
   const [appState, setAppState] = useState(AppState.currentState);
+  const theme = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+  const { colors } = theme;
   const allNotifications = useSelector(notificationSelector.selectAll);
   const isFetching = useSelector(selectIsFetching);
   const isAllNotificationsLoaded = useSelector(selectAllNotificationsLoaded);
@@ -74,19 +86,25 @@ const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
 
   const renderEmptyList = () => {
     return (
-      <Layout style={style.tabContainer}>
-        <List data={LoaderData} renderItem={renderItemLoader} />
-      </Layout>
+      <View style={styles.tabContainer}>
+        <FlatList data={LoaderData} renderItem={renderItemLoader} />
+      </View>
     );
   };
 
   const renderMoreLoader = () => {
     return (
-      <View style={style.loadMoreSpinnerView}>
+      <View style={styles.loadMoreSpinnerView}>
         {!isAllNotificationsLoaded ? (
-          <Spinner size="medium" />
+          <ActivityIndicator
+            size="small"
+            color={colors.textDark}
+            animating={!isAllNotificationsLoaded}
+          />
         ) : (
-          <CustomText>{`${i18n.t('NOTIFICATION.ALL_NOTIFICATION_LOADED')} 🎉`}</CustomText>
+          <Text sm color={colors.textLight}>
+            {`${i18n.t('NOTIFICATION.ALL_NOTIFICATION_LOADED')} 🎉`}
+          </Text>
         )}
       </View>
     );
@@ -127,12 +145,8 @@ const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
     });
   };
 
-  const showActionSheet = () => {
-    actionSheetRef.current?.setModalVisible();
-  };
-
   const onPressAction = ({ itemType }) => {
-    actionSheetRef.current?.hide();
+    closeNotificationActionModal();
     if (itemType === 'mark_all') {
       dispatch(notificationsActions.markAllNotificationAsRead());
     }
@@ -144,14 +158,26 @@ const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
     wait(1000).then(() => setRefreshing(false));
   };
 
+  const notificationActionModal = useRef(null);
+  const notificationActionModalSnapPoints = useMemo(
+    () => [deviceHeight - 680, deviceHeight - 680],
+    [],
+  );
+  const toggleNotificationActionModal = useCallback(() => {
+    notificationActionModal.current.present() || notificationActionModal.current?.dismiss();
+  }, []);
+  const closeNotificationActionModal = useCallback(() => {
+    notificationActionModal.current?.dismiss();
+  }, []);
+
   return (
-    <SafeAreaView style={style.container}>
+    <SafeAreaView style={styles.container}>
       <Header
         headerText={i18n.t('NOTIFICATION.HEADER_TITLE')}
         rightIcon="more-horizontal"
-        onPressRight={showActionSheet}
+        onPressRight={toggleNotificationActionModal}
       />
-      <View style={style.container}>
+      <View style={styles.container}>
         {!isFetching || notifications.length ? (
           <React.Fragment>
             {notifications && notifications.length ? (
@@ -182,27 +208,32 @@ const NotificationScreen = ({ eva: { style, theme }, navigation }) => {
           renderEmptyList()
         )}
       </View>
-      <ActionSheet ref={actionSheetRef} initialOffsetFromBottom={0.6} defaultOverlayOpacity={0.3}>
-        <NotificationActionItem
-          onPressItem={onPressAction}
-          text={i18n.t('NOTIFICATION.MARK_ALL')}
-          itemType="mark_all"
-        />
-        <NotificationActionItem
-          onPressItem={onPressAction}
-          text={i18n.t('NOTIFICATION.CANCEL')}
-          itemType="cancel"
-        />
-      </ActionSheet>
+      <BottomSheetModal
+        bottomSheetModalRef={notificationActionModal}
+        initialSnapPoints={notificationActionModalSnapPoints}
+        closeFilter={closeNotificationActionModal}
+        children={
+          <View style={styles.bottomSheetView}>
+            <NotificationActionItem
+              onPressItem={onPressAction}
+              text={i18n.t('NOTIFICATION.MARK_ALL')}
+              iconName="mail-outline"
+              itemType="mark_all"
+            />
+            <NotificationActionItem
+              onPressItem={onPressAction}
+              text={i18n.t('NOTIFICATION.CANCEL')}
+              iconName="dismiss-circle-outline"
+              itemType="cancel"
+            />
+          </View>
+        }
+      />
     </SafeAreaView>
   );
 };
 
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
@@ -225,4 +256,4 @@ const defaultProps = {
 NotificationScreen.propTypes = propTypes;
 NotificationScreen.defaultProps = defaultProps;
 
-export default withStyles(NotificationScreen, styles);
+export default NotificationScreen;

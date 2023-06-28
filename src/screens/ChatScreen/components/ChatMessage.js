@@ -1,73 +1,54 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
-import { View, Dimensions } from 'react-native';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
+import { View, Dimensions, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { withStyles } from '@ui-kitten/components';
-
-import CustomText from '../../../components/Text';
+import { Text } from 'components';
 import { messageStamp } from '../../../helpers/TimeHelper';
 import ChatMessageItem from './ChatMessageItem';
 import { UserAvatar } from 'components';
 
 import { INBOX_TYPES } from 'constants';
 
-const styles = theme => ({
-  message: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-
-  emailContainer: {
-    width: '100%',
-  },
-
-  activityView: {
-    padding: 8,
-    borderRadius: 8,
-    maxWidth: Dimensions.get('window').width - 50,
-    backgroundColor: theme['color-background-activity'],
-    borderWidth: 1,
-    borderColor: theme['color-border-activity'],
-  },
-  activityDateView: {
-    alignItems: 'flex-end',
-  },
-
-  messageActivity: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  icon: {
-    width: 16,
-    height: 16,
-  },
-
-  messageContent: {
-    fontSize: theme['font-size-regular'],
-    fontWeight: theme['font-regular'],
-    color: theme['text-basic-color'],
-  },
-
-  date: {
-    color: theme['text-hint-color'],
-    fontSize: theme['font-size-extra-extra-small'],
-  },
-
-  messageBubble: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-  },
-
-  outgoingMessageThumbnail: {
-    marginLeft: 8,
-  },
-
-  incomingMessageThumbnail: {
-    marginRight: 8,
-  },
-});
+const createStyles = theme => {
+  const { spacing, borderRadius, colors } = theme;
+  return StyleSheet.create({
+    message: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: spacing.micro,
+    },
+    emailContainer: {
+      width: '100%',
+    },
+    activityView: {
+      padding: spacing.smaller,
+      borderRadius: borderRadius.small,
+      maxWidth: Dimensions.get('window').width - 50,
+      backgroundColor: colors.backgroundActivity,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    activityDateView: {
+      alignItems: 'flex-end',
+    },
+    messageActivity: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    messageBubble: {
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+    },
+    outgoingMessageThumbnail: {
+      marginLeft: spacing.smaller,
+    },
+    incomingMessageThumbnail: {
+      marginRight: spacing.smaller,
+    },
+  });
+};
 
 const MessageContentComponent = ({ conversation, message, type, showAttachment, created_at }) => {
   return (
@@ -83,26 +64,31 @@ const MessageContentComponent = ({ conversation, message, type, showAttachment, 
   );
 };
 
-const MessageContent = withStyles(MessageContentComponent, styles);
+const MessageContent = MessageContentComponent;
 
-const ActivityMessageComponent = ({ eva: { style }, message, created_at }) => (
-  <View style={style.activityView}>
-    <View style={style.messageActivity}>
-      <CustomText style={style.messageContent}>{message.content}</CustomText>
+const ActivityMessageComponent = ({ message, created_at }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
+  return (
+    <View style={styles.activityView}>
+      <View style={styles.messageActivity}>
+        <Text sm color={colors.textDarker}>
+          {message.content}
+        </Text>
+      </View>
+      <View style={styles.activityDateView}>
+        <Text xxs color={colors.text} style={styles.date}>
+          {messageStamp({ time: created_at })}
+        </Text>
+      </View>
     </View>
-    <View style={style.activityDateView}>
-      <CustomText style={style.date}>{messageStamp({ time: created_at })}</CustomText>
-    </View>
-  </View>
-);
+  );
+};
 
-const ActivityMessage = withStyles(ActivityMessageComponent, styles);
+const ActivityMessage = ActivityMessageComponent;
 
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }),
   message: PropTypes.shape({
     content: PropTypes.string,
     date: PropTypes.string,
@@ -115,7 +101,10 @@ const defaultProps = {
   message: { content: null, date: null },
 };
 
-const ChatMessageComponent = ({ message, eva: { style }, showAttachment, conversation }) => {
+const ChatMessageComponent = ({ message, showAttachment, conversation }) => {
+  const theme = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+
   const { message_type, created_at } = message;
   const channel = conversation?.meta?.channel;
 
@@ -136,10 +125,10 @@ const ChatMessageComponent = ({ message, eva: { style }, showAttachment, convers
   }
 
   return (
-    <View style={[style.message, !shouldShowFullWidth ? { justifyContent: alignment } : null]}>
-      <View style={[shouldShowFullWidth ? style.emailContainer : {}]}>
+    <View style={[styles.message, !shouldShowFullWidth ? { justifyContent: alignment } : null]}>
+      <View style={[shouldShowFullWidth ? styles.emailContainer : {}]}>
         {alignment === 'flex-start' ? (
-          <View style={style.messageBubble}>
+          <View style={styles.messageBubble}>
             <MessageContent
               conversation={conversation}
               message={message}
@@ -151,7 +140,7 @@ const ChatMessageComponent = ({ message, eva: { style }, showAttachment, convers
         ) : alignment === 'center' ? (
           <ActivityMessage message={message} created_at={created_at} type="activity" />
         ) : (
-          <View style={style.messageBubble}>
+          <View style={styles.messageBubble}>
             <MessageContent
               conversation={conversation}
               message={message}
@@ -160,7 +149,7 @@ const ChatMessageComponent = ({ message, eva: { style }, showAttachment, convers
               showAttachment={showAttachment}
             />
             {!isTwitterChannel ? (
-              <View style={style.outgoingMessageThumbnail}>
+              <View style={styles.outgoingMessageThumbnail}>
                 <UserAvatar
                   thumbnail={senderThumbnail}
                   userName={senderName}
@@ -176,9 +165,7 @@ const ChatMessageComponent = ({ message, eva: { style }, showAttachment, convers
   );
 };
 
-const ChatMessage = withStyles(ChatMessageComponent, styles);
+ChatMessageComponent.defaultProps = defaultProps;
+ChatMessageComponent.propTypes = propTypes;
 
-ChatMessage.defaultProps = defaultProps;
-ChatMessage.propTypes = propTypes;
-
-export default React.memo(ChatMessage);
+export default ChatMessageComponent;

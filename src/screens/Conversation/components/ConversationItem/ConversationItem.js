@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { View, Pressable, StyleSheet, Animated } from 'react-native';
+import { View, Pressable, StyleSheet, Animated, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,6 +18,9 @@ import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
 import ConversationLabel from './ConversationLabels';
+import ConversationPriority from './ConversationPriority';
+
+const isAndroid = Platform.OS === 'android';
 
 const propTypes = {
   item: PropTypes.shape({
@@ -38,6 +41,7 @@ const propTypes = {
     inbox_id: PropTypes.number,
     id: PropTypes.number,
     unread_count: PropTypes.number,
+    priority: PropTypes.string,
     status: PropTypes.string,
     last_non_activity_message: PropTypes.object,
   }).isRequired,
@@ -47,6 +51,8 @@ const propTypes = {
 };
 
 const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssigneeLabel }) => {
+  const swipeableRef = useRef(null);
+
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
@@ -62,13 +68,20 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
     inbox_id: inboxId,
     id,
     unread_count: unreadCount,
+    priority,
   } = item;
 
   const assigneeName = assignee?.name;
-
   const lastMessage = findLastMessage(item);
 
-  const { content, created_at, attachments, message_type, private: isPrivate } = lastMessage;
+  if (!lastMessage) {
+    return null;
+  }
+
+  const hasPriority = priority !== null;
+
+  const content = lastMessage?.content;
+  const { created_at, attachments, message_type, private: isPrivate } = lastMessage;
   const {
     name: inboxName = null,
     channel_type: channelType = null,
@@ -77,14 +90,13 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
     inboxes,
     inboxId,
   });
+
   const inboxDetails = inboxes ? inboxes.find(inbox => inbox.id === inboxId) : {};
 
   const typingUser = getTypingUsersText({
     conversationTypingUsers,
     conversationId: id,
   });
-
-  const swipeableRef = useRef(null);
 
   const markAsUnreadAndClose = () => {
     AnalyticsHelper.track(CONVERSATION_EVENTS.MARK_AS_UNREAD);
@@ -159,7 +171,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
             <UserAvatar
               thumbnail={thumbnail}
               userName={name}
-              size={46}
+              size={40}
               fontSize={16}
               defaultBGColor={colors.primary}
               channel={channel}
@@ -184,14 +196,21 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
                   />
                 </View>
               </View>
-              {showAssigneeLabel && assigneeName && (
-                <View style={styles.assigneeLabel}>
-                  <Icon icon="person-outline" color={colors.textLighter} size={12} />
-                  <Text xs color={colors.textLighter}>
-                    {getTextSubstringWithEllipsis(assigneeName, 14)}
-                  </Text>
-                </View>
-              )}
+              <View style={styles.metaDetails}>
+                {showAssigneeLabel && assigneeName && (
+                  <View style={styles.assigneeLabel}>
+                    <Icon icon="person-outline" color={colors.textLighter} size={12} />
+                    <Text xs color={colors.textLighter}>
+                      {getTextSubstringWithEllipsis(assigneeName, 14)}
+                    </Text>
+                  </View>
+                )}
+                {hasPriority && (
+                  <View style={styles.priorityView}>
+                    <ConversationPriority priority={priority} />
+                  </View>
+                )}
+              </View>
             </View>
             <View style={styles.conversationDetails}>
               <View>
@@ -266,7 +285,8 @@ const createStyles = theme => {
       alignItems: 'flex-start',
     },
     avatarView: {
-      alignSelf: 'center',
+      alignSelf: 'flex-start',
+      marginTop: !isAndroid ? 30 : 34,
       marginRight: spacing.smaller,
     },
     contentView: {
@@ -345,6 +365,9 @@ const createStyles = theme => {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    priorityView: {
+      marginLeft: spacing.micro,
     },
   });
 };

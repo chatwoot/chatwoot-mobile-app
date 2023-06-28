@@ -1,53 +1,53 @@
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import { withStyles } from '@ui-kitten/components';
-import { Icon } from '@ui-kitten/components';
-import { Text } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Text, Icon, Pressable } from 'components';
 
-const styles = theme => ({
-  addButtonWrap: {
-    flexDirection: 'row',
-    height: 24,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: theme['color-primary-50'],
-    borderColor: theme['color-primary-75'],
-    borderWidth: 0.5,
-    borderRadius: 4,
-    paddingHorizontal: 8,
-    marginBottom: 4,
-    marginRight: 6,
-  },
-  addButton: {
-    marginRight: 6,
-    color: theme['color-primary-700'],
-    fontWeight: theme['font-medium'],
-    fontSize: theme['font-size-extra-small'],
-  },
-});
+const createStyles = theme => {
+  const { spacing, borderRadius, colors } = theme;
+  return StyleSheet.create({
+    addButtonWrap: {
+      flexDirection: 'row',
+      height: spacing.medium,
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      backgroundColor: colors.primaryColorLight,
+      borderColor: colors.primaryColorLight,
+      borderWidth: 0.2,
+      borderRadius: borderRadius.micro,
+      paddingHorizontal: spacing.smaller,
+      marginBottom: spacing.micro,
+      marginRight: 6,
+    },
+    addButton: {
+      marginRight: 6,
+    },
+  });
+};
 
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   buttonLabel: PropTypes.string,
   iconName: PropTypes.string,
   onClickOpen: PropTypes.func,
 };
 
-const AddButton = ({ buttonLabel, iconName, onClickOpen, eva: { style, theme } }) => {
+const AddButton = ({ buttonLabel, iconName, onClickOpen }) => {
+  const theme = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+  const { colors } = theme;
+
   return (
     <React.Fragment>
-      <TouchableOpacity style={style.addButtonWrap} onPress={onClickOpen}>
-        <Text style={style.addButton}>{buttonLabel}</Text>
-        <Icon name={iconName} height={14} width={14} fill={theme['color-primary-700']} />
-      </TouchableOpacity>
+      <Pressable style={styles.addButtonWrap} onPress={onClickOpen}>
+        <Text xs medium color={colors.primaryColorDarker} style={styles.addButton}>
+          {buttonLabel}
+        </Text>
+        <Icon icon={iconName} color={colors.primaryColorDarker} size={14} />
+      </Pressable>
     </React.Fragment>
   );
 };
 
 AddButton.propTypes = propTypes;
-
-export default withStyles(AddButton, styles);
+export default AddButton;

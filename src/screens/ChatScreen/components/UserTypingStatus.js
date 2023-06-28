@@ -1,39 +1,39 @@
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+import { Text } from 'components';
 import PropTypes from 'prop-types';
-import { withStyles } from '@ui-kitten/components';
-
-import CustomText from '../../../components/Text';
 import { View } from 'react-native-animatable';
 
-const styles = theme => ({
-  subHeaderTitle: {
-    fontSize: theme['font-size-extra-small'],
-    color: theme['color-success-500'],
-    paddingLeft: 1,
-  },
-});
+const createStyles = theme => {
+  return StyleSheet.create({
+    subHeaderTitle: {
+      paddingLeft: 1,
+    },
+  });
+};
 
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   typingUser: PropTypes.string,
 };
 
-const typingStatusComponent = ({ typingUser, eva: { style, theme } }) => {
+const TypingStatusComponent = ({ typingUser }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
+
   return (
     <React.Fragment>
       <TouchableOpacity>
         <View>
-          <CustomText style={style.subHeaderTitle}>{typingUser ? `${typingUser}` : ''}</CustomText>
+          <Text xs medium color={colors.successColor} style={styles.subHeaderTitle}>
+            {typingUser ? `${typingUser}` : ''}
+          </Text>
         </View>
       </TouchableOpacity>
     </React.Fragment>
   );
 };
 
-typingStatusComponent.propTypes = propTypes;
-
-export default withStyles(typingStatusComponent, styles);
+TypingStatusComponent.propTypes = propTypes;
+export default TypingStatusComponent;

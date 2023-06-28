@@ -1,13 +1,15 @@
 import React from 'react';
+import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { View, ActivityIndicator } from 'react-native';
-import { withStyles } from '@ui-kitten/components';
-import { theme } from '../theme';
 
 const ImageLoader = ({ style }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+
   return (
     <View style={style}>
-      <ActivityIndicator size="small" color={theme['loader-color']} />
+      <ActivityIndicator size="small" color={colors.textDark} />
     </View>
   );
 };
@@ -16,7 +18,5 @@ const propTypes = {
   style: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.shape({})), PropTypes.shape({})]),
 };
 
-const styles = () => ({});
-
 ImageLoader.propTypes = propTypes;
-export default withStyles(ImageLoader, styles);
+export default ImageLoader;

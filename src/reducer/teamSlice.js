@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
-import { pop } from 'helpers/NavigationHelper';
 import APIHelper from 'helpers/APIHelper';
 
 export const actions = {
@@ -66,7 +65,6 @@ const teamSlice = createSlice({
       })
       .addCase(actions.update.fulfilled, (state, action) => {
         state.uiFlags.isTeamUpdating = false;
-        pop(1);
       })
       .addCase(actions.update.rejected, (state, action) => {
         state.uiFlags.isTeamUpdating = false;

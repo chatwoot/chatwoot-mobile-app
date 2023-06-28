@@ -1,44 +1,41 @@
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { Icon, withStyles } from '@ui-kitten/components';
+import { Icon, Text, Pressable } from 'components';
 
 import { openURL } from 'src/helpers/UrlHelper';
-import CustomText from '../../../components/Text';
 import { View } from 'react-native-animatable';
 
-const styles = theme => ({
-  bannerWrapper: {
-    alignItems: 'flex-start',
-    flexDirection: 'row',
-    padding: 8,
-    maxHeight: 60,
-  },
-  bannerText: {
-    fontSize: theme['font-size-extra-small'],
-    fontWeight: theme['font-medium'],
-    paddingTop: 2,
-    paddingLeft: 8,
-  },
-  bannerHrefText: {
-    textDecorationLine: 'underline',
-  },
-  bannerWrap: {
-    flexDirection: 'row',
-  },
-  iconWrap: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 6,
-    paddingRight: 6,
-  },
-});
+const createStyles = theme => {
+  const { spacing } = theme;
+  return StyleSheet.create({
+    bannerWrapper: {
+      alignItems: 'flex-start',
+      flexDirection: 'row',
+      padding: spacing.smaller,
+      maxHeight: 60,
+    },
+    bannerText: {
+      paddingTop: spacing.tiny,
+      paddingLeft: spacing.smaller,
+    },
+    bannerHrefText: {
+      textDecorationLine: 'underline',
+    },
+    bannerWrap: {
+      flexDirection: 'row',
+    },
+    iconWrap: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingLeft: spacing.small,
+      paddingRight: spacing.small,
+    },
+  });
+};
 
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-    theme: PropTypes.object,
-  }).isRequired,
   text: PropTypes.string,
   color: PropTypes.string,
   hrefText: PropTypes.string,
@@ -56,34 +53,37 @@ const BannerComponent = ({
   closeButton,
   itemType,
   onPressItem,
-  eva: { style, theme },
 }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
+
   const bannerColor = () => {
     if (color === 'primary') {
-      return { backgroundColor: theme['color-primary-500'] };
+      return { backgroundColor: colors.primaryColor };
     }
     if (color === 'secondary') {
-      return { backgroundColor: theme['color-secondary-200'] };
+      return { backgroundColor: colors.secondaryColorLight };
     }
     if (color === 'alert') {
-      return { backgroundColor: theme['color-danger-500'] };
+      return { backgroundColor: colors.dangerColor };
     }
     if (color === 'warning') {
-      return { backgroundColor: theme['color-warning-500'] };
+      return { backgroundColor: colors.warningColor };
     }
     if (color === 'gray') {
-      return { backgroundColor: theme['color-black-500'] };
+      return { backgroundColor: colors.colorBlackLight };
     }
   };
 
   const bannerTextColor = () => {
     if (color === 'secondary') {
-      return { color: theme['color-secondary-800'] };
+      return colors.secondaryColorDarker;
     }
     if (color === 'warning') {
-      return { color: theme['color-warning-900'] };
+      return colors.warningColorDarker;
     } else {
-      return { color: theme['color-white'] };
+      return colors.colorWhite;
     }
   };
 
@@ -93,37 +93,35 @@ const BannerComponent = ({
 
   return (
     <React.Fragment>
-      <TouchableOpacity style={[style.bannerWrapper, bannerColor()]}>
-        <View style={style.bannerWrap}>
+      <Pressable style={[styles.bannerWrapper, bannerColor()]}>
+        <View style={styles.bannerWrap}>
           <View>
-            <CustomText style={[style.bannerText, bannerTextColor()]}>
+            <Text xs medium color={bannerTextColor()} style={styles.bannerText}>
               {text}
               {hrefText && hrefLink ? (
-                <CustomText
-                  style={[style.bannerText, style.bannerHrefText, bannerTextColor()]}
+                <Text
+                  xs
+                  medium
+                  color={bannerTextColor()}
+                  style={[styles.bannerText, styles.bannerHrefText]}
                   onPress={onPressOpenURL}>
                   {hrefText}
-                </CustomText>
+                </Text>
               ) : null}
-            </CustomText>
+            </Text>
           </View>
           {closeButton ? (
-            <View style={style.iconWrap}>
-              <Icon
-                name="close-circle-outline"
-                width={18}
-                height={18}
-                fill={theme['color-white']}
-                onPress={() => onPressItem({ itemType })}
-              />
+            <View style={styles.iconWrap}>
+              <Pressable onPress={() => onPressItem({ itemType })}>
+                <Icon icon="dismiss-circle-outline" color={colors.colorWhite} size={18} />
+              </Pressable>
             </View>
           ) : null}
         </View>
-      </TouchableOpacity>
+      </Pressable>
     </React.Fragment>
   );
 };
 
 BannerComponent.propTypes = propTypes;
-
-export default withStyles(BannerComponent, styles);
+export default BannerComponent;

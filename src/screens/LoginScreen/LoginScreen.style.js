@@ -1,84 +1,73 @@
 import { Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const deviceWidth = Dimensions.get('window').width;
 
-const styles = theme => ({
-  keyboardView: {
-    flex: 1,
-    backgroundColor: theme['background-basic-color-1'],
-  },
-  scrollView: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  logoView: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: Dimensions.get('window').height * 0.07,
-  },
-  logo: {
-    width: deviceWidth * 0.2,
-    height: deviceWidth * 0.5,
-    aspectRatio: 2,
-    resizeMode: 'contain',
-  },
-  titleView: {
-    paddingLeft: 40,
-    paddingRight: 40,
-  },
-  titleText: {
-    width: '100%',
-    textAlign: 'center',
-    fontSize: theme['font-size-large'],
-    fontWeight: theme['font-medium'],
-  },
-  subTitleText: {
-    textAlign: 'center',
-    fontSize: theme['font-size-small'],
-    lineHeight: 20,
-    marginVertical: 16,
-  },
-  formView: {
-    paddingLeft: 40,
-    paddingRight: 40,
-    marginTop: 16,
-  },
-  spacer: { paddingTop: 16 },
-  loginButtonView: {
-    paddingTop: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  loginButton: {
-    flex: 1,
-  },
-  loginButtonText: {
-    color: theme['text-control-color'],
-    fontWeight: theme['font-medium'],
-    fontSize: theme['font-size-large'],
-  },
-  separator: {
-    color: theme['text-hint-color'],
-  },
-  forgotView: {
-    paddingTop: 4,
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  accountView: {
-    paddingTop: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  linksContainer: {
-    paddingBottom: 64,
-  },
-  textStyle: {
-    fontSize: theme['font-size-extra-small'],
-    color: theme['text-hint-color'],
-    fontWeight: theme['font-medium'],
-  },
-});
-export default styles;
+export default theme => {
+  const { spacing, colors } = theme;
+  return StyleSheet.create({
+    keyboardView: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    scrollView: {
+      alignItems: 'center',
+    },
+    logoView: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: Dimensions.get('window').height * 0.07,
+    },
+    logo: {
+      width: deviceWidth * 0.2,
+      height: deviceWidth * 0.5,
+      aspectRatio: 2,
+      resizeMode: 'contain',
+    },
+    titleView: {
+      paddingLeft: 40,
+      paddingRight: 40,
+    },
+    titleText: {
+      textAlign: 'center',
+    },
+    subTitleText: {
+      textAlign: 'center',
+      lineHeight: 20,
+      marginVertical: spacing.small,
+    },
+    formView: {
+      paddingLeft: 40,
+      paddingRight: 40,
+      marginTop: spacing.small,
+    },
+    spacer: {
+      paddingTop: spacing.small,
+    },
+    loginButtonView: {
+      paddingTop: spacing.small,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    loginButton: {
+      width: '100%',
+    },
+    separator: {
+      color: colors.backgroundLight,
+    },
+    forgotView: {
+      paddingTop: spacing.micro,
+      alignItems: 'flex-end',
+    },
+    accountView: {
+      paddingTop: spacing.small,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    linksContainer: {
+      paddingBottom: 64,
+    },
+  });
+};

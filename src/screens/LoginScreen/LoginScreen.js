@@ -1,8 +1,7 @@
 import React, { useMemo, useEffect, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTheme } from '@react-navigation/native';
-import { View, Image, TouchableOpacity, SafeAreaView, Text, Dimensions } from 'react-native';
-import { withStyles } from '@ui-kitten/components';
+import { View, Image, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
@@ -10,9 +9,10 @@ import LanguageSelector from '../Settings/components/LanguageSelector';
 import { StackActions } from '@react-navigation/native';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
+import { Text } from 'components';
 
 import DeviceInfo from 'react-native-device-info';
-import styles from './LoginScreen.style';
+import createStyles from './LoginScreen.style';
 import TextInput from '../../components/TextInput';
 import images from '../../constants/images';
 
@@ -21,7 +21,6 @@ import LoaderButton from '../../components/LoaderButton';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { SIGNUP_URL } from '../../constants/url';
-import CustomText from '../../components/Text';
 import { openURL } from '../../helpers/UrlHelper';
 import { EMAIL_REGEX } from '../../helpers/formHelper';
 import { actions as authActions, resetAuth, selectLoggedIn } from 'reducer/authSlice';
@@ -33,9 +32,6 @@ const deviceHeight = Dimensions.get('window').height;
 const appName = DeviceInfo.getApplicationName();
 
 const propTypes = {
-  eva: PropTypes.shape({
-    style: PropTypes.object,
-  }).isRequired,
   onLogin: PropTypes.func,
   isLoggingIn: PropTypes.bool,
   navigation: PropTypes.shape({
@@ -51,9 +47,10 @@ const defaultProps = {
   isLoggingIn: false,
 };
 
-const LoginScreenComponent = ({ navigation, eva }) => {
+const LoginScreenComponent = ({ navigation }) => {
   const theme = useTheme();
   const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   const dispatch = useDispatch();
   const { isLoggingIn } = useSelector(state => state.auth);
@@ -75,7 +72,6 @@ const LoginScreenComponent = ({ navigation, eva }) => {
   };
 
   const { navigate } = navigation;
-  const { style } = eva;
 
   const {
     control,
@@ -98,10 +94,10 @@ const LoginScreenComponent = ({ navigation, eva }) => {
     [],
   );
   const toggleChangeLanguageModal = useCallback(() => {
-    changeLanguageModal.current.present() || changeLanguageModal.current?.close();
+    changeLanguageModal.current.present() || changeLanguageModal.current?.dismiss();
   }, []);
   const closeChangeLanguageModal = useCallback(() => {
-    changeLanguageModal.current?.close();
+    changeLanguageModal.current?.dismiss();
   }, []);
   const onChangeLanguage = useCallback(
     locale => {
@@ -120,22 +116,24 @@ const LoginScreenComponent = ({ navigation, eva }) => {
   );
 
   return (
-    <SafeAreaView style={style.keyboardView}>
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <View style={style.logoView}>
-          <Image style={style.logo} source={images.login} />
+    <SafeAreaView style={styles.keyboardView}>
+      <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="handled">
+        <View style={styles.logoView}>
+          <Image style={styles.logo} source={images.login} />
         </View>
-        <View style={style.titleView}>
-          <CustomText style={style.titleText}>{i18n.t('LOGIN.TITLE')}</CustomText>
+        <View style={styles.titleView}>
+          <Text lg medium color={colors.textDark} style={styles.titleText}>
+            {i18n.t('LOGIN.TITLE')}
+          </Text>
           {baseUrl ? (
-            <CustomText appearance="hint" style={style.subTitleText}>
+            <Text sm color={colors.textLight} style={styles.subTitleText}>
               {i18n.t('LOGIN.DESCRIPTION', { baseUrl })}
-            </CustomText>
+            </Text>
           ) : null}
         </View>
 
-        <View style={style.contentView}>
-          <View style={style.formView}>
+        <View style={styles.contentView}>
+          <View style={styles.formView}>
             <View>
               <Controller
                 control={control}
@@ -162,7 +160,7 @@ const LoginScreenComponent = ({ navigation, eva }) => {
                 )}
                 name="email"
               />
-              <View style={style.spacer} />
+              <View style={styles.spacer} />
               <View />
               <Controller
                 control={control}
@@ -186,41 +184,47 @@ const LoginScreenComponent = ({ navigation, eva }) => {
                 name="password"
               />
             </View>
-            <TouchableOpacity style={style.forgotView} onPress={() => navigate('ResetPassword')}>
-              <CustomText style={style.textStyle}>{i18n.t('LOGIN.FORGOT_PASSWORD')}</CustomText>
+            <TouchableOpacity style={styles.forgotView} onPress={() => navigate('ResetPassword')}>
+              <Text xs medium color={colors.textLight}>
+                {i18n.t('LOGIN.FORGOT_PASSWORD')}
+              </Text>
             </TouchableOpacity>
-            <View style={style.loginButtonView}>
+            <View style={styles.loginButtonView}>
               <LoaderButton
-                style={style.loginButton}
+                titleStyle={styles.loginButton}
                 loading={isLoggingIn}
-                textStyle={style.buttonTextStyle}
+                colorScheme="primary"
                 onPress={handleSubmit(onSubmit)}
-                size="large"
+                size="expanded"
                 text={i18n.t('LOGIN.LOGIN')}
               />
             </View>
           </View>
 
-          <View style={style.linksContainer}>
-            <View style={style.accountView}>
+          <View style={styles.linksContainer}>
+            <View style={styles.accountView}>
               {appName === 'Chatwoot' && (
                 <>
                   <TouchableOpacity onPress={doSignup}>
-                    <CustomText style={style.textStyle}>
+                    <Text xs medium color={colors.textLight}>
                       {i18n.t('LOGIN.CREATE_ACCOUNT')}
-                    </CustomText>
+                    </Text>
                   </TouchableOpacity>
-                  <Text style={style.textStyle}>{'   |   '}</Text>
+                  <Text color={colors.textLight}>{'   |   '}</Text>
                 </>
               )}
 
               <TouchableOpacity onPress={() => navigate('ConfigureURL')}>
-                <CustomText style={style.textStyle}>{i18n.t('LOGIN.CHANGE_URL')}</CustomText>
+                <Text xs medium color={colors.textLight}>
+                  {i18n.t('LOGIN.CHANGE_URL')}
+                </Text>
               </TouchableOpacity>
             </View>
-            <View style={style.accountView}>
+            <View style={styles.accountView}>
               <TouchableOpacity onPress={toggleChangeLanguageModal}>
-                <CustomText style={style.textStyle}>{i18n.t('LOGIN.CHANGE_LANGUAGE')}</CustomText>
+                <Text xs medium color={colors.textLight}>
+                  {i18n.t('LOGIN.CHANGE_LANGUAGE')}
+                </Text>
               </TouchableOpacity>
             </View>
             <BottomSheetModal
@@ -244,8 +248,6 @@ const LoginScreenComponent = ({ navigation, eva }) => {
   );
 };
 
-LoginScreenComponent.propTypes = propTypes;
 LoginScreenComponent.defaultProps = defaultProps;
-const LoginScreen = withStyles(LoginScreenComponent, styles);
-
-export default LoginScreen;
+LoginScreenComponent.propTypes = propTypes;
+export default LoginScreenComponent;

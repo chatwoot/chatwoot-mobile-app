@@ -1,6 +1,7 @@
 import { createSlice, createEntityAdapter, createDraftSafeSelector } from '@reduxjs/toolkit';
 const lodashFilter = require('lodash.filter');
 import actions from './conversationSlice.action';
+import { CONVERSATION_PRIORITY_ORDER } from 'constants';
 import { applyFilters, findPendingMessageIndex } from '../helpers/conversationHelpers';
 export const conversationAdapter = createEntityAdapter({
   selectId: conversation => conversation.id,
@@ -20,6 +21,7 @@ const conversationSlice = createSlice({
     isAllMessagesFetched: false,
     conversationStatus: 'open',
     assigneeType: 'mine',
+    sortFilter: 'latest',
     currentInbox: 0,
     loadingMessages: false,
     isChangingConversationStatus: false,
@@ -35,6 +37,9 @@ const conversationSlice = createSlice({
     },
     setActiveInbox: (state, action) => {
       state.currentInbox = action.payload;
+    },
+    setSortFilter: (state, action) => {
+      state.sortFilter = action.payload;
     },
     clearConversation: (state, action) => {
       const conversationId = action.payload;
@@ -202,7 +207,7 @@ const conversationSlice = createSlice({
         if (!conversation) {
           return;
         }
-        const lastMessageId = conversation.messages[conversation.messages.length - 1].id;
+        const lastMessageId = conversation?.messages[conversation.messages.length - 1]?.id;
         const messageId = data.messages[data.messages.length - 1].id;
         // If the last message id is same as the message id, we don't need to update the conversation
         if (lastMessageId !== messageId) {
@@ -210,6 +215,14 @@ const conversationSlice = createSlice({
           state.isAllMessagesFetched = false;
           state.isConversationFetching = false;
         }
+      })
+      .addCase(actions.togglePriority.fulfilled, (state, { payload }) => {
+        const { id, priority } = payload;
+        const conversation = state.entities[id];
+        if (!conversation) {
+          return;
+        }
+        conversation.priority = priority;
       });
   },
 });
@@ -220,6 +233,7 @@ export const selectAllConversationFetched = state => state.conversations.isAllCo
 export const selectConversationStatus = state => state.conversations.conversationStatus;
 export const selectAssigneeType = state => state.conversations.assigneeType;
 export const selectActiveInbox = state => state.conversations.currentInbox;
+export const selectSortFilter = state => state.conversations.sortFilter;
 export const selectMessagesLoading = state => state.conversations.loadingMessages;
 export const selectConversationFetching = state => state.conversations.isConversationFetching;
 export const selectAllMessagesFetched = state => state.conversations.isAllMessagesFetched;
@@ -231,11 +245,17 @@ export const selectors = {
   getFilteredConversations: createDraftSafeSelector(
     [conversationSelector.selectAll, (_, filters) => filters],
     (conversations, filters) => {
-      const { assigneeType, userId } = filters;
+      const { assigneeType, userId, sortBy } = filters;
 
-      const sortedConversations = conversations.sort((a, b) => {
-        return b.timestamp - a.timestamp;
-      });
+      const comparator = {
+        latest: (a, b) => b.last_activity_at - a.last_activity_at,
+        sort_on_created_at: (a, b) => a.created_at - b.created_at,
+        sort_on_priority: (a, b) => {
+          return CONVERSATION_PRIORITY_ORDER[a.priority] - CONVERSATION_PRIORITY_ORDER[b.priority];
+        },
+      };
+      const sortedConversations = conversations.sort(comparator[sortBy]);
+
       if (assigneeType === 'mine') {
         return sortedConversations.filter(conversation => {
           const { assignee } = conversation.meta;
@@ -282,6 +302,7 @@ export const {
   setConversationStatus,
   setAssigneeType,
   setActiveInbox,
+  setSortFilter,
   addConversation,
   addMessage,
   updateConversation,

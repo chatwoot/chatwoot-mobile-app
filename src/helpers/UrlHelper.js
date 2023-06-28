@@ -31,6 +31,9 @@ export const checkUrlIsConversation = async ({ url }) => {
 };
 
 export const openURL = ({ URL }) => {
+  if (!URL) {
+    return;
+  }
   if (Platform.OS === 'ios') {
     SafariView.show({
       url: URL,

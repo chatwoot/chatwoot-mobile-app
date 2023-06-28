@@ -1,77 +1,111 @@
-import React from 'react';
-import { View, FlatList, TouchableOpacity } from 'react-native';
-import { withStyles } from '@ui-kitten/components';
+import React, { useMemo, useEffect } from 'react';
+import { useTheme } from '@react-navigation/native';
+import { Text, Pressable } from 'components';
+import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
-import CustomText from '../../../components/Text';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  actions as CannedResponseActions,
+  cannedResponseSelector,
+} from 'reducer/cannedResponseSlice';
 
-const styles = theme => ({
-  mainView: {
-    backgroundColor: 'white',
-    borderRadius: 4,
-    paddingHorizontal: 8,
-    maxHeight: 200,
-    borderTopColor: theme['color-border'],
-    borderTopWidth: 1,
-  },
-  itemView: {
-    flex: 1,
-    flexDirection: 'row',
-    paddingVertical: 8,
-    paddingHorizontal: 2,
-  },
-  lastItemView: {
-    borderBottomWidth: 1,
-    borderBottomColor: theme['color-border'],
-  },
-  shortCode: {
-    color: theme['color-primary-default'],
-    fontWeight: theme['font-bold'],
-  },
-  content: {
-    color: theme['color-primary-default'],
-  },
-});
+const createStyles = theme => {
+  const { spacing, borderRadius, colors } = theme;
+  const { width } = Dimensions.get('window');
+  return StyleSheet.create({
+    mainView: {
+      backgroundColor: colors.colorWhite,
+      marginHorizontal: spacing.smaller,
+      borderRadius: borderRadius.small,
+      shadowColor: colors.backdropColor,
+      shadowOffset: {
+        width: 0,
+        height: 8,
+      },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 6,
+      maxHeight: 200,
+      borderColor: colors.borderLight,
+      borderWidth: 0.6,
+      position: 'absolute',
+      width: width - spacing.smaller * 2,
+      bottom: 106,
+      zIndex: 1,
+    },
+    contentContainerStyle: {
+      paddingHorizontal: spacing.small,
+      paddingVertical: spacing.smaller,
+    },
+    itemView: {
+      flexDirection: 'row',
+      paddingVertical: spacing.smaller,
+    },
+    lastItemView: {
+      borderBottomWidth: 0.4,
+      borderBottomColor: colors.borderLight,
+    },
+    content: {
+      lineHeight: 18,
+    },
+  });
+};
 
-const CannedResponseComponent = ({
-  shortCode,
-  content,
-  lastItem,
-  onClick,
-  eva: { theme, style },
-}) => (
-  <TouchableOpacity
-    style={[style.itemView, !lastItem && style.lastItemView]}
-    onPress={() => onClick(content)}>
-    <CustomText style={style.shortCode}>{shortCode} - </CustomText>
-    <CustomText style={style.content}>{content}</CustomText>
-  </TouchableOpacity>
-);
+const CannedResponseComponent = ({ shortCode, content, lastItem, onClick }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
+  return (
+    <Pressable
+      style={[styles.itemView, !lastItem && styles.lastItemView]}
+      onPress={() => onClick(content)}>
+      <Text semiBold sm color={colors.primaryColorDark} style={styles.content}>
+        {`${shortCode} - `}
+        <Text regular sm color={colors.textDark} style={styles.content}>
+          {content}
+        </Text>
+      </Text>
+    </Pressable>
+  );
+};
 
 CannedResponseComponent.propTypes = {
   shortCode: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
   lastItem: PropTypes.bool,
-  eva: PropTypes.shape({
-    theme: PropTypes.object,
-    style: PropTypes.object,
-  }).isRequired,
   onClick: PropTypes.func.isRequired,
 };
 
-const CannedResponse = withStyles(CannedResponseComponent, styles);
+const CannedResponse = React.memo(CannedResponseComponent);
 
 const propTypes = {
-  eva: PropTypes.shape({
-    theme: PropTypes.object,
-    style: PropTypes.object,
-  }).isRequired,
-  cannedResponses: PropTypes.array.isRequired,
+  searchKey: PropTypes.string,
   onClick: PropTypes.func.isRequired,
 };
 
-const CannedResponses = ({ eva: { theme, style }, cannedResponses, onClick }) => {
+const CannedResponses = ({ onClick, searchKey }) => {
+  const theme = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      CannedResponseActions.index({
+        searchKey,
+      }),
+    );
+  }, [dispatch, searchKey]);
+
+  const cannedResponses = useSelector(cannedResponseSelector.selectAll);
+
+  const isCannedResponsesExist = cannedResponses.length > 0;
+
+  if (!isCannedResponsesExist) {
+    return null;
+  }
+
   return (
-    <View style={style.mainView}>
+    <View style={styles.mainView}>
       <FlatList
         data={cannedResponses}
         renderItem={({ item, index }) => (
@@ -82,13 +116,13 @@ const CannedResponses = ({ eva: { theme, style }, cannedResponses, onClick }) =>
             onClick={onClick}
           />
         )}
+        contentContainerStyle={styles.contentContainerStyle}
         keyExtractor={item => item.id}
+        keyboardShouldPersistTaps={'handled'}
       />
     </View>
   );
 };
 
 CannedResponses.propTypes = propTypes;
-
-const CannedResponsesItem = withStyles(CannedResponses, styles);
-export default CannedResponsesItem;
+export default CannedResponses;

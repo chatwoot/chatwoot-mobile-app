@@ -6,6 +6,7 @@ import { Text } from 'components';
 import { View, StyleSheet } from 'react-native';
 import { getInboxIconByType } from 'src/helpers/inboxHelpers';
 import { getTextSubstringWithEllipsis } from 'helpers';
+
 const createStyles = theme => {
   const { spacing } = theme;
   return StyleSheet.create({
@@ -37,7 +38,7 @@ const InboxName = ({ inboxName, phoneNumber, channelType }) => {
         {iconName ? <Icon color={colors.textLight} size={10} icon={iconName} /> : null}
         {inboxName ? (
           <Text xs medium color={colors.textLight} style={styles.channelText}>
-            {getTextSubstringWithEllipsis(inboxName, 32)}
+            {getTextSubstringWithEllipsis(inboxName, 26)}
           </Text>
         ) : null}
       </View>

@@ -30,7 +30,12 @@ export default theme => {
       borderBottomWidth: 1,
       borderBottomColor: colors.borderLight,
       paddingHorizontal: spacing.half,
-      paddingVertical: spacing.half,
+      paddingTop: spacing.half,
+      paddingBottom: spacing.half,
+    },
+    chatHeaderWithApps: {
+      borderBottomWidth: 0,
+      paddingBottom: spacing.tiny,
     },
     chatHeaderLeft: {
       flexDirection: 'row',

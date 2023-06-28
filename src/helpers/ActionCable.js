@@ -37,7 +37,6 @@ class ActionCableConnector extends BaseActionCableConnector {
       //   'contact.deleted': this.onContactDelete,
       //   'contact.updated': this.onContactUpdate,
       //   'conversation.mentioned': this.onConversationMentioned,
-      //   'notification.created': this.onNotificationCreated,
       //   'first.reply.created': this.onFirstReplyCreated,
     };
   }

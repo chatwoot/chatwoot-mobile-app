@@ -7,12 +7,14 @@ export default theme => {
       flex: 1,
     },
     filterContainer: {
-      paddingHorizontal: spacing.small,
       paddingBottom: spacing.small,
       flexDirection: 'row',
       alignItems: 'center',
       borderBottomWidth: 0.4,
       borderBottomColor: colors.border,
+    },
+    filterScrollView: {
+      paddingHorizontal: spacing.small,
     },
   });
 };

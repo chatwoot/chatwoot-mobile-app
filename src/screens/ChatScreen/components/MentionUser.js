@@ -1,34 +1,26 @@
-import React from 'react';
-import { Pressable } from 'react-native';
-import { withStyles } from '@ui-kitten/components';
+import React, { useMemo } from 'react';
+import { useTheme } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
+import { Text, UserAvatar, Pressable } from 'components';
 import PropTypes from 'prop-types';
-import CustomText from 'components/Text';
-import UserAvatar from 'components/UserAvatar';
 
-const styles = theme => ({
-  itemView: {
-    flexDirection: 'row',
-    paddingVertical: 8,
-    paddingHorizontal: 2,
-    borderBottomWidth: 1,
-    borderBottomColor: theme['color-border'],
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  lastItemView: {
-    borderBottomWidth: 1,
-    borderBottomColor: theme['color-border'],
-  },
-  name: {
-    color: theme['color-primary-default'],
-    fontWeight: theme['font-bold'],
-    fontSize: 16,
-    paddingLeft: 8,
-  },
-  content: {
-    color: theme['color-primary-default'],
-  },
-});
+const createStyles = theme => {
+  const { spacing, colors, borderRadius } = theme;
+  return StyleSheet.create({
+    itemView: {
+      flexDirection: 'row',
+      padding: spacing.smaller,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.borderLight,
+      borderRadius: borderRadius.micro,
+      alignItems: 'center',
+      backgroundColor: colors.background,
+    },
+    name: {
+      paddingLeft: spacing.smaller,
+    },
+  });
+};
 
 const MentionUserComponent = ({
   name,
@@ -37,20 +29,26 @@ const MentionUserComponent = ({
   thumbnail,
   availabilityStatus,
   onUserSelect,
-  eva: { theme, style },
 }) => {
+  const theme = useTheme();
+  const { colors } = theme;
+  const styles = useMemo(() => createStyles(theme), [theme]);
+
   return (
-    <Pressable onPress={onUserSelect} style={style.itemView}>
+    <Pressable onPress={onUserSelect} style={styles.itemView}>
       <UserAvatar
         thumbnail={thumbnail}
         userName={name}
         size={24}
-        fontSize={theme['font-size-extra-extra-small']}
-        defaultBGColor={theme['color-primary-default']}
+        fontSize={12}
         availabilityStatus={availabilityStatus}
       />
-      <CustomText style={style.name}>{`${name} - `}</CustomText>
-      <CustomText style={style.email}>{email}</CustomText>
+      <Text sm semiBold color={colors.primaryColorDark} style={styles.name}>
+        {`${name} - `}
+      </Text>
+      <Text sm color={colors.textDark} style={styles.subHeaderTitle}>
+        {email}
+      </Text>
     </Pressable>
   );
 };
@@ -60,14 +58,8 @@ MentionUserComponent.propTypes = {
   email: PropTypes.string.isRequired,
   thumbnail: PropTypes.string.isRequired,
   lastItem: PropTypes.bool,
-  eva: PropTypes.shape({
-    theme: PropTypes.object,
-    style: PropTypes.object,
-  }).isRequired,
   onUserSelect: PropTypes.func.isRequired,
   availabilityStatus: PropTypes.string,
 };
 
-const MentionUser = withStyles(MentionUserComponent, styles);
-
-export default MentionUser;
+export default MentionUserComponent;

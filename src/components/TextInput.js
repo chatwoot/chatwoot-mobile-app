@@ -1,50 +1,48 @@
-import React from 'react';
-import { View, TextInput } from 'react-native';
-import { StyleService, useStyleSheet } from '@ui-kitten/components';
+import React, { useMemo } from 'react';
+import { View, TextInput, StyleSheet } from 'react-native';
+import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import Text from './Text';
+import { Text } from 'components';
 
-const themedStyles = StyleService.create({
-  textViewError: {
-    borderWidth: 1,
-    borderColor: 'color-danger-900',
-    borderRadius: 4,
-    marginTop: 8,
-  },
-  label: {
-    color: 'text-basic-color',
-    paddingBottom: 6,
-    fontSize: 'text-primary-size',
-    fontWeight: 'font-medium',
-  },
-  errorLabel: {
-    color: 'color-danger-900',
-    textAlign: 'left',
-    paddingTop: 2,
-    paddingBottom: 2,
-    fontSize: 'text-primary-size',
-  },
-  inputStyle: {
-    fontSize: 'input-font-size',
-    color: 'text-basic-color',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderWidth: 1,
-    borderRadius: 4,
-    borderColor: 'color-basic-focus-border',
-    height: 48,
-  },
-  errorInputStyle: {
-    fontSize: 'input-font-size',
-    color: 'text-basic-color',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderWidth: 1,
-    borderRadius: 4,
-    borderColor: 'color-danger-900',
-    height: 48,
-  },
-});
+const createStyles = theme => {
+  const { colors, fontSize, spacing, borderRadius } = theme;
+  return StyleSheet.create({
+    textViewError: {
+      borderWidth: 1,
+      borderColor: colors.dangerColorDark,
+      borderRadius: borderRadius.micro,
+      marginTop: spacing.smaller,
+    },
+    label: {
+      paddingBottom: 6,
+    },
+    errorLabel: {
+      textAlign: 'left',
+      paddingTop: spacing.tiny,
+      paddingBottom: spacing.tiny,
+    },
+    inputStyle: {
+      fontSize: fontSize.md,
+      color: colors.textDark,
+      paddingVertical: spacing.smaller,
+      paddingHorizontal: spacing.small,
+      borderWidth: 1,
+      borderRadius: borderRadius.micro,
+      borderColor: colors.borderLight,
+      height: spacing.larger,
+    },
+    errorInputStyle: {
+      fontSize: fontSize.md,
+      color: colors.textDark,
+      paddingVertical: spacing.smaller,
+      paddingHorizontal: spacing.small,
+      borderWidth: 1,
+      borderRadius: borderRadius.micro,
+      borderColor: colors.dangerColorDark,
+      height: spacing.larger,
+    },
+  });
+};
 
 const propTypes = {
   onChangeText: PropTypes.func.isRequired,
@@ -55,11 +53,15 @@ const propTypes = {
   value: PropTypes.string.isRequired,
 };
 const TextInputField = ({ onChangeText, error, keyboardType, secureTextEntry, label, value }) => {
-  const styles = useStyleSheet(themedStyles);
+  const theme = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+  const { colors } = theme;
 
   return (
     <View>
-      <Text style={styles.label}>{label}</Text>
+      <Text sm medium color={colors.textDark} style={styles.label}>
+        {label}
+      </Text>
       <TextInput
         style={error ? styles.errorInputStyle : styles.inputStyle}
         accessibilityLabel={label}
@@ -69,7 +71,11 @@ const TextInputField = ({ onChangeText, error, keyboardType, secureTextEntry, la
         value={value}
         autoCapitalize="none"
       />
-      {error && <Text style={styles.errorLabel}>{error.message}</Text>}
+      {error && (
+        <Text sm color={colors.dangerColor} style={styles.errorLabel}>
+          {error.message}
+        </Text>
+      )}
     </View>
   );
 };

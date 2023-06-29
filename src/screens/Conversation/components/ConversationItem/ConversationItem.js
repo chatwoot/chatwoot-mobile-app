@@ -80,7 +80,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
 
   const hasPriority = priority !== null;
 
-  const content = lastMessage?.content;
+  const content = lastMessage?.content || '';
   const { created_at, attachments, message_type, private: isPrivate } = lastMessage;
   const {
     name: inboxName = null,

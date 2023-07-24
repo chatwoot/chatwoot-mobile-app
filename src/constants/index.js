@@ -4,8 +4,8 @@ export const SCREENS = {
   LOGIN: 'Login',
   CONFIG_URL: 'ConfigureURL',
   CONVERSATION: 'ConversationScreen',
-  NOTIFICATION: 'Notification',
-  SETTINGS: 'Settings',
+  NOTIFICATION: 'NotificationScreen',
+  SETTINGS: 'SettingsScreen',
   DETAIL: 'Detail',
   CHAT: 'ChatScreen',
 };

@@ -145,10 +145,14 @@ const ChatScreenComponent = ({ navigation, route }) => {
   // Update messages list when app comes to foreground from background
   useEffect(() => {
     const appStateListener = AppState.addEventListener('change', nextAppState => {
-      if (appState === 'background' && nextAppState === 'active') {
+      if (appState.match(/inactive|background/) && nextAppState === 'active') {
         const routeName = getCurrentRouteName();
         if (routeName === SCREENS.CHAT) {
-          dispatch(conversationActions.updateConversationAndMessages({ conversationId }));
+          dispatch(
+            conversationActions.fetchPreviousMessages({
+              conversationId,
+            }),
+          );
         }
       }
       setAppState(nextAppState);

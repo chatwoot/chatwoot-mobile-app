@@ -120,16 +120,10 @@ const ConversationScreen = () => {
   // Update notifications when app comes to foreground from background
   useEffect(() => {
     const appStateListener = AppState.addEventListener('change', nextAppState => {
-      if (appState === 'background' && nextAppState === 'active') {
+      if (appState.match(/inactive|background/) && nextAppState === 'active') {
         const routeName = getCurrentRouteName();
         if (REFRESH_SCREEN_LIST.includes(routeName)) {
-          loadConversations({
-            page: pageNumber,
-            assignee: assigneeType,
-            status: conversationStatus,
-            inboxId: activeInboxId,
-            sortBy: sortFilter,
-          });
+          refreshConversationsAgain();
         }
       }
       setAppState(nextAppState);
@@ -137,19 +131,23 @@ const ConversationScreen = () => {
     return () => {
       appStateListener?.remove();
     };
-  }, [
-    appState,
-    pageNumber,
-    assigneeType,
-    conversationStatus,
-    activeInboxId,
-    loadConversations,
-    sortFilter,
-  ]);
+  }, [appState, refreshConversationsAgain]);
 
   const onChangePage = async () => {
     setPage(pageNumber + 1);
   };
+
+  const refreshConversationsAgain = useCallback(async () => {
+    await dispatch(clearAllConversations());
+    setPage(1);
+    loadConversations({
+      page: 1,
+      assignee: assigneeType,
+      status: conversationStatus,
+      inboxId: activeInboxId,
+      sortBy: sortFilter,
+    });
+  }, [dispatch, assigneeType, conversationStatus, activeInboxId, loadConversations, sortFilter]);
 
   const refreshConversations = async () => {
     AnalyticsHelper.track(CONVERSATION_EVENTS.REFRESH_CONVERSATIONS);

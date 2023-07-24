@@ -110,10 +110,10 @@ const NotificationScreen = ({ navigation }) => {
     );
   };
 
-  // Update conversations when app comes to foreground from background
+  // Update notifications when app comes to foreground from background
   useEffect(() => {
     const appStateListener = AppState.addEventListener('change', nextAppState => {
-      if (appState === 'background' && nextAppState === 'active') {
+      if (appState.match(/inactive|background/) && nextAppState === 'active') {
         const routeName = getCurrentRouteName();
         if (REFRESH_SCREEN_LIST.includes(routeName)) {
           dispatch(notificationsActions.index({ pageNo }));

@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import { useTheme } from '@react-navigation/native';
+import ImageZoom from 'react-native-image-pan-zoom';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
-import { View, Dimensions, SafeAreaView, StyleSheet } from 'react-native';
-import ImageZoom from 'react-native-image-pan-zoom';
+import { View, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
 import { Header, ImageLoader } from 'components';
 
 const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Dimensions.get('window').height;
+const deviceHeight = Dimensions.get('window').height - 180;
 
 const createStyles = theme => {
   const { colors } = theme;
@@ -19,20 +19,12 @@ const createStyles = theme => {
     imageContainer: {
       justifyContent: 'center',
       alignItems: 'center',
-    },
-    imageLoader: {
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      top: 0,
-      bottom: 0,
-      opacity: 0.7,
-      justifyContent: 'center',
-      alignItems: 'center',
+      flex: 1,
     },
     bannerImage: {
-      height: deviceHeight - 180,
-      width: deviceWidth,
+      flex: 1,
+      width: '100%',
+      height: '100%',
       resizeMode: 'contain',
     },
   });
@@ -68,11 +60,12 @@ const ImageScreen = ({ navigation, route }) => {
     <SafeAreaView style={styles.container}>
       <Header leftIcon="dismiss-outline" onPressLeft={onBackPress} />
       <View style={styles.imageContainer}>
+        {imageLoading && <ImageLoader style={styles.imageLoader} />}
         <ImageZoom
-          cropWidth={Dimensions.get('window').width}
-          cropHeight={Dimensions.get('window').height}
-          imageWidth={Dimensions.get('window').width}
-          imageHeight={Dimensions.get('window').height}>
+          cropWidth={deviceWidth}
+          cropHeight={deviceHeight}
+          imageWidth={deviceWidth}
+          imageHeight={deviceHeight}>
           <FastImage
             style={styles.bannerImage}
             source={{
@@ -82,9 +75,9 @@ const ImageScreen = ({ navigation, route }) => {
             onLoadEnd={() => {
               onLoadImage(false);
             }}
+            resizeMode={FastImage.resizeMode.contain}
           />
         </ImageZoom>
-        {imageLoading && <ImageLoader style={styles.imageLoader} />}
       </View>
     </SafeAreaView>
   );

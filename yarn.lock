@@ -1080,10 +1080,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@chatwoot/react-native-widget@^0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@chatwoot/react-native-widget/-/react-native-widget-0.0.14.tgz#66fa6465ca0c9027023c7ca9562ab27ad1835cb6"
-  integrity sha512-1oOHibUgq8eDLHcSjvrOHtCMIkAvmNN1VR4zv2pwGorNcTAD8eTnBCEQRg9V1z+JkoxmS4vV6GEuNDj1Y6N+Lw==
+"@chatwoot/react-native-widget@^0.0.16":
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/@chatwoot/react-native-widget/-/react-native-widget-0.0.16.tgz#7c75fe18fe4a13d2d8b37c406889031513e0a3d6"
+  integrity sha512-inEsjPO6qTRVY6LQnR0Is6Ak1cJYdLNv9oOuaAJSuNXDBR3jY9V666YXAV317l0BcI60kvCCE6uUkQXDjajfFA==
   dependencies:
     react-native-modal "^13.0.1"
 
@@ -1900,7 +1900,7 @@
   resolved "https://registry.yarnpkg.com/@jsamr/react-native-li/-/react-native-li-2.3.1.tgz#12a5b5f6e3971cec77b96bee58104eed0ae9314a"
   integrity sha512-Qbo4NEj48SQ4k8FZJHFE2fgZDKTWaUGmVxcIQh3msg5JezLdTMMHuRRDYctfdHI6L0FZGObmEv3haWbIvmol8w==
 
-"@kesha-antonov/react-native-action-cable@^1.1.0":
+"@kesha-antonov/react-native-action-cable@^1.1.4":
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/@kesha-antonov/react-native-action-cable/-/react-native-action-cable-1.1.4.tgz#117d48aba33476a1c3f7b5a1c3a32ba8ec43524f"
   integrity sha512-Qy0jozu8fcAy9d0Reb/fIkWKr+0RXtt4nkwDKPz2xx6tD3it6XhgyfX1fVk1UMqnjwy8YyPCcB61TEAH2RbeYA==

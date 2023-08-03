@@ -182,7 +182,10 @@ export const getTypingUsersText = ({ conversationId, conversationTypingUsers }) 
 };
 
 export const findUniqueMessages = ({ allMessages }) => {
-  const completeMessages = [].concat(allMessages).reverse();
+  const completeMessages = []
+    .concat(allMessages)
+    .sort((a, b) => a.created_at - b.created_at)
+    .reverse();
 
   const uniqueMessages = completeMessages.reduce((acc, current) => {
     const x = acc.find(item => item.id === current.id);

@@ -10,7 +10,7 @@ export const SCREENS = {
   CHAT: 'ChatScreen',
 };
 
-export const MAXIMUM_FILE_UPLOAD_SIZE = 40;
+export const MAXIMUM_FILE_UPLOAD_SIZE = 10;
 
 export const CONVERSATION_STATUSES = [
   {

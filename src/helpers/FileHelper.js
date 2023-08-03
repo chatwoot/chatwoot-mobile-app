@@ -20,6 +20,5 @@ export const findFileSize = bytes => {
   if (bytes === 0) {
     return 0;
   }
-  const sizeInMB = (bytes / (1024 * 1024)).toFixed(2);
-  return sizeInMB;
+  return bytes / (1024 * 1024);
 };

@@ -21,6 +21,7 @@ const propTypes = {
 };
 
 const MessagesListComponent = ({ conversationId, loadMessages }) => {
+  const [isFlashListReady, setFlashListReady] = React.useState(false);
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -49,7 +50,7 @@ const MessagesListComponent = ({ conversationId, loadMessages }) => {
   };
 
   const onEndReached = ({ distanceFromEnd }) => {
-    const shouldFetchMoreMessages = !isAllMessagesFetched && !isFetching;
+    const shouldFetchMoreMessages = !isAllMessagesFetched && !isFetching && isFlashListReady;
     if (shouldFetchMoreMessages) {
       loadMessages();
     }
@@ -85,6 +86,11 @@ const MessagesListComponent = ({ conversationId, loadMessages }) => {
       <View style={styles.chatView}>
         {groupedConversationList.length ? (
           <SectionList
+            onScroll={() => {
+              if (!isFlashListReady) {
+                setFlashListReady(true);
+              }
+            }}
             keyboardShouldPersistTaps="never"
             scrollEventThrottle={16}
             inverted

@@ -9,7 +9,7 @@ import ChatMessageDate from '../ChatMessageDate';
 import ReplyBox from '../ReplyBox';
 import createStyles from './MessageList.style';
 import { openURL } from 'helpers/UrlHelper';
-import { getGroupedConversation, findUniqueMessages } from 'helpers';
+import { findUniqueMessages, getGroupedMessages } from 'helpers/conversationHelpers';
 import {
   selectors as conversationSelectors,
   selectMessagesLoading,
@@ -75,16 +75,17 @@ const MessagesListComponent = ({ conversationId, loadMessages }) => {
       conversation={conversation}
     />
   );
-
-  const uniqueMessages = findUniqueMessages({ allMessages });
-  const groupedConversationList = getGroupedConversation({
-    conversations: uniqueMessages,
+  const uniqueMessages = findUniqueMessages({
+    allMessages,
+  });
+  const groupedMessages = getGroupedMessages({
+    messages: uniqueMessages,
   });
 
   return (
     <View style={styles.container} autoDismiss={false}>
       <View style={styles.chatView}>
-        {groupedConversationList.length ? (
+        {groupedMessages.length ? (
           <SectionList
             onScroll={() => {
               if (!isFlashListReady) {
@@ -95,7 +96,7 @@ const MessagesListComponent = ({ conversationId, loadMessages }) => {
             scrollEventThrottle={16}
             inverted
             onEndReached={onEndReached}
-            sections={groupedConversationList}
+            sections={groupedMessages}
             keyExtractor={(item, index) => item + index}
             renderItem={renderMessage}
             renderSectionFooter={({ section: { date } }) => <ChatMessageDate date={date} />}
@@ -103,7 +104,7 @@ const MessagesListComponent = ({ conversationId, loadMessages }) => {
             ListFooterComponent={renderMoreLoader}
           />
         ) : null}
-        {isFetching && !groupedConversationList.length && (
+        {isFetching && !groupedMessages.length && (
           <View style={styles.loadMoreSpinnerView}>
             <ActivityIndicator size="small" color={colors.textDark} animating={isFetching} />
           </View>
@@ -113,7 +114,7 @@ const MessagesListComponent = ({ conversationId, loadMessages }) => {
         conversationId={conversationId}
         conversationDetails={conversation}
         inboxId={inboxId}
-        enableReplyButton={groupedConversationList.length > 0}
+        enableReplyButton={groupedMessages.length > 0}
       />
     </View>
   );

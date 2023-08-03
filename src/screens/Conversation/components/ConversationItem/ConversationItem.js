@@ -8,7 +8,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
 import { getTextSubstringWithEllipsis } from 'helpers';
 import { findLastMessage, getInboxName } from 'helpers/conversationHelpers';
-import { getTypingUsersText } from 'helpers';
+import { getTypingUsersText } from 'helpers/conversationHelpers';
 import ConversationContent from './ConversationContent';
 import ConversationAttachment from './ConversationAttachment';
 import { dynamicTime } from 'helpers/TimeHelper';

@@ -9,7 +9,6 @@ import {
 } from 'helpers/conversationHelpers';
 
 import { messages } from './fixtures/messages';
-import { describe } from 'node_modules/jest-circus/build/index';
 
 describe('conversation helpers', () => {
   it('should return true if conversation status matches filter status', () => {
@@ -90,8 +89,8 @@ describe('#lastMessage', () => {
       messages: [{ id: 1, created_at: 1654333, message_type: 2, content: 'Hey' }],
       last_non_activity_message: null,
     };
-    const { messages } = conversation;
-    expect(findLastMessage(conversation)).toEqual(messages[messages.length - 1]);
+    const { messages: allMessages } = conversation;
+    expect(findLastMessage(conversation)).toEqual(allMessages[allMessages.length - 1]);
   });
 
   it('should return message from store if store has latest message', () => {

@@ -21,18 +21,16 @@ import i18n from 'i18n';
 import { navigationRef } from 'helpers/NavigationHelper';
 import { findConversationLinkFromPush } from './helpers/PushHelper';
 import { selectLoggedIn } from 'reducer/authSlice';
-import { selectUrlSet, selectInstallationUrl, selectLocale } from 'reducer/settingsSlice';
+import { selectInstallationUrl, selectLocale } from 'reducer/settingsSlice';
 
 const Stack = createNativeStackNavigator();
 
 const propTypes = {
   isLoggedIn: PropTypes.bool,
-  isUrlSet: PropTypes.bool,
 };
 
 const defaultProps = {
   isLoggedIn: false,
-  isUrlSet: false,
 };
 // TODO
 messaging().setBackgroundMessageHandler(async remoteMessage => {});
@@ -48,7 +46,6 @@ const App = () => {
   const routeNameRef = useRef();
 
   const isLoggedIn = useSelector(selectLoggedIn);
-  const isUrlSet = useSelector(selectUrlSet);
   const installationUrl = useSelector(selectInstallationUrl);
   const locale = useSelector(selectLocale);
 
@@ -155,9 +152,7 @@ const App = () => {
           }}
           theme={theme}>
           <BottomSheetModalProvider>
-            <Stack.Navigator
-              initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'}
-              screenOptions={{ headerShown: false }}>
+            <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
               {isLoggedIn ? (
                 <Fragment>
                   <Stack.Screen name="Tab" component={TabStack} />

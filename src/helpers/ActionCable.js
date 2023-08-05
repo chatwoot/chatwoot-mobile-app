@@ -1,10 +1,11 @@
 import BaseActionCableConnector from './BaseActionCableConnector';
 
 import {
-  addMessage,
+  addOrUpdateMessage,
   addConversation,
   updateConversation,
   updateContactsPresence,
+  updateConversationLastActivity,
 } from 'reducer/conversationSlice';
 
 import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
@@ -42,11 +43,16 @@ class ActionCableConnector extends BaseActionCableConnector {
   }
 
   onMessageCreated = message => {
-    store.dispatch(addMessage(message));
+    store.dispatch(addOrUpdateMessage(message));
+    const {
+      conversation: { last_activity_at: lastActivityAt },
+      conversation_id: conversationId,
+    } = message;
+    store.dispatch(updateConversationLastActivity({ lastActivityAt, conversationId }));
   };
 
   onMessageUpdated = data => {
-    store.dispatch(addMessage(data));
+    store.dispatch(addOrUpdateMessage(data));
   };
 
   onConversationCreated = data => {

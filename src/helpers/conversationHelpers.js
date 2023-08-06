@@ -216,5 +216,7 @@ export const extractConversationIdFromUrl = ({ url }) => {
     const conversationIdMatch = url.match(/\/conversations\/(\d+)/);
     const conversationId = conversationIdMatch ? parseInt(conversationIdMatch[1]) : null;
     return conversationId;
-  } catch (error) {}
+  } catch (error) {
+    return null;
+  }
 };

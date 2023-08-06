@@ -386,4 +386,12 @@ describe('extractConversationIdFromUrl', () => {
       }),
     ).toBe(null);
   });
+
+  it('should return null if null url is passed', () => {
+    expect(
+      extractConversationIdFromUrl({
+        url: null,
+      }),
+    ).toBe(null);
+  });
 });

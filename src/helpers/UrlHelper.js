@@ -1,9 +1,7 @@
 import SafariView from 'react-native-safari-view';
-
 import { Platform, Linking } from 'react-native';
 
 import { store } from '../store';
-
 import { URL_REGEX } from '../constants';
 
 export const getBaseUrl = async () => {

@@ -20,6 +20,7 @@ import TabStack from './components/TabBar';
 import i18n from 'i18n';
 import { navigationRef } from 'helpers/NavigationHelper';
 import { findConversationLinkFromPush } from './helpers/PushHelper';
+import { extractConversationIdFromUrl } from './helpers/conversationHelpers';
 import { selectLoggedIn } from 'reducer/authSlice';
 import { selectInstallationUrl, selectLocale } from 'reducer/settingsSlice';
 
@@ -62,8 +63,9 @@ const App = () => {
       },
     },
     getStateFromPath: (path, config) => {
-      const conversationIdMatch = path.match(/\/conversations\/(\d+)/);
-      const conversationId = conversationIdMatch ? parseInt(conversationIdMatch[1]) : null;
+      const conversationId = extractConversationIdFromUrl({
+        url: path,
+      });
       if (!conversationId) {
         return;
       }

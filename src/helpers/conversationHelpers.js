@@ -210,3 +210,11 @@ export const getTypingUsersText = ({ conversationId, conversationTypingUsers }) 
   }
   return false;
 };
+
+export const extractConversationIdFromUrl = ({ url }) => {
+  try {
+    const conversationIdMatch = url.match(/\/conversations\/(\d+)/);
+    const conversationId = conversationIdMatch ? parseInt(conversationIdMatch[1]) : null;
+    return conversationId;
+  } catch (error) {}
+};

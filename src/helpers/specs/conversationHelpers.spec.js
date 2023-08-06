@@ -6,6 +6,7 @@ import {
   findUniqueMessages,
   getGroupedMessages,
   getTypingUsersText,
+  extractConversationIdFromUrl,
 } from 'helpers/conversationHelpers';
 
 import { messages } from './fixtures/messages';
@@ -350,5 +351,39 @@ describe('#getTypingUsersText', () => {
         },
       }),
     ).toEqual('John and 3 others are typing...');
+  });
+});
+
+describe('extractConversationIdFromUrl', () => {
+  it('should return conversation if valid url is passed', () => {
+    expect(
+      extractConversationIdFromUrl({
+        url: 'https://app.chatwoot.com/app/accounts/1/conversations/23919',
+      }),
+    ).toBe(23919);
+  });
+
+  it('should return conversation if folder conversation url is passed', () => {
+    expect(
+      extractConversationIdFromUrl({
+        url: 'https://app.chatwoot.com/app/accounts/1/custom_view/338/conversations/26511',
+      }),
+    ).toBe(26511);
+  });
+
+  it('should return conversation if mention conversation url is passed', () => {
+    expect(
+      extractConversationIdFromUrl({
+        url: 'https://app.chatwoot.com/app/accounts/1/mentions/conversations/21480',
+      }),
+    ).toBe(21480);
+  });
+
+  it('should return null if invalid url is passed', () => {
+    expect(
+      extractConversationIdFromUrl({
+        url: 'https://app.chatwoot.com/app/accounts/1/conversations/',
+      }),
+    ).toBe(null);
   });
 });

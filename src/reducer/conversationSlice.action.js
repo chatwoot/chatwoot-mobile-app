@@ -108,7 +108,7 @@ const actions = {
         const { error: message } = error.response.data;
         const errorMessage = message || I18n.t('CONVERSATION.CONVERSATION_NOT_FOUND');
         showToast({ message: errorMessage });
-        RootNavigation.navigate('ConversationScreen');
+        RootNavigation.replace('Tab');
         return rejectWithValue(error.response.data);
       }
     },

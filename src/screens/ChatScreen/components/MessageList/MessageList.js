@@ -10,11 +10,8 @@ import ReplyBox from '../ReplyBox';
 import createStyles from './MessageList.style';
 import { openURL } from 'helpers/UrlHelper';
 import { findUniqueMessages, getGroupedMessages } from 'helpers/conversationHelpers';
-import {
-  selectors as conversationSelectors,
-  selectMessagesLoading,
-  selectAllMessagesFetched,
-} from 'reducer/conversationSlice';
+import { selectMessagesLoading, selectAllMessagesFetched } from 'reducer/conversationSlice';
+import { selectors as conversationSelectors } from 'reducer/conversationSlice.selector.js';
 const propTypes = {
   loadMessages: PropTypes.func.isRequired,
   conversationId: PropTypes.number.isRequired,

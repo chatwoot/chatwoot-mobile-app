@@ -16,7 +16,7 @@ import { selectUser } from 'reducer/authSlice';
 import { actions as notificationsActions } from 'reducer/notificationSlice';
 import { dashboardAppSelector } from 'reducer/dashboardAppSlice';
 import { selectAllTypingUsers } from 'reducer/conversationTypingSlice';
-import { selectors as conversationSelectors } from 'reducer/conversationSlice';
+import { selectors as conversationSelectors } from 'reducer/conversationSlice.selector.js';
 import conversationActions from 'reducer/conversationSlice.action';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
 

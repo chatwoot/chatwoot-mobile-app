@@ -1,4 +1,4 @@
-import { selectors as conversationSelectors } from '../conversationSlice';
+import { selectors as conversationSelectors } from '../conversationSlice.selector';
 jest.mock('axios');
 jest.mock('helpers/APIHelper', () => {
   return {

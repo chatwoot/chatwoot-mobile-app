@@ -6,10 +6,9 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, View } from 'react-native';
 import { Text } from 'components';
-import {
-  selectors as conversationSelectors,
-  selectAllConversationFetched,
-} from 'reducer/conversationSlice';
+import { selectAllConversationFetched } from 'reducer/conversationSlice';
+
+import { selectors as conversationSelectors } from 'reducer/conversationSlice.selector.js';
 import ConversationEmptyList from '../ConversationEmptyList/ConversationEmptyList';
 import ConversationItem from '../ConversationItem/ConversationItem';
 import ConversationEmptyMessage from '../ConversationEmptyMessage/ConversationEmptyMessage';

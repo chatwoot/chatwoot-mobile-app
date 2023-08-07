@@ -214,4 +214,5 @@ export const NOTIFICATION_TYPES = [
   'conversation_assignment',
   'assigned_conversation_new_message',
   'conversation_mention',
+  'participating_conversation_new_message',
 ];

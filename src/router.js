@@ -2,6 +2,8 @@ import React, { useRef, Fragment, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { SafeAreaView, KeyboardAvoidingView, Platform, Linking, StyleSheet } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
+import { getStateFromPath } from '@react-navigation/native';
+
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import RNBootSplash from 'react-native-bootsplash';
 import PropTypes from 'prop-types';
@@ -58,16 +60,30 @@ const App = () => {
           path: 'app/accounts/:accountId/conversations/:conversationId/:primaryActorId?/:primaryActorType?',
           parse: {
             conversationId: conversationId => parseInt(conversationId),
+            primaryActorId: primaryActorId => parseInt(primaryActorId),
+            primaryActorType: primaryActorType => decodeURIComponent(primaryActorType),
           },
         },
       },
     },
     getStateFromPath: (path, config) => {
+      let primaryActorId = null;
+      let primaryActorType = null;
+      const state = getStateFromPath(path, config);
+      const { routes } = state;
+
       const conversationId = extractConversationIdFromUrl({
         url: path,
       });
+
       if (!conversationId) {
         return;
+      }
+
+      if (routes[0]) {
+        const { params } = routes[0];
+        primaryActorId = params?.primaryActorId;
+        primaryActorType = params?.primaryActorType;
       }
       return {
         routes: [
@@ -75,6 +91,8 @@ const App = () => {
             name: 'ChatScreen',
             params: {
               conversationId: conversationId,
+              primaryActorId,
+              primaryActorType,
             },
           },
         ],
@@ -90,10 +108,8 @@ const App = () => {
 
       // Handle notification caused app to open from quit state:
       const message = await messaging().getInitialNotification();
-
       if (message) {
         const { notification } = message.data;
-
         const conversationLink = findConversationLinkFromPush({ notification, installationUrl });
         if (conversationLink) {
           return conversationLink;

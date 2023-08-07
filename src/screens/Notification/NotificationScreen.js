@@ -44,7 +44,12 @@ const wait = timeout => {
 };
 
 // The screen list thats need to be checked for refresh conversation list
-const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.NOTIFICATION, SCREENS.SETTINGS];
+const REFRESH_SCREEN_LIST = [
+  SCREENS.CONVERSATION,
+  SCREENS.NOTIFICATION,
+  SCREENS.SETTINGS,
+  SCREENS.CHAT,
+];
 
 const NotificationScreen = ({ navigation }) => {
   const [appState, setAppState] = useState(AppState.currentState);

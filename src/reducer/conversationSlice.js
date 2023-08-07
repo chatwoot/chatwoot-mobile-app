@@ -116,7 +116,8 @@ const conversationSlice = createSlice({
         let filteredConversations = lodashFilter(allConversations, {
           meta: { sender: { id: parseInt(contactId) } },
         });
-        // TODO: This is a temporary fix for the issue of contact presence not updating if the contact goes offline, create contact store and update the contact presence there, reference https://github.com/chatwoot/chatwoot/blob/develop/app/javascript/dashboard/store/modules/conversations/helpers/actionHelpers.js#L47
+        // TODO: This is a temporary fix for the issue of contact presence not updating if the contact goes offline, create contact store and update the contact presence there,
+        //TODO: reference https://github.com/chatwoot/chatwoot/blob/develop/app/javascript/dashboard/store/modules/conversations/helpers/actionHelpers.js#L47
         filteredConversations.forEach(item => {
           state.entities[item.id].meta.sender.availability_status = contacts[contactId];
         });
@@ -218,21 +219,6 @@ const conversationSlice = createSlice({
       })
       .addCase(actions.toggleConversationStatus.rejected, state => {
         state.isChangingConversationStatus = false;
-      })
-      .addCase(actions.updateConversationAndMessages.fulfilled, (state, { payload }) => {
-        const { data, conversationId } = payload;
-        const conversation = state.entities[conversationId];
-        if (!conversation) {
-          return;
-        }
-        const lastMessageId = conversation?.messages[conversation.messages.length - 1]?.id;
-        const messageId = data.messages[data.messages.length - 1].id;
-        // If the last message id is same as the message id, we don't need to update the conversation
-        if (lastMessageId !== messageId) {
-          conversationAdapter.upsertOne(state, data);
-          state.isAllMessagesFetched = false;
-          state.isConversationFetching = false;
-        }
       })
       .addCase(actions.togglePriority.fulfilled, (state, { payload }) => {
         const { id, priority } = payload;

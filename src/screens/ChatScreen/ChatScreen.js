@@ -146,6 +146,11 @@ const ChatScreenComponent = ({ navigation, route }) => {
               conversationId,
             }),
           );
+          dispatch(
+            conversationActions.updateConversation({
+              conversationId,
+            }),
+          );
         }
       }
       setAppState(nextAppState);

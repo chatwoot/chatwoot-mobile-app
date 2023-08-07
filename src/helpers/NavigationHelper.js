@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { StackActions } from '@react-navigation/native';
+
 export const navigationRef = React.createRef();
 
 export function navigate(name, params, key) {
@@ -12,4 +13,8 @@ export function pop(n) {
 
 export function getCurrentRouteName() {
   return navigationRef.current?.getCurrentRoute().name;
+}
+
+export function replace(name, params) {
+  navigationRef.current?.dispatch(StackActions.replace(name, params));
 }

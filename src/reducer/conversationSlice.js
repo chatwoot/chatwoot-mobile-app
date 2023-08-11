@@ -1,8 +1,9 @@
-import { createSlice, createEntityAdapter, createDraftSafeSelector } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 const lodashFilter = require('lodash.filter');
 import actions from './conversationSlice.action';
-import { CONVERSATION_PRIORITY_ORDER } from 'constants';
-import { applyFilters, findPendingMessageIndex } from '../helpers/conversationHelpers';
+import { MESSAGE_TYPES } from 'constants';
+import { isEmptyObject } from 'helpers';
+import { findPendingMessageIndex } from '../helpers/conversationHelpers';
 export const conversationAdapter = createEntityAdapter({
   selectId: conversation => conversation.id,
 });
@@ -70,7 +71,7 @@ const conversationSlice = createSlice({
         conversationAdapter.addOne(state, conversation);
       }
     },
-    addMessage: (state, action) => {
+    addOrUpdateMessage: (state, action) => {
       const message = action.payload;
 
       const { conversation_id: conversationId } = message;
@@ -78,9 +79,14 @@ const conversationSlice = createSlice({
         return;
       }
       const conversation = state.entities[conversationId];
+
       // If the conversation is not present in the store, we don't need to add the message
       if (!conversation) {
         return;
+      }
+      // If the message type is incoming, set the can reply to true
+      if (message.message_type === MESSAGE_TYPES.INCOMING) {
+        conversation.can_reply = true;
       }
       const pendingMessageIndex = findPendingMessageIndex(conversation, message);
       if (pendingMessageIndex !== -1) {
@@ -88,17 +94,30 @@ const conversationSlice = createSlice({
       } else {
         conversation.messages.push(message);
         conversation.timestamp = message.created_at;
+        const { conversation: { unread_count: unreadCount = 0 } = {} } = message;
+        conversation.unread_count = unreadCount;
       }
+    },
+    updateConversationLastActivity: (state, action) => {
+      const { conversationId, lastActivityAt } = action.payload;
+      const conversation = state.entities[conversationId];
+      if (!conversation) {
+        return;
+      }
+      conversation.last_activity_at = lastActivityAt;
     },
     updateContactsPresence: (state, action) => {
       const { contacts } = action.payload;
       const allConversations = state.entities;
-
+      if (isEmptyObject(contacts)) {
+        return;
+      }
       Object.keys(contacts).forEach(contactId => {
         let filteredConversations = lodashFilter(allConversations, {
           meta: { sender: { id: parseInt(contactId) } },
         });
-        // TODO: This is a temporary fix for the issue of contact presence not updating if the contact goes offline
+        // TODO: This is a temporary fix for the issue of contact presence not updating if the contact goes offline, create contact store and update the contact presence there,
+        //TODO: reference https://github.com/chatwoot/chatwoot/blob/develop/app/javascript/dashboard/store/modules/conversations/helpers/actionHelpers.js#L47
         filteredConversations.forEach(item => {
           state.entities[item.id].meta.sender.availability_status = contacts[contactId];
         });
@@ -201,21 +220,6 @@ const conversationSlice = createSlice({
       .addCase(actions.toggleConversationStatus.rejected, state => {
         state.isChangingConversationStatus = false;
       })
-      .addCase(actions.updateConversationAndMessages.fulfilled, (state, { payload }) => {
-        const { data, conversationId } = payload;
-        const conversation = state.entities[conversationId];
-        if (!conversation) {
-          return;
-        }
-        const lastMessageId = conversation?.messages[conversation.messages.length - 1]?.id;
-        const messageId = data.messages[data.messages.length - 1].id;
-        // If the last message id is same as the message id, we don't need to update the conversation
-        if (lastMessageId !== messageId) {
-          conversationAdapter.upsertOne(state, data);
-          state.isAllMessagesFetched = false;
-          state.isConversationFetching = false;
-        }
-      })
       .addCase(actions.togglePriority.fulfilled, (state, { payload }) => {
         const { id, priority } = payload;
         const conversation = state.entities[id];
@@ -241,61 +245,7 @@ export const selectConversationToggleStatus = state =>
   state.conversations.isChangingConversationStatus;
 export const selectConversationAssigneeStatus = state =>
   state.conversations.isChangingConversationAssignee;
-export const selectors = {
-  getFilteredConversations: createDraftSafeSelector(
-    [conversationSelector.selectAll, (_, filters) => filters],
-    (conversations, filters) => {
-      const { assigneeType, userId, sortBy } = filters;
 
-      const comparator = {
-        latest: (a, b) => b.last_activity_at - a.last_activity_at,
-        sort_on_created_at: (a, b) => a.created_at - b.created_at,
-        sort_on_priority: (a, b) => {
-          return CONVERSATION_PRIORITY_ORDER[a.priority] - CONVERSATION_PRIORITY_ORDER[b.priority];
-        },
-      };
-      const sortedConversations = conversations.sort(comparator[sortBy]);
-
-      if (assigneeType === 'mine') {
-        return sortedConversations.filter(conversation => {
-          const { assignee } = conversation.meta;
-          const shouldFilter = applyFilters(conversation, filters);
-          const isAssignedToMe = assignee && assignee.id === userId;
-          const isChatMine = isAssignedToMe && shouldFilter;
-          return isChatMine;
-        });
-      }
-      if (assigneeType === 'unassigned') {
-        return sortedConversations.filter(conversation => {
-          const isUnAssigned = !conversation.meta.assignee;
-          const shouldFilter = applyFilters(conversation, filters);
-          return isUnAssigned && shouldFilter;
-        });
-      }
-
-      return sortedConversations.filter(conversation => {
-        const shouldFilter = applyFilters(conversation, filters);
-        return shouldFilter;
-      });
-    },
-  ),
-  getMessagesByConversationId: createDraftSafeSelector(
-    [conversationSelector.selectEntities, (_, conversationId) => conversationId],
-    (conversations, conversationId) => {
-      const conversation = conversations[conversationId];
-      if (!conversation) {
-        return [];
-      }
-      return conversation.messages;
-    },
-  ),
-  getConversationById: createDraftSafeSelector(
-    [conversationSelector.selectEntities, (_, conversationId) => conversationId],
-    (conversations, conversationId) => {
-      return conversations[conversationId];
-    },
-  ),
-};
 export const {
   clearAllConversations,
   clearConversation,
@@ -304,9 +254,10 @@ export const {
   setActiveInbox,
   setSortFilter,
   addConversation,
-  addMessage,
+  addOrUpdateMessage,
   updateConversation,
   updateContactsPresence,
+  updateConversationLastActivity,
 } = conversationSlice.actions;
 
 export default conversationSlice.reducer;

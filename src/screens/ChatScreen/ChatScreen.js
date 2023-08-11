@@ -2,26 +2,27 @@ import React, { useEffect, useCallback, useState, useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
-import { Keyboard } from 'react-native';
-
 import PropTypes from 'prop-types';
-import { SafeAreaView, AppState, useWindowDimensions } from 'react-native';
+import { SafeAreaView, AppState, useWindowDimensions, Keyboard } from 'react-native';
 import { StackActions } from '@react-navigation/native';
+
+import createStyles from './ChatScreen.style';
 import ChatHeader from './components/ChatHeader';
 import ChatHeaderLoader from './components/ChatHeaderLoader';
-import createStyles from './ChatScreen.style';
-import { actions as notificationsActions } from 'reducer/notificationSlice';
-import { selectUser } from 'reducer/authSlice';
-
-import { dashboardAppSelector } from 'reducer/dashboardAppSlice';
 import DashboardApp from './components/DashboardApp';
+import MessageList from './components/MessageList/MessageList';
+
+import { selectUser } from 'reducer/authSlice';
+import { actions as notificationsActions } from 'reducer/notificationSlice';
+import { dashboardAppSelector } from 'reducer/dashboardAppSlice';
 import { selectAllTypingUsers } from 'reducer/conversationTypingSlice';
-import { clearConversation, selectors as conversationSelectors } from 'reducer/conversationSlice';
+import { selectors as conversationSelectors } from 'reducer/conversationSlice.selector.js';
 import conversationActions from 'reducer/conversationSlice.action';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
-import MessageList from './components/MessageList/MessageList';
+
 import { SCREENS } from 'constants';
 import i18n from 'i18n';
+
 const propTypes = {
   route: PropTypes.object,
   navigation: PropTypes.shape({
@@ -41,12 +42,7 @@ const ChatScreenComponent = ({ navigation, route }) => {
   const conversationTypingUsers = useSelector(selectAllTypingUsers);
   const [appState, setAppState] = useState(AppState.currentState);
 
-  const {
-    conversationId,
-    primaryActorId,
-    primaryActorType,
-    isConversationOpenedExternally = true,
-  } = route.params;
+  const { conversationId, primaryActorId, primaryActorType } = route.params;
 
   const conversation = useSelector(state =>
     conversationSelectors.getConversationById(state, conversationId),
@@ -96,33 +92,6 @@ const ChatScreenComponent = ({ navigation, route }) => {
   }, [dispatch, conversationId]);
 
   useEffect(() => {
-    if (isConversationOpenedExternally) {
-      dispatch(clearConversation(conversationId));
-      loadConversation();
-    } else {
-      loadMessages();
-    }
-  }, [conversationId, isConversationOpenedExternally, loadConversation, loadMessages, dispatch]);
-
-  const loadConversation = useCallback(() => {
-    dispatch(conversationActions.fetchConversation({ conversationId }));
-  }, [conversationId, dispatch]);
-
-  const loadMessages = useCallback(async () => {
-    // Fetch conversation if not present
-    if (!conversation) {
-      loadConversation();
-    } else {
-      dispatch(
-        conversationActions.fetchPreviousMessages({
-          conversationId,
-          beforeId: lastMessageId(),
-        }),
-      );
-    }
-  }, [conversation, conversationId, dispatch, lastMessageId, loadConversation]);
-
-  useEffect(() => {
     if (primaryActorId && primaryActorType) {
       dispatch(
         notificationsActions.markNotificationAsRead({
@@ -132,6 +101,30 @@ const ChatScreenComponent = ({ navigation, route }) => {
       );
     }
   }, [conversationId, dispatch, primaryActorId, primaryActorType]);
+
+  useEffect(() => {
+    loadMessages();
+  }, [loadMessages]);
+
+  const loadMessages = useCallback(async () => {
+    // Fetch conversation if not present and fetch previous messages, otherwise fetch previous messages
+    if (!conversation) {
+      await dispatch(conversationActions.fetchConversation({ conversationId }));
+      dispatch(
+        conversationActions.fetchPreviousMessages({
+          conversationId,
+          beforeId: lastMessageId(),
+        }),
+      );
+    } else {
+      dispatch(
+        conversationActions.fetchPreviousMessages({
+          conversationId,
+          beforeId: lastMessageId(),
+        }),
+      );
+    }
+  }, [conversation, conversationId, dispatch, lastMessageId]);
 
   const onBackPress = () => {
     Keyboard.dismiss();
@@ -153,6 +146,11 @@ const ChatScreenComponent = ({ navigation, route }) => {
               conversationId,
             }),
           );
+          dispatch(
+            conversationActions.updateConversation({
+              conversationId,
+            }),
+          );
         }
       }
       setAppState(nextAppState);
@@ -160,7 +158,7 @@ const ChatScreenComponent = ({ navigation, route }) => {
     return () => {
       appStateListener?.remove();
     };
-  }, [appState, loadConversation, conversationId, dispatch]);
+  }, [appState, conversationId, dispatch]);
 
   const showConversationDetails = () => {
     if (conversation) {

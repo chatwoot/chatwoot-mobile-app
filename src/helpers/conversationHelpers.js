@@ -1,4 +1,7 @@
 import { MESSAGE_STATUS, MESSAGE_TYPES } from 'constants';
+import DateHelper from './DateHelper';
+
+const groupBy = require('lodash.groupby');
 
 export const getUuid = () =>
   'xxxxxxxx4xxx'.replace(/[xy]/g, c => {
@@ -132,4 +135,88 @@ export const replaceMentionsWithUsernames = text => {
     result = result.replace(fullMatch, replacement);
   }
   return result;
+};
+
+export const findUniqueMessages = ({ allMessages }) => {
+  const completeMessages = []
+    .concat(allMessages)
+    .sort((a, b) => a.created_at - b.created_at)
+    .reverse();
+
+  const uniqueMessages = completeMessages.reduce((acc, current) => {
+    const x = acc.find(item => item.id === current.id);
+    if (!x) {
+      return acc.concat([current]);
+    } else {
+      return acc;
+    }
+  }, []);
+  return uniqueMessages;
+};
+
+export const getGroupedMessages = ({ messages }) => {
+  const conversationGroupedByDate = groupBy(Object.values(messages), message =>
+    new DateHelper(message.created_at).format(),
+  );
+  return Object.keys(conversationGroupedByDate).map(date => {
+    const groupedMessages = conversationGroupedByDate[date].map((message, index) => {
+      let showAvatar = false;
+      if (index === conversationGroupedByDate[date].length - 1) {
+        showAvatar = true;
+      } else {
+        const nextMessage = conversationGroupedByDate[date][index + 1];
+        const currentSender = message.sender ? message.sender.name : '';
+        const nextSender = nextMessage.sender ? nextMessage.sender.name : '';
+        showAvatar =
+          currentSender !== nextSender || message.message_type !== nextMessage.message_type;
+      }
+      return { showAvatar, ...message };
+    });
+
+    return {
+      data: groupedMessages,
+      date,
+    };
+  });
+};
+
+export const getTypingUsersText = ({ conversationId, conversationTypingUsers }) => {
+  const userList = conversationTypingUsers[conversationId];
+  const isAnyoneTyping = userList && userList.length !== 0;
+  if (isAnyoneTyping) {
+    const count = userList.length;
+    if (count === 1) {
+      const [user] = userList;
+      const { type } = user;
+      // Check user is typing
+      if (type === 'contact') {
+        return 'typing...';
+      }
+      return `${user.name.toString().replace(/^./, str => str.toUpperCase())} is typing...`;
+    }
+
+    if (count === 2) {
+      const [first, second] = userList;
+      return `${first.name.toString().replace(/^./, str => str.toUpperCase())} and ${second.name
+        .toString()
+        .replace(/^./, str => str.toUpperCase())} are typing...`;
+    }
+
+    const [user] = userList;
+    const rest = userList.length - 1;
+    return `${user.name
+      .toString()
+      .replace(/^./, str => str.toUpperCase())} and ${rest} others are typing...`;
+  }
+  return false;
+};
+
+export const extractConversationIdFromUrl = ({ url }) => {
+  try {
+    const conversationIdMatch = url.match(/\/conversations\/(\d+)/);
+    const conversationId = conversationIdMatch ? parseInt(conversationIdMatch[1]) : null;
+    return conversationId;
+  } catch (error) {
+    return null;
+  }
 };

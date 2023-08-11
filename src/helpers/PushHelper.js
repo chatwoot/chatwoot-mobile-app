@@ -17,6 +17,7 @@ export const updateBadgeCount = ({ count = 0 }) => {
 
 export const findConversationLinkFromPush = ({ notification, installationUrl }) => {
   const pushData = JSON.parse(notification);
+
   const { notification_type } = pushData;
 
   if (NOTIFICATION_TYPES.includes(notification_type)) {
@@ -28,7 +29,8 @@ export const findConversationLinkFromPush = ({ notification, installationUrl }) 
       conversationId = primary_actor.conversation_id;
     }
     if (conversationId) {
-      return `${installationUrl}/app/accounts/1/conversations/${conversationId}/${primary_actor_id}/${primary_actor_type}`;
+      const conversationLink = `${installationUrl}/app/accounts/1/conversations/${conversationId}/${primary_actor_id}/${primary_actor_type}`;
+      return conversationLink;
     }
   }
   return;

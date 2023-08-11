@@ -1,6 +1,14 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
-import { View, Dimensions, TextInput, StyleSheet, Platform } from 'react-native';
+import {
+  View,
+  Dimensions,
+  TextInput,
+  StyleSheet,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import { Text, Icon, Pressable } from 'components';
 import { MentionInput } from 'react-native-controlled-mentions';
 import PropTypes from 'prop-types';
@@ -33,6 +41,11 @@ const propTypes = {
 };
 
 const isAndroid = Platform.OS === 'android';
+
+// eslint-disable-next-line react/prop-types
+const DismissKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
+);
 
 const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyButton }) => {
   const theme = useTheme();
@@ -279,34 +292,37 @@ const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyBut
               {'Cc/Bcc'}
             </Text>
           )}
-          <MentionInput
-            style={[styles.inputView, inputFieldColor()]}
-            value={message}
-            onChange={onNewMessageChange}
-            partTypes={[
-              {
-                allowedSpacesCount: 0,
-                isInsertSpaceAfterMention: true,
-                trigger: '@',
-                renderSuggestions,
-                textStyle: { fontWeight: 'bold', color: 'white', backgroundColor: '#8c9eb6' },
-              },
-              {
-                // eslint-disable-next-line no-useless-escape
-                pattern: /\[([^\]]+)\]\(([^\)]+)\)/g,
-                textStyle: { color: colors.primaryColor },
-              },
-            ]}
-            multiline={true}
-            placeholderTextColor={colors.textLighter}
-            placeholder={
-              isPrivate
-                ? `${i18n.t('CONVERSATION.PRIVATE_MSG_INPUT')}`
-                : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`
-            }
-            onBlur={onBlur}
-            onFocus={onFocus}
-          />
+          <DismissKeyboard>
+            <MentionInput
+              style={[styles.inputView, inputFieldColor()]}
+              value={message}
+              onChange={onNewMessageChange}
+              partTypes={[
+                {
+                  allowedSpacesCount: 0,
+                  isInsertSpaceAfterMention: true,
+                  trigger: '@',
+                  renderSuggestions,
+                  textStyle: { fontWeight: 'bold', color: 'white', backgroundColor: '#8c9eb6' },
+                },
+                {
+                  // eslint-disable-next-line no-useless-escape
+                  pattern: /\[([^\]]+)\]\(([^\)]+)\)/g,
+                  textStyle: { color: colors.primaryColor },
+                },
+              ]}
+              multiline={true}
+              placeholderTextColor={colors.textLighter}
+              placeholder={
+                isPrivate
+                  ? `${i18n.t('CONVERSATION.PRIVATE_MSG_INPUT')}`
+                  : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`
+              }
+              onBlur={onBlur}
+              onFocus={onFocus}
+              returnKeyType="done"
+            />
+          </DismissKeyboard>
 
           <View style={styles.buttonViews}>
             <View style={styles.attachIconView}>

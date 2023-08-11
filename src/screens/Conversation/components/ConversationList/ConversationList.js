@@ -6,10 +6,9 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, View } from 'react-native';
 import { Text } from 'components';
-import {
-  selectors as conversationSelectors,
-  selectAllConversationFetched,
-} from 'reducer/conversationSlice';
+import { selectAllConversationFetched } from 'reducer/conversationSlice';
+
+import { selectors as conversationSelectors } from 'reducer/conversationSlice.selector.js';
 import ConversationEmptyList from '../ConversationEmptyList/ConversationEmptyList';
 import ConversationItem from '../ConversationItem/ConversationItem';
 import ConversationEmptyMessage from '../ConversationEmptyMessage/ConversationEmptyMessage';
@@ -43,6 +42,7 @@ const ConversationList = ({
   onChangePageNumber,
   refreshConversations,
 }) => {
+  const [isFlashListReady, setFlashListReady] = useState(false);
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
@@ -66,7 +66,8 @@ const ConversationList = ({
   const keyExtractor = item => item.id;
 
   const onEndReached = () => {
-    if (!isAllConversationsAreFetched) {
+    const shouldLoadMoreConversations = isFlashListReady && !isAllConversationsAreFetched;
+    if (shouldLoadMoreConversations) {
       onChangePageNumber();
     }
   };
@@ -86,6 +87,7 @@ const ConversationList = ({
   };
 
   const onRefresh = () => {
+    setFlashListReady(false);
     setRefreshing(true);
     refreshConversations();
     wait(1000).then(() => setRefreshing(false));
@@ -108,6 +110,11 @@ const ConversationList = ({
     <View style={styles.container}>
       <FlashList
         keyExtractor={keyExtractor}
+        onScroll={() => {
+          if (!isFlashListReady) {
+            setFlashListReady(true);
+          }
+        }}
         data={allConversations}
         renderItem={({ item }) => (
           <ConversationItem

@@ -3,7 +3,7 @@ import { showToast } from 'helpers/ToastHelper';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { createPendingMessage, buildCreatePayload } from 'helpers/conversationHelpers';
-import { addMessage } from 'reducer/conversationSlice';
+import { addOrUpdateMessage } from 'reducer/conversationSlice';
 
 import axios from 'helpers/APIHelper';
 import * as RootNavigation from 'helpers/NavigationHelper';
@@ -108,7 +108,7 @@ const actions = {
         const { error: message } = error.response.data;
         const errorMessage = message || I18n.t('CONVERSATION.CONVERSATION_NOT_FOUND');
         showToast({ message: errorMessage });
-        RootNavigation.navigate('ConversationScreen');
+        RootNavigation.replace('Tab');
         return rejectWithValue(error.response.data);
       }
     },
@@ -154,7 +154,7 @@ const actions = {
 
       try {
         dispatch(
-          addMessage({
+          addOrUpdateMessage({
             ...pendingMessage,
             status: MESSAGE_STATUS.PROGRESS,
           }),
@@ -163,14 +163,14 @@ const actions = {
 
         const response = await axios.post(`conversations/${conversationId}/messages`, payload);
         dispatch(
-          addMessage({
+          addOrUpdateMessage({
             ...response.data,
             status: MESSAGE_STATUS.SENT,
           }),
         );
       } catch (error) {
         dispatch(
-          addMessage({
+          addOrUpdateMessage({
             ...pendingMessage,
             status: MESSAGE_STATUS.FAILED,
           }),
@@ -269,13 +269,13 @@ const actions = {
         .catch();
     },
   ),
-  updateConversationAndMessages: createAsyncThunk(
-    'conversations/updateConversationAndMessages',
+  updateConversation: createAsyncThunk(
+    'conversations/updateConversation',
     async ({ conversationId }, { rejectWithValue }) => {
       try {
         const response = await axios.get(`conversations/${conversationId}`);
         const { data } = response;
-        return { data, conversationId };
+        return data;
       } catch (error) {
         if (!error.response) {
           throw error;

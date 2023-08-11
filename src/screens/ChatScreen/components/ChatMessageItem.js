@@ -110,7 +110,7 @@ const propTypes = {
   type: PropTypes.string,
   created_at: PropTypes.number,
   message: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     sender: PropTypes.shape({
       name: PropTypes.string,
       thumbnail: PropTypes.string,

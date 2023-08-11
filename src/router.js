@@ -2,6 +2,8 @@ import React, { useRef, Fragment, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { SafeAreaView, KeyboardAvoidingView, Platform, Linking, StyleSheet } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
+import { getStateFromPath } from '@react-navigation/native';
+
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import RNBootSplash from 'react-native-bootsplash';
 import PropTypes from 'prop-types';
@@ -20,19 +22,18 @@ import TabStack from './components/TabBar';
 import i18n from 'i18n';
 import { navigationRef } from 'helpers/NavigationHelper';
 import { findConversationLinkFromPush } from './helpers/PushHelper';
+import { extractConversationIdFromUrl } from './helpers/conversationHelpers';
 import { selectLoggedIn } from 'reducer/authSlice';
-import { selectUrlSet, selectInstallationUrl, selectLocale } from 'reducer/settingsSlice';
+import { selectInstallationUrl, selectLocale } from 'reducer/settingsSlice';
 
 const Stack = createNativeStackNavigator();
 
 const propTypes = {
   isLoggedIn: PropTypes.bool,
-  isUrlSet: PropTypes.bool,
 };
 
 const defaultProps = {
   isLoggedIn: false,
-  isUrlSet: false,
 };
 // TODO
 messaging().setBackgroundMessageHandler(async remoteMessage => {});
@@ -48,7 +49,6 @@ const App = () => {
   const routeNameRef = useRef();
 
   const isLoggedIn = useSelector(selectLoggedIn);
-  const isUrlSet = useSelector(selectUrlSet);
   const installationUrl = useSelector(selectInstallationUrl);
   const locale = useSelector(selectLocale);
 
@@ -60,15 +60,30 @@ const App = () => {
           path: 'app/accounts/:accountId/conversations/:conversationId/:primaryActorId?/:primaryActorType?',
           parse: {
             conversationId: conversationId => parseInt(conversationId),
+            primaryActorId: primaryActorId => parseInt(primaryActorId),
+            primaryActorType: primaryActorType => decodeURIComponent(primaryActorType),
           },
         },
       },
     },
     getStateFromPath: (path, config) => {
-      const conversationIdMatch = path.match(/\/conversations\/(\d+)/);
-      const conversationId = conversationIdMatch ? parseInt(conversationIdMatch[1]) : null;
+      let primaryActorId = null;
+      let primaryActorType = null;
+      const state = getStateFromPath(path, config);
+      const { routes } = state;
+
+      const conversationId = extractConversationIdFromUrl({
+        url: path,
+      });
+
       if (!conversationId) {
         return;
+      }
+
+      if (routes[0]) {
+        const { params } = routes[0];
+        primaryActorId = params?.primaryActorId;
+        primaryActorType = params?.primaryActorType;
       }
       return {
         routes: [
@@ -76,6 +91,8 @@ const App = () => {
             name: 'ChatScreen',
             params: {
               conversationId: conversationId,
+              primaryActorId,
+              primaryActorType,
             },
           },
         ],
@@ -91,10 +108,8 @@ const App = () => {
 
       // Handle notification caused app to open from quit state:
       const message = await messaging().getInitialNotification();
-
       if (message) {
         const { notification } = message.data;
-
         const conversationLink = findConversationLinkFromPush({ notification, installationUrl });
         if (conversationLink) {
           return conversationLink;
@@ -155,9 +170,7 @@ const App = () => {
           }}
           theme={theme}>
           <BottomSheetModalProvider>
-            <Stack.Navigator
-              initialRouteName={isUrlSet ? 'Login' : 'ConfigureURL'}
-              screenOptions={{ headerShown: false }}>
+            <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
               {isLoggedIn ? (
                 <Fragment>
                   <Stack.Screen name="Tab" component={TabStack} />

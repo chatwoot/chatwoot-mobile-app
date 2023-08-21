@@ -12,6 +12,8 @@ const createStyles = theme => {
   return StyleSheet.create({
     container: {
       width: '100%',
+      opacity: 0.99,
+      minHeight: 1,
     },
   });
 };

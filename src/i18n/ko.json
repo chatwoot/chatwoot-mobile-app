@@ -66,9 +66,11 @@
     "ALL_CONVERSATION_LOADED": "모든 대화가 불러와졌음",
     "ASSIGN": "대화에 참여시키기",
     "FILE_SIZE_LIMIT": "파일이 5MB 첨부 파일 제한을 초과했습니다.",
-    "SHARE": "Share",
+    "SHARE": "대화 공유하기",
     "DETAILS": "Details",
-    "LABELS": "라벨",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Assigned agent",
+    "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "이건 에이전트에게만 보일것입니다",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "대화에서 제외시키기",
@@ -78,8 +80,10 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
     "SNOOZE_UNTIL_TOMORROW": "내일까지",
     "SNOOZE_UNTIL_NEXT_WEEK": "다음 주까지",
-    "SNOOZE": "Snooze Conversation",
-    "MESSAGES": "메시지"
+    "SNOOZE": "Snooze conversation",
+    "MESSAGES": "메시지",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_CLOSE": "닫기"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
@@ -146,12 +150,25 @@
   "CONVERSATION_ACTION": {
     "TITLE": "액션"
   },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "Assign team",
+    "SELECT_TEAM": "팀 선택",
+    "NO_RESULT": "No team found"
+  },
   "CONVERSATION_LABELS": {
     "TITLE": "대화 라벨",
     "ADD_LABEL": "라벨 추가하기",
     "EMPTY_LIST": "계정에 라벨을 추가해주세요",
     "NO_LABEL": "할당된 라벨 없음",
-    "UPDATE_LABEL": "라벨이 성공적으로 업데이트됨"
+    "UPDATE_LABEL": "라벨이 성공적으로 업데이트됨",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "라벨을 찾을 수 없습니다"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Assign agent",
+    "SELECT_AGENT": "에이전트 선택",
+    "NO_RESULT": "No agent found"
   },
   "AGENT": {
     "TITLE": "에이전트 선택"

@@ -8,7 +8,7 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import RNBootSplash from 'react-native-bootsplash';
 import PropTypes from 'prop-types';
 import { useFlipper } from '@react-navigation/devtools';
-import { LightTheme } from 'src/theme';
+import { LightTheme } from './theme';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ConfigureURLScreen from './screens/ConfigureURLScreen/ConfigureURLScreen';

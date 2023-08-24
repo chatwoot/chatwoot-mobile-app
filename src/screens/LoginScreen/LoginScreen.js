@@ -25,8 +25,13 @@ import { openURL } from '../../helpers/UrlHelper';
 import { EMAIL_REGEX } from '../../helpers/formHelper';
 import { actions as authActions, resetAuth, selectLoggedIn } from 'reducer/authSlice';
 
-import { selectInstallationUrl, selectBaseUrl } from 'reducer/settingsSlice';
-import { selectLocale, setLocale } from 'reducer/settingsSlice';
+import {
+  selectInstallationUrl,
+  selectBaseUrl,
+  selectLocale,
+  setLocale,
+} from 'reducer/settingsSlice';
+
 const deviceHeight = Dimensions.get('window').height;
 
 const appName = DeviceInfo.getApplicationName();

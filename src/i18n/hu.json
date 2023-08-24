@@ -66,9 +66,11 @@
     "ALL_CONVERSATION_LOADED": "Minden beszélgetés betöltve",
     "ASSIGN": "Beszélgetés hozzárendelése",
     "FILE_SIZE_LIMIT": "A file nagyobb az 5MB-os limitnél",
-    "SHARE": "Share",
+    "SHARE": "Share conversation",
     "DETAILS": "Details",
-    "LABELS": "Cimkék",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Assigned agent",
+    "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "Ezt csak ügynökök láthatják",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Beszélgetés hozzárendelés törlése",
@@ -78,8 +80,10 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
     "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
     "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
-    "SNOOZE": "Snooze Conversation",
-    "MESSAGES": "Messages"
+    "SNOOZE": "Snooze conversation",
+    "MESSAGES": "Messages",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_CLOSE": "Bezár"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
@@ -146,12 +150,25 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Lehetőségek"
   },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "Assign team",
+    "SELECT_TEAM": "Csapat kiválasztása",
+    "NO_RESULT": "No team found"
+  },
   "CONVERSATION_LABELS": {
     "TITLE": "Beszélgetés cimkék",
     "ADD_LABEL": "Címkék hozzáadása",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Cimke sikeresen frissítve"
+    "UPDATE_LABEL": "Cimke sikeresen frissítve",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "Nem találtunk címkét"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Assign agent",
+    "SELECT_AGENT": "Ügynök kiválasztása",
+    "NO_RESULT": "No agent found"
   },
   "AGENT": {
     "TITLE": "Ügynök kiválasztása"

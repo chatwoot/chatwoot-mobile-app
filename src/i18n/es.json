@@ -66,11 +66,13 @@
     "ALL_CONVERSATION_LOADED": "Todas las conversaciones cargadas",
     "ASSIGN": "Asignar conversación",
     "FILE_SIZE_LIMIT": "El archivo supera el límite de 5MB de archivos adjuntos",
-    "SHARE": "Share",
-    "DETAILS": "Details",
-    "LABELS": "Etiquetas",
+    "SHARE": "Compartir la conversación",
+    "DETAILS": "Detalles",
+    "LABELS": "Etiquetas de conversación",
+    "ASSIGNED_AGENT": "Agente asignado",
+    "TEAM": "Equipo",
     "PRIVATE_MSG_INPUT": "Esto será visible sólo para los agentes",
-    "SELF_ASSIGN": "Self assign conversation",
+    "SELF_ASSIGN": "Auto asignar conversación",
     "UN_ASSIGN": "Desasignar conversación",
     "CONVERSATION_NOT_FOUND": "No se pudo obtener la conversación",
     "MARK_AS_PENDING": "Marcar como pendiente",
@@ -79,7 +81,9 @@
     "SNOOZE_UNTIL_TOMORROW": "Hasta mañana",
     "SNOOZE_UNTIL_NEXT_WEEK": "Hasta la próxima semana",
     "SNOOZE": "Posponer conversación",
-    "MESSAGES": "Mensajes"
+    "MESSAGES": "Mensajes",
+    "UNDEFINED_VARIABLES_TITLE": "Variables indefinidas",
+    "UNDEFINED_VARIABLES_CLOSE": "Cerrar"
   },
   "FILTER": {
     "ALL_INBOXES": "Todas las bandejas",
@@ -94,7 +98,7 @@
     "BOT": "Bot",
     "SUBMIT": "Enviar",
     "PENDING": "En espera",
-    "SNOOZED": "Postpuestas"
+    "SNOOZED": "Pospuesto"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Preferencias",
@@ -146,12 +150,25 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Acciones"
   },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "Asignar equipo",
+    "SELECT_TEAM": "Seleccionar equipo",
+    "NO_RESULT": "No se encontró ningún equipo"
+  },
   "CONVERSATION_LABELS": {
     "TITLE": "Etiquetas de conversación",
     "ADD_LABEL": "Añadir etiquetas",
     "EMPTY_LIST": "Por favor, añade etiquetas a tu cuenta",
     "NO_LABEL": "No hay etiquetas asignadas",
-    "UPDATE_LABEL": "Etiqueta actualizada correctamente"
+    "UPDATE_LABEL": "Etiqueta actualizada correctamente",
+    "SELECTED": "Seleccionado",
+    "NOT_SELECTED": "No hay etiquetas seleccionadas",
+    "NO_RESULT": "No se encontraron etiquetas"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Asignar un agente",
+    "SELECT_AGENT": "Seleccionar agente",
+    "NO_RESULT": "No se encontró ningún agente"
   },
   "AGENT": {
     "TITLE": "Seleccionar agente"
@@ -184,7 +201,7 @@
   },
   "BANNER": {
     "TWILIO_WHATSAPP": {
-      "TEXT": "Sólo puede responder a esta conversación utilizando un mensaje de plantilla debido a ",
+      "TEXT": "Solo puede responder a esta conversación usando un mensaje de plantilla debido a ",
       "HREF_TEXT": "Restricción de la ventana de mensajes de 24 horas",
       "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
     },

@@ -66,9 +66,11 @@
     "ALL_CONVERSATION_LOADED": "تم تحميل كافة المحادثات",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share",
+    "SHARE": "Share conversation",
     "DETAILS": "Details",
-    "LABELS": "الوسوم",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "الوكيل المكلف",
+    "TEAM": "الفريق",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Unassign conversation",
@@ -78,8 +80,10 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "حتى الرد القادم",
     "SNOOZE_UNTIL_TOMORROW": "حتى الغد",
     "SNOOZE_UNTIL_NEXT_WEEK": "حتى الأسبوع القادم",
-    "SNOOZE": "تأجيل المحادثة",
-    "MESSAGES": "الرسائل"
+    "SNOOZE": "Snooze conversation",
+    "MESSAGES": "الرسائل",
+    "UNDEFINED_VARIABLES_TITLE": "متغيرات غير معرفة",
+    "UNDEFINED_VARIABLES_CLOSE": "إغلاق"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
@@ -146,12 +150,25 @@
   "CONVERSATION_ACTION": {
     "TITLE": "الإجراءات"
   },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "تعيين فريق",
+    "SELECT_TEAM": "اختيار فريق",
+    "NO_RESULT": "No team found"
+  },
   "CONVERSATION_LABELS": {
     "TITLE": "وسوم المحادثة",
     "ADD_LABEL": "اضافة تصنيف جديد",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "تم تحديث الوسم بنجاح"
+    "UPDATE_LABEL": "تم تحديث الوسم بنجاح",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "لم يتم العثور على تصنيفات"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "تعيين وكيل",
+    "SELECT_AGENT": "اختر وكيل",
+    "NO_RESULT": "No agent found"
   },
   "AGENT": {
     "TITLE": "اختر وكيل"

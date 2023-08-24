@@ -66,9 +66,11 @@
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share",
+    "SHARE": "Share conversation",
     "DETAILS": "Details",
-    "LABELS": "Мітки",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Призначений агент",
+    "TEAM": "Команда",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Unassign conversation",
@@ -78,8 +80,10 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "До наступної відповіді",
     "SNOOZE_UNTIL_TOMORROW": "До завтра",
     "SNOOZE_UNTIL_NEXT_WEEK": "До наступного тижня",
-    "SNOOZE": "Відкласти розмову",
-    "MESSAGES": "Текст повідомлень"
+    "SNOOZE": "Snooze conversation",
+    "MESSAGES": "Текст повідомлень",
+    "UNDEFINED_VARIABLES_TITLE": "Невизначені змінні",
+    "UNDEFINED_VARIABLES_CLOSE": "Закрити"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
@@ -146,12 +150,25 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Дії"
   },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "Призначити команду",
+    "SELECT_TEAM": "Виберіть команду",
+    "NO_RESULT": "No team found"
+  },
   "CONVERSATION_LABELS": {
     "TITLE": "Мітки бесіди",
     "ADD_LABEL": "Додати мітки",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Мітку успішно оновлено"
+    "UPDATE_LABEL": "Мітку успішно оновлено",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "Міток не знайдено"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Призначити агента",
+    "SELECT_AGENT": "Виберіть агента",
+    "NO_RESULT": "No agent found"
   },
   "AGENT": {
     "TITLE": "Select Agent"

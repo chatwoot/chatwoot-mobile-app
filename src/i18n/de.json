@@ -55,7 +55,7 @@
     "MINE": "Meine",
     "UN_ASSIGNED": "Nicht zugeordnet",
     "ALL": "Alle",
-    "EMPTY": "In dieser Gruppe gibt es keine aktiven Konversationen.",
+    "EMPTY": "In dieser Gruppe gibt es keine aktiven Koversationen.",
     "PICTURE_CONTENT": "Bildnachricht",
     "ATTACHMENT_CONTENT": "Datei-Anhang",
     "DOWNLOAD": "Download",
@@ -66,11 +66,13 @@
     "ALL_CONVERSATION_LOADED": "Alle Konversationen geladen",
     "ASSIGN": "Konversation zuweisen",
     "FILE_SIZE_LIMIT": "Datei überschreitet das Limit von 5 MB",
-    "SHARE": "Share",
+    "SHARE": "Konversation teilen",
     "DETAILS": "Details",
-    "LABELS": "Labels",
+    "LABELS": "Konversationslabels",
+    "ASSIGNED_AGENT": "Zugewiesener Agent",
+    "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "Dies ist nur für Agenten sichtbar",
-    "SELF_ASSIGN": "Self assign conversation",
+    "SELF_ASSIGN": "Konversation selbst zuweisen",
     "UN_ASSIGN": "Zuweisung entfernen",
     "CONVERSATION_NOT_FOUND": "Unterhaltung konnte nicht abgerufen werden",
     "MARK_AS_PENDING": "Als ausstehend markieren",
@@ -78,8 +80,10 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Bis zur nächsten Antwort",
     "SNOOZE_UNTIL_TOMORROW": "Bis morgen",
     "SNOOZE_UNTIL_NEXT_WEEK": "Bis nächste Woche",
-    "SNOOZE": "Snooze-Konversation",
-    "MESSAGES": "Nachrichten"
+    "SNOOZE": "Konversation schlummern",
+    "MESSAGES": "Nachrichten",
+    "UNDEFINED_VARIABLES_TITLE": "Undefinierte Variablen",
+    "UNDEFINED_VARIABLES_CLOSE": "Schließen"
   },
   "FILTER": {
     "ALL_INBOXES": "Alle Posteingänge",
@@ -99,8 +103,8 @@
   "SETTINGS": {
     "HEADER_TITLE": "Einstellungen",
     "SET_AVAILABILITY": "Setzen Sie sich als",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
+    "PREFERENCES": "Einstellungen",
+    "ABOUT": "Über",
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Konto wechseln",
     "CHANGE_LANGUAGE": "Sprache ändern",
@@ -146,12 +150,25 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Aktionen"
   },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "Team zuweisen",
+    "SELECT_TEAM": "Team auswählen",
+    "NO_RESULT": "Kein Team gefunden"
+  },
   "CONVERSATION_LABELS": {
     "TITLE": "Konversationsetiketten",
     "ADD_LABEL": "Label hinzufügen",
     "EMPTY_LIST": "Bitte fügen Sie Labels zu Ihrem Konto hinzu",
     "NO_LABEL": "Keine Labels zugewiesen",
-    "UPDATE_LABEL": "Label wurde erfolgreich aktualisiert"
+    "UPDATE_LABEL": "Label wurde erfolgreich aktualisiert",
+    "SELECTED": "Ausgewählt",
+    "NOT_SELECTED": "Keine Label ausgewählt",
+    "NO_RESULT": "Keine Labels gefunden"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Agent zuweisen",
+    "SELECT_AGENT": "Agent auswählen",
+    "NO_RESULT": "Keine Agenten gefunden"
   },
   "AGENT": {
     "TITLE": "Agent auswählen"

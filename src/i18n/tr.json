@@ -66,9 +66,11 @@
     "ALL_CONVERSATION_LOADED": "Tüm görüşmeler yüklendi",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share",
+    "SHARE": "Share conversation",
     "DETAILS": "Details",
-    "LABELS": "Etiketler",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Assigned agent",
+    "TEAM": "Ekip",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Unassign conversation",
@@ -78,8 +80,10 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Sonraki yanıta kadar",
     "SNOOZE_UNTIL_TOMORROW": "Yarına kadar",
     "SNOOZE_UNTIL_NEXT_WEEK": "Gelecek haftaya kadar",
-    "SNOOZE": "Snooze Conversation",
-    "MESSAGES": "Mesajlar"
+    "SNOOZE": "Snooze conversation",
+    "MESSAGES": "Mesajlar",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_CLOSE": "Kapat"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
@@ -146,12 +150,25 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Hareketler"
   },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "Takım ata",
+    "SELECT_TEAM": "Takım seçin",
+    "NO_RESULT": "No team found"
+  },
   "CONVERSATION_LABELS": {
     "TITLE": "Konuşma Etiketleri",
     "ADD_LABEL": "Etiketler ekleyin",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Etiket başarıyla güncellendi"
+    "UPDATE_LABEL": "Etiket başarıyla güncellendi",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "Etiket bulunamadı"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Temsilci ata",
+    "SELECT_AGENT": "Temsilci seçin",
+    "NO_RESULT": "No agent found"
   },
   "AGENT": {
     "TITLE": "Temsilci Seçin"

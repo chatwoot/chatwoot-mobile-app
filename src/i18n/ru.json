@@ -66,9 +66,11 @@
     "ALL_CONVERSATION_LOADED": "Все беседы загружены",
     "ASSIGN": "Назначить ответсвенного",
     "FILE_SIZE_LIMIT": "Файл превышает 5mb",
-    "SHARE": "Share",
+    "SHARE": "Поделиться разговором",
     "DETAILS": "Details",
-    "LABELS": "Категории",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Назначенный сотрудник",
+    "TEAM": "Команда",
     "PRIVATE_MSG_INPUT": "Это будет видно только сотрудникам",
     "SELF_ASSIGN": "Личное назначение разговора",
     "UN_ASSIGN": "Отменить беседу",
@@ -78,8 +80,10 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "До следующего ответа",
     "SNOOZE_UNTIL_TOMORROW": "До завтра",
     "SNOOZE_UNTIL_NEXT_WEEK": "До следующей недели",
-    "SNOOZE": "Включить звук диалога",
-    "MESSAGES": "Сообщения"
+    "SNOOZE": "Snooze conversation",
+    "MESSAGES": "Сообщения",
+    "UNDEFINED_VARIABLES_TITLE": "Неопределенные переменные",
+    "UNDEFINED_VARIABLES_CLOSE": "Закрыть"
   },
   "FILTER": {
     "ALL_INBOXES": "Все письма",
@@ -146,12 +150,25 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Действия"
   },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "Назначить команду",
+    "SELECT_TEAM": "Выберите команду",
+    "NO_RESULT": "Команда не найдена"
+  },
   "CONVERSATION_LABELS": {
     "TITLE": "Категории Диалога",
     "ADD_LABEL": "Добавить метки",
     "EMPTY_LIST": "Пожалуйста, добавьте ярлыки в свой аккаунт",
     "NO_LABEL": "Ярлыки не назначены",
-    "UPDATE_LABEL": "Категория сохранена"
+    "UPDATE_LABEL": "Категория сохранена",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "Метки не найдены"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Назначить агента",
+    "SELECT_AGENT": "Выбрать Агента",
+    "NO_RESULT": "Агент не найден"
   },
   "AGENT": {
     "TITLE": "Выбрать Агента"

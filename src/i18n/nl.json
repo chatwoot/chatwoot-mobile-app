@@ -66,9 +66,11 @@
     "ALL_CONVERSATION_LOADED": "Alle gesprekken geladen",
     "ASSIGN": "Gesprek toewijzen",
     "FILE_SIZE_LIMIT": "Het bestand overschrijdt de limiet van 5 MB",
-    "SHARE": "Deel",
+    "SHARE": "Deel gesprek",
     "DETAILS": "Details",
-    "LABELS": "Labelen",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Assigned agent",
+    "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "Dit zal alleen zichtbaar zijn voor medewerkers",
     "SELF_ASSIGN": "Geef gesprek aan mijzelf",
     "UN_ASSIGN": "Toewijzing ongedaan maken",
@@ -78,8 +80,10 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Tot het volgende antwoord",
     "SNOOZE_UNTIL_TOMORROW": "Tot morgen",
     "SNOOZE_UNTIL_NEXT_WEEK": "Tot volgende week",
-    "SNOOZE": "Demp gesprek",
-    "MESSAGES": "Berichten"
+    "SNOOZE": "Snooze conversation",
+    "MESSAGES": "Berichten",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_CLOSE": "Sluiten"
   },
   "FILTER": {
     "ALL_INBOXES": "Alle inboxen",
@@ -146,12 +150,25 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Acties"
   },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "Assign team",
+    "SELECT_TEAM": "Selecteer team",
+    "NO_RESULT": "No team found"
+  },
   "CONVERSATION_LABELS": {
     "TITLE": "Labels voor gesprekken",
     "ADD_LABEL": "Labels toevoegen",
     "EMPTY_LIST": "Voeg labels toe aan je account",
     "NO_LABEL": "Geen labels toegewezen",
-    "UPDATE_LABEL": "Label succesvol bijgewerkt"
+    "UPDATE_LABEL": "Label succesvol bijgewerkt",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "Geen labels gevonden"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Assign agent",
+    "SELECT_AGENT": "Selecteer agent",
+    "NO_RESULT": "No agent found"
   },
   "AGENT": {
     "TITLE": "Selecteer medewerker"

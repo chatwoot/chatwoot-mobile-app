@@ -1,118 +1,122 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "Witaj",
   "COMMON": {
-    "ERROR": "Error",
+    "ERROR": "Błąd",
     "ERROR_TITLE": "Wystąpił nieoczekiwany błąd",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
+    "REPORT_MESSAGE": "Zgłosiliśmy to naszemu zespołowi! Prosimy zamknąć aplikację i ponownie ją uruchomić!",
     "CLOSE": "Zamknij"
   },
   "FOOTER": {
-    "HOME": "Home",
+    "HOME": "Strona główna",
     "CONVERSATION": "Rozmowy",
     "NOTIFICATION": "Powiadomienia",
     "SETTINGS": "Ustawienia"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
-    "URL_ERROR": "Enter a valid URL",
-    "URL_REQUIRED": "URL is required",
+    "ENTER_URL": "URL instalacji",
+    "DESCRIPTION": "Jeśli korzystasz z własnej instalacji Chatwoot, wprowadź adres URL serwera. W przeciwnym razie użyj app.chatwoot.com.",
+    "URL_ERROR": "Wprowadź poprawny URL",
+    "URL_REQUIRED": "Adres URL jest wymagany",
     "CONNECT": "Połącz",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "CHANGE_LANGUAGE": "Zmień język",
+    "ERROR": "Nieprawidłowy URL instalacji"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "Zaloguj się na swoje konto",
+    "DESCRIPTION": "Jesteś podłączony do {{baseUrl}}. Zaloguj się przy użyciu adresu e-mail i hasła.",
     "EMAIL": "E-mail",
-    "PASSWORD": "Password",
-    "EMAIL_REQUIRED": "Email is required",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_REQUIRED": "Password is required",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
-    "FORGOT_PASSWORD": "Forgot your password?",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "Create new account",
+    "PASSWORD": "Hasło",
+    "EMAIL_REQUIRED": "E-mail jest wymagany",
+    "EMAIL_ERROR": "Wprowadź poprawny adres e-mail",
+    "PASSWORD_REQUIRED": "Hasło jest wymagane",
+    "PASSWORD_ERROR": "Wprowadź poprawne hasło",
+    "LOGIN": "Zaloguj się",
+    "FORGOT_PASSWORD": "Zapomniałeś hasła?",
+    "RESET_HERE": "Zresetuj tutaj",
+    "NO_ACCOUNT": "Nie masz konta?",
+    "CREATE_ACCOUNT": "Utwórz nowe konto",
     "SETTINGS": "Ustawienia",
-    "CHANGE_LANGUAGE": "Change language",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "CHANGE_LANGUAGE": "Zmień język",
+    "TERMS": "Warunki korzystania",
+    "CHANGE_URL": "Zmień URL"
   },
   "FORGOT_PASSWORD": {
     "EMAIL": "Wprowadź swój adres e-mail",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "EMAIL_ERROR": "Wprowadź poprawny adres e-mail",
+    "RESET_HERE": "Zresetuj hasło",
+    "HEADER_TITLE": "Zresetuj hasło",
+    "TITLE": "Zapomniałeś hasła?",
+    "SUB_TITLE": "Nie martw się! Mamy to dla Ciebie",
+    "API_SUCCESS": "Link do resetowania hasła został wysłany na Twój adres e-mail"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Rozmowy",
-    "UPDATING": "Updating...",
-    "MINE": "Mine",
-    "UN_ASSIGNED": "Unassigned",
-    "ALL": "All",
-    "EMPTY": "There are no active conversations in this group.",
-    "PICTURE_CONTENT": "Picture message",
-    "ATTACHMENT_CONTENT": "File Attachment",
+    "UPDATING": "Aktualizowanie...",
+    "MINE": "Moje",
+    "UN_ASSIGNED": "Nieprzypisane",
+    "ALL": "Wszystkie",
+    "EMPTY": "Brak aktywnych rozmów w tej grupie.",
+    "PICTURE_CONTENT": "Wiadomość z obrazem",
+    "ATTACHMENT_CONTENT": "Załącznik pliku",
     "DOWNLOAD": "Pobierz",
     "TODAY": "Dzisiaj",
     "YESTERDAY": "Wczoraj",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share",
-    "DETAILS": "Details",
-    "LABELS": "Etykiety",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "SELF_ASSIGN": "Self assign conversation",
-    "UN_ASSIGN": "Unassign conversation",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "TYPE_MESSAGE": "Wpisz wiadomość",
+    "TYPING": "pisze",
+    "ALL_CONVERSATION_LOADED": "Wszystkie rozmowy załadowane",
+    "ASSIGN": "Przypisz rozmowę",
+    "FILE_SIZE_LIMIT": "Plik przekracza limit załącznika 5 MB",
+    "SHARE": "Udostępnij rozmowę",
+    "DETAILS": "Szczegóły",
+    "LABELS": "Etykiety rozmowy",
+    "ASSIGNED_AGENT": "Przypisany agent",
+    "TEAM": "Zespół",
+    "PRIVATE_MSG_INPUT": "To będzie widoczne tylko dla agentów",
+    "SELF_ASSIGN": "Przypisz rozmowę samodzielnie",
+    "UN_ASSIGN": "Anuluj przypisanie rozmowy",
+    "CONVERSATION_NOT_FOUND": "Nie można pobrać rozmowy",
     "MARK_AS_PENDING": "Oznacz jako oczekujące",
-    "SNOOZE_UNTIL": "Uśpij do",
+    "SNOOZE_UNTIL": "Zamień w tryb uśpienia do",
     "SNOOZE_UNTIL_NEXT_REPLY": "Do następnej odpowiedzi",
     "SNOOZE_UNTIL_TOMORROW": "Do jutra",
     "SNOOZE_UNTIL_NEXT_WEEK": "Do następnego tygodnia",
-    "SNOOZE": "Wycisz rozmowę",
-    "MESSAGES": "Messages"
+    "SNOOZE": "Tryb uśpienia rozmowy",
+    "MESSAGES": "Wiadomości",
+    "UNDEFINED_VARIABLES_TITLE": "Niezdefiniowane zmienne",
+    "UNDEFINED_VARIABLES_CLOSE": "Zamknij"
   },
   "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
-    "FILTER_BY_INBOX": "Filter by inbox",
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
+    "ALL_INBOXES": "Wszystkie skrzynki odbiorcze",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filtruj według rodzaju przypisania",
+    "FILTER_BY_CONVERSATION_STATUS": "Filtruj według statusu rozmowy",
+    "FILTER_BY_INBOX": "Filtruj według skrzynki odbiorczej",
+    "HEADER_TITLE": "Filtr rozmów",
+    "CHOOSE_INBOX": "Wybierz skrzynkę odbiorczą",
+    "CHOOSE_STATUS": "Status rozmowy",
     "OPEN": "Otwórz",
-    "RESOLVED": "Resolved",
+    "RESOLVED": "Zakończone",
     "BOT": "Bot",
     "SUBMIT": "Prześlij",
     "PENDING": "Oczekujące",
-    "SNOOZED": "Snoozed"
+    "SNOOZED": "Zamrożone"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Ustawienia",
-    "SET_AVAILABILITY": "Set yourself as",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
-    "SWITCH_ACCOUNT": "Switch Account",
-    "CHANGE_LANGUAGE": "Change Language",
-    "LOGOUT": "Logout",
+    "SET_AVAILABILITY": "Ustaw dostępność",
+    "PREFERENCES": "Preferencje",
+    "ABOUT": "O aplikacji",
+    "SUPPORT": "Wsparcie",
+    "SWITCH_ACCOUNT": "Przełącz konto",
+    "CHANGE_LANGUAGE": "Zmień język",
+    "LOGOUT": "Wyloguj",
     "SUBMIT": "Prześlij"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Powiadomienia",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
+    "EMPTY": "Brak powiadomień.",
+    "EMPTY_MORE_TEXT": "Gdy zaczniesz otrzymywać powiadomienia, pojawią się tutaj.",
+    "ALL_NOTIFICATION_LOADED": "Wszystkie powiadomienia załadowane",
+    "MARK_ALL": "Oznacz wszystkie jako przeczytane",
     "CANCEL": "Anuluj"
   },
   "AVAILABILITY": {
@@ -121,76 +125,89 @@
     "OFFLINE": "Offline"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
+    "TITLE": "Preferencje powiadomień",
     "EMAIL": "E-mail",
-    "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
-    "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Wysyłaj powiadomienia e-mail, gdy nowa wiadomość zostanie utworzona w przypisanej konwersacji"
+    "PUSH": "Powiadomienia push",
+    "CONVERSATION_CREATE_PUSH": "Wysyłaj powiadomienia push, gdy utworzona zostaje nowa rozmowa",
+    "CONVERSATION_ASSIGNEE_PUSH": "Wysyłaj powiadomienia push, gdy rozmowa zostanie przypisana do mnie",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Wysyłaj powiadomienia push, gdy w przypisanej rozmowie zostanie utworzona nowa wiadomość",
+    "CONVERSATION_MENTION": "Wysyłaj powiadomienia push, gdy zostaniesz wymieniony w rozmowie",
+    "CONVERSATION_CREATE_EMAIL": "Wysyłaj powiadomienia e-mail, gdy utworzona zostaje nowa rozmowa",
+    "CONVERSATION_ASSIGNEE_EMAIL": "Wysyłaj powiadomienia e-mail, gdy rozmowa zostanie przypisana do mnie",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Wysyłaj powiadomienia e-mail, gdy w przypisanej rozmowie zostanie utworzona nowa wiadomość"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Conversation Information",
-    "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Operating System",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from",
+    "TITLE": "Informacje o rozmowie",
+    "BROWSER": "Przeglądarka",
+    "OPERATING_SYSTEM": "System operacyjny",
+    "INITIATED_AT": "Zainicjowano o",
+    "INITIATED_FROM": "Zainicjowano z",
     "IP_ADDRESS": "Adres IP"
   },
   "CONTACT_ATTRIBUTES": {
-    "TITLE": "Contact Attributes"
+    "TITLE": "Atrybuty kontaktu"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Akcje"
   },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "Przypisz zespół",
+    "SELECT_TEAM": "Wybierz zespół",
+    "NO_RESULT": "Nie znaleziono zespołu"
+  },
   "CONVERSATION_LABELS": {
     "TITLE": "Etykiety rozmowy",
     "ADD_LABEL": "Dodaj etykiety",
-    "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Etykieta została pomyślnie zaktualizowana"
+    "EMPTY_LIST": "Dodaj etykiety do swojego konta",
+    "NO_LABEL": "Brak przypisanych etykiet",
+    "UPDATE_LABEL": "Etykieta została pomyślnie zaktualizowana",
+    "SELECTED": "Wybrane",
+    "NOT_SELECTED": "Nie wybrano etykiet",
+    "NO_RESULT": "Nie znaleziono etykiet"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Przypisz konsultanta",
+    "SELECT_AGENT": "Wybierz konsultanta",
+    "NO_RESULT": "Nie znaleziono konsultanta"
   },
   "AGENT": {
-    "TITLE": "Wybierz Agenta"
+    "TITLE": "Wybierz agenta"
   },
   "TEAMS": {
     "TITLE": "Wybierz zespół",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
-    "CHANGE_TEAMS": "Zespół konwersacji został zmieniony"
+    "EMPTY": "Dodaj zespoły do swojego konta, aby przypisać rozmowy do zespołów.",
+    "CHANGE_TEAMS": "Zmieniono zespół rozmowy"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Nie można połączyć się z Woot Server, spróbuj ponownie później",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
-    "AUTH": "Username / Password Incorrect. Please try again",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "COMMON_ERROR": "Nie można połączyć się z serwerem Woot, spróbuj ponownie później",
+    "OfFLINE": "Aby ponownie połączyć się z siecią, musisz połączyć się z siecią Wi-Fi lub komórkową",
+    "CANNOT_FETCH": "Wystąpił błąd podczas pobierania informacji, spróbuj ponownie",
+    "AUTH": "Nieprawidłowa nazwa użytkownika/hasło. Spróbuj ponownie",
+    "NO_ACCOUNTS_MESSAGE": "Nie masz dostępu do żadnych kont Chatwoot"
   },
   "SUCCESS": {
-    "AUTH": "Login Successful"
+    "AUTH": "Zalogowano pomyślnie"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "Wymagana aktualizacja serwera",
+    "WARNING_FOR_AGENT": "Wygląda na to, że korzystasz z nieobsługiwanego serwera Chatwoot dla swojej aplikacji mobilnej. Skontaktuj się z administratorem, aby zaktualizować serwer Chatwoot.",
+    "WARNING_FOR_ADMIN": "Wygląda na to, że korzystasz z nieobsługiwanego serwera Chatwoot dla swojej aplikacji mobilnej. Wymagana jest aktualizacja do wersji serwera %{minimumVersion} lub nowszej."
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
+    "TITLE": "Wyjście",
+    "SUBTITLE": "Czy na pewno chcesz wyjść?",
     "CANCEL": "Anuluj",
     "OK": "Ok"
   },
   "BANNER": {
     "TWILIO_WHATSAPP": {
-      "TEXT": "You can only reply to this conversation using a template message due to ",
-      "HREF_TEXT": "Ograniczenie 24-godzinnego okna wiadomości",
+      "TEXT": "Możesz odpowiedzieć na tę rozmowę tylko za pomocą wiadomości szablonowych z powodu ",
+      "HREF_TEXT": "Ograniczenia 24-godzinnego okna wiadomości",
       "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
     },
     "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
-      "HREF_TEXT": "Ograniczenie 24-godzinnego okna wiadomości",
+      "TEXT": "Nie możesz odpowiedzieć z powodu ",
+      "HREF_TEXT": "Ograniczenia 24-godzinnego okna wiadomości",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }
   }

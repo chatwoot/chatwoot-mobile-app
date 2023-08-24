@@ -66,9 +66,11 @@
     "ALL_CONVERSATION_LOADED": "Todas as conversas foram carregadas",
     "ASSIGN": "Atribuir conversa",
     "FILE_SIZE_LIMIT": "O arquivo excede o limite de anexos de 5MB",
-    "SHARE": "Share",
-    "DETAILS": "Details",
-    "LABELS": "Marcadores",
+    "SHARE": "Compartilhar conversa",
+    "DETAILS": "Detalhes",
+    "LABELS": "Marcadores da conversa",
+    "ASSIGNED_AGENT": "Agente atribuído",
+    "TEAM": "Times",
     "PRIVATE_MSG_INPUT": "Isto será visível apenas para Agentes",
     "SELF_ASSIGN": "Autoatribuir conversa",
     "UN_ASSIGN": "Desassociar conversa",
@@ -79,7 +81,9 @@
     "SNOOZE_UNTIL_TOMORROW": "Até amanhã",
     "SNOOZE_UNTIL_NEXT_WEEK": "Até a próxima semana",
     "SNOOZE": "Adiar conversa",
-    "MESSAGES": "Mensagens"
+    "MESSAGES": "Mensagens",
+    "UNDEFINED_VARIABLES_TITLE": "Variáveis não definidas",
+    "UNDEFINED_VARIABLES_CLOSE": "Fechar"
   },
   "FILTER": {
     "ALL_INBOXES": "Todas as caixas de entrada",
@@ -146,12 +150,25 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Ações"
   },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "Atribuir equipe",
+    "SELECT_TEAM": "Selecionar time",
+    "NO_RESULT": "Nenhuma equipe encontrada"
+  },
   "CONVERSATION_LABELS": {
     "TITLE": "Marcador da conversa",
     "ADD_LABEL": "Adicionar marcador",
     "EMPTY_LIST": "Por favor, adicione marcadores à sua conta",
     "NO_LABEL": "Nenhum marcador atribuído",
-    "UPDATE_LABEL": "Marcador atualizado com sucesso"
+    "UPDATE_LABEL": "Marcador atualizado com sucesso",
+    "SELECTED": "Selecionar",
+    "NOT_SELECTED": "Nenhum marcador selecionado",
+    "NO_RESULT": "Nenhum rótulo encontrado"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Atribuir Agente",
+    "SELECT_AGENT": "Selecionar agente",
+    "NO_RESULT": "Nenhum agente encontrado"
   },
   "AGENT": {
     "TITLE": "Selecione o Agent"

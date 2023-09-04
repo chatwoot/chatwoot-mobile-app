@@ -5,7 +5,7 @@ orbs:
 jobs:
   build-and-test:
     docker:
-      - image: circleci/node:16.x-slim
+      - image: circleci/node:14.15.0
     steps:
       - checkout
       - restore_cache:
@@ -14,7 +14,7 @@ jobs:
             - yarn-packages-{{ checksum "yarn.lock" }}
       - run:
           name: Install Dependencies
-          command: yarn install --immutable
+          command: yarn install  --immutable --ignore-engines
       - save_cache:
           name: Save Yarn Package Cache
           key: yarn-packages-{{ checksum "yarn.lock" }}

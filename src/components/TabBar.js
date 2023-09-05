@@ -68,8 +68,8 @@ const TabStack = () => {
         tabBarInactiveTintColor: '#293F51',
         tabBarStyle: {
           paddingTop: 2,
-          height: isAndroid ? 58 : 49,
-          paddingBottom: isAndroid ? 10 : 0,
+          // height: isAndroid ? 58 : 49,
+          // paddingBottom: isAndroid ? 10 : 0,
         },
         tabBarLabelStyle: {
           fontSize: 12,

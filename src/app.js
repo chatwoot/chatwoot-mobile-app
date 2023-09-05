@@ -9,6 +9,7 @@ import ErrorHelper from 'helpers/ErrorHelper';
 import Router from './router';
 import { store, persistor } from './store';
 import i18n from './i18n/index';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -55,4 +56,5 @@ const Chatwoot = () => {
     </GestureHandlerRootView>
   );
 };
-export default Sentry.wrap(Chatwoot);
+
+export default !__DEV__ ? Sentry.wrap(Chatwoot) : Chatwoot;

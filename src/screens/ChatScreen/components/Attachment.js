@@ -48,16 +48,20 @@ const Attachment = ({ conversationId, onSelectAttachment }) => {
   };
   const openCamera = () => {
     launchCamera(imagePickerOptions, response => {
-      if (response.uri) {
-        onSelectAttachment({ attachment: response });
+      const attachment = response?.assets?.[0];
+      if (!attachment) {
+        return;
       }
+      onSelectAttachment({ attachment });
     });
   };
   const openGallery = () => {
     launchImageLibrary(imagePickerOptions, response => {
-      if (response.uri) {
-        onSelectAttachment({ attachment: response });
+      const attachment = response?.assets?.[0];
+      if (!attachment) {
+        return;
       }
+      onSelectAttachment({ attachment });
     });
   };
   const openDocument = async () => {

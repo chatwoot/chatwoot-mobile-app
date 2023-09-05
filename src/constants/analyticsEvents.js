@@ -27,6 +27,7 @@ export const ACCOUNT_EVENTS = Object.freeze({
   CHANGE_LANGUAGE: 'Changed language',
   OPEN_SUPPORT: 'Opened help support',
   CHANGE_URL: 'Changed URL',
+  ENABLE_PUSH_NOTIFICATION: 'Enabled push notification',
 });
 
 export const LABEL_EVENTS = Object.freeze({

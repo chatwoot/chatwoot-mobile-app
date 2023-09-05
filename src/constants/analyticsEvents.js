@@ -28,6 +28,7 @@ export const ACCOUNT_EVENTS = Object.freeze({
   OPEN_SUPPORT: 'Opened help support',
   CHANGE_URL: 'Changed URL',
   ENABLE_PUSH_NOTIFICATION: 'Enabled push notification',
+  FORGOT_PASSWORD: 'Requested forgot password',
 });
 
 export const LABEL_EVENTS = Object.freeze({

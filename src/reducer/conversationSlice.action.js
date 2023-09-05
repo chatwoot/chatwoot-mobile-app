@@ -1,6 +1,7 @@
 import I18n from 'i18n';
 import { showToast } from 'helpers/ToastHelper';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { Platform } from 'react-native';
 
 import { createPendingMessage, buildCreatePayload } from 'helpers/conversationHelpers';
 import { addOrUpdateMessage } from 'reducer/conversationSlice';
@@ -160,8 +161,20 @@ const actions = {
           }),
         );
         payload = buildCreatePayload(pendingMessage);
+        const { file } = data;
 
-        const response = await axios.post(`conversations/${conversationId}/messages`, payload);
+        const contentType =
+          Platform.OS === 'ios' && file
+            ? file.type
+            : Platform.OS === 'android' && file
+            ? 'multipart/form-data'
+            : 'application/json';
+
+        const response = await axios.post(`conversations/${conversationId}/messages`, payload, {
+          headers: {
+            'Content-Type': contentType,
+          },
+        });
         dispatch(
           addOrUpdateMessage({
             ...response.data,

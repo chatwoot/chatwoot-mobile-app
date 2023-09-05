@@ -30,8 +30,12 @@ API.interceptors.request.use(
   async config => {
     const headers = await getHeaders();
     config.baseURL = await getBaseUrl();
+    const configHeaders = config.headers;
     if (headers) {
-      config.headers = headers;
+      config.headers = {
+        ...configHeaders,
+        ...headers,
+      }
       const { accountId } = headers;
       if (accountId) {
         config.url = `${API_URL}accounts/${accountId}/${config.url}`;

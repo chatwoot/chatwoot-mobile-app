@@ -1,13 +1,13 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "1.10.15",
+  "version": "1.10.16",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
     "android:clean": "cd android && ./gradlew clean",
     "android:publish-internal": "cd android && ./gradlew clean && fastlane android beta_internal",
     "android:publish-open": "cd android && ./gradlew clean && fastlane android beta_open",
-    "android:release": "react-native run-android --variant=release",
+    "android:release": "yarn android --mode release",
     "build-storybook": "build-storybook",
     "clean": "rm -rf $TMPDIR/react-* && watchman watch-del-all && yarn cache clean --force",
     "clean:hard": "react-native-clean-project",

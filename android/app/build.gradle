@@ -79,8 +79,8 @@ android {
         applicationId "com.chatwoot.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5188
-        versionName "1.10.16"
+        versionCode 5180005
+        versionName "1.10.17"
     }
     lintOptions {
         checkReleaseBuilds false

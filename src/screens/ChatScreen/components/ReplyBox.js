@@ -192,6 +192,7 @@ const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyBut
         setBCCEmails('');
         setAttachmentDetails(null);
         setPrivateMode(false);
+        setUndefinedVariablesModal(false);
       }
     }
   };

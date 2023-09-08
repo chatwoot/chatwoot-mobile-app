@@ -1,16 +1,29 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
-        <item name="android:textColor">#000000</item>
-        <item name="colorPrimaryDark">@color/status_bar_color</item>
+        <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
+        <item name="android:navigationBarColor">@android:color/white</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
-    <style name="BootTheme" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/bootsplash_background</item>
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/bootsplash_logo</item>
-        <item name="postSplashScreenTheme">@style/AppTheme</item>
+
+    <style name="BootTheme" parent="Theme.BootSplash">
+        <item name="bootSplashBackground">@color/bootsplash_background</item>
+        <item name="bootSplashLogo">@drawable/bootsplash_logo</item>
+        <!-- <item name="bootSplashBrand">@drawable/bootsplash_brand</item> -->
+        <item name="postBootSplashTheme">@style/AppTheme</item>
+
+        <!--
+        3 things to know to use windowLightStatusBar / windowLightNavigationBar:
+        - true = dark-content, false = light-content barStyle
+        - windowLightStatusBar should target at least "m" api
+        - windowLightNavigationBar should target at least "o_mr1" api
+
+        For this example, we are using a transparent status bar + an opaque navigation bar.
+        For that, we only need to set the status color as the bootsplash background color.
+        -->
+        <item name="android:statusBarColor" tools:targetApi="m">@color/bootsplash_background</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
 </resources>

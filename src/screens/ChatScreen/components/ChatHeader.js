@@ -2,8 +2,9 @@ import React, { useRef, useCallback, useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
+import * as Sentry from '@sentry/react-native';
 import PropTypes from 'prop-types';
-import { View, Share, ActivityIndicator, Dimensions, Keyboard } from 'react-native';
+import { View, Share, ActivityIndicator, Dimensions, Keyboard, Platform } from 'react-native';
 import { getCustomerDetails } from 'helpers';
 import { getTypingUsersText } from 'helpers/conversationHelpers';
 import { selectConversationToggleStatus } from 'reducer/conversationSlice';
@@ -190,12 +191,14 @@ const ChatHeader = ({
         conversationId: currentConversationId,
         accountId: accountId,
       });
-
+      const message = Platform.OS === 'android' ? conversationURL : '';
       await Share.share({
+        message: message,
         url: conversationURL,
       });
+      AnalyticsHelper.track(CONVERSATION_EVENTS.CONVERSATION_SHARE);
     } catch (error) {
-      //error
+      Sentry.captureException(error);
     }
   };
 

@@ -12,8 +12,9 @@ import i18n from '../../i18n';
 import LoaderButton from '../../components/LoaderButton';
 import images from '../../constants/images';
 import { EMAIL_REGEX } from '../../helpers/formHelper';
-
+import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
 import { actions as authActions, resetAuth, selectIsResettingPassword } from 'reducer/authSlice';
+import AnalyticsHelper from 'helpers/AnalyticsHelper';
 
 const propTypes = {
   onResetPassword: PropTypes.func,
@@ -48,6 +49,7 @@ const ForgotPasswordComponent = ({ navigation }) => {
   const onSubmit = data => {
     const { email } = data;
     dispatch(authActions.onResetPassword({ email }));
+    AnalyticsHelper.track(ACCOUNT_EVENTS.FORGOT_PASSWORD);
   };
 
   const isResettingPassword = useSelector(selectIsResettingPassword);

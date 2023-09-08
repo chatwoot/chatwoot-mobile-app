@@ -3,13 +3,13 @@ import messaging from '@react-native-firebase/messaging';
 import axios from 'axios';
 import { Platform, PermissionsAndroid } from 'react-native';
 import {
-  getUniqueId,
   getSystemName,
   getManufacturer,
   getModel,
   getApiLevel,
   getBrand,
   getBuildNumber,
+  getUniqueId,
 } from 'react-native-device-info';
 import APIHelper from '../helpers/APIHelper';
 import { updateBadgeCount } from 'helpers/PushHelper';
@@ -82,7 +82,7 @@ export const actions = {
       try {
         const permissionEnabled = await messaging().hasPermission();
         const fcmToken = await messaging().getToken();
-        const deviceId = getUniqueId();
+        const deviceId = await getUniqueId();
         const devicePlatform = getSystemName();
         const manufacturer = await getManufacturer();
         const model = await getModel();

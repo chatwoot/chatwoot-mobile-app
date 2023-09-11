@@ -85,7 +85,7 @@
     "react-native-snackbar": "^2.6.2",
     "react-native-svg": "^13.13.0",
     "react-native-tab-view": "^3.5.2",
-    "react-native-webview": "^11.3.1",
+    "react-native-webview": "^13.6.0",
     "react-redux": "^8.1.2",
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",

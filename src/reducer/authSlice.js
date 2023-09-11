@@ -14,18 +14,9 @@ export const actions = {
     try {
       const response = await APIHelper.post('auth/sign_in', { email, password });
       const { data } = response.data;
-      const {
-        name,
-        id,
-        account_id,
-        accounts,
-        access_token,
-        uid,
-        pubsub_token,
-        avatar_url,
-        available_name,
-        role,
-      } = data;
+      const { 'access-token': access_token, uid, client } = response.headers;
+      const { name, id, account_id, accounts, pubsub_token, avatar_url, available_name, role } =
+        data;
       return {
         user: {
           name,
@@ -33,14 +24,16 @@ export const actions = {
           account_id,
           accounts,
           email,
-          access_token,
-          uid,
           pubsub_token,
           avatar_url,
           available_name,
           role,
         },
-        headers: response.headers,
+        headers: {
+          'access-token': access_token,
+          uid,
+          client,
+        },
       };
     } catch (error) {
       const { response } = error;

@@ -135,7 +135,7 @@ const ConversationLabels = ({ colors, conversationDetails }) => {
     if (conversationSavedLabels?.includes(label.title)) {
       return false;
     }
-    return label.title.toLowerCase().includes(search.toLowerCase());
+    return label.title.toLowerCase()?.includes(search.toLowerCase());
   });
 
   const createLabelEvent = () => {

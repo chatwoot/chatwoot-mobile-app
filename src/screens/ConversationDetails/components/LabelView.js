@@ -67,7 +67,7 @@ const LabelView = ({ conversationDetails, conversationId, openLabelsBottomSheet 
   const activeLabels =
     labels && savedLabels
       ? labels.filter(({ title }) => {
-          return savedLabels.includes(title);
+          return savedLabels?.includes(title);
         })
       : [];
 

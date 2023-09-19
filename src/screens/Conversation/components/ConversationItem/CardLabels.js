@@ -55,7 +55,7 @@ const CardLabel = ({ conversationDetails, conversationId }) => {
   const activeLabels =
     labels && conversationLabels
       ? labels.filter(({ title }) => {
-          return conversationLabels.includes(title);
+          return conversationLabels?.includes(title);
         })
       : [];
 

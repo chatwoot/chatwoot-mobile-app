@@ -49,7 +49,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@sentry/react-native": "^5.9.1",
     "@shopify/flash-list": "^1.5.0",
-    "axios": "^1.4.0",
+    "axios": "^1.6.0",
     "date-fns": "2.21.1",
     "i18n-js": "^3.8.0",
     "lodash.filter": "^4.6.0",

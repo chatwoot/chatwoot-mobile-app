@@ -120,4 +120,4 @@ const MessagesListComponent = ({ conversationId, loadMessages }) => {
 };
 
 MessagesListComponent.propTypes = propTypes;
-export default React.memo(MessagesListComponent);
+export default MessagesListComponent;

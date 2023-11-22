@@ -39,36 +39,14 @@ const MessageDeliveryStatus = ({ message, type, channel, contactLastSeenAt }) =>
   const isSent = message?.status === MESSAGE_STATUS.SENT;
   const isEmailChannel = channel === INBOX_TYPES.EMAIL;
   const isAWhatsappChannel = channel === INBOX_TYPES.TWILIO || channel === INBOX_TYPES.WHATSAPP;
-  const isAWebWidgetInbox = channel === INBOX_TYPES.WEB;
+  const isATelegramChannel = channel === INBOX_TYPES.TELEGRAM;
+  const isATwilioChannel = channel === INBOX_TYPES.TWILIO;
+  const isAFacebookChannel = channel === INBOX_TYPES.FB;
+  const isAWebWidgetChannel = channel === INBOX_TYPES.WEB;
   const isTemplate = message.template === MESSAGE_TYPES.TEMPLATE;
+  const isAPIChannel = channel === INBOX_TYPES.API;
   const shouldShowStatusIndicator = (type === 'outgoing' || isTemplate) && !message.private;
-
-  const showDeliveredIndicator = () => {
-    if (!shouldShowStatusIndicator) {
-      return false;
-    }
-    if (isAWhatsappChannel) {
-      return message.source_id && isDelivered;
-    }
-
-    return false;
-  };
-
-  const showReadIndicator = () => {
-    if (!shouldShowStatusIndicator) {
-      return false;
-    }
-
-    if (isAWebWidgetInbox) {
-      return contactLastSeenAt >= message.created_at;
-    }
-
-    if (isAWhatsappChannel) {
-      return message.source_id && isRead;
-    }
-
-    return false;
-  };
+  const isALineChannel = channel === INBOX_TYPES.LINE;
 
   const showSentIndicator = () => {
     if (!shouldShowStatusIndicator) {
@@ -79,9 +57,49 @@ const MessageDeliveryStatus = ({ message, type, channel, contactLastSeenAt }) =>
       return !!message.source_id;
     }
 
-    if (isAWhatsappChannel) {
+    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel || isATelegramChannel) {
       return message.source_id && isSent;
     }
+    // There is no source id for the line channel
+    if (isALineChannel) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const showDeliveredIndicator = () => {
+    if (!shouldShowStatusIndicator) {
+      return false;
+    }
+    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel) {
+      return message.source_id && isDelivered;
+    }
+
+    // We will consider messages as delivered for web widget inbox and API inbox if they are sent
+    if (isAWebWidgetChannel || isAPIChannel) {
+      return isSent;
+    }
+
+    if (isALineChannel) {
+      return isDelivered;
+    }
+
+    return false;
+  };
+
+  const showReadIndicator = () => {
+    if (!shouldShowStatusIndicator) {
+      return false;
+    }
+    if (isAWebWidgetChannel || isAPIChannel) {
+      return isRead;
+    }
+
+    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel) {
+      return message.source_id && isRead;
+    }
+
     return false;
   };
 

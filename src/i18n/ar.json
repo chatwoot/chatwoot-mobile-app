@@ -14,19 +14,19 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "رابط التثبيت",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "إذا كنت تستخدم تثبيت Chatwoot، قم بإدخال رابط الخادم الخاص بك. خلاف ذلك، استخدم app.chatwoot.com.",
     "URL_ERROR": "الرجاء إدخال عنوان صحيح",
-    "URL_REQUIRED": "URL is required",
+    "URL_REQUIRED": "الرابط مطلوب",
     "CONNECT": "اتصل",
     "CHANGE_LANGUAGE": "تغيير اللغة",
     "ERROR": "رابط التثبيت غير صحيح"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "قم بتسجيل الدخول إلى حسابك",
+    "DESCRIPTION": "أنت متصل بـ {{baseUrl}}. قم بتسجيل الدخول باستخدام عنوان بريدك الإلكتروني وكلمة المرور.",
     "EMAIL": "البريد الإلكتروني",
     "PASSWORD": "كلمة المرور",
-    "EMAIL_REQUIRED": "الايميل مطلوب",
+    "EMAIL_REQUIRED": "البريد الإلكتروني مطلوب",
     "EMAIL_ERROR": "أدخل بريد إلكتروني صحيح",
     "PASSWORD_REQUIRED": "كلمة المرور مطلوبة",
     "PASSWORD_ERROR": "أدخل كلمة مرور صالحة",
@@ -47,11 +47,11 @@
     "HEADER_TITLE": "إعادة تعيين كلمة المرور",
     "TITLE": "هل نسيت كلمة المرور؟",
     "SUB_TITLE": "لاتقلق، سنهتم بذلك",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "API_SUCCESS": "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "المحادثات",
-    "UPDATING": "Updating...",
+    "UPDATING": "جاري التحديث...",
     "MINE": "محادثاتي",
     "UN_ASSIGNED": "غير مسند",
     "ALL": "الكل",
@@ -64,32 +64,32 @@
     "TYPE_MESSAGE": "اكتب رسالة",
     "TYPING": "جار الكتابة",
     "ALL_CONVERSATION_LOADED": "تم تحميل كافة المحادثات",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share conversation",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
+    "ASSIGN": "تعيين المحادثة",
+    "FILE_SIZE_LIMIT": "الملف يتجاوز الحجم المسموح - 5 ميغابايت",
+    "SHARE": "مشاركة",
+    "DETAILS": "التفاصيل",
+    "LABELS": "وسوم المحادثة",
     "ASSIGNED_AGENT": "الوكيل المكلف",
     "TEAM": "الفريق",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "SELF_ASSIGN": "Self assign conversation",
-    "UN_ASSIGN": "Unassign conversation",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "PRIVATE_MSG_INPUT": "سيكون هذا مرئيًا فقط للوكلاء",
+    "SELF_ASSIGN": "تعيين ذاتي للمحادثة",
+    "UN_ASSIGN": "الغاء تعيين المحادثة",
+    "CONVERSATION_NOT_FOUND": "تعذر مزامنة المحادثة",
     "MARK_AS_PENDING": "تحديد كمعلق",
     "SNOOZE_UNTIL": "تأجيل حتى",
     "SNOOZE_UNTIL_NEXT_REPLY": "حتى الرد القادم",
     "SNOOZE_UNTIL_TOMORROW": "حتى الغد",
     "SNOOZE_UNTIL_NEXT_WEEK": "حتى الأسبوع القادم",
-    "SNOOZE": "Snooze conversation",
+    "SNOOZE": "تأجيل المحادثة",
     "MESSAGES": "الرسائل",
     "UNDEFINED_VARIABLES_TITLE": "متغيرات غير معرفة",
     "UNDEFINED_VARIABLES_CLOSE": "إغلاق"
   },
   "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
-    "FILTER_BY_INBOX": "Filter by inbox",
+    "ALL_INBOXES": "كل البريد",
+    "FILTER_BY_ASSIGNEE_TYPE": "تصفية حسب التعيين",
+    "FILTER_BY_CONVERSATION_STATUS": "تصفية حسب حالة المحادثة",
+    "FILTER_BY_INBOX": "تصفية حسب صندوق الوارد",
     "HEADER_TITLE": "تصفية المحادثات",
     "CHOOSE_INBOX": "اختر صندوق الوارد",
     "CHOOSE_STATUS": "حالة المحادثة",
@@ -97,15 +97,15 @@
     "RESOLVED": "إغلاق",
     "BOT": "الروبوت",
     "SUBMIT": "إرسال",
-    "PENDING": "Pending",
-    "SNOOZED": "Snoozed"
+    "PENDING": "قيد الانتظار",
+    "SNOOZED": "مؤجل"
   },
   "SETTINGS": {
     "HEADER_TITLE": "الإعدادات",
     "SET_AVAILABILITY": "تعيين نفسك كـ",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
+    "PREFERENCES": "التفضيلات",
+    "ABOUT": "حول",
+    "SUPPORT": "الدعم",
     "SWITCH_ACCOUNT": "تبديل الحساب",
     "CHANGE_LANGUAGE": "تغيير اللغة",
     "LOGOUT": "تسجيل الخروج",
@@ -161,14 +161,14 @@
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
     "UPDATE_LABEL": "تم تحديث الوسم بنجاح",
-    "SELECTED": "Selected",
+    "SELECTED": "محدد",
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "لم يتم العثور على تصنيفات"
   },
   "CONVERSATION_AGENTS": {
     "TITLE": "تعيين وكيل",
     "SELECT_AGENT": "اختر وكيل",
-    "NO_RESULT": "No agent found"
+    "NO_RESULT": "لم يُعثر على وكيل"
   },
   "AGENT": {
     "TITLE": "اختر وكيل"
@@ -189,7 +189,7 @@
     "AUTH": "تم تسجيل الدخول بنجاح"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
+    "TITLE": "يجب ترقية الخادم",
     "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
     "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },

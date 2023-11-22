@@ -86,6 +86,7 @@ const MessagesListComponent = ({ conversationId, loadMessages }) => {
               }
             }}
             inverted
+            contentContainerStyle={styles.listContainerStyle}
             keyboardShouldPersistTaps="never"
             scrollEventThrottle={16}
             keyExtractor={(item, index) => item + index}

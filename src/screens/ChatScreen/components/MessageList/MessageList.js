@@ -10,7 +10,6 @@ import ChatMessage from '../ChatMessage';
 import ReplyBox from '../ReplyBox';
 import createStyles from './MessageList.style';
 import { openURL } from 'helpers/UrlHelper';
-import { findUniqueMessages } from 'helpers/conversationHelpers';
 import { selectMessagesLoading, selectAllMessagesFetched } from 'reducer/conversationSlice';
 import { selectors as conversationSelectors } from 'reducer/conversationSlice.selector.js';
 const propTypes = {
@@ -75,14 +74,11 @@ const MessagesListComponent = ({ conversationId, loadMessages }) => {
       />
     );
   };
-  const uniqueMessages = findUniqueMessages({
-    allMessages,
-  });
 
   return (
     <View style={styles.container} autoDismiss={false}>
       <View style={styles.chatView}>
-        {uniqueMessages.length ? (
+        {allMessages.length ? (
           <FlashList
             onScroll={() => {
               if (!isFlashListReady) {
@@ -97,13 +93,12 @@ const MessagesListComponent = ({ conversationId, loadMessages }) => {
             estimatedItemSize={100}
             renderItem={renderMessage}
             onEndReached={onEndReached}
-            contentContainerStyle={styles.chatContainer}
             onEndReachedThreshold={0.5}
             contentInsetAdjustmentBehavior="automatic"
             ListFooterComponent={renderMoreLoader}
           />
         ) : null}
-        {isFetching && !uniqueMessages.length && (
+        {isFetching && !allMessages.length && (
           <View style={styles.loadMoreSpinnerView}>
             <ActivityIndicator size="small" color={colors.textDark} animating={isFetching} />
           </View>
@@ -113,7 +108,7 @@ const MessagesListComponent = ({ conversationId, loadMessages }) => {
         conversationId={conversationId}
         conversationDetails={conversation}
         inboxId={inboxId}
-        enableReplyButton={uniqueMessages.length > 0}
+        enableReplyButton={allMessages.length > 0}
       />
     </View>
   );

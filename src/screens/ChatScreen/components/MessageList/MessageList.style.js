@@ -9,11 +9,8 @@ export default theme => {
     },
     chatView: {
       flex: 1,
-    },
-    chatContainer: {
       paddingHorizontal: spacing.small,
       paddingVertical: spacing.half,
-      paddingTop: spacing.smaller,
     },
     loadMoreSpinnerView: {
       alignItems: 'center',

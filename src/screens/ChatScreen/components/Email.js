@@ -47,4 +47,4 @@ const EmailComponent = ({ emailContent }) => {
 };
 
 EmailComponent.propTypes = propTypes;
-export default EmailComponent;
+export default React.memo(EmailComponent);

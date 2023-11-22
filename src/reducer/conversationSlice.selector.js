@@ -48,7 +48,10 @@ export const selectors = {
       if (!conversation) {
         return [];
       }
-      return conversation.messages;
+      return []
+        .concat(conversation.messages)
+        .sort((a, b) => a.created_at - b.created_at)
+        .reverse();
     },
   ),
   getConversationById: createDraftSafeSelector(

@@ -2,14 +2,14 @@ import React, { useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { FlashList } from '@shopify/flash-list';
+
 import PropTypes from 'prop-types';
-import { View, SectionList, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import ChatMessage from '../ChatMessage';
-import ChatMessageDate from '../ChatMessageDate';
 import ReplyBox from '../ReplyBox';
 import createStyles from './MessageList.style';
 import { openURL } from 'helpers/UrlHelper';
-import { findUniqueMessages, getGroupedMessages } from 'helpers/conversationHelpers';
 import { selectMessagesLoading, selectAllMessagesFetched } from 'reducer/conversationSlice';
 import { selectors as conversationSelectors } from 'reducer/conversationSlice.selector.js';
 const propTypes = {
@@ -46,7 +46,7 @@ const MessagesListComponent = ({ conversationId, loadMessages }) => {
     }
   };
 
-  const onEndReached = ({ distanceFromEnd }) => {
+  const onEndReached = () => {
     const shouldFetchMoreMessages = !isAllMessagesFetched && !isFetching && isFlashListReady;
     if (shouldFetchMoreMessages) {
       loadMessages();
@@ -64,44 +64,42 @@ const MessagesListComponent = ({ conversationId, loadMessages }) => {
     return null;
   };
 
-  const renderMessage = item => (
-    <ChatMessage
-      message={item.item}
-      key={item.index}
-      showAttachment={showAttachment}
-      conversation={conversation}
-    />
-  );
-  const uniqueMessages = findUniqueMessages({
-    allMessages,
-  });
-  const groupedMessages = getGroupedMessages({
-    messages: uniqueMessages,
-  });
+  const renderMessage = item => {
+    return (
+      <ChatMessage
+        message={item.item}
+        key={item.index}
+        showAttachment={showAttachment}
+        conversation={conversation}
+      />
+    );
+  };
 
   return (
     <View style={styles.container} autoDismiss={false}>
       <View style={styles.chatView}>
-        {groupedMessages.length ? (
-          <SectionList
+        {allMessages.length ? (
+          <FlashList
             onScroll={() => {
               if (!isFlashListReady) {
                 setFlashListReady(true);
               }
             }}
+            inverted
+            contentContainerStyle={styles.listContainerStyle}
             keyboardShouldPersistTaps="never"
             scrollEventThrottle={16}
-            inverted
-            onEndReached={onEndReached}
-            sections={groupedMessages}
             keyExtractor={(item, index) => item + index}
+            data={allMessages}
+            estimatedItemSize={100}
             renderItem={renderMessage}
-            renderSectionFooter={({ section: { date } }) => <ChatMessageDate date={date} />}
-            style={styles.chatContainer}
+            onEndReached={onEndReached}
+            onEndReachedThreshold={0.5}
+            contentInsetAdjustmentBehavior="automatic"
             ListFooterComponent={renderMoreLoader}
           />
         ) : null}
-        {isFetching && !groupedMessages.length && (
+        {isFetching && !allMessages.length && (
           <View style={styles.loadMoreSpinnerView}>
             <ActivityIndicator size="small" color={colors.textDark} animating={isFetching} />
           </View>
@@ -111,7 +109,7 @@ const MessagesListComponent = ({ conversationId, loadMessages }) => {
         conversationId={conversationId}
         conversationDetails={conversation}
         inboxId={inboxId}
-        enableReplyButton={groupedMessages.length > 0}
+        enableReplyButton={allMessages.length > 0}
       />
     </View>
   );

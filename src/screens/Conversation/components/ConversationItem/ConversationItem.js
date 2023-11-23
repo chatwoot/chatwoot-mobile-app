@@ -88,6 +88,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
 
   const content = lastMessage?.content || '';
   const { created_at, attachments, message_type, private: isPrivate } = lastMessage;
+
   const {
     name: inboxName = null,
     channel_type: channelType = null,
@@ -96,6 +97,12 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
     inboxes,
     inboxId,
   });
+
+  const isEmailChannel = channelType === 'Channel::Email';
+
+  const lastMessageContent = isEmailChannel
+    ? lastMessage?.content_attributes?.email?.subject
+    : lastMessage?.content;
 
   const inboxDetails = inboxes ? inboxes.find(inbox => inbox.id === inboxId) : {};
 
@@ -237,7 +244,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
                     <ConversationAttachment attachment={attachments[0]} />
                   ) : (
                     <ConversationContent
-                      content={content}
+                      content={lastMessageContent}
                       messageType={message_type}
                       isPrivate={isPrivate}
                       unReadCount={unreadCount}

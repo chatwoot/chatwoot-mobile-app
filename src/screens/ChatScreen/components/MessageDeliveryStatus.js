@@ -44,6 +44,7 @@ const MessageDeliveryStatus = ({ message, type, channel, contactLastSeenAt }) =>
   const isAFacebookChannel = channel === INBOX_TYPES.FB;
   const isAWebWidgetChannel = channel === INBOX_TYPES.WEB;
   const isTemplate = message.template === MESSAGE_TYPES.TEMPLATE;
+  const isASmsInbox = channel === INBOX_TYPES.SMS;
   const isAPIChannel = channel === INBOX_TYPES.API;
   const shouldShowStatusIndicator = (type === 'outgoing' || isTemplate) && !message.private;
   const isALineChannel = channel === INBOX_TYPES.LINE;
@@ -57,7 +58,13 @@ const MessageDeliveryStatus = ({ message, type, channel, contactLastSeenAt }) =>
       return !!message.source_id;
     }
 
-    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel || isATelegramChannel) {
+    if (
+      isAWhatsappChannel ||
+      isATwilioChannel ||
+      isAFacebookChannel ||
+      isATelegramChannel ||
+      this.isASmsInbox
+    ) {
       return message.source_id && isSent;
     }
     // There is no source id for the line channel
@@ -72,7 +79,7 @@ const MessageDeliveryStatus = ({ message, type, channel, contactLastSeenAt }) =>
     if (!shouldShowStatusIndicator) {
       return false;
     }
-    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel) {
+    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel || this.isASmsInbox) {
       return message.source_id && isDelivered;
     }
 

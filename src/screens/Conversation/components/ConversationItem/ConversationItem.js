@@ -19,6 +19,7 @@ import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
 import ConversationLabel from './ConversationLabels';
 import ConversationPriority from './ConversationPriority';
+import { selectors as contactSelectors } from 'reducer/contactSlice';
 
 const isAndroid = Platform.OS === 'android';
 
@@ -32,6 +33,7 @@ const propTypes = {
         name: PropTypes.string,
         thumbnail: PropTypes.string,
         availability_status: PropTypes.string,
+        id: PropTypes.number,
       }),
       channel: PropTypes.string,
     }),
@@ -61,7 +63,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
   const {
     meta: {
       assignee,
-      sender: { name, thumbnail, availability_status: availabilityStatus },
+      sender: { name, thumbnail, id: contactId },
       channel,
     },
     additional_attributes: additionalAttributes = {},
@@ -70,6 +72,10 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
     unread_count: unreadCount,
     priority,
   } = item;
+
+  const contact = useSelector(state => contactSelectors.getContactById(state, contactId));
+
+  const { availability_status: availabilityStatus } = contact || {};
 
   const assigneeName = assignee?.name;
   const lastMessage = findLastMessage(item);

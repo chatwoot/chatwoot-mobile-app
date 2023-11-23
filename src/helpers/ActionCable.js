@@ -4,18 +4,16 @@ import {
   addOrUpdateMessage,
   addConversation,
   updateConversation,
-  updateContactsPresence,
   updateConversationLastActivity,
 } from 'reducer/conversationSlice';
 
 import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
-
 import conversationActions from 'reducer/conversationSlice.action';
 import { store } from '../store';
 import { setCurrentUserAvailability } from 'reducer/authSlice';
 import { addUserToTyping, destroyUserFromTyping } from 'reducer/conversationTypingSlice';
-
 import { addNotification } from 'reducer/notificationSlice';
+import { addContact, updateContactsPresence } from 'reducer/contactSlice';
 
 class ActionCableConnector extends BaseActionCableConnector {
   constructor(pubsubToken, webSocketUrl, accountId, userId) {
@@ -58,6 +56,7 @@ class ActionCableConnector extends BaseActionCableConnector {
   onConversationCreated = data => {
     store.dispatch(addConversation(data));
     store.dispatch(conversationActions.fetchConversationStats({}));
+    store.dispatch(addContact(data));
   };
 
   onStatusChange = data => {
@@ -81,6 +80,7 @@ class ActionCableConnector extends BaseActionCableConnector {
     const { id } = data;
     if (id) {
       store.dispatch(updateConversation(data));
+      store.dispatch(addContact(data));
     }
     store.dispatch(conversationActions.fetchConversationStats({}));
   };

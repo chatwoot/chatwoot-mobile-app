@@ -20,7 +20,7 @@ import { HELP_URL } from 'constants/url.js';
 import { openURL } from 'helpers/UrlHelper';
 import packageFile from '../../../package.json';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { clearContacts } from 'reducer/contactSlice';
 import { actions as settingsActions } from 'reducer/settingsSlice';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
@@ -146,6 +146,7 @@ const SettingsScreen = () => {
 
   const onChangeAccount = useCallback(
     accountId => {
+      dispatch(clearContacts());
       dispatch(clearAllConversations());
       dispatch(setAccount(accountId));
       navigation.dispatch(StackActions.replace('Tab'));

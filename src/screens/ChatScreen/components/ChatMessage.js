@@ -168,4 +168,4 @@ const ChatMessageComponent = ({ message, showAttachment, conversation }) => {
 ChatMessageComponent.defaultProps = defaultProps;
 ChatMessageComponent.propTypes = propTypes;
 
-export default ChatMessageComponent;
+export default React.memo(ChatMessageComponent);

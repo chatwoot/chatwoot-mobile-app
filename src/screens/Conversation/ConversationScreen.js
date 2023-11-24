@@ -22,6 +22,7 @@ import {
   selectConversationMeta,
   selectSortFilter,
 } from 'reducer/conversationSlice';
+import { clearContacts } from 'reducer/contactSlice';
 import conversationActions from 'reducer/conversationSlice.action';
 import createStyles from './ConversationScreen.style';
 import i18n from 'i18n';
@@ -69,6 +70,7 @@ const ConversationScreen = () => {
 
   useEffect(() => {
     initActionCable();
+    dispatch(clearContacts());
     dispatch(clearAllConversations());
     dispatch(inboxActions.fetchInboxes());
     initAnalytics();
@@ -138,6 +140,7 @@ const ConversationScreen = () => {
   };
 
   const refreshConversationsAgain = useCallback(async () => {
+    await dispatch(clearContacts());
     await dispatch(clearAllConversations());
     setPage(1);
     loadConversations({
@@ -151,6 +154,7 @@ const ConversationScreen = () => {
 
   const refreshConversations = async () => {
     AnalyticsHelper.track(CONVERSATION_EVENTS.REFRESH_CONVERSATIONS);
+    await dispatch(clearContacts());
     await dispatch(clearAllConversations());
     setPage(1);
     loadConversations({
@@ -189,6 +193,7 @@ const ConversationScreen = () => {
 
   const clearAppliedFilters = async () => {
     AnalyticsHelper.track(CONVERSATION_EVENTS.CLEAR_FILTERS);
+    await dispatch(clearContacts());
     await dispatch(clearAllConversations());
     await dispatch(setConversationStatus('open'));
     await dispatch(setAssigneeType('mine'));
@@ -227,6 +232,7 @@ const ConversationScreen = () => {
       type: 'status',
       value: item.key,
     });
+    await dispatch(clearContacts());
     await dispatch(clearAllConversations());
     await dispatch(setConversationStatus(item.key));
     setPage(1);
@@ -237,6 +243,7 @@ const ConversationScreen = () => {
     AnalyticsHelper.track(CONVERSATION_EVENTS.APPLY_FILTER, {
       type: 'inbox',
     });
+    await dispatch(clearContacts());
     await dispatch(clearAllConversations());
     await dispatch(setActiveInbox(item.id));
     setPage(1);
@@ -247,6 +254,7 @@ const ConversationScreen = () => {
     AnalyticsHelper.track(CONVERSATION_EVENTS.APPLY_FILTER, {
       type: 'sort',
     });
+    await dispatch(clearContacts());
     await dispatch(clearAllConversations());
     await dispatch(setSortFilter(item.key));
     setPage(1);

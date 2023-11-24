@@ -8,6 +8,7 @@ import { View, Share, ActivityIndicator, Dimensions, Keyboard, Platform } from '
 import { getCustomerDetails } from 'helpers';
 import { getTypingUsersText } from 'helpers/conversationHelpers';
 import { selectConversationToggleStatus } from 'reducer/conversationSlice';
+import { selectors as contactSelectors } from 'reducer/contactSlice';
 import conversationActions from 'reducer/conversationSlice.action';
 import { UserAvatar, Pressable, Text, Icon, InboxName } from 'components';
 import { getInboxName } from 'helpers/conversationHelpers';
@@ -70,12 +71,14 @@ const ChatHeader = ({
     inbox_id: inboxId,
     status: conversationStatus,
     can_reply: canReply,
-    meta: {
-      sender: { availability_status: availabilityStatus },
-    },
+    meta: { sender: { id: contactId } = {} },
     additional_attributes: additionalAttributes = {},
     muted,
   } = conversationDetails;
+
+  const contact = useSelector(state => contactSelectors.getContactById(state, contactId));
+
+  const { availability_status: availabilityStatus } = contact || {};
 
   const snoozedConversation = conversationStatus === CONVERSATION_STATUS.SNOOZED;
   const pendingConversation = conversationStatus === CONVERSATION_STATUS.PENDING;

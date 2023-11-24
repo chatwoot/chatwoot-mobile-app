@@ -1,8 +1,6 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
-const lodashFilter = require('lodash.filter');
 import actions from './conversationSlice.action';
 import { MESSAGE_TYPES } from 'constants';
-import { isEmptyObject } from 'helpers';
 import { findPendingMessageIndex } from '../helpers/conversationHelpers';
 export const conversationAdapter = createEntityAdapter({
   selectId: conversation => conversation.id,
@@ -105,23 +103,6 @@ const conversationSlice = createSlice({
         return;
       }
       conversation.last_activity_at = lastActivityAt;
-    },
-    updateContactsPresence: (state, action) => {
-      const { contacts } = action.payload;
-      const allConversations = state.entities;
-      if (isEmptyObject(contacts)) {
-        return;
-      }
-      Object.keys(contacts).forEach(contactId => {
-        let filteredConversations = lodashFilter(allConversations, {
-          meta: { sender: { id: parseInt(contactId) } },
-        });
-        // TODO: This is a temporary fix for the issue of contact presence not updating if the contact goes offline, create contact store and update the contact presence there,
-        //TODO: reference https://github.com/chatwoot/chatwoot/blob/develop/app/javascript/dashboard/store/modules/conversations/helpers/actionHelpers.js#L47
-        filteredConversations.forEach(item => {
-          state.entities[item.id].meta.sender.availability_status = contacts[contactId];
-        });
-      });
     },
   },
 
@@ -256,7 +237,6 @@ export const {
   addConversation,
   addOrUpdateMessage,
   updateConversation,
-  updateContactsPresence,
   updateConversationLastActivity,
 } = conversationSlice.actions;
 

@@ -80,7 +80,7 @@ const ChatScreenComponent = ({ navigation, route }) => {
   const lastMessageId = useCallback(() => {
     let beforeId = null;
     if (allMessages && allMessages.length) {
-      const [lastMessage] = allMessages;
+      const lastMessage = allMessages[allMessages.length - 1];
       const { id } = lastMessage;
       beforeId = id;
     }

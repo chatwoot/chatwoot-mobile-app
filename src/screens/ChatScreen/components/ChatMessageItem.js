@@ -499,4 +499,4 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
 };
 
 ChatMessageItemComponent.propTypes = propTypes;
-export default ChatMessageItemComponent;
+export default React.memo(ChatMessageItemComponent);

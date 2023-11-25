@@ -125,16 +125,20 @@ export const buildCreatePayload = ({
 };
 
 export const replaceMentionsWithUsernames = text => {
-  // eslint-disable-next-line no-useless-escape
-  const regex = /\[@([^\]]+)\]\(mention:\/\/user\/\d+\/([^\)]+)\)/g;
-  const matches = text.matchAll(regex);
-  let result = text;
-  for (const match of matches) {
-    const [fullMatch, username] = match;
-    const replacement = `@${decodeURIComponent(username)}`;
-    result = result.replace(fullMatch, replacement);
+  try {
+    // eslint-disable-next-line no-useless-escape
+    const regex = /\[@([^\]]+)\]\(mention:\/\/user\/\d+\/([^\)]+)\)/g;
+    const matches = text.matchAll(regex);
+    let result = text;
+    for (const match of matches) {
+      const [fullMatch, username] = match;
+      const replacement = `@${decodeURIComponent(username)}`;
+      result = result.replace(fullMatch, replacement);
+    }
+    return result;
+  } catch (error) {
+    return text;
   }
-  return result;
 };
 
 export const findUniqueMessages = ({ allMessages }) => {

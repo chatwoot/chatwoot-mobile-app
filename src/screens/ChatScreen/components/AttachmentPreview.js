@@ -56,10 +56,10 @@ const AttachmentPreview = ({ attachmentDetails, onRemoveAttachment }) => {
       ) : (
         <Icon icon="file-filled" style={styles.sendButton} color={colors.textLight} size={20} />
       )}
-      <Text sm medium color={colors.textDark} style={styles.name}>
+      <Text accessible={true} sm medium color={colors.textDark} style={styles.name}>
         {fileName.length < 36 ? `${fileName}` : `...${fileName.substr(fileName.length - 15)}`}
       </Text>
-      <Text sm medium color={colors.textDark} style={styles.name}>
+      <Text accessible={true} sm medium color={colors.textDark} style={styles.name}>
         {formattedFileSize}
       </Text>
       <Pressable onPress={onRemoveAttachment}>

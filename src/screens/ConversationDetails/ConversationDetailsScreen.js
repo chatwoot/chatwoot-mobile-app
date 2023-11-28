@@ -154,13 +154,13 @@ const ConversationDetailsScreen = ({ navigation, route }) => {
               />
             </View>
             <View>
-              <Text bold lg color={colors.textDark}>
+              <Text accessible={true} bold lg color={colors.textDark}>
                 {name}
               </Text>
             </View>
             {senderAdditionalInfo.description ? (
               <View style={styles.descriptionContainer}>
-                <Text regular sm color={colors.textDark} style={styles.description}>
+                <Text accessible={true} regular sm color={colors.textDark} style={styles.description}>
                   {senderAdditionalInfo.description}
                 </Text>
               </View>
@@ -170,7 +170,7 @@ const ConversationDetailsScreen = ({ navigation, route }) => {
           </View>
           <View style={styles.separatorView}>
             <View style={styles.separator}>
-              <Text bold sm color={colors.textDark}>
+              <Text accessible={true} bold sm color={colors.textDark}>
                 {i18n.t('CONVERSATION_LABELS.TITLE')}
               </Text>
             </View>

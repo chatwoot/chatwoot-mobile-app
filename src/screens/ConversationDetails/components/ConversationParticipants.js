@@ -156,18 +156,18 @@ const ConversationParticipants = ({ conversationId }) => {
       <View>
         <View style={styles.separatorView}>
           <View style={styles.separator}>
-            <Text bold sm color={colors.textDark}>
+            <Text accessible={true} bold sm color={colors.textDark}>
               {i18n.t('CONVERSATION_PARTICIPANTS.TITLE')}
             </Text>
           </View>
           <View style={styles.accordionItemWrapper}>
             <View style={styles.totalWatchersWrapper}>
               {!isConversationWatchersExist ? (
-                <Text sm color={colors.textGrayLighter}>
+                <Text accessible={true} sm color={colors.textGrayLighter}>
                   {i18n.t('CONVERSATION_PARTICIPANTS.NO_PARTICIPANTS_TEXT')}
                 </Text>
               ) : (
-                <Text sm color={colors.textDark}>
+                <Text accessible={true} sm color={colors.textDark}>
                   {watchersText}
                 </Text>
               )}
@@ -191,7 +191,7 @@ const ConversationParticipants = ({ conversationId }) => {
                 <View />
               )}
               {isCurrentUserWatching ? (
-                <Text sm color={colors.textGrayLighter}>
+                <Text accessible={true} sm color={colors.textGrayLighter}>
                   {i18n.t('CONVERSATION_PARTICIPANTS.YOU_ARE_WATCHING')}
                 </Text>
               ) : (
@@ -199,7 +199,7 @@ const ConversationParticipants = ({ conversationId }) => {
                   style={styles.watchConversationButton}
                   onPress={() => updateConversationWatchers(currentAgent)}>
                   <Icon color={colors.primaryColor} icon="arrow-right" size={12} />
-                  <Text xs color={colors.primaryColor} style={styles.watchConversationButtonText}>
+                  <Text accessible={true} xs color={colors.primaryColor} style={styles.watchConversationButtonText}>
                     {i18n.t('CONVERSATION_PARTICIPANTS.WATCH_CONVERSATION')}
                   </Text>
                 </Pressable>

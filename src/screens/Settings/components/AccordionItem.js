@@ -54,13 +54,13 @@ const AccordionItem = ({ title, activeValue, rightIcon, leftIcon, routeName, onP
     <Pressable key={title} style={styles.accordionItem} onPress={() => onPress({ routeName })}>
       <View style={styles.itemView}>
         <Icon icon={leftIcon} color={colors.textDark} size={18} />
-        <Text medium sm color={colors.textDark} style={styles.accordionItemText}>
+        <Text accessible={true} medium sm color={colors.textDark} style={styles.accordionItemText}>
           {title}
         </Text>
       </View>
       <View style={styles.activeItemView}>
         {activeValue && (
-          <Text medium sm color={colors.textLight} style={styles.accordionItemText}>
+          <Text accessible={true} medium sm color={colors.textLight} style={styles.accordionItemText}>
             {getTextSubstringWithEllipsis(activeValue, 12)}
           </Text>
         )}

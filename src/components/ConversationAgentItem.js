@@ -131,7 +131,7 @@ const ConversationAgentItem = ({ colors, title, agentsList, activeValue, onClick
 
         <View style={styles.bottomSheetItemView}>
           {filteredAgentsOnSearch.length !== 0 && (
-            <Text sm medium color={colors.textDark} style={styles.itemText}>
+            <Text accessible={true} sm medium color={colors.textDark} style={styles.itemText}>
               {title}
             </Text>
           )}
@@ -151,7 +151,7 @@ const ConversationAgentItem = ({ colors, title, agentsList, activeValue, onClick
                   fontSize={12}
                   availabilityStatus={item.availability_status}
                 />
-                <Text sm medium color={colors.text} style={styles.agentName}>
+                <Text accessible={true} sm medium color={colors.text} style={styles.agentName}>
                   {`${item.name}`}
                 </Text>
               </View>
@@ -164,7 +164,7 @@ const ConversationAgentItem = ({ colors, title, agentsList, activeValue, onClick
           ))}
           {filteredAgentsOnSearch && filteredAgentsOnSearch.length === 0 && (
             <View style={styles.emptyView}>
-              <Text sm medium color={colors.textDark}>
+              <Text accessible={true} sm medium color={colors.textDark}>
                 {i18n.t('CONVERSATION_AGENTS.NO_RESULT')}
               </Text>
             </View>

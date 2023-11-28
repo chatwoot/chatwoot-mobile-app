@@ -81,17 +81,17 @@ const AccountsSelector = ({ accounts, activeValue, onPress, colors }) => {
             }}>
             <View style={styles.accountDetailsWrapper}>
               <View style={styles.nameIdWrapper}>
-                <Text md semiBold color={colors.textDark}>
+                <Text accessible={true} md semiBold color={colors.textDark}>
                   {account.name}
                 </Text>
                 <View
                   style={[styles.accountIdWrapper, { backgroundColor: colors.primaryColorLight }]}>
-                  <Text xs medium color={colors.text} style={styles.accountId}>
+                  <Text accessible={true} xs medium color={colors.text} style={styles.accountId}>
                     {`#${account.id}`}
                   </Text>
                 </View>
               </View>
-              <Text xs color={colors.text} style={styles.role}>
+              <Text accessible={true} xs color={colors.text} style={styles.role}>
                 {account.role}
               </Text>
             </View>

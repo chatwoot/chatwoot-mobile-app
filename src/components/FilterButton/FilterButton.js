@@ -57,7 +57,7 @@ const FilterButton = ({ label, onPress, isActive, hasLeftIcon, leftIconName }) =
           <Icon color={colors.textLight} icon={leftIconName} size={14} />
         </View>
       )}
-      <Text sm medium color={colors.text}>
+      <Text accessible={true} sm medium color={colors.text}>
         {getTextSubstringWithEllipsis(label, 20)}
       </Text>
       <View style={styles.arrowDownIcon}>

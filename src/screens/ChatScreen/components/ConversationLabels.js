@@ -203,7 +203,7 @@ const ConversationLabels = ({ colors, conversationDetails }) => {
         </View>
         {conversationSavedLabels && activeLabels && (
           <View style={styles.selectedView}>
-            <Text sm medium color={colors.textDark} style={styles.itemText}>
+            <Text accessible={true} sm medium color={colors.textDark} style={styles.itemText}>
               {i18n.t('CONVERSATION_LABELS.SELECTED')}
             </Text>
             {activeLabels.map(item => (
@@ -220,7 +220,7 @@ const ConversationLabels = ({ colors, conversationDetails }) => {
                       styles.labelColorDisplay,
                     ]}
                   />
-                  <Text sm medium color={colors.primaryColor}>
+                  <Text accessible={true} sm medium color={colors.primaryColor}>
                     {`${item.title}`}
                   </Text>
                 </View>
@@ -233,7 +233,7 @@ const ConversationLabels = ({ colors, conversationDetails }) => {
             {activeLabels.length === 0 && (
               <Pressable style={styles.bottomSheetItem}>
                 <View>
-                  <Text sm color={colors.textDark}>
+                  <Text accessible={true} sm color={colors.textDark}>
                     {i18n.t('CONVERSATION_LABELS.NOT_SELECTED')}
                   </Text>
                 </View>
@@ -256,7 +256,7 @@ const ConversationLabels = ({ colors, conversationDetails }) => {
                     styles.labelColorDisplay,
                   ]}
                 />
-                <Text sm medium color={colors.primaryColor}>
+                <Text accessible={true} sm medium color={colors.primaryColor}>
                   {`${item.title}`}
                 </Text>
               </View>
@@ -267,7 +267,7 @@ const ConversationLabels = ({ colors, conversationDetails }) => {
           ))}
         {filteredLabelsOnSearch && filteredLabelsOnSearch.length === 0 && (
           <View style={styles.emptyView}>
-            <Text sm medium color={colors.textDark}>
+            <Text accessible={true} sm medium color={colors.textDark}>
               {i18n.t('CONVERSATION_LABELS.NO_RESULT')}
             </Text>
           </View>

@@ -141,7 +141,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
               ]}>
               <Pressable style={styles.readUnreadMessageSwipeAction}>
                 <Icon color={colors.colorWhite} icon="mail-unread-outline" size={24} />
-                <Text sm semiBold color={colors.colorWhite} style={styles.swipeActionText}>
+                <Text accessible={true} sm semiBold color={colors.colorWhite} style={styles.swipeActionText}>
                   Unread
                 </Text>
               </Pressable>
@@ -157,7 +157,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
               ]}>
               <Pressable style={styles.readUnreadMessageSwipeAction}>
                 <Icon color={colors.colorWhite} icon="mail-outline" size={24} />
-                <Text sm semiBold color={colors.colorWhite} style={styles.swipeActionText}>
+                <Text accessible={true} sm semiBold color={colors.colorWhite} style={styles.swipeActionText}>
                   Read
                 </Text>
               </Pressable>
@@ -197,7 +197,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
             <View style={styles.conversationMeta}>
               <View style={styles.metaDetails}>
                 <View style={styles.idView}>
-                  <Text xs medium color={colors.textLight}>
+                  <Text accessible={true} xs medium color={colors.textLight}>
                     #{id}
                   </Text>
                 </View>
@@ -213,7 +213,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
                 {showAssigneeLabel && assigneeName && (
                   <View style={styles.assigneeLabel}>
                     <Icon icon="person-outline" color={colors.textLighter} size={12} />
-                    <Text xs color={colors.textLighter}>
+                    <Text accessible={true} xs color={colors.textLighter}>
                       {getTextSubstringWithEllipsis(assigneeName, 14)}
                     </Text>
                   </View>
@@ -230,11 +230,11 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
                 <View style={styles.nameView}>
                   {!!name &&
                     (unreadCount ? (
-                      <Text sm semiBold color={colors.textDark}>
+                      <Text accessible={true} sm semiBold color={colors.textDark}>
                         {getTextSubstringWithEllipsis(name, 22)}
                       </Text>
                     ) : (
-                      <Text sm medium color={colors.textDark}>
+                      <Text accessible={true} sm medium color={colors.textDark}>
                         {getTextSubstringWithEllipsis(name, 22)}
                       </Text>
                     ))}
@@ -251,7 +251,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
                     />
                   )
                 ) : (
-                  <Text sm color={colors.successColor}>
+                  <Text accessible={true} sm color={colors.successColor}>
                     {getTextSubstringWithEllipsis(typingUser, 25)}
                   </Text>
                 )}
@@ -260,14 +260,14 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
             </View>
             <View style={styles.unreadTimestampContainer}>
               <View>
-                <Text xxs color={colors.textLight}>
+                <Text accessible={true} xxs color={colors.textLight}>
                   {dynamicTime({ time: created_at })}
                 </Text>
               </View>
               {unreadCount ? (
                 <View style={styles.badgeView}>
                   <View style={styles.badge}>
-                    <Text xxs medium color={colors.colorWhite}>
+                    <Text accessible={true} xxs medium color={colors.colorWhite}>
                       {unreadCount > 9 ? '9+' : unreadCount.toString()}
                     </Text>
                   </View>

@@ -83,10 +83,10 @@ const ConfigureURLScreenComponent = ({ navigation }) => {
         </View>
 
         <View style={styles.titleView}>
-          <Text lg medium color={colors.textDark} style={styles.titleText}>
+          <Text accessible={true} lg medium color={colors.textDark} style={styles.titleText}>
             {i18n.t('CONFIGURE_URL.ENTER_URL')}
           </Text>
-          <Text sm color={colors.textLight} style={styles.subTitleText}>
+          <Text accessible={true} sm color={colors.textLight} style={styles.subTitleText}>
             {i18n.t('CONFIGURE_URL.DESCRIPTION')}
           </Text>
         </View>

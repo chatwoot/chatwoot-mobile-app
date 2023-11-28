@@ -54,7 +54,7 @@ const LabelBox = ({ id, title, color, onClickRemoveLabel }) => {
       <View>
         <View style={styles.labelView} key={id}>
           <View style={[getLabelColor(color)]} />
-          <Text xs medium color={colors.textDark} style={styles.label}>
+          <Text accessible={true} xs medium color={colors.textDark} style={styles.label}>
             {title}
           </Text>
           <Pressable style={styles.labelCloseIcon} onPress={() => onClickRemoveLabel()}>

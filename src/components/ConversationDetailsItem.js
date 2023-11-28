@@ -34,17 +34,17 @@ const ConversationDetailsItem = ({ value, title, type }) => {
     <React.Fragment>
       <View key={type}>
         <View style={styles.itemTitleView}>
-          <Text medium sm color={colors.textDark}>
+          <Text accessible={true} medium sm color={colors.textDark}>
             {title}
           </Text>
         </View>
         <View>
           {link ? (
-            <Text sm color={colors.primaryColor} onPress={() => openURL({ URL: value })}>
+            <Text accessible={true} sm color={colors.primaryColor} onPress={() => openURL({ URL: value })}>
               {value}
             </Text>
           ) : (
-            <Text sm color={colors.textDark}>
+            <Text accessible={true} sm color={colors.textDark}>
               {value}
             </Text>
           )}

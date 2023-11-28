@@ -59,7 +59,7 @@ const TextInputField = ({ onChangeText, error, keyboardType, secureTextEntry, la
 
   return (
     <View>
-      <Text sm medium color={colors.textDark} style={styles.label}>
+      <Text accessible={true} sm medium color={colors.textDark} style={styles.label}>
         {label}
       </Text>
       <TextInput
@@ -72,7 +72,7 @@ const TextInputField = ({ onChangeText, error, keyboardType, secureTextEntry, la
         autoCapitalize="none"
       />
       {error && (
-        <Text sm color={colors.dangerColor} style={styles.errorLabel}>
+        <Text accessible={true} sm color={colors.dangerColor} style={styles.errorLabel}>
           {error.message}
         </Text>
       )}

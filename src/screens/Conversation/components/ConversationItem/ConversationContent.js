@@ -55,11 +55,11 @@ const ConversationContent = ({ content, messageType, isPrivate, unReadCount }) =
                 </View>
               )}
               {unReadCount ? (
-                <Text semiBold sm numberOfLines={1} maxLength={8} color={colors.text}>
+                <Text accessible={true} semiBold sm numberOfLines={1} maxLength={8} color={colors.text}>
                   {findLastMessage(message)}
                 </Text>
               ) : (
-                <Text sm numberOfLines={1} maxLength={8} color={colors.text}>
+                <Text accessible={true} sm numberOfLines={1} maxLength={8} color={colors.text}>
                   {findLastMessage(message)}
                 </Text>
               )}
@@ -71,11 +71,11 @@ const ConversationContent = ({ content, messageType, isPrivate, unReadCount }) =
                 <Icon color={colors.text} icon="info-outline" size={14} />
               </View>
               {unReadCount ? (
-                <Text semiBold sm numberOfLines={1} maxLength={8} color={colors.text}>
+                <Text accessible={true} semiBold sm numberOfLines={1} maxLength={8} color={colors.text}>
                   {getTextSubstringWithEllipsis(message, 32)}
                 </Text>
               ) : (
-                <Text sm numberOfLines={1} maxLength={8} color={colors.text}>
+                <Text accessible={true} sm numberOfLines={1} maxLength={8} color={colors.text}>
                   {getTextSubstringWithEllipsis(message, 32)}
                 </Text>
               )}
@@ -85,11 +85,11 @@ const ConversationContent = ({ content, messageType, isPrivate, unReadCount }) =
       ) : (
         <View style={styles.itemView}>
           {unReadCount ? (
-            <Text semiBold sm numberOfLines={1} maxLength={8} color={colors.text}>
+            <Text accessible={true} semiBold sm numberOfLines={1} maxLength={8} color={colors.text}>
               {findLastMessage(message)}
             </Text>
           ) : (
-            <Text sm numberOfLines={1} maxLength={8} color={colors.text}>
+            <Text accessible={true} sm numberOfLines={1} maxLength={8} color={colors.text}>
               {findLastMessage(message)}
             </Text>
           )}

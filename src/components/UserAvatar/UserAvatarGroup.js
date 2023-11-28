@@ -32,7 +32,7 @@ const UserAvatarGroup = ({ users, size, showMoreText, moreText, length, fontSize
     const count = users.length - length;
     return (
       <View style={[styles.countContainer, styles.bubbleBorder, { height: size + 1 }]}>
-        <Text style={[styles.countText, { fontSize }]}>{`+${count} ${moreText || ''}`}</Text>
+        <Text accessible={true} style={[styles.countText, { fontSize }]}>{`+${count} ${moreText || ''}`}</Text>
       </View>
     );
   };

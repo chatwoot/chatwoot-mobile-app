@@ -125,7 +125,7 @@ const ConversationAttributes = ({ conversationDetails }) => {
         <View>
           <View style={styles.separatorView}>
             <View style={styles.separator}>
-              <Text bold sm color={colors.textDark}>
+              <Text accessible={true} bold sm color={colors.textDark}>
                 {i18n.t('CONVERSATION_DETAILS.TITLE')}
               </Text>
             </View>

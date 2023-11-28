@@ -64,7 +64,7 @@ const ConversationLabel = ({ conversationDetails, conversationId }) => {
       {activeLabels.map(({ id, title, color }) => (
         <View style={styles.labelView} key={id}>
           <View style={[getLabelStyle(color)]} />
-          <Text xs medium color={colors.text}>
+          <Text accessible={true} xs medium color={colors.text}>
             {title}
           </Text>
         </View>

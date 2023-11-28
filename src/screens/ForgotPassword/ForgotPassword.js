@@ -76,12 +76,12 @@ const ForgotPasswordComponent = ({ navigation }) => {
         </View>
 
         <View style={styles.titleView}>
-          <Text lg medium color={colors.textDark} style={styles.titleText}>
+          <Text accessible={true} lg medium color={colors.textDark} style={styles.titleText}>
             {i18n.t('FORGOT_PASSWORD.TITLE')}
           </Text>
         </View>
         <View style={styles.titleView}>
-          <Text sm color={colors.textLight} style={styles.subTitleText}>
+          <Text accessible={true} sm color={colors.textLight} style={styles.subTitleText}>
             {i18n.t('FORGOT_PASSWORD.SUB_TITLE')}
           </Text>
         </View>

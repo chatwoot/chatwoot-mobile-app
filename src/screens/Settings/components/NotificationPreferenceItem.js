@@ -45,7 +45,7 @@ const NotificationPreferenceItemComponent = ({ title, item, onCheckedChange, isC
   return (
     <Pressable style={styles.itemView} onPress={() => onCheckedChange({ item })}>
       <View style={styles.textView}>
-        <Text sm color={colors.text}>
+        <Text accessible={true} sm color={colors.text}>
           {title}
         </Text>
       </View>

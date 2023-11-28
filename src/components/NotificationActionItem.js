@@ -44,7 +44,7 @@ const NotificationActionItem = ({ text, iconName, itemType, onPressItem }) => {
       <Pressable style={styles.section} onPress={() => onPressItem({ itemType })}>
         <View style={styles.sectionTitleView}>
           <Icon icon={iconName} color={colors.primaryColor} size={22} style={styles.iconWrapper} />
-          <Text sm medium color={colors.text} style={styles.sectionText}>
+          <Text accessible={true} sm medium color={colors.text} style={styles.sectionText}>
             {text}
           </Text>
         </View>

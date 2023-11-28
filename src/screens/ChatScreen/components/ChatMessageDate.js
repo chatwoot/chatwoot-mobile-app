@@ -31,7 +31,7 @@ const ChatMessageDateComponent = ({ date }) => {
   return (
     <View style={styles.mainView}>
       <View style={styles.dateView}>
-        <Text xs medium color={colors.textDark}>
+        <Text accessible={true} xs medium color={colors.textDark}>
           {date}
         </Text>
       </View>

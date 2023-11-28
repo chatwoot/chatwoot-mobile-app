@@ -116,12 +116,12 @@ const Header = ({
               style={styles.headerLoader}
             />
           ) : null}
-          <Text xl bold color={colors.textDark}>
+          <Text accessible={true} xl bold color={colors.textDark}>
             {headerText}
           </Text>
           {showCount && !loading && count !== 0 && (
             <View style={styles.headerCountView}>
-              <Text xs medium color={colors.textDark} style={styles.headerCount}>
+              <Text accessible={true} xs medium color={colors.textDark} style={styles.headerCount}>
                 {`(${count})`}
               </Text>
             </View>

@@ -117,7 +117,7 @@ const SnoozeConversation = ({ colors, conversationId, activePriority, closeModal
             onPress={() => changePriority(item.id)}>
             <View style={styles.itemView}>
               <SvgXml xml={item.icon} width={22} height={22} />
-              <Text sm medium color={colors.textDark} style={styles.itemText}>
+              <Text accessible={true} sm medium color={colors.textDark} style={styles.itemText}>
                 {item.name}
               </Text>
             </View>

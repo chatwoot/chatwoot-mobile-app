@@ -43,7 +43,7 @@ const ContactDetails = ({ type, value, iconName }) => {
   return (
     <Pressable style={styles.detailsContainer} onPress={() => onClickOpen()}>
       <Icon icon={iconName} color={colors.primaryColor} size={14} />
-      <Text sm color={colors.textDark} style={styles.detailText}>
+      <Text accessible={true} sm color={colors.textDark} style={styles.detailText}>
         {value}
       </Text>
     </Pressable>

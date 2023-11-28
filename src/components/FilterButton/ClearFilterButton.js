@@ -52,7 +52,7 @@ const Dropdown = ({ onSelectItem, count }) => {
         <Icon color={colors.textDark} icon="filter-dismiss-outline" size={16} />
       </View>
       <View style={styles.dropdownCountWrapper}>
-        <Text xs bold color={colors.dangerColor}>
+        <Text accessible={true} xs bold color={colors.dangerColor}>
           {getTextSubstringWithEllipsis(count, 20)}
         </Text>
       </View>

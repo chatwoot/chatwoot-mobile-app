@@ -40,7 +40,7 @@ const AddButton = ({ buttonLabel, iconName, onClickOpen }) => {
   return (
     <React.Fragment>
       <Pressable style={styles.addButtonWrap} onPress={onClickOpen}>
-        <Text xs medium color={colors.primaryColorDarker} style={styles.addButton}>
+        <Text accessible={true} xs medium color={colors.primaryColorDarker} style={styles.addButton}>
           {buttonLabel}
         </Text>
         <Icon icon={iconName} color={colors.primaryColorDarker} size={14} />

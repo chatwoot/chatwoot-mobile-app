@@ -127,11 +127,11 @@ const LoginScreenComponent = ({ navigation }) => {
           <Image style={styles.logo} source={images.login} />
         </View>
         <View style={styles.titleView}>
-          <Text lg medium color={colors.textDark} style={styles.titleText}>
+          <Text accessible={true} lg medium color={colors.textDark} style={styles.titleText}>
             {i18n.t('LOGIN.TITLE')}
           </Text>
           {baseUrl ? (
-            <Text sm color={colors.textLight} style={styles.subTitleText}>
+            <Text accessible={true} sm color={colors.textLight} style={styles.subTitleText}>
               {i18n.t('LOGIN.DESCRIPTION', { baseUrl })}
             </Text>
           ) : null}
@@ -190,7 +190,7 @@ const LoginScreenComponent = ({ navigation }) => {
               />
             </View>
             <TouchableOpacity style={styles.forgotView} onPress={() => navigate('ResetPassword')}>
-              <Text xs medium color={colors.textLight}>
+              <Text accessible={true} xs medium color={colors.textLight}>
                 {i18n.t('LOGIN.FORGOT_PASSWORD')}
               </Text>
             </TouchableOpacity>
@@ -211,23 +211,23 @@ const LoginScreenComponent = ({ navigation }) => {
               {appName === 'Chatwoot' && (
                 <>
                   <TouchableOpacity onPress={doSignup}>
-                    <Text xs medium color={colors.textLight}>
+                    <Text accessible={true} xs medium color={colors.textLight}>
                       {i18n.t('LOGIN.CREATE_ACCOUNT')}
                     </Text>
                   </TouchableOpacity>
-                  <Text color={colors.textLight}>{'   |   '}</Text>
+                  <Text accessible={true} color={colors.textLight}>{'   |   '}</Text>
                 </>
               )}
 
               <TouchableOpacity onPress={() => navigate('ConfigureURL')}>
-                <Text xs medium color={colors.textLight}>
+                <Text accessible={true} xs medium color={colors.textLight}>
                   {i18n.t('LOGIN.CHANGE_URL')}
                 </Text>
               </TouchableOpacity>
             </View>
             <View style={styles.accountView}>
               <TouchableOpacity onPress={toggleChangeLanguageModal}>
-                <Text xs medium color={colors.textLight}>
+                <Text accessible={true} xs medium color={colors.textLight}>
                   {i18n.t('LOGIN.CHANGE_LANGUAGE')}
                 </Text>
               </TouchableOpacity>

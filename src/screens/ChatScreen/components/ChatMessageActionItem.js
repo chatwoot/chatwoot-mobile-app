@@ -46,7 +46,7 @@ const ChatMessageActionItem = ({ text, itemType, onPressItem }) => {
           </View>
         )}
         <View>
-          <Text sm medium color={colors.textDark}>
+          <Text accessible={true} sm medium color={colors.textDark}>
             {text}
           </Text>
         </View>

@@ -76,7 +76,7 @@ const ConversationList = ({
     return (
       <View style={styles.loadMoreView}>
         {isAllConversationsAreFetched ? (
-          <Text sm color={colors.textLight}>
+          <Text accessible={true} sm color={colors.textLight}>
             {i18n.t('CONVERSATION.ALL_CONVERSATION_LOADED')} 🎉
           </Text>
         ) : (

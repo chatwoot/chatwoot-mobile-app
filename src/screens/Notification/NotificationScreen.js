@@ -107,7 +107,7 @@ const NotificationScreen = ({ navigation }) => {
             animating={!isAllNotificationsLoaded}
           />
         ) : (
-          <Text sm color={colors.textLight}>
+          <Text accessible={true} sm color={colors.textLight}>
             {`${i18n.t('NOTIFICATION.ALL_NOTIFICATION_LOADED')} 🎉`}
           </Text>
         )}

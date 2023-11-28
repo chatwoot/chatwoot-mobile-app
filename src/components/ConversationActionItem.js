@@ -81,7 +81,7 @@ const ConversationActionItem = ({
         }}>
         <View style={styles.sectionTitleView}>
           <Icon icon={iconName} color={colors.textDark} size={16} />
-          <Text sm medium color={colors.textDark} style={styles.sectionTitle}>
+          <Text accessible={true} sm medium color={colors.textDark} style={styles.sectionTitle}>
             {text}
           </Text>
         </View>
@@ -89,7 +89,7 @@ const ConversationActionItem = ({
           {shouldShowUserAvatar && (
             <UserAvatar thumbnail={thumbnail} userName={name} size={18} fontSize={8} />
           )}
-          <Text sm medium color={colors.textLight} style={styles.sectionActiveTitle}>
+          <Text accessible={true} sm medium color={colors.textLight} style={styles.sectionActiveTitle}>
             {name}
           </Text>
           {(itemType === 'assignee' || itemType === 'team' || itemType === 'snooze') && (

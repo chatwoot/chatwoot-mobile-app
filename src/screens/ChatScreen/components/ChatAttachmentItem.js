@@ -214,7 +214,7 @@ const ChatAttachmentItemComponent = ({ type, attachments, showAttachment, messag
                       {fileNameToDisplay}
                     </Text>
                     <Pressable onPress={() => showAttachment({ type: 'file', dataUrl })}>
-                      <Text xs color={attachmentDownloadTextColor()} style={styles.downloadText}>
+                      <Text accessible={true} xs color={attachmentDownloadTextColor()} style={styles.downloadText}>
                         {i18n.t('CONVERSATION.DOWNLOAD')}
                       </Text>
                     </Pressable>

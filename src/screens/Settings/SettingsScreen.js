@@ -192,7 +192,7 @@ const SettingsScreen = () => {
         />
         <View style={styles.separatorView}>
           <View style={styles.separator}>
-            <Text bold sm color={colors.textDark}>
+            <Text accessible={true} bold sm color={colors.textDark}>
               {i18n.t('SETTINGS.SET_AVAILABILITY')}
             </Text>
           </View>
@@ -200,7 +200,7 @@ const SettingsScreen = () => {
         </View>
         <View style={styles.separatorView}>
           <View style={styles.separator}>
-            <Text bold sm color={colors.textDark}>
+            <Text accessible={true} bold sm color={colors.textDark}>
               {i18n.t('SETTINGS.PREFERENCES')}
             </Text>
           </View>
@@ -267,7 +267,7 @@ const SettingsScreen = () => {
         </View>
         <View style={styles.separatorView}>
           <View style={styles.separator}>
-            <Text bold sm color={colors.textDark}>
+            <Text accessible={true} bold sm color={colors.textDark}>
               {i18n.t('SETTINGS.SUPPORT')}
             </Text>
           </View>
@@ -297,7 +297,7 @@ const SettingsScreen = () => {
             <Image style={styles.aboutImage} source={images.appLogo} />
           </View>
           <View style={styles.appDescriptionView}>
-            <Text color={colors.textLight} xs medium style={styles.appDescriptionText}>
+            <Text accessible={true} color={colors.textLight} xs medium style={styles.appDescriptionText}>
               {`Version ${packageFile.version}`}
             </Text>
           </View>
@@ -305,7 +305,7 @@ const SettingsScreen = () => {
         <View style={styles.logoutSection}>
           <Pressable style={styles.logoutButton} onPress={onClickLogout}>
             <Icon icon="power-outline" color={colors.textDark} size={16} />
-            <Text medium sm color={colors.textDark} style={styles.logoutText}>
+            <Text accessible={true} medium sm color={colors.textDark} style={styles.logoutText}>
               {i18n.t('SETTINGS.LOGOUT')}
             </Text>
           </Pressable>

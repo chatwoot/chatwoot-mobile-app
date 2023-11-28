@@ -40,7 +40,11 @@ const ConversationDetailsItem = ({ value, title, type }) => {
         </View>
         <View>
           {link ? (
-            <Text accessible={true} sm color={colors.primaryColor} onPress={() => openURL({ URL: value })}>
+            <Text
+              accessible={true}
+              sm
+              color={colors.primaryColor}
+              onPress={() => openURL({ URL: value })}>
               {value}
             </Text>
           ) : (

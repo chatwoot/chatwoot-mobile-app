@@ -160,7 +160,12 @@ const ConversationDetailsScreen = ({ navigation, route }) => {
             </View>
             {senderAdditionalInfo.description ? (
               <View style={styles.descriptionContainer}>
-                <Text accessible={true} regular sm color={colors.textDark} style={styles.description}>
+                <Text
+                  accessible={true}
+                  regular
+                  sm
+                  color={colors.textDark}
+                  style={styles.description}>
                   {senderAdditionalInfo.description}
                 </Text>
               </View>

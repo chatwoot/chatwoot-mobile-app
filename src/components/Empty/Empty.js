@@ -62,7 +62,12 @@ const Empty = ({ image, title, subTitle }) => {
       )}
       {subTitle && (
         <View style={styles.titleView}>
-          <Text accessible={true} sm appearance="hint" color={colors.textLight} style={styles.subTitleText}>
+          <Text
+            accessible={true}
+            sm
+            appearance="hint"
+            color={colors.textLight}
+            style={styles.subTitleText}>
             {subTitle}
           </Text>
         </View>

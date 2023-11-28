@@ -297,7 +297,12 @@ const SettingsScreen = () => {
             <Image style={styles.aboutImage} source={images.appLogo} />
           </View>
           <View style={styles.appDescriptionView}>
-            <Text accessible={true} color={colors.textLight} xs medium style={styles.appDescriptionText}>
+            <Text
+              accessible={true}
+              color={colors.textLight}
+              xs
+              medium
+              style={styles.appDescriptionText}>
               {`Version ${packageFile.version}`}
             </Text>
           </View>

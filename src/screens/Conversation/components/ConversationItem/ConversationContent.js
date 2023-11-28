@@ -55,7 +55,13 @@ const ConversationContent = ({ content, messageType, isPrivate, unReadCount }) =
                 </View>
               )}
               {unReadCount ? (
-                <Text accessible={true} semiBold sm numberOfLines={1} maxLength={8} color={colors.text}>
+                <Text
+                  accessible={true}
+                  semiBold
+                  sm
+                  numberOfLines={1}
+                  maxLength={8}
+                  color={colors.text}>
                   {findLastMessage(message)}
                 </Text>
               ) : (
@@ -71,7 +77,13 @@ const ConversationContent = ({ content, messageType, isPrivate, unReadCount }) =
                 <Icon color={colors.text} icon="info-outline" size={14} />
               </View>
               {unReadCount ? (
-                <Text accessible={true} semiBold sm numberOfLines={1} maxLength={8} color={colors.text}>
+                <Text
+                  accessible={true}
+                  semiBold
+                  sm
+                  numberOfLines={1}
+                  maxLength={8}
+                  color={colors.text}>
                   {getTextSubstringWithEllipsis(message, 32)}
                 </Text>
               ) : (

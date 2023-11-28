@@ -89,7 +89,12 @@ const ConversationActionItem = ({
           {shouldShowUserAvatar && (
             <UserAvatar thumbnail={thumbnail} userName={name} size={18} fontSize={8} />
           )}
-          <Text accessible={true} sm medium color={colors.textLight} style={styles.sectionActiveTitle}>
+          <Text
+            accessible={true}
+            sm
+            medium
+            color={colors.textLight}
+            style={styles.sectionActiveTitle}>
             {name}
           </Text>
           {(itemType === 'assignee' || itemType === 'team' || itemType === 'snooze') && (

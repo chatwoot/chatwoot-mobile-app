@@ -26,7 +26,12 @@ const TypingStatusComponent = ({ typingUser }) => {
     <React.Fragment>
       <TouchableOpacity>
         <View>
-          <Text accessible={true} xs medium color={colors.successColor} style={styles.subHeaderTitle}>
+          <Text
+            accessible={true}
+            xs
+            medium
+            color={colors.successColor}
+            style={styles.subHeaderTitle}>
             {typingUser ? `${typingUser}` : ''}
           </Text>
         </View>

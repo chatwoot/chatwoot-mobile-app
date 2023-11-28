@@ -215,7 +215,9 @@ const LoginScreenComponent = ({ navigation }) => {
                       {i18n.t('LOGIN.CREATE_ACCOUNT')}
                     </Text>
                   </TouchableOpacity>
-                  <Text accessible={true} color={colors.textLight}>{'   |   '}</Text>
+                  <Text accessible={true} color={colors.textLight}>
+                    {'   |   '}
+                  </Text>
                 </>
               )}
 

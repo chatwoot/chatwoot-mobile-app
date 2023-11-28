@@ -141,7 +141,12 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
               ]}>
               <Pressable style={styles.readUnreadMessageSwipeAction}>
                 <Icon color={colors.colorWhite} icon="mail-unread-outline" size={24} />
-                <Text accessible={true} sm semiBold color={colors.colorWhite} style={styles.swipeActionText}>
+                <Text
+                  accessible={true}
+                  sm
+                  semiBold
+                  color={colors.colorWhite}
+                  style={styles.swipeActionText}>
                   Unread
                 </Text>
               </Pressable>
@@ -157,7 +162,12 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
               ]}>
               <Pressable style={styles.readUnreadMessageSwipeAction}>
                 <Icon color={colors.colorWhite} icon="mail-outline" size={24} />
-                <Text accessible={true} sm semiBold color={colors.colorWhite} style={styles.swipeActionText}>
+                <Text
+                  accessible={true}
+                  sm
+                  semiBold
+                  color={colors.colorWhite}
+                  style={styles.swipeActionText}>
                   Read
                 </Text>
               </Pressable>

@@ -199,7 +199,11 @@ const ConversationParticipants = ({ conversationId }) => {
                   style={styles.watchConversationButton}
                   onPress={() => updateConversationWatchers(currentAgent)}>
                   <Icon color={colors.primaryColor} icon="arrow-right" size={12} />
-                  <Text accessible={true} xs color={colors.primaryColor} style={styles.watchConversationButtonText}>
+                  <Text
+                    accessible={true}
+                    xs
+                    color={colors.primaryColor}
+                    style={styles.watchConversationButtonText}>
                     {i18n.t('CONVERSATION_PARTICIPANTS.WATCH_CONVERSATION')}
                   </Text>
                 </Pressable>

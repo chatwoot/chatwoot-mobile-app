@@ -60,7 +60,12 @@ const AccordionItem = ({ title, activeValue, rightIcon, leftIcon, routeName, onP
       </View>
       <View style={styles.activeItemView}>
         {activeValue && (
-          <Text accessible={true} medium sm color={colors.textLight} style={styles.accordionItemText}>
+          <Text
+            accessible={true}
+            medium
+            sm
+            color={colors.textLight}
+            style={styles.accordionItemText}>
             {getTextSubstringWithEllipsis(activeValue, 12)}
           </Text>
         )}

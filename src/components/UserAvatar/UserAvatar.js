@@ -165,7 +165,11 @@ const UserAvatar = ({
             borderRadius: size,
           },
         ]}>
-        <Text accessible={true} medium color={colors.primaryColorDark} style={{ fontSize: fontSize }}>
+        <Text
+          accessible={true}
+          medium
+          color={colors.primaryColorDark}
+          style={{ fontSize: fontSize }}>
           {getUserInitial({ userName })}
         </Text>
       </LinearGradient>

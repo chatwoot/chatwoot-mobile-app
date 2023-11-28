@@ -558,7 +558,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Chatwoot/Chatwoot.entitlements;
 				CURRENT_PROJECT_VERSION = 324;
-				DEVELOPMENT_TEAM = L7YLMN4634;
+				DEVELOPMENT_TEAM = QX4UR6UAR2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Chatwoot/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Chatwoot;
@@ -572,7 +572,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.chatwoot.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zach.chatwoot.app;
 				PRODUCT_NAME = Chatwoot;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -592,7 +592,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Chatwoot/Chatwoot.entitlements;
 				CURRENT_PROJECT_VERSION = 324;
-				DEVELOPMENT_TEAM = L7YLMN4634;
+				DEVELOPMENT_TEAM = QX4UR6UAR2;
 				INFOPLIST_FILE = Chatwoot/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Chatwoot;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -605,7 +605,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.chatwoot.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zach.chatwoot.app;
 				PRODUCT_NAME = Chatwoot;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

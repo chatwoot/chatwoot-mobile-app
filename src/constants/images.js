@@ -14,6 +14,8 @@ const forgotPassword = require('../assets/images/forgotPassword.png');
 const emptyConversations = require('../assets/images/emptyConversations.png');
 const URL = require('../assets/images/url.png');
 const login = require('../assets/images/login.png');
+const eye = require('../assets/images/eye.png');
+const eyeOff = require('../assets/images/eyeOff.png');
 
 export default {
   appLogo,
@@ -32,4 +34,6 @@ export default {
   emptyConversations,
   URL,
   login,
+  eye,
+  eyeOff,
 };

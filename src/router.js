@@ -150,32 +150,31 @@ const App = () => {
   const styles = useMemo(() => createStyles(theme), [theme]);
 
   useEffect(() => {
+    const initializeBackgroundFetch = async () => {
+      const pubSubToken = await getPubSubToken();
+      const { accountId, userId } = await getUserDetails();
+      // Configure background fetch
+      BackgroundFetch.configure(
+        {
+          minimumFetchInterval: 15,
+        },
+        async taskId => {
+          // Initialize your BaseActionCableConnector instance
+          const cableConnector = new BaseActionCableConnector(
+            pubSubToken,
+            webSocketUrl,
+            accountId,
+            userId,
+          );
+          cableConnector.updatePresence();
+
+          BackgroundFetch.finish(taskId);
+        },
+        error => {},
+      );
+    };
     initializeBackgroundFetch();
-  }, []);
-
-  const initializeBackgroundFetch = async () => {
-    const pubSubToken = await getPubSubToken();
-    const { accountId, userId } = await getUserDetails();
-    // Configure background fetch
-    BackgroundFetch.configure(
-      {
-        minimumFetchInterval: 15,
-      },
-      async taskId => {
-        // Initialize your BaseActionCableConnector instance
-        const cableConnector = new BaseActionCableConnector(
-          pubSubToken,
-          webSocketUrl,
-          accountId,
-          userId,
-        );
-        cableConnector.updatePresence();
-
-        BackgroundFetch.finish(taskId);
-      },
-      error => {},
-    );
-  };
+  }, [webSocketUrl]);
 
   return (
     <KeyboardAvoidingView

@@ -1,8 +1,11 @@
-import React, { useRef, Fragment, useMemo } from 'react';
+import React, { useEffect, useRef, Fragment, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { SafeAreaView, KeyboardAvoidingView, Platform, Linking, StyleSheet } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { getStateFromPath } from '@react-navigation/native';
+import BackgroundFetch from 'react-native-background-fetch';
+import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
+import BaseActionCableConnector from './helpers/BaseActionCableConnector';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import RNBootSplash from 'react-native-bootsplash';
@@ -24,7 +27,7 @@ import { navigationRef } from 'helpers/NavigationHelper';
 import { findConversationLinkFromPush } from './helpers/PushHelper';
 import { extractConversationIdFromUrl } from './helpers/conversationHelpers';
 import { selectLoggedIn } from 'reducer/authSlice';
-import { selectInstallationUrl, selectLocale } from 'reducer/settingsSlice';
+import { selectInstallationUrl, selectLocale, selectWebSocketUrl } from 'reducer/settingsSlice';
 
 const Stack = createNativeStackNavigator();
 
@@ -51,6 +54,7 @@ const App = () => {
   const isLoggedIn = useSelector(selectLoggedIn);
   const installationUrl = useSelector(selectInstallationUrl);
   const locale = useSelector(selectLocale);
+  const webSocketUrl = useSelector(selectWebSocketUrl);
 
   const linking = {
     prefixes: [installationUrl],
@@ -144,6 +148,34 @@ const App = () => {
 
   i18n.locale = locale;
   const styles = useMemo(() => createStyles(theme), [theme]);
+
+  useEffect(() => {
+    initializeBackgroundFetch();
+  }, []);
+
+  const initializeBackgroundFetch = async () => {
+    const pubSubToken = await getPubSubToken();
+    const { accountId, userId } = await getUserDetails();
+    // Configure background fetch
+    BackgroundFetch.configure(
+      {
+        minimumFetchInterval: 15,
+      },
+      async taskId => {
+        // Initialize your BaseActionCableConnector instance
+        const cableConnector = new BaseActionCableConnector(
+          pubSubToken,
+          webSocketUrl,
+          accountId,
+          userId,
+        );
+        cableConnector.updatePresence();
+
+        BackgroundFetch.finish(taskId);
+      },
+      error => {},
+    );
+  };
 
   return (
     <KeyboardAvoidingView

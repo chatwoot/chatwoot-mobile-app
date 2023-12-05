@@ -103,28 +103,31 @@ const ChatScreenComponent = ({ navigation, route }) => {
   }, [conversationId, dispatch, primaryActorId, primaryActorType]);
 
   useEffect(() => {
-    loadMessages();
+    loadMessages({ loadingMessagesForFirstTime: true });
   }, [loadMessages]);
 
-  const loadMessages = useCallback(async () => {
-    // Fetch conversation if not present and fetch previous messages, otherwise fetch previous messages
-    if (!conversation) {
-      await dispatch(conversationActions.fetchConversation({ conversationId }));
-      dispatch(
-        conversationActions.fetchPreviousMessages({
-          conversationId,
-          beforeId: lastMessageId(),
-        }),
-      );
-    } else {
-      dispatch(
-        conversationActions.fetchPreviousMessages({
-          conversationId,
-          beforeId: lastMessageId(),
-        }),
-      );
-    }
-  }, [conversation, conversationId, dispatch, lastMessageId]);
+  const loadMessages = useCallback(
+    async ({ loadingMessagesForFirstTime = false }) => {
+      // Fetch conversation if not present and fetch previous messages, otherwise fetch previous messages
+      if (!conversation) {
+        await dispatch(conversationActions.fetchConversation({ conversationId }));
+        dispatch(
+          conversationActions.fetchPreviousMessages({
+            conversationId,
+            beforeId: loadingMessagesForFirstTime ? null : lastMessageId(),
+          }),
+        );
+      } else {
+        dispatch(
+          conversationActions.fetchPreviousMessages({
+            conversationId,
+            beforeId: lastMessageId(),
+          }),
+        );
+      }
+    },
+    [conversation, conversationId, dispatch, lastMessageId],
+  );
 
   const onBackPress = () => {
     Keyboard.dismiss();

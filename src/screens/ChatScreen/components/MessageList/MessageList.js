@@ -49,7 +49,7 @@ const MessagesListComponent = ({ conversationId, loadMessages }) => {
   const onEndReached = () => {
     const shouldFetchMoreMessages = !isAllMessagesFetched && !isFetching && isFlashListReady;
     if (shouldFetchMoreMessages) {
-      loadMessages();
+      loadMessages({ loadingMessagesForFirstTime: false });
     }
   };
 

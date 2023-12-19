@@ -12,6 +12,8 @@ const createStyles = theme => {
   return StyleSheet.create({
     container: {
       width: '100%',
+      opacity: 0.99,
+      minHeight: 1,
     },
   });
 };
@@ -45,4 +47,4 @@ const EmailComponent = ({ emailContent }) => {
 };
 
 EmailComponent.propTypes = propTypes;
-export default EmailComponent;
+export default React.memo(EmailComponent);

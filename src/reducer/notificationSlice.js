@@ -1,14 +1,15 @@
 import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
 import messaging from '@react-native-firebase/messaging';
 import axios from 'axios';
+import { Platform, PermissionsAndroid } from 'react-native';
 import {
-  getUniqueId,
   getSystemName,
   getManufacturer,
   getModel,
   getApiLevel,
   getBrand,
   getBuildNumber,
+  getUniqueId,
 } from 'react-native-device-info';
 import APIHelper from '../helpers/APIHelper';
 import { updateBadgeCount } from 'helpers/PushHelper';
@@ -17,7 +18,7 @@ import { getHeaders } from 'helpers/AuthHelper';
 import { getBaseUrl } from 'helpers/UrlHelper';
 import { API_URL } from 'constants/url';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
-import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
+import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
 
 export const notificationAdapter = createEntityAdapter({
   selectId: notification => notification.id,
@@ -81,18 +82,23 @@ export const actions = {
       try {
         const permissionEnabled = await messaging().hasPermission();
         const fcmToken = await messaging().getToken();
-        const deviceId = getUniqueId();
+        const deviceId = await getUniqueId();
         const devicePlatform = getSystemName();
         const manufacturer = await getManufacturer();
         const model = await getModel();
         const apiLevel = await getApiLevel();
         const deviceName = `${manufacturer} ${model}`;
+
+        const isAndroidAPILevelGreater32 = apiLevel > 32 && Platform.OS === 'android';
         const brandName = await getBrand();
         const buildNumber = await getBuildNumber();
 
         if (!permissionEnabled || permissionEnabled === -1) {
+          if (isAndroidAPILevelGreater32) {
+            await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+          }
           await messaging().requestPermission();
-          AnalyticsHelper.track(CONVERSATION_EVENTS.APPLY_FILTER, {
+          AnalyticsHelper.track(ACCOUNT_EVENTS.ENABLE_PUSH_NOTIFICATION, {
             devicePlatform,
             deviceName,
             brandName,

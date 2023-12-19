@@ -44,7 +44,12 @@ const wait = timeout => {
 };
 
 // The screen list thats need to be checked for refresh conversation list
-const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.NOTIFICATION, SCREENS.SETTINGS];
+const REFRESH_SCREEN_LIST = [
+  SCREENS.CONVERSATION,
+  SCREENS.NOTIFICATION,
+  SCREENS.SETTINGS,
+  SCREENS.CHAT,
+];
 
 const NotificationScreen = ({ navigation }) => {
   const [appState, setAppState] = useState(AppState.currentState);
@@ -110,10 +115,10 @@ const NotificationScreen = ({ navigation }) => {
     );
   };
 
-  // Update conversations when app comes to foreground from background
+  // Update notifications when app comes to foreground from background
   useEffect(() => {
     const appStateListener = AppState.addEventListener('change', nextAppState => {
-      if (appState === 'background' && nextAppState === 'active') {
+      if (appState.match(/inactive|background/) && nextAppState === 'active') {
         const routeName = getCurrentRouteName();
         if (REFRESH_SCREEN_LIST.includes(routeName)) {
           dispatch(notificationsActions.index({ pageNo }));

@@ -2,10 +2,13 @@ import React, { useRef, useCallback, useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
+import * as Sentry from '@sentry/react-native';
 import PropTypes from 'prop-types';
-import { View, Share, ActivityIndicator, Dimensions, Keyboard } from 'react-native';
-import { getTypingUsersText, getCustomerDetails } from 'helpers';
+import { View, Share, ActivityIndicator, Dimensions, Keyboard, Platform } from 'react-native';
+import { getCustomerDetails } from 'helpers';
+import { getTypingUsersText } from 'helpers/conversationHelpers';
 import { selectConversationToggleStatus } from 'reducer/conversationSlice';
+import { selectors as contactSelectors } from 'reducer/contactSlice';
 import conversationActions from 'reducer/conversationSlice.action';
 import { UserAvatar, Pressable, Text, Icon, InboxName } from 'components';
 import { getInboxName } from 'helpers/conversationHelpers';
@@ -68,12 +71,14 @@ const ChatHeader = ({
     inbox_id: inboxId,
     status: conversationStatus,
     can_reply: canReply,
-    meta: {
-      sender: { availability_status: availabilityStatus },
-    },
+    meta: { sender: { id: contactId } = {} },
     additional_attributes: additionalAttributes = {},
     muted,
   } = conversationDetails;
+
+  const contact = useSelector(state => contactSelectors.getContactById(state, contactId));
+
+  const { availability_status: availabilityStatus } = contact || {};
 
   const snoozedConversation = conversationStatus === CONVERSATION_STATUS.SNOOZED;
   const pendingConversation = conversationStatus === CONVERSATION_STATUS.PENDING;
@@ -189,12 +194,14 @@ const ChatHeader = ({
         conversationId: currentConversationId,
         accountId: accountId,
       });
-
+      const message = Platform.OS === 'android' ? conversationURL : '';
       await Share.share({
+        message: message,
         url: conversationURL,
       });
+      AnalyticsHelper.track(CONVERSATION_EVENTS.CONVERSATION_SHARE);
     } catch (error) {
-      //error
+      Sentry.captureException(error);
     }
   };
 

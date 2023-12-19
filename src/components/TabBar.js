@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Platform } from 'react-native';
+// import { Platform } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ConversationScreen from 'src/screens/Conversation/ConversationScreen';
@@ -8,7 +8,7 @@ import NotificationScreen from 'src/screens/Notification/NotificationScreen';
 import SettingsScreen from 'src/screens/Settings/SettingsScreen';
 import { Icon } from 'components';
 import { selectUnreadCount } from 'reducer/notificationSlice';
-const isAndroid = Platform.OS === 'android';
+// const isAndroid = Platform.OS === 'android';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -68,8 +68,8 @@ const TabStack = () => {
         tabBarInactiveTintColor: '#293F51',
         tabBarStyle: {
           paddingTop: 2,
-          height: isAndroid ? 58 : 49,
-          paddingBottom: isAndroid ? 10 : 0,
+          // height: isAndroid ? 58 : 49,
+          // paddingBottom: isAndroid ? 10 : 0,
         },
         tabBarLabelStyle: {
           fontSize: 12,

@@ -48,6 +48,10 @@ const createStyles = theme => {
       borderTopRightRadius: borderRadius.micro,
       borderBottomRightRadius: borderRadius.micro,
     },
+    emailMessageBody: {
+      minWidth: Dimensions.get('window').width - 44,
+      maxWidth: Dimensions.get('window').width - 44,
+    },
     messageContentRight: {
       fontSize: fontSize.sm,
     },
@@ -110,7 +114,7 @@ const propTypes = {
   type: PropTypes.string,
   created_at: PropTypes.number,
   message: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     sender: PropTypes.shape({
       name: PropTypes.string,
       thumbnail: PropTypes.string,
@@ -170,6 +174,7 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
           backgroundColor: isSentByBot ? '#AC52FF' : colors.primaryColor,
         }
       : styles.messageLeft;
+
   const messageTextStyle =
     type === 'outgoing'
       ? {
@@ -441,7 +446,7 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
           styles.message,
           messageViewStyle,
           message.private && styles.privateMessageContainer,
-          !isEmailChannel && styles.messageBody,
+          !isEmailChannel ? styles.messageBody : styles.emailMessageBody,
         ]}>
         {hasAnyEmailValues() ? <View style={styles.mailHeadWrap}>{emailHeader}</View> : null}
         {isMessageContentExist && <MessageContent />}
@@ -494,4 +499,4 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
 };
 
 ChatMessageItemComponent.propTypes = propTypes;
-export default ChatMessageItemComponent;
+export default React.memo(ChatMessageItemComponent);

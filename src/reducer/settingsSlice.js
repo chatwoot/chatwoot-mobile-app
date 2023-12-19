@@ -62,15 +62,14 @@ export const actions = {
 export const settingsSlice = createSlice({
   name: 'settings',
   initialState: settingAdapter.getInitialState({
-    baseUrl: '',
-    installationUrl: null,
+    baseUrl: 'app.chatwoot.com',
+    installationUrl: 'https://app.chatwoot.com/',
     isLocaleSet: false,
     isSettingUrl: false,
     isUpdating: false,
-    isUrlSet: false,
     localeValue: 'en',
     notification: {},
-    webSocketUrl: null,
+    webSocketUrl: 'wss://app.chatwoot.com/cable',
   }),
   reducers: {
     resetSettings: state => {
@@ -89,14 +88,12 @@ export const settingsSlice = createSlice({
       })
       .addCase(actions.setInstallationUrl.fulfilled, (state, action) => {
         state.isSettingUrl = false;
-        state.isUrlSet = true;
         state.installationUrl = action.payload.installationUrl;
         state.baseUrl = action.payload.baseUrl;
         state.webSocketUrl = action.payload.webSocketUrl;
       })
       .addCase(actions.setInstallationUrl.rejected, state => {
         state.isSettingUrl = false;
-        state.isUrlSet = false;
         state.installationUrl = null;
         state.baseUrl = '';
       })
@@ -116,8 +113,6 @@ export const settingsSlice = createSlice({
 });
 
 export const { resetSettings, setLocale } = settingsSlice.actions;
-
-export const selectUrlSet = state => state.settings.isUrlSet;
 
 export const selectInstallationUrl = state => state.settings.installationUrl;
 

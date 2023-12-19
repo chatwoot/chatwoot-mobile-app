@@ -51,7 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversații",
-    "UPDATING": "Updating...",
+    "UPDATING": "Actualizare...",
     "MINE": "Ale mele",
     "UN_ASSIGNED": "Neatribuit",
     "ALL": "Toate",
@@ -66,26 +66,30 @@
     "ALL_CONVERSATION_LOADED": "Toate conversațiile încărcate",
     "ASSIGN": "Atribuirea conversației",
     "FILE_SIZE_LIMIT": "Fișierul depășește limita de atașare de 5MB",
-    "SHARE": "Share",
-    "DETAILS": "Details",
-    "LABELS": "Etichete",
+    "SHARE": "Partajarea conversației",
+    "DETAILS": "Detalii",
+    "LABELS": "Etichete conversație",
+    "ASSIGNED_AGENT": "Agent alocat",
+    "TEAM": "Echipa",
     "PRIVATE_MSG_INPUT": "Acest lucru va fi vizibil numai agenților",
-    "SELF_ASSIGN": "Self assign conversation",
+    "SELF_ASSIGN": "Auto atribuiți conversație",
     "UN_ASSIGN": "Anularea atribuirii conversației",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "CONVERSATION_NOT_FOUND": "Nu s-a putut aduce conversația",
     "MARK_AS_PENDING": "Marchează ca în așteptare",
     "SNOOZE_UNTIL": "Amânare până la",
     "SNOOZE_UNTIL_NEXT_REPLY": "Până la următorul răspuns",
     "SNOOZE_UNTIL_TOMORROW": "Până mâine",
     "SNOOZE_UNTIL_NEXT_WEEK": "Până săptămâna viitoare",
-    "SNOOZE": "Snooze conversație",
-    "MESSAGES": "Mesaje"
+    "SNOOZE": "Amânare conversație",
+    "MESSAGES": "Mesaje",
+    "UNDEFINED_VARIABLES_TITLE": "Variabile nedefinite",
+    "UNDEFINED_VARIABLES_CLOSE": "Închide"
   },
   "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
-    "FILTER_BY_INBOX": "Filter by inbox",
+    "ALL_INBOXES": "Toate cutiile",
+    "FILTER_BY_ASSIGNEE_TYPE": "Modificarea cesionarului",
+    "FILTER_BY_CONVERSATION_STATUS": "Starea conversației",
+    "FILTER_BY_INBOX": "Filtrarea după inbox",
     "HEADER_TITLE": "Filtru conversație",
     "CHOOSE_INBOX": "Alege Inboxul",
     "CHOOSE_STATUS": "Starea conversației",
@@ -99,9 +103,9 @@
   "SETTINGS": {
     "HEADER_TITLE": "Setări",
     "SET_AVAILABILITY": "Setați-vă ca",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
+    "PREFERENCES": "Preferințe",
+    "ABOUT": "Despre",
+    "SUPPORT": "Suport",
     "SWITCH_ACCOUNT": "Comută contul",
     "CHANGE_LANGUAGE": "Schimbarea limbii",
     "LOGOUT": "Deconectare",
@@ -126,11 +130,11 @@
     "PUSH": "Push",
     "CONVERSATION_CREATE_PUSH": "Trimite notificări push atunci când o conversație nouă este creată",
     "CONVERSATION_ASSIGNEE_PUSH": "Trimite notificări push atunci când o conversație îmi este atribuită",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Trimiterea notificărilor push atunci când se creează un mesaj nou într-o conversație atribuită",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Trimite notificări prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită",
     "CONVERSATION_MENTION": "Trimiterea notificărilor push atunci când sunteți menționat într-o conversație",
     "CONVERSATION_CREATE_EMAIL": "Trimite notificări prin e-mail atunci când o conversație nouă este creată",
     "CONVERSATION_ASSIGNEE_EMAIL": "Trimite notificări prin e-mail atunci când o conversație îmi este atribuită",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Trimiterea notificărilor prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită"
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Trimite notificări prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Informații despre conversație",
@@ -146,19 +150,32 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Acțiuni"
   },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "Atribuiți echipă",
+    "SELECT_TEAM": "Selectați echipa",
+    "NO_RESULT": "Nu s-a găsit nicio echipă"
+  },
   "CONVERSATION_LABELS": {
     "TITLE": "Etichete conversație",
     "ADD_LABEL": "Adaugă etichete",
-    "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Etichetă actualizată cu succes"
+    "EMPTY_LIST": "Te rugăm să introduci ID-ul contului Twilio",
+    "NO_LABEL": "Etichete atribuite cu succes",
+    "UPDATE_LABEL": "Etichetă actualizată cu succes",
+    "SELECTED": "Selectată",
+    "NOT_SELECTED": "Atribuiți etichetele selectate",
+    "NO_RESULT": "Nu s-au găsit etichete"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Atribuiți agent",
+    "SELECT_AGENT": "Selectați agentul",
+    "NO_RESULT": "Nu s-a găsit niciun agent"
   },
   "AGENT": {
     "TITLE": "Selectează agent"
   },
   "TEAMS": {
     "TITLE": "Selectați echipa",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "EMPTY": "Vă rugăm să adăugați echipe în cont pentru a atribui conversații echipelor.",
     "CHANGE_TEAMS": "Echipa de conversație schimbată"
   },
   "ERRORS": {
@@ -184,12 +201,12 @@
   },
   "BANNER": {
     "TWILIO_WHATSAPP": {
-      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "TEXT": "Puteți răspunde la această conversație numai utilizând un mesaj șablon din cauza ",
       "HREF_TEXT": "Restricţie fereastră mesaj 24 de ore",
       "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
     },
     "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
+      "TEXT": "Nu puteți răspunde din cauza ",
       "HREF_TEXT": "Restricţie fereastră mesaj 24 de ore",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }

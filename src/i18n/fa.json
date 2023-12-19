@@ -66,9 +66,11 @@
     "ALL_CONVERSATION_LOADED": "همه گفتگوها دریافت شدند",
     "ASSIGN": "اختصاص مکالمه",
     "FILE_SIZE_LIMIT": "محدودیت حجم فایل پیوست 5MB می باشد",
-    "SHARE": "Share",
+    "SHARE": "اشتراک گذاری گفتگو",
     "DETAILS": "Details",
-    "LABELS": "برچسب‌ها",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "ایجنت تعیین شده",
+    "TEAM": "تیم‌",
     "PRIVATE_MSG_INPUT": "این فقط برای ایجنت ها قابل مشاهده خواهد بود",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "لغو اختصاص مکالمه",
@@ -78,8 +80,10 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "تا پاسخ بعدی",
     "SNOOZE_UNTIL_TOMORROW": "تا فردا",
     "SNOOZE_UNTIL_NEXT_WEEK": "تا هفته بعد",
-    "SNOOZE": "به تعویق انداختن مکالمه",
-    "MESSAGES": "پیام‌ها"
+    "SNOOZE": "Snooze conversation",
+    "MESSAGES": "پیام‌ها",
+    "UNDEFINED_VARIABLES_TITLE": "متغیرهای تعریف نشده",
+    "UNDEFINED_VARIABLES_CLOSE": "بستن"
   },
   "FILTER": {
     "ALL_INBOXES": "همه صندوق‌های‌ورودی",
@@ -146,12 +150,25 @@
   "CONVERSATION_ACTION": {
     "TITLE": "عملیات"
   },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "تیم را تعیین کنید",
+    "SELECT_TEAM": "انتخاب تیم",
+    "NO_RESULT": "No team found"
+  },
   "CONVERSATION_LABELS": {
     "TITLE": "برچسب‌های گفتگو",
     "ADD_LABEL": "افزودن برچسب‌ها",
     "EMPTY_LIST": "لطفا برچسب‌ها را به حساب‌کاربری خود اضافه کنید",
     "NO_LABEL": "هیچ برچسبی اختصاص داده نشده است",
-    "UPDATE_LABEL": "برچسب با موفقیت به روز شد"
+    "UPDATE_LABEL": "برچسب با موفقیت به روز شد",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "هیچ برچسبی یافت نشد"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "ایجنت را تعیین کنید",
+    "SELECT_AGENT": "انتخاب ایجنت",
+    "NO_RESULT": "No agent found"
   },
   "AGENT": {
     "TITLE": "انتخاب ایجنت"

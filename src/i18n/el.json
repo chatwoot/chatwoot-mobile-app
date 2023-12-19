@@ -66,9 +66,11 @@
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share",
+    "SHARE": "Share conversation",
     "DETAILS": "Details",
-    "LABELS": "Ετικέτες",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Αντιστοιχισμένος πράκτορας",
+    "TEAM": "Ομάδα",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Unassign conversation",
@@ -78,8 +80,10 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Μέχρι την επόμενη απάντηση",
     "SNOOZE_UNTIL_TOMORROW": "Μέχρι αύριο",
     "SNOOZE_UNTIL_NEXT_WEEK": "Έως την επόμενη εβδομάδα",
-    "SNOOZE": "Αναβολή Συνομιλίας",
-    "MESSAGES": "Μηνύματα"
+    "SNOOZE": "Snooze conversation",
+    "MESSAGES": "Μηνύματα",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_CLOSE": "Κλείσιμο"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
@@ -146,12 +150,25 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Ενέργειες"
   },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "Ανάθεση ομάδας",
+    "SELECT_TEAM": "Επιλογή ομάδας",
+    "NO_RESULT": "No team found"
+  },
   "CONVERSATION_LABELS": {
     "TITLE": "Ετικέτες συνομιλίας",
     "ADD_LABEL": "Προσθήκη Ετικετών",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Η ετικέτα ενημερώθηκε επιτυχώς"
+    "UPDATE_LABEL": "Η ετικέτα ενημερώθηκε επιτυχώς",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "Δεν βρέθηκαν ετικέτες"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Ανάθεση σε πράκτορα",
+    "SELECT_AGENT": "Επιλογή πράκτορα",
+    "NO_RESULT": "No agent found"
   },
   "AGENT": {
     "TITLE": "Επιλογή πράκτορα"

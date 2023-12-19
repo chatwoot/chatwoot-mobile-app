@@ -22,6 +22,7 @@ import {
   selectConversationMeta,
   selectSortFilter,
 } from 'reducer/conversationSlice';
+import { clearContacts } from 'reducer/contactSlice';
 import conversationActions from 'reducer/conversationSlice.action';
 import createStyles from './ConversationScreen.style';
 import i18n from 'i18n';
@@ -69,6 +70,7 @@ const ConversationScreen = () => {
 
   useEffect(() => {
     initActionCable();
+    dispatch(clearContacts());
     dispatch(clearAllConversations());
     dispatch(inboxActions.fetchInboxes());
     initAnalytics();
@@ -120,16 +122,10 @@ const ConversationScreen = () => {
   // Update notifications when app comes to foreground from background
   useEffect(() => {
     const appStateListener = AppState.addEventListener('change', nextAppState => {
-      if (appState === 'background' && nextAppState === 'active') {
+      if (appState.match(/inactive|background/) && nextAppState === 'active') {
         const routeName = getCurrentRouteName();
         if (REFRESH_SCREEN_LIST.includes(routeName)) {
-          loadConversations({
-            page: pageNumber,
-            assignee: assigneeType,
-            status: conversationStatus,
-            inboxId: activeInboxId,
-            sortBy: sortFilter,
-          });
+          refreshConversationsAgain();
         }
       }
       setAppState(nextAppState);
@@ -137,22 +133,28 @@ const ConversationScreen = () => {
     return () => {
       appStateListener?.remove();
     };
-  }, [
-    appState,
-    pageNumber,
-    assigneeType,
-    conversationStatus,
-    activeInboxId,
-    loadConversations,
-    sortFilter,
-  ]);
+  }, [appState, refreshConversationsAgain]);
 
   const onChangePage = async () => {
     setPage(pageNumber + 1);
   };
 
+  const refreshConversationsAgain = useCallback(async () => {
+    await dispatch(clearContacts());
+    await dispatch(clearAllConversations());
+    setPage(1);
+    loadConversations({
+      page: 1,
+      assignee: assigneeType,
+      status: conversationStatus,
+      inboxId: activeInboxId,
+      sortBy: sortFilter,
+    });
+  }, [dispatch, assigneeType, conversationStatus, activeInboxId, loadConversations, sortFilter]);
+
   const refreshConversations = async () => {
     AnalyticsHelper.track(CONVERSATION_EVENTS.REFRESH_CONVERSATIONS);
+    await dispatch(clearContacts());
     await dispatch(clearAllConversations());
     setPage(1);
     loadConversations({
@@ -191,6 +193,7 @@ const ConversationScreen = () => {
 
   const clearAppliedFilters = async () => {
     AnalyticsHelper.track(CONVERSATION_EVENTS.CLEAR_FILTERS);
+    await dispatch(clearContacts());
     await dispatch(clearAllConversations());
     await dispatch(setConversationStatus('open'));
     await dispatch(setAssigneeType('mine'));
@@ -229,6 +232,7 @@ const ConversationScreen = () => {
       type: 'status',
       value: item.key,
     });
+    await dispatch(clearContacts());
     await dispatch(clearAllConversations());
     await dispatch(setConversationStatus(item.key));
     setPage(1);
@@ -239,6 +243,7 @@ const ConversationScreen = () => {
     AnalyticsHelper.track(CONVERSATION_EVENTS.APPLY_FILTER, {
       type: 'inbox',
     });
+    await dispatch(clearContacts());
     await dispatch(clearAllConversations());
     await dispatch(setActiveInbox(item.id));
     setPage(1);
@@ -249,6 +254,7 @@ const ConversationScreen = () => {
     AnalyticsHelper.track(CONVERSATION_EVENTS.APPLY_FILTER, {
       type: 'sort',
     });
+    await dispatch(clearContacts());
     await dispatch(clearAllConversations());
     await dispatch(setSortFilter(item.key));
     setPage(1);

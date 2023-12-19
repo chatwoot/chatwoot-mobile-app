@@ -1,13 +1,17 @@
 import I18n from 'i18n';
 import { showToast } from 'helpers/ToastHelper';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { Platform } from 'react-native';
 
 import { createPendingMessage, buildCreatePayload } from 'helpers/conversationHelpers';
-import { addMessage } from 'reducer/conversationSlice';
+import { addOrUpdateMessage } from 'reducer/conversationSlice';
 
 import axios from 'helpers/APIHelper';
 import * as RootNavigation from 'helpers/NavigationHelper';
 import { MESSAGE_STATUS } from 'constants';
+
+import { addContacts, addContact } from 'reducer/contactSlice';
+
 const actions = {
   fetchConversations: createAsyncThunk(
     'conversations/fetchConversations',
@@ -19,7 +23,7 @@ const actions = {
         inboxId = 0,
         sortBy = 'latest',
       },
-      { rejectWithValue },
+      { dispatch, rejectWithValue },
     ) => {
       try {
         const params = {
@@ -35,6 +39,11 @@ const actions = {
         const {
           data: { meta, payload },
         } = response.data;
+        dispatch(
+          addContacts({
+            conversations: payload,
+          }),
+        );
         return {
           conversations: payload,
           meta,
@@ -99,16 +108,17 @@ const actions = {
   ),
   fetchConversation: createAsyncThunk(
     'conversations/fetchConversation',
-    async ({ conversationId }, { rejectWithValue }) => {
+    async ({ conversationId }, { dispatch, rejectWithValue }) => {
       try {
         const response = await axios.get(`conversations/${conversationId}`);
         const { data } = response;
+        dispatch(addContact(data));
         return data;
       } catch (error) {
         const { error: message } = error.response.data;
         const errorMessage = message || I18n.t('CONVERSATION.CONVERSATION_NOT_FOUND');
         showToast({ message: errorMessage });
-        RootNavigation.navigate('ConversationScreen');
+        RootNavigation.replace('Tab');
         return rejectWithValue(error.response.data);
       }
     },
@@ -154,23 +164,35 @@ const actions = {
 
       try {
         dispatch(
-          addMessage({
+          addOrUpdateMessage({
             ...pendingMessage,
             status: MESSAGE_STATUS.PROGRESS,
           }),
         );
         payload = buildCreatePayload(pendingMessage);
+        const { file } = data;
 
-        const response = await axios.post(`conversations/${conversationId}/messages`, payload);
+        const contentType =
+          Platform.OS === 'ios' && file
+            ? file.type
+            : Platform.OS === 'android' && file
+            ? 'multipart/form-data'
+            : 'application/json';
+
+        const response = await axios.post(`conversations/${conversationId}/messages`, payload, {
+          headers: {
+            'Content-Type': contentType,
+          },
+        });
         dispatch(
-          addMessage({
+          addOrUpdateMessage({
             ...response.data,
             status: MESSAGE_STATUS.SENT,
           }),
         );
       } catch (error) {
         dispatch(
-          addMessage({
+          addOrUpdateMessage({
             ...pendingMessage,
             status: MESSAGE_STATUS.FAILED,
           }),
@@ -269,13 +291,13 @@ const actions = {
         .catch();
     },
   ),
-  updateConversationAndMessages: createAsyncThunk(
-    'conversations/updateConversationAndMessages',
+  updateConversation: createAsyncThunk(
+    'conversations/updateConversation',
     async ({ conversationId }, { rejectWithValue }) => {
       try {
         const response = await axios.get(`conversations/${conversationId}`);
         const { data } = response;
-        return { data, conversationId };
+        return data;
       } catch (error) {
         if (!error.response) {
           throw error;

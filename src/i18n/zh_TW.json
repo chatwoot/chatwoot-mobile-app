@@ -66,9 +66,11 @@
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "ASSIGN": "重新打开会话",
     "FILE_SIZE_LIMIT": "文件超过 5MB 附件限制",
-    "SHARE": "Share",
+    "SHARE": "Share conversation",
     "DETAILS": "Details",
-    "LABELS": "標籤",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Assigned agent",
+    "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "此操作仅对代理人可见",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "取消分配对话",
@@ -78,8 +80,10 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
     "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
     "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
-    "SNOOZE": "Snooze Conversation",
-    "MESSAGES": "訊息"
+    "SNOOZE": "Snooze conversation",
+    "MESSAGES": "訊息",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_CLOSE": "關閉"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
@@ -146,12 +150,25 @@
   "CONVERSATION_ACTION": {
     "TITLE": "操作"
   },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "Assign team",
+    "SELECT_TEAM": "選擇團隊",
+    "NO_RESULT": "No team found"
+  },
   "CONVERSATION_LABELS": {
     "TITLE": "对话标记",
     "ADD_LABEL": "添加标签",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "标签已成功更新"
+    "UPDATE_LABEL": "标签已成功更新",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "查無標籤"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Assign agent",
+    "SELECT_AGENT": "選擇客服",
+    "NO_RESULT": "No agent found"
   },
   "AGENT": {
     "TITLE": "选择代理"

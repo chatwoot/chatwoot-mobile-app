@@ -4,13 +4,13 @@ export const SCREENS = {
   LOGIN: 'Login',
   CONFIG_URL: 'ConfigureURL',
   CONVERSATION: 'ConversationScreen',
-  NOTIFICATION: 'Notification',
-  SETTINGS: 'Settings',
+  NOTIFICATION: 'NotificationScreen',
+  SETTINGS: 'SettingsScreen',
   DETAIL: 'Detail',
   CHAT: 'ChatScreen',
 };
 
-export const MAXIMUM_FILE_UPLOAD_SIZE = 40;
+export const MAXIMUM_FILE_UPLOAD_SIZE = 10;
 
 export const CONVERSATION_STATUSES = [
   {
@@ -214,4 +214,5 @@ export const NOTIFICATION_TYPES = [
   'conversation_assignment',
   'assigned_conversation_new_message',
   'conversation_mention',
+  'participating_conversation_new_message',
 ];

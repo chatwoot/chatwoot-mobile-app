@@ -66,9 +66,11 @@
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share",
+    "SHARE": "Share conversation",
     "DETAILS": "Details",
-    "LABELS": "Etiquetas",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Agente atribuído",
+    "TEAM": "Equipa",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
     "SELF_ASSIGN": "Self assign conversation",
     "UN_ASSIGN": "Unassign conversation",
@@ -78,8 +80,10 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Até à próxima resposta",
     "SNOOZE_UNTIL_TOMORROW": "Até amanhã",
     "SNOOZE_UNTIL_NEXT_WEEK": "Até à próxima semana",
-    "SNOOZE": "Adiar Conversa",
-    "MESSAGES": "Mensagens"
+    "SNOOZE": "Snooze conversation",
+    "MESSAGES": "Mensagens",
+    "UNDEFINED_VARIABLES_TITLE": "Variáveis indefinidas",
+    "UNDEFINED_VARIABLES_CLOSE": "FECHAR"
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
@@ -146,12 +150,25 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Ações."
   },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "Atribuir equipe",
+    "SELECT_TEAM": "Escolher Equipa",
+    "NO_RESULT": "No team found"
+  },
   "CONVERSATION_LABELS": {
     "TITLE": "Etiquetas da conversa",
     "ADD_LABEL": "Adicionar Etiquetas",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Etiqueta adicionada com sucesso"
+    "UPDATE_LABEL": "Etiqueta adicionada com sucesso",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "Nenhuma Etiqueta encontrada"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Atribuir agente",
+    "SELECT_AGENT": "Escolher agente",
+    "NO_RESULT": "No agent found"
   },
   "AGENT": {
     "TITLE": "Select Agent"

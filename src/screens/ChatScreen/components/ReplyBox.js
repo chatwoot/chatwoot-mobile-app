@@ -138,6 +138,7 @@ const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyBut
   const messageVariables = () => {
     const variables = getMessageVariables({
       conversation: conversationDetails,
+      contact: conversationDetails?.meta?.sender,
     });
     return variables;
   };

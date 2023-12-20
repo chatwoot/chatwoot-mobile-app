@@ -81,14 +81,36 @@
     "SNOOZE_UNTIL_TOMORROW": "Yarına kadar",
     "SNOOZE_UNTIL_NEXT_WEEK": "Gelecek haftaya kadar",
     "SNOOZE": "Snooze conversation",
+    "CHANGE_PRIORITY": "Change priority",
     "MESSAGES": "Mesajlar",
     "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
-    "UNDEFINED_VARIABLES_CLOSE": "Kapat"
+    "UNDEFINED_VARIABLES_CLOSE": "Kapat",
+    "DELETE_MESSAGE_TITLE": "Bu mesajı silmek istediğinizden emin misiniz?",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "PRIORITY": {
+      "TITLE": "Öncelik",
+      "OPTIONS": {
+        "NONE": "Hiçbiri",
+        "URGENT": "Acil",
+        "HIGH": "Yüksek",
+        "MEDIUM": "Orta",
+        "LOW": "Düşük"
+      },
+      "CHANGE_PRIORITY": {
+        "SELECT_PLACEHOLDER": "Hiçbiri",
+        "INPUT_PLACEHOLDER": "Öncelik seçin",
+        "NO_RESULTS": "Sonuç bulunamadı",
+        "SUCCESSFUL": "Sohbet kimliği %{conversationId} önceliği %{priority} olarak değiştirildi",
+        "FAILED": "Öncelik değiştirilemedi. Lütfen tekrar deneyin."
+      }
+    }
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
     "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
     "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "SORT_BY": "Sırala",
     "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "Görüşme Filtresi",
     "CHOOSE_INBOX": "Gelen Kutusu Seçin",
@@ -108,6 +130,7 @@
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Hesap değiştir",
     "CHANGE_LANGUAGE": "Dili değiştir",
+    "NOTIFICATION_PREFERENCES": "Bildirim Tercihleri",
     "LOGOUT": "Çıkış Yap",
     "SUBMIT": "Yolla"
   },
@@ -126,15 +149,18 @@
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Bildirim Tercihleri",
-    "EMAIL": "E-posta",
-    "PUSH": "Push",
+    "EMAIL": "E-posta Bildirimleri",
+    "PUSH": "Bildirimler",
     "CONVERSATION_CREATE_PUSH": "Yeni bir görüşme oluşturulduğunda anlık bildirimler gönderin",
     "CONVERSATION_ASSIGNEE_PUSH": "Bana bir konuşma atandığında anında bildirim gönder",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Atanan bir görüşmede yeni bir mesaj oluşturulduğunda anlık bildirimler gönderin",
     "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Katıldığım bir konuşmada yeni bir mesaj oluşturulduğunda anlık bildirimler gönderin",
     "CONVERSATION_CREATE_EMAIL": "Yeni bir görüşme oluşturulduğunda e-posta bildirimleri gönderin",
     "CONVERSATION_ASSIGNEE_EMAIL": "Bana bir konuşma atandığında e-posta bildirimleri gönder",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Atanmış bir görüşmede yeni bir mesaj oluşturulduğunda e-posta bildirimleri gönderin"
+    "CONVERSATION_MENTION_EMAIL": "Bir konuşmada adım geçtiğinde e-posta bildirimleri gönder",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Atanmış bir görüşmede yeni bir mesaj oluşturulduğunda e-posta bildirimleri gönderin",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Katıldığım bir konuşmada yeni bir mesaj oluşturulduğunda anlık bildirimler gönderin"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Conversation Information",
@@ -143,6 +169,19 @@
     "INITIATED_AT": "Başlatıldı",
     "INITIATED_FROM": "Başlatıldı",
     "IP_ADDRESS": "IP Adresi"
+  },
+  "CONVERSATION_PARTICIPANTS": {
+    "TITLE": "Konuşma Katılımcıları",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} kişi katılıyor.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} kişi katılıyor.",
+    "NO_PARTICIPANTS_TEXT": "Kimse katılmıyor!",
+    "WATCH_CONVERSATION": "Konuşmaya Katıl",
+    "YOU_ARE_WATCHING": "Katılıyorsunuz",
+    "NO_RECORDS_FOUND": "Kayıt bulunamadı",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "ADD_PARTICIPANTS": "Katılımcıları Seç",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Contact Attributes"

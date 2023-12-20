@@ -81,14 +81,36 @@
     "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
     "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
     "SNOOZE": "Snooze conversation",
+    "CHANGE_PRIORITY": "Change priority",
     "MESSAGES": "Messages",
     "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
-    "UNDEFINED_VARIABLES_CLOSE": "Fermer"
+    "UNDEFINED_VARIABLES_CLOSE": "Fermer",
+    "DELETE_MESSAGE_TITLE": "Êtes-vous sûr de vouloir supprimer ce message ?",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "PRIORITY": {
+      "TITLE": "Priorité",
+      "OPTIONS": {
+        "NONE": "Aucun",
+        "URGENT": "Urgent",
+        "HIGH": "Élevé",
+        "MEDIUM": "Moyenne",
+        "LOW": "Faible"
+      },
+      "CHANGE_PRIORITY": {
+        "SELECT_PLACEHOLDER": "Aucun",
+        "INPUT_PLACEHOLDER": "Sélectionner la priorité",
+        "NO_RESULTS": "Aucun résultat trouvé",
+        "SUCCESSFUL": "La priorité de la conversation id %{conversationId} a été changée en %{priority}",
+        "FAILED": "Impossible de modifier la priorité. Veuillez réessayer."
+      }
+    }
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
     "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
     "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "SORT_BY": "Trier par",
     "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "Filtrer les conversations",
     "CHOOSE_INBOX": "Choisir la boîte de réception",
@@ -108,6 +130,7 @@
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Changer de compte",
     "CHANGE_LANGUAGE": "Changer de langue",
+    "NOTIFICATION_PREFERENCES": "Préférences de notifications",
     "LOGOUT": "Se déconnecter",
     "SUBMIT": "Envoyer"
   },
@@ -126,15 +149,18 @@
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Préférences de notifications",
-    "EMAIL": "Courriel",
-    "PUSH": "Sauvegarder",
+    "EMAIL": "Notifications par courriel",
+    "PUSH": "Notifications push",
     "CONVERSATION_CREATE_PUSH": "Envoyer une notifications lors de la création d'une conversation",
     "CONVERSATION_ASSIGNEE_PUSH": "Envoyer une notification lors qu'une discussion m'est assignée",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Envoyer une notification lors de la réception d'un message dans une discussion m'étant assignée",
     "CONVERSATION_MENTION": "Envoyer des notifications push lorsque vous êtes mentionné dans une conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Envoyer des notifications par courriel lorsqu'un nouveau message est créé dans une conversation assignée",
     "CONVERSATION_CREATE_EMAIL": "Envoyer une notification par e-mail lors de la création d'une conversation",
     "CONVERSATION_ASSIGNEE_EMAIL": "Envoyer une notification par e-mail lors qu'une discussion m'est assignée",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Envoyer une notification par e-mail lors de la réception d'un message dans une discussion qui m'est assignée"
+    "CONVERSATION_MENTION_EMAIL": "Envoyer des notifications par courriel lorsque vous êtes mentionné dans une conversation",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Envoyer une notification par e-mail lors de la réception d'un message dans une discussion qui m'est assignée",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Envoyer des notifications par courriel lorsqu'un nouveau message est créé dans une conversation assignée"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Informations de la conversation",
@@ -143,6 +169,19 @@
     "INITIATED_AT": "Crée a",
     "INITIATED_FROM": "Crée depuis",
     "IP_ADDRESS": "Adresse IP"
+  },
+  "CONVERSATION_PARTICIPANTS": {
+    "TITLE": "Participants à une conversation",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} personnes participent.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} personne participe.",
+    "NO_PARTICIPANTS_TEXT": "Personne ne participe !.",
+    "WATCH_CONVERSATION": "Rejoindre une conversation",
+    "YOU_ARE_WATCHING": "Vous participez",
+    "NO_RECORDS_FOUND": "Aucun résultat trouvé",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "ADD_PARTICIPANTS": "Sélectionner des participants",
+    "REMAINING_PARTICIPANTS_TEXT": "autres",
+    "REMAINING_PARTICIPANT_TEXT": "autre"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Attributs du contact"

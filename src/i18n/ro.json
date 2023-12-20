@@ -81,14 +81,36 @@
     "SNOOZE_UNTIL_TOMORROW": "Până mâine",
     "SNOOZE_UNTIL_NEXT_WEEK": "Până săptămâna viitoare",
     "SNOOZE": "Amânare conversație",
+    "CHANGE_PRIORITY": "Change priority",
     "MESSAGES": "Mesaje",
     "UNDEFINED_VARIABLES_TITLE": "Variabile nedefinite",
-    "UNDEFINED_VARIABLES_CLOSE": "Închide"
+    "UNDEFINED_VARIABLES_CLOSE": "Închide",
+    "DELETE_MESSAGE_TITLE": "Ești sigur că vrei să ștergi acest mesaj?",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "PRIORITY": {
+      "TITLE": "Prioritate",
+      "OPTIONS": {
+        "NONE": "Nimic",
+        "URGENT": "Urgent",
+        "HIGH": "Mare",
+        "MEDIUM": "Mediu",
+        "LOW": "Scăzut"
+      },
+      "CHANGE_PRIORITY": {
+        "SELECT_PLACEHOLDER": "Nimic",
+        "INPUT_PLACEHOLDER": "Selectați prioritatea",
+        "NO_RESULTS": "Niciun rezultat găsit",
+        "SUCCESSFUL": "A schimbat prioritatea ID-ului conversației %{conversationId} în %{priority}",
+        "FAILED": "Nu s-a putut schimba prioritatea. Vă rugăm să încercați din nou."
+      }
+    }
   },
   "FILTER": {
     "ALL_INBOXES": "Toate cutiile",
     "FILTER_BY_ASSIGNEE_TYPE": "Modificarea cesionarului",
     "FILTER_BY_CONVERSATION_STATUS": "Starea conversației",
+    "SORT_BY": "Sortați după",
     "FILTER_BY_INBOX": "Filtrarea după inbox",
     "HEADER_TITLE": "Filtru conversație",
     "CHOOSE_INBOX": "Alege Inboxul",
@@ -108,6 +130,7 @@
     "SUPPORT": "Suport",
     "SWITCH_ACCOUNT": "Comută contul",
     "CHANGE_LANGUAGE": "Schimbarea limbii",
+    "NOTIFICATION_PREFERENCES": "Preferințe de notificare",
     "LOGOUT": "Deconectare",
     "SUBMIT": "Trimite"
   },
@@ -126,15 +149,18 @@
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Preferințe de notificare",
-    "EMAIL": "Email",
-    "PUSH": "Push",
+    "EMAIL": "Notificări prin e-mail",
+    "PUSH": "Notificări push",
     "CONVERSATION_CREATE_PUSH": "Trimite notificări push atunci când o conversație nouă este creată",
     "CONVERSATION_ASSIGNEE_PUSH": "Trimite notificări push atunci când o conversație îmi este atribuită",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Trimite notificări prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită",
     "CONVERSATION_MENTION": "Trimiterea notificărilor push atunci când sunteți menționat într-o conversație",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Trimiterea notificărilor push atunci când se creează un mesaj nou într-o conversație participantă",
     "CONVERSATION_CREATE_EMAIL": "Trimite notificări prin e-mail atunci când o conversație nouă este creată",
     "CONVERSATION_ASSIGNEE_EMAIL": "Trimite notificări prin e-mail atunci când o conversație îmi este atribuită",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Trimite notificări prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită"
+    "CONVERSATION_MENTION_EMAIL": "Trimiterea notificărilor prin e-mail atunci când sunteți menționat într-o conversație",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Trimite notificări prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Trimiterea notificărilor push atunci când se creează un mesaj nou într-o conversație participantă"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Informații despre conversație",
@@ -143,6 +169,19 @@
     "INITIATED_AT": "Iniţiat la",
     "INITIATED_FROM": "Inițiat de la",
     "IP_ADDRESS": "Adresă IP"
+  },
+  "CONVERSATION_PARTICIPANTS": {
+    "TITLE": "Participanți la conversație",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} participă oamenii.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} persoană participă.",
+    "NO_PARTICIPANTS_TEXT": "Nimeni nu participă!.",
+    "WATCH_CONVERSATION": "Începe conversația",
+    "YOU_ARE_WATCHING": "Participați",
+    "NO_RECORDS_FOUND": "Niciun rezultat găsit",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "ADD_PARTICIPANTS": "Selectarea participanților",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Atribute Contacte"

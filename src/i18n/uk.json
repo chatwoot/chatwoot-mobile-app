@@ -81,14 +81,36 @@
     "SNOOZE_UNTIL_TOMORROW": "До завтра",
     "SNOOZE_UNTIL_NEXT_WEEK": "До наступного тижня",
     "SNOOZE": "Snooze conversation",
+    "CHANGE_PRIORITY": "Change priority",
     "MESSAGES": "Текст повідомлень",
     "UNDEFINED_VARIABLES_TITLE": "Невизначені змінні",
-    "UNDEFINED_VARIABLES_CLOSE": "Закрити"
+    "UNDEFINED_VARIABLES_CLOSE": "Закрити",
+    "DELETE_MESSAGE_TITLE": "Ви справді бажаєте вилучити це повідомлення?",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "PRIORITY": {
+      "TITLE": "Пріоритет",
+      "OPTIONS": {
+        "NONE": "Нiчого",
+        "URGENT": "Терміновий",
+        "HIGH": "Високий",
+        "MEDIUM": "Середній",
+        "LOW": "Низький"
+      },
+      "CHANGE_PRIORITY": {
+        "SELECT_PLACEHOLDER": "Нiчого",
+        "INPUT_PLACEHOLDER": "Оберіть пріоритет",
+        "NO_RESULTS": "Результатів не знайдено",
+        "SUCCESSFUL": "Змінено пріоритет для бесід з ID %{conversationId} на %{priority}",
+        "FAILED": "Не вдалося змінити пріоритет. Будь ласка, спробуйте ще раз."
+      }
+    }
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
     "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
     "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "SORT_BY": "Сортувати за",
     "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "Conversation Filter",
     "CHOOSE_INBOX": "Choose Inbox",
@@ -108,6 +130,7 @@
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Switch Account",
     "CHANGE_LANGUAGE": "Change Language",
+    "NOTIFICATION_PREFERENCES": "Notification Preferences",
     "LOGOUT": "Вийти",
     "SUBMIT": "Додати"
   },
@@ -126,15 +149,18 @@
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Notification Preferences",
-    "EMAIL": "Email",
-    "PUSH": "Push",
+    "EMAIL": "Сповіщення електронною поштою",
+    "PUSH": "Push-сповіщення",
     "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
     "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
     "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Надсилати push-повідомлення, коли нове повідомлення створюється в призначеній розмові",
     "CONVERSATION_CREATE_EMAIL": "Надсилати сповіщення при створенні нової бесіди",
     "CONVERSATION_ASSIGNEE_EMAIL": "Надсилати сповіщення коли бесіду призначають мені",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation"
+    "CONVERSATION_MENTION_EMAIL": "Надсилати сповіщення електронною поштою, коли вас згадують в розмові",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Надсилати push-повідомлення, коли нове повідомлення створюється в призначеній розмові"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Інформація про бесіду",
@@ -143,6 +169,19 @@
     "INITIATED_AT": "Час початку",
     "INITIATED_FROM": "Initiated from",
     "IP_ADDRESS": "IP-адреса"
+  },
+  "CONVERSATION_PARTICIPANTS": {
+    "TITLE": "Учасники бесіди",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} людей беруть участь.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} людей беруть участь.",
+    "NO_PARTICIPANTS_TEXT": "Нікого немає!.",
+    "WATCH_CONVERSATION": "Підключитись до бесіди",
+    "YOU_ARE_WATCHING": "Ви підключились",
+    "NO_RECORDS_FOUND": "Результатів не знайдено",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "ADD_PARTICIPANTS": "Виберіть учасників",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Атрибути контакту"

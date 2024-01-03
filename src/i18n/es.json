@@ -81,13 +81,13 @@
     "SNOOZE_UNTIL_TOMORROW": "Hasta mañana",
     "SNOOZE_UNTIL_NEXT_WEEK": "Hasta la próxima semana",
     "SNOOZE": "Posponer conversación",
-    "CHANGE_PRIORITY": "Change priority",
+    "CHANGE_PRIORITY": "Cambiar prioridad",
     "MESSAGES": "Mensajes",
     "UNDEFINED_VARIABLES_TITLE": "Variables indefinidas",
     "UNDEFINED_VARIABLES_CLOSE": "Cerrar",
     "DELETE_MESSAGE_TITLE": "¿Está seguro que desea eliminar este mensaje?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
+    "DELETE_MESSAGE_SUB_TITLE": "Esta acción no se puede deshacer.",
+    "COPY_MESSAGE": "Mensaje copiado al portapapeles",
     "PRIORITY": {
       "TITLE": "Prioridad",
       "OPTIONS": {

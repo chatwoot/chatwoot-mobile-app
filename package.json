@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@chatwoot/react-native-widget": "^0.0.18",
-    "@chatwoot/utils": "^0.0.16",
+    "@chatwoot/utils": "^0.0.21",
     "@gorhom/bottom-sheet": "^4.4.7",
     "@kesha-antonov/react-native-action-cable": "^1.1.4",
     "@react-native-async-storage/async-storage": "^1.19.2",

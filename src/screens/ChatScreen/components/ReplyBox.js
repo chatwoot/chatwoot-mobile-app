@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
 import {
   View,
@@ -31,6 +31,7 @@ import {
   getMessageVariables,
   getUndefinedVariablesInMessage,
   replaceVariablesInMessage,
+  createTypingIndicator,
 } from '@chatwoot/utils';
 
 const propTypes = {
@@ -41,6 +42,7 @@ const propTypes = {
 };
 
 const isAndroid = Platform.OS === 'android';
+const TYPING_INDICATOR_IDLE_TIME = 4000;
 
 // eslint-disable-next-line react/prop-types
 const DismissKeyboard = ({ children }) => (
@@ -70,8 +72,30 @@ const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyBut
     }
   }, [dispatch, inboxId]);
 
+  const dispatchTypingStatus = useCallback(
+    status => {
+      dispatch(conversationActions.toggleTypingStatus({ conversationId, typingStatus: status }));
+    },
+    [dispatch, conversationId],
+  );
+
+  const typingIndicator = useMemo(
+    () =>
+      createTypingIndicator(
+        () => dispatchTypingStatus('on'),
+        () => dispatchTypingStatus('off'),
+        TYPING_INDICATOR_IDLE_TIME,
+      ),
+    [dispatchTypingStatus],
+  );
+
+  const startTyping = useCallback(() => {
+    typingIndicator.start();
+  }, [typingIndicator]);
+
   const onNewMessageChange = text => {
     setMessage(text);
+    startTyping();
     if (text.charAt(0) === '/') {
       const query = text.substring(1) ? text.substring(1).toLowerCase() : ' ';
       setCannedResponseSearchKey(query);
@@ -79,6 +103,15 @@ const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyBut
       setCannedResponseSearchKey('');
     }
   };
+
+  const onBlur = useCallback(() => {
+    typingIndicator.stop();
+  }, [typingIndicator]);
+
+  useEffect(() => {
+    return () => typingIndicator.stop();
+  }, [typingIndicator]);
+
   const onCCMailChange = mail => {
     setCCEmails(mail);
   };
@@ -102,16 +135,10 @@ const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyBut
     isAnEmailChannelAndNotInPrivateNote() ? { borderTopWidth: 0 } : { borderTopWidth: 1 };
   };
 
-  const onBlur = () => {
-    dispatch(conversationActions.toggleTypingStatus({ conversationId, typingStatus: 'off' }));
-  };
-  const onFocus = () => {
-    dispatch(conversationActions.toggleTypingStatus({ conversationId, typingStatus: 'on' }));
-  };
-
   const messageVariables = () => {
     const variables = getMessageVariables({
       conversation: conversationDetails,
+      contact: conversationDetails?.meta?.sender,
     });
     return variables;
   };
@@ -320,7 +347,6 @@ const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyBut
                   : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`
               }
               onBlur={onBlur}
-              onFocus={onFocus}
               returnKeyType="done"
             />
           </DismissKeyboard>

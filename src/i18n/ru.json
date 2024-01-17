@@ -86,7 +86,7 @@
     "UNDEFINED_VARIABLES_TITLE": "Неопределенные переменные",
     "UNDEFINED_VARIABLES_CLOSE": "Закрыть",
     "DELETE_MESSAGE_TITLE": "Вы действительно хотите удалить это сообщение?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "DELETE_MESSAGE_SUB_TITLE": "Это действие не может быть отменено.",
     "COPY_MESSAGE": "Сообщение скопировано в буфер обмена",
     "PRIORITY": {
       "TITLE": "Приоритет",
@@ -125,7 +125,7 @@
   "SETTINGS": {
     "HEADER_TITLE": "Настройки",
     "SET_AVAILABILITY": "Установить себя",
-    "PREFERENCES": "Preferences",
+    "PREFERENCES": "Настройки",
     "ABOUT": "About",
     "SUPPORT": "Поддержка",
     "SWITCH_ACCOUNT": "Сменить Аккаунт",

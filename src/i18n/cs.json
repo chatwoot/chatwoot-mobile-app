@@ -81,14 +81,36 @@
     "SNOOZE_UNTIL_TOMORROW": "Do zítřka",
     "SNOOZE_UNTIL_NEXT_WEEK": "Do příštího týdne",
     "SNOOZE": "Snooze conversation",
+    "CHANGE_PRIORITY": "Change priority",
     "MESSAGES": "Zprávy",
     "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
-    "UNDEFINED_VARIABLES_CLOSE": "Zavřít"
+    "UNDEFINED_VARIABLES_CLOSE": "Zavřít",
+    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "PRIORITY": {
+      "TITLE": "Priority",
+      "OPTIONS": {
+        "NONE": "Nic",
+        "URGENT": "Urgent",
+        "HIGH": "High",
+        "MEDIUM": "Medium",
+        "LOW": "Low"
+      },
+      "CHANGE_PRIORITY": {
+        "SELECT_PLACEHOLDER": "Nic",
+        "INPUT_PLACEHOLDER": "Select priority",
+        "NO_RESULTS": "Žádné výsledky",
+        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
+        "FAILED": "Couldn't change priority. Please try again."
+      }
+    }
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
     "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
     "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "SORT_BY": "Seřadit podle",
     "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "Conversation Filter",
     "CHOOSE_INBOX": "Choose Inbox",
@@ -108,6 +130,7 @@
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Přepnout účet",
     "CHANGE_LANGUAGE": "Change Language",
+    "NOTIFICATION_PREFERENCES": "Notification Preferences",
     "LOGOUT": "Logout",
     "SUBMIT": "Odeslat"
   },
@@ -126,15 +149,18 @@
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Notification Preferences",
-    "EMAIL": "E-mailová adresa",
-    "PUSH": "Push",
+    "EMAIL": "E-mailová oznámení",
+    "PUSH": "Push oznámení",
     "CONVERSATION_CREATE_PUSH": "Odeslat push oznámení při vytváření nové konverzace",
     "CONVERSATION_ASSIGNEE_PUSH": "Odeslat push oznámení, když je mi přiřazena konverzace",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Odeslat push oznámení, když je nová zpráva vytvořena v přiřazené konverzaci",
     "CONVERSATION_MENTION": "Poslat push oznámení, když jste zmíněni v konverzaci",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in a participating conversation",
     "CONVERSATION_CREATE_EMAIL": "Send email notifications when a new conversation is created",
     "CONVERSATION_ASSIGNEE_EMAIL": "Send email notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Odeslat oznámení e-mailem, když je nová zpráva vytvořena v přiřazené konverzaci"
+    "CONVERSATION_MENTION_EMAIL": "Odeslat oznámení e-mailem, pokud jste zmíněni v konverzaci",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Odeslat oznámení e-mailem, když je nová zpráva vytvořena v přiřazené konverzaci",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Send push notifications when a new message is created in a participating conversation"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Informace o konverzaci",
@@ -143,6 +169,19 @@
     "INITIATED_AT": "Initiated at",
     "INITIATED_FROM": "Initiated from",
     "IP_ADDRESS": "IP adresa"
+  },
+  "CONVERSATION_PARTICIPANTS": {
+    "TITLE": "Conversation participants",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
+    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
+    "WATCH_CONVERSATION": "Join conversation",
+    "YOU_ARE_WATCHING": "You are participating",
+    "NO_RECORDS_FOUND": "Žádné výsledky",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "ADD_PARTICIPANTS": "Select participants",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Atributy kontaktu"

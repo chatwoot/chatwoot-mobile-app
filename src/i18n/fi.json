@@ -81,14 +81,36 @@
     "SNOOZE_UNTIL_TOMORROW": "Huomiseen asti",
     "SNOOZE_UNTIL_NEXT_WEEK": "Ensi viikkoon asti",
     "SNOOZE": "Torkuta keskustelu",
+    "CHANGE_PRIORITY": "Change priority",
     "MESSAGES": "Viestit",
     "UNDEFINED_VARIABLES_TITLE": "Määrittelemättömät muuttujat",
-    "UNDEFINED_VARIABLES_CLOSE": "Sulje"
+    "UNDEFINED_VARIABLES_CLOSE": "Sulje",
+    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "PRIORITY": {
+      "TITLE": "Priority",
+      "OPTIONS": {
+        "NONE": "None",
+        "URGENT": "Urgent",
+        "HIGH": "High",
+        "MEDIUM": "Medium",
+        "LOW": "Low"
+      },
+      "CHANGE_PRIORITY": {
+        "SELECT_PLACEHOLDER": "None",
+        "INPUT_PLACEHOLDER": "Select priority",
+        "NO_RESULTS": "Tuloksia ei löytynyt",
+        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
+        "FAILED": "Couldn't change priority. Please try again."
+      }
+    }
   },
   "FILTER": {
     "ALL_INBOXES": "Kaikki saapuneet",
     "FILTER_BY_ASSIGNEE_TYPE": "Suodata vastuuhenkilön tyypin mukaan",
     "FILTER_BY_CONVERSATION_STATUS": "Suodata keskustelun tilan perusteella",
+    "SORT_BY": "Sort by",
     "FILTER_BY_INBOX": "Suodata saapuneet-kansion mukaan",
     "HEADER_TITLE": "Keskustelusuodatin",
     "CHOOSE_INBOX": "Valitse saapuneet",
@@ -108,6 +130,7 @@
     "SUPPORT": "Tuki",
     "SWITCH_ACCOUNT": "Vaihda tiliä",
     "CHANGE_LANGUAGE": "Vaihda kieli",
+    "NOTIFICATION_PREFERENCES": "Ilmoitusasetukset",
     "LOGOUT": "Kirjaudu ulos",
     "SUBMIT": "Lähetä"
   },
@@ -126,15 +149,18 @@
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Ilmoitusasetukset",
-    "EMAIL": "Sähköposti",
-    "PUSH": "Push",
+    "EMAIL": "Sähköposti-ilmoitukset",
+    "PUSH": "Push-ilmoitukset",
     "CONVERSATION_CREATE_PUSH": "Lähetä push-ilmoitukset kun uusi keskustelu on luotu",
     "CONVERSATION_ASSIGNEE_PUSH": "Lähetä push-ilmoitus, kun keskustelu on määritetty minulle",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Lähetä push-ilmoitus, kun uusi viesti on luotu määritettyyn keskusteluun",
     "CONVERSATION_MENTION": "Lähetä push-ilmoituksia, kun olet mainittu keskustelussa",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in a participating conversation",
     "CONVERSATION_CREATE_EMAIL": "Lähetä sähköposti-ilmoitus, kun uusi keskustelu luodaan",
     "CONVERSATION_ASSIGNEE_EMAIL": "Lähetä sähköposti-ilmoitus, kun keskustelu on määritetty minulle",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Lähetä sähköposti-ilmoitus, kun uusi viesti on luotu määritetyssä keskustelussa"
+    "CONVERSATION_MENTION_EMAIL": "Send email notifications when you are mentioned in a conversation",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Lähetä sähköposti-ilmoitus, kun uusi viesti on luotu määritetyssä keskustelussa",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Send push notifications when a new message is created in a participating conversation"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Keskustelun Tiedot",
@@ -143,6 +169,19 @@
     "INITIATED_AT": "Aloitettu klo",
     "INITIATED_FROM": "Aloitettu osoitteesta",
     "IP_ADDRESS": "IP-osoite"
+  },
+  "CONVERSATION_PARTICIPANTS": {
+    "TITLE": "Conversation participants",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
+    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
+    "WATCH_CONVERSATION": "Join conversation",
+    "YOU_ARE_WATCHING": "You are participating",
+    "NO_RECORDS_FOUND": "Tuloksia ei löytynyt",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "ADD_PARTICIPANTS": "Select participants",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Yhteystiedon määritteet"

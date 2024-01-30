@@ -81,14 +81,36 @@
     "SNOOZE_UNTIL_TOMORROW": "עד מחר",
     "SNOOZE_UNTIL_NEXT_WEEK": "עד שבוע הבא",
     "SNOOZE": "Snooze conversation",
+    "CHANGE_PRIORITY": "Change priority",
     "MESSAGES": "הודעות",
     "UNDEFINED_VARIABLES_TITLE": "משתנים בלתי מזוהים",
-    "UNDEFINED_VARIABLES_CLOSE": "סגור"
+    "UNDEFINED_VARIABLES_CLOSE": "סגור",
+    "DELETE_MESSAGE_TITLE": "בטוחים שאתם רוצים למחוק את ההודעה הזו?",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "PRIORITY": {
+      "TITLE": "Priority",
+      "OPTIONS": {
+        "NONE": "כלום",
+        "URGENT": "Urgent",
+        "HIGH": "High",
+        "MEDIUM": "Medium",
+        "LOW": "Low"
+      },
+      "CHANGE_PRIORITY": {
+        "SELECT_PLACEHOLDER": "כלום",
+        "INPUT_PLACEHOLDER": "Select priority",
+        "NO_RESULTS": "לא נמצאו תוצאות",
+        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
+        "FAILED": "Couldn't change priority. Please try again."
+      }
+    }
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
     "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
     "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "SORT_BY": "מיין לפי",
     "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "סינון שיחות",
     "CHOOSE_INBOX": "בחר בתיבת דואר נכנס",
@@ -108,6 +130,7 @@
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "החלף חשבון",
     "CHANGE_LANGUAGE": "שנה שפה",
+    "NOTIFICATION_PREFERENCES": "הגדרות התראות",
     "LOGOUT": "התנתק",
     "SUBMIT": "שלח"
   },
@@ -126,15 +149,18 @@
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "הגדרות התראות",
-    "EMAIL": "אימייל",
-    "PUSH": "התראות פוש",
+    "EMAIL": "התראות דוא\"ל",
+    "PUSH": "הודעות דחיפה (Push)",
     "CONVERSATION_CREATE_PUSH": "שלח התראת פוש כאשר נפתחת שיחה חדשה",
     "CONVERSATION_ASSIGNEE_PUSH": "שלח התראת פוש כאשר שיחה מוקצית עבורי",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "שלח התראת פוש כאשר יש הודעה חדשה בשיחה המוקצית עבורי",
     "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "שלח הודעות דחיפה כאשר נוצרת הודעה חדשה בשיחה המיועדת עבורי",
     "CONVERSATION_CREATE_EMAIL": "שלח התראה באימייל כאשר נפתחת שיחה חדשה",
     "CONVERSATION_ASSIGNEE_EMAIL": "שלח התראה באימייל כאשר שיחה מוקצית עבורי",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "שלח התראה באימייל כאשר יש הודעה חדשה בשיחה המוקצית עבורי"
+    "CONVERSATION_MENTION_EMAIL": "שלח הודעות דחיפה כאשר אתה מוזכר בשיחה",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "שלח התראה באימייל כאשר יש הודעה חדשה בשיחה המוקצית עבורי",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "שלח הודעות דחיפה כאשר נוצרת הודעה חדשה בשיחה המיועדת עבורי"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Conversation Information",
@@ -143,6 +169,19 @@
     "INITIATED_AT": "יזם ב",
     "INITIATED_FROM": "יזם מ",
     "IP_ADDRESS": "כתובת IP"
+  },
+  "CONVERSATION_PARTICIPANTS": {
+    "TITLE": "משתתפים בשיחה",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
+    "NO_PARTICIPANTS_TEXT": "אף אחד לא משתתף!.",
+    "WATCH_CONVERSATION": "הצטרף לשיחה",
+    "YOU_ARE_WATCHING": "אתה משתתף",
+    "NO_RECORDS_FOUND": "לא נמצאו תוצאות",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "ADD_PARTICIPANTS": "בחר משתתפים",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Contact Attributes"

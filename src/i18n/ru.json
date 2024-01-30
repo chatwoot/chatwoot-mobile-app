@@ -67,8 +67,8 @@
     "ASSIGN": "Назначить ответсвенного",
     "FILE_SIZE_LIMIT": "Файл превышает 5mb",
     "SHARE": "Поделиться разговором",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
+    "DETAILS": "Подробности",
+    "LABELS": "Метки разговора",
     "ASSIGNED_AGENT": "Назначенный сотрудник",
     "TEAM": "Команда",
     "PRIVATE_MSG_INPUT": "Это будет видно только сотрудникам",
@@ -80,15 +80,37 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "До следующего ответа",
     "SNOOZE_UNTIL_TOMORROW": "До завтра",
     "SNOOZE_UNTIL_NEXT_WEEK": "До следующей недели",
-    "SNOOZE": "Snooze conversation",
+    "SNOOZE": "Отложить диалог",
+    "CHANGE_PRIORITY": "Изменить приоритет",
     "MESSAGES": "Сообщения",
     "UNDEFINED_VARIABLES_TITLE": "Неопределенные переменные",
-    "UNDEFINED_VARIABLES_CLOSE": "Закрыть"
+    "UNDEFINED_VARIABLES_CLOSE": "Закрыть",
+    "DELETE_MESSAGE_TITLE": "Вы действительно хотите удалить это сообщение?",
+    "DELETE_MESSAGE_SUB_TITLE": "Это действие не может быть отменено.",
+    "COPY_MESSAGE": "Сообщение скопировано в буфер обмена",
+    "PRIORITY": {
+      "TITLE": "Приоритет",
+      "OPTIONS": {
+        "NONE": "Ничего",
+        "URGENT": "Срочность",
+        "HIGH": "Высокая",
+        "MEDIUM": "Средняя",
+        "LOW": "Низкая"
+      },
+      "CHANGE_PRIORITY": {
+        "SELECT_PLACEHOLDER": "Ничего",
+        "INPUT_PLACEHOLDER": "Выберите приоритет",
+        "NO_RESULTS": "Результаты не найдены",
+        "SUCCESSFUL": "Изменен приоритет разговора id %{conversationId} на %{priority}",
+        "FAILED": "Не удалось изменить приоритет. Пожалуйста, попробуйте еще раз."
+      }
+    }
   },
   "FILTER": {
     "ALL_INBOXES": "Все письма",
     "FILTER_BY_ASSIGNEE_TYPE": "Фильтр по типу исполнителя",
     "FILTER_BY_CONVERSATION_STATUS": "Фильтр по статусу разговора",
+    "SORT_BY": "Сортировать по",
     "FILTER_BY_INBOX": "Фильтр по входящим",
     "HEADER_TITLE": "Фильтр сообщений",
     "CHOOSE_INBOX": "Выбрать входящие",
@@ -103,11 +125,12 @@
   "SETTINGS": {
     "HEADER_TITLE": "Настройки",
     "SET_AVAILABILITY": "Установить себя",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
+    "PREFERENCES": "Настройки",
+    "ABOUT": "О нас",
+    "SUPPORT": "Поддержка",
     "SWITCH_ACCOUNT": "Сменить Аккаунт",
     "CHANGE_LANGUAGE": "Изменить язык",
+    "NOTIFICATION_PREFERENCES": "Настройки уведомлений",
     "LOGOUT": "Выход",
     "SUBMIT": "Отправить"
   },
@@ -126,15 +149,18 @@
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Настройки уведомлений",
-    "EMAIL": "Email",
-    "PUSH": "Push",
+    "EMAIL": "Email Уведомления",
+    "PUSH": "Push уведомления",
     "CONVERSATION_CREATE_PUSH": "Отправлять push уведомление, когда новый диалог создан",
     "CONVERSATION_ASSIGNEE_PUSH": "Отправлять push уведомление при назначении мне диалога",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Отправлять push уведомления при создании нового сообщения в назначенном диалоге",
     "CONVERSATION_MENTION": "Отправлять уведомления при упоминании в разговоре",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Отправлять push-уведомления при создании нового сообщения в участвующем разговоре",
     "CONVERSATION_CREATE_EMAIL": "Отправлять email уведомление, когда новый диалог создан",
     "CONVERSATION_ASSIGNEE_EMAIL": "Отправлять email уведомление, когда мне назначен диалог",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Отправлять email уведомления при создании нового сообщения в назначенном диалоге"
+    "CONVERSATION_MENTION_EMAIL": "Отправлять email уведомление, когда вас упоминают в диалоге",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Отправлять email уведомления при создании нового сообщения в назначенном диалоге",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Отправлять push-уведомления при создании нового сообщения в участвующем разговоре"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Информация о беседе",
@@ -143,6 +169,19 @@
     "INITIATED_AT": "Начат в",
     "INITIATED_FROM": "Начат из",
     "IP_ADDRESS": "IP адрес"
+  },
+  "CONVERSATION_PARTICIPANTS": {
+    "TITLE": "Участники диалога",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} человек участвуют.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} человек участвуют.",
+    "NO_PARTICIPANTS_TEXT": "Никто не участвует!.",
+    "WATCH_CONVERSATION": "Присоединиться к диалогу",
+    "YOU_ARE_WATCHING": "Вы участвуете",
+    "NO_RECORDS_FOUND": "Результаты не найдены",
+    "SELECT_PARTICIPANTS": "Выбрать сотрудника",
+    "ADD_PARTICIPANTS": "Выберите участников",
+    "REMAINING_PARTICIPANTS_TEXT": "другие",
+    "REMAINING_PARTICIPANT_TEXT": "другое"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Атрибуты контакта"

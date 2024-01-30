@@ -81,14 +81,36 @@
     "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
     "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
     "SNOOZE": "Snooze conversation",
+    "CHANGE_PRIORITY": "Ändra prioritet",
     "MESSAGES": "Messages",
     "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
-    "UNDEFINED_VARIABLES_CLOSE": "Stäng"
+    "UNDEFINED_VARIABLES_CLOSE": "Stäng",
+    "DELETE_MESSAGE_TITLE": "Är du säker på att du vill radera detta meddelande?",
+    "DELETE_MESSAGE_SUB_TITLE": "Denna åtgärd kan inte ångras.",
+    "COPY_MESSAGE": "Meddelandet har kopierats till urklipp",
+    "PRIORITY": {
+      "TITLE": "Prioritet",
+      "OPTIONS": {
+        "NONE": "Inget",
+        "URGENT": "Brådskande",
+        "HIGH": "Hög",
+        "MEDIUM": "Medel",
+        "LOW": "Låg"
+      },
+      "CHANGE_PRIORITY": {
+        "SELECT_PLACEHOLDER": "Inget",
+        "INPUT_PLACEHOLDER": "Välj prioritet",
+        "NO_RESULTS": "Inga resultat hittades",
+        "SUCCESSFUL": "Ändrad prioritet för konversations-id %{conversationId} till %{priority}",
+        "FAILED": "Kunde inte ändra prioritet. Försök igen."
+      }
+    }
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
     "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
     "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "SORT_BY": "Sortera efter",
     "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "Konversationsfilter",
     "CHOOSE_INBOX": "Välj inkorg",
@@ -108,6 +130,7 @@
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Byt konto",
     "CHANGE_LANGUAGE": "Byt språk",
+    "NOTIFICATION_PREFERENCES": "Aviseringsinställningar",
     "LOGOUT": "Logga ut",
     "SUBMIT": "Skicka"
   },
@@ -126,15 +149,18 @@
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Aviseringsinställningar",
-    "EMAIL": "E-post",
-    "PUSH": "Push",
+    "EMAIL": "E-postaviseringar",
+    "PUSH": "Push-notiser",
     "CONVERSATION_CREATE_PUSH": "Skicka push-aviseringar när en ny konversation skapas",
     "CONVERSATION_ASSIGNEE_PUSH": "Skicka push-aviseringar när en konversation är tilldelad till mig",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Skicka push-aviseringar när ett nytt meddelande skapas i en tilldelad konversation",
     "CONVERSATION_MENTION": "Skicka push-meddelanden när du nämns i en konversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Skicka push-meddelanden när ett nytt meddelande skapas i en tilldelad konversation",
     "CONVERSATION_CREATE_EMAIL": "Skicka e-postaviseringar när en ny konversation skapas",
     "CONVERSATION_ASSIGNEE_EMAIL": "Skicka e-postaviseringar när en konversation är tilldelad till mig",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Skicka e-postaviseringar när ett nytt meddelande skapas i en tilldelad konversation"
+    "CONVERSATION_MENTION_EMAIL": "Skicka e-postaviseringar när du nämns i en konversation",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Skicka e-postaviseringar när ett nytt meddelande skapas i en tilldelad konversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Skicka push-meddelanden när ett nytt meddelande skapas i en tilldelad konversation"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Conversation Information",
@@ -143,6 +169,19 @@
     "INITIATED_AT": "Initierad",
     "INITIATED_FROM": "Initierad från",
     "IP_ADDRESS": "IP-adress"
+  },
+  "CONVERSATION_PARTICIPANTS": {
+    "TITLE": "Deltagare i konversation",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} personer deltar.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} person deltar.",
+    "NO_PARTICIPANTS_TEXT": "Ingen deltar!.",
+    "WATCH_CONVERSATION": "Gå med i konversation",
+    "YOU_ARE_WATCHING": "Du deltar",
+    "NO_RECORDS_FOUND": "Inga resultat hittades",
+    "SELECT_PARTICIPANTS": "Välj agenter",
+    "ADD_PARTICIPANTS": "Välj deltagare",
+    "REMAINING_PARTICIPANTS_TEXT": "andra",
+    "REMAINING_PARTICIPANT_TEXT": "annan"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Contact Attributes"

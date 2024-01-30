@@ -81,14 +81,36 @@
     "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
     "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
     "SNOOZE": "Snooze conversation",
+    "CHANGE_PRIORITY": "Change priority",
     "MESSAGES": "Messages",
     "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
-    "UNDEFINED_VARIABLES_CLOSE": "Bezár"
+    "UNDEFINED_VARIABLES_CLOSE": "Bezár",
+    "DELETE_MESSAGE_TITLE": "Biztosan törölni szeretnéd ezt az üzenetet?",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "PRIORITY": {
+      "TITLE": "Prioritás",
+      "OPTIONS": {
+        "NONE": "Nincs",
+        "URGENT": "Sürgős",
+        "HIGH": "Magas",
+        "MEDIUM": "Közepes",
+        "LOW": "Alacsony"
+      },
+      "CHANGE_PRIORITY": {
+        "SELECT_PLACEHOLDER": "Nincs",
+        "INPUT_PLACEHOLDER": "Prioritás megadása",
+        "NO_RESULTS": "Nincs találat",
+        "SUCCESSFUL": "Beszélgetés prioritásának megváltoztatása",
+        "FAILED": "Nem sikerült megváltoztatni a prioritást. Kérlek, próbáld újra."
+      }
+    }
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
     "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
     "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "SORT_BY": "Rendezés",
     "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "Beszélgetés szűrő",
     "CHOOSE_INBOX": "Inbox kiválasztása",
@@ -108,6 +130,7 @@
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Fiókváltás",
     "CHANGE_LANGUAGE": "Nyelvválasztás",
+    "NOTIFICATION_PREFERENCES": "Értesítési beállítások",
     "LOGOUT": "Kilépés",
     "SUBMIT": "Elküld"
   },
@@ -126,15 +149,18 @@
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Értesítési beállítások",
-    "EMAIL": "E-mail",
-    "PUSH": "Push üzenet",
+    "EMAIL": "E-mail értesítések",
+    "PUSH": "Push üzenetek",
     "CONVERSATION_CREATE_PUSH": "Kapj push értesítéseket amikor egy új beszélgetés létrejön",
     "CONVERSATION_ASSIGNEE_PUSH": "Kapj push értesítéseket amikor hozzád rendelnek egy beszélgetést",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Kapj push értesítést amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben",
     "CONVERSATION_MENTION": "Küldj push üzeneteket, amikor egy beszélgetésben megemlítenek",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Kapj push értesítést amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben",
     "CONVERSATION_CREATE_EMAIL": "Kapj e-mailt amikor egy új beszélgetés létrejön",
     "CONVERSATION_ASSIGNEE_EMAIL": "Kapj e-mailt amikor hozzád rendelnek egy beszélgetést",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Kapj e-mailt amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben"
+    "CONVERSATION_MENTION_EMAIL": "Küldj e-mail értesítéseket, amikor egy beszélgetésben megemlítenek",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Kapj e-mailt amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Kapj push értesítést amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Conversation Information",
@@ -143,6 +169,19 @@
     "INITIATED_AT": "Kezdeményezve ekkor:",
     "INITIATED_FROM": "Kezdeményezve innen:",
     "IP_ADDRESS": "IP cím"
+  },
+  "CONVERSATION_PARTICIPANTS": {
+    "TITLE": "Résztvevők",
+    "TOTAL_PARTICIPANTS_TEXT": "+%{count} fő vesz részt.",
+    "TOTAL_PARTICIPANT_TEXT": "+%{count} fő vesz részt.",
+    "NO_PARTICIPANTS_TEXT": "Nincs részvevő!.",
+    "WATCH_CONVERSATION": "Csatlakozás a beszélgetéshez",
+    "YOU_ARE_WATCHING": "Te részt veszel",
+    "NO_RECORDS_FOUND": "Nincs találat",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "ADD_PARTICIPANTS": "Résztvevők kiválasztása",
+    "REMAINING_PARTICIPANTS_TEXT": "egyebek",
+    "REMAINING_PARTICIPANT_TEXT": "egyéb"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Contact Attributes"

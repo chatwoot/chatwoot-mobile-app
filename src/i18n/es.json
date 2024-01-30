@@ -81,14 +81,36 @@
     "SNOOZE_UNTIL_TOMORROW": "Hasta mañana",
     "SNOOZE_UNTIL_NEXT_WEEK": "Hasta la próxima semana",
     "SNOOZE": "Posponer conversación",
+    "CHANGE_PRIORITY": "Cambiar prioridad",
     "MESSAGES": "Mensajes",
     "UNDEFINED_VARIABLES_TITLE": "Variables indefinidas",
-    "UNDEFINED_VARIABLES_CLOSE": "Cerrar"
+    "UNDEFINED_VARIABLES_CLOSE": "Cerrar",
+    "DELETE_MESSAGE_TITLE": "¿Está seguro que desea eliminar este mensaje?",
+    "DELETE_MESSAGE_SUB_TITLE": "Esta acción no se puede deshacer.",
+    "COPY_MESSAGE": "Mensaje copiado al portapapeles",
+    "PRIORITY": {
+      "TITLE": "Prioridad",
+      "OPTIONS": {
+        "NONE": "Ninguna",
+        "URGENT": "Urgente",
+        "HIGH": "Alta",
+        "MEDIUM": "Media",
+        "LOW": "Baja"
+      },
+      "CHANGE_PRIORITY": {
+        "SELECT_PLACEHOLDER": "Ninguna",
+        "INPUT_PLACEHOLDER": "Seleccionar prioridad",
+        "NO_RESULTS": "No se encontraron resultados",
+        "SUCCESSFUL": "Se ha cambiado la prioridad del id de conversación %{conversationId} a %{priority}",
+        "FAILED": "No se pudo cambiar la prioridad. Por favor, inténtelo de nuevo."
+      }
+    }
   },
   "FILTER": {
     "ALL_INBOXES": "Todas las bandejas",
     "FILTER_BY_ASSIGNEE_TYPE": "Filtrar por tipo de asignado",
     "FILTER_BY_CONVERSATION_STATUS": "Filtrar por estado de conversación",
+    "SORT_BY": "Ordenar por",
     "FILTER_BY_INBOX": "Filtrar por bandeja de entrada",
     "HEADER_TITLE": "Filtro de conversación",
     "CHOOSE_INBOX": "Elegir bandeja de entrada",
@@ -108,6 +130,7 @@
     "SUPPORT": "Soporte",
     "SWITCH_ACCOUNT": "Cambiar de cuenta",
     "CHANGE_LANGUAGE": "Cambiar idioma",
+    "NOTIFICATION_PREFERENCES": "Preferencias de Notificación",
     "LOGOUT": "Cerrar sesión",
     "SUBMIT": "Enviar"
   },
@@ -126,15 +149,18 @@
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Preferencias de notificación",
-    "EMAIL": "Email",
-    "PUSH": "Push",
+    "EMAIL": "Notificaciones por email",
+    "PUSH": "Notificaciones push",
     "CONVERSATION_CREATE_PUSH": "Enviar notificaciones push cuando se crea una nueva conversación",
     "CONVERSATION_ASSIGNEE_PUSH": "Enviar notificaciones push cuando se me asigne una conversación",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Enviar notificaciones push cuando se crea un nuevo mensaje en una conversación asignada",
     "CONVERSATION_MENTION": "Enviar notificaciones push cuando sea mencionado en una conversación",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Enviar notificaciones push cuando se crea un nuevo mensaje en una conversación participante",
     "CONVERSATION_CREATE_EMAIL": "Enviar notificaciones por email cuando se crea una nueva conversación",
     "CONVERSATION_ASSIGNEE_EMAIL": "Enviar notificaciones por email cuando se me ha asignado una conversación",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Enviar notificaciones por email cuando se crea un nuevo mensaje en una conversación asignada"
+    "CONVERSATION_MENTION_EMAIL": "Enviar notificaciones por correo electrónico cuando sea mencionado en una conversación",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Enviar notificaciones por email cuando se crea un nuevo mensaje en una conversación asignada",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Enviar notificaciones push cuando se crea un nuevo mensaje en una conversación participante"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Información de la conversación",
@@ -143,6 +169,19 @@
     "INITIATED_AT": "Iniciado a las",
     "INITIATED_FROM": "Iniciado desde",
     "IP_ADDRESS": "Dirección IP"
+  },
+  "CONVERSATION_PARTICIPANTS": {
+    "TITLE": "Participantes de la conversación",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} personas están participando.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} personas están participando.",
+    "NO_PARTICIPANTS_TEXT": "Nadie está participando!.",
+    "WATCH_CONVERSATION": "Abrir conversación",
+    "YOU_ARE_WATCHING": "Estás participando",
+    "NO_RECORDS_FOUND": "No se encontraron resultados",
+    "SELECT_PARTICIPANTS": "Seleccionar agentes",
+    "ADD_PARTICIPANTS": "Seleccionar participantes",
+    "REMAINING_PARTICIPANTS_TEXT": "otros",
+    "REMAINING_PARTICIPANT_TEXT": "otro"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Atributos de contacto"

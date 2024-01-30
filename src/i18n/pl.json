@@ -81,14 +81,36 @@
     "SNOOZE_UNTIL_TOMORROW": "Do jutra",
     "SNOOZE_UNTIL_NEXT_WEEK": "Do następnego tygodnia",
     "SNOOZE": "Uśpij rozmowę",
+    "CHANGE_PRIORITY": "Change priority",
     "MESSAGES": "Wiadomości",
     "UNDEFINED_VARIABLES_TITLE": "Niezdefiniowane zmienne",
-    "UNDEFINED_VARIABLES_CLOSE": "Zamknij"
+    "UNDEFINED_VARIABLES_CLOSE": "Zamknij",
+    "DELETE_MESSAGE_TITLE": "Czy na pewno chcesz usunąć tę wiadomość?",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "PRIORITY": {
+      "TITLE": "Priorytet",
+      "OPTIONS": {
+        "NONE": "Brak",
+        "URGENT": "Pilne",
+        "HIGH": "Wysoki",
+        "MEDIUM": "Średni",
+        "LOW": "Niski"
+      },
+      "CHANGE_PRIORITY": {
+        "SELECT_PLACEHOLDER": "Brak",
+        "INPUT_PLACEHOLDER": "Wybierz priorytet",
+        "NO_RESULTS": "Brak wyników",
+        "SUCCESSFUL": "Zmieniono priorytet konwersacji o identyfikatorze %{conversationId} na %{priority}",
+        "FAILED": "Nie można zmienić priorytetu. Spróbuj ponownie."
+      }
+    }
   },
   "FILTER": {
     "ALL_INBOXES": "Wszystkie skrzynki odbiorcze",
     "FILTER_BY_ASSIGNEE_TYPE": "Filtruj według typu przypisania",
     "FILTER_BY_CONVERSATION_STATUS": "Filtruj według statusu rozmowy",
+    "SORT_BY": "Sortuj według",
     "FILTER_BY_INBOX": "Filtruj według skrzynki odbiorczej",
     "HEADER_TITLE": "Filtr rozmów",
     "CHOOSE_INBOX": "Wybierz skrzynkę odbiorczą",
@@ -108,6 +130,7 @@
     "SUPPORT": "Wsparcie",
     "SWITCH_ACCOUNT": "Zmień konto",
     "CHANGE_LANGUAGE": "Zmień język",
+    "NOTIFICATION_PREFERENCES": "Preferencje powiadomień",
     "LOGOUT": "Wyloguj",
     "SUBMIT": "Zatwierdź"
   },
@@ -132,9 +155,12 @@
     "CONVERSATION_ASSIGNEE_PUSH": "Wysyłaj powiadomienia push, gdy rozmowa zostanie mi przypisana",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Wysyłaj powiadomienia push, gdy w przypisanej rozmowie pojawi się nowa wiadomość",
     "CONVERSATION_MENTION": "Wysyłaj powiadomienia push, gdy zostaniesz wspomniany w rozmowie",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Wyślij powiadomienia push, gdy w rozmowie, w której bierzesz udział, zostanie utworzona nowa wiadomość",
     "CONVERSATION_CREATE_EMAIL": "Wysyłaj powiadomienia e-mail, gdy zostanie utworzona nowa rozmowa",
     "CONVERSATION_ASSIGNEE_EMAIL": "Wysyłaj powiadomienia e-mail, gdy rozmowa zostanie mi przypisana",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Wysyłaj powiadomienia e-mail, gdy w przypisanej rozmowie pojawi się nowa wiadomość"
+    "CONVERSATION_MENTION_EMAIL": "Wysyłaj powiadomienia e-mail, gdy zostaniesz wymieniony w rozmowie",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Wysyłaj powiadomienia e-mail, gdy w przypisanej rozmowie pojawi się nowa wiadomość",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Wyślij powiadomienia push, gdy w rozmowie, w której bierzesz udział, zostanie utworzona nowa wiadomość"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Informacje o rozmowie",
@@ -143,6 +169,19 @@
     "INITIATED_AT": "Rozpoczęto o",
     "INITIATED_FROM": "Rozpoczęto z",
     "IP_ADDRESS": "Adres IP"
+  },
+  "CONVERSATION_PARTICIPANTS": {
+    "TITLE": "Uczestnicy konwersacji",
+    "TOTAL_PARTICIPANTS_TEXT": "Bierze w nich udział %{count} osób.",
+    "TOTAL_PARTICIPANT_TEXT": "Bierze w nich udział %{count} osoba.",
+    "NO_PARTICIPANTS_TEXT": "Nikt nie bierze udziału!",
+    "WATCH_CONVERSATION": "Dołącz do konwersacji",
+    "YOU_ARE_WATCHING": "Bierzesz udział",
+    "NO_RECORDS_FOUND": "Nie znaleziono rekordów",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "ADD_PARTICIPANTS": "Wybierz uczestników",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Atrybuty kontaktu"

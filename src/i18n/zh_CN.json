@@ -81,14 +81,36 @@
     "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
     "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
     "SNOOZE": "Snooze conversation",
+    "CHANGE_PRIORITY": "Change priority",
     "MESSAGES": "消息",
     "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
-    "UNDEFINED_VARIABLES_CLOSE": "关闭"
+    "UNDEFINED_VARIABLES_CLOSE": "关闭",
+    "DELETE_MESSAGE_TITLE": "您确定要删除这条消息吗？",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "PRIORITY": {
+      "TITLE": "优先级",
+      "OPTIONS": {
+        "NONE": "啥都没有",
+        "URGENT": "Urgent",
+        "HIGH": "High",
+        "MEDIUM": "Medium",
+        "LOW": "Low"
+      },
+      "CHANGE_PRIORITY": {
+        "SELECT_PLACEHOLDER": "啥都没有",
+        "INPUT_PLACEHOLDER": "Select priority",
+        "NO_RESULTS": "没有检索到相关信息",
+        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
+        "FAILED": "Couldn't change priority. Please try again."
+      }
+    }
   },
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
     "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
     "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "SORT_BY": "排序方式",
     "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "会话过滤器",
     "CHOOSE_INBOX": "选择收件箱",
@@ -108,6 +130,7 @@
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "切换账户",
     "CHANGE_LANGUAGE": "更改语言",
+    "NOTIFICATION_PREFERENCES": "通知设置",
     "LOGOUT": "注销",
     "SUBMIT": "提交"
   },
@@ -126,15 +149,18 @@
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "通知设置",
-    "EMAIL": "Email",
-    "PUSH": "推送",
+    "EMAIL": "电子邮件通知",
+    "PUSH": "推送通知",
     "CONVERSATION_CREATE_PUSH": "创建新会话时发送推送通知",
     "CONVERSATION_ASSIGNEE_PUSH": "当会话分配给我时发送推送通知",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "在已分配的会话中创建新消息时发送推送通知",
     "CONVERSATION_MENTION": "当您在对话中被提及时发送推送通知",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in a participating conversation",
     "CONVERSATION_CREATE_EMAIL": "创建新会话时发送电子邮件通知",
     "CONVERSATION_ASSIGNEE_EMAIL": "当会话分配给我时发送电子邮件通知",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "在已分配的会话中创建新消息时发送电子邮件通知"
+    "CONVERSATION_MENTION_EMAIL": "Send email notifications when you are mentioned in a conversation",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "在已分配的会话中创建新消息时发送电子邮件通知",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Send push notifications when a new message is created in a participating conversation"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Conversation Information",
@@ -143,6 +169,19 @@
     "INITIATED_AT": "发起于",
     "INITIATED_FROM": "发起自",
     "IP_ADDRESS": "IP 地址"
+  },
+  "CONVERSATION_PARTICIPANTS": {
+    "TITLE": "对话参与者",
+    "TOTAL_PARTICIPANTS_TEXT": "有%{count}人参与。",
+    "TOTAL_PARTICIPANT_TEXT": "有%{count}人参与。",
+    "NO_PARTICIPANTS_TEXT": "没有人参与！",
+    "WATCH_CONVERSATION": "加入对话",
+    "YOU_ARE_WATCHING": "你正在参与",
+    "NO_RECORDS_FOUND": "没有检索到相关信息",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "ADD_PARTICIPANTS": "选择参与者",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Contact Attributes"

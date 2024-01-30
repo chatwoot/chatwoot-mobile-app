@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@chatwoot/react-native-widget": "^0.0.18",
-    "@chatwoot/utils": "^0.0.16",
+    "@chatwoot/utils": "^0.0.21",
     "@gorhom/bottom-sheet": "^4.4.7",
     "@kesha-antonov/react-native-action-cable": "^1.1.4",
     "@react-native-async-storage/async-storage": "^1.19.2",
@@ -49,7 +49,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@sentry/react-native": "^5.9.1",
     "@shopify/flash-list": "^1.5.0",
-    "axios": "^1.6.0",
+    "axios": "^1.6.4",
     "date-fns": "2.21.1",
     "i18n-js": "^3.8.0",
     "lodash.filter": "^4.6.0",

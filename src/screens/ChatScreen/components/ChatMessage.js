@@ -73,12 +73,12 @@ const ActivityMessageComponent = ({ message, created_at }) => {
   return (
     <View style={styles.activityView}>
       <View style={styles.messageActivity}>
-        <Text sm color={colors.textDarker}>
+        <Text accessible={true} sm color={colors.textDarker}>
           {message.content}
         </Text>
       </View>
       <View style={styles.activityDateView}>
-        <Text xxs color={colors.text} style={styles.date}>
+        <Text accessible={true} xxs color={colors.text} style={styles.date}>
           {messageStamp({ time: created_at })}
         </Text>
       </View>

@@ -170,7 +170,7 @@ const ConversationTeams = ({ colors, conversationDetails, closeModal }) => {
 
         <View style={styles.bottomSheetItemView}>
           {filteredTeamsOnSearch.length !== 0 && (
-            <Text sm medium color={colors.textDark} style={styles.itemText}>
+            <Text accessible={true} sm medium color={colors.textDark} style={styles.itemText}>
               {i18n.t('CONVERSATION_TEAMS.SELECT_TEAM')}
             </Text>
           )}
@@ -184,7 +184,7 @@ const ConversationTeams = ({ colors, conversationDetails, closeModal }) => {
               onPress={() => onClickAssignTeam(item.id)}>
               <View style={styles.teamDetails}>
                 <UserAvatar userName={item.name} size={24} fontSize={12} />
-                <Text sm medium color={colors.text} style={styles.teamName}>
+                <Text accessible={true} sm medium color={colors.text} style={styles.teamName}>
                   {`${item.name}`}
                 </Text>
               </View>
@@ -197,7 +197,7 @@ const ConversationTeams = ({ colors, conversationDetails, closeModal }) => {
           ))}
           {filteredTeamsOnSearch && filteredTeamsOnSearch.length === 0 && (
             <View style={styles.emptyView}>
-              <Text sm medium color={colors.textDark}>
+              <Text accessible={true} sm medium color={colors.textDark}>
                 {i18n.t('CONVERSATION_TEAMS.NO_RESULT')}
               </Text>
             </View>

@@ -69,15 +69,15 @@ const ModalView = ({ showModal, headerText, contentText, buttonText, onPressClos
     <NativeModal visible={showModal} animationType="fade" transparent={true}>
       <View style={styles.modalViewWrap}>
         <View style={styles.modalView}>
-          <Text md bold color={colors.textDark}>
+          <Text accessible={true} md bold color={colors.textDark}>
             {headerText}
           </Text>
-          <Text sm color={colors.textDark} style={styles.modalText}>
+          <Text accessible={true} sm color={colors.textDark} style={styles.modalText}>
             {contentText}
           </Text>
           <View style={styles.modalButtonView}>
             <Pressable style={styles.modalButton} onPress={onPressClose}>
-              <Text sm color={colors.colorWhite} style={styles.modalButtonText}>
+              <Text accessible={true} sm color={colors.colorWhite} style={styles.modalButtonText}>
                 {buttonText}
               </Text>
             </Pressable>

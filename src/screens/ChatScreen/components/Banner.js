@@ -96,7 +96,7 @@ const BannerComponent = ({
       <Pressable style={[styles.bannerWrapper, bannerColor()]}>
         <View style={styles.bannerWrap}>
           <View>
-            <Text xs medium color={bannerTextColor()} style={styles.bannerText}>
+            <Text accessible={true} xs medium color={bannerTextColor()} style={styles.bannerText}>
               {text}
               {hrefText && hrefLink ? (
                 <Text

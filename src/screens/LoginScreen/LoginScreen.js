@@ -65,6 +65,8 @@ const LoginScreenComponent = ({ navigation }) => {
   const baseUrl = useSelector(selectBaseUrl);
   const activeLocale = useSelector(selectLocale);
 
+  const [hiddenPassword, setHiddenPassword] = React.useState(true);
+
   useEffect(() => {
     dispatch(resetAuth());
     if (!installationUrl) {
@@ -127,11 +129,11 @@ const LoginScreenComponent = ({ navigation }) => {
           <Image style={styles.logo} source={images.login} />
         </View>
         <View style={styles.titleView}>
-          <Text lg medium color={colors.textDark} style={styles.titleText}>
+          <Text accessible={true} lg medium color={colors.textDark} style={styles.titleText}>
             {i18n.t('LOGIN.TITLE')}
           </Text>
           {baseUrl ? (
-            <Text sm color={colors.textLight} style={styles.subTitleText}>
+            <Text accessible={true} sm color={colors.textLight} style={styles.subTitleText}>
               {i18n.t('LOGIN.DESCRIPTION', { baseUrl })}
             </Text>
           ) : null}
@@ -142,6 +144,7 @@ const LoginScreenComponent = ({ navigation }) => {
             <View>
               <Controller
                 control={control}
+                style={{ borderColor: 'red', borderWidth: 1 }}
                 rules={{
                   required: i18n.t('LOGIN.EMAIL_REQUIRED'),
                   pattern: {
@@ -167,30 +170,44 @@ const LoginScreenComponent = ({ navigation }) => {
               />
               <View style={styles.spacer} />
               <View />
-              <Controller
-                control={control}
-                rules={{
-                  required: i18n.t('LOGIN.PASSWORD_REQUIRED'),
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    style={styles.input}
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    errors={errors}
-                    error={errors.password}
-                    label={i18n.t('LOGIN.PASSWORD')}
-                    keyboardType="default"
-                    errorMessage={i18n.t('LOGIN.PASSWORD_ERROR')}
-                    secureTextEntry={true}
+              <View>
+                <Controller
+                  control={control}
+                  style={{ borderColor: 'red', borderWidth: 1 }}
+                  rules={{
+                    required: i18n.t('LOGIN.PASSWORD_REQUIRED'),
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      style={[styles.input, { flex: 1, width: '100%', paddingRight: 40 }]} // Add padding to accommodate the icon
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      errors={errors}
+                      error={errors.password}
+                      label={i18n.t('LOGIN.PASSWORD')}
+                      keyboardType="default"
+                      errorMessage={i18n.t('LOGIN.PASSWORD_ERROR')}
+                      secureTextEntry={hiddenPassword}
+                    />
+                  )}
+                  name="password"
+                />
+                <TouchableOpacity
+                  style={[
+                    styles.eyeIcon,
+                    { position: 'absolute', bottom: 10, right: 10, height: 25, width: 25 },
+                  ]} // Position the icon absolutely
+                  onPress={() => setHiddenPassword(!hiddenPassword)}>
+                  <Image
+                    style={{ width: 25, height: 25 }}
+                    source={hiddenPassword ? images.eye : images.eyeOff}
                   />
-                )}
-                name="password"
-              />
+                </TouchableOpacity>
+              </View>
             </View>
             <TouchableOpacity style={styles.forgotView} onPress={() => navigate('ResetPassword')}>
-              <Text xs medium color={colors.textLight}>
+              <Text accessible={true} xs medium color={colors.textLight}>
                 {i18n.t('LOGIN.FORGOT_PASSWORD')}
               </Text>
             </TouchableOpacity>
@@ -211,23 +228,25 @@ const LoginScreenComponent = ({ navigation }) => {
               {appName === 'Chatwoot' && (
                 <>
                   <TouchableOpacity onPress={doSignup}>
-                    <Text xs medium color={colors.textLight}>
+                    <Text accessible={true} xs medium color={colors.textLight}>
                       {i18n.t('LOGIN.CREATE_ACCOUNT')}
                     </Text>
                   </TouchableOpacity>
-                  <Text color={colors.textLight}>{'   |   '}</Text>
+                  <Text accessible={true} color={colors.textLight}>
+                    {'   |   '}
+                  </Text>
                 </>
               )}
 
               <TouchableOpacity onPress={() => navigate('ConfigureURL')}>
-                <Text xs medium color={colors.textLight}>
+                <Text accessible={true} xs medium color={colors.textLight}>
                   {i18n.t('LOGIN.CHANGE_URL')}
                 </Text>
               </TouchableOpacity>
             </View>
             <View style={styles.accountView}>
               <TouchableOpacity onPress={toggleChangeLanguageModal}>
-                <Text xs medium color={colors.textLight}>
+                <Text accessible={true} xs medium color={colors.textLight}>
                   {i18n.t('LOGIN.CHANGE_LANGUAGE')}
                 </Text>
               </TouchableOpacity>

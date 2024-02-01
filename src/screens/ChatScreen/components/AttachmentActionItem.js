@@ -40,7 +40,7 @@ const AttachmentActionItem = ({ text, itemType, iconName, onPressItem }) => {
     <React.Fragment>
       <Pressable style={styles.section} onPress={() => onPressItem({ itemType })}>
         <Icon icon={iconName} color={colors.primaryColor} size={22} />
-        <Text sm medium color={colors.textDark} style={styles.sectionText}>
+        <Text accessible={true} sm medium color={colors.textDark} style={styles.sectionText}>
           {text}
         </Text>
       </Pressable>

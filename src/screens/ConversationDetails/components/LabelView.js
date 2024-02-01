@@ -116,7 +116,7 @@ const LabelView = ({ conversationDetails, conversationId, openLabelsBottomSheet 
           )}
         </View>
         {shouldShowEmptyMessage && (
-          <Text sm color={colors.text} style={styles.itemValue}>
+          <Text accessible={true} sm color={colors.text} style={styles.itemValue}>
             {i18n.t('CONVERSATION_LABELS.NO_LABEL')}
           </Text>
         )}

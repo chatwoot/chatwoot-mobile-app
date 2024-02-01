@@ -88,7 +88,7 @@ const NotificationPreferenceSelector = ({ activeValue, onPress, colors }) => {
   return (
     <View style={styles.bottomSheet}>
       <View style={styles.itemMainView}>
-        <Text semiBold color={colors.textDark} style={styles.itemMainViewItem}>
+        <Text accessible={true} semiBold color={colors.textDark} style={styles.itemMainViewItem}>
           {i18n.t('NOTIFICATION_PREFERENCE.EMAIL')}
         </Text>
         {allEmailFlags.map(
@@ -105,7 +105,7 @@ const NotificationPreferenceSelector = ({ activeValue, onPress, colors }) => {
         )}
       </View>
       <View style={styles.itemMainView}>
-        <Text semiBold color={colors.textDark} style={styles.itemMainViewItem}>
+        <Text accessible={true} semiBold color={colors.textDark} style={styles.itemMainViewItem}>
           {i18n.t('NOTIFICATION_PREFERENCE.PUSH')}
         </Text>
         {allPushFlags.map(

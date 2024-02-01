@@ -116,7 +116,7 @@ const SnoozeConversation = ({ colors, conversationId, activeSnoozeValue, closeMo
             onPress={() => toggleStatusForConversations(item.key)}>
             <View style={styles.itemView}>
               <Icon icon={item.icon} color={colors.textDark} size={18} />
-              <Text sm medium color={colors.textDark} style={styles.itemText}>
+              <Text accessible={true} sm medium color={colors.textDark} style={styles.itemText}>
                 {`${i18n.t('CONVERSATION.SNOOZE_UNTIL')} ${item.title}`}
               </Text>
             </View>

@@ -283,7 +283,7 @@ const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyBut
         {isAnEmailChannelAndNotInPrivateNote() && emailFields && (
           <View style={styles.emailFields}>
             <View style={styles.emailFieldsTextWrap}>
-              <Text medium sm color={colors.text} style={styles.emailFieldLabel}>
+              <Text accessible={true} medium sm color={colors.text} style={styles.emailFieldLabel}>
                 {'Cc'}
               </Text>
               <TextInput
@@ -295,7 +295,7 @@ const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyBut
               />
             </View>
             <View style={styles.emailFieldsTextWrap}>
-              <Text medium sm color={colors.text} style={styles.emailFieldLabel}>
+              <Text accessible={true} medium sm color={colors.text} style={styles.emailFieldLabel}>
                 {'Bcc'}
               </Text>
               <TextInput

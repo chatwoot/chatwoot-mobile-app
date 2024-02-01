@@ -381,7 +381,7 @@ const ChatHeader = ({
             <View style={styles.titleView}>
               <View style={styles.customerName}>
                 {customerDetails.name && (
-                  <Text md medium color={colors.textDark}>
+                  <Text accessible={true} md medium color={colors.textDark}>
                     {getTextSubstringWithEllipsis(customerDetails.name, 13)}
                   </Text>
                 )}

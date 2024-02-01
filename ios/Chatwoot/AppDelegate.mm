@@ -2,6 +2,7 @@
 #import "RNBootSplash.h"
 #import <Firebase.h>
 #import <React/RCTBundleURLProvider.h>
+#import <TSBackgroundFetch/TSBackgroundFetch.h>
 
 @implementation AppDelegate
 
@@ -10,6 +11,7 @@
   if ([FIRApp defaultApp] == nil) {
     [FIRApp configure];
   }
+  [[TSBackgroundFetch sharedInstance] didFinishLaunching];
 
   self.moduleName = @"Chatwoot";
   // You can add your custom initial props in the dictionary below.

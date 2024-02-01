@@ -70,7 +70,7 @@ const ConversationFilter = ({ colors, activeValue, leftIcon, items, onChangeFilt
                   <Icon icon={leftIcon} color={colors.text} size={16} />
                 </View>
               )}
-              <Text sm medium color={colors.text}>
+              <Text accessible={true} sm medium color={colors.text}>
                 {item.name}
               </Text>
             </View>

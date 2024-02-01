@@ -234,7 +234,7 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
               defaultBGColor={colors.primaryColor}
               size={14}
             />
-            <Text xs color={colors.primaryColor} style={styles.senderScreenName}>
+            <Text accessible={true} xs color={colors.primaryColor} style={styles.senderScreenName}>
               {senderName}
             </Text>
           </View>
@@ -368,9 +368,9 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
     .map(({ key, value, title }) =>
       value ? (
         <View style={styles.emailFields} key={key}>
-          <Text xs semiBold color={emailHeadLabelColor}>
+          <Text accessible={true} xs semiBold color={emailHeadLabelColor}>
             {title}
-            <Text xs regular color={emailHeadTextColor}>
+            <Text accessible={true} xs regular color={emailHeadTextColor}>
               {value}
             </Text>
           </Text>
@@ -459,7 +459,7 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
         />
 
         <View style={styles.dateView}>
-          <Text xxs color={dateStyleColor()} style={styles.dateTextView}>
+          <Text accessible={true} xxs color={dateStyleColor()} style={styles.dateTextView}>
             {readableTime}
           </Text>
           {isPrivate && (

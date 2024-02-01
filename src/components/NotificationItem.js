@@ -48,15 +48,15 @@ const NotificationItemComponent = ({ item, onSelectNotification }) => {
         )}
         <View style={styles.contentView}>
           {!read_at ? (
-            <Text xs medium color={colors.textDark} style={styles.content}>
+            <Text accessible={true} xs medium color={colors.textDark} style={styles.content}>
               {push_message_title}
             </Text>
           ) : (
-            <Text xs color={colors.textDark} style={styles.content}>
+            <Text accessible={true} xs color={colors.textDark} style={styles.content}>
               {push_message_title}
             </Text>
           )}
-          <Text xxs color={colors.textLighter}>
+          <Text accessible={true} xxs color={colors.textLighter}>
             {`${timeAgo({ time: created_at })}`}
           </Text>
         </View>

@@ -43,10 +43,10 @@ const MentionUserComponent = ({
         fontSize={12}
         availabilityStatus={availabilityStatus}
       />
-      <Text sm semiBold color={colors.primaryColorDark} style={styles.name}>
+      <Text accessible={true} sm semiBold color={colors.primaryColorDark} style={styles.name}>
         {`${name} - `}
       </Text>
-      <Text sm color={colors.textDark} style={styles.subHeaderTitle}>
+      <Text accessible={true} sm color={colors.textDark} style={styles.subHeaderTitle}>
         {email}
       </Text>
     </Pressable>

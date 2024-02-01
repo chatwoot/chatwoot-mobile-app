@@ -37,7 +37,7 @@ const InboxName = ({ inboxName, phoneNumber, channelType }) => {
       <View style={styles.inboxDetails}>
         {iconName ? <Icon color={colors.textLight} size={10} icon={iconName} /> : null}
         {inboxName ? (
-          <Text xs medium color={colors.textLight} style={styles.channelText}>
+          <Text accessible={true} xs medium color={colors.textLight} style={styles.channelText}>
             {getTextSubstringWithEllipsis(inboxName, 26)}
           </Text>
         ) : null}

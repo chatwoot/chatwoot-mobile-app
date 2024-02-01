@@ -86,7 +86,7 @@ const ConversationInboxFilter = ({ colors, activeValue, hasLeftIcon, items, onCh
                   <Icon icon={iconNameByInboxType(item)} color={colors.text} size={16} />
                 </View>
               )}
-              <Text sm medium color={colors.text}>
+              <Text accessible={true} sm medium color={colors.text}>
                 {item.name === 'All' ? 'All Inboxes' : item.name}
               </Text>
             </View>

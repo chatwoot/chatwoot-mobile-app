@@ -92,14 +92,16 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
           itemType="label"
         />
 
-        <ConversationActionItem
-          onPressItem={onPressAction}
-          iconName="snooze-outline"
-          text={i18n.t('CONVERSATION.SNOOZE')}
-          colors={colors}
-          name={isSnoozed ? snoozeDisplayText() : ''}
-          itemType="snooze"
-        />
+        {!isSnoozed && (
+          <ConversationActionItem
+            onPressItem={onPressAction}
+            iconName="snooze-outline"
+            text={i18n.t('CONVERSATION.SNOOZE')}
+            colors={colors}
+            name={isSnoozed ? snoozeDisplayText() : ''}
+            itemType="snooze"
+          />
+        )}
 
         <ConversationActionItem
           onPressItem={onPressAction}

@@ -12,7 +12,7 @@ import createStyles from './MessageList.style';
 import { openURL } from 'helpers/UrlHelper';
 import { selectMessagesLoading, selectAllMessagesFetched } from 'reducer/conversationSlice';
 import { selectors as conversationSelectors } from 'reducer/conversationSlice.selector.js';
-import ConversationSLA from '../../../Conversation/components/ConversationItem/ConversationSLA';
+import ConversationSLA from 'screens/Conversation/components/ConversationItem/ConversationSLA';
 
 const propTypes = {
   loadMessages: PropTypes.func.isRequired,

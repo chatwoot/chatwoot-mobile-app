@@ -9,7 +9,9 @@ const createStyles = theme => {
   const { spacing } = theme;
   return StyleSheet.create({
     container: {
-      padding: spacing.half,
+      paddingHorizontal: spacing.smaller,
+      paddingTop: spacing.smaller,
+      paddingBottom: 100,
     },
   });
 };

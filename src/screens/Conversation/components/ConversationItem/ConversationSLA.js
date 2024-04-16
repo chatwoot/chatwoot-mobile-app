@@ -2,7 +2,7 @@ import React, { useMemo, useEffect, useRef, useCallback, useState } from 'react'
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { Text, Icon } from 'components';
-import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { evaluateSLAStatus } from 'helpers/SLAHelper';
 import SLAMisses from './SLAMisses';
@@ -12,17 +12,26 @@ const REFRESH_INTERVAL = 60000;
 const createStyles = theme => {
   const { spacing, colors } = theme;
   return StyleSheet.create({
-    cardLabelWrap: {
+    container: {
       marginTop: spacing.micro,
       paddingTop: spacing.tiny,
       flexDirection: 'row',
       flexWrap: 'wrap',
     },
-    labelView: {
+    extendedContainer: {
+      shadowColor: 'rgba(43, 43, 62, 0.16)',
+      maxHeight: 64,
+      shadowOffset: {
+        width: 0,
+        height: 16,
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 8,
+    },
+    slaView: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      paddingHorizontal: 4,
       marginRight: 4,
       marginBottom: 4,
       paddingVertical: 2,
@@ -31,6 +40,12 @@ const createStyles = theme => {
       backgroundColor: colors.background,
       borderColor: colors.borderLight,
       gap: 4,
+      paddingHorizontal: 4,
+    },
+    extendedSlaView: {
+      height: 26,
+      paddingHorizontal: 8,
+      borderRadius: 8,
     },
     line: {
       height: 12,
@@ -46,7 +61,6 @@ const propTypes = {
   showExtendedInfo: PropTypes.bool,
 };
 
-const deviceHeight = Dimensions.get('window').height;
 const ConversationSLa = ({ conversationDetails, showExtendedInfo = false }) => {
   const theme = useTheme();
   const { colors } = theme;
@@ -62,12 +76,6 @@ const ConversationSLa = ({ conversationDetails, showExtendedInfo = false }) => {
   const closeConversationSLAMissesModal = useCallback(() => {
     conversationSLAMissesModal.current?.dismiss();
   }, []);
-
-  // Conversation filter modal
-  const conversationFilterModalSnapPoints = useMemo(
-    () => [deviceHeight - 400, deviceHeight - 400],
-    [],
-  );
 
   const [slaStatus, setSlaStatus] = useState(null);
   const timerRef = useRef(null);
@@ -116,8 +124,10 @@ const ConversationSLa = ({ conversationDetails, showExtendedInfo = false }) => {
   };
 
   return (
-    <TouchableOpacity style={styles.cardLabelWrap} onPress={toggleConversationSLAMissesModal}>
-      <View style={styles.labelView}>
+    <TouchableOpacity
+      style={[styles.container, showExtendedInfo && styles.extendedContainer]}
+      onPress={toggleConversationSLAMissesModal}>
+      <View style={[styles.slaView, showExtendedInfo && styles.extendedSlaView]}>
         <Icon icon={icon} color={color} size={12} />
         {showExtendedInfo && (
           <Text xs medium color={color}>
@@ -130,8 +140,9 @@ const ConversationSLa = ({ conversationDetails, showExtendedInfo = false }) => {
         </Text>
       </View>
       <BottomSheetModal
+        maxContentHeight={1000}
         bottomSheetModalRef={conversationSLAMissesModal}
-        initialSnapPoints={conversationFilterModalSnapPoints}
+        autoHeightEnabled
         showHeader
         headerTitle={i18n.t('SLA.MISSES.TITLE')}
         closeFilter={closeConversationSLAMissesModal}

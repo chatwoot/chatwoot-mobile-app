@@ -33,7 +33,7 @@ const createStyles = theme => {
   });
 };
 
-const SLAEventItem = ({ label, items }) => {
+const SLAMissItem = ({ label, items }) => {
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -54,6 +54,6 @@ const SLAEventItem = ({ label, items }) => {
     </View>
   );
 };
-SLAEventItem.propTypes = propTypes;
+SLAMissItem.propTypes = propTypes;
 
-export default SLAEventItem;
+export default SLAMissItem;

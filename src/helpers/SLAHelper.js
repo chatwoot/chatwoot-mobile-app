@@ -91,9 +91,6 @@ const evaluateSLAConditions = (appliedSla, chat) => {
 };
 
 export const evaluateSLAStatus = (appliedSla, chat) => {
-  console.log('appliedSla', appliedSla);
-  console.log('chat', chat);
-
   if (!appliedSla || !chat) {
     return { type: '', threshold: '', icon: '', isSlaMissed: false };
   }

@@ -6,7 +6,7 @@ import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { evaluateSLAStatus } from 'helpers/SLAHelper';
 import SLAMisses from './SLAMisses';
-
+import i18n from 'i18n';
 const REFRESH_INTERVAL = 60000;
 
 const createStyles = theme => {
@@ -28,6 +28,7 @@ const createStyles = theme => {
       paddingVertical: 2,
       borderRadius: 4,
       borderWidth: 0.5,
+      backgroundColor: colors.background,
       borderColor: colors.borderLight,
       gap: 4,
     },
@@ -46,18 +47,20 @@ const propTypes = {
 };
 
 const deviceHeight = Dimensions.get('window').height;
-const ConversationLabel = ({ conversationDetails, showExtendedInfo = false }) => {
+const ConversationSLa = ({ conversationDetails, showExtendedInfo = false }) => {
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
 
   // Filter by assignee type
-  const conversationAssigneeModal = useRef(null);
-  const toggleConversationAssigneeModal = useCallback(() => {
-    conversationAssigneeModal.current.present() || conversationAssigneeModal.current?.dismiss();
-  }, []);
-  const closeConversationAssigneeModal = useCallback(() => {
-    conversationAssigneeModal.current?.dismiss();
+  const conversationSLAMissesModal = useRef(null);
+  const toggleConversationSLAMissesModal = useCallback(() => {
+    if (conversationDetails?.sla_events.length > 0) {
+      conversationSLAMissesModal.current.present() || conversationSLAMissesModal.current?.dismiss();
+    }
+  }, [conversationDetails]);
+  const closeConversationSLAMissesModal = useCallback(() => {
+    conversationSLAMissesModal.current?.dismiss();
   }, []);
 
   // Conversation filter modal
@@ -102,15 +105,23 @@ const ConversationLabel = ({ conversationDetails, showExtendedInfo = false }) =>
 
   const icon = slaStatus.isSlaMissed ? 'flame-outline' : 'alarm-outline';
   const color = slaStatus.isSlaMissed ? colors.dangerColor : colors.warningColor;
-  const slaStatusText = slaStatus?.isSlaMissed ? 'SLA Missed' : 'SLA Warning';
+  const isSlaMissed = slaStatus?.isSlaMissed;
+
+  const sLAStatusText = () => {
+    const upperCaseType = slaStatus?.type?.toUpperCase(); // FRT, NRT, or RT
+    const statusKey = isSlaMissed ? 'MISSED' : 'DUE';
+    return i18n.t(`SLA.STATUS.${upperCaseType}`, {
+      status: i18n.t(`SLA.STATUS.${statusKey}`),
+    });
+  };
 
   return (
-    <TouchableOpacity style={styles.cardLabelWrap} onPress={toggleConversationAssigneeModal}>
+    <TouchableOpacity style={styles.cardLabelWrap} onPress={toggleConversationSLAMissesModal}>
       <View style={styles.labelView}>
         <Icon icon={icon} color={color} size={12} />
         {showExtendedInfo && (
           <Text xs medium color={color}>
-            {slaStatusText}
+            {sLAStatusText()}
           </Text>
         )}
         {showExtendedInfo && <View style={styles.line} />}
@@ -119,16 +130,16 @@ const ConversationLabel = ({ conversationDetails, showExtendedInfo = false }) =>
         </Text>
       </View>
       <BottomSheetModal
-        bottomSheetModalRef={conversationAssigneeModal}
+        bottomSheetModalRef={conversationSLAMissesModal}
         initialSnapPoints={conversationFilterModalSnapPoints}
         showHeader
-        headerTitle="SLA Misses"
-        closeFilter={closeConversationAssigneeModal}
+        headerTitle={i18n.t('SLA.MISSES.TITLE')}
+        closeFilter={closeConversationSLAMissesModal}
         children={<SLAMisses slaMissedEvents={conversationDetails.sla_events} />}
       />
     </TouchableOpacity>
   );
 };
 
-ConversationLabel.propTypes = propTypes;
-export default ConversationLabel;
+ConversationSLa.propTypes = propTypes;
+export default ConversationSLa;

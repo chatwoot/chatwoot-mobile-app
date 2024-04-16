@@ -52,7 +52,11 @@ const ConfigureURLScreenComponent = ({ navigation }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      url: baseUrl ? baseUrl : appName === 'Chatwoot' ? 'app.chatwoot.com' : '',
+      url: baseUrl
+        ? baseUrl
+        : appName === 'Chatwoot'
+        ? 'alfred-tunnel.chatwoot.dev'
+        : 'alfred-tunnel.chatwoot.dev',
     },
   });
 

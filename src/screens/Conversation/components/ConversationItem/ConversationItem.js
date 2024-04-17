@@ -258,9 +258,9 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
                   </Text>
                 )}
                 <View style={styles.conversationAdditionalDetails}>
-                  <ConversationSLA conversationDetails={item} conversationId={id} />
+                  <ConversationLabel conversationDetails={item} conversationId={id} />
                   {item.sla_policy_id && (
-                    <ConversationLabel conversationDetails={item} conversationId={id} />
+                    <ConversationSLA conversationDetails={item} conversationId={id} />
                   )}
                 </View>
               </View>

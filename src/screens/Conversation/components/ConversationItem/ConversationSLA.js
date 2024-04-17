@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { Text, Icon } from 'components';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
-import { evaluateSLAStatus } from 'helpers/SLAHelper';
 import SLAMisses from './SLAMisses';
+import { evaluateSLAStatus } from '@chatwoot/utils';
 import i18n from 'i18n';
 const REFRESH_INTERVAL = 60000;
 
@@ -101,7 +101,10 @@ const ConversationSLa = ({ conversationDetails, showExtendedInfo = false }) => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateSlaStatus = () => {
-    const status = evaluateSLAStatus(appliedSLA, conversationDetails);
+    const status = evaluateSLAStatus({
+      appliedSl: appliedSLA,
+      chat: conversationDetails,
+    });
     setSlaStatus(status);
   };
 

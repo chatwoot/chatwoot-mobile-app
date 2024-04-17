@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "1.10.29",
+  "version": "1.10.30",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@chatwoot/react-native-widget": "^0.0.18",
-    "@chatwoot/utils": "^0.0.21",
+    "@chatwoot/utils": "^0.0.24",
     "@gorhom/bottom-sheet": "^4.5.1",
     "@kesha-antonov/react-native-action-cable": "^1.1.4",
     "@react-native-async-storage/async-storage": "^1.19.2",

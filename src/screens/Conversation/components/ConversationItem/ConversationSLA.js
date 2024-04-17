@@ -102,7 +102,7 @@ const ConversationSLa = ({ conversationDetails, showExtendedInfo = false }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateSlaStatus = () => {
     const status = evaluateSLAStatus({
-      appliedSl: appliedSLA,
+      appliedSla: appliedSLA,
       chat: conversationDetails,
     });
     setSlaStatus(status);

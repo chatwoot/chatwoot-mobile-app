@@ -92,6 +92,10 @@ const ConversationSLa = ({ conversationDetails, showExtendedInfo = false }) => {
     };
   }, [createTimer, updateSlaStatus]);
 
+  useEffect(() => {
+    updateSlaStatus();
+  }, [conversationDetails, updateSlaStatus]);
+
   const createTimer = useCallback(() => {
     timerRef.current = setTimeout(() => {
       updateSlaStatus();

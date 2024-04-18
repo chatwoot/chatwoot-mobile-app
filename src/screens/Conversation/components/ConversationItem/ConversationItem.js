@@ -18,7 +18,7 @@ import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
 import ConversationLabel from './ConversationLabels';
-import ConversationSLA from './ConversationSLA';
+
 import ConversationPriority from './ConversationPriority';
 import { selectors as contactSelectors } from 'reducer/contactSlice';
 
@@ -257,12 +257,7 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
                     {getTextSubstringWithEllipsis(typingUser, 25)}
                   </Text>
                 )}
-                <View style={styles.conversationAdditionalDetails}>
-                  <ConversationLabel conversationDetails={item} conversationId={id} />
-                  {item.sla_policy_id && (
-                    <ConversationSLA conversationDetails={item} conversationId={id} />
-                  )}
-                </View>
+                <ConversationLabel conversationDetails={item} conversationId={id} />
               </View>
             </View>
             <View style={styles.unreadTimestampContainer}>
@@ -328,10 +323,6 @@ const createStyles = theme => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
-    },
-    conversationAdditionalDetails: {
-      flexDirection: 'row',
-      alignItems: 'center',
     },
     conversationMeta: {
       marginBottom: spacing.tiny,

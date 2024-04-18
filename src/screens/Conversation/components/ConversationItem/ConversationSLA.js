@@ -2,7 +2,8 @@ import React, { useMemo, useEffect, useRef, useCallback, useState } from 'react'
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { Text, Icon } from 'components';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Pressable } from 'components';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import SLAMisses from './SLAMisses';
 import { evaluateSLAStatus } from '@chatwoot/utils';
@@ -10,11 +11,9 @@ import i18n from 'i18n';
 const REFRESH_INTERVAL = 60000;
 
 const createStyles = theme => {
-  const { spacing, colors } = theme;
+  const { colors } = theme;
   return StyleSheet.create({
     container: {
-      marginTop: spacing.micro,
-      paddingTop: spacing.tiny,
       flexDirection: 'row',
       flexWrap: 'wrap',
     },
@@ -32,8 +31,6 @@ const createStyles = theme => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginRight: 4,
-      marginBottom: 4,
       paddingVertical: 2,
       borderRadius: 4,
       borderWidth: 0.5,
@@ -41,6 +38,7 @@ const createStyles = theme => {
       borderColor: colors.borderLight,
       gap: 4,
       paddingHorizontal: 4,
+      height: 20,
     },
     extendedSlaView: {
       height: 26,
@@ -131,7 +129,7 @@ const ConversationSLa = ({ conversationDetails, showExtendedInfo = false }) => {
   };
 
   return (
-    <TouchableOpacity
+    <Pressable
       style={[styles.container, showExtendedInfo && styles.extendedContainer]}
       onPress={toggleConversationSLAMissesModal}>
       <View style={[styles.slaView, showExtendedInfo && styles.extendedSlaView]}>
@@ -155,7 +153,7 @@ const ConversationSLa = ({ conversationDetails, showExtendedInfo = false }) => {
         closeFilter={closeConversationSLAMissesModal}
         children={<SLAMisses slaMissedEvents={conversationDetails.sla_events} />}
       />
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

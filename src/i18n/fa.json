@@ -249,5 +249,22 @@
       "HREF_TEXT": "محدودیت ۲۴ ساعته پنجره پیام",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "از دست رفته",
+      "DUE": "نقض"
+    },
+    "MISSES": {
+      "TITLE": "SLA های از دست رفته",
+      "FRT": "زمان تا اولین پاسخ",
+      "NRT": "زمان پاسخگویی بعدی",
+      "RT": "زمان تا حل شدن مساله",
+      "SHOW_MORE": "{count} بیشتر",
+      "HIDE": "مخفی کردم {count} مورد"
+    }
   }
 }

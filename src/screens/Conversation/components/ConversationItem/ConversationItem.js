@@ -18,6 +18,7 @@ import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
 import ConversationLabel from './ConversationLabels';
+import ConversationSLA from './ConversationSLA';
 import ConversationPriority from './ConversationPriority';
 import { selectors as contactSelectors } from 'reducer/contactSlice';
 
@@ -45,6 +46,7 @@ const propTypes = {
     unread_count: PropTypes.number,
     priority: PropTypes.string,
     status: PropTypes.string,
+    sla_policy_id: PropTypes.number,
     last_non_activity_message: PropTypes.object,
   }).isRequired,
   conversationTypingUsers: PropTypes.shape({}),
@@ -255,7 +257,12 @@ const ConversationItem = ({ item, conversationTypingUsers, onPress, showAssignee
                     {getTextSubstringWithEllipsis(typingUser, 25)}
                   </Text>
                 )}
-                <ConversationLabel conversationDetails={item} conversationId={id} />
+                <View style={styles.conversationAdditionalDetails}>
+                  <ConversationLabel conversationDetails={item} conversationId={id} />
+                  {item.sla_policy_id && (
+                    <ConversationSLA conversationDetails={item} conversationId={id} />
+                  )}
+                </View>
               </View>
             </View>
             <View style={styles.unreadTimestampContainer}>
@@ -321,6 +328,10 @@ const createStyles = theme => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
+    },
+    conversationAdditionalDetails: {
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     conversationMeta: {
       marginBottom: spacing.tiny,

@@ -6,6 +6,7 @@ export default theme => {
     container: {
       flex: 1,
       backgroundColor: colors.backgroundChat,
+      position: 'relative',
     },
     chatView: {
       flex: 1,
@@ -19,6 +20,16 @@ export default theme => {
       justifyContent: 'center',
       paddingBottom: spacing.smaller,
       paddingTop: spacing.half,
+    },
+    slaContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 1,
     },
   });
 };

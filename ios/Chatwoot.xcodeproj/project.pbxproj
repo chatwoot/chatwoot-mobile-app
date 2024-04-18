@@ -16,6 +16,7 @@
 		4D61A548CD464A128090C0BD /* Inter-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = E75F650BCC4C4B5D8335DC0C /* Inter-Light.otf */; };
 		7699B88040F8A987B510C191 /* libPods-Chatwoot-ChatwootTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Chatwoot-ChatwootTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		833AD64B2BD116CE001FD6D6 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 833AD64A2BD116CE001FD6D6 /* PrivacyInfo.xcprivacy */; };
 		83A12A8A2A961CB4009C0419 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 83A12A892A961CB4009C0419 /* GoogleService-Info.plist */; };
 		83BB91C72A968654006D340F /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 83BB91C62A968654006D340F /* BootSplash.storyboard */; };
 		8B23603CA17949C5976077AC /* Inter-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = C864274B6C0D406F90905FB9 /* Inter-Regular.otf */; };
@@ -53,6 +54,7 @@
 		5F66D46F1C1E415482632B17 /* Inter-SemiBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-SemiBold.otf"; path = "../assets/Inter-SemiBold.otf"; sourceTree = "<group>"; };
 		757605ACA51540EE99272101 /* Inter-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Italic.otf"; path = "../assets/Inter-Italic.otf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Chatwoot/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		833AD64A2BD116CE001FD6D6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		83A12A892A961CB4009C0419 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		83A12A8B2A962338009C0419 /* Chatwoot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Chatwoot.entitlements; path = Chatwoot/Chatwoot.entitlements; sourceTree = "<group>"; };
 		83BB91C62A968654006D340F /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = Chatwoot/BootSplash.storyboard; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				833AD64A2BD116CE001FD6D6 /* PrivacyInfo.xcprivacy */,
 				83A12A892A961CB4009C0419 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Chatwoot */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -279,6 +282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				833AD64B2BD116CE001FD6D6 /* PrivacyInfo.xcprivacy in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				83A12A8A2A961CB4009C0419 /* GoogleService-Info.plist in Resources */,
 				AF073241A0ED4D318F9DE5EE /* Inter-Bold.otf in Resources */,
@@ -557,7 +561,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Chatwoot/Chatwoot.entitlements;
-				CURRENT_PROJECT_VERSION = 336;
+				CURRENT_PROJECT_VERSION = 337;
 				DEVELOPMENT_TEAM = L7YLMN4634;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Chatwoot/Info.plist;
@@ -566,7 +570,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.10.36;
+				MARKETING_VERSION = 1.10.37;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -591,7 +595,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Chatwoot/Chatwoot.entitlements;
-				CURRENT_PROJECT_VERSION = 336;
+				CURRENT_PROJECT_VERSION = 337;
 				DEVELOPMENT_TEAM = L7YLMN4634;
 				INFOPLIST_FILE = Chatwoot/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Chatwoot;
@@ -599,7 +603,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.10.36;
+				MARKETING_VERSION = 1.10.37;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

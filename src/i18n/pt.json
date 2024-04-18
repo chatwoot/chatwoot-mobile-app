@@ -249,5 +249,22 @@
       "HREF_TEXT": "Mensagens bloqueadas durante 24 horas",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
+    },
+    "MISSES": {
+      "TITLE": "SLA Perdidas",
+      "FRT": "Primeiro tempo de resposta",
+      "NRT": "Tempo para a próxima resposta",
+      "RT": "Tempo de resolução",
+      "SHOW_MORE": "{count} mais",
+      "HIDE": "Ocultar {count} linhas"
+    }
   }
 }

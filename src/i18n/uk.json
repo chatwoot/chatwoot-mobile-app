@@ -159,7 +159,7 @@
     "CONVERSATION_CREATE_EMAIL": "Надсилати сповіщення при створенні нової бесіди",
     "CONVERSATION_ASSIGNEE_EMAIL": "Надсилати сповіщення коли бесіду призначають мені",
     "CONVERSATION_MENTION_EMAIL": "Надсилати сповіщення електронною поштою, коли вас згадують в розмові",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Надсилати email-сповіщення, коли нове повідомлення створюється в призначеній бесіді",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Надсилати email, коли нове повідомлення створюється в призначеній бесіді",
     "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Надсилати push-повідомлення, коли нове повідомлення створюється в призначеній розмові"
   },
   "CONVERSATION_DETAILS": {
@@ -228,7 +228,7 @@
     "AUTH": "Вхід успішно здійснено"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
+    "TITLE": "Необхідно оновити сервер",
     "WARNING_FOR_AGENT": "Схоже, ви використовуєте непідтримуваний сервер Chatwoot для вашого мобільного додатку. Будь ласка, зверніться до адміністратора, щоб оновити ваш сервер Chatwoot.",
     "WARNING_FOR_ADMIN": "Схоже, ви використовуєте непідтримуваний сервер Chatwoot для вашого мобільного додатку. Потрібне оновлення до версії сервера %{minimumVersion} або вище."
   },
@@ -248,6 +248,23 @@
       "TEXT": "You cannot reply due to ",
       "HREF_TEXT": "24-годинне обмеження на повідомлення",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
+    },
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "Час першої відповіді",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

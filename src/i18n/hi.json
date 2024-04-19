@@ -1,15 +1,15 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "स्वागत",
   "COMMON": {
     "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
+    "ERROR_TITLE": "अनपेक्षित त्रुटि उत्पन्न हुई",
+    "REPORT_MESSAGE": "हमने अपनी टीम को इसकी सूचना दे दी है! कृपया ऐप बंद करें और फिर से शुरू करें!",
     "CLOSE": "Close"
   },
   "FOOTER": {
     "HOME": "Home",
     "CONVERSATION": "Conversations",
-    "NOTIFICATION": "Notifications",
+    "NOTIFICATION": "सूचनाएँ",
     "SETTINGS": "Settings"
   },
   "CONFIGURE_URL": {
@@ -31,8 +31,8 @@
     "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Enter a valid password",
     "LOGIN": "Sign In",
-    "FORGOT_PASSWORD": "Forgot your password?",
-    "RESET_HERE": "Reset here",
+    "FORGOT_PASSWORD": "क्या आप अपना पासवर्ड भूल गए?",
+    "RESET_HERE": "यहां रीसेट करें",
     "NO_ACCOUNT": "Don't have an account?",
     "CREATE_ACCOUNT": "Create new account",
     "SETTINGS": "Settings",

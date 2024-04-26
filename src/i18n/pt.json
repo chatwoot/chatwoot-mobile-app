@@ -16,19 +16,19 @@
     "ENTER_URL": "URL da Instalação",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
     "URL_ERROR": "Insira um URL válido",
-    "URL_REQUIRED": "URL is required",
+    "URL_REQUIRED": "URL é obrigatório",
     "CONNECT": "Ligar",
     "CHANGE_LANGUAGE": "Alterar idioma",
     "ERROR": "URL de instalação inválido"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
+    "TITLE": "Entrar na sua conta",
     "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
     "EMAIL": "e-mail",
     "PASSWORD": "Palavra-passe",
-    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_REQUIRED": "E-mail é necessário",
     "EMAIL_ERROR": "Insira um e-mail válido",
-    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_REQUIRED": "A senha é obrigatória",
     "PASSWORD_ERROR": "Insira uma senha válida",
     "LOGIN": "Iniciar Sessão",
     "FORGOT_PASSWORD": "Esqueceu-se da sua senha?",
@@ -81,7 +81,7 @@
     "SNOOZE_UNTIL_TOMORROW": "Até amanhã",
     "SNOOZE_UNTIL_NEXT_WEEK": "Até à próxima semana",
     "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Change priority",
+    "CHANGE_PRIORITY": "Alterar prioridade",
     "MESSAGES": "Mensagens",
     "UNDEFINED_VARIABLES_TITLE": "Variáveis indefinidas",
     "UNDEFINED_VARIABLES_CLOSE": "FECHAR",
@@ -111,7 +111,7 @@
     "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
     "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
     "SORT_BY": "Ordenar por",
-    "FILTER_BY_INBOX": "Filter by inbox",
+    "FILTER_BY_INBOX": "Filtrar por caixa de entrada",
     "HEADER_TITLE": "Filtro de Conversa",
     "CHOOSE_INBOX": "Selecionar Caixa de Entrada",
     "CHOOSE_STATUS": "Estado da Conversa",
@@ -139,7 +139,7 @@
     "EMPTY": "Sem notificações.",
     "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
+    "MARK_ALL": "Marcar todos como lidos",
     "CANCEL": "cancelar"
   },
   "AVAILABILITY": {
@@ -163,7 +163,7 @@
     "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Enviar notificações push quando uma nova mensagem é criada numa conversa em que está a participar"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Conversation Information",
+    "TITLE": "Informação da Conversa",
     "BROWSER": "Navegador",
     "OPERATING_SYSTEM": "Sistema operacional",
     "INITIATED_AT": "Iniciado em",
@@ -178,7 +178,7 @@
     "WATCH_CONVERSATION": "Junte-se a conversa",
     "YOU_ARE_WATCHING": "Você está participando",
     "NO_RECORDS_FOUND": "Nenhum resultado encontrado",
-    "SELECT_PARTICIPANTS": "Select agents",
+    "SELECT_PARTICIPANTS": "Selecionar agentes",
     "ADD_PARTICIPANTS": "Selecionar participantes",
     "REMAINING_PARTICIPANTS_TEXT": "outros",
     "REMAINING_PARTICIPANT_TEXT": "outro"
@@ -192,7 +192,7 @@
   "CONVERSATION_TEAMS": {
     "TITLE": "Atribuir equipe",
     "SELECT_TEAM": "Escolher Equipa",
-    "NO_RESULT": "No team found"
+    "NO_RESULT": "Nenhuma equipa encontrada"
   },
   "CONVERSATION_LABELS": {
     "TITLE": "Etiquetas da conversa",
@@ -200,17 +200,17 @@
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
     "UPDATE_LABEL": "Etiqueta adicionada com sucesso",
-    "SELECTED": "Selected",
-    "NOT_SELECTED": "No labels selected",
+    "SELECTED": "Selecionado",
+    "NOT_SELECTED": "Nenhuma etiqueta selecionada",
     "NO_RESULT": "Nenhuma Etiqueta encontrada"
   },
   "CONVERSATION_AGENTS": {
     "TITLE": "Atribuir agente",
     "SELECT_AGENT": "Escolher agente",
-    "NO_RESULT": "No agent found"
+    "NO_RESULT": "Nenhum agente encontrado"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Selecionar Agente"
   },
   "TEAMS": {
     "TITLE": "Escolher Equipa",
@@ -233,8 +233,8 @@
     "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
+    "TITLE": "Sair",
+    "SUBTITLE": "Tem a certeza que deseja sair?",
     "CANCEL": "cancelar",
     "OK": "Ok"
   },

@@ -20,6 +20,9 @@ const createStyles = theme => {
     icon: {
       marginRight: spacing.micro,
     },
+    text: {
+      maxHeight: 20,
+    },
   });
 };
 
@@ -59,7 +62,7 @@ const ConversationContent = ({ content, messageType, isPrivate, unReadCount }) =
                   {findLastMessage(message)}
                 </Text>
               ) : (
-                <Text sm numberOfLines={1} maxLength={8} color={colors.text}>
+                <Text sm numberOfLines={1} maxLength={8} color={colors.text} style={styles.text}>
                   {findLastMessage(message)}
                 </Text>
               )}

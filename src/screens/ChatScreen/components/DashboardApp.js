@@ -53,6 +53,7 @@ const DashboardApp = ({ content, conversation, currentUser }) => {
     data,
   )}}));`;
 
+  // eslint-disable-next-line react/no-unstable-nested-components
   const Spinner = () => (
     <View style={styles.spinnerView}>
       <ActivityIndicator size="small" />

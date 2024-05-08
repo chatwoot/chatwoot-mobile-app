@@ -12,6 +12,8 @@ import createStyles from './MessageList.style';
 import { openURL } from 'helpers/UrlHelper';
 import { selectMessagesLoading, selectAllMessagesFetched } from 'reducer/conversationSlice';
 import { selectors as conversationSelectors } from 'reducer/conversationSlice.selector.js';
+import ConversationSLA from 'screens/Conversation/components/ConversationItem/ConversationSLA';
+
 const propTypes = {
   loadMessages: PropTypes.func.isRequired,
   conversationId: PropTypes.number.isRequired,
@@ -77,6 +79,9 @@ const MessagesListComponent = ({ conversationId, loadMessages }) => {
 
   return (
     <View style={styles.container} autoDismiss={false}>
+      <View style={styles.slaContainer}>
+        <ConversationSLA conversationDetails={conversation} showExtendedInfo />
+      </View>
       <View style={styles.chatView}>
         {allMessages.length ? (
           <FlashList

@@ -18,6 +18,7 @@ import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 
 import ConversationLabel from './ConversationLabels';
+
 import ConversationPriority from './ConversationPriority';
 import { selectors as contactSelectors } from 'reducer/contactSlice';
 
@@ -45,6 +46,7 @@ const propTypes = {
     unread_count: PropTypes.number,
     priority: PropTypes.string,
     status: PropTypes.string,
+    sla_policy_id: PropTypes.number,
     last_non_activity_message: PropTypes.object,
   }).isRequired,
   conversationTypingUsers: PropTypes.shape({}),

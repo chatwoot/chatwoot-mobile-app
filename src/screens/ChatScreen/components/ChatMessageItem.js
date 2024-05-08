@@ -379,6 +379,7 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
     )
     .filter(displayItem => !!displayItem);
 
+  // eslint-disable-next-line react/no-unstable-nested-components
   const MessageContent = () => {
     if (emailMessageContent()) {
       return <Email emailContent={emailMessageContent()} />;

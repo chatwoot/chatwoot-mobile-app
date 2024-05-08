@@ -5,26 +5,29 @@ import { Text } from 'components';
 import { useSelector } from 'react-redux';
 import { View, StyleSheet } from 'react-native';
 import { labelsSelector } from 'reducer/labelSlice';
+import ConversationSLA from './ConversationSLA';
 
 const createStyles = theme => {
   const { spacing, colors } = theme;
   return StyleSheet.create({
-    cardLabelWrap: {
+    container: {
       marginTop: spacing.micro,
       paddingTop: spacing.tiny,
       flexDirection: 'row',
+      alignItems: 'center',
       flexWrap: 'wrap',
+      width: '100%',
+      gap: 4,
     },
     labelView: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginRight: 4,
-      marginBottom: 4,
       paddingHorizontal: 4,
       paddingVertical: 2,
       borderRadius: 4,
       borderWidth: 0.5,
       borderColor: colors.borderLight,
+      height: 20,
     },
   });
 };
@@ -45,8 +48,8 @@ const ConversationLabel = ({ conversationDetails, conversationId }) => {
   const getLabelStyle = color => {
     return {
       backgroundColor: color,
-      width: 8,
-      height: 8,
+      width: 7,
+      height: 7,
       borderRadius: 3,
       marginRight: 4,
     };
@@ -60,7 +63,10 @@ const ConversationLabel = ({ conversationDetails, conversationId }) => {
       : [];
 
   return (
-    <View style={styles.cardLabelWrap}>
+    <View style={styles.container}>
+      {conversationDetails?.sla_policy_id && (
+        <ConversationSLA conversationDetails={conversationDetails} />
+      )}
       {activeLabels.map(({ id, title, color }) => (
         <View style={styles.labelView} key={id}>
           <View style={[getLabelStyle(color)]} />

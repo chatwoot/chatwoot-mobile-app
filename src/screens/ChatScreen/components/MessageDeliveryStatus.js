@@ -79,7 +79,7 @@ const MessageDeliveryStatus = ({ message, type, channel, contactLastSeenAt }) =>
     if (!shouldShowStatusIndicator) {
       return false;
     }
-    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel || this.isASmsInbox) {
+    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel || isASmsInbox) {
       return message.source_id && isDelivered;
     }
 

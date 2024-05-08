@@ -24,9 +24,11 @@ const BottomSheetModal = ({
   headerTitle,
   closeFilter,
   showHeader,
-  initialSnapPoints,
   bottomSheetModalRef,
+  maxContentHeight,
   onDismiss,
+  initialSnapPoints,
+  autoHeightEnabled = false,
 }) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -48,10 +50,11 @@ const BottomSheetModal = ({
 
   return (
     <BottomSheetModalLibrary
-      index={1}
       ref={bottomSheetModalRef}
+      {...(autoHeightEnabled && { index: 0 })}
+      {...(!autoHeightEnabled && { index: 1 })}
+      {...(!autoHeightEnabled && { snapPoints: initialSnapPoints })}
       onChange={props => {}}
-      snapPoints={initialSnapPoints}
       backgroundStyle={{ backgroundColor: colors.background }}
       handleIndicatorStyle={{ backgroundColor: colors.secondaryColorLight }}
       handleStyle={styles.handleStyle}
@@ -59,6 +62,8 @@ const BottomSheetModal = ({
       backdropComponent={renderBackdrop}
       keyboardBlurBehavior="restore"
       android_keyboardInputMode="adjustResize"
+      enableDynamicSizing={autoHeightEnabled}
+      {...(autoHeightEnabled && { maxDynamicContentSize: maxContentHeight })}
       enablePanDownToClose
       onDismiss={onDismiss}>
       {showHeader && (
@@ -77,6 +82,8 @@ BottomSheetModal.propTypes = {
   initialSnapPoints: PropTypes.array,
   closeFilter: PropTypes.func,
   headerTitle: PropTypes.string,
+  maxContentHeight: PropTypes.number,
+  autoHeightEnabled: PropTypes.bool,
 };
 
 export default BottomSheetModal;

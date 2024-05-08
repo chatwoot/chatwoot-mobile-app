@@ -171,6 +171,7 @@ const ChatScreenComponent = ({ navigation, route }) => {
   };
 
   const dashboardScenes = {
+    // eslint-disable-next-line react/no-unstable-nested-components
     MessageRoute: () => <MessageList loadMessages={loadMessages} conversationId={conversationId} />,
   };
   if (!isDashboardAppsEmpty) {

@@ -94,6 +94,12 @@ export const ASSIGNEE_TYPE = {
   ALL: 'all',
 };
 
+export const SLA_MISS_TYPES = {
+  FRT: 'frt',
+  NRT: 'nrt',
+  RT: 'rt',
+};
+
 export const INBOX_TYPES = {
   WEB: 'Channel::WebWidget',
   FB: 'Channel::FacebookPage',

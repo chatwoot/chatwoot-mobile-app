@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL d'instal·lació",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "Si utilitzes una instal·lació de Chatwoot autoallotjada, introdueix l'URL del teu servidor. En cas contrari, utilitza app.chatwoot.com.",
     "URL_ERROR": "Introduïu un URL vàlid",
     "URL_REQUIRED": "URL is required",
     "CONNECT": "Connectar",

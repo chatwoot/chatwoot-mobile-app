@@ -16,19 +16,19 @@
     "ENTER_URL": "URL d'instal·lació",
     "DESCRIPTION": "Si utilitzes una instal·lació de Chatwoot autoallotjada, introdueix l'URL del teu servidor. En cas contrari, utilitza app.chatwoot.com.",
     "URL_ERROR": "Introduïu un URL vàlid",
-    "URL_REQUIRED": "URL is required",
+    "URL_REQUIRED": "La URL és necessària",
     "CONNECT": "Connectar",
     "CHANGE_LANGUAGE": "Canviar d'idioma",
     "ERROR": "URL d'instal·lació no vàlid"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "Inicia sessió al teu compte",
+    "DESCRIPTION": "Estàs connectat a {{baseUrl}}. Inicia sessió amb la teva adreça de correu electrònic i contrasenya.",
     "EMAIL": "Correu electrònic",
     "PASSWORD": "Contrasenya",
-    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_REQUIRED": "El correu electrònic és obligatori",
     "EMAIL_ERROR": "Introduïu un correu electrònic vàlid",
-    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_REQUIRED": "La contrasenya és necessària",
     "PASSWORD_ERROR": "Introduïu una contrasenya vàlida",
     "LOGIN": "Inicia la sessió",
     "FORGOT_PASSWORD": "Has oblidat la teva contrasenya?",
@@ -47,11 +47,11 @@
     "HEADER_TITLE": "Restablir la contrasenya",
     "TITLE": "Has oblidat la contrasenya?",
     "SUB_TITLE": "No et preocupis! T'ajudarem",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "API_SUCCESS": "L’enllaç de reinicialització de la contrasenya s’ha enviat al vostre correu electrònic."
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Converses",
-    "UPDATING": "Updating...",
+    "UPDATING": "S'està actualitzant...",
     "MINE": "Les meves",
     "UN_ASSIGNED": "Sense assignar",
     "ALL": "Totes",
@@ -64,45 +64,45 @@
     "TYPE_MESSAGE": "Escriu un missatge",
     "TYPING": "escrivint",
     "ALL_CONVERSATION_LOADED": "S'han carregat totes les converses",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "ASSIGN": "Assignar conversa",
+    "FILE_SIZE_LIMIT": "El fitxer supera el límit de 5 MB de fitxers adjunts",
     "SHARE": "Share conversation",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
-    "ASSIGNED_AGENT": "Assigned agent",
-    "TEAM": "Team",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "SELF_ASSIGN": "Self assign conversation",
-    "UN_ASSIGN": "Unassign conversation",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
-    "MARK_AS_PENDING": "Mark as pending",
-    "SNOOZE_UNTIL": "Snooze until",
-    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
-    "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
-    "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
-    "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Change priority",
-    "MESSAGES": "Messages",
-    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "DETAILS": "Detalls",
+    "LABELS": "Etiquetes de converses",
+    "ASSIGNED_AGENT": "Agent assignat",
+    "TEAM": "Equip",
+    "PRIVATE_MSG_INPUT": "Això només serà visible per als agents",
+    "SELF_ASSIGN": "Conversa autoassignada",
+    "UN_ASSIGN": "Anul·la l'assignació de la conversa",
+    "CONVERSATION_NOT_FOUND": "No s'ha pogut recuperar la conversa",
+    "MARK_AS_PENDING": "Marca com a pendent",
+    "SNOOZE_UNTIL": "Posposat fins a",
+    "SNOOZE_UNTIL_NEXT_REPLY": "Fins a la propera resposta",
+    "SNOOZE_UNTIL_TOMORROW": "Fins demà",
+    "SNOOZE_UNTIL_NEXT_WEEK": "Fins a la setmana vinent",
+    "SNOOZE": "Posposa la conversa",
+    "CHANGE_PRIORITY": "Canvia la prioritat",
+    "MESSAGES": "Missatges",
+    "UNDEFINED_VARIABLES_TITLE": "Variables sense definir",
     "UNDEFINED_VARIABLES_CLOSE": "Tancar",
-    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "DELETE_MESSAGE_TITLE": "Estàs segur que vols suprimir aquest missatge?",
+    "DELETE_MESSAGE_SUB_TITLE": "Aquesta acció no es pot desfer.",
     "COPY_MESSAGE": "Message copied to clipboard",
     "PRIORITY": {
-      "TITLE": "Priority",
+      "TITLE": "Prioritat",
       "OPTIONS": {
         "NONE": "Ningú",
         "URGENT": "Urgent",
-        "HIGH": "High",
-        "MEDIUM": "Medium",
-        "LOW": "Low"
+        "HIGH": "Alta",
+        "MEDIUM": "Mitjana",
+        "LOW": "Baixa"
       },
       "CHANGE_PRIORITY": {
         "SELECT_PLACEHOLDER": "Ningú",
-        "INPUT_PLACEHOLDER": "Select priority",
+        "INPUT_PLACEHOLDER": "Selecciona la prioritat",
         "NO_RESULTS": "No s'ha trobat agents",
-        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
-        "FAILED": "Couldn't change priority. Please try again."
+        "SUCCESSFUL": "S'ha canviat la prioritat de l'ID de conversa %{conversationId} a %{priority}",
+        "FAILED": "No s'ha pogut canviar la prioritat. Torna-ho a provar."
       }
     }
   },
@@ -110,7 +110,7 @@
     "ALL_INBOXES": "All inboxes",
     "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
     "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
-    "SORT_BY": "Sort by",
+    "SORT_BY": "Ordenat per",
     "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "Filtre de converses",
     "CHOOSE_INBOX": "Trieu Safata d'entrada",
@@ -119,12 +119,12 @@
     "RESOLVED": "Resolt",
     "BOT": "Bot",
     "SUBMIT": "Trametre",
-    "PENDING": "Pending",
-    "SNOOZED": "Snoozed"
+    "PENDING": "Pendent",
+    "SNOOZED": "Posposat"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Configuració",
-    "SET_AVAILABILITY": "Set yourself as",
+    "SET_AVAILABILITY": "Posa't com",
     "PREFERENCES": "Preferences",
     "ABOUT": "About",
     "SUPPORT": "Support",
@@ -155,7 +155,7 @@
     "CONVERSATION_ASSIGNEE_PUSH": "Envia notificacions automàtiques quan se m'assigna una conversa",
     "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Envia notificacions automàtiques quan es creï un missatge nou en una conversa assignada",
     "CONVERSATION_MENTION": "Enviar notificacions push quan siguis esmentat en una conversació",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in a participating conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Envia notificacions push quan es crea un missatge nou en una conversa participant",
     "CONVERSATION_CREATE_EMAIL": "Envia notificacions per correu electrònic quan es creï una conversa nova",
     "CONVERSATION_ASSIGNEE_EMAIL": "Envia notificacions per correu electrònic quan se m'assigna una conversa",
     "CONVERSATION_MENTION_EMAIL": "Enviar notificacions per mail quan siguis esmentat en una conversació",
@@ -174,46 +174,46 @@
     "TITLE": "Conversation participants",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
-    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
-    "WATCH_CONVERSATION": "Join conversation",
-    "YOU_ARE_WATCHING": "You are participating",
+    "NO_PARTICIPANTS_TEXT": "No hi participa ningú!.",
+    "WATCH_CONVERSATION": "Uneix-te a la conversa",
+    "YOU_ARE_WATCHING": "Estàs participant",
     "NO_RECORDS_FOUND": "No s'ha trobat agents",
-    "SELECT_PARTICIPANTS": "Select agents",
-    "ADD_PARTICIPANTS": "Select participants",
-    "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other"
+    "SELECT_PARTICIPANTS": "Seleccionar Agents",
+    "ADD_PARTICIPANTS": "Selecciona els participants",
+    "REMAINING_PARTICIPANTS_TEXT": "altres",
+    "REMAINING_PARTICIPANT_TEXT": "altre"
   },
   "CONTACT_ATTRIBUTES": {
-    "TITLE": "Contact Attributes"
+    "TITLE": "Atributs de contacte"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Accions"
   },
   "CONVERSATION_TEAMS": {
-    "TITLE": "Assign team",
+    "TITLE": "Assigna un equip",
     "SELECT_TEAM": "Selecciona equip",
-    "NO_RESULT": "No team found"
+    "NO_RESULT": "No s'han trobat equips"
   },
   "CONVERSATION_LABELS": {
     "TITLE": "Etiquetes de converses",
-    "ADD_LABEL": "Add Labels",
+    "ADD_LABEL": "Afegir etiquetes",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
     "UPDATE_LABEL": "L'etiqueta s'ha actualitzat correctament",
-    "SELECTED": "Selected",
+    "SELECTED": "Seleccionat",
     "NOT_SELECTED": "No labels selected",
     "NO_RESULT": "No s'han trobat etiquetes"
   },
   "CONVERSATION_AGENTS": {
-    "TITLE": "Assign agent",
+    "TITLE": "Assigna un agent",
     "SELECT_AGENT": "Seleccionar Agent",
-    "NO_RESULT": "No agent found"
+    "NO_RESULT": "No s'han trobat agents"
   },
   "AGENT": {
     "TITLE": "Seleccionar Agent"
   },
   "TEAMS": {
-    "TITLE": "Select Team",
+    "TITLE": "Selecciona equip",
     "EMPTY": "Please add teams to your account to assign conversations to teams.",
     "CHANGE_TEAMS": "Conversation team changed"
   },
@@ -255,16 +255,16 @@
       "FRT": "FRT %{status}",
       "NRT": "NRT %{status}",
       "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "due"
+      "MISSED": "perduda",
+      "DUE": "límit"
     },
     "MISSES": {
-      "TITLE": "SLA Misses",
+      "TITLE": "Faltes SLA",
       "FRT": "Primer temps de resposta",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
+      "NRT": "Pròxim temps de resposta",
+      "RT": "Temps de resolució",
+      "SHOW_MORE": "{count} més",
+      "HIDE": "Amaga {count} files"
     }
   }
 }

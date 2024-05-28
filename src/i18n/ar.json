@@ -81,28 +81,28 @@
     "SNOOZE_UNTIL_TOMORROW": "حتى الغد",
     "SNOOZE_UNTIL_NEXT_WEEK": "حتى الأسبوع القادم",
     "SNOOZE": "تأجيل المحادثة",
-    "CHANGE_PRIORITY": "Change priority",
+    "CHANGE_PRIORITY": "تغيير الأولوية",
     "MESSAGES": "الرسائل",
     "UNDEFINED_VARIABLES_TITLE": "متغيرات غير معرفة",
     "UNDEFINED_VARIABLES_CLOSE": "إغلاق",
-    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
+    "DELETE_MESSAGE_TITLE": "هل أنت متأكد من أنك تريد حذف هذه الرسالة؟",
+    "DELETE_MESSAGE_SUB_TITLE": "لا يمكن التراجع عن هذا الإجراء.",
+    "COPY_MESSAGE": "تم نسخ الرسالة إلى الحافظة",
     "PRIORITY": {
       "TITLE": "الأولوية",
       "OPTIONS": {
         "NONE": "لا شيء",
-        "URGENT": "Urgent",
-        "HIGH": "High",
-        "MEDIUM": "Medium",
-        "LOW": "Low"
+        "URGENT": "عاجل",
+        "HIGH": "عالية",
+        "MEDIUM": "متوسطة",
+        "LOW": "منخفضة"
       },
       "CHANGE_PRIORITY": {
         "SELECT_PLACEHOLDER": "لا شيء",
-        "INPUT_PLACEHOLDER": "Select priority",
+        "INPUT_PLACEHOLDER": "تحديد الأولوية",
         "NO_RESULTS": "لم يتم العثور على النتائج",
-        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
-        "FAILED": "Couldn't change priority. Please try again."
+        "SUCCESSFUL": "تغيير أولوية معرف المحادثة %{conversationId} إلى %{priority}",
+        "FAILED": "تعذر تغيير الأولوية، الرجاء المحاولة مرة أخرى."
       }
     }
   },
@@ -178,10 +178,10 @@
     "WATCH_CONVERSATION": "الانضمام إلى المحادثة",
     "YOU_ARE_WATCHING": "أنت مشترك",
     "NO_RECORDS_FOUND": "لم يتم العثور على النتائج",
-    "SELECT_PARTICIPANTS": "Select agents",
+    "SELECT_PARTICIPANTS": "اختر وكيل",
     "ADD_PARTICIPANTS": "اختر المشاركين",
-    "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other"
+    "REMAINING_PARTICIPANTS_TEXT": "الآخرين",
+    "REMAINING_PARTICIPANT_TEXT": "آخر"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "سمات جهة الاتصال"
@@ -192,16 +192,16 @@
   "CONVERSATION_TEAMS": {
     "TITLE": "تعيين فريق",
     "SELECT_TEAM": "اختيار فريق",
-    "NO_RESULT": "No team found"
+    "NO_RESULT": "لم يتم العثور على فريق"
   },
   "CONVERSATION_LABELS": {
     "TITLE": "وسوم المحادثة",
     "ADD_LABEL": "اضافة تصنيف جديد",
-    "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
+    "EMPTY_LIST": "يرجى إضافة تسميات إلى حسابك",
+    "NO_LABEL": "لم يتم تعيين أي تسميات",
     "UPDATE_LABEL": "تم تحديث الوسم بنجاح",
     "SELECTED": "محدد",
-    "NOT_SELECTED": "No labels selected",
+    "NOT_SELECTED": "لا توجد تسميات محددة",
     "NO_RESULT": "لم يتم العثور على تصنيفات"
   },
   "CONVERSATION_AGENTS": {
@@ -214,7 +214,7 @@
   },
   "TEAMS": {
     "TITLE": "اختيار فريق",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "EMPTY": "الرجاء إضافة فريق إلى حسابك لتعيين المحادثات للفرق.",
     "CHANGE_TEAMS": "تم تغيير فريق المحادثة"
   },
   "ERRORS": {
@@ -229,7 +229,7 @@
   },
   "SERVER_UPGRADE": {
     "TITLE": "يجب ترقية الخادم",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
+    "WARNING_FOR_AGENT": "يبدو أنك تستخدم خادم Chatwoot غير مدعوم لتطبيق الجوال الخاص بك، الرجاء الاتصال بالمشرف لترقية خادم Chatwoot الخاص بك.",
     "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
   "EXIT": {

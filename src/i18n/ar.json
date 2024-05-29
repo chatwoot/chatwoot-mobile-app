@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "رابط التثبيت",
-    "DESCRIPTION": "إذا كنت تستخدم تثبيت Chatwoot، قم بإدخال رابط الخادم الخاص بك. خلاف ذلك، استخدم app.chatwoot.com.",
+    "DESCRIPTION": "إذا كنت تستضيف الموقع بشكل ذاتي الرجاء إدخال URL الخاص بخادمك.",
     "URL_ERROR": "الرجاء إدخال عنوان صحيح",
     "URL_REQUIRED": "الرابط مطلوب",
     "CONNECT": "اتصل",
@@ -230,7 +230,7 @@
   "SERVER_UPGRADE": {
     "TITLE": "يجب ترقية الخادم",
     "WARNING_FOR_AGENT": "يبدو أنك تستخدم خادم Chatwoot غير مدعوم لتطبيق الجوال الخاص بك، الرجاء الاتصال بالمشرف لترقية خادم Chatwoot الخاص بك.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "WARNING_FOR_ADMIN": "يبدو أنك تستخدم خادم Chatwoot غير مدعوم لتطبيق الجوال الخاص بك، الرجاء الترقية إلى الإصدار %{minimumVersion} أو أحدث نسخة مطلوبة."
   },
   "EXIT": {
     "TITLE": "خروج",
@@ -240,12 +240,12 @@
   },
   "BANNER": {
     "TWILIO_WHATSAPP": {
-      "TEXT": "You can only reply to this conversation using a template message due to ",
+      "TEXT": "يمكنك فقط الرد على هذه المحادثة باستخدام رسالة قالب بسبب ",
       "HREF_TEXT": "قيد نافذة الـ 24 ساعة",
-      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send Whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
     },
     "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
+      "TEXT": "لا يمكنك الرد بسبب ",
       "HREF_TEXT": "قيد نافذة الـ 24 ساعة",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
     }
@@ -255,16 +255,16 @@
       "FRT": "FRT %{status}",
       "NRT": "NRT %{status}",
       "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "due"
+      "MISSED": "مفقود",
+      "DUE": "مستحق"
     },
     "MISSES": {
-      "TITLE": "SLA Misses",
+      "TITLE": "فشل اتفاقية مستوى الخدمة",
       "FRT": "وقت الاستجابة الأولى",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
+      "NRT": "وقت الاستجابة التالي",
+      "RT": "الوقت المحدد",
+      "SHOW_MORE": "{count} المزيد",
+      "HIDE": "إخفاء الصفوف {count}"
     }
   }
 }

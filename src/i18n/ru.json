@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "Операционная система",
     "INITIATED_AT": "Начат в",
     "INITIATED_FROM": "Начат из",
-    "IP_ADDRESS": "IP адрес"
+    "IP_ADDRESS": "IP адрес",
+    "CLIPBOARD_SUCCESS": "Код скопирован в буфер обмена"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Участники диалога",

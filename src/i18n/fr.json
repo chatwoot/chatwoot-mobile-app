@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "Système d'explitation",
     "INITIATED_AT": "Crée a",
     "INITIATED_FROM": "Crée depuis",
-    "IP_ADDRESS": "Adresse IP"
+    "IP_ADDRESS": "Adresse IP",
+    "CLIPBOARD_SUCCESS": "Code copié dans le presse-papier avec succès"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participants à une conversation",

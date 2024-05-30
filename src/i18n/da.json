@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "Operativsystem",
     "INITIATED_AT": "Startet fra",
     "INITIATED_FROM": "Startet fra",
-    "IP_ADDRESS": "IP Address"
+    "IP_ADDRESS": "IP Address",
+    "CLIPBOARD_SUCCESS": "Kode kopieret til udklipsholder med succes"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Conversation participants",

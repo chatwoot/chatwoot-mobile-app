@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "Sistema operatiu",
     "INITIATED_AT": "Iniciada a",
     "INITIATED_FROM": "Iniciat des de",
-    "IP_ADDRESS": "Adreça IP"
+    "IP_ADDRESS": "Adreça IP",
+    "CLIPBOARD_SUCCESS": "El codi s'ha copiat al porta-retalls amb èxit"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Conversation participants",

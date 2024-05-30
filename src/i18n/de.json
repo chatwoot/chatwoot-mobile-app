@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "Betriebssystem",
     "INITIATED_AT": "Initiiert am",
     "INITIATED_FROM": "Initiiert von",
-    "IP_ADDRESS": "IP-Adresse"
+    "IP_ADDRESS": "IP-Adresse",
+    "CLIPBOARD_SUCCESS": "Code erfolgreich in die Zwischenablage kopiert"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Konversationsteilnehmer",

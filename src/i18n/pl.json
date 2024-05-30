@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "System operacyjny",
     "INITIATED_AT": "Rozpoczęto o",
     "INITIATED_FROM": "Rozpoczęto z",
-    "IP_ADDRESS": "Adres IP"
+    "IP_ADDRESS": "Adres IP",
+    "CLIPBOARD_SUCCESS": "Kod został skopiowany do schowka"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Uczestnicy konwersacji",

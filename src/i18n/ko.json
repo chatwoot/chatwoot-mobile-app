@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "운영 체제",
     "INITIATED_AT": "시작 시간",
     "INITIATED_FROM": "시작 위치",
-    "IP_ADDRESS": "IP 주소"
+    "IP_ADDRESS": "IP 주소",
+    "CLIPBOARD_SUCCESS": "코드가 클립보드에 복사됨"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Conversation participants",

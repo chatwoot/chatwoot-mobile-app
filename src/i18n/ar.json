@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "نظام التشغيل",
     "INITIATED_AT": "بدأت في",
     "INITIATED_FROM": "بدأت من",
-    "IP_ADDRESS": "عنوان IP"
+    "IP_ADDRESS": "عنوان IP",
+    "CLIPBOARD_SUCCESS": "تم نسخ الكود إلى الحافظة بنجاح"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "المشاركون في المحادثة",

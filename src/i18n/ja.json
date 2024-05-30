@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "OS",
     "INITIATED_AT": "開始場所",
     "INITIATED_FROM": "開始元",
-    "IP_ADDRESS": "IP Address"
+    "IP_ADDRESS": "IP Address",
+    "CLIPBOARD_SUCCESS": "コードが正常にクリップボードにコピーされました"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Conversation participants",

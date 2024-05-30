@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "作業系统",
     "INITIATED_AT": "發起於",
     "INITIATED_FROM": "發起自：",
-    "IP_ADDRESS": "IP 地址"
+    "IP_ADDRESS": "IP 地址",
+    "CLIPBOARD_SUCCESS": "Copied to clipboard"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Conversation participants",

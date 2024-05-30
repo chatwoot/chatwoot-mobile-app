@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "Λειτουργικό",
     "INITIATED_AT": "Αρχικοποίηση τις",
     "INITIATED_FROM": "Αρχικοποίηση από",
-    "IP_ADDRESS": "Διεύθυνση IP"
+    "IP_ADDRESS": "Διεύθυνση IP",
+    "CLIPBOARD_SUCCESS": "Ο κώδικας αντιγράφτηκε με επιτυχία στο πρόχειρο"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Conversation participants",

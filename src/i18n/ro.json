@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "Sistem de operare",
     "INITIATED_AT": "Iniţiat la",
     "INITIATED_FROM": "Inițiat de la",
-    "IP_ADDRESS": "Adresă IP"
+    "IP_ADDRESS": "Adresă IP",
+    "CLIPBOARD_SUCCESS": "Cod copiat în clipboard cu succes"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participanți la conversație",

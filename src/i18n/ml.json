@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "ഓപ്പറേറ്റിംഗ് സിസ്റ്റം",
     "INITIATED_AT": "ആരംഭിച്ച സമയം ",
     "INITIATED_FROM": "ആരംഭിച്ച ആൾ ",
-    "IP_ADDRESS": "IP വിലാസം"
+    "IP_ADDRESS": "IP വിലാസം",
+    "CLIPBOARD_SUCCESS": "കോഡ് ക്ലിപ്പ്ബോർഡിലേക്ക് വിജയകരമായി പകർത്തി"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Conversation participants",

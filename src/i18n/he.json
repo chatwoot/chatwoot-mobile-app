@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "מערכת הפעלה",
     "INITIATED_AT": "יזם ב",
     "INITIATED_FROM": "יזם מ",
-    "IP_ADDRESS": "כתובת IP"
+    "IP_ADDRESS": "כתובת IP",
+    "CLIPBOARD_SUCCESS": "הקוד הועתק ללוח בהצלחה"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "משתתפים בשיחה",

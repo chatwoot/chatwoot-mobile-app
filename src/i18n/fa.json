@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "سیستم عامل",
     "INITIATED_AT": "شروع شده در",
     "INITIATED_FROM": "شروع شده از",
-    "IP_ADDRESS": "آدرس آی‌پی"
+    "IP_ADDRESS": "آدرس آی‌پی",
+    "CLIPBOARD_SUCCESS": "کد به حافظه کپی شد"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "شرکت کنندگان در گفتگو",

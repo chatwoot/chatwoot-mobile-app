@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "Hệ điều hành",
     "INITIATED_AT": "Bắt đầu lúc",
     "INITIATED_FROM": "Bắt đầu từ",
-    "IP_ADDRESS": "Địa chỉ IP"
+    "IP_ADDRESS": "Địa chỉ IP",
+    "CLIPBOARD_SUCCESS": "Copied to clipboard"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Conversation participants",

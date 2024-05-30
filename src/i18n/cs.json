@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "Operating System",
     "INITIATED_AT": "Initiated at",
     "INITIATED_FROM": "Initiated from",
-    "IP_ADDRESS": "IP adresa"
+    "IP_ADDRESS": "IP adresa",
+    "CLIPBOARD_SUCCESS": "Kód byl úspěšně zkopírován do schránky"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Conversation participants",

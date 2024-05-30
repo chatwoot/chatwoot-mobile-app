@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "Käyttöjärjestelmä",
     "INITIATED_AT": "Aloitettu klo",
     "INITIATED_FROM": "Aloitettu osoitteesta",
-    "IP_ADDRESS": "IP-osoite"
+    "IP_ADDRESS": "IP-osoite",
+    "CLIPBOARD_SUCCESS": "Koodi kopioitu leikepöydälle onnistuneesti"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Conversation participants",

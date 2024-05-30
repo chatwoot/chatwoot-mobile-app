@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "İşletim sistemi",
     "INITIATED_AT": "Başlatıldı",
     "INITIATED_FROM": "Başlatıldı",
-    "IP_ADDRESS": "IP Adresi"
+    "IP_ADDRESS": "IP Adresi",
+    "CLIPBOARD_SUCCESS": "Kod başarıyla panoya kopyalandı"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Konuşma Katılımcıları",

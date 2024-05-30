@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "Operációs rendszer",
     "INITIATED_AT": "Kezdeményezve ekkor:",
     "INITIATED_FROM": "Kezdeményezve innen:",
-    "IP_ADDRESS": "IP cím"
+    "IP_ADDRESS": "IP cím",
+    "CLIPBOARD_SUCCESS": "Vágólapra másolva"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Résztvevők",

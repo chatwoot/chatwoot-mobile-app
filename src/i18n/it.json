@@ -168,7 +168,8 @@
     "OPERATING_SYSTEM": "Sistema operativo",
     "INITIATED_AT": "Avviato il",
     "INITIATED_FROM": "Avviato da",
-    "IP_ADDRESS": "Indirizzo IP"
+    "IP_ADDRESS": "Indirizzo IP",
+    "CLIPBOARD_SUCCESS": "Codice copiato negli appunti correttamente"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Conversation participants",

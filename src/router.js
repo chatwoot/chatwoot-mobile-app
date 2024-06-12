@@ -21,7 +21,7 @@ import ConversationAction from './screens/ConversationAction/ConversationAction'
 import TabStack from './components/TabBar';
 import i18n from 'i18n';
 import { navigationRef } from 'helpers/NavigationHelper';
-import { findConversationLinkFromPush } from './helpers/PushHelper';
+import { findConversationLinkFromPush, findNotificationFromFCM } from './helpers/PushHelper';
 import { extractConversationIdFromUrl } from './helpers/conversationHelpers';
 import { selectLoggedIn } from 'reducer/authSlice';
 import { selectInstallationUrl, selectLocale } from 'reducer/settingsSlice';
@@ -109,7 +109,7 @@ const App = () => {
       // Handle notification caused app to open from quit state:
       const message = await messaging().getInitialNotification();
       if (message) {
-        const { notification } = message.data;
+        const notification = findNotificationFromFCM({ message });
         const conversationLink = findConversationLinkFromPush({ notification, installationUrl });
         if (conversationLink) {
           return conversationLink;
@@ -126,7 +126,7 @@ const App = () => {
       // Handle notification caused app to open from background state
       const unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
         if (message) {
-          const { notification } = message.data;
+          const notification = findNotificationFromFCM({ message });
 
           const conversationLink = findConversationLinkFromPush({ notification, installationUrl });
           if (conversationLink) {

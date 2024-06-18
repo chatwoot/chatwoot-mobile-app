@@ -16,12 +16,10 @@ export const updateBadgeCount = ({ count = 0 }) => {
 };
 
 export const findConversationLinkFromPush = ({ notification, installationUrl }) => {
-  const pushData = JSON.parse(notification);
-
-  const { notification_type } = pushData;
+  const { notification_type } = notification;
 
   if (NOTIFICATION_TYPES.includes(notification_type)) {
-    const { primary_actor, primary_actor_id, primary_actor_type } = pushData;
+    const { primary_actor, primary_actor_id, primary_actor_type } = notification;
     let conversationId = null;
     if (primary_actor_type === 'Conversation') {
       conversationId = primary_actor.id;
@@ -34,4 +32,18 @@ export const findConversationLinkFromPush = ({ notification, installationUrl }) 
     }
   }
   return;
+};
+
+export const findNotificationFromFCM = ({ message }) => {
+  let notification = null;
+  // FCM HTTP v1
+  if (message?.data?.payload) {
+    const parsedPayload = JSON.parse(message.data.payload);
+    notification = parsedPayload.data.notification;
+  }
+  // FCM legacy. It will be deprecated soon
+  else {
+    notification = JSON.parse(message.data.notification);
+  }
+  return notification;
 };

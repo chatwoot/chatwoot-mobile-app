@@ -1,9 +1,9 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "歡迎",
   "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
+    "ERROR": "錯誤",
+    "ERROR_TITLE": "發生意外錯誤",
+    "REPORT_MESSAGE": "我們已將此情況報告給我們的團隊！請關閉應用程式並重新開始！",
     "CLOSE": "關閉"
   },
   "FOOTER": {
@@ -13,13 +13,13 @@
     "SETTINGS": "設定"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
+    "ENTER_URL": "安裝網址",
     "DESCRIPTION": "如果您正在使用自己托管的Chatwoot 安装，请输入您的服务器URL。否则，请使用 app.chatwoot.com。",
-    "URL_ERROR": "Enter a valid URL",
+    "URL_ERROR": "輸入有效的網址",
     "URL_REQUIRED": "URL is required",
     "CONNECT": "連接",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "CHANGE_LANGUAGE": "更換語言",
+    "ERROR": "安裝網址無效"
   },
   "LOGIN": {
     "TITLE": "登录到您的帐户",
@@ -27,7 +27,7 @@
     "EMAIL": "Email",
     "PASSWORD": "密碼",
     "EMAIL_REQUIRED": "Email is required",
-    "EMAIL_ERROR": "Enter a valid email",
+    "EMAIL_ERROR": "輸入錯誤信箱",
     "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Enter a valid password",
     "LOGIN": "Sign In",
@@ -36,7 +36,7 @@
     "NO_ACCOUNT": "Don't have an account?",
     "CREATE_ACCOUNT": "建立新帳戶",
     "SETTINGS": "設定",
-    "CHANGE_LANGUAGE": "Change language",
+    "CHANGE_LANGUAGE": "更換語言",
     "TERMS": "Terms & Conditions",
     "CHANGE_URL": "Change URL"
   },

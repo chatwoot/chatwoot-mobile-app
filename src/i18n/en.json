@@ -169,7 +169,8 @@
     "OPERATING_SYSTEM": "Operating System",
     "INITIATED_AT": "Initiated at",
     "INITIATED_FROM": "Initiated from",
-    "IP_ADDRESS": "IP Address"
+    "IP_ADDRESS": "IP Address",
+    "CLIPBOARD_SUCCESS": "Copied to clipboard"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Conversation participants",

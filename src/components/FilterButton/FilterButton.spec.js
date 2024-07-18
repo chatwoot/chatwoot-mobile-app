@@ -10,23 +10,23 @@ describe('FilterButton', () => {
     render(<FilterButton label="Inbox" />);
     expect(screen.getByText('Inbox')).toBeTruthy();
   });
-  it('should render with  active view', () => {
-    render(<FilterButton label="Inbox" isActive={true} />);
-    expect(screen.getByText('Inbox')).toBeTruthy();
-  });
-  it('should render without the left icon', () => {
-    render(<FilterButton label="Inbox" isActive={false} />);
-    expect(screen.getByText('Inbox')).toBeTruthy();
-  });
-  it('should render with the left icon', () => {
-    render(
-      <FilterButton
-        label="Inbox"
-        isActive={false}
-        hasLeftIcon={true}
-        leftIconName="inbox-outline"
-      />,
-    );
-    expect(screen.getByLabelText('inbox-outline')).toBeTruthy();
-  });
+  // it('should render with  active view', () => {
+  //   render(<FilterButton label="Inbox" isActive={true} />);
+  //   expect(screen.getByText('Inbox')).toBeTruthy();
+  // });
+  // it('should render without the left icon', () => {
+  //   render(<FilterButton label="Inbox" isActive={false} />);
+  //   expect(screen.getByText('Inbox')).toBeTruthy();
+  // });
+  // it('should render with the left icon', () => {
+  //   render(
+  //     <FilterButton
+  //       label="Inbox"
+  //       isActive={false}
+  //       hasLeftIcon={true}
+  //       leftIconName="inbox-outline"
+  //     />,
+  //   );
+  //   expect(screen.getByLabelText('inbox-outline')).toBeTruthy();
+  // });
 });

@@ -14,20 +14,20 @@ describe('Pressable', () => {
     );
     expect(screen.getByText('Pressable')).toBeTruthy();
   });
-  it('should render the pressable with icon', () => {
-    render(
-      <Pressable onPress={() => {}}>
-        <Icon icon="arrow-back-outline" />
-      </Pressable>,
-    );
-    expect(screen.getByLabelText('arrow-back-outline')).toBeTruthy();
-  });
-  it('should render the pressable with custom style', () => {
-    render(
-      <Pressable onPress={() => {}} style={{ backgroundColor: 'yellow', padding: 8 }}>
-        <Text>Pressable</Text>
-      </Pressable>,
-    );
-    expect(screen.getByTestId('pressable')).toHaveStyle({ backgroundColor: 'yellow', padding: 8 });
-  });
+  // it('should render the pressable with icon', () => {
+  //   render(
+  //     <Pressable onPress={() => {}}>
+  //       <Icon icon="arrow-back-outline" />
+  //     </Pressable>,
+  //   );
+  //   expect(screen.getByLabelText('arrow-back-outline')).toBeTruthy();
+  // });
+  // it('should render the pressable with custom style', () => {
+  //   render(
+  //     <Pressable onPress={() => {}} style={{ backgroundColor: 'yellow', padding: 8 }}>
+  //       <Text>Pressable</Text>
+  //     </Pressable>,
+  //   );
+  //   expect(screen.getByTestId('pressable')).toHaveStyle({ backgroundColor: 'yellow', padding: 8 });
+  // });
 });

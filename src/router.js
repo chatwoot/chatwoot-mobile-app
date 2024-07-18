@@ -7,9 +7,8 @@ import { getStateFromPath } from '@react-navigation/native';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import RNBootSplash from 'react-native-bootsplash';
 import PropTypes from 'prop-types';
-import { useFlipper } from '@react-navigation/devtools';
 import { LightTheme } from './theme';
-import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ConfigureURLScreen from './screens/ConfigureURLScreen/ConfigureURLScreen';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
@@ -42,9 +41,7 @@ const App = () => {
   // TODO: Lets use light theme for now, add dark theme later
   const theme = LightTheme;
 
-  const routerReference = useNavigationContainerRef();
-
-  useFlipper(routerReference);
+  // const routerReference = useNavigationContainerRef();
 
   const routeNameRef = useRef();
 

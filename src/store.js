@@ -28,8 +28,8 @@ const allReducer = (state, action) => {
 };
 
 if (__DEV__) {
-  const createDebugger = require('redux-flipper').default;
-  middlewares.push(createDebugger());
+  // const createDebugger = require('redux-flipper').default;
+  // middlewares.push(createDebugger());
 }
 
 const persistedReducer = persistReducer(persistConfig, allReducer);

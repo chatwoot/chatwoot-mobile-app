@@ -3,14 +3,14 @@
   "COMMON": {
     "ERROR": "Erro",
     "ERROR_TITLE": "Ocorreu um erro inesperado",
-    "REPORT_MESSAGE": "Já relatamos isso para nossa equipe! Por favor, feche o aplicativo e comece novamente!",
+    "REPORT_MESSAGE": "Já reportamos o erro para nossa equipe! Por favor, feche o aplicativo e tente novamente!",
     "CLOSE": "Fechar"
   },
   "FOOTER": {
     "HOME": "Principal",
     "CONVERSATION": "Conversas",
     "NOTIFICATION": "Notificações",
-    "SETTINGS": "Confirgurações"
+    "SETTINGS": "Configurações"
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL de instalação",
@@ -19,23 +19,23 @@
     "URL_REQUIRED": "URL é obrigatório",
     "CONNECT": "Conectar",
     "CHANGE_LANGUAGE": "Alterar idioma",
-    "ERROR": "Url de instalação inválida"
+    "ERROR": "URL de instalação inválida"
   },
   "LOGIN": {
     "TITLE": "Acesse sua conta",
     "DESCRIPTION": "Você está conectado a {{baseUrl}}. Entre com seu endereço de e-mail e senha.",
-    "EMAIL": "e-mail",
+    "EMAIL": "E-mail",
     "PASSWORD": "Senha",
     "EMAIL_REQUIRED": "E-mail é obrigatório",
     "EMAIL_ERROR": "Digite um e-mail válido",
-    "PASSWORD_REQUIRED": "Senha obrigatória",
+    "PASSWORD_REQUIRED": "Senha é obrigatória",
     "PASSWORD_ERROR": "Digite uma senha válida",
     "LOGIN": "Entrar",
     "FORGOT_PASSWORD": "Esqueceu sua senha?",
-    "RESET_HERE": "Redefinir aqui",
+    "RESET_HERE": "Redefinir",
     "NO_ACCOUNT": "Não possui uma conta?",
-    "CREATE_ACCOUNT": "Criar nova conta",
-    "SETTINGS": "Confirgurações",
+    "CREATE_ACCOUNT": "Criar uma conta",
+    "SETTINGS": "Configurações",
     "CHANGE_LANGUAGE": "Alterar idioma",
     "TERMS": "Termos & Condições",
     "CHANGE_URL": "Alterar URL"
@@ -46,7 +46,7 @@
     "RESET_HERE": "Redefinir senha",
     "HEADER_TITLE": "Redefinir senha",
     "TITLE": "Esqueceu a Senha?",
-    "SUB_TITLE": "Não se preocupe! Nós te protegemos",
+    "SUB_TITLE": "Não se preocupe! Vamos te ajudar",
     "API_SUCCESS": "O link de redefinição de senha foi enviado para o seu endereço de e-mail"
   },
   "CONVERSATION": {
@@ -61,8 +61,8 @@
     "DOWNLOAD": "Download",
     "TODAY": "Hoje",
     "YESTERDAY": "Ontem",
-    "TYPE_MESSAGE": "Tipo da Mensagem",
-    "TYPING": "digitando",
+    "TYPE_MESSAGE": "Digite uma mensagem",
+    "TYPING": "digitando...",
     "ALL_CONVERSATION_LOADED": "Todas as conversas foram carregadas",
     "ASSIGN": "Atribuir conversa",
     "FILE_SIZE_LIMIT": "O arquivo excede o limite de anexos de 5MB",
@@ -71,7 +71,7 @@
     "LABELS": "Marcadores da conversa",
     "ASSIGNED_AGENT": "Agente atribuído",
     "TEAM": "Times",
-    "PRIVATE_MSG_INPUT": "Isto será visível apenas para Agentes",
+    "PRIVATE_MSG_INPUT": "Isto será visível apenas para agentes",
     "SELF_ASSIGN": "Autoatribuir conversa",
     "UN_ASSIGN": "Desassociar conversa",
     "CONVERSATION_NOT_FOUND": "Não foi possível obter a conversa",
@@ -101,11 +101,12 @@
         "SELECT_PLACEHOLDER": "Nenhuma",
         "INPUT_PLACEHOLDER": "Selecionar prioridade",
         "NO_RESULTS": "Nenhum resultado encontrado",
-        "SUCCESSFUL": "Alterada a prioridade do ID da conversa %{conversationId} para %{priority}",
+        "SUCCESSFUL": "Alterada a prioridade da conversa com ID %{conversationId} para %{priority}",
         "FAILED": "Não foi possível alterar a prioridade. Por favor, tente novamente."
       }
     }
   },
+
   "FILTER": {
     "ALL_INBOXES": "Todas as caixas de entrada",
     "FILTER_BY_ASSIGNEE_TYPE": "Filtrar por tipo de responsável",
@@ -169,7 +170,7 @@
     "INITIATED_AT": "Iniciada em",
     "INITIATED_FROM": "Iniciado por",
     "IP_ADDRESS": "Endereço IP",
-    "CLIPBOARD_SUCCESS": "Código copiado para área de transferência com sucesso"
+    "CLIPBOARD_SUCCESS": "Copiado para área de transferência"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participantes da conversa",
@@ -192,7 +193,7 @@
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "Atribuir equipe",
-    "SELECT_TEAM": "Selecionar time",
+    "SELECT_TEAM": "Selecionar equipe",
     "NO_RESULT": "Nenhuma equipe encontrada"
   },
   "CONVERSATION_LABELS": {
@@ -203,30 +204,30 @@
     "UPDATE_LABEL": "Marcador atualizado com sucesso",
     "SELECTED": "Selecionar",
     "NOT_SELECTED": "Nenhum marcador selecionado",
-    "NO_RESULT": "Nenhum rótulo encontrado"
+    "NO_RESULT": "Nenhum marcador encontrado"
   },
   "CONVERSATION_AGENTS": {
-    "TITLE": "Atribuir Agente",
+    "TITLE": "Atribuir agente",
     "SELECT_AGENT": "Selecionar agente",
     "NO_RESULT": "Nenhum agente encontrado"
   },
   "AGENT": {
-    "TITLE": "Selecione o Agent"
+    "TITLE": "Selecione o agente"
   },
   "TEAMS": {
-    "TITLE": "Selecionar time",
-    "EMPTY": "Adicione equipes à sua conta para atribuir conversas a equipes.",
-    "CHANGE_TEAMS": "Estado da conversa mudou"
+    "TITLE": "Selecionar equipe",
+    "EMPTY": "Adicione equipe à sua conta para atribuir conversas a equipes.",
+    "CHANGE_TEAMS": "Equipe da conversa foi alterado"
   },
   "ERRORS": {
     "COMMON_ERROR": "Não foi possível conectar ao servidor Woot, por favor tente novamente mais tarde",
-    "OfFLINE": "Você precisa se conectar ao Wi-Fi ou a uma rede celular para ficar online novamente",
+    "OfFLINE": "Você precisa se conectar ao Wi-Fi ou a uma rede móvel para ficar online novamente",
     "CANNOT_FETCH": "Ocorreu um erro ao buscar as informações, por favor, tente novamente",
-    "AUTH": "Nome de usuário / senha incorreta. Por favor, tente novamente",
+    "AUTH": "Nome de usuário ou senha inválidos. Por favor, tente novamente",
     "NO_ACCOUNTS_MESSAGE": "Você não tem acesso a nenhuma conta no chatwoot"
   },
   "SUCCESS": {
-    "AUTH": "Acesso bem sucedido"
+    "AUTH": "Login bem-sucedido"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Atualização do servidor necessária",
@@ -256,16 +257,16 @@
       "FRT": "FRT %{status}",
       "NRT": "NRT %{status}",
       "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "devido"
+      "MISSED": "perdidas",
+      "DUE": "no prazo"
     },
     "MISSES": {
-      "TITLE": "SLA Misses",
-      "FRT": "Primeira resposta",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
+      "TITLE": "SLA pendentes",
+      "FRT": "Tempo para primeira resposta (FRT)",
+      "NRT": "Tempo para próxima resposta (NRT)",
+      "RT": "Tempo de resolução (RT)",
+      "SHOW_MORE": "Mais {count}",
+      "HIDE": "Esconder {count} linhas"
     }
   }
 }

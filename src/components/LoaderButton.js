@@ -167,10 +167,5 @@ const propTypes = {
   colorScheme: PropTypes.string.isRequired,
 };
 
-const defaultProps = {
-  loading: false,
-};
-
 LoaderButton.propTypes = propTypes;
-LoaderButton.defaultProps = defaultProps;
 export default LoaderButton;

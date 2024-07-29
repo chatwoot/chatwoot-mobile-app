@@ -47,11 +47,6 @@ const propTypes = {
   installationUrl: PropTypes.string,
 };
 
-const defaultProps = {
-  onLogin: () => {},
-  isLoggingIn: false,
-};
-
 const LoginScreenComponent = ({ navigation }) => {
   const theme = useTheme();
   const { colors } = theme;
@@ -253,6 +248,5 @@ const LoginScreenComponent = ({ navigation }) => {
   );
 };
 
-LoginScreenComponent.defaultProps = defaultProps;
 LoginScreenComponent.propTypes = propTypes;
 export default LoginScreenComponent;

@@ -9,9 +9,10 @@ const deviceHeight = Dimensions.get('window').height;
 import ImageLoader from 'components/ImageLoader';
 import { MESSAGE_STATUS } from 'constants';
 import i18n from 'i18n';
+import { differenceInHours } from 'date-fns';
 
 const createStyles = theme => {
-  const { spacing, borderRadius } = theme;
+  const { spacing, borderRadius, colors } = theme;
   return StyleSheet.create({
     fileView: {
       alignItems: 'center',
@@ -80,6 +81,9 @@ const createStyles = theme => {
     attachmentTextView: {
       alignItems: 'flex-start',
       justifyContent: 'center',
+      flexWrap: 'nowrap',
+      flexGrow: 1,
+      flex: 1,
     },
     filenameTextStyle: {
       textAlign: 'left',
@@ -92,6 +96,14 @@ const createStyles = theme => {
     icon: {
       width: 16,
       height: 16,
+    },
+    instagramContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 16,
+      height: 112,
+      backgroundColor: colors.backgroundDark,
     },
   });
 };
@@ -112,6 +124,14 @@ const propTypes = {
   ),
 };
 
+function isMessageCreatedAtLessThan24HoursOld(messageTimestamp) {
+  const currentTime = new Date();
+  const messageTime = new Date(messageTimestamp * 1000);
+  const hoursDifference = differenceInHours(currentTime, messageTime);
+
+  return hoursDifference > 24;
+}
+
 const ChatAttachmentItemComponent = ({ type, attachments, showAttachment, message }) => {
   const theme = useTheme();
   const { colors } = theme;
@@ -120,6 +140,12 @@ const ChatAttachmentItemComponent = ({ type, attachments, showAttachment, messag
   const [imageLoading, onLoadImage] = useState(false);
   const isPrivate = message.private;
   const status = message.status;
+  const contentAttributes = message.content_attributes;
+  const createdAt = message.created_at;
+  const { image_type = null, file_type = null } = contentAttributes;
+
+  const isInstagramStory = image_type === 'story_mention';
+  const isInstagramStoryExpired = isMessageCreatedAtLessThan24HoursOld(createdAt);
 
   const attachmentNameTextColor = () => {
     if (isPrivate) {
@@ -169,61 +195,67 @@ const ChatAttachmentItemComponent = ({ type, attachments, showAttachment, messag
           ? `${fileName}`
           : `${fileNameWithOutExt.substr(fileName.length - 30)}...${fileTypeFromName}`;
 
+      if (fileType === 'image') {
+        return (
+          <React.Fragment key={index}>
+            {isInstagramStory && isInstagramStoryExpired ? (
+              <View style={styles.instagramContainer}>
+                <Icon icon="document-error-outline" size={24} color={colors.colorBlackLight} />
+                <Text style={styles.text}>{i18n.t('CONVERSATION.STORY_NOT_AVAILABLE')}</Text>
+              </View>
+            ) : (
+              <Pressable
+                onPress={() => showAttachment({ type: 'image', dataUrl })}
+                style={[
+                  type === 'outgoing' ? styles.imageViewRight : styles.imageViewLeft,
+                  isPrivate && styles.privateMessageContainer,
+                ]}>
+                <FastImage
+                  style={styles.image}
+                  source={{
+                    uri: dataUrl,
+                  }}
+                  onLoadStart={() => onLoadImage(true)}
+                  onLoadEnd={() => {
+                    onLoadImage(false);
+                  }}
+                />
+                {imageLoading && <ImageLoader style={styles.imageLoader} />}
+              </Pressable>
+            )}
+          </React.Fragment>
+        );
+      }
+
       return (
-        <React.Fragment key={index}>
-          {fileType === 'image' ? (
-            <Pressable
-              onPress={() => showAttachment({ type: 'image', dataUrl })}
-              style={[
-                type === 'outgoing' ? styles.imageViewRight : styles.imageViewLeft,
-                isPrivate && styles.privateMessageContainer,
-              ]}>
-              <FastImage
-                style={styles.image}
-                source={{
-                  uri: dataUrl,
-                }}
-                onLoadStart={() => onLoadImage(true)}
-                onLoadEnd={() => {
-                  onLoadImage(false);
-                }}
-              />
-              {imageLoading && <ImageLoader style={styles.imageLoader} />}
-            </Pressable>
-          ) : (
-            <View
-              style={[
-                type === 'outgoing' ? styles.fileViewRight : styles.fileViewLeft,
-                styles.fileView,
-              ]}>
-              <View style={styles.fileAttachmentContainer}>
-                <View style={styles.fileAttachmentView}>
-                  <View style={styles.attachmentIconView}>
-                    <Icon
-                      icon={fileType === 'audio' ? 'headphone-filled' : 'file-filled'}
-                      color={attachmentIconColor()}
-                      size={24}
-                    />
-                  </View>
-                  <View style={styles.attachmentTextView}>
-                    <Text
-                      sm
-                      medium
-                      color={attachmentNameTextColor()}
-                      style={styles.filenameTextStyle}>
-                      {fileNameToDisplay}
-                    </Text>
-                    <Pressable onPress={() => showAttachment({ type: 'file', dataUrl })}>
-                      <Text xs color={attachmentDownloadTextColor()} style={styles.downloadText}>
-                        {i18n.t('CONVERSATION.DOWNLOAD')}
-                      </Text>
-                    </Pressable>
-                  </View>
-                </View>
+        <View
+          style={[
+            type === 'outgoing' ? styles.fileViewRight : styles.fileViewLeft,
+            styles.fileView,
+          ]}
+          key={index}>
+          <View style={styles.fileAttachmentContainer}>
+            <View style={styles.fileAttachmentView}>
+              <View style={styles.attachmentIconView}>
+                <Icon
+                  icon={fileType === 'audio' ? 'headphone-filled' : 'file-filled'}
+                  color={attachmentIconColor()}
+                  size={24}
+                />
+              </View>
+              <View style={styles.attachmentTextView}>
+                <Text sm medium color={attachmentNameTextColor()} style={styles.filenameTextStyle}>
+                  {fileNameToDisplay}
+                </Text>
+                <Pressable onPress={() => showAttachment({ type: 'file', dataUrl })}>
+                  <Text xs color={attachmentDownloadTextColor()} style={styles.downloadText}>
+                    {i18n.t('CONVERSATION.DOWNLOAD')}
+                  </Text>
+                </Pressable>
               </View>
             </View>
-          )}
-        </React.Fragment>
+          </View>
+        </View>
       );
     });
   }

@@ -1431,7 +1431,7 @@ PODS:
     - React-Core
     - React-hermes
     - Sentry/HybridSDK (= 8.31.1)
-  - RNSnackbar (2.7.1):
+  - RNSnackbar (2.6.2):
     - React-Core
   - RNSVG (15.4.0):
     - React-Core
@@ -1801,7 +1801,7 @@ SPEC CHECKSUMS:
   RNReanimated: f4ff116e33e0afc3d127f70efe928847c7c66355
   RNScreens: 5aeecbb09aa7285379b6e9f3c8a3c859bb16401c
   RNSentry: 85fe1023bf60ead12d059d9c845de19de0ed6f0d
-  RNSnackbar: eb4e012514c60433cbe933be0846e8f2abb6d2b6
+  RNSnackbar: 3727b42bf6c4314a53c18185b5203e915a4ab020
   RNSVG: cb24fb322de8c1ebf59904e7aca0447bb8dbed5a
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d

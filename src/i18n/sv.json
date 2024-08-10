@@ -88,6 +88,7 @@
     "DELETE_MESSAGE_TITLE": "Är du säker på att du vill radera detta meddelande?",
     "DELETE_MESSAGE_SUB_TITLE": "Denna åtgärd kan inte ångras.",
     "COPY_MESSAGE": "Meddelandet har kopierats till urklipp",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Prioritet",
       "OPTIONS": {

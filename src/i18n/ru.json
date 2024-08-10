@@ -88,6 +88,7 @@
     "DELETE_MESSAGE_TITLE": "Вы действительно хотите удалить это сообщение?",
     "DELETE_MESSAGE_SUB_TITLE": "Это действие не может быть отменено.",
     "COPY_MESSAGE": "Сообщение скопировано в буфер обмена",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Приоритет",
       "OPTIONS": {

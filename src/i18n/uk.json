@@ -88,6 +88,7 @@
     "DELETE_MESSAGE_TITLE": "Ви справді бажаєте вилучити це повідомлення?",
     "DELETE_MESSAGE_SUB_TITLE": "Цю дію не можна скасувати.",
     "COPY_MESSAGE": "Повідомлення скопійовано до буфера обміну",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Пріоритет",
       "OPTIONS": {

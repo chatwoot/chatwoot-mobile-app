@@ -88,6 +88,7 @@
     "DELETE_MESSAGE_TITLE": "هل أنت متأكد من أنك تريد حذف هذه الرسالة؟",
     "DELETE_MESSAGE_SUB_TITLE": "لا يمكن التراجع عن هذا الإجراء.",
     "COPY_MESSAGE": "تم نسخ الرسالة إلى الحافظة",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "الأولوية",
       "OPTIONS": {

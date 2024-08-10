@@ -88,6 +88,7 @@
     "DELETE_MESSAGE_TITLE": "Estàs segur que vols suprimir aquest missatge?",
     "DELETE_MESSAGE_SUB_TITLE": "Aquesta acció no es pot desfer.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Prioritat",
       "OPTIONS": {

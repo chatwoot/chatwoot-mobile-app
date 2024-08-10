@@ -88,6 +88,7 @@
     "DELETE_MESSAGE_TITLE": "בטוחים שאתם רוצים למחוק את ההודעה הזו?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Priority",
       "OPTIONS": {

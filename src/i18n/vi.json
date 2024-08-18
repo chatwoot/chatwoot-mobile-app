@@ -127,8 +127,8 @@
     "HEADER_TITLE": "Cài đặt",
     "SET_AVAILABILITY": "Đặt chính mình như",
     "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
+    "ABOUT": "Về",
+    "SUPPORT": "Hỗ trợ",
     "SWITCH_ACCOUNT": "Chuyển tài khoản",
     "CHANGE_LANGUAGE": "Thay đổi ngôn ngữ",
     "NOTIFICATION_PREFERENCES": "Tuỳ chọn thông báo",
@@ -177,13 +177,13 @@
     "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
     "NO_PARTICIPANTS_TEXT": "No one is participating!.",
-    "WATCH_CONVERSATION": "Join conversation",
+    "WATCH_CONVERSATION": "Mở cuộc trò chuyện",
     "YOU_ARE_WATCHING": "You are participating",
     "NO_RECORDS_FOUND": "Không tìm thấy kết quả",
     "SELECT_PARTICIPANTS": "Select agents",
     "ADD_PARTICIPANTS": "Select participants",
-    "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other"
+    "REMAINING_PARTICIPANTS_TEXT": "khác",
+    "REMAINING_PARTICIPANT_TEXT": "khác"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Thuộc tính của liên hệ"
@@ -199,7 +199,7 @@
   "CONVERSATION_LABELS": {
     "TITLE": "Nhãn hội thoại",
     "ADD_LABEL": "Thêm nhãn",
-    "EMPTY_LIST": "Please add labels to your account",
+    "EMPTY_LIST": "Vui lòng thêm nhãn cho tài khoản của bạn",
     "NO_LABEL": "No labels assigned",
     "UPDATE_LABEL": "Nhãn được cập nhật thành công",
     "SELECTED": "Selected",

@@ -51,7 +51,7 @@
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Các cuộc hội thoại",
-    "UPDATING": "Updating...",
+    "UPDATING": "Đang cập nhật...",
     "MINE": "Của tôi",
     "UN_ASSIGNED": "Chưa được phân công",
     "ALL": "Tất cả",
@@ -67,14 +67,14 @@
     "ASSIGN": "Phân công cuộc trò chuyện",
     "FILE_SIZE_LIMIT": "File vượt quá giới hạn tối đa 5MB",
     "SHARE": "Chia sẻ cuộc trò chuyện",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
+    "DETAILS": "Chi tiết",
+    "LABELS": "Nhãn hội thoại",
     "ASSIGNED_AGENT": "Đại lý được phân công",
     "TEAM": "Nhóm",
     "PRIVATE_MSG_INPUT": "Chỉ hiện cho nhà cung cấp",
-    "SELF_ASSIGN": "Self assign conversation",
+    "SELF_ASSIGN": "Tự chỉ định cuộc trò chuyện",
     "UN_ASSIGN": "Bỏ phân công cuộc trò chuyện",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "CONVERSATION_NOT_FOUND": "Không tìm thấy hội thoại",
     "MARK_AS_PENDING": "Đánh dấu chưa giải quyết",
     "SNOOZE_UNTIL": "Tạm dừng đến khi",
     "SNOOZE_UNTIL_NEXT_REPLY": "Cho đến phản hồi kế tiếp",
@@ -90,13 +90,13 @@
     "COPY_MESSAGE": "Message copied to clipboard",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
-      "TITLE": "Priority",
+      "TITLE": "Sự ưu tiên",
       "OPTIONS": {
         "NONE": "Không có",
-        "URGENT": "Urgent",
-        "HIGH": "High",
-        "MEDIUM": "Medium",
-        "LOW": "Low"
+        "URGENT": "Gấp",
+        "HIGH": "Cao",
+        "MEDIUM": "Trung bình",
+        "LOW": "Thấp"
       },
       "CHANGE_PRIORITY": {
         "SELECT_PLACEHOLDER": "Không có",

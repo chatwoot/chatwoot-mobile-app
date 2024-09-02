@@ -1,15 +1,15 @@
-import React, { useState, useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
-import { TouchableOpacity, View, Dimensions, StyleSheet } from 'react-native';
+import { Icon, Pressable, Text } from 'components';
+import ImageLoader from 'components/ImageLoader';
+import { MESSAGE_STATUS } from 'constants';
+import { differenceInHours } from 'date-fns';
+import i18n from 'i18n';
 import PropTypes from 'prop-types';
-import { Icon, Text, Pressable } from 'components';
+import React, { useMemo, useState } from 'react';
+import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
-import ImageLoader from 'components/ImageLoader';
-import { MESSAGE_STATUS } from 'constants';
-import i18n from 'i18n';
-import { differenceInHours } from 'date-fns';
 
 const createStyles = theme => {
   const { spacing, borderRadius, colors } = theme;
@@ -140,7 +140,8 @@ const ChatAttachmentItemComponent = ({ type, attachments, showAttachment, messag
   const [imageLoading, onLoadImage] = useState(false);
   const isPrivate = message.private;
   const status = message.status;
-  const contentAttributes = message.content_attributes;
+  const { contentAttributes = {} } = message?.content_attributes || {};
+
   const createdAt = message.created_at;
   const { image_type = null, file_type = null } = contentAttributes;
 

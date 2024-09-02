@@ -80,8 +80,8 @@ android {
         applicationId "com.chatwoot.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5180036
-        versionName "1.10.45"
+        versionCode 5180037
+        versionName "1.10.46"
     }
     lintOptions {
         checkReleaseBuilds false
@@ -95,7 +95,7 @@ android {
                 keyAlias RELEASE_KEY_ALIAS
                 keyPassword RELEASE_KEY_PASSWORD
             }
-        }        
+        }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'

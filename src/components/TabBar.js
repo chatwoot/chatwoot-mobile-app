@@ -1,14 +1,16 @@
-import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-// import { Platform } from 'react-native';
+import React, { useMemo, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ConversationScreen from 'src/screens/Conversation/ConversationScreen';
 import NotificationScreen from 'src/screens/Notification/NotificationScreen';
 import SettingsScreen from 'src/screens/Settings/SettingsScreen';
 import { Icon } from 'components';
+import { actions as authActions } from 'reducer/authSlice';
 import { selectUnreadCount } from 'reducer/notificationSlice';
-// const isAndroid = Platform.OS === 'android';
+import { selectUser } from 'reducer/authSlice';
+import { getUserPermissions } from 'helpers/permissionHelper';
+import { CONVERSATION_PERMISSIONS } from 'src/constants/permissions';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -51,6 +53,7 @@ const renderTabIcon = (route, focused, color, size) => {
 };
 
 const TabStack = () => {
+  const dispatch = useDispatch();
   const unReadCount = useSelector(selectUnreadCount);
   const tabBarBadge = useMemo(() => {
     if (unReadCount >= 100) {
@@ -58,6 +61,16 @@ const TabStack = () => {
     }
     return unReadCount;
   }, [unReadCount]);
+
+  useEffect(() => {
+    dispatch(authActions.getProfile());
+  }, [dispatch]);
+
+  const user = useSelector(selectUser);
+  const userPermissions = getUserPermissions(user, user.account_id);
+  const hasConversationPermission = CONVERSATION_PERMISSIONS.some(permission =>
+    userPermissions.includes(permission),
+  );
 
   return (
     <Tab.Navigator
@@ -84,12 +97,14 @@ const TabStack = () => {
           alignSelf: undefined,
         },
       })}>
-      <Tab.Screen name="Conversations" component={HomeStack} />
-      <Tab.Screen
-        name="Notifications"
-        component={NotificationStack}
-        options={{ tabBarBadge: tabBarBadge > 0 ? tabBarBadge : null }}
-      />
+      {hasConversationPermission && <Tab.Screen name="Conversations" component={HomeStack} />}
+      {hasConversationPermission && (
+        <Tab.Screen
+          name="Notifications"
+          component={NotificationStack}
+          options={{ tabBarBadge: tabBarBadge > 0 ? tabBarBadge : null }}
+        />
+      )}
       <Tab.Screen name="Settings" component={SettingsStack} />
     </Tab.Navigator>
   );

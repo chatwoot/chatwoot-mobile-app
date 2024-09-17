@@ -34,6 +34,8 @@ import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import { actions as inboxActions, inboxesSelector } from 'reducer/inboxSlice';
 import { selectUser } from 'reducer/authSlice';
+import { getUserPermissions } from 'helpers/permissionHelper';
+import { CONVERSATION_PERMISSIONS } from 'src/constants/permissions';
 import {
   selectWebSocketUrl,
   selectInstallationUrl,
@@ -64,6 +66,15 @@ const ConversationScreen = () => {
   const isLoading = useSelector(state => state.conversations.loading);
   const inboxes = useSelector(inboxesSelector.selectAll);
   const user = useSelector(selectUser);
+  const userPermissions = getUserPermissions(user, user.account_id);
+  // If conversation_manage permission is available, then keep all the assignee types
+  // If conversation_manage is not available and conversation_unassigned_manage only is available, then return only unassigned and mine
+  // If conversation_manage is not available and conversation_participating_manage only is available, then return only all and mine
+  const assigneeTypes = userPermissions.includes('conversation_manage')
+    ? ASSIGNEE_TYPES
+    : userPermissions.includes('conversation_unassigned_manage')
+    ? ASSIGNEE_TYPES.filter(type => type.key !== 'all')
+    : ASSIGNEE_TYPES.filter(type => type.key !== 'unassigned');
 
   const [pageNumber, setPage] = useState(1);
   const dispatch = useDispatch();
@@ -360,7 +371,7 @@ const ConversationScreen = () => {
             <ClearFilterButton count={filtersCount} onSelectItem={clearAppliedFilters} />
           )}
           <FilterButton
-            label={ASSIGNEE_TYPES.map(item => (item.key === assigneeType ? item.name : null))}
+            label={assigneeTypes.map(item => (item.key === assigneeType ? item.name : null))}
             hasLeftIcon={false}
             onPress={toggleConversationAssigneeModal}
             isActive={assigneeType !== 'mine'}
@@ -397,7 +408,7 @@ const ConversationScreen = () => {
           children={
             <ConversationFilter
               activeValue={assigneeType}
-              items={ASSIGNEE_TYPES}
+              items={assigneeTypes}
               onChangeFilter={onSelectAssigneeType}
               colors={colors}
             />

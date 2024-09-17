@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/react-native';
 import Config from 'react-native-config';
 import { name as appName } from './app.json';
 
-LogBox.ignoreLogs(['Warning: Function components cannot have defaultProps']);
+LogBox.ignoreLogs([/defaultProps/]); // This will ignore all warnings containing 'defaultProps'
 
 import App from './src/app';
 
@@ -14,4 +14,8 @@ if (!__DEV__) {
     tracesSampleRate: 1.0,
     attachScreenshot: true,
   });
+}
+
+if (__DEV__) {
+  require('./ReactotronConfig');
 }

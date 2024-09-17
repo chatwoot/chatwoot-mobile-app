@@ -24,6 +24,7 @@ import { clearContacts } from 'reducer/contactSlice';
 import { actions as settingsActions } from 'reducer/settingsSlice';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
+import { CONVERSATION_PERMISSIONS } from 'src/constants/permissions';
 import {
   logout,
   selectUser,
@@ -38,6 +39,8 @@ import UserInformation from './components/UserInformation';
 import AvailabilityStatus from './components/AvailabilityStatus';
 import AccordionItem from './components/AccordionItem';
 import { Header, Text, Pressable, Icon } from 'components';
+
+import { getUserPermissions } from 'helpers/permissionHelper';
 
 // Bottom sheet
 import AccountsSelector from './components/AccountsSelector';
@@ -62,13 +65,27 @@ const SettingsScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [showWidget, toggleWidget] = useState(false);
+  const user = useSelector(selectUser);
   const {
     name,
     email,
     avatar_url: avatarUrl,
     identifier_hash: identifierHash,
     account_id: activeAccountId,
-  } = useSelector(selectUser);
+  } = user;
+
+  const userPermissions = getUserPermissions(user, activeAccountId);
+
+  const hasConversationPermission = CONVERSATION_PERMISSIONS.some(permission =>
+    userPermissions.includes(permission),
+  );
+
+  const preferencesSections = settings.preferencesSections.filter(item => {
+    if (item.routeName === 'NotificationPreferences') {
+      return hasConversationPermission;
+    }
+    return true;
+  });
 
   const availabilityStatus = useSelector(selectCurrentUserAvailability) || 'offline';
 
@@ -205,7 +222,7 @@ const SettingsScreen = () => {
             </Text>
           </View>
           <View style={styles.accordionItemWrapper}>
-            {settings.preferencesSections.map((item, index) => (
+            {preferencesSections.map((item, index) => (
               <AccordionItem
                 key={item.title}
                 leftIcon={item.leftIcon}

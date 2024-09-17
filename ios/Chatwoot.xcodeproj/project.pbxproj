@@ -543,7 +543,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Chatwoot/Chatwoot.entitlements;
-				CURRENT_PROJECT_VERSION = 3468;
+				CURRENT_PROJECT_VERSION = 3469;
 				DEVELOPMENT_TEAM = L7YLMN4634;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Chatwoot/Info.plist;
@@ -552,7 +552,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.10.48;
+				MARKETING_VERSION = 1.10.49;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -577,7 +577,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Chatwoot/Chatwoot.entitlements;
-				CURRENT_PROJECT_VERSION = 3468;
+				CURRENT_PROJECT_VERSION = 3469;
 				DEVELOPMENT_TEAM = L7YLMN4634;
 				INFOPLIST_FILE = Chatwoot/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Chatwoot;
@@ -585,7 +585,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.10.48;
+				MARKETING_VERSION = 1.10.49;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

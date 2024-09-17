@@ -67,15 +67,22 @@ const ConversationScreen = () => {
   const inboxes = useSelector(inboxesSelector.selectAll);
   const user = useSelector(selectUser);
   const userPermissions = getUserPermissions(user, user.account_id);
-  // If conversation_manage permission is available, then keep all the assignee types
+  // If userPermissions contains any values conversation_manage_permission,administrator, agent then keep all the assignee types
   // If conversation_manage is not available and conversation_unassigned_manage only is available, then return only unassigned and mine
   // If conversation_manage is not available and conversation_participating_manage only is available, then return only all and mine
-  const assigneeTypes = userPermissions.includes('conversation_manage')
-    ? ASSIGNEE_TYPES
-    : userPermissions.includes('conversation_unassigned_manage')
-    ? ASSIGNEE_TYPES.filter(type => type.key !== 'all')
-    : ASSIGNEE_TYPES.filter(type => type.key !== 'unassigned');
+  let assigneeTypes = ASSIGNEE_TYPES;
 
+  if (
+    userPermissions.includes('conversation_manage') ||
+    userPermissions.includes('agent') ||
+    userPermissions.includes('administrator')
+  ) {
+    assigneeTypes = ASSIGNEE_TYPES;
+  } else if (userPermissions.includes('conversation_unassigned_manage')) {
+    assigneeTypes = ASSIGNEE_TYPES.filter(type => type.key !== 'all');
+  } else {
+    assigneeTypes = ASSIGNEE_TYPES.filter(type => type.key !== 'unassigned');
+  }
   const [pageNumber, setPage] = useState(1);
   const dispatch = useDispatch();
 

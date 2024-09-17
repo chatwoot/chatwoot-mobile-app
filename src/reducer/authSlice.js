@@ -111,6 +111,16 @@ export const actions = {
       } catch (error) {}
     },
   ),
+  getProfile: createAsyncThunk('auth/getProfile', async (_, { rejectWithValue }) => {
+    try {
+      const headers = await getHeaders();
+      const baseUrl = await getBaseUrl();
+      const response = await axios.get(`${baseUrl}${API_URL}profile`, { headers });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }),
 };
 
 export const authAdapter = createEntityAdapter();
@@ -181,6 +191,12 @@ const authSlice = createSlice({
       })
       .addCase(actions.updateAvailability.fulfilled, (state, { payload }) => {
         state.currentUser = payload;
+      })
+      .addCase(actions.getProfile.fulfilled, (state, { payload }) => {
+        state.currentUser = {
+          ...state.currentUser,
+          ...payload,
+        };
       });
   },
 });

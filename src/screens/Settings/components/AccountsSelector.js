@@ -92,7 +92,7 @@ const AccountsSelector = ({ accounts, activeValue, onPress, colors }) => {
                 </View>
               </View>
               <Text xs color={colors.text} style={styles.role}>
-                {account.role}
+                {account.custom_role_id ? account.custom_role.name : account.role}
               </Text>
             </View>
             <View>

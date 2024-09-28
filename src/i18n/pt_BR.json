@@ -261,7 +261,7 @@
       "DUE": "devido"
     },
     "MISSES": {
-      "TITLE": "SLA Misses",
+      "TITLE": "SLA Perdido",
       "FRT": "Primeira resposta",
       "NRT": "Next response time",
       "RT": "Resolution time",

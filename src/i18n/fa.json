@@ -88,6 +88,7 @@
     "DELETE_MESSAGE_TITLE": "آیا از حذف این پیام مطمئن هستید؟",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "اولویت",
       "OPTIONS": {
@@ -168,7 +169,8 @@
     "OPERATING_SYSTEM": "سیستم عامل",
     "INITIATED_AT": "شروع شده در",
     "INITIATED_FROM": "شروع شده از",
-    "IP_ADDRESS": "آدرس آی‌پی"
+    "IP_ADDRESS": "آدرس آی‌پی",
+    "CLIPBOARD_SUCCESS": "کد به حافظه کپی شد"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "شرکت کنندگان در گفتگو",
@@ -248,6 +250,23 @@
       "TEXT": "شما نمی‌توانید پاسخ بدهید به دلیل ",
       "HREF_TEXT": "محدودیت ۲۴ ساعته پنجره پیام",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "از دست رفته",
+      "DUE": "نقض"
+    },
+    "MISSES": {
+      "TITLE": "SLA های از دست رفته",
+      "FRT": "زمان تا اولین پاسخ",
+      "NRT": "زمان پاسخگویی بعدی",
+      "RT": "زمان تا حل شدن مساله",
+      "SHOW_MORE": "{count} بیشتر",
+      "HIDE": "مخفی کردم {count} مورد"
     }
   }
 }

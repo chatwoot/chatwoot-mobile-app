@@ -88,6 +88,7 @@
     "DELETE_MESSAGE_TITLE": "Ești sigur că vrei să ștergi acest mesaj?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Prioritate",
       "OPTIONS": {
@@ -168,7 +169,8 @@
     "OPERATING_SYSTEM": "Sistem de operare",
     "INITIATED_AT": "Iniţiat la",
     "INITIATED_FROM": "Inițiat de la",
-    "IP_ADDRESS": "Adresă IP"
+    "IP_ADDRESS": "Adresă IP",
+    "CLIPBOARD_SUCCESS": "Cod copiat în clipboard cu succes"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participanți la conversație",
@@ -248,6 +250,23 @@
       "TEXT": "Nu puteți răspunde din cauza ",
       "HREF_TEXT": "Restricţie fereastră mesaj 24 de ore",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
+    },
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "Primul răspuns",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

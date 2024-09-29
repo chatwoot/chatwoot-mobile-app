@@ -88,6 +88,7 @@
     "DELETE_MESSAGE_TITLE": "Sind Sie sicher, dass Sie diese Nachricht löschen möchten?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Priorität",
       "OPTIONS": {
@@ -168,7 +169,8 @@
     "OPERATING_SYSTEM": "Betriebssystem",
     "INITIATED_AT": "Initiiert am",
     "INITIATED_FROM": "Initiiert von",
-    "IP_ADDRESS": "IP-Adresse"
+    "IP_ADDRESS": "IP-Adresse",
+    "CLIPBOARD_SUCCESS": "Code erfolgreich in die Zwischenablage kopiert"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Konversationsteilnehmer",
@@ -248,6 +250,23 @@
       "TEXT": "Sie können nicht antworten, weil ",
       "HREF_TEXT": "Beschränkung des 24-Stunden-Nachrichtenfensters",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/?translation"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
+    },
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "Erste Antwortzeit",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

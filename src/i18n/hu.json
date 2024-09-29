@@ -88,6 +88,7 @@
     "DELETE_MESSAGE_TITLE": "Biztosan törölni szeretnéd ezt az üzenetet?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Prioritás",
       "OPTIONS": {
@@ -168,7 +169,8 @@
     "OPERATING_SYSTEM": "Operációs rendszer",
     "INITIATED_AT": "Kezdeményezve ekkor:",
     "INITIATED_FROM": "Kezdeményezve innen:",
-    "IP_ADDRESS": "IP cím"
+    "IP_ADDRESS": "IP cím",
+    "CLIPBOARD_SUCCESS": "Vágólapra másolva"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Résztvevők",
@@ -248,6 +250,23 @@
       "TEXT": "You cannot reply due to ",
       "HREF_TEXT": "24 órás üzeneti ablak megkötés",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
+    },
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "Első reakció idő",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

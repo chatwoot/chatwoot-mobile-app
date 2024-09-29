@@ -88,6 +88,7 @@
     "DELETE_MESSAGE_TITLE": "Você tem certeza que deseja excluir esta mensagem?",
     "DELETE_MESSAGE_SUB_TITLE": "Esta ação não pode ser desfeita.",
     "COPY_MESSAGE": "Mensagem copiada para área de transferência",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Prioridade",
       "OPTIONS": {
@@ -168,7 +169,8 @@
     "OPERATING_SYSTEM": "Sistema Operacional",
     "INITIATED_AT": "Iniciada em",
     "INITIATED_FROM": "Iniciado por",
-    "IP_ADDRESS": "Endereço IP"
+    "IP_ADDRESS": "Endereço IP",
+    "CLIPBOARD_SUCCESS": "Código copiado para área de transferência com sucesso"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participantes da conversa",
@@ -248,6 +250,23 @@
       "TEXT": "Você não pode responder devido a ",
       "HREF_TEXT": "Restrições de janela de mensagem de 24 horas",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "devido"
+    },
+    "MISSES": {
+      "TITLE": "SLA Perdido",
+      "FRT": "Primeira resposta",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} mais",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

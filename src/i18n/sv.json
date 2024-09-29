@@ -88,6 +88,7 @@
     "DELETE_MESSAGE_TITLE": "Är du säker på att du vill radera detta meddelande?",
     "DELETE_MESSAGE_SUB_TITLE": "Denna åtgärd kan inte ångras.",
     "COPY_MESSAGE": "Meddelandet har kopierats till urklipp",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Prioritet",
       "OPTIONS": {
@@ -168,7 +169,8 @@
     "OPERATING_SYSTEM": "Operativsystem",
     "INITIATED_AT": "Initierad",
     "INITIATED_FROM": "Initierad från",
-    "IP_ADDRESS": "IP-adress"
+    "IP_ADDRESS": "IP-adress",
+    "CLIPBOARD_SUCCESS": "Koden har kopierats till urklipp"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Deltagare i konversation",
@@ -248,6 +250,23 @@
       "TEXT": "You cannot reply due to ",
       "HREF_TEXT": "24 timmars meddelandebegränsning",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
+    },
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "Första svarstiden",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

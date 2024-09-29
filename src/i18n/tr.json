@@ -88,6 +88,7 @@
     "DELETE_MESSAGE_TITLE": "Bu mesajı silmek istediğinizden emin misiniz?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Öncelik",
       "OPTIONS": {
@@ -168,7 +169,8 @@
     "OPERATING_SYSTEM": "İşletim sistemi",
     "INITIATED_AT": "Başlatıldı",
     "INITIATED_FROM": "Başlatıldı",
-    "IP_ADDRESS": "IP Adresi"
+    "IP_ADDRESS": "IP Adresi",
+    "CLIPBOARD_SUCCESS": "Kod başarıyla panoya kopyalandı"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Konuşma Katılımcıları",
@@ -248,6 +250,23 @@
       "TEXT": "You cannot reply due to ",
       "HREF_TEXT": "24 saat mesaj penceresi kısıtlaması",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
+    },
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "İlk yanıt süresi",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

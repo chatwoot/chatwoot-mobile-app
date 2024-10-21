@@ -26,6 +26,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           'This app does not use Apple Music, but a system API may require this permission.',
         UIBackgroundModes: ['fetch', 'remote-notification'],
       },
+      // Please use the relative path to the google-services.json file
       googleServicesFile: process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE,
       entitlements: {
         'aps-environment': 'production',
@@ -43,6 +44,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         'android.permission.WRITE_EXTERNAL_STORAGE',
         'android.permission.RECORD_AUDIO',
       ],
+      // Please use the relative path to the google-services.json file
       googleServicesFile: process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE,
     },
     extra: {

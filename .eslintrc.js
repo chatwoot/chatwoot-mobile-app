@@ -1,9 +1,18 @@
 module.exports = {
-  root: true,
-  extends: '@react-native-community',
+  extends: ['expo', 'prettier'],
+  plugins: ['prettier'],
   rules: {
-    'no-console': 2,
-    'react/prop-types': 2,
-    radix: 'off',
+    'prettier/prettier': 'error',
   },
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      parser: '@typescript-eslint/parser',
+      plugins: ['@typescript-eslint'],
+      extends: ['plugin:@typescript-eslint/recommended'],
+      parserOptions: {
+        warnOnUnsupportedTypeScriptVersion: false,
+      },
+    },
+  ],
 };

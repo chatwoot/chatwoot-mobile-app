@@ -8,7 +8,7 @@ import i18n from 'i18n';
 import { selectUserId } from 'reducer/authSlice';
 import { inboxAgentSelectors } from 'reducer/inboxAgentsSlice';
 import differenceInHours from 'date-fns/differenceInHours';
-import { CONVERSATION_STATUS } from 'src/constants/index';
+import { CONVERSATION_STATUS } from 'constants/index';
 
 const createStyles = theme => {
   const { spacing } = theme;

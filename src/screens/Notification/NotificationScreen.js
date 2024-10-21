@@ -51,7 +51,7 @@ const REFRESH_SCREEN_LIST = [
   SCREENS.CHAT,
 ];
 
-const NotificationScreen = ({ navigation }) => {
+const NotificationScreen = ({ navigation, selectConversation = () => {} }) => {
   const [appState, setAppState] = useState(AppState.currentState);
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -243,7 +243,6 @@ const propTypes = {
     navigate: PropTypes.func.isRequired,
   }).isRequired,
   selectConversation: PropTypes.func,
-  allNotifications: PropTypes.array.isRequired,
   isFetching: PropTypes.bool,
   isAllNotificationsLoaded: PropTypes.bool,
   getAllNotifications: PropTypes.func,
@@ -251,14 +250,6 @@ const propTypes = {
   markNotificationAsRead: PropTypes.func,
 };
 
-const defaultProps = {
-  allNotifications: [],
-  isFetching: false,
-  selectConversation: () => {},
-  isAllNotificationsLoaded: false,
-};
-
 NotificationScreen.propTypes = propTypes;
-NotificationScreen.defaultProps = defaultProps;
 
 export default NotificationScreen;

@@ -1,4 +1,4 @@
-import { INBOX_TYPES } from 'src/constants/index';
+import { INBOX_TYPES } from 'constants/index';
 import images from 'constants/images';
 
 export const getInboxIconByType = ({ channelType, phoneNumber }) => {

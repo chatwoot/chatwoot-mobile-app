@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import { Text, Icon, Pressable } from 'components';
+import Icon from '../Icon/Icon';
+import Text from '../Text/Text';
+import Pressable from '../Pressable/Pressable';
 import { getTextSubstringWithEllipsis } from 'helpers';
 
 import PropTypes from 'prop-types';

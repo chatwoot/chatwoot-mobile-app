@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
 
-import { UserAvatar } from 'components';
+import UserAvatar from './UserAvatar';
 
 const UserAvatarGroup = ({ users, size, showMoreText, moreText, length, fontSize }) => {
   const theme = useTheme();

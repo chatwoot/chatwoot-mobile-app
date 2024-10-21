@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen } from '@testing-library/react-native';
-import { render } from 'tests';
+import { render } from '../../tests';
 import Empty from './Empty';
 jest.mock('react-native-linear-gradient', () => 'LinearGradient');
 describe('Empty', () => {

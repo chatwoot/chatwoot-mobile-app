@@ -7,7 +7,7 @@ import { showToast } from 'helpers/ToastHelper';
 import I18n from 'i18n';
 import * as RootNavigation from 'helpers/NavigationHelper';
 import { checkServerSupport } from 'helpers/ServerHelper';
-import { extractDomain } from 'src/helpers/settingsHelper';
+import { extractDomain } from 'helpers/settingsHelper';
 
 const settingAdapter = createEntityAdapter();
 export const actions = {

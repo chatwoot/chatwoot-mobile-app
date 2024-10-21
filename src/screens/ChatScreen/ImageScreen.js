@@ -1,15 +1,20 @@
-import React, { useMemo, useState } from 'react';
-import { useTheme } from '@react-navigation/native';
-import ImageZoom from 'react-native-image-pan-zoom';
-import FastImage from 'react-native-fast-image';
-import PropTypes from 'prop-types';
-import { View, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
-import { Header, ImageLoader } from 'components';
+import React, { useMemo, useState } from "react";
+import { useTheme } from "@react-navigation/native";
+import ImageZoom from "react-native-image-pan-zoom";
+import PropTypes from "prop-types";
+import {
+  View,
+  SafeAreaView,
+  StyleSheet,
+  Dimensions,
+  Image,
+} from "react-native";
+import { Header, ImageLoader } from "components";
 
-const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Dimensions.get('window').height - 180;
+const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get("window").height - 180;
 
-const createStyles = theme => {
+const createStyles = (theme) => {
   const { colors } = theme;
   return StyleSheet.create({
     container: {
@@ -17,15 +22,15 @@ const createStyles = theme => {
       backgroundColor: colors.background,
     },
     imageContainer: {
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: "center",
+      alignItems: "center",
       flex: 1,
     },
     bannerImage: {
       flex: 1,
-      width: '100%',
-      height: '100%',
-      resizeMode: 'contain',
+      width: "100%",
+      height: "100%",
+      resizeMode: "contain",
     },
   });
 };
@@ -65,8 +70,9 @@ const ImageScreen = ({ navigation, route }) => {
           cropWidth={deviceWidth}
           cropHeight={deviceHeight}
           imageWidth={deviceWidth}
-          imageHeight={deviceHeight}>
-          <FastImage
+          imageHeight={deviceHeight}
+        >
+          <Image
             style={styles.bannerImage}
             source={{
               uri: imageUrl,

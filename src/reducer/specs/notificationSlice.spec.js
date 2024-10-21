@@ -43,7 +43,7 @@ jest.mock('helpers/APIHelper', () => {
     }),
   };
 });
-jest.mock('helpers/AuthHelper', () => {
+jest.mock('services/auth', () => {
   return {
     getHeaders: jest.fn(() => {
       return {

@@ -2,7 +2,9 @@ import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
-import { Text, Icon, Pressable } from 'components';
+import Icon from '../Icon/Icon';
+import Text from '../Text/Text';
+import Pressable from '../Pressable/Pressable';
 
 import { StyleSheet } from 'react-native';
 

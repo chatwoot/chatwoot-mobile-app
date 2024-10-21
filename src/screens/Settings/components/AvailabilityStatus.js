@@ -14,10 +14,6 @@ const propTypes = {
   status: PropTypes.string,
 };
 
-const defaultProps = {
-  status: '',
-};
-
 const createStyles = theme => {
   const { colors, spacing, borderRadius } = theme;
   return StyleSheet.create({
@@ -45,7 +41,7 @@ const createStyles = theme => {
   });
 };
 
-const AvailabilityStatus = ({ status }) => {
+const AvailabilityStatus = ({ status = '' }) => {
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -107,5 +103,4 @@ const AvailabilityStatus = ({ status }) => {
 };
 
 AvailabilityStatus.propTypes = propTypes;
-AvailabilityStatus.defaultProps = defaultProps;
 export default AvailabilityStatus;

@@ -5,17 +5,13 @@ import { API_URL } from '../constants/url';
 import I18n from '../i18n';
 
 import { showToast } from './ToastHelper';
-import { getHeaders } from './AuthHelper';
-
-import { store } from '../store';
-import { logout } from 'reducer/authSlice';
-import { getBaseUrl } from './UrlHelper';
+import { getHeaders, getBaseUrl, handleLogout } from '../services/auth';
 
 const parseErrorCode = error => {
   Sentry.captureException(error);
   if (error.response) {
     if (error.response.status === 401) {
-      store.dispatch(logout());
+      handleLogout();
     }
   } else {
     showToast({ message: I18n.t('ERRORS.COMMON_ERROR') });
@@ -28,7 +24,7 @@ const API = axios.create();
 // Request parsing interceptor
 API.interceptors.request.use(
   async config => {
-    const headers = await getHeaders();
+    const headers = await getHeaders() 
     config.baseURL = await getBaseUrl();
     const configHeaders = config.headers;
     if (headers) {

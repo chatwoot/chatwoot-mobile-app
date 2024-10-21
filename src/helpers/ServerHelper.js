@@ -1,8 +1,8 @@
-import Config from 'react-native-config';
 import { Alert } from 'react-native';
 import I18n from '../i18n';
+
+const minimumVersion = process.env.EXPO_PUBLIC_MINIMUM_CHATWOOT_VERSION;
 export function checkServerSupport({ installedVersion, userRole }) {
-  const minimumVersion = Config.MINIMUM_CHATWOOT_VERSION;
   if (installedVersion < minimumVersion) {
     if (userRole === 'administrator') {
       Alert.alert(

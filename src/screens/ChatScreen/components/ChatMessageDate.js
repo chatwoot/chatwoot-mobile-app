@@ -24,7 +24,7 @@ const createStyles = theme => {
   });
 };
 
-const ChatMessageDateComponent = ({ date }) => {
+const ChatMessageDateComponent = ({ date = null }) => {
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -43,10 +43,5 @@ const propTypes = {
   date: PropTypes.string,
 };
 
-const defaultProps = {
-  date: null,
-};
-
-ChatMessageDateComponent.defaultProps = defaultProps;
 ChatMessageDateComponent.propTypes = propTypes;
 export default ChatMessageDateComponent;

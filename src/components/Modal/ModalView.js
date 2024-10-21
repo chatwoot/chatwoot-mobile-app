@@ -54,13 +54,13 @@ const propTypes = {
   onPressClose: PropTypes.func,
 };
 
-const defaultProps = {
-  headerText: '',
-  buttonText: '',
-  contentText: '',
-};
-
-const ModalView = ({ showModal, headerText, contentText, buttonText, onPressClose }) => {
+const ModalView = ({
+  showModal,
+  headerText,
+  contentText,
+  buttonText,
+  onPressClose,
+}) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
@@ -89,5 +89,4 @@ const ModalView = ({ showModal, headerText, contentText, buttonText, onPressClos
 };
 
 ModalView.propTypes = propTypes;
-ModalView.defaultProps = defaultProps;
 export default ModalView;

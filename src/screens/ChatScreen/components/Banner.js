@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { Icon, Text, Pressable } from 'components';
 
-import { openURL } from 'src/helpers/UrlHelper';
+import { openURL } from 'helpers/UrlHelper';
 import { View } from 'react-native-animatable';
 
 const createStyles = theme => {

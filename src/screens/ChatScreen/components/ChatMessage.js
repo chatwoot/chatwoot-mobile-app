@@ -97,11 +97,14 @@ const propTypes = {
   conversation: PropTypes.object,
 };
 
-const defaultProps = {
-  message: { content: null, date: null },
-};
-
-const ChatMessageComponent = ({ message, showAttachment, conversation }) => {
+const ChatMessageComponent = ({
+  message = {
+    content: null,
+    date: null,
+  },
+  showAttachment,
+  conversation,
+}) => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
 
@@ -165,7 +168,6 @@ const ChatMessageComponent = ({ message, showAttachment, conversation }) => {
   );
 };
 
-ChatMessageComponent.defaultProps = defaultProps;
 ChatMessageComponent.propTypes = propTypes;
 
 export default React.memo(ChatMessageComponent);

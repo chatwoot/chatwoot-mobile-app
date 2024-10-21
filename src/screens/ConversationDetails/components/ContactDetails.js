@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Icon, Text, Pressable } from 'components';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { openNumber } from 'src/helpers/UrlHelper';
+import { openNumber } from 'helpers/UrlHelper';
 import { showToast } from 'helpers/ToastHelper';
 
 const createStyles = theme => {

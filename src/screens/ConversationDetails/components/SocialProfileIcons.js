@@ -4,7 +4,7 @@ import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { Icon, Pressable } from 'components';
 
-import { openURL } from 'src/helpers/UrlHelper';
+import { openURL } from 'helpers/UrlHelper';
 
 const createStyles = theme => {
   const { spacing, borderRadius } = theme;

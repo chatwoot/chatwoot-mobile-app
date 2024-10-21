@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { openURL } from 'src/helpers/UrlHelper';
+import { openURL } from 'helpers/UrlHelper';
 import { Text } from 'components';
 
 const createStyles = theme => {

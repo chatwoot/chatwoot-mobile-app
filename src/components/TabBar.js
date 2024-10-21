@@ -2,33 +2,39 @@ import React, { useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ConversationScreen from 'src/screens/Conversation/ConversationScreen';
-import NotificationScreen from 'src/screens/Notification/NotificationScreen';
-import SettingsScreen from 'src/screens/Settings/SettingsScreen';
+import ConversationScreen from 'screens/Conversation/ConversationScreen';
+import NotificationScreen from 'screens/Notification/NotificationScreen';
+import SettingsScreen from 'screens/Settings/SettingsScreen';
 import { Icon } from 'components';
 import { actions as authActions } from 'reducer/authSlice';
 import { selectUnreadCount } from 'reducer/notificationSlice';
 import { selectUser } from 'reducer/authSlice';
 import { getUserPermissions } from 'helpers/permissionHelper';
-import { CONVERSATION_PERMISSIONS } from 'src/constants/permissions';
+import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const HomeStack = () => (
-  <Stack.Navigator initialRouteName="ConversationScreen" screenOptions={{ headerShown: false }}>
+  <Stack.Navigator
+    initialRouteName="ConversationScreen"
+    screenOptions={{ headerShown: false, navigationBarColor: '#FFFF' }}>
     <Stack.Screen name="ConversationScreen" component={ConversationScreen} />
   </Stack.Navigator>
 );
 
 const SettingsStack = () => (
-  <Stack.Navigator initialRouteName="SettingsScreen" screenOptions={{ headerShown: false }}>
+  <Stack.Navigator
+    initialRouteName="SettingsScreen"
+    screenOptions={{ headerShown: false, navigationBarColor: '#FFFF' }}>
     <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
   </Stack.Navigator>
 );
 
 const NotificationStack = () => (
-  <Stack.Navigator initialRouteName="NotificationScreen" screenOptions={{ headerShown: false }}>
+  <Stack.Navigator
+    initialRouteName="NotificationScreen"
+    screenOptions={{ headerShown: false, navigationBarColor: '#FFFF' }}>
     <Tab.Screen name="NotificationScreen" component={NotificationScreen} />
   </Stack.Navigator>
 );

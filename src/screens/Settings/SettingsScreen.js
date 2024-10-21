@@ -3,14 +3,16 @@ import { useTheme } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { SafeAreaView, Platform, ScrollView, Dimensions } from 'react-native';
-import Config from 'react-native-config';
 import { StackActions } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import DeviceInfo from 'react-native-device-info';
 import ChatWootWidget from '@chatwoot/react-native-widget';
 import { View, Image } from 'react-native';
+import * as Application from 'expo-application';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import { useFocusEffect } from '@react-navigation/native';
+import Constants from 'expo-constants';
+
 import settings from './constants/settings';
 import { LANGUAGES } from 'constants';
 import i18n from 'i18n';
@@ -24,7 +26,7 @@ import { clearContacts } from 'reducer/contactSlice';
 import { actions as settingsActions } from 'reducer/settingsSlice';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
-import { CONVERSATION_PERMISSIONS } from 'src/constants/permissions';
+import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 import {
   logout,
   selectUser,
@@ -49,7 +51,11 @@ import LanguageSelector from './components/LanguageSelector';
 
 const deviceHeight = Dimensions.get('window').height;
 
-const appName = DeviceInfo.getApplicationName();
+const appName = Application.applicationName;
+const appVersion = Application.nativeApplicationVersion;
+
+const buildNumber = Application.nativeBuildVersion;
+const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVersion;
 
 const propTypes = {
   navigation: PropTypes.shape({
@@ -315,7 +321,7 @@ const SettingsScreen = () => {
           </View>
           <View style={styles.appDescriptionView}>
             <Text color={colors.textLight} xs medium style={styles.appDescriptionText}>
-              {`Version ${packageFile.version}`}
+              {`v${appVersionDetails}`}
             </Text>
           </View>
         </View>
@@ -327,17 +333,19 @@ const SettingsScreen = () => {
             </Text>
           </Pressable>
         </View>
-        {!!Config.CHATWOOT_WEBSITE_TOKEN && !!Config.CHATWOOT_BASE_URL && !!showWidget && (
-          <ChatWootWidget
-            websiteToken={Config.CHATWOOT_WEBSITE_TOKEN}
-            locale="en"
-            baseUrl={Config.CHATWOOT_BASE_URL}
-            closeModal={() => toggleWidget(false)}
-            isModalVisible={showWidget}
-            user={userDetails}
-            customAttributes={customAttributes}
-          />
-        )}
+        {!!process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN &&
+          !!process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL &&
+          !!showWidget && (
+            <ChatWootWidget
+              websiteToken={process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN}
+              locale="en"
+              baseUrl={process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL}
+              closeModal={() => toggleWidget(false)}
+              isModalVisible={showWidget}
+              user={userDetails}
+              customAttributes={customAttributes}
+            />
+          )}
       </ScrollView>
     </SafeAreaView>
   );

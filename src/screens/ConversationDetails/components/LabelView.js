@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@react-navigation/native';
-import LabelBox from 'src/components/LabelBox';
+import LabelBox from 'components/LabelBox';
 import AddLabelButton from './AddButton';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { Text } from 'components';

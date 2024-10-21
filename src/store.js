@@ -11,6 +11,7 @@ import {
   REGISTER,
 } from 'redux-persist';
 import { rootReducer } from './reducer';
+import { setStore } from './reducer/storeAccessor';
 
 const persistConfig = {
   key: 'Root',
@@ -27,11 +28,6 @@ const allReducer = (state, action) => {
   return rootReducer(state, action);
 };
 
-if (__DEV__) {
-  // const createDebugger = require('redux-flipper').default;
-  // middlewares.push(createDebugger());
-}
-
 const persistedReducer = persistReducer(persistConfig, allReducer);
 
 export const store = configureStore({
@@ -46,3 +42,5 @@ export const store = configureStore({
     }).concat(middlewares),
 });
 export const persistor = persistStore(store);
+
+setStore(store);

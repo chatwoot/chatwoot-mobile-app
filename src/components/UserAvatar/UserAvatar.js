@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import PropTypes from 'prop-types';
-import FastImage from 'react-native-fast-image';
-import { Text } from 'components';
+import Text from 'components/Text/Text';
 import { getUserInitial } from 'helpers';
 
 import { PRESENCE_STATUS_COLORS } from 'constants';
@@ -72,7 +71,7 @@ const Badge = ({ source, size, badgeStyle, activeBadgeColor, activeCircle }) => 
           backgroundColor: colors.colorWhite,
         },
       ]}>
-      <FastImage
+      <Image
         style={[
           badgeStyle,
           {
@@ -106,10 +105,10 @@ const Badge = ({ source, size, badgeStyle, activeBadgeColor, activeCircle }) => 
 };
 
 const UserAvatar = ({
-  thumbnail,
-  userName,
-  size,
-  fontSize,
+  thumbnail = null,
+  userName = null,
+  size = 48,
+  fontSize = 16,
   defaultBGColor,
   channel,
   chatAdditionalInfo,
@@ -123,7 +122,7 @@ const UserAvatar = ({
 
   return avatarUrl ? (
     <View testID="userAvatar">
-      <FastImage
+      <Image
         testID="userImage"
         source={{
           uri: avatarUrl,
@@ -205,14 +204,7 @@ const badgePropTypes = {
   activeBadgeColor: PropTypes.string,
   activeCircle: PropTypes.object,
 };
-const defaultProps = {
-  thumbnail: null,
-  userName: null,
-  size: 48,
-  fontSize: 16,
-};
 
-UserAvatar.defaultProps = defaultProps;
 UserAvatar.propTypes = propTypes;
 Badge.propTypes = badgePropTypes;
 

@@ -1,0 +1,30 @@
+version: '2.1'
+orbs:
+  node: circleci/node@5.1.0
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/node:20.6.0
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install Dependencies
+          command: yarn install --immutable
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - .yarn/cache
+            - .yarn/unplugged
+      - run:
+          command: yarn run test
+          name: Run YARN tests
+workflows:
+  test_my_app:
+    jobs:
+      - build-and-test

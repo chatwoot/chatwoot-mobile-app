@@ -31,7 +31,7 @@ export const getBaseUrl = async () => {
 
 export const getPubSubToken = async () => {
   try {
-    const state = getStore().getState();
+    const state = await getStore().getState();
     const {
       currentUser: { pubsub_token: pubSubToken },
     } = state.auth;

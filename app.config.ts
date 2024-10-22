@@ -64,8 +64,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         '@sentry/react-native/expo',
         {
           url: 'https://sentry.io/',
-          project: 'react-native',
-          organization: 'chatwoot-p3',
+          project: process.env.EXPO_PUBLIC_SENTRY_PROJECT_NAME,
+          organization: process.env.EXPO_PUBLIC_SENTRY_ORG_NAME,
         },
       ],
       '@react-native-firebase/app',

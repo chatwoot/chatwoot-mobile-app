@@ -4,7 +4,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Platform } from 'react-native';
 
 import { createPendingMessage, buildCreatePayload } from 'helpers/conversationHelpers';
-import { addOrUpdateMessage } from 'reducer/conversationSlice';
+import { addOrUpdateMessageHelper } from './conversationHelpers';
 
 import axios from 'helpers/APIHelper';
 import * as RootNavigation from 'helpers/NavigationHelper';
@@ -63,7 +63,6 @@ const actions = {
         const {
           conversations: { currentInbox, assigneeType, conversationStatus },
         } = getState();
-        // TODO: Move to helpers since this is used in multiple places
         const params = {
           inbox_id: currentInbox || null,
           assignee_type: assigneeType === 'mine' ? 'me' : assigneeType,
@@ -96,7 +95,6 @@ const actions = {
         const {
           data: { payload, meta },
         } = response;
-        // TODO: Commit meta to store
         return { data: payload, meta, conversationId };
       } catch (error) {
         if (!error.response) {
@@ -157,46 +155,49 @@ const actions = {
   ),
   sendMessage: createAsyncThunk(
     'conversations/sendMessage',
-    async ({ data }, { dispatch, rejectWithValue }) => {
+    async ({ data }, { dispatch, getState, rejectWithValue }) => {
       const { conversationId } = data;
       let payload;
       const pendingMessage = createPendingMessage(data);
 
       try {
-        dispatch(
-          addOrUpdateMessage({
-            ...pendingMessage,
-            status: MESSAGE_STATUS.PROGRESS,
-          }),
-        );
-        payload = buildCreatePayload(pendingMessage);
-        const { file } = data;
+        const state = getState();
+        const newState = { ...state.conversations };
+        addOrUpdateMessageHelper(newState, {
+          ...pendingMessage,
+          status: MESSAGE_STATUS.PROGRESS,
+        });
+        dispatch({ type: 'conversations/addOrUpdateMessage', payload: newState });
+
+        payload = buildCreatePayload(data);
 
         const contentType =
           Platform.OS === 'ios' && file
             ? file.type
             : Platform.OS === 'android' && file
-            ? 'multipart/form-data'
-            : 'application/json';
+              ? 'multipart/form-data'
+              : 'application/json';
 
         const response = await axios.post(`conversations/${conversationId}/messages`, payload, {
           headers: {
             'Content-Type': contentType,
           },
         });
-        dispatch(
-          addOrUpdateMessage({
-            ...response.data,
-            status: MESSAGE_STATUS.SENT,
-          }),
-        );
+
+        const finalState = { ...getState().conversations };
+        addOrUpdateMessageHelper(finalState, {
+          ...response.data,
+          status: MESSAGE_STATUS.SENT,
+        });
+        dispatch({ type: 'conversations/addOrUpdateMessage', payload: finalState });
+        return response.data;
       } catch (error) {
-        dispatch(
-          addOrUpdateMessage({
-            ...pendingMessage,
-            status: MESSAGE_STATUS.FAILED,
-          }),
-        );
+        const errorState = { ...getState().conversations };
+        addOrUpdateMessageHelper(errorState, {
+          ...pendingMessage,
+          status: MESSAGE_STATUS.FAILED,
+        });
+        dispatch({ type: 'conversations/addOrUpdateMessage', payload: errorState });
         if (!error.response) {
           throw error;
         }
@@ -204,7 +205,6 @@ const actions = {
       }
     },
   ),
-
   toggleConversationStatus: createAsyncThunk(
     'conversations/toggleConversationStatus',
     async ({ conversationId, status, snoozedUntil = null }, { rejectWithValue }) => {
@@ -269,7 +269,6 @@ const actions = {
       try {
         const apiUrl = `conversations/${conversationId}/assignments?assignee_id=${assigneeId}`;
         const response = await axios.post(apiUrl);
-
         return response.data;
       } catch (error) {
         if (!error.response) {
@@ -283,7 +282,6 @@ const actions = {
     'conversations/toggleTypingStatus',
     async ({ conversationId, typingStatus }, { rejectWithValue }) => {
       const apiUrl = `conversations/${conversationId}/toggle_typing_status`;
-
       await axios
         .post(apiUrl, {
           typing_status: typingStatus,

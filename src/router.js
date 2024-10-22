@@ -152,14 +152,7 @@ const App = () => {
             routeNameRef.current = navigationRef.current.getCurrentRoute().name;
           }}
           onStateChange={async () => {
-            const previousRouteName = routeNameRef.current;
-            const currentRouteName = navigationRef.current.getCurrentRoute().name;
-            if (previousRouteName !== currentRouteName) {
-              // TODO
-              // captureScreen({ screenName: currentRouteName });
-            }
-            // Save the current route name for later comparison
-            routeNameRef.current = currentRouteName;
+            routeNameRef.current = navigationRef.current.getCurrentRoute().name;
           }}
           theme={theme}>
           <BottomSheetModalProvider>

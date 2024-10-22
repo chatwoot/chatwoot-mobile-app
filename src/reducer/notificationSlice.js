@@ -135,7 +135,6 @@ export const actions = {
       }
     },
   ),
-  // TODO: Use on logout
   clearDeviceDetails: createAsyncThunk(
     'notifications/clearDeviceDetails',
     async ({ pushToken }, { rejectWithValue }) => {

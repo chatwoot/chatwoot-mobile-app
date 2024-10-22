@@ -1,10 +1,9 @@
 import { getStore } from '../reducer/storeAccessor';
-// import { logout } from '../reducer/authSlice';
+import { logout } from '../reducer/authSlice';
 
 export const handleLogout = async () => {
   const store = await getStore();
-  // TODO: dispatch logout
-  //   store.dispatch(logout());
+  store.dispatch(logout());
 };
 
 export const getHeaders = async () => {

@@ -3,12 +3,12 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import I18n from 'i18n';
 import axios from 'axios';
 import APIHelper from '../helpers/APIHelper';
-import { showToast } from 'helpers/ToastHelper'; 
+import { showToast } from 'helpers/ToastHelper';
 import { getBaseUrl, getHeaders } from '../services/auth';
 import { API_URL } from 'constants/url';
 import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
 
-export const actions = { 
+export const actions = {
   doLogin: createAsyncThunk('auth/doLogin', async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await APIHelper.post('auth/sign_in', { email, password });
@@ -107,7 +107,10 @@ export const actions = {
           }),
         );
         return data;
-      } catch (error) {}
+      } catch (error) {
+        // Handle the error and return a rejected value
+        return rejectWithValue(error.response ? error.response.data : error.message);
+      }
     },
   ),
   getProfile: createAsyncThunk('auth/getProfile', async (_, { rejectWithValue }) => {

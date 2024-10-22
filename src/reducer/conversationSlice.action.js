@@ -176,8 +176,8 @@ const actions = {
           Platform.OS === 'ios' && file
             ? file.type
             : Platform.OS === 'android' && file
-              ? 'multipart/form-data'
-              : 'application/json';
+            ? 'multipart/form-data'
+            : 'application/json';
 
         const response = await axios.post(`conversations/${conversationId}/messages`, payload, {
           headers: {

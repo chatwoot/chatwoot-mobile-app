@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
-import { Alert, BackHandler, StatusBar, StyleSheet } from 'react-native';
+import { Alert, BackHandler, StatusBar, StyleSheet, LogBox } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PersistGate } from 'redux-persist/integration/react';
+
 import * as SplashScreen from 'expo-splash-screen';
 import { store, persistor } from './store';
 import NoNetworkBar from 'components/NoNetworkBar';
@@ -15,6 +16,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+// TODO: Please fix this
+LogBox.ignoreLogs(['Require cycle:']);
 
 const Chatwoot = () => {
   useEffect(() => {

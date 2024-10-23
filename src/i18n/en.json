@@ -127,14 +127,18 @@
   "SETTINGS": {
     "HEADER_TITLE": "Settings",
     "SET_AVAILABILITY": "Set yourself as",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferences",
     "ABOUT": "About",
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Switch Account",
     "CHANGE_LANGUAGE": "Change Language",
     "NOTIFICATION_PREFERENCES": "Notification Preferences",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Chat with us",
     "LOGOUT": "Logout",
-    "SUBMIT": "Submit"
+    "SUBMIT": "Submit",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",

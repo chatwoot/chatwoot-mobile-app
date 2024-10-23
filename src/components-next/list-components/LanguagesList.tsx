@@ -16,6 +16,8 @@ export type LanguageItemType = {
 type LanguageCellProps = {
   item: LanguageItemType;
   index: number;
+  currentLanguage: string;
+  onChangeLanguage: (locale: string) => void;
 };
 
 const languagesList = Object.keys(LANGUAGES).map((languageCode: string) => {
@@ -27,15 +29,11 @@ const languagesList = Object.keys(LANGUAGES).map((languageCode: string) => {
 });
 
 const LanguageCell = (props: LanguageCellProps) => {
-  const { item, index } = props;
-  const [currentLanguage, setLanguage] = useState('en');
+  const { item, index, currentLanguage, onChangeLanguage } = props;
   const hapticSelection = useHaptic();
-
   const handlePress = () => {
     hapticSelection?.();
-    setLanguage(item.key);
-    // i18n.changeLanguage(item.key);
-    // setLanguage(item.key as keyof typeof LANGUAGES);
+    onChangeLanguage(item.key);
   };
 
   return (
@@ -59,11 +57,17 @@ const LanguageCell = (props: LanguageCellProps) => {
   );
 };
 
-export const LanguagesList = () => {
+export const LanguagesList = ({
+  currentLanguage,
+  onChangeLanguage,
+}: {
+  currentLanguage: string;
+  onChangeLanguage: (locale: string) => void;
+}) => {
   return (
     <Animated.View style={tailwind.style('py-1 pl-3')}>
       {languagesList.map((item, index) => {
-        return <LanguageCell key={index} {...{ item, index }} />;
+        return <LanguageCell key={index} {...{ item, index, currentLanguage, onChangeLanguage }} />;
       })}
     </Animated.View>
   );

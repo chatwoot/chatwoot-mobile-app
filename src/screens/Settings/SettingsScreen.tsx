@@ -2,13 +2,16 @@ import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { Image } from 'expo-image';
 import Animated from 'react-native-reanimated';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+// import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   BottomSheetModal,
   BottomSheetScrollView,
   useBottomSheetSpringConfigs,
 } from '@gorhom/bottom-sheet';
 import { useDispatch, useSelector } from 'react-redux';
+import i18n from 'i18n';
+import { useNavigation } from '@react-navigation/native';
 
 import { tailwind } from '@/theme';
 
@@ -40,8 +43,9 @@ import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 
 const SettingsScreen = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const availabilityStatus = useSelector(selectCurrentUserAvailability) || 'offline';
-  const { bottom } = useSafeAreaInsets();
+  // const { bottom } = useSafeAreaInsets();
 
   const user = useSelector(selectUser);
   const {
@@ -53,7 +57,6 @@ const SettingsScreen = () => {
   } = user;
 
   const activeLocale = useSelector(selectLocale);
-
   const { userAvailabilityStatusSheetRef, languagesModalSheetRef } = useRefsContext();
   const hapticSelection = useHaptic();
 
@@ -74,8 +77,21 @@ const SettingsScreen = () => {
       to: updatedStatus,
     });
     // TODO: Fix this later
-    // @ts-ignore
+    // @ts-expect-error TODO: Fix typing for dispatch
     dispatch(authActions.updateAvailability({ availability: updatedStatus }));
+  };
+
+  // const onChangeLanguage = useCallback(
+  //   locale => {
+  //     dispatch(setLocale(locale));
+  //     navigation.dispatch(StackActions.replace('Tab'));
+  //     closeChangeLanguageModal();
+  //   },
+  //   [closeChangeLanguageModal, navigation, dispatch],
+  // );
+
+  const onChangeLanguage = (locale: string) => {
+    dispatch(setLocale(locale));
   };
 
   useEffect(() => {
@@ -99,49 +115,49 @@ const SettingsScreen = () => {
   const preferencesList: GenericListType[] = [
     {
       hasChevron: true,
-      title: 'Switch Account',
+      title: i18n.t('SETTINGS.CHANGE_AVAILABILITY'),
       icon: <SwitchIcon />,
-      subtitle: 'Timeless',
+      subtitle: '',
       subtitleType: 'light',
-      onPressListItem: () => null,
+      onPressListItem: () => openSheet(),
     },
     {
       hasChevron: true,
-      title: 'Notification Preferences',
+      title: i18n.t('SETTINGS.NOTIFICATION_PREFERENCES'),
       icon: <NotificationIcon />,
       subtitle: '',
       subtitleType: 'light',
       onPressListItem: () => null,
     },
-    // {
-    //   hasChevron: true,
-    //   title: 'Personal Information',
-    //   icon: <UserIcon />,
-    //   subtitle: '',
-    //   subtitleType: 'light',
-    //   onPressListItem: () => null,
-    // },
     {
       hasChevron: true,
-      title: 'Language',
+      title: i18n.t('SETTINGS.CHANGE_LANGUAGE'),
       icon: <TranslateIcon />,
       subtitle: LANGUAGES[activeLocale as keyof typeof LANGUAGES],
       subtitleType: 'light',
       onPressListItem: () => languagesModalSheetRef.current?.present(),
+    },
+    {
+      hasChevron: true,
+      title: i18n.t('SETTINGS.SWITCH_ACCOUNT'),
+      icon: <SwitchIcon />,
+      subtitle: 'Timeless',
+      subtitleType: 'light',
+      onPressListItem: () => null,
     },
   ];
 
   const supportList: GenericListType[] = [
     {
       hasChevron: true,
-      title: 'Read Docs',
+      title: i18n.t('SETTINGS.READ_DOCS'),
       icon: <SwitchIcon />,
       subtitle: '',
       subtitleType: 'light',
     },
     {
       hasChevron: true,
-      title: 'Chat with us',
+      title: i18n.t('SETTINGS.CHAT_WITH_US'),
       icon: <ChatwootIcon />,
       subtitle: '',
       subtitleType: 'light',
@@ -184,13 +200,13 @@ const SettingsScreen = () => {
           </Animated.Text>
         </Animated.View>
         <Animated.View style={tailwind.style('pt-14')}>
-          <GenericList sectionTitle="Preferences" list={preferencesList} />
+          <GenericList sectionTitle={i18n.t('SETTINGS.PREFERENCES')} list={preferencesList} />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-10')}>
-          <GenericList sectionTitle="Support" list={supportList} />
+          <GenericList sectionTitle={i18n.t('SETTINGS.SUPPORT')} list={supportList} />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-8')}>
-          <FullWidthButton text={`Log Out Timeless`} isDestructive />
+          <FullWidthButton text={i18n.t('SETTINGS.LOGOUT')} isDestructive />
         </Animated.View>
       </Animated.ScrollView>
       <BottomSheetModal
@@ -198,14 +214,15 @@ const SettingsScreen = () => {
         backdropComponent={BottomSheetBackdrop}
         handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
         detached
-        bottomInset={bottom === 0 ? 12 : bottom}
         enablePanDownToClose
         animationConfigs={animationConfigs}
+        // TODO: Fix this later
+        // bottomInset={bottom === 0 ? 12 : bottom}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-        style={tailwind.style('mx-3 rounded-[26px] overflow-hidden')}
-        snapPoints={[173]}>
+        style={tailwind.style('rounded-[26px] overflow-hidden')}
+        snapPoints={[190]}>
         <BottomSheetWrapper>
-          <BottomSheetHeader headerText="Set yourself as" />
+          <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_AVAILABILITY')} />
           <UserStatusList
             changeUserAvailabilityStatus={changeUserAvailabilityStatus}
             availabilityStatus={availabilityStatus}
@@ -217,15 +234,16 @@ const SettingsScreen = () => {
         backdropComponent={BottomSheetBackdrop}
         handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
         detached
-        bottomInset={bottom === 0 ? 12 : bottom}
+        // TODO: Fix this later
+        // bottomInset={bottom === 0 ? 12 : bottom}
         enablePanDownToClose
         animationConfigs={animationConfigs}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-        style={tailwind.style('mx-3 rounded-[26px] overflow-hidden')}
+        style={tailwind.style('rounded-[26px] overflow-hidden')}
         snapPoints={['70%']}>
         <BottomSheetScrollView showsVerticalScrollIndicator={false}>
-          <BottomSheetHeader headerText="Set Language" />
-          <LanguagesList />
+          <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_LANGUAGE')} />
+          <LanguagesList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
         </BottomSheetScrollView>
       </BottomSheetModal>
     </SafeAreaView>

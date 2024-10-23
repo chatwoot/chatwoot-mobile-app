@@ -17,7 +17,7 @@ export const getHeaders = async () => {
       accountId,
     };
   } catch (error) {
-    console.log('error:', error);
+    return null;
   }
 };
 

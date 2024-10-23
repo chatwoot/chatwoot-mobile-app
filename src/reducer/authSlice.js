@@ -8,7 +8,7 @@ import { getBaseUrl, getHeaders } from '../services/auth';
 import { API_URL } from 'constants/url';
 import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
 
-export const actions = {
+export const actions = { 
   doLogin: createAsyncThunk('auth/doLogin', async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await APIHelper.post('auth/sign_in', { email, password });

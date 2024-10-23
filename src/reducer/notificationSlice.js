@@ -131,7 +131,7 @@ export const actions = {
         return { fcmToken };
       } catch (error) {
         console.log('error', error);
-        // return rejectWithValue(error);
+        return rejectWithValue(error);
       }
     },
   ),

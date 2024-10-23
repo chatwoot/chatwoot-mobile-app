@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { StatusBar } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StatusBar, View, Text, Platform } from 'react-native';
 import { Image } from 'expo-image';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -9,9 +9,16 @@ import {
   BottomSheetScrollView,
   useBottomSheetSpringConfigs,
 } from '@gorhom/bottom-sheet';
+import DeviceInfo from 'react-native-device-info';
+import * as WebBrowser from 'expo-web-browser';
+import ChatWootWidget from '@chatwoot/react-native-widget';
 import { useDispatch, useSelector } from 'react-redux';
+import * as Application from 'expo-application';
+
 import i18n from 'i18n';
-import { useNavigation } from '@react-navigation/native';
+
+import { HELP_URL } from '@/constants/url';
+// import { useNavigation } from '@react-navigation/native';
 
 import { tailwind } from '@/theme';
 
@@ -20,9 +27,9 @@ import {
   BottomSheetHeader,
   BottomSheetWrapper,
   FullWidthButton,
-  GenericList,
-  LanguagesList,
-  UserStatusList,
+  SettingsList,
+  LanguageList,
+  AvailabilityStatusList,
 } from '@/components-next';
 
 import { LANGUAGES, TAB_BAR_HEIGHT, userStatusList } from '@/constants';
@@ -40,21 +47,53 @@ import {
 import { selectLocale, setLocale } from '@/reducer/settingsSlice';
 import AnalyticsHelper from '@/helpers/AnalyticsHelper';
 import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
+import { getUserPermissions } from '@/helpers/permissionHelper';
+import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
+
+const appName = Application.applicationName;
+const appVersion = Application.nativeApplicationVersion;
+
+const buildNumber = Application.nativeBuildVersion;
+const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVersion;
 
 const SettingsScreen = () => {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const availabilityStatus = useSelector(selectCurrentUserAvailability) || 'offline';
   // const { bottom } = useSafeAreaInsets();
 
+  const [showWidget, toggleWidget] = useState(false);
   const user = useSelector(selectUser);
   const {
     name,
+    email,
+    avatar_url: avatarUrl,
+    identifier_hash: identifierHash,
+    account_id: activeAccountId,
+  } = user;
+
+  const userPermissions = getUserPermissions(user, activeAccountId);
+
+  const hasConversationPermission = CONVERSATION_PERMISSIONS.some(permission =>
+    userPermissions.includes(permission),
+  );
+
+  const userDetails = {
+    identifier: email,
+    name,
     avatar_url: avatarUrl,
     email,
-    // identifier_hash: identifierHash,
-    // account_id: activeAccountId,
-  } = user;
+    identifier_hash: identifierHash,
+  };
+
+  const customAttributes = {
+    originatedFrom: 'mobile-app',
+    appName,
+    appVersion: appVersionDetails,
+    deviceId: DeviceInfo.getDeviceId(),
+    packageName: appName,
+    operatingSystem: Platform.OS, // android/ios
+  };
 
   const activeLocale = useSelector(selectLocale);
   const { userAvailabilityStatusSheetRef, languagesModalSheetRef } = useRefsContext();
@@ -71,7 +110,7 @@ const SettingsScreen = () => {
     userAvailabilityStatusSheetRef.current?.present();
   };
 
-  const changeUserAvailabilityStatus = (updatedStatus: string) => {
+  const changeAvailabilityStatus = (updatedStatus: string) => {
     AnalyticsHelper.track(PROFILE_EVENTS.TOGGLE_AVAILABILITY_STATUS, {
       from: availabilityStatus,
       to: updatedStatus,
@@ -80,15 +119,6 @@ const SettingsScreen = () => {
     // @ts-expect-error TODO: Fix typing for dispatch
     dispatch(authActions.updateAvailability({ availability: updatedStatus }));
   };
-
-  // const onChangeLanguage = useCallback(
-  //   locale => {
-  //     dispatch(setLocale(locale));
-  //     navigation.dispatch(StackActions.replace('Tab'));
-  //     closeChangeLanguageModal();
-  //   },
-  //   [closeChangeLanguageModal, navigation, dispatch],
-  // );
 
   const onChangeLanguage = (locale: string) => {
     dispatch(setLocale(locale));
@@ -112,6 +142,10 @@ const SettingsScreen = () => {
     return userStatusList.find(value => value.status === availabilityStatus)?.statusColor || '';
   };
 
+  const openURL = async () => {
+    await WebBrowser.openBrowserAsync(HELP_URL);
+  };
+
   const preferencesList: GenericListType[] = [
     {
       hasChevron: true,
@@ -127,6 +161,7 @@ const SettingsScreen = () => {
       icon: <NotificationIcon />,
       subtitle: '',
       subtitleType: 'light',
+      disabled: !hasConversationPermission,
       onPressListItem: () => null,
     },
     {
@@ -154,6 +189,7 @@ const SettingsScreen = () => {
       icon: <SwitchIcon />,
       subtitle: '',
       subtitleType: 'light',
+      onPressListItem: openURL,
     },
     {
       hasChevron: true,
@@ -161,8 +197,10 @@ const SettingsScreen = () => {
       icon: <ChatwootIcon />,
       subtitle: '',
       subtitleType: 'light',
+      onPressListItem: () => toggleWidget(true),
     },
   ];
+
   return (
     <SafeAreaView style={tailwind.style('flex-1 bg-white')}>
       <StatusBar
@@ -200,14 +238,19 @@ const SettingsScreen = () => {
           </Animated.Text>
         </Animated.View>
         <Animated.View style={tailwind.style('pt-14')}>
-          <GenericList sectionTitle={i18n.t('SETTINGS.PREFERENCES')} list={preferencesList} />
+          <SettingsList sectionTitle={i18n.t('SETTINGS.PREFERENCES')} list={preferencesList} />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-10')}>
-          <GenericList sectionTitle={i18n.t('SETTINGS.SUPPORT')} list={supportList} />
+          <SettingsList sectionTitle={i18n.t('SETTINGS.SUPPORT')} list={supportList} />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-8')}>
           <FullWidthButton text={i18n.t('SETTINGS.LOGOUT')} isDestructive />
         </Animated.View>
+        <View style={tailwind.style('p-4 items-center')}>
+          <Text style={tailwind.style('text-sm text-gray-700 ')}>
+            {`${appName} ${appVersionDetails}`}
+          </Text>
+        </View>
       </Animated.ScrollView>
       <BottomSheetModal
         ref={userAvailabilityStatusSheetRef}
@@ -223,8 +266,8 @@ const SettingsScreen = () => {
         snapPoints={[190]}>
         <BottomSheetWrapper>
           <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_AVAILABILITY')} />
-          <UserStatusList
-            changeUserAvailabilityStatus={changeUserAvailabilityStatus}
+          <AvailabilityStatusList
+            changeAvailabilityStatus={changeAvailabilityStatus}
             availabilityStatus={availabilityStatus}
           />
         </BottomSheetWrapper>
@@ -243,9 +286,22 @@ const SettingsScreen = () => {
         snapPoints={['70%']}>
         <BottomSheetScrollView showsVerticalScrollIndicator={false}>
           <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_LANGUAGE')} />
-          <LanguagesList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
+          <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
         </BottomSheetScrollView>
       </BottomSheetModal>
+      {!!process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN &&
+        !!process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL &&
+        !!showWidget && (
+          <ChatWootWidget
+            websiteToken={process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN}
+            locale="en"
+            baseUrl={process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL}
+            closeModal={() => toggleWidget(false)}
+            isModalVisible={showWidget}
+            user={userDetails}
+            customAttributes={customAttributes}
+          />
+        )}
     </SafeAreaView>
   );
 };

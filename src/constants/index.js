@@ -19,6 +19,12 @@ export const userStatusList = [
   { statusColor: 'bg-gray-800', status: 'offline' },
 ];
 
+export const AVAILABILITY_STATUS_LIST = [
+  { statusColor: 'bg-green-800', status: 'online' },
+  { statusColor: 'bg-yellow-800', status: 'busy' },
+  { statusColor: 'bg-gray-800', status: 'offline' },
+];
+
 export const MAXIMUM_FILE_UPLOAD_SIZE = 10;
 
 export const CONVERSATION_STATUSES = [

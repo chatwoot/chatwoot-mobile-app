@@ -23,7 +23,7 @@ const ListItem = (props: ListItemProps) => {
 
   return (
     <Pressable
-      onPress={listItem.onPressListItem}
+      onPress={() => listItem.onPressListItem && listItem.onPressListItem()}
       key={index}
       style={({ pressed }) => [
         tailwind.style(
@@ -68,7 +68,7 @@ const ListItem = (props: ListItemProps) => {
   );
 };
 
-export const GenericList = (props: GenericListProps) => {
+export const SettingsList = (props: GenericListProps) => {
   const { list, sectionTitle } = props;
 
   return (

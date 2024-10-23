@@ -4,4 +4,4 @@
 // export * from "./LabelListComponent";
 // export * from "./SortByListComponent";
 // export * from "./StatusListComponent";
-export * from './UserStatusList';
+export * from './AvailabilityStatusList';

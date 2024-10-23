@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
@@ -20,10 +20,9 @@ type LanguageCellProps = {
   onChangeLanguage: (locale: string) => void;
 };
 
-const languagesList = Object.keys(LANGUAGES).map((languageCode: string) => {
+const languagesList = Object.keys(LANGUAGES).map(languageCode => {
   return {
-    // @ts-expect-error
-    title: LANGUAGES[languageCode],
+    title: LANGUAGES[languageCode as keyof typeof LANGUAGES],
     key: languageCode,
   };
 });
@@ -36,13 +35,16 @@ const LanguageCell = (props: LanguageCellProps) => {
     onChangeLanguage(item.key);
   };
 
+  const isLastItem = index === languagesList.length - 1;
+  const isSelected = currentLanguage === item.key;
+
   return (
     <Pressable onPress={handlePress}>
       <Animated.View style={tailwind.style('flex flex-row items-center')}>
         <Animated.View
           style={tailwind.style(
             'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
-            index !== languagesList.length - 1 ? 'border-b-[1px] border-blackA-A3' : '',
+            !isLastItem && 'border-b-[1px] border-blackA-A3',
           )}>
           <Animated.Text
             style={tailwind.style(
@@ -50,14 +52,14 @@ const LanguageCell = (props: LanguageCellProps) => {
             )}>
             {item.title}
           </Animated.Text>
-          {currentLanguage === item.key ? <Icon icon={<TickIcon />} size={20} /> : null}
+          {isSelected && <Icon icon={<TickIcon />} size={20} />}
         </Animated.View>
       </Animated.View>
     </Pressable>
   );
 };
 
-export const LanguagesList = ({
+export const LanguageList = ({
   currentLanguage,
   onChangeLanguage,
 }: {

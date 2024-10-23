@@ -33,12 +33,7 @@ const propTypes = {
   }).isRequired,
 };
 
-const defaultProps = {
-  setInstallationUrl: () => {},
-  isSettingUrl: false,
-};
-
-const ConfigureURLScreenComponent = ({ navigation }) => {
+const ConfigureURLScreenComponent = ({ navigation, setInstallationUrl = () => {} }) => {
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -135,5 +130,4 @@ const ConfigureURLScreenComponent = ({ navigation }) => {
 };
 
 ConfigureURLScreenComponent.propTypes = propTypes;
-ConfigureURLScreenComponent.defaultProps = defaultProps;
 export default ConfigureURLScreenComponent;

@@ -10,7 +10,7 @@ import { Text, UserAvatar, Header } from 'components';
 import createStyles from './ConversationDetailsScreen.style';
 import SocialProfileIcons from './components/SocialProfileIcons';
 import ContactDetails from './components/ContactDetails';
-import LabelView from 'src/screens/ConversationDetails/components/LabelView';
+import LabelView from 'screens/ConversationDetails/components/LabelView';
 import ConversationAttributes from './components/ConversationAttributes';
 import ConversationParticipants from './components/ConversationParticipants';
 import ContactAttributes from './components/ContactAttributes';
@@ -20,7 +20,7 @@ import { actions as conversationWatchersActions } from 'reducer/conversationWatc
 // Bottom sheet items
 const deviceHeight = Dimensions.get('window').height;
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
-import LabelConversationItems from 'src/screens/ChatScreen/components/ConversationLabels';
+import LabelConversationItems from 'screens/ChatScreen/components/ConversationLabels';
 
 const ConversationDetailsScreen = ({ navigation, route }) => {
   const theme = useTheme();

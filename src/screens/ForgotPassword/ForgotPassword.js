@@ -26,12 +26,11 @@ const propTypes = {
   resetAuth: PropTypes.func,
 };
 
-const defaultProps = {
-  doResetPassword: () => {},
-  isLoading: false,
-};
-
-const ForgotPasswordComponent = ({ navigation }) => {
+const ForgotPasswordComponent = ({
+  navigation,
+  setInstallationUrl = () => {},
+  isSettingUrl = false,
+}) => {
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
@@ -132,6 +131,5 @@ const ForgotPasswordComponent = ({ navigation }) => {
 };
 
 ForgotPasswordComponent.propTypes = propTypes;
-ForgotPasswordComponent.defaultProps = defaultProps;
 
 export default ForgotPasswordComponent;

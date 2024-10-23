@@ -8,7 +8,7 @@ import * as Sentry from '@sentry/react-native';
 
 import { getInboxIconByType } from 'helpers/inboxHelpers';
 import ActionCable from 'helpers/ActionCable';
-import { getPubSubToken, getUserDetails } from 'helpers/AuthHelper';
+import { getPubSubToken, getUserDetails } from 'services/auth';
 import { clearAllDeliveredNotifications } from 'helpers/PushHelper';
 import {
   selectConversationStatus,
@@ -35,7 +35,7 @@ import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import { actions as inboxActions, inboxesSelector } from 'reducer/inboxSlice';
 import { selectUser } from 'reducer/authSlice';
 import { getUserPermissions } from 'helpers/permissionHelper';
-import { CONVERSATION_PERMISSIONS } from 'src/constants/permissions';
+import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 import {
   selectWebSocketUrl,
   selectInstallationUrl,

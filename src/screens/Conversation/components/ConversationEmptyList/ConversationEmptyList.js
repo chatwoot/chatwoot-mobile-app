@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { View, FlatList } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-import { ConversationEmptyItem } from '../index';
+import ConversationEmptyItem from '../ConversationEmptyItem/ConversationEmptyItem';
 import createStyles from './ConversationEmptyList.style';
 const LoaderData = new Array(24).fill(0).map((item, index) => index);
 

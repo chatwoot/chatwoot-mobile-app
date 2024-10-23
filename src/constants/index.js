@@ -221,4 +221,7 @@ export const NOTIFICATION_TYPES = [
   'assigned_conversation_new_message',
   'conversation_mention',
   'participating_conversation_new_message',
+  'sla_missed_first_response',
+  'sla_missed_next_response',
+  'sla_missed_resolution',
 ];

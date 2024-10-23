@@ -6,8 +6,7 @@ import { differenceInHours } from 'date-fns';
 import i18n from 'i18n';
 import PropTypes from 'prop-types';
 import React, { useMemo, useState } from 'react';
-import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Dimensions, StyleSheet, TouchableOpacity, View,Image } from 'react-native';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
@@ -211,7 +210,7 @@ const ChatAttachmentItemComponent = ({ type, attachments, showAttachment, messag
                   type === 'outgoing' ? styles.imageViewRight : styles.imageViewLeft,
                   isPrivate && styles.privateMessageContainer,
                 ]}>
-                <FastImage
+                <Image
                   style={styles.image}
                   source={{
                     uri: dataUrl,

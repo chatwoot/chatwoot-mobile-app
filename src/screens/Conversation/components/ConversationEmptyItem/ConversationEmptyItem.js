@@ -4,7 +4,7 @@ import { useTheme } from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 import createStyles from './ConversationEmptyItem.style';
 
-const ConversationItemLoader = () => {
+const ConversationEmptyItem = () => {
   const theme = useTheme();
   const styles = useMemo(() => createStyles(theme), [theme]);
   return (
@@ -41,4 +41,4 @@ const ConversationItemLoader = () => {
   );
 };
 
-export default ConversationItemLoader;
+export default ConversationEmptyItem;

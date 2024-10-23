@@ -2,9 +2,9 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@react-navigation/native';
 import Icon from 'components/Icon/Icon';
-import { Text } from 'components';
+import Text from 'components/Text/Text';
 import { View, StyleSheet } from 'react-native';
-import { getInboxIconByType } from 'src/helpers/inboxHelpers';
+import { getInboxIconByType } from 'helpers/inboxHelpers';
 import { getTextSubstringWithEllipsis } from 'helpers';
 
 const createStyles = theme => {

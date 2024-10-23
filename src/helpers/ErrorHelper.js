@@ -1,6 +1,5 @@
 import * as Sentry from '@sentry/react-native';
 import { Alert } from 'react-native';
-import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
 
 import i18n from '../i18n';
 
@@ -26,12 +25,12 @@ const errorHandler = (e, isFatal) => {
 
 export default {
   init() {
-    setNativeExceptionHandler(exceptionString => {
-      Sentry.captureException(new Error(exceptionString), {
-        logger: 'NativeExceptionHandler',
-      });
-    }, false);
-
-    setJSExceptionHandler(errorHandler, false);
+    // TODO: Enable this later
+    // setNativeExceptionHandler(exceptionString => {
+    //   Sentry.captureException(new Error(exceptionString), {
+    //     logger: 'NativeExceptionHandler',
+    //   });
+    // }, false);
+    // setJSExceptionHandler(errorHandler, false);
   },
 };

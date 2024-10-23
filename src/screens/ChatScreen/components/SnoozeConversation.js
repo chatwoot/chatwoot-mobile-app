@@ -8,7 +8,7 @@ import { Text, Icon, Pressable } from 'components';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import conversationActions from 'reducer/conversationSlice.action';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
-import { CONVERSATION_STATUS } from 'src/constants/index';
+import { CONVERSATION_STATUS } from 'constants/index';
 import { getUnixTime, addHours, addWeeks, startOfTomorrow, startOfWeek } from 'date-fns';
 
 const propTypes = {

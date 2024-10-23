@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useTheme } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
-import { SLA_MISS_TYPES } from 'src/constants/index';
+import { SLA_MISS_TYPES } from 'constants/index';
 import SLAMissItem from './SLAMissItem';
 import i18n from 'i18n';
 const createStyles = theme => {

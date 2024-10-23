@@ -2,9 +2,10 @@ import React, { useMemo, useRef, useCallback } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { Icon, Pressable } from 'components';
-import { Keyboard, StyleSheet, Dimensions, View } from 'react-native';
+import { Keyboard, StyleSheet, Dimensions, View, Platform, Alert, Linking } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import PropTypes from 'prop-types';
+import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import AttachmentActionItem from './AttachmentActionItem';
@@ -47,22 +48,131 @@ const Attachment = ({ conversationId, onSelectAttachment }) => {
     }, 10);
   };
   const openCamera = () => {
-    launchCamera(imagePickerOptions, response => {
-      const attachment = response?.assets?.[0];
-      if (!attachment) {
-        return;
-      }
-      onSelectAttachment({ attachment });
-    });
+    request(Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA).then(
+      async result => {
+        if (RESULTS.BLOCKED === result) {
+          Alert.alert(
+            'Permission Denied',
+            'The permission to access the camera has been denied and cannot be requested again. Please enable it in your device settings if you wish to use the camera feature.',
+            [
+              {
+                text: 'Cancel',
+                style: 'cancel',
+              },
+              {
+                text: 'Open Settings',
+                onPress: () => {
+                  // Open app settings
+                  Linking.openSettings();
+                },
+              },
+            ],
+            { cancelable: false },
+          );
+        }
+        if (RESULTS.GRANTED === result) {
+          const imageResult = await launchCamera({
+            presentationStyle: 'formSheet',
+            mediaType: 'mixed',
+          });
+          if (imageResult.didCancel) {
+          } else if (imageResult.errorCode) {
+          } else {
+            if (imageResult.assets && imageResult.assets?.length > 0) {
+              const attachment = imageResult?.assets?.[0];
+              onSelectAttachment({ attachment });
+            }
+          }
+        }
+      },
+    );
   };
   const openGallery = () => {
-    launchImageLibrary(imagePickerOptions, response => {
-      const attachment = response?.assets?.[0];
-      if (!attachment) {
-        return;
-      }
-      onSelectAttachment({ attachment });
-    });
+    if (Platform.OS === 'ios') {
+      request(
+        Platform.OS === 'ios'
+          ? PERMISSIONS.IOS.PHOTO_LIBRARY
+          : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+      ).then(async result => {
+        if (RESULTS.BLOCKED === result) {
+          Alert.alert(
+            'Permission Denied',
+            'The permission to access the photo library has been denied and cannot be requested again. Please enable it in your device settings if you wish to access photos from your library.',
+            [
+              {
+                text: 'Cancel',
+                style: 'cancel',
+              },
+              {
+                text: 'Open Settings',
+                onPress: () => {
+                  // Open app settings
+                  Linking.openSettings();
+                },
+              },
+            ],
+            { cancelable: false },
+          );
+        }
+        if (result === RESULTS.GRANTED || result === RESULTS.LIMITED) {
+          const pickedAssets = await launchImageLibrary({
+            quality: 1,
+            selectionLimit: 4,
+            mediaType: 'mixed',
+            presentationStyle: 'formSheet',
+          });
+          if (pickedAssets.didCancel) {
+          } else if (pickedAssets.errorCode) {
+          } else {
+            if (pickedAssets.assets && pickedAssets.assets?.length > 0) {
+              // updateAttachments(pickedAssets.assets);
+              const attachment = pickedAssets?.assets?.[0];
+              onSelectAttachment({ attachment });
+            }
+          }
+        }
+      });
+    } else {
+      request(PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION).then(async result => {
+        if (RESULTS.BLOCKED === result) {
+          Alert.alert(
+            'Permission Denied',
+            'The permission to access the photo library has been denied and cannot be requested again. Please enable it in your device settings if you wish to access photos from your library.',
+            [
+              {
+                text: 'Cancel',
+                style: 'cancel',
+              },
+              {
+                text: 'Open Settings',
+                onPress: () => {
+                  // Open app settings
+                  Linking.openSettings();
+                },
+              },
+            ],
+            { cancelable: false },
+          );
+        }
+        if (result === RESULTS.GRANTED) {
+          const pickedAssets = await launchImageLibrary({
+            quality: 1,
+            selectionLimit: 4,
+            mediaType: 'mixed',
+            presentationStyle: 'formSheet',
+          });
+          if (pickedAssets.didCancel) {
+          } else if (pickedAssets.errorCode) {
+          } else {
+            if (pickedAssets.assets && pickedAssets.assets?.length > 0) {
+              // updateAttachments(pickedAssets.assets);
+              const attachment = pickedAssets?.assets?.[0];
+              onSelectAttachment({ attachment });
+            }
+          }
+        }
+      });
+    }
   };
   const openDocument = async () => {
     try {

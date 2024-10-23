@@ -1,11 +1,11 @@
-import Config from 'react-native-config';
+// import Config from 'react-native-config';
 import axios from 'axios';
 
 const BASE_URL = 'https://api.june.so/api/';
 
 class AnalyticsHelper {
   constructor(resource, options = {}) {
-    this.analyticsToken = Config.JUNE_SDK_KEY;
+    this.analyticsToken = process.env.EXPO_PUBLIC_JUNE_SDK_KEY;
     this.user = {};
     this.isAnalyticsEnabled = !!(!__DEV__ && this.analyticsToken);
     this.APIHelper = axios.create({

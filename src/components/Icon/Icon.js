@@ -10,10 +10,6 @@ const propTypes = {
   color: PropTypes.string,
   viewBox: PropTypes.string,
 };
-const defaultProps = {
-  size: 22,
-  color: '#1F93FF',
-};
 
 const getPathSource = ({ icon }) => {
   const path = icons[`${icon}`];
@@ -24,7 +20,7 @@ const getPathSource = ({ icon }) => {
   return path;
 };
 
-const Icon = ({ size, icon, color, viewBox = '0 0 24 24' }) => {
+const Icon = ({ size = 22, icon, color = '#1F93FF', viewBox = '0 0 24 24' }) => {
   const path = getPathSource({ icon });
   return (
     <Svg
@@ -40,6 +36,5 @@ const Icon = ({ size, icon, color, viewBox = '0 0 24 24' }) => {
   );
 };
 Icon.propTypes = propTypes;
-Icon.defaultProps = defaultProps;
 
 export default Icon;

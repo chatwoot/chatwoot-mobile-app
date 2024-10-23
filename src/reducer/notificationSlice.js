@@ -2,6 +2,7 @@ import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/too
 import messaging from '@react-native-firebase/messaging';
 import axios from 'axios';
 import { Platform, PermissionsAndroid } from 'react-native';
+
 import {
   getSystemName,
   getManufacturer,
@@ -14,8 +15,8 @@ import {
 import APIHelper from '../helpers/APIHelper';
 import { updateBadgeCount } from 'helpers/PushHelper';
 
-import { getHeaders } from 'helpers/AuthHelper';
-import { getBaseUrl } from 'helpers/UrlHelper';
+import { getHeaders } from 'services/auth';
+import { getBaseUrl } from '../services/auth';
 import { API_URL } from 'constants/url';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
@@ -81,7 +82,6 @@ export const actions = {
     async (_, { rejectWithValue }) => {
       try {
         const permissionEnabled = await messaging().hasPermission();
-        const fcmToken = await messaging().getToken();
         const deviceId = await getUniqueId();
         const devicePlatform = getSystemName();
         const manufacturer = await getManufacturer();
@@ -106,6 +106,11 @@ export const actions = {
           });
         }
 
+        const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+        await messaging().registerDeviceForRemoteMessages();
+        await sleep(1000);
+        const fcmToken = await messaging().getToken();
+
         const pushData = {
           subscription_type: 'fcm',
           subscription_attributes: {
@@ -125,11 +130,11 @@ export const actions = {
         });
         return { fcmToken };
       } catch (error) {
+        console.log('error', error);
         return rejectWithValue(error);
       }
     },
   ),
-  // TODO: Use on logout
   clearDeviceDetails: createAsyncThunk(
     'notifications/clearDeviceDetails',
     async ({ pushToken }, { rejectWithValue }) => {
@@ -202,7 +207,9 @@ const notificationSlice = createSlice({
         });
       })
       .addCase(actions.saveDeviceDetails.fulfilled, (state, action) => {
-        state.pushToken = action.payload.fcmToken;
+        if (action?.payload?.fcmToken) {
+          state.pushToken = action.payload.fcmToken;
+        }
       })
       .addCase(actions.clearDeviceDetails.fulfilled, state => {
         state.pushToken = null;

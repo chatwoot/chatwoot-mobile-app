@@ -2,14 +2,13 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 
 import I18n from 'i18n';
 import axios from 'axios';
-import APIHelper from 'helpers/APIHelper';
-import { showToast } from 'helpers/ToastHelper';
-import { getHeaders } from 'helpers/AuthHelper';
-import { getBaseUrl } from 'helpers/UrlHelper';
+import APIHelper from '../helpers/APIHelper';
+import { showToast } from 'helpers/ToastHelper'; 
+import { getBaseUrl, getHeaders } from '../services/auth';
 import { API_URL } from 'constants/url';
 import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
 
-export const actions = {
+export const actions = { 
   doLogin: createAsyncThunk('auth/doLogin', async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await APIHelper.post('auth/sign_in', { email, password });

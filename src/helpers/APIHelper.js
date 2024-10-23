@@ -2,20 +2,18 @@ import axios from 'axios';
 import * as Sentry from '@sentry/react-native';
 
 import { API_URL } from '../constants/url';
-import I18n from '../i18n';
+import I18n from '../i18n'; 
 
 import { showToast } from './ToastHelper';
-import { getHeaders } from './AuthHelper';
-
-import { store } from '../store';
-import { logout } from 'reducer/authSlice';
-import { getBaseUrl } from './UrlHelper';
+import { getHeaders, getBaseUrl } from '../services/auth';
+import { handleLogout } from '../reducer/authHelper'; 
+import { getStore } from '../reducer/storeAccessor';
 
 const parseErrorCode = error => {
   Sentry.captureException(error);
   if (error.response) {
     if (error.response.status === 401) {
-      store.dispatch(logout());
+      handleLogout();
     }
   } else {
     showToast({ message: I18n.t('ERRORS.COMMON_ERROR') });

@@ -1,11 +1,10 @@
-import React, { useRef, Fragment, useMemo } from 'react';
+import React, { useRef, Fragment, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { SafeAreaView, KeyboardAvoidingView, Platform, Linking, StyleSheet } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { getStateFromPath } from '@react-navigation/native';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import RNBootSplash from 'react-native-bootsplash';
 import PropTypes from 'prop-types';
 import { LightTheme } from './theme';
 import { NavigationContainer } from '@react-navigation/native';
@@ -27,15 +26,13 @@ import { selectInstallationUrl, selectLocale } from 'reducer/settingsSlice';
 
 const Stack = createNativeStackNavigator();
 
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  // console.log('Message handled in the background!', remoteMessage);
+});
+
 const propTypes = {
   isLoggedIn: PropTypes.bool,
 };
-
-const defaultProps = {
-  isLoggedIn: false,
-};
-// TODO
-messaging().setBackgroundMessageHandler(async remoteMessage => {});
 
 const App = () => {
   // TODO: Lets use light theme for now, add dark theme later
@@ -153,21 +150,15 @@ const App = () => {
           ref={navigationRef}
           onReady={() => {
             routeNameRef.current = navigationRef.current.getCurrentRoute().name;
-            RNBootSplash.hide({ fade: true });
           }}
           onStateChange={async () => {
-            const previousRouteName = routeNameRef.current;
-            const currentRouteName = navigationRef.current.getCurrentRoute().name;
-            if (previousRouteName !== currentRouteName) {
-              // TODO
-              // captureScreen({ screenName: currentRouteName });
-            }
-            // Save the current route name for later comparison
-            routeNameRef.current = currentRouteName;
+            routeNameRef.current = navigationRef.current.getCurrentRoute().name;
           }}
           theme={theme}>
           <BottomSheetModalProvider>
-            <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+            <Stack.Navigator
+              initialRouteName="Login"
+              screenOptions={{ headerShown: false, navigationBarColor: '#FFFF' }}>
               {isLoggedIn ? (
                 <Fragment>
                   <Stack.Screen name="Tab" component={TabStack} />
@@ -200,6 +191,5 @@ const createStyles = theme => {
 };
 
 App.propTypes = propTypes;
-App.defaultProps = defaultProps;
 
 export default App;

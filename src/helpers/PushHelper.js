@@ -1,17 +1,17 @@
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { Platform } from 'react-native';
-import { NOTIFICATION_TYPES } from 'constants';
+import { NOTIFICATION_TYPES } from '../constants';
+import notifee from '@notifee/react-native';
 
 export const clearAllDeliveredNotifications = () => {
   if (Platform.OS === 'android') {
   } else {
-    PushNotificationIOS.removeAllDeliveredNotifications();
+    notifee.cancelAllNotifications();
   }
 };
 
 export const updateBadgeCount = ({ count = 0 }) => {
   if (Platform.OS === 'ios') {
-    PushNotificationIOS.setApplicationIconBadgeNumber(count);
+    notifee.setBadgeCount(count);
   }
 };
 

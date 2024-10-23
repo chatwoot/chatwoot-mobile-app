@@ -1,16 +1,7 @@
-import SafariView from 'react-native-safari-view';
 import { Platform, Linking } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 
-import { store } from '../store';
 import { URL_REGEX } from '../constants';
-
-export const getBaseUrl = async () => {
-  try {
-    const state = await store.getState();
-    const { installationUrl } = state.settings;
-    return installationUrl;
-  } catch (error) {}
-};
 
 export const getConversationUrl = async ({ conversationId, accountId }) => {
   try {
@@ -32,13 +23,7 @@ export const openURL = ({ URL }) => {
   if (!URL) {
     return;
   }
-  if (Platform.OS === 'ios') {
-    SafariView.show({
-      url: URL,
-    });
-  } else {
-    Linking.openURL(URL);
-  }
+  WebBrowser.openBrowserAsync(URL);
 };
 
 export const openNumber = ({ phoneNumber }) => {

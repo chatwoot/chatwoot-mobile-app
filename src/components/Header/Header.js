@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 
-import { Icon, Text, Pressable } from 'components';
+import Icon from '../Icon/Icon';
+import Text from '../Text/Text';
+import Pressable from '../Pressable/Pressable';
 
 const createStyles = theme => {
   const { spacing, borderRadius, colors } = theme;
@@ -78,20 +80,13 @@ const propTypes = {
   onPressRight: PropTypes.func,
 };
 
-const defaultProps = {
-  loading: false,
-  headerText: '',
-  leftIcon: '',
-  rightIcon: '',
-};
-
 const Header = ({
-  leftIcon,
-  rightIcon,
+  leftIcon = '',
+  rightIcon = '',
   count,
   showCount,
-  loading,
-  headerText,
+  loading = false,
+  headerText = '',
   onPressLeft,
   onPressRight,
 }) => {
@@ -138,5 +133,4 @@ const Header = ({
 };
 
 Header.propTypes = propTypes;
-Header.defaultProps = defaultProps;
 export default Header;

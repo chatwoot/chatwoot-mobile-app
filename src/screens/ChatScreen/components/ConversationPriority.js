@@ -9,8 +9,8 @@ import { Text, Icon, Pressable } from 'components';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import conversationActions from 'reducer/conversationSlice.action';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
-import { CONVERSATION_PRIORITY } from 'src/constants/index';
-import { HIGH, MEDIUM, LOW, NONE, URGENT } from 'src/constants/PrioritySVG';
+import { CONVERSATION_PRIORITY } from 'constants/index';
+import { HIGH, MEDIUM, LOW, NONE, URGENT } from 'constants/PrioritySVG';
 
 const propTypes = {
   colors: PropTypes.object,

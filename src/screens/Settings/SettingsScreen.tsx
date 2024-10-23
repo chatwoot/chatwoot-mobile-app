@@ -241,7 +241,7 @@ const SettingsScreen = () => {
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}>
-        <Animated.View style={tailwind.style('flex justify-center items-center pt-8')}>
+        <Animated.View style={tailwind.style('flex justify-center items-center pt-4')}>
           <Animated.View>
             <Image style={tailwind.style('h-24 w-24 rounded-full')} source={{ uri: avatarUrl }} />
             <Animated.View
@@ -266,13 +266,13 @@ const SettingsScreen = () => {
             {email}
           </Animated.Text>
         </Animated.View>
-        <Animated.View style={tailwind.style('pt-14')}>
+        <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.PREFERENCES')} list={preferencesList} />
         </Animated.View>
-        <Animated.View style={tailwind.style('pt-10')}>
+        <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.SUPPORT')} list={supportList} />
         </Animated.View>
-        <Animated.View style={tailwind.style('pt-8')}>
+        <Animated.View style={tailwind.style('pt-6')}>
           <FullWidthButton text={i18n.t('SETTINGS.LOGOUT')} isDestructive />
         </Animated.View>
         <View style={tailwind.style('p-4 items-center')}>

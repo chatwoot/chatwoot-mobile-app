@@ -9,6 +9,7 @@ export * from './Contact';
 export * from './Conversation';
 export * from './Message';
 export * from './Team';
+export * from './Account';
 
 export interface IconProps extends PathProps {}
 

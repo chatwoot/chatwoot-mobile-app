@@ -11,6 +11,8 @@ interface RefsContextType {
   chatPagerView: React.RefObject<PagerView>;
   addLabelSheetRef: React.RefObject<BottomSheetModal>;
   macrosListSheetRef: React.RefObject<BottomSheetModal>;
+  notificationPreferencesSheetRef: React.RefObject<BottomSheetModal>;
+  switchAccountSheetRef: React.RefObject<BottomSheetModal>;
   messageListRef: React.RefObject<FlashList<any>>;
 }
 
@@ -32,11 +34,12 @@ const RefsProvider: React.FC<Partial<RefsContextType & { children: React.ReactNo
   const filtersModalSheetRef = useRef<BottomSheetModal>(null);
   const actionsModalSheetRef = useRef<BottomSheetModal>(null);
   const languagesModalSheetRef = useRef<BottomSheetModal>(null);
+  const notificationPreferencesSheetRef = useRef<BottomSheetModal>(null);
   const addLabelSheetRef = useRef<BottomSheetModal>(null);
   const macrosListSheetRef = useRef<BottomSheetModal>(null);
   const chatPagerView = useRef<PagerView>(null);
   const messageListRef = useRef<FlashList<any>>(null);
-
+  const switchAccountSheetRef = useRef<BottomSheetModal>(null);
   const { children } = props;
 
   const contextRefValues = {
@@ -44,10 +47,12 @@ const RefsProvider: React.FC<Partial<RefsContextType & { children: React.ReactNo
     filtersModalSheetRef,
     actionsModalSheetRef,
     languagesModalSheetRef,
+    notificationPreferencesSheetRef,
     chatPagerView,
     addLabelSheetRef,
     macrosListSheetRef,
     messageListRef,
+    switchAccountSheetRef,
   };
 
   return <RefsContext.Provider value={contextRefValues}>{children}</RefsContext.Provider>;

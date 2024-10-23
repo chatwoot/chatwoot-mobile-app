@@ -5,3 +5,5 @@
 // export * from "./SortByListComponent";
 // export * from "./StatusListComponent";
 export * from './AvailabilityStatusList';
+export * from './NotificationPreferences';
+export * from './SwitchAccount';

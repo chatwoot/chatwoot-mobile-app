@@ -14,6 +14,7 @@ import * as WebBrowser from 'expo-web-browser';
 import ChatWootWidget from '@chatwoot/react-native-widget';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Application from 'expo-application';
+import { Account } from '@/types';
 
 import i18n from 'i18n';
 
@@ -30,6 +31,8 @@ import {
   SettingsList,
   LanguageList,
   AvailabilityStatusList,
+  NotificationPreferences,
+  SwitchAccount,
 } from '@/components-next';
 
 import { LANGUAGES, TAB_BAR_HEIGHT, userStatusList } from '@/constants';
@@ -43,6 +46,7 @@ import {
   selectCurrentUserAvailability,
   selectUser,
   actions as authActions,
+  selectAccounts,
 } from '@/reducer/authSlice';
 import { selectLocale, setLocale } from '@/reducer/settingsSlice';
 import AnalyticsHelper from '@/helpers/AnalyticsHelper';
@@ -95,8 +99,23 @@ const SettingsScreen = () => {
     operatingSystem: Platform.OS, // android/ios
   };
 
+  const accounts = useSelector(selectAccounts);
+
+  const activeAccountName = accounts.length
+    ? accounts.find((account: Account) => account.id === activeAccountId).name
+    : '';
+
+  // const enableAccountSwitch = accounts.length > 1;
+  const enableAccountSwitch = true;
+
   const activeLocale = useSelector(selectLocale);
-  const { userAvailabilityStatusSheetRef, languagesModalSheetRef } = useRefsContext();
+  const {
+    userAvailabilityStatusSheetRef,
+    languagesModalSheetRef,
+    notificationPreferencesSheetRef,
+    switchAccountSheetRef,
+  } = useRefsContext();
+
   const hapticSelection = useHaptic();
 
   const animationConfigs = useBottomSheetSpringConfigs({
@@ -122,6 +141,10 @@ const SettingsScreen = () => {
 
   const onChangeLanguage = (locale: string) => {
     dispatch(setLocale(locale));
+  };
+
+  const changeAccount = (accountId: number) => {
+    console.log('changeAccount', accountId);
   };
 
   useEffect(() => {
@@ -162,7 +185,7 @@ const SettingsScreen = () => {
       subtitle: '',
       subtitleType: 'light',
       disabled: !hasConversationPermission,
-      onPressListItem: () => null,
+      onPressListItem: () => notificationPreferencesSheetRef.current?.present(),
     },
     {
       hasChevron: true,
@@ -173,12 +196,16 @@ const SettingsScreen = () => {
       onPressListItem: () => languagesModalSheetRef.current?.present(),
     },
     {
-      hasChevron: true,
+      hasChevron: enableAccountSwitch,
       title: i18n.t('SETTINGS.SWITCH_ACCOUNT'),
       icon: <SwitchIcon />,
-      subtitle: 'Timeless',
+      subtitle: activeAccountName,
       subtitleType: 'light',
-      onPressListItem: () => null,
+      onPressListItem: () => {
+        if (enableAccountSwitch) {
+          switchAccountSheetRef.current?.present();
+        }
+      },
     },
   ];
 
@@ -200,6 +227,8 @@ const SettingsScreen = () => {
       onPressListItem: () => toggleWidget(true),
     },
   ];
+
+  console.log('accounts', accounts);
 
   return (
     <SafeAreaView style={tailwind.style('flex-1 bg-white')}>
@@ -288,6 +317,44 @@ const SettingsScreen = () => {
           <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_LANGUAGE')} />
           <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
         </BottomSheetScrollView>
+      </BottomSheetModal>
+      <BottomSheetModal
+        ref={notificationPreferencesSheetRef}
+        backdropComponent={BottomSheetBackdrop}
+        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        detached
+        // TODO: Fix this later
+        // bottomInset={bottom === 0 ? 12 : bottom}
+        enablePanDownToClose
+        animationConfigs={animationConfigs}
+        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        style={tailwind.style('rounded-[26px] overflow-hidden')}
+        snapPoints={['70%']}>
+        <BottomSheetWrapper>
+          <BottomSheetHeader headerText={i18n.t('SETTINGS.NOTIFICATION_PREFERENCES')} />
+          <NotificationPreferences />
+        </BottomSheetWrapper>
+      </BottomSheetModal>
+      <BottomSheetModal
+        ref={switchAccountSheetRef}
+        backdropComponent={BottomSheetBackdrop}
+        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        detached
+        // TODO: Fix this later
+        // bottomInset={bottom === 0 ? 12 : bottom}
+        enablePanDownToClose
+        animationConfigs={animationConfigs}
+        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        style={tailwind.style('rounded-[26px] overflow-hidden')}
+        snapPoints={['70%']}>
+        <BottomSheetWrapper>
+          <BottomSheetHeader headerText={i18n.t('SETTINGS.SWITCH_ACCOUNT')} />
+          <SwitchAccount
+            currentAccountId={activeAccountId}
+            changeAccount={changeAccount}
+            accounts={accounts}
+          />
+        </BottomSheetWrapper>
       </BottomSheetModal>
       {!!process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN &&
         !!process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL &&

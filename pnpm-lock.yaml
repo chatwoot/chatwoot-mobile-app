@@ -71,6 +71,9 @@ importers:
       expo-build-properties:
         specifier: ~0.12.5
         version: 0.12.5(expo@51.0.37(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7)))
+      expo-checkbox:
+        specifier: ~3.0.0
+        version: 3.0.0
       expo-font:
         specifier: ~12.0.10
         version: 12.0.10(expo@51.0.37(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7)))
@@ -3133,6 +3136,9 @@ packages:
     resolution: {integrity: sha512-donC1le0PYfLKCPKRMGQoixuWuwDWCngzXSoQXUPsgHTDHQUKr8aw+lcWkTwZcItgNovcnk784I0dyfYDcxybA==}
     peerDependencies:
       expo: '*'
+
+  expo-checkbox@3.0.0:
+    resolution: {integrity: sha512-ZfNUawE0Bp/Xa5Gwtn04yfg6rCnKdqdmBXvEGbYg5U+IfRfLh+ocLiiBAcx760DfdYpzMGQOGpUtWQeEVmJwNw==}
 
   expo-constants@16.0.2:
     resolution: {integrity: sha512-9tNY3OVO0jfiMzl7ngb6IOyR5VFzNoN5OOazUWoeGfmMqVB5kltTemRvKraK9JRbBKIw+SOYLEmF0sEqgFZ6OQ==}
@@ -10199,6 +10205,8 @@ snapshots:
       ajv: 8.17.1
       expo: 51.0.37(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))
       semver: 7.6.3
+
+  expo-checkbox@3.0.0: {}
 
   expo-constants@16.0.2(expo@51.0.37(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))):
     dependencies:

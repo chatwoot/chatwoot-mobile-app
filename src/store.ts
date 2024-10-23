@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, ThunkAction, Action, Middleware, AnyAction } from '@reduxjs/toolkit';
 import {
   persistStore,
   persistReducer,
@@ -10,7 +10,7 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import { rootReducer } from './reducer';
+import { appReducer } from './reducer';
 import { setStore } from './reducer/storeAccessor';
 
 const persistConfig = {
@@ -19,16 +19,19 @@ const persistConfig = {
   storage: AsyncStorage,
 };
 
-const middlewares = [];
+const middlewares: Middleware[] = [];
 
-const allReducer = (state, action) => {
+const rootReducer = (state: ReturnType<typeof appReducer>, action: AnyAction) => {
   if (action.type === 'auth/logout') {
-    state = { settings: state.settings };
+    const initialState = appReducer(undefined, { type: 'INIT' });
+    return { ...initialState, settings: state.settings };
   }
-  return rootReducer(state, action);
+  return appReducer(state, action);
 };
 
-const persistedReducer = persistReducer(persistConfig, allReducer);
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
@@ -41,6 +44,16 @@ export const store = configureStore({
       immutableCheck: { warnAfter: 128 },
     }).concat(middlewares),
 });
+
 export const persistor = persistStore(store);
 
 setStore(store);
+
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  Action<string>
+>;

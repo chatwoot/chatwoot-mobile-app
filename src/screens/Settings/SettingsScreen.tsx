@@ -55,10 +55,15 @@ import {
   logout,
 } from '@/reducer/authSlice';
 import { selectLocale, setLocale, actions as settingsActions } from '@/reducer/settingsSlice';
+import {
+  actions as cannedTemplatesActions,
+  selectors as cannedTemplatesSelectors,
+} from '@/reducer/cannedTemplates';
 import AnalyticsHelper from '@/helpers/AnalyticsHelper';
 import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/helpers/permissionHelper';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -69,8 +74,19 @@ const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVe
 const SettingsScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const dispatchApp = useAppDispatch();
+
+  // const navigation = useNavigation();
   const availabilityStatus = useSelector(selectCurrentUserAvailability) || 'offline';
   // const { bottom } = useSafeAreaInsets();
+
+  useEffect(() => {
+    dispatchApp(cannedTemplatesActions.index({ searchKey: '' }));
+  }, [dispatchApp]);
+
+  // const cannedTemplates = useAppSelector(state => cannedTemplatesSelectors.selectAll(state));
+
+  // console.log('cannedTemplates', cannedTemplates.length);
 
   const [showWidget, toggleWidget] = useState(false);
   const user = useSelector(selectUser);

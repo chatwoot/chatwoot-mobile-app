@@ -10,7 +10,7 @@ export * from './Conversation';
 export * from './Message';
 export * from './Team';
 export * from './Account';
-
+export * from './CannedResponse';
 export interface IconProps extends PathProps {}
 
 export interface GenericListType {

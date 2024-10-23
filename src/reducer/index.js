@@ -15,7 +15,10 @@ import notificationSlice from './notificationSlice';
 import dashboardAppSlice from './dashboardAppSlice';
 import conversationWatchersSlice from './conversationWatchersSlice';
 import contactsSlice from './contactSlice';
-export const rootReducer = combineReducers({
+import cannedTemplatesSlice from './cannedTemplates';
+
+export const appReducer = combineReducers({
+  cannedTemplates: cannedTemplatesSlice,
   cannedResponses: cannedResponseSlice,
   conversations: conversationSlice,
   labels: labelSlice,

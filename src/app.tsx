@@ -9,7 +9,6 @@ import { store, persistor } from './store';
 import NoNetworkBar from 'components/NoNetworkBar';
 import Router from './router';
 import { RefsProvider } from '@/context';
-import * as SplashScreen from 'expo-splash-screen';
 
 import i18n from 'i18n';
 
@@ -23,6 +22,7 @@ const styles = StyleSheet.create({
 LogBox.ignoreLogs(['Require cycle:']);
 
 const Chatwoot = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [fontsLoaded, error] = useFonts({
     'Inter-400-20': require('./assets/fonts/Inter-400-20.ttf'),
     'inter-420-20': require('./assets/fonts/Inter-420-20.ttf'),
@@ -63,17 +63,15 @@ const Chatwoot = () => {
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      <React.Fragment>
-        <StatusBar barStyle="dark-content" backgroundColor="white" />
-        <RefsProvider>
-          <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-              <NoNetworkBar />
-              <Router />
-            </PersistGate>
-          </Provider>
-        </RefsProvider>
-      </React.Fragment>
+      <StatusBar barStyle="dark-content" backgroundColor="white" />
+      <RefsProvider>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <NoNetworkBar />
+            <Router />
+          </PersistGate>
+        </Provider>
+      </RefsProvider>
     </GestureHandlerRootView>
   );
 };

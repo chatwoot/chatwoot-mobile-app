@@ -27,7 +27,7 @@ export interface GenericListType {
 }
 
 /**
- * The types of Filter for Conversaion List
+ * The types of Filter for Conversation List
  */
 
 export type ConversationFilterOptions = 'assignee_type' | 'status' | 'sort_by';

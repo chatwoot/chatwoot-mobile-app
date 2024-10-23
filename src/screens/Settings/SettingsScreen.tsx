@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { Image } from 'expo-image';
@@ -29,7 +28,7 @@ import { ChatwootIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg
 import { GenericListType } from '@/types';
 
 import { useHaptic } from '@/utils';
-import { SettingsHeaderComponent } from './SettingsHeader';
+import { SettingsHeader } from './SettingsHeader';
 import {
   selectCurrentUserAvailability,
   selectUser,
@@ -155,7 +154,7 @@ const SettingsScreen = () => {
         backgroundColor={tailwind.color('bg-white')}
         barStyle={'dark-content'}
       />
-      <SettingsHeaderComponent handleSetStatusPress={openSheet} />
+      <SettingsHeader />
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}>

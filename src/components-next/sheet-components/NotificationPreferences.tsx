@@ -1,153 +1,110 @@
 import React, { useState } from 'react';
-import { Path, Svg } from 'react-native-svg';
-import { Pressable } from 'react-native';
+import { Switch, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { tailwind } from '@/theme';
-import { Icon } from '@/components-next/common';
+import i18n from 'i18n';
+import { selectNotificationSettings, actions as settingsActions } from '@/reducer/settingsSlice';
+import { NOTIFICATION_PREFERENCE_TYPES } from '@/constants';
 
-import { IconProps } from '../../types';
-
-const TickIcon = ({ stroke = '#FFF' }: IconProps): JSX.Element => {
-  return (
-    <Svg width="100%" height="100%" viewBox="0 0 20 20" fill="none">
-      <Path
-        d="M16.6667 5L7.50004 14.1667L3.33337 10"
-        stroke={stroke}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  );
+const addOrRemoveItemFromArray = <T,>(array: T[], key: T): T[] => {
+  const index = array.indexOf(key);
+  if (index === -1) {
+    return [...array, key];
+  } else {
+    return array.filter(item => item !== key);
+  }
 };
 
-function MyCheckbox() {
-  const [checked, setChecked] = useState(false);
-  return (
-    <Pressable
-      style={tailwind.style(
-        'w-4 h-4 justify-center items-center rounded border mr-3',
-        checked ? 'bg-blue-900 border-blue-900' : 'bg-transparent border-slate-500',
-      )}
-      onPress={() => setChecked(!checked)}>
-      {checked && <Icon icon={<TickIcon />} size={14} style={tailwind.style('text-white')} />}
-    </Pressable>
-  );
-}
+type NotificationPreferenceType = keyof typeof NOTIFICATION_PREFERENCE_TYPES;
 
 export const NotificationPreferences = () => {
+  const {
+    all_push_flags: allPushFlags,
+    selected_email_flags: selectedEmailFlags,
+    selected_push_flags,
+  } = useSelector(selectNotificationSettings);
+
+  const dispatch = useDispatch();
+
+  const [selectedPushFlags, setPushFlags] = useState(selected_push_flags);
+
+  const onPushItemChange = (item: string) => {
+    const pushFlags = addOrRemoveItemFromArray([...selectedPushFlags], item);
+    setPushFlags(pushFlags);
+    savePreferences({
+      emailFlags: selectedEmailFlags,
+      pushFlags: pushFlags,
+    });
+  };
+
+  const savePreferences = ({
+    emailFlags,
+    pushFlags,
+  }: {
+    emailFlags: string[];
+    pushFlags: string[];
+  }) => {
+    // TODO: Add analytics
+    // AnalyticsHelper.track(PROFILE_EVENTS.CHANGE_PREFERENCES);
+    // TODO: Fix this later
+    // @ts-ignore
+    dispatch(
+      settingsActions.updateNotificationSettings({
+        notification_settings: {
+          selected_email_flags: emailFlags,
+          selected_push_flags: pushFlags,
+        },
+      }),
+    );
+  };
+
   return (
     <Animated.View style={tailwind.style('py-4 px-3')}>
       <Animated.View style={tailwind.style('flex flex-row items-center')}>
         <Animated.View
           style={tailwind.style(
-            'flex-1 ml-3 flex-row justify-between py-[11px] pr-3 border-b-[1px] border-blackA-A3',
+            'flex-1 mx-2 flex-row justify-between py-[11px] pr-3 border-b-[1px] border-grayA-300',
           )}>
           <Animated.Text
             style={tailwind.style(
               'text-base font-semibold leading-[17px] tracking-[0.2px] text-gray-950',
             )}>
-            Email Notifications
+            {i18n.t('NOTIFICATION_PREFERENCE.PUSH')}
           </Animated.Text>
         </Animated.View>
       </Animated.View>
-      <Animated.View style={tailwind.style('flex flex-row items-center')}>
-        <Animated.View style={tailwind.style('flex-1 ml-3 flex-row items-center py-[11px] pr-3')}>
-          {/* <Checkbox value={true} onValueChange={() => {}} style={tailwind.style('mr-3')} /> */}
-          <MyCheckbox />
-          <Animated.Text
-            style={tailwind.style(
-              'text-base font-inter-medium-24 leading-[17px] tracking-[0.24px] text-gray-950',
-            )}>
-            Conversation is assigned to you
-          </Animated.Text>
-        </Animated.View>
-      </Animated.View>
-      {/* <Animated.View style={tailwind.style('flex flex-row items-center')}>
-        <Animated.View style={tailwind.style('flex-1 ml-3 flex-row items-center py-[11px] pr-3')}>
-          <Checkbox value={true} onValueChange={() => {}} style={tailwind.style('mr-3')} />
-          <Animated.Text
-            style={tailwind.style(
-              'text-base font-inter-medium-24 leading-[17px] tracking-[0.24px] text-gray-950',
-            )}>
-            Conversation is assigned to you
-          </Animated.Text>
-        </Animated.View>
-      </Animated.View>
-      <Animated.View style={tailwind.style('flex flex-row items-center')}>
-        <Animated.View style={tailwind.style('flex-1 ml-3 flex-row items-center py-[11px] pr-3')}>
-          <Checkbox value={true} onValueChange={() => {}} style={tailwind.style('mr-3')} />
-          <Animated.Text
-            style={tailwind.style(
-              'text-base font-inter-medium-24 leading-[17px] tracking-[0.24px] text-gray-950',
-            )}>
-            Conversation is assigned to you
-          </Animated.Text>
-        </Animated.View>
-      </Animated.View>
-      <Animated.View style={tailwind.style('flex flex-row items-center')}>
-        <Animated.View style={tailwind.style('flex-1 ml-3 flex-row items-center py-[11px] pr-3')}>
-          <Checkbox value={true} onValueChange={() => {}} style={tailwind.style('mr-3')} />
-          <Animated.Text
-            style={tailwind.style(
-              'text-base font-inter-medium-24 leading-[17px] tracking-[0.24px] text-gray-950',
-            )}>
-            Conversation is assigned to you
-          </Animated.Text>
-        </Animated.View>
-      </Animated.View>
-      <Animated.View style={tailwind.style('flex flex-row items-center')}>
-        <Animated.View
-          style={tailwind.style(
-            'flex-1 ml-3 flex-row justify-between py-[11px] pr-3 border-b-[1px] border-blackA-A3',
-          )}>
-          <Animated.Text
-            style={tailwind.style(
-              'text-base font-semibold leading-[17px] tracking-[0.24px] text-gray-950',
-            )}>
-            Push Notifications
-          </Animated.Text>
-          <Pressable>
-            <Animated.Text
-              style={tailwind.style('text-base  leading-[17px] tracking-[0.2px] text-blue-900')}>
-              Enable
-            </Animated.Text>
-          </Pressable>
-        </Animated.View>
-      </Animated.View>
-      <Animated.View style={tailwind.style('flex flex-row items-center')}>
-        <Animated.View style={tailwind.style('flex-1 ml-3 flex-row items-center py-[11px] pr-3')}>
-          <Checkbox value={true} onValueChange={() => {}} style={tailwind.style('mr-3')} />
-          <Animated.Text
-            style={tailwind.style(
-              'text-base font-inter-medium-24 leading-[17px] tracking-[0.24px] text-gray-950',
-            )}>
-            Conversation is assigned to you
-          </Animated.Text>
-        </Animated.View>
-      </Animated.View>
-      <Animated.View style={tailwind.style('flex flex-row items-center')}>
-        <Animated.View style={tailwind.style('flex-1 ml-3 flex-row items-center py-[11px] pr-3')}>
-          <Checkbox value={true} onValueChange={() => {}} style={tailwind.style('mr-3')} />
-          <Animated.Text
-            style={tailwind.style(
-              'text-base font-inter-medium-24 leading-[17px] tracking-[0.24px] text-gray-950',
-            )}>
-            Conversation is assigned to you
-          </Animated.Text>
-        </Animated.View>
-      </Animated.View>
-      <Animated.View style={tailwind.style('flex flex-row items-center')}>
-        <Animated.View style={tailwind.style('flex-1 ml-3 flex-row items-center py-[11px] pr-3')}>
-          <Checkbox value={true} onValueChange={() => {}} style={tailwind.style('mr-3')} />
-          <Animated.Text
-            style={tailwind.style(
-              'text-base font-inter-medium-24 leading-[17px] tracking-[0.24px] text-gray-950',
-            )}>
-            Conversation is assigned to you
-          </Animated.Text>
-        </Animated.View>
-      </Animated.View> */}
+
+      {allPushFlags.map(
+        (item: NotificationPreferenceType) =>
+          NOTIFICATION_PREFERENCE_TYPES[item] && (
+            <Animated.View
+              key={item}
+              style={tailwind.style('flex flex-row items-center justify-between ml-2 mt-2')}>
+              <Animated.Text
+                style={tailwind.style(
+                  'text-base flex-1 leading-[17px] tracking-[0.24px] text-gray-950',
+                )}>
+                {i18n.t(`NOTIFICATION_PREFERENCE.${NOTIFICATION_PREFERENCE_TYPES[item]}`)}
+              </Animated.Text>
+              <Switch
+                trackColor={{ false: '#C9D7E3', true: '#1F93FF' }}
+                thumbColor="#FFFFFF"
+                style={styles.switch}
+                ios_backgroundColor="#C9D7E3"
+                onValueChange={() => onPushItemChange(item)}
+                value={selectedPushFlags.includes(item)}
+              />
+            </Animated.View>
+          ),
+      )}
     </Animated.View>
   );
 };
+
+const styles = StyleSheet.create({
+  switch: {
+    transform: [{ scale: 0.6 }],
+  },
+});

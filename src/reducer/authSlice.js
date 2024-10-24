@@ -8,7 +8,7 @@ import { getBaseUrl, getHeaders } from '../services/auth';
 import { API_URL } from 'constants/url';
 import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
 
-export const actions = { 
+export const actions = {
   doLogin: createAsyncThunk('auth/doLogin', async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await APIHelper.post('auth/sign_in', { email, password });
@@ -123,6 +123,23 @@ export const actions = {
       return rejectWithValue(error);
     }
   }),
+  setActiveAccount: createAsyncThunk(
+    'auth/setActiveAccount',
+    async ({ accountId }, { rejectWithValue }) => {
+      try {
+        const headers = await getHeaders();
+        const baseUrl = await getBaseUrl();
+        const response = await axios.put(
+          `${baseUrl}${API_URL}profile/set_active_account`,
+          { account_id: accountId },
+          { headers },
+        );
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error);
+      }
+    },
+  ),
 };
 
 export const authAdapter = createEntityAdapter();

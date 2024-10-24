@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { StatusBar, View, Text, Platform } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StatusBar, View, Text, Platform, Linking } from 'react-native';
 import { Image } from 'expo-image';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { StackActions, useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
   BottomSheetModal,
   BottomSheetScrollView,
@@ -15,11 +18,12 @@ import ChatWootWidget from '@chatwoot/react-native-widget';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Application from 'expo-application';
 import { Account } from '@/types';
+import { clearContacts } from '@/reducer/contactSlice';
+import { clearAllConversations } from '@/reducer/conversationSlice';
 
 import i18n from 'i18n';
 
 import { HELP_URL } from '@/constants/url';
-// import { useNavigation } from '@react-navigation/native';
 
 import { tailwind } from '@/theme';
 
@@ -47,8 +51,10 @@ import {
   selectUser,
   actions as authActions,
   selectAccounts,
+  setAccount,
+  logout,
 } from '@/reducer/authSlice';
-import { selectLocale, setLocale } from '@/reducer/settingsSlice';
+import { selectLocale, setLocale, actions as settingsActions } from '@/reducer/settingsSlice';
 import AnalyticsHelper from '@/helpers/AnalyticsHelper';
 import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/helpers/permissionHelper';
@@ -61,8 +67,8 @@ const buildNumber = Application.nativeBuildVersion;
 const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVersion;
 
 const SettingsScreen = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
-  // const navigation = useNavigation();
   const availabilityStatus = useSelector(selectCurrentUserAvailability) || 'offline';
   // const { bottom } = useSafeAreaInsets();
 
@@ -75,6 +81,12 @@ const SettingsScreen = () => {
     identifier_hash: identifierHash,
     account_id: activeAccountId,
   } = user;
+
+  useEffect(() => {
+    // TODO: Fix this later
+    // @ts-expect-error TODO: Fix typing for dispatch
+    dispatch(settingsActions.getNotificationSettings());
+  }, [dispatch]);
 
   const userPermissions = getUserPermissions(user, activeAccountId);
 
@@ -144,7 +156,13 @@ const SettingsScreen = () => {
   };
 
   const changeAccount = (accountId: number) => {
-    console.log('changeAccount', accountId);
+    dispatch(clearContacts());
+    dispatch(clearAllConversations());
+    dispatch(setAccount(accountId));
+    // TODO: Fix this later
+    // @ts-expect-error TODO: Fix typing for dispatch
+    dispatch(authActions.setActiveAccount({ accountId }));
+    navigation.dispatch(StackActions.replace('Tab'));
   };
 
   useEffect(() => {
@@ -169,6 +187,20 @@ const SettingsScreen = () => {
     await WebBrowser.openBrowserAsync(HELP_URL);
   };
 
+  const openSystemSettings = () => {
+    if (Platform.OS === 'ios') {
+      Linking.openURL('app-settings:');
+    } else {
+      Linking.openSettings();
+    }
+  };
+
+  const onClickLogout = useCallback(async () => {
+    await AsyncStorage.removeItem('cwCookie');
+    // TODO: Add action to remove FCM token
+    dispatch(logout());
+  }, [dispatch]);
+
   const preferencesList: GenericListType[] = [
     {
       hasChevron: true,
@@ -180,12 +212,13 @@ const SettingsScreen = () => {
     },
     {
       hasChevron: true,
-      title: i18n.t('SETTINGS.NOTIFICATION_PREFERENCES'),
+      title: i18n.t('SETTINGS.NOTIFICATIONS'),
       icon: <NotificationIcon />,
-      subtitle: '',
+      subtitle: 'Enabled',
       subtitleType: 'light',
       disabled: !hasConversationPermission,
       onPressListItem: () => notificationPreferencesSheetRef.current?.present(),
+      // onPressListItem: openSystemSettings,
     },
     {
       hasChevron: true,
@@ -227,8 +260,6 @@ const SettingsScreen = () => {
       onPressListItem: () => toggleWidget(true),
     },
   ];
-
-  console.log('accounts', accounts);
 
   return (
     <SafeAreaView style={tailwind.style('flex-1 bg-white')}>
@@ -273,7 +304,11 @@ const SettingsScreen = () => {
           <SettingsList sectionTitle={i18n.t('SETTINGS.SUPPORT')} list={supportList} />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-6')}>
-          <FullWidthButton text={i18n.t('SETTINGS.LOGOUT')} isDestructive />
+          <FullWidthButton
+            text={i18n.t('SETTINGS.LOGOUT')}
+            isDestructive
+            handlePress={onClickLogout}
+          />
         </Animated.View>
         <View style={tailwind.style('p-4 items-center')}>
           <Text style={tailwind.style('text-sm text-gray-700 ')}>
@@ -329,7 +364,7 @@ const SettingsScreen = () => {
         animationConfigs={animationConfigs}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
-        snapPoints={['70%']}>
+        snapPoints={['52%']}>
         <BottomSheetWrapper>
           <BottomSheetHeader headerText={i18n.t('SETTINGS.NOTIFICATION_PREFERENCES')} />
           <NotificationPreferences />

@@ -6,7 +6,7 @@ import I18n from '../i18n';
 
 import { showToast } from './ToastHelper';
 import { getHeaders, getBaseUrl } from '../services/auth';
-import { handleLogout } from '../reducer/authHelper'; 
+import { handleLogout } from '../reducer/storeHelper'; 
 import { getStore } from '../reducer/storeAccessor';
 
 const parseErrorCode = error => {

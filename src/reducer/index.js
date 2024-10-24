@@ -16,6 +16,7 @@ import dashboardAppSlice from './dashboardAppSlice';
 import conversationWatchersSlice from './conversationWatchersSlice';
 import contactsSlice from './contactSlice';
 import cannedTemplatesSlice from './cannedTemplates';
+import authv4Slice from '../store/auth/authSlice';
 
 export const appReducer = combineReducers({
   cannedTemplates: cannedTemplatesSlice,
@@ -34,4 +35,5 @@ export const appReducer = combineReducers({
   dashboardApps: dashboardAppSlice,
   conversationWatchers: conversationWatchersSlice,
   contacts: contactsSlice,
+  authv4: authv4Slice,
 });

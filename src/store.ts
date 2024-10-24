@@ -11,7 +11,6 @@ import {
   REGISTER,
 } from 'redux-persist';
 import { appReducer } from './reducer';
-import { setStore } from './reducer/storeAccessor';
 
 const persistConfig = {
   key: 'Root',
@@ -46,8 +45,6 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
-
-setStore(store);
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;

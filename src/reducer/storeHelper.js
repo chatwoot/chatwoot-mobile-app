@@ -1,4 +1,4 @@
-import { getStore } from '../reducer/storeAccessor';
+import { getStore } from './storeAccessor';
 
 export const handleLogout = async () => {
   const store = await getStore();

@@ -83,6 +83,7 @@
     "react-redux": "^8.1.2",
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
+    "semver": "^7.6.3",
     "tailwindcss": "^3.4.12",
     "twrnc": "^4.5.1"
   },

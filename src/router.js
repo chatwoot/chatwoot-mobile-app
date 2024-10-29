@@ -6,7 +6,7 @@ import { getStateFromPath } from '@react-navigation/native';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import PropTypes from 'prop-types';
-import { LightTheme } from './theme';
+import { LightTheme } from './theme-old';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ConfigureURLScreen from './screens/ConfigureURLScreen/ConfigureURLScreen';

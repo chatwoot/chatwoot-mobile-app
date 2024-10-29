@@ -10,6 +10,21 @@ export const SCREENS = {
   CHAT: 'ChatScreen',
 };
 
+export const TAB_BAR_HEIGHT = 83;
+export const TEXT_INPUT_CONTAINER_HEIGHT = 57;
+
+export const userStatusList = [
+  { statusColor: 'bg-green-800', status: 'online' },
+  { statusColor: 'bg-yellow-800', status: 'busy' },
+  { statusColor: 'bg-gray-800', status: 'offline' },
+];
+
+export const AVAILABILITY_STATUS_LIST = [
+  { statusColor: 'bg-green-800', status: 'online' },
+  { statusColor: 'bg-yellow-800', status: 'busy' },
+  { statusColor: 'bg-gray-800', status: 'offline' },
+];
+
 export const MAXIMUM_FILE_UPLOAD_SIZE = 10;
 
 export const CONVERSATION_STATUSES = [
@@ -208,6 +223,9 @@ export const NOTIFICATION_PREFERENCE_TYPES = {
   push_assigned_conversation_new_message: 'CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH',
   push_conversation_mention: 'CONVERSATION_MENTION',
   push_participating_conversation_new_message: 'CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH',
+  push_sla_missed_first_response: 'CONVERSATION_SLA_MISSED_FIRST_RESPONSE',
+  push_sla_missed_next_response: 'CONVERSATION_SLA_MISSED_NEXT_RESPONSE',
+  push_sla_missed_resolution: 'CONVERSATION_SLA_MISSED_RESOLUTION',
   email_conversation_creation: 'CONVERSATION_CREATE_EMAIL',
   email_conversation_assignment: 'CONVERSATION_ASSIGNEE_EMAIL',
   email_assigned_conversation_new_message: 'CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL',

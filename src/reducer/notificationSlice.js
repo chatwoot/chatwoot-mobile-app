@@ -130,7 +130,7 @@ export const actions = {
         });
         return { fcmToken };
       } catch (error) {
-        return rejectWithValue(error.message || 'Error saving device details');
+        return rejectWithValue(error.message || 'An unknown error occurred');
       }
     },
   ),
@@ -209,6 +209,9 @@ const notificationSlice = createSlice({
         if (action?.payload?.fcmToken) {
           state.pushToken = action.payload.fcmToken;
         }
+      })
+      .addCase(actions.saveDeviceDetails.rejected, (state, action) => {
+        state.pushToken = null;
       })
       .addCase(actions.clearDeviceDetails.fulfilled, state => {
         state.pushToken = null;

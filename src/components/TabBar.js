@@ -12,6 +12,8 @@ import { selectUser } from 'reducer/authSlice';
 import { getUserPermissions } from 'helpers/permissionHelper';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 
+import { selectInstallationUrl, actions as settingsActions } from 'reducer/settingsSlice';
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -73,6 +75,12 @@ const TabStack = () => {
   }, [dispatch]);
 
   const user = useSelector(selectUser);
+  const installationUrl = useSelector(selectInstallationUrl);
+
+  useEffect(() => {
+    dispatch(settingsActions.checkInstallationVersion({ user, installationUrl }));
+  }, []);
+
   const userPermissions = getUserPermissions(user, user.account_id);
   const hasConversationPermission = CONVERSATION_PERMISSIONS.some(permission =>
     userPermissions.includes(permission),

@@ -130,8 +130,7 @@ export const actions = {
         });
         return { fcmToken };
       } catch (error) {
-        console.log('error', error);
-        return rejectWithValue(error);
+        return rejectWithValue(error.message || 'Error saving device details');
       }
     },
   ),

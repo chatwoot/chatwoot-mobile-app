@@ -36,11 +36,7 @@ import { actions as inboxActions, inboxesSelector } from 'reducer/inboxSlice';
 import { selectUser } from 'reducer/authSlice';
 import { getUserPermissions } from 'helpers/permissionHelper';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
-import {
-  selectWebSocketUrl,
-  selectInstallationUrl,
-  actions as settingsActions,
-} from 'reducer/settingsSlice';
+import { selectWebSocketUrl, selectInstallationUrl } from 'reducer/settingsSlice';
 import { actions as notificationActions } from 'reducer/notificationSlice';
 import { actions as dashboardAppActions } from 'reducer/dashboardAppSlice';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
@@ -93,19 +89,11 @@ const ConversationScreen = () => {
     dispatch(inboxActions.fetchInboxes());
     initAnalytics();
     initSentry();
-    checkAppVersion();
     initPushNotifications();
     dispatch(dashboardAppActions.index());
     dispatch(labelActions.index());
     dispatch(teamActions.index());
-  }, [
-    dispatch,
-    initActionCable,
-    initAnalytics,
-    initPushNotifications,
-    checkAppVersion,
-    initSentry,
-  ]);
+  }, [dispatch, initActionCable, initAnalytics, initPushNotifications, initSentry]);
 
   const initPushNotifications = useCallback(async () => {
     dispatch(notificationActions.index({ pageNo: 1 }));
@@ -127,10 +115,6 @@ const ConversationScreen = () => {
       installation_url: installationUrl,
     });
   }, [user, installationUrl]);
-
-  const checkAppVersion = useCallback(async () => {
-    dispatch(settingsActions.checkInstallationVersion({ user, installationUrl }));
-  }, [dispatch, user, installationUrl]);
 
   const initActionCable = useCallback(async () => {
     const pubSubToken = await getPubSubToken();

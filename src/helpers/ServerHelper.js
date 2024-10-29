@@ -3,6 +3,14 @@ import semver from 'semver';
 
 import I18n from '@/i18n';
 
+export const checkShouldShowServerUpgradeWarning = ({ installedVersion, minimumVersion }) => {
+  try {
+    return semver.lt(installedVersion, minimumVersion);
+  } catch (error) {
+    return false;
+  }
+};
+
 const minimumVersion = process.env.EXPO_PUBLIC_MINIMUM_CHATWOOT_VERSION;
 export function checkServerSupport({ installedVersion, userRole }) {
   const shouldShowServerUpgradeWarning = semver.lt(installedVersion, minimumVersion);

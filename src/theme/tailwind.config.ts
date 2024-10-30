@@ -15,7 +15,7 @@ const chatwootAppColors = {
 
 export const twConfig = {
   theme: {
-    // ...defaultTheme,
+    ...defaultTheme,
     extend: {
       colors: { ...chatwootAppColors },
       fontSize: {

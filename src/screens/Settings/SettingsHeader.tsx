@@ -6,7 +6,7 @@ import { tailwind } from '@/theme';
 
 export const SettingsHeader = () => {
   return (
-    <Animated.View style={[tailwind.style('border-b-[1px] border-b-blackA-A3')]}>
+    <Animated.View>
       <Animated.View style={tailwind.style('flex flex-row px-4 pt-2 pb-[12px]')}>
         <Animated.View style={tailwind.style('flex-1 justify-center items-center')}>
           <Animated.Text

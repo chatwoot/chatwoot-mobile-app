@@ -286,9 +286,7 @@ const SettingsScreen = () => {
           </Animated.View>
           <Animated.View style={tailwind.style('flex flex-col items-center gap-1')}>
             <Animated.Text
-              style={tailwind.style(
-                'text-[22px] font-inter-580-24 font-semibold leading-[22px] text-gray-950',
-              )}>
+              style={tailwind.style('text-[22px]  font-semibold leading-[22px] text-gray-950')}>
               {name}
             </Animated.Text>
             <Animated.Text

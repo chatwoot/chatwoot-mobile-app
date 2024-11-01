@@ -69,7 +69,7 @@ export const NotificationPreferences = () => {
           )}>
           <Animated.Text
             style={tailwind.style(
-              'text-base font-semibold leading-[17px] tracking-[0.2px] text-gray-950',
+              'text-base font-medium leading-[17px] tracking-[0.2px] text-gray-950',
             )}>
             {i18n.t('NOTIFICATION_PREFERENCE.PUSH')}
           </Animated.Text>
@@ -83,9 +83,7 @@ export const NotificationPreferences = () => {
               key={item}
               style={tailwind.style('flex flex-row items-center justify-between ml-2 mt-2')}>
               <Animated.Text
-                style={tailwind.style(
-                  'text-base flex-1 leading-[17px] tracking-[0.24px] text-gray-950',
-                )}>
+                style={tailwind.style('flex-1 leading-[17px] tracking-[0.24px] text-gray-950')}>
                 {i18n.t(`NOTIFICATION_PREFERENCE.${NOTIFICATION_PREFERENCE_TYPES[item]}`)}
               </Animated.Text>
               <Switch

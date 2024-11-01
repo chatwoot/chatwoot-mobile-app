@@ -11,7 +11,7 @@ export const SettingsHeader = () => {
         <Animated.View style={tailwind.style('flex-1 justify-center items-center')}>
           <Animated.Text
             style={tailwind.style(
-              'text-[17px] font-inter-medium-24 leading-[17px] tracking-[0.32px] text-center text-gray-950',
+              'text-[17px] font-medium leading-[17px] tracking-[0.32px] text-center text-gray-950',
             )}>
             {i18n.t('SETTINGS.HEADER_TITLE')}
           </Animated.Text>

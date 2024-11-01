@@ -272,7 +272,7 @@ const SettingsScreen = () => {
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}>
-        <Animated.View style={tailwind.style('flex justify-center items-center pt-4')}>
+        <Animated.View style={tailwind.style('flex justify-center items-center pt-4 gap-4')}>
           <Animated.View>
             <Image style={tailwind.style('h-24 w-24 rounded-full')} source={{ uri: avatarUrl }} />
             <Animated.View
@@ -284,18 +284,18 @@ const SettingsScreen = () => {
               />
             </Animated.View>
           </Animated.View>
-          <Animated.Text
-            style={tailwind.style(
-              'text-[22px] font-inter-580-24 pt-4 leading-[22px] text-gray-950',
-            )}>
-            {name}
-          </Animated.Text>
-          <Animated.Text
-            style={tailwind.style(
-              'text-[16px] font-inter-420-20 pt-2 leading-[21px] text-gray-950',
-            )}>
-            {email}
-          </Animated.Text>
+          <Animated.View style={tailwind.style('flex flex-col items-center gap-1')}>
+            <Animated.Text
+              style={tailwind.style(
+                'text-[22px] font-inter-580-24 font-semibold leading-[22px] text-gray-950',
+              )}>
+              {name}
+            </Animated.Text>
+            <Animated.Text
+              style={tailwind.style('text-[15px] font-medium leading-[17.25px] text-gray-900')}>
+              {email}
+            </Animated.Text>
+          </Animated.View>
         </Animated.View>
         <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.PREFERENCES')} list={preferencesList} />

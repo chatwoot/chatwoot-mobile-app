@@ -47,8 +47,8 @@ export const FullWidthButton = (props: FullWidthButtonProps) => {
         <Animated.Text
           style={[
             tailwind.style(
-              'text-base font-inter-medium-24 tracking-[0.16px] leading-[22px]',
-              isDestructive ? ' text-tomato-800' : 'text-gray-950',
+              'text-base font-medium tracking-[0.16px] leading-[22.4px]',
+              isDestructive ? ' text-ruby-800' : 'text-gray-950',
             ),
           ]}>
           {text}

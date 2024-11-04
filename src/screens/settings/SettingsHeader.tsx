@@ -1,7 +1,7 @@
 import React from 'react';
 import Animated from 'react-native-reanimated';
-import i18n from 'i18n';
 
+import i18n from 'i18n';
 import { tailwind } from '@/theme';
 
 export const SettingsHeader = () => {

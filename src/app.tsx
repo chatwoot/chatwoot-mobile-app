@@ -58,7 +58,6 @@ const Chatwoot = () => {
     return true;
   };
 
-  console.log(fontsLoaded, error);
   if (!fontsLoaded) {
     return null;
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { CaretRight } from '@/svg-icons';
@@ -98,15 +98,18 @@ export const SettingsList = (props: GenericListProps) => {
     </Animated.View>
   );
 };
-
 const styles = StyleSheet.create({
-  listShadow: {
-    // box-shadow: 0px 0.15000000596046448px 2px 0px #00000040;
-    // box-shadow: [horizontal offset] [vertical offset] [blur radius] [optional spread radius] [color];
-    shadowColor: '#00000040',
-    shadowOffset: { width: 0, height: 0.15 },
-    shadowRadius: 2,
-    shadowOpacity: 0.35,
-    elevation: 2,
-  },
+  listShadow:
+    Platform.select({
+      ios: {
+        shadowColor: '#000000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowRadius: 2,
+        shadowOpacity: 0.25,
+      },
+      android: {
+        elevation: 4,
+        backgroundColor: 'white',
+      },
+    }) || {}, // Add fallback empty object
 });

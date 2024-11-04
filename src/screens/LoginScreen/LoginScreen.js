@@ -5,7 +5,7 @@ import { View, Image, TouchableOpacity, SafeAreaView, Dimensions } from 'react-n
 import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
-import LanguageSelector from '../Settings/components/LanguageSelector';
+import LanguageSelector from '../settings/components/LanguageSelector';
 import { StackActions } from '@react-navigation/native';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
@@ -203,7 +203,7 @@ const LoginScreenComponent = ({ navigation }) => {
 
           <View style={styles.linksContainer}>
             <View style={styles.accountView}>
-              {appName === 'Chatwoot' && (
+              {/* {appName === 'Chatwoot' && (
                 <>
                   <TouchableOpacity onPress={doSignup}>
                     <Text xs medium color={colors.textLight}>
@@ -212,7 +212,7 @@ const LoginScreenComponent = ({ navigation }) => {
                   </TouchableOpacity>
                   <Text color={colors.textLight}>{'   |   '}</Text>
                 </>
-              )}
+              )} */}
 
               <TouchableOpacity onPress={() => navigate('ConfigureURL')}>
                 <Text xs medium color={colors.textLight}>

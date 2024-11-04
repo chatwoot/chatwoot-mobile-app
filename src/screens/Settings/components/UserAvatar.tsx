@@ -90,7 +90,12 @@ export const UserAvatar: React.FC<Partial<UserAvatarProps>> = props => {
   const loadFallback = () => setImageAvailable(false);
 
   return (
-    <View style={[tailwind.style('rounded-full h-24 w-24'), styleAdapter(style)]} {...boxProps}>
+    <View
+      style={[
+        tailwind.style('relative items-center justify-center bg-gray-100 rounded-full h-24 w-24'),
+        styleAdapter(style),
+      ]}
+      {...boxProps}>
       {imageAvailable && src ? (
         <AvatarImage src={src} handleFallback={loadFallback} />
       ) : name ? (

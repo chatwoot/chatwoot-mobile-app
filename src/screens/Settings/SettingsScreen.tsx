@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { StatusBar, View, Text, Platform, Linking } from 'react-native';
-import { Image } from 'expo-image';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -38,8 +37,9 @@ import {
   NotificationPreferences,
   SwitchAccount,
 } from '@/components-next';
+import { UserAvatar } from './components/UserAvatar';
 
-import { LANGUAGES, TAB_BAR_HEIGHT, userStatusList } from '@/constants';
+import { LANGUAGES, TAB_BAR_HEIGHT } from '@/constants';
 import { useRefsContext } from '@/context';
 import { ChatwootIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
 import { GenericListType } from '@/types';
@@ -179,10 +179,6 @@ const SettingsScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeLocale]);
 
-  const getBgColorBasedOnStatus = () => {
-    return userStatusList.find(value => value.status === availabilityStatus)?.statusColor || '';
-  };
-
   const openURL = async () => {
     await WebBrowser.openBrowserAsync(HELP_URL);
   };
@@ -262,7 +258,7 @@ const SettingsScreen = () => {
   ];
 
   return (
-    <SafeAreaView style={tailwind.style('flex-1 bg-white font-inter-400-20')}>
+    <SafeAreaView style={tailwind.style('flex-1 bg-white font-inter-normal-20')}>
       <StatusBar
         translucent
         backgroundColor={tailwind.color('bg-white')}
@@ -274,15 +270,11 @@ const SettingsScreen = () => {
         contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}>
         <Animated.View style={tailwind.style('flex justify-center items-center pt-4 gap-4')}>
           <Animated.View>
-            <Image style={tailwind.style('h-24 w-24 rounded-full')} source={{ uri: avatarUrl }} />
+            <UserAvatar src={avatarUrl} name={name} status={availabilityStatus} />
             <Animated.View
               style={tailwind.style(
                 'absolute border-[2px] border-white rounded-full -bottom-[2px] right-[10px]',
-              )}>
-              <Animated.View
-                style={tailwind.style('h-4 w-4 rounded-full', getBgColorBasedOnStatus())}
-              />
-            </Animated.View>
+              )}></Animated.View>
           </Animated.View>
           <Animated.View style={tailwind.style('flex flex-col items-center gap-1')}>
             <Animated.Text

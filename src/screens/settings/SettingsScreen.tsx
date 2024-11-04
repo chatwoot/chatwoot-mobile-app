@@ -183,13 +183,13 @@ const SettingsScreen = () => {
     await WebBrowser.openBrowserAsync(HELP_URL);
   };
 
-  const openSystemSettings = () => {
-    if (Platform.OS === 'ios') {
-      Linking.openURL('app-settings:');
-    } else {
-      Linking.openSettings();
-    }
-  };
+  // const openSystemSettings = () => {
+  //   if (Platform.OS === 'ios') {
+  //     Linking.openURL('app-settings:');
+  //   } else {
+  //     Linking.openSettings();
+  //   }
+  // };
 
   const onClickLogout = useCallback(async () => {
     await AsyncStorage.removeItem('cwCookie');
@@ -210,7 +210,7 @@ const SettingsScreen = () => {
       hasChevron: true,
       title: i18n.t('SETTINGS.NOTIFICATIONS'),
       icon: <NotificationIcon />,
-      subtitle: 'Enabled',
+      subtitle: '',
       subtitleType: 'light',
       disabled: !hasConversationPermission,
       onPressListItem: () => notificationPreferencesSheetRef.current?.present(),
@@ -312,7 +312,6 @@ const SettingsScreen = () => {
         ref={userAvailabilityStatusSheetRef}
         backdropComponent={BottomSheetBackdrop}
         handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        detached
         enablePanDownToClose
         animationConfigs={animationConfigs}
         // TODO: Fix this later
@@ -332,7 +331,6 @@ const SettingsScreen = () => {
         ref={languagesModalSheetRef}
         backdropComponent={BottomSheetBackdrop}
         handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        detached
         // TODO: Fix this later
         // bottomInset={bottom === 0 ? 12 : bottom}
         enablePanDownToClose
@@ -349,7 +347,6 @@ const SettingsScreen = () => {
         ref={notificationPreferencesSheetRef}
         backdropComponent={BottomSheetBackdrop}
         handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        detached
         // TODO: Fix this later
         // bottomInset={bottom === 0 ? 12 : bottom}
         enablePanDownToClose
@@ -366,7 +363,6 @@ const SettingsScreen = () => {
         ref={switchAccountSheetRef}
         backdropComponent={BottomSheetBackdrop}
         handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        detached
         // TODO: Fix this later
         // bottomInset={bottom === 0 ? 12 : bottom}
         enablePanDownToClose

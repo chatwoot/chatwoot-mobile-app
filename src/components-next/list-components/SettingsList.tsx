@@ -55,7 +55,7 @@ const ListItem = (props: ListItemProps) => {
           <Animated.View style={tailwind.style('flex flex-row items-center pr-3')}>
             <Animated.Text
               style={tailwind.style(
-                'text-base font-inter-normal-24 leading-[22px] tracking-[0.16px]',
+                'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px]',
                 listItem.subtitleType === 'light' ? 'text-gray-900' : 'text-gray-950',
               )}>
               {listItem.subtitle}

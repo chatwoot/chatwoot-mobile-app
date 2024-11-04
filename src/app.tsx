@@ -25,10 +25,10 @@ const Chatwoot = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [fontsLoaded, error] = useFonts({
     'Inter-400-20': require('./assets/fonts/Inter-400-20.ttf'),
-    'inter-420-20': require('./assets/fonts/Inter-420-20.ttf'),
+    'Inter-420-20': require('./assets/fonts/Inter-420-20.ttf'),
     'Inter-500-24': require('./assets/fonts/Inter-500-24.ttf'),
+    'Inter-580-24': require('./assets/fonts/Inter-580-24.ttf'),
     'Inter-600-20': require('./assets/fonts/Inter-600-20.ttf'),
-    'inter-580-24': require('./assets/fonts/Inter-580-24.ttf'),
   });
 
   useEffect(() => {
@@ -57,6 +57,8 @@ const Chatwoot = () => {
     );
     return true;
   };
+
+  console.log(fontsLoaded, error);
   if (!fontsLoaded) {
     return null;
   }

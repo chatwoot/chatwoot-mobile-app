@@ -262,7 +262,7 @@ const SettingsScreen = () => {
   ];
 
   return (
-    <SafeAreaView style={tailwind.style('flex-1 bg-white')}>
+    <SafeAreaView style={tailwind.style('flex-1 bg-white font-inter-400-20')}>
       <StatusBar
         translucent
         backgroundColor={tailwind.color('bg-white')}
@@ -286,11 +286,13 @@ const SettingsScreen = () => {
           </Animated.View>
           <Animated.View style={tailwind.style('flex flex-col items-center gap-1')}>
             <Animated.Text
-              style={tailwind.style('text-[22px]  font-semibold leading-[22px] text-gray-950')}>
+              style={tailwind.style('text-[22px] font-inter-580-24 leading-[22px] text-gray-950')}>
               {name}
             </Animated.Text>
             <Animated.Text
-              style={tailwind.style('text-[15px] font-medium leading-[17.25px] text-gray-900')}>
+              style={tailwind.style(
+                'text-[15px] font-inter-420-20 leading-[17.25px] text-gray-900',
+              )}>
               {email}
             </Animated.Text>
           </Animated.View>

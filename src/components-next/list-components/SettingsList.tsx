@@ -102,10 +102,11 @@ const styles = StyleSheet.create({
   listShadow:
     Platform.select({
       ios: {
-        shadowColor: '#000000',
-        shadowOffset: { width: 0, height: 1 },
+        shadowColor: '#00000040',
+        shadowOffset: { width: 0, height: 0.15 },
         shadowRadius: 2,
-        shadowOpacity: 0.25,
+        shadowOpacity: 0.35,
+        elevation: 2,
       },
       android: {
         elevation: 4,

@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ConversationScreen from 'screens/Conversation/ConversationScreen';
 import NotificationScreen from 'screens/Notification/NotificationScreen';
-import SettingsScreen from 'screens/Settings/SettingsScreen';
+import SettingsScreen from 'screens/settings/SettingsScreen';
 import { Icon } from 'components';
 import { actions as authActions } from 'reducer/authSlice';
 import { selectUnreadCount } from 'reducer/notificationSlice';

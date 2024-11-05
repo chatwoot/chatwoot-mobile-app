@@ -11,7 +11,7 @@ interface SettingsState {
     isUpdating: boolean;
     isLocaleSet: boolean;
   };
-  notificationSettings: null | NotificationSettings;
+  notificationSettings: NotificationSettings;
   localeValue: string;
   webSocketUrl: string;
 }

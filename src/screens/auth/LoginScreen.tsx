@@ -28,8 +28,6 @@ import {
   selectBaseUrl,
   selectLocale,
 } from '@/store/settings/settingsSelectors';
-import { SIGNUP_URL } from '@/constants/url';
-import { openURL } from '@/helpers/UrlHelper';
 import { selectIsLoggingIn } from '@/store/auth/authSelectors';
 import { setLocale } from '@/store/settings/settingsSlice';
 import { useRefsContext } from '@/context/RefsContext';
@@ -85,10 +83,6 @@ const LoginScreen = () => {
   const onSubmit = async (data: FormData) => {
     const { email, password } = data;
     dispatch(authActions.login({ email, password }));
-  };
-
-  const doSignup = () => {
-    openURL({ URL: `${installationUrl}${SIGNUP_URL}` });
   };
 
   const openResetPassword = () => {

@@ -17,7 +17,7 @@ export const BottomSheetBackdrop: React.FC<BottomSheetBackgroundProps> = props =
     languagesModalSheetRef,
     macrosListSheetRef,
     notificationPreferencesSheetRef,
-    switchAccountSheetRef
+    switchAccountSheetRef,
   } = useRefsContext();
 
   const animatedStyle = useAnimatedStyle(() => {

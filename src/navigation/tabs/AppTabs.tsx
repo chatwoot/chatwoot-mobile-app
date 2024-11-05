@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { useEffect } from 'react';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -46,7 +46,13 @@ const Stack = createNativeStackNavigator<TabBarExcludedScreenParamList>();
 const CustomTabBar = (props: BottomTabBarProps) => <BottomTabBar {...props} />;
 
 const Tabs = () => {
+  const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
+
+  useEffect(() => {
+    dispatch(authActions.getProfile());
+  }, [dispatch]);
+
   const userPermissions = getUserPermissions(user, user?.account_id);
   const hasConversationPermission = CONVERSATION_PERMISSIONS.some(permission =>
     userPermissions.includes(permission),
@@ -74,27 +80,19 @@ const Tabs = () => {
 };
 
 export const AppTabs = () => {
-  const dispatch = useAppDispatch();
-
   const isLoggedIn = useAppSelector(selectLoggedIn);
 
-  useEffect(() => {
-    dispatch(authActions.getProfile());
-  }, [dispatch]);
-
-  return (
-    <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
-      {isLoggedIn ? (
-        <Fragment>
-          <Stack.Screen name="Tab" component={Tabs} />
-          <Stack.Screen name="ChatScreen" component={ChatScreen} />
-          <Stack.Screen name="ImageScreen" component={ImageScreen} />
-          <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
-          <Stack.Screen name="ConversationAction" component={ConversationAction} />
-        </Fragment>
-      ) : (
-        <AuthStack />
-      )}
-    </Stack.Navigator>
-  );
+  if (isLoggedIn) {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Tab" component={Tabs} />
+        <Stack.Screen name="ChatScreen" component={ChatScreen} />
+        <Stack.Screen name="ImageScreen" component={ImageScreen} />
+        <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
+        <Stack.Screen name="ConversationAction" component={ConversationAction} />
+      </Stack.Navigator>
+    );
+  } else {
+    return <AuthStack />;
+  }
 };

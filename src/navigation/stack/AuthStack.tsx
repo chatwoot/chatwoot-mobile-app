@@ -7,8 +7,8 @@ import ForgotPassword from '@/screens/auth/ForgotPassword';
 
 export type AuthStackParamList = {
   Login: undefined;
-  ForgotPassword: undefined;
-  ConfigInstallationURL: undefined;
+  ResetPassword: undefined;
+  ConfigureURL: undefined;
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
@@ -31,7 +31,7 @@ export const AuthStack = () => {
           headerShadowVisible: false,
           title: '',
         }}
-        name="ForgotPassword"
+        name="ResetPassword"
         component={ForgotPassword}
       />
       <Stack.Screen
@@ -42,7 +42,7 @@ export const AuthStack = () => {
           headerShadowVisible: false,
           title: '',
         }}
-        name="ConfigInstallationURL"
+        name="ConfigureURL"
         component={ConfigInstallationURL}
       />
     </Stack.Navigator>

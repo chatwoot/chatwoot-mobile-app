@@ -116,7 +116,7 @@ const LoginScreen = () => {
             </Animated.Text>
             <Animated.Text
               style={tailwind.style(
-                'text-sm font-inter-medium-24 leading-[17px] tracking-[0.32px] text-gray-900 pt-4',
+                'font-inter-normal-20 leading-[18px] tracking-[0.32px] text-gray-900 pt-4',
               )}>
               {i18n.t('LOGIN.DESCRIPTION', { baseUrl })}
             </Animated.Text>
@@ -133,8 +133,7 @@ const LoginScreen = () => {
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <View style={tailwind.style('mt-8 mb-8')}>
-                <Animated.Text
-                  style={tailwind.style('text-sm font-inter-medium-24 mb-2 text-gray-950')}>
+                <Animated.Text style={tailwind.style('font-inter-420-20 mb-2 text-gray-950')}>
                   {i18n.t('LOGIN.EMAIL')}
                 </Animated.Text>
                 <TextInput
@@ -173,8 +172,7 @@ const LoginScreen = () => {
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <View style={tailwind.style('mb-1')}>
-                <Animated.Text
-                  style={tailwind.style('text-sm font-inter-medium-24 mb-2 text-gray-950')}>
+                <Animated.Text style={tailwind.style('font-inter-420-20 mb-2 text-gray-950')}>
                   {i18n.t('LOGIN.PASSWORD')}
                 </Animated.Text>
                 <View style={tailwind.style('relative')}>
@@ -195,7 +193,7 @@ const LoginScreen = () => {
                   <Pressable
                     style={tailwind.style('absolute right-3 top-2')}
                     onPress={() => setShowPassword(!showPassword)}>
-                    <Icon size={24} icon={showPassword ? <EyeIcon /> : <EyeSlash />} />
+                    <Icon size={20} icon={showPassword ? <EyeIcon /> : <EyeSlash />} />
                   </Pressable>
                 </View>
                 {errors.password && (
@@ -220,7 +218,6 @@ const LoginScreen = () => {
           />
 
           <View style={tailwind.style('flex-row justify-center items-center mt-8 gap-4')}>
-            <View style={tailwind.style('h-4 w-[1px] bg-blackA-A4')} />
             <Pressable onPress={openConfigInstallationURL}>
               <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
                 {i18n.t('LOGIN.CHANGE_URL')}

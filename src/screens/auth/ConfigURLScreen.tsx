@@ -60,7 +60,7 @@ const ConfigURLScreen = () => {
             </Animated.Text>
             <Animated.Text
               style={tailwind.style(
-                'text-sm font-inter-medium-24 leading-[17px] tracking-[0.32px] text-gray-900 pt-4',
+                'font-inter-normal-20 leading-[18px] tracking-[0.32px] text-gray-900 pt-4',
               )}>
               {i18n.t('CONFIGURE_URL.DESCRIPTION')}
             </Animated.Text>

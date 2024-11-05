@@ -1,8 +1,10 @@
-import React, { useRef } from 'react';
-import { Linking, StyleSheet } from 'react-native';
+import React, { useCallback, useRef } from 'react';
+import { Linking, StyleSheet, View } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { getStateFromPath } from '@react-navigation/native';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { LightTheme } from '../theme-old';
@@ -25,6 +27,14 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
 export const AppNavigationContainer = () => {
   // TODO: Lets use light theme for now, add dark theme later
   const theme = LightTheme;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [fontsLoaded, error] = useFonts({
+    'Inter-400-20': require('../assets/fonts/Inter-400-20.ttf'),
+    'Inter-420-20': require('../assets/fonts/Inter-420-20.ttf'),
+    'Inter-500-24': require('../assets/fonts/Inter-500-24.ttf'),
+    'Inter-580-24': require('../assets/fonts/Inter-580-24.ttf'),
+    'Inter-600-20': require('../assets/fonts/Inter-600-20.ttf'),
+  });
 
   const routeNameRef = useRef();
 
@@ -124,6 +134,16 @@ export const AppNavigationContainer = () => {
 
   i18n.locale = locale;
 
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <NavigationContainer
       linking={linking}
@@ -136,7 +156,9 @@ export const AppNavigationContainer = () => {
       }}
       theme={theme}>
       <BottomSheetModalProvider>
-        <AppTabs />
+        <View style={styles.navigationLayout} onLayout={onLayoutRootView}>
+          <AppTabs />
+        </View>
       </BottomSheetModalProvider>
     </NavigationContainer>
   );

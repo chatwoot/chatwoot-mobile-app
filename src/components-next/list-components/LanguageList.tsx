@@ -67,7 +67,7 @@ export const LanguageList = ({
   onChangeLanguage: (locale: string) => void;
 }) => {
   return (
-    <Animated.View style={tailwind.style('py-1 pl-3')}>
+    <Animated.View style={tailwind.style('pt-1 pb-4 pl-2')}>
       {languagesList.map((item, index) => {
         return <LanguageCell key={index} {...{ item, index, currentLanguage, onChangeLanguage }} />;
       })}

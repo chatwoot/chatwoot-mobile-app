@@ -28,3 +28,5 @@ export const selectNotificationSettings = createSelector(
 );
 
 export const selectWebSocketUrl = createSelector(selectSettings, settings => settings.webSocketUrl);
+
+export const selectTheme = createSelector(selectSettings, settings => settings.theme);

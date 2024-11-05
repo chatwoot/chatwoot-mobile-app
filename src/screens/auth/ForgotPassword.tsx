@@ -43,16 +43,14 @@ const ForgotPassword = () => {
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={tailwind.style('px-6 pt-16')}>
-          <View style={tailwind.style('mb-8')}>
-            <Icon icon={<KeyRoundIcon />} size={40} />
-          </View>
-          <View style={tailwind.style('mb-8')}>
-            <Animated.Text style={tailwind.style('text-2xl text-gray-950 font-semibold ')}>
+          <Icon icon={<KeyRoundIcon />} size={40} />
+          <View style={tailwind.style('pt-6 gap-4')}>
+            <Animated.Text style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20')}>
               {i18n.t('FORGOT_PASSWORD.TITLE')}
             </Animated.Text>
             <Animated.Text
               style={tailwind.style(
-                'font-inter-normal-20 leading-[18px] tracking-[0.32px] text-gray-900 pt-4',
+                'font-inter-normal-20 leading-[18px] tracking-[0.32px] text-gray-900',
               )}>
               {i18n.t('FORGOT_PASSWORD.SUB_TITLE')}
             </Animated.Text>
@@ -68,9 +66,8 @@ const ForgotPassword = () => {
               },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <View style={tailwind.style('mt-8 mb-8')}>
-                <Animated.Text
-                  style={tailwind.style('text-sm font-inter-medium-24 mb-2 text-gray-950')}>
+              <View style={tailwind.style('pt-8 mb-8 gap-2')}>
+                <Animated.Text style={tailwind.style('font-inter-420-20 text-gray-950')}>
                   {i18n.t('LOGIN.EMAIL')}
                 </Animated.Text>
                 <TextInput
@@ -89,7 +86,7 @@ const ForgotPassword = () => {
                   autoCapitalize="none"
                 />
                 {errors.email && (
-                  <Animated.Text style={tailwind.style('text-red-700 mt-1')}>
+                  <Animated.Text style={tailwind.style('text-red-700')}>
                     {errors.email.message}
                   </Animated.Text>
                 )}
@@ -98,7 +95,10 @@ const ForgotPassword = () => {
             name="email"
           />
 
-          <PrimaryButton text="Reset password" handlePress={handleSubmit(onSubmit)} />
+          <PrimaryButton
+            text={i18n.t('FORGOT_PASSWORD.RESET_HERE')}
+            handlePress={handleSubmit(onSubmit)}
+          />
         </Animated.ScrollView>
       </View>
     </SafeAreaView>

@@ -51,16 +51,14 @@ const ConfigURLScreen = () => {
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={tailwind.style('px-6 pt-16')}>
-          <View style={tailwind.style('mb-8')}>
-            <Icon icon={<LinkIcon />} size={40} />
-          </View>
-          <View style={tailwind.style('mb-8')}>
-            <Animated.Text style={tailwind.style('text-2xl text-gray-950 font-semibold ')}>
+          <Icon icon={<LinkIcon />} size={40} />
+          <View style={tailwind.style('pt-6 gap-4')}>
+            <Animated.Text style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20')}>
               {i18n.t('CONFIGURE_URL.ENTER_URL')}
             </Animated.Text>
             <Animated.Text
               style={tailwind.style(
-                'font-inter-normal-20 leading-[18px] tracking-[0.32px] text-gray-900 pt-4',
+                'font-inter-normal-20 leading-[18px] tracking-[0.32px] text-gray-900',
               )}>
               {i18n.t('CONFIGURE_URL.DESCRIPTION')}
             </Animated.Text>

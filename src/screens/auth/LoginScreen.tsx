@@ -9,7 +9,7 @@ import {
 } from '@gorhom/bottom-sheet';
 
 import { EMAIL_REGEX } from '@/constants';
-import { EyeIcon, EyeSlash } from '@/svg-icons';
+import { EyeIcon, EyeSlash } from '@/svg-icons'; 
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { resetAuth } from '@/store/auth/authSlice';
@@ -102,21 +102,19 @@ const LoginScreen = () => {
       <View style={tailwind.style('flex-1 bg-white')}>
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={tailwind.style('px-6 pt-16')}>
-          <View style={tailwind.style('mb-8')}>
-            <Image
-              source={require('@/assets/images/logo.png')}
-              style={tailwind.style('w-10 h-10')}
-              resizeMode="contain"
-            />
-          </View>
-          <View style={tailwind.style('mb-8')}>
-            <Animated.Text style={tailwind.style('text-2xl text-gray-950 font-semibold ')}>
+          contentContainerStyle={tailwind.style('px-6 pt-24')}>
+          <Image
+            source={require('@/assets/images/logo.png')}
+            style={tailwind.style('w-10 h-10')}
+            resizeMode="contain"
+          />
+          <View style={tailwind.style('pt-6 gap-4')}>
+            <Animated.Text style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20')}>
               {i18n.t('LOGIN.TITLE')}
             </Animated.Text>
             <Animated.Text
               style={tailwind.style(
-                'font-inter-normal-20 leading-[18px] tracking-[0.32px] text-gray-900 pt-4',
+                'font-inter-normal-20 leading-[18px] tracking-[0.32px] text-gray-900',
               )}>
               {i18n.t('LOGIN.DESCRIPTION', { baseUrl })}
             </Animated.Text>
@@ -132,8 +130,8 @@ const LoginScreen = () => {
               },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <View style={tailwind.style('mt-8 mb-8')}>
-                <Animated.Text style={tailwind.style('font-inter-420-20 mb-2 text-gray-950')}>
+              <View style={tailwind.style('pt-8 gap-2')}>
+                <Animated.Text style={tailwind.style('font-inter-420-20 text-gray-950')}>
                   {i18n.t('LOGIN.EMAIL')}
                 </Animated.Text>
                 <TextInput
@@ -152,7 +150,7 @@ const LoginScreen = () => {
                   autoCapitalize="none"
                 />
                 {errors.email && (
-                  <Animated.Text style={tailwind.style('text-red-700 mt-1')}>
+                  <Animated.Text style={tailwind.style('font-inter-normal-20 text-ruby-900')}>
                     {errors.email.message}
                   </Animated.Text>
                 )}
@@ -171,8 +169,8 @@ const LoginScreen = () => {
               },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <View style={tailwind.style('mb-1')}>
-                <Animated.Text style={tailwind.style('font-inter-420-20 mb-2 text-gray-950')}>
+              <View style={tailwind.style('pt-8 gap-2')}>
+                <Animated.Text style={tailwind.style('font-inter-420-20  text-gray-950')}>
                   {i18n.t('LOGIN.PASSWORD')}
                 </Animated.Text>
                 <View style={tailwind.style('relative')}>
@@ -191,13 +189,13 @@ const LoginScreen = () => {
                     secureTextEntry={!showPassword}
                   />
                   <Pressable
-                    style={tailwind.style('absolute right-3 top-2')}
+                    style={tailwind.style('absolute right-4 top-2.5')}
                     onPress={() => setShowPassword(!showPassword)}>
                     <Icon size={20} icon={showPassword ? <EyeIcon /> : <EyeSlash />} />
                   </Pressable>
                 </View>
                 {errors.password && (
-                  <Animated.Text style={tailwind.style('text-red-700 mt-1')}>
+                  <Animated.Text style={tailwind.style('text-ruby-900')}>
                     {errors.password.message}
                   </Animated.Text>
                 )}
@@ -206,7 +204,7 @@ const LoginScreen = () => {
             name="password"
           />
 
-          <Pressable style={tailwind.style('mt-1 mb-8')} onPress={openResetPassword}>
+          <Pressable style={tailwind.style('pt-1 mb-8')} onPress={openResetPassword}>
             <Animated.Text style={tailwind.style('text-blue-800 font-inter-medium-24 text-right')}>
               {i18n.t('LOGIN.FORGOT_PASSWORD')}
             </Animated.Text>
@@ -217,20 +215,20 @@ const LoginScreen = () => {
             handlePress={handleSubmit(onSubmit)}
           />
 
-          <View style={tailwind.style('flex-row justify-center items-center mt-8 gap-4')}>
-            <Pressable onPress={openConfigInstallationURL}>
-              <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
-                {i18n.t('LOGIN.CHANGE_URL')}
-              </Animated.Text>
-            </Pressable>
-          </View>
-          <View style={tailwind.style('flex-row justify-center items-center mt-4')}>
-            <Pressable onPress={() => languagesModalSheetRef.current?.present()}>
-              <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
-                {i18n.t('LOGIN.CHANGE_LANGUAGE')}
-              </Animated.Text>
-            </Pressable>
-          </View>
+          <Pressable
+            style={tailwind.style('flex-row justify-center items-center mt-6')}
+            onPress={openConfigInstallationURL}>
+            <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
+              {i18n.t('LOGIN.CHANGE_URL')}
+            </Animated.Text>
+          </Pressable>
+          <Pressable
+            style={tailwind.style('flex-row justify-center items-center mt-4')}
+            onPress={() => languagesModalSheetRef.current?.present()}>
+            <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
+              {i18n.t('LOGIN.CHANGE_LANGUAGE')}
+            </Animated.Text>
+          </Pressable>
         </Animated.ScrollView>
       </View>
       <BottomSheetModal

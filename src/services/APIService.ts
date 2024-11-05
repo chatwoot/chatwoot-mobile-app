@@ -45,7 +45,6 @@ class APIService {
         const state = store.getState();
         config.baseURL = state.settings?.installationUrl;
         const accountId = state.auth.user?.account_id;
-        console.log('config.url', config.url);
         if (accountId && config.url && !nonAccountRoutes.includes(config.url)) {
           config.url = `api/v1/accounts/${accountId}/${config.url}`;
         } else if (nonAccountRoutes.includes(config.url || '')) {

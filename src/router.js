@@ -9,10 +9,10 @@ import PropTypes from 'prop-types';
 import { LightTheme } from './theme-old';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ConfigureURLScreen from './screens/ConfigureURLScreen/ConfigureURLScreen';
-import LoginScreen from './screens/LoginScreen/LoginScreen';
+import ConfigURLScreen from './screens/auth/ConfigURLScreen';
+import LoginScreen from './screens/auth/LoginScreen';
+import ForgotPassword from './screens/auth/ForgotPassword';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
-import ResetPassword from './screens/ForgotPassword/ForgotPassword';
 import ImageScreen from './screens/ChatScreen/ImageScreen';
 import ConversationDetailsScreen from './screens/ConversationDetails/ConversationDetailsScreen';
 import ConversationAction from './screens/ConversationAction/ConversationAction';
@@ -170,9 +170,29 @@ const App = () => {
                 </Fragment>
               ) : (
                 <Fragment>
-                  <Stack.Screen name="ConfigureURL" component={ConfigureURLScreen} />
+                  <Stack.Screen
+                    options={{
+                      headerShown: true,
+                      headerBackTitle: 'Back',
+                      headerBackVisible: true,
+                      headerShadowVisible: false,
+                      title: '',
+                    }}
+                    name="ConfigureURL"
+                    component={ConfigURLScreen}
+                  />
                   <Stack.Screen name="Login" component={LoginScreen} />
-                  <Stack.Screen name="ResetPassword" component={ResetPassword} />
+                  <Stack.Screen
+                    name="ResetPassword"
+                    options={{
+                      headerShown: true,
+                      headerBackTitle: 'Back',
+                      headerBackVisible: true,
+                      headerShadowVisible: false,
+                      title: '',
+                    }}
+                    component={ForgotPassword}
+                  />
                 </Fragment>
               )}
             </Stack.Navigator>

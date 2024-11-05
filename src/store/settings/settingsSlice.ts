@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { settingsActions } from './settingsActions';
 import * as RootNavigation from '@/helpers/NavigationHelper';
+import { NotificationSettings } from './settingsTypes';
 
 interface SettingsState {
   baseUrl: string;
@@ -10,7 +11,7 @@ interface SettingsState {
     isUpdating: boolean;
     isLocaleSet: boolean;
   };
-  notificationSettings: null | object;
+  notificationSettings: null | NotificationSettings;
   localeValue: string;
   webSocketUrl: string;
 }
@@ -23,7 +24,15 @@ const initialState: SettingsState = {
     isLocaleSet: false,
   },
   localeValue: 'en',
-  notificationSettings: {},
+  notificationSettings: {
+    account_id: 0,
+    all_email_flags: [],
+    all_push_flags: [],
+    id: 0,
+    selected_email_flags: [],
+    selected_push_flags: [],
+    user_id: 0,
+  },
   webSocketUrl: 'wss://app.chatwoot.com/cable',
 };
 export const settingsSlice = createSlice({

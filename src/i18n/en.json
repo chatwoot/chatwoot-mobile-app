@@ -31,6 +31,7 @@
     "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Enter a valid password",
     "LOGIN": "Sign In",
+    "LOGIN_LOADING": "Signing In...",
     "FORGOT_PASSWORD": "Forgot your password?",
     "RESET_HERE": "Reset here",
     "NO_ACCOUNT": "Don't have an account?",

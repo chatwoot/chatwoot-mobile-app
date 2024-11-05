@@ -10,7 +10,7 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import { appReducer } from '@/reducer';
+import { appReducer } from '@/store/reducers';
 import { setStore } from '@/reducer/storeAccessor';
 
 const persistConfig = {

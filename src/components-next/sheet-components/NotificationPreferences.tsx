@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { tailwind } from '@/theme';
 import i18n from 'i18n';
-import { selectNotificationSettings, actions as settingsActions } from '@/reducer/settingsSlice';
+import { selectNotificationSettings } from '@/store/settings/settingsSelectors';
+import { settingsActions } from '@/store/settings/settingsActions';
 import { NOTIFICATION_PREFERENCE_TYPES } from '@/constants';
 
 const addOrRemoveItemFromArray = <T,>(array: T[], key: T): T[] => {

@@ -21,8 +21,9 @@ import i18n from 'i18n';
 import { navigationRef } from 'helpers/NavigationHelper';
 import { findConversationLinkFromPush, findNotificationFromFCM } from './helpers/PushHelper';
 import { extractConversationIdFromUrl } from './helpers/conversationHelpers';
-import { selectLoggedIn } from 'reducer/authSlice';
-import { selectInstallationUrl, selectLocale } from 'reducer/settingsSlice';
+import { selectLoggedIn } from '@/store/auth/authSelectors';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectInstallationUrl, selectLocale } from '@/store/settings/settingsSelectors';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,9 +43,9 @@ const App = () => {
 
   const routeNameRef = useRef();
 
-  const isLoggedIn = useSelector(selectLoggedIn);
-  const installationUrl = useSelector(selectInstallationUrl);
-  const locale = useSelector(selectLocale);
+  const isLoggedIn = useAppSelector(selectLoggedIn);
+  const installationUrl = useAppSelector(selectInstallationUrl);
+  const locale = useAppSelector(selectLocale);
 
   const linking = {
     prefixes: [installationUrl],

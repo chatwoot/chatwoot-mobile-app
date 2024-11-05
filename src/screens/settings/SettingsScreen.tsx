@@ -49,12 +49,14 @@ import { SettingsHeader } from './SettingsHeader';
 import {
   selectCurrentUserAvailability,
   selectUser,
-  actions as authActions,
   selectAccounts,
-  setAccount,
-  logout,
-} from '@/reducer/authSlice';
-import { selectLocale, setLocale, actions as settingsActions } from '@/reducer/settingsSlice';
+} from '@/store/auth/authSelectors';
+import { logout, setAccount } from '@/store/auth/authSlice';
+import { authActions } from '@/store/auth/authActions';
+import { selectLocale } from '@/store/settings/settingsSelectors';
+import { settingsActions } from '@/store/settings/settingsActions';
+import { setLocale } from '@/store/settings/settingsSlice';
+
 import AnalyticsHelper from '@/helpers/AnalyticsHelper';
 import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/helpers/permissionHelper';
@@ -146,9 +148,10 @@ const SettingsScreen = () => {
       from: availabilityStatus,
       to: updatedStatus,
     });
+    const payload = { profile: { availability: updatedStatus, account_id: activeAccountId } };
     // TODO: Fix this later
     // @ts-expect-error TODO: Fix typing for dispatch
-    dispatch(authActions.updateAvailability({ availability: updatedStatus }));
+    dispatch(authActions.updateAvailability(payload));
   };
 
   const onChangeLanguage = (locale: string) => {

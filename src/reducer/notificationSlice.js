@@ -130,7 +130,7 @@ export const actions = {
         });
         return { fcmToken };
       } catch (error) {
-        return rejectWithValue(error.message || 'An unknown error occurred');
+        return rejectWithValue(error.message || 'Error saving device details');
       }
     },
   ),

@@ -4,15 +4,16 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ConversationScreen from 'screens/Conversation/ConversationScreen';
 import NotificationScreen from 'screens/Notification/NotificationScreen';
-import SettingsScreen from 'screens/settings/SettingsScreen';
+import SettingsScreen from '@/screens/settings/SettingsScreen';
 import { Icon } from 'components';
-import { actions as authActions } from 'reducer/authSlice';
 import { selectUnreadCount } from 'reducer/notificationSlice';
-import { selectUser } from 'reducer/authSlice';
+
+import { authActions } from '@/store/auth/authActions';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectUser } from '@/store/auth/authSelectors';
+
 import { getUserPermissions } from 'helpers/permissionHelper';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
-
-import { selectInstallationUrl, actions as settingsActions } from 'reducer/settingsSlice';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -61,7 +62,7 @@ const renderTabIcon = (route, focused, color, size) => {
 };
 
 const TabStack = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const unReadCount = useSelector(selectUnreadCount);
   const tabBarBadge = useMemo(() => {
     if (unReadCount >= 100) {
@@ -74,13 +75,7 @@ const TabStack = () => {
     dispatch(authActions.getProfile());
   }, [dispatch]);
 
-  const user = useSelector(selectUser);
-  const installationUrl = useSelector(selectInstallationUrl);
-
-  useEffect(() => {
-    dispatch(settingsActions.checkInstallationVersion({ user, installationUrl }));
-  }, []);
-
+  const user = useAppSelector(selectUser);
   const userPermissions = getUserPermissions(user, user.account_id);
   const hasConversationPermission = CONVERSATION_PERMISSIONS.some(permission =>
     userPermissions.includes(permission),

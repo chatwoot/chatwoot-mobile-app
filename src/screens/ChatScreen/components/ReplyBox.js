@@ -25,7 +25,8 @@ import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import conversationActions from 'reducer/conversationSlice.action';
 import CannedResponses from './CannedResponses';
 import { inboxAgentSelectors, actions as inboxAgentActions } from 'reducer/inboxAgentsSlice';
-import { selectUser } from 'reducer/authSlice';
+import { selectUser } from '@/store/auth/authSelectors';
+import { useAppSelector } from '@/hooks';
 import ModalView from 'components/Modal/ModalView.js';
 import {
   getMessageVariables,
@@ -64,7 +65,7 @@ const ReplyBox = ({ conversationId, inboxId, conversationDetails, enableReplyBut
   const [undefinedVariableText, setUndefinedVariableText] = useState('');
   const [showUndefinedVariablesModal, setUndefinedVariablesModal] = useState(false);
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);
+  const user = useAppSelector(selectUser);
 
   useEffect(() => {
     if (inboxId) {

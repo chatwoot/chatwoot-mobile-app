@@ -12,7 +12,8 @@ import ChatHeaderLoader from './components/ChatHeaderLoader';
 import DashboardApp from './components/DashboardApp';
 import MessageList from './components/MessageList/MessageList';
 
-import { selectUser } from 'reducer/authSlice';
+import { selectUser } from '@/store/auth/authSelectors';
+import { useAppSelector } from '@/hooks';
 import { actions as notificationsActions } from 'reducer/notificationSlice';
 import { dashboardAppSelector } from 'reducer/dashboardAppSlice';
 import { selectAllTypingUsers } from 'reducer/conversationTypingSlice';
@@ -52,7 +53,7 @@ const ChatScreenComponent = ({ navigation, route }) => {
     conversationSelectors.getMessagesByConversationId(state, conversationId),
   );
 
-  const currentUser = useSelector(selectUser);
+  const currentUser = useAppSelector(selectUser);
 
   const dashboardApps = useSelector(dashboardAppSelector.selectAll);
   const isDashboardAppsEmpty = dashboardApps?.length === 0;

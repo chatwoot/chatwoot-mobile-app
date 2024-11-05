@@ -5,7 +5,8 @@ import { useSelector } from 'react-redux';
 import { View, StyleSheet } from 'react-native';
 import ConversationActionItem from '../../components/ConversationActionItem';
 import i18n from 'i18n';
-import { selectUserId } from 'reducer/authSlice';
+import { selectUserId } from '@/store/auth/authSelectors';
+import { useAppSelector } from '@/hooks';
 import { inboxAgentSelectors } from 'reducer/inboxAgentsSlice';
 import differenceInHours from 'date-fns/differenceInHours';
 import { CONVERSATION_STATUS } from 'constants/index';
@@ -26,7 +27,7 @@ const ConversationActionComponent = ({ onPressAction, conversationDetails }) => 
   const styles = useMemo(() => createStyles(theme), [theme]);
   const { colors } = theme;
   const agents = useSelector(state => inboxAgentSelectors.inboxAssignedAgents(state));
-  const userId = useSelector(selectUserId);
+  const userId = useAppSelector(selectUserId);
   const {
     meta: { assignee, team },
   } = conversationDetails;

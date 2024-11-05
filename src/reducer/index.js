@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
-import authSlice from './authSlice';
+import authSlice from '@/store/auth/authSlice';
+import settingsSlice from '@/store/settings/settingsSlice';
 import inboxSlice from './inboxSlice';
-import settingsSlice from './settingsSlice';
 import cannedResponseSlice from './cannedResponseSlice';
 import conversationSlice from './conversationSlice';
 import inboxAgentsSlice from './inboxAgentsSlice';
@@ -15,7 +15,8 @@ import notificationSlice from './notificationSlice';
 import dashboardAppSlice from './dashboardAppSlice';
 import conversationWatchersSlice from './conversationWatchersSlice';
 import contactsSlice from './contactSlice';
-export const rootReducer = combineReducers({
+
+export const appReducer = combineReducers({
   cannedResponses: cannedResponseSlice,
   conversations: conversationSlice,
   labels: labelSlice,

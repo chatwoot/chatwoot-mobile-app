@@ -13,12 +13,11 @@ import LoaderButton from '../../components/LoaderButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import TextInput from '../../components/TextInput';
 import { URL_WITHOUT_HTTP_REGEX } from '../../helpers/formHelper';
-import {
-  selectIsSettingUrl,
-  selectBaseUrl,
-  actions as settingsActions,
-  resetSettings,
-} from 'reducer/settingsSlice';
+
+import { selectIsSettingUrl, selectBaseUrl } from '@/store/settings/settingsSelectors';
+import { settingsActions } from '@/store/settings/settingsActions';
+import { resetSettings } from '@/store/settings/settingsSlice';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 
 const appName = DeviceInfo.getApplicationName();
 
@@ -37,9 +36,9 @@ const ConfigureURLScreenComponent = ({ navigation, setInstallationUrl = () => {}
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
-  const baseUrl = useSelector(selectBaseUrl);
-  const isSettingUrl = useSelector(selectIsSettingUrl);
-  const dispatch = useDispatch();
+  const baseUrl = useAppSelector(selectBaseUrl);
+  const isSettingUrl = useAppSelector(selectIsSettingUrl);
+  const dispatch = useAppDispatch();
 
   const {
     control,
@@ -58,7 +57,7 @@ const ConfigureURLScreenComponent = ({ navigation, setInstallationUrl = () => {}
   const onSubmit = data => {
     const { url } = data;
     if (url) {
-      dispatch(settingsActions.setInstallationUrl({ url }));
+      dispatch(settingsActions.setInstallationUrl(url));
     }
   };
 

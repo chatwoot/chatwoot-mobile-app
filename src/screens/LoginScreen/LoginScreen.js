@@ -23,14 +23,17 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { SIGNUP_URL } from '../../constants/url';
 import { openURL } from '../../helpers/UrlHelper';
 import { EMAIL_REGEX } from '../../helpers/formHelper';
-import { actions as authActions, resetAuth, selectLoggedIn } from 'reducer/authSlice';
+import { resetAuth } from '@/store/auth/authSlice';
+import { authActions } from '@/store/auth/authActions';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectLoggedIn, selectIsLoggingIn } from '@/store/auth/authSelectors';
 
 import {
   selectInstallationUrl,
   selectBaseUrl,
   selectLocale,
-  setLocale,
-} from 'reducer/settingsSlice';
+} from '@/store/settings/settingsSelectors';
+import { setLocale } from '@/store/settings/settingsSlice';
 
 const deviceHeight = Dimensions.get('window').height;
 
@@ -43,7 +46,6 @@ const propTypes = {
     navigate: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
   }).isRequired,
-  resetAuth: PropTypes.func,
   installationUrl: PropTypes.string,
 };
 
@@ -52,13 +54,13 @@ const LoginScreenComponent = ({ navigation }) => {
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
 
-  const dispatch = useDispatch();
-  const { isLoggingIn } = useSelector(state => state.auth);
-  const isLoggedIn = useSelector(selectLoggedIn);
+  const dispatch = useAppDispatch();
+  const isLoggingIn = useAppSelector(selectIsLoggingIn);
+  const isLoggedIn = useAppSelector(selectLoggedIn);
 
-  const installationUrl = useSelector(selectInstallationUrl);
-  const baseUrl = useSelector(selectBaseUrl);
-  const activeLocale = useSelector(selectLocale);
+  const installationUrl = useAppSelector(selectInstallationUrl);
+  const baseUrl = useAppSelector(selectBaseUrl);
+  const activeLocale = useAppSelector(selectLocale);
 
   useEffect(() => {
     dispatch(resetAuth());
@@ -85,7 +87,7 @@ const LoginScreenComponent = ({ navigation }) => {
   });
   const onSubmit = data => {
     const { email, password } = data;
-    dispatch(authActions.doLogin({ email, password }));
+    dispatch(authActions.login({ email, password }));
   };
 
   const changeLanguageModal = useRef(null);
@@ -203,7 +205,7 @@ const LoginScreenComponent = ({ navigation }) => {
 
           <View style={styles.linksContainer}>
             <View style={styles.accountView}>
-              {/* {appName === 'Chatwoot' && (
+              {appName === 'Chatwoot' && (
                 <>
                   <TouchableOpacity onPress={doSignup}>
                     <Text xs medium color={colors.textLight}>
@@ -212,7 +214,7 @@ const LoginScreenComponent = ({ navigation }) => {
                   </TouchableOpacity>
                   <Text color={colors.textLight}>{'   |   '}</Text>
                 </>
-              )} */}
+              )}
 
               <TouchableOpacity onPress={() => navigate('ConfigureURL')}>
                 <Text xs medium color={colors.textLight}>

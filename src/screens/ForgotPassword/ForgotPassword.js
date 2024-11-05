@@ -13,7 +13,10 @@ import LoaderButton from '../../components/LoaderButton';
 import images from '../../constants/images';
 import { EMAIL_REGEX } from '../../helpers/formHelper';
 import { ACCOUNT_EVENTS } from 'constants/analyticsEvents';
-import { actions as authActions, resetAuth, selectIsResettingPassword } from 'reducer/authSlice';
+import { authActions } from '@/store/auth/authActions';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectResetPasswordLoading } from '@/store/auth/authSelectors';
+import { resetAuth } from '@/store/auth/authSlice';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 
 const propTypes = {
@@ -23,7 +26,6 @@ const propTypes = {
     navigate: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
   }).isRequired,
-  resetAuth: PropTypes.func,
 };
 
 const ForgotPasswordComponent = ({
@@ -34,7 +36,7 @@ const ForgotPasswordComponent = ({
   const theme = useTheme();
   const { colors } = theme;
   const styles = useMemo(() => createStyles(theme), [theme]);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const {
     control,
@@ -47,11 +49,11 @@ const ForgotPasswordComponent = ({
   });
   const onSubmit = data => {
     const { email } = data;
-    dispatch(authActions.onResetPassword({ email }));
+    dispatch(authActions.resetPassword({ email }));
     AnalyticsHelper.track(ACCOUNT_EVENTS.FORGOT_PASSWORD);
   };
 
-  const isResettingPassword = useSelector(selectIsResettingPassword);
+  const isResettingPassword = useAppSelector(selectResetPasswordLoading);
 
   useEffect(() => {
     dispatch(resetAuth());

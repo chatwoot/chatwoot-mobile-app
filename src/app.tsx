@@ -1,22 +1,13 @@
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
-import { Alert, BackHandler, StatusBar, StyleSheet, LogBox } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Alert, BackHandler, LogBox } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import { store, persistor } from './store';
-import NoNetworkBar from 'components/NoNetworkBar';
 import { AppNavigator } from '@/navigation';
-import { RefsProvider } from '@/context';
 
-import i18n from 'i18n';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+import i18n from '@/i18n';
 
 // TODO: Please fix this
 LogBox.ignoreLogs(['Require cycle:']);
@@ -63,17 +54,11 @@ const Chatwoot = () => {
   }
 
   return (
-    <GestureHandlerRootView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <RefsProvider>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <NoNetworkBar />
-            <AppNavigator />
-          </PersistGate>
-        </Provider>
-      </RefsProvider>
-    </GestureHandlerRootView>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <AppNavigator />
+      </PersistGate>
+    </Provider>
   );
 };
 

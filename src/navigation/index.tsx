@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
-import { SafeAreaView, KeyboardAvoidingView, Platform, Linking } from 'react-native';
+import { Linking, StyleSheet } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { getStateFromPath } from '@react-navigation/native';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { LightTheme } from '../theme-old';
@@ -13,12 +14,15 @@ import { findConversationLinkFromPush, findNotificationFromFCM } from '../helper
 import { extractConversationIdFromUrl } from '../helpers/conversationHelpers';
 import { useAppSelector } from '@/hooks';
 import { selectInstallationUrl, selectLocale } from '@/store/settings/settingsSelectors';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { RefsProvider } from '@/context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   // console.log('Message handled in the background!', remoteMessage);
 });
 
-export const AppNavigator = () => {
+export const AppNavigationContainer = () => {
   // TODO: Lets use light theme for now, add dark theme later
   const theme = LightTheme;
 
@@ -121,26 +125,39 @@ export const AppNavigator = () => {
   i18n.locale = locale;
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      enabled>
-      <SafeAreaView style={{ flex: 1 }}>
-        <NavigationContainer
-          linking={linking}
-          ref={navigationRef}
-          onReady={() => {
-            routeNameRef.current = navigationRef.current.getCurrentRoute().name;
-          }}
-          onStateChange={async () => {
-            routeNameRef.current = navigationRef.current.getCurrentRoute().name;
-          }}
-          theme={theme}>
-          <BottomSheetModalProvider>
-            <AppTabs />
-          </BottomSheetModalProvider>
-        </NavigationContainer>
-      </SafeAreaView>
-    </KeyboardAvoidingView>
+    <NavigationContainer
+      linking={linking}
+      ref={navigationRef}
+      onReady={() => {
+        routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+      }}
+      onStateChange={async () => {
+        routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+      }}
+      theme={theme}>
+      <BottomSheetModalProvider>
+        <AppTabs />
+      </BottomSheetModalProvider>
+    </NavigationContainer>
   );
 };
+
+export const AppNavigator = () => {
+  return (
+    <GestureHandlerRootView style={styles.navigationLayout}>
+      <KeyboardProvider>
+        <RefsProvider>
+          <SafeAreaProvider>
+            <AppNavigationContainer />
+          </SafeAreaProvider>
+        </RefsProvider>
+      </KeyboardProvider>
+    </GestureHandlerRootView>
+  );
+};
+
+const styles = StyleSheet.create({
+  navigationLayout: {
+    flex: 1,
+  },
+});

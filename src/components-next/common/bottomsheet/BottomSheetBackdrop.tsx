@@ -16,6 +16,8 @@ export const BottomSheetBackdrop: React.FC<BottomSheetBackgroundProps> = props =
     addLabelSheetRef,
     languagesModalSheetRef,
     macrosListSheetRef,
+    notificationPreferencesSheetRef,
+    switchAccountSheetRef
   } = useRefsContext();
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -33,6 +35,8 @@ export const BottomSheetBackdrop: React.FC<BottomSheetBackgroundProps> = props =
     addLabelSheetRef.current?.dismiss({ overshootClamping: true });
     languagesModalSheetRef.current?.dismiss({ overshootClamping: true });
     macrosListSheetRef.current?.dismiss({ overshootClamping: true });
+    notificationPreferencesSheetRef.current?.dismiss({ overshootClamping: true });
+    switchAccountSheetRef.current?.dismiss({ overshootClamping: true });
   };
 
   return (

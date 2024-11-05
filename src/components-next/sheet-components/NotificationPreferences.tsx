@@ -62,20 +62,6 @@ export const NotificationPreferences = () => {
 
   return (
     <Animated.View style={tailwind.style('py-4 px-3')}>
-      <Animated.View style={tailwind.style('flex flex-row items-center')}>
-        <Animated.View
-          style={tailwind.style(
-            'flex-1 mx-2 flex-row justify-between py-[11px] pr-3 border-b-[1px] border-grayA-300',
-          )}>
-          <Animated.Text
-            style={tailwind.style(
-              'text-base font-medium leading-[17px] tracking-[0.2px] text-gray-950',
-            )}>
-            {i18n.t('NOTIFICATION_PREFERENCE.PUSH')}
-          </Animated.Text>
-        </Animated.View>
-      </Animated.View>
-
       {allPushFlags.map(
         (item: NotificationPreferenceType) =>
           NOTIFICATION_PREFERENCE_TYPES[item] && (

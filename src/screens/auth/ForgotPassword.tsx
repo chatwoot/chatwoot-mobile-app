@@ -86,7 +86,7 @@ const ForgotPassword = () => {
                   autoCapitalize="none"
                 />
                 {errors.email && (
-                  <Animated.Text style={tailwind.style('text-red-700')}>
+                  <Animated.Text style={tailwind.style('text-ruby-900')}>
                     {errors.email.message}
                   </Animated.Text>
                 )}

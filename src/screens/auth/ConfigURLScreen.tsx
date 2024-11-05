@@ -74,7 +74,7 @@ const ConfigURLScreen = () => {
               },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <View style={tailwind.style('mt-8 mb-8')}>
+              <View style={tailwind.style('pt-8 mb-8 gap-2')}>
                 <TextInput
                   style={[
                     tailwind.style(
@@ -91,7 +91,7 @@ const ConfigURLScreen = () => {
                   autoCapitalize="none"
                 />
                 {errors.url && (
-                  <Animated.Text style={tailwind.style('text-red-700 mt-1')}>
+                  <Animated.Text style={tailwind.style('text-ruby-900')}>
                     {errors.url.message}
                   </Animated.Text>
                 )}

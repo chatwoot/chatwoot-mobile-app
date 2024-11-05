@@ -7,7 +7,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import { store, persistor } from './store';
 import NoNetworkBar from 'components/NoNetworkBar';
-import Router from './router';
+import { AppNavigator } from '@/navigation';
 import { RefsProvider } from '@/context';
 
 import i18n from 'i18n';
@@ -69,7 +69,7 @@ const Chatwoot = () => {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <NoNetworkBar />
-            <Router />
+            <AppNavigator />
           </PersistGate>
         </Provider>
       </RefsProvider>

@@ -16,7 +16,7 @@ import * as WebBrowser from 'expo-web-browser';
 import ChatWootWidget from '@chatwoot/react-native-widget';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Application from 'expo-application';
-import { Account } from '@/types';
+import { Account, AvailabilityStatus } from '@/types';
 import { clearContacts } from '@/reducer/contactSlice';
 import { clearAllConversations } from '@/reducer/conversationSlice';
 
@@ -53,7 +53,7 @@ import {
 } from '@/store/auth/authSelectors';
 import { logout, setAccount } from '@/store/auth/authSlice';
 import { authActions } from '@/store/auth/authActions';
-import { selectLocale } from '@/store/settings/settingsSelectors';
+import { selectLocale, selectIsChatwootCloud } from '@/store/settings/settingsSelectors';
 import { settingsActions } from '@/store/settings/settingsActions';
 import { setLocale } from '@/store/settings/settingsSlice';
 
@@ -61,6 +61,7 @@ import AnalyticsHelper from '@/helpers/AnalyticsHelper';
 import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/helpers/permissionHelper';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
+import { useAppSelector } from '@/hooks';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -71,7 +72,9 @@ const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVe
 const SettingsScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const availabilityStatus = useSelector(selectCurrentUserAvailability) || 'offline';
+  const availabilityStatus =
+    (useSelector(selectCurrentUserAvailability) as AvailabilityStatus) || 'offline';
+
   // const { bottom } = useSafeAreaInsets();
 
   const [showWidget, toggleWidget] = useState(false);
@@ -82,7 +85,7 @@ const SettingsScreen = () => {
     avatar_url: avatarUrl,
     identifier_hash: identifierHash,
     account_id: activeAccountId,
-  } = user;
+  } = user || {};
 
   useEffect(() => {
     // TODO: Fix this later
@@ -113,14 +116,17 @@ const SettingsScreen = () => {
     operatingSystem: Platform.OS, // android/ios
   };
 
-  const accounts = useSelector(selectAccounts);
+  const isChatwootCloud = useAppSelector(selectIsChatwootCloud);
+
+  const chatwootInstance = isChatwootCloud ? `${appName} cloud` : `${appName} self-hosted`;
+
+  const accounts = useSelector(selectAccounts) || [];
 
   const activeAccountName = accounts.length
-    ? accounts.find((account: Account) => account.id === activeAccountId).name
+    ? accounts.find((account: Account) => account.id === activeAccountId)?.name || ''
     : '';
 
-  // const enableAccountSwitch = accounts.length > 1;
-  const enableAccountSwitch = true;
+  const enableAccountSwitch = accounts.length > 1;
 
   const activeLocale = useSelector(selectLocale);
   const {
@@ -307,7 +313,7 @@ const SettingsScreen = () => {
         </Animated.View>
         <View style={tailwind.style('p-4 items-center')}>
           <Text style={tailwind.style('text-sm text-gray-700 ')}>
-            {`${appName} ${appVersionDetails}`}
+            {`${chatwootInstance} ${appVersionDetails}`}
           </Text>
         </View>
       </Animated.ScrollView>

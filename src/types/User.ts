@@ -1,4 +1,5 @@
 import type { Account } from './Account';
+import type { AvailabilityStatus } from './common/AvailabilityStatus';
 
 export type UserRole = 'administrator' | 'agent';
 
@@ -14,5 +15,5 @@ export type User = {
   role: UserRole;
   identifier_hash: string;
   availability: string;
-  availability_status: string;
+  availability_status: AvailabilityStatus;
 };

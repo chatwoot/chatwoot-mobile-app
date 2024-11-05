@@ -10,7 +10,7 @@ import { Account } from '@/types';
 type AccountCellProps = {
   item: Account;
   index: number;
-  currentAccountId: number;
+  currentAccountId: number | undefined;
   changeAccount: (accountId: number) => void;
   isLastItem: boolean;
 };
@@ -65,7 +65,7 @@ export const SwitchAccount = ({
   changeAccount,
   accounts,
 }: {
-  currentAccountId: number;
+  currentAccountId: number | undefined;
   changeAccount: (accountId: number) => void;
   accounts: Account[];
 }) => (

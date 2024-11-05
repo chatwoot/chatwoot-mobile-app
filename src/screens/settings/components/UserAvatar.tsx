@@ -63,7 +63,7 @@ export interface UserAvatarProps extends ViewProps {
    * The image source (either a remote URL or a local file resource).
    * Check https://reactnative.dev/docs/image#imagesource
    */
-  src: ImageSourcePropType;
+  src?: string | ImageSourcePropType;
   /**
    * Name prop used for `alt` & calculate placeholder initials.
    */
@@ -73,7 +73,7 @@ export interface UserAvatarProps extends ViewProps {
    *
    * @default none
    */
-  status: AvailabilityStatus;
+  status?: AvailabilityStatus;
   /**
    * StatusIndicator's Background Color & StatusIndicator Ring Color.
    *

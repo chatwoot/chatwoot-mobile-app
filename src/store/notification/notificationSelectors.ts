@@ -14,7 +14,7 @@ export const selectNotificationsMetadata = createSelector(selectNotificationsSta
   unreadCount: state.unreadCount,
   totalCount: state.totalCount,
   currentPage: state.currentPage,
-  isLoading: state.isLoading,
+  isLoading: state.uiFlags.isLoading,
   error: state.error,
 }));
 
@@ -24,7 +24,7 @@ export const selectUnreadNotifications = createSelector(selectAllNotifications, 
 
 export const selectIsLoadingNotifications = createSelector(
   selectNotificationsState,
-  state => state.isLoading,
+  state => state.uiFlags.isLoading,
 );
 
 export const selectNotificationsError = createSelector(

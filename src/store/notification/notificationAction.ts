@@ -24,17 +24,4 @@ export const notificationActions = {
     async ({ page }) => NotificationService.getNotifications(page),
     I18n.t('ERRORS.NOTIFICATIONS_FETCH'),
   ),
-
-  markAsRead: createNotificationThunk<void, { accountId: number; notificationId: number }>(
-    'notifications/markAsRead',
-    async ({ accountId, notificationId }) =>
-      NotificationService.markAsRead(accountId, notificationId),
-    I18n.t('ERRORS.NOTIFICATION_MARK_READ'),
-  ),
-
-  markAllAsRead: createNotificationThunk<void, number>(
-    'notifications/markAllAsRead',
-    async accountId => NotificationService.markAllAsRead(accountId),
-    I18n.t('ERRORS.NOTIFICATIONS_MARK_READ'),
-  ),
 };

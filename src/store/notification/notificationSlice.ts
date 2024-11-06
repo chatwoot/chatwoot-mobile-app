@@ -2,13 +2,16 @@ import { createSlice, createEntityAdapter, PayloadAction } from '@reduxjs/toolki
 import type { NotificationResponse } from './notificationTypes';
 import { Notification } from '@/types/Notification';
 import { notificationActions } from './notificationAction';
+import { updateBadgeCount } from '@/helpers/PushHelper';
 
 export interface NotificationState {
   unreadCount: number;
   totalCount: number;
   currentPage: string;
-  isLoading: boolean;
   error: string | null;
+  uiFlags: {
+    isLoading: boolean;
+  };
 }
 
 export const notificationsAdapter = createEntityAdapter<Notification>({
@@ -19,8 +22,10 @@ const initialState = notificationsAdapter.getInitialState<NotificationState>({
   unreadCount: 0,
   totalCount: 0,
   currentPage: '1',
-  isLoading: false,
   error: null,
+  uiFlags: {
+    isLoading: false,
+  },
 });
 
 const notificationsSlice = createSlice({
@@ -39,7 +44,7 @@ const notificationsSlice = createSlice({
     builder
       // Fetch notifications
       .addCase(notificationActions.fetchNotifications.pending, state => {
-        state.isLoading = true;
+        state.uiFlags.isLoading = true;
         state.error = null;
       })
       .addCase(
@@ -51,8 +56,8 @@ const notificationsSlice = createSlice({
           state.unreadCount = meta.unread_count;
           state.totalCount = meta.count;
           state.currentPage = meta.current_page;
-          state.isLoading = false;
-
+          state.uiFlags.isLoading = false;
+          updateBadgeCount({ count: meta.unread_count });
           if (meta.current_page === '1') {
             notificationsAdapter.setAll(state, payload);
           } else {
@@ -61,7 +66,7 @@ const notificationsSlice = createSlice({
         },
       )
       .addCase(notificationActions.fetchNotifications.rejected, (state, action) => {
-        state.isLoading = false;
+        state.uiFlags.isLoading = false;
         state.error = (action.payload as string) ?? 'Failed to fetch notifications';
       });
   },

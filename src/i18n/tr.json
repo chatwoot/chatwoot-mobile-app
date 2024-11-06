@@ -126,14 +126,19 @@
   "SETTINGS": {
     "HEADER_TITLE": "Ayarlar",
     "SET_AVAILABILITY": "Set yourself as",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferences",
     "ABOUT": "About",
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Hesap değiştir",
     "CHANGE_LANGUAGE": "Dili değiştir",
+    "NOTIFICATIONS": "Bildirimler",
     "NOTIFICATION_PREFERENCES": "Bildirim Tercihleri",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Sohbet et",
     "LOGOUT": "Çıkış Yap",
-    "SUBMIT": "Yolla"
+    "SUBMIT": "Yolla",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Bildirimler",
@@ -152,16 +157,14 @@
     "TITLE": "Bildirim Tercihleri",
     "EMAIL": "E-posta Bildirimleri",
     "PUSH": "Bildirimler",
-    "CONVERSATION_CREATE_PUSH": "Yeni bir görüşme oluşturulduğunda anlık bildirimler gönderin",
-    "CONVERSATION_ASSIGNEE_PUSH": "Bana bir konuşma atandığında anında bildirim gönder",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Atanan bir görüşmede yeni bir mesaj oluşturulduğunda anlık bildirimler gönderin",
-    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Katıldığım bir konuşmada yeni bir mesaj oluşturulduğunda anlık bildirimler gönderin",
-    "CONVERSATION_CREATE_EMAIL": "Yeni bir görüşme oluşturulduğunda e-posta bildirimleri gönderin",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Bana bir konuşma atandığında e-posta bildirimleri gönder",
-    "CONVERSATION_MENTION_EMAIL": "Bir konuşmada adım geçtiğinde e-posta bildirimleri gönder",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Atanmış bir görüşmede yeni bir mesaj oluşturulduğunda e-posta bildirimleri gönderin",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Katıldığım bir konuşmada yeni bir mesaj oluşturulduğunda anlık bildirimler gönderin"
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Conversation Information",

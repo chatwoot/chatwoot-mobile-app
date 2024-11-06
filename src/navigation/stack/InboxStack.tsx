@@ -1,22 +1,18 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import NotificationScreen from '@/screens/Notification/NotificationScreen';
+import InboxScreen from '@/screens/inbox/InboxScreen';
 
-export type NotificationStackParamList = {
-  NotificationScreen: undefined;
+export type InboxStackParamList = {
+  Inbox: undefined;
 };
 
-const Stack = createNativeStackNavigator<NotificationStackParamList>();
+const Stack = createNativeStackNavigator<InboxStackParamList>();
 
-export const NotificationStack = () => {
+export const InboxStack = () => {
   return (
-    <Stack.Navigator initialRouteName="NotificationScreen">
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="NotificationScreen"
-        component={NotificationScreen}
-      />
+    <Stack.Navigator initialRouteName="Inbox">
+      <Stack.Screen options={{ headerShown: false }} name="Inbox" component={InboxScreen} />
     </Stack.Navigator>
   );
 };

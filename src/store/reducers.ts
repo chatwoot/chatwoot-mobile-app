@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 
 import authSlice from '@/store/auth/authSlice';
 import settingsSlice from '@/store/settings/settingsSlice';
+import notificationSlice from '@/store/notification/notificationSlice';
 
 import inboxSlice from '@/reducer/inboxSlice';
 import cannedResponseSlice from '@/reducer/cannedResponseSlice';
@@ -12,7 +13,6 @@ import labelSlice from '@/reducer/labelSlice';
 import conversationLabelsSlice from '@/reducer/conversationLabelSlice';
 import teamSlice from '@/reducer/teamSlice';
 import customAttributeSlice from '@/reducer/customAttributeSlice';
-import notificationSlice from '@/reducer/notificationSlice';
 import dashboardAppSlice from '@/reducer/dashboardAppSlice';
 import conversationWatchersSlice from '@/reducer/conversationWatchersSlice';
 import contactsSlice from '@/reducer/contactSlice';

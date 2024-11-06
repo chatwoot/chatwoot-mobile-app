@@ -100,7 +100,7 @@ const ConversationScreen = () => {
 
   const initPushNotifications = useCallback(async () => {
     dispatch(notificationActions.index({ pageNo: 1 }));
-    dispatch(notificationActions.saveDeviceDetails());
+    // dispatch(notificationActions.saveDeviceDetails());
     clearAllDeliveredNotifications();
   }, [dispatch]);
 

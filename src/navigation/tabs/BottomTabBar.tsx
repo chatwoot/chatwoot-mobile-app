@@ -39,7 +39,7 @@ const TabBarIcons = ({ focused, route }: TabBarIconsProps) => {
   switch (route.name) {
     case 'Conversations':
       return focused ? <ConversationIconFilled /> : <ConversationIconOutline />;
-    case 'Notifications':
+    case 'Inbox':
       return focused ? <InboxIconFilled /> : <InboxIconOutline />;
     case 'Settings':
       return focused ? <SettingsIconFilled /> : <SettingsIconOutline />;

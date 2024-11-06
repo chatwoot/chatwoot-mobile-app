@@ -403,6 +403,6 @@ const SettingsScreen = () => {
         )}
     </SafeAreaView>
   );
-};
+}; 
 
 export default SettingsScreen;

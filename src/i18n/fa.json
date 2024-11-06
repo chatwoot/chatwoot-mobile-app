@@ -126,14 +126,19 @@
   "SETTINGS": {
     "HEADER_TITLE": "تنظیمات",
     "SET_AVAILABILITY": "خود را به عنوان",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "تنظیمات",
     "ABOUT": "درباره",
     "SUPPORT": "پشتیبانی",
     "SWITCH_ACCOUNT": "سوییچ به یک حساب دیگر",
     "CHANGE_LANGUAGE": "تغییر زبان",
+    "NOTIFICATIONS": "اعلان ها",
     "NOTIFICATION_PREFERENCES": "تنظیمات اعلان",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "با ما گفتگو کنید",
     "LOGOUT": "خروج از حساب",
-    "SUBMIT": "ثبت"
+    "SUBMIT": "ثبت",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "اعلان ها",
@@ -152,16 +157,14 @@
     "TITLE": "تنظیمات اعلان",
     "EMAIL": "اعلامیه‌ به ایمیل",
     "PUSH": "پوش نوتیفیکیشن",
-    "CONVERSATION_CREATE_PUSH": "هر وقت گفتگوی جدیدی شروع شد برای من پوش نوتیفیکیشن بفرست",
-    "CONVERSATION_ASSIGNEE_PUSH": "هر وقت گفتگویی به من اختصاص داده شد، برای من پوش نوتیفیکیشن بفرست",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "وقتی پیام جدیدی در مکالمه اختصاص داده شده ایجاد می شود ، پوش نوتیفیکیشن را ارسال کنید",
-    "CONVERSATION_MENTION": "هنگامی که از شما در مکالمه نام برده می شود پوش نوتیفیکیشن ارسال کنید",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "هنگامی که یک پیام جدید در یک مکالمه شرکت کننده ایجاد می شود، اعلان فشار ارسال کنید",
-    "CONVERSATION_CREATE_EMAIL": "هر وقت گفتگوی جدیدی شروع شد برای من ایمیل بفرست",
-    "CONVERSATION_ASSIGNEE_EMAIL": "هر وقت گفتگویی به من اختصاص داده شد،‌ ایمیل بفرست",
-    "CONVERSATION_MENTION_EMAIL": "هنگامی که از شما در گفتگو نام برده می‌شود، از طریق ایمیل آگاه‌سازی ارسال کن",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "با ایجاد پیام جدید در مکالمه اختصاصی ، اعلان های ایمیل را ارسال کنید",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "هنگامی که یک پیام جدید در یک مکالمه شرکت کننده ایجاد می شود، اعلان فشار ارسال کنید"
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "اطلاعات مکالمه",

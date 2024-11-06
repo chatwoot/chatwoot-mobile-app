@@ -126,14 +126,19 @@
   "SETTINGS": {
     "HEADER_TITLE": "Налаштування",
     "SET_AVAILABILITY": "Позначити себе як",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Налаштування",
     "ABOUT": "About",
     "SUPPORT": "Підтримка",
     "SWITCH_ACCOUNT": "Змінити обліковий запис",
     "CHANGE_LANGUAGE": "Змінити мову",
+    "NOTIFICATIONS": "Сповіщення",
     "NOTIFICATION_PREFERENCES": "Налаштування сповіщень",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Почніть розмову з нами",
     "LOGOUT": "Вийти",
-    "SUBMIT": "Додати"
+    "SUBMIT": "Додати",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Сповіщення",
@@ -152,16 +157,14 @@
     "TITLE": "Налаштування сповіщень",
     "EMAIL": "Сповіщення електронною поштою",
     "PUSH": "Push-сповіщення",
-    "CONVERSATION_CREATE_PUSH": "Надсилати push-сповіщення, коли створюється нова розмова",
-    "CONVERSATION_ASSIGNEE_PUSH": "Надсилати push-сповіщення, коли мені призначено розмову",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Надсилати push-сповіщення, коли нове повідомлення створюється в призначеній бесіді",
-    "CONVERSATION_MENTION": "Надсилати push-сповіщення, коли вас згадують в розмові",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Надсилати push-повідомлення, коли нове повідомлення створюється в призначеній розмові",
-    "CONVERSATION_CREATE_EMAIL": "Надсилати сповіщення при створенні нової бесіди",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Надсилати сповіщення коли бесіду призначають мені",
-    "CONVERSATION_MENTION_EMAIL": "Надсилати сповіщення електронною поштою, коли вас згадують в розмові",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Надсилати email, коли нове повідомлення створюється в призначеній бесіді",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Надсилати push-повідомлення, коли нове повідомлення створюється в призначеній розмові"
+    "CONVERSATION_CREATE_PUSH": "Діалог створено",
+    "CONVERSATION_ASSIGNEE_PUSH": "Розмова призначена вам",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Ви згадані в розмові",
+    "CONVERSATION_MENTION": "Нове повідомлення створено в призначеній розмові",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Створено нове повідомлення в розмові з учасниками",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "Розмова пропускає першу відповідь SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "Розмова пропускає наступну відповідь SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "Розмова пропускає SLA розширення"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Інформація про бесіду",

@@ -62,4 +62,9 @@ export const settingsActions = {
     NotificationSettings,
     NotificationSettingsPayload
   >('settings/updateNotificationSettings', SettingsService.updateNotificationSettings),
+
+  getChatwootVersion: createSettingsThunk<{ version: string }, { installationUrl: string }>(
+    'settings/getChatwootVersion',
+    ({ installationUrl }) => SettingsService.getChatwootVersion(installationUrl),
+  ),
 };

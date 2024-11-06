@@ -1,6 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '@/store';
 import { Account } from '@/types/Account';
+
 export const selectAuth = (state: RootState) => state.auth;
 
 export const selectAuthHeaders = createSelector(selectAuth, auth => auth.headers);
@@ -34,3 +35,11 @@ export const selectCurrentUserAvailability = createSelector(selectAuth, auth => 
 });
 
 export const selectCurrentUserAccountId = createSelector(selectAuth, auth => auth.user?.account_id);
+
+export const selectCurrentUserAccount = createSelector(selectAuth, auth => {
+  const { user } = auth;
+  const currentAccount = user?.accounts?.find(
+    account => Number(account.id) === Number(user?.account_id),
+  );
+  return currentAccount;
+});

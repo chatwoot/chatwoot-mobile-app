@@ -16,6 +16,7 @@ interface SettingsState {
   localeValue: string;
   webSocketUrl: string;
   theme: Theme;
+  version: string;
 }
 const initialState: SettingsState = {
   baseUrl: 'app.chatwoot.com',
@@ -37,6 +38,7 @@ const initialState: SettingsState = {
   },
   webSocketUrl: 'wss://app.chatwoot.com/cable',
   theme: 'system',
+  version: '',
 };
 export const settingsSlice = createSlice({
   name: 'settings',
@@ -80,6 +82,10 @@ export const settingsSlice = createSlice({
       })
       .addCase(settingsActions.updateNotificationSettings.rejected, state => {
         state.uiFlags.isUpdating = false;
+      })
+      .addCase(settingsActions.getChatwootVersion.fulfilled, (state, action) => {
+        const { version } = action.payload;
+        state.version = version;
       });
   },
 });

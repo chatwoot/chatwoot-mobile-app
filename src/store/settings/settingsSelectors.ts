@@ -34,3 +34,5 @@ export const selectTheme = createSelector(selectSettings, settings => settings.t
 export const selectIsChatwootCloud = createSelector(selectSettings, settings =>
   settings.installationUrl.includes('app.chatwoot.com'),
 );
+
+export const selectChatwootVersion = createSelector(selectSettings, settings => settings.version);

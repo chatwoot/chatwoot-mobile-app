@@ -92,19 +92,11 @@ const ConversationScreen = () => {
     dispatch(inboxActions.fetchInboxes());
     initAnalytics();
     initSentry();
-    // checkAppVersion();
     initPushNotifications();
     dispatch(dashboardAppActions.index());
     dispatch(labelActions.index());
     dispatch(teamActions.index());
-  }, [
-    dispatch,
-    initActionCable,
-    initAnalytics,
-    initPushNotifications,
-    // checkAppVersion,
-    initSentry,
-  ]);
+  }, [dispatch, initActionCable, initAnalytics, initPushNotifications, initSentry]);
 
   const initPushNotifications = useCallback(async () => {
     dispatch(notificationActions.index({ pageNo: 1 }));
@@ -126,10 +118,6 @@ const ConversationScreen = () => {
       installation_url: installationUrl,
     });
   }, [user, installationUrl]);
-
-  // const checkAppVersion = useCallback(async () => {
-  //   appDispatch(settingsActions.checkInstallationVersion({ user, installationUrl }));
-  // }, [dispatch, user, installationUrl]);
 
   const initActionCable = useCallback(async () => {
     const pubSubToken = await getPubSubToken();

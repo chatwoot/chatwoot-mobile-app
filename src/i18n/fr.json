@@ -126,14 +126,19 @@
   "SETTINGS": {
     "HEADER_TITLE": "Paramètres",
     "SET_AVAILABILITY": "Se définir comme",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferences",
     "ABOUT": "About",
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Changer de compte",
     "CHANGE_LANGUAGE": "Changer de langue",
+    "NOTIFICATIONS": "Notifications",
     "NOTIFICATION_PREFERENCES": "Préférences de notifications",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Discutez avec nous",
     "LOGOUT": "Se déconnecter",
-    "SUBMIT": "Envoyer"
+    "SUBMIT": "Envoyer",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",
@@ -152,16 +157,14 @@
     "TITLE": "Préférences de notifications",
     "EMAIL": "Notifications par courriel",
     "PUSH": "Notifications push",
-    "CONVERSATION_CREATE_PUSH": "Envoyer une notifications lors de la création d'une conversation",
-    "CONVERSATION_ASSIGNEE_PUSH": "Envoyer une notification lors qu'une discussion m'est assignée",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Envoyer une notification lors de la réception d'un message dans une discussion m'étant assignée",
-    "CONVERSATION_MENTION": "Envoyer des notifications push lorsque vous êtes mentionné dans une conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Envoyer des notifications par courriel lorsqu'un nouveau message est créé dans une conversation assignée",
-    "CONVERSATION_CREATE_EMAIL": "Envoyer une notification par e-mail lors de la création d'une conversation",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Envoyer une notification par e-mail lors qu'une discussion m'est assignée",
-    "CONVERSATION_MENTION_EMAIL": "Envoyer des notifications par courriel lorsque vous êtes mentionné dans une conversation",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Envoyer une notification par e-mail lors de la réception d'un message dans une discussion qui m'est assignée",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Envoyer des notifications par courriel lorsqu'un nouveau message est créé dans une conversation assignée"
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Informations de la conversation",

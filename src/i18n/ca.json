@@ -126,14 +126,19 @@
   "SETTINGS": {
     "HEADER_TITLE": "Configuració",
     "SET_AVAILABILITY": "Posa't com",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferences",
     "ABOUT": "About",
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Canvia de compte",
     "CHANGE_LANGUAGE": "Canviar d'idioma",
+    "NOTIFICATIONS": "Notificacions",
     "NOTIFICATION_PREFERENCES": "Preferències de notificació",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Xateja amb nosaltres",
     "LOGOUT": "Tancar sessió",
-    "SUBMIT": "Trametre"
+    "SUBMIT": "Trametre",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notificacions",
@@ -152,16 +157,14 @@
     "TITLE": "Preferències de notificació",
     "EMAIL": "Notificacions per correu electrònic",
     "PUSH": "Notificacions automàtiques",
-    "CONVERSATION_CREATE_PUSH": "Envia notificacions automàtiques quan es creï una conversa nova",
-    "CONVERSATION_ASSIGNEE_PUSH": "Envia notificacions automàtiques quan se m'assigna una conversa",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Envia notificacions automàtiques quan es creï un missatge nou en una conversa assignada",
-    "CONVERSATION_MENTION": "Enviar notificacions push quan siguis esmentat en una conversació",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Envia notificacions push quan es crea un missatge nou en una conversa participant",
-    "CONVERSATION_CREATE_EMAIL": "Envia notificacions per correu electrònic quan es creï una conversa nova",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Envia notificacions per correu electrònic quan se m'assigna una conversa",
-    "CONVERSATION_MENTION_EMAIL": "Enviar notificacions per mail quan siguis esmentat en una conversació",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Envia notificacions per correu electrònic quan es creï un missatge nou en una conversa assignada",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Send push notifications when a new message is created in a participating conversation"
+    "CONVERSATION_CREATE_PUSH": "S'ha creat una nova conversa",
+    "CONVERSATION_ASSIGNEE_PUSH": "Se t'assigna una conversa",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Se't menciona en una conversa",
+    "CONVERSATION_MENTION": "Es crea un missatge nou en una conversa assignada",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Es crea un missatge nou en una conversa participant",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "Una conversa no té un SLA de primera resposta",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "SLA de la següent resposta no és una conversa",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "Una conversa no resol un SLA"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Conversation Information",

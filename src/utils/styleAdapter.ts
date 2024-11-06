@@ -14,7 +14,7 @@ import {
  * boolean is true, then the value is of the type that the type guard is guarding against
  * @param {any} value - any - The value to check.
  */
-const isFunction = (value: any): value is Function => typeof value === 'function';
+const isFunction = (value: unknown): value is Function => typeof value === 'function';
 
 /**
  * Take from Chakra UI Util Funcs

@@ -33,10 +33,12 @@ import { CONVERSATION_STATUSES, ASSIGNEE_TYPES, SORT_TYPES } from 'constants';
 import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import { actions as inboxActions, inboxesSelector } from 'reducer/inboxSlice';
-import { selectUser } from 'reducer/authSlice';
+import { selectUser } from '@/store/auth/authSelectors';
 import { getUserPermissions } from 'helpers/permissionHelper';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
-import { selectWebSocketUrl, selectInstallationUrl } from 'reducer/settingsSlice';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectWebSocketUrl, selectInstallationUrl } from '@/store/settings/settingsSelectors';
+import { settingsActions } from '@/store/settings/settingsActions';
 import { actions as notificationActions } from 'reducer/notificationSlice';
 import { actions as dashboardAppActions } from 'reducer/dashboardAppSlice';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
@@ -57,11 +59,11 @@ const ConversationScreen = () => {
   const assigneeType = useSelector(selectAssigneeType);
   const sortFilter = useSelector(selectSortFilter) || SORT_TYPES[0].key;
   const activeInboxId = useSelector(selectActiveInbox);
-  const webSocketUrl = useSelector(selectWebSocketUrl);
-  const installationUrl = useSelector(selectInstallationUrl);
+  const webSocketUrl = useAppSelector(selectWebSocketUrl);
+  const installationUrl = useAppSelector(selectInstallationUrl);
   const isLoading = useSelector(state => state.conversations.loading);
   const inboxes = useSelector(inboxesSelector.selectAll);
-  const user = useSelector(selectUser);
+  const user = useAppSelector(selectUser);
   const userPermissions = getUserPermissions(user, user.account_id);
   // If userPermissions contains any values conversation_manage_permission,administrator, agent then keep all the assignee types
   // If conversation_manage is not available and conversation_unassigned_manage only is available, then return only unassigned and mine
@@ -81,6 +83,7 @@ const ConversationScreen = () => {
   }
   const [pageNumber, setPage] = useState(1);
   const dispatch = useDispatch();
+  const appDispatch = useAppDispatch();
 
   useEffect(() => {
     initActionCable();

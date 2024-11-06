@@ -226,11 +226,6 @@ export const NOTIFICATION_PREFERENCE_TYPES = {
   push_sla_missed_first_response: 'CONVERSATION_SLA_MISSED_FIRST_RESPONSE',
   push_sla_missed_next_response: 'CONVERSATION_SLA_MISSED_NEXT_RESPONSE',
   push_sla_missed_resolution: 'CONVERSATION_SLA_MISSED_RESOLUTION',
-  email_conversation_creation: 'CONVERSATION_CREATE_EMAIL',
-  email_conversation_assignment: 'CONVERSATION_ASSIGNEE_EMAIL',
-  email_assigned_conversation_new_message: 'CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL',
-  email_conversation_mention: 'CONVERSATION_MENTION_EMAIL',
-  email_participating_conversation_new_message: 'CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL',
 };
 
 export const NOTIFICATION_TYPES = [
@@ -243,3 +238,9 @@ export const NOTIFICATION_TYPES = [
   'sla_missed_next_response',
   'sla_missed_resolution',
 ];
+
+export const URL_WITHOUT_HTTP_REGEX =
+  /([\w+]+\:\/\/)?([\w\d-]+\.)*[\w-]+[\.\:]\w+([\/\?\=\&\#\.]?[\w-]+)*\/?/gm;
+
+export const EMAIL_REGEX =
+  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

@@ -8,7 +8,7 @@ export const getHeaders = async () => {
     }
     const {
       headers: { 'access-token': accessToken, uid, client },
-      currentUser: { account_id: accountId },
+      user: { account_id: accountId },
     } = state.auth;
     return {
       'access-token': accessToken,
@@ -33,7 +33,7 @@ export const getPubSubToken = async () => {
   try {
     const state = await getStore().getState();
     const {
-      currentUser: { pubsub_token: pubSubToken },
+      user: { pubsub_token: pubSubToken },
     } = state.auth;
 
     return pubSubToken;
@@ -44,7 +44,7 @@ export const getUserDetails = async () => {
   try {
     const state = await getStore().getState();
     const {
-      currentUser: { id: userId, account_id: accountId, name, email },
+      user: { id: userId, account_id: accountId, name, email },
     } = state.auth;
     return { accountId, userId, name, email };
   } catch (error) {}

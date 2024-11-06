@@ -6,6 +6,9 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import i18n from 'i18n';
 import { useDispatch } from 'react-redux';
 
+import { selectUserId } from '@/store/auth/authSelectors';
+import { useAppSelector } from '@/hooks';
+
 import BottomSheetModal from 'components/BottomSheet/BottomSheet';
 import ConversationAgentItems from 'components/ConversationAgentItem';
 import { inboxAgentSelectors } from 'reducer/inboxAgentsSlice';
@@ -13,7 +16,6 @@ import {
   actions as conversationWatchersActions,
   selectConversationWatchers,
 } from 'reducer/conversationWatchersSlice';
-import { selectUserId } from 'reducer/authSlice';
 import { Text, Icon, UserAvatarGroup, Pressable } from 'components';
 
 const deviceHeight = Dimensions.get('window').height;
@@ -81,7 +83,7 @@ const ConversationParticipants = ({ conversationId }) => {
   const styles = useMemo(() => createStyles(theme), [theme]);
   const dispatch = useDispatch();
 
-  const userId = useSelector(selectUserId);
+  const userId = useAppSelector(selectUserId);
   const agents = useSelector(state => inboxAgentSelectors.inboxAssignedAgents(state));
   const conversationParticipantList = useSelector(selectConversationWatchers);
   const conversationWatchers = conversationId ? conversationParticipantList[conversationId] : null;

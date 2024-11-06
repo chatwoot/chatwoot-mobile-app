@@ -4,3 +4,4 @@ export * from './ConversationPriority';
 export * from './ConversationStatus';
 export * from './UnixTimestamp';
 export * from './UserRole';
+export * from './Theme';

@@ -22,7 +22,8 @@ import AnalyticsHelper from 'helpers/AnalyticsHelper';
 import { CONVERSATION_EVENTS } from 'constants/analyticsEvents';
 import { CONVERSATION_STATUS } from 'constants/index';
 import { inboxesSelector } from 'reducer/inboxSlice';
-import { selectUserId } from 'reducer/authSlice';
+import { selectUserId } from '@/store/auth/authSelectors';
+import { useAppSelector } from '@/hooks';
 import differenceInHours from 'date-fns/differenceInHours';
 import createStyles from './ChatHeader.styles.js';
 const deviceHeight = Dimensions.get('window').height;
@@ -60,7 +61,7 @@ const ChatHeader = ({
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const conversationToggleStatus = useSelector(selectConversationToggleStatus);
-  const userId = useSelector(selectUserId);
+  const userId = useAppSelector(selectUserId);
 
   const inboxes = useSelector(inboxesSelector.selectAll);
   const inboxDetails = inboxes ? inboxes.find(inbox => inbox.id === inboxId) : {};

@@ -17,15 +17,12 @@ interface ConversationLastMessage {
   status: MessageStatus;
   sourceId: null | string;
   contentType: ContentType;
-  contentAttributes: Record<string, any>; // Adjust the type as needed
   senderType: null | string;
   senderId: null | string;
   externalSourceIds: {
     slack: string | null;
   };
-  additionalAttributes: Record<string, any>; // Adjust the type as needed
   processedMessageContent: string;
-  sentiment: Record<string, any>; // Adjust the type as needed
   conversation: {
     assigneeId: null | number;
     unreadCount: number;

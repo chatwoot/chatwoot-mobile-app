@@ -9,8 +9,8 @@ import {
 
 import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
 import conversationActions from 'reducer/conversationSlice.action';
-import { store } from '../store';
-import { setCurrentUserAvailability } from 'reducer/authSlice';
+import { store } from '@/store';
+import { setCurrentUserAvailability } from '@/store/auth/authSlice';
 import { addUserToTyping, destroyUserFromTyping } from 'reducer/conversationTypingSlice';
 import { addNotification } from 'reducer/notificationSlice';
 import { addContact, updateContactsPresence } from 'reducer/contactSlice';

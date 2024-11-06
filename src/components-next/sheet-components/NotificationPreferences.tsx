@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Switch, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 
 import { tailwind } from '@/theme';
 import i18n from 'i18n';
-import { selectNotificationSettings, actions as settingsActions } from '@/reducer/settingsSlice';
+import { selectNotificationSettings } from '@/store/settings/settingsSelectors';
+import { settingsActions } from '@/store/settings/settingsActions';
 import { NOTIFICATION_PREFERENCE_TYPES } from '@/constants';
 
 const addOrRemoveItemFromArray = <T,>(array: T[], key: T): T[] => {
@@ -24,9 +25,9 @@ export const NotificationPreferences = () => {
     all_push_flags: allPushFlags,
     selected_email_flags: selectedEmailFlags,
     selected_push_flags,
-  } = useSelector(selectNotificationSettings);
+  } = useAppSelector(selectNotificationSettings);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [selectedPushFlags, setPushFlags] = useState(selected_push_flags);
 
@@ -46,10 +47,6 @@ export const NotificationPreferences = () => {
     emailFlags: string[];
     pushFlags: string[];
   }) => {
-    // TODO: Add analytics
-    // AnalyticsHelper.track(PROFILE_EVENTS.CHANGE_PREFERENCES);
-    // TODO: Fix this later
-    // @ts-ignore
     dispatch(
       settingsActions.updateNotificationSettings({
         notification_settings: {
@@ -60,29 +57,28 @@ export const NotificationPreferences = () => {
     );
   };
 
+  const typedPushFlags = allPushFlags as NotificationPreferenceType[];
+
   return (
     <Animated.View style={tailwind.style('py-4 px-3')}>
-      {allPushFlags.map(
-        (item: NotificationPreferenceType) =>
-          NOTIFICATION_PREFERENCE_TYPES[item] && (
-            <Animated.View
-              key={item}
-              style={tailwind.style('flex flex-row items-center justify-between ml-2 mt-2')}>
-              <Animated.Text
-                style={tailwind.style('flex-1 leading-[17px] tracking-[0.24px] text-gray-950')}>
-                {i18n.t(`NOTIFICATION_PREFERENCE.${NOTIFICATION_PREFERENCE_TYPES[item]}`)}
-              </Animated.Text>
-              <Switch
-                trackColor={{ false: '#C9D7E3', true: '#1F93FF' }}
-                thumbColor="#FFFFFF"
-                style={styles.switch}
-                ios_backgroundColor="#C9D7E3"
-                onValueChange={() => onPushItemChange(item)}
-                value={selectedPushFlags.includes(item)}
-              />
-            </Animated.View>
-          ),
-      )}
+      {typedPushFlags.map((item: NotificationPreferenceType) => (
+        <Animated.View
+          key={item}
+          style={tailwind.style('flex flex-row items-center justify-between ml-2 mt-2')}>
+          <Animated.Text
+            style={tailwind.style('flex-1 leading-[17px] tracking-[0.24px] text-gray-950')}>
+            {i18n.t(`NOTIFICATION_PREFERENCE.${NOTIFICATION_PREFERENCE_TYPES[item]}`)}
+          </Animated.Text>
+          <Switch
+            trackColor={{ false: '#C9D7E3', true: '#1F93FF' }}
+            thumbColor="#FFFFFF"
+            style={styles.switch}
+            ios_backgroundColor="#C9D7E3"
+            onValueChange={() => onPushItemChange(item)}
+            value={selectedPushFlags.includes(item)}
+          />
+        </Animated.View>
+      ))}
     </Animated.View>
   );
 };

@@ -126,14 +126,19 @@
   "SETTINGS": {
     "HEADER_TITLE": "Preferencias",
     "SET_AVAILABILITY": "Ponte como",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferencias",
     "ABOUT": "Acerca de",
     "SUPPORT": "Soporte",
     "SWITCH_ACCOUNT": "Cambiar de cuenta",
     "CHANGE_LANGUAGE": "Cambiar idioma",
+    "NOTIFICATIONS": "Notificaciones",
     "NOTIFICATION_PREFERENCES": "Preferencias de Notificación",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Chatea con nosotros",
     "LOGOUT": "Cerrar sesión",
-    "SUBMIT": "Enviar"
+    "SUBMIT": "Enviar",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notificaciones",
@@ -152,16 +157,14 @@
     "TITLE": "Preferencias de notificación",
     "EMAIL": "Notificaciones por email",
     "PUSH": "Notificaciones push",
-    "CONVERSATION_CREATE_PUSH": "Enviar notificaciones push cuando se crea una nueva conversación",
-    "CONVERSATION_ASSIGNEE_PUSH": "Enviar notificaciones push cuando se me asigne una conversación",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Enviar notificaciones push cuando se crea un nuevo mensaje en una conversación asignada",
-    "CONVERSATION_MENTION": "Enviar notificaciones push cuando sea mencionado en una conversación",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Enviar notificaciones push cuando se crea un nuevo mensaje en una conversación participante",
-    "CONVERSATION_CREATE_EMAIL": "Enviar notificaciones por email cuando se crea una nueva conversación",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Enviar notificaciones por email cuando se me ha asignado una conversación",
-    "CONVERSATION_MENTION_EMAIL": "Enviar notificaciones por correo electrónico cuando sea mencionado en una conversación",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Enviar notificaciones por email cuando se crea un nuevo mensaje en una conversación asignada",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Enviar notificaciones push cuando se crea un nuevo mensaje en una conversación participante"
+    "CONVERSATION_CREATE_PUSH": "Se ha creado una nueva conversación",
+    "CONVERSATION_ASSIGNEE_PUSH": "Se te ha asignado una conversación",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Has sido mencionado en una conversación",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Información de la conversación",

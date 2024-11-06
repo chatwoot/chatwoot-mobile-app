@@ -59,7 +59,8 @@ const Tabs = () => {
 
   useEffect(() => {
     dispatch(authActions.getProfile());
-  }, [dispatch]);
+    dispatch(settingsActions.saveDeviceDetails());
+  }, []);
 
   useEffect(() => {
     dispatch(settingsActions.getChatwootVersion({ installationUrl: installationUrl }));

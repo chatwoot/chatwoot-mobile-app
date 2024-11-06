@@ -39,7 +39,6 @@ import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectWebSocketUrl, selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { settingsActions } from '@/store/settings/settingsActions';
-import { actions as notificationActions } from 'reducer/notificationSlice';
 import { actions as dashboardAppActions } from 'reducer/dashboardAppSlice';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
 import { actions as labelActions } from 'reducer/labelSlice';
@@ -99,8 +98,6 @@ const ConversationScreen = () => {
   }, [dispatch, initActionCable, initAnalytics, initPushNotifications, initSentry]);
 
   const initPushNotifications = useCallback(async () => {
-    dispatch(notificationActions.index({ pageNo: 1 }));
-    // dispatch(notificationActions.saveDeviceDetails());
     clearAllDeliveredNotifications();
   }, [dispatch]);
 

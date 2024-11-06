@@ -5,7 +5,7 @@ import Animated from 'react-native-reanimated';
 import { Avatar, HashIcon, Icon, Swipeable } from '@/components-next';
 import { useInboxListStateContext } from '@/context';
 import type { Notification } from '@/types/Notification';
-import { MarkAsRead, MarkAsUnRead } from '@/svg-icons';
+import { MarkAsRead, MarkAsUnRead, SnoozedIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { getDynamicTime, getShortTimeStamp } from '@/utils';
 
@@ -89,7 +89,6 @@ export const InboxItem = (props: InboxItemProps) => {
               style={tailwind.style(
                 'text-sm font-inter-420-20 leading-[16px] tracking-[0.32px] text-gray-700',
               )}>
-              {/* {getElapsedTimeFromNow(cellData.timestamp)} */}
               {lastActivityAt()}
             </Animated.Text>
           </Animated.View>
@@ -106,17 +105,16 @@ export const InboxItem = (props: InboxItemProps) => {
                 style={tailwind.style(
                   'pl-1.5 font-inter-normal-24 text-md text-gray-900 leading-[17px] tracking-[0.32px]',
                 )}>
-                {/* {cellData.notification} */}
-                {cellData.push_message_title}
+                {cellData.push_message_title.slice(0, 40)}
               </Animated.Text>
             </Animated.View>
-            {/* <Animated.View
+            <Animated.View
               style={tailwind.style(
                 'h-6 w-6 rounded-full justify-center items-center',
-                cellData.notificationBgColor,
+                'bg-green-700',
               )}>
-              <Icon icon={cellData.notificationIcon} size={19.2} />
-            </Animated.View> */}
+              <Icon icon={<SnoozedIcon stroke={tailwind.color('text-white')} />} size={19.2} />
+            </Animated.View>
           </Animated.View>
         </Animated.View>
       </Animated.View>

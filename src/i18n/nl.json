@@ -126,14 +126,19 @@
   "SETTINGS": {
     "HEADER_TITLE": "Instellingen",
     "SET_AVAILABILITY": "Zet jezelf op",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Voorkeuren",
     "ABOUT": "Over",
     "SUPPORT": "Ondersteuning",
     "SWITCH_ACCOUNT": "Switch account",
     "CHANGE_LANGUAGE": "Wijzig taal",
+    "NOTIFICATIONS": "Notificaties",
     "NOTIFICATION_PREFERENCES": "Notificatie voorkeuren",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Chat met ons",
     "LOGOUT": "Afmelden",
-    "SUBMIT": "Bevestigen"
+    "SUBMIT": "Bevestigen",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notificaties",
@@ -152,16 +157,14 @@
     "TITLE": "Notificatie voorkeuren",
     "EMAIL": "E-mail notificaties",
     "PUSH": "Pushberichten",
-    "CONVERSATION_CREATE_PUSH": "Stuur pushberichten wanneer een nieuw gesprek is aangemaakt",
-    "CONVERSATION_ASSIGNEE_PUSH": "Stuur pushberichten wanneer een gesprek aan mij is toegewezen",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_MENTION": "Ontvang pushmeldingen wanneer je wordt genoemd in een gesprek",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in a participating conversation",
-    "CONVERSATION_CREATE_EMAIL": "E-mailberichten verzenden wanneer een nieuw gesprek is gemaakt",
-    "CONVERSATION_ASSIGNEE_EMAIL": "E-mailberichten verzenden wanneer een gesprek aan mij is toegewezen",
-    "CONVERSATION_MENTION_EMAIL": "E-mail notificaties versturen wanneer u in een gesprek wordt genoemd",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Send push notifications when a new message is created in a participating conversation"
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Gespreksinformatie",

@@ -22,8 +22,8 @@
     "ERROR": "Url de instalação inválida"
   },
   "LOGIN": {
-    "TITLE": "Acesse sua conta",
-    "DESCRIPTION": "Você está conectado a {{baseUrl}}. Entre com seu endereço de e-mail e senha.",
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "e-mail",
     "PASSWORD": "Senha",
     "EMAIL_REQUIRED": "E-mail é obrigatório",
@@ -31,6 +31,7 @@
     "PASSWORD_REQUIRED": "Senha obrigatória",
     "PASSWORD_ERROR": "Digite uma senha válida",
     "LOGIN": "Entrar",
+    "LOGIN_LOADING": "Signing In...",
     "FORGOT_PASSWORD": "Esqueceu sua senha?",
     "RESET_HERE": "Redefinir aqui",
     "NO_ACCOUNT": "Não possui uma conta?",
@@ -88,6 +89,7 @@
     "DELETE_MESSAGE_TITLE": "Você tem certeza que deseja excluir esta mensagem?",
     "DELETE_MESSAGE_SUB_TITLE": "Esta ação não pode ser desfeita.",
     "COPY_MESSAGE": "Mensagem copiada para área de transferência",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Prioridade",
       "OPTIONS": {
@@ -125,14 +127,19 @@
   "SETTINGS": {
     "HEADER_TITLE": "Confirgurações",
     "SET_AVAILABILITY": "Defina como",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferências",
     "ABOUT": "Sobre",
     "SUPPORT": "Suporte",
     "SWITCH_ACCOUNT": "Alterar conta",
     "CHANGE_LANGUAGE": "Alterar Idioma",
+    "NOTIFICATIONS": "Notificações",
     "NOTIFICATION_PREFERENCES": "Preferências de Notificação",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Fale conosco no chat",
     "LOGOUT": "Sair",
-    "SUBMIT": "Enviar"
+    "SUBMIT": "Enviar",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notificações",
@@ -151,16 +158,14 @@
     "TITLE": "Preferências de Notificação",
     "EMAIL": "Notificações por e-mail",
     "PUSH": "Notificações via Push",
-    "CONVERSATION_CREATE_PUSH": "Enviar notificações push quando uma nova conversa é criada",
-    "CONVERSATION_ASSIGNEE_PUSH": "Enviar notificações push quando uma conversa é atribuída para mim",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Enviar notificações push quando uma nova mensagem é criada em uma conversa atribuída",
-    "CONVERSATION_MENTION": "Enviar notificações push quando você for mencionado em uma conversa",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Enviar notificações push quando uma nova mensagem é criada em uma conversa que você participa",
-    "CONVERSATION_CREATE_EMAIL": "Enviar notificações push quando uma nova conversa é criada",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Enviar notificações por email quando uma conversa é atribuída a mim",
-    "CONVERSATION_MENTION_EMAIL": "Enviar notificações por email quando você for mencionado em uma conversa",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Enviar notificações por email quando uma nova mensagem é criada em uma conversa atribuída",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Enviar notificações push quando uma nova mensagem é criada em uma conversa que você participa"
+    "CONVERSATION_CREATE_PUSH": "Uma nova conversa foi criada",
+    "CONVERSATION_ASSIGNEE_PUSH": "Uma conversa foi atribuída a você",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Você foi mencionado em uma conversa",
+    "CONVERSATION_MENTION": "Uma nova mensagem foi criada e atribuída",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Uma nova mensagem foi criada em uma conversa participante",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "Uma conversa perde o SLA de primeira resposta",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "Uma conversa perde o SLA da próxima resposta",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "Uma conversa perde o SLA de resolução"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Informação da conversa",
@@ -168,7 +173,8 @@
     "OPERATING_SYSTEM": "Sistema Operacional",
     "INITIATED_AT": "Iniciada em",
     "INITIATED_FROM": "Iniciado por",
-    "IP_ADDRESS": "Endereço IP"
+    "IP_ADDRESS": "Endereço IP",
+    "CLIPBOARD_SUCCESS": "Código copiado para área de transferência com sucesso"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participantes da conversa",
@@ -248,6 +254,23 @@
       "TEXT": "Você não pode responder devido a ",
       "HREF_TEXT": "Restrições de janela de mensagem de 24 horas",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "devido"
+    },
+    "MISSES": {
+      "TITLE": "SLA Perdido",
+      "FRT": "Primeira resposta",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} mais",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

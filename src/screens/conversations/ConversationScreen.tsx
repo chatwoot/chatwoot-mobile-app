@@ -105,7 +105,7 @@ const ConversationList = () => {
     setCurrentPage(1);
     fetchConversations(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters]);
+  }, []);
 
   const fetchConversations = useCallback(
     async (page: number = 1) => {
@@ -118,13 +118,13 @@ const ConversationList = () => {
       dispatch(conversationActions.fetchConversations(conversationFilters));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [filters],
+    [],
   );
 
   const handleOnEndReached = () => {
     if (conversations.length !== 0) {
-      setCurrentPage(prevPage => prevPage + 1);
-      fetchConversations(currentPage + 1);
+      // setCurrentPage(prevPage => prevPage + 1);
+      // fetchConversations(currentPage + 1);
     }
   };
 

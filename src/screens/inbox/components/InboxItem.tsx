@@ -112,7 +112,7 @@ export const InboxItem = (props: InboxItemProps) => {
 
               <Animated.Text
                 style={tailwind.style(
-                  'pl-1.5 font-inter-normal-24 text-md text-gray-900 leading-[17px] tracking-[0.32px]',
+                  'pl-1.5 font-inter-420-20 text-md text-gray-900 leading-[17px] tracking-[0.32px]',
                 )}>
                 {item.push_message_title.slice(0, 40)}
               </Animated.Text>

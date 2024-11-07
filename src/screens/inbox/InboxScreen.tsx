@@ -11,7 +11,7 @@ import { tailwind } from '@/theme';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { notificationActions } from '@/store/notification/notificationAction';
 import { selectAllNotifications } from '@/store/notification/notificationSelectors';
-import { InboxItem, InboxHeader } from './components';
+import { InboxItem, InboxHeader, InboxEmpty } from './components';
 
 const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList);
 
@@ -39,6 +39,10 @@ const InboxList = () => {
       openedRowIndex.value = -1;
     },
   });
+
+  if (notifications.length === 0) {
+    return <InboxEmpty />;
+  }
 
   return (
     <AnimatedFlashlist

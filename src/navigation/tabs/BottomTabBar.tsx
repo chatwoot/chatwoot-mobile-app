@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { Platform, Pressable } from 'react-native';
 import Animated, {
   interpolate,
@@ -9,6 +9,7 @@ import Animated, {
 import { BlurView, BlurViewProps } from '@react-native-community/blur';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
+import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice';
 
 import {
   ConversationIconFilled,
@@ -22,6 +23,7 @@ import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';
 
 import { TabParamList } from './AppTabs';
+import { useAppSelector } from '@/hooks';
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
@@ -32,8 +34,6 @@ type TabBarIconsProps = {
   focused: boolean;
   route: RouteProp<TabParamList, keyof TabParamList>;
 };
-
-type TabBarState = 'Search' | 'Filter' | 'Select' | 'none';
 
 const TabBarIcons = ({ focused, route }: TabBarIconsProps) => {
   switch (route.name) {
@@ -50,8 +50,8 @@ type TabBarBackgroundProps = BlurViewProps & PropsWithChildren;
 
 const TabBarBackground = (props: TabBarBackgroundProps) => {
   const { children, style, blurAmount, blurType } = props;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [currentState, setCurrentState] = useState<TabBarState>('none');
+
+  const currentState = useAppSelector(selectCurrentState);
 
   const tabBarHeight = useTabBarHeight();
 

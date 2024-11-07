@@ -5,3 +5,5 @@ export * from './styleAdapter';
 export * from './getChannelTypeIcon';
 export * from './useTabBarHeight';
 export * from './dateTimeUtils';
+export * from './withAnchorPoint';
+export * from './getStatusTypeIcon';

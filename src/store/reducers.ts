@@ -3,10 +3,14 @@ import { combineReducers } from 'redux';
 import authSlice from '@/store/auth/authSlice';
 import settingsSlice from '@/store/settings/settingsSlice';
 import notificationSlice from '@/store/notification/notificationSlice';
+import conversationFilterSlice from '@/store/conversation/conversationFilterSlice';
+import selectedConversationSlice from '@/store/conversation/selectedConversationSlice';
+import conversationHeaderSlice from '@/store/conversation/conversationHeaderSlice';
+import conversationActionSlice from '@/store/conversation/conversationActionSlice';
 
 import inboxSlice from '@/reducer/inboxSlice';
 import cannedResponseSlice from '@/reducer/cannedResponseSlice';
-import conversationSlice from '@/reducer/conversationSlice';
+// import conversationSlice from '@/reducer/conversationSlice';
 import inboxAgentsSlice from '@/reducer/inboxAgentsSlice';
 import conversationTypingSlice from '@/reducer/conversationTypingSlice';
 import labelSlice from '@/reducer/labelSlice';
@@ -18,18 +22,23 @@ import conversationWatchersSlice from '@/reducer/conversationWatchersSlice';
 import contactsSlice from '@/reducer/contactSlice';
 
 export const appReducer = combineReducers({
+  auth: authSlice,
+  notifications: notificationSlice,
+  settings: settingsSlice,
+  conversationFilter: conversationFilterSlice,
+  selectedConversation: selectedConversationSlice,
+  conversationHeader: conversationHeaderSlice,
+  conversationAction: conversationActionSlice,
+
   cannedResponses: cannedResponseSlice,
-  conversations: conversationSlice,
+  // conversations: conversationSlice,
   labels: labelSlice,
   conversationLabels: conversationLabelsSlice,
   customAttributes: customAttributeSlice,
   inboxes: inboxSlice,
   inboxAgents: inboxAgentsSlice,
   conversationTypingStatus: conversationTypingSlice,
-  settings: settingsSlice,
   teams: teamSlice,
-  auth: authSlice,
-  notifications: notificationSlice,
   dashboardApps: dashboardAppSlice,
   conversationWatchers: conversationWatchersSlice,
   contacts: contactsSlice,

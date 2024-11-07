@@ -22,8 +22,8 @@
     "ERROR": "Helytelen installációs Url"
   },
   "LOGIN": {
-    "TITLE": "Belépés",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "E-mail",
     "PASSWORD": "Jelszó",
     "EMAIL_REQUIRED": "Email is required",
@@ -31,6 +31,7 @@
     "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Kérjük helyes jelszót adj meg",
     "LOGIN": "Belépés",
+    "LOGIN_LOADING": "Signing In...",
     "FORGOT_PASSWORD": "Elfelejtetted a jelszavad?",
     "RESET_HERE": "Megváltoztatni itt",
     "NO_ACCOUNT": "Nincs még fiókod?",
@@ -88,6 +89,7 @@
     "DELETE_MESSAGE_TITLE": "Biztosan törölni szeretnéd ezt az üzenetet?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Prioritás",
       "OPTIONS": {
@@ -125,14 +127,19 @@
   "SETTINGS": {
     "HEADER_TITLE": "Beállítások",
     "SET_AVAILABILITY": "Set yourself as",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferences",
     "ABOUT": "About",
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Fiókváltás",
     "CHANGE_LANGUAGE": "Nyelvválasztás",
+    "NOTIFICATIONS": "Értesítések",
     "NOTIFICATION_PREFERENCES": "Értesítési beállítások",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Chatelj velünk",
     "LOGOUT": "Kilépés",
-    "SUBMIT": "Elküld"
+    "SUBMIT": "Elküld",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Értesítések",
@@ -151,16 +158,14 @@
     "TITLE": "Értesítési beállítások",
     "EMAIL": "E-mail értesítések",
     "PUSH": "Push üzenetek",
-    "CONVERSATION_CREATE_PUSH": "Kapj push értesítéseket amikor egy új beszélgetés létrejön",
-    "CONVERSATION_ASSIGNEE_PUSH": "Kapj push értesítéseket amikor hozzád rendelnek egy beszélgetést",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Kapj push értesítést amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben",
-    "CONVERSATION_MENTION": "Küldj push üzeneteket, amikor egy beszélgetésben megemlítenek",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Kapj push értesítést amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben",
-    "CONVERSATION_CREATE_EMAIL": "Kapj e-mailt amikor egy új beszélgetés létrejön",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Kapj e-mailt amikor hozzád rendelnek egy beszélgetést",
-    "CONVERSATION_MENTION_EMAIL": "Küldj e-mail értesítéseket, amikor egy beszélgetésben megemlítenek",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Kapj e-mailt amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Kapj push értesítést amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben"
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Conversation Information",
@@ -168,7 +173,8 @@
     "OPERATING_SYSTEM": "Operációs rendszer",
     "INITIATED_AT": "Kezdeményezve ekkor:",
     "INITIATED_FROM": "Kezdeményezve innen:",
-    "IP_ADDRESS": "IP cím"
+    "IP_ADDRESS": "IP cím",
+    "CLIPBOARD_SUCCESS": "Vágólapra másolva"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Résztvevők",
@@ -248,6 +254,23 @@
       "TEXT": "You cannot reply due to ",
       "HREF_TEXT": "24 órás üzeneti ablak megkötés",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
+    },
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "Első reakció idő",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

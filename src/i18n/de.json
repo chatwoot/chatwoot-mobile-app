@@ -22,8 +22,8 @@
     "ERROR": "Ungültige Installations URL"
   },
   "LOGIN": {
-    "TITLE": "Bei Ihrem Konto anmelden",
-    "DESCRIPTION": "Sie sind mit {{baseUrl}} verbunden. Melden Sie sich mit Ihrer E-Mail-Adresse und Ihrem Passwort an.",
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "E-Mail",
     "PASSWORD": "Passwort",
     "EMAIL_REQUIRED": "E-Mail ist erforderlich",
@@ -31,6 +31,7 @@
     "PASSWORD_REQUIRED": "Passwort ist erforderlich",
     "PASSWORD_ERROR": "Geben Sie ein gültiges Passwort ein",
     "LOGIN": "Anmelden",
+    "LOGIN_LOADING": "Signing In...",
     "FORGOT_PASSWORD": "Passwort vergessen?",
     "RESET_HERE": "Hier zurücksetzen",
     "NO_ACCOUNT": "Sie haben kein Konto?",
@@ -88,6 +89,7 @@
     "DELETE_MESSAGE_TITLE": "Sind Sie sicher, dass Sie diese Nachricht löschen möchten?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Priorität",
       "OPTIONS": {
@@ -125,14 +127,19 @@
   "SETTINGS": {
     "HEADER_TITLE": "Einstellungen",
     "SET_AVAILABILITY": "Setzen Sie sich als",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Einstellungen",
     "ABOUT": "Über",
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Konto wechseln",
     "CHANGE_LANGUAGE": "Sprache ändern",
+    "NOTIFICATIONS": "Benachrichtigungen",
     "NOTIFICATION_PREFERENCES": "Benachrichtigungseinstellungen",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Chatten Sie mit uns",
     "LOGOUT": "Abmelden",
-    "SUBMIT": "Senden"
+    "SUBMIT": "Senden",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Benachrichtigungen",
@@ -151,16 +158,14 @@
     "TITLE": "Benachrichtigungseinstellungen",
     "EMAIL": "E-Mail Benachrichtigungen",
     "PUSH": "Push-Benachrichtigungen",
-    "CONVERSATION_CREATE_PUSH": "Sende Push-Benachrichtigungen, wenn eine neue Konversation erstellt wird",
-    "CONVERSATION_ASSIGNEE_PUSH": "Sende Push-Benachrichtigungen, wenn mir eine Konversation zugewiesen ist",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Sende Push-Benachrichtigungen, wenn eine neue Nachricht in einer zugewiesenen Konversation erstellt wird",
-    "CONVERSATION_MENTION": "Senden Sie Push-Benachrichtigungen, wenn Sie in einer Konversation erwähnt werden",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Sende Push-Benachrichtigungen, wenn eine neue Nachricht in einer zugewiesenen Konversation erstellt wird",
-    "CONVERSATION_CREATE_EMAIL": "E-Mail-Benachrichtigungen senden, wenn eine neue Konversation erstellt wird",
-    "CONVERSATION_ASSIGNEE_EMAIL": "E-Mail-Benachrichtigungen senden, wenn mir eine Konversation zugewiesen wird",
-    "CONVERSATION_MENTION_EMAIL": "Senden Sie E-Mail-Benachrichtigungen, wenn Sie in einer Konversation erwähnt werden",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "E-Mail-Benachrichtigungen senden, wenn eine neue Nachricht in einer zugewiesenen Konversation erstellt wird",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Sende Push-Benachrichtigungen, wenn eine neue Nachricht in einer zugewiesenen Konversation erstellt wird"
+    "CONVERSATION_CREATE_PUSH": "Eine neue Konversation wurde erstellt",
+    "CONVERSATION_ASSIGNEE_PUSH": "Eine Konversation wurde Ihnen zugewiesen",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Sie wurden in einer Konversation erwähnt",
+    "CONVERSATION_MENTION": "Eine neue Nachricht wurde in einer zugewiesenen Konversation erstellt",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Eine neue Nachricht wurde in einer Konversation erstellt, an der Sie teilnehmen",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "Eine Konversation verpasst die erste Antwort-SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "Eine Konversation verpasst die nächste Antwort-SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "Eine Konversation verpasst die Lösungs-SLA"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Konversationsinformationen",
@@ -168,7 +173,8 @@
     "OPERATING_SYSTEM": "Betriebssystem",
     "INITIATED_AT": "Initiiert am",
     "INITIATED_FROM": "Initiiert von",
-    "IP_ADDRESS": "IP-Adresse"
+    "IP_ADDRESS": "IP-Adresse",
+    "CLIPBOARD_SUCCESS": "Code erfolgreich in die Zwischenablage kopiert"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Konversationsteilnehmer",
@@ -248,6 +254,23 @@
       "TEXT": "Sie können nicht antworten, weil ",
       "HREF_TEXT": "Beschränkung des 24-Stunden-Nachrichtenfensters",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/?translation"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
+    },
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "Erste Antwortzeit",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

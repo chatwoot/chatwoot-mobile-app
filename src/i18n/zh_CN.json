@@ -22,8 +22,8 @@
     "ERROR": "无效的安装链接"
   },
   "LOGIN": {
-    "TITLE": "登录到您的帐户",
-    "DESCRIPTION": "您已连接到 {{baseUrl}}。使用您的电子邮件地址和密码登录。",
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "Email",
     "PASSWORD": "密码",
     "EMAIL_REQUIRED": "Email is required",
@@ -31,6 +31,7 @@
     "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "输入有效的密码",
     "LOGIN": "登录",
+    "LOGIN_LOADING": "Signing In...",
     "FORGOT_PASSWORD": "忘记密码？",
     "RESET_HERE": "重置",
     "NO_ACCOUNT": "没有注册？",
@@ -88,6 +89,7 @@
     "DELETE_MESSAGE_TITLE": "您确定要删除这条消息吗？",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "优先级",
       "OPTIONS": {
@@ -125,14 +127,19 @@
   "SETTINGS": {
     "HEADER_TITLE": "设置",
     "SET_AVAILABILITY": "Set yourself as",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferences",
     "ABOUT": "About",
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "切换账户",
     "CHANGE_LANGUAGE": "更改语言",
+    "NOTIFICATIONS": "消息通知",
     "NOTIFICATION_PREFERENCES": "通知设置",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "联系我们",
     "LOGOUT": "注销",
-    "SUBMIT": "提交"
+    "SUBMIT": "提交",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "消息通知",
@@ -151,16 +158,14 @@
     "TITLE": "通知设置",
     "EMAIL": "电子邮件通知",
     "PUSH": "推送通知",
-    "CONVERSATION_CREATE_PUSH": "创建新会话时发送推送通知",
-    "CONVERSATION_ASSIGNEE_PUSH": "当会话分配给我时发送推送通知",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "在已分配的会话中创建新消息时发送推送通知",
-    "CONVERSATION_MENTION": "当您在对话中被提及时发送推送通知",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in a participating conversation",
-    "CONVERSATION_CREATE_EMAIL": "创建新会话时发送电子邮件通知",
-    "CONVERSATION_ASSIGNEE_EMAIL": "当会话分配给我时发送电子邮件通知",
-    "CONVERSATION_MENTION_EMAIL": "Send email notifications when you are mentioned in a conversation",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "在已分配的会话中创建新消息时发送电子邮件通知",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Send push notifications when a new message is created in a participating conversation"
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Conversation Information",
@@ -168,7 +173,8 @@
     "OPERATING_SYSTEM": "操作系统",
     "INITIATED_AT": "发起于",
     "INITIATED_FROM": "发起自",
-    "IP_ADDRESS": "IP 地址"
+    "IP_ADDRESS": "IP 地址",
+    "CLIPBOARD_SUCCESS": "Copied to clipboard"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "对话参与者",
@@ -248,6 +254,23 @@
       "TEXT": "You cannot reply due to ",
       "HREF_TEXT": "24 小时消息窗口限制",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
+    },
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "首次响应时间",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

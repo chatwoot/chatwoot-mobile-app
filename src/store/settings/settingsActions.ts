@@ -125,7 +125,9 @@ export const settingsActions = {
         await SettingsService.saveDeviceDetails(pushData);
         return { fcmToken };
       } catch (error) {
-        return rejectWithValue(handleApiError(error));
+        return rejectWithValue(
+          error instanceof Error ? error.message : 'Error saving device details',
+        );
       }
     },
   ),

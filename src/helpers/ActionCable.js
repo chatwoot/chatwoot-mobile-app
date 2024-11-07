@@ -12,8 +12,8 @@ import conversationActions from 'reducer/conversationSlice.action';
 import { store } from '@/store';
 import { setCurrentUserAvailability } from '@/store/auth/authSlice';
 import { addUserToTyping, destroyUserFromTyping } from 'reducer/conversationTypingSlice';
-import { addNotification } from 'reducer/notificationSlice';
 import { addContact, updateContactsPresence } from 'reducer/contactSlice';
+import { addNotification, removeNotification } from '@/store/notification/notificationSlice';
 
 class ActionCableConnector extends BaseActionCableConnector {
   constructor(pubsubToken, webSocketUrl, accountId, userId) {
@@ -31,6 +31,7 @@ class ActionCableConnector extends BaseActionCableConnector {
       'conversation.typing_on': this.onTypingOn,
       'conversation.typing_off': this.onTypingOff,
       'notification.created': this.onNotificationCreated,
+      'notification.deleted': this.onNotificationRemoved,
       // TODO: Handle all these events
       //   'conversation.contact_changed': this.onConversationContactChange,
       //   'contact.deleted': this.onContactDelete,
@@ -87,6 +88,10 @@ class ActionCableConnector extends BaseActionCableConnector {
 
   onNotificationCreated = data => {
     store.dispatch(addNotification(data));
+  };
+
+  onNotificationRemoved = data => {
+    store.dispatch(removeNotification(data));
   };
 
   onPresenceUpdate = ({ contacts, users }) => {

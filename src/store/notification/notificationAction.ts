@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { NotificationService } from './notificationService';
-import type { NotificationResponse } from './notificationTypes';
+import type { NotificationResponse, MarkAsReadPayload } from './notificationTypes';
 import { handleApiError } from './notificationUtils';
 import I18n from '@/i18n';
 
@@ -23,5 +23,24 @@ export const notificationActions = {
     'notifications/fetchNotifications',
     async ({ page }) => NotificationService.getNotifications(page),
     I18n.t('ERRORS.NOTIFICATIONS_FETCH'),
+  ),
+
+  markAsRead: createAsyncThunk<MarkAsReadPayload, MarkAsReadPayload>(
+    'notifications/markAsRead',
+    async (payload, { rejectWithValue }) => {
+      try {
+        await NotificationService.markAsRead(payload);
+        return payload;
+      } catch (error) {
+        const message = error instanceof Error ? error.message : '';
+        return rejectWithValue(message);
+      }
+    },
+  ),
+
+  markAllAsRead: createNotificationThunk<void, void>(
+    'notifications/markAllAsRead',
+    async () => NotificationService.markAllAsRead(),
+    I18n.t('ERRORS.NOTIFICATIONS_MARK_READ'),
   ),
 };

@@ -10,7 +10,7 @@ type NotificationType =
   | 'conversation_mention'
   | 'participating_conversation_new_message';
 
-type PrimaryActorType = 'Conversation' | 'Message';
+export type PrimaryActorType = 'Conversation' | 'Message';
 
 export type Notification = {
   id: number;

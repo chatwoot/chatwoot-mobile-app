@@ -7,10 +7,13 @@ import { useInboxListStateContext } from '@/context';
 import type { Notification } from '@/types/Notification';
 import { MarkAsRead, MarkAsUnRead, SnoozedIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { getDynamicTime, getShortTimeStamp } from '@/utils';
+import { formatTimeToShortForm, formatRelativeTime } from '@/utils';
+import { notificationActions } from '@/store/notification/notificationAction';
+import { useAppDispatch } from '@/hooks';
+import type { MarkAsReadPayload } from '@/store/notification/notificationTypes';
 
 type InboxItemProps = {
-  cellData: Notification;
+  item: Notification;
   index: number;
 };
 
@@ -31,29 +34,35 @@ const ReadComponent = React.memo(() => {
 });
 
 export const InboxItem = (props: InboxItemProps) => {
-  const { index, cellData } = props;
+  const { index, item } = props;
+  const dispatch = useAppDispatch();
   const { openedRowIndex } = useInboxListStateContext();
 
-  const onPressAction = () => {};
+  const onPressAction = () => {
+    const payload: MarkAsReadPayload = {
+      primary_actor_id: item.primary_actor_id,
+      primary_actor_type: item.primary_actor_type,
+    };
+    dispatch(notificationActions.markAsRead(payload));
+  };
   //   const { readInboxItems, toggleReadState, showUnread } = useInboxReadUnreadState();
   const onSwipeLeftAction = () => {
-    // toggleReadState(cellData.id);
+    // toggleReadState(item.id);
   };
 
   //   const isRead = useMemo(
-  //     () => readInboxItems.includes(cellData.id),
+  //     () => readInboxItems.includes(item.id),
   //     // eslint-disable-next-line react-hooks/exhaustive-deps
   //     [readInboxItems.length],
   //   );
-  const isRead = true;
-  const showUnread = true;
+  const isRead = item.read_at;
 
-  const meta = cellData.primary_actor?.meta;
+  const meta = item.primary_actor?.meta;
   const assignee = meta?.assignee;
 
   const lastActivityAt = () => {
-    const time = getDynamicTime(cellData.last_activity_at);
-    return getShortTimeStamp(time, true);
+    const time = formatRelativeTime(item.last_activity_at);
+    return formatTimeToShortForm(time, true);
   };
 
   return (
@@ -81,7 +90,7 @@ export const InboxItem = (props: InboxItemProps) => {
                   style={tailwind.style(
                     'text-cxs font-inter-420-20 leading-[15px] tracking-[0.32px] text-gray-700',
                   )}>
-                  {cellData.id}
+                  {item.id}
                 </Animated.Text>
               </Animated.View>
             </Animated.View>
@@ -105,7 +114,7 @@ export const InboxItem = (props: InboxItemProps) => {
                 style={tailwind.style(
                   'pl-1.5 font-inter-normal-24 text-md text-gray-900 leading-[17px] tracking-[0.32px]',
                 )}>
-                {cellData.push_message_title.slice(0, 40)}
+                {item.push_message_title.slice(0, 40)}
               </Animated.Text>
             </Animated.View>
             <Animated.View
@@ -119,9 +128,9 @@ export const InboxItem = (props: InboxItemProps) => {
         </Animated.View>
       </Animated.View>
       {/* Possible animate the opacity */}
-      {isRead && !showUnread ? (
+      {isRead && (
         <Animated.View style={tailwind.style('absolute bg-white opacity-50 inset-0 z-20')} />
-      ) : null}
+      )}
     </Swipeable>
   );
 };

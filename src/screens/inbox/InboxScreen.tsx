@@ -31,7 +31,7 @@ const InboxList = () => {
 
   const { openedRowIndex } = useInboxListStateContext();
   const handleRender = useCallback(({ item, index }: FlashListRenderItemType) => {
-    return <InboxItem cellData={item} index={index} />;
+    return <InboxItem item={item} index={index} />;
   }, []);
 
   const scrollHandler = useAnimatedScrollHandler({

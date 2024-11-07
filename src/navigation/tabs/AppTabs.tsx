@@ -4,7 +4,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { authActions } from '@/store/auth/authActions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectLoggedIn, selectUser, selectCurrentUserAccount } from '@/store/auth/authSelectors';
+import {
+  selectLoggedIn,
+  selectUser,
+  selectCurrentUserAccount,
+  selectPubSubToken,
+  selectUserId,
+  selectCurrentUserAccountId,
+} from '@/store/auth/authSelectors';
+import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 
 import { getUserPermissions } from 'helpers/permissionHelper';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
@@ -19,6 +27,7 @@ import { BottomTabBar } from './BottomTabBar';
 import { settingsActions } from '@/store/settings/settingsActions';
 import { selectChatwootVersion } from '@/store/settings/settingsSelectors';
 import { checkServerSupport } from '@/helpers/ServerHelper';
+import ActionCable from '@/helpers/ActionCable';
 
 const Tab = createBottomTabNavigator();
 
@@ -56,11 +65,21 @@ const Tabs = () => {
   const chatwootVersion = useAppSelector(selectChatwootVersion);
   const currentAccount = useAppSelector(selectCurrentUserAccount);
   const currentAccountRole = currentAccount?.role;
+  const pubSubToken = useAppSelector(selectPubSubToken);
+  const userId = useAppSelector(selectUserId);
+  const accountId = useAppSelector(selectCurrentUserAccountId);
+  const webSocketUrl = useAppSelector(selectWebSocketUrl);
 
   useEffect(() => {
     dispatch(authActions.getProfile());
     dispatch(settingsActions.saveDeviceDetails());
+    initActionCable();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const initActionCable = useCallback(async () => {
+    ActionCable.init({ pubSubToken, webSocketUrl, accountId, userId });
+  }, [accountId, pubSubToken, userId, webSocketUrl]);
 
   useEffect(() => {
     dispatch(settingsActions.getChatwootVersion({ installationUrl: installationUrl }));

@@ -7,8 +7,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as Sentry from '@sentry/react-native';
 
 import { getInboxIconByType } from 'helpers/inboxHelpers';
-import ActionCable from 'helpers/ActionCable';
-import { getPubSubToken, getUserDetails } from 'services/auth';
 import { clearAllDeliveredNotifications } from 'helpers/PushHelper';
 import {
   selectConversationStatus,
@@ -37,7 +35,7 @@ import { selectUser } from '@/store/auth/authSelectors';
 import { getUserPermissions } from 'helpers/permissionHelper';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectWebSocketUrl, selectInstallationUrl } from '@/store/settings/settingsSelectors';
+import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { settingsActions } from '@/store/settings/settingsActions';
 import { actions as dashboardAppActions } from 'reducer/dashboardAppSlice';
 import { getCurrentRouteName } from 'helpers/NavigationHelper';
@@ -58,7 +56,6 @@ const ConversationScreen = () => {
   const assigneeType = useSelector(selectAssigneeType);
   const sortFilter = useSelector(selectSortFilter) || SORT_TYPES[0].key;
   const activeInboxId = useSelector(selectActiveInbox);
-  const webSocketUrl = useAppSelector(selectWebSocketUrl);
   const installationUrl = useAppSelector(selectInstallationUrl);
   const isLoading = useSelector(state => state.conversations.loading);
   const inboxes = useSelector(inboxesSelector.selectAll);
@@ -85,7 +82,6 @@ const ConversationScreen = () => {
   const appDispatch = useAppDispatch();
 
   useEffect(() => {
-    initActionCable();
     dispatch(clearContacts());
     dispatch(clearAllConversations());
     dispatch(inboxActions.fetchInboxes());
@@ -95,7 +91,7 @@ const ConversationScreen = () => {
     dispatch(dashboardAppActions.index());
     dispatch(labelActions.index());
     dispatch(teamActions.index());
-  }, [dispatch, initActionCable, initAnalytics, initPushNotifications, initSentry]);
+  }, [dispatch, initAnalytics, initPushNotifications, initSentry]);
 
   const initPushNotifications = useCallback(async () => {
     clearAllDeliveredNotifications();
@@ -116,11 +112,6 @@ const ConversationScreen = () => {
     });
   }, [user, installationUrl]);
 
-  const initActionCable = useCallback(async () => {
-    const pubSubToken = await getPubSubToken();
-    const { accountId, userId } = await getUserDetails();
-    ActionCable.init({ pubSubToken, webSocketUrl, accountId, userId });
-  }, [webSocketUrl]);
   // Update notifications when app comes to foreground from background
   useEffect(() => {
     const appStateListener = AppState.addEventListener('change', nextAppState => {

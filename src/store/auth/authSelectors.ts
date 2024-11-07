@@ -16,6 +16,8 @@ export const selectLoggedIn = createSelector(selectAuth, auth => auth.user !== n
 
 export const selectUserId = createSelector(selectAuth, auth => auth.user?.id);
 
+export const selectPubSubToken = createSelector(selectAuth, auth => auth.user?.pubsub_token);
+
 export const selectResetPasswordLoading = createSelector(
   selectAuth,
   auth => auth.uiFlags.isResettingPassword,

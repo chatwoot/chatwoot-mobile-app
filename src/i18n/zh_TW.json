@@ -1,9 +1,9 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "歡迎",
   "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
+    "ERROR": "錯誤",
+    "ERROR_TITLE": "發生意外錯誤",
+    "REPORT_MESSAGE": "我們已將此情況報告給我們的團隊！請關閉應用程式並重新開始！",
     "CLOSE": "關閉"
   },
   "FOOTER": {
@@ -13,40 +13,41 @@
     "SETTINGS": "設定"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
+    "ENTER_URL": "安裝網址",
     "DESCRIPTION": "如果您正在使用自己托管的Chatwoot 安装，请输入您的服务器URL。否则，请使用 app.chatwoot.com。",
-    "URL_ERROR": "Enter a valid URL",
+    "URL_ERROR": "輸入有效的網址",
     "URL_REQUIRED": "URL is required",
     "CONNECT": "連接",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "CHANGE_LANGUAGE": "更換語言",
+    "ERROR": "安裝網址無效"
   },
   "LOGIN": {
-    "TITLE": "登录到您的帐户",
-    "DESCRIPTION": "您已连接到 {{baseUrl}}。使用您的电子邮件地址和密码登录。",
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "Email",
     "PASSWORD": "密碼",
     "EMAIL_REQUIRED": "Email is required",
-    "EMAIL_ERROR": "Enter a valid email",
+    "EMAIL_ERROR": "輸入錯誤信箱",
     "PASSWORD_REQUIRED": "Password is required",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
+    "PASSWORD_ERROR": "輸入錯誤密碼",
+    "LOGIN": "登入",
+    "LOGIN_LOADING": "Signing In...",
     "FORGOT_PASSWORD": "忘記密碼了？",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
+    "RESET_HERE": "在此重置",
+    "NO_ACCOUNT": "有登入帳號嗎",
     "CREATE_ACCOUNT": "建立新帳戶",
     "SETTINGS": "設定",
-    "CHANGE_LANGUAGE": "Change language",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "CHANGE_LANGUAGE": "更換語言",
+    "TERMS": "條款及條件",
+    "CHANGE_URL": "更改網址"
   },
   "FORGOT_PASSWORD": {
     "EMAIL": "請輸入您的電子信箱",
     "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back",
+    "RESET_HERE": "重設密碼",
+    "HEADER_TITLE": "重設密碼",
+    "TITLE": "忘記密碼",
+    "SUB_TITLE": "不用擔心，我們降返回",
     "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
@@ -61,9 +62,9 @@
     "DOWNLOAD": "下載",
     "TODAY": "今天",
     "YESTERDAY": "昨天",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
+    "TYPE_MESSAGE": "輸入信息",
+    "TYPING": "輸入",
+    "ALL_CONVERSATION_LOADED": "所有對話以加載",
     "ASSIGN": "重新打开会话",
     "FILE_SIZE_LIMIT": "文件超过 5MB 附件限制",
     "SHARE": "Share conversation",
@@ -88,6 +89,7 @@
     "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Priority",
       "OPTIONS": {
@@ -112,9 +114,9 @@
     "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
     "SORT_BY": "Sort by",
     "FILTER_BY_INBOX": "Filter by inbox",
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
+    "HEADER_TITLE": "對話過濾",
+    "CHOOSE_INBOX": "選擇收件夾",
+    "CHOOSE_STATUS": "通話狀況",
     "OPEN": "正在進行的\n",
     "RESOLVED": "已解決",
     "BOT": "機器人",
@@ -125,19 +127,24 @@
   "SETTINGS": {
     "HEADER_TITLE": "設定",
     "SET_AVAILABILITY": "Set yourself as",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferences",
     "ABOUT": "About",
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "切換帳戶",
-    "CHANGE_LANGUAGE": "Change Language",
-    "NOTIFICATION_PREFERENCES": "Notification Preferences",
+    "CHANGE_LANGUAGE": "更換語言",
+    "NOTIFICATIONS": "通知",
+    "NOTIFICATION_PREFERENCES": "通知首選",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "與我們對話",
     "LOGOUT": "退出登入",
-    "SUBMIT": "送出"
+    "SUBMIT": "送出",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "通知",
     "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
+    "EMPTY_MORE_TEXT": "一旦你開始收到通知，他們就會出現她",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
     "CANCEL": "取消"
@@ -151,16 +158,14 @@
     "TITLE": "Notification Preferences",
     "EMAIL": "電子信箱通知",
     "PUSH": "推送通知",
-    "CONVERSATION_CREATE_PUSH": "建立新對話時發送推送通知",
-    "CONVERSATION_ASSIGNEE_PUSH": "當對話被分配給我時發送推送通知",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "當被指派的對話中有新訊息時以推播通知",
-    "CONVERSATION_MENTION": "当您在对话中被提及时发送推送通知",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in a participating conversation",
-    "CONVERSATION_CREATE_EMAIL": "當對話分配給我時發送電子信箱通知",
-    "CONVERSATION_ASSIGNEE_EMAIL": "當對話分配給我時發送電子信箱通知",
-    "CONVERSATION_MENTION_EMAIL": "當你在對話中被提及時以 Email 通知",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "當被指派的對話中有新訊息時以 Email 通知",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Send push notifications when a new message is created in a participating conversation"
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "對話資訊",
@@ -168,7 +173,8 @@
     "OPERATING_SYSTEM": "作業系统",
     "INITIATED_AT": "發起於",
     "INITIATED_FROM": "發起自：",
-    "IP_ADDRESS": "IP 地址"
+    "IP_ADDRESS": "IP 地址",
+    "CLIPBOARD_SUCCESS": "Copied to clipboard"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Conversation participants",
@@ -248,6 +254,23 @@
       "TEXT": "You cannot reply due to ",
       "HREF_TEXT": "24 小时消息窗口限制",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
+    },
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "首次回覆時間",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

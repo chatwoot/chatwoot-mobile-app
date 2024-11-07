@@ -22,8 +22,8 @@
     "ERROR": "URL instalare nevalid"
   },
   "LOGIN": {
-    "TITLE": "Conectează-te la contul tău",
-    "DESCRIPTION": "Ești conectat la {{baseUrl}}. Autentifică-te cu adresa ta de e-mail și parola.",
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "Email",
     "PASSWORD": "Parola",
     "EMAIL_REQUIRED": "E-mailul este necesar",
@@ -31,6 +31,7 @@
     "PASSWORD_REQUIRED": "Parola este necesară",
     "PASSWORD_ERROR": "Introduceți o parolă validă",
     "LOGIN": "Autentificare",
+    "LOGIN_LOADING": "Signing In...",
     "FORGOT_PASSWORD": "Ai uitat parola?",
     "RESET_HERE": "Resetați aici",
     "NO_ACCOUNT": "Nu aveți un cont?",
@@ -88,6 +89,7 @@
     "DELETE_MESSAGE_TITLE": "Ești sigur că vrei să ștergi acest mesaj?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Prioritate",
       "OPTIONS": {
@@ -125,14 +127,19 @@
   "SETTINGS": {
     "HEADER_TITLE": "Setări",
     "SET_AVAILABILITY": "Setați-vă ca",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferințe",
     "ABOUT": "Despre",
     "SUPPORT": "Suport",
     "SWITCH_ACCOUNT": "Comută contul",
     "CHANGE_LANGUAGE": "Schimbarea limbii",
+    "NOTIFICATIONS": "Notificări",
     "NOTIFICATION_PREFERENCES": "Preferințe de notificare",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Discută cu noi",
     "LOGOUT": "Deconectare",
-    "SUBMIT": "Trimite"
+    "SUBMIT": "Trimite",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notificări",
@@ -151,16 +158,14 @@
     "TITLE": "Preferințe de notificare",
     "EMAIL": "Notificări prin e-mail",
     "PUSH": "Notificări push",
-    "CONVERSATION_CREATE_PUSH": "Trimite notificări push atunci când o conversație nouă este creată",
-    "CONVERSATION_ASSIGNEE_PUSH": "Trimite notificări push atunci când o conversație îmi este atribuită",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Trimite notificări prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită",
-    "CONVERSATION_MENTION": "Trimiterea notificărilor push atunci când sunteți menționat într-o conversație",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Trimiterea notificărilor push atunci când se creează un mesaj nou într-o conversație participantă",
-    "CONVERSATION_CREATE_EMAIL": "Trimite notificări prin e-mail atunci când o conversație nouă este creată",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Trimite notificări prin e-mail atunci când o conversație îmi este atribuită",
-    "CONVERSATION_MENTION_EMAIL": "Trimiterea notificărilor prin e-mail atunci când sunteți menționat într-o conversație",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Trimite notificări prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Trimiterea notificărilor push atunci când se creează un mesaj nou într-o conversație participantă"
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Informații despre conversație",
@@ -168,7 +173,8 @@
     "OPERATING_SYSTEM": "Sistem de operare",
     "INITIATED_AT": "Iniţiat la",
     "INITIATED_FROM": "Inițiat de la",
-    "IP_ADDRESS": "Adresă IP"
+    "IP_ADDRESS": "Adresă IP",
+    "CLIPBOARD_SUCCESS": "Cod copiat în clipboard cu succes"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participanți la conversație",
@@ -248,6 +254,23 @@
       "TEXT": "Nu puteți răspunde din cauza ",
       "HREF_TEXT": "Restricţie fereastră mesaj 24 de ore",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
+    },
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "Primul răspuns",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

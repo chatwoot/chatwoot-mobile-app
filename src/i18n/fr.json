@@ -22,8 +22,8 @@
     "ERROR": "Lien d'installation invalide"
   },
   "LOGIN": {
-    "TITLE": "Connectez-vous à votre compte",
-    "DESCRIPTION": "Vous êtes connecté à {{baseUrl}}. Connectez-vous avec votre adresse e-mail et votre mot de passe.",
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "Courriel",
     "PASSWORD": "Mot de passe",
     "EMAIL_REQUIRED": "L'e-mail est requis",
@@ -31,6 +31,7 @@
     "PASSWORD_REQUIRED": "Le mot de passe est requis",
     "PASSWORD_ERROR": "Saisissez un mot de passe valide",
     "LOGIN": "Se connecter",
+    "LOGIN_LOADING": "Signing In...",
     "FORGOT_PASSWORD": "Mot de passe oublié ?",
     "RESET_HERE": "Réinitialiser ici",
     "NO_ACCOUNT": "Vous n'avez pas de compte ?",
@@ -88,6 +89,7 @@
     "DELETE_MESSAGE_TITLE": "Êtes-vous sûr de vouloir supprimer ce message ?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Priorité",
       "OPTIONS": {
@@ -125,14 +127,19 @@
   "SETTINGS": {
     "HEADER_TITLE": "Paramètres",
     "SET_AVAILABILITY": "Se définir comme",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferences",
     "ABOUT": "About",
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Changer de compte",
     "CHANGE_LANGUAGE": "Changer de langue",
+    "NOTIFICATIONS": "Notifications",
     "NOTIFICATION_PREFERENCES": "Préférences de notifications",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Discutez avec nous",
     "LOGOUT": "Se déconnecter",
-    "SUBMIT": "Envoyer"
+    "SUBMIT": "Envoyer",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",
@@ -151,16 +158,14 @@
     "TITLE": "Préférences de notifications",
     "EMAIL": "Notifications par courriel",
     "PUSH": "Notifications push",
-    "CONVERSATION_CREATE_PUSH": "Envoyer une notifications lors de la création d'une conversation",
-    "CONVERSATION_ASSIGNEE_PUSH": "Envoyer une notification lors qu'une discussion m'est assignée",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Envoyer une notification lors de la réception d'un message dans une discussion m'étant assignée",
-    "CONVERSATION_MENTION": "Envoyer des notifications push lorsque vous êtes mentionné dans une conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Envoyer des notifications par courriel lorsqu'un nouveau message est créé dans une conversation assignée",
-    "CONVERSATION_CREATE_EMAIL": "Envoyer une notification par e-mail lors de la création d'une conversation",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Envoyer une notification par e-mail lors qu'une discussion m'est assignée",
-    "CONVERSATION_MENTION_EMAIL": "Envoyer des notifications par courriel lorsque vous êtes mentionné dans une conversation",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Envoyer une notification par e-mail lors de la réception d'un message dans une discussion qui m'est assignée",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Envoyer des notifications par courriel lorsqu'un nouveau message est créé dans une conversation assignée"
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Informations de la conversation",
@@ -168,7 +173,8 @@
     "OPERATING_SYSTEM": "Système d'explitation",
     "INITIATED_AT": "Crée a",
     "INITIATED_FROM": "Crée depuis",
-    "IP_ADDRESS": "Adresse IP"
+    "IP_ADDRESS": "Adresse IP",
+    "CLIPBOARD_SUCCESS": "Code copié dans le presse-papier avec succès"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participants à une conversation",
@@ -248,6 +254,23 @@
       "TEXT": "You cannot reply due to ",
       "HREF_TEXT": "Restriction de fenêtre de message de 24 heures",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "manqué",
+      "DUE": "due"
+    },
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "Délai de la première réponse",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

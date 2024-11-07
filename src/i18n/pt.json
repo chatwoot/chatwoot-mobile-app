@@ -1,57 +1,58 @@
 {
-  "WELCOME": "Welcome",
+  "WELCOME": "Bem-vindo",
   "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
+    "ERROR": "Erro",
+    "ERROR_TITLE": "Ocorreu um erro inesperado",
+    "REPORT_MESSAGE": "Reportamos isto à nossa equipa ! Por favor feche a aplicação e abra novamente!",
     "CLOSE": "FECHAR"
   },
   "FOOTER": {
-    "HOME": "Home",
+    "HOME": "Início",
     "CONVERSATION": "Conversas",
-    "NOTIFICATION": "Notifications",
+    "NOTIFICATION": "Notificações",
     "SETTINGS": "Confirgurações"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
+    "ENTER_URL": "URL da Instalação",
     "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
-    "URL_ERROR": "Enter a valid URL",
-    "URL_REQUIRED": "URL is required",
-    "CONNECT": "Connect",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "URL_ERROR": "Insira um URL válido",
+    "URL_REQUIRED": "URL é obrigatório",
+    "CONNECT": "Ligar",
+    "CHANGE_LANGUAGE": "Alterar idioma",
+    "ERROR": "URL de instalação inválido"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "e-mail",
     "PASSWORD": "Palavra-passe",
-    "EMAIL_REQUIRED": "Email is required",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_REQUIRED": "Password is required",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
-    "FORGOT_PASSWORD": "Forgot your password?",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
+    "EMAIL_REQUIRED": "E-mail é necessário",
+    "EMAIL_ERROR": "Insira um e-mail válido",
+    "PASSWORD_REQUIRED": "A senha é obrigatória",
+    "PASSWORD_ERROR": "Insira uma senha válida",
+    "LOGIN": "Iniciar Sessão",
+    "LOGIN_LOADING": "Signing In...",
+    "FORGOT_PASSWORD": "Esqueceu-se da sua senha?",
+    "RESET_HERE": "Redefinir aqui",
+    "NO_ACCOUNT": "Não tem uma conta?",
     "CREATE_ACCOUNT": "Criar nova conta",
     "SETTINGS": "Confirgurações",
-    "CHANGE_LANGUAGE": "Change language",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "CHANGE_LANGUAGE": "Alterar idioma",
+    "TERMS": "Termos & Condições",
+    "CHANGE_URL": "Mudar URL"
   },
   "FORGOT_PASSWORD": {
     "EMAIL": "Por favor, digite seu e-mail",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
+    "EMAIL_ERROR": "Insira um e-mail válido",
+    "RESET_HERE": "Redefinir senha",
+    "HEADER_TITLE": "Redefinir senha",
+    "TITLE": "Esqueceu-se da sua senha?",
     "SUB_TITLE": "Don't worry! We got your back",
     "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
     "DEFAULT_HEADER_TITLE": "Conversas",
-    "UPDATING": "Updating...",
+    "UPDATING": "Atualizando...",
     "MINE": "Minerar",
     "UN_ASSIGNED": "Não atribuído",
     "ALL": "TODOS",
@@ -59,15 +60,15 @@
     "PICTURE_CONTENT": "Mensagem de imagem",
     "ATTACHMENT_CONTENT": "Arquivo anexo",
     "DOWNLOAD": "BAIXAR",
-    "TODAY": "Today",
-    "YESTERDAY": "Yesterday",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
+    "TODAY": "Hoje",
+    "YESTERDAY": "Ontem",
+    "TYPE_MESSAGE": "Escreva a sua mensagem",
+    "TYPING": "escrevendo",
+    "ALL_CONVERSATION_LOADED": "Todas as conversas carregadas",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
     "SHARE": "Share conversation",
-    "DETAILS": "Details",
+    "DETAILS": "Detalhes",
     "LABELS": "Conversation labels",
     "ASSIGNED_AGENT": "Agente atribuído",
     "TEAM": "Equipa",
@@ -81,13 +82,14 @@
     "SNOOZE_UNTIL_TOMORROW": "Até amanhã",
     "SNOOZE_UNTIL_NEXT_WEEK": "Até à próxima semana",
     "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Change priority",
+    "CHANGE_PRIORITY": "Alterar prioridade",
     "MESSAGES": "Mensagens",
     "UNDEFINED_VARIABLES_TITLE": "Variáveis indefinidas",
     "UNDEFINED_VARIABLES_CLOSE": "FECHAR",
     "DELETE_MESSAGE_TITLE": "Tem a certeza que pretende apagar esta mensagem?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Prioridade",
       "OPTIONS": {
@@ -107,68 +109,72 @@
     }
   },
   "FILTER": {
-    "ALL_INBOXES": "All inboxes",
+    "ALL_INBOXES": "Todas as caixas de entrada",
     "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
     "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
     "SORT_BY": "Ordenar por",
-    "FILTER_BY_INBOX": "Filter by inbox",
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
+    "FILTER_BY_INBOX": "Filtrar por caixa de entrada",
+    "HEADER_TITLE": "Filtro de Conversa",
+    "CHOOSE_INBOX": "Selecionar Caixa de Entrada",
+    "CHOOSE_STATUS": "Estado da Conversa",
     "OPEN": "Abertas",
     "RESOLVED": "Resolvido",
     "BOT": "Bot",
     "SUBMIT": "submeter",
-    "PENDING": "Pending",
-    "SNOOZED": "Snoozed"
+    "PENDING": "Pendente",
+    "SNOOZED": "Silenciado"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Confirgurações",
     "SET_AVAILABILITY": "Defina-se como",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
-    "SWITCH_ACCOUNT": "Switch Account",
-    "CHANGE_LANGUAGE": "Change Language",
-    "NOTIFICATION_PREFERENCES": "Notification Preferences",
+    "CHANGE_AVAILABILITY": "Set availability",
+    "PREFERENCES": "Preferências",
+    "ABOUT": "Sobre",
+    "SUPPORT": "Suporte",
+    "SWITCH_ACCOUNT": "Trocar Conta",
+    "CHANGE_LANGUAGE": "Alterar Idioma",
+    "NOTIFICATIONS": "Notificações",
+    "NOTIFICATION_PREFERENCES": "Preferências de Notificação",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Fale connosco",
     "LOGOUT": "Desconectar",
-    "SUBMIT": "submeter"
+    "SUBMIT": "submeter",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
-    "HEADER_TITLE": "Notifications",
-    "EMPTY": "No notifications yet.",
+    "HEADER_TITLE": "Notificações",
+    "EMPTY": "Sem notificações.",
     "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
+    "MARK_ALL": "Marcar todos como lidos",
     "CANCEL": "cancelar"
   },
   "AVAILABILITY": {
-    "ONLINE": "Online",
-    "BUSY": "Busy",
-    "OFFLINE": "Offline"
+    "ONLINE": "Disponível",
+    "BUSY": "Ocupado",
+    "OFFLINE": "Ausente"
   },
   "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
+    "TITLE": "Preferências de Notificação",
     "EMAIL": "Notificações por e-mail",
     "PUSH": "Notificações Push",
-    "CONVERSATION_CREATE_PUSH": "Send push notifications when a new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push notifications when a conversation is assigned to me",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Enviar notificações push quando uma nova mensagem é criada numa conversa em que está a participar",
-    "CONVERSATION_CREATE_EMAIL": "Enviar notificações por email quando uma nova conversa é criada",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Enviar notificações por email quando uma conversa é atribuída a mim",
-    "CONVERSATION_MENTION_EMAIL": "Enviar notificações por email quando for mencionado numa conversa",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Enviar notificações push quando uma nova mensagem é criada numa conversa em que está a participar"
+    "CONVERSATION_CREATE_PUSH": "Nova conversa criada",
+    "CONVERSATION_ASSIGNEE_PUSH": "Foi-lhe atribuída uma conversa",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Foi mencionado numa conversa",
+    "CONVERSATION_MENTION": "Foi criada uma nova mensagem numa conversa que lhe está atribuída",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Foi criada uma nova mensagem numa conversa em que está a participar",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "Uma conversa perdeu a primeira resposta SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "Uma conversa perdeu a a próxima resposta SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "Uma conversa falhou a SLA de resolução"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Conversation Information",
+    "TITLE": "Informação da Conversa",
     "BROWSER": "Navegador",
     "OPERATING_SYSTEM": "Sistema operacional",
     "INITIATED_AT": "Iniciado em",
     "INITIATED_FROM": "Initiated from",
-    "IP_ADDRESS": "Endereço IP"
+    "IP_ADDRESS": "Endereço IP",
+    "CLIPBOARD_SUCCESS": "Código copiado com sucesso para área de transferência"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participantes da conversa",
@@ -178,7 +184,7 @@
     "WATCH_CONVERSATION": "Junte-se a conversa",
     "YOU_ARE_WATCHING": "Você está participando",
     "NO_RECORDS_FOUND": "Nenhum resultado encontrado",
-    "SELECT_PARTICIPANTS": "Select agents",
+    "SELECT_PARTICIPANTS": "Selecionar agentes",
     "ADD_PARTICIPANTS": "Selecionar participantes",
     "REMAINING_PARTICIPANTS_TEXT": "outros",
     "REMAINING_PARTICIPANT_TEXT": "outro"
@@ -192,7 +198,7 @@
   "CONVERSATION_TEAMS": {
     "TITLE": "Atribuir equipe",
     "SELECT_TEAM": "Escolher Equipa",
-    "NO_RESULT": "No team found"
+    "NO_RESULT": "Nenhuma equipa encontrada"
   },
   "CONVERSATION_LABELS": {
     "TITLE": "Etiquetas da conversa",
@@ -200,17 +206,17 @@
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
     "UPDATE_LABEL": "Etiqueta adicionada com sucesso",
-    "SELECTED": "Selected",
-    "NOT_SELECTED": "No labels selected",
+    "SELECTED": "Selecionado",
+    "NOT_SELECTED": "Nenhuma etiqueta selecionada",
     "NO_RESULT": "Nenhuma Etiqueta encontrada"
   },
   "CONVERSATION_AGENTS": {
     "TITLE": "Atribuir agente",
     "SELECT_AGENT": "Escolher agente",
-    "NO_RESULT": "No agent found"
+    "NO_RESULT": "Nenhum agente encontrado"
   },
   "AGENT": {
-    "TITLE": "Select Agent"
+    "TITLE": "Selecionar Agente"
   },
   "TEAMS": {
     "TITLE": "Escolher Equipa",
@@ -233,8 +239,8 @@
     "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
   "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
+    "TITLE": "Sair",
+    "SUBTITLE": "Tem a certeza que deseja sair?",
     "CANCEL": "cancelar",
     "OK": "Ok"
   },
@@ -248,6 +254,23 @@
       "TEXT": "You cannot reply due to ",
       "HREF_TEXT": "Mensagens bloqueadas durante 24 horas",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
+    },
+    "MISSES": {
+      "TITLE": "SLA Perdidas",
+      "FRT": "Primeiro tempo de resposta",
+      "NRT": "Tempo para a próxima resposta",
+      "RT": "Tempo de resolução",
+      "SHOW_MORE": "{count} mais",
+      "HIDE": "Ocultar {count} linhas"
     }
   }
 }

@@ -5,7 +5,7 @@ import { RootState } from '@/store';
 export type FilterState = Record<ConversationFilterOptions, string>;
 
 export const defaultFilterState: FilterState = {
-  assignee_type: 'all',
+  assignee_type: 'me',
   status: 'open',
   sort_by: 'latest',
 };
@@ -36,6 +36,7 @@ const conversationFilterSlice = createSlice({
 });
 
 export const { setFilters, resetFilters } = conversationFilterSlice.actions;
+
 export const selectFilters = (state: RootState) => state.conversationFilter.filters;
 
 export default conversationFilterSlice.reducer;

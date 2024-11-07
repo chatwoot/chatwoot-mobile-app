@@ -30,5 +30,6 @@ export type Notification = {
 export type PrimaryActor = {
   meta: {
     assignee: User;
+    sender: User;
   };
 };

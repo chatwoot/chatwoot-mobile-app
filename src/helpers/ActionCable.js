@@ -1,14 +1,14 @@
 import BaseActionCableConnector from './BaseActionCableConnector';
 
-import {
-  addOrUpdateMessage,
-  addConversation,
-  updateConversation,
-  updateConversationLastActivity,
-} from 'reducer/conversationSlice';
+// import {
+//   addOrUpdateMessage,
+//   addConversation,
+//   updateConversation,
+//   updateConversationLastActivity,
+// } from 'reducer/conversationSlice';
 
 import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
-import conversationActions from 'reducer/conversationSlice.action';
+// import conversationActions from 'reducer/conversationSlice.action';
 import { store } from '@/store';
 import { setCurrentUserAvailability } from '@/store/auth/authSlice';
 import { addUserToTyping, destroyUserFromTyping } from 'reducer/conversationTypingSlice';
@@ -42,48 +42,48 @@ class ActionCableConnector extends BaseActionCableConnector {
   }
 
   onMessageCreated = message => {
-    store.dispatch(addOrUpdateMessage(message));
-    const {
-      conversation: { last_activity_at: lastActivityAt },
-      conversation_id: conversationId,
-    } = message;
-    store.dispatch(updateConversationLastActivity({ lastActivityAt, conversationId }));
+    // store.dispatch(addOrUpdateMessage(message));
+    // const {
+    //   conversation: { last_activity_at: lastActivityAt },
+    //   conversation_id: conversationId,
+    // } = message;
+    // store.dispatch(updateConversationLastActivity({ lastActivityAt, conversationId }));
   };
 
   onMessageUpdated = data => {
-    store.dispatch(addOrUpdateMessage(data));
+    // store.dispatch(addOrUpdateMessage(data));
   };
 
   onConversationCreated = data => {
-    store.dispatch(addConversation(data));
-    store.dispatch(conversationActions.fetchConversationStats({}));
-    store.dispatch(addContact(data));
+    // store.dispatch(addConversation(data));
+    // store.dispatch(conversationActions.fetchConversationStats({}));
+    // store.dispatch(addContact(data));
   };
 
   onStatusChange = data => {
-    store.dispatch(updateConversation(data));
-    store.dispatch(conversationActions.fetchConversationStats({}));
+    // store.dispatch(updateConversation(data));
+    // store.dispatch(conversationActions.fetchConversationStats({}));
   };
 
   onAssigneeChanged = data => {
     const { id } = data;
     if (id) {
-      store.dispatch(updateConversation(data));
+      // store.dispatch(updateConversation(data));
     }
-    store.dispatch(conversationActions.fetchConversationStats({}));
+    // store.dispatch(conversationActions.fetchConversationStats({}));
   };
 
   onConversationRead = data => {
-    store.dispatch(updateConversation(data));
+    // store.dispatch(updateConversation(data));
   };
 
   onConversationUpdated = data => {
     const { id } = data;
     if (id) {
-      store.dispatch(updateConversation(data));
+      // store.dispatch(updateConversation(data));
       store.dispatch(addContact(data));
     }
-    store.dispatch(conversationActions.fetchConversationStats({}));
+    // store.dispatch(conversationActions.fetchConversationStats({}));
   };
 
   onNotificationCreated = data => {
@@ -95,21 +95,21 @@ class ActionCableConnector extends BaseActionCableConnector {
   };
 
   onPresenceUpdate = ({ contacts, users }) => {
-    store.dispatch(
-      updateAgentsPresence({
-        users,
-      }),
-    );
-    store.dispatch(
-      updateContactsPresence({
-        contacts,
-      }),
-    );
-    store.dispatch(
-      setCurrentUserAvailability({
-        users,
-      }),
-    );
+    // store.dispatch(
+    //   updateAgentsPresence({
+    //     users,
+    //   }),
+    // );
+    // store.dispatch(
+    //   updateContactsPresence({
+    //     contacts,
+    //   }),
+    // );
+    // store.dispatch(
+    //   setCurrentUserAvailability({
+    //     users,
+    //   }),
+    // );
   };
 
   onTypingOn = ({ conversation, user }) => {

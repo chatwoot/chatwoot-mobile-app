@@ -58,7 +58,7 @@ export const InboxItem = (props: InboxItemProps) => {
   const isRead = item.read_at;
 
   const meta = item.primary_actor?.meta;
-  const assignee = meta?.assignee;
+  const assignee = meta?.sender;
 
   const lastActivityAt = () => {
     const time = formatRelativeTime(item.last_activity_at);
@@ -82,7 +82,7 @@ export const InboxItem = (props: InboxItemProps) => {
                 style={tailwind.style(
                   'text-base font-inter-medium-24 leading-[17px] tracking-[0.32px] text-gray-950',
                 )}>
-                {assignee.name}
+                {assignee?.name}
               </Animated.Text>
               <Animated.View style={tailwind.style('flex flex-row items-center pl-1')}>
                 <HashIcon />

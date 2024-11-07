@@ -41,7 +41,7 @@ const getFiltersAppliedCount = (defaultState: FilterState, updatedState: FilterS
   return count;
 };
 
-export const ConversationListScreenHeader = () => {
+export const ConversationHeader = () => {
   const navigation = useNavigation();
   const currentState = useAppSelector(selectCurrentState);
 

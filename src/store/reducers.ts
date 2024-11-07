@@ -7,10 +7,10 @@ import conversationFilterSlice from '@/store/conversation/conversationFilterSlic
 import selectedConversationSlice from '@/store/conversation/selectedConversationSlice';
 import conversationHeaderSlice from '@/store/conversation/conversationHeaderSlice';
 import conversationActionSlice from '@/store/conversation/conversationActionSlice';
+import conversationSlice from '@/store/conversation/conversationSlice';
 
 import inboxSlice from '@/reducer/inboxSlice';
 import cannedResponseSlice from '@/reducer/cannedResponseSlice';
-// import conversationSlice from '@/reducer/conversationSlice';
 import inboxAgentsSlice from '@/reducer/inboxAgentsSlice';
 import conversationTypingSlice from '@/reducer/conversationTypingSlice';
 import labelSlice from '@/reducer/labelSlice';
@@ -28,10 +28,10 @@ export const appReducer = combineReducers({
   conversationFilter: conversationFilterSlice,
   selectedConversation: selectedConversationSlice,
   conversationHeader: conversationHeaderSlice,
+  conversations: conversationSlice,
   conversationAction: conversationActionSlice,
 
   cannedResponses: cannedResponseSlice,
-  // conversations: conversationSlice,
   labels: labelSlice,
   conversationLabels: conversationLabelsSlice,
   customAttributes: customAttributeSlice,

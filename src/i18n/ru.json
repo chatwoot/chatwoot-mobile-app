@@ -22,8 +22,8 @@
     "ERROR": "Неправильный URL установки"
   },
   "LOGIN": {
-    "TITLE": "Войти в свой аккаунт",
-    "DESCRIPTION": "Вы подключены к {{baseUrl}}. Войдите с вашим адресом электронной почты и паролем.",
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "Почта",
     "PASSWORD": "Пароль",
     "EMAIL_REQUIRED": "Необходимо указать Email",
@@ -31,6 +31,7 @@
     "PASSWORD_REQUIRED": "Необходимо указать пароль",
     "PASSWORD_ERROR": "Введите корректный пароль",
     "LOGIN": "Войти",
+    "LOGIN_LOADING": "Signing In...",
     "FORGOT_PASSWORD": "Забыли пароль?",
     "RESET_HERE": "Сбросить здесь",
     "NO_ACCOUNT": "Нет учетной записи?",
@@ -88,6 +89,7 @@
     "DELETE_MESSAGE_TITLE": "Вы действительно хотите удалить это сообщение?",
     "DELETE_MESSAGE_SUB_TITLE": "Это действие не может быть отменено.",
     "COPY_MESSAGE": "Сообщение скопировано в буфер обмена",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
     "PRIORITY": {
       "TITLE": "Приоритет",
       "OPTIONS": {
@@ -125,14 +127,19 @@
   "SETTINGS": {
     "HEADER_TITLE": "Настройки",
     "SET_AVAILABILITY": "Установить себя",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Настройки",
     "ABOUT": "О нас",
     "SUPPORT": "Поддержка",
     "SWITCH_ACCOUNT": "Сменить Аккаунт",
     "CHANGE_LANGUAGE": "Изменить язык",
+    "NOTIFICATIONS": "Уведомления",
     "NOTIFICATION_PREFERENCES": "Настройки уведомлений",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Пообщайтесь с нами",
     "LOGOUT": "Выход",
-    "SUBMIT": "Отправить"
+    "SUBMIT": "Отправить",
+    "SET_LANGUAGE": "Set Language"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Уведомления",
@@ -151,16 +158,14 @@
     "TITLE": "Настройки уведомлений",
     "EMAIL": "Email Уведомления",
     "PUSH": "Push уведомления",
-    "CONVERSATION_CREATE_PUSH": "Отправлять push уведомление, когда новый диалог создан",
-    "CONVERSATION_ASSIGNEE_PUSH": "Отправлять push уведомление при назначении мне диалога",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Отправлять push уведомления при создании нового сообщения в назначенном диалоге",
-    "CONVERSATION_MENTION": "Отправлять уведомления при упоминании в разговоре",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Отправлять push-уведомления при создании нового сообщения в участвующем разговоре",
-    "CONVERSATION_CREATE_EMAIL": "Отправлять email уведомление, когда новый диалог создан",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Отправлять email уведомление, когда мне назначен диалог",
-    "CONVERSATION_MENTION_EMAIL": "Отправлять email уведомление, когда вас упоминают в диалоге",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Отправлять email уведомления при создании нового сообщения в назначенном диалоге",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Отправлять push-уведомления при создании нового сообщения в участвующем разговоре"
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Информация о беседе",
@@ -168,7 +173,8 @@
     "OPERATING_SYSTEM": "Операционная система",
     "INITIATED_AT": "Начат в",
     "INITIATED_FROM": "Начат из",
-    "IP_ADDRESS": "IP адрес"
+    "IP_ADDRESS": "IP адрес",
+    "CLIPBOARD_SUCCESS": "Код скопирован в буфер обмена"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Участники диалога",
@@ -200,8 +206,8 @@
     "EMPTY_LIST": "Пожалуйста, добавьте ярлыки в свой аккаунт",
     "NO_LABEL": "Ярлыки не назначены",
     "UPDATE_LABEL": "Категория сохранена",
-    "SELECTED": "Selected",
-    "NOT_SELECTED": "No labels selected",
+    "SELECTED": "Выбрано",
+    "NOT_SELECTED": "Нет выбранных меток",
     "NO_RESULT": "Метки не найдены"
   },
   "CONVERSATION_AGENTS": {
@@ -248,6 +254,23 @@
       "TEXT": "Вы не можете ответить из-за ",
       "HREF_TEXT": "Ограничение на 24 часа",
       "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    }
+  },
+  "SLA": {
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
+    },
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "Время первого ответа",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

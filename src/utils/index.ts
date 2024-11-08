@@ -12,3 +12,4 @@ export * from './useScaleAnimation';
 export * from './useTabBarHeight';
 export * from './withAnchorPoint';
 export * from './dateTimeUtils';
+export * from './conversationUtils';

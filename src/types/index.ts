@@ -32,7 +32,7 @@ export interface GenericListType {
  * The types of Filter for Conversation List
  */
 
-export type ConversationFilterOptions = 'assignee_type' | 'status' | 'sort_by';
+export type ConversationFilterOptions = 'assignee_type' | 'status' | 'sort_by' | 'inbox_id';
 
 // Defining the specific options for each filter type
 export type AssigneeFilterOptions = Record<AssigneeTypes, string>;

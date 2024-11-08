@@ -46,10 +46,12 @@ import {
   selectConversationsLoading,
   selectAllConversations,
   selectIsAllConversationsFetched,
+  getFilteredConversations,
 } from '@/store/conversation/conversationSelectors';
 import { selectFilters, FilterState } from '@/store/conversation/conversationFilterSlice';
 import { ConversationPayload } from '@/store/conversation/conversationTypes';
 import { clearAllConversations } from '@/store/conversation/conversationSlice';
+import { selectUserId } from '@/store/auth/authSelectors';
 import i18n from '@/i18n';
 
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
@@ -64,6 +66,7 @@ const ConversationList = () => {
 
   const [isFlashListReady, setFlashListReady] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
+  const userId = useAppSelector(selectUserId);
 
   const { openedRowIndex } = useConversationListStateContext();
 
@@ -157,12 +160,16 @@ const ConversationList = () => {
     },
   });
 
+  const allConversations = useAppSelector(state =>
+    getFilteredConversations(state, filters, userId),
+  );
+
   return isConversationsLoading ? (
     <Animated.View
       style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
       <ActivityIndicator />
     </Animated.View>
-  ) : conversations.length === 0 ? (
+  ) : allConversations.length === 0 ? (
     <Animated.View
       style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
       <EmptyStateIcon />
@@ -175,7 +182,7 @@ const ConversationList = () => {
     <AnimatedFlashList
       layout={LinearTransition.springify().damping(18).stiffness(120)}
       showsVerticalScrollIndicator={false}
-      data={conversations}
+      data={allConversations}
       estimatedItemSize={91}
       onScroll={scrollHandler}
       onEndReached={handleOnEndReached}

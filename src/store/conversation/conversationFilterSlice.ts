@@ -8,6 +8,7 @@ export const defaultFilterState: FilterState = {
   assignee_type: 'me',
   status: 'open',
   sort_by: 'latest',
+  inbox_id: '',
 };
 
 interface ConversationFilterState {

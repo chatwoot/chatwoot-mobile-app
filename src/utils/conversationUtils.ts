@@ -6,7 +6,7 @@ const filterByStatus = (chatStatus: string, filterStatus: string) =>
 
 export const shouldApplyFilters = (conversation: Conversation, filters: FilterState) => {
   const { inbox_id: inboxId, status } = filters;
-  const { status: chatStatus, inbox_id: chatInboxId } = conversation;
+  const { status: chatStatus, inboxId: chatInboxId } = conversation;
   let shouldFilter = filterByStatus(chatStatus, status);
   if (inboxId) {
     const filterByInbox = Number(inboxId) === chatInboxId;

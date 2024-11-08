@@ -45,7 +45,6 @@ export interface Conversation {
   firstReplyCreatedAt: UnixTimestamp;
   id: number;
   inboxId: number;
-  inbox_id: number;
   labels: string[];
   lastActivityAt: UnixTimestamp;
   muted: boolean;

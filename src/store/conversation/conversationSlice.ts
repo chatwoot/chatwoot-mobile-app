@@ -1,7 +1,7 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { Conversation } from '@/types/Conversation';
 import { conversationActions } from './conversationActions';
-import { convertToCamelCase } from '@/utils';
+import { transformConversation } from '@/utils';
 
 export interface ConversationState {
   meta: {
@@ -48,7 +48,7 @@ const conversationSlice = createSlice({
         const {
           data: { payload: conversations },
         } = payload;
-        const camelCaseConversations = conversations.map(convertToCamelCase);
+        const camelCaseConversations = conversations.map(transformConversation);
         conversationAdapter.upsertMany(state, camelCaseConversations);
         state.uiFlags.isLoadingConversations = false;
         state.uiFlags.isAllConversationsFetched = conversations.length < 20 || false;

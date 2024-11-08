@@ -11,8 +11,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import tailwind from 'twrnc';
 
-import { LoadingIcon } from '@/svg-icons';
-import { withAnchorPoint } from '@/utils';
+import { LoadingIcon } from '../../svg-icons';
+import { withAnchorPoint } from '../../utils';
 import { Icon } from '../common';
 
 interface SpinnerProps extends Pick<ViewProps, 'style'> {

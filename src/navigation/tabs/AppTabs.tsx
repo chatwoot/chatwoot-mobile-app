@@ -14,15 +14,14 @@ import {
 } from '@/store/auth/authSelectors';
 import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 
-
 import { getUserPermissions } from 'helpers/permissionHelper';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 
 import { AuthStack, ConversationStack, InboxStack, SettingsStack } from '../stack';
-// import ChatScreen from '@/screens/ChatScreen/ChatScreen';
-// import ImageScreen from '@/screens/ChatScreen/ImageScreen';
-// import ConversationDetailsScreen from '@/screens/ConversationDetails/ConversationDetailsScreen';
-// import ConversationAction from '@/screens/ConversationAction/ConversationAction';
+import ChatScreen from '@/screens/chat-screen/ChatScreen';
+import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
+// import DashboardScreen from '@/screens/dashboard/Dashboard';
+
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { BottomTabBar } from './BottomTabBar';
 import { settingsActions } from '@/store/settings/settingsActions';
@@ -128,10 +127,20 @@ export const AppTabs = () => {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Tab" component={Tabs} />
-        {/* <Stack.Screen name="ChatScreen" component={ChatScreen} />
-        <Stack.Screen name="ImageScreen" component={ImageScreen} />
-        <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
-        <Stack.Screen name="ConversationAction" component={ConversationAction} /> */}
+        <Stack.Screen
+          options={{ animation: 'slide_from_right' }}
+          name="ChatScreen"
+          component={ChatScreen}
+        />
+        <Stack.Screen
+          options={{
+            presentation: 'formSheet',
+            animation: 'slide_from_bottom',
+          }}
+          name="ContactDetails"
+          component={ContactDetailsScreen}
+        />
+        {/* <Stack.Screen name="Dashboard" component={DashboardScreen} /> */}
       </Stack.Navigator>
     );
   } else {

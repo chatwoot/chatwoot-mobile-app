@@ -97,7 +97,7 @@ export const ConversationCell = memo((props: ConversationCellProps) => {
 
   const pushToChatScreen = StackActions.push('ChatScreen', {
     index,
-  });
+  }); 
 
   const onPressAction = () => {
     if (currentState === 'Select') {

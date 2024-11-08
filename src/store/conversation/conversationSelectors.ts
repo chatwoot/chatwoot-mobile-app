@@ -12,5 +12,10 @@ export const {
 
 export const selectConversationsLoading = createSelector(
   selectConversationsState,
-  state => state.uiFlags.isLoading,
+  state => state.uiFlags.isLoadingConversations,
+);
+
+export const selectIsAllConversationsFetched = createSelector(
+  selectConversationsState,
+  state => state.uiFlags.isAllConversationsFetched,
 );

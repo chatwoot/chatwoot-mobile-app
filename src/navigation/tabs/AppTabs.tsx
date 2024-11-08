@@ -92,10 +92,12 @@ const Tabs = () => {
   );
 
   const checkAppVersion = useCallback(async () => {
-    checkServerSupport({
-      installedVersion: chatwootVersion,
-      userRole: currentAccountRole,
-    });
+    if (chatwootVersion) {
+      checkServerSupport({
+        installedVersion: chatwootVersion,
+        userRole: currentAccountRole,
+      });
+    }
   }, [chatwootVersion, currentAccountRole]);
 
   useEffect(() => {

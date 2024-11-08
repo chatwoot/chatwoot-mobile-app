@@ -1,11 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, StatusBar } from 'react-native';
-import Animated, { LinearTransition, useAnimatedScrollHandler } from 'react-native-reanimated';
+import Animated, {
+  LinearTransition,
+  runOnJS,
+  useAnimatedScrollHandler,
+} from 'react-native-reanimated';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 
-import { ConversationCell, ConversationError, ConversationHeader } from './components';
+import { ConversationCell, ConversationHeader } from './components';
 
 import {
   ActionTabs,
@@ -41,10 +45,12 @@ import { conversationActions } from '@/store/conversation/conversationActions';
 import {
   selectConversationsLoading,
   selectAllConversations,
+  selectIsAllConversationsFetched,
 } from '@/store/conversation/conversationSelectors';
-import { selectFilters } from '@/store/conversation/conversationFilterSlice';
+import { selectFilters, FilterState } from '@/store/conversation/conversationFilterSlice';
 import { ConversationPayload } from '@/store/conversation/conversationTypes';
 import { clearAllConversations } from '@/store/conversation/conversationSlice';
+import i18n from '@/i18n';
 
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 
@@ -53,26 +59,17 @@ type FlashListRenderItemType = {
   index: number;
 };
 
-const ListFooterComponent = () => (
-  <Animated.View style={tailwind.style('h-20 flex justify-center items-center')}>
-    <ActivityIndicator />
-  </Animated.View>
-);
-
-const error = {
-  message: '',
-};
-
-const hasNextPage = false;
-
 const ConversationList = () => {
   const dispatch = useAppDispatch();
 
+  const [isFlashListReady, setFlashListReady] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+
   const { openedRowIndex } = useConversationListStateContext();
 
-  const isLoading = useAppSelector(selectConversationsLoading);
+  const isConversationsLoading = useAppSelector(selectConversationsLoading);
+  const isAllConversationsFetched = useAppSelector(selectIsAllConversationsFetched);
   const conversations = useAppSelector(selectAllConversations);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const handleRender = useCallback(
     ({ item, index }: FlashListRenderItemType) => {
@@ -90,25 +87,42 @@ const ConversationList = () => {
   useEffect(() => {
     if (previousFilters.current !== filters) {
       previousFilters.current = filters;
-      clearAndFetchConversations();
+      clearAndFetchConversations(filters);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
   useEffect(() => {
-    fetchConversations();
+    fetchConversations(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const clearAndFetchConversations = useCallback(async () => {
+  const clearAndFetchConversations = useCallback(async (filters: FilterState) => {
     await dispatch(clearAllConversations());
-    setCurrentPage(1);
-    fetchConversations(1);
+    fetchConversations(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const ListFooterComponent = () => {
+    return (
+      <Animated.View
+        style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
+        {isAllConversationsFetched ? (
+          <Animated.Text
+            style={tailwind.style(
+              'pt-6 text-md font-inter-normal-24 tracking-[0.32px] text-gray-800',
+            )}>
+            {i18n.t('CONVERSATION.ALL_CONVERSATION_LOADED')} 🎉
+          </Animated.Text>
+        ) : (
+          <ActivityIndicator size="small" />
+        )}
+      </Animated.View>
+    );
+  };
 
   const fetchConversations = useCallback(
-    async (page: number = 1) => {
+    async (filters: FilterState, page: number = 1) => {
       const conversationFilters = {
         status: filters.status,
         assigneeType: filters.assignee_type,
@@ -121,62 +135,58 @@ const ConversationList = () => {
     [],
   );
 
+  const onChangePageNumber = () => {
+    const nextPageNumber = pageNumber + 1;
+    setPageNumber(nextPageNumber);
+    fetchConversations(filters, nextPageNumber);
+  };
+
   const handleOnEndReached = () => {
-    if (conversations.length !== 0) {
-      // setCurrentPage(prevPage => prevPage + 1);
-      // fetchConversations(currentPage + 1);
+    const shouldLoadMoreConversations = isFlashListReady && !isAllConversationsFetched;
+    if (shouldLoadMoreConversations) {
+      onChangePageNumber();
     }
   };
 
   const scrollHandler = useAnimatedScrollHandler({
     onBeginDrag: () => {
       openedRowIndex.value = -1;
+      if (!isFlashListReady) {
+        runOnJS(setFlashListReady)(true);
+      }
     },
   });
 
-  try {
-    if (error && error.message) {
-      return <ConversationError message={error.message} />;
-    }
-    // Refer https://github.com/chatwoot/mobile-app-v3/blob/main/src/screens/conversations/ConversationList.tsx
-    return isLoading ? (
-      <Animated.View
-        style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
-        <ActivityIndicator />
-      </Animated.View>
-    ) : conversations.length === 0 ? (
-      // Rendering a mock list of data for dev purpose
-      // For Prop remove below code and uncomment the Empty State
-      <Animated.View
-        style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
-        <EmptyStateIcon />
-        <Animated.Text
-          style={tailwind.style(
-            'pt-6 text-md font-inter-normal-24 tracking-[0.32px] text-gray-800',
-          )}>
-          No Conversations found
-        </Animated.Text>
-      </Animated.View>
-    ) : (
-      <AnimatedFlashList
-        layout={LinearTransition.springify().damping(18).stiffness(120)}
-        showsVerticalScrollIndicator={false}
-        data={conversations}
-        estimatedItemSize={91}
-        onScroll={scrollHandler}
-        onEndReached={handleOnEndReached}
-        onEndReachedThreshold={1}
-        ListFooterComponent={hasNextPage ? ListFooterComponent : null}
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        renderItem={handleRender}
-        contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}
-      />
-    );
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (e) {
-    // Handle component API Fetch issue
-  }
+  return isConversationsLoading ? (
+    <Animated.View
+      style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
+      <ActivityIndicator />
+    </Animated.View>
+  ) : conversations.length === 0 ? (
+    <Animated.View
+      style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
+      <EmptyStateIcon />
+      <Animated.Text
+        style={tailwind.style('pt-6 text-md font-inter-normal-24 tracking-[0.32px] text-gray-800')}>
+        {i18n.t('CONVERSATION.EMPTY')}
+      </Animated.Text>
+    </Animated.View>
+  ) : (
+    <AnimatedFlashList
+      layout={LinearTransition.springify().damping(18).stiffness(120)}
+      showsVerticalScrollIndicator={false}
+      data={conversations}
+      estimatedItemSize={91}
+      onScroll={scrollHandler}
+      onEndReached={handleOnEndReached}
+      onEndReachedThreshold={0.5}
+      ListFooterComponent={ListFooterComponent}
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      renderItem={handleRender}
+      contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}
+    />
+  );
 };
 
 const ConversationScreen = () => {

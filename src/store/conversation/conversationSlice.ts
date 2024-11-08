@@ -10,7 +10,8 @@ export interface ConversationState {
   };
   error: string | null;
   uiFlags: {
-    isLoading: boolean;
+    isLoadingConversations: boolean;
+    isAllConversationsFetched: boolean;
   };
 }
 
@@ -26,7 +27,8 @@ const initialState = conversationAdapter.getInitialState<ConversationState>({
   },
   error: null,
   uiFlags: {
-    isLoading: false,
+    isLoadingConversations: false,
+    isAllConversationsFetched: false,
   },
 });
 
@@ -39,17 +41,18 @@ const conversationSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(conversationActions.fetchConversations.pending, state => {
-        state.uiFlags.isLoading = true;
+        state.uiFlags.isLoadingConversations = true;
       })
       .addCase(conversationActions.fetchConversations.fulfilled, (state, { payload }) => {
         const {
           data: { payload: conversations },
         } = payload;
         conversationAdapter.upsertMany(state, conversations);
-        state.uiFlags.isLoading = false;
+        state.uiFlags.isLoadingConversations = false;
+        state.uiFlags.isAllConversationsFetched = conversations.length < 20 || false;
       })
       .addCase(conversationActions.fetchConversations.rejected, (state, { error }) => {
-        state.uiFlags.isLoading = false;
+        state.uiFlags.isLoadingConversations = false;
       });
   },
 });

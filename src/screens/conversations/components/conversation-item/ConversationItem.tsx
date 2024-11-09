@@ -23,6 +23,7 @@ import {
 import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import { setActionState } from '@/store/conversation/conversationActionSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectContactById } from '@/store/contact/contactSelectors';
 
 type ConversationCellProps = {
   conversationItem: Conversation;
@@ -55,7 +56,7 @@ const StatusComponent = React.memo(() => {
 export const ConversationItem = memo((props: ConversationCellProps) => {
   const {
     meta: {
-      sender: { name: senderName, thumbnail: senderThumbnail },
+      sender: { name: senderName, thumbnail: senderThumbnail, id: contactId },
       channel,
       assignee,
     },
@@ -66,6 +67,11 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
     labels,
     timestamp,
   } = props.conversationItem;
+
+  const contact = useAppSelector(state => selectContactById(state, contactId));
+
+  // TODO: show the availability status in the avatar
+  const { availabilityStatus } = contact || {};
 
   const { openedRowIndex, index } = props;
 

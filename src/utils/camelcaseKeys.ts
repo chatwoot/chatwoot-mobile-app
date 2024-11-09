@@ -1,7 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import camelcaseKeys from 'camelcase-keys';
-import { Conversation } from '@/types';
+import { Contact, Conversation } from '@/types';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const transformConversation = (conversation: any): Conversation => {
   return camelcaseKeys(conversation, { deep: true }) as unknown as Conversation;
+};
+
+export const transformContact = (contact: any): Contact => {
+  return camelcaseKeys(contact, { deep: true }) as unknown as Contact;
 };

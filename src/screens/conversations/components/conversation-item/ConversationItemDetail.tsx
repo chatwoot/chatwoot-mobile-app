@@ -17,6 +17,7 @@ import { AnimatedNativeView, NativeView } from '@/components-next/native-compone
 import { tailwind } from '@/theme';
 import { Agent, Conversation } from '@/types';
 import { formatTimeToShortForm, formatRelativeTime } from '@/utils/dateTimeUtils';
+import { getLastMessage } from '@/utils/conversationUtils';
 
 const { width } = Dimensions.get('screen');
 
@@ -38,7 +39,6 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
   const {
     id: conversationId,
     priority,
-    messages: [{ updatedAt, content }],
     // unreadCount = 2,
     labels,
     assignee,
@@ -48,6 +48,20 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
   const unreadCount = 12;
 
   const lastActivityAtTimeAgo = formatTimeToShortForm(formatRelativeTime(timestamp));
+
+  // const lastMessage = getLastMessage(props);
+
+  // const hasPriority = priority !== null;
+
+  // const content = lastMessage?.content || '';
+
+  // const { createdAt, attachments, messageType, private: isPrivate } = lastMessage;
+
+  // const isEmailChannel = channelType === 'Channel::Email';
+
+  // const lastMessageContent = isEmailChannel
+  //   ? lastMessage?.content_attributes?.email?.subject
+  //   : lastMessage?.content;
 
   return (
     <AnimatedNativeView

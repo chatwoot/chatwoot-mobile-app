@@ -12,7 +12,7 @@ import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
 import { store } from '@/store';
 import { setCurrentUserAvailability } from '@/store/auth/authSlice';
 import { addUserToTyping, destroyUserFromTyping } from 'reducer/conversationTypingSlice';
-import { addContact, updateContactsPresence } from 'reducer/contactSlice';
+import { addContact, updateContactsPresence } from '@/store/contact/contactSlice';
 import { addNotification, removeNotification } from '@/store/notification/notificationSlice';
 
 class ActionCableConnector extends BaseActionCableConnector {

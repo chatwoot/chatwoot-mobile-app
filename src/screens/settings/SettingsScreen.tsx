@@ -17,8 +17,8 @@ import ChatWootWidget from '@chatwoot/react-native-widget';
 import { useSelector } from 'react-redux';
 import * as Application from 'expo-application';
 import { Account, AvailabilityStatus } from '@/types';
-import { clearContacts } from '@/reducer/contactSlice';
 import { clearAllConversations } from '@/store/conversation/conversationSlice';
+import { clearAllContacts } from '@/store/contact/contactSlice';
 
 import i18n from 'i18n';
 
@@ -163,7 +163,7 @@ const SettingsScreen = () => {
   };
 
   const changeAccount = (accountId: number) => {
-    dispatch(clearContacts());
+    dispatch(clearAllContacts());
     dispatch(clearAllConversations());
     dispatch(setAccount(accountId));
     // TODO: Fix this later

@@ -55,4 +55,5 @@ export interface Message {
   sender: Agent | AgentBot | Contact | null;
   sourceId: string | null;
   status: MessageStatus;
+  lastNonActivityMessage: Message | null;
 }

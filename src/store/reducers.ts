@@ -8,6 +8,7 @@ import conversationSelectedSlice from '@/store/conversation/conversationSelected
 import conversationHeaderSlice from '@/store/conversation/conversationHeaderSlice';
 import conversationActionSlice from '@/store/conversation/conversationActionSlice';
 import conversationSlice from '@/store/conversation/conversationSlice';
+import contactSlice from '@/store/contact/contactSlice';
 
 import inboxSlice from '@/reducer/inboxSlice';
 import cannedResponseSlice from '@/reducer/cannedResponseSlice';
@@ -19,7 +20,6 @@ import teamSlice from '@/reducer/teamSlice';
 import customAttributeSlice from '@/reducer/customAttributeSlice';
 import dashboardAppSlice from '@/reducer/dashboardAppSlice';
 import conversationWatchersSlice from '@/reducer/conversationWatchersSlice';
-import contactsSlice from '@/reducer/contactSlice';
 
 export const appReducer = combineReducers({
   auth: authSlice,
@@ -30,6 +30,7 @@ export const appReducer = combineReducers({
   conversationHeader: conversationHeaderSlice,
   conversations: conversationSlice,
   conversationAction: conversationActionSlice,
+  contacts: contactSlice,
 
   cannedResponses: cannedResponseSlice,
   labels: labelSlice,
@@ -41,5 +42,4 @@ export const appReducer = combineReducers({
   teams: teamSlice,
   dashboardApps: dashboardAppSlice,
   conversationWatchers: conversationWatchersSlice,
-  contacts: contactsSlice,
 });

@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text } from 'react-native';
 
 import { tailwind } from '../../theme';
 import { ConversationPriority } from '../../types';
 import { NativeView } from '../native-components';
+import { UrgentIcon } from '@/svg-icons/priority-icons';
 
 type ConversationPriorityKeys = {
   code: number;
@@ -23,18 +23,15 @@ type PriorityIndicatorProps = {
 
 export const PriorityIndicator = (props: PriorityIndicatorProps) => {
   return (
-    <NativeView
-      style={tailwind.style(
-        'h-4 w-4 rounded bg-tomato-700 justify-center items-center',
-        `${CONVERSATION_PRIORITY_ORDER[props.priority].color}`,
-      )}>
+    <NativeView style={tailwind.style('h-4 w-4 rounded justify-center items-center')}>
       {/* Design Review the Text Style */}
-      <Text
+      {/* <Text
         style={tailwind.style(
           'text-white text-cxs w-2 leading-[16px] font-inter-semibold-24 text-center',
         )}>
         {CONVERSATION_PRIORITY_ORDER[props.priority].code}
-      </Text>
+      </Text> */}
+      <UrgentIcon />
     </NativeView>
   );
 };

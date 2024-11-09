@@ -10,11 +10,13 @@ import {
   LabelText,
   PriorityIndicator,
   UnreadIndicator,
+  ChannelIndicator,
+  SLAIndicator,
 } from '@/components-next/label';
 import { AnimatedNativeView, NativeView } from '@/components-next/native-components';
 import { tailwind } from '@/theme';
-import { Agent, Conversation } from '../../../../types';
-// import { formatRelativeTime } from '@/utils';
+import { Agent, Conversation } from '@/types';
+import { formatTimeToShortForm, formatRelativeTime } from '@/utils/dateTimeUtils';
 
 const { width } = Dimensions.get('screen');
 
@@ -24,6 +26,7 @@ type ConversationDetailSubCellProps = Pick<
 > & {
   senderName: string | null;
   assignee: Agent;
+  timestamp: number;
 };
 
 const checkIfPropsAreSame = (prev: any, next: any) => {
@@ -36,11 +39,15 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
     id: conversationId,
     priority,
     messages: [{ updatedAt, content }],
-    unreadCount,
+    // unreadCount = 2,
     labels,
     assignee,
     senderName,
+    timestamp,
   } = props;
+  const unreadCount = 12;
+
+  const lastActivityAtTimeAgo = formatTimeToShortForm(formatRelativeTime(timestamp));
 
   return (
     <AnimatedNativeView
@@ -58,18 +65,20 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
               // We might have to do a 10-20px offset based on the max width of the timestamp
               `max-w-[${width - 250}px]`,
             )}>
-            {senderName}
+            {/* {senderName} */}
+            Floyd Alexander Miles Miles
           </Text>
           <ConversationId id={conversationId} />
         </AnimatedNativeView>
-        <AnimatedNativeView style={tailwind.style('flex flex-row items-center')}>
+        <AnimatedNativeView style={tailwind.style('flex flex-row items-center gap-1')}>
           {priority ? <PriorityIndicator {...{ priority }} /> : null}
-          <NativeView style={tailwind.style('pl-1')}>
+          {<ChannelIndicator channel="facebook" />}
+          <NativeView>
             <Text
               style={tailwind.style(
                 'text-sm font-inter-420-20 leading-[16px] tracking-[0.32px] text-gray-700',
               )}>
-              {/* {formatRelativeTime(updatedAt)} */}2 hours
+              {lastActivityAtTimeAgo}
             </Text>
           </NativeView>
         </AnimatedNativeView>
@@ -82,20 +91,21 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
         <Text
           numberOfLines={labels.length > 0 ? 1 : 2}
           style={tailwind.style(
-            'text-md flex-1 font-inter-normal-24 tracking-[0.32px] leading-[21px] text-gray-900',
+            'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
           )}>
-          {/* {messageType === "reply"
-              ? "↩ "
-              : messageType === "note"
-              ? "⬒ "
-              : ""} */}
-          {content}
+          {/* {messageType === 'reply' ? '↩ ' : messageType === 'note' ? '⬒ ' : ''} */}
+          {/* {content} */}
+          Hi there, I accidentally purchased the wrong item. Can I cancel the order and get a
+          refund?
         </Text>
+      </AnimatedNativeView>
+      <AnimatedNativeView style={tailwind.style('flex flex-row')}>
+        {<SLAIndicator />}
       </AnimatedNativeView>
       {labels.length > 0 ? (
         <AnimatedNativeView style={tailwind.style('mt-[3px] flex flex-row justify-between')}>
           <AnimatedNativeView style={tailwind.style('flex flex-row items-center')}>
-            {labels.slice(0, 2).map((label, i) => {
+            {labels.map((label, i) => {
               return (
                 <NativeView key={i} style={tailwind.style(i !== 0 ? 'pl-1.5' : '')}>
                   <LabelText
@@ -118,7 +128,8 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
             />
           </NativeView>
         ) : null}
-        {unreadCount >= 1 ? <UnreadIndicator count={unreadCount} /> : null}
+        {/* {unreadCount >= 1 ? <UnreadIndicator count={unreadCount} /> : null} */}
+        {<UnreadIndicator count={unreadCount} />}
       </AnimatedNativeView>
     </AnimatedNativeView>
   );

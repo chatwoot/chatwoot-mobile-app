@@ -10,6 +10,7 @@ import { useRefsContext } from '@/context';
 import { AssignIcon, StatusIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Conversation } from '@/types';
+import i18n from '@/i18n';
 
 import { ConversationAvatar } from './ConversationAvatar';
 import { ConversationItemDetail } from './ConversationItemDetail';
@@ -34,7 +35,7 @@ const AssignComponent = React.memo(() => {
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
       <Icon icon={<AssignIcon />} size={24} />
       <Animated.Text style={tailwind.style('text-sm font-inter-420-20 pt-[3px] text-white')}>
-        Assign
+        {i18n.t('CONVERSATION.ITEM.ASSIGN')}
       </Animated.Text>
     </Animated.View>
   );
@@ -45,7 +46,7 @@ const StatusComponent = React.memo(() => {
     <Animated.View style={tailwind.style('flex justify-center items-center ')}>
       <Icon icon={<StatusIcon />} size={24} />
       <Animated.Text style={tailwind.style('text-sm font-inter-420-20 pt-[3px] text-white')}>
-        Status
+        {i18n.t('CONVERSATION.ITEM.STATUS')}
       </Animated.Text>
     </Animated.View>
   );
@@ -63,6 +64,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
     messages,
     unreadCount,
     labels,
+    timestamp,
   } = props.conversationItem;
 
   const { openedRowIndex, index } = props;
@@ -137,7 +139,6 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
         <ConversationAvatar
           src={{ uri: senderThumbnail } as ImageURISource}
           name={senderName as string}
-          channel={channel}
         />
         <ConversationItemDetail
           {...{
@@ -148,6 +149,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
             labels,
             assignee,
             senderName,
+            timestamp,
           }}
         />
       </NativeView>

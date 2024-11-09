@@ -4,17 +4,18 @@ import { LinearTransition } from 'react-native-reanimated';
 
 import { Icon } from '@/components-next/common';
 import { AnimatedNativeView } from '@/components-next/native-components';
-import { CurrentState } from '@/storev2';
 import { CheckedIcon, UncheckedIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
+import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice';
+import { useAppSelector } from '@/hooks';
 
 type ConversationSelectProps = {
-  currentState: CurrentState;
   isSelected: boolean;
 };
 
 export const ConversationSelect = memo((props: ConversationSelectProps) => {
-  const { currentState, isSelected } = props;
+  const { isSelected } = props;
+  const currentState = useAppSelector(selectCurrentState);
 
   return currentState === 'Select' ? (
     <AnimatedNativeView

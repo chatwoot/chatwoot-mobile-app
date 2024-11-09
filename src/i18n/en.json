@@ -106,6 +106,10 @@
         "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
         "FAILED": "Couldn't change priority. Please try again."
       }
+    },
+    "ITEM": {
+      "ASSIGN": "Assign",
+      "STATUS": "Status"
     }
   },
 

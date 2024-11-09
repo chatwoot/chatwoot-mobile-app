@@ -31,7 +31,7 @@ const checkIfPropsAreSame = (prev: any, next: any) => {
   return arePropsEqual;
 };
 
-export const ConversationDetailSubCell = memo((props: ConversationDetailSubCellProps) => {
+export const ConversationItemDetail = memo((props: ConversationDetailSubCellProps) => {
   const {
     id: conversationId,
     priority,

@@ -25,7 +25,7 @@ import {
   clearSelection,
   selectAll,
   selectSelectedIndexes,
-} from '@/store/conversation/selectedConversationSlice';
+} from '@/store/conversation/conversationSelectedSlice';
 import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';

@@ -15,7 +15,7 @@ import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '../common';
-import { clearSelection } from '@/store/conversation/selectedConversationSlice';
+import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import { setActionState } from '@/store/conversation/conversationActionSlice';

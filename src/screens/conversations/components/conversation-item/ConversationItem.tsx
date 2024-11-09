@@ -12,12 +12,13 @@ import { tailwind } from '@/theme';
 import { Conversation } from '@/types';
 
 import { ConversationAvatar } from './ConversationAvatar';
-import { ConversationDetailSubCell } from './ConversationDetailSubCell';
+import { ConversationItemDetail } from './ConversationItemDetail';
 import { ConversationSelect } from './ConversationSelect';
+
 import {
   toggleSelection,
   selectSelectedIndexes,
-} from '@/store/conversation/selectedConversationSlice';
+} from '@/store/conversation/conversationSelectedSlice';
 import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import { setActionState } from '@/store/conversation/conversationActionSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -50,7 +51,7 @@ const StatusComponent = React.memo(() => {
   );
 });
 
-export const ConversationCell = memo((props: ConversationCellProps) => {
+export const ConversationItem = memo((props: ConversationCellProps) => {
   const {
     meta: {
       sender: { name: senderName, thumbnail: senderThumbnail },
@@ -97,7 +98,7 @@ export const ConversationCell = memo((props: ConversationCellProps) => {
 
   const pushToChatScreen = StackActions.push('ChatScreen', {
     index,
-  }); 
+  });
 
   const onPressAction = () => {
     if (currentState === 'Select') {
@@ -138,7 +139,7 @@ export const ConversationCell = memo((props: ConversationCellProps) => {
           name={senderName as string}
           channel={channel}
         />
-        <ConversationDetailSubCell
+        <ConversationItemDetail
           {...{
             id,
             priority,

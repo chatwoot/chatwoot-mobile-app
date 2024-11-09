@@ -4,7 +4,7 @@ import authSlice from '@/store/auth/authSlice';
 import settingsSlice from '@/store/settings/settingsSlice';
 import notificationSlice from '@/store/notification/notificationSlice';
 import conversationFilterSlice from '@/store/conversation/conversationFilterSlice';
-import selectedConversationSlice from '@/store/conversation/selectedConversationSlice';
+import conversationSelectedSlice from '@/store/conversation/conversationSelectedSlice';
 import conversationHeaderSlice from '@/store/conversation/conversationHeaderSlice';
 import conversationActionSlice from '@/store/conversation/conversationActionSlice';
 import conversationSlice from '@/store/conversation/conversationSlice';
@@ -26,7 +26,7 @@ export const appReducer = combineReducers({
   notifications: notificationSlice,
   settings: settingsSlice,
   conversationFilter: conversationFilterSlice,
-  selectedConversation: selectedConversationSlice,
+  selectedConversation: conversationSelectedSlice,
   conversationHeader: conversationHeaderSlice,
   conversations: conversationSlice,
   conversationAction: conversationActionSlice,

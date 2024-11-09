@@ -10,8 +10,8 @@ const initialState: SelectedConversationState = {
   selectedIndexes: [],
 };
 
-const selectedConversationSlice = createSlice({
-  name: 'selectedConversation',
+const conversationSelectedSlice = createSlice({
+  name: 'conversationSelected',
   initialState,
   reducers: {
     toggleSelection: (state, action: PayloadAction<number>) => {
@@ -36,5 +36,5 @@ const selectedConversationSlice = createSlice({
 export const selectSelectedIndexes = (state: RootState) =>
   state.selectedConversation.selectedIndexes;
 
-export const { toggleSelection, clearSelection, selectAll } = selectedConversationSlice.actions;
-export default selectedConversationSlice.reducer;
+export const { toggleSelection, clearSelection, selectAll } = conversationSelectedSlice.actions;
+export default conversationSelectedSlice.reducer;

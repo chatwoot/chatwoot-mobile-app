@@ -9,7 +9,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 
-import { ConversationCell, ConversationHeader } from './components';
+import { ConversationItem, ConversationHeader } from './components';
 
 import {
   ActionTabs,
@@ -44,7 +44,6 @@ import {
 import { conversationActions } from '@/store/conversation/conversationActions';
 import {
   selectConversationsLoading,
-  selectAllConversations,
   selectIsAllConversationsFetched,
   getFilteredConversations,
 } from '@/store/conversation/conversationSelectors';
@@ -72,12 +71,11 @@ const ConversationList = () => {
 
   const isConversationsLoading = useAppSelector(selectConversationsLoading);
   const isAllConversationsFetched = useAppSelector(selectIsAllConversationsFetched);
-  const conversations = useAppSelector(selectAllConversations);
 
   const handleRender = useCallback(
     ({ item, index }: FlashListRenderItemType) => {
       return (
-        <ConversationCell index={index} conversationItem={item} openedRowIndex={openedRowIndex} />
+        <ConversationItem index={index} conversationItem={item} openedRowIndex={openedRowIndex} />
       );
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

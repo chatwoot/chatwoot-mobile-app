@@ -1,17 +1,15 @@
 import BaseActionCableConnector from './BaseActionCableConnector';
-
+import { store } from '@/store';
 // import {
 //   addOrUpdateMessage,
 //   addConversation,
 //   updateConversation,
 //   updateConversationLastActivity,
 // } from 'reducer/conversationSlice';
-
-import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
 // import conversationActions from 'reducer/conversationSlice.action';
-import { store } from '@/store';
+import { updateAgentsPresence } from 'reducer/inboxAgentsSlice';
 import { setCurrentUserAvailability } from '@/store/auth/authSlice';
-import { addUserToTyping, destroyUserFromTyping } from 'reducer/conversationTypingSlice';
+import { setTypingUsers, removeTypingUser } from '@/store/conversation/conversationTypingSlice';
 import { addContact, updateContactsPresence } from '@/store/contact/contactSlice';
 import { addNotification, removeNotification } from '@/store/notification/notificationSlice';
 
@@ -118,7 +116,7 @@ class ActionCableConnector extends BaseActionCableConnector {
     this.clearTimer(conversationId);
 
     store.dispatch(
-      addUserToTyping({
+      setTypingUsers({
         conversationId,
         user,
       }),
@@ -132,7 +130,7 @@ class ActionCableConnector extends BaseActionCableConnector {
     this.clearTimer(conversationId);
 
     store.dispatch(
-      destroyUserFromTyping({
+      removeTypingUser({
         conversationId,
         user,
       }),

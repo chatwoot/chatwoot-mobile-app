@@ -9,11 +9,11 @@ import conversationHeaderSlice from '@/store/conversation/conversationHeaderSlic
 import conversationActionSlice from '@/store/conversation/conversationActionSlice';
 import conversationSlice from '@/store/conversation/conversationSlice';
 import contactSlice from '@/store/contact/contactSlice';
+import inboxSlice from '@/store/inbox/inboxSlice';
+import conversationTypingSlice from '@/store/conversation/conversationTypingSlice';
 
-import inboxSlice from '@/reducer/inboxSlice';
 import cannedResponseSlice from '@/reducer/cannedResponseSlice';
 import inboxAgentsSlice from '@/reducer/inboxAgentsSlice';
-import conversationTypingSlice from '@/reducer/conversationTypingSlice';
 import labelSlice from '@/reducer/labelSlice';
 import conversationLabelsSlice from '@/reducer/conversationLabelSlice';
 import teamSlice from '@/reducer/teamSlice';
@@ -31,14 +31,14 @@ export const appReducer = combineReducers({
   conversations: conversationSlice,
   conversationAction: conversationActionSlice,
   contacts: contactSlice,
+  inboxes: inboxSlice,
+  conversationTyping: conversationTypingSlice,
 
   cannedResponses: cannedResponseSlice,
   labels: labelSlice,
   conversationLabels: conversationLabelsSlice,
   customAttributes: customAttributeSlice,
-  inboxes: inboxSlice,
   inboxAgents: inboxAgentsSlice,
-  conversationTypingStatus: conversationTypingSlice,
   teams: teamSlice,
   dashboardApps: dashboardAppSlice,
   conversationWatchers: conversationWatchersSlice,

@@ -18,16 +18,18 @@ import { tailwind } from '@/theme';
 import { Agent, Conversation } from '@/types';
 import { formatTimeToShortForm, formatRelativeTime } from '@/utils/dateTimeUtils';
 import { getLastMessage } from '@/utils/conversationUtils';
+import { Inbox } from '@/types/Inbox';
 
 const { width } = Dimensions.get('screen');
 
 type ConversationDetailSubCellProps = Pick<
   Conversation,
-  'id' | 'priority' | 'messages' | 'labels' | 'unreadCount'
+  'id' | 'priority' | 'messages' | 'labels' | 'unreadCount' | 'inbox'
 > & {
   senderName: string | null;
   assignee: Agent;
   timestamp: number;
+  inbox: Inbox;
 };
 
 const checkIfPropsAreSame = (prev: any, next: any) => {
@@ -44,6 +46,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
     assignee,
     senderName,
     timestamp,
+    inbox,
   } = props;
   const unreadCount = 12;
 
@@ -57,7 +60,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
 
   // const { createdAt, attachments, messageType, private: isPrivate } = lastMessage;
 
-  // const isEmailChannel = channelType === 'Channel::Email';
+  const isEmailChannel = inbox?.channelType === 'Channel::Email';
 
   // const lastMessageContent = isEmailChannel
   //   ? lastMessage?.content_attributes?.email?.subject

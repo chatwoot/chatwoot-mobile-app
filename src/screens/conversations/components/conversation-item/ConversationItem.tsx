@@ -24,6 +24,7 @@ import { selectCurrentState, setCurrentState } from '@/store/conversation/conver
 import { setActionState } from '@/store/conversation/conversationActionSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectContactById } from '@/store/contact/contactSelectors';
+import { selectInboxById } from '@/store/inbox/inboxSelectors';
 
 type ConversationCellProps = {
   conversationItem: Conversation;
@@ -66,9 +67,12 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
     unreadCount,
     labels,
     timestamp,
+    inboxId,
   } = props.conversationItem;
 
   const contact = useAppSelector(state => selectContactById(state, contactId));
+
+  const inbox = useAppSelector(state => selectInboxById(state, inboxId));
 
   // TODO: show the availability status in the avatar
   const { availabilityStatus } = contact || {};
@@ -156,6 +160,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
             assignee,
             senderName,
             timestamp,
+            inbox,
           }}
         />
       </NativeView>

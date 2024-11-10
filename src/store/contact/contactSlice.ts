@@ -24,7 +24,7 @@ const contactSlice = createSlice({
       });
     },
     addContact: (state, action) => {
-      const conversation = action.payload;
+      const conversation = action.payload as Conversation;
       const contact = conversation?.meta?.sender;
       const camelCaseContact = transformContact(contact);
       if (camelCaseContact) {
@@ -47,6 +47,6 @@ const contactSlice = createSlice({
   },
 });
 
-export const { clearAllContacts, addContacts } = contactSlice.actions;
+export const { clearAllContacts, addContacts, addContact } = contactSlice.actions;
 
 export default contactSlice.reducer;

@@ -25,7 +25,7 @@ import { setActionState } from '@/store/conversation/conversationActionSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectContactById } from '@/store/contact/contactSelectors';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
-
+import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
 type ConversationCellProps = {
   conversationItem: Conversation;
   index: number;
@@ -73,6 +73,8 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
   const contact = useAppSelector(state => selectContactById(state, contactId));
 
   const inbox = useAppSelector(state => selectInboxById(state, inboxId));
+
+  const typingUsers = useAppSelector(selectTypingUsersByConversationId(id));
 
   // TODO: show the availability status in the avatar
   const { availabilityStatus } = contact || {};

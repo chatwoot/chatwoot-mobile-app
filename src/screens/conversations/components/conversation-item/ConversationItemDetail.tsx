@@ -52,11 +52,11 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
 
   const lastActivityAtTimeAgo = formatTimeToShortForm(formatRelativeTime(timestamp));
 
-  // const lastMessage = getLastMessage(props);
+  const lastMessage = getLastMessage(props);
 
   // const hasPriority = priority !== null;
 
-  // const content = lastMessage?.content || '';
+  const content = lastMessage?.content || '';
 
   // const { createdAt, attachments, messageType, private: isPrivate } = lastMessage;
 
@@ -82,8 +82,8 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
               // We might have to do a 10-20px offset based on the max width of the timestamp
               `max-w-[${width - 250}px]`,
             )}>
-            {/* {senderName} */}
-            Floyd Alexander Miles Miles
+            {senderName}
+            {/* Floyd Alexander Miles Miles */}
           </Text>
           <ConversationId id={conversationId} />
         </AnimatedNativeView>
@@ -111,9 +111,9 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
             'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
           )}>
           {/* {messageType === 'reply' ? '↩ ' : messageType === 'note' ? '⬒ ' : ''} */}
-          {/* {content} */}
-          Hi there, I accidentally purchased the wrong item. Can I cancel the order and get a
-          refund?
+          {content}
+          {/* Hi there, I accidentally purchased the wrong item. Can I cancel the order and get a */}
+          {/* refund? */}
         </Text>
       </AnimatedNativeView>
       <AnimatedNativeView style={tailwind.style('flex flex-row')}>

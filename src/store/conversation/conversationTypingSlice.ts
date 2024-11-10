@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TypingUser } from '@/types';
+import { RootState } from '@/store';
 
 interface TypingUserPayload {
   conversationId: number;
@@ -40,4 +41,10 @@ const conversationTypingSlice = createSlice({
 });
 
 export const { setTypingUsers, removeTypingUser } = conversationTypingSlice.actions;
+
+export const selectTypingUsers = (state: RootState) => state.conversationTyping.records;
+
+export const selectTypingUsersByConversationId = (conversationId: number) => (state: RootState) =>
+  state.conversationTyping.records[conversationId] || [];
+
 export default conversationTypingSlice.reducer;

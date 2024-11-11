@@ -9,7 +9,8 @@ export const shouldApplyFilters = (conversation: Conversation, filters: FilterSt
   const { inbox_id: inboxId, status } = filters;
   const { status: chatStatus, inboxId: chatInboxId } = conversation;
   let shouldFilter = filterByStatus(chatStatus, status);
-  if (inboxId) {
+  const hasInboxFilter = inboxId && inboxId !== '0';
+  if (hasInboxFilter) {
     const filterByInbox = Number(inboxId) === chatInboxId;
     shouldFilter = shouldFilter && filterByInbox;
   }

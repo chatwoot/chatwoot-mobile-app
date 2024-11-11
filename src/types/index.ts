@@ -47,7 +47,9 @@ export type FilterOption<T extends ConversationFilterOptions> = {
       ? StatusFilterOptions
       : T extends 'sort_by'
         ? SortFilterOptions
-        : never;
+        : T extends 'inbox_id'
+          ? Record<number, string>
+          : never;
   defaultFilter: string;
 };
 

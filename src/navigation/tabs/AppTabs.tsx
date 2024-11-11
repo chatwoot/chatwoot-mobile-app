@@ -27,8 +27,8 @@ import { BottomTabBar } from './BottomTabBar';
 import { settingsActions } from '@/store/settings/settingsActions';
 import { selectChatwootVersion } from '@/store/settings/settingsSelectors';
 import { checkServerSupport } from '@/helpers/ServerHelper';
-import ActionCable from '@/helpers/ActionCable';
 import { inboxActions } from '@/store/inbox/inboxActions';
+import actionCableConnector from '@/utils/actionCable';
 
 const Tab = createBottomTabNavigator();
 
@@ -80,7 +80,7 @@ const Tabs = () => {
   }, []);
 
   const initActionCable = useCallback(async () => {
-    ActionCable.init({ pubSubToken, webSocketUrl, accountId, userId });
+    actionCableConnector.init({ pubSubToken, webSocketUrl, accountId, userId });
   }, [accountId, pubSubToken, userId, webSocketUrl]);
 
   useEffect(() => {

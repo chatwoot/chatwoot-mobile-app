@@ -2,7 +2,7 @@
 import React from 'react';
 import Animated from 'react-native-reanimated';
 
-import { Avatar, HashIcon, Icon, Swipeable } from '@/components-next';
+import { Avatar, Icon, Swipeable } from '@/components-next';
 import { useInboxListStateContext } from '@/context';
 import type { Notification } from '@/types/Notification';
 import { MarkAsRead, MarkAsUnRead, SnoozedIcon } from '@/svg-icons';
@@ -40,8 +40,8 @@ export const InboxItem = (props: InboxItemProps) => {
 
   const onPressAction = () => {
     const payload: MarkAsReadPayload = {
-      primary_actor_id: item.primary_actor_id,
-      primary_actor_type: item.primary_actor_type,
+      primary_actor_id: item.primaryActorId,
+      primary_actor_type: item.primaryActorType,
     };
     dispatch(notificationActions.markAsRead(payload));
   };
@@ -55,13 +55,13 @@ export const InboxItem = (props: InboxItemProps) => {
   //     // eslint-disable-next-line react-hooks/exhaustive-deps
   //     [readInboxItems.length],
   //   );
-  const isRead = item.read_at;
+  const isRead = item.readAt;
 
-  const meta = item.primary_actor?.meta;
+  const meta = item.primaryActor?.meta;
   const assignee = meta?.sender;
 
   const lastActivityAt = () => {
-    const time = formatRelativeTime(item.last_activity_at);
+    const time = formatRelativeTime(item.lastActivityAt);
     return formatTimeToShortForm(time, true);
   };
 
@@ -85,12 +85,11 @@ export const InboxItem = (props: InboxItemProps) => {
                 {assignee?.name}
               </Animated.Text>
               <Animated.View style={tailwind.style('flex flex-row items-center pl-1')}>
-                <HashIcon />
                 <Animated.Text
                   style={tailwind.style(
                     'text-cxs font-inter-420-20 leading-[15px] tracking-[0.32px] text-gray-700',
                   )}>
-                  {item.id}
+                  #{item.id}
                 </Animated.Text>
               </Animated.View>
             </Animated.View>
@@ -114,7 +113,7 @@ export const InboxItem = (props: InboxItemProps) => {
                 style={tailwind.style(
                   'pl-1.5 font-inter-420-20 text-md text-gray-900 leading-[17px] tracking-[0.32px]',
                 )}>
-                {item.push_message_title.slice(0, 40)}
+                {item.pushMessageTitle.slice(0, 40)}
               </Animated.Text>
             </Animated.View>
             <Animated.View

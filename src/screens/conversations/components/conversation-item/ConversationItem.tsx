@@ -25,7 +25,7 @@ import { setActionState } from '@/store/conversation/conversationActionSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectContactById } from '@/store/contact/contactSelectors';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
-import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
+// import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
 type ConversationCellProps = {
   conversationItem: Conversation;
   index: number;
@@ -68,13 +68,14 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
     labels,
     timestamp,
     inboxId,
+    lastNonActivityMessage,
   } = props.conversationItem;
 
   const contact = useAppSelector(state => selectContactById(state, contactId));
 
   const inbox = useAppSelector(state => selectInboxById(state, inboxId));
 
-  const typingUsers = useAppSelector(selectTypingUsersByConversationId(id));
+  // const typingUsers = useAppSelector(selectTypingUsersByConversationId(id));
 
   // TODO: show the availability status in the avatar
   const { availabilityStatus } = contact || {};
@@ -146,12 +147,15 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
       handleLongPress={onLongPressAction}
       handlePress={onPressAction}
       {...{ index, openedRowIndex }}>
-      <NativeView style={tailwind.style('pl-3 flex-row items-start')}>
-        <ConversationSelect {...{ isSelected, currentState }} />
-        <ConversationAvatar
-          src={{ uri: senderThumbnail } as ImageURISource}
-          name={senderName as string}
-        />
+      <NativeView style={tailwind.style('py-3 px-3 gap-2 flex-row justify-between')}>
+        <NativeView style={tailwind.style('flex flex-row')}>
+          <ConversationSelect {...{ isSelected, currentState }} />
+          <ConversationAvatar
+            src={{ uri: senderThumbnail } as ImageURISource}
+            name={senderName as string}
+          />
+        </NativeView>
+
         <ConversationItemDetail
           {...{
             id,
@@ -163,6 +167,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
             senderName,
             timestamp,
             inbox,
+            lastNonActivityMessage,
           }}
         />
       </NativeView>

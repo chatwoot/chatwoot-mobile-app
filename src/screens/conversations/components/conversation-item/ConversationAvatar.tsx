@@ -23,7 +23,7 @@ export const ConversationAvatar = memo((props: ConversationAvatarProps) => {
 
   return (
     <AnimatedNativeView
-      style={tailwind.style('pt-3')}
+      style={tailwind.style('')}
       layout={LinearTransition.springify().damping(28).stiffness(200)}>
       <Avatar size="4xl" {...{ src, name }} />
     </AnimatedNativeView>

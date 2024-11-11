@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import Animated from 'react-native-reanimated';
 
 export const NativeView =

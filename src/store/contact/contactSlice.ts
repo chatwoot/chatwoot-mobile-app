@@ -1,7 +1,6 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { Contact } from '@/types/Contact';
 import { Conversation } from '@/types/Conversation';
-import { transformContact } from '@/utils';
 
 export const contactAdapter = createEntityAdapter<Contact>({
   selectId: contact => contact.id,
@@ -17,8 +16,7 @@ const contactSlice = createSlice({
     addContacts: (state, action) => {
       const { conversations } = action.payload;
       const contacts = conversations.map((conversation: Conversation) => conversation.meta.sender);
-      const camelCaseContacts = contacts.map(transformContact);
-      camelCaseContacts.map((contact: Contact) => {
+      contacts.map((contact: Contact) => {
         contactAdapter.upsertOne(state, contact);
         return contact.id;
       });
@@ -26,9 +24,8 @@ const contactSlice = createSlice({
     addContact: (state, action) => {
       const conversation = action.payload as Conversation;
       const contact = conversation?.meta?.sender;
-      const camelCaseContact = transformContact(contact);
-      if (camelCaseContact) {
-        contactAdapter.upsertOne(state, camelCaseContact);
+      if (contact) {
+        contactAdapter.upsertOne(state, contact);
       }
     },
     updateContactsPresence: (state, action) => {

@@ -21,7 +21,7 @@ export interface NotificationState {
 }
 
 export const notificationsAdapter = createEntityAdapter<Notification>({
-  sortComparer: (a, b) => b.last_activity_at - a.last_activity_at,
+  sortComparer: (a, b) => b.lastActivityAt - a.lastActivityAt,
 });
 
 const initialState = notificationsAdapter.getInitialState<NotificationState>({
@@ -69,20 +69,18 @@ const notificationsSlice = createSlice({
       .addCase(
         notificationActions.fetchNotifications.fulfilled,
         (state, action: PayloadAction<NotificationResponse>) => {
-          const {
-            data: { meta, payload },
-          } = action.payload;
-          state.unreadCount = meta.unread_count;
+          const { notifications, meta } = action.payload;
+          state.unreadCount = meta.unreadCount;
           state.totalCount = meta.count;
-          state.currentPage = meta.current_page;
+          state.currentPage = meta.currentPage;
           state.uiFlags.isLoading = false;
-          updateBadgeCount({ count: meta.unread_count });
-          if (meta.current_page === '1') {
-            notificationsAdapter.setAll(state, payload);
+          updateBadgeCount({ count: meta.unreadCount });
+          if (meta.currentPage === '1') {
+            notificationsAdapter.setAll(state, notifications);
           } else {
-            notificationsAdapter.upsertMany(state, payload);
+            notificationsAdapter.upsertMany(state, notifications);
           }
-          state.uiFlags.isAllNotificationsRead = payload.length < 15;
+          state.uiFlags.isAllNotificationsRead = notifications.length < 15;
         },
       )
       .addCase(notificationActions.fetchNotifications.rejected, (state, action) => {
@@ -95,12 +93,12 @@ const notificationsSlice = createSlice({
         (state, action: PayloadAction<MarkAsReadPayload>) => {
           const { primary_actor_id: primaryActorId } = action.payload;
           const notification = Object.values(state.entities).find(
-            n => n?.primary_actor_id === primaryActorId,
+            n => n?.primaryActorId === primaryActorId,
           );
           if (notification) {
             notificationsAdapter.updateOne(state, {
               id: primaryActorId,
-              changes: { read_at: new Date().toISOString() },
+              changes: { readAt: new Date().toISOString() },
             });
             state.unreadCount -= 1;
             updateBadgeCount({ count: state.unreadCount });

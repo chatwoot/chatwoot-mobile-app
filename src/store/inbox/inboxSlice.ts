@@ -1,7 +1,14 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import type { Inbox } from '@/types/Inbox';
 import { inboxActions } from './inboxActions';
-import { transformInbox } from '@/utils';
+
+const defaultInbox: Inbox = {
+  id: 0,
+  name: 'All Inboxes',
+  channelType: 'Channel::All',
+  avatarUrl: '',
+  channelId: 0,
+};
 
 export const inboxAdapter = createEntityAdapter<Inbox>({
   selectId: inbox => inbox.id,
@@ -30,8 +37,8 @@ const inboxSlice = createSlice({
       })
       .addCase(inboxActions.fetchInboxes.fulfilled, (state, action) => {
         const { payload: inboxes } = action.payload;
-        const camelCaseInboxes = inboxes.map(transformInbox);
-        inboxAdapter.setAll(state, camelCaseInboxes);
+        const allInboxes = [defaultInbox, ...inboxes];
+        inboxAdapter.setAll(state, allInboxes);
         state.uiFlags.isLoading = false;
       })
       .addCase(inboxActions.fetchInboxes.rejected, (state, { error }) => {

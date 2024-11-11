@@ -7,7 +7,8 @@ export const listenerMiddleware = createListenerMiddleware();
 listenerMiddleware.startListening({
   matcher: isAnyOf(conversationActions.fetchConversations.fulfilled),
   effect: (action, listenerApi) => {
-    const conversations = action.payload.data.payload;
+    const { payload } = action;
+    const { conversations } = payload;
     listenerApi.dispatch(addContacts({ conversations }));
   },
 });

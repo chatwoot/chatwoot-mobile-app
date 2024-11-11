@@ -8,7 +8,8 @@ export type Channel =
   | 'Channel::Line'
   | 'Channel::FacebookPage'
   | 'Channel::Email'
-  | 'Channel::Api';
+  | 'Channel::Api'
+  | 'Channel::All';
 
 export type AllChannels = Channel | 'All';
 

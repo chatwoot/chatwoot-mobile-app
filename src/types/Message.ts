@@ -2,6 +2,7 @@ import { Agent } from './Agent';
 import { AgentBot } from './AgentBot';
 import { UnixTimestamp } from './common';
 import { Contact } from './Contact';
+import { Conversation } from './Conversation';
 
 export type ContentType =
   | 'text'
@@ -56,4 +57,5 @@ export interface Message {
   sourceId: string | null;
   status: MessageStatus;
   lastNonActivityMessage: Message | null;
+  conversation: Conversation;
 }

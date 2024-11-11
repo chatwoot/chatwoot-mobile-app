@@ -14,7 +14,11 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setBottomSheetState } from '@/store/conversation/conversationHeaderSlice';
 type FilterButtonProps = {
   handleOnPress: () => void;
-  filterData: FilterOption<'assignee_type'> | FilterOption<'status'> | FilterOption<'sort_by'>;
+  filterData:
+    | FilterOption<'assignee_type'>
+    | FilterOption<'status'>
+    | FilterOption<'sort_by'>
+    | FilterOption<'inbox_id'>;
 };
 
 export const FilterButton = (props: FilterButtonProps) => {

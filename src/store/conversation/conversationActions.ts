@@ -1,27 +1,32 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ConversationService } from './conversationService';
-import type { ConversationResponse, ConversationPayload } from './conversationTypes';
-import I18n from '@/i18n';
-import { handleApiError } from '../auth/authUtils';
-
-const createConversationThunk = <TResponse, TPayload>(
-  type: string,
-  handler: (payload: TPayload) => Promise<TResponse>,
-  errorMessage?: string,
-) => {
-  return createAsyncThunk<TResponse, TPayload>(type, async (payload, { rejectWithValue }) => {
-    try {
-      return await handler(payload);
-    } catch (error) {
-      return rejectWithValue(handleApiError(error, errorMessage));
-    }
-  });
-};
+import type {
+  ConversationResponse,
+  ConversationPayload,
+  ApiErrorResponse,
+} from './conversationTypes';
+import { AxiosError } from 'axios';
+import { transformConversationMeta, transformConversation } from '@/utils';
 
 export const conversationActions = {
-  fetchConversations: createConversationThunk<ConversationResponse, ConversationPayload>(
+  fetchConversations: createAsyncThunk<ConversationResponse, ConversationPayload>(
     'conversations/fetchConversations',
-    async payload => ConversationService.getConversations(payload),
-    I18n.t('ERRORS.CONVERSATIONS_FETCH'),
+    async (payload, { rejectWithValue }) => {
+      try {
+        const response = await ConversationService.getConversations(payload);
+        const { payload: conversations, meta } = response.data;
+        const transformedResponse: ConversationResponse = {
+          conversations: conversations.map(transformConversation),
+          meta: transformConversationMeta(meta),
+        };
+        return transformedResponse;
+      } catch (error) {
+        const { response } = error as AxiosError<ApiErrorResponse>;
+        if (!response) {
+          throw error;
+        }
+        return rejectWithValue(response.data);
+      }
+    },
   ),
 };

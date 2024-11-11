@@ -20,6 +20,7 @@ import {
   LabelListComponent,
   SortByListComponent,
   StatusListComponent,
+  InboxListComponent,
 } from '@/components-next';
 
 import { EmptyStateIcon } from '@/svg-icons';
@@ -51,6 +52,8 @@ import { selectFilters, FilterState } from '@/store/conversation/conversationFil
 import { ConversationPayload } from '@/store/conversation/conversationTypes';
 import { clearAllConversations } from '@/store/conversation/conversationSlice';
 import { selectUserId } from '@/store/auth/authSelectors';
+import { clearAllContacts } from '@/store/contact/contactSlice';
+
 import i18n from '@/i18n';
 
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
@@ -100,27 +103,28 @@ const ConversationList = () => {
 
   const clearAndFetchConversations = useCallback(async (filters: FilterState) => {
     await dispatch(clearAllConversations());
+    await dispatch(clearAllContacts());
     fetchConversations(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const ListFooterComponent = () => {
-    return (
-      <Animated.View
-        style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
-        {isAllConversationsFetched ? (
-          <Animated.Text
-            style={tailwind.style(
-              'pt-6 text-md font-inter-normal-24 tracking-[0.32px] text-gray-800',
-            )}>
-            {i18n.t('CONVERSATION.ALL_CONVERSATION_LOADED')} 🎉
-          </Animated.Text>
-        ) : (
-          <ActivityIndicator size="small" />
-        )}
-      </Animated.View>
-    );
-  };
+  // const ListFooterComponent = () => {
+  //   return (
+  //     <Animated.View
+  //       style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
+  //       {isAllConversationsFetched ? (
+  //         <Animated.Text
+  //           style={tailwind.style(
+  //             'pt-6 text-md font-inter-normal-24 tracking-[0.32px] text-gray-800',
+  //           )}>
+  //           {i18n.t('CONVERSATION.ALL_CONVERSATION_LOADED')} 🎉
+  //         </Animated.Text>
+  //       ) : (
+  //         <ActivityIndicator size="small" />
+  //       )}
+  //     </Animated.View>
+  //   );
+  // };
 
   const fetchConversations = useCallback(
     async (filters: FilterState, page: number = 1) => {
@@ -185,7 +189,7 @@ const ConversationList = () => {
       onScroll={scrollHandler}
       onEndReached={handleOnEndReached}
       onEndReachedThreshold={0.5}
-      ListFooterComponent={ListFooterComponent}
+      // ListFooterComponent={ListFooterComponent}
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       renderItem={handleRender}
@@ -225,6 +229,8 @@ const ConversationScreen = () => {
         return [170];
       case 'assignee_type':
         return [170];
+      case 'inbox_id':
+        return ['70%'];
       default:
         return [250];
     }
@@ -260,9 +266,7 @@ const ConversationScreen = () => {
             'overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]',
           )}
           handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-          style={tailwind.style('mx-3 rounded-[26px] overflow-hidden')}
-          detached
-          bottomInset={bottom === 0 ? 12 : bottom}
+          style={tailwind.style('rounded-[26px] overflow-hidden')}
           animationConfigs={animationConfigs}
           enablePanDownToClose
           snapPoints={filterSnapPoints}
@@ -271,6 +275,7 @@ const ConversationScreen = () => {
             {currentBottomSheet === 'status' ? <StatusListComponent type="Filter" /> : null}
             {currentBottomSheet === 'sort_by' ? <SortByListComponent /> : null}
             {currentBottomSheet === 'assignee_type' ? <AssigneeTypeListComponent /> : null}
+            {currentBottomSheet === 'inbox_id' ? <InboxListComponent /> : null}
           </BottomSheetWrapper>
         </BottomSheetModal>
         <BottomSheetModal

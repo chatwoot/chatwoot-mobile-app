@@ -1,6 +1,6 @@
 import type { Notification, PrimaryActorType } from '@/types/Notification';
 
-export interface NotificationResponse {
+export interface NotificationAPIResponse {
   data: {
     meta: {
       unread_count: number;
@@ -9,6 +9,15 @@ export interface NotificationResponse {
     };
     payload: Notification[];
   };
+}
+
+export interface NotificationResponse {
+  meta: {
+    unreadCount: number;
+    count: number;
+    currentPage: string;
+  };
+  notifications: Notification[];
 }
 
 export interface ApiErrorResponse {

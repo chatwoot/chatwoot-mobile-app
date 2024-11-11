@@ -7,3 +7,4 @@ export * from './AssigneeTypeListComponent';
 export * from './LabelListComponent';
 export * from './SortByListComponent';
 export * from './StatusListComponent';
+export * from './InboxListComponent';

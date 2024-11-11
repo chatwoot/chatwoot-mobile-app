@@ -1,19 +1,20 @@
-import type { Conversation } from '@/types/Conversation';
+import type { Conversation, ConversationMeta } from '@/types/Conversation';
 import type {
   AssigneeTypes,
   ConversationStatus,
   SortTypes,
 } from '@/types/common/ConversationStatus';
 
-export interface ConversationResponse {
+export interface ConversationAPIResponse {
   data: {
-    meta: {
-      unread_count: number;
-      count: number;
-      current_page: string;
-    };
+    meta: ConversationMeta;
     payload: Conversation[];
   };
+}
+
+export interface ConversationResponse {
+  meta: ConversationMeta;
+  conversations: Conversation[];
 }
 
 export interface ConversationPayload {

@@ -9,7 +9,7 @@ import {
 } from '@gorhom/bottom-sheet';
 
 import { EMAIL_REGEX } from '@/constants';
-import { EyeIcon, EyeSlash } from '@/svg-icons'; 
+import { EyeIcon, EyeSlash } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { resetAuth } from '@/store/auth/authSlice';

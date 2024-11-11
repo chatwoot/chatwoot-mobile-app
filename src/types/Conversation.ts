@@ -43,3 +43,9 @@ export interface Conversation {
   // Deprecated
   timestamp: UnixTimestamp;
 }
+
+export interface ConversationMeta {
+  mineCount: number;
+  unassignedCount: number;
+  allCount: number;
+}

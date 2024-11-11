@@ -3,6 +3,8 @@ import Animated, { LinearTransition, withTiming } from 'react-native-reanimated'
 
 import { tailwind } from '@/theme';
 import { AllStatusTypes, AssigneeTypes, FilterOption, SortTypes } from '@/types';
+import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
+import { useAppSelector } from '@/hooks';
 
 import { FilterButton } from './FilterButton';
 
@@ -30,6 +32,7 @@ export const filterOptions: (
   | FilterOption<'assignee_type'>
   | FilterOption<'status'>
   | FilterOption<'sort_by'>
+  | FilterOption<'inbox_id'>
 )[] = [
   {
     type: 'assignee_type',
@@ -48,7 +51,30 @@ export const filterOptions: (
   },
 ];
 
+const getInboxOptions = (inboxes: { id: number; name: string }[]) => {
+  const options: Record<string, string> = {
+    '0': 'All Inboxes',
+  };
+
+  inboxes.forEach(inbox => {
+    options[inbox.id] = inbox.name;
+  });
+
+  return options;
+};
+
 export const FilterBar = () => {
+  const inboxes = useAppSelector(selectAllInboxes);
+
+  const dynamicFilterOptions = [
+    ...filterOptions,
+    {
+      type: 'inbox_id' as const,
+      options: getInboxOptions(inboxes),
+      defaultFilter: 'All Inboxes',
+    },
+  ];
+
   // Row Exit Animation
   const exiting = () => {
     'worklet';
@@ -68,7 +94,7 @@ export const FilterBar = () => {
     <Animated.View
       exiting={exiting}
       style={tailwind.style('px-3 pt-2 pb-1.5 h-[46px] flex flex-row')}>
-      {filterOptions.map((value, index) => (
+      {dynamicFilterOptions.map((value, index) => (
         <Animated.View
           layout={LinearTransition.springify().stiffness(200).damping(24)}
           key={index}

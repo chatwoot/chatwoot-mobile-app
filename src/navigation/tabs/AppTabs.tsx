@@ -29,6 +29,7 @@ import { selectChatwootVersion } from '@/store/settings/settingsSelectors';
 import { checkServerSupport } from '@/helpers/ServerHelper';
 import { inboxActions } from '@/store/inbox/inboxActions';
 import actionCableConnector from '@/utils/actionCable';
+import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 
 const Tab = createBottomTabNavigator();
 
@@ -76,6 +77,7 @@ const Tabs = () => {
     dispatch(settingsActions.saveDeviceDetails());
     dispatch(inboxActions.fetchInboxes());
     initActionCable();
+    dispatch(setCurrentState('none'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

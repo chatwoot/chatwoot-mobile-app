@@ -147,7 +147,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
       handleLongPress={onLongPressAction}
       handlePress={onPressAction}
       {...{ index, openedRowIndex }}>
-      <NativeView style={tailwind.style('py-3 px-3 gap-2 flex-row justify-between')}>
+      <NativeView style={tailwind.style('mt-3 px-3 gap-2 flex-row justify-between')}>
         <NativeView style={tailwind.style('flex flex-row')}>
           <ConversationSelect {...{ isSelected, currentState }} />
           <ConversationAvatar

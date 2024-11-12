@@ -54,3 +54,7 @@ export interface ConversationMeta {
   unassignedCount: number;
   allCount: number;
 }
+
+export interface ConversationAdditionalAttributes {
+  type?: string;
+}

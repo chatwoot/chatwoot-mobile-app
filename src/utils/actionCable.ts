@@ -60,7 +60,7 @@ class ActionCableConnector extends BaseActionCableConnector {
   onConversationCreated = (data: Conversation) => {
     const conversation = transformConversation(data);
     store.dispatch(addConversation(conversation));
-    store.dispatch(addContacts(conversation));
+    store.dispatch(addContact(conversation));
   };
 
   onMessageUpdated = (data: Message) => {

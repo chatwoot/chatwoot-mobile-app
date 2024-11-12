@@ -10,11 +10,11 @@ import { BottomSheetHeader, Icon } from '@/components-next/common';
 import { selectFilters, setFilters } from '@/store/conversation/conversationFilterSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
-import { getChannelTypeIcon } from '@/utils';
+import { getChannelIcon } from '@/utils';
 import { Channel } from '@/types';
 
 type InboxCellProps = {
-  value: { id: number; name: string; channelType: Channel };
+  value: { id: number; name: string; channelType: Channel; medium: string };
   isLastItem: boolean;
 };
 
@@ -43,7 +43,7 @@ const InboxCell = (props: InboxCellProps) => {
         )}>
         <Animated.View style={tailwind.style('flex-row items-center')}>
           <Icon
-            icon={getChannelTypeIcon(value.channelType)}
+            icon={getChannelIcon(value.channelType, value.medium, '')}
             size={18}
             style={tailwind.style('my-auto flex items-center justify-center')}
           />

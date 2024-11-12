@@ -6,4 +6,6 @@ export type Inbox = {
   channelId: number;
   name: string;
   channelType: Channel;
+  phoneNumber: string;
+  medium: string;
 };

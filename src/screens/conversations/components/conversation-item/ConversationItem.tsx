@@ -26,6 +26,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 // import { selectContactById } from '@/store/contact/contactSelectors';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { getLastMessage } from '@/utils/conversationUtils';
+import { Inbox } from '@/types/Inbox';
 
 type ConversationCellProps = {
   conversationItem: Conversation;
@@ -59,7 +60,6 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
   const {
     meta: {
       sender: { name: senderName, thumbnail: senderThumbnail },
-      channel,
       assignee,
     },
     id,
@@ -75,6 +75,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
     firstReplyCreatedAt,
     waitingSince,
     status,
+    additionalAttributes,
   } = props.conversationItem;
 
   // const contact = useAppSelector(state => selectContactById(state, contactId));
@@ -175,8 +176,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
             assignee,
             senderName,
             timestamp,
-            inbox,
-            channel,
+            inbox: inbox as Inbox,
             lastNonActivityMessage,
             slaPolicyId,
             lastMessage,
@@ -187,6 +187,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
               waitingSince,
               status,
             },
+            additionalAttributes,
           }}
         />
       </NativeView>

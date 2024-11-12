@@ -133,7 +133,9 @@ const ConversationList = () => {
         assigneeType: filters.assignee_type,
         page: page,
         sortBy: filters.sort_by,
+        inboxId: parseInt(filters.inbox_id),
       } as ConversationPayload;
+
       dispatch(conversationActions.fetchConversations(conversationFilters));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

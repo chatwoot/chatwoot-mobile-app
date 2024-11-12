@@ -32,7 +32,7 @@ const InboxCell = (props: InboxCellProps) => {
 
   const handlePreferredAssigneeTypePress = () => {
     hapticSelection?.();
-    dispatch(setFilters({ key: 'inbox_id', value: value.id }));
+    dispatch(setFilters({ key: 'inbox_id', value: value.id.toString() }));
     setTimeout(() => filtersModalSheetRef.current?.dismiss({ overshootClamping: true }), 1);
   };
 
@@ -51,7 +51,7 @@ const InboxCell = (props: InboxCellProps) => {
           )}>
           {value.name}
         </Animated.Text>
-        {filters.inbox_id === value.id ? <Icon icon={<TickIcon />} size={20} /> : null}
+        {filters.inbox_id === value.id.toString() ? <Icon icon={<TickIcon />} size={20} /> : null}
       </Animated.View>
     </Pressable>
   );

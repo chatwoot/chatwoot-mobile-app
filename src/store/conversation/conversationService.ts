@@ -3,9 +3,18 @@ import type { ConversationAPIResponse, ConversationPayload } from './conversatio
 
 export class ConversationService {
   static async getConversations(payload: ConversationPayload): Promise<ConversationAPIResponse> {
-    const { status, assigneeType, page, sortBy } = payload;
-    const queryParams = `?status=${status}&assignee_type=${assigneeType}&page=${page}&sort_by=${sortBy}`;
-    const response = await apiService.get<ConversationAPIResponse>(`conversations${queryParams}`);
+    const { status, assigneeType, page, sortBy, inboxId = 0 } = payload;
+
+    const params = {
+      inbox_id: inboxId || null,
+      assignee_type: assigneeType,
+      status: status,
+      page: page,
+      sort_by: sortBy,
+    };
+    const response = await apiService.get<ConversationAPIResponse>('conversations', {
+      params,
+    });
     return response.data;
   }
 }

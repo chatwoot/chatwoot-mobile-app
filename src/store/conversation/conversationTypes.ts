@@ -22,6 +22,7 @@ export interface ConversationPayload {
   status: ConversationStatus;
   assigneeType: AssigneeTypes;
   sortBy: SortTypes;
+  inboxId?: number;
 }
 
 export interface ApiErrorResponse {

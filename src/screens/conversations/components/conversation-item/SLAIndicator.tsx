@@ -9,10 +9,7 @@ export const SLAIndicator = () => {
   return (
     <NativeView style={tailwind.style('flex flex-row justify-center items-center')}>
       <SlaMissedIcon />
-      <Text
-        style={tailwind.style(
-          'pl-1 text-ruby-800 text-sm leading-[20px] font-inter-normal-20 text-center',
-        )}>
+      <Text style={tailwind.style('pl-1 text-ruby-800 text-sm leading-[20px] text-center')}>
         NRT: 11d 5h
       </Text>
     </NativeView>

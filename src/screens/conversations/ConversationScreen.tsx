@@ -127,6 +127,7 @@ const ConversationList = () => {
   // };
 
   const handleRefresh = useCallback(() => {
+    setFlashListReady(false);
     setIsRefreshing(true);
     clearAndFetchConversations(filters).finally(() => {
       setIsRefreshing(false);

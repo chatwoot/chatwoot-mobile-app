@@ -10,7 +10,8 @@ import { tailwind } from '../../theme';
 import { LabelType } from '../../types';
 import { useScaleAnimation } from '../../utils';
 import { BottomSheetBackdrop, Icon, SearchBar } from '../common';
-import { allLabels, LabelStack } from '../sheet-components';
+
+import { LabelStack, allLabels } from '@/screens/conversations/components/conversation-sheet';
 
 const { width } = Dimensions.get('screen');
 

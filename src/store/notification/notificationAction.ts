@@ -4,16 +4,17 @@ import type {
   NotificationResponse,
   MarkAsReadPayload,
   ApiErrorResponse,
+  NotificationPayload,
 } from './notificationTypes';
 import { transformNotification, transformNotificationMeta } from '@/utils/camelcaseKeys';
 import { AxiosError } from 'axios';
 
 export const notificationActions = {
-  fetchNotifications: createAsyncThunk<NotificationResponse, { page: number }>(
+  fetchNotifications: createAsyncThunk<NotificationResponse, NotificationPayload>(
     'notifications/fetchNotifications',
-    async ({ page = 1 }, { rejectWithValue }) => {
+    async (payload, { rejectWithValue }) => {
       try {
-        const response = await NotificationService.getNotifications(page);
+        const response = await NotificationService.getNotifications(payload);
         const { payload: notifications, meta } = response.data;
         const transformedResponse: NotificationResponse = {
           notifications: notifications.map(transformNotification),

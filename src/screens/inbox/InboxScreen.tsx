@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { ActivityIndicator, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 import Animated, { LinearTransition, useAnimatedScrollHandler } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList } from '@shopify/flash-list';
@@ -20,11 +20,11 @@ type FlashListRenderItemType = {
   index: number;
 };
 
-const ListFooterComponent = () => (
-  <Animated.View style={tailwind.style('h-20 flex justify-center items-center')}>
-    <ActivityIndicator />
-  </Animated.View>
-);
+// const ListFooterComponent = () => (
+//   <Animated.View style={tailwind.style('h-20 flex justify-center items-center')}>
+//     <ActivityIndicator />
+//   </Animated.View>
+// );
 
 const InboxList = () => {
   const notifications = useAppSelector(selectAllNotifications);
@@ -63,7 +63,14 @@ const InboxList = () => {
 const InboxScreen = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(notificationActions.fetchNotifications({ page: 1 }));
+    dispatch(
+      notificationActions.fetchNotifications({
+        page: 1,
+        sortOrder: 'desc',
+        status: 'snoozed',
+        type: 'read',
+      }),
+    );
   }, [dispatch]);
 
   return (

@@ -19,7 +19,7 @@ export const selectNotificationsMetadata = createSelector(selectNotificationsSta
 }));
 
 export const selectUnreadNotifications = createSelector(selectAllNotifications, notifications =>
-  notifications.filter(notification => !notification.read_at),
+  notifications.filter(notification => !notification.readAt),
 );
 
 export const selectIsLoadingNotifications = createSelector(

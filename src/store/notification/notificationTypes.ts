@@ -43,3 +43,10 @@ export interface MarkAsReadPayload {
   primary_actor_id: number;
   primary_actor_type: PrimaryActorType;
 }
+
+export interface NotificationPayload {
+  page: number;
+  sortOrder: 'desc' | 'asc';
+  status: 'snoozed' | 'all';
+  type: 'read' | 'all';
+}

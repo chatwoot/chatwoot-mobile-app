@@ -100,7 +100,7 @@ const notificationsSlice = createSlice({
               id: primaryActorId,
               changes: { readAt: new Date().toISOString() },
             });
-            state.unreadCount -= 1;
+            state.unreadCount = state.unreadCount > 0 ? state.unreadCount - 1 : 0;
             updateBadgeCount({ count: state.unreadCount });
           }
         },

@@ -45,16 +45,10 @@ export const InboxItem = (props: InboxItemProps) => {
     };
     dispatch(notificationActions.markAsRead(payload));
   };
-  //   const { readInboxItems, toggleReadState, showUnread } = useInboxReadUnreadState();
   const onSwipeLeftAction = () => {
     // toggleReadState(item.id);
   };
 
-  //   const isRead = useMemo(
-  //     () => readInboxItems.includes(item.id),
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //     [readInboxItems.length],
-  //   );
   const isRead = item.readAt;
 
   const meta = item.primaryActor?.meta;

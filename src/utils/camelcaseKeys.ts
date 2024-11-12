@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import camelcaseKeys from 'camelcase-keys';
-import { Contact, Conversation, Message, ConversationMeta } from '@/types';
+import { Contact, Conversation, Message, ConversationMeta, Label } from '@/types';
 import type { Inbox } from '@/types/Inbox';
 import type { NotificationMeta, Notification } from '@/types/Notification';
 
@@ -30,4 +30,8 @@ export const transformNotificationMeta = (meta: any): NotificationMeta => {
 
 export const transformNotification = (notification: any): Notification => {
   return camelcaseKeys(notification, { deep: true }) as unknown as Notification;
+};
+
+export const transformLabel = (label: any): Label => {
+  return camelcaseKeys(label, { deep: true }) as unknown as Label;
 };

@@ -9,7 +9,7 @@ type ConversationIdProps = {
 };
 
 export const ConversationId = (props: ConversationIdProps) => {
-  const { id = 60 } = props;
+  const { id } = props;
   return (
     <NativeView style={tailwind.style('flex flex-row items-center pl-[5px]')}>
       <Text

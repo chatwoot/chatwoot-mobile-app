@@ -39,6 +39,9 @@ type ImageMetadata = {
 export type MessageContentAttributes = {
   inReplyTo: number;
   inReplyToExternalId: null;
+  email: {
+    subject: string;
+  };
 };
 
 export interface Message {

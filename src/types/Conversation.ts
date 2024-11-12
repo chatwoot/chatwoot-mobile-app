@@ -42,6 +42,8 @@ export interface Conversation {
 
   // Deprecated
   timestamp: UnixTimestamp;
+
+  slaPolicyId: number | null;
 }
 
 export interface ConversationMeta {

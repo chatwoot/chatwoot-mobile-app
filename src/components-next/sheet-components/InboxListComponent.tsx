@@ -3,7 +3,7 @@ import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
-import { TickIcon } from '@/svg-icons';
+import { FacebookIcon, TickIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { BottomSheetHeader, Icon } from '@/components-next/common';
@@ -45,12 +45,20 @@ const InboxCell = (props: InboxCellProps) => {
           'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
           index !== inboxList.length - 1 ? 'border-b-[1px] border-blackA-A3' : '',
         )}>
-        <Animated.Text
-          style={tailwind.style(
-            'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px] capitalize',
-          )}>
-          {value.name}
-        </Animated.Text>
+        <Animated.View style={tailwind.style('flex-row items-center')}>
+          <Icon
+            icon={<FacebookIcon />}
+            size={24}
+            style={tailwind.style('my-auto flex items-center justify-center')}
+          />
+
+          <Animated.Text
+            style={tailwind.style(
+              'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px] capitalize ml-2',
+            )}>
+            {value.name}
+          </Animated.Text>
+        </Animated.View>
         {filters.inbox_id === value.id.toString() ? <Icon icon={<TickIcon />} size={20} /> : null}
       </Animated.View>
     </Pressable>

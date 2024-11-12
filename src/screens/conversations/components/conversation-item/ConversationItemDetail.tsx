@@ -7,7 +7,7 @@ import { isEqual } from 'lodash';
 import { Avatar } from '@/components-next/common';
 import {
   ConversationId,
-  LabelText,
+  LabelIndicator,
   PriorityIndicator,
   UnreadIndicator,
   ChannelIndicator,
@@ -15,24 +15,28 @@ import {
 } from '@/components-next/label';
 import { AnimatedNativeView, NativeView } from '@/components-next/native-components';
 import { tailwind } from '@/theme';
-import { Agent, Conversation } from '@/types';
+import { Agent, Channel, Conversation, Message } from '@/types';
 import { formatTimeToShortForm, formatRelativeTime } from '@/utils/dateTimeUtils';
-import { getLastMessage } from '@/utils/conversationUtils';
 import { Inbox } from '@/types/Inbox';
 
 const { width } = Dimensions.get('screen');
 
 type ConversationDetailSubCellProps = Pick<
   Conversation,
-  'id' | 'priority' | 'messages' | 'labels' | 'unreadCount' | 'inbox'
+  'id' | 'priority' | 'messages' | 'labels' | 'unreadCount' | 'inboxId' | 'slaPolicyId'
 > & {
   senderName: string | null;
   assignee: Agent;
   timestamp: number;
   inbox: Inbox;
+  lastMessage: Message;
+  channel: Channel;
 };
 
-const checkIfPropsAreSame = (prev: any, next: any) => {
+const checkIfPropsAreSame = (
+  prev: ConversationDetailSubCellProps,
+  next: ConversationDetailSubCellProps,
+) => {
   const arePropsEqual = isEqual(prev, next);
   return arePropsEqual;
 };
@@ -47,28 +51,24 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
     senderName,
     timestamp,
     inbox,
-    lastNonActivityMessage,
+    slaPolicyId,
+    lastMessage,
+    channel,
   } = props;
 
   const lastActivityAtTimeAgo = formatTimeToShortForm(formatRelativeTime(timestamp));
-
-  const lastMessage = getLastMessage(props);
 
   const hasPriority = priority !== null;
 
   const hasLabels = labels.length > 0;
 
-  const hasSLA = false;
-
-  const content = lastMessage?.content || '';
-
-  // const { createdAt, attachments, messageType, private: isPrivate } = lastMessage;
+  const hasSLA = !!slaPolicyId;
 
   const isEmailChannel = inbox?.channelType === 'Channel::Email';
 
-  // const lastMessageContent = isEmailChannel
-  //   ? lastMessage?.content_attributes?.email?.subject
-  //   : lastMessage?.content;
+  const lastMessageContent = isEmailChannel
+    ? lastMessage?.contentAttributes?.email?.subject
+    : lastMessage?.content;
 
   return (
     <AnimatedNativeView
@@ -89,8 +89,8 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           <ConversationId id={conversationId} />
         </AnimatedNativeView>
         <AnimatedNativeView style={tailwind.style('flex flex-row items-center gap-2')}>
-          {priority ? <PriorityIndicator {...{ priority }} /> : null}
-          {<ChannelIndicator channel="facebook" />}
+          {hasPriority ? <PriorityIndicator {...{ priority }} /> : null}
+          {<ChannelIndicator channel={channel} />}
           <NativeView>
             <Text
               style={tailwind.style(
@@ -110,7 +110,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
               style={tailwind.style(
                 'text-md font-inter-420-20 tracking-[0.32px] text-gray-900 flex-1',
               )}>
-              {content}
+              {lastMessageContent}
             </Text>
             {unreadCount >= 1 && (
               <NativeView style={tailwind.style('flex-shrink-0')}>
@@ -122,16 +122,8 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
             style={tailwind.style('flex flex-row h-6 justify-between items-center gap-2')}>
             <AnimatedNativeView style={tailwind.style('flex flex-row flex-1 gap-2 items-center')}>
               {<SLAIndicator />}
-              <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />
-              <AnimatedNativeView style={tailwind.style('flex flex-row items-center')}>
-                {labels.map((label, i) => {
-                  return (
-                    <NativeView key={i} style={tailwind.style(i !== 0 ? 'pl-1.5' : '')}>
-                      <LabelText labelText={label} />
-                    </NativeView>
-                  );
-                })}
-              </AnimatedNativeView>
+              {hasLabels && <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />}
+              {hasLabels && <LabelIndicator labels={labels} />}
             </AnimatedNativeView>
 
             {assignee ? (
@@ -152,7 +144,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
             style={tailwind.style(
               'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
             )}>
-            {content}
+            {lastMessageContent}
           </Text>
           <AnimatedNativeView style={tailwind.style('flex flex-row items-end pb-1 gap-2')}>
             {assignee ? (

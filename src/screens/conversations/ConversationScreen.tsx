@@ -9,7 +9,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 
-import { ConversationItem, ConversationHeader } from './components';
+import { ConversationItem, ConversationHeader } from './components'; 
 
 import {
   ActionTabs,
@@ -30,7 +30,7 @@ import {
   useConversationListStateContext,
   useRefsContext,
 } from '@/context';
-// import { conversationListData } from '@/mockdata/conversationListMockdata';
+import { conversationListData } from '@/mockdata/conversationListMockdata';
 import { tailwind } from '@/theme';
 import { Conversation } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -186,7 +186,7 @@ const ConversationList = () => {
     <AnimatedFlashList
       layout={LinearTransition.springify().damping(18).stiffness(120)}
       showsVerticalScrollIndicator={false}
-      data={allConversations}
+      data={conversationListData}
       estimatedItemSize={91}
       onScroll={scrollHandler}
       onEndReached={handleOnEndReached}

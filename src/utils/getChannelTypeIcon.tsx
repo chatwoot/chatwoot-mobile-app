@@ -1,6 +1,13 @@
 import React from 'react';
 
-import { FacebookIcon, TelegramIcon, WebsiteIcon, WhatsAppIcon, XIcon } from '../svg-icons';
+import {
+  ChatwootIcon,
+  FacebookIcon,
+  TelegramIcon,
+  WebsiteIcon,
+  WhatsAppIcon,
+  XIcon,
+} from '../svg-icons';
 import { Channel } from '../types';
 
 export const getChannelTypeIcon = (type: Channel) => {
@@ -15,5 +22,7 @@ export const getChannelTypeIcon = (type: Channel) => {
       return <WhatsAppIcon />;
     case 'Channel::TwitterProfile':
       return <XIcon />;
+    default:
+      return <ChatwootIcon />;
   }
 };

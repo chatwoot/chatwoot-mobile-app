@@ -428,7 +428,7 @@ export const conversationListData = [
     created_at: 1685523198,
     timestamp: 1700028357,
     first_reply_created_at: 0,
-    unread_count: 0,
+    unreadCount: 2,
     last_non_activity_message: {
       id: 59281,
       content: 'Fd\n',
@@ -472,6 +472,7 @@ export const conversationListData = [
     last_activity_at: 1700028357,
     priority: null,
     waiting_since: 0,
+    slaPolicyId: 1,
   },
   {
     meta: {
@@ -619,6 +620,7 @@ export const conversationListData = [
     last_activity_at: 1690361760,
     priority: null,
     waiting_since: 0,
+    unreadCount: 1,
   },
   {
     meta: {

@@ -1,5 +1,5 @@
 export * from './ConversationId';
-export * from './Label';
+export * from './LabelIndicator';
 export * from './PriorityIndicator';
 export * from './UnreadIndicator';
 export * from './ChannelIndicator';

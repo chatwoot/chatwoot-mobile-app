@@ -11,10 +11,10 @@ import conversationSlice from '@/store/conversation/conversationSlice';
 import contactSlice from '@/store/contact/contactSlice';
 import inboxSlice from '@/store/inbox/inboxSlice';
 import conversationTypingSlice from '@/store/conversation/conversationTypingSlice';
+import labelSlice from '@/store/label/labelSlice';
 
 import cannedResponseSlice from '@/reducer/cannedResponseSlice';
 import inboxAgentsSlice from '@/reducer/inboxAgentsSlice';
-import labelSlice from '@/reducer/labelSlice';
 import conversationLabelsSlice from '@/reducer/conversationLabelSlice';
 import teamSlice from '@/reducer/teamSlice';
 import customAttributeSlice from '@/reducer/customAttributeSlice';
@@ -31,11 +31,11 @@ export const appReducer = combineReducers({
   conversations: conversationSlice,
   conversationAction: conversationActionSlice,
   contacts: contactSlice,
+  labels: labelSlice,
   inboxes: inboxSlice,
   conversationTyping: conversationTypingSlice,
 
   cannedResponses: cannedResponseSlice,
-  labels: labelSlice,
   conversationLabels: conversationLabelsSlice,
   customAttributes: customAttributeSlice,
   inboxAgents: inboxAgentsSlice,

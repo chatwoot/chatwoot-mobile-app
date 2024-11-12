@@ -3,16 +3,18 @@ import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
-import { FacebookIcon, TickIcon } from '@/svg-icons';
+import { TickIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { BottomSheetHeader, Icon } from '@/components-next/common';
 import { selectFilters, setFilters } from '@/store/conversation/conversationFilterSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
+import { getChannelTypeIcon } from '@/utils';
+import { Channel } from '@/types';
 
 type InboxCellProps = {
-  value: { id: number; name: string };
+  value: { id: number; name: string; channelType: Channel };
   index: number;
 };
 
@@ -25,6 +27,7 @@ const InboxCell = (props: InboxCellProps) => {
   const inboxList = inboxes.map(inbox => ({
     id: inbox.id,
     name: inbox.name,
+    channelType: inbox.channelType,
   }));
 
   const filters = useAppSelector(selectFilters);
@@ -47,7 +50,7 @@ const InboxCell = (props: InboxCellProps) => {
         )}>
         <Animated.View style={tailwind.style('flex-row items-center')}>
           <Icon
-            icon={<FacebookIcon />}
+            icon={getChannelTypeIcon(value.channelType)}
             size={24}
             style={tailwind.style('my-auto flex items-center justify-center')}
           />
@@ -66,7 +69,7 @@ const InboxCell = (props: InboxCellProps) => {
 };
 
 type InboxStackProps = {
-  list: { id: number; name: string }[];
+  list: { id: number; name: string; channelType: Channel }[];
 };
 
 const InboxStack = (props: InboxStackProps) => {
@@ -85,11 +88,12 @@ export const InboxListComponent = () => {
   const inboxList = inboxes.map(inbox => ({
     id: inbox.id,
     name: inbox.name,
+    channelType: inbox.channelType,
   }));
 
   return (
     <Animated.View>
-      <BottomSheetHeader headerText={'Filter by inbox'} />
+      <BottomSheetHeader headerText={'Filter by Inbox'} />
       <InboxStack list={inboxList} />
     </Animated.View>
   );

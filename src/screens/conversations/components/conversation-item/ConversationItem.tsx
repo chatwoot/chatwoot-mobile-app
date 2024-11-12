@@ -176,6 +176,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
             lastNonActivityMessage,
             slaPolicyId,
             lastMessage,
+            inboxId,
           }}
         />
       </NativeView>

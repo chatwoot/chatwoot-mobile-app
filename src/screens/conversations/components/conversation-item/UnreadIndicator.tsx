@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-import { tailwind } from '../../theme';
-import { NativeView } from '../native-components';
+import { tailwind } from '@/theme';
+import { NativeView } from '@/components-next/native-components';
 
 type UnreadIndicatorProps = {
   count: number;

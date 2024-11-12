@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { tailwind } from '../../theme';
-import { ConversationPriority } from '../../types';
-import { NativeView } from '../native-components';
+import { tailwind } from '@/theme';
+import { ConversationPriority } from '@/types';
+import { NativeView } from '@/components-next/native-components';
 import { UrgentIcon } from '@/svg-icons/priority-icons';
 
 type PriorityIndicatorProps = {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { tailwind } from '@/theme';
-import { NativeView } from '../native-components';
+import { NativeView } from '@/components-next/native-components';
 import { Icon } from '@/components-next';
 import { getChannelTypeIcon } from '@/utils/getChannelTypeIcon';
 import { Channel } from '@/types';

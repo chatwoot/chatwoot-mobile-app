@@ -9,7 +9,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 
-import { ConversationItem, ConversationHeader } from './components'; 
+import { ConversationItem, ConversationHeader } from './components';
 
 import {
   ActionTabs,

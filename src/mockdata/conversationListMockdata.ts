@@ -15,7 +15,7 @@ export const conversationListData = [
         last_activity_at: 1685523199,
         created_at: 1685523199,
       },
-      channel: 'Channel::Email',
+      channel: 'Channel::Facebook',
       assignee: {
         id: 156,
         account_id: 51,

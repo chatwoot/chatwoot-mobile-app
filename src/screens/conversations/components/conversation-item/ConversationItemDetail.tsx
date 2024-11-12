@@ -5,19 +5,17 @@ import { LinearTransition } from 'react-native-reanimated';
 import { isEqual } from 'lodash';
 
 import { Avatar } from '@/components-next/common';
-import {
-  ConversationId,
-  LabelIndicator,
-  PriorityIndicator,
-  UnreadIndicator,
-  ChannelIndicator,
-  SLAIndicator,
-} from '@/components-next/label';
 import { AnimatedNativeView, NativeView } from '@/components-next/native-components';
 import { tailwind } from '@/theme';
 import { Agent, Channel, Conversation, Message } from '@/types';
 import { formatTimeToShortForm, formatRelativeTime } from '@/utils/dateTimeUtils';
-import { Inbox } from '@/types/Inbox';
+
+import { ConversationId } from './ConversationId';
+import { PriorityIndicator } from './PriorityIndicator';
+import { UnreadIndicator } from './UnreadIndicator';
+import { ChannelIndicator } from './ChannelIndicator';
+import { SLAIndicator } from './SLAIndicator';
+import { LabelIndicator } from './LabelIndicator';
 
 const { width } = Dimensions.get('screen');
 
@@ -28,8 +26,7 @@ type ConversationDetailSubCellProps = Pick<
   senderName: string | null;
   assignee: Agent;
   timestamp: number;
-  inbox: Inbox;
-  lastMessage: Message;
+  lastMessage?: Message | null;
   channel: Channel;
 };
 
@@ -50,7 +47,6 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
     assignee,
     senderName,
     timestamp,
-    inbox,
     slaPolicyId,
     lastMessage,
     channel,
@@ -64,11 +60,15 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
 
   const hasSLA = !!slaPolicyId;
 
-  const isEmailChannel = inbox?.channelType === 'Channel::Email';
+  const isEmailChannel = channel === 'Channel::Email';
 
   const lastMessageContent = isEmailChannel
     ? lastMessage?.contentAttributes?.email?.subject
     : lastMessage?.content;
+
+  if (!lastMessage) {
+    return null;
+  }
 
   return (
     <AnimatedNativeView

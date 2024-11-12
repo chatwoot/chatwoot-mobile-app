@@ -10,8 +10,7 @@ export const ConversationError = ({ message }: { message: string }) => {
     <Animated.View
       style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
       <EmptyStateIcon />
-      <Animated.Text
-        style={tailwind.style('pt-6 text-md font-inter-normal-24 tracking-[0.32px] text-gray-800')}>
+      <Animated.Text style={tailwind.style('pt-6 text-md  tracking-[0.32px] text-gray-800')}>
         {message}
       </Animated.Text>
     </Animated.View>

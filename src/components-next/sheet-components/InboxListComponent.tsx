@@ -51,7 +51,7 @@ const InboxCell = (props: InboxCellProps) => {
         <Animated.View style={tailwind.style('flex-row items-center')}>
           <Icon
             icon={getChannelTypeIcon(value.channelType)}
-            size={24}
+            size={18}
             style={tailwind.style('my-auto flex items-center justify-center')}
           />
 
@@ -75,11 +75,11 @@ type InboxStackProps = {
 const InboxStack = (props: InboxStackProps) => {
   const { list } = props;
   return (
-    <Animated.View style={tailwind.style('py-1 pl-3')}>
+    <Animated.ScrollView style={tailwind.style('pl-3 pb-4')}>
       {list.map((value, index) => (
         <InboxCell key={index} {...{ value, index }} />
       ))}
-    </Animated.View>
+    </Animated.ScrollView>
   );
 };
 
@@ -92,9 +92,9 @@ export const InboxListComponent = () => {
   }));
 
   return (
-    <Animated.View>
+    <Animated.ScrollView>
       <BottomSheetHeader headerText={'Filter by Inbox'} />
       <InboxStack list={inboxList} />
-    </Animated.View>
+    </Animated.ScrollView>
   );
 };

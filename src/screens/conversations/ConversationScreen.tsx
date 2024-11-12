@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, StatusBar } from 'react-native';
+import { ActivityIndicator, RefreshControl, StatusBar } from 'react-native';
 import Animated, {
   LinearTransition,
   runOnJS,
@@ -67,6 +67,7 @@ const ConversationList = () => {
   const dispatch = useAppDispatch();
 
   const [isFlashListReady, setFlashListReady] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const userId = useAppSelector(selectUserId);
 
@@ -126,6 +127,13 @@ const ConversationList = () => {
   //   );
   // };
 
+  const handleRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    clearAndFetchConversations(filters).finally(() => {
+      setIsRefreshing(false);
+    });
+  }, [clearAndFetchConversations, filters]);
+
   const fetchConversations = useCallback(
     async (filters: FilterState, page: number = 1) => {
       const conversationFilters = {
@@ -174,16 +182,21 @@ const ConversationList = () => {
       <ActivityIndicator />
     </Animated.View>
   ) : allConversations.length === 0 ? (
-    <Animated.View
-      style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
+    <Animated.ScrollView
+      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+      contentContainerStyle={tailwind.style(
+        'flex-1 items-center justify-center',
+        `pb-[${TAB_BAR_HEIGHT}px]`,
+      )}>
       <EmptyStateIcon />
       <Animated.Text
         style={tailwind.style('pt-6 text-md font-inter-normal-24 tracking-[0.32px] text-gray-800')}>
         {i18n.t('CONVERSATION.EMPTY')}
       </Animated.Text>
-    </Animated.View>
+    </Animated.ScrollView>
   ) : (
     <AnimatedFlashList
+      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       layout={LinearTransition.springify().damping(18).stiffness(120)}
       showsVerticalScrollIndicator={false}
       data={conversationListData}

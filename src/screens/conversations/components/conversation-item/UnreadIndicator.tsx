@@ -17,7 +17,7 @@ export const UnreadIndicator = (props: UnreadIndicatorProps) => {
         style={tailwind.style(
           'text-cxs font-inter-semibold-24 leading-[15px] text-center text-white',
         )}>
-        {count}
+        {count > 9 ? '9+' : count}
       </Text>
     </NativeView>
   );

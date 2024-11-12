@@ -41,17 +41,14 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
   const {
     id: conversationId,
     priority,
-    // unreadCount = 2,
-    // labels,
+    unreadCount,
+    labels,
     assignee,
     senderName,
     timestamp,
     inbox,
     lastNonActivityMessage,
   } = props;
-  const unreadCount = 2;
-  // const assignee = null;
-  const labels = [];
 
   const lastActivityAtTimeAgo = formatTimeToShortForm(formatRelativeTime(timestamp));
 
@@ -88,7 +85,6 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
               `max-w-[${width - 250}px]`,
             )}>
             {senderName}
-            {/* Floyd Alexander Miles Miles */}
           </Text>
           <ConversationId id={conversationId} />
         </AnimatedNativeView>
@@ -114,8 +110,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
               style={tailwind.style(
                 'text-md font-inter-420-20 tracking-[0.32px] text-gray-900 flex-1',
               )}>
-              Hi there, I accidentally purchased the wrong item. Can I cancel the order and get a
-              refund?
+              {content}
             </Text>
             {unreadCount >= 1 && (
               <NativeView style={tailwind.style('flex-shrink-0')}>
@@ -156,10 +151,8 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
             numberOfLines={2}
             style={tailwind.style(
               'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
-              // unreadCount >= 1 ? 'pr-13' : ' pr-11',
             )}>
-            Hi there, I accidentally purchased the wrong item. Can I cancel the order and get a
-            refund?
+            {content}
           </Text>
           <AnimatedNativeView style={tailwind.style('flex flex-row items-end pb-1 gap-2')}>
             {assignee ? (
@@ -171,7 +164,8 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
                 />
               </NativeView>
             ) : null}
-            {unreadCount >= 1 && <UnreadIndicator count={unreadCount} />}
+
+            {unreadCount >= 0 && <UnreadIndicator count={unreadCount} />}
           </AnimatedNativeView>
         </AnimatedNativeView>
       )}

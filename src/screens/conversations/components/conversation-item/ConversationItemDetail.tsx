@@ -16,6 +16,7 @@ import { UnreadIndicator } from './UnreadIndicator';
 import { ChannelIndicator } from './ChannelIndicator';
 import { SLAIndicator } from './SLAIndicator';
 import { LabelIndicator } from './LabelIndicator';
+import { SLA } from '@/types/common/SLA';
 
 const { width } = Dimensions.get('screen');
 
@@ -28,6 +29,12 @@ type ConversationDetailSubCellProps = Pick<
   timestamp: number;
   lastMessage?: Message | null;
   channel: Channel;
+  appliedSla: SLA;
+  appliedSlaConversationDetails: {
+    firstReplyCreatedAt: number;
+    waitingSince: number;
+    status: string;
+  };
 };
 
 const checkIfPropsAreSame = (
@@ -50,6 +57,8 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
     slaPolicyId,
     lastMessage,
     channel,
+    appliedSla,
+    appliedSlaConversationDetails,
   } = props;
 
   const lastActivityAtTimeAgo = formatTimeToShortForm(formatRelativeTime(timestamp));
@@ -121,8 +130,16 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           <AnimatedNativeView
             style={tailwind.style('flex flex-row h-6 justify-between items-center gap-2')}>
             <AnimatedNativeView style={tailwind.style('flex flex-row flex-1 gap-2 items-center')}>
-              {<SLAIndicator />}
-              {hasLabels && <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />}
+              {hasSLA && (
+                <SLAIndicator
+                  slaPolicyId={slaPolicyId}
+                  appliedSla={appliedSla}
+                  appliedSlaConversationDetails={appliedSlaConversationDetails}
+                />
+              )}
+              {hasLabels && hasSLA && (
+                <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />
+              )}
               {hasLabels && <LabelIndicator labels={labels} />}
             </AnimatedNativeView>
 

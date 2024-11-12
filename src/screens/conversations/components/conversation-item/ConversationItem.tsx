@@ -71,6 +71,10 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
     inboxId,
     lastNonActivityMessage,
     slaPolicyId,
+    appliedSla,
+    firstReplyCreatedAt,
+    waitingSince,
+    status,
   } = props.conversationItem;
 
   // const contact = useAppSelector(state => selectContactById(state, contactId));
@@ -177,6 +181,12 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
             slaPolicyId,
             lastMessage,
             inboxId,
+            appliedSla,
+            appliedSlaConversationDetails: {
+              firstReplyCreatedAt,
+              waitingSince,
+              status,
+            },
           }}
         />
       </NativeView>

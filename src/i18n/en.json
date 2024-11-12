@@ -262,6 +262,9 @@
     }
   },
   "SLA": {
+    "FRT": "FRT",
+    "NRT": "NRT",
+    "RT": "RT",
     "STATUS": {
       "FRT": "FRT %{status}",
       "NRT": "NRT %{status}",

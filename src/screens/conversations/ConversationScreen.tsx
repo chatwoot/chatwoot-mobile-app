@@ -9,19 +9,18 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 
-import { ConversationItem, ConversationHeader } from './components';
-
 import {
-  ActionTabs,
-  AssigneeListComponent,
-  AssigneeTypeListComponent,
-  BottomSheetBackdrop,
-  BottomSheetWrapper,
-  LabelListComponent,
-  SortByListComponent,
-  StatusListComponent,
-  InboxListComponent,
-} from '@/components-next';
+  ConversationItem,
+  ConversationHeader,
+  InboxListSheet,
+  StatusListSheet,
+  SortBySheet,
+  AssigneeTypeSheet,
+  AssigneeListSheet,
+  LabelListSheet,
+} from './components';
+
+import { ActionTabs, BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
 
 import { EmptyStateIcon } from '@/svg-icons';
 import { TAB_BAR_HEIGHT } from '@/constants';
@@ -287,10 +286,10 @@ const ConversationScreen = () => {
           snapPoints={filterSnapPoints}
           onDismiss={handleOnDismiss}>
           <BottomSheetWrapper>
-            {currentBottomSheet === 'status' ? <StatusListComponent type="Filter" /> : null}
-            {currentBottomSheet === 'sort_by' ? <SortByListComponent /> : null}
-            {currentBottomSheet === 'assignee_type' ? <AssigneeTypeListComponent /> : null}
-            {currentBottomSheet === 'inbox_id' ? <InboxListComponent /> : null}
+            {currentBottomSheet === 'status' ? <StatusListSheet type="Filter" /> : null}
+            {currentBottomSheet === 'sort_by' ? <SortBySheet /> : null}
+            {currentBottomSheet === 'assignee_type' ? <AssigneeTypeSheet /> : null}
+            {currentBottomSheet === 'inbox_id' ? <InboxListSheet /> : null}
           </BottomSheetWrapper>
         </BottomSheetModal>
         <BottomSheetModal
@@ -307,9 +306,9 @@ const ConversationScreen = () => {
           enablePanDownToClose
           snapPoints={actionSnapPoints}
           onDismiss={handleOnDismiss}>
-          {currentActionState === 'Assign' ? <AssigneeListComponent /> : null}
-          {currentActionState === 'Status' ? <StatusListComponent type="SetStatus" /> : null}
-          {currentActionState === 'Label' ? <LabelListComponent /> : null}
+          {currentActionState === 'Assign' ? <AssigneeListSheet /> : null}
+          {currentActionState === 'Status' ? <StatusListSheet type="SetStatus" /> : null}
+          {currentActionState === 'Label' ? <LabelListSheet /> : null}
         </BottomSheetModal>
         <ActionTabs />
       </ConversationListStateProvider>

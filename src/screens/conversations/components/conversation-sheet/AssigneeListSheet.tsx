@@ -3,63 +3,19 @@ import { ImageSourcePropType, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
-import { useRefsContext } from '../../context';
-import { tailwind } from '../../theme';
-import { Agent } from '../../types';
-import { Avatar, SearchBar } from '../common';
+import { useRefsContext } from '@/context';
+import { tailwind } from '@/theme';
+import { Agent } from '@/types';
+import { Avatar, SearchBar } from '@/components-next';
 
 export const people: Agent[] = [
   {
     name: 'James Madisson',
-    thumbnail: require('../../assets/local/avatars-small/avatar.png'),
+    thumbnail: require('@/assets/local/avatars-small/avatar.png'),
   },
   {
     name: 'Sarah Yu',
-    thumbnail: require('../../assets/local/avatars-small/avatar1.png'),
-  },
-  {
-    name: 'Kimber Lee',
-    thumbnail: require('../../assets/local/avatars-small/avatar3.png'),
-  },
-  {
-    name: 'Nilan Roy',
-    thumbnail: require('../../assets/local/avatars-small/avatar2.png'),
-  },
-  {
-    name: 'James Jordan',
-    thumbnail: require('../../assets/local/avatars-small/avatar4.png'),
-  },
-  {
-    name: 'Alyssa Normandy',
-    thumbnail: require('../../assets/local/avatars-small/avatar5.png'),
-  },
-  {
-    name: 'Richard Grove',
-    thumbnail: require('../../assets/local/avatars-small/avatar6.png'),
-  },
-  {
-    name: 'Jay Prichett',
-    thumbnail: require('../../assets/local/avatars-small/avatar4.png'),
-  },
-  {
-    name: 'Claire Normandy',
-    thumbnail: require('../../assets/local/avatars-small/avatar5.png'),
-  },
-  {
-    name: 'Mitchell Grove',
-    thumbnail: require('../../assets/local/avatars-small/avatar6.png'),
-  },
-  {
-    name: 'Phil Dunphy',
-    thumbnail: require('../../assets/local/avatars-small/avatar4.png'),
-  },
-  {
-    name: 'Alex Turner',
-    thumbnail: require('../../assets/local/avatars-small/avatar5.png'),
-  },
-  {
-    name: 'Manny Delgado',
-    thumbnail: require('../../assets/local/avatars-small/avatar6.png'),
+    thumbnail: require('@/assets/local/avatars-small/avatar1.png'),
   },
 ];
 
@@ -108,7 +64,7 @@ const AssigneeStack = () => {
   );
 };
 
-export const AssigneeListComponent = () => {
+export const AssigneeListSheet = () => {
   const { actionsModalSheetRef } = useRefsContext();
   const handleFocus = () => {
     actionsModalSheetRef.current?.expand();

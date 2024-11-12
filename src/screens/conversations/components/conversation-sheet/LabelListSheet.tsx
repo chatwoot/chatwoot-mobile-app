@@ -3,10 +3,10 @@ import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
-import { useRefsContext } from '../../context';
-import { tailwind } from '../../theme';
-import { LabelType } from '../../types';
-import { SearchBar } from '../common';
+import { useRefsContext } from '@/context';
+import { tailwind } from '@/theme';
+import { LabelType } from '@/types';
+import { SearchBar } from '@/components-next';
 
 type LabelCellProps = {
   value: LabelType;
@@ -125,7 +125,7 @@ export const allLabels: LabelType[] = [
   },
 ];
 
-export const LabelListComponent = () => {
+export const LabelListSheet = () => {
   const { actionsModalSheetRef } = useRefsContext();
   const handleFocus = () => {
     actionsModalSheetRef.current?.expand();

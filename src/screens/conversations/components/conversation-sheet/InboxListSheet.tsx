@@ -15,20 +15,13 @@ import { Channel } from '@/types';
 
 type InboxCellProps = {
   value: { id: number; name: string; channelType: Channel };
-  index: number;
+  isLastItem: boolean;
 };
 
 const InboxCell = (props: InboxCellProps) => {
   const { filtersModalSheetRef } = useRefsContext();
   const dispatch = useAppDispatch();
-  const { value, index } = props;
-
-  const inboxes = useAppSelector(selectAllInboxes);
-  const inboxList = inboxes.map(inbox => ({
-    id: inbox.id,
-    name: inbox.name,
-    channelType: inbox.channelType,
-  }));
+  const { value, isLastItem } = props;
 
   const filters = useAppSelector(selectFilters);
   const hapticSelection = useHaptic();
@@ -46,7 +39,7 @@ const InboxCell = (props: InboxCellProps) => {
       <Animated.View
         style={tailwind.style(
           'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
-          index !== inboxList.length - 1 ? 'border-b-[1px] border-blackA-A3' : '',
+          !isLastItem ? 'border-b-[1px] border-blackA-A3' : '',
         )}>
         <Animated.View style={tailwind.style('flex-row items-center')}>
           <Icon
@@ -77,13 +70,13 @@ const InboxStack = (props: InboxStackProps) => {
   return (
     <Animated.ScrollView style={tailwind.style('pl-3 pb-4')}>
       {list.map((value, index) => (
-        <InboxCell key={index} {...{ value, index }} />
+        <InboxCell key={index} {...{ value, index, isLastItem: index === list.length - 1 }} />
       ))}
     </Animated.ScrollView>
   );
 };
 
-export const InboxListComponent = () => {
+export const InboxListSheet = () => {
   const inboxes = useAppSelector(selectAllInboxes);
   const inboxList = inboxes.map(inbox => ({
     id: inbox.id,

@@ -15,7 +15,7 @@ export const UnreadIndicator = (props: UnreadIndicatorProps) => {
       style={tailwind.style('h-5 w-5 flex justify-center items-center rounded-full bg-blue-700')}>
       <Text
         style={tailwind.style(
-          'text-cxs font-inter-semibold-24 leading-[15px] text-center text-white',
+          'text-cxs font-inter-semibold-20 leading-[15px] text-center text-white',
         )}>
         {count > 9 ? '9+' : count}
       </Text>

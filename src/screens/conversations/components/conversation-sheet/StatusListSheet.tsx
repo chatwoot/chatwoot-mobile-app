@@ -7,9 +7,9 @@ import { useRefsContext } from '@/context';
 import { selectFilters, setFilters } from '@/store/conversation/conversationFilterSlice';
 import { TickIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { StatusCollection } from '../../types';
-import { getStatusTypeIcon, useHaptic } from '../../utils';
-import { BottomSheetHeader, Icon, StatusOptions } from '../common';
+import { StatusCollection } from '@/types';
+import { getStatusTypeIcon, useHaptic } from '@/utils';
+import { BottomSheetHeader, Icon, StatusOptions } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 
 type StatusCellProps = {
@@ -91,7 +91,7 @@ interface StatusListComponentProps {
   type: 'Filter' | 'SetStatus';
 }
 
-export const StatusListComponent = (props: StatusListComponentProps) => {
+export const StatusListSheet = (props: StatusListComponentProps) => {
   const { type } = props;
   return (
     <BottomSheetView>

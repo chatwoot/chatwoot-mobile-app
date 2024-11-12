@@ -11,7 +11,7 @@ export const SLAIndicator = () => {
       <SlaMissedIcon />
       <Text
         style={tailwind.style(
-          'pl-1 text-ruby-800 text-cxs leading-[16px] font-inter-semibold-24 text-center',
+          'pl-1 text-ruby-800 text-sm leading-[20px] font-inter-normal-20 text-center',
         )}>
         NRT: 11d 5h
       </Text>

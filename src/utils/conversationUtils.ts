@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { groupBy } from 'lodash';
 
 import type { FilterState } from '@/store/conversation/conversationFilterSlice';
+import { PendingMessage } from '@/store/conversation/conversationTypes';
 
 const filterByStatus = (chatStatus: string, filterStatus: string) =>
   filterStatus === 'all' ? true : chatStatus === filterStatus;
@@ -64,6 +65,19 @@ export const getReadMessages = (messages: Message[], agentLastSeenAt: number): M
 
 export const getUnreadMessages = (messages: Message[], agentLastSeenAt: number): Message[] => {
   return messages.filter(message => message.createdAt * 1000 > agentLastSeenAt * 1000);
+};
+
+export const findPendingMessageIndex = (
+  conversation: Conversation,
+  message: PendingMessage | Message,
+) => {
+  const { echoId: tempMessageId } = message;
+  if (tempMessageId) {
+    return conversation.messages.findIndex(
+      message => message.id === message.id || message.echoId === tempMessageId,
+    );
+  }
+  return conversation.messages.findIndex(message => message.id === message.id);
 };
 
 // TODO: Add tests for this function

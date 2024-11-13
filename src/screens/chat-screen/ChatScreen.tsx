@@ -65,9 +65,9 @@ const ChatScreenWrapper = (props: ChatScreenProps) => {
   return (
     <React.Fragment>
       <ChatScreenHeader
-        name={senderName}
+        name={senderName || ''}
         imageSrc={{
-          uri: senderThumbnail,
+          uri: senderThumbnail || '',
         }}
       />
       <ConversationPagerView {...props} />

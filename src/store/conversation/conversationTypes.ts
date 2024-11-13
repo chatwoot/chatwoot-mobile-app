@@ -5,6 +5,8 @@ import type {
   SortTypes,
 } from '@/types/common/ConversationStatus';
 import type { Message } from '@/types/Message';
+import { MESSAGE_STATUS, MESSAGE_TYPES } from '@/constants';
+
 export interface ConversationAPIResponse {
   data: {
     meta: ConversationListMeta;
@@ -44,4 +46,68 @@ export interface MessagesResponse {
   meta: ConversationMeta;
   messages: Message[];
   conversationId: number;
+}
+
+export interface SendMessagePayload {
+  conversationId: number;
+  message: string;
+  private: boolean;
+  sender: {
+    id: number;
+    thumbnail?: string;
+  };
+  file?: File;
+  contentAttributes?: {
+    inReplyTo: string;
+  };
+  templateParams?: string;
+  ccEmails?: string;
+  bccEmails?: string;
+  toEmails?: string;
+}
+
+export interface PendingMessage extends SendMessagePayload {
+  content: string | null;
+  id: string;
+  echoId: string;
+  status: typeof MESSAGE_STATUS.PROGRESS;
+  createdAt: number;
+  messageType: typeof MESSAGE_TYPES.OUTGOING;
+  attachments: { id: string }[] | null;
+}
+
+export type MessageBuilderPayload =
+  | FormData
+  | {
+      content: string;
+      private: boolean;
+      echo_id: string;
+      content_attributes?: Record<string, unknown>;
+      cc_emails?: string;
+      bcc_emails?: string;
+      template_params?: string;
+    };
+
+export interface SendMessageAPIResponse {
+  id: number;
+  content: string;
+  inbox_id: number;
+  echo_id: string;
+  conversation_id: number;
+  message_type: typeof MESSAGE_TYPES;
+  content_type: string;
+  status: typeof MESSAGE_STATUS;
+  content_attributes?: Record<string, unknown>;
+  created_at: number;
+  private: boolean;
+  source_id: string | null;
+  sender: {
+    id: number;
+    name: string;
+    available_name: string;
+    avatar_url: string;
+    type: string;
+    availability_status: string;
+    thumbnail: string;
+  };
 }

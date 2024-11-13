@@ -112,7 +112,9 @@ const Tabs = () => {
   }, []);
 
   const initActionCable = useCallback(async () => {
-    actionCableConnector.init({ pubSubToken, webSocketUrl, accountId, userId });
+    if (pubSubToken && webSocketUrl && accountId && userId) {
+      actionCableConnector.init({ pubSubToken, webSocketUrl, accountId, userId });
+    }
   }, [accountId, pubSubToken, userId, webSocketUrl]);
 
   useEffect(() => {

@@ -10,7 +10,7 @@ import { useChatWindowContext } from '../../../context';
 import { useLocalRecordedAudioCache, useMessageList } from '../../../storev2';
 import { SendIcon, Trash } from '../../../svg-icons';
 import { tailwind } from '../../../theme';
-import { constructAudioMessage } from '../../../utils';
+// import { constructAudioMessage } from '../../../utils';
 import { Icon } from '../../common';
 import { PauseIcon, PlayIcon } from '../message-components';
 
@@ -121,7 +121,7 @@ export const AudioRecorder = () => {
          * the Audio File is a local cache, so we might have to upload the file to server,
          * because the cache file gets overwritten
          */
-        addNewMessage(constructAudioMessage(value));
+        // addNewMessage(constructAudioMessage(value));
         addNewCachePath(value);
         setIsVoiceRecorderOpen(false);
       })

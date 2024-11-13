@@ -1,10 +1,11 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { Conversation } from '@/types/Conversation';
 import { conversationActions } from './conversationActions';
-import { transformConversation } from '@/utils';
-import { findPendingMessageIndex } from '@/helpers/conversationHelpers';
+import { transformConversation, findPendingMessageIndex } from '@/utils';
+
 import { MESSAGE_TYPES } from '@/constants';
 import { Message } from '@/types/Message';
+import { PendingMessage } from './conversationTypes';
 
 export interface ConversationState {
   meta: {
@@ -65,12 +66,13 @@ const conversationSlice = createSlice({
       }
     },
     addOrUpdateMessage: (state, action) => {
-      const message = action.payload as Message;
+      const message = action.payload as PendingMessage | Message;
 
       const { conversationId } = message;
       if (!conversationId) {
         return;
       }
+
       const conversation = state.entities[conversationId];
 
       // If the conversation is not present in the store, we don't need to add the message
@@ -81,15 +83,17 @@ const conversationSlice = createSlice({
       if (message.messageType === MESSAGE_TYPES.INCOMING) {
         conversation.canReply = true;
       }
+      // Check message is already present in the conversation
       const pendingMessageIndex = findPendingMessageIndex(conversation, message);
       if (pendingMessageIndex !== -1) {
-        conversation.messages[pendingMessageIndex] = message;
-      } else {
-        conversation.messages.push(message);
-        conversation.timestamp = message.createdAt;
-        const { conversation: { unreadCount = 0 } = {} } = message;
-        conversation.unreadCount = unreadCount;
+        conversation.messages[pendingMessageIndex] = message as Message;
       }
+      // If the message is not present in the conversation, add it
+      else {
+        conversation.messages.push(message as Message);
+      }
+      conversation.timestamp = message.createdAt;
+      conversation.unreadCount = (message as Message).conversation?.unreadCount || 0;
     },
     updateConversationLastActivity: (state, action) => {
       const { conversationId, lastActivityAt } = action.payload;

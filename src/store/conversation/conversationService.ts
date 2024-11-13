@@ -4,6 +4,8 @@ import type {
   ConversationPayload,
   MessagesPayload,
   MessagesAPIResponse,
+  MessageBuilderPayload,
+  SendMessageAPIResponse,
 } from './conversationTypes';
 
 export class ConversationService {
@@ -32,6 +34,17 @@ export class ConversationService {
           before: beforeId,
         },
       },
+    );
+    return response.data;
+  }
+
+  static async sendMessage(
+    conversationId: number,
+    payload: MessageBuilderPayload,
+  ): Promise<SendMessageAPIResponse> {
+    const response = await apiService.post<SendMessageAPIResponse>(
+      `conversations/${conversationId}/messages`,
+      payload,
     );
     return response.data;
   }

@@ -15,10 +15,10 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useChatWindowContext, useRefsContext } from '../../context';
-import { useMessageList, useSendMessage } from '../../storev2';
+import { useSendMessage } from '../../storev2';
 import { AddIcon, PhotosIcon, SendIcon, VoiceNote } from '../../svg-icons';
 import { tailwind } from '../../theme';
-import { constructTextMessage, useHaptic, useScaleAnimation } from '../../utils';
+import { useHaptic, useScaleAnimation } from '../../utils';
 import { Icon } from '../common';
 
 import { AttachedMedia } from './AttachedMedia';
@@ -34,6 +34,10 @@ import {
 } from './customAnimations';
 import { MessageTextInput } from './message-input';
 import { QuoteReply } from './QuoteReply';
+import { conversationActions } from '@/store/conversation/conversationActions';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { SendMessagePayload } from '@/store/conversation/conversationTypes';
+import { selectUserId, selectUserThumbnail } from '@/store/auth/authSelectors';
 
 const SHEET_APPEAR_SPRING_CONFIG: WithSpringConfig = {
   damping: 20,
@@ -150,6 +154,10 @@ const PhotosCommandButton = (props: PhotosCommandButtonProps) => {
 
 const BottomSheetContent = () => {
   const hapticSelection = useHaptic();
+  const dispatch = useAppDispatch();
+  const userId = useAppSelector(selectUserId);
+  const userThumbnail = useAppSelector(selectUserThumbnail);
+
   const {
     messageContent,
     updateAttachments,
@@ -159,7 +167,7 @@ const BottomSheetContent = () => {
     resetSentMessage,
   } = useSendMessage();
 
-  const { addNewMessage } = useMessageList();
+  // const { addNewMessage } = useMessageList();
   const { bottom } = useSafeAreaInsets();
   const {
     isAddMenuOptionSheetOpen,
@@ -168,6 +176,7 @@ const BottomSheetContent = () => {
     isVoiceRecorderOpen,
     setIsVoiceRecorderOpen,
     isTextInputFocused,
+    conversationId,
   } = useChatWindowContext();
 
   const { messageListRef } = useRefsContext();
@@ -200,17 +209,28 @@ const BottomSheetContent = () => {
 
   const sendMessage = () => {
     hapticSelection?.();
+
     // @ts-ignore
     textInputRef?.current?.clear();
     if (messageContent.length >= 0) {
-      addNewMessage(
-        constructTextMessage(
-          messageContent,
-          isPrivateMessage,
-          attachments,
-          quoteMessage ? { inReplyTo: quoteMessage.id, inReplyToExternalId: null } : null,
-        ),
-      );
+      // addNewMessage(
+      //   constructTextMessage(
+      //     messageContent,
+      //     isPrivateMessage,
+      //     attachments,
+      //     quoteMessage ? { inReplyTo: quoteMessage.id, inReplyToExternalId: null } : null,
+      //   ),
+      // );
+      const payload: SendMessagePayload = {
+        conversationId: conversationId,
+        message: messageContent,
+        private: isPrivateMessage,
+        sender: {
+          id: userId ?? 0,
+          thumbnail: userThumbnail ?? '',
+        },
+      };
+      dispatch(conversationActions.sendMessage(payload));
       resetSentMessage();
       messageListRef?.current?.scrollToOffset({ offset: 0, animated: true });
     }

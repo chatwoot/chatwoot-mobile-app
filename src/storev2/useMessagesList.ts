@@ -2,20 +2,15 @@ import { create } from 'zustand';
 
 import { Message } from '../types';
 
-import { getGroupedMessages, formatDate, SectionGroupMessages } from '@/utils';
+import { formatDate, SectionGroupMessages } from '@/utils';
 
 export type MessageListState = {
   messageList: SectionGroupMessages[];
-  setMessageList: (messageList: Message[]) => void;
   addNewMessage: (message: Message) => void;
 };
 
 export const useMessageList = create<MessageListState>(set => ({
   messageList: [],
-  setMessageList: messageList => {
-    const formattedList = getGroupedMessages(messageList);
-    set(state => ({ ...state, messageList: formattedList }));
-  },
   addNewMessage: message => {
     set(state => {
       const newMessageDate = formatDate(message.createdAt);

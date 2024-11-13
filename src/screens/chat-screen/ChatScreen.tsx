@@ -17,10 +17,9 @@ import { tailwind } from '@/theme';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { useAppSelector } from '@/hooks';
 export const ChatWindow = (props: ChatScreenProps) => {
-  const { conversationId } = props.route.params;
   return (
     <Animated.View style={tailwind.style('flex-1')}>
-      <MessagesList conversationId={conversationId} />
+      <MessagesList />
       <MessageInputBox />
     </Animated.View>
   );
@@ -50,7 +49,7 @@ const ConversationPagerView = (props: ChatScreenProps) => {
 };
 
 const ChatScreenWrapper = (props: ChatScreenProps) => {
-  const { conversationId } = props.route.params;
+  const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
 
   if (!conversation) {
@@ -76,6 +75,8 @@ const ChatScreenWrapper = (props: ChatScreenProps) => {
   );
 };
 const ChatScreen = (props: ChatScreenProps) => {
+  const { conversationId } = props.route.params;
+
   useEffect(() => {
     const setUpTrackPlayer = () => {
       TrackPlayer.setupPlayer()
@@ -89,7 +90,7 @@ const ChatScreen = (props: ChatScreenProps) => {
   return (
     <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
       <LightBoxProvider>
-        <ChatWindowProvider>
+        <ChatWindowProvider conversationId={conversationId}>
           <ChatScreenWrapper {...props} />
         </ChatWindowProvider>
       </LightBoxProvider>

@@ -54,7 +54,8 @@ const PlatformSpecificKeyboardWrapperComponent =
 
 //
 
-export const MessagesList = ({ conversationId }: { conversationId: number }) => {
+export const MessagesList = () => {
+  const { conversationId } = useChatWindowContext();
   const { messageListRef } = useRefsContext();
   const [isFlashListReady, setFlashListReady] = React.useState(false);
   const dispatch = useAppDispatch();

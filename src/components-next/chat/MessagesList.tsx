@@ -8,18 +8,31 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { FlashList } from '@shopify/flash-list';
-import camelcaseKeys from 'camelcase-keys';
+
 import { flatMap } from 'lodash';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
-import { useChatWindowContext, useRefsContext } from '../../context';
-import { messagesListMockdata } from '../../mockdata/messagesListMockdata';
-import { useMessageList, useSendMessage } from '../../storev2';
-import { tailwind } from '../../theme';
-import { Message } from '../../types';
-import { useAppKeyboardAnimation } from '../../utils';
+import { useChatWindowContext, useRefsContext } from '@/context';
+// import camelcaseKeys from 'camelcase-keys';
+// import { messagesListMockdata } from '@/mockdata/messagesListMockdata';
+import { useSendMessage } from '@/storev2';
+import { tailwind } from '@/theme';
+import { Message } from '@/types';
+import { useAppKeyboardAnimation } from '@/utils';
+import { useAppSelector, useAppDispatch } from '@/hooks';
+import {
+  // selectConversationById,
+  getMessagesByConversationId,
+  selectConversationById,
+} from '@/store/conversation/conversationSelectors';
+import { getGroupedMessages } from '@/utils';
 
 import { MessageCell } from './MessageCell';
+import { conversationActions } from '@/store/conversation/conversationActions';
+import {
+  selectIsAllMessagesFetched,
+  selectIsLoadingMessages,
+} from '@/store/conversation/conversationSelectors';
 
 const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList);
 
@@ -30,31 +43,32 @@ export type FlashListRenderProps = {
   index: number;
 };
 
+// const MESSAGES_LIST_MOCKDATA = [...messagesListMockdata.payload].reverse();
+
+// const messages = MESSAGES_LIST_MOCKDATA.map(
+//   value => camelcaseKeys(value, { deep: true }) as unknown as Message,
+// );
+
 const PlatformSpecificKeyboardWrapperComponent =
   Platform.OS === 'android' ? Animated.View : KeyboardGestureArea;
 
-const MESSAGES_LIST_MOCKDATA = [...messagesListMockdata.payload].reverse();
+//
 
-export const MessagesList = () => {
+export const MessagesList = ({ conversationId }: { conversationId: number }) => {
   const { messageListRef } = useRefsContext();
+  const [isFlashListReady, setFlashListReady] = React.useState(false);
+  const dispatch = useAppDispatch();
+  const conversation = useAppSelector(state => selectConversationById(state, conversationId));
+  const isAllMessagesFetched = useAppSelector(selectIsAllMessagesFetched);
+  const isLoadingMessages = useAppSelector(selectIsLoadingMessages);
+
+  const messages = useAppSelector(state => getMessagesByConversationId(state, { conversationId }));
 
   const handleRender = useCallback(({ item, index }: FlashListRenderProps) => {
     return <MessageCell {...{ item, index }} />;
   }, []);
 
-  const setMessageListStore = useMessageList(state => state.setMessageList);
   const attachments = useSendMessage(state => state.attachments);
-  const chatMessages = useMessageList(state => state.messageList);
-
-  useEffect(() => {
-    const messageList = MESSAGES_LIST_MOCKDATA.map(
-      value => camelcaseKeys(value, { deep: true }) as unknown as Message,
-    );
-
-    setMessageListStore(messageList);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const { progress, height } = useAppKeyboardAnimation();
   const { setAddMenuOptionSheetState } = useChatWindowContext();
 
@@ -62,7 +76,7 @@ export const MessagesList = () => {
     setAddMenuOptionSheetState(false);
   }, [attachments]);
 
-  const allMessages = flatMap(chatMessages, section => [...section.data, { date: section.date }]);
+  // const allMessages = flatMap(chatMessages, section => [...section.data, { date: section.date }]);
 
   const animatedFlashlistStyle = useAnimatedStyle(() => {
     return {
@@ -72,6 +86,60 @@ export const MessagesList = () => {
       }),
     };
   });
+
+  const onEndReached = () => {
+    const shouldFetchMoreMessages = !isAllMessagesFetched && !isLoadingMessages && isFlashListReady;
+    if (shouldFetchMoreMessages) {
+      loadMessages({ loadingMessagesForFirstTime: false });
+    }
+  };
+
+  const lastMessageId = useCallback(() => {
+    let beforeId = null;
+    if (messages && messages.length) {
+      const lastMessage = messages[messages.length - 1];
+      const { id } = lastMessage;
+      beforeId = id;
+    }
+    return beforeId;
+  }, [messages]);
+
+  useEffect(() => {
+    loadMessages({ loadingMessagesForFirstTime: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const loadMessages = useCallback(
+    async ({ loadingMessagesForFirstTime = false }) => {
+      const beforeId = loadingMessagesForFirstTime ? null : lastMessageId();
+      // TODO: Implement this later
+      // Fetch conversation if not present and fetch previous messages, otherwise fetch previous messages
+      if (!conversation) {
+        // await dispatch(conversationActions.fetchConversation({ conversationId }));
+        // dispatch(
+        //   conversationActions.fetchPreviousMessages({
+        //     conversationId,
+        //     beforeId,
+        //   }),
+        // );
+      } else {
+        dispatch(
+          conversationActions.fetchPreviousMessages({
+            conversationId,
+            beforeId,
+          }),
+        );
+      }
+    },
+    [conversation, conversationId, dispatch, lastMessageId],
+  );
+
+  const groupedMessages = getGroupedMessages(messages);
+
+  const allMessages = flatMap(groupedMessages, section => [
+    ...section.data,
+    { date: section.date },
+  ]);
 
   return (
     <PlatformSpecificKeyboardWrapperComponent
@@ -83,12 +151,19 @@ export const MessagesList = () => {
         style={[tailwind.style('flex-1 min-h-10'), animatedFlashlistStyle]}>
         <AnimatedFlashlist
           layout={LinearTransition.springify().damping(38).stiffness(240)}
+          onScroll={() => {
+            if (!isFlashListReady) {
+              setFlashListReady(true);
+            }
+          }}
           ref={messageListRef}
           inverted
           estimatedItemSize={30}
           showsVerticalScrollIndicator={false}
           // @ts-ignore
           renderItem={handleRender}
+          onEndReached={onEndReached}
+          onEndReachedThreshold={0.5}
           data={allMessages}
           keyboardShouldPersistTaps="handled"
           // * Add an empty state component - when there are no messages

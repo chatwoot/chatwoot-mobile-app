@@ -14,11 +14,13 @@ import { MessagesList } from '@/components-next/chat/MessagesList';
 import { ChatWindowProvider, useChatWindowContext, useRefsContext } from '@/context';
 import { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 import { tailwind } from '@/theme';
-
-export const ChatWindow = () => {
+import { selectConversationById } from '@/store/conversation/conversationSelectors';
+import { useAppSelector } from '@/hooks';
+export const ChatWindow = (props: ChatScreenProps) => {
+  const { conversationId } = props.route.params;
   return (
     <Animated.View style={tailwind.style('flex-1')}>
-      <MessagesList />
+      <MessagesList conversationId={conversationId} />
       <MessageInputBox />
     </Animated.View>
   );
@@ -26,7 +28,7 @@ export const ChatWindow = () => {
 
 type ChatScreenProps = NativeStackScreenProps<TabBarExcludedScreenParamList, 'ChatScreen'>;
 
-const ConversationPagerView = () => {
+const ConversationPagerView = (props: ChatScreenProps) => {
   const { chatPagerView } = useRefsContext();
   const { setPagerViewIndex } = useChatWindowContext();
   const onPageSelected = (e: PagerViewOnPageSelectedEvent) => {
@@ -41,27 +43,39 @@ const ConversationPagerView = () => {
       scrollEnabled
       initialPage={0}
       onPageSelected={onPageSelected}>
-      <ChatWindow />
+      <ChatWindow {...props} />
       <ConversationActions />
     </PagerView>
   );
 };
 
-const ChatScreenWrapper = () => {
+const ChatScreenWrapper = (props: ChatScreenProps) => {
+  const { conversationId } = props.route.params;
+  const conversation = useAppSelector(state => selectConversationById(state, conversationId));
+
+  if (!conversation) {
+    return null;
+  }
+
+  const {
+    meta: {
+      sender: { name: senderName, thumbnail: senderThumbnail },
+    },
+  } = conversation;
+
   return (
     <React.Fragment>
       <ChatScreenHeader
-        name={'John Jacobs'}
+        name={senderName}
         imageSrc={{
-          uri: 'https://staging-chatwoot-assets.s3.amazonaws.com/6pxkq3iagyside8cbjxq2ax3qal8?response-content-disposition=inline%3B%20filename%3D%22IMG_0802%20Copy%20%25281%2529.jpg%22%3B%20filename%2A%3DUTF-8%27%27IMG_0802%2520Copy%2520%25281%2529.jpg&response-content-type=image%2Fjpeg&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAX7PDOLKINF2NWSIW%2F20231209%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231209T061806Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=210ab2a48bb0ac5a698543aae718557ad4931e79516d75ba9c504d013954865e',
+          uri: senderThumbnail,
         }}
       />
-      <ConversationPagerView />
+      <ConversationPagerView {...props} />
     </React.Fragment>
   );
 };
-const ChatScreen = (_props: ChatScreenProps) => {
-  // const chatData = conversationListData[props.route.params.index];
+const ChatScreen = (props: ChatScreenProps) => {
   useEffect(() => {
     const setUpTrackPlayer = () => {
       TrackPlayer.setupPlayer()
@@ -76,7 +90,7 @@ const ChatScreen = (_props: ChatScreenProps) => {
     <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
       <LightBoxProvider>
         <ChatWindowProvider>
-          <ChatScreenWrapper />
+          <ChatScreenWrapper {...props} />
         </ChatWindowProvider>
       </LightBoxProvider>
     </SafeAreaView>

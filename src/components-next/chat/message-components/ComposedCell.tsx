@@ -139,7 +139,8 @@ export const ComposedCell = (props: ComposedCellProps) => {
                   <ReplyMessageCell {...{ replyMessage, isIncoming, isOutgoing }} />
                 ) : null}
                 <MarkdownDisplay {...{ isIncoming, isOutgoing }} messageContent={content} />
-                {props.messageData.attachments.map((attachment, index) => {
+                {/* TODO: Implement this later */}
+                {/* {props.messageData.attachments.map((attachment, index) => {
                   if (attachment.fileType === 'audio') {
                     return (
                       <Animated.View
@@ -190,7 +191,7 @@ export const ComposedCell = (props: ComposedCellProps) => {
                     );
                   }
                   return null;
-                })}
+                })} */}
                 <Animated.View
                   style={tailwind.style(
                     'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',

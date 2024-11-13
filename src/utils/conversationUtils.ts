@@ -1,5 +1,8 @@
 import type { Conversation } from '@/types';
-import type { Message } from '@/types';
+import type { Message, UnixTimestamp } from '@/types';
+import { format } from 'date-fns';
+import { groupBy } from 'lodash';
+
 import type { FilterState } from '@/store/conversation/conversationFilterSlice';
 
 const filterByStatus = (chatStatus: string, filterStatus: string) =>
@@ -61,4 +64,49 @@ export const getReadMessages = (messages: Message[], agentLastSeenAt: number): M
 
 export const getUnreadMessages = (messages: Message[], agentLastSeenAt: number): Message[] => {
   return messages.filter(message => message.createdAt * 1000 > agentLastSeenAt * 1000);
+};
+
+// TODO: Add tests for this function
+export const formatDate = (timestamp: UnixTimestamp): string => {
+  const messageDate = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
+  const currentDate = new Date();
+
+  const formatString =
+    messageDate.getFullYear() !== currentDate.getFullYear() ? 'MMM dd, yyyy' : 'MMM dd';
+
+  return format(messageDate, formatString);
+};
+
+export type SectionGroupMessages = {
+  data: Message[];
+  date: string;
+};
+
+// TODO: Add tests for this function
+export const getGroupedMessages = (messages: Message[]): SectionGroupMessages[] => {
+  const conversationGroupedByDate = groupBy(Object.values(messages), (message: Message) =>
+    formatDate(message.createdAt),
+  );
+  return Object.keys(conversationGroupedByDate).map(date => {
+    const groupedMessages = conversationGroupedByDate[date].map(
+      (message: Message, index: number) => {
+        let shouldRenderAvatar = false;
+        if (index === conversationGroupedByDate[date].length - 1) {
+          shouldRenderAvatar = true;
+        } else {
+          const nextMessage = conversationGroupedByDate[date][index + 1];
+          const currentSender = message.sender ? message.sender.name : '';
+          const nextSender = nextMessage.sender ? nextMessage.sender.name : '';
+          shouldRenderAvatar =
+            currentSender !== nextSender || message.messageType !== nextMessage.messageType;
+        }
+        return { shouldRenderAvatar, ...message };
+      },
+    );
+
+    return {
+      data: groupedMessages,
+      date,
+    };
+  });
 };

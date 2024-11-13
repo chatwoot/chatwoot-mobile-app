@@ -1,5 +1,5 @@
 import { type Agent } from './Agent';
-import { Channel, ConversationPriority, ConversationStatus, UnixTimestamp } from './common';
+import { ConversationPriority, ConversationStatus, UnixTimestamp } from './common';
 import { SLA } from './common/SLA';
 import { Contact } from './Contact';
 import { Message } from './Message';
@@ -31,15 +31,7 @@ export interface Conversation {
 
   lastNonActivityMessage: Message | null;
 
-  meta: {
-    sender: Contact;
-    assignee: Agent;
-    team: Team;
-    hmacVerified: boolean | null;
-
-    // Avoid this attribute and resolve it from Inbox
-    channel: Channel;
-  };
+  meta: ConversationMeta;
 
   // Deprecated
   timestamp: UnixTimestamp;
@@ -49,7 +41,7 @@ export interface Conversation {
   appliedSla: SLA | null;
 }
 
-export interface ConversationMeta {
+export interface ConversationListMeta {
   mineCount: number;
   unassignedCount: number;
   allCount: number;
@@ -57,4 +49,11 @@ export interface ConversationMeta {
 
 export interface ConversationAdditionalAttributes {
   type?: string;
+}
+
+export interface ConversationMeta {
+  sender: Contact;
+  assignee: Agent;
+  team: Team;
+  hmacVerified: boolean | null;
 }

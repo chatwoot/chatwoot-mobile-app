@@ -1,5 +1,10 @@
 import { apiService } from '@/services/APIService';
-import type { ConversationAPIResponse, ConversationPayload } from './conversationTypes';
+import type {
+  ConversationAPIResponse,
+  ConversationPayload,
+  MessagesPayload,
+  MessagesAPIResponse,
+} from './conversationTypes';
 
 export class ConversationService {
   static async getConversations(payload: ConversationPayload): Promise<ConversationAPIResponse> {
@@ -15,6 +20,19 @@ export class ConversationService {
     const response = await apiService.get<ConversationAPIResponse>('conversations', {
       params,
     });
+    return response.data;
+  }
+  static async fetchPreviousMessages(payload: MessagesPayload): Promise<MessagesAPIResponse> {
+    const { conversationId, beforeId } = payload;
+
+    const response = await apiService.get<MessagesAPIResponse>(
+      `conversations/${conversationId}/messages`,
+      {
+        params: {
+          before: beforeId,
+        },
+      },
+    );
     return response.data;
   }
 }

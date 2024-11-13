@@ -119,7 +119,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
   };
 
   const pushToChatScreen = StackActions.push('ChatScreen', {
-    index,
+    conversationId: id,
     isConversationOpenedExternally: false,
   });
 
@@ -128,9 +128,6 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
       // When Select is activated
       dispatch(toggleSelection(index));
     } else {
-      // Navigation
-      // Move this function outside this component, to make it clean
-      // Add a callback
       navigation.dispatch(pushToChatScreen);
     }
   };

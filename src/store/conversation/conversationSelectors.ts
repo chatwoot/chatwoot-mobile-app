@@ -24,6 +24,16 @@ export const selectIsAllConversationsFetched = createSelector(
   state => state.uiFlags.isAllConversationsFetched,
 );
 
+export const selectIsAllMessagesFetched = createSelector(
+  selectConversationsState,
+  state => state.uiFlags.isAllMessagesFetched,
+);
+
+export const selectIsLoadingMessages = createSelector(
+  selectConversationsState,
+  state => state.uiFlags.isLoadingMessages,
+);
+
 export const getFilteredConversations = createDraftSafeSelector(
   [
     selectAllConversations,
@@ -82,5 +92,23 @@ export const getFilteredConversations = createDraftSafeSelector(
       const shouldFilter = shouldApplyFilters(conversation, filters);
       return shouldFilter;
     });
+  },
+);
+
+export const getMessagesByConversationId = createDraftSafeSelector(
+  [
+    (state: RootState, params: { conversationId: number }) =>
+      selectConversationById(state, params.conversationId),
+  ],
+  conversation => {
+    if (!conversation) {
+      return [];
+    }
+    // Memoize the sorted and filtered messages using createSelector
+    return conversation.messages
+      .slice()
+      .sort((a, b) => a.createdAt - b.createdAt)
+      .reverse()
+      .filter((message, index, self) => index === self.findIndex(m => m.id === message.id));
   },
 );

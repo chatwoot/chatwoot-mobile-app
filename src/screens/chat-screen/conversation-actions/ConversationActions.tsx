@@ -19,9 +19,9 @@ import {
 } from '@/components-next';
 import { TAB_BAR_HEIGHT } from '@/constants';
 import { LoadingIcon, MuteIcon, ResolvedIcon, SnoozedIcon } from '@/svg-icons';
-import { tailwind } from '../../../theme';
-import { LabelType } from '../../../types';
-import { useHaptic, useScaleAnimation } from '../../../utils';
+import { tailwind } from '@/theme';
+import { LabelType } from '@/types';
+import { useHaptic, useScaleAnimation } from '@/utils';
 
 type ConversationStateType = 'mute' | 'pending' | 'snooze' | 'resolve';
 

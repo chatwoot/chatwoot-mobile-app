@@ -15,7 +15,9 @@ export interface ConversationState {
   error: string | null;
   uiFlags: {
     isLoadingConversations: boolean;
+    isLoadingMessages: boolean;
     isAllConversationsFetched: boolean;
+    isAllMessagesFetched: boolean;
   };
 }
 
@@ -33,6 +35,8 @@ const initialState = conversationAdapter.getInitialState<ConversationState>({
   uiFlags: {
     isLoadingConversations: false,
     isAllConversationsFetched: false,
+    isLoadingMessages: false,
+    isAllMessagesFetched: false,
   },
 });
 
@@ -110,6 +114,26 @@ const conversationSlice = createSlice({
       })
       .addCase(conversationActions.fetchConversations.rejected, (state, { error }) => {
         state.uiFlags.isLoadingConversations = false;
+      })
+      .addCase(conversationActions.fetchPreviousMessages.pending, state => {
+        state.uiFlags.isLoadingMessages = true;
+      })
+      .addCase(conversationActions.fetchPreviousMessages.fulfilled, (state, { payload }) => {
+        const { messages, conversationId, meta } = payload;
+        if (!state.entities[conversationId]) {
+          return;
+        }
+        const conversation = state.entities[conversationId];
+        conversation.messages.unshift(...messages);
+        conversation.meta = {
+          ...conversation.meta,
+          ...meta,
+        };
+        state.uiFlags.isLoadingMessages = false;
+        state.uiFlags.isAllMessagesFetched = messages.length < 20 || false;
+      })
+      .addCase(conversationActions.fetchPreviousMessages.rejected, state => {
+        state.uiFlags.isLoadingMessages = false;
       });
   },
 });

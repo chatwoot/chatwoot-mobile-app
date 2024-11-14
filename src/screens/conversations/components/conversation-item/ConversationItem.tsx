@@ -80,7 +80,9 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
 
   // const contact = useAppSelector(state => selectContactById(state, contactId));
 
-  const inbox = useAppSelector(state => selectInboxById(state, inboxId));
+  const inbox = {
+    channelType: 'Channel::WebWidget',
+  };
 
   // const typingUsers = useAppSelector(selectTypingUsersByConversationId(id));
 
@@ -154,8 +156,8 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
       handleLongPress={onLongPressAction}
       handlePress={onPressAction}
       {...{ index, openedRowIndex }}>
-      <NativeView style={tailwind.style('mt-3 px-3 gap-2 flex-row justify-between')}>
-        <NativeView style={tailwind.style('flex flex-row')}>
+      <NativeView style={tailwind.style('px-3 gap-3 flex-row justify-between')}>
+        <NativeView style={tailwind.style('py-3 flex flex-row')}>
           <ConversationSelect {...{ isSelected, currentState }} />
           <ConversationAvatar
             src={{ uri: senderThumbnail } as ImageURISource}

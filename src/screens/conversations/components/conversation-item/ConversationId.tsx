@@ -11,13 +11,9 @@ type ConversationIdProps = {
 export const ConversationId = (props: ConversationIdProps) => {
   const { id } = props;
   return (
-    <NativeView style={tailwind.style('flex flex-row items-center pl-[5px]')}>
-      <Text
-        style={tailwind.style(
-          'text-sm font-inter-420-20 leading-[16px] tracking-[0.32px] text-gray-700 pl-0.5',
-        )}>
-        #{id}
-      </Text>
+    <NativeView style={tailwind.style('flex flex-row items-center gap-0.5 pb-px')}>
+      <Text style={tailwind.style('text-sm font-inter-420-20 text-gray-700')}>#</Text>
+      <Text style={tailwind.style('text-sm font-inter-420-20 text-gray-700')}>{id}</Text>
     </NativeView>
   );
 };

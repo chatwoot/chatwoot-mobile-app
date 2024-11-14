@@ -10,7 +10,9 @@ import { tailwind } from '@/theme';
 import { Agent, Conversation, ConversationAdditionalAttributes, Message } from '@/types';
 import { formatTimeToShortForm, formatRelativeTime } from '@/utils/dateTimeUtils';
 
+
 import { ConversationId } from './ConversationId';
+import { ConversationLastMessage } from './ConversationLastMessage';
 import { PriorityIndicator } from './PriorityIndicator';
 import { UnreadIndicator } from './UnreadIndicator';
 import { ChannelIndicator } from './ChannelIndicator';
@@ -72,22 +74,23 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
 
   const hasSLA = !!slaPolicyId;
 
-  const isEmailChannel = inbox.channelType === 'Channel::Email';
+  const { contentAttributes } = lastMessage || {};
+  const { email: { subject = '' } = {} } = contentAttributes || {};
+  // TODO: Implement getPlainText
+  // const lastMessageContent = getPlainText(subject || lastMessage?.content);
+  const lastMessageContent = subject || lastMessage?.content;
 
-  const lastMessageContent = isEmailChannel
-    ? lastMessage?.contentAttributes?.email?.subject
-    : lastMessage?.content;
-
-  if (!lastMessage) {
+  if (!lastMessageContent) {
     return null;
   }
 
   return (
     <AnimatedNativeView
       layout={LinearTransition.springify().damping(28).stiffness(200)}
-      style={tailwind.style('flex-1 border-b-[1px] border-b-blackA-A3 gap-1 pb-3')}>
-      <AnimatedNativeView style={tailwind.style('flex flex-row justify-between items-center')}>
-        <AnimatedNativeView style={tailwind.style('flex flex-row items-center h-[24px]')}>
+      style={tailwind.style('flex-1 gap-1 py-3 border-b-[1px] border-b-blackA-A3')}>
+      <AnimatedNativeView
+        style={tailwind.style('flex flex-row justify-between items-center h-[24px]')}>
+        <AnimatedNativeView style={tailwind.style('flex flex-row items-center gap-[5px]')}>
           <Text
             numberOfLines={1}
             style={tailwind.style(
@@ -114,16 +117,10 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
         </AnimatedNativeView>
       </AnimatedNativeView>
       {hasLabels || hasSLA ? (
-        <AnimatedNativeView style={tailwind.style('flex flex-col items-center gap-2')}>
+        <AnimatedNativeView style={tailwind.style('flex flex-col items-center gap-1')}>
           <AnimatedNativeView
             style={tailwind.style('flex flex-row w-full justify-between items-center gap-2')}>
-            <Text
-              numberOfLines={1}
-              style={tailwind.style(
-                'text-md font-inter-420-20 tracking-[0.32px] text-gray-900 flex-1',
-              )}>
-              {lastMessageContent}
-            </Text>
+            <ConversationLastMessage numberOfLines={1} lastMessageContent={lastMessageContent} />
             {unreadCount >= 1 && (
               <NativeView style={tailwind.style('flex-shrink-0')}>
                 <UnreadIndicator count={unreadCount} />
@@ -143,7 +140,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
               {hasLabels && hasSLA && (
                 <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />
               )}
-              {hasLabels && <LabelIndicator labels={labels} />}
+              {hasLabels && <LabelIndicator labels={labels.slice(0, 2)} />}
             </AnimatedNativeView>
 
             {assignee ? (
@@ -159,13 +156,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
         </AnimatedNativeView>
       ) : (
         <AnimatedNativeView style={tailwind.style('flex flex-row items-end gap-2')}>
-          <Text
-            numberOfLines={2}
-            style={tailwind.style(
-              'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
-            )}>
-            {lastMessageContent}
-          </Text>
+          <ConversationLastMessage numberOfLines={2} lastMessageContent={lastMessageContent} />
           <AnimatedNativeView style={tailwind.style('flex flex-row items-end pb-1 gap-2')}>
             {assignee ? (
               <NativeView style={tailwind.style(unreadCount >= 1 ? 'pr-1' : '')}>
@@ -181,6 +172,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           </AnimatedNativeView>
         </AnimatedNativeView>
       )}
+      {/* <NativeView style={tailwind.style('w-full h-[1px] bg-blackA-A3 flex items-end')} /> */}
     </AnimatedNativeView>
   );
 }, checkIfPropsAreSame);

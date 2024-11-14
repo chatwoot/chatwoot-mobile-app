@@ -29,10 +29,12 @@ import {
   useConversationListStateContext,
   useRefsContext,
 } from '@/context';
-// import { conversationListData } from '@/mockdata/conversationListMockdata';
+
 import { tailwind } from '@/theme';
 import { Conversation } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { conversationListData } from '@/mockdata/conversationListMockdata';
+import camelcaseKeys from 'camelcase-keys';
 import {
   selectBottomSheetState,
   setBottomSheetState,
@@ -61,6 +63,10 @@ type FlashListRenderItemType = {
   item: Conversation;
   index: number;
 };
+
+const conversationList = conversationListData.map(
+  value => camelcaseKeys(value, { deep: true }) as unknown as Conversation,
+);
 
 const ConversationList = () => {
   const dispatch = useAppDispatch();
@@ -172,16 +178,16 @@ const ConversationList = () => {
     },
   });
 
-  const allConversations = useAppSelector(state =>
-    getFilteredConversations(state, filters, userId),
-  );
+  // const allConversations = useAppSelector(state =>
+  //   getFilteredConversations(state, filters, userId),
+  // );
 
   return isConversationsLoading ? (
     <Animated.View
       style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
       <ActivityIndicator />
     </Animated.View>
-  ) : allConversations.length === 0 ? (
+  ) : conversationListData.length === 0 ? (
     <Animated.ScrollView
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       contentContainerStyle={tailwind.style(
@@ -198,7 +204,7 @@ const ConversationList = () => {
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       layout={LinearTransition.springify().damping(18).stiffness(120)}
       showsVerticalScrollIndicator={false}
-      data={allConversations}
+      data={conversationList}
       estimatedItemSize={91}
       onScroll={scrollHandler}
       onEndReached={handleOnEndReached}

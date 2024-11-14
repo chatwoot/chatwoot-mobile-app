@@ -14,6 +14,7 @@ import { Icon } from '@/components-next';
 import { Message } from '@/types';
 import { MESSAGE_TYPES } from '@/constants';
 import i18n from '@/i18n';
+import { getPlainText } from '@/utils/messageFormatterUtils';
 
 type ConversationLastMessageProps = {
   numberOfLines: number;
@@ -64,9 +65,7 @@ const MessageContent = ({
   const { contentAttributes } = message || {};
   const { email: { subject = '' } = {} } = contentAttributes || {};
 
-  // TODO: Implement getPlainText
-  // const lastMessageContent = getPlainText(subject || lastMessage?.content);
-  const lastMessageContent = subject || message?.content;
+  const lastMessageContent = getPlainText(subject || message?.content);
 
   const lastMessageFileType = message?.attachments?.[0]?.fileType;
 
@@ -85,7 +84,7 @@ const MessageContent = ({
         </Text>
       </NativeView>
     );
-  } else if (message.content) {
+  } else if (lastMessageContent) {
     return (
       <Text
         numberOfLines={numberOfLines}

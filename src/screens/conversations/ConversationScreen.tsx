@@ -34,7 +34,7 @@ import { tailwind } from '@/theme';
 import { Conversation } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { conversationListData } from '@/mockdata/conversationListMockdata';
-import camelcaseKeys from 'camelcase-keys';
+// import camelcaseKeys from 'camelcase-keys';
 import {
   selectBottomSheetState,
   setBottomSheetState,
@@ -64,9 +64,9 @@ type FlashListRenderItemType = {
   index: number;
 };
 
-const conversationList = conversationListData.map(
-  value => camelcaseKeys(value, { deep: true }) as unknown as Conversation,
-);
+// const conversationList = conversationListData.map(
+//   value => camelcaseKeys(value, { deep: true }) as unknown as Conversation,
+// );
 
 const ConversationList = () => {
   const dispatch = useAppDispatch();
@@ -114,23 +114,14 @@ const ConversationList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // const ListFooterComponent = () => {
-  //   return (
-  //     <Animated.View
-  //       style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
-  //       {isAllConversationsFetched ? (
-  //         <Animated.Text
-  //           style={tailwind.style(
-  //             'pt-6 text-md font-inter-normal-24 tracking-[0.32px] text-gray-800',
-  //           )}>
-  //           {i18n.t('CONVERSATION.ALL_CONVERSATION_LOADED')} 🎉
-  //         </Animated.Text>
-  //       ) : (
-  //         <ActivityIndicator size="small" />
-  //       )}
-  //     </Animated.View>
-  //   );
-  // };
+  const ListFooterComponent = () => {
+    return (
+      <Animated.View
+        style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
+        {isAllConversationsFetched ? null : <ActivityIndicator size="small" />}
+      </Animated.View>
+    );
+  };
 
   const handleRefresh = useCallback(() => {
     setFlashListReady(false);
@@ -178,11 +169,13 @@ const ConversationList = () => {
     },
   });
 
-  // const allConversations = useAppSelector(state =>
-  //   getFilteredConversations(state, filters, userId),
-  // );
+  const allConversations = useAppSelector(state =>
+    getFilteredConversations(state, filters, userId),
+  );
 
-  return isConversationsLoading ? (
+  const shouldShowEmptyLoader = isConversationsLoading && allConversations.length === 0;
+
+  return shouldShowEmptyLoader ? (
     <Animated.View
       style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
       <ActivityIndicator />
@@ -204,12 +197,12 @@ const ConversationList = () => {
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       layout={LinearTransition.springify().damping(18).stiffness(120)}
       showsVerticalScrollIndicator={false}
-      data={conversationList}
+      data={allConversations}
       estimatedItemSize={91}
       onScroll={scrollHandler}
       onEndReached={handleOnEndReached}
       onEndReachedThreshold={0.5}
-      // ListFooterComponent={ListFooterComponent}
+      ListFooterComponent={ListFooterComponent}
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       renderItem={handleRender}

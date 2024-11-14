@@ -108,6 +108,7 @@ const ConversationList = () => {
   }, []);
 
   const clearAndFetchConversations = useCallback(async (filters: FilterState) => {
+    setPageNumber(1);
     await dispatch(clearAllConversations());
     await dispatch(clearAllContacts());
     fetchConversations(filters);
@@ -154,7 +155,8 @@ const ConversationList = () => {
   };
 
   const handleOnEndReached = () => {
-    const shouldLoadMoreConversations = isFlashListReady && !isAllConversationsFetched;
+    const shouldLoadMoreConversations =
+      isFlashListReady && !isAllConversationsFetched && !isConversationsLoading;
     if (shouldLoadMoreConversations) {
       onChangePageNumber();
     }

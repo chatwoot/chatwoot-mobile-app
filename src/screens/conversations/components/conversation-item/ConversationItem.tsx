@@ -26,7 +26,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 // import { selectContactById } from '@/store/contact/contactSelectors';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { getLastMessage } from '@/utils/conversationUtils';
-import { getRandomChannel } from '@/types/common/Channel';
+// import { getRandomChannel } from '@/types/common/Channel';
 import { Inbox } from '@/types/Inbox';
 
 type ConversationCellProps = {
@@ -81,9 +81,11 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
 
   // const contact = useAppSelector(state => selectContactById(state, contactId));
 
-  const inbox = {
-    channelType: getRandomChannel(),
-  };
+  const inbox = useAppSelector(state => selectInboxById(state, inboxId));
+
+  // const inbox = {
+  //   channelType: getRandomChannel(),
+  // };
 
   // const typingUsers = useAppSelector(selectTypingUsersByConversationId(id));
 
@@ -131,7 +133,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
       // When Select is activated
       dispatch(toggleSelection(index));
     } else {
-      // navigation.dispatch(pushToChatScreen);
+      navigation.dispatch(pushToChatScreen);
     }
   };
 

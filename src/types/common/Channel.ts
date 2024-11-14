@@ -31,3 +31,8 @@ export const InboxTypes = {
   LINE: 'Channel::Line',
   SMS: 'Channel::Sms',
 };
+
+export const getRandomChannel = () => {
+  const channels = Object.values(InboxTypes);
+  return channels[Math.floor(Math.random() * channels.length)];
+};

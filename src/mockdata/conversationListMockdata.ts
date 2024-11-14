@@ -35,15 +35,14 @@ export const conversationListData = [
     messages: [
       {
         id: 59389,
-        content:
-          'Hi there, I accidentally purchased the wrong item. Can I cancel the order and get a refund?',
+        content: null,
         account_id: 51,
         inbox_id: 501,
         conversation_id: 15,
         message_type: 1,
         created_at: 1705055681,
         updated_at: '2024-01-12T10:34:45.420Z',
-        private: false,
+        private: true,
         status: 'sent',
         source_id:
           'conversation/b0d5f831-fbb4-43b9-aa95-cd4a51f00204/messages/59389@reply.chatwoot.dev',
@@ -120,7 +119,7 @@ export const conversationListData = [
       message_type: 1,
       created_at: 1705055681,
       updated_at: '2024-01-12T10:34:45.420Z',
-      private: false,
+      private: true,
       status: 'sent',
       source_id:
         'conversation/b0d5f831-fbb4-43b9-aa95-cd4a51f00204/messages/59389@reply.chatwoot.dev',

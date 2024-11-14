@@ -14,7 +14,7 @@ type ChannelIndicatorProps = {
 
 export const ChannelIndicator = (props: ChannelIndicatorProps) => {
   const { channelType, medium = '' } = props.inbox;
-  const { type = '' } = props.additionalAttributes;
+  const { type = '' } = props.additionalAttributes || {};
 
   return (
     <NativeView style={tailwind.style('pl-1 h-4 w-4  justify-center items-center')}>

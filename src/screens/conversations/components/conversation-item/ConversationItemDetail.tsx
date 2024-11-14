@@ -10,7 +10,6 @@ import { tailwind } from '@/theme';
 import { Agent, Conversation, ConversationAdditionalAttributes, Message } from '@/types';
 import { formatTimeToShortForm, formatRelativeTime } from '@/utils/dateTimeUtils';
 
-
 import { ConversationId } from './ConversationId';
 import { ConversationLastMessage } from './ConversationLastMessage';
 import { PriorityIndicator } from './PriorityIndicator';
@@ -74,13 +73,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
 
   const hasSLA = !!slaPolicyId;
 
-  const { contentAttributes } = lastMessage || {};
-  const { email: { subject = '' } = {} } = contentAttributes || {};
-  // TODO: Implement getPlainText
-  // const lastMessageContent = getPlainText(subject || lastMessage?.content);
-  const lastMessageContent = subject || lastMessage?.content;
-
-  if (!lastMessageContent) {
+  if (!lastMessage) {
     return null;
   }
 
@@ -120,7 +113,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
         <AnimatedNativeView style={tailwind.style('flex flex-col items-center gap-1')}>
           <AnimatedNativeView
             style={tailwind.style('flex flex-row w-full justify-between items-center gap-2')}>
-            <ConversationLastMessage numberOfLines={1} lastMessageContent={lastMessageContent} />
+            <ConversationLastMessage numberOfLines={1} lastMessage={lastMessage as Message} />
             {unreadCount >= 1 && (
               <NativeView style={tailwind.style('flex-shrink-0')}>
                 <UnreadIndicator count={unreadCount} />
@@ -156,7 +149,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
         </AnimatedNativeView>
       ) : (
         <AnimatedNativeView style={tailwind.style('flex flex-row items-end gap-2')}>
-          <ConversationLastMessage numberOfLines={2} lastMessageContent={lastMessageContent} />
+          <ConversationLastMessage numberOfLines={2} lastMessage={lastMessage as Message} />
           <AnimatedNativeView style={tailwind.style('flex flex-row items-end pb-1 gap-2')}>
             {assignee ? (
               <NativeView style={tailwind.style(unreadCount >= 1 ? 'pr-1' : '')}>

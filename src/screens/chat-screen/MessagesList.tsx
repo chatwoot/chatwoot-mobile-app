@@ -27,7 +27,7 @@ import {
 } from '@/store/conversation/conversationSelectors';
 import { getGroupedMessages } from '@/utils';
 
-import { MessageCell } from './MessageCell';
+import { MessageItem } from './components/MessageItem';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import {
   selectIsAllMessagesFetched,
@@ -52,8 +52,6 @@ export type FlashListRenderProps = {
 const PlatformSpecificKeyboardWrapperComponent =
   Platform.OS === 'android' ? Animated.View : KeyboardGestureArea;
 
-//
-
 export const MessagesList = () => {
   const { conversationId } = useChatWindowContext();
   const { messageListRef } = useRefsContext();
@@ -66,7 +64,7 @@ export const MessagesList = () => {
   const messages = useAppSelector(state => getMessagesByConversationId(state, { conversationId }));
 
   const handleRender = useCallback(({ item, index }: FlashListRenderProps) => {
-    return <MessageCell {...{ item, index }} />;
+    return <MessageItem {...{ item, index }} />;
   }, []);
 
   const attachments = useSendMessage(state => state.attachments);

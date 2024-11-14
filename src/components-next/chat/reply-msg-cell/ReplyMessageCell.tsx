@@ -9,7 +9,7 @@ import { Message } from '../../../types';
 import { isMarkdown } from '../../../utils';
 import { Icon } from '../../common';
 import { MarkdownDisplay } from '../markdown';
-import { TEXT_MAX_WIDTH } from '../MessagesList';
+import { TEXT_MAX_WIDTH } from '@/constants';
 
 type ReplyMessageCellProps = {
   replyMessage: Message;

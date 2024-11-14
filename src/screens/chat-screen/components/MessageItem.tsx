@@ -2,13 +2,20 @@ import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { useSendMessage } from '../../storev2';
-import { tailwind } from '../../theme';
-import { Message } from '../../types';
+import { useSendMessage } from '@/storev2';
+import { tailwind } from '@/theme';
+import { Message } from '@/types';
 
-import { AudioCell, ComposedCell, FileCell, ImageCell, VideoCell } from './message-components';
-import { FlashListRenderProps } from './MessagesList';
-import { TextMessageCell } from './TextMessageCell';
+import {
+  AudioCell,
+  ComposedCell,
+  FileCell,
+  ImageCell,
+  VideoCell,
+} from '@/components-next/chat/message-components';
+
+import { FlashListRenderProps } from '../MessagesList';
+import { TextMessageCell } from '@/components-next/chat/TextMessageCell';
 
 type StickySectionProps = { item: { date: string } };
 
@@ -27,7 +34,7 @@ const StickySection = ({ item }: StickySectionProps) => {
   );
 };
 
-export const MessageCell = (props: FlashListRenderProps) => {
+export const MessageItem = (props: FlashListRenderProps) => {
   const { setQuoteMessage } = useSendMessage();
 
   const handleQuoteReplyAttachment = () => {

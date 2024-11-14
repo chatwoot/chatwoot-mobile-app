@@ -5,13 +5,19 @@ import Animated, { Easing, FadeIn, FadeOut, useSharedValue } from 'react-native-
 import Svg, { Path, Rect } from 'react-native-svg';
 
 import { useAudioPlayer } from '../../../storev2';
-import { DoubleCheckIcon, LinkIcon, Trash } from '../../../svg-icons';
-import { tailwind } from '../../../theme';
-import { IconProps, Message, MessageStatus, UnixTimestamp } from '../../../types';
-import { unixTimestampToReadableTime } from '../../../utils';
-import { Avatar, Icon, Slider } from '../../common';
-import { Spinner } from '../../spinner';
-import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
+import { DoubleCheckIcon, LinkIcon, Trash } from '@/svg-icons';
+import { tailwind } from '@/theme';
+import { IconProps, Message, MessageStatus, UnixTimestamp } from '@/types';
+import { unixTimestampToReadableTime } from '@/utils';
+import { Avatar, Icon, Slider } from '@/components-next/common';
+import { Spinner } from '@/components-next/spinner';
+import {
+  pausePlayer,
+  resumePlayer,
+  seekTo,
+  startPlayer,
+  stopPlayer,
+} from '@/components-next/chat/audio-recorder';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { MESSAGE_TYPES } from '../TextMessageCell';
 

@@ -11,7 +11,7 @@ import { unixTimestampToReadableTime } from '../../../utils';
 import { Avatar, Icon } from '../../common';
 import { MarkdownDisplay } from '../markdown';
 import { MenuOption, MessageMenu } from '../message-menu';
-import { TEXT_MAX_WIDTH } from '../MessagesList';
+import { TEXT_MAX_WIDTH } from '@/constants';
 import { ReplyMessageCell } from '../reply-msg-cell';
 import { MESSAGE_TYPES } from '../TextMessageCell';
 
@@ -43,6 +43,8 @@ export const ComposedCell = (props: ComposedCellProps) => {
   } = props.messageData as Message;
 
   const chatMessages = useMessageList(state => state.messageList);
+
+  console.log('messageData', props.messageData);
 
   const isIncoming = messageType === MESSAGE_TYPES.INCOMING;
   const isOutgoing = messageType === MESSAGE_TYPES.OUTGOING;
@@ -140,58 +142,59 @@ export const ComposedCell = (props: ComposedCellProps) => {
                 ) : null}
                 <MarkdownDisplay {...{ isIncoming, isOutgoing }} messageContent={content} />
                 {/* TODO: Implement this later */}
-                {/* {props.messageData.attachments.map((attachment, index) => {
-                  if (attachment.fileType === 'audio') {
-                    return (
-                      <Animated.View
-                        key={attachment.fileType + index}
-                        style={tailwind.style('flex-1 py-3 px-2 rounded-xl my-2')}>
-                        <AudioPlayer
-                          audioSrc={attachment.dataUrl}
-                          {...{ isIncoming, isOutgoing }}
-                        />
-                      </Animated.View>
-                    );
-                  }
-                  if (attachment.fileType === 'image') {
-                    return (
-                      <Animated.View
-                        key={attachment.fileType + index}
-                        style={tailwind.style('flex-1 my-2')}>
-                        <ImageContainer
-                          imageSrc={attachment.dataUrl}
-                          width={300 - 24 - (isPrivate ? 13 : 0)}
-                          height={215}
-                        />
-                      </Animated.View>
-                    );
-                  }
-                  if (attachment.fileType === 'file') {
-                    return (
-                      <Animated.View
-                        key={attachment.fileType + index}
-                        style={tailwind.style(
-                          'flex flex-row items-center relative max-w-[300px] my-2',
-                        )}>
-                        <FilePreview
-                          fileSrc={attachment.dataUrl}
-                          isComposed
-                          {...{ isIncoming, isOutgoing }}
-                        />
-                      </Animated.View>
-                    );
-                  }
-                  if (attachment.fileType === 'video') {
-                    return (
-                      <Animated.View
-                        key={attachment.fileType + index}
-                        style={tailwind.style('flex flex-row items-center my-2')}>
-                        <VideoPlayer videoSrc={attachment.dataUrl} />
-                      </Animated.View>
-                    );
-                  }
-                  return null;
-                })} */}
+                {props.messageData.attachments &&
+                  props.messageData.attachments.map((attachment, index) => {
+                    if (attachment.fileType === 'audio') {
+                      return (
+                        <Animated.View
+                          key={attachment.fileType + index}
+                          style={tailwind.style('flex-1 py-3 px-2 rounded-xl my-2')}>
+                          <AudioPlayer
+                            audioSrc={attachment.dataUrl}
+                            {...{ isIncoming, isOutgoing }}
+                          />
+                        </Animated.View>
+                      );
+                    }
+                    if (attachment.fileType === 'image') {
+                      return (
+                        <Animated.View
+                          key={attachment.fileType + index}
+                          style={tailwind.style('flex-1 my-2')}>
+                          <ImageContainer
+                            imageSrc={attachment.dataUrl}
+                            width={300 - 24 - (isPrivate ? 13 : 0)}
+                            height={215}
+                          />
+                        </Animated.View>
+                      );
+                    }
+                    if (attachment.fileType === 'file') {
+                      return (
+                        <Animated.View
+                          key={attachment.fileType + index}
+                          style={tailwind.style(
+                            'flex flex-row items-center relative max-w-[300px] my-2',
+                          )}>
+                          <FilePreview
+                            fileSrc={attachment.dataUrl}
+                            isComposed
+                            {...{ isIncoming, isOutgoing }}
+                          />
+                        </Animated.View>
+                      );
+                    }
+                    if (attachment.fileType === 'video') {
+                      return (
+                        <Animated.View
+                          key={attachment.fileType + index}
+                          style={tailwind.style('flex flex-row items-center my-2')}>
+                          <VideoPlayer videoSrc={attachment.dataUrl} />
+                        </Animated.View>
+                      );
+                    }
+                    return null;
+                  })}
                 <Animated.View
                   style={tailwind.style(
                     'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',

@@ -10,7 +10,7 @@ import { ChatScreenHeader } from './components';
 import { ConversationActions } from './conversation-actions';
 
 import { MessageInputBox } from '@/components-next/chat/MessageInputBox';
-import { MessagesList } from '@/components-next/chat/MessagesList';
+import { MessagesList } from './MessagesList';
 import { ChatWindowProvider, useChatWindowContext, useRefsContext } from '@/context';
 import { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 import { tailwind } from '@/theme';

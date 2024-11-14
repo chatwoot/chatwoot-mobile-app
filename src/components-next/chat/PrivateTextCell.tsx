@@ -7,7 +7,7 @@ import { unixTimestampToReadableTime } from '../../utils';
 import { Icon } from '../common';
 
 import { MarkdownDisplay } from './markdown';
-import { TEXT_MAX_WIDTH } from './MessagesList';
+import { TEXT_MAX_WIDTH } from '@/constants';
 
 type PrivateTextCellProps = {
   text: string;

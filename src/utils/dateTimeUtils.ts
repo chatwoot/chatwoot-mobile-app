@@ -60,3 +60,14 @@ export const unixTimestampToReadableTime = (unixTimestamp: number) => {
 
   return `${formattedHours}:${minutes} ${ampm}`;
 };
+
+export const messageStamp = ({
+  time,
+  dateFormat = 'h:mm a',
+}: {
+  time: number;
+  dateFormat?: string;
+}) => {
+  const unixTime = fromUnixTime(time);
+  return format(unixTime, dateFormat);
+};

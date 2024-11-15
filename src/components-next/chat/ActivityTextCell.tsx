@@ -1,8 +1,8 @@
 import React from 'react';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '../../theme';
-import { unixTimestampToReadableTime } from '../../utils';
+import { tailwind } from '@/theme';
+import { unixTimestampToReadableTime } from '@/utils/dateTimeUtils';
 
 type ActivityTextCellProps = {
   text: string;

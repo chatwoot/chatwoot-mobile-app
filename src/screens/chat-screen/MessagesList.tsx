@@ -13,8 +13,8 @@ import { flatMap } from 'lodash';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
 import { useChatWindowContext, useRefsContext } from '@/context';
-import camelcaseKeys from 'camelcase-keys';
-import { messagesListMockdata } from '@/mockdata/messagesListMockdata';
+// import camelcaseKeys from 'camelcase-keys';
+// import { messagesListMockdata } from '@/mockdata/messagesListMockdata';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { useAppKeyboardAnimation } from '@/utils';
@@ -43,11 +43,11 @@ export type FlashListRenderProps = {
   index: number;
 };
 
-const MESSAGES_LIST_MOCKDATA = [...messagesListMockdata.payload].reverse();
+// const MESSAGES_LIST_MOCKDATA = [...messagesListMockdata.payload].reverse();
 
-const messages = MESSAGES_LIST_MOCKDATA.map(
-  value => camelcaseKeys(value, { deep: true }) as unknown as Message,
-);
+// const messages = MESSAGES_LIST_MOCKDATA.map(
+//   value => camelcaseKeys(value, { deep: true }) as unknown as Message,
+// );
 
 const PlatformSpecificKeyboardWrapperComponent =
   Platform.OS === 'android' ? Animated.View : KeyboardGestureArea;
@@ -61,7 +61,7 @@ export const MessagesList = () => {
   const isAllMessagesFetched = useAppSelector(selectIsAllMessagesFetched);
   const isLoadingMessages = useAppSelector(selectIsLoadingMessages);
 
-  // const messages = useAppSelector(state => getMessagesByConversationId(state, { conversationId }));
+  const messages = useAppSelector(state => getMessagesByConversationId(state, { conversationId }));
 
   const handleRender = useCallback(({ item, index }: FlashListRenderProps) => {
     return <MessageItem {...{ item, index }} />;

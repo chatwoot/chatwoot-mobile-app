@@ -1,15 +1,18 @@
 import { apiService } from '@/services/APIService';
 import type {
-  ConversationAPIResponse,
   ConversationPayload,
   MessagesPayload,
   MessagesAPIResponse,
   MessageBuilderPayload,
   SendMessageAPIResponse,
+  ConversationListAPIResponse,
+  ConversationAPIResponse,
 } from './conversationTypes';
 
 export class ConversationService {
-  static async getConversations(payload: ConversationPayload): Promise<ConversationAPIResponse> {
+  static async getConversations(
+    payload: ConversationPayload,
+  ): Promise<ConversationListAPIResponse> {
     const { status, assigneeType, page, sortBy, inboxId = 0 } = payload;
 
     const params = {
@@ -19,7 +22,7 @@ export class ConversationService {
       page: page,
       sort_by: sortBy,
     };
-    const response = await apiService.get<ConversationAPIResponse>('conversations', {
+    const response = await apiService.get<ConversationListAPIResponse>('conversations', {
       params,
     });
     return response.data;
@@ -45,6 +48,13 @@ export class ConversationService {
     const response = await apiService.post<SendMessageAPIResponse>(
       `conversations/${conversationId}/messages`,
       payload,
+    );
+    return response.data;
+  }
+
+  static async fetchConversation(conversationId: number): Promise<ConversationAPIResponse> {
+    const response = await apiService.get<ConversationAPIResponse>(
+      `conversations/${conversationId}`,
     );
     return response.data;
   }

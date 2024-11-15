@@ -111,16 +111,15 @@ export const MessagesList = () => {
   const loadMessages = useCallback(
     async ({ loadingMessagesForFirstTime = false }) => {
       const beforeId = loadingMessagesForFirstTime ? null : lastMessageId();
-      // TODO: Implement this later
       // Fetch conversation if not present and fetch previous messages, otherwise fetch previous messages
       if (!conversation) {
-        // await dispatch(conversationActions.fetchConversation({ conversationId }));
-        // dispatch(
-        //   conversationActions.fetchPreviousMessages({
-        //     conversationId,
-        //     beforeId,
-        //   }),
-        // );
+        await dispatch(conversationActions.fetchConversation(conversationId));
+        dispatch(
+          conversationActions.fetchPreviousMessages({
+            conversationId,
+            beforeId,
+          }),
+        );
       } else {
         dispatch(
           conversationActions.fetchPreviousMessages({

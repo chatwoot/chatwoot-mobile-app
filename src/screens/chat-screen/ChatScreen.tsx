@@ -52,22 +52,14 @@ const ChatScreenWrapper = (props: ChatScreenProps) => {
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
 
-  if (!conversation) {
-    return null;
-  }
-
-  const {
-    meta: {
-      sender: { name: senderName, thumbnail: senderThumbnail },
-    },
-  } = conversation;
+  const { meta: { sender: { name = '', thumbnail = '' } = {} } = {} } = conversation || {};
 
   return (
     <React.Fragment>
       <ChatScreenHeader
-        name={senderName || ''}
+        name={name || ''}
         imageSrc={{
-          uri: senderThumbnail || '',
+          uri: thumbnail || '',
         }}
       />
       <ConversationPagerView {...props} />

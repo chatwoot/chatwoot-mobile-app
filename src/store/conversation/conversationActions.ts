@@ -8,6 +8,7 @@ import type {
   MessagesResponse,
   SendMessagePayload,
   SendMessageAPIResponse,
+  ConversationListResponse,
 } from './conversationTypes';
 import { AxiosError } from 'axios';
 import { addOrUpdateMessage } from './conversationSlice';
@@ -22,17 +23,34 @@ import { MESSAGE_STATUS } from '@/constants';
 // import { Platform } from 'react-native';
 
 export const conversationActions = {
-  fetchConversations: createAsyncThunk<ConversationResponse, ConversationPayload>(
+  fetchConversations: createAsyncThunk<ConversationListResponse, ConversationPayload>(
     'conversations/fetchConversations',
     async (payload, { rejectWithValue }) => {
       try {
-        const response = await ConversationService.getConversations(payload);
+        const response = await ConversationService.getConversations(payload); 
         const { payload: conversations, meta } = response.data;
-        const transformedResponse: ConversationResponse = {
+        const transformedResponse: ConversationListResponse = {
           conversations: conversations.map(transformConversation),
           meta: transformConversationListMeta(meta),
         };
         return transformedResponse;
+      } catch (error) {
+        const { response } = error as AxiosError<ApiErrorResponse>;
+        if (!response) {
+          throw error;
+        }
+        return rejectWithValue(response.data);
+      }
+    },
+  ),
+  fetchConversation: createAsyncThunk<ConversationResponse, number>(
+    'conversations/fetchConversation',
+    async (conversationId, { rejectWithValue }) => {
+      try {
+        const response = await ConversationService.fetchConversation(conversationId);
+        return {
+          conversation: transformConversation(response),
+        };
       } catch (error) {
         const { response } = error as AxiosError<ApiErrorResponse>;
         if (!response) {

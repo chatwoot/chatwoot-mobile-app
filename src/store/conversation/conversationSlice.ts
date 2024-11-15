@@ -19,6 +19,7 @@ export interface ConversationState {
     isLoadingMessages: boolean;
     isAllConversationsFetched: boolean;
     isAllMessagesFetched: boolean;
+    isConversationFetching: boolean;
   };
 }
 
@@ -38,6 +39,7 @@ const initialState = conversationAdapter.getInitialState<ConversationState>({
     isAllConversationsFetched: false,
     isLoadingMessages: false,
     isAllMessagesFetched: false,
+    isConversationFetching: false,
   },
 });
 
@@ -118,6 +120,18 @@ const conversationSlice = createSlice({
       })
       .addCase(conversationActions.fetchConversations.rejected, (state, { error }) => {
         state.uiFlags.isLoadingConversations = false;
+      })
+      .addCase(conversationActions.fetchConversation.pending, state => {
+        state.uiFlags.isConversationFetching = true;
+      })
+      .addCase(conversationActions.fetchConversation.fulfilled, (state, { payload }) => {
+        const { conversation } = payload;
+        conversationAdapter.upsertOne(state, conversation);
+        state.uiFlags.isConversationFetching = false;
+        state.uiFlags.isAllMessagesFetched = false;
+      })
+      .addCase(conversationActions.fetchConversation.rejected, state => {
+        state.uiFlags.isConversationFetching = false;
       })
       .addCase(conversationActions.fetchPreviousMessages.pending, state => {
         state.uiFlags.isLoadingMessages = true;

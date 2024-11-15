@@ -33,7 +33,7 @@ import {
 import { tailwind } from '@/theme';
 import { Conversation } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { conversationListData } from '@/mockdata/conversationListMockdata';
+// import { conversationListData } from '@/mockdata/conversationListMockdata';
 // import camelcaseKeys from 'camelcase-keys';
 import {
   selectBottomSheetState,
@@ -103,7 +103,8 @@ const ConversationList = () => {
   }, [filters]);
 
   useEffect(() => {
-    fetchConversations(filters);
+    clearAndFetchConversations(filters);
+    // fetchConversations(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -182,7 +183,7 @@ const ConversationList = () => {
       style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
       <ActivityIndicator />
     </Animated.View>
-  ) : conversationListData.length === 0 ? (
+  ) : allConversations.length === 0 ? (
     <Animated.ScrollView
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       contentContainerStyle={tailwind.style(

@@ -7,16 +7,24 @@ import type {
 import type { Message } from '@/types/Message';
 import { MESSAGE_STATUS, MESSAGE_TYPES } from '@/constants';
 
-export interface ConversationAPIResponse {
+export interface ConversationListAPIResponse {
   data: {
     meta: ConversationListMeta;
     payload: Conversation[];
   };
 }
 
-export interface ConversationResponse {
+export interface ConversationAPIResponse {
+  data: Conversation;
+}
+
+export interface ConversationListResponse {
   meta: ConversationListMeta;
   conversations: Conversation[];
+}
+
+export interface ConversationResponse {
+  conversation: Conversation;
 }
 
 export interface ConversationPayload {

@@ -137,20 +137,20 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
             </AnimatedNativeView>
 
             {assignee ? (
-              <NativeView>
+              <AnimatedNativeView>
                 <Avatar
                   size="sm"
                   name={assignee.name as string}
                   src={{ uri: assignee.thumbnail } as ImageURISource}
                 />
-              </NativeView>
+              </AnimatedNativeView>
             ) : null}
           </AnimatedNativeView>
         </AnimatedNativeView>
       ) : (
         <AnimatedNativeView style={tailwind.style('flex flex-row items-end gap-2')}>
           <ConversationLastMessage numberOfLines={2} lastMessage={lastMessage as Message} />
-          <AnimatedNativeView style={tailwind.style('flex flex-row items-end pb-1 gap-2')}>
+          <AnimatedNativeView style={tailwind.style('flex flex-row items-end gap-2')}>
             {assignee ? (
               <NativeView style={tailwind.style(unreadCount >= 1 ? 'pr-1' : '')}>
                 <Avatar
@@ -161,7 +161,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
               </NativeView>
             ) : null}
 
-            {unreadCount >= 0 && <UnreadIndicator count={unreadCount} />}
+            {unreadCount >= 1 && <UnreadIndicator count={unreadCount} />}
           </AnimatedNativeView>
         </AnimatedNativeView>
       )}

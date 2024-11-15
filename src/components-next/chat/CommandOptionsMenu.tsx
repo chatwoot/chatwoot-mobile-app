@@ -5,23 +5,23 @@ import { Asset, launchCamera, launchImageLibrary } from 'react-native-image-pick
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-import { useRefsContext } from '../../context';
-import { useSendMessage } from '../../storev2';
+import { useAppDispatch } from '@/hooks';
+import { updateAttachments } from '@/store/conversation/sendMessageSlice';
+import { useRefsContext } from '@/context';
 import {
-  AIAssisst,
+  // AIAssisst,
   AttachFileIcon,
   CameraIcon,
-  MacrosIcon,
+  // MacrosIcon,
   PhotosIcon,
-  VideoCall,
-  VoiceNote,
+  // VideoCall,
+  // VoiceNote,
 } from '../../svg-icons';
 import { tailwind } from '../../theme';
 import { useHaptic, useScaleAnimation } from '../../utils';
 import { Icon } from '../common';
 
-export const handleOpenPhotosLibrary = async updateAttachments => {
+export const handleOpenPhotosLibrary = async dispatch => {
   if (Platform.OS === 'ios') {
     request(
       Platform.OS === 'ios'
@@ -59,7 +59,7 @@ export const handleOpenPhotosLibrary = async updateAttachments => {
         } else if (pickedAssets.errorCode) {
         } else {
           if (pickedAssets.assets && pickedAssets.assets?.length > 0) {
-            updateAttachments(pickedAssets.assets);
+            dispatch(updateAttachments(pickedAssets.assets));
           }
         }
       }
@@ -105,7 +105,7 @@ export const handleOpenPhotosLibrary = async updateAttachments => {
   }
 };
 
-const handleLaunchCamera = async updateAttachments => {
+const handleLaunchCamera = async dispatch => {
   request(Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA).then(
     async result => {
       if (RESULTS.BLOCKED === result) {
@@ -164,7 +164,7 @@ const mapObject = (originalObject: DocumentPickerResponse): Asset[] => {
   ];
 };
 
-const handleAttachFile = async updateAttachments => {
+const handleAttachFile = async dispatch => {
   try {
     const result = await DocumentPicker.pick({
       type: [DocumentPicker.types.pdf], // You can specify the file types you want to allow
@@ -196,27 +196,27 @@ const ADD_MENU_OPTIONS = [
     title: 'Attach File',
     handlePress: handleAttachFile,
   },
-  {
-    icon: <AIAssisst />,
-    title: 'AI Assist',
-    handlePress: () => Alert.alert('AI Assist'),
-  },
-  {
-    icon: <MacrosIcon />,
-    title: 'Macros',
-    handlePress: () => {},
-  },
+  // {
+  //   icon: <AIAssisst />,
+  //   title: 'AI Assist',
+  //   handlePress: () => Alert.alert('AI Assist'),
+  // },
+  // {
+  //   icon: <MacrosIcon />,
+  //   title: 'Macros',
+  //   handlePress: () => {},
+  // },
 
-  {
-    icon: <VoiceNote />,
-    title: 'Voice Note',
-    handlePress: () => Alert.alert('Voice Note'),
-  },
-  {
-    icon: <VideoCall />,
-    title: 'Video Call',
-    handlePress: () => Alert.alert('Video Call'),
-  },
+  // {
+  //   icon: <VoiceNote />,
+  //   title: 'Voice Note',
+  //   handlePress: () => Alert.alert('Voice Note'),
+  // },
+  // {
+  //   icon: <VideoCall />,
+  //   title: 'Video Call',
+  //   handlePress: () => Alert.alert('Video Call'),
+  // },
 ];
 
 type MenuOptionProps = {
@@ -226,7 +226,7 @@ type MenuOptionProps = {
 
 const MenuOption = (props: MenuOptionProps) => {
   const { index, menuOption } = props;
-  const { updateAttachments } = useSendMessage();
+  const dispatch = useAppDispatch();
   const { macrosListSheetRef } = useRefsContext();
 
   const { animatedStyle, handlers } = useScaleAnimation();
@@ -234,7 +234,7 @@ const MenuOption = (props: MenuOptionProps) => {
 
   const handlePress = () => {
     hapticSelection?.();
-    menuOption?.handlePress(updateAttachments);
+    menuOption?.handlePress(dispatch);
     if (menuOption.title === 'Macros') {
       macrosListSheetRef.current?.present();
     }

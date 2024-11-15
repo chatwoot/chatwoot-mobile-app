@@ -5,14 +5,14 @@ import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { isUndefined } from 'lodash';
 import RNFetchBlob from 'rn-fetch-blob';
 
-import { TEXT_INPUT_CONTAINER_HEIGHT } from '../../../constants';
-import { useChatWindowContext } from '../../../context';
-import { useLocalRecordedAudioCache, useMessageList } from '../../../storev2';
-import { SendIcon, Trash } from '../../../svg-icons';
-import { tailwind } from '../../../theme';
-// import { constructAudioMessage } from '../../../utils';
-import { Icon } from '../../common';
-import { PauseIcon, PlayIcon } from '../message-components';
+import { TEXT_INPUT_CONTAINER_HEIGHT } from '@/constants';
+import { useChatWindowContext } from '@/context';
+import { useLocalRecordedAudioCache } from '@/storev2';
+import { SendIcon, Trash } from '@/svg-icons';
+import { tailwind } from '@/theme';
+// import { constructAudioMessage } from '@/utils';
+import { Icon } from '@/components-next/common';
+import { PauseIcon, PlayIcon } from '@/components-next/chat/message-components';
 
 const RecorderSegmentWidth = Dimensions.get('screen').width - 8 - 80 - 12;
 
@@ -53,7 +53,7 @@ const millisecondsToTimeString = (milliseconds: number | undefined) => {
 };
 
 export const AudioRecorder = () => {
-  const { addNewMessage } = useMessageList();
+  // const { addNewMessage } = useMessageList();
   const { localRecordedAudioCacheFilePaths, addNewCachePath } = useLocalRecordedAudioCache();
 
   useEffect(() => {

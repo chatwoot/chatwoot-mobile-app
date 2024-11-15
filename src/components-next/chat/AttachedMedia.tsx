@@ -11,11 +11,12 @@ import Svg, { Path } from 'react-native-svg';
 import { ResizeMode, Video } from 'expo-av';
 import { Image } from 'expo-image';
 
-import { useSendMessage } from '../../storev2';
-import { AttachFileIcon } from '../../svg-icons';
-import { tailwind } from '../../theme';
-import { useScaleAnimation } from '../../utils';
-import { Icon } from '../common';
+import { AttachFileIcon } from '@/svg-icons';
+import { tailwind } from '@/theme';
+import { useScaleAnimation } from '@/utils';
+import { Icon } from '@/components-next/common';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectAttachments, deleteAttachment } from '@/store/conversation/sendMessageSlice';
 
 export const PlayIcon = () => {
   return (
@@ -59,12 +60,12 @@ type AttachedImageProps = AttachedMediaProps & { attachmentsLength: number };
 
 const AttachedImage = (props: AttachedImageProps) => {
   const { item, index, attachmentsLength } = props;
-  const deleteAttachment = useSendMessage(state => state.deleteAttachment);
+  const dispatch = useAppDispatch();
 
   const { animatedStyle, handlers } = useScaleAnimation();
 
   const handleOnDelete = () => {
-    deleteAttachment(index);
+    dispatch(deleteAttachment(index));
   };
 
   return (
@@ -106,12 +107,12 @@ type AttachedVideoProps = AttachedMediaProps & { attachmentsLength: number };
 const AttachedVideo = (props: AttachedVideoProps) => {
   const { item, index, attachmentsLength } = props;
 
-  const deleteAttachment = useSendMessage(state => state.deleteAttachment);
+  const dispatch = useAppDispatch();
 
   const { animatedStyle, handlers } = useScaleAnimation();
 
   const handleOnDelete = () => {
-    deleteAttachment(index);
+    dispatch(deleteAttachment(index));
   };
 
   return (
@@ -179,12 +180,12 @@ type AttachedFileProps = AttachedMediaProps & { attachmentsLength: number };
 
 const AttachedFile = (props: AttachedFileProps) => {
   const { item, index, attachmentsLength } = props;
-  const deleteAttachment = useSendMessage(state => state.deleteAttachment);
+  const dispatch = useAppDispatch();
 
   const { animatedStyle, handlers } = useScaleAnimation();
 
   const handleOnDelete = () => {
-    deleteAttachment(index);
+    dispatch(deleteAttachment(index));
   };
 
   return (
@@ -234,7 +235,7 @@ const AttachedFile = (props: AttachedFileProps) => {
 };
 
 export const AttachedMedia = () => {
-  const attachments = useSendMessage(state => state.attachments);
+  const attachments = useAppSelector(selectAttachments);
 
   const handleRenderItem = ({ item, index }: AttachedMediaProps) => {
     if (item.type?.includes('image')) {

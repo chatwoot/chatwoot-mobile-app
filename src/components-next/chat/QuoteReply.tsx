@@ -4,12 +4,15 @@ import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import Animated from 'react-native-reanimated';
 import { Image } from 'expo-image';
 
-import { useRefsContext } from '../../context';
-import { useSendMessage } from '../../storev2';
-import { CloseIcon, FileIcon, VoiceNote } from '../../svg-icons';
-import { tailwind } from '../../theme';
-import { isMarkdown } from '../../utils';
-import { Icon } from '../common';
+import { useRefsContext } from '@/context';
+import { CloseIcon, FileIcon, VoiceNote } from '@/svg-icons';
+import { tailwind } from '@/theme';
+import { isMarkdown } from '@/utils';
+import { Icon } from '@/components-next/common';
+
+import { useAppDispatch, useAppSelector } from '@/hooks';
+
+import { selectQuoteMessage, setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 
 import { VideoPlayer } from './message-components';
 
@@ -32,7 +35,8 @@ const File = () => {
 };
 
 export const QuoteReply = () => {
-  const { quoteMessage, setQuoteMessage } = useSendMessage();
+  const quoteMessage = useAppSelector(selectQuoteMessage);
+  const dispatch = useAppDispatch();
 
   const { messageListRef } = useRefsContext();
 
@@ -77,7 +81,7 @@ export const QuoteReply = () => {
   });
 
   const handleOnPressClose = () => {
-    setQuoteMessage(null);
+    dispatch(setQuoteMessage(null));
   };
 
   const handleScrollToMessage = useCallback(() => {

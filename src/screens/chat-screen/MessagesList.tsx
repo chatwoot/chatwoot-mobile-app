@@ -15,7 +15,6 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 import { useChatWindowContext, useRefsContext } from '@/context';
 import camelcaseKeys from 'camelcase-keys';
 import { messagesListMockdata } from '@/mockdata/messagesListMockdata';
-import { useSendMessage } from '@/storev2';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { useAppKeyboardAnimation } from '@/utils';
@@ -33,6 +32,7 @@ import {
   selectIsAllMessagesFetched,
   selectIsLoadingMessages,
 } from '@/store/conversation/conversationSelectors';
+import { selectAttachments } from '@/store/conversation/sendMessageSlice';
 
 const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList);
 
@@ -67,7 +67,7 @@ export const MessagesList = () => {
     return <MessageItem {...{ item, index }} />;
   }, []);
 
-  const attachments = useSendMessage(state => state.attachments);
+  const attachments = useAppSelector(selectAttachments);
   const { progress, height } = useAppKeyboardAnimation();
   const { setAddMenuOptionSheetState } = useChatWindowContext();
 

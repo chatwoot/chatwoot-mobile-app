@@ -14,12 +14,19 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useChatWindowContext, useRefsContext } from '../../context';
-import { useSendMessage } from '../../storev2';
-import { AddIcon, PhotosIcon, SendIcon, VoiceNote } from '../../svg-icons';
-import { tailwind } from '../../theme';
-import { useHaptic, useScaleAnimation } from '../../utils';
-import { Icon } from '../common';
+import { useChatWindowContext, useRefsContext } from '@/context';
+import {
+  selectMessageContent,
+  selectAttachments,
+  selectIsPrivateMessage,
+  selectQuoteMessage,
+  resetSentMessage,
+  updateAttachments,
+} from '@/store/conversation/sendMessageSlice';
+import { AddIcon, PhotosIcon, SendIcon, VoiceNote } from '@/svg-icons';
+import { tailwind } from '@/theme';
+import { useHaptic, useScaleAnimation } from '@/utils';
+import { Icon } from '@/components-next/common';
 
 import { AttachedMedia } from './AttachedMedia';
 import { AudioRecorder } from './audio-recorder';
@@ -50,7 +57,7 @@ type SendMessageButtonProps = PressableProps & {};
 
 const SendMessageButton = (props: SendMessageButtonProps) => {
   const { animatedStyle, handlers } = useScaleAnimation();
-  const { isPrivateMessage } = useSendMessage();
+  const isPrivateMessage = useAppSelector(selectIsPrivateMessage);
 
   return (
     <Pressable {...props} {...handlers}>
@@ -158,14 +165,10 @@ const BottomSheetContent = () => {
   const userId = useAppSelector(selectUserId);
   const userThumbnail = useAppSelector(selectUserThumbnail);
 
-  const {
-    messageContent,
-    updateAttachments,
-    attachments,
-    isPrivateMessage,
-    quoteMessage,
-    resetSentMessage,
-  } = useSendMessage();
+  const messageContent = useAppSelector(selectMessageContent);
+  const attachments = useAppSelector(selectAttachments);
+  const isPrivateMessage = useAppSelector(selectIsPrivateMessage);
+  const quoteMessage = useAppSelector(selectQuoteMessage);
 
   // const { addNewMessage } = useMessageList();
   const { bottom } = useSafeAreaInsets();

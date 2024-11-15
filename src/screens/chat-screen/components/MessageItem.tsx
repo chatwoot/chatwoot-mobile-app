@@ -2,7 +2,6 @@ import React from 'react';
 import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { useSendMessage } from '@/storev2';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
 
@@ -16,9 +15,10 @@ import {
 
 import { FlashListRenderProps } from '../MessagesList';
 import { TextMessageCell } from '@/components-next/chat/TextMessageCell';
-import { useAppSelector } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { useChatWindowContext } from '@/context';
+import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 
 type StickySectionProps = { item: { date: string } };
 
@@ -38,10 +38,10 @@ const StickySection = ({ item }: StickySectionProps) => {
 };
 
 export const MessageItem = (props: FlashListRenderProps) => {
-  const { setQuoteMessage } = useSendMessage();
+  const dispatch = useAppDispatch();
   const { conversationId } = useChatWindowContext();
   const handleQuoteReplyAttachment = () => {
-    setQuoteMessage(props.item as Message);
+    dispatch(setQuoteMessage(props.item as Message));
     // TODO: Add text input focus which now is a little janky
   };
 

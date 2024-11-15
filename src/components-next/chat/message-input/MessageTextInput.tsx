@@ -16,10 +16,16 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
 
-import { useChatWindowContext } from '../../../context';
-import { useSendMessage } from '../../../storev2';
-import { tailwind } from '../../../theme';
-import { Icon } from '../../common';
+import { useChatWindowContext } from '@/context';
+import { tailwind } from '@/theme';
+import { Icon } from '@/components-next/common';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import {
+  setMessageText,
+  togglePrivateMessage,
+  selectIsPrivateMessage,
+  selectQuoteMessage,
+} from '@/store/conversation/sendMessageSlice';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
@@ -59,6 +65,7 @@ const Locked = () => {
 // eslint-disable-next-line no-empty-pattern
 export const MessageTextInput = ({}: MessageTextInputProps) => {
   const messageText = useSharedValue('');
+  const dispatch = useAppDispatch();
 
   const lockIconAnimatedPosition = useAnimatedStyle(() => {
     return {
@@ -69,10 +76,8 @@ export const MessageTextInput = ({}: MessageTextInputProps) => {
   const { setAddMenuOptionSheetState, textInputRef, setIsTextInputFocused } =
     useChatWindowContext();
 
-  const setMessageText = useSendMessage(state => state.setMessageText);
-  const togglePrivateMessage = useSendMessage(state => state.togglePrivateMessage);
-  const isPrivateMessage = useSendMessage(state => state.isPrivateMessage);
-  const quoteMessage = useSendMessage(state => state.quoteMessage);
+  const isPrivateMessage = useAppSelector(selectIsPrivateMessage);
+  const quoteMessage = useAppSelector(selectQuoteMessage);
 
   const animatedProps = useAnimatedProps(() => {
     return {
@@ -82,7 +87,7 @@ export const MessageTextInput = ({}: MessageTextInputProps) => {
 
   const onChangeText = (text: string) => {
     messageText.value = text.trimEnd();
-    setMessageText(text);
+    dispatch(setMessageText(text));
   };
 
   const handleOnFocus = useCallback(
@@ -151,7 +156,7 @@ export const MessageTextInput = ({}: MessageTextInputProps) => {
           tailwind.style('absolute right-[57px]'),
           lockIconAnimatedPosition,
         ]}>
-        <Pressable hitSlop={5} onPress={togglePrivateMessage}>
+        <Pressable hitSlop={5} onPress={() => dispatch(togglePrivateMessage())}>
           {isPrivateMessage ? (
             <Icon size={29} icon={<Locked />} />
           ) : (

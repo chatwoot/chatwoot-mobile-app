@@ -1,11 +1,11 @@
 import React from 'react';
 import { Animated, Text } from 'react-native';
 
-import { DoubleCheckIcon } from '../../svg-icons';
-import { tailwind } from '../../theme';
-import { MessageStatus } from '../../types';
-import { unixTimestampToReadableTime } from '../../utils';
-import { Icon } from '../common';
+import { DoubleCheckIcon } from '@/svg-icons';
+import { tailwind } from '@/theme';
+import { MessageStatus } from '@/types';
+import { unixTimestampToReadableTime } from '@/utils';
+import { Icon } from '@/components-next/common';
 
 import { MarkdownDisplay } from './markdown';
 import { TEXT_MAX_WIDTH } from '@/constants';

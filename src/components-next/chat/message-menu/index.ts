@@ -1,1 +1,1 @@
-export * from "./MessageMenu";
+export * from './MessageMenu';

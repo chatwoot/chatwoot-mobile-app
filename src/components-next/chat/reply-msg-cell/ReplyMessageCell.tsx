@@ -2,12 +2,12 @@ import React, { useCallback, useMemo } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { useRefsContext } from '../../../context';
-import { AttachFileIcon, CameraIcon, VideoCall, VoiceNote } from '../../../svg-icons';
-import { tailwind } from '../../../theme';
-import { Message } from '../../../types';
-import { isMarkdown } from '../../../utils';
-import { Icon } from '../../common';
+import { useRefsContext } from '@/context';
+import { AttachFileIcon, CameraIcon, VideoCall, VoiceNote } from '@/svg-icons';
+import { tailwind } from '@/theme';
+import { Message } from '@/types';
+import { isMarkdown } from '@/utils';
+import { Icon } from '@/components-next';
 import { MarkdownDisplay } from '../markdown';
 import { TEXT_MAX_WIDTH } from '@/constants';
 

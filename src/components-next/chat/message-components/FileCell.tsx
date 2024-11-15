@@ -11,7 +11,7 @@ import { unixTimestampToReadableTime } from '@/utils';
 import { Avatar, Icon } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
 import { MenuOption, MessageMenu } from '../message-menu';
-import { MESSAGE_TYPES } from '../TextMessageCell';
+import { MESSAGE_TYPES } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
 
 type FilePreviewProps = Pick<FileCellProps, 'fileSrc'> & {

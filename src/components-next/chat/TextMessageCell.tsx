@@ -3,22 +3,16 @@ import { Alert } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import tailwind from 'twrnc';
 
-import { CannedResponseIcon, CopyIcon, LinkIcon, TranslateIcon, Trash } from '../../svg-icons';
-import { Message } from '../../types';
-import { Avatar } from '../common';
+import { CannedResponseIcon, CopyIcon, LinkIcon, TranslateIcon, Trash } from '@/svg-icons';
+import { Message } from '@/types';
+import { Avatar } from '@/components-next/common';
 
 import { ActivityTextCell } from './ActivityTextCell';
 import { BotTextCell } from './BotTextCell';
 import { MenuOption, MessageMenu } from './message-menu';
 import { MessageTextCell } from './MessageTextCell';
 import { PrivateTextCell } from './PrivateTextCell';
-
-export const MESSAGE_TYPES = {
-  INCOMING: 0,
-  OUTGOING: 1,
-  ACTIVITY: 2,
-  TEMPLATE: 3,
-};
+import { MESSAGE_TYPES } from '@/constants';
 
 export type TextMessageCellProps = {
   item: Message;
@@ -104,7 +98,7 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
       <Animated.View style={tailwind.style('flex flex-row')}>
         {sender?.thumbnail && isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
+            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name || ''} />
           </Animated.View>
         ) : null}
         <MessageMenu
@@ -140,7 +134,8 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
             )}
           </React.Fragment>
         </MessageMenu>
-        {sender?.thumbnail.length >= 0 &&
+        {sender?.thumbnail &&
+        sender?.thumbnail.length >= 0 &&
         shouldRenderAvatar &&
         (messageItem.private || isOutgoing || isTemplate) ? (
           <Animated.View style={tailwind.style('flex items-end justify-end ml-1')}>
@@ -151,7 +146,7 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
                   ? require('../../assets/local/bot-avatar.png')
                   : { uri: sender?.thumbnail }
               }
-              name={sender?.name}
+              name={sender?.name || ''}
             />
           </Animated.View>
         ) : null}

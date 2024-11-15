@@ -17,7 +17,7 @@ import { unixTimestampToReadableTime } from '@/utils';
 import { Avatar } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
 import { MenuOption, MessageMenu } from '@/components-next/chat/message-menu';
-import { MESSAGE_TYPES } from '../TextMessageCell';
+import { MESSAGE_TYPES } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
 
 type VideoCellProps = {

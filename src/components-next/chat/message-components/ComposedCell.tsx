@@ -2,16 +2,16 @@ import React, { useMemo } from 'react';
 import { Alert, Text } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
-import { CopyIcon, DoubleCheckIcon, LinkIcon, LockIcon, TranslateIcon } from '@/svg-icons';
+import { CopyIcon, LinkIcon, LockIcon, TranslateIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { Message } from '@/types';
+import { Channel, Message } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
-import { Avatar, Icon } from '../../common';
+import { Avatar, Icon } from '@/components-next';
 import { MarkdownDisplay } from '../markdown';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { TEXT_MAX_WIDTH } from '@/constants';
 import { ReplyMessageCell } from '../reply-msg-cell';
-import { MESSAGE_TYPES } from '../TextMessageCell';
+import { MESSAGE_TYPES } from '@/constants';
 
 import { AudioPlayer } from './AudioCell';
 import { FilePreview } from './FileCell';
@@ -20,9 +20,11 @@ import { VideoPlayer } from './VideoCell';
 import { useAppSelector } from '@/hooks';
 import { getMessagesByConversationId } from '@/store/conversation/conversationSelectors';
 import { useChatWindowContext } from '@/context';
+import { DeliveryStatus } from './DeliveryStatus';
 
 type ComposedCellProps = {
   messageData: Message;
+  channel?: Channel;
 };
 
 export const ComposedCell = (props: ComposedCellProps) => {
@@ -33,9 +35,11 @@ export const ComposedCell = (props: ComposedCellProps) => {
     sender,
     private: isPrivate,
     status,
+    sourceId,
     createdAt,
     contentAttributes,
   } = props.messageData as Message;
+  const { channel } = props;
   const { conversationId } = useChatWindowContext();
 
   const messages = useAppSelector(state => getMessagesByConversationId(state, { conversationId }));
@@ -53,18 +57,14 @@ export const ComposedCell = (props: ComposedCellProps) => {
   const replyMessage = useMemo(
     () =>
       contentAttributes && contentAttributes?.inReplyTo
-        ? messages.find(message => message.id === contentAttributes?.inReplyTo)
-        : {},
+        ? messages.find(message => message.id === contentAttributes?.inReplyTo) || null
+        : null,
     [messages, contentAttributes],
   );
 
   const commonOptions = useMemo(
     () =>
       [
-        // {
-        //   title: "Reply",
-        //   handleOnPressMenuOption: () => Alert.alert("Reply"),
-        // },
         {
           title: 'Copy',
           icon: <CopyIcon />,
@@ -102,7 +102,7 @@ export const ComposedCell = (props: ComposedCellProps) => {
       <Animated.View style={tailwind.style('flex flex-row')}>
         {sender?.thumbnail && isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
+            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name || ''} />
           </Animated.View>
         ) : null}
 
@@ -131,10 +131,12 @@ export const ComposedCell = (props: ComposedCellProps) => {
                 />
               ) : null}
               <Animated.View style={tailwind.style(isPrivate ? 'pl-2.5' : '')}>
-                {isReplyMessage ? (
+                {isReplyMessage && replyMessage ? (
                   <ReplyMessageCell {...{ replyMessage, isIncoming, isOutgoing }} />
                 ) : null}
-                <MarkdownDisplay {...{ isIncoming, isOutgoing }} messageContent={content} />
+                {content && (
+                  <MarkdownDisplay {...{ isIncoming, isOutgoing }} messageContent={content} />
+                )}
                 {/* TODO: Implement this later */}
                 {props.messageData.attachments &&
                   props.messageData.attachments.map((attachment, index) => {
@@ -206,30 +208,22 @@ export const ComposedCell = (props: ComposedCellProps) => {
                     )}>
                     {unixTimestampToReadableTime(createdAt)}
                   </Text>
-                  {isOutgoing ? (
-                    <Icon
-                      icon={
-                        <DoubleCheckIcon
-                          renderSecondTick={status !== 'sent'}
-                          stroke={
-                            status === 'read'
-                              ? tailwind.color('text-blue-800')
-                              : tailwind.color('text-gray-700')
-                          }
-                        />
-                      }
-                      size={14}
-                    />
-                  ) : null}
+                  <DeliveryStatus
+                    isPrivate={isPrivate}
+                    status={status}
+                    messageType={messageType}
+                    channel={channel}
+                    sourceId={sourceId}
+                    deliveredColor="text-gray-700"
+                    sentColor="text-gray-700"
+                  />
                 </Animated.View>
               </Animated.View>
             </Animated.View>
           </Animated.View>
         </MessageMenu>
 
-        {sender?.thumbnail.length >= 0 &&
-        shouldRenderAvatar &&
-        (isPrivate || isOutgoing || isTemplate) ? (
+        {sender?.thumbnail && shouldRenderAvatar && (isPrivate || isOutgoing || isTemplate) ? (
           <Animated.View style={tailwind.style('flex items-end justify-end ml-1')}>
             <Avatar
               size={'md'}
@@ -238,7 +232,7 @@ export const ComposedCell = (props: ComposedCellProps) => {
                   ? require('../../../assets/local/bot-avatar.png')
                   : { uri: sender?.thumbnail }
               }
-              name={sender?.name}
+              name={sender?.name || ''}
             />
           </Animated.View>
         ) : null}

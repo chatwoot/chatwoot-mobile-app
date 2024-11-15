@@ -19,7 +19,7 @@ import {
   stopPlayer,
 } from '@/components-next/chat/audio-recorder';
 import { MenuOption, MessageMenu } from '../message-menu';
-import { MESSAGE_TYPES } from '../TextMessageCell';
+import { MESSAGE_TYPES } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
 
 export const PlayIcon = ({ fill, fillOpacity }: IconProps) => {

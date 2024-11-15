@@ -131,9 +131,11 @@ export const MessageItem = (props: FlashListRenderProps) => {
               handleQuoteReply={handleQuoteReplyAttachment}
             />
           );
+        default:
+          return null;
       }
     } else if (item?.attachments?.length >= 1 || isReplyMessage) {
-      return <ComposedCell messageData={item} />;
+      return <ComposedCell messageData={item} channel={channel} />;
     } else if ('content' in item && item.content) {
       // Check if 'content' exists in 'item' (i.e., it's a message item)
       return <TextMessageCell {...{ item, index }} handleQuoteReply={handleQuoteReplyAttachment} />;

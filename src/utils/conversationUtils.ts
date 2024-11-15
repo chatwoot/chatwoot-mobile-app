@@ -1,10 +1,10 @@
 import type { Conversation } from '@/types';
-import type { Message, UnixTimestamp } from '@/types';
-import { format } from 'date-fns';
+import type { Message } from '@/types';
 import { groupBy } from 'lodash';
 
 import type { FilterState } from '@/store/conversation/conversationFilterSlice';
 import { PendingMessage } from '@/store/conversation/conversationTypes';
+import { formatDate } from '@/utils/dateTimeUtils';
 
 const filterByStatus = (chatStatus: string, filterStatus: string) =>
   filterStatus === 'all' ? true : chatStatus === filterStatus;
@@ -78,17 +78,6 @@ export const findPendingMessageIndex = (
     );
   }
   return conversation.messages.findIndex(message => message.id === message.id);
-};
-
-// TODO: Add tests for this function
-export const formatDate = (timestamp: UnixTimestamp): string => {
-  const messageDate = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
-  const currentDate = new Date();
-
-  const formatString =
-    messageDate.getFullYear() !== currentDate.getFullYear() ? 'MMM dd, yyyy' : 'MMM dd';
-
-  return format(messageDate, formatString);
 };
 
 export type SectionGroupMessages = {

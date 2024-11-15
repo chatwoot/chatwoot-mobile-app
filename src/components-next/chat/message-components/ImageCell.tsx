@@ -4,20 +4,14 @@ import Animated, { Easing, FadeIn } from 'react-native-reanimated';
 import { LightBox, LightBoxProps } from '@alantoa/lightbox';
 import { Image, ImageBackground } from 'expo-image';
 
-import {
-  CannedResponseIcon,
-  CopyIcon,
-  DoubleCheckIcon,
-  LinkIcon,
-  TranslateIcon,
-  Trash,
-} from '../../../svg-icons';
-import { tailwind } from '../../../theme';
-import { Message, MessageStatus, UnixTimestamp } from '../../../types';
-import { unixTimestampToReadableTime } from '../../../utils';
-import { Avatar, Icon } from '../../common';
+import { CannedResponseIcon, CopyIcon, LinkIcon, TranslateIcon, Trash } from '@/svg-icons';
+import { tailwind } from '@/theme';
+import { Channel, Message, MessageStatus, UnixTimestamp } from '@/types';
+import { unixTimestampToReadableTime } from '@/utils';
+import { Avatar } from '@/components-next/common';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { MESSAGE_TYPES } from '../TextMessageCell';
+import { DeliveryStatus } from './DeliveryStatus';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -27,9 +21,12 @@ type ImageCellProps = {
   imageSrc: string;
   shouldRenderAvatar: boolean;
   messageType: number;
-  senderDetails: Pick<Message, 'sender'>;
+  sender: Message['sender'];
   timeStamp: UnixTimestamp;
   status: MessageStatus;
+  channel?: Channel;
+  isPrivate: boolean;
+  sourceId?: string | null;
   handleQuoteReply: () => void;
 };
 
@@ -58,10 +55,13 @@ export const ImageCell = (props: ImageCellProps) => {
     imageSrc,
     shouldRenderAvatar,
     messageType,
-    senderDetails: sender,
+    sender,
     timeStamp,
-    status,
+    channel,
     handleQuoteReply,
+    isPrivate,
+    sourceId,
+    status,
   } = props;
 
   const isIncoming = messageType === MESSAGE_TYPES.INCOMING;
@@ -125,7 +125,7 @@ export const ImageCell = (props: ImageCellProps) => {
         shouldRenderAvatar ? 'pb-2' : '',
       )}>
       <Animated.View style={tailwind.style('flex flex-row')}>
-        {sender?.thumbnail && isIncoming && shouldRenderAvatar ? (
+        {sender?.thumbnail && sender?.name && isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
             <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
           </Animated.View>
@@ -164,27 +164,19 @@ export const ImageCell = (props: ImageCellProps) => {
                     )}>
                     {unixTimestampToReadableTime(timeStamp)}
                   </Text>
-                  {isOutgoing ? (
-                    <Icon
-                      icon={
-                        <DoubleCheckIcon
-                          renderSecondTick={status !== 'sent'}
-                          stroke={
-                            status === 'read'
-                              ? tailwind.color('text-blue-800')
-                              : tailwind.color('text-whiteA-A12')
-                          }
-                        />
-                      }
-                      size={14}
-                    />
-                  ) : null}
+                  <DeliveryStatus
+                    messageType={messageType}
+                    status={status}
+                    channel={channel}
+                    isPrivate={isPrivate}
+                    sourceId={sourceId}
+                  />
                 </Animated.View>
               </ImageBackground>
             </Animated.View>
           </Animated.View>
         </MessageMenu>
-        {sender?.thumbnail && isOutgoing && shouldRenderAvatar ? (
+        {sender?.thumbnail && sender?.name && isOutgoing && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end ml-1')}>
             <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
           </Animated.View>

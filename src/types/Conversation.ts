@@ -1,5 +1,5 @@
 import { type Agent } from './Agent';
-import { ConversationPriority, ConversationStatus, UnixTimestamp } from './common';
+import { Channel, ConversationPriority, ConversationStatus, UnixTimestamp } from './common';
 import { SLA } from './common/SLA';
 import { Contact } from './Contact';
 import { Message } from './Message';
@@ -56,4 +56,5 @@ export interface ConversationMeta {
   assignee: Agent;
   team: Team;
   hmacVerified: boolean | null;
+  channel: Channel;
 }

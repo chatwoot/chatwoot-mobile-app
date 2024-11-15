@@ -4,7 +4,6 @@ export * from './getChannelTypeIcon';
 export * from './getStatusTypeIcon';
 export * from './isMarkdown';
 export * from './stringManipulation';
-export * from './time';
 export * from './styleAdapter';
 export * from './useAppKeyboardAnimation';
 export * from './useHaptic';

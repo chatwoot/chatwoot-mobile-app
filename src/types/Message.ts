@@ -3,6 +3,7 @@ import { AgentBot } from './AgentBot';
 import { UnixTimestamp } from './common';
 import { Contact } from './Contact';
 import { Conversation } from './Conversation';
+import { User } from './User';
 
 export type ContentType =
   | 'text'
@@ -56,7 +57,7 @@ export interface Message {
   inboxId: number;
   messageType: MessageType;
   private: boolean;
-  sender: Agent | AgentBot | Contact | null;
+  sender: Agent | User | AgentBot | Contact;
   sourceId: string | null;
   status: MessageStatus;
   lastNonActivityMessage: Message | null;

@@ -4,10 +4,10 @@ import { PlayBackType } from 'react-native-audio-recorder-player';
 import Animated, { Easing, FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
 
-import { useAudioPlayer } from '../../../storev2';
-import { DoubleCheckIcon, LinkIcon, Trash } from '@/svg-icons';
+import { useAudioPlayer } from '@/storev2';
+import { LinkIcon, Trash } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { IconProps, Message, MessageStatus, UnixTimestamp } from '@/types';
+import { Channel, IconProps, Message, MessageStatus, UnixTimestamp } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
 import { Avatar, Icon, Slider } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
@@ -20,6 +20,7 @@ import {
 } from '@/components-next/chat/audio-recorder';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { MESSAGE_TYPES } from '../TextMessageCell';
+import { DeliveryStatus } from './DeliveryStatus';
 
 export const PlayIcon = ({ fill, fillOpacity }: IconProps) => {
   return (
@@ -42,9 +43,12 @@ type AudioCellProps = {
   audioSrc: string;
   shouldRenderAvatar: boolean;
   messageType: number;
-  senderDetails: Pick<Message, 'sender'>;
+  sender: Message['sender'];
   timeStamp: UnixTimestamp;
   status: MessageStatus;
+  channel?: Channel;
+  isPrivate: boolean;
+  sourceId?: string | null;
   handleQuoteReply: () => void;
 };
 
@@ -183,10 +187,13 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
     audioSrc,
     shouldRenderAvatar,
     messageType,
-    senderDetails: sender,
+    sender,
     timeStamp,
     status,
     handleQuoteReply,
+    isPrivate,
+    channel,
+    sourceId,
   } = props;
   const isIncoming = messageType === MESSAGE_TYPES.INCOMING;
   const isOutgoing = messageType === MESSAGE_TYPES.OUTGOING;
@@ -237,7 +244,7 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
         shouldRenderAvatar ? 'pb-2' : '',
       )}>
       <Animated.View style={tailwind.style('flex flex-row')}>
-        {sender?.thumbnail && isIncoming && shouldRenderAvatar ? (
+        {sender?.thumbnail && sender?.name && isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
             <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
           </Animated.View>
@@ -271,25 +278,19 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
                 )}>
                 {unixTimestampToReadableTime(timeStamp)}
               </Text>
-              {isOutgoing ? (
-                <Icon
-                  icon={
-                    <DoubleCheckIcon
-                      renderSecondTick={status !== 'sent'}
-                      stroke={
-                        status === 'read'
-                          ? tailwind.color('text-blue-800')
-                          : tailwind.color('text-gray-700')
-                      }
-                    />
-                  }
-                  size={14}
-                />
-              ) : null}
+              <DeliveryStatus
+                isPrivate={isPrivate}
+                status={status}
+                messageType={messageType}
+                channel={channel}
+                sourceId={sourceId}
+                deliveredColor="text-gray-700"
+                sentColor="text-gray-700"
+              />
             </Animated.View>
           </Animated.View>
         </MessageMenu>
-        {sender?.thumbnail && isOutgoing && shouldRenderAvatar ? (
+        {sender?.thumbnail && sender?.name && isOutgoing && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end ml-1')}>
             <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
           </Animated.View>

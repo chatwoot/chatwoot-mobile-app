@@ -10,22 +10,26 @@ import {
 } from 'expo-av';
 import { Image, ImageBackground } from 'expo-image';
 
-import { DoubleCheckIcon, LinkIcon, Trash } from '../../../svg-icons';
-import { tailwind } from '../../../theme';
-import { Message, MessageStatus, UnixTimestamp } from '../../../types';
-import { unixTimestampToReadableTime } from '../../../utils';
-import { Avatar, Icon } from '../../common';
-import { Spinner } from '../../spinner';
-import { MenuOption, MessageMenu } from '../message-menu';
+import { LinkIcon, Trash } from '@/svg-icons';
+import { tailwind } from '@/theme';
+import { Channel, Message, MessageStatus, UnixTimestamp } from '@/types';
+import { unixTimestampToReadableTime } from '@/utils';
+import { Avatar } from '@/components-next/common';
+import { Spinner } from '@/components-next/spinner';
+import { MenuOption, MessageMenu } from '@/components-next/chat/message-menu';
 import { MESSAGE_TYPES } from '../TextMessageCell';
+import { DeliveryStatus } from './DeliveryStatus';
 
 type VideoCellProps = {
   videoSrc: string;
   shouldRenderAvatar: boolean;
   messageType: number;
-  senderDetails: Pick<Message, 'sender'>;
+  sender: Message['sender'];
   timeStamp: UnixTimestamp;
   status: MessageStatus;
+  channel?: Channel;
+  isPrivate: boolean;
+  sourceId?: string | null;
   handleQuoteReply: () => void;
 };
 
@@ -117,13 +121,16 @@ export const VideoPlayer = (props: VideoPlayerProps) => {
 
 export const VideoCell = (props: VideoCellProps) => {
   const {
-    shouldRenderAvatar,
-    status: messageStatus,
-    timeStamp,
-    messageType,
     videoSrc,
-    senderDetails: sender,
+    sender,
+    shouldRenderAvatar,
+    messageType,
+    timeStamp,
+    status,
     handleQuoteReply,
+    isPrivate,
+    channel,
+    sourceId,
   } = props;
 
   const isIncoming = messageType === MESSAGE_TYPES.INCOMING;
@@ -220,27 +227,19 @@ export const VideoCell = (props: VideoCellProps) => {
                     )}>
                     {unixTimestampToReadableTime(timeStamp)}
                   </Text>
-                  {isOutgoing ? (
-                    <Icon
-                      icon={
-                        <DoubleCheckIcon
-                          renderSecondTick={messageStatus !== 'sent'}
-                          stroke={
-                            messageStatus === 'read'
-                              ? tailwind.color('text-blue-800')
-                              : tailwind.color('text-whiteA-A12')
-                          }
-                        />
-                      }
-                      size={14}
-                    />
-                  ) : null}
+                  <DeliveryStatus
+                    isPrivate={isPrivate}
+                    status={status}
+                    messageType={messageType}
+                    channel={channel}
+                    sourceId={sourceId}
+                  />
                 </Animated.View>
               </ImageBackground>
             </Animated.View>
           </Animated.View>
         </MessageMenu>
-        {sender?.thumbnail && isOutgoing && shouldRenderAvatar ? (
+        {sender?.thumbnail && sender?.name && isOutgoing && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end ml-1')}>
             <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
           </Animated.View>

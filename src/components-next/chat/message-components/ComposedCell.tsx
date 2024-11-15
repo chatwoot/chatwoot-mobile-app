@@ -1,13 +1,11 @@
 import React, { useMemo } from 'react';
 import { Alert, Text } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
-import { find, flatMap } from 'lodash';
 
-import { useMessageList } from '../../../storev2';
-import { CopyIcon, DoubleCheckIcon, LinkIcon, LockIcon, TranslateIcon } from '../../../svg-icons';
-import { tailwind } from '../../../theme';
-import { Message } from '../../../types';
-import { unixTimestampToReadableTime } from '../../../utils';
+import { CopyIcon, DoubleCheckIcon, LinkIcon, LockIcon, TranslateIcon } from '@/svg-icons';
+import { tailwind } from '@/theme';
+import { Message } from '@/types';
+import { unixTimestampToReadableTime } from '@/utils';
 import { Avatar, Icon } from '../../common';
 import { MarkdownDisplay } from '../markdown';
 import { MenuOption, MessageMenu } from '../message-menu';
@@ -19,16 +17,13 @@ import { AudioPlayer } from './AudioCell';
 import { FilePreview } from './FileCell';
 import { ImageContainer } from './ImageCell';
 import { VideoPlayer } from './VideoCell';
+import { useAppSelector } from '@/hooks';
+import { getMessagesByConversationId } from '@/store/conversation/conversationSelectors';
+import { useChatWindowContext } from '@/context';
 
 type ComposedCellProps = {
   messageData: Message;
 };
-
-// TODO Add types from the store - not setting it now, might change when integrating it with Data layer
-// @ts-ignore
-function findMessageByIdLodash(messageList, messageId: number) {
-  return find(flatMap(messageList, 'data'), { id: messageId });
-}
 
 export const ComposedCell = (props: ComposedCellProps) => {
   const {
@@ -41,10 +36,9 @@ export const ComposedCell = (props: ComposedCellProps) => {
     createdAt,
     contentAttributes,
   } = props.messageData as Message;
+  const { conversationId } = useChatWindowContext();
 
-  const chatMessages = useMessageList(state => state.messageList);
-
-  console.log('messageData', props.messageData);
+  const messages = useAppSelector(state => getMessagesByConversationId(state, { conversationId }));
 
   const isIncoming = messageType === MESSAGE_TYPES.INCOMING;
   const isOutgoing = messageType === MESSAGE_TYPES.OUTGOING;
@@ -59,9 +53,9 @@ export const ComposedCell = (props: ComposedCellProps) => {
   const replyMessage = useMemo(
     () =>
       contentAttributes && contentAttributes?.inReplyTo
-        ? findMessageByIdLodash(chatMessages, contentAttributes?.inReplyTo)
+        ? messages.find(message => message.id === contentAttributes?.inReplyTo)
         : {},
-    [chatMessages, contentAttributes],
+    [messages, contentAttributes],
   );
 
   const commonOptions = useMemo(

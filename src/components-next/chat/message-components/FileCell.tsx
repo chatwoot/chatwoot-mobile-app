@@ -4,14 +4,15 @@ import FileViewer from 'react-native-file-viewer';
 import Animated, { Easing, FadeIn } from 'react-native-reanimated';
 import RNFetchBlob from 'rn-fetch-blob';
 
-import { CopyIcon, DoubleCheckIcon, FileIcon, Trash } from '../../../svg-icons';
-import { tailwind } from '../../../theme';
-import { Message, MessageStatus, UnixTimestamp } from '../../../types';
-import { unixTimestampToReadableTime } from '../../../utils';
-import { Avatar, Icon } from '../../common';
-import { Spinner } from '../../spinner';
+import { CopyIcon, FileIcon, Trash } from '@/svg-icons';
+import { tailwind } from '@/theme';
+import { Channel, Message, MessageStatus, UnixTimestamp } from '@/types';
+import { unixTimestampToReadableTime } from '@/utils';
+import { Avatar, Icon } from '@/components-next/common';
+import { Spinner } from '@/components-next/spinner';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { MESSAGE_TYPES } from '../TextMessageCell';
+import { DeliveryStatus } from './DeliveryStatus';
 
 type FilePreviewProps = Pick<FileCellProps, 'fileSrc'> & {
   isIncoming: boolean;
@@ -118,21 +119,27 @@ type FileCellProps = {
   fileSrc: string;
   shouldRenderAvatar: boolean;
   messageType: number;
-  senderDetails: Pick<Message, 'sender'>;
+  sender: Message['sender'];
   timeStamp: UnixTimestamp;
   status: MessageStatus;
   handleQuoteReply: () => void;
+  channel?: Channel;
+  isPrivate: boolean;
+  sourceId?: string | null;
 };
 
 export const FileCell = (props: FileCellProps) => {
   const {
-    shouldRenderAvatar,
-    status: messageStatus,
-    timeStamp,
-    messageType,
     fileSrc,
-    senderDetails: sender,
+    sender,
+    shouldRenderAvatar,
+    messageType,
+    timeStamp,
+    status,
     handleQuoteReply,
+    isPrivate,
+    channel,
+    sourceId,
   } = props;
 
   const isIncoming = messageType === MESSAGE_TYPES.INCOMING;
@@ -184,7 +191,7 @@ export const FileCell = (props: FileCellProps) => {
         shouldRenderAvatar ? 'pb-2' : '',
       )}>
       <Animated.View style={tailwind.style('flex flex-row')}>
-        {sender?.thumbnail && isIncoming && shouldRenderAvatar ? (
+        {sender?.thumbnail && sender?.name && isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
             <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
           </Animated.View>
@@ -216,25 +223,19 @@ export const FileCell = (props: FileCellProps) => {
                 )}>
                 {unixTimestampToReadableTime(timeStamp)}
               </Animated.Text>
-              {isOutgoing ? (
-                <Icon
-                  icon={
-                    <DoubleCheckIcon
-                      renderSecondTick={messageStatus !== 'sent'}
-                      stroke={
-                        messageStatus === 'read'
-                          ? tailwind.color('text-blue-800')
-                          : tailwind.color('text-gray-700')
-                      }
-                    />
-                  }
-                  size={14}
-                />
-              ) : null}
+              <DeliveryStatus
+                isPrivate={isPrivate}
+                status={status}
+                messageType={messageType}
+                channel={channel}
+                sourceId={sourceId}
+                deliveredColor="text-gray-700"
+                sentColor="text-gray-700"
+              />
             </Animated.View>
           </Animated.View>
         </MessageMenu>
-        {sender?.thumbnail && isOutgoing && shouldRenderAvatar ? (
+        {sender?.thumbnail && sender?.name && isOutgoing && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end ml-1')}>
             <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
           </Animated.View>

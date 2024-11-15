@@ -9,4 +9,5 @@ export interface AgentBot {
   botConfig: object | null;
   accountId: number | null;
   accessToken: string | null;
+  thumbnail?: string | null;
 }

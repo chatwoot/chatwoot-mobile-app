@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
@@ -16,6 +16,9 @@ import {
 
 import { FlashListRenderProps } from '../MessagesList';
 import { TextMessageCell } from '@/components-next/chat/TextMessageCell';
+import { useAppSelector } from '@/hooks';
+import { selectConversationById } from '@/store/conversation/conversationSelectors';
+import { useChatWindowContext } from '@/context';
 
 type StickySectionProps = { item: { date: string } };
 
@@ -36,7 +39,7 @@ const StickySection = ({ item }: StickySectionProps) => {
 
 export const MessageItem = (props: FlashListRenderProps) => {
   const { setQuoteMessage } = useSendMessage();
-
+  const { conversationId } = useChatWindowContext();
   const handleQuoteReplyAttachment = () => {
     setQuoteMessage(props.item as Message);
     // TODO: Add text input focus which now is a little janky
@@ -45,66 +48,86 @@ export const MessageItem = (props: FlashListRenderProps) => {
   const { item, index } = props;
   const messageItem = item as Message;
 
-  const isReplyMessage = useMemo(
-    () =>
-      messageItem.contentAttributes &&
-      Object.keys(messageItem.contentAttributes).length > 0 &&
-      Object.keys(messageItem.contentAttributes).includes('inReplyTo'),
-    [messageItem.contentAttributes],
-  );
+  const conversation = useAppSelector(state => selectConversationById(state, conversationId));
+
+  const {
+    messageType,
+    private: isPrivate,
+    sourceId,
+    createdAt,
+    status,
+    shouldRenderAvatar,
+    sender,
+  } = messageItem;
+  const channel = conversation?.meta?.channel;
+
+  const isReplyMessage = messageItem.contentAttributes?.inReplyTo;
 
   if ('date' in item) {
-    // Check if 'section' exists in 'item' (i.e., it's a section item)
     return <StickySection {...{ item }} />;
   } else {
-    // Message has only one attachment and no content
+    const attachments = item?.attachments;
+    // Message has only one attachment, no content and not a reply message
     if (item?.attachments?.length === 1 && !item.content && !isReplyMessage) {
-      switch (item.attachments[0].fileType) {
-        case 'audio':
-          return (
-            <AudioCell
-              audioSrc={item.attachments[0].dataUrl}
-              senderDetails={item.sender}
-              timeStamp={item.createdAt}
-              shouldRenderAvatar={item.shouldRenderAvatar}
-              messageType={item.messageType}
-              status={item.status}
-              handleQuoteReply={handleQuoteReplyAttachment}
-            />
-          );
+      switch (attachments[0].fileType) {
         case 'image':
           return (
             <ImageCell
-              senderDetails={item.sender}
-              timeStamp={item.createdAt}
-              shouldRenderAvatar={item.shouldRenderAvatar}
-              messageType={item.messageType}
-              imageSrc={item.attachments[0].dataUrl}
-              status={item.status}
+              sender={sender}
+              timeStamp={createdAt}
+              shouldRenderAvatar={shouldRenderAvatar}
+              messageType={messageType}
+              isPrivate={isPrivate}
+              channel={channel}
+              sourceId={sourceId}
+              imageSrc={attachments[0].dataUrl}
+              status={status}
               handleQuoteReply={handleQuoteReplyAttachment}
             />
           );
+        case 'audio':
+          return (
+            <AudioCell
+              audioSrc={attachments[0].dataUrl}
+              sender={item.sender}
+              timeStamp={item.createdAt}
+              shouldRenderAvatar={item.shouldRenderAvatar}
+              messageType={item.messageType}
+              status={item.status}
+              isPrivate={isPrivate}
+              channel={channel}
+              sourceId={sourceId}
+              handleQuoteReply={handleQuoteReplyAttachment}
+            />
+          );
+
         case 'video':
           return (
             <VideoCell
-              senderDetails={item.sender}
-              videoSrc={item.attachments[0].dataUrl}
+              sender={item.sender}
+              videoSrc={attachments[0].dataUrl}
               shouldRenderAvatar={item.shouldRenderAvatar}
-              messageType={item.messageType}
               timeStamp={item.createdAt}
+              messageType={item.messageType}
               status={item.status}
+              isPrivate={isPrivate}
+              channel={channel}
+              sourceId={sourceId}
               handleQuoteReply={handleQuoteReplyAttachment}
             />
           );
         case 'file':
           return (
             <FileCell
-              senderDetails={item.sender}
-              fileSrc={item.attachments[0].dataUrl}
+              fileSrc={attachments[0].dataUrl}
               shouldRenderAvatar={item.shouldRenderAvatar}
-              messageType={item.messageType}
               timeStamp={item.createdAt}
+              messageType={item.messageType}
               status={item.status}
+              isPrivate={isPrivate}
+              channel={channel}
+              sourceId={sourceId}
+              sender={sender}
               handleQuoteReply={handleQuoteReplyAttachment}
             />
           );

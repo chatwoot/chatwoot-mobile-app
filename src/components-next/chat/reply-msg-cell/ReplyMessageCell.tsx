@@ -26,7 +26,7 @@ export const ReplyMessageCell = (props: ReplyMessageCellProps) => {
 
   const hasAttachments = useMemo(
     () => replyMessageItem?.attachments?.length > 0,
-    [replyMessageItem.attachments],
+    [replyMessageItem?.attachments],
   );
 
   const renderAttachmentSection = () => {
@@ -72,7 +72,7 @@ export const ReplyMessageCell = (props: ReplyMessageCellProps) => {
             style={tailwind.style(
               'text-cxs font-inter-420-20 leading-[14.95px] tracking-[0.32px] text-blackA-A11',
             )}>
-            Replying to {replyMessageItem.sender?.name}
+            Replying to {replyMessageItem?.sender?.name}
           </Animated.Text>
           {hasAttachments ? (
             <Animated.View style={tailwind.style('py-[3px] flex flex-row items-center')}>

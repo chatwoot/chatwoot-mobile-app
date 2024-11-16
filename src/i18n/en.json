@@ -165,7 +165,8 @@
     "CHAT_WITH_US": "Chat with us",
     "LOGOUT": "Logout",
     "SUBMIT": "Submit",
-    "SET_LANGUAGE": "Set Language"
+    "SET_LANGUAGE": "Set Language",
+    "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",

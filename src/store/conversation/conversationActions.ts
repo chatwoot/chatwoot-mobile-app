@@ -12,6 +12,8 @@ import type {
   ToggleConversationStatusAPIResponse,
   ToggleConversationStatusPayload,
   BulkActionPayload,
+  AssigneePayload,
+  AssigneeAPIResponse,
 } from './conversationTypes';
 import { AxiosError } from 'axios';
 import { addOrUpdateMessage } from './conversationSlice';
@@ -156,6 +158,20 @@ export const conversationActions = {
     'conversations/bulkAction',
     async (payload, { rejectWithValue }) => {
       await ConversationService.bulkAction(payload);
+    },
+  ),
+  assignConversation: createAsyncThunk<AssigneeAPIResponse, AssigneePayload>(
+    'conversations/assignConversation',
+    async (payload, { rejectWithValue }) => {
+      try {
+        return await ConversationService.assignConversation(payload);
+      } catch (error) {
+        const { response } = error as AxiosError<ApiErrorResponse>;
+        if (!response) {
+          throw error;
+        }
+        return rejectWithValue(response.data);
+      }
     },
   ),
 };

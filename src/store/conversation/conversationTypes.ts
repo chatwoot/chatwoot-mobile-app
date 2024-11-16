@@ -6,6 +6,7 @@ import type {
 } from '@/types/common/ConversationStatus';
 import type { Message } from '@/types/Message';
 import { MESSAGE_STATUS, MESSAGE_TYPES } from '@/constants';
+import { Agent } from '@/types';
 
 export interface ConversationListAPIResponse {
   data: {
@@ -152,4 +153,15 @@ export interface BulkActionFields {
 
 export interface BulkActionLabels {
   add: string[];
+}
+
+export interface AssigneePayload {
+  conversationId: number;
+  assigneeId: number;
+}
+
+export interface AssigneeAPIResponse {
+  data: {
+    payload: Agent;
+  };
 }

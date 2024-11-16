@@ -10,6 +10,8 @@ import type {
   ToggleConversationStatusPayload,
   ToggleConversationStatusAPIResponse,
   BulkActionPayload,
+  AssigneePayload,
+  AssigneeAPIResponse,
 } from './conversationTypes';
 
 export class ConversationService {
@@ -74,5 +76,12 @@ export class ConversationService {
   }
   static async bulkAction(payload: BulkActionPayload): Promise<void> {
     await apiService.post('bulk_actions', payload);
+  }
+  static async assignConversation(payload: AssigneePayload): Promise<AssigneeAPIResponse> {
+    const { conversationId, assigneeId } = payload;
+    const response = await apiService.post<AssigneeAPIResponse>(
+      `conversations/${conversationId}/assignments?assignee_id=${assigneeId}`,
+    );
+    return response.data;
   }
 }

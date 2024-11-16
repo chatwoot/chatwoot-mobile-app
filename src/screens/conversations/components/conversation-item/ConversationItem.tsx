@@ -16,14 +16,18 @@ import { ConversationAvatar } from './ConversationAvatar';
 import { ConversationItemDetail } from './ConversationItemDetail';
 import { ConversationSelect } from './ConversationSelect';
 
-import { toggleSelection, selectSelected } from '@/store/conversation/conversationSelectedSlice';
+import {
+  toggleSelection,
+  selectSelected,
+  selectSingleConversation,
+} from '@/store/conversation/conversationSelectedSlice';
 import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import { setActionState } from '@/store/conversation/conversationActionSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 // import { selectContactById } from '@/store/contact/contactSelectors';
+// import { getRandomChannel } from '@/types/common/Channel';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { getLastMessage } from '@/utils/conversationUtils';
-// import { getRandomChannel } from '@/types/common/Channel';
 import { Inbox } from '@/types/Inbox';
 
 type ConversationCellProps = {
@@ -102,12 +106,14 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
   const { actionsModalSheetRef } = useRefsContext();
 
   const onAssignAction = useCallback(() => {
+    dispatch(selectSingleConversation(props.conversationItem));
     dispatch(setActionState('Assign'));
     actionsModalSheetRef.current?.present();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onStatusAction = useCallback(() => {
+    dispatch(selectSingleConversation(props.conversationItem));
     dispatch(setActionState('Status'));
     actionsModalSheetRef.current?.present();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -124,7 +130,6 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
 
   const onPressAction = () => {
     if (currentState === 'Select') {
-      // When Select is activated
       dispatch(toggleSelection({ conversation: props.conversationItem }));
     } else {
       navigation.dispatch(pushToChatScreen);

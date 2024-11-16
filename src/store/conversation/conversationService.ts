@@ -7,6 +7,8 @@ import type {
   SendMessageAPIResponse,
   ConversationListAPIResponse,
   ConversationAPIResponse,
+  ToggleConversationStatusPayload,
+  ToggleConversationStatusAPIResponse,
 } from './conversationTypes';
 
 export class ConversationService {
@@ -55,6 +57,17 @@ export class ConversationService {
   static async fetchConversation(conversationId: number): Promise<ConversationAPIResponse> {
     const response = await apiService.get<ConversationAPIResponse>(
       `conversations/${conversationId}`,
+    );
+    return response.data;
+  }
+
+  static async toggleConversationStatus({
+    conversationId,
+    payload,
+  }: ToggleConversationStatusPayload): Promise<ToggleConversationStatusAPIResponse> {
+    const response = await apiService.post<ToggleConversationStatusAPIResponse>(
+      `conversations/${conversationId}/toggle_status`,
+      payload,
     );
     return response.data;
   }

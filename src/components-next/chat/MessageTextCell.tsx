@@ -1,14 +1,13 @@
 import React from 'react';
 import { Animated, Text } from 'react-native';
 
-import { DoubleCheckIcon } from '../../svg-icons';
-import { tailwind } from '../../theme';
-import { MessageStatus } from '../../types';
-import { unixTimestampToReadableTime } from '../../utils';
-import { Icon } from '../common';
+import { tailwind } from '@/theme';
+import { Channel, MessageStatus, MessageType } from '@/types';
+import { unixTimestampToReadableTime } from '@/utils';
 
 import { MarkdownDisplay } from './markdown';
 import { TEXT_MAX_WIDTH } from '@/constants';
+import { DeliveryStatus } from './message-components/DeliveryStatus';
 
 type MessageTextCellProps = {
   text: string;
@@ -18,10 +17,25 @@ type MessageTextCellProps = {
   isActivity: boolean;
   status: MessageStatus;
   isAvatarRendered: boolean;
+  channel?: Channel;
+  messageType: MessageType;
+  sourceId?: string;
+  isPrivate: boolean;
 };
 
 export const MessageTextCell = (props: MessageTextCellProps) => {
-  const { text, timeStamp, isIncoming, isOutgoing, status, isAvatarRendered } = props;
+  const {
+    text,
+    timeStamp,
+    isIncoming,
+    isOutgoing,
+    status,
+    isAvatarRendered,
+    channel,
+    messageType,
+    sourceId,
+    isPrivate,
+  } = props;
 
   // const [singleLineLongText, setSingleLineLongText] = useState(false);
   // const [singleLineShortText, setSingleLineShortText] = useState(false);
@@ -80,7 +94,7 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
             : "",
           isIncoming ? "text-white" : "",
           isOutgoing ? "text-gray-950" : "",
-        )}
+        )} 
       >
         {text}
       </Text> */}
@@ -99,7 +113,16 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
           )}>
           {unixTimestampToReadableTime(timeStamp)}
         </Text>
-        {isOutgoing ? (
+        <DeliveryStatus
+          isPrivate={isPrivate}
+          status={status}
+          messageType={messageType}
+          channel={channel}
+          sourceId={sourceId}
+          deliveredColor="text-gray-700"
+          sentColor="text-gray-700"
+        />
+        {/* {isOutgoing ? (
           <Icon
             icon={
               <DoubleCheckIcon
@@ -113,7 +136,7 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
             }
             size={14}
           />
-        ) : null}
+        ) : null} */}
       </Animated.View>
     </Animated.View>
   );

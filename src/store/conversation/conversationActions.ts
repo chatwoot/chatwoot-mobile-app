@@ -9,6 +9,8 @@ import type {
   SendMessagePayload,
   SendMessageAPIResponse,
   ConversationListResponse,
+  ToggleConversationStatusAPIResponse,
+  ToggleConversationStatusPayload,
 } from './conversationTypes';
 import { AxiosError } from 'axios';
 import { addOrUpdateMessage } from './conversationSlice';
@@ -27,7 +29,7 @@ export const conversationActions = {
     'conversations/fetchConversations',
     async (payload, { rejectWithValue }) => {
       try {
-        const response = await ConversationService.getConversations(payload); 
+        const response = await ConversationService.getConversations(payload);
         const { payload: conversations, meta } = response.data;
         const transformedResponse: ConversationListResponse = {
           conversations: conversations.map(transformConversation),
@@ -134,4 +136,19 @@ export const conversationActions = {
       }
     },
   ),
+  toggleConversationStatus: createAsyncThunk<
+    ToggleConversationStatusAPIResponse,
+    ToggleConversationStatusPayload
+  >('conversations/toggleConversationStatus', async (payload, { rejectWithValue }) => {
+    try {
+      const response = await ConversationService.toggleConversationStatus(payload);
+      return response;
+    } catch (error) {
+      const { response } = error as AxiosError<ApiErrorResponse>;
+      if (!response) {
+        throw error;
+      }
+      return rejectWithValue(response.data);
+    }
+  }),
 };

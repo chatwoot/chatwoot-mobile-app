@@ -119,3 +119,18 @@ export interface SendMessageAPIResponse {
     thumbnail: string;
   };
 }
+
+export interface ToggleConversationStatusPayload {
+  conversationId: number;
+  payload: {
+    status: ConversationStatus;
+    snoozed_until: number | null;
+  };
+}
+
+export interface ToggleConversationStatusAPIResponse {
+  conversation_id: number;
+  current_status: ConversationStatus;
+  snoozed_until: number | null;
+  success: boolean;
+}

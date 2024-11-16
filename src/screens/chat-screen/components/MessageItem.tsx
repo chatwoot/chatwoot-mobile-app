@@ -138,7 +138,13 @@ export const MessageItem = (props: FlashListRenderProps) => {
       return <ComposedCell messageData={item} channel={channel} />;
     } else if ('content' in item && item.content) {
       // Check if 'content' exists in 'item' (i.e., it's a message item)
-      return <TextMessageCell {...{ item, index }} handleQuoteReply={handleQuoteReplyAttachment} />;
+      return (
+        <TextMessageCell
+          {...{ item, index }}
+          handleQuoteReply={handleQuoteReplyAttachment}
+          channel={channel}
+        />
+      );
     } else {
       return <View />;
     }

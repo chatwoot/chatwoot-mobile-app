@@ -1,23 +1,27 @@
 import React from 'react';
 import { Animated, Text } from 'react-native';
 
-import { DoubleCheckIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { MessageStatus } from '@/types';
+import { Channel, MessageStatus, MessageType } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
-import { Icon } from '@/components-next/common';
 
 import { MarkdownDisplay } from './markdown';
 import { TEXT_MAX_WIDTH } from '@/constants';
+import { DeliveryStatus } from './message-components/DeliveryStatus';
 
 type BotTextCellProps = {
   text: string;
   timeStamp: number;
   status: MessageStatus;
   isAvatarRendered: boolean;
+  channel?: Channel;
+  messageType: MessageType;
+  sourceId?: string;
+  isPrivate: boolean;
 };
 export const BotTextCell = (props: BotTextCellProps) => {
-  const { text, timeStamp, status, isAvatarRendered } = props;
+  const { text, timeStamp, status, isAvatarRendered, channel, messageType, sourceId, isPrivate } =
+    props;
 
   // const [singleLineLongText, setSingleLineLongText] = useState(false);
   // const [singleLineShortText, setSingleLineShortText] = useState(false);
@@ -66,7 +70,7 @@ export const BotTextCell = (props: BotTextCellProps) => {
           "text-base tracking-[0.32px] leading-[22px] font-inter-normal-24 text-gray-950",
         )}
       >
-        {text}
+        {text} 
       </Text> */}
       <MarkdownDisplay isBotText messageContent={text} />
 
@@ -81,17 +85,14 @@ export const BotTextCell = (props: BotTextCellProps) => {
           style={tailwind.style('text-xs font-inter-420-20 tracking-[0.32px] pr-1 text-gray-700')}>
           {unixTimestampToReadableTime(timeStamp)}
         </Text>
-        <Icon
-          icon={
-            <DoubleCheckIcon
-              stroke={
-                status === 'read'
-                  ? tailwind.color('text-blue-800')
-                  : tailwind.color('text-gray-700')
-              }
-            />
-          }
-          size={14}
+        <DeliveryStatus
+          isPrivate={isPrivate}
+          status={status}
+          messageType={messageType}
+          channel={channel}
+          sourceId={sourceId || ''}
+          deliveredColor="text-gray-700"
+          sentColor="text-gray-700"
         />
       </Animated.View>
     </Animated.View>

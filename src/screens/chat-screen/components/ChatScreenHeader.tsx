@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { ImageSourcePropType, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -9,7 +9,11 @@ import { ChevronLeft, OpenIcon, Overflow, ResolvedIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 
 import { ChatDropdownMenu, DashboardList } from './DropdownMenu';
-
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { conversationActions } from '@/store/conversation/conversationActions';
+import { selectConversationById } from '@/store/conversation/conversationSelectors';
+import { CONVERSATION_STATUS } from '@/constants';
+import { ConversationStatus } from '@/types/common/ConversationStatus';
 type ChatScreenHeaderProps = {
   name: string;
   imageSrc: ImageSourcePropType;
@@ -18,11 +22,14 @@ type ChatScreenHeaderProps = {
 export const ChatScreenHeader = (props: ChatScreenHeaderProps) => {
   const { name, imageSrc } = props;
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+  const { conversationId } = useChatWindowContext();
+  const conversation = useAppSelector(state => selectConversationById(state, conversationId));
+
+  const conversationStatus = conversation?.status;
 
   const { chatPagerView } = useRefsContext();
   const { pagerViewIndex } = useChatWindowContext();
-
-  const [conversationStatus, setConversationStatus] = useState<'resolved' | 'open'>('resolved');
 
   const handleBackPress = () => {
     navigation.dispatch(StackActions.pop());
@@ -43,11 +50,16 @@ export const ChatScreenHeader = (props: ChatScreenHeaderProps) => {
   };
 
   const toggleChatStatus = () => {
-    if (conversationStatus === 'resolved') {
-      setConversationStatus('open');
-    } else {
-      setConversationStatus('resolved');
-    }
+    const updatedStatus =
+      conversationStatus === CONVERSATION_STATUS.RESOLVED
+        ? CONVERSATION_STATUS.OPEN
+        : CONVERSATION_STATUS.RESOLVED;
+    dispatch(
+      conversationActions.toggleConversationStatus({
+        conversationId,
+        payload: { status: updatedStatus as ConversationStatus, snoozed_until: null },
+      }),
+    );
   };
 
   const dashboardsList = useMemo(() => {
@@ -102,7 +114,7 @@ export const ChatScreenHeader = (props: ChatScreenHeaderProps) => {
           <Pressable hitSlop={8} onPress={toggleChatStatus}>
             <Icon
               icon={
-                conversationStatus === 'resolved' ? (
+                conversationStatus !== 'resolved' ? (
                   <ResolvedIcon strokeWidth={2} stroke={tailwind.color('bg-green-700')} />
                 ) : (
                   <OpenIcon strokeWidth={2} />

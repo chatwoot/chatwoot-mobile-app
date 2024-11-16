@@ -4,7 +4,7 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import tailwind from 'twrnc';
 
 import { CannedResponseIcon, CopyIcon, LinkIcon, TranslateIcon, Trash } from '@/svg-icons';
-import { Message } from '@/types';
+import { Channel, Message } from '@/types';
 import { Avatar } from '@/components-next/common';
 
 import { ActivityTextCell } from './ActivityTextCell';
@@ -17,21 +17,29 @@ import { MESSAGE_TYPES } from '@/constants';
 export type TextMessageCellProps = {
   item: Message;
   handleQuoteReply: () => void;
+  channel?: Channel;
 };
 
 export const TextMessageCell = (props: TextMessageCellProps) => {
   const messageItem = props.item as Message;
+
+  const {
+    messageType,
+    shouldRenderAvatar,
+    sender,
+    private: isPrivate,
+    status,
+    sourceId,
+    content,
+    createdAt,
+  } = messageItem;
+  const { channel } = props;
   const isIncoming = messageItem.messageType === MESSAGE_TYPES.INCOMING;
   const isOutgoing = messageItem.messageType === MESSAGE_TYPES.OUTGOING;
   const isActivity = messageItem.messageType === MESSAGE_TYPES.ACTIVITY;
   const isTemplate = messageItem.messageType === MESSAGE_TYPES.TEMPLATE;
 
   const { handleQuoteReply } = props;
-
-  const sender = messageItem.sender;
-  // This is a prop which is added after getting the Payload
-  // so we might want to have two set of types for Message
-  const { shouldRenderAvatar } = messageItem;
 
   const commonOptions = useMemo(
     () =>
@@ -104,32 +112,38 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
         <MessageMenu
           menuOptions={isActivity ? [] : isIncoming ? commonOptions : outgoingMessageOptions}>
           <React.Fragment>
-            {messageItem.private ? (
+            {isPrivate ? (
               <React.Fragment>
-                <PrivateTextCell text={messageItem.content} timeStamp={messageItem.createdAt} />
+                <PrivateTextCell text={content} timeStamp={createdAt} />
               </React.Fragment>
             ) : (
               <React.Fragment>
                 {isIncoming || isOutgoing ? (
                   <MessageTextCell
                     {...{ isActivity, isIncoming, isOutgoing }}
-                    text={messageItem.content}
-                    timeStamp={messageItem.createdAt}
-                    status={messageItem.status}
+                    text={content}
+                    timeStamp={createdAt}
+                    status={status}
                     isAvatarRendered={shouldRenderAvatar}
+                    channel={channel}
+                    messageType={messageType}
+                    sourceId={sourceId || ''}
+                    isPrivate={isPrivate}
                   />
                 ) : null}
                 {isTemplate ? (
                   <BotTextCell
-                    text={messageItem.content}
-                    timeStamp={messageItem.createdAt}
+                    text={content}
+                    timeStamp={createdAt}
                     status={messageItem.status}
                     isAvatarRendered={shouldRenderAvatar}
+                    channel={channel}
+                    messageType={messageType}
+                    sourceId={sourceId || ''}
+                    isPrivate={isPrivate}
                   />
                 ) : null}
-                {isActivity ? (
-                  <ActivityTextCell text={messageItem.content} timeStamp={messageItem.createdAt} />
-                ) : null}
+                {isActivity ? <ActivityTextCell text={content} timeStamp={createdAt} /> : null}
               </React.Fragment>
             )}
           </React.Fragment>
@@ -137,7 +151,7 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
         {sender?.thumbnail &&
         sender?.thumbnail.length >= 0 &&
         shouldRenderAvatar &&
-        (messageItem.private || isOutgoing || isTemplate) ? (
+        (isPrivate || isOutgoing || isTemplate) ? (
           <Animated.View style={tailwind.style('flex items-end justify-end ml-1')}>
             <Avatar
               size={'md'}

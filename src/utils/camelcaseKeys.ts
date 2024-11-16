@@ -7,6 +7,7 @@ import {
   ConversationMeta,
   Label,
   ConversationListMeta,
+  Agent,
 } from '@/types';
 import type { Inbox } from '@/types/Inbox';
 import type { NotificationMeta, Notification } from '@/types/Notification';
@@ -45,4 +46,8 @@ export const transformLabel = (label: any): Label => {
 
 export const transformConversationMeta = (meta: any): ConversationMeta => {
   return camelcaseKeys(meta, { deep: true }) as unknown as ConversationMeta;
+};
+
+export const transformInboxAgent = (agent: any): Agent => {
+  return camelcaseKeys(agent, { deep: true }) as unknown as Agent;
 };

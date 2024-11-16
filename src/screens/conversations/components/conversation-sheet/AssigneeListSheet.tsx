@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ImageSourcePropType, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
@@ -8,24 +8,18 @@ import { tailwind } from '@/theme';
 import { Agent } from '@/types';
 import { Avatar, SearchBar } from '@/components-next';
 
-export const people: Agent[] = [
-  {
-    name: 'James Madisson',
-    thumbnail: require('@/assets/local/avatars-small/avatar.png'),
-  },
-  {
-    name: 'Sarah Yu',
-    thumbnail: require('@/assets/local/avatars-small/avatar1.png'),
-  },
-];
+import { inboxAgentActions } from '@/store/inbox-agent/inboxAgentActions';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectAllInboxAgents } from '@/store/inbox-agent/inboxAgentSelectors';
+import { getFilteredConversations } from '@/store/conversation/conversationSelectors';
 
 type AssigneeCellProps = {
   value: Agent;
-  index: number;
+  lastItem: boolean;
 };
 
 const AssigneeCell = (props: AssigneeCellProps) => {
-  const { value, index } = props;
+  const { value, lastItem } = props;
 
   const { filtersModalSheetRef } = useRefsContext();
 
@@ -35,11 +29,11 @@ const AssigneeCell = (props: AssigneeCellProps) => {
 
   return (
     <Pressable onPress={handleAssigneePress} style={tailwind.style('flex flex-row items-center')}>
-      <Avatar src={value.thumbnail as ImageSourcePropType} name={value.name} />
+      <Avatar src={value.thumbnail as ImageSourcePropType} name={value.name ?? ''} />
       <Animated.View
         style={tailwind.style(
           'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
-          index !== people.length - 1 ? 'border-b-[1px] border-blackA-A3' : '',
+          !lastItem ? 'border-b-[1px] border-blackA-A3' : '',
         )}>
         <Animated.Text
           style={[
@@ -54,24 +48,33 @@ const AssigneeCell = (props: AssigneeCellProps) => {
   );
 };
 
-const AssigneeStack = () => {
+const AssigneeStack = ({ agents }: { agents: Agent[] }) => {
   return (
     <BottomSheetScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
-      {people.map((value, index) => {
-        return <AssigneeCell key={index} {...{ value, index }} />;
+      {agents.map((value, index) => {
+        return <AssigneeCell key={index} {...{ value, lastItem: index === agents.length - 1 }} />;
       })}
     </BottomSheetScrollView>
   );
 };
 
 export const AssigneeListSheet = () => {
+  const dispatch = useAppDispatch();
   const { actionsModalSheetRef } = useRefsContext();
+
+  const agents = useAppSelector(selectAllInboxAgents);
+
   const handleFocus = () => {
     actionsModalSheetRef.current?.expand();
   };
   const handleBlur = () => {
     actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
   };
+
+  useEffect(() => {
+    dispatch(inboxAgentActions.fetchInboxAgents({ inboxIds: ['2'] }));
+  }, []);
+
   return (
     <React.Fragment>
       <SearchBar
@@ -80,7 +83,7 @@ export const AssigneeListSheet = () => {
         onBlur={handleBlur}
         placeholder="Search people"
       />
-      <AssigneeStack />
+      <AssigneeStack agents={agents} />
     </React.Fragment>
   );
 };

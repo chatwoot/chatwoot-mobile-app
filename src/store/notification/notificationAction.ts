@@ -29,7 +29,7 @@ export const notificationActions = {
         return rejectWithValue(response.data);
       }
     },
-  ),
+  ), 
   markAsRead: createAsyncThunk<MarkAsReadPayload, MarkAsReadPayload>(
     'notifications/markAsRead',
     async (payload, { rejectWithValue }) => {

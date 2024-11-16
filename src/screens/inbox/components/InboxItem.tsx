@@ -74,7 +74,7 @@ export const InboxItem = (props: InboxItemProps) => {
             <Animated.View style={tailwind.style('flex flex-row')}>
               <Animated.Text
                 style={tailwind.style(
-                  'text-base font-inter-medium-24 leading-[17px] tracking-[0.32px] text-gray-950',
+                  'text-base font-inter-medium-24 leading-[17px] tracking-[0.32px] text-gray-950 capitalize',
                 )}>
                 {assignee?.name}
               </Animated.Text>
@@ -83,7 +83,7 @@ export const InboxItem = (props: InboxItemProps) => {
                   style={tailwind.style(
                     'text-cxs font-inter-420-20 leading-[15px] tracking-[0.32px] text-gray-700',
                   )}>
-                  #{item.id}
+                  #{item.primaryActorId}
                 </Animated.Text>
               </Animated.View>
             </Animated.View>

@@ -97,7 +97,7 @@ const notificationsSlice = createSlice({
           );
           if (notification) {
             notificationsAdapter.updateOne(state, {
-              id: primaryActorId,
+              id: notification?.id,
               changes: { readAt: new Date().toISOString() },
             });
             state.unreadCount = state.unreadCount > 0 ? state.unreadCount - 1 : 0;

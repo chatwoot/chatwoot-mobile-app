@@ -129,8 +129,10 @@ export interface ToggleConversationStatusPayload {
 }
 
 export interface ToggleConversationStatusAPIResponse {
-  conversation_id: number;
-  current_status: ConversationStatus;
-  snoozed_until: number | null;
-  success: boolean;
+  payload: {
+    conversation_id: number;
+    current_status: ConversationStatus;
+    snoozed_until: number | null;
+    success: boolean;
+  };
 }

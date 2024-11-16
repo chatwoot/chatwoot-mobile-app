@@ -142,7 +142,7 @@ export const conversationActions = {
   >('conversations/toggleConversationStatus', async (payload, { rejectWithValue }) => {
     try {
       const response = await ConversationService.toggleConversationStatus(payload);
-      return response;
+      return { payload: response.payload };
     } catch (error) {
       const { response } = error as AxiosError<ApiErrorResponse>;
       if (!response) {

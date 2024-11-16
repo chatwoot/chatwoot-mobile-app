@@ -313,7 +313,7 @@ const SettingsScreen = () => {
         </Animated.View>
         <Pressable
           style={tailwind.style('p-4 items-center')}
-          onPress={() => debugActionsSheetRef.current?.present()}>
+          onLongPress={() => debugActionsSheetRef.current?.present()}>
           <Text style={tailwind.style('text-sm text-gray-700 ')}>
             {`${chatwootInstance} ${appVersionDetails}`}
           </Text>

@@ -30,8 +30,7 @@ const ConfigURLScreen = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      // url: baseUrl ? baseUrl : appName === 'Chatwoot' ? 'app.chatwoot.com' : '',
-      url: 'alfred-tunnel.chatwoot.dev',
+      url: baseUrl ? baseUrl : appName === 'Chatwoot' ? 'app.chatwoot.com' : '',
     },
   });
 

@@ -11,7 +11,10 @@ import { StatusCollection } from '@/types';
 import { getStatusTypeIcon, useHaptic } from '@/utils';
 import { BottomSheetHeader, Icon, StatusOptions } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectSelectedIds } from '@/store/conversation/conversationSelectedSlice';
+import {
+  selectSelectedConversation,
+  selectSelectedIds,
+} from '@/store/conversation/conversationSelectedSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 
@@ -35,6 +38,8 @@ const StatusCell = (props: StatusCellProps) => {
   const filters = useAppSelector(selectFilters);
   const dispatch = useAppDispatch();
   const selectedIds = useAppSelector(selectSelectedIds);
+  const selectedConversation = useAppSelector(selectSelectedConversation);
+  const isMultipleConversationsSelected = selectedIds.length !== 0;
 
   const hapticSelection = useHaptic();
 
@@ -44,10 +49,24 @@ const StatusCell = (props: StatusCellProps) => {
       dispatch(setFilters({ key: 'status', value: value.id }));
       setTimeout(() => filtersModalSheetRef.current?.dismiss({ overshootClamping: true }), 1);
     } else if (type === 'SetStatus') {
-      const payload = { type: 'Conversation', ids: selectedIds, fields: { status: value.id } };
-      dispatch(conversationActions.bulkAction(payload));
-      actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
-      dispatch(setCurrentState('none'));
+      if (isMultipleConversationsSelected) {
+        const payload = { type: 'Conversation', ids: selectedIds, fields: { status: value.id } };
+        dispatch(conversationActions.bulkAction(payload));
+        actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
+        dispatch(setCurrentState('none'));
+      } else {
+        if (!selectedConversation?.id) return;
+        dispatch(
+          conversationActions.toggleConversationStatus({
+            conversationId: selectedConversation?.id,
+            payload: {
+              status: value.id,
+              snoozed_until: null,
+            },
+          }),
+        );
+        actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
+      }
     }
   };
 

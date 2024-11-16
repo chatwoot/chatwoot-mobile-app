@@ -122,7 +122,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
   const currentState = useAppSelector(selectCurrentState);
   const { actionsModalSheetRef } = useRefsContext();
 
-  const onAssignAction = useCallback(() => {
+  const markMessageReadOrUnread = useCallback(() => {
     if (unreadCount > 0) {
       dispatch(conversationActions.markMessageRead({ conversationId: id }));
     } else {
@@ -159,7 +159,6 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
   };
 
   const handleLeftPaneOverswiped = () => {
-    
     Alert.alert('Assigned to you');
   };
 
@@ -174,7 +173,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
       spacing={27}
       leftElement={unreadCount > 0 ? <ReadComponent /> : <UnreadComponent />}
       rightElement={<StatusComponent />}
-      handleLeftElementPress={onAssignAction}
+      handleLeftElementPress={markMessageReadOrUnread}
       handleRightElementPress={onStatusAction}
       handleOnLeftOverswiped={handleLeftPaneOverswiped}
       handleOnRightOverswiped={handleRightPaneOverswiped}

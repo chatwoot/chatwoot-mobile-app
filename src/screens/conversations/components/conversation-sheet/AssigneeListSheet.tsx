@@ -34,10 +34,10 @@ const AssigneeCell = (props: AssigneeCellProps) => {
   const selectedIds = useAppSelector(selectSelectedIds);
   const selectedConversation = useAppSelector(selectSelectedConversation);
 
-  const isBulkAssigning = selectedIds.length !== 0;
+  const isMultipleConversationsSelected = selectedIds.length !== 0;
 
   const handleAssigneePress = async () => {
-    if (isBulkAssigning) {
+    if (isMultipleConversationsSelected) {
       const payload = { type: 'Conversation', ids: selectedIds, fields: { assignee_id: value.id } };
       await dispatch(conversationActions.bulkAction(payload));
       actionsModalSheetRef.current?.dismiss({ overshootClamping: true });

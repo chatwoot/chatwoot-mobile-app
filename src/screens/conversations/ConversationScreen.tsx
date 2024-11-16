@@ -257,7 +257,7 @@ const ConversationScreen = () => {
       case 'Assign':
         return [368];
       case 'Status':
-        return [216];
+        return [250];
       case 'Label':
         return [368];
       default:

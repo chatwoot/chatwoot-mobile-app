@@ -1,39 +1,65 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@/store';
 import { Conversation } from '@/types';
 
 interface SelectedConversationState {
-  selectedIds: number[];
+  selected: {
+    [key: number]: Conversation;
+  };
 }
 
 const initialState: SelectedConversationState = {
-  selectedIds: [],
+  selected: {},
 };
 
 const conversationSelectedSlice = createSlice({
   name: 'conversationSelected',
   initialState,
   reducers: {
-    toggleSelection: (state, action: PayloadAction<{ id: number; index: number }>) => {
-      const { id } = action.payload;
-      const exists = state.selectedIds.includes(id);
+    toggleSelection: (state, action: PayloadAction<{ conversation: Conversation }>) => {
+      const { conversation } = action.payload;
+      const id = conversation.id;
 
-      if (exists) {
-        state.selectedIds = state.selectedIds.filter(selectedId => selectedId !== id);
+      if (id in state.selected) {
+        const { [id]: removed, ...rest } = state.selected;
+        state.selected = rest;
       } else {
-        state.selectedIds.push(id);
+        state.selected[id] = conversation;
       }
     },
     clearSelection: state => {
-      state.selectedIds = [];
+      state.selected = {};
     },
     selectAll: (state, action: PayloadAction<Conversation[]>) => {
-      state.selectedIds = action.payload.map(conversation => conversation.id);
+      state.selected = action.payload.reduce(
+        (acc, conversation) => {
+          acc[conversation.id] = conversation;
+          return acc;
+        },
+        {} as { [key: number]: Conversation },
+      );
     },
   },
 });
 
-export const selectSelectedIds = (state: RootState) => state.selectedConversation.selectedIds;
+export const selectSelected = (state: RootState) => state.selectedConversation.selected;
+
+export const selectSelectedIds = createSelector([selectSelected], selected =>
+  Object.keys(selected).map(Number),
+);
+
+export const selectSelectedConversations = createSelector([selectSelected], selected =>
+  Object.values(selected),
+);
+
+export const selectIsConversationSelected = createSelector(
+  [selectSelected, (_state: RootState, conversationId: number) => conversationId],
+  (selected, conversationId) => conversationId in selected,
+);
+
+export const selectSelectedInboxes = createSelector([selectSelectedConversations], selected => [
+  ...new Set(selected.map(conversation => conversation.inboxId)),
+]);
 
 export const { toggleSelection, clearSelection, selectAll } = conversationSelectedSlice.actions;
 export default conversationSelectedSlice.reducer;

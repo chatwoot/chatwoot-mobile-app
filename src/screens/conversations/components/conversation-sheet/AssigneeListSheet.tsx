@@ -11,7 +11,11 @@ import { Avatar, SearchBar } from '@/components-next';
 import { inboxAgentActions } from '@/store/inbox-agent/inboxAgentActions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAllInboxAgents } from '@/store/inbox-agent/inboxAgentSelectors';
-import { getFilteredConversations } from '@/store/conversation/conversationSelectors';
+import {
+  selectSelectedIds,
+  selectSelectedInboxes,
+} from '@/store/conversation/conversationSelectedSlice';
+import { conversationActions } from '@/store/conversation/conversationActions';
 
 type AssigneeCellProps = {
   value: Agent;
@@ -20,10 +24,14 @@ type AssigneeCellProps = {
 
 const AssigneeCell = (props: AssigneeCellProps) => {
   const { value, lastItem } = props;
+  const dispatch = useAppDispatch();
 
   const { filtersModalSheetRef } = useRefsContext();
+  const selectedIds = useAppSelector(selectSelectedIds);
 
   const handleAssigneePress = () => {
+    const payload = { type: 'Conversation', ids: selectedIds, fields: { assignee_id: value.id } };
+    dispatch(conversationActions.bulkAction(payload));
     filtersModalSheetRef.current?.dismiss({ overshootClamping: true });
   };
 
@@ -63,6 +71,7 @@ export const AssigneeListSheet = () => {
   const { actionsModalSheetRef } = useRefsContext();
 
   const agents = useAppSelector(selectAllInboxAgents);
+  const selectedInboxes = useAppSelector(selectSelectedInboxes);
 
   const handleFocus = () => {
     actionsModalSheetRef.current?.expand();
@@ -72,7 +81,7 @@ export const AssigneeListSheet = () => {
   };
 
   useEffect(() => {
-    dispatch(inboxAgentActions.fetchInboxAgents({ inboxIds: ['2'] }));
+    dispatch(inboxAgentActions.fetchInboxAgents({ inboxIds: selectedInboxes }));
   }, []);
 
   return (

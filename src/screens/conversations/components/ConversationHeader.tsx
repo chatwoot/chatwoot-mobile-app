@@ -25,7 +25,7 @@ import {
 import {
   clearSelection,
   selectAll,
-  selectSelectedIds,
+  selectSelectedConversations,
 } from '@/store/conversation/conversationSelectedSlice';
 import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 
@@ -51,15 +51,16 @@ export const ConversationHeader = () => {
   const userId = useAppSelector(selectUserId);
 
   const { openedRowIndex } = useConversationListStateContext();
-  const selectedIds = useAppSelector(selectSelectedIds);
 
   const allConversations = useAppSelector(state =>
     getFilteredConversations(state, filters, userId),
   );
 
+  const selectedConversations = useAppSelector(selectSelectedConversations);
+
   const isSelectedAll = useMemo(
-    () => selectedIds.length === allConversations.length,
-    [selectedIds, allConversations],
+    () => selectedConversations.length === allConversations.length,
+    [selectedConversations, allConversations],
   );
 
   const hapticSuccess = useHaptic('success');

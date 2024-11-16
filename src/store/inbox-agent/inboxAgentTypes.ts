@@ -5,5 +5,5 @@ export interface InboxAgentAPIResponse {
 }
 
 export interface InboxAgentPayload {
-  inboxIds: string[];
+  inboxIds: number[];
 }

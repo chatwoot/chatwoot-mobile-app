@@ -16,7 +16,7 @@ import { ConversationAvatar } from './ConversationAvatar';
 import { ConversationItemDetail } from './ConversationItemDetail';
 import { ConversationSelect } from './ConversationSelect';
 
-import { toggleSelection, selectSelectedIds } from '@/store/conversation/conversationSelectedSlice';
+import { toggleSelection, selectSelected } from '@/store/conversation/conversationSelectedSlice';
 import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import { setActionState } from '@/store/conversation/conversationActionSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -94,9 +94,9 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
-  const selectedIds = useAppSelector(selectSelectedIds);
+  const selected = useAppSelector(selectSelected);
 
-  const isSelected = useMemo(() => selectedIds.includes(id), [selectedIds, id]);
+  const isSelected = useMemo(() => id in selected, [selected, id]);
 
   const currentState = useAppSelector(selectCurrentState);
   const { actionsModalSheetRef } = useRefsContext();
@@ -125,7 +125,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
   const onPressAction = () => {
     if (currentState === 'Select') {
       // When Select is activated
-      dispatch(toggleSelection({ id, index }));
+      dispatch(toggleSelection({ conversation: props.conversationItem }));
     } else {
       navigation.dispatch(pushToChatScreen);
     }

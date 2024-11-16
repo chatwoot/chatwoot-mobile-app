@@ -174,6 +174,24 @@ const conversationSlice = createSlice({
       })
       .addCase(conversationActions.toggleConversationStatus.rejected, state => {
         state.uiFlags.isChangingConversationStatus = false;
+      })
+      .addCase(conversationActions.markMessagesUnread.fulfilled, (state, action) => {
+        const { conversationId, unreadCount, agentLastSeenAt } = action.payload;
+        const conversation = state.entities[conversationId];
+        if (!conversation) {
+          return;
+        }
+        conversation.unreadCount = unreadCount;
+        conversation.agentLastSeenAt = agentLastSeenAt;
+      })
+      .addCase(conversationActions.markMessageRead.fulfilled, (state, action) => {
+        const { conversationId, agentLastSeenAt, unreadCount } = action.payload;
+        const conversation = state.entities[conversationId];
+        if (!conversation) {
+          return;
+        }
+        conversation.unreadCount = unreadCount;
+        conversation.agentLastSeenAt = agentLastSeenAt;
       });
   },
 });

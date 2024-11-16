@@ -14,6 +14,11 @@ import type {
   BulkActionPayload,
   AssigneePayload,
   AssigneeAPIResponse,
+  MarkMessagesUnreadPayload,
+  MarkMessagesUnreadAPIResponse,
+  MarkMessageReadAPIResponse,
+  MarkMessageReadPayload,
+  MarkMessageReadOrUnreadResponse,
 } from './conversationTypes';
 import { AxiosError } from 'axios';
 import { addOrUpdateMessage } from './conversationSlice';
@@ -174,4 +179,44 @@ export const conversationActions = {
       }
     },
   ),
+  markMessagesUnread: createAsyncThunk<
+    MarkMessageReadOrUnreadResponse,
+    MarkMessagesUnreadPayload,
+    { rejectValue: ApiErrorResponse }
+  >('conversations/markMessagesUnread', async (payload, { rejectWithValue }) => {
+    try {
+      const response = await ConversationService.markMessagesUnread(payload);
+      return {
+        conversationId: response.id,
+        agentLastSeenAt: response.agent_last_seen_at,
+        unreadCount: response.unread_count,
+      };
+    } catch (error) {
+      const { response } = error as AxiosError<ApiErrorResponse>;
+      if (!response) {
+        throw error;
+      }
+      return rejectWithValue(response.data);
+    }
+  }),
+  markMessageRead: createAsyncThunk<
+    MarkMessageReadOrUnreadResponse,
+    MarkMessageReadPayload,
+    { rejectValue: ApiErrorResponse }
+  >('conversations/markMessageRead', async (payload, { rejectWithValue }) => {
+    try {
+      const response = await ConversationService.markMessageRead(payload);
+      return {
+        conversationId: response.id,
+        agentLastSeenAt: response.agent_last_seen_at,
+        unreadCount: response.unread_count,
+      };
+    } catch (error) {
+      const { response } = error as AxiosError<ApiErrorResponse>;
+      if (!response) {
+        throw error;
+      }
+      return rejectWithValue(response.data);
+    }
+  }),
 };

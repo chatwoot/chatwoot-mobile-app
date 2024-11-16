@@ -165,3 +165,29 @@ export interface AssigneeAPIResponse {
     payload: Agent;
   };
 }
+
+export interface MarkMessagesUnreadPayload {
+  conversationId: number;
+}
+
+export interface MarkMessageReadPayload {
+  conversationId: number;
+}
+
+export interface MarkMessagesUnreadAPIResponse {
+  id: number;
+  unread_count: number;
+  agent_last_seen_at: number;
+}
+
+export interface MarkMessageReadAPIResponse {
+  id: number;
+  agent_last_seen_at: number;
+  unread_count: number;
+}
+
+export interface MarkMessageReadOrUnreadResponse {
+  conversationId: number;
+  agentLastSeenAt: number;
+  unreadCount: number;
+}

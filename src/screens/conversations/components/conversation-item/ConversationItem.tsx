@@ -7,7 +7,7 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { Icon, Swipeable } from '@/components-next/common';
 import { NativeView } from '@/components-next/native-components';
 import { useRefsContext } from '@/context';
-import { AssignIcon, StatusIcon } from '@/svg-icons';
+import { MarkAsRead, MarkAsUnRead, StatusIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Conversation } from '@/types';
 import i18n from '@/i18n';
@@ -29,6 +29,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { getLastMessage } from '@/utils/conversationUtils';
 import { Inbox } from '@/types/Inbox';
+import { conversationActions } from '@/store/conversation/conversationActions';
 
 type ConversationCellProps = {
   conversationItem: Conversation;
@@ -36,16 +37,32 @@ type ConversationCellProps = {
   openedRowIndex: SharedValue<number | null>;
 };
 
-const AssignComponent = React.memo(() => {
+const ReadComponent = React.memo(() => {
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
-      <Icon icon={<AssignIcon />} size={24} />
-      <Animated.Text style={tailwind.style('text-sm font-inter-420-20 pt-[3px] text-white')}>
-        {i18n.t('CONVERSATION.ITEM.ASSIGN')}
-      </Animated.Text>
+      <Icon icon={<MarkAsRead />} size={24} />
     </Animated.View>
   );
 });
+
+const UnreadComponent = React.memo(() => {
+  return (
+    <Animated.View style={tailwind.style('flex justify-center items-center')}>
+      <Icon icon={<MarkAsUnRead />} size={24} />
+    </Animated.View>
+  );
+});
+
+// const AssignComponent = React.memo(() => {
+//   return (
+//     <Animated.View style={tailwind.style('flex justify-center items-center')}>
+//       <Icon icon={<AssignIcon />} size={24} />
+//       <Animated.Text style={tailwind.style('text-sm font-inter-420-20 pt-[3px] text-white')}>
+//         {i18n.t('CONVERSATION.ITEM.ASSIGN')}
+//       </Animated.Text>
+//     </Animated.View>
+//   );
+// });
 
 const StatusComponent = React.memo(() => {
   return (
@@ -106,11 +123,16 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
   const { actionsModalSheetRef } = useRefsContext();
 
   const onAssignAction = useCallback(() => {
-    dispatch(selectSingleConversation(props.conversationItem));
-    dispatch(setActionState('Assign'));
-    actionsModalSheetRef.current?.present();
+    if (unreadCount > 0) {
+      dispatch(conversationActions.markMessageRead({ conversationId: id }));
+    } else {
+      dispatch(conversationActions.markMessagesUnread({ conversationId: id }));
+    }
+    // dispatch(selectSingleConversation(props.conversationItem));
+    // dispatch(setActionState('Assign'));
+    // actionsModalSheetRef.current?.present();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [unreadCount]);
 
   const onStatusAction = useCallback(() => {
     dispatch(selectSingleConversation(props.conversationItem));
@@ -137,6 +159,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
   };
 
   const handleLeftPaneOverswiped = () => {
+    
     Alert.alert('Assigned to you');
   };
 
@@ -149,7 +172,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
   return (
     <Swipeable
       spacing={27}
-      leftElement={<AssignComponent />}
+      leftElement={unreadCount > 0 ? <ReadComponent /> : <UnreadComponent />}
       rightElement={<StatusComponent />}
       handleLeftElementPress={onAssignAction}
       handleRightElementPress={onStatusAction}

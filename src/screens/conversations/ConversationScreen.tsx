@@ -240,11 +240,11 @@ const ConversationScreen = () => {
   const filterSnapPoints = useMemo(() => {
     switch (currentBottomSheet) {
       case 'status':
-        return [261];
+        return [290];
       case 'sort_by':
-        return [170];
+        return [200];
       case 'assignee_type':
-        return [170];
+        return [200];
       case 'inbox_id':
         return ['70%'];
       default:

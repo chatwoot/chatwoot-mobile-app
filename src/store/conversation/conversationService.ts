@@ -12,6 +12,10 @@ import type {
   BulkActionPayload,
   AssigneePayload,
   AssigneeAPIResponse,
+  MarkMessagesUnreadPayload,
+  MarkMessagesUnreadAPIResponse,
+  MarkMessageReadPayload,
+  MarkMessageReadAPIResponse,
 } from './conversationTypes';
 
 export class ConversationService {
@@ -81,6 +85,26 @@ export class ConversationService {
     const { conversationId, assigneeId } = payload;
     const response = await apiService.post<AssigneeAPIResponse>(
       `conversations/${conversationId}/assignments?assignee_id=${assigneeId}`,
+    );
+    return response.data;
+  }
+
+  static async markMessagesUnread(
+    payload: MarkMessagesUnreadPayload,
+  ): Promise<MarkMessagesUnreadAPIResponse> {
+    const { conversationId } = payload;
+    const response = await apiService.post<MarkMessagesUnreadAPIResponse>(
+      `conversations/${conversationId}/unread`,
+    );
+    return response.data;
+  }
+
+  static async markMessageRead(
+    payload: MarkMessageReadPayload,
+  ): Promise<MarkMessageReadAPIResponse> {
+    const { conversationId } = payload;
+    const response = await apiService.post<MarkMessageReadAPIResponse>(
+      `conversations/${conversationId}/update_last_seen`,
     );
     return response.data;
   }

@@ -136,3 +136,20 @@ export interface ToggleConversationStatusAPIResponse {
     success: boolean;
   };
 }
+
+export interface BulkActionPayload {
+  type: string;
+  ids: number[];
+  fields?: BulkActionFields;
+  labels?: BulkActionLabels;
+}
+
+export interface BulkActionFields {
+  status?: ConversationStatus;
+  assignee_id?: number;
+  team_id?: number;
+}
+
+export interface BulkActionLabels {
+  add: string[];
+}

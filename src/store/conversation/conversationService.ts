@@ -9,6 +9,7 @@ import type {
   ConversationAPIResponse,
   ToggleConversationStatusPayload,
   ToggleConversationStatusAPIResponse,
+  BulkActionPayload,
 } from './conversationTypes';
 
 export class ConversationService {
@@ -70,5 +71,8 @@ export class ConversationService {
       payload,
     );
     return response.data;
+  }
+  static async bulkAction(payload: BulkActionPayload): Promise<void> {
+    await apiService.post('bulk_actions', payload);
   }
 }

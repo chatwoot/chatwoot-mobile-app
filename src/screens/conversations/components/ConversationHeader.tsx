@@ -11,10 +11,11 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 
 import { FilterBar, Icon } from '@/components-next/common';
 import { useConversationListStateContext } from '@/context';
-import { conversationListData } from '@/mockdata/conversationListMockdata';
 import { CheckedIcon, CloseIcon, FilterIcon, SearchIcon, UncheckedIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
+import { getFilteredConversations } from '@/store/conversation/conversationSelectors';
+import { selectUserId } from '@/store/auth/authSelectors';
 import {
   resetFilters,
   selectFilters,
@@ -24,7 +25,7 @@ import {
 import {
   clearSelection,
   selectAll,
-  selectSelectedIndexes,
+  selectSelectedIds,
 } from '@/store/conversation/conversationSelectedSlice';
 import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 
@@ -47,9 +48,19 @@ export const ConversationHeader = () => {
 
   const filters = useAppSelector(selectFilters);
   const dispatch = useAppDispatch();
+  const userId = useAppSelector(selectUserId);
 
   const { openedRowIndex } = useConversationListStateContext();
-  const selectedIndexes = useAppSelector(selectSelectedIndexes);
+  const selectedIds = useAppSelector(selectSelectedIds);
+
+  const allConversations = useAppSelector(state =>
+    getFilteredConversations(state, filters, userId),
+  );
+
+  const isSelectedAll = useMemo(
+    () => selectedIds.length === allConversations.length,
+    [selectedIds, allConversations],
+  );
 
   const hapticSuccess = useHaptic('success');
 
@@ -57,11 +68,6 @@ export const ConversationHeader = () => {
   const { handlers, animatedStyle } = useScaleAnimation();
   const headerOpenState = useDerivedValue(() =>
     currentState !== 'none' && currentState !== 'Select' ? withSpring(1) : withSpring(0),
-  );
-
-  const isSelectedAll = useMemo(
-    () => selectedIndexes.length === conversationListData.length,
-    [selectedIndexes],
   );
 
   const headerBorderAnimation = useAnimatedStyle(() => {
@@ -87,7 +93,7 @@ export const ConversationHeader = () => {
       if (isSelectedAll) {
         dispatch(clearSelection());
       } else {
-        dispatch(selectAll(conversationListData));
+        dispatch(selectAll(allConversations));
       }
     } else {
       dispatch(setCurrentState('Search'));

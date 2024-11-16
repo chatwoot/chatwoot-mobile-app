@@ -1,40 +1,39 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { conversationListData } from '@/mockdata/conversationListMockdata';
 import { RootState } from '@/store';
+import { Conversation } from '@/types';
 
 interface SelectedConversationState {
-  selectedIndexes: number[];
+  selectedIds: number[];
 }
 
 const initialState: SelectedConversationState = {
-  selectedIndexes: [],
+  selectedIds: [],
 };
 
 const conversationSelectedSlice = createSlice({
   name: 'conversationSelected',
   initialState,
   reducers: {
-    toggleSelection: (state, action: PayloadAction<number>) => {
-      const index = action.payload;
-      const exists = state.selectedIndexes.includes(index);
+    toggleSelection: (state, action: PayloadAction<{ id: number; index: number }>) => {
+      const { id } = action.payload;
+      const exists = state.selectedIds.includes(id);
 
       if (exists) {
-        state.selectedIndexes = state.selectedIndexes.filter(i => i !== index);
+        state.selectedIds = state.selectedIds.filter(selectedId => selectedId !== id);
       } else {
-        state.selectedIndexes.push(index);
+        state.selectedIds.push(id);
       }
     },
     clearSelection: state => {
-      state.selectedIndexes = [];
+      state.selectedIds = [];
     },
-    selectAll: (state, action: PayloadAction<typeof conversationListData>) => {
-      state.selectedIndexes = action.payload.map((_, index) => index);
+    selectAll: (state, action: PayloadAction<Conversation[]>) => {
+      state.selectedIds = action.payload.map(conversation => conversation.id);
     },
   },
 });
 
-export const selectSelectedIndexes = (state: RootState) =>
-  state.selectedConversation.selectedIndexes;
+export const selectSelectedIds = (state: RootState) => state.selectedConversation.selectedIds;
 
 export const { toggleSelection, clearSelection, selectAll } = conversationSelectedSlice.actions;
 export default conversationSelectedSlice.reducer;

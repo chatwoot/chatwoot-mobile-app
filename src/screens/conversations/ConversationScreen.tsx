@@ -5,7 +5,7 @@ import Animated, {
   runOnJS,
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 
@@ -226,7 +226,7 @@ const ConversationScreen = () => {
 
   const currentActionState = useAppSelector(selectCurrentActionState);
   const { filtersModalSheetRef, actionsModalSheetRef } = useRefsContext();
-  const { bottom } = useSafeAreaInsets();
+  // const { bottom } = useSafeAreaInsets();
 
   const handleOnDismiss = () => {
     /**
@@ -301,9 +301,7 @@ const ConversationScreen = () => {
             'overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]',
           )}
           handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-          style={tailwind.style('mx-3 rounded-[26px] overflow-hidden -mt-3')}
-          detached
-          bottomInset={bottom === 0 ? 12 : bottom}
+          style={tailwind.style('rounded-[26px] overflow-hidden')}
           animationConfigs={animationConfigs}
           enablePanDownToClose
           snapPoints={actionSnapPoints}

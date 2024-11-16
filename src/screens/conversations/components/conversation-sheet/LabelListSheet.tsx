@@ -5,11 +5,16 @@ import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
-import { LabelType } from '@/types';
 import { SearchBar } from '@/components-next';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectAllLabels } from '@/store/label/labelSelectors';
+import { Label } from '@/types/common/Label';
+import { selectSelectedIds } from '@/store/conversation/conversationSelectedSlice';
+import { conversationActions } from '@/store/conversation/conversationActions';
+import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 
 type LabelCellProps = {
-  value: LabelType;
+  value: Label;
   index: number;
   handleLabelPress: (labelText: string) => void;
   isLastItem: boolean;
@@ -19,13 +24,13 @@ const LabelCell = (props: LabelCellProps) => {
   const { value, isLastItem, handleLabelPress } = props;
 
   const handleOnPress = useCallback(() => {
-    handleLabelPress(value.labelText);
+    handleLabelPress(value.title);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Pressable onPress={handleOnPress} style={tailwind.style('flex flex-row items-center pl-1.5')}>
-      <Animated.View style={tailwind.style('h-4 w-4 rounded-full', `${value.labelColor}`)} />
+      <Animated.View style={tailwind.style('h-4 w-4 rounded-full', `bg-[${value.color}]`)} />
       <Animated.View
         style={tailwind.style(
           'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
@@ -37,7 +42,7 @@ const LabelCell = (props: LabelCellProps) => {
               'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
             ),
           ]}>
-          {value.labelText}
+          {value.title}
         </Animated.Text>
       </Animated.View>
     </Pressable>
@@ -45,7 +50,7 @@ const LabelCell = (props: LabelCellProps) => {
 };
 
 type LabelStackProps = {
-  labelList: LabelType[];
+  labelList: Label[];
   handleLabelPress: (labelText: string) => void;
   isStandAloneComponent?: boolean;
 };
@@ -68,72 +73,18 @@ export const LabelStack = (props: LabelStackProps) => {
   );
 };
 
-// This is the component for Listing All Labels
-
-export const allLabels: LabelType[] = [
-  {
-    labelText: 'Production',
-    labelColor: 'bg-green-700',
-  },
-  {
-    labelText: 'Bug',
-    labelColor: 'bg-crimson-700',
-  },
-  {
-    labelText: 'Billing',
-    labelColor: 'bg-cyan-700',
-  },
-  {
-    labelText: 'Lead',
-    labelColor: 'bg-tomato-700',
-  },
-  {
-    labelText: 'Subscription',
-    labelColor: 'bg-teal-700',
-  },
-  {
-    labelText: 'Software',
-    labelColor: 'bg-yellow-700',
-  },
-  {
-    labelText: 'Marketing',
-    labelColor: 'bg-blue-700',
-  },
-  {
-    labelText: 'Complaint',
-    labelColor: 'bg-purple-700',
-  },
-  {
-    labelText: 'Feedback',
-    labelColor: 'bg-red-700',
-  },
-  {
-    labelText: 'Mark as Read',
-    labelColor: 'bg-pink-700',
-  },
-  {
-    labelText: 'Integration',
-    labelColor: 'bg-pink-700',
-  },
-  {
-    labelText: 'Needs Attention',
-    labelColor: 'bg-pink-700',
-  },
-  {
-    labelText: 'Product Feedback',
-    labelColor: 'bg-pink-700',
-  },
-];
-
 export const LabelListSheet = () => {
   const { actionsModalSheetRef } = useRefsContext();
+  const dispatch = useAppDispatch();
+  const selectedIds = useAppSelector(selectSelectedIds);
+
+  const allLabels = useAppSelector(selectAllLabels);
   const handleFocus = () => {
     actionsModalSheetRef.current?.expand();
   };
   const handleBlur = () => {
     actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
   };
-  const { filtersModalSheetRef } = useRefsContext();
 
   // The selected label text is received
   /**
@@ -142,7 +93,14 @@ export const LabelListSheet = () => {
    * that was selected.
    */
   const handleLabelPress = (_selectedLabel: string) => {
-    filtersModalSheetRef.current?.dismiss({ overshootClamping: true });
+    const payload = {
+      type: 'Conversation',
+      ids: selectedIds,
+      labels: { add: [_selectedLabel] },
+    };
+    dispatch(conversationActions.bulkAction(payload));
+    actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
+    dispatch(setCurrentState('none'));
   };
 
   return (

@@ -7,11 +7,13 @@ import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useRefsContext } from '../../context';
 import { AddIcon, LabelTag } from '../../svg-icons';
 import { tailwind } from '../../theme';
-import { LabelType } from '../../types';
+import { Label, LabelType } from '../../types';
 import { useScaleAnimation } from '../../utils';
 import { BottomSheetBackdrop, Icon, SearchBar } from '../common';
 
-import { LabelStack, allLabels } from '@/screens/conversations/components/conversation-sheet';
+import { LabelStack } from '@/screens/conversations/components/conversation-sheet';
+import { selectAllLabels } from '@/store/label/labelSelectors';
+import { useAppSelector } from '@/hooks';
 
 const { width } = Dimensions.get('screen');
 
@@ -155,6 +157,7 @@ const labelReducer = (state: LabelType[], action: Action): LabelType[] => {
   }
 };
 
+const allLabels: Label[] = [];
 export const LabelSection = (props: LabelSectionProps) => {
   const { labelList } = props;
 

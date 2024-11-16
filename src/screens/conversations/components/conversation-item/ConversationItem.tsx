@@ -16,10 +16,7 @@ import { ConversationAvatar } from './ConversationAvatar';
 import { ConversationItemDetail } from './ConversationItemDetail';
 import { ConversationSelect } from './ConversationSelect';
 
-import {
-  toggleSelection,
-  selectSelectedIndexes,
-} from '@/store/conversation/conversationSelectedSlice';
+import { toggleSelection, selectSelectedIds } from '@/store/conversation/conversationSelectedSlice';
 import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import { setActionState } from '@/store/conversation/conversationActionSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -96,7 +93,10 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
 
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const selectedIndexes = useAppSelector(selectSelectedIndexes);
+
+  const selectedIds = useAppSelector(selectSelectedIds);
+
+  const isSelected = useMemo(() => selectedIds.includes(id), [selectedIds, id]);
 
   const currentState = useAppSelector(selectCurrentState);
   const { actionsModalSheetRef } = useRefsContext();
@@ -113,12 +113,6 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const isSelected = useMemo(
-    () => selectedIndexes.includes(index),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [selectedIndexes],
-  );
-
   const onLongPressAction = () => {
     dispatch(setCurrentState('Select'));
   };
@@ -131,7 +125,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
   const onPressAction = () => {
     if (currentState === 'Select') {
       // When Select is activated
-      dispatch(toggleSelection(index));
+      dispatch(toggleSelection({ id, index }));
     } else {
       navigation.dispatch(pushToChatScreen);
     }

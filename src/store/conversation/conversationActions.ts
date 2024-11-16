@@ -11,6 +11,7 @@ import type {
   ConversationListResponse,
   ToggleConversationStatusAPIResponse,
   ToggleConversationStatusPayload,
+  BulkActionPayload,
 } from './conversationTypes';
 import { AxiosError } from 'axios';
 import { addOrUpdateMessage } from './conversationSlice';
@@ -151,4 +152,10 @@ export const conversationActions = {
       return rejectWithValue(response.data);
     }
   }),
+  bulkAction: createAsyncThunk<void, BulkActionPayload>(
+    'conversations/bulkAction',
+    async (payload, { rejectWithValue }) => {
+      await ConversationService.bulkAction(payload);
+    },
+  ),
 };

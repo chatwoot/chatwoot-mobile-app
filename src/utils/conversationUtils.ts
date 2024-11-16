@@ -72,7 +72,7 @@ export const findPendingMessageIndex = (
   message: PendingMessage | Message,
 ) => {
   const { echoId: tempMessageId } = message;
-  return conversation.messages.findIndex(m => m.id === message.id || m.echoId === tempMessageId);
+  return conversation.messages.findIndex(m => m.id === message.id || m.id === tempMessageId);
 };
 
 export type SectionGroupMessages = {
@@ -98,7 +98,7 @@ export const getGroupedMessages = (messages: Message[]): SectionGroupMessages[] 
           shouldRenderAvatar =
             currentSender !== nextSender || message.messageType !== nextMessage.messageType;
         }
-        return { shouldRenderAvatar, ...message };
+        return { ...message, shouldRenderAvatar };
       },
     );
 

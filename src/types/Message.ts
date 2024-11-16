@@ -46,14 +46,14 @@ export type MessageContentAttributes = {
 };
 
 export interface Message {
+  id: number;
   attachments: ImageMetadata[];
   content: string;
   contentAttributes: MessageContentAttributes | null;
   contentType: ContentType;
   conversationId: number;
   createdAt: UnixTimestamp;
-  echoId: string | null;
-  id: number;
+  echoId: number | string | null;
   inboxId: number;
   messageType: MessageType;
   private: boolean;

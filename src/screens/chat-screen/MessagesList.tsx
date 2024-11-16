@@ -20,7 +20,6 @@ import { Message } from '@/types';
 import { useAppKeyboardAnimation } from '@/utils';
 import { useAppSelector, useAppDispatch } from '@/hooks';
 import {
-  // selectConversationById,
   getMessagesByConversationId,
   selectConversationById,
 } from '@/store/conversation/conversationSelectors';

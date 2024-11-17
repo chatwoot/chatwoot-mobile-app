@@ -15,8 +15,6 @@ import type {
   AssigneePayload,
   AssigneeAPIResponse,
   MarkMessagesUnreadPayload,
-  MarkMessagesUnreadAPIResponse,
-  MarkMessageReadAPIResponse,
   MarkMessageReadPayload,
   MarkMessageReadOrUnreadResponse,
 } from './conversationTypes';

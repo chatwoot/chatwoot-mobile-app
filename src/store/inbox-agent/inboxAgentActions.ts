@@ -14,7 +14,6 @@ export const inboxAgentActions = {
           payload: inboxes,
         };
       } catch (error) {
-        console.error(error);
         const message = error instanceof Error ? error.message : '';
         return rejectWithValue(message);
       }

@@ -3,13 +3,19 @@ import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { StackActions, useNavigation } from '@react-navigation/native';
 
-import { Icon, Avatar } from '../../components-next/common';
-import { CloseIcon, Overflow } from '../../svg-icons';
-import { tailwind } from '../../theme';
+import { Icon, Avatar } from '@/components-next/common';
+import { CloseIcon } from '@/svg-icons';
+import { tailwind } from '@/theme';
 
-export const ContactDetailsScreenHeader = () => {
+type ContactDetailsScreenHeaderProps = {
+  name: string;
+  thumbnail: string;
+};
+
+export const ContactDetailsScreenHeader = (props: ContactDetailsScreenHeaderProps) => {
   const navigation = useNavigation();
 
+  const { name, thumbnail } = props;
   const handleBackPress = () => {
     navigation.dispatch(StackActions.pop());
   };
@@ -26,16 +32,16 @@ export const ContactDetailsScreenHeader = () => {
       </Pressable>
       <Animated.View>
         <Animated.View style={tailwind.style('flex items-center')}>
-          <Avatar size="4xl" src={require('../../assets/local/avatars/avatar-image-3.png')} />
+          <Avatar size="4xl" src={thumbnail} name={name} />
           <Animated.View style={tailwind.style('pt-3')}>
             <Animated.Text style={tailwind.style('text-[21px] font-inter-580-24 text-gray-950')}>
-              Jacob Jones
+              {name}
             </Animated.Text>
           </Animated.View>
         </Animated.View>
       </Animated.View>
       <Animated.View style={tailwind.style('flex-1 items-end')}>
-        <Icon icon={<Overflow strokeWidth={2} />} size={24} />
+        {/* <Icon icon={<Overflow strokeWidth={2} />} size={24} /> */}
       </Animated.View>
     </Animated.View>
   );

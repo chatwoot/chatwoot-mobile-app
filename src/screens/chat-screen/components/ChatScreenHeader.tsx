@@ -36,7 +36,7 @@ export const ChatScreenHeader = (props: ChatScreenHeaderProps) => {
   };
 
   const handleNavigationToContactDetails = () => {
-    const navigateToScreen = StackActions.push('ContactDetails');
+    const navigateToScreen = StackActions.push('ContactDetails', { conversationId });
     navigation.dispatch(navigateToScreen);
   };
 

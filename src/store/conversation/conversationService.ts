@@ -17,6 +17,7 @@ import type {
   MarkMessageReadPayload,
   MarkMessageReadAPIResponse,
   MuteOrUnmuteConversationPayload,
+  ConversationLabelPayload,
 } from './conversationTypes';
 
 export class ConversationService {
@@ -118,5 +119,10 @@ export class ConversationService {
   static async unmuteConversation(payload: MuteOrUnmuteConversationPayload): Promise<void> {
     const { conversationId } = payload;
     await apiService.post(`conversations/${conversationId}/unmute`);
+  }
+
+  static async addOrUpdateConversationLabels(payload: ConversationLabelPayload): Promise<void> {
+    const { conversationId, labels } = payload;
+    await apiService.post(`conversations/${conversationId}/labels`, { labels });
   }
 }

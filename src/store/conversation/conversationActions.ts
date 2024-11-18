@@ -18,6 +18,7 @@ import type {
   MarkMessageReadPayload,
   MarkMessageReadOrUnreadResponse,
   MuteOrUnmuteConversationPayload,
+  ConversationLabelPayload,
 } from './conversationTypes';
 import { AxiosError } from 'axios';
 import { addOrUpdateMessage } from './conversationSlice';
@@ -236,4 +237,10 @@ export const conversationActions = {
     await ConversationService.unmuteConversation(payload);
     return { conversationId: payload.conversationId };
   }),
+  addOrUpdateConversationLabels: createAsyncThunk<void, ConversationLabelPayload>(
+    'conversations/addOrUpdateConversationLabels',
+    async (payload, { rejectWithValue }) => {
+      await ConversationService.addOrUpdateConversationLabels(payload);
+    },
+  ),
 };

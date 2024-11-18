@@ -1,62 +1,29 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
-import { useRefsContext } from '@/context';
-import { LabelTag, TickIcon } from '@/svg-icons';
+import { useChatWindowContext, useRefsContext } from '@/context';
+import { LabelTag } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Label } from '@/types';
 import { BottomSheetBackdrop, Icon, SearchBar } from '@/components-next';
 import { useAppSelector } from '@/hooks';
 import { filterLabels } from '@/store/label/labelSelectors';
+import { useAppDispatch } from '@/hooks';
+import { conversationActions } from '@/store/conversation/conversationActions';
 
-type LabelCellProps = {
-  value: Label;
-  index: number;
-  handleLabelPress: (labelText: string) => void;
-  isLastItem: boolean;
-  isActive: boolean;
-};
-
-const LabelCell = (props: LabelCellProps) => {
-  const { value, isActive, isLastItem, handleLabelPress } = props;
-
-  const handleOnPress = useCallback(() => {
-    handleLabelPress(value.title);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return (
-    <Pressable onPress={handleOnPress} style={tailwind.style('flex flex-row items-center pl-1.5')}>
-      <Animated.View style={tailwind.style('h-4 w-4 rounded-full', `bg-[${value.color}]`)} />
-      <Animated.View
-        style={tailwind.style(
-          'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
-          !isLastItem ? 'border-b-[1px] border-blackA-A3' : '',
-        )}>
-        <Animated.Text
-          style={[
-            tailwind.style(
-              'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
-            ),
-          ]}>
-          {value.title}
-        </Animated.Text>
-        {isActive ? <Icon icon={<TickIcon />} size={20} /> : null}
-      </Animated.View>
-    </Pressable>
-  );
-};
+import { LabelCell, LabelItem } from '@/components-next/label-section';
 
 type LabelStackProps = {
   filteredLabels: Label[];
-  labels: string[];
-  handleLabelPress: (labelText: string) => void;
+  selectedLabels: string[];
+  handleLabelPress: (label: string) => void;
   isStandAloneComponent?: boolean;
 };
 const LabelStack = (props: LabelStackProps) => {
-  const { filteredLabels, handleLabelPress, labels, isStandAloneComponent = true } = props;
+  const { filteredLabels, selectedLabels, isStandAloneComponent = true, handleLabelPress } = props;
+
   return (
     <BottomSheetScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
       {filteredLabels.map((value, index) => {
@@ -65,36 +32,12 @@ const LabelStack = (props: LabelStackProps) => {
             key={index}
             {...{ value, index }}
             handleLabelPress={handleLabelPress}
-            isActive={labels.includes(value.title)}
+            isActive={selectedLabels.includes(value.title)}
             isLastItem={index === filteredLabels.length - 1 && isStandAloneComponent ? true : false}
           />
         );
       })}
     </BottomSheetScrollView>
-  );
-};
-
-type LabelItemProps = {
-  item: Label;
-  index: number;
-};
-
-const LabelItem = (props: LabelItemProps) => {
-  const { item } = props;
-  return (
-    <Animated.View
-      style={[
-        styles.labelShadow,
-        tailwind.style('flex flex-row items-center bg-white px-3 py-[7px] rounded-lg mr-2 mt-3'),
-      ]}>
-      <Animated.View style={tailwind.style('h-2 w-2 rounded-full', `bg-[${item.color}]`)} />
-      <Animated.Text
-        style={tailwind.style(
-          'text-md font-inter-normal-24 leading-[17px] tracking-[0.32px] pl-1.5 text-gray-950',
-        )}>
-        {item.title}
-      </Animated.Text>
-    </Animated.View>
   );
 };
 
@@ -105,6 +48,10 @@ interface LabelSectionProps {
 export const ConversationLabelActions = (props: LabelSectionProps) => {
   const { labels } = props;
   const [searchTerm, setSearchTerm] = useState('');
+  const { conversationId } = useChatWindowContext();
+  const dispatch = useAppDispatch();
+
+  const [selectedLabels, setSelectedLabels] = useState(labels);
 
   const { addLabelSheetRef } = useRefsContext();
 
@@ -112,10 +59,10 @@ export const ConversationLabelActions = (props: LabelSectionProps) => {
 
   const filteredLabels = useAppSelector(state => filterLabels(state, searchTerm));
 
-  const appliedLabels =
-    allLabels && labels
+  const conversationLabels =
+    allLabels && selectedLabels
       ? allLabels.filter(({ title }) => {
-          return labels?.includes(title);
+          return selectedLabels?.includes(title);
         })
       : [];
 
@@ -137,6 +84,22 @@ export const ConversationLabelActions = (props: LabelSectionProps) => {
     }
   };
 
+  const handleAddOrUpdateLabels = async (label: string) => {
+    setSelectedLabels(prevLabels => {
+      const updatedLabels = prevLabels.includes(label)
+        ? prevLabels.filter(item => item !== label)
+        : [...prevLabels, label];
+
+      dispatch(
+        conversationActions.addOrUpdateConversationLabels({
+          conversationId: conversationId,
+          labels: updatedLabels,
+        }),
+      );
+
+      return updatedLabels;
+    });
+  };
   return (
     <Animated.View>
       <Animated.View style={tailwind.style('pl-4')}>
@@ -148,7 +111,7 @@ export const ConversationLabelActions = (props: LabelSectionProps) => {
         </Animated.Text>
       </Animated.View>
       <Animated.View style={tailwind.style('flex flex-row flex-wrap pl-4')}>
-        {appliedLabels.map((label, index) => (
+        {conversationLabels.map((label, index) => (
           <LabelItem key={index} index={index} item={label} />
         ))}
         <Pressable
@@ -191,10 +154,10 @@ export const ConversationLabelActions = (props: LabelSectionProps) => {
         />
         <BottomSheetScrollView showsVerticalScrollIndicator={false}>
           <LabelStack
-            handleLabelPress={() => null}
             filteredLabels={filteredLabels}
-            labels={labels}
+            selectedLabels={selectedLabels}
             isStandAloneComponent={allLabels.length > 3}
+            handleLabelPress={handleAddOrUpdateLabels}
           />
           <Animated.View style={tailwind.style('items-start')}></Animated.View>
         </BottomSheetScrollView>

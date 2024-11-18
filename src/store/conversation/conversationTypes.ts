@@ -195,3 +195,8 @@ export interface MarkMessageReadOrUnreadResponse {
   agentLastSeenAt: number;
   unreadCount: number;
 }
+
+export interface ConversationLabelPayload {
+  conversationId: number;
+  labels: string[];
+}

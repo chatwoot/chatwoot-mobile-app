@@ -11,16 +11,19 @@ type ConversationSettingsPanelProps = {
   name: string;
   thumbnail: string;
   priority: ConversationPriority;
+  onChangeAssignee: () => void;
 };
 
 export const ConversationSettingsPanel = ({
   name,
   thumbnail,
   priority,
+  onChangeAssignee,
 }: ConversationSettingsPanelProps) => {
   return (
     <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
       <Pressable
+        onPress={onChangeAssignee}
         style={({ pressed }) => [tailwind.style(pressed ? 'bg-gray-100' : '', 'rounded-t-[13px]')]}>
         <Animated.View style={tailwind.style('flex-row items-center justify-between pl-3')}>
           <Avatar size={'lg'} src={{ uri: thumbnail || '' }} name={name || ''} />
@@ -39,7 +42,7 @@ export const ConversationSettingsPanel = ({
                 style={tailwind.style(
                   'text-base font-inter-normal-24 leading-[22px] tracking-[0.16px] text-gray-900',
                 )}>
-                Reassign
+                Assign
               </Animated.Text>
               <Icon icon={<CaretRight />} size={20} />
             </Animated.View>

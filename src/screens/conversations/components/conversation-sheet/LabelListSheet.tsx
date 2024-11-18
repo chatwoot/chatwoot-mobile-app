@@ -48,7 +48,7 @@ const LabelCell = (props: LabelCellProps) => {
     </Pressable>
   );
 };
-
+ 
 type LabelStackProps = {
   labelList: Label[];
   handleLabelPress: (labelText: string) => void;

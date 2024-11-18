@@ -15,6 +15,18 @@ export const isInboxAgentFetching = createSelector(
 export const filterInboxAgents = createSelector(
   [selectAllInboxAgents, (state: RootState, searchTerm: string) => searchTerm],
   (agents, searchTerm) => {
-    return searchTerm ? agents.filter(agent => agent?.name?.includes(searchTerm)) : agents;
+    const agentsList = [
+      {
+        confirmed: true,
+        name: 'None',
+        id: 0,
+        role: 'agent',
+        accountId: 0,
+        email: 'None',
+      },
+      ...agents,
+    ];
+
+    return searchTerm ? agentsList.filter(agent => agent?.name?.includes(searchTerm)) : agentsList;
   },
 );

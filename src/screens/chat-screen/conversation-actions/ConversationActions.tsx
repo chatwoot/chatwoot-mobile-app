@@ -6,33 +6,25 @@ import Animated from 'react-native-reanimated';
 import {
   AddParticipantList,
   FullWidthButton,
-  LabelSection,
   MacrosList,
   OtherConversationDetails,
 } from '@/components-next';
-import { ConversationBasicActions, ConversationSettingsPanel } from './components';
+import {
+  ConversationBasicActions,
+  ConversationLabelActions,
+  ConversationSettingsPanel,
+} from './components';
 import { TAB_BAR_HEIGHT } from '@/constants';
 import { tailwind } from '@/theme';
-import { ConversationStatus, LabelType } from '@/types';
+import { ConversationStatus } from '@/types';
 import { useChatWindowContext } from '@/context';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { conversationActions } from '@/store/conversation/conversationActions';
 
-const currentLabels: LabelType[] = [
-  {
-    labelColor: 'bg-indigo-800',
-    labelText: 'Billing',
-  },
-  {
-    labelColor: 'bg-red-800',
-    labelText: 'Bug',
-  },
-  {
-    labelColor: 'bg-green-800',
-    labelText: 'Lead',
-  },
-];
+import { setActionState } from '@/store/conversation/conversationActionSlice';
+import { useRefsContext } from '@/context';
+import { selectSingleConversation } from '@/store/conversation/conversationSelectedSlice';
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 
@@ -40,12 +32,15 @@ export type ConversationActionType = 'mute' | 'status' | 'unmute';
 
 export const ConversationActions = () => {
   const dispatch = useAppDispatch();
+  const { actionsModalSheetRef } = useRefsContext();
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
 
-  const { status, muted: isMuted, meta, priority } = conversation || {};
-  const { sender } = meta || {};
-  const { name = '', thumbnail = '' } = sender || {};
+  const { status, muted: isMuted, meta, priority = null } = conversation || {};
+  const { assignee } = meta || {};
+  const { name = '', thumbnail = '' } = assignee || {};
+
+  const currentLabels = conversation?.labels || [];
 
   const onShareConversation = async () => {
     try {
@@ -82,6 +77,13 @@ export const ConversationActions = () => {
     }
   };
 
+  const onChangeAssignee = () => {
+    if (!conversation) return;
+    dispatch(selectSingleConversation(conversation));
+    dispatch(setActionState('Assign'));
+    actionsModalSheetRef.current?.present();
+  };
+
   return (
     <Animated.View style={tailwind.style('', `w-[${SCREEN_WIDTH}px]`)}>
       <ScrollView
@@ -93,10 +95,15 @@ export const ConversationActions = () => {
           isMuted={isMuted || false}
         />
         <Animated.View style={tailwind.style('pt-10')}>
-          <ConversationSettingsPanel name={name} thumbnail={thumbnail} priority={priority} />
+          <ConversationSettingsPanel
+            name={name || ''}
+            thumbnail={thumbnail || ''}
+            priority={priority}
+            onChangeAssignee={onChangeAssignee}
+          />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-10')}>
-          <LabelSection labelList={currentLabels} />
+          <ConversationLabelActions labels={currentLabels} />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-10')}>
           <AddParticipantList />

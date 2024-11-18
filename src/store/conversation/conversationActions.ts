@@ -152,7 +152,6 @@ export const conversationActions = {
       return { payload: response.payload };
     } catch (error) {
       const { response } = error as AxiosError<ApiErrorResponse>;
-      console.log('error', error);
       if (!response) {
         throw error;
       }

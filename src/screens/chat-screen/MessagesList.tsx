@@ -87,6 +87,7 @@ export const MessagesList = () => {
 
   const onEndReached = () => {
     const shouldFetchMoreMessages = !isAllMessagesFetched && !isLoadingMessages && isFlashListReady;
+
     if (shouldFetchMoreMessages) {
       loadMessages({ loadingMessagesForFirstTime: false });
     }
@@ -155,12 +156,12 @@ export const MessagesList = () => {
           }}
           ref={messageListRef}
           inverted
-          estimatedItemSize={30}
+          estimatedItemSize={100}
           showsVerticalScrollIndicator={false}
           // @ts-ignore
           renderItem={handleRender}
           onEndReached={onEndReached}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={0.1}
           data={allMessages}
           keyboardShouldPersistTaps="handled"
           // * Add an empty state component - when there are no messages

@@ -6,7 +6,7 @@ import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
 import { Agent } from '@/types';
-import { Avatar, SearchBar } from '@/components-next';
+import { Avatar, Icon, SearchBar } from '@/components-next';
 
 import { inboxAgentActions } from '@/store/inbox-agent/inboxAgentActions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -20,14 +20,16 @@ import { conversationActions } from '@/store/conversation/conversationActions';
 import { isInboxAgentFetching } from '@/store/inbox-agent/inboxAgentSelectors';
 import { showToast } from '@/helpers/ToastHelper';
 import i18n from '@/i18n';
+import { TickIcon } from '@/svg-icons';
 
 type AssigneeCellProps = {
   value: Agent;
   lastItem: boolean;
+  assigneeId: number | undefined;
 };
 
 const AssigneeCell = (props: AssigneeCellProps) => {
-  const { value, lastItem } = props;
+  const { value, lastItem, assigneeId } = props;
   const dispatch = useAppDispatch();
 
   const { actionsModalSheetRef } = useRefsContext();
@@ -46,7 +48,7 @@ const AssigneeCell = (props: AssigneeCellProps) => {
       await dispatch(
         conversationActions.assignConversation({
           conversationId: selectedConversation?.id,
-          assigneeId: value.id,
+          assigneeId: value.id === assigneeId ? 0 : value.id,
         }),
       );
       showToast({
@@ -72,12 +74,19 @@ const AssigneeCell = (props: AssigneeCellProps) => {
           ]}>
           {value.name}
         </Animated.Text>
+        {assigneeId === value.id ? <Icon icon={<TickIcon />} size={20} /> : null}
       </Animated.View>
     </Pressable>
   );
 };
 
-const AssigneeStack = ({ agents }: { agents: Agent[] }) => {
+const AssigneeStack = ({
+  agents,
+  assigneeId,
+}: {
+  agents: Agent[];
+  assigneeId: number | undefined;
+}) => {
   const isFetching = useAppSelector(isInboxAgentFetching);
 
   return (
@@ -86,7 +95,12 @@ const AssigneeStack = ({ agents }: { agents: Agent[] }) => {
         <ActivityIndicator />
       ) : (
         agents.map((value, index) => {
-          return <AssigneeCell key={index} {...{ value, lastItem: index === agents.length - 1 }} />;
+          return (
+            <AssigneeCell
+              key={index}
+              {...{ value, lastItem: index === agents.length - 1, assigneeId }}
+            />
+          );
         })
       )}
     </BottomSheetScrollView>
@@ -105,6 +119,8 @@ export const AssigneeListSheet = () => {
   const inboxId = selectedConversation?.inboxId;
 
   const inboxIds = inboxId ? [inboxId] : selectedInboxes;
+
+  const assigneeId = selectedConversation?.meta?.assignee?.id;
 
   const handleFocus = () => {
     actionsModalSheetRef.current?.expand();
@@ -130,7 +146,7 @@ export const AssigneeListSheet = () => {
         onChangeText={handleChangeText}
         placeholder="Search people"
       />
-      <AssigneeStack agents={agents} />
+      <AssigneeStack agents={agents as Agent[]} assigneeId={assigneeId} />
     </React.Fragment>
   );
 };

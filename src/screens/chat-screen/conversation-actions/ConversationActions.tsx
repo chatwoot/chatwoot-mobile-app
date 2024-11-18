@@ -5,13 +5,12 @@ import Animated from 'react-native-reanimated';
 
 import {
   AddParticipantList,
-  ConversationManagementList,
   FullWidthButton,
   LabelSection,
   MacrosList,
   OtherConversationDetails,
 } from '@/components-next';
-import { ConversationBasicActions } from './components';
+import { ConversationBasicActions, ConversationSettingsPanel } from './components';
 import { TAB_BAR_HEIGHT } from '@/constants';
 import { tailwind } from '@/theme';
 import { ConversationStatus, LabelType } from '@/types';
@@ -44,8 +43,10 @@ export const ConversationActions = () => {
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
 
-  const status = conversation?.status;
-  const isMuted = conversation?.muted;
+  const { status, muted: isMuted, meta, priority } = conversation || {};
+  const { sender } = meta || {};
+  const { name = '', thumbnail = '' } = sender || {};
+
   const onShareConversation = async () => {
     try {
       const result = await Share.share({
@@ -92,7 +93,7 @@ export const ConversationActions = () => {
           isMuted={isMuted || false}
         />
         <Animated.View style={tailwind.style('pt-10')}>
-          <ConversationManagementList />
+          <ConversationSettingsPanel name={name} thumbnail={thumbnail} priority={priority} />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-10')}>
           <LabelSection labelList={currentLabels} />

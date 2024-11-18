@@ -7,11 +7,11 @@ import Animated, {
   withDelay,
   withSpring,
 } from 'react-native-reanimated';
-import { StackActions, useNavigation } from '@react-navigation/native';
+// import { useNavigation } from '@react-navigation/native';
 
 import { FilterBar, Icon } from '@/components-next/common';
 import { useConversationListStateContext } from '@/context';
-import { CheckedIcon, CloseIcon, FilterIcon, SearchIcon, UncheckedIcon } from '@/svg-icons';
+import { CheckedIcon, CloseIcon, FilterIcon, UncheckedIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { getFilteredConversations } from '@/store/conversation/conversationSelectors';
@@ -43,7 +43,7 @@ const getFiltersAppliedCount = (defaultState: FilterState, updatedState: FilterS
 };
 
 export const ConversationHeader = () => {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const currentState = useAppSelector(selectCurrentState);
 
   const filters = useAppSelector(selectFilters);
@@ -155,8 +155,8 @@ export const ConversationHeader = () => {
   };
 
   const openSearch = () => {
-    const navigateToScreen = StackActions.push('SearchScreen');
-    navigation.dispatch(navigateToScreen);
+    // const navigateToScreen = StackActions.push('SearchScreen');
+    // navigation.dispatch(navigateToScreen);
   };
 
   return (
@@ -188,7 +188,7 @@ export const ConversationHeader = () => {
             <Animated.View style={tailwind.style('flex-1 items-start')}>
               <Pressable onPress={openSearch} hitSlop={16}>
                 <Animated.View exiting={exiting} entering={entering}>
-                  <Icon size={24} icon={<SearchIcon />} />
+                  {/* <Icon size={24} icon={<SearchIcon />} /> */}
                 </Animated.View>
               </Pressable>
             </Animated.View>

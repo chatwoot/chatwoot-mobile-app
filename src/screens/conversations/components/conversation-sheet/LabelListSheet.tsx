@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
@@ -7,7 +7,7 @@ import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
 import { SearchBar } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectAllLabels } from '@/store/label/labelSelectors';
+import { filterLabels } from '@/store/label/labelSelectors';
 import { Label } from '@/types/common/Label';
 import { selectSelectedIds } from '@/store/conversation/conversationSelectedSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
@@ -77,8 +77,10 @@ export const LabelListSheet = () => {
   const { actionsModalSheetRef } = useRefsContext();
   const dispatch = useAppDispatch();
   const selectedIds = useAppSelector(selectSelectedIds);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const allLabels = useAppSelector(selectAllLabels);
+  const allLabels = useAppSelector(state => filterLabels(state, searchTerm));
+
   const handleFocus = () => {
     actionsModalSheetRef.current?.expand();
   };
@@ -103,12 +105,17 @@ export const LabelListSheet = () => {
     dispatch(setCurrentState('none'));
   };
 
+  const handleSearch = useCallback((text: string) => {
+    setSearchTerm(text);
+  }, []);
+
   return (
     <React.Fragment>
       <SearchBar
-        isInsideBottomsheet
+        isInsideBottomSheet
         onFocus={handleFocus}
         onBlur={handleBlur}
+        onChangeText={handleSearch}
         placeholder="Search labels"
       />
       <LabelStack labelList={allLabels} handleLabelPress={handleLabelPress} />

@@ -12,11 +12,11 @@ import { Icon } from '../icon';
 interface SearchBarProps extends TextInputProps {
   isLoading?: boolean;
   prefix?: RenderPropType;
-  isInsideBottomsheet?: boolean;
+  isInsideBottomSheet?: boolean;
 }
 
 export const SearchBar = (props: SearchBarProps) => {
-  const { isLoading = false, prefix, isInsideBottomsheet = false, ...otherProps } = props;
+  const { isLoading = false, prefix, isInsideBottomSheet = false, ...otherProps } = props;
 
   // Row Exit Animation
   const exiting = () => {
@@ -33,7 +33,7 @@ export const SearchBar = (props: SearchBarProps) => {
     };
   };
 
-  const SearchTextInput = isInsideBottomsheet ? BottomSheetTextInput : TextInput;
+  const SearchTextInput = isInsideBottomSheet ? BottomSheetTextInput : TextInput;
 
   return (
     <Animated.View exiting={exiting} style={tailwind.style('px-3 h-[36px] relative')}>

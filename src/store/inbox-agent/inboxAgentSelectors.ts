@@ -11,3 +11,10 @@ export const isInboxAgentFetching = createSelector(
   [selectInboxAgentsState],
   state => state.uiFlags.isLoading,
 );
+
+export const filterInboxAgents = createSelector(
+  [selectAllInboxAgents, (state: RootState, searchTerm: string) => searchTerm],
+  (agents, searchTerm) => {
+    return searchTerm ? agents.filter(agent => agent?.name?.includes(searchTerm)) : agents;
+  },
+);

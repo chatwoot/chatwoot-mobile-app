@@ -18,6 +18,7 @@ import {
   AssigneeTypeSheet,
   AssigneeListSheet,
   LabelListSheet,
+  StatusChangeListSheet,
 } from './components';
 
 import { ActionTabs, BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
@@ -288,7 +289,7 @@ const ConversationScreen = () => {
           snapPoints={filterSnapPoints}
           onDismiss={handleOnDismiss}>
           <BottomSheetWrapper>
-            {currentBottomSheet === 'status' ? <StatusListSheet type="Filter" /> : null}
+            {currentBottomSheet === 'status' ? <StatusListSheet /> : null}
             {currentBottomSheet === 'sort_by' ? <SortBySheet /> : null}
             {currentBottomSheet === 'assignee_type' ? <AssigneeTypeSheet /> : null}
             {currentBottomSheet === 'inbox_id' ? <InboxListSheet /> : null}
@@ -307,7 +308,7 @@ const ConversationScreen = () => {
           snapPoints={actionSnapPoints}
           onDismiss={handleOnDismiss}>
           {currentActionState === 'Assign' ? <AssigneeListSheet /> : null}
-          {currentActionState === 'Status' ? <StatusListSheet type="SetStatus" /> : null}
+          {currentActionState === 'Status' ? <StatusChangeListSheet /> : null}
           {currentActionState === 'Label' ? <LabelListSheet /> : null}
         </BottomSheetModal>
         <ActionTabs />

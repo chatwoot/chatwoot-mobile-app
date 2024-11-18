@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ImageSourcePropType, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
@@ -10,7 +10,7 @@ import { Avatar, SearchBar } from '@/components-next';
 
 import { inboxAgentActions } from '@/store/inbox-agent/inboxAgentActions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectAllInboxAgents } from '@/store/inbox-agent/inboxAgentSelectors';
+import { filterInboxAgents } from '@/store/inbox-agent/inboxAgentSelectors';
 import {
   selectSelectedIds,
   selectSelectedInboxes,
@@ -96,8 +96,9 @@ const AssigneeStack = ({ agents }: { agents: Agent[] }) => {
 export const AssigneeListSheet = () => {
   const dispatch = useAppDispatch();
   const { actionsModalSheetRef } = useRefsContext();
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const agents = useAppSelector(selectAllInboxAgents);
+  const agents = useAppSelector(state => filterInboxAgents(state, searchTerm));
   const selectedInboxes = useAppSelector(selectSelectedInboxes);
   const selectedConversation = useAppSelector(selectSelectedConversation);
 
@@ -116,12 +117,17 @@ export const AssigneeListSheet = () => {
     dispatch(inboxAgentActions.fetchInboxAgents({ inboxIds }));
   }, []);
 
+  const handleChangeText = (text: string) => {
+    setSearchTerm(text);
+  };
+
   return (
     <React.Fragment>
       <SearchBar
-        isInsideBottomsheet
+        isInsideBottomSheet
         onFocus={handleFocus}
         onBlur={handleBlur}
+        onChangeText={handleChangeText}
         placeholder="Search people"
       />
       <AssigneeStack agents={agents} />

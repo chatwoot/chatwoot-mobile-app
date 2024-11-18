@@ -17,6 +17,7 @@ import type {
   MarkMessagesUnreadPayload,
   MarkMessageReadPayload,
   MarkMessageReadOrUnreadResponse,
+  MuteOrUnmuteConversationPayload,
 } from './conversationTypes';
 import { AxiosError } from 'axios';
 import { addOrUpdateMessage } from './conversationSlice';
@@ -151,6 +152,7 @@ export const conversationActions = {
       return { payload: response.payload };
     } catch (error) {
       const { response } = error as AxiosError<ApiErrorResponse>;
+      console.log('error', error);
       if (!response) {
         throw error;
       }
@@ -216,5 +218,23 @@ export const conversationActions = {
       }
       return rejectWithValue(response.data);
     }
+  }),
+  muteConversation: createAsyncThunk<
+    {
+      conversationId: number;
+    },
+    MuteOrUnmuteConversationPayload
+  >('conversations/muteConversation', async (payload, { rejectWithValue }) => {
+    await ConversationService.muteConversation(payload);
+    return { conversationId: payload.conversationId };
+  }),
+  unmuteConversation: createAsyncThunk<
+    {
+      conversationId: number;
+    },
+    MuteOrUnmuteConversationPayload
+  >('conversations/unmuteConversation', async (payload, { rejectWithValue }) => {
+    await ConversationService.unmuteConversation(payload);
+    return { conversationId: payload.conversationId };
   }),
 };

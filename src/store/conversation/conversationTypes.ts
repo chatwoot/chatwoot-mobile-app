@@ -170,6 +170,10 @@ export interface MarkMessagesUnreadPayload {
   conversationId: number;
 }
 
+export interface MuteOrUnmuteConversationPayload {
+  conversationId: number;
+}
+
 export interface MarkMessageReadPayload {
   conversationId: number;
 }

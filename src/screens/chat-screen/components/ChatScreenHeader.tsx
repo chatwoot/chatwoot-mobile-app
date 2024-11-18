@@ -28,6 +28,8 @@ export const ChatScreenHeader = (props: ChatScreenHeaderProps) => {
 
   const conversationStatus = conversation?.status;
 
+  const isResolved = conversationStatus === CONVERSATION_STATUS.RESOLVED;
+
   const { chatPagerView } = useRefsContext();
   const { pagerViewIndex } = useChatWindowContext();
 
@@ -114,7 +116,7 @@ export const ChatScreenHeader = (props: ChatScreenHeaderProps) => {
           <Pressable hitSlop={8} onPress={toggleChatStatus}>
             <Icon
               icon={
-                conversationStatus !== 'resolved' ? (
+                isResolved ? (
                   <ResolvedIcon strokeWidth={2} stroke={tailwind.color('bg-green-700')} />
                 ) : (
                   <OpenIcon strokeWidth={2} />

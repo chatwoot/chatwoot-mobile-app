@@ -13,6 +13,8 @@ import type {
   ToggleConversationStatusPayload,
   BulkActionPayload,
   AssigneePayload,
+  AssignTeamPayload,
+  AssignTeamAPIResponse,
   AssigneeAPIResponse,
   MarkMessagesUnreadPayload,
   MarkMessageReadPayload,
@@ -170,6 +172,20 @@ export const conversationActions = {
     async (payload, { rejectWithValue }) => {
       try {
         return await ConversationService.assignConversation(payload);
+      } catch (error) {
+        const { response } = error as AxiosError<ApiErrorResponse>;
+        if (!response) {
+          throw error;
+        }
+        return rejectWithValue(response.data);
+      }
+    },
+  ),
+  assignTeam: createAsyncThunk<AssignTeamAPIResponse, AssignTeamPayload>(
+    'conversations/assignTeam',
+    async (payload, { rejectWithValue }) => {
+      try {
+        return await ConversationService.assignTeam(payload);
       } catch (error) {
         const { response } = error as AxiosError<ApiErrorResponse>;
         if (!response) {

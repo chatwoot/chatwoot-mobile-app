@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Alert, Dimensions, Share } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
@@ -25,6 +25,8 @@ import { conversationActions } from '@/store/conversation/conversationActions';
 import { setActionState } from '@/store/conversation/conversationActionSlice';
 import { useRefsContext } from '@/context';
 import { selectSingleConversation } from '@/store/conversation/conversationSelectedSlice';
+import { teamActions } from '@/store/team/teamActions';
+import { selectAllTeams } from '@/store/team/teamSelectors';
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 
@@ -37,10 +39,18 @@ export const ConversationActions = () => {
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
 
   const { status, muted: isMuted, meta, priority = null } = conversation || {};
-  const { assignee } = meta || {};
+  const { assignee, team } = meta || {};
   const { name = '', thumbnail = '' } = assignee || {};
+  const teams = useAppSelector(selectAllTeams);
+
+  const currentTeam = teams.find(t => t.id === team?.id) || null;
 
   const currentLabels = conversation?.labels || [];
+
+  useEffect(() => {
+    dispatch(teamActions.fetchTeams());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onShareConversation = async () => {
     try {
@@ -84,6 +94,13 @@ export const ConversationActions = () => {
     actionsModalSheetRef.current?.present();
   };
 
+  const onChangeTeamAssignee = () => {
+    if (!conversation) return;
+    dispatch(selectSingleConversation(conversation));
+    dispatch(setActionState('TeamAssign'));
+    actionsModalSheetRef.current?.present();
+  };
+
   return (
     <Animated.View style={tailwind.style('', `w-[${SCREEN_WIDTH}px]`)}>
       <ScrollView
@@ -98,8 +115,10 @@ export const ConversationActions = () => {
           <ConversationSettingsPanel
             name={name || ''}
             thumbnail={thumbnail || ''}
+            teamName={currentTeam?.name || ''}
             priority={priority}
             onChangeAssignee={onChangeAssignee}
+            onChangeTeamAssignee={onChangeTeamAssignee}
           />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-10')}>

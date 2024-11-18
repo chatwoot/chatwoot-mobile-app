@@ -22,7 +22,7 @@ import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 import { AuthStack, ConversationStack, InboxStack, SettingsStack } from '../stack';
 import ChatScreen from '@/screens/chat-screen/ChatScreen';
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
-// import DashboardScreen from '@/screens/dashboard/Dashboard';
+import { DashboardScreen } from '@/screens/dashboard';
 
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { BottomTabBar } from './BottomTabBar';
@@ -179,7 +179,14 @@ export const AppTabs = () => {
           name="ContactDetails"
           component={ContactDetailsScreen}
         />
-        {/* <Stack.Screen name="Dashboard" component={DashboardScreen} /> */}
+        <Stack.Screen
+          options={{
+            presentation: 'formSheet',
+            animation: 'slide_from_bottom',
+          }}
+          name="Dashboard"
+          component={DashboardScreen}
+        />
       </Stack.Navigator>
     );
   } else {

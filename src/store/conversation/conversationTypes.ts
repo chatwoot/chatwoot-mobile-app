@@ -6,7 +6,7 @@ import type {
 } from '@/types/common/ConversationStatus';
 import type { Message } from '@/types/Message';
 import { MESSAGE_STATUS, MESSAGE_TYPES } from '@/constants';
-import { Agent } from '@/types';
+import { Agent, Team } from '@/types';
 
 export interface ConversationListAPIResponse {
   data: {
@@ -158,6 +158,17 @@ export interface BulkActionLabels {
 export interface AssigneePayload {
   conversationId: number;
   assigneeId: number;
+}
+
+export interface AssignTeamPayload {
+  conversationId: number;
+  teamId: string;
+}
+
+export interface AssignTeamAPIResponse {
+  data: {
+    payload: Team;
+  };
 }
 
 export interface AssigneeAPIResponse {

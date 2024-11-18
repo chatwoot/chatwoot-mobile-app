@@ -4,11 +4,11 @@ import Animated from 'react-native-reanimated';
 import { WebView } from 'react-native-webview';
 import { StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
-import { Icon } from '../../components';
-import { CloseIcon } from '../../svg-icons';
-import { tailwind } from '../../theme';
+import { Icon } from '@/components-next';
+import { CloseIcon } from '@/svg-icons';
+import { tailwind } from '@/theme';
 
-const DashboardScreen = () => {
+export const DashboardScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
 
@@ -47,5 +47,3 @@ const DashboardScreen = () => {
     </Animated.View>
   );
 };
-
-export default DashboardScreen;

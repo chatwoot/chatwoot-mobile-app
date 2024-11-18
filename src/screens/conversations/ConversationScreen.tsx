@@ -19,6 +19,7 @@ import {
   AssigneeListSheet,
   LabelListSheet,
   StatusChangeListSheet,
+  TeamAssigneeSheet,
 } from './components';
 
 import { ActionTabs, BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
@@ -308,6 +309,7 @@ const ConversationScreen = () => {
           snapPoints={actionSnapPoints}
           onDismiss={handleOnDismiss}>
           {currentActionState === 'Assign' ? <AssigneeListSheet /> : null}
+          {currentActionState === 'TeamAssign' ? <TeamAssigneeSheet /> : null}
           {currentActionState === 'Status' ? <StatusChangeListSheet /> : null}
           {currentActionState === 'Label' ? <LabelListSheet /> : null}
         </BottomSheetModal>

@@ -18,6 +18,8 @@ import type {
   MarkMessageReadAPIResponse,
   MuteOrUnmuteConversationPayload,
   ConversationLabelPayload,
+  AssignTeamPayload,
+  AssignTeamAPIResponse,
 } from './conversationTypes';
 
 export class ConversationService {
@@ -87,6 +89,14 @@ export class ConversationService {
     const { conversationId, assigneeId } = payload;
     const response = await apiService.post<AssigneeAPIResponse>(
       `conversations/${conversationId}/assignments?assignee_id=${assigneeId}`,
+    );
+    return response.data;
+  }
+
+  static async assignTeam(payload: AssignTeamPayload): Promise<AssignTeamAPIResponse> {
+    const { conversationId, teamId } = payload;
+    const response = await apiService.post<AssignTeamAPIResponse>(
+      `conversations/${conversationId}/assignments?team_id=${teamId}`,
     );
     return response.data;
   }

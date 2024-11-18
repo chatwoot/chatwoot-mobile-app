@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { CaretRight, PriorityIcon, WebsiteIcon } from '@/svg-icons';
+import { CaretRight, PriorityIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Avatar, Icon } from '@/components-next';
 import { ConversationPriority } from '@/types';
@@ -11,14 +11,18 @@ type ConversationSettingsPanelProps = {
   name: string;
   thumbnail: string;
   priority: ConversationPriority;
+  teamName: string;
   onChangeAssignee: () => void;
+  onChangeTeamAssignee: () => void;
 };
 
 export const ConversationSettingsPanel = ({
   name,
   thumbnail,
   priority,
+  teamName,
   onChangeAssignee,
+  onChangeTeamAssignee,
 }: ConversationSettingsPanelProps) => {
   return (
     <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
@@ -49,9 +53,11 @@ export const ConversationSettingsPanel = ({
           </Animated.View>
         </Animated.View>
       </Pressable>
-      <Pressable style={({ pressed }) => [tailwind.style(pressed ? 'bg-gray-100' : '')]}>
-        <Animated.View style={tailwind.style('flex-row items-center justify-between pl-3')}>
-          <Icon icon={<WebsiteIcon />} size={28} />
+      <Pressable
+        onPress={onChangeTeamAssignee}
+        style={({ pressed }) => [tailwind.style(pressed ? 'bg-gray-100' : '')]}>
+        <Animated.View style={tailwind.style('flex-row items-center justify-between')}>
+          {/* <Icon icon={<WebsiteIcon />} size={28} /> */}
           <Animated.View
             style={tailwind.style(
               'flex-1 flex-row items-center justify-between py-[11px] ml-3 border-b-[1px] border-b-blackA-A3',
@@ -60,14 +66,14 @@ export const ConversationSettingsPanel = ({
               style={tailwind.style(
                 'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
               )}>
-              Department
+              {teamName}
             </Animated.Text>
             <Animated.View style={tailwind.style('flex-row items-center pr-3')}>
               <Animated.Text
                 style={tailwind.style(
                   'text-base font-inter-normal-24 leading-[22px] tracking-[0.16px] text-gray-900',
                 )}>
-                Marketing
+                Change
               </Animated.Text>
               <Icon icon={<CaretRight />} size={20} />
             </Animated.View>
@@ -77,7 +83,7 @@ export const ConversationSettingsPanel = ({
       <Pressable
         style={({ pressed }) => [tailwind.style(pressed ? 'bg-gray-100' : '', 'rounded-b-[13px]')]}>
         <Animated.View style={tailwind.style('flex-row items-center justify-between pl-3')}>
-          <Icon icon={<PriorityIcon />} size={28} />
+          <Icon icon={<PriorityIcon />} />
           <Animated.View
             style={tailwind.style('flex-1 flex-row items-center justify-between py-[11px] ml-3')}>
             <Animated.Text

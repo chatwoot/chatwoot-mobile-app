@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@/store';
 
-type ActionType = 'Assign' | 'Status' | 'Label' | null;
+type ActionType = 'Assign' | 'Status' | 'Label' | 'TeamAssign' | null;
 
 interface ActionState {
   currentActionState: ActionType;

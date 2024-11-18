@@ -8,6 +8,8 @@ const defaultInbox: Inbox = {
   channelType: 'Channel::All',
   avatarUrl: '',
   channelId: 0,
+  phoneNumber: '',
+  medium: 'Channel::All',
 };
 
 export const inboxAdapter = createEntityAdapter<Inbox>({

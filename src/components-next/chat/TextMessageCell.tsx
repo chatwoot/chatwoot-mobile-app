@@ -1,9 +1,7 @@
-import React, { useMemo } from 'react';
-import { Alert } from 'react-native';
+import React from 'react';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import tailwind from 'twrnc';
 
-import { CannedResponseIcon, CopyIcon, LinkIcon, TranslateIcon, Trash } from '@/svg-icons';
 import { Channel, Message } from '@/types';
 import { Avatar } from '@/components-next/common';
 
@@ -16,8 +14,8 @@ import { MESSAGE_TYPES } from '@/constants';
 
 export type TextMessageCellProps = {
   item: Message;
-  handleQuoteReply: () => void;
   channel?: Channel;
+  menuOptions: MenuOption[];
 };
 
 export const TextMessageCell = (props: TextMessageCellProps) => {
@@ -39,52 +37,7 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
   const isActivity = messageItem.messageType === MESSAGE_TYPES.ACTIVITY;
   const isTemplate = messageItem.messageType === MESSAGE_TYPES.TEMPLATE;
 
-  const { handleQuoteReply } = props;
-
-  const commonOptions = useMemo(
-    () =>
-      [
-        {
-          title: 'Reply',
-          handleOnPressMenuOption: handleQuoteReply,
-        },
-        {
-          title: 'Copy',
-          icon: <CopyIcon />,
-          handleOnPressMenuOption: () => Alert.alert('Copy'),
-        },
-        {
-          title: 'Translate',
-          icon: <TranslateIcon />,
-          handleOnPressMenuOption: () => Alert.alert('Translate'),
-        },
-        {
-          title: 'Copy link to message',
-          icon: <LinkIcon />,
-          handleOnPressMenuOption: () => Alert.alert('Copy link to message'),
-        },
-      ] as MenuOption[],
-    [handleQuoteReply],
-  );
-
-  const outgoingMessageOptions = useMemo(
-    () =>
-      [
-        ...commonOptions,
-        {
-          title: 'Add to canned responses',
-          icon: <CannedResponseIcon />,
-          handleOnPressMenuOption: () => Alert.alert('Add to canned responses'),
-        },
-        {
-          title: 'Delete message',
-          icon: <Trash />,
-          handleOnPressMenuOption: () => Alert.alert('Delete message'),
-          destructive: true,
-        },
-      ] as MenuOption[],
-    [commonOptions],
-  );
+  const { menuOptions } = props;
 
   return (
     <Animated.View
@@ -109,8 +62,7 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
             <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name || ''} />
           </Animated.View>
         ) : null}
-        <MessageMenu
-          menuOptions={isActivity ? [] : isIncoming ? commonOptions : outgoingMessageOptions}>
+        <MessageMenu menuOptions={menuOptions}>
           <React.Fragment>
             {isPrivate ? (
               <React.Fragment>

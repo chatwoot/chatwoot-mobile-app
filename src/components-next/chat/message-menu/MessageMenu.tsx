@@ -17,7 +17,7 @@ export type MenuOption = {
   title: string;
   icon: React.ReactNode | JSX.Element;
   handleOnPressMenuOption: () => void;
-  destructive: boolean;
+  destructive?: boolean;
 };
 
 type MessageMenuProps = {

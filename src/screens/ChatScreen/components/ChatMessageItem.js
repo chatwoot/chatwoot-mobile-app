@@ -268,7 +268,7 @@ const ChatMessageItemComponent = ({ conversation, type, message, created_at, sho
         i18n.t('CONVERSATION.DELETE_MESSAGE_TITLE'),
         i18n.t('CONVERSATION.DELETE_MESSAGE_SUB_TITLE'),
         [
-          {
+          { 
             text: i18n.t('EXIT.CANCEL'),
             onPress: () => {},
             style: 'cancel',

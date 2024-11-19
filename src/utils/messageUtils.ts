@@ -70,7 +70,10 @@ export const buildCreatePayload = (data: PendingMessage): MessageBuilderPayload 
       content: message,
       private: isPrivate,
       echo_id: echoId,
-      content_attributes: contentAttributes,
+      content_attributes: {
+        ...contentAttributes,
+        in_reply_to: contentAttributes?.inReplyTo,
+      },
       cc_emails: ccEmails,
       bcc_emails: bccEmails,
       template_params: templateParams,

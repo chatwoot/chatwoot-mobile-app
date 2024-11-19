@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Alert, Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { PlayBackType } from 'react-native-audio-recorder-player';
 import Animated, { Easing, FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
 
 import { useAudioPlayer } from '@/storev2';
-import { LinkIcon, Trash } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Channel, IconProps, Message, MessageStatus, UnixTimestamp } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
@@ -49,7 +48,7 @@ type AudioCellProps = {
   channel?: Channel;
   isPrivate: boolean;
   sourceId?: string | null;
-  handleQuoteReply: () => void;
+  menuOptions: MenuOption[];
 };
 
 type AudioPlayerProps = Pick<AudioCellProps, 'audioSrc'> & {
@@ -190,47 +189,13 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
     sender,
     timeStamp,
     status,
-    handleQuoteReply,
     isPrivate,
     channel,
     sourceId,
+    menuOptions,
   } = props;
   const isIncoming = messageType === MESSAGE_TYPES.INCOMING;
   const isOutgoing = messageType === MESSAGE_TYPES.OUTGOING;
-
-  const commonOptions = useMemo(
-    () =>
-      [
-        {
-          title: 'Reply',
-          handleOnPressMenuOption: handleQuoteReply,
-        },
-        {
-          title: 'Copy link to message',
-          icon: <LinkIcon />,
-          handleOnPressMenuOption: () => Alert.alert('Copy link to message'),
-        },
-        // {
-        //   title: "Download",
-        //   handleOnPressMenuOption: () => Alert.alert("Download"),
-        // },
-      ] as MenuOption[],
-    [handleQuoteReply],
-  );
-
-  const outgoingMessageOptions = useMemo(
-    () =>
-      [
-        ...commonOptions,
-        {
-          title: 'Delete message',
-          icon: <Trash />,
-          handleOnPressMenuOption: () => Alert.alert('Delete message'),
-          destructive: true,
-        },
-      ] as MenuOption[],
-    [commonOptions],
-  );
 
   return (
     <Animated.View
@@ -249,7 +214,7 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
             <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
           </Animated.View>
         ) : null}
-        <MessageMenu menuOptions={isIncoming ? commonOptions : outgoingMessageOptions}>
+        <MessageMenu menuOptions={menuOptions}>
           <Animated.View
             style={[
               tailwind.style(

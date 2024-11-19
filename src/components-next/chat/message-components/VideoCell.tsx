@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Alert, Platform, Pressable, Text } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Platform, Pressable, Text } from 'react-native';
 import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
 import {
   AVPlaybackStatus,
@@ -10,7 +10,6 @@ import {
 } from 'expo-av';
 import { Image, ImageBackground } from 'expo-image';
 
-import { LinkIcon, Trash } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Channel, Message, MessageStatus, UnixTimestamp } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
@@ -30,7 +29,7 @@ type VideoCellProps = {
   channel?: Channel;
   isPrivate: boolean;
   sourceId?: string | null;
-  handleQuoteReply: () => void;
+  menuOptions: MenuOption[];
 };
 
 type VideoPlayerProps = Pick<VideoCellProps, 'videoSrc'> & {
@@ -127,7 +126,7 @@ export const VideoCell = (props: VideoCellProps) => {
     messageType,
     timeStamp,
     status,
-    handleQuoteReply,
+    menuOptions,
     isPrivate,
     channel,
     sourceId,
@@ -136,39 +135,6 @@ export const VideoCell = (props: VideoCellProps) => {
   const isIncoming = messageType === MESSAGE_TYPES.INCOMING;
   const isOutgoing = messageType === MESSAGE_TYPES.OUTGOING;
 
-  const commonOptions = useMemo(
-    () =>
-      [
-        {
-          title: 'Reply',
-          handleOnPressMenuOption: handleQuoteReply,
-        },
-        {
-          title: 'Copy link to message',
-          icon: <LinkIcon />,
-          handleOnPressMenuOption: () => Alert.alert('Copy link to message'),
-        },
-        // {
-        //   title: "Download",
-        //   handleOnPressMenuOption: () => Alert.alert("Download"),
-        // },
-      ] as MenuOption[],
-    [handleQuoteReply],
-  );
-
-  const outgoingMessageOptions = useMemo(
-    () =>
-      [
-        ...commonOptions,
-        {
-          title: 'Delete message',
-          icon: <Trash />,
-          handleOnPressMenuOption: () => Alert.alert('Delete message'),
-          destructive: true,
-        },
-      ] as MenuOption[],
-    [commonOptions],
-  );
   return (
     <Animated.View
       entering={FadeIn.duration(300).easing(Easing.ease)}
@@ -186,7 +152,7 @@ export const VideoCell = (props: VideoCellProps) => {
             <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
           </Animated.View>
         ) : null}
-        <MessageMenu menuOptions={isIncoming ? commonOptions : outgoingMessageOptions}>
+        <MessageMenu menuOptions={menuOptions}>
           <Animated.View
             style={tailwind.style(
               'relative w-[300px] aspect-video rounded-[14px] overflow-hidden',

@@ -20,6 +20,8 @@ import type {
   ConversationLabelPayload,
   AssignTeamPayload,
   AssignTeamAPIResponse,
+  DeleteMessagePayload,
+  DeleteMessageAPIResponse,
 } from './conversationTypes';
 
 export class ConversationService {
@@ -134,5 +136,13 @@ export class ConversationService {
   static async addOrUpdateConversationLabels(payload: ConversationLabelPayload): Promise<void> {
     const { conversationId, labels } = payload;
     await apiService.post(`conversations/${conversationId}/labels`, { labels });
+  }
+
+  static async deleteMessage(payload: DeleteMessagePayload): Promise<DeleteMessageAPIResponse> {
+    const { conversationId, messageId } = payload;
+    const response = await apiService.delete<DeleteMessageAPIResponse>(
+      `conversations/${conversationId}/messages/${messageId}`,
+    );
+    return response.data;
   }
 }

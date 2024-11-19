@@ -297,7 +297,7 @@ const BottomSheetContent = () => {
   );
 };
 
-export const MessageInputBox = () => {
+export const ReplyBox = () => {
   // const { bottom } = useSafeAreaInsets();
 
   // const bottomSheetRef = useRef<BottomSheet>(null);

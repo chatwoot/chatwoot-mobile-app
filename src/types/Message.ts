@@ -40,6 +40,7 @@ type ImageMetadata = {
 export type MessageContentAttributes = {
   inReplyTo: number;
   inReplyToExternalId: null;
+  deleted?: boolean;
   email: {
     subject: string;
   };

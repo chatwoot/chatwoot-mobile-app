@@ -14,3 +14,4 @@ export * from './dateTimeUtils';
 export * from './conversationUtils';
 export * from './camelcaseKeys';
 export * from './getChannelIcon';
+export * from './inboxUtils';

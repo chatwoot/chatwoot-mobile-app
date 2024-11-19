@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import PagerView from 'react-native-pager-view';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
+import { Message } from '@/types';
 
 interface RefsContextType {
   userAvailabilityStatusSheetRef: React.RefObject<BottomSheetModal>;
@@ -14,7 +15,7 @@ interface RefsContextType {
   notificationPreferencesSheetRef: React.RefObject<BottomSheetModal>;
   switchAccountSheetRef: React.RefObject<BottomSheetModal>;
   debugActionsSheetRef: React.RefObject<BottomSheetModal>;
-  messageListRef: React.RefObject<FlashList<any>>;
+  messageListRef: React.RefObject<FlashList<Message>>;
 }
 
 const RefsContext = React.createContext<RefsContextType | undefined>(undefined);
@@ -41,7 +42,7 @@ const RefsProvider: React.FC<Partial<RefsContextType & { children: React.ReactNo
   const chatPagerView = useRef<PagerView>(null);
   const switchAccountSheetRef = useRef<BottomSheetModal>(null);
   const debugActionsSheetRef = useRef<BottomSheetModal>(null);
-  const messageListRef = useRef<FlashList<any>>(null);
+  const messageListRef = useRef<FlashList<Message>>(null);
 
   const { children } = props;
 

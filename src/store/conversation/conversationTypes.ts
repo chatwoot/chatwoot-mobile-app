@@ -67,7 +67,7 @@ export interface SendMessagePayload {
   };
   file?: File;
   contentAttributes?: {
-    inReplyTo: string;
+    inReplyTo: number;
   };
   templateParams?: string;
   ccEmails?: string;
@@ -210,4 +210,13 @@ export interface MarkMessageReadOrUnreadResponse {
 export interface ConversationLabelPayload {
   conversationId: number;
   labels: string[];
+}
+
+export interface DeleteMessagePayload {
+  conversationId: number;
+  messageId: number;
+}
+
+export interface DeleteMessageAPIResponse {
+  data: Message;
 }

@@ -21,6 +21,8 @@ import type {
   MarkMessageReadOrUnreadResponse,
   MuteOrUnmuteConversationPayload,
   ConversationLabelPayload,
+  DeleteMessagePayload,
+  DeleteMessageAPIResponse,
 } from './conversationTypes';
 import { AxiosError } from 'axios';
 import { addOrUpdateMessage } from './conversationSlice';
@@ -257,6 +259,12 @@ export const conversationActions = {
     'conversations/addOrUpdateConversationLabels',
     async (payload, { rejectWithValue }) => {
       await ConversationService.addOrUpdateConversationLabels(payload);
+    },
+  ),
+  deleteMessage: createAsyncThunk<DeleteMessageAPIResponse, DeleteMessagePayload>(
+    'conversations/deleteMessage',
+    async (payload, { rejectWithValue }) => {
+      return await ConversationService.deleteMessage(payload);
     },
   ),
 };

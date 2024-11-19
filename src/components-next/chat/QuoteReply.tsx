@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectQuoteMessage, setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 
 import { VideoPlayer } from './message-components';
+import { Message } from '@/types';
 
 const AudioIcon = () => {
   return (
@@ -85,11 +86,18 @@ export const QuoteReply = () => {
   };
 
   const handleScrollToMessage = useCallback(() => {
-    messageListRef.current?.scrollToItem({
-      item: quoteMessage,
-      animated: true,
-      viewPosition: 0.5,
-    });
+    const messageIndex = messageListRef.current?.props.data?.findIndex(
+      (item: Message) => item.id === quoteMessage?.id,
+    );
+    const shouldScrollToMessage = messageIndex !== -1 && messageIndex !== undefined;
+
+    if (shouldScrollToMessage) {
+      messageListRef.current?.scrollToIndex({
+        index: messageIndex,
+        animated: true,
+        viewPosition: 0.5,
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -97,7 +105,7 @@ export const QuoteReply = () => {
     <Pressable
       onPress={handleScrollToMessage}
       style={tailwind.style('flex flex-row items-center px-2.5 pb-[14px] bg-white -z-10')}>
-      {quoteMessage?.attachments?.length > 0 ? (
+      {quoteMessage?.attachments?.length && quoteMessage?.attachments?.length > 0 ? (
         <Animated.View style={tailwind.style('h-9.5 w-9.5 mr-3 rounded-lg overflow-hidden')}>
           {quoteMessage?.attachments?.length > 0 &&
           quoteMessage?.attachments[0].fileType === 'image' ? (
@@ -153,7 +161,7 @@ export const QuoteReply = () => {
           ) : (
             <Text
               style={tailwind.style('text-md font-inter-normal-24 tracking-[0.32px] capitalize')}>
-              {quoteMessage?.attachments[0].fileType}
+              {quoteMessage?.attachments?.[0]?.fileType}
             </Text>
           )}
         </Animated.View>

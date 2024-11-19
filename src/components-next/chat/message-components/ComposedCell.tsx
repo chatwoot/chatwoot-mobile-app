@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
-import { Alert, Text } from 'react-native';
+import { Text } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
-import { CopyIcon, LinkIcon, LockIcon, TranslateIcon } from '@/svg-icons';
+import { LockIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Channel, Message } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
@@ -25,6 +25,7 @@ import { DeliveryStatus } from './DeliveryStatus';
 type ComposedCellProps = {
   messageData: Message;
   channel?: Channel;
+  menuOptions: MenuOption[];
 };
 
 export const ComposedCell = (props: ComposedCellProps) => {
@@ -39,7 +40,7 @@ export const ComposedCell = (props: ComposedCellProps) => {
     createdAt,
     contentAttributes,
   } = props.messageData as Message;
-  const { channel } = props;
+  const { channel, menuOptions } = props;
   const { conversationId } = useChatWindowContext();
 
   const messages = useAppSelector(state => getMessagesByConversationId(state, { conversationId }));
@@ -60,28 +61,6 @@ export const ComposedCell = (props: ComposedCellProps) => {
         ? messages.find(message => message.id === contentAttributes?.inReplyTo) || null
         : null,
     [messages, contentAttributes],
-  );
-
-  const commonOptions = useMemo(
-    () =>
-      [
-        {
-          title: 'Copy',
-          icon: <CopyIcon />,
-          handleOnPressMenuOption: () => Alert.alert('Copy'),
-        },
-        {
-          title: 'Translate',
-          icon: <TranslateIcon />,
-          handleOnPressMenuOption: () => Alert.alert('Translate'),
-        },
-        {
-          title: 'Copy link to message',
-          icon: <LinkIcon />,
-          handleOnPressMenuOption: () => Alert.alert('Copy link to message'),
-        },
-      ] as MenuOption[],
-    [],
   );
 
   return (
@@ -106,7 +85,7 @@ export const ComposedCell = (props: ComposedCellProps) => {
           </Animated.View>
         ) : null}
 
-        <MessageMenu menuOptions={commonOptions}>
+        <MessageMenu menuOptions={menuOptions}>
           <Animated.View
             style={[
               tailwind.style(

@@ -9,7 +9,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ChatScreenHeader } from './components';
 import { ConversationActions } from './conversation-actions';
 
-import { MessageInputBox } from '@/components-next/chat/MessageInputBox';
+import { ReplyBox } from '@/components-next/chat/ReplyBox';
 import { MessagesList } from './MessagesList';
 import { ChatWindowProvider, useChatWindowContext, useRefsContext } from '@/context';
 import { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
@@ -20,7 +20,7 @@ export const ChatWindow = (props: ChatScreenProps) => {
   return (
     <Animated.View style={tailwind.style('flex-1')}>
       <MessagesList />
-      <MessageInputBox />
+      <ReplyBox />
     </Animated.View>
   );
 };

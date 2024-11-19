@@ -1,10 +1,8 @@
-import React, { useMemo } from 'react';
-import { Alert, Dimensions, Text } from 'react-native';
+import React from 'react';
+import { Dimensions, Text } from 'react-native';
 import Animated, { Easing, FadeIn } from 'react-native-reanimated';
 import { LightBox, LightBoxProps } from '@alantoa/lightbox';
 import { Image, ImageBackground } from 'expo-image';
-
-import { CannedResponseIcon, CopyIcon, LinkIcon, TranslateIcon, Trash } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Channel, Message, MessageStatus, UnixTimestamp } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
@@ -27,7 +25,7 @@ type ImageCellProps = {
   channel?: Channel;
   isPrivate: boolean;
   sourceId?: string | null;
-  handleQuoteReply: () => void;
+  menuOptions: MenuOption[];
 };
 
 type ImageContainerProps = Pick<ImageCellProps, 'imageSrc'> &
@@ -58,60 +56,14 @@ export const ImageCell = (props: ImageCellProps) => {
     sender,
     timeStamp,
     channel,
-    handleQuoteReply,
     isPrivate,
     sourceId,
     status,
+    menuOptions,
   } = props;
 
   const isIncoming = messageType === MESSAGE_TYPES.INCOMING;
   const isOutgoing = messageType === MESSAGE_TYPES.OUTGOING;
-
-  const commonOptions = useMemo(
-    () =>
-      [
-        {
-          title: 'Reply',
-          handleOnPressMenuOption: handleQuoteReply,
-        },
-        {
-          title: 'Copy',
-          icon: <CopyIcon />,
-          handleOnPressMenuOption: () => Alert.alert('Copy'),
-        },
-        {
-          title: 'Translate',
-          icon: <TranslateIcon />,
-          handleOnPressMenuOption: () => Alert.alert('Translate'),
-        },
-        {
-          title: 'Copy link to message',
-          icon: <LinkIcon />,
-          handleOnPressMenuOption: () => Alert.alert('Copy link to message'),
-        },
-      ] as MenuOption[],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
-
-  const outgoingMessageOptions = useMemo(
-    () =>
-      [
-        ...commonOptions,
-        {
-          title: 'Add to canned responses',
-          icon: <CannedResponseIcon />,
-          handleOnPressMenuOption: () => Alert.alert('Add to canned responses'),
-        },
-        {
-          title: 'Delete message',
-          icon: <Trash />,
-          handleOnPressMenuOption: () => Alert.alert('Delete message'),
-          destructive: true,
-        },
-      ] as MenuOption[],
-    [commonOptions],
-  );
 
   return (
     <Animated.View
@@ -130,7 +82,7 @@ export const ImageCell = (props: ImageCellProps) => {
             <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
           </Animated.View>
         ) : null}
-        <MessageMenu menuOptions={isIncoming ? commonOptions : outgoingMessageOptions}>
+        <MessageMenu menuOptions={menuOptions}>
           <Animated.View
             style={tailwind.style(
               'relative w-[300px] rounded-[14px] overflow-hidden',

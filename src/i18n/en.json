@@ -93,6 +93,7 @@
     "NO_CONTENT": "No content available",
     "ASSIGN_CHANGE": "Conversation Assignee changed",
     "TEAM_CHANGE": "Conversation Team changed",
+    "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY": {
       "TITLE": "Priority",
       "OPTIONS": {

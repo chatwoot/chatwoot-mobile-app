@@ -7,6 +7,8 @@ import { Avatar, Icon } from '@/components-next';
 import { useChatWindowContext, useRefsContext } from '@/context';
 import { ChevronLeft, OpenIcon, Overflow, ResolvedIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
+import { showToast } from '@/helpers/ToastHelper';
+import i18n from '@/i18n';
 
 import { ChatDropdownMenu, DashboardList } from './DropdownMenu';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -51,17 +53,21 @@ export const ChatScreenHeader = (props: ChatScreenHeaderProps) => {
     }
   };
 
-  const toggleChatStatus = () => {
+  const toggleChatStatus = async () => {
     const updatedStatus =
       conversationStatus === CONVERSATION_STATUS.RESOLVED
         ? CONVERSATION_STATUS.OPEN
         : CONVERSATION_STATUS.RESOLVED;
-    dispatch(
+    await dispatch(
       conversationActions.toggleConversationStatus({
         conversationId,
         payload: { status: updatedStatus as ConversationStatus, snoozed_until: null },
       }),
     );
+
+    showToast({
+      message: i18n.t('CONVERSATION.STATUS_CHANGE'),
+    });
   };
 
   const dashboardsList = useMemo(() => {

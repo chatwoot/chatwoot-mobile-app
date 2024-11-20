@@ -8,7 +8,6 @@ import { Avatar } from '@/components-next/common';
 import { AnimatedNativeView, NativeView } from '@/components-next/native-components';
 import { tailwind } from '@/theme';
 import { Agent, Conversation, ConversationAdditionalAttributes, Message } from '@/types';
-import { formatTimeToShortForm, formatRelativeTime } from '@/utils/dateTimeUtils';
 
 import { ConversationId } from './ConversationId';
 import { ConversationLastMessage } from './ConversationLastMessage';
@@ -17,6 +16,7 @@ import { UnreadIndicator } from './UnreadIndicator';
 import { ChannelIndicator } from './ChannelIndicator';
 import { SLAIndicator } from './SLAIndicator';
 import { LabelIndicator } from './LabelIndicator';
+import { LastActivityTime } from './LastActivityTime';
 import { SLA } from '@/types/common/SLA';
 import { Inbox } from '@/types/Inbox';
 
@@ -65,8 +65,6 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
     additionalAttributes,
   } = props;
 
-  const lastActivityAtTimeAgo = formatTimeToShortForm(formatRelativeTime(timestamp));
-
   const hasPriority = priority !== null;
 
   const hasLabels = labels.length > 0;
@@ -99,14 +97,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
         <AnimatedNativeView style={tailwind.style('flex flex-row items-center gap-2')}>
           {hasPriority ? <PriorityIndicator {...{ priority }} /> : null}
           {<ChannelIndicator inbox={inbox} additionalAttributes={additionalAttributes} />}
-          <NativeView>
-            <Text
-              style={tailwind.style(
-                'text-sm font-inter-420-20 leading-[16px] tracking-[0.32px] text-gray-700',
-              )}>
-              {lastActivityAtTimeAgo}
-            </Text>
-          </NativeView>
+          <LastActivityTime timestamp={timestamp} />
         </AnimatedNativeView>
       </AnimatedNativeView>
       {hasLabels || hasSLA ? (

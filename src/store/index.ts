@@ -12,6 +12,8 @@ import {
 } from 'redux-persist';
 import { appReducer } from '@/store/reducers';
 import { setStore } from '@/reducer/storeAccessor';
+import { listenerMiddleware } from './contact/contactListener';
+import reactotron from '../../ReactotronConfig';
 
 const persistConfig = {
   key: 'Root',
@@ -19,7 +21,7 @@ const persistConfig = {
   storage: AsyncStorage,
 };
 
-const middlewares: Middleware[] = [];
+const middlewares: Middleware[] = [listenerMiddleware.middleware];
 
 const rootReducer = (state: ReturnType<typeof appReducer>, action: AnyAction) => {
   if (action.type === 'auth/logout') {
@@ -35,6 +37,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
+  enhancers: [reactotron.createEnhancer!()],
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {

@@ -8,7 +8,7 @@ export const avatarTheme = {
     xl: 'h-8 w-8',
     '2xl': 'h-10 w-10',
     '3xl': 'h-12 w-12',
-    '4xl': 'h-14 w-14',
+    '4xl': 'h-[50px] w-[50px]',
   },
   image: 'w-full h-full',
   // Having style objects because specific value not present as tailwind classnames

@@ -5,3 +5,5 @@ export * from './ConversationStatus';
 export * from './UnixTimestamp';
 export * from './UserRole';
 export * from './Theme';
+export * from './ConversationTyping';
+export * from './Label';

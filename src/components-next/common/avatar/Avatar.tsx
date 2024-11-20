@@ -10,7 +10,7 @@ import { AvatarImage } from './AvatarImage';
 import { AvatarStatus } from './AvatarStatus';
 
 export type AvatarSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
-export type AvatarStatusType = 'active' | 'away' | 'sleep' | 'typing';
+export type AvatarStatusType = 'online' | 'away' | 'offline' | 'typing' | 'sleep';
 
 function getInitials(name: string, size: AvatarSizes) {
   if (!name) {

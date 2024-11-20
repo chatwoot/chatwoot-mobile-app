@@ -35,15 +35,16 @@ const contactSlice = createSlice({
         if (!contactId) return;
         const availabilityStatus = contacts[contactId];
         if (availabilityStatus) {
-          entity.availabilityStatus = availabilityStatus;
+          entity.availabilityStatus = availabilityStatus || 'offline';
         } else {
-          delete entity.availabilityStatus;
+          entity.availabilityStatus = 'offline';
         }
       });
     },
   },
 });
 
-export const { clearAllContacts, addContacts, addContact } = contactSlice.actions;
+export const { clearAllContacts, addContacts, addContact, updateContactsPresence } =
+  contactSlice.actions;
 
 export default contactSlice.reducer;

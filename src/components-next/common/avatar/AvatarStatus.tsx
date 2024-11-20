@@ -93,7 +93,7 @@ export const AvatarStatus: React.FC<Pick<AvatarProps, 'status' | 'size' | 'paren
   parentsBackground,
 }) => {
   switch (status) {
-    case 'active': {
+    case 'online': {
       return (
         <View
           style={[
@@ -157,6 +157,9 @@ export const AvatarStatus: React.FC<Pick<AvatarProps, 'status' | 'size' | 'paren
     }
     case 'typing': {
       return <TypingComponent size={size} parentsBackground={parentsBackground} />;
+    }
+    default: {
+      return null;
     }
   }
 };

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TypingUser } from '@/types';
 import { RootState } from '@/store';
 
@@ -44,7 +44,7 @@ export const { setTypingUsers, removeTypingUser } = conversationTypingSlice.acti
 
 export const selectTypingUsers = (state: RootState) => state.conversationTyping.records;
 
-export const selectTypingUsersByConversationId = (conversationId: number) => (state: RootState) =>
-  state.conversationTyping.records[conversationId] || [];
+export const selectTypingUsersByConversationId = (conversationId: number) =>
+  createSelector(selectTypingUsers, records => records[conversationId] || []);
 
 export default conversationTypingSlice.reducer;

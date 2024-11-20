@@ -29,6 +29,9 @@ import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { getLastMessage } from '@/utils/conversationUtils';
 import { Inbox } from '@/types/Inbox';
 import { conversationActions } from '@/store/conversation/conversationActions';
+import { selectContactById } from '@/store/contact/contactSelectors';
+import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
+import { isContactTyping } from '@/utils';
 
 type ConversationCellProps = {
   conversationItem: Conversation;
@@ -52,17 +55,6 @@ const UnreadComponent = React.memo(() => {
   );
 });
 
-// const AssignComponent = React.memo(() => {
-//   return (
-//     <Animated.View style={tailwind.style('flex justify-center items-center')}>
-//       <Icon icon={<AssignIcon />} size={24} />
-//       <Animated.Text style={tailwind.style('text-sm font-inter-420-20 pt-[3px] text-white')}>
-//         {i18n.t('CONVERSATION.ITEM.ASSIGN')}
-//       </Animated.Text>
-//     </Animated.View>
-//   );
-// });
-
 const StatusComponent = React.memo(() => {
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center ')}>
@@ -77,7 +69,7 @@ const StatusComponent = React.memo(() => {
 export const ConversationItem = memo((props: ConversationCellProps) => {
   const {
     meta: {
-      sender: { name: senderName, thumbnail: senderThumbnail },
+      sender: { name: senderName, thumbnail: senderThumbnail, id: contactId },
       assignee,
     },
     id,
@@ -96,14 +88,15 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
     additionalAttributes,
   } = props.conversationItem;
 
-  // const contact = useAppSelector(state => selectContactById(state, contactId));
+  const contact = useAppSelector(state => selectContactById(state, contactId));
+
+  const { availabilityStatus } = contact || {};
 
   const inbox = useAppSelector(state => selectInboxById(state, inboxId));
 
-  // const typingUsers = useAppSelector(selectTypingUsersByConversationId(id));
+  const typingUsers = useAppSelector(selectTypingUsersByConversationId(id));
 
-  // TODO: show the availability status in the avatar
-  // const { availabilityStatus } = contact || {};
+  const isTyping = useMemo(() => isContactTyping(typingUsers, contactId), [typingUsers, contactId]);
 
   const { openedRowIndex, index } = props;
 
@@ -171,6 +164,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
           <ConversationAvatar
             src={{ uri: senderThumbnail } as ImageURISource}
             name={senderName as string}
+            status={isTyping ? 'typing' : availabilityStatus || 'offline'}
           />
         </NativeView>
 

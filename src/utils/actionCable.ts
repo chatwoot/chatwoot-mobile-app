@@ -4,11 +4,13 @@ import {
   addConversation,
   addOrUpdateMessage,
 } from '@/store/conversation/conversationSlice';
-import { addContact, addContacts } from '@/store/contact/contactSlice';
+import { addContact, updateContactsPresence } from '@/store/contact/contactSlice';
+import { setTypingUsers, removeTypingUser } from '@/store/conversation/conversationTypingSlice';
 import BaseActionCableConnector from './baseActionCableConnector';
 import { store } from '@/store';
-import { Conversation, Message } from '@/types';
-import { transformMessage, transformConversation } from './camelcaseKeys';
+import { Conversation, Message, PresenceUpdateData, TypingData } from '@/types';
+import { transformMessage, transformConversation, transformTypingData } from './camelcaseKeys';
+import { setCurrentUserAvailability } from '@/store/auth/authSlice';
 
 interface ActionCableConfig {
   pubSubToken: string;
@@ -34,12 +36,12 @@ class ActionCableConnector extends BaseActionCableConnector {
 
       'assignee.changed': this.onAssigneeChanged,
       'conversation.updated': this.onConversationUpdated,
-      //   'presence.update': this.onPresenceUpdate,
-      //   'conversation.typing_on': this.onTypingOn,
-      //   'conversation.typing_off': this.onTypingOff,
+      'conversation.typing_on': this.onTypingOn,
+      'conversation.typing_off': this.onTypingOff,
+      'presence.update': this.onPresenceUpdate,
+      // TODO: Handle all these events
       //   'notification.created': this.onNotificationCreated,
       //   'notification.deleted': this.onNotificationRemoved,
-      // TODO: Handle all these events
       //   'conversation.contact_changed': this.onConversationContactChange,
       //   'contact.deleted': this.onContactDelete,
       //   'contact.updated': this.onContactUpdate,
@@ -89,59 +91,54 @@ class ActionCableConnector extends BaseActionCableConnector {
     store.dispatch(updateConversation(conversation));
   };
 
-  //   onTypingOn = (data: TypingData) => {
-  //     const { conversation, user } = data;
-  //     const conversationId = conversation.id;
-  //     store.dispatch(
-  //       conversationTypingActions.toggleTyping({
-  //         conversationId,
-  //         user,
-  //         typing: true,
-  //       }),
-  //     );
-  //     this.initTimer({ conversation, user });
-  //   };
+  onTypingOn = (data: TypingData) => {
+    const typingData = transformTypingData(data);
+    const { conversation, user } = typingData;
+    const conversationId = conversation.id;
+    store.dispatch(setTypingUsers({ conversationId, user }));
+    this.initTimer(typingData);
+  };
 
-  //   onTypingOff = (data: TypingData) => {
-  //     const { conversation, user } = data;
-  //     const conversationId = conversation.id;
-  //     store.dispatch(
-  //       conversationTypingActions.toggleTyping({
-  //         conversationId,
-  //         user,
-  //         typing: false,
-  //       }),
-  //     );
-  //     this.clearTimer(conversationId);
-  //   };
+  onTypingOff = (data: TypingData) => {
+    const typingData = transformTypingData(data);
+    const { conversation, user } = typingData;
+    const conversationId = conversation.id;
+    store.dispatch(removeTypingUser({ conversationId, user }));
+    this.clearTimer(conversationId);
+  };
 
-  //   private initTimer = ({ conversation, user }: TypingData) => {
-  //     const conversationId = conversation.id;
-  //     if (this.CancelTyping[conversationId]) {
-  //       clearTimeout(this.CancelTyping[conversationId]!);
-  //       this.CancelTyping[conversationId] = null;
-  //     }
-  //     this.CancelTyping[conversationId] = setTimeout(() => {
-  //       store.dispatch(
-  //         conversationTypingActions.toggleTyping({
-  //           conversationId,
-  //           user,
-  //           typing: false,
-  //         }),
-  //       );
-  //     }, 30000);
-  //   };
+  private initTimer = (data: TypingData) => {
+    const { conversation } = data;
+    const conversationId = conversation.id;
+    if (this.CancelTyping[conversationId]) {
+      clearTimeout(this.CancelTyping[conversationId]!);
+      this.CancelTyping[conversationId] = null;
+    }
+    this.CancelTyping[conversationId] = setTimeout(() => {
+      this.onTypingOff(data);
+    }, 30000);
+  };
 
-  //   private clearTimer = (conversationId: number) => {
-  //     if (this.CancelTyping[conversationId]) {
-  //       clearTimeout(this.CancelTyping[conversationId]!);
-  //       this.CancelTyping[conversationId] = null;
-  //     }
-  //   };
+  private clearTimer = (conversationId: number) => {
+    if (this.CancelTyping[conversationId]) {
+      clearTimeout(this.CancelTyping[conversationId]!);
+      this.CancelTyping[conversationId] = null;
+    }
+  };
 
-  //   onPresenceUpdate = (data: PresenceData) => {
-  //     const { contacts, users } = data;
-  //   };
+  onPresenceUpdate = (data: PresenceUpdateData) => {
+    const { contacts, users } = data;
+    store.dispatch(
+      updateContactsPresence({
+        contacts,
+      }),
+    );
+    store.dispatch(
+      setCurrentUserAvailability({
+        users,
+      }),
+    );
+  };
 }
 
 export default {

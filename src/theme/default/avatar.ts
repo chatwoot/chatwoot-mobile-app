@@ -62,7 +62,7 @@ export const avatarTheme = {
         xl: 'h-2 w-2',
         '2xl': 'h-2.5 w-2.5',
         '3xl': 'h-[11px] w-[11px]',
-        '4xl': 'h-5 w-5',
+        '4xl': 'h-[12px] w-[12px]',
       },
     },
     away: {
@@ -76,7 +76,7 @@ export const avatarTheme = {
         xl: 'h-2 w-2',
         '2xl': 'h-2.5 w-2.5',
         '3xl': 'h-[11px] w-[11px]',
-        '4xl': 'h-5 w-5',
+        '4xl': 'h-[12px] w-[12px]',
       },
     },
     sleep: {
@@ -90,7 +90,7 @@ export const avatarTheme = {
         xl: 'h-2 w-2',
         '2xl': 'h-2.5 w-2.5',
         '3xl': 'h-[11px] w-[11px]',
-        '4xl': 'h-5 w-5',
+        '4xl': 'h-[12px] w-[12px]',
       },
     },
     typing: {

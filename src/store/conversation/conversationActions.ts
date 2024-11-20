@@ -6,8 +6,6 @@ import type {
   ApiErrorResponse,
   MessagesPayload,
   MessagesResponse,
-  SendMessagePayload,
-  SendMessageAPIResponse,
   ConversationListResponse,
   ToggleConversationStatusAPIResponse,
   ToggleConversationStatusPayload,
@@ -23,16 +21,15 @@ import type {
   ConversationLabelPayload,
   DeleteMessagePayload,
   DeleteMessageAPIResponse,
+  TypingPayload,
 } from './conversationTypes';
 import { AxiosError } from 'axios';
-import { addOrUpdateMessage } from './conversationSlice';
 import {
   transformConversationMeta,
   transformConversation,
   transformMessage,
   transformConversationListMeta,
 } from '@/utils';
-import { MESSAGE_STATUS } from '@/constants';
 
 export const conversationActions = {
   fetchConversations: createAsyncThunk<ConversationListResponse, ConversationPayload>(
@@ -210,6 +207,12 @@ export const conversationActions = {
     'conversations/deleteMessage',
     async (payload, { rejectWithValue }) => {
       return await ConversationService.deleteMessage(payload);
+    },
+  ),
+  toggleTyping: createAsyncThunk<void, TypingPayload>(
+    'conversations/toggleTyping',
+    async (payload, { rejectWithValue }) => {
+      return await ConversationService.toggleTyping(payload);
     },
   ),
 };

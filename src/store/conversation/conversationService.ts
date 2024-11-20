@@ -22,6 +22,7 @@ import type {
   AssignTeamAPIResponse,
   DeleteMessagePayload,
   DeleteMessageAPIResponse,
+  TypingPayload,
 } from './conversationTypes';
 
 export class ConversationService {
@@ -144,5 +145,13 @@ export class ConversationService {
       `conversations/${conversationId}/messages/${messageId}`,
     );
     return response.data;
+  }
+
+  static async toggleTyping(payload: TypingPayload): Promise<void> {
+    const { conversationId, typingStatus, isPrivate } = payload;
+    await apiService.post(`conversations/${conversationId}/toggle_typing_status`, {
+      typing_status: typingStatus,
+      is_private: isPrivate,
+    });
   }
 }

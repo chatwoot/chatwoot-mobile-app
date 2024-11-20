@@ -6,7 +6,7 @@ import type {
 } from '@/types/common/ConversationStatus';
 import type { Message } from '@/types/Message';
 import { MESSAGE_STATUS, MESSAGE_TYPES } from '@/constants';
-import { Agent, Team } from '@/types';
+import { Agent, Team, TypingUser } from '@/types';
 
 export interface ConversationListAPIResponse {
   data: {
@@ -219,4 +219,10 @@ export interface DeleteMessagePayload {
 
 export interface DeleteMessageAPIResponse {
   data: Message;
+}
+
+export interface TypingPayload {
+  conversationId: number;
+  typingStatus: 'off' | 'on';
+  isPrivate: boolean;
 }

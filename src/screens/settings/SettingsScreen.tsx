@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, Text, Platform, Pressable } from 'react-native';
+import { StatusBar, View, Text, Platform, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -36,9 +36,7 @@ import {
   NotificationPreferences,
   SwitchAccount,
   DebugActions,
-  SettingsList,
 } from '@/components-next';
-// import { SettingsList } from '@/components-next/list-components/SettingsList';
 import { UserAvatar } from './components/UserAvatar';
 
 import { LANGUAGES, TAB_BAR_HEIGHT } from '@/constants';

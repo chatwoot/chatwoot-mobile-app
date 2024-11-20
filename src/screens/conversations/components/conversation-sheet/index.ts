@@ -5,3 +5,4 @@ export * from './AssigneeTypeSheet';
 export * from './AssigneeListSheet';
 export * from './LabelListSheet';
 export * from './StatusChangeListSheet';
+export * from './TeamAssigneeSheet';

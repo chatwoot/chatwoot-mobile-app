@@ -19,10 +19,10 @@ import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 import { getUserPermissions } from 'helpers/permissionHelper';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 
-import { AuthStack, ConversationStack, SettingsStack } from '../stack';
-// import ChatScreen from '@/screens/chat-screen/ChatScreen';
-// import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
-// import { DashboardScreen } from '@/screens/dashboard';
+import { AuthStack, ConversationStack, InboxStack, SettingsStack } from '../stack';
+import ChatScreen from '@/screens/chat-screen/ChatScreen';
+import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
+import { DashboardScreen } from '@/screens/dashboard';
 
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { BottomTabBar } from './BottomTabBar';
@@ -150,9 +150,9 @@ const Tabs = () => {
           component={ConversationStack}
         />
       )}
-      {/* {hasConversationPermission && (
+      {hasConversationPermission && (
         <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
-      )} */}
+      )}
 
       <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
     </Tab.Navigator>
@@ -166,7 +166,7 @@ export const AppTabs = () => {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Tab" component={Tabs} />
-        {/* <Stack.Screen
+        <Stack.Screen
           options={{ animation: 'slide_from_right' }}
           name="ChatScreen"
           component={ChatScreen}
@@ -186,7 +186,7 @@ export const AppTabs = () => {
           }}
           name="Dashboard"
           component={DashboardScreen}
-        /> */}
+        />
       </Stack.Navigator>
     );
   } else {

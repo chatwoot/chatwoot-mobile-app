@@ -3,8 +3,8 @@ import {
   createAsyncThunk,
   createEntityAdapter,
   createDraftSafeSelector,
-} from '@reduxjs/toolkit';
-import axios from 'helpers/APIHelper';
+} from '@reduxjs/toolkit'; 
+import axios from 'helpers/APIHelper'; 
 
 export const actions = {
   fetchInboxAgents: createAsyncThunk(
@@ -21,7 +21,7 @@ export const actions = {
         return rejectWithValue(error.response.data);
       }
     },
-  ),
+  ), 
 };
 
 const inboxAgentAdapter = createEntityAdapter({

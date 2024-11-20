@@ -14,7 +14,7 @@ import MessageList from './components/MessageList/MessageList';
 
 import { selectUser } from '@/store/auth/authSelectors';
 import { useAppSelector } from '@/hooks';
-import { actions as notificationsActions } from 'reducer/notificationSlice';
+// import { actions as notificationsActions } from 'reducer/notificationSlice';
 import { dashboardAppSelector } from 'reducer/dashboardAppSlice';
 import { selectAllTypingUsers } from 'reducer/conversationTypingSlice';
 import { selectors as conversationSelectors } from 'reducer/conversationSlice.selector.js';
@@ -94,12 +94,12 @@ const ChatScreenComponent = ({ navigation, route }) => {
 
   useEffect(() => {
     if (primaryActorId && primaryActorType) {
-      dispatch(
-        notificationsActions.markNotificationAsRead({
-          primaryActorId,
-          primaryActorType,
-        }),
-      );
+      // dispatch(
+      //   notificationsActions.markNotificationAsRead({
+      //     primaryActorId,
+      //     primaryActorType,
+      //   }),
+      // );
     }
   }, [conversationId, dispatch, primaryActorId, primaryActorType]);
 

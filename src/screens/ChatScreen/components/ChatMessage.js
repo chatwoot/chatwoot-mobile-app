@@ -7,7 +7,7 @@ import { Text } from 'components';
 import { messageStamp } from '../../../helpers/TimeHelper';
 import ChatMessageItem from './ChatMessageItem';
 import { UserAvatar } from 'components';
-
+ 
 import { INBOX_TYPES } from 'constants';
 
 const createStyles = theme => {

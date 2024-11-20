@@ -3,7 +3,7 @@ import { type UnixTimestamp } from './common/UnixTimestamp';
 
 export interface Contact {
   additionalAttributes: object;
-  availabilityStatus: AvailabilityStatus;
+  availabilityStatus?: AvailabilityStatus;
   createdAt: UnixTimestamp;
   customAttributes: object;
   email: string | null;

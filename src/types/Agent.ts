@@ -2,7 +2,7 @@ import { type AvailabilityStatus } from './common/AvailabilityStatus';
 import { type UserRole } from './common/UserRole';
 
 export interface Agent {
-  id?: number;
+  id: number;
   accountId?: number | null;
   availabilityStatus?: AvailabilityStatus;
   autoOffline?: boolean;

@@ -15,5 +15,6 @@ export type User = {
   role: UserRole;
   identifier_hash: string;
   availability: string;
+  thumbnail: string;
   availability_status: AvailabilityStatus;
 };

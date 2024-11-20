@@ -1,4 +1,4 @@
-export type ConversationStatus = 'open' | 'resolved' | 'pending' | 'snoozed';
+export type ConversationStatus = 'open' | 'resolved' | 'pending' | 'snoozed' | 'all';
 
 export type AllStatusTypes = ConversationStatus | 'all';
 

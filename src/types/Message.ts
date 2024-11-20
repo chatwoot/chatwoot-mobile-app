@@ -2,6 +2,8 @@ import { Agent } from './Agent';
 import { AgentBot } from './AgentBot';
 import { UnixTimestamp } from './common';
 import { Contact } from './Contact';
+import { Conversation } from './Conversation';
+import { User } from './User';
 
 export type ContentType =
   | 'text'
@@ -38,21 +40,28 @@ type ImageMetadata = {
 export type MessageContentAttributes = {
   inReplyTo: number;
   inReplyToExternalId: null;
+  deleted?: boolean;
+  email: {
+    subject: string;
+  };
 };
 
 export interface Message {
+  id: number;
   attachments: ImageMetadata[];
   content: string;
   contentAttributes: MessageContentAttributes | null;
   contentType: ContentType;
   conversationId: number;
   createdAt: UnixTimestamp;
-  echoId: string | null;
-  id: number;
+  echoId: number | string | null;
   inboxId: number;
   messageType: MessageType;
   private: boolean;
-  sender: Agent | AgentBot | Contact | null;
+  sender: Agent | User | AgentBot | Contact;
   sourceId: string | null;
   status: MessageStatus;
+  lastNonActivityMessage: Message | null;
+  conversation: Conversation;
+  shouldRenderAvatar: boolean;
 }

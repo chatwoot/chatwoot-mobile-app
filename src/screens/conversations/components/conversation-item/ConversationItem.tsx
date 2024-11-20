@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import React, { memo, useCallback, useMemo } from 'react';
-import { Alert, ImageURISource } from 'react-native';
+import { ImageURISource } from 'react-native';
 import Animated, { SharedValue } from 'react-native-reanimated';
 import { StackActions, useNavigation } from '@react-navigation/native';
 
@@ -24,8 +24,7 @@ import {
 import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import { setActionState } from '@/store/conversation/conversationActionSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-// import { selectContactById } from '@/store/contact/contactSelectors';
-// import { getRandomChannel } from '@/types/common/Channel';
+
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { getLastMessage } from '@/utils/conversationUtils';
 import { Inbox } from '@/types/Inbox';
@@ -101,10 +100,6 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
 
   const inbox = useAppSelector(state => selectInboxById(state, inboxId));
 
-  // const inbox = {
-  //   channelType: getRandomChannel(),
-  // };
-
   // const typingUsers = useAppSelector(selectTypingUsersByConversationId(id));
 
   // TODO: show the availability status in the avatar
@@ -158,14 +153,6 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
     }
   };
 
-  const handleLeftPaneOverswiped = () => {
-    Alert.alert('Assigned to you');
-  };
-
-  const handleRightPaneOverswiped = () => {
-    Alert.alert('Conversation marked as resolved');
-  };
-
   const lastMessage = getLastMessage(props.conversationItem);
 
   return (
@@ -175,8 +162,6 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
       rightElement={<StatusComponent />}
       handleLeftElementPress={markMessageReadOrUnread}
       handleRightElementPress={onStatusAction}
-      handleOnLeftOverswiped={handleLeftPaneOverswiped}
-      handleOnRightOverswiped={handleRightPaneOverswiped}
       handleLongPress={onLongPressAction}
       handlePress={onPressAction}
       {...{ index, openedRowIndex }}>

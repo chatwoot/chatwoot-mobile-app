@@ -15,9 +15,8 @@ import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '../common';
-import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
+import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import { setActionState } from '@/store/conversation/conversationActionSlice';
 
 const ACTION_TAB_HEIGHT = 58;
@@ -30,19 +29,6 @@ const tabExitSpringConfig = { damping: 20, stiffness: 360, mass: 1 };
 const tabEnterSpringConfig = { damping: 30, stiffness: 360, mass: 1 };
 
 type ActionTabBarBackgroundProps = BlurViewProps & PropsWithChildren;
-
-const ActionMailIcon = () => (
-  <Svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-    <Path
-      d="M16.0348 3.07212L24.8175 8.78087C25.1278 8.98259 25.283 9.08345 25.3954 9.21799C25.4949 9.33708 25.5697 9.47483 25.6153 9.62318C25.6668 9.79076 25.6668 9.97583 25.6668 10.346V18.8996C25.6668 20.8598 25.6668 21.8399 25.2854 22.5886C24.9498 23.2472 24.4144 23.7826 23.7558 24.1181C23.0071 24.4996 22.027 24.4996 20.0668 24.4996H7.9335C5.97331 24.4996 4.99322 24.4996 4.24453 24.1181C3.58596 23.7826 3.05053 23.2472 2.71497 22.5886C2.3335 21.8399 2.3335 20.8598 2.3335 18.8996V10.346C2.3335 9.97583 2.3335 9.79076 2.38503 9.62318C2.43064 9.47483 2.5054 9.33708 2.60492 9.21799C2.71734 9.08345 2.87251 8.98259 3.18285 8.78087L11.9655 3.07212M16.0348 3.07212C15.2983 2.59343 14.9301 2.35408 14.5334 2.26096C14.1827 2.17864 13.8177 2.17864 13.467 2.26096C13.0702 2.35408 12.702 2.59343 11.9655 3.07212M16.0348 3.07212L24.4629 8.5504C24.8642 8.81121 25.0648 8.94162 25.1343 9.10699C25.195 9.25151 25.195 9.41439 25.1343 9.55891C25.0648 9.72429 24.8642 9.85469 24.4629 10.1155L16.0348 15.5938C15.2983 16.0725 14.9301 16.3118 14.5334 16.4049C14.1827 16.4873 13.8177 16.4873 13.467 16.4049C13.0702 16.3118 12.702 16.0725 11.9655 15.5938L3.53742 10.1155C3.13617 9.85469 2.93555 9.72429 2.86606 9.55891C2.80534 9.41439 2.80534 9.25151 2.86606 9.10699C2.93555 8.94162 3.13617 8.81121 3.53742 8.5504L11.9655 3.07212"
-      stroke="black"
-      strokeOpacity="0.91"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </Svg>
-);
 
 const ActionLabelTag = () => (
   <Svg width="29" height="28" viewBox="0 0 29 28" fill="none">
@@ -143,14 +129,7 @@ export const ActionTabs = () => {
   const dispatch = useAppDispatch();
 
   const { actionsModalSheetRef } = useRefsContext();
-  const handleMarkAsReadConversations = () => {
-    // setShowToast({
-    //   showToast: true,
-    //   toastMessage: 'Marked selected conversations as read.',
-    // });
-    dispatch(clearSelection());
-    dispatch(setCurrentState('none'));
-  };
+
   const handleBulkChangeStatus = () => {
     dispatch(setActionState('Status'));
     actionsModalSheetRef.current?.present();
@@ -165,11 +144,6 @@ export const ActionTabs = () => {
   };
 
   const bulkSelectActions = [
-    {
-      action: 'assign_labels',
-      icon: <ActionMailIcon />,
-      onPress: handleMarkAsReadConversations,
-    },
     {
       action: 'change_status',
       icon: <ActionLabelTag />,
@@ -194,17 +168,17 @@ export const ActionTabs = () => {
       style={Platform.select({
         ios: [
           tailwind.style(
-            'flex flex-row rounded-[30px] items-center absolute justify-between w-[290px] px-6 py-[15px] bg-[#00000003]',
+            'flex flex-row rounded-[30px] items-center absolute justify-between w-[220px] px-6 py-[15px] bg-[#00000003]',
             `h-[${ACTION_TAB_HEIGHT}px] bottom-[${bottom + 8}px] left-[${
-              (SCREEN_WIDTH - 290) / 2
+              (SCREEN_WIDTH - 220) / 2
             }px]`,
           ),
         ],
         android: [
           tailwind.style(
-            'flex flex-row rounded-[30px] items-center absolute justify-between w-[290px] px-6 py-[15px] bg-white',
+            'flex flex-row rounded-[30px] items-center absolute justify-between w-[220px] px-6 py-[15px] bg-white',
             `h-[${ACTION_TAB_HEIGHT}px] bottom-[${bottom + 8}px] left-[${
-              (SCREEN_WIDTH - 290) / 2
+              (SCREEN_WIDTH - 220) / 2
             }px]`,
           ),
         ],

@@ -34,8 +34,6 @@ import {
 import { tailwind } from '@/theme';
 import { Conversation } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-// import { conversationListData } from '@/mockdata/conversationListMockdata';
-// import camelcaseKeys from 'camelcase-keys';
 import {
   selectBottomSheetState,
   setBottomSheetState,
@@ -64,10 +62,6 @@ type FlashListRenderItemType = {
   item: Conversation;
   index: number;
 };
-
-// const conversationList = conversationListData.map(
-//   value => camelcaseKeys(value, { deep: true }) as unknown as Conversation,
-// );
 
 const ConversationList = () => {
   const dispatch = useAppDispatch();

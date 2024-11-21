@@ -9,5 +9,5 @@ export const label1: Label = {
 };
 
 export const mockLabelsResponse = {
-  data: [label1],
+  data: { payload: [label1] },
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { tailwind } from '@/theme';
 import { NativeView } from '@/components-next/native-components';
@@ -45,12 +45,18 @@ const getAttachmentIcon = (fileType: string) => {
 
 const MessageType = ({ message }: { message: Message }) => {
   const { private: isPrivate } = message;
-  const messageByAgent = message?.messageType === MESSAGE_TYPES.OUTGOING;
+  const isOutgoing = message?.messageType === MESSAGE_TYPES.OUTGOING;
 
-  if (isPrivate) {
-    return <Icon icon={<PrivateNoteIcon />} style={tailwind.style('mt-0.5')} />;
-  } else if (messageByAgent) {
-    return <Icon icon={<OutgoingIcon />} style={tailwind.style('mt-0.5')} />;
+  if (isOutgoing || isPrivate) {
+    return (
+      <View style={tailwind.style('flex-row items-center mr-2 gap-1')}>
+        {isPrivate ? (
+          <Icon icon={<PrivateNoteIcon />} />
+        ) : (
+          isOutgoing && <Icon icon={<OutgoingIcon />} />
+        )}
+      </View>
+    );
   }
   return null;
 };
@@ -74,12 +80,13 @@ const MessageContent = ({
   if (message.content && isMessageSticker) {
     return (
       <NativeView style={tailwind.style('flex-row gap-1 items-center')}>
-        <Icon icon={<ImageAttachmentIcon />} style={tailwind.style('mt-0.5')} />
+        <Icon icon={<ImageAttachmentIcon />} />
         <Text
           numberOfLines={1}
           style={tailwind.style(
             'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
           )}>
+          <MessageType message={message} />
           {i18n.t(`CONVERSATION.ATTACHMENTS.image.CONTENT`)}
         </Text>
       </NativeView>
@@ -91,18 +98,20 @@ const MessageContent = ({
         style={tailwind.style(
           'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
         )}>
+        <MessageType message={message} />
         {lastMessageContent}
       </Text>
     );
   } else if (message.attachments) {
     return (
       <NativeView style={tailwind.style('flex-row gap-1 items-center')}>
-        <Icon icon={getAttachmentIcon(lastMessageFileType)} style={tailwind.style('mt-0.5')} />
+        <Icon icon={getAttachmentIcon(lastMessageFileType)} />
         <Text
           numberOfLines={1}
           style={tailwind.style(
             'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
           )}>
+          <MessageType message={message} />
           {i18n.t(`CONVERSATION.ATTACHMENTS.${lastMessageFileType}.CONTENT`)}
         </Text>
       </NativeView>
@@ -115,7 +124,6 @@ export const ConversationLastMessage = (props: ConversationLastMessageProps) => 
   const { numberOfLines, lastMessage } = props;
   return (
     <NativeView style={tailwind.style('flex-1 flex-row gap-1 items-start')}>
-      <MessageType message={lastMessage} />
       <MessageContent message={lastMessage} numberOfLines={numberOfLines} />
     </NativeView>
   );

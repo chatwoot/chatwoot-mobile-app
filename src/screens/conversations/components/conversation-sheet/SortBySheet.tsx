@@ -10,6 +10,7 @@ import { SortTypes } from '@/types';
 import { useHaptic } from '@/utils';
 import { BottomSheetHeader, Icon, SortOptions } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import i18n from '@/i18n';
 
 type SortByCellProps = {
   value: string;
@@ -45,7 +46,7 @@ const SortByCell = (props: SortByCellProps) => {
           style={tailwind.style(
             'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px] capitalize',
           )}>
-          {SortOptions[value as SortTypes]}
+          {i18n.t(`CONVERSATION.FILTERS.SORT_BY.OPTIONS.${value.toUpperCase()}`)}
         </Animated.Text>
         {filters.sort_by === value ? <Icon icon={<TickIcon />} size={20} /> : null}
       </Animated.View>
@@ -71,7 +72,7 @@ const SortByStack = (props: SortByStackProps) => {
 export const SortBySheet = () => {
   return (
     <Animated.View>
-      <BottomSheetHeader headerText={'Sort by'} />
+      <BottomSheetHeader headerText={i18n.t('CONVERSATION.FILTERS.SORT_BY.TITLE')} />
       <SortByStack list={sortByList} />
     </Animated.View>
   );

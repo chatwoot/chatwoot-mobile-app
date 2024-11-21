@@ -15,7 +15,7 @@ const useConversationListStateContext = (): ConversationListStateContextType => 
   const context = React.useContext(ConversationListStateContext);
   if (!context) {
     throw new Error(
-      'ConversationListStateContext: `ConversationListStateContext` is undefined. Seems you forgot to wrap component within the CalendarProvider',
+      'ConversationListStateContext: `ConversationListStateContext` is undefined. Seems you forgot to wrap component within the ConversationListStateProvider',
     );
   }
 

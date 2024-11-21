@@ -11,6 +11,7 @@ import { StatusCollection } from '@/types';
 import { getStatusTypeIcon, useHaptic } from '@/utils';
 import { BottomSheetHeader, Icon, StatusOptions } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import i18n from '@/i18n';
 
 type StatusCellProps = {
   value: StatusCollection;
@@ -52,7 +53,7 @@ const StatusCell = (props: StatusCellProps) => {
           style={tailwind.style(
             'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px] capitalize',
           )}>
-          {StatusOptions[value.id]}
+          {i18n.t(`CONVERSATION.FILTERS.STATUS.OPTIONS.${StatusOptions[value.id].toUpperCase()}`)}
         </Animated.Text>
         {filters.status === value.id ? <Icon icon={<TickIcon />} size={20} /> : null}
       </Animated.View>
@@ -79,7 +80,7 @@ const StatusStack = (props: StatusStackProps) => {
 export const StatusListSheet = () => {
   return (
     <BottomSheetView>
-      <BottomSheetHeader headerText={'Filter by status'} />
+      <BottomSheetHeader headerText={i18n.t('CONVERSATION.FILTERS.STATUS.TITLE')} />
       <StatusStack statusList={status} />
     </BottomSheetView>
   );

@@ -10,6 +10,7 @@ import { useHaptic } from '@/utils';
 import { AssigneeOptions, BottomSheetHeader, Icon } from '@/components-next';
 import { selectFilters, setFilters } from '@/store/conversation/conversationFilterSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import i18n from '@/i18n';
 
 type AssigneeTypeCellProps = {
   value: string;
@@ -44,7 +45,7 @@ const AssigneeTypeCell = (props: AssigneeTypeCellProps) => {
           style={tailwind.style(
             'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px] capitalize',
           )}>
-          {AssigneeOptions[value as AssigneeTypes]}
+          {i18n.t(`CONVERSATION.FILTERS.ASSIGNEE_TYPE.OPTIONS.${value.toUpperCase()}`)}
         </Animated.Text>
         {filters.assignee_type === value ? <Icon icon={<TickIcon />} size={20} /> : null}
       </Animated.View>
@@ -70,7 +71,7 @@ const AssigneeTypeStack = (props: AssigneeTypeStackProps) => {
 export const AssigneeTypeSheet = () => {
   return (
     <Animated.View>
-      <BottomSheetHeader headerText={'Filter by assignee type'} />
+      <BottomSheetHeader headerText={i18n.t('CONVERSATION.FILTERS.ASSIGNEE_TYPE.TITLE')} />
       <AssigneeTypeStack list={assigneeTypeList} />
     </Animated.View>
   );

@@ -51,6 +51,63 @@
     "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
+    "HEADER": {
+      "TITLE": "Conversations",
+      "CLEAR_FILTER": "Clear"
+    },
+    "FILTERS": {
+      "AGENT": {
+        "SEARCH_AGENT": "Search agents"
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filter by assignee type",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Unassigned",
+          "ALL": "All"
+        }
+      },
+      "INBOX": {
+        "TITLE": "Filter by inbox"
+      },
+      "SORT_BY": {
+        "TITLE": "Sort by",
+        "OPTIONS": {
+          "LATEST": "Latest",
+          "SORT_ON_CREATED_AT": "Created At",
+          "SORT_ON_PRIORITY": "Priority"
+        }
+      },
+      "STATUS": {
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "Open",
+          "PENDING": "Pending",
+          "SNOOZED": "Snoozed",
+          "RESOLVED": "Resolved",
+          "ALL": "All"
+        }
+      }
+    },
+    "ASSIGNEE": {
+      "LABELS": {
+        "SEARCH_LABELS": "Search labels"
+      },
+      "AGENTS": {
+        "SEARCH_AGENT": "Search agents"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "Open",
+          "PENDING": "Pending",
+          "SNOOZED": "Snoozed",
+          "RESOLVED": "Resolved",
+          "ALL": "All"
+        }
+      }
+    },
     "DEFAULT_HEADER_TITLE": "Conversations",
     "UPDATING": "Updating...",
     "MINE": "Mine",

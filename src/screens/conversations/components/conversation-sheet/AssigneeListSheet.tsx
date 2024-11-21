@@ -7,6 +7,7 @@ import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
 import { Agent } from '@/types';
 import { Avatar, Icon, SearchBar } from '@/components-next';
+import { TickIcon } from '@/svg-icons';
 
 import { inboxAgentActions } from '@/store/inbox-agent/inboxAgentActions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -20,7 +21,6 @@ import { conversationActions } from '@/store/conversation/conversationActions';
 import { isInboxAgentFetching } from '@/store/inbox-agent/inboxAgentSelectors';
 import { showToast } from '@/helpers/ToastHelper';
 import i18n from '@/i18n';
-import { TickIcon } from '@/svg-icons';
 
 type AssigneeCellProps = {
   value: Agent;
@@ -131,6 +131,7 @@ export const AssigneeListSheet = () => {
 
   useEffect(() => {
     dispatch(inboxAgentActions.fetchInboxAgents({ inboxIds }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChangeText = (text: string) => {
@@ -144,7 +145,7 @@ export const AssigneeListSheet = () => {
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChangeText={handleChangeText}
-        placeholder="Search people"
+        placeholder={i18n.t('CONVERSATION.ASSIGNEE.AGENTS.SEARCH_AGENT')}
       />
       <AssigneeStack agents={agents as Agent[]} assigneeId={assigneeId} />
     </React.Fragment>

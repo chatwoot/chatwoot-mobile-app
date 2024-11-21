@@ -1,3 +1,5 @@
+// This listener adds the contacts to the store when there are new conversations are added to the store. It may be created in bulk or individually.
+
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import { conversationActions } from '../conversation/conversationActions';
 import { addContact, addContacts } from './contactSlice';

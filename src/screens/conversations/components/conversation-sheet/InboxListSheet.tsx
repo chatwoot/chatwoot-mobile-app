@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
 import { getChannelIcon } from '@/utils';
 import { Channel } from '@/types';
+import i18n from '@/i18n';
 
 type InboxCellProps = {
   value: { id: number; name: string; channelType: Channel; medium: string };
@@ -86,7 +87,7 @@ export const InboxListSheet = () => {
 
   return (
     <Animated.ScrollView>
-      <BottomSheetHeader headerText={'Filter by Inbox'} />
+      <BottomSheetHeader headerText={i18n.t('CONVERSATION.FILTERS.INBOX.TITLE')} />
       <InboxStack list={inboxList} />
     </Animated.ScrollView>
   );

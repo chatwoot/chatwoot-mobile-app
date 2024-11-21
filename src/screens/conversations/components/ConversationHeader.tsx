@@ -28,6 +28,7 @@ import {
   selectSelectedConversations,
 } from '@/store/conversation/conversationSelectedSlice';
 import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
+import i18n from '@/i18n';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 
@@ -208,7 +209,7 @@ export const ConversationHeader = () => {
                   'text-md font-inter-medium-24 leading-[17px] tracking-[0.24px]',
                   filtersAppliedCount === 0 ? 'text-gray-700' : 'text-blue-800',
                 )}>
-                Clear
+                {i18n.t('CONVERSATION.HEADER.CLEAR_FILTER')}
                 {filtersAppliedCount === 0 ? '' : ` (${filtersAppliedCount})`}
               </Text>
             </Pressable>
@@ -219,7 +220,7 @@ export const ConversationHeader = () => {
             style={tailwind.style(
               'text-[17px] font-inter-medium-24 tracking-[0.32px] leading-[17px] text-center text-gray-950',
             )}>
-            Conversations
+            {i18n.t('CONVERSATION.HEADER.TITLE')}
           </Text>
         </Animated.View>
         <Animated.View style={tailwind.style('flex-1 items-end')}>

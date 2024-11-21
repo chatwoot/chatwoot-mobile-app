@@ -15,7 +15,7 @@ export const AssigneeOptions: Record<AssigneeTypes, string> = {
 };
 
 export const StatusOptions: Record<AllStatusTypes, string> = {
-  all: 'All Statuses',
+  all: 'All',
   open: 'Open',
   resolved: 'Resolved',
   pending: 'Pending',

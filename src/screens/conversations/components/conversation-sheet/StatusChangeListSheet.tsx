@@ -15,6 +15,7 @@ import {
 } from '@/store/conversation/conversationSelectedSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
+import i18n from '@/i18n';
 
 type StatusCellProps = {
   value: StatusCollection;
@@ -47,7 +48,7 @@ const StatusCell = (props: StatusCellProps) => {
           style={tailwind.style(
             'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px] capitalize',
           )}>
-          {StatusOptions[value.id]}
+          {i18n.t(`CONVERSATION.ASSIGNEE.STATUS.OPTIONS.${StatusOptions[value.id].toUpperCase()}`)}
         </Animated.Text>
       </Animated.View>
     </Pressable>

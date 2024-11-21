@@ -156,7 +156,6 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           </AnimatedNativeView>
         </AnimatedNativeView>
       )}
-      {/* <NativeView style={tailwind.style('w-full h-[1px] bg-blackA-A3 flex items-end')} /> */}
     </AnimatedNativeView>
   );
 }, checkIfPropsAreSame);

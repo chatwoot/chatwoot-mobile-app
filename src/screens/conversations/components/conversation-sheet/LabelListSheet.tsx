@@ -10,6 +10,7 @@ import { Label } from '@/types/common/Label';
 import { selectSelectedIds } from '@/store/conversation/conversationSelectedSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { LabelCell } from '@/components-next/label-section';
+import i18n from '@/i18n';
 
 type LabelStackProps = {
   labelList: Label[];
@@ -96,7 +97,7 @@ export const LabelListSheet = () => {
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChangeText={handleSearch}
-        placeholder="Search labels"
+        placeholder={i18n.t('CONVERSATION.ASSIGNEE.LABELS.SEARCH_LABELS')}
       />
       <LabelStack
         labelList={allLabels}

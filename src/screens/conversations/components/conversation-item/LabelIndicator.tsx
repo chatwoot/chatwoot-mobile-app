@@ -30,10 +30,8 @@ const LabelText = (props: LabelTextProps) => {
 type LabelIndicatorProps = {
   labels: string[];
 };
-
 export const LabelIndicator = (props: LabelIndicatorProps) => {
   const { labels } = props;
-
   const allLabels = useAppSelector(selectAllLabels);
 
   const activeLabels =
@@ -44,14 +42,16 @@ export const LabelIndicator = (props: LabelIndicatorProps) => {
       : [];
 
   return (
-    <AnimatedNativeView style={tailwind.style('flex flex-row items-center')}>
-      {activeLabels.map((label, i) => {
-        return (
-          <NativeView key={i} style={tailwind.style(i !== 0 ? 'pl-1.5' : '')}>
-            <LabelText labelText={label.title} labelColor={label.color} />
-          </NativeView>
-        );
-      })}
+    <AnimatedNativeView style={tailwind.style('flex-1')}>
+      <NativeView style={tailwind.style('flex flex-row items-center overflow-hidden')}>
+        {activeLabels.map((label, i) => {
+          return (
+            <NativeView key={i} style={tailwind.style(i !== 0 ? 'pl-1.5' : '')}>
+              <LabelText labelText={label.title} labelColor={label.color} />
+            </NativeView>
+          );
+        })}
+      </NativeView>
     </AnimatedNativeView>
   );
 };

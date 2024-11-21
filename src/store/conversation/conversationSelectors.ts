@@ -3,7 +3,7 @@ import type { RootState } from '@/store';
 import { conversationAdapter } from './conversationSlice';
 import { FilterState } from '@/store/conversation/conversationFilterSlice';
 import { CONVERSATION_PRIORITY_ORDER } from '@/constants';
-import { shouldApplyFilters } from '@/utils';
+import { shouldApplyFilters } from '@/utils/conversationUtils';
 import type { Conversation } from '@/types';
 
 export const selectConversationsState = (state: RootState) => state.conversations;

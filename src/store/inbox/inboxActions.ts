@@ -1,7 +1,7 @@
- import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { InboxService } from './inboxService';
 import type { InboxResponse } from './inboxTypes';
-import { transformInbox } from '@/utils';
+import { transformInbox } from '@/utils/camelcaseKeys';
 
 export const inboxActions = {
   fetchInboxes: createAsyncThunk<InboxResponse, void>(
@@ -21,4 +21,3 @@ export const inboxActions = {
     },
   ),
 };
- 

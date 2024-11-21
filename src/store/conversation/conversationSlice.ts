@@ -1,7 +1,8 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { Conversation } from '@/types/Conversation';
 import { conversationActions } from './conversationActions';
-import { transformConversation, findPendingMessageIndex } from '@/utils';
+import { transformConversation } from '@/utils/camelcaseKeys';
+import { findPendingMessageIndex } from '@/utils/conversationUtils';
 
 import { MESSAGE_TYPES } from '@/constants';
 import { Message } from '@/types/Message';

@@ -13,6 +13,4 @@ export interface Contact {
   name: string | null;
   phoneNumber: string | null;
   thumbnail: string | null;
-  // Missing attribute in the payload
-  // contactInboxes: ContactInbox[] | null;
 }

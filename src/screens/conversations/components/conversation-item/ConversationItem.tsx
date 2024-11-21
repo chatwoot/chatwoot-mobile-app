@@ -148,8 +148,6 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
     }
   };
 
-  console.log('conversationItem', props.conversationItem);
-
   const lastMessage = getLastMessage(props.conversationItem);
 
   return (

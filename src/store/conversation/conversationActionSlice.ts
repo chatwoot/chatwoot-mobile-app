@@ -3,7 +3,7 @@ import { RootState } from '@/store';
 
 type ActionType = 'Assign' | 'Status' | 'Label' | 'TeamAssign' | null;
 
-interface ActionState {
+export interface ActionState {
   currentActionState: ActionType;
 }
 

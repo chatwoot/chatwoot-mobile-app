@@ -9,3 +9,5 @@ export const inbox: Inbox = {
   phoneNumber: '+1234567890',
   medium: 'web',
 };
+
+export const mockInboxesResponse = { data: { payload: [inbox] } };

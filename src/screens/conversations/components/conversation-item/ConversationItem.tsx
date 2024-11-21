@@ -32,6 +32,7 @@ import { conversationActions } from '@/store/conversation/conversationActions';
 import { selectContactById } from '@/store/contact/contactSelectors';
 import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
 import { isContactTyping } from '@/utils';
+import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
 
 type ConversationCellProps = {
   conversationItem: Conversation;
@@ -130,6 +131,7 @@ export const ConversationItem = memo((props: ConversationCellProps) => {
   }, []);
 
   const onLongPressAction = () => {
+    dispatch(clearSelection());
     dispatch(setCurrentState('Select'));
   };
 

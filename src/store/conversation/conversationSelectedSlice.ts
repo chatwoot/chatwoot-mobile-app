@@ -31,6 +31,7 @@ const conversationSelectedSlice = createSlice({
     },
     clearSelection: state => {
       state.selectedConversations = {};
+      state.selectedConversation = null;
     },
     selectAll: (state, action: PayloadAction<Conversation[]>) => {
       state.selectedConversations = action.payload.reduce(

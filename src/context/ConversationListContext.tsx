@@ -2,7 +2,7 @@ import React from 'react';
 import { SharedValue, useSharedValue } from 'react-native-reanimated';
 
 // Using Context because we need to access this shared value variable in various components
-// and we cannot use the useSharedValue hook inside Zustand store
+// and we cannot use the useSharedValue hook inside redux store
 interface ConversationListStateContextType {
   openedRowIndex: SharedValue<number>;
 }

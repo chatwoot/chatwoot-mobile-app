@@ -270,7 +270,7 @@
       "NRT": "Next response time",
       "RT": "Resolution time",
       "SHOW_MORE": "{count} mais",
-      "HIDE": "Hide {count} rows"
+      "HIDE": "Esconder linhas de {count}"
     }
   }
 }

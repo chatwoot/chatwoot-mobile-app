@@ -12,7 +12,7 @@ import {
 } from 'redux-persist';
 import { appReducer } from '@/store/reducers';
 import { setStore } from '@/reducer/storeAccessor';
-import { listenerMiddleware } from './contact/contactListener';
+import { contactListenerMiddleware } from './contact/contactListener';
 import reactotron from '../../ReactotronConfig';
 
 const persistConfig = {
@@ -21,7 +21,7 @@ const persistConfig = {
   storage: AsyncStorage,
 };
 
-const middlewares: Middleware[] = [listenerMiddleware.middleware];
+const middlewares: Middleware[] = [contactListenerMiddleware.middleware];
 
 const rootReducer = (state: ReturnType<typeof appReducer>, action: AnyAction) => {
   if (action.type === 'auth/logout') {

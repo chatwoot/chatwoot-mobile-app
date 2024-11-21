@@ -4,9 +4,9 @@ import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import { conversationActions } from '../conversation/conversationActions';
 import { addContact, addContacts } from './contactSlice';
 
-export const listenerMiddleware = createListenerMiddleware();
+export const contactListenerMiddleware = createListenerMiddleware();
 
-listenerMiddleware.startListening({
+contactListenerMiddleware.startListening({
   matcher: isAnyOf(conversationActions.fetchConversations.fulfilled),
   effect: (action, listenerApi) => {
     const { payload } = action;
@@ -15,7 +15,7 @@ listenerMiddleware.startListening({
   },
 });
 
-listenerMiddleware.startListening({
+contactListenerMiddleware.startListening({
   matcher: isAnyOf(conversationActions.fetchConversation.fulfilled),
   effect: (action, listenerApi) => {
     const { payload } = action;

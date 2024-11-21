@@ -80,7 +80,6 @@ export type SectionGroupMessages = {
   date: string;
 };
 
-// TODO: Add tests for this function
 export const getGroupedMessages = (messages: Message[]): SectionGroupMessages[] => {
   const conversationGroupedByDate = groupBy(Object.values(messages), (message: Message) =>
     formatDate(message.createdAt),

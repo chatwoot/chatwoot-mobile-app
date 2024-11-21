@@ -1,4 +1,4 @@
-import { formatTimeToShortForm, formatRelativeTime } from '../dateTimeUtils';
+import { formatTimeToShortForm, formatRelativeTime } from '@/utils/dateTimeUtils';
 
 describe('#dynamicTime', () => {
   it('returns correct value', () => {

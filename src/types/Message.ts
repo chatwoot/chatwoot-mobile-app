@@ -58,10 +58,10 @@ export interface Message {
   inboxId: number;
   messageType: MessageType;
   private: boolean;
-  sender: Agent | User | AgentBot | Contact;
+  sender: Agent | User | AgentBot | Contact | null;
   sourceId: string | null;
   status: MessageStatus;
   lastNonActivityMessage: Message | null;
-  conversation: Conversation;
+  conversation: Conversation | null;
   shouldRenderAvatar: boolean;
 }

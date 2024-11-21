@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { GridIcon, OpenIcon, PendingIcon, ResolvedIcon, SnoozedIcon } from '../svg-icons';
-import { AllStatusTypes } from '../types';
+import { GridIcon, OpenIcon, PendingIcon, ResolvedIcon, SnoozedIcon } from '@/svg-icons';
+import { AllStatusTypes } from '@/types';
 
 export const getStatusTypeIcon = (type: AllStatusTypes) => {
   switch (type) {

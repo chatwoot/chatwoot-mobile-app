@@ -5,7 +5,6 @@ import { avatarTheme, tailwind } from '@/theme';
 import { Channel } from '@/types';
 import { cx, styleAdapter } from '@/utils';
 
-import { AvatarChannel } from './AvatarChannel';
 import { AvatarImage } from './AvatarImage';
 import { AvatarStatus } from './AvatarStatus';
 
@@ -128,9 +127,6 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
         </Text>
       ) : null}
       {status && <AvatarStatus parentsBackground={parentsBackground} size={size} status={status} />}
-      {channel && (
-        <AvatarChannel parentsBackground={parentsBackground} size={size} channel={channel} />
-      )}
     </View>
   );
 };

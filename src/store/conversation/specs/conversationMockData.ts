@@ -63,3 +63,18 @@ export const conversationListResponse: ConversationListAPIResponse = {
     payload: [conversation],
   },
 };
+
+export const smallCaseConversation = {
+  id: 250,
+  account_id: 1,
+  additional_attributes: {},
+  agent_last_seen_at: 1,
+  assignee_last_seen_at: 1,
+  can_reply: true,
+  contact_last_seen_at: 1,
+  created_at: 1,
+  custom_attributes: {},
+  first_reply_created_at: 1,
+  inbox_id: 1,
+  labels: [],
+};

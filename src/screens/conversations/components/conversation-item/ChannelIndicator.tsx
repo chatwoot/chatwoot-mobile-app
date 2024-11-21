@@ -14,7 +14,7 @@ type ChannelIndicatorProps = {
 };
 
 export const ChannelIndicator = (props: ChannelIndicatorProps) => {
-  const { channelType = '', medium = '' } = props.inbox;
+  const { channelType = '', medium = '' } = props.inbox || {};
   const { type = '' } = props.additionalAttributes || {};
 
   return (

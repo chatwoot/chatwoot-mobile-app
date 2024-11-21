@@ -19,7 +19,7 @@ const initialState = labelAdapter.getInitialState<LabelState>({
 });
 
 const labelSlice = createSlice({
-  name: 'label',
+  name: 'labels',
   initialState,
   reducers: {},
   extraReducers: builder => {

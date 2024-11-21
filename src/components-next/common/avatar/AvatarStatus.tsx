@@ -133,28 +133,6 @@ export const AvatarStatus: React.FC<Pick<AvatarProps, 'status' | 'size' | 'paren
         </View>
       );
     }
-    case 'sleep': {
-      return (
-        <View
-          style={[
-            tailwind.style(cx(avatarTheme.status.sleep.container)),
-            avatarTheme.status.position,
-            {
-              borderColor: tailwind.color(parentsBackground),
-              backgroundColor: tailwind.color(parentsBackground),
-            },
-          ]}>
-          <View style={tailwind.style(cx(avatarTheme.status.sleep.size[size]))}>
-            <Svg width="100%" height="100%" viewBox="0 0 4 4" fill="none">
-              <Path
-                d="M3.97107 2.35964C3.98707 2.27194 3.88243 2.2173 3.8072 2.26514C3.57467 2.413 3.29869 2.49864 3.00271 2.49864C2.17354 2.49864 1.50136 1.82646 1.50136 0.997285C1.50136 0.701308 1.587 0.425334 1.73486 0.192796C1.7827 0.117568 1.72806 0.0129337 1.64036 0.0289269C0.707321 0.199076 0 1.01603 0 1.99819C0 3.10376 0.896241 4 2.00181 4C2.98397 4 3.80092 3.29268 3.97107 2.35964Z"
-                fill={tailwind.color('text-gray-800')}
-              />
-            </Svg>
-          </View>
-        </View>
-      );
-    }
     case 'typing': {
       return <TypingComponent size={size} parentsBackground={parentsBackground} />;
     }

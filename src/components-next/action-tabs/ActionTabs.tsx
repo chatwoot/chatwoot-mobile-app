@@ -100,8 +100,15 @@ const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
   );
 };
 
-// Extract Types from list
-const ActionItem = (props: any) => {
+type ActionItemProps = {
+  actionItem: {
+    action: string;
+    icon: React.ReactNode;
+    onPress: () => void;
+  };
+};
+
+const ActionItem = (props: ActionItemProps) => {
   const { actionItem } = props;
   const { handlers, animatedStyle } = useScaleAnimation();
 

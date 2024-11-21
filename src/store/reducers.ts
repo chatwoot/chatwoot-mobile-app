@@ -21,7 +21,6 @@ import conversationWatchersSlice from '@/reducer/conversationWatchersSlice';
 
 export const appReducer = combineReducers({
   auth: authSlice,
-  // notifications: notificationSlice,
   settings: settingsSlice,
   conversationFilter: conversationFilterSlice,
   selectedConversation: conversationSelectedSlice,

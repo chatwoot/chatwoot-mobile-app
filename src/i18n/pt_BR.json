@@ -22,8 +22,8 @@
     "ERROR": "Url de instalação inválida"
   },
   "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "TITLE": "Acesse sua conta",
+    "DESCRIPTION": "Você está conectado a {{baseUrl}}.",
     "EMAIL": "e-mail",
     "PASSWORD": "Senha",
     "EMAIL_REQUIRED": "E-mail é obrigatório",
@@ -31,7 +31,7 @@
     "PASSWORD_REQUIRED": "Senha obrigatória",
     "PASSWORD_ERROR": "Digite uma senha válida",
     "LOGIN": "Entrar",
-    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_LOADING": "Entrar...",
     "FORGOT_PASSWORD": "Esqueceu sua senha?",
     "RESET_HERE": "Redefinir aqui",
     "NO_ACCOUNT": "Não possui uma conta?",
@@ -89,7 +89,7 @@
     "DELETE_MESSAGE_TITLE": "Você tem certeza que deseja excluir esta mensagem?",
     "DELETE_MESSAGE_SUB_TITLE": "Esta ação não pode ser desfeita.",
     "COPY_MESSAGE": "Mensagem copiada para área de transferência",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "STORY_NOT_AVAILABLE": "Esta história não está mais disponível",
     "PRIORITY": {
       "TITLE": "Prioridade",
       "OPTIONS": {
@@ -127,7 +127,7 @@
   "SETTINGS": {
     "HEADER_TITLE": "Confirgurações",
     "SET_AVAILABILITY": "Defina como",
-    "CHANGE_AVAILABILITY": "Set availability",
+    "CHANGE_AVAILABILITY": "Definir disponibilidade",
     "PREFERENCES": "Preferências",
     "ABOUT": "Sobre",
     "SUPPORT": "Suporte",
@@ -135,11 +135,11 @@
     "CHANGE_LANGUAGE": "Alterar Idioma",
     "NOTIFICATIONS": "Notificações",
     "NOTIFICATION_PREFERENCES": "Preferências de Notificação",
-    "READ_DOCS": "Read Docs",
+    "READ_DOCS": "Ler documentação",
     "CHAT_WITH_US": "Fale conosco no chat",
     "LOGOUT": "Sair",
     "SUBMIT": "Enviar",
-    "SET_LANGUAGE": "Set Language"
+    "SET_LANGUAGE": "Configurar Idioma"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notificações",
@@ -261,14 +261,14 @@
       "FRT": "FRT %{status}",
       "NRT": "NRT %{status}",
       "RT": "RT %{status}",
-      "MISSED": "missed",
+      "MISSED": "perdidas",
       "DUE": "devido"
     },
     "MISSES": {
       "TITLE": "SLA Perdido",
       "FRT": "Primeira resposta",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
+      "NRT": "Tempo da próxima resposta",
+      "RT": "Tempo de resolução",
       "SHOW_MORE": "{count} mais",
       "HIDE": "Esconder linhas de {count}"
     }

@@ -10,6 +10,6 @@ if (!__DEV__) {
 }
 
 if (__DEV__) {
-  require('./ReactotronConfig');
+  // require('./ReactotronConfig');
 }
 export default !__DEV__ ? Sentry.wrap(App) : App;

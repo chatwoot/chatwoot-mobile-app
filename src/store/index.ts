@@ -3,7 +3,7 @@ import { configureStore, ThunkAction, Action, Middleware, AnyAction } from '@red
 import {
   persistStore,
   persistReducer,
-  FLUSH, 
+  FLUSH,
   REHYDRATE,
   PAUSE,
   PERSIST,

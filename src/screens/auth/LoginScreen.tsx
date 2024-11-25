@@ -20,7 +20,7 @@ import {
   BottomSheetBackdrop,
   BottomSheetHeader,
   LanguageList,
-  PrimaryButton,
+  Button,
   Icon,
 } from '@/components-next';
 import {
@@ -210,7 +210,7 @@ const LoginScreen = () => {
             </Animated.Text>
           </Pressable>
 
-          <PrimaryButton
+          <Button
             text={isLoggingIn ? i18n.t('LOGIN.LOGIN_LOADING') : i18n.t('LOGIN.LOGIN')}
             handlePress={handleSubmit(onSubmit)}
           />

@@ -54,7 +54,7 @@ export const Button = ({
   const isPrimary = variant === 'primary';
 
   return (
-    <Animated.View style={[!isPrimary && tailwind.style('px-4'), animatedStyle]}>
+    <Animated.View style={animatedStyle}>
       <Pressable
         onPress={handleButtonPress}
         disabled={disabled}

@@ -13,7 +13,7 @@ jest.mock('@/helpers/ToastHelper', () => ({
 
 jest.mock('../inboxService', () => ({
   InboxService: {
-    getInboxes: jest.fn(),
+    index: jest.fn(),
   },
 }));
 
@@ -25,14 +25,14 @@ describe('inboxActions', () => {
       const transformedResponse = {
         payload: mockInboxesResponse.data.payload.map(transformInbox),
       };
-      (InboxService.getInboxes as jest.Mock).mockResolvedValue(transformedResponse);
+      (InboxService.index as jest.Mock).mockResolvedValue(transformedResponse);
 
       const dispatch = jest.fn();
       const getState = jest.fn();
 
       const result = await fetchInboxes()(dispatch, getState, {});
 
-      expect(InboxService.getInboxes).toHaveBeenCalled();
+      expect(InboxService.index).toHaveBeenCalled();
       expect(result.payload).toEqual(transformedResponse);
     });
   });

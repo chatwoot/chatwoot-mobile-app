@@ -28,7 +28,7 @@ describe('InboxService', () => {
   it('should get inboxes and transform the data', async () => {
     (apiService.get as jest.Mock).mockResolvedValueOnce(mockInboxesResponse);
 
-    const result = await InboxService.getInboxes();
+    const result = await InboxService.index();
     expect(apiService.get).toHaveBeenCalledWith('inboxes');
     expect(result).toEqual({
       payload: mockInboxesResponse.data.payload.map(transformInbox),

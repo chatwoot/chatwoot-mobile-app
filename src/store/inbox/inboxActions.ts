@@ -7,7 +7,7 @@ export const inboxActions = {
     'inboxes/fetchInboxes',
     async (_, { rejectWithValue }) => {
       try {
-        const response = await InboxService.getInboxes();
+        const response = await InboxService.index();
         return response;
       } catch (error) {
         console.error(error);

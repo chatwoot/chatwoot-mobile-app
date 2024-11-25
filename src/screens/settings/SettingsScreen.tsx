@@ -30,7 +30,7 @@ import {
   BottomSheetBackdrop,
   BottomSheetHeader,
   BottomSheetWrapper,
-  FullWidthButton,
+  Button,
   SettingsList,
   LanguageList,
   AvailabilityStatusList,
@@ -305,7 +305,8 @@ const SettingsScreen = () => {
           <SettingsList sectionTitle={i18n.t('SETTINGS.SUPPORT')} list={supportList} />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-6')}>
-          <FullWidthButton
+          <Button
+            variant="secondary"
             text={i18n.t('SETTINGS.LOGOUT')}
             isDestructive
             handlePress={onClickLogout}

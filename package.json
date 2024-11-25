@@ -20,7 +20,11 @@
     "build:all": "eas build -p ios --profile production && eas build -p android --profile production",
     "submit:android": "dotenv -c -- eas submit -p android --profile production",
     "submit:ios": "dotenv -e .env -- eas submit --platform ios",
-    "submit:all": "dotenv -e .env -- eas submit -p ios --profile production && dotenv -e .env -- eas submit -p android --profile production"
+    "submit:all": "dotenv -e .env -- eas submit -p ios --profile production && dotenv -e .env -- eas submit -p android --profile production",
+    "storybook-generate": "sb-rn-get-stories",
+    "storybook": "cross-env EXPO_STORYBOOK_ENABLED='true' expo start",
+    "storybook:ios": "cross-env EXPO_STORYBOOK_ENABLED='true' expo ios",
+    "storybook:android": "cross-env EXPO_STORYBOOK_ENABLED='true' expo android"
   },
   "dependencies": {
     "@alantoa/lightbox": "^0.3.1",
@@ -99,17 +103,23 @@
     "rn-fetch-blob": "^0.12.0",
     "semver": "^7.6.3",
     "tailwindcss": "^3.4.12",
-    "twrnc": "^4.5.1",
     "use-deep-compare-effect": "^1.8.1",
     "zeego": "^1.10.0",
     "zustand": "^4.5.4"
+    "twrnc": "^4.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@react-native-community/datetimepicker": "^8.2.0",
+    "@react-native-community/slider": "^4.5.5",
+    "@storybook/addon-ondevice-actions": "^8.4.2",
+    "@storybook/addon-ondevice-controls": "^8.4.2",
+    "@storybook/react-native": "^8.4.2",
     "@testing-library/jest-native": "^5.1.2",
     "@testing-library/react-native": "^11.3.0",
     "@types/jest": "^29.5.12",
     "@types/react": "~18.2.45",
+    "babel-loader": "^8.4.1",
     "dotenv-cli": "^7.4.2",
     "eslint": "^8.57.0",
     "eslint-config-expo": "^7.1.2",
@@ -117,6 +127,7 @@
     "eslint-plugin-prettier": "^5.2.1",
     "jest": "^29.6.3",
     "prettier": "^3.3.3",
+    "react-dom": "18.2.0",
     "reactotron-react-native": "^5.1.8",
     "typescript": "^5.1.3"
   },

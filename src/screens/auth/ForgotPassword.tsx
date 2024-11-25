@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Animated, SafeAreaView, TextInput, View } from 'react-native';
 
-import { PrimaryButton, Icon } from '@/components-next';
+import { Button, Icon } from '@/components-next';
 import { EMAIL_REGEX } from '@/constants';
 import { KeyRoundIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
@@ -95,7 +95,7 @@ const ForgotPassword = () => {
             name="email"
           />
 
-          <PrimaryButton
+          <Button
             text={i18n.t('FORGOT_PASSWORD.RESET_HERE')}
             handlePress={handleSubmit(onSubmit)}
           />

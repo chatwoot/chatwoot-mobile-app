@@ -59,6 +59,15 @@ export const PrimaryLongText: Story = {
   },
 };
 
+// Disabled Button
+export const DisabledButton: Story = {
+  args: {
+    text: 'Disabled Button',
+    variant: 'primary',
+    disabled: true,
+  },
+};
+
 // Button Group Example
 export const ButtonGroup: Story = {
   decorators: [

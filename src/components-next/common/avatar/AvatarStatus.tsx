@@ -62,14 +62,15 @@ const AnimatedDot: React.FC<AnimatedDotProps> = ({ size, delay }) => {
 };
 
 const TypingComponent: React.FC<TypingStatusProps> = ({ size, parentsBackground }) => {
-  const delays = ['xl', '2xl', '3xl'].includes(size) ? [0, 333, 667] : [0, 500];
+  const delays = ['xl', '2xl', '3xl', '4xl'].includes(size) ? [0, 333, 667] : [0, 500];
 
   return (
     <View
       style={[
         tailwind.style(cx(avatarTheme.status.typing.container)),
-        avatarTheme.status.position,
         {
+          bottom: avatarTheme.status.position[size],
+          right: avatarTheme.status.position[size],
           borderColor: tailwind.color(parentsBackground),
           backgroundColor: tailwind.color(parentsBackground),
         },

@@ -2,7 +2,7 @@ import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import type { Inbox } from '@/types/Inbox';
 import { inboxActions } from './inboxActions';
 
-const defaultInbox: Inbox = {
+const DEFAULT_INBOX: Readonly<Inbox> = {
   id: 0,
   name: 'All Inboxes',
   channelType: 'Channel::All',
@@ -10,7 +10,7 @@ const defaultInbox: Inbox = {
   channelId: 0,
   phoneNumber: '',
   medium: 'Channel::All',
-};
+} as const;
 
 export const inboxAdapter = createEntityAdapter<Inbox>({
   selectId: inbox => inbox.id,
@@ -39,7 +39,7 @@ const inboxSlice = createSlice({
       })
       .addCase(inboxActions.fetchInboxes.fulfilled, (state, action) => {
         const { payload: inboxes } = action.payload;
-        const allInboxes = [defaultInbox, ...inboxes];
+        const allInboxes = [DEFAULT_INBOX, ...inboxes];
         inboxAdapter.setAll(state, allInboxes);
         state.uiFlags.isLoading = false;
       })

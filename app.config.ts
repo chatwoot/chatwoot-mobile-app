@@ -50,6 +50,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     extra: {
       eas: {
         projectId: process.env.EXPO_PUBLIC_PROJECT_ID,
+        storybookEnabled: process.env.EXPO_STORYBOOK_ENABLED,
       },
     },
     owner: 'chatwoot',

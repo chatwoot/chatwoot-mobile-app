@@ -3,7 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Animated, SafeAreaView, TextInput, View } from 'react-native';
 import * as Application from 'expo-application';
 
-import { PrimaryButton, Icon } from '@/components-next';
+import { Button, Icon } from '@/components-next';
 import { URL_WITHOUT_HTTP_REGEX } from '@/constants';
 import { LinkIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
@@ -100,10 +100,7 @@ const ConfigURLScreen = () => {
             name="url"
           />
 
-          <PrimaryButton
-            text={i18n.t('CONFIGURE_URL.CONNECT')}
-            handlePress={handleSubmit(onSubmit)}
-          />
+          <Button text={i18n.t('CONFIGURE_URL.CONNECT')} handlePress={handleSubmit(onSubmit)} />
         </Animated.ScrollView>
       </View>
     </SafeAreaView>

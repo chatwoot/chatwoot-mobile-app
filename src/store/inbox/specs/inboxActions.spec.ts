@@ -1,6 +1,7 @@
 import { inboxActions } from '../inboxActions';
 import { mockInboxesResponse } from './inboxMockData';
 import { InboxService } from '../inboxService';
+import { transformInbox } from '@/utils/camelCaseKeys';
 
 jest.mock('@/i18n', () => ({
   t: (key: string) => key,
@@ -21,9 +22,10 @@ describe('inboxActions', () => {
     const { fetchInboxes } = inboxActions;
 
     it('should fetch inboxes successfully', async () => {
-      // Update mockResponse to match the expected structure
-      const mockResponse = mockInboxesResponse; // Remove the extra payload wrapper
-      (InboxService.getInboxes as jest.Mock).mockResolvedValue(mockResponse.data);
+      const transformedResponse = {
+        payload: mockInboxesResponse.data.payload.map(transformInbox),
+      };
+      (InboxService.getInboxes as jest.Mock).mockResolvedValue(transformedResponse);
 
       const dispatch = jest.fn();
       const getState = jest.fn();
@@ -31,11 +33,7 @@ describe('inboxActions', () => {
       const result = await fetchInboxes()(dispatch, getState, {});
 
       expect(InboxService.getInboxes).toHaveBeenCalled();
-      expect(result.payload).toEqual({
-        payload: mockInboxesResponse.data.payload.map(inbox => ({
-          ...inbox,
-        })),
-      });
+      expect(result.payload).toEqual(transformedResponse);
     });
   });
 });

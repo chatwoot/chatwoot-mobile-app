@@ -1,3 +1,4 @@
+import { transformInbox } from '@/utils/camelCaseKeys';
 import { InboxService } from '../inboxService';
 import { mockInboxesResponse } from './inboxMockData';
 import { apiService } from '@/services/APIService';
@@ -24,11 +25,13 @@ jest.mock('@/services/APIService', () => ({
 }));
 
 describe('InboxService', () => {
-  it('should get inboxes', async () => {
+  it('should get inboxes and transform the data', async () => {
     (apiService.get as jest.Mock).mockResolvedValueOnce(mockInboxesResponse);
 
     const result = await InboxService.getInboxes();
     expect(apiService.get).toHaveBeenCalledWith('inboxes');
-    expect(result).toEqual(mockInboxesResponse.data);
+    expect(result).toEqual({
+      payload: mockInboxesResponse.data.payload.map(transformInbox),
+    });
   });
 });

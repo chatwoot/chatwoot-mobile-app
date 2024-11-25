@@ -14,21 +14,28 @@ export type PrimaryActorType = 'Conversation' | 'Message';
 
 export type Notification = {
   id: number;
-  notification_type: NotificationType;
-  push_message_title: string;
-  primary_actor_type: PrimaryActorType;
-  primary_actor_id: number;
-  primary_actor: PrimaryActor;
-  read_at: string;
+  notificationType: NotificationType;
+  pushMessageTitle: string;
+  primaryActorType: PrimaryActorType;
+  primaryActorId: number;
+  primaryActor: PrimaryActor;
+  readAt: string;
   user: User;
-  snoozed_until: string;
-  created_at: number;
-  last_activity_at: number;
+  snoozedUntil: string;
+  createdAt: number;
+  lastActivityAt: number;
   meta: object;
 };
 
 export type PrimaryActor = {
   meta: {
     assignee: User;
+    sender: User;
   };
 };
+
+export interface NotificationMeta {
+  unreadCount: number;
+  count: number;
+  currentPage: string;
+}

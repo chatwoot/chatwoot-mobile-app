@@ -7,3 +7,5 @@ export * from './menu-icons';
 export * from './status-icons';
 export * from './swipe-actions';
 export * from './tabs';
+export * from './priority-icons';
+export * from './sla-icons';

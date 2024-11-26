@@ -9,7 +9,6 @@ import Animated, {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
-import Svg, { Path } from 'react-native-svg';
 
 import { avatarTheme, tailwind } from '@/theme';
 import { cx } from '@/utils';
@@ -63,14 +62,15 @@ const AnimatedDot: React.FC<AnimatedDotProps> = ({ size, delay }) => {
 };
 
 const TypingComponent: React.FC<TypingStatusProps> = ({ size, parentsBackground }) => {
-  const delays = ['xl', '2xl', '3xl'].includes(size) ? [0, 333, 667] : [0, 500];
+  const delays = ['xl', '2xl', '3xl', '4xl'].includes(size) ? [0, 333, 667] : [0, 500];
 
   return (
     <View
       style={[
         tailwind.style(cx(avatarTheme.status.typing.container)),
-        avatarTheme.status.position,
         {
+          bottom: avatarTheme.status.position[size],
+          right: avatarTheme.status.position[size],
           borderColor: tailwind.color(parentsBackground),
           backgroundColor: tailwind.color(parentsBackground),
         },
@@ -106,30 +106,6 @@ export const AvatarStatus: React.FC<Pick<AvatarProps, 'status' | 'size' | 'paren
               cx(avatarTheme.status.active.base, avatarTheme.status.active.size[size]),
             )}
           />
-        </View>
-      );
-    }
-    case 'away': {
-      return (
-        <View
-          style={[
-            tailwind.style(cx(avatarTheme.status.away.container)),
-            avatarTheme.status.position,
-            {
-              borderColor: tailwind.color(parentsBackground),
-              backgroundColor: tailwind.color(parentsBackground),
-            },
-          ]}>
-          <View style={tailwind.style(cx(avatarTheme.status.away.size[size]))}>
-            <Svg width="100%" height="100%" viewBox="0 0 4 4" fill="none">
-              <Path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M2 4C3.10457 4 4 3.10457 4 2C4 0.895431 3.10457 0 2 0C0.895431 0 0 0.895431 0 2C0 3.10457 0.895431 4 2 4ZM2 3.25C2.69036 3.25 3.25 2.69036 3.25 2C3.25 1.30964 2.69036 0.75 2 0.75C1.30964 0.75 0.75 1.30964 0.75 2C0.75 2.69036 1.30964 3.25 2 3.25Z"
-                fill={tailwind.color('text-gray-800')}
-              />
-            </Svg>
-          </View>
         </View>
       );
     }

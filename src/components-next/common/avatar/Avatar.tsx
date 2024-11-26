@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { ImageProps, ImageSourcePropType, Text, View, ViewProps } from 'react-native';
 
 import { avatarTheme, tailwind } from '@/theme';
@@ -87,8 +87,8 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
   } = props;
 
   const isSquared = squared;
+  const isSourceAvailable = !!src;
 
-  const isSourceAvailable = useMemo(() => (src ? true : false), [src]);
   const [imageAvailable, setImageAvailable] = useState(isSourceAvailable);
   const loadFallback = () => setImageAvailable(false);
 

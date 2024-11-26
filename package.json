@@ -23,7 +23,7 @@
     "submit:all": "dotenv -e .env -- eas submit -p ios --profile production && dotenv -e .env -- eas submit -p android --profile production",
     "storybook-generate": "sb-rn-get-stories",
     "storybook": "cross-env EXPO_STORYBOOK_ENABLED='true' expo start",
-    "storybook:ios": "cross-env EXPO_STORYBOOK_ENABLED='true' expo ios",
+    "storybook:ios": "cross-env EXPO_STORYBOOK_ENABLED='true' pnpm run:ios",
     "storybook:android": "cross-env EXPO_STORYBOOK_ENABLED='true' expo android"
   },
   "dependencies": {
@@ -48,6 +48,7 @@
     "@types/lodash": "^4.17.9",
     "axios": "^1.6.4",
     "camelcase-keys": "^7.0.2",
+    "cross-env": "^7.0.3",
     "date-fns": "2.21.1",
     "expo": "~51.0.28",
     "expo-application": "~5.9.1",

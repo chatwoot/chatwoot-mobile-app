@@ -3,7 +3,6 @@
 // It also manages the availability status of the contacts
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { Contact } from '@/types/Contact';
-import { Conversation } from '@/types/Conversation';
 
 export const contactAdapter = createEntityAdapter<Contact>({
   selectId: contact => contact.id,
@@ -17,27 +16,22 @@ const contactSlice = createSlice({
   reducers: {
     clearAllContacts: contactAdapter.removeAll,
     addContacts: (state, action) => {
-      const { conversations } = action.payload;
-      const contacts = conversations.map((conversation: Conversation) => conversation.meta.sender);
+      const { contacts } = action.payload;
       contacts.map((contact: Contact) => {
         contactAdapter.upsertOne(state, contact);
         return contact.id;
       });
     },
     addContact: (state, action) => {
-      const conversation = action.payload as Conversation;
-      const contact = conversation?.meta?.sender;
+      const contact = action.payload as Contact;
       if (contact) {
         contactAdapter.upsertOne(state, contact);
       }
     },
     updateContactsPresence: (state, action) => {
       const { contacts } = action.payload;
-      if (!contacts) return;
-      Object.values(state.entities).forEach(entity => {
-        if (!entity) return;
+      Object.values(state.entities as Record<string, Contact>).forEach(entity => {
         const contactId = entity.id;
-        if (!contactId) return;
         const availabilityStatus = contacts[contactId];
         if (availabilityStatus) {
           entity.availabilityStatus = availabilityStatus || 'offline';

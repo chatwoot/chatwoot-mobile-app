@@ -2,16 +2,6 @@ import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import type { Inbox } from '@/types/Inbox';
 import { inboxActions } from './inboxActions';
 
-const DEFAULT_INBOX: Readonly<Inbox> = {
-  id: 0,
-  name: 'All Inboxes',
-  channelType: 'Channel::All',
-  avatarUrl: '',
-  channelId: 0,
-  phoneNumber: '',
-  medium: 'Channel::All',
-} as const;
-
 export const inboxAdapter = createEntityAdapter<Inbox>({
   selectId: inbox => inbox.id,
 });
@@ -39,8 +29,7 @@ const inboxSlice = createSlice({
       })
       .addCase(inboxActions.fetchInboxes.fulfilled, (state, action) => {
         const { payload: inboxes } = action.payload;
-        const allInboxes = [DEFAULT_INBOX, ...inboxes];
-        inboxAdapter.setAll(state, allInboxes);
+        inboxAdapter.setAll(state, inboxes);
         state.uiFlags.isLoading = false;
       })
       .addCase(inboxActions.fetchInboxes.rejected, (state, { error }) => {

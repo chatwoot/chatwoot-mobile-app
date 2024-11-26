@@ -4,7 +4,7 @@ import reducer, {
   clearAllContacts,
   updateContactsPresence,
 } from '../contactSlice';
-import { contact, conversation } from './contactMockData';
+import { contact } from './contactMockData';
 
 describe('contact reducer', () => {
   it('should return the initial state', () => {
@@ -25,20 +25,20 @@ describe('contact reducer', () => {
     });
   });
 
-  it('should handle addContact', () => {
-    const action = addContact(conversation);
+  it('should add a single contact', () => {
+    const action = addContact(contact);
     const state = reducer(undefined, action);
     expect(state.entities[contact.id]).toEqual(contact);
   });
 
-  it('should handle addContacts', () => {
-    const conversations = [conversation];
-    const action = addContacts({ conversations });
+  it('should add all the contacts', () => {
+    const contacts = [contact];
+    const action = addContacts({ contacts });
     const state = reducer(undefined, action);
     expect(state.entities[contact.id]).toEqual(contact);
   });
 
-  it('should handle updateContactsPresence', () => {
+  it('should update the contacts presence', () => {
     const initialState = {
       ids: [1],
       entities: { 1: contact },

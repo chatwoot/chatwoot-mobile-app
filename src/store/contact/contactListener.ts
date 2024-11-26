@@ -3,6 +3,7 @@
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import { conversationActions } from '../conversation/conversationActions';
 import { addContact, addContacts } from './contactSlice';
+import { Conversation } from '@/types/Conversation';
 
 export const contactListenerMiddleware = createListenerMiddleware();
 
@@ -11,14 +12,20 @@ contactListenerMiddleware.startListening({
   effect: (action, listenerApi) => {
     const { payload } = action;
     const { conversations } = payload;
-    listenerApi.dispatch(addContacts({ conversations }));
+    const contacts = conversations.map((conversation: Conversation) => conversation.meta.sender);
+    if (contacts.length > 0) {
+      listenerApi.dispatch(addContacts({ contacts }));
+    }
   },
 });
 
 contactListenerMiddleware.startListening({
   matcher: isAnyOf(conversationActions.fetchConversation.fulfilled),
   effect: (action, listenerApi) => {
-    const { payload } = action;
-    listenerApi.dispatch(addContact(payload.conversation));
+    const conversation = action.payload as Conversation;
+    const contact = conversation?.meta?.sender;
+    if (contact) {
+      listenerApi.dispatch(addContact(contact));
+    }
   },
 });

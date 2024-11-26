@@ -30,6 +30,6 @@ describe('ContactService', () => {
     const result = await ContactService.getContactLabels({ contactId: 1 });
     expect(apiService.get).toHaveBeenCalledWith('contacts/1/labels');
 
-    expect(result).toEqual(mockContactLabelsResponse.data);
+    expect(result).toEqual(mockContactLabelsResponse);
   });
 });

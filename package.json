@@ -93,7 +93,8 @@
     "redux-persist": "^6.0.0",
     "semver": "^7.6.3",
     "tailwindcss": "^3.4.12",
-    "twrnc": "^4.5.1"
+    "twrnc": "^4.5.1",
+    "camelcase-keys": "^7.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

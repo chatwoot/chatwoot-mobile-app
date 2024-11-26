@@ -1,5 +1,6 @@
 import { apiService } from '@/services/APIService';
 import type { InboxAgentAPIResponse } from './inboxAgentTypes';
+import { transformInboxAgent } from '@/utils/camelCaseKeys';
 
 export class InboxAgentService {
   static async getInboxAgents(inboxIds: number[]): Promise<InboxAgentAPIResponse> {
@@ -8,6 +9,9 @@ export class InboxAgentService {
         'inbox_ids[]': inboxIds,
       },
     });
-    return response.data;
+    const inboxesAgents = response.data.payload.map(transformInboxAgent);
+    return {
+      payload: inboxesAgents,
+    };
   }
 }

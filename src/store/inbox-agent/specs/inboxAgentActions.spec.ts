@@ -18,7 +18,7 @@ jest.mock('../inboxAgentService', () => ({
 
 describe('inboxAgentActions', () => {
   it('should fetch inbox agents successfully', async () => {
-    (InboxAgentService.getInboxAgents as jest.Mock).mockResolvedValue(mockInboxAgentsResponse.data);
+    (InboxAgentService.getInboxAgents as jest.Mock).mockResolvedValue(mockInboxAgentsResponse);
 
     const dispatch = jest.fn();
     const getState = jest.fn();
@@ -30,6 +30,6 @@ describe('inboxAgentActions', () => {
     );
 
     expect(InboxAgentService.getInboxAgents).toHaveBeenCalled();
-    expect(result.payload).toEqual(mockInboxAgentsResponse.data);
+    expect(result.payload).toEqual(mockInboxAgentsResponse);
   });
 });

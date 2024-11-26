@@ -9,7 +9,7 @@ import { setTypingUsers, removeTypingUser } from '@/store/conversation/conversat
 import BaseActionCableConnector from './baseActionCableConnector';
 import { store } from '@/store';
 import { Conversation, Message, PresenceUpdateData, TypingData } from '@/types';
-import { transformMessage, transformConversation, transformTypingData } from './camelcaseKeys';
+import { transformMessage, transformConversation, transformTypingData } from './camelCaseKeys';
 import { setCurrentUserAvailability } from '@/store/auth/authSlice';
 
 interface ActionCableConfig {

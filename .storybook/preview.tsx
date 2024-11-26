@@ -1,6 +1,11 @@
-import type { Preview } from '@storybook/react';
+import React from 'react';
+import { View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { RefsProvider } from '../src/context/RefsContext';
 
-const preview: Preview = {
+/** @type{import("@storybook/react").Preview} */
+const preview = {
   parameters: {
     controls: {
       matchers: {
@@ -9,6 +14,23 @@ const preview: Preview = {
       },
     },
   },
+
+  decorators: [
+    (Story, { parameters }) => (
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <BottomSheetModalProvider>
+          <RefsProvider>
+            <View
+              style={{
+                flex: 1,
+              }}>
+              <Story />
+            </View>
+          </RefsProvider>
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
+    ),
+  ],
 };
 
 export default preview;

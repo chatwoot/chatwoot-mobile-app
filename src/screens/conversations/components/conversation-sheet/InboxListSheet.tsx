@@ -13,10 +13,21 @@ import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
 import { getChannelIcon } from '@/utils';
 import { Channel } from '@/types';
 import i18n from '@/i18n';
+import { Inbox } from '@/types/Inbox';
 
 type InboxCellProps = {
   value: { id: number; name: string; channelType: Channel; medium: string };
   isLastItem: boolean;
+};
+
+const defaultInbox: Inbox = {
+  id: 0,
+  name: 'All Inboxes',
+  channelType: 'Channel::All',
+  avatarUrl: '',
+  channelId: 0,
+  phoneNumber: '',
+  medium: 'Channel::All',
 };
 
 const InboxCell = (props: InboxCellProps) => {
@@ -63,7 +74,7 @@ const InboxCell = (props: InboxCellProps) => {
 };
 
 type InboxStackProps = {
-  list: { id: number; name: string; channelType: Channel }[];
+  list: { id: number; name: string; channelType: Channel; medium: string }[];
 };
 
 const InboxStack = (props: InboxStackProps) => {
@@ -79,10 +90,11 @@ const InboxStack = (props: InboxStackProps) => {
 
 export const InboxListSheet = () => {
   const inboxes = useAppSelector(selectAllInboxes);
-  const inboxList = inboxes.map(inbox => ({
+  const inboxList = [defaultInbox, ...inboxes].map(inbox => ({
     id: inbox.id,
     name: inbox.name,
     channelType: inbox.channelType,
+    medium: inbox.medium,
   }));
 
   return (

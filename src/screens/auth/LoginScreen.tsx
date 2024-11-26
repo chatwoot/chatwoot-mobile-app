@@ -9,7 +9,7 @@ import {
 } from '@gorhom/bottom-sheet';
 
 import { EMAIL_REGEX } from '@/constants';
-import { EyeIcon, EyeSlash } from '@/svg-icons'; 
+import { EyeIcon, EyeSlash } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { resetAuth } from '@/store/auth/authSlice';
@@ -20,7 +20,7 @@ import {
   BottomSheetBackdrop,
   BottomSheetHeader,
   LanguageList,
-  PrimaryButton,
+  Button,
   Icon,
 } from '@/components-next';
 import {
@@ -210,7 +210,7 @@ const LoginScreen = () => {
             </Animated.Text>
           </Pressable>
 
-          <PrimaryButton
+          <Button
             text={isLoggingIn ? i18n.t('LOGIN.LOGIN_LOADING') : i18n.t('LOGIN.LOGIN')}
             handlePress={handleSubmit(onSubmit)}
           />

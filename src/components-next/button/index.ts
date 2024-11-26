@@ -1,2 +1,1 @@
-export * from './FullWidthButton';
-export * from './PrimaryButton';
+export * from './Button';

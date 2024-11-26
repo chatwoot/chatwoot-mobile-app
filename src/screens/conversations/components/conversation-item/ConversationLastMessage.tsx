@@ -77,8 +77,6 @@ const MessageContent = ({
 
   const isMessageSticker = message?.contentType === ('sticker' as Message['contentType']);
 
-  console.log('message', lastMessageContent);
-
   if (message.content && isMessageSticker) {
     return (
       <NativeView style={tailwind.style('flex-row gap-1 items-center')}>

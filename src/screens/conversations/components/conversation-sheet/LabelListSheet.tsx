@@ -21,7 +21,7 @@ type LabelStackProps = {
 
 export const LabelStack = (props: LabelStackProps) => {
   const { labelList, handleLabelPress, selectedLabels, isStandAloneComponent = true } = props;
-  console.log(selectedLabels);
+
   return (
     <BottomSheetScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
       {labelList.map((value, index) => {

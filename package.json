@@ -47,7 +47,6 @@
     "@tanstack/react-query": "^5.56.2",
     "@types/lodash": "^4.17.9",
     "axios": "^1.6.4",
-    "camelcase-keys": "^7.0.2",
     "cross-env": "^7.0.3",
     "date-fns": "2.21.1",
     "expo": "~51.0.28",
@@ -99,7 +98,7 @@
     "semver": "^7.6.3",
     "tailwindcss": "^3.4.12",
     "twrnc": "^4.5.1",
-    "use-deep-compare-effect": "^1.8.1"
+    "use-deep-compare-effect": "^1.8.1",
     "camelcase-keys": "^7.0.2"
   },
   "devDependencies": {

@@ -27,7 +27,7 @@ describe('LabelService', () => {
   it('should fetch labels successfully', async () => {
     (apiService.get as jest.Mock).mockResolvedValueOnce(mockLabelsResponse);
 
-    const response = await LabelService.getLabels();
+    const response = await LabelService.index();
     expect(apiService.get).toHaveBeenCalledWith('labels');
     expect(response).toEqual(mockLabelsResponse.data);
   });

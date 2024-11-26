@@ -31,7 +31,6 @@ import {
   BottomSheetHeader,
   BottomSheetWrapper,
   Button,
-  SettingsList,
   LanguageList,
   AvailabilityStatusList,
   NotificationPreferences,

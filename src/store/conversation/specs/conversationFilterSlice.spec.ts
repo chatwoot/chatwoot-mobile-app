@@ -25,7 +25,6 @@ describe('conversationFilter reducer', () => {
       );
 
       expect(nextState.filters.status).toBe('resolved');
-      // Other filters should remain unchanged
       expect(nextState.filters.assignee_type).toBe(defaultFilterState.assignee_type);
       expect(nextState.filters.sort_by).toBe(defaultFilterState.sort_by);
       expect(nextState.filters.inbox_id).toBe(defaultFilterState.inbox_id);

@@ -7,17 +7,6 @@ import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
 import { useAppSelector } from '@/hooks';
 
 import { FilterButton } from './FilterButton';
-import { Inbox } from '@/types/Inbox';
-
-const defaultInbox: Inbox = {
-  id: 0,
-  name: 'All Inboxes',
-  channelType: 'Channel::All',
-  avatarUrl: '',
-  channelId: 0,
-  phoneNumber: '',
-  medium: 'Channel::All',
-};
 
 export const AssigneeOptions: Record<AssigneeTypes, string> = {
   me: 'Mine',

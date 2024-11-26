@@ -1,3 +1,5 @@
+// Conversation Header Slice is used to manage the header for the conversations screen
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ConversationFilterOptions } from '@/types';
 import { RootState } from '@/store';

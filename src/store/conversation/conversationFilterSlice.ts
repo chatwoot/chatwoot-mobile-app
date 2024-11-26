@@ -1,3 +1,5 @@
+// Conversation Filter Slice is used to manage the filters for the conversations screen
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ConversationFilterOptions } from '@/types';
 import { RootState } from '@/store';

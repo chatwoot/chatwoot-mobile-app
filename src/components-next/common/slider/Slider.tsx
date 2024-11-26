@@ -14,7 +14,7 @@ import Animated, {
   WithSpringConfig,
 } from 'react-native-reanimated';
 
-import { tailwind } from '../../../theme';
+import { tailwind } from '@/theme';
 
 const DefaultSpringConfig: WithSpringConfig = {
   mass: 1,

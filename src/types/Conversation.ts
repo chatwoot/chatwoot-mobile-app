@@ -7,7 +7,7 @@ import { Team } from './Team';
 
 export interface Conversation {
   accountId: number;
-  additionalAttributes: object;
+  additionalAttributes: ConversationAdditionalAttributes;
   agentLastSeenAt: UnixTimestamp;
   assigneeLastSeenAt: UnixTimestamp;
   canReply: boolean;
@@ -48,9 +48,20 @@ export interface ConversationListMeta {
 }
 
 export interface ConversationAdditionalAttributes {
+  browser?: {
+    deviceName: string;
+    browserName: string;
+    platformName: string;
+    browserVersion: string;
+    platformVersion: string;
+  };
+  referer?: string;
+  initiatedAt?: {
+    timestamp: string;
+  };
+  browserLanguage?: string;
   type?: string;
 }
-
 export interface ConversationMeta {
   sender: Contact;
   assignee: Agent;

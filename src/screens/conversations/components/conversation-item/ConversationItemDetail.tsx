@@ -7,7 +7,7 @@ import { isEqual } from 'lodash';
 import { Avatar } from '@/components-next/common';
 import { AnimatedNativeView, NativeView } from '@/components-next/native-components';
 import { tailwind } from '@/theme';
-import { Agent, Conversation, ConversationAdditionalAttributes, Message } from '@/types';
+import { Agent, Conversation, ConversationAdditionalAttributes, Label, Message } from '@/types';
 
 import { ConversationId } from './ConversationId';
 import { ConversationLastMessage } from './ConversationLastMessage';
@@ -24,20 +24,23 @@ const { width } = Dimensions.get('screen');
 
 type ConversationDetailSubCellProps = Pick<
   Conversation,
-  'id' | 'priority' | 'messages' | 'labels' | 'unreadCount' | 'inboxId' | 'slaPolicyId'
+  'id' | 'priority' | 'labels' | 'unreadCount' | 'inboxId' | 'slaPolicyId'
 > & {
   senderName: string | null;
-  assignee: Agent;
+  assignee: Agent | null;
   timestamp: number;
   lastMessage?: Message | null;
-  inbox: Inbox;
+  inbox: Inbox | null;
   appliedSla: SLA | null;
-  appliedSlaConversationDetails: {
-    firstReplyCreatedAt: number;
-    waitingSince: number;
-    status: string;
-  };
-  additionalAttributes: ConversationAdditionalAttributes;
+  appliedSlaConversationDetails?:
+    | {
+        firstReplyCreatedAt: number;
+        waitingSince: number;
+        status: string;
+      }
+    | {};
+  additionalAttributes?: ConversationAdditionalAttributes;
+  allLabels: Label[];
 };
 
 const checkIfPropsAreSame = (
@@ -63,6 +66,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
     appliedSla,
     appliedSlaConversationDetails,
     additionalAttributes,
+    allLabels,
   } = props;
 
   const hasPriority = priority !== null;
@@ -96,7 +100,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
         </AnimatedNativeView>
         <AnimatedNativeView style={tailwind.style('flex flex-row items-center gap-2')}>
           {hasPriority ? <PriorityIndicator {...{ priority }} /> : null}
-          {<ChannelIndicator inbox={inbox} additionalAttributes={additionalAttributes} />}
+          {inbox && <ChannelIndicator inbox={inbox} additionalAttributes={additionalAttributes} />}
           <LastActivityTime timestamp={timestamp} />
         </AnimatedNativeView>
       </AnimatedNativeView>
@@ -114,17 +118,23 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           <AnimatedNativeView
             style={tailwind.style('flex flex-row h-6 justify-between items-center gap-2')}>
             <AnimatedNativeView style={tailwind.style('flex flex-row flex-1 gap-2 items-center')}>
-              {hasSLA && (
+              {hasSLA && appliedSlaConversationDetails && (
                 <SLAIndicator
                   slaPolicyId={slaPolicyId}
                   appliedSla={appliedSla as SLA}
-                  appliedSlaConversationDetails={appliedSlaConversationDetails}
+                  appliedSlaConversationDetails={
+                    appliedSlaConversationDetails as {
+                      firstReplyCreatedAt: number;
+                      waitingSince: number;
+                      status: string;
+                    }
+                  }
                 />
               )}
               {hasLabels && hasSLA && (
                 <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />
               )}
-              {hasLabels && <LabelIndicator labels={labels.slice(0, 2)} />}
+              {hasLabels && <LabelIndicator labels={labels.slice(0, 2)} allLabels={allLabels} />}
             </AnimatedNativeView>
 
             {assignee ? (

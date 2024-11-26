@@ -3,8 +3,7 @@ import { Text } from 'react-native';
 
 import { tailwind } from '@/theme';
 import { AnimatedNativeView, NativeView } from '@/components-next/native-components';
-import { selectAllLabels } from '@/store/label/labelSelectors';
-import { useAppSelector } from '@/hooks';
+import { Label } from '@/types';
 
 type LabelTextProps = {
   labelText: string;
@@ -29,10 +28,10 @@ const LabelText = (props: LabelTextProps) => {
 };
 type LabelIndicatorProps = {
   labels: string[];
+  allLabels: Label[];
 };
 export const LabelIndicator = (props: LabelIndicatorProps) => {
-  const { labels } = props;
-  const allLabels = useAppSelector(selectAllLabels);
+  const { labels, allLabels } = props;
 
   const activeLabels =
     allLabels && labels

@@ -50,7 +50,7 @@ export interface Message {
   id: number;
   attachments: ImageMetadata[];
   content: string;
-  contentAttributes: MessageContentAttributes | null;
+  contentAttributes?: MessageContentAttributes | null;
   contentType: ContentType;
   conversationId: number;
   createdAt: UnixTimestamp;
@@ -58,10 +58,10 @@ export interface Message {
   inboxId: number;
   messageType: MessageType;
   private: boolean;
-  sender: Agent | User | AgentBot | Contact | null;
+  sender?: Agent | User | AgentBot | Contact | null;
   sourceId: string | null;
   status: MessageStatus;
   lastNonActivityMessage: Message | null;
   conversation: Conversation | null;
-  shouldRenderAvatar: boolean;
+  shouldRenderAvatar?: boolean;
 }

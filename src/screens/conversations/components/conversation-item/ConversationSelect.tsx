@@ -6,16 +6,14 @@ import { Icon } from '@/components-next/common';
 import { AnimatedNativeView } from '@/components-next/native-components';
 import { CheckedIcon, UncheckedIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice';
-import { useAppSelector } from '@/hooks';
 
 type ConversationSelectProps = {
   isSelected: boolean;
+  currentState: string;
 };
 
 export const ConversationSelect = memo((props: ConversationSelectProps) => {
-  const { isSelected } = props;
-  const currentState = useAppSelector(selectCurrentState);
+  const { isSelected, currentState } = props;
 
   return currentState === 'Select' ? (
     <AnimatedNativeView

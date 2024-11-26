@@ -10,7 +10,7 @@ import { Channel } from '@/types';
 
 type ChannelIndicatorProps = {
   inbox: Inbox;
-  additionalAttributes: ConversationAdditionalAttributes;
+  additionalAttributes?: ConversationAdditionalAttributes;
 };
 
 export const ChannelIndicator = (props: ChannelIndicatorProps) => {

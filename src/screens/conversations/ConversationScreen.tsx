@@ -10,7 +10,7 @@ import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sh
 import { FlashList } from '@shopify/flash-list';
 
 import {
-  ConversationItem,
+  ConversationItemContainer,
   ConversationHeader,
   InboxListSheet,
   StatusListSheet,
@@ -79,7 +79,11 @@ const ConversationList = () => {
   const handleRender = useCallback(
     ({ item, index }: FlashListRenderItemType) => {
       return (
-        <ConversationItem index={index} conversationItem={item} openedRowIndex={openedRowIndex} />
+        <ConversationItemContainer
+          index={index}
+          conversationItem={item}
+          openedRowIndex={openedRowIndex}
+        />
       );
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

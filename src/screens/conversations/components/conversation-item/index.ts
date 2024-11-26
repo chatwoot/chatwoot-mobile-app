@@ -1,1 +1,1 @@
-export * from './ConversationItem';
+export * from './ConversationItemContainer';

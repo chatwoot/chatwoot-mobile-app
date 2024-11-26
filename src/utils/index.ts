@@ -7,6 +7,6 @@ export * from './common';
 export * from './withAnchorPoint';
 export * from './dateTimeUtils';
 export * from './conversationUtils';
-export * from './camelcaseKeys';
+export * from './camelCaseKeys';
 export * from './getChannelIcon';
 export * from './typingUtils';

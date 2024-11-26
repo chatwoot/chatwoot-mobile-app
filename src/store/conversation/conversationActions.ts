@@ -29,7 +29,7 @@ import {
   transformConversation,
   transformMessage,
   transformConversationListMeta,
-} from '@/utils/camelcaseKeys';
+} from '@/utils/camelCaseKeys';
 
 export const conversationActions = {
   fetchConversations: createAsyncThunk<ConversationListResponse, ConversationPayload>(

@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { InboxAgentService } from './inboxAgentService';
 import type { InboxAgentAPIResponse, InboxAgentPayload } from './inboxAgentTypes';
-import { transformInboxAgent } from '@/utils/camelcaseKeys';
+import { transformInboxAgent } from '@/utils/camelCaseKeys';
 
 export const inboxAgentActions = {
   fetchInboxAgents: createAsyncThunk<InboxAgentAPIResponse, InboxAgentPayload>(

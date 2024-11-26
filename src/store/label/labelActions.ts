@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { LabelService } from './labelService';
 import type { LabelResponse } from './labelTypes';
-import { transformLabel } from '@/utils/camelcaseKeys';
+import { transformLabel } from '@/utils/camelCaseKeys';
 
 export const labelActions = {
   fetchLabels: createAsyncThunk<LabelResponse, void>(

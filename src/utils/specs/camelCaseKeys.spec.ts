@@ -1,4 +1,4 @@
-import { transformConversation, transformContact } from '@/utils/camelcaseKeys';
+import { transformConversation, transformContact } from '@/utils/camelCaseKeys';
 
 export const smallCaseConversation = {
   id: 250,

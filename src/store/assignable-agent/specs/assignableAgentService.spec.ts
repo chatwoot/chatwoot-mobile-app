@@ -1,6 +1,6 @@
 import { apiService } from '@/services/APIService';
-import { InboxAgentService } from '../inboxAgentService';
-import { mockInboxAgentsResponse } from './inboxAgentMockData';
+import { AssignableAgentService } from '../assignableAgentService';
+import { mockInboxAgentsResponse } from './assignableAgentMockData';
 
 jest.mock('@sentry/react-native', () => ({
   captureException: jest.fn(),
@@ -31,7 +31,7 @@ describe('inboxAgentService', () => {
   it('fetches inbox agents successfully', async () => {
     (apiService.get as jest.Mock).mockResolvedValueOnce(mockInboxAgentsResponse);
 
-    const result = await InboxAgentService.getInboxAgents([1]);
+    const result = await AssignableAgentService.getAgents([1]);
     expect(apiService.get).toHaveBeenCalledWith('assignable_agents', {
       params: {
         'inbox_ids[]': [1],

@@ -1,10 +1,10 @@
 import { apiService } from '@/services/APIService';
-import type { InboxAgentAPIResponse } from './inboxAgentTypes';
+import type { AssignableAgentAPIResponse } from './assignableAgentTypes';
 import { transformInboxAgent } from '@/utils/camelCaseKeys';
 
-export class InboxAgentService {
-  static async getInboxAgents(inboxIds: number[]): Promise<InboxAgentAPIResponse> {
-    const response = await apiService.get<InboxAgentAPIResponse>('assignable_agents', {
+export class AssignableAgentService {
+  static async getAgents(inboxIds: number[]): Promise<AssignableAgentAPIResponse> {
+    const response = await apiService.get<AssignableAgentAPIResponse>('assignable_agents', {
       params: {
         'inbox_ids[]': inboxIds,
       },

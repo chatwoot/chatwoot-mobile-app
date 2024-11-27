@@ -9,16 +9,16 @@ import { Agent } from '@/types';
 import { Avatar, Icon, SearchBar } from '@/components-next';
 import { TickIcon } from '@/svg-icons';
 
-import { inboxAgentActions } from '@/store/inbox-agent/inboxAgentActions';
+import { assignableAgentActions } from '@/store/assignable-agent/assignableAgentActions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { filterInboxAgents } from '@/store/inbox-agent/inboxAgentSelectors';
+import { filterAssignableAgents } from '@/store/assignable-agent/assignableAgentSelectors';
 import {
   selectSelectedIds,
   selectSelectedInboxes,
   selectSelectedConversation,
 } from '@/store/conversation/conversationSelectedSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
-import { isInboxAgentFetching } from '@/store/inbox-agent/inboxAgentSelectors';
+import { isAssignableAgentFetching } from '@/store/assignable-agent/assignableAgentSelectors';
 import { showToast } from '@/helpers/ToastHelper';
 import i18n from '@/i18n';
 
@@ -87,7 +87,7 @@ const AssigneeStack = ({
   agents: Agent[];
   assigneeId: number | undefined;
 }) => {
-  const isFetching = useAppSelector(isInboxAgentFetching);
+  const isFetching = useAppSelector(isAssignableAgentFetching);
 
   return (
     <BottomSheetScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
@@ -112,7 +112,7 @@ export const AssigneeListSheet = () => {
   const { actionsModalSheetRef } = useRefsContext();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const agents = useAppSelector(state => filterInboxAgents(state, searchTerm));
+  const agents = useAppSelector(state => filterAssignableAgents(state, searchTerm));
   const selectedInboxes = useAppSelector(selectSelectedInboxes);
   const selectedConversation = useAppSelector(selectSelectedConversation);
 
@@ -130,7 +130,7 @@ export const AssigneeListSheet = () => {
   };
 
   useEffect(() => {
-    dispatch(inboxAgentActions.fetchInboxAgents({ inboxIds }));
+    dispatch(assignableAgentActions.fetchAgents({ inboxIds }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

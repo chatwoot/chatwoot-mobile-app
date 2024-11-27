@@ -1,16 +1,16 @@
-import { selectAllInboxAgents } from '../inboxAgentSelectors';
+import { selectAllAssignableAgents } from '../assignableAgentSelectors';
 import { RootState } from '@/store';
-import { agent } from './inboxAgentMockData';
+import { agent } from './assignableAgentMockData';
 
 describe('inboxAgentSelectors', () => {
   const state = {
-    inboxAgents: {
+    assignableAgents: {
       ids: [agent.id],
       entities: { [agent.id]: agent },
       uiFlags: { isLoading: false },
     },
   } as RootState;
   it('selects all inbox agents', () => {
-    expect(selectAllInboxAgents(state)).toEqual([agent]);
+    expect(selectAllAssignableAgents(state)).toEqual([agent]);
   });
 });

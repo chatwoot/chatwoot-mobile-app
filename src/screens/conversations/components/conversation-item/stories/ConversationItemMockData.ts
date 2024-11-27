@@ -139,3 +139,13 @@ export const conversationWithMoreLabels = {
   ...conversationWithLabelAndSLA,
   labels: ['billing', 'lead', 'premium-customer', 'software', 'delivery', 'test'],
 };
+
+export const conversationWithMarkdownMessage = {
+  ...conversation,
+  lastMessage: {
+    ...conversation.lastMessage,
+    content:
+      '[@John Doe](mention://user/1/John%20Doe), Please try [Github.com](https://github.com) for the detailed <b>Guide</b>',
+    messageType: 0 as MessageType,
+  },
+};

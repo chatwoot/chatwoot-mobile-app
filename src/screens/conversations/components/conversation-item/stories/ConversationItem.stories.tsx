@@ -3,13 +3,13 @@ import { ConversationItem, ConversationItemProps } from '../ConversationItem';
 import {
   conversation,
   conversationWithLabelAndSLA,
-  conversationWithSLA,
   conversationWithAgentAndUnreadCount,
   conversationWithOneLineMessage,
   conversationWithAttachment,
   conversationWithOutgoingMessage,
   conversationWithNonEnglishContact,
   conversationWithMoreLabels,
+  conversationWithMarkdownMessage,
 } from './ConversationItemMockData';
 import { Text, ScrollView } from 'react-native';
 import { tailwind } from '@/theme';
@@ -163,6 +163,16 @@ export const AllVariants: Story = {
         availabilityStatus="online"
         inboxId={1}
         currentState="none"
+      />
+      <Text>Conversation with markdown message</Text>
+      <ConversationItem
+        {...conversationWithMarkdownMessage}
+        isSelected={false}
+        currentState="none"
+        unreadCount={1}
+        availabilityStatus="online"
+        inboxId={1}
+        assignee={null}
       />
     </ScrollView>
   ),

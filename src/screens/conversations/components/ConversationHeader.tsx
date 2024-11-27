@@ -28,7 +28,7 @@ import {
   selectSelectedConversations,
 } from '@/store/conversation/conversationSelectedSlice';
 import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
-import { ConversationFilterBar } from '@/components-next/common/filters/ConversationFilterBar';
+import { ConversationFilterBar } from './ConversationFilterBar';
 import i18n from '@/i18n';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';

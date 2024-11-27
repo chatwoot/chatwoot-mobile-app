@@ -8,9 +8,10 @@ import { TickIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { SortTypes } from '@/types';
 import { useHaptic } from '@/utils';
-import { BottomSheetHeader, Icon, SortOptions } from '@/components-next';
+import { BottomSheetHeader, Icon } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import i18n from '@/i18n';
+import { SortOptions } from '@/types';
 
 type SortByCellProps = {
   value: string;

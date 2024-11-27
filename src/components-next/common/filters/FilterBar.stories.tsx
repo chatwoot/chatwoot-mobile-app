@@ -1,8 +1,26 @@
 import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { FilterBar as FilterBarComponent } from './FilterBar';
-import { filterOptions } from './ConversationFilterBar';
+import { BaseFilterOption, FilterBar as FilterBarComponent } from './FilterBar';
+import { AssigneeOptions, SortOptions, StatusOptions } from '@/types';
+
+export const ConversationFilterOptions: BaseFilterOption[] = [
+  {
+    type: 'assignee_type',
+    options: AssigneeOptions,
+    defaultFilter: 'All',
+  },
+  {
+    type: 'status',
+    options: StatusOptions,
+    defaultFilter: 'Open',
+  },
+  {
+    type: 'sort_by',
+    options: SortOptions,
+    defaultFilter: 'Latest',
+  },
+];
 
 const meta = {
   title: 'Filters',
@@ -22,7 +40,7 @@ type Story = StoryObj<typeof meta>;
 
 export const FilterBar: Story = {
   args: {
-    allFilters: filterOptions,
+    allFilters: ConversationFilterOptions,
     selectedFilters: {
       assignee_type: 'me',
       status: 'open',

@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { FilterButton as FilterButtonComponent } from './FilterButton';
-import { filterOptions } from './ConversationFilterBar';
+import { ConversationFilterOptions } from './FilterBar.stories';
 
 const meta = {
   title: 'Filters',
@@ -22,7 +22,7 @@ type Story = StoryObj<typeof meta>;
 
 export const FilterButton: Story = {
   args: {
-    allFilters: filterOptions[0],
+    allFilters: ConversationFilterOptions[0],
     selectedFilters: {
       assignee_type: 'me',
       status: 'open',

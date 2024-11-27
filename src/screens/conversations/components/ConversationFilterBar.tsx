@@ -3,10 +3,10 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
 import { BottomSheetType, setBottomSheetState } from '@/store/conversation/conversationHeaderSlice';
 import { selectFilters } from '@/store/conversation/conversationFilterSlice';
-import { BaseFilterOption, FilterBar } from './FilterBar';
+import { BaseFilterOption, FilterBar } from '@/components-next';
 import { AssigneeOptions, StatusOptions, SortOptions } from '@/types/common/ConversationStatus';
 
-export const filterOptions: BaseFilterOption[] = [
+export const ConversationFilterOptions: BaseFilterOption[] = [
   {
     type: 'assignee_type',
     options: AssigneeOptions,
@@ -23,7 +23,6 @@ export const filterOptions: BaseFilterOption[] = [
     defaultFilter: 'Latest',
   },
 ];
-
 const getInboxOptions = (inboxes: { id: number; name: string }[]) => {
   const options: Record<string, string> = {
     '0': 'All Inboxes',
@@ -40,7 +39,7 @@ export const ConversationFilterBar = () => {
   const selectedFilters = useAppSelector(selectFilters);
 
   const dynamicFilterOptions = [
-    ...filterOptions,
+    ...ConversationFilterOptions,
     {
       type: 'inbox_id' as const,
       options: getInboxOptions(inboxes),

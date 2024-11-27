@@ -69,24 +69,24 @@ export const conversationWithOutgoingMessage = {
 
 export const conversationWithSLA = {
   ...conversation,
-  slaPolicyId: 1,
+  slaPolicyId: 8,
   appliedSla: {
-    id: 1,
-    slaName: 'SLA 1',
-    slaDescription: 'SLA 1 description',
-    slaId: 1,
-    slaStatus: 'pending',
-    createdAt: 1732118959,
-    updatedAt: 1732118959,
-    slaFirstResponseTimeThreshold: 10,
-    slaNextResponseTimeThreshold: 20,
-    slaResolutionTimeThreshold: 30,
+    id: 3983,
+    slaId: 8,
+    slaStatus: 'active_with_misses',
+    createdAt: 1731632416,
+    updatedAt: 1731647115,
+    slaDescription: 'SLA Applied for conversations by paid users',
+    slaName: 'In App // Paid SLA',
+    slaFirstResponseTimeThreshold: 14400,
+    slaNextResponseTimeThreshold: 14400,
     slaOnlyDuringBusinessHours: false,
+    slaResolutionTimeThreshold: 604800,
   },
   appliedSlaConversationDetails: {
-    firstReplyCreatedAt: 1732118959,
-    waitingSince: 1732118959,
-    status: 'pending',
+    firstReplyCreatedAt: 1731661661,
+    waitingSince: 1732604153,
+    status: 'open',
   },
 };
 
@@ -133,4 +133,9 @@ export const conversationWithNonEnglishContact = {
     ...conversation.lastMessage,
     messageType: 1 as MessageType,
   },
+};
+
+export const conversationWithMoreLabels = {
+  ...conversationWithLabelAndSLA,
+  labels: ['billing', 'lead', 'premium-customer', 'software', 'delivery', 'test'],
 };

@@ -120,7 +120,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           <AnimatedNativeView
             style={tailwind.style('flex flex-row h-6 justify-between items-center gap-2')}>
             <AnimatedNativeView style={tailwind.style('flex flex-row flex-1 gap-2 items-center')}>
-              {hasSLA && appliedSlaConversationDetails && (
+              {hasSLA && (
                 <SLAIndicator
                   slaPolicyId={slaPolicyId}
                   appliedSla={appliedSla as SLA}

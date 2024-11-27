@@ -50,7 +50,8 @@ export const SLAIndicator = ({
       },
     });
     setSlaStatus(status);
-  }, [appliedSla, appliedSlaConversationDetails]);
+    onSLAStatusChange(status?.threshold ? true : false);
+  }, [appliedSla, appliedSlaConversationDetails, onSLAStatusChange]);
 
   const createTimer = useCallback(() => {
     timerRef.current = setTimeout(() => {
@@ -68,10 +69,6 @@ export const SLAIndicator = ({
       }
     };
   }, [createTimer, updateSlaStatus]);
-
-  useEffect(() => {
-    onSLAStatusChange(slaStatus?.threshold ? true : false);
-  }, [slaStatus?.threshold, onSLAStatusChange]);
 
   if (!slaStatus?.threshold) {
     return null;

@@ -3,22 +3,38 @@ import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/b
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { authActions } from '@/store/auth/authActions';
+import * as Sentry from '@sentry/react-native';
+
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectLoggedIn, selectUser, selectCurrentUserAccount } from '@/store/auth/authSelectors';
+import {
+  selectLoggedIn,
+  selectUser,
+  selectCurrentUserAccount,
+  selectPubSubToken,
+  selectUserId,
+  selectCurrentUserAccountId,
+} from '@/store/auth/authSelectors';
+import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 
 import { getUserPermissions } from 'helpers/permissionHelper';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 
-import { AuthStack, ConversationStack, NotificationStack, SettingsStack } from '../stack';
-import ChatScreen from '@/screens/ChatScreen/ChatScreen';
-import ImageScreen from '@/screens/ChatScreen/ImageScreen';
-import ConversationDetailsScreen from '@/screens/ConversationDetails/ConversationDetailsScreen';
-import ConversationAction from '@/screens/ConversationAction/ConversationAction';
+import { AuthStack, ConversationStack, SettingsStack } from '../stack';
+// import ChatScreen from '@/screens/chat-screen/ChatScreen';
+// import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
+// import { DashboardScreen } from '@/screens/dashboard';
+
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { BottomTabBar } from './BottomTabBar';
 import { settingsActions } from '@/store/settings/settingsActions';
 import { selectChatwootVersion } from '@/store/settings/settingsSelectors';
 import { checkServerSupport } from '@/helpers/ServerHelper';
+import { inboxActions } from '@/store/inbox/inboxActions';
+import { labelActions } from '@/store/label/labelActions';
+import actionCableConnector from '@/utils/actionCable';
+import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
+import AnalyticsHelper from '@/helpers/AnalyticsHelper';
+import { clearAllDeliveredNotifications } from '@/helpers/PushHelper';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,8 +51,8 @@ export type TabParamList = {
 
 export type TabBarExcludedScreenParamList = {
   Tab: undefined;
-  ChatScreen: { index: number };
-  ContactDetails: undefined;
+  ChatScreen: { conversationId: number };
+  ContactDetails: { conversationId: number };
   ConversationActions: undefined;
   Dashboard: { url: string };
   Login: undefined;
@@ -56,10 +72,50 @@ const Tabs = () => {
   const chatwootVersion = useAppSelector(selectChatwootVersion);
   const currentAccount = useAppSelector(selectCurrentUserAccount);
   const currentAccountRole = currentAccount?.role;
+  const pubSubToken = useAppSelector(selectPubSubToken);
+  const userId = useAppSelector(selectUserId);
+  const accountId = useAppSelector(selectCurrentUserAccountId);
+  const webSocketUrl = useAppSelector(selectWebSocketUrl);
 
   useEffect(() => {
     dispatch(authActions.getProfile());
-  }, [dispatch]);
+    dispatch(settingsActions.saveDeviceDetails());
+    dispatch(inboxActions.fetchInboxes());
+    initActionCable();
+    dispatch(labelActions.fetchLabels());
+    dispatch(setCurrentState('none'));
+    initAnalytics();
+    initSentry();
+    initPushNotifications();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const initAnalytics = useCallback(async () => {
+    AnalyticsHelper.identify(user);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const initPushNotifications = useCallback(async () => {
+    clearAllDeliveredNotifications();
+  }, []);
+
+  const initSentry = useCallback(async () => {
+    Sentry.setUser({
+      id: user?.id,
+      email: user?.email,
+      account_id: user?.account_id,
+      name: user?.name,
+      role: user?.role,
+      installation_url: installationUrl,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const initActionCable = useCallback(async () => {
+    if (pubSubToken && webSocketUrl && accountId && userId) {
+      actionCableConnector.init({ pubSubToken, webSocketUrl, accountId, userId });
+    }
+  }, [accountId, pubSubToken, userId, webSocketUrl]);
 
   useEffect(() => {
     dispatch(settingsActions.getChatwootVersion({ installationUrl: installationUrl }));
@@ -72,10 +128,12 @@ const Tabs = () => {
   );
 
   const checkAppVersion = useCallback(async () => {
-    checkServerSupport({
-      installedVersion: chatwootVersion,
-      userRole: currentAccountRole,
-    });
+    if (chatwootVersion) {
+      checkServerSupport({
+        installedVersion: chatwootVersion,
+        userRole: currentAccountRole,
+      });
+    }
   }, [chatwootVersion, currentAccountRole]);
 
   useEffect(() => {
@@ -92,13 +150,10 @@ const Tabs = () => {
           component={ConversationStack}
         />
       )}
-      {hasConversationPermission && (
-        <Tab.Screen
-          name="Notifications"
-          component={NotificationStack}
-          options={{ headerShown: false }}
-        />
-      )}
+      {/* {hasConversationPermission && (
+        <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
+      )} */}
+
       <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
     </Tab.Navigator>
   );
@@ -111,10 +166,27 @@ export const AppTabs = () => {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Tab" component={Tabs} />
-        <Stack.Screen name="ChatScreen" component={ChatScreen} />
-        <Stack.Screen name="ImageScreen" component={ImageScreen} />
-        <Stack.Screen name="ConversationDetails" component={ConversationDetailsScreen} />
-        <Stack.Screen name="ConversationAction" component={ConversationAction} />
+        {/* <Stack.Screen
+          options={{ animation: 'slide_from_right' }}
+          name="ChatScreen"
+          component={ChatScreen}
+        />
+        <Stack.Screen
+          options={{
+            presentation: 'formSheet',
+            animation: 'slide_from_bottom',
+          }}
+          name="ContactDetails"
+          component={ContactDetailsScreen}
+        />
+        <Stack.Screen
+          options={{
+            presentation: 'formSheet',
+            animation: 'slide_from_bottom',
+          }}
+          name="Dashboard"
+          component={DashboardScreen}
+        /> */}
       </Stack.Navigator>
     );
   } else {

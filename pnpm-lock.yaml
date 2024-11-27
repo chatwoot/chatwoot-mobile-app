@@ -59,6 +59,12 @@ importers:
       '@shopify/flash-list':
         specifier: ^1.5.0
         version: 1.7.1(@babel/runtime@7.25.7)(react-native@0.74.5(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0)
+      '@tanstack/react-query':
+        specifier: ^5.56.2
+        version: 5.61.3(react@18.2.0)
+      '@types/lodash':
+        specifier: ^4.17.9
+        version: 4.17.13
       axios:
         specifier: ^1.6.4
         version: 1.7.7
@@ -104,6 +110,9 @@ importers:
       i18n-js:
         specifier: ^3.8.0
         version: 3.9.2
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       lodash.filter:
         specifier: ^4.6.0
         version: 4.6.0
@@ -197,6 +206,9 @@ importers:
       react-redux:
         specifier: ^8.1.2
         version: 8.1.3(@types/react@18.2.79)(react-dom@18.2.0(react@18.2.0))(react-native@0.74.5(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0)(redux@4.2.1)
+      reactotron-redux:
+        specifier: ^3.1.10
+        version: 3.1.10(reactotron-core-client@2.9.4)(redux@4.2.1)
       redux:
         specifier: ^4.2.1
         version: 4.2.1
@@ -212,6 +224,9 @@ importers:
       twrnc:
         specifier: ^4.5.1
         version: 4.5.1(react-native@0.74.5(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@types/react@18.2.79)(react@18.2.0))
+      use-deep-compare-effect:
+        specifier: ^1.8.1
+        version: 1.8.1(react@18.2.0)
     devDependencies:
       '@babel/core':
         specifier: ^7.20.0
@@ -2222,6 +2237,14 @@ packages:
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
+  '@tanstack/query-core@5.60.6':
+    resolution: {integrity: sha512-tI+k0KyCo1EBJ54vxK1kY24LWj673ujTydCZmzEZKAew4NqZzTaVQJEuaG1qKj2M03kUHN46rchLRd+TxVq/zQ==}
+
+  '@tanstack/react-query@5.61.3':
+    resolution: {integrity: sha512-c3Oz9KaCBapGkRewu7AJLhxE9BVqpMcHsd3KtFxSd7FSCu2qGwqfIN37zbSGoyk6Ix9LGZBNHQDPI6GpWABnmA==}
+    peerDependencies:
+      react: ^18 || ^19
+
   '@testing-library/jest-native@5.4.3':
     resolution: {integrity: sha512-/sSDGaOuE+PJ1Z9Kp4u7PQScSVVXGud59I/qsBFFJvIbcn4P6yYw6cBnBmbPF+X9aRIsTJRDl6gzw5ZkJNm66w==}
     peerDependencies:
@@ -2290,6 +2313,9 @@ packages:
 
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
+
+  '@types/lodash@4.17.13':
+    resolution: {integrity: sha512-lfx+dftrEZcdBPczf9d0Qv0x+j/rfNCMuC6OcfXmO8gkfeNAY88PgKUbvG56whcN23gc27yenwF6oJZXGFpYxg==}
 
   '@types/node-forge@1.3.11':
     resolution: {integrity: sha512-FQx220y22OKNTqaByeBGqHWYz4cl94tpcxeFdvBo3wjG6XPBuZ0BNgNZRV5J5TFmmcsJ4IzsLkmGRiQbnYsBEQ==}
@@ -5703,6 +5729,12 @@ packages:
     peerDependencies:
       react-native: '>=0.40.0'
 
+  reactotron-redux@3.1.10:
+    resolution: {integrity: sha512-35uD3SlUxkgQm6g/S8+bYho6N47KzH2lAsjXnWirKUXS23Hb6ovOsWnrNb8JipLzfMgb2CCpL7oHB5FCwr4RoQ==}
+    peerDependencies:
+      reactotron-core-client: '*'
+      redux: '>=4.0.0'
+
   read-cache@1.0.0:
     resolution: {integrity: sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==}
 
@@ -6510,6 +6542,12 @@ packages:
 
   url-join@4.0.0:
     resolution: {integrity: sha512-EGXjXJZhIHiQMK2pQukuFcL303nskqIRzWvPvV5O8miOfwoUb9G+a/Cld60kUyeaybEI94wvVClT10DtfeAExA==}
+
+  use-deep-compare-effect@1.8.1:
+    resolution: {integrity: sha512-kbeNVZ9Zkc0RFGpfMN3MNfaKNvcLNyxOAAd9O4CBZ+kCBXXscn9s/4I+8ytUER4RDpEYs5+O6Rs4PqiZ+rHr5Q==}
+    engines: {node: '>=10', npm: '>=6'}
+    peerDependencies:
+      react: '>=16.13'
 
   use-latest-callback@0.1.11:
     resolution: {integrity: sha512-8nhb73STSD/z3GTHklvNjL8F9wMOo0bj0AFnulpIYuFTm6aQlT3ZcNbXF2YurKImIY8+kpSFSDHZZyQmurGrhw==}
@@ -9689,6 +9727,13 @@ snapshots:
     dependencies:
       storybook: 8.4.5(prettier@2.8.8)
 
+  '@tanstack/query-core@5.60.6': {}
+
+  '@tanstack/react-query@5.61.3(react@18.2.0)':
+    dependencies:
+      '@tanstack/query-core': 5.60.6
+      react: 18.2.0
+
   '@testing-library/jest-native@5.4.3(react-native@0.74.5(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@types/react@18.2.79)(react@18.2.0))(react-test-renderer@18.3.1(react@18.2.0))(react@18.2.0)':
     dependencies:
       chalk: 4.1.2
@@ -9776,6 +9821,8 @@ snapshots:
   '@types/json-schema@7.0.15': {}
 
   '@types/json5@0.0.29': {}
+
+  '@types/lodash@4.17.13': {}
 
   '@types/node-forge@1.3.11':
     dependencies:
@@ -13844,6 +13891,11 @@ snapshots:
     transitivePeerDependencies:
       - react
 
+  reactotron-redux@3.1.10(reactotron-core-client@2.9.4)(redux@4.2.1):
+    dependencies:
+      reactotron-core-client: 2.9.4
+      redux: 4.2.1
+
   read-cache@1.0.0:
     dependencies:
       pify: 2.3.0
@@ -14719,6 +14771,12 @@ snapshots:
   urijs@1.19.11: {}
 
   url-join@4.0.0: {}
+
+  use-deep-compare-effect@1.8.1(react@18.2.0):
+    dependencies:
+      '@babel/runtime': 7.25.7
+      dequal: 2.0.3
+      react: 18.2.0
 
   use-latest-callback@0.1.11(react@18.2.0):
     dependencies:

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, View, Text, Platform } from 'react-native';
+import { StatusBar, Text, Platform, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,11 +14,11 @@ import {
 import DeviceInfo from 'react-native-device-info';
 import * as WebBrowser from 'expo-web-browser';
 import ChatWootWidget from '@chatwoot/react-native-widget';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import * as Application from 'expo-application';
 import { Account, AvailabilityStatus } from '@/types';
-import { clearContacts } from '@/reducer/contactSlice';
-import { clearAllConversations } from '@/reducer/conversationSlice';
+import { clearAllConversations } from '@/store/conversation/conversationSlice';
+import { clearAllContacts } from '@/store/contact/contactSlice';
 
 import i18n from 'i18n';
 
@@ -31,12 +31,13 @@ import {
   BottomSheetHeader,
   BottomSheetWrapper,
   Button,
-  SettingsList,
   LanguageList,
   AvailabilityStatusList,
   NotificationPreferences,
   SwitchAccount,
+  SettingsList,
 } from '@/components-next';
+// import { SettingsList } from '@/components-next/list-components/SettingsList';
 import { UserAvatar } from './components/UserAvatar';
 
 import { LANGUAGES, TAB_BAR_HEIGHT } from '@/constants';
@@ -61,7 +62,7 @@ import AnalyticsHelper from '@/helpers/AnalyticsHelper';
 import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/helpers/permissionHelper';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
-import { useAppSelector } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -71,7 +72,7 @@ const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVe
 
 const SettingsScreen = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const availabilityStatus =
     (useSelector(selectCurrentUserAvailability) as AvailabilityStatus) || 'offline';
 
@@ -88,8 +89,6 @@ const SettingsScreen = () => {
   } = user || {};
 
   useEffect(() => {
-    // TODO: Fix this later
-    // @ts-expect-error TODO: Fix typing for dispatch
     dispatch(settingsActions.getNotificationSettings());
   }, [dispatch]);
 
@@ -134,6 +133,7 @@ const SettingsScreen = () => {
     languagesModalSheetRef,
     notificationPreferencesSheetRef,
     switchAccountSheetRef,
+    debugActionsSheetRef,
   } = useRefsContext();
 
   const hapticSelection = useHaptic();
@@ -165,7 +165,7 @@ const SettingsScreen = () => {
   };
 
   const changeAccount = (accountId: number) => {
-    dispatch(clearContacts());
+    dispatch(clearAllContacts());
     dispatch(clearAllConversations());
     dispatch(setAccount(accountId));
     // TODO: Fix this later

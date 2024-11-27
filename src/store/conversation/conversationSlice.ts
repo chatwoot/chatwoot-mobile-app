@@ -97,6 +97,14 @@ const conversationSlice = createSlice({
       conversation.timestamp = message.createdAt;
       conversation.unreadCount = (message as Message).conversation?.unreadCount || 0;
     },
+    updateConversationLastActivity: (state, action) => {
+      const { conversationId, lastActivityAt } = action.payload;
+      const conversation = state.entities[conversationId];
+      if (!conversation) {
+        return;
+      }
+      conversation.lastActivityAt = lastActivityAt;
+    },
   },
   extraReducers: builder => {
     builder
@@ -198,7 +206,12 @@ const conversationSlice = createSlice({
   },
 });
 
-export const { clearAllConversations, updateConversation, addOrUpdateMessage, addConversation } =
-  conversationSlice.actions;
+export const {
+  clearAllConversations,
+  updateConversation,
+  updateConversationLastActivity,
+  addOrUpdateMessage,
+  addConversation,
+} = conversationSlice.actions;
 
 export default conversationSlice.reducer;

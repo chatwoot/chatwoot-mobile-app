@@ -6,18 +6,14 @@ import { useRefsContext } from '@/context';
 
 import { CaretBottomSmall } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { FilterOption } from '@/types';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '../icon';
+import { BaseFilterOption } from './FilterBar';
 
 type FilterButtonProps = {
-  handleOnPress: (type: string) => void;
+  allFilters: BaseFilterOption;
   selectedFilters: Record<string, string>;
-  allFilters:
-    | FilterOption<'assignee_type'>
-    | FilterOption<'status'>
-    | FilterOption<'sort_by'>
-    | FilterOption<'inbox_id'>;
+  handleOnPress: () => void;
 };
 
 export const FilterButton = (props: FilterButtonProps) => {
@@ -30,7 +26,7 @@ export const FilterButton = (props: FilterButtonProps) => {
   const onPress = useCallback(() => {
     hapticSelection?.();
     filtersModalSheetRef.current?.present();
-    handleOnPress(allFilters.type);
+    handleOnPress();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

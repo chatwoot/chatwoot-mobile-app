@@ -1,33 +1,33 @@
 import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { FilterBar as FilterBarComponent } from './FilterBar';
+import { FilterButton as FilterButtonComponent } from './FilterButton';
 import { filterOptions } from './ConversationFilterBar';
 
 const meta = {
   title: 'Filters',
-  component: FilterBarComponent,
+  component: FilterButtonComponent,
   decorators: [
     Story => (
-      <View style={{ flex: 1, padding: 16 }}>
+      <View style={{ flex: 1, padding: 16, maxWidth: 100 }}>
         <Story />
       </View>
     ),
   ],
-} satisfies Meta<typeof FilterBarComponent>;
+} satisfies Meta<typeof FilterButtonComponent>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const FilterBar: Story = {
+export const FilterButton: Story = {
   args: {
-    allFilters: filterOptions,
+    allFilters: filterOptions[0],
     selectedFilters: {
       assignee_type: 'me',
       status: 'open',
       sort_by: 'latest',
     },
-    onFilterPress: () => {},
+    handleOnPress: () => {},
   },
 };

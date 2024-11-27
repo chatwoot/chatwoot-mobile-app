@@ -2,18 +2,20 @@ import React from 'react';
 import Animated, { LinearTransition, withTiming } from 'react-native-reanimated';
 import { tailwind } from '@/theme';
 import { FilterButton } from './FilterButton';
-import { FilterOption } from '@/types';
+
+// Generic type for filter options
+export type BaseFilterOption = {
+  type: string;
+  options: Record<string, string>;
+  defaultFilter: string;
+};
 
 type FilterBarProps = {
-  allFilters: (
-    | FilterOption<'assignee_type'>
-    | FilterOption<'status'>
-    | FilterOption<'sort_by'>
-    | FilterOption<'inbox_id'>
-  )[];
+  allFilters: BaseFilterOption[];
   selectedFilters: Record<string, string>;
-  onFilterPress: (type: 'assignee_type' | 'status' | 'sort_by' | 'inbox_id') => void;
+  onFilterPress: (type: string) => void;
 };
+
 export const FilterBar = ({ allFilters, selectedFilters, onFilterPress }: FilterBarProps) => {
   // Row Exit Animation
   const exiting = () => {

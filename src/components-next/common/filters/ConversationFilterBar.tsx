@@ -1,10 +1,10 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
-import { setBottomSheetState } from '@/store/conversation/conversationHeaderSlice';
+import { BottomSheetType, setBottomSheetState } from '@/store/conversation/conversationHeaderSlice';
 import { selectFilters } from '@/store/conversation/conversationFilterSlice';
-import { FilterBar } from './FilterBar';
-import { AllStatusTypes, AssigneeTypes, FilterOption, SortTypes } from '@/types';
+import { BaseFilterOption, FilterBar } from './FilterBar';
+import { AllStatusTypes, AssigneeTypes, SortTypes } from '@/types';
 
 export const AssigneeOptions: Record<AssigneeTypes, string> = {
   me: 'Mine',
@@ -26,12 +26,7 @@ export const SortOptions: Record<SortTypes, string> = {
   sort_on_priority: 'Priority',
 };
 
-export const filterOptions: (
-  | FilterOption<'assignee_type'>
-  | FilterOption<'status'>
-  | FilterOption<'sort_by'>
-  | FilterOption<'inbox_id'>
-)[] = [
+export const filterOptions: BaseFilterOption[] = [
   {
     type: 'assignee_type',
     options: AssigneeOptions,
@@ -73,8 +68,8 @@ export const ConversationFilterBar = () => {
     },
   ];
 
-  const handleFilterButtonPress = (type: 'assignee_type' | 'status' | 'sort_by' | 'inbox_id') => {
-    dispatch(setBottomSheetState(type));
+  const handleFilterButtonPress = (type: string) => {
+    dispatch(setBottomSheetState(type as BottomSheetType));
   };
 
   return (

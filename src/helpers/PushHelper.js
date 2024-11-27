@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { NOTIFICATION_TYPES } from '../constants';
+import { NOTIFICATION_TYPES } from '@/constants';
 import notifee from '@notifee/react-native';
 
 export const clearAllDeliveredNotifications = () => {

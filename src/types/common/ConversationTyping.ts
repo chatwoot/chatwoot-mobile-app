@@ -1,4 +1,14 @@
+import { Conversation } from '@/types';
+
+export interface TypingData {
+  account_id: number;
+  conversation: Conversation;
+  user: TypingUser;
+}
+
 export type TypingUser = UserTyping | ContactTyping;
+
+export type TypingUserType = 'user' | 'contact';
 
 interface UserTyping {
   availabilityStatus: string;
@@ -7,7 +17,7 @@ interface UserTyping {
   id: number;
   name: string;
   thumbnail: string;
-  type: 'user';
+  type: TypingUserType;
 }
 
 interface ContactTyping {
@@ -16,5 +26,5 @@ interface ContactTyping {
   name: string;
   phoneNumber: string | null;
   thumbnail: string;
-  type: 'contact';
+  type: TypingUserType;
 }

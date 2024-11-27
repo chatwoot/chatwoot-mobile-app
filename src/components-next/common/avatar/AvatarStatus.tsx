@@ -98,8 +98,11 @@ export const AvatarStatus: React.FC<Pick<AvatarProps, 'status' | 'size' | 'paren
         <View
           style={[
             tailwind.style(cx(avatarTheme.status.active.container)),
-            avatarTheme.status.position,
-            { borderColor: tailwind.color(parentsBackground) },
+            {
+              bottom: avatarTheme.status.position[size],
+              right: avatarTheme.status.position[size],
+              borderColor: tailwind.color(parentsBackground),
+            },
           ]}>
           <View
             style={tailwind.style(

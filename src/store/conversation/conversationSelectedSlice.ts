@@ -1,3 +1,5 @@
+// Conversation Selected Slice is used to manage the selected conversations on bulk actions
+
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@/store';
 import { Conversation } from '@/types';

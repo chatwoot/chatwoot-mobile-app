@@ -62,6 +62,6 @@ export interface Message {
   sourceId: string | null;
   status: MessageStatus;
   lastNonActivityMessage: Message | null;
-  conversation: Conversation | null;
+  conversation: Conversation;
   shouldRenderAvatar?: boolean;
 }

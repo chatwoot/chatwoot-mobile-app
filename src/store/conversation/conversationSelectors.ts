@@ -54,7 +54,9 @@ export const getFilteredConversations = createDraftSafeSelector(
       latest: (a, b) => b.lastActivityAt - a.lastActivityAt,
       sort_on_created_at: (a, b) => a.createdAt - b.createdAt,
       sort_on_priority: (a, b) => {
-        return CONVERSATION_PRIORITY_ORDER[a.priority] - CONVERSATION_PRIORITY_ORDER[b.priority];
+        const priorityA = a.priority || 'low';
+        const priorityB = b.priority || 'low';
+        return CONVERSATION_PRIORITY_ORDER[priorityA] - CONVERSATION_PRIORITY_ORDER[priorityB];
       },
     };
 

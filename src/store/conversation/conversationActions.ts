@@ -7,7 +7,6 @@ import type {
   MessagesPayload,
   MessagesResponse,
   ConversationListResponse,
-  ToggleConversationStatusAPIResponse,
   ToggleConversationStatusPayload,
   BulkActionPayload,
   AssigneePayload,
@@ -25,7 +24,6 @@ import type {
   ToggleConversationStatusResponse,
 } from './conversationTypes';
 import { AxiosError } from 'axios';
-import { transformConversation } from '@/utils/camelCaseKeys';
 
 export const conversationActions = {
   fetchConversations: createAsyncThunk<ConversationListResponse, ConversationPayload>(

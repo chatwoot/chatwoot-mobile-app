@@ -35,7 +35,6 @@ const conversationHeaderSlice = createSlice({
   },
 });
 
-// Selectors
 export const selectCurrentState = (state: RootState) => state.conversationHeader.currentState;
 export const selectSearchTerm = (state: RootState) => state.conversationHeader.searchTerm;
 export const selectBottomSheetState = (state: RootState) =>

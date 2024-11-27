@@ -1,7 +1,6 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { Conversation } from '@/types/Conversation';
 import { conversationActions } from './conversationActions';
-import { transformConversation } from '@/utils/camelCaseKeys';
 import { findPendingMessageIndex } from '@/utils/conversationUtils';
 
 import { MESSAGE_TYPES } from '@/constants';
@@ -53,17 +52,15 @@ const conversationSlice = createSlice({
     clearAllConversations: conversationAdapter.removeAll,
     addConversation: (state, action) => {
       const conversation = action.payload;
-      const camelCaseConversation = transformConversation(conversation);
-      conversationAdapter.addOne(state, camelCaseConversation);
+      conversationAdapter.addOne(state, conversation);
     },
     updateConversation: (state, action) => {
       const conversation = action.payload as Conversation;
-      const camelCaseConversation = transformConversation(conversation);
       const conversationIds = conversationAdapter.getSelectors().selectIds(state);
-      if (conversationIds.includes(camelCaseConversation.id)) {
-        const { messages, ...conversationAttributes } = camelCaseConversation;
+      if (conversationIds.includes(conversation.id)) {
+        const { messages, ...conversationAttributes } = conversation;
         conversationAdapter.updateOne(state, {
-          id: camelCaseConversation.id,
+          id: conversation.id,
           changes: conversationAttributes,
         });
       } else {

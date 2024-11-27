@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { FilterButton as FilterButtonComponent } from './FilterButton';
+import { FilterButton as FilterButtonComponent } from '../FilterButton';
 import { ConversationFilterOptions } from './FilterBar.stories';
 
 const meta = {

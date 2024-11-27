@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { BaseFilterOption, FilterBar as FilterBarComponent } from './FilterBar';
+import { BaseFilterOption, FilterBar as FilterBarComponent } from '../FilterBar';
 import { AssigneeOptions, SortOptions, StatusOptions } from '@/types';
 
 export const ConversationFilterOptions: BaseFilterOption[] = [

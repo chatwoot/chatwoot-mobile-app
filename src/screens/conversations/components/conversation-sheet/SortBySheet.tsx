@@ -3,7 +3,6 @@ import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
-import { selectFilters, setFilters } from '@/store/conversation/conversationFilterSlice';
 import { TickIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { SortTypes } from '@/types';
@@ -12,6 +11,7 @@ import { BottomSheetHeader, Icon } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import i18n from '@/i18n';
 import { SortOptions } from '@/types';
+import { selectFilters, setFilters } from '@/store/conversation/conversationFilterSlice';
 
 type SortByCellProps = {
   value: string;

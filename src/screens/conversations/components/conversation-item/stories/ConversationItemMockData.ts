@@ -55,6 +55,15 @@ export const conversationWithOneLineMessage = {
   lastMessage: {
     ...conversation.lastMessage,
     content: 'Hello, how are you?',
+    messageType: 1 as MessageType,
+  },
+};
+
+export const conversationWithOutgoingMessage = {
+  ...conversation,
+  lastMessage: {
+    ...conversation.lastMessage,
+    messageType: 1 as MessageType,
   },
 };
 
@@ -101,11 +110,12 @@ export const conversationWithAttachment = {
     ...conversation.lastMessage,
     content: null,
     messageType: 1 as MessageType,
+    private: true,
     attachments: [
       {
         id: 717,
         messageId: 59389,
-        fileType: 'file',
+        fileType: 'image',
         accountId: 51,
         extension: null,
         dataUrl: 'https://i.pravatar.cc/300',
@@ -113,5 +123,14 @@ export const conversationWithAttachment = {
         fileSize: 6099463,
       },
     ],
+  },
+};
+
+export const conversationWithNonEnglishContact = {
+  ...conversation,
+  senderName: '马健航',
+  lastMessage: {
+    ...conversation.lastMessage,
+    messageType: 1 as MessageType,
   },
 };

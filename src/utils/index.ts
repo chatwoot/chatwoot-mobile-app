@@ -5,3 +5,5 @@ export * from './styleAdapter';
 export * from './useTabBarHeight';
 export * from './withAnchorPoint';
 export * from './camelCaseKeys';
+export * from './getChannelIcon';
+export * from './statusTypeIcon';

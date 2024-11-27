@@ -1,6 +1,7 @@
 import { ConversationService } from '../conversationService';
 import { apiService } from '@/services/APIService';
-import { conversationListResponse } from './conversationMockData';
+import { conversation, conversationListResponse } from './conversationMockData';
+import { transformConversation, transformConversationListMeta } from '@/utils/camelCaseKeys';
 
 jest.mock('@sentry/react-native', () => ({
   captureException: jest.fn(),
@@ -25,7 +26,9 @@ jest.mock('@/services/APIService', () => ({
 
 describe('ConversationService', () => {
   it('should fetch all conversations', async () => {
-    (apiService.get as jest.Mock).mockResolvedValueOnce(conversationListResponse);
+    (apiService.get as jest.Mock).mockResolvedValueOnce({
+      data: conversationListResponse,
+    });
 
     const result = await ConversationService.getConversations({
       status: 'open',
@@ -33,16 +36,30 @@ describe('ConversationService', () => {
       page: 1,
       sortBy: 'latest',
     });
-
-    expect(result).toEqual(conversationListResponse.data);
+    expect(apiService.get).toHaveBeenCalledWith('conversations', {
+      params: {
+        inbox_id: null,
+        assignee_type: 'all',
+        status: 'open',
+        page: 1,
+        sort_by: 'latest',
+      },
+    });
+    expect(result).toEqual({
+      conversations: conversationListResponse.data.payload.map(transformConversation),
+      meta: transformConversationListMeta(conversationListResponse.data.meta),
+    });
   });
 
   it('should fetch conversation', async () => {
-    (apiService.get as jest.Mock).mockResolvedValueOnce(conversationListResponse);
+    (apiService.get as jest.Mock).mockResolvedValueOnce({
+      data: conversation,
+    });
 
     const result = await ConversationService.fetchConversation(1);
-
-    expect(result).toEqual(conversationListResponse.data);
+    expect(result).toEqual({
+      conversation: transformConversation(conversation),
+    });
 
     expect(apiService.get).toHaveBeenCalledWith('conversations/1');
   });
@@ -50,10 +67,11 @@ describe('ConversationService', () => {
   it('should toggle conversation status', async () => {
     (apiService.post as jest.Mock).mockResolvedValueOnce({
       data: {
-        conversation_id: 1,
-        current_status: 'resolved',
-        snoozed_until: null,
-        success: true,
+        payload: {
+          conversation_id: 1,
+          current_status: 'resolved',
+          snoozed_until: null,
+        },
       },
     });
 
@@ -67,10 +85,9 @@ describe('ConversationService', () => {
     });
 
     expect(result).toEqual({
-      conversation_id: 1,
-      current_status: 'resolved',
-      snoozed_until: null,
-      success: true,
+      conversationId: 1,
+      currentStatus: 'resolved',
+      snoozedUntil: null,
     });
   });
 

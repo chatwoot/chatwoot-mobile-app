@@ -8,7 +8,7 @@ import type {
   ConversationListAPIResponse,
   ConversationAPIResponse,
   ToggleConversationStatusPayload,
-  ToggleConversationStatusAPIResponse,
+  ToggleConversationStatusResponse,
   BulkActionPayload,
   AssigneePayload,
   AssigneeAPIResponse,
@@ -23,12 +23,22 @@ import type {
   DeleteMessagePayload,
   DeleteMessageAPIResponse,
   TypingPayload,
+  ConversationListResponse,
+  MessagesResponse,
+  ConversationResponse,
+  MarkMessageReadOrUnreadResponse,
+  ToggleConversationStatusAPIResponse,
 } from './conversationTypes';
 
+import {
+  transformConversation,
+  transformConversationListMeta,
+  transformMessage,
+  transformConversationMeta,
+} from '@/utils/camelCaseKeys';
+
 export class ConversationService {
-  static async getConversations(
-    payload: ConversationPayload,
-  ): Promise<ConversationListAPIResponse> {
+  static async getConversations(payload: ConversationPayload): Promise<ConversationListResponse> {
     const { status, assigneeType, page, sortBy, inboxId = 0 } = payload;
 
     const params = {
@@ -41,9 +51,28 @@ export class ConversationService {
     const response = await apiService.get<ConversationListAPIResponse>('conversations', {
       params,
     });
-    return response.data;
+    const {
+      data: { payload: conversations, meta },
+    } = response.data;
+    const transformedResponse: ConversationListResponse = {
+      conversations: conversations.map(transformConversation),
+      meta: transformConversationListMeta(meta),
+    };
+    return transformedResponse;
   }
-  static async fetchPreviousMessages(payload: MessagesPayload): Promise<MessagesAPIResponse> {
+
+  static async fetchConversation(conversationId: number): Promise<ConversationResponse> {
+    const response = await apiService.get<ConversationAPIResponse>(
+      `conversations/${conversationId}`,
+    );
+
+    const { data: conversation } = response;
+    return {
+      conversation: transformConversation(conversation),
+    };
+  }
+
+  static async fetchPreviousMessages(payload: MessagesPayload): Promise<MessagesResponse> {
     const { conversationId, beforeId } = payload;
 
     const response = await apiService.get<MessagesAPIResponse>(
@@ -54,7 +83,12 @@ export class ConversationService {
         },
       },
     );
-    return response.data;
+    const { meta, payload: messages } = response.data;
+    return {
+      meta: transformConversationMeta(meta),
+      messages: messages.map(transformMessage),
+      conversationId,
+    };
   }
 
   static async sendMessage(
@@ -68,22 +102,22 @@ export class ConversationService {
     return response.data;
   }
 
-  static async fetchConversation(conversationId: number): Promise<ConversationAPIResponse> {
-    const response = await apiService.get<ConversationAPIResponse>(
-      `conversations/${conversationId}`,
-    );
-    return response.data;
-  }
-
   static async toggleConversationStatus({
     conversationId,
     payload,
-  }: ToggleConversationStatusPayload): Promise<ToggleConversationStatusAPIResponse> {
+  }: ToggleConversationStatusPayload): Promise<ToggleConversationStatusResponse> {
     const response = await apiService.post<ToggleConversationStatusAPIResponse>(
       `conversations/${conversationId}/toggle_status`,
       payload,
     );
-    return response.data;
+    const {
+      payload: { current_status: currentStatus, snoozed_until: snoozedUntil },
+    } = response.data;
+    return {
+      conversationId,
+      currentStatus,
+      snoozedUntil,
+    };
   }
   static async bulkAction(payload: BulkActionPayload): Promise<void> {
     await apiService.post('bulk_actions', payload);
@@ -106,22 +140,32 @@ export class ConversationService {
 
   static async markMessagesUnread(
     payload: MarkMessagesUnreadPayload,
-  ): Promise<MarkMessagesUnreadAPIResponse> {
+  ): Promise<MarkMessageReadOrUnreadResponse> {
     const { conversationId } = payload;
     const response = await apiService.post<MarkMessagesUnreadAPIResponse>(
       `conversations/${conversationId}/unread`,
     );
-    return response.data;
+    const { id, unread_count: unreadCount, agent_last_seen_at: agentLastSeenAt } = response.data;
+    return {
+      conversationId: id,
+      unreadCount,
+      agentLastSeenAt,
+    };
   }
 
   static async markMessageRead(
     payload: MarkMessageReadPayload,
-  ): Promise<MarkMessageReadAPIResponse> {
+  ): Promise<MarkMessageReadOrUnreadResponse> {
     const { conversationId } = payload;
     const response = await apiService.post<MarkMessageReadAPIResponse>(
       `conversations/${conversationId}/update_last_seen`,
     );
-    return response.data;
+    const { id, unread_count: unreadCount, agent_last_seen_at: agentLastSeenAt } = response.data;
+    return {
+      conversationId: id,
+      unreadCount,
+      agentLastSeenAt,
+    };
   }
 
   static async muteConversation(payload: MuteOrUnmuteConversationPayload): Promise<void> {

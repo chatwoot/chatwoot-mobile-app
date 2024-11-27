@@ -160,16 +160,12 @@ const conversationSlice = createSlice({
         state.uiFlags.isChangingConversationStatus = true;
       })
       .addCase(conversationActions.toggleConversationStatus.fulfilled, (state, { payload }) => {
-        const {
-          current_status: status,
-          snoozed_until: snoozedUntil,
-          conversation_id: conversationId,
-        } = payload.payload;
+        const { conversationId, currentStatus, snoozedUntil } = payload;
         const conversation = state.entities[conversationId];
         if (!conversation) {
           return;
         }
-        conversation.status = status;
+        conversation.status = currentStatus;
         conversation.snoozedUntil = snoozedUntil;
         state.uiFlags.isChangingConversationStatus = false;
       })

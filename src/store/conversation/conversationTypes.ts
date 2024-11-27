@@ -15,6 +15,11 @@ export interface ConversationListAPIResponse {
   };
 }
 
+export interface MessagesAPIResponse {
+  meta: ConversationMeta;
+  payload: Message[];
+}
+
 export interface ConversationAPIResponse {
   data: Conversation;
 }
@@ -36,14 +41,32 @@ export interface ConversationPayload {
   inboxId?: number;
 }
 
+export interface ToggleConversationStatusPayload {
+  conversationId: number;
+  payload: {
+    status: ConversationStatus;
+    snoozed_until: number | null;
+  };
+}
+
+export interface ToggleConversationStatusResponse {
+  conversationId: number;
+  currentStatus: ConversationStatus;
+  snoozedUntil: number | null;
+}
+
+export interface ToggleConversationStatusAPIResponse {
+  payload: {
+    conversation_id: number;
+    current_status: ConversationStatus;
+    snoozed_until: number | null;
+    success: boolean;
+  };
+}
+
 export interface ApiErrorResponse {
   success: boolean;
   errors: string[];
-}
-
-export interface MessagesAPIResponse {
-  meta: ConversationMeta;
-  payload: Message[];
 }
 
 export interface MessagesPayload {
@@ -118,23 +141,6 @@ export interface SendMessageAPIResponse {
     type: string;
     availability_status: string;
     thumbnail: string;
-  };
-}
-
-export interface ToggleConversationStatusPayload {
-  conversationId: number;
-  payload: {
-    status: ConversationStatus;
-    snoozed_until: number | null;
-  };
-}
-
-export interface ToggleConversationStatusAPIResponse {
-  payload: {
-    conversation_id: number;
-    current_status: ConversationStatus;
-    snoozed_until: number | null;
-    success: boolean;
   };
 }
 

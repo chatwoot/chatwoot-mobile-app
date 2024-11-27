@@ -22,27 +22,17 @@ import type {
   DeleteMessagePayload,
   DeleteMessageAPIResponse,
   TypingPayload,
+  ToggleConversationStatusResponse,
 } from './conversationTypes';
 import { AxiosError } from 'axios';
-import {
-  transformConversationMeta,
-  transformConversation,
-  transformMessage,
-  transformConversationListMeta,
-} from '@/utils/camelCaseKeys';
+import { transformConversation } from '@/utils/camelCaseKeys';
 
 export const conversationActions = {
   fetchConversations: createAsyncThunk<ConversationListResponse, ConversationPayload>(
     'conversations/fetchConversations',
     async (payload, { rejectWithValue }) => {
       try {
-        const response = await ConversationService.getConversations(payload);
-        const { payload: conversations, meta } = response.data;
-        const transformedResponse: ConversationListResponse = {
-          conversations: conversations.map(transformConversation),
-          meta: transformConversationListMeta(meta),
-        };
-        return transformedResponse;
+        return await ConversationService.getConversations(payload);
       } catch (error) {
         const { response } = error as AxiosError<ApiErrorResponse>;
         if (!response) {
@@ -56,10 +46,7 @@ export const conversationActions = {
     'conversations/fetchConversation',
     async (conversationId, { rejectWithValue }) => {
       try {
-        const response = await ConversationService.fetchConversation(conversationId);
-        return {
-          conversation: transformConversation(response),
-        };
+        return await ConversationService.fetchConversation(conversationId);
       } catch (error) {
         const { response } = error as AxiosError<ApiErrorResponse>;
         if (!response) {
@@ -73,14 +60,7 @@ export const conversationActions = {
     'conversations/fetchPreviousMessages',
     async (payload, { rejectWithValue }) => {
       try {
-        const response = await ConversationService.fetchPreviousMessages(payload);
-        const { payload: messages, meta } = response;
-        const transformedResponse: MessagesResponse = {
-          messages: messages.map(transformMessage),
-          meta: transformConversationMeta(meta),
-          conversationId: payload.conversationId,
-        };
-        return transformedResponse;
+        return await ConversationService.fetchPreviousMessages(payload);
       } catch (error) {
         const { response } = error as AxiosError<ApiErrorResponse>;
         if (!response) {
@@ -91,12 +71,11 @@ export const conversationActions = {
     },
   ),
   toggleConversationStatus: createAsyncThunk<
-    ToggleConversationStatusAPIResponse,
+    ToggleConversationStatusResponse,
     ToggleConversationStatusPayload
   >('conversations/toggleConversationStatus', async (payload, { rejectWithValue }) => {
     try {
-      const response = await ConversationService.toggleConversationStatus(payload);
-      return { payload: response.payload };
+      return await ConversationService.toggleConversationStatus(payload);
     } catch (error) {
       const { response } = error as AxiosError<ApiErrorResponse>;
       if (!response) {
@@ -145,12 +124,7 @@ export const conversationActions = {
     { rejectValue: ApiErrorResponse }
   >('conversations/markMessagesUnread', async (payload, { rejectWithValue }) => {
     try {
-      const response = await ConversationService.markMessagesUnread(payload);
-      return {
-        conversationId: response.id,
-        agentLastSeenAt: response.agent_last_seen_at,
-        unreadCount: response.unread_count,
-      };
+      return await ConversationService.markMessagesUnread(payload);
     } catch (error) {
       const { response } = error as AxiosError<ApiErrorResponse>;
       if (!response) {
@@ -165,12 +139,7 @@ export const conversationActions = {
     { rejectValue: ApiErrorResponse }
   >('conversations/markMessageRead', async (payload, { rejectWithValue }) => {
     try {
-      const response = await ConversationService.markMessageRead(payload);
-      return {
-        conversationId: response.id,
-        agentLastSeenAt: response.agent_last_seen_at,
-        unreadCount: response.unread_count,
-      };
+      return await ConversationService.markMessageRead(payload);
     } catch (error) {
       const { response } = error as AxiosError<ApiErrorResponse>;
       if (!response) {

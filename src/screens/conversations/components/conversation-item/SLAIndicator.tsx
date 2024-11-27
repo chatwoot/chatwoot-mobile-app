@@ -74,9 +74,6 @@ export const SLAIndicator = ({
     return null;
   }
 
-  // const isSlaMissed = slaStatus?.isSlaMissed;
-  // const icon = isSlaMissed ? 'flame-outline' : 'alarm-outline';
-
   const sLAStatusText = () => {
     const upperCaseType = slaStatus?.type?.toUpperCase(); // FRT, NRT, or RT
     return i18n.t(`SLA.${upperCaseType}`);
@@ -84,7 +81,7 @@ export const SLAIndicator = ({
 
   return (
     <NativeView style={tailwind.style('flex flex-row justify-center items-center')}>
-      <SlaMissedIcon />
+      <SlaMissedIcon color={slaStatus?.isSlaMissed ? '#E592A3' : '#BBBBBB'} />
       <Text style={tailwind.style('pl-1 text-ruby-800 text-sm leading-[20px] text-center')}>
         {`${sLAStatusText()}: ${slaStatus?.threshold}`}
       </Text>

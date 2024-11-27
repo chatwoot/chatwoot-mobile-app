@@ -12,7 +12,7 @@ import { Icon } from '../icon';
 
 type FilterButtonProps = {
   handleOnPress: (type: string) => void;
-  currentFilters: Record<string, string>;
+  selectedFilters: Record<string, string>;
   allFilters:
     | FilterOption<'assignee_type'>
     | FilterOption<'status'>
@@ -21,7 +21,7 @@ type FilterButtonProps = {
 };
 
 export const FilterButton = (props: FilterButtonProps) => {
-  const { allFilters, handleOnPress, currentFilters } = props;
+  const { allFilters, handleOnPress, selectedFilters } = props;
   const { handlers, animatedStyle } = useScaleAnimation();
   const { filtersModalSheetRef } = useRefsContext();
 
@@ -44,7 +44,7 @@ export const FilterButton = (props: FilterButtonProps) => {
           style={tailwind.style(
             'text-sm font-inter-medium-24 leading-[16px] tracking-[0.24px] pr-1 capitalize text-gray-950',
           )}>
-          {allFilters.options[currentFilters[allFilters.type] as keyof typeof allFilters.options]}
+          {allFilters.options[selectedFilters[allFilters.type] as keyof typeof allFilters.options]}
         </Animated.Text>
         <Icon icon={<CaretBottomSmall />} size={7.5} />
       </Pressable>

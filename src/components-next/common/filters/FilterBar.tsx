@@ -5,16 +5,16 @@ import { FilterButton } from './FilterButton';
 import { FilterOption } from '@/types';
 
 type FilterBarProps = {
-  filterOptions: (
+  allFilters: (
     | FilterOption<'assignee_type'>
     | FilterOption<'status'>
     | FilterOption<'sort_by'>
     | FilterOption<'inbox_id'>
   )[];
-  currentFilters: Record<string, string>;
+  selectedFilters: Record<string, string>;
   onFilterPress: (type: 'assignee_type' | 'status' | 'sort_by' | 'inbox_id') => void;
 };
-export const FilterBar = ({ filterOptions, currentFilters, onFilterPress }: FilterBarProps) => {
+export const FilterBar = ({ allFilters, selectedFilters, onFilterPress }: FilterBarProps) => {
   // Row Exit Animation
   const exiting = () => {
     'worklet';
@@ -34,7 +34,7 @@ export const FilterBar = ({ filterOptions, currentFilters, onFilterPress }: Filt
     <Animated.View
       exiting={exiting}
       style={tailwind.style('px-3 pt-2 pb-1.5 h-[46px] flex flex-row')}>
-      {filterOptions.map((value, index) => (
+      {allFilters.map((value, index) => (
         <Animated.View
           layout={LinearTransition.springify().stiffness(200).damping(24)}
           key={index}
@@ -42,7 +42,7 @@ export const FilterBar = ({ filterOptions, currentFilters, onFilterPress }: Filt
           <FilterButton
             handleOnPress={() => onFilterPress(value.type)}
             allFilters={value}
-            currentFilters={currentFilters}
+            selectedFilters={selectedFilters}
           />
         </Animated.View>
       ))}

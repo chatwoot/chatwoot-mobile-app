@@ -62,7 +62,7 @@ const getInboxOptions = (inboxes: { id: number; name: string }[]) => {
 export const ConversationFilterBar = () => {
   const dispatch = useAppDispatch();
   const inboxes = useAppSelector(selectAllInboxes);
-  const currentFilters = useAppSelector(selectFilters);
+  const selectedFilters = useAppSelector(selectFilters);
 
   const dynamicFilterOptions = [
     ...filterOptions,
@@ -79,8 +79,8 @@ export const ConversationFilterBar = () => {
 
   return (
     <FilterBar
-      filterOptions={dynamicFilterOptions}
-      currentFilters={currentFilters}
+      allFilters={dynamicFilterOptions}
+      selectedFilters={selectedFilters}
       onFilterPress={handleFilterButtonPress}
     />
   );

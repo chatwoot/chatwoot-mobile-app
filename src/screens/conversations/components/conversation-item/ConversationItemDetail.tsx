@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { Dimensions, ImageURISource, Text } from 'react-native';
 import { LinearTransition } from 'react-native-reanimated';
 import { isEqual } from 'lodash';
@@ -69,11 +69,13 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
     allLabels,
   } = props;
 
+  const [shouldShowSLA, setShouldShowSLA] = useState(true);
+
   const hasPriority = priority !== null;
 
   const hasLabels = labels.length > 0;
 
-  const hasSLA = !!slaPolicyId;
+  const hasSLA = !!slaPolicyId && shouldShowSLA;
 
   if (!lastMessage) {
     return null;
@@ -129,6 +131,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
                       status: string;
                     }
                   }
+                  onSLAStatusChange={setShouldShowSLA}
                 />
               )}
               {hasLabels && hasSLA && (

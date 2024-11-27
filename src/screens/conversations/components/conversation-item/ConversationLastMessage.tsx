@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 
 import { tailwind } from '@/theme';
 import { NativeView } from '@/components-next/native-components';
@@ -49,13 +49,13 @@ const MessageType = ({ message }: { message: Message }) => {
 
   if (isOutgoing || isPrivate) {
     return (
-      <View style={tailwind.style('flex-row items-center mr-2 gap-1')}>
+      <NativeView style={tailwind.style('flex-row items-center mr-2 gap-1')}>
         {isPrivate ? (
-          <Icon icon={<PrivateNoteIcon />} />
+          <Icon icon={<PrivateNoteIcon />} style={tailwind.style('top-0.2')} />
         ) : (
-          isOutgoing && <Icon icon={<OutgoingIcon />} />
+          isOutgoing && <Icon icon={<OutgoingIcon />} style={tailwind.style('top-0.2')} />
         )}
-      </View>
+      </NativeView>
     );
   }
   return null;
@@ -93,14 +93,16 @@ const MessageContent = ({
     );
   } else if (lastMessageContent) {
     return (
-      <Text
-        numberOfLines={numberOfLines}
-        style={tailwind.style(
-          'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
-        )}>
-        <MessageType message={message} />
-        {lastMessageContent}
-      </Text>
+      <NativeView style={tailwind.style('flex-row gap-1 items-center')}>
+        <Text
+          numberOfLines={numberOfLines}
+          style={tailwind.style(
+            'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[23px] text-gray-900',
+          )}>
+          <MessageType message={message} />
+          {lastMessageContent}
+        </Text>
+      </NativeView>
     );
   } else if (message.attachments) {
     return (

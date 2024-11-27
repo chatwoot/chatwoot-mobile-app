@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AssignableAgentService } from './assignableAgentService';
-import type { AssignableAgentAPIResponse, AssignableAgentPayload } from './assignableAgentTypes';
+import type { AssignableAgentPayload, AssignableAgentResponse } from './assignableAgentTypes';
 
 export const assignableAgentActions = {
-  fetchAgents: createAsyncThunk<AssignableAgentAPIResponse, AssignableAgentPayload>(
+  fetchAgents: createAsyncThunk<AssignableAgentResponse, AssignableAgentPayload>(
     'assignableAgents/fetchAgents',
     async (payload, { rejectWithValue }) => {
       try {

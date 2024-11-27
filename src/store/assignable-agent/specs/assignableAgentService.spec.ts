@@ -18,7 +18,7 @@ jest.mock('@/services/APIService', () => ({
   apiService: {
     get: jest.fn(),
     post: jest.fn(),
-    put: jest.fn(),
+    put: jest.fn(), 
     delete: jest.fn(),
   },
 }));
@@ -37,6 +37,9 @@ describe('inboxAgentService', () => {
         'inbox_ids[]': [1],
       },
     });
-    expect(result).toEqual(mockInboxAgentsResponse.data);
+    expect(result).toEqual({
+      agents: mockInboxAgentsResponse.data.payload,
+      inboxIds: [1],
+    });
   });
 });

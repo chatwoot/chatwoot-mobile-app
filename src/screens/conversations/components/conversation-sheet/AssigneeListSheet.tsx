@@ -11,7 +11,7 @@ import { TickIcon } from '@/svg-icons';
 
 import { assignableAgentActions } from '@/store/assignable-agent/assignableAgentActions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { filterAssignableAgents } from '@/store/assignable-agent/assignableAgentSelectors';
+import { selectAssignableAgentsByInboxId } from '@/store/assignable-agent/assignableAgentSelectors';
 import {
   selectSelectedIds,
   selectSelectedInboxes,
@@ -112,13 +112,16 @@ export const AssigneeListSheet = () => {
   const { actionsModalSheetRef } = useRefsContext();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const agents = useAppSelector(state => filterAssignableAgents(state, searchTerm));
   const selectedInboxes = useAppSelector(selectSelectedInboxes);
   const selectedConversation = useAppSelector(selectSelectedConversation);
 
   const inboxId = selectedConversation?.inboxId;
 
   const inboxIds = inboxId ? [inboxId] : selectedInboxes;
+
+  const agents = useAppSelector(state =>
+    selectAssignableAgentsByInboxId(state, inboxIds, searchTerm),
+  );
 
   const assigneeId = selectedConversation?.meta?.assignee?.id;
 

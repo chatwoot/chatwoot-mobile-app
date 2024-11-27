@@ -1,22 +1,22 @@
-import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { Agent } from '@/types';
 import { assignableAgentActions } from './assignableAgentActions';
 
-export const assignableAgentAdapter = createEntityAdapter<Agent>({
-  selectId: agent => agent.id,
-});
-
 export interface AssignableAgentState {
+  records: {
+    [key: string]: Agent[];
+  };
   uiFlags: {
     isLoading: boolean;
   };
 }
 
-const initialState = assignableAgentAdapter.getInitialState<AssignableAgentState>({
+const initialState: AssignableAgentState = {
+  records: {},
   uiFlags: {
     isLoading: false,
   },
-});
+};
 
 const assignableAgentSlice = createSlice({
   name: 'assignableAgent',
@@ -28,8 +28,11 @@ const assignableAgentSlice = createSlice({
         state.uiFlags.isLoading = true;
       })
       .addCase(assignableAgentActions.fetchAgents.fulfilled, (state, action) => {
-        const { payload: agents } = action.payload;
-        assignableAgentAdapter.setAll(state, agents);
+        const { inboxIds, agents } = action.payload;
+        state.records = {
+          ...state.records,
+          [inboxIds.join(',')]: agents,
+        };
         state.uiFlags.isLoading = false;
       })
       .addCase(assignableAgentActions.fetchAgents.rejected, (state, { error }) => {

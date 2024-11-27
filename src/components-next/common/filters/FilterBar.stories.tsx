@@ -66,7 +66,7 @@ const MockStore = ({ children }: { children: React.ReactNode }) => (
 );
 
 const meta = {
-  title: 'FilterBar',
+  title: 'Conversation Filters',
   component: FilterBar,
   decorators: [
     Story => (
@@ -81,6 +81,6 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Filter: Story = {
   decorators: [Story => <MockStore>{Story()}</MockStore>],
 };

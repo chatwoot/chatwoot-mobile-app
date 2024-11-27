@@ -9,7 +9,7 @@ import Animated, {
 } from 'react-native-reanimated';
 // import { useNavigation } from '@react-navigation/native';
 
-import { FilterBar, Icon } from '@/components-next/common';
+import { Icon } from '@/components-next/common';
 import { useConversationListStateContext } from '@/context';
 import { CheckedIcon, CloseIcon, FilterIcon, UncheckedIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
@@ -28,6 +28,7 @@ import {
   selectSelectedConversations,
 } from '@/store/conversation/conversationSelectedSlice';
 import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
+import { ConversationFilterBar } from '@/components-next/common/filters/ConversationFilterBar';
 import i18n from '@/i18n';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -244,7 +245,7 @@ export const ConversationHeader = () => {
           </Pressable>
         </Animated.View>
       </Animated.View>
-      {currentState === 'Filter' ? <FilterBar /> : null}
+      {currentState === 'Filter' ? <ConversationFilterBar /> : null}
     </Animated.View>
   );
 };

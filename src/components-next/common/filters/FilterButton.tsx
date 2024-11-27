@@ -4,17 +4,16 @@ import Animated from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
 
-import { selectFilters } from '@/store/conversation/conversationFilterSlice';
 import { CaretBottomSmall } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { FilterOption } from '@/types';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '../icon';
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import { setBottomSheetState } from '@/store/conversation/conversationHeaderSlice';
+
 type FilterButtonProps = {
-  handleOnPress: () => void;
-  filterData:
+  handleOnPress: (type: string) => void;
+  currentFilters: Record<string, string>;
+  allFilters:
     | FilterOption<'assignee_type'>
     | FilterOption<'status'>
     | FilterOption<'sort_by'>
@@ -22,19 +21,16 @@ type FilterButtonProps = {
 };
 
 export const FilterButton = (props: FilterButtonProps) => {
-  const { handleOnPress, filterData } = props;
+  const { allFilters, handleOnPress, currentFilters } = props;
   const { handlers, animatedStyle } = useScaleAnimation();
   const { filtersModalSheetRef } = useRefsContext();
 
-  const filters = useAppSelector(selectFilters);
-  const dispatch = useAppDispatch();
   const hapticSelection = useHaptic();
 
   const onPress = useCallback(() => {
-    handleOnPress?.();
     hapticSelection?.();
     filtersModalSheetRef.current?.present();
-    dispatch(setBottomSheetState(filterData.type));
+    handleOnPress(allFilters.type);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -48,7 +44,7 @@ export const FilterButton = (props: FilterButtonProps) => {
           style={tailwind.style(
             'text-sm font-inter-medium-24 leading-[16px] tracking-[0.24px] pr-1 capitalize text-gray-950',
           )}>
-          {filterData.options[filters[filterData.type] as keyof typeof filterData.options]}
+          {allFilters.options[currentFilters[allFilters.type] as keyof typeof allFilters.options]}
         </Animated.Text>
         <Icon icon={<CaretBottomSmall />} size={7.5} />
       </Pressable>

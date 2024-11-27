@@ -7,10 +7,11 @@ import { TickIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { AssigneeTypes } from '@/types';
 import { useHaptic } from '@/utils';
-import { AssigneeOptions, BottomSheetHeader, Icon } from '@/components-next';
+import { BottomSheetHeader, Icon } from '@/components-next';
 import { selectFilters, setFilters } from '@/store/conversation/conversationFilterSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import i18n from '@/i18n';
+import { AssigneeOptions } from '@/types';
 
 type AssigneeTypeCellProps = {
   value: string;

@@ -4,27 +4,7 @@ import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
 import { BottomSheetType, setBottomSheetState } from '@/store/conversation/conversationHeaderSlice';
 import { selectFilters } from '@/store/conversation/conversationFilterSlice';
 import { BaseFilterOption, FilterBar } from './FilterBar';
-import { AllStatusTypes, AssigneeTypes, SortTypes } from '@/types';
-
-export const AssigneeOptions: Record<AssigneeTypes, string> = {
-  me: 'Mine',
-  unassigned: 'Unassigned',
-  all: 'All',
-};
-
-export const StatusOptions: Record<AllStatusTypes, string> = {
-  all: 'All',
-  open: 'Open',
-  resolved: 'Resolved',
-  pending: 'Pending',
-  snoozed: 'Snoozed',
-};
-
-export const SortOptions: Record<SortTypes, string> = {
-  latest: 'Latest',
-  sort_on_created_at: 'Created At',
-  sort_on_priority: 'Priority',
-};
+import { AssigneeOptions, StatusOptions, SortOptions } from '@/types/common/ConversationStatus';
 
 export const filterOptions: BaseFilterOption[] = [
   {

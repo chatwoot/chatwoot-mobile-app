@@ -7,7 +7,7 @@ import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
 import { ConversationStatus, StatusCollection } from '@/types';
 import { getStatusTypeIcon, useHaptic } from '@/utils';
-import { BottomSheetHeader, Icon, StatusOptions } from '@/components-next';
+import { BottomSheetHeader, Icon } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import {
   selectSelectedConversation,
@@ -16,7 +16,7 @@ import {
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import i18n from '@/i18n';
-
+import { StatusOptions } from '@/types';
 type StatusCellProps = {
   value: StatusCollection;
   isLastItem: boolean;

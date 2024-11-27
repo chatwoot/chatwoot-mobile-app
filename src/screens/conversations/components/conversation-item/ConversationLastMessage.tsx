@@ -117,7 +117,14 @@ const MessageContent = ({
       </NativeView>
     );
   }
-  return <Text>{i18n.t('CONVERSATION.NO_CONTENT')}</Text>;
+  return (
+    <Text
+      style={tailwind.style(
+        'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
+      )}>
+      {i18n.t('CONVERSATION.NO_CONTENT')}
+    </Text>
+  );
 };
 
 export const ConversationLastMessage = (props: ConversationLastMessageProps) => {

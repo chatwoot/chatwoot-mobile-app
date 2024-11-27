@@ -14,6 +14,7 @@ export const SLAIndicator = ({
   slaPolicyId,
   appliedSla,
   appliedSlaConversationDetails,
+  onSLAStatusChange,
 }: {
   slaPolicyId: number;
   appliedSla: SLA;
@@ -22,6 +23,7 @@ export const SLAIndicator = ({
     waitingSince: number;
     status: string;
   };
+  onSLAStatusChange: (hasThreshold: boolean) => void;
 }) => {
   const [slaStatus, setSlaStatus] = useState<SLAStatus | null>(null);
 
@@ -67,9 +69,11 @@ export const SLAIndicator = ({
     };
   }, [createTimer, updateSlaStatus]);
 
-  const hasSlaThreshold = slaStatus?.threshold;
+  useEffect(() => {
+    onSLAStatusChange(slaStatus?.threshold ? true : false);
+  }, [slaStatus?.threshold, onSLAStatusChange]);
 
-  if (!hasSlaThreshold) {
+  if (!slaStatus?.threshold) {
     return null;
   }
 

@@ -9,6 +9,7 @@ import {
   conversationWithAttachment,
   conversationWithOutgoingMessage,
   conversationWithNonEnglishContact,
+  conversationWithMoreLabels,
 } from './ConversationItemMockData';
 import { Text, ScrollView } from 'react-native';
 import { tailwind } from '@/theme';
@@ -57,7 +58,20 @@ export const AllVariants: Story = {
   render: () => (
     <ScrollView
       contentContainerStyle={tailwind.style('flex flex-col justify-center items-center gap-2')}>
-      <Text>Conversation with one line message</Text>
+      <Text>Conversation with more labels</Text>
+      <ConversationItem
+        {...conversationWithMoreLabels}
+        isSelected={false}
+        unreadCount={2}
+        availabilityStatus="offline"
+        inboxId={1}
+        assignee={{
+          id: 1,
+          name: 'John Doe',
+        }}
+        currentState="none"
+      />
+
       <ConversationItem
         {...conversationWithOneLineMessage}
         isSelected={false}
@@ -81,6 +95,7 @@ export const AllVariants: Story = {
         assignee={null}
       />
       <Text>Conversation with attachment</Text>
+      {/* @ts-expect-error - TODO: fix this */}
       <ConversationItem
         {...conversationWithAttachment}
         isSelected={false}
@@ -131,16 +146,6 @@ export const AllVariants: Story = {
         currentState="none"
       />
 
-      <Text>Conversation with SLA</Text>
-      <ConversationItem
-        {...conversationWithSLA}
-        isSelected={false}
-        unreadCount={1}
-        availabilityStatus="typing"
-        inboxId={1}
-        assignee={null}
-        currentState="none"
-      />
       <Text>Conversation with label and SLA</Text>
       <ConversationItem
         {...conversationWithLabelAndSLA}

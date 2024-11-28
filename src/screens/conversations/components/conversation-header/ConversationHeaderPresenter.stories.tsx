@@ -17,7 +17,7 @@ const meta: Meta<typeof ConversationHeaderPresenter> = {
   argTypes: {
     currentState: {
       control: 'select',
-      options: ['Default', 'Selection', 'Filter', 'Search'],
+      options: ['none', 'Select', 'Filter', 'Search'],
     },
     isSelectedAll: {
       control: 'boolean',
@@ -44,13 +44,13 @@ export const Default: Story = {
   },
 };
 
-export const Title = ({ title }: { title: string }) => (
+const Title = ({ title }: { title: string }) => (
   <View style={tailwind.style('flex items-center justify-center')}>
     <Text style={tailwind.style('text-md font-medium italic text-gray-800')}>{title}</Text>
   </View>
 );
 
-export const HeaderContainer = ({ children }: { children: React.ReactNode }) => (
+const HeaderContainer = ({ children }: { children: React.ReactNode }) => (
   <View style={tailwind.style('flex-1 border-b-[1px] border-blackA-A3')}>{children}</View>
 );
 

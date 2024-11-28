@@ -69,7 +69,7 @@ const AssigneeTypeStack = (props: AssigneeTypeStackProps) => {
   );
 };
 
-export const AssigneeTypeSheet = () => {
+export const AssigneeTypeFilters = () => {
   return (
     <Animated.View>
       <BottomSheetHeader headerText={i18n.t('CONVERSATION.FILTERS.ASSIGNEE_TYPE.TITLE')} />

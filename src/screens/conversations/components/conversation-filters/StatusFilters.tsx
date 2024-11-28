@@ -78,7 +78,7 @@ const StatusStack = (props: StatusStackProps) => {
   );
 };
 
-export const StatusListSheet = () => {
+export const StatusFilters = () => {
   return (
     <BottomSheetView>
       <BottomSheetHeader headerText={i18n.t('CONVERSATION.FILTERS.STATUS.TITLE')} />

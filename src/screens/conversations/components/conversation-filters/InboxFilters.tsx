@@ -88,7 +88,7 @@ const InboxStack = (props: InboxStackProps) => {
   );
 };
 
-export const InboxListSheet = () => {
+export const InboxFilters = () => {
   const inboxes = useAppSelector(selectAllInboxes);
   const inboxList = [defaultInbox, ...inboxes].map(inbox => ({
     id: inbox.id,

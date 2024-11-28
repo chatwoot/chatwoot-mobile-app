@@ -70,7 +70,7 @@ const SortByStack = (props: SortByStackProps) => {
   );
 };
 
-export const SortBySheet = () => {
+export const SortByFilters = () => {
   return (
     <Animated.View>
       <BottomSheetHeader headerText={i18n.t('CONVERSATION.FILTERS.SORT_BY.TITLE')} />

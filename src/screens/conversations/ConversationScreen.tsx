@@ -12,13 +12,13 @@ import { FlashList } from '@shopify/flash-list';
 import {
   ConversationItemContainer,
   ConversationHeader,
-  InboxListSheet,
-  StatusListSheet,
-  SortBySheet,
-  AssigneeTypeSheet,
   AssigneeListSheet,
   LabelListSheet,
   StatusChangeListSheet,
+  StatusFilters,
+  SortByFilters,
+  InboxFilters,
+  AssigneeTypeFilters,
 } from './components';
 
 import { ActionTabs, BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
@@ -287,10 +287,10 @@ const ConversationScreen = () => {
           snapPoints={filterSnapPoints}
           onDismiss={handleOnDismiss}>
           <BottomSheetWrapper>
-            {currentBottomSheet === 'status' ? <StatusListSheet /> : null}
-            {currentBottomSheet === 'sort_by' ? <SortBySheet /> : null}
-            {currentBottomSheet === 'assignee_type' ? <AssigneeTypeSheet /> : null}
-            {currentBottomSheet === 'inbox_id' ? <InboxListSheet /> : null}
+            {currentBottomSheet === 'status' ? <StatusFilters /> : null}
+            {currentBottomSheet === 'sort_by' ? <SortByFilters /> : null}
+            {currentBottomSheet === 'assignee_type' ? <AssigneeTypeFilters /> : null}
+            {currentBottomSheet === 'inbox_id' ? <InboxFilters /> : null}
           </BottomSheetWrapper>
         </BottomSheetModal>
         <BottomSheetModal

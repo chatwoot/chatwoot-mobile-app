@@ -86,7 +86,7 @@ const MessageContent = ({
           style={tailwind.style(
             'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
           )}>
-          <MessageType message={message} />
+          <MessageType message={message} style={tailwind.style('ml-1')} />
           {i18n.t(`CONVERSATION.ATTACHMENTS.image.CONTENT`)}
         </Text>
       </NativeView>

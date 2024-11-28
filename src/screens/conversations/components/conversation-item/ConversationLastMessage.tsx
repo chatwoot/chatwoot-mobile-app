@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { StyleProp, Text, ViewStyle } from 'react-native';
 
 import { tailwind } from '@/theme';
 import { NativeView } from '@/components-next/native-components';
@@ -43,17 +43,17 @@ const getAttachmentIcon = (fileType: string) => {
   }
 };
 
-const MessageType = ({ message }: { message: Message }) => {
+const MessageType = ({ message, style }: { message: Message; style?: StyleProp<ViewStyle> }) => {
   const { private: isPrivate } = message;
   const isOutgoing = message?.messageType === MESSAGE_TYPES.OUTGOING;
 
   if (isOutgoing || isPrivate) {
     return (
-      <NativeView style={tailwind.style('flex-row items-center mr-2 gap-1')}>
+      <NativeView style={[tailwind.style('flex-row items-center gap-1'), style]}>
         {isPrivate ? (
-          <Icon icon={<PrivateNoteIcon />} style={tailwind.style('top-0.2')} />
+          <Icon icon={<PrivateNoteIcon />} />
         ) : (
-          isOutgoing && <Icon icon={<OutgoingIcon />} style={tailwind.style('top-0.2')} />
+          isOutgoing && <Icon icon={<OutgoingIcon />} />
         )}
       </NativeView>
     );
@@ -99,8 +99,14 @@ const MessageContent = ({
           style={tailwind.style(
             'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[23px] text-gray-900',
           )}>
-          <MessageType message={message} />
-          {lastMessageContent}
+          <MessageType message={message} style={tailwind.style('ml-1')} />
+          <Text
+            numberOfLines={numberOfLines}
+            style={tailwind.style(
+              'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[23px] text-gray-900',
+            )}>
+            {lastMessageContent}
+          </Text>
         </Text>
       </NativeView>
     );
@@ -108,12 +114,12 @@ const MessageContent = ({
     return (
       <NativeView style={tailwind.style('flex-row gap-1 items-center')}>
         <Icon icon={getAttachmentIcon(lastMessageFileType)} />
+        <MessageType message={message} />
         <Text
           numberOfLines={1}
           style={tailwind.style(
             'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
           )}>
-          <MessageType message={message} />
           {i18n.t(`CONVERSATION.ATTACHMENTS.${lastMessageFileType}.CONTENT`)}
         </Text>
       </NativeView>

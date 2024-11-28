@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import type { Meta } from '@storybook/react';
 import { Provider } from 'react-redux';
@@ -11,7 +11,7 @@ import {
 import { useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 
 import { UpdateLabels } from '../UpdateLabels';
-import { Button } from '@/components-next';
+
 import { BottomSheetBackdrop } from '@/components-next/common/bottomsheet/BottomSheetBackdrop';
 import { useRefsContext, RefsProvider } from '@/context/RefsContext';
 import { tailwind } from '@/theme';
@@ -74,16 +74,15 @@ const BaseBottomSheet = ({ children }: { children: React.ReactNode }) => {
 
   const { filtersModalSheetRef } = useRefsContext();
 
+  useEffect(() => {
+    filtersModalSheetRef.current?.present();
+  }, []);
+
   return (
     <Provider store={mockStore}>
       <BottomSheetModalProvider>
         <RefsProvider>
           <View style={tailwind.style('flex-1 bg-white p-4')}>
-            <Button
-              text="Open Label Options"
-              handlePress={() => filtersModalSheetRef.current?.present()}
-            />
-
             <BottomSheetModal
               ref={filtersModalSheetRef}
               backdropComponent={BottomSheetBackdrop}

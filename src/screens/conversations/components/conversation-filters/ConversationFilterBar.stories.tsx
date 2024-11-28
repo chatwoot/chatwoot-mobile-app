@@ -47,7 +47,7 @@ const mockStore = configureStore({
 });
 
 const meta = {
-  title: 'ConversationFilters',
+  title: 'Conversation Filters',
   component: ConversationFilterBarComponent,
   decorators: [
     Story => (

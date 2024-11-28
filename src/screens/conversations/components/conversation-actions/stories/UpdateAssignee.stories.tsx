@@ -10,7 +10,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import { useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 
-import { AssigneeListSheet } from '../AssigneeListSheet';
+import { UpdateAssignee } from '../UpdateAssignee';
 import { Button } from '@/components-next';
 import { BottomSheetBackdrop } from '@/components-next/common/bottomsheet/BottomSheetBackdrop';
 import { useRefsContext, RefsProvider } from '@/context/RefsContext';
@@ -25,7 +25,6 @@ const mockSelectedSlice = createSlice({
         status: 'open',
         inboxId: 1,
       },
-      
     },
     selectedConversation: null,
   },
@@ -104,14 +103,14 @@ const BaseBottomSheet = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default {
-  title: 'Conversation Actions',
-  component: AssigneeListSheet,
-} satisfies Meta<typeof AssigneeListSheet>;
+  title: 'Conversation Single & Bulk Actions',
+  component: UpdateAssignee,
+} satisfies Meta<typeof UpdateAssignee>;
 
 export const ChangeAssignee = () => {
   return (
     <BaseBottomSheet>
-      <AssigneeListSheet />
+      <UpdateAssignee />
     </BaseBottomSheet>
   );
 };

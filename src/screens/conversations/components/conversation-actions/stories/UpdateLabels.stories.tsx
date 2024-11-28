@@ -10,7 +10,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import { useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 
-import { LabelListSheet } from '../LabelListSheet';
+import { UpdateLabels } from '../UpdateLabels';
 import { Button } from '@/components-next';
 import { BottomSheetBackdrop } from '@/components-next/common/bottomsheet/BottomSheetBackdrop';
 import { useRefsContext, RefsProvider } from '@/context/RefsContext';
@@ -80,7 +80,7 @@ const BaseBottomSheet = ({ children }: { children: React.ReactNode }) => {
         <RefsProvider>
           <View style={tailwind.style('flex-1 bg-white p-4')}>
             <Button
-              text="Open Status Options"
+              text="Open Label Options"
               handlePress={() => filtersModalSheetRef.current?.present()}
             />
 
@@ -108,14 +108,14 @@ const BaseBottomSheet = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default {
-  title: 'Conversation Actions',
-  component: LabelListSheet,
-} satisfies Meta<typeof LabelListSheet>;
+  title: 'Conversation Single & Bulk Actions',
+  component: UpdateLabels,
+} satisfies Meta<typeof UpdateLabels>;
 
 export const ChangeLabel = () => {
   return (
     <BaseBottomSheet>
-      <LabelListSheet />
+      <UpdateLabels />
     </BaseBottomSheet>
   );
 };

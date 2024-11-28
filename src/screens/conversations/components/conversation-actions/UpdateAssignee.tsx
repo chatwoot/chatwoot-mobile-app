@@ -107,7 +107,7 @@ const AssigneeStack = ({
   );
 };
 
-export const AssigneeListSheet = () => {
+export const UpdateAssignee = () => {
   const dispatch = useAppDispatch();
   const { actionsModalSheetRef } = useRefsContext();
   const [searchTerm, setSearchTerm] = useState('');

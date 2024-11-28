@@ -59,7 +59,7 @@ const filterStatusList = (status: ConversationStatus) => {
   return StatusList.filter(item => item.id !== status);
 };
 
-export const StatusChangeListSheet = () => {
+export const UpdateStatus = () => {
   const { actionsModalSheetRef } = useRefsContext();
 
   const dispatch = useAppDispatch();

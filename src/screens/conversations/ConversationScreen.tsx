@@ -12,13 +12,13 @@ import { FlashList } from '@shopify/flash-list';
 import {
   ConversationItemContainer,
   ConversationHeader,
-  AssigneeListSheet,
-  LabelListSheet,
-  StatusChangeListSheet,
   StatusFilters,
   SortByFilters,
   InboxFilters,
   AssigneeTypeFilters,
+  UpdateStatus,
+  UpdateLabels,
+  UpdateAssignee,
 } from './components';
 
 import { ActionTabs, BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
@@ -305,9 +305,9 @@ const ConversationScreen = () => {
           enablePanDownToClose
           snapPoints={actionSnapPoints}
           onDismiss={handleOnDismiss}>
-          {currentActionState === 'Assign' ? <AssigneeListSheet /> : null}
-          {currentActionState === 'Status' ? <StatusChangeListSheet /> : null}
-          {currentActionState === 'Label' ? <LabelListSheet /> : null}
+          {currentActionState === 'Assign' ? <UpdateAssignee /> : null}
+          {currentActionState === 'Status' ? <UpdateStatus /> : null}
+          {currentActionState === 'Label' ? <UpdateLabels /> : null}
         </BottomSheetModal>
         <ActionTabs />
       </ConversationListStateProvider>

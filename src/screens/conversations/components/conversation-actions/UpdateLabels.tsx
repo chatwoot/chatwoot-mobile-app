@@ -39,7 +39,7 @@ export const LabelStack = (props: LabelStackProps) => {
   );
 };
 
-export const LabelListSheet = () => {
+export const UpdateLabels = () => {
   const { actionsModalSheetRef } = useRefsContext();
   const dispatch = useAppDispatch();
   const selectedIds = useAppSelector(selectSelectedIds);

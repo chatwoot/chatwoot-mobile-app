@@ -10,7 +10,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import { useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 
-import { StatusChangeListSheet } from '../StatusChangeListSheet';
+import { UpdateStatus } from '../UpdateStatus';
 import { Button } from '@/components-next';
 import { BottomSheetBackdrop } from '@/components-next/common/bottomsheet/BottomSheetBackdrop';
 import { useRefsContext, RefsProvider } from '@/context/RefsContext';
@@ -86,14 +86,14 @@ const BaseBottomSheet = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default {
-  title: 'Conversation Actions',
-  component: StatusChangeListSheet,
-} satisfies Meta<typeof StatusChangeListSheet>;
+  title: 'Conversation Single & Bulk Actions',
+  component: UpdateStatus,
+} satisfies Meta<typeof UpdateStatus>;
 
 export const ChangeStatus = () => {
   return (
     <BaseBottomSheet>
-      <StatusChangeListSheet />
+      <UpdateStatus />
     </BaseBottomSheet>
   );
 };

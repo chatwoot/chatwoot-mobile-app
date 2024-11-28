@@ -46,7 +46,7 @@ class ActionCableConnector extends BaseActionCableConnector {
       conversation: { last_activity_at: lastActivityAt },
       conversation_id: conversationId,
     } = message;
-    store.dispatch(updateConversation(conversation));
+    store.dispatch(updateConversationLastActivity({ lastActivityAt, conversationId }));
   };
 
   onMessageUpdated = data => {

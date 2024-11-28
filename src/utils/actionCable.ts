@@ -1,5 +1,6 @@
 import {
   updateConversation,
+  updateConversationLastActivity,
   addConversation,
   addOrUpdateMessage,
 } from '@/store/conversation/conversationSlice';
@@ -51,9 +52,11 @@ class ActionCableConnector extends BaseActionCableConnector {
 
   onMessageCreated = (data: Message) => {
     const message = transformMessage(data);
-    const { conversation } = message;
-    // TODO: Fix Add message to conversation
-    store.dispatch(updateConversation(conversation));
+    const {
+      conversation: { lastActivityAt },
+      conversationId,
+    } = message;
+    store.dispatch(updateConversationLastActivity({ lastActivityAt, conversationId }));
   };
 
   onConversationCreated = (data: Conversation) => {

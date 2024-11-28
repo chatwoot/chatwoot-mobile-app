@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ConversationHeaderPresenter } from './ConversationHeaderPresenter';
 import { tailwind } from '@/theme';
-import { View } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 
 const meta: Meta<typeof ConversationHeaderPresenter> = {
   title: 'ConversationHeader',
@@ -44,37 +44,77 @@ export const Default: Story = {
   },
 };
 
-export const SelectAllConversations: Story = {
-  args: {
-    currentState: 'Select',
-    isSelectedAll: false,
-  },
-};
+export const Title = ({ title }: { title: string }) => (
+  <View style={tailwind.style('flex items-center justify-center')}>
+    <Text style={tailwind.style('text-md font-medium italic text-gray-800')}>{title}</Text>
+  </View>
+);
 
-export const SelectedAllConversations: Story = {
-  args: {
-    currentState: 'Select',
-    isSelectedAll: true,
-  },
-};
+export const HeaderContainer = ({ children }: { children: React.ReactNode }) => (
+  <View style={tailwind.style('flex-1 border-b-[1px] border-blackA-A3')}>{children}</View>
+);
 
-export const Filter: Story = {
-  args: {
-    currentState: 'Filter',
-    filtersAppliedCount: 2,
-  },
-};
+export const AllVariants: Story = {
+  render: () => (
+    <ScrollView contentContainerStyle={tailwind.style('flex gap-4')}>
+      <Title title="Select All" />
+      <HeaderContainer>
+        <ConversationHeaderPresenter
+          currentState="Select"
+          isSelectedAll={false}
+          filtersAppliedCount={0}
+          onLeftIconPress={() => {}}
+          onRightIconPress={() => {}}
+          onClearFilter={() => {}}
+        />
+      </HeaderContainer>
+      <Title title="Selected All" />
+      <HeaderContainer>
+        <ConversationHeaderPresenter
+          currentState="Select"
+          isSelectedAll={true}
+          filtersAppliedCount={0}
+          onLeftIconPress={() => {}}
+          onRightIconPress={() => {}}
+          onClearFilter={() => {}}
+        />
+      </HeaderContainer>
 
-export const FilterEmpty: Story = {
-  args: {
-    currentState: 'Filter',
-    filtersAppliedCount: 0,
-  },
-};
+      <Title title="Filter" />
+      <HeaderContainer>
+        <ConversationHeaderPresenter
+          currentState="Filter"
+          isSelectedAll={false}
+          filtersAppliedCount={2}
+          onLeftIconPress={() => {}}
+          onRightIconPress={() => {}}
+          onClearFilter={() => {}}
+        />
+      </HeaderContainer>
 
-export const FilterApplied: Story = {
-  args: {
-    currentState: 'none',
-    filtersAppliedCount: 2,
-  },
+      <Title title="Filter Empty" />
+      <HeaderContainer>
+        <ConversationHeaderPresenter
+          currentState="Filter"
+          isSelectedAll={false}
+          filtersAppliedCount={0}
+          onLeftIconPress={() => {}}
+          onRightIconPress={() => {}}
+          onClearFilter={() => {}}
+        />
+      </HeaderContainer>
+
+      <Title title="Filter Applied" />
+      <HeaderContainer>
+        <ConversationHeaderPresenter
+          currentState="Filter"
+          isSelectedAll={false}
+          filtersAppliedCount={2}
+          onLeftIconPress={() => {}}
+          onRightIconPress={() => {}}
+          onClearFilter={() => {}}
+        />
+      </HeaderContainer>
+    </ScrollView>
+  ),
 };

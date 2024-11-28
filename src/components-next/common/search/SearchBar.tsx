@@ -6,8 +6,8 @@ import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { SearchIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { RenderPropType } from '@/types';
-import { Spinner } from '@/components-next';
-import { Icon } from '@/components-next';
+import { Spinner } from '@/components-next/spinner';
+import { Icon } from '../icon';
 
 interface SearchBarProps extends TextInputProps {
   isLoading?: boolean;

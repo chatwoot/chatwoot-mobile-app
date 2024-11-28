@@ -2,35 +2,40 @@ import { combineReducers } from 'redux';
 
 import authSlice from '@/store/auth/authSlice';
 import settingsSlice from '@/store/settings/settingsSlice';
+import conversationFilterSlice from '@/store/conversation/conversationFilterSlice';
+import conversationSelectedSlice from '@/store/conversation/conversationSelectedSlice';
+import conversationHeaderSlice from '@/store/conversation/conversationHeaderSlice';
+import conversationActionSlice from '@/store/conversation/conversationActionSlice';
+import conversationSlice from '@/store/conversation/conversationSlice';
+import inboxSlice from '@/store/inbox/inboxSlice';
+import labelReducer from '@/store/label/labelSlice';
+import contactSlice from '@/store/contact/contactSlice';
+import assignableAgentSlice from '@/store/assignable-agent/assignableAgentSlice';
+import conversationTypingSlice from '@/store/conversation/conversationTypingSlice';
 
-import inboxSlice from '@/reducer/inboxSlice';
 import cannedResponseSlice from '@/reducer/cannedResponseSlice';
-import conversationSlice from '@/reducer/conversationSlice';
-import inboxAgentsSlice from '@/reducer/inboxAgentsSlice';
-import conversationTypingSlice from '@/reducer/conversationTypingSlice';
-import labelSlice from '@/reducer/labelSlice';
 import conversationLabelsSlice from '@/reducer/conversationLabelSlice';
-import teamSlice from '@/reducer/teamSlice';
 import customAttributeSlice from '@/reducer/customAttributeSlice';
-import notificationSlice from '@/reducer/notificationSlice';
 import dashboardAppSlice from '@/reducer/dashboardAppSlice';
 import conversationWatchersSlice from '@/reducer/conversationWatchersSlice';
-import contactsSlice from '@/reducer/contactSlice';
 
 export const appReducer = combineReducers({
-  cannedResponses: cannedResponseSlice,
+  auth: authSlice,
+  settings: settingsSlice,
+  conversationFilter: conversationFilterSlice,
+  selectedConversation: conversationSelectedSlice,
+  conversationHeader: conversationHeaderSlice,
   conversations: conversationSlice,
-  labels: labelSlice,
+  conversationAction: conversationActionSlice,
+  contacts: contactSlice,
+  labels: labelReducer,
+  inboxes: inboxSlice,
+  assignableAgents: assignableAgentSlice,
+  conversationTyping: conversationTypingSlice,
+  // TODO: Convert these to RTK toolkit typescript
+  cannedResponses: cannedResponseSlice,
   conversationLabels: conversationLabelsSlice,
   customAttributes: customAttributeSlice,
-  inboxes: inboxSlice,
-  inboxAgents: inboxAgentsSlice,
-  conversationTypingStatus: conversationTypingSlice,
-  settings: settingsSlice,
-  teams: teamSlice,
-  auth: authSlice,
-  notifications: notificationSlice,
   dashboardApps: dashboardAppSlice,
   conversationWatchers: conversationWatchersSlice,
-  contacts: contactsSlice,
 });

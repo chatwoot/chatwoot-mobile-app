@@ -31,6 +31,5 @@ export * from './Search';
 export * from './SendIcon';
 export * from './Tick';
 export * from './Trash';
-export * from './Audio';
-export * from './Outgoing';
+export * from './MessageType';
 export * from './Location';

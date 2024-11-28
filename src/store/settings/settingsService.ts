@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { apiService } from '@/services/APIService';
-import type { NotificationSettings, NotificationSettingsPayload } from './settingsTypes';
+import type {
+  NotificationSettings,
+  NotificationSettingsPayload,
+  PushPayload,
+} from './settingsTypes';
 
 export class SettingsService {
   static async verifyInstallationUrl(url: string): Promise<boolean> {
@@ -26,6 +30,14 @@ export class SettingsService {
 
   static async getChatwootVersion(installationUrl: string): Promise<{ version: string }> {
     const response = await axios.get(`${installationUrl}api`);
+    return response.data;
+  }
+
+  static async saveDeviceDetails(payload: PushPayload): Promise<{ fcmToken: string }> {
+    const response = await apiService.post<{ fcmToken: string }>(
+      'notification_subscriptions',
+      payload,
+    );
     return response.data;
   }
 }

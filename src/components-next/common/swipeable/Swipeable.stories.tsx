@@ -33,8 +33,7 @@ const meta = {
     ),
   ],
   parameters: {
-    notes:
-      'A swipeable component that supports left and right actions with over swipe capabilities',
+    notes: 'A swipeable component that supports left and right actions with over swipe capabilities',
   },
 } satisfies Meta<typeof Swipeable>;
 
@@ -55,7 +54,7 @@ const RightElement = () => (
 );
 
 const SwipeableContent = () => (
-  <View style={tailwind.style('bg-white p-4 border border-gray-200')}>
+  <View style={tailwind.style('bg-white p-4 border-b border-gray-200')}>
     <Text style={tailwind.style('text-base')}>Swipe me left or right</Text>
   </View>
 );

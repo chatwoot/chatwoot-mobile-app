@@ -9,6 +9,7 @@ import {
   ConversationListMeta,
   Agent,
   Team,
+  TypingData,
 } from '@/types';
 import type { Inbox } from '@/types/Inbox';
 import type { NotificationMeta, Notification } from '@/types/Notification';
@@ -55,4 +56,8 @@ export const transformInboxAgent = (agent: any): Agent => {
 
 export const transformTeam = (team: any): Team => {
   return camelcaseKeys(team, { deep: true }) as unknown as Team;
+};
+
+export const transformTypingData = (typingData: any): TypingData => {
+  return camelcaseKeys(typingData, { deep: true }) as unknown as TypingData;
 };

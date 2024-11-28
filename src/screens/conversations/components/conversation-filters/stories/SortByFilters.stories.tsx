@@ -10,7 +10,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import { useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 
-import { StatusListSheet } from '../StatusListSheet';
+import { SortByFilters } from '../SortByFilters';
 import { defaultFilterState } from '@/store/conversation/conversationFilterSlice';
 import { Button } from '@/components-next';
 import { BottomSheetBackdrop } from '@/components-next/common/bottomsheet/BottomSheetBackdrop';
@@ -55,7 +55,7 @@ const BaseBottomSheet = ({ children }: { children: React.ReactNode }) => {
         <RefsProvider>
           <View style={tailwind.style('flex-1 bg-white p-4')}>
             <Button
-              text="Open Status Options"
+              text="Open Sort Options"
               handlePress={() => filtersModalSheetRef.current?.present()}
             />
 
@@ -84,13 +84,13 @@ const BaseBottomSheet = ({ children }: { children: React.ReactNode }) => {
 
 export default {
   title: 'ConversationFilters',
-  component: StatusListSheet,
-} satisfies Meta<typeof StatusListSheet>;
+  component: SortByFilters,
+} satisfies Meta<typeof SortByFilters>;
 
-export const Status = () => {
+export const SortBy = () => {
   return (
     <BaseBottomSheet>
-      <StatusListSheet />
+      <SortByFilters />
     </BaseBottomSheet>
   );
 };

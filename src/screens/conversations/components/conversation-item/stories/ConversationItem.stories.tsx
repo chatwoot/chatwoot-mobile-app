@@ -15,7 +15,7 @@ import { Text, ScrollView } from 'react-native';
 import { tailwind } from '@/theme';
 
 const meta: Meta<typeof ConversationItem> = {
-  title: 'ConversationItem',
+  title: 'Conversation Item',
   component: ConversationItem,
   argTypes: {
     currentState: {

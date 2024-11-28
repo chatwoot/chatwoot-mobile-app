@@ -4,7 +4,7 @@ import { tailwind } from '@/theme';
 import { ScrollView, View, Text } from 'react-native';
 
 const meta: Meta<typeof ConversationHeaderPresenter> = {
-  title: 'ConversationHeader',
+  title: 'Conversation Header',
   component: ConversationHeaderPresenter,
   args: {
     currentState: 'none',

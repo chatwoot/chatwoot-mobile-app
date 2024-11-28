@@ -13,7 +13,7 @@ import {
 import { appReducer } from '@/store/reducers';
 import { setStore } from '@/reducer/storeAccessor';
 import { contactListenerMiddleware } from './contact/contactListener';
-// import reactotron from '../../ReactotronConfig';
+import reactotron from '../../ReactotronConfig';
 
 const persistConfig = {
   key: 'Root',
@@ -37,7 +37,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  // enhancers: [reactotron.createEnhancer!()],
+  enhancers: [reactotron.createEnhancer!()],
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {

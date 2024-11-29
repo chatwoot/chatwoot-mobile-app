@@ -143,13 +143,13 @@ const Tabs = () => {
 
   return (
     <Tab.Navigator tabBar={CustomTabBar} initialRouteName="Conversations">
-      {/* {hasConversationPermission && (
+      {hasConversationPermission && (
         <Tab.Screen
           name="Conversations"
           options={{ headerShown: false }}
           component={ConversationStack}
         />
-      )} */}
+      )}
       {/* {hasConversationPermission && (
         <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
       )} */}

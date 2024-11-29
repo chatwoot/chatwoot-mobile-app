@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { defaultFilterState } from '@/store/conversation/conversationFilterSlice';
 import { ConversationFilterOptions } from '@/types';
 
-import { ConversationFilterBar as ConversationFilterBarComponent } from './ConversationFilterBar';
+import { ConversationFilterBar as ConversationFilterBarComponent } from '../ConversationFilterBar';
 
 const mockFilterSlice = createSlice({
   name: 'conversationFilter',

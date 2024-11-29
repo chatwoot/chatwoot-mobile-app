@@ -149,12 +149,3 @@ export const conversationWithMarkdownMessage = {
     messageType: 0 as MessageType,
   },
 };
-
-export const conversationWithNewLineMessage = {
-  ...conversation,
-  lastMessage: {
-    ...conversation.lastMessage,
-    content: `Hey Dominique,\n\n Generally, the review process takes around 3-4 weeks`,
-    messageType: 1 as MessageType,
-  },
-};

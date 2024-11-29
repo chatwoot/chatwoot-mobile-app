@@ -11,7 +11,7 @@ import {
   conversationWithMoreLabels,
   conversationWithMarkdownMessage,
 } from './ConversationItemMockData';
-import { Text, ScrollView } from 'react-native';
+import { Text, ScrollView, View } from 'react-native';
 import { tailwind } from '@/theme';
 
 const meta: Meta<typeof ConversationItem> = {
@@ -54,11 +54,17 @@ export const Basic: Story = {
   },
 };
 
+const Title = ({ title }: { title: string }) => (
+  <View style={tailwind.style('flex items-center justify-center')}>
+    <Text style={tailwind.style('text-md font-medium italic text-gray-800')}>{title}</Text>
+  </View>
+);
+
 export const AllVariants: Story = {
   render: () => (
     <ScrollView
       contentContainerStyle={tailwind.style('flex flex-col justify-center items-center gap-2')}>
-      <Text>Conversation with more labels</Text>
+      <Title title="Conversation with more labels" />
       <ConversationItem
         {...conversationWithMoreLabels}
         isSelected={false}
@@ -72,6 +78,7 @@ export const AllVariants: Story = {
         currentState="none"
       />
 
+      <Title title="Conversation with one line message" />
       <ConversationItem
         {...conversationWithOneLineMessage}
         isSelected={false}
@@ -94,7 +101,7 @@ export const AllVariants: Story = {
         unreadCount={1}
         assignee={null}
       />
-      <Text>Conversation with attachment</Text>
+      <Title title="Conversation with attachment" />
       {/* @ts-expect-error - TODO: fix this */}
       <ConversationItem
         {...conversationWithAttachment}
@@ -108,7 +115,7 @@ export const AllVariants: Story = {
           name: 'John Doe',
         }}
       />
-      <Text>Conversation with non-English contact</Text>
+      <Title title="Conversation with non-English contact" />
       <ConversationItem
         {...conversationWithNonEnglishContact}
         isSelected={false}
@@ -121,7 +128,7 @@ export const AllVariants: Story = {
           name: 'John Doe',
         }}
       />
-      <Text>Conversation with labels</Text>
+      <Title title="Conversation with labels" />
       <ConversationItem
         {...conversation}
         isSelected={false}
@@ -132,7 +139,7 @@ export const AllVariants: Story = {
         assignee={null}
         currentState="none"
       />
-      <Text>Conversation with assigned agent</Text>
+      <Title title="Conversation with assigned agent" />
       <ConversationItem
         {...conversation}
         isSelected={false}
@@ -146,7 +153,7 @@ export const AllVariants: Story = {
         currentState="none"
       />
 
-      <Text>Conversation with label and SLA</Text>
+      <Title title="Conversation with label and SLA" />
       <ConversationItem
         {...conversationWithLabelAndSLA}
         isSelected={false}
@@ -156,7 +163,7 @@ export const AllVariants: Story = {
         assignee={null}
         currentState="none"
       />
-      <Text>Conversation with agent and unread count</Text>
+      <Title title="Conversation with agent and unread count" />
       <ConversationItem
         {...conversationWithAgentAndUnreadCount}
         isSelected={false}
@@ -164,7 +171,7 @@ export const AllVariants: Story = {
         inboxId={1}
         currentState="none"
       />
-      <Text>Conversation with markdown message</Text>
+      <Title title="Conversation with markdown message" />
       <ConversationItem
         {...conversationWithMarkdownMessage}
         isSelected={false}

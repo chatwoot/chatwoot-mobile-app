@@ -115,6 +115,18 @@ export const AllVariants: Story = {
           onClearFilter={() => {}}
         />
       </HeaderContainer>
+
+      <Title title="Filter Applied with out state" />
+      <HeaderContainer>
+        <ConversationHeaderPresenter
+          currentState="none"
+          isSelectedAll={false}
+          filtersAppliedCount={2}
+          onLeftIconPress={() => {}}
+          onRightIconPress={() => {}}
+          onClearFilter={() => {}}
+        />
+      </HeaderContainer>
     </ScrollView>
   ),
 };

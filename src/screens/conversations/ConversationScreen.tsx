@@ -16,9 +16,6 @@ import {
   SortByFilters,
   InboxFilters,
   AssigneeTypeFilters,
-  UpdateStatus,
-  UpdateLabels,
-  UpdateAssignee,
 } from './components';
 
 import { ActionTabs, BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
@@ -38,10 +35,7 @@ import {
   selectBottomSheetState,
   setBottomSheetState,
 } from '@/store/conversation/conversationHeaderSlice';
-import {
-  resetActionState,
-  selectCurrentActionState,
-} from '@/store/conversation/conversationActionSlice';
+import { resetActionState } from '@/store/conversation/conversationActionSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import {
   selectConversationsLoading,
@@ -55,6 +49,7 @@ import { selectUserId } from '@/store/auth/authSelectors';
 import { clearAllContacts } from '@/store/contact/contactSlice';
 
 import i18n from '@/i18n';
+import ActionBottomSheet from '@/navigation/tabs/ ';
 
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 
@@ -227,8 +222,7 @@ const ConversationScreen = () => {
     damping: 30,
   });
 
-  const currentActionState = useAppSelector(selectCurrentActionState);
-  const { filtersModalSheetRef, actionsModalSheetRef } = useRefsContext();
+  const { filtersModalSheetRef } = useRefsContext();
   // const { bottom } = useSafeAreaInsets();
 
   const handleOnDismiss = () => {
@@ -254,19 +248,6 @@ const ConversationScreen = () => {
         return [250];
     }
   }, [currentBottomSheet]);
-
-  const actionSnapPoints = useMemo(() => {
-    switch (currentActionState) {
-      case 'Assign':
-        return [368];
-      case 'Status':
-        return [250];
-      case 'Label':
-        return [368];
-      default:
-        return [250];
-    }
-  }, [currentActionState]);
 
   return (
     <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
@@ -297,22 +278,7 @@ const ConversationScreen = () => {
             {currentBottomSheet === 'inbox_id' ? <InboxFilters /> : null}
           </BottomSheetWrapper>
         </BottomSheetModal>
-        <BottomSheetModal
-          ref={actionsModalSheetRef}
-          backdropComponent={BottomSheetBackdrop}
-          handleIndicatorStyle={tailwind.style(
-            'overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]',
-          )}
-          handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-          style={tailwind.style('rounded-[26px] overflow-hidden')}
-          animationConfigs={animationConfigs}
-          enablePanDownToClose
-          snapPoints={actionSnapPoints}
-          onDismiss={handleOnDismiss}>
-          {currentActionState === 'Assign' ? <UpdateAssignee /> : null}
-          {currentActionState === 'Status' ? <UpdateStatus /> : null}
-          {currentActionState === 'Label' ? <UpdateLabels /> : null}
-        </BottomSheetModal>
+        <ActionBottomSheet />
         <ActionTabs />
       </ConversationListStateProvider>
     </SafeAreaView>

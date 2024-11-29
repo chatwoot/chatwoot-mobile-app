@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import ConversationScreen from '@/screens/conversations/ConversationScreen';
+import ConversationScreen from '@/screens/Conversation/ConversationScreen';
 
 export type ConversationStackParamList = {
   ConversationScreen: undefined;

@@ -3,7 +3,7 @@ import { SearchBar } from './SearchBar';
 import { CloseIcon } from '@/svg-icons';
 
 const meta = {
-  title: 'SearchBar',
+  title: 'Search Bar',
   component: SearchBar,
 } satisfies Meta<typeof SearchBar>;
 

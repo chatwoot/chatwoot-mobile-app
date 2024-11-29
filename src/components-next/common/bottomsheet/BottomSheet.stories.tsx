@@ -15,7 +15,7 @@ import { tailwind } from '@/theme';
 import { useRefsContext, RefsProvider } from '@/context/RefsContext';
 
 export default {
-  title: 'BottomSheet',
+  title: 'Bottom Sheet',
   argTypes: {
     backdropComponent: { control: false },
   },

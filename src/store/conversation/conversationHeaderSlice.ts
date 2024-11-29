@@ -13,7 +13,7 @@ interface ConversationHeaderState {
   currentBottomSheet: BottomSheetType;
 }
 
-const initialState: ConversationHeaderState = {
+export const initialState: ConversationHeaderState = {
   currentState: 'none',
   searchTerm: '',
   currentBottomSheet: 'none',

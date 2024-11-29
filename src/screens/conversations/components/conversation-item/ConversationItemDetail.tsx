@@ -154,7 +154,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
       ) : (
         <AnimatedNativeView style={tailwind.style('flex flex-row items-end gap-2')}>
           <ConversationLastMessage numberOfLines={2} lastMessage={lastMessage as Message} />
-          <AnimatedNativeView style={tailwind.style('flex flex-row items-end gap-1')}>
+          <AnimatedNativeView style={tailwind.style('flex flex-row items-end gap-2')}>
             {assignee ? (
               <NativeView style={tailwind.style(unreadCount >= 1 ? 'pr-1' : '')}>
                 <Avatar

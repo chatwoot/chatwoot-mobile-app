@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, Text } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import Animated, { withDelay, withSpring } from 'react-native-reanimated';
 import { Icon } from '@/components-next/common';
 import { CheckedIcon, CloseIcon, FilterIcon, UncheckedIcon } from '@/svg-icons';
@@ -15,6 +15,17 @@ type ConversationHeaderPresenterProps = {
   onRightIconPress: () => void;
   onClearFilter: () => void;
 };
+
+const HeaderTitle = ({ title }: { title: string }) => (
+  <Animated.View style={tailwind.style('flex-1')}>
+    <Text
+      style={tailwind.style(
+        'text-[17px] font-inter-medium-24 tracking-[0.32px] leading-[17px] text-center text-gray-950',
+      )}>
+      {i18n.t('CONVERSATION.HEADER.TITLE')}
+    </Text>
+  </Animated.View>
+);
 
 export const ConversationHeaderPresenter = ({
   currentState,
@@ -107,14 +118,7 @@ export const ConversationHeaderPresenter = ({
           </Pressable>
         </Animated.View>
       ) : null}
-      <Animated.View style={tailwind.style('flex-1')}>
-        <Text
-          style={tailwind.style(
-            'text-[17px] font-inter-medium-24 tracking-[0.32px] leading-[17px] text-center text-gray-950',
-          )}>
-          {i18n.t('CONVERSATION.HEADER.TITLE')}
-        </Text>
-      </Animated.View>
+      <HeaderTitle title={i18n.t('CONVERSATION.HEADER.TITLE')} />
       <Animated.View style={tailwind.style('flex-1 items-end')}>
         <Pressable onPress={onRightIconPress} hitSlop={16}>
           {currentState === 'Filter' || currentState === 'Select' ? (

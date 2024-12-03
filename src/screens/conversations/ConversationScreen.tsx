@@ -111,9 +111,13 @@ const ConversationList = () => {
   }, []);
 
   const ListFooterComponent = () => {
+    if (isAllConversationsFetched) return null;
     return (
       <Animated.View
-        style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
+        style={tailwind.style(
+          'flex-1 items-center justify-center pt-8',
+          `pb-[${TAB_BAR_HEIGHT}px]`,
+        )}>
         {isAllConversationsFetched ? null : <ActivityIndicator size="small" />}
       </Animated.View>
     );

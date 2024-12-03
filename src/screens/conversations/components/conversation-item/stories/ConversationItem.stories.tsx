@@ -10,6 +10,7 @@ import {
   conversationWithNonEnglishContact,
   conversationWithMoreLabels,
   conversationWithMarkdownMessage,
+  conversationWithNewLineMessage,
 } from './ConversationItemMockData';
 import { Text, ScrollView, View } from 'react-native';
 import { tailwind } from '@/theme';
@@ -77,7 +78,6 @@ export const AllVariants: Story = {
         }}
         currentState="none"
       />
-
       <Title title="Conversation with one line message" />
       <ConversationItem
         {...conversationWithOneLineMessage}
@@ -180,6 +180,19 @@ export const AllVariants: Story = {
         availabilityStatus="online"
         inboxId={1}
         assignee={null}
+      />
+      <Title title="Conversation with new line message" />
+      <ConversationItem
+        {...conversationWithNewLineMessage}
+        isSelected={false}
+        currentState="none"
+        unreadCount={1}
+        availabilityStatus="online"
+        inboxId={1}
+        assignee={{
+          id: 1,
+          name: 'John Doe',
+        }}
       />
     </ScrollView>
   ),

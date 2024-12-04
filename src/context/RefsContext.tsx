@@ -16,6 +16,7 @@ interface RefsContextType {
   switchAccountSheetRef: React.RefObject<BottomSheetModal>;
   debugActionsSheetRef: React.RefObject<BottomSheetModal>;
   messageListRef: React.RefObject<FlashList<Message>>;
+  inboxFiltersSheetRef: React.RefObject<BottomSheetModal>;
 }
 
 const RefsContext = React.createContext<RefsContextType | undefined>(undefined);
@@ -42,6 +43,7 @@ const RefsProvider: React.FC<Partial<RefsContextType & { children: React.ReactNo
   const chatPagerView = useRef<PagerView>(null);
   const switchAccountSheetRef = useRef<BottomSheetModal>(null);
   const debugActionsSheetRef = useRef<BottomSheetModal>(null);
+  const inboxFiltersSheetRef = useRef<BottomSheetModal>(null);
   const messageListRef = useRef<FlashList<Message>>(null);
 
   const { children } = props;
@@ -57,6 +59,7 @@ const RefsProvider: React.FC<Partial<RefsContextType & { children: React.ReactNo
     macrosListSheetRef,
     switchAccountSheetRef,
     debugActionsSheetRef,
+    inboxFiltersSheetRef,
     messageListRef,
   };
 

@@ -19,6 +19,7 @@ export const BottomSheetBackdrop: React.FC<BottomSheetBackgroundProps> = props =
     notificationPreferencesSheetRef,
     switchAccountSheetRef,
     debugActionsSheetRef,
+    inboxFiltersSheetRef,
   } = useRefsContext();
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -39,6 +40,7 @@ export const BottomSheetBackdrop: React.FC<BottomSheetBackgroundProps> = props =
     notificationPreferencesSheetRef.current?.dismiss({ overshootClamping: true });
     switchAccountSheetRef.current?.dismiss({ overshootClamping: true });
     debugActionsSheetRef.current?.dismiss({ overshootClamping: true });
+    inboxFiltersSheetRef.current?.dismiss({ overshootClamping: true });
   };
 
   return (

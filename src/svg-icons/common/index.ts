@@ -33,3 +33,4 @@ export * from './Tick';
 export * from './Trash';
 export * from './MessageType';
 export * from './Location';
+export * from './NotificationIcons';

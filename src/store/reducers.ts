@@ -12,13 +12,14 @@ import labelReducer from '@/store/label/labelSlice';
 import contactSlice from '@/store/contact/contactSlice';
 import assignableAgentSlice from '@/store/assignable-agent/assignableAgentSlice';
 import conversationTypingSlice from '@/store/conversation/conversationTypingSlice';
+import notificationSlice from '@/store/notification/notificationSlice';
 
 import cannedResponseSlice from '@/reducer/cannedResponseSlice';
 import conversationLabelsSlice from '@/reducer/conversationLabelSlice';
 import customAttributeSlice from '@/reducer/customAttributeSlice';
 import dashboardAppSlice from '@/reducer/dashboardAppSlice';
 import conversationWatchersSlice from '@/reducer/conversationWatchersSlice';
-
+import notificationFilterSlice from '@/store/notification/notificationFilterSlice';
 export const appReducer = combineReducers({
   auth: authSlice,
   settings: settingsSlice,
@@ -32,6 +33,8 @@ export const appReducer = combineReducers({
   inboxes: inboxSlice,
   assignableAgents: assignableAgentSlice,
   conversationTyping: conversationTypingSlice,
+  notifications: notificationSlice,
+  notificationFilter: notificationFilterSlice,
   // TODO: Convert these to RTK toolkit typescript
   cannedResponses: cannedResponseSlice,
   conversationLabels: conversationLabelsSlice,

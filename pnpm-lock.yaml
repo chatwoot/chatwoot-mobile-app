@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@chatwoot/markdown-to-txt':
-        specifier: ^2.0.2
-        version: 2.0.2
+        specifier: ^2.0.3
+        version: 2.0.3
       '@chatwoot/react-native-widget':
         specifier: ^0.0.21
         version: 0.0.21(@react-native-async-storage/async-storage@1.24.0(react-native@0.74.5(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@types/react@18.2.79)(react@18.2.0)))(react-native-webview@13.8.6(react-native@0.74.5(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0))(react-native@0.74.5(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0)
@@ -1068,8 +1068,8 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  '@chatwoot/markdown-to-txt@2.0.2':
-    resolution: {integrity: sha512-G1xDB/lA5O3XHc5cbk0++02svRfOyHE2YdfyN7WTbwVGbrF36FY3ia5k/AvXb5Kz/vQHerjuD4CvkG26HfLDPw==}
+  '@chatwoot/markdown-to-txt@2.0.3':
+    resolution: {integrity: sha512-oxDCr9SjANO/GMTPk+NHUh0DuBH4cBBfQVE+8W4nojUWfTyAqKBONIeEckueQj++keMJi5i2/zUW6suyo0U9Bw==}
 
   '@chatwoot/react-native-widget@0.0.21':
     resolution: {integrity: sha512-NlsRyRkJz3GyijQ2eGCfNkkOA8mRGDjWkUdJKAmLhbbNtVrhaE0OWur5qhy26c3ekOgzii47s5hfbjHFqLXFPQ==}
@@ -7832,7 +7832,7 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@chatwoot/markdown-to-txt@2.0.2':
+  '@chatwoot/markdown-to-txt@2.0.3':
     dependencies:
       lodash.escape: 4.0.1
       lodash.unescape: 4.0.1

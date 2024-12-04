@@ -27,7 +27,7 @@
     "storybook:android": "cross-env EXPO_STORYBOOK_ENABLED='true' expo android"
   },
   "dependencies": {
-    "@chatwoot/markdown-to-txt": "^2.0.2",
+    "@chatwoot/markdown-to-txt": "^2.0.3",
     "@chatwoot/react-native-widget": "^0.0.21",
     "@chatwoot/utils": "^0.0.25",
     "@gorhom/bottom-sheet": "^4.6.3",

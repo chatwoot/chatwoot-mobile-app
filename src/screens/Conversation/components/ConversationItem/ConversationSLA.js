@@ -120,7 +120,7 @@ const ConversationSLa = ({ conversationDetails, showExtendedInfo = false }) => {
   const color = slaStatus.isSlaMissed ? colors.dangerColor : colors.warningColor;
   const isSlaMissed = slaStatus?.isSlaMissed;
 
-  const sLAStatusText = () => {
+  const slaStatusText = () => {
     const upperCaseType = slaStatus?.type?.toUpperCase(); // FRT, NRT, or RT
     const statusKey = isSlaMissed ? 'MISSED' : 'DUE';
     return i18n.t(`SLA.STATUS.${upperCaseType}`, {
@@ -136,7 +136,7 @@ const ConversationSLa = ({ conversationDetails, showExtendedInfo = false }) => {
         <Icon icon={icon} color={color} size={12} />
         {showExtendedInfo && (
           <Text xs medium color={color}>
-            {sLAStatusText()}
+            {slaStatusText()}
           </Text>
         )}
         {showExtendedInfo && <View style={styles.line} />}

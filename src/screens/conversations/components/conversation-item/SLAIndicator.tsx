@@ -74,7 +74,7 @@ export const SLAIndicator = ({
     return null;
   }
 
-  const sLAStatusText = () => {
+  const slaStatusText = () => {
     const upperCaseType = slaStatus?.type?.toUpperCase(); // FRT, NRT, or RT
     return i18n.t(`SLA.${upperCaseType}`);
   };
@@ -87,7 +87,7 @@ export const SLAIndicator = ({
           'pl-1 text-sm leading-[20px] text-center',
           slaStatus?.isSlaMissed ? 'text-ruby-800' : 'text-gray-800',
         )}>
-        {`${sLAStatusText()}: ${slaStatus?.threshold}`}
+        {`${slaStatusText()}: ${slaStatus?.threshold}`}
       </Text>
     </NativeView>
   );

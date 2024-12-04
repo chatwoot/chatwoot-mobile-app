@@ -92,6 +92,16 @@ export type SwipeableProps = {
    * No of pointers
    */
   noOfPointers?: number;
+  /**
+   * Background color for the left swipeable element
+   * @default 'bg-blue-800'
+   */
+  leftElementBgColor?: string;
+  /**
+   * Background color for the right swipeable element
+   * @default 'bg-green-800'
+   */
+  rightElementBgColor?: string;
 };
 
 // eslint-disable-next-line react/display-name
@@ -111,6 +121,8 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
     spacing,
     triggerOverswipeOnFlick = false,
     noOfPointers = 1,
+    leftElementBgColor = 'bg-blue-800',
+    rightElementBgColor = 'bg-green-800',
   } = props;
 
   const hapticWarning = useHaptic('success');
@@ -437,7 +449,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
         onPress={handleOnPressLeft}
         style={[
           StyleSheet.absoluteFillObject,
-          tailwind.style('flex justify-center items-start bg-blue-800'),
+          tailwind.style('flex justify-center items-start', leftElementBgColor),
           leftStyle,
         ]}>
         <AnimatedNativeView style={[tailwind.style(`pl-[${spacing}px]`), leftTranslation]}>
@@ -448,7 +460,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
         onPress={handleOnPressRight}
         style={[
           StyleSheet.absoluteFillObject,
-          tailwind.style('flex justify-center items-end bg-green-800'),
+          tailwind.style('flex justify-center items-end', rightElementBgColor),
           rightStyle,
         ]}>
         <AnimatedNativeView style={[tailwind.style(`pr-[${spacing}px]`), rightTranslation]}>

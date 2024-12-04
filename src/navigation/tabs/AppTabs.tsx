@@ -19,7 +19,7 @@ import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 import { getUserPermissions } from 'helpers/permissionHelper';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 
-import { AuthStack, ConversationStack, SettingsStack } from '../stack';
+import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stack';
 // import ChatScreen from '@/screens/chat-screen/ChatScreen';
 // import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 // import { DashboardScreen } from '@/screens/dashboard';
@@ -142,17 +142,17 @@ const Tabs = () => {
   }, []);
 
   return (
-    <Tab.Navigator tabBar={CustomTabBar} initialRouteName="Conversations">
-      {/* {hasConversationPermission && (
+    <Tab.Navigator tabBar={CustomTabBar} initialRouteName="Inbox">
+      {hasConversationPermission && (
+        <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
+      )}
+      {hasConversationPermission && (
         <Tab.Screen
           name="Conversations"
           options={{ headerShown: false }}
           component={ConversationStack}
         />
-      )} */}
-      {/* {hasConversationPermission && (
-        <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
-      )} */}
+      )}
 
       <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
     </Tab.Navigator>

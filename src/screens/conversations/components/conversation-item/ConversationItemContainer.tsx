@@ -168,9 +168,12 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
       leftElement={unreadCount > 0 ? <ReadComponent /> : <UnreadComponent />}
       rightElement={<StatusComponent />}
       handleLeftElementPress={markMessageReadOrUnread}
+      handleOnLeftOverswiped={markMessageReadOrUnread}
       handleRightElementPress={onStatusAction}
+      handleOnRightOverswiped={onStatusAction}
       handleLongPress={onLongPressAction}
       handlePress={onPressAction}
+      triggerOverswipeOnFlick
       {...{ index, openedRowIndex }}>
       <ConversationItem {...viewProps} />
     </Swipeable>

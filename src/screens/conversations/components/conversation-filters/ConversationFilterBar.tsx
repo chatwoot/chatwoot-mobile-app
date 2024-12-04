@@ -5,7 +5,6 @@ import { BottomSheetType, setBottomSheetState } from '@/store/conversation/conve
 import { selectFilters } from '@/store/conversation/conversationFilterSlice';
 import { BaseFilterOption, FilterBar } from '@/components-next';
 import { AssigneeOptions, StatusOptions, SortOptions } from '@/types/common/ConversationStatus';
-import i18n from '@/i18n';
 
 export const ConversationFilterOptions: BaseFilterOption[] = [
   {
@@ -24,28 +23,27 @@ export const ConversationFilterOptions: BaseFilterOption[] = [
     defaultFilter: 'Latest',
   },
 ];
+const getInboxOptions = (inboxes: { id: number; name: string }[]) => {
+  const options: Record<string, string> = {
+    '0': 'All Inboxes',
+  };
+  inboxes.forEach(inbox => {
+    options[inbox.id] = inbox.name;
+  });
+  return options;
+};
 
 export const ConversationFilterBar = () => {
   const dispatch = useAppDispatch();
   const inboxes = useAppSelector(selectAllInboxes);
   const selectedFilters = useAppSelector(selectFilters);
 
-  const getInboxOptions = (inboxes: { id: number; name: string }[]) => {
-    const options: Record<string, string> = {
-      '0': i18n.t('FILTER.ALL_INBOXES'),
-    };
-    inboxes.forEach(inbox => {
-      options[inbox.id] = inbox.name;
-    });
-    return options;
-  };
-
   const dynamicFilterOptions = [
     ...ConversationFilterOptions,
     {
       type: 'inbox_id' as const,
       options: getInboxOptions(inboxes),
-      defaultFilter: i18n.t('FILTER.ALL_INBOXES'),
+      defaultFilter: 'All Inboxes',
     },
   ];
 

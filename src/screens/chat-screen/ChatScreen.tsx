@@ -7,7 +7,7 @@ import { LightBoxProvider } from '@alantoa/lightbox';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { ChatHeaderContainer } from './components';
-// import { ConversationActions } from './conversation-actions';
+import { ConversationActions } from './conversation-actions';
 
 import { ReplyBoxContainer } from './components';
 import { MessagesListContainer } from './components';
@@ -43,7 +43,7 @@ const ConversationPagerView = (props: ChatScreenProps) => {
       initialPage={0}
       onPageSelected={onPageSelected}>
       <ChatWindow {...props} />
-      {/* <ConversationActions /> */}
+      <ConversationActions />
     </PagerView>
   );
 };

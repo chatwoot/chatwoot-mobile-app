@@ -39,6 +39,8 @@ import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import AnalyticsHelper from '@/helpers/AnalyticsHelper';
 import { clearAllDeliveredNotifications } from '@/helpers/PushHelper';
 import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
+import { customAttributeActions } from '@/store/custom-attribute/customAttributeActions';
+import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
 
 const Tab = createBottomTabNavigator();
 
@@ -55,7 +57,7 @@ export type TabParamList = {
 
 export type TabBarExcludedScreenParamList = {
   Tab: undefined;
-  ChatScreen: { conversationId: number };
+  ChatScreen: { conversationId: number; primaryActorId?: number; primaryActorType?: string };
   ContactDetails: { conversationId: number };
   ConversationActions: undefined;
   Dashboard: { url: string };
@@ -88,7 +90,9 @@ const Tabs = () => {
     initActionCable();
     dispatch(labelActions.fetchLabels());
     dispatch(setCurrentState('none'));
+    dispatch(clearSelection());
     dispatch(dashboardAppActions.index());
+    dispatch(customAttributeActions.index());
     initAnalytics();
     initSentry();
     initPushNotifications();

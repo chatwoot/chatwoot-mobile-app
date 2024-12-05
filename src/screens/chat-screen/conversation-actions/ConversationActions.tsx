@@ -3,12 +3,7 @@ import { Alert, Dimensions, Share } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
-import {
-  AddParticipantList,
-  FullWidthButton,
-  MacrosList,
-  OtherConversationDetails,
-} from '@/components-next';
+import { Button } from '@/components-next';
 import {
   ConversationBasicActions,
   ConversationLabelActions,
@@ -124,17 +119,14 @@ export const ConversationActions = () => {
         <Animated.View style={tailwind.style('pt-10')}>
           <ConversationLabelActions labels={currentLabels} />
         </Animated.View>
-        <Animated.View style={tailwind.style('pt-10')}>
+        {/* <Animated.View style={tailwind.style('pt-10')}>
           <AddParticipantList />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-10')}>
-          <MacrosList />
-        </Animated.View>
-        <Animated.View style={tailwind.style('pt-10')}>
           <OtherConversationDetails />
-        </Animated.View>
-        <Animated.View style={tailwind.style('pt-10')}>
-          <FullWidthButton handlePress={onShareConversation} text="Share conversation" />
+        </Animated.View> */}
+        <Animated.View style={tailwind.style('px-6 pt-10')}>
+          <Button variant="secondary" handlePress={onShareConversation} text="Share conversation" />
         </Animated.View>
       </ScrollView>
     </Animated.View>

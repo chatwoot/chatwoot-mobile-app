@@ -44,7 +44,7 @@ export const ConversationSettingsPanel = ({
             <Animated.View style={tailwind.style('flex-row items-center pr-3')}>
               <Animated.Text
                 style={tailwind.style(
-                  'text-base font-inter-normal-24 leading-[22px] tracking-[0.16px] text-gray-900',
+                  'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] text-gray-900',
                 )}>
                 Assign
               </Animated.Text>
@@ -71,7 +71,7 @@ export const ConversationSettingsPanel = ({
             <Animated.View style={tailwind.style('flex-row items-center pr-3')}>
               <Animated.Text
                 style={tailwind.style(
-                  'text-base font-inter-normal-24 leading-[22px] tracking-[0.16px] text-gray-900',
+                  'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] text-gray-900',
                 )}>
                 Change
               </Animated.Text>
@@ -96,7 +96,7 @@ export const ConversationSettingsPanel = ({
           <Animated.View style={tailwind.style('flex-row items-center pr-3')}>
             <Animated.Text
               style={tailwind.style(
-                'text-base font-inter-normal-24 leading-[22px] tracking-[0.16px] text-gray-900',
+                'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] text-gray-900',
               )}>
               Change
             </Animated.Text>

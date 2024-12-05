@@ -77,7 +77,7 @@ export const BotTextCell = (props: BotTextCellProps) => {
       {/* <Text
         // onTextLayout={handleTextLayout}
         style={tailwind.style(
-          "text-base tracking-[0.32px] leading-[22px] font-inter-normal-24 text-gray-950",
+          "text-base tracking-[0.32px] leading-[22px] font-inter-normal-20 text-gray-950",
         )}
       >
         {text} 

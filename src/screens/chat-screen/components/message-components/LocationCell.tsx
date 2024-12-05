@@ -90,7 +90,7 @@ export const LocationCell: React.FC<LocationCellProps> = props => {
                 onPress={() => openURL({ URL: mapUrl })}
                 style={tailwind.style(
                   isIncoming || isOutgoing
-                    ? 'text-base tracking-[0.32px] leading-[22px] font-inter-normal-24 underline'
+                    ? 'text-base tracking-[0.32px] leading-[22px] font-inter-normal-20 underline'
                     : '',
                   isIncoming ? 'text-white' : '',
                   isOutgoing ? 'text-gray-950' : '',

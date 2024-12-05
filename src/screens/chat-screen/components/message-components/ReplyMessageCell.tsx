@@ -79,7 +79,7 @@ export const ReplyMessageCell = (props: ReplyMessageCellProps) => {
               {renderAttachmentSection()}
               <Animated.Text
                 style={tailwind.style(
-                  'text-[14px] font-inter-normal-24 leading-[19.6px] tracking-[0.16px] text-gray-950 capitalize pl-1.5',
+                  'text-[14px] font-inter-normal-20 leading-[19.6px] tracking-[0.16px] text-gray-950 capitalize pl-1.5',
                 )}>
                 {replyMessageItem?.attachments[0].fileType}
               </Animated.Text>
@@ -90,7 +90,7 @@ export const ReplyMessageCell = (props: ReplyMessageCellProps) => {
             isMarkdown(replyMessageItem?.content) ? (
               <MarkdownDisplay
                 // style={tailwind.style(
-                //   "text-[14px] font-inter-normal-24 leading-[19.6px] tracking-[0.16px] text-gray-950",
+                //   "text-[14px] font-inter-normal-20 leading-[19.6px] tracking-[0.16px] text-gray-950",
                 // )}
                 messageContent={replyMessageItem?.content?.split('\n')?.[0]}
               />
@@ -98,9 +98,10 @@ export const ReplyMessageCell = (props: ReplyMessageCellProps) => {
               <Animated.Text
                 numberOfLines={1}
                 style={tailwind.style(
-                  'text-[14px] font-inter-normal-24 leading-[19.6px] tracking-[0.16px] text-gray-950 capitalize',
+                  'text-[14px] font-inter-normal-20 leading-[19.6px] tracking-[0.16px] text-gray-950 capitalize',
                 )}>
-                {replyMessageItem?.content}
+                {/* {replyMessageItem?.content} */}
+                qwqwe
               </Animated.Text>
             )
           ) : null}

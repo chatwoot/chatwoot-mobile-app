@@ -154,13 +154,13 @@ export const QuoteReply = () => {
             ) : (
               <Text
                 numberOfLines={1}
-                style={tailwind.style('text-md font-inter-normal-24 tracking-[0.32px] capitalize')}>
+                style={tailwind.style('text-md font-inter-normal-20 tracking-[0.32px] capitalize')}>
                 {quoteMessage?.content}
               </Text>
             )
           ) : (
             <Text
-              style={tailwind.style('text-md font-inter-normal-24 tracking-[0.32px] capitalize')}>
+              style={tailwind.style('text-md font-inter-normal-20 tracking-[0.32px] capitalize')}>
               {quoteMessage?.attachments?.[0]?.fileType}
             </Text>
           )}

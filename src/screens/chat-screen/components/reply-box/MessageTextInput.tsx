@@ -142,7 +142,7 @@ export const MessageTextInput = ({ maxLength, replyEditorMode }: MessageTextInpu
           enablesReturnKeyAutomatically
           style={[
             tailwind.style(
-              'text-base font-inter-normal-24 tracking-[0.24px] leading-[20px] android:leading-[18px]',
+              'text-base font-inter-normal-20 tracking-[0.24px] leading-[20px] android:leading-[18px]',
               'ml-[5px] mr-2 py-2 pl-3 pr-[36px] rounded-2xl text-gray-950',
               'min-h-9 max-h-[76px]',
               isPrivateMessage ? 'bg-amber-100' : 'bg-blackA-A4',

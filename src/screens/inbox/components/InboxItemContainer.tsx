@@ -16,6 +16,7 @@ import { Icon, Swipeable } from '@/components-next';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import i18n from '@/i18n';
 import { showToast } from '@/helpers/ToastHelper';
+import { StackActions, useNavigation } from '@react-navigation/native';
 
 type InboxItemContainerProps = {
   item: Notification;
@@ -54,23 +55,37 @@ export const InboxItemContainer = (props: InboxItemContainerProps) => {
   const { index, item, openedRowIndex } = props;
   const dispatch = useAppDispatch();
 
+  const navigation = useNavigation();
   const meta = item.primaryActor?.meta;
   const inboxId = item.primaryActor?.inboxId;
   const isRead = !!item.readAt;
 
   const onPressAction = () => {
-    markNotificationAsRead();
+    markNotificationAsRead({
+      shouldShowToast: false,
+    });
+    if (item.primaryActor?.id) {
+      const pushToChatScreen = StackActions.push('ChatScreen', {
+        conversationId: item.primaryActor?.id,
+        isConversationOpenedExternally: false,
+      });
+      navigation.dispatch(pushToChatScreen);
+    }
   };
 
-  const markNotificationAsRead = async () => {
+  const markNotificationAsRead = async ({
+    shouldShowToast = true,
+  }: { shouldShowToast?: boolean } = {}) => {
     const payload: MarkAsReadPayload = {
       primaryActorId: item.primaryActorId,
       primaryActorType: item.primaryActorType,
     };
     await dispatch(notificationActions.markAsRead(payload));
-    showToast({
-      message: i18n.t('NOTIFICATION.ALERTS.MARK_AS_READ'),
-    });
+    if (shouldShowToast) {
+      showToast({
+        message: i18n.t('NOTIFICATION.ALERTS.MARK_AS_READ'),
+      });
+    }
   };
 
   const markNotificationAsUnread = async () => {

@@ -21,7 +21,7 @@ export const LabelItem = (props: LabelItemProps) => {
       <Animated.View style={tailwind.style('h-2 w-2 rounded-full', `bg-[${item.color}]`)} />
       <Animated.Text
         style={tailwind.style(
-          'text-md font-inter-normal-24 leading-[17px] tracking-[0.32px] pl-1.5 text-gray-950',
+          'text-md font-inter-normal-20 leading-[17px] tracking-[0.32px] pl-1.5 text-gray-950',
         )}>
         {item.title}
       </Animated.Text>

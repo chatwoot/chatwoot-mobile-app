@@ -23,6 +23,9 @@ import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stac
 import ChatScreen from '@/screens/chat-screen/ChatScreen';
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
+// import ChatScreen from '@/screens/chat-screen/ChatScreen';
+// import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
+// import { DashboardScreen } from '@/screens/dashboard';
 
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { BottomTabBar } from './BottomTabBar';

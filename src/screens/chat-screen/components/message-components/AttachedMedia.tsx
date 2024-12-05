@@ -238,16 +238,14 @@ export const AttachedMedia = () => {
   const attachments = useAppSelector(selectAttachments);
 
   const handleRenderItem = ({ item, index }: AttachedMediaProps) => {
+    console.log('item', item);
     if (item.type?.includes('image')) {
       return <AttachedImage {...{ item, index }} attachmentsLength={attachments.length} />;
     }
     if (item.type?.includes('video')) {
       return <AttachedVideo {...{ item, index }} attachmentsLength={attachments.length} />;
     }
-    if (item.type?.includes('pdf')) {
-      return <AttachedFile {...{ item, index }} attachmentsLength={attachments.length} />;
-    }
-    return <Animated.View />;
+    return <AttachedFile {...{ item, index }} attachmentsLength={attachments.length} />;
   };
 
   return attachments.length > 0 ? (

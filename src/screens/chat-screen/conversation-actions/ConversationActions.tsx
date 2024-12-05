@@ -24,6 +24,8 @@ import { selectSingleConversation } from '@/store/conversation/conversationSelec
 import { teamActions } from '@/store/team/teamActions';
 import { selectAllTeams } from '@/store/team/teamSelectors';
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
+import { ConversationMetaInformation } from './components/ConversationMetaInformation';
+import i18n from '@/i18n';
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 
@@ -128,6 +130,9 @@ export const ConversationActions = () => {
         </Animated.View>
         <Animated.View style={tailwind.style('pt-10')}>
           <AddParticipantList />
+        </Animated.View>
+        <Animated.View style={tailwind.style('pt-10')}>
+          <ConversationMetaInformation />
         </Animated.View>
         <Animated.View style={tailwind.style('px-4 pt-10')}>
           <Button variant="secondary" handlePress={onShareConversation} text="Share conversation" />

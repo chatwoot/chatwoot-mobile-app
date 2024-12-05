@@ -4,7 +4,7 @@ import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sh
 
 import { BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
 import { tailwind } from '@/theme';
-import { DoubleCheckIcon, WarningIcon } from '@/svg-icons';
+import { DoubleCheckIcon, WarningIcon, MessagePendingIcon } from '@/svg-icons';
 import { Icon } from '@/components-next/common';
 import { MessageStatus, MessageType } from '@/types';
 import { Channel } from '@/types';
@@ -51,6 +51,8 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
   const isTemplate = messageType === MESSAGE_TYPES.TEMPLATE;
   const isASmsInbox = channel === INBOX_TYPES.SMS;
   const isAPIChannel = channel === INBOX_TYPES.API;
+  const isPending = status === MESSAGE_STATUS.PROGRESS;
+  const isOutgoing = messageType === MESSAGE_TYPES.OUTGOING;
   const shouldShowStatusIndicator =
     (messageType === MESSAGE_TYPES.OUTGOING || isTemplate) && !isPrivate;
   const isALineChannel = channel === INBOX_TYPES.LINE;
@@ -121,6 +123,21 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
 
     return false;
   };
+
+  if (isPending) {
+    return (
+      <Icon
+        icon={
+          <MessagePendingIcon
+            stroke={
+              isOutgoing ? tailwind.color('text-blackA-A12') : tailwind.color('text-whiteA-A12')
+            }
+          />
+        }
+        size={14}
+      />
+    );
+  }
 
   if (isFailed) {
     return (

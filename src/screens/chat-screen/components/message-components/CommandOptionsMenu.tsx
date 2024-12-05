@@ -89,7 +89,7 @@ export const handleOpenPhotosLibrary = async dispatch => {
         } else if (pickedAssets.errorCode) {
         } else {
           if (pickedAssets.assets && pickedAssets.assets?.length > 0) {
-            updateAttachments(pickedAssets.assets);
+            dispatch(updateAttachments(pickedAssets.assets));
           }
         }
       }
@@ -129,7 +129,7 @@ const handleLaunchCamera = async dispatch => {
         } else if (imageResult.errorCode) {
         } else {
           if (imageResult.assets && imageResult.assets?.length > 0) {
-            updateAttachments(imageResult.assets);
+            dispatch(updateAttachments(imageResult.assets));
           }
         }
       }
@@ -159,10 +159,24 @@ const mapObject = (originalObject: DocumentPickerResponse): Asset[] => {
 const handleAttachFile = async dispatch => {
   try {
     const result = await DocumentPicker.pick({
-      type: [DocumentPicker.types.pdf], // You can specify the file types you want to allow
+      type: [
+        DocumentPicker.types.allFiles,
+        DocumentPicker.types.images,
+        DocumentPicker.types.plainText,
+        DocumentPicker.types.audio,
+        DocumentPicker.types.pdf,
+        DocumentPicker.types.zip,
+        DocumentPicker.types.csv,
+        DocumentPicker.types.doc,
+        DocumentPicker.types.docx,
+        DocumentPicker.types.ppt,
+        DocumentPicker.types.pptx,
+        DocumentPicker.types.xls,
+        DocumentPicker.types.xlsx,
+      ], // You can specify the file types you want to allow
       presentationStyle: 'formSheet',
     });
-    updateAttachments(mapObject(result[0]));
+    dispatch(updateAttachments(mapObject(result[0])));
   } catch (err) {
     if (DocumentPicker.isCancel(err)) {
       // User cancelled the picker

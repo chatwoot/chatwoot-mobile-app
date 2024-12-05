@@ -206,7 +206,7 @@ const AttachedFile = (props: AttachedFileProps) => {
             ellipsizeMode={'middle'}
             style={[
               tailwind.style(
-                'text-base tracking-[0.32px] leading-[22px] font-inter-normal-24 pt-1 text-gray-950',
+                'text-base tracking-[0.32px] leading-[22px] font-inter-normal-20 pt-1 text-gray-950',
               ),
             ]}>
             {item.fileName}

@@ -91,7 +91,7 @@ export const FilePreview = (props: FilePreviewProps) => {
               tailwind.style(
                 isComposed ? 'max-w-[248px]' : 'max-w-[170px]',
                 isIncoming || isOutgoing
-                  ? 'text-base tracking-[0.32px] leading-[22px] font-inter-normal-24'
+                  ? 'text-base tracking-[0.32px] leading-[22px] font-inter-normal-20'
                   : '',
                 isIncoming ? 'text-white' : '',
                 isOutgoing ? 'text-blue-800' : '',

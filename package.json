@@ -107,8 +107,7 @@
     "tailwindcss": "^3.4.12",
     "twrnc": "^4.5.1",
     "use-deep-compare-effect": "^1.8.1",
-    "zeego": "^1.10.0",
-    "zustand": "4.5.4"
+    "zeego": "^1.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

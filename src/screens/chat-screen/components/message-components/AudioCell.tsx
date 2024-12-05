@@ -4,7 +4,11 @@ import { PlayBackType } from 'react-native-audio-recorder-player';
 import Animated, { Easing, FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
 
-import { useAudioPlayer } from '@/storev2';
+import {
+  selectCurrentPlayingAudioSrc,
+  setCurrentPlayingAudioSrc,
+} from '@/store/conversation/audioPlayerSlice';
+
 import { tailwind } from '@/theme';
 import { Channel, IconProps, Message, MessageStatus, UnixTimestamp } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
@@ -14,6 +18,8 @@ import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../a
 import { MenuOption, MessageMenu } from '../message-menu';
 import { MESSAGE_TYPES } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '@/hooks';
 
 export const PlayIcon = ({ fill, fillOpacity }: IconProps) => {
   return (
@@ -57,7 +63,8 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
   const [isSoundLoading, setIsSoundLoading] = useState(false);
   const [isAudioPlaying, setAudioPlaying] = useState(false);
 
-  const { setCurrentPlayingAudioSrc, currentPlayingAudioSrc } = useAudioPlayer();
+  const dispatch = useDispatch();
+  const currentPlayingAudioSrc = useAppSelector(selectCurrentPlayingAudioSrc);
 
   const currentPosition = useSharedValue(0);
   const totalDuration = useSharedValue(0);
@@ -71,7 +78,7 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
         currentPosition.value = 0;
         totalDuration.value = 0;
         setAudioPlaying(false);
-        setCurrentPlayingAudioSrc('');
+        dispatch(setCurrentPlayingAudioSrc(''));
       }
     }
   };
@@ -92,7 +99,7 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
       startPlayer(audioSrc, audioPlayBackStatus).then(() => {
         setIsSoundLoading(false);
         setAudioPlaying(true);
-        setCurrentPlayingAudioSrc(audioSrc);
+        dispatch(setCurrentPlayingAudioSrc(audioSrc));
       });
     }
   };
@@ -126,7 +133,7 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
         .then()
         .finally(() => {
           setAudioPlaying(false);
-          setCurrentPlayingAudioSrc('');
+          dispatch(setCurrentPlayingAudioSrc(''));
         });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

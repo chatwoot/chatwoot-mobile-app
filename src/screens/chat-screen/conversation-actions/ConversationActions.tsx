@@ -8,6 +8,7 @@ import {
   ConversationBasicActions,
   ConversationLabelActions,
   ConversationSettingsPanel,
+  AddParticipantList,
 } from './components';
 import { TAB_BAR_HEIGHT } from '@/constants';
 import { tailwind } from '@/theme';
@@ -22,6 +23,7 @@ import { useRefsContext } from '@/context';
 import { selectSingleConversation } from '@/store/conversation/conversationSelectedSlice';
 import { teamActions } from '@/store/team/teamActions';
 import { selectAllTeams } from '@/store/team/teamSelectors';
+import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 
@@ -33,9 +35,10 @@ export const ConversationActions = () => {
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
 
+  const installationUrl = useAppSelector(selectInstallationUrl);
+
   const { status, muted: isMuted, meta, priority = null } = conversation || {};
   const { assignee, team } = meta || {};
-  const { name = '', thumbnail = '' } = assignee || {};
   const teams = useAppSelector(selectAllTeams);
 
   const currentTeam = teams.find(t => t.id === team?.id) || null;
@@ -51,7 +54,7 @@ export const ConversationActions = () => {
     try {
       const result = await Share.share({
         // * Replace it with the current conversation URL
-        url: 'https://staging.chatwoot.com/app/accounts/51/conversations/20',
+        url: `${installationUrl}app/accounts/${conversation?.accountId}/conversations/${conversation?.id}`,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -62,8 +65,8 @@ export const ConversationActions = () => {
       } else if (result.action === Share.dismissedAction) {
         // dismissed
       }
-    } catch (error: any) {
-      Alert.alert(error.message);
+    } catch (error) {
+      Alert.alert((error as Error).message);
     }
   };
 
@@ -92,8 +95,12 @@ export const ConversationActions = () => {
   const onChangeTeamAssignee = () => {
     if (!conversation) return;
     dispatch(selectSingleConversation(conversation));
-    dispatch(setActionState('TeamAssign'));
-    actionsModalSheetRef.current?.present();
+    // dispatch(setActionState('TeamAssign'));
+    // actionsModalSheetRef.current?.present();
+  };
+
+  const onChangePriority = () => {
+    if (!conversation) return;
   };
 
   return (
@@ -108,24 +115,21 @@ export const ConversationActions = () => {
         />
         <Animated.View style={tailwind.style('pt-10')}>
           <ConversationSettingsPanel
-            name={name || ''}
-            thumbnail={thumbnail || ''}
-            teamName={currentTeam?.name || ''}
-            priority={priority}
+            assignee={assignee || null}
+            team={currentTeam || null}
+            priority={priority || null}
             onChangeAssignee={onChangeAssignee}
             onChangeTeamAssignee={onChangeTeamAssignee}
+            onChangePriority={onChangePriority}
           />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-10')}>
           <ConversationLabelActions labels={currentLabels} />
         </Animated.View>
-        {/* <Animated.View style={tailwind.style('pt-10')}>
+        <Animated.View style={tailwind.style('pt-10')}>
           <AddParticipantList />
         </Animated.View>
-        <Animated.View style={tailwind.style('pt-10')}>
-          <OtherConversationDetails />
-        </Animated.View> */}
-        <Animated.View style={tailwind.style('px-6 pt-10')}>
+        <Animated.View style={tailwind.style('px-4 pt-10')}>
           <Button variant="secondary" handlePress={onShareConversation} text="Share conversation" />
         </Animated.View>
       </ScrollView>

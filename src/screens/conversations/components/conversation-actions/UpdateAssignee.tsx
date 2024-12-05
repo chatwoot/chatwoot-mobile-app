@@ -60,7 +60,7 @@ const AssigneeCell = (props: AssigneeCellProps) => {
 
   return (
     <Pressable onPress={handleAssigneePress} style={tailwind.style('flex flex-row items-center')}>
-      <Avatar src={value.thumbnail as ImageSourcePropType} name={value.name ?? ''} />
+      <Avatar src={value.thumbnail as ImageSourcePropType} name={value.name ?? ''} size="md" />
       <Animated.View
         style={tailwind.style(
           'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',

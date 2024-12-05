@@ -1,109 +1,35 @@
 import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { CaretRight, PriorityIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { Avatar, Icon } from '@/components-next';
-import { ConversationPriority } from '@/types';
+import { Agent, ConversationPriority, Team } from '@/types';
+import AssigneePanel from './AssigneePanel';
+import TeamPanel from './TeamPanel';
+import PriorityPanel from './PriorityPanel';
 
 type ConversationSettingsPanelProps = {
-  name: string;
-  thumbnail: string;
   priority: ConversationPriority;
-  teamName: string;
+  team: Team | null;
+  assignee: Agent | null;
   onChangeAssignee: () => void;
   onChangeTeamAssignee: () => void;
+  onChangePriority: () => void;
 };
 
 export const ConversationSettingsPanel = ({
-  name,
-  thumbnail,
+  assignee,
+  team,
   priority,
-  teamName,
   onChangeAssignee,
   onChangeTeamAssignee,
+  onChangePriority,
 }: ConversationSettingsPanelProps) => {
   return (
     <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
-      <Pressable
-        onPress={onChangeAssignee}
-        style={({ pressed }) => [tailwind.style(pressed ? 'bg-gray-100' : '', 'rounded-t-[13px]')]}>
-        <Animated.View style={tailwind.style('flex-row items-center justify-between pl-3')}>
-          <Avatar size={'lg'} src={{ uri: thumbnail || '' }} name={name || ''} />
-          <Animated.View
-            style={tailwind.style(
-              'flex-1 flex-row items-center justify-between py-[11px] ml-3 border-b-[1px] border-b-blackA-A3',
-            )}>
-            <Animated.Text
-              style={tailwind.style(
-                'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
-              )}>
-              {name}
-            </Animated.Text>
-            <Animated.View style={tailwind.style('flex-row items-center pr-3')}>
-              <Animated.Text
-                style={tailwind.style(
-                  'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] text-gray-900',
-                )}>
-                Assign
-              </Animated.Text>
-              <Icon icon={<CaretRight />} size={20} />
-            </Animated.View>
-          </Animated.View>
-        </Animated.View>
-      </Pressable>
-      <Pressable
-        onPress={onChangeTeamAssignee}
-        style={({ pressed }) => [tailwind.style(pressed ? 'bg-gray-100' : '')]}>
-        <Animated.View style={tailwind.style('flex-row items-center justify-between')}>
-          {/* <Icon icon={<WebsiteIcon />} size={28} /> */}
-          <Animated.View
-            style={tailwind.style(
-              'flex-1 flex-row items-center justify-between py-[11px] ml-3 border-b-[1px] border-b-blackA-A3',
-            )}>
-            <Animated.Text
-              style={tailwind.style(
-                'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
-              )}>
-              {teamName}
-            </Animated.Text>
-            <Animated.View style={tailwind.style('flex-row items-center pr-3')}>
-              <Animated.Text
-                style={tailwind.style(
-                  'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] text-gray-900',
-                )}>
-                Change
-              </Animated.Text>
-              <Icon icon={<CaretRight />} size={20} />
-            </Animated.View>
-          </Animated.View>
-        </Animated.View>
-      </Pressable>
-      <Pressable
-        style={({ pressed }) => [tailwind.style(pressed ? 'bg-gray-100' : '', 'rounded-b-[13px]')]}>
-        <Animated.View style={tailwind.style('flex-row items-center justify-between pl-3')}>
-          <Icon icon={<PriorityIcon />} />
-          <Animated.View
-            style={tailwind.style('flex-1 flex-row items-center justify-between py-[11px] ml-3')}>
-            <Animated.Text
-              style={tailwind.style(
-                'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950 capitalize',
-              )}>
-              {priority}
-            </Animated.Text>
-          </Animated.View>
-          <Animated.View style={tailwind.style('flex-row items-center pr-3')}>
-            <Animated.Text
-              style={tailwind.style(
-                'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] text-gray-900',
-              )}>
-              Change
-            </Animated.Text>
-            <Icon icon={<CaretRight />} size={20} />
-          </Animated.View>
-        </Animated.View>
-      </Pressable>
+      <AssigneePanel assignee={assignee} onPress={onChangeAssignee} />
+      <TeamPanel team={team} onPress={onChangeTeamAssignee} />
+      <PriorityPanel priority={priority} onPress={onChangePriority} />
     </Animated.View>
   );
 };

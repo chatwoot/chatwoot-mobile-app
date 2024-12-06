@@ -21,8 +21,8 @@ import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 
 import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stack';
 import ChatScreen from '@/screens/chat-screen/ChatScreen';
-// import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
-// import { DashboardScreen } from '@/screens/dashboard';
+import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
+import DashboardScreen from '@/screens/dashboard/DashboardScreen';
 
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { BottomTabBar } from './BottomTabBar';
@@ -171,7 +171,7 @@ export const AppTabs = () => {
           name="ChatScreen"
           component={ChatScreen}
         />
-        {/*  <Stack.Screen
+        <Stack.Screen
           options={{
             presentation: 'formSheet',
             animation: 'slide_from_bottom',
@@ -186,7 +186,7 @@ export const AppTabs = () => {
           }}
           name="Dashboard"
           component={DashboardScreen}
-        /> */}
+        />
       </Stack.Navigator>
     );
   } else {

@@ -14,6 +14,8 @@ import { ImageSourcePropType } from 'react-native';
 import { SLAStatus } from '@/types/common/SLA';
 import { evaluateSLAStatus } from '@chatwoot/utils';
 import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
+import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
+import { selectUser } from '@/store/auth/authSelectors';
 
 type ChatScreenHeaderProps = {
   name: string;
@@ -28,6 +30,8 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   const dispatch = useAppDispatch();
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
+  const currentUser = useAppSelector(selectUser);
+  const dashboardApps = useAppSelector(selectAllDashboardApps);
 
   const appliedSla = conversation?.appliedSla;
 
@@ -95,7 +99,12 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
 
   const handleNavigation = (url?: string, title?: string) => {
     if (url) {
-      const navigateToScreen = StackActions.push('Dashboard', { url, title });
+      const navigateToScreen = StackActions.push('Dashboard', {
+        url,
+        title,
+        conversation,
+        currentUser,
+      });
       navigation.dispatch(navigateToScreen);
     } else {
       chatPagerView.current?.setPage(1);
@@ -119,6 +128,12 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
     });
   };
 
+  const dashboardRoutes = dashboardApps.map(dashboardApp => ({
+    title: dashboardApp.title,
+    url: dashboardApp.content[0].url,
+    onSelect: handleNavigation,
+  }));
+
   const dashboardsList = useMemo(() => {
     return [
       pagerViewIndex === 0
@@ -127,18 +142,9 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
             onSelect: handleNavigation,
           }
         : undefined,
-      {
-        title: 'Chatwoot AI',
-        url: 'https://chatwoot.ai/',
-        onSelect: handleNavigation,
-      },
-      {
-        title: 'Changelog',
-        url: 'https://github.com/chatwoot/chatwoot-mobile-app/releases/tag/1.10.26',
-        onSelect: handleNavigation,
-      },
+      ...dashboardRoutes,
     ].filter((item): item is DashboardList => item !== undefined);
-  }, [pagerViewIndex]);
+  }, []);
 
   const sLAStatusText = () => {
     const upperCaseType = slaStatus?.type?.toUpperCase(); // FRT, NRT, or RT

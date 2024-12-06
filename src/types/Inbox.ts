@@ -8,4 +8,8 @@ export type Inbox = {
   channelType: Channel;
   phoneNumber: string;
   medium: string;
+  additionalAttributes?: {
+    agentReplyTimeWindowMessage?: string;
+  };
+  provider: string;
 };

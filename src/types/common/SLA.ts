@@ -18,3 +18,11 @@ export interface SLAStatus {
   icon: string;
   isSlaMissed: boolean;
 }
+
+export interface SLAEvent {
+  id: number;
+  meta: object;
+  eventType: string;
+  createdAt: number;
+  updatedAt: number;
+}

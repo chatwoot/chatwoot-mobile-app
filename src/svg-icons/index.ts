@@ -9,3 +9,4 @@ export * from './swipe-actions';
 export * from './tabs';
 export * from './priority-icons';
 export * from './sla-icons';
+export * from './conversation-icons';

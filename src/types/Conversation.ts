@@ -1,6 +1,6 @@
 import { type Agent } from './Agent';
 import { Channel, ConversationPriority, ConversationStatus, UnixTimestamp } from './common';
-import { SLA } from './common/SLA';
+import { SLA, SLAEvent } from './common/SLA';
 import { Contact } from './Contact';
 import { Message } from './Message';
 import { Team } from './Team';
@@ -39,6 +39,8 @@ export interface Conversation {
   slaPolicyId: number | null;
 
   appliedSla: SLA | null;
+
+  slaEvents: SLAEvent[];
 }
 
 export interface ConversationListMeta {

@@ -35,6 +35,9 @@ type ImageMetadata = {
   extension: string | null;
   dataUrl: string;
   thumbUrl: string;
+  fallbackTitle: string;
+  coordinatesLat: number;
+  coordinatesLong: number;
 };
 
 export type MessageContentAttributes = {
@@ -44,6 +47,8 @@ export type MessageContentAttributes = {
   email: {
     subject: string;
   };
+  externalError: string;
+  imageType: string;
 };
 
 export interface Message {
@@ -63,5 +68,5 @@ export interface Message {
   status: MessageStatus;
   lastNonActivityMessage: Message | null;
   conversation?: Conversation | null;
-  shouldRenderAvatar?: boolean;
+  shouldRenderAvatar?: boolean | false;
 }

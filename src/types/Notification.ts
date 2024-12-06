@@ -1,6 +1,7 @@
+import { ConversationPriority } from './common';
 import type { User } from './User';
-
-type NotificationType =
+import type { ConversationAdditionalAttributes } from './Conversation';
+export type NotificationType =
   | 'sla_missed_next_response'
   | 'sla_missed_first_response'
   | 'sla_missed_resolution'
@@ -28,10 +29,14 @@ export type Notification = {
 };
 
 export type PrimaryActor = {
+  id: number;
+  priority?: ConversationPriority | null;
   meta: {
     assignee: User;
     sender: User;
   };
+  inboxId: number;
+  additionalAttributes: ConversationAdditionalAttributes;
 };
 
 export interface NotificationMeta {

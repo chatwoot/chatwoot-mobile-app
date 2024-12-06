@@ -10,6 +10,7 @@ import {
   Agent,
   Team,
   TypingData,
+  DashboardApp,
 } from '@/types';
 import type { Inbox } from '@/types/Inbox';
 import type { NotificationMeta, Notification } from '@/types/Notification';
@@ -60,4 +61,8 @@ export const transformTeam = (team: any): Team => {
 
 export const transformTypingData = (typingData: any): TypingData => {
   return camelcaseKeys(typingData, { deep: true }) as unknown as TypingData;
+};
+
+export const transformDashboardApp = (dashboardApp: any): DashboardApp => {
+  return camelcaseKeys(dashboardApp, { deep: true }) as unknown as DashboardApp;
 };

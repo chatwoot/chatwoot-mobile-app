@@ -13,7 +13,11 @@ import {
 import { appReducer } from '@/store/reducers';
 import { setStore } from '@/reducer/storeAccessor';
 import { contactListenerMiddleware } from './contact/contactListener';
-// import reactotron from '../../ReactotronConfig';
+
+// Disable this in testing environment
+const shouldLoadDebugger = __DEV__ && !process.env.JEST_WORKER_ID;
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const reactotronInstance = shouldLoadDebugger ? require('../../ReactotronConfig').default : null;
 
 const persistConfig = {
   key: 'Root',
@@ -37,7 +41,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  // enhancers: [reactotron.createEnhancer!()],
+  enhancers: shouldLoadDebugger ? [reactotronInstance.createEnhancer!()] : [],
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {

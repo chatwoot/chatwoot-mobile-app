@@ -2,7 +2,12 @@ import { type AvailabilityStatus } from './common/AvailabilityStatus';
 import { type UnixTimestamp } from './common/UnixTimestamp';
 
 export interface Contact {
-  additionalAttributes: object;
+  additionalAttributes: {
+    location?: string;
+    companyName?: string;
+    city?: string;
+    country?: string;
+  };
   availabilityStatus?: AvailabilityStatus;
   createdAt: UnixTimestamp;
   customAttributes: object;

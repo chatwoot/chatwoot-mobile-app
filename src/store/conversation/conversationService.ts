@@ -36,6 +36,7 @@ import {
   transformMessage,
   transformConversationMeta,
 } from '@/utils/camelCaseKeys';
+import type { AxiosRequestConfig } from 'axios';
 
 export class ConversationService {
   static async getConversations(payload: ConversationPayload): Promise<ConversationListResponse> {
@@ -94,10 +95,12 @@ export class ConversationService {
   static async sendMessage(
     conversationId: number,
     payload: MessageBuilderPayload,
+    config: AxiosRequestConfig,
   ): Promise<SendMessageAPIResponse> {
     const response = await apiService.post<SendMessageAPIResponse>(
       `conversations/${conversationId}/messages`,
       payload,
+      config,
     );
     return response.data;
   }

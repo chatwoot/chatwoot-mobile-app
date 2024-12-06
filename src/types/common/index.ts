@@ -7,3 +7,5 @@ export * from './UserRole';
 export * from './Theme';
 export * from './ConversationTyping';
 export * from './Label';
+export * from './SLA';
+export * from './Dashboard';

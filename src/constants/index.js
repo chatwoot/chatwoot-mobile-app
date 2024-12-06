@@ -128,6 +128,11 @@ export const INBOX_TYPES = {
   SMS: 'Channel::Sms',
 };
 
+export const INBOX_FEATURES = {
+  REPLY_TO: 'replyTo',
+  REPLY_TO_OUTGOING: 'replyToOutgoing',
+};
+
 export const INBOX_ICON = {
   'Channel::All': 'copy-outline',
   'Channel::Api': 'inbox-outline',
@@ -246,3 +251,36 @@ export const EMAIL_REGEX =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export const TEXT_MAX_WIDTH = 300;
+
+export const MESSAGE_MAX_LENGTH = {
+  GENERAL: 10000,
+  FACEBOOK: 1000,
+  TWILIO_SMS: 320,
+  TWILIO_WHATSAPP: 1600,
+  EMAIL: 25000,
+};
+
+export const REPLY_EDITOR_MODES = {
+  REPLY: 'REPLY',
+  NOTE: 'NOTE',
+};
+
+export const ATTACHMENT_TYPES = {
+  IMAGE: 'image',
+  AUDIO: 'audio',
+  VIDEO: 'video',
+  FILE: 'file',
+  LOCATION: 'location',
+  FALLBACK: 'fallback',
+  SHARE: 'share',
+  STORY_MENTION: 'story_mention',
+  CONTACT: 'contact',
+  IG_REEL: 'ig_reel',
+};
+
+export const MEDIA_TYPES = [
+  ATTACHMENT_TYPES.IMAGE,
+  ATTACHMENT_TYPES.VIDEO,
+  ATTACHMENT_TYPES.AUDIO,
+  ATTACHMENT_TYPES.IG_REEL,
+];

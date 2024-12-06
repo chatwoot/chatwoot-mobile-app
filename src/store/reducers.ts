@@ -13,13 +13,18 @@ import contactSlice from '@/store/contact/contactSlice';
 import assignableAgentSlice from '@/store/assignable-agent/assignableAgentSlice';
 import conversationTypingSlice from '@/store/conversation/conversationTypingSlice';
 import notificationSlice from '@/store/notification/notificationSlice';
+import notificationFilterSlice from '@/store/notification/notificationFilterSlice';
+import sendMessageSlice from '@/store/conversation/sendMessageSlice';
+import audioPlayerSlice from '@/store/conversation/audioPlayerSlice';
+import teamSlice from '@/store/team/teamSlice';
+import contactLabelSlice from '@/store/contact/contactLabelSlice';
+import contactConversationSlice from '@/store/contact/contactConversationSlice';
+import dashboardAppSlice from '@/store/dashboard-app/dashboardAppSlice';
 
 import cannedResponseSlice from '@/reducer/cannedResponseSlice';
-import conversationLabelsSlice from '@/reducer/conversationLabelSlice';
 import customAttributeSlice from '@/reducer/customAttributeSlice';
-import dashboardAppSlice from '@/reducer/dashboardAppSlice';
 import conversationWatchersSlice from '@/reducer/conversationWatchersSlice';
-import notificationFilterSlice from '@/store/notification/notificationFilterSlice';
+
 export const appReducer = combineReducers({
   auth: authSlice,
   settings: settingsSlice,
@@ -35,10 +40,15 @@ export const appReducer = combineReducers({
   conversationTyping: conversationTypingSlice,
   notifications: notificationSlice,
   notificationFilter: notificationFilterSlice,
+  sendMessage: sendMessageSlice,
+  audioPlayer: audioPlayerSlice,
+  teams: teamSlice,
+  contactLabels: contactLabelSlice,
+  contactConversations: contactConversationSlice,
+  dashboardApps: dashboardAppSlice,
+
   // TODO: Convert these to RTK toolkit typescript
   cannedResponses: cannedResponseSlice,
-  conversationLabels: conversationLabelsSlice,
   customAttributes: customAttributeSlice,
-  dashboardApps: dashboardAppSlice,
   conversationWatchers: conversationWatchersSlice,
 });

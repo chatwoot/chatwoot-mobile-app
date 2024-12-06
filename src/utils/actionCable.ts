@@ -38,6 +38,7 @@ class ActionCableConnector extends BaseActionCableConnector {
       'conversation.updated': this.onConversationUpdated,
       'conversation.typing_on': this.onTypingOn,
       'conversation.typing_off': this.onTypingOff,
+      // TODO: Handle presence update
       // 'presence.update': this.onPresenceUpdate,
       // TODO: Handle all these events
       //   'notification.created': this.onNotificationCreated,
@@ -52,11 +53,10 @@ class ActionCableConnector extends BaseActionCableConnector {
 
   onMessageCreated = (data: Message) => {
     const message = transformMessage(data);
-    const {
-      conversation: { lastActivityAt },
-      conversationId,
-    } = message;
+    const { conversation, conversationId } = message;
+    const lastActivityAt = conversation?.lastActivityAt;
     store.dispatch(updateConversationLastActivity({ lastActivityAt, conversationId }));
+    store.dispatch(addOrUpdateMessage(message));
   };
 
   onConversationCreated = (data: Conversation) => {

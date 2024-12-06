@@ -7,7 +7,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     version: '1.10.52',
     orientation: 'portrait',
     icon: './assets/icon.png',
-    userInterfaceStyle: 'light',
+    userInterfaceStyle: 'automatic',
     splash: {
       image: './assets/splash.png',
       resizeMode: 'contain',

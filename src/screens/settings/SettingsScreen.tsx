@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, Text, Platform, View, Pressable } from 'react-native';
+import { StatusBar, Text, Platform, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -53,15 +53,20 @@ import {
 } from '@/store/auth/authSelectors';
 import { logout, setAccount } from '@/store/auth/authSlice';
 import { authActions } from '@/store/auth/authActions';
-import { selectLocale, selectIsChatwootCloud } from '@/store/settings/settingsSelectors';
+import {
+  selectLocale,
+  selectIsChatwootCloud,
+  selectTheme,
+} from '@/store/settings/settingsSelectors';
 import { settingsActions } from '@/store/settings/settingsActions';
-import { setLocale } from '@/store/settings/settingsSlice';
+import { setLocale, setTheme } from '@/store/settings/settingsSlice';
 
 import AnalyticsHelper from '@/helpers/AnalyticsHelper';
 import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/helpers/permissionHelper';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useAppColorScheme } from 'twrnc';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -75,7 +80,10 @@ const SettingsScreen = () => {
   const availabilityStatus =
     (useSelector(selectCurrentUserAvailability) as AvailabilityStatus) || 'offline';
 
+  const theme = useAppSelector(selectTheme);
+
   // const { bottom } = useSafeAreaInsets();
+  const [colorScheme, toggleColorScheme, setColorScheme] = useAppColorScheme(tailwind);
 
   const [showWidget, toggleWidget] = useState(false);
   const user = useSelector(selectUser);
@@ -265,8 +273,15 @@ const SettingsScreen = () => {
     },
   ];
 
+  const changeTheme = () => {
+    const updatedTheme = theme === 'light' ? 'dark' : 'light';
+    dispatch(setTheme(updatedTheme));
+    setColorScheme(updatedTheme);
+    toggleColorScheme();
+  };
+
   return (
-    <SafeAreaView style={tailwind.style('flex-1 bg-white font-inter-normal-20')}>
+    <SafeAreaView style={tailwind.style('flex-1 bg-white font-inter-normal-20 dark:bg-black')}>
       <StatusBar
         translucent
         backgroundColor={tailwind.color('bg-white')}
@@ -286,12 +301,14 @@ const SettingsScreen = () => {
           </Animated.View>
           <Animated.View style={tailwind.style('flex flex-col items-center gap-1')}>
             <Animated.Text
-              style={tailwind.style('text-[22px] font-inter-580-24 leading-[22px] text-gray-950')}>
+              style={tailwind.style(
+                'text-[22px] font-inter-580-24 leading-[22px] text-gray-950 dark:text-gray-200',
+              )}>
               {name}
             </Animated.Text>
             <Animated.Text
               style={tailwind.style(
-                'text-[15px] font-inter-420-20 leading-[17.25px] text-gray-900',
+                'text-[15px] font-inter-420-20 leading-[17.25px] text-gray-900 dark:text-gray-200',
               )}>
               {email}
             </Animated.Text>
@@ -311,10 +328,13 @@ const SettingsScreen = () => {
             handlePress={onClickLogout}
           />
         </Animated.View>
+        <Animated.View style={tailwind.style('pt-6')}>
+          <Button variant="secondary" text="Change Theme" isDestructive handlePress={changeTheme} />
+        </Animated.View>
         <Pressable
           style={tailwind.style('p-4 items-center')}
           onLongPress={() => debugActionsSheetRef.current?.present()}>
-          <Text style={tailwind.style('text-sm text-gray-700 ')}>
+          <Text style={tailwind.style('text-sm text-gray-700 dark:text-gray-200')}>
             {`${chatwootInstance} ${appVersionDetails}`}
           </Text>
         </Pressable>

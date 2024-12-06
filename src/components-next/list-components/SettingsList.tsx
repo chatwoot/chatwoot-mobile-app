@@ -27,7 +27,7 @@ const ListItem = (props: ListItemProps) => {
       key={index}
       style={({ pressed }) => [
         tailwind.style(
-          pressed ? 'bg-gray-100' : '',
+          pressed ? 'bg-gray-100 dark:bg-gray-800' : '',
           index === 0 ? 'rounded-t-[13px]' : '',
           isLastItem ? 'rounded-b-[13px]' : '',
         ),
@@ -47,7 +47,7 @@ const ListItem = (props: ListItemProps) => {
           <Animated.View>
             <Animated.Text
               style={tailwind.style(
-                'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
+                'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950 dark:text-gray-200',
               )}>
               {listItem.title}
             </Animated.Text>
@@ -56,11 +56,19 @@ const ListItem = (props: ListItemProps) => {
             <Animated.Text
               style={tailwind.style(
                 'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px]',
-                listItem.subtitleType === 'light' ? 'text-gray-900' : 'text-gray-950',
+                listItem.subtitleType === 'light'
+                  ? 'text-gray-900 dark:text-gray-600'
+                  : 'text-gray-950 dark:text-gray-600',
               )}>
               {listItem.subtitle}
             </Animated.Text>
-            {listItem.hasChevron ? <Icon icon={<CaretRight />} size={20} /> : null}
+            {listItem.hasChevron ? (
+              <Icon
+                // icon={<CaretRight stroke={tailwind.color('text-gray-950 dark:text-gray-600')} />}
+                icon={<CaretRight stroke="#B4B4B4" />}
+                size={20}
+              />
+            ) : null}
           </Animated.View>
         </Animated.View>
       </Animated.View>
@@ -83,7 +91,11 @@ export const SettingsList = (props: GenericListProps) => {
           </Animated.Text>
         </Animated.View>
       ) : null}
-      <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
+      <Animated.View
+        style={[
+          tailwind.style('rounded-[13px] mx-4 bg-white dark:bg-gray-950'),
+          styles.listShadow,
+        ]}>
         {list.map(
           (listItem, index) =>
             !listItem.disabled && (

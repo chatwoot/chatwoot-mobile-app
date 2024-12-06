@@ -100,8 +100,7 @@ export const ReplyMessageCell = (props: ReplyMessageCellProps) => {
                 style={tailwind.style(
                   'text-[14px] font-inter-normal-20 leading-[19.6px] tracking-[0.16px] text-gray-950 capitalize',
                 )}>
-                {/* {replyMessageItem?.content} */}
-                qwqwe
+                {replyMessageItem?.content}
               </Animated.Text>
             )
           ) : null}

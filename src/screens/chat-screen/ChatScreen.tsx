@@ -15,7 +15,12 @@ import { ChatWindowProvider, useChatWindowContext, useRefsContext } from '@/cont
 import { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 import { tailwind } from '@/theme';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
-import { useAppSelector } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+
+import { notificationActions } from '@/store/notification/notificationAction';
+import { MarkAsReadPayload } from '@/store/notification/notificationTypes';
+import { PrimaryActorType } from '@/types/Notification';
+
 export const ChatWindow = (props: ChatScreenProps) => {
   return (
     <Animated.View style={tailwind.style('flex-1')}>
@@ -67,7 +72,20 @@ const ChatScreenWrapper = (props: ChatScreenProps) => {
   );
 };
 const ChatScreen = (props: ChatScreenProps) => {
-  const { conversationId } = props.route.params;
+  const { conversationId, primaryActorId, primaryActorType } = props.route.params;
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (primaryActorId && primaryActorType) {
+      const payload: MarkAsReadPayload = {
+        primaryActorId,
+        primaryActorType: primaryActorType as PrimaryActorType,
+      };
+      dispatch(notificationActions.markAsRead(payload));
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const setUpTrackPlayer = () => {

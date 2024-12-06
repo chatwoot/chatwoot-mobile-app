@@ -259,18 +259,17 @@ const BottomSheetContent = () => {
   return (
     <Animated.View layout={LinearTransition.springify().damping(38).stiffness(240)}>
       <AnimatedKeyboardStickyView style={[tailwind.style('bg-white'), animatedInputWrapperStyle]}>
+        {!canReply && inbox && conversation && (
+          <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>
+            <ReplyWarning inbox={inbox} conversation={conversation} />
+          </Animated.View>
+        )}
         <Animated.View
           layout={LinearTransition.springify().damping(38).stiffness(240)}
           style={tailwind.style('py-2 border-t-[1px] border-t-blackA-A3')}>
           {quoteMessage && (
             <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>
               <QuoteReply />s
-            </Animated.View>
-          )}
-
-          {!canReply && inbox && conversation && (
-            <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>
-              <ReplyWarning inbox={inbox} conversation={conversation} />
             </Animated.View>
           )}
 

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, Text, Platform, View } from 'react-native';
+import { StatusBar, Text, Platform, View, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -21,9 +21,7 @@ import { clearAllConversations } from '@/store/conversation/conversationSlice';
 import { clearAllContacts } from '@/store/contact/contactSlice';
 
 import i18n from 'i18n';
-
 import { HELP_URL } from '@/constants/url';
-
 import { tailwind } from '@/theme';
 
 import {
@@ -47,6 +45,7 @@ import { GenericListType } from '@/types';
 
 import { useHaptic } from '@/utils';
 import { SettingsHeader } from './SettingsHeader';
+import { DebugActions } from './components/DebugActions';
 import {
   selectCurrentUserAvailability,
   selectUser,
@@ -312,11 +311,13 @@ const SettingsScreen = () => {
             handlePress={onClickLogout}
           />
         </Animated.View>
-        <View style={tailwind.style('p-4 items-center')}>
+        <Pressable
+          style={tailwind.style('p-4 items-center')}
+          onLongPress={() => debugActionsSheetRef.current?.present()}>
           <Text style={tailwind.style('text-sm text-gray-700 ')}>
             {`${chatwootInstance} ${appVersionDetails}`}
           </Text>
-        </View>
+        </Pressable>
       </Animated.ScrollView>
       <BottomSheetModal
         ref={userAvailabilityStatusSheetRef}
@@ -387,6 +388,20 @@ const SettingsScreen = () => {
             changeAccount={changeAccount}
             accounts={accounts}
           />
+        </BottomSheetWrapper>
+      </BottomSheetModal>
+      <BottomSheetModal
+        ref={debugActionsSheetRef}
+        backdropComponent={BottomSheetBackdrop}
+        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        enablePanDownToClose
+        animationConfigs={animationConfigs}
+        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        style={tailwind.style('rounded-[26px] overflow-hidden')}
+        snapPoints={['36%']}>
+        <BottomSheetWrapper>
+          <BottomSheetHeader headerText={i18n.t('SETTINGS.DEBUG_ACTIONS')} />
+          <DebugActions />
         </BottomSheetWrapper>
       </BottomSheetModal>
       {!!process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN &&

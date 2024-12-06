@@ -303,7 +303,7 @@ const SettingsScreen = () => {
         <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.SUPPORT')} list={supportList} />
         </Animated.View>
-        <Animated.View style={tailwind.style('pt-6')}>
+        <Animated.View style={tailwind.style('pt-6 mx-4')}>
           <Button
             variant="secondary"
             text={i18n.t('SETTINGS.LOGOUT')}

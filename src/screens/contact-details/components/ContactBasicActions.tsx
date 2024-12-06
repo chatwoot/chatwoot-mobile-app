@@ -2,42 +2,35 @@ import React from 'react';
 import { Dimensions, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { Icon } from '@/components-next';
-import { ChatIcon, MailIcon, Overflow, PhoneIcon } from '@/svg-icons';
+import { Icon, IconButton } from '@/components-next';
+
+import { MailIcon, PhoneIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
+import i18n from '@/i18n';
+import { openNumber, openEmail } from '@/helpers/UrlHelper';
 
-// Add onPress callbacks to the options
 const contactOptions = [
   {
     contactType: 'call',
     icon: <PhoneIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />,
   },
   {
-    contactType: 'message',
-    icon: <ChatIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />,
-  },
-  {
     contactType: 'email',
     icon: <MailIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />,
-  },
-  {
-    contactType: 'more',
-    icon: <Overflow strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />,
   },
 ];
 
 type ContactOptionProps = {
-  index: number;
   option: (typeof contactOptions)[0];
   handleOptionPress?: () => void;
 };
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
-const OPTION_WIDTH = (SCREEN_WIDTH - 32 - 12 * 3) / 4;
+const OPTION_WIDTH = (SCREEN_WIDTH - 32 - 12 * 3) / 2;
 
 const ContactOption = (props: ContactOptionProps) => {
-  const { index, option, handleOptionPress } = props;
+  const { option, handleOptionPress } = props;
 
   const { handlers, animatedStyle } = useScaleAnimation();
   const hapticSelection = useHaptic();
@@ -48,11 +41,7 @@ const ContactOption = (props: ContactOptionProps) => {
   };
 
   return (
-    <Animated.View
-      style={[
-        tailwind.style('flex-1', index !== contactOptions.length - 1 ? 'mr-3' : ''),
-        animatedStyle,
-      ]}>
+    <Animated.View style={[tailwind.style('flex-1'), animatedStyle]}>
       <Pressable
         style={({ pressed }) => [
           tailwind.style(
@@ -76,14 +65,74 @@ const ContactOption = (props: ContactOptionProps) => {
   );
 };
 
-export const ContactBasicActions = () => {
-  return (
-    <Animated.View style={tailwind.style('mt-[23px]')}>
-      <Animated.View style={tailwind.style('flex flex-row justify-between px-4')}>
-        {contactOptions.map((option, index) => (
-          <ContactOption key={index} {...{ option, index }} />
-        ))}
+type ContactBasicActionsProps = {
+  phoneNumber?: string;
+  email?: string;
+};
+
+export const ContactBasicActions = (props: ContactBasicActionsProps) => {
+  const { phoneNumber, email } = props;
+
+  if (!email && !phoneNumber) {
+    return null;
+  }
+
+  const onCallPress = () => {
+    openNumber({ phoneNumber });
+  };
+
+  const onEmailPress = () => {
+    openEmail({ email });
+  };
+
+  if (email && phoneNumber) {
+    return (
+      <Animated.View style={tailwind.style('mt-[23px]')}>
+        {email && phoneNumber && (
+          <Animated.View style={tailwind.style('flex flex-row justify-between px-4')}>
+            <ContactOption
+              key="email"
+              option={{
+                contactType: i18n.t('CONTACT_DETAILS.EMAIL'),
+                icon: <MailIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />,
+              }}
+              handleOptionPress={onEmailPress}
+            />
+            <ContactOption
+              key="phoneNumber"
+              option={{
+                contactType: i18n.t('CONTACT_DETAILS.CALL'),
+                icon: <PhoneIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />,
+              }}
+              handleOptionPress={onCallPress}
+            />
+          </Animated.View>
+        )}
       </Animated.View>
-    </Animated.View>
-  );
+    );
+  }
+
+  if (phoneNumber) {
+    return (
+      <Animated.View style={tailwind.style('mt-[23px] px-4')}>
+        <IconButton
+          text={i18n.t('CONTACT_DETAILS.CALL')}
+          variant="secondary"
+          handlePress={onCallPress}
+        />
+      </Animated.View>
+    );
+  }
+
+  if (email) {
+    return (
+      <Animated.View style={tailwind.style('mt-[23px] px-4')}>
+        <IconButton
+          text={i18n.t('CONTACT_DETAILS.EMAIL')}
+          variant="secondary"
+          handlePress={onEmailPress}
+        />
+      </Animated.View>
+    );
+  }
 };

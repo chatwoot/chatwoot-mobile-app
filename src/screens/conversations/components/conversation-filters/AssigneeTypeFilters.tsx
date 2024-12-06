@@ -12,6 +12,9 @@ import { selectFilters, setFilters } from '@/store/conversation/conversationFilt
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import i18n from '@/i18n';
 import { AssigneeOptions } from '@/types';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/store/auth/authSelectors';
+import { getUserPermissions } from '@/helpers/permissionHelper';
 
 type AssigneeTypeCellProps = {
   value: string;
@@ -54,26 +57,36 @@ const AssigneeTypeCell = (props: AssigneeTypeCellProps) => {
   );
 };
 
-type AssigneeTypeStackProps = {
-  list: AssigneeTypes[];
-};
-
-const AssigneeTypeStack = (props: AssigneeTypeStackProps) => {
-  const { list } = props;
-  return (
-    <Animated.View style={tailwind.style('py-1 pl-3')}>
-      {list.map((value, index) => (
-        <AssigneeTypeCell key={index} {...{ value, index }} />
-      ))}
-    </Animated.View>
-  );
-};
-
 export const AssigneeTypeFilters = () => {
+  const user = useSelector(selectUser);
+  const { account_id: activeAccountId } = user || {};
+
+  const userPermissions = getUserPermissions(user, activeAccountId);
+
+  // If userPermissions contains any values conversation_manage_permission,administrator, agent then keep all the assignee types
+  // If conversation_manage is not available and conversation_unassigned_manage only is available, then return only unassigned and mine
+  // If conversation_manage is not available and conversation_participating_manage only is available, then return only all and mine
+  let assigneeTypes = assigneeTypeList;
+
+  if (
+    userPermissions.includes('conversation_manage') ||
+    userPermissions.includes('agent') ||
+    userPermissions.includes('administrator')
+  ) {
+    // Keep all the assignee types
+  } else if (userPermissions.includes('conversation_unassigned_manage')) {
+    assigneeTypes = assigneeTypeList.filter(type => type !== 'all');
+  } else {
+    assigneeTypes = assigneeTypeList.filter(type => type !== 'unassigned');
+  }
   return (
     <Animated.View>
       <BottomSheetHeader headerText={i18n.t('CONVERSATION.FILTERS.ASSIGNEE_TYPE.TITLE')} />
-      <AssigneeTypeStack list={assigneeTypeList} />
+      <Animated.View style={tailwind.style('py-1 pl-3')}>
+        {assigneeTypes.map((value, index) => (
+          <AssigneeTypeCell key={index} {...{ value, index }} />
+        ))}
+      </Animated.View>
     </Animated.View>
   );
 };

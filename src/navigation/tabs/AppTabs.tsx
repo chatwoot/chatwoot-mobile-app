@@ -35,6 +35,7 @@ import actionCableConnector from '@/utils/actionCable';
 import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import AnalyticsHelper from '@/helpers/AnalyticsHelper';
 import { clearAllDeliveredNotifications } from '@/helpers/PushHelper';
+import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
 
 const Tab = createBottomTabNavigator();
 
@@ -84,6 +85,7 @@ const Tabs = () => {
     initActionCable();
     dispatch(labelActions.fetchLabels());
     dispatch(setCurrentState('none'));
+    dispatch(dashboardAppActions.index());
     initAnalytics();
     initSentry();
     initPushNotifications();

@@ -123,7 +123,7 @@ export const MessageTextInput = ({ maxLength, replyEditorMode }: MessageTextInpu
 
   const toggleReplyMode = () => {
     if (replyEditorMode === REPLY_EDITOR_MODES.REPLY) {
-      dispatch(togglePrivateMessage(true));
+      dispatch(togglePrivateMessage(!isPrivateMessage));
     }
   };
 

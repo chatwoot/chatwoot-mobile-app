@@ -10,18 +10,13 @@ import { Icon } from '@/components-next/common';
 import { openURL } from '@/helpers/UrlHelper';
 import { showToast } from '@/helpers/ToastHelper';
 
-type AttributeListProps = {
-  sectionTitle?: string;
-  list: AttributeListType[];
-};
-
-type ListItemProps = {
+type AttributeItemProps = {
   listItem: AttributeListType;
   index: number;
   isLastItem: boolean;
 };
 
-const ListItem = (props: ListItemProps) => {
+const AttributeItem = (props: AttributeItemProps) => {
   const { listItem, index, isLastItem } = props;
 
   const handlePress = () => {
@@ -59,11 +54,6 @@ const ListItem = (props: ListItemProps) => {
         ),
       ]}>
       <Animated.View style={tailwind.style('flex flex-row items-center pl-3')}>
-        {listItem.icon ? (
-          <Animated.View>
-            <Icon icon={listItem.icon} size={24} />
-          </Animated.View>
-        ) : null}
         <Animated.View
           style={tailwind.style(
             'flex-1 flex-row items-center justify-between py-[11px]',
@@ -95,6 +85,10 @@ const ListItem = (props: ListItemProps) => {
   );
 };
 
+type AttributeListProps = {
+  sectionTitle?: string;
+  list: AttributeListType[];
+};
 export const AttributeList = (props: AttributeListProps) => {
   const { list, sectionTitle } = props;
 
@@ -113,8 +107,9 @@ export const AttributeList = (props: AttributeListProps) => {
       <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
         {list.map(
           (listItem, index) =>
-            !listItem.disabled && (
-              <ListItem
+            !listItem.disabled &&
+            listItem.subtitle && (
+              <AttributeItem
                 key={index}
                 {...{ listItem, index }}
                 isLastItem={index === list.length - 1}

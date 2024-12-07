@@ -1,10 +1,37 @@
 import React from 'react';
 import Animated from 'react-native-reanimated';
 
-import { AttributeListType } from '@/types';
+import { AttributeListType, CustomAttribute } from '@/types';
 import { Conversation } from '@/types/Conversation';
-import { ConversationAttributes } from './ConversationAttributes';
 import i18n from '@/i18n';
+import { camelCase } from 'lodash';
+import { useAppSelector } from '@/hooks';
+import { getConversationCustomAttributes } from '@/store/custom-attribute/customAttributeSlice';
+import { AttributeList } from '@/components-next';
+
+const processContactAttributes = (
+  attributes: CustomAttribute[],
+  customAttributes: Record<string, string>,
+  filterCondition: (key: string, custom: Record<string, string>) => boolean,
+) => {
+  if (!attributes.length || !customAttributes) {
+    return [];
+  }
+
+  return attributes.reduce<(CustomAttribute & { value: string })[]>((result, attribute) => {
+    const { attributeKey } = attribute;
+    const meetsCondition = filterCondition(camelCase(attributeKey), customAttributes);
+
+    if (meetsCondition) {
+      result.push({
+        ...attribute,
+        value: customAttributes[camelCase(attributeKey)] ?? '',
+      });
+    }
+
+    return result;
+  }, []);
+};
 
 export const ConversationMetaInformation = ({ conversation }: { conversation: Conversation }) => {
   const additionalAttributes = conversation.additionalAttributes;
@@ -16,7 +43,14 @@ export const ConversationMetaInformation = ({ conversation }: { conversation: Co
   const browserName = `${browser?.browserName} ${browser?.browserVersion}`;
   const platformName = `${browser?.platformName} ${browser?.platformVersion}`;
 
+  const conversationCustomAttributes = useAppSelector(getConversationCustomAttributes);
   const { additionalAttributes: { createdAtIp = '' } = {} } = sender;
+
+  const usedConversationCustomAttributes = processContactAttributes(
+    conversationCustomAttributes,
+    conversation?.customAttributes || {},
+    (key, custom) => key in custom,
+  );
 
   const otherConversationDetails: AttributeListType[] = [
     {
@@ -51,11 +85,20 @@ export const ConversationMetaInformation = ({ conversation }: { conversation: Co
     },
   ];
 
+  const processedAttributes = usedConversationCustomAttributes.map(attribute => ({
+    title: attribute.attributeDisplayName,
+    subtitle: attribute.value,
+    subtitleType: 'dark',
+    type: attribute.attributeDisplayType,
+  }));
+
+  const allAttributes = [...otherConversationDetails, ...processedAttributes];
+
   return (
     <Animated.View>
-      <ConversationAttributes
+      <AttributeList
         sectionTitle={i18n.t('CONVERSATION_DETAILS.TITLE')}
-        list={otherConversationDetails as AttributeListType[]}
+        list={allAttributes as AttributeListType[]}
       />
     </Animated.View>
   );

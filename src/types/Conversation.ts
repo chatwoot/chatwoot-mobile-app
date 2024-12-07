@@ -13,7 +13,7 @@ export interface Conversation {
   canReply: boolean;
   contactLastSeenAt: UnixTimestamp;
   createdAt: UnixTimestamp;
-  customAttributes: object;
+  customAttributes: Record<string, string>;
   firstReplyCreatedAt: UnixTimestamp;
   id: number;
   inboxId: number;

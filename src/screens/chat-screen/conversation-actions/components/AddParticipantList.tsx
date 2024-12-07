@@ -23,7 +23,7 @@ const ListItem = (props: ListItemProps) => {
       ]}>
       <Animated.View style={tailwind.style('flex flex-row items-center ml-3')}>
         <Animated.View>
-          <Avatar src={listItem.thumbnail} size="lg" />
+          <Avatar src={listItem.thumbnail || undefined} size="lg" />
         </Animated.View>
         <Animated.View
           style={tailwind.style('flex-1 py-[11px] ml-2 border-b-[1px] border-b-blackA-A3')}>
@@ -39,6 +39,27 @@ const ListItem = (props: ListItemProps) => {
   );
 };
 
+const ParticipantOverflowCell = ({ count }: { count: number }) => {
+  return (
+    <Pressable style={({ pressed }) => [tailwind.style(pressed ? 'bg-gray-100' : '')]}>
+      <Animated.View style={tailwind.style('flex flex-row items-center ml-3')}>
+        <Animated.View>
+          <Icon icon={<Overflow stroke={tailwind.color('text-gray-600')} />} size={28} />
+        </Animated.View>
+        <Animated.View
+          style={tailwind.style('flex-1 py-[11px] ml-2 border-b-[1px] border-b-blackA-A3')}>
+          <Animated.Text
+            style={tailwind.style(
+              'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
+            )}>
+            {count} participants
+          </Animated.Text>
+        </Animated.View>
+      </Animated.View>
+    </Pressable>
+  );
+};
+
 type AddParticipantListProps = {
   conversationParticipants: Agent[];
   onAddParticipant: () => void;
@@ -46,6 +67,8 @@ type AddParticipantListProps = {
 
 export const AddParticipantList = (props: AddParticipantListProps) => {
   const { conversationParticipants, onAddParticipant } = props;
+
+  const overflowCount = conversationParticipants.length;
   return (
     <Animated.View>
       <Animated.View style={tailwind.style('pl-4 pb-3')}>
@@ -60,22 +83,7 @@ export const AddParticipantList = (props: AddParticipantListProps) => {
         {conversationParticipants.slice(0, 4).map((listItem, index) => {
           return <ListItem key={index} {...{ listItem, index }} />;
         })}
-        <Pressable style={({ pressed }) => [tailwind.style(pressed ? 'bg-gray-100' : '')]}>
-          <Animated.View style={tailwind.style('flex flex-row items-center ml-3')}>
-            <Animated.View>
-              <Icon icon={<Overflow stroke={tailwind.color('text-gray-600')} />} size={28} />
-            </Animated.View>
-            <Animated.View
-              style={tailwind.style('flex-1 py-[11px] ml-2 border-b-[1px] border-b-blackA-A3')}>
-              <Animated.Text
-                style={tailwind.style(
-                  'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
-                )}>
-                2 participants
-              </Animated.Text>
-            </Animated.View>
-          </Animated.View>
-        </Pressable>
+        {overflowCount > 3 && <ParticipantOverflowCell count={overflowCount - 4} />}
         <Pressable
           onPress={onAddParticipant}
           style={({ pressed }) => [

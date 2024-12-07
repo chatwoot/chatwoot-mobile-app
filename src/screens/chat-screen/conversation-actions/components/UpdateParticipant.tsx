@@ -51,7 +51,7 @@ const ParticipantCell = (props: ParticipantCellProps) => {
   );
 };
 
-const AssigneeStack = ({
+const ParticipantStack = ({
   allAgents,
   activeConversationParticipants,
 }: {
@@ -164,7 +164,7 @@ export const UpdateParticipant = (props: UpdateParticipantProps) => {
         onChangeText={handleChangeText}
         placeholder={i18n.t('CONVERSATION.ASSIGNEE.AGENTS.SEARCH_AGENT')}
       />
-      <AssigneeStack
+      <ParticipantStack
         allAgents={allAgents}
         activeConversationParticipants={activeConversationParticipants}
       />

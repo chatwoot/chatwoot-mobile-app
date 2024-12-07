@@ -12,3 +12,8 @@ export interface ConversationParticipantResponse {
   participants: Agent[];
   conversationId: number;
 }
+
+export interface UpdateConversationParticipantPayload {
+  conversationId: number;
+  userIds: number[];
+}

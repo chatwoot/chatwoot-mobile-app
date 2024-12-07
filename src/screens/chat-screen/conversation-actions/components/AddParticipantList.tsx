@@ -5,60 +5,11 @@ import Animated from 'react-native-reanimated';
 import { AddParticipant, Overflow } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Avatar, Icon } from '@/components-next';
-
-const peopleList = [
-  {
-    name: 'Howard Stark',
-    imageSource: require('../../../../assets/local/avatars/avatar-image.png'),
-  },
-  {
-    imageSource: require('../../../../assets/local/avatars/avatar-image-1.png'),
-    name: 'Bob Smith',
-  },
-  {
-    imageSource: require('../../../../assets/local/avatars/avatar-image-2.png'),
-    name: 'Eva White',
-  },
-  {
-    imageSource: require('../../../../assets/local/avatars/avatar-image-3.png'),
-    name: 'Michael Davis',
-  },
-  {
-    imageSource: require('../../../../assets/local/avatars/avatar-image-5.png'),
-    name: 'Olivia Anderson',
-  },
-  {
-    imageSource: require('../../../../assets/local/avatars/avatar-image-4.png'),
-    name: 'Sophia Martinez',
-  },
-  {
-    imageSource: require('../../../../assets/local/avatars/avatar-image.png'),
-    name: 'Liam Brown',
-  },
-  {
-    imageSource: require('../../../../assets/local/avatars/avatar-image-1.png'),
-    name: 'Emma Lee',
-  },
-  {
-    imageSource: require('../../../../assets/local/avatars/avatar-image-2.png'),
-    name: 'Noah Wilson',
-  },
-  {
-    imageSource: require('../../../../assets/local/avatars/avatar-image-3.png'),
-    name: 'Ava Johnson',
-  },
-  {
-    imageSource: require('../../../../assets/local/avatars/avatar-image-5.png'),
-    name: 'Lucas Clark',
-  },
-  {
-    imageSource: require('../../../../assets/local/avatars/avatar-image-4.png'),
-    name: 'Isabella Hall',
-  },
-];
+import { Agent } from '@/types';
+import i18n from '@/i18n';
 
 type ListItemProps = {
-  listItem: (typeof peopleList)[0];
+  listItem: Agent;
   index: number;
 };
 
@@ -72,7 +23,7 @@ const ListItem = (props: ListItemProps) => {
       ]}>
       <Animated.View style={tailwind.style('flex flex-row items-center ml-3')}>
         <Animated.View>
-          <Avatar src={listItem.imageSource} size="lg" />
+          <Avatar src={listItem.thumbnail} size="lg" />
         </Animated.View>
         <Animated.View
           style={tailwind.style('flex-1 py-[11px] ml-2 border-b-[1px] border-b-blackA-A3')}>
@@ -88,7 +39,13 @@ const ListItem = (props: ListItemProps) => {
   );
 };
 
-export const AddParticipantList = () => {
+type AddParticipantListProps = {
+  conversationParticipants: Agent[];
+  onAddParticipant: () => void;
+};
+
+export const AddParticipantList = (props: AddParticipantListProps) => {
+  const { conversationParticipants, onAddParticipant } = props;
   return (
     <Animated.View>
       <Animated.View style={tailwind.style('pl-4 pb-3')}>
@@ -96,11 +53,11 @@ export const AddParticipantList = () => {
           style={tailwind.style(
             'text-sm font-inter-medium-24 tracking-[0.32px] leading-[16px] text-gray-700',
           )}>
-          Participants
+          {i18n.t('CONVERSATION_PARTICIPANTS.TITLE')}
         </Animated.Text>
       </Animated.View>
       <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
-        {peopleList.slice(0, 4).map((listItem, index) => {
+        {conversationParticipants.slice(0, 4).map((listItem, index) => {
           return <ListItem key={index} {...{ listItem, index }} />;
         })}
         <Pressable style={({ pressed }) => [tailwind.style(pressed ? 'bg-gray-100' : '')]}>
@@ -114,12 +71,13 @@ export const AddParticipantList = () => {
                 style={tailwind.style(
                   'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
                 )}>
-                {peopleList.length - 4} participants
+                2 participants
               </Animated.Text>
             </Animated.View>
           </Animated.View>
         </Pressable>
         <Pressable
+          onPress={onAddParticipant}
           style={({ pressed }) => [
             tailwind.style('rounded-b-[13px]', pressed ? 'bg-blue-100' : ''),
           ]}>

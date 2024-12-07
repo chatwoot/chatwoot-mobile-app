@@ -36,3 +36,16 @@ export const selectAssignableAgentsByInboxId = createSelector(
     return searchTerm ? agentsList.filter(agent => agent?.name?.includes(searchTerm)) : agentsList;
   },
 );
+
+export const selectAssignableParticipantsByInboxId = createSelector(
+  [
+    selectAssignableAgents,
+    (_state: RootState, inboxIds: number | number[]) =>
+      Array.isArray(inboxIds) ? inboxIds : [inboxIds],
+    (_state: RootState, _inboxIds: number | number[], searchTerm: string) => searchTerm,
+  ],
+  (state, inboxIds, searchTerm) => {
+    const agents = inboxIds.flatMap(id => state[id] || []);
+    return searchTerm ? agents.filter(agent => agent?.name?.includes(searchTerm)) : agents;
+  },
+);

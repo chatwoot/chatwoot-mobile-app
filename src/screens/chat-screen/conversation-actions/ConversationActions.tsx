@@ -102,6 +102,9 @@ export const ConversationActions = () => {
 
   const onChangePriority = () => {
     if (!conversation) return;
+    dispatch(selectSingleConversation(conversation));
+    dispatch(setActionState('Priority'));
+    actionsModalSheetRef.current?.present();
   };
 
   return (

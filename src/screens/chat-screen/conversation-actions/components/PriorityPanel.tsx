@@ -33,7 +33,7 @@ const PriorityPanel = ({ priority, onPress }: PriorityPanelProps) => {
           )}>
           <Animated.Text
             style={tailwind.style(
-              'text-base font-inter-420-20 leading-[22.4px] tracking-[0.16px] text-gray-950',
+              'text-base font-inter-420-20 leading-[22.4px] tracking-[0.16px] text-gray-950 capitalize',
             )}>
             {priorityName}
           </Animated.Text>

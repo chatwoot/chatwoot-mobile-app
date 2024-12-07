@@ -28,6 +28,7 @@ import type {
   ConversationResponse,
   MarkMessageReadOrUnreadResponse,
   ToggleConversationStatusAPIResponse,
+  TogglePriorityPayload,
 } from './conversationTypes';
 
 import {
@@ -205,5 +206,10 @@ export class ConversationService {
       typing_status: typingStatus,
       is_private: isPrivate,
     });
+  }
+
+  static async togglePriority(payload: TogglePriorityPayload): Promise<void> {
+    const { conversationId, priority } = payload;
+    await apiService.post(`conversations/${conversationId}/toggle_priority`, { priority });
   }
 }

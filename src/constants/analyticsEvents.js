@@ -20,6 +20,7 @@ export const CONVERSATION_EVENTS = Object.freeze({
   MARK_AS_READ: 'Mark as read',
   ENABLE_PUSH_NOTIFICATION: 'Enabled push notification',
   CONVERSATION_SHARE: 'Shared conversation url',
+  PRIORITY_CHANGED: 'Changed conversation priority',
 });
 
 export const ACCOUNT_EVENTS = Object.freeze({

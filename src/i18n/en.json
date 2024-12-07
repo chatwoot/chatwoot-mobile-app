@@ -152,6 +152,8 @@
     "ASSIGN_CHANGE": "Conversation Assignee changed",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "CHANGE_STATUS": "Change status",
     "PRIORITY": {
       "TITLE": "Priority",
       "OPTIONS": {

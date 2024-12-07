@@ -24,6 +24,7 @@ import type {
   ToggleConversationStatusResponse,
   SendMessageAPIResponse,
   SendMessagePayload,
+  TogglePriorityPayload,
 } from './conversationTypes';
 import { AxiosError } from 'axios';
 import { MESSAGE_STATUS } from '@/constants';
@@ -243,6 +244,12 @@ export const conversationActions = {
     'conversations/toggleTyping',
     async (payload, { rejectWithValue }) => {
       return await ConversationService.toggleTyping(payload);
+    },
+  ),
+  togglePriority: createAsyncThunk<void, TogglePriorityPayload>(
+    'conversations/togglePriority',
+    async (payload, { rejectWithValue }) => {
+      return await ConversationService.togglePriority(payload);
     },
   ),
 };

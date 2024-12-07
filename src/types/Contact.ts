@@ -8,6 +8,7 @@ export interface Contact {
     city?: string;
     country?: string;
     description?: string;
+    createdAtIp?: string;
   };
   availabilityStatus?: AvailabilityStatus;
   createdAt: UnixTimestamp;

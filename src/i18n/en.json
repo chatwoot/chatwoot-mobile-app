@@ -316,7 +316,7 @@
     "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Conversation Information",
+    "TITLE": "Attributes",
     "BROWSER": "Browser",
     "OPERATING_SYSTEM": "Operating System",
     "INITIATED_AT": "Initiated at",

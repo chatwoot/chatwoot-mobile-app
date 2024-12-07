@@ -68,7 +68,7 @@ type AddParticipantListProps = {
 export const AddParticipantList = (props: AddParticipantListProps) => {
   const { conversationParticipants, onAddParticipant } = props;
 
-  const overflowCount = conversationParticipants.length;
+  const overflowCount = conversationParticipants?.length;
   return (
     <Animated.View>
       <Animated.View style={tailwind.style('pl-4 pb-3')}>
@@ -80,9 +80,10 @@ export const AddParticipantList = (props: AddParticipantListProps) => {
         </Animated.Text>
       </Animated.View>
       <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
-        {conversationParticipants.slice(0, 4).map((listItem, index) => {
-          return <ListItem key={index} {...{ listItem, index }} />;
-        })}
+        {conversationParticipants &&
+          conversationParticipants.slice(0, 4).map((listItem, index) => {
+            return <ListItem key={index} {...{ listItem, index }} />;
+          })}
         {overflowCount > 3 && <ParticipantOverflowCell count={overflowCount - 4} />}
         <Pressable
           onPress={onAddParticipant}

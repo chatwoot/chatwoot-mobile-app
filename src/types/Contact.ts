@@ -7,10 +7,11 @@ export interface Contact {
     companyName?: string;
     city?: string;
     country?: string;
+    description?: string;
   };
   availabilityStatus?: AvailabilityStatus;
   createdAt: UnixTimestamp;
-  customAttributes: object;
+  customAttributes: Record<string, string>;
   email: string | null;
   id: number;
   identifier: string | null;

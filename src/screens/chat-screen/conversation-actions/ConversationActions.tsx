@@ -25,7 +25,6 @@ import { teamActions } from '@/store/team/teamActions';
 import { selectAllTeams } from '@/store/team/teamSelectors';
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { ConversationMetaInformation } from './components/ConversationMetaInformation';
-import i18n from '@/i18n';
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 

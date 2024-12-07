@@ -87,52 +87,44 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
 
   if (email && phoneNumber) {
     return (
-      <Animated.View style={tailwind.style('mt-[23px]')}>
-        {email && phoneNumber && (
-          <Animated.View style={tailwind.style('flex flex-row justify-between px-4')}>
-            <ContactOption
-              key="email"
-              option={{
-                contactType: i18n.t('CONTACT_DETAILS.EMAIL'),
-                icon: <MailIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />,
-              }}
-              handleOptionPress={onEmailPress}
-            />
-            <ContactOption
-              key="phoneNumber"
-              option={{
-                contactType: i18n.t('CONTACT_DETAILS.CALL'),
-                icon: <PhoneIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />,
-              }}
-              handleOptionPress={onCallPress}
-            />
-          </Animated.View>
-        )}
+      <Animated.View style={tailwind.style('flex flex-row justify-between ')}>
+        <ContactOption
+          key="email"
+          option={{
+            contactType: i18n.t('CONTACT_DETAILS.EMAIL'),
+            icon: <MailIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />,
+          }}
+          handleOptionPress={onEmailPress}
+        />
+        <ContactOption
+          key="phoneNumber"
+          option={{
+            contactType: i18n.t('CONTACT_DETAILS.CALL'),
+            icon: <PhoneIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />,
+          }}
+          handleOptionPress={onCallPress}
+        />
       </Animated.View>
     );
   }
 
   if (phoneNumber) {
     return (
-      <Animated.View style={tailwind.style('mt-[23px] px-4')}>
-        <IconButton
-          text={i18n.t('CONTACT_DETAILS.CALL')}
-          variant="secondary"
-          handlePress={onCallPress}
-        />
-      </Animated.View>
+      <IconButton
+        text={i18n.t('CONTACT_DETAILS.CALL')}
+        variant="secondary"
+        handlePress={onCallPress}
+      />
     );
   }
 
   if (email) {
     return (
-      <Animated.View style={tailwind.style('mt-[23px] px-4')}>
-        <IconButton
-          text={i18n.t('CONTACT_DETAILS.EMAIL')}
-          variant="secondary"
-          handlePress={onEmailPress}
-        />
-      </Animated.View>
+      <IconButton
+        text={i18n.t('CONTACT_DETAILS.EMAIL')}
+        variant="secondary"
+        handlePress={onEmailPress}
+      />
     );
   }
 };

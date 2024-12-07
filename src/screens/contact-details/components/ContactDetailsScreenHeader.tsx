@@ -10,12 +10,13 @@ import { tailwind } from '@/theme';
 type ContactDetailsScreenHeaderProps = {
   name: string;
   thumbnail: string;
+  bio: string;
 };
 
 export const ContactDetailsScreenHeader = (props: ContactDetailsScreenHeaderProps) => {
   const navigation = useNavigation();
 
-  const { name, thumbnail } = props;
+  const { name, thumbnail, bio } = props;
   const handleBackPress = () => {
     navigation.dispatch(StackActions.pop());
   };
@@ -32,10 +33,16 @@ export const ContactDetailsScreenHeader = (props: ContactDetailsScreenHeaderProp
       </Pressable>
       <Animated.View>
         <Animated.View style={tailwind.style('flex items-center')}>
-          <Avatar size="4xl" src={thumbnail} name={name} />
-          <Animated.View style={tailwind.style('pt-3')}>
+          <Avatar size="4xl" src={thumbnail ? { uri: thumbnail } : undefined} name={name} />
+          <Animated.View style={tailwind.style('flex flex-col items-center gap-1 pt-3')}>
             <Animated.Text style={tailwind.style('text-[21px] font-inter-580-24 text-gray-950')}>
               {name}
+            </Animated.Text>
+            <Animated.Text
+              style={tailwind.style(
+                'text-[15px] font-inter-420-20 leading-[17.25px] text-gray-900',
+              )}>
+              {bio}
             </Animated.Text>
           </Animated.View>
         </Animated.View>

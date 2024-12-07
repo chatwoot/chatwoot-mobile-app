@@ -28,6 +28,17 @@ export interface GenericListType {
   }[];
 }
 
+export interface AttributeListType {
+  key?: string;
+  title?: string;
+  icon?: React.ReactNode;
+  subtitle?: string;
+  subtitleType?: 'dark' | 'light';
+  hasChevron?: boolean;
+  disabled?: boolean;
+  type: 'text' | 'date' | 'checkbox' | 'link';
+}
+
 /**
  * The types of Filter for Conversation List
  */

@@ -4,12 +4,17 @@ import {
   addConversation,
   addOrUpdateMessage,
 } from '@/store/conversation/conversationSlice';
-import { addContact, updateContactsPresence } from '@/store/contact/contactSlice';
+import { addContact, updateContact, updateContactsPresence } from '@/store/contact/contactSlice';
 import { setTypingUsers, removeTypingUser } from '@/store/conversation/conversationTypingSlice';
 import BaseActionCableConnector from './baseActionCableConnector';
 import { store } from '@/store';
-import { Conversation, Message, PresenceUpdateData, TypingData } from '@/types';
-import { transformMessage, transformConversation, transformTypingData } from './camelCaseKeys';
+import { Contact, Conversation, Message, PresenceUpdateData, TypingData } from '@/types';
+import {
+  transformMessage,
+  transformConversation,
+  transformTypingData,
+  transformContact,
+} from './camelCaseKeys';
 import { setCurrentUserAvailability } from '@/store/auth/authSlice';
 
 interface ActionCableConfig {
@@ -38,6 +43,7 @@ class ActionCableConnector extends BaseActionCableConnector {
       'conversation.updated': this.onConversationUpdated,
       'conversation.typing_on': this.onTypingOn,
       'conversation.typing_off': this.onTypingOff,
+      'contact.updated': this.onContactUpdate,
       // TODO: Handle presence update
       // 'presence.update': this.onPresenceUpdate,
       // TODO: Handle all these events
@@ -45,7 +51,7 @@ class ActionCableConnector extends BaseActionCableConnector {
       //   'notification.deleted': this.onNotificationRemoved,
       //   'conversation.contact_changed': this.onConversationContactChange,
       //   'contact.deleted': this.onContactDelete,
-      //   'contact.updated': this.onContactUpdate,
+
       //   'conversation.mentioned': this.onConversationMentioned,
       //   'first.reply.created': this.onFirstReplyCreated,
     };
@@ -89,6 +95,11 @@ class ActionCableConnector extends BaseActionCableConnector {
   onConversationRead = (data: Conversation) => {
     const conversation = transformConversation(data);
     store.dispatch(updateConversation(conversation));
+  };
+
+  onContactUpdate = (data: Contact) => {
+    const contact = transformContact(data);
+    store.dispatch(updateContact(contact));
   };
 
   onTypingOn = (data: TypingData) => {

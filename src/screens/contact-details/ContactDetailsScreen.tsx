@@ -1,24 +1,56 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
+import camelCase from 'camelcase';
 
 import { GenericList } from '@/components-next';
 import { TAB_BAR_HEIGHT } from '@/constants';
 import { CallIcon, EmailIcon, LocationIcon, WebsiteIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { GenericListType } from '@/types';
+import { CustomAttribute, GenericListType } from '@/types';
 
-import { ContactDetailsScreenHeader, ContactBasicActions } from './components';
+import {
+  ContactDetailsScreenHeader,
+  ContactBasicActions,
+  ContactMetaInformation,
+} from './components';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { contactLabelActions } from '@/store/contact/contactLabelActions';
+import { getContactCustomAttributes } from '@/store/custom-attribute/customAttributeSlice';
+import { selectContactById } from '@/store/contact/contactSelectors';
+import i18n from '@/i18n';
 
 type ContactDetailsScreenProps = NativeStackScreenProps<
   TabBarExcludedScreenParamList,
   'ContactDetails'
 >;
+
+const processContactAttributes = (
+  attributes: CustomAttribute[],
+  customAttributes: Record<string, string>,
+  filterCondition: (key: string, custom: Record<string, string>) => boolean,
+) => {
+  if (!attributes.length || !customAttributes) {
+    return [];
+  }
+
+  return attributes.reduce<(CustomAttribute & { value: string })[]>((result, attribute) => {
+    const { attributeKey } = attribute;
+    const meetsCondition = filterCondition(camelCase(attributeKey), customAttributes);
+
+    if (meetsCondition) {
+      result.push({
+        ...attribute,
+        value: customAttributes[camelCase(attributeKey)] ?? '',
+      });
+    }
+
+    return result;
+  }, []);
+};
 
 const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
   const { conversationId } = props.route.params;
@@ -28,17 +60,32 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
 
   const {
     meta: {
-      sender: { email, name, thumbnail, id: contactId, phoneNumber, additionalAttributes },
+      sender: { email, id: contactId },
     },
   } = conversation || { meta: { sender: { name: '', thumbnail: '' } } };
 
-  const { city, country } = additionalAttributes || {};
+  const contact = useAppSelector(state => (contactId ? selectContactById(state, contactId) : null));
 
-  const { location = '', companyName = '' } = additionalAttributes || {};
+  const { name: contactName, thumbnail: contactThumbnail, phoneNumber } = contact || {};
 
-  // const contactLabels = useAppSelector(state =>
-  //   contactId ? selectContactLabelsByContactId(contactId)(state) : [],
-  // );
+  const {
+    city,
+    country,
+    description,
+    location = '',
+    companyName = '',
+  } = contact?.additionalAttributes || {};
+
+  const contactCustomAttributes = useAppSelector(getContactCustomAttributes);
+
+  const usedContactCustomAttributes = processContactAttributes(
+    contactCustomAttributes,
+    contact?.customAttributes || {},
+    (key, custom) => key in custom,
+  );
+
+  const hasContactCustomAttributes = usedContactCustomAttributes.length > 0;
+
   useEffect(() => {
     if (contactId) {
       dispatch(contactLabelActions.getContactLabels({ contactId }));
@@ -54,25 +101,25 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
   const userDetails: GenericListType[] = [
     {
       icon: <LocationIcon />,
-      subtitle: fullLocation || '',
+      subtitle: fullLocation || i18n.t('CONTACT_DETAILS.VALUE_UNAVAILABLE'),
       title: 'Location',
       subtitleType: 'dark',
     },
     {
       icon: <CallIcon />,
-      subtitle: phoneNumber || '',
+      subtitle: phoneNumber || i18n.t('CONTACT_DETAILS.VALUE_UNAVAILABLE'),
       title: 'Phone',
       subtitleType: 'dark',
     },
     {
       icon: <EmailIcon />,
-      subtitle: email || '',
+      subtitle: email || i18n.t('CONTACT_DETAILS.VALUE_UNAVAILABLE'),
       title: 'Email',
       subtitleType: 'dark',
     },
     {
       icon: <WebsiteIcon />,
-      subtitle: companyName || '',
+      subtitle: companyName || i18n.t('CONTACT_DETAILS.VALUE_UNAVAILABLE'),
       title: 'Company',
       subtitleType: 'dark',
     },
@@ -80,26 +127,28 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
 
   return (
     <View style={tailwind.style('flex-1 bg-white pt-6')}>
-      <ContactDetailsScreenHeader name={name || ''} thumbnail={thumbnail || ''} />
+      <ContactDetailsScreenHeader
+        name={contactName || ''}
+        thumbnail={contactThumbnail || ''}
+        bio={description || ''}
+      />
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT}]`)}>
-        <ContactBasicActions phoneNumber={phoneNumber || ''} email={email || ''} />
+        {email ||
+          (phoneNumber && (
+            <Animated.View style={tailwind.style('mt-[23px] px-4')}>
+              <ContactBasicActions phoneNumber={phoneNumber || ''} email={email || ''} />
+            </Animated.View>
+          ))}
         <Animated.View style={tailwind.style('pt-10')}>
           <GenericList list={userDetails} />
         </Animated.View>
-        {/* <Animated.View style={tailwind.style('pt-10')}>
-          <LabelSection labelList={labels} />
-        </Animated.View> */}
-        {/* <Animated.View style={tailwind.style('pt-10')}>
-          <PreviousConversationList />
-        </Animated.View> */}
-        {/* <Animated.View style={tailwind.style('pt-10')}>
-          <OtherConversationDetails />
-        </Animated.View> */}
-        {/* <Animated.View style={tailwind.style('pt-10')}>
-          <FullWidthButton isDestructive text="Delete contact" />
-        </Animated.View> */}
+        {hasContactCustomAttributes && (
+          <Animated.View style={tailwind.style('pt-10')}>
+            <ContactMetaInformation attributes={usedContactCustomAttributes} />
+          </Animated.View>
+        )}
       </Animated.ScrollView>
     </View>
   );

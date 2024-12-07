@@ -325,7 +325,9 @@
     "TITLE": "Contact Details",
     "EMAIL": "Email",
     "PHONE_NUMBER": "Phone Number",
-    "CALL": "Call"
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "Contact Attributes",
+    "VALUE_UNAVAILABLE": "Unavailable"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Conversation participants",

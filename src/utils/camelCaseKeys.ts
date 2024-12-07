@@ -11,6 +11,7 @@ import {
   Team,
   TypingData,
   DashboardApp,
+  CustomAttribute,
 } from '@/types';
 import type { Inbox } from '@/types/Inbox';
 import type { NotificationMeta, Notification } from '@/types/Notification';
@@ -65,4 +66,8 @@ export const transformTypingData = (typingData: any): TypingData => {
 
 export const transformDashboardApp = (dashboardApp: any): DashboardApp => {
   return camelcaseKeys(dashboardApp, { deep: true }) as unknown as DashboardApp;
+};
+
+export const transformCustomAttribute = (customAttribute: any): CustomAttribute => {
+  return camelcaseKeys(customAttribute, { deep: true }) as unknown as CustomAttribute;
 };

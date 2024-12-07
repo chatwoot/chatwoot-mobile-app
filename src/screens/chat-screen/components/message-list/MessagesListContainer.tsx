@@ -17,6 +17,7 @@ import { Animated } from 'react-native';
 import { getGroupedMessages } from '@/utils';
 import { MessagesList } from './MessagesList';
 import tailwind from 'twrnc';
+import { conversationParticipantActions } from '@/store/conversation-participant/conversationParticipantActions';
 
 const PlatformSpecificKeyboardWrapperComponent =
   Platform.OS === 'android' ? Animated.View : KeyboardGestureArea;
@@ -77,6 +78,7 @@ export const MessagesListContainer = () => {
 
   useEffect(() => {
     loadMessages({ loadingMessagesForFirstTime: true });
+    dispatch(conversationParticipantActions.index({ conversationId }));
   }, []);
 
   const groupedMessages = getGroupedMessages(messages);

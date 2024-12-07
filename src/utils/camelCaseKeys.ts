@@ -71,3 +71,7 @@ export const transformDashboardApp = (dashboardApp: any): DashboardApp => {
 export const transformCustomAttribute = (customAttribute: any): CustomAttribute => {
   return camelcaseKeys(customAttribute, { deep: true }) as unknown as CustomAttribute;
 };
+
+export const transformAgent = (agent: any): Agent => {
+  return camelcaseKeys(agent, { deep: true }) as unknown as Agent;
+};

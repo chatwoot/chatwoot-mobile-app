@@ -96,8 +96,8 @@ export const ConversationActions = () => {
   const onChangeTeamAssignee = () => {
     if (!conversation) return;
     dispatch(selectSingleConversation(conversation));
-    // dispatch(setActionState('TeamAssign'));
-    // actionsModalSheetRef.current?.present();
+    dispatch(setActionState('TeamAssign'));
+    actionsModalSheetRef.current?.present();
   };
 
   const onChangePriority = () => {

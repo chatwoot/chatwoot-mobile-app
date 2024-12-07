@@ -11,13 +11,26 @@ import { AvatarStatus } from './AvatarStatus';
 export type AvatarSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
 export type AvatarStatusType = 'online' | 'away' | 'offline' | 'typing';
 
+export const removeEmoji = (text: string) => {
+  if (text) {
+    return text
+      .replace(
+        /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g,
+        '',
+      )
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+  return '';
+};
+
 function getInitials(name: string, size: AvatarSizes) {
-  if (!name) {
+  const userNameWithoutEmoji = removeEmoji(name).trimStart();
+  if (!userNameWithoutEmoji) {
     return;
   }
-  const [firstName, lastName] = name.split(' ');
+  const [firstName, lastName] = userNameWithoutEmoji.split(' ');
   const oneLetterInitialSizes = ['xs', 'sm', 'md'];
-
   const initials =
     firstName && lastName
       ? `${firstName.charAt(0)}${lastName.charAt(0)}`

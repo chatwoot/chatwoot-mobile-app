@@ -4,6 +4,8 @@ import { createSelector } from '@reduxjs/toolkit';
 
 export const selectTeamsState = (state: RootState) => state.teams;
 
+export const selectLoading = createSelector([selectTeamsState], state => state.uiFlags.isLoading);
+
 export const { selectAll: selectAllTeams } = teamAdapter.getSelectors<RootState>(selectTeamsState);
 
 export const filterTeams = createSelector(

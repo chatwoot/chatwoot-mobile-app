@@ -163,7 +163,8 @@ export interface BulkActionLabels {
 
 export interface AssigneePayload {
   conversationId: number;
-  assigneeId: number;
+  assigneeId?: number;
+  teamId?: string;
 }
 
 export interface AssignTeamPayload {

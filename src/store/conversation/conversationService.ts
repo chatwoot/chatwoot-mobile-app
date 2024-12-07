@@ -126,9 +126,14 @@ export class ConversationService {
     await apiService.post('bulk_actions', payload);
   }
   static async assignConversation(payload: AssigneePayload): Promise<AssigneeAPIResponse> {
-    const { conversationId, assigneeId } = payload;
+    const { conversationId, assigneeId, teamId } = payload;
+    const params = {
+      assignee_id: assigneeId,
+      team_id: teamId,
+    };
     const response = await apiService.post<AssigneeAPIResponse>(
-      `conversations/${conversationId}/assignments?assignee_id=${assigneeId}`,
+      `conversations/${conversationId}/assignments`,
+      params,
     );
     return response.data;
   }

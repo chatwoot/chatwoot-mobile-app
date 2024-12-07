@@ -5,6 +5,7 @@ export const CONVERSATION_EVENTS = Object.freeze({
   SELECTED_ATTACHMENT: 'Select an attachment',
   USED_MENTIONS: 'Used mentions',
   ASSIGNEE_CHANGED: 'Conversation assignee changed',
+  TEAM_CHANGED: 'Conversation team changed',
   RESOLVE_CONVERSATION_STATUS: 'Conversation resolved',
   TOGGLE_STATUS: 'Changed conversation status',
   MUTE_CONVERSATION: 'Conversation muted',

@@ -22,6 +22,7 @@ import type {
 import I18n from '@/i18n';
 import { URL_TYPE } from '@/constants/url';
 import { checkValidUrl, extractDomain, handleApiError } from './settingsUtils';
+import { showToast } from '@/helpers/ToastHelper';
 
 const createSettingsThunk = <TResponse, TPayload>(
   type: string,
@@ -43,7 +44,7 @@ export const settingsActions = {
     async (url, { rejectWithValue }) => {
       try {
         if (!checkValidUrl({ url })) {
-          throw new Error(I18n.t('CONFIGURE_URL.INVALID_URL'));
+          throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
         }
 
         const installationUrl = extractDomain({ url });
@@ -52,7 +53,7 @@ export const settingsActions = {
         const isValid = await SettingsService.verifyInstallationUrl(INSTALLATION_URL);
 
         if (!isValid) {
-          throw new Error(I18n.t('CONFIGURE_URL.INVALID_API'));
+          throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
         }
 
         return {
@@ -62,6 +63,7 @@ export const settingsActions = {
         };
       } catch (error) {
         const message = error instanceof Error ? error.message : I18n.t('CONFIGURE_URL.ERROR');
+        showToast({ message });
         return rejectWithValue(message);
       }
     },

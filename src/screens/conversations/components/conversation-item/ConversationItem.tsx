@@ -55,6 +55,8 @@ export type ConversationItemProps = {
   currentState: string;
 
   allLabels: Label[];
+
+  typingText?: string;
 };
 
 export const ConversationItem = memo(
@@ -79,6 +81,7 @@ export const ConversationItem = memo(
     appliedSlaConversationDetails = {},
     additionalAttributes,
     allLabels,
+    typingText,
   }: ConversationItemProps) => {
     return (
       <NativeView style={tailwind.style('px-3 gap-3 flex-row justify-between')}>
@@ -87,7 +90,7 @@ export const ConversationItem = memo(
           <ConversationAvatar
             src={{ uri: senderThumbnail } as ImageURISource}
             name={senderName || ''}
-            status={isTyping ? 'typing' : availabilityStatus || 'offline'}
+            status={availabilityStatus || 'offline'}
           />
         </NativeView>
 
@@ -109,6 +112,7 @@ export const ConversationItem = memo(
             slaPolicyId,
             currentState,
             allLabels,
+            typingText,
           }}
         />
       </NativeView>

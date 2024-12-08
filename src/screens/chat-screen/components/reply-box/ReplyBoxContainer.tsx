@@ -49,6 +49,9 @@ import { ReplyWarning } from './ReplyWarning';
 import { AttachedMedia } from '../message-components/AttachedMedia';
 import { CommandOptionsMenu } from '../message-components/CommandOptionsMenu';
 import { SendMessagePayload } from '@/store/conversation/conversationTypes';
+import { TypingIndicator } from './TypingIndicator';
+import { getTypingUsersText } from '@/utils';
+import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
 
 const SHEET_APPEAR_SPRING_CONFIG = {
   damping: 20,
@@ -92,6 +95,9 @@ const BottomSheetContent = () => {
   const [ccEmails, setCCEmails] = useState('');
   const [bccEmails, setBCCEmails] = useState('');
   const [toEmails, setToEmails] = useState('');
+
+  const typingUsers = useAppSelector(selectTypingUsersByConversationId(conversationId));
+  const typingText = useMemo(() => getTypingUsersText({ users: typingUsers }), [typingUsers]);
 
   const attachmentsLength = useMemo(() => attachedFiles.length, [attachedFiles.length]);
 
@@ -272,6 +278,8 @@ const BottomSheetContent = () => {
               <QuoteReply />s
             </Animated.View>
           )}
+
+          {typingText && <TypingIndicator typingText={typingText} />}
 
           <Animated.View style={tailwind.style('flex flex-row px-1 items-end z-20 relative')}>
             {/* TODO: Add the support for multiple attachments */}

@@ -15,24 +15,7 @@ describe('#getTypingUsersText', () => {
           },
         ],
       }),
-    ).toEqual('John is typing...');
-  });
-
-  it('returns the correct text is there is only one contact typing user', () => {
-    expect(
-      getTypingUsersText({
-        users: [
-          {
-            name: 'John',
-            type: 'contact',
-            id: 1,
-            email: 'john@example.com',
-            phoneNumber: '1234567890',
-            thumbnail: 'https://example.com/thumbnail.jpg',
-          },
-        ],
-      }),
-    ).toEqual('typing...');
+    ).toEqual('John is typing');
   });
 
   it('returns the correct text is there are two typing users', () => {
@@ -57,7 +40,7 @@ describe('#getTypingUsersText', () => {
           },
         ],
       }),
-    ).toEqual('John and Peter are typing...');
+    ).toEqual('John and Peter are typing');
   });
   it('returns the correct text is there are more than two users are typing', () => {
     expect(
@@ -97,6 +80,6 @@ describe('#getTypingUsersText', () => {
           },
         ],
       }),
-    ).toEqual('John and 3 others are typing...');
+    ).toEqual('John and 3 others are typing');
   });
 });

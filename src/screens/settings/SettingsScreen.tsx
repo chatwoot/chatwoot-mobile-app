@@ -167,9 +167,7 @@ const SettingsScreen = () => {
     dispatch(clearAllContacts());
     dispatch(clearAllConversations());
     dispatch(setAccount(accountId));
-    // TODO: Fix this later
-    // @ts-expect-error TODO: Fix typing for dispatch
-    dispatch(authActions.setActiveAccount({ accountId }));
+    dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
     navigation.dispatch(StackActions.replace('Tab'));
   };
 

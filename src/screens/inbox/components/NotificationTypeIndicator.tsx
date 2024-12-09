@@ -4,10 +4,10 @@ import { tailwind } from '@/theme';
 import { Icon } from '@/components-next';
 import Animated from 'react-native-reanimated';
 import {
-  NotificationSnoozedIcon,
   NotificationMentionIcon,
   NotificationNewMessageIcon,
   NotificationAssignedIcon,
+  NotificationSLAIcon,
 } from '@/svg-icons';
 import { NotificationType } from '@/types/Notification';
 
@@ -28,7 +28,7 @@ export const getNotificationTypeIcon = (type: NotificationType) => {
     case 'conversation_creation':
       return <NotificationNewMessageIcon />;
     case 'sla_missed_first_response':
-      return <NotificationSnoozedIcon />;
+      return <NotificationSLAIcon />;
     default:
       return <NotificationNewMessageIcon />;
   }

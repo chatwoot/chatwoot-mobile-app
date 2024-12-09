@@ -39,6 +39,23 @@ export const EmailMessageCell = (props: EmailMessageCellProps) => {
 
   const { menuOptions } = props;
 
+  const emailMessageContent = () => {
+    const {
+      htmlContent: { full: fullHTMLContent } = { full: undefined },
+      textContent: { full: fullTextContent } = { full: undefined },
+    } = contentAttributes?.email || {};
+
+    if (fullHTMLContent) {
+      return fullHTMLContent;
+    }
+
+    if (fullTextContent) {
+      return fullTextContent.replace(/\n/g, '<br>');
+    }
+
+    return '';
+  };
+
   return (
     <Animated.View
       entering={FadeIn.duration(350)}
@@ -77,7 +94,7 @@ export const EmailMessageCell = (props: EmailMessageCellProps) => {
                 {isIncoming || isOutgoing ? (
                   <Email
                     {...{ isActivity, isIncoming, isOutgoing }}
-                    text={content}
+                    text={emailMessageContent()}
                     timeStamp={createdAt}
                     status={status}
                     isAvatarRendered={shouldRenderAvatar}

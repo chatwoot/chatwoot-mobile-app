@@ -50,6 +50,12 @@ export type MessageContentAttributes = {
     to?: string[];
     cc?: string[];
     bcc?: string[];
+    htmlContent?: {
+      full: string;
+    };
+    textContent?: {
+      full: string;
+    };
   };
   ccEmail?: string[];
   bccEmail?: string[];

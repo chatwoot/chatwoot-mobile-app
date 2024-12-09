@@ -1,5 +1,6 @@
 import React from 'react';
 import { Animated, Text } from 'react-native';
+import AutoHeightWebView from 'react-native-autoheight-webview';
 
 import { tailwind } from '@/theme';
 import { Channel, Message, MessageStatus, MessageType } from '@/types';
@@ -44,6 +45,7 @@ export const Email = (props: EmailProps) => {
   } = props;
 
   const isMessageFailed = status === MESSAGE_STATUS.FAILED;
+  const FormattedEmail = text.replace('height:100%;', '');
 
   return (
     <Animated.View
@@ -65,10 +67,23 @@ export const Email = (props: EmailProps) => {
       <Animated.View style={tailwind.style('h-[1px] my-2 bg-gray-300')} />
       <Animated.View style={[tailwind.style('flex bg-white rounded-2xl')]}>
         <Animated.View style={tailwind.style('px-4 py-2')}>
-          <Animated.Text
-            style={tailwind.style('text-sm text-gray-900 font-inter-normal-20 tracking-[0.32px]')}>
-            {text}
-          </Animated.Text>
+          <AutoHeightWebView
+            style={{ width: '100%', opacity: 0.99, minHeight: 1 }}
+            scrollEnabled={false}
+            customStyle={`
+        * {
+          font-family: system,-apple-system,".SFNSText-Regular","San Francisco",Roboto,"Segoe UI","Helvetica Neue","Lucida Grande",sans-serif;
+          font-size: 14px;
+        } 
+        img{
+          max-width: 100% !important;
+        }
+      `}
+            source={{
+              html: FormattedEmail,
+            }}
+            viewportContent={'width=device-width, user-scalable=no'}
+          />
         </Animated.View>
       </Animated.View>
       <Animated.View

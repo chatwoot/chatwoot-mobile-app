@@ -20,11 +20,15 @@ const AttributeItem = (props: AttributeItemProps) => {
   const { listItem, index, isLastItem } = props;
 
   const handlePress = () => {
-    if (listItem.type === 'link') {
-      openURL({ URL: listItem.subtitle });
-    } else if (listItem.subtitle) {
+    if (listItem.subtitle) {
       Clipboard.setString(listItem.subtitle);
       showToast({ message: `${listItem.title} copied to clipboard` });
+    }
+  };
+
+  const handleTextPress = () => {
+    if (listItem.type === 'link') {
+      openURL({ URL: listItem.subtitle });
     }
   };
 
@@ -70,6 +74,7 @@ const AttributeItem = (props: AttributeItemProps) => {
           </Animated.View>
           <Animated.View style={tailwind.style('flex flex-row items-center pr-3')}>
             <Animated.Text
+              onPress={handleTextPress}
               style={tailwind.style(
                 'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px]',
                 listItem.subtitleType === 'light' ? 'text-gray-900' : 'text-gray-950',

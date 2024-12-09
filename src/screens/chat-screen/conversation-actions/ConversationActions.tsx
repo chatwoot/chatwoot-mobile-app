@@ -121,6 +121,8 @@ export const ConversationActions = () => {
   };
 
   const onAddParticipant = () => {
+    if (!conversation) return;
+    dispatch(selectSingleConversation(conversation));
     updateParticipantSheetRef.current?.present();
   };
 

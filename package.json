@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@alantoa/lightbox": "0.3.1",
-    "@chatwoot/markdown-to-txt": "^2.0.3",
+    "@chatwoot/markdown-to-txt": "^2.0.4",
     "@chatwoot/react-native-widget": "^0.0.21",
     "@chatwoot/utils": "^0.0.25",
     "@gorhom/bottom-sheet": "^4.6.3",

@@ -49,7 +49,7 @@ import { selectUserId } from '@/store/auth/authSelectors';
 import { clearAllContacts } from '@/store/contact/contactSlice';
 
 import i18n from '@/i18n';
-import ActionBottomSheet from '@/navigation/tabs/ ';
+import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
 
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 

@@ -8,3 +8,4 @@ export * from './MarkdownDisplay';
 export * from './PrivateTextCell';
 export * from './ReplyMessageCell';
 export * from './DeliveryStatus';
+export * from './EmailMessageCell';

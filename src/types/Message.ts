@@ -44,9 +44,15 @@ export type MessageContentAttributes = {
   inReplyTo: number;
   inReplyToExternalId: null;
   deleted?: boolean;
-  email: {
+  email?: {
     subject: string;
+    from?: string[]; // Ensure this line is present
+    to?: string[];
+    cc?: string[];
+    bcc?: string[];
   };
+  ccEmail?: string[];
+  bccEmail?: string[];
   externalError: string;
   imageType: string;
 };

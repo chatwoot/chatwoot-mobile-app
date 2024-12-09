@@ -4,16 +4,9 @@ import Animated from 'react-native-reanimated';
 import { tailwind } from '@/theme';
 import { Channel, Message } from '@/types';
 import { MenuOption } from '../message-menu';
-import {
-  AudioCell,
-  ComposedCell,
-  FileCell,
-  ImageCell,
-  VideoCell,
-  EmailMessageCell,
-} from '../message-components';
+import { AudioCell, ComposedCell, FileCell, ImageCell, VideoCell } from '../message-components';
 import { TextMessageCell } from '../message-components';
-import { ATTACHMENT_TYPES, INBOX_TYPES } from '@/constants';
+import { ATTACHMENT_TYPES } from '@/constants';
 import { LocationCell } from '../message-components/LocationCell';
 
 type DateSectionProps = { item: { date: string } };
@@ -26,7 +19,7 @@ type MessageItemPresentationProps = {
 
 const DateSection = ({ item }: DateSectionProps) => {
   return (
-    <Animated.View style={tailwind.style('flex flex-row justify-center items-center py-5')}>
+    <Animated.View style={tailwind.style('flex flex-row justify-center items-center py-4')}>
       <Animated.View style={tailwind.style('rounded-lg py-1 px-[7px] bg-blackA-A3')}>
         <Animated.Text
           style={tailwind.style(
@@ -45,12 +38,12 @@ export const MessageItem = ({ item, channel, getMenuOptions }: MessageItemPresen
   }
 
   const isReplyMessage = item.contentAttributes?.inReplyTo;
-  const isEmailChannel = channel === INBOX_TYPES.EMAIL;
+  // const isEmailChannel = channel === INBOX_TYPES.EMAIL;
   const attachments = item.attachments;
 
-  if (isEmailChannel) {
-    return <EmailMessageCell item={item} channel={channel} menuOptions={getMenuOptions(item)} />;
-  }
+  // if (isEmailChannel) {
+  //   return <EmailMessageCell item={item} channel={channel} menuOptions={getMenuOptions(item)} />;
+  // }
 
   // Message has only one attachment, no content and not a reply message
   if (attachments?.length === 1 && !item.content && !isReplyMessage) {

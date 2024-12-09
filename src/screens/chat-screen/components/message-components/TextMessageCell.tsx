@@ -54,7 +54,7 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
           !shouldRenderAvatar && isIncoming ? 'ml-10' : '',
           !shouldRenderAvatar && isOutgoing ? 'pr-10' : '',
           !shouldRenderAvatar && isTemplate ? 'pr-10' : '',
-          shouldRenderAvatar ? 'mb-2' : '',
+          shouldRenderAvatar ? 'mb-1' : '',
           messageItem.private ? 'my-6' : '',
         ),
       ]}>
@@ -84,7 +84,6 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
                     sourceId={sourceId || ''}
                     isPrivate={isPrivate}
                     errorMessage={errorMessage}
-                    contentAttributes={contentAttributes}
                   />
                 ) : null}
                 {isTemplate ? (

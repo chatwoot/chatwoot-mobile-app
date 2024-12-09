@@ -9,6 +9,9 @@ export interface Contact {
     country?: string;
     description?: string;
     createdAtIp?: string;
+    socialProfiles?: Record<string, string>;
+    twitterScreenName?: string;
+    telegramUsername?: string;
   };
   availabilityStatus?: AvailabilityStatus;
   createdAt: UnixTimestamp;

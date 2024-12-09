@@ -21,6 +21,7 @@ export interface GenericListType {
   subtitleType?: 'dark' | 'light';
   hasChevron?: boolean;
   disabled?: boolean;
+  link?: string;
   onPressListItem?: (key?: string) => void;
   actions?: {
     action_name: string;

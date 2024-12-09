@@ -5,7 +5,7 @@ import camelCase from 'camelcase';
 
 import { GenericList } from '@/components-next';
 import { TAB_BAR_HEIGHT } from '@/constants';
-import { CallIcon, EmailIcon, LocationIcon, WebsiteIcon } from '@/svg-icons';
+import { CallIcon, EmailIcon, LocationIcon, CompanyIcon, FacebookChannelIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { CustomAttribute, GenericListType } from '@/types';
 
@@ -27,6 +27,17 @@ type ContactDetailsScreenProps = NativeStackScreenProps<
   TabBarExcludedScreenParamList,
   'ContactDetails'
 >;
+
+const allSocialMediaProfiles: GenericListType[] = [
+  {
+    icon: <FacebookChannelIcon />,
+    subtitle: 'Facebook',
+    title: 'Facebook',
+    subtitleType: 'dark',
+    key: 'facebook',
+    link: 'https://facebook.com/',
+  },
+];
 
 const processContactAttributes = (
   attributes: CustomAttribute[],
@@ -60,7 +71,7 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
 
   const {
     meta: {
-      sender: { email, id: contactId },
+      sender: { email, id: contactId, name, thumbnail },
     },
   } = conversation || { meta: { sender: { name: '', thumbnail: '' } } };
 
@@ -74,6 +85,9 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
     description,
     location = '',
     companyName = '',
+    socialProfiles,
+    twitterScreenName,
+    telegramUsername,
   } = contact?.additionalAttributes || {};
 
   const contactCustomAttributes = useAppSelector(getContactCustomAttributes);
@@ -84,6 +98,12 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
     (key, custom) => key in custom,
   );
 
+  const socialMediaProfiles = {
+    twitter: twitterScreenName,
+    telegram: telegramUsername,
+    ...(socialProfiles || {}),
+  };
+
   const hasContactCustomAttributes = usedContactCustomAttributes.length > 0;
 
   useEffect(() => {
@@ -92,6 +112,13 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const socialMediaDetails = allSocialMediaProfiles
+    .filter(profile => socialMediaProfiles?.[profile.key as keyof typeof socialMediaProfiles])
+    .map(profile => ({
+      ...profile,
+      subtitle: socialMediaProfiles?.[profile.key as keyof typeof socialMediaProfiles],
+    }));
 
   const fullLocation =
     location || city || country !== undefined
@@ -118,31 +145,32 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
       subtitleType: 'dark',
     },
     {
-      icon: <WebsiteIcon />,
+      icon: <CompanyIcon />,
       subtitle: companyName || i18n.t('CONTACT_DETAILS.VALUE_UNAVAILABLE'),
       title: 'Company',
       subtitleType: 'dark',
     },
   ];
 
+  const allDetails = [...userDetails, ...socialMediaDetails];
+
   return (
     <View style={tailwind.style('flex-1 bg-white pt-6')}>
       <ContactDetailsScreenHeader
-        name={contactName || ''}
-        thumbnail={contactThumbnail || ''}
+        name={name || contactName || ''}
+        thumbnail={thumbnail || contactThumbnail || ''}
         bio={description || ''}
       />
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT}]`)}>
-        {email ||
-          (phoneNumber && (
-            <Animated.View style={tailwind.style('mt-[23px] px-4')}>
-              <ContactBasicActions phoneNumber={phoneNumber || ''} email={email || ''} />
-            </Animated.View>
-          ))}
+        {email || phoneNumber ? (
+          <Animated.View style={tailwind.style('mt-[23px] px-4')}>
+            <ContactBasicActions phoneNumber={phoneNumber || ''} email={email || ''} />
+          </Animated.View>
+        ) : null}
         <Animated.View style={tailwind.style('pt-10')}>
-          <GenericList list={userDetails} />
+          <GenericList list={allDetails} />
         </Animated.View>
         {hasContactCustomAttributes && (
           <Animated.View style={tailwind.style('pt-10')}>

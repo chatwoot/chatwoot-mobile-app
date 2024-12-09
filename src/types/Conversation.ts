@@ -27,6 +27,8 @@ export interface Conversation {
   uuid: string;
   waitingSince: UnixTimestamp;
 
+  channel?: Channel;
+
   messages: Message[];
 
   lastNonActivityMessage: Message | null;

@@ -15,7 +15,7 @@ export const TypingMessage = (props: TypingMessageProps) => {
       <Text
         numberOfLines={1}
         style={tailwind.style(
-          'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-green-500',
+          'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-green-800',
         )}>
         {typingText}
       </Text>

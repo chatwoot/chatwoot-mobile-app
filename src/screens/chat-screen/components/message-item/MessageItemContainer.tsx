@@ -102,7 +102,7 @@ export const MessageItemContainer = (props: MessageItemContainerProps) => {
   return (
     <MessageItem
       item={props.item}
-      channel={conversation?.meta?.channel}
+      channel={conversation?.channel || conversation?.meta?.channel}
       getMenuOptions={getMenuOptions}
     />
   );

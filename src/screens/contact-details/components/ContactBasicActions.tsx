@@ -73,10 +73,6 @@ type ContactBasicActionsProps = {
 export const ContactBasicActions = (props: ContactBasicActionsProps) => {
   const { phoneNumber, email } = props;
 
-  if (!email && !phoneNumber) {
-    return null;
-  }
-
   const onCallPress = () => {
     openNumber({ phoneNumber });
   };
@@ -84,6 +80,10 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
   const onEmailPress = () => {
     openEmail({ email });
   };
+
+  if (!email && !phoneNumber) {
+    return null;
+  }
 
   if (email && phoneNumber) {
     return (

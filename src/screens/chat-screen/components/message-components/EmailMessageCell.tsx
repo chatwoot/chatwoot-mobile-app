@@ -7,7 +7,6 @@ import { MenuOption, MessageMenu } from '../message-menu';
 import { PrivateTextCell } from './PrivateTextCell';
 import { MESSAGE_TYPES } from '@/constants';
 import { Email } from './Email';
-
 import { tailwind } from '@/theme';
 import { Avatar } from '@/components-next';
 
@@ -45,7 +44,7 @@ export const EmailMessageCell = (props: EmailMessageCellProps) => {
       entering={FadeIn.duration(350)}
       style={[
         tailwind.style(
-          'my-[1px]',
+          'my-[1px] w-full px-3',
           isIncoming ? 'items-start ml-3' : '',
           isOutgoing ? 'items-end pr-3' : '',
           isTemplate ? 'pr-3' : '',
@@ -57,10 +56,14 @@ export const EmailMessageCell = (props: EmailMessageCellProps) => {
           messageItem.private ? 'my-6' : '',
         ),
       ]}>
-      <Animated.View style={tailwind.style('flex flex-row')}>
+      <Animated.View style={tailwind.style('flex flex-row w-full')}>
         {sender?.name && isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name || ''} />
+            <Avatar
+              size={'md'}
+              src={sender?.thumbnail ? { uri: sender.thumbnail } : undefined}
+              name={sender?.name || ''}
+            />
           </Animated.View>
         ) : null}
         <MessageMenu menuOptions={menuOptions}>

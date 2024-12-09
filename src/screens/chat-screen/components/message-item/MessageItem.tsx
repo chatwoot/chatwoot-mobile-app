@@ -4,10 +4,18 @@ import Animated from 'react-native-reanimated';
 import { tailwind } from '@/theme';
 import { Channel, Message } from '@/types';
 import { MenuOption } from '../message-menu';
-import { AudioCell, ComposedCell, FileCell, ImageCell, VideoCell } from '../message-components';
+import {
+  AudioCell,
+  ComposedCell,
+  EmailMessageCell,
+  FileCell,
+  ImageCell,
+  VideoCell,
+} from '../message-components';
 import { TextMessageCell } from '../message-components';
 import { ATTACHMENT_TYPES } from '@/constants';
 import { LocationCell } from '../message-components/LocationCell';
+import { CONTENT_TYPES } from '@/constants';
 
 type DateSectionProps = { item: { date: string } };
 
@@ -38,12 +46,16 @@ export const MessageItem = ({ item, channel, getMenuOptions }: MessageItemPresen
   }
 
   const isReplyMessage = item.contentAttributes?.inReplyTo;
-  // const isEmailChannel = channel === INBOX_TYPES.EMAIL;
+
+  const contentType = item?.contentType;
+
+  const isEmailMessage = contentType === CONTENT_TYPES.INCOMING_EMAIL;
+
   const attachments = item.attachments;
 
-  // if (isEmailChannel) {
-  //   return <EmailMessageCell item={item} channel={channel} menuOptions={getMenuOptions(item)} />;
-  // }
+  if (isEmailMessage) {
+    return <EmailMessageCell item={item} channel={channel} menuOptions={getMenuOptions(item)} />;
+  }
 
   // Message has only one attachment, no content and not a reply message
   if (attachments?.length === 1 && !item.content && !isReplyMessage) {

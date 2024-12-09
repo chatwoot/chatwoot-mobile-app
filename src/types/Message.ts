@@ -55,6 +55,7 @@ export type MessageContentAttributes = {
   bccEmail?: string[];
   externalError: string;
   imageType: string;
+  contentType: ContentType;
 };
 
 export interface Message {

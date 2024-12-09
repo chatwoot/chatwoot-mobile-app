@@ -49,8 +49,8 @@ export const Email = (props: EmailProps) => {
     <Animated.View
       style={[
         tailwind.style(
-          'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden bg-gray-100',
-          `max-w-[${TEXT_MAX_WIDTH}px]`,
+          'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden bg-gray-100 w-full',
+          `max-w-[${TEXT_MAX_WIDTH + 50}px]`,
           isMessageFailed ? 'bg-ruby-700' : '',
           isAvatarRendered
             ? isOutgoing
@@ -62,14 +62,17 @@ export const Email = (props: EmailProps) => {
         ),
       ]}>
       {contentAttributes && <EmailMeta {...{ contentAttributes, sender }} />}
-      <Animated.View style={tailwind.style('px-4 py-2')}>
-        <Animated.Text
-          style={tailwind.style('text-gray-900 font-inter-normal-20 tracking-[0.32px]')}>
-          {text}
-        </Animated.Text>
+      <Animated.View style={tailwind.style('h-[1px] my-2 bg-gray-300')} />
+      <Animated.View style={[tailwind.style('flex bg-white rounded-2xl')]}>
+        <Animated.View style={tailwind.style('px-4 py-2')}>
+          <Animated.Text
+            style={tailwind.style('text-sm text-gray-900 font-inter-normal-20 tracking-[0.32px]')}>
+            {text}
+          </Animated.Text>
+        </Animated.View>
       </Animated.View>
       <Animated.View
-        style={tailwind.style('h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end')}>
+        style={tailwind.style('h-[21px] pt-[6px] pb-0.5 flex flex-row items-center justify-end')}>
         <Text
           style={tailwind.style(
             'text-xs font-inter-420-20 tracking-[0.32px] pr-1 text-gray-700',

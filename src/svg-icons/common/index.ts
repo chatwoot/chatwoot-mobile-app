@@ -37,3 +37,4 @@ export * from './NotificationIcons';
 export * from './Warning';
 export * from './Call';
 export * from './Email';
+export * from './SelfAssign';

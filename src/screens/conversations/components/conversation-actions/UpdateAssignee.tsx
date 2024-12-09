@@ -7,7 +7,7 @@ import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
 import { Agent } from '@/types';
 import { Avatar, Icon, SearchBar } from '@/components-next';
-import { TickIcon } from '@/svg-icons';
+import { SelfAssign, TickIcon } from '@/svg-icons';
 
 import { assignableAgentActions } from '@/store/assignable-agent/assignableAgentActions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -23,47 +23,21 @@ import { showToast } from '@/helpers/ToastHelper';
 import i18n from '@/i18n';
 import { CONVERSATION_EVENTS } from '@/constants/analyticsEvents';
 import AnalyticsHelper from '@/helpers/AnalyticsHelper';
+import { selectUserId } from '@/store/auth/authSelectors';
 
 type AssigneeCellProps = {
-  value: Agent;
+  agent: Agent;
   lastItem: boolean;
   assigneeId: number | undefined;
+  onPress: () => void;
 };
 
 const AssigneeCell = (props: AssigneeCellProps) => {
-  const { value, lastItem, assigneeId } = props;
-  const dispatch = useAppDispatch();
-
-  const { actionsModalSheetRef } = useRefsContext();
-  const selectedIds = useAppSelector(selectSelectedIds);
-  const selectedConversation = useAppSelector(selectSelectedConversation);
-
-  const isMultipleConversationsSelected = selectedIds.length !== 0;
-
-  const handleAssigneePress = async () => {
-    if (isMultipleConversationsSelected) {
-      const payload = { type: 'Conversation', ids: selectedIds, fields: { assignee_id: value.id } };
-      await dispatch(conversationActions.bulkAction(payload));
-      actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
-    } else {
-      if (!selectedConversation?.id) return;
-      await dispatch(
-        conversationActions.assignConversation({
-          conversationId: selectedConversation?.id,
-          assigneeId: value.id === assigneeId ? 0 : value.id,
-        }),
-      );
-      AnalyticsHelper.track(CONVERSATION_EVENTS.ASSIGNEE_CHANGED);
-      showToast({
-        message: i18n.t('CONVERSATION.ASSIGN_CHANGE'),
-      });
-      actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
-    }
-  };
+  const { agent, lastItem, assigneeId } = props;
 
   return (
-    <Pressable onPress={handleAssigneePress} style={tailwind.style('flex flex-row items-center')}>
-      <Avatar src={value.thumbnail as ImageSourcePropType} name={value.name ?? ''} size="md" />
+    <Pressable onPress={props.onPress} style={tailwind.style('flex flex-row items-center')}>
+      <Avatar src={agent.thumbnail as ImageSourcePropType} name={agent.name ?? ''} size="md" />
       <Animated.View
         style={tailwind.style(
           'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
@@ -75,38 +49,11 @@ const AssigneeCell = (props: AssigneeCellProps) => {
               'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
             ),
           ]}>
-          {value.name}
+          {agent.name}
         </Animated.Text>
-        {assigneeId === value.id ? <Icon icon={<TickIcon />} size={20} /> : null}
+        {assigneeId === agent.id ? <Icon icon={<TickIcon />} size={20} /> : null}
       </Animated.View>
     </Pressable>
-  );
-};
-
-const AssigneeStack = ({
-  agents,
-  assigneeId,
-}: {
-  agents: Agent[];
-  assigneeId: number | undefined;
-}) => {
-  const isFetching = useAppSelector(isAssignableAgentFetching);
-
-  return (
-    <BottomSheetScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
-      {isFetching ? (
-        <ActivityIndicator />
-      ) : (
-        agents.map((value, index) => {
-          return (
-            <AssigneeCell
-              key={index}
-              {...{ value, lastItem: index === agents.length - 1, assigneeId }}
-            />
-          );
-        })
-      )}
-    </BottomSheetScrollView>
   );
 };
 
@@ -117,6 +64,7 @@ export const UpdateAssignee = () => {
 
   const selectedInboxes = useAppSelector(selectSelectedInboxes);
   const selectedConversation = useAppSelector(selectSelectedConversation);
+  const selectedIds = useAppSelector(selectSelectedIds);
 
   const inboxId = selectedConversation?.inboxId;
 
@@ -127,6 +75,14 @@ export const UpdateAssignee = () => {
   );
 
   const assigneeId = selectedConversation?.meta?.assignee?.id;
+
+  const userId = useAppSelector(selectUserId);
+
+  const isSelfAssign = assigneeId === userId;
+
+  const isMultipleConversationsSelected = selectedIds.length !== 0;
+
+  const isFetching = useAppSelector(isAssignableAgentFetching);
 
   const handleFocus = () => {
     actionsModalSheetRef.current?.expand();
@@ -144,6 +100,29 @@ export const UpdateAssignee = () => {
     setSearchTerm(text);
   };
 
+  const handleAssigneePress = async (agent: Agent) => {
+    if (isMultipleConversationsSelected) {
+      const payload = { type: 'Conversation', ids: selectedIds, fields: { assignee_id: agent.id } };
+      await dispatch(conversationActions.bulkAction(payload));
+      actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
+    } else {
+      if (!selectedConversation?.id) return;
+      await dispatch(
+        conversationActions.assignConversation({
+          conversationId: selectedConversation?.id,
+          assigneeId: agent.id === assigneeId ? 0 : agent.id,
+        }),
+      );
+      AnalyticsHelper.track(CONVERSATION_EVENTS.ASSIGNEE_CHANGED);
+      showToast({
+        message: i18n.t('CONVERSATION.ASSIGN_CHANGE'),
+      });
+      actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
+    }
+  };
+
+  const selfAgent = agents.find(agent => agent.id === userId);
+
   return (
     <React.Fragment>
       <SearchBar
@@ -153,7 +132,49 @@ export const UpdateAssignee = () => {
         onChangeText={handleChangeText}
         placeholder={i18n.t('CONVERSATION.ASSIGNEE.AGENTS.SEARCH_AGENT')}
       />
-      <AssigneeStack agents={agents as Agent[]} assigneeId={assigneeId} />
+
+      <BottomSheetScrollView
+        showsVerticalScrollIndicator={false}
+        style={tailwind.style('my-1 pl-3')}>
+        {isFetching ? (
+          <ActivityIndicator />
+        ) : (
+          <>
+            {!isSelfAssign && (
+              <Pressable
+                style={tailwind.style('flex flex-row items-center')}
+                onPress={() => handleAssigneePress(selfAgent as Agent)}>
+                <Animated.View style={tailwind.style('p-0.5')}>
+                  <Icon icon={<SelfAssign />} size={24} />
+                </Animated.View>
+                <Animated.View
+                  style={tailwind.style(
+                    'flex-1 ml-3 flex-row justify-between py-[11px] pr-3 border-b-[1px] border-blackA-A3',
+                  )}>
+                  <Animated.Text
+                    style={[
+                      tailwind.style(
+                        'text-base text-blue-800 font-inter-420-20 leading-[21px] tracking-[0.16px]',
+                      ),
+                    ]}>
+                    {i18n.t('CONVERSATION.SELF_ASSIGN')}
+                  </Animated.Text>
+                </Animated.View>
+              </Pressable>
+            )}
+
+            {agents.map((agent, index) => {
+              return (
+                <AssigneeCell
+                  key={agent.id}
+                  {...{ agent: agent as Agent, lastItem: index === agents.length - 1, assigneeId }}
+                  onPress={() => handleAssigneePress(agent as Agent)}
+                />
+              );
+            })}
+          </>
+        )}
+      </BottomSheetScrollView>
     </React.Fragment>
   );
 };

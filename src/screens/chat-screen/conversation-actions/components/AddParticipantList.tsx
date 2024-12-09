@@ -99,7 +99,7 @@ export const AddParticipantList = (props: AddParticipantListProps) => {
                 style={tailwind.style(
                   'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-blue-800',
                 )}>
-                Add Participant
+                {i18n.t('CONVERSATION_PARTICIPANTS.ADD_PARTICIPANT')}
               </Animated.Text>
             </Animated.View>
           </Animated.View>

@@ -15,7 +15,7 @@ interface RefsContextType {
   notificationPreferencesSheetRef: React.RefObject<BottomSheetModal>;
   switchAccountSheetRef: React.RefObject<BottomSheetModal>;
   debugActionsSheetRef: React.RefObject<BottomSheetModal>;
-  messageListRef: React.RefObject<FlashList<Message>>;
+  messageListRef: React.RefObject<FlashList<Message | { date: string }>>;
   inboxFiltersSheetRef: React.RefObject<BottomSheetModal>;
   slaEventsSheetRef: React.RefObject<BottomSheetModal>;
   deliveryStatusSheetRef: React.RefObject<BottomSheetModal>;

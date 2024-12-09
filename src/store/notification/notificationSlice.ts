@@ -47,16 +47,16 @@ const notificationsSlice = createSlice({
       state.error = null;
     },
     addNotification(state, action: PayloadAction<NotificationCreatedResponse>) {
-      const { notification, unread_count } = action.payload;
+      const { notification, unreadCount } = action.payload;
       notificationsAdapter.addOne(state, notification);
-      state.unreadCount = unread_count;
-      updateBadgeCount({ count: unread_count });
+      state.unreadCount = unreadCount;
+      updateBadgeCount({ count: unreadCount });
     },
     removeNotification(state, action: PayloadAction<NotificationRemovedResponse>) {
-      const { notification, unread_count } = action.payload;
+      const { notification, unreadCount } = action.payload;
       notificationsAdapter.removeOne(state, notification.id);
-      state.unreadCount = unread_count;
-      updateBadgeCount({ count: unread_count });
+      state.unreadCount = unreadCount;
+      updateBadgeCount({ count: unreadCount });
     },
   },
   extraReducers: builder => {

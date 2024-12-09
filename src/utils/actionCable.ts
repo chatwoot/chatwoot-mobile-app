@@ -14,8 +14,16 @@ import {
   transformConversation,
   transformTypingData,
   transformContact,
+  transformNotificationCreatedResponse,
+  transformNotificationRemovedResponse,
 } from './camelCaseKeys';
+import { addNotification } from '@/store/notification/notificationSlice';
 import { setCurrentUserAvailability } from '@/store/auth/authSlice';
+import { removeNotification } from '@/store/notification/notificationSlice';
+import {
+  NotificationCreatedResponse,
+  NotificationRemovedResponse,
+} from '@/store/notification/notificationTypes';
 
 interface ActionCableConfig {
   pubSubToken: string;
@@ -38,22 +46,21 @@ class ActionCableConnector extends BaseActionCableConnector {
       'conversation.created': this.onConversationCreated,
       'conversation.status_changed': this.onStatusChange,
       'conversation.read': this.onConversationRead,
-
       'assignee.changed': this.onAssigneeChanged,
       'conversation.updated': this.onConversationUpdated,
       'conversation.typing_on': this.onTypingOn,
       'conversation.typing_off': this.onTypingOff,
       'contact.updated': this.onContactUpdate,
-      // TODO: Handle presence update
+      'notification.created': this.onNotificationCreated,
+      'notification.deleted': this.onNotificationRemoved,
+      // TODO: Enable presence update
       // 'presence.update': this.onPresenceUpdate,
-      // TODO: Handle all these events
-      //   'notification.created': this.onNotificationCreated,
-      //   'notification.deleted': this.onNotificationRemoved,
-      //   'conversation.contact_changed': this.onConversationContactChange,
-      //   'contact.deleted': this.onContactDelete,
 
-      //   'conversation.mentioned': this.onConversationMentioned,
-      //   'first.reply.created': this.onFirstReplyCreated,
+      // TODO: Handle all these events later
+      // 'conversation.contact_changed': this.onConversationContactChange,
+      // 'contact.deleted': this.onContactDelete,
+      // 'conversation.mentioned': this.onConversationMentioned,
+      // 'first.reply.created': this.onFirstReplyCreated,
     };
   }
 
@@ -100,6 +107,16 @@ class ActionCableConnector extends BaseActionCableConnector {
   onContactUpdate = (data: Contact) => {
     const contact = transformContact(data);
     store.dispatch(updateContact(contact));
+  };
+
+  onNotificationCreated = (data: NotificationCreatedResponse) => {
+    const notification: NotificationCreatedResponse = transformNotificationCreatedResponse(data);
+    store.dispatch(addNotification(notification));
+  };
+
+  onNotificationRemoved = (data: NotificationRemovedResponse) => {
+    const notification: NotificationRemovedResponse = transformNotificationRemovedResponse(data);
+    store.dispatch(removeNotification(notification));
   };
 
   onTypingOn = (data: TypingData) => {

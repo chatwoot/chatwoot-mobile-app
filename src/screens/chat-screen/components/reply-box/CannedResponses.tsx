@@ -29,7 +29,7 @@ export const CannedResponses = (props: CannedResponsesProps) => {
     <Animated.View
       style={[
         tailwind.style(
-          'absolute bottom-full left-0 right-0 bg-white border-t border-gray-200  max-h-[186px]',
+          'absolute bottom-full left-0 right-0 bg-white border-t border-gray-200  max-h-[180px]',
         ),
       ]}>
       <ScrollView>
@@ -37,7 +37,7 @@ export const CannedResponses = (props: CannedResponsesProps) => {
           <Pressable
             onPress={() => props.onSelect(cannedResponse)}
             style={tailwind.style(
-              'w-full flex-row justify-between items-center border-b border-gray-200 py-2 px-4',
+              'w-full flex-row justify-between items-center border-b border-gray-200 py-3 px-4',
             )}
             key={cannedResponse.id}>
             <Animated.Text numberOfLines={1} style={tailwind.style('text-md flex-1 text-gray-950')}>

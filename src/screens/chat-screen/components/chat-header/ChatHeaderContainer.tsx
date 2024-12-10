@@ -89,7 +89,11 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
 
   const handleBackPress = () => {
     dispatch(resetSentMessage());
-    navigation.dispatch(StackActions.pop());
+    if (navigation.canGoBack()) {
+      navigation.dispatch(StackActions.pop());
+    } else {
+      navigation.dispatch(StackActions.replace('Tab'));
+    }
   };
 
   const handleNavigationToContactDetails = () => {

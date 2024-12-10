@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   NativeSyntheticEvent,
   Platform,
@@ -26,6 +26,8 @@ import {
 } from '@/store/conversation/sendMessageSlice';
 import { REPLY_EDITOR_MODES } from '@/constants';
 import i18n from '@/i18n';
+import { createTypingIndicator } from '@chatwoot/utils';
+import { conversationActions } from '@/store/conversation/conversationActions';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
@@ -65,6 +67,7 @@ const Locked = () => {
     </Svg>
   );
 };
+const TYPING_INDICATOR_IDLE_TIME = 4000;
 
 // eslint-disable-next-line no-empty-pattern
 export const MessageTextInput = ({
@@ -82,14 +85,50 @@ export const MessageTextInput = ({
     };
   });
 
-  const { setAddMenuOptionSheetState, textInputRef, setIsTextInputFocused } =
+  const { setAddMenuOptionSheetState, textInputRef, setIsTextInputFocused, conversationId } =
     useChatWindowContext();
 
   const isPrivateMessage = useAppSelector(selectIsPrivateMessage);
   const quoteMessage = useAppSelector(selectQuoteMessage);
 
+  const dispatchTypingStatus = useCallback(
+    (status: 'on' | 'off') => {
+      dispatch(
+        conversationActions.toggleTyping({
+          conversationId,
+          typingStatus: status,
+          isPrivate: isPrivateMessage,
+        }),
+      );
+    },
+    [dispatch, conversationId, isPrivateMessage],
+  );
+
+  const typingIndicator = useMemo(
+    () =>
+      createTypingIndicator(
+        () => dispatchTypingStatus('on'),
+        () => dispatchTypingStatus('off'),
+        TYPING_INDICATOR_IDLE_TIME,
+      ),
+    [dispatchTypingStatus],
+  );
+
+  const startTyping = useCallback(() => {
+    typingIndicator.start();
+  }, [typingIndicator]);
+
+  const onBlur = useCallback(() => {
+    typingIndicator.stop();
+  }, [typingIndicator]);
+
+  useEffect(() => {
+    return () => typingIndicator.stop();
+  }, [typingIndicator]);
+
   const onChangeText = (text: string) => {
     setMessageText(text);
+    startTyping();
     dispatch(setMessageContent(text));
   };
 
@@ -119,6 +158,7 @@ export const MessageTextInput = ({
     (_args: NativeSyntheticEvent<TextInputFocusEventData>) => {
       // shouldHandleKeyboardEvents.value = false;
       setIsTextInputFocused(false);
+      onBlur();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],

@@ -21,7 +21,7 @@ const sendMessageSlice = createSlice({
   name: 'sendMessage',
   initialState,
   reducers: {
-    setMessageText: (state, action: PayloadAction<string>) => {
+    setMessageContent: (state, action: PayloadAction<string>) => {
       state.messageContent = action.payload;
     },
     togglePrivateMessage: (state, action: PayloadAction<boolean>) => {
@@ -53,7 +53,7 @@ export const selectAttachments = (state: RootState) => state.sendMessage.attachm
 export const selectQuoteMessage = (state: RootState) => state.sendMessage.quoteMessage;
 
 export const {
-  setMessageText,
+  setMessageContent,
   togglePrivateMessage,
   updateAttachments,
   deleteAttachment,

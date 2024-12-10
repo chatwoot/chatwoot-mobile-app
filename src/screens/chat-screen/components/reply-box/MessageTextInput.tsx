@@ -18,19 +18,21 @@ import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import {
-  setMessageText,
+  setMessageContent,
   togglePrivateMessage,
   selectIsPrivateMessage,
   selectQuoteMessage,
   selectMessageContent,
 } from '@/store/conversation/sendMessageSlice';
 import { REPLY_EDITOR_MODES } from '@/constants';
+import i18n from '@/i18n';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 type MessageTextInputProps = {
   maxLength: number;
   replyEditorMode: string;
+  selectedCannedResponse?: string | null;
 };
 
 const Unlock = () => {
@@ -65,9 +67,14 @@ const Locked = () => {
 };
 
 // eslint-disable-next-line no-empty-pattern
-export const MessageTextInput = ({ maxLength, replyEditorMode }: MessageTextInputProps) => {
+export const MessageTextInput = ({
+  maxLength,
+  replyEditorMode,
+  selectedCannedResponse,
+}: MessageTextInputProps) => {
   const dispatch = useAppDispatch();
-  const [messageContent, setMessageContent] = useState(useAppSelector(selectMessageContent));
+  const messageContent = useAppSelector(selectMessageContent);
+  const [messageText, setMessageText] = useState(messageContent);
 
   const lockIconAnimatedPosition = useAnimatedStyle(() => {
     return {
@@ -82,8 +89,8 @@ export const MessageTextInput = ({ maxLength, replyEditorMode }: MessageTextInpu
   const quoteMessage = useAppSelector(selectQuoteMessage);
 
   const onChangeText = (text: string) => {
-    setMessageContent(text);
-    dispatch(setMessageText(text));
+    setMessageText(text);
+    dispatch(setMessageContent(text));
   };
 
   const handleOnFocus = useCallback(
@@ -94,6 +101,10 @@ export const MessageTextInput = ({ maxLength, replyEditorMode }: MessageTextInpu
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
+
+  useEffect(() => {
+    if (selectedCannedResponse) onChangeText(selectedCannedResponse);
+  }, [selectedCannedResponse]);
 
   useEffect(() => {
     if (quoteMessage !== null) {
@@ -143,9 +154,13 @@ export const MessageTextInput = ({ maxLength, replyEditorMode }: MessageTextInpu
           ]}
           placeholderTextColor={tailwind.color('bg-gray-800')}
           maxLength={maxLength}
-          placeholder="Message..."
+          placeholder={
+            isPrivateMessage
+              ? `${i18n.t('CONVERSATION.PRIVATE_MSG_INPUT')}`
+              : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`
+          }
           onSubmitEditing={() => setMessageContent('')}
-          value={messageContent}
+          value={messageText}
           returnKeyType={'default'}
           textAlignVertical="top"
           underlineColorAndroid="transparent"

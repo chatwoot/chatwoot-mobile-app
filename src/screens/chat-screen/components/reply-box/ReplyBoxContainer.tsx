@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Keyboard, TextInput } from 'react-native';
+import { Alert, Keyboard, TextInput } from 'react-native';
 import { KeyboardStickyView } from 'react-native-keyboard-controller';
 import Animated, {
   FadeIn,
@@ -35,6 +35,7 @@ import {
   resetSentMessage,
   selectIsPrivateMessage,
   togglePrivateMessage,
+  setMessageContent,
 } from '@/store/conversation/sendMessageSlice';
 import { selectUserId, selectUserThumbnail } from '@/store/auth/authSelectors';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
@@ -53,8 +54,14 @@ import { SendMessagePayload } from '@/store/conversation/conversationTypes';
 import { TypingIndicator } from './TypingIndicator';
 import { getTypingUsersText } from '@/utils';
 import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
-import { CannedResponse } from '@/types';
-import { setMessageText } from '@/store/conversation/sendMessageSlice';
+import { CannedResponse, Contact, Conversation } from '@/types';
+import AnalyticsHelper from '@/helpers/AnalyticsHelper';
+import { CONVERSATION_EVENTS } from '@/constants/analyticsEvents';
+import {
+  allMessageVariables,
+  replaceMessageVariables,
+  getAllUndefinedVariablesInMessage,
+} from '@/utils/messageVariableUtils';
 
 const SHEET_APPEAR_SPRING_CONFIG = {
   damping: 20,
@@ -98,6 +105,7 @@ const BottomSheetContent = () => {
   const [ccEmails, setCCEmails] = useState('');
   const [bccEmails, setBCCEmails] = useState('');
   const [toEmails, setToEmails] = useState('');
+  const [selectedCannedResponse, setSelectedCannedResponse] = useState<string | null>(null);
 
   const typingUsers = useAppSelector(selectTypingUsersByConversationId(conversationId));
   const typingText = useMemo(() => getTypingUsersText({ users: typingUsers }), [typingUsers]);
@@ -106,6 +114,11 @@ const BottomSheetContent = () => {
 
   // Show reply header form if it's an email channel and not on a private note
   const showReplyHeader = inbox && isAnEmailChannel(inbox) && !isPrivate;
+
+  const messageVariables = allMessageVariables({
+    conversation: conversation as Conversation,
+    contact: conversation?.meta?.sender as Contact,
+  });
 
   useEffect(() => {
     if (canReply || (inbox && isAWhatsAppChannel(inbox))) {
@@ -219,7 +232,19 @@ const BottomSheetContent = () => {
       isAWhatsAppCloudChannel(inbox) ||
       is360DialogWhatsAppChannel(inbox?.channelType);
 
-    if (isOnWhatsApp && !isPrivate) {
+    AnalyticsHelper.track(CONVERSATION_EVENTS.SENT_MESSAGE);
+
+    const undefinedVariables = getAllUndefinedVariablesInMessage({
+      message: messageContent,
+      variables: messageVariables,
+    });
+
+    if (undefinedVariables.length > 0) {
+      const undefinedVariablesCount = undefinedVariables.length > 1 ? undefinedVariables.length : 1;
+      const undefinedVariablesText = undefinedVariables.join(', ');
+      const undefinedVariablesMessage = `You have ${undefinedVariablesCount} undefined variable(s) in your message: ${undefinedVariablesText}. Please check and try again with valid variables.`;
+      Alert.alert(undefinedVariablesMessage);
+    } else if (isOnWhatsApp && !isPrivate) {
       sendMessageAsMultipleMessages(messageContent);
     } else {
       const messagePayload = getMessagePayload(messageContent);
@@ -230,6 +255,8 @@ const BottomSheetContent = () => {
   const sendMessage = (messagePayload: SendMessagePayload) => {
     dispatch(conversationActions.sendMessage(messagePayload));
     dispatch(resetSentMessage());
+    setSelectedCannedResponse(null);
+    dispatch(setMessageContent(''));
     setCCEmails('');
     setBCCEmails('');
     setToEmails('');
@@ -266,7 +293,12 @@ const BottomSheetContent = () => {
   };
 
   const onSelectCannedResponse = (cannedResponse: CannedResponse) => {
-    dispatch(setMessageText(cannedResponse.content));
+    const updatedContent = replaceMessageVariables({
+      message: cannedResponse.content,
+      variables: messageVariables,
+    });
+    AnalyticsHelper.track(CONVERSATION_EVENTS.INSERTED_A_CANNED_RESPONSE);
+    setSelectedCannedResponse(updatedContent);
   };
 
   const shouldShowCannedResponses = messageContent?.charAt(0) === '/';
@@ -301,7 +333,11 @@ const BottomSheetContent = () => {
                 derivedAddMenuOptionStateValue={derivedAddMenuOptionStateValue}
               />
             )}
-            <MessageTextInput maxLength={maxLength()} replyEditorMode={replyEditorMode} />
+            <MessageTextInput
+              maxLength={maxLength()}
+              replyEditorMode={replyEditorMode}
+              selectedCannedResponse={selectedCannedResponse}
+            />
             {(messageContent.length > 0 || attachmentsLength > 0) && (
               <SendMessageButton onPress={confirmOnSendReply} />
             )}

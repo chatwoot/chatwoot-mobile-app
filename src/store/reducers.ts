@@ -23,7 +23,7 @@ import dashboardAppSlice from '@/store/dashboard-app/dashboardAppSlice';
 import customAttributeSlice from '@/store/custom-attribute/customAttributeSlice';
 import conversationParticipantSlice from '@/store/conversation-participant/conversationParticipantSlice';
 
-import cannedResponseSlice from '@/reducer/cannedResponseSlice';
+import cannedResponseSlice from '@/store/canned-response/cannedResponseSlice';
 
 export const appReducer = combineReducers({
   auth: authSlice,
@@ -48,7 +48,5 @@ export const appReducer = combineReducers({
   dashboardApps: dashboardAppSlice,
   customAttributes: customAttributeSlice,
   conversationParticipants: conversationParticipantSlice,
-
-  // TODO: Convert these to RTK toolkit typescript
   cannedResponses: cannedResponseSlice,
 });

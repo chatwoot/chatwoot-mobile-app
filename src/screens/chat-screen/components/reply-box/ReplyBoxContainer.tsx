@@ -46,12 +46,15 @@ import { SendMessageButton } from './buttons/SendMessageButton';
 import { MessageTextInput } from './MessageTextInput';
 import { QuoteReply } from './QuoteReply';
 import { ReplyWarning } from './ReplyWarning';
+import { CannedResponses } from './CannedResponses';
 import { AttachedMedia } from '../message-components/AttachedMedia';
 import { CommandOptionsMenu } from '../message-components/CommandOptionsMenu';
 import { SendMessagePayload } from '@/store/conversation/conversationTypes';
 import { TypingIndicator } from './TypingIndicator';
 import { getTypingUsersText } from '@/utils';
 import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
+import { CannedResponse } from '@/types';
+import { setMessageText } from '@/store/conversation/sendMessageSlice';
 
 const SHEET_APPEAR_SPRING_CONFIG = {
   damping: 20,
@@ -262,6 +265,12 @@ const BottomSheetContent = () => {
     return MESSAGE_MAX_LENGTH.GENERAL;
   };
 
+  const onSelectCannedResponse = (cannedResponse: CannedResponse) => {
+    dispatch(setMessageText(cannedResponse.content));
+  };
+
+  const shouldShowCannedResponses = messageContent?.charAt(0) === '/';
+
   return (
     <Animated.View layout={LinearTransition.springify().damping(38).stiffness(240)}>
       <AnimatedKeyboardStickyView style={[tailwind.style('bg-white'), animatedInputWrapperStyle]}>
@@ -270,6 +279,10 @@ const BottomSheetContent = () => {
             <ReplyWarning inbox={inbox} conversation={conversation} />
           </Animated.View>
         )}
+        {shouldShowCannedResponses && (
+          <CannedResponses searchKey={messageContent} onSelect={onSelectCannedResponse} />
+        )}
+
         <Animated.View
           layout={LinearTransition.springify().damping(38).stiffness(240)}
           style={tailwind.style('py-2 border-t-[1px] border-t-blackA-A3')}>

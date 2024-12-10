@@ -12,6 +12,7 @@ import {
   TypingData,
   DashboardApp,
   CustomAttribute,
+  CannedResponse,
 } from '@/types';
 import type { Inbox } from '@/types/Inbox';
 import type { NotificationMeta, Notification } from '@/types/Notification';
@@ -84,4 +85,8 @@ export const transformNotificationCreatedResponse = (data: any): NotificationCre
 
 export const transformNotificationRemovedResponse = (data: any): NotificationRemovedResponse => {
   return camelcaseKeys(data, { deep: true }) as unknown as NotificationRemovedResponse;
+};
+
+export const transformCannedResponse = (cannedResponse: any): CannedResponse => {
+  return camelcaseKeys(cannedResponse, { deep: true }) as unknown as CannedResponse;
 };

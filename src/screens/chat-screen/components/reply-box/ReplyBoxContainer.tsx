@@ -295,7 +295,6 @@ const BottomSheetContent = () => {
           {typingText && <TypingIndicator typingText={typingText} />}
 
           <Animated.View style={tailwind.style('flex flex-row px-1 items-end z-20 relative')}>
-            {/* TODO: Add the support for multiple attachments */}
             {attachmentsLength === 0 && shouldShowFileUpload && (
               <AddCommandButton
                 onPress={handleShowAddMenuOption}

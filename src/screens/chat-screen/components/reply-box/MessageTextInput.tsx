@@ -1,18 +1,15 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   NativeSyntheticEvent,
   Platform,
   Pressable,
   TextInput,
   TextInputFocusEventData,
-  TextInputProps,
 } from 'react-native';
 import Animated, {
   LayoutAnimationConfig,
   LinearTransition,
-  useAnimatedProps,
   useAnimatedStyle,
-  useSharedValue,
 } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
 
@@ -25,6 +22,7 @@ import {
   togglePrivateMessage,
   selectIsPrivateMessage,
   selectQuoteMessage,
+  selectMessageContent,
 } from '@/store/conversation/sendMessageSlice';
 import { REPLY_EDITOR_MODES } from '@/constants';
 
@@ -68,8 +66,8 @@ const Locked = () => {
 
 // eslint-disable-next-line no-empty-pattern
 export const MessageTextInput = ({ maxLength, replyEditorMode }: MessageTextInputProps) => {
-  const messageText = useSharedValue('');
   const dispatch = useAppDispatch();
+  const [messageContent, setMessageContent] = useState(useAppSelector(selectMessageContent));
 
   const lockIconAnimatedPosition = useAnimatedStyle(() => {
     return {
@@ -83,14 +81,8 @@ export const MessageTextInput = ({ maxLength, replyEditorMode }: MessageTextInpu
   const isPrivateMessage = useAppSelector(selectIsPrivateMessage);
   const quoteMessage = useAppSelector(selectQuoteMessage);
 
-  const animatedProps = useAnimatedProps(() => {
-    return {
-      text: messageText.value,
-    } as unknown as TextInputProps;
-  });
-
   const onChangeText = (text: string) => {
-    messageText.value = text.trimEnd();
+    setMessageContent(text);
     dispatch(setMessageText(text));
   };
 
@@ -152,13 +144,13 @@ export const MessageTextInput = ({ maxLength, replyEditorMode }: MessageTextInpu
           placeholderTextColor={tailwind.color('bg-gray-800')}
           maxLength={maxLength}
           placeholder="Message..."
-          onSubmitEditing={() => (messageText.value = '')}
+          onSubmitEditing={() => setMessageContent('')}
+          value={messageContent}
           returnKeyType={'default'}
           textAlignVertical="top"
           underlineColorAndroid="transparent"
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
-          animatedProps={animatedProps}
         />
       </Animated.View>
       <Animated.View

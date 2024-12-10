@@ -90,7 +90,7 @@ export const ConversationItem = memo(
           <ConversationAvatar
             src={{ uri: senderThumbnail } as ImageURISource}
             name={senderName || ''}
-            status={availabilityStatus || 'offline'}
+            status={isTyping ? 'typing' : availabilityStatus || 'offline'}
           />
         </NativeView>
 

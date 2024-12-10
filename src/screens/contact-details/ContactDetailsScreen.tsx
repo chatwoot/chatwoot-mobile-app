@@ -3,17 +3,17 @@ import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import camelCase from 'camelcase';
 
-import { GenericList } from '@/components-next';
 import { TAB_BAR_HEIGHT } from '@/constants';
 import { CallIcon, EmailIcon, LocationIcon, CompanyIcon, FacebookChannelIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { CustomAttribute, GenericListType } from '@/types';
+import { AttributeListType, CustomAttribute, GenericListType } from '@/types';
 
 import {
   ContactDetailsScreenHeader,
   ContactBasicActions,
   ContactMetaInformation,
 } from './components';
+import { AttributeList } from '@/components-next';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
@@ -170,7 +170,7 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
           </Animated.View>
         ) : null}
         <Animated.View style={tailwind.style('pt-10')}>
-          <GenericList list={allDetails} />
+          <AttributeList list={allDetails as AttributeListType[]} />
         </Animated.View>
         {hasContactCustomAttributes && (
           <Animated.View style={tailwind.style('pt-10')}>

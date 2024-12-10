@@ -7,7 +7,6 @@ import { CaretRight } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { AttributeListType } from '@/types';
 import { Icon } from '@/components-next/common';
-import { openURL } from '@/helpers/UrlHelper';
 import { showToast } from '@/helpers/ToastHelper';
 
 type AttributeItemProps = {
@@ -20,15 +19,9 @@ const AttributeItem = (props: AttributeItemProps) => {
   const { listItem, index, isLastItem } = props;
 
   const handlePress = () => {
-    if (listItem.subtitle) {
-      Clipboard.setString(listItem.subtitle);
+    if (formattedValue) {
+      Clipboard.setString(formattedValue);
       showToast({ message: `${listItem.title} copied to clipboard` });
-    }
-  };
-
-  const handleTextPress = () => {
-    if (listItem.type === 'link') {
-      openURL({ URL: listItem.subtitle });
     }
   };
 
@@ -57,7 +50,7 @@ const AttributeItem = (props: AttributeItemProps) => {
           isLastItem ? 'rounded-b-[13px]' : '',
         ),
       ]}>
-      <Animated.View style={tailwind.style('flex flex-row items-center pl-3')}>
+      <Animated.View style={tailwind.style('flex flex-row items-center px-3')}>
         <Animated.View
           style={tailwind.style(
             'flex-1 flex-row items-center justify-between py-[11px]',
@@ -72,11 +65,12 @@ const AttributeItem = (props: AttributeItemProps) => {
               {listItem.title}
             </Animated.Text>
           </Animated.View>
-          <Animated.View style={tailwind.style('flex flex-row items-center pr-3')}>
+          <Animated.View style={tailwind.style('flex flex-row items-center max-w-[200px]')}>
             <Animated.Text
-              onPress={handleTextPress}
+              numberOfLines={1}
+              ellipsizeMode="tail"
               style={tailwind.style(
-                'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px]',
+                'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] overflow-hidden',
                 listItem.subtitleType === 'light' ? 'text-gray-900' : 'text-gray-950',
                 listItem.type === 'link' ? 'text-blue-800 underline' : '',
               )}>

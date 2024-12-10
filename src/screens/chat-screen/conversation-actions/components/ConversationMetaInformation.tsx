@@ -40,8 +40,12 @@ export const ConversationMetaInformation = ({ conversation }: { conversation: Co
   const browser = additionalAttributes.browser;
   const sender = conversation.meta.sender;
 
-  const browserName = `${browser?.browserName} ${browser?.browserVersion}`;
-  const platformName = `${browser?.platformName} ${browser?.platformVersion}`;
+  const browserName = browser?.browserName
+    ? `${browser?.browserName} ${browser?.browserVersion}`
+    : '';
+  const platformName = browser?.platformName
+    ? `${browser?.platformName} ${browser?.platformVersion}`
+    : '';
 
   const conversationCustomAttributes = useAppSelector(getConversationCustomAttributes);
   const { additionalAttributes: { createdAtIp = '' } = {} } = sender;

@@ -50,7 +50,7 @@ export const NoNetworkBar = () => {
     transform: [{ translateX: interpolated }],
   };
 
-  return connected ? (
+  return !connected ? (
     <SafeAreaView style={tailwind.style('bg-red-900')}>
       <StatusBar backgroundColor={tailwind.color('red-900')} />
       <Animated.View style={[tailwind.style(' px-4 py-2'), animationStyle]}>

@@ -98,6 +98,12 @@ export const ConversationMetaInformation = ({ conversation }: { conversation: Co
 
   const allAttributes = [...otherConversationDetails, ...processedAttributes];
 
+  const hasAnyAttributeContainingValue = allAttributes.some(attribute => attribute.subtitle);
+
+  if (!hasAnyAttributeContainingValue) {
+    return null;
+  }
+
   return (
     <Animated.View>
       <AttributeList

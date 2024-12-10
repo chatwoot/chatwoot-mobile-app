@@ -51,6 +51,11 @@ const AttributeItem = (props: AttributeItemProps) => {
         ),
       ]}>
       <Animated.View style={tailwind.style('flex flex-row items-center px-3')}>
+        {listItem.icon ? (
+          <Animated.View>
+            <Icon icon={listItem.icon} size={24} />
+          </Animated.View>
+        ) : null}
         <Animated.View
           style={tailwind.style(
             'flex-1 flex-row items-center justify-between py-[11px]',

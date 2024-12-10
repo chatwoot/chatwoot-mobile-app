@@ -4,7 +4,18 @@ import Animated from 'react-native-reanimated';
 import camelCase from 'camelcase';
 
 import { TAB_BAR_HEIGHT } from '@/constants';
-import { CallIcon, EmailIcon, LocationIcon, CompanyIcon, FacebookChannelIcon } from '@/svg-icons';
+import {
+  CallIcon,
+  EmailIcon,
+  LocationIcon,
+  CompanyIcon,
+  MessengerFilledIcon,
+  XFilledIcon,
+  TelegramFilledIcon,
+  InstagramFilledIcon,
+  GithubIcon,
+  LinkedinIcon,
+} from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { AttributeListType, CustomAttribute, GenericListType } from '@/types';
 
@@ -30,12 +41,52 @@ type ContactDetailsScreenProps = NativeStackScreenProps<
 
 const allSocialMediaProfiles: GenericListType[] = [
   {
-    icon: <FacebookChannelIcon />,
+    icon: <MessengerFilledIcon />,
     subtitle: 'Facebook',
     title: 'Facebook',
     subtitleType: 'dark',
     key: 'facebook',
-    link: 'https://facebook.com/',
+    link: 'https://fb.com/',
+  },
+  {
+    icon: <XFilledIcon />,
+    subtitle: 'Twitter',
+    title: 'Twitter',
+    subtitleType: 'dark',
+    key: 'twitter',
+    link: 'https://x.com/',
+  },
+  {
+    icon: <GithubIcon />,
+    subtitle: 'Github',
+    title: 'Github',
+    subtitleType: 'dark',
+    key: 'github',
+    link: 'https://github.com/',
+  },
+  {
+    icon: <LinkedinIcon />,
+    subtitle: 'Linkedin',
+    title: 'Linkedin',
+    subtitleType: 'dark',
+    key: 'linkedin',
+    link: 'https://linkedin.com/',
+  },
+  {
+    icon: <InstagramFilledIcon />,
+    subtitle: 'Instagram',
+    title: 'Instagram',
+    subtitleType: 'dark',
+    key: 'instagram',
+    link: 'https://instagram/',
+  },
+  {
+    icon: <TelegramFilledIcon />,
+    subtitle: 'Telegram',
+    title: 'Telegram',
+    subtitleType: 'dark',
+    key: 'telegram',
+    link: 'https://t.me/',
   },
 ];
 
@@ -117,7 +168,8 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
     .filter(profile => socialMediaProfiles?.[profile.key as keyof typeof socialMediaProfiles])
     .map(profile => ({
       ...profile,
-      subtitle: socialMediaProfiles?.[profile.key as keyof typeof socialMediaProfiles],
+      subtitle: `${profile.link}${socialMediaProfiles?.[profile.key as keyof typeof socialMediaProfiles]}`,
+      type: 'link',
     }));
 
   const fullLocation =

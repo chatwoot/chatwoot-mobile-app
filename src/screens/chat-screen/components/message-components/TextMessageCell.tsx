@@ -37,6 +37,7 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
   const isOutgoing = messageItem.messageType === MESSAGE_TYPES.OUTGOING;
   const isActivity = messageItem.messageType === MESSAGE_TYPES.ACTIVITY;
   const isTemplate = messageItem.messageType === MESSAGE_TYPES.TEMPLATE;
+  const isSentByBot = !sender || ('type' in sender && sender.type === 'agent_bot');
   const errorMessage = contentAttributes?.externalError || '';
 
   const { menuOptions } = props;
@@ -59,9 +60,13 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
         ),
       ]}>
       <Animated.View style={tailwind.style('flex flex-row')}>
-        {sender?.name && isIncoming && shouldRenderAvatar ? (
+        {sender && sender?.name && isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name || ''} />
+            <Avatar
+              size={'md'}
+              src={sender?.thumbnail ? { uri: sender.thumbnail } : undefined}
+              name={sender?.name || ''}
+            />
           </Animated.View>
         ) : null}
         <MessageMenu menuOptions={menuOptions}>
@@ -72,7 +77,7 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {isIncoming || isOutgoing ? (
+                {(isOutgoing && !isSentByBot) || isIncoming ? (
                   <MessageTextCell
                     {...{ isActivity, isIncoming, isOutgoing }}
                     text={content}
@@ -86,7 +91,7 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
                     errorMessage={errorMessage}
                   />
                 ) : null}
-                {isTemplate ? (
+                {(isOutgoing && isSentByBot) || isTemplate ? (
                   <BotTextCell
                     text={content}
                     timeStamp={createdAt}
@@ -109,7 +114,7 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
             <Avatar
               size={'md'}
               src={
-                isTemplate
+                isTemplate || isSentByBot
                   ? require('../../../../assets/local/bot-avatar.png')
                   : { uri: sender?.thumbnail }
               }

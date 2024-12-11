@@ -130,6 +130,11 @@
     "ASSIGNED_AGENT": "Assigned agent",
     "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "EMAIL_HEAD": {
+      "TO": "To",
+      "CC": "Cc",
+      "BCC": "Bcc"
+    },
     "SELF_ASSIGN": "Assign to me",
     "UN_ASSIGN": "Unassign conversation",
     "CONVERSATION_NOT_FOUND": "Could not fetch conversation",

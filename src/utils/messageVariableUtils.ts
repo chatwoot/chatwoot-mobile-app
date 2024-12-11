@@ -11,13 +11,9 @@ type MessageVariables = {
   [key: string]: string | number | boolean;
 };
 
-export const allMessageVariables = ({
-  conversation,
-  contact,
-}: {
-  conversation: Conversation;
-  contact: Contact;
-}) => {
+export const allMessageVariables = ({ conversation }: { conversation: Conversation }) => {
+  if (!conversation) return {};
+  const contact = conversation?.meta?.sender as Contact;
   return getMessageVariables({
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore

@@ -115,7 +115,6 @@ const BottomSheetContent = () => {
 
   const messageVariables = allMessageVariables({
     conversation: conversation as Conversation,
-    contact: conversation?.meta?.sender as Contact,
   });
 
   useEffect(() => {
@@ -300,8 +299,6 @@ const BottomSheetContent = () => {
   };
 
   const shouldShowCannedResponses = messageContent?.charAt(0) === '/';
-
-  console.log('shouldShowFileUpload', shouldShowFileUpload);
 
   return (
     <Animated.View layout={LinearTransition.springify().damping(38).stiffness(240)}>

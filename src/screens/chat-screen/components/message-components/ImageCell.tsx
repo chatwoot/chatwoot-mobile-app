@@ -8,7 +8,7 @@ import { Channel, Message, MessageStatus, UnixTimestamp } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
 import { Avatar } from '@/components-next/common';
 import { MenuOption, MessageMenu } from '../message-menu';
-import { MESSAGE_TYPES, TEXT_MAX_WIDTH } from '@/constants';
+import { MESSAGE_TYPES } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
 
 const { width, height } = Dimensions.get('screen');

@@ -5,6 +5,7 @@ import { FilterState } from '@/store/conversation/conversationFilterSlice';
 import { CONVERSATION_PRIORITY_ORDER } from '@/constants';
 import { shouldApplyFilters } from '@/utils/conversationUtils';
 import type { Conversation } from '@/types';
+import { MESSAGE_TYPES } from '@/constants';
 
 export const selectConversationsState = (state: RootState) => state.conversations;
 
@@ -112,5 +113,28 @@ export const getMessagesByConversationId = createDraftSafeSelector(
       .sort((a, b) => a.createdAt - b.createdAt)
       .reverse()
       .filter((message, index, self) => index === self.findIndex(m => m.id === message.id));
+  },
+);
+
+export const getLastEmailInSelectedChat = createDraftSafeSelector(
+  [
+    (state: RootState, params: { conversationId: number }) =>
+      selectConversationById(state, params.conversationId),
+  ],
+  conversation => {
+    if (!conversation) {
+      return [];
+    }
+    const lastEmail = [...conversation.messages].reverse().find(message => {
+      const { contentAttributes = {}, messageType } = message;
+      const { email = {} } = contentAttributes || {};
+      const isIncomingOrOutgoing =
+        messageType === MESSAGE_TYPES.OUTGOING || messageType === MESSAGE_TYPES.INCOMING;
+      if (email.from && isIncomingOrOutgoing) {
+        return true;
+      }
+      return false;
+    });
+    return lastEmail;
   },
 );

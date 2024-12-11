@@ -20,10 +20,10 @@ import teamSlice from '@/store/team/teamSlice';
 import contactLabelSlice from '@/store/contact/contactLabelSlice';
 import contactConversationSlice from '@/store/contact/contactConversationSlice';
 import dashboardAppSlice from '@/store/dashboard-app/dashboardAppSlice';
+import customAttributeSlice from '@/store/custom-attribute/customAttributeSlice';
+import conversationParticipantSlice from '@/store/conversation-participant/conversationParticipantSlice';
 
-import cannedResponseSlice from '@/reducer/cannedResponseSlice';
-import customAttributeSlice from '@/reducer/customAttributeSlice';
-import conversationWatchersSlice from '@/reducer/conversationWatchersSlice';
+import cannedResponseSlice from '@/store/canned-response/cannedResponseSlice';
 
 export const appReducer = combineReducers({
   auth: authSlice,
@@ -46,9 +46,7 @@ export const appReducer = combineReducers({
   contactLabels: contactLabelSlice,
   contactConversations: contactConversationSlice,
   dashboardApps: dashboardAppSlice,
-
-  // TODO: Convert these to RTK toolkit typescript
-  cannedResponses: cannedResponseSlice,
   customAttributes: customAttributeSlice,
-  conversationWatchers: conversationWatchersSlice,
+  conversationParticipants: conversationParticipantSlice,
+  cannedResponses: cannedResponseSlice,
 });

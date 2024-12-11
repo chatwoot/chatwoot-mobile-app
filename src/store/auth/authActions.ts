@@ -8,6 +8,7 @@ import type {
   AvailabilityPayload,
   ProfileResponse,
   ApiErrorResponse,
+  SetActiveAccountPayload,
 } from './authTypes';
 import { handleApiError } from './authUtils';
 import I18n from '@/i18n';
@@ -47,5 +48,10 @@ export const authActions = {
   updateAvailability: createAuthThunk<ProfileResponse, AvailabilityPayload>(
     'auth/updateAvailability',
     AuthService.updateAvailability,
+  ),
+
+  setActiveAccount: createAuthThunk<ProfileResponse, SetActiveAccountPayload>(
+    'auth/setActiveAccount',
+    AuthService.setActiveAccount,
   ),
 };

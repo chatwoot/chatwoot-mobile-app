@@ -110,7 +110,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
 
   return (
     <TabBarBackground
-      blurAmount={25}
+      blurAmount={100}
       blurType="light"
       style={Platform.select({
         ios: [

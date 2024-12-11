@@ -26,15 +26,15 @@ export interface ApiErrorResponse {
 }
 
 export interface NotificationCreatedResponse {
-  account_id: number;
-  unread_count: number;
+  accountId: number;
+  unreadCount: number;
   count: number;
   notification: Notification;
 }
 
 export interface NotificationRemovedResponse {
-  account_id: number;
-  unread_count: number;
+  accountId: number;
+  unreadCount: number;
   count: number;
   notification: Notification;
 }

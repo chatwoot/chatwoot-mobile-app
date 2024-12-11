@@ -167,9 +167,7 @@ const SettingsScreen = () => {
     dispatch(clearAllContacts());
     dispatch(clearAllConversations());
     dispatch(setAccount(accountId));
-    // TODO: Fix this later
-    // @ts-expect-error TODO: Fix typing for dispatch
-    dispatch(authActions.setActiveAccount({ accountId }));
+    dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
     navigation.dispatch(StackActions.replace('Tab'));
   };
 
@@ -303,7 +301,7 @@ const SettingsScreen = () => {
         <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.SUPPORT')} list={supportList} />
         </Animated.View>
-        <Animated.View style={tailwind.style('pt-6')}>
+        <Animated.View style={tailwind.style('pt-6 mx-4')}>
           <Button
             variant="secondary"
             text={i18n.t('SETTINGS.LOGOUT')}

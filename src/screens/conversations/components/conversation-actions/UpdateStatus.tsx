@@ -96,7 +96,7 @@ export const UpdateStatus = () => {
 
   return (
     <BottomSheetView>
-      <BottomSheetHeader headerText={'Assign status'} />
+      <BottomSheetHeader headerText={i18n.t('CONVERSATION.CHANGE_STATUS')} />
       <Animated.View style={tailwind.style('py-1 pl-3')}>
         {statusList.map((value, index) => (
           <StatusCell

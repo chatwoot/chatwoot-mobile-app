@@ -6,7 +6,7 @@ import type {
 } from '@/types/common/ConversationStatus';
 import type { Message } from '@/types/Message';
 import { MESSAGE_STATUS, MESSAGE_TYPES } from '@/constants';
-import { Agent, Team } from '@/types';
+import { Agent, ConversationPriority, Team } from '@/types';
 
 export interface ConversationListAPIResponse {
   data: {
@@ -163,7 +163,8 @@ export interface BulkActionLabels {
 
 export interface AssigneePayload {
   conversationId: number;
-  assigneeId: number;
+  assigneeId?: number;
+  teamId?: string;
 }
 
 export interface AssignTeamPayload {
@@ -231,4 +232,9 @@ export interface TypingPayload {
   conversationId: number;
   typingStatus: 'off' | 'on';
   isPrivate: boolean;
+}
+
+export interface TogglePriorityPayload {
+  conversationId: number;
+  priority: ConversationPriority;
 }

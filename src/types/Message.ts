@@ -44,11 +44,24 @@ export type MessageContentAttributes = {
   inReplyTo: number;
   inReplyToExternalId: null;
   deleted?: boolean;
-  email: {
+  email?: {
     subject: string;
+    from?: string[]; // Ensure this line is present
+    to?: string[];
+    cc?: string[];
+    bcc?: string[];
+    htmlContent?: {
+      full: string;
+    };
+    textContent?: {
+      full: string;
+    };
   };
+  ccEmail?: string[];
+  bccEmail?: string[];
   externalError: string;
   imageType: string;
+  contentType: ContentType;
 };
 
 export interface Message {

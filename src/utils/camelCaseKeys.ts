@@ -11,9 +11,13 @@ import {
   Team,
   TypingData,
   DashboardApp,
+  CustomAttribute,
+  CannedResponse,
 } from '@/types';
 import type { Inbox } from '@/types/Inbox';
 import type { NotificationMeta, Notification } from '@/types/Notification';
+import { NotificationCreatedResponse } from '@/store/notification/notificationTypes';
+import { NotificationRemovedResponse } from '@/store/notification/notificationTypes';
 
 export const transformConversation = (conversation: any): Conversation => {
   return camelcaseKeys(conversation, { deep: true }) as unknown as Conversation;
@@ -65,4 +69,24 @@ export const transformTypingData = (typingData: any): TypingData => {
 
 export const transformDashboardApp = (dashboardApp: any): DashboardApp => {
   return camelcaseKeys(dashboardApp, { deep: true }) as unknown as DashboardApp;
+};
+
+export const transformCustomAttribute = (customAttribute: any): CustomAttribute => {
+  return camelcaseKeys(customAttribute, { deep: true }) as unknown as CustomAttribute;
+};
+
+export const transformAgent = (agent: any): Agent => {
+  return camelcaseKeys(agent, { deep: true }) as unknown as Agent;
+};
+
+export const transformNotificationCreatedResponse = (data: any): NotificationCreatedResponse => {
+  return camelcaseKeys(data, { deep: true }) as unknown as NotificationCreatedResponse;
+};
+
+export const transformNotificationRemovedResponse = (data: any): NotificationRemovedResponse => {
+  return camelcaseKeys(data, { deep: true }) as unknown as NotificationRemovedResponse;
+};
+
+export const transformCannedResponse = (cannedResponse: any): CannedResponse => {
+  return camelcaseKeys(cannedResponse, { deep: true }) as unknown as CannedResponse;
 };

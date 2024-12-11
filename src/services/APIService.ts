@@ -9,7 +9,12 @@ import { store } from '@/store';
 import I18n from '@/i18n';
 import { showToast } from '@/helpers/ToastHelper';
 
-const nonAccountRoutes = ['profile', 'profile/availability', 'notification_subscriptions'];
+const nonAccountRoutes = [
+  'profile',
+  'profile/availability',
+  'notification_subscriptions',
+  'profile/set_active_account',
+];
 
 class APIService {
   private static instance: APIService;

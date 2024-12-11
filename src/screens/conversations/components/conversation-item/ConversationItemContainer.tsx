@@ -20,7 +20,7 @@ import { selectTypingUsersByConversationId } from '@/store/conversation/conversa
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { selectAllLabels } from '@/store/label/labelSelectors';
 
-import { isContactTyping, getLastMessage } from '@/utils';
+import { isContactTyping, getLastMessage, getTypingUsersText } from '@/utils';
 import { Icon, Swipeable } from '@/components-next/common';
 
 import { ConversationItem } from './ConversationItem';
@@ -97,10 +97,11 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
   const selected = useAppSelector(selectSelected);
   const currentState = useAppSelector(selectCurrentState);
 
-  // Derived state
   const { availabilityStatus } = contact || {};
   const isSelected = useMemo(() => id in selected, [selected, id]);
   const isTyping = useMemo(() => isContactTyping(typingUsers, contactId), [typingUsers, contactId]);
+  const typingText = useMemo(() => getTypingUsersText({ users: typingUsers }), [typingUsers]);
+
   const lastMessage = getLastMessage(conversationItem);
 
   const markMessageReadOrUnread = useCallback(() => {
@@ -160,6 +161,7 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
     },
     additionalAttributes,
     allLabels,
+    typingText: typingText as string | undefined,
   };
 
   return (

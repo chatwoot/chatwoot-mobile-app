@@ -27,3 +27,11 @@ export const SortOptions: Record<SortTypes, string> = {
   sort_on_created_at: 'Created At',
   sort_on_priority: 'Priority',
 };
+
+export const PriorityOptions: Record<string, string> = {
+  none: 'None',
+  low: 'Low',
+  medium: 'Medium',
+  high: 'High',
+  urgent: 'Urgent',
+};

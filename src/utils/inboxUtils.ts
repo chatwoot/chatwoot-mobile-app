@@ -48,6 +48,10 @@ export const isALineChannel = (inbox: Inbox) => {
   return inbox.channelType === INBOX_TYPES.LINE;
 };
 
+export const isAPIInbox = (inbox: Inbox | undefined) => {
+  return inbox?.channelType === INBOX_TYPES.API;
+};
+
 export const isATwilioChannel = (inbox: Inbox) => {
   return inbox.channelType === INBOX_TYPES.TWILIO;
 };

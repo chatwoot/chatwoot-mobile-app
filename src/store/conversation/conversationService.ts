@@ -28,6 +28,7 @@ import type {
   ConversationResponse,
   MarkMessageReadOrUnreadResponse,
   ToggleConversationStatusAPIResponse,
+  TogglePriorityPayload,
 } from './conversationTypes';
 
 import {
@@ -126,9 +127,14 @@ export class ConversationService {
     await apiService.post('bulk_actions', payload);
   }
   static async assignConversation(payload: AssigneePayload): Promise<AssigneeAPIResponse> {
-    const { conversationId, assigneeId } = payload;
+    const { conversationId, assigneeId, teamId } = payload;
+    const params = {
+      assignee_id: assigneeId,
+      team_id: teamId,
+    };
     const response = await apiService.post<AssigneeAPIResponse>(
-      `conversations/${conversationId}/assignments?assignee_id=${assigneeId}`,
+      `conversations/${conversationId}/assignments`,
+      params,
     );
     return response.data;
   }
@@ -200,5 +206,10 @@ export class ConversationService {
       typing_status: typingStatus,
       is_private: isPrivate,
     });
+  }
+
+  static async togglePriority(payload: TogglePriorityPayload): Promise<void> {
+    const { conversationId, priority } = payload;
+    await apiService.post(`conversations/${conversationId}/toggle_priority`, { priority });
   }
 }

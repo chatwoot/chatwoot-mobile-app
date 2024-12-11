@@ -9,3 +9,6 @@ export * from './ConversationTyping';
 export * from './Label';
 export * from './SLA';
 export * from './Dashboard';
+export * from './CustomAttribute';
+export * from './CannedResponse';
+

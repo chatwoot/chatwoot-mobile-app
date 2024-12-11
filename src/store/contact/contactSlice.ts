@@ -28,6 +28,12 @@ const contactSlice = createSlice({
         contactAdapter.upsertOne(state, contact);
       }
     },
+    updateContact: (state, action) => {
+      const contact = action.payload as Contact;
+      if (contact) {
+        contactAdapter.upsertOne(state, contact);
+      }
+    },
     updateContactsPresence: (state, action) => {
       const { contacts } = action.payload;
       Object.values(state.entities as Record<string, Contact>).forEach(entity => {
@@ -43,7 +49,7 @@ const contactSlice = createSlice({
   },
 });
 
-export const { clearAllContacts, addContacts, addContact, updateContactsPresence } =
+export const { clearAllContacts, updateContact, addContacts, addContact, updateContactsPresence } =
   contactSlice.actions;
 
 export default contactSlice.reducer;

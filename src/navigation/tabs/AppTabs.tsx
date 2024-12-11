@@ -20,6 +20,9 @@ import { getUserPermissions } from 'helpers/permissionHelper';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 
 import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stack';
+import ChatScreen from '@/screens/chat-screen/ChatScreen';
+import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
+import DashboardScreen from '@/screens/dashboard/DashboardScreen';
 // import ChatScreen from '@/screens/chat-screen/ChatScreen';
 // import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 // import { DashboardScreen } from '@/screens/dashboard';
@@ -35,6 +38,9 @@ import actionCableConnector from '@/utils/actionCable';
 import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import AnalyticsHelper from '@/helpers/AnalyticsHelper';
 import { clearAllDeliveredNotifications } from '@/helpers/PushHelper';
+import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
+import { customAttributeActions } from '@/store/custom-attribute/customAttributeActions';
+import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
 
 const Tab = createBottomTabNavigator();
 
@@ -51,7 +57,7 @@ export type TabParamList = {
 
 export type TabBarExcludedScreenParamList = {
   Tab: undefined;
-  ChatScreen: { conversationId: number };
+  ChatScreen: { conversationId: number; primaryActorId?: number; primaryActorType?: string };
   ContactDetails: { conversationId: number };
   ConversationActions: undefined;
   Dashboard: { url: string };
@@ -84,6 +90,9 @@ const Tabs = () => {
     initActionCable();
     dispatch(labelActions.fetchLabels());
     dispatch(setCurrentState('none'));
+    dispatch(clearSelection());
+    dispatch(dashboardAppActions.index());
+    dispatch(customAttributeActions.index());
     initAnalytics();
     initSentry();
     initPushNotifications();
@@ -166,7 +175,7 @@ export const AppTabs = () => {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Tab" component={Tabs} />
-        {/* <Stack.Screen
+        <Stack.Screen
           options={{ animation: 'slide_from_right' }}
           name="ChatScreen"
           component={ChatScreen}
@@ -186,7 +195,7 @@ export const AppTabs = () => {
           }}
           name="Dashboard"
           component={DashboardScreen}
-        /> */}
+        />
       </Stack.Navigator>
     );
   } else {

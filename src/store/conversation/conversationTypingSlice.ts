@@ -33,9 +33,13 @@ const conversationTypingSlice = createSlice({
     },
     removeTypingUser: (state, action: PayloadAction<TypingUserPayload>) => {
       const { conversationId, user } = action.payload;
-      state.records[conversationId] = state.records[conversationId].filter(
-        record => record.id !== user.id || record.type !== user.type,
-      );
+      const records = state.records[conversationId] || [];
+      state.records = {
+        ...state.records,
+        [conversationId]: records.filter(
+          record => record.id !== user.id || record.type !== user.type,
+        ),
+      };
     },
   },
 });

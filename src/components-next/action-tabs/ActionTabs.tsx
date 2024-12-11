@@ -175,7 +175,7 @@ export const ActionTabs = () => {
       style={Platform.select({
         ios: [
           tailwind.style(
-            'flex flex-row rounded-[30px] items-center absolute justify-between w-[220px] px-6 py-[15px] bg-[#00000003]',
+            'flex flex-row rounded-[30px] items-center absolute justify-between w-[220px] px-6 py-[15px] bg-[#00000009]',
             `h-[${ACTION_TAB_HEIGHT}px] bottom-[${bottom + 8}px] left-[${
               (SCREEN_WIDTH - 220) / 2
             }px]`,

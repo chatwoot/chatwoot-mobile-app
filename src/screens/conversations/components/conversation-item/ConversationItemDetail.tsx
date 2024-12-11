@@ -19,6 +19,7 @@ import { LabelIndicator } from './LabelIndicator';
 import { LastActivityTime } from './LastActivityTime';
 import { SLA } from '@/types/common/SLA';
 import { Inbox } from '@/types/Inbox';
+import { TypingMessage } from './TypingMessage';
 
 const { width } = Dimensions.get('screen');
 
@@ -41,6 +42,7 @@ type ConversationDetailSubCellProps = Pick<
     | {};
   additionalAttributes?: ConversationAdditionalAttributes;
   allLabels: Label[];
+  typingText?: string;
 };
 
 const checkIfPropsAreSame = (
@@ -67,6 +69,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
     appliedSlaConversationDetails,
     additionalAttributes,
     allLabels,
+    typingText,
   } = props;
 
   const [shouldShowSLA, setShouldShowSLA] = useState(true);
@@ -110,7 +113,12 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
         <AnimatedNativeView style={tailwind.style('flex flex-col items-center gap-1')}>
           <AnimatedNativeView
             style={tailwind.style('flex flex-row w-full justify-between items-center gap-2')}>
-            <ConversationLastMessage numberOfLines={1} lastMessage={lastMessage as Message} />
+            {typingText ? (
+              <TypingMessage typingText={typingText} />
+            ) : (
+              <ConversationLastMessage numberOfLines={1} lastMessage={lastMessage as Message} />
+            )}
+
             {unreadCount >= 1 && (
               <NativeView style={tailwind.style('flex-shrink-0')}>
                 <UnreadIndicator count={unreadCount} />
@@ -153,7 +161,12 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
         </AnimatedNativeView>
       ) : (
         <AnimatedNativeView style={tailwind.style('flex flex-row items-end gap-2')}>
-          <ConversationLastMessage numberOfLines={2} lastMessage={lastMessage as Message} />
+          {typingText ? (
+            <TypingMessage typingText={typingText} />
+          ) : (
+            <ConversationLastMessage numberOfLines={2} lastMessage={lastMessage as Message} />
+          )}
+
           <AnimatedNativeView style={tailwind.style('flex flex-row items-end gap-1')}>
             {assignee ? (
               <NativeView style={tailwind.style(unreadCount >= 1 ? 'pr-1' : '')}>

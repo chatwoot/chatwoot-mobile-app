@@ -284,3 +284,7 @@ export const MEDIA_TYPES = [
   ATTACHMENT_TYPES.AUDIO,
   ATTACHMENT_TYPES.IG_REEL,
 ];
+
+export const CONTENT_TYPES = {
+  INCOMING_EMAIL: 'incoming_email',
+};

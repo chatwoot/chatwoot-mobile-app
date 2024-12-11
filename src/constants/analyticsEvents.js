@@ -5,6 +5,7 @@ export const CONVERSATION_EVENTS = Object.freeze({
   SELECTED_ATTACHMENT: 'Select an attachment',
   USED_MENTIONS: 'Used mentions',
   ASSIGNEE_CHANGED: 'Conversation assignee changed',
+  TEAM_CHANGED: 'Conversation team changed',
   RESOLVE_CONVERSATION_STATUS: 'Conversation resolved',
   TOGGLE_STATUS: 'Changed conversation status',
   MUTE_CONVERSATION: 'Conversation muted',
@@ -19,6 +20,8 @@ export const CONVERSATION_EVENTS = Object.freeze({
   MARK_AS_READ: 'Mark as read',
   ENABLE_PUSH_NOTIFICATION: 'Enabled push notification',
   CONVERSATION_SHARE: 'Shared conversation url',
+  PRIORITY_CHANGED: 'Changed conversation priority',
+  PARTICIPANT_CHANGED: 'Changed conversation participant',
 });
 
 export const ACCOUNT_EVENTS = Object.freeze({

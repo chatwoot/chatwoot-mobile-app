@@ -17,6 +17,7 @@ import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import i18n from '@/i18n';
 import { showToast } from '@/helpers/ToastHelper';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { conversationActions } from '@/store/conversation/conversationActions';
 
 type InboxItemContainerProps = {
   item: Notification;
@@ -60,11 +61,12 @@ export const InboxItemContainer = (props: InboxItemContainerProps) => {
   const inboxId = item.primaryActor?.inboxId;
   const isRead = !!item.readAt;
 
-  const onPressAction = () => {
+  const onPressAction = async () => {
     markNotificationAsRead({
       shouldShowToast: false,
     });
     if (item.primaryActor?.id) {
+      await dispatch(conversationActions.fetchConversation(item.primaryActor?.id));
       const pushToChatScreen = StackActions.push('ChatScreen', {
         conversationId: item.primaryActor?.id,
         isConversationOpenedExternally: false,

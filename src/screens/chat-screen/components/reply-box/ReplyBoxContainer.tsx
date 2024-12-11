@@ -15,15 +15,13 @@ import { useChatWindowContext, useRefsContext } from '@/context';
 import {
   useHaptic,
   isAWhatsAppChannel,
-  is360DialogWhatsAppChannel,
-  isATwilioWhatsAppChannel,
-  isAWhatsAppCloudChannel,
   isAnEmailChannel,
   isASmsInbox,
   isAFacebookInbox,
   isALineChannel,
   isATelegramChannel,
   isAWebWidgetInbox,
+  isAPIInbox,
 } from '@/utils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { MESSAGE_MAX_LENGTH, REPLY_EDITOR_MODES } from '@/constants';
@@ -155,11 +153,6 @@ const BottomSheetContent = () => {
   };
 
   // TODO: Implement this
-  const sendMessageAsMultipleMessages = (message: string) => {
-    console.log('sendMessageAsMultipleMessages', message);
-  };
-
-  // TODO: Implement this
   const setReplyToInPayload = (messagePayload: any) => {
     //     ...(quoteMessage?.id && {
     //       contentAttributes: { inReplyTo: quoteMessage.id },
@@ -227,10 +220,10 @@ const BottomSheetContent = () => {
       (textInputRef.current as TextInput).clear();
     }
 
-    const isOnWhatsApp =
-      isATwilioWhatsAppChannel(inbox) ||
-      isAWhatsAppCloudChannel(inbox) ||
-      is360DialogWhatsAppChannel(inbox?.channelType);
+    // const isOnWhatsApp =
+    //   isATwilioWhatsAppChannel(inbox) ||
+    //   isAWhatsAppCloudChannel(inbox) ||
+    //   is360DialogWhatsAppChannel(inbox?.channelType);
 
     AnalyticsHelper.track(CONVERSATION_EVENTS.SENT_MESSAGE);
 
@@ -244,12 +237,16 @@ const BottomSheetContent = () => {
       const undefinedVariablesText = undefinedVariables.join(', ');
       const undefinedVariablesMessage = `You have ${undefinedVariablesCount} undefined variable(s) in your message: ${undefinedVariablesText}. Please check and try again with valid variables.`;
       Alert.alert(undefinedVariablesMessage);
-    } else if (isOnWhatsApp && !isPrivate) {
-      sendMessageAsMultipleMessages(messageContent);
     } else {
       const messagePayload = getMessagePayload(messageContent);
       sendMessage(messagePayload);
     }
+    // TODO: Implement this once we have add the support for multiple attachments
+    // https://github.com/chatwoot/chatwoot/pull/6125
+    // https://github.com/chatwoot/chatwoot/pull/6428
+    // if (isOnWhatsApp && !isPrivate) {
+    // sendMessageAsMultipleMessages(messageContent);
+    // }
   };
 
   const sendMessage = (messagePayload: SendMessagePayload) => {
@@ -267,7 +264,8 @@ const BottomSheetContent = () => {
     inbox &&
     (isAWebWidgetInbox(inbox) ||
       isAFacebookInbox(inbox) ||
-      isATwilioWhatsAppChannel(inbox) ||
+      isAWhatsAppChannel(inbox) ||
+      isAPIInbox(inbox) ||
       isASmsInbox(inbox) ||
       isAnEmailChannel(inbox) ||
       isATelegramChannel(inbox) ||
@@ -302,6 +300,8 @@ const BottomSheetContent = () => {
   };
 
   const shouldShowCannedResponses = messageContent?.charAt(0) === '/';
+
+  console.log('shouldShowFileUpload', shouldShowFileUpload);
 
   return (
     <Animated.View layout={LinearTransition.springify().damping(38).stiffness(240)}>

@@ -11,7 +11,7 @@ import {
   REGISTER,
 } from 'redux-persist';
 import { appReducer } from '@/store/reducers';
-import { setStore } from '@/reducer/storeAccessor';
+import { setStore } from './storeAccessor';
 import { contactListenerMiddleware } from './contact/contactListener';
 
 // Disable this in testing environment

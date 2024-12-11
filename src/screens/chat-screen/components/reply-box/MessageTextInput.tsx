@@ -1,16 +1,22 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   NativeSyntheticEvent,
   Platform,
   Pressable,
-  TextInput,
   TextInputFocusEventData,
+  StyleSheet,
+  ScrollView,
 } from 'react-native';
 import Animated, {
   LayoutAnimationConfig,
   LinearTransition,
   useAnimatedStyle,
 } from 'react-native-reanimated';
+import {
+  MentionInput,
+  MentionSuggestionsProps,
+  Suggestion,
+} from 'react-native-controlled-mentions';
 import Svg, { Path, Rect } from 'react-native-svg';
 
 import { useChatWindowContext } from '@/context';
@@ -28,14 +34,16 @@ import { REPLY_EDITOR_MODES } from '@/constants';
 import i18n from '@/i18n';
 import { createTypingIndicator } from '@chatwoot/utils';
 import { conversationActions } from '@/store/conversation/conversationActions';
-
-const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
+import { MentionUser } from './MentionUser';
+import { Agent } from '@/types';
 
 type MessageTextInputProps = {
   maxLength: number;
   replyEditorMode: string;
   selectedCannedResponse?: string | null;
+  agents: Agent[];
 };
+type AgentSuggestion = Omit<Agent, 'id'> & Suggestion;
 
 const Unlock = () => {
   return (
@@ -74,6 +82,7 @@ export const MessageTextInput = ({
   maxLength,
   replyEditorMode,
   selectedCannedResponse,
+  agents,
 }: MessageTextInputProps) => {
   const dispatch = useAppDispatch();
   const messageContent = useAppSelector(selectMessageContent);
@@ -170,16 +179,62 @@ export const MessageTextInput = ({
     }
   };
 
+  const renderSuggestions: (suggestions: Agent[]) => FC<MentionSuggestionsProps> =
+    suggestions =>
+    // eslint-disable-next-line react/display-name
+    ({ keyword, onSuggestionPress }) => {
+      if (keyword == null || !isPrivateMessage) {
+        return null;
+      }
+      return (
+        <Animated.View
+          style={[
+            tailwind.style('absolute bottom-full rounded-[13px] mx-4 px-2 bg-white w-full'),
+            styles.listShadow,
+          ]}>
+          <ScrollView keyboardShouldPersistTaps="always">
+            {suggestions
+              .filter(one => one.name?.toLocaleLowerCase().includes(keyword.toLocaleLowerCase()))
+              .map(agent => {
+                const agentSuggestion: AgentSuggestion = {
+                  ...agent,
+                  id: String(agent.id),
+                  name: agent.name || '',
+                };
+                return (
+                  <MentionUser
+                    key={agent.id}
+                    agent={agent}
+                    lastItem={false}
+                    onPress={() => onSuggestionPress(agentSuggestion)}
+                  />
+                );
+              })}
+          </ScrollView>
+        </Animated.View>
+      );
+    };
+  const renderMentionSuggestions = renderSuggestions(agents);
+
   return (
     <LayoutAnimationConfig skipEntering={true}>
       <Animated.View
         layout={LinearTransition.springify().damping(20).stiffness(120)}
         style={[tailwind.style('flex-1 my-0.5')]}>
-        <AnimatedTextInput
+        <MentionInput
           // @ts-ignore
           ref={textInputRef}
           layout={LinearTransition.springify().damping(20).stiffness(120)}
-          onChangeText={onChangeText}
+          onChange={onChangeText}
+          partTypes={[
+            {
+              trigger: '@',
+              renderSuggestions: renderMentionSuggestions,
+              textStyle: tailwind.style('font-bold text-blue-600'),
+              allowedSpacesCount: 0,
+              isInsertSpaceAfterMention: true,
+            },
+          ]}
           numberOfLines={3}
           multiline
           enablesReturnKeyAutomatically
@@ -225,3 +280,15 @@ export const MessageTextInput = ({
     </LayoutAnimationConfig>
   );
 };
+
+const styles = StyleSheet.create({
+  listShadow: {
+    // box-shadow: 0px 0.15000000596046448px 2px 0px #00000040;
+    // box-shadow: [horizontal offset] [vertical offset] [blur radius] [optional spread radius] [color];
+    shadowColor: '#00000040',
+    shadowOffset: { width: 0, height: 0.15 },
+    shadowRadius: 2,
+    shadowOpacity: 0.35,
+    elevation: 2,
+  },
+});

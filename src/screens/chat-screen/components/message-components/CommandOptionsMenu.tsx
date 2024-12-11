@@ -12,6 +12,10 @@ import { AttachFileIcon, CameraIcon, PhotosIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '@/components-next/common';
+import { MAXIMUM_FILE_UPLOAD_SIZE } from '@/constants';
+import i18n from '@/i18n';
+import { showToast } from '@/helpers/ToastHelper';
+import { findFileSize } from '@/helpers/FileHelper';
 
 export const handleOpenPhotosLibrary = async dispatch => {
   if (Platform.OS === 'ios') {
@@ -51,7 +55,7 @@ export const handleOpenPhotosLibrary = async dispatch => {
         } else if (pickedAssets.errorCode) {
         } else {
           if (pickedAssets.assets && pickedAssets.assets?.length > 0) {
-            dispatch(updateAttachments(pickedAssets.assets));
+            validateFileAndSetAttachments(dispatch, pickedAssets.assets);
           }
         }
       }
@@ -89,7 +93,7 @@ export const handleOpenPhotosLibrary = async dispatch => {
         } else if (pickedAssets.errorCode) {
         } else {
           if (pickedAssets.assets && pickedAssets.assets?.length > 0) {
-            dispatch(updateAttachments(pickedAssets.assets));
+            validateFileAndSetAttachments(dispatch, pickedAssets.assets);
           }
         }
       }
@@ -129,7 +133,7 @@ const handleLaunchCamera = async dispatch => {
         } else if (imageResult.errorCode) {
         } else {
           if (imageResult.assets && imageResult.assets?.length > 0) {
-            dispatch(updateAttachments(imageResult.assets));
+            validateFileAndSetAttachments(dispatch, imageResult.assets);
           }
         }
       }
@@ -176,7 +180,7 @@ const handleAttachFile = async dispatch => {
       ], // You can specify the file types you want to allow
       presentationStyle: 'formSheet',
     });
-    dispatch(updateAttachments(mapObject(result[0])));
+    validateFileAndSetAttachments(dispatch, mapObject(result[0]));
   } catch (err) {
     if (DocumentPicker.isCancel(err)) {
       // User cancelled the picker
@@ -203,6 +207,15 @@ const ADD_MENU_OPTIONS = [
     handlePress: handleAttachFile,
   },
 ];
+
+export const validateFileAndSetAttachments = async (dispatch, attachment) => {
+  const { fileSize } = attachment;
+  if (findFileSize(fileSize) <= MAXIMUM_FILE_UPLOAD_SIZE) {
+    dispatch(updateAttachments(attachment));
+  } else {
+    showToast({ message: i18n.t('CONVERSATION.FILE_SIZE_LIMIT') });
+  }
+};
 
 type MenuOptionProps = {
   index: number;

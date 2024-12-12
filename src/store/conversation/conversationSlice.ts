@@ -14,14 +14,12 @@ export interface ConversationState {
     allCount: number;
   };
   error: string | null;
-  uiFlags: {
-    isLoadingConversations: boolean;
-    isLoadingMessages: boolean;
-    isAllConversationsFetched: boolean;
-    isAllMessagesFetched: boolean;
-    isConversationFetching: boolean;
-    isChangingConversationStatus: boolean;
-  };
+  isLoadingConversations: boolean;
+  isLoadingMessages: boolean;
+  isAllConversationsFetched: boolean;
+  isAllMessagesFetched: boolean;
+  isConversationFetching: boolean;
+  isChangingConversationStatus: boolean;
 }
 
 export const conversationAdapter = createEntityAdapter<Conversation>({
@@ -35,14 +33,12 @@ const initialState = conversationAdapter.getInitialState<ConversationState>({
     allCount: 0,
   },
   error: null,
-  uiFlags: {
-    isLoadingConversations: false,
-    isAllConversationsFetched: false,
-    isLoadingMessages: false,
-    isAllMessagesFetched: false,
-    isConversationFetching: false,
-    isChangingConversationStatus: false,
-  },
+  isLoadingConversations: false,
+  isAllConversationsFetched: false,
+  isLoadingMessages: false,
+  isAllMessagesFetched: false,
+  isConversationFetching: false,
+  isChangingConversationStatus: false,
 });
 
 const conversationSlice = createSlice({
@@ -109,32 +105,32 @@ const conversationSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(conversationActions.fetchConversations.pending, state => {
-        state.uiFlags.isLoadingConversations = true;
+        state.isLoadingConversations = true;
       })
       .addCase(conversationActions.fetchConversations.fulfilled, (state, { payload }) => {
         const { conversations, meta } = payload;
         conversationAdapter.upsertMany(state, conversations);
-        state.uiFlags.isLoadingConversations = false;
-        state.uiFlags.isAllConversationsFetched = conversations.length < 20 || false;
+        state.isLoadingConversations = false;
+        state.isAllConversationsFetched = conversations.length < 20 || false;
         state.meta = meta;
       })
       .addCase(conversationActions.fetchConversations.rejected, (state, { error }) => {
-        state.uiFlags.isLoadingConversations = false;
+        state.isLoadingConversations = false;
       })
       .addCase(conversationActions.fetchConversation.pending, state => {
-        state.uiFlags.isConversationFetching = true;
+        state.isConversationFetching = true;
       })
       .addCase(conversationActions.fetchConversation.fulfilled, (state, { payload }) => {
         const { conversation } = payload;
         conversationAdapter.upsertOne(state, conversation);
-        state.uiFlags.isConversationFetching = false;
-        state.uiFlags.isAllMessagesFetched = false;
+        state.isConversationFetching = false;
+        state.isAllMessagesFetched = false;
       })
       .addCase(conversationActions.fetchConversation.rejected, state => {
-        state.uiFlags.isConversationFetching = false;
+        state.isConversationFetching = false;
       })
       .addCase(conversationActions.fetchPreviousMessages.pending, state => {
-        state.uiFlags.isLoadingMessages = true;
+        state.isLoadingMessages = true;
       })
       .addCase(conversationActions.fetchPreviousMessages.fulfilled, (state, { payload }) => {
         const { messages, conversationId, meta } = payload;
@@ -147,14 +143,14 @@ const conversationSlice = createSlice({
           ...conversation.meta,
           ...meta,
         };
-        state.uiFlags.isLoadingMessages = false;
-        state.uiFlags.isAllMessagesFetched = messages.length < 20 || false;
+        state.isLoadingMessages = false;
+        state.isAllMessagesFetched = messages.length < 20 || false;
       })
       .addCase(conversationActions.fetchPreviousMessages.rejected, state => {
-        state.uiFlags.isLoadingMessages = false;
+        state.isLoadingMessages = false;
       })
       .addCase(conversationActions.toggleConversationStatus.pending, (state, action) => {
-        state.uiFlags.isChangingConversationStatus = true;
+        state.isChangingConversationStatus = true;
       })
       .addCase(conversationActions.toggleConversationStatus.fulfilled, (state, { payload }) => {
         const { conversationId, currentStatus, snoozedUntil } = payload;
@@ -164,10 +160,10 @@ const conversationSlice = createSlice({
         }
         conversation.status = currentStatus;
         conversation.snoozedUntil = snoozedUntil;
-        state.uiFlags.isChangingConversationStatus = false;
+        state.isChangingConversationStatus = false;
       })
       .addCase(conversationActions.toggleConversationStatus.rejected, state => {
-        state.uiFlags.isChangingConversationStatus = false;
+        state.isChangingConversationStatus = false;
       })
       .addCase(conversationActions.muteConversation.fulfilled, (state, action) => {
         const { conversationId } = action.payload;

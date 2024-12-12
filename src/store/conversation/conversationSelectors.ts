@@ -17,22 +17,22 @@ export const {
 
 export const selectConversationsLoading = createSelector(
   selectConversationsState,
-  state => state.uiFlags.isLoadingConversations,
+  state => state.isLoadingConversations,
 );
 
 export const selectIsAllConversationsFetched = createSelector(
   selectConversationsState,
-  state => state.uiFlags.isAllConversationsFetched,
+  state => state.isAllConversationsFetched,
 );
 
 export const selectIsAllMessagesFetched = createSelector(
   selectConversationsState,
-  state => state.uiFlags.isAllMessagesFetched,
+  state => state.isAllMessagesFetched,
 );
 
 export const selectIsLoadingMessages = createSelector(
   selectConversationsState,
-  state => state.uiFlags.isLoadingMessages,
+  state => state.isLoadingMessages,
 );
 
 export const getFilteredConversations = createDraftSafeSelector(

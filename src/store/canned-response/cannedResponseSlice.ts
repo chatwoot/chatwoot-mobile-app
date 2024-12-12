@@ -8,15 +8,11 @@ export const cannedResponseAdapter = createEntityAdapter<CannedResponse>({
 });
 
 export interface CannedResponseState {
-  uiFlags: {
-    isLoading: boolean;
-  };
+  isLoading: boolean;
 }
 
 const initialState = cannedResponseAdapter.getInitialState<CannedResponseState>({
-  uiFlags: {
-    isLoading: false,
-  },
+  isLoading: false,
 });
 
 const cannedResponseSlice = createSlice({
@@ -26,15 +22,15 @@ const cannedResponseSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(cannedResponseActions.index.pending, state => {
-        state.uiFlags.isLoading = true;
+        state.isLoading = true;
       })
       .addCase(cannedResponseActions.index.fulfilled, (state, action) => {
         const { payload: cannedResponses } = action.payload;
         cannedResponseAdapter.setAll(state, cannedResponses);
-        state.uiFlags.isLoading = false;
+        state.isLoading = false;
       })
       .addCase(cannedResponseActions.index.rejected, state => {
-        state.uiFlags.isLoading = false;
+        state.isLoading = false;
       });
   },
 });

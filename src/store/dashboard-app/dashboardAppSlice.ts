@@ -8,15 +8,11 @@ export const dashboardAppAdapter = createEntityAdapter<DashboardApp>({
 });
 
 export interface DashboardAppState {
-  uiFlags: {
-    isLoading: boolean;
-  };
+  isLoading: boolean;
 }
 
 const initialState = dashboardAppAdapter.getInitialState<DashboardAppState>({
-  uiFlags: {
-    isLoading: false,
-  },
+  isLoading: false,
 });
 
 const dashboardAppSlice = createSlice({
@@ -26,15 +22,15 @@ const dashboardAppSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(dashboardAppActions.index.pending, state => {
-        state.uiFlags.isLoading = true;
+        state.isLoading = true;
       })
       .addCase(dashboardAppActions.index.fulfilled, (state, action) => {
         const { payload: dashboardApps } = action.payload;
         dashboardAppAdapter.setAll(state, dashboardApps);
-        state.uiFlags.isLoading = false;
+        state.isLoading = false;
       })
       .addCase(dashboardAppActions.index.rejected, state => {
-        state.uiFlags.isLoading = false;
+        state.isLoading = false;
       });
   },
 });

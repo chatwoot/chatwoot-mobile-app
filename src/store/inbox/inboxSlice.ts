@@ -7,15 +7,11 @@ export const inboxAdapter = createEntityAdapter<Inbox>({
 });
 
 export interface InboxState {
-  uiFlags: {
-    isLoading: boolean;
-  };
+  isLoading: boolean;
 }
 
 const initialState = inboxAdapter.getInitialState<InboxState>({
-  uiFlags: {
-    isLoading: false,
-  },
+  isLoading: false,
 });
 
 const inboxSlice = createSlice({
@@ -25,15 +21,15 @@ const inboxSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(inboxActions.fetchInboxes.pending, state => {
-        state.uiFlags.isLoading = true;
+        state.isLoading = true;
       })
       .addCase(inboxActions.fetchInboxes.fulfilled, (state, action) => {
         const { payload: inboxes } = action.payload;
         inboxAdapter.setAll(state, inboxes);
-        state.uiFlags.isLoading = false;
+        state.isLoading = false;
       })
       .addCase(inboxActions.fetchInboxes.rejected, (state, { error }) => {
-        state.uiFlags.isLoading = false;
+        state.isLoading = false;
       });
   },
 });

@@ -5,9 +5,7 @@ describe('inbox reducer', () => {
     expect(reducer(undefined, { type: undefined })).toEqual({
       ids: [],
       entities: {},
-      uiFlags: {
-        isLoading: false,
-      },
+      isLoading: false,
     });
   });
 });

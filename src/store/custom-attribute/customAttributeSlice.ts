@@ -8,15 +8,11 @@ export const customAttributeAdapter = createEntityAdapter<CustomAttribute>({
 });
 
 export interface CustomAttributeState {
-  uiFlags: {
-    isLoading: boolean;
-  };
+  isLoading: boolean;
 }
 
 const initialState = customAttributeAdapter.getInitialState<CustomAttributeState>({
-  uiFlags: {
-    isLoading: false,
-  },
+  isLoading: false,
 });
 
 const customAttributeSlice = createSlice({
@@ -26,15 +22,15 @@ const customAttributeSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(customAttributeActions.index.pending, state => {
-        state.uiFlags.isLoading = true;
+        state.isLoading = true;
       })
       .addCase(customAttributeActions.index.fulfilled, (state, action) => {
         const { payload: customAttributes } = action.payload;
         customAttributeAdapter.setAll(state, customAttributes);
-        state.uiFlags.isLoading = false;
+        state.isLoading = false;
       })
       .addCase(customAttributeActions.index.rejected, state => {
-        state.uiFlags.isLoading = false;
+        state.isLoading = false;
       });
   },
 });

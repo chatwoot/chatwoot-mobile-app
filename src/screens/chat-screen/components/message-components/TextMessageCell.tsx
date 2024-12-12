@@ -56,7 +56,7 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
           !shouldRenderAvatar && isOutgoing ? 'pr-10' : '',
           !shouldRenderAvatar && isTemplate ? 'pr-10' : '',
           shouldRenderAvatar ? 'mb-1' : '',
-          messageItem.private ? 'my-6' : '',
+          messageItem.private ? 'my-2' : '',
         ),
       ]}>
       <Animated.View style={tailwind.style('flex flex-row')}>

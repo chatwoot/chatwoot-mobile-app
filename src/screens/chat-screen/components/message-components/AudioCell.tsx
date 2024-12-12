@@ -252,7 +252,7 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
                 messageType={messageType}
                 channel={channel}
                 sourceId={sourceId}
-                errorMessage={errorMessage}
+                errorMessage={errorMessage || ''}
                 deliveredColor="text-gray-700"
                 sentColor="text-gray-700"
               />

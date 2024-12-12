@@ -20,8 +20,9 @@ const audioPlayerSlice = createSlice({
 });
 
 // Selector
-export const selectCurrentPlayingAudioSrc = (state: RootState) =>
-  state.audioPlayer.currentPlayingAudioSrc;
+export const selectCurrentPlayingAudioSrc = (state: RootState) => {
+  return state.audioPlayer?.currentPlayingAudioSrc;
+};
 
 // Actions
 export const { setCurrentPlayingAudioSrc } = audioPlayerSlice.actions;

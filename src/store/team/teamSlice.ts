@@ -7,15 +7,11 @@ export const teamAdapter = createEntityAdapter<Team>({
 });
 
 interface TeamState {
-  uiFlags: {
-    isLoading: boolean;
-  };
+  isLoading: boolean;
 }
 
 const initialState = teamAdapter.getInitialState<TeamState>({
-  uiFlags: {
-    isLoading: false,
-  },
+  isLoading: false,
 });
 
 const teamSlice = createSlice({
@@ -25,15 +21,15 @@ const teamSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(teamActions.fetchTeams.pending, state => {
-        state.uiFlags.isLoading = true;
+        state.isLoading = true;
       })
       .addCase(teamActions.fetchTeams.fulfilled, (state, action) => {
-        state.uiFlags.isLoading = false;
+        state.isLoading = false;
         const { payload: teams } = action;
         teamAdapter.setAll(state, teams);
       })
       .addCase(teamActions.fetchTeams.rejected, (state, action) => {
-        state.uiFlags.isLoading = false;
+        state.isLoading = false;
       });
   },
 });

@@ -7,15 +7,11 @@ export const labelAdapter = createEntityAdapter<Label>({
 });
 
 export interface LabelState {
-  uiFlags: {
-    isLoading: boolean;
-  };
+  isLoading: boolean;
 }
 
 const initialState = labelAdapter.getInitialState<LabelState>({
-  uiFlags: {
-    isLoading: false,
-  },
+  isLoading: false,
 });
 
 const labelSlice = createSlice({
@@ -25,15 +21,15 @@ const labelSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(labelActions.fetchLabels.pending, state => {
-        state.uiFlags.isLoading = true;
+        state.isLoading = true;
       })
       .addCase(labelActions.fetchLabels.fulfilled, (state, action) => {
         const { payload: labels } = action.payload;
         labelAdapter.setAll(state, labels);
-        state.uiFlags.isLoading = false;
+        state.isLoading = false;
       })
       .addCase(labelActions.fetchLabels.rejected, (state, { error }) => {
-        state.uiFlags.isLoading = false;
+        state.isLoading = false;
       });
   },
 });

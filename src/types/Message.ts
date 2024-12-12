@@ -57,8 +57,8 @@ export type MessageContentAttributes = {
       full: string;
     };
   };
-  ccEmail?: string[];
-  bccEmail?: string[];
+  ccEmails?: string[];
+  bccEmails?: string[];
   externalError: string;
   imageType: string;
   contentType: ContentType;

@@ -18,11 +18,11 @@ export const EmailMeta = (props: EmailMetaProps) => {
 
   const toEmail = contentAttributes?.email?.to ?? [];
 
-  const ccEmail = contentAttributes?.ccEmail ?? contentAttributes?.email?.cc ?? [];
+  const ccEmail = contentAttributes?.ccEmails ?? contentAttributes?.email?.cc ?? [];
 
-  const bccEmail = contentAttributes?.bccEmail ?? contentAttributes?.email?.bcc ?? [];
+  const bccEmail = contentAttributes?.bccEmails ?? contentAttributes?.email?.bcc ?? [];
 
-  const senderName = sender?.name ?? fromEmail[0];
+  const senderName = sender?.name ?? '';
 
   const subject = contentAttributes?.email?.subject ?? '';
 

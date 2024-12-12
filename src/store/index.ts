@@ -32,7 +32,6 @@ const persistConfig = {
       const initialState = appReducer(undefined, { type: 'INIT' });
       return {
         ...initialState,
-        settings: state?.settings,
       };
     }
     return state;

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import {
   NativeSyntheticEvent,
   Platform,
@@ -42,6 +42,7 @@ type MessageTextInputProps = {
   replyEditorMode: string;
   selectedCannedResponse?: string | null;
   agents: Agent[];
+  messageContent: string;
 };
 type AgentSuggestion = Omit<Agent, 'id'> & Suggestion;
 
@@ -86,7 +87,6 @@ export const MessageTextInput = ({
 }: MessageTextInputProps) => {
   const dispatch = useAppDispatch();
   const messageContent = useAppSelector(selectMessageContent);
-  const [messageText, setMessageText] = useState(messageContent);
 
   const lockIconAnimatedPosition = useAnimatedStyle(() => {
     return {
@@ -136,7 +136,6 @@ export const MessageTextInput = ({
   }, [typingIndicator]);
 
   const onChangeText = (text: string) => {
-    setMessageText(text);
     startTyping();
     dispatch(setMessageContent(text));
   };
@@ -255,7 +254,7 @@ export const MessageTextInput = ({
               : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`
           }
           onSubmitEditing={() => setMessageContent('')}
-          value={messageText}
+          value={messageContent}
           returnKeyType={'default'}
           textAlignVertical="top"
           underlineColorAndroid="transparent"

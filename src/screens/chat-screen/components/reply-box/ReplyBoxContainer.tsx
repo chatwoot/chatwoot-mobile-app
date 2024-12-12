@@ -395,6 +395,7 @@ const BottomSheetContent = () => {
               replyEditorMode={replyEditorMode}
               selectedCannedResponse={selectedCannedResponse}
               agents={agents as Agent[]}
+              messageContent={messageContent}
             />
             {(messageContent.length > 0 || attachmentsLength > 0) && (
               <SendMessageButton onPress={confirmOnSendReply} />

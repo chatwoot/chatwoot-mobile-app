@@ -13,6 +13,9 @@ export const checkShouldShowServerUpgradeWarning = ({ installedVersion, minimumV
 
 const minimumVersion = process.env.EXPO_PUBLIC_MINIMUM_CHATWOOT_VERSION;
 export function checkServerSupport({ installedVersion, userRole }) {
+  if (!minimumVersion || !installedVersion) {
+    return;
+  }
   const shouldShowServerUpgradeWarning = semver.lt(installedVersion, minimumVersion);
   if (shouldShowServerUpgradeWarning) {
     if (userRole === 'administrator') {

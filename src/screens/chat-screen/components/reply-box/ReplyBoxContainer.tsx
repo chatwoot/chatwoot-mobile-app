@@ -207,18 +207,18 @@ const BottomSheetContent = () => {
   };
 
   const getMessagePayload = (message: string) => {
-    // TODO: Update mentions if the message is private
-    // if (isPrivate) {
-    //   const regex = /@\[([\w\s]+)\]\((\d+)\)/g;
-    //   updatedMessage = message.replace(
-    //     regex,
-    //     '[@$1](mention://user/$2/' + encodeURIComponent('$1') + ')',
-    //   );
-    // }
+    let updatedMessage = message;
+    if (isPrivate) {
+      const regex = /@\[([\w\s]+)\]\((\d+)\)/g;
+      updatedMessage = message.replace(
+        regex,
+        '[@$1](mention://user/$2/' + encodeURIComponent('$1') + ')',
+      );
+    }
 
     let messagePayload = {
       conversationId,
-      message,
+      message: updatedMessage,
       private: isPrivate,
       sender: {
         id: userId ?? 0,

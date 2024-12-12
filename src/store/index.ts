@@ -19,10 +19,24 @@ const shouldLoadDebugger = __DEV__ && !process.env.JEST_WORKER_ID;
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const reactotronInstance = shouldLoadDebugger ? require('../../ReactotronConfig').default : null;
 
+const CURRENT_VERSION = 2;
+
 const persistConfig = {
   key: 'Root',
-  version: 1,
+  version: CURRENT_VERSION,
   storage: AsyncStorage,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  migrate: async (state: any) => {
+    // If the stored version is older or doesn't exist, return initial state
+    if (!state?._persist?.version || state._persist.version < CURRENT_VERSION) {
+      const initialState = appReducer(undefined, { type: 'INIT' });
+      return {
+        ...initialState,
+        settings: state?.settings,
+      };
+    }
+    return state;
+  },
 };
 
 const middlewares: Middleware[] = [contactListenerMiddleware.middleware];

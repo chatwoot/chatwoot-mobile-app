@@ -38,14 +38,17 @@ export const selectAssignableAgentsByInboxId = createSelector(
 );
 
 export const selectAssignableParticipantsByInboxId = createSelector(
-  [
-    selectAssignableAgents,
-    (_state: RootState, inboxIds: number | number[]) =>
-      Array.isArray(inboxIds) ? inboxIds : [inboxIds],
-    (_state: RootState, _inboxIds: number | number[], searchTerm: string) => searchTerm,
-  ],
-  (state, inboxIds, searchTerm) => {
-    const agents = inboxIds.flatMap(id => state[id] || []);
-    return searchTerm ? agents.filter(agent => agent?.name?.includes(searchTerm)) : agents;
+  [selectAssignableAgents],
+  state => {
+    // Create a memoized function that we can reuse
+    return (inboxIds: number | number[], searchTerm: string = '') => {
+      const normalizedInboxIds = Array.isArray(inboxIds) ? inboxIds : [inboxIds];
+      const agents = normalizedInboxIds.flatMap(id => state[id] || []);
+
+      if (!searchTerm) {
+        return agents;
+      }
+      return agents.filter(agent => agent?.name?.toLowerCase().includes(searchTerm.toLowerCase()));
+    };
   },
 );

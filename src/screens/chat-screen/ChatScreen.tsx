@@ -20,6 +20,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { notificationActions } from '@/store/notification/notificationAction';
 import { MarkAsReadPayload } from '@/store/notification/notificationTypes';
 import { PrimaryActorType } from '@/types/Notification';
+import { assignableAgentActions } from '@/store/assignable-agent/assignableAgentActions';
 
 export const ChatWindow = (props: ChatScreenProps) => {
   return (
@@ -54,10 +55,20 @@ const ConversationPagerView = (props: ChatScreenProps) => {
 };
 
 const ChatScreenWrapper = (props: ChatScreenProps) => {
+  const dispatch = useAppDispatch();
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
 
   const { meta: { sender: { name = '', thumbnail = '' } = {} } = {} } = conversation || {};
+  const { inboxId } = conversation || {};
+
+  useEffect(() => {
+    const inboxIds = inboxId ? [inboxId] : [];
+    if (inboxIds.length > 0) {
+      dispatch(assignableAgentActions.fetchAgents({ inboxIds }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inboxId]);
 
   return (
     <React.Fragment>

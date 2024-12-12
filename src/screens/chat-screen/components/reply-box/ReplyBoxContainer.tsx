@@ -63,7 +63,6 @@ import {
 import { ReplyEmailHead } from './ReplyEmailHead';
 import { getLastEmailInSelectedChat } from '@/store/conversation/conversationSelectors';
 import { selectAssignableParticipantsByInboxId } from '@/store/assignable-agent/assignableAgentSelectors';
-import { assignableAgentActions } from '@/store/assignable-agent/assignableAgentActions';
 
 const SHEET_APPEAR_SPRING_CONFIG = {
   damping: 20,
@@ -103,9 +102,8 @@ const BottomSheetContent = () => {
   const { inboxId, canReply } = conversation || {};
   const inbox = useAppSelector(state => (inboxId ? selectInboxById(state, inboxId) : undefined));
 
-  const agents = useAppSelector(state =>
-    inboxId ? selectAssignableParticipantsByInboxId(state, inboxId, '') : [],
-  );
+  const selectAgents = useAppSelector(selectAssignableParticipantsByInboxId);
+  const agents = inboxId ? selectAgents(inboxId, '') : [];
 
   const [replyEditorMode, setReplyEditorMode] = useState(REPLY_EDITOR_MODES.REPLY);
   const [ccEmails, setCCEmails] = useState('');
@@ -123,12 +121,6 @@ const BottomSheetContent = () => {
   const lastEmail = useAppSelector(state =>
     shouldShowReplyHeader ? getLastEmailInSelectedChat(state, { conversationId }) : null,
   );
-
-  useEffect(() => {
-    const inboxIds = inboxId ? [inboxId] : [];
-    dispatch(assignableAgentActions.fetchAgents({ inboxIds }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     if (!lastEmail) return;

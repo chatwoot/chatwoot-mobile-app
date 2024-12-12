@@ -47,6 +47,7 @@ import { ConversationPayload } from '@/store/conversation/conversationTypes';
 import { clearAllConversations } from '@/store/conversation/conversationSlice';
 import { selectUserId } from '@/store/auth/authSelectors';
 import { clearAllContacts } from '@/store/contact/contactSlice';
+import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentSlice';
 
 import i18n from '@/i18n';
 import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
@@ -106,6 +107,7 @@ const ConversationList = () => {
     setPageNumber(1);
     await dispatch(clearAllConversations());
     await dispatch(clearAllContacts());
+    await dispatch(clearAssignableAgents());
     fetchConversations(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

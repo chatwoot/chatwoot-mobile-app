@@ -21,7 +21,11 @@ const initialState: AssignableAgentState = {
 const assignableAgentSlice = createSlice({
   name: 'assignableAgent',
   initialState,
-  reducers: {},
+  reducers: {
+    clearAssignableAgents: state => {
+      state.records = {};
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(assignableAgentActions.fetchAgents.pending, state => {
@@ -40,5 +44,7 @@ const assignableAgentSlice = createSlice({
       });
   },
 });
+
+export const { clearAssignableAgents } = assignableAgentSlice.actions;
 
 export default assignableAgentSlice.reducer;

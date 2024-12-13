@@ -22,8 +22,8 @@
     "ERROR": "Неправильный URL установки"
   },
   "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "TITLE": "Войти в свой аккаунт",
+    "DESCRIPTION": "Вы подключены к {{baseUrl}}.",
     "EMAIL": "Почта",
     "PASSWORD": "Пароль",
     "EMAIL_REQUIRED": "Необходимо указать Email",
@@ -31,7 +31,7 @@
     "PASSWORD_REQUIRED": "Необходимо указать пароль",
     "PASSWORD_ERROR": "Введите корректный пароль",
     "LOGIN": "Войти",
-    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_LOADING": "Выполняется вход...",
     "FORGOT_PASSWORD": "Забыли пароль?",
     "RESET_HERE": "Сбросить здесь",
     "NO_ACCOUNT": "Нет учетной записи?",
@@ -89,7 +89,7 @@
     "DELETE_MESSAGE_TITLE": "Вы действительно хотите удалить это сообщение?",
     "DELETE_MESSAGE_SUB_TITLE": "Это действие не может быть отменено.",
     "COPY_MESSAGE": "Сообщение скопировано в буфер обмена",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "STORY_NOT_AVAILABLE": "Эта история больше недоступна",
     "PRIORITY": {
       "TITLE": "Приоритет",
       "OPTIONS": {
@@ -127,7 +127,7 @@
   "SETTINGS": {
     "HEADER_TITLE": "Настройки",
     "SET_AVAILABILITY": "Установить себя",
-    "CHANGE_AVAILABILITY": "Set availability",
+    "CHANGE_AVAILABILITY": "Установить доступность",
     "PREFERENCES": "Настройки",
     "ABOUT": "О нас",
     "SUPPORT": "Поддержка",
@@ -135,11 +135,11 @@
     "CHANGE_LANGUAGE": "Изменить язык",
     "NOTIFICATIONS": "Уведомления",
     "NOTIFICATION_PREFERENCES": "Настройки уведомлений",
-    "READ_DOCS": "Read Docs",
+    "READ_DOCS": "Открыть документацию",
     "CHAT_WITH_US": "Пообщайтесь с нами",
     "LOGOUT": "Выход",
     "SUBMIT": "Отправить",
-    "SET_LANGUAGE": "Set Language"
+    "SET_LANGUAGE": "Установить язык"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Уведомления",
@@ -158,14 +158,14 @@
     "TITLE": "Настройки уведомлений",
     "EMAIL": "Email Уведомления",
     "PUSH": "Push уведомления",
-    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
-    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
+    "CONVERSATION_CREATE_PUSH": "Новый диалог создан",
+    "CONVERSATION_ASSIGNEE_PUSH": "Вам назначен диалог",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Вас упомянули в диалоге",
+    "CONVERSATION_MENTION": "Новое сообщение создано в назначенном диалоге",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Новое сообщение создано в участвующем диалоге",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "Разговор не соответствует SLA по первому ответу",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "Диалог не соответствует SLA по следующему ответу",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "Диалог не соответствует SLA по разрешению"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Информация о беседе",
@@ -225,7 +225,7 @@
   },
   "ERRORS": {
     "COMMON_ERROR": "Не удается соединиться с сервером Woot, попробуйте позже",
-    "OfFLINE": "Вы должны подключиться к Wi-Fi или сотовой сети, чтобы снова войти в Интернет",
+    "OfFLINE": "Вы должны подключиться к Wi-fi или сотовой сети, чтобы снова подключиться к сети",
     "CANNOT_FETCH": "При получении информации произошла ошибка. Повторите попытку",
     "AUTH": "Неверное имя пользователя / пароль. Пожалуйста, попробуйте еще раз",
     "NO_ACCOUNTS_MESSAGE": "У вас нет доступа ни к одной учетной записи chatwoot"
@@ -261,16 +261,16 @@
       "FRT": "FRT %{status}",
       "NRT": "NRT %{status}",
       "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "due"
+      "MISSED": "пропущенный",
+      "DUE": "до"
     },
     "MISSES": {
-      "TITLE": "SLA Misses",
+      "TITLE": "Пропуски SLA",
       "FRT": "Время первого ответа",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
+      "NRT": "Время первого ответа",
+      "RT": "Время разрешения",
+      "SHOW_MORE": "еще {count}",
+      "HIDE": "Скрыть {count} строк"
     }
   }
 }

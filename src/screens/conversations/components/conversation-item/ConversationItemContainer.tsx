@@ -97,7 +97,7 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
   const selected = useAppSelector(selectSelected);
   const currentState = useAppSelector(selectCurrentState);
 
-  const { availabilityStatus } = contact || {};
+  const { availabilityStatus, name: contactName, thumbnail: contactThumbnail } = contact || {};
   const isSelected = useMemo(() => id in selected, [selected, id]);
   const isTyping = useMemo(() => isContactTyping(typingUsers, contactId), [typingUsers, contactId]);
   const typingText = useMemo(() => getTypingUsersText({ users: typingUsers }), [typingUsers]);
@@ -137,8 +137,8 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
 
   const viewProps = {
     id,
-    senderName,
-    senderThumbnail,
+    senderName: contactName || senderName,
+    senderThumbnail: contactThumbnail || senderThumbnail,
     isSelected,
     currentState,
     unreadCount,

@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react-native';
 
 import messaging from '@react-native-firebase/messaging';
 import { Platform, PermissionsAndroid } from 'react-native';
@@ -127,6 +128,7 @@ export const settingsActions = {
         await SettingsService.saveDeviceDetails(pushData);
         return { fcmToken };
       } catch (error) {
+        Sentry.captureException(error);
         return rejectWithValue(
           error instanceof Error ? error.message : 'Error saving device details',
         );

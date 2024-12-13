@@ -97,13 +97,13 @@ const MessageContent = ({
         <Text
           numberOfLines={numberOfLines}
           style={tailwind.style(
-            'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[23px] text-gray-900',
+            'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[21px] text-gray-900',
           )}>
           <MessageType message={message} style={tailwind.style('ml-1')} />
           <Text
             numberOfLines={numberOfLines}
             style={tailwind.style(
-              'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[23px] text-gray-900',
+              'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[21px] text-gray-900',
             )}>
             {lastMessageContent}
           </Text>

@@ -8,14 +8,14 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { Icon } from '@/components-next';
-import { MuteIcon, ResolvedFilledIcon, SnoozedFilledIcon, PendingFilledIcon } from '@/svg-icons';
+import { OpenIcon, ResolvedFilledIcon, PendingFilledIcon, SnoozedFilledIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { ConversationStatus } from '@/types';
 
 import { ConversationActionType } from '../ConversationActions';
 
-type ConversationStateType = 'mute' | 'pending' | 'snooze' | 'resolve';
+type ConversationStateType = 'open' | 'pending' | 'snooze' | 'resolve';
 
 type ConversationActionOptionsType = {
   backgroundActionColor: string;
@@ -23,7 +23,7 @@ type ConversationActionOptionsType = {
   borderActionColor: string;
   actionIcon: React.JSX.Element;
   actionText: ConversationStateType;
-  actionStatus: ConversationStatus | 'muted';
+  actionStatus: ConversationStatus | 'open';
 };
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
@@ -34,9 +34,9 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionColor: 'bg-gray-100',
     backgroundActionPressedColor: 'bg-gray-200',
     borderActionColor: 'bg-gray-700',
-    actionIcon: <MuteIcon stroke={tailwind.color('text-gray-700') as string} />,
-    actionText: 'mute',
-    actionStatus: 'muted',
+    actionIcon: <OpenIcon stroke={tailwind.color('text-gray-700') as string} />,
+    actionText: 'open',
+    actionStatus: 'open',
   },
   {
     backgroundActionColor: 'bg-amber-100',
@@ -79,21 +79,14 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
 
   const handleActionOptionPress = () => {
     hapticSelection?.();
-    if (conversationAction.actionText === 'mute') {
-      updateConversationStatus(isMuted ? 'unmute' : 'mute');
-    } else {
-      updateConversationStatus('status', conversationAction.actionStatus as ConversationStatus);
-    }
+    updateConversationStatus('status', conversationAction.actionStatus as ConversationStatus);
   };
   const actionActive = useSharedValue(0);
 
   const { handlers, animatedStyle } = useScaleAnimation();
 
   useEffect(() => {
-    if (
-      conversationAction.actionStatus === status ||
-      (conversationAction.actionText === 'mute' && isMuted)
-    ) {
+    if (conversationAction.actionStatus === status) {
       actionActive.value = withSpring(1);
     } else {
       actionActive.value = withSpring(0);
@@ -113,13 +106,6 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
       borderColor: interpolateColor(actionActive.value, [0, 1], ['transparent', actionBorderColor]),
     };
   });
-
-  const actionText =
-    conversationAction.actionText === 'mute'
-      ? isMuted
-        ? 'unmute'
-        : 'mute'
-      : conversationAction.actionText;
 
   return (
     <Animated.View
@@ -150,7 +136,7 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
           style={tailwind.style(
             'text-md font-inter-normal-20 leading-[17px] tracking-[0.32px] text-center pt-5 capitalize text-gray-950 ',
           )}>
-          {actionText}
+          {conversationAction.actionText}
         </Animated.Text>
       </Pressable>
     </Animated.View>

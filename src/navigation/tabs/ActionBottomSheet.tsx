@@ -32,13 +32,15 @@ const ActionBottomSheet = () => {
   const actionSnapPoints = useMemo(() => {
     switch (currentActionState) {
       case 'Assign':
-        return [368];
+        return ['50%'];
       case 'Status':
         return [250];
       case 'Label':
         return [368];
       case 'Priority':
         return [300];
+      case 'TeamAssign':
+        return ['50%'];
       default:
         return [250];
     }

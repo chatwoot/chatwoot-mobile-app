@@ -84,7 +84,7 @@ export const AddParticipantList = (props: AddParticipantListProps) => {
           conversationParticipants.slice(0, 4).map((listItem, index) => {
             return <ListItem key={index} {...{ listItem, index }} />;
           })}
-        {overflowCount > 3 && <ParticipantOverflowCell count={overflowCount - 4} />}
+        {overflowCount > 4 && <ParticipantOverflowCell count={overflowCount - 4} />}
         <Pressable
           onPress={onAddParticipant}
           style={({ pressed }) => [

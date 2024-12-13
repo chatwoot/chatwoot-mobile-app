@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ActivityIndicator, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
@@ -115,7 +115,7 @@ export const UpdateTeam = () => {
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChangeText={handleChangeText}
-        placeholder={i18n.t('CONVERSATION.ASSIGNEE.AGENTS.SEARCH_AGENT')}
+        placeholder={i18n.t('CONVERSATION.SEARCH_TEAM')}
       />
       <TeamStack teams={teams} teamId={teamId} />
     </React.Fragment>

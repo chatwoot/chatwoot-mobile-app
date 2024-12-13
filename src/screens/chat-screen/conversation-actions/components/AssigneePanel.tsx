@@ -23,6 +23,9 @@ const assigneeAvatar = (assignee: Agent | null) => {
 
 const AssigneePanel = ({ assignee, onPress }: AssigneePanelProps) => {
   const assigneeName = assignee ? assignee.name : i18n.t('CONVERSATION.ACTIONS.ASSIGNEE.EMPTY');
+  const assigneeActionText = assignee
+    ? i18n.t('CONVERSATION.ACTIONS.ASSIGNEE.EDIT')
+    : i18n.t('CONVERSATION.ACTIONS.ASSIGNEE.ASSIGN');
   return (
     <Pressable
       onPress={onPress}
@@ -44,7 +47,7 @@ const AssigneePanel = ({ assignee, onPress }: AssigneePanelProps) => {
               style={tailwind.style(
                 'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] text-gray-900',
               )}>
-              {i18n.t('CONVERSATION.ACTIONS.ASSIGNEE.ASSIGN')}
+              {assigneeActionText}
             </Animated.Text>
             <Icon icon={<CaretRight />} size={20} />
           </Animated.View>

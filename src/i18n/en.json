@@ -160,6 +160,7 @@
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",
     "CHANGE_STATUS": "Change status",
+    "SEARCH_TEAM": "Search teams",
     "PRIORITY": {
       "TITLE": "Priority",
       "OPTIONS": {
@@ -217,7 +218,8 @@
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "Unassigned",
-        "ASSIGN": "Assign"
+        "ASSIGN": "Assign",
+        "EDIT": "Edit"
       },
       "TEAM": {
         "EMPTY": "No team assigned",

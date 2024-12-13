@@ -135,9 +135,8 @@ export const UpdateParticipant = (props: UpdateParticipantProps) => {
 
   const inboxIds = inboxId ? [inboxId] : [];
 
-  const allAgents = useAppSelector(state =>
-    selectAssignableParticipantsByInboxId(state, inboxIds, searchTerm),
-  );
+  const selectAgents = useAppSelector(selectAssignableParticipantsByInboxId);
+  const allAgents = inboxId ? selectAgents(inboxId, searchTerm) : [];
 
   const handleFocus = () => {
     actionsModalSheetRef.current?.expand();

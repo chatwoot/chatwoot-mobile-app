@@ -55,7 +55,7 @@ export const handleOpenPhotosLibrary = async dispatch => {
         } else if (pickedAssets.errorCode) {
         } else {
           if (pickedAssets.assets && pickedAssets.assets?.length > 0) {
-            validateFileAndSetAttachments(dispatch, pickedAssets.assets);
+            validateFileAndSetAttachments(dispatch, pickedAssets.assets[0]);
           }
         }
       }
@@ -93,7 +93,7 @@ export const handleOpenPhotosLibrary = async dispatch => {
         } else if (pickedAssets.errorCode) {
         } else {
           if (pickedAssets.assets && pickedAssets.assets?.length > 0) {
-            validateFileAndSetAttachments(dispatch, pickedAssets.assets);
+            validateFileAndSetAttachments(dispatch, pickedAssets.assets[0]);
           }
         }
       }
@@ -133,7 +133,7 @@ const handleLaunchCamera = async dispatch => {
         } else if (imageResult.errorCode) {
         } else {
           if (imageResult.assets && imageResult.assets?.length > 0) {
-            validateFileAndSetAttachments(dispatch, imageResult.assets);
+            validateFileAndSetAttachments(dispatch, imageResult.assets[0]);
           }
         }
       }
@@ -211,7 +211,7 @@ const ADD_MENU_OPTIONS = [
 export const validateFileAndSetAttachments = async (dispatch, attachment) => {
   const { fileSize } = attachment;
   if (findFileSize(fileSize) <= MAXIMUM_FILE_UPLOAD_SIZE) {
-    dispatch(updateAttachments(attachment));
+    dispatch(updateAttachments([attachment]));
   } else {
     showToast({ message: i18n.t('CONVERSATION.FILE_SIZE_LIMIT') });
   }

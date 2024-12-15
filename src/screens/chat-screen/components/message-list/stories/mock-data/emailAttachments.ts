@@ -1,4 +1,4 @@
-export const EMAIL_MESSAGES = [
+export const EMAIL_ATTACHMENTS = [
   {
     id: 60913,
     content:

@@ -6,11 +6,13 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Animated } from 'react-native';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { tailwind } from '@/theme';
-import { MessagesList } from './MessagesList';
-import { ALL_MESSAGES_MOCKDATA } from './mock-data/EmailMessageListMockData';
+import { MessagesList } from '../MessagesList';
+import { EMAIL_MESSAGES } from './mock-data/simpleEmail';
 import { LightBoxProvider } from '@alantoa/lightbox';
 import { ChatWindowProvider, RefsProvider } from '@/context';
 import { Provider } from 'react-redux';
+import { getAllGroupedMessages } from './mock-data/helper';
+const ALL_MESSAGES_MOCKDATA = getAllGroupedMessages(EMAIL_MESSAGES);
 
 const PlatformSpecificKeyboardWrapperComponent =
   Platform.OS === 'android' ? Animated.View : KeyboardGestureArea;
@@ -50,7 +52,7 @@ const mockStore = configureStore({
 });
 
 const meta: Meta<typeof MessagesList> = {
-  title: 'Email Message List',
+  title: 'Messages List',
   component: MessagesList,
   argTypes: {},
 };
@@ -58,7 +60,7 @@ const meta: Meta<typeof MessagesList> = {
 export default meta;
 type Story = StoryObj<typeof MessagesList>;
 
-export const AllMessageTypes: Story = {
+export const EmailMessageList: Story = {
   render: function AllVariantsComponent() {
     return (
       <Provider store={mockStore}>

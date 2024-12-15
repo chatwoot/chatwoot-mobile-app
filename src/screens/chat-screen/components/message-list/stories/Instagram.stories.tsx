@@ -6,11 +6,14 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Animated } from 'react-native';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { tailwind } from '@/theme';
-import { MessagesList } from './MessagesList';
+import { MessagesList } from '../MessagesList';
 import { LightBoxProvider } from '@alantoa/lightbox';
-import { ALL_MESSAGES_MOCKDATA } from './mock-data/MessagesListMockdata';
 import { ChatWindowProvider, RefsProvider } from '@/context';
 import { Provider } from 'react-redux';
+import { INSTAGRAM_MESSAGES } from './mock-data/instagram';
+import { getAllGroupedMessages } from './mock-data/helper';
+
+const ALL_MESSAGES_MOCKDATA = getAllGroupedMessages(INSTAGRAM_MESSAGES);
 
 const PlatformSpecificKeyboardWrapperComponent =
   Platform.OS === 'android' ? Animated.View : KeyboardGestureArea;
@@ -57,7 +60,7 @@ const meta: Meta<typeof MessagesList> = {
 export default meta;
 type Story = StoryObj<typeof MessagesList>;
 
-export const AllMessageTypes: Story = {
+export const Instagram: Story = {
   render: function AllVariantsComponent() {
     return (
       <Provider store={mockStore}>
@@ -68,7 +71,7 @@ export const AllMessageTypes: Story = {
                 <ChatWindowProvider conversationId={29}>
                   <ScrollView contentContainerStyle={tailwind.style('flex')}>
                     <PlatformSpecificKeyboardWrapperComponent
-                      style={tailwind.style('flex-1 bg-white')}
+                      style={tailwind.style('flex-1 bg-white border border-red-500')}
                       interpolator="linear">
                       <MessagesList
                         messages={ALL_MESSAGES_MOCKDATA}

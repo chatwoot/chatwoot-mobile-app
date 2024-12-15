@@ -6,7 +6,7 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Animated } from 'react-native';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { tailwind } from '@/theme';
-import { MessagesList } from './MessagesList';
+import { MessagesList } from '../MessagesList';
 import { LightBoxProvider } from '@alantoa/lightbox';
 import { ChatWindowProvider, RefsProvider } from '@/context';
 import { Provider } from 'react-redux';
@@ -52,7 +52,7 @@ const mockStore = configureStore({
 });
 
 const meta: Meta<typeof MessagesList> = {
-  title: 'Messages List/Text Only',
+  title: 'Messages List',
   component: MessagesList,
   argTypes: {},
 };
@@ -60,7 +60,7 @@ const meta: Meta<typeof MessagesList> = {
 export default meta;
 type Story = StoryObj<typeof MessagesList>;
 
-export const AllMessageTypes: Story = {
+export const TextOnly: Story = {
   render: function AllVariantsComponent() {
     return (
       <Provider store={mockStore}>

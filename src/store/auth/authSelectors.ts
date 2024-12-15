@@ -20,6 +20,8 @@ export const selectPubSubToken = createSelector(selectAuth, auth => auth.user?.p
 
 export const selectUserThumbnail = createSelector(selectAuth, auth => auth.user?.avatar_url);
 
+export const selectUserName = createSelector(selectAuth, auth => auth.user?.name);
+
 export const selectResetPasswordLoading = createSelector(
   selectAuth,
   auth => auth.uiFlags.isResettingPassword,

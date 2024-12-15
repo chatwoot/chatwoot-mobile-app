@@ -35,7 +35,7 @@ import {
   togglePrivateMessage,
   setMessageContent,
 } from '@/store/conversation/sendMessageSlice';
-import { selectUserId, selectUserThumbnail } from '@/store/auth/authSelectors';
+import { selectUserId, selectUserName, selectUserThumbnail } from '@/store/auth/authSelectors';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { conversationActions } from '@/store/conversation/conversationActions';
@@ -84,6 +84,7 @@ const BottomSheetContent = () => {
   // Selectors
   const userId = useAppSelector(selectUserId);
   const userThumbnail = useAppSelector(selectUserThumbnail);
+  const userName = useAppSelector(selectUserName);
   const messageContent = useAppSelector(selectMessageContent);
   const attachedFiles = useAppSelector(selectAttachments);
   const quoteMessage = useAppSelector(selectQuoteMessage);
@@ -223,6 +224,7 @@ const BottomSheetContent = () => {
       sender: {
         id: userId ?? 0,
         thumbnail: userThumbnail ?? '',
+        name: userName ?? '',
       },
       files: [],
     } as SendMessagePayload;

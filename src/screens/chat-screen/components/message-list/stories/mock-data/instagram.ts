@@ -1079,4 +1079,55 @@ export const INSTAGRAM_MESSAGES = [
       type: 'contact',
     },
   },
+  {
+    id: 63391639,
+    content: 'iammuhzi mentioned you in the story: ',
+    inbox_id: 27355,
+    conversation_id: 23724,
+    message_type: 0,
+    content_type: 'text',
+    status: 'sent',
+    content_attributes: {
+      in_reply_to_external_id: null,
+      story_sender: 'iammuhzi',
+      story_id: '18452749462037449',
+      image_type: 'story_mention',
+    },
+    created_at: 1722326626,
+    private: false,
+    source_id:
+      'aWdfZAG1faXRlbToxOklHTWVzc2FnZAUlEOjE3ODQxNDQ3NTU5OTYxMzk4OjM0MDI4MjM2Njg0MTcxMDMwMTI0NDI1ODcwNzIxMjU5ODI4ODM2NjozMTc3MTMxODQ1NjYxNjc2NDY1OTEzNzUxOTk4MDM4MDE2MAZDZD',
+    sender: {
+      additional_attributes: {
+        social_profiles: {
+          instagram: 'iammuhzi',
+        },
+      },
+      custom_attributes: {},
+      email: null,
+      id: 53364943,
+      identifier: null,
+      name: 'Muhsin',
+      phone_number: null,
+      thumbnail:
+        'https://app.chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBeGs0V0E9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--4dec645ac0228f02910e15ee689e263ad6ec5d3e/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--fabd060060e055c9dd6a8996dc0b9ef8a3776cf5/272819353_1488256531571824_6160892973137511656_n.jpg',
+      type: 'contact',
+    },
+    attachments: [
+      {
+        id: 4689324,
+        message_id: 63391637,
+        file_type: 'image',
+        account_id: 1,
+        extension: null,
+        data_url:
+          'https://lookaside.fbsbx.com/ig_messaging_cdn/?asset_id=18452749462037449&signature=Aby2iPdEjUNgW4zIfTe73zc4vmi6HIlzmAZSm-ccdkByTWI_B0DEanwpVdLtZywGIdwdp2ai0Vgi27JXkFDMMAS-faIIQthdmZAC5ASJHhBsr1QbigBZ2-ePAvHaxjPqpaT5r3y5yLe_hoc0w2ifThhpK-MWz37PGWGuxz6gHzNZEgaEzq6T6HOIFR_j9P0nUgfaqZi2HJz2ZQ6pWMwGzgeH8ZqimsEZ',
+        thumb_url:
+          'https://lookaside.fbsbx.com/ig_messaging_cdn/?asset_id=18452749462037449&signature=Aby2iPdEjUNgW4zIfTe73zc4vmi6HIlzmAZSm-ccdkByTWI_B0DEanwpVdLtZywGIdwdp2ai0Vgi27JXkFDMMAS-faIIQthdmZAC5ASJHhBsr1QbigBZ2-ePAvHaxjPqpaT5r3y5yLe_hoc0w2ifThhpK-MWz37PGWGuxz6gHzNZEgaEzq6T6HOIFR_j9P0nUgfaqZi2HJz2ZQ6pWMwGzgeH8ZqimsEZ',
+        file_size: 50987,
+        width: 1170,
+        height: 2080,
+      },
+    ],
+  },
 ];

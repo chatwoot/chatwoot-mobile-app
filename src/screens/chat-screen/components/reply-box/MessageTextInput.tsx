@@ -229,7 +229,7 @@ export const MessageTextInput = ({
             {
               trigger: '@',
               renderSuggestions: renderMentionSuggestions,
-              textStyle: tailwind.style('font-bold text-blue-600'),
+              textStyle: tailwind.style('text-amber-950 font-inter-medium-24'),
               allowedSpacesCount: 0,
               isInsertSpaceAfterMention: true,
             },

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { tailwind } from '@/theme';
@@ -17,10 +17,9 @@ type LabelCellProps = {
 export const LabelCell = (props: LabelCellProps) => {
   const { value, isLastItem, handleLabelPress, isActive = false } = props;
 
-  const handleOnPress = useCallback(() => {
+  const handleOnPress = () => {
     handleLabelPress(value.title);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
   return (
     <Pressable onPress={handleOnPress} style={tailwind.style('flex flex-row items-center pl-1.5')}>

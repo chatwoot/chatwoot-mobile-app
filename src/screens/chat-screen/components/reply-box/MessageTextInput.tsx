@@ -188,7 +188,9 @@ export const MessageTextInput = ({
       return (
         <Animated.View
           style={[
-            tailwind.style('absolute bottom-full rounded-[13px] mx-4 px-2 bg-white w-full'),
+            tailwind.style(
+              'absolute bottom-full rounded-[13px] mx-4 px-2 bg-white w-full max-h-[250px]',
+            ),
             styles.listShadow,
           ]}>
           <ScrollView keyboardShouldPersistTaps="always">

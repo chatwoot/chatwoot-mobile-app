@@ -19,7 +19,7 @@ import { selectInstallationUrl, selectLocale } from '@/store/settings/settingsSe
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RefsProvider } from '@/context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { NoNetworkBar } from '@/components-next';
+// import { NoNetworkBar } from '@/components-next';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   // console.log('Message handled in the background!', remoteMessage);
@@ -156,7 +156,7 @@ export const AppNavigationContainer = () => {
         routeNameRef.current = navigationRef.current.getCurrentRoute().name;
       }}
       theme={theme}>
-      <NoNetworkBar />
+      {/* <NoNetworkBar /> */}
       <BottomSheetModalProvider>
         <View style={styles.navigationLayout} onLayout={onLayoutRootView}>
           <AppTabs />

@@ -59,28 +59,28 @@ export const ChatHeader = ({
         style={tailwind.style(
           'flex flex-row justify-between items-center px-4 pt-[13px] pb-[12px]',
         )}>
-        <Animated.View style={tailwind.style('flex-1')}>
+        <Animated.View style={tailwind.style('flex-1 flex-row gap-2')}>
           <Pressable hitSlop={8} style={tailwind.style('h-6 w-6')} onPress={onBackPress}>
             <Icon icon={<ChevronLeft />} size={24} />
           </Pressable>
+          <Pressable
+            onPress={onContactDetailsPress}
+            style={tailwind.style('flex flex-row items-center flex-1')}>
+            <Avatar size="md" src={imageSrc} name={name} />
+            <Animated.View style={tailwind.style('pl-2')}>
+              <Animated.Text
+                numberOfLines={1}
+                style={tailwind.style(
+                  'text-[17px] font-inter-medium-24 tracking-[0.32px] text-gray-950',
+                )}>
+                {name}
+              </Animated.Text>
+            </Animated.View>
+          </Pressable>
         </Animated.View>
-        <Pressable
-          hitSlop={{ top: 8, bottom: 8, left: 20, right: 20 }}
-          onPress={onContactDetailsPress}
-          style={tailwind.style('flex flex-row justify-center items-center flex-1')}>
-          <Avatar size="md" src={imageSrc} name={name} />
-          <Animated.View style={tailwind.style('pl-2')}>
-            <Animated.Text
-              numberOfLines={1}
-              style={tailwind.style(
-                'text-[17px] font-inter-medium-24 tracking-[0.32px] text-gray-950',
-              )}>
-              {name}
-            </Animated.Text>
-          </Animated.View>
-        </Pressable>
+
         <Animated.View style={tailwind.style('flex flex-row flex-1 justify-end')}>
-          <Animated.View style={tailwind.style('flex flex-row items-center gap-2')}>
+          <Animated.View style={tailwind.style('flex flex-row items-center gap-4')}>
             {hasSla && (
               <Pressable hitSlop={8} onPress={toggleSlaEventsSheet}>
                 <Icon icon={<SLAIcon color={isSlaMissed ? '#E13D45' : '#BBBBBB'} />} size={24} />

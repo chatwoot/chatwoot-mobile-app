@@ -62,7 +62,7 @@ const ParticipantStack = ({
 
   const dispatch = useAppDispatch();
 
-  const { actionsModalSheetRef } = useRefsContext();
+  const { updateParticipantSheetRef } = useRefsContext();
   const selectedConversation = useAppSelector(selectSelectedConversation);
 
   const updatedAgents = allAgents.map(agent => {
@@ -93,7 +93,7 @@ const ParticipantStack = ({
       showToast({
         message: i18n.t('CONVERSATION.PARTICIPANT_CHANGE'),
       });
-      actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
+      updateParticipantSheetRef.current?.dismiss({ overshootClamping: true });
     }
   };
 
@@ -126,7 +126,7 @@ type UpdateParticipantProps = {
 export const UpdateParticipant = (props: UpdateParticipantProps) => {
   const { activeConversationParticipants } = props;
   const dispatch = useAppDispatch();
-  const { actionsModalSheetRef } = useRefsContext();
+  const { updateParticipantSheetRef } = useRefsContext();
   const [searchTerm, setSearchTerm] = useState('');
 
   const selectedConversation = useAppSelector(selectSelectedConversation);
@@ -139,10 +139,10 @@ export const UpdateParticipant = (props: UpdateParticipantProps) => {
   const allAgents = inboxId ? selectAgents(inboxId, searchTerm) : [];
 
   const handleFocus = () => {
-    actionsModalSheetRef.current?.expand();
+    updateParticipantSheetRef.current?.expand();
   };
   const handleBlur = () => {
-    actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
+    updateParticipantSheetRef.current?.dismiss({ overshootClamping: true });
   };
 
   useEffect(() => {

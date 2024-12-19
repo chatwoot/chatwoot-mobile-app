@@ -62,7 +62,6 @@ const ParticipantStack = ({
 
   const dispatch = useAppDispatch();
 
-  const { updateParticipantSheetRef } = useRefsContext();
   const selectedConversation = useAppSelector(selectSelectedConversation);
 
   const updatedAgents = allAgents.map(agent => {
@@ -93,7 +92,6 @@ const ParticipantStack = ({
       showToast({
         message: i18n.t('CONVERSATION.PARTICIPANT_CHANGE'),
       });
-      updateParticipantSheetRef.current?.dismiss({ overshootClamping: true });
     }
   };
 

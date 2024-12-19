@@ -28,7 +28,6 @@ import { selectAllTeams } from '@/store/team/teamSelectors';
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { ConversationMetaInformation } from './components/ConversationMetaInformation';
 import { selectConversationParticipantsByConversationId } from '@/store/conversation-participant/conversationParticipantSelectors';
-import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 
@@ -173,7 +172,6 @@ export const ConversationActions = () => {
         snapPoints={['50%']}>
         <UpdateParticipant activeConversationParticipants={conversationParticipants} />
       </BottomSheetModal>
-      <ActionBottomSheet />
     </Animated.View>
   );
 };

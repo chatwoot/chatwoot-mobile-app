@@ -21,6 +21,7 @@ import { notificationActions } from '@/store/notification/notificationAction';
 import { MarkAsReadPayload } from '@/store/notification/notificationTypes';
 import { PrimaryActorType } from '@/types/Notification';
 import { assignableAgentActions } from '@/store/assignable-agent/assignableAgentActions';
+import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
 
 export const ChatWindow = (props: ChatScreenProps) => {
   return (
@@ -115,6 +116,7 @@ const ChatScreen = (props: ChatScreenProps) => {
           <ChatScreenWrapper {...props} />
         </ChatWindowProvider>
       </LightBoxProvider>
+      <ActionBottomSheet />
     </SafeAreaView>
   );
 };

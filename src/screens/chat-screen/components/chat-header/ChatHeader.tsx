@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageSourcePropType, Pressable } from 'react-native';
+import { ImageSourcePropType, Keyboard, Pressable } from 'react-native';
 import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 import Animated from 'react-native-reanimated';
 
@@ -49,24 +49,25 @@ export const ChatHeader = ({
 
   const toggleSlaEventsSheet = () => {
     if (slaEvents?.length) {
+      Keyboard.dismiss();
       slaEventsSheetRef.current?.present();
     }
   };
 
   return (
     <Animated.View style={[tailwind.style('border-b-[1px] border-b-blackA-A3')]}>
-      <Animated.View
-        style={tailwind.style(
-          'flex flex-row justify-between items-center px-4 pt-[13px] pb-[12px]',
-        )}>
-        <Animated.View style={tailwind.style('flex-1 flex-row gap-2')}>
-          <Pressable hitSlop={8} style={tailwind.style('h-6 w-6')} onPress={onBackPress}>
+      <Animated.View style={tailwind.style('flex flex-row justify-between items-center px-4 py-2')}>
+        <Animated.View style={tailwind.style('flex-1 flex-row gap-2 items-center justify-center')}>
+          <Pressable
+            hitSlop={8}
+            style={tailwind.style('h-8 w-8 flex  justify-center items-start')}
+            onPress={onBackPress}>
             <Icon icon={<ChevronLeft />} size={24} />
           </Pressable>
           <Pressable
             onPress={onContactDetailsPress}
             style={tailwind.style('flex flex-row items-center flex-1')}>
-            <Avatar size="md" src={imageSrc} name={name} />
+            <Avatar size="xl" src={imageSrc} name={name} />
             <Animated.View style={tailwind.style('pl-2')}>
               <Animated.Text
                 numberOfLines={1}

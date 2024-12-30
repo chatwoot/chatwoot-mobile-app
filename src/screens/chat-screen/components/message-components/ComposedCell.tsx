@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Text } from 'react-native';
+import { Text, Dimensions } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 import { FileErrorIcon, LockIcon } from '@/svg-icons';
@@ -10,7 +10,6 @@ import { unixTimestampToReadableTime } from '@/utils';
 import { Avatar, Icon } from '@/components-next';
 import { MarkdownDisplay } from './MarkdownDisplay';
 import { MenuOption, MessageMenu } from '../message-menu';
-import { TEXT_MAX_WIDTH } from '@/constants';
 import { ReplyMessageCell } from './ReplyMessageCell';
 import { MESSAGE_TYPES } from '@/constants';
 
@@ -79,18 +78,21 @@ export const ComposedCell = (props: ComposedCellProps) => {
   const isAnInstagramStory = imageType === ATTACHMENT_TYPES.STORY_MENTION;
   const isInstagramStoryExpired = isMessageCreatedAtLessThan24HoursOld(createdAt);
 
+  const windowWidth = Dimensions.get('window').width;
+  const WIDTH = windowWidth - 52; // 52 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (4)
+
   return (
     <Animated.View
       entering={FadeIn.duration(350)}
       style={tailwind.style(
         'my-[1px]',
-        isIncoming ? 'items-start ml-3' : '',
-        isOutgoing ? 'items-end pr-3' : '',
-        isTemplate ? 'items-end pr-3' : '',
+        isIncoming && 'items-start',
+        isOutgoing && 'items-end',
+        isTemplate && 'items-end',
         isActivity ? 'items-center' : '',
-        !shouldRenderAvatar && isIncoming ? 'ml-10' : '',
-        !shouldRenderAvatar && isOutgoing ? 'pr-10' : '',
-        !shouldRenderAvatar && isTemplate ? 'pr-10' : '',
+        !shouldRenderAvatar && isIncoming ? 'ml-7' : '',
+        !shouldRenderAvatar && isOutgoing ? 'pr-7' : '',
+        !shouldRenderAvatar && isTemplate ? 'pr-7' : '',
         shouldRenderAvatar ? 'mb-2' : '',
         isPrivate ? 'my-6' : '',
       )}>
@@ -105,8 +107,8 @@ export const ComposedCell = (props: ComposedCellProps) => {
           <Animated.View
             style={[
               tailwind.style(
-                'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
-                `max-w-[${TEXT_MAX_WIDTH}px]`,
+                'relative pl-3 pr-2.5 py-2 h-full rounded-2xl overflow-hidden',
+                `max-w-[${WIDTH}px]`,
                 isIncoming ? 'bg-blue-700' : '',
                 isOutgoing ? 'bg-gray-100' : '',
                 isPrivate ? ' bg-amber-100' : '',
@@ -163,7 +165,7 @@ export const ComposedCell = (props: ComposedCellProps) => {
                       ) : (
                         <Animated.View
                           key={attachment.fileType + index}
-                          style={tailwind.style('flex-1 my-2')}>
+                          style={tailwind.style('my-2')}>
                           <ImageContainer
                             imageSrc={attachment.dataUrl}
                             width={300 - 24 - (isPrivate ? 13 : 0)}

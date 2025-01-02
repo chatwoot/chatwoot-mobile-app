@@ -1,12 +1,12 @@
 import React from 'react';
-import { Animated, Text } from 'react-native';
+import { Animated, Text, Dimensions } from 'react-native';
 
 import { tailwind } from '@/theme';
 import { Channel, MessageStatus, MessageType } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
 
 import { MarkdownDisplay } from './MarkdownDisplay';
-import { MESSAGE_STATUS, TEXT_MAX_WIDTH } from '@/constants';
+import { MESSAGE_STATUS, INBOX_TYPES, TEXT_MAX_WIDTH } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
 
 type MessageTextCellProps = {
@@ -72,12 +72,18 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
 
   const isMessageFailed = status === MESSAGE_STATUS.FAILED;
 
+  const isEmailMessage = channel === INBOX_TYPES.EMAIL;
+
+  const windowWidth = Dimensions.get('window').width;
+
+  const EMAIL_MESSAGE_WIDTH = windowWidth - 52; // 52 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (4)
+
   return (
     <Animated.View
       style={[
         tailwind.style(
           'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
-          `max-w-[${TEXT_MAX_WIDTH}px]`,
+          isEmailMessage ? `max-w-[${EMAIL_MESSAGE_WIDTH}px]` : `max-w-[${TEXT_MAX_WIDTH}px]`,
           isIncoming ? 'bg-blue-700' : '',
           isOutgoing ? 'bg-gray-100' : '',
           isMessageFailed ? 'bg-ruby-700' : '',

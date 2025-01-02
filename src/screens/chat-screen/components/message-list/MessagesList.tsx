@@ -71,6 +71,7 @@ export const MessagesList = ({
         onEndReached={onEndReached}
         onEndReachedThreshold={0.1}
         data={messages}
+        contentContainerStyle={tailwind.style('px-3')}
         keyboardShouldPersistTaps="handled"
         keyExtractor={(item: { date: string } | Message) => {
           if ('date' in item) {

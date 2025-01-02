@@ -61,14 +61,9 @@ export const EmailMessageCell = (props: EmailMessageCellProps) => {
       entering={FadeIn.duration(350)}
       style={[
         tailwind.style(
-          'my-[1px] w-full px-3',
-          isIncoming ? 'items-start ml-3' : '',
-          isOutgoing ? 'items-end pr-3' : '',
-          isTemplate ? 'pr-3' : '',
-          isActivity ? 'items-center' : '',
-          !shouldRenderAvatar && isIncoming ? 'ml-10' : '',
-          !shouldRenderAvatar && isOutgoing ? 'pr-10' : '',
-          !shouldRenderAvatar && isTemplate ? 'pr-10' : '',
+          'my-[1px] w-full',
+          !shouldRenderAvatar && isIncoming ? 'ml-7' : '',
+          !shouldRenderAvatar && isOutgoing ? 'pr-7' : '',
           shouldRenderAvatar ? 'mb-2' : '',
           messageItem.private ? 'my-6' : '',
         ),

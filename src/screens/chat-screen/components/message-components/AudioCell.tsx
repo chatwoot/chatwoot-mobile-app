@@ -205,10 +205,10 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
       entering={FadeIn.duration(300).easing(Easing.ease)}
       style={tailwind.style(
         'w-full my-[1px]',
-        isIncoming ? 'items-start ml-3' : '',
-        isOutgoing ? 'items-end pr-3' : '',
-        !shouldRenderAvatar && isIncoming ? 'ml-10' : '',
-        !shouldRenderAvatar && isOutgoing ? 'pr-10' : '',
+        isIncoming && 'items-start',
+        isOutgoing && 'items-end',
+        !shouldRenderAvatar && isIncoming ? 'ml-7' : '',
+        !shouldRenderAvatar && isOutgoing ? 'pr-7' : '',
         shouldRenderAvatar ? 'pb-2' : '',
       )}>
       <Animated.View style={tailwind.style('flex flex-row')}>

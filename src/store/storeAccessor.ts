@@ -1,7 +1,14 @@
-let store;
+import { Store } from '@reduxjs/toolkit';
 
-export const setStore = appStore => {
-  store = appStore;
+let store: Store;
+
+export const setStore = (s: Store) => {
+  store = s;
 };
 
-export const getStore = () => store;
+export const getStore = () => {
+  if (!store) {
+    throw new Error('Store not initialized');
+  }
+  return store;
+};

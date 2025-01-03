@@ -6,7 +6,7 @@ import { TickIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { AvailabilityStatus, AvailabilityStatusListItemType } from '@/types';
 import { useHaptic } from '@/utils';
-import { Icon } from '@/components-next';
+import { Icon } from '@/components-next/common/icon';
 
 type StatusCellProps = {
   item: AvailabilityStatusListItemType;

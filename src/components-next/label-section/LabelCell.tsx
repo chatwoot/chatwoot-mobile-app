@@ -4,7 +4,7 @@ import Animated from 'react-native-reanimated';
 import { tailwind } from '@/theme';
 import { Label } from '@/types/common/Label';
 import { TickIcon } from '@/svg-icons';
-import { Icon } from '@/components-next';
+import { Icon } from '@/components-next/common/icon';
 
 type LabelCellProps = {
   value: Label;

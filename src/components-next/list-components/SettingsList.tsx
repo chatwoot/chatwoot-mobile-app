@@ -5,7 +5,7 @@ import Animated from 'react-native-reanimated';
 import { CaretRight } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { GenericListType } from '@/types';
-import { Icon } from '@/components-next';
+import { Icon } from '@/components-next/common/icon';
 
 type GenericListProps = {
   sectionTitle?: string;

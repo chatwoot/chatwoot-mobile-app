@@ -29,7 +29,6 @@ import type {
 import { AxiosError } from 'axios';
 import { MESSAGE_STATUS } from '@/constants';
 import { buildCreatePayload, createPendingMessage } from '@/utils/messageUtils';
-import { addOrUpdateMessage } from './conversationSlice';
 import { transformMessage } from '@/utils/camelCaseKeys';
 import { Platform } from 'react-native';
 
@@ -83,12 +82,13 @@ export const conversationActions = {
       const pendingMessage = createPendingMessage(sendMessagePayload);
 
       try {
-        dispatch(
-          addOrUpdateMessage({
+        dispatch({
+          type: 'conversation/addOrUpdateMessage',
+          payload: {
             ...pendingMessage,
             status: MESSAGE_STATUS.PROGRESS,
-          }),
-        );
+          },
+        });
         const payload = buildCreatePayload(pendingMessage);
         const { file } = sendMessagePayload;
         const contentType =
@@ -106,25 +106,27 @@ export const conversationActions = {
 
         const camelCaseMessage = transformMessage(response);
 
-        dispatch(
-          addOrUpdateMessage({
+        dispatch({
+          type: 'conversation/addOrUpdateMessage',
+          payload: {
             ...camelCaseMessage,
             status: MESSAGE_STATUS.SENT,
-          }),
-        );
+          },
+        });
         return response;
       } catch (error) {
         const { response } = error as AxiosError<ApiErrorResponse>;
         const errorMessage = response?.data?.errors?.[0];
-        dispatch(
-          addOrUpdateMessage({
+        dispatch({
+          type: 'conversation/addOrUpdateMessage',
+          payload: {
             ...pendingMessage,
             meta: {
               error: errorMessage,
             },
             status: MESSAGE_STATUS.FAILED,
-          }),
-        );
+          },
+        });
         if (!response) {
           throw error;
         }

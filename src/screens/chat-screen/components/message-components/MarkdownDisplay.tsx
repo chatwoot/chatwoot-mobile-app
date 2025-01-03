@@ -56,6 +56,7 @@ export const MarkdownDisplay = (props: MarkdownDisplayProps) => {
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
+      ...textStyle,
     },
     bullet_list_icon: {
       marginLeft: 0,

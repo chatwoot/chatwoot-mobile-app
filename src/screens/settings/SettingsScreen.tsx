@@ -35,7 +35,6 @@ import {
   SwitchAccount,
   SettingsList,
 } from '@/components-next';
-// import { SettingsList } from '@/components-next/list-components/SettingsList';
 import { UserAvatar } from './components/UserAvatar';
 
 import { LANGUAGES, TAB_BAR_HEIGHT } from '@/constants';

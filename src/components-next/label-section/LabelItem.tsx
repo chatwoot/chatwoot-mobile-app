@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { tailwind } from '@/theme';
@@ -30,13 +30,18 @@ export const LabelItem = (props: LabelItemProps) => {
 };
 
 const styles = StyleSheet.create({
-  labelShadow: {
-    // box-shadow: 0px 0.15000000596046448px 2px 0px #00000040;
-    // box-shadow: [horizontal offset] [vertical offset] [blur radius] [optional spread radius] [color];
-    shadowColor: '#00000040',
-    shadowOffset: { width: 0, height: 0.15 },
-    shadowRadius: 2,
-    shadowOpacity: 0.35,
-    elevation: 2,
-  },
+  labelShadow:
+    Platform.select({
+      ios: {
+        shadowColor: '#00000040',
+        shadowOffset: { width: 0, height: 0.15 },
+        shadowRadius: 2,
+        shadowOpacity: 0.35,
+        elevation: 2,
+      },
+      android: {
+        elevation: 4,
+        backgroundColor: 'white',
+      },
+    }) || {}, // Add fallback empty object
 });

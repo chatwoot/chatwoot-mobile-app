@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { Platform, Pressable, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
 
@@ -126,13 +126,18 @@ export const AttributeList = (props: AttributeListProps) => {
 };
 
 const styles = StyleSheet.create({
-  listShadow: {
-    // box-shadow: 0px 0.15000000596046448px 2px 0px #00000040;
-    // box-shadow: [horizontal offset] [vertical offset] [blur radius] [optional spread radius] [color];
-    shadowColor: '#00000040',
-    shadowOffset: { width: 0, height: 0.15 },
-    shadowRadius: 2,
-    shadowOpacity: 0.35,
-    elevation: 2,
-  },
+  listShadow:
+    Platform.select({
+      ios: {
+        shadowColor: '#00000040',
+        shadowOffset: { width: 0, height: 0.15 },
+        shadowRadius: 2,
+        shadowOpacity: 0.35,
+        elevation: 2,
+      },
+      android: {
+        elevation: 4,
+        backgroundColor: 'white',
+      },
+    }) || {}, // Add fallback empty object
 });

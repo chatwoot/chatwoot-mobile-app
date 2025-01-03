@@ -74,6 +74,12 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       [
         'expo-build-properties',
         {
+          // https://github.com/invertase/notifee/issues/808#issuecomment-2175934609
+          android: {
+            compileSdkVersion: 34,
+            targetSdkVersion: 34,
+            extraMavenRepos: ['$rootDir/../../../node_modules/@notifee/react-native/android/libs'],
+          },
           ios: {
             useFrameworks: 'static',
           },

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
 import camelCase from 'camelcase';
 
@@ -207,7 +207,10 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
   const allDetails = [...userDetails, ...socialMediaDetails];
 
   return (
-    <View style={tailwind.style('flex-1 bg-white pt-6')}>
+    <View
+      style={tailwind.style(
+        `flex-1 bg-white pt-6 ${Platform.OS === 'android' ? 'pt-12' : 'pt-6'}`,
+      )}>
       <ContactDetailsScreenHeader
         name={name || contactName || ''}
         thumbnail={thumbnail || contactThumbnail || ''}

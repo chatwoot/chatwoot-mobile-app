@@ -101,12 +101,7 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
             : '',
         ),
       ]}>
-      {contentAttributes && (
-        <React.Fragment>
-          <EmailMeta {...{ contentAttributes, sender }} />
-          <Animated.View style={tailwind.style('h-[1px] my-2 bg-gray-300')} />
-        </React.Fragment>
-      )}
+      {contentAttributes && <EmailMeta {...{ contentAttributes, sender }} />}
       <MarkdownDisplay {...{ isIncoming, isOutgoing, isMessageFailed }} messageContent={text} />
       {/* <Text
         // onTextLayout={handleTextLayout}

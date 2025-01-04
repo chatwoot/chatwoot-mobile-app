@@ -68,6 +68,7 @@ export const EmailMeta = (props: EmailMetaProps) => {
           {i18n.t('CONVERSATION.EMAIL_HEADER.SUBJECT')}: {subject}
         </Animated.Text>
       )}
+      <Animated.View style={tailwind.style('h-[1px] my-2 bg-gray-300')} />
     </Animated.View>
   );
 };

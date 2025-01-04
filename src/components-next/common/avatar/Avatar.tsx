@@ -122,7 +122,7 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
         styleAdapter(style),
       ]}
       {...boxProps}>
-      {imageAvailable && (src as ImageURISource).uri ? (
+      {imageAvailable && src ? (
         <AvatarImage
           size={size}
           imageProps={imageProps}

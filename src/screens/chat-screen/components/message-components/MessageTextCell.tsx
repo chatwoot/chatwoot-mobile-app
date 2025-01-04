@@ -2,12 +2,13 @@ import React from 'react';
 import { Animated, Text, Dimensions } from 'react-native';
 
 import { tailwind } from '@/theme';
-import { Channel, MessageStatus, MessageType } from '@/types';
+import { Channel, Message, MessageStatus, MessageType } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
 
 import { MarkdownDisplay } from './MarkdownDisplay';
 import { MESSAGE_STATUS, INBOX_TYPES, TEXT_MAX_WIDTH } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
+import { EmailMeta } from './EmailMeta';
 
 type MessageTextCellProps = {
   text: string;
@@ -22,6 +23,8 @@ type MessageTextCellProps = {
   sourceId?: string;
   isPrivate: boolean;
   errorMessage: string;
+  sender: Message['sender'];
+  contentAttributes: Message['contentAttributes'];
 };
 
 export const MessageTextCell = (props: MessageTextCellProps) => {
@@ -37,6 +40,8 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
     sourceId,
     isPrivate,
     errorMessage,
+    sender,
+    contentAttributes,
   } = props;
 
   // const [singleLineLongText, setSingleLineLongText] = useState(false);
@@ -96,6 +101,12 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
             : '',
         ),
       ]}>
+      {contentAttributes && (
+        <React.Fragment>
+          <EmailMeta {...{ contentAttributes, sender }} />
+          <Animated.View style={tailwind.style('h-[1px] my-2 bg-gray-300')} />
+        </React.Fragment>
+      )}
       <MarkdownDisplay {...{ isIncoming, isOutgoing, isMessageFailed }} messageContent={text} />
       {/* <Text
         // onTextLayout={handleTextLayout}

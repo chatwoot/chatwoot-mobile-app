@@ -89,6 +89,8 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
                     sourceId={sourceId || ''}
                     isPrivate={isPrivate}
                     errorMessage={errorMessage}
+                    sender={sender}
+                    contentAttributes={contentAttributes}
                   />
                 ) : null}
                 {(isOutgoing && isSentByBot) || isTemplate ? (

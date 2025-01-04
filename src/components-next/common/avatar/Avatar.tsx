@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { ImageProps, ImageSourcePropType, Text, View, ViewProps } from 'react-native';
+import {
+  ImageProps,
+  ImageSourcePropType,
+  ImageURISource,
+  Text,
+  View,
+  ViewProps,
+} from 'react-native';
 
 import { avatarTheme, tailwind } from '@/theme';
 import { Channel } from '@/types';
@@ -115,11 +122,11 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
         styleAdapter(style),
       ]}
       {...boxProps}>
-      {imageAvailable && src ? (
+      {imageAvailable && (src as ImageURISource).uri ? (
         <AvatarImage
           size={size}
           imageProps={imageProps}
-          src={src}
+          src={src as ImageURISource}
           squared={isSquared}
           handleFallback={loadFallback}
         />

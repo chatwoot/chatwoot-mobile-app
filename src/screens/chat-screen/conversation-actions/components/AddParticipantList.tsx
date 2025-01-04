@@ -23,7 +23,7 @@ const ListItem = (props: ListItemProps) => {
       ]}>
       <Animated.View style={tailwind.style('flex flex-row items-center ml-3')}>
         <Animated.View>
-          <Avatar src={listItem.thumbnail || undefined} size="lg" />
+          <Avatar src={{ uri: listItem.thumbnail || undefined }} size="lg" />
         </Animated.View>
         <Animated.View
           style={tailwind.style('flex-1 py-[11px] ml-2 border-b-[1px] border-b-blackA-A3')}>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, ImageSourcePropType, Pressable } from 'react-native';
+import { ActivityIndicator, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
@@ -37,7 +37,7 @@ const AssigneeCell = (props: AssigneeCellProps) => {
 
   return (
     <Pressable onPress={props.onPress} style={tailwind.style('flex flex-row items-center')}>
-      <Avatar src={agent.thumbnail as ImageSourcePropType} name={agent.name ?? ''} size="md" />
+      <Avatar src={{ uri: agent.thumbnail || undefined }} name={agent.name ?? ''} size="md" />
       <Animated.View
         style={tailwind.style(
           'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',

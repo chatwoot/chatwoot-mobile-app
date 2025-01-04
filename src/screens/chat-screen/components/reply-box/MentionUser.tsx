@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageSourcePropType, Pressable } from 'react-native';
+import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { tailwind } from '@/theme';
 import { Agent } from '@/types';
@@ -13,7 +13,7 @@ export const MentionUser = (props: MentionUserProps) => {
   const { lastItem, agent, onPress } = props;
   return (
     <Pressable onPress={onPress} style={tailwind.style('flex flex-row items-center')}>
-      <Avatar src={agent.thumbnail as ImageSourcePropType} name={agent.name ?? ''} size="md" />
+      <Avatar src={{ uri: agent.thumbnail || undefined }} name={agent.name ?? ''} size="md" />
       <Animated.View
         style={tailwind.style(
           'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',

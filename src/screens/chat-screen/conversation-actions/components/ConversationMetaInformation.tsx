@@ -58,6 +58,12 @@ export const ConversationMetaInformation = ({ conversation }: { conversation: Co
 
   const otherConversationDetails: AttributeListType[] = [
     {
+      title: i18n.t('CONVERSATION_DETAILS.CONVERSATION_ID'),
+      subtitleType: 'light',
+      subtitle: conversation.id.toString(),
+      type: 'text',
+    },
+    {
       title: i18n.t('CONVERSATION_DETAILS.INITIATED_AT'),
       subtitleType: 'light',
       subtitle: initiatedAt,

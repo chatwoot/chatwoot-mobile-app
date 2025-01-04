@@ -65,9 +65,9 @@ export const ConversationActions = () => {
 
   const onShareConversation = async () => {
     try {
+      const url = `${installationUrl}app/accounts/${conversation?.accountId}/conversations/${conversation?.id}`;
       const result = await Share.share({
-        // * Replace it with the current conversation URL
-        url: `${installationUrl}app/accounts/${conversation?.accountId}/conversations/${conversation?.id}`,
+        url,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {

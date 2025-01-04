@@ -329,6 +329,7 @@
     "INITIATED_AT": "Initiated at",
     "INITIATED_FROM": "Initiated from",
     "IP_ADDRESS": "IP Address",
+    "CONVERSATION_ID": "Conversation ID",
     "CLIPBOARD_SUCCESS": "Copied to clipboard"
   },
   "CONTACT_DETAILS": {

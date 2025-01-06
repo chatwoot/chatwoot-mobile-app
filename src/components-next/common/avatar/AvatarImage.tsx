@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image } from 'expo-image';
 
 import { avatarTheme, tailwind } from '@/theme';
@@ -17,6 +17,21 @@ export const AvatarImage: React.FC<AvatarImageProps> = ({
   size,
   handleFallback,
 }) => {
+  const onError = () => {
+    handleFallback();
+  };
+
+  useEffect(() => {
+    if (
+      typeof src === 'object' &&
+      'uri' in src && // Check if it's a remote image source
+      !src.uri // Check if URI is empty
+    ) {
+      onError();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [src]);
+
   return (
     <Image
       source={src}
@@ -27,7 +42,7 @@ export const AvatarImage: React.FC<AvatarImageProps> = ({
       // Seems to be tricky to set the right type here, but as we are not
       // doing anything with the error data, we can ignore the TS here
       // @ts-ignore
-      onError={handleFallback}
+      onError={onError}
       {...imageProps}
     />
   );

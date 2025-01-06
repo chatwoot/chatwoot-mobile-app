@@ -38,17 +38,16 @@ export const ImageContainer = (props: ImageContainerProps) => {
     <LightBox
       width={lightboxW}
       height={lightboxH}
-      imgLayout={{ height: height / 1.3, width }}
+      imgLayout={{ height: height * 0.8, width: width * 0.8 }}
       tapToClose={false}>
       <AnimatedExpoImage
         source={{ uri: imageSrc }}
-        contentFit="cover"
+        contentFit="contain"
         style={[tailwind.style('h-full w-full bg-gray-100 overflow-hidden')]}
       />
     </LightBox>
   );
 };
-
 export const ImageCell = (props: ImageCellProps) => {
   const {
     imageSrc,

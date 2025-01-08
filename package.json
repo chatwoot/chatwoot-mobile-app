@@ -10,6 +10,7 @@
     "test": "jest",
     "lint": "eslint .",
     "generate": "npx expo prebuild --clean",
+    "generate:soft": "npx expo prebuild",
     "run:ios": "npx expo run:ios -d",
     "run:android": "npx expo run:android -d",
     "build:android:local": "dotenv -c -- eas build -p android --profile production --local",

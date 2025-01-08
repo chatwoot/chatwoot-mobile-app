@@ -31,6 +31,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       entitlements: {
         'aps-environment': 'production',
       },
+      associatedDomains: ['applinks:app.chatwoot.com'],
     },
     android: {
       adaptiveIcon: {
@@ -46,6 +47,21 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       ],
       // Please use the relative path to the google-services.json file
       googleServicesFile: process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE,
+      intentFilters: [
+        {
+          action: 'VIEW',
+          autoVerify: true,
+          data: [
+            {
+              scheme: 'https',
+              host: 'app.chatwoot.com',
+              pathPrefix: '/app/accounts/',
+              pathPattern: '.*/conversations/.*',
+            },
+          ],
+          category: ['BROWSABLE', 'DEFAULT'],
+        },
+      ],
     },
     extra: {
       eas: {

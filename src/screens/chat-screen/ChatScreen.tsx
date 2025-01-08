@@ -28,7 +28,7 @@ import { assignableAgentActions } from '@/store/assignable-agent/assignableAgent
 import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { TAB_BAR_HEIGHT } from '@/constants';
-import { EmptyStateIcon } from '@/svg-icons';
+import { ErrorIcon } from '@/svg-icons';
 import { Button } from '@/components-next';
 import { ActivityIndicator, Pressable } from 'react-native';
 import i18n from '@/i18n';
@@ -167,26 +167,34 @@ const ChatScreen = (props: ChatScreenProps) => {
     );
   }
 
-  if (conversationError) {
+  if (conversationError || !conversation) {
     return (
       <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
         <Animated.View
-          style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
-          <EmptyStateIcon />
-          <Animated.Text
-            style={tailwind.style(
-              'pt-6 text-base font-inter-420-20 tracking-[0.32px] text-gray-950',
-            )}>
-            {conversationError || i18n.t('CONVERSATION.NOT_FOUND.TITLE')}
-          </Animated.Text>
-          <Animated.View style={tailwind.style('px-4 pt-4  w-full')}>
+          style={tailwind.style(
+            'flex-1 items-center justify-center gap-8 px-4',
+            `pb-[${TAB_BAR_HEIGHT}px]`,
+          )}>
+          <ErrorIcon />
+          <Animated.View style={tailwind.style('items-center justify-center gap-4')}>
+            <Animated.Text style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20')}>
+              {conversationError || i18n.t('CONVERSATION.NOT_FOUND.TITLE')}
+            </Animated.Text>
+            <Animated.Text
+              style={tailwind.style(
+                'font-inter-normal-20 leading-[18px] tracking-[0.32px] text-gray-900',
+              )}>
+              {i18n.t('CONVERSATION.NOT_FOUND.DESCRIPTION')}
+            </Animated.Text>
+          </Animated.View>
+          <Animated.View style={tailwind.style('gap-4 w-full')}>
             <Button
-              variant="secondary"
+              variant="primary"
               text={i18n.t('CONVERSATION.NOT_FOUND.RETRY')}
               handlePress={fetchConversation}
             />
             <Pressable
-              style={tailwind.style('flex-row justify-center items-center mt-6')}
+              style={tailwind.style('flex-row justify-center items-center')}
               onPress={handleBackPress}>
               <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
                 {i18n.t('CONVERSATION.NOT_FOUND.BACK_TO_HOME')}
@@ -197,7 +205,6 @@ const ChatScreen = (props: ChatScreenProps) => {
       </SafeAreaView>
     );
   }
-
   return null;
 };
 

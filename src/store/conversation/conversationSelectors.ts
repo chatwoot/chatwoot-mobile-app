@@ -20,6 +20,16 @@ export const selectConversationsLoading = createSelector(
   state => state.isLoadingConversations,
 );
 
+export const selectConversationError = createSelector(
+  selectConversationsState,
+  state => state.error,
+);
+
+export const selectConversationFetching = createSelector(
+  selectConversationsState,
+  state => state.isConversationFetching,
+);
+
 export const selectIsAllConversationsFetched = createSelector(
   selectConversationsState,
   state => state.isAllConversationsFetched,

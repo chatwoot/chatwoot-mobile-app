@@ -105,6 +105,7 @@ const conversationSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(conversationActions.fetchConversations.pending, state => {
+        state.error = null;
         state.isLoadingConversations = true;
       })
       .addCase(conversationActions.fetchConversations.fulfilled, (state, { payload }) => {
@@ -118,6 +119,7 @@ const conversationSlice = createSlice({
         state.isLoadingConversations = false;
       })
       .addCase(conversationActions.fetchConversation.pending, state => {
+        state.error = null;
         state.isConversationFetching = true;
       })
       .addCase(conversationActions.fetchConversation.fulfilled, (state, { payload }) => {
@@ -128,6 +130,7 @@ const conversationSlice = createSlice({
       })
       .addCase(conversationActions.fetchConversation.rejected, state => {
         state.isConversationFetching = false;
+        state.error = state.error || 'Unable to load conversation';
       })
       .addCase(conversationActions.fetchPreviousMessages.pending, state => {
         state.isLoadingMessages = true;

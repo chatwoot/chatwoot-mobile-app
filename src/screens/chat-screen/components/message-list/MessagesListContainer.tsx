@@ -56,9 +56,6 @@ export const MessagesListContainer = () => {
   const loadMessages = useCallback(
     async ({ loadingMessagesForFirstTime = false }) => {
       const beforeId = loadingMessagesForFirstTime ? null : lastMessageId();
-      if (!conversation) {
-        await dispatch(conversationActions.fetchConversation(conversationId));
-      }
       dispatch(
         conversationActions.fetchPreviousMessages({
           conversationId,
@@ -66,7 +63,7 @@ export const MessagesListContainer = () => {
         }),
       );
     },
-    [conversation, conversationId, dispatch, lastMessageId],
+    [conversationId, dispatch, lastMessageId],
   );
 
   const onEndReached = () => {

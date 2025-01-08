@@ -56,7 +56,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
               scheme: 'https',
               host: 'app.chatwoot.com',
               pathPrefix: '/app/accounts/',
-              pathPattern: '.*/conversations/.*',
+              pathPattern: '/*/conversations/*',
             },
           ],
           category: ['BROWSABLE', 'DEFAULT'],

@@ -51,6 +51,63 @@
     "API_SUCCESS": "پیوند بازنشانی رمز عبور به ایمیل شما ارسال شد"
   },
   "CONVERSATION": {
+    "HEADER": {
+      "TITLE": "گفتگوها",
+      "CLEAR_FILTER": "پاک کردن"
+    },
+    "FILTERS": {
+      "AGENT": {
+        "SEARCH_AGENT": "جستجوی اپراتور"
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "فیلتر براساس نوع اختصاص شده",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "تخصیص داده نشده",
+          "ALL": "همه"
+        }
+      },
+      "INBOX": {
+        "TITLE": "فیلتر براساس صندوق‌ورودی"
+      },
+      "SORT_BY": {
+        "TITLE": "مرتب‌سازی براساس",
+        "OPTIONS": {
+          "LATEST": "Latest",
+          "SORT_ON_CREATED_AT": "ایجاد شده در",
+          "SORT_ON_PRIORITY": "اولویت"
+        }
+      },
+      "STATUS": {
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "باز",
+          "PENDING": "در انتظار",
+          "SNOOZED": "به تعویق افتاد",
+          "RESOLVED": "حل شده",
+          "ALL": "همه"
+        }
+      }
+    },
+    "ASSIGNEE": {
+      "LABELS": {
+        "SEARCH_LABELS": "جستجو برچسب‌ها"
+      },
+      "AGENTS": {
+        "SEARCH_AGENT": "جستجوی اپراتور"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "باز",
+          "PENDING": "در انتظار",
+          "SNOOZED": "به تعویق افتاد",
+          "RESOLVED": "حل شده",
+          "ALL": "همه"
+        }
+      }
+    },
     "DEFAULT_HEADER_TITLE": "گفتگوها",
     "UPDATING": "در حال به‌روزرسانی...",
     "MINE": "من",
@@ -73,7 +130,18 @@
     "ASSIGNED_AGENT": "ایجنت تعیین شده",
     "TEAM": "تیم‌",
     "PRIVATE_MSG_INPUT": "این فقط برای ایجنت ها قابل مشاهده خواهد بود",
-    "SELF_ASSIGN": "Self assign conversation",
+    "NOT_FOUND": {
+      "TITLE": "Unable to fetch conversation",
+      "RETRY": "Retry",
+      "BACK_TO_HOME": "Take me Home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+    },
+    "EMAIL_HEAD": {
+      "TO": "به",
+      "CC": "Cc",
+      "BCC": "Bcc"
+    },
+    "SELF_ASSIGN": "اختصاص به من",
     "UN_ASSIGN": "لغو اختصاص مکالمه",
     "CONVERSATION_NOT_FOUND": "گفتگو را نمی‌تواند دریافت کرد",
     "MARK_AS_PENDING": "علامت گذاری به عنوان در انتظار",
@@ -90,6 +158,15 @@
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "DELETE_MESSAGE_SUCCESS": "پیام با موفقیت حذف شد",
+    "NO_CONTENT": "No content available",
+    "ASSIGN_CHANGE": "Conversation Assignee changed",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "CHANGE_STATUS": "Change status",
+    "SEARCH_TEAM": "Search teams",
     "PRIORITY": {
       "TITLE": "اولویت",
       "OPTIONS": {
@@ -105,6 +182,58 @@
         "NO_RESULTS": "نتیجه‌ای یافت نشد",
         "SUCCESSFUL": "تغییر اولویت گفتگوی با شناسه %{conversationId} به %{priority}",
         "FAILED": "تغییر اولویت گفتگو با موفقیت انجام نشد. لطفا دوباره تلاش نمایید."
+      }
+    },
+    "ITEM": {
+      "ASSIGN": "Assign",
+      "STATUS": "Status"
+    },
+    "ATTACHMENTS": {
+      "image": {
+        "CONTENT": "پیام تصویری"
+      },
+      "audio": {
+        "CONTENT": "Audio message"
+      },
+      "video": {
+        "CONTENT": "Video message"
+      },
+      "file": {
+        "CONTENT": "فایل الصاقی"
+      },
+      "location": {
+        "CONTENT": "Location"
+      },
+      "fallback": {
+        "CONTENT": "has shared a url"
+      }
+    },
+    "LONG_PRESS_ACTIONS": {
+      "COPY": "Copy",
+      "REPLY": "Reply",
+      "DELETE_MESSAGE": "Delete message"
+    },
+    "EMAIL_HEADER": {
+      "FROM": "From",
+      "TO": "To",
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "SUBJECT": "Subject",
+      "EXPAND": "Expand email"
+    },
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "EMPTY": "تخصیص داده نشده",
+        "ASSIGN": "Assign",
+        "EDIT": "Edit"
+      },
+      "TEAM": {
+        "EMPTY": "No team assigned",
+        "ASSIGN": "Assign"
+      },
+      "PRIORITY": {
+        "EMPTY": "No priority added",
+        "EDIT": "Edit"
       }
     }
   },
@@ -139,15 +268,46 @@
     "CHAT_WITH_US": "با ما گفتگو کنید",
     "LOGOUT": "خروج از حساب",
     "SUBMIT": "ثبت",
-    "SET_LANGUAGE": "Set Language"
+    "SET_LANGUAGE": "Set Language",
+    "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "اعلان ها",
+    "INBOX": "Inbox",
     "EMPTY": "اعلانی وجود ندارد.",
     "EMPTY_MORE_TEXT": "هنگامی که اعلان جدیدی دریافت می کنید ، آنها در اینجا نمایش داده می شوند.",
     "ALL_NOTIFICATION_LOADED": "همه اعلان ها بارگیری شدند",
     "MARK_ALL": "همه را به عنوان خوانده شده علامت بزن",
-    "CANCEL": "انصراف"
+    "CANCEL": "انصراف",
+    "DELETE": "Delete",
+    "TYPES": {
+      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "CONVERSATION_CREATION": "New conversation created",
+      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    },
+    "FILTERS": {
+      "SORT_BY": {
+        "TITLE": "Sort by",
+        "OPTIONS": {
+          "ASC": "Oldest",
+          "DESC": "Newest"
+        }
+      }
+    },
+    "ALERTS": {
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed",
+      "DELETE": "Notification deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted"
+    }
   },
   "AVAILABILITY": {
     "ONLINE": "آنلاین",
@@ -168,16 +328,25 @@
     "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "اطلاعات مکالمه",
+    "TITLE": "Attributes",
     "BROWSER": "مرورگر",
     "OPERATING_SYSTEM": "سیستم عامل",
     "INITIATED_AT": "شروع شده در",
     "INITIATED_FROM": "شروع شده از",
     "IP_ADDRESS": "آدرس آی‌پی",
+    "CONVERSATION_ID": "Conversation ID",
     "CLIPBOARD_SUCCESS": "کد به حافظه کپی شد"
   },
+  "CONTACT_DETAILS": {
+    "TITLE": "Contact Details",
+    "EMAIL": "ایمیل",
+    "PHONE_NUMBER": "Phone Number",
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "Contact Attributes",
+    "VALUE_UNAVAILABLE": "Unavailable"
+  },
   "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "شرکت کنندگان در گفتگو",
+    "TITLE": "Participants",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} نفر شرکت می کنند.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} نفر شرکت می کند.",
     "NO_PARTICIPANTS_TEXT": "هیچ کس شرکت نمی کند!.",
@@ -187,7 +356,8 @@
     "SELECT_PARTICIPANTS": "Select agents",
     "ADD_PARTICIPANTS": "شرکت کنندگان را انتخاب کنید",
     "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other"
+    "REMAINING_PARTICIPANT_TEXT": "other",
+    "ADD_PARTICIPANT": "Add Participant"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "ویژگی‌های تماس"
@@ -224,7 +394,7 @@
     "CHANGE_TEAMS": "تیم مکالمه تغییر کرد"
   },
   "ERRORS": {
-    "COMMON_ERROR": "متاسفانه ارتباط با سرور برقرار نشد، مجددا امتحان کنید",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
     "OfFLINE": "برای اتصال مجدد باید به وای فای یا شبکه تلفن همراه متصل شوید",
     "CANNOT_FETCH": "هنگام دریافت اطلاعات خطایی روی داد ، لطفاً دوباره امتحان کنید",
     "AUTH": "این نام کاربری و رمز عبور صحیح نیست",
@@ -245,18 +415,15 @@
     "OK": "باشه"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP": {
-      "TEXT": "شما فقط با استفاده از یک پیام الگو به این مکالمه می‌توانید پاسخ دهید ",
-      "HREF_TEXT": "محدودیت ۲۴ ساعته پنجره پیام",
-      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
-    },
-    "FACEBOOK": {
-      "TEXT": "شما نمی‌توانید پاسخ بدهید به دلیل ",
-      "HREF_TEXT": "محدودیت ۲۴ ساعته پنجره پیام",
-      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
-    }
+    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
+    "24_HOURS_WINDOW": "24 hour message window restriction",
+    "CANNOT_REPLY": "You cannot reply due to"
   },
   "SLA": {
+    "FRT": "FRT",
+    "NRT": "NRT",
+    "RT": "RT",
     "STATUS": {
       "FRT": "FRT %{status}",
       "NRT": "NRT %{status}",

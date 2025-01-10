@@ -10,8 +10,8 @@ import { FlashList } from '@shopify/flash-list';
 import { useAppKeyboardAnimation } from '@/utils';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
-import { MessageItem } from '../message-item';
 import { MessageComponent } from '../message-item/Message';
+// import { MessageItemContainer } from '../message-item/MessageItemContainer';
 import { useRefsContext } from '@/context';
 
 export type FlashListRenderProps = {
@@ -74,6 +74,7 @@ export const MessagesList = ({
         currentUserId={currentUserId}
       />
     );
+    // return <MessageItemContainer item={item} index={index} />;
   };
 
   const animatedFlashlistStyle = useAnimatedStyle(() => {

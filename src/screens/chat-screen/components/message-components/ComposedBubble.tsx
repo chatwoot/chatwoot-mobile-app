@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import Animated from 'react-native-reanimated';
 
-import { FileErrorIcon, LockIcon } from '@/svg-icons';
+import { FileErrorIcon } from '@/svg-icons';
 import { differenceInHours } from 'date-fns';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';

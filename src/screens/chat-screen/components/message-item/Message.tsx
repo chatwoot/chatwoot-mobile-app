@@ -34,9 +34,10 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { CopyIcon, Trash } from '@/svg-icons';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { tailwind } from '@/theme';
-import { View } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import { Avatar } from '@/components-next';
 import { ImageMetadata } from '@/types';
+
 type MessageComponentProps = {
   item: Message;
   index: number;
@@ -52,9 +53,9 @@ type MessageWrapperProps = {
   shouldGroupWithNext: boolean;
   shouldShowAvatar: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  avatarInfo: () => { name: string | null | undefined; src: any }; // Updated type
+  avatarInfo: { name: string | null | undefined; src: any }; // Updated type
   getMenuOptions: (message: Message) => MenuOption[];
-  variant: () => string;
+  variant: string;
   channel?: Channel;
 };
 
@@ -74,6 +75,7 @@ const variantBaseMap = {
   [MESSAGE_VARIANTS.TEMPLATE]: 'bg-blue-100',
   [MESSAGE_VARIANTS.ERROR]: 'bg-ruby-700',
   [MESSAGE_VARIANTS.EMAIL]: 'bg-gray-100',
+  [MESSAGE_VARIANTS.UNSUPPORTED]: 'bg-amber-100 border border-dashed border-amber-700',
 };
 
 const MessageWrapper = ({
@@ -96,6 +98,10 @@ const MessageWrapper = ({
     };
     return map[orientation];
   };
+
+  const windowWidth = Dimensions.get('window').width;
+  // 52 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (4)
+  const EMAIL_WIDTH = windowWidth - 52;
 
   return (
     <Animated.View
@@ -120,8 +126,8 @@ const MessageWrapper = ({
             style={[
               tailwind.style(
                 'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
-                `max-w-[${TEXT_MAX_WIDTH}px]`,
-                variantBaseMap[variant()],
+                `${variant === MESSAGE_VARIANTS.EMAIL ? `max-w-[${EMAIL_WIDTH}px]` : `max-w-[${TEXT_MAX_WIDTH}px]`}`,
+                variantBaseMap[variant],
                 shouldGroupWithNext && shouldGroupWithPrevious
                   ? orientation === ORIENTATION.LEFT
                     ? 'rounded-l-none'
@@ -148,7 +154,7 @@ const MessageWrapper = ({
                 <Animated.Text
                   style={tailwind.style(
                     'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
-                    variantTextMap[variant()],
+                    variantTextMap[variant],
                   )}>
                   {unixTimestampToReadableTime(item.createdAt)}
                 </Animated.Text>
@@ -191,7 +197,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
   const channel = conversation?.channel || conversation?.meta?.channel;
 
   const variant = () => {
-    if ('date' in item) return MESSAGE_VARIANTS.DATE;
     if (item.private) return MESSAGE_VARIANTS.PRIVATE;
     if (isEmailInbox) {
       const emailInboxTypes = [MESSAGE_TYPES.INCOMING, MESSAGE_TYPES.OUTGOING];
@@ -310,7 +315,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
   const avatarInfo = () => {
     if (!sender || sender.type === SENDER_TYPES.AGENT_BOT) {
       return {
-        name: 'Bot',
+        name: i18n.t('CONVERSATION.BOT'),
         src: require('../../../../assets/local/bot-avatar.png'),
       };
     }
@@ -329,7 +334,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
         return (
           <LocationBubble
             latitude={attachment.coordinatesLat ?? 0}
-            longitude={attachment.coordinatesLong ?? 0}
+            longitude={attachment.coordinatesLong ?? 0} 
             variant={variant()}
           />
         );
@@ -357,7 +362,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
     let messageContent;
     if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
       messageContent = <EmailBubble item={item} />;
-    } else if (props.isEmailInbox && !item.private) {
+    } else if (isEmailInbox && !item.private) {
       messageContent = <EmailBubble item={item} />;
     } else if (attachments?.length === 1 && !item.content && !isReplyMessage) {
       messageContent = renderSingleAttachment(attachments[0]);
@@ -376,9 +381,9 @@ export const MessageComponent = (props: MessageComponentProps) => {
         shouldGroupWithPrevious={shouldGroupWithPrevious()}
         shouldGroupWithNext={shouldGroupWithNext()}
         shouldShowAvatar={shouldShowAvatar()}
-        avatarInfo={avatarInfo}
+        avatarInfo={avatarInfo()}
         getMenuOptions={getMenuOptions}
-        variant={variant}
+        variant={variant()}
         channel={channel}>
         {messageContent}
       </MessageWrapper>

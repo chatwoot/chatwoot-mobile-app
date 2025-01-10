@@ -127,7 +127,7 @@ export const AudioBubblePlayer = (props: AudioPlayerProps) => {
   }, []);
 
   return (
-    <View style={tailwind.style('flex flex-row items-center flex-1')}>
+    <View style={tailwind.style('w-full flex flex-row items-center flex-1')}>
       <Pressable disabled={isSoundLoading} hitSlop={10} onPress={togglePlayback}>
         {isSoundLoading ? (
           <Animated.View>
@@ -173,5 +173,9 @@ export const AudioBubblePlayer = (props: AudioPlayerProps) => {
 export const AudioBubble: React.FC<AudioBubbleProps> = props => {
   const { audioSrc, variant } = props;
 
-  return <AudioBubblePlayer audioSrc={audioSrc} variant={variant} />;
+  return (
+    <Animated.View style={tailwind.style('w-full flex flex-row items-center')}>
+      <AudioBubblePlayer audioSrc={audioSrc} variant={variant} />
+    </Animated.View>
+  );
 };

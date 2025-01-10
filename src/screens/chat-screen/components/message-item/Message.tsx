@@ -11,16 +11,16 @@ import {
   DeliveryStatus,
   TextBubble,
   ActivityBubble,
-  LocationBubble,
-  ImageBubble,
-  AudioBubble,
-  VideoBubble,
-  FileBubble,
+  // LocationBubble,
+  // ImageBubble,
+  // AudioBubble,
+  // VideoBubble,
+  // FileBubble,
   EmailBubble,
 } from '../message-components';
 import { showToast } from '@/helpers/ToastHelper';
 import {
-  ATTACHMENT_TYPES,
+  // ATTACHMENT_TYPES,
   MESSAGE_STATUS,
   MESSAGE_VARIANTS,
   ORIENTATION,
@@ -36,7 +36,7 @@ import { MenuOption, MessageMenu } from '../message-menu';
 import { tailwind } from '@/theme';
 import { Dimensions, View } from 'react-native';
 import { Avatar } from '@/components-next';
-import { ImageMetadata } from '@/types';
+// import { ImageMetadata } from '@/types';
 
 type MessageComponentProps = {
   item: Message;
@@ -328,28 +328,28 @@ export const MessageComponent = (props: MessageComponentProps) => {
     };
   };
 
-  const renderSingleAttachment = (attachment: ImageMetadata) => {
-    switch (attachment.fileType) {
-      case ATTACHMENT_TYPES.LOCATION:
-        return (
-          <LocationBubble
-            latitude={attachment.coordinatesLat ?? 0}
-            longitude={attachment.coordinatesLong ?? 0}
-            variant={variant()}
-          />
-        );
-      case ATTACHMENT_TYPES.IMAGE:
-        return <ImageBubble imageSrc={attachment.dataUrl} />;
-      case ATTACHMENT_TYPES.AUDIO:
-        return <AudioBubble audioSrc={attachment.dataUrl} variant={variant()} />;
-      case ATTACHMENT_TYPES.VIDEO:
-        return <VideoBubble videoSrc={attachment.dataUrl} />;
-      case ATTACHMENT_TYPES.FILE:
-        return <FileBubble fileSrc={attachment.dataUrl} variant={variant()} />;
-      default:
-        return <TextBubble item={item} variant={variant()} />;
-    }
-  };
+  // const renderSingleAttachment = (attachment: ImageMetadata) => {
+  //   switch (attachment.fileType) {
+  //     case ATTACHMENT_TYPES.LOCATION:
+  //       return (
+  //         <LocationBubble
+  //           latitude={attachment.coordinatesLat ?? 0}
+  //           longitude={attachment.coordinatesLong ?? 0}
+  //           variant={variant()}
+  //         />
+  //       );
+  //     case ATTACHMENT_TYPES.IMAGE:
+  //       return <ImageBubble imageSrc={attachment.dataUrl} />;
+  //     case ATTACHMENT_TYPES.AUDIO:
+  //       return <AudioBubble audioSrc={attachment.dataUrl} variant={variant()} />;
+  //     case ATTACHMENT_TYPES.VIDEO:
+  //       return <VideoBubble videoSrc={attachment.dataUrl} />;
+  //     case ATTACHMENT_TYPES.FILE:
+  //       return <FileBubble fileSrc={attachment.dataUrl} variant={variant()} />;
+  //     default:
+  //       return <TextBubble item={item} variant={variant()} />;
+  //   }
+  // };
 
   const renderMessageContent = () => {
     if (messageType === MESSAGE_TYPES.ACTIVITY) {
@@ -364,9 +364,12 @@ export const MessageComponent = (props: MessageComponentProps) => {
       messageContent = <EmailBubble item={item} variant={variant()} />;
     } else if (isEmailInbox && !item.private) {
       messageContent = <EmailBubble item={item} variant={variant()} />;
-    } else if (attachments?.length === 1 && !item.content && !isReplyMessage) {
-      messageContent = renderSingleAttachment(attachments[0]);
-    } else if (attachments?.length >= 1 || isReplyMessage) {
+    }
+    // TODO: remove this once we have a proper way to render single attachments
+    // else if (attachments?.length === 1 && !item.content && !isReplyMessage) {
+    //   messageContent = renderSingleAttachment(attachments[0]);
+    // }
+    else if (attachments?.length >= 1 || isReplyMessage) {
       messageContent = <ComposedBubble item={item} variant={variant()} />;
     } else if (item.content) {
       messageContent = <TextBubble item={item} variant={variant()} />;

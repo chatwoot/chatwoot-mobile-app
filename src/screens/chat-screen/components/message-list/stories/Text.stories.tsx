@@ -37,7 +37,7 @@ const mockConversationSlice = createSlice({
       29: {
         id: 29,
         status: 'open',
-        messages: ALL_MESSAGES_MOCKDATA, 
+        messages: ALL_MESSAGES_MOCKDATA,
       },
     },
   },

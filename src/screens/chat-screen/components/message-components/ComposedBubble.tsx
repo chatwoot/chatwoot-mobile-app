@@ -19,6 +19,7 @@ import { MarkdownBubble } from './MarkdownBubble';
 import { FileBubblePreview } from './FileBubble';
 import { AudioBubble } from './AudioBubble';
 import { VideoBubble } from './VideoBubble';
+import { LocationBubble } from './LocationBubble';
 type ComposedBubbleProps = {
   item: Message;
   variant: string;
@@ -120,6 +121,21 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
                 </Animated.View>
               );
             }
+
+            if (attachment.fileType === 'location') {
+              return (
+                <Animated.View
+                  key={attachment.fileType + index}
+                  style={tailwind.style('flex flex-row items-center my-2')}>
+                  <LocationBubble
+                    latitude={attachment.coordinatesLat}
+                    longitude={attachment.coordinatesLong}
+                    variant={props.variant}
+                  />
+                </Animated.View>
+              );
+            }
+
             return null;
           })}
       </Animated.View>

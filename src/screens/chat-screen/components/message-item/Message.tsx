@@ -334,7 +334,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
         return (
           <LocationBubble
             latitude={attachment.coordinatesLat ?? 0}
-            longitude={attachment.coordinatesLong ?? 0} 
+            longitude={attachment.coordinatesLong ?? 0}
             variant={variant()}
           />
         );
@@ -361,9 +361,9 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
     let messageContent;
     if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
-      messageContent = <EmailBubble item={item} />;
+      messageContent = <EmailBubble item={item} variant={variant()} />;
     } else if (isEmailInbox && !item.private) {
-      messageContent = <EmailBubble item={item} />;
+      messageContent = <EmailBubble item={item} variant={variant()} />;
     } else if (attachments?.length === 1 && !item.content && !isReplyMessage) {
       messageContent = renderSingleAttachment(attachments[0]);
     } else if (attachments?.length >= 1 || isReplyMessage) {

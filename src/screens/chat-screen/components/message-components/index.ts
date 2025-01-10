@@ -9,3 +9,9 @@ export * from './PrivateTextCell';
 export * from './ReplyMessageCell';
 export * from './DeliveryStatus';
 export * from './EmailMessageCell';
+
+// New components
+export * from './TextBubble';
+export * from './ActivityBubble';
+export * from './MarkdownBubble';
+export * from './ComposedBubble';

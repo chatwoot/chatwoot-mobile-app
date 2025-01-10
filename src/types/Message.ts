@@ -62,6 +62,7 @@ export type MessageContentAttributes = {
   externalError: string;
   imageType: string;
   contentType: ContentType;
+  isUnsupported: boolean;
 };
 
 export interface Message {
@@ -82,4 +83,8 @@ export interface Message {
   lastNonActivityMessage: Message | null;
   conversation?: Conversation | null;
   shouldRenderAvatar?: boolean | false;
+  senderId: number;
+  groupWithNext?: boolean;
+  groupWithPrevious?: boolean;
+  senderType?: string;
 }

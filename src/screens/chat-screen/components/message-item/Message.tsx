@@ -9,7 +9,15 @@ import { conversationActions } from '@/store/conversation/conversationActions';
 import { unixTimestampToReadableTime, useHaptic } from '@/utils';
 // import { inboxHasFeature, is360DialogWhatsAppChannel, useHaptic } from '@/utils';
 // import { INBOX_FEATURES } from '@/constants';
-import { ComposedBubble, DeliveryStatus, TextBubble } from '../message-components';
+import {
+  ComposedBubble,
+  DeliveryStatus,
+  TextBubble,
+  EmailMessageCell,
+  ActivityBubble,
+  LocationBubble,
+  ImageBubble,
+} from '../message-components';
 import { showToast } from '@/helpers/ToastHelper';
 import {
   ATTACHMENT_TYPES,
@@ -19,23 +27,13 @@ import {
   SENDER_TYPES,
   TEXT_MAX_WIDTH,
 } from '@/constants';
-import { LocationCell } from '../message-components/LocationCell';
+
 import { CONTENT_TYPES } from '@/constants';
 import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { MESSAGE_TYPES } from '@/constants';
 import { CopyIcon, Trash } from '@/svg-icons';
 import { MenuOption, MessageMenu } from '../message-menu';
-
-import {
-  AudioCell,
-  ComposedCell,
-  EmailMessageCell,
-  FileCell,
-  ImageCell,
-  VideoCell,
-  ActivityBubble,
-} from '../message-components';
 
 import { tailwind } from '@/theme';
 import { View } from 'react-native';
@@ -311,41 +309,106 @@ export const MessageComponent = (props: MessageComponentProps) => {
   //   return InstagramStoryBubble;
   // }
 
-  // // Message has only one attachment, no content and not a reply message
-  // if (attachments?.length === 1 && !item.content && !isReplyMessage) {
-  //   const commonProps = {
-  //     sender: item.sender,
-  //     timeStamp: item.createdAt,
-  //     shouldRenderAvatar: !!item.shouldRenderAvatar,
-  //     messageType: item.messageType,
-  //     status: item.status,
-  //     isPrivate: !!item.private,
-  //     channel,
-  //     sourceId: item.sourceId,
-  //     menuOptions: getMenuOptions(item),
-  //   };
-
-  //   switch (attachments[0].fileType) {
-  //     case ATTACHMENT_TYPES.IMAGE:
-  //       return <ImageCell {...commonProps} imageSrc={attachments[0].dataUrl} />;
-  //     case ATTACHMENT_TYPES.AUDIO:
-  //       return <AudioCell {...commonProps} audioSrc={attachments[0].dataUrl} />;
-  //     case ATTACHMENT_TYPES.VIDEO:
-  //       return <VideoCell {...commonProps} videoSrc={attachments[0].dataUrl} />;
-  //     case ATTACHMENT_TYPES.FILE:
-  //       return <FileCell {...commonProps} fileSrc={attachments[0].dataUrl} />;
-  //     case ATTACHMENT_TYPES.LOCATION:
-  //       return (
-  //         <LocationCell
-  //           {...commonProps}
-  //           latitude={attachments[0].coordinatesLat ?? 0}
-  //           longitude={attachments[0].coordinatesLong ?? 0}
-  //         />
-  //       );
-  //     default:
-  //       return null;
-  //   }
-  // }
+  // Message has only one attachment, no content and not a reply message
+  if (attachments?.length === 1 && !item.content && !isReplyMessage) {
+    return (
+      <Animated.View
+        entering={FadeIn.duration(350)}
+        style={[
+          tailwind.style(
+            'my-[1px]',
+            flexOrientationClass(),
+            shouldGroupWithPrevious() && orientation() === ORIENTATION.LEFT ? 'ml-7' : '',
+            !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
+            item.private ? 'my-2' : '',
+          ),
+        ]}>
+        <Animated.View style={tailwind.style('flex flex-row')}>
+          {!shouldGroupWithPrevious() && shouldShowAvatar() ? (
+            <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
+              <Avatar size={'md'} src={avatarInfo().src} name={avatarInfo().name || ''} />
+            </Animated.View>
+          ) : null}
+          <MessageMenu menuOptions={getMenuOptions(item)}>
+            <Animated.View
+              style={[
+                tailwind.style(
+                  'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
+                  `max-w-[${TEXT_MAX_WIDTH}px]`,
+                  variantBaseMap[variant()],
+                  shouldGroupWithNext() && shouldGroupWithPrevious()
+                    ? orientation() === ORIENTATION.LEFT
+                      ? 'rounded-l-none'
+                      : 'rounded-r-none'
+                    : '',
+                  shouldGroupWithNext() && !shouldGroupWithPrevious()
+                    ? orientation() === ORIENTATION.LEFT
+                      ? 'rounded-tl-none'
+                      : 'rounded-tr-none'
+                    : '',
+                  !shouldGroupWithNext() && shouldGroupWithPrevious()
+                    ? orientation() === ORIENTATION.LEFT
+                      ? 'rounded-bl-none'
+                      : 'rounded-br-none'
+                    : '',
+                ),
+              ]}>
+              {attachments[0].fileType === ATTACHMENT_TYPES.LOCATION && (
+                <LocationBubble
+                  latitude={attachments[0].coordinatesLat ?? 0}
+                  longitude={attachments[0].coordinatesLong ?? 0}
+                  variant={variant()}
+                />
+              )}
+              {attachments[0].fileType === ATTACHMENT_TYPES.IMAGE && (
+                <ImageBubble imageSrc={attachments[0].dataUrl} />
+              )}
+              {/* {attachments[0].fileType === ATTACHMENT_TYPES.AUDIO && (
+                <AudioCell audioSrc={attachments[0].dataUrl} variant={variant()} />
+              )}
+              {attachments[0].fileType === ATTACHMENT_TYPES.VIDEO && (
+                <VideoCell videoSrc={attachments[0].dataUrl} variant={variant()} />
+              )}
+              {attachments[0].fileType === ATTACHMENT_TYPES.FILE && (
+                <FileCell fileSrc={attachments[0].dataUrl} variant={variant()} />
+              )} */}
+              {![
+                ATTACHMENT_TYPES.LOCATION,
+                ATTACHMENT_TYPES.IMAGE,
+                ATTACHMENT_TYPES.AUDIO,
+                ATTACHMENT_TYPES.VIDEO,
+                ATTACHMENT_TYPES.FILE,
+              ].includes(attachments[0].fileType) && <TextBubble item={item} variant={variant()} />}
+              {!shouldGroupWithPrevious() && (
+                <Animated.View
+                  style={tailwind.style(
+                    'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',
+                  )}>
+                  <Animated.Text
+                    style={tailwind.style(
+                      'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
+                      variantTextMap[variant()],
+                    )}>
+                    {unixTimestampToReadableTime(item.createdAt)}
+                  </Animated.Text>
+                  <DeliveryStatus
+                    isPrivate={item.private}
+                    status={item.status}
+                    messageType={item.messageType}
+                    channel={channel}
+                    sourceId={item.sourceId}
+                    errorMessage={item.contentAttributes?.externalError || ''}
+                    deliveredColor="text-gray-700"
+                    sentColor="text-gray-700"
+                  />
+                </Animated.View>
+              )}
+            </Animated.View>
+          </MessageMenu>
+        </Animated.View>
+      </Animated.View>
+    );
+  }
 
   if (attachments?.length >= 1 || isReplyMessage) {
     return (

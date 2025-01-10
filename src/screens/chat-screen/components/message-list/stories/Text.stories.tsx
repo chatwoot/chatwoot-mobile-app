@@ -10,7 +10,7 @@ import { MessagesList } from '../MessagesList';
 import { LightBoxProvider } from '@alantoa/lightbox';
 import { ChatWindowProvider, RefsProvider } from '@/context';
 import { Provider } from 'react-redux';
-import { TEXT_ONLY } from './mock-data/textOnly';
+import { TEXT_ONLY } from './mock-data/simpleText';
 import { getAllGroupedMessages } from './mock-data/helper';
 
 const ALL_MESSAGES_MOCKDATA = getAllGroupedMessages(TEXT_ONLY);

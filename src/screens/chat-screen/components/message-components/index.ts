@@ -17,3 +17,5 @@ export * from './MarkdownBubble';
 export * from './ComposedBubble';
 export * from './FileBubble';
 export * from './AudioBubble';
+export * from './LocationBubble';
+export * from './ImageBubble';

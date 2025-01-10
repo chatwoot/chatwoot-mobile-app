@@ -2,10 +2,20 @@ import { type AvailabilityStatus } from './common/AvailabilityStatus';
 import { type UnixTimestamp } from './common/UnixTimestamp';
 
 export interface Contact {
-  additionalAttributes: object;
+  additionalAttributes: {
+    location?: string;
+    companyName?: string;
+    city?: string;
+    country?: string;
+    description?: string;
+    createdAtIp?: string;
+    socialProfiles?: Record<string, string>;
+    twitterScreenName?: string;
+    telegramUsername?: string;
+  };
   availabilityStatus?: AvailabilityStatus;
   createdAt: UnixTimestamp;
-  customAttributes: object;
+  customAttributes: Record<string, string>;
   email: string | null;
   id: number;
   identifier: string | null;
@@ -13,6 +23,4 @@ export interface Contact {
   name: string | null;
   phoneNumber: string | null;
   thumbnail: string | null;
-  // Missing attribute in the payload
-  // contactInboxes: ContactInbox[] | null;
 }

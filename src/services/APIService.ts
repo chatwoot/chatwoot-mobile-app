@@ -5,11 +5,16 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
-import { store } from '@/store';
+import { getStore } from '@/store/storeAccessor';
 import I18n from '@/i18n';
 import { showToast } from '@/helpers/ToastHelper';
 
-const nonAccountRoutes = ['profile', 'profile/availability'];
+const nonAccountRoutes = [
+  'profile',
+  'profile/availability',
+  'notification_subscriptions',
+  'profile/set_active_account',
+];
 
 class APIService {
   private static instance: APIService;
@@ -27,6 +32,7 @@ class APIService {
   }
 
   private getHeaders() {
+    const store = getStore();
     const state = store.getState();
     const headers = state.auth.headers;
     if (!headers) return {};
@@ -42,6 +48,7 @@ class APIService {
     this.api.interceptors.request.use(
       async (config: AxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
         const headers = this.getHeaders();
+        const store = getStore();
         const state = store.getState();
         config.baseURL = state.settings?.installationUrl;
         const accountId = state.auth.user?.account_id;
@@ -65,6 +72,7 @@ class APIService {
       (response: AxiosResponse) => response,
       async (error: AxiosError) => {
         if (error.response?.status === 401) {
+          const store = getStore();
           store.dispatch({ type: 'auth/logout' });
         } else {
           showToast({ message: I18n.t('ERRORS.COMMON_ERROR') });

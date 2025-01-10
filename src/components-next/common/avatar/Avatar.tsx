@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { ImageProps, ImageSourcePropType, Text, View, ViewProps } from 'react-native';
+import {
+  ImageProps,
+  ImageSourcePropType,
+  ImageURISource,
+  Text,
+  View,
+  ViewProps,
+} from 'react-native';
 
 import { avatarTheme, tailwind } from '@/theme';
 import { Channel } from '@/types';
@@ -11,13 +18,26 @@ import { AvatarStatus } from './AvatarStatus';
 export type AvatarSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
 export type AvatarStatusType = 'online' | 'away' | 'offline' | 'typing';
 
+export const removeEmoji = (text: string) => {
+  if (text) {
+    return text
+      .replace(
+        /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g,
+        '',
+      )
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+  return '';
+};
+
 function getInitials(name: string, size: AvatarSizes) {
-  if (!name) {
+  const userNameWithoutEmoji = removeEmoji(name).trimStart();
+  if (!userNameWithoutEmoji) {
     return;
   }
-  const [firstName, lastName] = name.split(' ');
+  const [firstName, lastName] = userNameWithoutEmoji.split(' ');
   const oneLetterInitialSizes = ['xs', 'sm', 'md'];
-
   const initials =
     firstName && lastName
       ? `${firstName.charAt(0)}${lastName.charAt(0)}`
@@ -106,7 +126,7 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
         <AvatarImage
           size={size}
           imageProps={imageProps}
-          src={src}
+          src={src as ImageURISource}
           squared={isSquared}
           handleFallback={loadFallback}
         />

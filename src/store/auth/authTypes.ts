@@ -35,3 +35,9 @@ export interface ApiErrorResponse {
   success: boolean;
   errors: string[];
 }
+
+export interface SetActiveAccountPayload {
+  profile: {
+    account_id: number;
+  };
+}

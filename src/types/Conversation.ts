@@ -1,19 +1,19 @@
 import { type Agent } from './Agent';
 import { Channel, ConversationPriority, ConversationStatus, UnixTimestamp } from './common';
-import { SLA } from './common/SLA';
+import { SLA, SLAEvent } from './common/SLA';
 import { Contact } from './Contact';
 import { Message } from './Message';
 import { Team } from './Team';
 
 export interface Conversation {
   accountId: number;
-  additionalAttributes: object;
+  additionalAttributes: ConversationAdditionalAttributes;
   agentLastSeenAt: UnixTimestamp;
   assigneeLastSeenAt: UnixTimestamp;
   canReply: boolean;
   contactLastSeenAt: UnixTimestamp;
   createdAt: UnixTimestamp;
-  customAttributes: object;
+  customAttributes: Record<string, string>;
   firstReplyCreatedAt: UnixTimestamp;
   id: number;
   inboxId: number;
@@ -27,6 +27,8 @@ export interface Conversation {
   uuid: string;
   waitingSince: UnixTimestamp;
 
+  channel?: Channel;
+
   messages: Message[];
 
   lastNonActivityMessage: Message | null;
@@ -39,6 +41,8 @@ export interface Conversation {
   slaPolicyId: number | null;
 
   appliedSla: SLA | null;
+
+  slaEvents: SLAEvent[];
 }
 
 export interface ConversationListMeta {
@@ -48,13 +52,24 @@ export interface ConversationListMeta {
 }
 
 export interface ConversationAdditionalAttributes {
+  browser?: {
+    deviceName: string;
+    browserName: string;
+    platformName: string;
+    browserVersion: string;
+    platformVersion: string;
+  };
+  referer?: string;
+  initiatedAt?: {
+    timestamp: string;
+  };
+  browserLanguage?: string;
   type?: string;
 }
-
 export interface ConversationMeta {
   sender: Contact;
   assignee: Agent;
-  team: Team;
+  team: Team | null;
   hmacVerified: boolean | null;
   channel: Channel;
 }

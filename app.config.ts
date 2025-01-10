@@ -4,7 +4,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'Chatwoot',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
-    version: '1.10.52',
+    version: '1.10.55',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
@@ -31,6 +31,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       entitlements: {
         'aps-environment': 'production',
       },
+      associatedDomains: ['applinks:app.chatwoot.com'],
     },
     android: {
       adaptiveIcon: {
@@ -46,6 +47,21 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       ],
       // Please use the relative path to the google-services.json file
       googleServicesFile: process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE,
+      intentFilters: [
+        {
+          action: 'VIEW',
+          autoVerify: true,
+          data: [
+            {
+              scheme: 'https',
+              host: 'app.chatwoot.com',
+              pathPrefix: '/app/accounts/',
+              pathPattern: '/*/conversations/*',
+            },
+          ],
+          category: ['BROWSABLE', 'DEFAULT'],
+        },
+      ],
     },
     extra: {
       eas: {
@@ -74,11 +90,20 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       [
         'expo-build-properties',
         {
+          // https://github.com/invertase/notifee/issues/808#issuecomment-2175934609
+          android: {
+            compileSdkVersion: 34,
+            targetSdkVersion: 34,
+            extraMavenRepos: ['$rootDir/../../../node_modules/@notifee/react-native/android/libs'],
+          },
           ios: {
             useFrameworks: 'static',
           },
         },
       ],
     ],
+    androidNavigationBar: {
+      backgroundColor: '#ffffff',
+    },
   };
 };

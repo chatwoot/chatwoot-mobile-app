@@ -17,6 +17,7 @@ import {
   MESSAGE_VARIANTS,
   ORIENTATION,
   SENDER_TYPES,
+  TEXT_MAX_WIDTH,
 } from '@/constants';
 import { LocationCell } from '../message-components/LocationCell';
 import { CONTENT_TYPES } from '@/constants';
@@ -230,7 +231,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
     return (
       senderTypeValue.toLowerCase() === SENDER_TYPES.USER.toLowerCase() &&
-      props.currentUserId === senderIdentifier
+      currentUserId === senderIdentifier
     );
   };
 
@@ -370,6 +371,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
               style={[
                 tailwind.style(
                   'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
+                  `max-w-[${TEXT_MAX_WIDTH}px]`,
                   variantBaseMap[variant()],
                   shouldGroupWithNext() && shouldGroupWithPrevious()
                     ? orientation() === ORIENTATION.LEFT
@@ -388,11 +390,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
                     : '',
                 ),
               ]}>
-              <ComposedBubble
-                messageData={item}
-                channel={channel}
-                menuOptions={getMenuOptions(item)}
-              />
+              <ComposedBubble item={item} variant={variant()} />
               {!shouldGroupWithPrevious() && (
                 <Animated.View
                   style={tailwind.style(
@@ -448,6 +446,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
               style={[
                 tailwind.style(
                   'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
+                  `max-w-[${TEXT_MAX_WIDTH}px]`,
                   variantBaseMap[variant()],
                   shouldGroupWithNext() && shouldGroupWithPrevious()
                     ? orientation() === ORIENTATION.LEFT

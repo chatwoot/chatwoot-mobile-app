@@ -37,7 +37,7 @@ const mockConversationSlice = createSlice({
       29: {
         id: 29,
         status: 'open',
-        messages: ALL_MESSAGES_MOCKDATA,
+        messages: ALL_MESSAGES_MOCKDATA, 
       },
     },
   },
@@ -74,6 +74,8 @@ export const TextOnly: Story = {
                       style={tailwind.style('flex-1 bg-white border border-red-500')}
                       interpolator="linear">
                       <MessagesList
+                        currentUserId={1}
+                        isEmailInbox={false}
                         messages={ALL_MESSAGES_MOCKDATA}
                         isFlashListReady={false}
                         setFlashListReady={() => {}}

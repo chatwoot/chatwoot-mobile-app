@@ -11,7 +11,7 @@ import { Icon } from '@/components-next';
 import { MarkdownBubble } from './MarkdownBubble';
 import { MESSAGE_VARIANTS, TEXT_MAX_WIDTH } from '@/constants';
 
-type ReplyMessageCellProps = {
+type ReplyMessageBubbleProps = {
   replyMessage: Message;
   variant: string;
 };
@@ -21,7 +21,7 @@ const variantBaseMap = {
   [MESSAGE_VARIANTS.USER]: 'bg-blackA-A7',
 };
 
-export const ReplyMessageCell = (props: ReplyMessageCellProps) => {
+export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
   const replyMessageItem = props.replyMessage as Message;
 
   const { messageListRef } = useRefsContext();

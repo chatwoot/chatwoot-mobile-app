@@ -1,34 +1,26 @@
 import React, { useMemo } from 'react';
-import { Text, Dimensions } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 
 import { FileErrorIcon, LockIcon } from '@/svg-icons';
 import { differenceInHours } from 'date-fns';
 import { tailwind } from '@/theme';
-import { Channel, Message } from '@/types';
-import { unixTimestampToReadableTime } from '@/utils';
-import { Avatar, Icon } from '@/components-next';
-import { MarkdownDisplay } from './MarkdownDisplay';
-import { MenuOption, MessageMenu } from '../message-menu';
+import { Message } from '@/types';
+import { Icon } from '@/components-next';
 import { ReplyMessageBubble } from './ReplyMessageBubble';
-import { INBOX_TYPES, MESSAGE_TYPES, TEXT_MAX_WIDTH } from '@/constants';
 
-import { AudioPlayer } from './AudioCell';
-import { FilePreview } from './FileCell';
 import { ImageContainer } from './ImageCell';
-import { VideoPlayer } from './VideoCell';
-import { DeliveryStatus } from './DeliveryStatus';
+
 import { useAppSelector } from '@/hooks';
 import { useChatWindowContext } from '@/context';
 import { getMessagesByConversationId } from '@/store/conversation/conversationSelectors';
 import { ATTACHMENT_TYPES } from '@/constants';
 import i18n from '@/i18n';
 import { MarkdownBubble } from './MarkdownBubble';
-
+import { FileBubblePreview } from './FileBubble';
+import { AudioBubble } from './AudioBubble';
+import { VideoBubble } from './VideoBubble';
 type ComposedBubbleProps = {
-  messageData: Message;
-  channel?: Channel;
-  menuOptions: MenuOption[];
+  item: Message;
   variant: string;
 };
 
@@ -41,19 +33,10 @@ const isMessageCreatedAtLessThan24HoursOld = (messageTimestamp: number) => {
 };
 
 export const ComposedBubble = (props: ComposedBubbleProps) => {
-  const {
-    messageType,
-    content,
-    private: isPrivate,
-    createdAt,
-    contentAttributes,
-  } = props.messageData as Message;
+  const { content, private: isPrivate, createdAt, contentAttributes } = props.item as Message;
   const { conversationId } = useChatWindowContext();
 
   const messages = useAppSelector(state => getMessagesByConversationId(state, { conversationId }));
-
-  const isIncoming = messageType === MESSAGE_TYPES.INCOMING;
-  const isOutgoing = messageType === MESSAGE_TYPES.OUTGOING;
 
   const isReplyMessage = useMemo(
     () => contentAttributes?.inReplyTo !== undefined,
@@ -77,21 +60,12 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
         <Animated.View style={tailwind.style('w-[3px] bg-amber-700 h-auto rounded-[4px]')} />
       ) : null}
       <Animated.View style={tailwind.style(isPrivate ? 'pl-2.5' : '')}>
-        {/* {isReplyMessage && replyMessage ? (
+        {isReplyMessage && replyMessage ? (
           <ReplyMessageBubble replyMessage={replyMessage} variant={props.variant} />
-        ) : null} */}
+        ) : null}
         {content && <MarkdownBubble messageContent={content} variant={props.variant} />}
-        {props.messageData.attachments &&
-          props.messageData.attachments.map((attachment, index) => {
-            // if (attachment.fileType === 'audio') {
-            //   return (
-            //     <Animated.View
-            //       key={attachment.fileType + index}
-            //       style={tailwind.style('flex-1 py-3 px-2 rounded-xl my-2')}>
-            //       <AudioPlayer audioSrc={attachment.dataUrl} {...{ isIncoming, isOutgoing }} />
-            //     </Animated.View>
-            //   );
-            // }
+        {props.item.attachments &&
+          props.item.attachments.map((attachment, index) => {
             if (attachment.fileType === 'image') {
               return isAnInstagramStory && isInstagramStoryExpired ? (
                 <Animated.View
@@ -114,28 +88,38 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
                 </Animated.View>
               );
             }
-            // if (attachment.fileType === 'file') {
-            //   return (
-            //     <Animated.View
-            //       key={attachment.fileType + index}
-            //       style={tailwind.style('flex flex-row items-center relative max-w-[300px] my-2')}>
-            //       <FilePreview
-            //         fileSrc={attachment.dataUrl}
-            //         isComposed
-            //         {...{ isIncoming, isOutgoing }}
-            //       />
-            //     </Animated.View>
-            //   );
-            // }
-            // if (attachment.fileType === 'video') {
-            //   return (
-            //     <Animated.View
-            //       key={attachment.fileType + index}
-            //       style={tailwind.style('flex flex-row items-center my-2')}>
-            //       <VideoPlayer videoSrc={attachment.dataUrl} />
-            //     </Animated.View>
-            //   );
-            // }
+
+            if (attachment.fileType === 'file') {
+              return (
+                <Animated.View
+                  key={attachment.fileType + index}
+                  style={tailwind.style('flex flex-row items-center relative max-w-[300px] my-2')}>
+                  <FileBubblePreview
+                    fileSrc={attachment.dataUrl}
+                    isComposed
+                    variant={props.variant}
+                  />
+                </Animated.View>
+              );
+            }
+            if (attachment.fileType === 'video') {
+              return (
+                <Animated.View
+                  key={attachment.fileType + index}
+                  style={tailwind.style('flex flex-row items-center my-2')}>
+                  <VideoBubble videoSrc={attachment.dataUrl} />
+                </Animated.View>
+              );
+            }
+            if (attachment.fileType === 'audio') {
+              return (
+                <Animated.View
+                  key={attachment.fileType + index}
+                  style={tailwind.style('flex flex-row items-center my-2')}>
+                  <AudioBubble audioSrc={attachment.dataUrl} variant={props.variant} />
+                </Animated.View>
+              );
+            }
             return null;
           })}
       </Animated.View>

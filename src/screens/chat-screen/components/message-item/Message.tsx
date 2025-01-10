@@ -289,12 +289,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
     return <ActivityBubble text={item.content} timeStamp={item.createdAt} />;
   }
 
-  // if (props.isEmailInbox && !item.private) {
-  //   const emailInboxTypes = [MESSAGE_TYPES.INCOMING, MESSAGE_TYPES.OUTGOING];
-  //   if (emailInboxTypes.includes(messageType))
-  //     return <EmailMessageCell item={item} channel={channel} menuOptions={getMenuOptions(item)} />;
-  // }
-
   if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
     return (
       <Animated.View

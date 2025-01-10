@@ -8,7 +8,7 @@ import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { isMarkdown } from '@/utils';
 import { Icon } from '@/components-next';
-import { MarkdownDisplay } from './MarkdownDisplay';
+import { MarkdownBubble } from './MarkdownBubble';
 import { MESSAGE_VARIANTS, TEXT_MAX_WIDTH } from '@/constants';
 
 type ReplyMessageCellProps = {
@@ -88,11 +88,9 @@ export const ReplyMessageCell = (props: ReplyMessageCellProps) => {
 
           {replyMessageItem?.content ? (
             isMarkdown(replyMessageItem?.content) ? (
-              <MarkdownDisplay
-                // style={tailwind.style(
-                //   "text-[14px] font-inter-normal-20 leading-[19.6px] tracking-[0.16px] text-gray-950",
-                // )}
+              <MarkdownBubble
                 messageContent={replyMessageItem?.content?.split('\n')?.[0]}
+                variant={props.variant}
               />
             ) : (
               <Animated.Text

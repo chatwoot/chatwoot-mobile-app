@@ -23,6 +23,8 @@ export default (() => {
     return require('./.storybook').default;
   }
 
+  return require('./.storybook').default;
+
   if (!__DEV__) {
     return Sentry.wrap(App);
   }

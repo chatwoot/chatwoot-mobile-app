@@ -77,21 +77,21 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
         <Animated.View style={tailwind.style('w-[3px] bg-amber-700 h-auto rounded-[4px]')} />
       ) : null}
       <Animated.View style={tailwind.style(isPrivate ? 'pl-2.5' : '')}>
-        {isReplyMessage && replyMessage ? (
+        {/* {isReplyMessage && replyMessage ? (
           <ReplyMessageBubble replyMessage={replyMessage} variant={props.variant} />
-        ) : null}
+        ) : null} */}
         {content && <MarkdownBubble messageContent={content} variant={props.variant} />}
         {props.messageData.attachments &&
           props.messageData.attachments.map((attachment, index) => {
-            if (attachment.fileType === 'audio') {
-              return (
-                <Animated.View
-                  key={attachment.fileType + index}
-                  style={tailwind.style('flex-1 py-3 px-2 rounded-xl my-2')}>
-                  <AudioPlayer audioSrc={attachment.dataUrl} {...{ isIncoming, isOutgoing }} />
-                </Animated.View>
-              );
-            }
+            // if (attachment.fileType === 'audio') {
+            //   return (
+            //     <Animated.View
+            //       key={attachment.fileType + index}
+            //       style={tailwind.style('flex-1 py-3 px-2 rounded-xl my-2')}>
+            //       <AudioPlayer audioSrc={attachment.dataUrl} {...{ isIncoming, isOutgoing }} />
+            //     </Animated.View>
+            //   );
+            // }
             if (attachment.fileType === 'image') {
               return isAnInstagramStory && isInstagramStoryExpired ? (
                 <Animated.View
@@ -114,28 +114,28 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
                 </Animated.View>
               );
             }
-            if (attachment.fileType === 'file') {
-              return (
-                <Animated.View
-                  key={attachment.fileType + index}
-                  style={tailwind.style('flex flex-row items-center relative max-w-[300px] my-2')}>
-                  <FilePreview
-                    fileSrc={attachment.dataUrl}
-                    isComposed
-                    {...{ isIncoming, isOutgoing }}
-                  />
-                </Animated.View>
-              );
-            }
-            if (attachment.fileType === 'video') {
-              return (
-                <Animated.View
-                  key={attachment.fileType + index}
-                  style={tailwind.style('flex flex-row items-center my-2')}>
-                  <VideoPlayer videoSrc={attachment.dataUrl} />
-                </Animated.View>
-              );
-            }
+            // if (attachment.fileType === 'file') {
+            //   return (
+            //     <Animated.View
+            //       key={attachment.fileType + index}
+            //       style={tailwind.style('flex flex-row items-center relative max-w-[300px] my-2')}>
+            //       <FilePreview
+            //         fileSrc={attachment.dataUrl}
+            //         isComposed
+            //         {...{ isIncoming, isOutgoing }}
+            //       />
+            //     </Animated.View>
+            //   );
+            // }
+            // if (attachment.fileType === 'video') {
+            //   return (
+            //     <Animated.View
+            //       key={attachment.fileType + index}
+            //       style={tailwind.style('flex flex-row items-center my-2')}>
+            //       <VideoPlayer videoSrc={attachment.dataUrl} />
+            //     </Animated.View>
+            //   );
+            // }
             return null;
           })}
       </Animated.View>

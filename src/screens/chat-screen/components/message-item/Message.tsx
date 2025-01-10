@@ -17,6 +17,9 @@ import {
   ActivityBubble,
   LocationBubble,
   ImageBubble,
+  AudioBubble,
+  VideoBubble,
+  FileBubble,
 } from '../message-components';
 import { showToast } from '@/helpers/ToastHelper';
 import {
@@ -227,6 +230,8 @@ export const MessageComponent = (props: MessageComponentProps) => {
       return false;
     }
 
+    console.log('senderTypeValue', senderTypeValue, currentUserId, senderIdentifier);
+
     return (
       senderTypeValue.toLowerCase() === SENDER_TYPES.USER.toLowerCase() &&
       currentUserId === senderIdentifier
@@ -296,19 +301,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
     return <EmailMessageCell item={item} channel={channel} menuOptions={getMenuOptions(item)} />;
   }
 
-  // TODO: Add unsupported message
-  // if (contentAttributes?.isUnsupported) {
-  //   return <UnsupportedBubble item={item} channel={channel} menuOptions={getMenuOptions(item)} />;
-  // }
-
-  // if (contentAttributes.type === 'dyte') {
-  //   return DyteBubble;
-  // }
-
-  // if (contentAttributes.imageType === 'story_mention') {
-  //   return InstagramStoryBubble;
-  // }
-
   // Message has only one attachment, no content and not a reply message
   if (attachments?.length === 1 && !item.content && !isReplyMessage) {
     return (
@@ -363,15 +355,19 @@ export const MessageComponent = (props: MessageComponentProps) => {
               {attachments[0].fileType === ATTACHMENT_TYPES.IMAGE && (
                 <ImageBubble imageSrc={attachments[0].dataUrl} />
               )}
-              {/* {attachments[0].fileType === ATTACHMENT_TYPES.AUDIO && (
-                <AudioCell audioSrc={attachments[0].dataUrl} variant={variant()} />
+
+              {attachments[0].fileType === ATTACHMENT_TYPES.AUDIO && (
+                <AudioBubble audioSrc={attachments[0].dataUrl} variant={variant()} />
               )}
+
               {attachments[0].fileType === ATTACHMENT_TYPES.VIDEO && (
-                <VideoCell videoSrc={attachments[0].dataUrl} variant={variant()} />
+                <VideoBubble videoSrc={attachments[0].dataUrl} />
               )}
+
               {attachments[0].fileType === ATTACHMENT_TYPES.FILE && (
-                <FileCell fileSrc={attachments[0].dataUrl} variant={variant()} />
-              )} */}
+                <FileBubble fileSrc={attachments[0].dataUrl} variant={variant()} />
+              )}
+
               {![
                 ATTACHMENT_TYPES.LOCATION,
                 ATTACHMENT_TYPES.IMAGE,

@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Pressable, StyleSheet } from 'react-native';
 import FileViewer from 'react-native-file-viewer';
-import Animated, { Easing, FadeIn } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import RNFetchBlob from 'rn-fetch-blob';
 
 import { FileIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { Channel, Message, MessageStatus, UnixTimestamp } from '@/types';
-import { unixTimestampToReadableTime } from '@/utils';
-import { Avatar, Icon } from '@/components-next/common';
+import { Icon } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
-import { MenuOption, MessageMenu } from '../message-menu';
-import { MESSAGE_TYPES, MESSAGE_VARIANTS } from '@/constants';
-import { DeliveryStatus } from './DeliveryStatus';
-
+import { MESSAGE_VARIANTS } from '@/constants';
 type FilePreviewProps = Pick<FileBubbleProps, 'fileSrc'> & {
   isComposed?: boolean;
   variant: string;
@@ -127,103 +122,13 @@ export const FileBubblePreview = (props: FilePreviewProps) => {
 
 type FileBubbleProps = {
   fileSrc: string;
-  shouldRenderAvatar: boolean;
-  messageType: number;
-  sender: Message['sender'];
-  timeStamp: UnixTimestamp;
-  status: MessageStatus;
-  channel?: Channel;
-  isPrivate: boolean;
-  sourceId?: string | null;
-  menuOptions: MenuOption[];
-  errorMessage?: string;
   variant: string;
 };
 
 export const FileBubble = (props: FileBubbleProps) => {
-  const {
-    fileSrc,
-    sender,
-    shouldRenderAvatar,
-    messageType,
-    timeStamp,
-    status,
-    menuOptions,
-    isPrivate,
-    channel,
-    sourceId,
-    errorMessage,
-    variant,
-  } = props;
+  const { fileSrc, variant } = props;
 
-  const isIncoming = messageType === MESSAGE_TYPES.INCOMING;
-  const isOutgoing = messageType === MESSAGE_TYPES.OUTGOING;
-
-  return (
-    <Animated.View
-      entering={FadeIn.duration(300).easing(Easing.ease)}
-      style={tailwind.style(
-        'w-full my-[1px]',
-        isIncoming && 'items-start',
-        isOutgoing && 'items-end',
-        !shouldRenderAvatar && isIncoming ? 'ml-7' : '',
-        !shouldRenderAvatar && isOutgoing ? 'pr-7' : '',
-        shouldRenderAvatar ? 'pb-2' : '',
-      )}>
-      <Animated.View style={tailwind.style('flex flex-row')}>
-        {sender?.thumbnail && sender?.name && isIncoming && shouldRenderAvatar ? (
-          <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
-          </Animated.View>
-        ) : null}
-        <MessageMenu menuOptions={menuOptions}>
-          <Animated.View
-            style={[
-              tailwind.style(
-                'flex flex-row items-center relative max-w-[300px] pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
-                isIncoming ? 'bg-blue-700' : '',
-                isOutgoing ? 'bg-gray-100' : '',
-                shouldRenderAvatar
-                  ? isOutgoing
-                    ? 'rounded-br-none'
-                    : isIncoming
-                      ? 'rounded-bl-none'
-                      : ''
-                  : '',
-              ),
-            ]}>
-            <FileBubblePreview fileSrc={fileSrc} variant={variant} />
-            <Animated.View
-              style={tailwind.style('h-[21px] pt-[5px] pb-0.5 flex flex-row items-center pl-1.5')}>
-              <Animated.Text
-                style={tailwind.style(
-                  'text-xs font-inter-420-20 tracking-[0.32px] leading-[14px] pr-1',
-                  isIncoming ? 'text-whiteA-A11' : '',
-                  isOutgoing ? 'text-gray-700' : '',
-                )}>
-                {unixTimestampToReadableTime(timeStamp)}
-              </Animated.Text>
-              <DeliveryStatus
-                isPrivate={isPrivate}
-                status={status}
-                messageType={messageType}
-                channel={channel}
-                sourceId={sourceId}
-                errorMessage={errorMessage || ''}
-                deliveredColor="text-gray-700"
-                sentColor="text-gray-700"
-              />
-            </Animated.View>
-          </Animated.View>
-        </MessageMenu>
-        {sender?.thumbnail && sender?.name && isOutgoing && shouldRenderAvatar ? (
-          <Animated.View style={tailwind.style('flex items-end justify-end ml-1')}>
-            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
-          </Animated.View>
-        ) : null}
-      </Animated.View>
-    </Animated.View>
-  );
+  return <FileBubblePreview fileSrc={fileSrc} variant={variant} />;
 };
 
 const style = StyleSheet.create({

@@ -27,7 +27,7 @@ export enum MessageType {
 
 export type MessageStatus = 'sent' | 'delivered' | 'read' | 'failed';
 
-type ImageMetadata = {
+export type ImageMetadata = {
   id: number;
   messageId: number;
   fileType: 'image' | 'video' | 'audio' | 'file';
@@ -84,7 +84,7 @@ export interface Message {
   conversation?: Conversation | null;
   shouldRenderAvatar?: boolean | false;
   senderId: number;
-  groupWithNext?: boolean;
-  groupWithPrevious?: boolean;
+  groupWithNext?: boolean | false;
+  groupWithPrevious?: boolean | false;
   senderType?: string;
 }

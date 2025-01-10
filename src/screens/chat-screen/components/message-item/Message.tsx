@@ -1,14 +1,11 @@
 import React from 'react';
-import { Message } from '@/types';
+import { Channel, Message } from '@/types';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { useChatWindowContext } from '@/context';
-// import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { unixTimestampToReadableTime, useHaptic } from '@/utils';
-// import { inboxHasFeature, is360DialogWhatsAppChannel, useHaptic } from '@/utils';
-// import { INBOX_FEATURES } from '@/constants';
 import {
   ComposedBubble,
   DeliveryStatus,
@@ -29,24 +26,36 @@ import {
   ORIENTATION,
   SENDER_TYPES,
   TEXT_MAX_WIDTH,
+  CONTENT_TYPES,
+  MESSAGE_TYPES,
 } from '@/constants';
-
-import { CONTENT_TYPES } from '@/constants';
 import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { MESSAGE_TYPES } from '@/constants';
 import { CopyIcon, Trash } from '@/svg-icons';
 import { MenuOption, MessageMenu } from '../message-menu';
-
 import { tailwind } from '@/theme';
 import { View } from 'react-native';
 import { Avatar } from '@/components-next';
-
+import { ImageMetadata } from '@/types';
 type MessageComponentProps = {
   item: Message;
   index: number;
   isEmailInbox: boolean;
   currentUserId: number;
+};
+
+type MessageWrapperProps = {
+  children: React.ReactNode;
+  item: Message;
+  orientation: string;
+  shouldGroupWithPrevious: boolean;
+  shouldGroupWithNext: boolean;
+  shouldShowAvatar: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  avatarInfo: () => { name: string | null | undefined; src: any }; // Updated type
+  getMenuOptions: (message: Message) => MenuOption[];
+  variant: () => string;
+  channel?: Channel;
 };
 
 const variantTextMap = {
@@ -60,33 +69,120 @@ const variantTextMap = {
 const variantBaseMap = {
   [MESSAGE_VARIANTS.AGENT]: 'bg-gray-100',
   [MESSAGE_VARIANTS.PRIVATE]: 'bg-amber-100',
-  // [MESSAGE_VARIANTS.PRIVATE]:
-  //   'bg-n-solid-amber text-n-amber-12 [&_.prosemirror-mention-node]:font-semibold',
   [MESSAGE_VARIANTS.USER]: 'bg-blue-700',
-  // [MESSAGE_VARIANTS.ACTIVITY]: 'bg-n-alpha-1 text-n-slate-11 text-sm',
   [MESSAGE_VARIANTS.BOT]: 'bg-blue-100',
   [MESSAGE_VARIANTS.TEMPLATE]: 'bg-blue-100',
   [MESSAGE_VARIANTS.ERROR]: 'bg-ruby-700',
   [MESSAGE_VARIANTS.EMAIL]: 'bg-gray-100',
-  // [MESSAGE_VARIANTS.UNSUPPORTED]:
-  // 'bg-n-solid-amber/70 border border-dashed border-n-amber-12 text-n-amber-12',
+};
+
+const MessageWrapper = ({
+  children,
+  item,
+  orientation,
+  shouldGroupWithPrevious,
+  shouldGroupWithNext,
+  shouldShowAvatar,
+  avatarInfo,
+  getMenuOptions,
+  variant,
+  channel,
+}: MessageWrapperProps) => {
+  const flexOrientationClass = () => {
+    const map = {
+      [ORIENTATION.LEFT]: 'items-start',
+      [ORIENTATION.RIGHT]: 'items-end',
+      [ORIENTATION.CENTER]: 'items-center',
+    };
+    return map[orientation];
+  };
+
+  return (
+    <Animated.View
+      entering={FadeIn.duration(350)}
+      style={[
+        tailwind.style(
+          'my-[1px]',
+          flexOrientationClass(),
+          shouldGroupWithPrevious && orientation === ORIENTATION.LEFT ? 'ml-7' : '',
+          !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
+          item.private ? 'my-2' : '',
+        ),
+      ]}>
+      <Animated.View style={tailwind.style('flex flex-row')}>
+        {!shouldGroupWithPrevious && shouldShowAvatar ? (
+          <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
+            <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
+          </Animated.View>
+        ) : null}
+        <MessageMenu menuOptions={getMenuOptions(item)}>
+          <Animated.View
+            style={[
+              tailwind.style(
+                'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
+                `max-w-[${TEXT_MAX_WIDTH}px]`,
+                variantBaseMap[variant()],
+                shouldGroupWithNext && shouldGroupWithPrevious
+                  ? orientation === ORIENTATION.LEFT
+                    ? 'rounded-l-none'
+                    : 'rounded-r-none'
+                  : '',
+                shouldGroupWithNext && !shouldGroupWithPrevious
+                  ? orientation === ORIENTATION.LEFT
+                    ? 'rounded-tl-none'
+                    : 'rounded-tr-none'
+                  : '',
+                !shouldGroupWithNext && shouldGroupWithPrevious
+                  ? orientation === ORIENTATION.LEFT
+                    ? 'rounded-bl-none'
+                    : 'rounded-br-none'
+                  : '',
+              ),
+            ]}>
+            {children}
+            {!shouldGroupWithPrevious && (
+              <Animated.View
+                style={tailwind.style(
+                  'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',
+                )}>
+                <Animated.Text
+                  style={tailwind.style(
+                    'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
+                    variantTextMap[variant()],
+                  )}>
+                  {unixTimestampToReadableTime(item.createdAt)}
+                </Animated.Text>
+                <DeliveryStatus
+                  isPrivate={item.private}
+                  status={item.status}
+                  messageType={item.messageType}
+                  channel={channel}
+                  sourceId={item.sourceId}
+                  errorMessage={item.contentAttributes?.externalError || ''}
+                  deliveredColor="text-gray-700"
+                  sentColor="text-gray-700"
+                />
+              </Animated.View>
+            )}
+          </Animated.View>
+        </MessageMenu>
+      </Animated.View>
+    </Animated.View>
+  );
 };
 
 export const MessageComponent = (props: MessageComponentProps) => {
   const dispatch = useAppDispatch();
   const { conversationId } = useChatWindowContext();
-
   const { item, currentUserId, isEmailInbox } = props;
   const {
     messageType,
     contentType,
     status,
-    contentAttributes,
     sender,
     groupWithNext,
     groupWithPrevious,
     senderId,
-
     senderType,
   } = item;
 
@@ -96,22 +192,18 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
   const variant = () => {
     if ('date' in item) return MESSAGE_VARIANTS.DATE;
-
     if (item.private) return MESSAGE_VARIANTS.PRIVATE;
-
     if (isEmailInbox) {
       const emailInboxTypes = [MESSAGE_TYPES.INCOMING, MESSAGE_TYPES.OUTGOING];
       if (emailInboxTypes.includes(messageType)) {
         return MESSAGE_VARIANTS.EMAIL;
       }
     }
-
     if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
       return MESSAGE_VARIANTS.EMAIL;
     }
-
     if (status === MESSAGE_STATUS.FAILED) return MESSAGE_VARIANTS.ERROR;
-    if (contentAttributes?.isUnsupported) return MESSAGE_VARIANTS.UNSUPPORTED;
+    if (item.contentAttributes?.isUnsupported) return MESSAGE_VARIANTS.UNSUPPORTED;
 
     const isBot = !sender || sender.type === SENDER_TYPES.AGENT_BOT;
     if (isBot && messageType === MESSAGE_TYPES.OUTGOING) {
@@ -128,10 +220,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
     return variants[messageType] || MESSAGE_VARIANTS.USER;
   };
 
-  // const handleQuoteReplyAttachment = () => {
-  //   dispatch(setQuoteMessage(props.item as Message));
-  // };
-
   const handleCopyMessage = (content: string) => {
     hapticSelection?.();
     if (content) {
@@ -145,22 +233,10 @@ export const MessageComponent = (props: MessageComponentProps) => {
     showToast({ message: i18n.t('CONVERSATION.DELETE_MESSAGE_SUCCESS') });
   };
 
-  // const inboxSupportsReplyTo = (channel: string) => {
-  //   const incoming = inboxHasFeature(INBOX_FEATURES.REPLY_TO, channel);
-  //   const outgoing =
-  //     inboxHasFeature(INBOX_FEATURES.REPLY_TO_OUTGOING, channel) &&
-  //     !is360DialogWhatsAppChannel(channel);
-
-  //   return { incoming, outgoing };
-  // };
-
   const getMenuOptions = (message: Message): MenuOption[] => {
     const { messageType, content, attachments } = message;
-    // const { private: isPrivate } = message;
     const hasText = !!content;
     const hasAttachments = !!(attachments && attachments.length > 0);
-    // const channel = conversation?.meta?.channel;
-
     const isDeleted = message.contentAttributes?.deleted;
 
     const menuOptions: MenuOption[] = [];
@@ -177,16 +253,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
       });
     }
 
-    // TODO: Add reply to message when we have the feature
-    // if (!isPrivate && channel && inboxSupportsReplyTo(channel).outgoing) {
-    //   menuOptions.push({
-    //     title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.REPLY'),
-    //     icon: null,
-    //     handleOnPressMenuOption: handleQuoteReplyAttachment,
-    //     destructive: false,
-    //   });
-    // }
-
     if (hasAttachments || hasText) {
       menuOptions.push({
         title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.DELETE_MESSAGE'),
@@ -202,23 +268,10 @@ export const MessageComponent = (props: MessageComponentProps) => {
   const shouldShowAvatar = () => {
     if (messageType === MESSAGE_TYPES.ACTIVITY) return false;
     if (orientation() === ORIENTATION.RIGHT) return false;
-
     return true;
   };
 
-  const flexOrientationClass = () => {
-    const map = {
-      [ORIENTATION.LEFT]: 'items-start',
-      [ORIENTATION.RIGHT]: 'items-end',
-      [ORIENTATION.CENTER]: 'items-center',
-    };
-
-    return map[orientation()];
-  };
-
   const isMyMessage = () => {
-    // if an outgoing message is still processing, then it's definitely a
-    // message sent by the current user
     if (status === MESSAGE_STATUS.PROGRESS && messageType === MESSAGE_TYPES.OUTGOING) {
       return true;
     }
@@ -240,22 +293,18 @@ export const MessageComponent = (props: MessageComponentProps) => {
     if (isMyMessage()) {
       return ORIENTATION.RIGHT;
     }
-
     if (messageType === MESSAGE_TYPES.ACTIVITY) return ORIENTATION.CENTER;
-
     return ORIENTATION.LEFT;
   };
 
   const shouldGroupWithNext = () => {
     if (status === MESSAGE_STATUS.FAILED) return false;
-
-    return groupWithNext;
+    return groupWithNext ?? false;
   };
 
   const shouldGroupWithPrevious = () => {
     if (status === MESSAGE_STATUS.FAILED) return false;
-
-    return groupWithPrevious;
+    return groupWithPrevious ?? false;
   };
 
   const avatarInfo = () => {
@@ -266,363 +315,75 @@ export const MessageComponent = (props: MessageComponentProps) => {
       };
     }
 
-    if (sender) {
-      return {
-        name: sender.name,
-        src: {
-          uri: sender.thumbnail,
-        },
-      };
-    }
-
     return {
-      name: '',
-      src: '',
+      name: sender?.name || '',
+      src: {
+        uri: sender?.thumbnail || null,
+      },
     };
   };
 
-  const isReplyMessage = item.contentAttributes?.inReplyTo;
+  const renderSingleAttachment = (attachment: ImageMetadata) => {
+    switch (attachment.fileType) {
+      case ATTACHMENT_TYPES.LOCATION:
+        return (
+          <LocationBubble
+            latitude={attachment.coordinatesLat ?? 0}
+            longitude={attachment.coordinatesLong ?? 0}
+            variant={variant()}
+          />
+        );
+      case ATTACHMENT_TYPES.IMAGE:
+        return <ImageBubble imageSrc={attachment.dataUrl} />;
+      case ATTACHMENT_TYPES.AUDIO:
+        return <AudioBubble audioSrc={attachment.dataUrl} variant={variant()} />;
+      case ATTACHMENT_TYPES.VIDEO:
+        return <VideoBubble videoSrc={attachment.dataUrl} />;
+      case ATTACHMENT_TYPES.FILE:
+        return <FileBubble fileSrc={attachment.dataUrl} variant={variant()} />;
+      default:
+        return <TextBubble item={item} variant={variant()} />;
+    }
+  };
 
-  const attachments = item.attachments;
+  const renderMessageContent = () => {
+    if (messageType === MESSAGE_TYPES.ACTIVITY) {
+      return <ActivityBubble text={item.content} timeStamp={item.createdAt} />;
+    }
 
-  if (messageType === MESSAGE_TYPES.ACTIVITY) {
-    return <ActivityBubble text={item.content} timeStamp={item.createdAt} />;
-  }
+    const attachments = item.attachments;
+    const isReplyMessage = item.contentAttributes?.inReplyTo;
 
-  if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
+    let messageContent;
+    if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
+      messageContent = <EmailBubble item={item} />;
+    } else if (props.isEmailInbox && !item.private) {
+      messageContent = <EmailBubble item={item} />;
+    } else if (attachments?.length === 1 && !item.content && !isReplyMessage) {
+      messageContent = renderSingleAttachment(attachments[0]);
+    } else if (attachments?.length >= 1 || isReplyMessage) {
+      messageContent = <ComposedBubble item={item} variant={variant()} />;
+    } else if (item.content) {
+      messageContent = <TextBubble item={item} variant={variant()} />;
+    } else {
+      return <View />;
+    }
+
     return (
-      <Animated.View
-        entering={FadeIn.duration(350)}
-        style={[
-          tailwind.style(
-            'my-[1px]',
-            flexOrientationClass(),
-            shouldGroupWithPrevious() && orientation() === ORIENTATION.LEFT ? 'ml-7' : '',
-            !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
-            item.private ? 'my-2' : '',
-          ),
-        ]}>
-        <Animated.View style={tailwind.style('flex flex-row')}>
-          {!shouldGroupWithPrevious() && shouldShowAvatar() ? (
-            <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-              <Avatar size={'md'} src={avatarInfo().src} name={avatarInfo().name || ''} />
-            </Animated.View>
-          ) : null}
-          <MessageMenu menuOptions={getMenuOptions(item)}>
-            <Animated.View
-              style={[
-                tailwind.style(
-                  'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
-                  `max-w-[${TEXT_MAX_WIDTH}px]`,
-                  variantBaseMap[variant()],
-                  shouldGroupWithNext() && shouldGroupWithPrevious()
-                    ? orientation() === ORIENTATION.LEFT
-                      ? 'rounded-l-none'
-                      : 'rounded-r-none'
-                    : '',
-                  shouldGroupWithNext() && !shouldGroupWithPrevious()
-                    ? orientation() === ORIENTATION.LEFT
-                      ? 'rounded-tl-none'
-                      : 'rounded-tr-none'
-                    : '',
-                  !shouldGroupWithNext() && shouldGroupWithPrevious()
-                    ? orientation() === ORIENTATION.LEFT
-                      ? 'rounded-bl-none'
-                      : 'rounded-br-none'
-                    : '',
-                ),
-              ]}>
-              <EmailBubble item={item} />
-              {!shouldGroupWithPrevious() && (
-                <Animated.View
-                  style={tailwind.style(
-                    'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',
-                  )}>
-                  <Animated.Text
-                    style={tailwind.style(
-                      'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
-                      variantTextMap[variant()],
-                    )}>
-                    {unixTimestampToReadableTime(item.createdAt)}
-                  </Animated.Text>
-                  <DeliveryStatus
-                    isPrivate={item.private}
-                    status={item.status}
-                    messageType={item.messageType}
-                    channel={channel}
-                    sourceId={item.sourceId}
-                    errorMessage={item.contentAttributes?.externalError || ''}
-                    deliveredColor="text-gray-700"
-                    sentColor="text-gray-700"
-                  />
-                </Animated.View>
-              )}
-            </Animated.View>
-          </MessageMenu>
-        </Animated.View>
-      </Animated.View>
+      <MessageWrapper
+        item={item}
+        orientation={orientation()}
+        shouldGroupWithPrevious={shouldGroupWithPrevious()}
+        shouldGroupWithNext={shouldGroupWithNext()}
+        shouldShowAvatar={shouldShowAvatar()}
+        avatarInfo={avatarInfo}
+        getMenuOptions={getMenuOptions}
+        variant={variant}
+        channel={channel}>
+        {messageContent}
+      </MessageWrapper>
     );
-  }
+  };
 
-  // Message has only one attachment, no content and not a reply message
-  if (attachments?.length === 1 && !item.content && !isReplyMessage) {
-    return (
-      <Animated.View
-        entering={FadeIn.duration(350)}
-        style={[
-          tailwind.style(
-            'my-[1px]',
-            flexOrientationClass(),
-            shouldGroupWithPrevious() && orientation() === ORIENTATION.LEFT ? 'ml-7' : '',
-            !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
-            item.private ? 'my-2' : '',
-          ),
-        ]}>
-        <Animated.View style={tailwind.style('flex flex-row')}>
-          {!shouldGroupWithPrevious() && shouldShowAvatar() ? (
-            <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-              <Avatar size={'md'} src={avatarInfo().src} name={avatarInfo().name || ''} />
-            </Animated.View>
-          ) : null}
-          <MessageMenu menuOptions={getMenuOptions(item)}>
-            <Animated.View
-              style={[
-                tailwind.style(
-                  'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
-                  `max-w-[${TEXT_MAX_WIDTH}px]`,
-                  variantBaseMap[variant()],
-                  shouldGroupWithNext() && shouldGroupWithPrevious()
-                    ? orientation() === ORIENTATION.LEFT
-                      ? 'rounded-l-none'
-                      : 'rounded-r-none'
-                    : '',
-                  shouldGroupWithNext() && !shouldGroupWithPrevious()
-                    ? orientation() === ORIENTATION.LEFT
-                      ? 'rounded-tl-none'
-                      : 'rounded-tr-none'
-                    : '',
-                  !shouldGroupWithNext() && shouldGroupWithPrevious()
-                    ? orientation() === ORIENTATION.LEFT
-                      ? 'rounded-bl-none'
-                      : 'rounded-br-none'
-                    : '',
-                ),
-              ]}>
-              {attachments[0].fileType === ATTACHMENT_TYPES.LOCATION && (
-                <LocationBubble
-                  latitude={attachments[0].coordinatesLat ?? 0}
-                  longitude={attachments[0].coordinatesLong ?? 0}
-                  variant={variant()}
-                />
-              )}
-              {attachments[0].fileType === ATTACHMENT_TYPES.IMAGE && (
-                <ImageBubble imageSrc={attachments[0].dataUrl} />
-              )}
-
-              {attachments[0].fileType === ATTACHMENT_TYPES.AUDIO && (
-                <AudioBubble audioSrc={attachments[0].dataUrl} variant={variant()} />
-              )}
-
-              {attachments[0].fileType === ATTACHMENT_TYPES.VIDEO && (
-                <VideoBubble videoSrc={attachments[0].dataUrl} />
-              )}
-
-              {attachments[0].fileType === ATTACHMENT_TYPES.FILE && (
-                <FileBubble fileSrc={attachments[0].dataUrl} variant={variant()} />
-              )}
-
-              {![
-                ATTACHMENT_TYPES.LOCATION,
-                ATTACHMENT_TYPES.IMAGE,
-                ATTACHMENT_TYPES.AUDIO,
-                ATTACHMENT_TYPES.VIDEO,
-                ATTACHMENT_TYPES.FILE,
-              ].includes(attachments[0].fileType) && <TextBubble item={item} variant={variant()} />}
-              {!shouldGroupWithPrevious() && (
-                <Animated.View
-                  style={tailwind.style(
-                    'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',
-                  )}>
-                  <Animated.Text
-                    style={tailwind.style(
-                      'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
-                      variantTextMap[variant()],
-                    )}>
-                    {unixTimestampToReadableTime(item.createdAt)}
-                  </Animated.Text>
-                  <DeliveryStatus
-                    isPrivate={item.private}
-                    status={item.status}
-                    messageType={item.messageType}
-                    channel={channel}
-                    sourceId={item.sourceId}
-                    errorMessage={item.contentAttributes?.externalError || ''}
-                    deliveredColor="text-gray-700"
-                    sentColor="text-gray-700"
-                  />
-                </Animated.View>
-              )}
-            </Animated.View>
-          </MessageMenu>
-        </Animated.View>
-      </Animated.View>
-    );
-  }
-
-  if (attachments?.length >= 1 || isReplyMessage) {
-    return (
-      <Animated.View
-        entering={FadeIn.duration(350)}
-        style={[
-          tailwind.style(
-            'my-[1px]',
-            flexOrientationClass(),
-            shouldGroupWithPrevious() && orientation() === ORIENTATION.LEFT ? 'ml-7' : '',
-            !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
-            item.private ? 'my-2' : '',
-          ),
-        ]}>
-        <Animated.View style={tailwind.style('flex flex-row')}>
-          {!shouldGroupWithPrevious() && shouldShowAvatar() ? (
-            <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-              <Avatar size={'md'} src={avatarInfo().src} name={avatarInfo().name || ''} />
-            </Animated.View>
-          ) : null}
-          <MessageMenu menuOptions={getMenuOptions(item)}>
-            <Animated.View
-              style={[
-                tailwind.style(
-                  'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
-                  `max-w-[${TEXT_MAX_WIDTH}px]`,
-                  variantBaseMap[variant()],
-                  shouldGroupWithNext() && shouldGroupWithPrevious()
-                    ? orientation() === ORIENTATION.LEFT
-                      ? 'rounded-l-none'
-                      : 'rounded-r-none'
-                    : '',
-                  shouldGroupWithNext() && !shouldGroupWithPrevious()
-                    ? orientation() === ORIENTATION.LEFT
-                      ? 'rounded-tl-none'
-                      : 'rounded-tr-none'
-                    : '',
-                  !shouldGroupWithNext() && shouldGroupWithPrevious()
-                    ? orientation() === ORIENTATION.LEFT
-                      ? 'rounded-bl-none'
-                      : 'rounded-br-none'
-                    : '',
-                ),
-              ]}>
-              <ComposedBubble item={item} variant={variant()} />
-              {!shouldGroupWithPrevious() && (
-                <Animated.View
-                  style={tailwind.style(
-                    'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',
-                  )}>
-                  <Animated.Text
-                    style={tailwind.style(
-                      'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
-                      variantTextMap[variant()],
-                    )}>
-                    {unixTimestampToReadableTime(item.createdAt)}
-                  </Animated.Text>
-                  <DeliveryStatus
-                    isPrivate={item.private}
-                    status={item.status}
-                    messageType={item.messageType}
-                    channel={channel}
-                    sourceId={item.sourceId}
-                    errorMessage={item.contentAttributes?.externalError || ''}
-                    deliveredColor="text-gray-700"
-                    sentColor="text-gray-700"
-                  />
-                </Animated.View>
-              )}
-            </Animated.View>
-          </MessageMenu>
-        </Animated.View>
-      </Animated.View>
-    );
-  }
-
-  if (item.content) {
-    return (
-      <Animated.View
-        entering={FadeIn.duration(350)}
-        style={[
-          tailwind.style(
-            'my-[1px]',
-            flexOrientationClass(),
-            shouldGroupWithPrevious() && orientation() === ORIENTATION.LEFT ? 'ml-7' : '',
-            !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
-            item.private ? 'my-2' : '',
-          ),
-        ]}>
-        <Animated.View style={tailwind.style('flex flex-row')}>
-          {!shouldGroupWithPrevious() && shouldShowAvatar() ? (
-            <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-              <Avatar size={'md'} src={avatarInfo().src} name={avatarInfo().name || ''} />
-            </Animated.View>
-          ) : null}
-          <MessageMenu menuOptions={getMenuOptions(item)}>
-            <Animated.View
-              style={[
-                tailwind.style(
-                  'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
-                  `max-w-[${TEXT_MAX_WIDTH}px]`,
-                  variantBaseMap[variant()],
-                  shouldGroupWithNext() && shouldGroupWithPrevious()
-                    ? orientation() === ORIENTATION.LEFT
-                      ? 'rounded-l-none'
-                      : 'rounded-r-none'
-                    : '',
-                  shouldGroupWithNext() && !shouldGroupWithPrevious()
-                    ? orientation() === ORIENTATION.LEFT
-                      ? 'rounded-tl-none'
-                      : 'rounded-tr-none'
-                    : '',
-                  !shouldGroupWithNext() && shouldGroupWithPrevious()
-                    ? orientation() === ORIENTATION.LEFT
-                      ? 'rounded-bl-none'
-                      : 'rounded-br-none'
-                    : '',
-                ),
-              ]}>
-              <TextBubble
-                {...{
-                  item,
-                  variant: variant(),
-                }}
-              />
-              {!shouldGroupWithPrevious() && (
-                <Animated.View
-                  style={tailwind.style(
-                    'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',
-                  )}>
-                  <Animated.Text
-                    style={tailwind.style(
-                      'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
-                      variantTextMap[variant()],
-                    )}>
-                    {unixTimestampToReadableTime(item.createdAt)}
-                  </Animated.Text>
-                  <DeliveryStatus
-                    isPrivate={item.private}
-                    status={item.status}
-                    messageType={item.messageType}
-                    channel={channel}
-                    sourceId={item.sourceId}
-                    errorMessage={item.contentAttributes?.externalError || ''}
-                    deliveredColor="text-gray-700"
-                    sentColor="text-gray-700"
-                  />
-                </Animated.View>
-              )}
-            </Animated.View>
-          </MessageMenu>
-        </Animated.View>
-      </Animated.View>
-    );
-  }
-
-  return <View />;
+  return renderMessageContent();
 };

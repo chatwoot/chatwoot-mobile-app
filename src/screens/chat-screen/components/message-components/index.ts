@@ -20,3 +20,4 @@ export * from './AudioBubble';
 export * from './LocationBubble';
 export * from './ImageBubble';
 export * from './VideoBubble';
+export * from './EmailBubble';

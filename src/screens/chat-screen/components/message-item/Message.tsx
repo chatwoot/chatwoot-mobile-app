@@ -13,13 +13,13 @@ import {
   ComposedBubble,
   DeliveryStatus,
   TextBubble,
-  EmailMessageCell,
   ActivityBubble,
   LocationBubble,
   ImageBubble,
   AudioBubble,
   VideoBubble,
   FileBubble,
+  EmailBubble,
 } from '../message-components';
 import { showToast } from '@/helpers/ToastHelper';
 import {
@@ -67,7 +67,7 @@ const variantBaseMap = {
   [MESSAGE_VARIANTS.BOT]: 'bg-blue-100',
   [MESSAGE_VARIANTS.TEMPLATE]: 'bg-blue-100',
   [MESSAGE_VARIANTS.ERROR]: 'bg-ruby-700',
-  // [MESSAGE_VARIANTS.EMAIL]: 'bg-n-gray-3 w-full',
+  [MESSAGE_VARIANTS.EMAIL]: 'bg-gray-100',
   // [MESSAGE_VARIANTS.UNSUPPORTED]:
   // 'bg-n-solid-amber/70 border border-dashed border-n-amber-12 text-n-amber-12',
 };
@@ -230,8 +230,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
       return false;
     }
 
-    console.log('senderTypeValue', senderTypeValue, currentUserId, senderIdentifier);
-
     return (
       senderTypeValue.toLowerCase() === SENDER_TYPES.USER.toLowerCase() &&
       currentUserId === senderIdentifier
@@ -291,14 +289,85 @@ export const MessageComponent = (props: MessageComponentProps) => {
     return <ActivityBubble text={item.content} timeStamp={item.createdAt} />;
   }
 
-  if (props.isEmailInbox && !item.private) {
-    const emailInboxTypes = [MESSAGE_TYPES.INCOMING, MESSAGE_TYPES.OUTGOING];
-    if (emailInboxTypes.includes(messageType))
-      return <EmailMessageCell item={item} channel={channel} menuOptions={getMenuOptions(item)} />;
-  }
+  // if (props.isEmailInbox && !item.private) {
+  //   const emailInboxTypes = [MESSAGE_TYPES.INCOMING, MESSAGE_TYPES.OUTGOING];
+  //   if (emailInboxTypes.includes(messageType))
+  //     return <EmailMessageCell item={item} channel={channel} menuOptions={getMenuOptions(item)} />;
+  // }
 
   if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
-    return <EmailMessageCell item={item} channel={channel} menuOptions={getMenuOptions(item)} />;
+    return (
+      <Animated.View
+        entering={FadeIn.duration(350)}
+        style={[
+          tailwind.style(
+            'my-[1px]',
+            flexOrientationClass(),
+            shouldGroupWithPrevious() && orientation() === ORIENTATION.LEFT ? 'ml-7' : '',
+            !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
+            item.private ? 'my-2' : '',
+          ),
+        ]}>
+        <Animated.View style={tailwind.style('flex flex-row')}>
+          {!shouldGroupWithPrevious() && shouldShowAvatar() ? (
+            <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
+              <Avatar size={'md'} src={avatarInfo().src} name={avatarInfo().name || ''} />
+            </Animated.View>
+          ) : null}
+          <MessageMenu menuOptions={getMenuOptions(item)}>
+            <Animated.View
+              style={[
+                tailwind.style(
+                  'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
+                  `max-w-[${TEXT_MAX_WIDTH}px]`,
+                  variantBaseMap[variant()],
+                  shouldGroupWithNext() && shouldGroupWithPrevious()
+                    ? orientation() === ORIENTATION.LEFT
+                      ? 'rounded-l-none'
+                      : 'rounded-r-none'
+                    : '',
+                  shouldGroupWithNext() && !shouldGroupWithPrevious()
+                    ? orientation() === ORIENTATION.LEFT
+                      ? 'rounded-tl-none'
+                      : 'rounded-tr-none'
+                    : '',
+                  !shouldGroupWithNext() && shouldGroupWithPrevious()
+                    ? orientation() === ORIENTATION.LEFT
+                      ? 'rounded-bl-none'
+                      : 'rounded-br-none'
+                    : '',
+                ),
+              ]}>
+              <EmailBubble item={item} />
+              {!shouldGroupWithPrevious() && (
+                <Animated.View
+                  style={tailwind.style(
+                    'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',
+                  )}>
+                  <Animated.Text
+                    style={tailwind.style(
+                      'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
+                      variantTextMap[variant()],
+                    )}>
+                    {unixTimestampToReadableTime(item.createdAt)}
+                  </Animated.Text>
+                  <DeliveryStatus
+                    isPrivate={item.private}
+                    status={item.status}
+                    messageType={item.messageType}
+                    channel={channel}
+                    sourceId={item.sourceId}
+                    errorMessage={item.contentAttributes?.externalError || ''}
+                    deliveredColor="text-gray-700"
+                    sentColor="text-gray-700"
+                  />
+                </Animated.View>
+              )}
+            </Animated.View>
+          </MessageMenu>
+        </Animated.View>
+      </Animated.View>
+    );
   }
 
   // Message has only one attachment, no content and not a reply message

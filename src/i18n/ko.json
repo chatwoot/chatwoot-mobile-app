@@ -83,7 +83,7 @@
         "OPTIONS": {
           "OPEN": "열기",
           "PENDING": "보내는 중",
-          "SNOOZED": "Snoozed",
+          "SNOOZED": "일시 중지됨",
           "RESOLVED": "해결됨",
           "ALL": "모두"
         }
@@ -91,18 +91,18 @@
     },
     "ASSIGNEE": {
       "LABELS": {
-        "SEARCH_LABELS": "Search labels"
+        "SEARCH_LABELS": "라벨 찾기"
       },
       "AGENTS": {
-        "SEARCH_AGENT": "Search agents"
+        "SEARCH_AGENT": "에이전트 찾기"
       },
       "STATUS": {
         "HEADER_TITLE": "Assign status",
         "TITLE": "Filter by status",
         "OPTIONS": {
           "OPEN": "열기",
-          "PENDING": "Pending",
-          "SNOOZED": "Snoozed",
+          "PENDING": "보내는 중",
+          "SNOOZED": "일시 중지됨",
           "RESOLVED": "해결됨",
           "ALL": "모두"
         }
@@ -137,7 +137,7 @@
       "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
     },
     "EMAIL_HEAD": {
-      "TO": "To",
+      "TO": "~~에게",
       "CC": "Cc",
       "BCC": "Bcc"
     },
@@ -159,14 +159,14 @@
     "COPY_MESSAGE": "Message copied to clipboard",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
     "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
-    "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "Conversation Assignee changed",
+    "NO_CONTENT": "콘텐츠 이용 불가",
+    "ASSIGN_CHANGE": "대화 담당자가 변경됨",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",
     "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Search teams",
+    "SEARCH_TEAM": "팀 찾기",
     "PRIORITY": {
       "TITLE": "Priority",
       "OPTIONS": {
@@ -185,37 +185,37 @@
       }
     },
     "ITEM": {
-      "ASSIGN": "Assign",
-      "STATUS": "Status"
+      "ASSIGN": "할당하다",
+      "STATUS": "상태"
     },
     "ATTACHMENTS": {
       "image": {
         "CONTENT": "사진 메시지"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "음성 메시지"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "영상 메시지"
       },
       "file": {
         "CONTENT": "파일 첨부"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "장소"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "URL을 공유함"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
-      "REPLY": "Reply",
+      "COPY": "복사",
+      "REPLY": "답글",
       "DELETE_MESSAGE": "Delete message"
     },
     "EMAIL_HEADER": {
       "FROM": "From",
-      "TO": "To",
+      "TO": "~~에게",
       "BCC": "Bcc",
       "CC": "Cc",
       "SUBJECT": "Subject",
@@ -224,16 +224,16 @@
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "지정되지 않음",
-        "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "ASSIGN": "할당하다",
+        "EDIT": "수정"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
-        "ASSIGN": "Assign"
+        "ASSIGN": "할당하다"
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "수정"
       }
     }
   },
@@ -273,13 +273,13 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "알림",
-    "INBOX": "Inbox",
+    "INBOX": "받은 메시지함",
     "EMPTY": "알림 없음.",
     "EMPTY_MORE_TEXT": "알림이 온다면, 여기서 나타날 겁니다",
     "ALL_NOTIFICATION_LOADED": "모든 알림이 불러와졌음",
     "MARK_ALL": "전부 읽음으로 바꾸기",
     "CANCEL": "취소",
-    "DELETE": "Delete",
+    "DELETE": "삭제",
     "TYPES": {
       "CONVERSATION_MENTION": "You have been mentioned in a conversation",
       "CONVERSATION_CREATION": "New conversation created",
@@ -340,10 +340,10 @@
   "CONTACT_DETAILS": {
     "TITLE": "Contact Details",
     "EMAIL": "이메일",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "전화 번호",
     "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Contact Attributes",
-    "VALUE_UNAVAILABLE": "Unavailable"
+    "CONTACT_ATTRIBUTES": "연락처 속성",
+    "VALUE_UNAVAILABLE": "영업 종료"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participants",
@@ -416,9 +416,9 @@
   },
   "BANNER": {
     "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
-    "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24시간 메시지 창 제한",
+    "24_HOURS_WINDOW": "24시간 메시지 창 제한",
+    "CANNOT_REPLY": "당신은 답장을 할 수 없습니다"
   },
   "SLA": {
     "FRT": "FRT",

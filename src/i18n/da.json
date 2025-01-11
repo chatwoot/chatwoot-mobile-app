@@ -57,7 +57,7 @@
     },
     "FILTERS": {
       "AGENT": {
-        "SEARCH_AGENT": "Search agents"
+        "SEARCH_AGENT": "Søg agenter"
       },
       "ASSIGNEE_TYPE": {
         "TITLE": "Filter by assignee type",
@@ -71,7 +71,7 @@
         "TITLE": "Filter by inbox"
       },
       "SORT_BY": {
-        "TITLE": "Sort by",
+        "TITLE": "Sorter efter",
         "OPTIONS": {
           "LATEST": "Latest",
           "SORT_ON_CREATED_AT": "Oprettet Den",
@@ -82,8 +82,8 @@
         "TITLE": "Filter by status",
         "OPTIONS": {
           "OPEN": "Åbn",
-          "PENDING": "Pending",
-          "SNOOZED": "Snoozed",
+          "PENDING": "Afventer",
+          "SNOOZED": "Udsat",
           "RESOLVED": "Løst",
           "ALL": "Alle"
         }
@@ -91,18 +91,18 @@
     },
     "ASSIGNEE": {
       "LABELS": {
-        "SEARCH_LABELS": "Search labels"
+        "SEARCH_LABELS": "Søg efter labels"
       },
       "AGENTS": {
-        "SEARCH_AGENT": "Search agents"
+        "SEARCH_AGENT": "Søg agenter"
       },
       "STATUS": {
         "HEADER_TITLE": "Assign status",
         "TITLE": "Filter by status",
         "OPTIONS": {
           "OPEN": "Åbn",
-          "PENDING": "Pending",
-          "SNOOZED": "Snoozed",
+          "PENDING": "Afventer",
+          "SNOOZED": "Udsat",
           "RESOLVED": "Løst",
           "ALL": "Alle"
         }
@@ -137,11 +137,11 @@
       "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
     },
     "EMAIL_HEAD": {
-      "TO": "To",
+      "TO": "Til",
       "CC": "Cc",
       "BCC": "Bcc"
     },
-    "SELF_ASSIGN": "Assign to me",
+    "SELF_ASSIGN": "Tildel til mig",
     "UN_ASSIGN": "Unassign conversation",
     "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
     "MARK_AS_PENDING": "Markér som afventende",
@@ -158,15 +158,15 @@
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
-    "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "Conversation Assignee changed",
+    "DELETE_MESSAGE_SUCCESS": "Besked slettet",
+    "NO_CONTENT": "Intet tilgængeligt indhold",
+    "ASSIGN_CHANGE": "Samtaleansvarlig ændret",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Search teams",
+    "CHANGE_STATUS": "Skift status",
+    "SEARCH_TEAM": "Søg i teams",
     "PRIORITY": {
       "TITLE": "Priority",
       "OPTIONS": {
@@ -185,7 +185,7 @@
       }
     },
     "ITEM": {
-      "ASSIGN": "Assign",
+      "ASSIGN": "Tildel",
       "STATUS": "Status"
     },
     "ATTACHMENTS": {
@@ -193,47 +193,47 @@
         "CONTENT": "Billedbesked"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "Lydbesked"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "Video besked"
       },
       "file": {
         "CONTENT": "Fil Vedhæftning"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "Lokation"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "har delt en URL"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
-      "REPLY": "Reply",
+      "COPY": "Kopiér",
+      "REPLY": "Svar",
       "DELETE_MESSAGE": "Delete message"
     },
     "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "To",
+      "FROM": "Fra",
+      "TO": "Til",
       "BCC": "Bcc",
       "CC": "Cc",
-      "SUBJECT": "Subject",
+      "SUBJECT": "Emne",
       "EXPAND": "Expand email"
     },
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "Ikke Tildelt",
-        "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "ASSIGN": "Tildel",
+        "EDIT": "Rediger"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
-        "ASSIGN": "Assign"
+        "ASSIGN": "Tildel"
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "Rediger"
       }
     }
   },
@@ -273,13 +273,13 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",
-    "INBOX": "Inbox",
+    "INBOX": "Indbakke",
     "EMPTY": "No notifications yet.",
     "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
     "CANCEL": "Annuller",
-    "DELETE": "Delete",
+    "DELETE": "Slet",
     "TYPES": {
       "CONVERSATION_MENTION": "You have been mentioned in a conversation",
       "CONVERSATION_CREATION": "New conversation created",
@@ -292,7 +292,7 @@
     },
     "FILTERS": {
       "SORT_BY": {
-        "TITLE": "Sort by",
+        "TITLE": "Sorter efter",
         "OPTIONS": {
           "ASC": "Oldest",
           "DESC": "Newest"
@@ -338,11 +338,11 @@
     "CLIPBOARD_SUCCESS": "Kode kopieret til udklipsholder med succes"
   },
   "CONTACT_DETAILS": {
-    "TITLE": "Contact Details",
+    "TITLE": "Kontaktoplysninger",
     "EMAIL": "E-mail",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "Telefonnummer",
     "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Contact Attributes",
+    "CONTACT_ATTRIBUTES": "Kontakt Attributter",
     "VALUE_UNAVAILABLE": "Unavailable"
   },
   "CONVERSATION_PARTICIPANTS": {
@@ -415,10 +415,10 @@
     "OK": "Ok"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
-    "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "TWILIO_WHATSAPP_CAN_REPLY": "Du kan kun svare på denne samtale ved hjælp af en skabelon besked på grund af",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 timers beskedvindue begrænsning",
+    "24_HOURS_WINDOW": "24 timers beskedvindue begrænsning",
+    "CANNOT_REPLY": "Du kan ikke svare på grund af"
   },
   "SLA": {
     "FRT": "FRT",

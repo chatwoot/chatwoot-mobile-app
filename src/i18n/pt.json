@@ -94,15 +94,15 @@
         "SEARCH_LABELS": "Procurar etiquetas"
       },
       "AGENTS": {
-        "SEARCH_AGENT": "Search agents"
+        "SEARCH_AGENT": "Procurar agentes"
       },
       "STATUS": {
         "HEADER_TITLE": "Assign status",
         "TITLE": "Filter by status",
         "OPTIONS": {
           "OPEN": "Abertas",
-          "PENDING": "Pending",
-          "SNOOZED": "Snoozed",
+          "PENDING": "Pendente",
+          "SNOOZED": "Silenciado",
           "RESOLVED": "Resolvido",
           "ALL": "TODOS"
         }
@@ -137,11 +137,11 @@
       "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
     },
     "EMAIL_HEAD": {
-      "TO": "To",
+      "TO": "Para",
       "CC": "Cc",
       "BCC": "Bcc"
     },
-    "SELF_ASSIGN": "Assign to me",
+    "SELF_ASSIGN": "Atribuir a mim",
     "UN_ASSIGN": "Unassign conversation",
     "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
     "MARK_AS_PENDING": "Marcar como pendente",
@@ -158,15 +158,15 @@
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
-    "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "Conversation Assignee changed",
+    "DELETE_MESSAGE_SUCCESS": "Mensagem apagada com sucesso",
+    "NO_CONTENT": "Sem conteúdo disponível",
+    "ASSIGN_CHANGE": "Responsável da conversa alterado",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Search teams",
+    "CHANGE_STATUS": "Alterar estado",
+    "SEARCH_TEAM": "Procurar equipas",
     "PRIORITY": {
       "TITLE": "Prioridade",
       "OPTIONS": {
@@ -185,55 +185,55 @@
       }
     },
     "ITEM": {
-      "ASSIGN": "Assign",
-      "STATUS": "Status"
+      "ASSIGN": "Atribuir",
+      "STATUS": "Estado"
     },
     "ATTACHMENTS": {
       "image": {
         "CONTENT": "Mensagem de imagem"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "Mensagem de áudio"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "Mensagem de vídeo"
       },
       "file": {
         "CONTENT": "Arquivo anexo"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "Local"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "partilhou um URL"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
-      "REPLY": "Reply",
+      "COPY": "Copiar",
+      "REPLY": "Responder",
       "DELETE_MESSAGE": "Delete message"
     },
     "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "To",
+      "FROM": "De",
+      "TO": "Para",
       "BCC": "Bcc",
       "CC": "Cc",
-      "SUBJECT": "Subject",
+      "SUBJECT": "Assunto",
       "EXPAND": "Expand email"
     },
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "Não atribuído",
-        "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "ASSIGN": "Atribuir",
+        "EDIT": "Editar"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
-        "ASSIGN": "Assign"
+        "ASSIGN": "Atribuir"
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "Editar"
       }
     }
   },
@@ -273,40 +273,40 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notificações",
-    "INBOX": "Inbox",
+    "INBOX": "Caixa de entrada",
     "EMPTY": "Sem notificações.",
     "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Marcar todos como lidos",
     "CANCEL": "cancelar",
-    "DELETE": "Delete",
+    "DELETE": "Excluir",
     "TYPES": {
-      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
-      "CONVERSATION_CREATION": "New conversation created",
-      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
-      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
-      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+      "CONVERSATION_MENTION": "Foi mencionado numa conversa",
+      "CONVERSATION_CREATION": "Nova conversa criada",
+      "CONVERSATION_ASSIGNMENT": "Foi-lhe atribuída uma conversa",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Nova mensagem numa conversa que lhe está atribuída",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Nova mensagem numa conversa em que participa",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA da primeira resposta não atingido na conversa",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA da próxima resposta não atingido na conversa",
+      "SLA_MISSED_RESOLUTION": "SLA de resolução não atingido na conversa"
     },
     "FILTERS": {
       "SORT_BY": {
-        "TITLE": "Sort by",
+        "TITLE": "Ordenar por",
         "OPTIONS": {
-          "ASC": "Oldest",
-          "DESC": "Newest"
+          "ASC": "Antigas",
+          "DESC": "Recentes"
         }
       }
     },
     "ALERTS": {
-      "MARK_AS_READ": "Notification marked as read",
-      "MARK_AS_UNREAD": "Notification marked as unread",
-      "SNOOZE": "Notification snoozed",
-      "DELETE": "Notification deleted",
-      "MARK_ALL_READ": "All notifications marked as read",
-      "DELETE_ALL": "All notifications deleted",
-      "DELETE_ALL_READ": "All read notifications deleted"
+      "MARK_AS_READ": "Notificação marcada como lida",
+      "MARK_AS_UNREAD": "Notificação marcada como não lida",
+      "SNOOZE": "Notificação adiada",
+      "DELETE": "Notificação excluída",
+      "MARK_ALL_READ": "Todas as notificações marcadas como lidas",
+      "DELETE_ALL": "Todas as notificações foram excluídas",
+      "DELETE_ALL_READ": "Todas as notificações lidas foram excluídas"
     }
   },
   "AVAILABILITY": {
@@ -334,16 +334,16 @@
     "INITIATED_AT": "Iniciado em",
     "INITIATED_FROM": "Initiated from",
     "IP_ADDRESS": "Endereço IP",
-    "CONVERSATION_ID": "Conversation ID",
+    "CONVERSATION_ID": "ID da conversa",
     "CLIPBOARD_SUCCESS": "Código copiado com sucesso para área de transferência"
   },
   "CONTACT_DETAILS": {
-    "TITLE": "Contact Details",
+    "TITLE": "Detalhes do contacto",
     "EMAIL": "e-mail",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "Número de telefone",
     "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Contact Attributes",
-    "VALUE_UNAVAILABLE": "Unavailable"
+    "CONTACT_ATTRIBUTES": "Atributos do contacto",
+    "VALUE_UNAVAILABLE": "Indisponível"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participants",
@@ -415,10 +415,10 @@
     "OK": "Ok"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
-    "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "TWILIO_WHATSAPP_CAN_REPLY": "Só pode responder utilizando uma mensagem modelo, porque",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "Mensagens bloqueadas durante 24 horas",
+    "24_HOURS_WINDOW": "Mensagens bloqueadas durante 24 horas",
+    "CANNOT_REPLY": "Não pode responder porque"
   },
   "SLA": {
     "FRT": "FRT",

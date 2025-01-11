@@ -137,11 +137,11 @@
       "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
     },
     "EMAIL_HEAD": {
-      "TO": "To",
+      "TO": "Till",
       "CC": "Cc",
       "BCC": "Bcc"
     },
-    "SELF_ASSIGN": "Assign to me",
+    "SELF_ASSIGN": "Tilldela mig",
     "UN_ASSIGN": "Unassign conversation",
     "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
     "MARK_AS_PENDING": "Markera som väntande",
@@ -158,15 +158,15 @@
     "DELETE_MESSAGE_SUB_TITLE": "Denna åtgärd kan inte ångras.",
     "COPY_MESSAGE": "Meddelandet har kopierats till urklipp",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
-    "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "Conversation Assignee changed",
+    "DELETE_MESSAGE_SUCCESS": "Meddelandet har tagits bort",
+    "NO_CONTENT": "Inget innehåll tillgängligt",
+    "ASSIGN_CHANGE": "Konversationstilldelning ändrad",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",
     "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Search teams",
+    "SEARCH_TEAM": "Sök efter team",
     "PRIORITY": {
       "TITLE": "Prioritet",
       "OPTIONS": {
@@ -185,7 +185,7 @@
       }
     },
     "ITEM": {
-      "ASSIGN": "Assign",
+      "ASSIGN": "Tilldela",
       "STATUS": "Status"
     },
     "ATTACHMENTS": {
@@ -193,47 +193,47 @@
         "CONTENT": "Bildmeddelande"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "Ljudmeddelande"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "Videomeddelande"
       },
       "file": {
         "CONTENT": "Bifogad fil"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "Plats"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "har delat en webbadress"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
-      "REPLY": "Reply",
+      "COPY": "Kopiera",
+      "REPLY": "Svara",
       "DELETE_MESSAGE": "Delete message"
     },
     "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "To",
+      "FROM": "Från",
+      "TO": "Till",
       "BCC": "Bcc",
       "CC": "Cc",
-      "SUBJECT": "Subject",
+      "SUBJECT": "Ämne",
       "EXPAND": "Expand email"
     },
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "Otilldelade",
-        "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "ASSIGN": "Tilldela",
+        "EDIT": "Redigera"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
-        "ASSIGN": "Assign"
+        "ASSIGN": "Tilldela"
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "Redigera"
       }
     }
   },
@@ -273,13 +273,13 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Aviseringar",
-    "INBOX": "Inbox",
+    "INBOX": "Inkorg",
     "EMPTY": "Inga aviseringar ännu.",
     "EMPTY_MORE_TEXT": "När du väl börjat att ta emot aviseringar, kommer de att visas här.",
     "ALL_NOTIFICATION_LOADED": "Alla aviseringar laddade",
     "MARK_ALL": "Markera alla som lästa",
     "CANCEL": "Avbryt",
-    "DELETE": "Delete",
+    "DELETE": "Radera",
     "TYPES": {
       "CONVERSATION_MENTION": "You have been mentioned in a conversation",
       "CONVERSATION_CREATION": "New conversation created",
@@ -292,7 +292,7 @@
     },
     "FILTERS": {
       "SORT_BY": {
-        "TITLE": "Sort by",
+        "TITLE": "Sortera efter",
         "OPTIONS": {
           "ASC": "Oldest",
           "DESC": "Newest"
@@ -340,7 +340,7 @@
   "CONTACT_DETAILS": {
     "TITLE": "Contact Details",
     "EMAIL": "E-post",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "Telefonnummer",
     "CALL": "Call",
     "CONTACT_ATTRIBUTES": "Contact Attributes",
     "VALUE_UNAVAILABLE": "Unavailable"
@@ -415,10 +415,10 @@
     "OK": "Okej"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
-    "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "TWILIO_WHATSAPP_CAN_REPLY": "Du kan bara svara på denna konversation med ett mallmeddelande på grund av",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 timmars meddelandebegränsning",
+    "24_HOURS_WINDOW": "24 timmars meddelandebegränsning",
+    "CANNOT_REPLY": "Du kan inte svara på grund av"
   },
   "SLA": {
     "FRT": "FRT",

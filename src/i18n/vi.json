@@ -158,15 +158,15 @@
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
-    "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "Conversation Assignee changed",
+    "DELETE_MESSAGE_SUCCESS": "Tin nhắn được xoá thành công",
+    "NO_CONTENT": "Không có nội dung",
+    "ASSIGN_CHANGE": "Người Được Chỉ Định Cuộc Hội Thoại đã thay đổi",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Search teams",
+    "CHANGE_STATUS": "Thay đổi trạng thái",
+    "SEARCH_TEAM": "Tìm kiếm nhóm",
     "PRIORITY": {
       "TITLE": "Sự ưu tiên",
       "OPTIONS": {
@@ -185,55 +185,55 @@
       }
     },
     "ITEM": {
-      "ASSIGN": "Assign",
-      "STATUS": "Status"
+      "ASSIGN": "Gán",
+      "STATUS": "Trạng thái"
     },
     "ATTACHMENTS": {
       "image": {
         "CONTENT": "Tin nhắn hình ảnh"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "Tin nhắn thoại"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "Tin nhắn video"
       },
       "file": {
         "CONTENT": "Tập tin đính kèm"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "Vị trí"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "có một đường dẫn chia sẻ"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
-      "REPLY": "Reply",
+      "COPY": "Sao Chép",
+      "REPLY": "Trả lời",
       "DELETE_MESSAGE": "Delete message"
     },
     "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "To",
+      "FROM": "Từ",
+      "TO": "Đến",
       "BCC": "Bcc",
       "CC": "Cc",
-      "SUBJECT": "Subject",
+      "SUBJECT": "Chủ đề",
       "EXPAND": "Expand email"
     },
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "Chưa được phân công",
-        "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "ASSIGN": "Gán",
+        "EDIT": "Chỉnh sửa"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
-        "ASSIGN": "Assign"
+        "ASSIGN": "Gán"
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "Chỉnh sửa"
       }
     }
   },
@@ -273,15 +273,15 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Thông báo",
-    "INBOX": "Inbox",
+    "INBOX": "Kênh",
     "EMPTY": "Không có thông báo.",
     "EMPTY_MORE_TEXT": "Khi bạn bắt đầu nhận được thông báo, chúng sẽ xuất hiện ở đây.",
     "ALL_NOTIFICATION_LOADED": "Tất cả thông báo đã được tải",
     "MARK_ALL": "Đánh dấu tất cả đã đọc",
     "CANCEL": "Huỷ",
-    "DELETE": "Delete",
+    "DELETE": "Xoá",
     "TYPES": {
-      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "CONVERSATION_MENTION": "Bạn đã được nhắc đến trong một cuộc trò chuyện",
       "CONVERSATION_CREATION": "New conversation created",
       "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
       "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
@@ -292,7 +292,7 @@
     },
     "FILTERS": {
       "SORT_BY": {
-        "TITLE": "Sort by",
+        "TITLE": "Sắp bởi",
         "OPTIONS": {
           "ASC": "Oldest",
           "DESC": "Newest"
@@ -338,12 +338,12 @@
     "CLIPBOARD_SUCCESS": "Copied to clipboard"
   },
   "CONTACT_DETAILS": {
-    "TITLE": "Contact Details",
+    "TITLE": "Chi tiết liên hệ",
     "EMAIL": "Email",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "Số điện thoại",
     "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Contact Attributes",
-    "VALUE_UNAVAILABLE": "Unavailable"
+    "CONTACT_ATTRIBUTES": "Thuộc tính của liên hệ",
+    "VALUE_UNAVAILABLE": "Không có sẵn"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participants",
@@ -415,10 +415,10 @@
     "OK": "Có"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
-    "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "TWILIO_WHATSAPP_CAN_REPLY": "Bạn chỉ có thể phản hồi hội thoại này bằng tin nhắn mẫu vì",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "Giới hạn thời lượng tin nhắn 24 giờ",
+    "24_HOURS_WINDOW": "Giới hạn thời lượng tin nhắn 24 giờ",
+    "CANNOT_REPLY": "Bạn không thể trả lời do"
   },
   "SLA": {
     "FRT": "FRT",

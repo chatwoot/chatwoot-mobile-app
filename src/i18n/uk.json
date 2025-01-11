@@ -138,10 +138,10 @@
     },
     "EMAIL_HEAD": {
       "TO": "Для",
-      "CC": "Cc",
-      "BCC": "Bcc"
+      "CC": "Копія",
+      "BCC": "Прихована копія"
     },
-    "SELF_ASSIGN": "Assign to me",
+    "SELF_ASSIGN": "Призначити мені",
     "UN_ASSIGN": "Скасувати призначення бесіди",
     "CONVERSATION_NOT_FOUND": "Не вдалося завантажити бесіду",
     "MARK_AS_PENDING": "Позначити як \"В очікуванні\"",
@@ -158,15 +158,15 @@
     "DELETE_MESSAGE_SUB_TITLE": "Цю дію не можна скасувати.",
     "COPY_MESSAGE": "Повідомлення скопійовано до буфера обміну",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
-    "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "Conversation Assignee changed",
+    "DELETE_MESSAGE_SUCCESS": "Повідомлення успішно видалено",
+    "NO_CONTENT": "Немає вмісту",
+    "ASSIGN_CHANGE": "Оператора бесіди змінено",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Search teams",
+    "CHANGE_STATUS": "Змінити статус",
+    "SEARCH_TEAM": "Пошук команд",
     "PRIORITY": {
       "TITLE": "Пріоритет",
       "OPTIONS": {
@@ -185,55 +185,55 @@
       }
     },
     "ITEM": {
-      "ASSIGN": "Assign",
-      "STATUS": "Status"
+      "ASSIGN": "Призначити",
+      "STATUS": "Статус"
     },
     "ATTACHMENTS": {
       "image": {
         "CONTENT": "Повідомлення з картинкою"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "Аудіо-повідомлення"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "Відеоповідомлення"
       },
       "file": {
         "CONTENT": "Повідомлення з файлом"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "Місцезнаходження"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "поділився посиланням"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
-      "REPLY": "Reply",
+      "COPY": "Копіювати",
+      "REPLY": "Відповісти",
       "DELETE_MESSAGE": "Delete message"
     },
     "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "To",
-      "BCC": "Bcc",
-      "CC": "Cc",
-      "SUBJECT": "Subject",
+      "FROM": "Від",
+      "TO": "Для",
+      "BCC": "Прихована копія",
+      "CC": "Копія",
+      "SUBJECT": "Тема",
       "EXPAND": "Expand email"
     },
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "Непризначені",
-        "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "ASSIGN": "Призначити",
+        "EDIT": "Редагувати"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
-        "ASSIGN": "Assign"
+        "ASSIGN": "Призначити"
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "Редагувати"
       }
     }
   },
@@ -273,40 +273,40 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Сповіщення",
-    "INBOX": "Inbox",
+    "INBOX": "Вхідні",
     "EMPTY": "Немає сповіщень.",
     "EMPTY_MORE_TEXT": "Як тільки ви почнете отримувати сповіщення, вони з'являться тут.",
     "ALL_NOTIFICATION_LOADED": "Всі сповіщення завантажено",
     "MARK_ALL": "Позначити всі як прочитані",
     "CANCEL": "Скасувати",
-    "DELETE": "Delete",
+    "DELETE": "Видалити",
     "TYPES": {
-      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
-      "CONVERSATION_CREATION": "New conversation created",
-      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
-      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
-      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+      "CONVERSATION_MENTION": "Ви були згадані в розмові",
+      "CONVERSATION_CREATION": "Діалог створено",
+      "CONVERSATION_ASSIGNMENT": "Розмова була призначена для вас",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Нове повідомлення в призначеній розмові",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Нове повідомлення в розмові, в якій ви берете участь",
+      "SLA_MISSED_FIRST_RESPONSE": "Перша відповідь на SLA пропущена для розмови",
+      "SLA_MISSED_NEXT_RESPONSE": "Запропонована відповідь SLA відсутня для розмови",
+      "SLA_MISSED_RESOLUTION": "Цільова роздільна здатність SLA відсутня для розмови"
     },
     "FILTERS": {
       "SORT_BY": {
-        "TITLE": "Sort by",
+        "TITLE": "Сортувати за",
         "OPTIONS": {
-          "ASC": "Oldest",
-          "DESC": "Newest"
+          "ASC": "Старіші",
+          "DESC": "Новіші"
         }
       }
     },
     "ALERTS": {
-      "MARK_AS_READ": "Notification marked as read",
-      "MARK_AS_UNREAD": "Notification marked as unread",
-      "SNOOZE": "Notification snoozed",
-      "DELETE": "Notification deleted",
-      "MARK_ALL_READ": "All notifications marked as read",
-      "DELETE_ALL": "All notifications deleted",
-      "DELETE_ALL_READ": "All read notifications deleted"
+      "MARK_AS_READ": "Повідомлення помічено як прочитане",
+      "MARK_AS_UNREAD": "Повідомлення помічено як непрочитане",
+      "SNOOZE": "Сповіщення відключено",
+      "DELETE": "Сповіщення видалено",
+      "MARK_ALL_READ": "Повідомлення помічено як прочитане",
+      "DELETE_ALL": "Сповіщення видалено",
+      "DELETE_ALL_READ": "Всі прочитані повідомлення видалено"
     }
   },
   "AVAILABILITY": {
@@ -328,22 +328,22 @@
     "CONVERSATION_SLA_MISSED_RESOLUTION": "Розмова пропускає SLA розширення"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Attributes",
+    "TITLE": "Атрибути",
     "BROWSER": "Браузер",
     "OPERATING_SYSTEM": "Операційна система",
     "INITIATED_AT": "Час початку",
     "INITIATED_FROM": "Розпочато з",
     "IP_ADDRESS": "IP-адреса",
-    "CONVERSATION_ID": "Conversation ID",
+    "CONVERSATION_ID": "ID бесіди",
     "CLIPBOARD_SUCCESS": "Код скопійований в буфер обміну"
   },
   "CONTACT_DETAILS": {
-    "TITLE": "Contact Details",
+    "TITLE": "Контактні дані",
     "EMAIL": "Email",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "Номер телефону",
     "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Contact Attributes",
-    "VALUE_UNAVAILABLE": "Unavailable"
+    "CONTACT_ATTRIBUTES": "Атрибути контакту",
+    "VALUE_UNAVAILABLE": "Неприсутній"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participants",
@@ -415,10 +415,10 @@
     "OK": "Гаразд"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
-    "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "TWILIO_WHATSAPP_CAN_REPLY": "Ви можете відповісти на цю розмову тільки за допомогою шаблонного повідомлення через",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24-годинне обмеження на повідомлення",
+    "24_HOURS_WINDOW": "24-годинне обмеження на повідомлення",
+    "CANNOT_REPLY": "Ви не можете відповісти через"
   },
   "SLA": {
     "FRT": "FRT",

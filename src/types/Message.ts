@@ -27,7 +27,7 @@ export enum MessageType {
 
 export type MessageStatus = 'sent' | 'delivered' | 'read' | 'failed';
 
-type ImageMetadata = {
+export type ImageMetadata = {
   id: number;
   messageId: number;
   fileType: 'image' | 'video' | 'audio' | 'file';
@@ -62,6 +62,7 @@ export type MessageContentAttributes = {
   externalError: string;
   imageType: string;
   contentType: ContentType;
+  isUnsupported: boolean;
 };
 
 export interface Message {
@@ -82,4 +83,8 @@ export interface Message {
   lastNonActivityMessage: Message | null;
   conversation?: Conversation | null;
   shouldRenderAvatar?: boolean | false;
+  senderId: number;
+  groupWithNext?: boolean | false;
+  groupWithPrevious?: boolean | false;
+  senderType?: string;
 }

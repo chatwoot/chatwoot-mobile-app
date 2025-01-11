@@ -136,6 +136,7 @@
       "BACK_TO_HOME": "Take me Home",
       "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
     },
+    "BOT": "Bot",
     "EMAIL_HEAD": {
       "TO": "To",
       "CC": "Cc",

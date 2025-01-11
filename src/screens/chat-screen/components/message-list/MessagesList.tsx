@@ -10,7 +10,8 @@ import { FlashList } from '@shopify/flash-list';
 import { useAppKeyboardAnimation } from '@/utils';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
-import { MessageItemContainer } from '../message-item';
+import { MessageComponent } from '../message-item/Message';
+// import { MessageItemContainer } from '../message-item/MessageItemContainer';
 import { useRefsContext } from '@/context';
 
 export type FlashListRenderProps = {
@@ -20,11 +21,30 @@ export type FlashListRenderProps = {
 
 const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList<Message | { date: string }>);
 
+type DateSectionProps = { item: { date: string } };
+
+const DateSection = ({ item }: DateSectionProps) => {
+  return (
+    <Animated.View style={tailwind.style('flex flex-row justify-center items-center py-4')}>
+      <Animated.View style={tailwind.style('rounded-lg py-1 px-[7px] bg-blackA-A3')}>
+        <Animated.Text
+          style={tailwind.style(
+            'text-cxs font-inter-420-20 tracking-[0.32px] text-blackA-A11 leading-[15px]',
+          )}>
+          {item.date}
+        </Animated.Text>
+      </Animated.View>
+    </Animated.View>
+  );
+};
+
 type MessagesListPresentationProps = {
   messages: (Message | { date: string })[];
   isFlashListReady: boolean;
   setFlashListReady: (ready: boolean) => void;
   onEndReached: () => void;
+  isEmailInbox: boolean;
+  currentUserId: number;
 };
 
 export const MessagesList = ({
@@ -32,6 +52,8 @@ export const MessagesList = ({
   isFlashListReady,
   setFlashListReady,
   onEndReached,
+  isEmailInbox,
+  currentUserId,
 }: MessagesListPresentationProps) => {
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
@@ -40,7 +62,19 @@ export const MessagesList = ({
   >;
 
   const handleRender = ({ item, index }: { item: Message | { date: string }; index: number }) => {
-    return <MessageItemContainer item={item} index={index} />;
+    if ('date' in item) {
+      return <DateSection item={item} />;
+    }
+
+    return (
+      <MessageComponent
+        item={item}
+        index={index}
+        isEmailInbox={isEmailInbox}
+        currentUserId={currentUserId}
+      />
+    );
+    // return <MessageItemContainer item={item} index={index} />;
   };
 
   const animatedFlashlistStyle = useAnimatedStyle(() => {

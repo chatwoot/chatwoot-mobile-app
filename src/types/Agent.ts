@@ -13,4 +13,5 @@ export interface Agent {
   name?: string | null;
   role?: UserRole;
   thumbnail?: string | null;
+  type?: string;
 }

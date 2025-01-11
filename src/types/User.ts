@@ -17,4 +17,5 @@ export type User = {
   availability: string;
   thumbnail: string;
   availability_status: AvailabilityStatus;
+  type: string;
 };

@@ -23,4 +23,5 @@ export interface Contact {
   name: string | null;
   phoneNumber: string | null;
   thumbnail: string | null;
+  type: string;
 }

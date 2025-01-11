@@ -288,3 +288,29 @@ export const MEDIA_TYPES = [
 export const CONTENT_TYPES = {
   INCOMING_EMAIL: 'incoming_email',
 };
+
+
+export const ORIENTATION = {
+  LEFT: 'left',
+  RIGHT: 'right',
+  CENTER: 'center',
+};
+
+export const SENDER_TYPES = {
+  CONTACT: 'Contact',
+  USER: 'User',
+  AGENT_BOT: 'agent_bot',
+};
+
+export const MESSAGE_VARIANTS = {
+  DATE: 'date',
+  USER: 'user',
+  AGENT: 'agent',
+  ACTIVITY: 'activity',
+  PRIVATE: 'private',
+  BOT: 'bot',
+  ERROR: 'error',
+  TEMPLATE: 'template',
+  EMAIL: 'email',
+  UNSUPPORTED: 'unsupported',
+};

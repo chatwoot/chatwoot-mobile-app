@@ -14,10 +14,56 @@ import {
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { selectAttachments } from '@/store/conversation/sendMessageSlice';
 import { Animated } from 'react-native';
-import { getGroupedMessages } from '@/utils';
+import { getGroupedMessages, isAnEmailChannel } from '@/utils';
 import { MessagesList } from './MessagesList';
 import tailwind from 'twrnc';
 import { conversationParticipantActions } from '@/store/conversation-participant/conversationParticipantActions';
+import { MESSAGE_TYPES } from '@/constants';
+import { Message } from '@/types';
+import { selectInboxById } from '@/store/inbox/inboxSelectors';
+import { selectUserId } from '@/store/auth/authSelectors';
+
+type DateSeparator = { date: string; type: 'date' };
+type MessageOrDate = Message | DateSeparator;
+
+/**
+ * Determines if a message should be grouped with the next message and previous message
+ * @param {Number} index - Index of the current message
+ * @param {Array} searchList - Array of messages to check
+ * @returns {Boolean} - Whether the message should be grouped with next
+ */
+const shouldGroupWithNext = (index: number, searchList: MessageOrDate[]) => {
+  if (index < 0) return false;
+
+  if (index === searchList.length - 1) return false;
+
+  const current = searchList[index];
+  const next = searchList[index + 1];
+
+  if ('date' in current) return false;
+  if ('date' in next) return false;
+
+  if (!current.id || !next.id) return false;
+
+  if (next.status === 'failed') return false;
+
+  const nextSenderId = next.senderId ?? next.sender?.id;
+  const currentSenderId = current.senderId ?? current.sender?.id;
+  const hasSameSender = nextSenderId === currentSenderId;
+
+  const nextMessageType = next.messageType;
+  const currentMessageType = current.messageType;
+
+  const areBothTemplates =
+    nextMessageType === MESSAGE_TYPES.TEMPLATE && currentMessageType === MESSAGE_TYPES.TEMPLATE;
+
+  if (!hasSameSender || areBothTemplates) return false;
+
+  if (currentMessageType !== nextMessageType) return false;
+
+  // Check if messages are in the same minute by rounding down to nearest minute
+  return Math.floor(next.createdAt / 60) === Math.floor(current.createdAt / 60);
+};
 
 const PlatformSpecificKeyboardWrapperComponent =
   Platform.OS === 'android' ? Animated.View : KeyboardGestureArea;
@@ -79,20 +125,36 @@ export const MessagesListContainer = () => {
   }, []);
 
   const groupedMessages = getGroupedMessages(messages);
+
   const allMessages = flatMap(groupedMessages, section => [
     ...section.data,
     { date: section.date },
   ]);
+
+  const messagesWithGrouping = allMessages.map((message, index) => {
+    return {
+      ...message,
+      groupWithNext: shouldGroupWithNext(index, allMessages as MessageOrDate[]),
+      groupWithPrevious: shouldGroupWithNext(index - 1, allMessages as MessageOrDate[]),
+    };
+  });
+
+  const { inboxId } = conversation || {};
+  const inbox = useAppSelector(state => (inboxId ? selectInboxById(state, inboxId) : undefined));
+  const isEmailInbox = isAnEmailChannel(inbox);
+  const userId = useAppSelector(selectUserId);
 
   return (
     <PlatformSpecificKeyboardWrapperComponent
       style={tailwind.style('flex-1 bg-white')}
       interpolator="linear">
       <MessagesList
-        messages={allMessages}
+        messages={messagesWithGrouping}
         isFlashListReady={isFlashListReady}
         setFlashListReady={setFlashListReady}
         onEndReached={onEndReached}
+        isEmailInbox={isEmailInbox}
+        currentUserId={userId as number}
       />
     </PlatformSpecificKeyboardWrapperComponent>
   );

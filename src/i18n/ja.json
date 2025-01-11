@@ -137,11 +137,11 @@
       "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
     },
     "EMAIL_HEAD": {
-      "TO": "To",
-      "CC": "Cc",
-      "BCC": "Bcc"
+      "TO": "宛先:",
+      "CC": "シーシー",
+      "BCC": "ビーシーシー"
     },
-    "SELF_ASSIGN": "Assign to me",
+    "SELF_ASSIGN": "自分に割り当て",
     "UN_ASSIGN": "Unassign conversation",
     "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
     "MARK_AS_PENDING": "保留としてマークする",
@@ -158,9 +158,9 @@
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
+    "DELETE_MESSAGE_SUCCESS": "メッセージの削除に成功",
     "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "Conversation Assignee changed",
+    "ASSIGN_CHANGE": "会話の担当者が変更されました",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
@@ -186,46 +186,46 @@
     },
     "ITEM": {
       "ASSIGN": "Assign",
-      "STATUS": "Status"
+      "STATUS": "状況"
     },
     "ATTACHMENTS": {
       "image": {
         "CONTENT": "画像メッセージ"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "音声メッセージ"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "ビデオ メッセージ"
       },
       "file": {
         "CONTENT": "添付ファイル"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "場所"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "URLを共有しています"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
-      "REPLY": "Reply",
+      "COPY": "コピー",
+      "REPLY": "返信",
       "DELETE_MESSAGE": "Delete message"
     },
     "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "To",
-      "BCC": "Bcc",
-      "CC": "Cc",
-      "SUBJECT": "Subject",
+      "FROM": "差出人:",
+      "TO": "宛先:",
+      "BCC": "ビーシーシー",
+      "CC": "シーシー",
+      "SUBJECT": "件名",
       "EXPAND": "Expand email"
     },
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "未割当",
         "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "EDIT": "編集"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
@@ -233,7 +233,7 @@
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "編集"
       }
     }
   },
@@ -279,7 +279,7 @@
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
     "CANCEL": "キャンセル",
-    "DELETE": "Delete",
+    "DELETE": "削除",
     "TYPES": {
       "CONVERSATION_MENTION": "You have been mentioned in a conversation",
       "CONVERSATION_CREATION": "New conversation created",
@@ -340,7 +340,7 @@
   "CONTACT_DETAILS": {
     "TITLE": "Contact Details",
     "EMAIL": "Eメール",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "電話番号",
     "CALL": "Call",
     "CONTACT_ATTRIBUTES": "Contact Attributes",
     "VALUE_UNAVAILABLE": "Unavailable"
@@ -418,7 +418,7 @@
     "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
     "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
     "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "CANNOT_REPLY": "以下の理由で返信できません："
   },
   "SLA": {
     "FRT": "FRT",

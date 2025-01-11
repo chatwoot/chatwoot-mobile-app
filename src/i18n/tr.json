@@ -138,10 +138,10 @@
     },
     "EMAIL_HEAD": {
       "TO": "Kime",
-      "CC": "Cc",
-      "BCC": "Bcc"
+      "CC": "Kopya",
+      "BCC": "Gizli Kopya"
     },
-    "SELF_ASSIGN": "Assign to me",
+    "SELF_ASSIGN": "Bana Ata",
     "UN_ASSIGN": "Unassign conversation",
     "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
     "MARK_AS_PENDING": "Beklemede olarak işaretle",
@@ -158,15 +158,15 @@
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
-    "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "Conversation Assignee changed",
+    "DELETE_MESSAGE_SUCCESS": "Mesaj başarıyla silindi",
+    "NO_CONTENT": "Kullanılabilir içerik yok",
+    "ASSIGN_CHANGE": "Atanan kişiyi değiştirildi",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Search teams",
+    "CHANGE_STATUS": "Durumu değiştir",
+    "SEARCH_TEAM": "Takım ara",
     "PRIORITY": {
       "TITLE": "Öncelik",
       "OPTIONS": {
@@ -185,55 +185,55 @@
       }
     },
     "ITEM": {
-      "ASSIGN": "Assign",
-      "STATUS": "Status"
+      "ASSIGN": "Atama yap",
+      "STATUS": "Durum"
     },
     "ATTACHMENTS": {
       "image": {
         "CONTENT": "Görsel mesaj"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "Sesli mesaj"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "Video mesajı"
       },
       "file": {
         "CONTENT": "Dosya eklentisi"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "Konum"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "bir bağlantı paylaştı"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
-      "REPLY": "Reply",
+      "COPY": "Kopyala",
+      "REPLY": "Cevapla",
       "DELETE_MESSAGE": "Delete message"
     },
     "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "To",
-      "BCC": "Bcc",
-      "CC": "Cc",
-      "SUBJECT": "Subject",
+      "FROM": "Kimden",
+      "TO": "Kime",
+      "BCC": "Gizli Kopya",
+      "CC": "Kopya",
+      "SUBJECT": "Konu",
       "EXPAND": "Expand email"
     },
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "Atanmamış",
-        "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "ASSIGN": "Atama yap",
+        "EDIT": "Düzenle"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
-        "ASSIGN": "Assign"
+        "ASSIGN": "Atama yap"
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "Düzenle"
       }
     }
   },
@@ -273,40 +273,40 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Bildirimler",
-    "INBOX": "Inbox",
+    "INBOX": "Gelen Kutusu",
     "EMPTY": "Henüz bildirim yok.",
     "EMPTY_MORE_TEXT": "Bildirimler almaya başladığınızda burada görünecekler.",
     "ALL_NOTIFICATION_LOADED": "Tüm bildirimler yüklendi",
     "MARK_ALL": "Tümünü okundu olarak işaretle",
     "CANCEL": "İptal etmek",
-    "DELETE": "Delete",
+    "DELETE": "Sil",
     "TYPES": {
-      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
-      "CONVERSATION_CREATION": "New conversation created",
-      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "CONVERSATION_MENTION": "Bir konuşmada senden bahsedildi",
+      "CONVERSATION_CREATION": "Yeni bir görüşme oluşturuldu",
+      "CONVERSATION_ASSIGNMENT": "Size bir görüşme atandı",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Atandığınız görüşmeden bir yeni mesaj",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Katıldığınız sohbetteki yeni mesaj",
       "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
       "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
       "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
     },
     "FILTERS": {
       "SORT_BY": {
-        "TITLE": "Sort by",
+        "TITLE": "Sırala",
         "OPTIONS": {
-          "ASC": "Oldest",
-          "DESC": "Newest"
+          "ASC": "En Eski",
+          "DESC": "En Yeni"
         }
       }
     },
     "ALERTS": {
-      "MARK_AS_READ": "Notification marked as read",
-      "MARK_AS_UNREAD": "Notification marked as unread",
-      "SNOOZE": "Notification snoozed",
-      "DELETE": "Notification deleted",
-      "MARK_ALL_READ": "All notifications marked as read",
-      "DELETE_ALL": "All notifications deleted",
-      "DELETE_ALL_READ": "All read notifications deleted"
+      "MARK_AS_READ": "Bildirim okundu olarak işaretlendi",
+      "MARK_AS_UNREAD": "Bildirim okunmamış olarak işaretlendi",
+      "SNOOZE": "Bildirim Sessize Alındı",
+      "DELETE": "Bildirim Silindi",
+      "MARK_ALL_READ": "Tüm Bildirimler Okundu Olarak İşaretlendi",
+      "DELETE_ALL": "Tüm Bildirimler Silindi",
+      "DELETE_ALL_READ": "Tüm Okunmuş Bildirimler Silindi"
     }
   },
   "AVAILABILITY": {
@@ -328,22 +328,22 @@
     "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Attributes",
+    "TITLE": "Öznitelikler",
     "BROWSER": "Tarayıcı",
     "OPERATING_SYSTEM": "İşletim sistemi",
     "INITIATED_AT": "Başlatıldı",
     "INITIATED_FROM": "Başlatıldı",
     "IP_ADDRESS": "IP Adresi",
-    "CONVERSATION_ID": "Conversation ID",
+    "CONVERSATION_ID": "Sohbet Kodu",
     "CLIPBOARD_SUCCESS": "Kod başarıyla panoya kopyalandı"
   },
   "CONTACT_DETAILS": {
-    "TITLE": "Contact Details",
+    "TITLE": "İletişim Detayları",
     "EMAIL": "E-posta",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "Telefon Numarası",
     "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Contact Attributes",
-    "VALUE_UNAVAILABLE": "Unavailable"
+    "CONTACT_ATTRIBUTES": "İletişim Nitelikleri",
+    "VALUE_UNAVAILABLE": "Uygun Değil"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participants",
@@ -415,10 +415,10 @@
     "OK": "Tamam"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
-    "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "TWILIO_WHATSAPP_CAN_REPLY": "Bu konuşmaya yalnızca şablon mesaj kullanarak yanıt verebilirsiniz, çünkü",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 saat mesaj penceresi kısıtlaması",
+    "24_HOURS_WINDOW": "24 saat mesaj penceresi kısıtlaması",
+    "CANNOT_REPLY": "Nedeniyle cevap veremezsiniz"
   },
   "SLA": {
     "FRT": "FRT",

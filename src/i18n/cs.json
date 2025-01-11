@@ -57,7 +57,7 @@
     },
     "FILTERS": {
       "AGENT": {
-        "SEARCH_AGENT": "Search agents"
+        "SEARCH_AGENT": "Hledat agenty"
       },
       "ASSIGNEE_TYPE": {
         "TITLE": "Filter by assignee type",
@@ -71,7 +71,7 @@
         "TITLE": "Filter by inbox"
       },
       "SORT_BY": {
-        "TITLE": "Sort by",
+        "TITLE": "Seřadit podle",
         "OPTIONS": {
           "LATEST": "Latest",
           "SORT_ON_CREATED_AT": "Vytvořeno",
@@ -82,8 +82,8 @@
         "TITLE": "Filter by status",
         "OPTIONS": {
           "OPEN": "Otevřít",
-          "PENDING": "Pending",
-          "SNOOZED": "Snoozed",
+          "PENDING": "Čekající",
+          "SNOOZED": "Odložené",
           "RESOLVED": "Resolved",
           "ALL": "All"
         }
@@ -94,15 +94,15 @@
         "SEARCH_LABELS": "Search labels"
       },
       "AGENTS": {
-        "SEARCH_AGENT": "Search agents"
+        "SEARCH_AGENT": "Hledat agenty"
       },
       "STATUS": {
         "HEADER_TITLE": "Assign status",
         "TITLE": "Filter by status",
         "OPTIONS": {
           "OPEN": "Otevřít",
-          "PENDING": "Pending",
-          "SNOOZED": "Snoozed",
+          "PENDING": "Čekající",
+          "SNOOZED": "Odložené",
           "RESOLVED": "Resolved",
           "ALL": "All"
         }
@@ -137,11 +137,11 @@
       "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
     },
     "EMAIL_HEAD": {
-      "TO": "To",
+      "TO": "Komu",
       "CC": "Cc",
       "BCC": "Bcc"
     },
-    "SELF_ASSIGN": "Assign to me",
+    "SELF_ASSIGN": "Přiřadit mi",
     "UN_ASSIGN": "Unassign conversation",
     "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
     "MARK_AS_PENDING": "Označit jako nevyřízené",
@@ -158,15 +158,15 @@
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
-    "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "Conversation Assignee changed",
+    "DELETE_MESSAGE_SUCCESS": "Zpráva byla úspěšně smazána",
+    "NO_CONTENT": "Žádný obsah k dispozici",
+    "ASSIGN_CHANGE": "Konverzace pověřená osoba změněna",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",
     "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Search teams",
+    "SEARCH_TEAM": "Hledat týmy",
     "PRIORITY": {
       "TITLE": "Priority",
       "OPTIONS": {
@@ -185,55 +185,55 @@
       }
     },
     "ITEM": {
-      "ASSIGN": "Assign",
-      "STATUS": "Status"
+      "ASSIGN": "Přiřadit",
+      "STATUS": "Stav"
     },
     "ATTACHMENTS": {
       "image": {
         "CONTENT": "Picture message"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "Zvuková zpráva"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "Video zpráva"
       },
       "file": {
         "CONTENT": "File Attachment"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "Poloha"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "sdílel URL"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
-      "REPLY": "Reply",
+      "COPY": "Kopírovat",
+      "REPLY": "Odpověď",
       "DELETE_MESSAGE": "Delete message"
     },
     "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "To",
+      "FROM": "Od",
+      "TO": "Komu",
       "BCC": "Bcc",
       "CC": "Cc",
-      "SUBJECT": "Subject",
+      "SUBJECT": "Předmět",
       "EXPAND": "Expand email"
     },
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "Unassigned",
-        "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "ASSIGN": "Přiřadit",
+        "EDIT": "Upravit"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
-        "ASSIGN": "Assign"
+        "ASSIGN": "Přiřadit"
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "Upravit"
       }
     }
   },
@@ -279,7 +279,7 @@
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
     "CANCEL": "Zrušit",
-    "DELETE": "Delete",
+    "DELETE": "Vymazat",
     "TYPES": {
       "CONVERSATION_MENTION": "You have been mentioned in a conversation",
       "CONVERSATION_CREATION": "New conversation created",
@@ -292,7 +292,7 @@
     },
     "FILTERS": {
       "SORT_BY": {
-        "TITLE": "Sort by",
+        "TITLE": "Seřadit podle",
         "OPTIONS": {
           "ASC": "Oldest",
           "DESC": "Newest"
@@ -338,12 +338,12 @@
     "CLIPBOARD_SUCCESS": "Kód byl úspěšně zkopírován do schránky"
   },
   "CONTACT_DETAILS": {
-    "TITLE": "Contact Details",
+    "TITLE": "Podrobnosti kontaktu",
     "EMAIL": "E-mailová adresa",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "Telefonní číslo",
     "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Contact Attributes",
-    "VALUE_UNAVAILABLE": "Unavailable"
+    "CONTACT_ATTRIBUTES": "Atributy kontaktu",
+    "VALUE_UNAVAILABLE": "Nedostupný"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participants",
@@ -415,10 +415,10 @@
     "OK": "Ok"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
-    "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "TWILIO_WHATSAPP_CAN_REPLY": "Na tuto konverzaci můžete odpovědět pouze pomocí šablony zprávy z důvodu",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hodinové omezení okna",
+    "24_HOURS_WINDOW": "24 hodinové omezení okna",
+    "CANNOT_REPLY": "Nemůžete odpovědět z důvodu"
   },
   "SLA": {
     "FRT": "FRT",

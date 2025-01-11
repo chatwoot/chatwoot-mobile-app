@@ -60,7 +60,7 @@
         "SEARCH_AGENT": "Search agents"
       },
       "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
+        "TITLE": "Suodata vastuuhenkilön tyypin mukaan",
         "OPTIONS": {
           "ME": "Me",
           "UNASSIGNED": "Osoittamaton",
@@ -68,7 +68,7 @@
         }
       },
       "INBOX": {
-        "TITLE": "Filter by inbox"
+        "TITLE": "Suodata saapuneet-kansion mukaan"
       },
       "SORT_BY": {
         "TITLE": "Sort by",
@@ -82,8 +82,8 @@
         "TITLE": "Filter by status",
         "OPTIONS": {
           "OPEN": "Avaa",
-          "PENDING": "Pending",
-          "SNOOZED": "Snoozed",
+          "PENDING": "Odottava",
+          "SNOOZED": "Torkutettu",
           "RESOLVED": "Ratkaistu",
           "ALL": "Kaikki"
         }
@@ -101,8 +101,8 @@
         "TITLE": "Filter by status",
         "OPTIONS": {
           "OPEN": "Avaa",
-          "PENDING": "Pending",
-          "SNOOZED": "Snoozed",
+          "PENDING": "Odottava",
+          "SNOOZED": "Torkutettu",
           "RESOLVED": "Ratkaistu",
           "ALL": "Kaikki"
         }
@@ -141,7 +141,7 @@
       "CC": "Cc",
       "BCC": "Bcc"
     },
-    "SELF_ASSIGN": "Assign to me",
+    "SELF_ASSIGN": "Siirrä minulle",
     "UN_ASSIGN": "Poista keskustelu itseltä",
     "CONVERSATION_NOT_FOUND": "Keskustelua ei voitu hakea",
     "MARK_AS_PENDING": "Merkitse odottavaksi",
@@ -160,7 +160,7 @@
     "STORY_NOT_AVAILABLE": "This story is no longer available",
     "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
     "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "Conversation Assignee changed",
+    "ASSIGN_CHANGE": "Keskustelun vastaanottaja vaihdettu",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
@@ -185,32 +185,32 @@
       }
     },
     "ITEM": {
-      "ASSIGN": "Assign",
-      "STATUS": "Status"
+      "ASSIGN": "Delegoi",
+      "STATUS": "Tila"
     },
     "ATTACHMENTS": {
       "image": {
         "CONTENT": "Kuvaviesti"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "Ääniviesti"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "Videoviesti"
       },
       "file": {
         "CONTENT": "Liitetiedosto"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "Sijainti"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "on jakanut URL-osoitteen"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
-      "REPLY": "Reply",
+      "COPY": "Kopioi",
+      "REPLY": "Vastaa",
       "DELETE_MESSAGE": "Delete message"
     },
     "EMAIL_HEADER": {
@@ -224,16 +224,16 @@
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "Osoittamaton",
-        "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "ASSIGN": "Delegoi",
+        "EDIT": "Muokkaa"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
-        "ASSIGN": "Assign"
+        "ASSIGN": "Delegoi"
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "Muokkaa"
       }
     }
   },
@@ -279,7 +279,7 @@
     "ALL_NOTIFICATION_LOADED": "Kaikki ilmoitukset ladattu",
     "MARK_ALL": "Merkitse kaikki luetuiksi",
     "CANCEL": "Peruuta",
-    "DELETE": "Delete",
+    "DELETE": "Poista",
     "TYPES": {
       "CONVERSATION_MENTION": "You have been mentioned in a conversation",
       "CONVERSATION_CREATION": "New conversation created",
@@ -340,9 +340,9 @@
   "CONTACT_DETAILS": {
     "TITLE": "Contact Details",
     "EMAIL": "Sähköposti",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "Puhelinnumero",
     "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Contact Attributes",
+    "CONTACT_ATTRIBUTES": "Yhteystiedon määritteet",
     "VALUE_UNAVAILABLE": "Unavailable"
   },
   "CONVERSATION_PARTICIPANTS": {
@@ -416,9 +416,9 @@
   },
   "BANNER": {
     "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
-    "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24h vastausikkuna",
+    "24_HOURS_WINDOW": "24h vastausikkuna",
+    "CANNOT_REPLY": "Et voi vastata, sillä"
   },
   "SLA": {
     "FRT": "FRT",

@@ -112,7 +112,7 @@ const MessageWrapper = ({
           flexOrientationClass(),
           shouldGroupWithPrevious && orientation === ORIENTATION.LEFT ? 'ml-7' : '',
           !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
-          item.private ? 'my-2' : '',
+          item.private ? 'my-1' : '',
         ),
       ]}>
       <Animated.View style={tailwind.style('flex flex-row')}>

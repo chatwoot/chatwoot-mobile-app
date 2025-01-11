@@ -8,7 +8,7 @@ import { Message } from '@/types';
 import { Icon } from '@/components-next';
 import { ReplyMessageBubble } from './ReplyMessageBubble';
 
-import { ImageContainer } from './ImageCell';
+import { ImageBubbleContainer } from './ImageBubble';
 
 import { useAppSelector } from '@/hooks';
 import { useChatWindowContext } from '@/context';
@@ -80,8 +80,10 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
                   </Animated.Text>
                 </Animated.View>
               ) : (
-                <Animated.View key={attachment.fileType + index} style={tailwind.style('my-2')}>
-                  <ImageContainer
+                <Animated.View
+                  key={attachment.fileType + index}
+                  style={tailwind.style('my-2 border')}>
+                  <ImageBubbleContainer
                     imageSrc={attachment.dataUrl}
                     width={300 - 24 - (isPrivate ? 13 : 0)}
                     height={215}

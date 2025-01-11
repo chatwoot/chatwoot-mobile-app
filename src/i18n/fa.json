@@ -159,14 +159,14 @@
     "COPY_MESSAGE": "Message copied to clipboard",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
     "DELETE_MESSAGE_SUCCESS": "پیام با موفقیت حذف شد",
-    "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "Conversation Assignee changed",
+    "NO_CONTENT": "هیچ محتوایی موجود نیست",
+    "ASSIGN_CHANGE": "مسول گفتگو تغییر کرد",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Search teams",
+    "CHANGE_STATUS": "تغییر وضعیت",
+    "SEARCH_TEAM": "جستجوی تیم",
     "PRIORITY": {
       "TITLE": "اولویت",
       "OPTIONS": {
@@ -185,55 +185,55 @@
       }
     },
     "ITEM": {
-      "ASSIGN": "Assign",
-      "STATUS": "Status"
+      "ASSIGN": "اختصاص دادن",
+      "STATUS": "وضعیت"
     },
     "ATTACHMENTS": {
       "image": {
         "CONTENT": "پیام تصویری"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "پیام صوتی"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "پیام ویدیویی"
       },
       "file": {
         "CONTENT": "فایل الصاقی"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "موقعیت جغرافیایی"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "یک آدرس URL به اشتراک گذاشته شده"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
-      "REPLY": "Reply",
+      "COPY": "کپی",
+      "REPLY": "پاسخ",
       "DELETE_MESSAGE": "Delete message"
     },
     "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "To",
+      "FROM": "از",
+      "TO": "به",
       "BCC": "Bcc",
       "CC": "Cc",
-      "SUBJECT": "Subject",
+      "SUBJECT": "موضوع",
       "EXPAND": "Expand email"
     },
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "تخصیص داده نشده",
-        "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "ASSIGN": "اختصاص دادن",
+        "EDIT": "ویرایش"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
-        "ASSIGN": "Assign"
+        "ASSIGN": "اختصاص دادن"
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "ویرایش"
       }
     }
   },
@@ -273,40 +273,40 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "اعلان ها",
-    "INBOX": "Inbox",
+    "INBOX": "صندوق ورودی",
     "EMPTY": "اعلانی وجود ندارد.",
     "EMPTY_MORE_TEXT": "هنگامی که اعلان جدیدی دریافت می کنید ، آنها در اینجا نمایش داده می شوند.",
     "ALL_NOTIFICATION_LOADED": "همه اعلان ها بارگیری شدند",
     "MARK_ALL": "همه را به عنوان خوانده شده علامت بزن",
     "CANCEL": "انصراف",
-    "DELETE": "Delete",
+    "DELETE": "حذف",
     "TYPES": {
-      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
-      "CONVERSATION_CREATION": "New conversation created",
-      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
-      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
-      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+      "CONVERSATION_MENTION": "به نام شما در یک گفتگو اشاره شده است",
+      "CONVERSATION_CREATION": "گفتگو ایجاد شد",
+      "CONVERSATION_ASSIGNMENT": "یک گفتگو به شما اختصاص داده شده",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "پیام جدید در یک گفتگوی اختصاص داده شده",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "پیام جدید در گفتگویی که در آن شرکت داشته اید",
+      "SLA_MISSED_FIRST_RESPONSE": "سیاست SLA مربوط به اولین پاسخ در گفتگوی نقض شده",
+      "SLA_MISSED_NEXT_RESPONSE": "سیاست SLA مربوط به پاسخ بعدی در گفتگوی نقض شده",
+      "SLA_MISSED_RESOLUTION": "سیاست SLA مربوط به زمان حل موضوع در گفتگوی نقض شده"
     },
     "FILTERS": {
       "SORT_BY": {
-        "TITLE": "Sort by",
+        "TITLE": "مرتب‌سازی براساس",
         "OPTIONS": {
-          "ASC": "Oldest",
-          "DESC": "Newest"
+          "ASC": "قدیمی ترین",
+          "DESC": "جدیدترین"
         }
       }
     },
     "ALERTS": {
-      "MARK_AS_READ": "Notification marked as read",
-      "MARK_AS_UNREAD": "Notification marked as unread",
-      "SNOOZE": "Notification snoozed",
-      "DELETE": "Notification deleted",
-      "MARK_ALL_READ": "All notifications marked as read",
-      "DELETE_ALL": "All notifications deleted",
-      "DELETE_ALL_READ": "All read notifications deleted"
+      "MARK_AS_READ": "ثبت اعلان به عنوان خوانده شده",
+      "MARK_AS_UNREAD": "ثبت اعلان به عنوان خوانده نشده",
+      "SNOOZE": "اعلان به تعویق افتاده",
+      "DELETE": "اعلان حدف شده",
+      "MARK_ALL_READ": "ثبت همه اعلان ها به عنوان خوانده شده",
+      "DELETE_ALL": "حذف همه اعلان ها",
+      "DELETE_ALL_READ": "حذف همه اعلان های خوانده شده"
     }
   },
   "AVAILABILITY": {
@@ -328,22 +328,22 @@
     "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Attributes",
+    "TITLE": "ویژگی ها",
     "BROWSER": "مرورگر",
     "OPERATING_SYSTEM": "سیستم عامل",
     "INITIATED_AT": "شروع شده در",
     "INITIATED_FROM": "شروع شده از",
     "IP_ADDRESS": "آدرس آی‌پی",
-    "CONVERSATION_ID": "Conversation ID",
+    "CONVERSATION_ID": "شناسه گفتگو",
     "CLIPBOARD_SUCCESS": "کد به حافظه کپی شد"
   },
   "CONTACT_DETAILS": {
-    "TITLE": "Contact Details",
+    "TITLE": "اطلاعات تماس",
     "EMAIL": "ایمیل",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "شماره موبایل",
     "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Contact Attributes",
-    "VALUE_UNAVAILABLE": "Unavailable"
+    "CONTACT_ATTRIBUTES": "ویژگی‌های تماس",
+    "VALUE_UNAVAILABLE": "غیر قابل دسترسی"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participants",
@@ -415,10 +415,10 @@
     "OK": "باشه"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
-    "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "TWILIO_WHATSAPP_CAN_REPLY": "شما فقط می توانید با استفاده از یک پیام الگو به این مکالمه پاسخ دهید",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "محدودیت ۲۴ ساعته پنجره پیام",
+    "24_HOURS_WINDOW": "محدودیت ۲۴ ساعته پنجره پیام",
+    "CANNOT_REPLY": "شما نمی‌توانید پاسخ بدهید به دلیل"
   },
   "SLA": {
     "FRT": "FRT",

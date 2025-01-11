@@ -193,23 +193,23 @@
         "CONTENT": "Picture message"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "Poruka sa zvukom"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "Video poruka"
       },
       "file": {
         "CONTENT": "File Attachment"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "Lokacija"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "je podijelio/la url"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
+      "COPY": "Kopiraj",
       "REPLY": "Reply",
       "DELETE_MESSAGE": "Delete message"
     },
@@ -225,7 +225,7 @@
       "ASSIGNEE": {
         "EMPTY": "Unassigned",
         "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "EDIT": "Uredi"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
@@ -233,7 +233,7 @@
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "Uredi"
       }
     }
   },
@@ -279,7 +279,7 @@
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
     "CANCEL": "Cancel",
-    "DELETE": "Delete",
+    "DELETE": "Izbriši",
     "TYPES": {
       "CONVERSATION_MENTION": "You have been mentioned in a conversation",
       "CONVERSATION_CREATION": "New conversation created",
@@ -292,7 +292,7 @@
     },
     "FILTERS": {
       "SORT_BY": {
-        "TITLE": "Sort by",
+        "TITLE": "Poredaj po",
         "OPTIONS": {
           "ASC": "Oldest",
           "DESC": "Newest"
@@ -340,7 +340,7 @@
   "CONTACT_DETAILS": {
     "TITLE": "Contact Details",
     "EMAIL": "Email",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "Broj telefona",
     "CALL": "Call",
     "CONTACT_ATTRIBUTES": "Contact Attributes",
     "VALUE_UNAVAILABLE": "Unavailable"

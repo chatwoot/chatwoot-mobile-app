@@ -27,7 +27,7 @@ type DateSeparator = { date: string; type: 'date' };
 type MessageOrDate = Message | DateSeparator;
 
 /**
- * Determines if a message should be grouped with the next message
+ * Determines if a message should be grouped with the next message and previous message
  * @param {Number} index - Index of the current message
  * @param {Array} searchList - Array of messages to check
  * @returns {Boolean} - Whether the message should be grouped with next
@@ -131,7 +131,7 @@ export const MessagesListContainer = () => {
     { date: section.date },
   ]);
 
-  const updatedGroupedMessages = allMessages.map((message, index) => {
+  const messagesWithGrouping = allMessages.map((message, index) => {
     return {
       ...message,
       groupWithNext: shouldGroupWithNext(index, allMessages as MessageOrDate[]),
@@ -149,12 +149,12 @@ export const MessagesListContainer = () => {
       style={tailwind.style('flex-1 bg-white')}
       interpolator="linear">
       <MessagesList
-        messages={updatedGroupedMessages}
+        messages={messagesWithGrouping}
         isFlashListReady={isFlashListReady}
         setFlashListReady={setFlashListReady}
         onEndReached={onEndReached}
         isEmailInbox={isEmailInbox}
-        currentUserId={userId}
+        currentUserId={userId as number}
       />
     </PlatformSpecificKeyboardWrapperComponent>
   );

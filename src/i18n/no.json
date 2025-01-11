@@ -94,15 +94,15 @@
         "SEARCH_LABELS": "Search labels"
       },
       "AGENTS": {
-        "SEARCH_AGENT": "Search agents"
+        "SEARCH_AGENT": "Søk etter agenter"
       },
       "STATUS": {
         "HEADER_TITLE": "Assign status",
         "TITLE": "Filter by status",
         "OPTIONS": {
           "OPEN": "Åpne",
-          "PENDING": "Pending",
-          "SNOOZED": "Snoozed",
+          "PENDING": "Ventende",
+          "SNOOZED": "Slumret",
           "RESOLVED": "Løst",
           "ALL": "Alle"
         }
@@ -160,13 +160,13 @@
     "STORY_NOT_AVAILABLE": "This story is no longer available",
     "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
     "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "Conversation Assignee changed",
+    "ASSIGN_CHANGE": "Tildelt agent er endret",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",
     "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Search teams",
+    "SEARCH_TEAM": "Søk blant grupper",
     "PRIORITY": {
       "TITLE": "Priority",
       "OPTIONS": {
@@ -185,32 +185,32 @@
       }
     },
     "ITEM": {
-      "ASSIGN": "Assign",
-      "STATUS": "Status"
+      "ASSIGN": "Tildel",
+      "STATUS": "Satus"
     },
     "ATTACHMENTS": {
       "image": {
         "CONTENT": "Bildemelding"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "Lydmelding"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "Video beskjed"
       },
       "file": {
         "CONTENT": "Vedlegg"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "Plassering"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "har delt en URL"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
-      "REPLY": "Reply",
+      "COPY": "Kopier",
+      "REPLY": "Svar",
       "DELETE_MESSAGE": "Delete message"
     },
     "EMAIL_HEADER": {
@@ -224,16 +224,16 @@
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "Ikke tildelt",
-        "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "ASSIGN": "Tildel",
+        "EDIT": "Rediger"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
-        "ASSIGN": "Assign"
+        "ASSIGN": "Tildel"
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "Rediger"
       }
     }
   },
@@ -273,13 +273,13 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Varsler",
-    "INBOX": "Inbox",
+    "INBOX": "Innboks",
     "EMPTY": "No notifications yet.",
     "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
     "CANCEL": "Avbryt",
-    "DELETE": "Delete",
+    "DELETE": "Slett",
     "TYPES": {
       "CONVERSATION_MENTION": "You have been mentioned in a conversation",
       "CONVERSATION_CREATION": "New conversation created",
@@ -334,13 +334,13 @@
     "INITIATED_AT": "Started",
     "INITIATED_FROM": "Startet fra",
     "IP_ADDRESS": "IP Adresse",
-    "CONVERSATION_ID": "Conversation ID",
+    "CONVERSATION_ID": "Samtale ID",
     "CLIPBOARD_SUCCESS": "Koden er kopiert til utklippstavlen"
   },
   "CONTACT_DETAILS": {
     "TITLE": "Contact Details",
     "EMAIL": "E-post",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "Telefonnummer",
     "CALL": "Call",
     "CONTACT_ATTRIBUTES": "Contact Attributes",
     "VALUE_UNAVAILABLE": "Unavailable"
@@ -416,9 +416,9 @@
   },
   "BANNER": {
     "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
-    "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24-timers meldingsrestriksjon",
+    "24_HOURS_WINDOW": "24-timers meldingsrestriksjon",
+    "CANNOT_REPLY": "Du kan ikke svare på grunn av"
   },
   "SLA": {
     "FRT": "FRT",

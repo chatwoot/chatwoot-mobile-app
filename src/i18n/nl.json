@@ -91,18 +91,18 @@
     },
     "ASSIGNEE": {
       "LABELS": {
-        "SEARCH_LABELS": "Search labels"
+        "SEARCH_LABELS": "Zoek op labels"
       },
       "AGENTS": {
-        "SEARCH_AGENT": "Search agents"
+        "SEARCH_AGENT": "Zoek agenten"
       },
       "STATUS": {
         "HEADER_TITLE": "Assign status",
         "TITLE": "Filter by status",
         "OPTIONS": {
           "OPEN": "Open",
-          "PENDING": "Pending",
-          "SNOOZED": "Snoozed",
+          "PENDING": "Afwachtend",
+          "SNOOZED": "Gesluimerd",
           "RESOLVED": "Opgelost",
           "ALL": "Allemaal"
         }
@@ -137,11 +137,11 @@
       "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
     },
     "EMAIL_HEAD": {
-      "TO": "To",
-      "CC": "Cc",
-      "BCC": "Bcc"
+      "TO": "Aan",
+      "CC": "CC",
+      "BCC": "BCC"
     },
-    "SELF_ASSIGN": "Assign to me",
+    "SELF_ASSIGN": "Aan mij toewijzen",
     "UN_ASSIGN": "Toewijzing ongedaan maken",
     "CONVERSATION_NOT_FOUND": "Kon gesprek niet ophalen",
     "MARK_AS_PENDING": "Markeren als in afwachting van",
@@ -158,15 +158,15 @@
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
-    "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "Conversation Assignee changed",
+    "DELETE_MESSAGE_SUCCESS": "Bericht succesvol verwijderd",
+    "NO_CONTENT": "Geen inhoud beschikbaar",
+    "ASSIGN_CHANGE": "Toegewezen persoon voor dit gesprek is veranderd",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Search teams",
+    "CHANGE_STATUS": "Status wijzigen",
+    "SEARCH_TEAM": "Teams zoeken",
     "PRIORITY": {
       "TITLE": "Prioriteit",
       "OPTIONS": {
@@ -185,7 +185,7 @@
       }
     },
     "ITEM": {
-      "ASSIGN": "Assign",
+      "ASSIGN": "Toewijzen",
       "STATUS": "Status"
     },
     "ATTACHMENTS": {
@@ -193,47 +193,47 @@
         "CONTENT": "Bericht met foto"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "Audiobericht"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "Videobericht"
       },
       "file": {
         "CONTENT": "Bestand bijlage"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "Locatie"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "heeft een url gedeeld"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
-      "REPLY": "Reply",
+      "COPY": "Kopiëren",
+      "REPLY": "Beantwoorden",
       "DELETE_MESSAGE": "Delete message"
     },
     "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "To",
-      "BCC": "Bcc",
-      "CC": "Cc",
-      "SUBJECT": "Subject",
+      "FROM": "van",
+      "TO": "Aan",
+      "BCC": "BCC",
+      "CC": "CC",
+      "SUBJECT": "Onderwerp",
       "EXPAND": "Expand email"
     },
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "Niet-toegewezen",
-        "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "ASSIGN": "Toewijzen",
+        "EDIT": "Bewerken"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
-        "ASSIGN": "Assign"
+        "ASSIGN": "Toewijzen"
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "Bewerken"
       }
     }
   },
@@ -273,13 +273,13 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notificaties",
-    "INBOX": "Inbox",
+    "INBOX": "Postvak In",
     "EMPTY": "Er zijn nog geen notificaties.",
     "EMPTY_MORE_TEXT": "Wanneer je notificaties ontvangt, zullen deze hier worden weergegeven.",
     "ALL_NOTIFICATION_LOADED": "Alle notificaties geladen",
     "MARK_ALL": "Markeer alles als gelezen",
     "CANCEL": "annuleren",
-    "DELETE": "Delete",
+    "DELETE": "Verwijderen",
     "TYPES": {
       "CONVERSATION_MENTION": "You have been mentioned in a conversation",
       "CONVERSATION_CREATION": "New conversation created",
@@ -292,7 +292,7 @@
     },
     "FILTERS": {
       "SORT_BY": {
-        "TITLE": "Sort by",
+        "TITLE": "Sorteren op",
         "OPTIONS": {
           "ASC": "Oldest",
           "DESC": "Newest"
@@ -338,11 +338,11 @@
     "CLIPBOARD_SUCCESS": "Code succesvol naar het klembord gekopieerd "
   },
   "CONTACT_DETAILS": {
-    "TITLE": "Contact Details",
+    "TITLE": "Contactgegevens",
     "EMAIL": "E-mailadres",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "Telefoonnummer",
     "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Contact Attributes",
+    "CONTACT_ATTRIBUTES": "Contact-eigenschappen",
     "VALUE_UNAVAILABLE": "Unavailable"
   },
   "CONVERSATION_PARTICIPANTS": {
@@ -415,10 +415,10 @@
     "OK": "OK"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
-    "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "TWILIO_WHATSAPP_CAN_REPLY": "Je kunt dit gesprek alleen beantwoorden met een sjabloon bericht vanwege",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "Beperking van 24-uur berichtenvenster",
+    "24_HOURS_WINDOW": "Beperking van 24-uur berichtenvenster",
+    "CANNOT_REPLY": "Je kunt niet reageren omdat"
   },
   "SLA": {
     "FRT": "FRT",

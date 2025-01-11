@@ -186,31 +186,31 @@
     },
     "ITEM": {
       "ASSIGN": "നിയോഗിക്കുക",
-      "STATUS": "Status"
+      "STATUS": "സ്റ്റാറ്റസ്"
     },
     "ATTACHMENTS": {
       "image": {
         "CONTENT": "ചിത്ര സന്ദേശം"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "ഓഡിയോ സന്ദേശം"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "വീഡിയോ സന്ദേശം"
       },
       "file": {
         "CONTENT": "ഫയൽ അറ്റാച്ചുമെന്റ്"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "സ്ഥാനം"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "ഒരു യു. ആർ. എൽ പങ്കിട്ടു"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
-      "REPLY": "Reply",
+      "COPY": "പകർത്തുക",
+      "REPLY": "മറുപടി",
       "DELETE_MESSAGE": "Delete message"
     },
     "EMAIL_HEADER": {
@@ -218,22 +218,22 @@
       "TO": "To",
       "BCC": "Bcc",
       "CC": "Cc",
-      "SUBJECT": "Subject",
+      "SUBJECT": "വിഷയം",
       "EXPAND": "Expand email"
     },
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "നിയുക്തമാക്കാത്തത്",
-        "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "ASSIGN": "നിയോഗിക്കുക",
+        "EDIT": "എഡിറ്റുചെയ്യുക"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
-        "ASSIGN": "Assign"
+        "ASSIGN": "നിയോഗിക്കുക"
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "എഡിറ്റുചെയ്യുക"
       }
     }
   },
@@ -273,13 +273,13 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "അറിയിപ്പുകൾ",
-    "INBOX": "Inbox",
+    "INBOX": "ഇൻബോക്സ്",
     "EMPTY": "ഇതുവരെ അറിയിപ്പുകളൊന്നുമില്ല.",
     "EMPTY_MORE_TEXT": "നിങ്ങൾക്ക് അറിയിപ്പുകൾ ലഭിച്ചുതുടങ്ങിയാൽ, അവ ഇവിടെ ദൃശ്യമാകും.",
     "ALL_NOTIFICATION_LOADED": "എല്ലാ അറിയിപ്പുകളും ലോഡ് ചെയ്തു",
     "MARK_ALL": "എല്ലാം വായിച്ചതായി അടയാളപ്പെടുത്തുക",
     "CANCEL": "റദ്ദാക്കുക",
-    "DELETE": "Delete",
+    "DELETE": "ഇല്ലാതാക്കുക",
     "TYPES": {
       "CONVERSATION_MENTION": "You have been mentioned in a conversation",
       "CONVERSATION_CREATION": "New conversation created",
@@ -340,7 +340,7 @@
   "CONTACT_DETAILS": {
     "TITLE": "Contact Details",
     "EMAIL": "ഇമെയിൽ",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "ഫോൺ നമ്പർ",
     "CALL": "Call",
     "CONTACT_ATTRIBUTES": "Contact Attributes",
     "VALUE_UNAVAILABLE": "Unavailable"
@@ -416,9 +416,9 @@
   },
   "BANNER": {
     "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
-    "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 മണിക്കൂർ സന്ദേശ വിൻഡോ നിയന്ത്രണം",
+    "24_HOURS_WINDOW": "24 മണിക്കൂർ സന്ദേശ വിൻഡോ നിയന്ത്രണം",
+    "CANNOT_REPLY": "നിങ്ങൾക്ക് മറുപടി നൽകാൻ കഴിയില്ല"
   },
   "SLA": {
     "FRT": "FRT",

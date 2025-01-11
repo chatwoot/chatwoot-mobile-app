@@ -82,8 +82,8 @@
         "TITLE": "Filter by status",
         "OPTIONS": {
           "OPEN": "Apri",
-          "PENDING": "Pending",
-          "SNOOZED": "Snoozed",
+          "PENDING": "In sospeso",
+          "SNOOZED": "Posticipato",
           "RESOLVED": "Risolto",
           "ALL": "Tutti"
         }
@@ -91,18 +91,18 @@
     },
     "ASSIGNEE": {
       "LABELS": {
-        "SEARCH_LABELS": "Search labels"
+        "SEARCH_LABELS": "Cerca etichette"
       },
       "AGENTS": {
-        "SEARCH_AGENT": "Search agents"
+        "SEARCH_AGENT": "Cerca agenti"
       },
       "STATUS": {
         "HEADER_TITLE": "Assign status",
         "TITLE": "Filter by status",
         "OPTIONS": {
           "OPEN": "Apri",
-          "PENDING": "Pending",
-          "SNOOZED": "Snoozed",
+          "PENDING": "In sospeso",
+          "SNOOZED": "Posticipato",
           "RESOLVED": "Risolto",
           "ALL": "Tutti"
         }
@@ -137,11 +137,11 @@
       "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
     },
     "EMAIL_HEAD": {
-      "TO": "To",
+      "TO": "A",
       "CC": "Cc",
-      "BCC": "Bcc"
+      "BCC": "CCN"
     },
-    "SELF_ASSIGN": "Assign to me",
+    "SELF_ASSIGN": "Assegna a me",
     "UN_ASSIGN": "Annulla l'assegnazione della conversazione",
     "CONVERSATION_NOT_FOUND": "Impossibile recuperare la conversazione",
     "MARK_AS_PENDING": "Segna come in sospeso",
@@ -158,15 +158,15 @@
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
-    "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "Conversation Assignee changed",
+    "DELETE_MESSAGE_SUCCESS": "Messaggio eliminato con successo",
+    "NO_CONTENT": "Nessun contenuto disponibile",
+    "ASSIGN_CHANGE": "Modifica assegnatario conversazione",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Search teams",
+    "CHANGE_STATUS": "Cambia stato",
+    "SEARCH_TEAM": "Cerca team",
     "PRIORITY": {
       "TITLE": "Priorità",
       "OPTIONS": {
@@ -185,55 +185,55 @@
       }
     },
     "ITEM": {
-      "ASSIGN": "Assign",
-      "STATUS": "Status"
+      "ASSIGN": "Assegna",
+      "STATUS": "Stato"
     },
     "ATTACHMENTS": {
       "image": {
         "CONTENT": "Messaggio con foto"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "Messaggio audio"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "Messaggio video"
       },
       "file": {
         "CONTENT": "File allegato"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "Posizione"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "ha condiviso un url"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
-      "REPLY": "Reply",
+      "COPY": "Copia",
+      "REPLY": "Rispondi",
       "DELETE_MESSAGE": "Delete message"
     },
     "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "To",
-      "BCC": "Bcc",
+      "FROM": "Da",
+      "TO": "A",
+      "BCC": "CCN",
       "CC": "Cc",
-      "SUBJECT": "Subject",
+      "SUBJECT": "Oggetto",
       "EXPAND": "Expand email"
     },
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "Non assegnato",
-        "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "ASSIGN": "Assegna",
+        "EDIT": "Modifica"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
-        "ASSIGN": "Assign"
+        "ASSIGN": "Assegna"
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "Modifica"
       }
     }
   },
@@ -273,13 +273,13 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifiche",
-    "INBOX": "Inbox",
+    "INBOX": "Casella",
     "EMPTY": "Ancora nessuna notifica.",
     "EMPTY_MORE_TEXT": "Una volta che inizierai a ricevere le notifiche, appariranno qui.",
     "ALL_NOTIFICATION_LOADED": "Tutte le notifiche caricate",
     "MARK_ALL": "Segna tutto come letto",
     "CANCEL": "Annulla",
-    "DELETE": "Delete",
+    "DELETE": "Elimina",
     "TYPES": {
       "CONVERSATION_MENTION": "You have been mentioned in a conversation",
       "CONVERSATION_CREATION": "New conversation created",
@@ -292,7 +292,7 @@
     },
     "FILTERS": {
       "SORT_BY": {
-        "TITLE": "Sort by",
+        "TITLE": "Ordina per",
         "OPTIONS": {
           "ASC": "Oldest",
           "DESC": "Newest"
@@ -328,7 +328,7 @@
     "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Attributes",
+    "TITLE": "Attributi",
     "BROWSER": "Browser",
     "OPERATING_SYSTEM": "Sistema operativo",
     "INITIATED_AT": "Avviato il",
@@ -338,12 +338,12 @@
     "CLIPBOARD_SUCCESS": "Codice copiato negli appunti correttamente"
   },
   "CONTACT_DETAILS": {
-    "TITLE": "Contact Details",
+    "TITLE": "Dettagli contatto",
     "EMAIL": "Email",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "Numero di telefono",
     "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Contact Attributes",
-    "VALUE_UNAVAILABLE": "Unavailable"
+    "CONTACT_ATTRIBUTES": "Attributi contatti",
+    "VALUE_UNAVAILABLE": "Non disponibile"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participants",
@@ -415,10 +415,10 @@
     "OK": "Ok"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
-    "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "TWILIO_WHATSAPP_CAN_REPLY": "È possibile rispondere a questa conversazione solo utilizzando un messaggio modello a causa di",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "Restrizione della finestra del messaggio a 24 ore",
+    "24_HOURS_WINDOW": "Restrizione della finestra del messaggio a 24 ore",
+    "CANNOT_REPLY": "Non puoi rispondere a causa di"
   },
   "SLA": {
     "FRT": "FRT",

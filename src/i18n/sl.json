@@ -193,19 +193,19 @@
         "CONTENT": "Picture message"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "Avdio sporočilo"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "Video sporočilo"
       },
       "file": {
         "CONTENT": "File Attachment"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "Lokacija"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "je delil url"
       }
     },
     "LONG_PRESS_ACTIONS": {
@@ -225,7 +225,7 @@
       "ASSIGNEE": {
         "EMPTY": "Unassigned",
         "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "EDIT": "Uredi"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
@@ -233,7 +233,7 @@
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "Uredi"
       }
     }
   },
@@ -273,13 +273,13 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",
-    "INBOX": "Inbox",
+    "INBOX": "Nabiralnik",
     "EMPTY": "No notifications yet.",
     "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
     "CANCEL": "Cancel",
-    "DELETE": "Delete",
+    "DELETE": "Izbriši",
     "TYPES": {
       "CONVERSATION_MENTION": "You have been mentioned in a conversation",
       "CONVERSATION_CREATION": "New conversation created",
@@ -334,13 +334,13 @@
     "INITIATED_AT": "Initiated at",
     "INITIATED_FROM": "Initiated from",
     "IP_ADDRESS": "IP Address",
-    "CONVERSATION_ID": "Conversation ID",
+    "CONVERSATION_ID": "ID pogovora",
     "CLIPBOARD_SUCCESS": "Copied to clipboard"
   },
   "CONTACT_DETAILS": {
     "TITLE": "Contact Details",
     "EMAIL": "Email",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "Telefonska številka",
     "CALL": "Call",
     "CONTACT_ATTRIBUTES": "Contact Attributes",
     "VALUE_UNAVAILABLE": "Unavailable"

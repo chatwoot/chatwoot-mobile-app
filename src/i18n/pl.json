@@ -94,15 +94,15 @@
         "SEARCH_LABELS": "Szukaj etykiet"
       },
       "AGENTS": {
-        "SEARCH_AGENT": "Search agents"
+        "SEARCH_AGENT": "Szukaj agentów"
       },
       "STATUS": {
         "HEADER_TITLE": "Assign status",
         "TITLE": "Filter by status",
         "OPTIONS": {
           "OPEN": "Otwarte",
-          "PENDING": "Pending",
-          "SNOOZED": "Snoozed",
+          "PENDING": "Oczekujące",
+          "SNOOZED": "Uśpione",
           "RESOLVED": "Rozwiązane",
           "ALL": "Wszystkie"
         }
@@ -137,11 +137,11 @@
       "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
     },
     "EMAIL_HEAD": {
-      "TO": "To",
+      "TO": "Do",
       "CC": "Cc",
       "BCC": "Bcc"
     },
-    "SELF_ASSIGN": "Assign to me",
+    "SELF_ASSIGN": "Przypisz do mnie",
     "UN_ASSIGN": "Cofnij przypisanie rozmowy",
     "CONVERSATION_NOT_FOUND": "Nie można pobrać rozmowy",
     "MARK_AS_PENDING": "Oznacz jako oczekujące",
@@ -158,15 +158,15 @@
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
-    "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "Conversation Assignee changed",
+    "DELETE_MESSAGE_SUCCESS": "Wiadomość usunięta pomyślnie",
+    "NO_CONTENT": "Brak treści",
+    "ASSIGN_CHANGE": "Zmieniono przypisaną osobę do konwersacji",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Search teams",
+    "CHANGE_STATUS": "Zmień status",
+    "SEARCH_TEAM": "Szukaj zespołów",
     "PRIORITY": {
       "TITLE": "Priorytet",
       "OPTIONS": {
@@ -185,7 +185,7 @@
       }
     },
     "ITEM": {
-      "ASSIGN": "Assign",
+      "ASSIGN": "Przypisz",
       "STATUS": "Status"
     },
     "ATTACHMENTS": {
@@ -193,47 +193,47 @@
         "CONTENT": "Wiadomość z obrazem"
       },
       "audio": {
-        "CONTENT": "Audio message"
+        "CONTENT": "Wiadomość dźwiękowa"
       },
       "video": {
-        "CONTENT": "Video message"
+        "CONTENT": "Wiadomość wideo"
       },
       "file": {
         "CONTENT": "Załącznik pliku"
       },
       "location": {
-        "CONTENT": "Location"
+        "CONTENT": "Lokalizacja"
       },
       "fallback": {
-        "CONTENT": "has shared a url"
+        "CONTENT": "udostępnił adres URL"
       }
     },
     "LONG_PRESS_ACTIONS": {
-      "COPY": "Copy",
-      "REPLY": "Reply",
+      "COPY": "Kopiuj",
+      "REPLY": "Odpowiedz",
       "DELETE_MESSAGE": "Delete message"
     },
     "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "To",
+      "FROM": "Od",
+      "TO": "Do",
       "BCC": "Bcc",
       "CC": "Cc",
-      "SUBJECT": "Subject",
+      "SUBJECT": "Temat",
       "EXPAND": "Expand email"
     },
     "ACTIONS": {
       "ASSIGNEE": {
         "EMPTY": "Nieprzypisane",
-        "ASSIGN": "Assign",
-        "EDIT": "Edit"
+        "ASSIGN": "Przypisz",
+        "EDIT": "Edytuj"
       },
       "TEAM": {
         "EMPTY": "No team assigned",
-        "ASSIGN": "Assign"
+        "ASSIGN": "Przypisz"
       },
       "PRIORITY": {
         "EMPTY": "No priority added",
-        "EDIT": "Edit"
+        "EDIT": "Edytuj"
       }
     }
   },
@@ -273,13 +273,13 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Powiadomienia",
-    "INBOX": "Inbox",
+    "INBOX": "Skrzynka odbiorcza",
     "EMPTY": "Brak powiadomień.",
     "EMPTY_MORE_TEXT": "Gdy zaczniesz otrzymywać powiadomienia, pojawią się tutaj.",
     "ALL_NOTIFICATION_LOADED": "Wszystkie powiadomienia załadowane",
     "MARK_ALL": "Oznacz wszystko jako przeczytane",
     "CANCEL": "Anuluj",
-    "DELETE": "Delete",
+    "DELETE": "Usuń",
     "TYPES": {
       "CONVERSATION_MENTION": "You have been mentioned in a conversation",
       "CONVERSATION_CREATION": "New conversation created",
@@ -292,7 +292,7 @@
     },
     "FILTERS": {
       "SORT_BY": {
-        "TITLE": "Sort by",
+        "TITLE": "Sortuj według",
         "OPTIONS": {
           "ASC": "Oldest",
           "DESC": "Newest"
@@ -338,12 +338,12 @@
     "CLIPBOARD_SUCCESS": "Kod został skopiowany do schowka"
   },
   "CONTACT_DETAILS": {
-    "TITLE": "Contact Details",
+    "TITLE": "Dane kontaktowe",
     "EMAIL": "E-mail",
-    "PHONE_NUMBER": "Phone Number",
+    "PHONE_NUMBER": "Numer telefonu",
     "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Contact Attributes",
-    "VALUE_UNAVAILABLE": "Unavailable"
+    "CONTACT_ATTRIBUTES": "Atrybuty kontaktu",
+    "VALUE_UNAVAILABLE": "Niedostępny"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participants",
@@ -415,10 +415,10 @@
     "OK": "Ok"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
-    "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "TWILIO_WHATSAPP_CAN_REPLY": "Możesz odpowiedzieć na tę rozmowę tylko za pomocą szablonu wiadomości, ponieważ",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "ograniczenia 24-godzinnego okna wiadomości",
+    "24_HOURS_WINDOW": "ograniczenia 24-godzinnego okna wiadomości",
+    "CANNOT_REPLY": "Nie możesz odpowiedzieć z powodu"
   },
   "SLA": {
     "FRT": "FRT",

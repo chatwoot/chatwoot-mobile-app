@@ -176,18 +176,21 @@ const ChatScreen = (props: ChatScreenProps) => {
             `pb-[${TAB_BAR_HEIGHT}px]`,
           )}>
           <ErrorIcon />
-          <Animated.View style={tailwind.style('items-center justify-center gap-4')}>
-            <Animated.Text style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20')}>
+          <Animated.View style={tailwind.style('flex items-center justify-center gap-4')}>
+            <Animated.Text
+              style={tailwind.style(
+                'text-2xl font-inter-420-20 text-gray-950 font-inter-semibold-20',
+              )}>
               {conversationError || i18n.t('CONVERSATION.NOT_FOUND.TITLE')}
             </Animated.Text>
             <Animated.Text
               style={tailwind.style(
-                'font-inter-normal-20 leading-[18px] tracking-[0.32px] text-gray-900',
+                'font-inter-normal-20 font-base leading-[18px] tracking-[0.32px] text-gray-950 text-center',
               )}>
               {i18n.t('CONVERSATION.NOT_FOUND.DESCRIPTION')}
             </Animated.Text>
           </Animated.View>
-          <Animated.View style={tailwind.style('gap-4 w-full')}>
+          <Animated.View style={tailwind.style('gap-8 w-full')}>
             <Button
               variant="primary"
               text={i18n.t('CONVERSATION.NOT_FOUND.RETRY')}
@@ -196,7 +199,7 @@ const ChatScreen = (props: ChatScreenProps) => {
             <Pressable
               style={tailwind.style('flex-row justify-center items-center')}
               onPress={handleBackPress}>
-              <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
+              <Animated.Text style={tailwind.style('text-base font-inter-medium-24 text-gray-900')}>
                 {i18n.t('CONVERSATION.NOT_FOUND.BACK_TO_HOME')}
               </Animated.Text>
             </Pressable>

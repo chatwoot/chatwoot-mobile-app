@@ -53,7 +53,7 @@
     "camelcase-keys": "^7.0.2",
     "cross-env": "^7.0.3",
     "date-fns": "2.21.1",
-    "expo": "~51.0.28",
+    "expo": "~52.0.25",
     "expo-application": "~5.9.1",
     "expo-av": "~14.0.7",
     "expo-build-properties": "~0.12.5",

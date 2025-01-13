@@ -78,6 +78,16 @@ const variantBaseMap = {
   [MESSAGE_VARIANTS.UNSUPPORTED]: 'bg-amber-100 border border-dashed border-amber-700',
 };
 
+const variantBorderMap = {
+  [MESSAGE_VARIANTS.AGENT]: 'border-gray-100',
+  [MESSAGE_VARIANTS.USER]: 'border-gray-100',
+  [MESSAGE_VARIANTS.BOT]: 'border-gray-100',
+  [MESSAGE_VARIANTS.TEMPLATE]: 'border-gray-100',
+  [MESSAGE_VARIANTS.ERROR]: 'border-gray-100',
+  [MESSAGE_VARIANTS.EMAIL]: 'border-gray-100',
+  [MESSAGE_VARIANTS.UNSUPPORTED]: 'border-gray-100',
+};
+
 const MessageWrapper = ({
   children,
   item,
@@ -128,6 +138,7 @@ const MessageWrapper = ({
                 'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
                 `${variant === MESSAGE_VARIANTS.EMAIL ? `max-w-[${EMAIL_WIDTH}px]` : `max-w-[${TEXT_MAX_WIDTH}px]`}`,
                 variantBaseMap[variant],
+                variantBorderMap[variant],
                 shouldGroupWithNext && shouldGroupWithPrevious
                   ? orientation === ORIENTATION.LEFT
                     ? 'rounded-l-none'

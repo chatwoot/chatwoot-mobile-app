@@ -26,7 +26,7 @@ export const ImageBubbleContainer = (props: ImageContainerProps) => {
       tapToClose={false}>
       <AnimatedExpoImage
         source={{ uri: imageSrc }}
-        contentFit="contain"
+        contentFit="cover"
         style={[tailwind.style('h-full w-full bg-gray-100 overflow-hidden')]}
       />
     </LightBox>

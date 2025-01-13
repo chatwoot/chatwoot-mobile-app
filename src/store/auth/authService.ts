@@ -7,6 +7,7 @@ import type {
   ResetPasswordResponse,
   AvailabilityPayload,
   ProfileResponse,
+  SetActiveAccountPayload,
 } from './authTypes';
 
 export class AuthService {
@@ -31,6 +32,11 @@ export class AuthService {
   }
   static async updateAvailability(payload: AvailabilityPayload): Promise<ProfileResponse> {
     const response = await apiService.post<ProfileResponse>('profile/availability', payload);
+    return response.data;
+  }
+
+  static async setActiveAccount(payload: SetActiveAccountPayload): Promise<ProfileResponse> {
+    const response = await apiService.put<ProfileResponse>('profile/set_active_account', payload);
     return response.data;
   }
 }

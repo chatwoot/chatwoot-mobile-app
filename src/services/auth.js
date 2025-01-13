@@ -1,4 +1,4 @@
-import { getStore } from '../reducer/storeAccessor';
+import { getStore } from '@/store/storeAccessor';
 
 export const getHeaders = async () => {
   try {

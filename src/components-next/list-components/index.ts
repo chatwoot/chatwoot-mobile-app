@@ -1,3 +1,3 @@
-export * from './GenericList';
+export { SettingsList } from './SettingsList';
 export * from './LanguageList';
-export * from './SettingsList';
+export * from './AttributeList';

@@ -1,47 +1,19 @@
 import { type Agent } from './Agent';
 import { Channel, ConversationPriority, ConversationStatus, UnixTimestamp } from './common';
+import { SLA, SLAEvent } from './common/SLA';
 import { Contact } from './Contact';
-import { ContentType, MessageStatus, MessageType } from './Message';
+import { Message } from './Message';
 import { Team } from './Team';
-
-interface ConversationLastMessage {
-  id: number;
-  content: string;
-  accountId: number;
-  inboxId: number;
-  conversationId: number;
-  messageType: MessageType;
-  createdAt: UnixTimestamp;
-  updatedAt: string;
-  private: boolean;
-  status: MessageStatus;
-  sourceId: null | string;
-  contentType: ContentType;
-  senderType: null | string;
-  senderId: null | string;
-  externalSourceIds: {
-    slack: string | null;
-  };
-  processedMessageContent: string;
-  conversation: {
-    assigneeId: null | number;
-    unreadCount: number;
-    lastActivityAt: number;
-    contactInbox: {
-      sourceId: string;
-    };
-  };
-}
 
 export interface Conversation {
   accountId: number;
-  additionalAttributes: object;
+  additionalAttributes: ConversationAdditionalAttributes;
   agentLastSeenAt: UnixTimestamp;
   assigneeLastSeenAt: UnixTimestamp;
   canReply: boolean;
   contactLastSeenAt: UnixTimestamp;
   createdAt: UnixTimestamp;
-  customAttributes: object;
+  customAttributes: Record<string, string>;
   firstReplyCreatedAt: UnixTimestamp;
   id: number;
   inboxId: number;
@@ -55,18 +27,49 @@ export interface Conversation {
   uuid: string;
   waitingSince: UnixTimestamp;
 
-  messages: ConversationLastMessage[];
+  channel?: Channel;
 
-  meta: {
-    sender: Contact;
-    assignee: Agent;
-    team: Team;
-    hmacVerified: boolean | null;
+  messages: Message[];
 
-    // Avoid this attribute and resolve it from Inbox
-    channel: Channel;
-  };
+  lastNonActivityMessage: Message | null;
+
+  meta: ConversationMeta;
 
   // Deprecated
   timestamp: UnixTimestamp;
+
+  slaPolicyId: number | null;
+
+  appliedSla: SLA | null;
+
+  slaEvents: SLAEvent[];
+}
+
+export interface ConversationListMeta {
+  mineCount: number;
+  unassignedCount: number;
+  allCount: number;
+}
+
+export interface ConversationAdditionalAttributes {
+  browser?: {
+    deviceName: string;
+    browserName: string;
+    platformName: string;
+    browserVersion: string;
+    platformVersion: string;
+  };
+  referer?: string;
+  initiatedAt?: {
+    timestamp: string;
+  };
+  browserLanguage?: string;
+  type?: string;
+}
+export interface ConversationMeta {
+  sender: Contact;
+  assignee: Agent;
+  team: Team | null;
+  hmacVerified: boolean | null;
+  channel: Channel;
 }

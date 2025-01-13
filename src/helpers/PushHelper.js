@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { NOTIFICATION_TYPES } from '../constants';
+import { NOTIFICATION_TYPES } from '@/constants';
 import notifee from '@notifee/react-native';
 
 export const clearAllDeliveredNotifications = () => {
@@ -10,7 +10,7 @@ export const clearAllDeliveredNotifications = () => {
 };
 
 export const updateBadgeCount = ({ count = 0 }) => {
-  if (Platform.OS === 'ios') {
+  if (Platform.OS === 'ios' && count >= 0) {
     notifee.setBadgeCount(count);
   }
 };

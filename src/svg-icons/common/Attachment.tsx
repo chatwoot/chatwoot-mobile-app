@@ -1,5 +1,5 @@
 import React from 'react';
-import { Path, Svg } from 'react-native-svg';
+import Svg, { Path, G, Circle, Rect } from 'react-native-svg';
 
 import { IconProps } from '../../types';
 
@@ -14,6 +14,40 @@ export const AttachmentIcon = ({ stroke = 'black' }: IconProps): JSX.Element => 
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+    </Svg>
+  );
+};
+
+export const ImageAttachmentIcon = (): JSX.Element => {
+  return (
+    <Svg width="14" height="14" viewBox="0 0 24 24">
+      <G fill="none" stroke="#646464" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+        <Rect width="18" height="18" x="3" y="3" rx="2" ry="2"></Rect>
+        <Circle cx="9" cy="9" r="2"></Circle>
+        <Path d="m21 15l-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></Path>
+      </G>
+    </Svg>
+  );
+};
+
+export const DocumentAttachmentIcon = (): JSX.Element => {
+  return (
+    <Svg width="14" height="14" viewBox="0 0 24 24">
+      <G fill="none" stroke="#646464" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+        <Path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></Path>
+        <Path d="M14 2v4a2 2 0 0 0 2 2h4"></Path>
+      </G>
+    </Svg>
+  );
+};
+
+export const AudioIcon = (): JSX.Element => {
+  return (
+    <Svg width="14" height="14" viewBox="0 0 24 24">
+      <G fill="none" stroke="#646464" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+        <Path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3"></Path>
+        <Path d="M19 10v2a7 7 0 0 1-14 0v-2m7 9v3"></Path>
+      </G>
     </Svg>
   );
 };

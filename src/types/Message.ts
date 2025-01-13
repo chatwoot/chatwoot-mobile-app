@@ -2,6 +2,8 @@ import { Agent } from './Agent';
 import { AgentBot } from './AgentBot';
 import { UnixTimestamp } from './common';
 import { Contact } from './Contact';
+import { Conversation } from './Conversation';
+import { User } from './User';
 
 export type ContentType =
   | 'text'
@@ -33,26 +35,51 @@ type ImageMetadata = {
   extension: string | null;
   dataUrl: string;
   thumbUrl: string;
+  fallbackTitle: string;
+  coordinatesLat: number;
+  coordinatesLong: number;
 };
 
 export type MessageContentAttributes = {
   inReplyTo: number;
   inReplyToExternalId: null;
+  deleted?: boolean;
+  email?: {
+    subject: string;
+    from?: string[]; // Ensure this line is present
+    to?: string[];
+    cc?: string[];
+    bcc?: string[];
+    htmlContent?: {
+      full: string;
+    };
+    textContent?: {
+      full: string;
+    };
+  };
+  ccEmails?: string[];
+  bccEmails?: string[];
+  externalError: string;
+  imageType: string;
+  contentType: ContentType;
 };
 
 export interface Message {
+  id: number;
   attachments: ImageMetadata[];
   content: string;
-  contentAttributes: MessageContentAttributes | null;
+  contentAttributes?: MessageContentAttributes | null;
   contentType: ContentType;
   conversationId: number;
   createdAt: UnixTimestamp;
-  echoId: string | null;
-  id: number;
+  echoId: number | string | null;
   inboxId: number;
   messageType: MessageType;
   private: boolean;
-  sender: Agent | AgentBot | Contact | null;
+  sender?: Agent | User | AgentBot | Contact | null;
   sourceId: string | null;
   status: MessageStatus;
+  lastNonActivityMessage: Message | null;
+  conversation?: Conversation | null;
+  shouldRenderAvatar?: boolean | false;
 }

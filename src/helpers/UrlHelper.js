@@ -29,3 +29,7 @@ export const openURL = ({ URL }) => {
 export const openNumber = ({ phoneNumber }) => {
   Linking.openURL(`tel:${phoneNumber}`);
 };
+
+export const openEmail = ({ email }) => {
+  Linking.openURL(`mailto:${email}`);
+};

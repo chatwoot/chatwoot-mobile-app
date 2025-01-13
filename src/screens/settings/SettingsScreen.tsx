@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, View, Text, Platform } from 'react-native';
+import { StatusBar, Text, Platform, View, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,28 +14,26 @@ import {
 import DeviceInfo from 'react-native-device-info';
 import * as WebBrowser from 'expo-web-browser';
 import ChatWootWidget from '@chatwoot/react-native-widget';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import * as Application from 'expo-application';
 import { Account, AvailabilityStatus } from '@/types';
-import { clearContacts } from '@/reducer/contactSlice';
-import { clearAllConversations } from '@/reducer/conversationSlice';
+import { clearAllConversations } from '@/store/conversation/conversationSlice';
+import { clearAllContacts } from '@/store/contact/contactSlice';
 
 import i18n from 'i18n';
-
 import { HELP_URL } from '@/constants/url';
-
 import { tailwind } from '@/theme';
 
 import {
   BottomSheetBackdrop,
   BottomSheetHeader,
   BottomSheetWrapper,
-  FullWidthButton,
-  SettingsList,
+  Button,
   LanguageList,
   AvailabilityStatusList,
   NotificationPreferences,
   SwitchAccount,
+  SettingsList,
 } from '@/components-next';
 import { UserAvatar } from './components/UserAvatar';
 
@@ -46,6 +44,7 @@ import { GenericListType } from '@/types';
 
 import { useHaptic } from '@/utils';
 import { SettingsHeader } from './SettingsHeader';
+import { DebugActions } from './components/DebugActions';
 import {
   selectCurrentUserAvailability,
   selectUser,
@@ -61,7 +60,7 @@ import AnalyticsHelper from '@/helpers/AnalyticsHelper';
 import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/helpers/permissionHelper';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
-import { useAppSelector } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -71,7 +70,7 @@ const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVe
 
 const SettingsScreen = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const availabilityStatus =
     (useSelector(selectCurrentUserAvailability) as AvailabilityStatus) || 'offline';
 
@@ -88,8 +87,6 @@ const SettingsScreen = () => {
   } = user || {};
 
   useEffect(() => {
-    // TODO: Fix this later
-    // @ts-expect-error TODO: Fix typing for dispatch
     dispatch(settingsActions.getNotificationSettings());
   }, [dispatch]);
 
@@ -134,6 +131,7 @@ const SettingsScreen = () => {
     languagesModalSheetRef,
     notificationPreferencesSheetRef,
     switchAccountSheetRef,
+    debugActionsSheetRef,
   } = useRefsContext();
 
   const hapticSelection = useHaptic();
@@ -165,12 +163,10 @@ const SettingsScreen = () => {
   };
 
   const changeAccount = (accountId: number) => {
-    dispatch(clearContacts());
+    dispatch(clearAllContacts());
     dispatch(clearAllConversations());
     dispatch(setAccount(accountId));
-    // TODO: Fix this later
-    // @ts-expect-error TODO: Fix typing for dispatch
-    dispatch(authActions.setActiveAccount({ accountId }));
+    dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
     navigation.dispatch(StackActions.replace('Tab'));
   };
 
@@ -304,18 +300,21 @@ const SettingsScreen = () => {
         <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.SUPPORT')} list={supportList} />
         </Animated.View>
-        <Animated.View style={tailwind.style('pt-6')}>
-          <FullWidthButton
+        <Animated.View style={tailwind.style('pt-6 mx-4')}>
+          <Button
+            variant="secondary"
             text={i18n.t('SETTINGS.LOGOUT')}
             isDestructive
             handlePress={onClickLogout}
           />
         </Animated.View>
-        <View style={tailwind.style('p-4 items-center')}>
+        <Pressable
+          style={tailwind.style('p-4 items-center')}
+          onLongPress={() => debugActionsSheetRef.current?.present()}>
           <Text style={tailwind.style('text-sm text-gray-700 ')}>
             {`${chatwootInstance} ${appVersionDetails}`}
           </Text>
-        </View>
+        </Pressable>
       </Animated.ScrollView>
       <BottomSheetModal
         ref={userAvailabilityStatusSheetRef}
@@ -386,6 +385,20 @@ const SettingsScreen = () => {
             changeAccount={changeAccount}
             accounts={accounts}
           />
+        </BottomSheetWrapper>
+      </BottomSheetModal>
+      <BottomSheetModal
+        ref={debugActionsSheetRef}
+        backdropComponent={BottomSheetBackdrop}
+        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        enablePanDownToClose
+        animationConfigs={animationConfigs}
+        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        style={tailwind.style('rounded-[26px] overflow-hidden')}
+        snapPoints={['36%']}>
+        <BottomSheetWrapper>
+          <BottomSheetHeader headerText={i18n.t('SETTINGS.DEBUG_ACTIONS')} />
+          <DebugActions />
         </BottomSheetWrapper>
       </BottomSheetModal>
       {!!process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN &&

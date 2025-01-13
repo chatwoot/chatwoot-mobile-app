@@ -4,7 +4,7 @@ import { Pressable, Text, Animated, View } from 'react-native';
 import { TickIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
-import { Icon } from '@/components-next';
+import { Icon } from '@/components-next/common/icon';
 import { Account } from '@/types';
 
 type AccountCellProps = {

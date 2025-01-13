@@ -21,6 +21,7 @@ export interface GenericListType {
   subtitleType?: 'dark' | 'light';
   hasChevron?: boolean;
   disabled?: boolean;
+  link?: string;
   onPressListItem?: (key?: string) => void;
   actions?: {
     action_name: string;
@@ -28,11 +29,22 @@ export interface GenericListType {
   }[];
 }
 
+export interface AttributeListType {
+  key?: string;
+  title?: string;
+  icon?: React.ReactNode;
+  subtitle?: string;
+  subtitleType?: 'dark' | 'light';
+  hasChevron?: boolean;
+  disabled?: boolean;
+  type: 'text' | 'date' | 'checkbox' | 'link';
+}
+
 /**
  * The types of Filter for Conversation List
  */
 
-export type ConversationFilterOptions = 'assignee_type' | 'status' | 'sort_by';
+export type ConversationFilterOptions = 'assignee_type' | 'status' | 'sort_by' | 'inbox_id';
 
 // Defining the specific options for each filter type
 export type AssigneeFilterOptions = Record<AssigneeTypes, string>;
@@ -47,7 +59,9 @@ export type FilterOption<T extends ConversationFilterOptions> = {
       ? StatusFilterOptions
       : T extends 'sort_by'
         ? SortFilterOptions
-        : never;
+        : T extends 'inbox_id'
+          ? Record<number, string>
+          : never;
   defaultFilter: string;
 };
 

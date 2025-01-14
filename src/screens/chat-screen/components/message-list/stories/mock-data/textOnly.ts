@@ -890,21 +890,6 @@ export const TEXT_ONLY = [
         source_id: 'f42d4630-7c41-4af3-bbc7-7c43e2aa2fc7',
       },
     },
-    attachments: [
-      {
-        id: 21,
-        message_id: 5318,
-        file_type: 'video',
-        account_id: 2,
-        extension: null,
-        data_url:
-          'http://localhost:3000/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBaVVLIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--2b713098fcdb9fde921f7575ac7d7539d0ffd5df/CleanShot%202024-11-26%20at%2018.07.56.mp4',
-        thumb_url: '',
-        file_size: 1176246,
-        width: null,
-        height: null,
-      },
-    ],
     sender: {
       id: 1,
       name: 'John',

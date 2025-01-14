@@ -1,1 +1,1 @@
-export * from './MessageItemContainer';
+export * from './MessageItem';

@@ -22,8 +22,8 @@
     "ERROR": "URL instalare nevalid"
   },
   "LOGIN": {
-    "TITLE": "Conectează-te la contul tău",
-    "DESCRIPTION": "Ești conectat la {{baseUrl}}. Autentifică-te cu adresa ta de e-mail și parola.",
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "Email",
     "PASSWORD": "Parola",
     "EMAIL_REQUIRED": "E-mailul este necesar",
@@ -31,6 +31,7 @@
     "PASSWORD_REQUIRED": "Parola este necesară",
     "PASSWORD_ERROR": "Introduceți o parolă validă",
     "LOGIN": "Autentificare",
+    "LOGIN_LOADING": "Signing In...",
     "FORGOT_PASSWORD": "Ai uitat parola?",
     "RESET_HERE": "Resetați aici",
     "NO_ACCOUNT": "Nu aveți un cont?",
@@ -50,6 +51,63 @@
     "API_SUCCESS": "Linkul de resetare a parolei a fost trimis la adresa de e-mail"
   },
   "CONVERSATION": {
+    "HEADER": {
+      "TITLE": "Conversații",
+      "CLEAR_FILTER": "Clear"
+    },
+    "FILTERS": {
+      "AGENT": {
+        "SEARCH_AGENT": "Agenți de căutare"
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Modificarea cesionarului",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Neatribuit",
+          "ALL": "Toate"
+        }
+      },
+      "INBOX": {
+        "TITLE": "Filtrarea după inbox"
+      },
+      "SORT_BY": {
+        "TITLE": "Sortați după",
+        "OPTIONS": {
+          "LATEST": "Latest",
+          "SORT_ON_CREATED_AT": "Creat la",
+          "SORT_ON_PRIORITY": "Prioritate"
+        }
+      },
+      "STATUS": {
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "Deschide",
+          "PENDING": "În aşteptare",
+          "SNOOZED": "Amânat",
+          "RESOLVED": "Rezolvat",
+          "ALL": "Toate"
+        }
+      }
+    },
+    "ASSIGNEE": {
+      "LABELS": {
+        "SEARCH_LABELS": "Căutare etichete"
+      },
+      "AGENTS": {
+        "SEARCH_AGENT": "Agenți de căutare"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "Deschide",
+          "PENDING": "În aşteptare",
+          "SNOOZED": "Amânat",
+          "RESOLVED": "Rezolvat",
+          "ALL": "Toate"
+        }
+      }
+    },
     "DEFAULT_HEADER_TITLE": "Conversații",
     "UPDATING": "Actualizare...",
     "MINE": "Ale mele",
@@ -72,7 +130,18 @@
     "ASSIGNED_AGENT": "Agent alocat",
     "TEAM": "Echipa",
     "PRIVATE_MSG_INPUT": "Acest lucru va fi vizibil numai agenților",
-    "SELF_ASSIGN": "Auto atribuiți conversație",
+    "NOT_FOUND": {
+      "TITLE": "Unable to fetch conversation",
+      "RETRY": "Retry",
+      "BACK_TO_HOME": "Take me Home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+    },
+    "EMAIL_HEAD": {
+      "TO": "Către",
+      "CC": "Cc",
+      "BCC": "Bcc"
+    },
+    "SELF_ASSIGN": "Atribuie-mi",
     "UN_ASSIGN": "Anularea atribuirii conversației",
     "CONVERSATION_NOT_FOUND": "Nu s-a putut aduce conversația",
     "MARK_AS_PENDING": "Marchează ca în așteptare",
@@ -88,6 +157,16 @@
     "DELETE_MESSAGE_TITLE": "Ești sigur că vrei să ștergi acest mesaj?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "DELETE_MESSAGE_SUCCESS": "Mesaj şters cu succes",
+    "NO_CONTENT": "Nici un conținut disponibil",
+    "ASSIGN_CHANGE": "Persoana căreia i-a fost ateribuită conversația a fost schimbată",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "CHANGE_STATUS": "Schimbați statusul",
+    "SEARCH_TEAM": "Echipele de căutare",
     "PRIORITY": {
       "TITLE": "Prioritate",
       "OPTIONS": {
@@ -103,6 +182,58 @@
         "NO_RESULTS": "Niciun rezultat găsit",
         "SUCCESSFUL": "A schimbat prioritatea ID-ului conversației %{conversationId} în %{priority}",
         "FAILED": "Nu s-a putut schimba prioritatea. Vă rugăm să încercați din nou."
+      }
+    },
+    "ITEM": {
+      "ASSIGN": "Atribuiți",
+      "STATUS": "Status"
+    },
+    "ATTACHMENTS": {
+      "image": {
+        "CONTENT": "Mesaj imagine"
+      },
+      "audio": {
+        "CONTENT": "Mesaj audio"
+      },
+      "video": {
+        "CONTENT": "Mesaj video"
+      },
+      "file": {
+        "CONTENT": "Fişier ataşat"
+      },
+      "location": {
+        "CONTENT": "Locaţie"
+      },
+      "fallback": {
+        "CONTENT": "a partajat un URL"
+      }
+    },
+    "LONG_PRESS_ACTIONS": {
+      "COPY": "Copiază",
+      "REPLY": "Răspunde",
+      "DELETE_MESSAGE": "Delete message"
+    },
+    "EMAIL_HEADER": {
+      "FROM": "De la",
+      "TO": "Către",
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "SUBJECT": "Subiect",
+      "EXPAND": "Expand email"
+    },
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "EMPTY": "Neatribuit",
+        "ASSIGN": "Atribuiți",
+        "EDIT": "Editare"
+      },
+      "TEAM": {
+        "EMPTY": "No team assigned",
+        "ASSIGN": "Atribuiți"
+      },
+      "PRIORITY": {
+        "EMPTY": "No priority added",
+        "EDIT": "Editare"
       }
     }
   },
@@ -125,22 +256,58 @@
   "SETTINGS": {
     "HEADER_TITLE": "Setări",
     "SET_AVAILABILITY": "Setați-vă ca",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferințe",
     "ABOUT": "Despre",
     "SUPPORT": "Suport",
     "SWITCH_ACCOUNT": "Comută contul",
     "CHANGE_LANGUAGE": "Schimbarea limbii",
+    "NOTIFICATIONS": "Notificări",
     "NOTIFICATION_PREFERENCES": "Preferințe de notificare",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Discută cu noi",
     "LOGOUT": "Deconectare",
-    "SUBMIT": "Trimite"
+    "SUBMIT": "Trimite",
+    "SET_LANGUAGE": "Set Language",
+    "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notificări",
+    "INBOX": "Inbox",
     "EMPTY": "Nu există notificări încă.",
     "EMPTY_MORE_TEXT": "După ce începeți să primiți notificări, acestea vor apărea aici.",
     "ALL_NOTIFICATION_LOADED": "Toate notificările încărcate",
     "MARK_ALL": "Marcare totală ca citit",
-    "CANCEL": "Renunță"
+    "CANCEL": "Renunță",
+    "DELETE": "Şterge",
+    "TYPES": {
+      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "CONVERSATION_CREATION": "New conversation created",
+      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    },
+    "FILTERS": {
+      "SORT_BY": {
+        "TITLE": "Sortați după",
+        "OPTIONS": {
+          "ASC": "Oldest",
+          "DESC": "Newest"
+        }
+      }
+    },
+    "ALERTS": {
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed",
+      "DELETE": "Notification deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted"
+    }
   },
   "AVAILABILITY": {
     "ONLINE": "Online",
@@ -151,27 +318,35 @@
     "TITLE": "Preferințe de notificare",
     "EMAIL": "Notificări prin e-mail",
     "PUSH": "Notificări push",
-    "CONVERSATION_CREATE_PUSH": "Trimite notificări push atunci când o conversație nouă este creată",
-    "CONVERSATION_ASSIGNEE_PUSH": "Trimite notificări push atunci când o conversație îmi este atribuită",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Trimite notificări prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită",
-    "CONVERSATION_MENTION": "Trimiterea notificărilor push atunci când sunteți menționat într-o conversație",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Trimiterea notificărilor push atunci când se creează un mesaj nou într-o conversație participantă",
-    "CONVERSATION_CREATE_EMAIL": "Trimite notificări prin e-mail atunci când o conversație nouă este creată",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Trimite notificări prin e-mail atunci când o conversație îmi este atribuită",
-    "CONVERSATION_MENTION_EMAIL": "Trimiterea notificărilor prin e-mail atunci când sunteți menționat într-o conversație",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Trimite notificări prin e-mail atunci când se creează un mesaj nou într-o conversație atribuită",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Trimiterea notificărilor push atunci când se creează un mesaj nou într-o conversație participantă"
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Informații despre conversație",
+    "TITLE": "Attributes",
     "BROWSER": "Navigator",
     "OPERATING_SYSTEM": "Sistem de operare",
     "INITIATED_AT": "Iniţiat la",
     "INITIATED_FROM": "Inițiat de la",
-    "IP_ADDRESS": "Adresă IP"
+    "IP_ADDRESS": "Adresă IP",
+    "CONVERSATION_ID": "Conversation ID",
+    "CLIPBOARD_SUCCESS": "Cod copiat în clipboard cu succes"
+  },
+  "CONTACT_DETAILS": {
+    "TITLE": "Detalii contact",
+    "EMAIL": "Email",
+    "PHONE_NUMBER": "Număr de telefon",
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "Atribute Contacte",
+    "VALUE_UNAVAILABLE": "Indisponibil"
   },
   "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participanți la conversație",
+    "TITLE": "Participants",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} participă oamenii.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} persoană participă.",
     "NO_PARTICIPANTS_TEXT": "Nimeni nu participă!.",
@@ -181,7 +356,8 @@
     "SELECT_PARTICIPANTS": "Select agents",
     "ADD_PARTICIPANTS": "Selectarea participanților",
     "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other"
+    "REMAINING_PARTICIPANT_TEXT": "other",
+    "ADD_PARTICIPANT": "Add Participant"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Atribute Contacte"
@@ -218,7 +394,7 @@
     "CHANGE_TEAMS": "Echipa de conversație schimbată"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Nu s-a putut conecta la Woot Server, încercați din nou mai târziu",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
     "OfFLINE": "Trebuie să vă conectați la Wi-Fi sau la o rețea celulară pentru a intra din nou online",
     "CANNOT_FETCH": "A existat o eroare la preluarea informațiilor, vă rugăm să încercați din nou",
     "AUTH": "Nume utilizator / parolă incorectă. Vă rugăm să încercaţi din nou",
@@ -239,15 +415,29 @@
     "OK": "Da"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP": {
-      "TEXT": "Puteți răspunde la această conversație numai utilizând un mesaj șablon din cauza ",
-      "HREF_TEXT": "Restricţie fereastră mesaj 24 de ore",
-      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    "TWILIO_WHATSAPP_CAN_REPLY": "Poți răspunde la această conversație doar folosind un mesaj șablon datorat",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "Restricţie fereastră mesaj 24 de ore",
+    "24_HOURS_WINDOW": "Restricţie fereastră mesaj 24 de ore",
+    "CANNOT_REPLY": "Nu poți răspunde din cauza"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
     },
-    "FACEBOOK": {
-      "TEXT": "Nu puteți răspunde din cauza ",
-      "HREF_TEXT": "Restricţie fereastră mesaj 24 de ore",
-      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "Primul răspuns",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

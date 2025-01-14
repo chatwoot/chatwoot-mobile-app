@@ -22,8 +22,8 @@
     "ERROR": "Ongeldige installatie-url"
   },
   "LOGIN": {
-    "TITLE": "Log in op je account",
-    "DESCRIPTION": "Je bent verbonden met {{baseUrl}}. Log in met je e-mailadres en wachtwoord.",
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "E-mailadres",
     "PASSWORD": "Wachtwoord",
     "EMAIL_REQUIRED": "E-mail is vereist",
@@ -31,6 +31,7 @@
     "PASSWORD_REQUIRED": "Wachtwoord vereist",
     "PASSWORD_ERROR": "Voer een geldig wachtwoord in",
     "LOGIN": "Log in",
+    "LOGIN_LOADING": "Signing In...",
     "FORGOT_PASSWORD": "Wachtwoord vergeten?",
     "RESET_HERE": "Hier resetten",
     "NO_ACCOUNT": "Nog geen account?",
@@ -50,6 +51,63 @@
     "API_SUCCESS": "Een link om je wachtwoord te resetten is naar jouw e-mailadres gestuurd"
   },
   "CONVERSATION": {
+    "HEADER": {
+      "TITLE": "Gesprekken",
+      "CLEAR_FILTER": "Clear"
+    },
+    "FILTERS": {
+      "AGENT": {
+        "SEARCH_AGENT": "Zoek agenten"
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filter op toegewezene",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Niet-toegewezen",
+          "ALL": "Allemaal"
+        }
+      },
+      "INBOX": {
+        "TITLE": "Filter op inbox"
+      },
+      "SORT_BY": {
+        "TITLE": "Sorteren op",
+        "OPTIONS": {
+          "LATEST": "Latest",
+          "SORT_ON_CREATED_AT": "Aangemaakt op",
+          "SORT_ON_PRIORITY": "Prioriteit"
+        }
+      },
+      "STATUS": {
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "Open",
+          "PENDING": "Afwachtend",
+          "SNOOZED": "Gesluimerd",
+          "RESOLVED": "Opgelost",
+          "ALL": "Allemaal"
+        }
+      }
+    },
+    "ASSIGNEE": {
+      "LABELS": {
+        "SEARCH_LABELS": "Zoek op labels"
+      },
+      "AGENTS": {
+        "SEARCH_AGENT": "Zoek agenten"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "Open",
+          "PENDING": "Afwachtend",
+          "SNOOZED": "Gesluimerd",
+          "RESOLVED": "Opgelost",
+          "ALL": "Allemaal"
+        }
+      }
+    },
     "DEFAULT_HEADER_TITLE": "Gesprekken",
     "UPDATING": "Bijwerken...",
     "MINE": "Mijn",
@@ -72,7 +130,18 @@
     "ASSIGNED_AGENT": "Assigned agent",
     "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "Dit zal alleen zichtbaar zijn voor medewerkers",
-    "SELF_ASSIGN": "Geef gesprek aan mijzelf",
+    "NOT_FOUND": {
+      "TITLE": "Unable to fetch conversation",
+      "RETRY": "Retry",
+      "BACK_TO_HOME": "Take me Home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+    },
+    "EMAIL_HEAD": {
+      "TO": "Aan",
+      "CC": "CC",
+      "BCC": "BCC"
+    },
+    "SELF_ASSIGN": "Aan mij toewijzen",
     "UN_ASSIGN": "Toewijzing ongedaan maken",
     "CONVERSATION_NOT_FOUND": "Kon gesprek niet ophalen",
     "MARK_AS_PENDING": "Markeren als in afwachting van",
@@ -88,6 +157,16 @@
     "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "DELETE_MESSAGE_SUCCESS": "Bericht succesvol verwijderd",
+    "NO_CONTENT": "Geen inhoud beschikbaar",
+    "ASSIGN_CHANGE": "Toegewezen persoon voor dit gesprek is veranderd",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "CHANGE_STATUS": "Status wijzigen",
+    "SEARCH_TEAM": "Teams zoeken",
     "PRIORITY": {
       "TITLE": "Prioriteit",
       "OPTIONS": {
@@ -103,6 +182,58 @@
         "NO_RESULTS": "Geen resultaten gevonden",
         "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
         "FAILED": "Couldn't change priority. Please try again."
+      }
+    },
+    "ITEM": {
+      "ASSIGN": "Toewijzen",
+      "STATUS": "Status"
+    },
+    "ATTACHMENTS": {
+      "image": {
+        "CONTENT": "Bericht met foto"
+      },
+      "audio": {
+        "CONTENT": "Audiobericht"
+      },
+      "video": {
+        "CONTENT": "Videobericht"
+      },
+      "file": {
+        "CONTENT": "Bestand bijlage"
+      },
+      "location": {
+        "CONTENT": "Locatie"
+      },
+      "fallback": {
+        "CONTENT": "heeft een url gedeeld"
+      }
+    },
+    "LONG_PRESS_ACTIONS": {
+      "COPY": "Kopiëren",
+      "REPLY": "Beantwoorden",
+      "DELETE_MESSAGE": "Delete message"
+    },
+    "EMAIL_HEADER": {
+      "FROM": "van",
+      "TO": "Aan",
+      "BCC": "BCC",
+      "CC": "CC",
+      "SUBJECT": "Onderwerp",
+      "EXPAND": "Expand email"
+    },
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "EMPTY": "Niet-toegewezen",
+        "ASSIGN": "Toewijzen",
+        "EDIT": "Bewerken"
+      },
+      "TEAM": {
+        "EMPTY": "No team assigned",
+        "ASSIGN": "Toewijzen"
+      },
+      "PRIORITY": {
+        "EMPTY": "No priority added",
+        "EDIT": "Bewerken"
       }
     }
   },
@@ -125,22 +256,58 @@
   "SETTINGS": {
     "HEADER_TITLE": "Instellingen",
     "SET_AVAILABILITY": "Zet jezelf op",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Voorkeuren",
     "ABOUT": "Over",
     "SUPPORT": "Ondersteuning",
     "SWITCH_ACCOUNT": "Switch account",
     "CHANGE_LANGUAGE": "Wijzig taal",
+    "NOTIFICATIONS": "Notificaties",
     "NOTIFICATION_PREFERENCES": "Notificatie voorkeuren",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Chat met ons",
     "LOGOUT": "Afmelden",
-    "SUBMIT": "Bevestigen"
+    "SUBMIT": "Bevestigen",
+    "SET_LANGUAGE": "Set Language",
+    "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notificaties",
+    "INBOX": "Postvak In",
     "EMPTY": "Er zijn nog geen notificaties.",
     "EMPTY_MORE_TEXT": "Wanneer je notificaties ontvangt, zullen deze hier worden weergegeven.",
     "ALL_NOTIFICATION_LOADED": "Alle notificaties geladen",
     "MARK_ALL": "Markeer alles als gelezen",
-    "CANCEL": "annuleren"
+    "CANCEL": "annuleren",
+    "DELETE": "Verwijderen",
+    "TYPES": {
+      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "CONVERSATION_CREATION": "New conversation created",
+      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    },
+    "FILTERS": {
+      "SORT_BY": {
+        "TITLE": "Sorteren op",
+        "OPTIONS": {
+          "ASC": "Oldest",
+          "DESC": "Newest"
+        }
+      }
+    },
+    "ALERTS": {
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed",
+      "DELETE": "Notification deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted"
+    }
   },
   "AVAILABILITY": {
     "ONLINE": "Online",
@@ -151,27 +318,35 @@
     "TITLE": "Notificatie voorkeuren",
     "EMAIL": "E-mail notificaties",
     "PUSH": "Pushberichten",
-    "CONVERSATION_CREATE_PUSH": "Stuur pushberichten wanneer een nieuw gesprek is aangemaakt",
-    "CONVERSATION_ASSIGNEE_PUSH": "Stuur pushberichten wanneer een gesprek aan mij is toegewezen",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_MENTION": "Ontvang pushmeldingen wanneer je wordt genoemd in een gesprek",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in a participating conversation",
-    "CONVERSATION_CREATE_EMAIL": "E-mailberichten verzenden wanneer een nieuw gesprek is gemaakt",
-    "CONVERSATION_ASSIGNEE_EMAIL": "E-mailberichten verzenden wanneer een gesprek aan mij is toegewezen",
-    "CONVERSATION_MENTION_EMAIL": "E-mail notificaties versturen wanneer u in een gesprek wordt genoemd",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send email notifications when a new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Send push notifications when a new message is created in a participating conversation"
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Gespreksinformatie",
+    "TITLE": "Attributes",
     "BROWSER": "Browser",
     "OPERATING_SYSTEM": "Besturingssysteem",
     "INITIATED_AT": "Geïnitieerd op",
     "INITIATED_FROM": "Geïnitieerd vanuit",
-    "IP_ADDRESS": "IP-adres"
+    "IP_ADDRESS": "IP-adres",
+    "CONVERSATION_ID": "Conversation ID",
+    "CLIPBOARD_SUCCESS": "Code succesvol naar het klembord gekopieerd "
+  },
+  "CONTACT_DETAILS": {
+    "TITLE": "Contactgegevens",
+    "EMAIL": "E-mailadres",
+    "PHONE_NUMBER": "Telefoonnummer",
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "Contact-eigenschappen",
+    "VALUE_UNAVAILABLE": "Unavailable"
   },
   "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Conversation participants",
+    "TITLE": "Participants",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
     "NO_PARTICIPANTS_TEXT": "No one is participating!.",
@@ -181,7 +356,8 @@
     "SELECT_PARTICIPANTS": "Select agents",
     "ADD_PARTICIPANTS": "Select participants",
     "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other"
+    "REMAINING_PARTICIPANT_TEXT": "other",
+    "ADD_PARTICIPANT": "Add Participant"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Contact-eigenschappen"
@@ -218,7 +394,7 @@
     "CHANGE_TEAMS": "Gespreksteam gewijzigd"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Kan geen verbinding maken met Woot Server, probeer het later opnieuw",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
     "OfFLINE": "U moet verbinding maken met Wi-Fi of een mobiel netwerk om weer online te kunnen komen",
     "CANNOT_FETCH": "Er is een fout opgetreden bij het ophalen van de informatie, probeer het opnieuw",
     "AUTH": "Gebruikersnaam / wachtwoord onjuist. Probeer het opnieuw",
@@ -239,15 +415,29 @@
     "OK": "OK"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP": {
-      "TEXT": "Je kunt dit gesprek alleen beantwoorden met een sjabloonbericht vanwege ",
-      "HREF_TEXT": "Beperking van 24-uur berichtenvenster",
-      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    "TWILIO_WHATSAPP_CAN_REPLY": "Je kunt dit gesprek alleen beantwoorden met een sjabloon bericht vanwege",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "Beperking van 24-uur berichtenvenster",
+    "24_HOURS_WINDOW": "Beperking van 24-uur berichtenvenster",
+    "CANNOT_REPLY": "Je kunt niet reageren omdat"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
     },
-    "FACEBOOK": {
-      "TEXT": "Je kunt niet reageren vanwege ",
-      "HREF_TEXT": "Beperking van 24-uur berichtenvenster",
-      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "Eerste reactietijd",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

@@ -23,7 +23,7 @@
   },
   "LOGIN": {
     "TITLE": "Войти в свой аккаунт",
-    "DESCRIPTION": "Вы подключены к {{baseUrl}}. Войдите с вашим адресом электронной почты и паролем.",
+    "DESCRIPTION": "Вы подключены к {{baseUrl}}.",
     "EMAIL": "Почта",
     "PASSWORD": "Пароль",
     "EMAIL_REQUIRED": "Необходимо указать Email",
@@ -31,6 +31,7 @@
     "PASSWORD_REQUIRED": "Необходимо указать пароль",
     "PASSWORD_ERROR": "Введите корректный пароль",
     "LOGIN": "Войти",
+    "LOGIN_LOADING": "Выполняется вход...",
     "FORGOT_PASSWORD": "Забыли пароль?",
     "RESET_HERE": "Сбросить здесь",
     "NO_ACCOUNT": "Нет учетной записи?",
@@ -50,6 +51,63 @@
     "API_SUCCESS": "Ссылка для сброса пароля была отправлена на ваш email"
   },
   "CONVERSATION": {
+    "HEADER": {
+      "TITLE": "Разговоры",
+      "CLEAR_FILTER": "Сбросить"
+    },
+    "FILTERS": {
+      "AGENT": {
+        "SEARCH_AGENT": "Поиск агентов"
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Фильтр по типу исполнителя",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Неназначен",
+          "ALL": "Все"
+        }
+      },
+      "INBOX": {
+        "TITLE": "Фильтр по входящим"
+      },
+      "SORT_BY": {
+        "TITLE": "Сортировать по",
+        "OPTIONS": {
+          "LATEST": "Latest",
+          "SORT_ON_CREATED_AT": "Дата создания",
+          "SORT_ON_PRIORITY": "Приоритет"
+        }
+      },
+      "STATUS": {
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "Открытые",
+          "PENDING": "В ожидании",
+          "SNOOZED": "Отложено",
+          "RESOLVED": "Закрыт",
+          "ALL": "Все"
+        }
+      }
+    },
+    "ASSIGNEE": {
+      "LABELS": {
+        "SEARCH_LABELS": "Поиск меток"
+      },
+      "AGENTS": {
+        "SEARCH_AGENT": "Поиск агентов"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "Открытые",
+          "PENDING": "В ожидании",
+          "SNOOZED": "Отложено",
+          "RESOLVED": "Закрыт",
+          "ALL": "Все"
+        }
+      }
+    },
     "DEFAULT_HEADER_TITLE": "Разговоры",
     "UPDATING": "Обновление...",
     "MINE": "Мои",
@@ -72,7 +130,18 @@
     "ASSIGNED_AGENT": "Назначенный сотрудник",
     "TEAM": "Команда",
     "PRIVATE_MSG_INPUT": "Это будет видно только сотрудникам",
-    "SELF_ASSIGN": "Личное назначение разговора",
+    "NOT_FOUND": {
+      "TITLE": "Unable to fetch conversation",
+      "RETRY": "Retry",
+      "BACK_TO_HOME": "Take me Home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+    },
+    "EMAIL_HEAD": {
+      "TO": "Кому",
+      "CC": "Cc",
+      "BCC": "Bcc"
+    },
+    "SELF_ASSIGN": "Назначить мне",
     "UN_ASSIGN": "Отменить беседу",
     "CONVERSATION_NOT_FOUND": "Не удалось получить диалог",
     "MARK_AS_PENDING": "Отметить как ожидающие",
@@ -88,6 +157,16 @@
     "DELETE_MESSAGE_TITLE": "Вы действительно хотите удалить это сообщение?",
     "DELETE_MESSAGE_SUB_TITLE": "Это действие не может быть отменено.",
     "COPY_MESSAGE": "Сообщение скопировано в буфер обмена",
+    "STORY_NOT_AVAILABLE": "Эта история больше недоступна",
+    "DELETE_MESSAGE_SUCCESS": "Сообщение успешно удалено",
+    "NO_CONTENT": "Содержимое отсутствует",
+    "ASSIGN_CHANGE": "Назначенный оператор изменен",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "CHANGE_STATUS": "Изменить статус",
+    "SEARCH_TEAM": "Поиск команд",
     "PRIORITY": {
       "TITLE": "Приоритет",
       "OPTIONS": {
@@ -103,6 +182,58 @@
         "NO_RESULTS": "Результаты не найдены",
         "SUCCESSFUL": "Изменен приоритет разговора id %{conversationId} на %{priority}",
         "FAILED": "Не удалось изменить приоритет. Пожалуйста, попробуйте еще раз."
+      }
+    },
+    "ITEM": {
+      "ASSIGN": "Назначить",
+      "STATUS": "Статус"
+    },
+    "ATTACHMENTS": {
+      "image": {
+        "CONTENT": "Фото сообщение"
+      },
+      "audio": {
+        "CONTENT": "Аудиосообщение"
+      },
+      "video": {
+        "CONTENT": "Видео"
+      },
+      "file": {
+        "CONTENT": "Вложение файла"
+      },
+      "location": {
+        "CONTENT": "Местоположение"
+      },
+      "fallback": {
+        "CONTENT": "поделился ссылкой"
+      }
+    },
+    "LONG_PRESS_ACTIONS": {
+      "COPY": "Копировать",
+      "REPLY": "Ответить",
+      "DELETE_MESSAGE": "Delete message"
+    },
+    "EMAIL_HEADER": {
+      "FROM": "От",
+      "TO": "Кому",
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "SUBJECT": "Тема",
+      "EXPAND": "Развернуть email"
+    },
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "EMPTY": "Неназначен",
+        "ASSIGN": "Назначить",
+        "EDIT": "Редактировать"
+      },
+      "TEAM": {
+        "EMPTY": "No team assigned",
+        "ASSIGN": "Назначить"
+      },
+      "PRIORITY": {
+        "EMPTY": "No priority added",
+        "EDIT": "Редактировать"
       }
     }
   },
@@ -125,22 +256,58 @@
   "SETTINGS": {
     "HEADER_TITLE": "Настройки",
     "SET_AVAILABILITY": "Установить себя",
+    "CHANGE_AVAILABILITY": "Установить доступность",
     "PREFERENCES": "Настройки",
     "ABOUT": "О нас",
     "SUPPORT": "Поддержка",
     "SWITCH_ACCOUNT": "Сменить Аккаунт",
     "CHANGE_LANGUAGE": "Изменить язык",
+    "NOTIFICATIONS": "Уведомления",
     "NOTIFICATION_PREFERENCES": "Настройки уведомлений",
+    "READ_DOCS": "Открыть документацию",
+    "CHAT_WITH_US": "Пообщайтесь с нами",
     "LOGOUT": "Выход",
-    "SUBMIT": "Отправить"
+    "SUBMIT": "Отправить",
+    "SET_LANGUAGE": "Установить язык",
+    "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Уведомления",
+    "INBOX": "Электронная почта",
     "EMPTY": "Уведомлений пока нет.",
     "EMPTY_MORE_TEXT": "Как только вы начнете получать уведомления, они появятся здесь.",
     "ALL_NOTIFICATION_LOADED": "Все уведомления загружены",
     "MARK_ALL": "Отметить все как прочитанные",
-    "CANCEL": "Отменить"
+    "CANCEL": "Отменить",
+    "DELETE": "Удалить",
+    "TYPES": {
+      "CONVERSATION_MENTION": "Вас упомянули в диалоге",
+      "CONVERSATION_CREATION": "Диалог создан",
+      "CONVERSATION_ASSIGNMENT": "Вам назначен диалог",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Новое сообщение в назначенном диалоге",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Новое сообщение в диалоге, в котором вы участвуете",
+      "SLA_MISSED_FIRST_RESPONSE": "Не выполнен целевой срок разрешения по SLA для разговора",
+      "SLA_MISSED_NEXT_RESPONSE": "Не выполнен целевой срок следующего ответа по SLA для разговора",
+      "SLA_MISSED_RESOLUTION": "Не выполнен целевой срок первого ответа по SLA для разговора"
+    },
+    "FILTERS": {
+      "SORT_BY": {
+        "TITLE": "Сортировать по",
+        "OPTIONS": {
+          "ASC": "Самые старые",
+          "DESC": "Самые новые"
+        }
+      }
+    },
+    "ALERTS": {
+      "MARK_AS_READ": "Уведомление отмечено как прочитанное",
+      "MARK_AS_UNREAD": "Уведомление отмечено как непрочитанное",
+      "SNOOZE": "Уведомление отложено",
+      "DELETE": "Уведомление удалено",
+      "MARK_ALL_READ": "Все уведомления отмечены как прочитанные",
+      "DELETE_ALL": "Все уведомления удалены",
+      "DELETE_ALL_READ": "Все прочитанные уведомления удалены"
+    }
   },
   "AVAILABILITY": {
     "ONLINE": "В сети",
@@ -151,27 +318,35 @@
     "TITLE": "Настройки уведомлений",
     "EMAIL": "Email Уведомления",
     "PUSH": "Push уведомления",
-    "CONVERSATION_CREATE_PUSH": "Отправлять push уведомление, когда новый диалог создан",
-    "CONVERSATION_ASSIGNEE_PUSH": "Отправлять push уведомление при назначении мне диалога",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Отправлять push уведомления при создании нового сообщения в назначенном диалоге",
-    "CONVERSATION_MENTION": "Отправлять уведомления при упоминании в разговоре",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Отправлять push-уведомления при создании нового сообщения в участвующем разговоре",
-    "CONVERSATION_CREATE_EMAIL": "Отправлять email уведомление, когда новый диалог создан",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Отправлять email уведомление, когда мне назначен диалог",
-    "CONVERSATION_MENTION_EMAIL": "Отправлять email уведомление, когда вас упоминают в диалоге",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Отправлять email уведомления при создании нового сообщения в назначенном диалоге",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Отправлять push-уведомления при создании нового сообщения в участвующем разговоре"
+    "CONVERSATION_CREATE_PUSH": "Новый диалог создан",
+    "CONVERSATION_ASSIGNEE_PUSH": "Вам назначен диалог",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Вас упомянули в диалоге",
+    "CONVERSATION_MENTION": "Новое сообщение создано в назначенном диалоге",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Новое сообщение создано в участвующем диалоге",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "Разговор не соответствует SLA по первому ответу",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "Диалог не соответствует SLA по следующему ответу",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "Диалог не соответствует SLA по разрешению"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Информация о беседе",
+    "TITLE": "Свойства",
     "BROWSER": "Браузер",
     "OPERATING_SYSTEM": "Операционная система",
     "INITIATED_AT": "Начат в",
     "INITIATED_FROM": "Начат из",
-    "IP_ADDRESS": "IP адрес"
+    "IP_ADDRESS": "IP адрес",
+    "CONVERSATION_ID": "ID диалога",
+    "CLIPBOARD_SUCCESS": "Код скопирован в буфер обмена"
+  },
+  "CONTACT_DETAILS": {
+    "TITLE": "Контактные данные",
+    "EMAIL": "Почта",
+    "PHONE_NUMBER": "Номер телефона",
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "Атрибуты контакта",
+    "VALUE_UNAVAILABLE": "Я не работаю в этот день"
   },
   "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Участники диалога",
+    "TITLE": "Participants",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} человек участвуют.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} человек участвуют.",
     "NO_PARTICIPANTS_TEXT": "Никто не участвует!.",
@@ -181,7 +356,8 @@
     "SELECT_PARTICIPANTS": "Выбрать сотрудника",
     "ADD_PARTICIPANTS": "Выберите участников",
     "REMAINING_PARTICIPANTS_TEXT": "другие",
-    "REMAINING_PARTICIPANT_TEXT": "другое"
+    "REMAINING_PARTICIPANT_TEXT": "другое",
+    "ADD_PARTICIPANT": "Add Participant"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Атрибуты контакта"
@@ -200,8 +376,8 @@
     "EMPTY_LIST": "Пожалуйста, добавьте ярлыки в свой аккаунт",
     "NO_LABEL": "Ярлыки не назначены",
     "UPDATE_LABEL": "Категория сохранена",
-    "SELECTED": "Selected",
-    "NOT_SELECTED": "No labels selected",
+    "SELECTED": "Выбрано",
+    "NOT_SELECTED": "Нет выбранных меток",
     "NO_RESULT": "Метки не найдены"
   },
   "CONVERSATION_AGENTS": {
@@ -218,8 +394,8 @@
     "CHANGE_TEAMS": "Команда назначенная в беседу изменена"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Не удается соединиться с сервером Woot, попробуйте позже",
-    "OfFLINE": "Вы должны подключиться к Wi-Fi или сотовой сети, чтобы снова войти в Интернет",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "OfFLINE": "Вы должны подключиться к Wi-fi или сотовой сети, чтобы снова подключиться к сети",
     "CANNOT_FETCH": "При получении информации произошла ошибка. Повторите попытку",
     "AUTH": "Неверное имя пользователя / пароль. Пожалуйста, попробуйте еще раз",
     "NO_ACCOUNTS_MESSAGE": "У вас нет доступа ни к одной учетной записи chatwoot"
@@ -239,15 +415,29 @@
     "OK": "Ок"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP": {
-      "TEXT": "Вы можете ответить на этот разговор только с помощью шаблона ",
-      "HREF_TEXT": "Ограничение на 24 часа",
-      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    "TWILIO_WHATSAPP_CAN_REPLY": "Вы можете ответить в этой беседе только с помощью шаблона сообщения",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "Ограничение на 24 часа",
+    "24_HOURS_WINDOW": "Ограничение на 24 часа",
+    "CANNOT_REPLY": "Вы не можете ответить из-за"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "пропущенный",
+      "DUE": "до"
     },
-    "FACEBOOK": {
-      "TEXT": "Вы не можете ответить из-за ",
-      "HREF_TEXT": "Ограничение на 24 часа",
-      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    "MISSES": {
+      "TITLE": "Пропуски SLA",
+      "FRT": "Время первого ответа",
+      "NRT": "Время первого ответа",
+      "RT": "Время разрешения",
+      "SHOW_MORE": "еще {count}",
+      "HIDE": "Скрыть {count} строк"
     }
   }
 }

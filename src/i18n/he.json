@@ -22,8 +22,8 @@
     "ERROR": "קישור התקנה לא חוקי"
   },
   "LOGIN": {
-    "TITLE": "היכנס לחשבון שלך",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "אימייל",
     "PASSWORD": "סיסמה",
     "EMAIL_REQUIRED": "Email is required",
@@ -31,6 +31,7 @@
     "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "הזן סיסמה תקינה",
     "LOGIN": "כניסה",
+    "LOGIN_LOADING": "Signing In...",
     "FORGOT_PASSWORD": "שכחת את הסיסמה?",
     "RESET_HERE": "אפס כאן",
     "NO_ACCOUNT": "אין לך חשבון?",
@@ -50,6 +51,63 @@
     "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
+    "HEADER": {
+      "TITLE": "שיחות",
+      "CLEAR_FILTER": "Clear"
+    },
+    "FILTERS": {
+      "AGENT": {
+        "SEARCH_AGENT": "חפש נציגים"
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filter by assignee type",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "לא הוקצתה",
+          "ALL": "הכל"
+        }
+      },
+      "INBOX": {
+        "TITLE": "Filter by inbox"
+      },
+      "SORT_BY": {
+        "TITLE": "מיין לפי",
+        "OPTIONS": {
+          "LATEST": "Latest",
+          "SORT_ON_CREATED_AT": "הוקם ב",
+          "SORT_ON_PRIORITY": "Priority"
+        }
+      },
+      "STATUS": {
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "פתח",
+          "PENDING": "ממתין ל",
+          "SNOOZED": "נימנום",
+          "RESOLVED": "נפתרה",
+          "ALL": "הכל"
+        }
+      }
+    },
+    "ASSIGNEE": {
+      "LABELS": {
+        "SEARCH_LABELS": "חפש תוויות"
+      },
+      "AGENTS": {
+        "SEARCH_AGENT": "חפש נציגים"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "פתח",
+          "PENDING": "ממתין ל",
+          "SNOOZED": "נימנום",
+          "RESOLVED": "נפתרה",
+          "ALL": "הכל"
+        }
+      }
+    },
     "DEFAULT_HEADER_TITLE": "שיחות",
     "UPDATING": "Updating...",
     "MINE": "שלי",
@@ -72,7 +130,18 @@
     "ASSIGNED_AGENT": "סוכן מוקצה",
     "TEAM": "צוות",
     "PRIVATE_MSG_INPUT": "זה יהיה גלוי רק לסוכנים",
-    "SELF_ASSIGN": "Self assign conversation",
+    "NOT_FOUND": {
+      "TITLE": "Unable to fetch conversation",
+      "RETRY": "Retry",
+      "BACK_TO_HOME": "Take me Home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+    },
+    "EMAIL_HEAD": {
+      "TO": "אל",
+      "CC": "עותק",
+      "BCC": "עותק מוסתר"
+    },
+    "SELF_ASSIGN": "קשר אלי",
     "UN_ASSIGN": "שיחה שלא הוקצתה",
     "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
     "MARK_AS_PENDING": "סמן כממתין",
@@ -88,6 +157,16 @@
     "DELETE_MESSAGE_TITLE": "בטוחים שאתם רוצים למחוק את ההודעה הזו?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "DELETE_MESSAGE_SUCCESS": "ההודעה נמחקה בהצלחה",
+    "NO_CONTENT": "אין תוכן זמין",
+    "ASSIGN_CHANGE": "שיוך שיחה השתנתה",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "CHANGE_STATUS": "שנה סטאטוס",
+    "SEARCH_TEAM": "חפש קבוצות",
     "PRIORITY": {
       "TITLE": "Priority",
       "OPTIONS": {
@@ -103,6 +182,58 @@
         "NO_RESULTS": "לא נמצאו תוצאות",
         "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
         "FAILED": "Couldn't change priority. Please try again."
+      }
+    },
+    "ITEM": {
+      "ASSIGN": "שייך",
+      "STATUS": "מצב"
+    },
+    "ATTACHMENTS": {
+      "image": {
+        "CONTENT": "הודעת תמונה"
+      },
+      "audio": {
+        "CONTENT": "הודעות קוליות"
+      },
+      "video": {
+        "CONTENT": "הודעות וידאו"
+      },
+      "file": {
+        "CONTENT": "קובץ מצורף"
+      },
+      "location": {
+        "CONTENT": "מיקום"
+      },
+      "fallback": {
+        "CONTENT": "שיתף קישור"
+      }
+    },
+    "LONG_PRESS_ACTIONS": {
+      "COPY": "עותק",
+      "REPLY": "הגב",
+      "DELETE_MESSAGE": "Delete message"
+    },
+    "EMAIL_HEADER": {
+      "FROM": "מאת",
+      "TO": "אל",
+      "BCC": "עותק מוסתר",
+      "CC": "עותק",
+      "SUBJECT": "נושא",
+      "EXPAND": "Expand email"
+    },
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "EMPTY": "לא הוקצתה",
+        "ASSIGN": "שייך",
+        "EDIT": "ערוך"
+      },
+      "TEAM": {
+        "EMPTY": "No team assigned",
+        "ASSIGN": "שייך"
+      },
+      "PRIORITY": {
+        "EMPTY": "No priority added",
+        "EDIT": "ערוך"
       }
     }
   },
@@ -125,22 +256,58 @@
   "SETTINGS": {
     "HEADER_TITLE": "הגדרות",
     "SET_AVAILABILITY": "Set yourself as",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferences",
     "ABOUT": "About",
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "החלף חשבון",
     "CHANGE_LANGUAGE": "שנה שפה",
+    "NOTIFICATIONS": "התראות",
     "NOTIFICATION_PREFERENCES": "הגדרות התראות",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "דבר איתנו",
     "LOGOUT": "התנתק",
-    "SUBMIT": "שלח"
+    "SUBMIT": "שלח",
+    "SET_LANGUAGE": "Set Language",
+    "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "התראות",
+    "INBOX": "תיבת הדואר הנכנס",
     "EMPTY": "אין עדיין התראות.",
     "EMPTY_MORE_TEXT": "ברגע שתתחיל לקבל התראות, הן יופיעו כאן.",
     "ALL_NOTIFICATION_LOADED": "כל ההתראות נטענו",
     "MARK_ALL": "סמן הכל כנקרא",
-    "CANCEL": "ביטול"
+    "CANCEL": "ביטול",
+    "DELETE": "מחק",
+    "TYPES": {
+      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "CONVERSATION_CREATION": "New conversation created",
+      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    },
+    "FILTERS": {
+      "SORT_BY": {
+        "TITLE": "מיין לפי",
+        "OPTIONS": {
+          "ASC": "Oldest",
+          "DESC": "Newest"
+        }
+      }
+    },
+    "ALERTS": {
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed",
+      "DELETE": "Notification deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted"
+    }
   },
   "AVAILABILITY": {
     "ONLINE": "מחובר",
@@ -151,27 +318,35 @@
     "TITLE": "הגדרות התראות",
     "EMAIL": "התראות דוא\"ל",
     "PUSH": "הודעות דחיפה (Push)",
-    "CONVERSATION_CREATE_PUSH": "שלח התראת פוש כאשר נפתחת שיחה חדשה",
-    "CONVERSATION_ASSIGNEE_PUSH": "שלח התראת פוש כאשר שיחה מוקצית עבורי",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "שלח התראת פוש כאשר יש הודעה חדשה בשיחה המוקצית עבורי",
-    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "שלח הודעות דחיפה כאשר נוצרת הודעה חדשה בשיחה המיועדת עבורי",
-    "CONVERSATION_CREATE_EMAIL": "שלח התראה באימייל כאשר נפתחת שיחה חדשה",
-    "CONVERSATION_ASSIGNEE_EMAIL": "שלח התראה באימייל כאשר שיחה מוקצית עבורי",
-    "CONVERSATION_MENTION_EMAIL": "שלח הודעות דחיפה כאשר אתה מוזכר בשיחה",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "שלח התראה באימייל כאשר יש הודעה חדשה בשיחה המוקצית עבורי",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "שלח הודעות דחיפה כאשר נוצרת הודעה חדשה בשיחה המיועדת עבורי"
+    "CONVERSATION_CREATE_PUSH": "שיחה חדשה נוצרה",
+    "CONVERSATION_ASSIGNEE_PUSH": "שיחה הוקצתה לך",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "הוזכרת בשיחה",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Conversation Information",
+    "TITLE": "מאפיינים",
     "BROWSER": "דפדפן",
     "OPERATING_SYSTEM": "מערכת הפעלה",
     "INITIATED_AT": "יזם ב",
     "INITIATED_FROM": "יזם מ",
-    "IP_ADDRESS": "כתובת IP"
+    "IP_ADDRESS": "כתובת IP",
+    "CONVERSATION_ID": "Conversation ID",
+    "CLIPBOARD_SUCCESS": "הקוד הועתק ללוח בהצלחה"
+  },
+  "CONTACT_DETAILS": {
+    "TITLE": "פרטי איש קשר",
+    "EMAIL": "אימייל",
+    "PHONE_NUMBER": "מספר טלפון",
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "תכונות יצירת קשר",
+    "VALUE_UNAVAILABLE": "אינו זמין"
   },
   "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "משתתפים בשיחה",
+    "TITLE": "Participants",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
     "NO_PARTICIPANTS_TEXT": "אף אחד לא משתתף!.",
@@ -181,7 +356,8 @@
     "SELECT_PARTICIPANTS": "Select agents",
     "ADD_PARTICIPANTS": "בחר משתתפים",
     "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other"
+    "REMAINING_PARTICIPANT_TEXT": "other",
+    "ADD_PARTICIPANT": "Add Participant"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Contact Attributes"
@@ -218,7 +394,7 @@
     "CHANGE_TEAMS": "שיחת קבוצה השתנתה"
   },
   "ERRORS": {
-    "COMMON_ERROR": "לא ניתן להתחבר לשרת Woot, נסה שוב מאוחר יותר",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
     "OfFLINE": "עליך להתחבר ל- Wi-Fi או לרשת סלולרית כדי להתחבר מחדש",
     "CANNOT_FETCH": "אירעה שגיאה בניסיון לקבל את המידע, נסה שוב",
     "AUTH": "שם משתמש / סיסמה שגויים. נסה שוב",
@@ -239,15 +415,29 @@
     "OK": "אישור"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP": {
-      "TEXT": "You can only reply to this conversation using a template message due to ",
-      "HREF_TEXT": "הגבלת חלון הודעות של 24 שעות",
-      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    "TWILIO_WHATSAPP_CAN_REPLY": "אתה יכול להשיב לשיחה זו רק באמצעות הודעת תבנית בשל",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "הגבלת חלון הודעות של 24 שעות",
+    "24_HOURS_WINDOW": "הגבלת חלון הודעות של 24 שעות",
+    "CANNOT_REPLY": "לא ניתן להשיב עקב"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
     },
-    "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
-      "HREF_TEXT": "הגבלת חלון הודעות של 24 שעות",
-      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "First response time",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

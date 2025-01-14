@@ -22,8 +22,8 @@
     "ERROR": "Invalid installation url"
   },
   "LOGIN": {
-    "TITLE": "Login to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "E-mail",
     "PASSWORD": "Adgangskode",
     "EMAIL_REQUIRED": "Email is required",
@@ -31,6 +31,7 @@
     "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Enter a valid password",
     "LOGIN": "Sign In",
+    "LOGIN_LOADING": "Signing In...",
     "FORGOT_PASSWORD": "Glemt din adgangskode?",
     "RESET_HERE": "Reset here",
     "NO_ACCOUNT": "Don't have an account?",
@@ -50,6 +51,63 @@
     "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
+    "HEADER": {
+      "TITLE": "Samtaler",
+      "CLEAR_FILTER": "Clear"
+    },
+    "FILTERS": {
+      "AGENT": {
+        "SEARCH_AGENT": "Søg agenter"
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filter by assignee type",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Ikke Tildelt",
+          "ALL": "Alle"
+        }
+      },
+      "INBOX": {
+        "TITLE": "Filter by inbox"
+      },
+      "SORT_BY": {
+        "TITLE": "Sorter efter",
+        "OPTIONS": {
+          "LATEST": "Latest",
+          "SORT_ON_CREATED_AT": "Oprettet Den",
+          "SORT_ON_PRIORITY": "Priority"
+        }
+      },
+      "STATUS": {
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "Åbn",
+          "PENDING": "Afventer",
+          "SNOOZED": "Udsat",
+          "RESOLVED": "Løst",
+          "ALL": "Alle"
+        }
+      }
+    },
+    "ASSIGNEE": {
+      "LABELS": {
+        "SEARCH_LABELS": "Søg efter labels"
+      },
+      "AGENTS": {
+        "SEARCH_AGENT": "Søg agenter"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "Åbn",
+          "PENDING": "Afventer",
+          "SNOOZED": "Udsat",
+          "RESOLVED": "Løst",
+          "ALL": "Alle"
+        }
+      }
+    },
     "DEFAULT_HEADER_TITLE": "Samtaler",
     "UPDATING": "Updating...",
     "MINE": "Mine",
@@ -72,7 +130,18 @@
     "ASSIGNED_AGENT": "Tildelt agent",
     "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "SELF_ASSIGN": "Self assign conversation",
+    "NOT_FOUND": {
+      "TITLE": "Unable to fetch conversation",
+      "RETRY": "Retry",
+      "BACK_TO_HOME": "Take me Home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+    },
+    "EMAIL_HEAD": {
+      "TO": "Til",
+      "CC": "Cc",
+      "BCC": "Bcc"
+    },
+    "SELF_ASSIGN": "Tildel til mig",
     "UN_ASSIGN": "Unassign conversation",
     "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
     "MARK_AS_PENDING": "Markér som afventende",
@@ -88,6 +157,16 @@
     "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "DELETE_MESSAGE_SUCCESS": "Besked slettet",
+    "NO_CONTENT": "Intet tilgængeligt indhold",
+    "ASSIGN_CHANGE": "Samtaleansvarlig ændret",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "CHANGE_STATUS": "Skift status",
+    "SEARCH_TEAM": "Søg i teams",
     "PRIORITY": {
       "TITLE": "Priority",
       "OPTIONS": {
@@ -103,6 +182,58 @@
         "NO_RESULTS": "Ingen resultater fundet",
         "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
         "FAILED": "Couldn't change priority. Please try again."
+      }
+    },
+    "ITEM": {
+      "ASSIGN": "Tildel",
+      "STATUS": "Status"
+    },
+    "ATTACHMENTS": {
+      "image": {
+        "CONTENT": "Billedbesked"
+      },
+      "audio": {
+        "CONTENT": "Lydbesked"
+      },
+      "video": {
+        "CONTENT": "Video besked"
+      },
+      "file": {
+        "CONTENT": "Fil Vedhæftning"
+      },
+      "location": {
+        "CONTENT": "Lokation"
+      },
+      "fallback": {
+        "CONTENT": "har delt en URL"
+      }
+    },
+    "LONG_PRESS_ACTIONS": {
+      "COPY": "Kopiér",
+      "REPLY": "Svar",
+      "DELETE_MESSAGE": "Delete message"
+    },
+    "EMAIL_HEADER": {
+      "FROM": "Fra",
+      "TO": "Til",
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "SUBJECT": "Emne",
+      "EXPAND": "Expand email"
+    },
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "EMPTY": "Ikke Tildelt",
+        "ASSIGN": "Tildel",
+        "EDIT": "Rediger"
+      },
+      "TEAM": {
+        "EMPTY": "No team assigned",
+        "ASSIGN": "Tildel"
+      },
+      "PRIORITY": {
+        "EMPTY": "No priority added",
+        "EDIT": "Rediger"
       }
     }
   },
@@ -125,22 +256,58 @@
   "SETTINGS": {
     "HEADER_TITLE": "Indstillinger",
     "SET_AVAILABILITY": "Sæt dig selv som",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferences",
     "ABOUT": "About",
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Skift Konto",
     "CHANGE_LANGUAGE": "Change Language",
+    "NOTIFICATIONS": "Notifications",
     "NOTIFICATION_PREFERENCES": "Notification Preferences",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Chat med os",
     "LOGOUT": "Log Ud",
-    "SUBMIT": "Send"
+    "SUBMIT": "Send",
+    "SET_LANGUAGE": "Set Language",
+    "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",
+    "INBOX": "Indbakke",
     "EMPTY": "No notifications yet.",
     "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
     "MARK_ALL": "Mark all as read",
-    "CANCEL": "Annuller"
+    "CANCEL": "Annuller",
+    "DELETE": "Slet",
+    "TYPES": {
+      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "CONVERSATION_CREATION": "New conversation created",
+      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    },
+    "FILTERS": {
+      "SORT_BY": {
+        "TITLE": "Sorter efter",
+        "OPTIONS": {
+          "ASC": "Oldest",
+          "DESC": "Newest"
+        }
+      }
+    },
+    "ALERTS": {
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed",
+      "DELETE": "Notification deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted"
+    }
   },
   "AVAILABILITY": {
     "ONLINE": "Online",
@@ -151,27 +318,35 @@
     "TITLE": "Notification Preferences",
     "EMAIL": "E-Mail Notifikationer",
     "PUSH": "Push Notifikationer",
-    "CONVERSATION_CREATE_PUSH": "Send push-notifikationer, når en ny samtale er oprettet",
-    "CONVERSATION_ASSIGNEE_PUSH": "Send push-notifikationer, når en samtale er tildelt mig",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Send push-notifikationer, når en ny besked oprettes i en tildelt samtale",
-    "CONVERSATION_MENTION": "Send push notifications when you are mentioned in a conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in a participating conversation",
-    "CONVERSATION_CREATE_EMAIL": "Send e-mail notifikationer når en ny samtale er oprettet",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Send e-mail notifikationer når en samtale er tildelt mig",
-    "CONVERSATION_MENTION_EMAIL": "Send e-mail notifikationer, når du er nævnt i en samtale",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Send e-mail notifikationer når en ny besked er oprettet i en tildelt samtale",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Send push notifications when a new message is created in a participating conversation"
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Conversation Information",
+    "TITLE": "Attributes",
     "BROWSER": "Browser",
     "OPERATING_SYSTEM": "Operativsystem",
     "INITIATED_AT": "Startet fra",
     "INITIATED_FROM": "Startet fra",
-    "IP_ADDRESS": "IP Address"
+    "IP_ADDRESS": "IP Address",
+    "CONVERSATION_ID": "Conversation ID",
+    "CLIPBOARD_SUCCESS": "Kode kopieret til udklipsholder med succes"
+  },
+  "CONTACT_DETAILS": {
+    "TITLE": "Kontaktoplysninger",
+    "EMAIL": "E-mail",
+    "PHONE_NUMBER": "Telefonnummer",
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "Kontakt Attributter",
+    "VALUE_UNAVAILABLE": "Unavailable"
   },
   "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Conversation participants",
+    "TITLE": "Participants",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
     "NO_PARTICIPANTS_TEXT": "No one is participating!.",
@@ -181,7 +356,8 @@
     "SELECT_PARTICIPANTS": "Select agents",
     "ADD_PARTICIPANTS": "Select participants",
     "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other"
+    "REMAINING_PARTICIPANT_TEXT": "other",
+    "ADD_PARTICIPANT": "Add Participant"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Contact Attributes"
@@ -218,7 +394,7 @@
     "CHANGE_TEAMS": "Conversation team changed"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Kunne ikke oprette forbindelse til Woot Server, Prøv igen senere",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
     "CANNOT_FETCH": "There was an error fetching the information, please try again",
     "AUTH": "Brugernavn / adgangskode forkert. Prøv igen",
@@ -239,15 +415,29 @@
     "OK": "Ok"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP": {
-      "TEXT": "You can only reply to this conversation using a template message due to ",
-      "HREF_TEXT": "24 timers beskedvindue begrænsning",
-      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    "TWILIO_WHATSAPP_CAN_REPLY": "Du kan kun svare på denne samtale ved hjælp af en skabelon besked på grund af",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 timers beskedvindue begrænsning",
+    "24_HOURS_WINDOW": "24 timers beskedvindue begrænsning",
+    "CANNOT_REPLY": "Du kan ikke svare på grund af"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
     },
-    "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
-      "HREF_TEXT": "24 timers beskedvindue begrænsning",
-      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "Første svartid",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

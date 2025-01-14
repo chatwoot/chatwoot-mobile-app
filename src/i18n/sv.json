@@ -22,8 +22,8 @@
     "ERROR": "Ogiltig installations-URL"
   },
   "LOGIN": {
-    "TITLE": "Logga in på ditt konto",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "E-post",
     "PASSWORD": "Lösenord",
     "EMAIL_REQUIRED": "Email is required",
@@ -31,6 +31,7 @@
     "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Ange ett giltigt lösenord",
     "LOGIN": "Logga in",
+    "LOGIN_LOADING": "Signing In...",
     "FORGOT_PASSWORD": "Glömt ditt lösenord?",
     "RESET_HERE": "Återställ här",
     "NO_ACCOUNT": "Har du inget konto?",
@@ -50,6 +51,63 @@
     "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
+    "HEADER": {
+      "TITLE": "Konversationer",
+      "CLEAR_FILTER": "Clear"
+    },
+    "FILTERS": {
+      "AGENT": {
+        "SEARCH_AGENT": "Sök efter agenter"
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filter by assignee type",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Otilldelade",
+          "ALL": "Alla"
+        }
+      },
+      "INBOX": {
+        "TITLE": "Filter by inbox"
+      },
+      "SORT_BY": {
+        "TITLE": "Sortera efter",
+        "OPTIONS": {
+          "LATEST": "Latest",
+          "SORT_ON_CREATED_AT": "Created At",
+          "SORT_ON_PRIORITY": "Prioritet"
+        }
+      },
+      "STATUS": {
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "Öppna",
+          "PENDING": "Väntande",
+          "SNOOZED": "Pausad",
+          "RESOLVED": "Löst",
+          "ALL": "Alla"
+        }
+      }
+    },
+    "ASSIGNEE": {
+      "LABELS": {
+        "SEARCH_LABELS": "Sök etiketter"
+      },
+      "AGENTS": {
+        "SEARCH_AGENT": "Sök efter agenter"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "Öppna",
+          "PENDING": "Väntande",
+          "SNOOZED": "Pausad",
+          "RESOLVED": "Löst",
+          "ALL": "Alla"
+        }
+      }
+    },
     "DEFAULT_HEADER_TITLE": "Konversationer",
     "UPDATING": "Updating...",
     "MINE": "Mina",
@@ -72,7 +130,18 @@
     "ASSIGNED_AGENT": "Assigned agent",
     "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "SELF_ASSIGN": "Self assign conversation",
+    "NOT_FOUND": {
+      "TITLE": "Unable to fetch conversation",
+      "RETRY": "Retry",
+      "BACK_TO_HOME": "Take me Home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+    },
+    "EMAIL_HEAD": {
+      "TO": "Till",
+      "CC": "Cc",
+      "BCC": "Bcc"
+    },
+    "SELF_ASSIGN": "Tilldela mig",
     "UN_ASSIGN": "Unassign conversation",
     "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
     "MARK_AS_PENDING": "Markera som väntande",
@@ -88,6 +157,16 @@
     "DELETE_MESSAGE_TITLE": "Är du säker på att du vill radera detta meddelande?",
     "DELETE_MESSAGE_SUB_TITLE": "Denna åtgärd kan inte ångras.",
     "COPY_MESSAGE": "Meddelandet har kopierats till urklipp",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "DELETE_MESSAGE_SUCCESS": "Meddelandet har tagits bort",
+    "NO_CONTENT": "Inget innehåll tillgängligt",
+    "ASSIGN_CHANGE": "Konversationstilldelning ändrad",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "CHANGE_STATUS": "Change status",
+    "SEARCH_TEAM": "Sök efter team",
     "PRIORITY": {
       "TITLE": "Prioritet",
       "OPTIONS": {
@@ -103,6 +182,58 @@
         "NO_RESULTS": "Inga resultat hittades",
         "SUCCESSFUL": "Ändrad prioritet för konversations-id %{conversationId} till %{priority}",
         "FAILED": "Kunde inte ändra prioritet. Försök igen."
+      }
+    },
+    "ITEM": {
+      "ASSIGN": "Tilldela",
+      "STATUS": "Status"
+    },
+    "ATTACHMENTS": {
+      "image": {
+        "CONTENT": "Bildmeddelande"
+      },
+      "audio": {
+        "CONTENT": "Ljudmeddelande"
+      },
+      "video": {
+        "CONTENT": "Videomeddelande"
+      },
+      "file": {
+        "CONTENT": "Bifogad fil"
+      },
+      "location": {
+        "CONTENT": "Plats"
+      },
+      "fallback": {
+        "CONTENT": "har delat en webbadress"
+      }
+    },
+    "LONG_PRESS_ACTIONS": {
+      "COPY": "Kopiera",
+      "REPLY": "Svara",
+      "DELETE_MESSAGE": "Delete message"
+    },
+    "EMAIL_HEADER": {
+      "FROM": "Från",
+      "TO": "Till",
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "SUBJECT": "Ämne",
+      "EXPAND": "Expand email"
+    },
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "EMPTY": "Otilldelade",
+        "ASSIGN": "Tilldela",
+        "EDIT": "Redigera"
+      },
+      "TEAM": {
+        "EMPTY": "No team assigned",
+        "ASSIGN": "Tilldela"
+      },
+      "PRIORITY": {
+        "EMPTY": "No priority added",
+        "EDIT": "Redigera"
       }
     }
   },
@@ -125,22 +256,58 @@
   "SETTINGS": {
     "HEADER_TITLE": "Inställningar",
     "SET_AVAILABILITY": "Set yourself as",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferences",
     "ABOUT": "About",
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Byt konto",
     "CHANGE_LANGUAGE": "Byt språk",
+    "NOTIFICATIONS": "Aviseringar",
     "NOTIFICATION_PREFERENCES": "Aviseringsinställningar",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Chatta med oss",
     "LOGOUT": "Logga ut",
-    "SUBMIT": "Skicka"
+    "SUBMIT": "Skicka",
+    "SET_LANGUAGE": "Set Language",
+    "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Aviseringar",
+    "INBOX": "Inkorg",
     "EMPTY": "Inga aviseringar ännu.",
     "EMPTY_MORE_TEXT": "När du väl börjat att ta emot aviseringar, kommer de att visas här.",
     "ALL_NOTIFICATION_LOADED": "Alla aviseringar laddade",
     "MARK_ALL": "Markera alla som lästa",
-    "CANCEL": "Avbryt"
+    "CANCEL": "Avbryt",
+    "DELETE": "Radera",
+    "TYPES": {
+      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "CONVERSATION_CREATION": "New conversation created",
+      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    },
+    "FILTERS": {
+      "SORT_BY": {
+        "TITLE": "Sortera efter",
+        "OPTIONS": {
+          "ASC": "Oldest",
+          "DESC": "Newest"
+        }
+      }
+    },
+    "ALERTS": {
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed",
+      "DELETE": "Notification deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted"
+    }
   },
   "AVAILABILITY": {
     "ONLINE": "Online",
@@ -151,27 +318,35 @@
     "TITLE": "Aviseringsinställningar",
     "EMAIL": "E-postaviseringar",
     "PUSH": "Push-notiser",
-    "CONVERSATION_CREATE_PUSH": "Skicka push-aviseringar när en ny konversation skapas",
-    "CONVERSATION_ASSIGNEE_PUSH": "Skicka push-aviseringar när en konversation är tilldelad till mig",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Skicka push-aviseringar när ett nytt meddelande skapas i en tilldelad konversation",
-    "CONVERSATION_MENTION": "Skicka push-meddelanden när du nämns i en konversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Skicka push-meddelanden när ett nytt meddelande skapas i en tilldelad konversation",
-    "CONVERSATION_CREATE_EMAIL": "Skicka e-postaviseringar när en ny konversation skapas",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Skicka e-postaviseringar när en konversation är tilldelad till mig",
-    "CONVERSATION_MENTION_EMAIL": "Skicka e-postaviseringar när du nämns i en konversation",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Skicka e-postaviseringar när ett nytt meddelande skapas i en tilldelad konversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Skicka push-meddelanden när ett nytt meddelande skapas i en tilldelad konversation"
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Conversation Information",
+    "TITLE": "Attributes",
     "BROWSER": "Webbläsare",
     "OPERATING_SYSTEM": "Operativsystem",
     "INITIATED_AT": "Initierad",
     "INITIATED_FROM": "Initierad från",
-    "IP_ADDRESS": "IP-adress"
+    "IP_ADDRESS": "IP-adress",
+    "CONVERSATION_ID": "Conversation ID",
+    "CLIPBOARD_SUCCESS": "Koden har kopierats till urklipp"
+  },
+  "CONTACT_DETAILS": {
+    "TITLE": "Contact Details",
+    "EMAIL": "E-post",
+    "PHONE_NUMBER": "Telefonnummer",
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "Contact Attributes",
+    "VALUE_UNAVAILABLE": "Unavailable"
   },
   "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Deltagare i konversation",
+    "TITLE": "Participants",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} personer deltar.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} person deltar.",
     "NO_PARTICIPANTS_TEXT": "Ingen deltar!.",
@@ -181,7 +356,8 @@
     "SELECT_PARTICIPANTS": "Välj agenter",
     "ADD_PARTICIPANTS": "Välj deltagare",
     "REMAINING_PARTICIPANTS_TEXT": "andra",
-    "REMAINING_PARTICIPANT_TEXT": "annan"
+    "REMAINING_PARTICIPANT_TEXT": "annan",
+    "ADD_PARTICIPANT": "Add Participant"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Contact Attributes"
@@ -218,7 +394,7 @@
     "CHANGE_TEAMS": "Konversationsteamet har ändrats"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Kunde inte ansluta till Woot Server, försök igen senare",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
     "OfFLINE": "Du måste ansluta till Wi-Fi eller ett mobilnätverk för att gå online igen",
     "CANNOT_FETCH": "Det uppstod ett fel när informationen skulle hämtas, försök igen",
     "AUTH": "Användarnamn / Lösenord felaktigt. Försök igen",
@@ -239,15 +415,29 @@
     "OK": "Okej"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP": {
-      "TEXT": "You can only reply to this conversation using a template message due to ",
-      "HREF_TEXT": "24 timmars meddelandebegränsning",
-      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    "TWILIO_WHATSAPP_CAN_REPLY": "Du kan bara svara på denna konversation med ett mallmeddelande på grund av",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 timmars meddelandebegränsning",
+    "24_HOURS_WINDOW": "24 timmars meddelandebegränsning",
+    "CANNOT_REPLY": "Du kan inte svara på grund av"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
     },
-    "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
-      "HREF_TEXT": "24 timmars meddelandebegränsning",
-      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "Första svarstiden",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

@@ -22,8 +22,8 @@
     "ERROR": "Helytelen installációs Url"
   },
   "LOGIN": {
-    "TITLE": "Belépés",
-    "DESCRIPTION": "You are connected to {{baseUrl}}. Login with your email address and password.",
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "E-mail",
     "PASSWORD": "Jelszó",
     "EMAIL_REQUIRED": "Email is required",
@@ -31,6 +31,7 @@
     "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Kérjük helyes jelszót adj meg",
     "LOGIN": "Belépés",
+    "LOGIN_LOADING": "Signing In...",
     "FORGOT_PASSWORD": "Elfelejtetted a jelszavad?",
     "RESET_HERE": "Megváltoztatni itt",
     "NO_ACCOUNT": "Nincs még fiókod?",
@@ -50,6 +51,63 @@
     "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
+    "HEADER": {
+      "TITLE": "Beszélgetések",
+      "CLEAR_FILTER": "Clear"
+    },
+    "FILTERS": {
+      "AGENT": {
+        "SEARCH_AGENT": "Ügynökök keresése"
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filter by assignee type",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Gazdátlan",
+          "ALL": "Mind"
+        }
+      },
+      "INBOX": {
+        "TITLE": "Filter by inbox"
+      },
+      "SORT_BY": {
+        "TITLE": "Rendezés",
+        "OPTIONS": {
+          "LATEST": "Latest",
+          "SORT_ON_CREATED_AT": "Létrehozva",
+          "SORT_ON_PRIORITY": "Prioritás"
+        }
+      },
+      "STATUS": {
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "Megnyitva",
+          "PENDING": "Függőben lévő",
+          "SNOOZED": "Elnémított",
+          "RESOLVED": "Megoldva",
+          "ALL": "Mind"
+        }
+      }
+    },
+    "ASSIGNEE": {
+      "LABELS": {
+        "SEARCH_LABELS": "Címkék keresése"
+      },
+      "AGENTS": {
+        "SEARCH_AGENT": "Ügynökök keresése"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "Megnyitva",
+          "PENDING": "Függőben lévő",
+          "SNOOZED": "Elnémított",
+          "RESOLVED": "Megoldva",
+          "ALL": "Mind"
+        }
+      }
+    },
     "DEFAULT_HEADER_TITLE": "Beszélgetések",
     "UPDATING": "Updating...",
     "MINE": "Sajátom",
@@ -72,7 +130,18 @@
     "ASSIGNED_AGENT": "Assigned agent",
     "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "Ezt csak ügynökök láthatják",
-    "SELF_ASSIGN": "Self assign conversation",
+    "NOT_FOUND": {
+      "TITLE": "Unable to fetch conversation",
+      "RETRY": "Retry",
+      "BACK_TO_HOME": "Take me Home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+    },
+    "EMAIL_HEAD": {
+      "TO": "Ide",
+      "CC": "Másolat",
+      "BCC": "Titkos másolat"
+    },
+    "SELF_ASSIGN": "Hozzárendelés magamhoz",
     "UN_ASSIGN": "Beszélgetés hozzárendelés törlése",
     "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
     "MARK_AS_PENDING": "Mark as pending",
@@ -88,6 +157,16 @@
     "DELETE_MESSAGE_TITLE": "Biztosan törölni szeretnéd ezt az üzenetet?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "DELETE_MESSAGE_SUCCESS": "Üzenet törölve",
+    "NO_CONTENT": "Nincs elérhető tartalom",
+    "ASSIGN_CHANGE": "Hozzárendelt ügynök megváltoztatva",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "CHANGE_STATUS": "Státusz változtatása",
+    "SEARCH_TEAM": "Csapatok keresése",
     "PRIORITY": {
       "TITLE": "Prioritás",
       "OPTIONS": {
@@ -103,6 +182,58 @@
         "NO_RESULTS": "Nincs találat",
         "SUCCESSFUL": "Beszélgetés prioritásának megváltoztatása",
         "FAILED": "Nem sikerült megváltoztatni a prioritást. Kérlek, próbáld újra."
+      }
+    },
+    "ITEM": {
+      "ASSIGN": "Hozzárendelés",
+      "STATUS": "Státusz"
+    },
+    "ATTACHMENTS": {
+      "image": {
+        "CONTENT": "Képüzenet"
+      },
+      "audio": {
+        "CONTENT": "Hangüzenet"
+      },
+      "video": {
+        "CONTENT": "Videoüzenet"
+      },
+      "file": {
+        "CONTENT": "Csatolt file"
+      },
+      "location": {
+        "CONTENT": "Hely"
+      },
+      "fallback": {
+        "CONTENT": "megosztott URL-t tartalmaz"
+      }
+    },
+    "LONG_PRESS_ACTIONS": {
+      "COPY": "Másolás",
+      "REPLY": "Válasz",
+      "DELETE_MESSAGE": "Delete message"
+    },
+    "EMAIL_HEADER": {
+      "FROM": "Innen",
+      "TO": "Ide",
+      "BCC": "Titkos másolat",
+      "CC": "Másolat",
+      "SUBJECT": "Tárgy",
+      "EXPAND": "Expand email"
+    },
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "EMPTY": "Gazdátlan",
+        "ASSIGN": "Hozzárendelés",
+        "EDIT": "Szerkesztés"
+      },
+      "TEAM": {
+        "EMPTY": "No team assigned",
+        "ASSIGN": "Hozzárendelés"
+      },
+      "PRIORITY": {
+        "EMPTY": "No priority added",
+        "EDIT": "Szerkesztés"
       }
     }
   },
@@ -125,22 +256,58 @@
   "SETTINGS": {
     "HEADER_TITLE": "Beállítások",
     "SET_AVAILABILITY": "Set yourself as",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferences",
     "ABOUT": "About",
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Fiókváltás",
     "CHANGE_LANGUAGE": "Nyelvválasztás",
+    "NOTIFICATIONS": "Értesítések",
     "NOTIFICATION_PREFERENCES": "Értesítési beállítások",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Chatelj velünk",
     "LOGOUT": "Kilépés",
-    "SUBMIT": "Elküld"
+    "SUBMIT": "Elküld",
+    "SET_LANGUAGE": "Set Language",
+    "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Értesítések",
+    "INBOX": "Fiók",
     "EMPTY": "Még nem érkezett értesítés.",
     "EMPTY_MORE_TEXT": "Amint kapsz értesítést, itt fogod találni őket.",
     "ALL_NOTIFICATION_LOADED": "Minden értesítés betöltve",
     "MARK_ALL": "Mindent olvasottra állít",
-    "CANCEL": "Mégse"
+    "CANCEL": "Mégse",
+    "DELETE": "Törlés",
+    "TYPES": {
+      "CONVERSATION_MENTION": "Önt megemlítették egy beszélgetésben",
+      "CONVERSATION_CREATION": "Új beszélgetés létrehozása",
+      "CONVERSATION_ASSIGNMENT": "Egy beszélgetés hozzád lett rendelve",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Új üzenet egy kijelölt beszélgetésben",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Új üzenet egy beszélgetésben, amelyben részt vesz",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    },
+    "FILTERS": {
+      "SORT_BY": {
+        "TITLE": "Rendezés",
+        "OPTIONS": {
+          "ASC": "Legrégibb",
+          "DESC": "Legújabb"
+        }
+      }
+    },
+    "ALERTS": {
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed",
+      "DELETE": "Notification deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted"
+    }
   },
   "AVAILABILITY": {
     "ONLINE": "Online",
@@ -151,27 +318,35 @@
     "TITLE": "Értesítési beállítások",
     "EMAIL": "E-mail értesítések",
     "PUSH": "Push üzenetek",
-    "CONVERSATION_CREATE_PUSH": "Kapj push értesítéseket amikor egy új beszélgetés létrejön",
-    "CONVERSATION_ASSIGNEE_PUSH": "Kapj push értesítéseket amikor hozzád rendelnek egy beszélgetést",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Kapj push értesítést amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben",
-    "CONVERSATION_MENTION": "Küldj push üzeneteket, amikor egy beszélgetésben megemlítenek",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Kapj push értesítést amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben",
-    "CONVERSATION_CREATE_EMAIL": "Kapj e-mailt amikor egy új beszélgetés létrejön",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Kapj e-mailt amikor hozzád rendelnek egy beszélgetést",
-    "CONVERSATION_MENTION_EMAIL": "Küldj e-mail értesítéseket, amikor egy beszélgetésben megemlítenek",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Kapj e-mailt amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Kapj push értesítést amikor egy üzenet létrejön egy hozzád rendelt beszélgetésben"
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Conversation Information",
+    "TITLE": "Attributes",
     "BROWSER": "Böngésző",
     "OPERATING_SYSTEM": "Operációs rendszer",
     "INITIATED_AT": "Kezdeményezve ekkor:",
     "INITIATED_FROM": "Kezdeményezve innen:",
-    "IP_ADDRESS": "IP cím"
+    "IP_ADDRESS": "IP cím",
+    "CONVERSATION_ID": "Beszélgetés azonosítója",
+    "CLIPBOARD_SUCCESS": "Vágólapra másolva"
+  },
+  "CONTACT_DETAILS": {
+    "TITLE": "Kontakt adatai",
+    "EMAIL": "E-mail",
+    "PHONE_NUMBER": "Telefonszám",
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "Kontakt Tulajdonságok",
+    "VALUE_UNAVAILABLE": "Nem elérhető"
   },
   "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Résztvevők",
+    "TITLE": "Participants",
     "TOTAL_PARTICIPANTS_TEXT": "+%{count} fő vesz részt.",
     "TOTAL_PARTICIPANT_TEXT": "+%{count} fő vesz részt.",
     "NO_PARTICIPANTS_TEXT": "Nincs részvevő!.",
@@ -181,7 +356,8 @@
     "SELECT_PARTICIPANTS": "Select agents",
     "ADD_PARTICIPANTS": "Résztvevők kiválasztása",
     "REMAINING_PARTICIPANTS_TEXT": "egyebek",
-    "REMAINING_PARTICIPANT_TEXT": "egyéb"
+    "REMAINING_PARTICIPANT_TEXT": "egyéb",
+    "ADD_PARTICIPANT": "Add Participant"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Contact Attributes"
@@ -218,7 +394,7 @@
     "CHANGE_TEAMS": "A beszélgetés csapata megváltozott"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Nem sikerült csatlakozni a Woot szerverhez, kérjük próbáld később",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
     "OfFLINE": "Wi-Fi vagy mobilhálózat szükséges hogy ismét online legyél",
     "CANNOT_FETCH": "Hiba történt az információ lekérése során, kérjük próbált újra",
     "AUTH": "Felhasználó / Jelszó nem jó. Kérjük próbáld újra.",
@@ -239,15 +415,29 @@
     "OK": "Ok"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP": {
-      "TEXT": "You can only reply to this conversation using a template message due to ",
-      "HREF_TEXT": "24 órás üzeneti ablak megkötés",
-      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    "TWILIO_WHATSAPP_CAN_REPLY": "Erre a beszélgetésre csak konzerv válasszal válaszolhatsz, mert",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 órás üzeneti ablak megkötés",
+    "24_HOURS_WINDOW": "24 órás üzeneti ablak megkötés",
+    "CANNOT_REPLY": "Nem tudunk válaszolni, mivel"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
     },
-    "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
-      "HREF_TEXT": "24 órás üzeneti ablak megkötés",
-      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "Első reakció idő",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

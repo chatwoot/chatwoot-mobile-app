@@ -22,8 +22,8 @@
     "ERROR": "无效的安装链接"
   },
   "LOGIN": {
-    "TITLE": "登录到您的帐户",
-    "DESCRIPTION": "您已连接到 {{baseUrl}}。使用您的电子邮件地址和密码登录。",
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "Email",
     "PASSWORD": "密码",
     "EMAIL_REQUIRED": "Email is required",
@@ -31,6 +31,7 @@
     "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "输入有效的密码",
     "LOGIN": "登录",
+    "LOGIN_LOADING": "Signing In...",
     "FORGOT_PASSWORD": "忘记密码？",
     "RESET_HERE": "重置",
     "NO_ACCOUNT": "没有注册？",
@@ -50,6 +51,63 @@
     "API_SUCCESS": "Password reset link has been sent to your email address"
   },
   "CONVERSATION": {
+    "HEADER": {
+      "TITLE": "会话",
+      "CLEAR_FILTER": "Clear"
+    },
+    "FILTERS": {
+      "AGENT": {
+        "SEARCH_AGENT": "搜索客服代表"
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filter by assignee type",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "未分配的",
+          "ALL": "全部"
+        }
+      },
+      "INBOX": {
+        "TITLE": "Filter by inbox"
+      },
+      "SORT_BY": {
+        "TITLE": "排序方式",
+        "OPTIONS": {
+          "LATEST": "Latest",
+          "SORT_ON_CREATED_AT": "创建于",
+          "SORT_ON_PRIORITY": "优先级"
+        }
+      },
+      "STATUS": {
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "打开",
+          "PENDING": "等待中",
+          "SNOOZED": "已关闭",
+          "RESOLVED": "已解决",
+          "ALL": "全部"
+        }
+      }
+    },
+    "ASSIGNEE": {
+      "LABELS": {
+        "SEARCH_LABELS": "搜索标签"
+      },
+      "AGENTS": {
+        "SEARCH_AGENT": "搜索客服代表"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "打开",
+          "PENDING": "等待中",
+          "SNOOZED": "已关闭",
+          "RESOLVED": "已解决",
+          "ALL": "全部"
+        }
+      }
+    },
     "DEFAULT_HEADER_TITLE": "会话",
     "UPDATING": "Updating...",
     "MINE": "我的",
@@ -72,7 +130,18 @@
     "ASSIGNED_AGENT": "Assigned agent",
     "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "此操作仅对代理人可见",
-    "SELF_ASSIGN": "Self assign conversation",
+    "NOT_FOUND": {
+      "TITLE": "Unable to fetch conversation",
+      "RETRY": "Retry",
+      "BACK_TO_HOME": "Take me Home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+    },
+    "EMAIL_HEAD": {
+      "TO": "发送至",
+      "CC": "抄送",
+      "BCC": "密送"
+    },
+    "SELF_ASSIGN": "分配给我",
     "UN_ASSIGN": "取消分配对话",
     "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
     "MARK_AS_PENDING": "标记为待处理",
@@ -88,6 +157,16 @@
     "DELETE_MESSAGE_TITLE": "您确定要删除这条消息吗？",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "DELETE_MESSAGE_SUCCESS": "已成功删除消息",
+    "NO_CONTENT": "没有可用的内容",
+    "ASSIGN_CHANGE": "对话分配人已更改",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "CHANGE_STATUS": "更改状态",
+    "SEARCH_TEAM": "查找团队",
     "PRIORITY": {
       "TITLE": "优先级",
       "OPTIONS": {
@@ -103,6 +182,58 @@
         "NO_RESULTS": "没有检索到相关信息",
         "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
         "FAILED": "Couldn't change priority. Please try again."
+      }
+    },
+    "ITEM": {
+      "ASSIGN": "分配",
+      "STATUS": "状态"
+    },
+    "ATTACHMENTS": {
+      "image": {
+        "CONTENT": "图片消息"
+      },
+      "audio": {
+        "CONTENT": "音频消息"
+      },
+      "video": {
+        "CONTENT": "视频消息"
+      },
+      "file": {
+        "CONTENT": "附件"
+      },
+      "location": {
+        "CONTENT": "位置"
+      },
+      "fallback": {
+        "CONTENT": "分享了一个网址"
+      }
+    },
+    "LONG_PRESS_ACTIONS": {
+      "COPY": "复制",
+      "REPLY": "回复",
+      "DELETE_MESSAGE": "Delete message"
+    },
+    "EMAIL_HEADER": {
+      "FROM": "来自",
+      "TO": "发送至",
+      "BCC": "密送",
+      "CC": "抄送",
+      "SUBJECT": "主题",
+      "EXPAND": "Expand email"
+    },
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "EMPTY": "未分配的",
+        "ASSIGN": "分配",
+        "EDIT": "编辑"
+      },
+      "TEAM": {
+        "EMPTY": "No team assigned",
+        "ASSIGN": "分配"
+      },
+      "PRIORITY": {
+        "EMPTY": "No priority added",
+        "EDIT": "编辑"
       }
     }
   },
@@ -125,22 +256,58 @@
   "SETTINGS": {
     "HEADER_TITLE": "设置",
     "SET_AVAILABILITY": "Set yourself as",
+    "CHANGE_AVAILABILITY": "Set availability",
     "PREFERENCES": "Preferences",
     "ABOUT": "About",
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "切换账户",
     "CHANGE_LANGUAGE": "更改语言",
+    "NOTIFICATIONS": "消息通知",
     "NOTIFICATION_PREFERENCES": "通知设置",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "联系我们",
     "LOGOUT": "注销",
-    "SUBMIT": "提交"
+    "SUBMIT": "提交",
+    "SET_LANGUAGE": "Set Language",
+    "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "消息通知",
+    "INBOX": "收件箱",
     "EMPTY": "还没有消息通知",
     "EMPTY_MORE_TEXT": "一旦你收到通知，它们将出现在这里。",
     "ALL_NOTIFICATION_LOADED": "所有通知已加载",
     "MARK_ALL": "全部标记为已读",
-    "CANCEL": "取消"
+    "CANCEL": "取消",
+    "DELETE": "删除",
+    "TYPES": {
+      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "CONVERSATION_CREATION": "New conversation created",
+      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    },
+    "FILTERS": {
+      "SORT_BY": {
+        "TITLE": "排序方式",
+        "OPTIONS": {
+          "ASC": "Oldest",
+          "DESC": "Newest"
+        }
+      }
+    },
+    "ALERTS": {
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed",
+      "DELETE": "Notification deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted"
+    }
   },
   "AVAILABILITY": {
     "ONLINE": "在线",
@@ -151,27 +318,35 @@
     "TITLE": "通知设置",
     "EMAIL": "电子邮件通知",
     "PUSH": "推送通知",
-    "CONVERSATION_CREATE_PUSH": "创建新会话时发送推送通知",
-    "CONVERSATION_ASSIGNEE_PUSH": "当会话分配给我时发送推送通知",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "在已分配的会话中创建新消息时发送推送通知",
-    "CONVERSATION_MENTION": "当您在对话中被提及时发送推送通知",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Send push notifications when a new message is created in a participating conversation",
-    "CONVERSATION_CREATE_EMAIL": "创建新会话时发送电子邮件通知",
-    "CONVERSATION_ASSIGNEE_EMAIL": "当会话分配给我时发送电子邮件通知",
-    "CONVERSATION_MENTION_EMAIL": "Send email notifications when you are mentioned in a conversation",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "在已分配的会话中创建新消息时发送电子邮件通知",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_EMAIL": "Send push notifications when a new message is created in a participating conversation"
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Conversation Information",
+    "TITLE": "Attributes",
     "BROWSER": "浏览器",
     "OPERATING_SYSTEM": "操作系统",
     "INITIATED_AT": "发起于",
     "INITIATED_FROM": "发起自",
-    "IP_ADDRESS": "IP 地址"
+    "IP_ADDRESS": "IP 地址",
+    "CONVERSATION_ID": "Conversation ID",
+    "CLIPBOARD_SUCCESS": "Copied to clipboard"
+  },
+  "CONTACT_DETAILS": {
+    "TITLE": "联系人详细信息",
+    "EMAIL": "Email",
+    "PHONE_NUMBER": "电话号码",
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "联系人属性",
+    "VALUE_UNAVAILABLE": "不可用"
   },
   "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "对话参与者",
+    "TITLE": "Participants",
     "TOTAL_PARTICIPANTS_TEXT": "有%{count}人参与。",
     "TOTAL_PARTICIPANT_TEXT": "有%{count}人参与。",
     "NO_PARTICIPANTS_TEXT": "没有人参与！",
@@ -181,7 +356,8 @@
     "SELECT_PARTICIPANTS": "Select agents",
     "ADD_PARTICIPANTS": "选择参与者",
     "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other"
+    "REMAINING_PARTICIPANT_TEXT": "other",
+    "ADD_PARTICIPANT": "Add Participant"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Contact Attributes"
@@ -218,7 +394,7 @@
     "CHANGE_TEAMS": "Conversation team changed"
   },
   "ERRORS": {
-    "COMMON_ERROR": "无法连接到服务器，请稍后再试",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
     "OfFLINE": "您必须连接到 Wi-Fi 或蜂窝网络才能重新上线。",
     "CANNOT_FETCH": "获取信息时出现错误，请重试",
     "AUTH": "用户名 / 密码不正确。请重试",
@@ -239,15 +415,29 @@
     "OK": "确定"
   },
   "BANNER": {
-    "TWILIO_WHATSAPP": {
-      "TEXT": "You can only reply to this conversation using a template message due to ",
-      "HREF_TEXT": "24 小时消息窗口限制",
-      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
+    "TWILIO_WHATSAPP_CAN_REPLY": "您只能使用模板信息回复此会话，原因是",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 小时消息窗口限制",
+    "24_HOURS_WINDOW": "24 小时消息窗口限制",
+    "CANNOT_REPLY": "您不能回复，原因是："
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
     },
-    "FACEBOOK": {
-      "TEXT": "You cannot reply due to ",
-      "HREF_TEXT": "24 小时消息窗口限制",
-      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "首次响应时间",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
     }
   }
 }

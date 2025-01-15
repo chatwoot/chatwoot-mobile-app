@@ -1,5 +1,5 @@
 import React, { forwardRef, PropsWithChildren, useCallback, useRef } from 'react';
-import { Platform, Pressable } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
@@ -17,6 +17,35 @@ export type DashboardList = {
   url?: string;
   onSelect: (url: string | undefined, title: string | undefined) => void;
 };
+
+// Create custom trigger component to maintain consistent behavior
+const DropdownMenuTrigger = DropdownMenu.create<React.ComponentProps<typeof DropdownMenu.Trigger>>(
+  props => (
+    <DropdownMenu.Trigger {...props} asChild>
+      <View aria-role="button" style={tailwind.style('ml-4')}>
+        {props.children}
+      </View>
+    </DropdownMenu.Trigger>
+  ),
+  'Trigger',
+);
+
+// Create custom item component to maintain View wrapper and styles
+const DropdownMenuItem = DropdownMenu.create<React.ComponentProps<typeof DropdownMenu.Item>>(
+  props => (
+    <DropdownMenu.Item {...props}>
+      <View style={tailwind.style('flex flex-row items-center')}>
+        <DropdownMenu.ItemTitle
+          style={tailwind.style(
+            'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px] capitalize',
+          )}>
+          {props.children}
+        </DropdownMenu.ItemTitle>
+      </View>
+    </DropdownMenu.Item>
+  ),
+  'Item',
+);
 
 // eslint-disable-next-line react/display-name
 const DropdownMenuBottomSheetBackdrop = forwardRef<
@@ -136,21 +165,19 @@ export const ChatDropdownMenu = (props: PropsWithChildren<ChatDropdownMenuProps>
       </React.Fragment>
     );
   }
+
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger style={tailwind.style('ml-4')}>
-        {/* @ts-ignore */}
-        {children}
-      </DropdownMenu.Trigger>
+      <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
       <DropdownMenu.Content>
         {dropdownMenuList.map(menuOption => {
           const handleOnOptionSelect = () => {
             menuOption.onSelect(menuOption.url, menuOption.title);
           };
           return (
-            <DropdownMenu.Item onSelect={handleOnOptionSelect} key={menuOption.title}>
-              <DropdownMenu.ItemTitle>{menuOption.title}</DropdownMenu.ItemTitle>
-            </DropdownMenu.Item>
+            <DropdownMenuItem onSelect={handleOnOptionSelect} key={menuOption.title}>
+              {menuOption.title}
+            </DropdownMenuItem>
           );
         })}
       </DropdownMenu.Content>

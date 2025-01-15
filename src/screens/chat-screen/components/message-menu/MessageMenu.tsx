@@ -1,5 +1,5 @@
 import React, { forwardRef, PropsWithChildren, useCallback, useRef } from 'react';
-import { Platform, Pressable } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { interpolate, runOnJS, useAnimatedStyle } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -23,6 +23,28 @@ export type MenuOption = {
 type MessageMenuProps = {
   menuOptions: MenuOption[];
 };
+
+// Create custom trigger component
+const ContextMenuTrigger = ContextMenu.create<React.ComponentProps<typeof ContextMenu.Trigger>>(
+  props => (
+    <ContextMenu.Trigger {...props} asChild>
+      <View aria-role="button">{props.children}</View>
+    </ContextMenu.Trigger>
+  ),
+  'Trigger',
+);
+
+// Create custom item component
+const ContextMenuItem = ContextMenu.create<React.ComponentProps<typeof ContextMenu.Item>>(
+  props => (
+    <ContextMenu.Item {...props}>
+      <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        {props.children}
+      </View>
+    </ContextMenu.Item>
+  ),
+  'Item',
+);
 
 // eslint-disable-next-line react/display-name
 const ContextMenuBottomSheetBackdrop = forwardRef<
@@ -131,27 +153,20 @@ export const MessageMenu = (props: PropsWithChildren<MessageMenuProps>) => {
       </React.Fragment>
     );
   }
+
   return menuOptions?.length > 0 ? (
     <ContextMenu.Root>
-      {/*
-          The below children is a React Element but is not as per the types
-          of the library so ignoring the issue
-      */}
-      <ContextMenu.Trigger action="longPress">
-        {/* @ts-ignore */}
-        {children}
-      </ContextMenu.Trigger>
-
+      <ContextMenuTrigger>{children}</ContextMenuTrigger>
       <ContextMenu.Content>
         {menuOptions?.map(option => {
           return (
-            <ContextMenu.Item
-              onSelect={option.handleOnPressMenuOption}
+            <ContextMenuItem
               key={option.title}
+              onSelect={option.handleOnPressMenuOption}
               destructive={option.destructive}>
-              <ContextMenu.ItemTitle>{option.title}</ContextMenu.ItemTitle>
               {option.icon}
-            </ContextMenu.Item>
+              <ContextMenu.ItemTitle>{option.title}</ContextMenu.ItemTitle>
+            </ContextMenuItem>
           );
         })}
       </ContextMenu.Content>

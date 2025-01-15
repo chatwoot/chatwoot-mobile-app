@@ -41,6 +41,7 @@
     "@react-native-community/netinfo": "^11.3.2",
     "@react-native-firebase/app": "^21.0.0",
     "@react-native-firebase/messaging": "^21.0.0",
+    "@react-native-menu/menu": "^1.2.0",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.10.1",
@@ -80,6 +81,8 @@
     "react-native-file-viewer": "^2.1.5",
     "react-native-gesture-handler": "^2.17.1",
     "react-native-image-picker": "^7.1.2",
+    "react-native-ios-context-menu": "^3.1.0",
+    "react-native-ios-utilities": "^5.1.0",
     "react-native-keyboard-controller": "^1.13.4",
     "react-native-markdown-display": "^7.0.0-alpha.2",
     "react-native-pager-view": "^6.2.1",
@@ -100,7 +103,7 @@
     "tailwindcss": "^3.4.12",
     "twrnc": "^4.5.1",
     "use-deep-compare-effect": "^1.8.1",
-    "zeego": "^1.10.0"
+    "zeego": "^2.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

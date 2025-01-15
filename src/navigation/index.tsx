@@ -7,7 +7,6 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { LightTheme } from '../theme-old';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppTabs } from './tabs/AppTabs';
 import i18n from 'i18n';
@@ -26,8 +25,6 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
 });
 
 export const AppNavigationContainer = () => {
-  // TODO: Lets use light theme for now, add dark theme later
-  const theme = LightTheme;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [fontsLoaded, error] = useFonts({
     'Inter-400-20': require('../assets/fonts/Inter-400-20.ttf'),
@@ -155,7 +152,8 @@ export const AppNavigationContainer = () => {
       onStateChange={async () => {
         routeNameRef.current = navigationRef.current.getCurrentRoute().name;
       }}
-      theme={theme}>
+      // theme={theme}
+    >
       {/* <NoNetworkBar /> */}
       <BottomSheetModalProvider>
         <View style={styles.navigationLayout} onLayout={onLayoutRootView}>

@@ -110,12 +110,12 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
 
   return (
     <TabBarBackground
-      blurAmount={100}
+      blurAmount={25}
       blurType="light"
       style={Platform.select({
         ios: [
           tailwind.style(
-            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] pb-8 bg-whiteA-A11',
+            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] pb-8 bg-[#00000009]',
             `h-[${tabBarHeight}px]`,
           ),
         ],

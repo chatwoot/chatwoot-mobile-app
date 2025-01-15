@@ -133,9 +133,10 @@
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",
-      "BACK_TO_HOME": "Take me Home",
+      "BACK_TO_HOME": "Go back to home",
       "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
     },
+    "BOT": "ബോട്ട്",
     "EMAIL_HEAD": {
       "TO": "To",
       "CC": "Cc",

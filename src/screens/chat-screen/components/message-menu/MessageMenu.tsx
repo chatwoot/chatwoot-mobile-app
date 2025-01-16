@@ -24,7 +24,6 @@ type MessageMenuProps = {
   menuOptions: MenuOption[];
 };
 
-// Create custom trigger component
 const ContextMenuTrigger = ContextMenu.create<React.ComponentProps<typeof ContextMenu.Trigger>>(
   props => (
     <ContextMenu.Trigger {...props} asChild>
@@ -34,7 +33,6 @@ const ContextMenuTrigger = ContextMenu.create<React.ComponentProps<typeof Contex
   'Trigger',
 );
 
-// Create custom item component
 const ContextMenuItem = ContextMenu.create<React.ComponentProps<typeof ContextMenu.Item>>(
   props => (
     <ContextMenu.Item {...props}>

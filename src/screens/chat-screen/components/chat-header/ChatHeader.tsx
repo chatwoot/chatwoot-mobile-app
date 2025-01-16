@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageSourcePropType, Keyboard, Pressable } from 'react-native';
+import { ImageSourcePropType, Keyboard, Platform, Pressable } from 'react-native';
 import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 import Animated from 'react-native-reanimated';
 
@@ -80,7 +80,10 @@ export const ChatHeader = ({
           </Pressable>
         </Animated.View>
 
-        <Animated.View style={tailwind.style('flex flex-row flex-1 justify-end')}>
+        <Animated.View
+          style={tailwind.style(
+            `flex flex-row flex-1 justify-end ${Platform.OS === 'ios' ? 'gap-4' : ''}`,
+          )}>
           <Animated.View style={tailwind.style('flex flex-row items-center gap-4')}>
             {hasSla && (
               <Pressable hitSlop={8} onPress={toggleSlaEventsSheet}>

@@ -1,12 +1,34 @@
-// import Config from 'react-native-config';
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
+
+interface User {
+  id: string | number;
+  email: string;
+  name: string;
+  avatar_url: string;
+  accounts?: Account[];
+  account_id?: number | null;
+}
+
+interface Account {
+  id: number;
+  name: string;
+}
+
+interface AnalyticsProperties {
+  [key: string]: string | number | boolean | undefined;
+}
 
 const BASE_URL = 'https://api.june.so/api/';
 
 class AnalyticsHelper {
-  constructor(resource, options = {}) {
-    this.analyticsToken = process.env.EXPO_PUBLIC_JUNE_SDK_KEY;
-    this.user = {};
+  private analyticsToken: string;
+  private user: User;
+  private isAnalyticsEnabled: boolean;
+  private APIHelper: AxiosInstance;
+
+  constructor() {
+    this.analyticsToken = process.env.EXPO_PUBLIC_JUNE_SDK_KEY || '';
+    this.user = {} as User;
     this.isAnalyticsEnabled = !!(!__DEV__ && this.analyticsToken);
     this.APIHelper = axios.create({
       baseURL: BASE_URL,
@@ -14,7 +36,7 @@ class AnalyticsHelper {
     });
   }
 
-  getCurrentAccount() {
+  private getCurrentAccount(): Account | undefined {
     const { accounts = [], account_id = null } = this.user;
     if (account_id && accounts.length) {
       const [currentAccount] = accounts.filter(account => account.id === account_id);
@@ -22,7 +44,7 @@ class AnalyticsHelper {
     }
   }
 
-  identifyUser() {
+  private identifyUser() {
     return this.APIHelper.post('identify', {
       userId: this.user.id,
       traits: {
@@ -34,7 +56,7 @@ class AnalyticsHelper {
     });
   }
 
-  identifyGroup() {
+  private identifyGroup() {
     const currentAccount = this.getCurrentAccount();
     if (currentAccount) {
       return this.APIHelper.post('group', {
@@ -48,7 +70,7 @@ class AnalyticsHelper {
     }
   }
 
-  identify(user) {
+  identify(user: User): void {
     if (this.isAnalyticsEnabled) {
       this.user = user;
       this.identifyUser();
@@ -56,7 +78,7 @@ class AnalyticsHelper {
     }
   }
 
-  track(eventName, properties = {}) {
+  track(eventName: string, properties: AnalyticsProperties = {}): Promise<unknown> | void {
     if (this.isAnalyticsEnabled) {
       const currentAccount = this.getCurrentAccount();
       return this.APIHelper.post('track', {

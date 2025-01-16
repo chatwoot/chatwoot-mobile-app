@@ -15,7 +15,7 @@ import { tailwind } from '@/theme';
 import { Icon, Swipeable } from '@/components-next';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import i18n from '@/i18n';
-import { showToast } from '@/helpers/ToastHelper';
+import { showToast } from '@/utils/toastUtils';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { conversationActions } from '@/store/conversation/conversationActions';
 

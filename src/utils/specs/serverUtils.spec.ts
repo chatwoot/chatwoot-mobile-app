@@ -1,4 +1,4 @@
-import { checkShouldShowServerUpgradeWarning } from '../ServerHelper';
+import { checkShouldShowServerUpgradeWarning } from '../serverUtils';
 
 describe('ServerHelper', () => {
   it('returns true if installed version is less than minimum version', () => {

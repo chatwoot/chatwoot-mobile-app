@@ -1,6 +1,10 @@
 import Snackbar from 'react-native-snackbar';
 
-export const showToast = ({ message }) => {
+interface ToastParams {
+  message: string;
+}
+
+export const showToast = ({ message }: ToastParams): void => {
   Snackbar.show({
     text: message,
     duration: Snackbar.LENGTH_SHORT,

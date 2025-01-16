@@ -3,7 +3,12 @@ import { Alert } from 'react-native';
 
 import i18n from '../i18n';
 
-const errorHandler = (e, isFatal) => {
+interface ErrorHandler {
+  (e: Error, isFatal: boolean): void;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const errorHandler: ErrorHandler = (e, isFatal) => {
   Sentry.captureException(e);
   if (isFatal) {
     Alert.alert(
@@ -19,12 +24,12 @@ const errorHandler = (e, isFatal) => {
     );
   } else {
     // eslint-disable-next-line no-console
-    console.log(e); // So that we can see it in the ADB logs in case of Android if needed
+    console.log(e);
   }
 };
 
 export default {
-  init() {
+  init(): void {
     // TODO: Enable this later
     // setNativeExceptionHandler(exceptionString => {
     //   Sentry.captureException(new Error(exceptionString), {

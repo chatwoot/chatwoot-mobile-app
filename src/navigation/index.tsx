@@ -10,14 +10,15 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppTabs } from './tabs/AppTabs';
 import i18n from 'i18n';
-import { navigationRef } from '../helpers/NavigationHelper';
-import { findConversationLinkFromPush, findNotificationFromFCM } from '../helpers/PushHelper';
-import { extractConversationIdFromUrl } from '../helpers/conversationHelpers';
+import { navigationRef } from '@/utils/navigationUtils';
+import { findConversationLinkFromPush, findNotificationFromFCM } from '@/utils/pushUtils';
+import { extractConversationIdFromUrl } from '@/utils/conversationUtils';
 import { useAppSelector } from '@/hooks';
 import { selectInstallationUrl, selectLocale } from '@/store/settings/settingsSelectors';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RefsProvider } from '@/context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { transformNotification } from '@/utils/camelCaseKeys';
 // import { NoNetworkBar } from '@/components-next';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
@@ -34,7 +35,7 @@ export const AppNavigationContainer = () => {
     'Inter-600-20': require('../assets/fonts/Inter-600-20.ttf'),
   });
 
-  const routeNameRef = useRef();
+  const routeNameRef = useRef<string | undefined>(undefined);
 
   const installationUrl = useAppSelector(selectInstallationUrl);
   const locale = useAppSelector(selectLocale);
@@ -98,7 +99,11 @@ export const AppNavigationContainer = () => {
       const message = await messaging().getInitialNotification();
       if (message) {
         const notification = findNotificationFromFCM({ message });
-        const conversationLink = findConversationLinkFromPush({ notification, installationUrl });
+        const camelCaseNotification = transformNotification(notification);
+        const conversationLink = findConversationLinkFromPush({
+          notification: camelCaseNotification,
+          installationUrl,
+        });
         if (conversationLink) {
           return conversationLink;
         }
@@ -147,10 +152,10 @@ export const AppNavigationContainer = () => {
       linking={linking}
       ref={navigationRef}
       onReady={() => {
-        routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+        routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
       }}
       onStateChange={async () => {
-        routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+        routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
       }}
       // theme={theme}
     >

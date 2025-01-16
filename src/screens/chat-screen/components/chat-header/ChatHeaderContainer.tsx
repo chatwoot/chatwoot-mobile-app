@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { useChatWindowContext, useRefsContext } from '@/context';
-import { showToast } from '@/helpers/ToastHelper';
+import { showToast } from '@/utils/toastUtils';
 import i18n from '@/i18n';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { conversationActions } from '@/store/conversation/conversationActions';

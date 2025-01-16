@@ -18,7 +18,6 @@ export type DashboardList = {
   onSelect: (url: string | undefined, title: string | undefined) => void;
 };
 
-// Create custom trigger component to maintain consistent behavior
 const DropdownMenuTrigger = DropdownMenu.create<React.ComponentProps<typeof DropdownMenu.Trigger>>(
   props => (
     <DropdownMenu.Trigger {...props} asChild>
@@ -30,7 +29,6 @@ const DropdownMenuTrigger = DropdownMenu.create<React.ComponentProps<typeof Drop
   'Trigger',
 );
 
-// Create custom item component to maintain View wrapper and styles
 const DropdownMenuItem = DropdownMenu.create<React.ComponentProps<typeof DropdownMenu.Item>>(
   props => (
     <DropdownMenu.Item {...props}>

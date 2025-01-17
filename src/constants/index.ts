@@ -1,5 +1,3 @@
-import images from './images';
-
 export const SCREENS = {
   LOGIN: 'Login',
   CONFIG_URL: 'ConfigureURL',
@@ -145,12 +143,6 @@ export const INBOX_ICON = {
   'Channel::Line': 'message-circle-outline',
 };
 
-export const INBOX_IMAGES = {
-  'Channel::TwitterProfile': images.twitterBadge,
-  'Channel::FacebookPage': images.messengerBadge,
-  'Channel::TwilioSms': images.whatsAppBadge,
-};
-
 export const LANGUAGES = {
   af: 'Afrikaans',
   ar: 'Arabic',
@@ -288,7 +280,6 @@ export const MEDIA_TYPES = [
 export const CONTENT_TYPES = {
   INCOMING_EMAIL: 'incoming_email',
 };
-
 
 export const ORIENTATION = {
   LEFT: 'left',

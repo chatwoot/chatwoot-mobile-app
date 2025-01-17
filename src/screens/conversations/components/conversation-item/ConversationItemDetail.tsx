@@ -145,7 +145,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
               {hasLabels && hasSLA && (
                 <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />
               )}
-              {hasLabels && <LabelIndicator labels={labels.slice(0, 2)} allLabels={allLabels} />}
+              {hasLabels && <LabelIndicator labels={labels} allLabels={allLabels} />}
             </AnimatedNativeView>
 
             {assignee ? (

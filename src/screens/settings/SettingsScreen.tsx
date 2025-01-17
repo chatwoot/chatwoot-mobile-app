@@ -56,9 +56,9 @@ import { selectLocale, selectIsChatwootCloud } from '@/store/settings/settingsSe
 import { settingsActions } from '@/store/settings/settingsActions';
 import { setLocale } from '@/store/settings/settingsSlice';
 
-import AnalyticsHelper from '@/helpers/AnalyticsHelper';
+import AnalyticsHelper from '@/utils/analyticsUtils';
 import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
-import { getUserPermissions } from '@/helpers/permissionHelper';
+import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 

@@ -14,8 +14,8 @@ import { useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '@/components-next/common';
 import { MAXIMUM_FILE_UPLOAD_SIZE } from '@/constants';
 import i18n from '@/i18n';
-import { showToast } from '@/helpers/ToastHelper';
-import { findFileSize } from '@/helpers/FileHelper';
+import { showToast } from '@/utils/toastUtils';
+import { findFileSize } from '@/utils/fileUtils';
 
 export const handleOpenPhotosLibrary = async dispatch => {
   if (Platform.OS === 'ios') {

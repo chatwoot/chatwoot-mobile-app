@@ -9,7 +9,7 @@ import { tailwind } from '@/theme';
 import { authActions } from '@/store/auth/authActions';
 import { useAppDispatch } from '@/hooks';
 import { resetAuth } from '@/store/auth/authSlice';
-import AnalyticsHelper from '@/helpers/AnalyticsHelper';
+import AnalyticsHelper from '@/utils/analyticsUtils';
 import { ACCOUNT_EVENTS } from '@/constants/analyticsEvents';
 import i18n from '@/i18n';
 

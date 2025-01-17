@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
 import { NOTIFICATION_TYPES } from '@/constants';
 import notifee from '@notifee/react-native';
+import { Notification } from '@/types/Notification';
 
 export const clearAllDeliveredNotifications = () => {
   if (Platform.OS === 'android') {
@@ -15,26 +16,33 @@ export const updateBadgeCount = ({ count = 0 }) => {
   }
 };
 
-export const findConversationLinkFromPush = ({ notification, installationUrl }) => {
-  const { notification_type } = notification;
+export const findConversationLinkFromPush = ({
+  notification,
+  installationUrl,
+}: {
+  notification: Notification;
+  installationUrl: string;
+}) => {
+  const { notificationType } = notification;
 
-  if (NOTIFICATION_TYPES.includes(notification_type)) {
-    const { primary_actor, primary_actor_id, primary_actor_type } = notification;
+  if (NOTIFICATION_TYPES.includes(notificationType)) {
+    const { primaryActor, primaryActorId, primaryActorType } = notification;
     let conversationId = null;
-    if (primary_actor_type === 'Conversation') {
-      conversationId = primary_actor.id;
-    } else if (primary_actor_type === 'Message') {
-      conversationId = primary_actor.conversation_id;
+    if (primaryActorType === 'Conversation') {
+      conversationId = primaryActor.id;
+    } else if (primaryActorType === 'Message') {
+      conversationId = primaryActor.conversationId;
     }
     if (conversationId) {
-      const conversationLink = `${installationUrl}/app/accounts/1/conversations/${conversationId}/${primary_actor_id}/${primary_actor_type}`;
+      const conversationLink = `${installationUrl}/app/accounts/1/conversations/${conversationId}/${primaryActorId}/${primaryActorType}`;
       return conversationLink;
     }
   }
   return;
 };
 
-export const findNotificationFromFCM = ({ message }) => {
+
+export const findNotificationFromFCM = ({ message }: { message: any }) => {
   let notification = null;
   // FCM HTTP v1
   if (message?.data?.payload) {

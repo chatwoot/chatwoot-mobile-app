@@ -16,6 +16,7 @@ import { MAXIMUM_FILE_UPLOAD_SIZE } from '@/constants';
 import i18n from '@/i18n';
 import { showToast } from '@/utils/toastUtils';
 import { findFileSize } from '@/utils/fileUtils';
+import { getApiLevel } from 'react-native-device-info';
 
 export const handleOpenPhotosLibrary = async dispatch => {
   if (Platform.OS === 'ios') {
@@ -61,7 +62,13 @@ export const handleOpenPhotosLibrary = async dispatch => {
       }
     });
   } else {
-    request(PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION).then(async result => {
+    const apiLevel = await getApiLevel();
+    const permission =
+      apiLevel >= 33
+        ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
+        : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
+
+    request(permission).then(async result => {
       if (RESULTS.BLOCKED === result) {
         Alert.alert(
           'Permission Denied',

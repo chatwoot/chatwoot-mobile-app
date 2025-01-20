@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Animated, Image, Pressable, SafeAreaView, TextInput, View } from 'react-native';
+import { Animated, Image, Pressable, StatusBar, TextInput, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {
   BottomSheetModal,
   BottomSheetScrollView,
   useBottomSheetSpringConfigs,
 } from '@gorhom/bottom-sheet';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EMAIL_REGEX } from '@/constants';
 import { EyeIcon, EyeSlash } from '@/svg-icons';
@@ -98,7 +99,12 @@ const LoginScreen = () => {
   };
 
   return (
-    <SafeAreaView style={tailwind.style('flex-1 bg-white')}>
+    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+      <StatusBar
+        translucent
+        backgroundColor={tailwind.color('bg-white')}
+        barStyle={'dark-content'}
+      />
       <View style={tailwind.style('flex-1 bg-white')}>
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}

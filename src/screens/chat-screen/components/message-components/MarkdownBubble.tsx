@@ -1,6 +1,7 @@
 import React from 'react';
-import { Linking, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
+import { openURL } from '@/utils/urlUtils';
 
 import { tailwind } from '@/theme';
 import { MESSAGE_VARIANTS } from '@/constants';
@@ -22,7 +23,7 @@ const variantTextMap = {
 export const MarkdownBubble = (props: MarkdownBubbleProps) => {
   const { messageContent, variant } = props;
   const handleURL = (url: string) => {
-    Linking.openURL(url).then(() => {});
+    openURL({ URL: url });
     return true;
   };
 
@@ -60,6 +61,12 @@ export const MarkdownBubble = (props: MarkdownBubbleProps) => {
       ...textStyle,
     },
     bullet_list_icon: {
+      marginLeft: 0,
+      marginRight: 8,
+      fontWeight: '900',
+      ...textStyle,
+    },
+    ordered_list_icon: {
       marginLeft: 0,
       marginRight: 8,
       fontWeight: '900',

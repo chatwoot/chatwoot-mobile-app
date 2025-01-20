@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Animated, SafeAreaView, TextInput, View } from 'react-native';
+import { Animated, StatusBar, TextInput, View } from 'react-native';
 import * as Application from 'expo-application';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Icon } from '@/components-next';
 import { URL_WITHOUT_HTTP_REGEX } from '@/constants';
 import { LinkIcon } from '@/svg-icons';
@@ -47,6 +47,11 @@ const ConfigURLScreen = () => {
 
   return (
     <SafeAreaView style={tailwind.style('flex-1 bg-white')}>
+      <StatusBar
+        translucent
+        backgroundColor={tailwind.color('bg-white')}
+        barStyle={'dark-content'}
+      />
       <View style={tailwind.style('flex-1 bg-white')}>
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}

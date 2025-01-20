@@ -236,7 +236,7 @@ export const MessageTextInput = ({
               isInsertSpaceAfterMention: true,
             },
           ]}
-          numberOfLines={3}
+          maxNumberOfLines={3}
           multiline
           enablesReturnKeyAutomatically
           style={[

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Animated, SafeAreaView, TextInput, View } from 'react-native';
+import { Animated, StatusBar, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button, Icon } from '@/components-next';
 import { EMAIL_REGEX } from '@/constants';
@@ -39,6 +40,11 @@ const ForgotPassword = () => {
 
   return (
     <SafeAreaView style={tailwind.style('flex-1 bg-white')}>
+      <StatusBar
+        translucent
+        backgroundColor={tailwind.color('bg-white')}
+        barStyle={'dark-content'}
+      />
       <View style={tailwind.style('flex-1 bg-white')}>
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}

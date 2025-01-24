@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view';
 import Animated from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TrackPlayer from 'react-native-track-player';
 import { LightBoxProvider } from '@alantoa/lightbox';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -125,17 +124,6 @@ const ChatScreen = (props: ChatScreenProps) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    const setUpTrackPlayer = () => {
-      TrackPlayer.setupPlayer()
-        .then(() => {})
-        .catch(() => {
-          // Handle setting up player error
-        });
-    };
-    setUpTrackPlayer();
-  });
 
   const handleBackPress = () => {
     if (navigation.canGoBack()) {

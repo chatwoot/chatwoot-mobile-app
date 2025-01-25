@@ -47,8 +47,8 @@ const LoginScreen = () => {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      email: '',
-      password: '',
+      email: 'john@acme.inc',
+      password: 'Password1!',
     },
   });
 

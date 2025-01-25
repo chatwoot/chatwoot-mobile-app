@@ -53,8 +53,7 @@ class ActionCableConnector extends BaseActionCableConnector {
       'contact.updated': this.onContactUpdate,
       'notification.created': this.onNotificationCreated,
       'notification.deleted': this.onNotificationRemoved,
-      // TODO: Enable presence update
-      'presence.update': this.onPresenceUpdate,
+      // 'presence.update': this.onPresenceUpdate,
 
       // TODO: Handle all these events later
       // 'conversation.contact_changed': this.onConversationContactChange,

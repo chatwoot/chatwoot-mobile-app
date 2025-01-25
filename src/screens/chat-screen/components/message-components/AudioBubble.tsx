@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 import { PlayBackType } from 'react-native-audio-recorder-player';
 import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
@@ -17,6 +17,7 @@ import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../a
 import { MESSAGE_VARIANTS } from '@/constants';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
+import { convertOggToAac } from '@/utils/audioConverter';
 
 const PlayIcon = ({ fill, fillOpacity }: IconProps) => {
   return (
@@ -49,6 +50,7 @@ export const AudioBubblePlayer = (props: AudioPlayerProps) => {
 
   const [isSoundLoading, setIsSoundLoading] = useState(false);
   const [isAudioPlaying, setAudioPlaying] = useState(false);
+  const [convertedAudioSrc, setConvertedAudioSrc] = useState(audioSrc);
 
   const dispatch = useDispatch();
   const currentPlayingAudioSrc = useAppSelector(selectCurrentPlayingAudioSrc);
@@ -70,8 +72,25 @@ export const AudioBubblePlayer = (props: AudioPlayerProps) => {
     }
   };
 
+  useEffect(() => {
+    const prepareAudio = async () => {
+      if (Platform.OS === 'ios' && audioSrc.toLowerCase().endsWith('.ogg')) {
+        setIsSoundLoading(true);
+        try {
+          const convertedSrc = await convertOggToAac(audioSrc);
+          setConvertedAudioSrc(convertedSrc);
+        } catch (error) {
+          console.log('Error converting audio:', error);
+        } finally {
+          setIsSoundLoading(false);
+        }
+      }
+    };
+    prepareAudio();
+  }, [audioSrc]);
+
   const togglePlayback = () => {
-    if (audioSrc === currentPlayingAudioSrc) {
+    if (convertedAudioSrc === currentPlayingAudioSrc) {
       // The current playing audio file is same as the component audio src so
       // we will have to just toggle the audio playing
       if (isAudioPlaying) {
@@ -82,11 +101,10 @@ export const AudioBubblePlayer = (props: AudioPlayerProps) => {
       setAudioPlaying(!isAudioPlaying);
     } else {
       setIsSoundLoading(true);
-
-      startPlayer(audioSrc, audioPlayBackStatus).then(() => {
+      startPlayer(convertedAudioSrc, audioPlayBackStatus).then(() => {
         setIsSoundLoading(false);
         setAudioPlaying(true);
-        dispatch(setCurrentPlayingAudioSrc(audioSrc));
+        dispatch(setCurrentPlayingAudioSrc(convertedAudioSrc));
       });
     }
   };
@@ -102,8 +120,8 @@ export const AudioBubblePlayer = (props: AudioPlayerProps) => {
   };
 
   const isCurrentAudioSrcPlaying = useMemo(
-    () => currentPlayingAudioSrc === audioSrc && isAudioPlaying,
-    [audioSrc, currentPlayingAudioSrc, isAudioPlaying],
+    () => currentPlayingAudioSrc === convertedAudioSrc && isAudioPlaying,
+    [convertedAudioSrc, currentPlayingAudioSrc, isAudioPlaying],
   );
 
   useEffect(() => {

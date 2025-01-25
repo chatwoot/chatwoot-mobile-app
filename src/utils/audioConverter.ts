@@ -1,31 +1,55 @@
 import RNFS from 'react-native-fs';
 import { FFmpegKit } from 'ffmpeg-kit-react-native';
 
+// ... existing code ...
 export const convertOggToAac = async (oggUrl: string): Promise<string> => {
-  try {
-    // Create unique filename for converted audio
-    const fileName = `converted_${Date.now()}.m4a`;
-    const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+  const tempOggPath = `${RNFS.CachesDirectoryPath}/temp.ogg`;
+  const fileName = `converted_${Date.now()}.m4a`;
+  const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
 
-    // Download the OGG file
-    await RNFS.downloadFile({
+  try {
+    // Download the OGG file and wait for completion
+    const downloadResult = await RNFS.downloadFile({
       fromUrl: oggUrl,
-      toFile: `${RNFS.CachesDirectoryPath}/temp.ogg`,
+      toFile: tempOggPath,
     }).promise;
 
+    // Verify download was successful
+    if (downloadResult.statusCode !== 200) {
+      throw new Error(`Download failed with status ${downloadResult.statusCode}`);
+    }
+
+    // Verify file exists before conversion
+    const fileExists = await RNFS.exists(tempOggPath);
+    if (!fileExists) {
+      throw new Error('Downloaded file not found');
+    }
+
     // Convert OGG to AAC using FFmpeg
-    await FFmpegKit.execute(
-      `-i ${RNFS.CachesDirectoryPath}/temp.ogg -c:a aac -b:a 128k ${outputPath}`,
-    );
+    await FFmpegKit.execute(`-i "${tempOggPath}" -c:a aac -b:a 128k "${outputPath}"`);
 
     // Clean up the temporary OGG file
-    await RNFS.unlink(`${RNFS.CachesDirectoryPath}/temp.ogg`);
+    if (await RNFS.exists(tempOggPath)) {
+      await RNFS.unlink(tempOggPath);
+    }
 
-    console.log('outputPath', outputPath);
+    // Verify output file exists
+    const outputExists = await RNFS.exists(outputPath);
+    if (!outputExists) {
+      throw new Error('Conversion failed - output file not found');
+    }
 
     return `file://${outputPath}`;
   } catch (error) {
-    console.error('Error converting audio:', error);
-    return oggUrl; // Return original URL if conversion fails
+    console.error('Error converting audio:', oggUrl, error);
+    // Clean up any temporary files in case of error
+    try {
+      if (await RNFS.exists(tempOggPath)) {
+        await RNFS.unlink(tempOggPath);
+      }
+    } catch (cleanupError) {
+      console.error('Error during cleanup:', cleanupError);
+    }
+    return oggUrl;
   }
 };

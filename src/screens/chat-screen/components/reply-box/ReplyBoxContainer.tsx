@@ -63,10 +63,21 @@ import {
 import { ReplyEmailHead } from './ReplyEmailHead';
 import { getLastEmailInSelectedChat } from '@/store/conversation/conversationSelectors';
 import { selectAssignableParticipantsByInboxId } from '@/store/assignable-agent/assignableAgentSelectors';
+import { AudioRecorder } from '../audio-recorder/AudioRecorder';
+import { VoiceRecordButton } from './buttons/VoiceRecordButton';
 
 const SHEET_APPEAR_SPRING_CONFIG = {
   damping: 20,
   stiffness: 120,
+};
+
+type AudioFile = {
+  uri: string;
+  originalPath: string;
+  type: string;
+  fileName: string;
+  name: string;
+  fileSize: number;
 };
 
 // TODO: Implement this
@@ -97,6 +108,8 @@ const BottomSheetContent = () => {
     textInputRef,
     isTextInputFocused,
     conversationId,
+    isVoiceRecorderOpen,
+    setIsVoiceRecorderOpen,
   } = useChatWindowContext();
 
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
@@ -111,6 +124,7 @@ const BottomSheetContent = () => {
   const [bccEmails, setBCCEmails] = useState('');
   const [toEmails, setToEmails] = useState('');
   const [selectedCannedResponse, setSelectedCannedResponse] = useState<string | null>(null);
+  const [audioFile, setAudioFile] = useState<File | null>(null);
 
   const typingUsers = useAppSelector(selectTypingUsersByConversationId(conversationId));
   const typingText = useMemo(() => getTypingUsersText({ users: typingUsers }), [typingUsers]);
@@ -207,7 +221,8 @@ const BottomSheetContent = () => {
     return messagePayload;
   };
 
-  const getMessagePayload = (message: string) => {
+  const getMessagePayload = (message: string, file: AudioFile) => {
+    console.log('audioFile in getMessagePayload:', file);
     let updatedMessage = message;
     if (isPrivate) {
       const regex = /@\[([\w\s]+)\]\((\d+)\)/g;
@@ -229,6 +244,10 @@ const BottomSheetContent = () => {
       files: [],
     } as SendMessagePayload;
     messagePayload = setReplyToInPayload(messagePayload);
+
+    if (file) {
+      messagePayload.file = file;
+    }
 
     if (attachedFiles && attachedFiles.length) {
       // messagePayload.files = [];
@@ -262,7 +281,14 @@ const BottomSheetContent = () => {
     return messagePayload;
   };
 
-  const confirmOnSendReply = () => {
+  const onRecordingComplete = async (file: File) => {
+    console.log('Recording completed with file:', file);
+    setAudioFile(file);
+    // Use the file directly instead of audioFile state
+    confirmOnSendReply(file);
+  };
+
+  const confirmOnSendReply = (file: File) => {
     hapticSelection?.();
     if (textInputRef && 'current' in textInputRef && textInputRef.current) {
       (textInputRef.current as TextInput).clear();
@@ -286,7 +312,7 @@ const BottomSheetContent = () => {
       const undefinedVariablesMessage = `You have ${undefinedVariablesCount} undefined variable(s) in your message: ${undefinedVariablesText}. Please check and try again with valid variables.`;
       Alert.alert(undefinedVariablesMessage);
     } else {
-      const messagePayload = getMessagePayload(messageContent);
+      const messagePayload = getMessagePayload(messageContent, file);
       sendMessage(messagePayload);
     }
     // TODO: Implement this once we have add the support for multiple attachments
@@ -347,6 +373,11 @@ const BottomSheetContent = () => {
     setSelectedCannedResponse(updatedContent);
   };
 
+  const onPressVoiceRecordIcon = () => {
+    setIsVoiceRecorderOpen(true);
+    setAddMenuOptionSheetState(false);
+  };
+
   const shouldShowCannedResponses = messageContent?.charAt(0) === '/';
 
   return (
@@ -385,24 +416,30 @@ const BottomSheetContent = () => {
 
           {typingText && <TypingIndicator typingText={typingText} />}
 
-          <Animated.View style={tailwind.style('flex flex-row px-1 items-end z-20 relative')}>
-            {attachmentsLength === 0 && shouldShowFileUpload && (
-              <AddCommandButton
-                onPress={handleShowAddMenuOption}
-                derivedAddMenuOptionStateValue={derivedAddMenuOptionStateValue}
+          {isVoiceRecorderOpen ? <AudioRecorder onRecordingComplete={onRecordingComplete} /> : null}
+          {!isVoiceRecorderOpen ? (
+            <Animated.View style={tailwind.style('flex flex-row px-1 items-end z-20 relative')}>
+              {attachmentsLength === 0 && shouldShowFileUpload && (
+                <AddCommandButton
+                  onPress={handleShowAddMenuOption}
+                  derivedAddMenuOptionStateValue={derivedAddMenuOptionStateValue}
+                />
+              )}
+              <MessageTextInput
+                maxLength={maxLength()}
+                replyEditorMode={replyEditorMode}
+                selectedCannedResponse={selectedCannedResponse}
+                agents={agents as Agent[]}
+                messageContent={messageContent}
               />
-            )}
-            <MessageTextInput
-              maxLength={maxLength()}
-              replyEditorMode={replyEditorMode}
-              selectedCannedResponse={selectedCannedResponse}
-              agents={agents as Agent[]}
-              messageContent={messageContent}
-            />
-            {(messageContent.length > 0 || attachmentsLength > 0) && (
-              <SendMessageButton onPress={confirmOnSendReply} />
-            )}
-          </Animated.View>
+              {(messageContent.length > 0 || attachmentsLength > 0) && (
+                <SendMessageButton onPress={confirmOnSendReply} />
+              )}
+              {messageContent.length === 0 && attachmentsLength === 0 ? (
+                <VoiceRecordButton onPress={onPressVoiceRecordIcon} />
+              ) : null}
+            </Animated.View>
+          ) : null}
         </Animated.View>
 
         {isAddMenuOptionSheetOpen ? (

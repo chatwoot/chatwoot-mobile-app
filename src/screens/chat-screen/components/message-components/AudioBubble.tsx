@@ -17,7 +17,7 @@ import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../a
 import { MESSAGE_VARIANTS } from '@/constants';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
-import { convertOggToAac } from '@/utils/audioConverter';
+import { convertOggToMp3 } from '@/utils/audioConverter';
 
 // eslint-disable-next-line react/display-name
 const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
@@ -82,7 +82,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       if (Platform.OS === 'ios' && audioSrc.toLowerCase().endsWith('.ogg')) {
         setIsSoundLoading(true);
         try {
-          const convertedSrc = await convertOggToAac(audioSrc);
+          const convertedSrc = await convertOggToMp3(audioSrc);
           setConvertedAudioSrc(convertedSrc);
         } catch (error) {
           console.log('Error converting audio:', error);

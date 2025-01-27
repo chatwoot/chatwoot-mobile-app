@@ -1,7 +1,7 @@
 import RNFS from 'react-native-fs';
 import { FFmpegKit } from 'ffmpeg-kit-react-native';
 
-export const convertOggToAac = async (oggUrl: string): Promise<string> => {
+export const convertOggToMp3 = async (oggUrl: string): Promise<string> => {
   const tempOggPath = `${RNFS.CachesDirectoryPath}/temp.ogg`;
   const fileName = `converted_${Date.now()}.mp3`;
   const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
@@ -52,5 +52,28 @@ export const convertOggToAac = async (oggUrl: string): Promise<string> => {
       console.error('Error during cleanup:', cleanupError);
     }
     return oggUrl;
+  }
+};
+
+export const convertAacToMp3 = async (inputPath: string): Promise<string> => {
+  try {
+    const fileName = `converted_${Date.now()}.mp3`;
+    const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+
+    // Convert to MP3 using FFmpeg with optimal settings
+    await FFmpegKit.execute(
+      `-i "${inputPath}" -vn -y -ar 44100 -ac 2 -c:a libmp3lame -b:a 192k "${outputPath}"`,
+    );
+
+    // Verify output file exists
+    const outputExists = await RNFS.exists(outputPath);
+    if (!outputExists) {
+      throw new Error('Conversion failed - output file not found');
+    }
+
+    return `file://${outputPath}`;
+  } catch (error) {
+    console.error('Error converting to MP3:', error);
+    throw error;
   }
 };

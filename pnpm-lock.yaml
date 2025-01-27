@@ -20,6 +20,9 @@ importers:
       '@chatwoot/utils':
         specifier: ^0.0.25
         version: 0.0.25
+      '@config-plugins/ffmpeg-kit-react-native':
+        specifier: ^9.0.0
+        version: 9.0.0(expo@51.0.37(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7)))
       '@gorhom/bottom-sheet':
         specifier: ^4.6.3
         version: 4.6.4(@types/react-native@0.73.0(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@types/react@18.2.79)(react@18.2.0))(@types/react@18.2.79)(react-native-gesture-handler@2.20.0(react-native@0.74.5(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0))(react-native-reanimated@3.15.4(@babel/core@7.25.7)(react-native@0.74.5(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0))(react-native@0.74.5(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@types/react@18.2.79)(react@18.2.0))(react@18.2.0)
@@ -1090,6 +1093,11 @@ packages:
   '@chatwoot/utils@0.0.25':
     resolution: {integrity: sha512-2bGfRewHu0Bra47vHwJa3SdZ0VqXK/2q2ampcc6TT3z8ojSfZqpfMdb+1RKJ/Q1tQEYn/0rJTdWtLDRjePF92A==}
     engines: {node: '>=10'}
+
+  '@config-plugins/ffmpeg-kit-react-native@9.0.0':
+    resolution: {integrity: sha512-04bXwdq7pmUPoGqYV0YGsrW/8Db+TNicn2Hznb5t+Dl740z9QkNGP4A38y1Mdz7mCU2EW0riASwl/JTH+6rBvw==}
+    peerDependencies:
+      expo: ^52
 
   '@dominicstop/ts-event-emitter@1.1.0':
     resolution: {integrity: sha512-CcxmJIvUb1vsFheuGGVSQf4KdPZC44XolpUT34+vlal+LyQoBUOn31pjFET5M9ctOxEpt8xa0M3/2M7uUiAoJw==}
@@ -8179,6 +8187,11 @@ snapshots:
   '@chatwoot/utils@0.0.25':
     dependencies:
       date-fns: 2.30.0
+
+  '@config-plugins/ffmpeg-kit-react-native@9.0.0(expo@51.0.37(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7)))':
+    dependencies:
+      expo: 51.0.37(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))
+      semver: 7.6.3
 
   '@dominicstop/ts-event-emitter@1.1.0': {}
 

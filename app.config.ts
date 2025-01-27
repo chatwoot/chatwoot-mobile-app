@@ -102,6 +102,15 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           },
         },
       ],
+      [
+        '@config-plugins/ffmpeg-kit-react-native',
+        {
+          package: 'min',
+          ios: {
+            package: 'audio',
+          },
+        },
+      ],
     ],
     androidNavigationBar: {
       backgroundColor: '#ffffff',

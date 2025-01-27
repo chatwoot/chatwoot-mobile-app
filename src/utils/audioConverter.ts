@@ -3,7 +3,7 @@ import { FFmpegKit } from 'ffmpeg-kit-react-native';
 
 export const convertOggToAac = async (oggUrl: string): Promise<string> => {
   const tempOggPath = `${RNFS.CachesDirectoryPath}/temp.ogg`;
-  const fileName = `converted_${Date.now()}.m4a`;
+  const fileName = `converted_${Date.now()}.mp3`;
   const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
 
   try {
@@ -24,8 +24,10 @@ export const convertOggToAac = async (oggUrl: string): Promise<string> => {
       throw new Error('Downloaded file not found');
     }
 
-    // Convert OGG to AAC using FFmpeg
-    await FFmpegKit.execute(`-i "${tempOggPath}" -c:a aac -b:a 128k "${outputPath}"`);
+    // Convert OGG to mp3 using ffmpeg
+    await FFmpegKit.execute(
+      `-i "${tempOggPath}" -vn -y -ar 44100 -ac 2 -c:a libmp3lame -b:a 192k "${outputPath}"`,
+    );
 
     // Clean up the temporary OGG file
     if (await RNFS.exists(tempOggPath)) {

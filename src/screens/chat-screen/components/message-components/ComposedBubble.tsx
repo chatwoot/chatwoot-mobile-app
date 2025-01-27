@@ -5,7 +5,7 @@ import { FileErrorIcon } from '@/svg-icons';
 import { differenceInHours } from 'date-fns';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
-import { Icon } from '@/components-next';
+import { Icon, Spinner } from '@/components-next';
 import { ReplyMessageBubble } from './ReplyMessageBubble';
 
 import { ImageBubbleContainer } from './ImageBubble';
@@ -20,7 +20,7 @@ import { FileBubblePreview } from './FileBubble';
 import { AudioBubble } from './AudioBubble';
 import { VideoBubble } from './VideoBubble';
 import { LocationBubble } from './LocationBubble';
-import { ActivityIndicator } from 'react-native';
+
 type ComposedBubbleProps = {
   item: Message;
   variant: string;
@@ -75,7 +75,7 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
         {content && <MarkdownBubble messageContent={content} variant={props.variant} />}
         {isMessageSending && (
           <Animated.View style={tailwind.style('flex h-8 w-16 items-center justify-center')}>
-            <ActivityIndicator size="small" color={tailwind.color('text-gray-900')} />
+            <Spinner size={12} stroke={tailwind.color('text-gray-900')} />
           </Animated.View>
         )}
         {props.item.attachments &&

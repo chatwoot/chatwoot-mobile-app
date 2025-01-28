@@ -3,6 +3,7 @@ import { Alert, Dimensions, PermissionsAndroid, Platform, Pressable } from 'reac
 import AudioRecorderPlayer, { RecordBackType } from 'react-native-audio-recorder-player';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { isUndefined } from 'lodash';
+import * as Sentry from '@sentry/react-native';
 import RNFetchBlob from 'rn-fetch-blob';
 
 import { TEXT_INPUT_CONTAINER_HEIGHT } from '@/constants';
@@ -26,7 +27,6 @@ type AudioFile = {
   uri: string;
   originalPath: string;
   type: string;
-  a;
   fileName: string;
   name: string;
   fileSize: number;
@@ -147,7 +147,6 @@ export const AudioRecorder = ({
           let finalPath = cleanPath;
           if (Platform.OS === 'ios') {
             finalPath = await convertAacToMp3(cleanPath);
-            // Remove file:// prefix for stats check
             finalPath = finalPath.replace('file://', '');
           }
 
@@ -157,8 +156,8 @@ export const AudioRecorder = ({
             uri: Platform.OS === 'ios' ? `file://${finalPath}` : finalPath,
             originalPath: finalPath,
             type: 'audio/mp3',
-            fileName: `audio-${localRecordedAudioCacheFilePaths.length}${Platform.OS === 'ios' ? '.aac' : '.mp3'}`,
-            name: `audio-${localRecordedAudioCacheFilePaths.length}${Platform.OS === 'ios' ? '.aac' : '.mp3'}`,
+            fileName: `audio-${localRecordedAudioCacheFilePaths.length}.mp3`,
+            name: `audio-${localRecordedAudioCacheFilePaths.length}.mp3`,
             fileSize: stats.size,
           };
 
@@ -166,8 +165,11 @@ export const AudioRecorder = ({
           setIsVoiceRecorderOpen(false);
           onRecordingComplete(audioFile);
         } catch (error) {
-          console.error('Error preparing audio file:', error);
-          Alert.alert('Error preparing audio file', error.toString());
+          Sentry.captureException(error);
+          Alert.alert(
+            'Error preparing audio file',
+            error instanceof Error ? error.message : String(error),
+          );
         }
       })
       .catch(e => {

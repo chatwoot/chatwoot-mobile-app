@@ -71,15 +71,6 @@ const SHEET_APPEAR_SPRING_CONFIG = {
   stiffness: 120,
 };
 
-type AudioFile = {
-  uri: string;
-  originalPath: string;
-  type: string;
-  fileName: string;
-  name: string;
-  fileSize: number;
-};
-
 // TODO: Implement this
 // const globalConfig = {
 //   directUploadsEnabled: true,
@@ -221,8 +212,7 @@ const BottomSheetContent = () => {
     return messagePayload;
   };
 
-  const getMessagePayload = (message: string, file: AudioFile) => {
-    console.log('audioFile in getMessagePayload:', file);
+  const getMessagePayload = (message: string) => {
     let updatedMessage = message;
     if (isPrivate) {
       const regex = /@\[([\w\s]+)\]\((\d+)\)/g;
@@ -243,10 +233,11 @@ const BottomSheetContent = () => {
       },
       files: [],
     } as SendMessagePayload;
+
     messagePayload = setReplyToInPayload(messagePayload);
 
-    if (file) {
-      messagePayload.file = file;
+    if (audioFile) {
+      messagePayload.file = audioFile;
     }
 
     if (attachedFiles && attachedFiles.length) {
@@ -282,7 +273,6 @@ const BottomSheetContent = () => {
   };
 
   const onRecordingComplete = async (file: File) => {
-    console.log('Recording completed with file:', file);
     setAudioFile(file);
     // Use the file directly instead of audioFile state
     confirmOnSendReply(file);
@@ -312,7 +302,7 @@ const BottomSheetContent = () => {
       const undefinedVariablesMessage = `You have ${undefinedVariablesCount} undefined variable(s) in your message: ${undefinedVariablesText}. Please check and try again with valid variables.`;
       Alert.alert(undefinedVariablesMessage);
     } else {
-      const messagePayload = getMessagePayload(messageContent, file);
+      const messagePayload = getMessagePayload(messageContent);
       sendMessage(messagePayload);
     }
     // TODO: Implement this once we have add the support for multiple attachments

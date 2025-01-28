@@ -1,5 +1,6 @@
 import RNFS from 'react-native-fs';
 import { FFmpegKit } from 'ffmpeg-kit-react-native';
+import * as Sentry from '@sentry/react-native';
 
 export const convertOggToMp3 = async (oggUrl: string): Promise<string> => {
   const tempOggPath = `${RNFS.CachesDirectoryPath}/temp.ogg`;
@@ -42,14 +43,15 @@ export const convertOggToMp3 = async (oggUrl: string): Promise<string> => {
 
     return `file://${outputPath}`;
   } catch (error) {
-    console.error('Error converting audio:', oggUrl, error);
+    Sentry.captureException(error);
     // Clean up any temporary files in case of error
     try {
       if (await RNFS.exists(tempOggPath)) {
         await RNFS.unlink(tempOggPath);
       }
     } catch (cleanupError) {
-      console.error('Error during cleanup:', cleanupError);
+      Sentry.captureException(cleanupError);
+      // console.error('Error during cleanup:', cleanupError);
     }
     return oggUrl;
   }
@@ -73,7 +75,7 @@ export const convertAacToMp3 = async (inputPath: string): Promise<string> => {
 
     return `file://${outputPath}`;
   } catch (error) {
-    console.error('Error converting to MP3:', error);
+    Sentry.captureException(error);
     throw error;
   }
 };

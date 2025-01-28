@@ -19,10 +19,8 @@ const localRecordedAudioCacheSlice = createSlice({
   },
 });
 
-// Selector
 export const selectLocalRecordedAudioCacheFilePaths = (state: RootState) =>
   state.localRecordedAudioCache.localRecordedAudioCacheFilePaths;
 
-// Export actions and reducer
 export const { addNewCachePath } = localRecordedAudioCacheSlice.actions;
 export default localRecordedAudioCacheSlice.reducer;

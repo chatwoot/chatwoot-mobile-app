@@ -23,22 +23,12 @@ const RecorderSegmentWidth = Dimensions.get('screen').width - 8 - 80 - 12;
 
 const ARPlayer = new AudioRecorderPlayer();
 
-type AudioFile = {
-  uri: string;
-  originalPath: string;
-  type: string;
-  fileName: string;
-  name: string;
-  fileSize: number;
-};
-
 /**
  * ! Handling Audio Server Side
  * https://github.com/jsierles/react-native-audio/issues/107
  */
 
 /**
- * CHAT GPT Generate Function
  * The function `millisecondsToTimeString` converts a given number of milliseconds into a formatted
  * time string in the format "mm:ss".
  * @param {number} milliseconds - The `milliseconds` parameter is a number representing the duration in
@@ -69,10 +59,8 @@ const millisecondsToTimeString = (milliseconds: number | undefined) => {
 export const AudioRecorder = ({
   onRecordingComplete,
 }: {
-  onRecordingComplete: (audioFile: AudioFile) => void;
+  onRecordingComplete: (audioFile: File) => void;
 }) => {
-  //   const { addNewMessage } = useMessageList();
-  //   const { localRecordedAudioCacheFilePaths, addNewCachePath } = useLocalRecordedAudioCache();
   const localRecordedAudioCacheFilePaths = useAppSelector(selectLocalRecordedAudioCacheFilePaths);
   const dispatch = useAppDispatch();
 
@@ -143,7 +131,7 @@ export const AudioRecorder = ({
               android: value.replace(/\/\/+/g, '/'),
             }) || value;
 
-          // Convert to AAC for iOS
+          // Convert to MP3 for iOS
           let finalPath = cleanPath;
           if (Platform.OS === 'ios') {
             finalPath = await convertAacToMp3(cleanPath);
@@ -163,7 +151,7 @@ export const AudioRecorder = ({
 
           dispatch(addNewCachePath(finalPath));
           setIsVoiceRecorderOpen(false);
-          onRecordingComplete(audioFile);
+          onRecordingComplete(audioFile as unknown as File);
         } catch (error) {
           Sentry.captureException(error);
           Alert.alert(

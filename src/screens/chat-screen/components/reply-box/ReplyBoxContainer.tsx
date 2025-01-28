@@ -115,7 +115,6 @@ const BottomSheetContent = () => {
   const [bccEmails, setBCCEmails] = useState('');
   const [toEmails, setToEmails] = useState('');
   const [selectedCannedResponse, setSelectedCannedResponse] = useState<string | null>(null);
-  const [audioFile, setAudioFile] = useState<File | null>(null);
 
   const typingUsers = useAppSelector(selectTypingUsersByConversationId(conversationId));
   const typingText = useMemo(() => getTypingUsersText({ users: typingUsers }), [typingUsers]);
@@ -212,7 +211,7 @@ const BottomSheetContent = () => {
     return messagePayload;
   };
 
-  const getMessagePayload = (message: string) => {
+  const getMessagePayload = (message: string, audioFile: File | null) => {
     let updatedMessage = message;
     if (isPrivate) {
       const regex = /@\[([\w\s]+)\]\((\d+)\)/g;
@@ -272,13 +271,11 @@ const BottomSheetContent = () => {
     return messagePayload;
   };
 
-  const onRecordingComplete = async (file: File) => {
-    setAudioFile(file);
-    // Use the file directly instead of audioFile state
-    confirmOnSendReply(file);
+  const onRecordingComplete = async (audioFile: File | null) => {
+    confirmOnSendReply(audioFile);
   };
 
-  const confirmOnSendReply = (file: File) => {
+  const confirmOnSendReply = (audioFile: File | null) => {
     hapticSelection?.();
     if (textInputRef && 'current' in textInputRef && textInputRef.current) {
       (textInputRef.current as TextInput).clear();
@@ -302,7 +299,7 @@ const BottomSheetContent = () => {
       const undefinedVariablesMessage = `You have ${undefinedVariablesCount} undefined variable(s) in your message: ${undefinedVariablesText}. Please check and try again with valid variables.`;
       Alert.alert(undefinedVariablesMessage);
     } else {
-      const messagePayload = getMessagePayload(messageContent);
+      const messagePayload = getMessagePayload(messageContent, audioFile);
       sendMessage(messagePayload);
     }
     // TODO: Implement this once we have add the support for multiple attachments
@@ -423,7 +420,7 @@ const BottomSheetContent = () => {
                 messageContent={messageContent}
               />
               {(messageContent.length > 0 || attachmentsLength > 0) && (
-                <SendMessageButton onPress={confirmOnSendReply} />
+                <SendMessageButton onPress={() => confirmOnSendReply(null)} />
               )}
               {messageContent.length === 0 && attachmentsLength === 0 ? (
                 <VoiceRecordButton onPress={onPressVoiceRecordIcon} />

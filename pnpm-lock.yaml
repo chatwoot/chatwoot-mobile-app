@@ -69,8 +69,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0(expo@52.0.28(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(graphql@15.8.0)(react-native-webview@13.12.5(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
       '@shopify/flash-list':
-        specifier: ^1.5.0
-        version: 1.7.1(@babel/runtime@7.25.7)(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
+        specifier: ^1.7.2
+        version: 1.7.2(@babel/runtime@7.25.7)(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
       '@types/lodash':
         specifier: ^4.17.9
         version: 4.17.13
@@ -2304,8 +2304,8 @@ packages:
     resolution: {integrity: sha512-JrfnrQ4irbXWTb+8QC5TCefr3KJJ1x4tJr5p+HyVy4df0n7SIvSqQNeG2P8uuT82F4puFsD6hkQYxuGr3y/NSw==}
     engines: {node: '>=14.18'}
 
-  '@shopify/flash-list@1.7.1':
-    resolution: {integrity: sha512-sUYl7h8ydJutufA26E42Hj7cLvaBTpkMIyNJiFrxUspkcANb6jnFiLt9rEwAuDjvGk/C0lHau+WyT6ZOxqVPwg==}
+  '@shopify/flash-list@1.7.2':
+    resolution: {integrity: sha512-rnadpDht/mlJLDM02HBni49EJJQhc51zjJ3diGnTz3MV6U8vK9Hztou+2C5d6bNLb4oZvSG5f7NTWejkipyMLw==}
     peerDependencies:
       '@babel/runtime': '*'
       react: '*'
@@ -9336,7 +9336,7 @@ snapshots:
       '@sentry/core': 8.40.0
       '@sentry/types': 8.40.0
 
-  '@shopify/flash-list@1.7.1(@babel/runtime@7.25.7)(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)':
+  '@shopify/flash-list@1.7.2(@babel/runtime@7.25.7)(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.25.7
       react: 18.3.1

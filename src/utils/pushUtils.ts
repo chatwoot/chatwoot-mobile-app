@@ -41,7 +41,7 @@ export const findConversationLinkFromPush = ({
   return;
 };
 
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const findNotificationFromFCM = ({ message }: { message: any }) => {
   let notification = null;
   // FCM HTTP v1

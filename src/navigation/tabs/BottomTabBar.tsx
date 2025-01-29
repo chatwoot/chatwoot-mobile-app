@@ -80,6 +80,7 @@ const TabBarBackground = (props: TabBarBackgroundProps) => {
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const TabItem = (props: any) => {
   const { handlers, animatedStyle } = useScaleAnimation();
 

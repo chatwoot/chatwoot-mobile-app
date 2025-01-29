@@ -81,6 +81,7 @@ const Tabs = () => {
   const webSocketUrl = useAppSelector(selectWebSocketUrl);
 
   useEffect(() => {
+    // Here is the place we are loading all the data for the app first time first time or user switches account
     dispatch(authActions.getProfile());
     dispatch(settingsActions.saveDeviceDetails());
     dispatch(inboxActions.fetchInboxes());
@@ -130,7 +131,9 @@ const Tabs = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [installationUrl]);
 
-  const userPermissions = getUserPermissions(user, user?.account_id);
+  const userPermissions = user ? getUserPermissions(user, user.account_id) : [];
+
+  // Checking if user has conversation permission to show inbox and conversations tabs
   const hasConversationPermission = CONVERSATION_PERMISSIONS.some(permission =>
     userPermissions.includes(permission),
   );
@@ -161,7 +164,6 @@ const Tabs = () => {
           component={ConversationStack}
         />
       )}
-
       <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
     </Tab.Navigator>
   );

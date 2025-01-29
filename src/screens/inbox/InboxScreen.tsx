@@ -16,9 +16,9 @@ import { tailwind } from '@/theme';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { notificationActions } from '@/store/notification/notificationAction';
 import {
-  selectAllNotifications,
   selectIsAllNotificationsFetched,
   selectIsLoadingNotifications,
+  getFilteredNotifications,
 } from '@/store/notification/notificationSelectors';
 import { InboxHeader, InboxItemContainer } from './components';
 import { useInboxListStateContext } from '@/context';
@@ -37,8 +37,6 @@ type FlashListRenderItemType = {
 };
 
 const InboxList = () => {
-  const notifications = useAppSelector(selectAllNotifications);
-
   const [pageNumber, setPageNumber] = useState(1);
 
   const [isFlashListReady, setFlashListReady] = useState(false);
@@ -47,6 +45,8 @@ const InboxList = () => {
   const isNotificationsLoading = useAppSelector(selectIsLoadingNotifications);
   const isAllNotificationsFetched = useAppSelector(selectIsAllNotificationsFetched);
   const sortOrder = useAppSelector(selectSortOrder);
+
+  const notifications = useAppSelector(state => getFilteredNotifications(state, sortOrder));
 
   const previousSortOrder = useRef(sortOrder);
 

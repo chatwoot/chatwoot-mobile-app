@@ -201,10 +201,10 @@ importers:
         specifier: ^2.8.0
         version: 2.8.0(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
       react-native-svg:
-        specifier: ^15.11.1
+        specifier: ^15.8.0
         version: 15.11.1(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
       react-native-webview:
-        specifier: ^13.13.1
+        specifier: ^13.12.5
         version: 13.13.1(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
       react-redux:
         specifier: ^8.1.2

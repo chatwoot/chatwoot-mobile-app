@@ -89,6 +89,9 @@ importers:
       date-fns:
         specifier: 2.21.1
         version: 2.21.1
+      diff:
+        specifier: 5.0.0
+        version: 5.0.0
       expo:
         specifier: ~52.0.28
         version: 52.0.28(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(graphql@15.8.0)(react-native-webview@13.12.5(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
@@ -149,9 +152,6 @@ importers:
       react-native-autoheight-webview:
         specifier: ^1.6.5
         version: 1.6.5(react-native-webview@13.12.5(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
-      react-native-controlled-mentions:
-        specifier: ^2.2.5
-        version: 2.2.5(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
       react-native-device-info:
         specifier: ^11.1.0
         version: 11.1.0(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))
@@ -221,6 +221,9 @@ importers:
       semver:
         specifier: ^7.6.3
         version: 7.6.3
+      string.prototype.matchall:
+        specifier: 4.0.3
+        version: 4.0.3
       tailwindcss:
         specifier: ^3.4.12
         version: 3.4.14
@@ -5592,12 +5595,6 @@ packages:
       react: '>= 16.8.0'
       react-native: '>= 0.60.0'
       react-native-webview: '>= 10.9.0'
-
-  react-native-controlled-mentions@2.2.5:
-    resolution: {integrity: sha512-fNIQWZMPy9OvPKO3MeLX+J76Ld7OuvrrLn4xwXMOjsYjuEWtVBNc4t/ADxNc3woQCfuSEkST+SbafFpUwwLMIA==}
-    peerDependencies:
-      react: '>=16.0'
-      react-native: '>=0.57'
 
   react-native-device-info@11.1.0:
     resolution: {integrity: sha512-hzXJSObJdezEz0hF7MAJ3tGeoesuQWenXXt9mrQR9Mjb8kXpZ09rqSsZ/quNpJdZpQ3rYiFa3/0GFG5KNn9PBg==}
@@ -13560,13 +13557,6 @@ snapshots:
       react: 18.3.1
       react-native: 0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1)
       react-native-webview: 13.12.5(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
-
-  react-native-controlled-mentions@2.2.5(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1):
-    dependencies:
-      diff: 5.0.0
-      react: 18.3.1
-      react-native: 0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1)
-      string.prototype.matchall: 4.0.3
 
   react-native-device-info@11.1.0(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1)):
     dependencies:

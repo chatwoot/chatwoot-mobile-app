@@ -12,17 +12,15 @@ import Animated, {
   LinearTransition,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import {
-  MentionInput,
-  MentionSuggestionsProps,
-  Suggestion,
-} from 'react-native-controlled-mentions';
+
 import Svg, { Path, Rect } from 'react-native-svg';
 
 import { useChatWindowContext } from '@/context';
 import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+
+import { MentionInput, MentionSuggestionsProps, Suggestion } from './mentions-input';
 import {
   setMessageContent,
   togglePrivateMessage,

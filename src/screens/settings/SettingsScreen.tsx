@@ -61,6 +61,7 @@ import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { resetNotifications } from '@/store/notification/notificationSlice';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -165,6 +166,7 @@ const SettingsScreen = () => {
   const changeAccount = (accountId: number) => {
     dispatch(clearAllContacts());
     dispatch(clearAllConversations());
+    dispatch(resetNotifications());
     dispatch(setAccount(accountId));
     dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
     navigation.dispatch(StackActions.replace('Tab'));

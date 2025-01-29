@@ -80,7 +80,7 @@ const notificationsSlice = createSlice({
           } else {
             notificationsAdapter.upsertMany(state, payload);
           }
-          state.uiFlags.isAllNotificationsFetched = payload.length < 15;
+          state.uiFlags.isAllNotificationsFetched = payload.length <= 15;
         },
       )
       .addCase(notificationActions.fetchNotifications.rejected, (state, action) => {

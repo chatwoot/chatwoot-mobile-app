@@ -3,6 +3,7 @@ import { ActivityIndicator, RefreshControl, StatusBar } from 'react-native';
 import Animated, {
   LinearTransition,
   runOnJS,
+  SharedValue,
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -118,7 +119,13 @@ const InboxList = () => {
   const { openedRowIndex } = useInboxListStateContext();
 
   const handleRender = useCallback(({ item, index }: FlashListRenderItemType) => {
-    return <InboxItemContainer item={item} index={index} openedRowIndex={openedRowIndex} />;
+    return (
+      <InboxItemContainer
+        item={item}
+        index={index}
+        openedRowIndex={openedRowIndex as SharedValue<number | null>}
+      />
+    );
   }, []);
 
   const scrollHandler = useAnimatedScrollHandler({

@@ -101,7 +101,9 @@
     "tailwindcss": "^3.4.12",
     "twrnc": "^4.5.1",
     "use-deep-compare-effect": "^1.8.1",
-    "zeego": "^2.0.4"
+    "zeego": "^2.0.4",
+    "diff": "5.0.0",
+    "string.prototype.matchall": "4.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -145,7 +147,6 @@
           "react-native-snackbar",
           "@react-native-community/blur",
           "react-native-autoheight-webview",
-          "react-native-controlled-mentions",
           "redux-persist",
           "rn-fetch-blob"
         ],

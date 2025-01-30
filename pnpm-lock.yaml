@@ -177,8 +177,8 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
       react-native-keyboard-controller:
-        specifier: ^1.13.4
-        version: 1.14.3(react-native-reanimated@3.16.7(@babel/core@7.25.7)(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
+        specifier: ^1.16.0
+        version: 1.16.0(react-native-reanimated@3.16.7(@babel/core@7.25.7)(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
       react-native-markdown-display:
         specifier: ^7.0.0-alpha.2
         version: 7.0.2(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
@@ -248,7 +248,7 @@ importers:
         version: 4.5.5
       '@storybook/addon-ondevice-actions':
         specifier: ^8.5.2
-        version: 8.5.2(prettier@3.3.3)(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)(storybook@8.5.2(prettier@3.3.3))
+        version: 8.5.2(prettier@3.3.3)(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)(storybook@8.5.2(prettier@2.8.8))
       '@storybook/addon-ondevice-controls':
         specifier: ^8.5.2
         version: 8.5.2(je4kxnuiqciwdgx72aukypwen4)
@@ -5511,8 +5511,8 @@ packages:
       react: '>=18.2.0'
       react-native: '>=0.73.0'
 
-  react-native-keyboard-controller@1.14.3:
-    resolution: {integrity: sha512-E9yYD6Q6w+lCS0OFNXnWszoMlhcavdYJFMeYgmI5ydch3x8GtnQiNQwGhIATS2hxFbB1KY/TerVRxZBT+Zu5mQ==}
+  react-native-keyboard-controller@1.16.0:
+    resolution: {integrity: sha512-UDRimboBsPsl5fGSM7YvHFvsKj6IxLX6EGHRJDSxD8UrbEJoxh6Me7/3p1BKFv3BG2+DrJadNuUkwVda8FK3LQ==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -9348,7 +9348,7 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 3.0.1
 
-  '@storybook/addon-actions@8.5.2(storybook@8.5.2(prettier@3.3.3))':
+  '@storybook/addon-actions@8.5.2(storybook@8.5.2(prettier@2.8.8))':
     dependencies:
       '@storybook/global': 5.0.0
       '@types/uuid': 9.0.8
@@ -9364,9 +9364,9 @@ snapshots:
       storybook: 8.5.2(prettier@2.8.8)
       ts-dedent: 2.2.0
 
-  '@storybook/addon-ondevice-actions@8.5.2(prettier@3.3.3)(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)(storybook@8.5.2(prettier@3.3.3))':
+  '@storybook/addon-ondevice-actions@8.5.2(prettier@3.3.3)(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)(storybook@8.5.2(prettier@2.8.8))':
     dependencies:
-      '@storybook/addon-actions': 8.5.2(storybook@8.5.2(prettier@3.3.3))
+      '@storybook/addon-actions': 8.5.2(storybook@8.5.2(prettier@2.8.8))
       '@storybook/core': 8.5.2(prettier@3.3.3)
       '@storybook/global': 5.0.0
       fast-deep-equal: 2.0.1
@@ -13239,7 +13239,7 @@ snapshots:
       react: 18.3.1
       react-native: 0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1)
 
-  react-native-keyboard-controller@1.14.3(react-native-reanimated@3.16.7(@babel/core@7.25.7)(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1):
+  react-native-keyboard-controller@1.16.0(react-native-reanimated@3.16.7(@babel/core@7.25.7)(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1):
     dependencies:
       react: 18.3.1
       react-native: 0.76.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1)

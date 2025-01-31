@@ -61,9 +61,18 @@ export const store = configureStore({
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActions: [
+          FLUSH,
+          REHYDRATE,
+          PAUSE,
+          PERSIST,
+          PURGE,
+          REGISTER,
+          'auth/setCurrentUserAvailability',
+          'contact/updateContactsPresence',
+        ],
       },
-      immutableCheck: { warnAfter: 128 },
+      immutableCheck: { warnAfter: 256 },
     }).concat(middlewares) as typeof getDefaultMiddleware extends (...args: unknown[]) => infer R
       ? R
       : never,

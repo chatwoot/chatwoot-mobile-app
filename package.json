@@ -25,7 +25,8 @@
     "storybook-generate": "sb-rn-get-stories",
     "start:storybook": "cross-env EXPO_STORYBOOK_ENABLED='true' expo start",
     "storybook:ios": "cross-env EXPO_STORYBOOK_ENABLED='true' pnpm run:ios",
-    "storybook:android": "cross-env EXPO_STORYBOOK_ENABLED='true' expo android"
+    "storybook:android": "cross-env EXPO_STORYBOOK_ENABLED='true' expo android",
+    "adb:connect": "adb reverse tcp:9090 tcp:9090"
   },
   "dependencies": {
     "@alantoa/lightbox": "0.3.1",
@@ -106,6 +107,7 @@
     "zeego": "^2.0.4"
   },
   "devDependencies": {
+    "@welldone-software/why-did-you-render": "^10.0.1",
     "@babel/core": "^7.20.0",
     "@react-native-community/datetimepicker": "^8.2.0",
     "@react-native-community/slider": "^4.5.5",

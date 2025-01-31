@@ -63,6 +63,7 @@ export const AudioRecorder = ({
 }) => {
   const localRecordedAudioCacheFilePaths = useAppSelector(selectLocalRecordedAudioCacheFilePaths);
   const dispatch = useAppDispatch();
+  const [isSending, setIsSending] = useState(false);
 
   const { setIsVoiceRecorderOpen } = useChatWindowContext();
 
@@ -122,6 +123,8 @@ export const AudioRecorder = ({
   };
 
   const sendRecordedMessage = () => {
+    if (isSending) return;
+    setIsSending(true);
     ARPlayer.stopRecorder()
       .then(async value => {
         try {
@@ -163,6 +166,9 @@ export const AudioRecorder = ({
       .catch(e => {
         console.error('Recording error:', e);
         Alert.alert('Recording Error', e.toString());
+      })
+      .finally(() => {
+        setIsSending(false);
       });
   };
 
@@ -213,6 +219,7 @@ export const AudioRecorder = ({
         </Animated.Text>
       </Animated.View>
       <Pressable
+        disabled={isSending}
         onPress={sendRecordedMessage}
         style={tailwind.style('h-10 w-10 flex items-center justify-center')}>
         <Animated.View

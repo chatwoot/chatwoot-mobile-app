@@ -212,7 +212,7 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "Copiar",
       "REPLY": "Responder",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Apagar mensagem"
     },
     "EMAIL_HEADER": {
       "FROM": "De",
@@ -342,7 +342,7 @@
     "TITLE": "Detalhes do contato",
     "EMAIL": "e-mail",
     "PHONE_NUMBER": "Número de Telefone",
-    "CALL": "Call",
+    "CALL": "Chamada",
     "CONTACT_ATTRIBUTES": "Atributos do contato",
     "VALUE_UNAVAILABLE": "Indisponível"
   },

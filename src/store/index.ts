@@ -54,15 +54,19 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  enhancers: shouldLoadDebugger ? [reactotronInstance.createEnhancer!()] : [],
+  enhancers: getDefaultEnhancers =>
+    shouldLoadDebugger
+      ? getDefaultEnhancers().concat(reactotronInstance.createEnhancer!())
+      : getDefaultEnhancers(),
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        // warnAfter: 128,
       },
       immutableCheck: { warnAfter: 128 },
-    }).concat(middlewares),
+    }).concat(middlewares) as typeof getDefaultMiddleware extends (...args: unknown[]) => infer R
+      ? R
+      : never,
 });
 
 // TODO: Please get rid of this

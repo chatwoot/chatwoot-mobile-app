@@ -22,9 +22,7 @@ export interface ConversationState {
   isChangingConversationStatus: boolean;
 }
 
-export const conversationAdapter = createEntityAdapter<Conversation>({
-  selectId: conversation => conversation.id,
-});
+export const conversationAdapter = createEntityAdapter<Conversation>();
 
 const initialState = conversationAdapter.getInitialState<ConversationState>({
   meta: {

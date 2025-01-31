@@ -368,74 +368,72 @@ const BottomSheetContent = () => {
   const shouldShowCannedResponses = messageContent?.charAt(0) === '/';
 
   return (
-    <Animated.View layout={LinearTransition.springify().damping(38).stiffness(240)}>
-      <AnimatedKeyboardStickyView style={[tailwind.style('bg-white'), animatedInputWrapperStyle]}>
-        {!canReply && inbox && conversation && (
+    <AnimatedKeyboardStickyView style={[tailwind.style('bg-white'), animatedInputWrapperStyle]}>
+      {!canReply && inbox && conversation && (
+        <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>
+          <ReplyWarning inbox={inbox} conversation={conversation} />
+        </Animated.View>
+      )}
+      {shouldShowCannedResponses && (
+        <CannedResponses searchKey={messageContent} onSelect={onSelectCannedResponse} />
+      )}
+
+      <Animated.View
+        layout={LinearTransition.springify().damping(38).stiffness(240)}
+        style={tailwind.style(
+          `pb-2 border-t-[1px] border-t-blackA-A3 ${shouldShowReplyHeader ? 'pt-0' : 'pt-2'}`,
+        )}>
+        {quoteMessage && (
           <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>
-            <ReplyWarning inbox={inbox} conversation={conversation} />
+            <QuoteReply />s
           </Animated.View>
         )}
-        {shouldShowCannedResponses && (
-          <CannedResponses searchKey={messageContent} onSelect={onSelectCannedResponse} />
+
+        {shouldShowReplyHeader && (
+          <ReplyEmailHead
+            ccEmails={ccEmails}
+            bccEmails={bccEmails}
+            toEmails={toEmails}
+            onUpdateCC={setCCEmails}
+            onUpdateBCC={setBCCEmails}
+            onUpdateTo={setToEmails}
+          />
         )}
 
-        <Animated.View
-          layout={LinearTransition.springify().damping(38).stiffness(240)}
-          style={tailwind.style(
-            `pb-2 border-t-[1px] border-t-blackA-A3 ${shouldShowReplyHeader ? 'pt-0' : 'pt-2'}`,
-          )}>
-          {quoteMessage && (
-            <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>
-              <QuoteReply />s
-            </Animated.View>
-          )}
+        {typingText && <TypingIndicator typingText={typingText} />}
 
-          {shouldShowReplyHeader && (
-            <ReplyEmailHead
-              ccEmails={ccEmails}
-              bccEmails={bccEmails}
-              toEmails={toEmails}
-              onUpdateCC={setCCEmails}
-              onUpdateBCC={setBCCEmails}
-              onUpdateTo={setToEmails}
-            />
-          )}
-
-          {typingText && <TypingIndicator typingText={typingText} />}
-
-          {isVoiceRecorderOpen ? <AudioRecorder onRecordingComplete={onRecordingComplete} /> : null}
-          {!isVoiceRecorderOpen ? (
-            <Animated.View style={tailwind.style('flex flex-row px-1 items-end z-20 relative')}>
-              {attachmentsLength === 0 && shouldShowFileUpload && (
-                <AddCommandButton
-                  onPress={handleShowAddMenuOption}
-                  derivedAddMenuOptionStateValue={derivedAddMenuOptionStateValue}
-                />
-              )}
-              <MessageTextInput
-                maxLength={maxLength()}
-                replyEditorMode={replyEditorMode}
-                selectedCannedResponse={selectedCannedResponse}
-                agents={agents as Agent[]}
-                messageContent={messageContent}
+        {isVoiceRecorderOpen ? <AudioRecorder onRecordingComplete={onRecordingComplete} /> : null}
+        {!isVoiceRecorderOpen ? (
+          <Animated.View style={tailwind.style('flex flex-row px-1 items-end z-20 relative')}>
+            {attachmentsLength === 0 && shouldShowFileUpload && (
+              <AddCommandButton
+                onPress={handleShowAddMenuOption}
+                derivedAddMenuOptionStateValue={derivedAddMenuOptionStateValue}
               />
-              {(messageContent.length > 0 || attachmentsLength > 0) && (
-                <SendMessageButton onPress={() => confirmOnSendReply(null)} />
-              )}
-              {messageContent.length === 0 && attachmentsLength === 0 ? (
-                <VoiceRecordButton onPress={onPressVoiceRecordIcon} />
-              ) : null}
-            </Animated.View>
-          ) : null}
-        </Animated.View>
-
-        {isAddMenuOptionSheetOpen ? (
-          <CommandOptionsMenu />
-        ) : attachmentsLength > 0 ? (
-          <AttachedMedia />
+            )}
+            <MessageTextInput
+              maxLength={maxLength()}
+              replyEditorMode={replyEditorMode}
+              selectedCannedResponse={selectedCannedResponse}
+              agents={agents as Agent[]}
+              messageContent={messageContent}
+            />
+            {(messageContent.length > 0 || attachmentsLength > 0) && (
+              <SendMessageButton onPress={() => confirmOnSendReply(null)} />
+            )}
+            {messageContent.length === 0 && attachmentsLength === 0 ? (
+              <VoiceRecordButton onPress={onPressVoiceRecordIcon} />
+            ) : null}
+          </Animated.View>
         ) : null}
-      </AnimatedKeyboardStickyView>
-    </Animated.View>
+      </Animated.View>
+
+      {isAddMenuOptionSheetOpen ? (
+        <CommandOptionsMenu />
+      ) : attachmentsLength > 0 ? (
+        <AttachedMedia />
+      ) : null}
+    </AnimatedKeyboardStickyView>
   );
 };
 

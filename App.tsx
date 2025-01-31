@@ -7,6 +7,7 @@ import App from './src/app';
 // Ref: https://github.com/gorhom/react-native-bottom-sheet/issues/1983
 // https://github.com/dohooo/react-native-reanimated-carousel/issues/706
 import './reanimatedConfig';
+import './wdyr';
 
 const isStorybookEnabled = Constants.expoConfig?.extra?.eas?.storybookEnabled;
 

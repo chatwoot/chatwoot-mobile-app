@@ -3,9 +3,7 @@ import type { DashboardApp } from '@/types';
 import { dashboardAppActions } from './dashboardAppActions';
 import { RootState } from '@/store';
 
-export const dashboardAppAdapter = createEntityAdapter<DashboardApp>({
-  selectId: dashboardApp => dashboardApp.id,
-});
+export const dashboardAppAdapter = createEntityAdapter<DashboardApp>();
 
 export interface DashboardAppState {
   isLoading: boolean;

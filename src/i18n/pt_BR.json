@@ -79,7 +79,7 @@
         }
       },
       "STATUS": {
-        "TITLE": "Filter by status",
+        "TITLE": "Filtrar por status",
         "OPTIONS": {
           "OPEN": "Abrir",
           "PENDING": "Pendente",
@@ -133,7 +133,7 @@
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
+      "BACK_TO_HOME": "Voltar para a tela inicial",
       "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
     },
     "BOT": "Bot",
@@ -212,7 +212,7 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "Copiar",
       "REPLY": "Responder",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Apagar mensagem"
     },
     "EMAIL_HEADER": {
       "FROM": "De",
@@ -342,7 +342,7 @@
     "TITLE": "Detalhes do contato",
     "EMAIL": "e-mail",
     "PHONE_NUMBER": "Número de Telefone",
-    "CALL": "Call",
+    "CALL": "Chamada",
     "CONTACT_ATTRIBUTES": "Atributos do contato",
     "VALUE_UNAVAILABLE": "Indisponível"
   },

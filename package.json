@@ -147,7 +147,22 @@
           "@react-native-community/blur",
           "react-native-autoheight-webview",
           "redux-persist",
-          "rn-fetch-blob"
+          "rn-fetch-blob",
+          "@alantoa/lightbox",
+          "@chatwoot/markdown-to-txt",
+          "@chatwoot/react-native-widget",
+          "@chatwoot/utils",
+          "@config-plugins/ffmpeg-kit-react-native",
+          "camelcase",
+          "camelcase-keys",
+          "cross-env",
+          "date-fns",
+          "lodash",
+          "reactotron-redux",
+          "tailwindcss",
+          "use-deep-compare-effect",
+          "diff",
+          "string.prototype.matchall"
         ],
         "listUnknownPackages": true
       }

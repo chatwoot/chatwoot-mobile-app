@@ -97,6 +97,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
             compileSdkVersion: 34,
             targetSdkVersion: 34,
             extraMavenRepos: ['$rootDir/../../../node_modules/@notifee/react-native/android/libs'],
+            enableProguardInReleaseBuilds: true,
           },
           ios: {
             useFrameworks: 'static',

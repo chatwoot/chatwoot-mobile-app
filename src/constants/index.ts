@@ -23,7 +23,7 @@ export const AVAILABILITY_STATUS_LIST = [
   { statusColor: 'bg-gray-800', status: 'offline' },
 ];
 
-export const MAXIMUM_FILE_UPLOAD_SIZE = 10;
+export const MAXIMUM_FILE_UPLOAD_SIZE = 20;
 
 export const CONVERSATION_STATUSES = [
   {

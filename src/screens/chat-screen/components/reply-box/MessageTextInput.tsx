@@ -267,7 +267,7 @@ export const MessageTextInput = ({
       <Animated.View
         style={[
           // Pre calculated value to position the lock
-          tailwind.style('absolute right-[12px]'),
+          tailwind.style('absolute right-13px]'),
           lockIconAnimatedPosition,
         ]}>
         <Pressable hitSlop={5} onPress={toggleReplyMode}>

@@ -60,7 +60,9 @@ const InboxList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortOrder]);
 
-  const ListFooterComponent = () => {
+  // Memoize the ListFooterComponent
+  // eslint-disable-next-line react/display-name
+  const ListFooterComponent = React.memo(() => {
     if (isAllNotificationsFetched) return null;
     return (
       <Animated.View
@@ -71,7 +73,7 @@ const InboxList = () => {
         {isAllNotificationsFetched ? null : <ActivityIndicator size="small" />}
       </Animated.View>
     );
-  };
+  });
 
   useEffect(() => {
     clearAndFetchNotifications(sortOrder);
@@ -176,12 +178,14 @@ const InboxList = () => {
 
 const InboxScreen = () => {
   const dispatch = useAppDispatch();
-  const markAllAsRead = async () => {
+
+  // Memoize the markAllAsRead callback
+  const markAllAsRead = useCallback(async () => {
     await dispatch(notificationActions.markAllAsRead());
     showToast({
       message: i18n.t('NOTIFICATION.ALERTS.MARK_ALL_READ'),
     });
-  };
+  }, [dispatch]);
 
   return (
     <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>

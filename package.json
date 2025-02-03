@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "main": "expo/AppEntry.js",
   "scripts": {
     "start": "expo start",

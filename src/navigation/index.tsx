@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { Linking, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { getStateFromPath } from '@react-navigation/native';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -21,7 +21,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { transformNotification } from '@/utils/camelCaseKeys';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
-  // console.log('Message handled in the background!', remoteMessage);
+  console.log('Message handled in the background!', remoteMessage);
 });
 
 export const AppNavigationContainer = () => {
@@ -94,7 +94,7 @@ export const AppNavigationContainer = () => {
         return url;
       }
 
-      // Handle notification caused app to open from quit state:
+      // getInitialNotification: When the application is opened from a quit state.
       const message = await messaging().getInitialNotification();
       if (message) {
         const notification = findNotificationFromFCM({ message });
@@ -115,7 +115,7 @@ export const AppNavigationContainer = () => {
       // Listen to incoming links from deep linking
       const subscription = Linking.addEventListener('url', onReceiveURL);
 
-      // Handle notification caused app to open from background state
+      //onNotificationOpenedApp: When the application is running, but in the background.
       const unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
         if (message) {
           const notification = findNotificationFromFCM({ message });
@@ -155,7 +155,8 @@ export const AppNavigationContainer = () => {
       }}
       onStateChange={async () => {
         routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
-      }}>
+      }}
+      fallback={<ActivityIndicator animating />}>
       <BottomSheetModalProvider>
         <View style={styles.navigationLayout} onLayout={onLayoutRootView}>
           <AppTabs />

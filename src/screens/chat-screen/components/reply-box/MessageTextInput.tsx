@@ -19,6 +19,8 @@ import { useChatWindowContext } from '@/context';
 import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+
+import { MentionInput, MentionSuggestionsProps, Suggestion } from './mentions-input';
 import {
   setMessageContent,
   togglePrivateMessage,

@@ -12,11 +12,7 @@ import Animated, {
   LinearTransition,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import {
-  MentionInput,
-  MentionSuggestionsProps,
-  Suggestion,
-} from 'react-native-controlled-mentions';
+
 import Svg, { Path, Rect } from 'react-native-svg';
 
 import { useChatWindowContext } from '@/context';
@@ -36,6 +32,8 @@ import { createTypingIndicator } from '@chatwoot/utils';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { MentionUser } from './MentionUser';
 import { Agent } from '@/types';
+
+import { MentionInput, MentionSuggestionsProps, Suggestion } from './mentions-input';
 
 type MessageTextInputProps = {
   maxLength: number;
@@ -267,7 +265,7 @@ export const MessageTextInput = ({
       <Animated.View
         style={[
           // Pre calculated value to position the lock
-          tailwind.style('absolute right-[12px]'),
+          tailwind.style('absolute right-13px]'),
           lockIconAnimatedPosition,
         ]}>
         <Pressable hitSlop={5} onPress={toggleReplyMode}>

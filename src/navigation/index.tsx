@@ -19,7 +19,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RefsProvider } from '@/context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { transformNotification } from '@/utils/camelCaseKeys';
-// import { NoNetworkBar } from '@/components-next';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   // console.log('Message handled in the background!', remoteMessage);
@@ -156,10 +155,7 @@ export const AppNavigationContainer = () => {
       }}
       onStateChange={async () => {
         routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
-      }}
-      // theme={theme}
-    >
-      {/* <NoNetworkBar /> */}
+      }}>
       <BottomSheetModalProvider>
         <View style={styles.navigationLayout} onLayout={onLayoutRootView}>
           <AppTabs />

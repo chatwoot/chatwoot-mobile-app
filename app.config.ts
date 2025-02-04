@@ -4,7 +4,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'Chatwoot',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
-    version: '4.0.0',
+    version: '4.0.6',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
@@ -93,12 +93,23 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         {
           // https://github.com/invertase/notifee/issues/808#issuecomment-2175934609
           android: {
+            minSdkVersion: 24,
             compileSdkVersion: 34,
             targetSdkVersion: 34,
             extraMavenRepos: ['$rootDir/../../../node_modules/@notifee/react-native/android/libs'],
+            enableProguardInReleaseBuilds: true,
           },
           ios: {
             useFrameworks: 'static',
+          },
+        },
+      ],
+      [
+        '@config-plugins/ffmpeg-kit-react-native',
+        {
+          package: 'min',
+          ios: {
+            package: 'audio',
           },
         },
       ],

@@ -97,7 +97,9 @@ const Tabs = () => {
   }, []);
 
   const initAnalytics = useCallback(async () => {
-    AnalyticsHelper.identify(user);
+    if (user) {
+      AnalyticsHelper.identify(user);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

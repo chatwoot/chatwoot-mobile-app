@@ -37,14 +37,40 @@ export const authSlice = createSlice({
     setCurrentUserAvailability(state, action) {
       const { users } = action.payload;
       const userId = state.user?.id;
-      if (userId && users[userId] && state.user?.accounts) {
-        const availability = users[userId];
-        state.user.accounts = state.user.accounts.map(account => {
-          if (account.id === state.user?.account_id) {
-            return { ...account, availability, availability_status: availability };
+
+      // Only proceed if we have a valid user and matching availability data
+      if (!userId || !users[userId] || !state.user?.accounts) {
+        return;
+      }
+
+      const newAvailability = users[userId];
+      let needsUpdate = false;
+
+      // Update the accounts array with the new availability
+      const updatedAccounts = state.user.accounts.map(account => {
+        if (account.id === state.user?.account_id) {
+          // Check if we need to update this account
+          const shouldUpdate =
+            !account.availability || // availability doesn't exist
+            account.availability !== newAvailability || // availability doesn't match
+            account.availability_status !== newAvailability; // availability_status doesn't match
+          if (shouldUpdate) {
+            needsUpdate = true;
+            return {
+              ...account,
+              availability: newAvailability,
+              availability_status: newAvailability,
+            };
           }
-          return account;
-        });
+        }
+        return account;
+      });
+      // Only update state if changes were needed otherwise it will cause a re-render in the components
+      if (needsUpdate) {
+        state.user = {
+          ...state.user,
+          accounts: updatedAccounts,
+        };
       }
     },
     setAccount: (state, action) => {

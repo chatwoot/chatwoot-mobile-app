@@ -3,6 +3,7 @@ import { ActivityIndicator, RefreshControl, StatusBar } from 'react-native';
 import Animated, {
   LinearTransition,
   runOnJS,
+  SharedValue,
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,9 +16,9 @@ import { tailwind } from '@/theme';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { notificationActions } from '@/store/notification/notificationAction';
 import {
-  selectAllNotifications,
   selectIsAllNotificationsFetched,
   selectIsLoadingNotifications,
+  getFilteredNotifications,
 } from '@/store/notification/notificationSelectors';
 import { InboxHeader, InboxItemContainer } from './components';
 import { useInboxListStateContext } from '@/context';
@@ -36,8 +37,6 @@ type FlashListRenderItemType = {
 };
 
 const InboxList = () => {
-  const notifications = useAppSelector(selectAllNotifications);
-
   const [pageNumber, setPageNumber] = useState(1);
 
   const [isFlashListReady, setFlashListReady] = useState(false);
@@ -46,6 +45,8 @@ const InboxList = () => {
   const isNotificationsLoading = useAppSelector(selectIsLoadingNotifications);
   const isAllNotificationsFetched = useAppSelector(selectIsAllNotificationsFetched);
   const sortOrder = useAppSelector(selectSortOrder);
+
+  const notifications = useAppSelector(state => getFilteredNotifications(state, sortOrder));
 
   const previousSortOrder = useRef(sortOrder);
 
@@ -59,7 +60,9 @@ const InboxList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortOrder]);
 
-  const ListFooterComponent = () => {
+  // Memoize the ListFooterComponent
+  // eslint-disable-next-line react/display-name
+  const ListFooterComponent = React.memo(() => {
     if (isAllNotificationsFetched) return null;
     return (
       <Animated.View
@@ -70,7 +73,7 @@ const InboxList = () => {
         {isAllNotificationsFetched ? null : <ActivityIndicator size="small" />}
       </Animated.View>
     );
-  };
+  });
 
   useEffect(() => {
     clearAndFetchNotifications(sortOrder);
@@ -118,7 +121,13 @@ const InboxList = () => {
   const { openedRowIndex } = useInboxListStateContext();
 
   const handleRender = useCallback(({ item, index }: FlashListRenderItemType) => {
-    return <InboxItemContainer item={item} index={index} openedRowIndex={openedRowIndex} />;
+    return (
+      <InboxItemContainer
+        item={item}
+        index={index}
+        openedRowIndex={openedRowIndex as SharedValue<number | null>}
+      />
+    );
   }, []);
 
   const scrollHandler = useAnimatedScrollHandler({
@@ -169,12 +178,14 @@ const InboxList = () => {
 
 const InboxScreen = () => {
   const dispatch = useAppDispatch();
-  const markAllAsRead = async () => {
+
+  // Memoize the markAllAsRead callback
+  const markAllAsRead = useCallback(async () => {
     await dispatch(notificationActions.markAllAsRead());
     showToast({
       message: i18n.t('NOTIFICATION.ALERTS.MARK_ALL_READ'),
     });
-  };
+  }, [dispatch]);
 
   return (
     <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>

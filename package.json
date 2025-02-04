@@ -75,7 +75,6 @@
     "react-native": "0.74.5",
     "react-native-audio-recorder-player": "^3.6.11",
     "react-native-autoheight-webview": "^1.6.5",
-    "react-native-controlled-mentions": "^2.2.5",
     "react-native-device-info": "^11.1.0",
     "react-native-document-picker": "^9.3.1",
     "react-native-file-viewer": "^2.1.5",

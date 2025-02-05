@@ -35,8 +35,6 @@ import { conversationActions } from '@/store/conversation/conversationActions';
 import { MentionUser } from './MentionUser';
 import { Agent } from '@/types';
 
-import { MentionInput, MentionSuggestionsProps, Suggestion } from './mentions-input';
-
 type MessageTextInputProps = {
   maxLength: number;
   replyEditorMode: string;

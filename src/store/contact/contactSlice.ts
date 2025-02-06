@@ -1,5 +1,5 @@
 // This slice is responsible for managing the contacts in the store. It is used to add, update, and remove contacts.
-// Whenever there is a new conversation, the contacts are added to the store.
+// Whenever there is a new conversation/notification, the contacts are added to the store.
 // It also manages the availability status of the contacts
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { Contact } from '@/types/Contact';
@@ -34,13 +34,16 @@ const contactSlice = createSlice({
     },
     updateContactsPresence: (state, action) => {
       const { contacts } = action.payload;
-      Object.values(state.entities as Record<string, Contact>).forEach(entity => {
-        const contactId = entity.id;
-        const availabilityStatus = contacts[contactId];
-        if (availabilityStatus) {
-          entity.availabilityStatus = availabilityStatus || 'offline';
-        } else {
-          entity.availabilityStatus = 'offline';
+      const { selectById } = contactAdapter.getSelectors();
+      // Check each incoming contact and update their availability status in the store. Only update the status if the contact already exists in the store.
+      Object.keys(contacts).forEach(contactId => {
+        const numericId = Number(contactId);
+        const entity = selectById(state, numericId);
+        if (entity) {
+          contactAdapter.updateOne(state, {
+            id: numericId,
+            changes: { availabilityStatus: contacts[contactId] || 'offline' },
+          });
         }
       });
     },

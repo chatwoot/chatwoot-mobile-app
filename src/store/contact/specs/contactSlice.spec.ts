@@ -8,7 +8,7 @@ import { contact } from './contactMockData';
 
 describe('contact reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, { type: undefined })).toEqual({
+    expect(reducer(undefined, { type: 'unknown' })).toEqual({
       ids: [],
       entities: {},
     });
@@ -46,5 +46,15 @@ describe('contact reducer', () => {
     const action = updateContactsPresence({ contacts: { 1: 'offline' } });
     const state = reducer(initialState, action);
     expect(state.entities[contact.id]?.availabilityStatus).toEqual('offline');
+  });
+
+  it('should not update the contacts presence if the contact is not found', () => {
+    const initialState = {
+      ids: [1],
+      entities: { 1: contact },
+    };
+    const action = updateContactsPresence({ contacts: { 2: 'offline' } });
+    const state = reducer(initialState, action);
+    expect(state.entities[contact.id]?.availabilityStatus).toEqual('online');
   });
 });

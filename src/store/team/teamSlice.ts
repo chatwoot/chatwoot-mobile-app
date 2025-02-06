@@ -2,9 +2,7 @@ import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { teamActions } from './teamActions';
 import { Team } from '@/types';
 
-export const teamAdapter = createEntityAdapter<Team>({
-  selectId: inbox => inbox.id,
-});
+export const teamAdapter = createEntityAdapter<Team>();
 
 interface TeamState {
   isLoading: boolean;

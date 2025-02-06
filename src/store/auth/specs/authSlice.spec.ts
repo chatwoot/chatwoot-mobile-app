@@ -240,6 +240,62 @@ describe('Auth Slice', () => {
         const nextState = authReducer(state, action);
         expect(nextState).toEqual(state);
       });
+
+      it('should not update when the update is not needed', () => {
+        const state = {
+          ...initialState,
+          user: {
+            ...mockUser,
+            id: 1,
+            account_id: 123,
+            accounts: [
+              {
+                id: 123,
+                active_at: '',
+                auto_offline: false,
+                availability: 'online',
+                availability_status: 'online' as AvailabilityStatus,
+                custom_role: '',
+                custom_role_id: '',
+                name: 'Account 1',
+                permissions: [],
+                role: 'agent' as UserRole,
+                status: 'active',
+              },
+              {
+                id: 456,
+                active_at: '',
+                auto_offline: false,
+                availability: 'online',
+                availability_status: 'online' as AvailabilityStatus,
+                custom_role: '',
+                custom_role_id: '',
+                name: 'Account 2',
+                permissions: [],
+                role: 'agent' as UserRole,
+                status: 'active',
+              },
+            ],
+            pubsub_token: '',
+            avatar_url: '',
+            available_name: '',
+            role: 'agent' as UserRole,
+            availability: 'online',
+            availability_status: 'online' as AvailabilityStatus,
+            identifier_hash: '',
+            thumbnail: '',
+            type: 'user',
+          },
+        };
+
+        const action = {
+          type: 'auth/setCurrentUserAvailability',
+          payload: { users: { '123': 'busy' } },
+        };
+
+        const nextState = authReducer(state, action);
+        expect(nextState).toEqual(state);
+      });
     });
   });
 

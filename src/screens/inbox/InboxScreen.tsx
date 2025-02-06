@@ -60,7 +60,6 @@ const InboxList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortOrder]);
 
-  // Memoize the ListFooterComponent
   // eslint-disable-next-line react/display-name
   const ListFooterComponent = React.memo(() => {
     if (isAllNotificationsFetched) return null;

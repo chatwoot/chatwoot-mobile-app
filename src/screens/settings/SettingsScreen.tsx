@@ -18,6 +18,7 @@ import { useSelector } from 'react-redux';
 import * as Application from 'expo-application';
 import { Account, AvailabilityStatus } from '@/types';
 import { clearAllConversations } from '@/store/conversation/conversationSlice';
+import { resetNotifications } from '@/store/notification/notificationSlice';
 import { clearAllContacts } from '@/store/contact/contactSlice';
 
 import i18n from 'i18n';
@@ -165,6 +166,7 @@ const SettingsScreen = () => {
   const changeAccount = (accountId: number) => {
     dispatch(clearAllContacts());
     dispatch(clearAllConversations());
+    dispatch(resetNotifications());
     dispatch(setAccount(accountId));
     dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
     navigation.dispatch(StackActions.replace('Tab'));

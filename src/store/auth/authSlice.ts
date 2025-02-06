@@ -33,6 +33,7 @@ export const authSlice = createSlice({
       state.user = null;
       state.accessToken = null;
       state.headers = null;
+      state.error = null;
     },
     setCurrentUserAvailability(state, action) {
       const { users } = action.payload;

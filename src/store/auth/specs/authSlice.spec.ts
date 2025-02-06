@@ -1,9 +1,9 @@
-import authReducer, { resetAuth, setAccount } from '@/store/auth/authSlice';
+import authReducer, { logout, resetAuth, setAccount } from '@/store/auth/authSlice';
 import { mockUser } from './authMockData';
-import { AuthState } from '@/store/auth/authSlice'; // Add this import
+import { AuthState } from '@/store/auth/authSlice';
 
 import { authActions } from '@/store/auth/authActions';
-import { UserRole } from '@/types';
+import { AvailabilityStatus, UserRole } from '@/types';
 
 jest.mock('@sentry/react-native', () => ({
   captureException: jest.fn(),
@@ -42,16 +42,27 @@ describe('Auth Slice', () => {
   });
 
   describe('reducers', () => {
-    // TODO: Fix this spec later
-    // it('should handle logout', () => {
-    //   const state = {
-    //     ...initialState,
-    //     user: mockUser,
-    //     headers: { 'access-token': 'token', uid: 'uid', client: 'client' },
-    //   };
-    //   console.log('state', authReducer(state, logout()));
-    //   expect(authReducer(state, logout())).toEqual(initialState);
-    // });
+    it('should handle logout', () => {
+      const state = {
+        ...initialState,
+        user: {
+          ...mockUser,
+          accounts: [],
+          pubsub_token: 'token',
+          avatar_url: 'url',
+          available_name: 'name',
+          role: 'agent' as UserRole,
+          identifier_hash: 'hash',
+          availability: 'online',
+          thumbnail: 'thumbnail',
+          availability_status: 'online' as AvailabilityStatus,
+          type: 'user',
+        },
+        accessToken: 'token',
+        headers: { 'access-token': 'token', uid: 'uid', client: 'client' },
+      };
+      expect(() => authReducer(state, logout())).not.toThrow();
+    });
 
     it('should handle resetAuth', () => {
       const state = {
@@ -63,6 +74,11 @@ describe('Auth Slice', () => {
           avatar_url: 'url',
           available_name: 'name',
           role: 'agent' as UserRole,
+          identifier_hash: 'hash',
+          availability: 'online',
+          thumbnail: 'thumbnail',
+          availability_status: 'online' as AvailabilityStatus,
+          type: 'user',
         },
         accessToken: 'token',
         headers: { 'access-token': 'token', uid: 'uid', client: 'client' },
@@ -85,9 +101,145 @@ describe('Auth Slice', () => {
           avatar_url: '',
           available_name: '',
           role: 'agent' as UserRole,
+          identifier_hash: 'hash',
+          availability: 'online',
+          thumbnail: 'thumbnail',
+          availability_status: 'online' as AvailabilityStatus,
+          type: 'user',
         },
       };
       expect(authReducer(state, setAccount(123))).toEqual(state);
+    });
+
+    describe('setCurrentUserAvailability', () => {
+      it('should update user availability when user exists and has matching account', () => {
+        const state = {
+          ...initialState,
+          user: {
+            ...mockUser,
+            id: 1,
+            account_id: 123,
+            accounts: [
+              {
+                id: 123,
+                active_at: '',
+                auto_offline: false,
+                availability: 'online',
+                availability_status: 'online' as AvailabilityStatus,
+                custom_role: '',
+                custom_role_id: '',
+                name: 'Account 1',
+                permissions: [],
+                role: 'agent' as UserRole,
+                status: 'active',
+              },
+              {
+                id: 456,
+                active_at: '',
+                auto_offline: false,
+                availability: 'online',
+                availability_status: 'online' as AvailabilityStatus,
+                custom_role: '',
+                custom_role_id: '',
+                name: 'Account 2',
+                permissions: [],
+                role: 'agent' as UserRole,
+                status: 'active',
+              },
+            ],
+            pubsub_token: '',
+            avatar_url: '',
+            available_name: '',
+            role: 'agent' as UserRole,
+            availability: 'online',
+            availability_status: 'online' as AvailabilityStatus,
+            identifier_hash: '',
+            thumbnail: '',
+            type: 'user',
+          },
+        };
+
+        const action = {
+          type: 'auth/setCurrentUserAvailability',
+          payload: {
+            users: {
+              '1': 'busy',
+            },
+          },
+        };
+
+        const nextState = authReducer(state, action);
+        expect(nextState.user?.accounts[0].availability).toBe('busy');
+        expect(nextState.user?.accounts[0].availability_status).toBe('busy');
+        expect(nextState.user?.accounts[1].availability).toBe('online');
+        expect(nextState.user?.accounts[1].availability_status).toBe('online');
+      });
+
+      it('should not update user availability when user id does not match', () => {
+        const state = {
+          ...initialState,
+          user: {
+            ...mockUser,
+            id: 2,
+            account_id: 123,
+            accounts: [
+              {
+                id: 123,
+                active_at: '',
+                auto_offline: false,
+                availability: 'online',
+                availability_status: 'online' as AvailabilityStatus,
+                custom_role: '',
+                custom_role_id: '',
+                name: 'Account 1',
+                permissions: [],
+                role: 'agent' as UserRole,
+                status: 'active',
+              },
+            ],
+            pubsub_token: '',
+            avatar_url: '',
+            available_name: '',
+            role: 'agent' as UserRole,
+            availability: 'online',
+            availability_status: 'online' as AvailabilityStatus,
+            identifier_hash: '',
+            thumbnail: '',
+            type: 'user',
+          },
+        };
+
+        const action = {
+          type: 'auth/setCurrentUserAvailability',
+          payload: {
+            users: {
+              '1': 'busy',
+            },
+          },
+        };
+
+        const nextState = authReducer(state, action);
+        expect(nextState).toEqual(state);
+      });
+
+      it('should not update when user is null', () => {
+        const state = {
+          ...initialState,
+          user: null,
+        };
+
+        const action = {
+          type: 'auth/setCurrentUserAvailability',
+          payload: {
+            users: {
+              '1': 'busy',
+            },
+          },
+        };
+
+        const nextState = authReducer(state, action);
+        expect(nextState).toEqual(state);
+      });
     });
   });
 

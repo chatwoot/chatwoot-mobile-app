@@ -1,3 +1,4 @@
+import { AvailabilityStatus } from '@/types/common';
 import reducer, {
   addContacts,
   addContact,
@@ -48,12 +49,17 @@ describe('contact reducer', () => {
     expect(state.entities[contact.id]?.availabilityStatus).toEqual('offline');
   });
 
-  it('should not update the contacts presence if the contact is not found', () => {
+  it('should not update the contacts presence if the contact availability status is the same', () => {
     const initialState = {
       ids: [1],
-      entities: { 1: contact },
+      entities: {
+        1: {
+          ...contact,
+          availabilityStatus: 'online' as AvailabilityStatus,
+        },
+      },
     };
-    const action = updateContactsPresence({ contacts: { 2: 'offline' } });
+    const action = updateContactsPresence({ contacts: { 1: 'online' } });
     const state = reducer(initialState, action);
     expect(state.entities[contact.id]?.availabilityStatus).toEqual('online');
   });

@@ -12,6 +12,7 @@ export const contact: Contact = {
   additionalAttributes: {},
   lastActivityAt: 1732159896,
   createdAt: 1728033836,
+  type: 'user',
 };
 
 export const conversation = {

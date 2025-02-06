@@ -49,12 +49,12 @@ export const authSlice = createSlice({
       // Update the accounts array with the new availability
       const updatedAccounts = state.user.accounts.map(account => {
         if (account.id === state.user?.account_id) {
-          // Check if we need to update this account
-          const shouldUpdate =
+          // Since this event triggers frequently, we should verify if a state update is necessary to prevent unnecessary component re-renders.
+          const shouldUpdateAccount =
             !account.availability || // availability doesn't exist
             account.availability !== newAvailability || // availability doesn't match
             account.availability_status !== newAvailability; // availability_status doesn't match
-          if (shouldUpdate) {
+          if (shouldUpdateAccount) {
             needsUpdate = true;
             return {
               ...account,
@@ -65,7 +65,6 @@ export const authSlice = createSlice({
         }
         return account;
       });
-      // Only update state if changes were needed otherwise it will cause a re-render in the components
       if (needsUpdate) {
         state.user = {
           ...state.user,

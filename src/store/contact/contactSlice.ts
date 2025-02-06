@@ -34,15 +34,11 @@ const contactSlice = createSlice({
     },
     updateContactsPresence: (state, action) => {
       const { contacts } = action.payload;
-      const { selectById } = contactAdapter.getSelectors();
-      Object.keys(contacts).forEach(contactId => {
-        const numericId = Number(contactId);
-        const entity = selectById(state, numericId);
-        if (entity) {
-          contactAdapter.updateOne(state, {
-            id: numericId,
-            changes: { availabilityStatus: contacts[contactId] || 'offline' },
-          });
+      Object.values(state.entities as Record<string, Contact>).forEach(entity => {
+        const contactId = entity.id;
+        const newAvailability = contacts[contactId] || 'offline';
+        if (entity.availabilityStatus !== newAvailability) {
+          entity.availabilityStatus = newAvailability;
         }
       });
     },

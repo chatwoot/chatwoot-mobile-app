@@ -18,6 +18,7 @@ import { useSelector } from 'react-redux';
 import * as Application from 'expo-application';
 import { Account, AvailabilityStatus } from '@/types';
 import { clearAllConversations } from '@/store/conversation/conversationSlice';
+import { resetNotifications } from '@/store/notification/notificationSlice';
 import { clearAllContacts } from '@/store/contact/contactSlice';
 
 import i18n from 'i18n';

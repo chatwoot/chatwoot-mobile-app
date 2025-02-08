@@ -5,8 +5,8 @@ import { tailwind } from '@/theme';
 import type { NotificationType } from '@/types/Notification';
 import { ConversationPriority } from '@/types/common';
 import { AnimatedNativeView, NativeView } from '@/components-next/native-components';
-import { PriorityIndicator } from './PriorityIndicator';
-import { ChannelIndicator } from './ChannelIndicator';
+import { PriorityIndicator, ChannelIndicator } from '@/components-next/list-components';
+
 import { Inbox } from '@/types/Inbox';
 import { ConversationAdditionalAttributes } from '@/types/Conversation';
 import { NotificationTypeIndicator } from './NotificationTypeIndicator';
@@ -30,7 +30,7 @@ type InboxItemProps = {
   notificationType: NotificationType;
 };
 
-export const InboxItem = (props: InboxItemProps) => {
+export const InboxItemComponent = (props: InboxItemProps) => {
   const {
     isRead,
     inbox,
@@ -113,3 +113,6 @@ export const InboxItem = (props: InboxItemProps) => {
     </Animated.View>
   );
 };
+
+InboxItemComponent.displayName = 'InboxItem';
+export const InboxItem = React.memo(InboxItemComponent);

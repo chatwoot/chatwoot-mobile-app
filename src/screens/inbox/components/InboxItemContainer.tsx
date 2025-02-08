@@ -52,7 +52,7 @@ const DeleteComponent = React.memo(() => {
   );
 });
 
-export const InboxItemContainer = React.memo((props: InboxItemContainerProps) => {
+export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
   const { index, item, openedRowIndex } = props;
   const dispatch = useAppDispatch();
 
@@ -111,10 +111,10 @@ export const InboxItemContainer = React.memo((props: InboxItemContainerProps) =>
     }
   };
 
-  const lastActivityAt = () => {
+  const lastActivityAt = useCallback(() => {
     const time = formatRelativeTime(item.lastActivityAt);
     return formatTimeToShortForm(time, true);
-  };
+  }, [item.lastActivityAt]);
 
   const inbox = useAppSelector(state => selectInboxById(state, inboxId));
 
@@ -153,4 +153,7 @@ export const InboxItemContainer = React.memo((props: InboxItemContainerProps) =>
       />
     </Swipeable>
   );
-});
+};
+
+InboxItemContainerComponent.displayName = 'InboxItemContainer';
+export const InboxItemContainer = React.memo(InboxItemContainerComponent);

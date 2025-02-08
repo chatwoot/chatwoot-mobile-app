@@ -11,9 +11,8 @@ import { Agent, Conversation, ConversationAdditionalAttributes, Label, Message }
 
 import { ConversationId } from './ConversationId';
 import { ConversationLastMessage } from './ConversationLastMessage';
-import { PriorityIndicator } from './PriorityIndicator';
+import { PriorityIndicator, ChannelIndicator } from '@/components-next/list-components';
 import { UnreadIndicator } from './UnreadIndicator';
-import { ChannelIndicator } from './ChannelIndicator';
 import { SLAIndicator } from './SLAIndicator';
 import { LabelIndicator } from './LabelIndicator';
 import { LastActivityTime } from './LastActivityTime';

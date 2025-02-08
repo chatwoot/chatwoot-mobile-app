@@ -4,6 +4,7 @@
   "main": "expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
+    "start:production": "expo start --no-dev --minify",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "clean": "watchman watch-del-all && yarn cache clean",
@@ -35,7 +36,7 @@
     "@chatwoot/react-native-widget": "^0.0.21",
     "@chatwoot/utils": "^0.0.33",
     "@config-plugins/ffmpeg-kit-react-native": "^9.0.0",
-    "@gorhom/bottom-sheet": "^4.6.3",
+    "@gorhom/bottom-sheet": "^5.1.0",
     "@kesha-antonov/react-native-action-cable": "^1.1.5",
     "@notifee/react-native": "^9.1.1",
     "@react-native-async-storage/async-storage": "^1.23.1",

@@ -20,6 +20,7 @@ if (!__DEV__) {
 }
 
 if (__DEV__) {
+  // eslint-disable-next-line
   require('./ReactotronConfig');
 }
 // Ref: https://dev.to/dannyhw/how-to-swap-between-react-native-storybook-and-your-app-p3o

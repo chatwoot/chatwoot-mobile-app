@@ -62,7 +62,7 @@
       "ASSIGNEE_TYPE": {
         "TITLE": "Filtrar por tipo de responsável",
         "OPTIONS": {
-          "ME": "Me",
+          "ME": "Eu",
           "UNASSIGNED": "Não atribuída",
           "ALL": "Todas"
         }

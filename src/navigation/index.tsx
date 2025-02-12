@@ -119,8 +119,12 @@ export const AppNavigationContainer = () => {
       const unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
         if (message) {
           const notification = findNotificationFromFCM({ message });
+          const camelCaseNotification = transformNotification(notification);
 
-          const conversationLink = findConversationLinkFromPush({ notification, installationUrl });
+          const conversationLink = findConversationLinkFromPush({
+            notification: camelCaseNotification,
+            installationUrl,
+          });
           if (conversationLink) {
             listener(conversationLink);
           }

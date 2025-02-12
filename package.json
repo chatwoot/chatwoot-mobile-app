@@ -36,7 +36,7 @@
     "@chatwoot/react-native-widget": "^0.0.21",
     "@chatwoot/utils": "^0.0.33",
     "@config-plugins/ffmpeg-kit-react-native": "^9.0.0",
-    "@gorhom/bottom-sheet": "^5.1.0",
+    "@gorhom/bottom-sheet": "^5.1.1",
     "@kesha-antonov/react-native-action-cable": "^1.1.5",
     "@notifee/react-native": "^9.1.1",
     "@react-native-async-storage/async-storage": "^1.23.1",

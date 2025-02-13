@@ -134,7 +134,7 @@
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",
       "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+      "DESCRIPTION": "Parece que no se pudo obtener la conversación correctamente. Podría deberse a un problema de red o la conversación ya no está disponible. Haga clic en el botón de reintentar para intentarlo nuevamente."
     },
     "BOT": "Bot",
     "EMAIL_HEAD": {

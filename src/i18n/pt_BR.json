@@ -73,13 +73,13 @@
       "SORT_BY": {
         "TITLE": "Ordenar por",
         "OPTIONS": {
-          "LATEST": "Latest",
+          "LATEST": "Últimas",
           "SORT_ON_CREATED_AT": "Criado em",
           "SORT_ON_PRIORITY": "Prioridade"
         }
       },
       "STATUS": {
-        "TITLE": "Filtrar por status",
+        "TITLE": "Filtrar por situação",
         "OPTIONS": {
           "OPEN": "Abrir",
           "PENDING": "Pendente",
@@ -97,8 +97,8 @@
         "SEARCH_AGENT": "Pesquisar agentes"
       },
       "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
+        "HEADER_TITLE": "Atribuir situação",
+        "TITLE": "Filtrar pela situação",
         "OPTIONS": {
           "OPEN": "Abrir",
           "PENDING": "Pendente",
@@ -126,15 +126,15 @@
     "FILE_SIZE_LIMIT": "O arquivo excede o limite de anexos de 5MB",
     "SHARE": "Compartilhar conversa",
     "DETAILS": "Detalhes",
-    "LABELS": "Marcadores da conversa",
+    "LABELS": "Etiquetas da conversa",
     "ASSIGNED_AGENT": "Agente atribuído",
     "TEAM": "Times",
     "PRIVATE_MSG_INPUT": "Isto será visível apenas para Agentes",
     "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
+      "TITLE": "Não foi possível buscar a conversa",
+      "RETRY": "Tentar novamente",
       "BACK_TO_HOME": "Voltar para a tela inicial",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+      "DESCRIPTION": "Parece que essa conversa não é capaz de buscar corretamente. Isso pode ser devido a um problema de rede ou a conversa não está mais disponível. Por favor, clique no botão para tentar novamente."
     },
     "BOT": "Bot",
     "EMAIL_HEAD": {
@@ -162,10 +162,10 @@
     "DELETE_MESSAGE_SUCCESS": "Mensagem excluída com sucesso",
     "NO_CONTENT": "Nenhum conteúdo disponível",
     "ASSIGN_CHANGE": "Responsável da conversa alterado",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "TEAM_CHANGE": "Equipe de conversa alterada",
+    "STATUS_CHANGE": "Situação da conversa alterada",
+    "PRIORITY_CHANGE": "Prioridade da conversa alterada",
+    "PARTICIPANT_CHANGE": "Participante da Conversa alterado",
     "CHANGE_STATUS": "Alterar status",
     "SEARCH_TEAM": "Pesquisar times",
     "PRIORITY": {
@@ -229,11 +229,11 @@
         "EDIT": "Alterar"
       },
       "TEAM": {
-        "EMPTY": "No team assigned",
+        "EMPTY": "Nenhuma equipe atribuída",
         "ASSIGN": "Atribua"
       },
       "PRIORITY": {
-        "EMPTY": "No priority added",
+        "EMPTY": "Nenhuma prioridade adicionada",
         "EDIT": "Alterar"
       }
     }
@@ -270,7 +270,7 @@
     "LOGOUT": "Sair",
     "SUBMIT": "Enviar",
     "SET_LANGUAGE": "Configurar Idioma",
-    "DEBUG_ACTIONS": "Debug Actions"
+    "DEBUG_ACTIONS": "Ações de Depuração"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notificações",
@@ -347,7 +347,7 @@
     "VALUE_UNAVAILABLE": "Indisponível"
   },
   "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
+    "TITLE": "Participantes",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} pessoas estão participando.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} pessoa está participando.",
     "NO_PARTICIPANTS_TEXT": "Ninguém está participando!",
@@ -358,7 +358,7 @@
     "ADD_PARTICIPANTS": "Selecionar participantes",
     "REMAINING_PARTICIPANTS_TEXT": "outros",
     "REMAINING_PARTICIPANT_TEXT": "outro",
-    "ADD_PARTICIPANT": "Add Participant"
+    "ADD_PARTICIPANT": "Adicionar Participante"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Atributos do contato"
@@ -378,7 +378,7 @@
     "NO_LABEL": "Nenhum marcador atribuído",
     "UPDATE_LABEL": "Marcador atualizado com sucesso",
     "SELECTED": "Selecionar",
-    "NOT_SELECTED": "Nenhum marcador selecionado",
+    "NOT_SELECTED": "Nenhuma etiqueta selecionada",
     "NO_RESULT": "Nenhum rótulo encontrado"
   },
   "CONVERSATION_AGENTS": {
@@ -395,7 +395,7 @@
     "CHANGE_TEAMS": "Estado da conversa mudou"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "Não foi possível conectar ao servidor Woot, por favor tente novamente mais tarde",
     "OfFLINE": "Você precisa se conectar ao Wi-Fi ou a uma rede celular para ficar online novamente",
     "CANNOT_FETCH": "Ocorreu um erro ao buscar as informações, por favor, tente novamente",
     "AUTH": "Nome de usuário / senha incorreta. Por favor, tente novamente",

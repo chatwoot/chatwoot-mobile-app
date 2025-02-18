@@ -6,7 +6,7 @@
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "clean": "watchman watch-del-all && yarn cache clean",
+    "clean": "watchman watch-del-all && rm -rf node_modules ios android .expo && pnpm store prune",
     "test": "jest",
     "lint": "eslint .",
     "generate": "npx expo prebuild --clean",

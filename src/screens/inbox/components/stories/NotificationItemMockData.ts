@@ -16,6 +16,9 @@ export const conversation = {
     channelType: 'Channel::FacebookPage' as Channel,
     phoneNumber: '+1234567890',
     medium: 'web',
+    priority: 'medium',
+    status: 'active',
+    provider: 'facebook',
   },
   lastMessage: {
     id: 2346,

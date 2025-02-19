@@ -93,8 +93,8 @@ export const authSlice = createSlice({
       .addCase(authActions.getProfile.fulfilled, (state, action) => {
         state.user = {
           ...state.user,
-          ...action.payload.user,
-        };
+          ...action.payload,
+        } as User;
       })
       .addCase(authActions.login.rejected, (state, action) => {
         state.uiFlags.isLoggingIn = false;

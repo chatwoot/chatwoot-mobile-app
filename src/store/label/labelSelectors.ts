@@ -10,6 +10,8 @@ export const { selectAll: selectAllLabels } =
 export const filterLabels = createSelector(
   [selectAllLabels, (state: RootState, searchTerm: string) => searchTerm],
   (labels, searchTerm) => {
-    return searchTerm ? labels.filter(label => label?.title?.includes(searchTerm)) : labels;
+    return searchTerm
+      ? labels.filter(label => label?.title?.toLowerCase().includes(searchTerm.toLowerCase()))
+      : labels;
   },
 );

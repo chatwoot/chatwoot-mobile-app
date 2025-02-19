@@ -117,7 +117,8 @@ export const AttributeList = (props: AttributeListProps) => {
         {list.map(
           (listItem, index) =>
             !listItem.disabled &&
-            listItem.subtitle && (
+            listItem.subtitle !== undefined &&
+            listItem.subtitle !== null && (
               <AttributeItem
                 key={index}
                 {...{ listItem, index }}

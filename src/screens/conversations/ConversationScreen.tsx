@@ -3,6 +3,7 @@ import { ActivityIndicator, RefreshControl, StatusBar } from 'react-native';
 import Animated, {
   LinearTransition,
   runOnJS,
+  SharedValue,
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -62,29 +63,32 @@ type FlashListRenderItemType = {
 const ConversationList = () => {
   const dispatch = useAppDispatch();
 
+  // This is used to prevent the infinite scrolling before the list is ready
   const [isFlashListReady, setFlashListReady] = useState(false);
+  // This is used for pull to refresh
   const [isRefreshing, setIsRefreshing] = useState(false);
+  // This is used for pagination
   const [pageNumber, setPageNumber] = useState(1);
   const userId = useAppSelector(selectUserId);
 
+  // This is used to store the index of the item that is currently selected
   const { openedRowIndex } = useConversationListStateContext();
 
+  // This is used to check if the conversations are still loading
   const isConversationsLoading = useAppSelector(selectConversationsLoading);
+  // This is used to check if all the conversations are fetched
   const isAllConversationsFetched = useAppSelector(selectIsAllConversationsFetched);
 
-  const handleRender = useCallback(
-    ({ item, index }: FlashListRenderItemType) => {
-      return (
-        <ConversationItemContainer
-          index={index}
-          conversationItem={item}
-          openedRowIndex={openedRowIndex}
-        />
-      );
-    },
+  const handleRender = useCallback(({ item, index }: FlashListRenderItemType) => {
+    return (
+      <ConversationItemContainer
+        index={index}
+        conversationItem={item}
+        openedRowIndex={openedRowIndex as SharedValue<number | null>}
+      />
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
+  }, []);
 
   const filters = useAppSelector(selectFilters);
   const previousFilters = useRef(filters);
@@ -99,7 +103,6 @@ const ConversationList = () => {
 
   useEffect(() => {
     clearAndFetchConversations(filters);
-    // fetchConversations(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

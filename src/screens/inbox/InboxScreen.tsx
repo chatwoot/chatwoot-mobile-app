@@ -7,7 +7,7 @@ import Animated, {
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FlashList } from '@shopify/flash-list';
+import { FlashList, ListRenderItem } from '@shopify/flash-list';
 
 import { TAB_BAR_HEIGHT } from '@/constants';
 import { InboxListStateProvider } from '@/context';
@@ -29,12 +29,7 @@ import { selectSortOrder } from '@/store/notification/notificationFilterSlice';
 import { EmptyStateIcon } from '@/svg-icons';
 import { InboxSortTypes } from '@/store/notification/notificationTypes';
 
-const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList);
-
-type FlashListRenderItemType = {
-  item: Notification;
-  index: number;
-};
+const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList<Notification>);
 
 const InboxList = () => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -119,7 +114,7 @@ const InboxList = () => {
 
   const { openedRowIndex } = useInboxListStateContext();
 
-  const handleRender = useCallback(({ item, index }: FlashListRenderItemType) => {
+  const handleRender: ListRenderItem<Notification> = ({ item, index }) => {
     return (
       <InboxItemContainer
         item={item}
@@ -127,7 +122,7 @@ const InboxList = () => {
         openedRowIndex={openedRowIndex as SharedValue<number | null>}
       />
     );
-  }, []);
+  };
 
   const scrollHandler = useAnimatedScrollHandler({
     onBeginDrag: () => {
@@ -168,8 +163,7 @@ const InboxList = () => {
       onEndReached={handleOnEndReached}
       onEndReachedThreshold={0.5}
       ListFooterComponent={ListFooterComponent}
-      // @ts-expect-error
-      renderItem={handleRender}
+      renderItem={handleRender} 
       contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}
     />
   );

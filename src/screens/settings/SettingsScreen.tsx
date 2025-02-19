@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, Text, Platform, View, Pressable } from 'react-native';
+import { StatusBar, Text, Platform, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -284,8 +284,7 @@ const SettingsScreen = () => {
               )}></Animated.View>
           </Animated.View>
           <Animated.View style={tailwind.style('flex flex-col items-center gap-1')}>
-            <Animated.Text
-              style={tailwind.style('text-[22px] font-inter-580-24 leading-[22px] text-gray-950')}>
+            <Animated.Text style={tailwind.style('text-[22px] font-inter-580-24 text-gray-950')}>
               {name}
             </Animated.Text>
             <Animated.Text

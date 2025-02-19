@@ -4,14 +4,16 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'Chatwoot',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
-    version: '4.0.6',
+    version: '4.0.10',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
+    newArchEnabled: false,
     splash: {
       image: './assets/splash.png',
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
+      enableFullScreenImage_legacy: true,
     },
     ios: {
       supportsTablet: true,
@@ -72,6 +74,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     owner: 'chatwoot',
     plugins: [
+      'expo-font',
       [
         'react-native-permissions',
         {
@@ -94,7 +97,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           // https://github.com/invertase/notifee/issues/808#issuecomment-2175934609
           android: {
             minSdkVersion: 24,
-            compileSdkVersion: 34,
+            compileSdkVersion: 35,
             targetSdkVersion: 34,
             extraMavenRepos: ['$rootDir/../../../node_modules/@notifee/react-native/android/libs'],
             enableProguardInReleaseBuilds: true,

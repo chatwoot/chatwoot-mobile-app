@@ -2,7 +2,7 @@ import React from 'react';
 
 import { tailwind } from '@/theme';
 import { NativeView } from '@/components-next/native-components';
-import { Icon } from '@/components-next';
+import { Icon } from '@/components-next/common/icon';
 import { getChannelIcon } from '@/utils';
 import { Inbox } from '@/types/Inbox';
 import { ConversationAdditionalAttributes } from '@/types/Conversation';

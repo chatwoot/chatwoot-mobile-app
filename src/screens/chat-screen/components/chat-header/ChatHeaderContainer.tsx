@@ -148,7 +148,7 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
         : undefined,
       ...dashboardRoutes,
     ].filter((item): item is DashboardList => item !== undefined);
-  }, []);
+  }, [pagerViewIndex]);
 
   const sLAStatusText = () => {
     const upperCaseType = slaStatus?.type?.toUpperCase(); // FRT, NRT, or RT

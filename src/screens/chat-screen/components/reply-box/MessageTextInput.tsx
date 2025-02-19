@@ -19,6 +19,8 @@ import { useChatWindowContext } from '@/context';
 import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+
+import { MentionInput, MentionSuggestionsProps, Suggestion } from './mentions-input';
 import {
   setMessageContent,
   togglePrivateMessage,
@@ -32,8 +34,6 @@ import { createTypingIndicator } from '@chatwoot/utils';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { MentionUser } from './MentionUser';
 import { Agent } from '@/types';
-
-import { MentionInput, MentionSuggestionsProps, Suggestion } from './mentions-input';
 
 type MessageTextInputProps = {
   maxLength: number;

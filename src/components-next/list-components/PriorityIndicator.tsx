@@ -4,7 +4,7 @@ import { tailwind } from '@/theme';
 import { ConversationPriority } from '@/types';
 import { NativeView } from '@/components-next/native-components';
 import { HighIcon, MediumIcon, LowIcon, UrgentIcon } from '@/svg-icons/priority-icons';
-import { Icon } from '@/components-next';
+import { Icon } from '@/components-next/common/icon';
 
 type PriorityIndicatorProps = {
   priority: ConversationPriority;

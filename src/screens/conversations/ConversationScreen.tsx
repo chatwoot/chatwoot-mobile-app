@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, RefreshControl, StatusBar } from 'react-native';
+import { ActivityIndicator, AppState, RefreshControl, StatusBar } from 'react-native';
 import Animated, {
   LinearTransition,
   runOnJS,
@@ -22,7 +22,7 @@ import {
 import { ActionTabs, BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
 
 import { EmptyStateIcon } from '@/svg-icons';
-import { TAB_BAR_HEIGHT } from '@/constants';
+import { SCREENS, TAB_BAR_HEIGHT } from '@/constants';
 import {
   ConversationListStateProvider,
   useConversationListStateContext,
@@ -52,6 +52,10 @@ import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentS
 
 import i18n from '@/i18n';
 import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
+import { getCurrentRouteName } from '@/utils/navigationUtils';
+
+// The screen list thats need to be checked for refreshing the conversations list
+const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.INBOX, SCREENS.SETTINGS];
 
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 
@@ -62,6 +66,7 @@ type FlashListRenderItemType = {
 
 const ConversationList = () => {
   const dispatch = useAppDispatch();
+  const [appState, setAppState] = useState(AppState.currentState);
 
   // This is used to prevent the infinite scrolling before the list is ready
   const [isFlashListReady, setFlashListReady] = useState(false);
@@ -135,6 +140,22 @@ const ConversationList = () => {
       setIsRefreshing(false);
     });
   }, [clearAndFetchConversations, filters]);
+
+  // Update conversations when app comes to foreground from background
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener('change', nextAppState => {
+      if (appState.match(/inactive|background/) && nextAppState === 'active') {
+        const routeName = getCurrentRouteName();
+        if (routeName && REFRESH_SCREEN_LIST.includes(routeName)) {
+          clearAndFetchConversations(filters);
+        }
+      }
+      setAppState(nextAppState);
+    });
+    return () => {
+      appStateListener?.remove();
+    };
+  }, [appState, clearAndFetchConversations, filters]);
 
   const fetchConversations = useCallback(
     async (filters: FilterState, page: number = 1) => {

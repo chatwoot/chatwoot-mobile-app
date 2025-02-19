@@ -2,10 +2,12 @@ export const SCREENS = {
   LOGIN: 'Login',
   CONFIG_URL: 'ConfigureURL',
   CONVERSATION: 'ConversationScreen',
+  // Deprecated
   NOTIFICATION: 'NotificationScreen',
   SETTINGS: 'SettingsScreen',
   DETAIL: 'Detail',
   CHAT: 'ChatScreen',
+  INBOX: 'InboxScreen',
 };
 
 export const TAB_BAR_HEIGHT = 83;

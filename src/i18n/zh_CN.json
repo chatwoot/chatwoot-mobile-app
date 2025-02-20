@@ -207,6 +207,9 @@
       },
       "fallback": {
         "CONTENT": "分享了一个网址"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
       }
     },
     "LONG_PRESS_ACTIONS": {

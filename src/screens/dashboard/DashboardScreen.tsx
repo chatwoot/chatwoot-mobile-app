@@ -13,7 +13,7 @@ import { User } from '@/types/User';
 const DashboardScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const webviewRef = useRef(null);
+  const webviewRef = useRef<WebView>(null);
 
   const { conversation, currentUser, title, url } = route.params as {
     conversation: Conversation;
@@ -71,10 +71,12 @@ const DashboardScreen = () => {
         originWhitelist={['*']}
         source={{ uri: url }}
         startInLoadingState={true}
-        injectedJavaScript={INJECTED_JAVASCRIPT}
+        javaScriptEnabled={true}
+        onLoadEnd={() => {
+          webviewRef.current?.injectJavaScript(INJECTED_JAVASCRIPT);
+        }}
         onMessage={event => {
           if (event?.nativeEvent?.data === 'chatwoot-dashboard-app:fetch-info') {
-            // @ts-expect-error
             webviewRef.current?.injectJavaScript(INJECTED_JAVASCRIPT);
           }
         }}

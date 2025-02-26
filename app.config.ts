@@ -3,7 +3,7 @@ import { ExpoConfig, ConfigContext } from 'expo/config';
 export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'Chatwoot',
-    slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
+    slug: process.env.EXPO_PUBLIC_APP_SLUG || 'buddyhelp',
     version: '4.0.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -38,7 +38,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#ffffff',
       },
-      package: 'com.chatwoot.app',
+      package: 'org.buddyhelp.app',
       permissions: [
         'android.permission.CAMERA',
         'android.permission.READ_EXTERNAL_STORAGE',

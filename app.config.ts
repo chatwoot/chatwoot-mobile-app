@@ -85,8 +85,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           organization: process.env.EXPO_PUBLIC_SENTRY_ORG_NAME,
         },
       ],
-      // '@react-native-firebase/app',
-      // '@react-native-firebase/messaging',
+      '@react-native-firebase/app',
+      '@react-native-firebase/messaging',
       [
         'expo-build-properties',
         {

@@ -207,6 +207,9 @@
       },
       "fallback": {
         "CONTENT": "URL을 공유함"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
       }
     },
     "LONG_PRESS_ACTIONS": {

@@ -81,8 +81,8 @@
       "STATUS": {
         "TITLE": "Filtrar por situação",
         "OPTIONS": {
-          "OPEN": "Abrir",
-          "PENDING": "Pendente",
+          "OPEN": "Abertas",
+          "PENDING": "Pendentes",
           "SNOOZED": "Adiado",
           "RESOLVED": "Resolvida",
           "ALL": "Todas"
@@ -100,9 +100,9 @@
         "HEADER_TITLE": "Atribuir situação",
         "TITLE": "Filtrar pela situação",
         "OPTIONS": {
-          "OPEN": "Abrir",
-          "PENDING": "Pendente",
-          "SNOOZED": "Adiado",
+          "OPEN": "Abertas",
+          "PENDING": "Pendentes",
+          "SNOOZED": "Adiadas",
           "RESOLVED": "Resolvida",
           "ALL": "Todas"
         }
@@ -119,7 +119,7 @@
     "DOWNLOAD": "Baixar",
     "TODAY": "Hoje",
     "YESTERDAY": "Ontem",
-    "TYPE_MESSAGE": "Tipo da Mensagem",
+    "TYPE_MESSAGE": "Digite a mensagem",
     "TYPING": "digitando",
     "ALL_CONVERSATION_LOADED": "Todas as conversas foram carregadas",
     "ASSIGN": "Atribuir conversa",
@@ -207,6 +207,9 @@
       },
       "fallback": {
         "CONTENT": "compartilhou uma URL"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
       }
     },
     "LONG_PRESS_ACTIONS": {
@@ -247,11 +250,11 @@
     "HEADER_TITLE": "Filtro da Conversa",
     "CHOOSE_INBOX": "Selecionar Caixa de Entrada",
     "CHOOSE_STATUS": "Situação da conversa",
-    "OPEN": "Abrir",
+    "OPEN": "Abertas",
     "RESOLVED": "Resolvida",
     "BOT": "Robô",
     "SUBMIT": "Enviar",
-    "PENDING": "Pendente",
+    "PENDING": "Pendentes",
     "SNOOZED": "Adiado"
   },
   "SETTINGS": {

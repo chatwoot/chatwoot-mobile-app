@@ -207,6 +207,9 @@
       },
       "fallback": {
         "CONTENT": "heeft een url gedeeld"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
       }
     },
     "LONG_PRESS_ACTIONS": {

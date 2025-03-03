@@ -207,6 +207,9 @@
       },
       "fallback": {
         "CONTENT": "ha condiviso un url"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
       }
     },
     "LONG_PRESS_ACTIONS": {

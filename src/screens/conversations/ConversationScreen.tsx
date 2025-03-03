@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, RefreshControl, StatusBar } from 'react-native';
+import { ActivityIndicator, AppState, RefreshControl, StatusBar } from 'react-native';
 import Animated, {
   LinearTransition,
   runOnJS,
@@ -22,7 +22,12 @@ import {
 import { ActionTabs, BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
 
 import { EmptyStateIcon } from '@/svg-icons';
-import { TAB_BAR_HEIGHT } from '@/constants';
+import {
+  SCREENS,
+  TAB_BAR_HEIGHT,
+  LAST_ACTIVE_TIMESTAMP_KEY,
+  LAST_ACTIVE_TIMESTAMP_THRESHOLD,
+} from '@/constants';
 import {
   ConversationListStateProvider,
   useConversationListStateContext,
@@ -52,6 +57,11 @@ import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentS
 
 import i18n from '@/i18n';
 import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
+import { getCurrentRouteName } from '@/utils/navigationUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// The screen list thats need to be checked for refreshing the conversations list
+const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.INBOX, SCREENS.SETTINGS];
 
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 
@@ -62,6 +72,7 @@ type FlashListRenderItemType = {
 
 const ConversationList = () => {
   const dispatch = useAppDispatch();
+  const [appState, setAppState] = useState(AppState.currentState);
 
   // This is used to prevent the infinite scrolling before the list is ready
   const [isFlashListReady, setFlashListReady] = useState(false);
@@ -92,6 +103,11 @@ const ConversationList = () => {
 
   const filters = useAppSelector(selectFilters);
   const previousFilters = useRef(filters);
+
+  // Reset last active timestamp when the conversation screen is opened
+  useEffect(() => {
+    AsyncStorage.removeItem(LAST_ACTIVE_TIMESTAMP_KEY);
+  }, []);
 
   useEffect(() => {
     if (previousFilters.current !== filters) {
@@ -135,6 +151,40 @@ const ConversationList = () => {
       setIsRefreshing(false);
     });
   }, [clearAndFetchConversations, filters]);
+
+  const checkAppStateAndFetchConversations = useCallback(async () => {
+    const lastActiveTimestamp = await AsyncStorage.getItem(LAST_ACTIVE_TIMESTAMP_KEY);
+    if (lastActiveTimestamp) {
+      const currentTimestamp = Date.now();
+      const difference = currentTimestamp - parseInt(lastActiveTimestamp);
+      if (difference > LAST_ACTIVE_TIMESTAMP_THRESHOLD) {
+        clearAndFetchConversations(filters);
+      }
+    }
+  }, [clearAndFetchConversations, filters]);
+
+  // Update conversations when app comes to foreground from background
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener('change', nextAppState => {
+      if (appState.match(/inactive|background/) && nextAppState === 'active') {
+        const routeName = getCurrentRouteName();
+        if (routeName && REFRESH_SCREEN_LIST.includes(routeName)) {
+          checkAppStateAndFetchConversations();
+        }
+      }
+
+      if (appState === 'active' && nextAppState.match(/inactive|background/)) {
+        // App is going to background
+        const currentTimestamp = Date.now();
+        AsyncStorage.setItem(LAST_ACTIVE_TIMESTAMP_KEY, currentTimestamp.toString());
+      }
+
+      setAppState(nextAppState);
+    });
+    return () => {
+      appStateListener?.remove();
+    };
+  }, [appState, checkAppStateAndFetchConversations, clearAndFetchConversations, filters]);
 
   const fetchConversations = useCallback(
     async (filters: FilterState, page: number = 1) => {

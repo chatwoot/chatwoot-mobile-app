@@ -2,10 +2,12 @@ export const SCREENS = {
   LOGIN: 'Login',
   CONFIG_URL: 'ConfigureURL',
   CONVERSATION: 'ConversationScreen',
+  // Deprecated
   NOTIFICATION: 'NotificationScreen',
   SETTINGS: 'SettingsScreen',
   DETAIL: 'Detail',
   CHAT: 'ChatScreen',
+  INBOX: 'InboxScreen',
 };
 
 export const TAB_BAR_HEIGHT = 83;
@@ -305,3 +307,6 @@ export const MESSAGE_VARIANTS = {
   EMAIL: 'email',
   UNSUPPORTED: 'unsupported',
 };
+
+export const LAST_ACTIVE_TIMESTAMP_KEY = 'lastActiveTimestamp';
+export const LAST_ACTIVE_TIMESTAMP_THRESHOLD = 1000 * 60 * 1; // 1 minute

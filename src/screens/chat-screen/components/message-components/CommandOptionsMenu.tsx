@@ -187,7 +187,9 @@ const handleAttachFile = async dispatch => {
       ], // You can specify the file types you want to allow
       presentationStyle: 'formSheet',
     });
-    validateFileAndSetAttachments(dispatch, mapObject(result[0]));
+    // TODO: Support multiple files
+    const file = mapObject(result[0])[0];
+    validateFileAndSetAttachments(dispatch, file);
   } catch (err) {
     if (DocumentPicker.isCancel(err)) {
       // User cancelled the picker

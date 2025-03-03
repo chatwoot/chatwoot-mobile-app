@@ -154,7 +154,6 @@ const ConversationList = () => {
 
   const checkAppStateAndFetchConversations = useCallback(async () => {
     const lastActiveTimestamp = await AsyncStorage.getItem(LAST_ACTIVE_TIMESTAMP_KEY);
-    console.log('lastActiveTimestamp', lastActiveTimestamp);
     if (lastActiveTimestamp) {
       const currentTimestamp = Date.now();
       const difference = currentTimestamp - parseInt(lastActiveTimestamp);

@@ -31,7 +31,7 @@
     "PASSWORD_REQUIRED": "密码是必填项",
     "PASSWORD_ERROR": "输入有效的密码",
     "LOGIN": "登录",
-    "LOGIN_LOADING": "正在登录...",
+    "LOGIN_LOADING": "正在登录……",
     "FORGOT_PASSWORD": "忘记密码？",
     "RESET_HERE": "重置",
     "NO_ACCOUNT": "没有注册？",
@@ -109,7 +109,7 @@
       }
     },
     "DEFAULT_HEADER_TITLE": "会话",
-    "UPDATING": "更新中...",
+    "UPDATING": "更新中……",
     "MINE": "我的",
     "UN_ASSIGNED": "未分配的",
     "ALL": "全部",

@@ -307,3 +307,6 @@ export const MESSAGE_VARIANTS = {
   EMAIL: 'email',
   UNSUPPORTED: 'unsupported',
 };
+
+export const LAST_ACTIVE_TIMESTAMP_KEY = 'lastActiveTimestamp';
+export const LAST_ACTIVE_TIMESTAMP_THRESHOLD = 1000 * 60 * 1; // 1 minute

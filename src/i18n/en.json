@@ -444,5 +444,13 @@
       "SHOW_MORE": "{count} more",
       "HIDE": "Hide {count} rows"
     }
+  },
+  "MACRO": {
+    "TITLE": "Macros",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "Macro executed successfully"
   }
 }

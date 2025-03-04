@@ -32,12 +32,15 @@ import { Button } from '@/components-next';
 import { ActivityIndicator, Pressable } from 'react-native';
 import i18n from '@/i18n';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { MacrosList } from './components/macros/MacrosList';
+import { macroActions } from '@/store/macro/macroActions';
 
 export const ChatWindow = (props: ChatScreenProps) => {
   return (
     <Animated.View style={tailwind.style('flex-1')}>
       <MessagesListContainer />
       <ReplyBoxContainer />
+      <MacrosList conversationId={props.route.params.conversationId} />
     </Animated.View>
   );
 };
@@ -111,6 +114,10 @@ const ChatScreen = (props: ChatScreenProps) => {
       fetchConversation();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    dispatch(macroActions.fetchMacros());
   }, []);
 
   useEffect(() => {

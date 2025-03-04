@@ -13,6 +13,7 @@ import {
   DashboardApp,
   CustomAttribute,
   CannedResponse,
+  Macro,
 } from '@/types';
 import type { Inbox } from '@/types/Inbox';
 import type { NotificationMeta, Notification } from '@/types/Notification';
@@ -89,4 +90,8 @@ export const transformNotificationRemovedResponse = (data: any): NotificationRem
 
 export const transformCannedResponse = (cannedResponse: any): CannedResponse => {
   return camelcaseKeys(cannedResponse, { deep: true }) as unknown as CannedResponse;
+};
+
+export const transformMacro = (macro: any): Macro => {
+  return camelcaseKeys(macro, { deep: true }) as unknown as Macro;
 };

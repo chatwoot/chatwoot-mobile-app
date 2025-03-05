@@ -247,7 +247,6 @@ const MenuOption = (props: MenuOptionProps) => {
   const handlePress = () => {
     hapticSelection?.();
     menuOption?.handlePress(dispatch);
-    console.log('menuOption', menuOption);
     if (menuOption.title === 'Macros') {
       macrosListSheetRef.current?.present();
     }
@@ -276,7 +275,7 @@ export const CommandOptionsMenu = () => {
   const { bottom } = useSafeAreaInsets();
   const isAndroid = Platform.OS === 'android';
   const containerHeight = isAndroid
-    ? 150 + (bottom === 0 ? 16 : bottom)
+    ? 190 + (bottom === 0 ? 16 : bottom)
     : 150 + (bottom === 0 ? 16 : bottom);
   return (
     <Animated.View

@@ -41,7 +41,7 @@ const MacroItem = (props: MacroItemProps) => {
       ]}>
       <Animated.View style={tailwind.style('flex flex-row items-center pl-1')}>
         <Animated.View style={tailwind.style('w-[20px] h-[20px] flex items-center justify-center')}>
-          {isThisMacroExecuting ? <Spinner size={14} /> : <Icon icon={<MacroIcon />} size={20} />}
+          {isThisMacroExecuting ? <Spinner size={16} /> : <Icon icon={<MacroIcon />} size={20} />}
         </Animated.View>
 
         <Animated.View

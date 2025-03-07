@@ -29,16 +29,13 @@ export const MacroProvider: React.FC<{
   const executeMacro = (macro: Macro) => {
     setIsExecuting(true);
     setExecutingMacroId(macro.id);
-    // Simulate execution time
-    setTimeout(() => {
-      dispatch(macroActions.executeMacro({ macroId: macro.id, conversationIds: [conversationId] }));
-      showToast({
-        message: i18n.t('MACRO.EXECUTION_SUCCESS'),
-      });
-      setExecutingMacroId(null);
-      setIsExecuting(false);
-      onClose();
-    }, 1000);
+    dispatch(macroActions.executeMacro({ macroId: macro.id, conversationIds: [conversationId] }));
+    showToast({
+      message: i18n.t('MACRO.EXECUTION_SUCCESS'),
+    });
+    setExecutingMacroId(null);
+    setIsExecuting(false);
+    onClose();
   };
 
   return (

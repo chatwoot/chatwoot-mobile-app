@@ -201,11 +201,6 @@ const handleAttachFile = async dispatch => {
 
 const ADD_MENU_OPTIONS = [
   {
-    icon: <MacrosIcon />,
-    title: 'Macros',
-    handlePress: () => {},
-  },
-  {
     icon: <PhotosIcon />,
     title: 'Photos',
     handlePress: handleOpenPhotosLibrary,
@@ -219,6 +214,11 @@ const ADD_MENU_OPTIONS = [
     icon: <AttachFileIcon />,
     title: 'Attach File',
     handlePress: handleAttachFile,
+  },
+  {
+    icon: <MacrosIcon />,
+    title: 'Macros',
+    handlePress: () => {},
   },
 ];
 

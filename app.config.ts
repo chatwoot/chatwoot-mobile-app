@@ -2,8 +2,8 @@ import { ExpoConfig, ConfigContext } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => {
   return {
-    name: 'Chatwoot',
-    slug: process.env.EXPO_PUBLIC_APP_SLUG || 'buddyhelp',
+    name: 'BuddyHelp',
+    slug: 'buddyhelp',
     version: '4.0.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -15,7 +15,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     ios: {
       supportsTablet: true,
-      bundleIdentifier: 'com.chatwoot.app',
+      bundleIdentifier: 'org.buddyhelp.app',
       infoPlist: {
         NSCameraUsageDescription:
           'This app requires access to the camera to upload images and videos.',
@@ -27,7 +27,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         UIBackgroundModes: ['fetch', 'remote-notification'],
       },
       // Please use the relative path to the google-services.json file
-      googleServicesFile: process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE,
+      googleServicesFile: 'google-services.json',
       entitlements: {
         'aps-environment': 'production',
       },
@@ -46,7 +46,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         'android.permission.RECORD_AUDIO',
       ],
       // Please use the relative path to the google-services.json file
-      googleServicesFile: process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE,
+      googleServicesFile: 'google-services.json',
       intentFilters: [
         {
           action: 'VIEW',
@@ -65,11 +65,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     extra: {
       eas: {
-        projectId: process.env.EXPO_PUBLIC_PROJECT_ID,
-        storybookEnabled: process.env.EXPO_STORYBOOK_ENABLED,
+        projectId: 'effc2cf0-e2a3-4e8f-8ff1-ed9ef0e876ca',
       },
     },
-    owner: 'chatwoot',
+    owner: 'buddyhelp',
     plugins: [
       [
         'react-native-permissions',

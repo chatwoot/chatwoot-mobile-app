@@ -23,9 +23,9 @@ export default (() => {
     return require('./.storybook').default;
   }
 
-  if (!__DEV__) {
-    return Sentry.wrap(App);
-  }
+  // if (!__DEV__) {
+  //   return Sentry.wrap(App);
+  // }
 
   console.log('Loading Development App');
   return App;

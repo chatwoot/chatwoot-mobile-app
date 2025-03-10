@@ -26,16 +26,27 @@ export const MacroProvider: React.FC<{
   const [executingMacroId, setExecutingMacroId] = useState<number | null>(null);
   const dispatch = useAppDispatch();
 
-  const executeMacro = (macro: Macro) => {
-    setIsExecuting(true);
-    setExecutingMacroId(macro.id);
-    dispatch(macroActions.executeMacro({ macroId: macro.id, conversationIds: [conversationId] }));
-    showToast({
-      message: i18n.t('MACRO.EXECUTION_SUCCESS'),
-    });
-    setExecutingMacroId(null);
-    setIsExecuting(false);
-    onClose();
+  const executeMacro = async (macro: Macro) => {
+    try {
+      setIsExecuting(true);
+      setExecutingMacroId(macro.id);
+      await dispatch(
+        macroActions.executeMacro({ macroId: macro.id, conversationIds: [conversationId] }),
+      );
+      showToast({
+        message: i18n.t('MACRO.EXECUTION_SUCCESS'),
+      });
+      setExecutingMacroId(null);
+      setIsExecuting(false);
+      onClose();
+    } catch (error) {
+      showToast({
+        message: error instanceof Error ? error.message : i18n.t('MACRO.EXECUTION_ERROR'),
+      });
+    } finally {
+      setIsExecuting(false);
+      setExecutingMacroId(null);
+    }
   };
 
   return (

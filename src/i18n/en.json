@@ -451,6 +451,7 @@
     "ACTIONS": {
       "RUN": "Run"
     },
-    "EXECUTION_SUCCESS": "Macro executed successfully"
+    "EXECUTION_SUCCESS": "Macro executed successfully",
+    "EXECUTION_ERROR": "Macro execution failed"
   }
 }

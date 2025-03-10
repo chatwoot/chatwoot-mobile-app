@@ -275,8 +275,8 @@ export const CommandOptionsMenu = () => {
   const { bottom } = useSafeAreaInsets();
   const isAndroid = Platform.OS === 'android';
   const containerHeight = isAndroid
-    ? 190 + (bottom === 0 ? 16 : bottom)
-    : 150 + (bottom === 0 ? 16 : bottom);
+    ? 210 + (bottom === 0 ? 16 : bottom)
+    : 175 + (bottom === 0 ? 16 : bottom);
   return (
     <Animated.View
       entering={SlideInDown.springify().damping(38).stiffness(240)}

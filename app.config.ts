@@ -4,7 +4,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'BuddyHelp',
     slug: 'buddyhelp',
-    version: '4.0.0',
+    version: '0.1.5',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
@@ -27,7 +27,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         UIBackgroundModes: ['fetch', 'remote-notification'],
       },
       // Please use the relative path to the google-services.json file
-      googleServicesFile: 'google-services.json',
+      googleServicesFile: process.env.GOOGLE_SERVICES_JSON || 'google-services.json',
       entitlements: {
         'aps-environment': 'production',
       },
@@ -46,7 +46,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         'android.permission.RECORD_AUDIO',
       ],
       // Please use the relative path to the google-services.json file
-      googleServicesFile: 'google-services.json',
+      googleServicesFile: process.env.GOOGLE_SERVICES_JSON || 'google-services.json',
       intentFilters: [
         {
           action: 'VIEW',
@@ -79,9 +79,9 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       [
         '@sentry/react-native/expo',
         {
-          url: 'https://sentry.io/',
-          project: process.env.EXPO_PUBLIC_SENTRY_PROJECT_NAME,
-          organization: process.env.EXPO_PUBLIC_SENTRY_ORG_NAME,
+          url: process.env.EXPO_PUBLIC_SENTRY_DSN,
+          project: 'BuddyHelp',
+          organization: 'BuddyHelp',
         },
       ],
       '@react-native-firebase/app',

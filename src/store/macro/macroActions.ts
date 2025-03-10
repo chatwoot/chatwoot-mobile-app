@@ -23,8 +23,8 @@ export const macroActions = {
       try {
         await MacroService.executeMacro(macroId, conversationIds);
       } catch (error) {
-        console.error(error);
-        const message = error instanceof Error ? error.message : '';
+        console.error('error', error);
+        const message = error instanceof Error ? error.message : 'Failed to execute macro';
         return rejectWithValue(message);
       }
     },

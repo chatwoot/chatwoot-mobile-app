@@ -32,18 +32,18 @@ export const MacroProvider: React.FC<{
       setExecutingMacroId(macro.id);
       await dispatch(
         macroActions.executeMacro({ macroId: macro.id, conversationIds: [conversationId] }),
-      );
+      ).unwrap();
+
       showToast({
         message: i18n.t('MACRO.EXECUTION_SUCCESS'),
       });
-      setExecutingMacroId(null);
-      setIsExecuting(false);
-      onClose();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       showToast({
-        message: error instanceof Error ? error.message : i18n.t('MACRO.EXECUTION_ERROR'),
+        message: i18n.t('MACRO.EXECUTION_ERROR'),
       });
     } finally {
+      onClose();
       setIsExecuting(false);
       setExecutingMacroId(null);
     }

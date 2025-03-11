@@ -5,13 +5,13 @@ import App from './src/app';
 
 const isStorybookEnabled = Constants.expoConfig?.extra?.eas?.storybookEnabled;
 
-// if (!__DEV__) {
-//   Sentry.init({
-//     dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
-//     tracesSampleRate: 1.0,
-//     attachScreenshot: true,
-//   });
-// }
+if (!__DEV__) {
+  Sentry.init({
+    dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
+    tracesSampleRate: 1.0,
+    attachScreenshot: true,
+  });
+}
 
 if (__DEV__) {
   require('./ReactotronConfig');
@@ -23,9 +23,9 @@ export default (() => {
     return require('./.storybook').default;
   }
 
-  // if (!__DEV__) {
-  //   return Sentry.wrap(App);
-  // }
+  if (!__DEV__) {
+    return Sentry.wrap(App);
+  }
 
   console.log('Loading Development App');
   return App;

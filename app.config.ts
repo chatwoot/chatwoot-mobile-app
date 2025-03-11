@@ -79,9 +79,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       [
         '@sentry/react-native/expo',
         {
-          url: process.env.EXPO_PUBLIC_SENTRY_DSN,
-          project: 'BuddyHelp',
-          organization: 'BuddyHelp',
+          url: process.env.EXPO_PUBLIC_SENTRY_URL,
+          project: 'buddyhelp',
+          organization: 'buddyhelp',
+          
         },
       ],
       '@react-native-firebase/app',

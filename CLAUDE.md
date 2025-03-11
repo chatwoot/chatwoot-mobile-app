@@ -1,6 +1,7 @@
 # Chatwoot Mobile App Developer Guide
 
 ## Build/Lint/Test Commands
+
 - `pnpm test` - Run all Jest tests
 - `pnpm lint` - Run ESLint on the codebase
 - `npx jest path/to/file.spec.ts` - Run a specific test file
@@ -9,9 +10,10 @@
 - `pnpm run:ios` - Run on iOS simulator
 - `pnpm run:android` - Run on Android emulator
 - `pnpm clean` - Clean project
-- `pnpm storybook` - Run Storybook
+- `pnpm run:storybook` - Run Storybook
 
 ## Code Style Guidelines
+
 - TypeScript with strict typing throughout
 - PascalCase for components/interfaces, camelCase for variables/functions
 - Use absolute imports with `@/` prefix

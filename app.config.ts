@@ -27,7 +27,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         UIBackgroundModes: ['fetch', 'remote-notification'],
       },
       // Please use the relative path to the google-services.json file
-      googleServicesFile: process.env.GOOGLE_SERVICES_JSON || 'google-services.json',
+      googleServicesFile: 'GoogleService-Info.plist',
       entitlements: {
         'aps-environment': 'production',
       },

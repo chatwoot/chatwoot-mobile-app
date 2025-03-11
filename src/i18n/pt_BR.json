@@ -443,5 +443,15 @@
       "SHOW_MORE": "{count} mais",
       "HIDE": "Esconder linhas de {count}"
     }
+  },
+  "MACRO": {
+    "TITLE": "Macros",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "Macro executada com sucesso",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "Nenhuma macro encontrada"
   }
 }

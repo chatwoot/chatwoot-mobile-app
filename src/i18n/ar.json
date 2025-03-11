@@ -443,5 +443,15 @@
       "SHOW_MORE": "{count} المزيد",
       "HIDE": "إخفاء الصفوف {count}"
     }
+  },
+  "MACRO": {
+    "TITLE": "ماكروس",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "تم تنفيذ الماكرو بنجاح",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "لم يتم العثور على الماكروس"
   }
 }

@@ -452,6 +452,7 @@
       "RUN": "Run"
     },
     "EXECUTION_SUCCESS": "Macro executed successfully",
-    "EXECUTION_ERROR": "Macro execution failed"
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "No macros found"
   }
 }

@@ -41,5 +41,6 @@ google-services.json
 GoogleService-Info.plist
 .env
 .env.local
+build-*.aab
 
 .env.local

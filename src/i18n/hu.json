@@ -443,5 +443,15 @@
       "SHOW_MORE": "{count} more",
       "HIDE": "Hide {count} rows"
     }
+  },
+  "MACRO": {
+    "TITLE": "Makrók",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "Makró végrehajtása sikeres",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "Nem találtunk makrót"
   }
 }

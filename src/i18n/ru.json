@@ -443,5 +443,15 @@
       "SHOW_MORE": "еще {count}",
       "HIDE": "Скрыть {count} строк"
     }
+  },
+  "MACRO": {
+    "TITLE": "Макрос",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "Макрос успешно выполнен",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "Макросы не найдены"
   }
 }

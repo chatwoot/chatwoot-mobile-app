@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppDispatch } from '@/hooks';
 import { updateAttachments } from '@/store/conversation/sendMessageSlice';
 import { useRefsContext } from '@/context';
-import { AttachFileIcon, CameraIcon, PhotosIcon } from '@/svg-icons';
+import { AttachFileIcon, CameraIcon, MacrosIcon, PhotosIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '@/components-next/common';
@@ -215,6 +215,11 @@ const ADD_MENU_OPTIONS = [
     title: 'Attach File',
     handlePress: handleAttachFile,
   },
+  {
+    icon: <MacrosIcon />,
+    title: 'Macros',
+    handlePress: () => {},
+  },
 ];
 
 export const validateFileAndSetAttachments = async (dispatch, attachment) => {
@@ -270,8 +275,8 @@ export const CommandOptionsMenu = () => {
   const { bottom } = useSafeAreaInsets();
   const isAndroid = Platform.OS === 'android';
   const containerHeight = isAndroid
-    ? 150 + (bottom === 0 ? 16 : bottom)
-    : 110 + (bottom === 0 ? 16 : bottom);
+    ? 210 + (bottom === 0 ? 16 : bottom)
+    : 175 + (bottom === 0 ? 16 : bottom);
   return (
     <Animated.View
       entering={SlideInDown.springify().damping(38).stiffness(240)}

@@ -443,5 +443,15 @@
       "SHOW_MORE": "还有 {count} 条",
       "HIDE": "隐藏 {count} 行"
     }
+  },
+  "MACRO": {
+    "TITLE": "宏",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "宏成功执行",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "未找到宏"
   }
 }

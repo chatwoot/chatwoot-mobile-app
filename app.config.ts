@@ -27,8 +27,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         UIBackgroundModes: ['fetch', 'remote-notification'],
         ITSAppUsesNonExemptEncryption: false,
       },
-      // Please use the relative path to the google-services.json file
-      googleServicesFile: 'GoogleService-Info.plist',
+      // Using Google Services file in project root
+      googleServicesFile: './GoogleService-Info.plist',
       entitlements: {
         'aps-environment': 'production',
       },
@@ -46,8 +46,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         'android.permission.WRITE_EXTERNAL_STORAGE',
         'android.permission.RECORD_AUDIO',
       ],
-      // Please use the relative path to the google-services.json file
-      googleServicesFile: process.env.GOOGLE_SERVICES_JSON || 'google-services.json',
+      // Use google-services.json in project root
+      googleServicesFile: './google-services.json',
       intentFilters: [
         {
           action: 'VIEW',

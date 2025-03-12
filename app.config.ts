@@ -25,6 +25,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         NSAppleMusicUsageDescription:
           'This app does not use Apple Music, but a system API may require this permission.',
         UIBackgroundModes: ['fetch', 'remote-notification'],
+        ITSAppUsesNonExemptEncryption: false,
       },
       // Please use the relative path to the google-services.json file
       googleServicesFile: 'GoogleService-Info.plist',
@@ -80,8 +81,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         '@sentry/react-native/expo',
         {
           url: process.env.EXPO_PUBLIC_SENTRY_URL,
-          project: 'buddyhelp',
-          organization: 'buddyhelp',
+          project: 'BuddyHelp',
+          organization: 'BuddyHelp',
           
         },
       ],

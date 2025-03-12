@@ -38,9 +38,10 @@ ios/
 android/
 
 google-services.json
-GoogleService-Info.plist
+extracted-app
+googleservice-info.plist
 .env
 .env.local
-build-*.aab
-
+build-*
+credentials.json
 .env.local

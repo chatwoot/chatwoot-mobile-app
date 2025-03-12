@@ -8,8 +8,21 @@
       "developmentClient": true,
       "distribution": "internal"
     },
+    "preview": {
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      }
+    },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "ios": {
+        "credentialsSource": "local",
+        "enterpriseProvisioning": "adhoc",
+        "buildConfiguration": "Release",
+        "distribution": "internal",
+        "image": "latest"
+      }
     }
   },
   "submit": {

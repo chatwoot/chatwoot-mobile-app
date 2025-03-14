@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
-// import messaging from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging';
 import { getStateFromPath } from '@react-navigation/native';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { useFonts } from 'expo-font';
@@ -20,9 +20,9 @@ import { RefsProvider } from '@/context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 // import { NoNetworkBar } from '@/components-next';
 
-// messaging().setBackgroundMessageHandler(async remoteMessage => {
-//   // console.log('Message handled in the background!', remoteMessage);
-// });
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  // console.log('Message handled in the background!', remoteMessage);
+});
 
 export const AppNavigationContainer = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -86,25 +86,25 @@ export const AppNavigationContainer = () => {
         ],
       };
     },
-    // async getInitialURL() {
-    //   // Check if app was opened from a deep link
-    //   const url = await Linking.getInitialURL();
+    async getInitialURL() {
+      // Check if app was opened from a deep link
+      const url = await Linking.getInitialURL();
 
-    //   if (url != null) {
-    //     return url;
-    //   }
+      if (url != null) {
+        return url;
+      }
 
-    //   // Handle notification caused app to open from quit state:
-    //   const message = await messaging().getInitialNotification();
-    //   if (message) {
-    //     const notification = findNotificationFromFCM({ message });
-    //     const conversationLink = findConversationLinkFromPush({ notification, installationUrl });
-    //     if (conversationLink) {
-    //       return conversationLink;
-    //     }
-    //   }
-    //   return undefined;
-    // },
+      // Handle notification caused app to open from quit state:
+      const message = await messaging().getInitialNotification();
+      if (message) {
+        const notification = findNotificationFromFCM({ message });
+        const conversationLink = findConversationLinkFromPush({ notification, installationUrl });
+        if (conversationLink) {
+          return conversationLink;
+        }
+      }
+      return undefined;
+    },
     subscribe(listener: (arg0: string) => void) {
       const onReceiveURL = ({ url }: { url: string }) => listener(url);
 
@@ -112,20 +112,20 @@ export const AppNavigationContainer = () => {
       const subscription = Linking.addEventListener('url', onReceiveURL);
 
       // Handle notification caused app to open from background state
-      // const unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
-      //   if (message) {
-      //     const notification = findNotificationFromFCM({ message });
+      const unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
+        if (message) {
+          const notification = findNotificationFromFCM({ message });
 
-      //     const conversationLink = findConversationLinkFromPush({ notification, installationUrl });
-      //     if (conversationLink) {
-      //       listener(conversationLink);
-      //     }
-      //   }
-      // });
+          const conversationLink = findConversationLinkFromPush({ notification, installationUrl });
+          if (conversationLink) {
+            listener(conversationLink);
+          }
+        }
+      });
 
       return () => {
         subscription.remove();
-        // unsubscribeNotification();
+        unsubscribeNotification();
       };
     },
   };

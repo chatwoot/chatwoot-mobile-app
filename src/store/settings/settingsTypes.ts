@@ -49,3 +49,7 @@ export interface PushPayload {
     device_id: string;
   };
 }
+
+export interface RemoveDevicePayload {
+  push_token: string;
+}

@@ -10,6 +10,7 @@ import { PriorityIndicator, ChannelIndicator } from '@/components-next/list-comp
 import { Inbox } from '@/types/Inbox';
 import { ConversationAdditionalAttributes } from '@/types/Conversation';
 import { NotificationTypeIndicator } from './NotificationTypeIndicator';
+import { Dimensions } from 'react-native';
 
 type InboxItemProps = {
   isRead: boolean;
@@ -29,6 +30,8 @@ type InboxItemProps = {
   pushMessageTitle: string;
   notificationType: NotificationType;
 };
+
+const { width } = Dimensions.get('screen');
 
 export const InboxItemComponent = (props: InboxItemProps) => {
   const {
@@ -57,6 +60,7 @@ export const InboxItemComponent = (props: InboxItemProps) => {
               numberOfLines={1}
               style={tailwind.style(
                 'text-base font-inter-medium-24 tracking-[0.24px] text-gray-950 capitalize',
+                `max-w-[${width - 250}px]`,
               )}>
               {sender.name || ''}
             </Animated.Text>

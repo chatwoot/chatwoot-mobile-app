@@ -443,5 +443,15 @@
       "SHOW_MORE": "{count} بیشتر",
       "HIDE": "مخفی کردم {count} مورد"
     }
+  },
+  "MACRO": {
+    "TITLE": "ماکروها",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "ماکرو با موفقیت اجرا شد",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "هیچ ماکروی یافت نشد"
   }
 }

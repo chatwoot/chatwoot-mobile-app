@@ -443,5 +443,15 @@
       "SHOW_MORE": "{count} més",
       "HIDE": "Amaga {count} files"
     }
+  },
+  "MACRO": {
+    "TITLE": "Macros",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "La macro s'ha executat correctament",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "No s'han trobat macros"
   }
 }

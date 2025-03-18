@@ -443,5 +443,15 @@
       "SHOW_MORE": "{count} more",
       "HIDE": "Hide {count} rows"
     }
+  },
+  "MACRO": {
+    "TITLE": "Μακροεντολές",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "Η μακροεντολή εκτελέστηκε επιτυχώς",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "Δεν βρέθηκαν μακροεντολές"
   }
 }

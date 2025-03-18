@@ -83,8 +83,8 @@
         "OPTIONS": {
           "OPEN": "Abertas",
           "PENDING": "Pendentes",
-          "SNOOZED": "Adiado",
-          "RESOLVED": "Resolvida",
+          "SNOOZED": "Adiadas",
+          "RESOLVED": "Resolvidas",
           "ALL": "Todas"
         }
       }
@@ -103,7 +103,7 @@
           "OPEN": "Abertas",
           "PENDING": "Pendentes",
           "SNOOZED": "Adiadas",
-          "RESOLVED": "Resolvida",
+          "RESOLVED": "Resolvidas",
           "ALL": "Todas"
         }
       }
@@ -209,7 +209,7 @@
         "CONTENT": "compartilhou uma URL"
       },
       "contact": {
-        "CONTENT": "Shared a contact"
+        "CONTENT": "Compartilhou um contato"
       }
     },
     "LONG_PRESS_ACTIONS": {
@@ -251,7 +251,7 @@
     "CHOOSE_INBOX": "Selecionar Caixa de Entrada",
     "CHOOSE_STATUS": "Situação da conversa",
     "OPEN": "Abertas",
-    "RESOLVED": "Resolvida",
+    "RESOLVED": "Resolvidas",
     "BOT": "Robô",
     "SUBMIT": "Enviar",
     "PENDING": "Pendentes",
@@ -443,5 +443,15 @@
       "SHOW_MORE": "{count} mais",
       "HIDE": "Esconder linhas de {count}"
     }
+  },
+  "MACRO": {
+    "TITLE": "Macros",
+    "SELECT_MACRO": "Selecionar macro",
+    "ACTIONS": {
+      "RUN": "Executar"
+    },
+    "EXECUTION_SUCCESS": "Macro executada com sucesso",
+    "EXECUTION_ERROR": "Falha ao executar macro",
+    "NO_MACROS": "Nenhuma macro encontrada"
   }
 }

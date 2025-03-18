@@ -443,5 +443,15 @@
       "SHOW_MORE": "{count} more",
       "HIDE": "Hide {count} rows"
     }
+  },
+  "MACRO": {
+    "TITLE": "Kısayollar",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "Kısayol başarıyla çalıştırıldı",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "Hiç kısayol bulunamadı"
   }
 }

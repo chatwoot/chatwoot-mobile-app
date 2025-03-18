@@ -2,6 +2,8 @@ import React, { useRef } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { WebView } from 'react-native-webview';
+import snakecaseKeys from 'snakecase-keys';
+
 import { StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
 import { Icon } from '@/components-next';
@@ -27,15 +29,22 @@ const DashboardScreen = () => {
   };
 
   const contact = conversation?.meta?.sender;
-  const data = {
-    conversation,
-    contact,
-    currentAgent: {
-      id: currentUser.id,
-      name: currentUser.name,
-      email: currentUser.email,
+
+  // The mobile app consistently uses snake case, while the dashboard still has mixed usage of snake case.
+  // To maintain compatibility for dashboard users, we temporarily convert the data to snake case at this point.
+  // TODO: Once we complete the migration to camel case, we can remove this conversion.
+  const data = snakecaseKeys(
+    {
+      conversation,
+      contact,
+      currentAgent: {
+        id: currentUser.id,
+        name: currentUser.name,
+        email: currentUser.email,
+      },
     },
-  };
+    { deep: true },
+  );
 
   const INJECTED_JAVASCRIPT = `window.postMessage(JSON.stringify({"event":"appContext","data":${JSON.stringify(
     data,

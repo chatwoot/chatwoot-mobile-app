@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "generate": "npx expo prebuild --clean",
     "generate:soft": "npx expo prebuild",
-    "run:ios": "pnpm prepare-build && npx expo run:ios && pnpm cleanup-build",
+    "run:ios": "bash -c 'function cleanup() { pnpm cleanup-build; exit $?; }; trap cleanup EXIT INT TERM; pnpm prepare-build && npx expo run:ios'",
     "run:android": "pnpm prepare-build && npx expo run:android && pnpm cleanup-build",
     "prepare-build": "./scripts/prepare-build.sh",
     "build:android:local": "pnpm prepare-build && eas build -p android --profile production --local && pnpm cleanup-build",

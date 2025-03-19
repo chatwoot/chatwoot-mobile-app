@@ -136,4 +136,9 @@ export const settingsActions = {
       }
     },
   ),
+
+  removeDevice: createSettingsThunk<void, { pushToken: string }>(
+    'settings/removeDevice',
+    ({ pushToken }) => SettingsService.removeDevice({ push_token: pushToken }),
+  ),
 };

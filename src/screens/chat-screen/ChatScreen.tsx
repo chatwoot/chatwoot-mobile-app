@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view';
 import Animated from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import TrackPlayer from 'react-native-track-player';
 import { LightBoxProvider } from '@alantoa/lightbox';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -33,12 +32,15 @@ import { Button } from '@/components-next';
 import { ActivityIndicator, Pressable } from 'react-native';
 import i18n from '@/i18n';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { MacrosList } from './components/macros/MacrosList';
+import { macroActions } from '@/store/macro/macroActions';
 
 export const ChatWindow = (props: ChatScreenProps) => {
   return (
     <Animated.View style={tailwind.style('flex-1')}>
       <MessagesListContainer />
       <ReplyBoxContainer />
+      <MacrosList conversationId={props.route.params.conversationId} />
     </Animated.View>
   );
 };
@@ -115,6 +117,10 @@ const ChatScreen = (props: ChatScreenProps) => {
   }, []);
 
   useEffect(() => {
+    dispatch(macroActions.fetchMacros());
+  }, []);
+
+  useEffect(() => {
     if (primaryActorId && primaryActorType) {
       const payload: MarkAsReadPayload = {
         primaryActorId,
@@ -125,17 +131,6 @@ const ChatScreen = (props: ChatScreenProps) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    const setUpTrackPlayer = () => {
-      TrackPlayer.setupPlayer()
-        .then(() => {})
-        .catch(() => {
-          // Handle setting up player error
-        });
-    };
-    setUpTrackPlayer();
-  });
 
   const handleBackPress = () => {
     if (navigation.canGoBack()) {

@@ -14,10 +14,10 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAssignableParticipantsByInboxId } from '@/store/assignable-agent/assignableAgentSelectors';
 import { selectSelectedConversation } from '@/store/conversation/conversationSelectedSlice';
 import { isAssignableAgentFetching } from '@/store/assignable-agent/assignableAgentSelectors';
-import { showToast } from '@/helpers/ToastHelper';
+import { showToast } from '@/utils/toastUtils';
 import i18n from '@/i18n';
 import { CONVERSATION_EVENTS } from '@/constants/analyticsEvents';
-import AnalyticsHelper from '@/helpers/AnalyticsHelper';
+import AnalyticsHelper from '@/utils/analyticsUtils';
 import { conversationParticipantActions } from '@/store/conversation-participant/conversationParticipantActions';
 
 type ParticipantCellProps = {

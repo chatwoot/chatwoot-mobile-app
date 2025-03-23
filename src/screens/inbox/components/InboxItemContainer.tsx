@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React from 'react';
+import React, { useCallback } from 'react';
 import { SharedValue } from 'react-native-reanimated';
 import Animated from 'react-native-reanimated';
 
@@ -15,7 +15,7 @@ import { tailwind } from '@/theme';
 import { Icon, Swipeable } from '@/components-next';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import i18n from '@/i18n';
-import { showToast } from '@/helpers/ToastHelper';
+import { showToast } from '@/utils/toastUtils';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { conversationActions } from '@/store/conversation/conversationActions';
 
@@ -52,7 +52,7 @@ const DeleteComponent = React.memo(() => {
   );
 });
 
-export const InboxItemContainer = (props: InboxItemContainerProps) => {
+export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
   const { index, item, openedRowIndex } = props;
   const dispatch = useAppDispatch();
 
@@ -75,20 +75,19 @@ export const InboxItemContainer = (props: InboxItemContainerProps) => {
     }
   };
 
-  const markNotificationAsRead = async ({
-    shouldShowToast = true,
-  }: { shouldShowToast?: boolean } = {}) => {
-    const payload: MarkAsReadPayload = {
-      primaryActorId: item.primaryActorId,
-      primaryActorType: item.primaryActorType,
-    };
-    await dispatch(notificationActions.markAsRead(payload));
-    if (shouldShowToast) {
-      showToast({
-        message: i18n.t('NOTIFICATION.ALERTS.MARK_AS_READ'),
-      });
-    }
-  };
+  const markNotificationAsRead = useCallback(
+    async ({ shouldShowToast = true } = {}) => {
+      const payload: MarkAsReadPayload = {
+        primaryActorId: item.primaryActorId,
+        primaryActorType: item.primaryActorType,
+      };
+      await dispatch(notificationActions.markAsRead(payload));
+      if (shouldShowToast) {
+        showToast({ message: i18n.t('NOTIFICATION.ALERTS.MARK_AS_READ') });
+      }
+    },
+    [dispatch, item.primaryActorId, item.primaryActorType],
+  );
 
   const markNotificationAsUnread = async () => {
     await dispatch(notificationActions.markAsUnread(item.id));
@@ -112,10 +111,10 @@ export const InboxItemContainer = (props: InboxItemContainerProps) => {
     }
   };
 
-  const lastActivityAt = () => {
+  const lastActivityAt = useCallback(() => {
     const time = formatRelativeTime(item.lastActivityAt);
     return formatTimeToShortForm(time, true);
-  };
+  }, [item.lastActivityAt]);
 
   const inbox = useAppSelector(state => selectInboxById(state, inboxId));
 
@@ -155,3 +154,6 @@ export const InboxItemContainer = (props: InboxItemContainerProps) => {
     </Swipeable>
   );
 };
+
+InboxItemContainerComponent.displayName = 'InboxItemContainer';
+export const InboxItemContainer = React.memo(InboxItemContainerComponent);

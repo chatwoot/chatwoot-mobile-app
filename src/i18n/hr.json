@@ -207,6 +207,9 @@
       },
       "fallback": {
         "CONTENT": "je podijelio/la url"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
       }
     },
     "LONG_PRESS_ACTIONS": {
@@ -440,5 +443,15 @@
       "SHOW_MORE": "{count} more",
       "HIDE": "Hide {count} rows"
     }
+  },
+  "MACRO": {
+    "TITLE": "Macros",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "Macro executed successfully",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "No macros found"
   }
 }

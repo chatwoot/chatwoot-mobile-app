@@ -8,10 +8,12 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
+    newArchEnabled: false,
     splash: {
       image: './assets/splash.png',
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
+      enableFullScreenImage_legacy: true,
     },
     ios: {
       supportsTablet: true,
@@ -25,7 +27,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         NSAppleMusicUsageDescription:
           'This app does not use Apple Music, but a system API may require this permission.',
         UIBackgroundModes: ['fetch', 'remote-notification'],
-        ITSAppUsesNonExemptEncryption: false,
+        ITSAppUsesNonExemptEncryption: false, //todo: look if this is needed
       },
       // Using Google Services file in project root
       googleServicesFile: './GoogleService-Info.plist',
@@ -45,6 +47,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         'android.permission.READ_EXTERNAL_STORAGE',
         'android.permission.WRITE_EXTERNAL_STORAGE',
         'android.permission.RECORD_AUDIO',
+        'android.permission.READ_MEDIA_IMAGES',
       ],
       // Use google-services.json in project root
       googleServicesFile: './google-services.json',
@@ -71,6 +74,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     owner: 'buddyhelp',
     plugins: [
+      'expo-font',
       [
         'react-native-permissions',
         {
@@ -80,10 +84,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       [
         '@sentry/react-native/expo',
         {
-          url: process.env.EXPO_PUBLIC_SENTRY_URL,
+          url: process.env.EXPO_PUBLIC_SENTRY_URL, // TODO:add literal url
           project: 'BuddyHelp',
           organization: 'BuddyHelp',
-          
+
         },
       ],
       '@react-native-firebase/app',
@@ -93,12 +97,23 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         {
           // https://github.com/invertase/notifee/issues/808#issuecomment-2175934609
           android: {
-            compileSdkVersion: 34,
+            minSdkVersion: 24,
+            compileSdkVersion: 35,
             targetSdkVersion: 34,
             extraMavenRepos: ['$rootDir/../../../node_modules/@notifee/react-native/android/libs'],
+            enableProguardInReleaseBuilds: true,
           },
           ios: {
             useFrameworks: 'static',
+          },
+        },
+      ],
+      [
+        '@config-plugins/ffmpeg-kit-react-native',
+        {
+          package: 'min',
+          ios: {
+            package: 'audio',
           },
         },
       ],

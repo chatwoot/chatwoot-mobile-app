@@ -2,9 +2,7 @@ import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import type { Inbox } from '@/types/Inbox';
 import { inboxActions } from './inboxActions';
 
-export const inboxAdapter = createEntityAdapter<Inbox>({
-  selectId: inbox => inbox.id,
-});
+export const inboxAdapter = createEntityAdapter<Inbox>();
 
 export interface InboxState {
   isLoading: boolean;

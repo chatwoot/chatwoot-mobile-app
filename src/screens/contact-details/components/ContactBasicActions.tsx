@@ -8,7 +8,7 @@ import { MailIcon, PhoneIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import i18n from '@/i18n';
-import { openNumber, openEmail } from '@/helpers/UrlHelper';
+import { openNumber, openEmail } from '@/utils/urlUtils';
 
 const contactOptions = [
   {

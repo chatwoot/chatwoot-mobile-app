@@ -29,6 +29,9 @@ importers:
       '@kesha-antonov/react-native-action-cable':
         specifier: ^1.1.5
         version: 1.1.5
+      '@nandorojo/galeria':
+        specifier: ^1.2.0
+        version: 1.2.0(expo@52.0.35(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(graphql@15.8.0)(react-native-webview@13.12.5(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
       '@notifee/react-native':
         specifier: ^9.1.1
         version: 9.1.1(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))
@@ -1072,6 +1075,12 @@ packages:
     resolution: {integrity: sha512-XQsZgjm2EcVUiZQf11UBJQfmZeEmOW8DpI1gsFeln6w0ae0ii4dMQEQ0kjl6DspdWX1aGY1/loyXnP0JS06e/A==}
     engines: {node: '>=0.8.0'}
 
+  '@emotion/is-prop-valid@0.8.8':
+    resolution: {integrity: sha512-u5WtneEAr5IDG2Wv65yhunPSMLIpuKsbuOktRojfrEiEvRyC85LgPMZI63cr7NUqT8ZIGdSVg8ZKGxIug4lXcA==}
+
+  '@emotion/memoize@0.7.4':
+    resolution: {integrity: sha512-Ja/Vfqe3HpuzRsG1oBtWTHk2PGZ7GR+2Vz5iYGelAw8dx32K0y7PjVuxK6z1nMpZOqAFsRUPCkK1YjJ56qJlgw==}
+
   '@esbuild/aix-ppc64@0.24.0':
     resolution: {integrity: sha512-WtKdFM7ls47zkKHFVzMz8opM7LkcsIp9amDUBIAWirg70RM71WRSjdILPsY5Uv1D42ZpUfaPILDlfactHgsRkw==}
     engines: {node: '>=18'}
@@ -1679,6 +1688,14 @@ packages:
 
   '@kesha-antonov/react-native-action-cable@1.1.5':
     resolution: {integrity: sha512-bnTVl5qzm3lNGdsid1KzofEY7AGuqYBR/C5AUP0+eThhqc5d2Cd7ySyo4kWE7o/fVq8jb30po5Bk6FuX4pNEEw==}
+
+  '@nandorojo/galeria@1.2.0':
+    resolution: {integrity: sha512-v03TbphKeJt0P/KrQ45HA33qdmNMTxiPi3WDTv6EIlupVbixzZnErOG5zffOHJ3e6SeZu+GYPJhrsT35yo7Shw==}
+    peerDependencies:
+      expo: '*'
+      react: '*'
+      react-dom: '*'
+      react-native: '*'
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -3892,6 +3909,17 @@ packages:
   form-data@4.0.1:
     resolution: {integrity: sha512-tzN8e4TX8+kkxGPK8D5u0FNmjPUjw3lwC9lSLxxoB/+GtsJG91CO8bSWy73APlgAZzZbXEYZJuxjkHH2w+Ezhw==}
     engines: {node: '>= 6'}
+
+  framer-motion@10.18.0:
+    resolution: {integrity: sha512-oGlDh1Q1XqYPksuTD/usb0I70hq95OUzmL9+6Zd+Hs4XV0oaISBa/UUMSjYiq6m8EUF32132mOJ8xVZS+I0S6w==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
 
   freeport-async@2.0.0:
     resolution: {integrity: sha512-K7od3Uw45AJg00XUmy15+Hae2hOcgKcmN3/EF6Y7i01O0gaqiRx8sUSpsb9+BRNL8RPBrhzPsVfy8q9ADlJuWQ==}
@@ -7681,6 +7709,14 @@ snapshots:
     dependencies:
       '@types/hammerjs': 2.0.46
 
+  '@emotion/is-prop-valid@0.8.8':
+    dependencies:
+      '@emotion/memoize': 0.7.4
+    optional: true
+
+  '@emotion/memoize@0.7.4':
+    optional: true
+
   '@esbuild/aix-ppc64@0.24.0':
     optional: true
 
@@ -8692,6 +8728,15 @@ snapshots:
   '@kesha-antonov/react-native-action-cable@1.1.5':
     dependencies:
       eventemitter3: 5.0.1
+
+  '@nandorojo/galeria@1.2.0(expo@52.0.35(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(graphql@15.8.0)(react-native-webview@13.12.5(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      expo: 52.0.35(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(graphql@15.8.0)(react-native-webview@13.12.5(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
+      framer-motion: 10.18.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-native: 0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1)
+      react-native-is-edge-to-edge: 1.1.6(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -11447,6 +11492,14 @@ snapshots:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
+
+  framer-motion@10.18.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      tslib: 2.8.1
+    optionalDependencies:
+      '@emotion/is-prop-valid': 0.8.8
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   freeport-async@2.0.0: {}
 

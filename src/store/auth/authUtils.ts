@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { showToast } from '@/helpers/ToastHelper';
+import { showToast } from '@/utils/toastUtils';
 import I18n from '@/i18n';
 import type { ApiErrorResponse } from './authTypes';
 

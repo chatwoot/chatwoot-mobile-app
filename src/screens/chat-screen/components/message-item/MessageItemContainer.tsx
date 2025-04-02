@@ -8,7 +8,7 @@ import { conversationActions } from '@/store/conversation/conversationActions';
 import { useHaptic } from '@/utils';
 // import { inboxHasFeature, is360DialogWhatsAppChannel, useHaptic } from '@/utils';
 // import { INBOX_FEATURES } from '@/constants';
-import { showToast } from '@/helpers/ToastHelper';
+import { showToast } from '@/utils/toastUtils';
 import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { MESSAGE_TYPES } from '@/constants';

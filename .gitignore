@@ -45,3 +45,4 @@ googleservice-info.plist
 build-*
 credentials.json
 .env.local
+.idea

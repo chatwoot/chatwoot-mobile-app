@@ -18,7 +18,7 @@ import {
   // FileBubble,
   EmailBubble,
 } from '../message-components';
-import { showToast } from '@/helpers/ToastHelper';
+import { showToast } from '@/utils/toastUtils';
 import {
   // ATTACHMENT_TYPES,
   MESSAGE_STATUS,

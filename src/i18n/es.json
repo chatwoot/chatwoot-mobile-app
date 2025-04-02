@@ -134,7 +134,7 @@
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",
       "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+      "DESCRIPTION": "Parece que no se pudo obtener la conversación correctamente. Podría deberse a un problema de red o la conversación ya no está disponible. Haga clic en el botón de reintentar para intentarlo nuevamente."
     },
     "BOT": "Bot",
     "EMAIL_HEAD": {
@@ -207,6 +207,9 @@
       },
       "fallback": {
         "CONTENT": "ha compartido una url"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
       }
     },
     "LONG_PRESS_ACTIONS": {
@@ -440,5 +443,15 @@
       "SHOW_MORE": "{count} más",
       "HIDE": "Esconder {count} filas"
     }
+  },
+  "MACRO": {
+    "TITLE": "Macros",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "Macro ejecutado correctamente",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "No se encontraron macros"
   }
 }

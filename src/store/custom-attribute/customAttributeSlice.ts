@@ -3,9 +3,7 @@ import type { CustomAttribute } from '@/types';
 import { customAttributeActions } from './customAttributeActions';
 import { RootState } from '@/store';
 
-export const customAttributeAdapter = createEntityAdapter<CustomAttribute>({
-  selectId: customAttribute => customAttribute.id,
-});
+export const customAttributeAdapter = createEntityAdapter<CustomAttribute>();
 
 export interface CustomAttributeState {
   isLoading: boolean;

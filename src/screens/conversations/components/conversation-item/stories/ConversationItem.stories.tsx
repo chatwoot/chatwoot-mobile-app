@@ -72,6 +72,7 @@ export const AllVariants: Story = {
         unreadCount={2}
         availabilityStatus="offline"
         inboxId={1}
+        senderName="Floyd Alexander Milesmorrales"
         assignee={{
           id: 1,
           name: 'John Doe',

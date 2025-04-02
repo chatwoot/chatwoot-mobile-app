@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, Text, Platform, View, Pressable } from 'react-native';
+import { StatusBar, Text, Platform, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,6 +18,7 @@ import { useSelector } from 'react-redux';
 import * as Application from 'expo-application';
 import { Account, AvailabilityStatus } from '@/types';
 import { clearAllConversations } from '@/store/conversation/conversationSlice';
+import { resetNotifications } from '@/store/notification/notificationSlice';
 import { clearAllContacts } from '@/store/contact/contactSlice';
 
 import i18n from 'i18n';
@@ -52,13 +53,17 @@ import {
 } from '@/store/auth/authSelectors';
 import { logout, setAccount } from '@/store/auth/authSlice';
 import { authActions } from '@/store/auth/authActions';
-import { selectLocale, selectIsChatwootCloud } from '@/store/settings/settingsSelectors';
+import {
+  selectLocale,
+  selectIsChatwootCloud,
+  selectPushToken,
+} from '@/store/settings/settingsSelectors';
 import { settingsActions } from '@/store/settings/settingsActions';
 import { setLocale } from '@/store/settings/settingsSlice';
 
-import AnalyticsHelper from '@/helpers/AnalyticsHelper';
+import AnalyticsHelper from '@/utils/analyticsUtils';
 import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
-import { getUserPermissions } from '@/helpers/permissionHelper';
+import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 
@@ -90,6 +95,8 @@ const SettingsScreen = () => {
     dispatch(settingsActions.getNotificationSettings());
   }, [dispatch]);
 
+  const pushToken = useAppSelector(selectPushToken);
+
   const userPermissions = getUserPermissions(user, activeAccountId);
 
   const hasConversationPermission = CONVERSATION_PERMISSIONS.some(permission =>
@@ -118,12 +125,6 @@ const SettingsScreen = () => {
   const chatwootInstance = isChatwootCloud ? `${appName} cloud` : `${appName} self-hosted`;
 
   const accounts = useSelector(selectAccounts) || [];
-
-  const activeAccountName = accounts.length
-    ? accounts.find((account: Account) => account.id === activeAccountId)?.name || ''
-    : '';
-
-  const enableAccountSwitch = accounts.length > 1;
 
   const activeLocale = useSelector(selectLocale);
   const {
@@ -165,6 +166,7 @@ const SettingsScreen = () => {
   const changeAccount = (accountId: number) => {
     dispatch(clearAllContacts());
     dispatch(clearAllConversations());
+    dispatch(resetNotifications());
     dispatch(setAccount(accountId));
     dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
     navigation.dispatch(StackActions.replace('Tab'));
@@ -198,9 +200,9 @@ const SettingsScreen = () => {
 
   const onClickLogout = useCallback(async () => {
     await AsyncStorage.removeItem('cwCookie');
-    // TODO: Add action to remove FCM token
+    await dispatch(settingsActions.removeDevice({ pushToken }));
     dispatch(logout());
-  }, [dispatch]);
+  }, [dispatch, pushToken]);
 
   const preferencesList: GenericListType[] = [
     {
@@ -229,37 +231,25 @@ const SettingsScreen = () => {
       subtitleType: 'light',
       onPressListItem: () => languagesModalSheetRef.current?.present(),
     },
-    {
-      hasChevron: enableAccountSwitch,
-      title: i18n.t('SETTINGS.SWITCH_ACCOUNT'),
-      icon: <SwitchIcon />,
-      subtitle: activeAccountName,
-      subtitleType: 'light',
-      onPressListItem: () => {
-        if (enableAccountSwitch) {
-          switchAccountSheetRef.current?.present();
-        }
-      },
-    },
   ];
 
   const supportList: GenericListType[] = [
-    {
-      hasChevron: true,
-      title: i18n.t('SETTINGS.READ_DOCS'),
-      icon: <SwitchIcon />,
-      subtitle: '',
-      subtitleType: 'light',
-      onPressListItem: openURL,
-    },
-    {
-      hasChevron: true,
-      title: i18n.t('SETTINGS.CHAT_WITH_US'),
-      icon: <ChatwootIcon />,
-      subtitle: '',
-      subtitleType: 'light',
-      onPressListItem: () => toggleWidget(true),
-    },
+    // {
+    //   hasChevron: true,
+    //   title: i18n.t('SETTINGS.READ_DOCS'),
+    //   icon: <SwitchIcon />,
+    //   subtitle: '',
+    //   subtitleType: 'light',
+    //   onPressListItem: openURL,
+    // },
+    // {
+    //   hasChevron: true,
+    //   title: i18n.t('SETTINGS.CHAT_WITH_US'),
+    //   icon: <ChatwootIcon />,
+    //   subtitle: '',
+    //   subtitleType: 'light',
+    //   onPressListItem: () => toggleWidget(true),
+    // },
   ];
 
   return (
@@ -282,8 +272,7 @@ const SettingsScreen = () => {
               )}></Animated.View>
           </Animated.View>
           <Animated.View style={tailwind.style('flex flex-col items-center gap-1')}>
-            <Animated.Text
-              style={tailwind.style('text-[22px] font-inter-580-24 leading-[22px] text-gray-950')}>
+            <Animated.Text style={tailwind.style('text-[22px] font-inter-580-24 text-gray-950')}>
               {name}
             </Animated.Text>
             <Animated.Text
@@ -297,9 +286,9 @@ const SettingsScreen = () => {
         <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.PREFERENCES')} list={preferencesList} />
         </Animated.View>
-        <Animated.View style={tailwind.style('pt-6')}>
+        {/* <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.SUPPORT')} list={supportList} />
-        </Animated.View>
+        </Animated.View> */}
         <Animated.View style={tailwind.style('pt-6 mx-4')}>
           <Button
             variant="secondary"

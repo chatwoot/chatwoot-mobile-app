@@ -38,6 +38,8 @@ fi
 if [ -f "$CONFIG_DIR/google-services.json" ]; then
   echo "Copying google-services.json for Android..."
   cp "$CONFIG_DIR/google-services.json" "$PROJECT_DIR/google-services.json"
+  # Also copy to android/app directory
+  cp "$CONFIG_DIR/google-services.json" "$PROJECT_DIR/android/app/google-services.json"
 else
   echo "Warning: google-services.json not found in $CONFIG_DIR"
 fi

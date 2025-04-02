@@ -1,0 +1,9 @@
+expo-env.d.ts
+node_modules/
+.env
+android/
+ios/
+.expo
+src/storybook
+src/svg-icons
+src/assets

@@ -1,11 +1,8 @@
 import React from 'react';
-import { Dimensions } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { LightBox, LightBoxProps } from '@alantoa/lightbox';
 import { Image } from 'expo-image';
 import { tailwind } from '@/theme';
-
-const { width, height } = Dimensions.get('screen');
 
 const AnimatedExpoImage = Animated.createAnimatedComponent(Image);
 
@@ -18,12 +15,13 @@ type ImageContainerProps = Pick<ImageCellProps, 'imageSrc'> &
 
 export const ImageBubbleContainer = (props: ImageContainerProps) => {
   const { imageSrc, height: lightboxH, width: lightboxW } = props;
+
   return (
     <LightBox
       width={lightboxW}
       height={lightboxH}
-      imgLayout={{ height: height * 0.8, width: width * 0.8 }}
-      tapToClose={false}>
+      imgLayout={{ width: lightboxW, height: lightboxH }}
+      tapToClose={true}>
       <AnimatedExpoImage
         source={{ uri: imageSrc }}
         contentFit="cover"
@@ -32,6 +30,7 @@ export const ImageBubbleContainer = (props: ImageContainerProps) => {
     </LightBox>
   );
 };
+
 export const ImageBubble = (props: ImageCellProps) => {
   const { imageSrc } = props;
 

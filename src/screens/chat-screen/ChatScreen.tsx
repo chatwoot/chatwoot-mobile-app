@@ -34,6 +34,7 @@ import i18n from '@/i18n';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { MacrosList } from './components/macros/MacrosList';
 import { macroActions } from '@/store/macro/macroActions';
+import { setCurrentPlayingAudioSrc } from '@/store/conversation/audioPlayerSlice';
 
 export const ChatWindow = (props: ChatScreenProps) => {
   return (
@@ -118,6 +119,8 @@ const ChatScreen = (props: ChatScreenProps) => {
 
   useEffect(() => {
     dispatch(macroActions.fetchMacros());
+    // Clear audio player
+    dispatch(setCurrentPlayingAudioSrc(''));
   }, []);
 
   useEffect(() => {

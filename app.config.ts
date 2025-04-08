@@ -74,6 +74,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     owner: 'chatwoot',
     plugins: [
+      'expo-audio',
       'expo-font',
       [
         'react-native-permissions',
@@ -106,7 +107,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
             useFrameworks: 'static',
           },
         },
-      ]
+      ],
     ],
     androidNavigationBar: {
       backgroundColor: '#ffffff',

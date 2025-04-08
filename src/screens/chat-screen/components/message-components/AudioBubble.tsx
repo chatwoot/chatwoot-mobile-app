@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import { Platform, Pressable, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { PlayBackType } from 'react-native-audio-recorder-player';
 import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
@@ -17,7 +17,6 @@ import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../a
 import { MESSAGE_VARIANTS } from '@/constants';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
-// import { convertOggToMp3 } from '@/utils/audioConverter';
 
 // eslint-disable-next-line react/display-name
 const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {

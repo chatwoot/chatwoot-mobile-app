@@ -17,7 +17,7 @@ import {
   addNewCachePath,
   selectLocalRecordedAudioCacheFilePaths,
 } from '@/store/conversation/localRecordedAudioCacheSlice';
-import { convertAacToMp3 } from '@/utils/audioConverter';
+// import { convertAacToMp3 } from '@/utils/audioConverter';
 
 const RecorderSegmentWidth = Dimensions.get('screen').width - 8 - 80 - 12;
 
@@ -136,10 +136,10 @@ export const AudioRecorder = ({
 
           // Convert to MP3 for iOS
           let finalPath = cleanPath;
-          if (Platform.OS === 'ios') {
-            finalPath = await convertAacToMp3(cleanPath);
-            finalPath = finalPath.replace('file://', '');
-          }
+          // if (Platform.OS === 'ios') {
+          //   finalPath = await convertAacToMp3(cleanPath);
+          //   finalPath = finalPath.replace('file://', '');
+          // }
 
           const stats = await RNFetchBlob.fs.stat(finalPath);
 

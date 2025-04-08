@@ -18,7 +18,7 @@ import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../a
 import { MESSAGE_VARIANTS } from '@/constants';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
-import { convertOggToMp3 } from '@/utils/audioConverter';
+// import { convertOggToMp3 } from '@/utils/audioConverter';
 
 // eslint-disable-next-line react/display-name
 const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
@@ -78,22 +78,22 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
     [currentPosition, totalDuration, dispatch],
   );
 
-  useEffect(() => {
-    const prepareAudio = async () => {
-      if (Platform.OS === 'ios' && audioSrc.toLowerCase().endsWith('.ogg')) {
-        setIsSoundLoading(true);
-        try {
-          const convertedSrc = await convertOggToMp3(audioSrc);
-          setConvertedAudioSrc(convertedSrc);
-        } catch (error) {
-          Sentry.captureException(error);
-        } finally {
-          setIsSoundLoading(false);
-        }
-      }
-    };
-    prepareAudio();
-  }, [audioSrc]);
+  // useEffect(() => {
+  //   const prepareAudio = async () => {
+  //     if (Platform.OS === 'ios' && audioSrc.toLowerCase().endsWith('.ogg')) {
+  //       setIsSoundLoading(true);
+  //       try {
+  //         const convertedSrc = await convertOggToMp3(audioSrc);
+  //         setConvertedAudioSrc(convertedSrc);
+  //       } catch (error) {
+  //         Sentry.captureException(error);
+  //       } finally {
+  //         setIsSoundLoading(false);
+  //       }
+  //     }
+  //   };
+  //   prepareAudio();
+  // }, [audioSrc]);
 
   const togglePlayback = useCallback(() => {
     if (convertedAudioSrc === currentPlayingAudioSrc) {

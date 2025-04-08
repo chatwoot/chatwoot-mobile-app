@@ -20,9 +20,6 @@ importers:
       '@chatwoot/utils':
         specifier: ^0.0.33
         version: 0.0.33
-      '@config-plugins/ffmpeg-kit-react-native':
-        specifier: ^9.0.0
-        version: 9.0.0(expo@52.0.35(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(graphql@15.8.0)(react-native-webview@13.12.5(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))
       '@gorhom/bottom-sheet':
         specifier: ^5.1.1
         version: 5.1.1(@types/react-native@0.73.0(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react-native-gesture-handler@2.20.2(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.25.7)(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
@@ -128,9 +125,6 @@ importers:
       expo-web-browser:
         specifier: ~14.0.2
         version: 14.0.2(expo@52.0.35(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(graphql@15.8.0)(react-native-webview@13.12.5(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))
-      ffmpeg-kit-react-native:
-        specifier: ^6.0.2
-        version: 6.0.2(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
       i18n-js:
         specifier: ^3.8.0
         version: 3.9.2
@@ -1059,11 +1053,6 @@ packages:
   '@chatwoot/utils@0.0.33':
     resolution: {integrity: sha512-o5+2h+k+2XWRTfhI7mogRCYnbjh+/BKE/px7PYKUMsIS9uecxfNeLzrnaUzNw60dl/0MFe6G0OmcINW+AEh5KA==}
     engines: {node: '>=10'}
-
-  '@config-plugins/ffmpeg-kit-react-native@9.0.0':
-    resolution: {integrity: sha512-04bXwdq7pmUPoGqYV0YGsrW/8Db+TNicn2Hznb5t+Dl740z9QkNGP4A38y1Mdz7mCU2EW0riASwl/JTH+6rBvw==}
-    peerDependencies:
-      expo: ^52
 
   '@dominicstop/ts-event-emitter@1.1.0':
     resolution: {integrity: sha512-CcxmJIvUb1vsFheuGGVSQf4KdPZC44XolpUT34+vlal+LyQoBUOn31pjFET5M9ctOxEpt8xa0M3/2M7uUiAoJw==}
@@ -3809,13 +3798,6 @@ packages:
 
   fetch-retry@4.1.1:
     resolution: {integrity: sha512-e6eB7zN6UBSwGVwrbWVH+gdLnkW9WwHhmq2YDK1Sh30pzx1onRVGBvogTlUeWxwTa+L86NYdo4hFkh7O8ZjSnA==}
-
-  ffmpeg-kit-react-native@6.0.2:
-    resolution: {integrity: sha512-r9uSmahq8TeyIb7fXf3ft+uUXyoeWRFa99+khjo0TAzWO9y0z9wU7eGnab9JLw1MmCB9v64o4yojNluJhVm9nQ==}
-    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
-    peerDependencies:
-      react: '*'
-      react-native: '*'
 
   file-entry-cache@6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
@@ -7670,11 +7652,6 @@ snapshots:
     dependencies:
       date-fns: 2.30.0
 
-  '@config-plugins/ffmpeg-kit-react-native@9.0.0(expo@52.0.35(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(graphql@15.8.0)(react-native-webview@13.12.5(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))':
-    dependencies:
-      expo: 52.0.35(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(graphql@15.8.0)(react-native-webview@13.12.5(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1))(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
-      semver: 7.6.3
-
   '@dominicstop/ts-event-emitter@1.1.0': {}
 
   '@egjs/hammerjs@2.0.17':
@@ -11331,11 +11308,6 @@ snapshots:
       - encoding
 
   fetch-retry@4.1.1: {}
-
-  ffmpeg-kit-react-native@6.0.2(react-native@0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1))(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-      react-native: 0.76.7(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@react-native-community/cli-server-api@13.6.9)(@types/react@18.3.18)(react@18.3.1)
 
   file-entry-cache@6.0.1:
     dependencies:

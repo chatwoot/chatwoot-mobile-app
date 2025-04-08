@@ -3,7 +3,6 @@ import { Platform, Pressable, View } from 'react-native';
 import { PlayBackType } from 'react-native-audio-recorder-player';
 import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
-import * as Sentry from '@sentry/react-native';
 
 import {
   selectCurrentPlayingAudioSrc,
@@ -53,7 +52,6 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
 
   const [isSoundLoading, setIsSoundLoading] = useState(false);
   const [isAudioPlaying, setAudioPlaying] = useState(false);
-  const [convertedAudioSrc, setConvertedAudioSrc] = useState(audioSrc);
 
   const dispatch = useDispatch();
   const currentPlayingAudioSrc = useAppSelector(selectCurrentPlayingAudioSrc);
@@ -78,25 +76,8 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
     [currentPosition, totalDuration, dispatch],
   );
 
-  // useEffect(() => {
-  //   const prepareAudio = async () => {
-  //     if (Platform.OS === 'ios' && audioSrc.toLowerCase().endsWith('.ogg')) {
-  //       setIsSoundLoading(true);
-  //       try {
-  //         const convertedSrc = await convertOggToMp3(audioSrc);
-  //         setConvertedAudioSrc(convertedSrc);
-  //       } catch (error) {
-  //         Sentry.captureException(error);
-  //       } finally {
-  //         setIsSoundLoading(false);
-  //       }
-  //     }
-  //   };
-  //   prepareAudio();
-  // }, [audioSrc]);
-
   const togglePlayback = useCallback(() => {
-    if (convertedAudioSrc === currentPlayingAudioSrc) {
+    if (audioSrc === currentPlayingAudioSrc) {
       if (isAudioPlaying) {
         pausePlayer();
       } else {
@@ -105,13 +86,13 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       setAudioPlaying(!isAudioPlaying);
     } else {
       setIsSoundLoading(true);
-      startPlayer(convertedAudioSrc, audioPlayBackStatus).then(() => {
+      startPlayer(audioSrc, audioPlayBackStatus).then(() => {
         setIsSoundLoading(false);
         setAudioPlaying(true);
-        dispatch(setCurrentPlayingAudioSrc(convertedAudioSrc));
+        dispatch(setCurrentPlayingAudioSrc(audioSrc));
       });
     }
-  }, [convertedAudioSrc, currentPlayingAudioSrc, isAudioPlaying, dispatch, audioPlayBackStatus]);
+  }, [audioSrc, currentPlayingAudioSrc, isAudioPlaying, dispatch, audioPlayBackStatus]);
 
   const manualSeekTo = useCallback(async (manualSeekPosition: number) => {
     seekTo(manualSeekPosition).then(() => {
@@ -124,8 +105,8 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   }, []);
 
   const isCurrentAudioSrcPlaying = useMemo(
-    () => currentPlayingAudioSrc === convertedAudioSrc && isAudioPlaying,
-    [convertedAudioSrc, currentPlayingAudioSrc, isAudioPlaying],
+    () => currentPlayingAudioSrc === audioSrc && isAudioPlaying,
+    [audioSrc, currentPlayingAudioSrc, isAudioPlaying],
   );
 
   useEffect(() => {

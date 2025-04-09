@@ -106,15 +106,6 @@ export const Basic: Story = {
   },
 };
 
-export const AgentVariant: Story = {
-  render: args => <SliderWithState {...args} />,
-  args: {
-    trackColor: 'bg-gray-500',
-    filledTrackColor: 'bg-blue-700',
-    knobStyle: 'border-blue-700',
-  },
-};
-
 export const HalfwayProgress: Story = {
   render: args => <HalfwayProgressSlider {...args} />,
   args: {

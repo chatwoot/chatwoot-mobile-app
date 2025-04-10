@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { LayoutChangeEvent, StyleSheet } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
@@ -44,26 +44,46 @@ export const Slider = (props: SliderProps) => {
   } = props;
 
   const sliderActive = useSharedValue(0);
-
   const sliderMaxWidth = useSharedValue(0);
-
   const translationX = useSharedValue(0);
-
   const context = useSharedValue({ x: 0 });
 
+  // Handle position updates from audio playback
   useAnimatedReaction(
-    () => currentPosition.value,
-    (next, _prev) => {
-      translationX.value = withSpring(
-        interpolate(next, [0, totalDuration.value], [0, sliderMaxWidth.value - 16]),
-        {
-          damping: 24,
-          stiffness: 200,
-        },
-      );
+    () => {
+      const duration = totalDuration.value;
+      const position = currentPosition.value;
+      return { position, duration };
     },
-    [],
+    (result, prev) => {
+      const { position, duration } = result;
+      if (duration <= 0) return; // Prevent division by zero
+
+      // Only update if not being dragged and there's a valid duration
+      if (sliderActive.value === 0 && duration > 0) {
+        translationX.value = withSpring(
+          interpolate(position, [0, duration], [0, sliderMaxWidth.value - 16], Extrapolation.CLAMP),
+          {
+            damping: 24,
+            stiffness: 200,
+          },
+        );
+      }
+    },
+    [sliderMaxWidth],
   );
+
+  // Reset position if slider width changes
+  useEffect(() => {
+    if (sliderMaxWidth.value > 0 && totalDuration.value > 0) {
+      translationX.value = interpolate(
+        currentPosition.value,
+        [0, totalDuration.value],
+        [0, sliderMaxWidth.value - 16],
+        Extrapolation.CLAMP,
+      );
+    }
+  }, [sliderMaxWidth.value, totalDuration.value, currentPosition.value, translationX]);
 
   const panGesture = Gesture.Pan()
     .onBegin(() => {
@@ -79,6 +99,8 @@ export const Slider = (props: SliderProps) => {
       );
     })
     .onEnd(() => {
+      if (sliderMaxWidth.value <= 0 || totalDuration.value <= 0) return;
+
       const seekToValue = interpolate(
         translationX.value,
         [0, sliderMaxWidth.value - 16],
@@ -89,8 +111,9 @@ export const Slider = (props: SliderProps) => {
     })
     .onFinalize(() => (sliderActive.value = withSpring(0, DefaultSpringConfig)));
 
-  const handleLayout = (e: LayoutChangeEvent) =>
-    (sliderMaxWidth.value = e.nativeEvent.layout.width);
+  const handleLayout = (e: LayoutChangeEvent) => {
+    sliderMaxWidth.value = e.nativeEvent.layout.width;
+  };
 
   const animatedKnobOneStyle = useAnimatedStyle(
     () => ({

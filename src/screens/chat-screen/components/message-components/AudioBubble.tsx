@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { Pressable, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
@@ -46,6 +46,13 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const { isLoading, isPlaying, currentPosition, totalDuration, togglePlayback, seekTo, pause } =
     useAudio(audioSrc);
 
+  // Handle play/pause button press
+  const handlePlayPausePress = useCallback(() => {
+    if (!isLoading) {
+      togglePlayback();
+    }
+  }, [isLoading, togglePlayback]);
+
   // Configure slider props based on variant and audio state
   const sliderProps = useMemo(
     () => ({
@@ -60,11 +67,14 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
     [variant, seekTo, currentPosition, totalDuration, pause],
   );
 
+  const iconColor = variant === MESSAGE_VARIANTS.USER ? 'white' : 'black';
+  const iconOpacity = variant === MESSAGE_VARIANTS.USER ? '1' : '0.565';
+
   return (
     <View style={tailwind.style('w-full flex flex-row items-center flex-1')}>
-      <Pressable disabled={isLoading} hitSlop={10} onPress={togglePlayback}>
+      <Pressable hitSlop={10} onPress={handlePlayPausePress}>
         {isLoading ? (
-          <Animated.View>
+          <Animated.View entering={FadeIn} exiting={FadeOut}>
             <Spinner size={13} stroke={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'} />
           </Animated.View>
         ) : isPlaying ? (
@@ -72,25 +82,14 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
             style={tailwind.style('pl-0.5 pr-0.5')}
             entering={FadeIn}
             exiting={FadeOut}>
-            <Icon
-              icon={
-                <PauseIcon
-                  fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-                  fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
-                />
-              }
-              size={13}
-            />
+            <Icon icon={<PauseIcon fillOpacity={iconOpacity} fill={iconColor} />} size={13} />
           </Animated.View>
         ) : (
           <Animated.View
             style={tailwind.style('pl-0.5 pr-0.5')}
             entering={FadeIn}
             exiting={FadeOut}>
-            <PlayIcon
-              fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-              fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
-            />
+            <PlayIcon fillOpacity={iconOpacity} fill={iconColor} />
           </Animated.View>
         )}
       </Pressable>

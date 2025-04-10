@@ -38,7 +38,17 @@ export const useAudio = (audioUri: string): UseAudioResult => {
 
         // Update position and duration for slider
         currentPosition.value = status.positionMillis || 0;
-        totalDuration.value = status.durationMillis || 0;
+        
+        // Ensure we have a duration value
+        if (status.durationMillis && status.durationMillis > 0) {
+          totalDuration.value = status.durationMillis;
+        } else {
+          // Try to get duration from AudioManager
+          const cachedDuration = audioManager.getAudioDuration(audioUri);
+          if (cachedDuration > 0) {
+            totalDuration.value = cachedDuration;
+          }
+        }
 
         // Update loading state
         if (isLoading && status.isLoaded) {
@@ -47,50 +57,90 @@ export const useAudio = (audioUri: string): UseAudioResult => {
       },
     );
 
+    // Check if this audio is already playing
+    const checkInitialState = async () => {
+      try {
+        setIsPlaying(audioManager.isAudioPlaying(audioUri));
+        setIsLoading(audioManager.isAudioLoading(audioUri));
+        
+        // Try to get existing duration
+        const cachedDuration = audioManager.getAudioDuration(audioUri);
+        if (cachedDuration > 0) {
+          totalDuration.value = cachedDuration;
+        }
+      } catch (error) {
+        console.error('Error checking initial audio state:', error);
+      }
+    };
+    checkInitialState();
+
     // Clean up when unmounting
     return () => {
       unregisterCallback();
     };
   }, [audioUri, currentPosition, totalDuration, isLoading, audioManager]);
 
-  // Unload the audio when hook unmounts
+  // Unload the audio when component unmounts
   useEffect(() => {
     return () => {
-      audioManager.unloadAudio(audioUri);
+      // Only pause if this hook instance was the one that loaded it
+      if (isPlaying) {
+        audioManager.pauseAudio(audioUri).catch(console.error);
+      }
     };
-  }, [audioUri, audioManager]);
+  }, [audioUri, audioManager, isPlaying]);
 
-  const togglePlayback = useCallback(() => {
+  const togglePlayback = useCallback(async () => {
     if (isPlaying) {
       // Pause the audio
       setIsLoading(true);
-      audioManager.pauseAudio(audioUri).finally(() => setIsLoading(false));
+      try {
+        await audioManager.pauseAudio(audioUri);
+      } catch (error) {
+        console.error('Error pausing audio:', error);
+      } finally {
+        setIsLoading(false);
+      }
     } else {
       // Play the audio
       setIsLoading(true);
-      audioManager
-        .playAudio(audioUri)
-        .catch(error => {
-          console.error('Error playing audio:', error);
-        })
-        .finally(() => setIsLoading(false));
+      try {
+        const status = await audioManager.playAudio(audioUri);
+        
+        // Update total duration from initial playback
+        if (status && status.isLoaded && status.durationMillis) {
+          totalDuration.value = status.durationMillis;
+        }
+      } catch (error) {
+        console.error('Error playing audio:', error);
+      } finally {
+        setIsLoading(false);
+      }
     }
-  }, [audioUri, isPlaying, audioManager]);
+  }, [audioUri, isPlaying, audioManager, totalDuration]);
 
   const seekTo = useCallback(
     async (position: number) => {
       try {
+        setIsLoading(true);
         await audioManager.seekAudio(audioUri, position);
 
         // After seeking, resume playback if it was playing
         if (isPlaying) {
-          await audioManager.playAudio(audioUri);
+          const status = await audioManager.playAudio(audioUri);
+          
+          // Ensure we have duration after seeking
+          if (status && status.isLoaded && status.durationMillis) {
+            totalDuration.value = status.durationMillis;
+          }
         }
       } catch (error) {
         console.error('Error seeking audio:', error);
+      } finally {
+        setIsLoading(false);
       }
     },
-    [audioUri, isPlaying, audioManager],
+    [audioUri, isPlaying, audioManager, totalDuration],
   );
 
   const pause = useCallback(async () => {

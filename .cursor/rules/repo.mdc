@@ -34,3 +34,4 @@
 - Tests end with `.spec.ts` and use descriptive BDD-style naming
 - Clear error messages when throwing exceptions
 - Follow existing patterns for components, hooks, and services
+c

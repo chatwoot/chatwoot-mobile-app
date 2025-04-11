@@ -10,6 +10,7 @@ export * from './Conversation';
 export * from './Message';
 export * from './Team';
 export * from './Account';
+export * from './Macro';
 
 export interface IconProps extends PathProps {}
 
@@ -24,8 +25,8 @@ export interface GenericListType {
   link?: string;
   onPressListItem?: (key?: string) => void;
   actions?: {
-    action_name: string;
-    action_params: string[];
+    actionName: string;
+    actionParams: string[];
   }[];
 }
 

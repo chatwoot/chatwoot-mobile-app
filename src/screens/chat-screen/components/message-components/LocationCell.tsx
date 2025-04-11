@@ -10,7 +10,7 @@ import { MenuOption, MessageMenu } from '../message-menu';
 import { MESSAGE_STATUS, MESSAGE_TYPES, TEXT_MAX_WIDTH } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
 import { MapIcon } from '@/svg-icons';
-import { openURL } from 'helpers/UrlHelper';
+import { openURL } from '@/utils/urlUtils';
 
 type LocationCellProps = {
   shouldRenderAvatar: boolean;

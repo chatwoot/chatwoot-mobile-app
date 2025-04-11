@@ -5,11 +5,12 @@ import { tailwind } from '@/theme';
 import type { NotificationType } from '@/types/Notification';
 import { ConversationPriority } from '@/types/common';
 import { AnimatedNativeView, NativeView } from '@/components-next/native-components';
-import { PriorityIndicator } from './PriorityIndicator';
-import { ChannelIndicator } from './ChannelIndicator';
+import { PriorityIndicator, ChannelIndicator } from '@/components-next/list-components';
+
 import { Inbox } from '@/types/Inbox';
 import { ConversationAdditionalAttributes } from '@/types/Conversation';
 import { NotificationTypeIndicator } from './NotificationTypeIndicator';
+import { Dimensions } from 'react-native';
 
 type InboxItemProps = {
   isRead: boolean;
@@ -30,7 +31,9 @@ type InboxItemProps = {
   notificationType: NotificationType;
 };
 
-export const InboxItem = (props: InboxItemProps) => {
+const { width } = Dimensions.get('screen');
+
+export const InboxItemComponent = (props: InboxItemProps) => {
   const {
     isRead,
     inbox,
@@ -57,6 +60,7 @@ export const InboxItem = (props: InboxItemProps) => {
               numberOfLines={1}
               style={tailwind.style(
                 'text-base font-inter-medium-24 tracking-[0.24px] text-gray-950 capitalize',
+                `max-w-[${width - 250}px]`,
               )}>
               {sender.name || ''}
             </Animated.Text>
@@ -113,3 +117,6 @@ export const InboxItem = (props: InboxItemProps) => {
     </Animated.View>
   );
 };
+
+InboxItemComponent.displayName = 'InboxItem';
+export const InboxItem = React.memo(InboxItemComponent);

@@ -23,7 +23,7 @@ import type {
 import I18n from '@/i18n';
 import { URL_TYPE } from '@/constants/url';
 import { checkValidUrl, extractDomain, handleApiError } from './settingsUtils';
-import { showToast } from '@/helpers/ToastHelper';
+import { showToast } from '@/utils/toastUtils';
 
 const createSettingsThunk = <TResponse, TPayload>(
   type: string,
@@ -135,5 +135,10 @@ export const settingsActions = {
         );
       }
     },
+  ),
+
+  removeDevice: createSettingsThunk<void, { pushToken: string }>(
+    'settings/removeDevice',
+    ({ pushToken }) => SettingsService.removeDevice({ push_token: pushToken }),
   ),
 };

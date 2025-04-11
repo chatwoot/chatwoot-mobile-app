@@ -14,7 +14,7 @@ import i18n from '@/i18n';
 import { AssigneeOptions } from '@/types';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/auth/authSelectors';
-import { getUserPermissions } from '@/helpers/permissionHelper';
+import { getUserPermissions } from '@/utils/permissionUtils';
 
 type AssigneeTypeCellProps = {
   value: string;

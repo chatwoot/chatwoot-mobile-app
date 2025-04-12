@@ -1,3 +1,7 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 # Chatwoot Mobile App Developer Guide
 
 ## Build/Lint/Test Commands
@@ -10,14 +14,12 @@
 - `pnpm run:ios` - Run on iOS simulator
 - `pnpm run:android` - Run on Android emulator
 - `pnpm clean` - Clean project
-- `pnpm run:storybook` - Run Storybook
-- `pnpm generate` - Clean and regenerate the native directories (iOS/Android)
-- `pnpm build:ios:local` - Build iOS app locally (simulator)
-- `pnpm build:android:local` - Build Android app locally
+- `pnpm reset` - Clean, reinstall deps, and regenerate native code
+- `pnpm generate` - Clean and regenerate the native directories
 
 ## Troubleshooting Build Issues
 
-- If you encounter encryption-related prompts during iOS builds, make sure the `ITSAppUsesNonExemptEncryption: false` is set in the Info.plist section of app.config.ts
+- If you encounter encryption-related prompts during iOS builds, ensure `ITSAppUsesNonExemptEncryption: false` is set in app.config.ts
 - For dependency version mismatches, use `pnpm update [package-name]` to update to compatible versions
 - For React Native Reanimated issues, ensure version 3.10.1 is used (compatible with current React Native version)
 - After updating packages, always run `pnpm generate` to regenerate native code
@@ -29,9 +31,10 @@
 - Use absolute imports with `@/` prefix
 - Group imports: React first, third-party next, internal components last
 - Use functional components with hooks
-- Redux (with Redux Toolkit) for global state, Context for component-level state
+- Redux (Redux Toolkit) for global state, Context for component-level state
 - Files named to match their exported component
 - Tests end with `.spec.ts` and use descriptive BDD-style naming
-- Clear error messages when throwing exceptions
-- Follow existing patterns for components, hooks, and services
-c
+- Use Tailwind (twrnc) for styling
+- Follow ESLint and Prettier configurations
+- Be direct and candid in code reviews and comments
+- Provide clear, actionable steps with justifications in implementation approaches

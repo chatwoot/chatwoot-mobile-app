@@ -165,7 +165,8 @@
           "tailwindcss",
           "use-deep-compare-effect",
           "diff",
-          "string.prototype.matchall"
+          "string.prototype.matchall",
+          "snakecase-keys"
         ],
         "listUnknownPackages": true
       }

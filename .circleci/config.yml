@@ -14,8 +14,10 @@ jobs:
       - run:
           name: Disable Ruby Setup
           command: |
+            mkdir -p ~/.bashrc.d
+            touch ~/.bashrc
             echo 'source ./.circleci/pre-start.sh' >> $BASH_ENV
-            source $BASH_ENV
+            source ./.circleci/pre-start.sh
       - run:
           name: Debug CircleCI Setup
           command: ./.circleci/debug-setup.sh
@@ -59,8 +61,10 @@ jobs:
       - run:
           name: Disable Ruby Setup
           command: |
+            mkdir -p ~/.bashrc.d
+            touch ~/.bashrc
             echo 'source ./.circleci/pre-start.sh' >> $BASH_ENV
-            source $BASH_ENV
+            source ./.circleci/pre-start.sh
       - run:
           name: Debug CircleCI Setup
           command: ./.circleci/debug-setup.sh

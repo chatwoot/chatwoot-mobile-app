@@ -11,6 +11,7 @@
     "clean": "watchman watch-del-all && rm -rf node_modules ios android .expo && pnpm store prune && rm pnpm-lock.yaml",
     "reset": "pnpm clean && pnpm install && pnpm generate",
     "test": "jest",
+    "e2e": "pnpm test:e2e:ios && pnpm test:e2e:android",
     "lint": "eslint .",
     "generate": "npx expo prebuild --clean",
     "generate:soft": "npx expo prebuild",
@@ -32,7 +33,16 @@
     "adb:connect": "adb reverse tcp:9090 tcp:9090",
     "appium": "node e2e/start-appium.js",
     "test:e2e:ios": "NODE_OPTIONS=\"--experimental-vm-modules\" node e2e/ios/specs/login.test.js",
-    "test:e2e:android": "NODE_OPTIONS=\"--experimental-vm-modules\" node e2e/android/specs/login.test.js"
+    "test:e2e:android": "NODE_OPTIONS=\"--experimental-vm-modules\" node e2e/android/specs/login.test.js",
+    "test:e2e:ios:timeout": "NODE_OPTIONS=\"--experimental-vm-modules\" node e2e/run-with-timeout.js 120 e2e/ios/specs/login.test.js",
+    "test:e2e:android:timeout": "NODE_OPTIONS=\"--experimental-vm-modules\" node e2e/run-with-timeout.js 120 e2e/android/specs/login.test.js",
+    "e2e:timeout": "pnpm test:e2e:ios:timeout && pnpm test:e2e:android:timeout",
+    "e2e:safe": "pnpm appium & (sleep 5 && pnpm e2e:timeout); kill %1",
+    "e2e:setup": "pnpm appium & sleep 5",
+    "e2e:android": "emulator -avd Pixel_2_API_35 -no-window -no-audio -no-boot-anim & sleep 15 && pnpm test:e2e:android",
+    "e2e:full": "pnpm e2e:setup && pnpm e2e",
+    "e2e:run": "./e2e/run-tests.sh",
+    "e2e:quick": "./e2e/quick-test.sh"
   },
   "dependencies": {
     "@alantoa/lightbox": "0.3.1",

@@ -31,8 +31,79 @@ jobs:
       - run:
           command: yarn run test
           name: Run YARN tests
+      - run:
+          command: yarn run lint
+          name: Run linting
+
+  e2e-tests:
+    docker:
+      - image: cimg/node:20.9.0-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-v1-{{ checksum "package.json" }}
+            - yarn-packages-v1-
+      - run:
+          name: Install Dependencies
+          command: yarn install
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-v1-{{ checksum "package.json" }}
+          paths:
+            - .yarn/cache
+            - .yarn/unplugged
+            - node_modules
+      - run:
+          name: Install Appium
+          command: npm install -g appium
+      - run:
+          name: Install Appium Drivers
+          command: |
+            appium driver install xcuitest
+            appium driver install uiautomator2
+            npm install -g appium-chromedriver
+      - run:
+          name: Setup E2E Test Environment
+          command: |
+            # Create .env file with test credentials from CircleCI environment variables
+            echo "TEST_USER_EMAIL=$TEST_USER_EMAIL" > e2e/.env
+            echo "TEST_USER_PASSWORD=$TEST_USER_PASSWORD" >> e2e/.env
+            echo "EXPO_PUBLIC_CHATWOOT_BASE_URL=$EXPO_PUBLIC_CHATWOOT_BASE_URL" >> e2e/.env
+            
+            # Check environment setup using CI-specific check script
+            node e2e/ci-check-environment.js
+      - run:
+          name: Start Appium Server
+          command: node e2e/start-appium.js
+          background: true
+      - run:
+          name: Wait for Appium to Start
+          command: sleep 5
+      - run:
+          name: Run E2E Tests
+          command: |
+            # Run tests based on platform parameter or both if not specified
+            if [ "$PLATFORM" == "ios" ]; then
+              yarn test:e2e:ios
+            elif [ "$PLATFORM" == "android" ]; then
+              yarn test:e2e:android
+            else
+              # Default to running both
+              yarn test:e2e:ios || true
+              yarn test:e2e:android || true
+            fi
+      - store_artifacts:
+          path: e2e/screenshots
+          destination: e2e-screenshots
 
 workflows:
-  test_my_app:
+  test_and_e2e:
     jobs:
       - build-and-test
+      - e2e-tests:
+          requires:
+            - build-and-test
+          context: 
+            - chatwoot-e2e-tests

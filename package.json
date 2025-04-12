@@ -11,7 +11,7 @@
     "reset": "pnpm clean && pnpm install && pnpm generate",
     "test": "jest",
     "lint": "eslint .",
-    "generate": "npx expo prebuild --clean && pnpm cleanup-build",
+    "generate": "npx expo prebuild --clean",
     "generate:soft": "npx expo prebuild",
     "run:ios": "npx expo run:ios",
     "run:android": "npx expo run:android -d",

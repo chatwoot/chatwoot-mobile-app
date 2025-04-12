@@ -55,23 +55,6 @@ jobs:
           name: Install Appium
           command: sudo npm install -g appium
       - run:
-          name: Install or Update Appium Drivers
-          command: |
-            # Check if drivers exist and install or update accordingly
-            if appium driver list --installed | grep -q xcuitest; then
-              sudo appium driver update xcuitest
-            else
-              sudo appium driver install xcuitest
-            fi
-            
-            if appium driver list --installed | grep -q uiautomator2; then
-              sudo appium driver update uiautomator2
-            else
-              sudo appium driver install uiautomator2
-            fi
-            
-            sudo npm install -g appium-chromedriver
-      - run:
           name: Setup E2E Test Environment
           command: |
             # Create .env file with test credentials from CircleCI environment variables

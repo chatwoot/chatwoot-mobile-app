@@ -30,9 +30,9 @@
     "storybook:ios": "cross-env EXPO_STORYBOOK_ENABLED='true' pnpm run:ios",
     "storybook:android": "cross-env EXPO_STORYBOOK_ENABLED='true' expo android",
     "adb:connect": "adb reverse tcp:9090 tcp:9090",
-    "appium": "appium",
-    "test:e2e:ios": "jest --config=e2e/jest.config.js --testMatch='**/e2e/ios/**/*.test.js'",
-    "test:e2e:android": "jest --config=e2e/jest.config.js --testMatch='**/e2e/android/**/*.test.js'"
+    "appium": "node e2e/start-appium.js",
+    "test:e2e:ios": "NODE_OPTIONS=\"--experimental-vm-modules\" node e2e/ios/specs/login.test.js",
+    "test:e2e:android": "NODE_OPTIONS=\"--experimental-vm-modules\" node e2e/android/specs/login.test.js"
   },
   "dependencies": {
     "@alantoa/lightbox": "0.3.1",

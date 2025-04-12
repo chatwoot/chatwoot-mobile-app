@@ -4,6 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 # Chatwoot Mobile App Developer Guide
 
+## Development Workflow Tips
+
+- Always test your changes after implementation
+- When updating this CLAUDE.md file, also update the corresponding file in .cursor/rules/repo.mdc to keep them in sync
+
 ## Build/Lint/Test Commands
 
 - `pnpm test` - Run all Jest tests
@@ -19,13 +24,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## End-to-End Testing
 
-- `node e2e/start-appium.js` - Start Appium server with correct configuration
-- `NODE_OPTIONS="--experimental-vm-modules" node e2e/ios/specs/login.test.js` - Run iOS e2e test directly
-- `NODE_OPTIONS="--experimental-vm-modules" node e2e/android/specs/login.test.js` - Run Android e2e test directly
+- `pnpm appium` - Start Appium server with correct configuration
+- `pnpm test:e2e:ios` - Run iOS e2e test directly
+- `pnpm test:e2e:android` - Run Android e2e test directly
 
 Before running e2e tests:
 1. Create `e2e/.env` with test credentials
-2. Start the Appium server in a separate terminal
+2. Start the Appium server in a separate terminal with `pnpm appium`
 3. For app testing, build the app with `pnpm build:ios:local` or `pnpm build:android:local`
 
 ## Troubleshooting Build Issues

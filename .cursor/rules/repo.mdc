@@ -1,5 +1,10 @@
 # Chatwoot Mobile App Developer Guide
 
+## Development Workflow Tips
+
+- Always test your changes after implementation
+- When updating this file, also update the corresponding CLAUDE.md file in the root directory to keep them in sync
+
 ## Build/Lint/Test Commands
 
 - `pnpm test` - Run all Jest tests
@@ -10,14 +15,23 @@
 - `pnpm run:ios` - Run on iOS simulator
 - `pnpm run:android` - Run on Android emulator
 - `pnpm clean` - Clean project
-- `pnpm run:storybook` - Run Storybook
-- `pnpm generate` - Clean and regenerate the native directories (iOS/Android)
-- `pnpm build:ios:local` - Build iOS app locally (simulator)
-- `pnpm build:android:local` - Build Android app locally
+- `pnpm reset` - Clean, reinstall deps, and regenerate native code
+- `pnpm generate` - Clean and regenerate the native directories
+
+## End-to-End Testing
+
+- `pnpm appium` - Start Appium server with correct configuration
+- `pnpm test:e2e:ios` - Run iOS e2e test directly
+- `pnpm test:e2e:android` - Run Android e2e test directly
+
+Before running e2e tests:
+1. Create `e2e/.env` with test credentials
+2. Start the Appium server in a separate terminal with `pnpm appium`
+3. For app testing, build the app with `pnpm build:ios:local` or `pnpm build:android:local`
 
 ## Troubleshooting Build Issues
 
-- If you encounter encryption-related prompts during iOS builds, make sure the `ITSAppUsesNonExemptEncryption: false` is set in the Info.plist section of app.config.ts
+- If you encounter encryption-related prompts during iOS builds, ensure `ITSAppUsesNonExemptEncryption: false` is set in app.config.ts
 - For dependency version mismatches, use `pnpm update [package-name]` to update to compatible versions
 - For React Native Reanimated issues, ensure version 3.10.1 is used (compatible with current React Native version)
 - After updating packages, always run `pnpm generate` to regenerate native code
@@ -29,9 +43,10 @@
 - Use absolute imports with `@/` prefix
 - Group imports: React first, third-party next, internal components last
 - Use functional components with hooks
-- Redux (with Redux Toolkit) for global state, Context for component-level state
+- Redux (Redux Toolkit) for global state, Context for component-level state
 - Files named to match their exported component
 - Tests end with `.spec.ts` and use descriptive BDD-style naming
-- Clear error messages when throwing exceptions
-- Follow existing patterns for components, hooks, and services
-c
+- Use Tailwind (twrnc) for styling
+- Follow ESLint and Prettier configurations
+- Be direct and candid in code reviews and comments
+- Provide clear, actionable steps with justifications in implementation approaches

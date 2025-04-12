@@ -1,0 +1,1 @@
+jest.setTimeout(60000); // Set timeout to 1 minute

@@ -9,15 +9,18 @@ jobs:
     shell: /bin/bash -eo pipefail
     environment:
       BASH_ENV: ~/.bashrc
+      SKIP_RUBY_SETUP: "true"
     steps:
       - checkout
       - run:
           name: Disable Ruby Setup
           command: |
-            mkdir -p ~/.bashrc.d
-            touch ~/.bashrc
-            echo 'source ./.circleci/pre-start.sh' >> $BASH_ENV
-            source ./.circleci/pre-start.sh
+            # Create dummy functions to prevent Ruby setup
+            function rvm() { echo "RVM setup intercepted and skipped"; }
+            function bundle() { echo "Bundle install intercepted and skipped"; }
+            export -f rvm
+            export -f bundle
+            echo "Ruby setup has been disabled"
       - run:
           name: Debug CircleCI Setup
           command: ./.circleci/debug-setup.sh
@@ -56,15 +59,18 @@ jobs:
     shell: /bin/bash -eo pipefail
     environment:
       BASH_ENV: ~/.bashrc
+      SKIP_RUBY_SETUP: "true"
     steps:
       - checkout
       - run:
           name: Disable Ruby Setup
           command: |
-            mkdir -p ~/.bashrc.d
-            touch ~/.bashrc
-            echo 'source ./.circleci/pre-start.sh' >> $BASH_ENV
-            source ./.circleci/pre-start.sh
+            # Create dummy functions to prevent Ruby setup
+            function rvm() { echo "RVM setup intercepted and skipped"; }
+            function bundle() { echo "Bundle install intercepted and skipped"; }
+            export -f rvm
+            export -f bundle
+            echo "Ruby setup has been disabled"
       - run:
           name: Debug CircleCI Setup
           command: ./.circleci/debug-setup.sh

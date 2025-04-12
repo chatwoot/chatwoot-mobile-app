@@ -8,7 +8,7 @@
     "start:production": "expo start --no-dev --minify",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "clean": "watchman watch-del-all && rm -rf node_modules ios android .expo && pnpm store prune",
+    "clean": "watchman watch-del-all && rm -rf node_modules ios android .expo && pnpm store prune && rm pnpm-lock.yaml",
     "reset": "pnpm clean && pnpm install && pnpm generate",
     "test": "jest",
     "lint": "eslint .",

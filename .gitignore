@@ -46,3 +46,4 @@ build-*
 credentials.json
 .env.local
 .idea
+/e2e/screenshots

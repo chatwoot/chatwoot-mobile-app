@@ -17,6 +17,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `pnpm reset` - Clean, reinstall deps, and regenerate native code
 - `pnpm generate` - Clean and regenerate the native directories
 
+## End-to-End Testing
+
+- `node e2e/start-appium.js` - Start Appium server with correct configuration
+- `NODE_OPTIONS="--experimental-vm-modules" node e2e/ios/specs/login.test.js` - Run iOS e2e test directly
+- `NODE_OPTIONS="--experimental-vm-modules" node e2e/android/specs/login.test.js` - Run Android e2e test directly
+
+Before running e2e tests:
+1. Create `e2e/.env` with test credentials
+2. Start the Appium server in a separate terminal
+3. For app testing, build the app with `pnpm build:ios:local` or `pnpm build:android:local`
+
 ## Troubleshooting Build Issues
 
 - If you encounter encryption-related prompts during iOS builds, ensure `ITSAppUsesNonExemptEncryption: false` is set in app.config.ts

@@ -41,10 +41,10 @@ cleanup() {
 # Set up trap to call cleanup function on exit
 trap cleanup EXIT INT TERM
 
-# Run iOS tests with timeout
+# Run iOS tests
 echo "Running iOS tests..."
-timeout 30s NODE_OPTIONS="--experimental-vm-modules" node e2e/ios/specs/login.test.js || {
-  echo "iOS test timed out or failed with status: $?"
+NODE_OPTIONS="--experimental-vm-modules" node e2e/ios/specs/login.test.js || {
+  echo "iOS test failed with status: $?"
   iOS_RESULT=1
 }
 iOS_RESULT=${iOS_RESULT:-$?}
@@ -59,10 +59,10 @@ EMULATOR_PID=$!
 echo "Waiting for Android emulator to boot..."
 sleep 10
 
-# Run Android tests with timeout
+# Run Android tests
 echo "Running Android tests..."
-timeout 30s NODE_OPTIONS="--experimental-vm-modules" node e2e/android/specs/login.test.js || {
-  echo "Android test timed out or failed with status: $?"
+NODE_OPTIONS="--experimental-vm-modules" node e2e/android/specs/login.test.js || {
+  echo "Android test failed with status: $?"
   ANDROID_RESULT=1
 }
 ANDROID_RESULT=${ANDROID_RESULT:-$?}

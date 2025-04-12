@@ -47,3 +47,5 @@ credentials.json
 .env.local
 .idea
 /e2e/screenshots
+appium.log
+emulator.log

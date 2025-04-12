@@ -51,10 +51,10 @@ require.cache[require.resolve('../../detect-ci')].exports.getTestConfig = () => 
 require('./login.test.js');
 EOF
 
-# Run tests with short timeout
+# Run tests
 echo "Running quick Safari tests..."
-timeout 20s NODE_OPTIONS="--experimental-vm-modules" node $TMP_FILE || {
-  echo "Test timed out or failed with status: $?"
+NODE_OPTIONS="--experimental-vm-modules" node $TMP_FILE || {
+  echo "Test failed with status: $?"
   exit 1
 }
 

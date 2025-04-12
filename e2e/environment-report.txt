@@ -36,7 +36,7 @@ WARN Doctor  ➜ Manually install [1mAndroid SDK[22m and set [1mANDROID_HOME
 info Doctor 
 info Doctor ### Optional Manual Fixes ###
 info Doctor To fix these optional issues, please do the following manually:
-WARN Doctor  ➜ [1mbundletool.jar[22m is used to handle Android App bundles. Please download the binary from https://github.com/google/bundletool/releases/ and store it to any folder listed in the PATH environment variable. Folders that are currently present in PATH: /Users/bastinjafari/.npm/_npx/87826a530ba940cc/node_modules/.bin:/Users/bastinjafari/Documents/GitHub/chatwoot-mobile-app/node_modules/.bin:/Users/bastinjafari/Documents/GitHub/node_modules/.bin:/Users/bastinjafari/Documents/node_modules/.bin:/Users/bastinjafari/node_modules/.bin:/Users/node_modules/.bin:/node_modules/.bin:/Users/bastinjafari/.nvm/versions/node/v20.18.0/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/Users/bastinjafari/Documents/GitHub/chatwoot-mobile-app/node_modules/.bin:/Users/bastinjafari/.nvm/versions/node/v20.18.0/lib/node_modules/pnpm/dist/node-gyp-bin:/Users/bastinjafari/.deno/bin:/Users/bastinjafari/.codeium/windsurf/bin:/Users/bastinjafari/.console-ninja/.bin:/Users/bastinjafari/.bun/bin:/Users/bastinjafari/.bun/bin:/Users/bastinjafari/.rbenv/shims:/Users/bastinjafari/.meteor:/Users/bastinjafari/.meteor:/Users/bastinjafari/.nvm/versions/node/v20.18.0/bin:/Users/bastinjafari/.deno/bin:/Users/bastinjafari/.rbenv/shims:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/usr/local/MacGPG2/bin:/Users/bastinjafari/.deno/bin:/Users/bastinjafari/.codeium/windsurf/bin:/Users/bastinjafari/.console-ninja/.bin:/Users/bastinjafari/Library/pnpm:/Users/bastinjafari/.bun/bin:/Users/bastinjafari/.rbenv/shims:/Users/bastinjafari/.meteor:/Users/bastinjafari/.nvm/versions/node/v20.18.0/bin:/Users/bastinjafari/.cargo/bin:/Users/bastinjafari/.local/bin:/Users/bastinjafari/Library/Android/sdk/emulator:/Users/bastinjafari/Library/Android/sdk/platform-tools:/Users/bastinjafari/.local/bin:/Users/bastinjafari/.local/bin:/Users/bastinjafari/Library/Android/sdk/emulator:/Users/bastinjafari/Library/Android/sdk/platform-tools
+WARN Doctor  ➜ [1mbundletool.jar[22m is used to handle Android App bundles. Please download the binary from https://github.com/google/bundletool/releases/ and store it to any folder listed in the PATH environment variable. Folders that are currently present in PATH: /Users/bastinjafari/Documents/GitHub/chatwoot-mobile-app/node_modules/.bin:/Users/bastinjafari/Documents/GitHub/chatwoot-mobile-app/node_modules/.bin:/Users/bastinjafari/Documents/GitHub/node_modules/.bin:/Users/bastinjafari/Documents/node_modules/.bin:/Users/bastinjafari/node_modules/.bin:/Users/node_modules/.bin:/node_modules/.bin:/Users/bastinjafari/.nvm/versions/node/v20.18.0/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/Users/bastinjafari/Documents/GitHub/chatwoot-mobile-app/node_modules/.bin:/Users/bastinjafari/Library/pnpm/.tools/pnpm/8.15.1/node_modules/pnpm/dist/node-gyp-bin:/Users/bastinjafari/Library/pnpm/.tools/pnpm/8.15.1/bin:/Users/bastinjafari/.deno/bin:/Users/bastinjafari/.codeium/windsurf/bin:/Users/bastinjafari/.console-ninja/.bin:/Users/bastinjafari/.bun/bin:/Users/bastinjafari/.bun/bin:/Users/bastinjafari/.rbenv/shims:/Users/bastinjafari/.meteor:/Users/bastinjafari/.meteor:/Users/bastinjafari/.nvm/versions/node/v20.18.0/bin:/Users/bastinjafari/.deno/bin:/Users/bastinjafari/.rbenv/shims:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/usr/local/MacGPG2/bin:/Users/bastinjafari/.deno/bin:/Users/bastinjafari/.codeium/windsurf/bin:/Users/bastinjafari/.console-ninja/.bin:/Users/bastinjafari/Library/pnpm:/Users/bastinjafari/.bun/bin:/Users/bastinjafari/.rbenv/shims:/Users/bastinjafari/.meteor:/Users/bastinjafari/.nvm/versions/node/v20.18.0/bin:/Users/bastinjafari/.cargo/bin:/Users/bastinjafari/.local/bin:/Users/bastinjafari/Library/Android/sdk/emulator:/Users/bastinjafari/Library/Android/sdk/platform-tools:/Users/bastinjafari/.local/bin:/Users/bastinjafari/.local/bin:/Users/bastinjafari/Library/Android/sdk/emulator:/Users/bastinjafari/Library/Android/sdk/platform-tools
 WARN Doctor  ➜ [1mffmpeg[22m is used to capture screen recordings from the device under test. Please read https://www.ffmpeg.org/download.html.
 WARN Doctor  ➜ [1mgst-launch-1.0 and gst-inspect-1.0[22m are used to stream the screen of the device under test. Please read https://gstreamer.freedesktop.org/documentation/installing/index.html?gi-language=c.
 info Doctor 
@@ -385,19 +385,35 @@ Installed apps:
         SBAppTags =         (
         );
     };
+    "com.facebook.WebDriverAgentRunner.xctrunner" =     {
+        ApplicationType = User;
+        Bundle = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/6AEDD65E-10C1-4169-B3E9-49AEFE99DA70/WebDriverAgentRunner-Runner.app/";
+        BundleContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/6AEDD65E-10C1-4169-B3E9-49AEFE99DA70/";
+        CFBundleDisplayName = "WebDriverAgentRunner-Runner";
+        CFBundleExecutable = "WebDriverAgentRunner-Runner";
+        CFBundleIdentifier = "com.facebook.WebDriverAgentRunner.xctrunner";
+        CFBundleName = "WebDriverAgentRunner-Runner";
+        CFBundleVersion = 1;
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/6D16325D-285A-4277-8592-51828A0FF880/";
+        GroupContainers =         {
+        };
+        Path = "/Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/6AEDD65E-10C1-4169-B3E9-49AEFE99DA70/WebDriverAgentRunner-Runner.app";
+        SBAppTags =         (
+        );
+    };
     "org.buddyhelp.app" =     {
         ApplicationType = User;
-        Bundle = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/06AE7C28-44E5-4596-BC65-006B083A0516/BuddyHelp.app/";
-        BundleContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/06AE7C28-44E5-4596-BC65-006B083A0516/";
+        Bundle = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/C6EE67B7-ED40-4C6C-89D0-C12C02600542/BuddyHelp.app/";
+        BundleContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/C6EE67B7-ED40-4C6C-89D0-C12C02600542/";
         CFBundleDisplayName = BuddyHelp;
         CFBundleExecutable = BuddyHelp;
         CFBundleIdentifier = "org.buddyhelp.app";
         CFBundleName = BuddyHelp;
         CFBundleVersion = 1;
-        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/90C4AFDD-F9C1-45FC-BDB9-50CCB685134A/";
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/2D662820-4720-48B9-B196-93782FD39A33/";
         GroupContainers =         {
         };
-        Path = "/Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/06AE7C28-44E5-4596-BC65-006B083A0516/BuddyHelp.app";
+        Path = "/Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/C6EE67B7-ED40-4C6C-89D0-C12C02600542/BuddyHelp.app";
         SBAppTags =         (
         );
     };
@@ -408,6 +424,9 @@ Installed apps:
 --- Checking Android Devices ---
 Android devices:
 List of devices attached
+emulator-5554          device product:sdk_gphone64_arm64 model:sdk_gphone64_arm64 device:emu64a transport_id:1
 
 
-❌ No Android devices connected
+✅ Android device(s) connected
+Found Chatwoot packages:
+package:com.chatwoot.app

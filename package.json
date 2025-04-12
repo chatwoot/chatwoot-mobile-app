@@ -11,7 +11,7 @@
     "clean": "watchman watch-del-all && rm -rf node_modules ios android .expo && pnpm store prune && rm pnpm-lock.yaml",
     "reset": "pnpm clean && pnpm install && pnpm generate",
     "test": "jest",
-    "e2e": "./e2e/run-tests.sh",
+    "e2e": "node e2e/check-environment.js",
     "lint": "eslint .",
     "generate": "npx expo prebuild --clean",
     "generate:soft": "npx expo prebuild",

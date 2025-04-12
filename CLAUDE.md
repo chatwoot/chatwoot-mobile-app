@@ -10,6 +10,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Never make changes without verifying they work as expected
 - Test script changes by running them at least once
 - When updating this CLAUDE.md file, also update the corresponding file in .cursor/rules/repo.mdc to keep them in sync
+- When creating scripts that generate log files, ensure they are added to .gitignore
+- Never commit temporary files, logs, or environment files to the repository
 
 ## Build/Lint/Test Commands
 
@@ -26,6 +28,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## End-to-End Testing
 
+- `pnpm e2e` - Run a quick environment check for e2e testing
+- `pnpm e2e:run` - Run full e2e tests using run-tests.sh script
+- `pnpm e2e:quick` - Run quick e2e test with Safari only
 - `pnpm appium` - Start Appium server with correct configuration
 - `pnpm test:e2e:ios` - Run iOS e2e test directly
 - `pnpm test:e2e:android` - Run Android e2e test directly

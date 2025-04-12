@@ -158,3 +158,11 @@ export const conversationWithNewLineMessage = {
     messageType: 1 as MessageType,
   },
 };
+
+export const conversationWithAllFields = {
+  ...conversationWithMoreLabels,
+  isSelected: false,
+  unreadCount: 2,
+  priority: 'high',
+  availabilityStatus: 'offline',
+};

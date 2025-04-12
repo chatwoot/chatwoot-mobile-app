@@ -6,7 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Development Workflow Tips
 
-- Always test your changes after implementation
+- Always test your changes after implementation with appropriate commands
+- Never make changes without verifying they work as expected
+- Test script changes by running them at least once
 - When updating this CLAUDE.md file, also update the corresponding file in .cursor/rules/repo.mdc to keep them in sync
 
 ## Build/Lint/Test Commands

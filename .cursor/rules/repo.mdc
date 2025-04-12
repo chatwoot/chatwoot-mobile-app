@@ -2,7 +2,9 @@
 
 ## Development Workflow Tips
 
-- Always test your changes after implementation
+- Always test your changes after implementation with appropriate commands
+- Never make changes without verifying they work as expected
+- Test script changes by running them at least once
 - When updating this file, also update the corresponding CLAUDE.md file in the root directory to keep them in sync
 
 ## Build/Lint/Test Commands

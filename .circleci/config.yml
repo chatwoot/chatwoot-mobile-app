@@ -10,7 +10,7 @@ jobs:
       - checkout
       - run:
           name: Install PNPM
-          command: npm install -g pnpm@8.15.1
+          command: sudo npm install -g pnpm@8.15.1
       - restore_cache:
           name: Restore PNPM Package Cache
           keys:
@@ -39,7 +39,7 @@ jobs:
       - checkout
       - run:
           name: Install PNPM
-          command: npm install -g pnpm@8.15.1
+          command: sudo npm install -g pnpm@8.15.1
       - restore_cache:
           name: Restore PNPM Package Cache
           keys:
@@ -56,13 +56,13 @@ jobs:
             - ~/.pnpm-store
       - run:
           name: Install Appium
-          command: npm install -g appium
+          command: sudo npm install -g appium
       - run:
           name: Install Appium Drivers
           command: |
-            appium driver install xcuitest
-            appium driver install uiautomator2
-            npm install -g appium-chromedriver
+            sudo appium driver install xcuitest
+            sudo appium driver install uiautomator2
+            sudo npm install -g appium-chromedriver
       - run:
           name: Setup E2E Test Environment
           command: |

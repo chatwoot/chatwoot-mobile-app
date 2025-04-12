@@ -46,10 +46,11 @@ If you encounter issues with the E2E tests in CircleCI:
 3. Examine the screenshots that are saved as artifacts from failed test runs
 4. If necessary, modify the test scripts to accommodate the CircleCI environment
 
-## Converting to PNPM
+## Package Manager: PNPM
 
-This configuration currently uses Yarn, but plans to migrate to PNPM. When ready, update:
+This configuration uses PNPM for managing dependencies. The configuration:
 
-1. The cache keys and paths in the config.yml file
-2. The installation commands to use pnpm
-3. The test run commands to use pnpm
+1. Uses pnpm-lock.yaml for cache keys
+2. Caches both node_modules and the PNPM store
+3. Uses pnpm commands for installing dependencies and running tests
+4. Uses the same PNPM version (8.15.1) as specified in package.json

@@ -173,7 +173,6 @@ export const AppNavigationContainer = () => {
     </NavigationContainer>
   );
 };
-
 export const AppNavigator = () => {
   return (
     <GestureHandlerRootView style={styles.navigationLayout}>

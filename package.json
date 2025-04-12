@@ -35,7 +35,7 @@
     "@chatwoot/markdown-to-txt": "^2.0.4",
     "@chatwoot/react-native-widget": "^0.0.21",
     "@chatwoot/utils": "^0.0.33",
-    "@gorhom/bottom-sheet": "^5.1.1",
+    "@gorhom/bottom-sheet": "^5.1.2",
     "@kesha-antonov/react-native-action-cable": "^1.1.5",
     "@notifee/react-native": "^9.1.1",
     "@react-native-async-storage/async-storage": "^1.23.1",

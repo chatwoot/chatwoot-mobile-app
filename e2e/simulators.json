@@ -1,0 +1,68 @@
+[
+  {
+    "name": "iPhone 16 Pro",
+    "udid": "CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0",
+    "version": "18.2",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-18-2"
+  },
+  {
+    "name": "iPhone 16 Pro Max",
+    "udid": "2B8E33F1-5E08-42D0-BD51-BF1E0C3C9EF5",
+    "version": "18.2",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-18-2"
+  },
+  {
+    "name": "iPhone 16",
+    "udid": "DAAD4F28-357B-4B04-8343-F768CC4ECD45",
+    "version": "18.2",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-18-2"
+  },
+  {
+    "name": "iPhone 16 Plus",
+    "udid": "B6A31614-F301-457A-809C-277285949D4C",
+    "version": "18.2",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-18-2"
+  },
+  {
+    "name": "iPhone SE (3rd generation)",
+    "udid": "D1513818-5C73-4AA0-94CD-AC8133134E53",
+    "version": "18.2",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-18-2"
+  },
+  {
+    "name": "iPad Pro 11-inch (M4)",
+    "udid": "DF3480BB-3B07-4A86-8DC2-9A9B1B475E5A",
+    "version": "18.2",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-18-2"
+  },
+  {
+    "name": "iPad Pro 13-inch (M4)",
+    "udid": "4F387126-1573-4A5C-8A0F-6B2C117A0C18",
+    "version": "18.2",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-18-2"
+  },
+  {
+    "name": "iPad Air 11-inch (M2)",
+    "udid": "FF5EA52F-493E-4C1A-B6FB-421A5FE98A43",
+    "version": "18.2",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-18-2"
+  },
+  {
+    "name": "iPad Air 13-inch (M2)",
+    "udid": "BE6F771F-4F73-4C7D-9782-BCEFC83427C9",
+    "version": "18.2",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-18-2"
+  },
+  {
+    "name": "iPad mini (A17 Pro)",
+    "udid": "CFCD1388-036B-4C0D-868E-816BC8930713",
+    "version": "18.2",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-18-2"
+  },
+  {
+    "name": "iPad (10th generation)",
+    "udid": "959583DB-B34F-4DA9-8EE7-841C013E7E21",
+    "version": "18.2",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-18-2"
+  }
+]

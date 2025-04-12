@@ -6,11 +6,27 @@ jobs:
   build-and-test:
     docker:
       - image: cimg/node:20.9.0
+    shell: /bin/bash -eo pipefail
+    environment:
+      BASH_ENV: ~/.bashrc
     steps:
       - checkout
       - run:
+          name: Disable Ruby Setup
+          command: |
+            echo 'source ./.circleci/pre-start.sh' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: Debug CircleCI Setup
+          command: ./.circleci/debug-setup.sh
+      - run:
+          name: Setup Working Directory
+          command: |
+            ls -la
+            pwd
+      - run:
           name: Install PNPM
-          command: sudo npm install -g pnpm@8.15.1
+          command: npm install -g pnpm@8.15.1
       - restore_cache:
           name: Restore PNPM Package Cache
           keys:
@@ -28,15 +44,29 @@ jobs:
       - run:
           command: pnpm test
           name: Run tests
+      - run:
+          command: pnpm lint
+          name: Run linting
 
   e2e-tests:
     docker:
       - image: cimg/node:20.9.0-browsers
+    shell: /bin/bash -eo pipefail
+    environment:
+      BASH_ENV: ~/.bashrc
     steps:
       - checkout
       - run:
+          name: Disable Ruby Setup
+          command: |
+            echo 'source ./.circleci/pre-start.sh' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: Debug CircleCI Setup
+          command: ./.circleci/debug-setup.sh
+      - run:
           name: Install PNPM
-          command: sudo npm install -g pnpm@8.15.1
+          command: npm install -g pnpm@8.15.1
       - restore_cache:
           name: Restore PNPM Package Cache
           keys:
@@ -53,7 +83,13 @@ jobs:
             - ~/.pnpm-store
       - run:
           name: Install Appium
-          command: sudo npm install -g appium
+          command: npm install -g appium
+      - run:
+          name: Install Appium Drivers
+          command: |
+            appium driver install xcuitest
+            appium driver install uiautomator2
+            npm install -g appium-chromedriver
       - run:
           name: Setup E2E Test Environment
           command: |
@@ -90,7 +126,8 @@ jobs:
 
 workflows:
   version: 2
-  test-deploy:
+  # Explicitly name the workflow to ensure there's no confusion
+  pnpm_workflow:
     jobs:
       - build-and-test
       - e2e-tests:

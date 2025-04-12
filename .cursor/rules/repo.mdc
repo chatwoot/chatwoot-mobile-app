@@ -1,7 +1,3 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 # Chatwoot Mobile App Developer Guide
 
 ## Development Workflow Tips
@@ -9,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Always test your changes after implementation with appropriate commands
 - Never make changes without verifying they work as expected
 - Test script changes by running them at least once
-- When updating this CLAUDE.md file, also update the corresponding file in .cursor/rules/repo.mdc to keep them in sync
+- When updating this file, also update the corresponding CLAUDE.md file in the root directory to keep them in sync
 - When creating scripts that generate log files, ensure they are added to .gitignore
 - Never commit temporary files, logs, or environment files to the repository
 

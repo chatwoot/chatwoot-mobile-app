@@ -6,29 +6,8 @@ jobs:
   build-and-test:
     docker:
       - image: cimg/node:20.9.0
-    shell: /bin/bash -eo pipefail
-    environment:
-      BASH_ENV: ~/.bashrc
-      SKIP_RUBY_SETUP: "true"
     steps:
       - checkout
-      - run:
-          name: Disable Ruby Setup
-          command: |
-            # Create dummy functions to prevent Ruby setup
-            function rvm() { echo "RVM setup intercepted and skipped"; }
-            function bundle() { echo "Bundle install intercepted and skipped"; }
-            export -f rvm
-            export -f bundle
-            echo "Ruby setup has been disabled"
-      - run:
-          name: Debug CircleCI Setup
-          command: ./.circleci/debug-setup.sh
-      - run:
-          name: Setup Working Directory
-          command: |
-            ls -la
-            pwd
       - run:
           name: Install PNPM
           command: npm install -g pnpm@8.15.1
@@ -56,24 +35,8 @@ jobs:
   e2e-tests:
     docker:
       - image: cimg/node:20.9.0-browsers
-    shell: /bin/bash -eo pipefail
-    environment:
-      BASH_ENV: ~/.bashrc
-      SKIP_RUBY_SETUP: "true"
     steps:
       - checkout
-      - run:
-          name: Disable Ruby Setup
-          command: |
-            # Create dummy functions to prevent Ruby setup
-            function rvm() { echo "RVM setup intercepted and skipped"; }
-            function bundle() { echo "Bundle install intercepted and skipped"; }
-            export -f rvm
-            export -f bundle
-            echo "Ruby setup has been disabled"
-      - run:
-          name: Debug CircleCI Setup
-          command: ./.circleci/debug-setup.sh
       - run:
           name: Install PNPM
           command: npm install -g pnpm@8.15.1
@@ -136,8 +99,7 @@ jobs:
 
 workflows:
   version: 2
-  # Explicitly name the workflow to ensure there's no confusion
-  pnpm_workflow:
+  test-deploy:
     jobs:
       - build-and-test
       - e2e-tests:

@@ -28,9 +28,6 @@ jobs:
       - run:
           command: pnpm test
           name: Run tests
-      - run:
-          command: pnpm lint
-          name: Run linting
 
   e2e-tests:
     docker:

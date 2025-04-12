@@ -1,0 +1,2 @@
+This file is a signal to CircleCI that we don't need Ruby setup.
+This project uses Node.js and PNPM only.

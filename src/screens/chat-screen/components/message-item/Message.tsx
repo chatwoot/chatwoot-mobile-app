@@ -339,7 +339,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
       },
     };
   };
-
+  // TODO: Add this once we have a proper way to render single attachments
   // const renderSingleAttachment = (attachment: ImageMetadata) => {
   //   switch (attachment.fileType) {
   //     case ATTACHMENT_TYPES.LOCATION:
@@ -377,7 +377,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
     } else if (isEmailInbox && !item.private) {
       messageContent = <EmailBubble item={item} variant={variant()} />;
     }
-    // TODO: remove this once we have a proper way to render single attachments
+    // TODO: Add this once we have a proper way to render single attachments
     // else if (attachments?.length === 1 && !item.content && !isReplyMessage) {
     //   messageContent = renderSingleAttachment(attachments[0]);
     // }

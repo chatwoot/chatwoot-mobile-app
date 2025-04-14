@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppDispatch } from '@/hooks';
 import { updateAttachments } from '@/store/conversation/sendMessageSlice';
 import { useRefsContext } from '@/context';
-import { AttachFileIcon, CameraIcon, MacrosIcon, PhotosIcon } from '@/svg-icons';
+import { AIAssisst, AttachFileIcon, CameraIcon, MacrosIcon, PhotosIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '@/components-next/common';
@@ -17,6 +17,8 @@ import i18n from '@/i18n';
 import { showToast } from '@/utils/toastUtils';
 import { findFileSize } from '@/utils/fileUtils';
 import { getApiLevel } from 'react-native-device-info';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { RootStackParamList } from '@/utils/navigationUtils';
 
 export const handleOpenPhotosLibrary = async dispatch => {
   if (Platform.OS === 'ios') {
@@ -201,6 +203,11 @@ const handleAttachFile = async dispatch => {
 
 const ADD_MENU_OPTIONS = [
   {
+    icon: <AIAssisst />,
+    title: 'Captain',
+    handlePress: () => {},
+  },
+  {
     icon: <PhotosIcon />,
     title: 'Photos',
     handlePress: handleOpenPhotosLibrary,
@@ -239,6 +246,7 @@ type MenuOptionProps = {
 const MenuOption = (props: MenuOptionProps) => {
   const { index, menuOption } = props;
   const dispatch = useAppDispatch();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { macrosListSheetRef } = useRefsContext();
 
   const { animatedStyle, handlers } = useScaleAnimation();
@@ -249,6 +257,9 @@ const MenuOption = (props: MenuOptionProps) => {
     menuOption?.handlePress(dispatch);
     if (menuOption.title === 'Macros') {
       macrosListSheetRef.current?.present();
+    }
+    if (menuOption.title === 'Captain') {
+      navigation.navigate('Captain');
     }
   };
 

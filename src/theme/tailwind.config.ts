@@ -28,14 +28,6 @@ export const twConfig = {
         cxs: '13px',
         md: '15px',
       },
-      cursor: {
-        default: 'default',
-        pointer: 'pointer',
-        text: 'text',
-        'not-allowed': 'not-allowed',
-        wait: 'wait',
-        move: 'move',
-      },
       // We are using individual static Inter font files (e.g., Inter-400-20.ttf) to load different font weights and styles
       // Please refer to the following links for more information:
       // https://medium.com/timeless/adding-custom-variable-fonts-in-react-native-47e0d062bcfc

@@ -66,7 +66,6 @@ export const EmailMessageList: Story = {
         <BottomSheetModalProvider>
           <RefsProvider>
             <KeyboardProvider>
-              ={' '}
               <ChatWindowProvider conversationId={29}>
                 <ScrollView contentContainerStyle={tailwind.style('flex')}>
                   <PlatformSpecificKeyboardWrapperComponent
@@ -77,6 +76,8 @@ export const EmailMessageList: Story = {
                       isFlashListReady={false}
                       setFlashListReady={() => {}}
                       onEndReached={() => {}}
+                      isEmailInbox={true}
+                      currentUserId={1}
                     />
                   </PlatformSpecificKeyboardWrapperComponent>
                 </ScrollView>

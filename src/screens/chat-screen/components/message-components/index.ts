@@ -1,3 +1,4 @@
+// Deprecated components
 export * from './AudioCell';
 export * from './ComposedCell';
 export * from './FileCell';

@@ -66,22 +66,22 @@ export const Instagram: Story = {
         <BottomSheetModalProvider>
           <RefsProvider>
             <KeyboardProvider>
-              <LightBoxProvider>
-                <ChatWindowProvider conversationId={29}>
-                  <ScrollView contentContainerStyle={tailwind.style('flex')}>
-                    <PlatformSpecificKeyboardWrapperComponent
-                      style={tailwind.style('flex-1 bg-white border border-red-500')}
-                      interpolator="linear">
-                      <MessagesList
-                        messages={ALL_MESSAGES_MOCKDATA}
-                        isFlashListReady={false}
-                        setFlashListReady={() => {}}
-                        onEndReached={() => {}}
-                      />
-                    </PlatformSpecificKeyboardWrapperComponent>
-                  </ScrollView>
-                </ChatWindowProvider>
-              </LightBoxProvider>
+              <ChatWindowProvider conversationId={29}>
+                <ScrollView contentContainerStyle={tailwind.style('flex')}>
+                  <PlatformSpecificKeyboardWrapperComponent
+                    style={tailwind.style('flex-1 bg-white')}
+                    interpolator="linear">
+                    <MessagesList
+                      messages={ALL_MESSAGES_MOCKDATA}
+                      isFlashListReady={false}
+                      setFlashListReady={() => {}}
+                      onEndReached={() => {}}
+                      isEmailInbox={false}
+                      currentUserId={1}
+                    />
+                  </PlatformSpecificKeyboardWrapperComponent>
+                </ScrollView>
+              </ChatWindowProvider>
             </KeyboardProvider>
           </RefsProvider>
         </BottomSheetModalProvider>

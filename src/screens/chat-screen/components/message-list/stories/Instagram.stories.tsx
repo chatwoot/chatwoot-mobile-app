@@ -7,7 +7,6 @@ import { Animated } from 'react-native';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { tailwind } from '@/theme';
 import { MessagesList } from '../MessagesList';
-import { LightBoxProvider } from '@alantoa/lightbox';
 import { ChatWindowProvider, RefsProvider } from '@/context';
 import { Provider } from 'react-redux';
 import { INSTAGRAM_MESSAGES } from './mock-data/instagram';

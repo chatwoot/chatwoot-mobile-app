@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view';
 import Animated from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LightBoxProvider } from '@alantoa/lightbox';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { ChatHeaderContainer } from './components';
@@ -121,7 +120,7 @@ const ChatScreen = (props: ChatScreenProps) => {
     dispatch(macroActions.fetchMacros());
     // Clear audio player
     dispatch(setCurrentPlayingAudioSrc(''));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -147,11 +146,9 @@ const ChatScreen = (props: ChatScreenProps) => {
   if (conversation) {
     return (
       <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
-        <LightBoxProvider>
-          <ChatWindowProvider conversationId={conversationId}>
-            <ChatScreenWrapper {...props} />
-          </ChatWindowProvider>
-        </LightBoxProvider>
+        <ChatWindowProvider conversationId={conversationId}>
+          <ChatScreenWrapper {...props} />
+        </ChatWindowProvider>
         <ActionBottomSheet />
       </SafeAreaView>
     );

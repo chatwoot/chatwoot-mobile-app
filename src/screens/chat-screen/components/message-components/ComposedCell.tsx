@@ -15,7 +15,7 @@ import { INBOX_TYPES, MESSAGE_TYPES, TEXT_MAX_WIDTH } from '@/constants';
 
 import { AudioPlayer } from './AudioCell';
 import { FilePreview } from './FileCell';
-import { ImageContainer } from './ImageCell';
+
 import { VideoPlayer } from './VideoCell';
 import { DeliveryStatus } from './DeliveryStatus';
 import { useAppSelector } from '@/hooks';
@@ -148,32 +148,6 @@ export const ComposedCell = (props: ComposedCellProps) => {
                           <AudioPlayer
                             audioSrc={attachment.dataUrl}
                             {...{ isIncoming, isOutgoing }}
-                          />
-                        </Animated.View>
-                      );
-                    }
-                    if (attachment.fileType === 'image') {
-                      return isAnInstagramStory && isInstagramStoryExpired ? (
-                        <Animated.View
-                          style={tailwind.style(
-                            'flex flex-row items-center justify-center py-8 bg-slate-100 gap-1',
-                          )}>
-                          <Icon icon={<FileErrorIcon fill={tailwind.color('text-gray-900')} />} />
-                          <Animated.Text
-                            style={tailwind.style(
-                              'text-cxs font-inter-420-20 text-gray-900 mt-[1px]',
-                            )}>
-                            {i18n.t('CONVERSATION.STORY_NOT_AVAILABLE')}
-                          </Animated.Text>
-                        </Animated.View>
-                      ) : (
-                        <Animated.View
-                          key={attachment.fileType + index}
-                          style={tailwind.style('my-2')}>
-                          <ImageContainer
-                            imageSrc={attachment.dataUrl}
-                            width={300 - 24 - (isPrivate ? 13 : 0)}
-                            height={215}
                           />
                         </Animated.View>
                       );

@@ -1,8 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
-
 import { tailwind } from '@/theme';
 import { Image } from 'expo-image';
+import Animated, { FadeIn } from 'react-native-reanimated';
+// eslint-disable-next-line
+import typingGif from './typing.gif';
 
 type TypingIndicatorProps = {
   typingText: string;
@@ -10,18 +12,17 @@ type TypingIndicatorProps = {
 
 export const TypingIndicator = ({ typingText }: TypingIndicatorProps) => {
   return (
-    <View style={tailwind.style('w-full items-center mb-16')}>
-      <View
-        style={tailwind.style(
-          'flex-row items-center py-1 px-2 shadow-md rounded-xl bg-white mx-auto',
-        )}>
-        <Image
-          // eslint-disable-next-line @typescript-eslint/no-require-imports
-          source={require('./typing.gif')}
-          style={tailwind.style('w-6 h-6')}
-          contentFit="contain"
-        />
+    <Animated.View
+      entering={FadeIn.duration(350)}
+      style={tailwind.style('my-[1px] mb-2 items-start')}>
+      <View style={tailwind.style('flex flex-row')}>
+        <View
+          style={tailwind.style(
+            'relative rounded-2xl overflow-hidden bg-gray-100 pl-3 pr-2.5 py-2',
+          )}>
+          <Image source={typingGif} style={tailwind.style('w-6 h-6')} contentFit="contain" />
+        </View>
       </View>
-    </View>
+    </Animated.View>
   );
 };

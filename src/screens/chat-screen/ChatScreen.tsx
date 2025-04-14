@@ -121,6 +121,7 @@ const ChatScreen = (props: ChatScreenProps) => {
     dispatch(macroActions.fetchMacros());
     // Clear audio player
     dispatch(setCurrentPlayingAudioSrc(''));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

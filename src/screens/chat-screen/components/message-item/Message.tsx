@@ -327,6 +327,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
     if (!sender || sender.type === SENDER_TYPES.AGENT_BOT) {
       return {
         name: i18n.t('CONVERSATION.BOT'),
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         src: require('../../../../assets/local/bot-avatar.png'),
       };
     }

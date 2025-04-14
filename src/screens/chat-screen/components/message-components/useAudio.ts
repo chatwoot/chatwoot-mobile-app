@@ -38,7 +38,7 @@ export const useAudio = (audioUri: string): UseAudioResult => {
 
         // Update position and duration for slider
         currentPosition.value = status.positionMillis || 0;
-        
+
         // Ensure we have a duration value
         if (status.durationMillis && status.durationMillis > 0) {
           totalDuration.value = status.durationMillis;
@@ -62,7 +62,7 @@ export const useAudio = (audioUri: string): UseAudioResult => {
       try {
         setIsPlaying(audioManager.isAudioPlaying(audioUri));
         setIsLoading(audioManager.isAudioLoading(audioUri));
-        
+
         // Try to get existing duration
         const cachedDuration = audioManager.getAudioDuration(audioUri);
         if (cachedDuration > 0) {
@@ -106,7 +106,7 @@ export const useAudio = (audioUri: string): UseAudioResult => {
       setIsLoading(true);
       try {
         const status = await audioManager.playAudio(audioUri);
-        
+
         // Update total duration from initial playback
         if (status && status.isLoaded && status.durationMillis) {
           totalDuration.value = status.durationMillis;
@@ -128,7 +128,7 @@ export const useAudio = (audioUri: string): UseAudioResult => {
         // After seeking, resume playback if it was playing
         if (isPlaying) {
           const status = await audioManager.playAudio(audioUri);
-          
+
           // Ensure we have duration after seeking
           if (status && status.isLoaded && status.durationMillis) {
             totalDuration.value = status.durationMillis;

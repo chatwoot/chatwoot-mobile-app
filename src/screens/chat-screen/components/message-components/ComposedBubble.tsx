@@ -83,8 +83,9 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
             if (attachment.fileType === 'image') {
               return isAnInstagramStory && isInstagramStoryExpired ? (
                 <Animated.View
+                  key={attachment.fileType + index}
                   style={tailwind.style(
-                    'flex flex-row items-center justify-center py-8 bg-slate-100 gap-1',
+                    'flex flex-row items-center justify-center py-8 bg-slate-100 gap-1 rounded-lg',
                   )}>
                   <Icon icon={<FileErrorIcon fill={tailwind.color('text-gray-900')} />} />
                   <Animated.Text
@@ -103,7 +104,7 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
               );
             }
 
-            if (attachment.fileType === 'file') {
+            if (attachment.fileType === ATTACHMENT_TYPES.FILE) {
               return (
                 <Animated.View
                   key={attachment.fileType + index}
@@ -116,7 +117,7 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
                 </Animated.View>
               );
             }
-            if (attachment.fileType === 'video') {
+            if (attachment.fileType === ATTACHMENT_TYPES.VIDEO) {
               return (
                 <Animated.View
                   key={attachment.fileType + index}
@@ -125,7 +126,16 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
                 </Animated.View>
               );
             }
-            if (attachment.fileType === 'audio') {
+            if (attachment.fileType === ATTACHMENT_TYPES.IG_REEL) {
+              return (
+                <Animated.View
+                  key={attachment.fileType + index}
+                  style={tailwind.style('flex flex-row items-center my-2')}>
+                  <VideoBubble videoSrc={attachment.dataUrl} />
+                </Animated.View>
+              );
+            }
+            if (attachment.fileType === ATTACHMENT_TYPES.AUDIO) {
               return (
                 <Animated.View
                   key={attachment.fileType + index}
@@ -135,7 +145,7 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
               );
             }
 
-            if (attachment.fileType === 'location') {
+            if (attachment.fileType === ATTACHMENT_TYPES.LOCATION) {
               return (
                 <Animated.View
                   key={attachment.fileType + index}

@@ -1,24 +1,14 @@
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import { Platform, Pressable, View } from 'react-native';
-import { PlayBackType } from 'react-native-audio-recorder-player';
-import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
+import React, { useMemo, useCallback } from 'react';
+import { Pressable, View } from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
-import * as Sentry from '@sentry/react-native';
-
-import {
-  selectCurrentPlayingAudioSrc,
-  setCurrentPlayingAudioSrc,
-} from '@/store/conversation/audioPlayerSlice';
 
 import { tailwind } from '@/theme';
 import { IconProps } from '@/types';
 import { Icon, Slider } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
-import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
 import { MESSAGE_VARIANTS } from '@/constants';
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from '@/hooks';
-import { convertOggToMp3 } from '@/utils/audioConverter';
+import { useAudio } from './useAudio';
 
 // eslint-disable-next-line react/display-name
 const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
@@ -28,6 +18,7 @@ const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
     </Svg>
   );
 });
+
 // eslint-disable-next-line react/display-name
 const PauseIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
   return (
@@ -51,145 +42,54 @@ type AudioPlayerProps = Pick<AudioBubbleProps, 'audioSrc'> & {
 export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const { audioSrc, variant } = props;
 
-  const [isSoundLoading, setIsSoundLoading] = useState(false);
-  const [isAudioPlaying, setAudioPlaying] = useState(false);
-  const [convertedAudioSrc, setConvertedAudioSrc] = useState(audioSrc);
+  // Use our custom hook for audio functionality
+  const { isLoading, isPlaying, currentPosition, totalDuration, togglePlayback, seekTo, pause } =
+    useAudio(audioSrc);
 
-  const dispatch = useDispatch();
-  const currentPlayingAudioSrc = useAppSelector(selectCurrentPlayingAudioSrc);
-
-  const currentPosition = useSharedValue(0);
-  const totalDuration = useSharedValue(0);
-
-  const audioPlayBackStatus = useCallback(
-    (data: any) => {
-      const playBackData = data.data as PlayBackType;
-      if (playBackData) {
-        currentPosition.value = playBackData.currentPosition;
-        totalDuration.value = playBackData.duration;
-        if (playBackData.currentPosition === playBackData.duration) {
-          currentPosition.value = 0;
-          totalDuration.value = 0;
-          setAudioPlaying(false);
-          dispatch(setCurrentPlayingAudioSrc(''));
-        }
-      }
-    },
-    [currentPosition, totalDuration, dispatch],
-  );
-
-  useEffect(() => {
-    const prepareAudio = async () => {
-      if (Platform.OS === 'ios' && audioSrc.toLowerCase().endsWith('.ogg')) {
-        setIsSoundLoading(true);
-        try {
-          const convertedSrc = await convertOggToMp3(audioSrc);
-          setConvertedAudioSrc(convertedSrc);
-        } catch (error) {
-          Sentry.captureException(error);
-        } finally {
-          setIsSoundLoading(false);
-        }
-      }
-    };
-    prepareAudio();
-  }, [audioSrc]);
-
-  const togglePlayback = useCallback(() => {
-    if (convertedAudioSrc === currentPlayingAudioSrc) {
-      if (isAudioPlaying) {
-        pausePlayer();
-      } else {
-        resumePlayer();
-      }
-      setAudioPlaying(!isAudioPlaying);
-    } else {
-      setIsSoundLoading(true);
-      startPlayer(convertedAudioSrc, audioPlayBackStatus).then(() => {
-        setIsSoundLoading(false);
-        setAudioPlaying(true);
-        dispatch(setCurrentPlayingAudioSrc(convertedAudioSrc));
-      });
+  // Handle play/pause button press
+  const handlePlayPausePress = useCallback(() => {
+    if (!isLoading) {
+      togglePlayback();
     }
-  }, [convertedAudioSrc, currentPlayingAudioSrc, isAudioPlaying, dispatch, audioPlayBackStatus]);
+  }, [isLoading, togglePlayback]);
 
-  const manualSeekTo = useCallback(async (manualSeekPosition: number) => {
-    seekTo(manualSeekPosition).then(() => {
-      resumePlayer();
-    });
-  }, []);
-
-  const pauseAudio = useCallback(async () => {
-    await pausePlayer();
-  }, []);
-
-  const isCurrentAudioSrcPlaying = useMemo(
-    () => currentPlayingAudioSrc === convertedAudioSrc && isAudioPlaying,
-    [convertedAudioSrc, currentPlayingAudioSrc, isAudioPlaying],
-  );
-
-  useEffect(() => {
-    if (currentPlayingAudioSrc !== audioSrc) {
-      currentPosition.value = 0;
-      totalDuration.value = 0;
-    }
-  }, [currentPlayingAudioSrc, audioSrc, currentPosition, totalDuration]);
-
-  useEffect(() => {
-    return () => {
-      stopPlayer()
-        .then()
-        .finally(() => {
-          setAudioPlaying(false);
-          dispatch(setCurrentPlayingAudioSrc(''));
-        });
-    };
-  }, [dispatch]);
-
+  // Configure slider props based on variant and audio state
   const sliderProps = useMemo(
     () => ({
       trackColor: variant === MESSAGE_VARIANTS.USER ? 'bg-whiteA-A9' : 'bg-gray-500',
       filledTrackColor: variant === MESSAGE_VARIANTS.USER ? 'bg-white' : 'bg-blue-700',
       knobStyle: variant === MESSAGE_VARIANTS.USER ? 'border-blue-300' : 'border-blue-700',
-      manualSeekTo,
+      manualSeekTo: seekTo,
       currentPosition,
       totalDuration,
-      pauseAudio,
+      pauseAudio: pause,
     }),
-    [variant, manualSeekTo, currentPosition, totalDuration, pauseAudio],
+    [variant, seekTo, currentPosition, totalDuration, pause],
   );
+
+  const iconColor = variant === MESSAGE_VARIANTS.USER ? 'white' : 'black';
+  const iconOpacity = variant === MESSAGE_VARIANTS.USER ? '1' : '0.565';
 
   return (
     <View style={tailwind.style('w-full flex flex-row items-center flex-1')}>
-      <Pressable disabled={isSoundLoading} hitSlop={10} onPress={togglePlayback}>
-        {isSoundLoading ? (
-          <Animated.View>
+      <Pressable hitSlop={10} onPress={handlePlayPausePress}>
+        {isLoading ? (
+          <Animated.View entering={FadeIn} exiting={FadeOut}>
             <Spinner size={13} stroke={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'} />
           </Animated.View>
-        ) : isCurrentAudioSrcPlaying ? (
+        ) : isPlaying ? (
           <Animated.View
             style={tailwind.style('pl-0.5 pr-0.5')}
             entering={FadeIn}
             exiting={FadeOut}>
-            <Icon
-              icon={
-                <PauseIcon
-                  fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-                  fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
-                />
-              }
-              size={13}
-            />
+            <Icon icon={<PauseIcon fillOpacity={iconOpacity} fill={iconColor} />} size={13} />
           </Animated.View>
         ) : (
           <Animated.View
             style={tailwind.style('pl-0.5 pr-0.5')}
             entering={FadeIn}
             exiting={FadeOut}>
-            <PlayIcon
-              fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-              fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
-            />
+            <PlayIcon fillOpacity={iconOpacity} fill={iconColor} />
           </Animated.View>
         )}
       </Pressable>

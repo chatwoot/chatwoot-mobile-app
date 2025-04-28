@@ -74,6 +74,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     owner: 'buddyhelp',
     plugins: [
+      'expo-audio',
       'expo-font',
       [
         'react-native-permissions',
@@ -105,15 +106,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           },
           ios: {
             useFrameworks: 'static',
-          },
-        },
-      ],
-      [
-        '@config-plugins/ffmpeg-kit-react-native',
-        {
-          package: 'min',
-          ios: {
-            package: 'audio',
           },
         },
       ],

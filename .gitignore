@@ -38,8 +38,7 @@ ios/
 android/
 
 google-services.json
-extracted-app
-googleservice-info.plist
+GoogleService-Info.plist
 .env
 .env.local
 build-*
@@ -49,3 +48,6 @@ credentials.json
 /e2e/screenshots
 appium.log
 emulator.log
+
+
+.cursor/

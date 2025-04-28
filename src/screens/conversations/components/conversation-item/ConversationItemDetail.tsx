@@ -103,8 +103,8 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           <ConversationId id={conversationId} />
         </AnimatedNativeView>
         <AnimatedNativeView style={tailwind.style('flex flex-row items-center gap-2')}>
-          {hasPriority ? <PriorityIndicator {...{ priority }} /> : null}
           {inbox && <ChannelIndicator inbox={inbox} additionalAttributes={additionalAttributes} />}
+          <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />
           <LastActivityTime timestamp={timestamp} />
         </AnimatedNativeView>
       </AnimatedNativeView>
@@ -124,38 +124,47 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
               </NativeView>
             )}
           </AnimatedNativeView>
-          <AnimatedNativeView
-            style={tailwind.style('flex flex-row h-6 justify-between items-center gap-2')}>
-            <AnimatedNativeView style={tailwind.style('flex flex-row flex-1 gap-2 items-center')}>
-              {hasSLA && (
-                <SLAIndicator
-                  slaPolicyId={slaPolicyId}
-                  appliedSla={appliedSla as SLA}
-                  appliedSlaConversationDetails={
-                    appliedSlaConversationDetails as {
-                      firstReplyCreatedAt: number;
-                      waitingSince: number;
-                      status: string;
+          {(hasPriority || hasSLA) && (
+            <AnimatedNativeView
+              style={tailwind.style('flex flex-row h-6 justify-between items-center gap-2')}>
+              <AnimatedNativeView style={tailwind.style('flex flex-row flex-1 gap-2 items-center')}>
+                {hasPriority ? <PriorityIndicator {...{ priority }} /> : null}
+                {hasPriority && hasSLA && (
+                  <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />
+                )}
+                {assignee ? (
+                  <AnimatedNativeView>
+                    <Avatar
+                      size="sm"
+                      name={assignee.name as string}
+                      src={{ uri: assignee.thumbnail } as ImageURISource}
+                    />
+                  </AnimatedNativeView>
+                ) : null}
+                {hasSLA && assignee && hasPriority && (
+                  <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />
+                )}
+                {hasSLA && (
+                  <SLAIndicator
+                    slaPolicyId={slaPolicyId}
+                    appliedSla={appliedSla as SLA}
+                    appliedSlaConversationDetails={
+                      appliedSlaConversationDetails as {
+                        firstReplyCreatedAt: number;
+                        waitingSince: number;
+                        status: string;
+                      }
                     }
-                  }
-                  onSLAStatusChange={setShouldShowSLA}
-                />
-              )}
-              {hasLabels && hasSLA && (
-                <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />
-              )}
-              {hasLabels && <LabelIndicator labels={labels} allLabels={allLabels} />}
-            </AnimatedNativeView>
-
-            {assignee ? (
-              <AnimatedNativeView>
-                <Avatar
-                  size="sm"
-                  name={assignee.name as string}
-                  src={{ uri: assignee.thumbnail } as ImageURISource}
-                />
+                    onSLAStatusChange={setShouldShowSLA}
+                  />
+                )}
               </AnimatedNativeView>
-            ) : null}
+            </AnimatedNativeView>
+          )}
+
+          <AnimatedNativeView
+            style={tailwind.style('flex flex-row w-full justify-between items-center gap-2')}>
+            {hasLabels && <LabelIndicator labels={labels} allLabels={allLabels} />}
           </AnimatedNativeView>
         </AnimatedNativeView>
       ) : (

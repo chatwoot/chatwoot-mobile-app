@@ -53,7 +53,7 @@ export const FilePreview = (props: FilePreviewProps) => {
               setFileDownload(false);
             })
             .catch(() => {
-              Alert.alert('File load error');
+              // Alert.alert('File load error');
             });
         }
       });

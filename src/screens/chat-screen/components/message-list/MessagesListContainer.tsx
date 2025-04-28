@@ -144,6 +144,7 @@ export const MessagesListContainer = () => {
   useEffect(() => {
     loadMessages({ loadingMessagesForFirstTime: true });
     dispatch(conversationParticipantActions.index({ conversationId }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const groupedMessages = getGroupedMessages(messages);

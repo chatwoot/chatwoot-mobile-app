@@ -101,21 +101,14 @@ export default ({ config }: ConfigContext): ExpoConfig => {
             targetSdkVersion: 34,
             extraMavenRepos: ['$rootDir/../../../node_modules/@notifee/react-native/android/libs'],
             enableProguardInReleaseBuilds: true,
+            exclude: ['ffmpeg-kit-react-native'],
           },
           ios: {
             useFrameworks: 'static',
           },
         },
       ],
-      [
-        '@config-plugins/ffmpeg-kit-react-native',
-        {
-          package: 'min',
-          ios: {
-            package: 'audio',
-          },
-        },
-      ],
+      './with-ffmpeg-pod.js',
     ],
     androidNavigationBar: {
       backgroundColor: '#ffffff',

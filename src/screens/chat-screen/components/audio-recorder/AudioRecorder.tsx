@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Dimensions, PermissionsAndroid, Platform, Pressable } from 'react-native';
-import AudioRecorderPlayer, { RecordBackType } from 'react-native-audio-recorder-player';
+import AudioRecorderPlayer, {
+  RecordBackType,
+  AVEncodingOption,
+} from 'react-native-audio-recorder-player';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { isUndefined } from 'lodash';
 import * as Sentry from '@sentry/react-native';
@@ -17,7 +20,7 @@ import {
   addNewCachePath,
   selectLocalRecordedAudioCacheFilePaths,
 } from '@/store/conversation/localRecordedAudioCacheSlice';
-import { convertAacToMp3 } from '@/utils/audioConverter';
+import { convertAacToWav } from '@/utils/audioConverter';
 
 const RecorderSegmentWidth = Dimensions.get('screen').width - 8 - 80 - 12;
 
@@ -58,8 +61,10 @@ const millisecondsToTimeString = (milliseconds: number | undefined) => {
 
 export const AudioRecorder = ({
   onRecordingComplete,
+  audioFormat,
 }: {
   onRecordingComplete: (audioFile: File) => void;
+  audioFormat: 'audio/m4a' | 'audio/wav';
 }) => {
   const localRecordedAudioCacheFilePaths = useAppSelector(selectLocalRecordedAudioCacheFilePaths);
   const dispatch = useAppDispatch();
@@ -98,7 +103,11 @@ export const AudioRecorder = ({
         android: `${dirs.CacheDir}/audio-${localRecordedAudioCacheFilePaths.length}.mp3`,
       });
 
-      ARPlayer.startRecorder(path)
+      ARPlayer.startRecorder(path, {
+        AVFormatIDKeyIOS: AVEncodingOption.aac,
+        AVNumberOfChannelsKeyIOS: 2,
+        AVSampleRateKeyIOS: 44100,
+      })
         .then((value: string) => {
           if (value) {
             setIsAudioRecording(true);
@@ -134,21 +143,24 @@ export const AudioRecorder = ({
               android: value.replace(/\/\/+/g, '/'),
             }) || value;
 
-          // Convert to MP3 for iOS
+          const stats = await RNFetchBlob.fs.stat(cleanPath);
+
           let finalPath = cleanPath;
-          if (Platform.OS === 'ios') {
-            finalPath = await convertAacToMp3(cleanPath);
+          const finalType = Platform.OS === 'android' ? 'audio/mp3' : audioFormat;
+          const finalExtension =
+            Platform.OS === 'android' ? 'mp3' : audioFormat === 'audio/wav' ? 'wav' : 'm4a';
+
+          if (Platform.OS === 'ios' && audioFormat === 'audio/wav') {
+            finalPath = await convertAacToWav(cleanPath);
             finalPath = finalPath.replace('file://', '');
           }
-
-          const stats = await RNFetchBlob.fs.stat(finalPath);
 
           const audioFile = {
             uri: Platform.OS === 'ios' ? `file://${finalPath}` : finalPath,
             originalPath: finalPath,
-            type: 'audio/mp3',
-            fileName: `audio-${localRecordedAudioCacheFilePaths.length}.mp3`,
-            name: `audio-${localRecordedAudioCacheFilePaths.length}.mp3`,
+            type: finalType,
+            fileName: `audio-${localRecordedAudioCacheFilePaths.length}.${finalExtension}`,
+            name: `audio-${localRecordedAudioCacheFilePaths.length}.${finalExtension}`,
             fileSize: stats.size,
           };
 

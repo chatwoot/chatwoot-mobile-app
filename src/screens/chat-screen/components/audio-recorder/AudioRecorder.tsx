@@ -131,40 +131,53 @@ export const AudioRecorder = ({
     setIsVoiceRecorderOpen(false);
   };
 
+  const createAudioFile = async (value: string) => {
+    const cleanPath =
+      Platform.select({
+        ios: value.replace('file://', ''),
+        android: value.replace(/\/\/+/g, '/'),
+      }) || value;
+    let finalPath = cleanPath;
+    const stats = await RNFetchBlob.fs.stat(finalPath);
+
+    if (Platform.OS === 'android') {
+      return {
+        uri: finalPath,
+        originalPath: finalPath,
+        type: 'audio/mp3',
+        fileName: `audio-${localRecordedAudioCacheFilePaths.length}.mp3`,
+        name: `audio-${localRecordedAudioCacheFilePaths.length}.mp3`,
+        fileSize: stats.size,
+      };
+    }
+
+    const finalExtension = audioFormat === 'audio/wav' ? 'wav' : 'm4a';
+
+    if (audioFormat === 'audio/wav') {
+      finalPath = await convertAacToWav(cleanPath);
+      finalPath = finalPath.replace('file://', '');
+    }
+
+    const audioFile = {
+      uri: Platform.OS === 'ios' ? `file://${finalPath}` : finalPath,
+      originalPath: finalPath,
+      type: audioFormat,
+      fileName: `audio-${localRecordedAudioCacheFilePaths.length}.${finalExtension}`,
+      name: `audio-${localRecordedAudioCacheFilePaths.length}.${finalExtension}`,
+      fileSize: stats.size,
+    };
+
+    return audioFile;
+  };
+
   const sendRecordedMessage = () => {
     if (isSending) return;
     setIsSending(true);
     ARPlayer.stopRecorder()
       .then(async value => {
         try {
-          const cleanPath =
-            Platform.select({
-              ios: value.replace('file://', ''),
-              android: value.replace(/\/\/+/g, '/'),
-            }) || value;
-
-          const stats = await RNFetchBlob.fs.stat(cleanPath);
-
-          let finalPath = cleanPath;
-          const finalType = Platform.OS === 'android' ? 'audio/mp3' : audioFormat;
-          const finalExtension =
-            Platform.OS === 'android' ? 'mp3' : audioFormat === 'audio/wav' ? 'wav' : 'm4a';
-
-          if (Platform.OS === 'ios' && audioFormat === 'audio/wav') {
-            finalPath = await convertAacToWav(cleanPath);
-            finalPath = finalPath.replace('file://', '');
-          }
-
-          const audioFile = {
-            uri: Platform.OS === 'ios' ? `file://${finalPath}` : finalPath,
-            originalPath: finalPath,
-            type: finalType,
-            fileName: `audio-${localRecordedAudioCacheFilePaths.length}.${finalExtension}`,
-            name: `audio-${localRecordedAudioCacheFilePaths.length}.${finalExtension}`,
-            fileSize: stats.size,
-          };
-
-          dispatch(addNewCachePath(finalPath));
+          const audioFile = await createAudioFile(value);
+          dispatch(addNewCachePath(audioFile.originalPath));
           setIsVoiceRecorderOpen(false);
           onRecordingComplete(audioFile as unknown as File);
         } catch (error) {

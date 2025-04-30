@@ -44,25 +44,11 @@
       "android": {
         "track": "internal",
         "releaseStatus": "draft"
-      },
-      "ios": {
-        "appleId": "${EXPO_APPLE_ID}",
-        "ascAppId": "${EXPO_ASC_APP_ID}",
-        "appleTeamId": "${EXPO_APPLE_TEAM_ID}",
-        "sku": "org.buddyhelp.app",
-        "companyName": "BuddyHelp"
       }
     },
     "production": {
       "android": {
         "track": "internal"
-      },
-      "ios": {
-        "appleId": "${EXPO_APPLE_ID}",
-        "ascAppId": "${EXPO_ASC_APP_ID}",
-        "appleTeamId": "${EXPO_APPLE_TEAM_ID}",
-        "sku": "org.buddyhelp.app",
-        "companyName": "BuddyHelp"
       }
     }
   }

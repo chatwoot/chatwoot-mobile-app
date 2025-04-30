@@ -9,7 +9,6 @@ export const convertOggToWav = async (oggUrl: string): Promise<string | Error> =
   const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
 
   try {
-    console.log('Downloading OGG file...');
     // Download the OGG file and wait for completion
     const downloadResult = await RNFS.downloadFile({
       fromUrl: oggUrl,
@@ -18,7 +17,9 @@ export const convertOggToWav = async (oggUrl: string): Promise<string | Error> =
 
     // Verify download was successful
     if (downloadResult.statusCode !== 200) {
-      console.error(`Download failed with status ${downloadResult.statusCode}`);
+      Sentry.captureException(
+        new Error(`Download failed with status ${downloadResult.statusCode}`),
+      );
       throw new Error(`Download failed with status ${downloadResult.statusCode}`);
     }
 
@@ -28,7 +29,6 @@ export const convertOggToWav = async (oggUrl: string): Promise<string | Error> =
       throw new Error('Downloaded file not found');
     }
 
-    console.log('Converting to WAV...');
     // Convert OGG to WAV using ffmpeg
     await FFmpegKit.execute(
       `-i "${tempOggPath}" -vn -y -ar 44100 -ac 2 -c:a pcm_s16le "${outputPath}"`,
@@ -47,7 +47,7 @@ export const convertOggToWav = async (oggUrl: string): Promise<string | Error> =
 
     return `file://${outputPath}`;
   } catch (error) {
-    console.error(error);
+    Sentry.captureException(error);
     return error as Error;
   }
 };

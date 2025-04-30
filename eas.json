@@ -6,21 +6,20 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "channel": "development"
     },
     "preview": {
       "distribution": "internal",
       "autoIncrement": true,
       "channel": "staging",
       "ios": {
+        "resourceClass": "m-medium",
         "buildConfiguration": "Release",
-        "credentialsSource": "remote",
-        "image": "latest",
-        "resourceClass": "m-medium"
+        "credentialsSource": "remote"
       },
       "android": {
         "buildType": "apk",
-        "image": "latest",
         "resourceClass": "medium"
       }
     },
@@ -32,12 +31,10 @@
         "enterpriseProvisioning": "adhoc",
         "buildConfiguration": "Release",
         "distribution": "store",
-        "image": "latest",
         "resourceClass": "m-medium"
       },
       "android": {
         "buildType": "app-bundle",
-        "image": "latest",
         "resourceClass": "medium"
       }
     }
@@ -53,8 +50,7 @@
         "ascAppId": "${EXPO_ASC_APP_ID}",
         "appleTeamId": "${EXPO_APPLE_TEAM_ID}",
         "sku": "org.buddyhelp.app",
-        "companyName": "BuddyHelp",
-        "releaseType": "beta"
+        "companyName": "BuddyHelp"
       }
     },
     "production": {
@@ -66,8 +62,7 @@
         "ascAppId": "${EXPO_ASC_APP_ID}",
         "appleTeamId": "${EXPO_APPLE_TEAM_ID}",
         "sku": "org.buddyhelp.app",
-        "companyName": "BuddyHelp",
-        "releaseType": "beta"
+        "companyName": "BuddyHelp"
       }
     }
   }

@@ -23,6 +23,8 @@
     "submit:android": "dotenv -c -- eas submit -p android --profile production",
     "submit:ios": "dotenv -e .env -- eas submit --platform ios",
     "submit:all": "dotenv -e .env -- eas submit -p ios --profile production && dotenv -e .env -- eas submit -p android --profile production",
+    "build-and-submit:ios:local": "dotenv -c -- eas build -p ios --profile production --local && dotenv -c -- eas submit --platform ios --path ./*.ipa",
+    "build-and-submit:android:local": "dotenv -c -- eas build -p android --profile production --local && dotenv -c -- eas submit --platform android --path ./*.aab",
     "storybook-generate": "sb-rn-get-stories",
     "start:storybook": "cross-env EXPO_STORYBOOK_ENABLED='true' expo start",
     "storybook:ios": "cross-env EXPO_STORYBOOK_ENABLED='true' pnpm run:ios",

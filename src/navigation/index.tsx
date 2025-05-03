@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
-import messaging from '@react-native-firebase/messaging';
+// import messaging from '@react-native-firebase/messaging';
 import { getStateFromPath } from '@react-navigation/native';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { useFonts } from 'expo-font';
@@ -20,9 +20,11 @@ import { RefsProvider } from '@/context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { transformNotification } from '@/utils/camelCaseKeys';
 
+/* Firebase functionality disabled
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
 });
+*/
 
 export const AppNavigationContainer = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -94,6 +96,7 @@ export const AppNavigationContainer = () => {
         return url;
       }
 
+      /* Firebase functionality disabled
       // getInitialNotification: When the application is opened from a quit state.
       const message = await messaging().getInitialNotification();
       if (message) {
@@ -107,6 +110,7 @@ export const AppNavigationContainer = () => {
           return conversationLink;
         }
       }
+      */
       return undefined;
     },
     subscribe(listener: (arg0: string) => void) {
@@ -115,6 +119,7 @@ export const AppNavigationContainer = () => {
       // Listen to incoming links from deep linking
       const subscription = Linking.addEventListener('url', onReceiveURL);
 
+      /* Firebase functionality disabled
       //onNotificationOpenedApp: When the application is running, but in the background.
       const unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
         if (message) {
@@ -130,10 +135,12 @@ export const AppNavigationContainer = () => {
           }
         }
       });
+      */
 
       return () => {
         subscription.remove();
-        unsubscribeNotification();
+        // Firebase functionality disabled
+        // unsubscribeNotification();
       };
     },
   };

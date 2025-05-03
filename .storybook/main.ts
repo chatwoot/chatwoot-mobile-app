@@ -1,4 +1,4 @@
-import type { StorybookConfig } from '@storybook/react-native';
+import type { StorybookConfig } from '@storybook/react-native/types';
 
 const main: StorybookConfig = {
   stories: ['../src/**/*.stories.?(ts|tsx|js|jsx)'],

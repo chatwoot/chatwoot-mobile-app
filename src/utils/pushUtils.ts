@@ -41,6 +41,7 @@ export const findConversationLinkFromPush = ({
   return;
 };
 
+/* Firebase functionality disabled
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const findNotificationFromFCM = ({ message }: { message: any }) => {
   let notification = null;
@@ -54,4 +55,12 @@ export const findNotificationFromFCM = ({ message }: { message: any }) => {
     notification = JSON.parse(message.data.notification);
   }
   return notification;
+};
+*/
+
+// Firebase functionality disabled - stub implementation
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const findNotificationFromFCM = ({ message }: { message: any }) => {
+  console.log('Firebase disabled - FCM notifications not available', message);
+  return null;
 };

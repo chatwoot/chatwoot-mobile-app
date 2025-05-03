@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react-native';
 
-import messaging from '@react-native-firebase/messaging';
+// import messaging from '@react-native-firebase/messaging';
 import { Platform, PermissionsAndroid } from 'react-native';
 import {
   getSystemName,
@@ -89,7 +89,7 @@ export const settingsActions = {
     'settings/saveDeviceDetails',
     async (_, { rejectWithValue }) => {
       try {
-        const permissionEnabled = await messaging().hasPermission();
+        // const permissionEnabled = await messaging().hasPermission();
         const deviceId = await getUniqueId();
         const devicePlatform = getSystemName();
         const manufacturer = await getManufacturer();
@@ -101,18 +101,21 @@ export const settingsActions = {
         const brandName = await getBrand();
         const buildNumber = await getBuildNumber();
 
+        /*
         if (!permissionEnabled || permissionEnabled === -1) {
           if (isAndroidAPILevelGreater32) {
             await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
           }
           await messaging().requestPermission();
         }
+        */
 
         const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
         // https://github.com/invertase/react-native-firebase/issues/6893#issuecomment-1427998691
         // await messaging().registerDeviceForRemoteMessages();
         await sleep(1000);
-        const fcmToken = await messaging().getToken();
+        // const fcmToken = await messaging().getToken();
+        const fcmToken = 'firebase-disabled'; // Placeholder token
 
         const pushData: PushPayload = {
           subscription_type: 'fcm',
@@ -126,7 +129,11 @@ export const settingsActions = {
             device_id: deviceId,
           },
         };
-        await SettingsService.saveDeviceDetails(pushData);
+        
+        // Skip saving device details since Firebase is disabled
+        // await SettingsService.saveDeviceDetails(pushData);
+        console.log('Device details not saved - Firebase is disabled', pushData);
+        
         return { fcmToken };
       } catch (error) {
         Sentry.captureException(error);

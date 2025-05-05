@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Dimensions, PermissionsAndroid, Platform, Pressable } from 'react-native';
-import { Audio } from 'expo-av';
+import AudioRecorderPlayer, {
+  RecordBackType,
+  AVEncodingOption,
+} from 'react-native-audio-recorder-player';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { isUndefined } from 'lodash';
 import * as Sentry from '@sentry/react-native';
@@ -17,18 +20,39 @@ import {
   addNewCachePath,
   selectLocalRecordedAudioCacheFilePaths,
 } from '@/store/conversation/localRecordedAudioCacheSlice';
+import { convertAacToWav } from '@/utils/audioConverter';
 
 const RecorderSegmentWidth = Dimensions.get('screen').width - 8 - 80 - 12;
 
+const ARPlayer = new AudioRecorderPlayer();
+
+/**
+ * ! Handling Audio Server Side
+ * https://github.com/jsierles/react-native-audio/issues/107
+ */
+
+/**
+ * The function `millisecondsToTimeString` converts a given number of milliseconds into a formatted
+ * time string in the format "mm:ss".
+ * @param {number} milliseconds - The `milliseconds` parameter is a number representing the duration in
+ * milliseconds that you want to convert to a time string.
+ * @returns The function `millisecondsToTimeString` returns a string in the format "mm:ss", where "mm"
+ * represents the minutes and "ss" represents the seconds.
+ */
 const millisecondsToTimeString = (milliseconds: number | undefined) => {
+  // Check if the input is not a valid number or is negative
   if ((milliseconds && isNaN(milliseconds)) || isUndefined(milliseconds)) {
     return '00:00';
   }
 
+  // Convert milliseconds to seconds
   const totalSeconds = Math.floor(milliseconds / 1000);
+
+  // Calculate the minutes and seconds
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
 
+  // Create the time string with leading zeros
   const minutesString = String(minutes).padStart(2, '0');
   const secondsString = String(seconds).padStart(2, '0');
 
@@ -37,126 +61,150 @@ const millisecondsToTimeString = (milliseconds: number | undefined) => {
 
 export const AudioRecorder = ({
   onRecordingComplete,
+  audioFormat,
 }: {
   onRecordingComplete: (audioFile: File) => void;
+  audioFormat: 'audio/m4a' | 'audio/wav';
 }) => {
   const localRecordedAudioCacheFilePaths = useAppSelector(selectLocalRecordedAudioCacheFilePaths);
   const dispatch = useAppDispatch();
   const [isSending, setIsSending] = useState(false);
+
   const { setIsVoiceRecorderOpen } = useChatWindowContext();
+
   const [isAudioRecording, setIsAudioRecording] = useState(false);
-  const [recording, setRecording] = useState<Audio.Recording | null>(null);
-  const [recordingDuration, setRecordingDuration] = useState(0);
+
+  const [recorderData, setRecorderData] = useState<RecordBackType | undefined>(undefined);
 
   useEffect(() => {
-    const requestPermissions = async () => {
+    const requestAndroidPermission = async () => {
       try {
-        if (Platform.OS === 'android') {
-          const grants = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-          );
-          if (grants !== PermissionsAndroid.RESULTS.GRANTED) {
-            return;
-          }
-        }
-
-        await Audio.requestPermissionsAsync();
-        await Audio.setAudioModeAsync({
-          allowsRecordingIOS: true,
-          playsInSilentModeIOS: true,
-        });
-
-        const { recording: newRecording } = await Audio.Recording.createAsync(
-          Audio.RecordingOptionsPresets.HIGH_QUALITY,
+        const grants = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
         );
-        setRecording(newRecording);
-        setIsAudioRecording(true);
 
-        // Start recording duration timer
-        const interval = setInterval(() => {
-          setRecordingDuration(prev => prev + 1000);
-        }, 1000);
-
-        return () => {
-          clearInterval(interval);
-        };
+        if (grants === PermissionsAndroid.RESULTS.GRANTED) {
+          addRecorderListener();
+        } else {
+          return;
+        }
       } catch (err) {
         console.warn(err);
-        Alert.alert('Error', 'Failed to start recording');
-        setIsVoiceRecorderOpen(false);
+        return;
       }
     };
+    const addRecorderListener = () => {
+      ARPlayer.addRecordBackListener((recordingMeta: RecordBackType) => {
+        setRecorderData(recordingMeta);
+      });
+      const dirs = RNFetchBlob.fs.dirs;
+      const path = Platform.select({
+        ios: `audio-${localRecordedAudioCacheFilePaths.length}.m4a`,
+        android: `${dirs.CacheDir}/audio-${localRecordedAudioCacheFilePaths.length}.mp3`,
+      });
 
-    requestPermissions();
-
-    return () => {
-      if (recording) {
-        recording.stopAndUnloadAsync();
-      }
+      ARPlayer.startRecorder(path, {
+        AVFormatIDKeyIOS: AVEncodingOption.aac,
+        AVNumberOfChannelsKeyIOS: 2,
+        AVSampleRateKeyIOS: 44100,
+      })
+        .then((value: string) => {
+          if (value) {
+            setIsAudioRecording(true);
+          }
+        })
+        .catch(e => {
+          Alert.alert(e);
+          deleteRecorder();
+        });
     };
+    if (Platform.OS === 'android') {
+      requestAndroidPermission();
+    } else {
+      addRecorderListener();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const deleteRecorder = async () => {
-    if (recording) {
-      await recording.stopAndUnloadAsync();
-    }
+    await ARPlayer.stopRecorder();
     setIsVoiceRecorderOpen(false);
   };
 
-  const toggleRecorder = async () => {
-    if (!recording) return;
+  const createAudioFile = async (value: string) => {
+    const cleanPath =
+      Platform.select({
+        ios: value.replace('file://', ''),
+        android: value.replace(/\/\/+/g, '/'),
+      }) || value;
+    let finalPath = cleanPath;
+    const stats = await RNFetchBlob.fs.stat(finalPath);
 
-    if (isAudioRecording) {
-      await recording.pauseAsync();
-    } else {
-      await recording.startAsync();
-    }
-    setIsAudioRecording(!isAudioRecording);
-  };
-
-  const sendRecordedMessage = async () => {
-    if (isSending || !recording) return;
-    setIsSending(true);
-
-    try {
-      await recording.stopAndUnloadAsync();
-      const uri = recording.getURI();
-
-      if (!uri) {
-        throw new Error('No recording URI found');
-      }
-
-      const cleanPath =
-        Platform.select({
-          ios: uri.replace('file://', ''),
-          android: uri.replace(/\/\/+/g, '/'),
-        }) || uri;
-
-      const stats = await RNFetchBlob.fs.stat(cleanPath);
-
-      const audioFile = {
-        uri: Platform.OS === 'ios' ? `file://${cleanPath}` : cleanPath,
-        originalPath: cleanPath,
+    if (Platform.OS === 'android') {
+      return {
+        uri: finalPath,
+        originalPath: finalPath,
         type: 'audio/mp3',
         fileName: `audio-${localRecordedAudioCacheFilePaths.length}.mp3`,
         name: `audio-${localRecordedAudioCacheFilePaths.length}.mp3`,
         fileSize: stats.size,
       };
-
-      console.log('audioFile', audioFile);
-
-      dispatch(addNewCachePath(cleanPath));
-      setIsVoiceRecorderOpen(false);
-      onRecordingComplete(audioFile as unknown as File);
-    } catch (error) {
-      Sentry.captureException(error);
-      Alert.alert(
-        'Error preparing audio file',
-        error instanceof Error ? error.message : String(error),
-      );
-    } finally {
-      setIsSending(false);
     }
+
+    const finalExtension = audioFormat === 'audio/wav' ? 'wav' : 'm4a';
+
+    if (audioFormat === 'audio/wav') {
+      finalPath = await convertAacToWav(cleanPath);
+      finalPath = finalPath.replace('file://', '');
+    }
+
+    const audioFile = {
+      uri: Platform.OS === 'ios' ? `file://${finalPath}` : finalPath,
+      originalPath: finalPath,
+      type: audioFormat,
+      fileName: `audio-${localRecordedAudioCacheFilePaths.length}.${finalExtension}`,
+      name: `audio-${localRecordedAudioCacheFilePaths.length}.${finalExtension}`,
+      fileSize: stats.size,
+    };
+
+    return audioFile;
+  };
+
+  const sendRecordedMessage = () => {
+    if (isSending) return;
+    setIsSending(true);
+    ARPlayer.stopRecorder()
+      .then(async value => {
+        try {
+          const audioFile = await createAudioFile(value);
+          dispatch(addNewCachePath(audioFile.originalPath));
+          setIsVoiceRecorderOpen(false);
+          onRecordingComplete(audioFile as unknown as File);
+        } catch (error) {
+          Sentry.captureException(error);
+          Alert.alert(
+            'Error preparing audio file',
+            error instanceof Error ? error.message : String(error),
+          );
+        }
+      })
+      .catch(e => {
+        console.error('Recording error:', e);
+        Alert.alert('Recording Error', e.toString());
+      })
+      .finally(() => {
+        setIsSending(false);
+      });
+  };
+
+  const toggleRecorder = async () => {
+    if (isAudioRecording) {
+      await ARPlayer.pauseRecorder();
+    } else {
+      await ARPlayer.resumeRecorder();
+    }
+
+    setIsAudioRecording(!isAudioRecording);
   };
 
   return (
@@ -192,7 +240,7 @@ export const AudioRecorder = ({
           style={tailwind.style(
             'text-xs leading-[14px] font-inter-420-20 tracking-[0.32px] text-whiteA-A12',
           )}>
-          {millisecondsToTimeString(recordingDuration)}
+          {millisecondsToTimeString(recorderData?.currentPosition)}
         </Animated.Text>
       </Animated.View>
       <Pressable

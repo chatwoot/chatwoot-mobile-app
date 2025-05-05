@@ -25,6 +25,14 @@ export const AVAILABILITY_STATUS_LIST = [
   { statusColor: 'bg-gray-800', status: 'offline' },
 ];
 
+export const AUDIO_FORMATS = {
+  WEBM: 'audio/webm',
+  OGG: 'audio/ogg',
+  MP3: 'audio/mp3',
+  WAV: 'audio/wav',
+  M4A: 'audio/m4a',
+};
+
 export const MAXIMUM_FILE_UPLOAD_SIZE = 20;
 
 export const CONVERSATION_STATUSES = [
@@ -126,6 +134,7 @@ export const INBOX_TYPES = {
   TELEGRAM: 'Channel::Telegram',
   LINE: 'Channel::Line',
   SMS: 'Channel::Sms',
+  INSTAGRAM: 'Channel::Instagram',
 };
 
 export const INBOX_FEATURES = {

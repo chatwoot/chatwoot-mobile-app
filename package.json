@@ -4,7 +4,7 @@
   "main": "expo/AppEntry.js",
   "packageManager": "pnpm@8.15.1",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start --dev-client",
     "start:production": "expo start --no-dev --minify",
     "android": "expo run:android",
     "ios": "expo run:ios",
@@ -26,6 +26,8 @@
     "submit:android": "dotenv -c -- eas submit -p android --profile production",
     "submit:ios": "dotenv -e .env -- eas submit --platform ios",
     "submit:all": "dotenv -e .env -- eas submit -p ios --profile production && dotenv -e .env -- eas submit -p android --profile production",
+    "build-and-submit:ios:local": "dotenv -c -- eas build -p ios --profile production --local && dotenv -c -- eas submit --platform ios --path ./*.ipa",
+    "build-and-submit:android:local": "dotenv -c -- eas build -p android --profile production --local && dotenv -c -- eas submit --platform android --path ./*.aab",
     "storybook-generate": "sb-rn-get-stories",
     "start:storybook": "cross-env EXPO_STORYBOOK_ENABLED='true' expo start",
     "storybook:ios": "cross-env EXPO_STORYBOOK_ENABLED='true' pnpm run:ios",
@@ -72,7 +74,7 @@
     "cross-env": "^7.0.3",
     "date-fns": "2.21.1",
     "diff": "5.0.0",
-    "expo": "~52.0.44",
+    "expo": "~52.0.46",
     "expo-application": "~6.0.2",
     "expo-audio": "~0.3.5",
     "expo-av": "~15.0.2",
@@ -82,11 +84,12 @@
     "expo-font": "~13.0.4",
     "expo-haptics": "~14.0.1",
     "expo-image": "~2.0.7",
-    "expo-splash-screen": "~0.29.22",
+    "expo-splash-screen": "~0.29.24",
     "expo-status-bar": "~2.0.1",
     "expo-system-ui": "~4.0.9",
     "expo-updates": "~0.27.4",
     "expo-web-browser": "~14.0.2",
+    "ffmpeg-kit-react-native": "6.0.2",
     "i18n-js": "^3.8.0",
     "lodash": "^4.17.21",
     "react": "18.3.1",
@@ -173,6 +176,8 @@
           "react-native-autoheight-webview",
           "redux-persist",
           "rn-fetch-blob",
+          "@alantoa/lightbox",
+          "ffmpeg-kit-react-native",
           "@chatwoot/markdown-to-txt",
           "@chatwoot/react-native-widget",
           "@chatwoot/utils",
@@ -190,6 +195,11 @@
         ],
         "listUnknownPackages": true
       }
+    }
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "ffmpeg-kit-react-native@6.0.2": "patches/ffmpeg-kit-react-native.patch"
     }
   }
 }

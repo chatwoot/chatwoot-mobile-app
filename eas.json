@@ -6,16 +6,49 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "channel": "development"
+    },
+    "preview": {
+      "distribution": "internal",
+      "autoIncrement": true,
+      "channel": "staging",
+      "ios": {
+        "resourceClass": "m-medium",
+        "buildConfiguration": "Release",
+        "credentialsSource": "remote"
+      },
+      "android": {
+        "buildType": "apk",
+        "resourceClass": "medium"
+      }
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "channel": "production",
+      "ios": {
+        "credentialsSource": "remote",
+        "enterpriseProvisioning": "adhoc",
+        "buildConfiguration": "Release",
+        "distribution": "store",
+        "resourceClass": "m-medium"
+      },
+      "android": {
+        "buildType": "app-bundle",
+        "resourceClass": "medium"
+      }
     }
   },
   "submit": {
+    "preview": {
+      "android": {
+        "track": "internal",
+        "releaseStatus": "draft"
+      }
+    },
     "production": {
       "android": {
-        "track": "internal" // (enum: production, beta, alpha, internal)
+        "track": "internal"
       }
     }
   }

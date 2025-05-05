@@ -223,13 +223,6 @@ const LoginScreen = () => {
 
           <Pressable
             style={tailwind.style('flex-row justify-center items-center mt-6')}
-            onPress={openConfigInstallationURL}>
-            <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
-              {i18n.t('LOGIN.CHANGE_URL')}
-            </Animated.Text>
-          </Pressable>
-          <Pressable
-            style={tailwind.style('flex-row justify-center items-center mt-4')}
             onPress={() => languagesModalSheetRef.current?.present()}>
             <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
               {i18n.t('LOGIN.CHANGE_LANGUAGE')}

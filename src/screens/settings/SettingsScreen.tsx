@@ -126,12 +126,6 @@ const SettingsScreen = () => {
 
   const accounts = useSelector(selectAccounts) || [];
 
-  const activeAccountName = accounts.length
-    ? accounts.find((account: Account) => account.id === activeAccountId)?.name || ''
-    : '';
-
-  const enableAccountSwitch = accounts.length > 1;
-
   const activeLocale = useSelector(selectLocale);
   const {
     userAvailabilityStatusSheetRef,
@@ -237,37 +231,25 @@ const SettingsScreen = () => {
       subtitleType: 'light',
       onPressListItem: () => languagesModalSheetRef.current?.present(),
     },
-    {
-      hasChevron: enableAccountSwitch,
-      title: i18n.t('SETTINGS.SWITCH_ACCOUNT'),
-      icon: <SwitchIcon />,
-      subtitle: activeAccountName,
-      subtitleType: 'light',
-      onPressListItem: () => {
-        if (enableAccountSwitch) {
-          switchAccountSheetRef.current?.present();
-        }
-      },
-    },
   ];
 
   const supportList: GenericListType[] = [
-    {
-      hasChevron: true,
-      title: i18n.t('SETTINGS.READ_DOCS'),
-      icon: <SwitchIcon />,
-      subtitle: '',
-      subtitleType: 'light',
-      onPressListItem: openURL,
-    },
-    {
-      hasChevron: true,
-      title: i18n.t('SETTINGS.CHAT_WITH_US'),
-      icon: <ChatwootIcon />,
-      subtitle: '',
-      subtitleType: 'light',
-      onPressListItem: () => toggleWidget(true),
-    },
+    // {
+    //   hasChevron: true,
+    //   title: i18n.t('SETTINGS.READ_DOCS'),
+    //   icon: <SwitchIcon />,
+    //   subtitle: '',
+    //   subtitleType: 'light',
+    //   onPressListItem: openURL,
+    // },
+    // {
+    //   hasChevron: true,
+    //   title: i18n.t('SETTINGS.CHAT_WITH_US'),
+    //   icon: <ChatwootIcon />,
+    //   subtitle: '',
+    //   subtitleType: 'light',
+    //   onPressListItem: () => toggleWidget(true),
+    // },
   ];
 
   return (
@@ -304,9 +286,9 @@ const SettingsScreen = () => {
         <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.PREFERENCES')} list={preferencesList} />
         </Animated.View>
-        <Animated.View style={tailwind.style('pt-6')}>
+        {/* <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.SUPPORT')} list={supportList} />
-        </Animated.View>
+        </Animated.View> */}
         <Animated.View style={tailwind.style('pt-6 mx-4')}>
           <Button
             variant="secondary"

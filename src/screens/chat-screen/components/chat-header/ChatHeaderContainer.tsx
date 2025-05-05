@@ -148,6 +148,7 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
         : undefined,
       ...dashboardRoutes,
     ].filter((item): item is DashboardList => item !== undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pagerViewIndex]);
 
   const sLAStatusText = () => {

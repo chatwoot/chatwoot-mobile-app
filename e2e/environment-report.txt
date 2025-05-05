@@ -1,0 +1,432 @@
+
+--- Checking Appium Installation ---
+✅ Appium is installed: 2.17.1
+Installed drivers:
+
+
+--- Running Appium Doctor ---
+General Appium environment check:
+Command failed: npx appium doctor
+
+[ERROR] Unrecognized arguments: doctor
+
+
+XCUITest driver check:
+
+
+UiAutomator2 driver check:
+Command failed: npx appium driver doctor uiautomator2
+Running 7 doctor checks for the "uiautomator2" driver
+info Doctor ### Starting doctor diagnostics  ###
+info Doctor  [32m✔[39m ANDROID_HOME is set to: /Users/bastinjafari/Library/Android/sdk
+info Doctor    Checking adb, emulator, apkanalyzer
+info Doctor      'adb' exists in /Users/bastinjafari/Library/Android/sdk/platform-tools/adb
+info Doctor      'emulator' exists in /Users/bastinjafari/Library/Android/sdk/emulator/emulator
+WARN Doctor  [31m✖[39m apkanalyzer could NOT be found in '/Users/bastinjafari/Library/Android/sdk'!
+info Doctor  [32m✔[39m JAVA_HOME is set to: /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+info Doctor  [32m✔[39m 'bin/java' exists under '/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home'
+WARN Doctor  [33m✖[39m bundletool.jar cannot be found
+WARN Doctor  [33m✖[39m ffmpeg cannot be found
+WARN Doctor  [33m✖[39m gst-launch-1.0 and/or gst-inspect-1.0 cannot be found
+info Doctor ### Diagnostic completed, 1 required fix needed, 3 optional fixes possible. ###
+info Doctor 
+info Doctor ### Manual Fixes Needed ###
+info Doctor The configuration cannot be automatically fixed, please do the following first:
+WARN Doctor  ➜ Manually install [1mAndroid SDK[22m and set [1mANDROID_HOME[22m. Read https://developer.android.com/studio#cmdline-tools and https://developer.android.com/studio/intro/update#sdk-manager.
+info Doctor 
+info Doctor ### Optional Manual Fixes ###
+info Doctor To fix these optional issues, please do the following manually:
+WARN Doctor  ➜ [1mbundletool.jar[22m is used to handle Android App bundles. Please download the binary from https://github.com/google/bundletool/releases/ and store it to any folder listed in the PATH environment variable. Folders that are currently present in PATH: /Users/bastinjafari/Documents/GitHub/chatwoot-mobile-app/node_modules/.bin:/Users/bastinjafari/Documents/GitHub/chatwoot-mobile-app/node_modules/.bin:/Users/bastinjafari/Documents/GitHub/node_modules/.bin:/Users/bastinjafari/Documents/node_modules/.bin:/Users/bastinjafari/node_modules/.bin:/Users/node_modules/.bin:/node_modules/.bin:/Users/bastinjafari/.nvm/versions/node/v20.18.0/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/Users/bastinjafari/Documents/GitHub/chatwoot-mobile-app/node_modules/.bin:/Users/bastinjafari/Library/pnpm/.tools/pnpm/8.15.1/node_modules/pnpm/dist/node-gyp-bin:/Users/bastinjafari/Library/pnpm/.tools/pnpm/8.15.1/bin:/Users/bastinjafari/.deno/bin:/Users/bastinjafari/.codeium/windsurf/bin:/Users/bastinjafari/.console-ninja/.bin:/Users/bastinjafari/.bun/bin:/Users/bastinjafari/.bun/bin:/Users/bastinjafari/.rbenv/shims:/Users/bastinjafari/.meteor:/Users/bastinjafari/.meteor:/Users/bastinjafari/.nvm/versions/node/v20.18.0/bin:/Users/bastinjafari/.deno/bin:/Users/bastinjafari/.rbenv/shims:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/usr/local/MacGPG2/bin:/Users/bastinjafari/.deno/bin:/Users/bastinjafari/.codeium/windsurf/bin:/Users/bastinjafari/.console-ninja/.bin:/Users/bastinjafari/Library/pnpm:/Users/bastinjafari/.bun/bin:/Users/bastinjafari/.rbenv/shims:/Users/bastinjafari/.meteor:/Users/bastinjafari/.nvm/versions/node/v20.18.0/bin:/Users/bastinjafari/.cargo/bin:/Users/bastinjafari/.local/bin:/Users/bastinjafari/Library/Android/sdk/emulator:/Users/bastinjafari/Library/Android/sdk/platform-tools:/Users/bastinjafari/.local/bin:/Users/bastinjafari/.local/bin:/Users/bastinjafari/Library/Android/sdk/emulator:/Users/bastinjafari/Library/Android/sdk/platform-tools
+WARN Doctor  ➜ [1mffmpeg[22m is used to capture screen recordings from the device under test. Please read https://www.ffmpeg.org/download.html.
+WARN Doctor  ➜ [1mgst-launch-1.0 and gst-inspect-1.0[22m are used to stream the screen of the device under test. Please read https://gstreamer.freedesktop.org/documentation/installing/index.html?gi-language=c.
+info Doctor 
+info Doctor ###
+info Doctor 
+info Doctor Bye! Run doctor again when all manual fixes have been applied!
+info Doctor 
+[31mError: ✖ Treatment required[39m
+
+
+--- Checking iOS Simulators ---
+✅ Found 11 available iOS simulators:
+  - iPhone 16 Pro (iOS 18.2) [CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0]
+  - iPhone 16 Pro Max (iOS 18.2) [2B8E33F1-5E08-42D0-BD51-BF1E0C3C9EF5]
+  - iPhone 16 (iOS 18.2) [DAAD4F28-357B-4B04-8343-F768CC4ECD45]
+  - iPhone 16 Plus (iOS 18.2) [B6A31614-F301-457A-809C-277285949D4C]
+  - iPhone SE (3rd generation) (iOS 18.2) [D1513818-5C73-4AA0-94CD-AC8133134E53]
+  - iPad Pro 11-inch (M4) (iOS 18.2) [DF3480BB-3B07-4A86-8DC2-9A9B1B475E5A]
+  - iPad Pro 13-inch (M4) (iOS 18.2) [4F387126-1573-4A5C-8A0F-6B2C117A0C18]
+  - iPad Air 11-inch (M2) (iOS 18.2) [FF5EA52F-493E-4C1A-B6FB-421A5FE98A43]
+  - iPad Air 13-inch (M2) (iOS 18.2) [BE6F771F-4F73-4C7D-9782-BCEFC83427C9]
+  - iPad mini (A17 Pro) (iOS 18.2) [CFCD1388-036B-4C0D-868E-816BC8930713]
+  - iPad (10th generation) (iOS 18.2) [959583DB-B34F-4DA9-8EE7-841C013E7E21]
+Simulator data saved to /Users/bastinjafari/Documents/GitHub/chatwoot-mobile-app/e2e/simulators.json
+
+--- Checking Installed Apps on iOS Simulator ---
+Checking apps on iPhone 16 Pro (iOS 18.2)...
+Installed apps:
+{
+    "com.apple.Bridge" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Bridge.app/";
+        CFBundleDisplayName = Watch;
+        CFBundleExecutable = Bridge;
+        CFBundleIdentifier = "com.apple.Bridge";
+        CFBundleName = Watch;
+        CFBundleVersion = "1.0";
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/E0EA612F-901C-4C6A-83A1-14361C0B1727/";
+        GroupContainers =         {
+            "243LU875E5.groups.com.apple.podcasts" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/04BEC175-91DC-45AE-82E6-44AFCC11C2D5/";
+            "group.com.apple.bridge" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/2CABD722-4C1E-4A21-85D6-328AA42107C5/";
+            "group.com.apple.iBooks" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/ED0EA533-4A83-4ECF-B114-8DF341616C5F/";
+            "group.com.apple.mail" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/D6F22766-7EAB-49D9-AF8E-9BE1DF5064AB/";
+            "group.com.apple.stocks" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/00DB0CEA-3ADF-4C4E-A2DD-620243862CE1/";
+            "group.com.apple.weather" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/7A045ECB-240F-4129-8F72-FA65D0790344/";
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Bridge.app";
+        SBAppTags =         (
+            "watch-companion"
+        );
+    };
+    "com.apple.DocumentsApp" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Files.app/";
+        CFBundleDisplayName = Files;
+        CFBundleExecutable = Files;
+        CFBundleIdentifier = "com.apple.DocumentsApp";
+        CFBundleName = Files;
+        CFBundleVersion = "337.3.2";
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/E6ACA008-133E-4313-974C-BE0EE71F418F/";
+        GroupContainers =         {
+            "group.com.apple.DocumentManager" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/16AD5D83-4E7C-43DB-9C74-FAA83119FAA3/";
+            "group.com.apple.FileProvider.LocalStorage" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/338693BC-81CE-4896-BF42-A57958EFABD0/";
+            "group.com.apple.tipsnext" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/0890C839-4A57-448B-98DB-E30E60B3AAEE/";
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Files.app";
+        SBAppTags =         (
+        );
+    };
+    "com.apple.Fitness" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Fitness.app/";
+        CFBundleDisplayName = Fitness;
+        CFBundleExecutable = Fitness;
+        CFBundleIdentifier = "com.apple.Fitness";
+        CFBundleName = Fitness;
+        CFBundleVersion = "1.0";
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/6355DA9F-45E6-4806-82BE-1E12063DF351/";
+        GroupContainers =         {
+            "group.com.apple.weather" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/7A045ECB-240F-4129-8F72-FA65D0790344/";
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Fitness.app";
+        SBAppTags =         (
+        );
+    };
+    "com.apple.Health" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Health.app/";
+        CFBundleDisplayName = Health;
+        CFBundleExecutable = Health;
+        CFBundleIdentifier = "com.apple.Health";
+        CFBundleName = Health;
+        CFBundleVersion = "5200.2.12.1.1";
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/43B0A4A9-2098-4F80-BAE3-E947BEF3A0C7/";
+        GroupContainers =         {
+            "group.com.apple.Health" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/686B0D25-EFBE-4080-A725-0CDCBFBD6FEA/";
+            "group.com.apple.ip.redirects" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/D6BDDE78-E8B8-4221-863E-91FEC3BA6EA6/";
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Health.app";
+        SBAppTags =         (
+        );
+    };
+    "com.apple.Maps" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Maps.app/";
+        CFBundleDisplayName = Maps;
+        CFBundleExecutable = Maps;
+        CFBundleIdentifier = "com.apple.Maps";
+        CFBundleName = Maps;
+        CFBundleVersion = "2864.32.8.22.22";
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/8946BEF1-F83A-4563-8613-715A3B5F4C65/";
+        GroupContainers =         {
+            "group.com.apple.Maps" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/84CA13C8-B215-411E-BBE7-15371C3B0EBD/";
+            "group.com.apple.weather.internal" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/55361B96-BAF8-4813-A607-849E515BCC20/";
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Maps.app";
+        SBAppTags =         (
+        );
+    };
+    "com.apple.MobileAddressBook" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Contacts.app/";
+        CFBundleDisplayName = Contacts;
+        CFBundleExecutable = Contacts;
+        CFBundleIdentifier = "com.apple.MobileAddressBook";
+        CFBundleName = Contacts;
+        CFBundleVersion = "1.0";
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/1E4E6042-4FF6-409F-BF8F-0F8FED657F05/";
+        GroupContainers =         {
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Contacts.app";
+        SBAppTags =         (
+            "stand-alone-contacts"
+        );
+    };
+    "com.apple.MobileSMS" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/MobileSMS.app/";
+        CFBundleDisplayName = Messages;
+        CFBundleExecutable = MobileSMS;
+        CFBundleIdentifier = "com.apple.MobileSMS";
+        CFBundleName = MobileSMS;
+        CFBundleVersion = "1402.300.181.2.19";
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/5D5E8907-802E-479A-8834-383808EF68E6/";
+        GroupContainers =         {
+            "group.com.apple.PegasusConfiguration" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/1AA847D8-2632-40D8-ABF2-E4C49304AE38/";
+            "group.com.apple.hashtagImages" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/545D8F31-F9A7-4CAC-9945-94062AB2E949/";
+            "group.com.apple.mobileslideshow.PhotosFileProvider" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/C7B2F487-656E-4001-9409-675FC475AB87/";
+            "group.com.apple.safari" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/91A0EE78-AC2E-4F6F-B01D-E4A68B707014/";
+            "group.com.apple.tipsnext" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/0890C839-4A57-448B-98DB-E30E60B3AAEE/";
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/MobileSMS.app";
+        SBAppTags =         (
+        );
+    };
+    "com.apple.Passbook" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Passbook.app/";
+        CFBundleDisplayName = Wallet;
+        CFBundleExecutable = Passbook;
+        CFBundleIdentifier = "com.apple.Passbook";
+        CFBundleName = Wallet;
+        CFBundleVersion = "1591.3.11";
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/16757048-A291-4A3D-A0E0-34057431990D/";
+        GroupContainers =         {
+            "com.apple.CoreODI" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/356D656B-DE07-481C-B72B-75254CF22850/";
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Passbook.app";
+        SBAppTags =         (
+        );
+    };
+    "com.apple.Passwords" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Passwords.app/";
+        CFBundleDisplayName = Passwords;
+        CFBundleExecutable = Passwords;
+        CFBundleIdentifier = "com.apple.Passwords";
+        CFBundleName = Passwords;
+        CFBundleVersion = "8620.1.16.10.11";
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/5EB15B8D-EF5F-465E-8F70-B08A08AEEE75/";
+        GroupContainers =         {
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Passwords.app";
+        SBAppTags =         (
+        );
+    };
+    "com.apple.Preferences" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Preferences.app/";
+        CFBundleDisplayName = Settings;
+        CFBundleExecutable = Preferences;
+        CFBundleIdentifier = "com.apple.Preferences";
+        CFBundleName = Settings;
+        CFBundleVersion = "1308.2.10";
+        GroupContainers =         {
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Preferences.app";
+        SBAppTags =         (
+        );
+    };
+    "com.apple.PreviewShell" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/PreviewShell.app/";
+        CFBundleDisplayName = "Xcode Previews";
+        CFBundleExecutable = PreviewShell;
+        CFBundleIdentifier = "com.apple.PreviewShell";
+        CFBundleName = "Xcode Previews";
+        CFBundleVersion = "22.20.7";
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/0F252F63-1617-4743-B5E1-BB7D13422382/";
+        GroupContainers =         {
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/PreviewShell.app";
+        SBAppTags =         (
+        );
+    };
+    "com.apple.mobilecal" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/MobileCal.app/";
+        CFBundleDisplayName = Calendar;
+        CFBundleExecutable = MobileCal;
+        CFBundleIdentifier = "com.apple.mobilecal";
+        CFBundleName = MobileCal;
+        CFBundleVersion = 1;
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/9BD53F8B-6201-4B9F-8CCF-86FAE9FA8974/";
+        GroupContainers =         {
+            "group.com.apple.reminders" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/AF5376AD-3BA5-42EF-86A1-AFE9DEF138CB/";
+            "group.com.apple.tipsnext" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/0890C839-4A57-448B-98DB-E30E60B3AAEE/";
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/MobileCal.app";
+        SBAppTags =         (
+        );
+    };
+    "com.apple.mobilesafari" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/MobileSafari.app/";
+        CFBundleDisplayName = Safari;
+        CFBundleExecutable = MobileSafari;
+        CFBundleIdentifier = "com.apple.mobilesafari";
+        CFBundleName = MobileSafari;
+        CFBundleVersion = "8620.1.16.10.11";
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/92E9DAE9-5FC2-4752-93CC-B31F58131A62/";
+        GroupContainers =         {
+            "group.com.apple.tipsnext" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/0890C839-4A57-448B-98DB-E30E60B3AAEE/";
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/MobileSafari.app";
+        SBAppTags =         (
+        );
+    };
+    "com.apple.mobileslideshow" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Photos.app/";
+        CFBundleDisplayName = Photos;
+        CFBundleExecutable = Photos;
+        CFBundleIdentifier = "com.apple.mobileslideshow";
+        CFBundleName = Photos;
+        CFBundleVersion = 32;
+        GroupContainers =         {
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Photos.app";
+        SBAppTags =         (
+        );
+    };
+    "com.apple.news" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/News.app/";
+        CFBundleDisplayName = News;
+        CFBundleExecutable = News;
+        CFBundleIdentifier = "com.apple.news";
+        CFBundleName = News;
+        CFBundleVersion = 5621;
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/547CDD91-F19E-4FFA-A4DC-92494516F0D1/";
+        GroupContainers =         {
+            "group.com.apple.news" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/63B112EE-F602-41AB-BE79-CAAB3BC7C56F/";
+            "group.com.apple.newsd" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/BD275345-04DC-4F95-B988-09B6DCA8633E/";
+            "group.com.apple.stocks-news" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/E9D35E4C-0B0D-4CA5-A0DF-F33CBCD760AA/";
+            "group.com.apple.weather" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/7A045ECB-240F-4129-8F72-FA65D0790344/";
+            "group.tvappservices.container" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/ADB9E744-761F-4B42-B438-0F8B83C962B0/";
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/News.app";
+        SBAppTags =         (
+        );
+    };
+    "com.apple.reminders" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Reminders.app/";
+        CFBundleDisplayName = Reminders;
+        CFBundleExecutable = Reminders;
+        CFBundleIdentifier = "com.apple.reminders";
+        CFBundleName = Reminders;
+        CFBundleVersion = 3703;
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/A96F185F-194B-40B4-BDE2-3955D016DE02/";
+        GroupContainers =         {
+            "group.com.apple.reminders" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/AF5376AD-3BA5-42EF-86A1-AFE9DEF138CB/";
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Reminders.app";
+        SBAppTags =         (
+        );
+    };
+    "com.apple.shortcuts" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Shortcuts.app/";
+        CFBundleDisplayName = Shortcuts;
+        CFBundleExecutable = Shortcuts;
+        CFBundleIdentifier = "com.apple.shortcuts";
+        CFBundleName = Shortcuts;
+        CFBundleVersion = "3218.0.9";
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/72370F49-4B08-487A-A86B-7B66865C98E3/";
+        GroupContainers =         {
+            "group.com.apple.shortcuts" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/9327280F-3B24-4086-B547-514A36255FBF/";
+            "group.com.apple.tipsnext" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/0890C839-4A57-448B-98DB-E30E60B3AAEE/";
+            "group.is.workflow.my.app" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/8EAEA5F9-E5D3-4445-B29F-F126D341D2DB/";
+            "group.is.workflow.shortcuts" = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Shared/AppGroup/FA3495D4-5009-40CA-92D5-4F0A09519342/";
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Shortcuts.app";
+        SBAppTags =         (
+        );
+    };
+    "com.apple.webapp" =     {
+        ApplicationType = System;
+        Bundle = "file:///Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS%2018.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Web.app/";
+        CFBundleDisplayName = Web;
+        CFBundleExecutable = Web;
+        CFBundleIdentifier = "com.apple.webapp";
+        CFBundleName = Web;
+        CFBundleVersion = "8620.1.16.10.11";
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/70D8E3A3-C55C-4683-84B8-7BFE170D3412/";
+        GroupContainers =         {
+        };
+        Path = "/Library/Developer/CoreSimulator/Volumes/iOS_22C150/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 18.2.simruntime/Contents/Resources/RuntimeRoot/Applications/Web.app";
+        SBAppTags =         (
+        );
+    };
+    "com.chatwoot.app" =     {
+        ApplicationType = User;
+        Bundle = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/A1095909-31F8-49AE-9952-AEA63F20FF61/Chatwoot.app/";
+        BundleContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/A1095909-31F8-49AE-9952-AEA63F20FF61/";
+        CFBundleDisplayName = Chatwoot;
+        CFBundleExecutable = Chatwoot;
+        CFBundleIdentifier = "com.chatwoot.app";
+        CFBundleName = Chatwoot;
+        CFBundleVersion = 1;
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/A7B281F4-EABD-46B1-A0AD-A9824893701D/";
+        GroupContainers =         {
+        };
+        Path = "/Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/A1095909-31F8-49AE-9952-AEA63F20FF61/Chatwoot.app";
+        SBAppTags =         (
+        );
+    };
+    "com.facebook.WebDriverAgentRunner.xctrunner" =     {
+        ApplicationType = User;
+        Bundle = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/6AEDD65E-10C1-4169-B3E9-49AEFE99DA70/WebDriverAgentRunner-Runner.app/";
+        BundleContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/6AEDD65E-10C1-4169-B3E9-49AEFE99DA70/";
+        CFBundleDisplayName = "WebDriverAgentRunner-Runner";
+        CFBundleExecutable = "WebDriverAgentRunner-Runner";
+        CFBundleIdentifier = "com.facebook.WebDriverAgentRunner.xctrunner";
+        CFBundleName = "WebDriverAgentRunner-Runner";
+        CFBundleVersion = 1;
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/6D16325D-285A-4277-8592-51828A0FF880/";
+        GroupContainers =         {
+        };
+        Path = "/Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/6AEDD65E-10C1-4169-B3E9-49AEFE99DA70/WebDriverAgentRunner-Runner.app";
+        SBAppTags =         (
+        );
+    };
+    "org.buddyhelp.app" =     {
+        ApplicationType = User;
+        Bundle = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/C6EE67B7-ED40-4C6C-89D0-C12C02600542/BuddyHelp.app/";
+        BundleContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/C6EE67B7-ED40-4C6C-89D0-C12C02600542/";
+        CFBundleDisplayName = BuddyHelp;
+        CFBundleExecutable = BuddyHelp;
+        CFBundleIdentifier = "org.buddyhelp.app";
+        CFBundleName = BuddyHelp;
+        CFBundleVersion = 1;
+        DataContainer = "file:///Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Data/Application/2D662820-4720-48B9-B196-93782FD39A33/";
+        GroupContainers =         {
+        };
+        Path = "/Users/bastinjafari/Library/Developer/CoreSimulator/Devices/CF785BD0-F3A4-46C9-BB3C-E5A9A8D3F2C0/data/Containers/Bundle/Application/C6EE67B7-ED40-4C6C-89D0-C12C02600542/BuddyHelp.app";
+        SBAppTags =         (
+        );
+    };
+}
+
+✅ Chatwoot app is installed with bundle ID: com.chatwoot.app
+
+--- Checking Android Devices ---
+Android devices:
+List of devices attached
+emulator-5554          device product:sdk_gphone64_arm64 model:sdk_gphone64_arm64 device:emu64a transport_id:1
+
+
+✅ Android device(s) connected
+Found Chatwoot packages:
+package:com.chatwoot.app

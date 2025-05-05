@@ -30,7 +30,7 @@ export type MessageStatus = 'sent' | 'delivered' | 'read' | 'failed';
 export type ImageMetadata = {
   id: number;
   messageId: number;
-  fileType: 'image' | 'video' | 'audio' | 'file';
+  fileType: 'image' | 'video' | 'audio' | 'file' | 'ig_reel';
   accountId: number;
   extension: string | null;
   dataUrl: string;

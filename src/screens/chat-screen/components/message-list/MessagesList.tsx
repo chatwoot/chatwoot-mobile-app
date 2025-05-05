@@ -74,6 +74,7 @@ export const MessagesList = ({
         currentUserId={currentUserId}
       />
     );
+    // TODO: Deprecate this after the new message item is ready
     // return <MessageItemContainer item={item} index={index} />;
   };
 

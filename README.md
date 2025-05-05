@@ -64,4 +64,18 @@ If you wish to contribute, please take a quick look at the [CONTRIBUTING.md](htt
 
 If there's anything you'd like to chat about, please feel free to join our [Discord](https://discord.gg/cJXdrwS) chat!
 
+## Building the App Locally
+
+To build the app locally, you need to set up configuration files:
+
+1. Create a directory: `~/Documents/chatwoot-config-files/`
+2. Place the required configuration files in this directory:
+   - `GoogleService-Info.plist` for iOS builds
+   - `google-services.json` for Android builds
+3. Run the build commands:
+   - `pnpm build:ios:local` for iOS
+   - `pnpm build:android:local` for Android
+
+The build script will automatically copy these files to the correct locations before building.
+
 _Chatwoot_ &copy; 2017-2025, Chatwoot Inc - Released under the MIT License.

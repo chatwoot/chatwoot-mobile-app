@@ -1,4 +1,4 @@
-version: '2.1'
+version: 2.1
 orbs:
   node: circleci/node@5.1.0
 
@@ -9,30 +9,92 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Setup Working Directory
-          command: |
-            ls -la
-            pwd
+          name: Install PNPM
+          command: sudo npm install -g pnpm@8.15.1
       - restore_cache:
-          name: Restore Yarn Package Cache
+          name: Restore PNPM Package Cache
           keys:
-            - yarn-packages-v1-{{ checksum "package.json" }}
-            - yarn-packages-v1-
+            - pnpm-packages-v1-{{ checksum "pnpm-lock.yaml" }}
+            - pnpm-packages-v1-
       - run:
           name: Install Dependencies
-          command: yarn install
+          command: pnpm install
       - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-v1-{{ checksum "package.json" }}
+          name: Save PNPM Package Cache
+          key: pnpm-packages-v1-{{ checksum "pnpm-lock.yaml" }}
           paths:
-            - .yarn/cache
-            - .yarn/unplugged
             - node_modules
+            - ~/.pnpm-store
       - run:
-          command: yarn run test
-          name: Run YARN tests
+          command: pnpm test
+          name: Run tests
+
+  e2e-tests:
+    docker:
+      - image: cimg/node:20.9.0-browsers
+    steps:
+      - checkout
+      - run:
+          name: Install PNPM
+          command: sudo npm install -g pnpm@8.15.1
+      - restore_cache:
+          name: Restore PNPM Package Cache
+          keys:
+            - pnpm-packages-v1-{{ checksum "pnpm-lock.yaml" }}
+            - pnpm-packages-v1-
+      - run:
+          name: Install Dependencies
+          command: pnpm install
+      - save_cache:
+          name: Save PNPM Package Cache
+          key: pnpm-packages-v1-{{ checksum "pnpm-lock.yaml" }}
+          paths:
+            - node_modules
+            - ~/.pnpm-store
+      - run:
+          name: Install Appium
+          command: sudo npm install -g appium
+      - run:
+          name: Setup E2E Test Environment
+          command: |
+            # Create .env file with test credentials from CircleCI environment variables
+            echo "TEST_USER_EMAIL=$TEST_USER_EMAIL" > e2e/.env
+            echo "TEST_USER_PASSWORD=$TEST_USER_PASSWORD" >> e2e/.env
+            echo "EXPO_PUBLIC_CHATWOOT_BASE_URL=$EXPO_PUBLIC_CHATWOOT_BASE_URL" >> e2e/.env
+            
+            # Check environment setup using CI-specific check script
+            node e2e/ci-check-environment.js
+      - run:
+          name: Start Appium Server
+          command: node e2e/start-appium.js
+          background: true
+      - run:
+          name: Wait for Appium to Start
+          command: sleep 5
+      - run:
+          name: Run E2E Tests
+          command: |
+            # Run tests based on platform parameter or both if not specified
+            if [ "$PLATFORM" == "ios" ]; then
+              pnpm test:e2e:ios
+            elif [ "$PLATFORM" == "android" ]; then
+              pnpm test:e2e:android
+            else
+              # Default to running both
+              pnpm test:e2e:ios || true
+              pnpm test:e2e:android || true
+            fi
+      - store_artifacts:
+          path: e2e/screenshots
+          destination: e2e-screenshots
 
 workflows:
-  test_my_app:
+  version: 2
+  test-deploy:
     jobs:
       - build-and-test
+      - e2e-tests:
+          requires:
+            - build-and-test
+          context: 
+            - chatwoot-e2e-tests

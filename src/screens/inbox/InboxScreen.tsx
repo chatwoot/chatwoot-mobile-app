@@ -71,7 +71,6 @@ const InboxList = () => {
 
   useEffect(() => {
     clearAndFetchNotifications(sortOrder);
-    // fetchConversations(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -148,7 +147,7 @@ const InboxList = () => {
         `pb-[${TAB_BAR_HEIGHT}px]`,
       )}>
       <EmptyStateIcon />
-      <Animated.Text style={tailwind.style('pt-6 text-md  tracking-[0.32px] text-gray-800')}>
+      <Animated.Text style={tailwind.style('pt-6 text-md tracking-[0.32px] text-gray-800')}>
         {i18n.t('NOTIFICATION.EMPTY')}
       </Animated.Text>
     </Animated.ScrollView>
@@ -163,7 +162,7 @@ const InboxList = () => {
       onEndReached={handleOnEndReached}
       onEndReachedThreshold={0.5}
       ListFooterComponent={ListFooterComponent}
-      renderItem={handleRender} 
+      renderItem={handleRender}
       contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}
     />
   );

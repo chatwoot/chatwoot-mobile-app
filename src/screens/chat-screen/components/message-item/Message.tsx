@@ -17,6 +17,7 @@ import {
   // VideoBubble,
   // FileBubble,
   EmailBubble,
+  UnsupportedBubble,
 } from '../message-components';
 import { showToast } from '@/utils/toastUtils';
 import {
@@ -36,6 +37,7 @@ import { MenuOption, MessageMenu } from '../message-menu';
 import { tailwind } from '@/theme';
 import { Dimensions, View } from 'react-native';
 import { Avatar } from '@/components-next';
+
 // import { ImageMetadata } from '@/types';
 
 type MessageComponentProps = {
@@ -327,6 +329,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
     if (!sender || sender.type === SENDER_TYPES.AGENT_BOT) {
       return {
         name: i18n.t('CONVERSATION.BOT'),
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         src: require('../../../../assets/local/bot-avatar.png'),
       };
     }
@@ -338,7 +341,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
       },
     };
   };
-
+  // TODO: Add this once we have a proper way to render single attachments
   // const renderSingleAttachment = (attachment: ImageMetadata) => {
   //   switch (attachment.fileType) {
   //     case ATTACHMENT_TYPES.LOCATION:
@@ -369,14 +372,17 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
     const attachments = item.attachments;
     const isReplyMessage = item.contentAttributes?.inReplyTo;
-
+    const isUnsupported = item.contentAttributes?.isUnsupported;
     let messageContent;
-    if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
+
+    if (isUnsupported) {
+      messageContent = <UnsupportedBubble />;
+    } else if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
       messageContent = <EmailBubble item={item} variant={variant()} />;
     } else if (isEmailInbox && !item.private) {
       messageContent = <EmailBubble item={item} variant={variant()} />;
     }
-    // TODO: remove this once we have a proper way to render single attachments
+    // TODO: Add this once we have a proper way to render single attachments
     // else if (attachments?.length === 1 && !item.content && !isReplyMessage) {
     //   messageContent = renderSingleAttachment(attachments[0]);
     // }

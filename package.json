@@ -14,6 +14,7 @@
     "run:ios": "npx expo run:ios -d",
     "run:android": "npx expo run:android -d",
     "run:doctor": "npx expo-doctor",
+    "check:config": "npx expo-config check",
     "build:android:local": "dotenv -c -- eas build -p android --profile production --local",
     "build:android": "eas build -p android --profile production",
     "build:ios:local": "dotenv -c -- eas build -p ios --profile production --local",
@@ -176,7 +177,7 @@
   },
   "pnpm": {
     "patchedDependencies": {
-      "ffmpeg-kit-react-native": "patches/ffmpeg-kit-react-native.patch"
+      "ffmpeg-kit-react-native@6.0.2": "patches/ffmpeg-kit-react-native.patch"
     }
   }
 }

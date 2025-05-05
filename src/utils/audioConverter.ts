@@ -3,7 +3,6 @@ import { FFmpegKit } from 'ffmpeg-kit-react-native';
 import * as Sentry from '@sentry/react-native';
 
 export const convertOggToWav = async (oggUrl: string): Promise<string | Error> => {
-  console.log('Starting WAV conversion...');
   const tempOggPath = `${RNFS.CachesDirectoryPath}/temp.ogg`;
   const fileName = `converted_${Date.now()}.wav`;
   const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;

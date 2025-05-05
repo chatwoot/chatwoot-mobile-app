@@ -89,6 +89,7 @@
     "expo-system-ui": "~4.0.9",
     "expo-updates": "~0.27.4",
     "expo-web-browser": "~14.0.2",
+    "ffmpeg-kit-react-native": "6.0.2",
     "i18n-js": "^3.8.0",
     "lodash": "^4.17.21",
     "react": "18.3.1",
@@ -198,7 +199,7 @@
   },
   "pnpm": {
     "patchedDependencies": {
-      "ffmpeg-kit-react-native": "patches/ffmpeg-kit-react-native.patch"
+      "ffmpeg-kit-react-native@6.0.2": "patches/ffmpeg-kit-react-native.patch"
     }
   }
 }

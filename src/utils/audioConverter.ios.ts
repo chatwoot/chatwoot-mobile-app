@@ -9,10 +9,8 @@ export const convertOggToWav = async (oggUrl: string): Promise<string | Error> =
 
   try {
     // Download the OGG file and wait for completion
-    const downloadResult = await RNFS.downloadFile({
-      fromUrl: oggUrl,
-      toFile: tempOggPath,
-    }).promise;
+    const downloadResult = await RNFS.downloadFile({ fromUrl: oggUrl, toFile: tempOggPath })
+      .promise;
 
     // Verify download was successful
     if (downloadResult.statusCode !== 200) {

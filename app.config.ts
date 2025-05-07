@@ -4,7 +4,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'Chatwoot',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
-    version: '4.0.16',
+    version: '4.0.17',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
@@ -27,6 +27,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         NSAppleMusicUsageDescription:
           'This app does not use Apple Music, but a system API may require this permission.',
         UIBackgroundModes: ['fetch', 'remote-notification'],
+        ITSAppUsesNonExemptEncryption: false,
       },
       // Please use the relative path to the google-services.json file
       googleServicesFile: process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE,
@@ -101,21 +102,14 @@ export default ({ config }: ConfigContext): ExpoConfig => {
             targetSdkVersion: 34,
             extraMavenRepos: ['$rootDir/../../../node_modules/@notifee/react-native/android/libs'],
             enableProguardInReleaseBuilds: true,
+            exclude: ['ffmpeg-kit-react-native'],
           },
           ios: {
             useFrameworks: 'static',
           },
         },
       ],
-      [
-        '@config-plugins/ffmpeg-kit-react-native',
-        {
-          package: 'min',
-          ios: {
-            package: 'audio',
-          },
-        },
-      ],
+      './with-ffmpeg-pod.js',
     ],
     androidNavigationBar: {
       backgroundColor: '#ffffff',

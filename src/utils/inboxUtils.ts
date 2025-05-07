@@ -36,8 +36,8 @@ export const isAFacebookInbox = (inbox: Inbox | undefined) => {
   return inbox?.channelType === INBOX_TYPES.FB;
 };
 
-export const isATelegramChannel = (inbox: Inbox) => {
-  return inbox.channelType === INBOX_TYPES.TELEGRAM;
+export const isATelegramChannel = (inbox: Inbox | undefined) => {
+  return inbox?.channelType === INBOX_TYPES.TELEGRAM;
 };
 
 export const isAnEmailChannel = (inbox: Inbox | undefined) => {
@@ -87,4 +87,8 @@ export const isASmsInbox = (inbox: Inbox | undefined) => {
 
 export const whatsAppAPIProvider = (inbox: Inbox) => {
   return inbox.provider || '';
+};
+
+export const isAnInstagramChannel = (inbox: Inbox | undefined) => {
+  return inbox?.channelType === INBOX_TYPES.INSTAGRAM;
 };

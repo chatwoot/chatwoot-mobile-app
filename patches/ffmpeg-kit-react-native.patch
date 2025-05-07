@@ -1,0 +1,131 @@
+diff --git a/ffmpeg-kit-react-native.podspec b/ffmpeg-kit-react-native.podspec
+index 889d3e8f308f94a338869afedc8c25d8b1ebb53a..d41913064e7da4511cbb9ebec7374fc24cc0a6c4 100644
+--- a/ffmpeg-kit-react-native.podspec
++++ b/ffmpeg-kit-react-native.podspec
+@@ -15,121 +15,13 @@ Pod::Spec.new do |s|
+   s.static_framework  = true
+ 
+   s.source       = { :git => "https://github.com/arthenica/ffmpeg-kit.git", :tag => "react.native.v#{s.version}" }
+-
+-  s.default_subspec   = 'https'
+-
++  s.default_subspec = 'https' # Just change to whatever subspec you want to use, e.g 'min-gpl'
+   s.dependency "React-Core"
+ 
+-  s.subspec 'min' do |ss|
+-      ss.source_files      = '**/FFmpegKitReactNativeModule.m',
+-                             '**/FFmpegKitReactNativeModule.h'
+-      ss.dependency 'ffmpeg-kit-ios-min', "6.0"
+-      ss.ios.deployment_target = '12.1'
+-  end
+-
+-  s.subspec 'min-lts' do |ss|
+-      ss.source_files      = '**/FFmpegKitReactNativeModule.m',
+-                             '**/FFmpegKitReactNativeModule.h'
+-      ss.dependency 'ffmpeg-kit-ios-min', "6.0.LTS"
+-      ss.ios.deployment_target = '10'
+-  end
+-
+-  s.subspec 'min-gpl' do |ss|
+-      ss.source_files      = '**/FFmpegKitReactNativeModule.m',
+-                             '**/FFmpegKitReactNativeModule.h'
+-      ss.dependency 'ffmpeg-kit-ios-min-gpl', "6.0"
+-      ss.ios.deployment_target = '12.1'
+-  end
+-
+-  s.subspec 'min-gpl-lts' do |ss|
+-      ss.source_files      = '**/FFmpegKitReactNativeModule.m',
+-                             '**/FFmpegKitReactNativeModule.h'
+-      ss.dependency 'ffmpeg-kit-ios-min-gpl', "6.0.LTS"
+-      ss.ios.deployment_target = '10'
+-  end
+-
+   s.subspec 'https' do |ss|
+-      ss.source_files      = '**/FFmpegKitReactNativeModule.m',
+-                             '**/FFmpegKitReactNativeModule.h'
+-      ss.dependency 'ffmpeg-kit-ios-https', "6.0"
+-      ss.ios.deployment_target = '12.1'
+-  end
+-
+-  s.subspec 'https-lts' do |ss|
+-      ss.source_files      = '**/FFmpegKitReactNativeModule.m',
+-                             '**/FFmpegKitReactNativeModule.h'
+-      ss.dependency 'ffmpeg-kit-ios-https', "6.0.LTS"
+-      ss.ios.deployment_target = '10'
+-  end
+-
+-  s.subspec 'https-gpl' do |ss|
+-      ss.source_files      = '**/FFmpegKitReactNativeModule.m',
+-                             '**/FFmpegKitReactNativeModule.h'
+-      ss.dependency 'ffmpeg-kit-ios-https-gpl', "6.0"
+-      ss.ios.deployment_target = '12.1'
+-  end
+-
+-  s.subspec 'https-gpl-lts' do |ss|
+-      ss.source_files      = '**/FFmpegKitReactNativeModule.m',
+-                             '**/FFmpegKitReactNativeModule.h'
+-      ss.dependency 'ffmpeg-kit-ios-https-gpl', "6.0.LTS"
+-      ss.ios.deployment_target = '10'
++    ss.source_files      = '**/FFmpegKitReactNativeModule.m',
++                          '**/FFmpegKitReactNativeModule.h'
++    ss.dependency 'chatwoot-ffmpeg-kit-ios-https', "6.0.2"
++    ss.ios.deployment_target = '12.1'
+   end
+-
+-  s.subspec 'audio' do |ss|
+-      ss.source_files      = '**/FFmpegKitReactNativeModule.m',
+-                             '**/FFmpegKitReactNativeModule.h'
+-      ss.dependency 'ffmpeg-kit-ios-audio', "6.0"
+-      ss.ios.deployment_target = '12.1'
+-  end
+-
+-  s.subspec 'audio-lts' do |ss|
+-      ss.source_files      = '**/FFmpegKitReactNativeModule.m',
+-                             '**/FFmpegKitReactNativeModule.h'
+-      ss.dependency 'ffmpeg-kit-ios-audio', "6.0.LTS"
+-      ss.ios.deployment_target = '10'
+-  end
+-
+-  s.subspec 'video' do |ss|
+-      ss.source_files      = '**/FFmpegKitReactNativeModule.m',
+-                             '**/FFmpegKitReactNativeModule.h'
+-      ss.dependency 'ffmpeg-kit-ios-video', "6.0"
+-      ss.ios.deployment_target = '12.1'
+-  end
+-
+-  s.subspec 'video-lts' do |ss|
+-      ss.source_files      = '**/FFmpegKitReactNativeModule.m',
+-                             '**/FFmpegKitReactNativeModule.h'
+-      ss.dependency 'ffmpeg-kit-ios-video', "6.0.LTS"
+-      ss.ios.deployment_target = '10'
+-  end
+-
+-  s.subspec 'full' do |ss|
+-      ss.source_files      = '**/FFmpegKitReactNativeModule.m',
+-                             '**/FFmpegKitReactNativeModule.h'
+-      ss.dependency 'ffmpeg-kit-ios-full', "6.0"
+-      ss.ios.deployment_target = '12.1'
+-  end
+-
+-  s.subspec 'full-lts' do |ss|
+-      ss.source_files      = '**/FFmpegKitReactNativeModule.m',
+-                             '**/FFmpegKitReactNativeModule.h'
+-      ss.dependency 'ffmpeg-kit-ios-full', "6.0.LTS"
+-      ss.ios.deployment_target = '10'
+-  end
+-
+-  s.subspec 'full-gpl' do |ss|
+-      ss.source_files      = '**/FFmpegKitReactNativeModule.m',
+-                             '**/FFmpegKitReactNativeModule.h'
+-      ss.dependency 'ffmpeg-kit-ios-full-gpl', "6.0"
+-      ss.ios.deployment_target = '12.1'
+-  end
+-
+-  s.subspec 'full-gpl-lts' do |ss|
+-      ss.source_files      = '**/FFmpegKitReactNativeModule.m',
+-                             '**/FFmpegKitReactNativeModule.h'
+-      ss.dependency 'ffmpeg-kit-ios-full-gpl', "6.0.LTS"
+-      ss.ios.deployment_target = '10'
+-  end
+-
+ end

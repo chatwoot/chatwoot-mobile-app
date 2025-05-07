@@ -22,9 +22,10 @@ import {
   isATelegramChannel,
   isAWebWidgetInbox,
   isAPIInbox,
+  isAnInstagramChannel,
 } from '@/utils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { MESSAGE_MAX_LENGTH, REPLY_EDITOR_MODES } from '@/constants';
+import { MESSAGE_MAX_LENGTH, REPLY_EDITOR_MODES, AUDIO_FORMATS } from '@/constants';
 import { tailwind } from '@/theme';
 import {
   selectMessageContent,
@@ -65,6 +66,7 @@ import { getLastEmailInSelectedChat } from '@/store/conversation/conversationSel
 import { selectAssignableParticipantsByInboxId } from '@/store/assignable-agent/assignableAgentSelectors';
 import { AudioRecorder } from '../audio-recorder/AudioRecorder';
 import { VoiceRecordButton } from './buttons/VoiceRecordButton';
+import { is } from 'date-fns/locale';
 
 const SHEET_APPEAR_SPRING_CONFIG = {
   damping: 20,
@@ -330,7 +332,8 @@ const BottomSheetContent = () => {
       isASmsInbox(inbox) ||
       isAnEmailChannel(inbox) ||
       isATelegramChannel(inbox) ||
-      isALineChannel(inbox));
+      isALineChannel(inbox) ||
+      isAnInstagramChannel(inbox));
 
   const maxLength = () => {
     if (isPrivate) {
@@ -349,6 +352,13 @@ const BottomSheetContent = () => {
       return MESSAGE_MAX_LENGTH.EMAIL;
     }
     return MESSAGE_MAX_LENGTH.GENERAL;
+  };
+
+  const audioFormat = (): 'audio/m4a' | 'audio/wav' => {
+    if (isAWhatsAppChannel(inbox) || isATelegramChannel(inbox) || isAnInstagramChannel(inbox)) {
+      return 'audio/m4a';
+    }
+    return 'audio/wav';
   };
 
   const onSelectCannedResponse = (cannedResponse: CannedResponse) => {
@@ -402,7 +412,9 @@ const BottomSheetContent = () => {
 
         {typingText && <TypingIndicator typingText={typingText} />}
 
-        {isVoiceRecorderOpen ? <AudioRecorder onRecordingComplete={onRecordingComplete} /> : null}
+        {isVoiceRecorderOpen ? (
+          <AudioRecorder onRecordingComplete={onRecordingComplete} audioFormat={audioFormat()} />
+        ) : null}
         {!isVoiceRecorderOpen ? (
           <Animated.View style={tailwind.style('flex flex-row px-1 items-end z-20 relative')}>
             {attachmentsLength === 0 && shouldShowFileUpload && (

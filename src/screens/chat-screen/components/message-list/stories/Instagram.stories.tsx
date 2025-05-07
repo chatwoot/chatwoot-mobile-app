@@ -7,7 +7,6 @@ import { Animated } from 'react-native';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { tailwind } from '@/theme';
 import { MessagesList } from '../MessagesList';
-import { LightBoxProvider } from '@alantoa/lightbox';
 import { ChatWindowProvider, RefsProvider } from '@/context';
 import { Provider } from 'react-redux';
 import { INSTAGRAM_MESSAGES } from './mock-data/instagram';
@@ -33,13 +32,7 @@ const mockConversationSlice = createSlice({
   name: 'conversation',
   initialState: {
     ids: [29],
-    entities: {
-      29: {
-        id: 29,
-        status: 'open',
-        messages: ALL_MESSAGES_MOCKDATA,
-      },
-    },
+    entities: { 29: { id: 29, status: 'open', messages: ALL_MESSAGES_MOCKDATA } },
   },
   reducers: {},
 });
@@ -67,22 +60,20 @@ export const Instagram: Story = {
         <BottomSheetModalProvider>
           <RefsProvider>
             <KeyboardProvider>
-              <LightBoxProvider>
-                <ChatWindowProvider conversationId={29}>
-                  <ScrollView contentContainerStyle={tailwind.style('flex')}>
-                    <PlatformSpecificKeyboardWrapperComponent
-                      style={tailwind.style('flex-1 bg-white border border-red-500')}
-                      interpolator="linear">
-                      <MessagesList
-                        messages={ALL_MESSAGES_MOCKDATA}
-                        isFlashListReady={false}
-                        setFlashListReady={() => {}}
-                        onEndReached={() => {}}
-                      />
-                    </PlatformSpecificKeyboardWrapperComponent>
-                  </ScrollView>
-                </ChatWindowProvider>
-              </LightBoxProvider>
+              <ChatWindowProvider conversationId={29}>
+                <ScrollView contentContainerStyle={tailwind.style('flex')}>
+                  <PlatformSpecificKeyboardWrapperComponent
+                    style={tailwind.style('flex-1 bg-white border border-red-500')}
+                    interpolator="linear">
+                    <MessagesList
+                      messages={ALL_MESSAGES_MOCKDATA}
+                      isFlashListReady={false}
+                      setFlashListReady={() => {}}
+                      onEndReached={() => {}}
+                    />
+                  </PlatformSpecificKeyboardWrapperComponent>
+                </ScrollView>
+              </ChatWindowProvider>
             </KeyboardProvider>
           </RefsProvider>
         </BottomSheetModalProvider>

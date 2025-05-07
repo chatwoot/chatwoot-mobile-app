@@ -1,8 +1,7 @@
 import React from 'react';
-import { Dimensions, Text } from 'react-native';
+import { Text } from 'react-native';
 import Animated, { Easing, FadeIn } from 'react-native-reanimated';
-import { LightBox, LightBoxProps } from '@alantoa/lightbox';
-import { Image, ImageBackground } from 'expo-image';
+import { ImageBackground } from 'expo-image';
 import { tailwind } from '@/theme';
 import { Channel, Message, MessageStatus, UnixTimestamp } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
@@ -10,10 +9,6 @@ import { Avatar } from '@/components-next/common';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { MESSAGE_TYPES } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
-
-const { width, height } = Dimensions.get('screen');
-
-const AnimatedExpoImage = Animated.createAnimatedComponent(Image);
 
 type ImageCellProps = {
   imageSrc: string;
@@ -29,28 +24,8 @@ type ImageCellProps = {
   errorMessage?: string;
 };
 
-type ImageContainerProps = Pick<ImageCellProps, 'imageSrc'> &
-  Pick<LightBoxProps, 'width' | 'height'>;
-
-export const ImageContainer = (props: ImageContainerProps) => {
-  const { imageSrc, height: lightboxH, width: lightboxW } = props;
-  return (
-    <LightBox
-      width={lightboxW}
-      height={lightboxH}
-      imgLayout={{ height: height * 0.8, width: width * 0.8 }}
-      tapToClose={false}>
-      <AnimatedExpoImage
-        source={{ uri: imageSrc }}
-        contentFit="contain"
-        style={[tailwind.style('h-full w-full bg-gray-100 overflow-hidden')]}
-      />
-    </LightBox>
-  );
-};
 export const ImageCell = (props: ImageCellProps) => {
   const {
-    imageSrc,
     shouldRenderAvatar,
     messageType,
     sender,
@@ -111,7 +86,6 @@ export const ImageCell = (props: ImageCellProps) => {
                       : ''
                   : '',
               )}>
-              <ImageContainer {...{ imageSrc }} width={300} height={215} />
               <Animated.View pointerEvents={'none'}>
                 <ImageBackground
                   source={require('../../../../assets/local/ImageCellTimeStampOverlay.png')}

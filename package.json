@@ -31,7 +31,6 @@
     "adb:connect": "adb reverse tcp:9090 tcp:9090"
   },
   "dependencies": {
-    "@alantoa/lightbox": "0.3.1",
     "@chatwoot/markdown-to-txt": "^2.0.4",
     "@chatwoot/react-native-widget": "^0.0.21",
     "@chatwoot/utils": "^0.0.33",
@@ -154,7 +153,6 @@
           "react-native-autoheight-webview",
           "redux-persist",
           "rn-fetch-blob",
-          "@alantoa/lightbox",
           "@chatwoot/markdown-to-txt",
           "@chatwoot/react-native-widget",
           "@chatwoot/utils",

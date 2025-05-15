@@ -18,6 +18,8 @@ import {
   InboxIconOutline,
   SettingsIconFilled,
   SettingsIconOutline,
+  CommunityIconFilled,
+  CommunityIconOutline
 } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';
@@ -41,6 +43,8 @@ const TabBarIcons = ({ focused, route }: TabBarIconsProps) => {
       return focused ? <ConversationIconFilled /> : <ConversationIconOutline />;
     case 'Inbox':
       return focused ? <InboxIconFilled /> : <InboxIconOutline />;
+    case 'Community':
+      return focused ? <CommunityIconFilled /> : <CommunityIconOutline />;
     case 'Settings':
       return focused ? <SettingsIconFilled /> : <SettingsIconOutline />;
   }

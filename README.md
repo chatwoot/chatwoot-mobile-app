@@ -1,38 +1,41 @@
-<img src="https://user-images.githubusercontent.com/2246121/282256557-1570674b-d142-4198-9740-69404cc6a339.png#gh-light-mode-only" width="100%" alt="Chat dashboard dark mode"/>
-<img src="https://user-images.githubusercontent.com/2246121/282256632-87f6a01b-6467-4e0e-8a93-7bbf66d03a17.png#gh-dark-mode-only" width="100%" alt="Chat dashboard"/>
+<img src="https://unicorn-images.b-cdn.net/6e7a7d05-7544-4dab-87b5-c667b939d479?optimizer=gif" width="100"  alt="BuddyHelp Logo"/>
 
----
 
-# Chatwoot
 
-Mobile app for chatwoot platform. Built with React Native and Expo.
+# BuddyHelp - Free Emotional Support and Free Online Therapy
+
+Mobile app for BuddyHelp volunteer listeners. Built with React Native and Expo, forked from Chatwoot.
 
 <p>
    <a href="https://github.com/react-native-community/releases/blob/master/CHANGELOG.md"><img src="https://img.shields.io/github/package-json/dependency-version/chatwoot/chatwoot-mobile-app/react-native?color=%2361dafb" alt="Project Dependencies"></a>
    <img src="https://img.shields.io/github/package-json/dependency-version/chatwoot/chatwoot-mobile-app/expo?color=%2361dafb" alt="Expo">
-  <img src="https://img.shields.io/discord/647412545203994635" alt="Discord">
-  <a href="https://discord.gg/cJXdrwS"><img src="https://img.shields.io/badge/chat-Discord-violet?logo=discord" alt="Chat on Discord"></a>
-   <a href="http://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="Chat on Discord"></a>
- <img src="https://img.shields.io/github/license/chatwoot/chatwoot-mobile-app" alt="License">
+   <a href="https://buddyhelp.org"><img src="https://img.shields.io/badge/website-BuddyHelp-blue" alt="BuddyHelp Website"></a>
+   <a href="https://buddyhelp.org/volunteer"><img src="https://img.shields.io/badge/volunteer-Join%20Us-brightgreen" alt="Volunteer"></a>
+   <img src="https://img.shields.io/github/license/chatwoot/chatwoot-mobile-app" alt="License">
 </p>
 
-- **Supported Chatwoot version:** 3.13.0+
 - **Supported iOS versions**: 13.4+
 - **Supported Android versions**: 6.0+
 
+## About BuddyHelp
+
+BuddyHelp is an emotional support platform, where we facilitate conversations between people who are in emotional distress with caring, patient, compassionate individuals who will listen, and hold space. Our volunteers are unpaid and have usually been through rough patches themselves, knowing just how much it helped to have someone to talk to.
+
+When someone suffers from anxiety, job-related distress, domestic distress, breakups, fear of uncertainty, trauma, or simply not feeling their best, talking about it can help them mentally process their feelings and find their way back to the light. BuddyHelp aims to be that neutral partner, always there with an open ear.
+
 ## Features
 
-- Do not miss out on the new customers
-- Follow up on customer conversations on go
+- Connect with people seeking emotional support
+- Follow up on conversations while on the go
 - Reply easily with canned responses
-- Receive realtime notifications about system activities
-- Communicate with other team members via private notes
+- Receive realtime notifications about new support requests
+- Communicate with other volunteers via private notes
 - Assign statuses to your conversations
-  ... and more to come!
+- Help people through difficult moments from anywhere
+<!-- 
+## Download the BuddyHelp App
 
-## Download Android/iOS application
-
-<p >
+<p>
   <a href="https://apps.apple.com/app/id1495796682">
     <img alt="Download on the App Store" title="App Store" src="http://i.imgur.com/0n2zqHD.png" width="140">
   </a>
@@ -40,29 +43,24 @@ Mobile app for chatwoot platform. Built with React Native and Expo.
   <a href="https://play.google.com/store/apps/details?id=com.chatwoot.app&hl=en">
     <img alt="Get it on Google Play" title="Google Play" src="http://i.imgur.com/mtGRPuM.png" width="140">
   </a>
-</p>
+</p> -->
 
-## Testing
+## Become a Volunteer Listener
 
-To help with testing app updates before they're released, you can:
+BuddyHelp is the free mental health resource that provides a safe space for people who just need someone to talk to. Our volunteer listeners work from anywhere via their smartphones.
 
-Sign up to be a beta tester
+The process to become an Emotional Support Counselor:
+1. Fill out your application at [buddyhelp.org/volunteer](https://buddyhelp.org/volunteer)
+2. Complete a 6-hour online training led by the Johns Hopkins University (FREE)
+3. Take your first chat request and begin supporting people around the world!
 
-- [Android](https://play.google.com/apps/testing/com.chatwoot.app) - Open this link from your Android device
-- [iOS](https://testflight.apple.com/join/yQ4yoSx4) - Open this link from your iOS device
+[Apply Now →](https://buddyhelp.org/volunteer/)
 
-You can leave the Beta testing program at any time:
+## Why Volunteer with BuddyHelp?
 
-- On Android, [click this link](https://play.google.com/apps/testing/com.chatwoot.app) while logged in with your Google Play email address used to opt-in for the Beta program, then click **Leave the program**.
-- On iOS, access the `Chatwoot` app page in TestFlight and click **Stop Testing**.
-
-## Feedback & Contributing
-
-Feel free to send us feedback on [X](https://x.com/chatwootapp) or [file an issue](https://github.com/chatwoot/chatwoot-mobile-app/issues).
-
-If you wish to contribute, please take a quick look at the [CONTRIBUTING.md](https://www.chatwoot.com/docs/contributing-guide/mobile-app/setup-guide).
-
-If there's anything you'd like to chat about, please feel free to join our [Discord](https://discord.gg/cJXdrwS) chat!
+- **Make a difference**: Have an impact on people's lives. 91% of users indicate they feel better after talking to a listener.
+- **Gain valuable experience**: Learn communication, problem-solving, and crisis management skills – recognized by employers, universities, and colleges as essential skills.
+- **Volunteer the way you want**: Work from home, the office, or anywhere else. It's fully remote and flexible.
 
 ## Building the App Locally
 
@@ -78,4 +76,12 @@ To build the app locally, you need to set up configuration files:
 
 The build script will automatically copy these files to the correct locations before building.
 
-_Chatwoot_ &copy; 2017-2025, Chatwoot Inc - Released under the MIT License.
+## Get in Touch
+
+- Website: [buddyhelp.org](https://buddyhelp.org)
+- Email: [contact@buddyhelp.org](mailto:contact@buddyhelp.org)
+- [Volunteer as a Listener](https://buddyhelp.org/volunteer)
+- [Support BuddyHelp](https://buddyhelp.org/donate)
+
+BuddyHelp by Mind Well Foundation is an EU Charitable Non-Profit.
+Registered as an NGO in Berlin under reg. nr. VR 38475 B.

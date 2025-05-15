@@ -10,6 +10,7 @@
     "ios": "expo run:ios",
     "clean": "watchman watch-del-all && rm -rf node_modules ios android .expo && pnpm store prune && rm pnpm-lock.yaml",
     "reset": "pnpm clean && pnpm install && pnpm generate",
+    "restart:ios": "pnpm reset && pnpm ios",
     "test": "jest",
     "e2e": "node e2e/check-environment.js",
     "lint": "eslint .",

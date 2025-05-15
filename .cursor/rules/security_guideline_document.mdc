@@ -1,0 +1,136 @@
+# Security Guidelines for BuddyHelp Mobile App
+
+## 1. Introduction
+
+These guidelines establish the security best practices and controls for BuddyHelp, a React Native & Expo–based mobile application that connects individuals seeking emotional support with volunteer listeners. By following these principles during development, testing, and deployment, we ensure confidentiality, integrity, and availability of user data, as well as compliance with relevant privacy regulations.
+
+## 2. Authentication & Access Control
+
+- **Secure Login Flow**  
+  • Authenticate users against the Chatwoot API over HTTPS (TLS 1.2+).  
+  • Enforce strong password policies on the backend (minimum length, complexity).  
+  • Use short-lived access tokens and refresh tokens.  
+  • Store tokens in device secure storage (e.g., Expo SecureStore or Keychain) rather than plain AsyncStorage.  
+  
+- **Session Management**  
+  • Implement idle and absolute timeouts for user sessions.  
+  • Provide a reliable logout mechanism that clears tokens from secure storage.  
+  • Guard against session fixation by regenerating tokens on re-authentication.  
+  
+- **Role-Based Authorization**  
+  • Distinguish between volunteer listeners and support seekers in API claims.  
+  • Enforce authorization checks server-side for sensitive actions (e.g., assigning conversation status).  
+
+## 3. Input Handling & Processing
+
+- **Input Validation**  
+  • Validate all user-supplied data on the client and server.  
+  • Use schema validation (JSON Schema or equivalent) for API payloads.  
+  
+- **Prevent Injection Attacks**  
+  • Rely on parameterized queries or the Chatwoot API to avoid injection in backend.  
+  • Escape or sanitize any HTML content before rendering in WebViews (if used).  
+  
+- **XSS & UI Sanitization**  
+  • Use React Native’s `<Text>` component for rendering user messages (avoids HTML interpretation).  
+  • If rich text is supported in the future, apply context-aware sanitization.  
+
+## 4. Data Protection & Privacy
+
+- **Encryption In Transit & At Rest**  
+  • Enforce HTTPS for all network communication.  
+  • Pin Chatwoot server certificates with a library (e.g., `react-native-ssl-pinning`).  
+  • Store sensitive data (tokens, PII) encrypted in SecureStore or the device’s encrypted keychain.  
+  
+- **Minimize Data Exposure**  
+  • Limit locally cached messages to the last 20 per conversation.  
+  • Mask or omit Personally Identifiable Information (PII) in logs and error messages.  
+
+- **Secure Logging & Error Handling**  
+  • Do not log stack traces or sensitive data in production.  
+  • Configure Sentry to scrub PII before sending reports.  
+  • Fail securely by showing generic error messages to users.  
+
+## 5. API & Service Security
+
+- **Endpoint Protection**  
+  • Require a valid bearer token for every API request.  
+  • Validate token signature, issuer, and expiration (`exp`) server-side.  
+  
+- **Rate Limiting & Throttling**  
+  • Coordinate with the Chatwoot backend to enforce per-user and per-IP rate limits.  
+
+- **CORS & Origins**  
+  • Ensure the Chatwoot server allows only trusted origins and mobile User-Agent patterns.  
+
+- **Least Privilege for API Keys**  
+  • Restrict Firebase Cloud Messaging (FCM) server keys to push only.  
+  • Store third-party credentials (Sentry DSN, FCM server keys) in GitHub Secrets or Expo credentials vault.  
+
+## 6. Mobile App–Specific Security Hygiene
+
+- **Secure Storage of Secrets**  
+  • Do not hardcode API keys, secrets, or credentials in source code.  
+  • Use environment variables conjunction with [`expo-secure-store`](https://docs.expo.dev/versions/latest/sdk/securestore/).  
+
+- **Code Obfuscation & Minification**  
+  • Enable JavaScript minification and Hermes (if available) for code obfuscation.  
+  • Use ProGuard/R8 rules for native modules in release builds.  
+
+- **Certificate & App Integrity**  
+  • Use Expo’s managed credentials for code signing.  
+  • Verify app integrity at runtime (e.g., tamper checks or runtime signature validation).  
+
+- **Push Notification Security**  
+  • Use FCM topics or device tokens to target notifications.  
+  • Validate notification payloads before displaying.  
+
+- **Secure Use of WebViews (If Any)**  
+  • Disable JavaScript execution unless strictly required.  
+  • Block navigation to external URLs by default.  
+
+## 7. Infrastructure & Configuration Management
+
+- **Secure Build & Distribution**  
+  • Restrict access to Expo EAS and CI/CD pipelines via least-privilege GitHub roles.  
+  • Store signing keys and secrets in encrypted vaults (GitHub Secrets, Expo Secrets).  
+
+- **Environment Separation**  
+  • Maintain distinct configs for development, staging, and production.  
+  • Enforce strict TLS and API endpoint settings per environment.  
+
+- **Dependency & Patch Management**  
+  • Keep React Native, Expo SDK, and all libraries up to date.  
+  • Run automated dependency scans (e.g., `npm audit`, Snyk) in CI.  
+
+- **File & Resource Hardening**  
+  • Exclude sensitive files (`.env`, keystores) from version control.  
+  • Apply least-privilege file permissions on build servers.  
+
+## 8. Dependency Management
+
+- **Lockfiles & Auditing**  
+  • Commit `pnpm-lock.yaml` to ensure reproducible builds.  
+  • Integrate Software Composition Analysis (SCA) to detect CVEs in dependencies.  
+
+- **Library Vetting**  
+  • Prefer well-maintained libraries with active security teams.  
+  • Remove or replace unmaintained or vulnerable modules promptly.  
+
+## 9. DevOps & CI/CD Security
+
+- **Secure CI/CD Pipelines**  
+  • Require pull-request reviews for all code changes.  
+  • Run unit tests, linting, and security scans on every push.  
+  • Use signed commits and enforce branch protection.  
+
+- **Infrastructure as Code (IaC)**  
+  • If using IaC for backend or notification services, scan templates for misconfigurations.  
+
+- **Monitoring & Incident Response**  
+  • Leverage Sentry for crash reporting and performance insights.  
+  • Define a security incident response plan and alerting thresholds.  
+
+## 10. Conclusion
+
+By embedding these security controls at every stage, BuddyHelp will maintain a robust defense-in-depth posture, protect user privacy, and uphold trust. Periodic reviews and audits should be conducted to ensure continuous compliance with evolving security standards and threat landscapes.

@@ -1,0 +1,132 @@
+# Project Requirements Document (PRD)
+
+## 1. Project Overview
+
+BuddyHelp is a React Native & Expo–based mobile application forked from Chatwoot. It connects people experiencing emotional distress (“support seekers”) with trained volunteer listeners in real time. Volunteers can log in with their credentials, browse open support requests, send and receive messages, and get push notifications on new chats or status updates. The goal is to offer a simple, private, on-the-go support network for anyone who needs a compassionate ear.
+
+We’re building BuddyHelp to lower the barrier to emotional support and make it as easy as opening an app.
+
+## 2. In-Scope vs. Out-of-Scope
+
+### In-Scope (v1.0)
+
+*   User authentication via Chatwoot API (login, logout, password reset)
+*   Conversation listing with filters (status, assignee type, inbox)
+*   Real-time chat UI (send/receive messages, quick-reply buttons)
+*   Conversation status assignment (open, pending, resolved)
+*   Push notifications for new requests, replies, status changes
+*   Settings screen (availability toggle, notification preferences, language selection, account switching, logout)
+*   Offline caching of recent conversations via AsyncStorage
+*   Error tracking with Sentry
+*   Local multimedia processing support via FFmpegKit
+
+### Out-of-Scope (later phases)
+
+*   In-app voice or video calls
+*   AI-based sentiment analysis or chat suggestions
+*   Full volunteer management dashboard (assignment rules, reporting)
+*   Group chats or community forums
+*   User onboarding flows beyond login (e.g., tutorials)
+*   In-app payments or donations
+*   Deep analytics and dashboards
+
+## 3. User Flow
+
+When a new user opens BuddyHelp, they proceed to the **Login** screen to enter their email and password. On successful authentication, the user lands in the main app via a **Tab Navigator** with two tabs: **Conversations** and **Settings**.
+
+In **Conversations**, the user sees a scrollable list of active chats with status badges (open, pending, resolved) and can filter by status, inbox, or assignee. Tapping an item opens the **Chat Screen**, showing the message thread, quick-reply canned messages, a status dropdown, and a private notes section. Real-time messages arrive with push notifications when the app is backgrounded. From **Settings**, users toggle their availability (online/offline), adjust notification preferences, change language, switch between Chatwoot accounts, or log out.
+
+## 4. Core Features
+
+*   **Authentication & Config**\
+    • Login (email/password)\
+    • Password reset flow\
+    • Initial server URL configuration (persistent)
+*   **Conversation Management**\
+    • List conversations with filters (status, type)\
+    • Open/close or assign status to conversations\
+    • Private notes only visible to volunteers
+*   **Chat Interface**\
+    • Real-time text messaging\
+    • Message delivery indicators (sent, delivered)
+*   **Push Notifications**\
+    • New support request alerts\
+    • Incoming reply notifications\
+    • Status change notifications
+*   **Settings**\
+    • Online/offline availability toggle\
+    • Notification preference toggles (sound, badge, preview)\
+    • Language selection (i18n-enabled)\
+    • Account switching & logout
+*   **Offline Caching**\
+    • Store recent messages locally (AsyncStorage)
+*   **Error Tracking**\
+    • Sentry integration for crash and performance monitoring
+*   **Media Processing (Future-Ready)**\
+    • FFmpegKit included for voice notes or attachments
+
+## 5. Tech Stack & Tools
+
+*   **Frontend Framework**: React Native (JavaScript)
+*   **App Runtime**: Expo (managed workflow)
+*   **State Management**: Redux Toolkit
+*   **Navigation**: React Navigation (tab & stack navigators)
+*   **HTTP Client**: axios
+*   **Internationalization**: i18n-js
+*   **UI Components**:\
+    • @gorhom/bottom-sheet (action trays)\
+    • tailwindcss (utility-first styling)
+*   **Storage**: @react-native-async-storage/async-storage
+*   **Push Notifications**:\
+    • @react-native-firebase/app & /messaging\
+    • Notifee for local notifications
+*   **Error & Performance**: @sentry/react-native
+*   **Media Processing**: FFmpegKit
+*   **Package Manager**: pnpm
+*   **AI-Aided IDE**: Cursor (real-time code suggestions)
+
+## 6. Non-Functional Requirements
+
+*   **Performance**\
+    • Cold app start < 3 s on mid-range devices\
+    • Conversation list render time < 200 ms for 50 items\
+    • Message round-trip latency < 1 s
+*   **Security & Privacy**\
+    • All API calls over HTTPS (TLS 1.2+)\
+    • Store any tokens/encrypted data in secure storage\
+    • GDPR-compatible data handling (user can request deletion)
+*   **Usability**\
+    • Consistent UI/UX on iOS and Android\
+    • Accessible font sizes and contrast ratios\
+    • Offline read access to last 20 messages
+*   **Scalability**\
+    • Support up to 5,000 concurrent users without UI lag\
+    • Modular codebase to add features in future
+
+## 7. Constraints & Assumptions
+
+*   Relies on an existing Chatwoot backend with public API access
+*   Users must have internet to send/receive new messages; cached data only for read
+*   Volunteer listeners are pre-registered in Chatwoot system
+*   App binaries must remain under 100 MB (consider FFmpegKit bundle size)
+*   Assumes Cursor plugin available in developer IDE for code completion
+
+## 8. Known Issues & Potential Pitfalls
+
+*   **Push Notification Reliability**\
+    • iOS background delivery can vary; test thoroughly with APNs & Notifee\
+    • Android OEM restrictions may delay messages—use high-priority channels
+*   **Bundle Size**\
+    • FFmpegKit (full build) can bloat the binary; consider slim builds or on-demand modules
+*   **Memory / Performance**\
+    • Large conversation lists may cause memory spikes—use React Native’s FlatList with windowing\
+    • Keep bottom sheets and heavy animations off the main JS thread
+*   **API CORS / Auth Errors**\
+    • Misconfigured Chatwoot server CORS or missing SSL can block requests—document server setup steps clearly
+*   **Mitigation Guidelines**\
+    • Monitor crashes and performance via Sentry dashboards\
+    • Lazy-load components and media\
+    • Optimize Redux slices to prevent redundant re-renders\
+    • Enable release builds with ProGuard/R8 to minify and obfuscate code
+
+This document serves as the single source of truth for BuddyHelp’s first release. All subsequent technical guides (Tech Stack Docs, Frontend & Backend Structure, Security Guidelines, etc.) should align with these requirements.

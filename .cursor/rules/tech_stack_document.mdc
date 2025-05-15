@@ -1,0 +1,100 @@
+# Tech Stack Document
+
+This document explains, in everyday language, the technologies we chose for the BuddyHelp mobile app and why each one matters. You don’t need a technical background to understand how everything fits together.
+
+## 1. Frontend Technologies
+
+These are the tools and libraries we use to build the part of the app you see and interact with.
+
+*   **React Native**\
+    Lets us write one set of code (in JavaScript) that runs on both iOS and Android. This speeds up development and ensures a consistent look and feel.
+*   **Expo**\
+    A friendly layer on top of React Native that simplifies setup, testing, and publishing. With Expo, we can push updates over the air without needing users to download a new app version.
+*   **Redux Toolkit**\
+    Helps us manage the app’s data (like user login status or active conversations) in a predictable way. It keeps different parts of our app in sync without extra code.
+*   **React Navigation**\
+    Provides easy-to-use navigation between screens (tabs, stacks, and more). It makes moving from login to conversations or settings fast and smooth.
+*   **tailwindcss (via tailwind-react-native-classnames)**\
+    A utility-first styling approach that gives us ready-made CSS classes. It speeds up styling and keeps our design consistent.
+*   **@gorhom/bottom-sheet**\
+    Adds a slide-up panel component for quick actions or filters. It creates a familiar, easy-to-use interface element.
+*   **i18n-js**\
+    Manages multiple languages in the app. It lets users switch languages on the fly, ensuring BuddyHelp works globally.
+*   **@react-native-async-storage/async-storage**\
+    Provides simple, persistent storage on the device. We use it to save things like user tokens so people stay logged in.
+*   **axios**\
+    A promise-based HTTP client for talking to our backend (the Chatwoot server). It handles sending and receiving data (messages, notifications, etc.) over the internet.
+*   **Notifee**\
+    Displays local notifications for events like new messages or status changes, even when the app is closed.
+*   **FFmpegKit**\
+    Powers any multimedia processing we need (for example, handling voice notes or recorded audio) right on the device.
+*   **pnpm**\
+    A fast, disk-space-efficient package manager we use to install and manage all these libraries.
+
+## 2. Backend Technologies
+
+While BuddyHelp’s mobile app handles the interface, it relies on a server to store and manage data.
+
+*   **Chatwoot Server (Ruby on Rails + Postgres)**\
+    Provides the main API endpoints for user login, conversations, message history, and more. The app sends requests (via axios) to this server to fetch or update information.
+*   **Firebase Cloud Messaging (via @react-native-firebase/app & messaging)**\
+    Powers real-time push notifications. When a volunteer or seeker sends a new message, Firebase notifies the right person instantly.
+
+## 3. Infrastructure and Deployment
+
+These tools help us manage the code, build the app, and deliver it to users reliably.
+
+*   **Git & GitHub**\
+    We track code changes with Git and collaborate using GitHub. This makes teamwork clear and reversible if we ever need to roll back.
+*   **Expo Application Services (EAS)**\
+    Automates building the app for iOS and Android in the cloud. We can also push over-the-air updates, reducing the need for users to download full updates from the app stores.
+*   **CI/CD Pipeline (GitHub Actions)**\
+    Automatically runs tests and builds whenever code is updated. This catches errors early and ensures every release is stable.
+*   **Code Signing & Certificates**\
+    Important for publishing on Apple’s App Store and Google Play Store. Expo and EAS handle most of this behind the scenes.
+
+## 4. Third-Party Integrations
+
+We use these external services to add features without rebuilding them from scratch.
+
+*   **Firebase Cloud Messaging**\
+    For reliable push notifications across both platforms.
+*   **Sentry (**`@sentry/react-native`**)**\
+    Tracks crashes and performance issues in real time. If anything breaks in the wild, we get an alert and can fix it quickly.
+*   **Notifee**\
+    Enhances notification styling and behavior beyond what the device’s default offers.
+*   **FFmpegKit**\
+    Processes audio files for voice notes or any media-related feature directly on the user’s device.
+
+## 5. Security and Performance Considerations
+
+Here’s how we keep the app safe and running smoothly.
+
+Security:
+
+*   All communications with the Chatwoot server happen over HTTPS, ensuring data is encrypted in transit.
+*   User tokens and preferences are stored locally with AsyncStorage but handled carefully (we never store passwords in plain text).
+*   Authentication follows Chatwoot’s secure flow with short-lived tokens and optional token refresh.
+*   Sentry helps us spot unusual crashes that could hint at security or stability issues.
+
+Performance:
+
+*   **Redux Toolkit** reduces unnecessary re-renders, keeping the UI snappy.
+*   **tailwindcss** utility classes compile down to minimal styles, speeding up layout and rendering.
+*   **Expo’s lazy loading** and code splitting only load the code needed for each screen.
+*   **Bottom-sheet component** and **FFmpegKit** run heavy tasks efficiently so the main interface stays responsive.
+*   **pnpm** makes installing and updating dependencies fast and keeps the project lightweight.
+
+## 6. Conclusion and Overall Tech Stack Summary
+
+BuddyHelp brings together well-established tools to deliver a secure, high-performance mobile app for emotional support:
+
+*   Frontend built on **React Native + Expo** for cross-platform reach.
+*   State and navigation managed by **Redux Toolkit** and **React Navigation**.
+*   Styling sped up with **tailwindcss** and rich UI components like **@gorhom/bottom-sheet**.
+*   Persistent storage via **AsyncStorage** and network calls via **axios**.
+*   Real-time messaging and notifications powered by **Chatwoot API** and **Firebase Cloud Messaging**.
+*   Crash reporting and monitoring through **Sentry**, and multimedia handling with **FFmpegKit**.
+*   Reliable builds and deployments handled by **GitHub**, **Expo EAS**, and **CI/CD pipelines**.
+
+These choices make BuddyHelp easy to maintain, quick to update, and reliable for anyone seeking or offering support on the go.

@@ -19,7 +19,7 @@ import {
   SettingsIconFilled,
   SettingsIconOutline,
   CommunityIconFilled,
-  CommunityIconOutline
+  CommunityIconOutline,
 } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';

@@ -44,7 +44,7 @@ const CommunityScreen = () => {
       <WebView
         ref={webviewRef}
         originWhitelist={['*']}
-        source={{ uri: 'https://wps.apps.buddyhelp.org/' }}
+        source={{ uri: 'https://wp.apps.buddyhelp.org/portal/' }}
         startInLoadingState={true}
         javaScriptEnabled={true}
       />

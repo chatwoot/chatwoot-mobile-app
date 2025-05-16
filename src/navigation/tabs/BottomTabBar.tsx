@@ -12,8 +12,6 @@ import { RouteProp } from '@react-navigation/native';
 import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice';
 
 import {
-  ConversationIconFilled,
-  ConversationIconOutline,
   InboxIconFilled,
   InboxIconOutline,
   SettingsIconFilled,
@@ -21,6 +19,7 @@ import {
   CommunityIconFilled,
   CommunityIconOutline,
 } from '@/svg-icons';
+import { ChatIcon } from '@/svg-icons/common/Chat';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';
 
@@ -40,7 +39,21 @@ type TabBarIconsProps = {
 const TabBarIcons = ({ focused, route }: TabBarIconsProps) => {
   switch (route.name) {
     case 'Conversations':
-      return focused ? <ConversationIconFilled /> : <ConversationIconOutline />;
+      return (
+        <Animated.View
+          style={{
+            width: 48,
+            height: 40,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            transform: [{ translateY: -5 }],
+          }}>
+          <Animated.View style={{ width: 30, height: 30 }}>
+            <ChatIcon stroke={focused ? '#171717' : '#858585'} strokeWidth={focused ? 2 : 1.5} />
+          </Animated.View>
+        </Animated.View>
+      );
     case 'Inbox':
       return focused ? <InboxIconFilled /> : <InboxIconOutline />;
     case 'Community':

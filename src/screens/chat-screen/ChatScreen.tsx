@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view';
 import Animated from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LightBoxProvider } from '@alantoa/lightbox';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { ChatHeaderContainer } from './components';
@@ -86,12 +85,7 @@ const ChatScreenWrapper = (props: ChatScreenProps) => {
 
   return (
     <React.Fragment>
-      <ChatHeaderContainer
-        name={name || ''}
-        imageSrc={{
-          uri: thumbnail || '',
-        }}
-      />
+      <ChatHeaderContainer name={name || ''} imageSrc={{ uri: thumbnail || '' }} />
       <ConversationPagerView {...props} />
     </React.Fragment>
   );
@@ -143,11 +137,9 @@ const ChatScreen = (props: ChatScreenProps) => {
   if (conversation) {
     return (
       <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
-        <LightBoxProvider>
-          <ChatWindowProvider conversationId={conversationId}>
-            <ChatScreenWrapper {...props} />
-          </ChatWindowProvider>
-        </LightBoxProvider>
+        <ChatWindowProvider conversationId={conversationId}>
+          <ChatScreenWrapper {...props} />
+        </ChatWindowProvider>
         <ActionBottomSheet />
       </SafeAreaView>
     );

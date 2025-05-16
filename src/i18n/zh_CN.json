@@ -59,14 +59,6 @@
       "AGENT": {
         "SEARCH_AGENT": "搜索客服代表"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "按分配人类型过滤",
-        "OPTIONS": {
-          "ME": "我",
-          "UNASSIGNED": "未分配的",
-          "ALL": "全部"
-        }
-      },
       "INBOX": {
         "TITLE": "按收件箱过滤"
       },
@@ -85,6 +77,14 @@
           "PENDING": "等待中",
           "SNOOZED": "已关闭",
           "RESOLVED": "已解决",
+          "ALL": "全部"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "按分配人类型过滤",
+        "OPTIONS": {
+          "ME": "我",
+          "UNASSIGNED": "未分配的",
           "ALL": "全部"
         }
       }
@@ -446,7 +446,7 @@
   },
   "MACRO": {
     "TITLE": "宏",
-    "SELECT_MACRO": "Select macro",
+    "SELECT_MACRO": "",
     "ACTIONS": {
       "RUN": "Run"
     },

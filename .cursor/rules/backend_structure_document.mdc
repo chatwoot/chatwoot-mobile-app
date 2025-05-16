@@ -1,0 +1,176 @@
+# Backend Structure Document
+
+This document explains how the BuddyHelp backend is set up, hosted, and maintained. It uses everyday language to make everything clear, even if you’re not a backend expert.
+
+## 1. Backend Architecture
+
+**Overall Design**\
+BuddyHelp relies on the Chatwoot server (a Ruby on Rails application) to handle all data storage, business logic, and APIs. Here’s how it’s organized:
+
+*   **Model-View-Controller (MVC) Pattern**\
+    • Models represent data (users, conversations, messages).\
+    • Controllers receive requests (for example, “send a message”) and coordinate responses.\
+    • Views produce JSON responses for the mobile app to consume.
+*   **Service Objects & Active Record**\
+    • Complex operations (like assigning a conversation) live in service classes for clean code.\
+    • Active Record handles database queries, so we write simple Ruby code instead of raw SQL.
+*   **RESTful API**\
+    • The app communicates with endpoints like `/api/v1/conversations` or `/api/v1/messages`.\
+    • Consistent URL patterns make it easy to predict how to fetch or update data.
+*   **Real-Time Messaging**\
+    • Built with ActionCable (Rails’ WebSocket framework).\
+    • Users see new messages instantly without refreshing.
+*   **Background Jobs**\
+    • Sidekiq processes long-running tasks (push notifications, email sends) in the background.\
+    • Redis powers the Sidekiq queue.
+
+**How It Supports Scalability, Maintainability, and Performance**
+
+*   **Scalability:** Multiple Rails instances can run behind a load balancer so we handle more users simply by adding servers.
+*   **Maintainability:** Clear separation of concerns (models, controllers, services) means each piece is easier to update.
+*   **Performance:** Caching frequently used data in Redis and handling heavy tasks asynchronously keeps response times fast.
+
+## 2. Database Management
+
+**Technologies Used**
+
+*   PostgreSQL (relational SQL database)
+*   Redis (in-memory store for caching, job queues)
+
+**How Data Is Structured, Stored, and Accessed**
+
+*   **Primary Data (PostgreSQL):**\
+    User accounts, conversation records, message history, canned responses, and notification settings all live in relational tables.
+*   **Caching & Pub/Sub (Redis):**\
+    We store session data, recent conversation lists, and publish real-time chat updates via Redis.
+*   **Data Management Practices:**\
+    • Schema migrations ensure that database changes happen safely and in order.\
+    • Indexed critical columns (like `conversation_id` on the messages table) to speed up lookups.\
+    • Automated daily backups of PostgreSQL, with point-in-time recovery options.
+
+## 3. Database Schema
+
+Below is a human-readable overview of key tables. You’ll find table names, their main columns, and how they relate to each other. After that, you’ll see the SQL definitions for a PostgreSQL setup.
+
+### Human-Readable Schema
+
+*   **users**\
+    • id (unique user identifier)\
+    • email, encrypted_password, name\
+    • role (support_seeker or volunteer)\
+    • availability_status, language_preference
+*   **conversations**\
+    • id, status (open, pending, resolved)\
+    • support_seeker_id, volunteer_id\
+    • created_at, updated_at
+*   **messages**\
+    • id, conversation_id, sender_id\
+    • content (text), delivered_at, read_at\
+    • message_type (normal, canned_reply)
+*   **internal_notes**\
+    • id, conversation_id, author_id\
+    • note_text, created_at
+*   **canned_responses**\
+    • id, title, body\
+    • creator_id, created_at
+*   **notification_preferences**\
+    • id, user_id\
+    • push_enabled, email_enabled, last_notified_at
+
+### PostgreSQL Schema (SQL)
+
+`CREATE TABLE users ( id SERIAL PRIMARY KEY, email VARCHAR(255) UNIQUE NOT NULL, encrypted_password VARCHAR(255) NOT NULL, name VARCHAR(100), role VARCHAR(50) NOT NULL, availability_status VARCHAR(20) DEFAULT 'offline', language_preference VARCHAR(10) DEFAULT 'en', created_at TIMESTAMP NOT NULL DEFAULT NOW(), updated_at TIMESTAMP NOT NULL DEFAULT NOW() ); CREATE TABLE conversations ( id SERIAL PRIMARY KEY, support_seeker_id INTEGER REFERENCES users(id), volunteer_id INTEGER REFERENCES users(id), status VARCHAR(20) DEFAULT 'open', created_at TIMESTAMP NOT NULL DEFAULT NOW(), updated_at TIMESTAMP NOT NULL DEFAULT NOW() ); CREATE TABLE messages ( id SERIAL PRIMARY KEY, conversation_id INTEGER REFERENCES conversations(id) ON DELETE CASCADE, sender_id INTEGER REFERENCES users(id), content TEXT NOT NULL, message_type VARCHAR(20) DEFAULT 'normal', delivered_at TIMESTAMP, read_at TIMESTAMP, created_at TIMESTAMP NOT NULL DEFAULT NOW() ); CREATE TABLE internal_notes ( id SERIAL PRIMARY KEY, conversation_id INTEGER REFERENCES conversations(id) ON DELETE CASCADE, author_id INTEGER REFERENCES users(id), note_text TEXT NOT NULL, created_at TIMESTAMP NOT NULL DEFAULT NOW() ); CREATE TABLE canned_responses ( id SERIAL PRIMARY KEY, title VARCHAR(100) NOT NULL, body TEXT NOT NULL, creator_id INTEGER REFERENCES users(id), created_at TIMESTAMP NOT NULL DEFAULT NOW() ); CREATE TABLE notification_preferences ( id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id) UNIQUE, push_enabled BOOLEAN DEFAULT TRUE, email_enabled BOOLEAN DEFAULT FALSE, last_notified_at TIMESTAMP );`
+
+## 4. API Design and Endpoints
+
+BuddyHelp’s mobile app talks to the Chatwoot backend via RESTful endpoints. Here are the key ones:
+
+*   **Authentication & Config**\
+    • `POST /api/v1/auth/login` — log in with email and password\
+    • `POST /api/v1/auth/logout` — end the session\
+    • `POST /api/v1/auth/password_reset` — trigger a reset email
+*   **Conversations**\
+    • `GET /api/v1/conversations` — list all chats (with filter options)\
+    • `GET /api/v1/conversations/:id` — fetch a single conversation’s details
+*   **Messages**\
+    • `GET /api/v1/conversations/:id/messages` — load message history\
+    • `POST /api/v1/conversations/:id/messages` — send a new message
+*   **Status & Notes**\
+    • `PATCH /api/v1/conversations/:id/status` — change conversation status\
+    • `POST /api/v1/conversations/:id/notes` — add an internal note
+*   **Canned Responses**\
+    • `GET /api/v1/canned_responses` — list quick-reply templates\
+    • `POST /api/v1/canned_responses` — create a new template
+*   **Preferences & Settings**\
+    • `GET /api/v1/users/:id/preferences` — load notification settings\
+    • `PATCH /api/v1/users/:id/preferences` — update push or email toggles
+
+Each endpoint returns JSON data, making it simple for React Native (via axios) to display or store the results.
+
+## 5. Hosting Solutions
+
+BuddyHelp’s backend (the Chatwoot server) can run on any modern cloud platform. Here’s a common setup on AWS:
+
+*   **Amazon Elastic Container Service (ECS)** or **EKS (Kubernetes)** for running Dockerized Rails servers
+*   **Elastic Load Balancer (ELB)** to spread traffic evenly across server instances
+*   **Amazon RDS (PostgreSQL)** as a managed database service with automated backups
+*   **Amazon ElastiCache (Redis)** for caching and Sidekiq queues
+*   **Amazon S3** for storing any file uploads or media
+
+**Benefits**
+
+*   **Reliability:** Managed services with multi-AZ deployments minimize downtime.
+*   **Scalability:** Auto-scaling can add or remove servers based on demand.
+*   **Cost-Effectiveness:** Pay-as-you-go model means you only pay for what you use.
+
+## 6. Infrastructure Components
+
+These parts work together to keep BuddyHelp fast and responsive:
+
+*   **Load Balancer** (ELB or Nginx) routes user traffic to healthy servers.
+*   **Application Servers** run Rails processes to handle API requests.
+*   **Redis Cache & Job Queue** speeds up repeated queries and offloads background work with Sidekiq.
+*   **WebSocket Service** (ActionCable) pushes real-time messages to connected clients.
+*   **CDN** (Amazon CloudFront or Cloudflare) caches static assets and speeds up file delivery worldwide.
+*   **Object Storage** (S3) holds attachments and media.
+*   **CI/CD Pipeline** (GitHub Actions + Docker + AWS) automates testing and deployments.
+
+## 7. Security Measures
+
+We follow industry best practices to keep user data safe and private:
+
+*   **Transport Security:** All API calls go over HTTPS (TLS 1.2 or above).
+*   **Authentication & Tokens:** Short-lived session tokens, securely stored on the device (no passwords in storage).
+*   **Authorization:** Role-based access ensures only volunteers can see internal notes.
+*   **Data Encryption at Rest:** PostgreSQL volumes and S3 buckets are encrypted.
+*   **Network Security:** Security groups (AWS) or firewalls restrict traffic to required ports.
+*   **Vulnerability Monitoring:** Regular dependency audits and Sentry for runtime error detection.
+*   **Compliance:** GDPR-friendly data removal processes (users can request data deletion).
+
+## 8. Monitoring and Maintenance
+
+To keep the backend healthy and catch issues early, we use:
+
+*   **Logging & Metrics:**\
+    • AWS CloudWatch or ELK Stack (Elasticsearch/Logstash/Kibana) collects logs and performance metrics.\
+    • Prometheus + Grafana dashboards for real-time system insights.
+*   **Error Tracking:**\
+    • Sentry alerts on uncaught exceptions or spikes in error rates.
+*   **Health Checks & Alerts:**\
+    • Automated pings to API endpoints.\
+    • PagerDuty or Slack notifications if a service goes down.
+*   **Backups & Updates:**\
+    • Nightly database snapshots with point-in-time recovery.\
+    • Scheduled OS and dependency patching.\
+    • Rolling deployments to minimize downtime.
+
+## 9. Conclusion and Overall Backend Summary
+
+BuddyHelp’s backend is built on the proven Chatwoot platform, enhanced with Rails best practices, Redis caching, and real-time messaging via ActionCable. By hosting on a modern cloud setup (AWS, Docker, managed services), we achieve:
+
+*   **High Reliability:** Automatic failover and backups keep services running.
+*   **Smooth Performance:** Caching, background jobs, and load balancing ensure fast responses and real-time updates.
+*   **Easy Maintenance:** Clear code structure (MVC, service objects), CI/CD pipelines, and monitoring tools catch issues before they affect users.
+*   **Strong Security:** Encryption, secure tokens, network controls, and compliance practices protect user privacy.
+
+This architecture scales seamlessly as BuddyHelp grows, supports day-to-day operations, and aligns perfectly with our goal of providing a safe, responsive platform for emotional support.

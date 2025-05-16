@@ -1,0 +1,190 @@
+---
+description: Apply these rules when creating the project
+globs:
+alwaysApply: true
+---
+## Project Overview
+
+*   **Type:** cursor_project_rules
+*   **Description:** BuddyHelp is a React Native and Expo–based mobile application forked from Chatwoot, designed to connect individuals in emotional distress with volunteer listeners.
+*   **Primary Goal:** Offer a simple, private, on-the-go support network for anyone in need of emotional support.
+
+## Project Structure
+
+### Framework-Specific Routing
+
+*   **Directory Rules:**
+
+    *   React Navigation v6:
+
+        *   `src/navigation/`: Define navigators using `createNativeStackNavigator` and `createBottomTabNavigator`.
+        *   `src/screens/`: One file per screen component (e.g., `LoginScreen.tsx`, `ConversationScreen.tsx`).
+        *   `src/navigation/AuthNavigator.tsx`: Authentication flow (ConfigureURL, Login, ResetPassword).
+        *   `src/navigation/AppNavigator.tsx`: Main Tab Navigator (`Conversations`, `Settings`).
+
+### Core Directories
+
+*   **Versioned Structure:**
+
+    *   `src/screens`: React Native v0.72 screen components following React Hooks conventions.
+    *   `src/components`: Shared UI components (buttons, headers, message bubbles).
+    *   `src/navigation`: Navigation definitions using React Navigation v6.
+    *   `src/store`: Redux Toolkit v1.9 slices and store configuration.
+    *   `src/utils`: Helper functions and API wrappers (axios v1.x).
+    *   `assets`: Static assets (images, localization files).
+
+### Key Files
+
+*   **Stack-Versioned Patterns:**
+
+    *   `App.tsx`: Expo v48 entry point with `registerRootComponent`.
+    *   `babel.config.js`: Expo-managed workflow with TailwindCSS integration.
+    *   `src/navigation/AppNavigator.tsx`: Root navigator using React Navigation v6.
+    *   `src/store/index.ts`: Redux Toolkit store setup with slices.
+    *   `eas.json`: Expo EAS build configuration.
+
+## Tech Stack Rules
+
+*   **Version Enforcement:**
+
+    *   React Native@0.72: Use functional components and React Hooks only.
+    *   Expo@48: Managed workflow; rely on EAS for builds and OTA updates.
+    *   Redux Toolkit@1.9: Use `createSlice` and `createAsyncThunk` for all state and side effects.
+    *   React Navigation@6.6: All navigation via `createNativeStackNavigator` or `createBottomTabNavigator`.
+    *   <axios@1.x>: Centralize API calls in `src/utils/api.ts` with interceptors for auth tokens.
+    *   i18n-js@4.0: Store translations under `assets/locales/{lang}.json` and load via context.
+    *   @gorhom/bottom-sheet@5: Lazy-load bottom sheet components; offload heavy work from JS thread.
+    *   @react-native-async-storage/async-storage@1.17: Wrap in custom `storageService` with fallbacks.
+    *   @react-native-firebase/app & messaging@latest: Initialize in `App.tsx` and handle background messages in `firebaseMessaging.ts`.
+    *   @sentry/react-native@7.x: Initialize before any other imports; set up performance monitoring.
+    *   tailwindcss@3: Integrate via `tailwind-react-native-classnames`; forbid inline styles.
+    *   pnpm@8: Use `pnpm` for all dependency management; lockfile must be checked into Git.
+    *   Notifee@4: Configure notification channels on app startup.
+    *   FFmpegKit@5: Import only required modules; prefer slim builds to control binary size.
+
+## PRD Compliance
+
+*   "All API calls over HTTPS (TLS 1.2+)": Enforce axios defaults to `https://` and reject insecure requests.
+*   "Cold app start < 3 s on mid-range devices": Measure startup time in CI and fail if > 3 s.
+
+## App Flow Integration
+
+*   **Stack-Aligned Flow:**
+
+    *   React Navigation v6 Auth Flow → `src/navigation/AuthNavigator.tsx` defines `ConfigureURL`, `Login`, `ResetPassword` screens using native stack.
+    *   React Navigation v6 Main Flow → `src/navigation/AppNavigator.tsx` sets up bottom tabs for `ConversationScreen` and `SettingsScreen`.
+
+## Best Practices
+
+*   React Native
+
+    *   Use functional components and Hooks exclusively.
+    *   Optimize lists with `FlatList` and windowing props.
+    *   Avoid anonymous functions in JSX props.
+
+*   Expo
+
+    *   Use EAS for builds and over-the-air updates.
+    *   Keep `app.json` and `eas.json` in sync.
+    *   Test OTA updates in staging channel.
+
+*   Redux Toolkit
+
+    *   Co-locate actions and reducers in `createSlice`.
+    *   Use `createAsyncThunk` for all async logic.
+    *   Leverage `RTK Query` for API caching when feasible.
+
+*   React Navigation
+
+    *   Define navigators in separate files.
+    *   Strongly type route params with TypeScript.
+    *   Reset stack on logout using `CommonActions.reset`.
+
+*   axios
+
+    *   Centralize base URL and headers in `api.ts`.
+    *   Use interceptors for auth token management.
+    *   Standardize error handling and retries.
+
+*   i18n-js
+
+    *   Store locale files under `assets/locales`.
+    *   Load translations via context/provider.
+    *   Lazy-load heavy translation bundles.
+
+*   @gorhom/bottom-sheet
+
+    *   Lazy-load bottom sheet screens.
+    *   Avoid rendering heavy content in sheet’s initial render.
+    *   Use `snapPoints` arrays with percentages.
+
+*   @react-native-async-storage/async-storage
+
+    *   Wrap calls in try/catch.
+    *   Batch reads with `multiGet`.
+    *   Encrypt sensitive data if required.
+
+*   @react-native-firebase/app & messaging
+
+    *   Request permissions on app launch.
+    *   Handle background messages in native module.
+    *   Log token refresh events.
+
+*   @sentry/react-native
+
+    *   Initialize at the very top of `App.tsx`.
+    *   Annotate transactions in performance-critical flows.
+    *   Scrub PII in beforeSend hook.
+
+*   tailwindcss
+
+    *   Use classnames, not inline styles.
+    *   Define custom colors in `tailwind.config.js`.
+    *   Purge unused styles in production.
+
+*   pnpm
+
+    *   Commit `pnpm-lock.yaml`.
+    *   Use `pnpm dlx` for one-off scripts.
+    *   Enforce consistent workspace layouts.
+
+*   Notifee
+
+    *   Initialize channels on first app load.
+    *   Handle user notification settings.
+    *   Test on both iOS and Android real devices.
+
+*   FFmpegKit
+
+    *   Import only required modules.
+    *   Offload processes to background threads.
+    *   Clean up temp files after use.
+
+## Rules
+
+*   Derive folder/file patterns **directly** from techStackDoc versions.
+*   If using React Navigation v6: Enforce `src/navigation/` for all navigators and `src/screens/` for screens.
+*   Mirror routing logic: no mixed navigator definitions in screen files.
+*   Never mix routing patterns (e.g., do not define navigators inside `src/components`).
+
+## Rules Metrics
+
+Before starting the project development, create a metrics file in the root of the project called
+
+`cursor_metrics.md`.
+
+### Instructions:
+
+*   Each time a cursor rule is used as context, update `cursor_metrics.md`.
+*   Use the following format for `cursor_metrics.md:`
+
+# Rules Metrics
+
+## Usage
+
+The number of times rules is used as context
+
+*   react-navigation.md: 0
+*   redux-toolkit.md: 0
+*   axios.md: 0
+*   ...other rules

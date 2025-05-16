@@ -19,10 +19,11 @@ import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 
-import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stack';
+import { AuthStack, ConversationStack, SettingsStack, InboxStack, CommunityStack } from '../stack';
 import ChatScreen from '@/screens/chat-screen/ChatScreen';
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
+import CommunityScreen from '@/screens/community/CommunityScreen';
 
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { BottomTabBar } from './BottomTabBar';
@@ -45,6 +46,7 @@ export type TabParamList = {
   Conversations: undefined;
   Inbox: undefined;
   Settings: undefined;
+  Community: undefined;
   Login: undefined;
   ConfigInstallationURL: undefined;
   ForgotPassword: undefined;
@@ -58,6 +60,7 @@ export type TabBarExcludedScreenParamList = {
   ContactDetails: { conversationId: number };
   ConversationActions: undefined;
   Dashboard: { url: string };
+  Community: undefined;
   Login: undefined;
   SearchScreen: undefined;
   ImageScreen: undefined;
@@ -165,6 +168,7 @@ const Tabs = () => {
         <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
       )}
 
+      <Tab.Screen name="Community" component={CommunityStack} options={{ headerShown: false }} />
       <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
     </Tab.Navigator>
   );
@@ -197,6 +201,14 @@ export const AppTabs = () => {
           }}
           name="Dashboard"
           component={DashboardScreen}
+        />
+        <Stack.Screen
+          options={{
+            presentation: 'formSheet',
+            animation: 'slide_from_bottom',
+          }}
+          name="Community"
+          component={CommunityScreen}
         />
       </Stack.Navigator>
     );

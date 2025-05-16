@@ -1,0 +1,154 @@
+# Frontend Guidelines for BuddyHelp Mobile App
+
+This document outlines how we build and maintain the BuddyHelp mobile app’s frontend. It’s written in everyday language to make sure everyone—from designers to new developers—understands our setup.
+
+## 1. Frontend Architecture
+
+### Overview
+
+*   **Framework:** React Native (JavaScript) lets us write one codebase for both iOS and Android.
+*   **Runtime & Tooling:** Expo (managed workflow) simplifies project setup, over-the-air updates, and building for stores.
+*   **Core Libraries:**\
+    • Redux Toolkit for state management\
+    • React Navigation for screen routing\
+    • axios for HTTP calls\
+    • i18n-js for language support
+*   **UI Components:**\
+    • tailwindcss (via tailwind-react-native-classnames) for styling\
+    • @gorhom/bottom-sheet for slide-up panels
+
+### Scalability, Maintainability, Performance
+
+*   **Modular Code:** Features live in self-contained folders (screens, components, hooks). This makes it easy to add or remove parts without breaking others.
+*   **Predictable State:** Redux slices keep data handling consistent. New team members can find and update state logic quickly.
+*   **Optimized Builds:** Expo’s code splitting and lazy loading load only what’s needed per screen, reducing startup time.
+
+## 2. Design Principles
+
+### Key Principles
+
+1.  **Usability** – Clear labels, intuitive flows, and large touch targets.
+2.  **Accessibility** – Proper color contrast, dynamic font sizes, and screen-reader support.
+3.  **Responsiveness** – Layouts adapt to different screen sizes and orientations.
+
+### Applying Them
+
+*   **Buttons & Inputs:** At least 44×44 px touch areas.
+*   **Color Contrast:** Text and background combinations meet WCAG AA standards.
+*   **Dynamic Text:** Use React Native’s `Text` with percentage-based scaling or accessibility fonts.
+*   **Navigation Feedback:** Visual and haptic cues for presses and screen changes.
+
+## 3. Styling and Theming
+
+### Styling Approach
+
+*   **Utility-First with Tailwind CSS:** We use tailwind classes (`bg-primary`, `p-4`, `flex-row`) to style components without writing custom CSS files.
+*   **Pre-processing:** No separate SASS; Tailwind’s JIT compiler builds only the classes we use.
+
+### Theming & Consistency
+
+*   **Central Theme File:** Defines color palette, spacing, and font sizes. All tailwind tokens reference these values.
+*   **Light / Dark Mode (Future):** We can swap theme tokens based on user preference or system settings.
+
+### Visual Style
+
+*   **Overall Look:** Modern flat design—clean, minimal, and functional.
+*   **UI Elements:** Subtle shadows on cards, smooth bottom-sheet interactions, and simple iconography.
+
+### Color Palette
+
+*   Primary: #4F46E5 (Indigo)
+*   Secondary: #10B981 (Emerald)
+*   Accent: #F59E0B (Amber)
+*   Background Light: #F9FAFB
+*   Background Dark (when implemented): #111827
+*   Text Primary: #1F2937
+*   Text Secondary: #6B7280
+*   Error: #DC2626
+
+### Font
+
+*   **Font Family:** Inter (system-fallback) for clean readability.
+*   **Weights:** 400 (Regular), 600 (Semi-Bold), 700 (Bold).
+
+## 4. Component Structure
+
+### Organization
+
+*   `/components` – Reusable pieces (buttons, headers, message bubbles).
+*   `/screens` – Full screen layouts (Login, Conversations, Chat, Settings).
+*   `/features` – Redux slices, hooks, and APIs grouped by domain (auth, chat, notifications).
+
+### Reuse and Maintainability
+
+*   **Single Responsibility:** Each component does one thing—easy to test and update.
+*   **Prop-Driven:** Components receive data and callbacks via props; they don’t reach into global state directly.
+*   **Storybook (Future):** Document components in isolation for design review and testing.
+
+## 5. State Management
+
+### Approach
+
+*   **Redux Toolkit:** Simplifies store setup, action creation, and reducers.
+*   **Slices:** Each feature (auth, conversations, messages, settings) has its own slice.
+
+### Sharing State
+
+*   **Selectors:** Encapsulate logic for reading state so components stay simple.
+*   **Thunks:** Handle async operations (login, fetch messages) with clear loading/error statuses.
+*   **Local Persistence:** We use `@react-native-async-storage/async-storage` to store tokens and recent conversations for offline reads.
+
+## 6. Routing and Navigation
+
+### Library
+
+*   **React Navigation:** We use a combination of tab and stack navigators.
+
+### Structure
+
+1.  **Auth Stack:**\
+    • ConfigureURLScreen → LoginScreen → (on success) Main Tabs
+2.  **Main Tabs:**\
+    • Conversations Tab (ConversationListScreen, ChatScreen)\
+    • Settings Tab (SettingsScreen)
+
+### Deep Linking and URL Schemes
+
+*   Configured to handle password-reset links and external invites in the future.
+
+## 7. Performance Optimization
+
+### Strategies
+
+*   **Lazy Loading:** Screens and heavy components load only when needed.
+*   **FlatList with Windowing:** Conversation lists use `FlatList` with `windowSize` and `initialNumToRender` tuned for smooth scrolling.
+*   **Memoization:** `React.memo`, `useMemo`, and `useCallback` prevent unnecessary re-renders.
+*   **Asset Optimization:** Images and icons optimized for mobile (WebP, SVG when possible).
+*   **Bundle Size:**\
+    • Tailwind JIT ensures only used styles ship.\
+    • Consider slim FFmpegKit builds to reduce binary weight.
+
+## 8. Testing and Quality Assurance
+
+### Testing Levels
+
+*   **Unit Tests:** Jest + React Native Testing Library for components, utility functions, and Redux slices.
+*   **Integration Tests:** Combine screens and components to verify flows (e.g., login → fetch conversations).
+*   **End-to-End Tests:** Detox or Cypress for real device/emulator scenarios (sending a message, receiving a notification).
+
+### Tools & Processes
+
+*   **CI Pipeline:** GitHub Actions runs all tests on every PR.
+*   **Code Coverage:** Enforce minimum coverage thresholds for critical modules.
+*   **Linting & Formatting:** ESLint (with React Native plugin) and Prettier ensure code consistency.
+*   **Manual QA:** A test plan for major releases covering authentication, chat reliability, notification delivery, and settings.
+
+## 9. Conclusion and Overall Frontend Summary
+
+Our BuddyHelp frontend is built for clarity, performance, and empathy—matching the app’s mission of emotional support. By using React Native + Expo, strict design principles, utility-first styling, and a robust state/navigation setup, we ensure the app:
+
+*   Loads quickly and runs smoothly on a variety of devices.
+*   Remains easy to extend, maintain, and test as we add new features.
+*   Delivers a consistent, accessible, and friendly user experience.
+
+With these guidelines, any team member can jump in—whether tweaking a button’s look, adding a new chat feature, or fixing a bug—confident in the app’s architecture and style. Welcome to BuddyHelp’s frontend world!

@@ -16,8 +16,7 @@
       "ios": {
         "resourceClass": "m-medium",
         "buildConfiguration": "Release",
-        "credentialsSource": "remote",
-        "appleTeamId": "Y78RG62PSG"
+        "credentialsSource": "remote"
       },
       "android": {
         "buildType": "apk",

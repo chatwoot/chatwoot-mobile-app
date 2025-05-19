@@ -89,44 +89,53 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
       style={tailwind.style('flex-1 gap-1 py-3 border-b-[1px] border-b-blackA-A3')}>
       <AnimatedNativeView
         style={tailwind.style('flex flex-row justify-between items-center h-[24px]')}>
-        <AnimatedNativeView style={tailwind.style('flex flex-row items-center h-[24px] gap-[5px]')}>
-          <Text
-            numberOfLines={1}
-            style={tailwind.style(
-              'text-base font-inter-medium-24 tracking-[0.24px] text-gray-950 capitalize',
-              // Calculated based on the widths of other content,
-              // We might have to do a 10-20px offset based on the max width of the timestamp
-              `max-w-[${width - 250}px]`,
-            )}>
-            {senderName}
-          </Text>
-          <ConversationId id={conversationId} />
-        </AnimatedNativeView>
-        <AnimatedNativeView style={tailwind.style('flex flex-row items-center gap-2')}>
-          {hasPriority ? <PriorityIndicator {...{ priority }} /> : null}
-          {inbox && <ChannelIndicator inbox={inbox} additionalAttributes={additionalAttributes} />}
-          <LastActivityTime timestamp={timestamp} />
+        <AnimatedNativeView
+          style={tailwind.style('flex flex-row items-center h-[24px] gap-[5px] flex-1')}>
+          <AnimatedNativeView style={tailwind.style('flex flex-row items-center gap-[5px]')}>
+            <Text
+              numberOfLines={1}
+              style={tailwind.style(
+                'text-base font-inter-medium-24 tracking-[0.24px] text-gray-950 capitalize flex-shrink',
+                // Calculated based on the widths of other content,
+                // We might have to do a 10-20px offset based on the max width of the timestamp
+                `max-w-[${width - 250}px]`,
+              )}>
+              {senderName}
+            </Text>
+            <ConversationId id={conversationId} />
+          </AnimatedNativeView>
+          <AnimatedNativeView
+            style={tailwind.style('flex-1 flex flex-row items-center justify-end gap-[5px]')}>
+            {hasPriority && !hasLabels && !hasSLA && <PriorityIndicator {...{ priority }} />}
+            {inbox && (
+              <ChannelIndicator
+                inbox={inbox}
+                additionalAttributes={additionalAttributes}
+                style={tailwind.style('min-w-0')}
+              />
+            )}
+            {inbox && <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />}
+            <LastActivityTime timestamp={timestamp} />
+          </AnimatedNativeView>
         </AnimatedNativeView>
       </AnimatedNativeView>
       {hasLabels || hasSLA ? (
         <AnimatedNativeView style={tailwind.style('flex flex-col items-center gap-1')}>
           <AnimatedNativeView
-            style={tailwind.style('flex flex-row w-full justify-between items-center gap-2')}>
+            style={tailwind.style('flex flex-row h-5 w-full justify-between items-center gap-2')}>
             {typingText ? (
               <TypingMessage typingText={typingText} />
             ) : (
               <ConversationLastMessage numberOfLines={1} lastMessage={lastMessage as Message} />
             )}
 
-            {unreadCount >= 1 && (
-              <NativeView style={tailwind.style('flex-shrink-0')}>
-                <UnreadIndicator count={unreadCount} />
-              </NativeView>
-            )}
+            {unreadCount >= 1 && <UnreadIndicator count={unreadCount} />}
           </AnimatedNativeView>
           <AnimatedNativeView
             style={tailwind.style('flex flex-row h-6 justify-between items-center gap-2')}>
-            <AnimatedNativeView style={tailwind.style('flex flex-row flex-1 gap-2 items-center')}>
+            <AnimatedNativeView style={tailwind.style('flex flex-row flex-1 gap-2.5 items-center')}>
+              {hasPriority ? <PriorityIndicator {...{ priority }} /> : null}
+              {hasPriority && <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />}
               {hasSLA && (
                 <SLAIndicator
                   slaPolicyId={slaPolicyId}
@@ -145,17 +154,16 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
                 <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />
               )}
               {hasLabels && <LabelIndicator labels={labels} allLabels={allLabels} />}
+              {assignee ? (
+                <AnimatedNativeView>
+                  <Avatar
+                    size="sm"
+                    name={assignee.name as string}
+                    src={{ uri: assignee.thumbnail } as ImageURISource}
+                  />
+                </AnimatedNativeView>
+              ) : null}
             </AnimatedNativeView>
-
-            {assignee ? (
-              <AnimatedNativeView>
-                <Avatar
-                  size="sm"
-                  name={assignee.name as string}
-                  src={{ uri: assignee.thumbnail } as ImageURISource}
-                />
-              </AnimatedNativeView>
-            ) : null}
           </AnimatedNativeView>
         </AnimatedNativeView>
       ) : (
@@ -167,6 +175,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           )}
 
           <AnimatedNativeView style={tailwind.style('flex flex-row items-end gap-1')}>
+            {unreadCount >= 1 && <UnreadIndicator count={unreadCount} />}
             {assignee ? (
               <NativeView style={tailwind.style(unreadCount >= 1 ? 'pr-1' : '')}>
                 <Avatar
@@ -176,8 +185,6 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
                 />
               </NativeView>
             ) : null}
-
-            {unreadCount >= 1 && <UnreadIndicator count={unreadCount} />}
           </AnimatedNativeView>
         </AnimatedNativeView>
       )}

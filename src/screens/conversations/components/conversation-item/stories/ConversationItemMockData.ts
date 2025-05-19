@@ -17,6 +17,7 @@ export const conversation = {
     phoneNumber: '+1234567890',
     medium: 'web',
   },
+  priority: 'medium',
   lastMessage: {
     id: 2346,
     content:

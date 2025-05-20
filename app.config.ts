@@ -29,8 +29,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         UIBackgroundModes: ['fetch', 'remote-notification'],
         ITSAppUsesNonExemptEncryption: false, //todo: look if this is needed
       },
-      // Using Google Services file in project root
-      googleServicesFile: './GoogleService-Info.plist',
+      // Please use the relative path to the google-services.json file
+      googleServicesFile: process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE,
       entitlements: {
         'aps-environment': 'production',
       },
@@ -49,8 +49,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         'android.permission.RECORD_AUDIO',
         'android.permission.READ_MEDIA_IMAGES',
       ],
-      // Use google-services.json in project root
-      googleServicesFile: './google-services.json',
+      // Please use the relative path to the google-services.json file
+      googleServicesFile: process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE,
       intentFilters: [
         {
           action: 'VIEW',
@@ -88,7 +88,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           url: process.env.EXPO_PUBLIC_SENTRY_URL, // TODO:add literal url
           project: 'BuddyHelp',
           organization: 'BuddyHelp',
-
         },
       ],
       '@react-native-firebase/app',
@@ -115,10 +114,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       backgroundColor: '#ffffff',
     },
     updates: {
-      url: 'https://u.expo.dev/effc2cf0-e2a3-4e8f-8ff1-ed9ef0e876ca'
+      url: 'https://u.expo.dev/effc2cf0-e2a3-4e8f-8ff1-ed9ef0e876ca',
     },
     runtimeVersion: {
-      policy: 'appVersion'
-    }
+      policy: 'appVersion',
+    },
   };
 };

@@ -1,6 +1,6 @@
 ---
 description: Apply these rules when creating the project
-globs:
+globs: 
 alwaysApply: true
 ---
 ## Project Overview
@@ -162,10 +162,13 @@ alwaysApply: true
 
 ## Rules
 
+*   When an error implies that a file doesn't exist, always check if that is truly the case
 *   Derive folder/file patterns **directly** from techStackDoc versions.
 *   If using React Navigation v6: Enforce `src/navigation/` for all navigators and `src/screens/` for screens.
 *   Mirror routing logic: no mixed navigator definitions in screen files.
 *   Never mix routing patterns (e.g., do not define navigators inside `src/components`).
+*   STRICTLY PROHIBITED: Making any unnecessary changes to the codebase that don't directly address the task at hand.
+*   When making any change that might appear unnecessary, provide a clear explanation justifying why the change is required.
 
 ## Rules Metrics
 

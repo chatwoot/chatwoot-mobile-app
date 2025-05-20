@@ -5813,8 +5813,8 @@ packages:
     engines: {node: '>=14.6'}
     dev: true
 
-  /@zip.js/zip.js@2.7.61:
-    resolution: {integrity: sha512-+tZvY10nkW0pJoU88XFWLBd2O9PJPvEnDhSY/jQHfIroN5W5qGfPgFHKC4lkx0+9Vw/0IAkNHf1XBVInBkM9Vw==}
+  /@zip.js/zip.js@2.7.62:
+    resolution: {integrity: sha512-OaLvZ8j4gCkLn048ypkZu29KX30r8/OfFF2w4Jo5WXFr+J04J+lzJ5TKZBVgFXhlvSkqNFQdfnY1Q8TMTCyBVA==}
     engines: {bun: '>=0.7.0', deno: '>=1.0.0', node: '>=16.5.0'}
     dev: true
 
@@ -7990,7 +7990,7 @@ packages:
     requiresBuild: true
     dependencies:
       '@wdio/logger': 8.38.0
-      '@zip.js/zip.js': 2.7.61
+      '@zip.js/zip.js': 2.7.62
       decamelize: 6.0.0
       edge-paths: 3.0.5
       fast-xml-parser: 4.5.3

@@ -29,8 +29,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         UIBackgroundModes: ['fetch', 'remote-notification'],
         ITSAppUsesNonExemptEncryption: false, //todo: look if this is needed
       },
-      // Please use the relative path to the google-services.json file
-      googleServicesFile: process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE,
+      // Use secret environment variable for Google Services file
+      googleServicesFile: process.env.IOS_GOOGLE_SERVICES_FILE ?? './GoogleService-Info.plist',
       entitlements: {
         'aps-environment': 'production',
       },
@@ -49,8 +49,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         'android.permission.RECORD_AUDIO',
         'android.permission.READ_MEDIA_IMAGES',
       ],
-      // Please use the relative path to the google-services.json file
-      googleServicesFile: process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE,
+      // Use secret environment variable for Google Services file
+      googleServicesFile: process.env.ANDROID_GOOGLE_SERVICES_FILE ?? './google-services.json',
       intentFilters: [
         {
           action: 'VIEW',

@@ -4,15 +4,15 @@
     "appVersionSource": "remote"
   },
   "build": {
-    "development": {
+    "preview": {
       "developmentClient": true,
       "distribution": "internal",
-      "channel": "development",
+      "channel": "preview",
       "env": {
         "SENTRY_DISABLE_AUTO_UPLOAD": "true"
       }
     },
-    "preview": {
+    "development": {
       "distribution": "internal",
       "autoIncrement": true,
       "channel": "staging",
@@ -37,7 +37,6 @@
       },
       "ios": {
         "credentialsSource": "remote",
-        "enterpriseProvisioning": "adhoc",
         "buildConfiguration": "Release",
         "distribution": "store",
         "resourceClass": "m-medium"
@@ -49,7 +48,7 @@
     }
   },
   "submit": {
-    "preview": {
+    "development": {
       "ios": {
         "ascAppId": "6742459134"
       },

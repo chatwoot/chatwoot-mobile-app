@@ -37,6 +37,8 @@ yarn-error.*
 ios/
 android/
 
+# Removed google-services.json and GoogleService-Info.plist from gitignore
+# These files need to be tracked for EAS builds to work properly
 google-services.json
 GoogleService-Info.plist
 .env

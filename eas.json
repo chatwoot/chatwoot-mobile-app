@@ -13,7 +13,7 @@
       }
     },
     "development": {
-      "distribution": "internal",
+      "distribution": "store",
       "autoIncrement": true,
       "channel": "staging",
       "env": {
@@ -51,18 +51,6 @@
     "development": {
       "ios": {
         "ascAppId": "6742459134"
-      },
-      "android": {
-        "track": "internal",
-        "releaseStatus": "draft"
-      }
-    },
-    "production": {
-      "ios": {
-        "ascAppId": "6742459134"
-      },
-      "android": {
-        "track": "internal"
       }
     }
   }

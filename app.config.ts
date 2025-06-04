@@ -88,8 +88,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           url: process.env.EXPO_PUBLIC_SENTRY_URL, // TODO:add literal url
           project: 'BuddyHelp',
           organization: 'BuddyHelp',
-          autoUpload: false,  // Disable auto uploading
-          disableAutoUpload: true  // Alternative way to disable auto uploading
+          autoUpload: false, // Disable auto uploading
+          disableAutoUpload: true, // Alternative way to disable auto uploading
         },
       ],
       '@react-native-firebase/app',
@@ -110,7 +110,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           },
         },
       ],
-      './with-ffmpeg-pod',
+      // TODO: Re-enable FFmpeg when Android dependency issue is resolved
+      // './with-ffmpeg-pod',
     ],
     androidNavigationBar: {
       backgroundColor: '#ffffff',

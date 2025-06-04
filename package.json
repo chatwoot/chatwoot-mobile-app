@@ -17,7 +17,7 @@
     "generate": "npx expo prebuild --clean",
     "generate:soft": "npx expo prebuild",
     "run:ios": "npx expo run:ios",
-    "run:android": "npx expo run:android -d",
+    "run:android": "npx expo run:android --device Medium_Phone_API_35",
     "build:android:local": "eas build -p android --profile production --local",
     "build:android": "eas build -p android --profile production",
     "build:ios:local": "eas build -p ios --profile preview --local --non-interactive",
@@ -90,7 +90,6 @@
     "expo-system-ui": "~4.0.9",
     "expo-updates": "~0.27.4",
     "expo-web-browser": "~14.0.2",
-    "ffmpeg-kit-react-native": "6.0.2",
     "i18n-js": "^3.8.0",
     "lodash": "^4.17.21",
     "react": "18.3.1",
@@ -178,7 +177,6 @@
           "redux-persist",
           "rn-fetch-blob",
           "@alantoa/lightbox",
-          "ffmpeg-kit-react-native",
           "@chatwoot/markdown-to-txt",
           "@chatwoot/react-native-widget",
           "@chatwoot/utils",
@@ -200,8 +198,5 @@
     }
   },
   "pnpm": {
-    "patchedDependencies": {
-      "ffmpeg-kit-react-native@6.0.2": "patches/ffmpeg-kit-react-native.patch"
-    }
   }
 }

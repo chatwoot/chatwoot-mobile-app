@@ -1,5 +1,5 @@
 import RNFS from 'react-native-fs';
-import { FFmpegKit } from 'ffmpeg-kit-react-native';
+// import { FFmpegKit } from 'ffmpeg-kit-react-native';
 import * as Sentry from '@sentry/react-native';
 
 export const convertOggToWav = async (oggUrl: string): Promise<string | Error> => {
@@ -30,9 +30,9 @@ export const convertOggToWav = async (oggUrl: string): Promise<string | Error> =
     }
 
     // Convert OGG to WAV using ffmpeg
-    await FFmpegKit.execute(
-      `-i "${tempOggPath}" -vn -y -ar 44100 -ac 2 -c:a pcm_s16le "${outputPath}"`,
-    );
+    // await FFmpegKit.execute(
+    //   `-i "${tempOggPath}" -vn -y -ar 44100 -ac 2 -c:a pcm_s16le "${outputPath}"`,
+    // );
 
     // Clean up the temporary OGG file
     if (await RNFS.exists(tempOggPath)) {
@@ -57,9 +57,9 @@ export const convertAacToWav = async (inputPath: string): Promise<string> => {
     const fileName = `converted_${Date.now()}.wav`;
     const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
 
-    await FFmpegKit.execute(
-      `-i "${inputPath}" -vn -y -ar 44100 -ac 2 -c:a pcm_s16le "${outputPath}"`,
-    );
+    // await FFmpegKit.execute(
+    //   `-i "${inputPath}" -vn -y -ar 44100 -ac 2 -c:a pcm_s16le "${outputPath}"`,
+    // );
 
     const outputExists = await RNFS.exists(outputPath);
     if (!outputExists) {

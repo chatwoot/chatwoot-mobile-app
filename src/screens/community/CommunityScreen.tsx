@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { WebView } from 'react-native-webview';
@@ -10,7 +10,6 @@ import { tailwind } from '@/theme';
 
 const CommunityScreen = () => {
   const navigation = useNavigation();
-  const webviewRef = useRef<WebView>(null);
 
   const handleBackPress = () => {
     navigation.dispatch(StackActions.pop());
@@ -42,7 +41,6 @@ const CommunityScreen = () => {
         </Pressable>
       </Animated.View>
       <WebView
-        ref={webviewRef}
         originWhitelist={['*']}
         source={{ uri: 'https://wp.apps.buddyhelp.org/portal/' }}
         startInLoadingState={true}

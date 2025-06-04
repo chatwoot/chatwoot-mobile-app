@@ -18,6 +18,7 @@
     "generate:soft": "npx expo prebuild",
     "run:ios": "npx expo run:ios",
     "run:android": "npx expo run:android --device Medium_Phone_API_35",
+    "run:android:device": "npx expo run:android",
     "build:android:local": "eas build -p android --profile production --local",
     "build:android": "eas build -p android --profile production",
     "build:ios:local": "eas build -p ios --profile preview --local --non-interactive",

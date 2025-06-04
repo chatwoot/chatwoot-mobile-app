@@ -18,8 +18,9 @@ import {
   SettingsIconOutline,
   CommunityIconFilled,
   CommunityIconOutline,
+  ConversationIconFilled,
+  ConversationIconOutline,
 } from '@/svg-icons';
-import { ChatIcon } from '@/svg-icons/common/Chat';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';
 
@@ -39,21 +40,7 @@ type TabBarIconsProps = {
 const TabBarIcons = ({ focused, route }: TabBarIconsProps) => {
   switch (route.name) {
     case 'Conversations':
-      return (
-        <Animated.View
-          style={{
-            width: 48,
-            height: 40,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            transform: [{ translateY: -5 }],
-          }}>
-          <Animated.View style={{ width: 30, height: 30 }}>
-            <ChatIcon stroke={focused ? '#171717' : '#858585'} strokeWidth={focused ? 2 : 1.5} />
-          </Animated.View>
-        </Animated.View>
-      );
+      return focused ? <ConversationIconFilled /> : <ConversationIconOutline />;
     case 'Inbox':
       return focused ? <InboxIconFilled /> : <InboxIconOutline />;
     case 'Community':
@@ -172,13 +159,13 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
       style={Platform.select({
         ios: [
           tailwind.style(
-            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] pb-8 bg-[#00000009]',
+            'flex flex-row absolute w-full bottom-0 px-4 pt-[11px] pb-8 bg-[#00000009]',
             `h-[${tabBarHeight}px]`,
           ),
         ],
         android: [
           tailwind.style(
-            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] py-[11px] bg-white',
+            'flex flex-row absolute w-full bottom-0 px-4 py-[11px] bg-white',
             `h-[${tabBarHeight}px]`,
           ),
         ],

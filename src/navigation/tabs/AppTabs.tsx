@@ -156,16 +156,16 @@ const Tabs = () => {
   }, []);
 
   return (
-    <Tab.Navigator tabBar={CustomTabBar} initialRouteName="Conversations">
+    <Tab.Navigator tabBar={CustomTabBar} initialRouteName="Inbox">
+      {hasConversationPermission && (
+        <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
+      )}
       {hasConversationPermission && (
         <Tab.Screen
           name="Conversations"
           options={{ headerShown: false }}
           component={ConversationStack}
         />
-      )}
-      {hasConversationPermission && (
-        <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
       )}
 
       <Tab.Screen name="Community" component={CommunityStack} options={{ headerShown: false }} />

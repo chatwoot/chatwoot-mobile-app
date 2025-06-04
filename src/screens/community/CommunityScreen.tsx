@@ -1,5 +1,5 @@
-import React from 'react';
-import { Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { Pressable, ActivityIndicator } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { WebView } from 'react-native-webview';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -10,9 +10,20 @@ import { tailwind } from '@/theme';
 
 const CommunityScreen = () => {
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   const handleBackPress = () => {
     navigation.dispatch(StackActions.pop());
+  };
+
+  const handleLoadEnd = () => {
+    setIsLoading(false);
+  };
+
+  const handleError = () => {
+    setIsLoading(false);
+    setHasError(true);
   };
 
   return (
@@ -40,12 +51,44 @@ const CommunityScreen = () => {
           </Animated.View>
         </Pressable>
       </Animated.View>
-      <WebView
-        originWhitelist={['*']}
-        source={{ uri: 'https://wp.apps.buddyhelp.org/portal/' }}
-        startInLoadingState={true}
-        javaScriptEnabled={true}
-      />
+      {isLoading && (
+        <Animated.View style={tailwind.style('absolute inset-0 justify-center items-center')}>
+          <ActivityIndicator size="large" color="#171717" />
+        </Animated.View>
+      )}
+      {hasError ? (
+        <Animated.View style={tailwind.style('flex-1 justify-center items-center px-4')}>
+          <Animated.Text style={tailwind.style('text-gray-500 text-center mb-4')}>
+            Failed to load community page
+          </Animated.Text>
+          <Pressable
+            onPress={() => {
+              setHasError(false);
+              setIsLoading(true);
+            }}
+            style={tailwind.style('bg-blue-500 px-4 py-2 rounded')}>
+            <Animated.Text style={tailwind.style('text-white')}>Retry</Animated.Text>
+          </Pressable>
+        </Animated.View>
+      ) : (
+        <WebView
+          source={{ uri: 'https://wp.apps.buddyhelp.org/portal/' }}
+          onLoadEnd={handleLoadEnd}
+          onError={handleError}
+          onHttpError={handleError}
+          userAgent="BuddyHelp Mobile App (iOS/Android)"
+          allowsBackForwardNavigationGestures={true}
+          bounces={false}
+          scrollEnabled={true}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
+          startInLoadingState={false}
+          mixedContentMode="compatibility"
+          allowsInlineMediaPlayback={true}
+          mediaPlaybackRequiresUserAction={false}
+          style={tailwind.style('flex-1')}
+        />
+      )}
     </Animated.View>
   );
 };

@@ -24,7 +24,7 @@ const CommunityScreen = () => {
     <Animated.View style={tailwind.style('flex-1 bg-white')}>
       <Animated.View
         style={[
-          tailwind.style('flex-1 overflow-hidden'),
+          tailwind.style('flex-1'),
           {
             marginTop: insets.top,
             marginBottom: insets.bottom,
@@ -58,8 +58,12 @@ const CommunityScreen = () => {
             onHttpError={handleError}
             userAgent="BuddyHelp Mobile App (iOS/Android)"
             allowsBackForwardNavigationGestures={true}
-            bounces={false}
             scrollEnabled={true}
+            bounces={true}
+            showsVerticalScrollIndicator={true}
+            showsHorizontalScrollIndicator={false}
+            automaticallyAdjustContentInsets={true}
+            contentInsetAdjustmentBehavior="automatic"
             javaScriptEnabled={true}
             domStorageEnabled={true}
             startInLoadingState={false}

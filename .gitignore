@@ -52,4 +52,7 @@ appium.log
 emulator.log
 /.idea
 
+# Google Service Account Key for EAS Submit (contains sensitive credentials)
+buddyhelp-app-firebase-adminsdk-fbsvc-3daab4bf2b.json
+
 

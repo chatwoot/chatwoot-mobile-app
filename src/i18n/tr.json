@@ -14,24 +14,24 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Kurulum URL'si",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "Kendi barındırdığınız bir Chatwoot kurulumu kullanıyorsanız, sunucu URL'nizi girin. Aksi takdirde app.chatwoot.com'u kullanın.",
     "URL_ERROR": "Geçerli bir URL girin",
-    "URL_REQUIRED": "URL is required",
+    "URL_REQUIRED": "URL gereklidir",
     "CONNECT": "Bağlan",
     "CHANGE_LANGUAGE": "Dili değiştir",
     "ERROR": "Geçersiz yükleme url'si"
   },
   "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "TITLE": "Hesabınıza giriş yapın",
+    "DESCRIPTION": "{{baseUrl}}'a bağlısınız.",
     "EMAIL": "E-posta",
     "PASSWORD": "Parola",
-    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_REQUIRED": "E-posta gereklidir",
     "EMAIL_ERROR": "Geçerli bir e-posta giriniz",
-    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_REQUIRED": "Şifre gereklidir",
     "PASSWORD_ERROR": "Geçerli bir parola girin",
     "LOGIN": "Oturum aç",
-    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_LOADING": "Giriş yapılıyor...",
     "FORGOT_PASSWORD": "Parolanızı mı unuttunuz?",
     "RESET_HERE": "Buradan sıfırlayın",
     "NO_ACCOUNT": "Hesabın yok mu?",
@@ -48,43 +48,43 @@
     "HEADER_TITLE": "Parola yenile",
     "TITLE": "Parolanızı mı unuttunuz?",
     "SUB_TITLE": "Merak etmeyin! Arkanı kolluyoruz",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "API_SUCCESS": "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi"
   },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "Konuşmalar",
-      "CLEAR_FILTER": "Clear"
+      "CLEAR_FILTER": "Temizle"
     },
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "Temsilci ara"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Atanmamış",
-          "ALL": "Hepsi"
-        }
-      },
       "INBOX": {
-        "TITLE": "Filter by inbox"
+        "TITLE": "Gelen kutusuna göre filtrele"
       },
       "SORT_BY": {
         "TITLE": "Sırala",
         "OPTIONS": {
-          "LATEST": "Latest",
+          "LATEST": "En son",
           "SORT_ON_CREATED_AT": "Oluşturuldu",
           "SORT_ON_PRIORITY": "Öncelik"
         }
       },
       "STATUS": {
-        "TITLE": "Filter by status",
+        "TITLE": "Duruma göre filtrele",
         "OPTIONS": {
           "OPEN": "Açık",
           "PENDING": "Bekliyor",
           "SNOOZED": "Susturuldu",
           "RESOLVED": "Çözüldü",
+          "ALL": "Hepsi"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Atanan türüne göre filtrele",
+        "OPTIONS": {
+          "ME": "Ben",
+          "UNASSIGNED": "Atanmamış",
           "ALL": "Hepsi"
         }
       }
@@ -97,8 +97,8 @@
         "SEARCH_AGENT": "Temsilci ara"
       },
       "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
+        "HEADER_TITLE": "Durum ata",
+        "TITLE": "Duruma göre filtrele",
         "OPTIONS": {
           "OPEN": "Açık",
           "PENDING": "Bekliyor",
@@ -109,7 +109,7 @@
       }
     },
     "DEFAULT_HEADER_TITLE": "Konuşmalar",
-    "UPDATING": "Updating...",
+    "UPDATING": "Güncelleniyor...",
     "MINE": "Benim",
     "UN_ASSIGNED": "Atanmamış",
     "ALL": "Hepsi",
@@ -122,18 +122,18 @@
     "TYPE_MESSAGE": "Mesajınızı yazın",
     "TYPING": "yazıyor...",
     "ALL_CONVERSATION_LOADED": "Tüm görüşmeler yüklendi",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "ASSIGN": "Sohbet ata",
+    "FILE_SIZE_LIMIT": "Dosya 5MB ek sınırını aşıyor",
     "SHARE": "Share conversation",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
-    "ASSIGNED_AGENT": "Assigned agent",
+    "DETAILS": "Detaylar",
+    "LABELS": "Sohbet etiketleri",
+    "ASSIGNED_AGENT": "Atanan ajan",
     "TEAM": "Ekip",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "PRIVATE_MSG_INPUT": "Bu yalnızca Ajanlar için görünür olacak",
     "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
+      "TITLE": "Sohbet alınamıyor",
+      "RETRY": "Tekrar dene",
+      "BACK_TO_HOME": "Ana sayfaya dön",
       "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
     },
     "BOT": "Bot",
@@ -143,29 +143,29 @@
       "BCC": "Gizli Kopya"
     },
     "SELF_ASSIGN": "Bana Ata",
-    "UN_ASSIGN": "Unassign conversation",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "UN_ASSIGN": "Sohbeti atamayı kaldır",
+    "CONVERSATION_NOT_FOUND": "Sohbet alınamadı",
     "MARK_AS_PENDING": "Beklemede olarak işaretle",
     "SNOOZE_UNTIL": "Şu tarihe kadar ertele",
     "SNOOZE_UNTIL_NEXT_REPLY": "Sonraki yanıta kadar",
     "SNOOZE_UNTIL_TOMORROW": "Yarına kadar",
     "SNOOZE_UNTIL_NEXT_WEEK": "Gelecek haftaya kadar",
-    "SNOOZE": "Snooze conversation",
+    "SNOOZE": "Sohbeti ertele",
     "CHANGE_PRIORITY": "Change priority",
     "MESSAGES": "Mesajlar",
-    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_TITLE": "Tanımsız değişkenler",
     "UNDEFINED_VARIABLES_CLOSE": "Kapat",
     "DELETE_MESSAGE_TITLE": "Bu mesajı silmek istediğinizden emin misiniz?",
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "COPY_MESSAGE": "Mesaj panoya kopyalandı",
+    "STORY_NOT_AVAILABLE": "Bu hikaye artık mevcut değil",
     "DELETE_MESSAGE_SUCCESS": "Mesaj başarıyla silindi",
     "NO_CONTENT": "Kullanılabilir içerik yok",
     "ASSIGN_CHANGE": "Atanan kişiyi değiştirildi",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "TEAM_CHANGE": "Sohbet Takımı değişti",
+    "STATUS_CHANGE": "Sohbet Durumu değişti",
+    "PRIORITY_CHANGE": "Sohbet Önceliği değişti",
+    "PARTICIPANT_CHANGE": "Sohbet Katılımcısı değişti",
     "CHANGE_STATUS": "Durumu değiştir",
     "SEARCH_TEAM": "Takım ara",
     "PRIORITY": {
@@ -209,13 +209,13 @@
         "CONTENT": "bir bağlantı paylaştı"
       },
       "contact": {
-        "CONTENT": "Shared a contact"
+        "CONTENT": "Bir ileti paylaşıldı"
       }
     },
     "LONG_PRESS_ACTIONS": {
       "COPY": "Kopyala",
       "REPLY": "Cevapla",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Mesajı sil"
     },
     "EMAIL_HEADER": {
       "FROM": "Kimden",
@@ -223,7 +223,7 @@
       "BCC": "Gizli Kopya",
       "CC": "Kopya",
       "SUBJECT": "Konu",
-      "EXPAND": "Expand email"
+      "EXPAND": "E-postayı genişlet"
     },
     "ACTIONS": {
       "ASSIGNEE": {
@@ -232,21 +232,21 @@
         "EDIT": "Düzenle"
       },
       "TEAM": {
-        "EMPTY": "No team assigned",
+        "EMPTY": "Atanmış takım yok",
         "ASSIGN": "Atama yap"
       },
       "PRIORITY": {
-        "EMPTY": "No priority added",
+        "EMPTY": "Eklenmiş öncelik yok",
         "EDIT": "Düzenle"
       }
     }
   },
   "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "ALL_INBOXES": "Tüm gelen kutuları",
+    "FILTER_BY_ASSIGNEE_TYPE": "Atanan türüne göre filtrele",
+    "FILTER_BY_CONVERSATION_STATUS": "Sohbet durumuna göre filtrele",
     "SORT_BY": "Sırala",
-    "FILTER_BY_INBOX": "Filter by inbox",
+    "FILTER_BY_INBOX": "Gelen kutusuna göre filtrele",
     "HEADER_TITLE": "Görüşme Filtresi",
     "CHOOSE_INBOX": "Gelen Kutusu Seçin",
     "CHOOSE_STATUS": "Görüşme Durumu",
@@ -254,7 +254,7 @@
     "RESOLVED": "Çözüldü",
     "BOT": "Bot",
     "SUBMIT": "Yolla",
-    "PENDING": "Pending",
+    "PENDING": "Beklemede",
     "SNOOZED": "Snoozed"
   },
   "SETTINGS": {

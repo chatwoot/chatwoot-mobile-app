@@ -1,0 +1,395 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Chatwoot Mobile App - Combined Cursor Rules
+
+## Project Overview
+
+Chatwoot Mobile is a mobile app for the Chatwoot platform, built with React Native and Expo.
+
+### Main Features:
+- Ability to view conversations
+- Ability to send messages
+- Follow up on customer conversations on the go
+- Reply easily with canned responses
+- Receive real-time notifications about messages
+- Communicate with other te notes
+- Assign statuses to conversa and Structure
+
+You are an expeScript, React Native, Expo, and Mobile UI development.
+
+### General Principles
+- Write concise, technical TypeScript code with accurate examples
+- Use functional and declarative programming patterns; avoid classes
+- Prefer iteration and modularization over code duplication
+- Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError)
+- Structure files: exported component, subcomponents, helpers, static content, types
+- Component Modularity: Break down components into smaller, reusable pieces. Keep components focused on a single responsibility
+- Follow Expo's official documentation for setting up and configuring your projects: https://docs.expo.dev/
+
+### Naming Conventions
+- Use lowercase with dashes for directories (e.g., components/auth-wizard)
+- Favor named exports for components
+
+### TypeScript Usage
+- Use TypeScript for all code; prefer interfaces over types
+- Avoid enums; use maps instead
+- Use functional components with TypeScript interfaces
+- Use strict mode in TypeScript for better type safety
+
+### Syntax and Formatting
+- Use the "function" keyword for pure functions
+- Avoid unnecessary curly braces in conditionals; use concise syntax for simple statements
+- Use declarative JSX
+- Use Prettier for consistent code formatting
+
+## UI and Styling
+
+- Use the package @https://github.com/jaredh159/tailwind-react-native-classnames for styles
+- Use Expo's built-in components for common UI patterns and layouts
+- Implement responsive design with Flexbox and Expo's useWindowDimensions for screen size adjustments
+- Use styled-components or Tailwind CSS for component styling
+- Implement dark mode support using Expo's useColorScheme
+- Ensure high accessibility (a11y) standards using ARIA roles and native accessibility props
+- Leverage react-native-reanimated and react-native-gesture-handler for performant animations and gestures
+
+## Safe Area Management
+- Use SafeAreaProvider from react-native-safe-area-context to manage safe areas globally in your app
+- Wrap top-level components with SafeAreaView to handle notches, status bars, and other screen insets on both iOS and Android
+- Use SafeAreaScrollView for scrollable content to ensure it respects safe area boundaries
+- Avoid hardcoding padding or margins for safe areas; rely on SafeAreaView and context hooks
+
+## Performance Optimization
+- Minimize the use of useState and useEffect; prefer context and reducers for state management
+- Use Expo's AppLoading and SplashScreen for optimized app startup experience
+- Optimize images: implement lazy loading with expo-image
+- Implement code splitting and lazy loading for non-critical components with React's Suspense and dynamic imports
+- Profile and monitor performance using React Native's built-in tools and Expo's debugging features
+- Avoid unnecessary re-renders by memoizing components and using useMemo and useCallback hooks appropriately
+- Always clearTimeout or clearInterval when using them — especially in event listeners, effects (useEffect), or animations
+
+## Navigation
+- Use react-navigation for routing and navigation; follow its best practices for stack, tab, and drawer navigators
+- Leverage deep linking and universal links for better user engagement and navigation flow
+- Use dynamic routes with expo-router for better navigation handling
+
+## State Management
+- Use React Context and useReducer for managing global state
+- Leverage react-query for data fetching and caching; avoid excessive API calls
+- For complex state management, consider using Zustand or Redux Toolkit
+- Handle URL search parameters using libraries like expo-linking
+
+## Security
+- Sanitize user inputs to prevent XSS attacks
+- Use react-native-encrypted-storage for secure storage of sensitive data
+- Ensure secure communication with APIs using HTTPS and proper authentication
+- Use Expo's Security guidelines to protect your app: https://docs.expo.dev/guides/security/
+
+## Key Conventions
+- Rely on Expo's managed workflow for streamlined development and deployment
+- Prioritize Mobile Web Vitals (Load Time, Jank, and Responsiveness)
+- Use expo-constants for managing environment variables and configuration
+- Use expo-permissions to handle device permissions gracefully
+- Follow Expo's best practices for app deployment and publishing: https://docs.expo.dev/distribution/introduction/
+- Ensure compatibility with iOS and Android by testing extensively on both platforms
+
+## Project Structure
+
+### Directories:
+- **src/** - Main source code directory containing app components, screens, and business logic
+- **ios/** - iOS native code and configuration
+- **android/** - Android native code and configuration
+- **assets/** - Static assets like images, fonts, and other media files
+- **__mocks__/** - Jest test mocks and fixtures
+- **.expo/** - Expo development environment configuration
+- **.storybook/** - Component documentation and testing environment
+- **.circleci/** - CI/CD pipeline configuration
+- **.github/** - GitHub workflows and templates
+- **.cursor/** - IDE-specific configuration
+- **node_modules/** - Project dependencies
+- **App.tsx** - Main application entry point
+- **package.json** - Project dependencies and scripts
+- **app.config.ts** - Expo app configuration
+- **metro.config.js** - Metro bundler configuration
+- **babel.config.js** - Babel transpiler configuration
+- **tsconfig.json** - TypeScript configuration
+- **.env & .env.example** - Environment variables
+- **firebase.json & google-services.json** - Firebase configuration
+- **eas.json** - Expo Application Services configuration
+- **jest.config.js** - Jest testing configuration
+- **reanimatedConfig.js** - React Native Reanimated configuration
+- **wdyr.js** - Why Did You Render debugging configuration
+
+### Main Source Code Structure:
+- **theme/** - UI theme configuration and styling constants
+- **navigation/** - Navigation stack and routing configuration
+- **assets/** - Local assets specific to the app
+- **types/** - TypeScript type definitions and interfaces
+- **utils/** - Utility functions and helper methods
+- **i18n/** - Internationalization and localization setup
+- **components-next/** - Next generation UI components
+- **constants/** - Application-wide constants and configuration
+- **context/** - React Context providers and state management
+- **hooks/** - Custom React hooks
+- **screens/** - Application screens and pages
+- **services/** - API services and external integrations
+- **store/** - State management (likely Redux/Redux Toolkit)
+- **svg-icons/** - SVG icon components and assets
+- **app.tsx** - Main application component
+- **hooks.ts** - Exports of custom hooks
+
+### Application Modules:
+
+1. **Auth Module**
+   - Login screen
+   - Forgot password screen
+   - Change URL screen
+
+2. **Dashboard Module**
+   - Inbox screen
+   - Conversation screen
+   - Chat screen (Message view and Actions View)
+   - Contact details screen
+   - Dashboard Apps
+   - Settings screen
+
+## Redux Store Architecture
+
+### Overview
+The Chatwoot mobile app uses Redux Toolkit for state management with the following key features:
+- Redux Persist for state persistence
+- Middleware support for side effects
+- TypeScript integration
+- Reactotron debugging support in development
+- State migration handling
+
+### Store Structure
+```typescript
+RootState {
+  auth: AuthState
+  settings: SettingsState
+  conversations: {
+    filter: ConversationFilterState
+    selected: ConversationSelectedState
+    header: ConversationHeaderState
+    list: ConversationState
+    actions: ConversationActionState
+    typing: ConversationTypingState
+    sendMessage: SendMessageState
+    audioPlayer: AudioPlayerState
+    localRecordedAudioCache: LocalRecordedAudioCacheState
+    participants: ConversationParticipantState
+  }
+  contacts: {
+    list: ContactState
+    labels: ContactLabelState
+    conversations: ContactConversationState
+  }
+  labels: LabelState
+  inboxes: InboxState
+  assignableAgents: AssignableAgentState
+  notifications: {
+    list: NotificationState
+    filter: NotificationFilterState
+  }
+  teams: TeamState
+  macros: MacroState
+  dashboardApps: DashboardAppState
+  customAttributes: CustomAttributeState
+  cannedResponses: CannedResponseState
+}
+```
+
+### Redux Best Practices
+
+1. **State Organization**
+   - Each feature has its own slice
+   - Related features are grouped in nested state
+   - Clear separation of concerns
+
+2. **Action Handling**
+   - Use Redux Toolkit's `createSlice` for reducers
+   - Implement feature-specific middleware when needed
+   - Handle global actions (e.g., logout) at root reducer
+
+3. **State Updates**
+   - Use immer-powered mutations in reducers
+   - Implement optimistic updates where appropriate
+   - Handle loading and error states consistently
+
+4. **TypeScript Integration**
+   - Define strong types for all state slices
+   - Use typed selectors and actions
+   - Leverage Redux Toolkit's built-in type helpers
+
+5. **Performance**
+   - Implement proper memoization
+   - Use selective state persistence
+   - Configure appropriate warning thresholds
+
+### Implementation Examples
+
+1. **Creating a New Slice**
+```typescript
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+interface YourState {
+  data: any[];
+  loading: boolean;
+  error: string | null;
+}
+
+const initialState: YourState = {
+  data: [],
+  loading: false,
+  error: null,
+};
+
+const yourSlice = createSlice({
+  name: 'yourFeature',
+  initialState,
+  reducers: {
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
+    // ... more reducers
+  },
+});
+```
+
+2. **Using Typed Selectors**
+```typescript
+import { RootState } from '@/store';
+
+export const selectYourData = (state: RootState) => state.yourFeature.data;
+```
+
+3. **Dispatching Actions**
+```typescript
+import { useAppDispatch } from '@/store/hooks';
+
+const dispatch = useAppDispatch();
+dispatch(yourSlice.actions.setLoading(true));
+```
+
+## Theme System
+
+### Core Files
+- `tailwind.config.ts`: Base theme configuration
+- `tailwind.ts`: Tailwind instance creation and export
+- `colors/light.ts`: Light theme color definitions
+- `colors/dark.ts`: Dark theme color definitions
+- `colors/blackA.ts`: Black with alpha variations
+- `colors/whiteA.ts`: White with alpha variations
+
+### Base Configuration
+```typescript
+// tailwind.config.ts
+const twConfig = {
+  theme: {
+    ...defaultTheme,
+    extend: {
+      colors: { ...chatwootAppColors },
+      fontSize: {
+        xs: '12px',
+        cxs: '13px', 
+        md: '15px'
+      },
+      fontFamily: {
+        'inter-normal-20': ['Inter-400-20'],
+        'inter-420-20': ['Inter-420-20'],
+        'inter-medium-24': ['Inter-500-24'],
+        'inter-580-24': ['Inter-580-24'],
+        'inter-semibold-20': ['Inter-600-20']
+      }
+    }
+  },
+  plugins: []
+};
+```
+
+### Color System
+
+#### Color Categories
+1. **UI Colors** - gray, mauve, slate
+2. **Nature Colors** - sage, olive, sand
+3. **Primary Colors** - blue, indigo, violet
+4. **Accent Colors** - tomato, red, ruby, crimson
+5. **Special Colors** - mint, lime, yellow, amber
+6. **Neutral Colors** - brown, bronze, gold
+
+### Font System
+
+The app uses the Inter font family with various weights and optical sizes:
+
+| Font Name | Weight | Optical Size |
+|-----------|---------|--------------|
+| Inter-400-20 | Normal (400) | 20 |
+| Inter-420-20 | Light Medium (420) | 20 |
+| Inter-500-24 | Medium (500) | 24 |
+| Inter-580-24 | Semi Medium (580) | 24 |
+| Inter-600-20 | Semi Bold (600) | 20 |
+
+### Theme Usage Examples
+```typescript
+// Basic styling
+<View style={tailwind('bg-blue-500 p-4')}>
+  <Text style={tailwind('text-md font-inter-normal-20')}>
+    Hello World
+  </Text>
+</View>
+
+// Combining styles
+<TouchableOpacity 
+  style={tailwind('bg-blue-600 rounded-lg p-3 active:bg-blue-700')}>
+  <Text style={tailwind('text-white font-inter-medium-24')}>
+    Submit
+  </Text>
+</TouchableOpacity>
+```
+
+## Design Principles
+
+1. **Consistency**
+   - Unified color palette across the app
+   - Consistent spacing and typography scales
+   - Standardized component styles
+
+2. **Flexibility**
+   - Support for both light and dark modes
+   - Alpha variations for transparency
+   - Multiple color variations for different states
+
+3. **Accessibility**
+   - Proper contrast ratios
+   - Clear visual hierarchies
+   - Readable typography scales
+
+4. **Maintainability**
+   - Modular color files
+   - TypeScript support
+   - Clear naming conventions
+
+5. **Scalability**
+   - Extensive color variations
+   - Flexible component styling
+   - Easy theme extensions
+
+## Best Practices Summary
+
+1. Always use the `tailwind` utility for styling
+2. Use semantic color names when possible
+3. Maintain consistent spacing using the built-in scale
+4. Follow the established typography system
+5. Consider dark mode implications when styling
+6. Use alpha variations for overlay and hover states
+7. Leverage TypeScript for type safety
+8. Test extensively on both iOS and Android platforms
+9. Follow Expo's official documentation and best practices
+10. Implement proper error handling and security measures
+
+## API Documentation
+- Use Expo's official documentation for setting up and configuring your projects: https://docs.expo.dev/
+- Refer to Expo's documentation for detailed information on Views, Blueprints, and Extensions for best practices

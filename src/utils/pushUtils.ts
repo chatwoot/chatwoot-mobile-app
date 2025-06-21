@@ -1,18 +1,22 @@
 import { Platform } from 'react-native';
 import { NOTIFICATION_TYPES } from '@/constants';
-import notifee from '@notifee/react-native';
 import { Notification } from '@/types/Notification';
 
-export const clearAllDeliveredNotifications = () => {
-  if (Platform.OS === 'android') {
-  } else {
-    notifee.cancelAllNotifications();
+let notifee: any;
+
+if (Platform.OS === 'ios') {
+  notifee = require('@notifee/react-native').default;
+}
+
+export const clearAllDeliveredNotifications = async () => {
+  if (Platform.OS === 'ios') {
+    await notifee.cancelAllNotifications();
   }
 };
 
-export const updateBadgeCount = ({ count = 0 }) => {
+export const updateBadgeCount = async ({ count = 0 }) => {
   if (Platform.OS === 'ios' && count >= 0) {
-    notifee.setBadgeCount(count);
+    await notifee.setBadgeCount(count);
   }
 };
 

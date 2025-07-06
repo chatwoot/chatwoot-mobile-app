@@ -20,9 +20,9 @@ import { RefsProvider } from '@/context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { transformNotification } from '@/utils/camelCaseKeys';
 
-messaging().setBackgroundMessageHandler(async remoteMessage => {
-  console.log('Message handled in the background!', remoteMessage);
-});
+// messaging().setBackgroundMessageHandler(async remoteMessage => {
+//   console.log('Message handled in the background!', remoteMessage);
+// });
 
 export const AppNavigationContainer = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -95,18 +95,18 @@ export const AppNavigationContainer = () => {
       }
 
       // getInitialNotification: When the application is opened from a quit state.
-      const message = await messaging().getInitialNotification();
-      if (message) {
-        const notification = findNotificationFromFCM({ message });
-        const camelCaseNotification = transformNotification(notification);
-        const conversationLink = findConversationLinkFromPush({
-          notification: camelCaseNotification,
-          installationUrl,
-        });
-        if (conversationLink) {
-          return conversationLink;
-        }
-      }
+      // const message = await messaging().getInitialNotification();
+      // if (message) {
+      //   const notification = findNotificationFromFCM({ message });
+      //   const camelCaseNotification = transformNotification(notification);
+      //   const conversationLink = findConversationLinkFromPush({
+      //     notification: camelCaseNotification,
+      //     installationUrl,
+      //   });
+      //   if (conversationLink) {
+      //     return conversationLink;
+      //   }
+      // }
       return undefined;
     },
     subscribe(listener: (arg0: string) => void) {
@@ -116,24 +116,24 @@ export const AppNavigationContainer = () => {
       const subscription = Linking.addEventListener('url', onReceiveURL);
 
       //onNotificationOpenedApp: When the application is running, but in the background.
-      const unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
-        if (message) {
-          const notification = findNotificationFromFCM({ message });
-          const camelCaseNotification = transformNotification(notification);
+      // const unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
+      //   if (message) {
+      //     const notification = findNotificationFromFCM({ message });
+      //     const camelCaseNotification = transformNotification(notification);
 
-          const conversationLink = findConversationLinkFromPush({
-            notification: camelCaseNotification,
-            installationUrl,
-          });
-          if (conversationLink) {
-            listener(conversationLink);
-          }
-        }
-      });
+      //     const conversationLink = findConversationLinkFromPush({
+      //       notification: camelCaseNotification,
+      //       installationUrl,
+      //     });
+      //     if (conversationLink) {
+      //       listener(conversationLink);
+      //     }
+      //   }
+      // });
 
       return () => {
         subscription.remove();
-        unsubscribeNotification();
+        // unsubscribeNotification();
       };
     },
   };

@@ -67,7 +67,6 @@ export const AppNavigationContainer = () => {
       if (!conversationId) {
         return;
       }
-
       if (routes && routes[0]) {
         const { params } = routes[0];
         primaryActorId = (params as { primaryActorId?: number })?.primaryActorId;

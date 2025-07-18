@@ -11,7 +11,7 @@ import { AvailabilityStatus } from '@/types';
 type ConversationAvatarProps = {
   src: ImageURISource;
   name: string;
-  status: AvailabilityStatus; 
+  status: AvailabilityStatus;
 };
 
 const checkIfPropsAreSame = (prev: ConversationAvatarProps, next: ConversationAvatarProps) => {

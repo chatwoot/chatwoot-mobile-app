@@ -33,7 +33,8 @@ const meta = {
     ),
   ],
   parameters: {
-    notes: 'A swipeable component that supports left and right actions with over swipe capabilities',
+    notes:
+      'A swipeable component that supports left and right actions with over swipe capabilities',
   },
 } satisfies Meta<typeof Swipeable>;
 

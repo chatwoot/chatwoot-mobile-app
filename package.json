@@ -74,9 +74,9 @@
     "expo-status-bar": "~2.0.1",
     "expo-system-ui": "~4.0.9",
     "expo-web-browser": "~14.0.2",
-    "ffmpeg-kit-react-native": "^6.0.2",
     "i18n-js": "^3.8.0",
     "lodash": "^4.17.21",
+    "@dr.pogodin/react-native-audio": "^1.15.0",
     "react": "18.3.1",
     "react-hook-form": "^7.52.1",
     "react-native": "0.76.9",
@@ -155,7 +155,6 @@
           "react-native-autoheight-webview",
           "redux-persist",
           "rn-fetch-blob",
-          "ffmpeg-kit-react-native",
           "@chatwoot/markdown-to-txt",
           "@chatwoot/react-native-widget",
           "@chatwoot/utils",
@@ -173,11 +172,6 @@
         ],
         "listUnknownPackages": true
       }
-    }
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "ffmpeg-kit-react-native@6.0.2": "patches/ffmpeg-kit-react-native.patch"
     }
   }
 }

@@ -95,7 +95,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           ios: { useFrameworks: 'static' },
         },
       ],
-      './with-ffmpeg-pod.js',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },
   };

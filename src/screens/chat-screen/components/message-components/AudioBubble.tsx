@@ -18,7 +18,7 @@ import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../a
 import { MESSAGE_VARIANTS } from '@/constants';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
-import { convertOggToWav } from '@/utils/audioConverter';
+import { convertOggToWav } from '@/utils';
 
 // eslint-disable-next-line react/display-name
 const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {

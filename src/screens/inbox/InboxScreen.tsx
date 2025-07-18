@@ -163,7 +163,7 @@ const InboxList = () => {
       onEndReached={handleOnEndReached}
       onEndReachedThreshold={0.5}
       ListFooterComponent={ListFooterComponent}
-      renderItem={handleRender} 
+      renderItem={handleRender}
       contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}
     />
   );

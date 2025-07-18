@@ -22,7 +22,7 @@ type FilePreviewProps = Pick<FileCellProps, 'fileSrc'> & {
 
 export const FilePreview = (props: FilePreviewProps) => {
   const { fileSrc, isIncoming, isOutgoing, isComposed = false } = props;
-  let dirs = RNFetchBlob.fs.dirs;
+  const dirs = RNFetchBlob.fs.dirs;
 
   const [fileDownload, setFileDownload] = useState(false);
   const fileName = fileSrc.split('/')[fileSrc.split('/').length - 1];

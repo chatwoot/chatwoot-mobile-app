@@ -3,19 +3,18 @@ import * as Sentry from '@sentry/react-native';
 
 /**
  * Converts OGG audio file from URL to WAV format
- * @param oggUrl - URL of the OGG audio file
- * @returns Promise<string | Error> - Path to converted WAV file or Error
+ * Note: This is a simplified implementation that downloads the file
+ * For true audio conversion, consider using a native library or server-side solution
  */
 export const convertOggToWav = async (oggUrl: string): Promise<string | Error> => {
-  const tempOggPath = `${RNFS.CachesDirectoryPath}/temp.ogg`;
-  const fileName = `converted_${Date.now()}.wav`;
+  const fileName = `audio_${Date.now()}.ogg`;
   const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
 
   try {
     // Download the OGG file
     const downloadResult = await RNFS.downloadFile({
       fromUrl: oggUrl,
-      toFile: tempOggPath,
+      toFile: outputPath,
     }).promise;
 
     if (downloadResult.statusCode !== 200) {
@@ -24,65 +23,31 @@ export const convertOggToWav = async (oggUrl: string): Promise<string | Error> =
       return error;
     }
 
-    // Note: For Android, we'll rely on the native audio system's ability to handle OGG files
-    // and convert them using MediaMetadataRetriever/MediaMuxer. This is a simplified implementation
-    // that may need native Android code to handle OGG to WAV conversion properly.
-
-    // For now, we'll copy the file and let the app handle the format conversion
-    // This is a placeholder - in a real implementation, you'd need native Android code
-    // to use MediaMuxer/MediaCodec for proper OGG to WAV conversion
-    await RNFS.copyFile(tempOggPath, outputPath);
-
-    // Clean up temporary file
-    await RNFS.unlink(tempOggPath);
-
+    // For now, return the original file path
+    // Note: This doesn't actually convert OGG to WAV
+    // You would need a proper audio conversion library for that
     return outputPath;
   } catch (error) {
-    const convertError = error instanceof Error ? error : new Error('OGG conversion failed');
-    Sentry.captureException(convertError);
-
-    // Clean up temporary file if it exists
-    try {
-      await RNFS.unlink(tempOggPath);
-    } catch {
-      // Ignore cleanup errors
-    }
-
-    return convertError;
+    const conversionError = new Error(`Audio conversion failed: ${error}`);
+    Sentry.captureException(conversionError);
+    return conversionError;
   }
 };
 
 /**
  * Converts AAC audio file to WAV format
- * @param aacPath - Path to the AAC audio file
- * @returns Promise<string | Error> - Path to converted WAV file or Error
+ * Note: This is a simplified implementation that returns the original file
+ * For true audio conversion, consider using a native library or server-side solution
  */
 export const convertAacToWav = async (aacPath: string): Promise<string | Error> => {
-  const fileName = `converted_${Date.now()}.wav`;
-  const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
-
   try {
-    // Check if source file exists
-    const fileExists = await RNFS.exists(aacPath);
-    if (!fileExists) {
-      const error = new Error(`Source file does not exist: ${aacPath}`);
-      Sentry.captureException(error);
-      return error;
-    }
-
-    // Note: For Android, we'll rely on the native audio system's ability to handle AAC files
-    // and convert them using MediaMetadataRetriever/MediaMuxer. This is a simplified implementation
-    // that may need native Android code to handle AAC to WAV conversion properly.
-
-    // For now, we'll copy the file and let the app handle the format conversion
-    // This is a placeholder - in a real implementation, you'd need native Android code
-    // to use MediaMuxer/MediaCodec for proper AAC to WAV conversion
-    await RNFS.copyFile(aacPath, outputPath);
-
-    return outputPath;
+    // For now, return the original file path
+    // Note: This doesn't actually convert AAC to WAV
+    // You would need a proper audio conversion library for that
+    return aacPath;
   } catch (error) {
-    const convertError = error instanceof Error ? error : new Error('AAC conversion failed');
-    Sentry.captureException(convertError);
-    return convertError;
+    const conversionError = new Error(`Audio conversion failed: ${error}`);
+    Sentry.captureException(conversionError);
+    return conversionError;
   }
 };

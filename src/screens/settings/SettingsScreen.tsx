@@ -344,17 +344,16 @@ const SettingsScreen = () => {
         ref={notificationPreferencesSheetRef}
         backdropComponent={BottomSheetBackdrop}
         handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        // TODO: Fix this later
-        // bottomInset={bottom === 0 ? 12 : bottom}
         enablePanDownToClose
         animationConfigs={animationConfigs}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
-        snapPoints={['52%']}>
-        <BottomSheetWrapper>
+        snapPoints={['52%', '95%']}
+        index={1}>
+        <BottomSheetScrollView>
           <BottomSheetHeader headerText={i18n.t('SETTINGS.NOTIFICATION_PREFERENCES')} />
           <NotificationPreferences />
-        </BottomSheetWrapper>
+        </BottomSheetScrollView>
       </BottomSheetModal>
       <BottomSheetModal
         ref={switchAccountSheetRef}

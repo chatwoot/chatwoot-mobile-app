@@ -398,7 +398,7 @@
     "CHANGE_TEAMS": "대화 담당자가 변경됨"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "나중에 다시 시도하십시오...",
     "OfFLINE": "온라인에 다시 연결하려면 와이파이나 이동통신망에 연결되어야 합니다",
     "CANNOT_FETCH": "설명 불러오는 동안 오류가 발생했습니다. 다시 시도하십시오.",
     "AUTH": "사용자 이름/암호가 잘못됨. 다시 시도하십시오.",

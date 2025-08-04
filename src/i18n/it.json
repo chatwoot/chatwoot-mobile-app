@@ -398,7 +398,7 @@
     "CHANGE_TEAMS": "Team conversazione cambiato"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "Si prega di riprovare più tardi...",
     "OfFLINE": "Devi connetterti al Wi-Fi o a una rete cellulare per tornare online",
     "CANNOT_FETCH": "Si è verificato un errore nel recupero delle informazioni, si prega di riprovare",
     "AUTH": "Nome utente / Password non corretta. Si prega di riprovare",

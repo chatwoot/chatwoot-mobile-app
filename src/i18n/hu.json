@@ -398,7 +398,7 @@
     "CHANGE_TEAMS": "A beszélgetés csapata megváltozott"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "Kérjük, próbálja újra később...",
     "OfFLINE": "Wi-Fi vagy mobilhálózat szükséges hogy ismét online legyél",
     "CANNOT_FETCH": "Hiba történt az információ lekérése során, kérjük próbált újra",
     "AUTH": "Felhasználó / Jelszó nem jó. Kérjük próbáld újra.",

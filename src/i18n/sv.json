@@ -398,7 +398,7 @@
     "CHANGE_TEAMS": "Konversationsteamet har ändrats"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "Försök igen senare...",
     "OfFLINE": "Du måste ansluta till Wi-Fi eller ett mobilnätverk för att gå online igen",
     "CANNOT_FETCH": "Det uppstod ett fel när informationen skulle hämtas, försök igen",
     "AUTH": "Användarnamn / Lösenord felaktigt. Försök igen",

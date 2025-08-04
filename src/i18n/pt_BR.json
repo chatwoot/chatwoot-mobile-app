@@ -398,7 +398,7 @@
     "CHANGE_TEAMS": "Equipe da conversa mudou"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Não foi possível conectar ao servidor Woot, por favor tente novamente mais tarde",
+    "COMMON_ERROR": "Por favor, tente novamente mais tarde...",
     "OfFLINE": "Você precisa se conectar ao Wi-Fi ou a uma rede celular para ficar online novamente",
     "CANNOT_FETCH": "Ocorreu um erro ao buscar as informações, por favor, tente novamente",
     "AUTH": "Nome de usuário / senha incorreta. Por favor, tente novamente",

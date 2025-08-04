@@ -398,7 +398,7 @@
     "CHANGE_TEAMS": "Görüşme takımı değişti"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "Lütfen daha sonra tekrar deneyin...",
     "OfFLINE": "Tekrar çevrimiçi olmak için kablosuz ağa veya hücresel ağa bağlanmanız gerekir",
     "CANNOT_FETCH": "Bilgi alınırken bir hata oluştu, lütfen tekrar deneyin",
     "AUTH": "Kullanıcı Adı / Parola Yanlış. Lütfen tekrar deneyin",

@@ -398,7 +398,7 @@
     "CHANGE_TEAMS": "שיחת קבוצה השתנתה"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "אנא נסה שוב מאוחר יותר...",
     "OfFLINE": "עליך להתחבר ל- Wi-Fi או לרשת סלולרית כדי להתחבר מחדש",
     "CANNOT_FETCH": "אירעה שגיאה בניסיון לקבל את המידע, נסה שוב",
     "AUTH": "שם משתמש / סיסמה שגויים. נסה שוב",

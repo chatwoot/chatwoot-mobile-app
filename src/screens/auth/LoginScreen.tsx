@@ -26,7 +26,7 @@ import {
 } from '@/components-next';
 import {
   selectInstallationUrl,
-  selectBaseUrl,
+  //selectBaseUrl,
   selectLocale,
 } from '@/store/settings/settingsSelectors';
 import { selectIsLoggingIn } from '@/store/auth/authSelectors';
@@ -64,7 +64,7 @@ const LoginScreen = () => {
   const isLoggingIn = useAppSelector(selectIsLoggingIn);
 
   const installationUrl = useAppSelector(selectInstallationUrl);
-  const baseUrl = useAppSelector(selectBaseUrl);
+  //const baseUrl = useAppSelector(selectBaseUrl);
   const activeLocale = useAppSelector(selectLocale);
 
   useEffect(() => {
@@ -90,9 +90,9 @@ const LoginScreen = () => {
     navigation.navigate('ResetPassword' as never);
   };
 
-  const openConfigInstallationURL = () => {
+  /* const openConfigInstallationURL = () => {
     navigation.navigate('ConfigureURL' as never);
-  };
+  }; */
 
   const onChangeLanguage = (locale: string) => {
     dispatch(setLocale(locale));
@@ -109,12 +109,13 @@ const LoginScreen = () => {
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={tailwind.style('px-6 pt-24')}>
+          {/* eslint-disable-next-line @typescript-eslint/no-var-requires */}
           <Image
             source={require('@/assets/images/logo.png')}
             style={tailwind.style('w-10 h-10')}
             resizeMode="contain"
           />
-          <View style={tailwind.style('pt-6 gap-4')}>
+          {/* <View style={tailwind.style('pt-6 gap-4')}>
             <Animated.Text style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20')}>
               {i18n.t('LOGIN.TITLE')}
             </Animated.Text>
@@ -124,7 +125,7 @@ const LoginScreen = () => {
               )}>
               {i18n.t('LOGIN.DESCRIPTION', { baseUrl })}
             </Animated.Text>
-          </View>
+          </View> */}
 
           <Controller
             control={control}
@@ -211,7 +212,7 @@ const LoginScreen = () => {
           />
 
           <Pressable style={tailwind.style('pt-1 mb-8')} onPress={openResetPassword}>
-            <Animated.Text style={tailwind.style('text-blue-800 font-inter-medium-24 text-right')}>
+            <Animated.Text style={tailwind.style('text-brand-800 font-inter-medium-24 text-right')}>
               {i18n.t('LOGIN.FORGOT_PASSWORD')}
             </Animated.Text>
           </Pressable>
@@ -221,13 +222,13 @@ const LoginScreen = () => {
             handlePress={handleSubmit(onSubmit)}
           />
 
-          <Pressable
+          {/* <Pressable
             style={tailwind.style('flex-row justify-center items-center mt-6')}
             onPress={openConfigInstallationURL}>
             <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
               {i18n.t('LOGIN.CHANGE_URL')}
             </Animated.Text>
-          </Pressable>
+          </Pressable> */}
           <Pressable
             style={tailwind.style('flex-row justify-center items-center mt-4')}
             onPress={() => languagesModalSheetRef.current?.present()}>

@@ -154,9 +154,9 @@ const Tabs = () => {
 
   return (
     <Tab.Navigator tabBar={CustomTabBar} initialRouteName="Inbox">
-      {hasConversationPermission && (
+      {/* {hasConversationPermission && (
         <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
-      )}
+      )} */}
       {hasConversationPermission && (
         <Tab.Screen
           name="Conversations"

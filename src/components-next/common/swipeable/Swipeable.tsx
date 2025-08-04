@@ -94,7 +94,7 @@ export type SwipeableProps = {
   noOfPointers?: number;
   /**
    * Background color for the left swipeable element
-   * @default 'bg-blue-800'
+   * @default 'bg-brand-600'
    */
   leftElementBgColor?: string;
   /**
@@ -121,7 +121,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
     spacing,
     triggerOverswipeOnFlick = false,
     noOfPointers = 1,
-    leftElementBgColor = 'bg-blue-800',
+    leftElementBgColor = 'bg-brand-600',
     rightElementBgColor = 'bg-green-800',
   } = props;
 

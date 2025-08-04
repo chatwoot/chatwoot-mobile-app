@@ -398,7 +398,7 @@
     "CHANGE_TEAMS": "Keskustelutiimi vaihdettu"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "Ole hyvä ja yritä uudelleen myöhemmin...",
     "OfFLINE": "Sinun on yhdistettävä Wi-Fi- tai matkapuhelinverkkoon, jotta voit olla taas paikalla",
     "CANNOT_FETCH": "Tietojen haussa tapahtui virhe. Ole hyvä ja yritä uudelleen",
     "AUTH": "Käyttäjätunnus / salasana virheellinen. Yritä uudelleen",

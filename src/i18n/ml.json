@@ -398,7 +398,7 @@
     "CHANGE_TEAMS": "Conversation team changed"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "ദയവായി വീണ്ടും ശ്രമിക്കുക...",
     "OfFLINE": "വീണ്ടും ഓൺലൈനാകാൻ നിങ്ങൾ വൈഫൈയിലേക്കോ സെല്ലുലാർ നെറ്റ്‌വർക്കിലേക്കോ കണക്‌റ്റ് ചെയ്യണം",
     "CANNOT_FETCH": "വിവരങ്ങൾ ലഭ്യമാക്കുന്നതിൽ ഒരു തെറ്റുണ്ടായി, ദയവായി വീണ്ടും ശ്രമിക്കുക",
     "AUTH": "ഉപയോക്തൃനാമം / പാസ്‌വേഡ് തെറ്റാണ്. ദയവായി വീണ്ടും ശ്രമിക്കുക",

@@ -70,9 +70,9 @@ const variantTextMap = {
 const variantBaseMap = {
   [MESSAGE_VARIANTS.AGENT]: 'bg-gray-100',
   [MESSAGE_VARIANTS.PRIVATE]: 'bg-amber-100',
-  [MESSAGE_VARIANTS.USER]: 'bg-blue-700',
-  [MESSAGE_VARIANTS.BOT]: 'bg-blue-100',
-  [MESSAGE_VARIANTS.TEMPLATE]: 'bg-blue-100',
+  [MESSAGE_VARIANTS.USER]: 'bg-brand-600',
+  [MESSAGE_VARIANTS.BOT]: 'bg-brand-100',
+  [MESSAGE_VARIANTS.TEMPLATE]: 'bg-brand-100',
   [MESSAGE_VARIANTS.ERROR]: 'bg-ruby-700',
   [MESSAGE_VARIANTS.EMAIL]: 'bg-gray-100',
   [MESSAGE_VARIANTS.UNSUPPORTED]: 'bg-amber-100 border border-dashed border-amber-700',

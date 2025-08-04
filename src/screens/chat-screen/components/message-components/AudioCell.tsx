@@ -175,8 +175,8 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
       </Pressable>
       <Slider
         trackColor={isIncoming ? 'bg-whiteA-A9' : 'bg-gray-500'}
-        filledTrackColor={isIncoming ? 'bg-white' : 'bg-blue-700'}
-        knobStyle={isIncoming ? 'border-blue-300' : 'border-blue-700'}
+        filledTrackColor={isIncoming ? 'bg-white' : 'bg-brand-600'}
+        knobStyle={isIncoming ? 'border-brand-300' : 'border-brand-600'}
         {...{ manualSeekTo, currentPosition, totalDuration, pauseAudio }}
       />
     </View>
@@ -222,7 +222,7 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
             style={[
               tailwind.style(
                 'relative flex flex-row items-center w-[300px] pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
-                isIncoming ? 'bg-blue-700' : '',
+                isIncoming ? 'bg-brand-600' : '',
                 isOutgoing ? 'bg-gray-100' : '',
                 shouldRenderAvatar
                   ? isOutgoing

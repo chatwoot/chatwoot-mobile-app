@@ -398,7 +398,7 @@
     "CHANGE_TEAMS": "会话团队已更改"
   },
   "ERRORS": {
-    "COMMON_ERROR": "无法连接到 Chatwoot 服务器，请稍后重试",
+    "COMMON_ERROR": "请稍后重试...",
     "OfFLINE": "您必须连接到 Wi-Fi 或蜂窝网络才能重新上线。",
     "CANNOT_FETCH": "获取信息时出现错误，请重试",
     "AUTH": "用户名 / 密码不正确。请重试",

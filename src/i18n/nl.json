@@ -398,7 +398,7 @@
     "CHANGE_TEAMS": "Gespreksteam gewijzigd"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "Probeer het later opnieuw...",
     "OfFLINE": "U moet verbinding maken met Wi-Fi of een mobiel netwerk om weer online te kunnen komen",
     "CANNOT_FETCH": "Er is een fout opgetreden bij het ophalen van de informatie, probeer het opnieuw",
     "AUTH": "Gebruikersnaam / wachtwoord onjuist. Probeer het opnieuw",

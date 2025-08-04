@@ -155,7 +155,7 @@
     "CHANGE_TEAMS": "Conversation team changed"
   },
   "ERRORS": {
-    "COMMON_ERROR": "無法連接伺服器，請稍後再試",
+    "COMMON_ERROR": "請稍後再試...",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
     "CANNOT_FETCH": "There was an error fetching the information, please try again",
     "AUTH": "用户名/密碼不正確。請重試",

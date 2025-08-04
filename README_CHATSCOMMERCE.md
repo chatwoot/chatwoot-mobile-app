@@ -64,9 +64,30 @@ pnpm install
 
 ### 3. Environment Configuration
 
-Create a `.env` file in the root directory with the following variables from the .env.example file.
+This project uses environment-specific configuration files: `dev.env` for development and `prod.env` for production.
 
+1.  **Create Environment Files:**
+    Copy the `.env.example` file to create `dev.env` and `prod.env` in the root directory.
 
+    ```bash
+    cp .env.example dev.env
+    cp .env.example prod.env
+    ```
+
+2.  **Populate the Files:**
+    Fill in the necessary variables in both `dev.env` and `prod.env` with the appropriate values for each environment.
+
+3.  **Switching Environments:**
+    Use the following scripts to switch the active `.env` file, which is used by the application.
+
+    ```bash
+    # Switch to the development environment
+    pnpm run env:dev
+
+    # Switch to the production environment
+    pnpm run env:prod
+    ```
+    The run and build scripts will handle this for you automatically.
 
 ### 4. Firebase Setup (Required for Push Notifications)
 
@@ -98,40 +119,34 @@ pnpm run generate:soft
 
 ## Running the Application
 
-### Development Mode
+To run the application, use the environment-specific commands. These scripts will automatically set the correct environment variables and launch the app on a selected device or simulator.
 
-Start the Expo development server:
+### Android
+
+```bash
+# Run the app on Android with the development environment
+pnpm run android:dev
+
+# Run the app on Android with the production environment
+pnpm run android:prod
+```
+
+### iOS (macOS only)
+
+```bash
+# Run the app on iOS with the development environment
+pnpm run ios:dev
+
+# Run the app on iOS with the production environment
+pnpm run ios:prod
+```
+
+You can also start the Expo development server separately if you need more control:
 
 ```bash
 pnpm start
 ```
-
-This will open the Expo development tools in your browser where you can:
-- Scan QR code with Expo Go app (for managed workflow)
-- Press `a` to run on Android
-- Press `i` to run on iOS
-
-### Platform-Specific Commands
-
-#### Android
-
-```bash
-# Run on Android device/emulator
-pnpm run android
-
-# Or use the direct command
-pnpm run run:android
-```
-
-#### iOS (macOS only)
-
-```bash
-# Run on iOS simulator/device
-pnpm run ios
-
-# Or use the direct command
-pnpm run run:ios
-```
+This will open the Expo development tools in your browser. From there, you can press `a` to run on Android or `i` to run on iOS, but be aware that this will use the environment variables from the currently active `.env` file.
 
 ## Metro Bundler and Logging
 
@@ -145,7 +160,7 @@ pnpm run run:ios
 
 ```bash
 # This starts Metro AND runs the Android app
-pnpm run android
+pnpm run android:dev
 
 # This starts Metro with Expo dev tools
 pnpm start
@@ -159,7 +174,7 @@ pnpm start
 pnpm start
 
 # Terminal 2: Run Android app
-pnpm run android
+pnpm run android:dev
 ```
 
 #### Method 3: Direct React Native Commands
@@ -205,7 +220,7 @@ npx react-native log-ios
 
 2. **In another terminal, run Android**:
    ```bash
-   pnpm run android
+   pnpm run android:dev
    ```
 
 3. **Optional: Watch Android logs** (third terminal):
@@ -229,26 +244,39 @@ pnpm start --clear
 
 Here are the most commonly used scripts from `package.json`:
 
+### Environment Management
+- `pnpm run env:dev` - Sets the development environment.
+- `pnpm run env:prod` - Sets the production environment.
+
 ### Development Scripts
-- `pnpm start` - Start Expo development server
-- `pnpm run android` - Run on Android
-- `pnpm run ios` - Run on iOS
-- `pnpm run clean` - Clean cache and dependencies
+- `pnpm start` - Start Expo development server.
+- `pnpm run android:dev` - Run on Android with the dev environment.
+- `pnpm run android:prod` - Run on Android with the prod environment.
+- `pnpm run ios:dev` - Run on iOS with the dev environment.
+- `pnpm run ios:prod` - Run on iOS with the prod environment.
+- `pnpm run clean` - Clean cache and dependencies.
 
 ### Build Scripts
-- `pnpm run generate` - Generate native code (clean prebuild)
-- `pnpm run generate:soft` - Generate native code (soft prebuild)
-- `pnpm run build:android` - Build Android app for production
-- `pnpm run build:ios` - Build iOS app for production
+- `pnpm run generate` - Generate native code (clean prebuild).
+- `pnpm run build:android:dev` - Build Android app for development.
+- `pnpm run build:android:prod` - Build Android app for production.
+- `pnpm run build:ios:dev` - Build iOS app for development.
+- `pnpm run build:ios:prod` - Build iOS app for production.
+
+### Submit Scripts
+- `pnpm run submit:android:dev` - Submit Android app for development.
+- `pnpm run submit:android:prod` - Submit Android app for production.
+- `pnpm run submit:ios:dev` - Submit iOS app for development.
+- `pnpm run submit:ios:prod` - Submit iOS app for production.
 
 ### Testing and Quality
-- `pnpm test` - Run tests
-- `pnpm run lint` - Run ESLint
+- `pnpm test` - Run tests.
+- `pnpm run lint` - Run ESLint.
 
 ### Storybook (Component Development)
-- `pnpm run start:storybook` - Start Storybook server
-- `pnpm run storybook:android` - Run Storybook on Android
-- `pnpm run storybook:ios` - Run Storybook on iOS
+- `pnpm run start:storybook` - Start Storybook server.
+- `pnpm run storybook:android` - Run Storybook on Android (dev environment).
+- `pnpm run storybook:ios` - Run Storybook on iOS (dev environment).
 
 ## Troubleshooting
 

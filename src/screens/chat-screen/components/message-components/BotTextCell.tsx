@@ -68,7 +68,7 @@ export const BotTextCell = (props: BotTextCellProps) => {
     <Animated.View
       style={[
         tailwind.style(
-          'relative max-w-[300px] pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden bg-blue-100',
+          'relative max-w-[300px] pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden bg-brand-100',
           `max-w-[${TEXT_MAX_WIDTH}px]`,
           // singleLineShortText ? "flex flex-row" : "",
           isAvatarRendered ? 'rounded-br-none' : '',

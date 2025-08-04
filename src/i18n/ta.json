@@ -398,7 +398,7 @@
     "CHANGE_TEAMS": "Conversation team changed"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "தயவுசெய்து மீண்டும் முயற்சிக்கவும்...",
     "OfFLINE": "மீண்டும் ஆன்லைனில் செல்ல நீங்கள் வைஃபை அல்லது செல்லுலார் நெட்வொர்க்குடன் இணைக்க வேண்டும்",
     "CANNOT_FETCH": "தகவலைப் பெறுவதில் பிழை ஏற்பட்டது, தயவுசெய்து மீண்டும் முயற்சிக்கவும்",
     "AUTH": "யூசர் நேம் / பாஸ்வேர்டு தவறானது. தயவு செய்து மீண்டும் முயற்சிக்கவும்",

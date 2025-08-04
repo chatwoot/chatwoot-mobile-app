@@ -155,17 +155,17 @@ export const INBOX_ICON = {
 };
 
 export const LANGUAGES = {
-  af: 'Afrikaans',
+  /* af: 'Afrikaans',
   ar: 'Arabic',
   id: 'Bahasa Indonesia',
   ca: 'Catalan',
   cs: 'Czech',
   da: 'Danish',
-  de: 'German',
+  de: 'German', */
   en: 'English',
-  el: 'Greek',
+  /* el: 'Greek', */
   es: 'Spanish',
-  fa: 'Farsi',
+  /* fa: 'Farsi',
   fi: 'Finnish',
   fr: 'French',
   hu: 'Hungarian',
@@ -186,7 +186,7 @@ export const LANGUAGES = {
   tr: 'Turkish',
   uk: 'Ukrainian',
   vi: 'Vietnamese',
-  zh: 'Chinese',
+  zh: 'Chinese', */
 };
 
 export const URL_REGEX = {

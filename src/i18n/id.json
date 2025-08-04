@@ -155,7 +155,7 @@
     "CHANGE_TEAMS": "Tim percakapan berubah"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Tidak dapat terhubung ke Woot Server, Silakan coba lagi nanti",
+    "COMMON_ERROR": "Silakan coba lagi nanti...",
     "OfFLINE": "Anda harus terhubung ke Wi-fi atau jaringan seluler untuk online kembali",
     "OFFLINE": "Anda harus terhubung ke Wi-fi atau jaringan seluler untuk online kembali",
     "CANNOT_FETCH": "Ada kesalahan saat mengambil informasi, silakan coba lagi",

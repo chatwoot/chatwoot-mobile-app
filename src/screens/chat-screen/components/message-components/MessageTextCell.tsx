@@ -89,7 +89,7 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
         tailwind.style(
           'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
           isEmailMessage ? `max-w-[${EMAIL_MESSAGE_WIDTH}px]` : `max-w-[${TEXT_MAX_WIDTH}px]`,
-          isIncoming ? 'bg-blue-700' : '',
+          isIncoming ? 'bg-brand-600' : '',
           isOutgoing ? 'bg-gray-100' : '',
           isMessageFailed ? 'bg-ruby-700' : '',
           isAvatarRendered

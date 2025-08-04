@@ -15,7 +15,7 @@ type ButtonProps = {
 
 const getButtonStyles = (isPrimary: boolean, pressed: boolean) => {
   const baseStyles = 'py-[11px] flex items-center justify-center rounded-[13px]';
-  const variantStyles = isPrimary ? 'bg-blue-800' : 'bg-gray-50';
+  const variantStyles = isPrimary ? 'bg-brand-600' : 'bg-gray-50';
   const pressedStyles = isPrimary ? 'opacity-95' : pressed ? 'bg-gray-100' : '';
 
   return tailwind.style(baseStyles, variantStyles, pressedStyles);

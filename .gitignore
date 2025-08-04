@@ -41,3 +41,5 @@ google-services.json
 GoogleService-Info.plist
 .env
 .env.local
+dev.env
+prod.env

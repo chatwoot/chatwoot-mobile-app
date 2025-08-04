@@ -19,9 +19,10 @@ interface SettingsState {
   version: string;
   pushToken: string;
 }
+
 const initialState: SettingsState = {
-  baseUrl: 'app.chatwoot.com',
-  installationUrl: 'https://app.chatwoot.com/',
+  baseUrl: process.env.EXPO_PUBLIC_BASE_URL as string,
+  installationUrl: process.env.EXPO_PUBLIC_INSTALLATION_URL as string,
   uiFlags: {
     isSettingUrl: false,
     isUpdating: false,

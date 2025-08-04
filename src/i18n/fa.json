@@ -398,7 +398,7 @@
     "CHANGE_TEAMS": "تیم مکالمه تغییر کرد"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "لطفاً دوباره امتحان کنید...",
     "OfFLINE": "برای اتصال مجدد باید به وای فای یا شبکه تلفن همراه متصل شوید",
     "CANNOT_FETCH": "هنگام دریافت اطلاعات خطایی روی داد ، لطفاً دوباره امتحان کنید",
     "AUTH": "این نام کاربری و رمز عبور صحیح نیست",

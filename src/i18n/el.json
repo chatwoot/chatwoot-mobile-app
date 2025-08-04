@@ -398,7 +398,7 @@
     "CHANGE_TEAMS": "Η ομάδα συνομιλίας άλλαξε"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "Παρακαλώ δοκιμάστε ξανά αργότερα...",
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
     "CANNOT_FETCH": "There was an error fetching the information, please try again",
     "AUTH": "Το όνομα χρήστη ή ο κωδικός δεν είναι σωστός. Παρακαλώ ξαναπροσπαθήστε",

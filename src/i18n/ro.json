@@ -398,7 +398,7 @@
     "CHANGE_TEAMS": "Echipa de conversație schimbată"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "Vă rugăm să încercați din nou mai târziu...",
     "OfFLINE": "Trebuie să vă conectați la Wi-Fi sau la o rețea celulară pentru a intra din nou online",
     "CANNOT_FETCH": "A existat o eroare la preluarea informațiilor, vă rugăm să încercați din nou",
     "AUTH": "Nume utilizator / parolă incorectă. Vă rugăm să încercaţi din nou",

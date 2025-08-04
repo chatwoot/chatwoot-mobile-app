@@ -71,7 +71,9 @@ const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
 
 const buildNumber = Application.nativeBuildVersion;
-const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVersion;
+const appVersionDetails = buildNumber
+  ? `Version: ${appVersion} \n Build Number: ${buildNumber}`
+  : `Version: ${appVersion}`;
 
 const SettingsScreen = () => {
   const navigation = useNavigation();
@@ -252,14 +254,14 @@ const SettingsScreen = () => {
   ];
 
   const supportList: GenericListType[] = [
-    {
+    /* {
       hasChevron: true,
       title: i18n.t('SETTINGS.READ_DOCS'),
       icon: <SwitchIcon />,
       subtitle: '',
       subtitleType: 'light',
       onPressListItem: openURL,
-    },
+    }, */
     {
       hasChevron: true,
       title: i18n.t('SETTINGS.CHAT_WITH_US'),
@@ -318,9 +320,7 @@ const SettingsScreen = () => {
         <Pressable
           style={tailwind.style('p-4 items-center')}
           onLongPress={() => debugActionsSheetRef.current?.present()}>
-          <Text style={tailwind.style('text-sm text-gray-700 ')}>
-            {`${chatwootInstance} ${appVersionDetails}`}
-          </Text>
+          <Text style={tailwind.style('text-sm text-gray-700 ')}>{appVersionDetails}</Text>
         </Pressable>
       </Animated.ScrollView>
       <BottomSheetModal

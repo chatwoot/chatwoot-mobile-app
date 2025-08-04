@@ -129,7 +129,7 @@ const RightSection = ({
             {filtersAppliedCount > 0 && (
               <Animated.View
                 style={tailwind.style(
-                  'absolute z-10 -right-0.5 h-2.5 w-2.5 rounded-full bg-blue-800',
+                  'absolute z-10 -right-0.5 h-2.5 w-2.5 rounded-full bg-brand-600',
                 )}
               />
             )}

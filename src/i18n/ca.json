@@ -398,7 +398,7 @@
     "CHANGE_TEAMS": "Conversation team changed"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "Si us plau, torneu-ho a provar més tard...",
     "OfFLINE": "Has de connectar a la xarxa Wi-Fi o a una xarxa mòbil per tornar a connectar-te",
     "CANNOT_FETCH": "S'ha produït un error en obtenir la informació. Torna-ho a provar",
     "AUTH": "Nom d’usuari / contrasenya incorrecte. Si us plau torna-ho a provar",

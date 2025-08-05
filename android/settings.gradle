@@ -1,0 +1,45 @@
+pluginManagement {
+    // We'll define NODE_EXECUTABLE after this block, but use '/opt/homebrew/bin/node' directly here
+    includeBuild(new File(["/opt/homebrew/bin/node", "--print", "require.resolve('@react-native/gradle-plugin/package.json', { paths: [require.resolve('react-native/package.json')] })"].execute(null, rootDir).text.trim()).getParentFile().toString())
+}
+plugins { id("com.facebook.react.settings") }
+
+// Use the node wrapper script to ensure we can find node regardless of environment
+def NODE_EXECUTABLE = rootDir.toString() + "/node-wrapper.sh"
+
+// Make sure the script is executable (belt and suspenders approach)
+["chmod", "+x", NODE_EXECUTABLE].execute()
+
+extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
+  if (System.getenv('EXPO_USE_COMMUNITY_AUTOLINKING') == '1') {
+    ex.autolinkLibrariesFromCommand()
+  } else {
+    def command = [
+      NODE_EXECUTABLE,
+      '--no-warnings',
+      '--eval',
+      'require(require.resolve(\'expo-modules-autolinking\', { paths: [require.resolve(\'expo/package.json\')] }))(process.argv.slice(1))',
+      'react-native-config',
+      '--json',
+      '--platform',
+      'android'
+    ].toList()
+    ex.autolinkLibrariesFromCommand(command)
+  }
+}
+
+rootProject.name = 'Chatwoot'
+
+dependencyResolutionManagement {
+  versionCatalogs {
+    reactAndroidLibs {
+      from(files(new File([NODE_EXECUTABLE, "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim(), "../gradle/libs.versions.toml")))
+    }
+  }
+}
+
+apply from: new File([NODE_EXECUTABLE, "--print", "require.resolve('expo/package.json')"].execute(null, rootDir).text.trim(), "../scripts/autolinking.gradle");
+useExpoModules()
+
+include ':app'
+includeBuild(new File([NODE_EXECUTABLE, "--print", "require.resolve('@react-native/gradle-plugin/package.json', { paths: [require.resolve('react-native/package.json')] })"].execute(null, rootDir).text.trim()).getParentFile())

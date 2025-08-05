@@ -1,6 +1,35 @@
 pluginManagement {
-    // We'll define NODE_EXECUTABLE after this block, but use '/opt/homebrew/bin/node' directly here
-    includeBuild(new File(["/opt/homebrew/bin/node", "--print", "require.resolve('@react-native/gradle-plugin/package.json', { paths: [require.resolve('react-native/package.json')] })"].execute(null, rootDir).text.trim()).getParentFile().toString())
+    // Use dynamic Node.js detection that works on both local and EAS
+    def nodeExecutable
+    try {
+        // Try to use 'which node' first (works on most Unix systems)
+        nodeExecutable = ["which", "node"].execute().text.trim()
+        if (!nodeExecutable || nodeExecutable.empty) {
+            throw new Exception("which command failed")
+        }
+    } catch (Exception e) {
+        // Fallback: try common Node.js locations
+        def commonPaths = [
+            "/opt/homebrew/bin/node",      // macOS Homebrew (Apple Silicon)
+            "/usr/local/bin/node",         // macOS Homebrew (Intel) / Linux custom install
+            "/usr/bin/node",               // Linux system install (common on EAS)
+            "/bin/node"                    // Alternative Linux location
+        ]
+        
+        nodeExecutable = null
+        for (path in commonPaths) {
+            if (new File(path).exists()) {
+                nodeExecutable = path
+                break
+            }
+        }
+        
+        if (!nodeExecutable) {
+            throw new Exception("Node.js not found in any common location")
+        }
+    }
+    
+    includeBuild(new File([nodeExecutable, "--print", "require.resolve('@react-native/gradle-plugin/package.json', { paths: [require.resolve('react-native/package.json')] })"].execute(null, rootDir).text.trim()).getParentFile().toString())
 }
 plugins { id("com.facebook.react.settings") }
 

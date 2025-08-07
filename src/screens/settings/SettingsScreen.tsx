@@ -12,7 +12,6 @@ import {
   useBottomSheetSpringConfigs,
 } from '@gorhom/bottom-sheet';
 import DeviceInfo from 'react-native-device-info';
-import * as WebBrowser from 'expo-web-browser';
 import ChatWootWidget from '@chatwoot/react-native-widget';
 import { useSelector } from 'react-redux';
 import * as Application from 'expo-application';
@@ -22,7 +21,6 @@ import { resetNotifications } from '@/store/notification/notificationSlice';
 import { clearAllContacts } from '@/store/contact/contactSlice';
 
 import i18n from 'i18n';
-import { HELP_URL } from '@/constants/url';
 import { tailwind } from '@/theme';
 
 import {
@@ -55,7 +53,7 @@ import { logout, setAccount } from '@/store/auth/authSlice';
 import { authActions } from '@/store/auth/authActions';
 import {
   selectLocale,
-  selectIsChatwootCloud,
+  //selectIsChatwootCloud,
   selectPushToken,
 } from '@/store/settings/settingsSelectors';
 import { settingsActions } from '@/store/settings/settingsActions';
@@ -99,7 +97,7 @@ const SettingsScreen = () => {
 
   const pushToken = useAppSelector(selectPushToken);
 
-  const userPermissions = getUserPermissions(user, activeAccountId);
+  const userPermissions = user ? getUserPermissions(user, activeAccountId) : [];
 
   const hasConversationPermission = CONVERSATION_PERMISSIONS.some(permission =>
     userPermissions.includes(permission),
@@ -122,9 +120,9 @@ const SettingsScreen = () => {
     operatingSystem: Platform.OS, // android/ios
   };
 
-  const isChatwootCloud = useAppSelector(selectIsChatwootCloud);
+  // `const isChatwootCloud = useAppSelector(selectIsChatwootCloud);
 
-  const chatwootInstance = isChatwootCloud ? `${appName} cloud` : `${appName} self-hosted`;
+  // const chatwootInstance = isChatwootCloud ? `${appName} cloud` : `${appName} self-hosted`;
 
   const accounts = useSelector(selectAccounts) || [];
 
@@ -194,9 +192,9 @@ const SettingsScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeLocale]);
 
-  const openURL = async () => {
-    await WebBrowser.openBrowserAsync(HELP_URL);
-  };
+  //  const openURL = async () => {
+  //    await WebBrowser.openBrowserAsync(HELP_URL);
+  //    };
 
   // const openSystemSettings = () => {
   //   if (Platform.OS === 'ios') {
@@ -320,7 +318,7 @@ const SettingsScreen = () => {
         <Pressable
           style={tailwind.style('p-4 items-center')}
           onLongPress={() => debugActionsSheetRef.current?.present()}>
-          <Text style={tailwind.style('text-sm text-gray-700 ')}>{appVersionDetails}</Text>
+          <Text style={tailwind.style('text-sm text-gray-700')}>{appVersionDetails}</Text>
         </Pressable>
       </Animated.ScrollView>
       <BottomSheetModal

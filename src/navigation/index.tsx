@@ -1,5 +1,7 @@
-import React, { useCallback, useRef } from 'react';
-import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
+/* eslint-disable @typescript-eslint/no-var-requires */
+import React, { useCallback, useRef, useEffect } from 'react';
+import { ActivityIndicator, Linking, Platform, StyleSheet, View } from 'react-native';
+import firebase, { getApps } from '@react-native-firebase/app';
 import messaging from '@react-native-firebase/messaging';
 import { getStateFromPath } from '@react-navigation/native';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -11,18 +13,51 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AppTabs } from './tabs/AppTabs';
 import i18n from 'i18n';
 import { navigationRef } from '@/utils/navigationUtils';
-import { findConversationLinkFromPush, findNotificationFromFCM } from '@/utils/pushUtils';
+import {
+  findConversationLinkFromPush,
+  findNotificationFromFCM,
+  updateBadgeCount,
+} from '@/utils/pushUtils';
 import { extractConversationIdFromUrl } from '@/utils/conversationUtils';
 import { useAppSelector } from '@/hooks';
 import { selectInstallationUrl, selectLocale } from '@/store/settings/settingsSelectors';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RefsProvider } from '@/context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { waitForFirebaseInit } from '@/utils/firebaseUtils';
 import { transformNotification } from '@/utils/camelCaseKeys';
 
-// messaging().setBackgroundMessageHandler(async remoteMessage => {
-//   console.log('Message handled in the background!', remoteMessage);
-// });
+// Initialize Firebase messaging handlers after app starts
+const initializeFirebaseMessaging = () => {
+  try {
+    // Ensure Firebase is initialized (should be auto-initialized by plugin, but let's be explicit)
+    const apps = getApps();
+    if (!apps.length) {
+      console.log('Firebase not initialized, skipping messaging setup...');
+      return;
+    }
+
+    console.log('Firebase already initialized, setting up messaging...');
+
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log('Message handled in the background!', remoteMessage);
+
+      // Handle notification data
+      const notification = findNotificationFromFCM({ message: remoteMessage });
+      const camelCaseNotification = transformNotification(notification);
+
+      // Update badge count for iOS
+      if (Platform.OS === 'ios') {
+        updateBadgeCount({ count: 1 }); // You might want to track actual count
+      }
+
+      // TODO: Process camelCaseNotification data for background tasks
+      console.log('Processed notification:', camelCaseNotification.id);
+    });
+  } catch (error) {
+    console.log('Firebase messaging initialization failed:', error);
+  }
+};
 
 export const AppNavigationContainer = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -39,8 +74,28 @@ export const AppNavigationContainer = () => {
   const installationUrl = useAppSelector(selectInstallationUrl);
   const locale = useAppSelector(selectLocale);
 
+  // Initialize Firebase messaging when component mounts
+  useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      const ready = await waitForFirebaseInit({ timeoutMs: 5000, pollMs: 100 });
+      if (!isMounted) return;
+      console.log('Navigation: Firebase ready?', ready, 'apps:', getApps().length);
+      initializeFirebaseMessaging();
+    })();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const linking = {
-    prefixes: [installationUrl],
+    prefixes: [
+      installationUrl,
+      'https://app.chatscommerce.com',
+      'https://dev.app.chatscommerce.com',
+      'chatscommerce://',
+      // Add your ngrok URL here when testing
+    ],
     config: {
       screens: {
         ChatScreen: {
@@ -55,31 +110,35 @@ export const AppNavigationContainer = () => {
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getStateFromPath: (path: string, config: any) => {
-      let primaryActorId = null;
-      let primaryActorType = null;
+      let primaryActorId = null as number | null;
+      let primaryActorType = null as string | null;
       const state = getStateFromPath(path, config);
       const { routes } = state || {};
 
-      const conversationId = extractConversationIdFromUrl({
-        url: path,
-      });
+      // Extract optional query params (e.g., ?ref=whatsapp)
+      const queryString = path.includes('?') ? path.split('?')[1] : '';
+      const searchParams = new URLSearchParams(queryString);
+      const ref = searchParams.get('ref') || undefined;
+
+      const conversationId = extractConversationIdFromUrl({ url: path });
 
       if (!conversationId) {
         return;
       }
       if (routes && routes[0]) {
         const { params } = routes[0];
-        primaryActorId = (params as { primaryActorId?: number })?.primaryActorId;
-        primaryActorType = (params as { primaryActorType?: string })?.primaryActorType;
+        primaryActorId = (params as { primaryActorId?: number })?.primaryActorId ?? null;
+        primaryActorType = (params as { primaryActorType?: string })?.primaryActorType ?? null;
       }
       return {
         routes: [
           {
             name: 'ChatScreen',
             params: {
-              conversationId: conversationId,
-              primaryActorId,
-              primaryActorType,
+              conversationId,
+              primaryActorId: primaryActorId ?? undefined,
+              primaryActorType: primaryActorType ?? undefined,
+              ref,
             },
           },
         ],
@@ -94,18 +153,18 @@ export const AppNavigationContainer = () => {
       }
 
       // getInitialNotification: When the application is opened from a quit state.
-      // const message = await messaging().getInitialNotification();
-      // if (message) {
-      //   const notification = findNotificationFromFCM({ message });
-      //   const camelCaseNotification = transformNotification(notification);
-      //   const conversationLink = findConversationLinkFromPush({
-      //     notification: camelCaseNotification,
-      //     installationUrl,
-      //   });
-      //   if (conversationLink) {
-      //     return conversationLink;
-      //   }
-      // }
+      const message = await messaging().getInitialNotification();
+      if (message) {
+        const notification = findNotificationFromFCM({ message });
+        const camelCaseNotification = transformNotification(notification);
+        const conversationLink = findConversationLinkFromPush({
+          notification: camelCaseNotification,
+          installationUrl,
+        });
+        if (conversationLink) {
+          return conversationLink;
+        }
+      }
       return undefined;
     },
     subscribe(listener: (arg0: string) => void) {
@@ -114,25 +173,41 @@ export const AppNavigationContainer = () => {
       // Listen to incoming links from deep linking
       const subscription = Linking.addEventListener('url', onReceiveURL);
 
-      //onNotificationOpenedApp: When the application is running, but in the background.
-      // const unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
-      //   if (message) {
-      //     const notification = findNotificationFromFCM({ message });
-      //     const camelCaseNotification = transformNotification(notification);
+      // Only setup Firebase messaging if Firebase is initialized
+      let unsubscribeNotification: (() => void) | undefined;
+      
+      (async () => {
+        const ready = await waitForFirebaseInit({ timeoutMs: 5000, pollMs: 100 });
+        if (ready) {
+          try {
+            //onNotificationOpenedApp: When the application is running, but in the background.
+            unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
+              if (message) {
+                const notification = findNotificationFromFCM({ message });
+                const camelCaseNotification = transformNotification(notification);
 
-      //     const conversationLink = findConversationLinkFromPush({
-      //       notification: camelCaseNotification,
-      //       installationUrl,
-      //     });
-      //     if (conversationLink) {
-      //       listener(conversationLink);
-      //     }
-      //   }
-      // });
+                const conversationLink = findConversationLinkFromPush({
+                  notification: camelCaseNotification,
+                  installationUrl,
+                });
+                if (conversationLink) {
+                  listener(conversationLink);
+                }
+              }
+            });
+          } catch (error) {
+            console.log('Failed to setup notification listener in linking:', error);
+          }
+        } else {
+          console.log('Firebase not initialized, skipping notification listener in linking');
+        }
+      })();
 
       return () => {
         subscription.remove();
-        // unsubscribeNotification();
+        if (unsubscribeNotification) {
+          unsubscribeNotification();
+        }
       };
     },
   };

@@ -332,6 +332,17 @@
     "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
     "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
   },
+  "NOTIFICATIONS": {
+    "PERMISSION_TITLE": "Enable Notifications",
+    "PERMISSION_MESSAGE": "Allow notifications to stay updated with new messages",
+    "PERMISSION_ASK_LATER": "Ask Later",
+    "PERMISSION_CANCEL": "Don't Allow",
+    "PERMISSION_OK": "Allow",
+    "RATIONALE_TITLE": "Notifications Disabled",
+    "RATIONALE_MESSAGE": "Enable notifications in settings to receive message alerts",
+    "RATIONALE_CANCEL": "Cancel",
+    "RATIONALE_SETTINGS": "Open Settings"
+  },
   "CONVERSATION_DETAILS": {
     "TITLE": "Attributes",
     "BROWSER": "Browser",

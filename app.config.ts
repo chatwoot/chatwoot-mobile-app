@@ -4,6 +4,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'Chatscommerce',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatscommerce',
+    scheme: 'chatscommerce',
     version: '4.0.19',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -32,7 +33,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       // Please use the relative path to the google-services.json file
       googleServicesFile: process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE,
       entitlements: { 'aps-environment': 'production' },
-      associatedDomains: ['applinks:app.chatwoot.com'],
+      associatedDomains: ['applinks:app.chatscommerce.com', 'applinks:dev.app.chatscommerce.com'],
     },
     android: {
       adaptiveIcon: { foregroundImage: './assets/adaptive-icon.png', backgroundColor: '#ffffff' },
@@ -53,7 +54,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           data: [
             {
               scheme: 'https',
-              host: 'app.chatwoot.com',
+              host: 'app.chatscommerce.com',
               pathPrefix: '/app/accounts/',
               pathPattern: '/*/conversations/*',
             },
@@ -82,6 +83,13 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       ],
       '@react-native-firebase/app',
       '@react-native-firebase/messaging',
+      [
+        'expo-notifications',
+        {
+          color: '#ffffff',
+          sounds: ['default'],
+        },
+      ],
       [
         'expo-build-properties',
         {

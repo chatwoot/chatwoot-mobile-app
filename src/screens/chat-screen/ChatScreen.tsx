@@ -30,6 +30,7 @@ import { ErrorIcon } from '@/svg-icons';
 import { Button } from '@/components-next';
 import { ActivityIndicator, Pressable } from 'react-native';
 import i18n from '@/i18n';
+import AnalyticsHelper from '@/utils/analyticsUtils';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { MacrosList } from './components/macros/MacrosList';
 import { macroActions } from '@/store/macro/macroActions';
@@ -93,7 +94,7 @@ const ChatScreenWrapper = (props: ChatScreenProps) => {
 };
 const ChatScreen = (props: ChatScreenProps) => {
   const navigation = useNavigation();
-  const { conversationId, primaryActorId, primaryActorType } = props.route.params;
+  const { conversationId, primaryActorId, primaryActorType, ref } = props.route.params;
   const dispatch = useAppDispatch();
 
   const conversationFetching = useAppSelector(state => selectConversationFetching(state));
@@ -124,6 +125,25 @@ const ChatScreen = (props: ChatScreenProps) => {
       dispatch(notificationActions.markAsRead(payload));
     }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Log conversationId for deep-link testing convenience
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log('DeepLinkTest: conversationId', conversationId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Track if opened from external ref (e.g., whatsapp)
+  useEffect(() => {
+    if (ref) {
+      AnalyticsHelper.track('conversation_opened_from_link', {
+        source: ref,
+        conversationId,
+        hasMessageContext: !!primaryActorId,
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

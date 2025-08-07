@@ -38,6 +38,7 @@ import { clearAllDeliveredNotifications } from '@/utils/pushUtils';
 import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
 import { customAttributeActions } from '@/store/custom-attribute/customAttributeActions';
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
+import { usePushNotifications } from '@/hooks/usePushNotifications';
 
 const Tab = createBottomTabNavigator();
 
@@ -54,7 +55,13 @@ export type TabParamList = {
 
 export type TabBarExcludedScreenParamList = {
   Tab: undefined;
-  ChatScreen: { conversationId: number; primaryActorId?: number; primaryActorType?: string };
+  ChatScreen: {
+    conversationId: number;
+    primaryActorId?: number;
+    primaryActorType?: string;
+    ref?: string;
+    isConversationOpenedExternally?: boolean;
+  };
   ContactDetails: { conversationId: number };
   ConversationActions: undefined;
   Dashboard: { url: string };
@@ -79,6 +86,9 @@ const Tabs = () => {
   const userId = useAppSelector(selectUserId);
   const accountId = useAppSelector(selectCurrentUserAccountId);
   const webSocketUrl = useAppSelector(selectWebSocketUrl);
+
+  // Initialize push notifications for foreground handling
+  usePushNotifications(installationUrl);
 
   useEffect(() => {
     // Here is the place we are loading all the data for the app first time first time or user switches account

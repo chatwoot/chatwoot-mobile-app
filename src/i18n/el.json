@@ -453,5 +453,16 @@
     "EXECUTION_SUCCESS": "Η μακροεντολή εκτελέστηκε επιτυχώς",
     "EXECUTION_ERROR": "Macro execution failed",
     "NO_MACROS": "Δεν βρέθηκαν μακροεντολές"
+  },
+  "NOTIFICATIONS": {
+    "PERMISSION_TITLE": "Enable Notifications",
+    "PERMISSION_MESSAGE": "Allow notifications to stay updated with new messages",
+    "PERMISSION_ASK_LATER": "Ask Later",
+    "PERMISSION_CANCEL": "Don't Allow",
+    "PERMISSION_OK": "Allow",
+    "RATIONALE_TITLE": "Notifications Disabled",
+    "RATIONALE_MESSAGE": "Enable notifications in settings to receive message alerts",
+    "RATIONALE_CANCEL": "Cancel",
+    "RATIONALE_SETTINGS": "Open Settings"
   }
 }

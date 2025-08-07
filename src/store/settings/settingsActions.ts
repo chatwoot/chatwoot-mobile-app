@@ -102,10 +102,11 @@ export const settingsActions = {
         const buildNumber = await getBuildNumber();
 
         if (!permissionEnabled || permissionEnabled === -1) {
-          if (isAndroidAPILevelGreater32) {
-            await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+          const { requestNotificationPermissions } = await import('@/utils/permissionManager');
+          const permissionGranted = await requestNotificationPermissions();
+          if (!permissionGranted) {
+            return rejectWithValue('Notification permission denied');
           }
-          await messaging().requestPermission();
         }
 
         const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

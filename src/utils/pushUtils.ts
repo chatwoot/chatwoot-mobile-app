@@ -5,7 +5,7 @@ import { Notification } from '@/types/Notification';
 let notifee: any;
 
 if (Platform.OS === 'ios') {
-  notifee = require('@notifee/react-native').default;
+  // Notifee removed; keep optional require commented or replace with expo-notifications if needed
 }
 
 export const clearAllDeliveredNotifications = async () => {

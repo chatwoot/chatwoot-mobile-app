@@ -29,7 +29,9 @@ import {
   //selectBaseUrl,
   selectLocale,
 } from '@/store/settings/settingsSelectors';
-import { selectIsLoggingIn } from '@/store/auth/authSelectors';
+import { selectIsLoggingIn, selectLoggedIn } from '@/store/auth/authSelectors';
+import { loadAndClearPendingLink } from '@/utils/dynamicLinkUtils';
+import { navigationRef } from '@/utils/navigationUtils';
 import { setLocale } from '@/store/settings/settingsSlice';
 import { useRefsContext } from '@/context/RefsContext';
 
@@ -62,6 +64,7 @@ const LoginScreen = () => {
 
   const dispatch = useAppDispatch();
   const isLoggingIn = useAppSelector(selectIsLoggingIn);
+  const isLoggedIn = useAppSelector(selectLoggedIn);
 
   const installationUrl = useAppSelector(selectInstallationUrl);
   //const baseUrl = useAppSelector(selectBaseUrl);
@@ -80,6 +83,24 @@ const LoginScreen = () => {
       navigation.navigate('ConfigureURL' as never);
     }
   }, [installationUrl, navigation, dispatch]);
+
+  // After login, if there is a pending deep link, navigate to it
+  useEffect(() => {
+    const maybeNavigatePending = async () => {
+      if (!isLoggedIn) return;
+      const context = await loadAndClearPendingLink();
+      if (context) {
+        navigationRef.current?.navigate('ChatScreen' as never, {
+          conversationId: context.conversationId,
+          primaryActorId: context.primaryActorId,
+          primaryActorType: context.primaryActorType,
+          ref: context.ref,
+          isConversationOpenedExternally: true,
+        } as never);
+      }
+    };
+    maybeNavigatePending();
+  }, [isLoggedIn]);
 
   const onSubmit = async (data: FormData) => {
     const { email, password } = data;

@@ -59,14 +59,6 @@
       "AGENT": {
         "SEARCH_AGENT": "Ügynökök keresése"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Gazdátlan",
-          "ALL": "Mind"
-        }
-      },
       "INBOX": {
         "TITLE": "Filter by inbox"
       },
@@ -85,6 +77,14 @@
           "PENDING": "Függőben lévő",
           "SNOOZED": "Elnémított",
           "RESOLVED": "Megoldva",
+          "ALL": "Mind"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filter by assignee type",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Gazdátlan",
           "ALL": "Mind"
         }
       }
@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "Assigned agent",
     "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "Ezt csak ügynökök láthatják",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",

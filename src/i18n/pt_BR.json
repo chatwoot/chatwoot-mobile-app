@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "Agente atribuído",
     "TEAM": "Time",
     "PRIVATE_MSG_INPUT": "Isto será visível apenas para Agentes",
+    "UNSUPPORTED_MESSAGE": "Esta mensagem não é suportada. Você pode ver esta mensagem no aplicativo Facebook Messenger.",
     "NOT_FOUND": {
       "TITLE": "Não foi possível carregar a conversa",
       "RETRY": "Tentar novamente",

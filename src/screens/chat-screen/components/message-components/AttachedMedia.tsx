@@ -157,6 +157,7 @@ const AttachedVideo = (props: AttachedVideoProps) => {
             tailwind.style('rounded-lg'),
             { transform: [{ rotateY: '180deg' }] },
           ]}
+          // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
           source={require('../../../../assets/local/ImageCellTimeStampOverlay.png')}
         />
         <Animated.View
@@ -258,7 +259,7 @@ export const AttachedMedia = () => {
         showsHorizontalScrollIndicator={false}
         data={attachments}
         renderItem={handleRenderItem}
-        // @ts-ignore
+        // @ts-expect-error - FlatList keyExtractor expects string but Asset.uri is string
         keyExtractor={(item: Asset) => item.uri}
       />
     </Animated.View>

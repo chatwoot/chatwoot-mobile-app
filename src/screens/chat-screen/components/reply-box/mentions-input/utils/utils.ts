@@ -1,6 +1,6 @@
 import { diffChars } from 'diff';
 import { StyleProp, TextStyle } from 'react-native';
-// @ts-ignore the lib do not have TS declarations yet
+// @ts-expect-error the lib do not have TS declarations yet
 import matchAll from 'string.prototype.matchall';
 import {
   CharactersDiffChange,
@@ -126,7 +126,7 @@ const getMentionPartSuggestionKeywords = (
     keywordByTrigger[trigger] = undefined;
 
     // Check if we don't have selection range
-    if (selection.end != selection.start) {
+    if (selection.end !== selection.start) {
       return;
     }
 
@@ -145,7 +145,7 @@ const getMentionPartSuggestionKeywords = (
     // Return undefined in case when:
     if (
       // - the trigger index is not event found
-      triggerIndex == -1 ||
+      triggerIndex === -1 ||
       // - the trigger index is out of found part with selection cursor
       triggerIndex < part.position.start ||
       // - the trigger is not at the beginning and we don't have space or new line before trigger
@@ -425,7 +425,7 @@ const parseValue = (
     }
 
     // In case when we have some text before matched part parsing the text with rest part types
-    if (matches[0].index != 0) {
+    if (matches[0].index !== 0) {
       const text = value.substr(0, matches[0].index);
 
       const plainTextAndParts = parseValue(text, restPartTypes, positionOffset);

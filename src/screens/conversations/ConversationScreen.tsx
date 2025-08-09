@@ -7,7 +7,11 @@ import Animated, {
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetModal,
+  useBottomSheetSpringConfigs,
+  useBottomSheetModal,
+} from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 
 import {
@@ -71,6 +75,7 @@ type FlashListRenderItemType = {
 };
 
 const ConversationList = () => {
+  const { dismissAll } = useBottomSheetModal();
   const dispatch = useAppDispatch();
   const [appState, setAppState] = useState(AppState.currentState);
 
@@ -118,6 +123,7 @@ const ConversationList = () => {
   }, [filters]);
 
   useEffect(() => {
+    dismissAll();
     clearAndFetchConversations(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -272,13 +278,12 @@ const ConversationScreen = () => {
   const dispatch = useAppDispatch();
 
   const animationConfigs = useBottomSheetSpringConfigs({
-    mass: 1,
-    stiffness: 420,
-    damping: 30,
+    mass: 1.2,
+    stiffness: 300,
+    damping: 50,
   });
 
   const { filtersModalSheetRef } = useRefsContext();
-  // const { bottom } = useSafeAreaInsets();
 
   const handleOnDismiss = () => {
     /**

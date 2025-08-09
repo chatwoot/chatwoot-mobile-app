@@ -59,7 +59,7 @@ const DropdownMenuBottomSheetBackdrop = forwardRef<
   });
 
   const handleBackdropPress = () => {
-    // @ts-ignore
+    // @ts-expect-error - BottomSheet ref dismiss method accepts additional options
     ref?.current?.dismiss({ overshootClamping: true });
   };
 
@@ -98,7 +98,7 @@ export const ChatDropdownMenu = (props: PropsWithChildren<ChatDropdownMenuProps>
     (backdropProps: BottomSheetBackdropProps) => (
       <DropdownMenuBottomSheetBackdrop
         {...backdropProps}
-        // @ts-ignore
+        // @ts-expect-error - Custom backdrop component ref forwarding not typed correctly
         ref={contextMenuSheetRef}
       />
     ),

@@ -47,7 +47,7 @@ export const withAnchorPoint = (transform: TransformsStyle, anchorPoint: Point, 
   }
 
   if (anchorPoint.y !== defaultAnchorPoint.y && size.height) {
-    let shiftTranslateY = [];
+    const shiftTranslateY = [];
     // shift before rotation
     shiftTranslateY.push({
       translateY: size.height * (anchorPoint.y - defaultAnchorPoint.y),

@@ -88,7 +88,7 @@ export const ImageCell = (props: ImageCellProps) => {
               )}>
               <Animated.View pointerEvents={'none'}>
                 <ImageBackground
-                  source={require('../../../../assets/local/ImageCellTimeStampOverlay.png')}
+                  source={require('../../../../assets/local/ImageCellTimeStampOverlay.png')} // eslint-disable-line @typescript-eslint/no-require-imports
                   style={tailwind.style(
                     'absolute bottom-0 right-0 h-15 w-33 z-10',
                     shouldRenderAvatar

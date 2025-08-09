@@ -1,4 +1,4 @@
-import { Channel, ContentType, MessageStatus, MessageType } from '@/types';
+import { Channel, ContentType, MessageStatus, MessageType, ConversationPriority } from '@/types';
 
 export const conversation = {
   senderName: 'Leo Das',
@@ -16,6 +16,7 @@ export const conversation = {
     channelType: 'Channel::FacebookPage' as Channel,
     phoneNumber: '+1234567890',
     medium: 'web',
+    provider: 'facebook',
   },
   lastMessage: {
     id: 2346,
@@ -35,6 +36,7 @@ export const conversation = {
     status: 'sent' as MessageStatus,
     lastNonActivityMessage: null,
     conversation: null,
+    senderId: 1,
   },
   slaPolicyId: null,
   appliedSla: null,
@@ -157,4 +159,12 @@ export const conversationWithNewLineMessage = {
     content: `Hey Dominique,\n\n Generally, the review process takes around 3-4 weeks`,
     messageType: 1 as MessageType,
   },
+};
+
+export const conversationWithAllFields = {
+  ...conversationWithMoreLabels,
+  isSelected: false,
+  unreadCount: 2,
+  priority: 'high' as ConversationPriority,
+  availabilityStatus: 'offline',
 };

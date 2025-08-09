@@ -38,7 +38,7 @@ type ConversationDetailSubCellProps = Pick<
         waitingSince: number;
         status: string;
       }
-    | {};
+    | Record<string, never>;
   additionalAttributes?: ConversationAdditionalAttributes;
   allLabels: Label[];
   typingText?: string;

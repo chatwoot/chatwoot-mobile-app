@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import {
   NativeSyntheticEvent,
   Text,
@@ -34,7 +34,7 @@ const MentionInput = React.forwardRef<TextInput, MentionInputProps>(
     ) => {
       setSelection(event.nativeEvent.selection);
 
-      onSelectionChange && onSelectionChange(event);
+      onSelectionChange?.(event);
     };
 
     /**

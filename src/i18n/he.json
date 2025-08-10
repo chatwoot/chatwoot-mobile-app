@@ -14,24 +14,24 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "קישור התקנה",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": ".",
     "URL_ERROR": "הזן URL חוקי",
-    "URL_REQUIRED": "URL is required",
+    "URL_REQUIRED": "URL הוא חובה",
     "CONNECT": "התחבר",
     "CHANGE_LANGUAGE": "שנה שפה",
     "ERROR": "קישור התקנה לא חוקי"
   },
   "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "TITLE": "התחבר לחשבון שלך",
+    "DESCRIPTION": "אתה מחובר ל {{baseUrl}}.",
     "EMAIL": "אימייל",
     "PASSWORD": "סיסמה",
-    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_REQUIRED": "אימייל הוא חובה",
     "EMAIL_ERROR": "הזן אימייל חוקי",
-    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_REQUIRED": "סיסמה היא חובה",
     "PASSWORD_ERROR": "הזן סיסמה תקינה",
     "LOGIN": "כניסה",
-    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_LOADING": "נכנס...",
     "FORGOT_PASSWORD": "שכחת את הסיסמה?",
     "RESET_HERE": "אפס כאן",
     "NO_ACCOUNT": "אין לך חשבון?",
@@ -48,19 +48,19 @@
     "HEADER_TITLE": "אפס את הסיסמה",
     "TITLE": "שכחת את הסיסמה?",
     "SUB_TITLE": "אל תדאג! אנחנו דואגים לך",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "API_SUCCESS": "לינק לאיפוס סיסמה נשלח למייל שלך"
   },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "שיחות",
-      "CLEAR_FILTER": "Clear"
+      "CLEAR_FILTER": "ניקוי"
     },
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "חפש נציגים"
       },
       "INBOX": {
-        "TITLE": "Filter by inbox"
+        "TITLE": "סינון לפי תיבה נכנסת"
       },
       "SORT_BY": {
         "TITLE": "מיין לפי",
@@ -216,7 +216,7 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "עותק",
       "REPLY": "הגב",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "מחיקת הודעה"
     },
     "EMAIL_HEADER": {
       "FROM": "מאת",
@@ -233,19 +233,19 @@
         "EDIT": "ערוך"
       },
       "TEAM": {
-        "EMPTY": "No team assigned",
+        "EMPTY": "לא שוייך צוות",
         "ASSIGN": "שייך"
       },
       "PRIORITY": {
-        "EMPTY": "No priority added",
+        "EMPTY": "לא נוספה עדיפות",
         "EDIT": "ערוך"
       }
     }
   },
   "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "ALL_INBOXES": "כל התיבות הנכנסות",
+    "FILTER_BY_ASSIGNEE_TYPE": "סינון לפי סוג שיוך",
+    "FILTER_BY_CONVERSATION_STATUS": "סינון לפי סטטוס שיחה",
     "SORT_BY": "מיין לפי",
     "FILTER_BY_INBOX": "Filter by inbox",
     "HEADER_TITLE": "סינון שיחות",

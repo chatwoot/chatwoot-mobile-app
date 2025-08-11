@@ -30,8 +30,9 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         UIBackgroundModes: ['fetch', 'remote-notification'],
         ITSAppUsesNonExemptEncryption: false,
       },
-      // Please use the relative path to the google-services.json file
-      googleServicesFile: process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE,
+      // Prefer EAS Secret File env var; fallback to repo path for local builds
+      googleServicesFile:
+        process.env.GOOGLE_SERVICE_INFO_PLIST || process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE,
       entitlements: { 'aps-environment': 'production' },
       associatedDomains: ['applinks:app.chatscommerce.com', 'applinks:dev.app.chatscommerce.com'],
     },
@@ -45,8 +46,9 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         'android.permission.RECORD_AUDIO',
         'android.permission.READ_MEDIA_IMAGES',
       ],
-      // Please use the relative path to the google-services.json file
-      googleServicesFile: process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE,
+      // Prefer EAS Secret File env var; fallback to repo path for local builds
+      googleServicesFile:
+        process.env.GOOGLE_SERVICES_JSON || process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE,
       intentFilters: [
         {
           action: 'VIEW',

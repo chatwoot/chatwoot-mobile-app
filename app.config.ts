@@ -1,6 +1,35 @@
 import { ExpoConfig, ConfigContext } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => {
+  // Resolve Google services files from EAS secret file vars or fallbacks
+  const ANDROID_GSF =
+    process.env.GOOGLE_SERVICES_JSON ||
+    process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE ||
+    './credentials/android/google-services.json';
+
+  const IOS_PLIST =
+    process.env.GOOGLE_SERVICE_INFO_PLIST ||
+    process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE ||
+    './credentials/ios/GoogleService-Info.plist';
+
+  // Helpful logs in EAS build to confirm env injection
+  // These will appear early in build logs
+  // eslint-disable-next-line no-console
+  console.log('[config] EAS_BUILD:', process.env.EAS_BUILD);
+  // eslint-disable-next-line no-console
+  console.log(
+    '[config] EAS environment:',
+    process.env.EAS_BUILD_PROFILE || process.env.EAS_ENVIRONMENT,
+  );
+  // eslint-disable-next-line no-console
+  console.log('[config] GOOGLE_SERVICES_JSON (env):', process.env.GOOGLE_SERVICES_JSON);
+  // eslint-disable-next-line no-console
+  console.log('[config] ANDROID googleServicesFile (resolved):', ANDROID_GSF);
+  // eslint-disable-next-line no-console
+  console.log('[config] GOOGLE_SERVICE_INFO_PLIST (env):', process.env.GOOGLE_SERVICE_INFO_PLIST);
+  // eslint-disable-next-line no-console
+  console.log('[config] IOS googleServicesFile (resolved):', IOS_PLIST);
+
   return {
     name: 'Chatscommerce',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatscommerce',
@@ -31,8 +60,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         ITSAppUsesNonExemptEncryption: false,
       },
       // Prefer EAS Secret File env var; fallback to repo path for local builds
-      googleServicesFile:
-        process.env.GOOGLE_SERVICE_INFO_PLIST || process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE,
+      googleServicesFile: IOS_PLIST,
       entitlements: { 'aps-environment': 'production' },
       associatedDomains: ['applinks:app.chatscommerce.com', 'applinks:dev.app.chatscommerce.com'],
     },
@@ -47,8 +75,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         'android.permission.READ_MEDIA_IMAGES',
       ],
       // Prefer EAS Secret File env var; fallback to repo path for local builds
-      googleServicesFile:
-        process.env.GOOGLE_SERVICES_JSON || process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE,
+      googleServicesFile: ANDROID_GSF,
       intentFilters: [
         {
           action: 'VIEW',

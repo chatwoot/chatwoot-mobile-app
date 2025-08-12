@@ -42,7 +42,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     splash: {
       image: './assets/splash.png',
       resizeMode: 'contain',
-      backgroundColor: '#ffffff',
+      backgroundColor: '#5d17eb',
       enableFullScreenImage_legacy: true,
     },
     ios: {

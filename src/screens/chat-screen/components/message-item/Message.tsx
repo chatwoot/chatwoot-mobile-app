@@ -42,7 +42,6 @@ type MessageComponentProps = {
   item: Message;
   index: number;
   isEmailInbox: boolean;
-  currentUserId: number;
 };
 
 type MessageWrapperProps = {
@@ -121,12 +120,13 @@ const MessageWrapper = ({
           'my-[1px]',
           flexOrientationClass(),
           shouldGroupWithPrevious && orientation === ORIENTATION.LEFT ? 'ml-7' : '',
+          shouldGroupWithPrevious && orientation === ORIENTATION.RIGHT ? 'pr-7' : '',
           !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
           item.private ? 'my-1' : '',
         ),
       ]}>
       <Animated.View style={tailwind.style('flex flex-row')}>
-        {!shouldGroupWithPrevious && shouldShowAvatar ? (
+        {!shouldGroupWithPrevious && shouldShowAvatar && orientation === ORIENTATION.LEFT ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
             <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
           </Animated.View>
@@ -183,6 +183,11 @@ const MessageWrapper = ({
             )}
           </Animated.View>
         </MessageMenu>
+        {!shouldGroupWithPrevious && shouldShowAvatar && orientation === ORIENTATION.RIGHT ? (
+          <Animated.View style={tailwind.style('flex items-end justify-end ml-1')}>
+            <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
+          </Animated.View>
+        ) : null}
       </Animated.View>
     </Animated.View>
   );
@@ -191,17 +196,8 @@ const MessageWrapper = ({
 export const MessageComponent = (props: MessageComponentProps) => {
   const dispatch = useAppDispatch();
   const { conversationId } = useChatWindowContext();
-  const { item, currentUserId, isEmailInbox } = props;
-  const {
-    messageType,
-    contentType,
-    status,
-    sender,
-    groupWithNext,
-    groupWithPrevious,
-    senderId,
-    senderType,
-  } = item;
+  const { item, isEmailInbox } = props;
+  const { messageType, contentType, status, sender, groupWithNext, groupWithPrevious } = item;
 
   const hapticSelection = useHaptic();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
@@ -283,34 +279,14 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
   const shouldShowAvatar = () => {
     if (messageType === MESSAGE_TYPES.ACTIVITY) return false;
-    if (orientation() === ORIENTATION.RIGHT) return false;
     return true;
   };
 
-  const isMyMessage = () => {
-    if (status === MESSAGE_STATUS.PROGRESS && messageType === MESSAGE_TYPES.OUTGOING) {
-      return true;
-    }
-
-    const senderIdentifier = senderId ?? sender?.id;
-    const senderTypeValue = senderType ?? sender?.type;
-
-    if (!senderTypeValue || !senderIdentifier) {
-      return false;
-    }
-
-    return (
-      senderTypeValue.toLowerCase() === SENDER_TYPES.USER.toLowerCase() &&
-      currentUserId === senderIdentifier
-    );
-  };
-
   const orientation = () => {
-    if (isMyMessage()) {
-      return ORIENTATION.RIGHT;
-    }
     if (messageType === MESSAGE_TYPES.ACTIVITY) return ORIENTATION.CENTER;
-    return ORIENTATION.LEFT;
+    if (messageType === MESSAGE_TYPES.INCOMING) return ORIENTATION.LEFT;
+    // All non-incoming (outgoing, template, bot, other agents) on the right
+    return ORIENTATION.RIGHT;
   };
 
   const shouldGroupWithNext = () => {
@@ -327,7 +303,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
     if (!sender || sender.type === SENDER_TYPES.AGENT_BOT) {
       return {
         name: i18n.t('CONVERSATION.BOT'),
-        src: require('../../../../assets/local/bot-avatar.png'),
+        src: { uri: '' },
       };
     }
 

@@ -80,7 +80,15 @@ const LoginScreen = () => {
   useEffect(() => {
     dispatch(resetAuth());
     if (!installationUrl) {
-      navigation.navigate('ConfigureURL' as never);
+      const envInstallationUrl = process.env.EXPO_PUBLIC_INSTALLATION_URL;
+      if (envInstallationUrl) {
+        // Try to auto-set from env to avoid forcing the user into the Configure URL screen
+        // If verification fails, we'll fall back to the Configure URL screen
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        dispatch(settingsActions.setInstallationUrl(envInstallationUrl));
+      } else {
+        navigation.navigate('ConfigureURL' as never);
+      }
     }
   }, [installationUrl, navigation, dispatch]);
 

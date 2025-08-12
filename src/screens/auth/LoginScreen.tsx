@@ -33,6 +33,7 @@ import { selectIsLoggingIn, selectLoggedIn } from '@/store/auth/authSelectors';
 import { loadAndClearPendingLink } from '@/utils/dynamicLinkUtils';
 import { navigationRef } from '@/utils/navigationUtils';
 import { setLocale } from '@/store/settings/settingsSlice';
+import { BuildInfo } from '@/components-next/common';
 import { useRefsContext } from '@/context/RefsContext';
 
 type FormData = {
@@ -265,6 +266,10 @@ const LoginScreen = () => {
               {i18n.t('LOGIN.CHANGE_LANGUAGE')}
             </Animated.Text>
           </Pressable>
+
+          <Animated.View style={tailwind.style('items-center mt-6')}>
+            <BuildInfo />
+          </Animated.View>
         </Animated.ScrollView>
       </View>
       <BottomSheetModal

@@ -35,6 +35,7 @@ import {
   SettingsList,
 } from '@/components-next';
 import { UserAvatar } from './components/UserAvatar';
+import { BuildInfo } from '@/components-next/common';
 
 import { LANGUAGES, TAB_BAR_HEIGHT } from '@/constants';
 import { useRefsContext } from '@/context';
@@ -318,7 +319,7 @@ const SettingsScreen = () => {
         <Pressable
           style={tailwind.style('p-4 items-center')}
           onLongPress={() => debugActionsSheetRef.current?.present()}>
-          <Text style={tailwind.style('text-sm text-gray-700')}>{appVersionDetails}</Text>
+          <BuildInfo />
         </Pressable>
       </Animated.ScrollView>
       <BottomSheetModal

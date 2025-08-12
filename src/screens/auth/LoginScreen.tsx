@@ -35,6 +35,7 @@ import { navigationRef } from '@/utils/navigationUtils';
 import { setLocale } from '@/store/settings/settingsSlice';
 import { BuildInfo } from '@/components-next/common';
 import { useRefsContext } from '@/context/RefsContext';
+import { settingsActions } from '@/store/settings/settingsActions';
 
 type FormData = {
   email: string;
@@ -99,13 +100,16 @@ const LoginScreen = () => {
       if (!isLoggedIn) return;
       const context = await loadAndClearPendingLink();
       if (context) {
-        navigationRef.current?.navigate('ChatScreen' as never, {
-          conversationId: context.conversationId,
-          primaryActorId: context.primaryActorId,
-          primaryActorType: context.primaryActorType,
-          ref: context.ref,
-          isConversationOpenedExternally: true,
-        } as never);
+        navigationRef.current?.navigate(
+          'ChatScreen' as never,
+          {
+            conversationId: context.conversationId,
+            primaryActorId: context.primaryActorId,
+            primaryActorType: context.primaryActorType,
+            ref: context.ref,
+            isConversationOpenedExternally: true,
+          } as never,
+        );
       }
     };
     maybeNavigatePending();

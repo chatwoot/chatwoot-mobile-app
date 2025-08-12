@@ -4,6 +4,8 @@ import { Alert, BackHandler } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store';
 import { AppNavigator } from '@/navigation';
+import ErrorBoundaryScreen from '@/components-next/common/ErrorBoundaryScreen';
+import ErrorBoundary from '@/components-next/common/ErrorBoundary';
 
 import i18n from '@/i18n';
 
@@ -34,7 +36,14 @@ const Chatwoot = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <AppNavigator />
+        <React.Suspense fallback={null}>
+          <ErrorBoundary
+            fallbackRender={({ error, resetErrorBoundary }) => (
+              <ErrorBoundaryScreen error={error} onRetry={resetErrorBoundary} />
+            )}>
+            <AppNavigator />
+          </ErrorBoundary>
+        </React.Suspense>
       </PersistGate>
     </Provider>
   );

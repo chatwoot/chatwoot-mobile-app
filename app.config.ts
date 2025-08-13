@@ -34,6 +34,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     name: 'Chatscommerce',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatscommerce',
     scheme: 'chatscommerce',
+    // Required for EAS Update; prevents Expo CLI from trying to auto-write to dynamic config
+    updates: {
+      url: 'https://u.expo.dev/c388de6e-16cf-4618-b94e-a45c450845dc',
+    },
+    runtimeVersion: '1.0.0',
     version: '4.0.19',
     orientation: 'portrait',
     icon: './assets/icon.png',

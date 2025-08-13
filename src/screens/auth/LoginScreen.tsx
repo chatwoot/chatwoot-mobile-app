@@ -36,6 +36,7 @@ import { setLocale } from '@/store/settings/settingsSlice';
 import { BuildInfo } from '@/components-next/common';
 import { useRefsContext } from '@/context/RefsContext';
 import { settingsActions } from '@/store/settings/settingsActions';
+import appLogo from '@/assets/images/logo.png';
 
 type FormData = {
   email: string;
@@ -100,16 +101,17 @@ const LoginScreen = () => {
       if (!isLoggedIn) return;
       const context = await loadAndClearPendingLink();
       if (context) {
-        navigationRef.current?.navigate(
-          'ChatScreen' as never,
-          {
-            conversationId: context.conversationId,
-            primaryActorId: context.primaryActorId,
-            primaryActorType: context.primaryActorType,
-            ref: context.ref,
-            isConversationOpenedExternally: true,
-          } as never,
-        );
+        (
+          navigationRef.current as unknown as {
+            navigate: (route: string, params?: Record<string, unknown>) => void;
+          }
+        )?.navigate('ChatScreen', {
+          conversationId: context.conversationId,
+          primaryActorId: context.primaryActorId,
+          primaryActorType: context.primaryActorType,
+          ref: context.ref,
+          isConversationOpenedExternally: true,
+        });
       }
     };
     maybeNavigatePending();
@@ -143,12 +145,7 @@ const LoginScreen = () => {
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={tailwind.style('px-6 pt-24')}>
-          {/* eslint-disable-next-line @typescript-eslint/no-var-requires */}
-          <Image
-            source={require('@/assets/images/logo.png')}
-            style={tailwind.style('w-10 h-10')}
-            resizeMode="contain"
-          />
+          <Image source={appLogo} style={tailwind.style('w-10 h-10')} resizeMode="contain" />
           {/* <View style={tailwind.style('pt-6 gap-4')}>
             <Animated.Text style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20')}>
               {i18n.t('LOGIN.TITLE')}

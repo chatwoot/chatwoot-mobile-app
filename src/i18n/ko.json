@@ -368,7 +368,13 @@
     "TITLE": "연락처 속성"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "액션"
+    "TITLE": "액션",
+    "OPTIONS": {
+      "OPEN": "Open",
+      "PENDING": "Pending",
+      "SNOOZED": "Snooze",
+      "RESOLVED": "resolve"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "Assign team",

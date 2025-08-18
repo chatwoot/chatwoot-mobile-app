@@ -368,7 +368,13 @@
     "TITLE": "Yhteystiedon määritteet"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Toiminnot"
+    "TITLE": "Toiminnot",
+    "OPTIONS": {
+      "OPEN": "Open",
+      "PENDING": "Pending",
+      "SNOOZED": "Snooze",
+      "RESOLVED": "resolve"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "Määritä tiimi",

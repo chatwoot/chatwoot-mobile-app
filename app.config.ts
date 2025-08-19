@@ -4,7 +4,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'Chatwoot',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
-    version: '4.0.18',
+    version: '4.0.19',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
@@ -31,16 +31,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       },
       // Please use the relative path to the google-services.json file
       googleServicesFile: process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE,
-      entitlements: {
-        'aps-environment': 'production',
-      },
+      entitlements: { 'aps-environment': 'production' },
       associatedDomains: ['applinks:app.chatwoot.com'],
     },
     android: {
-      adaptiveIcon: {
-        foregroundImage: './assets/adaptive-icon.png',
-        backgroundColor: '#ffffff',
-      },
+      adaptiveIcon: { foregroundImage: './assets/adaptive-icon.png', backgroundColor: '#ffffff' },
       package: 'com.chatwoot.app',
       permissions: [
         'android.permission.CAMERA',
@@ -76,12 +71,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     owner: 'chatwoot',
     plugins: [
       'expo-font',
-      [
-        'react-native-permissions',
-        {
-          iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary'],
-        },
-      ],
+      ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary'] }],
       [
         '@sentry/react-native/expo',
         {
@@ -100,19 +90,13 @@ export default ({ config }: ConfigContext): ExpoConfig => {
             minSdkVersion: 24,
             compileSdkVersion: 35,
             targetSdkVersion: 34,
-            extraMavenRepos: ['$rootDir/../../../node_modules/@notifee/react-native/android/libs'],
             enableProguardInReleaseBuilds: true,
-            exclude: ['ffmpeg-kit-react-native'],
           },
-          ios: {
-            useFrameworks: 'static',
-          },
+          ios: { useFrameworks: 'static' },
         },
       ],
       './with-ffmpeg-pod.js',
     ],
-    androidNavigationBar: {
-      backgroundColor: '#ffffff',
-    },
+    androidNavigationBar: { backgroundColor: '#ffffff' },
   };
 };

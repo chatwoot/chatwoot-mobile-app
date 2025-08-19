@@ -118,7 +118,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
 
   // Memoize press handlers using useCallback
   const createPressHandler = React.useCallback(
-    (route: any, isFocused: boolean) => {
+    (route: { key: string; name: string; params?: object }, isFocused: boolean) => {
       return () => {
         hapticSelection?.();
         const event = navigation.emit({
@@ -137,7 +137,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
 
   // Memoize long press handler
   const createLongPressHandler = React.useCallback(
-    (route: any) => {
+    (route: { key: string; name: string; params?: object }) => {
       return () => {
         navigation.emit({
           type: 'tabLongPress',

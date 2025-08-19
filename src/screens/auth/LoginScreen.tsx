@@ -110,6 +110,7 @@ const LoginScreen = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={tailwind.style('px-6 pt-24')}>
           <Image
+            // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
             source={require('@/assets/images/logo.png')}
             style={tailwind.style('w-10 h-10')}
             resizeMode="contain"

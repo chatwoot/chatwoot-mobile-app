@@ -32,7 +32,12 @@ const mockConversationSlice = createSlice({
   initialState: {
     ids: [29],
     entities: {
-      29: { id: 29, status: 'open', channel: 'Channel::Email', messages: ALL_MESSAGES_MOCKDATA },
+      29: {
+        id: 29,
+        status: 'open',
+        channel: 'Channel::Email',
+        messages: ALL_MESSAGES_MOCKDATA,
+      },
     },
   },
   reducers: {},
@@ -71,6 +76,8 @@ export const EmailMessageList: Story = {
                       isFlashListReady={false}
                       setFlashListReady={() => {}}
                       onEndReached={() => {}}
+                      isEmailInbox={true}
+                      currentUserId={1}
                     />
                   </PlatformSpecificKeyboardWrapperComponent>
                 </ScrollView>

@@ -19,19 +19,23 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RefsProvider } from '@/context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { transformNotification } from '@/utils/camelCaseKeys';
+import Inter40020 from '@/assets/fonts/Inter-400-20.ttf';
+import Inter42020 from '@/assets/fonts/Inter-420-20.ttf';
+import Inter50024 from '@/assets/fonts/Inter-500-24.ttf';
+import Inter58024 from '@/assets/fonts/Inter-580-24.ttf';
+import Inter60020 from '@/assets/fonts/Inter-600-20.ttf';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
 });
 
 export const AppNavigationContainer = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [fontsLoaded, error] = useFonts({
-    'Inter-400-20': require('../assets/fonts/Inter-400-20.ttf'),
-    'Inter-420-20': require('../assets/fonts/Inter-420-20.ttf'),
-    'Inter-500-24': require('../assets/fonts/Inter-500-24.ttf'),
-    'Inter-580-24': require('../assets/fonts/Inter-580-24.ttf'),
-    'Inter-600-20': require('../assets/fonts/Inter-600-20.ttf'),
+  const [fontsLoaded] = useFonts({
+    'Inter-400-20': Inter40020,
+    'Inter-420-20': Inter42020,
+    'Inter-500-24': Inter50024,
+    'Inter-580-24': Inter58024,
+    'Inter-600-20': Inter60020,
   });
 
   const routeNameRef = useRef<string | undefined>(undefined);
@@ -169,7 +173,6 @@ export const AppNavigationContainer = () => {
     </NavigationContainer>
   );
 };
-
 export const AppNavigator = () => {
   return (
     <GestureHandlerRootView style={styles.navigationLayout}>

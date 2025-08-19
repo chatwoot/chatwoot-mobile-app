@@ -1,18 +1,24 @@
 import { Platform } from 'react-native';
 import { NOTIFICATION_TYPES } from '@/constants';
-import notifee from '@notifee/react-native';
 import { Notification } from '@/types/Notification';
 
-export const clearAllDeliveredNotifications = () => {
-  if (Platform.OS === 'android') {
-  } else {
-    notifee.cancelAllNotifications();
+let notifee: typeof import('@notifee/react-native').default | undefined;
+
+if (Platform.OS === 'ios') {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  notifee = require('@notifee/react-native')
+    .default as typeof import('@notifee/react-native').default;
+}
+
+export const clearAllDeliveredNotifications = async () => {
+  if (Platform.OS === 'ios' && notifee) {
+    await notifee.cancelAllNotifications();
   }
 };
 
-export const updateBadgeCount = ({ count = 0 }) => {
-  if (Platform.OS === 'ios' && count >= 0) {
-    notifee.setBadgeCount(count);
+export const updateBadgeCount = async ({ count = 0 }) => {
+  if (Platform.OS === 'ios' && count >= 0 && notifee) {
+    await notifee.setBadgeCount(count);
   }
 };
 
@@ -41,8 +47,14 @@ export const findConversationLinkFromPush = ({
   return;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const findNotificationFromFCM = ({ message }: { message: any }) => {
+interface FCMMessage {
+  data?: {
+    payload?: string;
+    notification?: string;
+  };
+}
+
+export const findNotificationFromFCM = ({ message }: { message: FCMMessage }) => {
   let notification = null;
   // FCM HTTP v1
   if (message?.data?.payload) {

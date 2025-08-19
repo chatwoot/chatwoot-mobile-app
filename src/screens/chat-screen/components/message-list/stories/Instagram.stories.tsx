@@ -32,7 +32,13 @@ const mockConversationSlice = createSlice({
   name: 'conversation',
   initialState: {
     ids: [29],
-    entities: { 29: { id: 29, status: 'open', messages: ALL_MESSAGES_MOCKDATA } },
+    entities: {
+      29: {
+        id: 29,
+        status: 'open',
+        messages: ALL_MESSAGES_MOCKDATA,
+      },
+    },
   },
   reducers: {},
 });
@@ -63,13 +69,15 @@ export const Instagram: Story = {
               <ChatWindowProvider conversationId={29}>
                 <ScrollView contentContainerStyle={tailwind.style('flex')}>
                   <PlatformSpecificKeyboardWrapperComponent
-                    style={tailwind.style('flex-1 bg-white border border-red-500')}
+                    style={tailwind.style('flex-1 bg-white')}
                     interpolator="linear">
                     <MessagesList
                       messages={ALL_MESSAGES_MOCKDATA}
                       isFlashListReady={false}
                       setFlashListReady={() => {}}
                       onEndReached={() => {}}
+                      isEmailInbox={false}
+                      currentUserId={1}
                     />
                   </PlatformSpecificKeyboardWrapperComponent>
                 </ScrollView>

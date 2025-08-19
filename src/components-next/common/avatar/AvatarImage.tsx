@@ -41,7 +41,7 @@ export const AvatarImage: React.FC<AvatarImageProps> = ({
       ]}
       // Seems to be tricky to set the right type here, but as we are not
       // doing anything with the error data, we can ignore the TS here
-      // @ts-ignore
+      // @ts-expect-error Image onError expects ImageErrorEventData but we only need the callback
       onError={onError}
       {...imageProps}
     />

@@ -117,7 +117,7 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
               size={'md'}
               src={
                 isTemplate || isSentByBot
-                  ? require('../../../../assets/local/bot-avatar.png')
+                  ? require('../../../../assets/local/bot-avatar.png') // eslint-disable-line @typescript-eslint/no-require-imports
                   : { uri: sender?.thumbnail }
               }
               name={sender?.name || ''}

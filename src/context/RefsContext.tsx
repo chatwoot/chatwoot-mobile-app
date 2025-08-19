@@ -28,7 +28,7 @@ const useRefsContext = (): RefsContextType => {
   const context = React.useContext(RefsContext);
   if (!context) {
     throw new Error(
-      'useRefsContext: `RefsContext` is undefined. Seems you forgot to wrap component within the CalendarProvider',
+      'useRefsContext: `RefsContext` is undefined. Seems you forgot to wrap component within the RefsProvider',
     );
   }
 
@@ -47,7 +47,7 @@ const RefsProvider: React.FC<Partial<RefsContextType & { children: React.ReactNo
   const switchAccountSheetRef = useRef<BottomSheetModal>(null);
   const debugActionsSheetRef = useRef<BottomSheetModal>(null);
   const inboxFiltersSheetRef = useRef<BottomSheetModal>(null);
-  const messageListRef = useRef<FlashList<Message>>(null);
+  const messageListRef = useRef<FlashList<Message | { date: string }>>(null);
   const slaEventsSheetRef = useRef<BottomSheetModal>(null);
   const deliveryStatusSheetRef = useRef<BottomSheetModal>(null);
   const updateParticipantSheetRef = useRef<BottomSheetModal>(null);

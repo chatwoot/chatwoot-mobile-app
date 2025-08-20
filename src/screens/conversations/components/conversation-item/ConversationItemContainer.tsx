@@ -97,10 +97,16 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
   const selected = useAppSelector(selectSelected);
   const currentState = useAppSelector(selectCurrentState);
 
-  const { availabilityStatus, name: contactName, thumbnail: contactThumbnail } = contact || {};
+  const {
+    availabilityStatus,
+    name: contactName,
+    thumbnail: contactThumbnail,
+    customAttributes,
+  } = contact || {};
   const isSelected = useMemo(() => id in selected, [selected, id]);
   const isTyping = useMemo(() => isContactTyping(typingUsers, contactId), [typingUsers, contactId]);
   const typingText = useMemo(() => getTypingUsersText({ users: typingUsers }), [typingUsers]);
+  const isAIEnabled = useMemo(() => customAttributes?.ai_enabled === 'true', [customAttributes]);
 
   const lastMessage = getLastMessage(conversationItem);
 
@@ -162,6 +168,8 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
     additionalAttributes,
     allLabels,
     typingText: typingText as string | undefined,
+    isAIEnabled,
+    contactId,
   };
 
   return (

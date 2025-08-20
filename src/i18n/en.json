@@ -414,10 +414,13 @@
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
     "CANNOT_FETCH": "There was an error fetching the information, please try again",
     "AUTH": "Username / Password Incorrect. Please try again",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts",
+    "AI_TOGGLE_ERROR": "Failed to toggle AI status. Please try again."
   },
   "SUCCESS": {
-    "AUTH": "Login Successful"
+    "AUTH": "Login Successful",
+    "AI_ENABLED_SUCCESS": "AI bot enabled successfully",
+    "AI_DISABLED_SUCCESS": "AI bot disabled successfully"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server upgrade required",

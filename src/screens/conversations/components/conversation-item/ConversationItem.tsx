@@ -46,7 +46,7 @@ export type ConversationItemProps = {
         waitingSince: number;
         status: string;
       }
-    | {};
+    | object;
 
   // Additional data
   additionalAttributes?: ConversationAdditionalAttributes;
@@ -57,6 +57,8 @@ export type ConversationItemProps = {
   allLabels: Label[];
 
   typingText?: string;
+  isAIEnabled?: boolean;
+  contactId?: number;
 };
 
 export const ConversationItem = memo(
@@ -82,6 +84,8 @@ export const ConversationItem = memo(
     additionalAttributes,
     allLabels,
     typingText,
+    isAIEnabled = false,
+    contactId,
   }: ConversationItemProps) => {
     return (
       <NativeView style={tailwind.style('px-3 gap-3 flex-row justify-between')}>
@@ -113,6 +117,8 @@ export const ConversationItem = memo(
             currentState,
             allLabels,
             typingText,
+            isAIEnabled,
+            contactId,
           }}
         />
       </NativeView>

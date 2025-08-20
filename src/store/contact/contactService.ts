@@ -5,6 +5,8 @@ import type {
   UpdateContactLabelsPayload,
   ContactConversationAPIResponse,
   ContactConversationPayload,
+  ToggleAIPayload,
+  ToggleAIResponse,
 } from './contactTypes';
 import { transformConversation } from '@/utils/camelCaseKeys';
 
@@ -37,5 +39,14 @@ export class ContactService {
     return {
       payload: transformedResponse,
     };
+  }
+
+  static async toggleAI(payload: ToggleAIPayload): Promise<ToggleAIResponse> {
+    const { contactId, aiEnabled } = payload;
+    const response = await apiService.patch<ToggleAIResponse>(
+      `contacts/${contactId}/toggle_ai`,
+      { ai_enabled: aiEnabled },
+    );
+    return response.data;
   }
 }

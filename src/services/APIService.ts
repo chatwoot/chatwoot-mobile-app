@@ -96,6 +96,10 @@ class APIService {
   public async delete<T>(url: string, config?: AxiosRequestConfig) {
     return this.api.delete<T>(url, config);
   }
+
+  public async patch<T, D = unknown>(url: string, data?: D, config?: AxiosRequestConfig) {
+    return this.api.patch<T>(url, data, config);
+  }
 }
 
 export const apiService = APIService.getInstance();

@@ -3,6 +3,7 @@
 // It also manages the availability status of the contacts
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { Contact } from '@/types/Contact';
+import { contactActions } from './contactActions';
 
 export const contactAdapter = createEntityAdapter<Contact>();
 
@@ -42,6 +43,18 @@ const contactSlice = createSlice({
         }
       });
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(contactActions.toggleAI.fulfilled, (state, action) => {
+      const { contactId, aiEnabled } = action.payload;
+      const contact = state.entities[contactId];
+      if (contact) {
+        contact.customAttributes = {
+          ...contact.customAttributes,
+          ai_enabled: aiEnabled.toString(),
+        };
+      }
+    });
   },
 });
 

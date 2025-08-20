@@ -1,13 +1,18 @@
 /* eslint-disable react/display-name */
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useCallback } from 'react';
 import { Dimensions, ImageURISource, Text } from 'react-native';
 import { LinearTransition } from 'react-native-reanimated';
 import { isEqual } from 'lodash';
 
 import { Avatar } from '@/components-next/common';
 import { AnimatedNativeView, NativeView } from '@/components-next/native-components';
+import { AIStatusIcon } from '@/components-next';
 import { tailwind } from '@/theme';
 import { Agent, Conversation, ConversationAdditionalAttributes, Label, Message } from '@/types';
+import { useAppDispatch } from '@/hooks';
+import { contactActions } from '@/store/contact/contactActions';
+import { showToast } from '@/utils/toastUtils';
+import I18n from '@/i18n';
 
 import { ConversationId } from './ConversationId';
 import { ConversationLastMessage } from './ConversationLastMessage';
@@ -38,10 +43,12 @@ type ConversationDetailSubCellProps = Pick<
         waitingSince: number;
         status: string;
       }
-    | {};
+    | object;
   additionalAttributes?: ConversationAdditionalAttributes;
   allLabels: Label[];
   typingText?: string;
+  isAIEnabled?: boolean;
+  contactId?: number;
 };
 
 const checkIfPropsAreSame = (
@@ -69,15 +76,49 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
     additionalAttributes,
     allLabels,
     typingText,
+    isAIEnabled,
+    contactId,
   } = props;
 
   const [shouldShowSLA, setShouldShowSLA] = useState(true);
+  const [isTogglingAI, setIsTogglingAI] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const hasPriority = priority !== null;
 
   const hasLabels = labels.length > 0;
 
   const hasSLA = !!slaPolicyId && shouldShowSLA;
+
+  const handleAIToggle = useCallback(async () => {
+    if (!contactId || isTogglingAI) return;
+    
+    setIsTogglingAI(true);
+    try {
+      const result = await dispatch(contactActions.toggleAI({
+        contactId,
+        aiEnabled: !isAIEnabled,
+      }));
+      
+      if (contactActions.toggleAI.fulfilled.match(result)) {
+        showToast({
+          message: I18n.t(
+            isAIEnabled ? 'SUCCESS.AI_DISABLED_SUCCESS' : 'SUCCESS.AI_ENABLED_SUCCESS',
+          ),
+        });
+      } else {
+        throw new Error('Toggle AI failed');
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      showToast({
+        message: I18n.t('ERRORS.AI_TOGGLE_ERROR'),
+      });
+    } finally {
+      setIsTogglingAI(false);
+    }
+  }, [contactId, isAIEnabled, isTogglingAI, dispatch]);
 
   if (!lastMessage) {
     return null;
@@ -105,6 +146,8 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
         <AnimatedNativeView style={tailwind.style('flex flex-row items-center gap-2')}>
           {hasPriority ? <PriorityIndicator {...{ priority }} /> : null}
           {inbox && <ChannelIndicator inbox={inbox} additionalAttributes={additionalAttributes} />}
+          {/* Always show icon for testing - remove this condition later */}
+          <AIStatusIcon isEnabled={isAIEnabled ?? false} onPress={handleAIToggle} />
           <LastActivityTime timestamp={timestamp} />
         </AnimatedNativeView>
       </AnimatedNativeView>

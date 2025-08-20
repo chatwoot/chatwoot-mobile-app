@@ -413,10 +413,13 @@
     "OfFLINE": "Debe conectarse a Wi-Fi o a una red móvil para conectarse de nuevo",
     "CANNOT_FETCH": "Hubo un error al recuperar la información, por favor inténtalo de nuevo",
     "AUTH": "Nombre de usuario / Contraseña incorrecto. Inténtalo de nuevo",
-    "NO_ACCOUNTS_MESSAGE": "No tienes acceso a ninguna cuenta de chatwoot"
+    "NO_ACCOUNTS_MESSAGE": "No tienes acceso a ninguna cuenta de chatwoot",
+    "AI_TOGGLE_ERROR": "Error al cambiar el estado de la IA. Por favor, inténtalo de nuevo."
   },
   "SUCCESS": {
-    "AUTH": "Inicio de sesión exitoso"
+    "AUTH": "Inicio de sesión exitoso",
+    "AI_ENABLED_SUCCESS": "Bot de IA habilitado exitosamente",
+    "AI_DISABLED_SUCCESS": "Bot de IA deshabilitado exitosamente"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Actualización de servidor necesaria",

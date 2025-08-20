@@ -31,7 +31,6 @@ export const AIStatusIcon: React.FC<AIStatusIconProps> = ({ isEnabled, size = 16
 
 const styles = StyleSheet.create({
   container: {
-    marginRight: 4,
     padding: 4,
     justifyContent: 'center',
     alignItems: 'center',

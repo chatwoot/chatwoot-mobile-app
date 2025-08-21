@@ -14,6 +14,13 @@ platform :ios, podfile_properties['ios.deploymentTarget'] || '15.1'
 install! 'cocoapods',
   :deterministic_uuids => false
 
+# Use different projects based on environment
+if ENV['ENVIRONMENT'] == 'prod'
+  project 'Chatscommerce.xcodeproj'
+else
+  project 'ChatscommerceDev.xcodeproj'
+end
+
 prepare_react_native_project!
 # @generated begin setup - expo prebuild (DO NOT MODIFY) sync-e6124d54c17a8d55098b718427896e44ae50d38d
 setup_permissions([
@@ -23,7 +30,9 @@ setup_permissions([
 ])
 # @generated end setup
 
-target 'Chatwoot' do
+# Use different targets based on environment
+target_name = ENV['ENVIRONMENT'] == 'prod' ? 'Chatscommerce' : 'ChatscommerceDev'
+target target_name do
   use_expo_modules!
 
   if ENV['EXPO_USE_COMMUNITY_AUTOLINKING'] == '1'

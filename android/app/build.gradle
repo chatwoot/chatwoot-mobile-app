@@ -1,7 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
-apply plugin: 'com.google.gms.google-services'
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
@@ -89,13 +88,13 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.chatscommerce.app'
+    namespace 'com.chatscommerce.app.dev'
     defaultConfig {
-        applicationId 'com.chatscommerce.app'
+        applicationId 'com.chatscommerce.app.dev'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "4.0.16"
+        versionName "4.0.19"
     }
     signingConfigs {
         debug {
@@ -176,9 +175,6 @@ dependencies {
     } else {
         implementation jscFlavor
     }
-    
-    // Explicitly exclude ffmpeg dependencies
-    configurations.all {
-        exclude group: 'com.arthenica', module: 'ffmpeg-kit-https'
-    }
 }
+
+apply plugin: 'com.google.gms.google-services'

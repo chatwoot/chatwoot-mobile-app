@@ -154,16 +154,16 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
                 <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />
               )}
               {hasLabels && <LabelIndicator labels={labels} allLabels={allLabels} />}
-              {assignee ? (
-                <AnimatedNativeView>
-                  <Avatar
-                    size="sm"
-                    name={assignee.name as string}
-                    src={{ uri: assignee.thumbnail } as ImageURISource}
-                  />
-                </AnimatedNativeView>
-              ) : null}
             </AnimatedNativeView>
+            {assignee ? (
+              <AnimatedNativeView style={tailwind.style('justify-end')}>
+                <Avatar
+                  size="sm"
+                  name={assignee.name as string}
+                  src={{ uri: assignee.thumbnail } as ImageURISource}
+                />
+              </AnimatedNativeView>
+            ) : null}
           </AnimatedNativeView>
         </AnimatedNativeView>
       ) : (

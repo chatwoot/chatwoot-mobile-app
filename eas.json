@@ -11,7 +11,13 @@
         "ENVIRONMENT": "dev"
       },
       "environment": "development",
-      "channel": "development"
+      "channel": "development",
+      "android": {
+        "image": "latest"
+      },
+      "ios": {
+        "image": "latest"
+      }
     },
     "preview": {
       "distribution": "internal",
@@ -24,14 +30,19 @@
         "ENVIRONMENT": "prod"
       },
       "environment": "production",
-      "channel": "production"
+      "channel": "production",
+      "env": {
+        "ENVIRONMENT": "prod"
+      }
     }
   },
   "submit": {
     "production": {
       "android": {
-        "track": "internal" // (enum: production, beta, alpha, internal)
-      }
+        "serviceAccountKeyPath": "./service-account-key.json",
+        "track": "production"
+      },
+      "ios": {}
     }
   }
 }

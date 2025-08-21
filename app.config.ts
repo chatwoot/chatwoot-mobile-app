@@ -1,70 +1,71 @@
 import { ExpoConfig, ConfigContext } from 'expo/config';
 
-const isProd = process.env.ENVIRONMENT === 'prod';
-
-const getBundleIdentifier = () => {
-  if (isProd) {
-    return 'com.chatscommerce.app';
-  }
-
-  return 'com.chatscommerce.app.dev';
-};
-
-const getAppName = () => {
-  if (isProd) {
-    return 'Chatscommerce';
-  }
-
-  return 'Chatscommerce Dev';
-};
-
-const getAppLinkDomains = () => {
-  if (isProd) {
-    return ['applinks:app.chatscommerce.com'];
-  }
-
-  return ['applinks:dev.app.chatscommerce.com'];
-};
-
-const getAppIcon = () => {
-  if (isProd) {
-    return './assets/icon.png';
-  }
-
-  return './assets/icon-dev.png';
-};
-
-const getAdaptiveIcon = () => {
-  if (isProd) {
-    return './assets/adaptive-icon.png';
-  }
-
-  return './assets/adaptive-icon-dev.png';
-};
-
-const getAppScheme = () => {
-  if (isProd) {
-    return 'chatscommerce';
-  }
-
-  return 'chatscommerce-dev';
-};
-
-const getHost = () => {
-  if (isProd) {
-    return 'app.chatscommerce.com';
-  }
-  return 'dev.app.chatscommerce.com';
-};
+// Helper functions are now defined inside the export function
 
 export default ({ config }: ConfigContext): ExpoConfig => {
-  // Use the copied Google services files from the native directories
-  const ANDROID_GSF = './android/app/google-services.json';
-  const IOS_PLIST = './ios/GoogleService-Info.plist';
+  // Check environment - EAS sets ENVIRONMENT in env, and build profile info is available
+  const isProd =
+    process.env.ENVIRONMENT === 'prod' || process.env.EAS_BUILD_PROFILE === 'production';
+  console.log('isProd', isProd);
+  // Helper functions that depend on isProd
+  const getBundleIdentifier = () =>
+    isProd ? 'com.chatscommerce.app' : 'com.chatscommerce.app.dev';
+  const getAppName = () => (isProd ? 'Chatscommerce' : 'Chatscommerce Dev');
+  const getAppLinkDomains = () =>
+    isProd ? ['applinks:app.chatscommerce.com'] : ['applinks:dev.app.chatscommerce.com'];
+  const getAppIcon = () => (isProd ? './assets/icon.png' : './assets/icon-dev.png');
+  const getAdaptiveIcon = () =>
+    isProd ? './assets/adaptive-icon.png' : './assets/adaptive-icon-dev.png';
+  const getAppScheme = () => (isProd ? 'chatscommerce' : 'chatscommerce-dev');
+  const getHost = () => (isProd ? 'app.chatscommerce.com' : 'dev.app.chatscommerce.com');
 
-  // Helpful logs in EAS build to confirm env injection
+  // Google Services file resolution with priority:
+  // 1. EAS environment variables (for cloud builds)
+  // 2. Native directories (for local dev after copy)
+  // 3. Credentials directory (for local dev fallback)
+  const fs = require('fs');
+  const getAndroidGSF = () => {
+    // Priority 1: EAS Secret File environment variable
+    if (process.env.GOOGLE_SERVICES_JSON && fs.existsSync(process.env.GOOGLE_SERVICES_JSON)) {
+      return process.env.GOOGLE_SERVICES_JSON;
+    }
+    
+    // Priority 2: Copied to native directory (local dev)
+    const nativeFile = './android/app/google-services.json';
+    if (fs.existsSync(nativeFile)) return nativeFile;
+    
+    // Priority 3: Credentials directory fallback
+    const credentialsFile = isProd ? './credentials/android/google-services.json' : './credentials/android/google-services-dev.json';
+    if (fs.existsSync(credentialsFile)) return credentialsFile;
+    
+    // Default fallback
+    return nativeFile;
+  };
+  
+  const getIosPlist = () => {
+    // Priority 1: EAS Secret File environment variable  
+    if (process.env.GOOGLE_SERVICE_INFO_PLIST && fs.existsSync(process.env.GOOGLE_SERVICE_INFO_PLIST)) {
+      return process.env.GOOGLE_SERVICE_INFO_PLIST;
+    }
+    
+    // Priority 2: Copied to native directory (local dev)
+    const nativeFile = './ios/GoogleService-Info.plist';
+    if (fs.existsSync(nativeFile)) return nativeFile;
+    
+    // Priority 3: Credentials directory fallback
+    const credentialsFile = isProd ? './credentials/ios/GoogleService-Info.plist' : './credentials/ios/GoogleService-Info-dev.plist';
+    if (fs.existsSync(credentialsFile)) return credentialsFile;
+    
+    // Default fallback
+    return nativeFile;
+  };
+
+  // Resolve the actual file paths
+  const resolvedAndroidGSF = getAndroidGSF();
+  const resolvedIosPlist = getIosPlist();
+
+  // Helpful logs in EAS build to confirm env injection and file resolution
   // These will appear early in build logs
-  // eslint-disable-next-line no-console
   // eslint-disable-next-line no-console
   console.log(
     '[config] EAS environment:',
@@ -73,11 +74,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   // eslint-disable-next-line no-console
   console.log('[config] GOOGLE_SERVICES_JSON (env):', process.env.GOOGLE_SERVICES_JSON);
   // eslint-disable-next-line no-console
-  console.log('[config] ANDROID googleServicesFile (resolved):', ANDROID_GSF);
+  console.log('[config] ANDROID googleServicesFile (resolved):', resolvedAndroidGSF);
   // eslint-disable-next-line no-console
   console.log('[config] GOOGLE_SERVICE_INFO_PLIST (env):', process.env.GOOGLE_SERVICE_INFO_PLIST);
   // eslint-disable-next-line no-console
-  console.log('[config] IOS googleServicesFile (resolved):', IOS_PLIST);
+  console.log('[config] IOS googleServicesFile (resolved):', resolvedIosPlist);
 
   return {
     ...config,
@@ -115,7 +116,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         ITSAppUsesNonExemptEncryption: false,
       },
       // Prefer EAS Secret File env var; fallback to repo path for local builds
-      googleServicesFile: IOS_PLIST,
+      googleServicesFile: resolvedIosPlist,
       entitlements: { 'aps-environment': 'production' },
       associatedDomains: getAppLinkDomains(),
     },
@@ -133,7 +134,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         'android.permission.READ_MEDIA_IMAGES',
       ],
       // Prefer EAS Secret File env var; fallback to repo path for local builds
-      googleServicesFile: ANDROID_GSF,
+      googleServicesFile: resolvedAndroidGSF,
       intentFilters: [
         {
           action: 'VIEW',
@@ -170,12 +171,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       ],
       '@react-native-firebase/app',
       '@react-native-firebase/messaging',
-      [
-        'expo-notifications',
-        {
-          color: '#ffffff',
-        },
-      ],
+      'expo-notifications',
       [
         'expo-build-properties',
         {
@@ -189,6 +185,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           ios: { useFrameworks: 'static' },
         },
       ],
+      './plugins/simple-manifest-fix',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },
   };

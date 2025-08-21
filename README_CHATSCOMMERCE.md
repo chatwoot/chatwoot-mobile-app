@@ -64,46 +64,37 @@ pnpm install
 
 ### 3. Environment Configuration
 
-This project uses environment-specific configuration files: `dev.env` for development and `prod.env` for production.
+Environment variables are managed through Expo's dashboard and automatically downloaded using scripts. This eliminates the need for manual environment file management.
 
-1.  **Create Environment Files:**
-    Copy the `.env.example` file to create `dev.env` and `prod.env` in the root directory.
+**Development Environment:**
+```bash
+./scripts/pull-env.sh development
+```
 
-    ```bash
-    cp .env.example dev.env
-    cp .env.example prod.env
-    ```
+**Production Environment:**
+```bash
+./scripts/pull-env.sh production
+```
 
-2.  **Populate the Files:**
-    Fill in the necessary variables in both `dev.env` and `prod.env` with the appropriate values for each environment.
-
-3.  **Switching Environments:**
-    Use the following scripts to switch the active `.env` file, which is used by the application.
-
-    ```bash
-    # Switch to the development environment
-    pnpm run env:dev
-
-    # Switch to the production environment
-    pnpm run env:prod
-    ```
-    The run and build scripts will handle this for you automatically.
+These scripts automatically download the appropriate environment variables from the Expo dashboard based on the specified environment. The variables are then used by the build and run scripts automatically.
 
 ### 4. Firebase Setup (Required for Push Notifications)
 
-1. **Create a Firebase Project**
-   - Go to [Firebase Console](https://console.firebase.google.com/)
-   - Create a new project or use an existing one
+Firebase configuration files should be placed in the `/credentials` directory for proper environment management:
 
-2. **Android Configuration**
-   - Add an Android app to your Firebase project
-   - Package name: `com.chatwoot.app`
-   - Download `google-services.json` and place it in the project root
+**Android Configuration:**
+1. Create Firebase Android app with package name: `com.chatscommerce.app`
+2. Download the `google-services.json` files and place them in:
+   - `/credentials/android/google-services.json` (production environment)
+   - `/credentials/android/google-services-dev.json` (development environment)
 
-3. **iOS Configuration**
-   - Add an iOS app to your Firebase project
-   - Bundle ID: `com.chatwoot.app`
-   - Download `GoogleService-Info.plist` and place it in the project root
+**iOS Configuration:**
+1. Create Firebase iOS app with bundle ID: `com.chatscommerce.app`
+2. Download the `GoogleService-Info.plist` files and place them in:
+   - `/credentials/ios/GoogleService-Info.plist` (production environment)
+   - `/credentials/ios/GoogleService-Info-dev.plist` (development environment)
+
+These files are automatically copied to the appropriate native directories during the build process based on the selected environment.
 
 ### 5. Expo Development Build
 
@@ -306,6 +297,42 @@ If you encounter issues with environment variables:
 2. Restart the development server after changing environment variables
 3. For production builds, set environment variables in your CI/CD pipeline
 
+
+## Deployment and CI/CD
+
+### Automatic Production Deployment
+
+When a Pull Request is merged to the `main` branch, the following automated processes are triggered:
+
+1. **Production Builds**: Automatic production builds are created for both Android and iOS platforms using EAS Build
+2. **App Store Submission**: The built applications are automatically submitted to:
+   - **Google Play Store** (Android) - submitted to the internal track for testing before production release
+   - **Apple App Store** (iOS) - submitted for App Store review and release
+
+### Manual Deployment
+
+For manual deployments or testing, use the following commands:
+
+```bash
+# Build production apps manually
+pnpm run build:android:prod  # Build Android production
+pnpm run build:ios:prod      # Build iOS production
+pnpm run build:all           # Build both platforms
+
+# Submit to app stores manually
+pnpm run submit:android:prod # Submit Android to Google Play
+pnpm run submit:ios:prod     # Submit iOS to App Store
+pnpm run submit:all          # Submit both platforms
+```
+
+### Development Workflow
+
+1. Create feature branches from `develop`
+2. Make changes and test on both platforms
+3. Create Pull Request to `develop` branch
+4. After review and approval, merge to `develop`
+5. When ready for release, merge `develop` to `main`
+6. **Automatic deployment** triggers upon merge to `main`
 
 ## Development Environment
 

@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL d'instal·lació",
-    "DESCRIPTION": "Si utilitzes una instal·lació de Chatwoot autoallotjada, introdueix l'URL del teu servidor. En cas contrari, utilitza app.chatwoot.com.",
+    "DESCRIPTION": "Si utilitzes una instal·lació de Chatscommerce autoallotjada, introdueix l'URL del teu servidor. En cas contrari, utilitza app.chatscommerce.com.",
     "URL_ERROR": "Introduïu un URL vàlid",
     "URL_REQUIRED": "La URL és necessària",
     "CONNECT": "Connectar",
@@ -402,15 +402,15 @@
     "OfFLINE": "Has de connectar a la xarxa Wi-Fi o a una xarxa mòbil per tornar a connectar-te",
     "CANNOT_FETCH": "S'ha produït un error en obtenir la informació. Torna-ho a provar",
     "AUTH": "Nom d’usuari / contrasenya incorrecte. Si us plau torna-ho a provar",
-    "NO_ACCOUNTS_MESSAGE": "No tens accés a cap compte de chatwoot"
+    "NO_ACCOUNTS_MESSAGE": "No tens accés a cap compte de Chatscommerce"
   },
   "SUCCESS": {
     "AUTH": "Inici de sessió correcte"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatscommerce server for your mobile app. Please contact your admin to upgrade your Chatscommerce server.",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatscommerce server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
   "EXIT": {
     "TITLE": "Sortir",

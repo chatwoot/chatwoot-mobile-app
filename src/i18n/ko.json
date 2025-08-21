@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "설치 URL",
-    "DESCRIPTION": "만약 자체 호스팅한 Chatwoot 설치를 사용하는 경우 서버 링크를 입력하세요. 그렇지 않으면 app.chatwoot.com을 사용하세요.",
+    "DESCRIPTION": "만약 자체 호스팅한 Chatscommerce 설치를 사용하는 경우 서버 링크를 입력하세요. 그렇지 않으면 app.chatscommerce.com을 사용하세요.",
     "URL_ERROR": "유효한 URL을 입력해주세요",
     "URL_REQUIRED": "링크가 필요합니다",
     "CONNECT": "연결",
@@ -402,15 +402,15 @@
     "OfFLINE": "온라인에 다시 연결하려면 와이파이나 이동통신망에 연결되어야 합니다",
     "CANNOT_FETCH": "설명 불러오는 동안 오류가 발생했습니다. 다시 시도하십시오.",
     "AUTH": "사용자 이름/암호가 잘못됨. 다시 시도하십시오.",
-    "NO_ACCOUNTS_MESSAGE": "모든 Chatwoot 계정에 접근 권한이 없습니다"
+    "NO_ACCOUNTS_MESSAGE": "모든 Chatscommerce 계정에 접근 권한이 없습니다"
   },
   "SUCCESS": {
     "AUTH": "로그인 성공"
   },
   "SERVER_UPGRADE": {
     "TITLE": "서버 업그레이드가 필요합니다",
-    "WARNING_FOR_AGENT": "모바일 앱에 지원되지 않는 Chatwoot 서버를 사용하고 있는 것 같습니다. Chatwoot 서버를 업그레이드하려면 관리자에게 문의하세요.",
-    "WARNING_FOR_ADMIN": "모바일 앱에 지원되지 않는 Chatwoot 서버를 사용하고 있는 것 같습니다. 서버 버전 %{minimumVersion} 이상으로 업그레이드해야 합니다."
+    "WARNING_FOR_AGENT": "모바일 앱에 지원되지 않는 Chatscommerce 서버를 사용하고 있는 것 같습니다. Chatscommerce 서버를 업그레이드하려면 관리자에게 문의하세요.",
+    "WARNING_FOR_ADMIN": "모바일 앱에 지원되지 않는 Chatscommerce 서버를 사용하고 있는 것 같습니다. 서버 버전 %{minimumVersion} 이상으로 업그레이드해야 합니다."
   },
   "EXIT": {
     "TITLE": "나가기",

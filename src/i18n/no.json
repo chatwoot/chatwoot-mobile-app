@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installation URL",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "If you are using a self-hosted Chatscommerce installation, input your server URL. Otherwise, use app.chatscommerce.com.",
     "URL_ERROR": "Enter a valid URL",
     "URL_REQUIRED": "URL is required",
     "CONNECT": "Koble til",
@@ -402,15 +402,15 @@
     "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
     "CANNOT_FETCH": "There was an error fetching the information, please try again",
     "AUTH": "Brukernavn eller passord er feil. Prøv igjen",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "NO_ACCOUNTS_MESSAGE": "You don't have access to any Chatscommerce accounts"
   },
   "SUCCESS": {
     "AUTH": "Innlogging vellykket"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatscommerce server for your mobile app. Please contact your admin to upgrade your Chatscommerce server.",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatscommerce server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
   "EXIT": {
     "TITLE": "Exit",

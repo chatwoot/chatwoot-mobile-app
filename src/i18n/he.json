@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "קישור התקנה",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "If you are using a self-hosted Chatscommerce installation, input your server URL. Otherwise, use app.chatscommerce.com.",
     "URL_ERROR": "הזן URL חוקי",
     "URL_REQUIRED": "URL is required",
     "CONNECT": "התחבר",
@@ -402,15 +402,15 @@
     "OfFLINE": "עליך להתחבר ל- Wi-Fi או לרשת סלולרית כדי להתחבר מחדש",
     "CANNOT_FETCH": "אירעה שגיאה בניסיון לקבל את המידע, נסה שוב",
     "AUTH": "שם משתמש / סיסמה שגויים. נסה שוב",
-    "NO_ACCOUNTS_MESSAGE": "אין לך גישה לשום חשבון chatwoot"
+    "NO_ACCOUNTS_MESSAGE": "אין לך גישה לשום חשבון Chatscommerce"
   },
   "SUCCESS": {
     "AUTH": "נכנסת בהצלחה"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatscommerce server for your mobile app. Please contact your admin to upgrade your Chatscommerce server.",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatscommerce server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
   "EXIT": {
     "TITLE": "יציאה",

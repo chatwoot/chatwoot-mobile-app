@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Asennuksen URL",
-    "DESCRIPTION": "Jos käytät itse ylläpidettyä Chatwoot asennusta, syötä palvelimen URL-osoite. Muussa tapauksessa käytä osoitetta app.chatwoot.com.",
+    "DESCRIPTION": "Jos käytät itse ylläpidettyä Chatscommerce asennusta, syötä palvelimen URL-osoite. Muussa tapauksessa käytä osoitetta app.chatscommerce.com.",
     "URL_ERROR": "Anna kelvollinen URL-osoite",
     "URL_REQUIRED": "URL osoite vaaditaan",
     "CONNECT": "Yhdistä",
@@ -402,15 +402,15 @@
     "OfFLINE": "Sinun on yhdistettävä Wi-Fi- tai matkapuhelinverkkoon, jotta voit olla taas paikalla",
     "CANNOT_FETCH": "Tietojen haussa tapahtui virhe. Ole hyvä ja yritä uudelleen",
     "AUTH": "Käyttäjätunnus / salasana virheellinen. Yritä uudelleen",
-    "NO_ACCOUNTS_MESSAGE": "Sinulla ei ole pääsyä mihinkään Chatwoot-tiliin"
+    "NO_ACCOUNTS_MESSAGE": "Sinulla ei ole pääsyä mihinkään Chatscommerce-tiliin"
   },
   "SUCCESS": {
     "AUTH": "Kirjautuminen onnistui"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Palvelimen päivitys tarvitaan",
-    "WARNING_FOR_AGENT": "Näyttää siltä, että käytät mobiiliapille sellaista Chatwoot palvelinta jota ei tueta. Ota yhteyttä ylläpitäjään ja päivitä Chatwoot palvelin.",
-    "WARNING_FOR_ADMIN": "Näyttää siltä, että käytät yhteensopimatonta Chatwoot palvelinversiota mobiilisovelluksellesi. Päivitys palvelimen versioon %{minimumVersion} tai uudempaan vaaditaan."
+    "WARNING_FOR_AGENT": "Näyttää siltä, että käytät mobiiliapille sellaista Chatscommerce palvelinta jota ei tueta. Ota yhteyttä ylläpitäjään ja päivitä Chatscommerce palvelin.",
+    "WARNING_FOR_ADMIN": "Näyttää siltä, että käytät yhteensopimatonta Chatscommerce palvelinversiota mobiilisovelluksellesi. Päivitys palvelimen versioon %{minimumVersion} tai uudempaan vaaditaan."
   },
   "EXIT": {
     "TITLE": "Poistu",

@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "安装链接",
-    "DESCRIPTION": "如果您正在使用自己托管的Chatwoot 安装，请输入您的服务器URL。否则，请使用 app.chatwoot.com。",
+    "DESCRIPTION": "如果您正在使用自己托管的Chatscommerce 安装，请输入您的服务器URL。否则，请使用 app.chatscommerce.com。",
     "URL_ERROR": "输入有效网址",
     "URL_REQUIRED": "URL 是必填项",
     "CONNECT": "连接",
@@ -409,8 +409,8 @@
   },
   "SERVER_UPGRADE": {
     "TITLE": "需要更新服务器",
-    "WARNING_FOR_AGENT": "您的手机应用似乎正在使用不受支持的Chatwoot 服务器。请联系您的管理员升级您的Chatwoot 服务器。",
-    "WARNING_FOR_ADMIN": "您的手机应用似乎正在使用不支持的Chatwoot 服务器。需要升级到服务器版本 %{minimumVersion} 或更高版本。"
+    "WARNING_FOR_AGENT": "您的手机应用似乎正在使用不受支持的Chatscommerce 服务器。请联系您的管理员升级您的Chatscommerce 服务器。",
+    "WARNING_FOR_ADMIN": "您的手机应用似乎正在使用不支持的Chatscommerce 服务器。需要升级到服务器版本 %{minimumVersion} 或更高版本。"
   },
   "EXIT": {
     "TITLE": "退出",

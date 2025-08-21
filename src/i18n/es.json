@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL de instalación",
-    "DESCRIPTION": "Si estás usando una instalación de Chatwoot autoalojada, introduce la URL de tu servidor. De lo contrario, usa app.chatwoot.com.",
+    "DESCRIPTION": "Si estás usando una instalación de Chatscommerce autoalojada, introduce la URL de tu servidor. De lo contrario, usa app.chatscommerce.com.",
     "URL_ERROR": "Introduzca una URL válida",
     "URL_REQUIRED": "La URL es requerida",
     "CONNECT": "Conectar",
@@ -413,7 +413,7 @@
     "OfFLINE": "Debe conectarse a Wi-Fi o a una red móvil para conectarse de nuevo",
     "CANNOT_FETCH": "Hubo un error al recuperar la información, por favor inténtalo de nuevo",
     "AUTH": "Nombre de usuario / Contraseña incorrecto. Inténtalo de nuevo",
-    "NO_ACCOUNTS_MESSAGE": "No tienes acceso a ninguna cuenta de chatwoot",
+    "NO_ACCOUNTS_MESSAGE": "No tienes acceso a ninguna cuenta de Chatscommerce",
     "AI_TOGGLE_ERROR": "Error al cambiar el estado de la IA. Por favor, inténtalo de nuevo."
   },
   "SUCCESS": {
@@ -423,8 +423,8 @@
   },
   "SERVER_UPGRADE": {
     "TITLE": "Actualización de servidor necesaria",
-    "WARNING_FOR_AGENT": "Parece que estás usando un servidor de Chatwoot no soportado para tu aplicación móvil. Por favor, contacta con tu administrador para actualizar tu servidor de Chatwoot.",
-    "WARNING_FOR_ADMIN": "Parece que estás usando un servidor de Chatwoot no compatible para tu aplicación móvil. Se requiere actualizar a la versión del servidor %{minimumVersion} o posterior."
+    "WARNING_FOR_AGENT": "Parece que estás usando un servidor de Chatscommerce no soportado para tu aplicación móvil. Por favor, contacta con tu administrador para actualizar tu servidor de Chatscommerce.",
+    "WARNING_FOR_ADMIN": "Parece que estás usando un servidor de Chatscommerce no compatible para tu aplicación móvil. Se requiere actualizar a la versión del servidor %{minimumVersion} o posterior."
   },
   "EXIT": {
     "TITLE": "Salir",

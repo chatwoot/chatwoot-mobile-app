@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installatie-url",
-    "DESCRIPTION": "Als je een zelf gehoste Chatwoot-installatie gebruikt, voer dan de URL van jouw server in. Gebruik anders: app.chatwoot.com.",
+    "DESCRIPTION": "Als je een zelf gehoste Chatscommerce-installatie gebruikt, voer dan de URL van jouw server in. Gebruik anders: app.chatscommerce.com.",
     "URL_ERROR": "Voer een geldige URL in",
     "URL_REQUIRED": "URL is vereist",
     "CONNECT": "Koppel",
@@ -402,15 +402,15 @@
     "OfFLINE": "U moet verbinding maken met Wi-Fi of een mobiel netwerk om weer online te kunnen komen",
     "CANNOT_FETCH": "Er is een fout opgetreden bij het ophalen van de informatie, probeer het opnieuw",
     "AUTH": "Gebruikersnaam / wachtwoord onjuist. Probeer het opnieuw",
-    "NO_ACCOUNTS_MESSAGE": "Je hebt geen toegang tot Chatwoot-accounts"
+    "NO_ACCOUNTS_MESSAGE": "Je hebt geen toegang tot Chatscommerce-accounts"
   },
   "SUCCESS": {
     "AUTH": "Login succesvol"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server-upgrade vereist",
-    "WARNING_FOR_AGENT": "Je gebruikt een niet-ondersteunde Chatwoot-server voor je mobiele app. Neem contact op met de je beheerder om de Chatwoot-server mogelijk te upgraden.",
-    "WARNING_FOR_ADMIN": "Je gebruikt een niet-ondersteunde Chatwoot-server voor je mobiele app. Upgrade naar serverversie %{minimumVersion} of hoger."
+    "WARNING_FOR_AGENT": "Je gebruikt een niet-ondersteunde Chatscommerce-server voor je mobiele app. Neem contact op met de je beheerder om de Chatscommerce-server mogelijk te upgraden.",
+    "WARNING_FOR_ADMIN": "Je gebruikt een niet-ondersteunde Chatscommerce-server voor je mobiele app. Upgrade naar serverversie %{minimumVersion} of hoger."
   },
   "EXIT": {
     "TITLE": "Afsluiten",

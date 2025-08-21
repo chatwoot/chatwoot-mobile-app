@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL cài đặt",
-    "DESCRIPTION": "Nếu bạn đang dùng Chatwoot tự chủ, điền URL máy chủ của bạn. Nếu không, dùng app.chatwoot.com.",
+    "DESCRIPTION": "Nếu bạn đang dùng Chatscommerce tự chủ, điền URL máy chủ của bạn. Nếu không, dùng app.chatscommerce.com.",
     "URL_ERROR": "Điền URL hợp lệ",
     "URL_REQUIRED": "URL bắt buộc có",
     "CONNECT": "Kết nối",
@@ -402,15 +402,15 @@
     "OfFLINE": "Bạn phải kết nối với Wi-fi hoặc mạng di động để trực tuyến trở lại",
     "CANNOT_FETCH": "Đã xảy ra lỗi khi lấy thông tin, vui lòng thử lại",
     "AUTH": "Tài khoản/Mật khẩu không đúng. Vui lòng thử lại",
-    "NO_ACCOUNTS_MESSAGE": "Bạn không có quyền truy cập vào bất kỳ tài khoản chatwoot nào"
+    "NO_ACCOUNTS_MESSAGE": "Bạn không có quyền truy cập vào bất kỳ tài khoản Chatscommerce nào"
   },
   "SUCCESS": {
     "AUTH": "Đăng nhập thành công"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Cần nâng cấp máy chủ",
-    "WARNING_FOR_AGENT": "Có vẻ như bạn đang dùng máy chủ Chatwoot không hỗ trợ ứng dụng di động. Vui lòng liên hệ với quản trị viên để nâng cấp server Chatwoot của bạn.",
-    "WARNING_FOR_ADMIN": "Có vẻ như bạn đang dùng máy chủ Chatwoot không hỗ trợ ứng dụng di động. Cần nâng cấp máy chủ lên phiên bản %{minimumVersion} hoặc lớn hơn."
+    "WARNING_FOR_AGENT": "Có vẻ như bạn đang dùng máy chủ Chatscommerce không hỗ trợ ứng dụng di động. Vui lòng liên hệ với quản trị viên để nâng cấp server Chatscommerce của bạn.",
+    "WARNING_FOR_ADMIN": "Có vẻ như bạn đang dùng máy chủ Chatscommerce không hỗ trợ ứng dụng di động. Cần nâng cấp máy chủ lên phiên bản %{minimumVersion} hoặc lớn hơn."
   },
   "EXIT": {
     "TITLE": "Lối ra",

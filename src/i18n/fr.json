@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Lien d'installation",
-    "DESCRIPTION": "Si vous utilisez une installation de Chatwoot auto-hébergée, saisissez l'URL de votre serveur. Sinon, utilisez app.chatwoot.com.",
+    "DESCRIPTION": "Si vous utilisez une installation de Chatscommerce auto-hébergée, saisissez l'URL de votre serveur. Sinon, utilisez app.chatscommerce.com.",
     "URL_ERROR": "Saisissez une URL valide",
     "URL_REQUIRED": "L'URL est requise",
     "CONNECT": "Connexion",
@@ -413,15 +413,15 @@
     "OfFLINE": "Vous devez vous connecter au Wi-Fi ou à un réseau cellulaire pour vous reconnecter",
     "CANNOT_FETCH": "Une erreur s'est produite lors de la récupération des informations, veuillez réessayer",
     "AUTH": "Nom d'utilisateur / mot de passe incorrect. Veuillez réessayer",
-    "NO_ACCOUNTS_MESSAGE": "Vous n'avez accès a aucun compte chatwoot"
+    "NO_ACCOUNTS_MESSAGE": "Vous n'avez accès a aucun compte Chatscommerce"
   },
   "SUCCESS": {
     "AUTH": "Connexion réussie"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Mise à jour du serveur requise",
-    "WARNING_FOR_AGENT": "Il semble que vous utilisez un serveur Chatwoot non pris en charge pour votre application mobile. Veuillez contacter votre administrateur pour mettre à jour votre serveur Chatwoot.",
-    "WARNING_FOR_ADMIN": "Il semble que vous utilisez un serveur Chatwoot non pris en charge pour votre application mobile. La mise à jour vers la version %{minimumVersion} du serveur ou ultérieure est requise."
+    "WARNING_FOR_AGENT": "Il semble que vous utilisez un serveur Chatscommerce non pris en charge pour votre application mobile. Veuillez contacter votre administrateur pour mettre à jour votre serveur Chatscommerce.",
+    "WARNING_FOR_ADMIN": "Il semble que vous utilisez un serveur Chatscommerce non pris en charge pour votre application mobile. La mise à jour vers la version %{minimumVersion} du serveur ou ultérieure est requise."
   },
   "EXIT": {
     "TITLE": "Quitter",

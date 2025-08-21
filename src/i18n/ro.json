@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Instalare URL",
-    "DESCRIPTION": "Dacă folosiți o instalare de Chatwoot auto-găzduită, introduceți URL-ul serverului. Altfel, folosiți app.chatwoot.com.",
+    "DESCRIPTION": "Dacă folosiți o instalare de Chatscommerce auto-găzduită, introduceți URL-ul serverului. Altfel, folosiți app.chatscommerce.com.",
     "URL_ERROR": "Introduceți o adresă URL validă",
     "URL_REQUIRED": "URL-ul este necesar",
     "CONNECT": "Conectează-te",
@@ -402,15 +402,15 @@
     "OfFLINE": "Trebuie să vă conectați la Wi-Fi sau la o rețea celulară pentru a intra din nou online",
     "CANNOT_FETCH": "A existat o eroare la preluarea informațiilor, vă rugăm să încercați din nou",
     "AUTH": "Nume utilizator / parolă incorectă. Vă rugăm să încercaţi din nou",
-    "NO_ACCOUNTS_MESSAGE": "Nu aveți acces la niciun cont de chatwoot"
+    "NO_ACCOUNTS_MESSAGE": "Nu aveți acces la niciun cont de Chatscommerce"
   },
   "SUCCESS": {
     "AUTH": "Autentificare reușită"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Este necesar upgrade-ul serverului",
-    "WARNING_FOR_AGENT": "Se pare că utilizați serverul Chatwoot neacceptat pentru aplicația mobilă. Vă rugăm să contactați administratorul pentru a vă actualiza serverul Chatwoot.",
-    "WARNING_FOR_ADMIN": "Se pare că utilizați serverul Chatwoot neacceptat pentru aplicația mobilă. Este necesar upgrade-ul la versiunea de server %{minimumVersion} sau o versiune ulterioară."
+    "WARNING_FOR_AGENT": "Se pare că utilizați serverul Chatscommerce neacceptat pentru aplicația mobilă. Vă rugăm să contactați administratorul pentru a vă actualiza serverul Chatscommerce.",
+    "WARNING_FOR_ADMIN": "Se pare că utilizați serverul Chatscommerce neacceptat pentru aplicația mobilă. Este necesar upgrade-ul la versiunea de server %{minimumVersion} sau o versiune ulterioară."
   },
   "EXIT": {
     "TITLE": "Ieșire",

@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL Instalasi",
-    "DESCRIPTION": "Jika Anda menggunakan instalasi Chatwoot yang di server anda sendiri, masukkan URL server Anda. Jika tidak, gunakan app.chatwoot.com.",
+    "DESCRIPTION": "Jika Anda menggunakan instalasi Chatscommerce yang di server anda sendiri, masukkan URL server Anda. Jika tidak, gunakan app.chatscommerce.com.",
     "URL_ERROR": "Masukkan URL yang valid",
     "URL_REQUIRED": "URL wajib diisi",
     "CONNECT": "Hubungkan",
@@ -160,15 +160,15 @@
     "OFFLINE": "Anda harus terhubung ke Wi-fi atau jaringan seluler untuk online kembali",
     "CANNOT_FETCH": "Ada kesalahan saat mengambil informasi, silakan coba lagi",
     "AUTH": "Nama pengguna / kata sandi salah. Silakan coba lagi",
-    "NO_ACCOUNTS_MESSAGE": "Anda tidak memiliki akses ke akun chatwoot apa pun"
+    "NO_ACCOUNTS_MESSAGE": "Anda tidak memiliki akses ke akun Chatscommerce apa pun"
   },
   "SUCCESS": {
     "AUTH": "Login Berhasil"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Peningkatan server diperlukan",
-    "WARNING_FOR_AGENT": "Sepertinya Anda menggunakan server Chatwoot yang tidak didukung perangkat seluler Anda. Silakan hubungi admin Anda untuk meningkatkan server Chatwoot Anda.",
-    "WARNING_FOR_ADMIN": "Sepertinya Anda menggunakan server Chatwoot yang tidak didukung perangkat seluler Anda. Diperlukan peningkatan ke versi server %{minimumVersion} atau yang lebih baru."
+    "WARNING_FOR_AGENT": "Sepertinya Anda menggunakan server Chatscommerce yang tidak didukung perangkat seluler Anda. Silakan hubungi admin Anda untuk meningkatkan server Chatscommerce Anda.",
+    "WARNING_FOR_ADMIN": "Sepertinya Anda menggunakan server Chatscommerce yang tidak didukung perangkat seluler Anda. Diperlukan peningkatan ke versi server %{minimumVersion} atau yang lebih baru."
   },
   "EXIT": {
     "TITLE": "Keluar",

@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL för installationen",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "If you are using a self-hosted Chatscommerce installation, input your server URL. Otherwise, use app.chatscommerce.com.",
     "URL_ERROR": "Ange en giltig URL",
     "URL_REQUIRED": "URL is required",
     "CONNECT": "Anslut",
@@ -402,15 +402,15 @@
     "OfFLINE": "Du måste ansluta till Wi-Fi eller ett mobilnätverk för att gå online igen",
     "CANNOT_FETCH": "Det uppstod ett fel när informationen skulle hämtas, försök igen",
     "AUTH": "Användarnamn / Lösenord felaktigt. Försök igen",
-    "NO_ACCOUNTS_MESSAGE": "Du har inte tillgång till några chatwoot-konton"
+    "NO_ACCOUNTS_MESSAGE": "Du har inte tillgång till några Chatscommerce-konton"
   },
   "SUCCESS": {
     "AUTH": "Inloggning lyckades"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatscommerce server for your mobile app. Please contact your admin to upgrade your Chatscommerce server.",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatscommerce server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
   "EXIT": {
     "TITLE": "Avsluta",

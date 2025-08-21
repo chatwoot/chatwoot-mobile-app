@@ -119,8 +119,12 @@ export const AudioRecorder = ({
             setIsAudioRecording(true);
           }
         })
-        .catch(e => {
-          Alert.alert(e);
+        .catch(error => {
+          .catch(error => {
+          Alert.alert(
+            'Error preparing audio file',
+            error instanceof Error ? error.message : String(error),
+          );
           deleteRecorder();
         });
     };

@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "4.0.19",
+  "version": "4.1.1",
   "scripts": {
     "start": "expo start --dev-client",
     "start:production": "expo start --no-dev --minify",

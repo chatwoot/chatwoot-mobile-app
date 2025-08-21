@@ -1,4 +1,4 @@
-package com.chatscommerce.app
+package com.chatscommerce.app.dev
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

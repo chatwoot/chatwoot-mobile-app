@@ -1,25 +1,74 @@
 import { ExpoConfig, ConfigContext } from 'expo/config';
 
-export default ({ config }: ConfigContext): ExpoConfig => {
-  // Resolve Google services files from EAS secret file vars or fallbacks
-  const ANDROID_GSF =
-    process.env.GOOGLE_SERVICES_JSON ||
-    process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE ||
-    './credentials/android/google-services.json';
+const isProd = process.env.ENVIRONMENT === 'prod';
 
-  const IOS_PLIST =
-    process.env.GOOGLE_SERVICE_INFO_PLIST ||
-    process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE ||
-    './credentials/ios/GoogleService-Info.plist';
+const getBundleIdentifier = () => {
+  if (isProd) {
+    return 'com.chatscommerce.app';
+  }
+
+  return 'com.chatscommerce.app.dev';
+};
+
+const getAppName = () => {
+  if (isProd) {
+    return 'Chatscommerce';
+  }
+
+  return 'Chatscommerce Dev';
+};
+
+const getAppLinkDomains = () => {
+  if (isProd) {
+    return ['applinks:app.chatscommerce.com'];
+  }
+
+  return ['applinks:dev.app.chatscommerce.com'];
+};
+
+const getAppIcon = () => {
+  if (isProd) {
+    return './assets/icon.png';
+  }
+
+  return './assets/icon-dev.png';
+};
+
+const getAdaptiveIcon = () => {
+  if (isProd) {
+    return './assets/adaptive-icon.png';
+  }
+
+  return './assets/adaptive-icon-dev.png';
+};
+
+const getAppScheme = () => {
+  if (isProd) {
+    return 'chatscommerce';
+  }
+
+  return 'chatscommerce-dev';
+};
+
+const getHost = () => {
+  if (isProd) {
+    return 'app.chatscommerce.com';
+  }
+  return 'dev.app.chatscommerce.com';
+};
+
+export default ({ config }: ConfigContext): ExpoConfig => {
+  // Use the copied Google services files from the native directories
+  const ANDROID_GSF = './android/app/google-services.json';
+  const IOS_PLIST = './ios/GoogleService-Info.plist';
 
   // Helpful logs in EAS build to confirm env injection
   // These will appear early in build logs
   // eslint-disable-next-line no-console
-  console.log('[config] EAS_BUILD:', process.env.EAS_BUILD);
   // eslint-disable-next-line no-console
   console.log(
     '[config] EAS environment:',
-    process.env.EAS_BUILD_PROFILE || process.env.EAS_ENVIRONMENT,
+    process.env.EAS_BUILD_PROFILE || process.env.ENVIRONMENT,
   );
   // eslint-disable-next-line no-console
   console.log('[config] GOOGLE_SERVICES_JSON (env):', process.env.GOOGLE_SERVICES_JSON);
@@ -31,9 +80,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   console.log('[config] IOS googleServicesFile (resolved):', IOS_PLIST);
 
   return {
-    name: 'Chatscommerce',
+    ...config,
+    name: getAppName(),
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatscommerce',
-    scheme: 'chatscommerce',
+    scheme: getAppScheme(),
     // Required for EAS Update; prevents Expo CLI from trying to auto-write to dynamic config
     updates: {
       url: 'https://u.expo.dev/c388de6e-16cf-4618-b94e-a45c450845dc',
@@ -41,7 +91,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     runtimeVersion: '1.0.0',
     version: '4.0.19',
     orientation: 'portrait',
-    icon: './assets/icon.png',
+    icon: getAppIcon(),
     userInterfaceStyle: 'light',
     newArchEnabled: false,
     splash: {
@@ -52,7 +102,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     ios: {
       supportsTablet: true,
-      bundleIdentifier: 'com.chatscommerce.app',
+      bundleIdentifier: getBundleIdentifier(),
       infoPlist: {
         NSCameraUsageDescription:
           'This app requires access to the camera to upload images and videos.',
@@ -67,11 +117,14 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       // Prefer EAS Secret File env var; fallback to repo path for local builds
       googleServicesFile: IOS_PLIST,
       entitlements: { 'aps-environment': 'production' },
-      associatedDomains: ['applinks:app.chatscommerce.com', 'applinks:dev.app.chatscommerce.com'],
+      associatedDomains: getAppLinkDomains(),
     },
     android: {
-      adaptiveIcon: { foregroundImage: './assets/adaptive-icon.png', backgroundColor: '#ffffff' },
-      package: 'com.chatscommerce.app',
+      adaptiveIcon: {
+        foregroundImage: getAdaptiveIcon(),
+        backgroundColor: '#5d17eb',
+      },
+      package: getBundleIdentifier(),
       permissions: [
         'android.permission.CAMERA',
         'android.permission.READ_EXTERNAL_STORAGE',
@@ -88,7 +141,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           data: [
             {
               scheme: 'https',
-              host: 'app.chatscommerce.com',
+              host: getHost(),
               pathPrefix: '/app/accounts/',
               pathPattern: '/*/conversations/*',
             },
@@ -121,7 +174,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         'expo-notifications',
         {
           color: '#ffffff',
-          sounds: ['default'],
         },
       ],
       [

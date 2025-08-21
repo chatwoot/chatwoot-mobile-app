@@ -34,9 +34,14 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-google-services.json
-GoogleService-Info.plist
+# credentials for Firebase and Google services
+/credentials/
+/google-services.json
+/GoogleService-Info.plist
+
 .env
 .env.local
 dev.env
 prod.env
+android/app/google-services.json
+ios/GoogleService-Info.plist

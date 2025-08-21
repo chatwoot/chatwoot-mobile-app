@@ -7,6 +7,9 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "env": {
+        "ENVIRONMENT": "dev"
+      },
       "environment": "development",
       "channel": "development"
     },
@@ -17,6 +20,9 @@
     },
     "production": {
       "autoIncrement": true,
+      "env": {
+        "ENVIRONMENT": "prod"
+      },
       "environment": "production",
       "channel": "production"
     }

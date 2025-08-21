@@ -6,13 +6,11 @@ import { tailwind } from '@/theme';
 export const BuildInfo: React.FC = () => {
   const appVersion = Application.nativeApplicationVersion;
   const buildNumber = Application.nativeBuildVersion;
-  const text = buildNumber
-    ? `Version: ${appVersion}  •  Build Number: ${buildNumber}`
-    : `Version: ${appVersion}`;
+  const bundleId = Application.applicationId;
+  const isProd = bundleId === 'com.chatscommerce.app';
 
-  return (
-    <Animated.Text style={tailwind.style('text-sm text-gray-700')}>{text}</Animated.Text>
-  );
+  const versionText = `Version: ${appVersion}${isProd ? '' : ' (dev)'}`;
+  const text = buildNumber ? `${versionText}  •  Build Number: ${buildNumber}` : versionText;
+
+  return <Animated.Text style={tailwind.style('text-sm text-gray-700')}>{text}</Animated.Text>;
 };
-
-

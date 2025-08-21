@@ -1,4 +1,4 @@
-package com.chatscommerce.app
+package com.chatscommerce.app.dev
 
 import android.app.Application
 import android.content.res.Configuration

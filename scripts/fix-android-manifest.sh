@@ -61,48 +61,53 @@ if [ -f "$MANIFEST_FILE" ]; then
     echo "ℹ️  xmlns:tools declaration already exists"
   fi
   
-  # Check if tools:replace is already present to avoid duplicates
-  if ! grep -q 'android:name="com.google.firebase.messaging.default_notification_color".*tools:replace="android:resource"' "$MANIFEST_FILE"; then
-    echo "🔧 Adding tools:replace to Firebase notification color meta-data..."
-    
-    # First, let's see what we're working with
-    echo "🔍 Lines containing notification color before fix:"
-    grep -n "com.google.firebase.messaging.default_notification_color" "$MANIFEST_FILE" || echo "None found"
-    
-    # Use different sed syntax for macOS vs Linux
-    # We'll use a more comprehensive approach to catch all variations
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-      # macOS - Handle multiple patterns
-      # Pattern 1: Simple attribute format
-      sed -i '' 's/android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color\/notification_icon_color"/android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color\/notification_icon_color" tools:replace="android:resource"/g' "$MANIFEST_FILE"
-      # Pattern 2: Meta-data tag with various spacing/formatting
-      sed -i '' 's/<meta-data\([^>]*\)android:name="com.google.firebase.messaging.default_notification_color"\([^>]*\)android:resource="@color\/notification_icon_color"\([^>]*\)>/<meta-data\1android:name="com.google.firebase.messaging.default_notification_color"\2android:resource="@color\/notification_icon_color" tools:replace="android:resource"\3>/g' "$MANIFEST_FILE"
-      # Pattern 3: Self-closing tag
-      sed -i '' 's/<meta-data\([^>]*\)android:name="com.google.firebase.messaging.default_notification_color"\([^>]*\)android:resource="@color\/notification_icon_color"\([^>]*\)\/>/<meta-data\1android:name="com.google.firebase.messaging.default_notification_color"\2android:resource="@color\/notification_icon_color" tools:replace="android:resource"\3\/>/g' "$MANIFEST_FILE"
+  # Check if Firebase notification color entry exists
+  if grep -q "com.google.firebase.messaging.default_notification_color" "$MANIFEST_FILE"; then
+    # Check if tools:replace is already present to avoid duplicates
+    if ! grep -q 'android:name="com.google.firebase.messaging.default_notification_color".*tools:replace="android:resource"' "$MANIFEST_FILE"; then
+      echo "🔧 Adding tools:replace to Firebase notification color meta-data..."
+      
+      # First, let's see what we're working with
+      echo "🔍 Lines containing notification color before fix:"
+      grep -n "com.google.firebase.messaging.default_notification_color" "$MANIFEST_FILE"
+      
+      # Use different sed syntax for macOS vs Linux
+      # We'll use a more comprehensive approach to catch all variations
+      if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS - Handle multiple patterns
+        # Pattern 1: Simple attribute format
+        sed -i '' 's/android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color\/notification_icon_color"/android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color\/notification_icon_color" tools:replace="android:resource"/g' "$MANIFEST_FILE"
+        # Pattern 2: Meta-data tag with various spacing/formatting
+        sed -i '' 's/<meta-data\([^>]*\)android:name="com.google.firebase.messaging.default_notification_color"\([^>]*\)android:resource="@color\/notification_icon_color"\([^>]*\)>/<meta-data\1android:name="com.google.firebase.messaging.default_notification_color"\2android:resource="@color\/notification_icon_color" tools:replace="android:resource"\3>/g' "$MANIFEST_FILE"
+        # Pattern 3: Self-closing tag
+        sed -i '' 's/<meta-data\([^>]*\)android:name="com.google.firebase.messaging.default_notification_color"\([^>]*\)android:resource="@color\/notification_icon_color"\([^>]*\)\/>/<meta-data\1android:name="com.google.firebase.messaging.default_notification_color"\2android:resource="@color\/notification_icon_color" tools:replace="android:resource"\3\/>/g' "$MANIFEST_FILE"
+      else
+        # Linux (EAS build environment) - Handle multiple patterns
+        # Pattern 1: Simple attribute format
+        sed -i 's/android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color\/notification_icon_color"/android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color\/notification_icon_color" tools:replace="android:resource"/g' "$MANIFEST_FILE"
+        # Pattern 2: Meta-data tag with various spacing/formatting
+        sed -i 's/<meta-data\([^>]*\)android:name="com.google.firebase.messaging.default_notification_color"\([^>]*\)android:resource="@color\/notification_icon_color"\([^>]*\)>/<meta-data\1android:name="com.google.firebase.messaging.default_notification_color"\2android:resource="@color\/notification_icon_color" tools:replace="android:resource"\3>/g' "$MANIFEST_FILE"
+        # Pattern 3: Self-closing tag
+        sed -i 's/<meta-data\([^>]*\)android:name="com.google.firebase.messaging.default_notification_color"\([^>]*\)android:resource="@color\/notification_icon_color"\([^>]*\)\/>/<meta-data\1android:name="com.google.firebase.messaging.default_notification_color"\2android:resource="@color\/notification_icon_color" tools:replace="android:resource"\3\/>/g' "$MANIFEST_FILE"
+      fi
+      
+      echo "🔍 Lines containing notification color after fix attempt:"
+      grep -n "com.google.firebase.messaging.default_notification_color" "$MANIFEST_FILE"
+      
+      # Verify the fix was applied
+      if grep -q 'android:name="com.google.firebase.messaging.default_notification_color".*tools:replace="android:resource"' "$MANIFEST_FILE"; then
+        echo "✅ Successfully fixed Firebase notification color conflict in AndroidManifest.xml"
+      else
+        echo "⚠️  Failed to apply tools:replace fix. Manual intervention may be required."
+        echo "📄 Please check the manifest file structure:"
+        grep -n "com.google.firebase.messaging.default_notification_color" "$MANIFEST_FILE"
+        exit 1
+      fi
     else
-      # Linux (EAS build environment) - Handle multiple patterns
-      # Pattern 1: Simple attribute format
-      sed -i 's/android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color\/notification_icon_color"/android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color\/notification_icon_color" tools:replace="android:resource"/g' "$MANIFEST_FILE"
-      # Pattern 2: Meta-data tag with various spacing/formatting
-      sed -i 's/<meta-data\([^>]*\)android:name="com.google.firebase.messaging.default_notification_color"\([^>]*\)android:resource="@color\/notification_icon_color"\([^>]*\)>/<meta-data\1android:name="com.google.firebase.messaging.default_notification_color"\2android:resource="@color\/notification_icon_color" tools:replace="android:resource"\3>/g' "$MANIFEST_FILE"
-      # Pattern 3: Self-closing tag
-      sed -i 's/<meta-data\([^>]*\)android:name="com.google.firebase.messaging.default_notification_color"\([^>]*\)android:resource="@color\/notification_icon_color"\([^>]*\)\/>/<meta-data\1android:name="com.google.firebase.messaging.default_notification_color"\2android:resource="@color\/notification_icon_color" tools:replace="android:resource"\3\/>/g' "$MANIFEST_FILE"
-    fi
-    
-    echo "🔍 Lines containing notification color after fix attempt:"
-    grep -n "com.google.firebase.messaging.default_notification_color" "$MANIFEST_FILE" || echo "None found"
-    
-    # Verify the fix was applied
-    if grep -q 'android:name="com.google.firebase.messaging.default_notification_color".*tools:replace="android:resource"' "$MANIFEST_FILE"; then
-      echo "✅ Successfully fixed Firebase notification color conflict in AndroidManifest.xml"
-    else
-      echo "⚠️  Failed to apply tools:replace fix. Manual intervention may be required."
-      echo "📄 Please check the manifest file structure:"
-      grep -n "com.google.firebase.messaging.default_notification_color" "$MANIFEST_FILE" || true
-      exit 1
+      echo "✅ Firebase notification color conflict already fixed in AndroidManifest.xml"
     fi
   else
-    echo "✅ Firebase notification color conflict already fixed in AndroidManifest.xml"
+    echo "ℹ️  No Firebase notification color entry found in AndroidManifest.xml - no fix needed"
   fi
   
   echo "🎉 Android manifest fix script completed successfully!"

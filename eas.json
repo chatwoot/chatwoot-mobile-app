@@ -42,7 +42,9 @@
         "serviceAccountKeyPath": "./service-account-key.json",
         "track": "production"
       },
-      "ios": {}
+      "ios": {
+        "ascAppId": "6749920971"
+      }
     }
   }
 }

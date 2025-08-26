@@ -106,10 +106,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       bundleIdentifier: getBundleIdentifier(),
       infoPlist: {
         NSCameraUsageDescription:
-          'This app requires access to the camera to upload images and videos.',
+          'This app uses the camera to take photos and videos that you can attach to your customer conversations. For example, you can take a photo of a product or document to share with customers during support chats.',
         NSPhotoLibraryUsageDescription:
-          'This app requires access to the photo library to upload images.',
-        NSMicrophoneUsageDescription: 'This app requires access to the microphone to record audio.',
+          'This app accesses your photo library to select existing photos and videos that you can attach to customer conversations. For example, you can select product images, screenshots, or documents from your gallery to share with customers.',
+        NSMicrophoneUsageDescription:
+          'This app uses the microphone to record voice messages that you can send to customers during conversations. For example, you can record a quick audio explanation or voice note to provide more personal support.',
         NSAppleMusicUsageDescription:
           'This app does not use Apple Music, but a system API may require this permission.',
         UIBackgroundModes: ['fetch', 'remote-notification'],

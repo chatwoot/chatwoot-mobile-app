@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "分配的客服代表",
     "TEAM": "团队",
     "PRIVATE_MSG_INPUT": "此操作仅对客服人员可见",
+    "UNSUPPORTED_MESSAGE": "不支持此消息。您可以在 Facebook Messenger 应用上查看此消息。",
     "NOT_FOUND": {
       "TITLE": "无法获取会话",
       "RETRY": "重试",

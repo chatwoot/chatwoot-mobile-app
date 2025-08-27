@@ -59,14 +59,6 @@
       "AGENT": {
         "SEARCH_AGENT": "جستجوی اپراتور"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "فیلتر براساس نوع اختصاص شده",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "تخصیص داده نشده",
-          "ALL": "همه"
-        }
-      },
       "INBOX": {
         "TITLE": "فیلتر براساس صندوق‌ورودی"
       },
@@ -85,6 +77,14 @@
           "PENDING": "در انتظار",
           "SNOOZED": "به تعویق افتاد",
           "RESOLVED": "حل شده",
+          "ALL": "همه"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "فیلتر براساس نوع اختصاص شده",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "تخصیص داده نشده",
           "ALL": "همه"
         }
       }
@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "ایجنت تعیین شده",
     "TEAM": "تیم‌",
     "PRIVATE_MSG_INPUT": "این فقط برای ایجنت ها قابل مشاهده خواهد بود",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",

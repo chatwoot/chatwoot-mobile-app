@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "Agente atribuído",
     "TEAM": "Equipa",
     "PRIVATE_MSG_INPUT": "Isto será visível apenas para os Agentes",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
       "TITLE": "Não foi possível obter a conversa",
       "RETRY": "Tentar novamente",

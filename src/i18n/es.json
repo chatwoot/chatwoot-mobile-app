@@ -59,14 +59,6 @@
       "AGENT": {
         "SEARCH_AGENT": "Buscar agentes"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filtrar por tipo de asignado",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Sin asignar",
-          "ALL": "Todo"
-        }
-      },
       "INBOX": {
         "TITLE": "Filtrar por bandeja de entrada"
       },
@@ -85,6 +77,14 @@
           "PENDING": "En espera",
           "SNOOZED": "Pospuesto",
           "RESOLVED": "Resuelto",
+          "ALL": "Todo"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filtrar por tipo de asignado",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Sin asignar",
           "ALL": "Todo"
         }
       }
@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "Agente asignado",
     "TEAM": "Equipo",
     "PRIVATE_MSG_INPUT": "Esto será visible sólo para los agentes",
+    "UNSUPPORTED_MESSAGE": "Este mensaje no es compatible. Puedes ver este mensaje en la aplicación de Facebook/Instagram.",
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",

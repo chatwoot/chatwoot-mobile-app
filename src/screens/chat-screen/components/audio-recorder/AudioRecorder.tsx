@@ -120,7 +120,6 @@ export const AudioRecorder = ({
           }
         })
         .catch(error => {
-          .catch(error => {
           Alert.alert(
             'Error preparing audio file',
             error instanceof Error ? error.message : String(error),

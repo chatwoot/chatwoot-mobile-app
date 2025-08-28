@@ -9,7 +9,7 @@ import { AnimatedNativeView, NativeView } from '@/components-next/native-compone
 import { AIStatusIcon } from '@/components-next';
 import { tailwind } from '@/theme';
 import { Agent, Conversation, ConversationAdditionalAttributes, Label, Message } from '@/types';
-import { useAppDispatch } from '@/hooks';
+import { useAppDispatch, useThemedStyles } from '@/hooks';
 import { contactActions } from '@/store/contact/contactActions';
 import { showToast } from '@/utils/toastUtils';
 import I18n from '@/i18n';
@@ -84,6 +84,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
   const [isTogglingAI, setIsTogglingAI] = useState(false);
 
   const dispatch = useAppDispatch();
+  const themedTailwind = useThemedStyles();
 
   const hasPriority = priority !== null;
 
@@ -127,13 +128,13 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
   return (
     <AnimatedNativeView
       layout={LinearTransition.springify().damping(28).stiffness(200)}
-      style={tailwind.style('flex-1 gap-1 py-3 border-b-[1px] border-b-blackA-A3')}>
+      style={themedTailwind.style('flex-1 gap-1 py-3 border-b-[1px] border-b-gray-200')}>
       <AnimatedNativeView
         style={tailwind.style('flex flex-row justify-between items-center h-[24px]')}>
         <AnimatedNativeView style={tailwind.style('flex flex-row items-center h-[24px] gap-[5px]')}>
           <Text
             numberOfLines={1}
-            style={tailwind.style(
+            style={themedTailwind.style(
               'text-base font-inter-medium-24 tracking-[0.24px] text-gray-950 capitalize',
               // Calculated based on the widths of other content,
               // We might have to do a 10-20px offset based on the max width of the timestamp

@@ -10,10 +10,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 
 import { TAB_BAR_HEIGHT } from '@/constants';
-import { InboxListStateProvider } from '@/context';
+import { InboxListStateProvider, useTheme } from '@/context';
 import type { Notification } from '@/types/Notification';
 import { tailwind } from '@/theme';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useAppDispatch, useAppSelector, useThemedStyles } from '@/hooks';
 import { notificationActions } from '@/store/notification/notificationAction';
 import {
   selectIsAllNotificationsFetched,
@@ -63,7 +63,8 @@ const InboxList = () => {
         style={tailwind.style(
           'flex-1 items-center justify-center pt-8',
           `pb-[${TAB_BAR_HEIGHT}px]`,
-        )}>
+        )}
+      >
         {isAllNotificationsFetched ? null : <ActivityIndicator size="small" />}
       </Animated.View>
     );
@@ -137,7 +138,8 @@ const InboxList = () => {
 
   return shouldShowEmptyLoader ? (
     <Animated.View
-      style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
+      style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}
+    >
       <ActivityIndicator />
     </Animated.View>
   ) : notifications.length === 0 ? (
@@ -146,7 +148,8 @@ const InboxList = () => {
       contentContainerStyle={tailwind.style(
         'flex-1 items-center justify-center',
         `pb-[${TAB_BAR_HEIGHT}px]`,
-      )}>
+      )}
+    >
       <EmptyStateIcon />
       <Animated.Text style={tailwind.style('pt-6 text-md  tracking-[0.32px] text-gray-800')}>
         {i18n.t('NOTIFICATION.EMPTY')}
@@ -171,6 +174,8 @@ const InboxList = () => {
 
 const InboxScreen = () => {
   const dispatch = useAppDispatch();
+  const themedTailwind = useThemedStyles();
+  const { isDark } = useTheme();
 
   // Memoize the markAllAsRead callback
   const markAllAsRead = useCallback(async () => {
@@ -181,11 +186,13 @@ const InboxScreen = () => {
   }, [dispatch]);
 
   return (
-    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+    <SafeAreaView edges={['top', 'bottom']} style={themedTailwind.style('flex-1 bg-white')}>
       <StatusBar
         translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
+        backgroundColor={themedTailwind.color('bg-white')}
+        barStyle={isDark ? 'light-content' : 'dark-content'}
+        navigationBarColor={themedTailwind.color('bg-white')}
+        navigationBarHidden={false}
       />
       <InboxListStateProvider>
         <InboxHeader markAllAsRead={markAllAsRead} />

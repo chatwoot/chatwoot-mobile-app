@@ -7,6 +7,8 @@ import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { useScaleAnimation } from '@/utils';
 import { useHeaderAnimation } from '@/hooks/useHeaderAnimation';
+import { useThemedStyles } from '@/hooks';
+import { useTheme } from '@/context';
 
 type HeaderState = 'Search' | 'Filter' | 'Select' | 'none';
 
@@ -38,19 +40,25 @@ type RightSectionProps = {
   onRightIconPress: () => void;
 };
 
-const HeaderTitle = () => (
-  <Animated.View style={tailwind.style('flex-1')}>
-    <Text
-      style={tailwind.style(
-        'text-[17px] font-inter-medium-24 tracking-[0.32px] leading-[17px] text-center text-gray-950',
-      )}>
-      {i18n.t('CONVERSATION.HEADER.TITLE')}
-    </Text>
-  </Animated.View>
-);
+const HeaderTitle = () => {
+  const themedTailwind = useThemedStyles();
+
+  return (
+    <Animated.View style={tailwind.style('flex-1')}>
+      <Text
+        style={themedTailwind.style(
+          'text-[17px] font-inter-medium-24 tracking-[0.32px] leading-[17px] text-center text-gray-950',
+        )}
+      >
+        {i18n.t('CONVERSATION.HEADER.TITLE')}
+      </Text>
+    </Animated.View>
+  );
+};
 
 const LeftSection = ({ currentState, isSelectedAll, onLeftIconPress }: LeftSectionProps) => {
   const { entering, exiting } = useHeaderAnimation();
+  const { isDark } = useTheme();
 
   if (currentState === 'Filter' || currentState === 'Search') return null;
   if (currentState !== 'Select') {
@@ -73,7 +81,7 @@ const LeftSection = ({ currentState, isSelectedAll, onLeftIconPress }: LeftSecti
               isSelectedAll ? (
                 <CheckedIcon />
               ) : (
-                <UncheckedIcon stroke={tailwind.color('text-gray-800')} />
+                <UncheckedIcon stroke={isDark ? '#FFFFFF' : tailwind.color('text-gray-800')} />
               )
             }
           />
@@ -90,18 +98,21 @@ const FilterSection = ({
   animatedStyle,
 }: FilterSectionProps) => {
   const { entering, exiting } = useHeaderAnimation();
+  const themedTailwind = useThemedStyles();
 
   return (
     <Animated.View
       style={[tailwind.style('flex-1'), animatedStyle]}
       exiting={exiting}
-      entering={entering}>
+      entering={entering}
+    >
       <Pressable onPress={onClearFilter} disabled={filtersAppliedCount === 0} {...handlers}>
         <Text
-          style={tailwind.style(
+          style={themedTailwind.style(
             'text-md font-inter-medium-24 leading-[17px] tracking-[0.24px]',
             filtersAppliedCount === 0 ? 'text-gray-700' : 'text-blue-800',
-          )}>
+          )}
+        >
           {i18n.t('CONVERSATION.HEADER.CLEAR_FILTER')}
           {filtersAppliedCount > 0 ? ` (${filtersAppliedCount})` : ''}
         </Text>
@@ -116,13 +127,14 @@ const RightSection = ({
   onRightIconPress,
 }: RightSectionProps) => {
   const { entering, exiting } = useHeaderAnimation();
+  const { isDark } = useTheme();
 
   return (
     <Animated.View style={tailwind.style('flex-1 items-end')}>
       <Pressable onPress={onRightIconPress} hitSlop={16}>
         {currentState === 'Filter' || currentState === 'Select' ? (
           <Animated.View exiting={exiting} entering={entering}>
-            <Icon size={24} icon={<CloseIcon />} />
+            <Icon size={24} icon={<CloseIcon stroke={isDark ? '#FFFFFF' : undefined} />} />
           </Animated.View>
         ) : (
           <Animated.View exiting={exiting} entering={entering}>
@@ -133,7 +145,7 @@ const RightSection = ({
                 )}
               />
             )}
-            <Icon size={24} icon={<FilterIcon />} />
+            <Icon size={24} icon={<FilterIcon stroke={isDark ? '#FFFFFF' : undefined} />} />
           </Animated.View>
         )}
       </Pressable>
@@ -153,7 +165,8 @@ export const ConversationHeaderPresenter = ({
 
   return (
     <Animated.View
-      style={[tailwind.style('flex flex-row justify-between items-center px-4 pt-2 pb-[12px]')]}>
+      style={[tailwind.style('flex flex-row justify-between items-center px-4 pt-2 pb-[12px]')]}
+    >
       <LeftSection
         currentState={currentState}
         isSelectedAll={isSelectedAll}

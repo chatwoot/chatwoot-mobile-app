@@ -2,6 +2,7 @@ import React from 'react';
 import { Animated, Text, Dimensions } from 'react-native';
 
 import { tailwind } from '@/theme';
+import { useThemedStyles } from '@/hooks';
 import { Channel, Message, MessageStatus, MessageType } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
 
@@ -28,6 +29,7 @@ type MessageTextCellProps = {
 };
 
 export const MessageTextCell = (props: MessageTextCellProps) => {
+  const themedTailwind = useThemedStyles();
   const {
     text,
     timeStamp,
@@ -86,7 +88,7 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
   return (
     <Animated.View
       style={[
-        tailwind.style(
+        themedTailwind.style(
           'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
           isEmailMessage ? `max-w-[${EMAIL_MESSAGE_WIDTH}px]` : `max-w-[${TEXT_MAX_WIDTH}px]`,
           isIncoming ? 'bg-brand-600' : '',

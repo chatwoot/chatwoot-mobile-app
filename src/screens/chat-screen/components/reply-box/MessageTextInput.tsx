@@ -15,10 +15,10 @@ import Animated, {
 
 import Svg, { Path, Rect } from 'react-native-svg';
 
-import { useChatWindowContext } from '@/context';
+import { useChatWindowContext, useTheme } from '@/context';
 import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useAppDispatch, useAppSelector, useThemedStyles } from '@/hooks';
 
 import { MentionInput, MentionSuggestionsProps, Suggestion } from './mentions-input';
 import {
@@ -44,13 +44,19 @@ type MessageTextInputProps = {
 };
 type AgentSuggestion = Omit<Agent, 'id'> & Suggestion;
 
-const Unlock = () => {
+const Unlock = ({
+  stroke = 'black',
+  strokeOpacity = '0.565',
+}: {
+  stroke?: string;
+  strokeOpacity?: string;
+}) => {
   return (
     <Svg width="100%" height="100%" viewBox="0 0 29 30" fill="none">
       <Path
         d="M10.3334 14.1667V11.6667C10.3334 10.5616 10.7724 9.50179 11.5538 8.72039C12.3352 7.93899 13.395 7.5 14.5 7.5C15.6051 7.5 16.6649 7.93899 17.4463 8.72039C17.8182 9.09225 18.1125 9.52716 18.3189 10M11.8334 22.5H17.1667C18.5667 22.5 19.2667 22.5 19.8017 22.2275C20.2721 21.9878 20.6545 21.6054 20.8942 21.135C21.1667 20.6 21.1667 19.9 21.1667 18.5V18.1667C21.1667 16.7667 21.1667 16.0667 20.8942 15.5317C20.6545 15.0613 20.2721 14.6788 19.8017 14.4392C19.2667 14.1667 18.5667 14.1667 17.1667 14.1667H11.8334C10.4334 14.1667 9.73337 14.1667 9.19837 14.4392C8.72799 14.6788 8.34555 15.0613 8.10587 15.5317C7.83337 16.0667 7.83337 16.7667 7.83337 18.1667V18.5C7.83337 19.9 7.83337 20.6 8.10587 21.135C8.34555 21.6054 8.72799 21.9878 9.19837 22.2275C9.73337 22.5 10.4334 22.5 11.8334 22.5Z"
-        stroke="black"
-        strokeOpacity="0.565"
+        stroke={stroke}
+        strokeOpacity={strokeOpacity}
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -59,14 +65,22 @@ const Unlock = () => {
   );
 };
 
-const Locked = () => {
+const Locked = ({
+  stroke = 'black',
+  strokeOpacity = '0.565',
+  fill = 'white',
+}: {
+  stroke?: string;
+  strokeOpacity?: string;
+  fill?: string;
+}) => {
   return (
     <Svg width="100%" height="100%" viewBox="0 0 29 30" fill="none">
-      <Rect y="0.5" width="29" height="29" rx="14.5" fill="white" />
+      <Rect y="0.5" width="29" height="29" rx="14.5" fill={fill} />
       <Path
         d="M18.6667 14.1667V11.6667C18.6667 10.5616 18.2277 9.50179 17.4463 8.72039C16.6649 7.93899 15.6051 7.5 14.5 7.5C13.395 7.5 12.3352 7.93899 11.5538 8.72039C10.7724 9.50179 10.3334 10.5616 10.3334 11.6667V14.1667M11.8334 22.5H17.1667C18.5667 22.5 19.2667 22.5 19.8017 22.2275C20.2721 21.9878 20.6545 21.6054 20.8942 21.135C21.1667 20.6 21.1667 19.9 21.1667 18.5V18.1667C21.1667 16.7667 21.1667 16.0667 20.8942 15.5317C20.6545 15.0613 20.2721 14.6788 19.8017 14.4392C19.2667 14.1667 18.5667 14.1667 17.1667 14.1667H11.8334C10.4334 14.1667 9.73337 14.1667 9.19837 14.4392C8.72799 14.6788 8.34555 15.0613 8.10587 15.5317C7.83337 16.0667 7.83337 16.7667 7.83337 18.1667V18.5C7.83337 19.9 7.83337 20.6 8.10587 21.135C8.34555 21.6054 8.72799 21.9878 9.19837 22.2275C9.73337 22.5 10.4334 22.5 11.8334 22.5Z"
-        stroke="black"
-        strokeOpacity="0.565"
+        stroke={stroke}
+        strokeOpacity={strokeOpacity}
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -83,6 +97,8 @@ export const MessageTextInput = ({
   selectedCannedResponse,
   agents,
 }: MessageTextInputProps) => {
+  const themedTailwind = useThemedStyles();
+  const { isDark } = useTheme();
   const dispatch = useAppDispatch();
   const messageContent = useAppSelector(selectMessageContent);
 
@@ -194,7 +210,8 @@ export const MessageTextInput = ({
               Platform.OS === 'ios' ? 'absolute bottom-full' : 'relative h-[150px]',
             ),
             styles.listShadow,
-          ]}>
+          ]}
+        >
           <ScrollView keyboardShouldPersistTaps="always">
             {filteredSuggestions.map(agent => {
               const agentSuggestion: AgentSuggestion = {
@@ -221,7 +238,8 @@ export const MessageTextInput = ({
     <LayoutAnimationConfig skipEntering={true}>
       <Animated.View
         layout={LinearTransition.springify().damping(20).stiffness(120)}
-        style={[tailwind.style('flex-1 my-0.5')]}>
+        style={[tailwind.style('flex-1 my-0.5')]}
+      >
         <MentionInput
           // @ts-ignore
           ref={textInputRef}
@@ -240,15 +258,15 @@ export const MessageTextInput = ({
           multiline
           enablesReturnKeyAutomatically
           style={[
-            tailwind.style(
+            themedTailwind.style(
               'text-base font-inter-normal-20 tracking-[0.24px] leading-[20px] android:leading-[18px]',
               'ml-[5px] mr-2 py-2 pl-3 pr-[36px] rounded-2xl text-gray-950',
               'min-h-9 max-h-[76px]',
-              isPrivateMessage ? 'bg-amber-100' : 'bg-blackA-A4',
+              isPrivateMessage ? 'bg-amber-100' : 'bg-gray-100',
             ),
             // TODO: Try settings includeFontPadding to false and have a single lineHeight value of 20
           ]}
-          placeholderTextColor={tailwind.color('bg-gray-800')}
+          placeholderTextColor={themedTailwind.color('text-gray-400')}
           maxLength={maxLength}
           placeholder={
             isPrivateMessage
@@ -269,12 +287,30 @@ export const MessageTextInput = ({
           // Pre calculated value to position the lock
           tailwind.style('absolute right-13px]'),
           lockIconAnimatedPosition,
-        ]}>
+        ]}
+      >
         <Pressable hitSlop={5} onPress={toggleReplyMode}>
           {isPrivateMessage ? (
-            <Icon size={29} icon={<Locked />} />
+            <Icon
+              size={29}
+              icon={
+                <Locked
+                  stroke={isDark ? '#FFFFFF' : 'black'}
+                  strokeOpacity={isDark ? '1' : '0.565'}
+                  fill={isDark ? '#374151' : 'white'}
+                />
+              }
+            />
           ) : (
-            <Icon size={29} icon={<Unlock />} />
+            <Icon
+              size={29}
+              icon={
+                <Unlock
+                  stroke={isDark ? '#FFFFFF' : 'black'}
+                  strokeOpacity={isDark ? '1' : '0.565'}
+                />
+              }
+            />
           )}
         </Pressable>
       </Animated.View>

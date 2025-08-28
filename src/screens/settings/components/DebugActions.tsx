@@ -4,6 +4,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 
 import { showToast } from '@/utils/toastUtils';
 import { tailwind } from '@/theme';
+import { useThemedStyles } from '@/hooks';
 import { useHaptic } from '@/utils';
 import { useAppSelector } from '@/hooks';
 import {
@@ -49,6 +50,7 @@ const DEBUG_ACTIONS: DebugAction[] = [
 ];
 
 const DebugActionCell = ({ item, index, isLastItem }: DebugActionCellProps) => {
+  const themedTailwind = useThemedStyles();
   const installationUrl = useAppSelector(selectInstallationUrl);
   const webSocketUrl = useAppSelector(selectWebSocketUrl);
   const version = useAppSelector(selectChatwootVersion);
@@ -82,24 +84,27 @@ const DebugActionCell = ({ item, index, isLastItem }: DebugActionCellProps) => {
 
   return (
     <Pressable onPress={() => handlePress(item)}>
-      <Animated.View style={tailwind.style('flex flex-row items-center')}>
+      <Animated.View style={themedTailwind.style('flex flex-row items-center')}>
         <Animated.View
-          style={tailwind.style(
+          style={themedTailwind.style(
             'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
             !isLastItem && 'border-b-[1px] border-blackA-A3',
-          )}>
+          )}
+        >
           <View>
             <Text
-              style={tailwind.style(
+              style={themedTailwind.style(
                 'text-base  text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
-              )}>
+              )}
+            >
               {item.label}
             </Text>
             <Text
               numberOfLines={2}
-              style={tailwind.style(
+              style={themedTailwind.style(
                 'text-sm text-gray-900 font-inter-420-20 leading-[18px] tracking-[0.16px] italic',
-              )}>
+              )}
+            >
               {debugValue(item.key)}
             </Text>
           </View>
@@ -109,15 +114,18 @@ const DebugActionCell = ({ item, index, isLastItem }: DebugActionCellProps) => {
   );
 };
 
-export const DebugActions = () => (
-  <Animated.View style={tailwind.style('py-1 pl-3')}>
-    {DEBUG_ACTIONS.map((item, index) => (
-      <DebugActionCell
-        key={item.key}
-        item={item}
-        index={index}
-        isLastItem={index === DEBUG_ACTIONS.length - 1}
-      />
-    ))}
-  </Animated.View>
-);
+export const DebugActions = () => {
+  const themedTailwind = useThemedStyles();
+  return (
+    <Animated.View style={themedTailwind.style('py-1 pl-3')}>
+      {DEBUG_ACTIONS.map((item, index) => (
+        <DebugActionCell
+          key={item.key}
+          item={item}
+          index={index}
+          isLastItem={index === DEBUG_ACTIONS.length - 1}
+        />
+      ))}
+    </Animated.View>
+  );
+};

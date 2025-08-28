@@ -93,7 +93,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     version: '4.0.19',
     orientation: 'portrait',
     icon: getAppIcon(),
-    userInterfaceStyle: 'light',
+    userInterfaceStyle: 'automatic',
     newArchEnabled: false,
     splash: {
       image: './assets/splash.png',

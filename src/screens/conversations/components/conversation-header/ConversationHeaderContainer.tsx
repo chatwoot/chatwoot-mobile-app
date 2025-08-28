@@ -10,6 +10,7 @@ import { useConversationListStateContext } from '@/context';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { getFilteredConversations } from '@/store/conversation/conversationSelectors';
+import { useThemedStyles } from '@/hooks';
 import { selectUserId } from '@/store/auth/authSelectors';
 import {
   resetFilters,
@@ -41,6 +42,7 @@ const getFiltersAppliedCount = (defaultState: FilterState, updatedState: FilterS
 
 export const ConversationHeader = () => {
   const currentState = useAppSelector(selectCurrentState);
+  const themedTailwind = useThemedStyles();
 
   const filters = useAppSelector(selectFilters);
   const dispatch = useAppDispatch();
@@ -120,7 +122,7 @@ export const ConversationHeader = () => {
   };
 
   return (
-    <Animated.View style={[tailwind.style('border-b-[1px]'), headerBorderAnimation]}>
+    <Animated.View style={[themedTailwind.style('border-b-[1px] bg-white'), headerBorderAnimation]}>
       <ConversationHeaderPresenter
         currentState={currentState}
         isSelectedAll={isSelectedAll}

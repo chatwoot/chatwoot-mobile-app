@@ -24,7 +24,7 @@ import {
   isAPIInbox,
   isAnInstagramChannel,
 } from '@/utils';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useAppDispatch, useAppSelector, useThemedStyles } from '@/hooks';
 import { MESSAGE_MAX_LENGTH, REPLY_EDITOR_MODES, AUDIO_FORMATS } from '@/constants';
 import { tailwind } from '@/theme';
 import {
@@ -80,6 +80,7 @@ const SHEET_APPEAR_SPRING_CONFIG = {
 
 const AnimatedKeyboardStickyView = Animated.createAnimatedComponent(KeyboardStickyView);
 const BottomSheetContent = () => {
+  const themedTailwind = useThemedStyles();
   const hapticSelection = useHaptic();
   const dispatch = useAppDispatch();
   const { bottom } = useSafeAreaInsets();
@@ -378,7 +379,7 @@ const BottomSheetContent = () => {
   const shouldShowCannedResponses = messageContent?.charAt(0) === '/';
 
   return (
-    <AnimatedKeyboardStickyView style={[tailwind.style('bg-white'), animatedInputWrapperStyle]}>
+    <AnimatedKeyboardStickyView style={[themedTailwind.style('bg-white'), animatedInputWrapperStyle]}>
       {!canReply && inbox && conversation && (
         <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>
           <ReplyWarning inbox={inbox} conversation={conversation} />
@@ -390,8 +391,8 @@ const BottomSheetContent = () => {
 
       <Animated.View
         layout={LinearTransition.springify().damping(38).stiffness(240)}
-        style={tailwind.style(
-          `pb-2 border-t-[1px] border-t-blackA-A3 ${shouldShowReplyHeader ? 'pt-0' : 'pt-2'}`,
+        style={themedTailwind.style(
+          `pb-2 border-t-[1px] border-t-gray-200 ${shouldShowReplyHeader ? 'pt-0' : 'pt-2'}`,
         )}>
         {quoteMessage && (
           <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>

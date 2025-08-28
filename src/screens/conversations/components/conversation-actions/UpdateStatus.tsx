@@ -8,7 +8,7 @@ import { tailwind } from '@/theme';
 import { ConversationStatus, StatusCollection } from '@/types';
 import { getStatusTypeIcon, useHaptic } from '@/utils';
 import { BottomSheetHeader, Icon } from '@/components-next';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useAppDispatch, useAppSelector, useThemedStyles } from '@/hooks';
 import {
   selectSelectedConversation,
   selectSelectedIds,
@@ -32,6 +32,7 @@ const StatusList: StatusCollection[] = [
 
 const StatusCell = (props: StatusCellProps) => {
   const { value, isLastItem, onPress } = props;
+  const themedTailwind = useThemedStyles();
   return (
     <Pressable
       onPress={() => onPress(value.id)}
@@ -40,12 +41,12 @@ const StatusCell = (props: StatusCellProps) => {
         <Icon icon={value.icon} size={24} />
       </Animated.View>
       <Animated.View
-        style={tailwind.style(
+        style={themedTailwind.style(
           'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
-          !isLastItem ? 'border-b-[1px] border-blackA-A3' : '',
+          !isLastItem ? 'border-b-[1px] border-b-gray-200' : '',
         )}>
         <Animated.Text
-          style={tailwind.style(
+          style={themedTailwind.style(
             'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px] capitalize',
           )}>
           {i18n.t(`CONVERSATION.ASSIGNEE.STATUS.OPTIONS.${StatusOptions[value.id].toUpperCase()}`)}

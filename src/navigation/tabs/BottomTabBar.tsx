@@ -23,7 +23,8 @@ import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';
 
 import { TabParamList } from './AppTabs';
-import { useAppSelector } from '@/hooks';
+import { useAppSelector, useThemedStyles } from '@/hooks';
+import { useTheme } from '@/context';
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
@@ -36,13 +37,28 @@ type TabBarIconsProps = {
 };
 
 const TabBarIcons = ({ focused, route }: TabBarIconsProps) => {
+  const { isDark } = useTheme();
+  const iconColor = isDark ? '#FFFFFF' : '#171717';
+
   switch (route.name) {
     case 'Conversations':
-      return focused ? <ConversationIconFilled /> : <ConversationIconOutline />;
+      return focused ? (
+        <ConversationIconFilled fill={iconColor} />
+      ) : (
+        <ConversationIconOutline stroke={iconColor} />
+      );
     case 'Inbox':
-      return focused ? <InboxIconFilled /> : <InboxIconOutline />;
+      return focused ? (
+        <InboxIconFilled fill={iconColor} />
+      ) : (
+        <InboxIconOutline stroke={iconColor} />
+      );
     case 'Settings':
-      return focused ? <SettingsIconFilled /> : <SettingsIconOutline />;
+      return focused ? (
+        <SettingsIconFilled fill={iconColor} />
+      ) : (
+        <SettingsIconOutline stroke={iconColor} />
+      );
   }
 };
 
@@ -96,7 +112,8 @@ const TabItem = (props: any) => {
   );
   return (
     <Animated.View
-      style={[tailwind.style('justify-center items-center flex-1 bg-transparent'), animatedStyle]}>
+      style={[tailwind.style('justify-center items-center flex-1 bg-transparent'), animatedStyle]}
+    >
       <Pressable
         hitSlop={hitSlop}
         {...handlers}
@@ -105,7 +122,8 @@ const TabItem = (props: any) => {
         accessibilityLabel={options.tabBarAccessibilityLabel}
         testID={options.tabBarTestID}
         onPress={onPress}
-        onLongPress={onLongPress}>
+        onLongPress={onLongPress}
+      >
         <TabBarIcons focused={isFocused} route={route} />
       </Pressable>
     </Animated.View>
@@ -115,6 +133,8 @@ const TabItem = (props: any) => {
 export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const hapticSelection = useHaptic();
   const tabBarHeight = useTabBarHeight();
+  const { isDark } = useTheme();
+  const themedTailwind = useThemedStyles();
 
   // Memoize press handlers using useCallback
   const createPressHandler = React.useCallback(
@@ -151,22 +171,23 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
   return (
     <TabBarBackground
       blurAmount={25}
-      blurType="light"
+      blurType={isDark ? 'dark' : 'light'}
       style={Platform.select({
         ios: [
-          tailwind.style(
-            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] pb-8 bg-[#00000009]',
+          themedTailwind.style(
+            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] pb-8 bg-white',
             `h-[${tabBarHeight}px]`,
           ),
         ],
         android: [
-          tailwind.style(
+          themedTailwind.style(
             'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] py-[11px] bg-white',
             `h-[${tabBarHeight}px]`,
           ),
         ],
-      })}>
-      <Animated.View style={tailwind.style('absolute inset-0 h-[1px] bg-blackA-A3')} />
+      })}
+    >
+      <Animated.View style={themedTailwind.style('absolute inset-0 h-[1px] bg-gray-200')} />
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;

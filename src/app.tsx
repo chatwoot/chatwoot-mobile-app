@@ -6,6 +6,7 @@ import { store, persistor } from './store';
 import { AppNavigator } from '@/navigation';
 import ErrorBoundaryScreen from '@/components-next/common/ErrorBoundaryScreen';
 import ErrorBoundary from '@/components-next/common/ErrorBoundary';
+import { ThemeProvider } from '@/context/ThemeContext';
 
 import i18n from '@/i18n';
 
@@ -36,14 +37,16 @@ const Chatwoot = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <React.Suspense fallback={null}>
-          <ErrorBoundary
-            fallbackRender={({ error, resetErrorBoundary }) => (
-              <ErrorBoundaryScreen error={error} onRetry={resetErrorBoundary} />
-            )}>
-            <AppNavigator />
-          </ErrorBoundary>
-        </React.Suspense>
+        <ThemeProvider>
+          <React.Suspense fallback={null}>
+            <ErrorBoundary
+              fallbackRender={({ error, resetErrorBoundary }) => (
+                <ErrorBoundaryScreen error={error} onRetry={resetErrorBoundary} />
+              )}>
+              <AppNavigator />
+            </ErrorBoundary>
+          </React.Suspense>
+        </ThemeProvider>
       </PersistGate>
     </Provider>
   );

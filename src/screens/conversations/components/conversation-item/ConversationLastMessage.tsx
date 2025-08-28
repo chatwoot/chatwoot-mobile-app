@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleProp, Text, ViewStyle } from 'react-native';
 
 import { tailwind } from '@/theme';
+import { useThemedStyles } from '@/hooks';
 import { NativeView } from '@/components-next/native-components';
 import {
   AudioIcon,
@@ -68,6 +69,7 @@ const MessageContent = ({
   message: Message;
   numberOfLines: number;
 }) => {
+  const themedTailwind = useThemedStyles();
   const { contentAttributes } = message || {};
   const { email: { subject = '' } = {} } = contentAttributes || {};
 
@@ -83,7 +85,7 @@ const MessageContent = ({
         <Icon icon={<ImageAttachmentIcon />} />
         <Text
           numberOfLines={1}
-          style={tailwind.style(
+          style={themedTailwind.style(
             'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
           )}>
           <MessageType message={message} style={tailwind.style('ml-1')} />
@@ -96,13 +98,13 @@ const MessageContent = ({
       <NativeView style={tailwind.style('flex-row gap-1 items-center')}>
         <Text
           numberOfLines={numberOfLines}
-          style={tailwind.style(
+          style={themedTailwind.style(
             'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[21px] text-gray-900',
           )}>
           <MessageType message={message} style={tailwind.style('ml-1')} />
           <Text
             numberOfLines={numberOfLines}
-            style={tailwind.style(
+            style={themedTailwind.style(
               'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[21px] text-gray-900',
             )}>
             {lastMessageContent}
@@ -117,7 +119,7 @@ const MessageContent = ({
         <MessageType message={message} />
         <Text
           numberOfLines={1}
-          style={tailwind.style(
+          style={themedTailwind.style(
             'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
           )}>
           {i18n.t(`CONVERSATION.ATTACHMENTS.${lastMessageFileType}.CONTENT`)}
@@ -127,7 +129,7 @@ const MessageContent = ({
   }
   return (
     <Text
-      style={tailwind.style(
+      style={themedTailwind.style(
         'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
       )}>
       {i18n.t('CONVERSATION.NO_CONTENT')}

@@ -4,6 +4,7 @@ import { ImageURISource } from 'react-native';
 
 import { NativeView } from '@/components-next/native-components';
 import { tailwind } from '@/theme';
+import { useThemedStyles } from '@/hooks';
 import {
   Agent,
   AvailabilityStatus,
@@ -87,8 +88,10 @@ export const ConversationItem = memo(
     isAIEnabled = false,
     contactId,
   }: ConversationItemProps) => {
+    const themedTailwind = useThemedStyles();
+    
     return (
-      <NativeView style={tailwind.style('px-3 gap-3 flex-row justify-between')}>
+      <NativeView style={themedTailwind.style('px-3 gap-3 flex-row justify-between bg-white')}>
         <NativeView style={tailwind.style('py-3 flex flex-row')}>
           <ConversationSelect {...{ isSelected, currentState }} />
           <ConversationAvatar

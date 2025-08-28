@@ -4,6 +4,7 @@ import { Image } from 'expo-image';
 import { AvailabilityStatus } from '@/types/common/AvailabilityStatus';
 
 import { tailwind } from '@/theme';
+import { useThemedStyles } from '@/hooks';
 import { cx, styleAdapter } from '@/utils';
 import { userStatusList } from '@/constants';
 
@@ -40,7 +41,8 @@ const AvatarStatus = ({
           'absolute border-[1.5px] border-white bg-white rounded-full bottom-[2px] right-[2px]',
         ),
         { borderColor: tailwind.color(parentsBackground) },
-      ]}>
+      ]}
+    >
       <View style={tailwind.style(cx('rounded-full h-4 w-4', bgColor))} />
     </View>
   );
@@ -84,6 +86,7 @@ export interface UserAvatarProps extends ViewProps {
 
 export const UserAvatar: React.FC<Partial<UserAvatarProps>> = props => {
   const { name, src, status, parentsBackground = 'text-white', style, ...boxProps } = props;
+  const themedTailwind = useThemedStyles();
 
   const isSourceAvailable = useMemo(() => (src ? true : false), [src]);
   const [imageAvailable, setImageAvailable] = useState(isSourceAvailable);
@@ -92,19 +95,25 @@ export const UserAvatar: React.FC<Partial<UserAvatarProps>> = props => {
   return (
     <View
       style={[
-        tailwind.style('relative items-center justify-center bg-gray-100 rounded-full h-24 w-24'),
+        themedTailwind.style(
+          'relative items-center justify-center bg-gray-100 rounded-full h-24 w-24',
+        ),
         styleAdapter(style),
       ]}
-      {...boxProps}>
+      {...boxProps}
+    >
       {imageAvailable && src ? (
         <AvatarImage src={src} handleFallback={loadFallback} />
       ) : name ? (
         <Text
           style={[
-            tailwind.style('text-center uppercase text-gray-800 font-inter-medium-24 text-3xl'),
+            themedTailwind.style(
+              'text-center uppercase text-gray-800 font-inter-medium-24 text-3xl',
+            ),
           ]}
           adjustsFontSizeToFit
-          allowFontScaling={false}>
+          allowFontScaling={false}
+        >
           {getInitials(name)}
         </Text>
       ) : null}

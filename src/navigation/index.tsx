@@ -9,17 +9,18 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { AppTabs } from './tabs/AppTabs';
 import i18n from 'i18n';
 import { navigationRef } from '@/utils/navigationUtils';
+import { useTheme } from '@/context';
 import {
   findConversationLinkFromPush,
   findNotificationFromFCM,
   updateBadgeCount,
 } from '@/utils/pushUtils';
 import { extractConversationIdFromUrl } from '@/utils/conversationUtils';
-import { useAppSelector } from '@/hooks';
+import { useAppSelector, useThemedStyles } from '@/hooks';
 import { selectInstallationUrl, selectLocale } from '@/store/settings/settingsSelectors';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RefsProvider } from '@/context';
@@ -60,6 +61,8 @@ const initializeFirebaseMessaging = () => {
 };
 
 export const AppNavigationContainer = () => {
+  const { isDark } = useTheme();
+  const themedTailwind = useThemedStyles();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [fontsLoaded, error] = useFonts({
     'Inter-400-20': require('../assets/fonts/Inter-400-20.ttf'),
@@ -175,7 +178,7 @@ export const AppNavigationContainer = () => {
 
       // Only setup Firebase messaging if Firebase is initialized
       let unsubscribeNotification: (() => void) | undefined;
-      
+
       (async () => {
         const ready = await waitForFirebaseInit({ timeoutMs: 5000, pollMs: 100 });
         if (ready) {
@@ -224,8 +227,22 @@ export const AppNavigationContainer = () => {
     return null;
   }
 
+  // Create a custom dark theme with pure black colors
+  const customDarkTheme = {
+    ...DarkTheme,
+    colors: {
+      ...DarkTheme.colors,
+      background: '#000000', // Pure black background
+      card: '#111827', // gray-900 - card backgrounds
+      text: '#ffffff', // Pure white text
+      border: '#374151', // gray-700 - borders
+      notification: '#3b82f6', // blue-500 - notifications
+    },
+  };
+
   return (
     <NavigationContainer
+      theme={isDark ? customDarkTheme : DefaultTheme}
       linking={linking}
       ref={navigationRef}
       onReady={() => {
@@ -234,9 +251,13 @@ export const AppNavigationContainer = () => {
       onStateChange={async () => {
         routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
       }}
-      fallback={<ActivityIndicator animating />}>
+      fallback={<ActivityIndicator animating />}
+    >
       <BottomSheetModalProvider>
-        <View style={styles.navigationLayout} onLayout={onLayoutRootView}>
+        <View
+          style={[themedTailwind.style('bg-black'), styles.navigationLayout]}
+          onLayout={onLayoutRootView}
+        >
           <AppTabs />
         </View>
       </BottomSheetModalProvider>
@@ -245,11 +266,13 @@ export const AppNavigationContainer = () => {
 };
 
 export const AppNavigator = () => {
+  const themedTailwind = useThemedStyles();
+
   return (
-    <GestureHandlerRootView style={styles.navigationLayout}>
+    <GestureHandlerRootView style={[themedTailwind.style('bg-black'), styles.navigationLayout]}>
       <KeyboardProvider>
         <RefsProvider>
-          <SafeAreaProvider>
+          <SafeAreaProvider style={themedTailwind.style('bg-black')}>
             <AppNavigationContainer />
           </SafeAreaProvider>
         </RefsProvider>

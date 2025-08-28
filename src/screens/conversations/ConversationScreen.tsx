@@ -36,7 +36,8 @@ import {
 
 import { tailwind } from '@/theme';
 import { Conversation } from '@/types';
-import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useAppDispatch, useAppSelector, useThemedStyles } from '@/hooks';
+import { useTheme } from '@/context';
 import {
   selectBottomSheetState,
   setBottomSheetState,
@@ -72,6 +73,7 @@ type FlashListRenderItemType = {
 
 const ConversationList = () => {
   const dispatch = useAppDispatch();
+  const themedTailwind = useThemedStyles();
   const [appState, setAppState] = useState(AppState.currentState);
 
   // This is used to prevent the infinite scrolling before the list is ready
@@ -138,7 +140,8 @@ const ConversationList = () => {
         style={tailwind.style(
           'flex-1 items-center justify-center pt-8',
           `pb-[${TAB_BAR_HEIGHT}px]`,
-        )}>
+        )}
+      >
         {isAllConversationsFetched ? null : <ActivityIndicator size="small" />}
       </Animated.View>
     );
@@ -233,7 +236,8 @@ const ConversationList = () => {
 
   return shouldShowEmptyLoader ? (
     <Animated.View
-      style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
+      style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}
+    >
       <ActivityIndicator />
     </Animated.View>
   ) : allConversations.length === 0 ? (
@@ -242,9 +246,10 @@ const ConversationList = () => {
       contentContainerStyle={tailwind.style(
         'flex-1 items-center justify-center',
         `pb-[${TAB_BAR_HEIGHT}px]`,
-      )}>
+      )}
+    >
       <EmptyStateIcon />
-      <Animated.Text style={tailwind.style('pt-6 text-md  tracking-[0.32px] text-gray-800')}>
+      <Animated.Text style={themedTailwind.style('pt-6 text-md  tracking-[0.32px] text-gray-800')}>
         {i18n.t('CONVERSATION.EMPTY')}
       </Animated.Text>
     </Animated.ScrollView>
@@ -269,6 +274,8 @@ const ConversationList = () => {
 
 const ConversationScreen = () => {
   const currentBottomSheet = useAppSelector(selectBottomSheetState);
+  const { isDark } = useTheme();
+  const themedTailwind = useThemedStyles();
   const dispatch = useAppDispatch();
 
   const animationConfigs = useBottomSheetSpringConfigs({
@@ -305,11 +312,13 @@ const ConversationScreen = () => {
   }, [currentBottomSheet]);
 
   return (
-    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+    <SafeAreaView edges={['top', 'bottom']} style={themedTailwind.style('flex-1 bg-white')}>
       <StatusBar
         translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
+        backgroundColor={themedTailwind.color('bg-white')}
+        barStyle={isDark ? 'light-content' : 'dark-content'}
+        navigationBarColor={themedTailwind.color('bg-white')}
+        navigationBarHidden={false}
       />
       <ConversationListStateProvider>
         <ConversationHeader />
@@ -325,7 +334,8 @@ const ConversationScreen = () => {
           animationConfigs={animationConfigs}
           enablePanDownToClose
           snapPoints={filterSnapPoints}
-          onDismiss={handleOnDismiss}>
+          onDismiss={handleOnDismiss}
+        >
           <BottomSheetWrapper>
             {currentBottomSheet === 'status' ? <StatusFilters /> : null}
             {currentBottomSheet === 'sort_by' ? <SortByFilters /> : null}

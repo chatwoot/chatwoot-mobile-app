@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useAppSelector, useAppDispatch } from '@/hooks';
+import { useAppSelector, useAppDispatch, useThemedStyles } from '@/hooks';
 import { useChatWindowContext } from '@/context';
 import { AppState, Platform } from 'react-native';
 import { KeyboardGestureArea } from 'react-native-keyboard-controller';
@@ -70,6 +70,7 @@ const PlatformSpecificKeyboardWrapperComponent =
   Platform.OS === 'android' ? Animated.View : KeyboardGestureArea;
 
 export const MessagesListContainer = () => {
+  const themedTailwind = useThemedStyles();
   const [appState, setAppState] = useState(AppState.currentState);
   const { conversationId } = useChatWindowContext();
   const dispatch = useAppDispatch();
@@ -168,7 +169,7 @@ export const MessagesListContainer = () => {
 
   return (
     <PlatformSpecificKeyboardWrapperComponent
-      style={tailwind.style('flex-1 bg-white')}
+      style={themedTailwind.style('flex-1 bg-white')}
       interpolator="linear">
       <MessagesList
         messages={messagesWithGrouping}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Text } from 'react-native';
 import { tailwind } from '@/theme';
+import { useThemedStyles } from '@/hooks';
 import { AnimatedNativeView, NativeView } from '@/components-next/native-components';
 import { Label } from '@/types';
 
@@ -18,17 +19,20 @@ interface LayoutChangeEvent {
   };
 }
 
-const LabelText = ({ labelText, labelColor }: { labelText: string; labelColor: string }) => (
-  <NativeView style={tailwind.style('flex-row items-center py-[3px]')}>
-    <NativeView style={tailwind.style('h-[5px] w-[5px] rounded-full', `bg-[${labelColor}]`)} />
-    <Text
-      style={tailwind.style(
-        'pl-1 text-sm font-inter-420-20 leading-[16px] tracking-[0.32px] text-gray-700',
-      )}>
-      {labelText}
-    </Text>
-  </NativeView>
-);
+const LabelText = ({ labelText, labelColor }: { labelText: string; labelColor: string }) => {
+  const themedTailwind = useThemedStyles();
+  return (
+    <NativeView style={tailwind.style('flex-row items-center py-[3px]')}>
+      <NativeView style={tailwind.style('h-[5px] w-[5px] rounded-full', `bg-[${labelColor}]`)} />
+      <Text
+        style={themedTailwind.style(
+          'pl-1 text-sm font-inter-420-20 leading-[16px] tracking-[0.32px] text-gray-700',
+        )}>
+        {labelText}
+      </Text>
+    </NativeView>
+  );
+};
 
 export const LabelIndicator = ({ labels, allLabels }: { labels: string[]; allLabels: Label[] }) => {
   // Store the container width

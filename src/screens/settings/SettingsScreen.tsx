@@ -283,15 +283,15 @@ const SettingsScreen = () => {
     },
   ];
 
-  const supportList: GenericListType[] = [
-    /* {
+  /* const supportList: GenericListType[] = [
+    {
       hasChevron: true,
       title: i18n.t('SETTINGS.READ_DOCS'),
       icon: <SwitchIcon />,
       subtitle: '',
       subtitleType: 'light',
       onPressListItem: openURL,
-    }, */
+    },
     {
       hasChevron: true,
       title: i18n.t('SETTINGS.CHAT_WITH_US'),
@@ -300,7 +300,7 @@ const SettingsScreen = () => {
       subtitleType: 'light',
       onPressListItem: () => toggleWidget(true),
     },
-  ];
+  ]; */
 
   return (
     <SafeAreaView
@@ -346,9 +346,9 @@ const SettingsScreen = () => {
         <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.PREFERENCES')} list={preferencesList} />
         </Animated.View>
-        <Animated.View style={tailwind.style('pt-6')}>
+        {/* <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.SUPPORT')} list={supportList} />
-        </Animated.View>
+        </Animated.View> */}
         <Animated.View style={tailwind.style('pt-6 mx-4')}>
           <Button
             variant="secondary"

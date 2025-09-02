@@ -18,7 +18,8 @@ export const AIStatusIcon: React.FC<AIStatusIconProps> = ({ isEnabled, size = 16
       onPress={onPress}
       accessible={true}
       accessibilityLabel={isEnabled ? 'AI bot enabled' : 'AI bot disabled'}
-      accessibilityRole={onPress ? 'button' : 'image'}>
+      accessibilityRole={onPress ? 'button' : 'image'}
+      activeOpacity={0.7}>
       <MaterialIcons
         name="smart-toy" // Using smart-toy icon for both states, color indicates enabled/disabled
         size={size}
@@ -31,7 +32,7 @@ export const AIStatusIcon: React.FC<AIStatusIconProps> = ({ isEnabled, size = 16
 
 const styles = StyleSheet.create({
   container: {
-    padding: 4,
+    padding: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },

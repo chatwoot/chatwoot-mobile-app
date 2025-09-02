@@ -14,8 +14,9 @@ import { cx, styleAdapter } from '@/utils';
 
 import { AvatarImage } from './AvatarImage';
 import { AvatarStatus } from './AvatarStatus';
+import { AvatarCounter, AvatarCounterProps } from './AvatarCounter';
 
-export type AvatarSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
+export type AvatarSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl';
 export type AvatarStatusType = 'online' | 'away' | 'offline' | 'typing';
 
 export const removeEmoji = (text: string) => {
@@ -90,6 +91,10 @@ export interface AvatarProps extends ViewProps {
    * The Avatar Channel Indicator, more likely for
    */
   channel: Channel;
+  /**
+   * Counter badge configuration
+   */
+  counter: Pick<AvatarCounterProps, 'count' | 'maxCount'>;
 }
 
 export const Avatar: React.FC<Partial<AvatarProps>> = props => {
@@ -102,6 +107,7 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
     parentsBackground = 'text-white',
     imageProps = {},
     channel,
+    counter,
     style,
     ...boxProps
   } = props;
@@ -147,6 +153,14 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
         </Text>
       ) : null}
       {status && <AvatarStatus parentsBackground={parentsBackground} size={size} status={status} />}
+      {counter && counter.count > 0 && (
+        <AvatarCounter
+          count={counter.count}
+          maxCount={counter.maxCount}
+          size={size}
+          parentsBackground={parentsBackground}
+        />
+      )}
     </View>
   );
 };

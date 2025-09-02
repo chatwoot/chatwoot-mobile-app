@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import React, { memo, useState, useCallback } from 'react';
-import { Dimensions, ImageURISource, Text } from 'react-native';
+import { Dimensions, ImageURISource, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { LinearTransition } from 'react-native-reanimated';
 import { isEqual } from 'lodash';
 
@@ -17,7 +17,6 @@ import I18n from '@/i18n';
 import { ConversationId } from './ConversationId';
 import { ConversationLastMessage } from './ConversationLastMessage';
 import { PriorityIndicator, ChannelIndicator } from '@/components-next/list-components';
-import { UnreadIndicator } from './UnreadIndicator';
 import { SLAIndicator } from './SLAIndicator';
 import { LabelIndicator } from './LabelIndicator';
 import { LastActivityTime } from './LastActivityTime';
@@ -128,27 +127,33 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
   return (
     <AnimatedNativeView
       layout={LinearTransition.springify().damping(28).stiffness(200)}
-      style={themedTailwind.style('flex-1 gap-1 py-3 border-b-[1px] border-b-gray-200')}>
+      style={themedTailwind.style('flex-1 gap-0.5 py-2 border-b-[1px] border-b-gray-200')}>
       <AnimatedNativeView
-        style={tailwind.style('flex flex-row justify-between items-center h-[24px]')}>
-        <AnimatedNativeView style={tailwind.style('flex flex-row items-center h-[24px] gap-[5px]')}>
+        style={tailwind.style('flex flex-row justify-between items-end h-[28px]')}>
+        <AnimatedNativeView style={tailwind.style('flex flex-row items-end h-[28px] gap-[5px]')}>
           <Text
             numberOfLines={1}
             style={themedTailwind.style(
-              'text-base font-inter-medium-24 tracking-[0.24px] text-gray-950 capitalize',
+              'text-lg font-inter-medium-24 tracking-[0.28px] text-gray-950 capitalize',
               // Calculated based on the widths of other content,
               // We might have to do a 10-20px offset based on the max width of the timestamp
               `max-w-[${width - 250}px]`,
             )}>
             {senderName}
           </Text>
-          <ConversationId id={conversationId} />
+          {/* <ConversationId id={conversationId} /> */}
+          {assignee ? (
+            <Avatar
+              size="sm"
+              name={assignee.name as string}
+              src={{ uri: assignee.thumbnail } as ImageURISource}
+            />
+          ) : null}
         </AnimatedNativeView>
         <AnimatedNativeView style={tailwind.style('flex flex-row items-center gap-2')}>
           {hasPriority ? <PriorityIndicator {...{ priority }} /> : null}
           {inbox && <ChannelIndicator inbox={inbox} additionalAttributes={additionalAttributes} />}
-          {/* Always show icon for testing - remove this condition later */}
-          <AIStatusIcon isEnabled={isAIEnabled ?? false} onPress={handleAIToggle} />
+          {/* AI button moved to next to conversation text */}
           <LastActivityTime timestamp={timestamp} />
         </AnimatedNativeView>
       </AnimatedNativeView>
@@ -162,11 +167,6 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
               <ConversationLastMessage numberOfLines={1} lastMessage={lastMessage as Message} />
             )}
 
-            {unreadCount >= 1 && (
-              <NativeView style={tailwind.style('flex-shrink-0')}>
-                <UnreadIndicator count={unreadCount} />
-              </NativeView>
-            )}
           </AnimatedNativeView>
           <AnimatedNativeView
             style={tailwind.style('flex flex-row h-6 justify-between items-center gap-2')}>
@@ -203,26 +203,33 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           </AnimatedNativeView>
         </AnimatedNativeView>
       ) : (
-        <AnimatedNativeView style={tailwind.style('flex flex-row items-end gap-2')}>
+        <AnimatedNativeView style={tailwind.style('flex flex-row items-center gap-2')}>
           {typingText ? (
             <TypingMessage typingText={typingText} />
           ) : (
-            <ConversationLastMessage numberOfLines={2} lastMessage={lastMessage as Message} />
+            <ConversationLastMessage numberOfLines={1} lastMessage={lastMessage as Message} />
           )}
 
-          <AnimatedNativeView style={tailwind.style('flex flex-row items-end gap-1')}>
-            {assignee ? (
-              <NativeView style={tailwind.style(unreadCount >= 1 ? 'pr-1' : '')}>
-                <Avatar
-                  size="sm"
-                  name={assignee.name as string}
-                  src={{ uri: assignee.thumbnail } as ImageURISource}
-                />
-              </NativeView>
-            ) : null}
-
-            {unreadCount >= 1 && <UnreadIndicator count={unreadCount} />}
-          </AnimatedNativeView>
+          <View style={{ position: 'relative' }}>
+            <TouchableWithoutFeedback onPress={handleAIToggle}>
+              <View style={{ 
+                position: 'absolute',
+                right: 0,
+                top: 0,
+                zIndex: 999, 
+                elevation: 999,
+                paddingTop: 4,
+                paddingBottom: 4,
+                paddingLeft: 4,
+                paddingRight: 0,
+                backgroundColor: 'transparent',
+              }}>
+                <AIStatusIcon isEnabled={isAIEnabled ?? false} size={32} />
+              </View>
+            </TouchableWithoutFeedback>
+            {/* Invisible spacer to maintain layout */}
+            <View style={{ width: 40, height: 40 }} />
+          </View>
         </AnimatedNativeView>
       )}
     </AnimatedNativeView>

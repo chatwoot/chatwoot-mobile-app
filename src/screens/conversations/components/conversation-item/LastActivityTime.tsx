@@ -47,7 +47,7 @@ export const LastActivityTime = ({ timestamp }: LastActivityTimeProps) => {
     <NativeView>
       <Text
         style={themedTailwind.style(
-          'text-sm font-inter-420-20 leading-[16px] tracking-[0.32px] text-gray-700',
+          'text-xs font-inter-420-20 leading-[14px] tracking-[0.24px] text-gray-700',
         )}>
         {lastActivityTime}
       </Text>

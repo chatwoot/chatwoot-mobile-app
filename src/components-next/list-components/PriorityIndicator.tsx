@@ -27,8 +27,8 @@ export const getPriorityIcon = (priority: ConversationPriority) => {
 
 export const PriorityIndicator = (props: PriorityIndicatorProps) => {
   return (
-    <NativeView style={tailwind.style('h-4 w-4 rounded justify-center items-center')}>
-      <Icon icon={getPriorityIcon(props.priority)} />
+    <NativeView style={tailwind.style('h-3 w-3 rounded justify-center items-center')}>
+      <Icon icon={getPriorityIcon(props.priority)} size={12} />
     </NativeView>
   );
 };

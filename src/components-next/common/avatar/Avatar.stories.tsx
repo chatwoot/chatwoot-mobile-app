@@ -142,3 +142,33 @@ export const ImageFallback: Story = {
     </View>
   ),
 };
+
+// Avatar with counter badge
+export const WithCounter: Story = {
+  render: () => (
+    <View style={{ gap: 16, flexDirection: 'row', flexWrap: 'wrap' }}>
+      <Avatar size="xs" name="ML" counter={{ count: 4 }} />
+      <Avatar size="sm" name="ML" counter={{ count: 4 }} />
+      <Avatar size="md" name="ML" counter={{ count: 4 }} />
+      <Avatar size="lg" name="ML" counter={{ count: 4 }} />
+      <Avatar size="xl" name="ML" counter={{ count: 4 }} />
+      <Avatar size="2xl" name="ML" counter={{ count: 4 }} />
+      <Avatar size="3xl" name="ML" counter={{ count: 4 }} />
+      <Avatar size="4xl" name="ML" counter={{ count: 4 }} />
+    </View>
+  ),
+};
+
+// Avatar with different counter values
+export const CounterVariations: Story = {
+  render: () => (
+    <View style={{ gap: 16, flexDirection: 'row', flexWrap: 'wrap' }}>
+      <Avatar size="4xl" name="ML" counter={{ count: 1 }} />
+      <Avatar size="4xl" name="ML" counter={{ count: 4 }} />
+      <Avatar size="4xl" name="ML" counter={{ count: 9 }} />
+      <Avatar size="4xl" name="ML" counter={{ count: 12 }} />
+      <Avatar size="4xl" name="ML" counter={{ count: 99 }} />
+      <Avatar size="4xl" name="ML" counter={{ count: 150 }} />
+    </View>
+  ),
+};

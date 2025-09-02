@@ -18,8 +18,8 @@ export const ChannelIndicator = (props: ChannelIndicatorProps) => {
   const { type = '' } = props.additionalAttributes || {};
 
   return (
-    <NativeView style={tailwind.style('pl-1 h-4 w-4  justify-center items-center')}>
-      <Icon icon={getChannelIcon(channelType as Channel, medium, type)} size={16} />
+    <NativeView style={tailwind.style('pl-1 h-3 w-3  justify-center items-center')}>
+      <Icon icon={getChannelIcon(channelType as Channel, medium, type)} size={12} />
     </NativeView>
   );
 };

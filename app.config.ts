@@ -80,17 +80,19 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   // eslint-disable-next-line no-console
   console.log('[config] IOS googleServicesFile (resolved):', resolvedIosPlist);
 
+  const APP_VERSION = '4.0.21';
+
   return {
     ...config,
     name: getAppName(),
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatscommerce',
     scheme: getAppScheme(),
-    // Required for EAS Update; prevents Expo CLI from trying to auto-write to dynamic config
+    // Disable OTA updates (EAS Update)
     updates: {
-      url: 'https://u.expo.dev/c388de6e-16cf-4618-b94e-a45c450845dc',
+      enabled: false,
     },
     runtimeVersion: '1.0.0',
-    version: '4.0.19',
+    version: APP_VERSION,
     orientation: 'portrait',
     icon: getAppIcon(),
     userInterfaceStyle: 'automatic',
@@ -180,7 +182,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           android: {
             minSdkVersion: 24,
             compileSdkVersion: 35,
-            targetSdkVersion: 34,
+            targetSdkVersion: 35,
             enableProguardInReleaseBuilds: true,
           },
           ios: { useFrameworks: 'static' },

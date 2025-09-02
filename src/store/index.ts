@@ -45,6 +45,43 @@ const rootReducer = (state: ReturnType<typeof appReducer>, action: AnyAction) =>
     const initialState = appReducer(undefined, { type: 'INIT' });
     return { ...initialState, settings: state.settings };
   }
+  
+  // Handle Redux Persist rehydration - check for environment mismatch
+  if (action.type === 'persist/REHYDRATE' && action.payload?.settings) {
+    const persistedSettings = action.payload.settings;
+    const envBaseUrl = process.env.EXPO_PUBLIC_BASE_URL;
+    const envInstallationUrl = process.env.EXPO_PUBLIC_INSTALLATION_URL;
+    const currentEnvironment = process.env.ENVIRONMENT || process.env.EAS_BUILD_PROFILE;
+    
+    // Check if persisted URLs don't match current environment variables
+    const urlMismatch = 
+      (envBaseUrl && persistedSettings.baseUrl !== envBaseUrl) ||
+      (envInstallationUrl && persistedSettings.installationUrl !== envInstallationUrl);
+    
+    if (urlMismatch && currentEnvironment) {
+      console.log('🚨 ENVIRONMENT MISMATCH DETECTED - Overriding persisted settings with environment variables:', {
+        'Persisted baseUrl': persistedSettings.baseUrl,
+        'Environment baseUrl': envBaseUrl,
+        'Persisted installationUrl': persistedSettings.installationUrl,
+        'Environment installationUrl': envInstallationUrl,
+        'Current environment': currentEnvironment,
+        'Action': 'Forcing environment variables to override persisted state'
+      });
+      
+      // Override persisted settings with environment variables
+      const updatedPayload = {
+        ...action.payload,
+        settings: {
+          ...persistedSettings,
+          baseUrl: envBaseUrl || persistedSettings.baseUrl,
+          installationUrl: envInstallationUrl || persistedSettings.installationUrl,
+        }
+      };
+      
+      return appReducer(state, { ...action, payload: updatedPayload });
+    }
+  }
+  
   return appReducer(state, action);
 };
 

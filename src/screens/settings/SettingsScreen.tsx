@@ -374,7 +374,7 @@ const SettingsScreen = () => {
         // bottomInset={bottom === 0 ? 12 : bottom}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
-        backgroundStyle={themedTailwind.style('bg-black')}
+        backgroundStyle={themedTailwind.style('bg-white')}
         snapPoints={[190]}
       >
         <BottomSheetWrapper>
@@ -395,7 +395,7 @@ const SettingsScreen = () => {
         animationConfigs={animationConfigs}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
-        backgroundStyle={themedTailwind.style('bg-black')}
+        backgroundStyle={themedTailwind.style('bg-white')}
         snapPoints={['70%']}
       >
         <BottomSheetScrollView showsVerticalScrollIndicator={false}>
@@ -413,7 +413,7 @@ const SettingsScreen = () => {
         animationConfigs={animationConfigs}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
-        backgroundStyle={themedTailwind.style('bg-black')}
+        backgroundStyle={themedTailwind.style('bg-white')}
         snapPoints={['52%']}
       >
         <BottomSheetWrapper>
@@ -431,7 +431,7 @@ const SettingsScreen = () => {
         animationConfigs={animationConfigs}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
-        backgroundStyle={themedTailwind.style('bg-black')}
+        backgroundStyle={themedTailwind.style('bg-white')}
         snapPoints={['50%']}
       >
         <BottomSheetWrapper>
@@ -451,7 +451,7 @@ const SettingsScreen = () => {
         animationConfigs={animationConfigs}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
-        backgroundStyle={themedTailwind.style('bg-black')}
+        backgroundStyle={themedTailwind.style('bg-white')}
         snapPoints={['36%']}
       >
         <BottomSheetWrapper>

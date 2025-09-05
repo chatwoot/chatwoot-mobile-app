@@ -71,7 +71,7 @@
         }
       },
       "STATUS": {
-        "TITLE": "Filter by status",
+        "TITLE": "Nach Status filtern",
         "OPTIONS": {
           "OPEN": "Öffnen",
           "PENDING": "Ausstehend",
@@ -83,7 +83,7 @@
       "ASSIGNEE_TYPE": {
         "TITLE": "Filtern Sie nach Mitarbeitertyp",
         "OPTIONS": {
-          "ME": "Me",
+          "ME": "Ich",
           "UNASSIGNED": "Nicht zugeordnet",
           "ALL": "Alle"
         }
@@ -97,8 +97,8 @@
         "SEARCH_AGENT": "Agenten suchen"
       },
       "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
+        "HEADER_TITLE": "Status zuweisen",
+        "TITLE": "Nach Status filtern",
         "OPTIONS": {
           "OPEN": "Öffnen",
           "PENDING": "Ausstehend",
@@ -132,10 +132,10 @@
     "PRIVATE_MSG_INPUT": "Dies ist nur für Agenten sichtbar",
     "UNSUPPORTED_MESSAGE": "Diese Nachricht wird nicht unterstützt. Sie können diese Nachricht in der Facebook/Instagram-App sehen.",
     "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+      "TITLE": "Gespräch kann nicht abgerufen werden",
+      "RETRY": "Wiederholen",
+      "BACK_TO_HOME": "Zurück zur Startseite",
+      "DESCRIPTION": "Es scheint, dass diese Unterhaltung nicht richtig abgerufen werden kann. Es könnte aufgrund eines Netzwerkproblems sein oder die Unterhaltung ist nicht mehr verfügbar. Bitte klicken Sie auf die Schaltfläche \"Wiederholen\" um es erneut zu versuchen."
     },
     "BOT": "Bot",
     "EMAIL_HEAD": {
@@ -152,18 +152,18 @@
     "SNOOZE_UNTIL_TOMORROW": "Bis morgen",
     "SNOOZE_UNTIL_NEXT_WEEK": "Bis nächste Woche",
     "SNOOZE": "Konversation schlummern",
-    "CHANGE_PRIORITY": "Change priority",
+    "CHANGE_PRIORITY": "Priorität ändern",
     "MESSAGES": "Nachrichten",
     "UNDEFINED_VARIABLES_TITLE": "Undefinierte Variablen",
     "UNDEFINED_VARIABLES_CLOSE": "Schließen",
     "DELETE_MESSAGE_TITLE": "Sind Sie sicher, dass Sie diese Nachricht löschen möchten?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
+    "DELETE_MESSAGE_SUB_TITLE": "Diese Aktion kann nicht rückgängig gemacht werden.",
+    "COPY_MESSAGE": "Nachricht in Zwischenablage kopiert",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
     "DELETE_MESSAGE_SUCCESS": "Nachricht erfolgreich gelöscht",
     "NO_CONTENT": "Kein Inhalt verfügbar",
     "ASSIGN_CHANGE": "Konversationsempfänger geändert",
-    "TEAM_CHANGE": "Conversation Team changed",
+    "TEAM_CHANGE": "",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",

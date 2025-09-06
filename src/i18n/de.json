@@ -22,8 +22,8 @@
     "ERROR": "Ungültige Installations URL"
   },
   "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "TITLE": "Melden Sie sich bei Ihrem Konto an",
+    "DESCRIPTION": "Sie sind mit {{baseUrl}} verbunden.",
     "EMAIL": "E-Mail",
     "PASSWORD": "Passwort",
     "EMAIL_REQUIRED": "E-Mail ist erforderlich",
@@ -31,7 +31,7 @@
     "PASSWORD_REQUIRED": "Passwort ist erforderlich",
     "PASSWORD_ERROR": "Geben Sie ein gültiges Passwort ein",
     "LOGIN": "Anmelden",
-    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_LOADING": "Anmelden...",
     "FORGOT_PASSWORD": "Passwort vergessen?",
     "RESET_HERE": "Hier zurücksetzen",
     "NO_ACCOUNT": "Sie haben kein Konto?",
@@ -65,7 +65,7 @@
       "SORT_BY": {
         "TITLE": "Sortieren nach",
         "OPTIONS": {
-          "LATEST": "Latest",
+          "LATEST": "Neueste",
           "SORT_ON_CREATED_AT": "Erstellt am",
           "SORT_ON_PRIORITY": "Priorität"
         }
@@ -216,7 +216,7 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "Kopieren",
       "REPLY": "Antworten",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Nachricht löschen"
     },
     "EMAIL_HEADER": {
       "FROM": "Von",
@@ -261,7 +261,7 @@
   "SETTINGS": {
     "HEADER_TITLE": "Einstellungen",
     "SET_AVAILABILITY": "Setzen Sie sich als",
-    "CHANGE_AVAILABILITY": "Set availability",
+    "CHANGE_AVAILABILITY": "Verfügbarkeit festlegen",
     "PREFERENCES": "Einstellungen",
     "ABOUT": "Über",
     "SUPPORT": "Support",
@@ -269,11 +269,11 @@
     "CHANGE_LANGUAGE": "Sprache ändern",
     "NOTIFICATIONS": "Benachrichtigungen",
     "NOTIFICATION_PREFERENCES": "Benachrichtigungseinstellungen",
-    "READ_DOCS": "Read Docs",
+    "READ_DOCS": "Dokumente lesen",
     "CHAT_WITH_US": "Chatten Sie mit uns",
     "LOGOUT": "Abmelden",
     "SUBMIT": "Senden",
-    "SET_LANGUAGE": "Set Language",
+    "SET_LANGUAGE": "Sprache festlegen",
     "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {

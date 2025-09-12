@@ -137,15 +137,17 @@ const MFAScreen = () => {
                 : 'Enter your backup code'}
             </Text>
 
-            <Animated.View style={[rShakeStyle, tailwind.style('mb-8')]}>
-              <VerificationCode
-                code={code}
-                maxLength={6}
-                status={verificationStatus}
-                isDarkMode={false}
-                isCodeWrong={isCodeWrong}
-              />
-            </Animated.View>
+            <Pressable onPress={() => hiddenInputRef.current?.focus()}>
+              <Animated.View style={[rShakeStyle, tailwind.style('mb-8')]}>
+                <VerificationCode
+                  code={code}
+                  maxLength={6}
+                  status={verificationStatus}
+                  isDarkMode={false}
+                  isCodeWrong={isCodeWrong}
+                />
+              </Animated.View>
+            </Pressable>
 
             {/* Hidden TextInput */}
             <TextInput

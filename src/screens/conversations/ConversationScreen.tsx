@@ -1,12 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, RefreshControl, StatusBar } from 'react-native';
+import { ActivityIndicator, AppState, RefreshControl, StatusBar } from 'react-native';
 import Animated, {
   LinearTransition,
   runOnJS,
+  SharedValue,
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetModal,
+  useBottomSheetSpringConfigs,
+  useBottomSheetModal,
+} from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 
 import {
@@ -21,7 +26,12 @@ import {
 import { ActionTabs, BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
 
 import { EmptyStateIcon } from '@/svg-icons';
-import { TAB_BAR_HEIGHT } from '@/constants';
+import {
+  SCREENS,
+  TAB_BAR_HEIGHT,
+  LAST_ACTIVE_TIMESTAMP_KEY,
+  LAST_ACTIVE_TIMESTAMP_THRESHOLD,
+} from '@/constants';
 import {
   ConversationListStateProvider,
   useConversationListStateContext,
@@ -51,6 +61,11 @@ import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentS
 
 import i18n from '@/i18n';
 import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
+import { getCurrentRouteName } from '@/utils/navigationUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// The screen list thats need to be checked for refreshing the conversations list
+const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.INBOX, SCREENS.SETTINGS];
 
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 
@@ -60,34 +75,44 @@ type FlashListRenderItemType = {
 };
 
 const ConversationList = () => {
+  const { dismissAll } = useBottomSheetModal();
   const dispatch = useAppDispatch();
+  const [appState, setAppState] = useState(AppState.currentState);
 
+  // This is used to prevent the infinite scrolling before the list is ready
   const [isFlashListReady, setFlashListReady] = useState(false);
+  // This is used for pull to refresh
   const [isRefreshing, setIsRefreshing] = useState(false);
+  // This is used for pagination
   const [pageNumber, setPageNumber] = useState(1);
   const userId = useAppSelector(selectUserId);
 
+  // This is used to store the index of the item that is currently selected
   const { openedRowIndex } = useConversationListStateContext();
 
+  // This is used to check if the conversations are still loading
   const isConversationsLoading = useAppSelector(selectConversationsLoading);
+  // This is used to check if all the conversations are fetched
   const isAllConversationsFetched = useAppSelector(selectIsAllConversationsFetched);
 
-  const handleRender = useCallback(
-    ({ item, index }: FlashListRenderItemType) => {
-      return (
-        <ConversationItemContainer
-          index={index}
-          conversationItem={item}
-          openedRowIndex={openedRowIndex}
-        />
-      );
-    },
+  const handleRender = useCallback(({ item, index }: FlashListRenderItemType) => {
+    return (
+      <ConversationItemContainer
+        index={index}
+        conversationItem={item}
+        openedRowIndex={openedRowIndex as SharedValue<number | null>}
+      />
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
+  }, []);
 
   const filters = useAppSelector(selectFilters);
   const previousFilters = useRef(filters);
+
+  // Reset last active timestamp when the conversation screen is opened
+  useEffect(() => {
+    AsyncStorage.removeItem(LAST_ACTIVE_TIMESTAMP_KEY);
+  }, []);
 
   useEffect(() => {
     if (previousFilters.current !== filters) {
@@ -98,8 +123,8 @@ const ConversationList = () => {
   }, [filters]);
 
   useEffect(() => {
+    dismissAll();
     clearAndFetchConversations(filters);
-    // fetchConversations(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -132,6 +157,40 @@ const ConversationList = () => {
       setIsRefreshing(false);
     });
   }, [clearAndFetchConversations, filters]);
+
+  const checkAppStateAndFetchConversations = useCallback(async () => {
+    const lastActiveTimestamp = await AsyncStorage.getItem(LAST_ACTIVE_TIMESTAMP_KEY);
+    if (lastActiveTimestamp) {
+      const currentTimestamp = Date.now();
+      const difference = currentTimestamp - parseInt(lastActiveTimestamp);
+      if (difference > LAST_ACTIVE_TIMESTAMP_THRESHOLD) {
+        clearAndFetchConversations(filters);
+      }
+    }
+  }, [clearAndFetchConversations, filters]);
+
+  // Update conversations when app comes to foreground from background
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener('change', nextAppState => {
+      if (appState.match(/inactive|background/) && nextAppState === 'active') {
+        const routeName = getCurrentRouteName();
+        if (routeName && REFRESH_SCREEN_LIST.includes(routeName)) {
+          checkAppStateAndFetchConversations();
+        }
+      }
+
+      if (appState === 'active' && nextAppState.match(/inactive|background/)) {
+        // App is going to background
+        const currentTimestamp = Date.now();
+        AsyncStorage.setItem(LAST_ACTIVE_TIMESTAMP_KEY, currentTimestamp.toString());
+      }
+
+      setAppState(nextAppState);
+    });
+    return () => {
+      appStateListener?.remove();
+    };
+  }, [appState, checkAppStateAndFetchConversations, clearAndFetchConversations, filters]);
 
   const fetchConversations = useCallback(
     async (filters: FilterState, page: number = 1) => {
@@ -219,13 +278,12 @@ const ConversationScreen = () => {
   const dispatch = useAppDispatch();
 
   const animationConfigs = useBottomSheetSpringConfigs({
-    mass: 1,
-    stiffness: 420,
-    damping: 30,
+    mass: 1.2,
+    stiffness: 300,
+    damping: 50,
   });
 
   const { filtersModalSheetRef } = useRefsContext();
-  // const { bottom } = useSafeAreaInsets();
 
   const handleOnDismiss = () => {
     /**

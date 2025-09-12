@@ -1,6 +1,6 @@
 import React from 'react';
-import { Pressable, Text } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { Pressable, Text, ViewStyle } from 'react-native';
+import Animated, { AnimatedStyle } from 'react-native-reanimated';
 import { Icon } from '@/components-next/common';
 import { CheckedIcon, CloseIcon, FilterIcon, UncheckedIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
@@ -28,8 +28,8 @@ type LeftSectionProps = {
 type FilterSectionProps = {
   filtersAppliedCount: number;
   onClearFilter: () => void;
-  handlers: unknown;
-  animatedStyle: unknown;
+  handlers: Record<string, unknown>;
+  animatedStyle: ViewStyle | AnimatedStyle<ViewStyle>;
 };
 
 type RightSectionProps = {

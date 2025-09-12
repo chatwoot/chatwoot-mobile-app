@@ -14,7 +14,7 @@ import i18n from '@/i18n';
 import { AssigneeOptions } from '@/types';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/auth/authSelectors';
-import { getUserPermissions } from '@/helpers/permissionHelper';
+import { getUserPermissions } from '@/utils/permissionUtils';
 
 type AssigneeTypeCellProps = {
   value: string;
@@ -59,9 +59,9 @@ const AssigneeTypeCell = (props: AssigneeTypeCellProps) => {
 
 export const AssigneeTypeFilters = () => {
   const user = useSelector(selectUser);
-  const { account_id: activeAccountId } = user || {};
+  const { account_id: activeAccountId } = user || { account_id: null };
 
-  const userPermissions = getUserPermissions(user, activeAccountId);
+  const userPermissions = user ? getUserPermissions(user, activeAccountId) : [];
 
   // If userPermissions contains any values conversation_manage_permission,administrator, agent then keep all the assignee types
   // If conversation_manage is not available and conversation_unassigned_manage only is available, then return only unassigned and mine

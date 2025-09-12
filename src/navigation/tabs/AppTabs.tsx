@@ -16,7 +16,7 @@ import {
 } from '@/store/auth/authSelectors';
 import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 
-import { getUserPermissions } from 'helpers/permissionHelper';
+import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 
 import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stack';
@@ -28,13 +28,13 @@ import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { BottomTabBar } from './BottomTabBar';
 import { settingsActions } from '@/store/settings/settingsActions';
 import { selectChatwootVersion } from '@/store/settings/settingsSelectors';
-import { checkServerSupport } from '@/helpers/ServerHelper';
+import { checkServerSupport } from '@/utils/serverUtils';
 import { inboxActions } from '@/store/inbox/inboxActions';
 import { labelActions } from '@/store/label/labelActions';
 import actionCableConnector from '@/utils/actionCable';
 import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
-import AnalyticsHelper from '@/helpers/AnalyticsHelper';
-import { clearAllDeliveredNotifications } from '@/helpers/PushHelper';
+import AnalyticsHelper from '@/utils/analyticsUtils';
+import { clearAllDeliveredNotifications } from '@/utils/pushUtils';
 import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
 import { customAttributeActions } from '@/store/custom-attribute/customAttributeActions';
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
@@ -81,6 +81,7 @@ const Tabs = () => {
   const webSocketUrl = useAppSelector(selectWebSocketUrl);
 
   useEffect(() => {
+    // Here is the place we are loading all the data for the app first time first time or user switches account
     dispatch(authActions.getProfile());
     dispatch(settingsActions.saveDeviceDetails());
     dispatch(inboxActions.fetchInboxes());
@@ -97,7 +98,9 @@ const Tabs = () => {
   }, []);
 
   const initAnalytics = useCallback(async () => {
-    AnalyticsHelper.identify(user);
+    if (user) {
+      AnalyticsHelper.identify(user);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -128,7 +131,9 @@ const Tabs = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [installationUrl]);
 
-  const userPermissions = getUserPermissions(user, user?.account_id);
+  const userPermissions = user ? getUserPermissions(user, user.account_id) : [];
+
+  // Checking if user has conversation permission to show inbox and conversations tabs
   const hasConversationPermission = CONVERSATION_PERMISSIONS.some(permission =>
     userPermissions.includes(permission),
   );
@@ -159,7 +164,6 @@ const Tabs = () => {
           component={ConversationStack}
         />
       )}
-
       <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
     </Tab.Navigator>
   );

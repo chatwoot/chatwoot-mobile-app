@@ -3,9 +3,7 @@ import type { CannedResponse } from '@/types';
 import { cannedResponseActions } from './cannedResponseActions';
 import { RootState } from '@/store';
 
-export const cannedResponseAdapter = createEntityAdapter<CannedResponse>({
-  selectId: cannedResponse => cannedResponse.id,
-});
+export const cannedResponseAdapter = createEntityAdapter<CannedResponse>();
 
 export interface CannedResponseState {
   isLoading: boolean;

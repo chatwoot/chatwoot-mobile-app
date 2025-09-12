@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import { Platform, Pressable, View } from 'react-native';
 import { PlayBackType } from 'react-native-audio-recorder-player';
 import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
+import * as Sentry from '@sentry/react-native';
 
 import {
   selectCurrentPlayingAudioSrc,
@@ -17,23 +18,25 @@ import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../a
 import { MESSAGE_VARIANTS } from '@/constants';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
+import { convertOggToWav } from '@/utils/audioConverter';
 
-const PlayIcon = ({ fill, fillOpacity }: IconProps) => {
+// eslint-disable-next-line react/display-name
+const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
   return (
     <Svg width="10" height="13" viewBox="0 0 10 13" fill="none">
       <Path d="M0 13V0L10 6.80952L0 13Z" fill={fill} fillOpacity={fillOpacity} />
     </Svg>
   );
-};
-
-const PauseIcon = ({ fill, fillOpacity }: IconProps) => {
+});
+// eslint-disable-next-line react/display-name
+const PauseIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
   return (
     <Svg width="10" height="12" viewBox="0 0 10 12" fill="none">
       <Rect width="3" height="12" fill={fill} fillOpacity={fillOpacity} />
       <Rect x="7" width="3" height="12" fill={fill} fillOpacity={fillOpacity} />
     </Svg>
   );
-};
+});
 
 type AudioBubbleProps = {
   audioSrc: string;
@@ -44,11 +47,13 @@ type AudioPlayerProps = Pick<AudioBubbleProps, 'audioSrc'> & {
   variant: string;
 };
 
-export const AudioBubblePlayer = (props: AudioPlayerProps) => {
+// eslint-disable-next-line react/display-name
+export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const { audioSrc, variant } = props;
 
   const [isSoundLoading, setIsSoundLoading] = useState(false);
   const [isAudioPlaying, setAudioPlaying] = useState(false);
+  const [convertedAudioSrc, setConvertedAudioSrc] = useState(audioSrc);
 
   const dispatch = useDispatch();
   const currentPlayingAudioSrc = useAppSelector(selectCurrentPlayingAudioSrc);
@@ -56,24 +61,42 @@ export const AudioBubblePlayer = (props: AudioPlayerProps) => {
   const currentPosition = useSharedValue(0);
   const totalDuration = useSharedValue(0);
 
-  const audioPlayBackStatus = (data: any) => {
-    const playBackData = data.data as PlayBackType;
-    if (playBackData) {
-      currentPosition.value = playBackData.currentPosition;
-      totalDuration.value = playBackData.duration;
-      if (playBackData.currentPosition === playBackData.duration) {
-        currentPosition.value = 0;
-        totalDuration.value = 0;
-        setAudioPlaying(false);
-        dispatch(setCurrentPlayingAudioSrc(''));
+  const audioPlayBackStatus = useCallback(
+    (data: { data: PlayBackType }) => {
+      const playBackData = data.data as PlayBackType;
+      if (playBackData) {
+        currentPosition.value = playBackData.currentPosition;
+        totalDuration.value = playBackData.duration;
+        if (playBackData.currentPosition === playBackData.duration) {
+          currentPosition.value = 0;
+          totalDuration.value = 0;
+          setAudioPlaying(false);
+          dispatch(setCurrentPlayingAudioSrc(''));
+        }
       }
-    }
-  };
+    },
+    [currentPosition, totalDuration, dispatch],
+  );
 
-  const togglePlayback = () => {
-    if (audioSrc === currentPlayingAudioSrc) {
-      // The current playing audio file is same as the component audio src so
-      // we will have to just toggle the audio playing
+  useEffect(() => {
+    const prepareAudio = async () => {
+      if (Platform.OS === 'ios' && audioSrc.toLowerCase().endsWith('.ogg')) {
+        setIsSoundLoading(true);
+        try {
+          const convertedSrc = await convertOggToWav(audioSrc);
+          setConvertedAudioSrc(convertedSrc);
+        } catch (error) {
+          Sentry.captureException(error);
+        } finally {
+          setIsSoundLoading(false);
+        }
+      }
+    };
+    prepareAudio();
+  }, [audioSrc]);
+
+  const togglePlayback = useCallback(() => {
+    if (convertedAudioSrc === currentPlayingAudioSrc) {
       if (isAudioPlaying) {
         pausePlayer();
       } else {
@@ -82,28 +105,27 @@ export const AudioBubblePlayer = (props: AudioPlayerProps) => {
       setAudioPlaying(!isAudioPlaying);
     } else {
       setIsSoundLoading(true);
-
-      startPlayer(audioSrc, audioPlayBackStatus).then(() => {
+      startPlayer(convertedAudioSrc, audioPlayBackStatus).then(() => {
         setIsSoundLoading(false);
         setAudioPlaying(true);
-        dispatch(setCurrentPlayingAudioSrc(audioSrc));
+        dispatch(setCurrentPlayingAudioSrc(convertedAudioSrc));
       });
     }
-  };
+  }, [convertedAudioSrc, currentPlayingAudioSrc, isAudioPlaying, dispatch, audioPlayBackStatus]);
 
-  const manualSeekTo = async (manualSeekPosition: number) => {
+  const manualSeekTo = useCallback(async (manualSeekPosition: number) => {
     seekTo(manualSeekPosition).then(() => {
       resumePlayer();
     });
-  };
+  }, []);
 
-  const pauseAudio = async () => {
+  const pauseAudio = useCallback(async () => {
     await pausePlayer();
-  };
+  }, []);
 
   const isCurrentAudioSrcPlaying = useMemo(
-    () => currentPlayingAudioSrc === audioSrc && isAudioPlaying,
-    [audioSrc, currentPlayingAudioSrc, isAudioPlaying],
+    () => currentPlayingAudioSrc === convertedAudioSrc && isAudioPlaying,
+    [convertedAudioSrc, currentPlayingAudioSrc, isAudioPlaying],
   );
 
   useEffect(() => {
@@ -111,8 +133,7 @@ export const AudioBubblePlayer = (props: AudioPlayerProps) => {
       currentPosition.value = 0;
       totalDuration.value = 0;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlayingAudioSrc]);
+  }, [currentPlayingAudioSrc, audioSrc, currentPosition, totalDuration]);
 
   useEffect(() => {
     return () => {
@@ -123,15 +144,27 @@ export const AudioBubblePlayer = (props: AudioPlayerProps) => {
           dispatch(setCurrentPlayingAudioSrc(''));
         });
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
+
+  const sliderProps = useMemo(
+    () => ({
+      trackColor: variant === MESSAGE_VARIANTS.USER ? 'bg-whiteA-A9' : 'bg-gray-500',
+      filledTrackColor: variant === MESSAGE_VARIANTS.USER ? 'bg-white' : 'bg-blue-700',
+      knobStyle: variant === MESSAGE_VARIANTS.USER ? 'border-blue-300' : 'border-blue-700',
+      manualSeekTo,
+      currentPosition,
+      totalDuration,
+      pauseAudio,
+    }),
+    [variant, manualSeekTo, currentPosition, totalDuration, pauseAudio],
+  );
 
   return (
     <View style={tailwind.style('w-full flex flex-row items-center flex-1')}>
       <Pressable disabled={isSoundLoading} hitSlop={10} onPress={togglePlayback}>
         {isSoundLoading ? (
           <Animated.View>
-            <Spinner size={13} />
+            <Spinner size={13} stroke={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'} />
           </Animated.View>
         ) : isCurrentAudioSrcPlaying ? (
           <Animated.View
@@ -160,17 +193,13 @@ export const AudioBubblePlayer = (props: AudioPlayerProps) => {
           </Animated.View>
         )}
       </Pressable>
-      <Slider
-        trackColor={variant === MESSAGE_VARIANTS.USER ? 'bg-whiteA-A9' : 'bg-gray-500'}
-        filledTrackColor={variant === MESSAGE_VARIANTS.USER ? 'bg-white' : 'bg-blue-700'}
-        knobStyle={variant === MESSAGE_VARIANTS.USER ? 'border-blue-300' : 'border-blue-700'}
-        {...{ manualSeekTo, currentPosition, totalDuration, pauseAudio }}
-      />
+      <Slider {...sliderProps} />
     </View>
   );
-};
+});
 
-export const AudioBubble: React.FC<AudioBubbleProps> = props => {
+// eslint-disable-next-line react/display-name
+export const AudioBubble = React.memo<AudioBubbleProps>(props => {
   const { audioSrc, variant } = props;
 
   return (
@@ -178,4 +207,4 @@ export const AudioBubble: React.FC<AudioBubbleProps> = props => {
       <AudioBubblePlayer audioSrc={audioSrc} variant={variant} />
     </Animated.View>
   );
-};
+});

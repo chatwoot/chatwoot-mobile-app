@@ -59,14 +59,6 @@
       "AGENT": {
         "SEARCH_AGENT": "Agenten suchen"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filtern Sie nach Mitarbeitertyp",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Nicht zugeordnet",
-          "ALL": "Alle"
-        }
-      },
       "INBOX": {
         "TITLE": "Filtern nach Posteingang"
       },
@@ -85,6 +77,14 @@
           "PENDING": "Ausstehend",
           "SNOOZED": "Erinnern",
           "RESOLVED": "Gelöst",
+          "ALL": "Alle"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filtern Sie nach Mitarbeitertyp",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Nicht zugeordnet",
           "ALL": "Alle"
         }
       }
@@ -109,7 +109,7 @@
       }
     },
     "DEFAULT_HEADER_TITLE": "Konversationen",
-    "UPDATING": "Aktualisieren...",
+    "UPDATING": "Aktualisiere...",
     "MINE": "Meine",
     "UN_ASSIGNED": "Nicht zugeordnet",
     "ALL": "Alle",
@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "Zugewiesener Agent",
     "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "Dies ist nur für Agenten sichtbar",
+    "UNSUPPORTED_MESSAGE": "Diese Nachricht wird nicht unterstützt. Sie können diese Nachricht in der Facebook/Instagram-App sehen.",
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",
@@ -207,6 +208,9 @@
       },
       "fallback": {
         "CONTENT": "hat eine URL geteilt"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
       }
     },
     "LONG_PRESS_ACTIONS": {
@@ -440,5 +444,15 @@
       "SHOW_MORE": "{count} more",
       "HIDE": "Hide {count} rows"
     }
+  },
+  "MACRO": {
+    "TITLE": "Makros",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "Makro erfolgreich ausgeführt",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "Keine Makros gefunden"
   }
 }

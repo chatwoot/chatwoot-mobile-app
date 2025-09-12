@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, Text, Animated, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { showToast } from '@/helpers/ToastHelper';
+import { showToast } from '@/utils/toastUtils';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { useAppSelector } from '@/hooks';

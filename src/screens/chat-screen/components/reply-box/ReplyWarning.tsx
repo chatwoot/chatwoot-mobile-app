@@ -8,7 +8,7 @@ import { Inbox } from '@/types/Inbox';
 import { Conversation } from '@/types';
 import i18n from '@/i18n';
 import { REPLY_POLICY } from '@/constants/url';
-import { openURL } from '@/helpers/UrlHelper';
+import { openURL } from '@/utils/urlUtils';
 
 type ReplyWarningProps = {
   inbox: Inbox;

@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/hooks';
 import { useChatWindowContext } from '@/context';
-import { Platform } from 'react-native';
+import { AppState, Platform } from 'react-native';
 import { KeyboardGestureArea } from 'react-native-keyboard-controller';
 import { flatMap } from 'lodash';
 import useDeepCompareEffect from 'use-deep-compare-effect';
@@ -18,10 +18,11 @@ import { getGroupedMessages, isAnEmailChannel } from '@/utils';
 import { MessagesList } from './MessagesList';
 import tailwind from 'twrnc';
 import { conversationParticipantActions } from '@/store/conversation-participant/conversationParticipantActions';
-import { MESSAGE_TYPES } from '@/constants';
+import { MESSAGE_TYPES, SCREENS } from '@/constants';
 import { Message } from '@/types';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { selectUserId } from '@/store/auth/authSelectors';
+import { getCurrentRouteName } from '@/utils/navigationUtils';
 
 type DateSeparator = { date: string; type: 'date' };
 type MessageOrDate = Message | DateSeparator;
@@ -69,6 +70,7 @@ const PlatformSpecificKeyboardWrapperComponent =
   Platform.OS === 'android' ? Animated.View : KeyboardGestureArea;
 
 export const MessagesListContainer = () => {
+  const [appState, setAppState] = useState(AppState.currentState);
   const { conversationId } = useChatWindowContext();
   const dispatch = useAppDispatch();
   const [isFlashListReady, setFlashListReady] = React.useState(false);
@@ -89,6 +91,7 @@ export const MessagesListContainer = () => {
     if (conversation) {
       dispatch(conversationActions.markMessageRead({ conversationId }));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const lastMessageId = useCallback(() => {
@@ -112,6 +115,26 @@ export const MessagesListContainer = () => {
     [conversationId, dispatch, lastMessageId],
   );
 
+  // Update messages when app comes to foreground from background
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener('change', nextAppState => {
+      if (appState.match(/inactive|background/) && nextAppState === 'active') {
+        const routeName = getCurrentRouteName();
+        if (routeName && SCREENS.CHAT === routeName) {
+          dispatch(
+            conversationActions.fetchPreviousMessages({
+              conversationId,
+            }),
+          );
+        }
+      }
+      setAppState(nextAppState);
+    });
+    return () => {
+      appStateListener?.remove();
+    };
+  }, [appState, conversationId, dispatch]);
+
   const onEndReached = () => {
     const shouldFetchMoreMessages = !isAllMessagesFetched && !isLoadingMessages && isFlashListReady;
     if (shouldFetchMoreMessages) {
@@ -122,6 +145,7 @@ export const MessagesListContainer = () => {
   useEffect(() => {
     loadMessages({ loadingMessagesForFirstTime: true });
     dispatch(conversationParticipantActions.index({ conversationId }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const groupedMessages = getGroupedMessages(messages);

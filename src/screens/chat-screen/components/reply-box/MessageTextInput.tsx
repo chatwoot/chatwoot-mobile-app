@@ -12,17 +12,15 @@ import Animated, {
   LinearTransition,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import {
-  MentionInput,
-  MentionSuggestionsProps,
-  Suggestion,
-} from 'react-native-controlled-mentions';
+
 import Svg, { Path, Rect } from 'react-native-svg';
 
 import { useChatWindowContext } from '@/context';
 import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+
+import { MentionInput, MentionSuggestionsProps, Suggestion } from './mentions-input';
 import {
   setMessageContent,
   togglePrivateMessage,
@@ -151,12 +149,13 @@ export const MessageTextInput = ({
 
   useEffect(() => {
     if (selectedCannedResponse) onChangeText(selectedCannedResponse);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCannedResponse]);
 
   useEffect(() => {
     if (quoteMessage !== null) {
       // Focussing Text Input when you have decided to reply
-      // @ts-ignore
+      // @ts-expect-error TextInput ref focus method may not be properly typed
       textInputRef?.current?.focus();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -185,32 +184,34 @@ export const MessageTextInput = ({
       if (keyword == null || !isPrivateMessage) {
         return null;
       }
+      const filteredSuggestions = suggestions.filter(one =>
+        one.name?.toLocaleLowerCase().includes(keyword.toLocaleLowerCase()),
+      );
       return (
         <Animated.View
           style={[
             tailwind.style(
-              'absolute bottom-full rounded-[13px] mx-4 px-2 bg-white w-full max-h-[250px]',
+              'bg-white border-t border-gray-200 rounded-[13px] mx-4 px-2 w-full max-h-[250px]',
+              Platform.OS === 'ios' ? 'absolute bottom-full' : 'relative h-[150px]',
             ),
             styles.listShadow,
           ]}>
           <ScrollView keyboardShouldPersistTaps="always">
-            {suggestions
-              .filter(one => one.name?.toLocaleLowerCase().includes(keyword.toLocaleLowerCase()))
-              .map(agent => {
-                const agentSuggestion: AgentSuggestion = {
-                  ...agent,
-                  id: String(agent.id),
-                  name: agent.name || '',
-                };
-                return (
-                  <MentionUser
-                    key={agent.id}
-                    agent={agent}
-                    lastItem={false}
-                    onPress={() => onSuggestionPress(agentSuggestion)}
-                  />
-                );
-              })}
+            {filteredSuggestions.map(agent => {
+              const agentSuggestion: AgentSuggestion = {
+                ...agent,
+                id: String(agent.id),
+                name: agent.name || '',
+              };
+              return (
+                <MentionUser
+                  key={agent.id}
+                  agent={agent}
+                  lastItem={false}
+                  onPress={() => onSuggestionPress(agentSuggestion)}
+                />
+              );
+            })}
           </ScrollView>
         </Animated.View>
       );
@@ -223,7 +224,7 @@ export const MessageTextInput = ({
         layout={LinearTransition.springify().damping(20).stiffness(120)}
         style={[tailwind.style('flex-1 my-0.5')]}>
         <MentionInput
-          // @ts-ignore
+          // @ts-expect-error MentionInput ref typing issue with forwardRef
           ref={textInputRef}
           layout={LinearTransition.springify().damping(20).stiffness(120)}
           onChange={onChangeText}
@@ -236,7 +237,7 @@ export const MessageTextInput = ({
               isInsertSpaceAfterMention: true,
             },
           ]}
-          numberOfLines={3}
+          maxNumberOfLines={3}
           multiline
           enablesReturnKeyAutomatically
           style={[
@@ -267,7 +268,7 @@ export const MessageTextInput = ({
       <Animated.View
         style={[
           // Pre calculated value to position the lock
-          tailwind.style('absolute right-[12px]'),
+          tailwind.style('absolute right-13px]'),
           lockIconAnimatedPosition,
         ]}>
         <Pressable hitSlop={5} onPress={toggleReplyMode}>

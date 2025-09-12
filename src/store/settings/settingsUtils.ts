@@ -1,4 +1,4 @@
-import { showToast } from '@/helpers/ToastHelper';
+import { showToast } from '@/utils/toastUtils';
 import I18n from '@/i18n';
 
 export const handleApiError = (error: unknown, customErrorMsg?: string) => {

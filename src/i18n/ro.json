@@ -59,14 +59,6 @@
       "AGENT": {
         "SEARCH_AGENT": "Agenți de căutare"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Modificarea cesionarului",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Neatribuit",
-          "ALL": "Toate"
-        }
-      },
       "INBOX": {
         "TITLE": "Filtrarea după inbox"
       },
@@ -85,6 +77,14 @@
           "PENDING": "În aşteptare",
           "SNOOZED": "Amânat",
           "RESOLVED": "Rezolvat",
+          "ALL": "Toate"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Modificarea cesionarului",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Neatribuit",
           "ALL": "Toate"
         }
       }
@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "Agent alocat",
     "TEAM": "Echipa",
     "PRIVATE_MSG_INPUT": "Acest lucru va fi vizibil numai agenților",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",
@@ -207,6 +208,9 @@
       },
       "fallback": {
         "CONTENT": "a partajat un URL"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
       }
     },
     "LONG_PRESS_ACTIONS": {
@@ -440,5 +444,15 @@
       "SHOW_MORE": "{count} more",
       "HIDE": "Hide {count} rows"
     }
+  },
+  "MACRO": {
+    "TITLE": "Macrocomenzi",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "Macrocomandă executată cu succes",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "Nu s-au găsit macrocomenzi"
   }
 }

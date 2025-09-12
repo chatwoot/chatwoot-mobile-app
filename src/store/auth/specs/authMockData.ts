@@ -3,6 +3,7 @@ export const mockUser = {
   email: 'test@example.com',
   name: 'Test User',
   account_id: 123,
+  type: 'user',
 };
 
 export const mockHeaders = {

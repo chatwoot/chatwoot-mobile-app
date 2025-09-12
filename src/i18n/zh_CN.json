@@ -16,22 +16,22 @@
     "ENTER_URL": "安装链接",
     "DESCRIPTION": "如果您正在使用自己托管的Chatwoot 安装，请输入您的服务器URL。否则，请使用 app.chatwoot.com。",
     "URL_ERROR": "输入有效网址",
-    "URL_REQUIRED": "URL is required",
+    "URL_REQUIRED": "URL 是必填项",
     "CONNECT": "连接",
     "CHANGE_LANGUAGE": "更改语言",
     "ERROR": "无效的安装链接"
   },
   "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "TITLE": "登录您的账户",
+    "DESCRIPTION": "您已连接到 {{baseUrl}}。",
     "EMAIL": "Email",
     "PASSWORD": "密码",
-    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_REQUIRED": "Email 是必填项",
     "EMAIL_ERROR": "输入有效的电子邮件",
-    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_REQUIRED": "密码是必填项",
     "PASSWORD_ERROR": "输入有效的密码",
     "LOGIN": "登录",
-    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_LOADING": "正在登录……",
     "FORGOT_PASSWORD": "忘记密码？",
     "RESET_HERE": "重置",
     "NO_ACCOUNT": "没有注册？",
@@ -48,43 +48,43 @@
     "HEADER_TITLE": "重置密码",
     "TITLE": "忘记密码？",
     "SUB_TITLE": "别担心，我们会支持你的",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "API_SUCCESS": "密码重置链接已发送到您的电子邮件地址"
   },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "会话",
-      "CLEAR_FILTER": "Clear"
+      "CLEAR_FILTER": "清除"
     },
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "搜索客服代表"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "未分配的",
-          "ALL": "全部"
-        }
-      },
       "INBOX": {
-        "TITLE": "Filter by inbox"
+        "TITLE": "按收件箱过滤"
       },
       "SORT_BY": {
         "TITLE": "排序方式",
         "OPTIONS": {
-          "LATEST": "Latest",
+          "LATEST": "最新",
           "SORT_ON_CREATED_AT": "创建于",
           "SORT_ON_PRIORITY": "优先级"
         }
       },
       "STATUS": {
-        "TITLE": "Filter by status",
+        "TITLE": "按状态过滤",
         "OPTIONS": {
           "OPEN": "打开",
           "PENDING": "等待中",
           "SNOOZED": "已关闭",
           "RESOLVED": "已解决",
+          "ALL": "全部"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "按分配人类型过滤",
+        "OPTIONS": {
+          "ME": "我",
+          "UNASSIGNED": "未分配的",
           "ALL": "全部"
         }
       }
@@ -97,8 +97,8 @@
         "SEARCH_AGENT": "搜索客服代表"
       },
       "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
+        "HEADER_TITLE": "分配状态",
+        "TITLE": "按状态过滤",
         "OPTIONS": {
           "OPEN": "打开",
           "PENDING": "等待中",
@@ -109,7 +109,7 @@
       }
     },
     "DEFAULT_HEADER_TITLE": "会话",
-    "UPDATING": "Updating...",
+    "UPDATING": "更新中……",
     "MINE": "我的",
     "UN_ASSIGNED": "未分配的",
     "ALL": "全部",
@@ -124,17 +124,18 @@
     "ALL_CONVERSATION_LOADED": "已加载所有会话",
     "ASSIGN": "重新打开会话",
     "FILE_SIZE_LIMIT": "文件超过 5MB 附件限制",
-    "SHARE": "Share conversation",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
-    "ASSIGNED_AGENT": "Assigned agent",
-    "TEAM": "Team",
-    "PRIVATE_MSG_INPUT": "此操作仅对代理人可见",
+    "SHARE": "分享会话",
+    "DETAILS": "详情",
+    "LABELS": "会话标签",
+    "ASSIGNED_AGENT": "分配的客服代表",
+    "TEAM": "团队",
+    "PRIVATE_MSG_INPUT": "此操作仅对客服人员可见",
+    "UNSUPPORTED_MESSAGE": "不支持此消息。您可以在 Facebook Messenger 应用上查看此消息。",
     "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+      "TITLE": "无法获取会话",
+      "RETRY": "重试",
+      "BACK_TO_HOME": "返回主页",
+      "DESCRIPTION": "似乎无法正确获取该会话。可能是由于网络问题或会话已不可用。请点击重试按钮再次尝试。"
     },
     "BOT": "机器人",
     "EMAIL_HEAD": {
@@ -144,45 +145,45 @@
     },
     "SELF_ASSIGN": "分配给我",
     "UN_ASSIGN": "取消分配对话",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "CONVERSATION_NOT_FOUND": "无法获取会话",
     "MARK_AS_PENDING": "标记为待处理",
     "SNOOZE_UNTIL": "推迟到",
-    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
-    "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
-    "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
-    "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Change priority",
+    "SNOOZE_UNTIL_NEXT_REPLY": "直到下次回复",
+    "SNOOZE_UNTIL_TOMORROW": "直到明天",
+    "SNOOZE_UNTIL_NEXT_WEEK": "直到下周",
+    "SNOOZE": "推迟会话",
+    "CHANGE_PRIORITY": "更改优先级",
     "MESSAGES": "消息",
-    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_TITLE": "未定义的变量",
     "UNDEFINED_VARIABLES_CLOSE": "关闭",
     "DELETE_MESSAGE_TITLE": "您确定要删除这条消息吗？",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "DELETE_MESSAGE_SUB_TITLE": "此操作无法撤销。",
+    "COPY_MESSAGE": "消息已复制到剪贴板",
+    "STORY_NOT_AVAILABLE": "此故事已不可用",
     "DELETE_MESSAGE_SUCCESS": "已成功删除消息",
     "NO_CONTENT": "没有可用的内容",
     "ASSIGN_CHANGE": "对话分配人已更改",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "TEAM_CHANGE": "会话团队已更改",
+    "STATUS_CHANGE": "会话状态已更改",
+    "PRIORITY_CHANGE": "会话优先级已更改",
+    "PARTICIPANT_CHANGE": "会话参与者已更改",
     "CHANGE_STATUS": "更改状态",
     "SEARCH_TEAM": "查找团队",
     "PRIORITY": {
       "TITLE": "优先级",
       "OPTIONS": {
-        "NONE": "啥都没有",
-        "URGENT": "Urgent",
-        "HIGH": "High",
-        "MEDIUM": "Medium",
-        "LOW": "Low"
+        "NONE": "无",
+        "URGENT": "紧急",
+        "HIGH": "高",
+        "MEDIUM": "中",
+        "LOW": "低"
       },
       "CHANGE_PRIORITY": {
-        "SELECT_PLACEHOLDER": "啥都没有",
-        "INPUT_PLACEHOLDER": "Select priority",
+        "SELECT_PLACEHOLDER": "无",
+        "INPUT_PLACEHOLDER": "选择优先级",
         "NO_RESULTS": "没有检索到相关信息",
-        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
-        "FAILED": "Couldn't change priority. Please try again."
+        "SUCCESSFUL": "已将会话 ID %{conversationId} 的优先级更改为 %{priority}",
+        "FAILED": "无法更改优先级。请重试。"
       }
     },
     "ITEM": {
@@ -207,12 +208,15 @@
       },
       "fallback": {
         "CONTENT": "分享了一个网址"
+      },
+      "contact": {
+        "CONTENT": "分享了一个联系人"
       }
     },
     "LONG_PRESS_ACTIONS": {
       "COPY": "复制",
       "REPLY": "回复",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "删除消息"
     },
     "EMAIL_HEADER": {
       "FROM": "来自",
@@ -220,7 +224,7 @@
       "BCC": "密送",
       "CC": "抄送",
       "SUBJECT": "主题",
-      "EXPAND": "Expand email"
+      "EXPAND": "展开邮件"
     },
     "ACTIONS": {
       "ASSIGNEE": {
@@ -229,21 +233,21 @@
         "EDIT": "编辑"
       },
       "TEAM": {
-        "EMPTY": "No team assigned",
+        "EMPTY": "未分配团队",
         "ASSIGN": "分配"
       },
       "PRIORITY": {
-        "EMPTY": "No priority added",
+        "EMPTY": "未添加优先级",
         "EDIT": "编辑"
       }
     }
   },
   "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "ALL_INBOXES": "所有收件箱",
+    "FILTER_BY_ASSIGNEE_TYPE": "按分配人类型过滤",
+    "FILTER_BY_CONVERSATION_STATUS": "按会话状态过滤",
     "SORT_BY": "排序方式",
-    "FILTER_BY_INBOX": "Filter by inbox",
+    "FILTER_BY_INBOX": "按收件箱过滤",
     "HEADER_TITLE": "会话过滤器",
     "CHOOSE_INBOX": "选择收件箱",
     "CHOOSE_STATUS": "会话状态",
@@ -256,21 +260,21 @@
   },
   "SETTINGS": {
     "HEADER_TITLE": "设置",
-    "SET_AVAILABILITY": "Set yourself as",
-    "CHANGE_AVAILABILITY": "Set availability",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
+    "SET_AVAILABILITY": "将自己设置为",
+    "CHANGE_AVAILABILITY": "设置可用性",
+    "PREFERENCES": "偏好设置",
+    "ABOUT": "关于",
+    "SUPPORT": "支持",
     "SWITCH_ACCOUNT": "切换账户",
     "CHANGE_LANGUAGE": "更改语言",
     "NOTIFICATIONS": "消息通知",
     "NOTIFICATION_PREFERENCES": "通知设置",
-    "READ_DOCS": "Read Docs",
+    "READ_DOCS": "阅读文档",
     "CHAT_WITH_US": "联系我们",
     "LOGOUT": "注销",
     "SUBMIT": "提交",
-    "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
+    "SET_LANGUAGE": "设置语言",
+    "DEBUG_ACTIONS": "调试操作"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "消息通知",
@@ -282,32 +286,32 @@
     "CANCEL": "取消",
     "DELETE": "删除",
     "TYPES": {
-      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
-      "CONVERSATION_CREATION": "New conversation created",
-      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
-      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
-      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+      "CONVERSATION_MENTION": "您在一个会话中被提及",
+      "CONVERSATION_CREATION": "新会话已创建",
+      "CONVERSATION_ASSIGNMENT": "一个会话已分配给您",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "已分配会话中的新消息",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "您参与的会话中的新消息",
+      "SLA_MISSED_FIRST_RESPONSE": "会话的首次响应 SLA 未达标",
+      "SLA_MISSED_NEXT_RESPONSE": "会话的后续响应 SLA 未达标",
+      "SLA_MISSED_RESOLUTION": "会话的解决 SLA 未达标"
     },
     "FILTERS": {
       "SORT_BY": {
         "TITLE": "排序方式",
         "OPTIONS": {
-          "ASC": "Oldest",
-          "DESC": "Newest"
+          "ASC": "最早",
+          "DESC": "最新"
         }
       }
     },
     "ALERTS": {
-      "MARK_AS_READ": "Notification marked as read",
-      "MARK_AS_UNREAD": "Notification marked as unread",
-      "SNOOZE": "Notification snoozed",
-      "DELETE": "Notification deleted",
-      "MARK_ALL_READ": "All notifications marked as read",
-      "DELETE_ALL": "All notifications deleted",
-      "DELETE_ALL_READ": "All read notifications deleted"
+      "MARK_AS_READ": "通知已标记为已读",
+      "MARK_AS_UNREAD": "通知已标记为未读",
+      "SNOOZE": "通知已推迟",
+      "DELETE": "通知已删除",
+      "MARK_ALL_READ": "所有通知已标记为已读",
+      "DELETE_ALL": "所有通知已删除",
+      "DELETE_ALL_READ": "所有已读通知已删除"
     }
   },
   "AVAILABILITY": {
@@ -319,83 +323,83 @@
     "TITLE": "通知设置",
     "EMAIL": "电子邮件通知",
     "PUSH": "推送通知",
-    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
-    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
+    "CONVERSATION_CREATE_PUSH": "新会话已创建",
+    "CONVERSATION_ASSIGNEE_PUSH": "一个会话已分配给您",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "您在一个会话中被提及",
+    "CONVERSATION_MENTION": "已分配会话中的新消息",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "您参与的会话中的新消息",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "会话的首次响应 SLA 未达标",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "会话的后续响应 SLA 未达标",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "会话的解决 SLA 未达标"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Attributes",
+    "TITLE": "属性",
     "BROWSER": "浏览器",
     "OPERATING_SYSTEM": "操作系统",
     "INITIATED_AT": "发起于",
     "INITIATED_FROM": "发起自",
     "IP_ADDRESS": "IP 地址",
-    "CONVERSATION_ID": "Conversation ID",
-    "CLIPBOARD_SUCCESS": "Copied to clipboard"
+    "CONVERSATION_ID": "会话 ID",
+    "CLIPBOARD_SUCCESS": "已复制到剪贴板"
   },
   "CONTACT_DETAILS": {
     "TITLE": "联系人详细信息",
     "EMAIL": "Email",
     "PHONE_NUMBER": "电话号码",
-    "CALL": "Call",
+    "CALL": "呼叫",
     "CONTACT_ATTRIBUTES": "联系人属性",
     "VALUE_UNAVAILABLE": "不可用"
   },
   "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
+    "TITLE": "参与者",
     "TOTAL_PARTICIPANTS_TEXT": "有%{count}人参与。",
     "TOTAL_PARTICIPANT_TEXT": "有%{count}人参与。",
     "NO_PARTICIPANTS_TEXT": "没有人参与！",
     "WATCH_CONVERSATION": "加入对话",
     "YOU_ARE_WATCHING": "你正在参与",
     "NO_RECORDS_FOUND": "没有检索到相关信息",
-    "SELECT_PARTICIPANTS": "Select agents",
+    "SELECT_PARTICIPANTS": "选择客服人员",
     "ADD_PARTICIPANTS": "选择参与者",
-    "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other",
-    "ADD_PARTICIPANT": "Add Participant"
+    "REMAINING_PARTICIPANTS_TEXT": "其他",
+    "REMAINING_PARTICIPANT_TEXT": "其他",
+    "ADD_PARTICIPANT": "添加参与者"
   },
   "CONTACT_ATTRIBUTES": {
-    "TITLE": "Contact Attributes"
+    "TITLE": "联系人属性"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "操作"
   },
   "CONVERSATION_TEAMS": {
-    "TITLE": "Assign team",
+    "TITLE": "分配团队",
     "SELECT_TEAM": "选择团队",
-    "NO_RESULT": "No team found"
+    "NO_RESULT": "未找到团队"
   },
   "CONVERSATION_LABELS": {
     "TITLE": "对话标记",
     "ADD_LABEL": "添加标签",
-    "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
+    "EMPTY_LIST": "请为您的账户添加标签",
+    "NO_LABEL": "未分配标签",
     "UPDATE_LABEL": "标签已成功更新",
-    "SELECTED": "Selected",
-    "NOT_SELECTED": "No labels selected",
+    "SELECTED": "已选择",
+    "NOT_SELECTED": "未选择标签",
     "NO_RESULT": "未找到标签"
   },
   "CONVERSATION_AGENTS": {
     "TITLE": "分配客服代表",
     "SELECT_AGENT": "选择客服代表",
-    "NO_RESULT": "No agent found"
+    "NO_RESULT": "未找到客服代表"
   },
   "AGENT": {
-    "TITLE": "选择代理"
+    "TITLE": "选择客服"
   },
   "TEAMS": {
-    "TITLE": "Select Team",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
-    "CHANGE_TEAMS": "Conversation team changed"
+    "TITLE": "选择团队",
+    "EMPTY": "请为您的账户添加团队以分配会话。",
+    "CHANGE_TEAMS": "会话团队已更改"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "无法连接到 Chatwoot 服务器，请稍后重试",
     "OfFLINE": "您必须连接到 Wi-Fi 或蜂窝网络才能重新上线。",
     "CANNOT_FETCH": "获取信息时出现错误，请重试",
     "AUTH": "用户名 / 密码不正确。请重试",
@@ -422,23 +426,33 @@
     "CANNOT_REPLY": "您不能回复，原因是："
   },
   "SLA": {
-    "FRT": "FRT",
-    "NRT": "NRT",
-    "RT": "RT",
+    "FRT": "首次响应时间",
+    "NRT": "下次响应时间",
+    "RT": "解决时间",
     "STATUS": {
-      "FRT": "FRT %{status}",
-      "NRT": "NRT %{status}",
-      "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "due"
+      "FRT": "首次响应时间 %{status}",
+      "NRT": "下次响应时间 %{status}",
+      "RT": "解决时间 %{status}",
+      "MISSED": "未达标",
+      "DUE": "即将到期"
     },
     "MISSES": {
-      "TITLE": "SLA Misses",
+      "TITLE": "SLA 未达标",
       "FRT": "首次响应时间",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
+      "NRT": "下次响应时间",
+      "RT": "解决时间",
+      "SHOW_MORE": "还有 {count} 条",
+      "HIDE": "隐藏 {count} 行"
     }
+  },
+  "MACRO": {
+    "TITLE": "宏",
+    "SELECT_MACRO": "",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "宏成功执行",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "未找到宏"
   }
 }

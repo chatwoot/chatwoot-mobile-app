@@ -37,6 +37,7 @@ export type PrimaryActor = {
   };
   inboxId: number;
   additionalAttributes: ConversationAdditionalAttributes;
+  conversationId: number;
 };
 
 export interface NotificationMeta {

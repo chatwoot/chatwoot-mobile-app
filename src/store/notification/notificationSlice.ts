@@ -7,7 +7,7 @@ import type {
 } from './notificationTypes';
 import { Notification } from '@/types/Notification';
 import { notificationActions } from './notificationAction';
-import { updateBadgeCount } from '@/helpers/PushHelper';
+import { updateBadgeCount } from '@/utils/pushUtils';
 
 export interface NotificationState {
   unreadCount: number;
@@ -80,7 +80,7 @@ const notificationsSlice = createSlice({
           } else {
             notificationsAdapter.upsertMany(state, payload);
           }
-          state.uiFlags.isAllNotificationsFetched = payload.length < 15;
+          state.uiFlags.isAllNotificationsFetched = payload.length <= 15;
         },
       )
       .addCase(notificationActions.fetchNotifications.rejected, (state, action) => {

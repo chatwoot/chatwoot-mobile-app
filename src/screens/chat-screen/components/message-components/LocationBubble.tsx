@@ -7,7 +7,7 @@ import { Icon } from '@/components-next/common';
 
 import { MESSAGE_VARIANTS } from '@/constants';
 import { MapIcon } from '@/svg-icons';
-import { openURL } from '@/helpers/UrlHelper';
+import { openURL } from '@/utils/urlUtils';
 
 type LocationBubbleProps = {
   latitude: number | 0;

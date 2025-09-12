@@ -5,25 +5,33 @@ orbs:
 jobs:
   build-and-test:
     docker:
-      - image: cimg/node:20.6.0
+      - image: cimg/node:20.9.0
     steps:
       - checkout
+      - run:
+          name: Setup Working Directory
+          command: |
+            ls -la
+            pwd
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ checksum "package.json" }}
+            - yarn-packages-v1-
       - run:
           name: Install Dependencies
-          command: yarn install --immutable
+          command: yarn install
       - save_cache:
           name: Save Yarn Package Cache
-          key: yarn-packages-{{ checksum "yarn.lock" }}
+          key: yarn-packages-v1-{{ checksum "package.json" }}
           paths:
             - .yarn/cache
             - .yarn/unplugged
+            - node_modules
       - run:
           command: yarn run test
           name: Run YARN tests
+
 workflows:
   test_my_app:
     jobs:

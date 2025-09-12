@@ -59,14 +59,6 @@
       "AGENT": {
         "SEARCH_AGENT": "ഏജന്റുകളെ തിരയുക"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "നിയുക്തമാക്കാത്തത്",
-          "ALL": "എല്ലാം"
-        }
-      },
       "INBOX": {
         "TITLE": "Filter by inbox"
       },
@@ -85,6 +77,14 @@
           "PENDING": "കെട്ടിക്കിടക്കുന്നു",
           "SNOOZED": "സ്‌നൂസ് ചെയ്തു",
           "RESOLVED": "പരിഹരിച്ചത്",
+          "ALL": "എല്ലാം"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filter by assignee type",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "നിയുക്തമാക്കാത്തത്",
           "ALL": "എല്ലാം"
         }
       }
@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "നിയോഗിച്ച ഏജന്റ്",
     "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "ഇത് ഏജന്റുമാർക്ക് മാത്രമേ ദൃശ്യമാകൂ",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",
@@ -207,6 +208,9 @@
       },
       "fallback": {
         "CONTENT": "ഒരു യു. ആർ. എൽ പങ്കിട്ടു"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
       }
     },
     "LONG_PRESS_ACTIONS": {
@@ -440,5 +444,15 @@
       "SHOW_MORE": "{count} more",
       "HIDE": "Hide {count} rows"
     }
+  },
+  "MACRO": {
+    "TITLE": "Macros",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "Macro executed successfully",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "No macros found"
   }
 }

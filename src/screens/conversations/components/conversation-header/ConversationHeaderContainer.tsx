@@ -62,10 +62,12 @@ export const ConversationHeader = () => {
   const hapticSuccess = useHaptic('success');
 
   const headerBorderColor = tailwind.color('text-blackA-A3') as string;
+
   const headerOpenState = useDerivedValue(() =>
     currentState !== 'none' && currentState !== 'Select' ? withSpring(1) : withSpring(0),
   );
 
+  // This creates a subtle visual effect where the border fades away when the header is in an active state (Search/Filter) and reappears when returning to the default state.
   const headerBorderAnimation = useAnimatedStyle(() => {
     return {
       borderBottomColor: interpolateColor(

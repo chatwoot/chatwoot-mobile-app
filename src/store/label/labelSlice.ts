@@ -2,9 +2,7 @@ import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import type { Label } from '@/types';
 import { labelActions } from './labelActions';
 
-export const labelAdapter = createEntityAdapter<Label>({
-  selectId: label => label.id,
-});
+export const labelAdapter = createEntityAdapter<Label>();
 
 export interface LabelState {
   isLoading: boolean;

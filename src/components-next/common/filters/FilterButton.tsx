@@ -8,16 +8,14 @@ import { CaretBottomSmall } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '../icon';
-import { BaseFilterOption } from './FilterBar';
 
 type FilterButtonProps = {
-  allFilters: BaseFilterOption;
-  selectedFilters: Record<string, string>;
+  value: string;
   handleOnPress: () => void;
 };
 
 export const FilterButton = (props: FilterButtonProps) => {
-  const { allFilters, handleOnPress, selectedFilters } = props;
+  const { value, handleOnPress } = props;
   const { handlers, animatedStyle } = useScaleAnimation();
   const { filtersModalSheetRef } = useRefsContext();
 
@@ -40,7 +38,7 @@ export const FilterButton = (props: FilterButtonProps) => {
           style={tailwind.style(
             'text-sm font-inter-medium-24 leading-[16px] tracking-[0.24px] pr-1 capitalize text-gray-950',
           )}>
-          {allFilters.options[selectedFilters[allFilters.type] as keyof typeof allFilters.options]}
+          {value}
         </Animated.Text>
         <Icon icon={<CaretBottomSmall />} size={7.5} />
       </Pressable>

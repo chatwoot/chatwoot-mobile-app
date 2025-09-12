@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { Linking, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { getStateFromPath } from '@react-navigation/native';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -10,31 +10,35 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppTabs } from './tabs/AppTabs';
 import i18n from 'i18n';
-import { navigationRef } from '../helpers/NavigationHelper';
-import { findConversationLinkFromPush, findNotificationFromFCM } from '../helpers/PushHelper';
-import { extractConversationIdFromUrl } from '../helpers/conversationHelpers';
+import { navigationRef } from '@/utils/navigationUtils';
+import { findConversationLinkFromPush, findNotificationFromFCM } from '@/utils/pushUtils';
+import { extractConversationIdFromUrl } from '@/utils/conversationUtils';
 import { useAppSelector } from '@/hooks';
 import { selectInstallationUrl, selectLocale } from '@/store/settings/settingsSelectors';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RefsProvider } from '@/context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-// import { NoNetworkBar } from '@/components-next';
+import { transformNotification } from '@/utils/camelCaseKeys';
+import Inter40020 from '@/assets/fonts/Inter-400-20.ttf';
+import Inter42020 from '@/assets/fonts/Inter-420-20.ttf';
+import Inter50024 from '@/assets/fonts/Inter-500-24.ttf';
+import Inter58024 from '@/assets/fonts/Inter-580-24.ttf';
+import Inter60020 from '@/assets/fonts/Inter-600-20.ttf';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
-  // console.log('Message handled in the background!', remoteMessage);
+  console.log('Message handled in the background!', remoteMessage);
 });
 
 export const AppNavigationContainer = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [fontsLoaded, error] = useFonts({
-    'Inter-400-20': require('../assets/fonts/Inter-400-20.ttf'),
-    'Inter-420-20': require('../assets/fonts/Inter-420-20.ttf'),
-    'Inter-500-24': require('../assets/fonts/Inter-500-24.ttf'),
-    'Inter-580-24': require('../assets/fonts/Inter-580-24.ttf'),
-    'Inter-600-20': require('../assets/fonts/Inter-600-20.ttf'),
+  const [fontsLoaded] = useFonts({
+    'Inter-400-20': Inter40020,
+    'Inter-420-20': Inter42020,
+    'Inter-500-24': Inter50024,
+    'Inter-580-24': Inter58024,
+    'Inter-600-20': Inter60020,
   });
 
-  const routeNameRef = useRef();
+  const routeNameRef = useRef<string | undefined>(undefined);
 
   const installationUrl = useAppSelector(selectInstallationUrl);
   const locale = useAppSelector(selectLocale);
@@ -94,11 +98,15 @@ export const AppNavigationContainer = () => {
         return url;
       }
 
-      // Handle notification caused app to open from quit state:
+      // getInitialNotification: When the application is opened from a quit state.
       const message = await messaging().getInitialNotification();
       if (message) {
         const notification = findNotificationFromFCM({ message });
-        const conversationLink = findConversationLinkFromPush({ notification, installationUrl });
+        const camelCaseNotification = transformNotification(notification);
+        const conversationLink = findConversationLinkFromPush({
+          notification: camelCaseNotification,
+          installationUrl,
+        });
         if (conversationLink) {
           return conversationLink;
         }
@@ -111,12 +119,16 @@ export const AppNavigationContainer = () => {
       // Listen to incoming links from deep linking
       const subscription = Linking.addEventListener('url', onReceiveURL);
 
-      // Handle notification caused app to open from background state
+      //onNotificationOpenedApp: When the application is running, but in the background.
       const unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
         if (message) {
           const notification = findNotificationFromFCM({ message });
+          const camelCaseNotification = transformNotification(notification);
 
-          const conversationLink = findConversationLinkFromPush({ notification, installationUrl });
+          const conversationLink = findConversationLinkFromPush({
+            notification: camelCaseNotification,
+            installationUrl,
+          });
           if (conversationLink) {
             listener(conversationLink);
           }
@@ -147,14 +159,12 @@ export const AppNavigationContainer = () => {
       linking={linking}
       ref={navigationRef}
       onReady={() => {
-        routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+        routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
       }}
       onStateChange={async () => {
-        routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+        routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
       }}
-      // theme={theme}
-    >
-      {/* <NoNetworkBar /> */}
+      fallback={<ActivityIndicator animating />}>
       <BottomSheetModalProvider>
         <View style={styles.navigationLayout} onLayout={onLayoutRootView}>
           <AppTabs />
@@ -163,7 +173,6 @@ export const AppNavigationContainer = () => {
     </NavigationContainer>
   );
 };
-
 export const AppNavigator = () => {
   return (
     <GestureHandlerRootView style={styles.navigationLayout}>

@@ -8,14 +8,15 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppDispatch } from '@/hooks';
 import { updateAttachments } from '@/store/conversation/sendMessageSlice';
 import { useRefsContext } from '@/context';
-import { AttachFileIcon, CameraIcon, PhotosIcon } from '@/svg-icons';
+import { AttachFileIcon, CameraIcon, MacrosIcon, PhotosIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '@/components-next/common';
 import { MAXIMUM_FILE_UPLOAD_SIZE } from '@/constants';
 import i18n from '@/i18n';
-import { showToast } from '@/helpers/ToastHelper';
-import { findFileSize } from '@/helpers/FileHelper';
+import { showToast } from '@/utils/toastUtils';
+import { findFileSize } from '@/utils/fileUtils';
+import { getApiLevel } from 'react-native-device-info';
 
 export const handleOpenPhotosLibrary = async dispatch => {
   if (Platform.OS === 'ios') {
@@ -61,7 +62,13 @@ export const handleOpenPhotosLibrary = async dispatch => {
       }
     });
   } else {
-    request(PERMISSIONS.ANDROID.ACCESS_MEDIA_LOCATION).then(async result => {
+    const apiLevel = await getApiLevel();
+    const permission =
+      apiLevel >= 33
+        ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
+        : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
+
+    request(permission).then(async result => {
       if (RESULTS.BLOCKED === result) {
         Alert.alert(
           'Permission Denied',
@@ -180,7 +187,9 @@ const handleAttachFile = async dispatch => {
       ], // You can specify the file types you want to allow
       presentationStyle: 'formSheet',
     });
-    validateFileAndSetAttachments(dispatch, mapObject(result[0]));
+    // TODO: Support multiple files
+    const file = mapObject(result[0])[0];
+    validateFileAndSetAttachments(dispatch, file);
   } catch (err) {
     if (DocumentPicker.isCancel(err)) {
       // User cancelled the picker
@@ -205,6 +214,11 @@ const ADD_MENU_OPTIONS = [
     icon: <AttachFileIcon />,
     title: 'Attach File',
     handlePress: handleAttachFile,
+  },
+  {
+    icon: <MacrosIcon />,
+    title: 'Macros',
+    handlePress: () => {},
   },
 ];
 
@@ -261,8 +275,8 @@ export const CommandOptionsMenu = () => {
   const { bottom } = useSafeAreaInsets();
   const isAndroid = Platform.OS === 'android';
   const containerHeight = isAndroid
-    ? 150 + (bottom === 0 ? 16 : bottom)
-    : 110 + (bottom === 0 ? 16 : bottom);
+    ? 210 + (bottom === 0 ? 16 : bottom)
+    : 175 + (bottom === 0 ? 16 : bottom);
   return (
     <Animated.View
       entering={SlideInDown.springify().damping(38).stiffness(240)}

@@ -1,7 +1,7 @@
+// Deprecated components
 export * from './AudioCell';
 export * from './ComposedCell';
 export * from './FileCell';
-export * from './ImageCell';
 export * from './VideoCell';
 export * from './TextMessageCell';
 export * from './MarkdownDisplay';
@@ -21,3 +21,4 @@ export * from './LocationBubble';
 export * from './ImageBubble';
 export * from './VideoBubble';
 export * from './EmailBubble';
+export * from './UnsupportedBubble';

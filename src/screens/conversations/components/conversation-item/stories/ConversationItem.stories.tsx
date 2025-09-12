@@ -9,6 +9,7 @@ import {
   conversationWithOutgoingMessage,
   conversationWithNonEnglishContact,
   conversationWithMoreLabels,
+  conversationWithAllFields,
   conversationWithMarkdownMessage,
   conversationWithNewLineMessage,
 } from './ConversationItemMockData';
@@ -65,6 +66,20 @@ export const AllVariants: Story = {
   render: () => (
     <ScrollView
       contentContainerStyle={tailwind.style('flex flex-col justify-center items-center gap-2')}>
+      <Title title="Conversation with all fields" />
+      <ConversationItem
+        {...conversationWithAllFields}
+        isSelected={false}
+        unreadCount={2}
+        availabilityStatus="offline"
+        inboxId={1}
+        senderName="Floyd Alexander Milesmorrales"
+        assignee={{
+          id: 1,
+          name: 'John Doe',
+        }}
+        currentState="none"
+      />
       <Title title="Conversation with more labels" />
       <ConversationItem
         {...conversationWithMoreLabels}
@@ -72,6 +87,7 @@ export const AllVariants: Story = {
         unreadCount={2}
         availabilityStatus="offline"
         inboxId={1}
+        senderName="Floyd Alexander Milesmorrales"
         assignee={{
           id: 1,
           name: 'John Doe',

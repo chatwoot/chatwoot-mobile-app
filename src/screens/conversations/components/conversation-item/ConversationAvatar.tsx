@@ -11,7 +11,7 @@ import { AvailabilityStatus } from '@/types';
 type ConversationAvatarProps = {
   src: ImageURISource;
   name: string;
-  status: AvailabilityStatus; 
+  status: AvailabilityStatus;
 };
 
 const checkIfPropsAreSame = (prev: ConversationAvatarProps, next: ConversationAvatarProps) => {
@@ -19,7 +19,6 @@ const checkIfPropsAreSame = (prev: ConversationAvatarProps, next: ConversationAv
   return arePropsEqual;
 };
 
-// eslint-disable-next-line react/display-name
 export const ConversationAvatar = memo((props: ConversationAvatarProps) => {
   const { src, name, status } = props;
   return (
@@ -30,3 +29,5 @@ export const ConversationAvatar = memo((props: ConversationAvatarProps) => {
     </AnimatedNativeView>
   );
 }, checkIfPropsAreSame);
+
+ConversationAvatar.displayName = 'ConversationAvatar';

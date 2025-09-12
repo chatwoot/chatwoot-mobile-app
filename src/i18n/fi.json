@@ -59,14 +59,6 @@
       "AGENT": {
         "SEARCH_AGENT": "Search agents"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Suodata vastuuhenkilön tyypin mukaan",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Osoittamaton",
-          "ALL": "Kaikki"
-        }
-      },
       "INBOX": {
         "TITLE": "Suodata saapuneet-kansion mukaan"
       },
@@ -85,6 +77,14 @@
           "PENDING": "Odottava",
           "SNOOZED": "Torkutettu",
           "RESOLVED": "Ratkaistu",
+          "ALL": "Kaikki"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Suodata vastuuhenkilön tyypin mukaan",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Osoittamaton",
           "ALL": "Kaikki"
         }
       }
@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "Osoitettu edustajalle",
     "TEAM": "Tiimi",
     "PRIVATE_MSG_INPUT": "Tämä näkyy vain agenteille",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",
@@ -207,6 +208,9 @@
       },
       "fallback": {
         "CONTENT": "on jakanut URL-osoitteen"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
       }
     },
     "LONG_PRESS_ACTIONS": {
@@ -440,5 +444,15 @@
       "SHOW_MORE": "{count} more",
       "HIDE": "Hide {count} rows"
     }
+  },
+  "MACRO": {
+    "TITLE": "Macros",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "Macro executed successfully",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "No macros found"
   }
 }

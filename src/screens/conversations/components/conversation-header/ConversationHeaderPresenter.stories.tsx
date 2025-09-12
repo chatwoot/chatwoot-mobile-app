@@ -4,7 +4,7 @@ import { tailwind } from '@/theme';
 import { ScrollView, View, Text } from 'react-native';
 
 const meta: Meta<typeof ConversationHeaderPresenter> = {
-  title: 'Conversation Header',
+  title: 'Conversations Screen Header',
   component: ConversationHeaderPresenter,
   args: {
     currentState: 'none',
@@ -51,12 +51,12 @@ const Title = ({ title }: { title: string }) => (
 );
 
 const HeaderContainer = ({ children }: { children: React.ReactNode }) => (
-  <View style={tailwind.style('flex-1 border-b-[1px] border-blackA-A3')}>{children}</View>
+  <View style={tailwind.style('flex-1 border-b-[1px] border-blackA-A3 ')}>{children}</View>
 );
 
 export const AllVariants: Story = {
   render: () => (
-    <ScrollView contentContainerStyle={tailwind.style('flex gap-4')}>
+    <ScrollView contentContainerStyle={tailwind.style('flex gap-4 pt-4')}>
       <Title title="Select All" />
       <HeaderContainer>
         <ConversationHeaderPresenter

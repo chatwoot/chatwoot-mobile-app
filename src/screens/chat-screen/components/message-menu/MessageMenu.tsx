@@ -58,7 +58,7 @@ const ContextMenuBottomSheetBackdrop = forwardRef<
   });
 
   const handleBackdropPress = () => {
-    // @ts-ignore
+    // @ts-expect-error Bottom sheet dismiss method typing issue
     ref?.current?.dismiss({ overshootClamping: true });
   };
 
@@ -88,18 +88,24 @@ export const MessageMenu = (props: PropsWithChildren<MessageMenuProps>) => {
     damping: 30,
   });
 
-  const handleOnDismiss = () => {};
+  const handleOnDismiss = () => {
+    contextMenuSheetRef.current?.dismiss();
+  };
 
   const renderBackDrop = useCallback(
     (backdropProps: BottomSheetBackdropProps) => (
       <ContextMenuBottomSheetBackdrop
         {...backdropProps}
-        // @ts-ignore
+        // @ts-expect-error Backdrop component ref typing issue
         ref={contextMenuSheetRef}
       />
     ),
     [],
   );
+
+  if (menuOptions?.length === 0) {
+    return <React.Fragment>{children}</React.Fragment>;
+  }
 
   if (Platform.OS === 'android') {
     return (
@@ -126,6 +132,10 @@ export const MessageMenu = (props: PropsWithChildren<MessageMenuProps>) => {
                 return (
                   <Pressable
                     key={option.title + index}
+                    onPress={() => {
+                      handleOnDismiss();
+                      option.handleOnPressMenuOption();
+                    }}
                     style={tailwind.style('flex flex-row items-center')}>
                     <Animated.View>
                       <Icon icon={option.icon} size={24} />
@@ -152,7 +162,7 @@ export const MessageMenu = (props: PropsWithChildren<MessageMenuProps>) => {
     );
   }
 
-  return menuOptions?.length > 0 ? (
+  return (
     <ContextMenu.Root>
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
       <ContextMenu.Content>
@@ -169,7 +179,5 @@ export const MessageMenu = (props: PropsWithChildren<MessageMenuProps>) => {
         })}
       </ContextMenu.Content>
     </ContextMenu.Root>
-  ) : (
-    <React.Fragment>{children}</React.Fragment>
   );
 };

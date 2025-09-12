@@ -3,7 +3,7 @@
   "COMMON": {
     "ERROR": "Ошибка",
     "ERROR_TITLE": "Произошла непредвиденная ошибка",
-    "REPORT_MESSAGE": "Мы сообщили об этом нашей команде! Пожалуйста, закройте приложение и зайдите заново",
+    "REPORT_MESSAGE": "Мы сообщили об этом нашей команде! Пожалуйста, закройте приложение и зайдите заново!",
     "CLOSE": "Закрыть"
   },
   "FOOTER": {
@@ -19,7 +19,7 @@
     "URL_REQUIRED": "Необходимо указать URL",
     "CONNECT": "Подключиться",
     "CHANGE_LANGUAGE": "Изменить язык",
-    "ERROR": "Неправильный URL установки"
+    "ERROR": "Неправильный url установки"
   },
   "LOGIN": {
     "TITLE": "Войти в свой аккаунт",
@@ -59,32 +59,32 @@
       "AGENT": {
         "SEARCH_AGENT": "Поиск агентов"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Фильтр по типу исполнителя",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Неназначен",
-          "ALL": "Все"
-        }
-      },
       "INBOX": {
         "TITLE": "Фильтр по входящим"
       },
       "SORT_BY": {
         "TITLE": "Сортировать по",
         "OPTIONS": {
-          "LATEST": "Latest",
+          "LATEST": "Последние",
           "SORT_ON_CREATED_AT": "Дата создания",
           "SORT_ON_PRIORITY": "Приоритет"
         }
       },
       "STATUS": {
-        "TITLE": "Filter by status",
+        "TITLE": "Фильтр по статусу",
         "OPTIONS": {
           "OPEN": "Открытые",
           "PENDING": "В ожидании",
           "SNOOZED": "Отложено",
           "RESOLVED": "Закрыт",
+          "ALL": "Все"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Фильтр по типу исполнителя",
+        "OPTIONS": {
+          "ME": "Я",
+          "UNASSIGNED": "Неназначен",
           "ALL": "Все"
         }
       }
@@ -97,8 +97,8 @@
         "SEARCH_AGENT": "Поиск агентов"
       },
       "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
+        "HEADER_TITLE": "Назначить статус",
+        "TITLE": "Фильтр по статусу",
         "OPTIONS": {
           "OPEN": "Открытые",
           "PENDING": "В ожидании",
@@ -130,11 +130,12 @@
     "ASSIGNED_AGENT": "Назначенный сотрудник",
     "TEAM": "Команда",
     "PRIVATE_MSG_INPUT": "Это будет видно только сотрудникам",
+    "UNSUPPORTED_MESSAGE": "Это сообщение не поддерживается. Вы можете просмотреть это сообщение в приложении Facebook / Instagram.",
     "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+      "TITLE": "Не удалось получить диалог",
+      "RETRY": "Повторить",
+      "BACK_TO_HOME": "Вернуться на главную",
+      "DESCRIPTION": "Похоже, этот разговор не удалось корректно загрузить. Возможно, это вызвано проблемой сети или разговор больше недоступен. Пожалуйста, нажмите кнопку “Повторить попытку”, чтобы попробовать снова."
     },
     "BOT": "Бот",
     "EMAIL_HEAD": {
@@ -162,10 +163,10 @@
     "DELETE_MESSAGE_SUCCESS": "Сообщение успешно удалено",
     "NO_CONTENT": "Содержимое отсутствует",
     "ASSIGN_CHANGE": "Назначенный оператор изменен",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "TEAM_CHANGE": "Команда диалога изменена",
+    "STATUS_CHANGE": "Статус диалога изменен",
+    "PRIORITY_CHANGE": "Приоритет диалога изменен",
+    "PARTICIPANT_CHANGE": "Участник диалога изменен",
     "CHANGE_STATUS": "Изменить статус",
     "SEARCH_TEAM": "Поиск команд",
     "PRIORITY": {
@@ -207,12 +208,15 @@
       },
       "fallback": {
         "CONTENT": "поделился ссылкой"
+      },
+      "contact": {
+        "CONTENT": "Поделился контактом"
       }
     },
     "LONG_PRESS_ACTIONS": {
       "COPY": "Копировать",
       "REPLY": "Ответить",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Удалить сообщение"
     },
     "EMAIL_HEADER": {
       "FROM": "От",
@@ -229,11 +233,11 @@
         "EDIT": "Редактировать"
       },
       "TEAM": {
-        "EMPTY": "No team assigned",
+        "EMPTY": "Команда не назначена",
         "ASSIGN": "Назначить"
       },
       "PRIORITY": {
-        "EMPTY": "No priority added",
+        "EMPTY": "Приоритет не добавлен",
         "EDIT": "Редактировать"
       }
     }
@@ -270,7 +274,7 @@
     "LOGOUT": "Выход",
     "SUBMIT": "Отправить",
     "SET_LANGUAGE": "Установить язык",
-    "DEBUG_ACTIONS": "Debug Actions"
+    "DEBUG_ACTIONS": "Действия отладки"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Уведомления",
@@ -342,12 +346,12 @@
     "TITLE": "Контактные данные",
     "EMAIL": "Почта",
     "PHONE_NUMBER": "Номер телефона",
-    "CALL": "Call",
+    "CALL": "Вызов",
     "CONTACT_ATTRIBUTES": "Атрибуты контакта",
     "VALUE_UNAVAILABLE": "Я не работаю в этот день"
   },
   "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
+    "TITLE": "Участники",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} человек участвуют.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} человек участвуют.",
     "NO_PARTICIPANTS_TEXT": "Никто не участвует!.",
@@ -358,7 +362,7 @@
     "ADD_PARTICIPANTS": "Выберите участников",
     "REMAINING_PARTICIPANTS_TEXT": "другие",
     "REMAINING_PARTICIPANT_TEXT": "другое",
-    "ADD_PARTICIPANT": "Add Participant"
+    "ADD_PARTICIPANT": "Добавить участника"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Атрибуты контакта"
@@ -395,7 +399,7 @@
     "CHANGE_TEAMS": "Команда назначенная в беседу изменена"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "Не удалось подключиться к серверу Chatwoot. Пожалуйста, попробуйте позже.",
     "OfFLINE": "Вы должны подключиться к Wi-fi или сотовой сети, чтобы снова подключиться к сети",
     "CANNOT_FETCH": "При получении информации произошла ошибка. Повторите попытку",
     "AUTH": "Неверное имя пользователя / пароль. Пожалуйста, попробуйте еще раз",
@@ -440,5 +444,15 @@
       "SHOW_MORE": "еще {count}",
       "HIDE": "Скрыть {count} строк"
     }
+  },
+  "MACRO": {
+    "TITLE": "Макрос",
+    "SELECT_MACRO": "Выбрать макрос",
+    "ACTIONS": {
+      "RUN": "Запустить"
+    },
+    "EXECUTION_SUCCESS": "Макрос успешно выполнен",
+    "EXECUTION_ERROR": "Выполнение макроса не удалось",
+    "NO_MACROS": "Макросы не найдены"
   }
 }

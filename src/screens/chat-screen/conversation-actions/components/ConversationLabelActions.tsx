@@ -146,7 +146,6 @@ export const ConversationLabelActions = (props: LabelSectionProps) => {
         <SearchBar
           isInsideBottomSheet
           onSubmitEditing={handleOnSubmitEditing}
-          autoFocus
           onChangeText={handleChangeText}
           placeholder="Search labels"
           returnKeyLabel="done"

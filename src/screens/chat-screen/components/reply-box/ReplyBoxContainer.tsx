@@ -22,6 +22,7 @@ import {
   isATelegramChannel,
   isAWebWidgetInbox,
   isAPIInbox,
+  isAnInstagramChannel,
 } from '@/utils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { MESSAGE_MAX_LENGTH, REPLY_EDITOR_MODES } from '@/constants';
@@ -53,7 +54,7 @@ import { TypingIndicator } from './TypingIndicator';
 import { getTypingUsersText } from '@/utils';
 import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
 import { Agent, CannedResponse, Conversation } from '@/types';
-import AnalyticsHelper from '@/helpers/AnalyticsHelper';
+import AnalyticsHelper from '@/utils/analyticsUtils';
 import { CONVERSATION_EVENTS } from '@/constants/analyticsEvents';
 import {
   allMessageVariables,
@@ -63,6 +64,8 @@ import {
 import { ReplyEmailHead } from './ReplyEmailHead';
 import { getLastEmailInSelectedChat } from '@/store/conversation/conversationSelectors';
 import { selectAssignableParticipantsByInboxId } from '@/store/assignable-agent/assignableAgentSelectors';
+import { AudioRecorder } from '../audio-recorder/AudioRecorder';
+import { VoiceRecordButton } from './buttons/VoiceRecordButton';
 
 const SHEET_APPEAR_SPRING_CONFIG = {
   damping: 20,
@@ -97,6 +100,8 @@ const BottomSheetContent = () => {
     textInputRef,
     isTextInputFocused,
     conversationId,
+    isVoiceRecorderOpen,
+    setIsVoiceRecorderOpen,
   } = useChatWindowContext();
 
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
@@ -159,6 +164,7 @@ const BottomSheetContent = () => {
     setCCEmails(cc.join(', '));
     setBCCEmails(bcc.join(', '));
     setToEmails(to.join(', '));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastEmail]);
 
   const messageVariables = allMessageVariables({
@@ -200,14 +206,14 @@ const BottomSheetContent = () => {
   };
 
   // TODO: Implement this
-  const setReplyToInPayload = (messagePayload: any) => {
+  const setReplyToInPayload = (messagePayload: Record<string, unknown>) => {
     //     ...(quoteMessage?.id && {
     //       contentAttributes: { inReplyTo: quoteMessage.id },
     //     }),
     return messagePayload;
   };
 
-  const getMessagePayload = (message: string) => {
+  const getMessagePayload = (message: string, audioFile: File | null) => {
     let updatedMessage = message;
     if (isPrivate) {
       const regex = /@\[([\w\s]+)\]\((\d+)\)/g;
@@ -228,7 +234,12 @@ const BottomSheetContent = () => {
       },
       files: [],
     } as SendMessagePayload;
+
     messagePayload = setReplyToInPayload(messagePayload);
+
+    if (audioFile) {
+      messagePayload.file = audioFile;
+    }
 
     if (attachedFiles && attachedFiles.length) {
       // messagePayload.files = [];
@@ -262,7 +273,11 @@ const BottomSheetContent = () => {
     return messagePayload;
   };
 
-  const confirmOnSendReply = () => {
+  const onRecordingComplete = async (audioFile: File | null) => {
+    confirmOnSendReply(audioFile);
+  };
+
+  const confirmOnSendReply = (audioFile: File | null) => {
     hapticSelection?.();
     if (textInputRef && 'current' in textInputRef && textInputRef.current) {
       (textInputRef.current as TextInput).clear();
@@ -286,7 +301,7 @@ const BottomSheetContent = () => {
       const undefinedVariablesMessage = `You have ${undefinedVariablesCount} undefined variable(s) in your message: ${undefinedVariablesText}. Please check and try again with valid variables.`;
       Alert.alert(undefinedVariablesMessage);
     } else {
-      const messagePayload = getMessagePayload(messageContent);
+      const messagePayload = getMessagePayload(messageContent, audioFile);
       sendMessage(messagePayload);
     }
     // TODO: Implement this once we have add the support for multiple attachments
@@ -317,7 +332,8 @@ const BottomSheetContent = () => {
       isASmsInbox(inbox) ||
       isAnEmailChannel(inbox) ||
       isATelegramChannel(inbox) ||
-      isALineChannel(inbox));
+      isALineChannel(inbox) ||
+      isAnInstagramChannel(inbox));
 
   const maxLength = () => {
     if (isPrivate) {
@@ -338,6 +354,13 @@ const BottomSheetContent = () => {
     return MESSAGE_MAX_LENGTH.GENERAL;
   };
 
+  const audioFormat = (): 'audio/m4a' | 'audio/wav' => {
+    if (isAWhatsAppChannel(inbox) || isATelegramChannel(inbox) || isAnInstagramChannel(inbox)) {
+      return 'audio/m4a';
+    }
+    return 'audio/wav';
+  };
+
   const onSelectCannedResponse = (cannedResponse: CannedResponse) => {
     const updatedContent = replaceMessageVariables({
       message: cannedResponse.content,
@@ -347,44 +370,52 @@ const BottomSheetContent = () => {
     setSelectedCannedResponse(updatedContent);
   };
 
+  const onPressVoiceRecordIcon = () => {
+    setIsVoiceRecorderOpen(true);
+    setAddMenuOptionSheetState(false);
+  };
+
   const shouldShowCannedResponses = messageContent?.charAt(0) === '/';
 
   return (
-    <Animated.View layout={LinearTransition.springify().damping(38).stiffness(240)}>
-      <AnimatedKeyboardStickyView style={[tailwind.style('bg-white'), animatedInputWrapperStyle]}>
-        {!canReply && inbox && conversation && (
+    <AnimatedKeyboardStickyView style={[tailwind.style('bg-white'), animatedInputWrapperStyle]}>
+      {!canReply && inbox && conversation && (
+        <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>
+          <ReplyWarning inbox={inbox} conversation={conversation} />
+        </Animated.View>
+      )}
+      {shouldShowCannedResponses && (
+        <CannedResponses searchKey={messageContent} onSelect={onSelectCannedResponse} />
+      )}
+
+      <Animated.View
+        layout={LinearTransition.springify().damping(38).stiffness(240)}
+        style={tailwind.style(
+          `pb-2 border-t-[1px] border-t-blackA-A3 ${shouldShowReplyHeader ? 'pt-0' : 'pt-2'}`,
+        )}>
+        {quoteMessage && (
           <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>
-            <ReplyWarning inbox={inbox} conversation={conversation} />
+            <QuoteReply />s
           </Animated.View>
         )}
-        {shouldShowCannedResponses && (
-          <CannedResponses searchKey={messageContent} onSelect={onSelectCannedResponse} />
+
+        {shouldShowReplyHeader && (
+          <ReplyEmailHead
+            ccEmails={ccEmails}
+            bccEmails={bccEmails}
+            toEmails={toEmails}
+            onUpdateCC={setCCEmails}
+            onUpdateBCC={setBCCEmails}
+            onUpdateTo={setToEmails}
+          />
         )}
 
-        <Animated.View
-          layout={LinearTransition.springify().damping(38).stiffness(240)}
-          style={tailwind.style(
-            `pb-2 border-t-[1px] border-t-blackA-A3 ${shouldShowReplyHeader ? 'pt-0' : 'pt-2'}`,
-          )}>
-          {quoteMessage && (
-            <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>
-              <QuoteReply />s
-            </Animated.View>
-          )}
+        {typingText && <TypingIndicator typingText={typingText} />}
 
-          {shouldShowReplyHeader && (
-            <ReplyEmailHead
-              ccEmails={ccEmails}
-              bccEmails={bccEmails}
-              toEmails={toEmails}
-              onUpdateCC={setCCEmails}
-              onUpdateBCC={setBCCEmails}
-              onUpdateTo={setToEmails}
-            />
-          )}
-
-          {typingText && <TypingIndicator typingText={typingText} />}
-
+        {isVoiceRecorderOpen ? (
+          <AudioRecorder onRecordingComplete={onRecordingComplete} audioFormat={audioFormat()} />
+        ) : null}
+        {!isVoiceRecorderOpen ? (
           <Animated.View style={tailwind.style('flex flex-row px-1 items-end z-20 relative')}>
             {attachmentsLength === 0 && shouldShowFileUpload && (
               <AddCommandButton
@@ -400,18 +431,21 @@ const BottomSheetContent = () => {
               messageContent={messageContent}
             />
             {(messageContent.length > 0 || attachmentsLength > 0) && (
-              <SendMessageButton onPress={confirmOnSendReply} />
+              <SendMessageButton onPress={() => confirmOnSendReply(null)} />
             )}
+            {messageContent.length === 0 && attachmentsLength === 0 && shouldShowFileUpload ? (
+              <VoiceRecordButton onPress={onPressVoiceRecordIcon} />
+            ) : null}
           </Animated.View>
-        </Animated.View>
-
-        {isAddMenuOptionSheetOpen ? (
-          <CommandOptionsMenu />
-        ) : attachmentsLength > 0 ? (
-          <AttachedMedia />
         ) : null}
-      </AnimatedKeyboardStickyView>
-    </Animated.View>
+      </Animated.View>
+
+      {isAddMenuOptionSheetOpen ? (
+        <CommandOptionsMenu />
+      ) : attachmentsLength > 0 ? (
+        <AttachedMedia />
+      ) : null}
+    </AnimatedKeyboardStickyView>
   );
 };
 

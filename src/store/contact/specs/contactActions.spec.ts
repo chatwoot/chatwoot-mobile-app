@@ -6,7 +6,7 @@ jest.mock('@/i18n', () => ({
   t: (key: string) => key,
 }));
 
-jest.mock('@/helpers/ToastHelper', () => ({
+jest.mock('@/utils/toastUtils', () => ({
   showToast: jest.fn(),
 }));
 

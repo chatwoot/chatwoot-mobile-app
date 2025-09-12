@@ -370,8 +370,10 @@ export const TEXT_ONLY = [
         file_type: 'image',
         account_id: 2,
         extension: null,
-        data_url: 'https://picsum.photos/500',
-        thumb_url: 'https://picsum.photos/500',
+        data_url:
+          'https://fastly.picsum.photos/id/342/500/500.jpg?hmac=MLeUvQ4zgSLTH4AiHuEsibZKcoYCo5wfcujm0JBXMKw',
+        thumb_url:
+          'https://fastly.picsum.photos/id/342/500/500.jpg?hmac=MLeUvQ4zgSLTH4AiHuEsibZKcoYCo5wfcujm0JBXMKw',
         file_size: 983912,
         width: null,
         height: null,
@@ -761,8 +763,10 @@ export const TEXT_ONLY = [
         file_type: 'image',
         account_id: 2,
         extension: null,
-        data_url: 'https://picsum.photos/500',
-        thumb_url: 'https://picsum.photos/500',
+        data_url:
+          'https://fastly.picsum.photos/id/808/500/500.jpg?hmac=NcPK20SHUc1qn8e0I3Ke_KFj2feT4CsiI5IWzTYoyBQ',
+        thumb_url:
+          'https://fastly.picsum.photos/id/808/500/500.jpg?hmac=NcPK20SHUc1qn8e0I3Ke_KFj2feT4CsiI5IWzTYoyBQ',
         file_size: 287949,
         width: null,
         height: null,
@@ -773,8 +777,10 @@ export const TEXT_ONLY = [
         file_type: 'image',
         account_id: 2,
         extension: null,
-        data_url: 'https://picsum.photos/500',
-        thumb_url: 'https://picsum.photos/500',
+        data_url:
+          'https://fastly.picsum.photos/id/1038/500/500.jpg?hmac=_DTXehSaqnPMQnDQmVv1aW82ZomX7YYymYT5OE4r4To',
+        thumb_url:
+          'https://fastly.picsum.photos/id/1038/500/500.jpg?hmac=_DTXehSaqnPMQnDQmVv1aW82ZomX7YYymYT5OE4r4To',
         file_size: 287949,
         width: null,
         height: null,
@@ -785,8 +791,10 @@ export const TEXT_ONLY = [
         file_type: 'image',
         account_id: 2,
         extension: null,
-        data_url: 'https://picsum.photos/500',
-        thumb_url: 'https://picsum.photos/500',
+        data_url:
+          'https://fastly.picsum.photos/id/323/500/500.jpg?hmac=b24VENFLL59JsHRUlOIBhRigKfk84EllIDCVfa_alUQ',
+        thumb_url:
+          'https://fastly.picsum.photos/id/323/500/500.jpg?hmac=b24VENFLL59JsHRUlOIBhRigKfk84EllIDCVfa_alUQ',
         file_size: 287949,
         width: null,
         height: null,
@@ -1220,8 +1228,10 @@ export const TEXT_ONLY = [
         file_type: 'image',
         account_id: 2,
         extension: null,
-        data_url: 'https://picsum.photos/500',
-        thumb_url: 'https://picsum.photos/500',
+        data_url:
+          'https://fastly.picsum.photos/id/179/500/500.jpg?hmac=NEXzqxg2mluWkvV-61E233j7gM6vHz3PO7jMcUjKOi8',
+        thumb_url:
+          'https://fastly.picsum.photos/id/179/500/500.jpg?hmac=NEXzqxg2mluWkvV-61E233j7gM6vHz3PO7jMcUjKOi8',
         file_size: 26126,
         width: null,
         height: null,
@@ -1232,8 +1242,10 @@ export const TEXT_ONLY = [
         file_type: 'image',
         account_id: 2,
         extension: null,
-        data_url: 'https://picsum.photos/500',
-        thumb_url: 'https://picsum.photos/500',
+        data_url:
+          'https://fastly.picsum.photos/id/193/500/500.jpg?hmac=5eXseIVa0Mq_-eotbpTeHTABeV-agyM79NghBnEmCJw',
+        thumb_url:
+          'https://fastly.picsum.photos/id/193/500/500.jpg?hmac=5eXseIVa0Mq_-eotbpTeHTABeV-agyM79NghBnEmCJw',
         file_size: 58696,
         width: null,
         height: null,
@@ -1246,75 +1258,6 @@ export const TEXT_ONLY = [
         extension: null,
         data_url:
           'http://localhost:3000/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBaXdLIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--3aa5f4c3a2a034b6e68800d4787d369254ab1eb4/multi.zip',
-        thumb_url:
-          'http://localhost:3000/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBaXdLIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--3aa5f4c3a2a034b6e68800d4787d369254ab1eb4/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBPZ2h3Ym1jNkUzSmxjMmw2WlY5MGIxOW1hV3hzV3dkcEFmb3ciLCJleHAiOm51bGwsInB1ciI6InZhcmlhdGlvbiJ9fQ==--328463286cffa0d7d9a36a3a30bfa1daed3a5ee6/multi.webp',
-        file_size: 58696,
-        width: null,
-        height: null,
-      },
-    ],
-  },
-  {
-    id: 5326,
-    content: null,
-    inbox_id: 486,
-    echo_id: '9f7432284767',
-    conversation_id: 1016,
-    message_type: 0,
-    content_type: 'text',
-    status: 'sent',
-    content_attributes: {},
-    created_at: 1732795624,
-    private: false,
-    source_id: null,
-    sender_type: 'Contact',
-    sender_id: 599,
-    sender: {
-      additional_attributes: {
-        created_at_ip: '::1',
-      },
-      custom_attributes: {},
-      email: 'anthony@example.com',
-      id: 599,
-      identifier: null,
-      name: 'anthony',
-      phone_number: null,
-      thumbnail: '',
-      type: 'contact',
-    },
-    attachments: [
-      {
-        id: 27,
-        message_id: 5323,
-        file_type: 'image',
-        account_id: 2,
-        extension: null,
-        data_url: 'https://picsum.photos/500',
-        thumb_url: 'https://picsum.photos/500',
-        file_size: 26126,
-        width: null,
-        height: null,
-      },
-      {
-        id: 28,
-        message_id: 5323,
-        file_type: 'image',
-        account_id: 2,
-        extension: null,
-        data_url: 'https://picsum.photos/500',
-        thumb_url: 'https://picsum.photos/500',
-        file_size: 58696,
-        width: null,
-        height: null,
-      },
-      {
-        id: 28,
-        message_id: 5323,
-        file_type: 'file',
-        account_id: 2,
-        extension: null,
-        data_url:
-          'http://localhost:3000/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBaXdLIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--3aa5f4c3a2a034b6e68800d4787d369254ab1eb4/list-with-all-data.csv',
         thumb_url:
           'http://localhost:3000/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBaXdLIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--3aa5f4c3a2a034b6e68800d4787d369254ab1eb4/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBPZ2h3Ym1jNkUzSmxjMmw2WlY5MGIxOW1hV3hzV3dkcEFmb3ciLCJleHAiOm51bGwsInB1ciI6InZhcmlhdGlvbiJ9fQ==--328463286cffa0d7d9a36a3a30bfa1daed3a5ee6/multi.webp',
         file_size: 58696,

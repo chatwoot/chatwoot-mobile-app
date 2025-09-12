@@ -11,9 +11,8 @@ import { Agent, Conversation, ConversationAdditionalAttributes, Label, Message }
 
 import { ConversationId } from './ConversationId';
 import { ConversationLastMessage } from './ConversationLastMessage';
-import { PriorityIndicator } from './PriorityIndicator';
+import { PriorityIndicator, ChannelIndicator } from '@/components-next/list-components';
 import { UnreadIndicator } from './UnreadIndicator';
-import { ChannelIndicator } from './ChannelIndicator';
 import { SLAIndicator } from './SLAIndicator';
 import { LabelIndicator } from './LabelIndicator';
 import { LastActivityTime } from './LastActivityTime';
@@ -39,7 +38,7 @@ type ConversationDetailSubCellProps = Pick<
         waitingSince: number;
         status: string;
       }
-    | {};
+    | Record<string, never>;
   additionalAttributes?: ConversationAdditionalAttributes;
   allLabels: Label[];
   typingText?: string;
@@ -145,7 +144,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
               {hasLabels && hasSLA && (
                 <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />
               )}
-              {hasLabels && <LabelIndicator labels={labels.slice(0, 2)} allLabels={allLabels} />}
+              {hasLabels && <LabelIndicator labels={labels} allLabels={allLabels} />}
             </AnimatedNativeView>
 
             {assignee ? (

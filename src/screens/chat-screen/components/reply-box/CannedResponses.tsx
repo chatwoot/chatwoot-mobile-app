@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Pressable, ScrollView } from 'react-native';
+import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { tailwind } from '@/theme';
@@ -44,6 +44,7 @@ export const CannedResponses = (props: CannedResponsesProps) => {
   useEffect(() => {
     const searchKey = props.searchKey.slice(1);
     dispatch(cannedResponseActions.index({ searchKey }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.searchKey]);
 
   if (!props.searchKey || cannedResponses.length === 0) {
@@ -54,18 +55,15 @@ export const CannedResponses = (props: CannedResponsesProps) => {
     <Animated.View
       style={[
         tailwind.style(
-          'absolute bottom-full left-0 right-0 bg-white border-t border-gray-200  max-h-[180px]',
+          'left-0 right-0 bg-white border-t border-gray-200 max-h-[180px] relative bottom-0 h-[180px]',
         ),
       ]}>
-      <ScrollView keyboardShouldPersistTaps="always">
-        <FlashList
-          data={cannedResponses}
-          renderItem={({ item }) => <CannedResponseItem item={item} onSelect={props.onSelect} />}
-          estimatedItemSize={50}
-          keyExtractor={item => item.id.toString()}
-          keyboardShouldPersistTaps="always"
-        />
-      </ScrollView>
+      <FlashList
+        data={cannedResponses}
+        renderItem={({ item }) => <CannedResponseItem item={item} onSelect={props.onSelect} />}
+        keyExtractor={item => item.id.toString()}
+        keyboardShouldPersistTaps="always"
+      />
     </Animated.View>
   );
 };

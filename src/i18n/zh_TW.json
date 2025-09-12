@@ -59,14 +59,6 @@
       "AGENT": {
         "SEARCH_AGENT": "搜尋客服"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "未指派的",
-          "ALL": "所有的"
-        }
-      },
       "INBOX": {
         "TITLE": "Filter by inbox"
       },
@@ -85,6 +77,14 @@
           "PENDING": "等待中",
           "SNOOZED": "擱置",
           "RESOLVED": "已解決",
+          "ALL": "所有的"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filter by assignee type",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "未指派的",
           "ALL": "所有的"
         }
       }
@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "Assigned agent",
     "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "此操作仅对代理人可见",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",
@@ -207,6 +208,9 @@
       },
       "fallback": {
         "CONTENT": "分享了一個網址"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
       }
     },
     "LONG_PRESS_ACTIONS": {
@@ -440,5 +444,15 @@
       "SHOW_MORE": "{count} more",
       "HIDE": "Hide {count} rows"
     }
+  },
+  "MACRO": {
+    "TITLE": "巨集",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "Macro executed successfully",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "No macros found"
   }
 }

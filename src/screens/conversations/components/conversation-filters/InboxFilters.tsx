@@ -13,21 +13,10 @@ import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
 import { getChannelIcon } from '@/utils';
 import { Channel } from '@/types';
 import i18n from '@/i18n';
-import { Inbox } from '@/types/Inbox';
 
 type InboxCellProps = {
   value: { id: number; name: string; channelType: Channel; medium: string };
   isLastItem: boolean;
-};
-
-const defaultInbox: Inbox = {
-  id: 0,
-  name: 'All Inboxes',
-  channelType: 'Channel::All',
-  avatarUrl: '',
-  channelId: 0,
-  phoneNumber: '',
-  medium: 'Channel::All',
 };
 
 const InboxCell = (props: InboxCellProps) => {
@@ -80,7 +69,12 @@ type InboxStackProps = {
 const InboxStack = (props: InboxStackProps) => {
   const { list } = props;
   return (
-    <Animated.ScrollView style={tailwind.style('pl-3 pb-4')}>
+    <Animated.ScrollView
+      style={tailwind.style('pl-3 pb-4')}
+      bounces={false}
+      showsVerticalScrollIndicator={true}
+      scrollEventThrottle={16}
+      nestedScrollEnabled={true}>
       {list.map((value, index) => (
         <InboxCell key={index} {...{ value, index, isLastItem: index === list.length - 1 }} />
       ))}
@@ -90,15 +84,31 @@ const InboxStack = (props: InboxStackProps) => {
 
 export const InboxFilters = () => {
   const inboxes = useAppSelector(selectAllInboxes);
-  const inboxList = [defaultInbox, ...inboxes].map(inbox => ({
+  const inboxList = [
+    {
+      id: 0,
+      name: i18n.t('FILTER.ALL_INBOXES'),
+      channelType: 'Channel::All' as Channel,
+      avatarUrl: '',
+      channelId: 0,
+      phoneNumber: '',
+      medium: 'Channel::All',
+      provider: 'Channel::All',
+    },
+    ...inboxes,
+  ].map(inbox => ({
     id: inbox.id,
     name: inbox.name,
-    channelType: inbox.channelType,
+    channelType: inbox.channelType as Channel,
     medium: inbox.medium,
   }));
 
   return (
-    <Animated.ScrollView>
+    <Animated.ScrollView
+      bounces={false}
+      showsVerticalScrollIndicator={true}
+      scrollEventThrottle={16}
+      nestedScrollEnabled={true}>
       <BottomSheetHeader headerText={i18n.t('CONVERSATION.FILTERS.INBOX.TITLE')} />
       <InboxStack list={inboxList} />
     </Animated.ScrollView>

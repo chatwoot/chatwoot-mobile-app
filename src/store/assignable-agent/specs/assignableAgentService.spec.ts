@@ -10,7 +10,7 @@ jest.mock('@/i18n', () => ({
   t: (key: string) => key,
 }));
 
-jest.mock('@/helpers/ToastHelper', () => ({
+jest.mock('@/utils/toastUtils', () => ({
   showToast: jest.fn(),
 }));
 
@@ -18,7 +18,7 @@ jest.mock('@/services/APIService', () => ({
   apiService: {
     get: jest.fn(),
     post: jest.fn(),
-    put: jest.fn(), 
+    put: jest.fn(),
     delete: jest.fn(),
   },
 }));

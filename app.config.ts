@@ -4,14 +4,16 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'Chatwoot',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
-    version: '4.0.0',
+    version: '4.1.3',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
+    newArchEnabled: false,
     splash: {
       image: './assets/splash.png',
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
+      enableFullScreenImage_legacy: true,
     },
     ios: {
       supportsTablet: true,
@@ -25,25 +27,22 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         NSAppleMusicUsageDescription:
           'This app does not use Apple Music, but a system API may require this permission.',
         UIBackgroundModes: ['fetch', 'remote-notification'],
+        ITSAppUsesNonExemptEncryption: false,
       },
       // Please use the relative path to the google-services.json file
       googleServicesFile: process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE,
-      entitlements: {
-        'aps-environment': 'production',
-      },
+      entitlements: { 'aps-environment': 'production' },
       associatedDomains: ['applinks:app.chatwoot.com'],
     },
     android: {
-      adaptiveIcon: {
-        foregroundImage: './assets/adaptive-icon.png',
-        backgroundColor: '#ffffff',
-      },
+      adaptiveIcon: { foregroundImage: './assets/adaptive-icon.png', backgroundColor: '#ffffff' },
       package: 'com.chatwoot.app',
       permissions: [
         'android.permission.CAMERA',
         'android.permission.READ_EXTERNAL_STORAGE',
         'android.permission.WRITE_EXTERNAL_STORAGE',
         'android.permission.RECORD_AUDIO',
+        'android.permission.READ_MEDIA_IMAGES',
       ],
       // Please use the relative path to the google-services.json file
       googleServicesFile: process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE,
@@ -71,12 +70,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     owner: 'chatwoot',
     plugins: [
-      [
-        'react-native-permissions',
-        {
-          iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary'],
-        },
-      ],
+      'expo-font',
+      ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary'] }],
       [
         '@sentry/react-native/expo',
         {
@@ -92,18 +87,16 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         {
           // https://github.com/invertase/notifee/issues/808#issuecomment-2175934609
           android: {
-            compileSdkVersion: 34,
+            minSdkVersion: 24,
+            compileSdkVersion: 35,
             targetSdkVersion: 34,
-            extraMavenRepos: ['$rootDir/../../../node_modules/@notifee/react-native/android/libs'],
+            enableProguardInReleaseBuilds: true,
           },
-          ios: {
-            useFrameworks: 'static',
-          },
+          ios: { useFrameworks: 'static' },
         },
       ],
+      './with-ffmpeg-pod.js',
     ],
-    androidNavigationBar: {
-      backgroundColor: '#ffffff',
-    },
+    androidNavigationBar: { backgroundColor: '#ffffff' },
   };
 };

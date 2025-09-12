@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Alert, Dimensions, Share } from 'react-native';
+import { Alert, Dimensions, Platform, Share } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
@@ -66,18 +66,13 @@ export const ConversationActions = () => {
   const onShareConversation = async () => {
     try {
       const url = `${installationUrl}app/accounts/${conversation?.accountId}/conversations/${conversation?.id}`;
-      const result = await Share.share({
+
+      const message = Platform.OS === 'android' ? url : '';
+
+      await Share.share({
+        message,
         url,
       });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
-      }
     } catch (error) {
       Alert.alert((error as Error).message);
     }

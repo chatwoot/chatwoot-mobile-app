@@ -16,7 +16,7 @@ import { contactListenerMiddleware } from './contact/contactListener';
 
 // Disable this in testing environment
 const shouldLoadDebugger = __DEV__ && !process.env.JEST_WORKER_ID;
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const reactotronInstance = shouldLoadDebugger ? require('../../ReactotronConfig').default : null;
 
 const CURRENT_VERSION = 2;
@@ -54,15 +54,28 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  enhancers: shouldLoadDebugger ? [reactotronInstance.createEnhancer!()] : [],
+  enhancers: getDefaultEnhancers =>
+    shouldLoadDebugger
+      ? getDefaultEnhancers().concat(reactotronInstance.createEnhancer!())
+      : getDefaultEnhancers(),
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        // warnAfter: 128,
+        ignoredActions: [
+          FLUSH,
+          REHYDRATE,
+          PAUSE,
+          PERSIST,
+          PURGE,
+          REGISTER,
+          'auth/setCurrentUserAvailability',
+          'contact/updateContactsPresence',
+        ],
       },
-      immutableCheck: { warnAfter: 128 },
-    }).concat(middlewares),
+      immutableCheck: { warnAfter: 256 },
+    }).concat(middlewares) as typeof getDefaultMiddleware extends (...args: unknown[]) => infer R
+      ? R
+      : never,
 });
 
 // TODO: Please get rid of this

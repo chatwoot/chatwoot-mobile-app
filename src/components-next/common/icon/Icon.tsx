@@ -20,6 +20,7 @@ export interface IconComponentProps {
   size?: 10 | 12 | 16 | 20 | 24 | 32 | number | string;
 }
 
+// Please take icons from https://icones.js.org/collection/fluent
 export const Icon: React.FC<Partial<IconComponentProps>> = props => {
   const { icon, style, size } = props;
   const iconAspectRatio = 1;

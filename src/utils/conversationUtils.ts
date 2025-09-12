@@ -107,3 +107,14 @@ export const getGroupedMessages = (messages: Message[]): SectionGroupMessages[] 
     };
   });
 };
+
+export const extractConversationIdFromUrl = ({ url }: { url: string }) => {
+  try {
+    const conversationIdMatch = url.match(/\/conversations\/(\d+)/);
+    const conversationId = conversationIdMatch ? parseInt(conversationIdMatch[1]) : null;
+    return conversationId;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return null;
+  }
+};

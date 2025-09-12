@@ -2,12 +2,13 @@ import React, { useMemo } from 'react';
 import { Platform, Pressable, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
+import * as Sentry from '@sentry/react-native';
 
 import { CaretRight } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { AttributeListType } from '@/types';
 import { Icon } from '@/components-next/common';
-import { showToast } from '@/helpers/ToastHelper';
+import { showToast } from '@/utils/toastUtils';
 
 type AttributeItemProps = {
   listItem: AttributeListType;
@@ -20,8 +21,12 @@ const AttributeItem = (props: AttributeItemProps) => {
 
   const handlePress = () => {
     if (formattedValue) {
-      Clipboard.setString(formattedValue);
-      showToast({ message: `${listItem.title} copied to clipboard` });
+      try {
+        Clipboard.setString(formattedValue);
+        showToast({ message: `${listItem.title} copied to clipboard` });
+      } catch (error) {
+        Sentry.captureException(error);
+      }
     }
   };
 
@@ -112,7 +117,8 @@ export const AttributeList = (props: AttributeListProps) => {
         {list.map(
           (listItem, index) =>
             !listItem.disabled &&
-            listItem.subtitle && (
+            listItem.subtitle !== undefined &&
+            listItem.subtitle !== null && (
               <AttributeItem
                 key={index}
                 {...{ listItem, index }}

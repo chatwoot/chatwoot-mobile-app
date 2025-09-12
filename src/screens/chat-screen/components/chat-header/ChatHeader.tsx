@@ -103,10 +103,11 @@ export const ChatHeader = ({
               />
             </Pressable>
           </Animated.View>
-
-          <ChatDropdownMenu dropdownMenuList={dashboardsList}>
-            <Icon icon={<Overflow strokeWidth={2} />} size={24} />
-          </ChatDropdownMenu>
+          {dashboardsList.length > 0 && (
+            <ChatDropdownMenu dropdownMenuList={dashboardsList}>
+              <Icon icon={<Overflow strokeWidth={2} />} size={24} />
+            </ChatDropdownMenu>
+          )}
         </Animated.View>
       </Animated.View>
       <BottomSheetModal

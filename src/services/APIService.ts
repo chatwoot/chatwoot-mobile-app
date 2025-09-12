@@ -7,7 +7,7 @@ import axios, {
 
 import { getStore } from '@/store/storeAccessor';
 import I18n from '@/i18n';
-import { showToast } from '@/helpers/ToastHelper';
+import { showToast } from '@/utils/toastUtils';
 
 const nonAccountRoutes = [
   'profile',

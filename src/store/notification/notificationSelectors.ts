@@ -1,7 +1,8 @@
-import { createSelector } from '@reduxjs/toolkit';
+import { createDraftSafeSelector, createSelector } from '@reduxjs/toolkit';
 import type { RootState } from '@/store';
 import { notificationsAdapter } from './notificationSlice';
-
+import { SortTypes } from './notificationFilterSlice';
+import { Notification } from '@/types/Notification';
 export const selectNotificationsState = (state: RootState) => state.notifications;
 
 export const {
@@ -40,4 +41,19 @@ export const selectNotificationsCurrentPage = createSelector(
 export const selectIsAllNotificationsFetched = createSelector(
   selectNotificationsState,
   state => state.uiFlags.isAllNotificationsFetched,
+);
+
+export const getFilteredNotifications = createDraftSafeSelector(
+  [selectAllNotifications, (_, sortOrder: SortTypes) => sortOrder],
+  (notifications, sortOrder) => {
+    type SortComparator = {
+      asc: (a: Notification, b: Notification) => number;
+      desc: (a: Notification, b: Notification) => number;
+    };
+    const comparator: SortComparator = {
+      asc: (a, b) => a.createdAt - b.createdAt,
+      desc: (a, b) => b.createdAt - a.createdAt,
+    };
+    return notifications.sort(comparator[sortOrder]);
+  },
 );

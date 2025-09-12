@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { settingsActions } from './settingsActions';
-import * as RootNavigation from '@/helpers/NavigationHelper';
+import * as RootNavigation from '@/utils/navigationUtils';
 import { NotificationSettings } from './settingsTypes';
 import { Theme } from '@/types/common/Theme';
 

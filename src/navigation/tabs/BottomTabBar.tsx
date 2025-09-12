@@ -80,19 +80,28 @@ const TabBarBackground = (props: TabBarBackgroundProps) => {
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const TabItem = (props: any) => {
   const { handlers, animatedStyle } = useScaleAnimation();
 
   const { onPress, onLongPress, isFocused, options, route } = props;
 
+  // Memoize hitSlop to prevent new object reference on every render
+  const hitSlop = React.useMemo(() => ({ top: 2, left: 10, right: 10, bottom: 10 }), []);
+
+  // Use stable object reference for accessibilityState when not focused
+  const accessibilityState = React.useMemo(
+    () => (isFocused ? { selected: true } : {}),
+    [isFocused],
+  );
   return (
     <Animated.View
       style={[tailwind.style('justify-center items-center flex-1 bg-transparent'), animatedStyle]}>
       <Pressable
-        hitSlop={{ top: 2, left: 10, right: 10, bottom: 10 }}
+        hitSlop={hitSlop}
         {...handlers}
         accessibilityRole="button"
-        accessibilityState={isFocused ? { selected: true } : {}}
+        accessibilityState={accessibilityState}
         accessibilityLabel={options.tabBarAccessibilityLabel}
         testID={options.tabBarTestID}
         onPress={onPress}
@@ -105,8 +114,39 @@ const TabItem = (props: any) => {
 
 export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const hapticSelection = useHaptic();
-
   const tabBarHeight = useTabBarHeight();
+
+  // Memoize press handlers using useCallback
+  const createPressHandler = React.useCallback(
+    (route: { key: string; name: string; params?: object }, isFocused: boolean) => {
+      return () => {
+        hapticSelection?.();
+        const event = navigation.emit({
+          type: 'tabPress',
+          target: route.key,
+          canPreventDefault: true,
+        });
+
+        if (!isFocused && !event.defaultPrevented) {
+          navigation.navigate(route.name, route.params);
+        }
+      };
+    },
+    [hapticSelection, navigation],
+  );
+
+  // Memoize long press handler
+  const createLongPressHandler = React.useCallback(
+    (route: { key: string; name: string; params?: object }) => {
+      return () => {
+        navigation.emit({
+          type: 'tabLongPress',
+          target: route.key,
+        });
+      };
+    },
+    [navigation],
+  );
 
   return (
     <TabBarBackground
@@ -129,30 +169,18 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
       <Animated.View style={tailwind.style('absolute inset-0 h-[1px] bg-blackA-A3')} />
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
-
         const isFocused = state.index === index;
 
-        const onPress = () => {
-          hapticSelection?.();
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
-
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name, route.params);
-          }
-        };
-
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
-        };
-
-        return <TabItem key={route.key} {...{ options, onPress, onLongPress, route, isFocused }} />;
+        return (
+          <TabItem
+            key={route.key}
+            options={options}
+            onPress={createPressHandler(route, isFocused)}
+            onLongPress={createLongPressHandler(route)}
+            route={route}
+            isFocused={isFocused}
+          />
+        );
       })}
     </TabBarBackground>
   );

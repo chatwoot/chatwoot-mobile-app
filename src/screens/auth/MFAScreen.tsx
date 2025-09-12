@@ -2,15 +2,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Animated, StatusBar, View, TextInput, Text, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSharedValue } from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
 import { Button, VerificationCode } from '@/components-next';
 import { useAnimatedShake } from '@/components-next/verification-code/hooks/use-animated-shake';
 import type { StatusType } from '@/components-next/verification-code';
 import { tailwind } from '@/theme';
-import i18n from '@/i18n';
 import { useAppDispatch } from '@/hooks';
 import { resetSettings } from '@/store/settings/settingsSlice';
 
 const MFAScreen = () => {
+  const navigation = useNavigation();
+
   const dispatch = useAppDispatch();
 
   const [activeTab, setActiveTab] = useState<'authenticator' | 'backup'>('authenticator');
@@ -74,9 +76,8 @@ const MFAScreen = () => {
     }
   };
 
-  const handleResendCode = () => {
-    // Implement resend logic
-    console.log('Resending code');
+  const backToLogin = () => {
+    navigation.navigate('Login');
   };
 
   return (
@@ -166,7 +167,7 @@ const MFAScreen = () => {
             />
             <Pressable
               style={tailwind.style('flex-row items-center justify-center mt-6 gap-1')}
-              onPress={() => console.log('Back to login')}>
+              onPress={() => backToLogin()}>
               <Text style={tailwind.style('text-gray-600 font-inter-normal-20')}>
                 ← Back to Login
               </Text>

@@ -24,6 +24,12 @@ export interface MfaVerificationPayload {
   otp_code?: string;
   backup_code?: string;
 }
+
+export interface LoginApiResponse {
+  data?: User;
+  mfa_required?: boolean;
+  mfa_token?: string;
+}
 export interface ResetPasswordPayload {
   email: string;
 }

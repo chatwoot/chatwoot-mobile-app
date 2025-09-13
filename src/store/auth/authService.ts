@@ -3,6 +3,7 @@ import type { User } from '@/types/User';
 import type {
   LoginPayload,
   LoginResponse,
+  LoginApiResponse,
   MfaRequiredResponse,
   MfaVerificationPayload,
   ResetPasswordPayload,
@@ -14,8 +15,8 @@ import type {
 
 export class AuthService {
   static async login(credentials: LoginPayload): Promise<LoginResponse | MfaRequiredResponse> {
-    const response = await apiService.post('auth/sign_in', credentials);
-    
+    const response = await apiService.post<LoginApiResponse>('auth/sign_in', credentials);
+
     // Check if MFA is required
     if (response.data.mfa_required) {
       return {
@@ -23,7 +24,7 @@ export class AuthService {
         mfa_token: response.data.mfa_token,
       } as MfaRequiredResponse;
     }
-    
+
     // Regular login response
     return {
       user: response.data.data,

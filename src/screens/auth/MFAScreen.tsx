@@ -10,12 +10,12 @@ import { tailwind } from '@/theme';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { resetSettings } from '@/store/settings/settingsSlice';
 import { authActions } from '@/store/auth/authActions';
-import { resetAuth } from '@/store/auth/authSlice';
+import { resetAuth, clearAuthError } from '@/store/auth/authSlice';
 
 const MFAScreen = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const { mfaToken, uiFlags } = useAppSelector(state => state.auth);
+  const { mfaToken, uiFlags, error } = useAppSelector(state => state.auth);
 
   const [activeTab, setActiveTab] = useState<'authenticator' | 'backup'>('authenticator');
   const [code, setCode] = useState<string[]>([]);
@@ -48,6 +48,7 @@ const MFAScreen = () => {
       .slice(0, 6);
     setCode(newCode);
     setIsCodeWrong(false);
+    dispatch(clearAuthError());
     verificationStatus.value = 'inProgress';
 
     if (newCode.length === 6) {
@@ -59,6 +60,7 @@ const MFAScreen = () => {
     if (!mfaToken) return;
 
     setIsCodeWrong(false);
+    dispatch(clearAuthError());
 
     try {
       const payload = {
@@ -74,7 +76,7 @@ const MFAScreen = () => {
 
       // The app will automatically navigate to main app when user is set in auth state
       // No manual navigation needed - the existing auth logic handles this
-    } catch (error) {
+    } catch (error: any) {
       verificationStatus.value = 'wrong';
       setIsCodeWrong(true);
       shake();
@@ -131,6 +133,7 @@ const MFAScreen = () => {
               onPress={() => {
                 setActiveTab('authenticator');
                 setIsCodeWrong(false);
+                dispatch(clearAuthError());
                 verificationStatus.value = 'inProgress';
               }}>
               <Text
@@ -149,6 +152,7 @@ const MFAScreen = () => {
               onPress={() => {
                 setActiveTab('backup');
                 setIsCodeWrong(false);
+                dispatch(clearAuthError());
                 verificationStatus.value = 'inProgress';
               }}>
               <Text
@@ -173,7 +177,7 @@ const MFAScreen = () => {
             {activeTab === 'authenticator' ? (
               <>
                 <Pressable onPress={() => hiddenInputRef.current?.focus()}>
-                  <Animated.View style={[rShakeStyle, tailwind.style('mb-8')]}>
+                  <Animated.View style={[rShakeStyle, tailwind.style('mb-2')]}>
                     <VerificationCode
                       code={code}
                       maxLength={6}
@@ -182,6 +186,16 @@ const MFAScreen = () => {
                     />
                   </Animated.View>
                 </Pressable>
+
+                {/* Error message for authenticator */}
+                {error && (
+                  <Animated.Text
+                    style={tailwind.style('font-inter-normal-20 text-ruby-900 mb-6 pl-2')}>
+                    {error}
+                  </Animated.Text>
+                )}
+
+                {!error && <View style={tailwind.style('mb-8')} />}
 
                 {/* Hidden TextInput for OTP */}
                 <TextInput
@@ -197,23 +211,39 @@ const MFAScreen = () => {
                 />
               </>
             ) : (
-              <Animated.View style={[rShakeStyle, tailwind.style('mb-8 pl-2 pr-2')]}>
-                <TextInput
-                  ref={backupInputRef}
-                  style={tailwind.style(
-                    `w-full p-4 border-2 rounded-lg text-left  ${
-                      isCodeWrong ? 'border-red-500' : 'border-gray-300'
-                    }`,
-                  )}
-                  value={backupCode}
-                  onChangeText={setBackupCode}
-                  placeholder="Enter backup code"
-                  autoCapitalize="characters"
-                  autoFocus
-                  autoCorrect={false}
-                  textContentType="password"
-                />
-              </Animated.View>
+              <>
+                <Animated.View style={[rShakeStyle, tailwind.style('mb-2 pl-2 pr-2')]}>
+                  <TextInput
+                    ref={backupInputRef}
+                    style={tailwind.style(
+                      `w-full p-4 border-2 rounded-lg text-left  ${
+                        isCodeWrong ? 'border-red-500' : 'border-gray-300'
+                      }`,
+                    )}
+                    value={backupCode}
+                    onChangeText={text => {
+                      setBackupCode(text);
+                      setIsCodeWrong(false);
+                      dispatch(clearAuthError());
+                    }}
+                    placeholder="Enter backup code"
+                    autoCapitalize="characters"
+                    autoFocus
+                    autoCorrect={false}
+                    textContentType="password"
+                  />
+                </Animated.View>
+
+                {/* Error message for backup code */}
+                {error && (
+                  <Animated.Text
+                    style={tailwind.style('font-inter-normal-20 text-ruby-900 mb-6 pl-2')}>
+                    {error}
+                  </Animated.Text>
+                )}
+
+                {!error && <View style={tailwind.style('mb-8')} />}
+              </>
             )}
 
             <Button

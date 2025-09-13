@@ -38,6 +38,10 @@ export const authSlice = createSlice({
       state.accessToken = null;
       state.headers = null;
       state.mfaToken = null;
+      state.error = null;
+    },
+    clearAuthError: state => {
+      state.error = null;
     },
     setCurrentUserAvailability(state, action) {
       const { users } = action.payload;
@@ -148,5 +152,5 @@ export const authSlice = createSlice({
       });
   },
 });
-export const { logout, setAccount, resetAuth, setCurrentUserAvailability } = authSlice.actions;
+export const { logout, setAccount, resetAuth, setCurrentUserAvailability, clearAuthError } = authSlice.actions;
 export default authSlice.reducer;

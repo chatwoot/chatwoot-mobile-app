@@ -13,6 +13,17 @@ export interface LoginResponse {
   user: User;
   headers: AuthHeaders;
 }
+
+export interface MfaRequiredResponse {
+  mfa_required: true;
+  mfa_token: string;
+}
+
+export interface MfaVerificationPayload {
+  mfa_token: string;
+  otp_code?: string;
+  backup_code?: string;
+}
 export interface ResetPasswordPayload {
   email: string;
 }

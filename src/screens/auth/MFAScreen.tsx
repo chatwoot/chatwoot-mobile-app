@@ -7,19 +7,22 @@ import { Button, VerificationCode } from '@/components-next';
 import { useAnimatedShake } from '@/components-next/verification-code/hooks/use-animated-shake';
 import type { StatusType } from '@/components-next/verification-code';
 import { tailwind } from '@/theme';
-import { useAppDispatch } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { resetSettings } from '@/store/settings/settingsSlice';
+import { authActions } from '@/store/auth/authActions';
+import { resetAuth } from '@/store/auth/authSlice';
 
 const MFAScreen = () => {
   const navigation = useNavigation();
-
   const dispatch = useAppDispatch();
+  const { mfaToken, uiFlags } = useAppSelector(state => state.auth);
 
   const [activeTab, setActiveTab] = useState<'authenticator' | 'backup'>('authenticator');
   const [code, setCode] = useState<string[]>([]);
+  const [backupCode, setBackupCode] = useState('');
   const [isCodeWrong, setIsCodeWrong] = useState(false);
-  const [isVerifying, setIsVerifying] = useState(false);
   const hiddenInputRef = useRef<TextInput>(null);
+  const backupInputRef = useRef<TextInput>(null);
 
   const verificationStatus = useSharedValue<StatusType>('inProgress');
   const { shake, rShakeStyle } = useAnimatedShake();
@@ -28,10 +31,19 @@ const MFAScreen = () => {
     dispatch(resetSettings());
   }, [dispatch]);
 
+  // Clear MFA token when navigating away from MFA screen (back button, hardware back, etc.)
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', e => {
+      // Clear MFA token when leaving the screen
+      dispatch(resetAuth());
+    });
+
+    return unsubscribe;
+  }, [navigation, dispatch]);
+
   const handleCodeChange = (text: string) => {
     const newCode = text
-      .toUpperCase()
-      .replace(/[^0-9A-Z]/g, '')
+      .replace(/[^0-9]/g, '')
       .split('')
       .slice(0, 6);
     setCode(newCode);
@@ -43,40 +55,51 @@ const MFAScreen = () => {
     }
   };
 
-  const handleVerify = async (enteredCode: string) => {
-    setIsVerifying(true);
+  const handleVerify = async (enteredCode?: string) => {
+    if (!mfaToken) return;
+
     setIsCodeWrong(false);
 
     try {
-      // Simulate API call - replace with actual implementation
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const payload = {
+        mfa_token: mfaToken,
+        ...(activeTab === 'authenticator'
+          ? { otp_code: enteredCode || code.join('') }
+          : { backup_code: backupCode }),
+      };
 
-      // For demo purposes, assume verification fails if code is not "123456"
-      if (enteredCode !== '123456') {
-        throw new Error('Invalid code');
-      }
+      await dispatch(authActions.verifyMfa(payload)).unwrap();
 
       verificationStatus.value = 'correct';
-      console.log('Verification successful');
-      // Navigate to next screen or perform success action
 
-      setTimeout(() => {
-        setIsVerifying(false);
-        // router.replace to next screen
-      }, 1000);
+      // The app will automatically navigate to main app when user is set in auth state
+      // No manual navigation needed - the existing auth logic handles this
     } catch (error) {
       verificationStatus.value = 'wrong';
       setIsCodeWrong(true);
       shake();
-      setCode([]);
-      if (hiddenInputRef.current) {
-        hiddenInputRef.current.clear();
+
+      if (activeTab === 'authenticator') {
+        setCode([]);
+        if (hiddenInputRef.current) {
+          hiddenInputRef.current.clear();
+        }
+      } else {
+        setBackupCode('');
+        if (backupInputRef.current) {
+          backupInputRef.current.clear();
+        }
       }
-      setIsVerifying(false);
     }
   };
 
+  const handleResendCode = () => {
+    // Implement resend logic - typically would call an API to resend the code
+    console.log('Resending code for activeTab:', activeTab);
+  };
+
   const backToLogin = () => {
+    dispatch(resetAuth()); // Clear MFA state
     navigation.navigate('Login');
   };
 
@@ -90,7 +113,7 @@ const MFAScreen = () => {
       <View style={tailwind.style('flex-1 bg-white')}>
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={tailwind.style('px-6 pt-16')}>
+          contentContainerStyle={tailwind.style('px-6 pt-8')}>
           <View style={tailwind.style('pt-6 gap-4 items-center')}>
             <Animated.Text style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20')}>
               Two-Factor Authentication
@@ -137,43 +160,62 @@ const MFAScreen = () => {
                 : 'Enter your backup code'}
             </Text>
 
-            <Pressable onPress={() => hiddenInputRef.current?.focus()}>
-              <Animated.View style={[rShakeStyle, tailwind.style('mb-8')]}>
-                <VerificationCode
-                  code={code}
+            {activeTab === 'authenticator' ? (
+              <>
+                <Pressable onPress={() => hiddenInputRef.current?.focus()}>
+                  <Animated.View style={[rShakeStyle, tailwind.style('mb-8')]}>
+                    <VerificationCode
+                      code={code}
+                      maxLength={6}
+                      status={verificationStatus}
+                      isDarkMode={false}
+                      isCodeWrong={isCodeWrong}
+                    />
+                  </Animated.View>
+                </Pressable>
+
+                {/* Hidden TextInput for OTP */}
+                <TextInput
+                  ref={hiddenInputRef}
+                  style={tailwind.style('position-absolute opacity-0 w-1 h-1')}
+                  value={code.join('')}
+                  onChangeText={handleCodeChange}
                   maxLength={6}
-                  status={verificationStatus}
-                  isDarkMode={false}
-                  isCodeWrong={isCodeWrong}
+                  keyboardType="numeric"
+                  autoCapitalize="none"
+                  autoFocus
+                  textContentType="oneTimeCode"
+                />
+              </>
+            ) : (
+              <Animated.View style={[rShakeStyle, tailwind.style('mb-8')]}>
+                <TextInput
+                  ref={backupInputRef}
+                  style={tailwind.style(
+                    `w-full p-4 border-2 rounded-lg text-center font-inter-medium-24 text-lg ${
+                      isCodeWrong ? 'border-red-500' : 'border-gray-300'
+                    }`,
+                  )}
+                  value={backupCode}
+                  onChangeText={setBackupCode}
+                  placeholder="Enter backup code"
+                  autoCapitalize="characters"
+                  autoFocus
+                  autoCorrect={false}
+                  textContentType="password"
                 />
               </Animated.View>
-            </Pressable>
-
-            {/* Hidden TextInput */}
-            <TextInput
-              ref={hiddenInputRef}
-              style={tailwind.style('position-absolute opacity-0 w-1 h-1')}
-              value={code.join('')}
-              onChangeText={handleCodeChange}
-              maxLength={6}
-              keyboardType="default"
-              autoCapitalize="characters"
-              autoFocus
-              textContentType="oneTimeCode"
-            />
+            )}
 
             <Button
-              text={isVerifying ? 'Verifying...' : 'Verify'}
-              onPress={() => handleVerify(code.join(''))}
-              disabled={code.length !== 6 || isVerifying}
+              text={uiFlags.isVerifyingMfa ? 'Verifying...' : 'Verify'}
+              onPress={() => handleVerify()}
+              disabled={
+                (activeTab === 'authenticator' && code.length !== 6) ||
+                (activeTab === 'backup' && !backupCode.trim()) ||
+                uiFlags.isVerifyingMfa
+              }
             />
-            <Pressable
-              style={tailwind.style('flex-row items-center justify-center mt-6 gap-1')}
-              onPress={() => backToLogin()}>
-              <Text style={tailwind.style('text-gray-600 font-inter-normal-20')}>
-                ← Back to Login
-              </Text>
-            </Pressable>
           </View>
         </Animated.ScrollView>
       </View>

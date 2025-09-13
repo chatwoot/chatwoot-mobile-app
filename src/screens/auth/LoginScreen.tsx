@@ -29,7 +29,7 @@ import {
   selectBaseUrl,
   selectLocale,
 } from '@/store/settings/settingsSelectors';
-import { selectIsLoggingIn } from '@/store/auth/authSelectors';
+import { selectIsLoggingIn, selectIsMfaRequired } from '@/store/auth/authSelectors';
 import { setLocale } from '@/store/settings/settingsSlice';
 import { useRefsContext } from '@/context/RefsContext';
 
@@ -47,8 +47,8 @@ const LoginScreen = () => {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      email: '',
-      password: '',
+      email: 'john@acme.inc',
+      password: 'Password1!',
     },
   });
 
@@ -62,6 +62,7 @@ const LoginScreen = () => {
 
   const dispatch = useAppDispatch();
   const isLoggingIn = useAppSelector(selectIsLoggingIn);
+  const isMfaRequired = useAppSelector(selectIsMfaRequired);
 
   const installationUrl = useAppSelector(selectInstallationUrl);
   const baseUrl = useAppSelector(selectBaseUrl);
@@ -81,8 +82,17 @@ const LoginScreen = () => {
     }
   }, [installationUrl, navigation, dispatch]);
 
+  // Handle MFA redirection
+  useEffect(() => {
+    if (isMfaRequired) {
+      navigation.navigate('MFAScreen' as never);
+    }
+  }, [isMfaRequired, navigation]);
+
   const onSubmit = async (data: FormData) => {
     const { email, password } = data;
+    // Clear any existing MFA token before login
+    dispatch(resetAuth());
     dispatch(authActions.login({ email, password }));
   };
 

@@ -10,14 +10,14 @@ export type AuthStackParamList = {
   Login: undefined;
   ResetPassword: undefined;
   ConfigureURL: undefined;
-  MFA: undefined;
+  MFAScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 export const AuthStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="MFA">
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Login">
       <Stack.Screen
         options={{
           headerShown: false,
@@ -55,7 +55,7 @@ export const AuthStack = () => {
           headerShadowVisible: false,
           title: '',
         }}
-        name="MFA"
+        name="MFAScreen"
         component={MFAScreen}
       />
     </Stack.Navigator>

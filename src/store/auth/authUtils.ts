@@ -13,7 +13,7 @@ export const handleApiError = (error: unknown, customErrorMsg?: string) => {
       showToast({ message: errors[0] });
       return { success: false, errors };
     }
-    
+
     // If no errors array, check for error field
     const responseData = response.data as any;
     if (responseData?.error) {

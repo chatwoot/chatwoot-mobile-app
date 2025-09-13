@@ -9,7 +9,6 @@ export type StatusType = 'inProgress' | 'correct' | 'wrong';
 type VerificationCodeProps = {
   code: string[];
   maxLength?: number;
-  isDarkMode: boolean;
   isCodeWrong: boolean;
 } & Pick<AnimatedCodeNumberProps, 'status'>;
 
@@ -17,7 +16,6 @@ export const VerificationCode: React.FC<VerificationCodeProps> = ({
   code,
   maxLength = 5,
   status,
-  isDarkMode,
   isCodeWrong,
 }) => {
   const wrongStatus = useSharedValue<StatusType>('wrong');
@@ -30,7 +28,6 @@ export const VerificationCode: React.FC<VerificationCodeProps> = ({
             code={code[index]}
             highlighted={index === code.length}
             status={isCodeWrong ? wrongStatus : status}
-            isDarkMode={isDarkMode}
           />
         </View>
       ))}

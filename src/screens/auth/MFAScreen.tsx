@@ -136,7 +136,7 @@ const MFAScreen = () => {
               <Text
                 style={tailwind.style(
                   `text-center font-inter-normal-20 ${
-                    activeTab === 'authenticator' ? 'text-gray-900' : 'text-gray-600'
+                    activeTab === 'authenticator' ? 'text-gray-950' : 'text-gray-600'
                   }`,
                 )}>
                 Authenticator App
@@ -154,7 +154,7 @@ const MFAScreen = () => {
               <Text
                 style={tailwind.style(
                   `text-center font-inter-normal-20 ${
-                    activeTab === 'backup' ? 'text-gray-900' : 'text-gray-600'
+                    activeTab === 'backup' ? 'text-gray-950' : 'text-gray-600'
                   }`,
                 )}>
                 Backup Code
@@ -178,7 +178,6 @@ const MFAScreen = () => {
                       code={code}
                       maxLength={6}
                       status={verificationStatus}
-                      isDarkMode={false}
                       isCodeWrong={isCodeWrong}
                     />
                   </Animated.View>

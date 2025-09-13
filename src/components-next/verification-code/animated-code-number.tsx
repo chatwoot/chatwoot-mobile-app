@@ -17,27 +17,31 @@ export type AnimatedCodeNumberProps = {
   code?: string;
   highlighted: boolean;
   status: SharedValue<StatusType>;
-  isDarkMode: boolean;
 };
 
 export const AnimatedCodeNumber: React.FC<AnimatedCodeNumberProps> = ({
   code,
   highlighted,
   status,
-  isDarkMode,
 }) => {
+  // Extract colors outside worklet to avoid reanimated issues
+  // Using direct HSL values from theme to ensure proper string format
+  const correctColor = 'hsl(151, 40.2%, 54.1%)'; // green-600
+  const errorColor = 'hsl(348, 61.5%, 73.5%)'; // ruby-600
+  const defaultColor = 'hsl(0, 0%, 89.5%)'; // gray-300
+
   const getColorByStatus = useCallback(
     (vStatus: StatusType) => {
       'worklet';
       if (vStatus === 'correct') {
-        return '#22bb33';
+        return correctColor;
       }
       if (vStatus === 'wrong') {
-        return '#bb2124';
+        return errorColor;
       }
-      return isDarkMode ? '#2E2B2E' : '#D3D3D3';
+      return defaultColor;
     },
-    [isDarkMode],
+    [correctColor, errorColor, defaultColor],
   );
   const rBoxStyle = useAnimatedStyle(() => {
     return {
@@ -65,7 +69,7 @@ export const AnimatedCodeNumber: React.FC<AnimatedCodeNumberProps> = ({
               // I want the animation to start fast, then decelerate at the end (opposite of the previous one)
               .easing(Easing.bezier(0.6, 0.1, 0.4, 0.8).factory())
               .build()}
-            style={[styles.text, { color: isDarkMode ? 'hsl(0, 0%, 97%)' : 'hsl(0, 0%, 3%)' }]}>
+            style={[styles.text, { color: 'hsl(0, 0%, 39.3%)' }]}>
             {code}
           </Animated.Text>
         </Animated.View>

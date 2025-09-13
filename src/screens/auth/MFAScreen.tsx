@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, StatusBar, View, TextInput, Text, Pressable } from 'react-native';
+import { Animated, StatusBar, View, TextInput, Text, Pressable, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
@@ -111,11 +111,13 @@ const MFAScreen = () => {
         barStyle={'dark-content'}
       />
       <View style={tailwind.style('flex-1 bg-white')}>
-        <Animated.ScrollView
+        <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={tailwind.style('px-6 pt-8')}>
-          <View style={tailwind.style('pt-6 gap-4 items-center')}>
-            <Animated.Text style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20')}>
+          contentContainerStyle={tailwind.style('px-6 pt-8')}
+          keyboardShouldPersistTaps="handled">
+          <View style={tailwind.style('pt-6 gap-4')}>
+            <Animated.Text
+              style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20 text-center')}>
               Two-Factor Authentication
             </Animated.Text>
           </View>
@@ -126,7 +128,11 @@ const MFAScreen = () => {
               style={tailwind.style(
                 `flex-1 py-3 px-4 rounded-md ${activeTab === 'authenticator' ? 'bg-white' : ''}`,
               )}
-              onPress={() => setActiveTab('authenticator')}>
+              onPress={() => {
+                setActiveTab('authenticator');
+                setIsCodeWrong(false);
+                verificationStatus.value = 'inProgress';
+              }}>
               <Text
                 style={tailwind.style(
                   `text-center font-inter-normal-20 ${
@@ -140,7 +146,11 @@ const MFAScreen = () => {
               style={tailwind.style(
                 `flex-1 py-3 px-4 rounded-md ${activeTab === 'backup' ? 'bg-white' : ''}`,
               )}
-              onPress={() => setActiveTab('backup')}>
+              onPress={() => {
+                setActiveTab('backup');
+                setIsCodeWrong(false);
+                verificationStatus.value = 'inProgress';
+              }}>
               <Text
                 style={tailwind.style(
                   `text-center font-inter-normal-20 ${
@@ -154,10 +164,10 @@ const MFAScreen = () => {
 
           {/* Code Input */}
           <View style={tailwind.style('mt-4')}>
-            <Text style={tailwind.style('text-gray-700 font-inter-normal-20 mb-4 text-center')}>
+            <Text style={[tailwind.style('text-gray-700 font-inter-normal-20 mb-4 pl-2')]}>
               {activeTab === 'authenticator'
                 ? 'Enter 6-digit code from your authenticator app'
-                : 'Enter your backup code'}
+                : 'Enter your one of your backup code'}
             </Text>
 
             {activeTab === 'authenticator' ? (
@@ -188,11 +198,11 @@ const MFAScreen = () => {
                 />
               </>
             ) : (
-              <Animated.View style={[rShakeStyle, tailwind.style('mb-8')]}>
+              <Animated.View style={[rShakeStyle, tailwind.style('mb-8 pl-2 pr-2')]}>
                 <TextInput
                   ref={backupInputRef}
                   style={tailwind.style(
-                    `w-full p-4 border-2 rounded-lg text-center font-inter-medium-24 text-lg ${
+                    `w-full p-4 border-2 rounded-lg text-left  ${
                       isCodeWrong ? 'border-red-500' : 'border-gray-300'
                     }`,
                   )}
@@ -209,7 +219,7 @@ const MFAScreen = () => {
 
             <Button
               text={uiFlags.isVerifyingMfa ? 'Verifying...' : 'Verify'}
-              onPress={() => handleVerify()}
+              handlePress={() => handleVerify()}
               disabled={
                 (activeTab === 'authenticator' && code.length !== 6) ||
                 (activeTab === 'backup' && !backupCode.trim()) ||
@@ -217,7 +227,7 @@ const MFAScreen = () => {
               }
             />
           </View>
-        </Animated.ScrollView>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );

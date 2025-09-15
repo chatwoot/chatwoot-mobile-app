@@ -1,6 +1,4 @@
 import { combineReducers } from 'redux';
-import { persistReducer } from 'redux-persist';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import authSlice from '@/store/auth/authSlice';
 import settingsSlice from '@/store/settings/settingsSlice';
@@ -29,18 +27,8 @@ import localRecordedAudioCacheSlice from '@/store/conversation/localRecordedAudi
 import cannedResponseSlice from '@/store/canned-response/cannedResponseSlice';
 import macroSlice from '@/store/macro/macroSlice';
 
-// Auth persist config to exclude ephemeral MFA token and errors
-const authPersistConfig = {
-  key: 'auth',
-  storage: AsyncStorage,
-  blacklist: ['mfaToken', 'error'], // Exclude ephemeral MFA token and errors
-};
-
-// Apply persist config to auth reducer
-const persistedAuthReducer = persistReducer(authPersistConfig, authSlice);
-
 export const appReducer = combineReducers({
-  auth: persistedAuthReducer,
+  auth: authSlice,
   settings: settingsSlice,
   conversationFilter: conversationFilterSlice,
   selectedConversation: conversationSelectedSlice,

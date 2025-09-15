@@ -10,7 +10,7 @@ import { tailwind } from '@/theme';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { resetSettings } from '@/store/settings/settingsSlice';
 import { authActions } from '@/store/auth/authActions';
-import { resetAuth, clearAuthError, clearMfaToken } from '@/store/auth/authSlice';
+import { resetAuth, clearAuthError } from '@/store/auth/authSlice';
 
 const MFAScreen = () => {
   const navigation = useNavigation();
@@ -31,31 +31,15 @@ const MFAScreen = () => {
     dispatch(resetSettings());
   }, [dispatch]);
 
-  // Clear MFA token when navigating away from MFA screen (back button, hardware back, etc.)
+  // Clear MFA token when navigating back to login
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', e => {
       // Clear MFA token when leaving the screen
-      dispatch(clearMfaToken());
+      dispatch(resetAuth());
     });
 
     return unsubscribe;
   }, [navigation, dispatch]);
-
-  // Add MFA token timeout (15 minutes)
-  useEffect(() => {
-    if (mfaToken) {
-      const timeout = setTimeout(
-        () => {
-          dispatch(clearMfaToken());
-          // Navigate back to login screen on timeout
-          navigation.navigate('Login' as never);
-        },
-        15 * 60 * 1000,
-      ); // 15 minutes
-
-      return () => clearTimeout(timeout);
-    }
-  }, [mfaToken, dispatch, navigation]);
 
   const handleCodeChange = (text: string) => {
     const newCode = text

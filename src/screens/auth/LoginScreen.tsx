@@ -29,7 +29,7 @@ import {
   selectBaseUrl,
   selectLocale,
 } from '@/store/settings/settingsSelectors';
-import { selectIsLoggingIn, selectIsMfaRequired } from '@/store/auth/authSelectors';
+import { selectIsLoggingIn } from '@/store/auth/authSelectors';
 import { setLocale } from '@/store/settings/settingsSlice';
 import { useRefsContext } from '@/context/RefsContext';
 
@@ -62,7 +62,6 @@ const LoginScreen = () => {
 
   const dispatch = useAppDispatch();
   const isLoggingIn = useAppSelector(selectIsLoggingIn);
-  const isMfaRequired = useAppSelector(selectIsMfaRequired);
 
   const installationUrl = useAppSelector(selectInstallationUrl);
   const baseUrl = useAppSelector(selectBaseUrl);
@@ -82,18 +81,24 @@ const LoginScreen = () => {
     }
   }, [installationUrl, navigation, dispatch]);
 
-  // Handle MFA redirection
-  useEffect(() => {
-    if (isMfaRequired) {
-      navigation.navigate('MFAScreen' as never);
-    }
-  }, [isMfaRequired, navigation]);
-
   const onSubmit = async (data: FormData) => {
     const { email, password } = data;
-    // Clear any existing MFA token before login
+    // Clear any existing auth state before login
     dispatch(resetAuth());
-    dispatch(authActions.login({ email, password }));
+
+    try {
+      const result = await dispatch(authActions.login({ email, password })).unwrap();
+
+      // Check if MFA is required in the response
+      if ('mfa_required' in result && result.mfa_required) {
+        // Navigate directly to MFA screen with the token
+        navigation.navigate('MFAScreen' as never);
+      }
+      // If MFA not required, the auth state will be updated and
+      // the app will automatically navigate to the dashboard
+    } catch {
+      // Login error is handled by Redux and displayed in the UI
+    }
   };
 
   const openResetPassword = () => {

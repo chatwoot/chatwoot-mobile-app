@@ -15,7 +15,7 @@ export const handleApiError = (error: unknown, customErrorMsg?: string) => {
     }
 
     // If no errors array, check for error field
-    const responseData = response.data as any;
+    const responseData = response.data as unknown as { error?: string };
     if (responseData?.error) {
       const errorMessage = responseData.error;
       showToast({ message: errorMessage });

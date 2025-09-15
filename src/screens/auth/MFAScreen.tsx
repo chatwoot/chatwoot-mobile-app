@@ -48,7 +48,7 @@ const MFAScreen = () => {
       .slice(0, 6);
     setCode(newCode);
     setIsCodeWrong(false);
-    dispatch(clearAuthError());
+    if (error) dispatch(clearAuthError());
     verificationStatus.value = 'inProgress';
 
     if (newCode.length === 6) {
@@ -216,20 +216,20 @@ const MFAScreen = () => {
                   <TextInput
                     ref={backupInputRef}
                     style={tailwind.style(
-                      `w-full p-4 border-2 rounded-lg text-left  ${
-                        isCodeWrong ? 'border-red-500' : 'border-gray-300'
-                      }`,
+                      'w-full p-4 border-2 rounded-lg text-left border-gray-300',
                     )}
                     value={backupCode}
                     onChangeText={text => {
-                      setBackupCode(text);
+                      const numericText = text.replace(/[^0-9]/g, '');
+                      setBackupCode(numericText);
                       setIsCodeWrong(false);
-                      dispatch(clearAuthError());
+                      if (error) dispatch(clearAuthError());
                     }}
                     placeholder="Enter backup code"
-                    autoCapitalize="characters"
+                    keyboardType="numeric"
                     autoFocus
                     autoCorrect={false}
+                    maxLength={8}
                     textContentType="password"
                   />
                 </Animated.View>
@@ -251,7 +251,7 @@ const MFAScreen = () => {
               handlePress={() => handleVerify()}
               disabled={
                 (activeTab === 'authenticator' && code.length !== 6) ||
-                (activeTab === 'backup' && !backupCode.trim()) ||
+                (activeTab === 'backup' && backupCode.length !== 8) ||
                 uiFlags.isVerifyingMfa
               }
             />

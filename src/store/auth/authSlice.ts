@@ -43,6 +43,9 @@ export const authSlice = createSlice({
     clearAuthError: state => {
       state.error = null;
     },
+    clearMfaToken: state => {
+      state.mfaToken = null;
+    },
     setCurrentUserAvailability(state, action) {
       const { users } = action.payload;
       const userId = state.user?.id;
@@ -99,6 +102,7 @@ export const authSlice = createSlice({
           state.mfaToken = action.payload.mfa_token;
           state.uiFlags.isLoggingIn = false;
           state.error = null;
+          // MFA token will not be persisted due to blacklist in persist config
         } else {
           // Regular login success
           state.user = action.payload.user;
@@ -152,5 +156,5 @@ export const authSlice = createSlice({
       });
   },
 });
-export const { logout, setAccount, resetAuth, setCurrentUserAvailability, clearAuthError } = authSlice.actions;
+export const { logout, setAccount, resetAuth, setCurrentUserAvailability, clearAuthError, clearMfaToken } = authSlice.actions;
 export default authSlice.reducer;

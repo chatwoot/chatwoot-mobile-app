@@ -10,7 +10,7 @@ import { tailwind } from '@/theme';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { resetSettings } from '@/store/settings/settingsSlice';
 import { authActions } from '@/store/auth/authActions';
-import { resetAuth, clearAuthError } from '@/store/auth/authSlice';
+import { resetAuth, clearAuthError, clearMfaToken } from '@/store/auth/authSlice';
 
 const MFAScreen = () => {
   const navigation = useNavigation();
@@ -35,11 +35,27 @@ const MFAScreen = () => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', e => {
       // Clear MFA token when leaving the screen
-      dispatch(resetAuth());
+      dispatch(clearMfaToken());
     });
 
     return unsubscribe;
   }, [navigation, dispatch]);
+
+  // Add MFA token timeout (15 minutes)
+  useEffect(() => {
+    if (mfaToken) {
+      const timeout = setTimeout(
+        () => {
+          dispatch(clearMfaToken());
+          // Navigate back to login screen on timeout
+          navigation.navigate('Login' as never);
+        },
+        15 * 60 * 1000,
+      ); // 15 minutes
+
+      return () => clearTimeout(timeout);
+    }
+  }, [mfaToken, dispatch, navigation]);
 
   const handleCodeChange = (text: string) => {
     const newCode = text
@@ -93,16 +109,6 @@ const MFAScreen = () => {
         }
       }
     }
-  };
-
-  const handleResendCode = () => {
-    // Implement resend logic - typically would call an API to resend the code
-    console.log('Resending code for activeTab:', activeTab);
-  };
-
-  const backToLogin = () => {
-    dispatch(resetAuth()); // Clear MFA state
-    navigation.navigate('Login');
   };
 
   return (

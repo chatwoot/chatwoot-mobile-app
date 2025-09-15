@@ -32,9 +32,11 @@ describe('Auth Slice', () => {
     uiFlags: {
       isLoggingIn: false,
       isResettingPassword: false,
+      isVerifyingMfa: false,
     },
     headers: null,
     error: null,
+    mfaToken: null,
   };
 
   const loggedInState = {

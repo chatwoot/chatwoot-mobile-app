@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { resetSettings } from '@/store/settings/settingsSlice';
 import { authActions } from '@/store/auth/authActions';
 import { resetAuth, clearAuthError } from '@/store/auth/authSlice';
+import i18n from '@/i18n';
 
 const MFAScreen = () => {
   const navigation = useNavigation();
@@ -76,7 +77,8 @@ const MFAScreen = () => {
 
       // The app will automatically navigate to main app when user is set in auth state
       // No manual navigation needed - the existing auth logic handles this
-    } catch (error: any) {
+      // eslint-disable-next-line
+    } catch (e) {
       verificationStatus.value = 'wrong';
       setIsCodeWrong(true);
       shake();
@@ -110,7 +112,7 @@ const MFAScreen = () => {
           <View style={tailwind.style('pt-6 gap-4')}>
             <Animated.Text
               style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20 text-center')}>
-              Two-Factor Authentication
+              {i18n.t('MFA.TITLE')}
             </Animated.Text>
           </View>
 
@@ -132,7 +134,7 @@ const MFAScreen = () => {
                     activeTab === 'authenticator' ? 'text-gray-950' : 'text-gray-600'
                   }`,
                 )}>
-                Authenticator App
+                {i18n.t('MFA.TABS.AUTHENTICATOR_APP')}
               </Text>
             </Pressable>
             <Pressable
@@ -151,7 +153,7 @@ const MFAScreen = () => {
                     activeTab === 'backup' ? 'text-gray-950' : 'text-gray-600'
                   }`,
                 )}>
-                Backup Code
+                {i18n.t('MFA.TABS.BACKUP_CODE')}
               </Text>
             </Pressable>
           </View>
@@ -160,8 +162,8 @@ const MFAScreen = () => {
           <View style={tailwind.style('mt-4')}>
             <Text style={[tailwind.style('text-gray-700 font-inter-normal-20 mb-4 pl-2')]}>
               {activeTab === 'authenticator'
-                ? 'Enter 6-digit code from your authenticator app'
-                : 'Enter your one of your backup code'}
+                ? i18n.t('MFA.INSTRUCTIONS.AUTHENTICATOR')
+                : i18n.t('MFA.INSTRUCTIONS.BACKUP')}
             </Text>
 
             {activeTab === 'authenticator' ? (
@@ -190,7 +192,7 @@ const MFAScreen = () => {
                 {/* Hidden TextInput for OTP */}
                 <TextInput
                   ref={hiddenInputRef}
-                  style={tailwind.style('position-absolute opacity-0 w-1 h-1')}
+                  style={tailwind.style('opacity-0 w-1 h-1')}
                   value={code.join('')}
                   onChangeText={handleCodeChange}
                   maxLength={6}
@@ -215,12 +217,11 @@ const MFAScreen = () => {
                       setIsCodeWrong(false);
                       if (error) dispatch(clearAuthError());
                     }}
-                    placeholder="Enter backup code"
+                    placeholder={i18n.t('MFA.PLACEHOLDERS.BACKUP_CODE')}
                     keyboardType="numeric"
                     autoFocus
                     autoCorrect={false}
                     maxLength={8}
-                    textContentType="password"
                   />
                 </Animated.View>
 
@@ -237,7 +238,11 @@ const MFAScreen = () => {
             )}
 
             <Button
-              text={uiFlags.isVerifyingMfa ? 'Verifying...' : 'Verify'}
+              text={
+                uiFlags.isVerifyingMfa
+                  ? i18n.t('MFA.BUTTONS.VERIFYING')
+                  : i18n.t('MFA.BUTTONS.VERIFY')
+              }
               handlePress={() => handleVerify()}
               disabled={
                 (activeTab === 'authenticator' && code.length !== 6) ||

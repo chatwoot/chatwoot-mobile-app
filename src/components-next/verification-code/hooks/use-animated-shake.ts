@@ -1,4 +1,3 @@
-// Import necessary functions and modules from react and react-native-reanimated
 import { useCallback } from 'react';
 import {
   cancelAnimation,

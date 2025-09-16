@@ -156,5 +156,12 @@ export const authSlice = createSlice({
       });
   },
 });
-export const { logout, setAccount, resetAuth, setCurrentUserAvailability, clearAuthError, clearMfaToken } = authSlice.actions;
+export const {
+  logout,
+  setAccount,
+  resetAuth,
+  setCurrentUserAvailability,
+  clearAuthError,
+  clearMfaToken,
+} = authSlice.actions;
 export default authSlice.reducer;

@@ -83,7 +83,22 @@ const LoginScreen = () => {
 
   const onSubmit = async (data: FormData) => {
     const { email, password } = data;
-    dispatch(authActions.login({ email, password }));
+    // Clear any existing auth state before login
+    dispatch(resetAuth());
+
+    try {
+      const result = await dispatch(authActions.login({ email, password })).unwrap();
+
+      // Check if MFA is required in the response
+      if ('mfa_required' in result && result.mfa_required) {
+        // Navigate directly to MFA screen with the token
+        navigation.navigate('MFAScreen' as never);
+      }
+      // If MFA not required, the auth state will be updated and
+      // the app will automatically navigate to the dashboard
+    } catch {
+      // Login error is handled by Redux and displayed in the UI
+    }
   };
 
   const openResetPassword = () => {

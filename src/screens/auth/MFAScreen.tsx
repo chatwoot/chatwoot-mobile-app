@@ -212,13 +212,12 @@ const MFAScreen = () => {
                     )}
                     value={backupCode}
                     onChangeText={text => {
-                      const numericText = text.replace(/[^0-9]/g, '');
-                      setBackupCode(numericText);
+                      setBackupCode(text);
                       setIsCodeWrong(false);
                       if (error) dispatch(clearAuthError());
                     }}
                     placeholder={i18n.t('MFA.PLACEHOLDERS.BACKUP_CODE')}
-                    keyboardType="numeric"
+                    keyboardType="default"
                     autoFocus
                     autoCorrect={false}
                     maxLength={8}

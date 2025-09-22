@@ -50,6 +50,24 @@
     "SUB_TITLE": "别担心，我们会支持你的",
     "API_SUCCESS": "密码重置链接已发送到您的电子邮件地址"
   },
+  "MFA": {
+    "TITLE": "两步验证",
+    "TABS": {
+      "AUTHENTICATOR_APP": "身份验证器应用",
+      "BACKUP_CODE": "备份代码"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "从您的身份验证程序中输入6位数字代码",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "验证",
+      "VERIFYING": "正在验证..."
+    }
+  },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "会话",

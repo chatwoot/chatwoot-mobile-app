@@ -50,6 +50,24 @@
     "SUB_TITLE": "Não se preocupe! Nós te protegemos",
     "API_SUCCESS": "O link de redefinição de senha foi enviado para o seu endereço de e-mail"
   },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "Verificando..."
+    }
+  },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "Conversas",

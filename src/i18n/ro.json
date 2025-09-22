@@ -50,6 +50,24 @@
     "SUB_TITLE": "Nu-ți face griji! Iți avem grija",
     "API_SUCCESS": "Linkul de resetare a parolei a fost trimis la adresa de e-mail"
   },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "Verificare..."
+    }
+  },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "Conversații",

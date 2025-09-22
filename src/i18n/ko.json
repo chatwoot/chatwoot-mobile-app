@@ -50,6 +50,24 @@
     "SUB_TITLE": "걱정마세요! 저희가 있잖아요",
     "API_SUCCESS": "비밀번호 재설정 링크가 이메일로 전송되었습니다"
   },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "확인 중..."
+    }
+  },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "대화",

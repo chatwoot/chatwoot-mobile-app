@@ -50,6 +50,24 @@
     "SUB_TITLE": "Ne vous inquiétes pas ! Nous avons récupéré",
     "API_SUCCESS": "Le lien de réinitialisation du mot de passe a été envoyé à votre adresse e-mail"
   },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "Vérification..."
+    }
+  },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "Conversations",

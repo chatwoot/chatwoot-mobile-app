@@ -50,6 +50,24 @@
     "SUB_TITLE": "Đừng lo! Chúng tôi sẽ canh chừng cho bạn",
     "API_SUCCESS": "Liên kết đặt lại mật khẩu đã được gửi đến địa chỉ email của bạn"
   },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "Đang xác thực..."
+    }
+  },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "Các cuộc hội thoại",

@@ -50,6 +50,24 @@
     "SUB_TITLE": "Не волнуйтесь! Все нормально",
     "API_SUCCESS": "Ссылка для сброса пароля была отправлена на ваш email"
   },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "Проверка..."
+    }
+  },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "Разговоры",

@@ -50,6 +50,24 @@
     "SUB_TITLE": "אל תדאג! אנחנו דואגים לך",
     "API_SUCCESS": "לינק לאיפוס סיסמה נשלח למייל שלך"
   },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "מאמת..."
+    }
+  },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "שיחות",

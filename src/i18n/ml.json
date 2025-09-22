@@ -50,6 +50,24 @@
     "SUB_TITLE": "വിഷമിക്കേണ്ട! ഞങ്ങൾക്ക് നിങ്ങളുടെ പിൻബലം ലഭിച്ചു",
     "API_SUCCESS": "പാസ്‌വേഡ് പുനഃസജ്ജീകരണ ലിങ്ക് നിങ്ങളുടെ ഇമെയിലിലേക്ക് അയച്ചു"
   },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "പരിശോധിച്ചുറപ്പിക്കുന്നു..."
+    }
+  },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "സംഭാഷണങ്ങൾ",

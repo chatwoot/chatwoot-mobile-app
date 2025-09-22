@@ -50,6 +50,24 @@
     "SUB_TITLE": "لاتقلق، سنهتم بذلك",
     "API_SUCCESS": "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني"
   },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "جار التحقق..."
+    }
+  },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "المحادثات",

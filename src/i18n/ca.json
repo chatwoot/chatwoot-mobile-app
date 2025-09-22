@@ -50,6 +50,24 @@
     "SUB_TITLE": "No et preocupis! T'ajudarem",
     "API_SUCCESS": "L’enllaç de reinicialització de la contrasenya s’ha enviat al vostre correu electrònic."
   },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "S'està verificant..."
+    }
+  },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "Converses",

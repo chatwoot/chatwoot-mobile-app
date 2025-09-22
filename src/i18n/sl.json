@@ -50,6 +50,24 @@
     "SUB_TITLE": "Don't worry! We got your back",
     "API_SUCCESS": "Password reset link has been sent to your email address"
   },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "Verifying..."
+    }
+  },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "Conversations",

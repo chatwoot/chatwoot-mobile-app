@@ -50,6 +50,24 @@
     "SUB_TITLE": "Maak je geen zorgen!",
     "API_SUCCESS": "Een link om je wachtwoord te resetten is naar jouw e-mailadres gestuurd"
   },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "Verifiëren..."
+    }
+  },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "Gesprekken",

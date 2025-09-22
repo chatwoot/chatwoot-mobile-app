@@ -50,6 +50,24 @@
     "SUB_TITLE": "Merak etmeyin! Arkanı kolluyoruz",
     "API_SUCCESS": "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi"
   },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "Doğrulama yapılıyor..."
+    }
+  },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "Konuşmalar",

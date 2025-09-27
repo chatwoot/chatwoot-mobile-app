@@ -51,20 +51,20 @@
     "API_SUCCESS": "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi"
   },
   "MFA": {
-    "TITLE": "Two-Factor Authentication",
+    "TITLE": "İki Faktörlü Kimlik Doğrulama",
     "TABS": {
-      "AUTHENTICATOR_APP": "Authenticator App",
-      "BACKUP_CODE": "Backup Code"
+      "AUTHENTICATOR_APP": "Kimlik Doğrulama Uygulaması",
+      "BACKUP_CODE": "Yedek Kod"
     },
     "INSTRUCTIONS": {
-      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
-      "BACKUP": "Enter your one of your backup code"
+      "AUTHENTICATOR": "Doğrulama uygulamasından 6 haneli kodu girin",
+      "BACKUP": "Yedek kodlarınızdan birini girin"
     },
     "PLACEHOLDERS": {
-      "BACKUP_CODE": "Enter backup code"
+      "BACKUP_CODE": "Yedek kodu girin"
     },
     "BUTTONS": {
-      "VERIFY": "Verify",
+      "VERIFY": "Doğrula",
       "VERIFYING": "Doğrulama yapılıyor..."
     }
   },

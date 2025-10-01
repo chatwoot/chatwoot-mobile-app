@@ -25,11 +25,9 @@ export class SsoUtils {
         path: 'sso/callback',
       });
 
-      // Construct SSO auth URL with hard-coded mobile redirect URI
-      // const authUrl = `${installationUrl}app/login/sso`;
-      const authUrl = 'https://saml-sso-on-mobile.vercel.app/';
+      // Construct SSO auth URL
+      const authUrl = `${installationUrl}/app/login/sso`;
 
-      console.log('authUrl', authUrl);
       // Start auth session
       const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUri);
 

@@ -58,3 +58,13 @@ export interface SetActiveAccountPayload {
     account_id: number;
   };
 }
+
+export interface SsoAuthPayload {
+  email: string;
+  sso_auth_token: string;
+}
+
+export interface SsoAuthResponse {
+  user: User;
+  headers: AuthHeaders;
+}

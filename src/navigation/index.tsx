@@ -19,6 +19,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RefsProvider } from '@/context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { transformNotification } from '@/utils/camelCaseKeys';
+import { SsoUtils } from '@/utils/ssoUtils';
+import { useAppDispatch } from '@/hooks';
 import Inter40020 from '@/assets/fonts/Inter-400-20.ttf';
 import Inter42020 from '@/assets/fonts/Inter-420-20.ttf';
 import Inter50024 from '@/assets/fonts/Inter-500-24.ttf';
@@ -39,12 +41,13 @@ export const AppNavigationContainer = () => {
   });
 
   const routeNameRef = useRef<string | undefined>(undefined);
+  const dispatch = useAppDispatch();
 
   const installationUrl = useAppSelector(selectInstallationUrl);
   const locale = useAppSelector(selectLocale);
 
   const linking = {
-    prefixes: [installationUrl],
+    prefixes: [installationUrl, 'chatwootapp://'],
     config: {
       screens: {
         ChatScreen: {
@@ -59,6 +62,18 @@ export const AppNavigationContainer = () => {
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getStateFromPath: (path: string, config: any) => {
+      console.log('path', path);
+      // Handle SSO callback
+      if (path.includes('chatwootapp://sso/callback')) {
+        const ssoParams = SsoUtils.parseCallbackUrl(path);
+        if (ssoParams.email && ssoParams.sso_auth_token) {
+          // Handle SSO login in background
+          SsoUtils.handleSsoCallback(ssoParams, dispatch);
+        }
+        // Return undefined to prevent navigation change for SSO callback
+        return undefined;
+      }
+
       let primaryActorId = null;
       let primaryActorType = null;
       const state = getStateFromPath(path, config);
@@ -95,6 +110,14 @@ export const AppNavigationContainer = () => {
       const url = await Linking.getInitialURL();
 
       if (url != null) {
+        // Handle SSO callback on initial URL
+        if (url.includes('chatwootapp://sso/callback')) {
+          const ssoParams = SsoUtils.parseCallbackUrl(url);
+          if (ssoParams.email && ssoParams.sso_auth_token) {
+            SsoUtils.handleSsoCallback(ssoParams, dispatch);
+          }
+          return null; // Don't navigate for SSO callback
+        }
         return url;
       }
 
@@ -114,7 +137,17 @@ export const AppNavigationContainer = () => {
       return undefined;
     },
     subscribe(listener: (arg0: string) => void) {
-      const onReceiveURL = ({ url }: { url: string }) => listener(url);
+      const onReceiveURL = ({ url }: { url: string }) => {
+        // Handle SSO callback
+        if (url.includes('chatwootapp://sso/callback')) {
+          const ssoParams = SsoUtils.parseCallbackUrl(url);
+          if (ssoParams.email && ssoParams.sso_auth_token) {
+            SsoUtils.handleSsoCallback(ssoParams, dispatch);
+          }
+          return; // Don't pass SSO callback to navigation
+        }
+        listener(url);
+      };
 
       // Listen to incoming links from deep linking
       const subscription = Linking.addEventListener('url', onReceiveURL);

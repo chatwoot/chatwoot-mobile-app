@@ -32,6 +32,7 @@ import {
 import { selectIsLoggingIn } from '@/store/auth/authSelectors';
 import { setLocale } from '@/store/settings/settingsSlice';
 import { useRefsContext } from '@/context/RefsContext';
+import { SsoUtils } from '@/utils/ssoUtils';
 
 type FormData = {
   email: string;
@@ -111,6 +112,25 @@ const LoginScreen = () => {
 
   const onChangeLanguage = (locale: string) => {
     dispatch(setLocale(locale));
+  };
+
+  const handleSsoLogin = async () => {
+    if (!installationUrl) {
+      return;
+    }
+
+    try {
+      const result = await SsoUtils.loginWithSSO(installationUrl);
+
+      if (result.type === 'success' && result.url) {
+        const ssoParams = SsoUtils.parseCallbackUrl(result.url);
+        if (ssoParams.email && ssoParams.sso_auth_token) {
+          await SsoUtils.handleSsoCallback(ssoParams, dispatch);
+        }
+      }
+    } catch (error) {
+      console.error('SSO login error:', error);
+    }
   };
 
   return (
@@ -235,6 +255,19 @@ const LoginScreen = () => {
           <Button
             text={isLoggingIn ? i18n.t('LOGIN.LOGIN_LOADING') : i18n.t('LOGIN.LOGIN')}
             handlePress={handleSubmit(onSubmit)}
+          />
+
+          <View style={tailwind.style('flex-row items-center my-6')}>
+            <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
+            <Animated.Text style={tailwind.style('px-4 text-sm text-gray-600')}>or</Animated.Text>
+            <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
+          </View>
+
+          <Button
+            text="Login with SSO"
+            variant="outline"
+            handlePress={handleSsoLogin}
+            disabled={isLoggingIn}
           />
 
           <Pressable

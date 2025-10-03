@@ -108,8 +108,9 @@ export class SsoUtils {
       const urlObj = new URL(url);
       const params: SsoLoginParams = {};
 
-      // Extract parameters from URL
-      params.email = urlObj.searchParams.get('email') || undefined;
+      // Extract parameters from URL and decode email properly
+      const rawEmail = urlObj.searchParams.get('email');
+      params.email = rawEmail ? decodeURIComponent(rawEmail) : undefined;
       params.sso_auth_token = urlObj.searchParams.get('sso_auth_token') || undefined;
       params.error = urlObj.searchParams.get('error') || undefined;
 

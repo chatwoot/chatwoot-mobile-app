@@ -126,7 +126,7 @@ const LoginScreen = () => {
         const ssoParams = SsoUtils.parseCallbackUrl(result.url);
         console.log('SSO Params:', ssoParams);
         if (ssoParams.email && ssoParams.sso_auth_token) {
-          // await SsoUtils.handleSsoCallback(ssoParams, dispatch);
+          await SsoUtils.handleSsoCallback(ssoParams, dispatch);
         }
       }
     } catch (error) {

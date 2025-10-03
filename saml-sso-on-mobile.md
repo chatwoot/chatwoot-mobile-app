@@ -39,10 +39,10 @@ export default {
 
 ### Step 1: User clicks "Login via SSO"
 
-The app opens the SSO endpoint with a `redirect_uri`:
+The app opens the SSO endpoint with a `target=mobile` parameter:
 
 ```
-GET https://<installation_url>/app/login/sso?redirect_uri=chatwootapp://sso/callback
+GET https://<installation_url>/app/login/sso?target=mobile
 ```
 
 ### Step 2: Expo opens browser
@@ -51,17 +51,28 @@ Use `AuthSession` to manage the SSO flow:
 
 ```tsx
 import * as AuthSession from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
 
-async function loginWithSSO() {
-  const redirectUri = AuthSession.makeRedirectUri({ scheme: 'chatwootapp' });
-
-  const result = await AuthSession.startAsync({
-    authUrl: `${installationUrl}/app/login/sso?redirect_uri=${encodeURIComponent(redirectUri)}`,
+async function loginWithSSO(installationUrl: string) {
+  const redirectUri = AuthSession.makeRedirectUri({ 
+    scheme: 'chatwootapp',
+    path: 'sso/callback'
   });
 
-  if (result.type === 'success') {
-    const { email, sso_auth_token } = result.params;
-    await fetch(`${installationUrl}/api/v1/accounts/sign_in`, {
+  // Use WebBrowser instead of AuthSession for better compatibility
+  const result = await WebBrowser.openAuthSessionAsync(
+    `${installationUrl}/app/login/sso?target=mobile`,
+    redirectUri
+  );
+
+  if (result.type === 'success' && result.url) {
+    // Parse callback parameters
+    const urlObj = new URL(result.url);
+    const email = decodeURIComponent(urlObj.searchParams.get('email') || '');
+    const sso_auth_token = urlObj.searchParams.get('sso_auth_token') || '';
+
+    // Call the auth endpoint
+    await fetch(`${installationUrl}/auth/sign_in`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, sso_auth_token }),
@@ -72,40 +83,95 @@ async function loginWithSSO() {
 
 ---
 
-## 3. Backend Adjustments
+## 3. Android Deep Link Configuration (Expo CNG)
 
-Update the backend to accept `redirect_uri` and redirect accordingly after SAML login.
+Since you're using Expo CNG, add the custom scheme intent filter in your `app.config.ts` instead of manually editing AndroidManifest.xml:
 
-```rb
-def sso_callback
-  email = saml_response.email
-  token = generate_sso_auth_token(email)
-
-  redirect_uri = params[:redirect_uri].presence || default_web_redirect
-  redirect_to "#{redirect_uri}?email=#{CGI.escape(email)}&sso_auth_token=#{token}"
-end
+```ts
+// app.config.ts
+export default {
+  android: {
+    intentFilters: [
+      // Existing intent filters...
+      {
+        action: 'VIEW',
+        data: [
+          {
+            scheme: 'chatwootapp',
+          },
+        ],
+        category: ['BROWSABLE', 'DEFAULT'],
+      },
+    ],
+  },
+};
 ```
 
-- If `redirect_uri` starts with `chatwootapp://` → redirect back to the app
-- Otherwise → fallback to web dashboard login (`/app/login?...`)
+**Note:** This automatically generates the correct AndroidManifest.xml when you build with `npx expo run:android` or `eas build`, ensuring your deep links persist across native regenerations.
+
+## 4. Mobile Deep Link Handling
+
+Handle SSO callbacks in your navigation setup:
+
+```tsx
+// src/navigation/index.tsx
+const linking = {
+  prefixes: [installationUrl, 'chatwootapp://'],
+  
+  getStateFromPath: (path: string, config: any) => {
+    // Handle SSO callback - support both sso/callback and auth/saml paths
+    if (path.includes('chatwootapp://sso/callback') || path.includes('auth/saml')) {
+      const ssoParams = SsoUtils.parseCallbackUrl(`chatwootapp://${path}`);
+      if (ssoParams.email && ssoParams.sso_auth_token) {
+        SsoUtils.handleSsoCallback(ssoParams, dispatch);
+      }
+      return undefined; // Prevent navigation change
+    }
+    // ... other navigation logic
+  },
+  
+  // Also handle in getInitialURL and subscribe methods
+};
+```
+
+## 5. Login Screen Integration
+
+Position the SSO button prominently above the standard login form:
+
+```tsx
+// src/screens/auth/LoginScreen.tsx
+<Button
+  text="Login via SSO"
+  variant="outline"
+  handlePress={handleSsoLogin}
+  disabled={isLoggingIn}
+  style={tailwind.style('mt-8')}
+/>
+
+<View style={tailwind.style('flex-row items-center my-6')}>
+  <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
+  <Text style={tailwind.style('px-4 text-sm text-gray-600')}>or</Text>
+  <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
+</View>
+
+{/* Standard email/password form follows */}
+```
+
+## 6. Security Considerations
+
+- `sso_auth_token` must be short-lived and single-use
+- Exchange `sso_auth_token` immediately with `/auth/sign_in`
+- Email parameters are URL-encoded and must be properly decoded
+- Backend handles mobile detection via `target=mobile` parameter
 
 ---
 
-## 4. Security Considerations
-
-- Maintain an **allowlist** of valid redirect URIs (e.g., `chatwootapp://sso/callback`, `https://app.chatwoot.com/...`).
-- Do not allow arbitrary redirects.
-- `sso_auth_token` must be short-lived and single-use.
-- Exchange `sso_auth_token` immediately with `/api/v1/accounts/sign_in`.
-
----
-
-## 5. End-to-End Example
+## 7. End-to-End Example
 
 1. Mobile app opens:
 
    ```
-   https://app.chatwoot.com/app/login/sso?redirect_uri=chatwootapp://sso/callback
+   https://app.chatwoot.com/app/login/sso?target=mobile
    ```
 
 2. IdP → Chatwoot backend → successful login → backend redirects:
@@ -118,7 +184,7 @@ end
 4. App calls API:
 
    ```
-   POST /api/v1/accounts/sign_in
+   POST /auth/sign_in
    { email: "john@doe.com", sso_auth_token: "xyz123" }
    ```
 

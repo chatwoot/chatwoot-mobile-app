@@ -55,6 +55,15 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           ],
           category: ['BROWSABLE', 'DEFAULT'],
         },
+        {
+          action: 'VIEW',
+          data: [
+            {
+              scheme: 'chatwootapp',
+            },
+          ],
+          category: ['BROWSABLE', 'DEFAULT'],
+        },
       ],
     },
     extra: {

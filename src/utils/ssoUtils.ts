@@ -26,7 +26,8 @@ export class SsoUtils {
       });
 
       // Construct SSO auth URL with mobile redirect URI parameter
-      const authUrl = `${installationUrl}/app/login/sso?redirect_uri=${encodeURIComponent(redirectUri)}`;
+      const authUrl = `${installationUrl}app/login/sso?target=mobile`;
+
       // Start auth session
       const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUri);
 

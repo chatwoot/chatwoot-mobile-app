@@ -124,13 +124,12 @@ const LoginScreen = () => {
 
       if (result.type === 'success' && result.url) {
         const ssoParams = SsoUtils.parseCallbackUrl(result.url);
-        console.log('SSO Params:', ssoParams);
         if (ssoParams.email && ssoParams.sso_auth_token) {
           await SsoUtils.handleSsoCallback(ssoParams, dispatch);
         }
       }
     } catch (error) {
-      console.error('SSO login error:', error);
+      // SSO login error handled silently
     }
   };
 

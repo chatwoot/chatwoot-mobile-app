@@ -68,7 +68,6 @@ export class AuthService {
   }
 
   static async loginWithSso(payload: SsoAuthPayload): Promise<SsoAuthResponse> {
-    console.log('loginWithSso Payload', payload);
     const response = await apiService.post<{ data: User }>('auth/sign_in', payload);
     return {
       user: response.data.data,

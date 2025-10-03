@@ -25,12 +25,8 @@ export class SsoUtils {
         path: 'sso/callback',
       });
 
-      // Construct SSO auth URL with hard-coded mobile redirect URI
-      // const authUrl = `${installationUrl}app/login/sso`;
-      // const authUrl = 'https://saml-sso-on-mobile.vercel.app/';
-      const authUrl = 'https://muhsin.chatwoot.dev/app/login/sso?target=mobile';
-
-      console.log('authUrl', authUrl);
+      // Construct SSO auth URL with mobile redirect URI parameter
+      const authUrl = `${installationUrl}/app/login/sso?redirect_uri=${encodeURIComponent(redirectUri)}`;
       // Start auth session
       const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUri);
 
@@ -51,13 +47,11 @@ export class SsoUtils {
     try {
       // Check for error in callback
       if (params.error) {
-        console.error('SSO callback error:', params.error);
         return false;
       }
 
       // Validate required parameters
       if (!params.email || !params.sso_auth_token) {
-        console.error('Missing required SSO parameters');
         return false;
       }
 
@@ -73,11 +67,9 @@ export class SsoUtils {
       if (authActions.loginWithSso.fulfilled.match(result)) {
         return true;
       } else {
-        console.error('SSO login failed:', result.error);
         return false;
       }
     } catch (error) {
-      console.error('SSO callback handling error:', error);
       return false;
     }
   }
@@ -93,7 +85,6 @@ export class SsoUtils {
       // For now, we assume all installations support SSO if they have the correct URL format
       return installationUrl && installationUrl.startsWith('https://');
     } catch (error) {
-      console.error('SSO validation error:', error);
       return false;
     }
   }
@@ -116,7 +107,6 @@ export class SsoUtils {
 
       return params;
     } catch (error) {
-      console.error('Error parsing callback URL:', error);
       return {};
     }
   }

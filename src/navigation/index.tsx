@@ -62,10 +62,8 @@ export const AppNavigationContainer = () => {
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getStateFromPath: (path: string, config: any) => {
-      console.log('path', path);
       // Handle SSO callback - support both sso/callback and auth/saml paths
       if (path.includes('chatwootapp://sso/callback') || path.includes('auth/saml')) {
-        console.log('Handling SSO callback in getStateFromPath:', path);
         const ssoParams = SsoUtils.parseCallbackUrl(`chatwootapp://${path}`);
         if (ssoParams.email && ssoParams.sso_auth_token) {
           // Handle SSO login in background
@@ -113,7 +111,6 @@ export const AppNavigationContainer = () => {
       if (url != null) {
         // Handle SSO callback on initial URL - support both sso/callback and auth/saml paths
         if (url.includes('chatwootapp://sso/callback') || url.includes('chatwootapp://auth/saml')) {
-          console.log('Handling SSO callback in getInitialURL:', url);
           const ssoParams = SsoUtils.parseCallbackUrl(url);
           if (ssoParams.email && ssoParams.sso_auth_token) {
             SsoUtils.handleSsoCallback(ssoParams, dispatch);
@@ -142,9 +139,7 @@ export const AppNavigationContainer = () => {
       const onReceiveURL = ({ url }: { url: string }) => {
         // Handle SSO callback - support both sso/callback and auth/saml paths
         if (url.includes('chatwootapp://sso/callback') || url.includes('chatwootapp://auth/saml')) {
-          console.log('Handling SSO callback in subscribe:', url);
           const ssoParams = SsoUtils.parseCallbackUrl(url);
-          console.log('ssoParams', ssoParams);
           if (ssoParams.email && ssoParams.sso_auth_token) {
             SsoUtils.handleSsoCallback(ssoParams, dispatch);
           }

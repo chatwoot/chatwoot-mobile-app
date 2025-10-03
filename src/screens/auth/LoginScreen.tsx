@@ -128,6 +128,7 @@ const LoginScreen = () => {
           await SsoUtils.handleSsoCallback(ssoParams, dispatch);
         }
       }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       // SSO login error handled silently
     }

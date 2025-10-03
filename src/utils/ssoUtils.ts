@@ -70,6 +70,7 @@ export class SsoUtils {
       } else {
         return false;
       }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return false;
     }
@@ -85,6 +86,7 @@ export class SsoUtils {
       // This could be extended to check if the installation supports SSO
       // For now, we assume all installations support SSO if they have the correct URL format
       return installationUrl && installationUrl.startsWith('https://');
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return false;
     }
@@ -107,6 +109,7 @@ export class SsoUtils {
       params.error = urlObj.searchParams.get('error') || undefined;
 
       return params;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return {};
     }

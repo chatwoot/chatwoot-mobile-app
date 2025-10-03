@@ -28,7 +28,7 @@ export class SsoUtils {
       // Construct SSO auth URL with hard-coded mobile redirect URI
       // const authUrl = `${installationUrl}app/login/sso`;
       // const authUrl = 'https://saml-sso-on-mobile.vercel.app/';
-      const authUrl = 'https://muhsin.chatwoot.dev/app/login/sso?targe';
+      const authUrl = 'https://muhsin.chatwoot.dev/app/login/sso?target=mobile';
 
       console.log('authUrl', authUrl);
       // Start auth session

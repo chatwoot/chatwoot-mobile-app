@@ -39,6 +39,11 @@ export const authSlice = createSlice({
       state.headers = null;
       state.mfaToken = null;
       state.error = null;
+      state.uiFlags = {
+        isLoggingIn: false,
+        isResettingPassword: false,
+        isVerifyingMfa: false,
+      };
     },
     clearAuthError: state => {
       state.error = null;

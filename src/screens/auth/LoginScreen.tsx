@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EMAIL_REGEX } from '@/constants';
-import { EyeIcon, EyeSlash } from '@/svg-icons';
+import { EyeIcon, EyeSlash, LockIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { resetAuth } from '@/store/auth/authSlice';
@@ -23,6 +23,7 @@ import {
   LanguageList,
   Button,
   Icon,
+  AuthButton,
 } from '@/components-next';
 import {
   selectInstallationUrl,
@@ -163,14 +164,14 @@ const LoginScreen = () => {
             </Animated.Text>
           </View>
 
-          <View style={tailwind.style('mt-8')}>
-            <Button
-              text="Login via SSO"
-              variant="secondary"
-              handlePress={handleSsoLogin}
-              disabled={isLoggingIn}
-            />
-          </View>
+          <AuthButton
+            text={i18n.t('LOGIN.LOGIN_VIA_SSO')}
+            icon={<LockIcon />}
+            handlePress={handleSsoLogin}
+            disabled={isLoggingIn}
+            variant="outline"
+            style={tailwind.style('mt-8')}
+          />
 
           <View style={tailwind.style('flex-row items-center my-6')}>
             <View style={tailwind.style('flex-1 h-px bg-gray-300')} />

@@ -163,6 +163,21 @@ const LoginScreen = () => {
             </Animated.Text>
           </View>
 
+          <View style={tailwind.style('mt-8')}>
+            <Button
+              text="Login via SSO"
+              variant="secondary"
+              handlePress={handleSsoLogin}
+              disabled={isLoggingIn}
+            />
+          </View>
+
+          <View style={tailwind.style('flex-row items-center my-6')}>
+            <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
+            <Animated.Text style={tailwind.style('px-4 text-sm text-gray-600')}>OR</Animated.Text>
+            <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
+          </View>
+
           <Controller
             control={control}
             rules={{
@@ -173,7 +188,7 @@ const LoginScreen = () => {
               },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <View style={tailwind.style('pt-8 gap-2')}>
+              <View style={tailwind.style('pt-2 gap-2')}>
                 <Animated.Text style={tailwind.style('font-inter-420-20 text-gray-950')}>
                   {i18n.t('LOGIN.EMAIL')}
                 </Animated.Text>
@@ -256,19 +271,6 @@ const LoginScreen = () => {
           <Button
             text={isLoggingIn ? i18n.t('LOGIN.LOGIN_LOADING') : i18n.t('LOGIN.LOGIN')}
             handlePress={handleSubmit(onSubmit)}
-          />
-
-          <View style={tailwind.style('flex-row items-center my-6')}>
-            <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
-            <Animated.Text style={tailwind.style('px-4 text-sm text-gray-600')}>or</Animated.Text>
-            <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
-          </View>
-
-          <Button
-            text="Login with SSO"
-            variant="outline"
-            handlePress={handleSsoLogin}
-            disabled={isLoggingIn}
           />
 
           <Pressable

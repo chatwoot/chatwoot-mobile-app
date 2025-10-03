@@ -17,7 +17,9 @@ export class SsoUtils {
    * @param installationUrl - The Chatwoot installation URL
    * @returns Promise with SSO login result
    */
-  static async loginWithSSO(installationUrl: string): Promise<AuthSession.AuthSessionResult> {
+  static async loginWithSSO(
+    installationUrl: string,
+  ): Promise<WebBrowser.WebBrowserAuthSessionResult> {
     try {
       // Create redirect URI with custom scheme
       const redirectUri = AuthSession.makeRedirectUri({
@@ -70,22 +72,6 @@ export class SsoUtils {
       } else {
         return false;
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      return false;
-    }
-  }
-
-  /**
-   * Validates if the current installation supports SSO
-   * @param installationUrl - The Chatwoot installation URL
-   * @returns Promise<boolean> - Whether SSO is supported
-   */
-  static async validateSsoSupport(installationUrl: string): Promise<boolean> {
-    try {
-      // This could be extended to check if the installation supports SSO
-      // For now, we assume all installations support SSO if they have the correct URL format
-      return installationUrl && installationUrl.startsWith('https://');
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return false;

@@ -125,9 +125,7 @@ const LoginScreen = () => {
 
       if (result.type === 'success' && result.url) {
         const ssoParams = SsoUtils.parseCallbackUrl(result.url);
-        if (ssoParams.email && ssoParams.sso_auth_token) {
-          await SsoUtils.handleSsoCallback(ssoParams, dispatch);
-        }
+        await SsoUtils.handleSsoCallback(ssoParams, dispatch);
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {

@@ -2,6 +2,7 @@ import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import { authActions } from '@/store/auth/authActions';
 import { AppDispatch } from '@/store';
+import { showToast } from './toastUtils';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -50,11 +51,13 @@ export class SsoUtils {
     try {
       // Check for error in callback
       if (params.error) {
+        showToast({ message: 'SSO authentication failed. Please try again.' });
         return false;
       }
 
       // Validate required parameters
       if (!params.email || !params.sso_auth_token) {
+        showToast({ message: 'Invalid SSO response. Please try again.' });
         return false;
       }
 
@@ -70,10 +73,12 @@ export class SsoUtils {
       if (authActions.loginWithSso.fulfilled.match(result)) {
         return true;
       } else {
+        showToast({ message: 'SSO login failed. Please check your credentials and try again.' });
         return false;
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
+      showToast({ message: 'An unexpected error occurred during SSO login. Please try again.' });
       return false;
     }
   }
@@ -85,6 +90,7 @@ export class SsoUtils {
    */
   static parseCallbackUrl(url: string): SsoLoginParams {
     try {
+      //  The URL will be in the format chatwootapp://auth/saml?email=<email>&sso_auth_token=<auth_token>&error=<error>
       const urlObj = new URL(url);
       const params: SsoLoginParams = {};
 

@@ -9,6 +9,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
     newArchEnabled: false,
+    scheme: 'chatwootapp',
     splash: {
       image: './assets/splash.png',
       resizeMode: 'contain',
@@ -50,6 +51,15 @@ export default ({ config }: ConfigContext): ExpoConfig => {
               host: 'app.chatwoot.com',
               pathPrefix: '/app/accounts/',
               pathPattern: '/*/conversations/*',
+            },
+          ],
+          category: ['BROWSABLE', 'DEFAULT'],
+        },
+        {
+          action: 'VIEW',
+          data: [
+            {
+              scheme: 'chatwootapp',
             },
           ],
           category: ['BROWSABLE', 'DEFAULT'],

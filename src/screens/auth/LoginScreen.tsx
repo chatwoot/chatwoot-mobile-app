@@ -103,6 +103,11 @@ const LoginScreen = () => {
     }
   };
 
+  // TODO: Change this condition based on EE check
+  // Show SSO login button only if installation URL contains app.chatwoot.com
+  // const showSsoLogin = installationUrl.includes('app.chatwoot.com');
+  const showSsoLogin = true;
+
   const openResetPassword = () => {
     navigation.navigate('ResetPassword' as never);
   };
@@ -162,20 +167,26 @@ const LoginScreen = () => {
             </Animated.Text>
           </View>
 
-          <AuthButton
-            text={i18n.t('LOGIN.LOGIN_VIA_SSO')}
-            icon={<LockIcon />}
-            handlePress={handleSsoLogin}
-            disabled={isLoggingIn}
-            variant="outline"
-            style={tailwind.style('mt-8')}
-          />
+          {showSsoLogin && (
+            <View>
+              <AuthButton
+                text={i18n.t('LOGIN.LOGIN_VIA_SSO')}
+                icon={<LockIcon />}
+                handlePress={handleSsoLogin}
+                disabled={isLoggingIn}
+                variant="outline"
+                style={tailwind.style('mt-8')}
+              />
 
-          <View style={tailwind.style('flex-row items-center my-6')}>
-            <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
-            <Animated.Text style={tailwind.style('px-4 text-sm text-gray-600')}>OR</Animated.Text>
-            <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
-          </View>
+              <View style={tailwind.style('flex-row items-center my-6')}>
+                <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
+                <Animated.Text style={tailwind.style('px-4 text-sm text-gray-600')}>
+                  OR
+                </Animated.Text>
+                <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
+              </View>
+            </View>
+          )}
 
           <Controller
             control={control}

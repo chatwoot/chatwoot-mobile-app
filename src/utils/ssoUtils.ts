@@ -3,6 +3,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { authActions } from '@/store/auth/authActions';
 import { AppDispatch } from '@/store';
 import { showToast } from './toastUtils';
+import i18n from '@/i18n';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -51,13 +52,17 @@ export class SsoUtils {
     try {
       // Check for error in callback
       if (params.error) {
-        showToast({ message: 'SSO authentication failed. Please try again.' });
+        showToast({
+          message: i18n.t('LOGIN.SSO_AUTH_FAILED'),
+        });
         return false;
       }
 
       // Validate required parameters
       if (!params.email || !params.sso_auth_token) {
-        showToast({ message: 'Invalid SSO response. Please try again.' });
+        showToast({
+          message: i18n.t('LOGIN.SSO_INVALID_RESPONSE'),
+        });
         return false;
       }
 
@@ -73,12 +78,16 @@ export class SsoUtils {
       if (authActions.loginWithSso.fulfilled.match(result)) {
         return true;
       } else {
-        showToast({ message: 'SSO login failed. Please check your credentials and try again.' });
+        showToast({
+          message: i18n.t('LOGIN.SSO_AUTH_FAILED'),
+        });
         return false;
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      showToast({ message: 'An unexpected error occurred during SSO login. Please try again.' });
+      showToast({
+        message: i18n.t('LOGIN.SSO_UNEXPECTED_ERROR'),
+      });
       return false;
     }
   }

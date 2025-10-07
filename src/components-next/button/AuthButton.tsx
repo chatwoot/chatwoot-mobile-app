@@ -3,7 +3,7 @@ import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { tailwind } from '@/theme';
-import { Icon } from '@/components-next';
+import { Icon } from '../common/icon/Icon';
 
 type AuthButtonProps = {
   text: string;

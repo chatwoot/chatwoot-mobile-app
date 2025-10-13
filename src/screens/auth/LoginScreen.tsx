@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EMAIL_REGEX } from '@/constants';
-import { EyeIcon, EyeSlash } from '@/svg-icons';
+import { EyeIcon, EyeSlash, LockIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { resetAuth } from '@/store/auth/authSlice';
@@ -23,6 +23,7 @@ import {
   LanguageList,
   Button,
   Icon,
+  AuthButton,
 } from '@/components-next';
 import {
   selectInstallationUrl,
@@ -32,6 +33,7 @@ import {
 import { selectIsLoggingIn } from '@/store/auth/authSelectors';
 import { setLocale } from '@/store/settings/settingsSlice';
 import { useRefsContext } from '@/context/RefsContext';
+import { SsoUtils } from '@/utils/ssoUtils';
 
 type FormData = {
   email: string;
@@ -101,6 +103,10 @@ const LoginScreen = () => {
     }
   };
 
+  // TODO: Change this condition based on EE check
+  // Show SSO login button only if installation URL contains app.chatwoot.com
+  const showSsoLogin = installationUrl.includes('app.chatwoot.com');
+
   const openResetPassword = () => {
     navigation.navigate('ResetPassword' as never);
   };
@@ -111,6 +117,24 @@ const LoginScreen = () => {
 
   const onChangeLanguage = (locale: string) => {
     dispatch(setLocale(locale));
+  };
+
+  const handleSsoLogin = async () => {
+    if (!installationUrl) {
+      return;
+    }
+
+    try {
+      const result = await SsoUtils.loginWithSSO(installationUrl);
+
+      if (result.type === 'success' && result.url) {
+        const ssoParams = SsoUtils.parseCallbackUrl(result.url);
+        await SsoUtils.handleSsoCallback(ssoParams, dispatch);
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      // SSO login error handled silently
+    }
   };
 
   return (
@@ -142,6 +166,27 @@ const LoginScreen = () => {
             </Animated.Text>
           </View>
 
+          {showSsoLogin && (
+            <View>
+              <AuthButton
+                text={i18n.t('LOGIN.LOGIN_VIA_SSO')}
+                icon={<LockIcon />}
+                handlePress={handleSsoLogin}
+                disabled={isLoggingIn}
+                variant="outline"
+                style={tailwind.style('mt-8')}
+              />
+
+              <View style={tailwind.style('flex-row items-center my-6')}>
+                <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
+                <Animated.Text style={tailwind.style('px-4 text-sm text-gray-600')}>
+                  OR
+                </Animated.Text>
+                <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
+              </View>
+            </View>
+          )}
+
           <Controller
             control={control}
             rules={{
@@ -152,7 +197,7 @@ const LoginScreen = () => {
               },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <View style={tailwind.style('pt-8 gap-2')}>
+              <View style={tailwind.style('pt-2 gap-2')}>
                 <Animated.Text style={tailwind.style('font-inter-420-20 text-gray-950')}>
                   {i18n.t('LOGIN.EMAIL')}
                 </Animated.Text>

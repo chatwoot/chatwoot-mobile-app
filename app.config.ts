@@ -9,6 +9,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
     newArchEnabled: false,
+    scheme: 'chatwootapp',
     splash: {
       image: './assets/splash.png',
       resizeMode: 'contain',
@@ -54,6 +55,15 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           ],
           category: ['BROWSABLE', 'DEFAULT'],
         },
+        {
+          action: 'VIEW',
+          data: [
+            {
+              scheme: 'chatwootapp',
+            },
+          ],
+          category: ['BROWSABLE', 'DEFAULT'],
+        },
       ],
     },
     extra: {
@@ -83,7 +93,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           android: {
             minSdkVersion: 24,
             compileSdkVersion: 35,
-            targetSdkVersion: 34,
+            targetSdkVersion: 35,
             enableProguardInReleaseBuilds: true,
           },
           ios: { useFrameworks: 'static' },

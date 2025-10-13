@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "Atanan ajan",
     "TEAM": "Ekip",
     "PRIVATE_MSG_INPUT": "Bu yalnızca Ajanlar için görünür olacak",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
       "TITLE": "Sohbet alınamıyor",
       "RETRY": "Tekrar dene",

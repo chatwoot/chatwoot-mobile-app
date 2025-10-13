@@ -59,14 +59,6 @@
       "AGENT": {
         "SEARCH_AGENT": "Αναζήτηση πράκτορων"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Χωρίς Αντιστοίχιση",
-          "ALL": "Όλες"
-        }
-      },
       "INBOX": {
         "TITLE": "Filter by inbox"
       },
@@ -85,6 +77,14 @@
           "PENDING": "Εκκρεμεί",
           "SNOOZED": "Αναβολή",
           "RESOLVED": "Επιλύθηκαν",
+          "ALL": "Όλες"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filter by assignee type",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Χωρίς Αντιστοίχιση",
           "ALL": "Όλες"
         }
       }
@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "Αντιστοιχισμένος πράκτορας",
     "TEAM": "Ομάδα",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",

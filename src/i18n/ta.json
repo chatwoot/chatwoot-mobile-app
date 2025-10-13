@@ -59,14 +59,6 @@
       "AGENT": {
         "SEARCH_AGENT": "Search agents"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "ஒதுக்கப்படாதது",
-          "ALL": "எல்லாம்"
-        }
-      },
       "INBOX": {
         "TITLE": "Filter by inbox"
       },
@@ -85,6 +77,14 @@
           "PENDING": "Pending",
           "SNOOZED": "Snoozed",
           "RESOLVED": "தீர்க்கப்பட்டது",
+          "ALL": "எல்லாம்"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filter by assignee type",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "ஒதுக்கப்படாதது",
           "ALL": "எல்லாம்"
         }
       }
@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "Assigned agent",
     "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",

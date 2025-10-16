@@ -9,6 +9,22 @@ import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
 import { MESSAGE_VARIANTS } from '@/constants';
+
+const generateUniqueFileName = (url: string, originalFileName: string) => {
+  const hash = url.split('').reduce((acc, char) => {
+    const charCode = char.charCodeAt(0);
+    return ((acc << 5) - acc + charCode) | 0;
+  }, 0);
+  const uniqueHash = Math.abs(hash).toString(36);
+  const fileExtension = originalFileName.includes('.')
+    ? originalFileName.substring(originalFileName.lastIndexOf('.'))
+    : '';
+  const baseFileName = originalFileName.includes('.')
+    ? originalFileName.substring(0, originalFileName.lastIndexOf('.'))
+    : originalFileName;
+  return `${baseFileName}_${uniqueHash}${fileExtension}`;
+};
+
 type FilePreviewProps = Pick<FileBubbleProps, 'fileSrc'> & {
   isComposed?: boolean;
   variant: string;
@@ -20,7 +36,8 @@ export const FileBubblePreview = (props: FilePreviewProps) => {
 
   const [fileDownload, setFileDownload] = useState(false);
   const fileName = fileSrc.split('/')[fileSrc.split('/').length - 1];
-  const localFilePath = dirs.DocumentDir + `/${fileName}`;
+  const uniqueFileName = generateUniqueFileName(fileSrc, fileName);
+  const localFilePath = dirs.DocumentDir + `/${uniqueFileName}`;
 
   const previewFile = () => {
     try {

@@ -142,7 +142,7 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
     return [
       pagerViewIndex === 0
         ? {
-            title: 'Conversation Actions',
+            title: i18n.t('CONVERSATION_ACTION.TITLE'),
             onSelect: handleNavigation,
           }
         : undefined,

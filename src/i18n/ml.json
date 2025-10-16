@@ -368,7 +368,13 @@
     "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "പ്രവർത്തനങ്ങൾ"
+    "TITLE": "പ്രവർത്തനങ്ങൾ",
+    "OPTIONS": {
+      "OPEN": "Open",
+      "PENDING": "Pending",
+      "SNOOZED": "Snooze",
+      "RESOLVED": "resolve"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "Assign team",

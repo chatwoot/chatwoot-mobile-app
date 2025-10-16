@@ -10,6 +10,7 @@ import Animated, {
 import { Icon } from '@/components-next';
 import { OpenIcon, ResolvedFilledIcon, PendingFilledIcon, SnoozedFilledIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
+import i18n from '@/i18n';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { ConversationStatus } from '@/types';
 
@@ -22,7 +23,7 @@ type ConversationActionOptionsType = {
   backgroundActionPressedColor: string;
   borderActionColor: string;
   actionIcon: React.JSX.Element;
-  actionText: ConversationStateType;
+  actionText: string;
   actionStatus: ConversationStatus | 'open';
 };
 
@@ -35,7 +36,7 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-gray-200',
     borderActionColor: 'bg-gray-700',
     actionIcon: <OpenIcon stroke={tailwind.color('text-gray-700') as string} />,
-    actionText: 'open',
+    actionText: i18n.t('CONVERSATION_ACTION.OPTIONS.OPEN'),
     actionStatus: 'open',
   },
   {
@@ -43,7 +44,7 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-amber-200',
     borderActionColor: 'bg-amber-700',
     actionIcon: <PendingFilledIcon />,
-    actionText: 'pending',
+    actionText: i18n.t('CONVERSATION_ACTION.OPTIONS.PENDING'),
     actionStatus: 'pending',
   },
   {
@@ -51,7 +52,7 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-indigo-200',
     borderActionColor: 'bg-indigo-700',
     actionIcon: <SnoozedFilledIcon />,
-    actionText: 'snooze',
+    actionText: i18n.t('CONVERSATION_ACTION.OPTIONS.SNOOZED'),
     actionStatus: 'snoozed',
   },
   {
@@ -59,7 +60,7 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-green-200',
     borderActionColor: 'bg-green-700',
     actionIcon: <ResolvedFilledIcon />,
-    actionText: 'resolve',
+    actionText: i18n.t('CONVERSATION_ACTION.OPTIONS.RESOLVED'),
     actionStatus: 'resolved',
   },
 ];

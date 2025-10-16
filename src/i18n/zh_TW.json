@@ -368,7 +368,13 @@
     "TITLE": "聯絡人屬性"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "操作"
+    "TITLE": "操作",
+    "OPTIONS": {
+      "OPEN": "Open",
+      "PENDING": "Pending",
+      "SNOOZED": "Snooze",
+      "RESOLVED": "resolve"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "Assign team",

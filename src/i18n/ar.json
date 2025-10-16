@@ -368,7 +368,13 @@
     "TITLE": "سمات جهة الاتصال"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "الإجراءات"
+    "TITLE": "الإجراءات",
+    "OPTIONS": {
+      "OPEN": "Open",
+      "PENDING": "Pending",
+      "SNOOZED": "Snooze",
+      "RESOLVED": "resolve"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "تعيين فريق",

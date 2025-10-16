@@ -6,6 +6,7 @@ import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useChatWindowContext, useRefsContext } from '@/context';
 import { LabelTag } from '@/svg-icons';
 import { tailwind } from '@/theme';
+import i18n from '@/i18n';
 import { Label } from '@/types';
 import { BottomSheetBackdrop, Icon, SearchBar } from '@/components-next';
 import { useAppSelector } from '@/hooks';
@@ -107,7 +108,7 @@ export const ConversationLabelActions = (props: LabelSectionProps) => {
           style={tailwind.style(
             'text-sm font-inter-medium-24 leading-[16px] tracking-[0.32px] text-gray-700',
           )}>
-          Labels
+          {i18n.t('CONVERSATION_LABELS.TITLE')}
         </Animated.Text>
       </Animated.View>
       <Animated.View style={tailwind.style('flex flex-row flex-wrap pl-4')}>
@@ -128,7 +129,7 @@ export const ConversationLabelActions = (props: LabelSectionProps) => {
             style={tailwind.style(
               'text-md font-inter-medium-24 leading-[17px] tracking-[0.24px] pl-1.5 text-blue-800',
             )}>
-            Add
+            {i18n.t('CONVERSATION_LABELS.ADD_LABEL')}
           </Animated.Text>
         </Pressable>
       </Animated.View>

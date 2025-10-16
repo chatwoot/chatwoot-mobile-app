@@ -368,7 +368,13 @@
     "TITLE": "Atributos de contacto"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Acciones"
+    "TITLE": "Acciones",
+    "OPTIONS": {
+      "OPEN": "Open",
+      "PENDING": "Pending",
+      "SNOOZED": "Snooze",
+      "RESOLVED": "resolve"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "Asignar equipo",

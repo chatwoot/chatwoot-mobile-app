@@ -18,6 +18,7 @@ import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../a
 import { MESSAGE_VARIANTS } from '@/constants';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
+// eslint-disable-next-line import/no-unresolved
 import { convertOggToWav } from '@/utils/audioConverter';
 
 // eslint-disable-next-line react/display-name

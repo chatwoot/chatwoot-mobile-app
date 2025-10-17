@@ -32,10 +32,10 @@
     "PASSWORD_ERROR": "הזן סיסמה תקינה",
     "LOGIN": "כניסה",
     "LOGIN_LOADING": "נכנס...",
-    "LOGIN_VIA_SSO": "Login via SSO",
-    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
-    "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
-    "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
+    "LOGIN_VIA_SSO": "התחבר באמצעות SSO",
+    "SSO_AUTH_FAILED": "אימות SSO נכשל. אנא בדוק את פרטי הכניסה שלך ונסה שוב.",
+    "SSO_INVALID_RESPONSE": "תגובת SSO לא תקינה. אנא נסה שוב.",
+    "SSO_UNEXPECTED_ERROR": "אירעה שגיאה בלתי צפויה במהלך התחברות SSO. אנא נסה שוב.",
     "FORGOT_PASSWORD": "שכחת את הסיסמה?",
     "RESET_HERE": "אפס כאן",
     "NO_ACCOUNT": "אין לך חשבון?",
@@ -55,20 +55,20 @@
     "API_SUCCESS": "לינק לאיפוס סיסמה נשלח למייל שלך"
   },
   "MFA": {
-    "TITLE": "Two-Factor Authentication",
+    "TITLE": "אימות דו-שלבי",
     "TABS": {
-      "AUTHENTICATOR_APP": "Authenticator App",
-      "BACKUP_CODE": "Backup Code"
+      "AUTHENTICATOR_APP": "אפליקציית אימות",
+      "BACKUP_CODE": "קוד גיבוי"
     },
     "INSTRUCTIONS": {
-      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
-      "BACKUP": "Enter your one of your backup code"
+      "AUTHENTICATOR": "הזן קוד בן 6 ספרות מאפליקציית אימות",
+      "BACKUP": "הזן אחד מקודי הגיבוי שלך"
     },
     "PLACEHOLDERS": {
-      "BACKUP_CODE": "Enter backup code"
+      "BACKUP_CODE": "הזן קוד גיבוי"
     },
     "BUTTONS": {
-      "VERIFY": "Verify",
+      "VERIFY": "אימות",
       "VERIFYING": "מאמת..."
     }
   },
@@ -87,13 +87,13 @@
       "SORT_BY": {
         "TITLE": "מיין לפי",
         "OPTIONS": {
-          "LATEST": "Latest",
+          "LATEST": "האחרון",
           "SORT_ON_CREATED_AT": "הוקם ב",
-          "SORT_ON_PRIORITY": "Priority"
+          "SORT_ON_PRIORITY": "עדיפות"
         }
       },
       "STATUS": {
-        "TITLE": "Filter by status",
+        "TITLE": "סינון לפי סטטוס",
         "OPTIONS": {
           "OPEN": "פתח",
           "PENDING": "ממתין ל",
@@ -103,9 +103,9 @@
         }
       },
       "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
+        "TITLE": "סינון לפי סוג מוקצה",
         "OPTIONS": {
-          "ME": "Me",
+          "ME": "אני",
           "UNASSIGNED": "לא הוקצתה",
           "ALL": "הכל"
         }
@@ -120,7 +120,7 @@
       },
       "STATUS": {
         "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
+        "TITLE": "סינון לפי סטטוס",
         "OPTIONS": {
           "OPEN": "פתח",
           "PENDING": "ממתין ל",
@@ -131,7 +131,7 @@
       }
     },
     "DEFAULT_HEADER_TITLE": "שיחות",
-    "UPDATING": "Updating...",
+    "UPDATING": "מעדכן...",
     "MINE": "שלי",
     "UN_ASSIGNED": "לא הוקצתה",
     "ALL": "הכל",
@@ -147,17 +147,17 @@
     "ASSIGN": "הקצה שיחה",
     "FILE_SIZE_LIMIT": "הקובץ עובר את מגבלת 5MB לקבצים מצורפים",
     "SHARE": "Share conversation",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
+    "DETAILS": "פרטים",
+    "LABELS": "תגיות שיחה",
     "ASSIGNED_AGENT": "סוכן מוקצה",
     "TEAM": "צוות",
     "PRIVATE_MSG_INPUT": "זה יהיה גלוי רק לסוכנים",
     "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+      "TITLE": "לא ניתן לשלוף את השיחה",
+      "RETRY": "נסה שוב",
+      "BACK_TO_HOME": "חזור לדף הבית",
+      "DESCRIPTION": "נראה שהשיחה לא נטענה כראוי. ייתכן שזה נובע מבעיה ברשת או שהשיחה אינה זמינה יותר. אנא לחץ על כפתור “נסה שוב” כדי לנסות שוב."
     },
     "BOT": "בוט",
     "EMAIL_HEAD": {
@@ -167,19 +167,19 @@
     },
     "SELF_ASSIGN": "קשר אלי",
     "UN_ASSIGN": "שיחה שלא הוקצתה",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "CONVERSATION_NOT_FOUND": "לא ניתן היה לשלוף את השיחה",
     "MARK_AS_PENDING": "סמן כממתין",
     "SNOOZE_UNTIL": "השהה עד",
     "SNOOZE_UNTIL_NEXT_REPLY": "עד תגובה הבאה",
     "SNOOZE_UNTIL_TOMORROW": "עד מחר",
     "SNOOZE_UNTIL_NEXT_WEEK": "עד שבוע הבא",
-    "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Change priority",
+    "SNOOZE": "השהה שיחה",
+    "CHANGE_PRIORITY": "שנה עדיפות",
     "MESSAGES": "הודעות",
     "UNDEFINED_VARIABLES_TITLE": "משתנים בלתי מזוהים",
     "UNDEFINED_VARIABLES_CLOSE": "סגור",
     "DELETE_MESSAGE_TITLE": "בטוחים שאתם רוצים למחוק את ההודעה הזו?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "DELETE_MESSAGE_SUB_TITLE": "לא ניתן לבטל פעולה זו.",
     "COPY_MESSAGE": "Message copied to clipboard",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
     "DELETE_MESSAGE_SUCCESS": "ההודעה נמחקה בהצלחה",

@@ -19,3 +19,5 @@ export const ConversationId = (props: ConversationIdProps) => {
     </NativeView>
   );
 };
+
+ConversationId.displayName = 'ConversationId';

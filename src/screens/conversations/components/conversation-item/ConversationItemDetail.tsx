@@ -42,7 +42,11 @@ type ConversationDetailSubCellProps = Pick<
         waitingSince: number;
         status: string;
       }
+<<<<<<< HEAD
     | object;
+=======
+    | Record<string, never>;
+>>>>>>> upstream/develop
   additionalAttributes?: ConversationAdditionalAttributes;
   allLabels: Label[];
   typingText?: string;

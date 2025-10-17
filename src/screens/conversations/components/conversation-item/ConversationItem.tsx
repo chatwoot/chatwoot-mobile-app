@@ -47,7 +47,11 @@ export type ConversationItemProps = {
         waitingSince: number;
         status: string;
       }
+<<<<<<< HEAD
     | object;
+=======
+    | Record<string, never>;
+>>>>>>> upstream/develop
 
   // Additional data
   additionalAttributes?: ConversationAdditionalAttributes;

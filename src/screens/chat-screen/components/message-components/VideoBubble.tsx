@@ -92,7 +92,7 @@ export const VideoBubblePlayer = (props: VideoPlayerProps) => {
             onPress={handlePlayPress}
             style={tailwind.style('h-full w-full flex items-center justify-center')}>
             <Image
-              source={require('../../../../assets/local/PlayIcon.png')}
+              source={require('../../../../assets/local/PlayIcon.png')} // eslint-disable-line @typescript-eslint/no-require-imports
               style={tailwind.style('h-12 w-12 z-10')}
             />
           </Pressable>

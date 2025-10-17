@@ -22,11 +22,19 @@ import {
 import { extractConversationIdFromUrl } from '@/utils/conversationUtils';
 import { useAppSelector, useThemedStyles } from '@/hooks';
 import { selectInstallationUrl, selectLocale } from '@/store/settings/settingsSelectors';
+import { SSO_CALLBACK_URL } from '@/constants';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RefsProvider } from '@/context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { waitForFirebaseInit } from '@/utils/firebaseUtils';
 import { transformNotification } from '@/utils/camelCaseKeys';
+import { SsoUtils } from '@/utils/ssoUtils';
+import { useAppDispatch } from '@/hooks';
+import Inter40020 from '@/assets/fonts/Inter-400-20.ttf';
+import Inter42020 from '@/assets/fonts/Inter-420-20.ttf';
+import Inter50024 from '@/assets/fonts/Inter-500-24.ttf';
+import Inter58024 from '@/assets/fonts/Inter-580-24.ttf';
+import Inter60020 from '@/assets/fonts/Inter-600-20.ttf';
 
 // Initialize Firebase messaging handlers after app starts
 const initializeFirebaseMessaging = () => {
@@ -63,16 +71,16 @@ const initializeFirebaseMessaging = () => {
 export const AppNavigationContainer = () => {
   const { isDark } = useTheme();
   const themedTailwind = useThemedStyles();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [fontsLoaded, error] = useFonts({
-    'Inter-400-20': require('../assets/fonts/Inter-400-20.ttf'),
-    'Inter-420-20': require('../assets/fonts/Inter-420-20.ttf'),
-    'Inter-500-24': require('../assets/fonts/Inter-500-24.ttf'),
-    'Inter-580-24': require('../assets/fonts/Inter-580-24.ttf'),
-    'Inter-600-20': require('../assets/fonts/Inter-600-20.ttf'),
+  const [fontsLoaded] = useFonts({
+    'Inter-400-20': Inter40020,
+    'Inter-420-20': Inter42020,
+    'Inter-500-24': Inter50024,
+    'Inter-580-24': Inter58024,
+    'Inter-600-20': Inter60020,
   });
 
   const routeNameRef = useRef<string | undefined>(undefined);
+  const dispatch = useAppDispatch();
 
   const installationUrl = useAppSelector(selectInstallationUrl);
   const locale = useAppSelector(selectLocale);
@@ -92,13 +100,7 @@ export const AppNavigationContainer = () => {
   }, []);
 
   const linking = {
-    prefixes: [
-      installationUrl,
-      'https://app.chatscommerce.com',
-      'https://dev.app.chatscommerce.com',
-      'chatscommerce://',
-      // Add your ngrok URL here when testing
-    ],
+    prefixes: [installationUrl, SSO_CALLBACK_URL],
     config: {
       screens: {
         ChatScreen: {
@@ -112,7 +114,17 @@ export const AppNavigationContainer = () => {
       },
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // getStateFromPath: App running, receives deep link - handles SSO callbacks and conversation navigation
     getStateFromPath: (path: string, config: any) => {
+      // Handle SSO callback - App running, receives deep link
+      if (path.includes(SSO_CALLBACK_URL) || path.includes('auth/saml')) {
+        const ssoParams = SsoUtils.parseCallbackUrl(`chatwootapp://${path}`);
+        // Handle both success and error cases
+        SsoUtils.handleSsoCallback(ssoParams, dispatch);
+        // Return undefined to prevent navigation change for SSO callback
+        return undefined;
+      }
+
       let primaryActorId = null as number | null;
       let primaryActorType = null as string | null;
       const state = getStateFromPath(path, config);
@@ -147,11 +159,19 @@ export const AppNavigationContainer = () => {
         ],
       };
     },
+    // getInitialURL: App starting up from deep link - handles SSO callbacks and push notifications
     async getInitialURL() {
       // Check if app was opened from a deep link
       const url = await Linking.getInitialURL();
 
       if (url != null) {
+        // Handle SSO callback - App starting up from deep link
+        if (url.includes(SSO_CALLBACK_URL)) {
+          const ssoParams = SsoUtils.parseCallbackUrl(url);
+          // Handle both success and error cases
+          SsoUtils.handleSsoCallback(ssoParams, dispatch);
+          return null; // Don't navigate for SSO callback
+        }
         return url;
       }
 
@@ -170,8 +190,18 @@ export const AppNavigationContainer = () => {
       }
       return undefined;
     },
+    // subscribe: App backgrounded, receives deep link - handles SSO callbacks and push notifications
     subscribe(listener: (arg0: string) => void) {
-      const onReceiveURL = ({ url }: { url: string }) => listener(url);
+      const onReceiveURL = ({ url }: { url: string }) => {
+        // Handle SSO callback - App backgrounded, receives deep link
+        if (url.includes(SSO_CALLBACK_URL)) {
+          const ssoParams = SsoUtils.parseCallbackUrl(url);
+          // Handle both success and error cases
+          SsoUtils.handleSsoCallback(ssoParams, dispatch);
+          return; // Don't pass SSO callback to navigation
+        }
+        listener(url);
+      };
 
       // Listen to incoming links from deep linking
       const subscription = Linking.addEventListener('url', onReceiveURL);
@@ -264,7 +294,6 @@ export const AppNavigationContainer = () => {
     </NavigationContainer>
   );
 };
-
 export const AppNavigator = () => {
   const themedTailwind = useThemedStyles();
 

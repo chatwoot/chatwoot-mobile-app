@@ -59,14 +59,6 @@
       "AGENT": {
         "SEARCH_AGENT": "搜索客服代表"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "按分配人类型过滤",
-        "OPTIONS": {
-          "ME": "我",
-          "UNASSIGNED": "未分配的",
-          "ALL": "全部"
-        }
-      },
       "INBOX": {
         "TITLE": "按收件箱过滤"
       },
@@ -85,6 +77,14 @@
           "PENDING": "等待中",
           "SNOOZED": "已关闭",
           "RESOLVED": "已解决",
+          "ALL": "全部"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "按分配人类型过滤",
+        "OPTIONS": {
+          "ME": "我",
+          "UNASSIGNED": "未分配的",
           "ALL": "全部"
         }
       }
@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "分配的客服代表",
     "TEAM": "团队",
     "PRIVATE_MSG_INPUT": "此操作仅对客服人员可见",
+    "UNSUPPORTED_MESSAGE": "不支持此消息。您可以在 Facebook Messenger 应用上查看此消息。",
     "NOT_FOUND": {
       "TITLE": "无法获取会话",
       "RETRY": "重试",
@@ -446,7 +447,7 @@
   },
   "MACRO": {
     "TITLE": "宏",
-    "SELECT_MACRO": "Select macro",
+    "SELECT_MACRO": "",
     "ACTIONS": {
       "RUN": "Run"
     },

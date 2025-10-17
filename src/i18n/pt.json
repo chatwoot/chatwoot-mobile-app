@@ -3,7 +3,7 @@
   "COMMON": {
     "ERROR": "Erro",
     "ERROR_TITLE": "Ocorreu um erro inesperado",
-    "REPORT_MESSAGE": "Reportamos isto à nossa equipa ! Por favor feche a aplicação e abra novamente!",
+    "REPORT_MESSAGE": "Reportámos isto à nossa equipa! Por favor, feche a aplicação e abre de novo!",
     "CLOSE": "FECHAR"
   },
   "FOOTER": {
@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL da Instalação",
-    "DESCRIPTION": "If you are using a self-hosted Chatscommerce installation, input your server URL. Otherwise, use app.chatscommerce.com.",
+    "DESCRIPTION": "Se estiver a usar uma instalação Chatwoot auto-hospedada, insira o URL do seu servidor. Caso contrário, utilize app.chatwoot.com.",
     "URL_ERROR": "Insira um URL válido",
     "URL_REQUIRED": "URL é obrigatório",
     "CONNECT": "Ligar",
@@ -22,8 +22,8 @@
     "ERROR": "URL de instalação inválido"
   },
   "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "TITLE": "Inicie sessão na sua conta",
+    "DESCRIPTION": "Está ligado a {{baseUrl}}.",
     "EMAIL": "e-mail",
     "PASSWORD": "Palavra-passe",
     "EMAIL_REQUIRED": "E-mail é necessário",
@@ -31,7 +31,7 @@
     "PASSWORD_REQUIRED": "A senha é obrigatória",
     "PASSWORD_ERROR": "Insira uma senha válida",
     "LOGIN": "Iniciar Sessão",
-    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_LOADING": "A iniciar sessão...",
     "FORGOT_PASSWORD": "Esqueceu-se da sua senha?",
     "RESET_HERE": "Redefinir aqui",
     "NO_ACCOUNT": "Não tem uma conta?",
@@ -47,8 +47,8 @@
     "RESET_HERE": "Redefinir senha",
     "HEADER_TITLE": "Redefinir senha",
     "TITLE": "Esqueceu-se da sua senha?",
-    "SUB_TITLE": "Don't worry! We got your back",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "SUB_TITLE": "Não se preocupe! Estamos aqui para ajudar",
+    "API_SUCCESS": "O link para redefinir a senha foi enviado para o seu email"
   },
   "CONVERSATION": {
     "HEADER": {
@@ -59,32 +59,32 @@
       "AGENT": {
         "SEARCH_AGENT": "Procurar agentes"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Eu",
-          "UNASSIGNED": "Não atribuído",
-          "ALL": "TODOS"
-        }
-      },
       "INBOX": {
         "TITLE": "Filtrar por caixa de entrada"
       },
       "SORT_BY": {
         "TITLE": "Ordenar por",
         "OPTIONS": {
-          "LATEST": "Latest",
+          "LATEST": "Última",
           "SORT_ON_CREATED_AT": "Criado em",
           "SORT_ON_PRIORITY": "Prioridade"
         }
       },
       "STATUS": {
-        "TITLE": "Filter by status",
+        "TITLE": "Filtrar por estado",
         "OPTIONS": {
           "OPEN": "Abertas",
           "PENDING": "Pendente",
           "SNOOZED": "Silenciado",
           "RESOLVED": "Resolvido",
+          "ALL": "TODOS"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filtrar por tipo de responsável",
+        "OPTIONS": {
+          "ME": "Eu",
+          "UNASSIGNED": "Não atribuído",
           "ALL": "TODOS"
         }
       }
@@ -97,8 +97,8 @@
         "SEARCH_AGENT": "Procurar agentes"
       },
       "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
+        "HEADER_TITLE": "Atribuir estado",
+        "TITLE": "Filtrar por estado",
         "OPTIONS": {
           "OPEN": "Abertas",
           "PENDING": "Pendente",
@@ -122,19 +122,20 @@
     "TYPE_MESSAGE": "Escreva a sua mensagem",
     "TYPING": "escrevendo",
     "ALL_CONVERSATION_LOADED": "Todas as conversas carregadas",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "ASSIGN": "Atribuir conversa",
+    "FILE_SIZE_LIMIT": "O ficheiro excede o limite de 5MB para anexos",
     "SHARE": "Share conversation",
     "DETAILS": "Detalhes",
-    "LABELS": "Conversation labels",
+    "LABELS": "Etiquetas da conversa",
     "ASSIGNED_AGENT": "Agente atribuído",
     "TEAM": "Equipa",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "PRIVATE_MSG_INPUT": "Isto será visível apenas para os Agentes",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+      "TITLE": "Não foi possível obter a conversa",
+      "RETRY": "Tentar novamente",
+      "BACK_TO_HOME": "Voltar à página inicial",
+      "DESCRIPTION": "Parece que não foi possível obter essa conversa corretamente. Pode ser devido a um problema de rede ou a conversa já não está disponível. Por favor, clique no botão de tentar novamente."
     },
     "BOT": "Bot",
     "EMAIL_HEAD": {
@@ -143,29 +144,29 @@
       "BCC": "Bcc"
     },
     "SELF_ASSIGN": "Atribuir a mim",
-    "UN_ASSIGN": "Unassign conversation",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "UN_ASSIGN": "Desatribuir conversa",
+    "CONVERSATION_NOT_FOUND": "Não foi possível obter a conversa",
     "MARK_AS_PENDING": "Marcar como pendente",
     "SNOOZE_UNTIL": "Suspender até",
     "SNOOZE_UNTIL_NEXT_REPLY": "Até à próxima resposta",
     "SNOOZE_UNTIL_TOMORROW": "Até amanhã",
     "SNOOZE_UNTIL_NEXT_WEEK": "Até à próxima semana",
-    "SNOOZE": "Snooze conversation",
+    "SNOOZE": "Adiar conversa",
     "CHANGE_PRIORITY": "Alterar prioridade",
     "MESSAGES": "Mensagens",
     "UNDEFINED_VARIABLES_TITLE": "Variáveis indefinidas",
     "UNDEFINED_VARIABLES_CLOSE": "FECHAR",
     "DELETE_MESSAGE_TITLE": "Tem a certeza que pretende apagar esta mensagem?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "DELETE_MESSAGE_SUB_TITLE": "Esta ação não pode ser desfeita.",
+    "COPY_MESSAGE": "Mensagem copiada para a área de transferência",
+    "STORY_NOT_AVAILABLE": "Esta história já não está disponível",
     "DELETE_MESSAGE_SUCCESS": "Mensagem apagada com sucesso",
     "NO_CONTENT": "Sem conteúdo disponível",
     "ASSIGN_CHANGE": "Responsável da conversa alterado",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "TEAM_CHANGE": "Equipa da conversa alterada",
+    "STATUS_CHANGE": "Estado da conversa alterado",
+    "PRIORITY_CHANGE": "Prioridade da conversa alterada",
+    "PARTICIPANT_CHANGE": "Participante da conversa alterado",
     "CHANGE_STATUS": "Alterar estado",
     "SEARCH_TEAM": "Procurar equipas",
     "PRIORITY": {
@@ -209,13 +210,13 @@
         "CONTENT": "partilhou um URL"
       },
       "contact": {
-        "CONTENT": "Shared a contact"
+        "CONTENT": "Compartilhou um contacto"
       }
     },
     "LONG_PRESS_ACTIONS": {
       "COPY": "Copiar",
       "REPLY": "Responder",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Apagar mensagem"
     },
     "EMAIL_HEADER": {
       "FROM": "De",
@@ -223,7 +224,7 @@
       "BCC": "Bcc",
       "CC": "Cc",
       "SUBJECT": "Assunto",
-      "EXPAND": "Expand email"
+      "EXPAND": "Expandir email"
     },
     "ACTIONS": {
       "ASSIGNEE": {
@@ -232,19 +233,19 @@
         "EDIT": "Editar"
       },
       "TEAM": {
-        "EMPTY": "No team assigned",
+        "EMPTY": "Nenhuma equipa atribuída",
         "ASSIGN": "Atribuir"
       },
       "PRIORITY": {
-        "EMPTY": "No priority added",
+        "EMPTY": "Nenhuma prioridade adicionada",
         "EDIT": "Editar"
       }
     }
   },
   "FILTER": {
     "ALL_INBOXES": "Todas as caixas de entrada",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filtrar por tipo de responsável",
+    "FILTER_BY_CONVERSATION_STATUS": "Filtrar por estado da conversa",
     "SORT_BY": "Ordenar por",
     "FILTER_BY_INBOX": "Filtrar por caixa de entrada",
     "HEADER_TITLE": "Filtro de Conversa",
@@ -260,7 +261,7 @@
   "SETTINGS": {
     "HEADER_TITLE": "Confirgurações",
     "SET_AVAILABILITY": "Defina-se como",
-    "CHANGE_AVAILABILITY": "Set availability",
+    "CHANGE_AVAILABILITY": "Definir disponibilidade",
     "PREFERENCES": "Preferências",
     "ABOUT": "Sobre",
     "SUPPORT": "Suporte",
@@ -268,19 +269,19 @@
     "CHANGE_LANGUAGE": "Alterar Idioma",
     "NOTIFICATIONS": "Notificações",
     "NOTIFICATION_PREFERENCES": "Preferências de Notificação",
-    "READ_DOCS": "Read Docs",
+    "READ_DOCS": "Ler documentação",
     "CHAT_WITH_US": "Fale connosco",
     "LOGOUT": "Desconectar",
     "SUBMIT": "submeter",
-    "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
+    "SET_LANGUAGE": "Definir idioma",
+    "DEBUG_ACTIONS": "Ações de depuração"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notificações",
     "INBOX": "Caixa de entrada",
     "EMPTY": "Sem notificações.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
+    "EMPTY_MORE_TEXT": "Assim que começar a receber notificações, elas aparecerão aqui.",
+    "ALL_NOTIFICATION_LOADED": "Todas as notificações carregadas",
     "MARK_ALL": "Marcar todos como lidos",
     "CANCEL": "cancelar",
     "DELETE": "Excluir",
@@ -332,11 +333,11 @@
     "CONVERSATION_SLA_MISSED_RESOLUTION": "Uma conversa falhou a SLA de resolução"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Attributes",
+    "TITLE": "Atributos",
     "BROWSER": "Navegador",
     "OPERATING_SYSTEM": "Sistema operacional",
     "INITIATED_AT": "Iniciado em",
-    "INITIATED_FROM": "Initiated from",
+    "INITIATED_FROM": "Iniciado de",
     "IP_ADDRESS": "Endereço IP",
     "CONVERSATION_ID": "ID da conversa",
     "CLIPBOARD_SUCCESS": "Código copiado com sucesso para área de transferência"
@@ -345,12 +346,12 @@
     "TITLE": "Detalhes do contacto",
     "EMAIL": "e-mail",
     "PHONE_NUMBER": "Número de telefone",
-    "CALL": "Call",
+    "CALL": "Chamada",
     "CONTACT_ATTRIBUTES": "Atributos do contacto",
     "VALUE_UNAVAILABLE": "Indisponível"
   },
   "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
+    "TITLE": "Participantes",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} pessoas estão participando.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} pessoa está participando.",
     "NO_PARTICIPANTS_TEXT": "Ninguém está participando!",
@@ -361,7 +362,7 @@
     "ADD_PARTICIPANTS": "Selecionar participantes",
     "REMAINING_PARTICIPANTS_TEXT": "outros",
     "REMAINING_PARTICIPANT_TEXT": "outro",
-    "ADD_PARTICIPANT": "Add Participant"
+    "ADD_PARTICIPANT": "Adicionar participante"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Atributos do Contato"
@@ -377,8 +378,8 @@
   "CONVERSATION_LABELS": {
     "TITLE": "Etiquetas da conversa",
     "ADD_LABEL": "Adicionar Etiquetas",
-    "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
+    "EMPTY_LIST": "Por favor, adicione etiquetas à sua conta",
+    "NO_LABEL": "Nenhuma etiqueta atribuída",
     "UPDATE_LABEL": "Etiqueta adicionada com sucesso",
     "SELECTED": "Selecionado",
     "NOT_SELECTED": "Nenhuma etiqueta selecionada",
@@ -394,23 +395,23 @@
   },
   "TEAMS": {
     "TITLE": "Escolher Equipa",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "EMPTY": "Por favor, adicione equipas à sua conta para atribuir conversas às equipas.",
     "CHANGE_TEAMS": "Equipa de conversação alterada"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Por favor, tente novamente mais tarde...",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "COMMON_ERROR": "Não foi possível ligar ao servidor Chatwoot, por favor tente novamente mais tarde",
+    "OfFLINE": "Tem de se ligar ao Wi-Fi ou a uma rede móvel para voltar a estar online",
+    "CANNOT_FETCH": "Tem de se ligar ao Wi-Fi ou a uma rede móvel para voltar a estar online",
     "AUTH": "Nome de usuário / senha incorreta. Por favor, tente novamente",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any Chatscommerce accounts"
+    "NO_ACCOUNTS_MESSAGE": "Não tem acesso a nenhuma conta Chatwoot"
   },
   "SUCCESS": {
     "AUTH": "Login bem sucedido"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatscommerce server for your mobile app. Please contact your admin to upgrade your Chatscommerce server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatscommerce server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "Atualização do servidor necessária",
+    "WARNING_FOR_AGENT": "Parece que está a utilizar um servidor Chatwoot não suportado para a sua aplicação móvel. Por favor, contacte o seu administrador para atualizar o servidor Chatwoot.",
+    "WARNING_FOR_ADMIN": "Parece que está a utilizar um servidor Chatwoot não suportado para a sua aplicação móvel. É necessário atualizar para a versão %{minimumVersion} ou superior do servidor."
   },
   "EXIT": {
     "TITLE": "Sair",
@@ -446,23 +447,12 @@
   },
   "MACRO": {
     "TITLE": "Macros",
-    "SELECT_MACRO": "Select macro",
+    "SELECT_MACRO": "Selecionar macro",
     "ACTIONS": {
-      "RUN": "Run"
+      "RUN": "Executar"
     },
     "EXECUTION_SUCCESS": "Macro executada com sucesso",
-    "EXECUTION_ERROR": "Macro execution failed",
+    "EXECUTION_ERROR": "Falha na execução do macro",
     "NO_MACROS": "Nenhuma macro encontrada"
-  },
-  "NOTIFICATIONS": {
-    "PERMISSION_TITLE": "Enable Notifications",
-    "PERMISSION_MESSAGE": "Allow notifications to stay updated with new messages",
-    "PERMISSION_ASK_LATER": "Ask Later",
-    "PERMISSION_CANCEL": "Don't Allow",
-    "PERMISSION_OK": "Allow",
-    "RATIONALE_TITLE": "Notifications Disabled",
-    "RATIONALE_MESSAGE": "Enable notifications in settings to receive message alerts",
-    "RATIONALE_CANCEL": "Cancel",
-    "RATIONALE_SETTINGS": "Open Settings"
   }
 }

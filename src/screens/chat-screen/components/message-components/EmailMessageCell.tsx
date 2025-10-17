@@ -126,7 +126,7 @@ export const EmailMessageCell = (props: EmailMessageCellProps) => {
               size={'md'}
               src={
                 isTemplate
-                  ? require('../../../../assets/local/bot-avatar.png')
+                  ? require('../../../../assets/local/bot-avatar.png') // eslint-disable-line @typescript-eslint/no-require-imports
                   : { uri: sender?.thumbnail }
               }
               name={sender?.name || ''}

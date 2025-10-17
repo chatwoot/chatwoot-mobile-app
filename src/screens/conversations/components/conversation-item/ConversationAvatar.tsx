@@ -20,7 +20,6 @@ const checkIfPropsAreSame = (prev: ConversationAvatarProps, next: ConversationAv
   return arePropsEqual;
 };
 
-// eslint-disable-next-line react/display-name
 export const ConversationAvatar = memo((props: ConversationAvatarProps) => {
   const { src, name, status, unreadCount } = props;
   return (
@@ -37,3 +36,5 @@ export const ConversationAvatar = memo((props: ConversationAvatarProps) => {
     </AnimatedNativeView>
   );
 }, checkIfPropsAreSame);
+
+ConversationAvatar.displayName = 'ConversationAvatar';

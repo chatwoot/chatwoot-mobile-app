@@ -72,7 +72,6 @@ const InboxList = () => {
 
   useEffect(() => {
     clearAndFetchNotifications(sortOrder);
-    // fetchConversations(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -151,7 +150,7 @@ const InboxList = () => {
       )}
     >
       <EmptyStateIcon />
-      <Animated.Text style={tailwind.style('pt-6 text-md  tracking-[0.32px] text-gray-800')}>
+      <Animated.Text style={tailwind.style('pt-6 text-md tracking-[0.32px] text-gray-800')}>
         {i18n.t('NOTIFICATION.EMPTY')}
       </Animated.Text>
     </Animated.ScrollView>

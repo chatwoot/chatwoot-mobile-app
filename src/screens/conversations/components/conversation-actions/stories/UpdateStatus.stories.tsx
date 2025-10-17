@@ -52,6 +52,7 @@ const BaseBottomSheet = ({ children }: { children: React.ReactNode }) => {
   const { filtersModalSheetRef } = useRefsContext();
   useEffect(() => {
     filtersModalSheetRef.current?.present();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

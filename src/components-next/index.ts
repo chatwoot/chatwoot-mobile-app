@@ -7,3 +7,4 @@ export * from './sheet-components';
 export * from './spinner';
 export * from './action-tabs';
 export * from './no-network';
+export * from './verification-code';

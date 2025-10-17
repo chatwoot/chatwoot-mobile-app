@@ -62,7 +62,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const totalDuration = useSharedValue(0);
 
   const audioPlayBackStatus = useCallback(
-    (data: any) => {
+    (data: { data: PlayBackType }) => {
       const playBackData = data.data as PlayBackType;
       if (playBackData) {
         currentPosition.value = playBackData.currentPosition;

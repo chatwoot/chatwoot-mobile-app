@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "Geçerli bir parola girin",
     "LOGIN": "Oturum aç",
     "LOGIN_LOADING": "Giriş yapılıyor...",
+    "LOGIN_VIA_SSO": "Login via SSO",
+    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
+    "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
+    "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
     "FORGOT_PASSWORD": "Parolanızı mı unuttunuz?",
     "RESET_HERE": "Buradan sıfırlayın",
     "NO_ACCOUNT": "Hesabın yok mu?",
@@ -49,6 +53,24 @@
     "TITLE": "Parolanızı mı unuttunuz?",
     "SUB_TITLE": "Merak etmeyin! Arkanı kolluyoruz",
     "API_SUCCESS": "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi"
+  },
+  "MFA": {
+    "TITLE": "İki Faktörlü Kimlik Doğrulama",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Kimlik Doğrulama Uygulaması",
+      "BACKUP_CODE": "Yedek Kod"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Doğrulama uygulamasından 6 haneli kodu girin",
+      "BACKUP": "Yedek kodlarınızdan birini girin"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Yedek kodu girin"
+    },
+    "BUTTONS": {
+      "VERIFY": "Doğrula",
+      "VERIFYING": "Doğrulama yapılıyor..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {

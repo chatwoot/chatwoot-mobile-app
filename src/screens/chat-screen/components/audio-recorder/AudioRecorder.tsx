@@ -20,8 +20,7 @@ import {
   addNewCachePath,
   selectLocalRecordedAudioCacheFilePaths,
 } from '@/store/conversation/localRecordedAudioCacheSlice';
-<<<<<<< HEAD
-import { convertAacToWav } from '@/utils';
+import { convertAacToWav } from '@/utils/audioConverter';
 
 const RecorderSegmentWidth = Dimensions.get('screen').width - 8 - 80 - 12;
 
@@ -164,8 +163,11 @@ export const AudioRecorder = ({
     const finalExtension = audioFormat === 'audio/wav' ? 'wav' : 'm4a';
 
     if (audioFormat === 'audio/wav') {
-      finalPath = await convertAacToWav(cleanPath);
-      finalPath = finalPath.replace('file://', '');
+      const conversionResult = await convertAacToWav(cleanPath);
+      if (conversionResult instanceof Error) {
+        throw conversionResult;
+      }
+      finalPath = conversionResult.replace('file://', '');
     }
 
     const audioFile = {

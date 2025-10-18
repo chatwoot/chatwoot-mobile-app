@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
-import React, { memo, useState, useCallback } from 'react';
-import { Dimensions, ImageURISource, Text, TouchableWithoutFeedback, View } from 'react-native';
+import React, { memo, useState } from 'react';
+import { Dimensions, ImageURISource, Text, View } from 'react-native';
 import { LinearTransition } from 'react-native-reanimated';
 import { isEqual } from 'lodash';
 
@@ -9,12 +9,8 @@ import { AnimatedNativeView, NativeView } from '@/components-next/native-compone
 import { AIStatusIcon } from '@/components-next';
 import { tailwind } from '@/theme';
 import { Agent, Conversation, ConversationAdditionalAttributes, Label, Message } from '@/types';
-import { useAppDispatch, useThemedStyles } from '@/hooks';
-import { contactActions } from '@/store/contact/contactActions';
-import { showToast } from '@/utils/toastUtils';
-import I18n from '@/i18n';
+import { useThemedStyles } from '@/hooks';
 
-import { ConversationId } from './ConversationId';
 import { ConversationLastMessage } from './ConversationLastMessage';
 import { PriorityIndicator, ChannelIndicator } from '@/components-next/list-components';
 import { SLAIndicator } from './SLAIndicator';
@@ -42,11 +38,7 @@ type ConversationDetailSubCellProps = Pick<
         waitingSince: number;
         status: string;
       }
-<<<<<<< HEAD
-    | object;
-=======
     | Record<string, never>;
->>>>>>> upstream/develop
   additionalAttributes?: ConversationAdditionalAttributes;
   allLabels: Label[];
   typingText?: string;
@@ -64,9 +56,7 @@ const checkIfPropsAreSame = (
 
 export const ConversationItemDetail = memo((props: ConversationDetailSubCellProps) => {
   const {
-    id: conversationId,
     priority,
-    unreadCount,
     labels,
     assignee,
     senderName,
@@ -80,13 +70,10 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
     allLabels,
     typingText,
     isAIEnabled,
-    contactId,
   } = props;
 
   const [shouldShowSLA, setShouldShowSLA] = useState(true);
-  const [isTogglingAI, setIsTogglingAI] = useState(false);
 
-  const dispatch = useAppDispatch();
   const themedTailwind = useThemedStyles();
 
   const hasPriority = priority !== null;
@@ -94,35 +81,6 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
   const hasLabels = labels.length > 0;
 
   const hasSLA = !!slaPolicyId && shouldShowSLA;
-
-  const handleAIToggle = useCallback(async () => {
-    if (!contactId || isTogglingAI) return;
-    
-    setIsTogglingAI(true);
-    try {
-      const result = await dispatch(contactActions.toggleAI({
-        contactId,
-        aiEnabled: !isAIEnabled,
-      }));
-      
-      if (contactActions.toggleAI.fulfilled.match(result)) {
-        showToast({
-          message: I18n.t(
-            isAIEnabled ? 'SUCCESS.AI_DISABLED_SUCCESS' : 'SUCCESS.AI_ENABLED_SUCCESS',
-          ),
-        });
-      } else {
-        throw new Error('Toggle AI failed');
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      showToast({
-        message: I18n.t('ERRORS.AI_TOGGLE_ERROR'),
-      });
-    } finally {
-      setIsTogglingAI(false);
-    }
-  }, [contactId, isAIEnabled, isTogglingAI, dispatch]);
 
   if (!lastMessage) {
     return null;
@@ -170,7 +128,6 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
             ) : (
               <ConversationLastMessage numberOfLines={1} lastMessage={lastMessage as Message} />
             )}
-
           </AnimatedNativeView>
           <AnimatedNativeView
             style={tailwind.style('flex flex-row h-6 justify-between items-center gap-2')}>
@@ -215,12 +172,12 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           )}
 
           <View style={{ position: 'relative' }}>
-            <TouchableWithoutFeedback onPress={handleAIToggle}>
-              <View style={{ 
+            <View
+              style={{
                 position: 'absolute',
                 right: 0,
                 top: 0,
-                zIndex: 999, 
+                zIndex: 999,
                 elevation: 999,
                 paddingTop: 4,
                 paddingBottom: 4,
@@ -228,9 +185,8 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
                 paddingRight: 0,
                 backgroundColor: 'transparent',
               }}>
-                <AIStatusIcon isEnabled={isAIEnabled ?? false} size={32} />
-              </View>
-            </TouchableWithoutFeedback>
+              <AIStatusIcon isEnabled={isAIEnabled ?? false} size={32} />
+            </View>
             {/* Invisible spacer to maintain layout */}
             <View style={{ width: 40, height: 40 }} />
           </View>

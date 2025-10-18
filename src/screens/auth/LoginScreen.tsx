@@ -36,7 +36,6 @@ import { navigationRef } from '@/utils/navigationUtils';
 import { setLocale } from '@/store/settings/settingsSlice';
 import { BuildInfo } from '@/components-next/common';
 import { useRefsContext } from '@/context/RefsContext';
-<<<<<<< HEAD
 import { settingsActions } from '@/store/settings/settingsActions';
 import appLogo from '@/assets/images/logo.png';
 import { useTheme } from '@/context/ThemeContext';
@@ -242,13 +241,8 @@ const LoginScreen = () => {
               },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-<<<<<<< HEAD
               <View style={tailwind.style('pt-8 gap-2')}>
                 <Animated.Text style={tailwind.style(`font-inter-420-20 ${textColor}`)}>
-=======
-              <View style={tailwind.style('pt-2 gap-2')}>
-                <Animated.Text style={tailwind.style('font-inter-420-20 text-gray-950')}>
->>>>>>> upstream/develop
                   {i18n.t('LOGIN.EMAIL')}
                 </Animated.Text>
                 <TextInput
@@ -322,7 +316,8 @@ const LoginScreen = () => {
           />
 
           <Pressable style={tailwind.style('pt-1 mb-8')} onPress={openResetPassword}>
-            <Animated.Text style={tailwind.style(`${linkTextColor} font-inter-medium-24 text-right`)}>
+            <Animated.Text
+              style={tailwind.style(`${linkTextColor} font-inter-medium-24 text-right`)}>
               {i18n.t('LOGIN.FORGOT_PASSWORD')}
             </Animated.Text>
           </Pressable>
@@ -355,7 +350,9 @@ const LoginScreen = () => {
       <BottomSheetModal
         ref={languagesModalSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={themedTailwind.style('overflow-hidden bg-gray-400 w-8 h-1 rounded-[11px]')}
+        handleIndicatorStyle={themedTailwind.style(
+          'overflow-hidden bg-gray-400 w-8 h-1 rounded-[11px]',
+        )}
         detached
         enablePanDownToClose
         animationConfigs={animationConfigs}

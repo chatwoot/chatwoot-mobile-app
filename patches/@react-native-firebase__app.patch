@@ -1,0 +1,97 @@
+diff --git a/android/build.gradle b/android/build.gradle
+index 1e0229495d96ce667077d9fb11040bc76d6e88e3..07cf6f36b92fedfce1f3cb8835b47c61c7c1f6e0 100644
+--- a/android/build.gradle
++++ b/android/build.gradle
+@@ -1,7 +1,12 @@
+-import io.invertase.gradle.common.PackageJson
++// Note: Commented out due to kotlinVersion error with invertase plugin
++// import io.invertase.gradle.common.PackageJson
+ import org.gradle.internal.jvm.Jvm
++import groovy.json.JsonSlurper
+ 
+ buildscript {
++  ext {
++    kotlinVersion = rootProject.hasProperty('kotlinVersion') ? rootProject.kotlinVersion : (findProperty('android.kotlinVersion') ?: '1.9.25')
++  }
+   // The Android Gradle plugin is only required when opening the android folder stand-alone.
+   // This avoids unnecessary downloads and potential conflicts when the library is included as a
+   // module dependency in an application project.
+@@ -17,16 +22,21 @@ buildscript {
+   }
+ }
+ 
+-plugins {
+-  id "io.invertase.gradle.build" version "1.5"
+-}
++// Note: Commented out due to kotlinVersion error
++// plugins {
++//   id "io.invertase.gradle.build" version "1.5"
++// }
++
++apply plugin: 'com.android.library'
+ 
+-def packageJson = PackageJson.getForProject(project)
+-def firebaseBomVersion = packageJson['sdkVersions']['android']['firebase']
+-def playServicesAuthVersion = packageJson['sdkVersions']['android']['playServicesAuth']
+-def jsonMinSdk = packageJson['sdkVersions']['android']['minSdk']
+-def jsonTargetSdk = packageJson['sdkVersions']['android']['targetSdk']
+-def jsonCompileSdk = packageJson['sdkVersions']['android']['compileSdk']
++// Manual JSON parsing since we can't use PackageJson from invertase plugin
++def packageJsonFile = new File(projectDir.parent, 'package.json')
++def packageJson = new JsonSlurper().parseText(packageJsonFile.text)
++def firebaseBomVersion = packageJson.sdkVersions.android.firebase
++def playServicesAuthVersion = packageJson.sdkVersions.android.playServicesAuth
++def jsonMinSdk = packageJson.sdkVersions.android.minSdk
++def jsonTargetSdk = packageJson.sdkVersions.android.targetSdk
++def jsonCompileSdk = packageJson.sdkVersions.android.compileSdk
+ 
+ project.ext {
+   set('react-native', [
+@@ -60,12 +70,16 @@ if (rootProject.ext && rootProject.ext.firebaseJson) {
+ }
+ 
+ android {
++  compileSdkVersion rootProject.hasProperty('compileSdkVersion') ? rootProject.compileSdkVersion : jsonCompileSdk
++  
+   def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')[0].toInteger()
+   if (agpVersion >= 7) {
+     namespace 'io.invertase.firebase'
+   }
+ 
+   defaultConfig {
++    minSdkVersion rootProject.hasProperty('minSdkVersion') ? rootProject.minSdkVersion : jsonMinSdk
++    targetSdkVersion rootProject.hasProperty('targetSdkVersion') ? rootProject.targetSdkVersion : jsonTargetSdk
+     multiDexEnabled true
+     manifestPlaceholders = [
+       firebaseJsonDataCollectionDefaultEnabled: dataCollectionDefaultEnabled
+@@ -101,9 +115,10 @@ repositories {
+ }
+ 
+ dependencies {
+-  implementation platform("com.google.firebase:firebase-bom:${ReactNative.ext.getVersion("firebase", "bom")}")
++  // Using direct versions since we can't use ReactNative.ext from invertase plugin
++  implementation platform("com.google.firebase:firebase-bom:${firebaseBomVersion}")
+   implementation "com.google.firebase:firebase-common"
+-  implementation "com.google.android.gms:play-services-auth:${ReactNative.ext.getVersion("play", "play-services-auth")}"
++  implementation "com.google.android.gms:play-services-auth:${playServicesAuthVersion}"
+ }
+ 
+ def jvmVersion = Jvm.current().javaVersion?.majorVersion
+@@ -122,7 +137,13 @@ if ((jvmVersion?.toInteger() ?: 17) < 17) {
+   System.exit(1)
+ }
+ 
+-ReactNative.shared.applyPackageVersion()
+-ReactNative.shared.applyDefaultExcludes()
+-ReactNative.module.applyAndroidVersions()
+-ReactNative.module.applyReactNativeDependency("api")
++// Note: Commented out ReactNative calls from invertase plugin
++// ReactNative.shared.applyPackageVersion()
++// ReactNative.shared.applyDefaultExcludes()
++// ReactNative.module.applyAndroidVersions()
++// ReactNative.module.applyReactNativeDependency("api")
++
++// Add React Native dependency manually
++dependencies {
++  api "com.facebook.react:react-android"
++}

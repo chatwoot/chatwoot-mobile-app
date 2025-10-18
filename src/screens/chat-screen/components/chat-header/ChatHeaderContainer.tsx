@@ -6,6 +6,8 @@ import i18n from '@/i18n';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
+import { selectContactById } from '@/store/contact/contactSelectors';
+import { contactActions } from '@/store/contact/contactActions';
 import { CONVERSATION_STATUS } from '@/constants';
 import { ConversationStatus } from '@/types/common/ConversationStatus';
 import { ChatHeader } from './ChatHeader';
@@ -30,8 +32,15 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   const dispatch = useAppDispatch();
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
+
   const currentUser = useAppSelector(selectUser);
   const dashboardApps = useAppSelector(selectAllDashboardApps);
+
+  // Get contact information for AI status
+  const contactId = conversation?.meta?.sender?.id;
+  const contact = useAppSelector(state => (contactId ? selectContactById(state, contactId) : null));
+  // @ts-expect-error - customAttributes is not typed
+  const isAIEnabled = contact?.customAttributes?.aiEnabled === true;
 
   const appliedSla = conversation?.appliedSla;
 
@@ -132,6 +141,33 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
     });
   };
 
+  const toggleAI = async () => {
+    if (!contactId) return;
+
+    try {
+      const result = await dispatch(
+        contactActions.toggleAI({
+          contactId,
+          aiEnabled: !isAIEnabled,
+        }),
+      );
+
+      if (contactActions.toggleAI.fulfilled.match(result)) {
+        showToast({
+          message: isAIEnabled
+            ? i18n.t('SUCCESS.AI_DISABLED_SUCCESS')
+            : i18n.t('SUCCESS.AI_ENABLED_SUCCESS'),
+        });
+      } else {
+        throw new Error('Toggle AI failed');
+      }
+    } catch {
+      showToast({
+        message: i18n.t('ERRORS.AI_TOGGLE_ERROR'),
+      });
+    }
+  };
+
   const dashboardRoutes = dashboardApps.map(dashboardApp => ({
     title: dashboardApp.title,
     url: dashboardApp.content[0].url,
@@ -168,9 +204,11 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       hasSla={!!appliedSla}
       slaEvents={conversation?.slaEvents}
       statusText={`${sLAStatusText()}: ${slaStatus?.threshold}`}
+      isAIEnabled={isAIEnabled}
       onBackPress={handleBackPress}
       onContactDetailsPress={handleNavigationToContactDetails}
       onToggleChatStatus={toggleChatStatus}
+      onToggleAI={toggleAI}
     />
   );
 };

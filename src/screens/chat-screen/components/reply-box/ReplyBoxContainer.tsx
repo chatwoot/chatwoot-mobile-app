@@ -24,13 +24,8 @@ import {
   isAPIInbox,
   isAnInstagramChannel,
 } from '@/utils';
-<<<<<<< HEAD
 import { useAppDispatch, useAppSelector, useThemedStyles } from '@/hooks';
 import { MESSAGE_MAX_LENGTH, REPLY_EDITOR_MODES } from '@/constants';
-=======
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import { MESSAGE_MAX_LENGTH, REPLY_EDITOR_MODES } from '@/constants';
->>>>>>> upstream/develop
 import { tailwind } from '@/theme';
 import {
   selectMessageContent,

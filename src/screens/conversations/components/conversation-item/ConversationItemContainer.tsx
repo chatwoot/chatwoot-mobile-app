@@ -106,7 +106,8 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
   const isSelected = useMemo(() => id in selected, [selected, id]);
   const isTyping = useMemo(() => isContactTyping(typingUsers, contactId), [typingUsers, contactId]);
   const typingText = useMemo(() => getTypingUsersText({ users: typingUsers }), [typingUsers]);
-  const isAIEnabled = useMemo(() => customAttributes?.ai_enabled === 'true', [customAttributes]);
+  // @ts-expect-error - customAttributes is not typed
+  const isAIEnabled = useMemo(() => customAttributes?.aiEnabled === true, [customAttributes]);
 
   const lastMessage = getLastMessage(conversationItem);
 

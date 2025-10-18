@@ -29,19 +29,19 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     if (process.env.GOOGLE_SERVICES_JSON && fs.existsSync(process.env.GOOGLE_SERVICES_JSON)) {
       return process.env.GOOGLE_SERVICES_JSON;
     }
-    
+
     // Priority 2: Copied to native directory (local dev)
     const nativeFile = './android/app/google-services.json';
     if (fs.existsSync(nativeFile)) return nativeFile;
-    
+
     // Priority 3: Credentials directory fallback
     const credentialsFile = isProd ? './credentials/android/google-services.json' : './credentials/android/google-services-dev.json';
     if (fs.existsSync(credentialsFile)) return credentialsFile;
-    
+
     // Default fallback
     return nativeFile;
   };
-  
+
   const getIosPlist = () => {
     // Priority 1: EAS Secret File environment variable  
     if (process.env.GOOGLE_SERVICE_INFO_PLIST && fs.existsSync(process.env.GOOGLE_SERVICE_INFO_PLIST)) {
@@ -184,11 +184,13 @@ export default ({ config }: ConfigContext): ExpoConfig => {
             compileSdkVersion: 35,
             targetSdkVersion: 35,
             enableProguardInReleaseBuilds: true,
+            // Notifee artifacts are now available on Maven Central - no extra repos needed
           },
           ios: { useFrameworks: 'static' },
         },
       ],
       './plugins/simple-manifest-fix',
+      './plugins/with-android-gradle-fixes',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },
   };

@@ -5,6 +5,7 @@ import Animated from 'react-native-reanimated';
 
 import { Avatar, Icon } from '@/components-next';
 import { ChevronLeft, OpenIcon, Overflow, ResolvedIcon, SLAIcon } from '@/svg-icons';
+import { AIHeaderButton } from '@/components-next/ai-status/AIHeaderButton';
 import { BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
 import { tailwind } from '@/theme';
 import { useThemedStyles } from '@/hooks';
@@ -23,9 +24,11 @@ type ChatHeaderProps = {
   slaEvents?: SLAEvent[];
   dashboardsList: DashboardList[];
   statusText?: string;
+  isAIEnabled?: boolean;
   onBackPress: () => void;
   onContactDetailsPress: () => void;
   onToggleChatStatus: () => void;
+  onToggleAI: () => void;
 };
 
 export const ChatHeader = ({
@@ -37,9 +40,11 @@ export const ChatHeader = ({
   hasSla,
   statusText,
   dashboardsList,
+  isAIEnabled = false,
   onBackPress,
   onContactDetailsPress,
   onToggleChatStatus,
+  onToggleAI,
 }: ChatHeaderProps) => {
   const themedTailwind = useThemedStyles();
   const { isDark } = useTheme();
@@ -103,6 +108,7 @@ export const ChatHeader = ({
                 />
               </Pressable>
             )}
+            <AIHeaderButton isEnabled={isAIEnabled} onPress={onToggleAI} />
             <Pressable hitSlop={8} onPress={onToggleChatStatus}>
               <Icon
                 icon={

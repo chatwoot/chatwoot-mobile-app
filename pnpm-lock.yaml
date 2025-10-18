@@ -191,11 +191,11 @@ importers:
         specifier: ^7.2.3
         version: 7.2.3(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1)
       react-native-ios-context-menu:
-        specifier: ^3.2.1
-        version: 3.2.1(react-native-ios-utilities@5.2.0(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1)
+        specifier: ^3.1.0
+        version: 3.1.0(react-native-ios-utilities@5.1.1(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1)
       react-native-ios-utilities:
-        specifier: ^5.2.0
-        version: 5.2.0(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1)
+        specifier: ^5.1.1
+        version: 5.1.1(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1)
       react-native-keyboard-controller:
         specifier: ^1.19.1
         version: 1.19.1(react-native-reanimated@3.16.7(@babel/core@7.28.4)(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1)
@@ -258,7 +258,7 @@ importers:
         version: 1.8.1(react@18.3.1)
       zeego:
         specifier: ^2.0.4
-        version: 2.0.4(@react-native-menu/menu@1.2.4(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(@types/react@18.3.26)(react-dom@18.3.1(react@18.3.1))(react-native-ios-context-menu@3.2.1(react-native-ios-utilities@5.2.0(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1)
+        version: 2.0.4(@react-native-menu/menu@1.2.4(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(@types/react@18.3.26)(react-dom@18.3.1(react@18.3.1))(react-native-ios-context-menu@3.1.0(react-native-ios-utilities@5.1.1(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@babel/core':
         specifier: ^7.28.4
@@ -5859,15 +5859,15 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-ios-context-menu@3.2.1:
-    resolution: {integrity: sha512-OBQbb3I/VUx2wQgz4cqN614kt3nJ+qx5wxEdtGN1Aj4nYYL1orp7VLFkV6axof6DgOyv0YD6af2RUTok6a2xDQ==}
+  react-native-ios-context-menu@3.1.0:
+    resolution: {integrity: sha512-qdPSXMKUp5lDgmZeUPdv5sgBFhkFrIqma+zsnqJQYOvekb6Qs17yJy1Rqhrj0bJrwuduHzZX0aYbaA8whxqpDw==}
     peerDependencies:
       react: '*'
       react-native: '*'
       react-native-ios-utilities: '*'
 
-  react-native-ios-utilities@5.2.0:
-    resolution: {integrity: sha512-RTw1Gk8rQhBL43+U80I+Nu8T7mLTNkj5RaG8vTs3ETEDqphS3L0Mrzk79RX0Jmm64HMad70GXHctXFlW1n0V8w==}
+  react-native-ios-utilities@5.1.1:
+    resolution: {integrity: sha512-fOm7IR2KCn3MzghITbrnZfpJ3Z7wai4S46GwXwTql1fzX25eO8MXVgaUeMd5EvPwg1zAqF5I6c3T6Dby8DoF3A==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -13844,14 +13844,14 @@ snapshots:
       react: 18.3.1
       react-native: 0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1)
 
-  react-native-ios-context-menu@3.2.1(react-native-ios-utilities@5.2.0(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1):
+  react-native-ios-context-menu@3.1.0(react-native-ios-utilities@5.1.1(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1):
     dependencies:
       '@dominicstop/ts-event-emitter': 1.1.0
       react: 18.3.1
       react-native: 0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1)
-      react-native-ios-utilities: 5.2.0(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1)
+      react-native-ios-utilities: 5.1.1(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1)
 
-  react-native-ios-utilities@5.2.0(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1):
+  react-native-ios-utilities@5.1.1(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1):
     dependencies:
       react: 18.3.1
       react-native: 0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1)
@@ -15097,14 +15097,14 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zeego@2.0.4(@react-native-menu/menu@1.2.4(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(@types/react@18.3.26)(react-dom@18.3.1(react@18.3.1))(react-native-ios-context-menu@3.2.1(react-native-ios-utilities@5.2.0(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1):
+  zeego@2.0.4(@react-native-menu/menu@1.2.4(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(@types/react@18.3.26)(react-dom@18.3.1(react@18.3.1))(react-native-ios-context-menu@3.1.0(react-native-ios-utilities@5.1.1(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1):
     dependencies:
       '@radix-ui/react-context-menu': 2.2.12(@types/react@18.3.26)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dropdown-menu': 2.1.12(@types/react@18.3.26)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-native-menu/menu': 1.2.4(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-native: 0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1)
-      react-native-ios-context-menu: 3.2.1(react-native-ios-utilities@5.2.0(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1)
+      react-native-ios-context-menu: 3.1.0(react-native-ios-utilities@5.1.1(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.28.4)(@babel/preset-env@7.27.1(@babel/core@7.28.4))(@types/react@18.3.26)(react@18.3.1))(react@18.3.1)
       sf-symbols-typescript: 2.1.0
     transitivePeerDependencies:
       - '@types/react'

@@ -32,10 +32,10 @@
     "PASSWORD_ERROR": "Введите корректный пароль",
     "LOGIN": "Войти",
     "LOGIN_LOADING": "Выполняется вход...",
-    "LOGIN_VIA_SSO": "Login via SSO",
-    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
-    "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
-    "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
+    "LOGIN_VIA_SSO": "Вход через SSO",
+    "SSO_AUTH_FAILED": "Ошибка аутентификации SSO. Пожалуйста, проверьте ваши учетные данные и повторите попытку.",
+    "SSO_INVALID_RESPONSE": "Неверный ответ SSO. Пожалуйста, попробуйте еще раз.",
+    "SSO_UNEXPECTED_ERROR": "Во время входа SSO произошла непредвиденная ошибка. Пожалуйста, попробуйте еще раз.",
     "FORGOT_PASSWORD": "Забыли пароль?",
     "RESET_HERE": "Сбросить здесь",
     "NO_ACCOUNT": "Нет учетной записи?",
@@ -55,20 +55,20 @@
     "API_SUCCESS": "Ссылка для сброса пароля была отправлена на ваш email"
   },
   "MFA": {
-    "TITLE": "Two-Factor Authentication",
+    "TITLE": "2-FA аутентификация",
     "TABS": {
-      "AUTHENTICATOR_APP": "Authenticator App",
-      "BACKUP_CODE": "Backup Code"
+      "AUTHENTICATOR_APP": "Приложение для 2-FA аутентификации",
+      "BACKUP_CODE": "Резервные коды"
     },
     "INSTRUCTIONS": {
-      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
-      "BACKUP": "Enter your one of your backup code"
+      "AUTHENTICATOR": "Введите 6-значный код из вашего приложения аутентификации",
+      "BACKUP": "Введите ваш резервный код"
     },
     "PLACEHOLDERS": {
-      "BACKUP_CODE": "Enter backup code"
+      "BACKUP_CODE": "Введите резервный код"
     },
     "BUTTONS": {
-      "VERIFY": "Verify",
+      "VERIFY": "Проверить",
       "VERIFYING": "Проверка..."
     }
   },

@@ -16,9 +16,9 @@ export const useThemedStyles = () => {
 
         if (isDark) {
           // Transform common light mode classes to dark mode equivalents
-          // Using pure black color scheme
+          // Using grayDark-50 to match LoginScreen
           themedClasses = themedClasses
-            .replace(/bg-white/g, 'bg-black') // Main backgrounds - pure black
+            .replace(/bg-white/g, 'bg-grayDark-50') // Main backgrounds - matching LoginScreen
             .replace(/bg-gray-50/g, 'bg-gray-900') // Secondary backgrounds - very dark gray
             .replace(/bg-gray-100/g, 'bg-gray-800') // Card backgrounds - dark gray
             .replace(/text-gray-950/g, 'text-white') // Primary text - pure white
@@ -61,7 +61,7 @@ export const useThemedStyles = () => {
 
         if (isDark) {
           themedColorClass = themedColorClass
-            .replace(/bg-white/g, 'bg-black')
+            .replace(/bg-white/g, 'bg-grayDark-50')
             .replace(/text-black/g, 'text-white');
         }
 

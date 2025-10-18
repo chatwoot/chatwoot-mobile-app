@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
 import { useColorScheme } from 'react-native';
 
 type ThemeMode = 'light' | 'dark' | 'system';
@@ -7,6 +7,7 @@ interface ThemeContextType {
   theme: ThemeMode;
   isDark: boolean;
   setTheme: (theme: ThemeMode) => void;
+  toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -41,10 +42,15 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     // AsyncStorage.setItem('theme', newTheme);
   };
 
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
+
   const value: ThemeContextType = {
     theme,
     isDark,
     setTheme: handleSetTheme,
+    toggleTheme,
   };
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;

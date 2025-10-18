@@ -1,21 +1,31 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const defaultTheme = require('tailwindcss/defaultTheme');
 
-// Light theme colors
-const radixUILightColors = require('./colors/light');
-// Dark theme colors
-const radixUIDarkColors = require('./colors/dark');
+// Import unified color system
+const { darkModeColorScales, lightModeColorScales } = require('./colors/unified');
+const { darkSemanticColors, lightSemanticColors } = require('./colors/semantic');
 
-// Black with alpha variations
+// Legacy color support (for backward compatibility)
+const radixUILightColors = require('./colors/light');
+const radixUIDarkColors = require('./colors/dark');
 const blackA = require('./colors/blackA');
-// White with alpha variations
 const whiteA = require('./colors/whiteA');
 
+// Combined color system (unified + legacy)
 const chatwootAppColors = {
+  // Legacy colors for backward compatibility
   ...blackA,
   ...whiteA,
   ...radixUILightColors,
   ...radixUIDarkColors,
+  
+  // Unified color system
+  ...darkModeColorScales,
+  ...lightModeColorScales,
+  
+  // Semantic colors
+  ...darkSemanticColors,
+  ...lightSemanticColors,
 };
 
 export const twConfig = {

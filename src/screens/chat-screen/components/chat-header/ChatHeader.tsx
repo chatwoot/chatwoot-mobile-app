@@ -46,8 +46,8 @@ export const ChatHeader = ({
   onToggleChatStatus,
   onToggleAI,
 }: ChatHeaderProps) => {
-  const themedTailwind = useThemedStyles();
   const { isDark } = useTheme();
+  const themedTailwind = useThemedStyles();
   const { slaEventsSheetRef } = useRefsContext();
 
   const animationConfigs = useBottomSheetSpringConfigs({

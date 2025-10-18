@@ -20,11 +20,26 @@ function copyIfExists(src, dest) {
 function main() {
   console.log('[copy-google-services] hook started');
   const projectRoot = process.cwd();
+  
+  // Determine environment: check EAS_BUILD_PROFILE, ENVIRONMENT, or default to production
+  const easProfile = process.env.EAS_BUILD_PROFILE || '';
+  const environment = process.env.ENVIRONMENT || '';
+  const isDevelopment = easProfile === 'development' || environment === 'dev';
+  
+  console.log('[copy-google-services] EAS_BUILD_PROFILE:', easProfile);
+  console.log('[copy-google-services] ENVIRONMENT:', environment);
+  console.log('[copy-google-services] isDevelopment:', isDevelopment);
+  
   const androidEnvPath = process.env.GOOGLE_SERVICES_JSON || process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE;
   const iosEnvPath = process.env.GOOGLE_SERVICE_INFO_PLIST || process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE;
 
-  const fallbackAndroid = path.join(projectRoot, 'credentials/android/google-services.json');
-  const fallbackIos = path.join(projectRoot, 'credentials/ios/GoogleService-Info.plist');
+  // Choose correct fallback files based on environment
+  const fallbackAndroid = isDevelopment
+    ? path.join(projectRoot, 'credentials/android/google-services-dev.json')
+    : path.join(projectRoot, 'credentials/android/google-services.json');
+  const fallbackIos = isDevelopment
+    ? path.join(projectRoot, 'credentials/ios/GoogleService-Info-dev.plist')
+    : path.join(projectRoot, 'credentials/ios/GoogleService-Info.plist');
 
   const androidSrc = androidEnvPath || fallbackAndroid;
   const iosSrc = iosEnvPath || fallbackIos;

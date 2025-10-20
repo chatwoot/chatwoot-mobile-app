@@ -1,0 +1,30 @@
+name: Create development builds
+
+jobs:
+  build_android:
+    type: build
+    params:
+      platform: android
+      profile: development
+  
+  build_ios:
+    type: build
+    params:
+      platform: ios
+      profile: development
+  
+  submit_android:
+    type: submit
+    params:
+      platform: android
+      profile: development
+    needs:
+      - build_android
+  
+  submit_ios:
+    type: submit
+    params:
+      platform: ios
+      profile: development
+    needs:
+      - build_ios

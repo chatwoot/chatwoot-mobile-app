@@ -1,0 +1,28 @@
+name: Create production builds
+
+jobs:
+  build_android:
+    type: build # This job type creates a production build for Android
+    params:
+      platform: android
+
+  build_ios:
+    type: build # This job type creates a production build for iOS
+    params:
+      platform: ios
+
+  submit_android:
+    type: submit
+    params:
+      platform: android
+      profile: production
+    needs:
+      - build_android
+  
+  submit_ios:
+    type: submit
+    params:
+      platform: ios
+      profile: production
+    needs:
+      - build_ios

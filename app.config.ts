@@ -4,12 +4,18 @@ import { ExpoConfig, ConfigContext } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => {
   // Check environment - EAS sets ENVIRONMENT in env, and build profile info is available
+  console.log('[app.config] ENVIRONMENT:', process.env.ENVIRONMENT);
+  console.log('[app.config] EAS_BUILD_PROFILE:', process.env.EAS_BUILD_PROFILE);
+
   const isProd =
     process.env.ENVIRONMENT === 'prod' || process.env.EAS_BUILD_PROFILE === 'production';
-  console.log('isProd', isProd);
+  console.log('[app.config] isProd:', isProd);
   // Helper functions that depend on isProd
-  const getBundleIdentifier = () =>
-    isProd ? 'com.chatscommerce.app' : 'com.chatscommerce.app.dev';
+  const getBundleIdentifier = () => {
+    const bundleId = isProd ? 'com.chatscommerce.app' : 'com.chatscommerce.app.dev';
+    console.log('[app.config] Android Bundle Identifier:', bundleId);
+    return bundleId;
+  };
   const getAppName = () => (isProd ? 'Chatscommerce' : 'Chatscommerce Dev');
   const getAppLinkDomains = () =>
     isProd ? ['applinks:app.chatscommerce.com'] : ['applinks:dev.app.chatscommerce.com'];

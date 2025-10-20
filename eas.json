@@ -13,7 +13,9 @@
       "environment": "development",
       "channel": "development",
       "android": {
-        "image": "latest"
+        "image": "latest",
+        "buildType": "app-bundle",
+        "gradleCommand": ":app:bundleDebug"
       },
       "ios": {
         "image": "latest"
@@ -22,7 +24,11 @@
     "preview": {
       "distribution": "internal",
       "environment": "preview",
-      "channel": "preview"
+      "channel": "preview",
+      "android": {
+        "buildType": "app-bundle",
+        "gradleCommand": ":app:bundleRelease"
+      }
     },
     "production": {
       "autoIncrement": true,
@@ -31,8 +37,9 @@
       },
       "environment": "production",
       "channel": "production",
-      "env": {
-        "ENVIRONMENT": "prod"
+      "android": {
+        "buildType": "app-bundle",
+        "gradleCommand": ":app:bundleRelease"
       }
     }
   },

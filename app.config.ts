@@ -184,6 +184,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
             compileSdkVersion: 35,
             targetSdkVersion: 35,
             enableProguardInReleaseBuilds: true,
+            // Support for 16 KB memory page sizes
+            ndk: {
+              abiFilters: ['arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'],
+            },
           },
           ios: { useFrameworks: 'static' },
         },

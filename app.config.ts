@@ -69,7 +69,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     // Priority 3: Copied to native directory (local dev after prebuild)
     const nativeFile = './ios/GoogleService-Info.plist';
     if (fs.existsSync(nativeFile)) return nativeFile;
-  
+
     // Default fallback
     return credentialsFile;
   };
@@ -94,7 +94,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   // eslint-disable-next-line no-console
   console.log('[config] IOS googleServicesFile (resolved):', resolvedIosPlist);
 
-  const APP_VERSION = '4.0.21';
+  const APP_VERSION = '4.0.22';
 
   return {
     ...config,
@@ -206,6 +206,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           ios: { useFrameworks: 'static' },
         },
       ],
+      './plugins/with-notifee-maven',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },
   };

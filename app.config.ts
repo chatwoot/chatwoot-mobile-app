@@ -206,7 +206,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           ios: { useFrameworks: 'static' },
         },
       ],
-      './plugins/simple-manifest-fix',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },
   };

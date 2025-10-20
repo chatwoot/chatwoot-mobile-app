@@ -16,95 +16,39 @@ import { MAXIMUM_FILE_UPLOAD_SIZE } from '@/constants';
 import i18n from '@/i18n';
 import { showToast } from '@/utils/toastUtils';
 import { findFileSize } from '@/utils/fileUtils';
-import { getApiLevel } from 'react-native-device-info';
 
 export const handleOpenPhotosLibrary = async dispatch => {
-  if (Platform.OS === 'ios') {
-    request(
-      Platform.OS === 'ios'
-        ? PERMISSIONS.IOS.PHOTO_LIBRARY
-        : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-    ).then(async result => {
-      if (RESULTS.BLOCKED === result) {
-        Alert.alert(
-          'Permission Denied',
-          'The permission to access the photo library has been denied and cannot be requested again. Please enable it in your device settings if you wish to access photos from your library.',
-          [
-            {
-              text: 'Cancel',
-              style: 'cancel',
-            },
-            {
-              text: 'Open Settings',
-              onPress: () => {
-                // Open app settings
-                Linking.openSettings();
-              },
-            },
-          ],
-          { cancelable: false },
-        );
-      }
-      if (result === RESULTS.GRANTED || result === RESULTS.LIMITED) {
-        const pickedAssets = await launchImageLibrary({
-          quality: 1,
-          selectionLimit: 4,
-          mediaType: 'mixed',
-          presentationStyle: 'formSheet',
-        });
-        if (pickedAssets.didCancel) {
-        } else if (pickedAssets.errorCode) {
-        } else {
-          if (pickedAssets.assets && pickedAssets.assets?.length > 0) {
-            validateFileAndSetAttachments(dispatch, pickedAssets.assets[0]);
-          }
-        }
-      }
-    });
+  const pickedAssets = await launchImageLibrary({
+    quality: 1,
+    selectionLimit: 4,
+    mediaType: 'mixed',
+    presentationStyle: 'formSheet',
+  });
+  if (pickedAssets.didCancel) {
+  } else if (pickedAssets.errorCode) {
+    Alert.alert(
+      'Permission Denied',
+      pickedAssets.errorMessage ||
+        'The permission to access the photo library has been denied and cannot be requested again. Please enable it in your device settings if you wish to access photos from your library.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Open Settings',
+          onPress: () => {
+            // Open app settings
+            Linking.openSettings();
+          },
+        },
+      ],
+      { cancelable: false },
+    );
   } else {
-    const apiLevel = await getApiLevel();
-    const permission =
-      apiLevel >= 33
-        ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
-        : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
-
-    request(permission).then(async result => {
-      if (RESULTS.BLOCKED === result) {
-        Alert.alert(
-          'Permission Denied',
-          'The permission to access the photo library has been denied and cannot be requested again. Please enable it in your device settings if you wish to access photos from your library.',
-          [
-            {
-              text: 'Cancel',
-              style: 'cancel',
-            },
-            {
-              text: 'Open Settings',
-              onPress: () => {
-                // Open app settings
-                Linking.openSettings();
-              },
-            },
-          ],
-          { cancelable: false },
-        );
-      }
-      if (result === RESULTS.GRANTED) {
-        const pickedAssets = await launchImageLibrary({
-          quality: 1,
-          selectionLimit: 4,
-          mediaType: 'mixed',
-          presentationStyle: 'formSheet',
-        });
-        if (pickedAssets.didCancel) {
-        } else if (pickedAssets.errorCode) {
-        } else {
-          if (pickedAssets.assets && pickedAssets.assets?.length > 0) {
-            validateFileAndSetAttachments(dispatch, pickedAssets.assets[0]);
-          }
-        }
-      }
-    });
+    if (pickedAssets.assets && pickedAssets.assets?.length > 0) {
+      validateFileAndSetAttachments(dispatch, pickedAssets.assets[0]);
+    }
   }
 };
 

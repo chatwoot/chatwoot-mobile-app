@@ -165,12 +165,13 @@ export const MessageTextInput = ({
 
   useEffect(() => {
     if (selectedCannedResponse) onChangeText(selectedCannedResponse);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCannedResponse]);
 
   useEffect(() => {
     if (quoteMessage !== null) {
       // Focussing Text Input when you have decided to reply
-      // @ts-ignore
+      // @ts-expect-error TextInput ref focus method may not be properly typed
       textInputRef?.current?.focus();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -241,7 +242,7 @@ export const MessageTextInput = ({
         style={[tailwind.style('flex-1 my-0.5')]}
       >
         <MentionInput
-          // @ts-ignore
+          // @ts-expect-error MentionInput ref typing issue with forwardRef
           ref={textInputRef}
           layout={LinearTransition.springify().damping(20).stiffness(120)}
           onChange={onChangeText}

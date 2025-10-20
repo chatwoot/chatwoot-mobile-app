@@ -32,7 +32,13 @@ const mockConversationSlice = createSlice({
   name: 'conversation',
   initialState: {
     ids: [29],
-    entities: { 29: { id: 29, status: 'open', messages: ALL_MESSAGES_MOCKDATA } },
+    entities: {
+      29: {
+        id: 29,
+        status: 'open',
+        messages: ALL_MESSAGES_MOCKDATA,
+      },
+    },
   },
   reducers: {},
 });
@@ -53,7 +59,7 @@ const meta: Meta<typeof MessagesList> = {
 export default meta;
 type Story = StoryObj<typeof MessagesList>;
 
-export const TextOnly: Story = {
+export const Basic: Story = {
   render: function AllVariantsComponent() {
     return (
       <Provider store={mockStore}>
@@ -63,7 +69,7 @@ export const TextOnly: Story = {
               <ChatWindowProvider conversationId={29}>
                 <ScrollView contentContainerStyle={tailwind.style('flex')}>
                   <PlatformSpecificKeyboardWrapperComponent
-                    style={tailwind.style('flex-1 bg-white border border-red-500')}
+                    style={tailwind.style('flex-1 bg-white')}
                     interpolator="linear">
                     <MessagesList
                       currentUserId={1}

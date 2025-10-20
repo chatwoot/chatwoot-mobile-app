@@ -59,14 +59,6 @@
       "AGENT": {
         "SEARCH_AGENT": "Szukaj agentów"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filtruj według typu przypisania",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Nieprzypisane",
-          "ALL": "Wszystkie"
-        }
-      },
       "INBOX": {
         "TITLE": "Filtruj według skrzynki odbiorczej"
       },
@@ -85,6 +77,14 @@
           "PENDING": "Oczekujące",
           "SNOOZED": "Uśpione",
           "RESOLVED": "Rozwiązane",
+          "ALL": "Wszystkie"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filtruj według typu przypisania",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Nieprzypisane",
           "ALL": "Wszystkie"
         }
       }
@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "Przypisany agent",
     "TEAM": "Zespół",
     "PRIVATE_MSG_INPUT": "To będzie widoczne tylko dla agentów",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",

@@ -59,14 +59,6 @@
       "AGENT": {
         "SEARCH_AGENT": "Пошук агентів"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Непризначені",
-          "ALL": "Всі"
-        }
-      },
       "INBOX": {
         "TITLE": "Фільтрувати за вхідними"
       },
@@ -85,6 +77,14 @@
           "PENDING": "В очікуванні",
           "SNOOZED": "Відкладено",
           "RESOLVED": "Вирішений",
+          "ALL": "Всі"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filter by assignee type",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Непризначені",
           "ALL": "Всі"
         }
       }
@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "Призначений агент",
     "TEAM": "Команда",
     "PRIVATE_MSG_INPUT": "Це буде видно лише співробітникам",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",

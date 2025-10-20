@@ -59,14 +59,6 @@
       "AGENT": {
         "SEARCH_AGENT": "Pesquisar agentes"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filtrar por tipo de responsável",
-        "OPTIONS": {
-          "ME": "Eu",
-          "UNASSIGNED": "Não atribuídas",
-          "ALL": "Todas"
-        }
-      },
       "INBOX": {
         "TITLE": "Filtrar por caixa de entrada"
       },
@@ -85,6 +77,14 @@
           "PENDING": "Pendentes",
           "SNOOZED": "Adiadas",
           "RESOLVED": "Resolvidas",
+          "ALL": "Todas"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filtrar por tipo de responsável",
+        "OPTIONS": {
+          "ME": "Eu",
+          "UNASSIGNED": "Não atribuídas",
           "ALL": "Todas"
         }
       }
@@ -128,8 +128,9 @@
     "DETAILS": "Detalhes",
     "LABELS": "Etiquetas da conversa",
     "ASSIGNED_AGENT": "Agente atribuído",
-    "TEAM": "Equipe",
+    "TEAM": "Time",
     "PRIVATE_MSG_INPUT": "Isto será visível apenas para Agentes",
+    "UNSUPPORTED_MESSAGE": "Esta mensagem não é suportada. Você pode ver esta mensagem no aplicativo Facebook Messenger.",
     "NOT_FOUND": {
       "TITLE": "Não foi possível carregar a conversa",
       "RETRY": "Tentar novamente",
@@ -162,12 +163,12 @@
     "DELETE_MESSAGE_SUCCESS": "Mensagem excluída com sucesso",
     "NO_CONTENT": "Nenhum conteúdo disponível",
     "ASSIGN_CHANGE": "Responsável da conversa alterado",
-    "TEAM_CHANGE": "Equipe de conversa alterada",
+    "TEAM_CHANGE": "Time alterado",
     "STATUS_CHANGE": "Situação da conversa alterada",
     "PRIORITY_CHANGE": "Prioridade da conversa alterada",
     "PARTICIPANT_CHANGE": "Participante da conversa alterado",
     "CHANGE_STATUS": "Alterar situação",
-    "SEARCH_TEAM": "Pesquisar equipes",
+    "SEARCH_TEAM": "Pesquisar times",
     "PRIORITY": {
       "TITLE": "Prioridade",
       "OPTIONS": {
@@ -232,7 +233,7 @@
         "EDIT": "Alterar"
       },
       "TEAM": {
-        "EMPTY": "Nenhuma equipe atribuída",
+        "EMPTY": "Nenhum time atribuído",
         "ASSIGN": "Atribuir"
       },
       "PRIORITY": {
@@ -370,9 +371,9 @@
     "TITLE": "Ações"
   },
   "CONVERSATION_TEAMS": {
-    "TITLE": "Atribuir equipe",
-    "SELECT_TEAM": "Selecionar equipe",
-    "NO_RESULT": "Nenhuma equipe encontrada"
+    "TITLE": "Atribuir time",
+    "SELECT_TEAM": "Selecionar time",
+    "NO_RESULT": "Nenhum time encontrado"
   },
   "CONVERSATION_LABELS": {
     "TITLE": "Etiquetas da conversa",
@@ -393,9 +394,9 @@
     "TITLE": "Selecione o Agente"
   },
   "TEAMS": {
-    "TITLE": "Selecionar Equipe",
-    "EMPTY": "Adicione equipes à sua conta para atribuir conversas a equipes.",
-    "CHANGE_TEAMS": "Equipe da conversa mudou"
+    "TITLE": "Selecionar Time",
+    "EMPTY": "Adicione times à sua conta para atribuir conversas a equipes.",
+    "CHANGE_TEAMS": "Time alterado"
   },
   "ERRORS": {
     "COMMON_ERROR": "Por favor, tente novamente mais tarde...",

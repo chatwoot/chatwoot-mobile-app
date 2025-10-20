@@ -14,24 +14,24 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Kurulum URL'si",
-    "DESCRIPTION": "If you are using a self-hosted Chatscommerce installation, input your server URL. Otherwise, use app.chatscommerce.com.",
+    "DESCRIPTION": "Kendi barındırdığınız bir Chatwoot kurulumu kullanıyorsanız, sunucu URL'nizi girin. Aksi takdirde app.chatwoot.com'u kullanın.",
     "URL_ERROR": "Geçerli bir URL girin",
-    "URL_REQUIRED": "URL is required",
+    "URL_REQUIRED": "URL gereklidir",
     "CONNECT": "Bağlan",
     "CHANGE_LANGUAGE": "Dili değiştir",
     "ERROR": "Geçersiz yükleme url'si"
   },
   "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "TITLE": "Hesabınıza giriş yapın",
+    "DESCRIPTION": "{{baseUrl}}'a bağlısınız.",
     "EMAIL": "E-posta",
     "PASSWORD": "Parola",
-    "EMAIL_REQUIRED": "Email is required",
+    "EMAIL_REQUIRED": "E-posta gereklidir",
     "EMAIL_ERROR": "Geçerli bir e-posta giriniz",
-    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_REQUIRED": "Şifre gereklidir",
     "PASSWORD_ERROR": "Geçerli bir parola girin",
     "LOGIN": "Oturum aç",
-    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_LOADING": "Giriş yapılıyor...",
     "FORGOT_PASSWORD": "Parolanızı mı unuttunuz?",
     "RESET_HERE": "Buradan sıfırlayın",
     "NO_ACCOUNT": "Hesabın yok mu?",
@@ -48,43 +48,43 @@
     "HEADER_TITLE": "Parola yenile",
     "TITLE": "Parolanızı mı unuttunuz?",
     "SUB_TITLE": "Merak etmeyin! Arkanı kolluyoruz",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "API_SUCCESS": "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi"
   },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "Konuşmalar",
-      "CLEAR_FILTER": "Clear"
+      "CLEAR_FILTER": "Temizle"
     },
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "Temsilci ara"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Atanmamış",
-          "ALL": "Hepsi"
-        }
-      },
       "INBOX": {
-        "TITLE": "Filter by inbox"
+        "TITLE": "Gelen kutusuna göre filtrele"
       },
       "SORT_BY": {
         "TITLE": "Sırala",
         "OPTIONS": {
-          "LATEST": "Latest",
+          "LATEST": "En son",
           "SORT_ON_CREATED_AT": "Oluşturuldu",
           "SORT_ON_PRIORITY": "Öncelik"
         }
       },
       "STATUS": {
-        "TITLE": "Filter by status",
+        "TITLE": "Duruma göre filtrele",
         "OPTIONS": {
           "OPEN": "Açık",
           "PENDING": "Bekliyor",
           "SNOOZED": "Susturuldu",
           "RESOLVED": "Çözüldü",
+          "ALL": "Hepsi"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Atanan türüne göre filtrele",
+        "OPTIONS": {
+          "ME": "Ben",
+          "UNASSIGNED": "Atanmamış",
           "ALL": "Hepsi"
         }
       }
@@ -97,8 +97,8 @@
         "SEARCH_AGENT": "Temsilci ara"
       },
       "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
+        "HEADER_TITLE": "Durum ata",
+        "TITLE": "Duruma göre filtrele",
         "OPTIONS": {
           "OPEN": "Açık",
           "PENDING": "Bekliyor",
@@ -109,7 +109,7 @@
       }
     },
     "DEFAULT_HEADER_TITLE": "Konuşmalar",
-    "UPDATING": "Updating...",
+    "UPDATING": "Güncelleniyor...",
     "MINE": "Benim",
     "UN_ASSIGNED": "Atanmamış",
     "ALL": "Hepsi",
@@ -122,19 +122,20 @@
     "TYPE_MESSAGE": "Mesajınızı yazın",
     "TYPING": "yazıyor...",
     "ALL_CONVERSATION_LOADED": "Tüm görüşmeler yüklendi",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "ASSIGN": "Sohbet ata",
+    "FILE_SIZE_LIMIT": "Dosya 5MB ek sınırını aşıyor",
     "SHARE": "Share conversation",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
-    "ASSIGNED_AGENT": "Assigned agent",
+    "DETAILS": "Detaylar",
+    "LABELS": "Sohbet etiketleri",
+    "ASSIGNED_AGENT": "Atanan ajan",
     "TEAM": "Ekip",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "PRIVATE_MSG_INPUT": "Bu yalnızca Ajanlar için görünür olacak",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+      "TITLE": "Sohbet alınamıyor",
+      "RETRY": "Tekrar dene",
+      "BACK_TO_HOME": "Ana sayfaya dön",
+      "DESCRIPTION": "Görünüşe göre o sohbet düzgün bir şekilde alınamıyor. Bu bir ağ sorunundan kaynaklanıyor olabilir veya sohbet artık mevcut olmayabilir. Lütfen tekrar dene butonuna tıklayarak yeniden deneyin."
     },
     "BOT": "Bot",
     "EMAIL_HEAD": {
@@ -143,29 +144,29 @@
       "BCC": "Gizli Kopya"
     },
     "SELF_ASSIGN": "Bana Ata",
-    "UN_ASSIGN": "Unassign conversation",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "UN_ASSIGN": "Sohbeti atamayı kaldır",
+    "CONVERSATION_NOT_FOUND": "Sohbet alınamadı",
     "MARK_AS_PENDING": "Beklemede olarak işaretle",
     "SNOOZE_UNTIL": "Şu tarihe kadar ertele",
     "SNOOZE_UNTIL_NEXT_REPLY": "Sonraki yanıta kadar",
     "SNOOZE_UNTIL_TOMORROW": "Yarına kadar",
     "SNOOZE_UNTIL_NEXT_WEEK": "Gelecek haftaya kadar",
-    "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Change priority",
+    "SNOOZE": "Sohbeti ertele",
+    "CHANGE_PRIORITY": "Önceliği değiştir",
     "MESSAGES": "Mesajlar",
-    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_TITLE": "Tanımsız değişkenler",
     "UNDEFINED_VARIABLES_CLOSE": "Kapat",
     "DELETE_MESSAGE_TITLE": "Bu mesajı silmek istediğinizden emin misiniz?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "DELETE_MESSAGE_SUB_TITLE": "Bu işlem geri alınamaz.",
+    "COPY_MESSAGE": "Mesaj panoya kopyalandı",
+    "STORY_NOT_AVAILABLE": "Bu hikaye artık mevcut değil",
     "DELETE_MESSAGE_SUCCESS": "Mesaj başarıyla silindi",
     "NO_CONTENT": "Kullanılabilir içerik yok",
     "ASSIGN_CHANGE": "Atanan kişiyi değiştirildi",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "TEAM_CHANGE": "Sohbet Takımı değişti",
+    "STATUS_CHANGE": "Sohbet Durumu değişti",
+    "PRIORITY_CHANGE": "Sohbet Önceliği değişti",
+    "PARTICIPANT_CHANGE": "Sohbet Katılımcısı değişti",
     "CHANGE_STATUS": "Durumu değiştir",
     "SEARCH_TEAM": "Takım ara",
     "PRIORITY": {
@@ -209,13 +210,13 @@
         "CONTENT": "bir bağlantı paylaştı"
       },
       "contact": {
-        "CONTENT": "Shared a contact"
+        "CONTENT": "Bir ileti paylaşıldı"
       }
     },
     "LONG_PRESS_ACTIONS": {
       "COPY": "Kopyala",
       "REPLY": "Cevapla",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Mesajı sil"
     },
     "EMAIL_HEADER": {
       "FROM": "Kimden",
@@ -223,7 +224,7 @@
       "BCC": "Gizli Kopya",
       "CC": "Kopya",
       "SUBJECT": "Konu",
-      "EXPAND": "Expand email"
+      "EXPAND": "E-postayı genişlet"
     },
     "ACTIONS": {
       "ASSIGNEE": {
@@ -232,21 +233,21 @@
         "EDIT": "Düzenle"
       },
       "TEAM": {
-        "EMPTY": "No team assigned",
+        "EMPTY": "Atanmış takım yok",
         "ASSIGN": "Atama yap"
       },
       "PRIORITY": {
-        "EMPTY": "No priority added",
+        "EMPTY": "Eklenmiş öncelik yok",
         "EDIT": "Düzenle"
       }
     }
   },
   "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "ALL_INBOXES": "Tüm gelen kutuları",
+    "FILTER_BY_ASSIGNEE_TYPE": "Atanan türüne göre filtrele",
+    "FILTER_BY_CONVERSATION_STATUS": "Sohbet durumuna göre filtrele",
     "SORT_BY": "Sırala",
-    "FILTER_BY_INBOX": "Filter by inbox",
+    "FILTER_BY_INBOX": "Gelen kutusuna göre filtrele",
     "HEADER_TITLE": "Görüşme Filtresi",
     "CHOOSE_INBOX": "Gelen Kutusu Seçin",
     "CHOOSE_STATUS": "Görüşme Durumu",
@@ -254,26 +255,26 @@
     "RESOLVED": "Çözüldü",
     "BOT": "Bot",
     "SUBMIT": "Yolla",
-    "PENDING": "Pending",
-    "SNOOZED": "Snoozed"
+    "PENDING": "Beklemede",
+    "SNOOZED": "Ertelendi"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Ayarlar",
-    "SET_AVAILABILITY": "Set yourself as",
-    "CHANGE_AVAILABILITY": "Set availability",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
+    "SET_AVAILABILITY": "Kendinizi olarak ayarlayın",
+    "CHANGE_AVAILABILITY": "Uygunluğu ayarla",
+    "PREFERENCES": "Tercihler",
+    "ABOUT": "Hakkında",
+    "SUPPORT": "Destek",
     "SWITCH_ACCOUNT": "Hesap değiştir",
     "CHANGE_LANGUAGE": "Dili değiştir",
     "NOTIFICATIONS": "Bildirimler",
     "NOTIFICATION_PREFERENCES": "Bildirim Tercihleri",
-    "READ_DOCS": "Read Docs",
+    "READ_DOCS": "Belgeleri oku",
     "CHAT_WITH_US": "Sohbet et",
     "LOGOUT": "Çıkış Yap",
     "SUBMIT": "Yolla",
-    "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
+    "SET_LANGUAGE": "Dili ayarla",
+    "DEBUG_ACTIONS": "Hata Ayıklama Eylemleri"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Bildirimler",
@@ -290,9 +291,9 @@
       "CONVERSATION_ASSIGNMENT": "Size bir görüşme atandı",
       "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Atandığınız görüşmeden bir yeni mesaj",
       "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Katıldığınız sohbetteki yeni mesaj",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
-      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
-      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+      "SLA_MISSED_FIRST_RESPONSE": "SLA hedef ilk yanıtı kaçırıldı",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA hedef sonraki yanıtı kaçırıldı",
+      "SLA_MISSED_RESOLUTION": "SLA hedef çözümü kaçırıldı"
     },
     "FILTERS": {
       "SORT_BY": {
@@ -322,14 +323,14 @@
     "TITLE": "Bildirim Tercihleri",
     "EMAIL": "E-posta Bildirimleri",
     "PUSH": "Bildirimler",
-    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
-    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
+    "CONVERSATION_CREATE_PUSH": "Yeni bir sohbet oluşturuldu",
+    "CONVERSATION_ASSIGNEE_PUSH": "Bir sohbet size atandı",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Bir sohbette adınız geçiyor",
+    "CONVERSATION_MENTION": "Atanmış bir sohbette yeni bir mesaj oluşturuldu",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Katılımcı olduğunuz bir sohbette yeni bir mesaj oluşturuldu",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "Bir sohbet ilk yanıt SLA'sını kaçırdı",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "Bir sohbet sonraki yanıt SLA'sını kaçırdı",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "Bir sohbet çözüm SLA'sını kaçırdı"
   },
   "CONVERSATION_DETAILS": {
     "TITLE": "Öznitelikler",
@@ -345,26 +346,26 @@
     "TITLE": "İletişim Detayları",
     "EMAIL": "E-posta",
     "PHONE_NUMBER": "Telefon Numarası",
-    "CALL": "Call",
+    "CALL": "Ara",
     "CONTACT_ATTRIBUTES": "İletişim Nitelikleri",
     "VALUE_UNAVAILABLE": "Uygun Değil"
   },
   "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
+    "TITLE": "Katılımcılar",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} kişi katılıyor.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} kişi katılıyor.",
     "NO_PARTICIPANTS_TEXT": "Kimse katılmıyor!",
     "WATCH_CONVERSATION": "Konuşmaya Katıl",
     "YOU_ARE_WATCHING": "Katılıyorsunuz",
     "NO_RECORDS_FOUND": "Kayıt bulunamadı",
-    "SELECT_PARTICIPANTS": "Select agents",
+    "SELECT_PARTICIPANTS": "Ajanları seçin",
     "ADD_PARTICIPANTS": "Katılımcıları Seç",
-    "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other",
-    "ADD_PARTICIPANT": "Add Participant"
+    "REMAINING_PARTICIPANTS_TEXT": "diğerleri",
+    "REMAINING_PARTICIPANT_TEXT": "diğer",
+    "ADD_PARTICIPANT": "Katılımcı Ekle"
   },
   "CONTACT_ATTRIBUTES": {
-    "TITLE": "Contact Attributes"
+    "TITLE": "İletişim Nitelikleri"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Hareketler"
@@ -372,45 +373,45 @@
   "CONVERSATION_TEAMS": {
     "TITLE": "Takım ata",
     "SELECT_TEAM": "Takım seçin",
-    "NO_RESULT": "No team found"
+    "NO_RESULT": "Takım bulunamadı"
   },
   "CONVERSATION_LABELS": {
     "TITLE": "Konuşma Etiketleri",
     "ADD_LABEL": "Etiketler ekleyin",
-    "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
+    "EMPTY_LIST": "Lütfen hesabınıza etiket ekleyin",
+    "NO_LABEL": "Atanmış etiket yok",
     "UPDATE_LABEL": "Etiket başarıyla güncellendi",
-    "SELECTED": "Selected",
-    "NOT_SELECTED": "No labels selected",
+    "SELECTED": "Seçildi",
+    "NOT_SELECTED": "Seçili etiket yok",
     "NO_RESULT": "Etiket bulunamadı"
   },
   "CONVERSATION_AGENTS": {
     "TITLE": "Temsilci ata",
     "SELECT_AGENT": "Temsilci seçin",
-    "NO_RESULT": "No agent found"
+    "NO_RESULT": "Ajan bulunamadı"
   },
   "AGENT": {
     "TITLE": "Temsilci Seçin"
   },
   "TEAMS": {
-    "TITLE": "Select Team",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "TITLE": "Takım Seçin",
+    "EMPTY": "Lütfen sohbetleri takımlara atamak için hesabınıza takımlar ekleyin.",
     "CHANGE_TEAMS": "Görüşme takımı değişti"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Lütfen daha sonra tekrar deneyin...",
+    "COMMON_ERROR": "Chatwoot Sunucusuna bağlanılamadı, Lütfen daha sonra tekrar deneyin",
     "OfFLINE": "Tekrar çevrimiçi olmak için kablosuz ağa veya hücresel ağa bağlanmanız gerekir",
     "CANNOT_FETCH": "Bilgi alınırken bir hata oluştu, lütfen tekrar deneyin",
     "AUTH": "Kullanıcı Adı / Parola Yanlış. Lütfen tekrar deneyin",
-    "NO_ACCOUNTS_MESSAGE": "Herhangi bir Chatscommerce hesabına erişiminiz yok"
+    "NO_ACCOUNTS_MESSAGE": "Herhangi bir chatwoot hesabına erişiminiz yok"
   },
   "SUCCESS": {
     "AUTH": "Giriş başarılı"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatscommerce server for your mobile app. Please contact your admin to upgrade your Chatscommerce server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatscommerce server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "Sunucu yükseltmesi gerekiyor",
+    "WARNING_FOR_AGENT": "Görünüşe göre mobil uygulamanız için desteklenmeyen bir Chatwoot sunucusu kullanıyorsunuz. Lütfen Chatwoot sunucunuzu yükseltmek için sistem yöneticinizle iletişime geçin.",
+    "WARNING_FOR_ADMIN": "Görünüşe göre mobil uygulamanız için desteklenmeyen bir Chatwoot sunucusu kullanıyorsunuz. Sunucu sürümünü %{minimumVersion} veya daha yenisine yükseltmek gerekmektedir."
   },
   "EXIT": {
     "TITLE": "Çıkış",
@@ -432,37 +433,26 @@
       "FRT": "FRT %{status}",
       "NRT": "NRT %{status}",
       "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "due"
+      "MISSED": "kaçırıldı",
+      "DUE": "son tarih"
     },
     "MISSES": {
-      "TITLE": "SLA Misses",
+      "TITLE": "SLA Kaçırmaları",
       "FRT": "İlk yanıt süresi",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
+      "NRT": "Sonraki yanıt süresi",
+      "RT": "Çözüm süresi",
+      "SHOW_MORE": "{count} daha",
+      "HIDE": "{count} satırı gizle"
     }
   },
   "MACRO": {
     "TITLE": "Kısayollar",
-    "SELECT_MACRO": "Select macro",
+    "SELECT_MACRO": "Makro seçin",
     "ACTIONS": {
-      "RUN": "Run"
+      "RUN": "Çalıştır"
     },
     "EXECUTION_SUCCESS": "Kısayol başarıyla çalıştırıldı",
-    "EXECUTION_ERROR": "Macro execution failed",
+    "EXECUTION_ERROR": "Makro yürütme başarısız oldu",
     "NO_MACROS": "Hiç kısayol bulunamadı"
-  },
-  "NOTIFICATIONS": {
-    "PERMISSION_TITLE": "Enable Notifications",
-    "PERMISSION_MESSAGE": "Allow notifications to stay updated with new messages",
-    "PERMISSION_ASK_LATER": "Ask Later",
-    "PERMISSION_CANCEL": "Don't Allow",
-    "PERMISSION_OK": "Allow",
-    "RATIONALE_TITLE": "Notifications Disabled",
-    "RATIONALE_MESSAGE": "Enable notifications in settings to receive message alerts",
-    "RATIONALE_CANCEL": "Cancel",
-    "RATIONALE_SETTINGS": "Open Settings"
   }
 }

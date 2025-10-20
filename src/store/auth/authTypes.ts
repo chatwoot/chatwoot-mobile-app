@@ -13,6 +13,23 @@ export interface LoginResponse {
   user: User;
   headers: AuthHeaders;
 }
+
+export interface MfaRequiredResponse {
+  mfa_required: true;
+  mfa_token: string;
+}
+
+export interface MfaVerificationPayload {
+  mfa_token: string;
+  otp_code?: string;
+  backup_code?: string;
+}
+
+export interface LoginApiResponse {
+  data?: User;
+  mfa_required?: boolean;
+  mfa_token?: string;
+}
 export interface ResetPasswordPayload {
   email: string;
 }
@@ -40,4 +57,14 @@ export interface SetActiveAccountPayload {
   profile: {
     account_id: number;
   };
+}
+
+export interface SsoAuthPayload {
+  email: string;
+  sso_auth_token: string;
+}
+
+export interface SsoAuthResponse {
+  user: User;
+  headers: AuthHeaders;
 }

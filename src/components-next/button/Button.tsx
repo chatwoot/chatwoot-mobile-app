@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { useThemedStyles } from '@/hooks';
 import { useHaptic, useScaleAnimation } from '@/utils';
 
@@ -14,22 +13,37 @@ type ButtonProps = {
   disabled?: boolean;
 };
 
-const getButtonStyles = (isPrimary: boolean, pressed: boolean, themedTailwind: any) => {
+const getButtonStyles = (
+  isPrimary: boolean,
+  pressed: boolean,
+  themedTailwind: ReturnType<typeof useThemedStyles>,
+  isDestructive: boolean,
+) => {
   const baseStyles = 'py-[11px] flex items-center justify-center rounded-[13px]';
-  const variantStyles = isPrimary ? 'bg-brand-600' : 'bg-gray-50';
+  const variantStyles = isPrimary
+    ? isDestructive
+      ? 'bg-ruby-3' // Pastel red background for destructive primary
+      : 'bg-brand-600'
+    : isDestructive
+      ? 'bg-ruby-2' // Pastel red background for destructive secondary
+      : 'bg-gray-50';
   const pressedStyles = isPrimary ? 'opacity-95' : pressed ? 'bg-gray-100' : '';
 
   return themedTailwind.style(baseStyles, variantStyles, pressedStyles);
 };
 
-const getTextStyles = (isPrimary: boolean, isDestructive: boolean, themedTailwind: any) => {
+const getTextStyles = (
+  isPrimary: boolean,
+  isDestructive: boolean,
+  themedTailwind: ReturnType<typeof useThemedStyles>,
+) => {
   const baseStyles = 'text-base font-medium tracking-[0.16px] leading-[22px]';
   const colorStyles = isPrimary
     ? isDestructive
-      ? 'text-tomato-800'
+      ? 'text-ruby-11' // Pastel red for primary destructive
       : 'text-white'
     : isDestructive
-      ? 'text-ruby-800'
+      ? 'text-ruby-11' // Pastel red for secondary destructive
       : 'text-gray-950';
 
   return themedTailwind.style(baseStyles, colorStyles);
@@ -63,7 +77,7 @@ export const Button = ({
         accessible
         accessibilityRole="button"
         accessibilityState={{ disabled }}
-        style={({ pressed }) => getButtonStyles(isPrimary, pressed, themedTailwind)}
+        style={({ pressed }) => getButtonStyles(isPrimary, pressed, themedTailwind, isDestructive)}
         {...handlers}
       >
         <Animated.Text style={getTextStyles(isPrimary, isDestructive, themedTailwind)}>

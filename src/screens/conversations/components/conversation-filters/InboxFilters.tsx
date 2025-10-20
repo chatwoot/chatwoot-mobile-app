@@ -69,7 +69,12 @@ type InboxStackProps = {
 const InboxStack = (props: InboxStackProps) => {
   const { list } = props;
   return (
-    <Animated.ScrollView style={tailwind.style('pl-3 pb-4')}>
+    <Animated.ScrollView
+      style={tailwind.style('pl-3 pb-4')}
+      bounces={false}
+      showsVerticalScrollIndicator={true}
+      scrollEventThrottle={16}
+      nestedScrollEnabled={true}>
       {list.map((value, index) => (
         <InboxCell key={index} {...{ value, index, isLastItem: index === list.length - 1 }} />
       ))}
@@ -83,7 +88,7 @@ export const InboxFilters = () => {
     {
       id: 0,
       name: i18n.t('FILTER.ALL_INBOXES'),
-      channelType: 'Channel::All',
+      channelType: 'Channel::All' as Channel,
       avatarUrl: '',
       channelId: 0,
       phoneNumber: '',
@@ -94,12 +99,16 @@ export const InboxFilters = () => {
   ].map(inbox => ({
     id: inbox.id,
     name: inbox.name,
-    channelType: inbox.channelType,
+    channelType: inbox.channelType as Channel,
     medium: inbox.medium,
   }));
 
   return (
-    <Animated.ScrollView>
+    <Animated.ScrollView
+      bounces={false}
+      showsVerticalScrollIndicator={true}
+      scrollEventThrottle={16}
+      nestedScrollEnabled={true}>
       <BottomSheetHeader headerText={i18n.t('CONVERSATION.FILTERS.INBOX.TITLE')} />
       <InboxStack list={inboxList} />
     </Animated.ScrollView>

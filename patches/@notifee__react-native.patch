@@ -1,0 +1,70 @@
+diff --git a/android/build.gradle b/android/build.gradle
+index 7477b940575d22e68d1b5e6d0adc12e2f1113763..10e7805459e809d71d93609f3a4d5cfc053d0106 100644
+--- a/android/build.gradle
++++ b/android/build.gradle
+@@ -1,6 +1,9 @@
+ import java.nio.file.Paths
+ 
+ buildscript {
++  ext {
++    kotlinVersion = rootProject.hasProperty('kotlinVersion') ? rootProject.kotlinVersion : (findProperty('android.kotlinVersion') ?: '1.9.25')
++  }
+   // The Android Gradle plugin is only required when opening the android folder stand-alone.
+   // This avoids unnecessary downloads and potential conflicts when the library is included as a
+   // module dependency in an application project.
+@@ -16,9 +19,12 @@ buildscript {
+   }
+ }
+ 
+-plugins {
+-  id "io.invertase.gradle.build" version "1.5"
+-}
++// Note: Commented out because the plugin tries to access kotlinVersion before buildscript is evaluated
++// plugins {
++//   id "io.invertase.gradle.build" version "1.5"
++// }
++
++apply plugin: 'com.android.library'
+ 
+ // https://github.com/facebook/react-native/blob/a70354df12ef71aec08583cca4f1fed5fb77d874/ReactAndroid/build.gradle#L168-L201
+ def findNodeModulePath(baseDir, packageName) {
+@@ -62,6 +68,8 @@ project.ext {
+ }
+ 
+ android {
++  compileSdkVersion rootProject.hasProperty('compileSdkVersion') ? rootProject.compileSdkVersion : 35
++  
+   def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
+   // Check AGP version for backward compatibility w/react-native versions still on gradle plugin 6
+   if (agpVersion.tokenize('.')[0].toInteger() >= 7) {
+@@ -69,6 +77,8 @@ android {
+   }
+ 
+   defaultConfig {
++    minSdkVersion rootProject.hasProperty('minSdkVersion') ? rootProject.minSdkVersion : 24
++    targetSdkVersion rootProject.hasProperty('targetSdkVersion') ? rootProject.targetSdkVersion : 34
+     multiDexEnabled true
+   }
+   lintOptions {
+@@ -106,10 +116,17 @@ dependencies {
+   implementation 'androidx.lifecycle:lifecycle-process:2.3.1'
+ }
+ 
+-ReactNative.shared.applyPackageVersion()
+-ReactNative.shared.applyDefaultExcludes()
+-ReactNative.module.applyAndroidVersions()
+-ReactNative.module.applyReactNativeDependency("api")
++// Note: These are provided by the invertase plugin which was commented out
++// ReactNative.shared.applyPackageVersion()
++// ReactNative.shared.applyDefaultExcludes()
++// ReactNative.module.applyAndroidVersions()
++// ReactNative.module.applyReactNativeDependency("api")
++
++// Add React Native dependency manually since we're not using the invertase plugin
++dependencies {
++  api "com.facebook.react:react-android"
++}
++
+ rootProject.allprojects {
+   repositories {
+     maven {

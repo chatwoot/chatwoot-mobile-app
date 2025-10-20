@@ -51,7 +51,7 @@ const contactSlice = createSlice({
       if (contact) {
         contact.customAttributes = {
           ...contact.customAttributes,
-          ai_enabled: aiEnabled.toString(),
+          aiEnabled: aiEnabled,
         };
       }
     });

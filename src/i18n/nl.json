@@ -59,14 +59,6 @@
       "AGENT": {
         "SEARCH_AGENT": "Zoek agenten"
       },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter op toegewezene",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Niet-toegewezen",
-          "ALL": "Allemaal"
-        }
-      },
       "INBOX": {
         "TITLE": "Filter op inbox"
       },
@@ -85,6 +77,14 @@
           "PENDING": "Afwachtend",
           "SNOOZED": "Gesluimerd",
           "RESOLVED": "Opgelost",
+          "ALL": "Allemaal"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filter op toegewezene",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Niet-toegewezen",
           "ALL": "Allemaal"
         }
       }
@@ -130,6 +130,7 @@
     "ASSIGNED_AGENT": "Assigned agent",
     "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "Dit zal alleen zichtbaar zijn voor medewerkers",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",

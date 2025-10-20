@@ -58,7 +58,7 @@ const ContextMenuBottomSheetBackdrop = forwardRef<
   });
 
   const handleBackdropPress = () => {
-    // @ts-ignore
+    // @ts-expect-error Bottom sheet dismiss method typing issue
     ref?.current?.dismiss({ overshootClamping: true });
   };
 
@@ -96,7 +96,7 @@ export const MessageMenu = (props: PropsWithChildren<MessageMenuProps>) => {
     (backdropProps: BottomSheetBackdropProps) => (
       <ContextMenuBottomSheetBackdrop
         {...backdropProps}
-        // @ts-ignore
+        // @ts-expect-error Backdrop component ref typing issue
         ref={contextMenuSheetRef}
       />
     ),

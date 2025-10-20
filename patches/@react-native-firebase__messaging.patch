@@ -1,0 +1,110 @@
+diff --git a/android/build.gradle b/android/build.gradle
+index e7e9df396b495360ca8301371d6b6270a6151b3d..b5394a11b19bd77b2da01b7c4ed6eda64a044d48 100644
+--- a/android/build.gradle
++++ b/android/build.gradle
+@@ -1,6 +1,10 @@
+-import io.invertase.gradle.common.PackageJson
++// Note: Commented out due to kotlinVersion error with invertase plugin
++// import io.invertase.gradle.common.PackageJson
+ 
+ buildscript {
++  ext {
++    kotlinVersion = rootProject.hasProperty('kotlinVersion') ? rootProject.kotlinVersion : (findProperty('android.kotlinVersion') ?: '1.9.25')
++  }
+   // The Android Gradle plugin is only required when opening the android folder stand-alone.
+   // This avoids unnecessary downloads and potential conflicts when the library is included as a
+   // module dependency in an application project.
+@@ -16,9 +20,12 @@ buildscript {
+   }
+ }
+ 
+-plugins {
+-  id "io.invertase.gradle.build" version "1.5"
+-}
++// Note: Commented out due to kotlinVersion error
++// plugins {
++//   id "io.invertase.gradle.build" version "1.5"
++// }
++
++apply plugin: 'com.android.library'
+ 
+ def appProject
+ if (findProject(':@react-native-firebase_app')) {
+@@ -28,18 +35,27 @@ if (findProject(':@react-native-firebase_app')) {
+ } else {
+   throw new GradleException('Could not find the react-native-firebase/app package, have you installed it?')
+ }
+-def packageJson = PackageJson.getForProject(project)
+-def appPackageJson = PackageJson.getForProject(appProject)
+-def firebaseBomVersion = appPackageJson['sdkVersions']['android']['firebase']
+-def jsonMinSdk = appPackageJson['sdkVersions']['android']['minSdk']
+-def jsonTargetSdk = appPackageJson['sdkVersions']['android']['targetSdk']
+-def jsonCompileSdk = appPackageJson['sdkVersions']['android']['compileSdk']
+-def coreVersionDetected = appPackageJson['version']
+-def coreVersionRequired = packageJson['peerDependencies'][appPackageJson['name']]
++
++// Manual JSON parsing since we can't use PackageJson from invertase plugin
++import groovy.json.JsonSlurper
++def packageJsonFile = new File(projectDir.parent, 'package.json')
++def packageJson = new JsonSlurper().parseText(packageJsonFile.text)
++
++// Get values from the app project which already has them parsed
++def firebaseBomVersion = appProject.ext['react-native'].versions.firebase.bom
++def jsonMinSdk = appProject.ext['react-native'].versions.android.minSdk
++def jsonTargetSdk = appProject.ext['react-native'].versions.android.targetSdk
++def jsonCompileSdk = appProject.ext['react-native'].versions.android.compileSdk
++
++// Version checking
++def appPackageJsonFile = new File(appProject.projectDir.parent, 'package.json')
++def appPackageJson = new JsonSlurper().parseText(appPackageJsonFile.text)
++def coreVersionDetected = appPackageJson.version
++def coreVersionRequired = packageJson.peerDependencies[appPackageJson.name]
+ // Only log after build completed so log warning appears at the end
+ if (coreVersionDetected != coreVersionRequired) {
+   gradle.buildFinished {
+-    project.logger.warn("ReactNativeFirebase WARNING: NPM package '${packageJson['name']}' depends on '${appPackageJson['name']}' v${coreVersionRequired} but found v${coreVersionDetected}, this might cause build issues or runtime crashes.")
++    project.logger.warn("ReactNativeFirebase WARNING: NPM package '${packageJson.name}' depends on '${appPackageJson.name}' v${coreVersionRequired} but found v${coreVersionDetected}, this might cause build issues or runtime crashes.")
+   }
+ }
+ 
+@@ -101,12 +117,16 @@ if (rootProject.ext && rootProject.ext.firebaseJson) {
+ }
+ 
+ android {
++  compileSdkVersion rootProject.hasProperty('compileSdkVersion') ? rootProject.compileSdkVersion : jsonCompileSdk
++  
+   def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')[0].toInteger()
+   if (agpVersion >= 7) {
+     namespace 'io.invertase.firebase.messaging'
+   }
+ 
+   defaultConfig {
++    minSdkVersion rootProject.hasProperty('minSdkVersion') ? rootProject.minSdkVersion : jsonMinSdk
++    targetSdkVersion rootProject.hasProperty('targetSdkVersion') ? rootProject.targetSdkVersion : jsonTargetSdk
+     multiDexEnabled true
+     manifestPlaceholders = [
+       firebaseJsonDeliveryMetricsExportEnabled: deliveryMetricsExportEnabled,
+@@ -142,11 +162,18 @@ repositories {
+ 
+ dependencies {
+   api appProject
+-  implementation platform("com.google.firebase:firebase-bom:${ReactNative.ext.getVersion("firebase", "bom")}")
++  // Get firebase version from the app project
++  implementation platform("com.google.firebase:firebase-bom:${appProject.ext['react-native'].versions.firebase.bom}")
+   implementation "com.google.firebase:firebase-messaging"
+ }
+ 
+-ReactNative.shared.applyPackageVersion()
+-ReactNative.shared.applyDefaultExcludes()
+-ReactNative.module.applyAndroidVersions()
+-ReactNative.module.applyReactNativeDependency("api")
++// Note: Commented out ReactNative calls from invertase plugin
++// ReactNative.shared.applyPackageVersion()
++// ReactNative.shared.applyDefaultExcludes()
++// ReactNative.module.applyAndroidVersions()
++// ReactNative.module.applyReactNativeDependency("api")
++
++// Add React Native dependency manually
++dependencies {
++  api "com.facebook.react:react-android"
++}

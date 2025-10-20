@@ -15,13 +15,21 @@ export const createThemedTailwind = (isDark: boolean) => {
         colors: {
           ...twConfig.theme.extend.colors,
           // Override base colors with theme-specific ones
-          background: isDark ? '#000000' : '#FFFFFF',
+          background: isDark ? 'rgb(27, 27, 27)' : '#FFFFFF', // Matching LoginScreen exactly
           foreground: isDark ? '#FFFFFF' : '#000000',
           // Add semantic color mappings
-          primary: isDark ? twConfig.theme.extend.colors.brandDark : twConfig.theme.extend.colors.brand,
-          secondary: isDark ? twConfig.theme.extend.colors.grayDark : twConfig.theme.extend.colors.gray,
-          muted: isDark ? twConfig.theme.extend.colors.slateDark : twConfig.theme.extend.colors.slate,
-          accent: isDark ? twConfig.theme.extend.colors.blueDark : twConfig.theme.extend.colors.blue,
+          primary: isDark
+            ? twConfig.theme.extend.colors.brandDark
+            : twConfig.theme.extend.colors.brand,
+          secondary: isDark
+            ? twConfig.theme.extend.colors.grayDark
+            : twConfig.theme.extend.colors.gray,
+          muted: isDark
+            ? twConfig.theme.extend.colors.slateDark
+            : twConfig.theme.extend.colors.slate,
+          accent: isDark
+            ? twConfig.theme.extend.colors.blueDark
+            : twConfig.theme.extend.colors.blue,
         },
       },
     },

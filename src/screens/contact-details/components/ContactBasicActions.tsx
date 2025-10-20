@@ -10,26 +10,20 @@ import { useHaptic, useScaleAnimation } from '@/utils';
 import i18n from '@/i18n';
 import { openNumber, openEmail } from '@/utils/urlUtils';
 
-const contactOptions = [
-  {
-    contactType: 'call',
-    icon: <PhoneIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />,
-  },
-  {
-    contactType: 'email',
-    icon: <MailIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />,
-  },
-];
+type ContactOption = {
+  contactType: 'call' | 'email';
+  icon: React.ReactNode;
+};
 
 type ContactOptionProps = {
-  option: (typeof contactOptions)[0];
+  option: ContactOption;
   handleOptionPress?: () => void;
 };
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 const OPTION_WIDTH = (SCREEN_WIDTH - 32 - 12 * 3) / 2;
 
-const ContactOption = (props: ContactOptionProps) => {
+const ContactOptionComponent = (props: ContactOptionProps) => {
   const { option, handleOptionPress } = props;
 
   const { handlers, animatedStyle } = useScaleAnimation();
@@ -88,7 +82,7 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
   if (email && phoneNumber) {
     return (
       <Animated.View style={tailwind.style('flex flex-row justify-between ')}>
-        <ContactOption
+        <ContactOptionComponent
           key="email"
           option={{
             contactType: i18n.t('CONTACT_DETAILS.EMAIL'),
@@ -96,7 +90,7 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
           }}
           handleOptionPress={onEmailPress}
         />
-        <ContactOption
+        <ContactOptionComponent
           key="phoneNumber"
           option={{
             contactType: i18n.t('CONTACT_DETAILS.CALL'),

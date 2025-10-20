@@ -1,0 +1,4 @@
+patchedDependencies:
+  '@notifee/react-native': patches/@notifee__react-native.patch
+  '@react-native-firebase/app': patches/@react-native-firebase__app.patch
+  '@react-native-firebase/messaging': patches/@react-native-firebase__messaging.patch

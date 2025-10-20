@@ -3,12 +3,16 @@ import { AuthService } from './authService';
 import type {
   LoginPayload,
   LoginResponse,
+  MfaRequiredResponse,
+  MfaVerificationPayload,
   ResetPasswordPayload,
   ResetPasswordResponse,
   AvailabilityPayload,
   ProfileResponse,
   ApiErrorResponse,
   SetActiveAccountPayload,
+  SsoAuthPayload,
+  SsoAuthResponse,
 } from './authTypes';
 import { handleApiError } from './authUtils';
 import I18n from '@/i18n';
@@ -30,9 +34,15 @@ const createAuthThunk = <TResponse, TPayload>(
   );
 };
 export const authActions = {
-  login: createAuthThunk<LoginResponse, LoginPayload>(
+  login: createAuthThunk<LoginResponse | MfaRequiredResponse, LoginPayload>(
     'auth/login',
     AuthService.login,
+    I18n.t('ERRORS.AUTH'),
+  ),
+
+  verifyMfa: createAuthThunk<LoginResponse, MfaVerificationPayload>(
+    'auth/verifyMfa',
+    AuthService.verifyMfa,
     I18n.t('ERRORS.AUTH'),
   ),
 
@@ -53,5 +63,11 @@ export const authActions = {
   setActiveAccount: createAuthThunk<ProfileResponse, SetActiveAccountPayload>(
     'auth/setActiveAccount',
     AuthService.setActiveAccount,
+  ),
+
+  loginWithSso: createAuthThunk<SsoAuthResponse, SsoAuthPayload>(
+    'auth/loginWithSso',
+    AuthService.loginWithSso,
+    I18n.t('ERRORS.AUTH'),
   ),
 };

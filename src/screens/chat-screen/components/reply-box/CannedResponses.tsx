@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Platform, Pressable } from 'react-native';
+import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { tailwind } from '@/theme';
@@ -44,6 +44,7 @@ export const CannedResponses = (props: CannedResponsesProps) => {
   useEffect(() => {
     const searchKey = props.searchKey.slice(1);
     dispatch(cannedResponseActions.index({ searchKey }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.searchKey]);
 
   if (!props.searchKey || cannedResponses.length === 0) {

@@ -25,7 +25,7 @@ import {
   isAnInstagramChannel,
 } from '@/utils';
 import { useAppDispatch, useAppSelector, useThemedStyles } from '@/hooks';
-import { MESSAGE_MAX_LENGTH, REPLY_EDITOR_MODES, AUDIO_FORMATS } from '@/constants';
+import { MESSAGE_MAX_LENGTH, REPLY_EDITOR_MODES } from '@/constants';
 import { tailwind } from '@/theme';
 import {
   selectMessageContent,
@@ -66,7 +66,6 @@ import { getLastEmailInSelectedChat } from '@/store/conversation/conversationSel
 import { selectAssignableParticipantsByInboxId } from '@/store/assignable-agent/assignableAgentSelectors';
 import { AudioRecorder } from '../audio-recorder/AudioRecorder';
 import { VoiceRecordButton } from './buttons/VoiceRecordButton';
-import { is } from 'date-fns/locale';
 
 const SHEET_APPEAR_SPRING_CONFIG = {
   damping: 20,
@@ -166,6 +165,7 @@ const BottomSheetContent = () => {
     setCCEmails(cc.join(', '));
     setBCCEmails(bcc.join(', '));
     setToEmails(to.join(', '));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastEmail]);
 
   const messageVariables = allMessageVariables({
@@ -207,7 +207,7 @@ const BottomSheetContent = () => {
   };
 
   // TODO: Implement this
-  const setReplyToInPayload = (messagePayload: any) => {
+  const setReplyToInPayload = (messagePayload: Record<string, unknown>) => {
     //     ...(quoteMessage?.id && {
     //       contentAttributes: { inReplyTo: quoteMessage.id },
     //     }),

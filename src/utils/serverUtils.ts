@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-// @ts-ignore
+// @ts-expect-error semver package lacks TypeScript definitions
 import semver from 'semver';
 
 import I18n from '@/i18n';

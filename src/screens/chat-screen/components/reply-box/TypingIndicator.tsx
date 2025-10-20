@@ -22,6 +22,7 @@ export const TypingIndicator = ({ typingText }: TypingIndicatorProps) => {
           {typingText}
         </Text>
         <Image
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
           source={require('../../../../assets/local/typing.gif')}
           style={tailwind.style('w-8 h-8 ml-2')}
           contentFit="contain"

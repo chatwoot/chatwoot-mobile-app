@@ -27,43 +27,51 @@ export default ({ config }: ConfigContext): ExpoConfig => {
 
   // Google Services file resolution with priority:
   // 1. EAS environment variables (for cloud builds)
-  // 2. Native directories (for local dev after copy)
-  // 3. Credentials directory (for local dev fallback)
+  // 2. Credentials directory (for both local dev and builds)
+  // 3. Native directories (for local dev after prebuild)
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const fs = require('fs');
   const getAndroidGSF = () => {
     // Priority 1: EAS Secret File environment variable
     if (process.env.GOOGLE_SERVICES_JSON && fs.existsSync(process.env.GOOGLE_SERVICES_JSON)) {
       return process.env.GOOGLE_SERVICES_JSON;
     }
-    
-    // Priority 2: Copied to native directory (local dev)
+
+    // Priority 2: Credentials directory (for both local dev and builds)
+    const credentialsFile = isProd
+      ? './credentials/android/google-services.json'
+      : './credentials/android/google-services-dev.json';
+    if (fs.existsSync(credentialsFile)) return credentialsFile;
+
+    // Priority 3: Copied to native directory (local dev after prebuild)
     const nativeFile = './android/app/google-services.json';
     if (fs.existsSync(nativeFile)) return nativeFile;
-    
-    // Priority 3: Credentials directory fallback
-    const credentialsFile = isProd ? './credentials/android/google-services.json' : './credentials/android/google-services-dev.json';
-    if (fs.existsSync(credentialsFile)) return credentialsFile;
-    
+
     // Default fallback
-    return nativeFile;
+    return credentialsFile;
   };
-  
+
   const getIosPlist = () => {
-    // Priority 1: EAS Secret File environment variable  
-    if (process.env.GOOGLE_SERVICE_INFO_PLIST && fs.existsSync(process.env.GOOGLE_SERVICE_INFO_PLIST)) {
+    // Priority 1: EAS Secret File environment variable
+    if (
+      process.env.GOOGLE_SERVICE_INFO_PLIST &&
+      fs.existsSync(process.env.GOOGLE_SERVICE_INFO_PLIST)
+    ) {
       return process.env.GOOGLE_SERVICE_INFO_PLIST;
     }
-    
-    // Priority 2: Copied to native directory (local dev)
+
+    // Priority 2: Credentials directory (for both local dev and builds)
+    const credentialsFile = isProd
+      ? './credentials/ios/GoogleService-Info.plist'
+      : './credentials/ios/GoogleService-Info-dev.plist';
+    if (fs.existsSync(credentialsFile)) return credentialsFile;
+
+    // Priority 3: Copied to native directory (local dev after prebuild)
     const nativeFile = './ios/GoogleService-Info.plist';
     if (fs.existsSync(nativeFile)) return nativeFile;
-    
-    // Priority 3: Credentials directory fallback
-    const credentialsFile = isProd ? './credentials/ios/GoogleService-Info.plist' : './credentials/ios/GoogleService-Info-dev.plist';
-    if (fs.existsSync(credentialsFile)) return credentialsFile;
-    
+  
     // Default fallback
-    return nativeFile;
+    return credentialsFile;
   };
 
   // Resolve the actual file paths

@@ -1,5 +1,9 @@
 name: Create development builds
 
+on:
+  push:
+    branches: ['development']
+
 jobs:
   build_android:
     type: build
@@ -18,6 +22,7 @@ jobs:
     params:
       platform: android
       profile: development
+      build_id: ${{ needs.build_android.outputs.build_id }}
     needs:
       - build_android
   
@@ -26,5 +31,6 @@ jobs:
     params:
       platform: ios
       profile: development
+      build_id: ${{ needs.build_ios.outputs.build_id }}
     needs:
       - build_ios

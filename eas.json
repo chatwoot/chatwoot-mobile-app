@@ -11,7 +11,8 @@
         "ENVIRONMENT": "dev",
         "EAS_BUILD_PROFILE": "development",
         "SENTRY_ORG": "eleva-labs",
-        "SENTRY_PROJECT": "chatscommerce"
+        "SENTRY_PROJECT": "chatscommerce",
+        "EXPO_DEBUG": "1"
       },
       "environment": "development",
       "channel": "development",
@@ -32,13 +33,15 @@
       "env": {
         "ENVIRONMENT": "prod",
         "SENTRY_ORG": "eleva-labs",
-        "SENTRY_PROJECT": "chatscommerce"
+        "SENTRY_PROJECT": "chatscommerce",
+        "EXPO_DEBUG": "1"
       },
       "environment": "production",
       "channel": "production",
       "android": {
         "buildType": "app-bundle",
-        "gradleCommand": ":app:bundleRelease"
+        "gradleCommand": ":app:bundleRelease",
+        "image": "latest"
       }
     }
   },

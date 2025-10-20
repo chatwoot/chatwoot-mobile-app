@@ -1,0 +1,23 @@
+# EAS ignore file - overrides .gitignore for EAS builds
+# This allows credentials to be included in local builds
+
+# Keep credentials directory for local builds
+# /credentials/
+
+# Still ignore sensitive files that shouldn't be in any build
+*.pem
+*.key
+*.p8
+*.p12
+*.jks
+*.mobileprovision
+service-account-key.json
+z
+# Ignore local environment files
+.env*.local
+dev.env
+prod.env
+
+# Ignore native build artifacts
+android/app/google-services.json
+ios/GoogleService-Info.plist

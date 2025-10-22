@@ -65,7 +65,7 @@
     "TYPING": "mengetik",
     "ALL_CONVERSATION_LOADED": "Semua percakapan dimuat",
     "ASSIGN": "Tetapkan percakapan",
-    "FILE_SIZE_LIMIT": "File melebihi batas lampiran 5MB",
+    "FILE_SIZE_LIMIT": "File melebihi batas lampiran {{limit}}MB",
     "SHARE": "Bagikan percakapan",
     "CANCEL": "Batal",
     "PRIVATE_MSG_INPUT": "Ini hanya akan terlihat oleh Agen",

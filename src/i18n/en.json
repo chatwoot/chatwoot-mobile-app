@@ -145,7 +145,7 @@
     "TYPING": "typing",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "FILE_SIZE_LIMIT": "File exceeds the {{limit}}MB attachment limit",
     "SHARE": "Share",
     "DETAILS": "Details",
     "LABELS": "Conversation labels",
@@ -264,7 +264,6 @@
       }
     }
   },
-
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
     "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",

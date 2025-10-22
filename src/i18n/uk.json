@@ -123,7 +123,7 @@
     "TYPING": "друкує",
     "ALL_CONVERSATION_LOADED": "Всі бесіди завантажено",
     "ASSIGN": "Призначити бесіду",
-    "FILE_SIZE_LIMIT": "Файл перевищує ліміт вкладення у 5 МБ",
+    "FILE_SIZE_LIMIT": "Файл перевищує ліміт вкладення у {{limit}} МБ",
     "SHARE": "Share conversation",
     "DETAILS": "Подробиці",
     "LABELS": "Мітки бесіди",

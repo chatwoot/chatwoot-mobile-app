@@ -123,7 +123,7 @@
     "TYPING": "பதிவிடப்படுகிறது",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "FILE_SIZE_LIMIT": "File exceeds the {{limit}}MB attachment limit",
     "SHARE": "Share conversation",
     "DETAILS": "Details",
     "LABELS": "Conversation labels",

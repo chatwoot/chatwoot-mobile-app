@@ -123,7 +123,7 @@
     "TYPING": "kirjoittaa",
     "ALL_CONVERSATION_LOADED": "Kaikki keskustelut ladattu",
     "ASSIGN": "Yhdistä keskustelu",
-    "FILE_SIZE_LIMIT": "Tiedosto ylittää 5MB liiterajan",
+    "FILE_SIZE_LIMIT": "Tiedosto ylittää {{limit}}MB liiterajan",
     "SHARE": "Share conversation",
     "DETAILS": "Tiedot",
     "LABELS": "Keskustelun tunnisteet",

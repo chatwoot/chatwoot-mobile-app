@@ -33,7 +33,7 @@ export const AUDIO_FORMATS = {
   M4A: 'audio/m4a',
 };
 
-export const MAXIMUM_FILE_UPLOAD_SIZE = 20;
+export const MAXIMUM_FILE_UPLOAD_SIZE = 40;
 
 export const CONVERSATION_STATUSES = [
   {

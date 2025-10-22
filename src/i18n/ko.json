@@ -123,7 +123,7 @@
     "TYPING": "쓰는 중",
     "ALL_CONVERSATION_LOADED": "모든 대화가 불러와졌음",
     "ASSIGN": "대화에 참여시키기",
-    "FILE_SIZE_LIMIT": "파일이 5MB 첨부 파일 제한을 초과했습니다.",
+    "FILE_SIZE_LIMIT": "파일이 {{limit}}MB 첨부 파일 제한을 초과했습니다.",
     "SHARE": "대화 공유하기",
     "DETAILS": "Details",
     "LABELS": "Conversation labels",

@@ -123,7 +123,7 @@
     "TYPING": "en cours d'écriture",
     "ALL_CONVERSATION_LOADED": "Toutes les conversations ont été chargées",
     "ASSIGN": "Affecter une conversation",
-    "FILE_SIZE_LIMIT": "Le fichier dépasse la limite de 5 Mo des pièces jointes",
+    "FILE_SIZE_LIMIT": "Le fichier dépasse la limite de {{limit}} Mo des pièces jointes",
     "SHARE": "Partager la conversation",
     "DETAILS": "Details",
     "LABELS": "Conversation labels",

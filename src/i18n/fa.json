@@ -123,7 +123,7 @@
     "TYPING": "تایپ کردن",
     "ALL_CONVERSATION_LOADED": "همه گفتگوها دریافت شدند",
     "ASSIGN": "اختصاص مکالمه",
-    "FILE_SIZE_LIMIT": "محدودیت حجم فایل پیوست 5MB می باشد",
+    "FILE_SIZE_LIMIT": "محدودیت حجم فایل پیوست {{limit}}MB می باشد",
     "SHARE": "اشتراک گذاری گفتگو",
     "DETAILS": "Details",
     "LABELS": "Conversation labels",

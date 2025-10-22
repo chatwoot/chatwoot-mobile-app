@@ -123,7 +123,7 @@
     "TYPING": "escrevendo",
     "ALL_CONVERSATION_LOADED": "Todas as conversas carregadas",
     "ASSIGN": "Atribuir conversa",
-    "FILE_SIZE_LIMIT": "O ficheiro excede o limite de 5MB para anexos",
+    "FILE_SIZE_LIMIT": "O ficheiro excede o limite de {{limit}}MB para anexos",
     "SHARE": "Share conversation",
     "DETAILS": "Detalhes",
     "LABELS": "Etiquetas da conversa",

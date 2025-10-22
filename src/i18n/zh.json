@@ -65,7 +65,7 @@
     "TYPING": "typing",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "ASSIGN": "重新打开会话",
-    "FILE_SIZE_LIMIT": "文件超过 5MB 附件限制",
+    "FILE_SIZE_LIMIT": "文件超过 {{limit}}MB 附件限制",
     "SHARE": "Share conversation",
     "CANCEL": "取消",
     "PRIVATE_MSG_INPUT": "此操作仅对代理人可见",

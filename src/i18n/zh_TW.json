@@ -123,7 +123,7 @@
     "TYPING": "輸入",
     "ALL_CONVERSATION_LOADED": "所有對話以加載",
     "ASSIGN": "重新打开会话",
-    "FILE_SIZE_LIMIT": "文件超过 5MB 附件限制",
+    "FILE_SIZE_LIMIT": "文件超过 {{limit}}MB 附件限制",
     "SHARE": "Share conversation",
     "DETAILS": "Details",
     "LABELS": "Conversation labels",

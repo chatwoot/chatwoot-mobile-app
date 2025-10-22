@@ -123,7 +123,7 @@
     "TYPING": "pisze",
     "ALL_CONVERSATION_LOADED": "Wszystkie rozmowy załadowane",
     "ASSIGN": "Przypisz rozmowę",
-    "FILE_SIZE_LIMIT": "Plik przekracza limit załącznika 5 MB",
+    "FILE_SIZE_LIMIT": "Plik przekracza limit załącznika {{limit}} MB",
     "SHARE": "Udostępnij",
     "DETAILS": "Szczegóły",
     "LABELS": "Etykiety rozmowy",

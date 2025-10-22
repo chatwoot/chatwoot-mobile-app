@@ -123,7 +123,7 @@
     "TYPING": "tippt",
     "ALL_CONVERSATION_LOADED": "Alle Konversationen geladen",
     "ASSIGN": "Konversation zuweisen",
-    "FILE_SIZE_LIMIT": "Datei überschreitet das Limit von 5 MB",
+    "FILE_SIZE_LIMIT": "Datei überschreitet das Limit von {{limit}} MB",
     "SHARE": "Konversation teilen",
     "DETAILS": "Details",
     "LABELS": "Konversationslabels",

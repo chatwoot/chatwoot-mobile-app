@@ -16,7 +16,7 @@
     "ENTER_URL": "Kurulum URL'si",
     "DESCRIPTION": "Kendi barındırdığınız bir Chatwoot kurulumu kullanıyorsanız, sunucu URL'nizi girin. Aksi takdirde app.chatwoot.com'u kullanın.",
     "URL_ERROR": "Geçerli bir URL girin",
-    "URL_REQUIRED": "URL gereklidir",
+    "URL_REQUIRED": "URL gerekli",
     "CONNECT": "Bağlan",
     "CHANGE_LANGUAGE": "Dili değiştir",
     "ERROR": "Geçersiz yükleme url'si"
@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "Geçerli bir parola girin",
     "LOGIN": "Oturum aç",
     "LOGIN_LOADING": "Giriş yapılıyor...",
+    "LOGIN_VIA_SSO": "SSO ile giriş yapın",
+    "SSO_AUTH_FAILED": "Kimlik doğrulama başarısız oldu. Lütfen kimlik bilgilerinizi kontrol edin ve tekrar deneyin.",
+    "SSO_INVALID_RESPONSE": "Geçersiz Slack kanalı. Lütfen tekrar deneyin.",
+    "SSO_UNEXPECTED_ERROR": "SSO oturumu açılırken beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.",
     "FORGOT_PASSWORD": "Parolanızı mı unuttunuz?",
     "RESET_HERE": "Buradan sıfırlayın",
     "NO_ACCOUNT": "Hesabın yok mu?",
@@ -49,6 +53,24 @@
     "TITLE": "Parolanızı mı unuttunuz?",
     "SUB_TITLE": "Merak etmeyin! Arkanı kolluyoruz",
     "API_SUCCESS": "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi"
+  },
+  "MFA": {
+    "TITLE": "İki Faktörlü Kimlik Doğrulama",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Kimlik Doğrulama Uygulaması",
+      "BACKUP_CODE": "Yedek Kod"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Doğrulama uygulamasından 6 haneli kodu girin",
+      "BACKUP": "Yedek kodlarınızdan birini girin"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Yedek kodu girin"
+    },
+    "BUTTONS": {
+      "VERIFY": "Doğrula",
+      "VERIFYING": "Doğrulama yapılıyor..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {
@@ -124,13 +146,13 @@
     "ALL_CONVERSATION_LOADED": "Tüm görüşmeler yüklendi",
     "ASSIGN": "Sohbet ata",
     "FILE_SIZE_LIMIT": "Dosya 5MB ek sınırını aşıyor",
-    "SHARE": "Share conversation",
+    "SHARE": "Paylaş",
     "DETAILS": "Detaylar",
     "LABELS": "Sohbet etiketleri",
     "ASSIGNED_AGENT": "Atanan ajan",
     "TEAM": "Ekip",
     "PRIVATE_MSG_INPUT": "Bu yalnızca Ajanlar için görünür olacak",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "UNSUPPORTED_MESSAGE": "Bu mesaj desteklenmiyor. Bu mesajı, Facebook / Instagram uygulamasında görüntüleyebilirsiniz.",
     "NOT_FOUND": {
       "TITLE": "Sohbet alınamıyor",
       "RETRY": "Tekrar dene",
@@ -146,8 +168,8 @@
     "SELF_ASSIGN": "Bana Ata",
     "UN_ASSIGN": "Sohbeti atamayı kaldır",
     "CONVERSATION_NOT_FOUND": "Sohbet alınamadı",
-    "MARK_AS_PENDING": "Beklemede olarak işaretle",
-    "SNOOZE_UNTIL": "Şu tarihe kadar ertele",
+    "MARK_AS_PENDING": "Beklemede yap",
+    "SNOOZE_UNTIL": "Tarihe ertele",
     "SNOOZE_UNTIL_NEXT_REPLY": "Sonraki yanıta kadar",
     "SNOOZE_UNTIL_TOMORROW": "Yarına kadar",
     "SNOOZE_UNTIL_NEXT_WEEK": "Gelecek haftaya kadar",
@@ -162,7 +184,7 @@
     "STORY_NOT_AVAILABLE": "Bu hikaye artık mevcut değil",
     "DELETE_MESSAGE_SUCCESS": "Mesaj başarıyla silindi",
     "NO_CONTENT": "Kullanılabilir içerik yok",
-    "ASSIGN_CHANGE": "Atanan kişiyi değiştirildi",
+    "ASSIGN_CHANGE": "Atanan kişi değiştirildi",
     "TEAM_CHANGE": "Sohbet Takımı değişti",
     "STATUS_CHANGE": "Sohbet Durumu değişti",
     "PRIORITY_CHANGE": "Sohbet Önceliği değişti",

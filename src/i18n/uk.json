@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "Введіть дійсний пароль",
     "LOGIN": "Увійти",
     "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Login via SSO",
+    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
+    "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
+    "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
     "FORGOT_PASSWORD": "Забули пароль?",
     "RESET_HERE": "Скинути тут",
     "NO_ACCOUNT": "Немає облікового запису?",
@@ -49,6 +53,24 @@
     "TITLE": "Забули пароль?",
     "SUB_TITLE": "Don't worry! We got your back",
     "API_SUCCESS": "Посилання для зміни пароля було надіслано на вашу електронну пошту"
+  },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "Перевірка..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {

@@ -22,8 +22,8 @@
     "ERROR": "URL installazione non valido"
   },
   "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "TITLE": "Accedi al tuo account",
+    "DESCRIPTION": "Sei connesso a {{baseUrl}}.",
     "EMAIL": "Email",
     "PASSWORD": "Password",
     "EMAIL_REQUIRED": "L'email è obbligatoria",
@@ -31,9 +31,9 @@
     "PASSWORD_REQUIRED": "La password è obbligatoria",
     "PASSWORD_ERROR": "Inserisci una password valida",
     "LOGIN": "Accedi",
-    "LOGIN_LOADING": "Signing In...",
-    "LOGIN_VIA_SSO": "Login via SSO",
-    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
+    "LOGIN_LOADING": "Accesso In Corso...",
+    "LOGIN_VIA_SSO": "Accedi tramite SSO",
+    "SSO_AUTH_FAILED": "Autenticazione SSO fallita. Verifica le credenziali e riprova.",
     "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
     "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
     "FORGOT_PASSWORD": "Hai dimenticato la password?",

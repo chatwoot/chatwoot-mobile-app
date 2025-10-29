@@ -146,22 +146,22 @@ const handleAttachFile = async dispatch => {
 const ADD_MENU_OPTIONS = [
   {
     icon: <PhotosIcon />,
-    title: 'Photos',
+    title: i18n.t('CONVERSATION_ATTACHMENT.OPTIONS.PHOTOS'),
     handlePress: handleOpenPhotosLibrary,
   },
   {
     icon: <CameraIcon />,
-    title: 'Camera',
+    title: i18n.t('CONVERSATION_ATTACHMENT.OPTIONS.CAMERA'),
     handlePress: handleLaunchCamera,
   },
   {
     icon: <AttachFileIcon />,
-    title: 'Attach File',
+    title: i18n.t('CONVERSATION_ATTACHMENT.OPTIONS.ATTACH_FILE'),
     handlePress: handleAttachFile,
   },
   {
     icon: <MacrosIcon />,
-    title: 'Macros',
+    title: i18n.t('CONVERSATION_ATTACHMENT.OPTIONS.MACROS'),
     handlePress: () => {},
   },
 ];

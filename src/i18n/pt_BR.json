@@ -368,7 +368,21 @@
     "TITLE": "Atributos do contato"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Ações"
+    "TITLE": "Ações",
+    "OPTIONS": {
+      "OPEN": "Abrir",
+      "PENDING": "Pendente",
+      "SNOOZED": "Adiar",
+      "RESOLVED": "Resolver"
+    }
+  },
+  "CONVERSATION_ATTACHMENT": {
+    "OPTIONS": {
+      "PHOTOS": "Fotos",
+      "CAMERA": "Câmera",
+      "ATTACH_FILE": "Documento",
+      "MACROS": "Macros"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "Atribuir time",

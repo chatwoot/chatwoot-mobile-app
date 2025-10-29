@@ -171,7 +171,11 @@ export const validateFileAndSetAttachments = async (dispatch, attachment) => {
   if (findFileSize(fileSize) <= MAXIMUM_FILE_UPLOAD_SIZE) {
     dispatch(updateAttachments([attachment]));
   } else {
-    showToast({ message: i18n.t('CONVERSATION.FILE_SIZE_LIMIT') });
+    showToast({
+      message: i18n.t('CONVERSATION.FILE_SIZE_LIMIT', {
+        limit: MAXIMUM_FILE_UPLOAD_SIZE,
+      }),
+    });
   }
 };
 

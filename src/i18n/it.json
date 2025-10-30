@@ -79,7 +79,7 @@
     },
     "FILTERS": {
       "AGENT": {
-        "SEARCH_AGENT": "Cerca agenti"
+        "SEARCH_AGENT": "Cerca operatori"
       },
       "INBOX": {
         "TITLE": "Filtra per caselle di posta"
@@ -88,7 +88,7 @@
         "TITLE": "Ordina per",
         "OPTIONS": {
           "LATEST": "Più recenti",
-          "SORT_ON_CREATED_AT": "Creato il",
+          "SORT_ON_CREATED_AT": "Data creazione",
           "SORT_ON_PRIORITY": "Priorità"
         }
       },
@@ -97,7 +97,7 @@
         "OPTIONS": {
           "OPEN": "Apri",
           "PENDING": "In sospeso",
-          "SNOOZED": "Posticipato",
+          "SNOOZED": "Posticipate",
           "RESOLVED": "Risolto",
           "ALL": "Tutti"
         }
@@ -116,7 +116,7 @@
         "SEARCH_LABELS": "Cerca etichette"
       },
       "AGENTS": {
-        "SEARCH_AGENT": "Cerca agenti"
+        "SEARCH_AGENT": "Cerca operatori"
       },
       "STATUS": {
         "HEADER_TITLE": "Assegna stato",
@@ -124,7 +124,7 @@
         "OPTIONS": {
           "OPEN": "Apri",
           "PENDING": "In sospeso",
-          "SNOOZED": "Posticipato",
+          "SNOOZED": "Posticipate",
           "RESOLVED": "Risolto",
           "ALL": "Tutti"
         }
@@ -152,7 +152,7 @@
     "ASSIGNED_AGENT": "Agente assegnato",
     "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "Questo sarà visibile solo agli agenti",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "UNSUPPORTED_MESSAGE": "Questo messaggio non è supportato. Puoi visualizzare questo messaggio sull'app Facebook / Instagram.",
     "NOT_FOUND": {
       "TITLE": "Impossibile caricare la conversazione",
       "RETRY": "Riprova",
@@ -163,7 +163,7 @@
     "EMAIL_HEAD": {
       "TO": "A",
       "CC": "Cc",
-      "BCC": "CCN"
+      "BCC": "Ccn"
     },
     "SELF_ASSIGN": "Assegna a me",
     "UN_ASSIGN": "Annulla l'assegnazione della conversazione",
@@ -184,24 +184,24 @@
     "STORY_NOT_AVAILABLE": "Questa storia non è più disponibile",
     "DELETE_MESSAGE_SUCCESS": "Messaggio eliminato con successo",
     "NO_CONTENT": "Nessun contenuto disponibile",
-    "ASSIGN_CHANGE": "Modifica assegnatario conversazione",
+    "ASSIGN_CHANGE": "Assegnatario Conversazione cambiato",
     "TEAM_CHANGE": "Team conversazione cambiato",
-    "STATUS_CHANGE": "Stato conversazione cambiato",
-    "PRIORITY_CHANGE": "Priorità conversazione cambiata",
-    "PARTICIPANT_CHANGE": "Partecipante conversazione cambiato",
+    "STATUS_CHANGE": "Stato Conversazione cambiato",
+    "PRIORITY_CHANGE": "Priorità Conversazione cambiata",
+    "PARTICIPANT_CHANGE": "Partecipante Conversazione cambiato",
     "CHANGE_STATUS": "Cambia stato",
     "SEARCH_TEAM": "Cerca team",
     "PRIORITY": {
       "TITLE": "Priorità",
       "OPTIONS": {
-        "NONE": "Nessuno",
+        "NONE": "Nessuna",
         "URGENT": "Urgente",
         "HIGH": "Alta",
         "MEDIUM": "Media",
         "LOW": "Bassa"
       },
       "CHANGE_PRIORITY": {
-        "SELECT_PLACEHOLDER": "Nessuno",
+        "SELECT_PLACEHOLDER": "Nessuna",
         "INPUT_PLACEHOLDER": "Seleziona priorità",
         "NO_RESULTS": "Nessun risultato trovato",
         "SUCCESSFUL": "Cambiata priorità della conversazione id %{conversationId} in %{priority}",
@@ -243,7 +243,7 @@
     "EMAIL_HEADER": {
       "FROM": "Da",
       "TO": "A",
-      "BCC": "CCN",
+      "BCC": "Ccn",
       "CC": "Cc",
       "SUBJECT": "Oggetto",
       "EXPAND": "Espandi email"
@@ -300,7 +300,7 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifiche",
-    "INBOX": "Casella",
+    "INBOX": "Inbox",
     "EMPTY": "Ancora nessuna notifica.",
     "EMPTY_MORE_TEXT": "Una volta che inizierai a ricevere le notifiche, appariranno qui.",
     "ALL_NOTIFICATION_LOADED": "Tutte le notifiche caricate",
@@ -362,14 +362,14 @@
     "INITIATED_FROM": "Avviato da",
     "IP_ADDRESS": "Indirizzo IP",
     "CONVERSATION_ID": "ID Conversazione",
-    "CLIPBOARD_SUCCESS": "Codice copiato negli appunti correttamente"
+    "CLIPBOARD_SUCCESS": "Copiato negli appunti"
   },
   "CONTACT_DETAILS": {
-    "TITLE": "Dettagli contatto",
+    "TITLE": "Dettagli Contatto",
     "EMAIL": "Email",
-    "PHONE_NUMBER": "Numero di telefono",
+    "PHONE_NUMBER": "Numero di Telefono",
     "CALL": "Chiama",
-    "CONTACT_ATTRIBUTES": "Attributi contatti",
+    "CONTACT_ATTRIBUTES": "Attributi Contatto",
     "VALUE_UNAVAILABLE": "Non disponibile"
   },
   "CONVERSATION_PARTICIPANTS": {
@@ -408,8 +408,8 @@
     "NO_RESULT": "Nessuna etichetta trovata"
   },
   "CONVERSATION_AGENTS": {
-    "TITLE": "Assegna agente",
-    "SELECT_AGENT": "Seleziona un'agente",
+    "TITLE": "Assegna operatore",
+    "SELECT_AGENT": "Seleziona un operatore",
     "NO_RESULT": "Nessun operatore trovato"
   },
   "AGENT": {

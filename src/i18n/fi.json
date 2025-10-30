@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "Anna kelvollinen salasana",
     "LOGIN": "Kirjaudu sisään",
     "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Login via SSO",
+    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
+    "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
+    "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
     "FORGOT_PASSWORD": "Salasana unohtunut?",
     "RESET_HERE": "Palauta täällä",
     "NO_ACCOUNT": "Eikö sinulla ole tiliä?",
@@ -49,6 +53,24 @@
     "TITLE": "Salasana unohtunut?",
     "SUB_TITLE": "Älä huoli! Takaamme selustasi.",
     "API_SUCCESS": "Salasanan palautuslinkki on lähetetty sähköpostiisi"
+  },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "Vahvistetaan..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {

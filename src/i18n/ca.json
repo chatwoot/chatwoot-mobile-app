@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "Introduïu una contrasenya vàlida",
     "LOGIN": "Inicia la sessió",
     "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Login via SSO",
+    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
+    "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
+    "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
     "FORGOT_PASSWORD": "Has oblidat la teva contrasenya?",
     "RESET_HERE": "Restableix aquí",
     "NO_ACCOUNT": "No teniu compte?",
@@ -49,6 +53,24 @@
     "TITLE": "Has oblidat la contrasenya?",
     "SUB_TITLE": "No et preocupis! T'ajudarem",
     "API_SUCCESS": "L’enllaç de reinicialització de la contrasenya s’ha enviat al vostre correu electrònic."
+  },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "S'està verificant..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {

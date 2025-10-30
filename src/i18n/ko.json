@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "유효한 비밀번호를 입력해주세요",
     "LOGIN": "가입하기",
     "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Login via SSO",
+    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
+    "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
+    "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
     "FORGOT_PASSWORD": "암호를 잊으셨나요?",
     "RESET_HERE": "리셋 시키기",
     "NO_ACCOUNT": "계정이 없으신가요?",
@@ -49,6 +53,24 @@
     "TITLE": "비밀번호를 잊으셨나요?",
     "SUB_TITLE": "걱정마세요! 저희가 있잖아요",
     "API_SUCCESS": "비밀번호 재설정 링크가 이메일로 전송되었습니다"
+  },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "확인 중..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {
@@ -128,7 +150,7 @@
     "DETAILS": "Details",
     "LABELS": "Conversation labels",
     "ASSIGNED_AGENT": "Assigned agent",
-    "TEAM": "Team",
+    "TEAM": "팀",
     "PRIVATE_MSG_INPUT": "이건 에이전트에게만 보일것입니다",
     "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {

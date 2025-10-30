@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "സാധുവായ ഒരു പാസ്‌വേഡ് നൽകുക",
     "LOGIN": "സൈൻ ഇൻ",
     "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Login via SSO",
+    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
+    "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
+    "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
     "FORGOT_PASSWORD": "നിങ്ങളുടെ പാസ്‌വേഡ് മറന്നോ?",
     "RESET_HERE": "ഇവിടെ പുനഃസജ്ജമാക്കുക",
     "NO_ACCOUNT": "അക്കൗണ്ട് ഇല്ലേ?",
@@ -49,6 +53,24 @@
     "TITLE": "പാസ്സ്‌വേർഡ് മറന്നോ?",
     "SUB_TITLE": "വിഷമിക്കേണ്ട! ഞങ്ങൾക്ക് നിങ്ങളുടെ പിൻബലം ലഭിച്ചു",
     "API_SUCCESS": "പാസ്‌വേഡ് പുനഃസജ്ജീകരണ ലിങ്ക് നിങ്ങളുടെ ഇമെയിലിലേക്ക് അയച്ചു"
+  },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "പരിശോധിച്ചുറപ്പിക്കുന്നു..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {

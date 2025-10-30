@@ -150,7 +150,7 @@
     "DETAILS": "Details",
     "LABELS": "Conversation labels",
     "ASSIGNED_AGENT": "Assigned agent",
-    "TEAM": "Team",
+    "TEAM": "팀",
     "PRIVATE_MSG_INPUT": "이건 에이전트에게만 보일것입니다",
     "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {

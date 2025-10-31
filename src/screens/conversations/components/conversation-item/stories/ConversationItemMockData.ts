@@ -18,6 +18,7 @@ export const conversation = {
     medium: 'web',
     provider: 'facebook',
   },
+  priority: 'medium',
   lastMessage: {
     id: 2346,
     content:

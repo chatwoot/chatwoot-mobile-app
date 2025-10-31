@@ -53,13 +53,14 @@ export const InboxItemComponent = (props: InboxItemProps) => {
     <Animated.View style={tailwind.style('ml-3 py-3 pr-4 border-b-[1px] border-b-blackA-A3')}>
       <Animated.View style={tailwind.style('')}>
         <AnimatedNativeView
-          style={tailwind.style('flex flex-row justify-between items-center h-[24px]')}>
-          <AnimatedNativeView
-            style={tailwind.style('flex flex-row items-center h-[24px] gap-[5px]')}>
+          style={tailwind.style(
+            'w-full gap-2 overflow-hidden flex flex-row justify-between items-center h-[24px]',
+          )}>
+          <AnimatedNativeView style={tailwind.style('flex flex-row items-center h-[24px] gap-1')}>
             <Animated.Text
               numberOfLines={1}
               style={tailwind.style(
-                'text-base font-inter-medium-24 tracking-[0.24px] text-gray-950 capitalize',
+                'text-base font-inter-medium-24 tracking-[0.24px] text-gray-950 capitalize flex-shrink',
                 `max-w-[${width - 250}px]`,
               )}>
               {sender.name || ''}
@@ -73,12 +74,18 @@ export const InboxItemComponent = (props: InboxItemProps) => {
               </Animated.Text>
             </NativeView>
           </AnimatedNativeView>
-          <AnimatedNativeView style={tailwind.style('flex flex-row items-center gap-2')}>
+          <AnimatedNativeView
+            style={tailwind.style('flex-1 flex flex-row items-center justify-end gap-1 min-w-0')}>
             {priority ? <PriorityIndicator {...{ priority }} /> : null}
             {inbox && (
-              <ChannelIndicator inbox={inbox} additionalAttributes={additionalAttributes} />
+              <ChannelIndicator
+                inbox={inbox}
+                additionalAttributes={additionalAttributes}
+                style={tailwind.style('min-w-0')}
+              />
             )}
-            <NativeView>
+            {inbox && <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />}
+            <NativeView style={tailwind.style('flex-shrink-0')}>
               <Animated.Text
                 style={tailwind.style(
                   'text-sm font-inter-420-20 leading-[16px] tracking-[0.32px] text-gray-700',

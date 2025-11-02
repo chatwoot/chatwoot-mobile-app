@@ -20,6 +20,50 @@ Mobile app for chatwoot platform. Built with React Native and Expo.
 - **Supported iOS versions**: 13.4+
 - **Supported Android versions**: 6.0+
 
+## Supported Languages
+
+The Chatwoot mobile app is available in the following languages:
+
+- Afrikaans (af)
+- Arabic (ar)
+- Bahasa Indonesia (id)
+- Catalan (ca)
+- Chinese (Simplified) (zh)
+- Chinese (Traditional) (zh_TW)
+- Czech (cs)
+- Danish (da)
+- Dutch (nl)
+- English (en)
+- Farsi (fa)
+- Finnish (fi)
+- French (fr)
+- German (de)
+- Greek (el)
+- Hungarian (hu)
+- Italian (it)
+- Japanese (ja)
+- Korean (ko)
+- Malayalam (ml)
+- Norwegian (no)
+- Polish (pl)
+- Portuguese (Brazil) (pt_BR)
+- Portuguese (Portugal) (pt)
+- Romanian (ro)
+- Russian (ru)
+- Serbian (sr)
+- Spanish (es)
+- Swedish (sv)
+- Tamil (ta)
+- Turkish (tr)
+- Ukrainian (uk)
+- Vietnamese (vi)
+
+Users can change their language preference from the Settings screen in the app.
+
+### Contributing Translations
+
+Want to add support for a new language? Check out our [Language Contribution Guide](docs/ADDING_LANGUAGES.md) for step-by-step instructions.
+
 ## Features
 
 - Do not miss out on the new customers

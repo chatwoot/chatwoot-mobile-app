@@ -22,19 +22,23 @@
     "ERROR": "安裝網址無效"
   },
   "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
-    "EMAIL": "Email",
+    "TITLE": "登入您的帳戶",
+    "DESCRIPTION": "您已連接至 {{baseUrl}}。",
+    "EMAIL": "電子信箱",
     "PASSWORD": "密碼",
-    "EMAIL_REQUIRED": "Email is required",
-    "EMAIL_ERROR": "輸入錯誤信箱",
-    "PASSWORD_REQUIRED": "Password is required",
-    "PASSWORD_ERROR": "輸入錯誤密碼",
+    "EMAIL_REQUIRED": "電子信箱為必填",
+    "EMAIL_ERROR": "請輸入有效的電子信箱",
+    "PASSWORD_REQUIRED": "密碼為必填",
+    "PASSWORD_ERROR": "請輸入有效的密碼",
     "LOGIN": "登入",
-    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_LOADING": "登入中...",
+    "LOGIN_VIA_SSO": "透過 SSO 登入",
+    "SSO_AUTH_FAILED": "SSO 驗證失敗。請檢查您的憑證並重試。",
+    "SSO_INVALID_RESPONSE": "無效的 SSO 回應。請重試。",
+    "SSO_UNEXPECTED_ERROR": "SSO 登入時發生意外錯誤。請重試。",
     "FORGOT_PASSWORD": "忘記密碼了？",
     "RESET_HERE": "在此重置",
-    "NO_ACCOUNT": "有登入帳號嗎",
+    "NO_ACCOUNT": "沒有帳號嗎？",
     "CREATE_ACCOUNT": "建立新帳戶",
     "SETTINGS": "設定",
     "CHANGE_LANGUAGE": "更換語言",
@@ -43,35 +47,53 @@
   },
   "FORGOT_PASSWORD": {
     "EMAIL": "請輸入您的電子信箱",
-    "EMAIL_ERROR": "Enter a valid email",
+    "EMAIL_ERROR": "請輸入有效的電子信箱",
     "RESET_HERE": "重設密碼",
     "HEADER_TITLE": "重設密碼",
     "TITLE": "忘記密碼",
-    "SUB_TITLE": "不用擔心，我們降返回",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "SUB_TITLE": "別擔心，我們會協助您",
+    "API_SUCCESS": "密碼重設連結已發送至您的電子信箱"
+  },
+  "MFA": {
+    "TITLE": "雙重驗證",
+    "TABS": {
+      "AUTHENTICATOR_APP": "驗證應用程式",
+      "BACKUP_CODE": "備用驗證碼"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "請輸入您驗證應用程式中的 6 位數驗證碼",
+      "BACKUP": "請輸入您的其中一個備用驗證碼"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "輸入備用驗證碼"
+    },
+    "BUTTONS": {
+      "VERIFY": "驗證",
+      "VERIFYING": "驗證中..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "對話",
-      "CLEAR_FILTER": "Clear"
+      "CLEAR_FILTER": "清除"
     },
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "搜尋客服"
       },
       "INBOX": {
-        "TITLE": "Filter by inbox"
+        "TITLE": "依收件匣篩選"
       },
       "SORT_BY": {
-        "TITLE": "Sort by",
+        "TITLE": "排序方式",
         "OPTIONS": {
-          "LATEST": "Latest",
+          "LATEST": "最新",
           "SORT_ON_CREATED_AT": "建立於",
           "SORT_ON_PRIORITY": "優先程度"
         }
       },
       "STATUS": {
-        "TITLE": "Filter by status",
+        "TITLE": "依狀態篩選",
         "OPTIONS": {
           "OPEN": "正在進行的\n",
           "PENDING": "等待中",
@@ -81,9 +103,9 @@
         }
       },
       "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
+        "TITLE": "依指派類型篩選",
         "OPTIONS": {
-          "ME": "Me",
+          "ME": "我的",
           "UNASSIGNED": "未指派的",
           "ALL": "所有的"
         }
@@ -97,8 +119,8 @@
         "SEARCH_AGENT": "搜尋客服"
       },
       "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
+        "HEADER_TITLE": "指派狀態",
+        "TITLE": "依狀態篩選",
         "OPTIONS": {
           "OPEN": "正在進行的\n",
           "PENDING": "等待中",
@@ -109,7 +131,7 @@
       }
     },
     "DEFAULT_HEADER_TITLE": "對話",
-    "UPDATING": "Updating...",
+    "UPDATING": "更新中...",
     "MINE": "我的",
     "UN_ASSIGNED": "未指派的",
     "ALL": "所有的",
@@ -122,68 +144,68 @@
     "TYPE_MESSAGE": "輸入信息",
     "TYPING": "輸入",
     "ALL_CONVERSATION_LOADED": "所有對話以加載",
-    "ASSIGN": "重新打开会话",
-    "FILE_SIZE_LIMIT": "文件超过 5MB 附件限制",
-    "SHARE": "Share conversation",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
-    "ASSIGNED_AGENT": "Assigned agent",
-    "TEAM": "Team",
-    "PRIVATE_MSG_INPUT": "此操作仅对代理人可见",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "ASSIGN": "指派對話",
+    "FILE_SIZE_LIMIT": "檔案超過 5MB 附件限制",
+    "SHARE": "分享",
+    "DETAILS": "詳細資料",
+    "LABELS": "對話標籤",
+    "ASSIGNED_AGENT": "已指派客服",
+    "TEAM": "團隊",
+    "PRIVATE_MSG_INPUT": "此訊息僅對客服可見",
+    "UNSUPPORTED_MESSAGE": "此訊息不支援。您可以在 Facebook / Instagram 應用程式中查看此訊息。",
     "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+      "TITLE": "無法載入對話",
+      "RETRY": "重試",
+      "BACK_TO_HOME": "返回首頁",
+      "DESCRIPTION": "該對話似乎無法正確載入。這可能是由於網路問題或對話已不存在。請點擊重試按鈕再試一次。"
     },
     "BOT": "機器人",
     "EMAIL_HEAD": {
-      "TO": "To",
+      "TO": "收件者",
       "CC": "副本",
       "BCC": "密件副本"
     },
-    "SELF_ASSIGN": "指定給我",
-    "UN_ASSIGN": "取消分配对话",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "SELF_ASSIGN": "指派給我",
+    "UN_ASSIGN": "取消指派對話",
+    "CONVERSATION_NOT_FOUND": "無法載入對話",
     "MARK_AS_PENDING": "標記為待處理",
-    "SNOOZE_UNTIL": "Snooze until",
-    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
-    "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
-    "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
-    "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Change priority",
+    "SNOOZE_UNTIL": "延後至",
+    "SNOOZE_UNTIL_NEXT_REPLY": "直到下次回覆",
+    "SNOOZE_UNTIL_TOMORROW": "直到明天",
+    "SNOOZE_UNTIL_NEXT_WEEK": "直到下週",
+    "SNOOZE": "延後對話",
+    "CHANGE_PRIORITY": "變更優先程度",
     "MESSAGES": "訊息",
-    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_TITLE": "未定義的變數",
     "UNDEFINED_VARIABLES_CLOSE": "關閉",
-    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "DELETE_MESSAGE_TITLE": "確定要刪除此訊息嗎？",
+    "DELETE_MESSAGE_SUB_TITLE": "此操作無法復原。",
+    "COPY_MESSAGE": "訊息已複製到剪貼簿",
+    "STORY_NOT_AVAILABLE": "此動態已不再提供",
     "DELETE_MESSAGE_SUCCESS": "已成功刪除訊息",
     "NO_CONTENT": "沒有可用內容",
     "ASSIGN_CHANGE": "對話指派人已更改",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
+    "TEAM_CHANGE": "對話團隊已更改",
+    "STATUS_CHANGE": "對話狀態已更改",
+    "PRIORITY_CHANGE": "對話優先程度已更改",
+    "PARTICIPANT_CHANGE": "對話參與者已更改",
+    "CHANGE_STATUS": "變更狀態",
     "SEARCH_TEAM": "搜尋團隊",
     "PRIORITY": {
-      "TITLE": "Priority",
+      "TITLE": "優先程度",
       "OPTIONS": {
         "NONE": "無",
-        "URGENT": "Urgent",
-        "HIGH": "High",
-        "MEDIUM": "Medium",
-        "LOW": "Low"
+        "URGENT": "緊急",
+        "HIGH": "高",
+        "MEDIUM": "中",
+        "LOW": "低"
       },
       "CHANGE_PRIORITY": {
         "SELECT_PLACEHOLDER": "無",
-        "INPUT_PLACEHOLDER": "Select priority",
-        "NO_RESULTS": "No results found",
-        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
-        "FAILED": "Couldn't change priority. Please try again."
+        "INPUT_PLACEHOLDER": "選擇優先程度",
+        "NO_RESULTS": "查無結果",
+        "SUCCESSFUL": "已將對話 ID %{conversationId} 的優先程度變更為 %{priority}",
+        "FAILED": "無法變更優先程度。請重試。"
       }
     },
     "ITEM": {
@@ -216,15 +238,15 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "複製",
       "REPLY": "回覆",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "刪除訊息"
     },
     "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "To",
+      "FROM": "寄件者",
+      "TO": "收件者",
       "BCC": "密件副本",
       "CC": "副本",
       "SUBJECT": "主旨",
-      "EXPAND": "Expand email"
+      "EXPAND": "展開電子郵件"
     },
     "ACTIONS": {
       "ASSIGNEE": {

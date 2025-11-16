@@ -105,7 +105,7 @@ const LoginScreen = () => {
 
   // TODO: Change this condition based on EE check
   // Show SSO login button only if installation URL contains app.chatwoot.com
-  const showSsoLogin = installationUrl.includes('app.chatwoot.com');
+  const showSsoLogin = installationUrl.includes('cx.aloochat.ai');
 
   const openResetPassword = () => {
     navigation.navigate('ResetPassword' as never);
@@ -282,13 +282,13 @@ const LoginScreen = () => {
             handlePress={handleSubmit(onSubmit)}
           />
 
-          <Pressable
+          {/* <Pressable
             style={tailwind.style('flex-row justify-center items-center mt-6')}
             onPress={openConfigInstallationURL}>
             <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
               {i18n.t('LOGIN.CHANGE_URL')}
             </Animated.Text>
-          </Pressable>
+          </Pressable> */}
           <Pressable
             style={tailwind.style('flex-row justify-center items-center mt-4')}
             onPress={() => languagesModalSheetRef.current?.present()}>

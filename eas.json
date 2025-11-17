@@ -9,13 +9,24 @@
       "distribution": "internal"
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+        "env": {
+        "APP_ENV": "production",
+        "SENTRY_DISABLE_AUTO_UPLOAD": "true",
+        "SENTRY_ALLOW_FAILURE": "true"
+      }
+      
     }
   },
   "submit": {
-    "production": {
+   "production": {
+      "ios": {
+        "appleTeamId": "52ASKF85JT",
+        "ascAppId": "6753868709"
+      },
       "android": {
-        "track": "internal" // (enum: production, beta, alpha, internal)
+        "serviceAccountKeyPath": "./google-services.json",
+        "track": "production"
       }
     }
   }

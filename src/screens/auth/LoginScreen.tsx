@@ -158,12 +158,12 @@ const LoginScreen = () => {
             <Animated.Text style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20')}>
               {i18n.t('LOGIN.TITLE')}
             </Animated.Text>
-            <Animated.Text
+            {/* <Animated.Text
               style={tailwind.style(
                 'font-inter-normal-20 leading-[18px] tracking-[0.32px] text-gray-900',
               )}>
               {i18n.t('LOGIN.DESCRIPTION', { baseUrl })}
-            </Animated.Text>
+            </Animated.Text> */}
           </View>
 
           {showSsoLogin && (

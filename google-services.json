@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "673459506971",
+    "project_id": "aloochat-7c47c",
+    "storage_bucket": "aloochat-7c47c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673459506971:android:8077c0124ab9b655310dbe",
+        "android_client_info": {
+          "package_name": "com.aloochat.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJWtoPHgyYUzeBtwa-VwwJHMF8DdXM2KQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

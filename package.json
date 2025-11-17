@@ -80,7 +80,7 @@
     "lodash": "^4.17.21",
     "react": "18.3.1",
     "react-hook-form": "^7.52.1",
-    "react-native": "0.76.9",
+    "react-native": "0.81.0",
     "react-native-audio-recorder-player": "^3.6.11",
     "react-native-autoheight-webview": "^1.6.5",
     "react-native-device-info": "^11.1.0",

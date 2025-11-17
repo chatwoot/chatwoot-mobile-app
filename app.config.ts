@@ -70,7 +70,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     extra: {
       eas: {
-        projectId: process.env.EXPO_PUBLIC_PROJECT_ID,
+        projectId: process.env.EXPO_PUBLIC_PROJECT_ID || '61e2c0a0-ea78-49b0-aff4-756616e42543',
         storybookEnabled: process.env.EXPO_STORYBOOK_ENABLED,
       },
     },

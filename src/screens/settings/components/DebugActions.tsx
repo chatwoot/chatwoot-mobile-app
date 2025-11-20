@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Pressable, Text, Animated, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import { showToast } from '@/utils/toastUtils';
-import { tailwind } from '@/theme';
 import { useThemedStyles } from '@/hooks';
 import { useHaptic } from '@/utils';
 import { useAppSelector } from '@/hooks';
@@ -56,6 +55,10 @@ const DebugActionCell = ({ item, index, isLastItem }: DebugActionCellProps) => {
   const version = useAppSelector(selectChatwootVersion);
   const pushToken = useAppSelector(selectPushToken);
 
+  useEffect(() => {
+    console.log('installationUrl', installationUrl);
+  }, [installationUrl]);
+
   const hapticSelection = useHaptic();
 
   const handlePress = (item: DebugAction) => {
@@ -66,6 +69,17 @@ const DebugActionCell = ({ item, index, isLastItem }: DebugActionCellProps) => {
       showToast({ message: `${item.label} copied to clipboard` });
     }
   };
+
+  const labelTextStyle = themedTailwind.style(
+    'text-base  text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
+  );
+  const valueTextStyle = themedTailwind.style(
+    'text-sm text-gray-900 font-inter-420-20 leading-[18px] tracking-[0.16px] italic',
+  );
+  const rowStyle = themedTailwind.style(
+    'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
+    !isLastItem && 'border-b-[1px] border-blackA-A3',
+  );
 
   const debugValue = (key: string) => {
     switch (key) {
@@ -85,26 +99,10 @@ const DebugActionCell = ({ item, index, isLastItem }: DebugActionCellProps) => {
   return (
     <Pressable onPress={() => handlePress(item)}>
       <Animated.View style={themedTailwind.style('flex flex-row items-center')}>
-        <Animated.View
-          style={themedTailwind.style(
-            'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
-            !isLastItem && 'border-b-[1px] border-blackA-A3',
-          )}
-        >
+        <Animated.View style={rowStyle}>
           <View>
-            <Text
-              style={themedTailwind.style(
-                'text-base  text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
-              )}
-            >
-              {item.label}
-            </Text>
-            <Text
-              numberOfLines={2}
-              style={themedTailwind.style(
-                'text-sm text-gray-900 font-inter-420-20 leading-[18px] tracking-[0.16px] italic',
-              )}
-            >
+            <Text style={labelTextStyle}>{item.label}</Text>
+            <Text numberOfLines={2} style={valueTextStyle}>
               {debugValue(item.key)}
             </Text>
           </View>

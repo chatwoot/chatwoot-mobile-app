@@ -68,6 +68,25 @@ const initializeFirebaseMessaging = () => {
   }
 };
 
+const buildConversationsState = () => ({
+  routes: [
+    {
+      name: 'Tab',
+      state: {
+        routes: [
+          {
+            name: 'Conversations',
+          },
+        ],
+      },
+    },
+  ],
+});
+
+const hasConversationIdInPath = (path: string) => /\/conversations\/\d+/.test(path);
+
+const normalizePath = (path: string) => path.split('?')[0].replace(/^\/+/, '');
+
 export const AppNavigationContainer = () => {
   const { isDark } = useTheme();
   const themedTailwind = useThemedStyles();
@@ -99,16 +118,29 @@ export const AppNavigationContainer = () => {
     };
   }, []);
 
+  const normalizedInstallationUrl = installationUrl?.replace(/\/+$/, '');
   const linking = {
-    prefixes: [installationUrl, SSO_CALLBACK_URL],
+    prefixes: [
+      installationUrl,
+      normalizedInstallationUrl,
+      SSO_CALLBACK_URL,
+      'chatwootapp://',
+    ].filter(Boolean),
     config: {
       screens: {
+        Tab: {
+          screens: {
+            Conversations: 'app/accounts/:accountId/conversations',
+          },
+        },
         ChatScreen: {
           path: 'app/accounts/:accountId/conversations/:conversationId/:primaryActorId?/:primaryActorType?',
           parse: {
-            conversationId: (conversationId: string) => parseInt(conversationId),
-            primaryActorId: (primaryActorId: string) => parseInt(primaryActorId),
-            primaryActorType: (primaryActorType: string) => decodeURIComponent(primaryActorType),
+            conversationId: (conversationId: string) => Number(conversationId),
+            primaryActorId: (primaryActorId: string) =>
+              primaryActorId ? Number(primaryActorId) : undefined,
+            primaryActorType: (primaryActorType: string) =>
+              primaryActorType ? decodeURIComponent(primaryActorType) : undefined,
           },
         },
       },
@@ -116,13 +148,24 @@ export const AppNavigationContainer = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // getStateFromPath: App running, receives deep link - handles SSO callbacks and conversation navigation
     getStateFromPath: (path: string, config: any) => {
+      const incomingPath = path;
       // Handle SSO callback - App running, receives deep link
-      if (path.includes(SSO_CALLBACK_URL) || path.includes('auth/saml')) {
-        const ssoParams = SsoUtils.parseCallbackUrl(`chatwootapp://${path}`);
+      const sanitizedPath = normalizePath(incomingPath);
+
+      if (incomingPath.includes(SSO_CALLBACK_URL) || incomingPath.includes('auth/saml')) {
+        const ssoParams = SsoUtils.parseCallbackUrl(`chatwootapp://${incomingPath}`);
         // Handle both success and error cases
         SsoUtils.handleSsoCallback(ssoParams, dispatch);
         // Return undefined to prevent navigation change for SSO callback
         return undefined;
+      }
+
+      if (
+        sanitizedPath === 'inbox' ||
+        sanitizedPath.includes('inbox') ||
+        (sanitizedPath.includes('/conversations') && !hasConversationIdInPath(sanitizedPath))
+      ) {
+        return buildConversationsState();
       }
 
       let primaryActorId = null as number | null;
@@ -138,6 +181,9 @@ export const AppNavigationContainer = () => {
       const conversationId = extractConversationIdFromUrl({ url: path });
 
       if (!conversationId) {
+        if (sanitizedPath.includes('/conversations')) {
+          return buildConversationsState();
+        }
         return;
       }
       if (routes && routes[0]) {

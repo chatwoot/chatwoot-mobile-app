@@ -68,6 +68,7 @@
     "expo-font": "~13.0.4",
     "expo-haptics": "~14.0.1",
     "expo-image": "~2.0.7",
+    "expo-linking": "~7.0.5",
     "expo-notifications": "~0.29.14",
     "expo-splash-screen": "~0.29.24",
     "expo-status-bar": "~2.0.1",

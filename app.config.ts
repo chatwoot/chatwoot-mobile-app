@@ -40,7 +40,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       package: 'com.chatwoot.app',
       permissions: ['android.permission.CAMERA', 'android.permission.RECORD_AUDIO'],
       // Please use the relative path to the google-services.json file
-      googleServicesFile: process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE || './android/app/google-services.json',
+      googleServicesFile: process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE || './google-services.json',
       intentFilters: [
         {
           action: 'VIEW',
@@ -84,8 +84,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           organization: process.env.EXPO_PUBLIC_SENTRY_ORG_NAME,
         },
       ],
-      '@react-native-firebase/app',
-      '@react-native-firebase/messaging',
       [
         'expo-build-properties',
         {
@@ -99,6 +97,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           ios: { useFrameworks: 'static' },
         },
       ],
+      '@react-native-firebase/app',
+      '@react-native-firebase/messaging',
       './with-ffmpeg-pod.js',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },

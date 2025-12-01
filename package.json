@@ -179,6 +179,17 @@
   "pnpm": {
     "patchedDependencies": {
       "ffmpeg-kit-react-native@6.0.2": "patches/ffmpeg-kit-react-native.patch"
+    },
+    "overrides": {
+      "zeego>react-native-ios-context-menu": "^3.1.0"
+    }
+  },
+  "overrides": {
+    "zeego": {
+      "react-native-ios-context-menu": "^3.1.0"
+    },
+    "@welldone-software/why-did-you-render": {
+      "react": "18.3.1"
     }
   }
 }

@@ -35,9 +35,9 @@ yarn-error.*
 *.tsbuildinfo
 
 ios/
-android/
+#android/
 
-google-services.json
+#google-services.json
 GoogleService-Info.plist
 .env
 .env.local

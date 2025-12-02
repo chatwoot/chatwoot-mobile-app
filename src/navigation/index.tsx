@@ -1,5 +1,5 @@
-import React, { useCallback, useRef } from 'react';
-import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
+import React, { useCallback, useRef, useEffect } from 'react';
+import { ActivityIndicator, Linking, StyleSheet, View, Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { getStateFromPath } from '@react-navigation/native';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -27,9 +27,35 @@ import Inter42020 from '@/assets/fonts/Inter-420-20.ttf';
 import Inter50024 from '@/assets/fonts/Inter-500-24.ttf';
 import Inter58024 from '@/assets/fonts/Inter-580-24.ttf';
 import Inter60020 from '@/assets/fonts/Inter-600-20.ttf';
+import notifee from '@notifee/react-native';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
+
+  // Exibir notificação em background usando Notifee
+  if (Platform.OS === 'android' && remoteMessage.data) {
+    const notification = findNotificationFromFCM({ message: remoteMessage });
+    if (notification) {
+      const transformedNotification = transformNotification(notification);
+      // Usar title/body do objeto original ou pushMessageTitle do transformado
+      const title =
+        (notification as any).title || transformedNotification.pushMessageTitle || 'Chatwoot';
+      const body = (notification as any).body || (notification as any).content || '';
+
+      await notifee.displayNotification({
+        title,
+        body,
+        android: {
+          channelId: 'default',
+          smallIcon: 'ic_notification',
+          pressAction: {
+            id: 'default',
+          },
+        },
+        data: remoteMessage.data,
+      });
+    }
+  }
 });
 
 export const AppNavigationContainer = () => {
@@ -46,6 +72,44 @@ export const AppNavigationContainer = () => {
 
   const installationUrl = useAppSelector(selectInstallationUrl);
   const locale = useAppSelector(selectLocale);
+
+  // Adicionar handler para notificações em foreground
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('Message received in foreground!', remoteMessage);
+
+      // Exibir notificação quando o app está em foreground
+      if (Platform.OS === 'android' && remoteMessage.data) {
+        try {
+          const notification = findNotificationFromFCM({ message: remoteMessage });
+          if (notification) {
+            const transformedNotification = transformNotification(notification);
+            // Usar title/body do objeto original ou pushMessageTitle do transformado
+            const title =
+              (notification as any).title || transformedNotification.pushMessageTitle || 'Chatwoot';
+            const body = (notification as any).body || (notification as any).content || '';
+
+            await notifee.displayNotification({
+              title,
+              body,
+              android: {
+                channelId: 'default',
+                smallIcon: 'ic_notification',
+                pressAction: {
+                  id: 'default',
+                },
+              },
+              data: remoteMessage.data,
+            });
+          }
+        } catch (error) {
+          console.error('Error displaying notification:', error);
+        }
+      }
+    });
+
+    return unsubscribe;
+  }, []);
 
   const linking = {
     prefixes: [installationUrl, SSO_CALLBACK_URL],

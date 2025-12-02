@@ -4,7 +4,8 @@ import { Notification } from '@/types/Notification';
 
 let notifee: typeof import('@notifee/react-native').default | undefined;
 
-if (Platform.OS === 'ios') {
+// Habilitar Notifee tanto no iOS quanto no Android
+if (Platform.OS !== 'web') {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   notifee = require('@notifee/react-native')
     .default as typeof import('@notifee/react-native').default;
@@ -62,7 +63,7 @@ export const findNotificationFromFCM = ({ message }: { message: FCMMessage }) =>
     notification = parsedPayload.data.notification;
   }
   // FCM legacy. It will be deprecated soon
-  else {
+  else if (message?.data?.notification) {
     notification = JSON.parse(message.data.notification);
   }
   return notification;

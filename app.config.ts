@@ -75,7 +75,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     owner: 'juandev1998',
     plugins: [
       'expo-font',
-      'expo-crypto',
       ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary'] }],
       [
         '@sentry/react-native/expo',

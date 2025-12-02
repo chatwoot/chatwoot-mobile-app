@@ -11,7 +11,8 @@ import './reanimatedConfig';
 
 const isStorybookEnabled = Constants.expoConfig?.extra?.eas?.storybookEnabled;
 
-if (!__DEV__) {
+// Inicializa Sentry apenas se o DSN estiver configurado
+if (!__DEV__ && process.env.EXPO_PUBLIC_SENTRY_DSN) {
   Sentry.init({
     dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
     tracesSampleRate: 1.0,
@@ -30,7 +31,8 @@ export default (() => {
     return require('./.storybook').default;
   }
 
-  if (!__DEV__) {
+  // Usa Sentry.wrap apenas se o Sentry foi inicializado
+  if (!__DEV__ && process.env.EXPO_PUBLIC_SENTRY_DSN) {
     return Sentry.wrap(App);
   }
 

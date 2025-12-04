@@ -3,6 +3,24 @@ module.exports = {
   plugins: ['prettier'],
   rules: {
     'prettier/prettier': 'error',
+    'import/no-unresolved': [
+      'error',
+      {
+        ignore: [
+          '^@/', // Ignora paths que começam com @/
+          '\\.(ttf|png|jpg|jpeg|gif|svg|webp)$', // Ignora arquivos de assets
+          '^i18n$', // Ignora o módulo i18n
+        ],
+      },
+    ],
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true,
+        project: './tsconfig.json',
+      },
+    },
   },
   overrides: [
     {

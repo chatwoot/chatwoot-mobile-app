@@ -1,43 +1,42 @@
-import React, { useCallback, useEffect } from 'react';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { useCallback, useEffect } from 'react';
 
 import { authActions } from '@/store/auth/authActions';
 import * as Sentry from '@sentry/react-native';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import {
-  selectLoggedIn,
-  selectUser,
   selectCurrentUserAccount,
-  selectPubSubToken,
-  selectUserId,
   selectCurrentUserAccountId,
+  selectLoggedIn,
+  selectPubSubToken,
+  selectUser,
+  selectUserId,
 } from '@/store/auth/authSelectors';
 import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 
-import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stack';
 import ChatScreen from '@/screens/chat-screen/ChatScreen';
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
+import { AuthStack, ConversationStack, InboxStack, SettingsStack } from '../stack';
 
-import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
-import { BottomTabBar } from './BottomTabBar';
-import { settingsActions } from '@/store/settings/settingsActions';
-import { selectChatwootVersion } from '@/store/settings/settingsSelectors';
-import { checkServerSupport } from '@/utils/serverUtils';
+import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
+import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
+import { customAttributeActions } from '@/store/custom-attribute/customAttributeActions';
+import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
 import { inboxActions } from '@/store/inbox/inboxActions';
 import { labelActions } from '@/store/label/labelActions';
+import { settingsActions } from '@/store/settings/settingsActions';
+import { selectChatwootVersion, selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import actionCableConnector from '@/utils/actionCable';
-import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import AnalyticsHelper from '@/utils/analyticsUtils';
 import { clearAllDeliveredNotifications } from '@/utils/pushUtils';
-import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
-import { customAttributeActions } from '@/store/custom-attribute/customAttributeActions';
-import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
+import { checkServerSupport } from '@/utils/serverUtils';
+import { BottomTabBar } from './BottomTabBar';
 
 const Tab = createBottomTabNavigator();
 
@@ -82,20 +81,22 @@ const Tabs = () => {
 
   useEffect(() => {
     // Here is the place we are loading all the data for the app first time first time or user switches account
-    dispatch(authActions.getProfile());
-    dispatch(settingsActions.saveDeviceDetails());
-    dispatch(inboxActions.fetchInboxes());
-    initActionCable();
-    dispatch(labelActions.fetchLabels());
-    dispatch(setCurrentState('none'));
-    dispatch(clearSelection());
-    dispatch(dashboardAppActions.index());
-    dispatch(customAttributeActions.index());
-    initAnalytics();
-    initSentry();
-    initPushNotifications();
+    if (user) {
+      dispatch(authActions.getProfile());
+      dispatch(settingsActions.saveDeviceDetails()); // Só registra token se usuário estiver logado
+      dispatch(inboxActions.fetchInboxes());
+      initActionCable();
+      dispatch(labelActions.fetchLabels());
+      dispatch(setCurrentState('none'));
+      dispatch(clearSelection());
+      dispatch(dashboardAppActions.index());
+      dispatch(customAttributeActions.index());
+      initAnalytics();
+      initSentry();
+      initPushNotifications();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user]); // Mudar dependência de [] para [user]
 
   const initAnalytics = useCallback(async () => {
     if (user) {

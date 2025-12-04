@@ -1,33 +1,43 @@
-import React, { useCallback, useRef, useEffect } from 'react';
-import { ActivityIndicator, Linking, StyleSheet, View, Platform } from 'react-native';
-import messaging from '@react-native-firebase/messaging';
-import { getStateFromPath } from '@react-navigation/native';
-import { KeyboardProvider } from 'react-native-keyboard-controller';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
-
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { NavigationContainer } from '@react-navigation/native';
-import { AppTabs } from './tabs/AppTabs';
-import i18n from 'i18n';
-import { navigationRef } from '@/utils/navigationUtils';
-import { findConversationLinkFromPush, findNotificationFromFCM } from '@/utils/pushUtils';
-import { extractConversationIdFromUrl } from '@/utils/conversationUtils';
-import { useAppSelector } from '@/hooks';
-import { selectInstallationUrl, selectLocale } from '@/store/settings/settingsSelectors';
-import { SSO_CALLBACK_URL } from '@/constants';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { RefsProvider } from '@/context';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { transformNotification } from '@/utils/camelCaseKeys';
-import { SsoUtils } from '@/utils/ssoUtils';
-import { useAppDispatch } from '@/hooks';
 import Inter40020 from '@/assets/fonts/Inter-400-20.ttf';
 import Inter42020 from '@/assets/fonts/Inter-420-20.ttf';
 import Inter50024 from '@/assets/fonts/Inter-500-24.ttf';
 import Inter58024 from '@/assets/fonts/Inter-580-24.ttf';
 import Inter60020 from '@/assets/fonts/Inter-600-20.ttf';
+import { SSO_CALLBACK_URL } from '@/constants';
+import { RefsProvider } from '@/context';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectInstallationUrl, selectLocale } from '@/store/settings/settingsSelectors';
+import { SettingsService } from '@/store/settings/settingsService';
+import type { PushPayload } from '@/store/settings/settingsTypes';
+import { getStore } from '@/store/storeAccessor';
+import { transformNotification } from '@/utils/camelCaseKeys';
+import { extractConversationIdFromUrl } from '@/utils/conversationUtils';
+import { navigationRef } from '@/utils/navigationUtils';
+import { findConversationLinkFromPush, findNotificationFromFCM } from '@/utils/pushUtils';
+import { SsoUtils } from '@/utils/ssoUtils';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import notifee from '@notifee/react-native';
+import messaging from '@react-native-firebase/messaging';
+import { getStateFromPath, NavigationContainer } from '@react-navigation/native';
+import * as Sentry from '@sentry/react-native';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import i18n from 'i18n';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { ActivityIndicator, Linking, Platform, StyleSheet, View } from 'react-native';
+import {
+  getApiLevel,
+  getBrand,
+  getBuildNumber,
+  getManufacturer,
+  getModel,
+  getSystemName,
+  getUniqueId,
+} from 'react-native-device-info';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AppTabs } from './tabs/AppTabs';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
@@ -39,7 +49,9 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
       const transformedNotification = transformNotification(notification);
       // Usar title/body do objeto original ou pushMessageTitle do transformado
       const title =
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (notification as any).title || transformedNotification.pushMessageTitle || 'Chatwoot';
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const body = (notification as any).body || (notification as any).content || '';
 
       await notifee.displayNotification({
@@ -86,8 +98,12 @@ export const AppNavigationContainer = () => {
             const transformedNotification = transformNotification(notification);
             // Usar title/body do objeto original ou pushMessageTitle do transformado
             const title =
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               (notification as any).title || transformedNotification.pushMessageTitle || 'Chatwoot';
-            const body = (notification as any).body || (notification as any).content || '';
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const body =
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (notification as any).body || (notification as any).content || '';
 
             await notifee.displayNotification({
               title,
@@ -111,6 +127,51 @@ export const AppNavigationContainer = () => {
     return unsubscribe;
   }, []);
 
+  // Adicionar listener para atualização do token FCM
+  useEffect(() => {
+    const unsubscribeTokenRefresh = messaging().onTokenRefresh(async fcmToken => {
+      console.log('FCM Token refreshed:', fcmToken);
+      // Verificar se usuário está logado antes de atualizar
+      const store = getStore();
+      const state = store.getState();
+      if (!state.auth.user) {
+        console.log('User not logged in, skipping token update');
+        return;
+      }
+
+      // Atualizar o token no backend quando ele for renovado
+      try {
+        const deviceId = await getUniqueId();
+        const devicePlatform = getSystemName();
+        const manufacturer = await getManufacturer();
+        const model = await getModel();
+        const apiLevel = await getApiLevel();
+        const deviceName = `${manufacturer} ${model}`;
+        const brandName = await getBrand();
+        const buildNumber = await getBuildNumber();
+
+        const pushData: PushPayload = {
+          subscription_type: 'fcm',
+          subscription_attributes: {
+            deviceName,
+            devicePlatform,
+            apiLevel: apiLevel.toString(),
+            brandName,
+            buildNumber,
+            push_token: fcmToken,
+            device_id: deviceId,
+          },
+        };
+        await SettingsService.saveDeviceDetails(pushData);
+      } catch (error) {
+        console.error('Error updating FCM token:', error);
+        Sentry.captureException(error);
+      }
+    });
+
+    return unsubscribeTokenRefresh;
+  }, []);
+
   const linking = {
     prefixes: [installationUrl, SSO_CALLBACK_URL],
     config: {
@@ -125,8 +186,8 @@ export const AppNavigationContainer = () => {
         },
       },
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // getStateFromPath: App running, receives deep link - handles SSO callbacks and conversation navigation
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getStateFromPath: (path: string, config: any) => {
       // Handle SSO callback - App running, receives deep link
       if (path.includes(SSO_CALLBACK_URL) || path.includes('auth/saml')) {

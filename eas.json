@@ -15,14 +15,12 @@
       "env": {
         "SENTRY_DISABLE_AUTO_UPLOAD": "true"
       },
-      "prebuildCommand": "npm run generate:soft"
     },
     "production": {
       "autoIncrement": true,
       "env": {
         "SENTRY_DISABLE_AUTO_UPLOAD": "true"
-      },
-      "prebuildCommand": "npm run generate:soft"
+      }
     }
   },
   "submit": {

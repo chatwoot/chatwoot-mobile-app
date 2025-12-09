@@ -15,12 +15,14 @@
       "env": {
         "SENTRY_DISABLE_AUTO_UPLOAD": "true"
       },
+      "prebuildCommand": "rm -rf android && npx expo prebuild --platform android"
     },
     "production": {
       "autoIncrement": true,
       "env": {
         "SENTRY_DISABLE_AUTO_UPLOAD": "true"
-      }
+      },
+      "prebuildCommand": "rm -rf android && npx expo prebuild --platform android"
     }
   },
   "submit": {

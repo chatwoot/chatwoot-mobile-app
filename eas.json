@@ -13,14 +13,16 @@
         "buildType": "apk"
       },
       "env": {
-        "SENTRY_DISABLE_AUTO_UPLOAD": "true"
+        "SENTRY_DISABLE_AUTO_UPLOAD": "true",
+        "EXPO_USE_COMMUNITY_AUTOLINKING": "1"
       },
       "prebuildCommand": "rm -rf android && npx expo prebuild --platform android"
     },
     "production": {
       "autoIncrement": true,
       "env": {
-        "SENTRY_DISABLE_AUTO_UPLOAD": "true"
+        "SENTRY_DISABLE_AUTO_UPLOAD": "true",
+        "EXPO_USE_COMMUNITY_AUTOLINKING": "1"
       },
       "prebuildCommand": "rm -rf android && npx expo prebuild --platform android"
     }

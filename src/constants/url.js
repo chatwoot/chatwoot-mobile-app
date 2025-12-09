@@ -1,4 +1,4 @@
-export const URL_TYPE = 'https://';
+export const URL_TYPE = 'http://';
 
 export const API_URL = 'api/v1/';
 

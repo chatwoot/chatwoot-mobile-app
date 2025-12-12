@@ -1,0 +1,480 @@
+{
+  "WELCOME": "Welcome",
+  "COMMON": {
+    "ERROR": "Error",
+    "ERROR_TITLE": "Unexpected error occurred",
+    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
+    "CLOSE": "Uždaryti"
+  },
+  "FOOTER": {
+    "HOME": "Pagrindinis",
+    "CONVERSATION": "Pokalbiai",
+    "NOTIFICATION": "Perspėjimai",
+    "SETTINGS": "Nustatymai"
+  },
+  "CONFIGURE_URL": {
+    "ENTER_URL": "Installation URL",
+    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "URL_ERROR": "Enter a valid URL",
+    "URL_REQUIRED": "URL is required",
+    "CONNECT": "Sujungti",
+    "CHANGE_LANGUAGE": "Change language",
+    "ERROR": "Invalid installation url"
+  },
+  "LOGIN": {
+    "TITLE": "Log in to your account",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "EMAIL": "El. paštas",
+    "PASSWORD": "Slaptažodis",
+    "EMAIL_REQUIRED": "El. paštas būtinas",
+    "EMAIL_ERROR": "Enter a valid email",
+    "PASSWORD_REQUIRED": "Password is required",
+    "PASSWORD_ERROR": "Enter a valid password",
+    "LOGIN": "Sign In",
+    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Login via SSO",
+    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
+    "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
+    "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
+    "FORGOT_PASSWORD": "Pamiršote slaptažodį?",
+    "RESET_HERE": "Reset here",
+    "NO_ACCOUNT": "Don't have an account?",
+    "CREATE_ACCOUNT": "Sukurti naują paskyrą",
+    "SETTINGS": "Nustatymai",
+    "CHANGE_LANGUAGE": "Change language",
+    "TERMS": "Terms & Conditions",
+    "CHANGE_URL": "Change URL"
+  },
+  "FORGOT_PASSWORD": {
+    "EMAIL": "Prašau įveskite jūsų el. paštą",
+    "EMAIL_ERROR": "Enter a valid email",
+    "RESET_HERE": "Atstatyti slaptažodį",
+    "HEADER_TITLE": "Atstatyti slaptažodį",
+    "TITLE": "Forgot Password?",
+    "SUB_TITLE": "Don't worry! We got your back",
+    "API_SUCCESS": "Password reset link has been sent to your email address"
+  },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "Tikrinama..."
+    }
+  },
+  "CONVERSATION": {
+    "HEADER": {
+      "TITLE": "Pokalbiai",
+      "CLEAR_FILTER": "Clear"
+    },
+    "FILTERS": {
+      "AGENT": {
+        "SEARCH_AGENT": "Ieškoti agentų"
+      },
+      "INBOX": {
+        "TITLE": "Filter by inbox"
+      },
+      "SORT_BY": {
+        "TITLE": "Rūšiuoti pagal",
+        "OPTIONS": {
+          "LATEST": "Latest",
+          "SORT_ON_CREATED_AT": "Sukūrimo data",
+          "SORT_ON_PRIORITY": "Prioritetas"
+        }
+      },
+      "STATUS": {
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "Atidaryti",
+          "PENDING": "Laukiama",
+          "SNOOZED": "Atidėta",
+          "RESOLVED": "Išspręsta",
+          "ALL": "Visi"
+        }
+      },
+      "ASSIGNEE_TYPE": {
+        "TITLE": "Filter by assignee type",
+        "OPTIONS": {
+          "ME": "Me",
+          "UNASSIGNED": "Ne priskirtas",
+          "ALL": "Visi"
+        }
+      }
+    },
+    "ASSIGNEE": {
+      "LABELS": {
+        "SEARCH_LABELS": "Ieškoti etikečių"
+      },
+      "AGENTS": {
+        "SEARCH_AGENT": "Ieškoti agentų"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "TITLE": "Filter by status",
+        "OPTIONS": {
+          "OPEN": "Atidaryti",
+          "PENDING": "Laukiama",
+          "SNOOZED": "Atidėta",
+          "RESOLVED": "Išspręsta",
+          "ALL": "Visi"
+        }
+      }
+    },
+    "DEFAULT_HEADER_TITLE": "Pokalbiai",
+    "UPDATING": "Updating...",
+    "MINE": "Mano",
+    "UN_ASSIGNED": "Ne priskirtas",
+    "ALL": "Visi",
+    "EMPTY": "Šioje grupėje nėra aktyvių pokalbių.",
+    "PICTURE_CONTENT": "Vaizdinė žinutė",
+    "ATTACHMENT_CONTENT": "Failas pridėtas",
+    "DOWNLOAD": "Parsisiųsti",
+    "TODAY": "Šiandien",
+    "YESTERDAY": "Vakar",
+    "TYPE_MESSAGE": "Type message",
+    "TYPING": "typing",
+    "ALL_CONVERSATION_LOADED": "All conversations loaded",
+    "ASSIGN": "Assign conversation",
+    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
+    "SHARE": "Share",
+    "DETAILS": "Details",
+    "LABELS": "Conversation labels",
+    "ASSIGNED_AGENT": "Priskirtas agentas",
+    "TEAM": "Komanda",
+    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "NOT_FOUND": {
+      "TITLE": "Unable to fetch conversation",
+      "RETRY": "Retry",
+      "BACK_TO_HOME": "Go back to home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+    },
+    "BOT": "Botas",
+    "EMAIL_HEAD": {
+      "TO": "Kam",
+      "CC": "Cc",
+      "BCC": "Bcc"
+    },
+    "SELF_ASSIGN": "Priskirti man",
+    "UN_ASSIGN": "Unassign conversation",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "MARK_AS_PENDING": "Pažymėti kaip laukiantį",
+    "SNOOZE_UNTIL": "Atidėti iki",
+    "SNOOZE_UNTIL_NEXT_REPLY": "Iki kito atsakymo",
+    "SNOOZE_UNTIL_TOMORROW": "Iki rytojaus",
+    "SNOOZE_UNTIL_NEXT_WEEK": "Iki kitos savaitės",
+    "SNOOZE": "Snooze conversation",
+    "CHANGE_PRIORITY": "Change priority",
+    "MESSAGES": "Pranešimai",
+    "UNDEFINED_VARIABLES_TITLE": "Neapibrėžti kintamieji",
+    "UNDEFINED_VARIABLES_CLOSE": "Uždaryti",
+    "DELETE_MESSAGE_TITLE": "Ar tikrai norite ištrinti šį pranešimą?",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "DELETE_MESSAGE_SUCCESS": "Pranešimas ištrintas sėkmingai",
+    "NO_CONTENT": "Nėra turinio",
+    "ASSIGN_CHANGE": "Pasikeitė pokalbiui priskirtas asmuo",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "CHANGE_STATUS": "Pakeisti būseną",
+    "SEARCH_TEAM": "Ieškoti komandų",
+    "PRIORITY": {
+      "TITLE": "Prioritetas",
+      "OPTIONS": {
+        "NONE": "Nėra",
+        "URGENT": "Skubus",
+        "HIGH": "Aukštas",
+        "MEDIUM": "Vidutinis",
+        "LOW": "Žemas"
+      },
+      "CHANGE_PRIORITY": {
+        "SELECT_PLACEHOLDER": "Nėra",
+        "INPUT_PLACEHOLDER": "Pasirinkti prioritetą",
+        "NO_RESULTS": "Nieko nerasta",
+        "SUCCESSFUL": "Prioritetas pokalbiui id %{conversationId} pakeistas į %{priority}",
+        "FAILED": "Nepavyko pakeisti prioriteto. Prašau, pabandykite dar kartą."
+      }
+    },
+    "ITEM": {
+      "ASSIGN": "Priskirti",
+      "STATUS": "Būsena"
+    },
+    "ATTACHMENTS": {
+      "image": {
+        "CONTENT": "Vaizdinė žinutė"
+      },
+      "audio": {
+        "CONTENT": "Garso žinutė"
+      },
+      "video": {
+        "CONTENT": "Video žinutė"
+      },
+      "file": {
+        "CONTENT": "Failas pridėtas"
+      },
+      "location": {
+        "CONTENT": "Vieta"
+      },
+      "fallback": {
+        "CONTENT": "pasidalino URL"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
+      }
+    },
+    "LONG_PRESS_ACTIONS": {
+      "COPY": "Kopijuoti",
+      "REPLY": "Atsakyti",
+      "DELETE_MESSAGE": "Delete message"
+    },
+    "EMAIL_HEADER": {
+      "FROM": "Nuo",
+      "TO": "Kam",
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "SUBJECT": "Tema",
+      "EXPAND": "Expand email"
+    },
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "EMPTY": "Ne priskirtas",
+        "ASSIGN": "Priskirti",
+        "EDIT": "Redaguoti"
+      },
+      "TEAM": {
+        "EMPTY": "No team assigned",
+        "ASSIGN": "Priskirti"
+      },
+      "PRIORITY": {
+        "EMPTY": "No priority added",
+        "EDIT": "Redaguoti"
+      }
+    }
+  },
+  "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "SORT_BY": "Rūšiuoti pagal",
+    "FILTER_BY_INBOX": "Filter by inbox",
+    "HEADER_TITLE": "Conversation Filter",
+    "CHOOSE_INBOX": "Choose Inbox",
+    "CHOOSE_STATUS": "Conversation Status",
+    "OPEN": "Atidaryti",
+    "RESOLVED": "Išspręsta",
+    "BOT": "Botas",
+    "SUBMIT": "Pateikti",
+    "PENDING": "Laukiama",
+    "SNOOZED": "Atidėta"
+  },
+  "SETTINGS": {
+    "HEADER_TITLE": "Nustatymai",
+    "SET_AVAILABILITY": "Nustatykite save kaip",
+    "CHANGE_AVAILABILITY": "Set availability",
+    "PREFERENCES": "Nuostatos",
+    "ABOUT": "About",
+    "SUPPORT": "Support",
+    "SWITCH_ACCOUNT": "Perjungti Paskyrą",
+    "CHANGE_LANGUAGE": "Change Language",
+    "NOTIFICATIONS": "Perspėjimai",
+    "NOTIFICATION_PREFERENCES": "Notification Preferences",
+    "READ_DOCS": "Read Docs",
+    "CHAT_WITH_US": "Pabendraukite su mumis",
+    "LOGOUT": "Atsijungti",
+    "SUBMIT": "Pateikti",
+    "SET_LANGUAGE": "Set Language",
+    "DEBUG_ACTIONS": "Debug Actions"
+  },
+  "NOTIFICATION": {
+    "HEADER_TITLE": "Perspėjimai",
+    "INBOX": "Gautų laiškų aplankas",
+    "EMPTY": "No notifications yet.",
+    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
+    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
+    "MARK_ALL": "Mark all as read",
+    "CANCEL": "Atšaukti",
+    "DELETE": "Ištrinti",
+    "TYPES": {
+      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "CONVERSATION_CREATION": "New conversation created",
+      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    },
+    "FILTERS": {
+      "SORT_BY": {
+        "TITLE": "Rūšiuoti pagal",
+        "OPTIONS": {
+          "ASC": "Oldest",
+          "DESC": "Newest"
+        }
+      }
+    },
+    "ALERTS": {
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed",
+      "DELETE": "Notification deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted"
+    }
+  },
+  "AVAILABILITY": {
+    "ONLINE": "Prisijungęs",
+    "BUSY": "Užimta",
+    "OFFLINE": "Atsijungęs"
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "TITLE": "Notification Preferences",
+    "EMAIL": "El. pašto Perspėjimai",
+    "PUSH": "Aktyvieji perspėjimai",
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
+  },
+  "CONVERSATION_DETAILS": {
+    "TITLE": "Attributes",
+    "BROWSER": "Naršyklė",
+    "OPERATING_SYSTEM": "Operacinė Sistema",
+    "INITIATED_AT": "Prasidėjo",
+    "INITIATED_FROM": "Pradėta iš",
+    "IP_ADDRESS": "IP Adresas",
+    "CONVERSATION_ID": "Conversation ID",
+    "CLIPBOARD_SUCCESS": "Nukopijuotas į iškarpinę"
+  },
+  "CONTACT_DETAILS": {
+    "TITLE": "Kontakto detali informacija",
+    "EMAIL": "El. paštas",
+    "PHONE_NUMBER": "Telefono numeris",
+    "CALL": "Skambučiai",
+    "CONTACT_ATTRIBUTES": "Kontakto Požymiai",
+    "VALUE_UNAVAILABLE": "Nepasiekiamas"
+  },
+  "CONVERSATION_PARTICIPANTS": {
+    "TITLE": "Participants",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} dalyvauja žmonių.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} dalyvauja asmenų.",
+    "NO_PARTICIPANTS_TEXT": "Niekas nedalyvauja!.",
+    "WATCH_CONVERSATION": "Prisijungti pire pokalbio",
+    "YOU_ARE_WATCHING": "Jūs dalyvaujate",
+    "NO_RECORDS_FOUND": "Nieko nerasta",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "ADD_PARTICIPANTS": "Pasirinkti dalyvius",
+    "REMAINING_PARTICIPANTS_TEXT": "kiti",
+    "REMAINING_PARTICIPANT_TEXT": "kitas",
+    "ADD_PARTICIPANT": "Add Participant"
+  },
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Kontakto Požymiai"
+  },
+  "CONVERSATION_ACTION": {
+    "TITLE": "Veiksmai"
+  },
+  "CONVERSATION_TEAMS": {
+    "TITLE": "Priskirti komandą",
+    "SELECT_TEAM": "Pasirinkite komandą",
+    "NO_RESULT": "No team found"
+  },
+  "CONVERSATION_LABELS": {
+    "TITLE": "Pokalbio Etiketės",
+    "ADD_LABEL": "Pridėti Etiketę",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Etiketė sėkmingai atnaujinta",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "Etikečių nerasta"
+  },
+  "CONVERSATION_AGENTS": {
+    "TITLE": "Priskirti Agentą",
+    "SELECT_AGENT": "Pasirinkti agentą",
+    "NO_RESULT": "No agent found"
+  },
+  "AGENT": {
+    "TITLE": "Pasirinkti agentą"
+  },
+  "TEAMS": {
+    "TITLE": "Pasirinkite komandą",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "CHANGE_TEAMS": "Pasikeitė pokalbių komanda"
+  },
+  "ERRORS": {
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
+    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "AUTH": "Username / Password Incorrect. Please try again",
+    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+  },
+  "SUCCESS": {
+    "AUTH": "Login Successful"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "Server upgrade required",
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+  },
+  "EXIT": {
+    "TITLE": "Exit",
+    "SUBTITLE": "Are you sure you want to quit?",
+    "CANCEL": "Atšaukti",
+    "OK": "Ok"
+  },
+  "BANNER": {
+    "TWILIO_WHATSAPP_CAN_REPLY": "Į šį pokalbį galite atsakyti tik naudodami šablono pranešimą, nes",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "Pranešimų apribojimas 24 valandoms",
+    "24_HOURS_WINDOW": "Pranešimų apribojimas 24 valandoms",
+    "CANNOT_REPLY": "Jūs negalite atsakyti dėl"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "FRT": "FRT %{status}",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}",
+      "MISSED": "missed",
+      "DUE": "due"
+    },
+    "MISSES": {
+      "TITLE": "SLA Misses",
+      "FRT": "First response time",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "HIDE": "Hide {count} rows"
+    }
+  },
+  "MACRO": {
+    "TITLE": "Makrokomandos",
+    "SELECT_MACRO": "Select macro",
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_SUCCESS": "Sėkmingai įvykdyta makrokomanda",
+    "EXECUTION_ERROR": "Macro execution failed",
+    "NO_MACROS": "Nerasta makrokomandų"
+  }
+}

@@ -2,19 +2,25 @@ import React from 'react';
 import { Platform, Pressable, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { AddParticipant, Overflow } from '@/svg-icons';
+import { AddParticipant, CloseIcon, Overflow } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Avatar, Icon } from '@/components-next';
 import { Agent } from '@/types';
 import i18n from '@/i18n';
+import { useAppDispatch } from '@/hooks';
+import { conversationParticipantActions } from '@/store/conversation-participant/conversationParticipantActions';
+import { showToast } from '@/utils/toastUtils';
+import AnalyticsHelper from '@/utils/analyticsUtils';
+import { CONVERSATION_EVENTS } from '@/constants/analyticsEvents';
 
 type ListItemProps = {
   listItem: Agent;
   index: number;
+  onRemove: (agent: Agent) => void;
 };
 
 const ListItem = (props: ListItemProps) => {
-  const { listItem, index } = props;
+  const { listItem, index, onRemove } = props;
   return (
     <Pressable
       key={index}
@@ -26,13 +32,16 @@ const ListItem = (props: ListItemProps) => {
           <Avatar src={{ uri: listItem.thumbnail || undefined }} size="lg" />
         </Animated.View>
         <Animated.View
-          style={tailwind.style('flex-1 py-[11px] ml-2 border-b-[1px] border-b-blackA-A3')}>
+          style={tailwind.style('flex-1 py-[11px] ml-2 border-b-[1px] border-b-blackA-A3 flex-row justify-between items-center pr-3')}>
           <Animated.Text
             style={tailwind.style(
               'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
             )}>
             {listItem.name}
           </Animated.Text>
+          <Pressable hitSlop={16} onPress={() => onRemove(listItem)}>
+            <Icon icon={<CloseIcon />} size={20} />
+          </Pressable>
         </Animated.View>
       </Animated.View>
     </Pressable>
@@ -63,10 +72,20 @@ const ParticipantOverflowCell = ({ count }: { count: number }) => {
 type AddParticipantListProps = {
   conversationParticipants: Agent[];
   onAddParticipant: () => void;
+  conversationId: number;
 };
 
 export const AddParticipantList = (props: AddParticipantListProps) => {
-  const { conversationParticipants, onAddParticipant } = props;
+  const { conversationParticipants, onAddParticipant, conversationId } = props;
+  const dispatch = useAppDispatch();
+
+  const handleRemoveParticipant = async (agent: Agent) => {
+    const remainingParticipants = conversationParticipants.filter(p => p.id !== agent.id);
+    const userIds = remainingParticipants.map(p => p.id);
+    await dispatch(conversationParticipantActions.update({ conversationId, userIds }));
+    AnalyticsHelper.track(CONVERSATION_EVENTS.PARTICIPANT_CHANGED);
+    showToast({ message: i18n.t('CONVERSATION.PARTICIPANT_CHANGE') });
+  };
 
   const overflowCount = conversationParticipants?.length;
   return (
@@ -82,7 +101,7 @@ export const AddParticipantList = (props: AddParticipantListProps) => {
       <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
         {conversationParticipants &&
           conversationParticipants.slice(0, 4).map((listItem, index) => {
-            return <ListItem key={index} {...{ listItem, index }} />;
+            return <ListItem key={index} {...{ listItem, index, onRemove: handleRemoveParticipant }} />;
           })}
         {overflowCount > 4 && <ParticipantOverflowCell count={overflowCount - 4} />}
         <Pressable

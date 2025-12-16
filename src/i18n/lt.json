@@ -9,12 +9,12 @@
   "FOOTER": {
     "HOME": "Pagrindinis",
     "CONVERSATION": "Pokalbiai",
-    "NOTIFICATION": "Perspėjimai",
+    "NOTIFICATION": "Pranešimai",
     "SETTINGS": "Nustatymai"
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installation URL",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "DESCRIPTION": "Jei naudojate savarankiškai talpinamą „Chatwoot“ diegimą, įveskite savo serverio nuorodą. Kitu atveju naudokite app.chatwoot.com.",
     "URL_ERROR": "Enter a valid URL",
     "URL_REQUIRED": "URL is required",
     "CONNECT": "Sujungti",
@@ -46,7 +46,7 @@
     "CHANGE_URL": "Change URL"
   },
   "FORGOT_PASSWORD": {
-    "EMAIL": "Prašau įveskite jūsų el. paštą",
+    "EMAIL": "Prašome įvesti savo el. pašto adresą",
     "EMAIL_ERROR": "Enter a valid email",
     "RESET_HERE": "Atstatyti slaptažodį",
     "HEADER_TITLE": "Atstatyti slaptažodį",
@@ -106,7 +106,7 @@
         "TITLE": "Filter by assignee type",
         "OPTIONS": {
           "ME": "Me",
-          "UNASSIGNED": "Ne priskirtas",
+          "UNASSIGNED": "Nepriskirta",
           "ALL": "Visi"
         }
       }
@@ -133,12 +133,12 @@
     "DEFAULT_HEADER_TITLE": "Pokalbiai",
     "UPDATING": "Updating...",
     "MINE": "Mano",
-    "UN_ASSIGNED": "Ne priskirtas",
+    "UN_ASSIGNED": "Nepriskirta",
     "ALL": "Visi",
     "EMPTY": "Šioje grupėje nėra aktyvių pokalbių.",
     "PICTURE_CONTENT": "Vaizdinė žinutė",
     "ATTACHMENT_CONTENT": "Failas pridėtas",
-    "DOWNLOAD": "Parsisiųsti",
+    "DOWNLOAD": "Atsisiųsti",
     "TODAY": "Šiandien",
     "YESTERDAY": "Vakar",
     "TYPE_MESSAGE": "Type message",
@@ -250,7 +250,7 @@
     },
     "ACTIONS": {
       "ASSIGNEE": {
-        "EMPTY": "Ne priskirtas",
+        "EMPTY": "Nepriskirta",
         "ASSIGN": "Priskirti",
         "EDIT": "Redaguoti"
       },
@@ -289,7 +289,7 @@
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Perjungti Paskyrą",
     "CHANGE_LANGUAGE": "Change Language",
-    "NOTIFICATIONS": "Perspėjimai",
+    "NOTIFICATIONS": "Pranešimai",
     "NOTIFICATION_PREFERENCES": "Notification Preferences",
     "READ_DOCS": "Read Docs",
     "CHAT_WITH_US": "Pabendraukite su mumis",

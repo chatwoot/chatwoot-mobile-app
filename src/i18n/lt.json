@@ -26,7 +26,7 @@
     "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "El. paštas",
     "PASSWORD": "Slaptažodis",
-    "EMAIL_REQUIRED": "El. paštas būtinas",
+    "EMAIL_REQUIRED": "El. paštas yra privalomas",
     "EMAIL_ERROR": "Enter a valid email",
     "PASSWORD_REQUIRED": "Password is required",
     "PASSWORD_ERROR": "Enter a valid password",
@@ -75,7 +75,7 @@
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "Pokalbiai",
-      "CLEAR_FILTER": "Clear"
+      "CLEAR_FILTER": "Išvalyti"
     },
     "FILTERS": {
       "AGENT": {
@@ -152,7 +152,7 @@
     "ASSIGNED_AGENT": "Priskirtas agentas",
     "TEAM": "Komanda",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "UNSUPPORTED_MESSAGE": "Šis pranešimas nepalaikomas. Jį galite peržiūrėti „Facebook“ / „Instagram“ programėlėje.",
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",
@@ -162,8 +162,8 @@
     "BOT": "Botas",
     "EMAIL_HEAD": {
       "TO": "Kam",
-      "CC": "Cc",
-      "BCC": "Bcc"
+      "CC": "Kopija (Cc)",
+      "BCC": "Slapta kopija (Bcc)"
     },
     "SELF_ASSIGN": "Priskirti man",
     "UN_ASSIGN": "Unassign conversation",
@@ -182,14 +182,14 @@
     "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
     "COPY_MESSAGE": "Message copied to clipboard",
     "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Pranešimas ištrintas sėkmingai",
+    "DELETE_MESSAGE_SUCCESS": "Pranešimas sėkmingai ištrintas",
     "NO_CONTENT": "Nėra turinio",
     "ASSIGN_CHANGE": "Pasikeitė pokalbiui priskirtas asmuo",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Pakeisti būseną",
+    "CHANGE_STATUS": "Pakeisti statusą",
     "SEARCH_TEAM": "Ieškoti komandų",
     "PRIORITY": {
       "TITLE": "Prioritetas",
@@ -204,7 +204,7 @@
         "SELECT_PLACEHOLDER": "Nėra",
         "INPUT_PLACEHOLDER": "Pasirinkti prioritetą",
         "NO_RESULTS": "Nieko nerasta",
-        "SUCCESSFUL": "Prioritetas pokalbiui id %{conversationId} pakeistas į %{priority}",
+        "SUCCESSFUL": "Prioritetas pokalbiui ID %{conversationId} pakeistas į %{priority}",
         "FAILED": "Nepavyko pakeisti prioriteto. Prašau, pabandykite dar kartą."
       }
     },
@@ -220,7 +220,7 @@
         "CONTENT": "Garso žinutė"
       },
       "video": {
-        "CONTENT": "Video žinutė"
+        "CONTENT": "Vaizdinė žinutė"
       },
       "file": {
         "CONTENT": "Failas pridėtas"
@@ -229,7 +229,7 @@
         "CONTENT": "Vieta"
       },
       "fallback": {
-        "CONTENT": "pasidalino URL"
+        "CONTENT": "pasidalino nuoroda"
       },
       "contact": {
         "CONTENT": "Shared a contact"
@@ -246,7 +246,7 @@
       "BCC": "Bcc",
       "CC": "Cc",
       "SUBJECT": "Tema",
-      "EXPAND": "Expand email"
+      "EXPAND": "Išskleisti el. laišką"
     },
     "ACTIONS": {
       "ASSIGNEE": {
@@ -287,7 +287,7 @@
     "PREFERENCES": "Nuostatos",
     "ABOUT": "About",
     "SUPPORT": "Support",
-    "SWITCH_ACCOUNT": "Perjungti Paskyrą",
+    "SWITCH_ACCOUNT": "Perjungti paskyrą",
     "CHANGE_LANGUAGE": "Change Language",
     "NOTIFICATIONS": "Pranešimai",
     "NOTIFICATION_PREFERENCES": "Notification Preferences",
@@ -299,21 +299,21 @@
     "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {
-    "HEADER_TITLE": "Perspėjimai",
+    "HEADER_TITLE": "Pranešimai",
     "INBOX": "Gautų laiškų aplankas",
     "EMPTY": "No notifications yet.",
     "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
     "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
+    "MARK_ALL": "Pažymėti viską kaip perskaityta",
     "CANCEL": "Atšaukti",
     "DELETE": "Ištrinti",
     "TYPES": {
-      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
-      "CONVERSATION_CREATION": "New conversation created",
-      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "CONVERSATION_MENTION": "Jūs buvote paminėtas pokalbyje",
+      "CONVERSATION_CREATION": "Naujas pokalbis sukurtas",
+      "CONVERSATION_ASSIGNMENT": "Pokalbis buvo priskirtas jums",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Nauji pranešimai priskirtame pokalbyje",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Naujas pranešimas pokalbyje, kuriame dalyvaujate",
+      "SLA_MISSED_FIRST_RESPONSE": "Praleistas SLA pirmojo atsakymo terminas pokalbiui",
       "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
       "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
     },
@@ -338,8 +338,8 @@
   },
   "AVAILABILITY": {
     "ONLINE": "Prisijungęs",
-    "BUSY": "Užimta",
-    "OFFLINE": "Atsijungęs"
+    "BUSY": "Užimtas",
+    "OFFLINE": "Nepasiekiamas"
   },
   "NOTIFICATION_PREFERENCE": {
     "TITLE": "Notification Preferences",
@@ -357,11 +357,11 @@
   "CONVERSATION_DETAILS": {
     "TITLE": "Attributes",
     "BROWSER": "Naršyklė",
-    "OPERATING_SYSTEM": "Operacinė Sistema",
+    "OPERATING_SYSTEM": "Operacinė sistema",
     "INITIATED_AT": "Prasidėjo",
-    "INITIATED_FROM": "Pradėta iš",
+    "INITIATED_FROM": "Prasidėjo nuo",
     "IP_ADDRESS": "IP Adresas",
-    "CONVERSATION_ID": "Conversation ID",
+    "CONVERSATION_ID": "Pokalbio ID",
     "CLIPBOARD_SUCCESS": "Nukopijuotas į iškarpinę"
   },
   "CONTACT_DETAILS": {
@@ -369,14 +369,14 @@
     "EMAIL": "El. paštas",
     "PHONE_NUMBER": "Telefono numeris",
     "CALL": "Skambučiai",
-    "CONTACT_ATTRIBUTES": "Kontakto Požymiai",
+    "CONTACT_ATTRIBUTES": "Kontakto požymiai",
     "VALUE_UNAVAILABLE": "Nepasiekiamas"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participants",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} dalyvauja žmonių.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} dalyvauja asmenų.",
-    "NO_PARTICIPANTS_TEXT": "Niekas nedalyvauja!.",
+    "NO_PARTICIPANTS_TEXT": "Niekas nedalyvauja!",
     "WATCH_CONVERSATION": "Prisijungti pire pokalbio",
     "YOU_ARE_WATCHING": "Jūs dalyvaujate",
     "NO_RECORDS_FOUND": "Nieko nerasta",
@@ -387,7 +387,7 @@
     "ADD_PARTICIPANT": "Add Participant"
   },
   "CONTACT_ATTRIBUTES": {
-    "TITLE": "Kontakto Požymiai"
+    "TITLE": "Kontakto požymiai"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Veiksmai"
@@ -398,8 +398,8 @@
     "NO_RESULT": "No team found"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "Pokalbio Etiketės",
-    "ADD_LABEL": "Pridėti Etiketę",
+    "TITLE": "Pokalbio etiketės",
+    "ADD_LABEL": "Pridėti etiketę",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",
     "UPDATE_LABEL": "Etiketė sėkmingai atnaujinta",

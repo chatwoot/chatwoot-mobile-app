@@ -47,7 +47,7 @@ const AssigneeTypeCell = (props: AssigneeTypeCellProps) => {
         )}>
         <Animated.Text
           style={tailwind.style(
-            'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px] capitalize',
+            'text-base text-gray-950 dark:text-grayDark-950 font-inter-420-20 leading-[21px] tracking-[0.16px] capitalize',
           )}>
           {i18n.t(`CONVERSATION.FILTERS.ASSIGNEE_TYPE.OPTIONS.${value.toUpperCase()}`)}
         </Animated.Text>

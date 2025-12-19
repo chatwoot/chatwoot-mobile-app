@@ -23,7 +23,7 @@ const LabelText = ({ labelText, labelColor }: { labelText: string; labelColor: s
     <NativeView style={tailwind.style('h-[5px] w-[5px] rounded-full', `bg-[${labelColor}]`)} />
     <Text
       style={tailwind.style(
-        'pl-1 text-sm font-inter-420-20 leading-[16px] tracking-[0.32px] text-gray-700',
+        'pl-1 text-sm font-inter-420-20 leading-[16px] tracking-[0.32px] text-gray-700 dark:text-grayDark-700',
       )}>
       {labelText}
     </Text>

@@ -94,7 +94,7 @@ export const FilePreview = (props: FilePreviewProps) => {
                   ? 'text-base tracking-[0.32px] leading-[22px] font-inter-normal-20'
                   : '',
                 isIncoming ? 'text-white' : '',
-                isOutgoing ? 'text-blue-800' : '',
+                isOutgoing ? 'text-blue-800 dark:text-grayDark-800' : '',
               ),
               style.androidTextOnlyStyle,
             ]}>
@@ -170,7 +170,7 @@ export const FileCell = (props: FileCellProps) => {
               tailwind.style(
                 'flex flex-row items-center relative max-w-[300px] pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
                 isIncoming ? 'bg-blue-700' : '',
-                isOutgoing ? 'bg-gray-100' : '',
+                isOutgoing ? 'bg-gray-100 dark:bg-grayDark-100' : '',
                 shouldRenderAvatar
                   ? isOutgoing
                     ? 'rounded-br-none'
@@ -187,7 +187,7 @@ export const FileCell = (props: FileCellProps) => {
                 style={tailwind.style(
                   'text-xs font-inter-420-20 tracking-[0.32px] leading-[14px] pr-1',
                   isIncoming ? 'text-whiteA-A11' : '',
-                  isOutgoing ? 'text-gray-700' : '',
+                  isOutgoing ? 'text-gray-700 dark:text-grayDark-700' : '',
                 )}>
                 {unixTimestampToReadableTime(timeStamp)}
               </Animated.Text>

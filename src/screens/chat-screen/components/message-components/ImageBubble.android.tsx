@@ -16,7 +16,7 @@ export const ImageBubbleContainer = (props: ImageContainerProps) => {
       overlayBackgroundColor="#000000"
       imageBackgroundColor="#F3F4F6"
       isTranslucent
-      style={[tailwind.style('bg-gray-100 overflow-hidden'), imageStyle]}
+      style={[tailwind.style('bg-gray-100 dark:bg-grayDark-100 overflow-hidden'), imageStyle]}
     />
   );
 };

@@ -191,8 +191,7 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
       type: 'link',
     }));
 
-  const fullLocation =
-    location || [city, country].filter(Boolean).join(', ') || null;
+  const fullLocation = location || [city, country].filter(Boolean).join(', ') || null;
 
   const userDetails: GenericListType[] = [
     {
@@ -227,7 +226,7 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
     <BottomSheetModalProvider>
       <View
         style={tailwind.style(
-          `flex-1 bg-white pt-6 ${Platform.OS === 'android' ? 'pt-12' : 'pt-6'}`,
+          `flex-1 bg-white dark:bg-grayDark-50 pt-6 ${Platform.OS === 'android' ? 'pt-12' : 'pt-6'}`,
         )}>
         <ContactDetailsScreenHeader
           name={name || contactName || ''}

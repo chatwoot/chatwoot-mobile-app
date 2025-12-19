@@ -161,7 +161,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
         ],
         android: [
           tailwind.style(
-            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] py-[11px] bg-white',
+            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] py-[11px] bg-white dark:bg-grayDark-50',
             `h-[${tabBarHeight}px]`,
           ),
         ],

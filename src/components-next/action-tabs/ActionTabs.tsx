@@ -183,7 +183,7 @@ export const ActionTabs = () => {
         ],
         android: [
           tailwind.style(
-            'flex flex-row rounded-[30px] items-center absolute justify-between w-[220px] px-6 py-[15px] bg-white',
+            'flex flex-row rounded-[30px] items-center absolute justify-between w-[220px] px-6 py-[15px] bg-white dark:bg-grayDark-50',
             `h-[${ACTION_TAB_HEIGHT}px] bottom-[${bottom + 8}px] left-[${
               (SCREEN_WIDTH - 220) / 2
             }px]`,
@@ -209,7 +209,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 4,
-        backgroundColor: 'white',
       },
     }) || {}, // Add fallback empty object
 });

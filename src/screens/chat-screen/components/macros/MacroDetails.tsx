@@ -89,7 +89,7 @@ const MacroDetails = ({ macro, onBack, onClose }: MacroDetailsProps) => {
         <Animated.View style={animatedStyle}>
           <Pressable
             style={tailwind.style(
-              'px-3 py-[7px] rounded-lg bg-gray-100 flex flex-row items-center justify-center min-w-[60px] min-h-[32px]',
+              'px-3 py-[7px] rounded-lg bg-gray-100 dark:bg-grayDark-100 flex flex-row items-center justify-center min-w-[60px] min-h-[32px]',
             )}
             onPress={onPress}
             {...handlers}>
@@ -98,7 +98,7 @@ const MacroDetails = ({ macro, onBack, onClose }: MacroDetailsProps) => {
             ) : (
               <Animated.Text
                 style={tailwind.style(
-                  'text-sm font-inter-580-24 leading-[16px] tracking-[0.24px] capitalize text-gray-900',
+                  'text-sm font-inter-580-24 leading-[16px] tracking-[0.24px] capitalize text-gray-900 dark:text-grayDark-900',
                 )}>
                 {i18n.t('MACRO.ACTIONS.RUN')}
               </Animated.Text>
@@ -115,17 +115,17 @@ const MacroDetails = ({ macro, onBack, onClose }: MacroDetailsProps) => {
               {macro.actions && index !== macro.actions.length - 1 && (
                 <View
                   style={tailwind.style(
-                    'absolute top-[14px] bottom-0 left-[5px] w-[1px] bg-gray-200',
+                    'absolute top-[14px] bottom-0 left-[5px] w-[1px] bg-gray-200 dark:bg-grayDark-200',
                   )}
                 />
               )}
               <View
                 style={tailwind.style(
-                  'absolute left-0 top-[2px] w-3 h-3 rounded-full bg-gray-300 border-2 border-gray-300',
+                  'absolute left-0 top-[2px] w-3 h-3 rounded-full bg-gray-300 dark:bg-grayDark-300 border-2 border-gray-300 dark:border-grayDark-300',
                 )}
               />
               <Animated.Text style={tailwind.style('mb-1')}>{action.actionName}</Animated.Text>
-              <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
+              <Animated.Text style={tailwind.style('text-sm text-gray-900 dark:text-grayDark-900')}>
                 {action.actionValue}
               </Animated.Text>
             </View>

@@ -93,7 +93,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           <Text
             numberOfLines={1}
             style={tailwind.style(
-              'text-base font-inter-medium-24 tracking-[0.24px] text-gray-950 capitalize',
+              'text-base font-inter-medium-24 tracking-[0.24px] text-gray-950 dark:text-grayDark-950 capitalize',
               // Calculated based on the widths of other content,
               // We might have to do a 10-20px offset based on the max width of the timestamp
               `max-w-[${width - 250}px]`,

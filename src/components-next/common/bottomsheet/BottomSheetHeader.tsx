@@ -13,7 +13,7 @@ export const BottomSheetHeader = (props: BottomSheetHeaderProps) => {
     <Animated.View style={tailwind.style('flex-row justify-center items-center')}>
       <Animated.Text
         style={tailwind.style(
-          'text-gray-700 text-md font-inter-medium-24 leading-[17px] tracking-[0.32px]',
+          'text-gray-700 dark:text-grayDark-700 text-md font-inter-medium-24 leading-[17px] tracking-[0.32px]',
         )}>
         {headerText}
       </Animated.Text>

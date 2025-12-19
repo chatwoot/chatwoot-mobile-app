@@ -22,7 +22,7 @@ export const ImageBubbleContainer = (props: ImageContainerProps) => {
           source={{ uri: imageSrc }}
           contentFit="cover"
           style={[
-            tailwind.style('h-full w-full bg-gray-100 overflow-hidden'),
+            tailwind.style('h-full w-full bg-gray-100 dark:bg-grayDark-100 overflow-hidden'),
             { width: width, height: height },
           ]}
         />

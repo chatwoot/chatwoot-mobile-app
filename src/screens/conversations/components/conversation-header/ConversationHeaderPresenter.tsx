@@ -42,7 +42,7 @@ const HeaderTitle = () => (
   <Animated.View style={tailwind.style('flex-1')}>
     <Text
       style={tailwind.style(
-        'text-[17px] font-inter-medium-24 tracking-[0.32px] leading-[17px] text-center text-gray-950',
+        'text-[17px] font-inter-medium-24 tracking-[0.32px] leading-[17px] text-center text-gray-950 dark:text-grayDark-950',
       )}>
       {i18n.t('CONVERSATION.HEADER.TITLE')}
     </Text>
@@ -73,7 +73,7 @@ const LeftSection = ({ currentState, isSelectedAll, onLeftIconPress }: LeftSecti
               isSelectedAll ? (
                 <CheckedIcon />
               ) : (
-                <UncheckedIcon stroke={tailwind.color('text-gray-800')} />
+                <UncheckedIcon stroke={tailwind.color('text-gray-800 dark:text-grayDark-800')} />
               )
             }
           />
@@ -100,7 +100,7 @@ const FilterSection = ({
         <Text
           style={tailwind.style(
             'text-md font-inter-medium-24 leading-[17px] tracking-[0.24px]',
-            filtersAppliedCount === 0 ? 'text-gray-700' : 'text-blue-800',
+            filtersAppliedCount === 0 ? 'text-gray-700 dark:text-grayDark-700' : 'text-blue-800',
           )}>
           {i18n.t('CONVERSATION.HEADER.CLEAR_FILTER')}
           {filtersAppliedCount > 0 ? ` (${filtersAppliedCount})` : ''}

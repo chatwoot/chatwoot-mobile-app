@@ -21,12 +21,12 @@ export const ReplyEmailHead = (props: EmailMetaProps) => {
   return (
     <Animated.View style={tailwind.style('flex flex-col mb-2')}>
       <Animated.View
-        style={tailwind.style('flex flex-col gap-1 px-3 py-1 border-b border-b-blackA-A3')}>
+        style={tailwind.style('flex flex-col gap-1 px-3 py-1 border-b border-b-blackA-A3 dark:border-b-grayDark-200')}>
         {toEmails && (
           <Animated.View style={tailwind.style('flex flex-row items-center gap-1 ')}>
             <Text
               style={tailwind.style(
-                'text-md text-gray-950 font-inter-normal-20 tracking-[0.16px] min-w-[30px]',
+                'text-md text-gray-950 dark:text-grayDark-950 font-inter-normal-20 tracking-[0.16px] min-w-[30px]',
               )}>
               {i18n.t('CONVERSATION.EMAIL_HEAD.TO')}
             </Text>
@@ -35,18 +35,18 @@ export const ReplyEmailHead = (props: EmailMetaProps) => {
               value={toEmails}
               onChangeText={onUpdateTo}
               placeholder="Emails separated by commas"
-              placeholderTextColor={tailwind.color('text-gray-300')}
+              placeholderTextColor={tailwind.color('text-gray-300 dark:text-grayDark-300')}
             />
           </Animated.View>
         )}
       </Animated.View>
       <Animated.View
         style={tailwind.style(
-          'flex flex-row items-center gap-1 py-1 px-3 border-b border-b-blackA-A3',
+          'flex flex-row items-center gap-1 py-1 px-3 border-b border-b-blackA-A3 dark:border-b-grayDark-200',
         )}>
         <Text
           style={tailwind.style(
-            'text-md text-gray-950 font-inter-normal-20 tracking-[0.16px] min-w-[30px]',
+            'text-md text-gray-950 dark:text-grayDark-950 font-inter-normal-20 tracking-[0.16px] min-w-[30px]',
           )}>
           {i18n.t('CONVERSATION.EMAIL_HEAD.CC')}
         </Text>
@@ -55,10 +55,10 @@ export const ReplyEmailHead = (props: EmailMetaProps) => {
           value={ccEmails}
           onChangeText={onUpdateCC}
           placeholder="Emails separated by commas"
-          placeholderTextColor={tailwind.color('text-gray-300')}
+          placeholderTextColor={tailwind.color('text-gray-300 dark:text-grayDark-300')}
         />
         <Pressable style={tailwind.style('')} onPress={() => setShowBcc(!showBcc)}>
-          <Animated.Text style={tailwind.style('text-blue-800')}>
+          <Animated.Text style={tailwind.style('text-blue-800 dark:text-blue-600')}>
             {i18n.t('CONVERSATION.EMAIL_HEAD.BCC')}
           </Animated.Text>
         </Pressable>
@@ -66,11 +66,11 @@ export const ReplyEmailHead = (props: EmailMetaProps) => {
       {showBcc && (
         <Animated.View
           style={tailwind.style(
-            'flex flex-row items-center gap-1 px-3 border-b py-1 border-b-blackA-A3',
+            'flex flex-row items-center gap-1 px-3 border-b py-1 border-b-blackA-A3 dark:border-b-grayDark-200',
           )}>
           <Text
             style={tailwind.style(
-              'text-md text-gray-950 font-inter-normal-20 tracking-[0.16px] min-w-[30px]',
+              'text-md text-gray-950 dark:text-grayDark-950 font-inter-normal-20 tracking-[0.16px] min-w-[30px]',
             )}>
             {i18n.t('CONVERSATION.EMAIL_HEAD.BCC')}
           </Text>
@@ -79,7 +79,7 @@ export const ReplyEmailHead = (props: EmailMetaProps) => {
             value={bccEmails}
             onChangeText={onUpdateBCC}
             placeholder="Emails separated by commas"
-            placeholderTextColor={tailwind.color('text-gray-300')}
+            placeholderTextColor={tailwind.color('text-gray-300 dark:text-grayDark-300')}
           />
         </Animated.View>
       )}

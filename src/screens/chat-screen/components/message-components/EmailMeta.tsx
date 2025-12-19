@@ -36,39 +36,39 @@ export const EmailMeta = (props: EmailMetaProps) => {
     <Animated.View style={tailwind.style('flex flex-col gap-1')}>
       {fromEmail[0] && (
         <Animated.Text
-          style={tailwind.style('text-md text-gray-950 font-inter-normal-20 tracking-[0.16px]')}>
+          style={tailwind.style('text-md text-gray-950 dark:text-grayDark-950 font-inter-normal-20 tracking-[0.16px]')}>
           {senderName} &lt;{fromEmail[0]}&gt;
         </Animated.Text>
       )}
 
       {toEmail.length > 0 && (
         <Animated.Text
-          style={tailwind.style('text-md text-gray-900 font-inter-normal-20 tracking-[0.32px]')}>
+          style={tailwind.style('text-md text-gray-900 dark:text-grayDark-900 font-inter-normal-20 tracking-[0.32px]')}>
           {i18n.t('CONVERSATION.EMAIL_HEADER.TO')}: {toEmail.join(', ')}
         </Animated.Text>
       )}
 
       {ccEmail.length > 0 && (
         <Animated.Text
-          style={tailwind.style(' text-md text-gray-900 font-inter-normal-20 tracking-[0.32px]')}>
+          style={tailwind.style(' text-md text-gray-900 dark:text-grayDark-900 font-inter-normal-20 tracking-[0.32px]')}>
           {i18n.t('CONVERSATION.EMAIL_HEADER.CC')}: {ccEmail.join(', ')}
         </Animated.Text>
       )}
 
       {bccEmail.length > 0 && (
         <Animated.Text
-          style={tailwind.style(' text-md text-gray-900 font-inter-normal-20 tracking-[0.32px]')}>
+          style={tailwind.style(' text-md text-gray-900 dark:text-grayDark-900 font-inter-normal-20 tracking-[0.32px]')}>
           {i18n.t('CONVERSATION.EMAIL_HEADER.BCC')}: {bccEmail}
         </Animated.Text>
       )}
 
       {subject && (
         <Animated.Text
-          style={tailwind.style('text-md text-gray-950 font-inter-normal-20 tracking-[0.32px]')}>
+          style={tailwind.style('text-md text-gray-950 dark:text-grayDark-950 font-inter-normal-20 tracking-[0.32px]')}>
           {i18n.t('CONVERSATION.EMAIL_HEADER.SUBJECT')}: {subject}
         </Animated.Text>
       )}
-      <Animated.View style={tailwind.style('h-[1px] my-2 bg-gray-300')} />
+      <Animated.View style={tailwind.style('h-[1px] my-2 bg-gray-300 dark:bg-grayDark-300')} />
     </Animated.View>
   );
 };

@@ -26,7 +26,7 @@ export const ConversationSettingsPanel = ({
   onChangePriority,
 }: ConversationSettingsPanelProps) => {
   return (
-    <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
+    <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white dark:bg-grayDark-50'), styles.listShadow]}>
       <AssigneePanel assignee={assignee} onPress={onChangeAssignee} />
       <TeamPanel team={team} onPress={onChangeTeamAssignee} />
       <PriorityPanel priority={priority} onPress={onChangePriority} />

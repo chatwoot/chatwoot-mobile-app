@@ -290,6 +290,7 @@
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Switch Account",
     "CHANGE_LANGUAGE": "Change Language",
+    "CHANGE_THEME": "Appearance",
     "NOTIFICATIONS": "Notifications",
     "NOTIFICATION_PREFERENCES": "Notification Preferences",
     "READ_DOCS": "Read Docs",
@@ -297,7 +298,16 @@
     "LOGOUT": "Logout",
     "SUBMIT": "Submit",
     "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
+    "SET_THEME": "Set Appearance",
+    "DEBUG_ACTIONS": "Debug Actions",
+    "THEME": {
+      "LIGHT": "Light",
+      "LIGHT_DESCRIPTION": "Always use light mode",
+      "DARK": "Dark",
+      "DARK_DESCRIPTION": "Always use dark mode",
+      "SYSTEM": "System",
+      "SYSTEM_DESCRIPTION": "Follow system settings"
+    }
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",

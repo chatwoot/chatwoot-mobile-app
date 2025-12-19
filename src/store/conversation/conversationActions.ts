@@ -25,6 +25,7 @@ import type {
   SendMessageAPIResponse,
   SendMessagePayload,
   TogglePriorityPayload,
+  TranslateMessagePayload,
 } from './conversationTypes';
 import { AxiosError } from 'axios';
 import { MESSAGE_STATUS } from '@/constants';
@@ -252,6 +253,20 @@ export const conversationActions = {
     'conversations/togglePriority',
     async (payload, { rejectWithValue }) => {
       return await ConversationService.togglePriority(payload);
+    },
+  ),
+  translateMessage: createAsyncThunk<void, TranslateMessagePayload>(
+    'conversations/translateMessage',
+    async (payload, { rejectWithValue }) => {
+      try {
+        await ConversationService.translateMessage(payload);
+      } catch (error) {
+        const { response } = error as AxiosError<ApiErrorResponse>;
+        if (!response) {
+          throw error;
+        }
+        return rejectWithValue(response.data);
+      }
     },
   ),
 };

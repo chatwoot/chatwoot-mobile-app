@@ -2,6 +2,7 @@ import React from 'react';
 import { Message } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
+import { selectLocale } from '@/store/settings/settingsSelectors';
 import { useChatWindowContext } from '@/context';
 // import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
@@ -12,7 +13,7 @@ import { showToast } from '@/utils/toastUtils';
 import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { MESSAGE_TYPES } from '@/constants';
-import { CopyIcon, Trash } from '@/svg-icons';
+import { CopyIcon, Trash, TranslateIcon } from '@/svg-icons';
 import { MenuOption } from '../message-menu';
 import { MessageItem } from './MessageItem';
 
@@ -27,6 +28,7 @@ export const MessageItemContainer = (props: MessageItemContainerProps) => {
 
   const hapticSelection = useHaptic();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
+  const locale = useAppSelector(selectLocale);
 
   // const handleQuoteReplyAttachment = () => {
   //   dispatch(setQuoteMessage(props.item as Message));
@@ -43,6 +45,18 @@ export const MessageItemContainer = (props: MessageItemContainerProps) => {
   const handleDeleteMessage = async (messageId: number) => {
     await dispatch(conversationActions.deleteMessage({ conversationId, messageId }));
     showToast({ message: i18n.t('CONVERSATION.DELETE_MESSAGE_SUCCESS') });
+  };
+
+  const handleTranslateMessage = async (messageId: number) => {
+    hapticSelection?.();
+    await dispatch(
+      conversationActions.translateMessage({
+        conversationId,
+        messageId,
+        targetLanguage: locale || 'en',
+      }),
+    );
+    showToast({ message: i18n.t('CONVERSATION.TRANSLATE_MESSAGE_SUCCESS') });
   };
 
   // const inboxSupportsReplyTo = (channel: string) => {
@@ -73,6 +87,12 @@ export const MessageItemContainer = (props: MessageItemContainerProps) => {
         title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.COPY'),
         icon: <CopyIcon />,
         handleOnPressMenuOption: () => handleCopyMessage(content),
+        destructive: false,
+      });
+      menuOptions.push({
+        title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.TRANSLATE'),
+        icon: <TranslateIcon />,
+        handleOnPressMenuOption: () => handleTranslateMessage(message.id),
         destructive: false,
       });
     }

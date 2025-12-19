@@ -22,7 +22,7 @@ const MacroStack = (props: MacroStackProps) => {
           isInsideBottomSheet ? 'py-1' : '',
           'flex-1 items-center justify-center',
         )}>
-        <Animated.Text style={tailwind.style('pt-6 text-md  tracking-[0.32px] text-gray-800')}>
+        <Animated.Text style={tailwind.style('pt-6 text-md  tracking-[0.32px] text-gray-800 dark:text-grayDark-800')}>
           {i18n.t('MACRO.NO_MACROS')}
         </Animated.Text>
       </Animated.View>

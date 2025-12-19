@@ -31,12 +31,12 @@ export const FilterButton = (props: FilterButtonProps) => {
   return (
     <Animated.View style={animatedStyle}>
       <Pressable
-        style={tailwind.style('px-3 py-[7px] rounded-lg bg-gray-100 flex flex-row items-center')}
+        style={tailwind.style('px-3 py-[7px] rounded-lg bg-gray-100 dark:bg-grayDark-200 flex flex-row items-center')}
         onPress={onPress}
         {...handlers}>
         <Animated.Text
           style={tailwind.style(
-            'text-sm font-inter-medium-24 leading-[16px] tracking-[0.24px] pr-1 capitalize text-gray-950',
+            'text-sm font-inter-medium-24 leading-[16px] tracking-[0.24px] pr-1 capitalize text-gray-950 dark:text-grayDark-950',
           )}>
           {value}
         </Animated.Text>

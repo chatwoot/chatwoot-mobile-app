@@ -17,12 +17,12 @@ export const MentionUser = (props: MentionUserProps) => {
       <Animated.View
         style={tailwind.style(
           'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
-          !lastItem ? 'border-b-[1px] border-blackA-A3' : '',
+          !lastItem ? 'border-b-[1px] border-blackA-A3 dark:border-grayDark-200' : '',
         )}>
         <Animated.Text
           style={[
             tailwind.style(
-              'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
+              'text-base text-gray-950 dark:text-grayDark-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
             ),
           ]}>
           {agent.name}

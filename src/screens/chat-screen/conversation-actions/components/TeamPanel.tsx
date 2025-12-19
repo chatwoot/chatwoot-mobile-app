@@ -17,7 +17,7 @@ const TeamPanel = ({ team, onPress }: TeamPanelProps) => {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [tailwind.style(pressed ? 'bg-gray-100' : '', 'rounded-t-[13px]')]}>
+      style={({ pressed }) => [tailwind.style(pressed ? 'bg-gray-100 dark:bg-grayDark-100' : '', 'rounded-t-[13px]')]}>
       <Animated.View style={tailwind.style('flex-row items-center justify-between pl-3')}>
         <Icon icon={<TeamIcon />} />
         <Animated.View
@@ -26,14 +26,14 @@ const TeamPanel = ({ team, onPress }: TeamPanelProps) => {
           )}>
           <Animated.Text
             style={tailwind.style(
-              'text-base font-inter-420-20 leading-[22.4px] tracking-[0.16px] text-gray-950 capitalize',
+              'text-base font-inter-420-20 leading-[22.4px] tracking-[0.16px] text-gray-950 dark:text-grayDark-950 capitalize',
             )}>
             {teamName}
           </Animated.Text>
           <Animated.View style={tailwind.style('flex-row items-center pr-3')}>
             <Animated.Text
               style={tailwind.style(
-                'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] text-gray-900',
+                'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] text-gray-900 dark:text-grayDark-900',
               )}>
               {i18n.t('CONVERSATION.ACTIONS.TEAM.ASSIGN')}
             </Animated.Text>

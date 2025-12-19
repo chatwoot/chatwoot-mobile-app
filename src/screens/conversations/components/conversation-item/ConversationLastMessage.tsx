@@ -84,7 +84,7 @@ const MessageContent = ({
         <Text
           numberOfLines={1}
           style={tailwind.style(
-            'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
+            'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900 dark:text-grayDark-900',
           )}>
           <MessageType message={message} style={tailwind.style('ml-1')} />
           {i18n.t(`CONVERSATION.ATTACHMENTS.image.CONTENT`)}
@@ -97,13 +97,13 @@ const MessageContent = ({
         <Text
           numberOfLines={numberOfLines}
           style={tailwind.style(
-            'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[21px] text-gray-900',
+            'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[21px] text-gray-900 dark:text-grayDark-900',
           )}>
           <MessageType message={message} style={tailwind.style('ml-1')} />
           <Text
             numberOfLines={numberOfLines}
             style={tailwind.style(
-              'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[21px] text-gray-900',
+              'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[21px] text-gray-900 dark:text-grayDark-900',
             )}>
             {lastMessageContent}
           </Text>
@@ -118,7 +118,7 @@ const MessageContent = ({
         <Text
           numberOfLines={1}
           style={tailwind.style(
-            'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
+            'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900 dark:text-grayDark-900',
           )}>
           {i18n.t(`CONVERSATION.ATTACHMENTS.${lastMessageFileType}.CONTENT`)}
         </Text>
@@ -128,7 +128,7 @@ const MessageContent = ({
   return (
     <Text
       style={tailwind.style(
-        'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
+        'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900 dark:text-grayDark-900',
       )}>
       {i18n.t('CONVERSATION.NO_CONTENT')}
     </Text>

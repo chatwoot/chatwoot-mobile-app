@@ -39,9 +39,9 @@ const ContactOptionComponent = (props: ContactOptionProps) => {
       <Pressable
         style={({ pressed }) => [
           tailwind.style(
-            'flex items-center justify-center flex-1 rounded-xl bg-gray-50 py-3',
+            'flex items-center justify-center flex-1 rounded-xl bg-gray-50 dark:bg-grayDark-50 py-3',
             `w-[${OPTION_WIDTH}px]`,
-            pressed ? 'bg-gray-100' : '',
+            pressed ? 'bg-gray-100 dark:bg-grayDark-100' : '',
           ),
         ]}
         onPress={handleOnPress}

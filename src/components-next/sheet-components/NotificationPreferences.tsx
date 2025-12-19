@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Switch, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useTheme } from '@/context';
 
 import { tailwind } from '@/theme';
 import i18n from 'i18n';
@@ -28,6 +29,13 @@ export const NotificationPreferences = () => {
   } = useAppSelector(selectNotificationSettings);
 
   const dispatch = useAppDispatch();
+  const { isDark } = useTheme();
+
+  // Theme-aware switch colors
+  const trackColorFalse = isDark ? tailwind.color('gray-600') : '#C9D7E3';
+  const trackColorTrue = tailwind.color('blue-700') || '#1F93FF';
+  const thumbColor = isDark ? tailwind.color('gray-50') : '#FFFFFF';
+  const iosBackgroundColor = isDark ? tailwind.color('gray-600') : '#C9D7E3';
 
   const [selectedPushFlags, setPushFlags] = useState(selected_push_flags);
 
@@ -66,14 +74,14 @@ export const NotificationPreferences = () => {
           key={item}
           style={tailwind.style('flex flex-row items-center justify-between ml-2 mt-2')}>
           <Animated.Text
-            style={tailwind.style('flex-1 leading-[17px] tracking-[0.24px] text-gray-950')}>
+            style={tailwind.style('flex-1 leading-[17px] tracking-[0.24px] text-gray-950 dark:text-grayDark-950')}>
             {i18n.t(`NOTIFICATION_PREFERENCE.${NOTIFICATION_PREFERENCE_TYPES[item]}`)}
           </Animated.Text>
           <Switch
-            trackColor={{ false: '#C9D7E3', true: '#1F93FF' }}
-            thumbColor="#FFFFFF"
+            trackColor={{ false: trackColorFalse, true: trackColorTrue }}
+            thumbColor={thumbColor}
             style={styles.switch}
-            ios_backgroundColor="#C9D7E3"
+            ios_backgroundColor={iosBackgroundColor}
             onValueChange={() => onPushItemChange(item)}
             value={selectedPushFlags.includes(item)}
           />

@@ -68,7 +68,7 @@ export const BotTextCell = (props: BotTextCellProps) => {
     <Animated.View
       style={[
         tailwind.style(
-          'relative max-w-[300px] pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden bg-blue-100',
+          'relative max-w-[300px] pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden bg-blue-100 dark:bg-grayDark-100',
           `max-w-[${TEXT_MAX_WIDTH}px]`,
           // singleLineShortText ? "flex flex-row" : "",
           isAvatarRendered ? 'rounded-br-none' : '',
@@ -80,7 +80,7 @@ export const BotTextCell = (props: BotTextCellProps) => {
           "text-base tracking-[0.32px] leading-[22px] font-inter-normal-20 text-gray-950",
         )}
       >
-        {text} 
+        {text}
       </Text> */}
       <MarkdownDisplay isBotText messageContent={text} />
 
@@ -92,7 +92,7 @@ export const BotTextCell = (props: BotTextCellProps) => {
           // multiLineShortText ? " absolute bottom-0.5 right-2.5" : "",
         )}>
         <Text
-          style={tailwind.style('text-xs font-inter-420-20 tracking-[0.32px] pr-1 text-gray-700')}>
+          style={tailwind.style('text-xs font-inter-420-20 tracking-[0.32px] pr-1 text-gray-700 dark:text-grayDark-700')}>
           {unixTimestampToReadableTime(timeStamp)}
         </Text>
         <DeliveryStatus

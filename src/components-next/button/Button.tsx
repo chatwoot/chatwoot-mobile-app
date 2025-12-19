@@ -15,8 +15,8 @@ type ButtonProps = {
 
 const getButtonStyles = (isPrimary: boolean, pressed: boolean) => {
   const baseStyles = 'py-[11px] flex items-center justify-center rounded-[13px]';
-  const variantStyles = isPrimary ? 'bg-blue-800' : 'bg-gray-50';
-  const pressedStyles = isPrimary ? 'opacity-95' : pressed ? 'bg-gray-100' : '';
+  const variantStyles = isPrimary ? 'bg-blue-800' : 'bg-gray-50 dark:bg-grayDark-100';
+  const pressedStyles = isPrimary ? 'opacity-95' : pressed ? 'bg-gray-100 dark:bg-grayDark-200' : '';
 
   return tailwind.style(baseStyles, variantStyles, pressedStyles);
 };
@@ -29,7 +29,7 @@ const getTextStyles = (isPrimary: boolean, isDestructive: boolean) => {
       : 'text-white'
     : isDestructive
       ? 'text-ruby-800'
-      : 'text-gray-950';
+      : 'text-gray-950 dark:text-grayDark-950';
 
   return tailwind.style(baseStyles, colorStyles);
 };

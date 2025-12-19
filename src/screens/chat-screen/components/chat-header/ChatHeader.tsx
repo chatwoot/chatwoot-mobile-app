@@ -72,7 +72,7 @@ export const ChatHeader = ({
               <Animated.Text
                 numberOfLines={1}
                 style={tailwind.style(
-                  'text-[17px] font-inter-medium-24 tracking-[0.32px] text-gray-950',
+                  'text-[17px] font-inter-medium-24 tracking-[0.32px] text-gray-950 dark:text-grayDark-950',
                 )}>
                 {name}
               </Animated.Text>

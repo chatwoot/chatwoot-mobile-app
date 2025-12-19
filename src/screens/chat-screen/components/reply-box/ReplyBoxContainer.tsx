@@ -378,7 +378,7 @@ const BottomSheetContent = () => {
   const shouldShowCannedResponses = messageContent?.charAt(0) === '/';
 
   return (
-    <AnimatedKeyboardStickyView style={[tailwind.style('bg-white'), animatedInputWrapperStyle]}>
+    <AnimatedKeyboardStickyView style={[tailwind.style('bg-white dark:bg-grayDark-50'), animatedInputWrapperStyle]}>
       {!canReply && inbox && conversation && (
         <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>
           <ReplyWarning inbox={inbox} conversation={conversation} />
@@ -391,7 +391,7 @@ const BottomSheetContent = () => {
       <Animated.View
         layout={LinearTransition.springify().damping(38).stiffness(240)}
         style={tailwind.style(
-          `pb-2 border-t-[1px] border-t-blackA-A3 ${shouldShowReplyHeader ? 'pt-0' : 'pt-2'}`,
+          `pb-2 border-t-[1px] border-t-blackA-A3 dark:border-t-grayDark-200 ${shouldShowReplyHeader ? 'pt-0' : 'pt-2'}`,
         )}>
         {quoteMessage && (
           <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>

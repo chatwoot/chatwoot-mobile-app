@@ -51,7 +51,7 @@ export const SearchBar = (props: SearchBarProps) => {
             isLoading ? 'px-8.5' : 'pl-8.5 pr-4',
           ),
         ]}
-        placeholderTextColor={tailwind.color('text-gray-800')}
+        placeholderTextColor={tailwind.color('text-gray-800 dark:text-grayDark-800')}
         {...otherProps}
       />
       {isLoading ? (

@@ -191,7 +191,7 @@ export const MessageTextInput = ({
         <Animated.View
           style={[
             tailwind.style(
-              'bg-white border-t border-gray-200 rounded-[13px] mx-4 px-2 w-full max-h-[250px]',
+              'bg-white dark:bg-grayDark-50 border-t border-gray-200 dark:border-grayDark-200 rounded-[13px] mx-4 px-2 w-full max-h-[250px]',
               Platform.OS === 'ios' ? 'absolute bottom-full' : 'relative h-[150px]',
             ),
             styles.listShadow,
@@ -243,13 +243,13 @@ export const MessageTextInput = ({
           style={[
             tailwind.style(
               'text-base font-inter-normal-20 tracking-[0.24px] leading-[20px] android:leading-[18px]',
-              'ml-[5px] mr-2 py-2 pl-3 pr-[36px] rounded-2xl text-gray-950',
+              'ml-[5px] mr-2 py-2 pl-3 pr-[36px] rounded-2xl text-gray-950 dark:text-grayDark-950',
               'min-h-9 max-h-[76px]',
-              isPrivateMessage ? 'bg-amber-100' : 'bg-blackA-A4',
+              isPrivateMessage ? 'bg-amber-100 dark:bg-amber-900' : 'bg-blackA-A4 dark:bg-grayDark-100',
             ),
             // TODO: Try settings includeFontPadding to false and have a single lineHeight value of 20
           ]}
-          placeholderTextColor={tailwind.color('bg-gray-800')}
+          placeholderTextColor={tailwind.color('bg-gray-800 dark:bg-grayDark-800')}
           maxLength={maxLength}
           placeholder={
             isPrivateMessage

@@ -35,12 +35,12 @@ export const ContactDetailsScreenHeader = (props: ContactDetailsScreenHeaderProp
         <Animated.View style={tailwind.style('flex items-center')}>
           <Avatar size="4xl" src={thumbnail ? { uri: thumbnail } : undefined} name={name} />
           <Animated.View style={tailwind.style('flex flex-col items-center gap-1 pt-3')}>
-            <Animated.Text style={tailwind.style('text-[21px] font-inter-580-24 text-gray-950')}>
+            <Animated.Text style={tailwind.style('text-[21px] font-inter-580-24 text-gray-950 dark:text-grayDark-950')}>
               {name}
             </Animated.Text>
             <Animated.Text
               style={tailwind.style(
-                'text-[15px] font-inter-420-20 leading-[17.25px] text-gray-900',
+                'text-[15px] font-inter-420-20 leading-[17.25px] text-gray-900 dark:text-grayDark-900',
               )}>
               {bio}
             </Animated.Text>

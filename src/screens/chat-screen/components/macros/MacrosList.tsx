@@ -54,7 +54,7 @@ export const MacrosList = ({ conversationId }: { conversationId: number }) => {
                 <View style={tailwind.style('px-4 pt-1 pb-4 items-center')}>
                   <Animated.Text
                     style={tailwind.style(
-                      'text-gray-700 font-inter-580-24 leading-[17px] tracking-[0.32px]',
+                      'text-gray-700 dark:text-grayDark-700 font-inter-580-24 leading-[17px] tracking-[0.32px]',
                     )}>
                     {i18n.t('MACRO.SELECT_MACRO')}
                   </Animated.Text>

@@ -85,7 +85,7 @@ export const SLAIndicator = ({
       <Text
         style={tailwind.style(
           'pl-1 text-sm leading-[20px] text-center',
-          slaStatus?.isSlaMissed ? 'text-ruby-800' : 'text-gray-800',
+          slaStatus?.isSlaMissed ? 'text-ruby-800' : 'text-gray-800 dark:text-grayDark-800',
         )}>
         {`${sLAStatusText()}: ${slaStatus?.threshold}`}
       </Text>

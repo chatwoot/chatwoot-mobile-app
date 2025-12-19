@@ -22,9 +22,14 @@ export const TextBubble = (props: TextBubbleProps) => {
 
   const translations = contentAttributes?.translations;
   const hasTranslations = translations && Object.keys(translations).length > 0;
-  const translationContent = hasTranslations ? translations[Object.keys(translations)[0]] : null;
+  const translationContent = hasTranslations
+    ? Object.values(translations)[0]
+    : null;
 
-  const displayContent = hasTranslations && !showOriginal ? translationContent : content;
+  const displayContent =
+    hasTranslations && !showOriginal && translationContent
+      ? translationContent
+      : content;
 
   const renderTranslationToggle = () => {
     if (!hasTranslations) return null;

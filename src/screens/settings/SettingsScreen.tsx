@@ -1,21 +1,49 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, Text, Platform, Pressable } from 'react-native';
+import { StatusBar, Text, Platform, Pressable, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+
+let AsyncStorage: any = {
+  removeItem: () => Promise.resolve(),
+  getItem: () => Promise.resolve(null),
+  setItem: () => Promise.resolve(),
+};
+try {
+  AsyncStorage = require('@react-native-async-storage/async-storage').default;
+} catch (e) {
+  console.warn('@react-native-async-storage/async-storage not available');
+}
 
 import {
   BottomSheetModal,
   BottomSheetScrollView,
   useBottomSheetSpringConfigs,
 } from '@gorhom/bottom-sheet';
-import DeviceInfo from 'react-native-device-info';
+// import DeviceInfo from 'react-native-device-info';
 import * as WebBrowser from 'expo-web-browser';
-import ChatWootWidget from '@chatwoot/react-native-widget';
+// import ChatWootWidget from '@chatwoot/react-native-widget';
 import { useSelector } from 'react-redux';
 import * as Application from 'expo-application';
+
+let ChatWootWidget: any = () => <View><Text>ChatWootWidget not available</Text></View>;
+try {
+  ChatWootWidget = require('@chatwoot/react-native-widget').default;
+} catch (e) {
+  console.warn('@chatwoot/react-native-widget not available');
+}
+
+let DeviceInfo: any = null;
+try {
+  DeviceInfo = require('react-native-device-info');
+} catch (error) {
+  console.warn('react-native-device-info not available:', error);
+  DeviceInfo = {
+    getDeviceId: () => 'unknown',
+  };
+}
 import { Account, AvailabilityStatus } from '@/types';
 import { clearAllConversations } from '@/store/conversation/conversationSlice';
 import { resetNotifications } from '@/store/notification/notificationSlice';

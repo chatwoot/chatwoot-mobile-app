@@ -3,7 +3,17 @@ import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/b
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { authActions } from '@/store/auth/authActions';
-import * as Sentry from '@sentry/react-native';
+// import * as Sentry from '@sentry/react-native';
+
+let Sentry: any = {
+  setUser: () => {},
+};
+
+try {
+  Sentry = require('@sentry/react-native');
+} catch (e) {
+  console.warn('@sentry/react-native not available');
+}
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import {

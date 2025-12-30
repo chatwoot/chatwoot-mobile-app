@@ -1,5 +1,14 @@
-import { useKeyboardHandler } from 'react-native-keyboard-controller';
+// import { useKeyboardHandler } from 'react-native-keyboard-controller';
 import { useSharedValue, withSpring } from 'react-native-reanimated';
+
+// Force mock for Expo Go - native module not available
+let useKeyboardHandler: any = () => {};
+// try {
+//   useKeyboardHandler = require('react-native-keyboard-controller').useKeyboardHandler;
+// } catch (e) {
+//   console.warn('react-native-keyboard-controller not available');
+//   useKeyboardHandler = () => {};
+// }
 
 const ANIMATION_CONFIGS_IOS = {
   damping: 500,

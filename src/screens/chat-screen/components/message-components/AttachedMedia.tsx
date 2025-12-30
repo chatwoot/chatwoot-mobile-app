@@ -1,12 +1,28 @@
 import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
-import { Asset } from 'react-native-image-picker';
+// import { Asset } from 'react-native-image-picker';
 import Animated, {
   LinearTransition,
   SlideInDown,
   SlideInUp,
   SlideOutDown,
 } from 'react-native-reanimated';
+
+// Mock Asset type
+interface Asset {
+  base64?: string;
+  uri?: string;
+  width?: number;
+  height?: number;
+  fileSize?: number;
+  type?: string;
+  fileName?: string;
+  duration?: number;
+  bitrate?: number;
+  timestamp?: string;
+  id?: string;
+}
+
 import Svg, { Path } from 'react-native-svg';
 import { ResizeMode, Video } from 'expo-av';
 import { Image } from 'expo-image';

@@ -1,7 +1,17 @@
-import * as Sentry from '@sentry/react-native';
+// import * as Sentry from '@sentry/react-native';
 import { Alert } from 'react-native';
 
 import i18n from '../i18n';
+
+let Sentry: any = {
+  captureException: () => {},
+};
+
+try {
+  Sentry = require('@sentry/react-native');
+} catch (e) {
+  console.warn('@sentry/react-native not available');
+}
 
 interface ErrorHandler {
   (e: Error, isFatal: boolean): void;

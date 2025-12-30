@@ -3,7 +3,17 @@ import { Platform, Pressable, View } from 'react-native';
 import { PlayBackType } from 'react-native-audio-recorder-player';
 import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
-import * as Sentry from '@sentry/react-native';
+// import * as Sentry from '@sentry/react-native';
+
+let Sentry: any = {
+  captureException: () => {},
+};
+
+try {
+  Sentry = require('@sentry/react-native');
+} catch (e) {
+  console.warn('@sentry/react-native not available');
+}
 
 import {
   selectCurrentPlayingAudioSrc,

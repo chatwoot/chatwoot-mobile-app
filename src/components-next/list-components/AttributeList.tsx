@@ -1,8 +1,29 @@
 import React, { useMemo } from 'react';
 import { Platform, Pressable, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
-import Clipboard from '@react-native-clipboard/clipboard';
-import * as Sentry from '@sentry/react-native';
+// import Clipboard from '@react-native-clipboard/clipboard';
+// import * as Sentry from '@sentry/react-native';
+
+let Sentry: any = {
+  captureException: () => {},
+};
+
+try {
+  Sentry = require('@sentry/react-native');
+} catch (e) {
+  console.warn('@sentry/react-native not available');
+}
+
+let Clipboard: any = null;
+try {
+  Clipboard = require('@react-native-clipboard/clipboard').default;
+} catch (e) {
+  console.warn('@react-native-clipboard/clipboard not available');
+  Clipboard = {
+    setString: () => {},
+    getString: () => Promise.resolve(''),
+  };
+}
 
 import { CaretRight } from '@/svg-icons';
 import { tailwind } from '@/theme';

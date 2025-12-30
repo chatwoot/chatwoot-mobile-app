@@ -1,7 +1,19 @@
-import * as Sentry from '@sentry/react-native';
+// import * as Sentry from '@sentry/react-native';
 
 import Constants from 'expo-constants';
 import App from './src/app';
+
+let Sentry: any = {
+  init: () => {},
+  wrap: (component: any) => component,
+  captureException: () => {},
+};
+
+try {
+  Sentry = require('@sentry/react-native');
+} catch (e) {
+  console.warn('@sentry/react-native not available');
+}
 
 // TODO: It is a temporary fix to fix the reanimated logger issue
 // Ref: https://github.com/gorhom/react-native-bottom-sheet/issues/1983

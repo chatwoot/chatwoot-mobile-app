@@ -7,7 +7,16 @@ import Animated, {
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FlashList, ListRenderItem } from '@shopify/flash-list';
+// import { FlashList, ListRenderItem } from '@shopify/flash-list';
+import { FlatList, ListRenderItem } from 'react-native';
+
+let FlashList: any = FlatList;
+try {
+  FlashList = require('@shopify/flash-list').FlashList;
+} catch (e) {
+  console.warn('@shopify/flash-list not available, falling back to FlatList');
+  FlashList = FlatList;
+}
 
 import { TAB_BAR_HEIGHT } from '@/constants';
 import { InboxListStateProvider } from '@/context';

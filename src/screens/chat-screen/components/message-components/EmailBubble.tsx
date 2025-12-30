@@ -1,6 +1,14 @@
 import React from 'react';
-import { Animated } from 'react-native';
-import AutoHeightWebView from 'react-native-autoheight-webview';
+import { Animated, View, Text } from 'react-native';
+// import AutoHeightWebView from 'react-native-autoheight-webview';
+
+let AutoHeightWebView: any = View;
+try {
+  AutoHeightWebView = require('react-native-autoheight-webview').default;
+} catch (e) {
+  console.warn('react-native-autoheight-webview not available');
+  AutoHeightWebView = (props: any) => <View><Text>Email content not available</Text></View>;
+}
 
 import { tailwind } from '@/theme';
 

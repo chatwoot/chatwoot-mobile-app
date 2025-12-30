@@ -1,8 +1,22 @@
 import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { SafeAreaView, StatusBar, Animated, Easing } from 'react-native';
-import NetInfo from '@react-native-community/netinfo';
+// import NetInfo from '@react-native-community/netinfo';
 import i18n from 'i18n';
 import { tailwind } from '@/theme';
+
+let NetInfo: any = null;
+try {
+  NetInfo = require('@react-native-community/netinfo').default || require('@react-native-community/netinfo');
+} catch (e) {
+  console.warn('@react-native-community/netinfo not available');
+  NetInfo = {
+    addEventListener: (callback: any) => {
+      callback({ isConnected: true });
+      return () => {};
+    },
+    fetch: () => Promise.resolve({ isConnected: true }),
+  };
+}
 
 export const NoNetworkBar = () => {
   const animationConstants = useMemo(

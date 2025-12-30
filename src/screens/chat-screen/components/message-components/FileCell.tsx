@@ -1,8 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Pressable, StyleSheet } from 'react-native';
-import FileViewer from 'react-native-file-viewer';
+// import FileViewer from 'react-native-file-viewer';
 import Animated, { Easing, FadeIn } from 'react-native-reanimated';
-import RNFetchBlob from 'rn-fetch-blob';
+// import RNFetchBlob from 'rn-fetch-blob';
+
+let FileViewer: any = null;
+try {
+  FileViewer = require('react-native-file-viewer').default;
+} catch (error) {
+  console.warn('react-native-file-viewer not available');
+  FileViewer = {
+    open: () => Promise.reject(new Error('FileViewer not available')),
+  };
+}
+
+let RNFetchBlob: any = null;
+try {
+  RNFetchBlob = require('rn-fetch-blob').default;
+} catch (error) {
+  console.warn('rn-fetch-blob not available');
+  RNFetchBlob = {
+    fs: {
+      dirs: { DocumentDir: 'mock_document_dir' },
+      exists: () => Promise.resolve(false),
+    },
+    config: () => ({ fetch: () => Promise.resolve() }),
+  };
+}
 
 import { FileIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';

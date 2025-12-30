@@ -1,4 +1,35 @@
-import { ActionCable, Cable } from '@kesha-antonov/react-native-action-cable';
+// import { ActionCable, Cable } from '@kesha-antonov/react-native-action-cable';
+
+let ActionCable: any = {
+  createConsumer: () => ({
+    subscriptions: {
+      create: () => ({
+        unsubscribe: () => {},
+      }),
+    },
+  }),
+};
+let Cable: any = class {
+  constructor() {}
+  setChannel() {
+    return {
+      on: () => {},
+    };
+  }
+  channel() {
+    return {
+      perform: () => {},
+    };
+  }
+};
+
+try {
+  const ActionCableModule = require('@kesha-antonov/react-native-action-cable');
+  ActionCable = ActionCableModule.ActionCable;
+  Cable = ActionCableModule.Cable;
+} catch (e) {
+  console.warn('@kesha-antonov/react-native-action-cable not available');
+}
 
 const cable = new Cable({});
 const channelName = 'RoomChannel';

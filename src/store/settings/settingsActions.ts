@@ -1,17 +1,64 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import * as Sentry from '@sentry/react-native';
+// import * as Sentry from '@sentry/react-native';
 
-import messaging from '@react-native-firebase/messaging';
+let Sentry: any = {
+  captureException: () => {},
+};
+
+try {
+  Sentry = require('@sentry/react-native');
+} catch (e) {
+  console.warn('@sentry/react-native not available');
+}
+
 import { Platform, PermissionsAndroid } from 'react-native';
-import {
-  getSystemName,
-  getManufacturer,
-  getModel,
-  getApiLevel,
-  getBrand,
-  getBuildNumber,
-  getUniqueId,
-} from 'react-native-device-info';
+
+// Lazy load Firebase to avoid module initialization errors in Expo Go
+let firebaseMessaging: any = null;
+let isFirebaseAvailable = true;
+
+const getFirebaseMessaging = () => {
+  if (!isFirebaseAvailable) {
+    return null;
+  }
+  
+  if (firebaseMessaging === null) {
+    try {
+      firebaseMessaging = require('@react-native-firebase/messaging').default;
+      // Check if the native module is actually available
+      if (!firebaseMessaging) {
+        isFirebaseAvailable = false;
+        firebaseMessaging = null;
+      }
+    } catch (error) {
+      console.warn('Firebase messaging module not available:', error);
+      isFirebaseAvailable = false;
+      firebaseMessaging = null;
+    }
+  }
+  
+  return firebaseMessaging;
+};
+
+let DeviceInfo: any = null;
+const getDeviceInfo = () => {
+  if (DeviceInfo) return DeviceInfo;
+  try {
+    DeviceInfo = require('react-native-device-info');
+    return DeviceInfo;
+  } catch (error) {
+    console.warn('react-native-device-info not available:', error);
+    return {
+      getSystemName: () => 'Unknown',
+      getManufacturer: () => Promise.resolve('Unknown'),
+      getModel: () => Promise.resolve('Unknown'),
+      getApiLevel: () => Promise.resolve('Unknown'),
+      getBrand: () => Promise.resolve('Unknown'),
+      getBuildNumber: () => Promise.resolve('Unknown'),
+      getUniqueId: () => Promise.resolve('Unknown'),
+    };
+  }
+};
 
 import { SettingsService } from './settingsService';
 import type {
@@ -89,7 +136,24 @@ export const settingsActions = {
     'settings/saveDeviceDetails',
     async (_, { rejectWithValue }) => {
       try {
+        const messaging = getFirebaseMessaging();
+        
+        if (!messaging) {
+          console.warn('Firebase messaging not available, skipping device details save');
+          return rejectWithValue('Firebase messaging not available');
+        }
+
         const permissionEnabled = await messaging().hasPermission();
+        const {
+          getUniqueId,
+          getSystemName,
+          getManufacturer,
+          getModel,
+          getApiLevel,
+          getBrand,
+          getBuildNumber,
+        } = getDeviceInfo();
+
         const deviceId = await getUniqueId();
         const devicePlatform = getSystemName();
         const manufacturer = await getManufacturer();

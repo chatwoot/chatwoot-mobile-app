@@ -2,12 +2,14 @@ import { Platform } from 'react-native';
 import { NOTIFICATION_TYPES } from '@/constants';
 import { Notification } from '@/types/Notification';
 
-let notifee: typeof import('@notifee/react-native').default | undefined;
+let notifee: any = null;
 
 if (Platform.OS === 'ios') {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  notifee = require('@notifee/react-native')
-    .default as typeof import('@notifee/react-native').default;
+  try {
+    notifee = require('@notifee/react-native').default;
+  } catch (e) {
+    console.warn('@notifee/react-native not available');
+  }
 }
 
 export const clearAllDeliveredNotifications = async () => {
@@ -62,7 +64,7 @@ export const findNotificationFromFCM = ({ message }: { message: FCMMessage }) =>
     notification = parsedPayload.data.notification;
   }
   // FCM legacy. It will be deprecated soon
-  else {
+  else if (message?.data?.notification) {
     notification = JSON.parse(message.data.notification);
   }
   return notification;

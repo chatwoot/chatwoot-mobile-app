@@ -6,7 +6,8 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
-import { FlashList } from '@shopify/flash-list';
+// import { FlashList } from '@shopify/flash-list';
+import { FlatList } from 'react-native';
 import { useAppKeyboardAnimation } from '@/utils';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
@@ -14,12 +15,20 @@ import { MessageComponent } from '../message-item/Message';
 // import { MessageItemContainer } from '../message-item/MessageItemContainer';
 import { useRefsContext } from '@/context';
 
+let FlashList: any = FlatList;
+try {
+  FlashList = require('@shopify/flash-list').FlashList;
+} catch (e) {
+  console.warn('@shopify/flash-list not available, falling back to FlatList');
+  FlashList = FlatList;
+}
+
 export type FlashListRenderProps = {
   item: { date: string } | Message;
   index: number;
 };
 
-const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList<Message | { date: string }>);
+const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList as any);
 
 type DateSectionProps = { item: { date: string } };
 
@@ -57,9 +66,7 @@ export const MessagesList = ({
 }: MessagesListPresentationProps) => {
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
-  const typedMessageListRef = messageListRef as React.RefObject<
-    FlashList<Message | { date: string }>
-  >;
+  const typedMessageListRef = messageListRef as any;
 
   const handleRender = ({ item, index }: { item: Message | { date: string }; index: number }) => {
     if ('date' in item) {

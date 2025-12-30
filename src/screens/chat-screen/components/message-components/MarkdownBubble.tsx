@@ -1,7 +1,18 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import Markdown, { MarkdownIt } from 'react-native-markdown-display';
+import { StyleSheet, Text, View } from 'react-native';
+// import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { openURL } from '@/utils/urlUtils';
+
+let Markdown: any = ({ children }: any) => <Text>{children}</Text>;
+let MarkdownIt: any = () => {};
+
+try {
+  const MarkdownDisplay = require('react-native-markdown-display');
+  Markdown = MarkdownDisplay.default;
+  MarkdownIt = MarkdownDisplay.MarkdownIt;
+} catch (e) {
+  console.warn('react-native-markdown-display not available');
+}
 
 import { tailwind } from '@/theme';
 import { MESSAGE_VARIANTS } from '@/constants';

@@ -1,6 +1,16 @@
-import * as Sentry from '@sentry/react-native';
+// import * as Sentry from '@sentry/react-native';
 import { User } from '@/types/User';
 import { Account } from '@/types/Account';
+
+let Sentry: any = {
+  captureException: () => {},
+};
+
+try {
+  Sentry = require('@sentry/react-native');
+} catch (e) {
+  console.warn('@sentry/react-native not available');
+}
 
 export const getCurrentAccount = (
   user: User = {} as User,

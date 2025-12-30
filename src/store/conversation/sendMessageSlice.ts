@@ -1,7 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Asset } from 'react-native-image-picker';
+// import { Asset } from 'react-native-image-picker';
 import { Message } from '@/types';
 import { RootState } from '@/store';
+
+// Mock Asset type
+interface Asset {
+  base64?: string;
+  uri?: string;
+  width?: number;
+  height?: number;
+  fileSize?: number;
+  type?: string;
+  fileName?: string;
+  duration?: number;
+  bitrate?: number;
+  timestamp?: string;
+  id?: string;
+}
 
 interface SendMessageState {
   messageContent: string;

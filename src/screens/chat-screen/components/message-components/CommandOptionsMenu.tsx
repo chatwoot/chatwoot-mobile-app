@@ -1,9 +1,83 @@
 import React from 'react';
 import { Alert, Linking, Platform, Pressable, Text } from 'react-native';
-import DocumentPicker, { DocumentPickerResponse } from 'react-native-document-picker';
-import { Asset, launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
+// import DocumentPicker, { DocumentPickerResponse } from 'react-native-document-picker';
+// import { Asset, launchCamera, launchImageLibrary } from 'react-native-image-picker';
+// import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
+
+let DocumentPicker: any = null;
+let launchCamera: any = null;
+let launchImageLibrary: any = null;
+let PERMISSIONS: any = null;
+let request: any = null;
+let RESULTS: any = null;
+
+try {
+  DocumentPicker = require('react-native-document-picker').default;
+  // Handle named export if default is not available or if it's mixed
+  if (!DocumentPicker && require('react-native-document-picker').pick) {
+    DocumentPicker = require('react-native-document-picker');
+  }
+} catch (e) {
+  console.warn('react-native-document-picker not available');
+  DocumentPicker = {
+    pick: () => Promise.reject(new Error('Module not available')),
+    types: {
+      allFiles: 'allFiles',
+      images: 'images',
+      plainText: 'plainText',
+      audio: 'audio',
+      pdf: 'pdf',
+      zip: 'zip',
+      csv: 'csv',
+      doc: 'doc',
+      docx: 'docx',
+      ppt: 'ppt',
+      pptx: 'pptx',
+      xls: 'xls',
+      xlsx: 'xlsx',
+    },
+    isCancel: () => false,
+  };
+}
+
+try {
+  const ImagePicker = require('react-native-image-picker');
+  launchCamera = ImagePicker.launchCamera;
+  launchImageLibrary = ImagePicker.launchImageLibrary;
+} catch (e) {
+  console.warn('react-native-image-picker not available');
+  launchCamera = () => Promise.resolve({ errorCode: 'camera_unavailable' });
+  launchImageLibrary = () => Promise.resolve({ errorCode: 'permission' });
+}
+
+try {
+  const Permissions = require('react-native-permissions');
+  PERMISSIONS = Permissions.PERMISSIONS;
+  request = Permissions.request;
+  RESULTS = Permissions.RESULTS;
+} catch (e) {
+  console.warn('react-native-permissions not available');
+  PERMISSIONS = { IOS: {}, ANDROID: {} };
+  request = () => Promise.resolve('unavailable');
+  RESULTS = { BLOCKED: 'blocked', GRANTED: 'granted' };
+}
+
+// Type definitions for development time safety if needed, though we are using any for the lazy loaded modules
+interface DocumentPickerResponse {
+  name: string | null;
+  size: number | null;
+  type: string | null;
+  uri: string;
+}
+
+interface Asset {
+  fileName?: string;
+  fileSize?: number;
+  type?: string;
+  uri?: string;
+}
+
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppDispatch } from '@/hooks';
 import { updateAttachments } from '@/store/conversation/sendMessageSlice';

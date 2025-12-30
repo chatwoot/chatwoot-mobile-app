@@ -1,8 +1,20 @@
 import React, { useEffect } from 'react';
-import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view';
+import { View } from 'react-native';
+// import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view';
 import Animated from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+
+let PagerView: any = View;
+try {
+  PagerView = require('react-native-pager-view').default;
+} catch (e) {
+  console.warn('react-native-pager-view not available');
+  PagerView = View;
+}
+
+// Mock type
+type PagerViewOnPageSelectedEvent = any;
 
 import { ChatHeaderContainer } from './components';
 import { ConversationActions } from './conversation-actions';
@@ -33,7 +45,14 @@ import i18n from '@/i18n';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { MacrosList } from './components/macros/MacrosList';
 import { macroActions } from '@/store/macro/macroActions';
-import { LightBoxProvider } from '@alantoa/lightbox';
+// import { LightBoxProvider } from '@alantoa/lightbox';
+
+let LightBoxProvider: any = ({ children }: any) => <>{children}</>;
+try {
+  LightBoxProvider = require('@alantoa/lightbox').LightBoxProvider;
+} catch (e) {
+  console.warn('@alantoa/lightbox not available');
+}
 
 export const ChatWindow = (props: ChatScreenProps) => {
   return (

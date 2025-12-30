@@ -8,7 +8,23 @@ import {
   BottomSheetModal,
   useBottomSheetSpringConfigs,
 } from '@gorhom/bottom-sheet';
-import * as ContextMenu from 'zeego/context-menu';
+// import * as ContextMenu from 'zeego/context-menu';
+import { Text } from 'react-native';
+
+let ContextMenu: any = {
+  create: (comp: any) => comp,
+  Trigger: View,
+  Item: View,
+  ItemTitle: Text,
+  Content: View,
+  Root: View,
+};
+
+try {
+  ContextMenu = require('zeego/context-menu');
+} catch (e) {
+  console.warn('zeego/context-menu not available');
+}
 
 import { tailwind } from '@/theme';
 import { BottomSheetHeader, BottomSheetWrapper, Icon } from '@/components-next/common';

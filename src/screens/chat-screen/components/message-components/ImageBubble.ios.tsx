@@ -1,7 +1,18 @@
 import React from 'react';
+import { View } from 'react-native';
 import { Image } from 'expo-image';
-import { Galeria } from '@nandorojo/galeria';
+// import { Galeria } from '@nandorojo/galeria';
 import { tailwind } from '@/theme';
+
+let Galeria: any = ({ children }: any) => <View>{children}</View>;
+// Add static properties that might be used
+Galeria.Image = ({ children }: any) => <View>{children}</View>;
+
+try {
+  Galeria = require('@nandorojo/galeria').Galeria;
+} catch (e) {
+  console.warn('@nandorojo/galeria not available');
+}
 
 type ImageCellProps = {
   imageSrc: string;

@@ -1,8 +1,24 @@
 import React, { useCallback, useRef } from 'react';
 import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
-import messaging from '@react-native-firebase/messaging';
+// import messaging from '@react-native-firebase/messaging';
 import { getStateFromPath } from '@react-navigation/native';
-import { KeyboardProvider } from 'react-native-keyboard-controller';
+// import { KeyboardProvider } from 'react-native-keyboard-controller';
+
+// Force mock KeyboardProvider for Expo Go compatibility
+const KeyboardProvider: any = ({ children }: any) => <>{children}</>;
+
+let messaging: any = () => ({
+  setBackgroundMessageHandler: () => {},
+  getInitialNotification: () => Promise.resolve(null),
+  onNotificationOpenedApp: () => () => {},
+});
+
+try {
+  messaging = require('@react-native-firebase/messaging').default;
+} catch (e) {
+  console.warn('@react-native-firebase/messaging not available');
+}
+
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 

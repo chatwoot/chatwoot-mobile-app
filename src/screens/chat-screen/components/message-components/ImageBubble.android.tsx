@@ -1,8 +1,19 @@
 import React from 'react';
+import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { LightBox, LightBoxProps } from '@alantoa/lightbox';
+// import { LightBox, LightBoxProps } from '@alantoa/lightbox';
 import { Image } from 'expo-image';
 import { tailwind } from '@/theme';
+
+let LightBox: any = ({ children }: any) => <View>{children}</View>;
+try {
+  LightBox = require('@alantoa/lightbox').LightBox;
+} catch (e) {
+  console.warn('@alantoa/lightbox not available');
+}
+
+// Mock type
+type LightBoxProps = any;
 
 const AnimatedExpoImage = Animated.createAnimatedComponent(Image);
 

@@ -1,8 +1,19 @@
 import React, { useCallback } from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
-import Markdown, { MarkdownIt } from 'react-native-markdown-display';
+// import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import Animated from 'react-native-reanimated';
 import { Image } from 'expo-image';
+
+let Markdown: any = ({ children }: any) => <Text>{children}</Text>;
+let MarkdownIt: any = () => {};
+
+try {
+  const MarkdownDisplay = require('react-native-markdown-display');
+  Markdown = MarkdownDisplay.default;
+  MarkdownIt = MarkdownDisplay.MarkdownIt;
+} catch (e) {
+  console.warn('react-native-markdown-display not available');
+}
 
 import { useRefsContext } from '@/context';
 import { CloseIcon, FileIcon, VoiceNote } from '@/svg-icons';

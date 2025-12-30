@@ -3,7 +3,24 @@
  * All credits goes the Awesome Developer [@vanGalilea](https://github.com/vanGalilea/vanGalilea)
  */
 
-import AudioRecorderPlayer, { PlayBackType } from 'react-native-audio-recorder-player';
+// import AudioRecorderPlayer, { PlayBackType } from 'react-native-audio-recorder-player';
+import { PlayBackType } from 'react-native-audio-recorder-player';
+
+let AudioRecorderPlayer: any = null;
+try {
+  AudioRecorderPlayer = require('react-native-audio-recorder-player').default;
+} catch (error) {
+  console.warn('react-native-audio-recorder-player not available');
+  AudioRecorderPlayer = class {
+    startPlayer() { return Promise.resolve(); }
+    stopPlayer() { return Promise.resolve(); }
+    resumePlayer() { return Promise.resolve(); }
+    pausePlayer() { return Promise.resolve(); }
+    seekToPlayer() { return Promise.resolve(); }
+    addPlayBackListener() {}
+    removePlayBackListener() {}
+  };
+}
 
 export type Callback = (args: { status: AudioStatus; data?: PlayBackType }) => void;
 

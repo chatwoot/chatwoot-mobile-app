@@ -1,15 +1,27 @@
 import React, { useRef } from 'react';
-import PagerView from 'react-native-pager-view';
+import { View } from 'react-native';
+// import PagerView from 'react-native-pager-view';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { FlashList } from '@shopify/flash-list';
+// import { FlashList } from '@shopify/flash-list';
 import { Message } from '@/types';
+
+let PagerView: any = View;
+try {
+  PagerView = require('react-native-pager-view').default;
+} catch (e) {
+  console.warn('react-native-pager-view not available');
+  PagerView = View;
+}
+
+// Mock FlashList type for context
+type FlashList<T> = any;
 
 interface RefsContextType {
   userAvailabilityStatusSheetRef: React.RefObject<BottomSheetModal>;
   filtersModalSheetRef: React.RefObject<BottomSheetModal>;
   actionsModalSheetRef: React.RefObject<BottomSheetModal>;
   languagesModalSheetRef: React.RefObject<BottomSheetModal>;
-  chatPagerView: React.RefObject<PagerView>;
+  chatPagerView: React.RefObject<typeof PagerView>;
   addLabelSheetRef: React.RefObject<BottomSheetModal>;
   macrosListSheetRef: React.RefObject<BottomSheetModal>;
   notificationPreferencesSheetRef: React.RefObject<BottomSheetModal>;
@@ -43,7 +55,7 @@ const RefsProvider: React.FC<Partial<RefsContextType & { children: React.ReactNo
   const notificationPreferencesSheetRef = useRef<BottomSheetModal>(null);
   const addLabelSheetRef = useRef<BottomSheetModal>(null);
   const macrosListSheetRef = useRef<BottomSheetModal>(null);
-  const chatPagerView = useRef<PagerView>(null);
+  const chatPagerView = useRef<typeof PagerView>(null);
   const switchAccountSheetRef = useRef<BottomSheetModal>(null);
   const debugActionsSheetRef = useRef<BottomSheetModal>(null);
   const inboxFiltersSheetRef = useRef<BottomSheetModal>(null);

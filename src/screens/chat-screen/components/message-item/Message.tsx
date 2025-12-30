@@ -31,12 +31,23 @@ import {
   MESSAGE_TYPES,
 } from '@/constants';
 import i18n from '@/i18n';
-import Clipboard from '@react-native-clipboard/clipboard';
+// import Clipboard from '@react-native-clipboard/clipboard';
 import { CopyIcon, Trash } from '@/svg-icons';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { tailwind } from '@/theme';
 import { Dimensions, View } from 'react-native';
 import { Avatar } from '@/components-next';
+
+let Clipboard: any = null;
+try {
+  Clipboard = require('@react-native-clipboard/clipboard').default;
+} catch (e) {
+  console.warn('@react-native-clipboard/clipboard not available');
+  Clipboard = {
+    setString: () => {},
+    getString: () => Promise.resolve(''),
+  };
+}
 
 // import { ImageMetadata } from '@/types';
 

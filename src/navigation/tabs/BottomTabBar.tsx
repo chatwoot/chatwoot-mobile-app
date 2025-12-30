@@ -1,13 +1,25 @@
 import React, { PropsWithChildren } from 'react';
-import { Platform, Pressable } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
   useDerivedValue,
   withSpring,
 } from 'react-native-reanimated';
-import { BlurView, BlurViewProps } from '@react-native-community/blur';
+// import { BlurView, BlurViewProps } from '@react-native-community/blur';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+
+let BlurView: any = View;
+try {
+  BlurView = require('@react-native-community/blur').BlurView;
+} catch (e) {
+  console.warn('@react-native-community/blur not available');
+  BlurView = View;
+}
+
+// Mock BlurViewProps
+type BlurViewProps = any;
+
 import { RouteProp } from '@react-navigation/native';
 import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice';
 

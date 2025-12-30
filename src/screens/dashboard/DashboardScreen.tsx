@@ -1,8 +1,16 @@
 import React, { useRef } from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, View, Text } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { WebView } from 'react-native-webview';
+// import { WebView } from 'react-native-webview';
 import snakecaseKeys from 'snakecase-keys';
+
+let WebView: any = View;
+try {
+  WebView = require('react-native-webview').WebView;
+} catch (e) {
+  console.warn('react-native-webview not available');
+  WebView = (props: any) => <View><Text>WebView not available</Text></View>;
+}
 
 import { StackActions, useNavigation, useRoute } from '@react-navigation/native';
 

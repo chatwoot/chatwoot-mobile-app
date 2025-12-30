@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Alert, Keyboard, TextInput } from 'react-native';
-import { KeyboardStickyView } from 'react-native-keyboard-controller';
+import { Alert, Keyboard, TextInput, View } from 'react-native';
+// import { KeyboardStickyView } from 'react-native-keyboard-controller';
 import Animated, {
   FadeIn,
   FadeOut,
@@ -9,6 +9,16 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
+
+// Force mock for Expo Go - native module not available
+let KeyboardStickyView: any = View;
+// try {
+//   KeyboardStickyView = require('react-native-keyboard-controller').KeyboardStickyView || View;
+// } catch (e) {
+//   console.warn('react-native-keyboard-controller not available');
+//   KeyboardStickyView = View;
+// }
+
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useChatWindowContext, useRefsContext } from '@/context';

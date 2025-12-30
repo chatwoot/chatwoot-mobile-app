@@ -7,7 +7,23 @@ import {
   BottomSheetModal,
   useBottomSheetSpringConfigs,
 } from '@gorhom/bottom-sheet';
-import * as DropdownMenu from 'zeego/dropdown-menu';
+// import * as DropdownMenu from 'zeego/dropdown-menu';
+import { Text } from 'react-native';
+
+let DropdownMenu: any = {
+  create: (comp: any) => comp,
+  Trigger: View,
+  Item: View,
+  ItemTitle: Text,
+  Content: View,
+  Root: View,
+};
+
+try {
+  DropdownMenu = require('zeego/dropdown-menu');
+} catch (e) {
+  console.warn('zeego/dropdown-menu not available');
+}
 
 import { BottomSheetHeader, BottomSheetWrapper } from '@/components-next';
 import { tailwind } from '@/theme';

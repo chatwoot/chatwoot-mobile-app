@@ -1,8 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/hooks';
 import { useChatWindowContext } from '@/context';
-import { AppState, Platform } from 'react-native';
-import { KeyboardGestureArea } from 'react-native-keyboard-controller';
+import { AppState, Platform, View } from 'react-native';
+// import { KeyboardGestureArea } from 'react-native-keyboard-controller';
+
+// Force mock for Expo Go - native module not available
+const KeyboardGestureArea: any = View;
+
 import { flatMap } from 'lodash';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import {

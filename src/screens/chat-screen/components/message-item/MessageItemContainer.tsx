@@ -10,9 +10,21 @@ import { useHaptic } from '@/utils';
 // import { INBOX_FEATURES } from '@/constants';
 import { showToast } from '@/utils/toastUtils';
 import i18n from '@/i18n';
-import Clipboard from '@react-native-clipboard/clipboard';
+// import Clipboard from '@react-native-clipboard/clipboard';
 import { MESSAGE_TYPES } from '@/constants';
 import { CopyIcon, Trash } from '@/svg-icons';
+
+let Clipboard: any = null;
+try {
+  Clipboard = require('@react-native-clipboard/clipboard').default;
+} catch (e) {
+  console.warn('@react-native-clipboard/clipboard not available');
+  Clipboard = {
+    setString: () => {},
+    getString: () => Promise.resolve(''),
+  };
+}
+
 import { MenuOption } from '../message-menu';
 import { MessageItem } from './MessageItem';
 

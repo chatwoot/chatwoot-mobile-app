@@ -94,7 +94,7 @@ export interface AvatarProps extends ViewProps {
 
 export const Avatar: React.FC<Partial<AvatarProps>> = props => {
   const {
-    size = 'xl',
+    size: rawSize = 'xl',
     squared = false,
     name,
     src,
@@ -105,6 +105,10 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
     style,
     ...boxProps
   } = props;
+
+  // Defensive check: ensure size is valid, fallback to 'xl' if invalid
+  const validSizes: AvatarSizes[] = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'];
+  const size = validSizes.includes(rawSize as AvatarSizes) ? (rawSize as AvatarSizes) : 'xl';
 
   const isSquared = squared;
   const isSourceAvailable = !!src;

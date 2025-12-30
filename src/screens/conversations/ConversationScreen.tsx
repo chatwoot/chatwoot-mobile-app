@@ -12,7 +12,16 @@ import {
   useBottomSheetSpringConfigs,
   useBottomSheetModal,
 } from '@gorhom/bottom-sheet';
-import { FlashList } from '@shopify/flash-list';
+// import { FlashList } from '@shopify/flash-list';
+import { FlatList } from 'react-native';
+
+let FlashList: any = FlatList;
+try {
+  FlashList = require('@shopify/flash-list').FlashList;
+} catch (e) {
+  console.warn('@shopify/flash-list not available, falling back to FlatList');
+  FlashList = FlatList;
+}
 
 import {
   ConversationItemContainer,
@@ -62,7 +71,18 @@ import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentS
 import i18n from '@/i18n';
 import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
 import { getCurrentRouteName } from '@/utils/navigationUtils';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+
+let AsyncStorage: any = {
+  removeItem: () => Promise.resolve(),
+  getItem: () => Promise.resolve(null),
+  setItem: () => Promise.resolve(),
+};
+try {
+  AsyncStorage = require('@react-native-async-storage/async-storage').default;
+} catch (e) {
+  console.warn('@react-native-async-storage/async-storage not available');
+}
 
 // The screen list thats need to be checked for refreshing the conversations list
 const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.INBOX, SCREENS.SETTINGS];

@@ -8,7 +8,19 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
-import { BlurView, BlurViewProps } from '@react-native-community/blur';
+// import { BlurView, BlurViewProps } from '@react-native-community/blur';
+import { View } from 'react-native';
+
+let BlurView: any = View;
+try {
+  BlurView = require('@react-native-community/blur').BlurView;
+} catch (e) {
+  console.warn('@react-native-community/blur not available');
+  BlurView = View;
+}
+
+// Mock BlurViewProps
+type BlurViewProps = any;
 
 import { TAB_BAR_HEIGHT } from '@/constants';
 import { useRefsContext } from '@/context';

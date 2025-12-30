@@ -1,9 +1,21 @@
 import React from 'react';
 import { Pressable, Text, Animated, View } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
+// import Clipboard from '@react-native-clipboard/clipboard';
 
 import { showToast } from '@/utils/toastUtils';
 import { tailwind } from '@/theme';
+
+let Clipboard: any = null;
+try {
+  Clipboard = require('@react-native-clipboard/clipboard').default;
+} catch (e) {
+  console.warn('@react-native-clipboard/clipboard not available');
+  Clipboard = {
+    setString: () => {},
+    getString: () => Promise.resolve(''),
+  };
+}
+
 import { useHaptic } from '@/utils';
 import { useAppSelector } from '@/hooks';
 import {

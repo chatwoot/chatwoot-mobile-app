@@ -4,11 +4,17 @@ import { Alert, BackHandler } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store';
 import { AppNavigator } from '@/navigation';
+import { initializeFirebaseMessaging } from '@/services/firebaseMessaging';
 
 import i18n from '@/i18n';
 
 const Chatwoot = () => {
   useEffect(() => {
+    // Initialize Firebase Messaging
+    initializeFirebaseMessaging().catch(error => {
+      console.error('[App] Failed to initialize Firebase:', error);
+    });
+
     BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);

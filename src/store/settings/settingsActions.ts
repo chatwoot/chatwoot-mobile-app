@@ -3,6 +3,7 @@ import * as Sentry from '@sentry/react-native';
 
 import messaging from '@react-native-firebase/messaging';
 import { Platform, PermissionsAndroid } from 'react-native';
+import { isFirebaseEnabled } from '@/services/firebaseMessaging';
 import {
   getSystemName,
   getManufacturer,
@@ -89,6 +90,10 @@ export const settingsActions = {
     'settings/saveDeviceDetails',
     async (_, { rejectWithValue }) => {
       try {
+        if (!isFirebaseEnabled()) {
+          return { fcmToken: '' };
+        }
+
         const permissionEnabled = await messaging().hasPermission();
         const deviceId = await getUniqueId();
         const devicePlatform = getSystemName();

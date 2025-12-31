@@ -84,8 +84,9 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           organization: process.env.EXPO_PUBLIC_SENTRY_ORG_NAME,
         },
       ],
-      '@react-native-firebase/app',
-      '@react-native-firebase/messaging',
+      // Temporarily disabled Firebase until we have the google-services files
+      // '@react-native-firebase/app',
+      // '@react-native-firebase/messaging',
       [
         'expo-build-properties',
         {

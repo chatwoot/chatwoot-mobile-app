@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { LANGUAGES } from '@/constants';
+import { AVAILABLE_LANGUAGES } from '@/constants';
 import { TickIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
@@ -20,9 +20,9 @@ type LanguageCellProps = {
   onChangeLanguage: (locale: string) => void;
 };
 
-const languagesList = Object.keys(LANGUAGES).map(languageCode => {
+const languagesList = Object.keys(AVAILABLE_LANGUAGES).map(languageCode => {
   return {
-    title: LANGUAGES[languageCode as keyof typeof LANGUAGES],
+    title: AVAILABLE_LANGUAGES[languageCode as keyof typeof AVAILABLE_LANGUAGES],
     key: languageCode,
   };
 });
@@ -45,11 +45,13 @@ const LanguageCell = (props: LanguageCellProps) => {
           style={tailwind.style(
             'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
             !isLastItem && 'border-b-[1px] border-blackA-A3',
-          )}>
+          )}
+        >
           <Animated.Text
             style={tailwind.style(
               'text-base capitalize text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
-            )}>
+            )}
+          >
             {item.title}
           </Animated.Text>
           {isSelected && <Icon icon={<TickIcon />} size={20} />}

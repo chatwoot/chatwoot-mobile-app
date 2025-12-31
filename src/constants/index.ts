@@ -189,6 +189,17 @@ export const LANGUAGES = {
   zh: 'Chinese',
 };
 
+// Available languages for the app (subset of LANGUAGES)
+export const AVAILABLE_LANGUAGE_CODES = ['en', 'es'] as const;
+
+export const AVAILABLE_LANGUAGES = AVAILABLE_LANGUAGE_CODES.reduce(
+  (acc, code) => {
+    acc[code] = LANGUAGES[code];
+    return acc;
+  },
+  {} as Record<(typeof AVAILABLE_LANGUAGE_CODES)[number], string>,
+);
+
 export const URL_REGEX = {
   CONVERSATION: 'app/accounts/[-0-9]+/conversations/[-0-9]',
 };

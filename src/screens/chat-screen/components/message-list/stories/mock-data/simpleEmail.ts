@@ -63,9 +63,9 @@ export const EMAIL_MESSAGES = [
         account_id: 51,
         extension: null,
         data_url:
-          'https://staging.chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdFdKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--10170e22f42401a9259e17eba6e59877127353d0/requirements.pdf',
+          'https://staging.AlooChat.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdFdKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--10170e22f42401a9259e17eba6e59877127353d0/requirements.pdf',
         thumb_url:
-          'https://staging.chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdFdKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--10170e22f42401a9259e17eba6e59877127353d0/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCam9UY21WemFYcGxYM1J2WDJacGJHeGJCMmtCK2pBPSIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--31a6ed995cc4ac2dd2fa023068ee23b23efa1efb/requirements.pdf',
+          'https://staging.AlooChat.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdFdKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--10170e22f42401a9259e17eba6e59877127353d0/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCam9UY21WemFYcGxYM1J2WDJacGJHeGJCMmtCK2pBPSIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--31a6ed995cc4ac2dd2fa023068ee23b23efa1efb/requirements.pdf',
         file_size: 841909,
         width: null,
         height: null,
@@ -99,7 +99,7 @@ export const EMAIL_MESSAGES = [
     private: false,
     status: 'sent',
     source_id:
-      'conversation/758d1f24-dc76-4abc-9c41-255ed8974f8e/messages/60914@reply.chatwoot.dev',
+      'conversation/758d1f24-dc76-4abc-9c41-255ed8974f8e/messages/60914@reply.AlooChat.dev',
     content_type: 'text',
     content_attributes: {
       cc_emails: [],
@@ -129,9 +129,9 @@ export const EMAIL_MESSAGES = [
         account_id: 51,
         extension: null,
         data_url:
-          'https://staging.chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGFKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--940f9c3df19ce042ef3447809c9c451cfa4e905b/quotation.pdf',
+          'https://staging.AlooChat.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGFKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--940f9c3df19ce042ef3447809c9c451cfa4e905b/quotation.pdf',
         thumb_url:
-          'https://staging.chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGFKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--940f9c3df19ce042ef3447809c9c451cfa4e905b/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCam9UY21WemFYcGxYM1J2WDJacGJHeGJCMmtCK2pBPSIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--31a6ed995cc4ac2dd2fa023068ee23b23efa1efb/quotation.pdf',
+          'https://staging.AlooChat.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGFKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--940f9c3df19ce042ef3447809c9c451cfa4e905b/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCam9UY21WemFYcGxYM1J2WDJacGJHeGJCMmtCK2pBPSIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--31a6ed995cc4ac2dd2fa023068ee23b23efa1efb/quotation.pdf',
         file_size: 841909,
         width: null,
         height: null,
@@ -142,17 +142,17 @@ export const EMAIL_MESSAGES = [
       name: 'Alex',
       available_name: 'Alex',
       avatar_url:
-        'https://staging.chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbktJIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--25806e8b52810484d3d6cb53af9e2a1c0cf1b43d/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--988d66f5e450207265d5c21bb0edb3facb890a43/slick-deploy.png',
+        'https://staging.AlooChat.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbktJIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--25806e8b52810484d3d6cb53af9e2a1c0cf1b43d/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--988d66f5e450207265d5c21bb0edb3facb890a43/slick-deploy.png',
       type: 'user',
       availability_status: 'online',
       thumbnail:
-        'https://staging.chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbktJIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--25806e8b52810484d3d6cb53af9e2a1c0cf1b43d/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--988d66f5e450207265d5c21bb0edb3facb890a43/slick-deploy.png',
+        'https://staging.AlooChat.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbktJIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--25806e8b52810484d3d6cb53af9e2a1c0cf1b43d/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--988d66f5e450207265d5c21bb0edb3facb890a43/slick-deploy.png',
     },
   },
   {
     id: 60915,
     content:
-      'Dear Sam,\n\nThank you for the quotation. Could you share images or samples of the\nfabric for us to review before proceeding?\n\nBest,\nAlex\n\nOn Wed, 4 Dec 2024 at 17:15, Sam from CottonMart <sam@cottonmart.test> wrote:\n\n> Dear Alex,\n>\n> Thank you for your inquiry. Please find attached our quotation based on\n> your requirements. Let us know if you need further details or wish to\n> discuss specific customizations.\n>\n> Best regards,\n> Sam\n> FabricMart\n> attachment [click here to view\n> <https://staging.chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGFKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--940f9c3df19ce042ef3447809c9c451cfa4e905b/quotation.pdf>]\n>',
+      'Dear Sam,\n\nThank you for the quotation. Could you share images or samples of the\nfabric for us to review before proceeding?\n\nBest,\nAlex\n\nOn Wed, 4 Dec 2024 at 17:15, Sam from CottonMart <sam@cottonmart.test> wrote:\n\n> Dear Alex,\n>\n> Thank you for your inquiry. Please find attached our quotation based on\n> your requirements. Let us know if you need further details or wish to\n> discuss specific customizations.\n>\n> Best regards,\n> Sam\n> FabricMart\n> attachment [click here to view\n> <https://staging.AlooChat.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGFKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--940f9c3df19ce042ef3447809c9c451cfa4e905b/quotation.pdf>]\n>',
     account_id: 51,
     inbox_id: 992,
     conversation_id: 134,
@@ -171,22 +171,22 @@ export const EMAIL_MESSAGES = [
         date: '2024-12-04T17:16:07+05:30',
         from: ['alex@paperlayer.test'],
         html_content: {
-          full: '<div dir="ltr"><p>Dear Sam,</p><p>Thank you for the quotation. Could you share images or samples of the fabric for us to review before proceeding?</p><p>Best,<br>Alex</p></div><br><div class="gmail_quote gmail_quote_container"><div dir="ltr" class="gmail_attr">On Wed, 4 Dec 2024 at 17:15, Sam from CottonMart &lt;<a href="mailto:sam@cottonmart.test">sam@cottonmart.test</a>&gt; wrote:<br></div><blockquote class="gmail_quote" style="margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">  <p>Dear Alex,</p>\n<p>Thank you for your inquiry. Please find attached our quotation based on your requirements. Let us know if you need further details or wish to discuss specific customizations.</p>\n<p>Best regards,<br>\nSam<br>\nFabricMart</p>\n\n    attachment [<a href="https://staging.chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGFKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--940f9c3df19ce042ef3447809c9c451cfa4e905b/quotation.pdf" target="_blank">click here to view</a>]\n</blockquote></div>\n',
+          full: '<div dir="ltr"><p>Dear Sam,</p><p>Thank you for the quotation. Could you share images or samples of the fabric for us to review before proceeding?</p><p>Best,<br>Alex</p></div><br><div class="gmail_quote gmail_quote_container"><div dir="ltr" class="gmail_attr">On Wed, 4 Dec 2024 at 17:15, Sam from CottonMart &lt;<a href="mailto:sam@cottonmart.test">sam@cottonmart.test</a>&gt; wrote:<br></div><blockquote class="gmail_quote" style="margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">  <p>Dear Alex,</p>\n<p>Thank you for your inquiry. Please find attached our quotation based on your requirements. Let us know if you need further details or wish to discuss specific customizations.</p>\n<p>Best regards,<br>\nSam<br>\nFabricMart</p>\n\n    attachment [<a href="https://staging.AlooChat.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGFKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--940f9c3df19ce042ef3447809c9c451cfa4e905b/quotation.pdf" target="_blank">click here to view</a>]\n</blockquote></div>\n',
           reply:
             'Dear Sam,\n\nThank you for the quotation. Could you share images or samples of the fabric for us to review before proceeding?\n\nBest,\nAlex\n\nOn Wed, 4 Dec 2024 at 17:15, Sam from CottonMart <sam@cottonmart.test> wrote:\n>',
           quoted:
             'Dear Sam,\n\nThank you for the quotation. Could you share images or samples of the fabric for us to review before proceeding?\n\nBest,\nAlex',
         },
         in_reply_to:
-          'conversation/758d1f24-dc76-4abc-9c41-255ed8974f8e/messages/60914@reply.chatwoot.dev',
+          'conversation/758d1f24-dc76-4abc-9c41-255ed8974f8e/messages/60914@reply.AlooChat.dev',
         message_id: 'CAM_Qp+_70EiYJ_nKMgJ6MZaD58Tq3E57QERcZgnd10g@mail.gmail.com',
         multipart: true,
         number_of_attachments: 0,
         subject: 'Re: Inquiry and Quotation for Cotton Fabric',
         text_content: {
-          full: 'Dear Sam,\n\nThank you for the quotation. Could you share images or samples of the\nfabric for us to review before proceeding?\n\nBest,\nAlex\n\nOn Wed, 4 Dec 2024 at 17:15, Sam from CottonMart <sam@cottonmart.test>\nwrote:\n\n> Dear Alex,\n>\n> Thank you for your inquiry. Please find attached our quotation based on\n> your requirements. Let us know if you need further details or wish to\n> discuss specific customizations.\n>\n> Best regards,\n> Sam\n> FabricMart\n> attachment [click here to view\n> <https://staging.chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGFKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--940f9c3df19ce042ef3447809c9c451cfa4e905b/quotation.pdf>]\n>\n',
+          full: 'Dear Sam,\n\nThank you for the quotation. Could you share images or samples of the\nfabric for us to review before proceeding?\n\nBest,\nAlex\n\nOn Wed, 4 Dec 2024 at 17:15, Sam from CottonMart <sam@cottonmart.test>\nwrote:\n\n> Dear Alex,\n>\n> Thank you for your inquiry. Please find attached our quotation based on\n> your requirements. Let us know if you need further details or wish to\n> discuss specific customizations.\n>\n> Best regards,\n> Sam\n> FabricMart\n> attachment [click here to view\n> <https://staging.AlooChat.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGFKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--940f9c3df19ce042ef3447809c9c451cfa4e905b/quotation.pdf>]\n>\n',
           reply:
-            'Dear Sam,\n\nThank you for the quotation. Could you share images or samples of the\nfabric for us to review before proceeding?\n\nBest,\nAlex\n\nOn Wed, 4 Dec 2024 at 17:15, Sam from CottonMart <sam@cottonmart.test> wrote:\n\n> Dear Alex,\n>\n> Thank you for your inquiry. Please find attached our quotation based on\n> your requirements. Let us know if you need further details or wish to\n> discuss specific customizations.\n>\n> Best regards,\n> Sam\n> FabricMart\n> attachment [click here to view\n> <https://staging.chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGFKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--940f9c3df19ce042ef3447809c9c451cfa4e905b/quotation.pdf>]\n>',
+            'Dear Sam,\n\nThank you for the quotation. Could you share images or samples of the\nfabric for us to review before proceeding?\n\nBest,\nAlex\n\nOn Wed, 4 Dec 2024 at 17:15, Sam from CottonMart <sam@cottonmart.test> wrote:\n\n> Dear Alex,\n>\n> Thank you for your inquiry. Please find attached our quotation based on\n> your requirements. Let us know if you need further details or wish to\n> discuss specific customizations.\n>\n> Best regards,\n> Sam\n> FabricMart\n> attachment [click here to view\n> <https://staging.AlooChat.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGFKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--940f9c3df19ce042ef3447809c9c451cfa4e905b/quotation.pdf>]\n>',
           quoted:
             'Dear Sam,\n\nThank you for the quotation. Could you share images or samples of the\nfabric for us to review before proceeding?\n\nBest,\nAlex',
         },
@@ -228,7 +228,7 @@ export const EMAIL_MESSAGES = [
     message_type: 1,
     content_type: 'text',
     source_id:
-      'conversation/758d1f24-dc76-4abc-9c41-255ed8974f8e/messages/60916@reply.chatwoot.dev',
+      'conversation/758d1f24-dc76-4abc-9c41-255ed8974f8e/messages/60916@reply.AlooChat.dev',
     processed_message_content:
       "Dear Alex,\r\n\r\nPlease find attached images of our cotton fabric samples. Let us know if you'd like physical samples sent to you. \r\n\r\nWarm regards,  \r\nSam",
     id: 60916,
@@ -267,9 +267,9 @@ export const EMAIL_MESSAGES = [
         account_id: 51,
         extension: null,
         data_url:
-          'https://staging.chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGVKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--62ee3b99421bfe7d8db85959ae99ab03a899f351/image.png',
+          'https://staging.AlooChat.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGVKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--62ee3b99421bfe7d8db85959ae99ab03a899f351/image.png',
         thumb_url:
-          'https://staging.chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGVKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--62ee3b99421bfe7d8db85959ae99ab03a899f351/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--988d66f5e450207265d5c21bb0edb3facb890a43/image.png',
+          'https://staging.AlooChat.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGVKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--62ee3b99421bfe7d8db85959ae99ab03a899f351/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--988d66f5e450207265d5c21bb0edb3facb890a43/image.png',
         file_size: 1617507,
         width: 1600,
         height: 900,
@@ -280,24 +280,24 @@ export const EMAIL_MESSAGES = [
       name: 'Alex',
       available_name: 'Alex',
       avatar_url:
-        'https://staging.chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbktJIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--25806e8b52810484d3d6cb53af9e2a1c0cf1b43d/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--988d66f5e450207265d5c21bb0edb3facb890a43/slick-deploy.png',
+        'https://staging.AlooChat.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbktJIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--25806e8b52810484d3d6cb53af9e2a1c0cf1b43d/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--988d66f5e450207265d5c21bb0edb3facb890a43/slick-deploy.png',
       type: 'user',
       availability_status: 'online',
       thumbnail:
-        'https://staging.chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbktJIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--25806e8b52810484d3d6cb53af9e2a1c0cf1b43d/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--988d66f5e450207265d5c21bb0edb3facb890a43/slick-deploy.png',
+        'https://staging.AlooChat.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbktJIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--25806e8b52810484d3d6cb53af9e2a1c0cf1b43d/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--988d66f5e450207265d5c21bb0edb3facb890a43/slick-deploy.png',
     },
     previous_changes: {
       updated_at: ['2024-12-04T11:47:46.879Z', '2024-12-04T11:47:53.564Z'],
       source_id: [
         null,
-        'conversation/758d1f24-dc76-4abc-9c41-255ed8974f8e/messages/60916@reply.chatwoot.dev',
+        'conversation/758d1f24-dc76-4abc-9c41-255ed8974f8e/messages/60916@reply.AlooChat.dev',
       ],
     },
   },
   {
     id: 60917,
     content:
-      "Great we were looking for something in a different finish see image attached\n\n[image: image.png]\n\nLet me know if you have different finish options?\n\nBest Regards\n\nOn Wed, 4 Dec 2024 at 17:17, Sam from CottonMart <sam@cottonmart.test> wrote:\n\n> Dear Alex,\n>\n> Please find attached images of our cotton fabric samples. Let us know if\n> you'd like physical samples sent to you.\n>\n> Warm regards,\n> Sam\n> attachment [click here to view\n> <https://staging.chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGVKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--62ee3b99421bfe7d8db85959ae99ab03a899f351/image.png>]\n>",
+      "Great we were looking for something in a different finish see image attached\n\n[image: image.png]\n\nLet me know if you have different finish options?\n\nBest Regards\n\nOn Wed, 4 Dec 2024 at 17:17, Sam from CottonMart <sam@cottonmart.test> wrote:\n\n> Dear Alex,\n>\n> Please find attached images of our cotton fabric samples. Let us know if\n> you'd like physical samples sent to you.\n>\n> Warm regards,\n> Sam\n> attachment [click here to view\n> <https://staging.AlooChat.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGVKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--62ee3b99421bfe7d8db85959ae99ab03a899f351/image.png>]\n>",
     account_id: 51,
     inbox_id: 992,
     conversation_id: 134,
@@ -316,22 +316,22 @@ export const EMAIL_MESSAGES = [
         date: '2024-12-04T17:18:54+05:30',
         from: ['alex@paperlayer.test'],
         html_content: {
-          full: '<div dir="ltr">Great we were looking for something in a different finish see image attached<br><br><img src="https://staging.chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGlKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--408309fa40f1cfea87ee3320a062a5d16ce09d4e/image.png" alt="image.png" width="472" height="305"><br><div><br></div><div>Let me know if you have different finish options?<br><br>Best Regards</div></div><br><div class="gmail_quote gmail_quote_container"><div dir="ltr" class="gmail_attr">On Wed, 4 Dec 2024 at 17:17, Sam from CottonMart &lt;<a href="mailto:sam@cottonmart.test">sam@cottonmart.test</a>&gt; wrote:<br></div><blockquote class="gmail_quote" style="margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">  <p>Dear Alex,</p>\n<p>Please find attached images of our cotton fabric samples. Let us know if you&#39;d like physical samples sent to you.</p>\n<p>Warm regards,<br>\nSam</p>\n\n    attachment [<a href="https://staging.chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGVKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--62ee3b99421bfe7d8db85959ae99ab03a899f351/image.png" target="_blank">click here to view</a>]\n</blockquote></div>\n',
+          full: '<div dir="ltr">Great we were looking for something in a different finish see image attached<br><br><img src="https://staging.AlooChat.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGlKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--408309fa40f1cfea87ee3320a062a5d16ce09d4e/image.png" alt="image.png" width="472" height="305"><br><div><br></div><div>Let me know if you have different finish options?<br><br>Best Regards</div></div><br><div class="gmail_quote gmail_quote_container"><div dir="ltr" class="gmail_attr">On Wed, 4 Dec 2024 at 17:17, Sam from CottonMart &lt;<a href="mailto:sam@cottonmart.test">sam@cottonmart.test</a>&gt; wrote:<br></div><blockquote class="gmail_quote" style="margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">  <p>Dear Alex,</p>\n<p>Please find attached images of our cotton fabric samples. Let us know if you&#39;d like physical samples sent to you.</p>\n<p>Warm regards,<br>\nSam</p>\n\n    attachment [<a href="https://staging.AlooChat.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGVKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--62ee3b99421bfe7d8db85959ae99ab03a899f351/image.png" target="_blank">click here to view</a>]\n</blockquote></div>\n',
           reply:
             'Great we were looking for something in a different finish see image attached\n\n[image.png]\n\nLet me know if you have different finish options?\n\nBest Regards\n\nOn Wed, 4 Dec 2024 at 17:17, Sam from CottonMart <sam@cottonmart.test> wrote:\n>',
           quoted:
             'Great we were looking for something in a different finish see image attached\n\n[image.png]\n\nLet me know if you have different finish options?\n\nBest Regards',
         },
         in_reply_to:
-          'conversation/758d1f24-dc76-4abc-9c41-255ed8974f8e/messages/60916@reply.chatwoot.dev',
+          'conversation/758d1f24-dc76-4abc-9c41-255ed8974f8e/messages/60916@reply.AlooChat.dev',
         message_id: 'CAM_Qp+8LuzLTWZXkecjzJAgmb9RAQGm+qTmg@mail.gmail.com',
         multipart: true,
         number_of_attachments: 1,
         subject: 'Re: Inquiry and Quotation for Cotton Fabric',
         text_content: {
-          full: "Great we were looking for something in a different finish see image attached\n\n[image: image.png]\n\nLet me know if you have different finish options?\n\nBest Regards\n\nOn Wed, 4 Dec 2024 at 17:17, Sam from CottonMart <sam@cottonmart.test> wrote:\n\n> Dear Alex,\n>\n> Please find attached images of our cotton fabric samples. Let us know if\n> you'd like physical samples sent to you.\n>\n> Warm regards,\n> Sam\n> attachment [click here to view\n> <https://staging.chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGVKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--62ee3b99421bfe7d8db85959ae99ab03a899f351/image.png>]\n>",
+          full: "Great we were looking for something in a different finish see image attached\n\n[image: image.png]\n\nLet me know if you have different finish options?\n\nBest Regards\n\nOn Wed, 4 Dec 2024 at 17:17, Sam from CottonMart <sam@cottonmart.test> wrote:\n\n> Dear Alex,\n>\n> Please find attached images of our cotton fabric samples. Let us know if\n> you'd like physical samples sent to you.\n>\n> Warm regards,\n> Sam\n> attachment [click here to view\n> <https://staging.AlooChat.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGVKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--62ee3b99421bfe7d8db85959ae99ab03a899f351/image.png>]\n>",
           reply:
-            "Great we were looking for something in a different finish see image attached\n\n[image: image.png]\n\nLet me know if you have different finish options?\n\nBest Regards\n\nOn Wed, 4 Dec 2024 at 17:17, Sam from CottonMart <sam@cottonmart.test> wrote:\n\n> Dear Alex,\n>\n> Please find attached images of our cotton fabric samples. Let us know if\n> you'd like physical samples sent to you.\n>\n> Warm regards,\n> Sam\n> attachment [click here to view\n> <https://staging.chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGVKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--62ee3b99421bfe7d8db85959ae99ab03a899f351/image.png>]\n>",
+            "Great we were looking for something in a different finish see image attached\n\n[image: image.png]\n\nLet me know if you have different finish options?\n\nBest Regards\n\nOn Wed, 4 Dec 2024 at 17:17, Sam from CottonMart <sam@cottonmart.test> wrote:\n\n> Dear Alex,\n>\n> Please find attached images of our cotton fabric samples. Let us know if\n> you'd like physical samples sent to you.\n>\n> Warm regards,\n> Sam\n> attachment [click here to view\n> <https://staging.AlooChat.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdGVKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--62ee3b99421bfe7d8db85959ae99ab03a899f351/image.png>]\n>",
           quoted:
             'Great we were looking for something in a different finish see image attached\n\n[image: image.png]\n\nLet me know if you have different finish options?\n\nBest Regards',
         },

@@ -1,44 +1,55 @@
+import { Alert } from 'react-native';
+
 interface ToastParams {
   message: string;
 }
 
-let SnackbarModule: any = null;
-let isSnackbarAvailable = true;
+let isSnackbarChecked = false;
+let isSnackbarAvailable = false;
 
-// Lazy load Snackbar to avoid module initialization errors in Expo Go
-const getSnackbar = () => {
-  if (!isSnackbarAvailable) {
-    return null;
+// Check if Snackbar is available once
+const checkSnackbarAvailability = () => {
+  if (isSnackbarChecked) {
+    return isSnackbarAvailable;
   }
   
-  if (SnackbarModule === null) {
-    try {
-      SnackbarModule = require('react-native-snackbar').default;
-      // Check if the native module is actually available
-      if (!SnackbarModule || !SnackbarModule.LENGTH_SHORT) {
-        isSnackbarAvailable = false;
-        SnackbarModule = null;
+  isSnackbarChecked = true;
+  
+  try {
+    const SnackbarModule = require('react-native-snackbar');
+    // Verify the module and its properties exist
+    if (SnackbarModule && SnackbarModule.default && typeof SnackbarModule.default.show === 'function') {
+      // Try to access LENGTH_SHORT to ensure native module is loaded
+      const testValue = SnackbarModule.default.LENGTH_SHORT;
+      if (testValue !== null && testValue !== undefined) {
+        isSnackbarAvailable = true;
+        return true;
       }
-    } catch (error) {
-      console.warn('Snackbar module not available:', error);
-      isSnackbarAvailable = false;
-      SnackbarModule = null;
     }
+  } catch (error) {
+    console.warn('Snackbar module not available:', error);
   }
   
-  return SnackbarModule;
+  isSnackbarAvailable = false;
+  return false;
 };
 
 export const showToast = ({ message }: ToastParams): void => {
-  const Snackbar = getSnackbar();
-  
-  if (!Snackbar) {
-    console.warn('Snackbar is not available. Message:', message);
+  // Check availability first
+  if (!checkSnackbarAvailability()) {
+    // Fallback to Alert when Snackbar is not available (e.g., in Expo Go)
+    Alert.alert('', message, [{ text: 'OK' }]);
     return;
   }
   
-  Snackbar.show({
-    text: message,
-    duration: Snackbar.LENGTH_SHORT,
-  });
+  try {
+    const Snackbar = require('react-native-snackbar').default;
+    Snackbar.show({
+      text: message,
+      duration: Snackbar.LENGTH_SHORT,
+    });
+  } catch (error) {
+    console.warn('Error showing snackbar:', error);
+    Alert.alert('', message, [{ text: 'OK' }]);
+  }
 };

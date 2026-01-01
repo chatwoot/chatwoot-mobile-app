@@ -3,20 +3,20 @@
 
 ---
 
-# Chatwoot
+# AlooChat
 
-Mobile app for chatwoot platform. Built with React Native and Expo.
+Mobile app for AlooChat platform. Built with React Native and Expo.
 
 <p>
-   <a href="https://github.com/react-native-community/releases/blob/master/CHANGELOG.md"><img src="https://img.shields.io/github/package-json/dependency-version/chatwoot/chatwoot-mobile-app/react-native?color=%2361dafb" alt="Project Dependencies"></a>
-   <img src="https://img.shields.io/github/package-json/dependency-version/chatwoot/chatwoot-mobile-app/expo?color=%2361dafb" alt="Expo">
+   <a href="https://github.com/react-native-community/releases/blob/master/CHANGELOG.md"><img src="https://img.shields.io/github/package-json/dependency-version/AlooChat/AlooChat-mobile-app/react-native?color=%2361dafb" alt="Project Dependencies"></a>
+   <img src="https://img.shields.io/github/package-json/dependency-version/AlooChat/AlooChat-mobile-app/expo?color=%2361dafb" alt="Expo">
   <img src="https://img.shields.io/discord/647412545203994635" alt="Discord">
   <a href="https://discord.gg/cJXdrwS"><img src="https://img.shields.io/badge/chat-Discord-violet?logo=discord" alt="Chat on Discord"></a>
    <a href="http://makeapullrequest.com"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="Chat on Discord"></a>
- <img src="https://img.shields.io/github/license/chatwoot/chatwoot-mobile-app" alt="License">
+ <img src="https://img.shields.io/github/license/AlooChat/AlooChat-mobile-app" alt="License">
 </p>
 
-- **Supported Chatwoot version:** 3.13.0+
+- **Supported AlooChat version:** 3.13.0+
 - **Supported iOS versions**: 13.4+
 - **Supported Android versions**: 6.0+
 
@@ -37,7 +37,7 @@ Mobile app for chatwoot platform. Built with React Native and Expo.
     <img alt="Download on the App Store" title="App Store" src="http://i.imgur.com/0n2zqHD.png" width="140">
   </a>
 
-  <a href="https://play.google.com/store/apps/details?id=com.chatwoot.app&hl=en">
+  <a href="https://play.google.com/store/apps/details?id=com.AlooChat.app&hl=en">
     <img alt="Get it on Google Play" title="Google Play" src="http://i.imgur.com/mtGRPuM.png" width="140">
   </a>
 </p>
@@ -48,20 +48,20 @@ To help with testing app updates before they're released, you can:
 
 Sign up to be a beta tester
 
-- [Android](https://play.google.com/apps/testing/com.chatwoot.app) - Open this link from your Android device
+- [Android](https://play.google.com/apps/testing/com.AlooChat.app) - Open this link from your Android device
 - [iOS](https://testflight.apple.com/join/yQ4yoSx4) - Open this link from your iOS device
 
 You can leave the Beta testing program at any time:
 
-- On Android, [click this link](https://play.google.com/apps/testing/com.chatwoot.app) while logged in with your Google Play email address used to opt-in for the Beta program, then click **Leave the program**.
-- On iOS, access the `Chatwoot` app page in TestFlight and click **Stop Testing**.
+- On Android, [click this link](https://play.google.com/apps/testing/com.AlooChat.app) while logged in with your Google Play email address used to opt-in for the Beta program, then click **Leave the program**.
+- On iOS, access the `AlooChat` app page in TestFlight and click **Stop Testing**.
 
 ## Feedback & Contributing
 
-Feel free to send us feedback on [X](https://x.com/chatwootapp) or [file an issue](https://github.com/chatwoot/chatwoot-mobile-app/issues).
+Feel free to send us feedback on [X](https://x.com/AlooChatapp) or [file an issue](https://github.com/AlooChat/AlooChat-mobile-app/issues).
 
-If you wish to contribute, please take a quick look at the [CONTRIBUTING.md](https://www.chatwoot.com/docs/contributing-guide/mobile-app/setup-guide).
+If you wish to contribute, please take a quick look at the [CONTRIBUTING.md](https://www.AlooChat.com/docs/contributing-guide/mobile-app/setup-guide).
 
 If there's anything you'd like to chat about, please feel free to join our [Discord](https://discord.gg/cJXdrwS) chat!
 
-_Chatwoot_ &copy; 2017-2025, Chatwoot Inc - Released under the MIT License.
+_AlooChat_ &copy; 2017-2025, AlooChat Inc - Released under the MIT License.

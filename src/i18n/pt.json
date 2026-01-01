@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL da Instalação",
-    "DESCRIPTION": "Se estiver a usar uma instalação Chatwoot auto-hospedada, insira o URL do seu servidor. Caso contrário, utilize app.chatwoot.com.",
+    "DESCRIPTION": "Se estiver a usar uma instalação AlooChat auto-hospedada, insira o URL do seu servidor. Caso contrário, utilize app.AlooChat.com.",
     "URL_ERROR": "Insira um URL válido",
     "URL_REQUIRED": "URL é obrigatório",
     "CONNECT": "Ligar",
@@ -399,19 +399,19 @@
     "CHANGE_TEAMS": "Equipa de conversação alterada"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Não foi possível ligar ao servidor Chatwoot, por favor tente novamente mais tarde",
+    "COMMON_ERROR": "Não foi possível ligar ao servidor AlooChat, por favor tente novamente mais tarde",
     "OfFLINE": "Tem de se ligar ao Wi-Fi ou a uma rede móvel para voltar a estar online",
     "CANNOT_FETCH": "Tem de se ligar ao Wi-Fi ou a uma rede móvel para voltar a estar online",
     "AUTH": "Nome de usuário / senha incorreta. Por favor, tente novamente",
-    "NO_ACCOUNTS_MESSAGE": "Não tem acesso a nenhuma conta Chatwoot"
+    "NO_ACCOUNTS_MESSAGE": "Não tem acesso a nenhuma conta AlooChat"
   },
   "SUCCESS": {
     "AUTH": "Login bem sucedido"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Atualização do servidor necessária",
-    "WARNING_FOR_AGENT": "Parece que está a utilizar um servidor Chatwoot não suportado para a sua aplicação móvel. Por favor, contacte o seu administrador para atualizar o servidor Chatwoot.",
-    "WARNING_FOR_ADMIN": "Parece que está a utilizar um servidor Chatwoot não suportado para a sua aplicação móvel. É necessário atualizar para a versão %{minimumVersion} ou superior do servidor."
+    "WARNING_FOR_AGENT": "Parece que está a utilizar um servidor AlooChat não suportado para a sua aplicação móvel. Por favor, contacte o seu administrador para atualizar o servidor AlooChat.",
+    "WARNING_FOR_ADMIN": "Parece que está a utilizar um servidor AlooChat não suportado para a sua aplicação móvel. É necessário atualizar para a versão %{minimumVersion} ou superior do servidor."
   },
   "EXIT": {
     "TITLE": "Sair",

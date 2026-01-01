@@ -30,7 +30,7 @@ const ConfigURLScreen = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      url: baseUrl ? baseUrl : appName === 'AlooChat' ? 'app.chatwoot.com' : '',
+      url: baseUrl ? baseUrl : appName === 'AlooChat' ? 'app.AlooChat.com' : '',
     },
   });
 

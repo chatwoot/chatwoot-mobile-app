@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 function addPodDependency(podfilePath) {
-  const podInstallLine = `pod 'chatwoot-ffmpeg-kit-ios-https', :podspec => 'https://raw.githubusercontent.com/chatwoot/ffmpeg/master/chatwoot-ffmpeg-kit-ios-https.podspec'`;
+  const podInstallLine = `pod 'AlooChat-ffmpeg-kit-ios-https', :podspec => 'https://raw.githubusercontent.com/AlooChat/ffmpeg/master/AlooChat-ffmpeg-kit-ios-https.podspec'`;
   const podInstallLine2 = `pod 'ffmpeg-kit-react-native', :path => '../node_modules/ffmpeg-kit-react-native'`;
 
   let contents = fs.readFileSync(podfilePath, 'utf8');

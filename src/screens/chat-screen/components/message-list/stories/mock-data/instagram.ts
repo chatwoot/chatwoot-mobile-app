@@ -134,8 +134,8 @@ export const INSTAGRAM_MESSAGES = [
         file_type: 'image',
         account_id: 1,
         extension: null,
-        data_url: 'https://chatwoot.dev/definitely-broken-image',
-        thumb_url: 'https://chatwoot.dev/definitely-broken-image',
+        data_url: 'https://AlooChat.dev/definitely-broken-image',
+        thumb_url: 'https://AlooChat.dev/definitely-broken-image',
         file_size: 376973,
         width: 1179,
         height: 2096,
@@ -412,11 +412,11 @@ export const INSTAGRAM_MESSAGES = [
       name: 'Jane',
       available_name: 'Jane',
       avatar_url:
-        'https://app.chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBDZz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--4a2c0c8e787a381c0a809905e7cb172d5a40f589/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hOeVpYTnBlbVZmZEc5ZlptbHNiRnNIYVFINk1BPT0iLCJleHAiOm51bGwsInB1ciI6InZhcmlhdGlvbiJ9fQ==--533c3ad7218e24c4b0e8f8959dc1953ce1d279b9/73185.jpeg',
+        'https://app.AlooChat.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBDZz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--4a2c0c8e787a381c0a809905e7cb172d5a40f589/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hOeVpYTnBlbVZmZEc5ZlptbHNiRnNIYVFINk1BPT0iLCJleHAiOm51bGwsInB1ciI6InZhcmlhdGlvbiJ9fQ==--533c3ad7218e24c4b0e8f8959dc1953ce1d279b9/73185.jpeg',
       type: 'user',
       availability_status: 'offline',
       thumbnail:
-        'https://app.chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBDZz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--4a2c0c8e787a381c0a809905e7cb172d5a40f589/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hOeVpYTnBlbVZmZEc5ZlptbHNiRnNIYVFINk1BPT0iLCJleHAiOm51bGwsInB1ciI6InZhcmlhdGlvbiJ9fQ==--533c3ad7218e24c4b0e8f8959dc1953ce1d279b9/73185.jpeg',
+        'https://app.AlooChat.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBDZz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--4a2c0c8e787a381c0a809905e7cb172d5a40f589/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lKYW5CbFp3WTZCa1ZVT2hOeVpYTnBlbVZmZEc5ZlptbHNiRnNIYVFINk1BPT0iLCJleHAiOm51bGwsInB1ciI6InZhcmlhdGlvbiJ9fQ==--533c3ad7218e24c4b0e8f8959dc1953ce1d279b9/73185.jpeg',
     },
   },
   {
@@ -723,9 +723,9 @@ export const INSTAGRAM_MESSAGES = [
         account_id: 1,
         extension: null,
         data_url:
-          'https://app.chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBL2lvYnc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--c7278d793ca8de35ea7a824cfbb82ffb630b410a/facebook.png',
+          'https://app.AlooChat.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBL2lvYnc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--c7278d793ca8de35ea7a824cfbb82ffb630b410a/facebook.png',
         thumb_url:
-          'https://app.chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBL2lvYnc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--c7278d793ca8de35ea7a824cfbb82ffb630b410a/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--624b3ceb3fdf42c4b07c7818563fe60603b6095b/facebook.png',
+          'https://app.AlooChat.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBL2lvYnc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--c7278d793ca8de35ea7a824cfbb82ffb630b410a/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--624b3ceb3fdf42c4b07c7818563fe60603b6095b/facebook.png',
         file_size: 256,
         width: 24,
         height: 24,
@@ -753,9 +753,9 @@ export const INSTAGRAM_MESSAGES = [
         account_id: 1,
         extension: null,
         data_url:
-          'https://app.chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBL21vYnc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--1ca7bc279638b97f4eec6eb86452d5a982a84c04/image-1478688519564287',
+          'https://app.AlooChat.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBL21vYnc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--1ca7bc279638b97f4eec6eb86452d5a982a84c04/image-1478688519564287',
         thumb_url:
-          'https://app.chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBL21vYnc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--1ca7bc279638b97f4eec6eb86452d5a982a84c04/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--624b3ceb3fdf42c4b07c7818563fe60603b6095b/image-1478688519564287',
+          'https://app.AlooChat.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBL21vYnc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--1ca7bc279638b97f4eec6eb86452d5a982a84c04/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJY0c1bkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--624b3ceb3fdf42c4b07c7818563fe60603b6095b/image-1478688519564287',
         file_size: 209,
         width: 24,
         height: 24,
@@ -1110,7 +1110,7 @@ export const INSTAGRAM_MESSAGES = [
       name: 'Muhsin',
       phone_number: null,
       thumbnail:
-        'https://app.chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBeGs0V0E9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--4dec645ac0228f02910e15ee689e263ad6ec5d3e/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--fabd060060e055c9dd6a8996dc0b9ef8a3776cf5/272819353_1488256531571824_6160892973137511656_n.jpg',
+        'https://app.AlooChat.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBeGs0V0E9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--4dec645ac0228f02910e15ee689e263ad6ec5d3e/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--fabd060060e055c9dd6a8996dc0b9ef8a3776cf5/272819353_1488256531571824_6160892973137511656_n.jpg',
       type: 'contact',
     },
     attachments: [

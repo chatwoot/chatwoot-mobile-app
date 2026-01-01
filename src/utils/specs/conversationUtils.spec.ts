@@ -54,7 +54,7 @@ export const conversation: Conversation = {
     {
       id: 438072,
       content:
-        'Chatwoot enables your team to be more productive, faster, and collaborate without switching apps.',
+        'AlooChat enables your team to be more productive, faster, and collaborate without switching apps.',
       inboxId: 37,
       conversationId: 5811,
       messageType: 1,

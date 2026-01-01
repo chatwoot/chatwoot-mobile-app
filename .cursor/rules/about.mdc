@@ -3,11 +3,11 @@ description:
 globs: 
 alwaysApply: true
 ---
-# Chatwoot Mobile App - Combined Cursor Rules
+# AlooChat Mobile App - Combined Cursor Rules
 
 ## Project Overview
 
-Chatwoot Mobile is a mobile app for the Chatwoot platform, built with React Native and Expo.
+AlooChat Mobile is a mobile app for the AlooChat platform, built with React Native and Expo.
 
 ### Main Features:
 - Ability to view conversations
@@ -158,7 +158,7 @@ You are an expeScript, React Native, Expo, and Mobile UI development.
 ## Redux Store Architecture
 
 ### Overview
-The Chatwoot mobile app uses Redux Toolkit for state management with the following key features:
+The AlooChat mobile app uses Redux Toolkit for state management with the following key features:
 - Redux Persist for state persistence
 - Middleware support for side effects
 - TypeScript integration
@@ -291,7 +291,7 @@ const twConfig = {
   theme: {
     ...defaultTheme,
     extend: {
-      colors: { ...chatwootAppColors },
+      colors: { ...AlooChatAppColors },
       fontSize: {
         xs: '12px',
         cxs: '13px', 

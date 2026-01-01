@@ -11,6 +11,20 @@ const sentryConfig = getSentryExpoConfig(__dirname);
 const config = {
   ...defaultConfig,
   ...sentryConfig,
+  resolver: {
+    ...defaultConfig.resolver,
+    ...sentryConfig.resolver,
+    resolveRequest: (context, moduleName, platform) => {
+      // Mock react-native-snackbar to prevent native module errors in Expo Go
+      if (moduleName === 'react-native-snackbar') {
+        return {
+          type: 'empty',
+        };
+      }
+      // Use default resolver for all other modules
+      return context.resolveRequest(context, moduleName, platform);
+    },
+  },
 };
 
 module.exports = withStorybook(config, {

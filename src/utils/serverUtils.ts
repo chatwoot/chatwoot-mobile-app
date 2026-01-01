@@ -25,7 +25,7 @@ export const checkShouldShowServerUpgradeWarning = ({
   }
 };
 
-const minimumVersion: string | undefined = process.env.EXPO_PUBLIC_MINIMUM_CHATWOOT_VERSION;
+const minimumVersion: string | undefined = process.env.EXPO_PUBLIC_MINIMUM_AlooChat_VERSION;
 
 export function checkServerSupport({ installedVersion, userRole }: ServerSupportCheck): void {
   if (!minimumVersion || !installedVersion) {

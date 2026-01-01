@@ -16,13 +16,13 @@ importers:
       '@alantoa/lightbox':
         specifier: ^0.3.1
         version: 0.3.1(react-native-gesture-handler@2.20.2(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.27.1)(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
-      '@chatwoot/markdown-to-txt':
+      '@AlooChat/markdown-to-txt':
         specifier: ^2.0.4
         version: 2.0.4
-      '@chatwoot/react-native-widget':
+      '@AlooChat/react-native-widget':
         specifier: ^0.0.21
         version: 0.0.21(@react-native-async-storage/async-storage@1.23.1(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1)))(react-native-webview@13.12.5(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
-      '@chatwoot/utils':
+      '@AlooChat/utils':
         specifier: ^0.0.33
         version: 0.0.33
       '@gorhom/bottom-sheet':
@@ -1049,10 +1049,10 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  '@chatwoot/markdown-to-txt@2.0.4':
+  '@AlooChat/markdown-to-txt@2.0.4':
     resolution: {integrity: sha512-gs5ybjESLH8L4Nuu7pjxwXQEVKvHzJzJj2Gf8X4b4C3zp4nBIuJVhSwwuR/22Vd2bVB5rEDWXH+xV0QWV1ZOfA==}
 
-  '@chatwoot/react-native-widget@0.0.21':
+  '@AlooChat/react-native-widget@0.0.21':
     resolution: {integrity: sha512-NlsRyRkJz3GyijQ2eGCfNkkOA8mRGDjWkUdJKAmLhbbNtVrhaE0OWur5qhy26c3ekOgzii47s5hfbjHFqLXFPQ==}
     peerDependencies:
       '@react-native-async-storage/async-storage': '>=1.23.1'
@@ -1060,7 +1060,7 @@ packages:
       react-native: '*'
       react-native-webview: '>=13.8.6'
 
-  '@chatwoot/utils@0.0.33':
+  '@AlooChat/utils@0.0.33':
     resolution: {integrity: sha512-o5+2h+k+2XWRTfhI7mogRCYnbjh+/BKE/px7PYKUMsIS9uecxfNeLzrnaUzNw60dl/0MFe6G0OmcINW+AEh5KA==}
     engines: {node: '>=10'}
 
@@ -7667,13 +7667,13 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@chatwoot/markdown-to-txt@2.0.4':
+  '@AlooChat/markdown-to-txt@2.0.4':
     dependencies:
       lodash.escape: 4.0.1
       lodash.unescape: 4.0.1
       marked: 4.3.0
 
-  '@chatwoot/react-native-widget@0.0.21(@react-native-async-storage/async-storage@1.23.1(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1)))(react-native-webview@13.12.5(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)':
+  '@AlooChat/react-native-widget@0.0.21(@react-native-async-storage/async-storage@1.23.1(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1)))(react-native-webview@13.12.5(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@react-native-async-storage/async-storage': 1.23.1(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1))
       react: 18.3.1
@@ -7681,7 +7681,7 @@ snapshots:
       react-native-modal: 13.0.1(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
       react-native-webview: 13.12.5(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
 
-  '@chatwoot/utils@0.0.33':
+  '@AlooChat/utils@0.0.33':
     dependencies:
       date-fns: 2.30.0
 

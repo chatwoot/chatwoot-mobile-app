@@ -68,7 +68,7 @@ index 889d3e8f308f94a338869afedc8c25d8b1ebb53a..d41913064e7da4511cbb9ebec7374fc2
 -      ss.ios.deployment_target = '10'
 +    ss.source_files      = '**/FFmpegKitReactNativeModule.m',
 +                          '**/FFmpegKitReactNativeModule.h'
-+    ss.dependency 'chatwoot-ffmpeg-kit-ios-https', "6.0.2"
++    ss.dependency 'AlooChat-ffmpeg-kit-ios-https', "6.0.2"
 +    ss.ios.deployment_target = '12.1'
    end
 -

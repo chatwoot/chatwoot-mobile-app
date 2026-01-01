@@ -29,7 +29,7 @@ export class SettingsService {
     return response.data;
   }
 
-  static async getChatwootVersion(installationUrl: string): Promise<{ version: string }> {
+  static async getAlooChatVersion(installationUrl: string): Promise<{ version: string }> {
     const response = await axios.get(`${installationUrl}api`);
     return response.data;
   }

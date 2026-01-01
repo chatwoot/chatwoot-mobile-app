@@ -7,16 +7,26 @@ import { getStateFromPath } from '@react-navigation/native';
 // Force mock KeyboardProvider for Expo Go compatibility
 const KeyboardProvider: any = ({ children }: any) => <>{children}</>;
 
-let messaging: any = () => ({
-  setBackgroundMessageHandler: () => {},
-  getInitialNotification: () => Promise.resolve(null),
-  onNotificationOpenedApp: () => () => {},
-});
+let messaging: any = null;
+let isMessagingAvailable = false;
 
 try {
-  messaging = require('@react-native-firebase/messaging').default;
+  const messagingModule = require('@react-native-firebase/messaging');
+  if (messagingModule && messagingModule.default) {
+    messaging = messagingModule.default;
+    isMessagingAvailable = true;
+  }
 } catch (e) {
-  console.warn('@react-native-firebase/messaging not available');
+  console.warn('@react-native-firebase/messaging not available:', e);
+}
+
+// Provide mock if not available
+if (!isMessagingAvailable) {
+  messaging = () => ({
+    setBackgroundMessageHandler: () => {},
+    getInitialNotification: () => Promise.resolve(null),
+    onNotificationOpenedApp: () => () => {},
+  });
 }
 
 import { useFonts } from 'expo-font';
@@ -38,15 +48,23 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { transformNotification } from '@/utils/camelCaseKeys';
 import { SsoUtils } from '@/utils/ssoUtils';
 import { useAppDispatch } from '@/hooks';
+import { CustomSplashScreen } from '@/components-next/common/splash/CustomSplashScreen';
 import Inter40020 from '@/assets/fonts/Inter-400-20.ttf';
 import Inter42020 from '@/assets/fonts/Inter-420-20.ttf';
 import Inter50024 from '@/assets/fonts/Inter-500-24.ttf';
 import Inter58024 from '@/assets/fonts/Inter-580-24.ttf';
 import Inter60020 from '@/assets/fonts/Inter-600-20.ttf';
 
-messaging().setBackgroundMessageHandler(async remoteMessage => {
-  console.log('Message handled in the background!', remoteMessage);
-});
+// Only set background message handler if messaging is available
+if (isMessagingAvailable) {
+  try {
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log('Message handled in the background!', remoteMessage);
+    });
+  } catch (e) {
+    console.warn('Failed to set background message handler:', e);
+  }
+}
 
 export const AppNavigationContainer = () => {
   const [fontsLoaded] = useFonts({
@@ -82,7 +100,7 @@ export const AppNavigationContainer = () => {
     getStateFromPath: (path: string, config: any) => {
       // Handle SSO callback - App running, receives deep link
       if (path.includes(SSO_CALLBACK_URL) || path.includes('auth/saml')) {
-        const ssoParams = SsoUtils.parseCallbackUrl(`chatwootapp://${path}`);
+        const ssoParams = SsoUtils.parseCallbackUrl(`AlooChatapp://${path}`);
         // Handle both success and error cases
         SsoUtils.handleSsoCallback(ssoParams, dispatch);
         // Return undefined to prevent navigation change for SSO callback
@@ -137,16 +155,22 @@ export const AppNavigationContainer = () => {
       }
 
       // getInitialNotification: When the application is opened from a quit state.
-      const message = await messaging().getInitialNotification();
-      if (message) {
-        const notification = findNotificationFromFCM({ message });
-        const camelCaseNotification = transformNotification(notification);
-        const conversationLink = findConversationLinkFromPush({
-          notification: camelCaseNotification,
-          installationUrl,
-        });
-        if (conversationLink) {
-          return conversationLink;
+      if (isMessagingAvailable) {
+        try {
+          const message = await messaging().getInitialNotification();
+          if (message) {
+            const notification = findNotificationFromFCM({ message });
+            const camelCaseNotification = transformNotification(notification);
+            const conversationLink = findConversationLinkFromPush({
+              notification: camelCaseNotification,
+              installationUrl,
+            });
+            if (conversationLink) {
+              return conversationLink;
+            }
+          }
+        } catch (e) {
+          console.warn('Failed to get initial notification:', e);
         }
       }
       return undefined;
@@ -168,20 +192,27 @@ export const AppNavigationContainer = () => {
       const subscription = Linking.addEventListener('url', onReceiveURL);
 
       //onNotificationOpenedApp: When the application is running, but in the background.
-      const unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
-        if (message) {
-          const notification = findNotificationFromFCM({ message });
-          const camelCaseNotification = transformNotification(notification);
+      let unsubscribeNotification = () => {};
+      if (isMessagingAvailable) {
+        try {
+          unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
+            if (message) {
+              const notification = findNotificationFromFCM({ message });
+              const camelCaseNotification = transformNotification(notification);
 
-          const conversationLink = findConversationLinkFromPush({
-            notification: camelCaseNotification,
-            installationUrl,
+              const conversationLink = findConversationLinkFromPush({
+                notification: camelCaseNotification,
+                installationUrl,
+              });
+              if (conversationLink) {
+                listener(conversationLink);
+              }
+            }
           });
-          if (conversationLink) {
-            listener(conversationLink);
-          }
+        } catch (e) {
+          console.warn('Failed to subscribe to notification opened app:', e);
         }
-      });
+      }
 
       return () => {
         subscription.remove();
@@ -199,7 +230,7 @@ export const AppNavigationContainer = () => {
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {
-    return null;
+    return <CustomSplashScreen />;
   }
 
   return (

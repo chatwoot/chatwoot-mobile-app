@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-Confirm you’re filing a new issue. [Search issues in Github](https://github.com/chatwoot/chatwoot-mobile-app/issues) and ensure that the issue is not already exist.
+Confirm you’re filing a new issue. [Search issues in Github](https://github.com/AlooChat/AlooChat-mobile-app/issues) and ensure that the issue is not already exist.
 
 **Describe the bug**
 
@@ -32,11 +32,11 @@ What did you see happen? Please include relevant error messages, screenshots and
 
 **Environment**
 
-  - Describe whether you are using Chatwoot Cloud (app.chatwoot.com) or a self hosted installation of Chatwoot.
+  - Describe whether you are using AlooChat Cloud (app.AlooChat.com) or a self hosted installation of AlooChat.
   - Device Name:  [e.g. iPhone6]
   - OS Version: [e.g. iOS8.1]
-  - Chatwoot App Version: [e.g. 1.2.0]
-  - Chatwoot Server Version: [e.g. 1.16.0]
+  - AlooChat App Version: [e.g. 1.2.0]
+  - AlooChat Server Version: [e.g. 1.16.0]
 
 **Additional context**
 

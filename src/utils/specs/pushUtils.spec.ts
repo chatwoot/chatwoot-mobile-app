@@ -32,14 +32,14 @@ describe('findConversationLinkFromPush', () => {
       primaryActorType: 'Conversation',
       primaryActor: { id: 14428 },
     };
-    const installationUrl = 'https://app.chatwoot.com';
+    const installationUrl = 'https://app.AlooChat.com';
     const transformedNotification = transformNotification(notification);
     const result = findConversationLinkFromPush({
       notification: transformedNotification,
       installationUrl,
     });
     expect(result).toBe(
-      'https://app.chatwoot.com/app/accounts/1/conversations/14428/14902/Conversation',
+      'https://app.AlooChat.com/app/accounts/1/conversations/14428/14902/Conversation',
     );
   });
 
@@ -51,14 +51,14 @@ describe('findConversationLinkFromPush', () => {
       primaryActorType: 'Message',
       primaryActor: { conversationId: 14429, id: 58731 },
     };
-    const installationUrl = 'https://app.chatwoot.com';
+    const installationUrl = 'https://app.AlooChat.com';
     const transformedNotification = transformNotification(notification);
     const result = findConversationLinkFromPush({
       notification: transformedNotification,
       installationUrl,
     });
     expect(result).toBe(
-      'https://app.chatwoot.com/app/accounts/1/conversations/14429/58731/Message',
+      'https://app.AlooChat.com/app/accounts/1/conversations/14429/58731/Message',
     );
   });
 
@@ -70,14 +70,14 @@ describe('findConversationLinkFromPush', () => {
       primaryActorType: 'Message',
       primaryActor: { conversationId: 14428, id: 58725 },
     };
-    const installationUrl = 'https://app.chatwoot.com';
+    const installationUrl = 'https://app.AlooChat.com';
     const transformedNotification = transformNotification(notification);
     const result = findConversationLinkFromPush({
       notification: transformedNotification,
       installationUrl,
     });
     expect(result).toBe(
-      'https://app.chatwoot.com/app/accounts/1/conversations/14428/58725/Message',
+      'https://app.AlooChat.com/app/accounts/1/conversations/14428/58725/Message',
     );
   });
 
@@ -89,14 +89,14 @@ describe('findConversationLinkFromPush', () => {
       primaryActorType: 'Message',
       primaryActor: { conversationId: 14427, id: 58712 },
     };
-    const installationUrl = 'https://app.chatwoot.com';
+    const installationUrl = 'https://app.AlooChat.com';
     const transformedNotification = transformNotification(notification);
     const result = findConversationLinkFromPush({
       notification: transformedNotification,
       installationUrl,
     });
     expect(result).toBe(
-      'https://app.chatwoot.com/app/accounts/1/conversations/14427/58712/Message',
+      'https://app.AlooChat.com/app/accounts/1/conversations/14427/58712/Message',
     );
   });
 
@@ -108,7 +108,7 @@ describe('findConversationLinkFromPush', () => {
       primaryActorType: 'Message',
       primaryActor: { conversationId: 14427, id: 58712 },
     };
-    const installationUrl = 'https://app.chatwoot.com';
+    const installationUrl = 'https://app.AlooChat.com';
     const transformedNotification = transformNotification(notification);
     const result = findConversationLinkFromPush({
       notification: transformedNotification,

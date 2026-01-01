@@ -68,7 +68,7 @@ import { UserAvatar } from './components/UserAvatar';
 
 import { LANGUAGES, TAB_BAR_HEIGHT } from '@/constants';
 import { useRefsContext } from '@/context';
-import { ChatwootIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
+import { AlooChatIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
 import { GenericListType } from '@/types';
 
 import { useHaptic } from '@/utils';
@@ -83,7 +83,7 @@ import { logout, setAccount } from '@/store/auth/authSlice';
 import { authActions } from '@/store/auth/authActions';
 import {
   selectLocale,
-  selectIsChatwootCloud,
+  selectIsAlooChatCloud,
   selectPushToken,
 } from '@/store/settings/settingsSelectors';
 import { settingsActions } from '@/store/settings/settingsActions';
@@ -148,9 +148,9 @@ const SettingsScreen = () => {
     operatingSystem: Platform.OS, // android/ios
   };
 
-  const isChatwootCloud = useAppSelector(selectIsChatwootCloud);
+  const isAlooChatCloud = useAppSelector(selectIsAlooChatCloud);
 
-  const chatwootInstance = isChatwootCloud ? `${appName} cloud` : `${appName} self-hosted`;
+  const AlooChatInstance = isAlooChatCloud ? `${appName} cloud` : `${appName} self-hosted`;
 
   const accounts = useSelector(selectAccounts) || [];
 
@@ -291,7 +291,7 @@ const SettingsScreen = () => {
     {
       hasChevron: true,
       title: i18n.t('SETTINGS.CHAT_WITH_US'),
-      icon: <ChatwootIcon />,
+      icon: <AlooChatIcon />,
       subtitle: '',
       subtitleType: 'light',
       onPressListItem: () => toggleWidget(true),
@@ -347,7 +347,7 @@ const SettingsScreen = () => {
           style={tailwind.style('p-4 items-center')}
           onLongPress={() => debugActionsSheetRef.current?.present()}>
           <Text style={tailwind.style('text-sm text-gray-700 ')}>
-            {`${chatwootInstance} ${appVersionDetails}`}
+            {`${AlooChatInstance} ${appVersionDetails}`}
           </Text>
         </Pressable>
       </Animated.ScrollView>
@@ -446,7 +446,6 @@ const SettingsScreen = () => {
             closeModal={() => toggleWidget(false)}
             isModalVisible={showWidget}
             user={userDetails}
-            customAttributes={customAttributes}
           />
         )}
     </SafeAreaView>

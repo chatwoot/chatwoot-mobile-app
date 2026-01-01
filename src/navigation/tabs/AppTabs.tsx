@@ -37,7 +37,7 @@ import DashboardScreen from '@/screens/dashboard/DashboardScreen';
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { BottomTabBar } from './BottomTabBar';
 import { settingsActions } from '@/store/settings/settingsActions';
-import { selectChatwootVersion } from '@/store/settings/settingsSelectors';
+import { selectAlooChatVersion } from '@/store/settings/settingsSelectors';
 import { checkServerSupport } from '@/utils/serverUtils';
 import { inboxActions } from '@/store/inbox/inboxActions';
 import { labelActions } from '@/store/label/labelActions';
@@ -82,7 +82,7 @@ const Tabs = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const installationUrl = useAppSelector(selectInstallationUrl);
-  const chatwootVersion = useAppSelector(selectChatwootVersion);
+  const AlooChatVersion = useAppSelector(selectAlooChatVersion);
   const currentAccount = useAppSelector(selectCurrentUserAccount);
   const currentAccountRole = currentAccount?.role;
   const pubSubToken = useAppSelector(selectPubSubToken);
@@ -137,7 +137,7 @@ const Tabs = () => {
   }, [accountId, pubSubToken, userId, webSocketUrl]);
 
   useEffect(() => {
-    dispatch(settingsActions.getChatwootVersion({ installationUrl: installationUrl }));
+    dispatch(settingsActions.getAlooChatVersion({ installationUrl: installationUrl }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [installationUrl]);
 
@@ -149,13 +149,13 @@ const Tabs = () => {
   );
 
   const checkAppVersion = useCallback(async () => {
-    if (chatwootVersion) {
+    if (AlooChatVersion) {
       checkServerSupport({
-        installedVersion: chatwootVersion,
+        installedVersion: AlooChatVersion,
         userRole: currentAccountRole,
       });
     }
-  }, [chatwootVersion, currentAccountRole]);
+  }, [AlooChatVersion, currentAccountRole]);
 
   useEffect(() => {
     checkAppVersion();
@@ -182,7 +182,11 @@ const Tabs = () => {
 export const AppTabs = () => {
   const isLoggedIn = useAppSelector(selectLoggedIn);
 
-  if (isLoggedIn) {
+  // TEMPORARY BYPASS: Force login to true for development
+  // TODO: Remove this line when server is working
+  const bypassLogin = true;
+
+  if (isLoggedIn || bypassLogin) {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Tab" component={Tabs} />

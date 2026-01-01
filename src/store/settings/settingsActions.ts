@@ -127,9 +127,9 @@ export const settingsActions = {
     NotificationSettingsPayload
   >('settings/updateNotificationSettings', SettingsService.updateNotificationSettings),
 
-  getChatwootVersion: createSettingsThunk<{ version: string }, { installationUrl: string }>(
-    'settings/getChatwootVersion',
-    ({ installationUrl }) => SettingsService.getChatwootVersion(installationUrl),
+  getAlooChatVersion: createSettingsThunk<{ version: string }, { installationUrl: string }>(
+    'settings/getAlooChatVersion',
+    ({ installationUrl }) => SettingsService.getAlooChatVersion(installationUrl),
   ),
 
   saveDeviceDetails: createAsyncThunk<{ fcmToken: string }, void>(

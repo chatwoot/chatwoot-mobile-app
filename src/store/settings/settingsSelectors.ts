@@ -31,12 +31,12 @@ export const selectWebSocketUrl = createSelector(selectSettings, settings => set
 
 export const selectTheme = createSelector(selectSettings, settings => settings.theme);
 
-export const selectIsChatwootCloud = createSelector(selectSettings, settings =>
+export const selectIsAlooChatCloud = createSelector(selectSettings, settings =>
   settings.installationUrl.includes('cx.aloochat.ai'),
 );
 
-// settings.installationUrl.includes('app.chatwoot.com'),
+// settings.installationUrl.includes('app.AlooChat.com'),
 
-export const selectChatwootVersion = createSelector(selectSettings, settings => settings.version);
+export const selectAlooChatVersion = createSelector(selectSettings, settings => settings.version);
 
 export const selectPushToken = createSelector(selectSettings, settings => settings.pushToken);

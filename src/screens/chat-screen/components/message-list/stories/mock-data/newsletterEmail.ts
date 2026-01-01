@@ -40,7 +40,7 @@ export const NEWSLETTER_EMAIL = [
           quoted:
             "News, tips, and behind the scenes technical mumbo jumbo\n\n ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏\n ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏\n ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­\n­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­\n­ ­ ­ ­ ­ ­ ­ ­ ­ ­  \n\nHello! Here we are again, ready to share some scintillating updates from Cloud Provider Land. All the real humans behind this newsletter hope you're doing well, and ask that you holler if we can help with something. Onward!\n\nProduct updates",
         },
-        to: ['shivam@chatwoot.com'],
+        to: ['shivam@AlooChat.com'],
       },
       cc_email: null,
       bcc_email: null,
@@ -113,7 +113,7 @@ export const NEWSLETTER_EMAIL = [
           quoted:
             'Get *more productive days* at a better price\n\nHey there,\n\nYour 5 day bundle is coming to an end.\n\nTo get access to more productive days at WeWork, upgrade to 10 day pass bundles and save flat 30%.\n\nBook day pass bundles of 10 at *30% off*\nUse code: *BUNDLE30* **\n\nBook now ( http://url492.myhq.in/ls/click?upn= bundle_upsell_CTA )\n\nWhy book a day pass bundle?\n\nExplore deep focus zones, fresh micro-brewed coffee, uninterrupted Wi-Fi and paid printing & on-site parking for multiple productive days in a row.\n\nBook now ( http://url492.myhq.in/ls/click?upn= bundle_upsell_CTA )\n\n*T&Cs apply\n\n* Offer applicable at all locations across India\n* Offer only applicable on 5 and 10 day pass bundles of WeWork on-demand\n* Offer valid for one time use only\n\nUnsubscribe ( <%asm_group_unsubscribe_raw_url%> )',
         },
-        to: ['shivam@chatwoot.com'],
+        to: ['shivam@AlooChat.com'],
       },
       cc_email: null,
       bcc_email: null,

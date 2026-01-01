@@ -9,7 +9,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
     newArchEnabled: false,
-    scheme: 'chatwootapp',
+    scheme: 'AlooChatapp',
     splash: {
       image: './assets/splash.png',
       resizeMode: 'contain',
@@ -61,7 +61,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           action: 'VIEW',
           data: [
             {
-              scheme: 'chatwootapp',
+              scheme: 'AlooChatapp',
             },
           ],
           category: ['BROWSABLE', 'DEFAULT'],

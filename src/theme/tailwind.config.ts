@@ -11,7 +11,7 @@ const blackA = require('./colors/blackA');
 // White with alpha variations
 const whiteA = require('./colors/whiteA');
 
-const chatwootAppColors = {
+const AlooChatAppColors = {
   ...blackA,
   ...whiteA,
   ...radixUILightColors,
@@ -22,7 +22,7 @@ export const twConfig = {
   theme: {
     ...defaultTheme,
     extend: {
-      colors: { ...chatwootAppColors },
+      colors: { ...AlooChatAppColors },
       fontSize: {
         xs: '12px',
         cxs: '13px',

@@ -3,7 +3,7 @@ import { Path, Svg } from 'react-native-svg';
 
 import { IconProps } from '../../types';
 
-export const ChatwootIcon = ({ stroke = '#858585', strokeWidth = 1.5 }: IconProps): JSX.Element => {
+export const AlooChatIcon = ({ stroke = '#858585', strokeWidth = 1.5 }: IconProps): JSX.Element => {
   return (
     <Svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
       <Path

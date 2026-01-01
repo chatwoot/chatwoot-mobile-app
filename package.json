@@ -1,5 +1,5 @@
 {
-  "name": "@chatwoot/mobile-app",
+  "name": "@aloochat/mobile-app",
   "version": "4.3.10",
   "scripts": {
     "start": "expo start --dev-client",

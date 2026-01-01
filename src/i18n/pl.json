@@ -14,7 +14,7 @@
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL instalacji",
-    "DESCRIPTION": "Jeśli korzystasz z własnej instalacji Chatwoot, wprowadź adres URL serwera. W przeciwnym razie użyj app.chatwoot.com.",
+    "DESCRIPTION": "Jeśli korzystasz z własnej instalacji AlooChat, wprowadź adres URL serwera. W przeciwnym razie użyj app.AlooChat.com.",
     "URL_ERROR": "Wprowadź prawidłowy URL",
     "URL_REQUIRED": "URL jest wymagany",
     "CONNECT": "Połącz",
@@ -399,19 +399,19 @@
     "CHANGE_TEAMS": "Zmieniono zespół rozmowy"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "Could not connect to AlooChat Server, Please try again later",
     "OfFLINE": "Musisz połączyć się z siecią Wi-Fi lub siecią komórkową, aby wrócić online",
     "CANNOT_FETCH": "Wystąpił błąd podczas pobierania informacji, spróbuj ponownie",
     "AUTH": "Nieprawidłowa nazwa użytkownika / hasło. Spróbuj ponownie",
-    "NO_ACCOUNTS_MESSAGE": "Nie masz dostępu do żadnych kont chatwoot"
+    "NO_ACCOUNTS_MESSAGE": "Nie masz dostępu do żadnych kont AlooChat"
   },
   "SUCCESS": {
     "AUTH": "Logowanie udane"
   },
   "SERVER_UPGRADE": {
     "TITLE": "Wymagana aktualizacja serwera",
-    "WARNING_FOR_AGENT": "Wygląda na to, że używasz nieobsługiwanej wersji serwera Chatwoot dla swojej aplikacji mobilnej. Skontaktuj się z administratorem, aby zaktualizować serwer Chatwoot.",
-    "WARNING_FOR_ADMIN": "Wygląda na to, że używasz nieobsługiwanej wersji serwera Chatwoot dla swojej aplikacji mobilnej. Wymagana jest aktualizacja do wersji serwera %{minimumVersion} lub nowszej."
+    "WARNING_FOR_AGENT": "Wygląda na to, że używasz nieobsługiwanej wersji serwera AlooChat dla swojej aplikacji mobilnej. Skontaktuj się z administratorem, aby zaktualizować serwer AlooChat.",
+    "WARNING_FOR_ADMIN": "Wygląda na to, że używasz nieobsługiwanej wersji serwera AlooChat dla swojej aplikacji mobilnej. Wymagana jest aktualizacja do wersji serwera %{minimumVersion} lub nowszej."
   },
   "EXIT": {
     "TITLE": "Wyjście",

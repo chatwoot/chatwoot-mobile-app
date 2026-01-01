@@ -315,8 +315,8 @@ const BottomSheetContent = () => {
       sendMessage(messagePayload);
     }
     // TODO: Implement this once we have add the support for multiple attachments
-    // https://github.com/chatwoot/chatwoot/pull/6125
-    // https://github.com/chatwoot/chatwoot/pull/6428
+    // https://github.com/AlooChat/AlooChat/pull/6125
+    // https://github.com/AlooChat/AlooChat/pull/6428
     // if (isOnWhatsApp && !isPrivate) {
     // sendMessageAsMultipleMessages(messageContent);
     // }

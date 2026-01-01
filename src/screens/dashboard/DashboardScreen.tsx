@@ -93,7 +93,7 @@ const DashboardScreen = () => {
           webviewRef.current?.injectJavaScript(INJECTED_JAVASCRIPT);
         }}
         onMessage={event => {
-          if (event?.nativeEvent?.data === 'chatwoot-dashboard-app:fetch-info') {
+          if (event?.nativeEvent?.data === 'AlooChat-dashboard-app:fetch-info') {
             webviewRef.current?.injectJavaScript(INJECTED_JAVASCRIPT);
           }
         }}

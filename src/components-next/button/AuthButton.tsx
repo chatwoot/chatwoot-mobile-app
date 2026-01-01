@@ -24,16 +24,28 @@ export const AuthButton = ({
 }: AuthButtonProps) => {
   const getButtonStyles = () => {
     const baseStyles = 'py-[11px] flex-row items-center justify-center rounded-[13px]';
-    const variantStyles = variant === 'filled' ? 'bg-blue-800' : 'bg-gray-50';
-    const disabledStyles = disabled ? 'opacity-50' : '';
 
-    return tailwind.style(baseStyles, variantStyles, disabledStyles);
+    if (variant === 'filled') {
+      const variantStyles = disabled ? 'bg-primary-disabled' : 'bg-primary';
+      return tailwind.style(baseStyles, variantStyles);
+    }
+
+    // Outline variant
+    const borderStyles = 'border border-secondary';
+    const bgStyles = disabled ? 'bg-secondary-light' : 'bg-transparent';
+    return tailwind.style(baseStyles, borderStyles, bgStyles);
   };
 
   const getTextStyles = () => {
     const baseStyles = 'ml-2 text-base font-medium';
-    const colorStyles = variant === 'filled' ? 'text-white' : 'text-gray-950';
 
+    if (variant === 'filled') {
+      const colorStyles = disabled ? 'text-oceanCoral' : 'text-white';
+      return tailwind.style(baseStyles, colorStyles);
+    }
+
+    // Outline variant
+    const colorStyles = disabled ? 'text-oceanCoral' : 'text-primary';
     return tailwind.style(baseStyles, colorStyles);
   };
 

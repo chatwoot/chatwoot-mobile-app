@@ -5,6 +5,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store';
 import { AppNavigator } from '@/navigation';
 import { initializeFirebaseMessaging } from '@/services/firebaseMessaging';
+import { ThemeProvider } from '@/context';
 
 import i18n from '@/i18n';
 
@@ -38,11 +39,13 @@ const Chatwoot = () => {
   };
 
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <AppNavigator />
-      </PersistGate>
-    </Provider>
+    <ThemeProvider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <AppNavigator />
+        </PersistGate>
+      </Provider>
+    </ThemeProvider>
   );
 };
 

@@ -11,7 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EMAIL_REGEX } from '@/constants';
 import { EyeIcon, EyeSlash, LockIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { tailwind, useThemedStyles } from '@/theme';
 import i18n from '@/i18n';
 import { resetAuth } from '@/store/auth/authSlice';
 import { authActions } from '@/store/auth/authActions';
@@ -21,6 +21,7 @@ import {
   BottomSheetBackdrop,
   BottomSheetHeader,
   LanguageList,
+  ThemeList,
   Button,
   Icon,
   AuthButton,
@@ -32,7 +33,7 @@ import {
 } from '@/store/settings/settingsSelectors';
 import { selectIsLoggingIn } from '@/store/auth/authSelectors';
 import { setLocale } from '@/store/settings/settingsSlice';
-import { useRefsContext } from '@/context/RefsContext';
+import { useRefsContext, useTheme } from '@/context';
 import { SsoUtils } from '@/utils/ssoUtils';
 
 type FormData = {
@@ -43,6 +44,7 @@ type FormData = {
 const LoginScreen = () => {
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
+  const styles = useThemedStyles();
   const {
     control,
     handleSubmit,
@@ -54,7 +56,8 @@ const LoginScreen = () => {
     },
   });
 
-  const { languagesModalSheetRef } = useRefsContext();
+  const { languagesModalSheetRef, themeModalSheetRef } = useRefsContext();
+  const { theme, setTheme, isDark } = useTheme();
 
   const animationConfigs = useBottomSheetSpringConfigs({
     mass: 1,
@@ -75,6 +78,13 @@ const LoginScreen = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeLocale]);
+
+  useEffect(() => {
+    themeModalSheetRef.current?.dismiss({
+      overshootClamping: true,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [theme]);
 
   useEffect(() => {
     dispatch(resetAuth());
@@ -119,6 +129,10 @@ const LoginScreen = () => {
     dispatch(setLocale(locale));
   };
 
+  const onChangeTheme = (newTheme: 'system' | 'light' | 'dark') => {
+    setTheme(newTheme);
+  };
+
   const handleSsoLogin = async () => {
     if (!installationUrl) {
       return;
@@ -138,31 +152,37 @@ const LoginScreen = () => {
   };
 
   return (
-    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
-      <StatusBar
-        translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
-      />
-      <View style={tailwind.style('flex-1 bg-white')}>
+    <SafeAreaView edges={['top']} style={[tailwind.style('flex-1'), styles.bgPrimary]}>
+      <StatusBar translucent backgroundColor="transparent" barStyle={styles.statusBar} />
+      <View style={[tailwind.style('flex-1'), styles.bgPrimary]}>
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={tailwind.style('px-6 pt-5')}>
+          contentContainerStyle={tailwind.style('px-6 pt-5')}
+        >
           <Image
             // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
-            source={require('@/assets/images/logo.png')}
+            source={
+              isDark
+                ? require('@/assets/images/logo_dark.png')
+                : require('@/assets/images/logo.png')
+            }
             style={tailwind.style('w-50 h-50 self-center')}
             resizeMode="contain"
           />
           <View style={tailwind.style('pt-6 gap-4')}>
-            <Animated.Text style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20')}>
+            <Animated.Text
+              style={[tailwind.style('text-2xl font-inter-semibold-20'), styles.textPrimary]}
+            >
               {i18n.t('LOGIN.TITLE')}
             </Animated.Text>
             <Animated.Text
-              style={tailwind.style(
-                'font-inter-normal-20 leading-[18px] tracking-[0.32px] text-gray-900',
-              )}>
-              {i18n.t('LOGIN.DESCRIPTION', { baseUrl })}
+              style={[
+                tailwind.style('font-inter-normal-20 leading-[18px] tracking-[0.32px]'),
+                styles.textSecondary,
+              ]}
+            >
+              {i18n.t('LOGIN.DESCRIPTION')}
+              <Animated.Text style={styles.textLink}>{baseUrl}</Animated.Text>
             </Animated.Text>
           </View>
 
@@ -178,11 +198,11 @@ const LoginScreen = () => {
               />
 
               <View style={tailwind.style('flex-row items-center my-6')}>
-                <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
-                <Animated.Text style={tailwind.style('px-4 text-sm text-gray-600')}>
+                <View style={[tailwind.style('flex-1 h-px'), styles.divider]} />
+                <Animated.Text style={[tailwind.style('px-4 text-sm'), styles.textSecondary]}>
                   OR
                 </Animated.Text>
-                <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
+                <View style={[tailwind.style('flex-1 h-px'), styles.divider]} />
               </View>
             </View>
           )}
@@ -198,26 +218,30 @@ const LoginScreen = () => {
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <View style={tailwind.style('pt-2 gap-2')}>
-                <Animated.Text style={tailwind.style('font-inter-420-20 text-gray-950')}>
+                <Animated.Text style={[tailwind.style('font-inter-420-20'), styles.textPrimary]}>
                   {i18n.t('LOGIN.EMAIL')}
                 </Animated.Text>
                 <TextInput
                   style={[
                     tailwind.style(
                       'text-base font-inter-normal-20 tracking-[0.24px] leading-[20px] android:leading-[18px]',
-                      'py-2 px-3 rounded-xl text-gray-950 bg-blackA-A4',
-                      'h-10',
+                      'py-2 px-3 rounded-xl h-10',
                     ),
+                    styles.textTertiary,
+                    styles.bgInput,
+                    styles.borderStyle,
                   ]}
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
-                  placeholderTextColor={tailwind.color('text-gray-900')}
+                  placeholderTextColor={styles.colors.textTertiary}
                   keyboardType="email-address"
                   autoCapitalize="none"
                 />
                 {errors.email && (
-                  <Animated.Text style={tailwind.style('font-inter-normal-20 text-ruby-900')}>
+                  <Animated.Text
+                    style={[tailwind.style('font-inter-normal-20'), styles.stateError]}
+                  >
                     {errors.email.message}
                   </Animated.Text>
                 )}
@@ -237,7 +261,7 @@ const LoginScreen = () => {
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <View style={tailwind.style('pt-8 gap-2')}>
-                <Animated.Text style={tailwind.style('font-inter-420-20  text-gray-950')}>
+                <Animated.Text style={[tailwind.style('font-inter-420-20'), styles.textPrimary]}>
                   {i18n.t('LOGIN.PASSWORD')}
                 </Animated.Text>
                 <View style={tailwind.style('relative')}>
@@ -245,26 +269,27 @@ const LoginScreen = () => {
                     style={[
                       tailwind.style(
                         'text-base font-inter-normal-20 tracking-[0.24px] leading-[20px] android:leading-[18px]',
-                        'py-2 pl-3 pr-10 rounded-xl text-gray-950 bg-blackA-A4',
-                        'h-10',
+                        'py-2 pl-3 pr-10 rounded-xl h-10',
                       ),
+                      styles.textTertiary,
+                      styles.bgInput,
+                      styles.borderStyle,
                     ]}
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
-                    placeholderTextColor={tailwind.color('text-gray-500')}
+                    placeholderTextColor={styles.colors.textTertiary}
                     secureTextEntry={!showPassword}
                   />
                   <Pressable
                     style={tailwind.style('absolute right-4 top-2.5')}
-                    onPress={() => setShowPassword(!showPassword)}>
+                    onPress={() => setShowPassword(!showPassword)}
+                  >
                     <Icon size={20} icon={showPassword ? <EyeIcon /> : <EyeSlash />} />
                   </Pressable>
                 </View>
                 {errors.password && (
-                  <Animated.Text style={tailwind.style('text-ruby-900')}>
-                    {errors.password.message}
-                  </Animated.Text>
+                  <Animated.Text style={styles.stateError}>{errors.password.message}</Animated.Text>
                 )}
               </View>
             )}
@@ -272,7 +297,9 @@ const LoginScreen = () => {
           />
 
           <Pressable style={tailwind.style('pt-1 mb-8')} onPress={openResetPassword}>
-            <Animated.Text style={tailwind.style('text-blue-800 font-inter-medium-24 text-right')}>
+            <Animated.Text
+              style={[tailwind.style('font-inter-medium-24 text-right'), styles.textLink]}
+            >
               {i18n.t('LOGIN.FORGOT_PASSWORD')}
             </Animated.Text>
           </Pressable>
@@ -284,16 +311,26 @@ const LoginScreen = () => {
 
           <Pressable
             style={tailwind.style('flex-row justify-center items-center mt-6')}
-            onPress={openConfigInstallationURL}>
-            <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
+            onPress={openConfigInstallationURL}
+          >
+            <Animated.Text style={[tailwind.style('text-sm'), styles.textSecondary]}>
               {i18n.t('LOGIN.CHANGE_URL')}
             </Animated.Text>
           </Pressable>
           <Pressable
             style={tailwind.style('flex-row justify-center items-center mt-4')}
-            onPress={() => languagesModalSheetRef.current?.present()}>
-            <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
+            onPress={() => languagesModalSheetRef.current?.present()}
+          >
+            <Animated.Text style={[tailwind.style('text-sm'), styles.textSecondary]}>
               {i18n.t('LOGIN.CHANGE_LANGUAGE')}
+            </Animated.Text>
+          </Pressable>
+          <Pressable
+            style={tailwind.style('flex-row justify-center items-center mt-4')}
+            onPress={() => themeModalSheetRef.current?.present()}
+          >
+            <Animated.Text style={[tailwind.style('text-sm'), styles.textSecondary]}>
+              Change Appearance
             </Animated.Text>
           </Pressable>
         </Animated.ScrollView>
@@ -301,16 +338,49 @@ const LoginScreen = () => {
       <BottomSheetModal
         ref={languagesModalSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        handleIndicatorStyle={tailwind.style(
+          'overflow-hidden',
+          styles.sheetIndicator,
+          'w-8 h-1 rounded-[11px]',
+        )}
         detached
         enablePanDownToClose
         animationConfigs={animationConfigs}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
-        snapPoints={['70%']}>
-        <BottomSheetScrollView showsVerticalScrollIndicator={false}>
+        backgroundStyle={tailwind.style(styles.sheetBg)}
+        snapPoints={['70%']}
+      >
+        <BottomSheetScrollView
+          showsVerticalScrollIndicator={false}
+          style={tailwind.style(styles.sheetBg)}
+        >
           <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_LANGUAGE')} />
           <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
+        </BottomSheetScrollView>
+      </BottomSheetModal>
+      <BottomSheetModal
+        ref={themeModalSheetRef}
+        backdropComponent={BottomSheetBackdrop}
+        handleIndicatorStyle={tailwind.style(
+          'overflow-hidden',
+          styles.sheetIndicator,
+          'w-8 h-1 rounded-[11px]',
+        )}
+        detached
+        enablePanDownToClose
+        animationConfigs={animationConfigs}
+        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        style={tailwind.style('rounded-[26px] overflow-hidden')}
+        backgroundStyle={tailwind.style(styles.sheetBg)}
+        snapPoints={[280]}
+      >
+        <BottomSheetScrollView
+          showsVerticalScrollIndicator={false}
+          style={tailwind.style(styles.sheetBg)}
+        >
+          <BottomSheetHeader headerText="Appearance" />
+          <ThemeList onChangeTheme={onChangeTheme} currentTheme={theme} />
         </BottomSheetScrollView>
       </BottomSheetModal>
     </SafeAreaView>

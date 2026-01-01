@@ -4,7 +4,7 @@ import Animated from 'react-native-reanimated';
 
 import { AVAILABLE_LANGUAGES } from '@/constants';
 import { TickIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { tailwind, useThemedStyles } from '@/theme';
 import { useHaptic } from '@/utils';
 import { Icon } from '@/components-next/common';
 
@@ -30,6 +30,8 @@ const languagesList = Object.keys(AVAILABLE_LANGUAGES).map(languageCode => {
 const LanguageCell = (props: LanguageCellProps) => {
   const { item, index, currentLanguage, onChangeLanguage } = props;
   const hapticSelection = useHaptic();
+  const styles = useThemedStyles();
+
   const handlePress = () => {
     hapticSelection?.();
     onChangeLanguage(item.key);
@@ -42,15 +44,18 @@ const LanguageCell = (props: LanguageCellProps) => {
     <Pressable onPress={handlePress}>
       <Animated.View style={tailwind.style('flex flex-row items-center')}>
         <Animated.View
-          style={tailwind.style(
-            'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
-            !isLastItem && 'border-b-[1px] border-blackA-A3',
-          )}
+          style={[
+            tailwind.style('flex-1 ml-3 flex-row justify-between py-[11px] pr-3'),
+            !isLastItem && { borderBottomWidth: 1, ...styles.border },
+          ]}
         >
           <Animated.Text
-            style={tailwind.style(
-              'text-base capitalize text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
-            )}
+            style={[
+              tailwind.style(
+                'text-base capitalize font-inter-420-20 leading-[21px] tracking-[0.16px]',
+              ),
+              styles.textPrimary,
+            ]}
           >
             {item.title}
           </Animated.Text>

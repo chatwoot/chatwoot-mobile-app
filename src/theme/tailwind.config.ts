@@ -11,11 +11,18 @@ const blackA = require('./colors/blackA');
 // White with alpha variations
 const whiteA = require('./colors/whiteA');
 
+// Brand colors - OceanoTech
+const brandColors = require('./colors/brand');
+// Semantic color mappings
+const semanticColors = require('./colors/semantic');
+
 const chatwootAppColors = {
   ...blackA,
   ...whiteA,
   ...radixUILightColors,
   ...radixUIDarkColors,
+  ...brandColors,
+  ...semanticColors,
 };
 
 export const twConfig = {

@@ -23,7 +23,7 @@
   },
   "LOGIN": {
     "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "DESCRIPTION": "You are connected to ",
     "EMAIL": "Email",
     "PASSWORD": "Password",
     "EMAIL_REQUIRED": "Email is required",

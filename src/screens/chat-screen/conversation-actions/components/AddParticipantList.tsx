@@ -26,8 +26,9 @@ const ListItem = (props: ListItemProps) => {
           <Avatar src={{ uri: listItem.thumbnail || undefined }} size="lg" />
         </Animated.View>
         <Animated.View
-          style={tailwind.style('flex-1 py-[11px] ml-2 border-b-[1px] border-b-blackA-A3')}>
+          style={tailwind.style('flex-1 py-[11px] ml-2 pr-3 border-b-[1px] border-b-blackA-A3')}>
           <Animated.Text
+            numberOfLines={1}
             style={tailwind.style(
               'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
             )}>
@@ -47,8 +48,9 @@ const ParticipantOverflowCell = ({ count }: { count: number }) => {
           <Icon icon={<Overflow stroke={tailwind.color('text-gray-600')} />} size={28} />
         </Animated.View>
         <Animated.View
-          style={tailwind.style('flex-1 py-[11px] ml-2 border-b-[1px] border-b-blackA-A3')}>
+          style={tailwind.style('flex-1 py-[11px] ml-2 pr-3 border-b-[1px] border-b-blackA-A3')}>
           <Animated.Text
+            numberOfLines={1}
             style={tailwind.style(
               'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
             )}>
@@ -94,8 +96,9 @@ export const AddParticipantList = (props: AddParticipantListProps) => {
             <Animated.View style={tailwind.style('p-0.5')}>
               <Icon icon={<AddParticipant stroke={tailwind.color('text-blue-800')} />} size={24} />
             </Animated.View>
-            <Animated.View style={tailwind.style('flex-1 py-[11px] ml-2')}>
+            <Animated.View style={tailwind.style('flex-1 py-[11px] ml-2 pr-3')}>
               <Animated.Text
+                numberOfLines={1}
                 style={tailwind.style(
                   'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-blue-800',
                 )}>

@@ -1,13 +1,13 @@
 import React from 'react';
-import { ImageSourcePropType, Keyboard, Platform, Pressable } from 'react-native';
+import { ImageSourcePropType, Keyboard, Pressable } from 'react-native';
 import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 import Animated from 'react-native-reanimated';
 
 import { Avatar, Icon } from '@/components-next';
-import { ChevronLeft, OpenIcon, Overflow, ResolvedIcon, SLAIcon } from '@/svg-icons';
+import { ChevronLeft, OpenIcon, ResolvedIcon } from '@/svg-icons';
 import { BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
 import { tailwind } from '@/theme';
-import { ChatDropdownMenu, DashboardList } from './DropdownMenu';
+import { DashboardList } from './DropdownMenu';
 import { SLAEvent } from '@/types/common';
 import { useRefsContext } from '@/context';
 import { SlaEvents } from './SlaEvents';
@@ -80,34 +80,19 @@ export const ChatHeader = ({
           </Pressable>
         </Animated.View>
 
-        <Animated.View
-          style={tailwind.style(
-            `flex flex-row flex-1 justify-end ${Platform.OS === 'ios' ? 'gap-4' : ''}`,
-          )}>
-          <Animated.View style={tailwind.style('flex flex-row items-center gap-4')}>
-            {hasSla && (
-              <Pressable hitSlop={8} onPress={toggleSlaEventsSheet}>
-                <Icon icon={<SLAIcon color={isSlaMissed ? '#E13D45' : '#BBBBBB'} />} size={24} />
-              </Pressable>
-            )}
-            <Pressable hitSlop={8} onPress={onToggleChatStatus}>
-              <Icon
-                icon={
-                  isResolved ? (
-                    <ResolvedIcon strokeWidth={2} stroke={tailwind.color('bg-green-700')} />
-                  ) : (
-                    <OpenIcon strokeWidth={2} />
-                  )
-                }
-                size={24}
-              />
-            </Pressable>
-          </Animated.View>
-          {dashboardsList.length > 0 && (
-            <ChatDropdownMenu dropdownMenuList={dashboardsList}>
-              <Icon icon={<Overflow strokeWidth={2} />} size={24} />
-            </ChatDropdownMenu>
-          )}
+        <Animated.View style={tailwind.style('flex flex-row items-center')}>
+          <Pressable hitSlop={8} onPress={onToggleChatStatus}>
+            <Icon
+              icon={
+                isResolved ? (
+                  <ResolvedIcon strokeWidth={2} stroke={tailwind.color('bg-green-700')} />
+                ) : (
+                  <OpenIcon strokeWidth={2} />
+                )
+              }
+              size={24}
+            />
+          </Pressable>
         </Animated.View>
       </Animated.View>
       <BottomSheetModal

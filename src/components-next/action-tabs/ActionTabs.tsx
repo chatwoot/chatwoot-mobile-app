@@ -11,12 +11,16 @@ import Svg, { Path } from 'react-native-svg';
 // import { BlurView, BlurViewProps } from '@react-native-community/blur';
 import { View } from 'react-native';
 
-let BlurView: any = View;
+let BlurViewComponent: any = null;
+let isBlurAvailable = false;
 try {
-  BlurView = require('@react-native-community/blur').BlurView;
+  const blurModule = require('@react-native-community/blur');
+  if (blurModule && blurModule.BlurView) {
+    BlurViewComponent = blurModule.BlurView;
+    isBlurAvailable = true;
+  }
 } catch (e) {
   console.warn('@react-native-community/blur not available');
-  BlurView = View;
 }
 
 // Mock BlurViewProps
@@ -35,7 +39,10 @@ const ACTION_TAB_HEIGHT = 58;
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 
-const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
+// Only create AnimatedBlurView when blur is available
+const AnimatedBlurView: any = isBlurAvailable
+  ? Animated.createAnimatedComponent(BlurViewComponent)
+  : null;
 
 const tabExitSpringConfig = { damping: 20, stiffness: 360, mass: 1 };
 const tabEnterSpringConfig = { damping: 30, stiffness: 360, mass: 1 };
@@ -101,12 +108,15 @@ const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
     };
   });
 
-  return Platform.OS === 'ios' ? (
-    <AnimatedBlurView {...{ blurAmount, blurType }} style={[style, animatedTabBarStyle]}>
-      {children}
-    </AnimatedBlurView>
-  ) : (
-    <Animated.View style={[style, animatedTabBarStyle, styles.listShadow]}>
+  if (Platform.OS === 'ios' && isBlurAvailable && AnimatedBlurView) {
+    return (
+      <AnimatedBlurView blurAmount={blurAmount} blurType={blurType} style={[style, animatedTabBarStyle]}>
+        {children}
+      </AnimatedBlurView>
+    );
+  }
+  return (
+    <Animated.View style={[style, animatedTabBarStyle, styles.listShadow, { backgroundColor: 'rgba(255,255,255,0.95)' }]}>
       {children}
     </Animated.View>
   );

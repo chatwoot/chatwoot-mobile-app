@@ -5,12 +5,13 @@ import Animated from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-let PagerView: any = View;
+let PagerViewComponent: any = null;
+let isPagerViewAvailable = false;
 try {
-  PagerView = require('react-native-pager-view').default;
+  PagerViewComponent = require('react-native-pager-view').default;
+  isPagerViewAvailable = true;
 } catch (e) {
   console.warn('react-native-pager-view not available');
-  PagerView = View;
 }
 
 // Mock type
@@ -68,12 +69,26 @@ type ChatScreenProps = NativeStackScreenProps<TabBarExcludedScreenParamList, 'Ch
 
 const ConversationPagerView = (props: ChatScreenProps) => {
   const { chatPagerView } = useRefsContext();
-  const { setPagerViewIndex } = useChatWindowContext();
+  const { setPagerViewIndex, pagerViewIndex } = useChatWindowContext();
   const onPageSelected = (e: PagerViewOnPageSelectedEvent) => {
     setPagerViewIndex(e.nativeEvent.position);
   };
+
+  // When PagerView is not available (Expo Go), show only one view at a time
+  if (!isPagerViewAvailable) {
+    return (
+      <View style={tailwind.style('flex-1')}>
+        {pagerViewIndex === 0 ? (
+          <ChatWindow {...props} />
+        ) : (
+          <ConversationActions />
+        )}
+      </View>
+    );
+  }
+
   return (
-    <PagerView
+    <PagerViewComponent
       ref={chatPagerView}
       orientation="horizontal"
       overdrag
@@ -83,7 +98,7 @@ const ConversationPagerView = (props: ChatScreenProps) => {
       onPageSelected={onPageSelected}>
       <ChatWindow {...props} />
       <ConversationActions />
-    </PagerView>
+    </PagerViewComponent>
   );
 };
 

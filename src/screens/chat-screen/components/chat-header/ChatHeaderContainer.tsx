@@ -68,7 +68,7 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   }, [appliedSla, conversation]);
 
   const { chatPagerView } = useRefsContext();
-  const { pagerViewIndex } = useChatWindowContext();
+  const { pagerViewIndex, setPagerViewIndex } = useChatWindowContext();
 
   const createTimer = useCallback(() => {
     timerRef.current = setTimeout(() => {
@@ -111,7 +111,12 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       });
       navigation.dispatch(navigateToScreen);
     } else {
-      chatPagerView.current?.setPage(1);
+      // Try PagerView first, fallback to state update for Expo Go
+      if (chatPagerView.current?.setPage) {
+        chatPagerView.current.setPage(1);
+      } else {
+        setPagerViewIndex(1);
+      }
     }
   };
 

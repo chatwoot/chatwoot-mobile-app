@@ -121,9 +121,10 @@ export const ConversationActions = () => {
   };
 
   return (
-    <Animated.View style={tailwind.style('', `w-[${SCREEN_WIDTH}px]`)}>
+    <Animated.View style={tailwind.style('bg-gray-50 flex-1', `w-[${SCREEN_WIDTH}px]`)}>
       <ScrollView
         showsVerticalScrollIndicator={false}
+        style={tailwind.style('bg-gray-50 flex-1')}
         contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT}]`)}>
         <ConversationBasicActions
           status={status}

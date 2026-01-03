@@ -9,12 +9,16 @@ import Animated, {
 // import { BlurView, BlurViewProps } from '@react-native-community/blur';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
-let BlurView: any = View;
+let BlurViewComponent: any = null;
+let isBlurAvailable = false;
 try {
-  BlurView = require('@react-native-community/blur').BlurView;
+  const blurModule = require('@react-native-community/blur');
+  if (blurModule && blurModule.BlurView) {
+    BlurViewComponent = blurModule.BlurView;
+    isBlurAvailable = true;
+  }
 } catch (e) {
   console.warn('@react-native-community/blur not available');
-  BlurView = View;
 }
 
 // Mock BlurViewProps
@@ -37,7 +41,10 @@ import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';
 import { TabParamList } from './AppTabs';
 import { useAppSelector } from '@/hooks';
 
-const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
+// Only create AnimatedBlurView when blur is available
+const AnimatedBlurView: any = isBlurAvailable
+  ? Animated.createAnimatedComponent(BlurViewComponent)
+  : null;
 
 const tabExitSpringConfig = { damping: 20, stiffness: 360, mass: 1 };
 const tabEnterSpringConfig = { damping: 30, stiffness: 360, mass: 1 };
@@ -83,12 +90,17 @@ const TabBarBackground = (props: TabBarBackgroundProps) => {
     };
   });
 
-  return Platform.OS === 'ios' ? (
-    <AnimatedBlurView {...{ blurAmount, blurType }} style={[style, animatedTabBarStyle]}>
+  if (Platform.OS === 'ios' && isBlurAvailable && AnimatedBlurView) {
+    return (
+      <AnimatedBlurView blurAmount={blurAmount} blurType={blurType} style={[style, animatedTabBarStyle]}>
+        {children}
+      </AnimatedBlurView>
+    );
+  }
+  return (
+    <Animated.View style={[style, animatedTabBarStyle, { backgroundColor: 'rgba(255,255,255,0.95)' }]}>
       {children}
-    </AnimatedBlurView>
-  ) : (
-    <Animated.View style={[style, animatedTabBarStyle]}>{children}</Animated.View>
+    </Animated.View>
   );
 };
 

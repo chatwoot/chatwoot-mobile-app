@@ -21,6 +21,12 @@ const config = {
           type: 'empty',
         };
       }
+      // Mock @react-native-community/blur to prevent native module errors in Expo Go
+      if (moduleName === '@react-native-community/blur') {
+        return {
+          type: 'empty',
+        };
+      }
       // Use default resolver for all other modules
       return context.resolveRequest(context, moduleName, platform);
     },

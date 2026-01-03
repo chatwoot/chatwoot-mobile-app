@@ -18,19 +18,20 @@ const TeamPanel = ({ team, onPress }: TeamPanelProps) => {
     <Pressable
       onPress={onPress}
       style={({ pressed }) => [tailwind.style(pressed ? 'bg-gray-100' : '', 'rounded-t-[13px]')]}>
-      <Animated.View style={tailwind.style('flex-row items-center justify-between pl-3')}>
+      <Animated.View style={tailwind.style('flex-row items-center pl-3')}>
         <Icon icon={<TeamIcon />} />
         <Animated.View
           style={tailwind.style(
-            'flex-1 flex-row items-center justify-between py-[11px] ml-[10px] border-b-[1px] border-b-blackA-A3',
+            'flex-1 flex-row items-center justify-between py-[11px] ml-[10px] pr-3 border-b-[1px] border-b-blackA-A3',
           )}>
           <Animated.Text
+            numberOfLines={1}
             style={tailwind.style(
-              'text-base font-inter-420-20 leading-[22.4px] tracking-[0.16px] text-gray-950 capitalize',
+              'flex-1 text-base font-inter-420-20 leading-[22.4px] tracking-[0.16px] text-gray-950 capitalize mr-2',
             )}>
             {teamName}
           </Animated.Text>
-          <Animated.View style={tailwind.style('flex-row items-center pr-3')}>
+          <Animated.View style={tailwind.style('flex-row items-center flex-shrink-0')}>
             <Animated.Text
               style={tailwind.style(
                 'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] text-gray-900',

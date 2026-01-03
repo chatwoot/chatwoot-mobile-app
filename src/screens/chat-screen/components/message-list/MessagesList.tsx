@@ -3,6 +3,7 @@ import React from 'react';
 import Animated, {
   interpolate,
   LinearTransition,
+  useAnimatedScrollHandler,
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
@@ -94,17 +95,21 @@ export const MessagesList = ({
     };
   });
 
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: () => {
+      if (!isFlashListReady) {
+        setFlashListReady(true);
+      }
+    },
+  });
+
   return (
     <Animated.View
       layout={LinearTransition.springify().damping(38).stiffness(240)}
       style={[tailwind.style('flex-1 min-h-10'), animatedFlashlistStyle]}>
       <AnimatedFlashlist
         layout={LinearTransition.springify().damping(38).stiffness(240)}
-        onScroll={() => {
-          if (!isFlashListReady) {
-            setFlashListReady(true);
-          }
-        }}
+        onScroll={scrollHandler}
         ref={typedMessageListRef}
         inverted
         estimatedItemSize={100}

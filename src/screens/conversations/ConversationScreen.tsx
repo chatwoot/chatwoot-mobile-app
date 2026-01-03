@@ -275,7 +275,7 @@ const ConversationList = () => {
       </Animated.Text>
     </Animated.ScrollView>
   ) : (
-    <AnimatedFlashList
+   <AnimatedFlashList
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       layout={LinearTransition.springify().damping(18).stiffness(120)}
       showsVerticalScrollIndicator={false}

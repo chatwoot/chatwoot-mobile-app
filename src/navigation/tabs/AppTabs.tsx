@@ -184,7 +184,7 @@ export const AppTabs = () => {
 
   // TEMPORARY BYPASS: Force login to true for development
   // TODO: Remove this line when server is working
-  const bypassLogin = true;
+  const bypassLogin = false;
 
   if (isLoggedIn || bypassLogin) {
     return (

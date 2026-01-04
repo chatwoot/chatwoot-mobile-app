@@ -32,13 +32,16 @@ const conversationFilterSlice = createSlice({
       const { key, value } = action.payload;
       state.filters[key] = value;
     },
+    setFiltersState: (state, action: PayloadAction<FilterState>) => {
+      state.filters = action.payload;
+    },
     resetFilters: state => {
       state.filters = defaultFilterState;
     },
   },
 });
 
-export const { setFilters, resetFilters } = conversationFilterSlice.actions;
+export const { setFilters, setFiltersState, resetFilters } = conversationFilterSlice.actions;
 
 export const selectFilters = (state: RootState) => state.conversationFilter.filters;
 

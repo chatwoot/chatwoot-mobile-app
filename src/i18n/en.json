@@ -286,6 +286,10 @@
     "PENDING": "Pending",
     "SNOOZED": "Snoozed"
   },
+  "CHANNELS": {
+    "TITLE": "Channels",
+    "EMPTY": "No channels yet."
+  },
   "SETTINGS": {
     "HEADER_TITLE": "Settings",
     "SET_AVAILABILITY": "Set yourself as",

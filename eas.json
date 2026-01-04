@@ -11,9 +11,7 @@
     "preview": {
       "distribution": "internal",
       "android": {
-        "buildType": "apk",
-        "credentialsSource": "remote",
-        "googleServicesFile": "./google-services.json"
+        "buildType": "apk"
       },
       "env": {
         "SENTRY_DISABLE_AUTO_UPLOAD": "true"

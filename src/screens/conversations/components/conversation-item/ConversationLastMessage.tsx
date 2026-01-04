@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleProp, Text, ViewStyle } from 'react-native';
 
 import { tailwind } from '@/theme';
+import { useTheme } from '@/context/ThemeContext';
 import { NativeView } from '@/components-next/native-components';
 import {
   AudioIcon,
@@ -68,6 +69,7 @@ const MessageContent = ({
   message: Message;
   numberOfLines: number;
 }) => {
+  const { colors } = useTheme();
   const { contentAttributes } = message || {};
   const { email: { subject = '' } = {} } = contentAttributes || {};
 
@@ -83,9 +85,10 @@ const MessageContent = ({
         <Icon icon={<ImageAttachmentIcon />} />
         <Text
           numberOfLines={1}
-          style={tailwind.style(
-            'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
-          )}>
+          style={[
+            tailwind.style('text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px]'),
+            { color: colors.textSecondary },
+          ]}>
           <MessageType message={message} style={tailwind.style('ml-1')} />
           {i18n.t(`CONVERSATION.ATTACHMENTS.image.CONTENT`)}
         </Text>
@@ -96,15 +99,17 @@ const MessageContent = ({
       <NativeView style={tailwind.style('flex-row gap-1 items-center')}>
         <Text
           numberOfLines={numberOfLines}
-          style={tailwind.style(
-            'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[21px] text-gray-900',
-          )}>
+          style={[
+            tailwind.style('text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[21px]'),
+            { color: colors.textSecondary },
+          ]}>
           <MessageType message={message} style={tailwind.style('ml-1')} />
           <Text
             numberOfLines={numberOfLines}
-            style={tailwind.style(
-              'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[21px] text-gray-900',
-            )}>
+            style={[
+              tailwind.style('text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[21px]'),
+              { color: colors.textSecondary },
+            ]}>
             {lastMessageContent}
           </Text>
         </Text>
@@ -117,9 +122,10 @@ const MessageContent = ({
         <MessageType message={message} />
         <Text
           numberOfLines={1}
-          style={tailwind.style(
-            'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
-          )}>
+          style={[
+            tailwind.style('text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px]'),
+            { color: colors.textSecondary },
+          ]}>
           {i18n.t(`CONVERSATION.ATTACHMENTS.${lastMessageFileType}.CONTENT`)}
         </Text>
       </NativeView>
@@ -127,9 +133,10 @@ const MessageContent = ({
   }
   return (
     <Text
-      style={tailwind.style(
-        'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
-      )}>
+      style={[
+        tailwind.style('text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px]'),
+        { color: colors.textSecondary },
+      ]}>
       {i18n.t('CONVERSATION.NO_CONTENT')}
     </Text>
   );

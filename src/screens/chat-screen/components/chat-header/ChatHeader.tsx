@@ -9,7 +9,7 @@ import { BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
 import { tailwind } from '@/theme';
 import { DashboardList } from './DropdownMenu';
 import { SLAEvent } from '@/types/common';
-import { useRefsContext } from '@/context';
+import { useRefsContext, useTheme } from '@/context';
 import { SlaEvents } from './SlaEvents';
 
 type ChatHeaderProps = {
@@ -54,8 +54,10 @@ export const ChatHeader = ({
     }
   };
 
+  const { colors } = useTheme();
+
   return (
-    <Animated.View style={[tailwind.style('border-b-[1px] border-b-blackA-A3')]}>
+    <Animated.View style={[tailwind.style('border-b-[1px]'), { borderBottomColor: colors.divider }]}>
       <Animated.View style={tailwind.style('flex flex-row justify-between items-center px-4 py-2')}>
         <Animated.View style={tailwind.style('flex-1 flex-row gap-2 items-center justify-center')}>
           <Pressable
@@ -71,9 +73,10 @@ export const ChatHeader = ({
             <Animated.View style={tailwind.style('pl-2')}>
               <Animated.Text
                 numberOfLines={1}
-                style={tailwind.style(
-                  'text-[17px] font-inter-medium-24 tracking-[0.32px] text-gray-950',
-                )}>
+                style={[
+                  tailwind.style('text-[17px] font-inter-medium-24 tracking-[0.32px]'),
+                  { color: colors.text },
+                ]}>
                 {name}
               </Animated.Text>
             </Animated.View>

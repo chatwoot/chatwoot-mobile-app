@@ -10,6 +10,7 @@ import { isMarkdown } from '@/utils';
 import { Icon } from '@/components-next';
 import { MarkdownDisplay } from './MarkdownDisplay';
 import { TEXT_MAX_WIDTH } from '@/constants';
+import { useTheme } from '@/context/ThemeContext';
 
 type ReplyMessageCellProps = {
   replyMessage: Message;
@@ -21,6 +22,7 @@ export const ReplyMessageCell = (props: ReplyMessageCellProps) => {
   const replyMessageItem = props.replyMessage as Message;
 
   const { isIncoming, isOutgoing } = props;
+  const { colors, isDark } = useTheme();
 
   const { messageListRef } = useRefsContext();
 
@@ -64,23 +66,30 @@ export const ReplyMessageCell = (props: ReplyMessageCellProps) => {
           isOutgoing ? 'bg-white' : '',
           // singleLineShortText ? "flex flex-row" : "",
         ),
+        isOutgoing && { backgroundColor: colors.card },
       ]}>
       <Animated.View style={tailwind.style('flex flex-row')}>
         <Animated.View style={tailwind.style('w-[3px] bg-gray-300 h-auto rounded-[4px]')} />
         <Animated.View style={tailwind.style('pl-2.5')}>
           <Animated.Text
-            style={tailwind.style(
-              'text-cxs font-inter-420-20 leading-[14.95px] tracking-[0.32px] text-blackA-A11',
-            )}>
+            style={[
+              tailwind.style(
+                'text-cxs font-inter-420-20 leading-[14.95px] tracking-[0.32px]',
+              ),
+              { color: isDark ? colors.textSecondary : tailwind.color('text-blackA-A11') },
+            ]}>
             Replying to {replyMessageItem?.sender?.name}
           </Animated.Text>
           {hasAttachments ? (
             <Animated.View style={tailwind.style('py-[3px] flex flex-row items-center')}>
               {renderAttachmentSection()}
               <Animated.Text
-                style={tailwind.style(
-                  'text-[14px] font-inter-normal-20 leading-[19.6px] tracking-[0.16px] text-gray-950 capitalize pl-1.5',
-                )}>
+                style={[
+                  tailwind.style(
+                    'text-[14px] font-inter-normal-20 leading-[19.6px] tracking-[0.16px] capitalize pl-1.5',
+                  ),
+                  { color: isDark ? colors.text : tailwind.color('text-gray-950') },
+                ]}>
                 {replyMessageItem?.attachments[0].fileType}
               </Animated.Text>
             </Animated.View>
@@ -97,9 +106,12 @@ export const ReplyMessageCell = (props: ReplyMessageCellProps) => {
             ) : (
               <Animated.Text
                 numberOfLines={1}
-                style={tailwind.style(
-                  'text-[14px] font-inter-normal-20 leading-[19.6px] tracking-[0.16px] text-gray-950 capitalize',
-                )}>
+                style={[
+                  tailwind.style(
+                    'text-[14px] font-inter-normal-20 leading-[19.6px] tracking-[0.16px] capitalize',
+                  ),
+                  { color: isDark ? colors.text : tailwind.color('text-gray-950') },
+                ]}>
                 {replyMessageItem?.content}
               </Animated.Text>
             )

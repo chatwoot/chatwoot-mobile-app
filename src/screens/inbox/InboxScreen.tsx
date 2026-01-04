@@ -19,7 +19,7 @@ try {
 }
 
 import { TAB_BAR_HEIGHT } from '@/constants';
-import { InboxListStateProvider } from '@/context';
+import { InboxListStateProvider, useTheme } from '@/context';
 import type { Notification } from '@/types/Notification';
 import { tailwind } from '@/theme';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -179,6 +179,7 @@ const InboxList = () => {
 
 const InboxScreen = () => {
   const dispatch = useAppDispatch();
+  const { colors, isDark } = useTheme();
 
   // Memoize the markAllAsRead callback
   const markAllAsRead = useCallback(async () => {
@@ -189,11 +190,11 @@ const InboxScreen = () => {
   }, [dispatch]);
 
   return (
-    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+    <SafeAreaView edges={['top']} style={[tailwind.style('flex-1'), { backgroundColor: colors.background }]}>
       <StatusBar
         translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
+        backgroundColor={colors.background}
+        barStyle={isDark ? 'light-content' : 'dark-content'}
       />
       <InboxListStateProvider>
         <InboxHeader markAllAsRead={markAllAsRead} />

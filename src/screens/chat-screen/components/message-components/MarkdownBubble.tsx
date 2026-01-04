@@ -16,6 +16,7 @@ try {
 
 import { tailwind } from '@/theme';
 import { MESSAGE_VARIANTS } from '@/constants';
+import { useTheme } from '@/context/ThemeContext';
 
 type MarkdownBubbleProps = {
   messageContent: string;
@@ -33,12 +34,22 @@ const variantTextMap = {
 
 export const MarkdownBubble = (props: MarkdownBubbleProps) => {
   const { messageContent, variant } = props;
+  const { colors, isDark } = useTheme();
+
   const handleURL = (url: string) => {
     openURL({ URL: url });
     return true;
   };
 
-  const textStyle = tailwind.style(variantTextMap[variant]);
+  const textStyle = {
+    ...tailwind.style(variantTextMap[variant]),
+    ...(isDark &&
+    (variant === MESSAGE_VARIANTS.AGENT ||
+      variant === MESSAGE_VARIANTS.BOT ||
+      variant === MESSAGE_VARIANTS.TEMPLATE)
+      ? { color: colors.text }
+      : {}),
+  };
 
   const styles = StyleSheet.create({
     text: {

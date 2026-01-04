@@ -37,6 +37,7 @@ import { MenuOption, MessageMenu } from '../message-menu';
 import { tailwind } from '@/theme';
 import { Dimensions, View } from 'react-native';
 import { Avatar } from '@/components-next';
+import { useTheme } from '@/context/ThemeContext';
 
 let Clipboard: any = null;
 try {
@@ -113,6 +114,14 @@ const MessageWrapper = ({
   variant,
   channel,
 }: MessageWrapperProps) => {
+  const { colors, isDark } = useTheme();
+
+  const isAgentOrBot =
+    variant === MESSAGE_VARIANTS.AGENT ||
+    variant === MESSAGE_VARIANTS.BOT ||
+    variant === MESSAGE_VARIANTS.TEMPLATE ||
+    variant === MESSAGE_VARIANTS.EMAIL;
+
   const flexOrientationClass = () => {
     const map = {
       [ORIENTATION.LEFT]: 'items-start',
@@ -134,11 +143,15 @@ const MessageWrapper = ({
           'my-[1px]',
           flexOrientationClass(),
           shouldGroupWithPrevious && orientation === ORIENTATION.LEFT ? 'ml-7' : '',
+          shouldGroupWithPrevious && orientation === ORIENTATION.RIGHT ? 'mr-0' : '',
           !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
           item.private ? 'my-1' : '',
         ),
       ]}>
-      <Animated.View style={tailwind.style('flex flex-row')}>
+      <Animated.View style={tailwind.style(
+        'flex flex-row w-full',
+        orientation === ORIENTATION.RIGHT ? 'justify-end' : 'justify-start'
+      )}>
         {!shouldGroupWithPrevious && shouldShowAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
             <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
@@ -168,6 +181,12 @@ const MessageWrapper = ({
                     : 'rounded-br-none'
                   : '',
               ),
+              isDark && isAgentOrBot
+                ? {
+                    backgroundColor: colors.card,
+                    borderColor: colors.border,
+                  }
+                : {},
             ]}>
             {children}
             {!shouldGroupWithPrevious && (
@@ -176,10 +195,17 @@ const MessageWrapper = ({
                   'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',
                 )}>
                 <Animated.Text
-                  style={tailwind.style(
-                    'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
-                    variantTextMap[variant],
-                  )}>
+                  style={[
+                    tailwind.style(
+                      'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
+                      variantTextMap[variant],
+                    ),
+                    isDark && isAgentOrBot
+                      ? {
+                          color: colors.textSecondary,
+                        }
+                      : {},
+                  ]}>
                   {unixTimestampToReadableTime(item.createdAt)}
                 </Animated.Text>
                 <DeliveryStatus

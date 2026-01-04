@@ -49,7 +49,7 @@ import { useAppSelector } from '@/hooks';
 import { selectInstallationUrl, selectLocale } from '@/store/settings/settingsSelectors';
 import { SSO_CALLBACK_URL } from '@/constants';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { RefsProvider } from '@/context';
+import { RefsProvider, ThemeProvider, useTheme } from '@/context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { transformNotification } from '@/utils/camelCaseKeys';
 import { SsoUtils } from '@/utils/ssoUtils';
@@ -248,6 +248,8 @@ export const AppNavigationContainer = () => {
     }
   }, [fontsLoaded]);
 
+  const { colors, isDark } = useTheme();
+
   if (!fontsLoaded) {
     return <CustomSplashScreen />;
   }
@@ -264,7 +266,7 @@ export const AppNavigationContainer = () => {
       }}
       fallback={<ActivityIndicator animating />}>
       <BottomSheetModalProvider>
-        <View style={styles.navigationLayout} onLayout={onLayoutRootView}>
+        <View style={[styles.navigationLayout, { backgroundColor: colors.background }]} onLayout={onLayoutRootView}>
           <AppTabs />
         </View>
       </BottomSheetModalProvider>
@@ -275,11 +277,13 @@ export const AppNavigator = () => {
   return (
     <GestureHandlerRootView style={styles.navigationLayout}>
       <KeyboardProvider>
-        <RefsProvider>
-          <SafeAreaProvider>
-            <AppNavigationContainer />
-          </SafeAreaProvider>
-        </RefsProvider>
+        <ThemeProvider>
+          <RefsProvider>
+            <SafeAreaProvider>
+              <AppNavigationContainer />
+            </SafeAreaProvider>
+          </RefsProvider>
+        </ThemeProvider>
       </KeyboardProvider>
     </GestureHandlerRootView>
   );

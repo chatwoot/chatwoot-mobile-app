@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 
 import { tailwind } from '@/theme';
+import { useTheme } from '@/context/ThemeContext';
 import { NativeView } from '@/components-next/native-components';
 import { formatTimeToShortForm, formatRelativeTime } from '@/utils/dateTimeUtils';
 
@@ -41,12 +42,15 @@ export const LastActivityTime = ({ timestamp }: LastActivityTimeProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const { colors } = useTheme();
+
   return (
     <NativeView>
       <Text
-        style={tailwind.style(
-          'text-sm font-inter-420-20 leading-[16px] tracking-[0.32px] text-gray-700',
-        )}>
+        style={[
+          tailwind.style('text-sm font-inter-420-20 leading-[16px] tracking-[0.32px]'),
+          { color: colors.textSecondary },
+        ]}>
         {lastActivityTime}
       </Text>
     </NativeView>

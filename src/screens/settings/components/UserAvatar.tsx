@@ -4,6 +4,7 @@ import { Image } from 'expo-image';
 import { AvailabilityStatus } from '@/types/common/AvailabilityStatus';
 
 import { tailwind } from '@/theme';
+import { useTheme } from '@/context/ThemeContext';
 import { cx, styleAdapter } from '@/utils';
 import { userStatusList } from '@/constants';
 
@@ -28,18 +29,18 @@ const getBgColorBasedOnStatus = (status: AvailabilityStatus) => {
 const AvatarStatus = ({
   status,
   parentsBackground,
+  colors,
 }: {
   status: AvailabilityStatus;
   parentsBackground: string;
+  colors: ReturnType<typeof useTheme>['colors'];
 }) => {
   const bgColor = getBgColorBasedOnStatus(status);
   return (
     <View
       style={[
-        tailwind.style(
-          'absolute border-[1.5px] border-white bg-white rounded-full bottom-[2px] right-[2px]',
-        ),
-        { borderColor: tailwind.color(parentsBackground) },
+        tailwind.style('absolute border-[1.5px] rounded-full bottom-[2px] right-[2px]'),
+        { borderColor: colors.background, backgroundColor: colors.background },
       ]}>
       <View style={tailwind.style(cx('rounded-full h-4 w-4', bgColor))} />
     </View>
@@ -84,6 +85,7 @@ export interface UserAvatarProps extends ViewProps {
 
 export const UserAvatar: React.FC<Partial<UserAvatarProps>> = props => {
   const { name, src, status, parentsBackground = 'text-white', style, ...boxProps } = props;
+  const { colors, isDark } = useTheme();
 
   const isSourceAvailable = useMemo(() => (src ? true : false), [src]);
   const [imageAvailable, setImageAvailable] = useState(isSourceAvailable);
@@ -92,23 +94,25 @@ export const UserAvatar: React.FC<Partial<UserAvatarProps>> = props => {
   return (
     <View
       style={[
-        tailwind.style('relative items-center justify-center bg-gray-100 rounded-full h-24 w-24'),
+        tailwind.style('relative items-center justify-center rounded-full h-24 w-24'),
+        { backgroundColor: colors.backgroundSecondary },
         styleAdapter(style),
       ]}
       {...boxProps}>
       {imageAvailable && src ? (
-        <AvatarImage src={src} handleFallback={loadFallback} />
+        <AvatarImage src={typeof src === 'string' ? { uri: src } : src} handleFallback={loadFallback} />
       ) : name ? (
         <Text
           style={[
-            tailwind.style('text-center uppercase text-gray-800 font-inter-medium-24 text-3xl'),
+            tailwind.style('text-center uppercase font-inter-medium-24 text-3xl'),
+            { color: colors.text },
           ]}
           adjustsFontSizeToFit
           allowFontScaling={false}>
           {getInitials(name)}
         </Text>
       ) : null}
-      {status && <AvatarStatus parentsBackground={parentsBackground} status={status} />}
+      {status && <AvatarStatus parentsBackground={parentsBackground} status={status} colors={colors} />}
     </View>
   );
 };

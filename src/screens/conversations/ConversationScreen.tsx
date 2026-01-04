@@ -45,6 +45,7 @@ import {
   ConversationListStateProvider,
   useConversationListStateContext,
   useRefsContext,
+  useTheme,
 } from '@/context';
 
 import { tailwind } from '@/theme';
@@ -329,12 +330,14 @@ const ConversationScreen = () => {
     }
   }, [currentBottomSheet]);
 
+  const { colors, isDark } = useTheme();
+
   return (
-    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+    <SafeAreaView edges={['top']} style={[tailwind.style('flex-1'), { backgroundColor: colors.background }]}>
       <StatusBar
         translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
+        backgroundColor={colors.background}
+        barStyle={isDark ? 'light-content' : 'dark-content'}
       />
       <ConversationListStateProvider>
         <ConversationHeader />

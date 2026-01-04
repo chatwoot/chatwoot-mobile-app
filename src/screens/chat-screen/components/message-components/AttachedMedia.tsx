@@ -7,6 +7,7 @@ import Animated, {
   SlideInUp,
   SlideOutDown,
 } from 'react-native-reanimated';
+import { useTheme } from '@/context/ThemeContext';
 
 // Mock Asset type
 interface Asset {
@@ -35,9 +36,10 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAttachments, deleteAttachment } from '@/store/conversation/sendMessageSlice';
 
 export const PlayIcon = () => {
+  const { isDark } = useTheme();
   return (
     <Svg width="8" height="11" viewBox="0 0 10 13" fill="none">
-      <Path d="M0 13V0L10 6.80952L0 13Z" fill="white" fillOpacity="1" />
+      <Path d="M0 13V0L10 6.80952L0 13Z" fill={isDark ? 'white' : 'white'} fillOpacity="1" />
     </Svg>
   );
 };
@@ -53,12 +55,13 @@ const formatSecondsToMinutes = (seconds: number) => {
 };
 
 const DeleteIcon = () => {
+  const { isDark } = useTheme();
   return (
     <Svg width="100%" height="100%" viewBox="0 0 12 12" fill="none">
       <Path
         d="M9 3L3 9M3 3L9 9"
-        stroke="black"
-        strokeOpacity="0.478"
+        stroke={isDark ? 'white' : 'black'}
+        strokeOpacity={isDark ? '1' : '0.478'}
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -77,6 +80,7 @@ type AttachedImageProps = AttachedMediaProps & { attachmentsLength: number };
 const AttachedImage = (props: AttachedImageProps) => {
   const { item, index, attachmentsLength } = props;
   const dispatch = useAppDispatch();
+  const { colors, isDark } = useTheme();
 
   const { animatedStyle, handlers } = useScaleAnimation();
 
@@ -100,6 +104,7 @@ const AttachedImage = (props: AttachedImageProps) => {
           style={[
             StyleSheet.absoluteFillObject,
             tailwind.style('border-[1px] rounded-lg border-[#0000000F] z-50'),
+            isDark && { borderColor: colors.border },
           ]}
         />
         <Animated.View
@@ -107,6 +112,7 @@ const AttachedImage = (props: AttachedImageProps) => {
             tailwind.style(
               'absolute h-[19px] w-[19px] border-[1px] border-blackA-A6 bg-whiteA-A11 rounded-full justify-center items-center right-[2px] top-[2px] z-50',
             ),
+            isDark && { backgroundColor: colors.backgroundSecondary, borderColor: colors.border },
             animatedStyle,
           ]}>
           <Pressable onPress={handleOnDelete} hitSlop={8} {...handlers}>
@@ -124,6 +130,7 @@ const AttachedVideo = (props: AttachedVideoProps) => {
   const { item, index, attachmentsLength } = props;
 
   const dispatch = useAppDispatch();
+  const { colors, isDark } = useTheme();
 
   const { animatedStyle, handlers } = useScaleAnimation();
 
@@ -154,6 +161,7 @@ const AttachedVideo = (props: AttachedVideoProps) => {
           style={[
             StyleSheet.absoluteFillObject,
             tailwind.style('border-[1px] rounded-lg border-[#0000000F] z-50'),
+            isDark && { borderColor: colors.border },
           ]}
         />
         <Animated.View
@@ -161,6 +169,7 @@ const AttachedVideo = (props: AttachedVideoProps) => {
             tailwind.style(
               'absolute h-[19px] w-[19px] border-[1px] border-blackA-A6 bg-whiteA-A11 rounded-full justify-center items-center right-[2px] top-[2px] z-50',
             ),
+            isDark && { backgroundColor: colors.backgroundSecondary, borderColor: colors.border },
             animatedStyle,
           ]}>
           <Pressable onPress={handleOnDelete} hitSlop={8} {...handlers}>
@@ -198,6 +207,7 @@ type AttachedFileProps = AttachedMediaProps & { attachmentsLength: number };
 const AttachedFile = (props: AttachedFileProps) => {
   const { item, index, attachmentsLength } = props;
   const dispatch = useAppDispatch();
+  const { colors, isDark } = useTheme();
 
   const { animatedStyle, handlers } = useScaleAnimation();
 
@@ -212,12 +222,15 @@ const AttachedFile = (props: AttachedFileProps) => {
       style={tailwind.style('pr-3 relative')}>
       <Animated.View
         layout={LinearTransition.springify()}
-        style={tailwind.style(
-          'h-23 w-[137px] rounded-lg items-center justify-center',
-          index === attachmentsLength - 1 ? 'mr-4' : '',
-        )}>
+        style={[
+          tailwind.style(
+            'h-23 w-[137px] rounded-lg items-center justify-center',
+            index === attachmentsLength - 1 ? 'mr-4' : '',
+          ),
+          isDark && { backgroundColor: colors.backgroundSecondary },
+        ]}>
         <Animated.View style={tailwind.style('items-center justify-center px-4')}>
-          <Icon size={24} icon={<AttachFileIcon />} />
+          <Icon size={24} icon={<AttachFileIcon stroke={isDark ? colors.text : 'black'} />} />
           <Animated.Text
             numberOfLines={1}
             ellipsizeMode={'middle'}
@@ -225,6 +238,7 @@ const AttachedFile = (props: AttachedFileProps) => {
               tailwind.style(
                 'text-base tracking-[0.32px] leading-[22px] font-inter-normal-20 pt-1 text-gray-950',
               ),
+              isDark && { color: colors.text },
             ]}>
             {item.fileName}
           </Animated.Text>
@@ -233,6 +247,7 @@ const AttachedFile = (props: AttachedFileProps) => {
           style={[
             StyleSheet.absoluteFillObject,
             tailwind.style('border-[1px] rounded-lg border-[#0000000F] z-50'),
+            isDark && { borderColor: colors.border },
           ]}
         />
         <Animated.View
@@ -240,6 +255,7 @@ const AttachedFile = (props: AttachedFileProps) => {
             tailwind.style(
               'absolute h-[19px] w-[19px] border-[1px] border-blackA-A6 bg-whiteA-A11 rounded-full justify-center items-center right-[2px] top-[2px] z-50',
             ),
+            isDark && { backgroundColor: colors.backgroundSecondary, borderColor: colors.border },
             animatedStyle,
           ]}>
           <Pressable onPress={handleOnDelete} hitSlop={8} {...handlers}>

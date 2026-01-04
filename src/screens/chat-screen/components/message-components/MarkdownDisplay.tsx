@@ -14,6 +14,7 @@ try {
 }
 
 import { tailwind } from '@/theme';
+import { useTheme } from '@/context/ThemeContext';
 
 type MarkdownDisplayProps = {
   messageContent: string;
@@ -26,17 +27,21 @@ type MarkdownDisplayProps = {
 
 export const MarkdownDisplay = (props: MarkdownDisplayProps) => {
   const { messageContent, isIncoming, isOutgoing, isBotText, isPrivate, isMessageFailed } = props;
+  const { colors } = useTheme();
+  
   const handleURL = (url: string) => {
     Linking.openURL(url).then(() => {});
     return true;
   };
 
-  const textStyle = tailwind.style(
-    isIncoming ? 'text-white' : '',
-    isOutgoing || isBotText ? 'text-gray-950' : '',
-    isPrivate ? 'text-amber-950 font-inter-medium-24' : '',
-    isMessageFailed ? 'text-white' : '',
-  );
+  const textStyle = {
+    ...tailwind.style(
+      isIncoming ? 'text-white' : '',
+      isPrivate ? 'text-amber-950 font-inter-medium-24' : '',
+      isMessageFailed ? 'text-white' : '',
+    ),
+    ...((isOutgoing || isBotText) && !isMessageFailed && !isPrivate ? { color: colors.text } : {}),
+  };
 
   const styles = StyleSheet.create({
     text: {

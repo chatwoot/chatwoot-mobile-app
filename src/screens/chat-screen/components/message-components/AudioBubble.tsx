@@ -30,6 +30,7 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
 // eslint-disable-next-line import/no-unresolved
 import { convertOggToWav } from '@/utils/audioConverter';
+import { useTheme } from '@/context/ThemeContext';
 
 // eslint-disable-next-line react/display-name
 const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
@@ -61,6 +62,7 @@ type AudioPlayerProps = Pick<AudioBubbleProps, 'audioSrc'> & {
 // eslint-disable-next-line react/display-name
 export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const { audioSrc, variant } = props;
+  const { colors, isDark } = useTheme();
 
   const [isSoundLoading, setIsSoundLoading] = useState(false);
   const [isAudioPlaying, setAudioPlaying] = useState(false);
@@ -170,12 +172,16 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
     [variant, manualSeekTo, currentPosition, totalDuration, pauseAudio],
   );
 
+  const isUser = variant === MESSAGE_VARIANTS.USER;
+  const iconColor = isUser || isDark ? 'white' : 'black';
+  const iconOpacity = isUser || isDark ? '1' : '0.565';
+
   return (
     <View style={tailwind.style('w-full flex flex-row items-center flex-1')}>
       <Pressable disabled={isSoundLoading} hitSlop={10} onPress={togglePlayback}>
         {isSoundLoading ? (
           <Animated.View>
-            <Spinner size={13} stroke={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'} />
+            <Spinner size={13} stroke={iconColor} />
           </Animated.View>
         ) : isCurrentAudioSrcPlaying ? (
           <Animated.View
@@ -185,8 +191,8 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
             <Icon
               icon={
                 <PauseIcon
-                  fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-                  fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
+                  fillOpacity={iconOpacity}
+                  fill={iconColor}
                 />
               }
               size={13}
@@ -198,8 +204,8 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
             entering={FadeIn}
             exiting={FadeOut}>
             <PlayIcon
-              fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-              fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
+              fillOpacity={iconOpacity}
+              fill={iconColor}
             />
           </Animated.View>
         )}

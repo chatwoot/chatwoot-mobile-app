@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/hooks';
 import { useChatWindowContext } from '@/context';
 import { AppState, Platform, View } from 'react-native';
+import { useTheme } from '@/context/ThemeContext';
 // import { KeyboardGestureArea } from 'react-native-keyboard-controller';
 
 // Force mock for Expo Go - native module not available
@@ -78,6 +79,7 @@ export const MessagesListContainer = () => {
   const { conversationId } = useChatWindowContext();
   const dispatch = useAppDispatch();
   const [isFlashListReady, setFlashListReady] = React.useState(false);
+  const { colors } = useTheme();
 
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const isAllMessagesFetched = useAppSelector(selectIsAllMessagesFetched);
@@ -174,7 +176,7 @@ export const MessagesListContainer = () => {
 
   return (
     <PlatformSpecificKeyboardWrapperComponent
-      style={tailwind.style('flex-1 bg-white')}
+      style={[tailwind.style('flex-1'), { backgroundColor: colors.background }]}
       interpolator="linear">
       <MessagesList
         messages={messagesWithGrouping}

@@ -17,6 +17,8 @@ import { Message } from '@/types';
 import { MarkdownBubble } from './MarkdownBubble';
 import { MESSAGE_TYPES } from '@/constants';
 
+import { useTheme } from '@/context/ThemeContext';
+
 type EmailBubbleProps = {
   item: Message;
   variant: string;
@@ -25,6 +27,7 @@ type EmailBubbleProps = {
 export const EmailBubble = (props: EmailBubbleProps) => {
   const messageItem = props.item as Message;
   const { sender, contentAttributes, messageType, content } = messageItem;
+  const { isDark } = useTheme();
 
   const emailMessageContent = () => {
     const {
@@ -56,13 +59,17 @@ export const EmailBubble = (props: EmailBubbleProps) => {
             <MarkdownBubble messageContent={content} variant={props.variant} />
           ) : (
             <AutoHeightWebView
-              style={{ width: '100%', minHeight: 1, minWidth: '100%' }}
+              style={{ width: '100%', minHeight: 1, minWidth: '100%', opacity: 0.99 }}
               scrollEnabled={false}
               customStyle={`
         * {
           font-family: system,-apple-system,".SFNSText-Regular","San Francisco",Roboto,"Segoe UI","Helvetica Neue","Lucida Grande",sans-serif;
           font-size: 16px;
+          color: ${isDark ? '#e5e5e5' : '#000000'};
         } 
+        body {
+          background-color: transparent;
+        }
         img{
           max-width: 100% !important;
         }

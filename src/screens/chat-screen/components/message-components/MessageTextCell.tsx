@@ -4,6 +4,7 @@ import { Animated, Text, Dimensions } from 'react-native';
 import { tailwind } from '@/theme';
 import { Channel, Message, MessageStatus, MessageType } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
+import { useTheme } from '@/context/ThemeContext';
 
 import { MarkdownDisplay } from './MarkdownDisplay';
 import { MESSAGE_STATUS, INBOX_TYPES, TEXT_MAX_WIDTH } from '@/constants';
@@ -43,6 +44,7 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
     sender,
     contentAttributes,
   } = props;
+  const { colors, isDark } = useTheme();
 
   // const [singleLineLongText, setSingleLineLongText] = useState(false);
   // const [singleLineShortText, setSingleLineShortText] = useState(false);
@@ -90,7 +92,6 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
           'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
           isEmailMessage ? `max-w-[${EMAIL_MESSAGE_WIDTH}px]` : `max-w-[${TEXT_MAX_WIDTH}px]`,
           isIncoming ? 'bg-blue-700' : '',
-          isOutgoing ? 'bg-gray-100' : '',
           isMessageFailed ? 'bg-ruby-700' : '',
           isAvatarRendered
             ? isOutgoing
@@ -100,6 +101,7 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
                 : ''
             : '',
         ),
+        isOutgoing && !isMessageFailed && { backgroundColor: colors.card },
       ]}>
       {contentAttributes && <EmailMeta {...{ contentAttributes, sender }} />}
       <MarkdownDisplay {...{ isIncoming, isOutgoing, isMessageFailed }} messageContent={text} />
@@ -123,12 +125,14 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
           // multiLineShortText ? " absolute bottom-0.5 right-2.5" : "",
         )}>
         <Text
-          style={tailwind.style(
-            'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
-            isIncoming ? 'text-whiteA-A11' : '',
-            isOutgoing ? 'text-gray-700' : '',
-            isMessageFailed ? 'text-whiteA-A11' : '',
-          )}>
+          style={[
+            tailwind.style(
+              'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
+              isIncoming ? 'text-whiteA-A11' : '',
+              isMessageFailed ? 'text-whiteA-A11' : '',
+            ),
+            isOutgoing && !isMessageFailed && { color: colors.textSecondary },
+          ]}>
           {unixTimestampToReadableTime(timeStamp)}
         </Text>
         <DeliveryStatus

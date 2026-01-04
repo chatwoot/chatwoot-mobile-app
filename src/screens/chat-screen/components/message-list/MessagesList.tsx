@@ -15,6 +15,7 @@ import { Message } from '@/types';
 import { MessageComponent } from '../message-item/Message';
 // import { MessageItemContainer } from '../message-item/MessageItemContainer';
 import { useRefsContext } from '@/context';
+import { useTheme } from '@/context/ThemeContext';
 
 let FlashList: any = FlatList;
 try {
@@ -34,13 +35,21 @@ const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList as any);
 type DateSectionProps = { item: { date: string } };
 
 const DateSection = ({ item }: DateSectionProps) => {
+  const { colors, isDark } = useTheme();
   return (
     <Animated.View style={tailwind.style('flex flex-row justify-center items-center py-4')}>
-      <Animated.View style={tailwind.style('rounded-lg py-1 px-[7px] bg-blackA-A3')}>
+      <Animated.View
+        style={[
+          tailwind.style('rounded-lg py-1 px-[7px] bg-blackA-A3'),
+          isDark && { backgroundColor: colors.backgroundSecondary },
+        ]}>
         <Animated.Text
-          style={tailwind.style(
-            'text-cxs font-inter-420-20 tracking-[0.32px] text-blackA-A11 leading-[15px]',
-          )}>
+          style={[
+            tailwind.style(
+              'text-cxs font-inter-420-20 tracking-[0.32px] text-blackA-A11 leading-[15px]',
+            ),
+            isDark && { color: colors.textSecondary },
+          ]}>
           {item.date}
         </Animated.Text>
       </Animated.View>

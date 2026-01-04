@@ -7,6 +7,7 @@ import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { useScaleAnimation } from '@/utils';
 import { useHeaderAnimation } from '@/hooks/useHeaderAnimation';
+import { useTheme } from '@/context/ThemeContext';
 
 type HeaderState = 'Search' | 'Filter' | 'Select' | 'none';
 
@@ -38,16 +39,20 @@ type RightSectionProps = {
   onRightIconPress: () => void;
 };
 
-const HeaderTitle = () => (
-  <Animated.View style={tailwind.style('flex-1')}>
-    <Text
-      style={tailwind.style(
-        'text-[17px] font-inter-medium-24 tracking-[0.32px] leading-[17px] text-center text-gray-950',
-      )}>
-      {i18n.t('CONVERSATION.HEADER.TITLE')}
-    </Text>
-  </Animated.View>
-);
+const HeaderTitle = () => {
+  const { colors } = useTheme();
+  return (
+    <Animated.View style={tailwind.style('flex-1')}>
+      <Text
+        style={[
+          tailwind.style('text-[17px] font-inter-medium-24 tracking-[0.32px] leading-[17px] text-center'),
+          { color: colors.text },
+        ]}>
+        {i18n.t('CONVERSATION.HEADER.TITLE')}
+      </Text>
+    </Animated.View>
+  );
+};
 
 const LeftSection = ({ currentState, isSelectedAll, onLeftIconPress }: LeftSectionProps) => {
   const { entering, exiting } = useHeaderAnimation();

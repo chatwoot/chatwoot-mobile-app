@@ -17,6 +17,7 @@ import Svg, { Path, Rect } from 'react-native-svg';
 
 import { useChatWindowContext } from '@/context';
 import { tailwind } from '@/theme';
+import { useTheme } from '@/context/ThemeContext';
 import { Icon } from '@/components-next/common';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 
@@ -85,6 +86,7 @@ export const MessageTextInput = ({
 }: MessageTextInputProps) => {
   const dispatch = useAppDispatch();
   const messageContent = useAppSelector(selectMessageContent);
+  const { colors, isDark } = useTheme();
 
   const lockIconAnimatedPosition = useAnimatedStyle(() => {
     return {
@@ -191,9 +193,10 @@ export const MessageTextInput = ({
         <Animated.View
           style={[
             tailwind.style(
-              'bg-white border-t border-gray-200 rounded-[13px] mx-4 px-2 w-full max-h-[250px]',
+              'border-t rounded-[13px] mx-4 px-2 w-full max-h-[250px]',
               Platform.OS === 'ios' ? 'absolute bottom-full' : 'relative h-[150px]',
             ),
+            { backgroundColor: colors.card, borderTopColor: colors.divider },
             styles.listShadow,
           ]}>
           <ScrollView keyboardShouldPersistTaps="always">
@@ -243,13 +246,14 @@ export const MessageTextInput = ({
           style={[
             tailwind.style(
               'text-base font-inter-normal-20 tracking-[0.24px] leading-[20px] android:leading-[18px]',
-              'ml-[5px] mr-2 py-2 pl-3 pr-[36px] rounded-2xl text-gray-950',
+              'ml-[5px] mr-2 py-2 pl-3 pr-[36px] rounded-2xl',
               'min-h-9 max-h-[76px]',
-              isPrivateMessage ? 'bg-amber-100' : 'bg-blackA-A4',
+              isPrivateMessage ? 'bg-amber-100' : '',
             ),
-            // TODO: Try settings includeFontPadding to false and have a single lineHeight value of 20
+            !isPrivateMessage && { backgroundColor: isDark ? colors.backgroundSecondary : tailwind.color('bg-blackA-A4') },
+            { color: colors.text },
           ]}
-          placeholderTextColor={tailwind.color('bg-gray-800')}
+          placeholderTextColor={colors.textSecondary}
           maxLength={maxLength}
           placeholder={
             isPrivateMessage

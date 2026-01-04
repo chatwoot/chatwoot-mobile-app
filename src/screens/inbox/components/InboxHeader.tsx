@@ -10,7 +10,7 @@ import { DoubleCheckIcon, InboxFilterIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { InboxFilters } from './InboxFilters';
 import i18n from '@/i18n';
-import { useRefsContext } from '@/context';
+import { useRefsContext, useTheme } from '@/context';
 
 type InboxHeaderProps = {
   markAllAsRead: () => void;
@@ -19,6 +19,7 @@ type InboxHeaderProps = {
 export const InboxHeader = (props: InboxHeaderProps) => {
   const { markAllAsRead } = props;
   const { inboxFiltersSheetRef } = useRefsContext();
+  const { colors } = useTheme();
   const handleToggleState = () => {
     inboxFiltersSheetRef.current?.present();
   };
@@ -30,7 +31,7 @@ export const InboxHeader = (props: InboxHeaderProps) => {
   });
 
   return (
-    <Animated.View style={[tailwind.style('border-b-[1px] border-b-blackA-A3')]}>
+    <Animated.View style={[tailwind.style('border-b-[1px]'), { borderBottomColor: colors.divider }]}>
       <Animated.View
         style={[tailwind.style('flex flex-row justify-between items-center px-4 pt-2 pb-[12px]')]}>
         <Animated.View style={tailwind.style('flex-1')}>
@@ -40,9 +41,10 @@ export const InboxHeader = (props: InboxHeaderProps) => {
         </Animated.View>
         <Animated.View style={tailwind.style('flex-1')}>
           <Animated.Text
-            style={tailwind.style(
-              'text-[17px] text-center leading-[17px] tracking-[0.32px] font-inter-medium-24 text-gray-950',
-            )}>
+            style={[
+              tailwind.style('text-[17px] text-center leading-[17px] tracking-[0.32px] font-inter-medium-24'),
+              { color: colors.text },
+            ]}>
             {i18n.t('NOTIFICATION.INBOX')}
           </Animated.Text>
         </Animated.View>

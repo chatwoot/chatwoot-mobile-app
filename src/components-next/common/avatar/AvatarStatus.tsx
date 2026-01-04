@@ -12,6 +12,7 @@ import Animated, {
 
 import { avatarTheme, tailwind } from '@/theme';
 import { cx } from '@/utils';
+import { useTheme } from '@/context/ThemeContext';
 
 import { AvatarProps, AvatarSizes } from './Avatar';
 
@@ -63,16 +64,17 @@ const AnimatedDot: React.FC<AnimatedDotProps> = ({ size, delay }) => {
 
 const TypingComponent: React.FC<TypingStatusProps> = ({ size, parentsBackground }) => {
   const delays = ['xl', '2xl', '3xl', '4xl'].includes(size) ? [0, 333, 667] : [0, 500];
+  const { colors } = useTheme();
 
   return (
     <View
       style={[
-        tailwind.style(cx(avatarTheme.status.typing.container)),
+        tailwind.style('absolute border-[1.5px] rounded-full'),
         {
           bottom: avatarTheme.status.position[size],
           right: avatarTheme.status.position[size],
-          borderColor: tailwind.color(parentsBackground),
-          backgroundColor: tailwind.color(parentsBackground),
+          borderColor: colors.background,
+          backgroundColor: colors.background,
         },
       ]}>
       <View
@@ -92,16 +94,19 @@ export const AvatarStatus: React.FC<Pick<AvatarProps, 'status' | 'size' | 'paren
   size,
   parentsBackground,
 }) => {
+  const { colors } = useTheme();
+  
   switch (status) {
     case 'online': {
       return (
         <View
           style={[
-            tailwind.style(cx(avatarTheme.status.active.container)),
+            tailwind.style('absolute border-[1.5px] rounded-full'),
             {
               bottom: avatarTheme.status.position[size],
               right: avatarTheme.status.position[size],
-              borderColor: tailwind.color(parentsBackground),
+              borderColor: colors.background,
+              backgroundColor: colors.background,
             },
           ]}>
           <View

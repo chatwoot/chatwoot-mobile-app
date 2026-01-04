@@ -8,6 +8,7 @@ import { tailwind } from '@/theme';
 import { Channel, Message } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
 import { Avatar, Icon } from '@/components-next';
+import { useTheme } from '@/context/ThemeContext';
 import { MarkdownDisplay } from './MarkdownDisplay';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { ReplyMessageCell } from './ReplyMessageCell';
@@ -52,6 +53,7 @@ export const ComposedCell = (props: ComposedCellProps) => {
   } = props.messageData as Message;
   const { channel, menuOptions } = props;
   const { conversationId } = useChatWindowContext();
+  const { colors, isDark } = useTheme();
 
   const messages = useAppSelector(state => getMessagesByConversationId(state, { conversationId }));
 
@@ -114,7 +116,6 @@ export const ComposedCell = (props: ComposedCellProps) => {
                 'relative pl-3 pr-2.5 py-2 h-full rounded-2xl overflow-hidden',
                 isEmailMessage ? `max-w-[${EMAIL_MESSAGE_WIDTH}px]` : `max-w-[${TEXT_MAX_WIDTH}px]`,
                 isIncoming ? 'bg-blue-700' : '',
-                isOutgoing ? 'bg-gray-100' : '',
                 isPrivate ? ' bg-amber-100' : '',
                 shouldRenderAvatar
                   ? isOutgoing
@@ -124,6 +125,7 @@ export const ComposedCell = (props: ComposedCellProps) => {
                       : ''
                   : '',
               ),
+              isOutgoing && !isPrivate && { backgroundColor: colors.card },
             ]}>
             <Animated.View style={tailwind.style('flex flex-row')}>
               {isPrivate ? (
@@ -213,12 +215,14 @@ export const ComposedCell = (props: ComposedCellProps) => {
                   )}>
                   {isPrivate ? <Icon icon={<LockIcon />} size={12} /> : null}
                   <Text
-                    style={tailwind.style(
-                      'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
-                      isIncoming ? 'text-whiteA-A11' : '',
-                      isOutgoing ? 'text-gray-700' : '',
-                      isPrivate ? 'pl-1' : '',
-                    )}>
+                    style={[
+                      tailwind.style(
+                        'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
+                        isIncoming ? 'text-whiteA-A11' : '',
+                        isPrivate ? 'pl-1' : '',
+                      ),
+                      isOutgoing && { color: colors.textSecondary },
+                    ]}>
                     {unixTimestampToReadableTime(createdAt)}
                   </Text>
                   <DeliveryStatus

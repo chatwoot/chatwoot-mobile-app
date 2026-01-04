@@ -69,6 +69,8 @@ import { UserAvatar } from './components/UserAvatar';
 import { LANGUAGES, TAB_BAR_HEIGHT } from '@/constants';
 import { useRefsContext } from '@/context';
 import { AlooChatIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
+import { ThemeSelector } from '@/components-next/settings/ThemeSelector';
+import { useTheme } from '@/context/ThemeContext';
 import { GenericListType } from '@/types';
 
 import { useHaptic } from '@/utils';
@@ -104,6 +106,7 @@ const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVe
 const SettingsScreen = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const { colors, isDark } = useTheme();
   const availabilityStatus =
     (useSelector(selectCurrentUserAvailability) as AvailabilityStatus) || 'offline';
 
@@ -299,11 +302,11 @@ const SettingsScreen = () => {
   ];
 
   return (
-    <SafeAreaView style={tailwind.style('flex-1 bg-white font-inter-normal-20')}>
+    <SafeAreaView style={[tailwind.style('flex-1 font-inter-normal-20'), { backgroundColor: colors.background }]}>
       <StatusBar
         translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
+        backgroundColor={colors.background}
+        barStyle={isDark ? 'light-content' : 'dark-content'}
       />
       <SettingsHeader />
       <Animated.ScrollView
@@ -313,24 +316,29 @@ const SettingsScreen = () => {
           <Animated.View>
             <UserAvatar src={avatarUrl} name={name} status={availabilityStatus} />
             <Animated.View
-              style={tailwind.style(
-                'absolute border-[2px] border-white rounded-full -bottom-[2px] right-[10px]',
-              )}></Animated.View>
+              style={[
+                tailwind.style('absolute border-[2px] rounded-full -bottom-[2px] right-[10px]'),
+                { borderColor: colors.background },
+              ]}></Animated.View>
           </Animated.View>
           <Animated.View style={tailwind.style('flex flex-col items-center gap-1')}>
-            <Animated.Text style={tailwind.style('text-[22px] font-inter-580-24 text-gray-950')}>
+            <Animated.Text style={[tailwind.style('text-[22px] font-inter-580-24'), { color: colors.text }]}>
               {name}
             </Animated.Text>
             <Animated.Text
-              style={tailwind.style(
-                'text-[15px] font-inter-420-20 leading-[17.25px] text-gray-900',
-              )}>
+              style={[tailwind.style('text-[15px] font-inter-420-20 leading-[17.25px]'), { color: colors.textSecondary }]}>
               {email}
             </Animated.Text>
           </Animated.View>
         </Animated.View>
         <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.PREFERENCES')} list={preferencesList} />
+        </Animated.View>
+        <Animated.View style={tailwind.style('pt-6')}>
+          <Animated.Text style={[tailwind.style('text-md font-inter-420-20 px-4 pb-2'), { color: colors.textSecondary }]}>
+            {i18n.t('SETTINGS.APPEARANCE')}
+          </Animated.Text>
+          <ThemeSelector />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.SUPPORT')} list={supportList} />
@@ -346,7 +354,7 @@ const SettingsScreen = () => {
         <Pressable
           style={tailwind.style('p-4 items-center')}
           onLongPress={() => debugActionsSheetRef.current?.present()}>
-          <Text style={tailwind.style('text-sm text-gray-700 ')}>
+          <Text style={[tailwind.style('text-sm'), { color: colors.textSecondary }]}>
             {`${AlooChatInstance} ${appVersionDetails}`}
           </Text>
         </Pressable>

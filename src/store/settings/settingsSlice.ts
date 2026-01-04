@@ -78,6 +78,9 @@ export const settingsSlice = createSlice({
       state.localeValue = action.payload;
       state.uiFlags.isLocaleSet = true;
     },
+    setTheme: (state, action) => {
+      state.theme = action.payload;
+    },
   },
   extraReducers: builder => {
     builder
@@ -123,5 +126,5 @@ export const settingsSlice = createSlice({
       });
   },
 });
-export const { resetSettings, setLocale } = settingsSlice.actions;
+export const { resetSettings, setLocale, setTheme } = settingsSlice.actions;
 export default settingsSlice.reducer;

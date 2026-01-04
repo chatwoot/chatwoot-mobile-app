@@ -4,6 +4,7 @@ import Animated from 'react-native-reanimated';
 
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
+import { useTheme } from '@/context/ThemeContext';
 
 type ButtonProps = {
   isDestructive?: boolean;
@@ -43,6 +44,7 @@ export const Button = ({
 }: ButtonProps) => {
   const { handlers, animatedStyle } = useScaleAnimation();
   const haptic = useHaptic(isDestructive ? 'medium' : 'selection');
+  const { colors, isDark } = useTheme();
 
   const handleButtonPress = useCallback(() => {
     if (!disabled) {
@@ -61,9 +63,15 @@ export const Button = ({
         accessible
         accessibilityRole="button"
         accessibilityState={{ disabled }}
-        style={({ pressed }) => getButtonStyles(isPrimary, pressed)}
+        style={({ pressed }) => [
+          getButtonStyles(isPrimary, pressed),
+          !isPrimary && { backgroundColor: colors.card },
+        ]}
         {...handlers}>
-        <Animated.Text style={getTextStyles(isPrimary, isDestructive)}>{text}</Animated.Text>
+        <Animated.Text style={[
+          getTextStyles(isPrimary, isDestructive),
+          !isPrimary && !isDestructive && { color: colors.text },
+        ]}>{text}</Animated.Text>
       </Pressable>
     </Animated.View>
   );

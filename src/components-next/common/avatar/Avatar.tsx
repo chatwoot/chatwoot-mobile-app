@@ -11,6 +11,7 @@ import {
 import { avatarTheme, tailwind } from '@/theme';
 import { Channel } from '@/types';
 import { cx, styleAdapter } from '@/utils';
+import { useTheme } from '@/context/ThemeContext';
 
 import { AvatarImage } from './AvatarImage';
 import { AvatarStatus } from './AvatarStatus';
@@ -112,6 +113,7 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
 
   const isSquared = squared;
   const isSourceAvailable = !!src;
+  const { colors } = useTheme();
 
   const [imageAvailable, setImageAvailable] = useState(isSourceAvailable);
   const loadFallback = () => setImageAvailable(false);
@@ -121,8 +123,9 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
       style={[
         avatarTheme.borderRadius.size[size],
         tailwind.style(
-          cx(avatarTheme.base, avatarTheme.size[size], !isSquared ? avatarTheme.circular : ''),
+          cx(avatarTheme.size[size], !isSquared ? avatarTheme.circular : '', 'relative items-center justify-center'),
         ),
+        { backgroundColor: colors.backgroundSecondary },
         styleAdapter(style),
       ]}
       {...boxProps}>
@@ -139,11 +142,11 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
           style={[
             tailwind.style(
               cx(
-                avatarTheme.initials.base,
                 avatarTheme.initials.size[size],
-                'font-inter-medium-24',
+                'font-inter-medium-24 text-center uppercase',
               ),
             ),
+            { color: colors.text },
           ]}
           adjustsFontSizeToFit
           allowFontScaling={false}>

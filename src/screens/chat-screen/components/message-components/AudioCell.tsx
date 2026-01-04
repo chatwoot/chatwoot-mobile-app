@@ -20,20 +20,23 @@ import { MESSAGE_TYPES } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
+import { useTheme } from '@/context/ThemeContext';
 
 export const PlayIcon = ({ fill, fillOpacity }: IconProps) => {
+  const { isDark } = useTheme();
   return (
     <Svg width="10" height="13" viewBox="0 0 10 13" fill="none">
-      <Path d="M0 13V0L10 6.80952L0 13Z" fill={fill} fillOpacity={fillOpacity} />
+      <Path d="M0 13V0L10 6.80952L0 13Z" fill={isDark ? 'white' : fill} fillOpacity={fillOpacity} />
     </Svg>
   );
 };
 
 export const PauseIcon = ({ fill, fillOpacity }: IconProps) => {
+  const { isDark } = useTheme();
   return (
     <Svg width="10" height="12" viewBox="0 0 10 12" fill="none">
-      <Rect width="3" height="12" fill={fill} fillOpacity={fillOpacity} />
-      <Rect x="7" width="3" height="12" fill={fill} fillOpacity={fillOpacity} />
+      <Rect width="3" height="12" fill={isDark ? 'white' : fill} fillOpacity={fillOpacity} />
+      <Rect x="7" width="3" height="12" fill={isDark ? 'white' : fill} fillOpacity={fillOpacity} />
     </Svg>
   );
 };
@@ -59,6 +62,7 @@ type AudioPlayerProps = Pick<AudioCellProps, 'audioSrc'> & {
 
 export const AudioPlayer = (props: AudioPlayerProps) => {
   const { audioSrc, isIncoming } = props;
+  const { colors, isDark } = useTheme();
 
   const [isSoundLoading, setIsSoundLoading] = useState(false);
   const [isAudioPlaying, setAudioPlaying] = useState(false);
@@ -144,7 +148,7 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
       <Pressable disabled={isSoundLoading} hitSlop={10} onPress={togglePlayback}>
         {isSoundLoading ? (
           <Animated.View>
-            <Spinner size={13} />
+            <Spinner size={13} stroke={isIncoming || isDark ? 'white' : 'black'} />
           </Animated.View>
         ) : isCurrentAudioSrcPlaying ? (
           <Animated.View
@@ -154,8 +158,8 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
             <Icon
               icon={
                 <PauseIcon
-                  fillOpacity={isIncoming ? '1' : '0.565'}
-                  fill={isIncoming ? 'white' : 'black'}
+                  fillOpacity={isIncoming || isDark ? '1' : '0.565'}
+                  fill={isIncoming || isDark ? 'white' : 'black'}
                 />
               }
               size={13}
@@ -167,8 +171,8 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
             entering={FadeIn}
             exiting={FadeOut}>
             <PlayIcon
-              fillOpacity={isIncoming ? '1' : '0.565'}
-              fill={isIncoming ? 'white' : 'black'}
+              fillOpacity={isIncoming || isDark ? '1' : '0.565'}
+              fill={isIncoming || isDark ? 'white' : 'black'}
             />
           </Animated.View>
         )}
@@ -199,6 +203,7 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
   } = props;
   const isIncoming = messageType === MESSAGE_TYPES.INCOMING;
   const isOutgoing = messageType === MESSAGE_TYPES.OUTGOING;
+  const { colors, isDark } = useTheme();
 
   return (
     <Animated.View
@@ -232,6 +237,7 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
                       : ''
                   : '',
               ),
+              isOutgoing && { backgroundColor: colors.card },
             ]}>
             <AudioPlayer {...{ audioSrc, isIncoming, isOutgoing }} />
             <Animated.View
@@ -239,11 +245,14 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
                 'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center self-end pl-1.5',
               )}>
               <Text
-                style={tailwind.style(
-                  'text-xs font-inter-420-20 tracking-[0.32px] leading-[14px] pr-1',
-                  isIncoming ? 'text-whiteA-A11' : '',
-                  isOutgoing ? 'text-gray-700' : '',
-                )}>
+                style={[
+                  tailwind.style(
+                    'text-xs font-inter-420-20 tracking-[0.32px] leading-[14px] pr-1',
+                    isIncoming ? 'text-whiteA-A11' : '',
+                    isOutgoing ? 'text-gray-700' : '',
+                  ),
+                  isOutgoing && { color: colors.textSecondary },
+                ]}>
                 {unixTimestampToReadableTime(timeStamp)}
               </Text>
               <DeliveryStatus

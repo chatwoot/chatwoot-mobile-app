@@ -22,7 +22,7 @@ import { ConversationActions } from './conversation-actions';
 
 import { ReplyBoxContainer } from './components';
 import { MessagesListContainer } from './components';
-import { ChatWindowProvider, useChatWindowContext, useRefsContext } from '@/context';
+import { ChatWindowProvider, useChatWindowContext, useRefsContext, useTheme } from '@/context';
 import { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 import { tailwind } from '@/theme';
 import {
@@ -170,9 +170,11 @@ const ChatScreen = (props: ChatScreenProps) => {
     }
   };
 
+  const { colors, isDark } = useTheme();
+
   if (conversation) {
     return (
-      <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+      <SafeAreaView edges={['top']} style={[tailwind.style('flex-1'), { backgroundColor: colors.background }]}>
         <LightBoxProvider>
           <ChatWindowProvider conversationId={conversationId}>
             <ChatScreenWrapper {...props} />
@@ -194,7 +196,7 @@ const ChatScreen = (props: ChatScreenProps) => {
 
   if (conversationError || !conversation) {
     return (
-      <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+      <SafeAreaView edges={['top']} style={[tailwind.style('flex-1'), { backgroundColor: colors.background }]}>
         <Animated.View
           style={tailwind.style(
             'flex-1 items-center justify-center gap-8 px-4',

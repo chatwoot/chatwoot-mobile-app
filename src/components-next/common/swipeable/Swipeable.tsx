@@ -21,6 +21,7 @@ import Animated, {
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { AnimatedNativeView } from '@/components-next/native-components';
+import { useTheme } from '@/context/ThemeContext';
 
 const WIDTH = Dimensions.get('screen').width;
 
@@ -128,12 +129,14 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
 
   const hapticWarning = useHaptic('success');
   const hapticSelection = useHaptic();
+  const { colors, isDark } = useTheme();
 
   const animStatePos = useSharedValue(0);
   const isGestureActive = useSharedValue(false);
 
   const maxTranslation = WIDTH * 0.6;
-  const tappedBgStyle = tailwind.color('bg-gray-200') as string;
+  const tappedBgStyle = isDark ? 'rgba(255,255,255,0.1)' : (tailwind.color('bg-gray-200') as string);
+  const cellBgColor = colors.background;
   const maxSnapPointLeft = -maxTranslation;
   const maxSnapPointRight = maxTranslation;
 
@@ -426,7 +429,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
 
   const tappedCellStyle = useAnimatedStyle(() => {
     return {
-      backgroundColor: interpolateColor(isTapped.value, [0, 1], ['white', tappedBgStyle]),
+      backgroundColor: interpolateColor(isTapped.value, [0, 1], [cellBgColor, tappedBgStyle]),
     };
   });
 

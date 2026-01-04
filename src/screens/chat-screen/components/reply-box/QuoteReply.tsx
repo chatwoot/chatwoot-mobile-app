@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text } from 'react-native';
 // import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import Animated from 'react-native-reanimated';
 import { Image } from 'expo-image';
+import { useTheme } from '@/context/ThemeContext';
 
 let Markdown: any = ({ children }: any) => <Text>{children}</Text>;
 let MarkdownIt: any = () => {};
@@ -49,16 +50,18 @@ const File = () => {
 export const QuoteReply = () => {
   const quoteMessage = useAppSelector(selectQuoteMessage);
   const dispatch = useAppDispatch();
+  const { colors, isDark } = useTheme();
 
   const { messageListRef } = useRefsContext();
 
-  const textStyle = tailwind.style('text-gray-950');
+  const textStyle = tailwind.style(isDark ? 'text-white' : 'text-gray-950');
 
   const styles = StyleSheet.create({
     text: {
       fontSize: 16,
       letterSpacing: 0.32,
       lineHeight: 22,
+      color: isDark ? colors.text : undefined,
       ...textStyle,
     },
     strong: {
@@ -115,7 +118,10 @@ export const QuoteReply = () => {
   return (
     <Pressable
       onPress={handleScrollToMessage}
-      style={tailwind.style('flex flex-row items-center px-2.5 pb-[14px] bg-white -z-10')}>
+      style={[
+        tailwind.style('flex flex-row items-center px-2.5 pb-[14px] -z-10'),
+        { backgroundColor: isDark ? colors.card : 'white' },
+      ]}>
       {quoteMessage?.attachments?.length && quoteMessage?.attachments?.length > 0 ? (
         <Animated.View style={tailwind.style('h-9.5 w-9.5 mr-3 rounded-lg overflow-hidden')}>
           {quoteMessage?.attachments?.length > 0 &&
@@ -140,9 +146,12 @@ export const QuoteReply = () => {
       <Animated.View style={tailwind.style('flex-1')}>
         <Animated.View>
           <Animated.Text
-            style={tailwind.style(
-              'text-cxs tracking-[0.32px] leading-[15px] font-inter-420-20 text-blackA-A11',
-            )}>
+            style={[
+              tailwind.style(
+                'text-cxs tracking-[0.32px] leading-[15px] font-inter-420-20',
+              ),
+              { color: isDark ? colors.textSecondary : tailwind.color('text-blackA-A11') },
+            ]}>
             Replying to {quoteMessage?.sender?.name}
           </Animated.Text>
         </Animated.View>
@@ -165,13 +174,19 @@ export const QuoteReply = () => {
             ) : (
               <Text
                 numberOfLines={1}
-                style={tailwind.style('text-md font-inter-normal-20 tracking-[0.32px] capitalize')}>
+                style={[
+                  tailwind.style('text-md font-inter-normal-20 tracking-[0.32px] capitalize'),
+                  isDark && { color: colors.text },
+                ]}>
                 {quoteMessage?.content}
               </Text>
             )
           ) : (
             <Text
-              style={tailwind.style('text-md font-inter-normal-20 tracking-[0.32px] capitalize')}>
+              style={[
+                tailwind.style('text-md font-inter-normal-20 tracking-[0.32px] capitalize'),
+                isDark && { color: colors.text },
+              ]}>
               {quoteMessage?.attachments?.[0]?.fileType}
             </Text>
           )}
@@ -180,7 +195,7 @@ export const QuoteReply = () => {
       <Pressable
         style={tailwind.style('h-10 w-10 items-center justify-center -mr-[1px]')}
         onPress={handleOnPressClose}>
-        <Icon icon={<CloseIcon />} size={24} />
+        <Icon icon={<CloseIcon stroke={isDark ? colors.text : 'black'} />} size={24} />
       </Pressable>
     </Pressable>
   );

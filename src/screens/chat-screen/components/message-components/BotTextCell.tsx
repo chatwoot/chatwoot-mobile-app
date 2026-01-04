@@ -4,6 +4,7 @@ import { Animated, Text } from 'react-native';
 import { tailwind } from '@/theme';
 import { Channel, MessageStatus, MessageType } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
+import { useTheme } from '@/context/ThemeContext';
 
 import { MarkdownDisplay } from './MarkdownDisplay';
 import { TEXT_MAX_WIDTH } from '@/constants';
@@ -32,6 +33,7 @@ export const BotTextCell = (props: BotTextCellProps) => {
     isPrivate,
     errorMessage,
   } = props;
+  const { colors, isDark } = useTheme();
 
   // const [singleLineLongText, setSingleLineLongText] = useState(false);
   // const [singleLineShortText, setSingleLineShortText] = useState(false);
@@ -68,11 +70,12 @@ export const BotTextCell = (props: BotTextCellProps) => {
     <Animated.View
       style={[
         tailwind.style(
-          'relative max-w-[300px] pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden bg-blue-100',
+          'relative max-w-[300px] pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
           `max-w-[${TEXT_MAX_WIDTH}px]`,
           // singleLineShortText ? "flex flex-row" : "",
           isAvatarRendered ? 'rounded-br-none' : '',
         ),
+        { backgroundColor: isDark ? colors.card : tailwind.color('bg-blue-100') },
       ]}>
       {/* <Text
         // onTextLayout={handleTextLayout}
@@ -92,7 +95,7 @@ export const BotTextCell = (props: BotTextCellProps) => {
           // multiLineShortText ? " absolute bottom-0.5 right-2.5" : "",
         )}>
         <Text
-          style={tailwind.style('text-xs font-inter-420-20 tracking-[0.32px] pr-1 text-gray-700')}>
+          style={[tailwind.style('text-xs font-inter-420-20 tracking-[0.32px] pr-1'), { color: colors.textSecondary }]}>
           {unixTimestampToReadableTime(timeStamp)}
         </Text>
         <DeliveryStatus

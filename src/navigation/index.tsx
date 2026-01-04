@@ -1,29 +1,35 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
 import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
-// import messaging from '@react-native-firebase/messaging';
 import { getStateFromPath } from '@react-navigation/native';
-// import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 // Force mock KeyboardProvider for Expo Go compatibility
 const KeyboardProvider: any = ({ children }: any) => <>{children}</>;
 
+// Import notification service
+import {
+  initializeNotificationService,
+  setupForegroundMessageListener,
+  setupNotificationEventHandlers,
+  isMessagingAvailable,
+} from '@/services/NotificationService';
+
+// Import background handler to register it early
+import '@/services/backgroundMessageHandler';
+
 let messaging: any = null;
-let isMessagingAvailable = false;
 
 try {
   const messagingModule = require('@react-native-firebase/messaging');
   if (messagingModule && messagingModule.default) {
     messaging = messagingModule.default;
-    isMessagingAvailable = true;
   }
 } catch (e) {
   console.warn('@react-native-firebase/messaging not available:', e);
 }
 
 // Provide mock if not available
-if (!isMessagingAvailable) {
+if (!messaging) {
   messaging = () => ({
-    setBackgroundMessageHandler: () => {},
     getInitialNotification: () => Promise.resolve(null),
     onNotificationOpenedApp: () => () => {},
   });
@@ -55,16 +61,6 @@ import Inter50024 from '@/assets/fonts/Inter-500-24.ttf';
 import Inter58024 from '@/assets/fonts/Inter-580-24.ttf';
 import Inter60020 from '@/assets/fonts/Inter-600-20.ttf';
 
-// Only set background message handler if messaging is available
-if (isMessagingAvailable) {
-  try {
-    messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('Message handled in the background!', remoteMessage);
-    });
-  } catch (e) {
-    console.warn('Failed to set background message handler:', e);
-  }
-}
 
 export const AppNavigationContainer = () => {
   const [fontsLoaded] = useFonts({
@@ -80,6 +76,29 @@ export const AppNavigationContainer = () => {
 
   const installationUrl = useAppSelector(selectInstallationUrl);
   const locale = useAppSelector(selectLocale);
+
+  // Initialize notification service and set up listeners
+  useEffect(() => {
+    // Initialize notification channels and permissions
+    initializeNotificationService();
+
+    // Set up foreground message listener
+    const unsubscribeForeground = setupForegroundMessageListener();
+
+    // Set up notification press handler
+    const unsubscribeNotificationPress = setupNotificationEventHandlers((data: any) => {
+      // Handle notification tap - navigate to conversation
+      if (data?.conversationId && installationUrl) {
+        const conversationLink = `${installationUrl}/app/accounts/1/conversations/${data.conversationId}`;
+        Linking.openURL(conversationLink);
+      }
+    });
+
+    return () => {
+      unsubscribeForeground();
+      unsubscribeNotificationPress();
+    };
+  }, [installationUrl]);
 
   const linking = {
     prefixes: [installationUrl, SSO_CALLBACK_URL],
@@ -195,7 +214,7 @@ export const AppNavigationContainer = () => {
       let unsubscribeNotification = () => {};
       if (isMessagingAvailable) {
         try {
-          unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
+          unsubscribeNotification = messaging().onNotificationOpenedApp((message: any) => {
             if (message) {
               const notification = findNotificationFromFCM({ message });
               const camelCaseNotification = transformNotification(notification);

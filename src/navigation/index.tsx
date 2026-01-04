@@ -13,8 +13,7 @@ import {
   isMessagingAvailable,
 } from '@/services/NotificationService';
 
-// Import background handler to register it early
-import '@/services/backgroundMessageHandler';
+// NOTE: Background handler is now registered in App.tsx (entry point) for proper background notification handling
 
 let messaging: any = null;
 

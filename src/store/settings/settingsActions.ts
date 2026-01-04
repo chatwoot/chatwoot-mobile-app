@@ -172,11 +172,23 @@ export const settingsActions = {
           await messaging().requestPermission();
         }
 
-        const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+        // Register device for remote messages (required for iOS)
         // https://github.com/invertase/react-native-firebase/issues/6893#issuecomment-1427998691
-        // await messaging().registerDeviceForRemoteMessages();
-        await sleep(1000);
+        if (Platform.OS === 'ios') {
+          try {
+            await messaging().registerDeviceForRemoteMessages();
+            console.log('[saveDeviceDetails] Registered for remote messages on iOS');
+          } catch (regError) {
+            console.warn('[saveDeviceDetails] Failed to register for remote messages:', regError);
+          }
+        }
+
+        // Small delay to ensure registration completes
+        const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+        await sleep(500);
+        
         const fcmToken = await messaging().getToken();
+        console.log('[saveDeviceDetails] FCM Token obtained:', fcmToken ? 'Yes' : 'No');
 
         const pushData: PushPayload = {
           subscription_type: 'fcm',

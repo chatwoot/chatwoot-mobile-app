@@ -1,19 +1,23 @@
-import { Platform } from 'react-native';
+import { Platform, PermissionsAndroid } from 'react-native';
 import { transformNotification } from '@/utils/camelCaseKeys';
 import { Notification } from '@/types/Notification';
 
 // Lazy load modules to avoid crashes when not available
 let notifee: any = null;
 let messaging: any = null;
+let EventType: any = null;
 let isNotifeeAvailable = false;
 let isMessagingAvailable = false;
 
 // Initialize notifee
 try {
-  notifee = require('@notifee/react-native').default;
+  const notifeeModule = require('@notifee/react-native');
+  notifee = notifeeModule.default;
+  EventType = notifeeModule.EventType;
   isNotifeeAvailable = true;
+  console.log('[NotificationService] Notifee loaded successfully');
 } catch (e) {
-  console.warn('@notifee/react-native not available');
+  console.warn('[NotificationService] @notifee/react-native not available:', e);
 }
 
 // Initialize Firebase messaging
@@ -22,9 +26,10 @@ try {
   if (messagingModule && messagingModule.default) {
     messaging = messagingModule.default;
     isMessagingAvailable = true;
+    console.log('[NotificationService] Firebase messaging loaded successfully');
   }
 } catch (e) {
-  console.warn('@react-native-firebase/messaging not available');
+  console.warn('[NotificationService] @react-native-firebase/messaging not available:', e);
 }
 
 // Channel IDs
@@ -267,10 +272,10 @@ export const setupNotificationEventHandlers = (onNotificationPress: (data: any) 
   try {
     // Handle notification press when app is in foreground/background
     const unsubscribeForeground = notifee.onForegroundEvent(({ type, detail }: any) => {
-      const EventType = require('@notifee/react-native').EventType;
+      console.log('[NotificationService] Foreground event type:', type);
       
-      if (type === EventType.PRESS) {
-        console.log('Notification pressed:', detail.notification);
+      if (type === EventType?.PRESS) {
+        console.log('[NotificationService] Notification pressed:', detail.notification);
         if (detail.notification?.data) {
           onNotificationPress(detail.notification.data);
         }
@@ -284,23 +289,42 @@ export const setupNotificationEventHandlers = (onNotificationPress: (data: any) 
   }
 };
 
-// Request notification permissions
+// Request notification permissions for both Android and iOS
 export const requestNotificationPermission = async (): Promise<boolean> => {
-  if (!isMessagingAvailable) {
-    console.warn('Firebase messaging not available');
-    return false;
-  }
-
   try {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === 1 || // AUTHORIZED
-      authStatus === 2;   // PROVISIONAL
-    
-    console.log('Notification permission status:', authStatus, 'enabled:', enabled);
-    return enabled;
+    // Request Android 13+ POST_NOTIFICATIONS permission
+    if (Platform.OS === 'android' && Platform.Version >= 33) {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      );
+      console.log('[NotificationService] Android POST_NOTIFICATIONS permission:', granted);
+      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+        console.warn('[NotificationService] Android notification permission denied');
+        return false;
+      }
+    }
+
+    // Request Firebase messaging permission (required for iOS)
+    if (isMessagingAvailable) {
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === 1 || // AUTHORIZED
+        authStatus === 2;   // PROVISIONAL
+      
+      console.log('[NotificationService] Firebase permission status:', authStatus, 'enabled:', enabled);
+      return enabled;
+    }
+
+    // If no Firebase but notifee is available, request notifee permissions
+    if (isNotifeeAvailable) {
+      const settings = await notifee.requestPermission();
+      console.log('[NotificationService] Notifee permission settings:', settings);
+      return settings.authorizationStatus >= 1; // AUTHORIZED or PROVISIONAL
+    }
+
+    return false;
   } catch (error) {
-    console.error('Error requesting notification permission:', error);
+    console.error('[NotificationService] Error requesting notification permission:', error);
     return false;
   }
 };
@@ -322,17 +346,44 @@ export const getFCMToken = async (): Promise<string | null> => {
   }
 };
 
+// Set up notifee background event handler (for notification actions when app is killed)
+export const setupNotifeeBackgroundHandler = () => {
+  if (!isNotifeeAvailable) {
+    return;
+  }
+
+  try {
+    notifee.onBackgroundEvent(async ({ type, detail }: any) => {
+      console.log('[NotificationService] Background event:', type, detail);
+      
+      if (type === EventType?.PRESS) {
+        // Handle notification press when app is killed
+        console.log('[NotificationService] Background notification pressed:', detail.notification);
+      }
+    });
+    console.log('[NotificationService] Notifee background handler set up');
+  } catch (error) {
+    console.error('[NotificationService] Error setting up notifee background handler:', error);
+  }
+};
+
 // Initialize notification service
 export const initializeNotificationService = async () => {
-  console.log('Initializing notification service...');
+  console.log('[NotificationService] Initializing notification service...');
   
-  // Create notification channels for Android
+  // Create notification channels for Android (MUST be done before showing notifications)
   await createNotificationChannels();
   
   // Request permissions
-  await requestNotificationPermission();
+  const permissionGranted = await requestNotificationPermission();
+  console.log('[NotificationService] Permission granted:', permissionGranted);
   
-  console.log('Notification service initialized');
+  // Set up notifee background handler
+  setupNotifeeBackgroundHandler();
+  
+  console.log('[NotificationService] Notification service initialized successfully');
+  
+  return permissionGranted;
 };
 
 // Export availability flags

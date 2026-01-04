@@ -1,5 +1,9 @@
 // import * as Sentry from '@sentry/react-native';
 
+// CRITICAL: Register background message handler BEFORE React component renders
+// This MUST be at the top level of the app entry point for background notifications to work
+import './src/services/backgroundMessageHandler';
+
 import Constants from 'expo-constants';
 import App from './src/app';
 

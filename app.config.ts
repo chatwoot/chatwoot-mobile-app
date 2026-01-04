@@ -37,7 +37,13 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     android: {
       package: 'com.aloochat.app',
-      permissions: ['android.permission.CAMERA', 'android.permission.RECORD_AUDIO'],
+      permissions: [
+        'android.permission.CAMERA',
+        'android.permission.RECORD_AUDIO',
+        'android.permission.POST_NOTIFICATIONS',
+        'android.permission.RECEIVE_BOOT_COMPLETED',
+        'android.permission.VIBRATE',
+      ],
       // Please use the relative path to the google-services.json file
       googleServicesFile:
         process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE || './google-services.json',
@@ -75,7 +81,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     owner: 'codemonger20',
     plugins: [
       'expo-font',
-      ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary'] }],
+      ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary', 'Notifications'] }],
       [
         '@sentry/react-native/expo',
         {
@@ -86,6 +92,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       ],
       '@react-native-firebase/app',
       '@react-native-firebase/messaging',
+      '@notifee/react-native',
       [
         'expo-build-properties',
         {

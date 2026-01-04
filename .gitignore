@@ -37,7 +37,7 @@ yarn-error.*
 ios/
 android/
 
-google-services.json
+# google-services.json  # Commented out for EAS builds
 GoogleService-Info.plist
 .env
 .env.local

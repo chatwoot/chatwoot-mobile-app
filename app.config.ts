@@ -70,11 +70,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     extra: {
       eas: {
-        projectId: process.env.EXPO_PUBLIC_PROJECT_ID || '61e2c0a0-ea78-49b0-aff4-756616e42543',
+        projectId: process.env.EXPO_PUBLIC_PROJECT_ID || '594dbcca-228d-4feb-b536-e698a8b33791',
         storybookEnabled: process.env.EXPO_STORYBOOK_ENABLED,
       },
     },
-    owner: 'bokele',
+    owner: 'codemonger20',
     plugins: [
       'expo-font',
       ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary'] }],

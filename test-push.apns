@@ -1,0 +1,11 @@
+{
+  "Simulator Target Bundle": "com.aloochat.app",
+  "aps": {
+    "alert": {
+      "title": "Test Notification",
+      "body": "This is a test push notification"
+    },
+    "sound": "default",
+    "badge": 1
+  }
+}

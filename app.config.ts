@@ -14,7 +14,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       image: './assets/splash.png',
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
-      enableFullScreenImage_legacy: true,
     },
     ios: {
       supportsTablet: true,
@@ -37,7 +36,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       associatedDomains: ['applinks:cx.aloochat.ai'],
     },
     android: {
-      adaptiveIcon: { foregroundImage: './assets/adaptive-icon.png', backgroundColor: '#ffffff' },
       package: 'com.aloochat.app',
       permissions: ['android.permission.CAMERA', 'android.permission.RECORD_AUDIO'],
       // Please use the relative path to the google-services.json file

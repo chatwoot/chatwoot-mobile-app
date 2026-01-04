@@ -334,6 +334,16 @@ export const MessageComponent = (props: MessageComponentProps) => {
     const senderIdentifier = senderId ?? sender?.id;
     const senderTypeValue = senderType ?? sender?.type;
 
+    // Debug logging to see actual values
+    console.log('=== MESSAGE DEBUG ===');
+    console.log('messageType:', messageType);
+    console.log('currentUserId:', currentUserId);
+    console.log('senderIdentifier:', senderIdentifier);
+    console.log('senderTypeValue:', senderTypeValue);
+    console.log('SENDER_TYPES.USER:', SENDER_TYPES.USER);
+    console.log('sender object:', sender);
+    console.log('===================');
+
     if (!senderTypeValue || !senderIdentifier) {
       return false;
     }

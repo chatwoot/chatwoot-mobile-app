@@ -47,19 +47,23 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
       entering={FadeIn.duration(350)}
       style={[
         tailwind.style(
-          'my-[1px]',
+          'my-[1px] w-full',
           isIncoming && 'items-start',
           isOutgoing && 'items-end',
           isTemplate && 'items-end',
           isActivity && 'items-center',
-          !shouldRenderAvatar && isIncoming ? 'ml-7' : '',
-          !shouldRenderAvatar && isOutgoing ? 'pr-7' : '',
-          !shouldRenderAvatar && isTemplate ? 'pr-7' : '',
           shouldRenderAvatar ? 'mb-1' : '',
           messageItem.private ? 'my-2' : '',
         ),
       ]}>
-      <Animated.View style={tailwind.style('flex flex-row')}>
+      <Animated.View style={tailwind.style(
+        'flex flex-row w-full',
+        isIncoming && 'justify-start',
+        (isOutgoing || isTemplate) && 'justify-end',
+        isActivity && 'justify-center',
+        !shouldRenderAvatar && isIncoming ? 'pl-7' : '',
+        !shouldRenderAvatar && (isOutgoing || isTemplate) ? 'pr-7' : '',
+      )}>
         {sender && sender?.name && isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
             <Avatar

@@ -155,55 +155,100 @@ export const displayNotification = async ({
   }
 };
 
+// Extract notification info from FCM message (handles multiple payload formats)
+const extractNotificationInfo = (remoteMessage: any): { title: string; body: string; data: any } => {
+  let title = 'AlooChat';
+  let body = 'You have a new message';
+  let data: any = {};
+
+  try {
+    // Method 1: FCM notification payload
+    if (remoteMessage?.notification) {
+      title = remoteMessage.notification.title || title;
+      body = remoteMessage.notification.body || body;
+      data = remoteMessage.data || {};
+    }
+
+    // Method 2: Chatwoot HTTP v1 format - data.payload
+    if (remoteMessage?.data?.payload) {
+      try {
+        const payload = JSON.parse(remoteMessage.data.payload);
+        const notification = payload?.data?.notification || payload?.notification;
+        
+        if (notification) {
+          title = notification.push_message_title || notification.title || title;
+          body = notification.push_message_body || 'New message received';
+          
+          const senderName = notification.primary_actor?.meta?.sender?.name;
+          if (senderName) title = senderName;
+          
+          const messageContent = notification.primary_actor?.meta?.last_message?.content;
+          if (messageContent) body = messageContent;
+          
+          data = {
+            conversationId: String(notification.primary_actor?.conversation_id || notification.primary_actor?.id || ''),
+            notificationType: notification.notification_type,
+          };
+        }
+      } catch (e) {
+        console.warn('[NotificationService] Failed to parse payload:', e);
+      }
+    }
+
+    // Method 3: Chatwoot legacy format - data.notification
+    if (remoteMessage?.data?.notification) {
+      try {
+        const notification = JSON.parse(remoteMessage.data.notification);
+        title = notification.push_message_title || notification.title || title;
+        body = notification.push_message_body || 'New message received';
+        
+        const senderName = notification.primary_actor?.meta?.sender?.name;
+        if (senderName) title = senderName;
+        
+        data = {
+          conversationId: String(notification.primary_actor?.conversation_id || notification.primary_actor?.id || ''),
+          notificationType: notification.notification_type,
+        };
+      } catch (e) {
+        console.warn('[NotificationService] Failed to parse legacy notification:', e);
+      }
+    }
+
+    // Method 4: Direct data fields
+    if (remoteMessage?.data) {
+      if (remoteMessage.data.title && !remoteMessage.notification) title = remoteMessage.data.title;
+      if (remoteMessage.data.body && !remoteMessage.notification) body = remoteMessage.data.body;
+      if (remoteMessage.data.message) body = remoteMessage.data.message;
+    }
+  } catch (error) {
+    console.error('[NotificationService] Error extracting notification info:', error);
+  }
+
+  return { title, body, data };
+};
+
 // Handle foreground FCM messages
 export const handleForegroundMessage = async (remoteMessage: any) => {
-  console.log('Foreground message received:', JSON.stringify(remoteMessage, null, 2));
+  console.log('[NotificationService] ====== FOREGROUND MESSAGE ======');
+  console.log('[NotificationService] Message:', JSON.stringify(remoteMessage, null, 2));
   
-  const notification = parseNotificationFromFCM(remoteMessage);
-  
-  if (notification) {
-    const { notificationType, primaryActor, pushMessageTitle } = notification;
+  try {
+    const { title, body, data } = extractNotificationInfo(remoteMessage);
+    console.log('[NotificationService] Extracted - Title:', title, 'Body:', body);
     
-    // Get title from notification
-    let title = pushMessageTitle || 'New Message';
-    let body = '';
+    // ALWAYS display notification for foreground messages
+    await displayNotification({ title, body, data });
     
-    // Construct body based on notification type
-    if (notificationType === 'conversation_creation') {
-      body = 'New conversation started';
-    } else if (notificationType === 'assigned_conversation_new_message') {
-      body = 'You have a new message';
-    } else if (notificationType === 'conversation_mention') {
-      body = 'You were mentioned in a conversation';
-    } else if (notificationType === 'participating_conversation_new_message') {
-      body = 'New message in conversation';
-    } else {
-      body = 'You have a new notification';
+  } catch (error) {
+    console.error('[NotificationService] Foreground handler error:', error);
+    // Fallback - still try to show something
+    if (remoteMessage?.notification) {
+      await displayNotification({
+        title: remoteMessage.notification.title || 'AlooChat',
+        body: remoteMessage.notification.body || 'You have a new notification',
+        data: remoteMessage.data,
+      });
     }
-    
-    // Try to get sender info from meta
-    const senderName = (primaryActor?.meta?.sender as any)?.name;
-    if (senderName) {
-      title = senderName;
-    }
-    
-    // Display the notification
-    await displayNotification({
-      title,
-      body,
-      data: {
-        notification: JSON.stringify(notification),
-        conversationId: String(primaryActor?.conversationId || primaryActor?.id || ''),
-        notificationType,
-      },
-    });
-  } else if (remoteMessage?.notification) {
-    // Fallback: Use FCM notification payload directly
-    await displayNotification({
-      title: remoteMessage.notification.title || 'AlooChat',
-      body: remoteMessage.notification.body || 'You have a new notification',
-      data: remoteMessage.data,
-    });
   }
 };
 

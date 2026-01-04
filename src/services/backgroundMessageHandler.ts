@@ -1,9 +1,10 @@
 // Background message handler - MUST be registered at app entry point (App.tsx)
 // This file is imported at the top of App.tsx BEFORE React renders
-import { Platform } from 'react-native';
+import { Platform, AppRegistry } from 'react-native';
 
 let messaging: any = null;
 let notifee: any = null;
+let AndroidImportance: any = null;
 let isMessagingAvailable = false;
 let isNotifeeAvailable = false;
 
@@ -13,65 +14,81 @@ try {
   if (messagingModule && messagingModule.default) {
     messaging = messagingModule.default;
     isMessagingAvailable = true;
-    console.log('[BackgroundHandler] Firebase messaging loaded successfully');
+    console.log('[BGHandler] Firebase messaging loaded');
   }
 } catch (e) {
-  console.warn('[BackgroundHandler] @react-native-firebase/messaging not available:', e);
+  console.warn('[BGHandler] Firebase messaging not available:', e);
 }
 
 // Initialize notifee for displaying notifications
 try {
-  notifee = require('@notifee/react-native').default;
+  const notifeeModule = require('@notifee/react-native');
+  notifee = notifeeModule.default;
+  AndroidImportance = notifeeModule.AndroidImportance;
   isNotifeeAvailable = true;
-  console.log('[BackgroundHandler] Notifee loaded successfully');
+  console.log('[BGHandler] Notifee loaded');
 } catch (e) {
-  console.warn('[BackgroundHandler] @notifee/react-native not available:', e);
+  console.warn('[BGHandler] Notifee not available:', e);
 }
 
-// Channel ID for messages
+// Channel ID for messages - MUST match across all notification code
 const CHANNEL_ID = 'aloochat_messages';
+let channelCreated = false;
 
-// Create notification channel for Android (must be done before showing notifications)
+// Create notification channel for Android
 const ensureChannelExists = async () => {
-  if (!isNotifeeAvailable || Platform.OS !== 'android') {
-    return;
+  if (!isNotifeeAvailable || Platform.OS !== 'android' || channelCreated) {
+    return CHANNEL_ID;
   }
   
   try {
-    await notifee.createChannel({
+    const channelId = await notifee.createChannel({
       id: CHANNEL_ID,
-      name: 'Messages',
-      description: 'New message notifications',
-      importance: 4, // HIGH
+      name: 'Chat Messages',
+      description: 'Notifications for new chat messages',
+      importance: AndroidImportance?.HIGH || 4,
       vibration: true,
       sound: 'default',
+      badge: true,
     });
+    channelCreated = true;
+    console.log('[BGHandler] Channel created:', channelId);
+    return channelId;
   } catch (error) {
-    console.error('[BackgroundHandler] Error creating channel:', error);
+    console.error('[BGHandler] Channel creation error:', error);
+    return CHANNEL_ID;
   }
 };
 
-// Display notification using notifee
-const displayBackgroundNotification = async (title: string, body: string, data: any) => {
+// Display notification - THE CORE FUNCTION
+const showNotification = async (title: string, body: string, data?: any) => {
+  console.log('[BGHandler] Attempting to show notification:', { title, body });
+  
   if (!isNotifeeAvailable) {
-    console.warn('[BackgroundHandler] Cannot display notification - notifee not available');
-    return;
+    console.error('[BGHandler] CANNOT SHOW NOTIFICATION - Notifee not available!');
+    return false;
   }
 
   try {
-    // Ensure channel exists for Android
-    await ensureChannelExists();
-
-    await notifee.displayNotification({
-      title,
-      body,
-      data,
+    const channelId = await ensureChannelExists();
+    
+    const notificationId = await notifee.displayNotification({
+      title: title || 'AlooChat',
+      body: body || 'You have a new message',
+      data: data || {},
       android: {
-        channelId: CHANNEL_ID,
+        channelId: channelId,
         smallIcon: 'ic_launcher',
-        pressAction: { id: 'default' },
-        importance: 4,
+        color: '#1F93FF',
+        pressAction: {
+          id: 'default',
+          launchActivity: 'default',
+        },
+        importance: AndroidImportance?.HIGH || 4,
         sound: 'default',
+        vibrationPattern: [300, 500],
+        showTimestamp: true,
+        autoCancel: true,
       },
       ios: {
         sound: 'default',
@@ -83,98 +100,159 @@ const displayBackgroundNotification = async (title: string, body: string, data: 
         },
       },
     });
-    console.log('[BackgroundHandler] Notification displayed:', title);
-  } catch (error) {
-    console.error('[BackgroundHandler] Error displaying notification:', error);
-  }
-};
-
-// Parse notification from FCM message
-const parseNotificationFromMessage = (remoteMessage: any) => {
-  try {
-    // FCM HTTP v1 format
-    if (remoteMessage?.data?.payload) {
-      const parsedPayload = JSON.parse(remoteMessage.data.payload);
-      return parsedPayload.data?.notification || parsedPayload.notification;
-    }
-    // FCM legacy format
-    if (remoteMessage?.data?.notification) {
-      return JSON.parse(remoteMessage.data.notification);
-    }
-    return null;
-  } catch (error) {
-    console.error('[BackgroundHandler] Error parsing notification:', error);
-    return null;
-  }
-};
-
-// Handle background message
-const handleBackgroundMessage = async (remoteMessage: any) => {
-  console.log('[BackgroundHandler] Background message received:', JSON.stringify(remoteMessage, null, 2));
-
-  const notification = parseNotificationFromMessage(remoteMessage);
-
-  if (notification) {
-    // Extract notification details
-    const { notification_type, push_message_title, primary_actor } = notification;
     
-    let title = push_message_title || 'New Message';
-    let body = 'You have a new message';
-
-    // Try to get sender name
-    const senderName = primary_actor?.meta?.sender?.name;
-    if (senderName) {
-      title = senderName;
-    }
-
-    // Customize body based on notification type
-    if (notification_type === 'conversation_creation') {
-      body = 'New conversation started';
-    } else if (notification_type === 'assigned_conversation_new_message') {
-      body = 'You have a new message';
-    } else if (notification_type === 'conversation_mention') {
-      body = 'You were mentioned in a conversation';
-    } else if (notification_type === 'participating_conversation_new_message') {
-      body = 'New message in conversation';
-    }
-
-    // Get conversation ID
-    const conversationId = primary_actor?.conversation_id || primary_actor?.id || '';
-
-    await displayBackgroundNotification(title, body, {
-      notification: JSON.stringify(notification),
-      conversationId: String(conversationId),
-      notificationType: notification_type,
-    });
-  } else if (remoteMessage?.notification) {
-    // Fallback: Use FCM notification payload directly
-    await displayBackgroundNotification(
-      remoteMessage.notification.title || 'AlooChat',
-      remoteMessage.notification.body || 'You have a new notification',
-      remoteMessage.data || {},
-    );
-  } else {
-    console.log('[BackgroundHandler] No notification data found in message');
+    console.log('[BGHandler] ✅ Notification displayed! ID:', notificationId);
+    return true;
+  } catch (error) {
+    console.error('[BGHandler] ❌ Notification display FAILED:', error);
+    return false;
   }
 };
 
-// Register background message handler
-export const registerBackgroundMessageHandler = () => {
+// Extract notification info from various payload formats
+const extractNotificationInfo = (remoteMessage: any): { title: string; body: string; data: any } => {
+  let title = 'AlooChat';
+  let body = 'You have a new message';
+  let data: any = {};
+
+  try {
+    console.log('[BGHandler] Parsing message:', JSON.stringify(remoteMessage, null, 2));
+
+    // Method 1: FCM notification payload (shown automatically by system when app is killed)
+    if (remoteMessage?.notification) {
+      title = remoteMessage.notification.title || title;
+      body = remoteMessage.notification.body || body;
+      data = remoteMessage.data || {};
+      console.log('[BGHandler] Found FCM notification payload');
+    }
+
+    // Method 2: Chatwoot HTTP v1 format - data.payload
+    if (remoteMessage?.data?.payload) {
+      try {
+        const payload = JSON.parse(remoteMessage.data.payload);
+        const notification = payload?.data?.notification || payload?.notification;
+        
+        if (notification) {
+          title = notification.push_message_title || notification.title || title;
+          body = notification.push_message_body || 'New message received';
+          
+          // Get sender name if available
+          const senderName = notification.primary_actor?.meta?.sender?.name;
+          if (senderName) {
+            title = senderName;
+          }
+          
+          // Get message content if available
+          const messageContent = notification.primary_actor?.meta?.last_message?.content;
+          if (messageContent) {
+            body = messageContent;
+          }
+          
+          data = {
+            conversationId: String(notification.primary_actor?.conversation_id || notification.primary_actor?.id || ''),
+            notificationType: notification.notification_type,
+            rawNotification: JSON.stringify(notification),
+          };
+          console.log('[BGHandler] Parsed HTTP v1 payload');
+        }
+      } catch (parseError) {
+        console.warn('[BGHandler] Failed to parse payload:', parseError);
+      }
+    }
+
+    // Method 3: Chatwoot legacy format - data.notification
+    if (remoteMessage?.data?.notification) {
+      try {
+        const notification = JSON.parse(remoteMessage.data.notification);
+        title = notification.push_message_title || notification.title || title;
+        body = notification.push_message_body || 'New message received';
+        
+        const senderName = notification.primary_actor?.meta?.sender?.name;
+        if (senderName) {
+          title = senderName;
+        }
+        
+        data = {
+          conversationId: String(notification.primary_actor?.conversation_id || notification.primary_actor?.id || ''),
+          notificationType: notification.notification_type,
+          rawNotification: remoteMessage.data.notification,
+        };
+        console.log('[BGHandler] Parsed legacy notification');
+      } catch (parseError) {
+        console.warn('[BGHandler] Failed to parse legacy notification:', parseError);
+      }
+    }
+
+    // Method 4: Direct data fields (simple format)
+    if (remoteMessage?.data) {
+      if (remoteMessage.data.title && !remoteMessage.notification) {
+        title = remoteMessage.data.title;
+      }
+      if (remoteMessage.data.body && !remoteMessage.notification) {
+        body = remoteMessage.data.body;
+      }
+      if (remoteMessage.data.message) {
+        body = remoteMessage.data.message;
+      }
+    }
+
+  } catch (error) {
+    console.error('[BGHandler] Error extracting notification info:', error);
+  }
+
+  return { title, body, data };
+};
+
+// Main background message handler
+const handleBackgroundMessage = async (remoteMessage: any) => {
+  console.log('[BGHandler] ====== BACKGROUND MESSAGE RECEIVED ======');
+  console.log('[BGHandler] Time:', new Date().toISOString());
+  console.log('[BGHandler] Message:', JSON.stringify(remoteMessage, null, 2));
+
+  try {
+    const { title, body, data } = extractNotificationInfo(remoteMessage);
+    console.log('[BGHandler] Extracted - Title:', title, 'Body:', body);
+    
+    // ALWAYS try to show a notification
+    await showNotification(title, body, data);
+    
+  } catch (error) {
+    console.error('[BGHandler] Handler error:', error);
+    // Even on error, try to show a basic notification
+    await showNotification('AlooChat', 'You have a new notification', {});
+  }
+  
+  console.log('[BGHandler] ====== HANDLER COMPLETE ======');
+};
+
+// Register the background message handler
+const registerHandler = () => {
   if (!isMessagingAvailable) {
-    console.warn('[BackgroundHandler] Firebase messaging not available, skipping registration');
+    console.warn('[BGHandler] Cannot register - Firebase not available');
     return;
   }
 
   try {
+    // Set the background message handler for FCM
     messaging().setBackgroundMessageHandler(handleBackgroundMessage);
-    console.log('[BackgroundHandler] Background message handler registered successfully');
+    console.log('[BGHandler] ✅ Background handler registered with Firebase');
+    
+    // Also register notifee background handler for notification actions
+    if (isNotifeeAvailable) {
+      notifee.onBackgroundEvent(async ({ type, detail }: any) => {
+        console.log('[BGHandler] Notifee background event:', type, detail?.notification?.id);
+      });
+      console.log('[BGHandler] ✅ Notifee background handler registered');
+    }
   } catch (error) {
-    console.error('[BackgroundHandler] Error registering handler:', error);
+    console.error('[BGHandler] Registration error:', error);
   }
 };
 
-// Auto-register when this module is imported (at app startup)
+// Register handler immediately when module loads
 if (isMessagingAvailable) {
-  registerBackgroundMessageHandler();
-  console.log('[BackgroundHandler] Module initialized');
+  registerHandler();
 }
+
+// Export for testing
+export { showNotification, handleBackgroundMessage, registerHandler as registerBackgroundMessageHandler };

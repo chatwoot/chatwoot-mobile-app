@@ -32,6 +32,7 @@ import { MESSAGE_STATUS } from '@/constants';
 import { buildCreatePayload, createPendingMessage } from '@/utils/messageUtils';
 import { transformMessage } from '@/utils/camelCaseKeys';
 import { Platform } from 'react-native';
+import type { Message } from '@/types';
 
 export const conversationActions = {
   fetchConversations: createAsyncThunk<ConversationListResponse, ConversationPayload>(
@@ -257,9 +258,39 @@ export const conversationActions = {
   ),
   translateMessage: createAsyncThunk<void, TranslateMessagePayload>(
     'conversations/translateMessage',
-    async (payload, { rejectWithValue }) => {
+    async (payload, { getState, dispatch, rejectWithValue }) => {
       try {
-        await ConversationService.translateMessage(payload);
+        const response = await ConversationService.translateMessage(payload);
+        const translatedContent = response?.content;
+        if (typeof translatedContent === 'string') {
+          const state = getState() as {
+            conversations: {
+              entities: Record<number, { messages: Message[] } | undefined>;
+            };
+          };
+          const conversation = state.conversations.entities[payload.conversationId];
+          const existingMessage = conversation?.messages?.find(
+            message => message.id === payload.messageId,
+          );
+
+          if (existingMessage) {
+            const contentAttributes = existingMessage.contentAttributes ?? {};
+            const translations = contentAttributes.translations ?? {};
+            dispatch({
+              type: 'conversation/addOrUpdateMessage',
+              payload: {
+                ...existingMessage,
+                contentAttributes: {
+                  ...contentAttributes,
+                  translations: {
+                    ...translations,
+                    [payload.targetLanguage]: translatedContent,
+                  },
+                },
+              },
+            });
+          }
+        }
       } catch (error) {
         const { response } = error as AxiosError<ApiErrorResponse>;
         if (!response) {

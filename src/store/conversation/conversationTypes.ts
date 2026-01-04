@@ -244,3 +244,7 @@ export interface TranslateMessagePayload {
   messageId: number;
   targetLanguage: string;
 }
+
+export interface TranslateMessageAPIResponse {
+  content?: string | null;
+}

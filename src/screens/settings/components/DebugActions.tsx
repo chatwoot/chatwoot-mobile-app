@@ -225,6 +225,55 @@ export const DebugActions = () => {
         </Animated.View>
       </Pressable>
 
+      {/* Android Notification Settings Helper */}
+      {Platform.OS === 'android' && (
+        <Pressable onPress={() => {
+          Alert.alert(
+            '📱 Check Android Settings',
+            'If notifications show ✅ but you don\'t see them:\n\n' +
+            '1. Go to Settings > Apps > AlooChat > Notifications\n' +
+            '2. Make sure "Allow notifications" is ON\n' +
+            '3. Check "Chat Messages" channel is enabled\n' +
+            '4. Disable "Do Not Disturb" mode\n' +
+            '5. Check Battery optimization (exclude AlooChat)\n' +
+            '6. Try restarting your phone\n\n' +
+            'Tap "Open App Settings" to go directly to notification settings.',
+            [
+              { text: 'Cancel' },
+              { 
+                text: 'Open App Settings',
+                onPress: () => {
+                  // This would require react-native-device-info or similar
+                  showToast({ message: 'Manually go to Settings > Apps > AlooChat > Notifications' });
+                }
+              }
+            ]
+          );
+        }}>
+          <Animated.View style={tailwind.style('flex flex-row items-center')}>
+            <Animated.View
+              style={tailwind.style(
+                'flex-1 ml-3 flex-row justify-between py-[11px] pr-3 border-b-[1px] border-blackA-A3',
+              )}>
+              <View>
+                <Text
+                  style={tailwind.style(
+                    'text-base text-orange-600 font-inter-420-20 leading-[21px] tracking-[0.16px]',
+                  )}>
+                  ⚙️ Android Notification Settings Help
+                </Text>
+                <Text
+                  style={tailwind.style(
+                    'text-sm text-gray-900 font-inter-420-20 leading-[18px] tracking-[0.16px] italic',
+                  )}>
+                  If diagnostics pass but no notifications appear
+                </Text>
+              </View>
+            </Animated.View>
+          </Animated.View>
+        </Pressable>
+      )}
+
       {/* Show Current Token Status */}
       <View style={tailwind.style('ml-3 py-2')}>
         <Text style={tailwind.style('text-xs text-gray-600')}>

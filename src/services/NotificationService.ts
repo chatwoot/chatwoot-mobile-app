@@ -559,15 +559,36 @@ export const runNotificationDiagnostics = async (): Promise<{
     }
   }
 
-  // Check 6: Test local notification
+  // Check 6: Android notification settings
+  if (Platform.OS === 'android' && isNotifeeAvailable) {
+    try {
+      const settings = await notifee.getNotificationSettings();
+      results.push(`📱 Android Settings - Authorization: ${settings.authorizationStatus}`);
+      results.push(`📱 Android Settings - Blocked: ${settings.android?.alarm || 'unknown'}`);
+    } catch (e) {
+      results.push(`❌ Settings check error: ${e}`);
+    }
+  }
+
+  // Check 7: Test local notification with detailed logging
   try {
+    console.log('[Diagnostics] About to send test notification...');
     const testResult = await displayNotification({
-      title: '🔍 Diagnostic Test',
-      body: 'This is a diagnostic notification',
-      data: { diagnostic: true },
+      title: '🔍 DIAGNOSTIC TEST',
+      body: 'If you see this notification, local notifications work!',
+      data: { diagnostic: true, timestamp: Date.now() },
     });
+    console.log('[Diagnostics] Notification result:', testResult);
+    
     if (testResult) {
-      results.push('✅ Local Notification: Displayed');
+      results.push(`✅ Local Notification: ID ${testResult} (Check your notification tray!)`);
+      // Wait a moment then check if notification was delivered
+      setTimeout(async () => {
+        if (isNotifeeAvailable) {
+          const delivered = await notifee.getDeliveredNotifications();
+          console.log('[Diagnostics] Delivered notifications count:', delivered.length);
+        }
+      }, 2000);
     } else {
       results.push('❌ Local Notification: FAILED to display');
       allPassed = false;

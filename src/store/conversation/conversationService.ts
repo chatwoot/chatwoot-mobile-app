@@ -29,6 +29,10 @@ import type {
   MarkMessageReadOrUnreadResponse,
   ToggleConversationStatusAPIResponse,
   TogglePriorityPayload,
+  MoveToInboxPayload,
+  MoveToInboxAPIResponse,
+  BulkMoveToInboxPayload,
+  BulkMoveToInboxAPIResponse,
 } from './conversationTypes';
 
 import {
@@ -211,5 +215,30 @@ export class ConversationService {
   static async togglePriority(payload: TogglePriorityPayload): Promise<void> {
     const { conversationId, priority } = payload;
     await apiService.post(`conversations/${conversationId}/toggle_priority`, { priority });
+  }
+
+  static async moveConversationToInbox(
+    payload: MoveToInboxPayload,
+  ): Promise<MoveToInboxAPIResponse> {
+    const { conversationId, inboxId } = payload;
+    const response = await apiService.patch<MoveToInboxAPIResponse>(
+      `conversations/${conversationId}/move_to_inbox`,
+      { inbox_id: inboxId },
+    );
+    return response.data;
+  }
+
+  static async bulkMoveConversationsToInbox(
+    payload: BulkMoveToInboxPayload,
+  ): Promise<BulkMoveToInboxAPIResponse> {
+    const { conversationIds, inboxId } = payload;
+    const response = await apiService.post<BulkMoveToInboxAPIResponse>(
+      'conversations/bulk_move_to_inbox',
+      {
+        conversation_ids: conversationIds,
+        inbox_id: inboxId,
+      },
+    );
+    return response.data;
   }
 }

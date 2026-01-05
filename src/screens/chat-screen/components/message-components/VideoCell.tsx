@@ -104,10 +104,12 @@ export const VideoPlayer = (props: VideoPlayerProps) => {
         <Animated.View
           entering={FadeIn.duration(300).easing(Easing.ease)}
           exiting={FadeOut.duration(300).easing(Easing.ease)}
-          style={tailwind.style('absolute inset-0 flex items-center justify-center')}>
+          style={tailwind.style('absolute inset-0 flex items-center justify-center')}
+        >
           <Pressable
             onPress={handlePlayPress}
-            style={tailwind.style('h-full w-full flex items-center justify-center')}>
+            style={tailwind.style('h-full w-full flex items-center justify-center')}
+          >
             <Image
               source={require('../../../../assets/local/PlayIcon.png')} // eslint-disable-line @typescript-eslint/no-require-imports
               style={tailwind.style('h-12 w-12 z-10')}
@@ -147,7 +149,8 @@ export const VideoCell = (props: VideoCellProps) => {
         !shouldRenderAvatar && isIncoming ? 'ml-7' : '',
         !shouldRenderAvatar && isOutgoing ? 'pr-7' : '',
         shouldRenderAvatar ? 'pb-2' : '',
-      )}>
+      )}
+    >
       <Animated.View style={tailwind.style('flex flex-row')}>
         {isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
@@ -165,7 +168,8 @@ export const VideoCell = (props: VideoCellProps) => {
                     ? 'rounded-bl-none'
                     : ''
                 : '',
-            )}>
+            )}
+          >
             <VideoPlayer
               {...{
                 videoSrc,
@@ -174,7 +178,8 @@ export const VideoCell = (props: VideoCellProps) => {
             <Animated.View
               pointerEvents={'none'}
               entering={FadeIn.duration(300).easing(Easing.ease)}
-              exiting={FadeOut.duration(300).easing(Easing.ease)}>
+              exiting={FadeOut.duration(300).easing(Easing.ease)}
+            >
               <ImageBackground
                 source={require('../../../../assets/local/ImageCellTimeStampOverlay.png')} // eslint-disable-line @typescript-eslint/no-require-imports
                 style={tailwind.style(
@@ -186,13 +191,16 @@ export const VideoCell = (props: VideoCellProps) => {
                         ? 'rounded-bl-none'
                         : ''
                     : '',
-                )}>
+                )}
+              >
                 <Animated.View
-                  style={tailwind.style('flex flex-row absolute right-3 bottom-[5px]')}>
+                  style={tailwind.style('flex flex-row absolute right-3 bottom-[5px]')}
+                >
                   <Text
                     style={tailwind.style(
                       'text-xs font-inter-420-20 tracking-[0.32px] leading-[14px] text-whiteA-A12 pr-1',
-                    )}>
+                    )}
+                  >
                     {unixTimestampToReadableTime(timeStamp)}
                   </Text>
                   <DeliveryStatus

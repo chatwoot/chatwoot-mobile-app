@@ -1,17 +1,17 @@
-import React from 'react';
-import { Pressable, Text, Animated, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
+import React from 'react';
+import { Animated, Pressable, Text, View } from 'react-native';
 
-import { showToast } from '@/utils/toastUtils';
-import { tailwind } from '@/theme';
-import { useHaptic } from '@/utils';
 import { useAppSelector } from '@/hooks';
 import {
-  selectChatwootVersion,
-  selectInstallationUrl,
-  selectPushToken,
-  selectWebSocketUrl,
+    selectAppVersion,
+    selectInstallationUrl,
+    selectPushToken,
+    selectWebSocketUrl,
 } from '@/store/settings/settingsSelectors';
+import { tailwind } from '@/theme';
+import { useHaptic } from '@/utils';
+import { showToast } from '@/utils/toastUtils';
 
 type DebugActionCellProps = {
   item: DebugAction;
@@ -27,8 +27,8 @@ interface DebugAction {
 
 const DEBUG_ACTIONS: DebugAction[] = [
   {
-    key: 'chatwoot_version',
-    label: 'Chatwoot Version',
+    key: 'app_version',
+    label: 'Notchat Version',
     value: '',
   },
   {
@@ -51,7 +51,7 @@ const DEBUG_ACTIONS: DebugAction[] = [
 const DebugActionCell = ({ item, index, isLastItem }: DebugActionCellProps) => {
   const installationUrl = useAppSelector(selectInstallationUrl);
   const webSocketUrl = useAppSelector(selectWebSocketUrl);
-  const version = useAppSelector(selectChatwootVersion);
+  const version = useAppSelector(selectAppVersion);
   const pushToken = useAppSelector(selectPushToken);
 
   const hapticSelection = useHaptic();
@@ -71,7 +71,7 @@ const DebugActionCell = ({ item, index, isLastItem }: DebugActionCellProps) => {
         return installationUrl;
       case 'web_socket_url':
         return webSocketUrl;
-      case 'chatwoot_version':
+      case 'app_version':
         return version;
       case 'push_token':
         return pushToken;

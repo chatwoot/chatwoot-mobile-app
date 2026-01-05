@@ -56,7 +56,8 @@ export const PrivateTextCell = (props: PrivateTextCellProps) => {
           `max-w-[${TEXT_MAX_WIDTH}px]`,
           // singleLineShortText ? "flex flex-row" : "",
         ),
-      ]}>
+      ]}
+    >
       <Animated.View style={tailwind.style('flex flex-row')}>
         <Animated.View style={tailwind.style('w-[3px] bg-amber-700 h-auto rounded-[4px]')} />
         <Animated.View style={tailwind.style('pl-2.5')}>
@@ -77,12 +78,12 @@ export const PrivateTextCell = (props: PrivateTextCellProps) => {
           // singleLineShortText ? "pl-1.5" : "",
           // singleLineLongText || isMultiLine ? "justify-end" : "",
           // multiLineShortText ? " absolute bottom-0.5 right-2.5" : "",
-        )}>
+        )}
+      >
         <Icon icon={<LockIcon />} size={12} />
         <Text
-          style={tailwind.style(
-            'text-xs font-inter-420-20 tracking-[0.32px] pl-1 text-blackA-A10',
-          )}>
+          style={tailwind.style('text-xs font-inter-420-20 tracking-[0.32px] pl-1 text-blackA-A10')}
+        >
           {unixTimestampToReadableTime(timeStamp)}
         </Text>
       </Animated.View>

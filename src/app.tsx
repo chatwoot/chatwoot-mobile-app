@@ -1,21 +1,50 @@
-import React, { useEffect } from 'react';
-import { Provider } from 'react-redux';
-import { Alert, BackHandler, Platform } from 'react-native';
-import { PersistGate } from 'redux-persist/integration/react';
-import { store, persistor } from './store';
 import { AppNavigator } from '@/navigation';
+import React, { useEffect } from 'react';
+import { Alert, BackHandler, Platform } from 'react-native';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from './store';
 
 import i18n from '@/i18n';
-import notifee from '@notifee/react-native';
+import { getStore } from '@/store/storeAccessor';
+import {
+  extractParamsFromNotification,
+  navigateToConversation,
+} from '@/utils/notificationNavigationUtils';
+import notifee, { EventType } from '@notifee/react-native';
 
 if (Platform.OS === 'android') {
-  // Criar canal de notificação no Android
   notifee.createChannel({
     id: 'default',
     name: 'Default Channel',
-    importance: 4, // HIGH
+    importance: 4,
   });
 }
+
+const BACKGROUND_NAVIGATION_DELAY = 500;
+
+notifee.onBackgroundEvent(async ({ type, detail }) => {
+  if (type !== EventType.PRESS || !detail.notification?.data) {
+    return;
+  }
+
+  try {
+    const state = getStore().getState();
+    const installationUrl = state.settings?.installationUrl || '';
+    const params = extractParamsFromNotification(
+      detail.notification.data as Record<string, string>,
+      installationUrl,
+    );
+
+    if (params) {
+      setTimeout(async () => {
+        await navigateToConversation(params);
+      }, BACKGROUND_NAVIGATION_DELAY);
+    }
+  } catch (error) {
+    console.error('[App] Error processing background notification:', error);
+  }
+});
 
 const Chatwoot = () => {
   useEffect(() => {

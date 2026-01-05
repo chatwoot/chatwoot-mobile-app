@@ -1,70 +1,111 @@
-import React, { useCallback } from 'react';
-import { Pressable } from 'react-native';
-import Animated from 'react-native-reanimated';
-
 import { tailwind } from '@/theme';
-import { useHaptic, useScaleAnimation } from '@/utils';
+import React, { memo } from 'react';
+import { ActivityIndicator, Pressable, Text } from 'react-native';
 
-type ButtonProps = {
-  isDestructive?: boolean;
-  text: string;
-  handlePress?: () => void;
-  variant?: 'primary' | 'secondary';
+export interface ButtonProps {
+  title?: string;
+  text?: string; // Compatibilidade com código antigo
+  onPress?: () => void;
+  handlePress?: () => void; // Compatibilidade com código antigo
+  variant?: 'primary' | 'secondary' | 'danger' | 'outline';
   disabled?: boolean;
+  loading?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  fullWidth?: boolean;
+  style?: any;
+  isDestructive?: boolean; // Compatibilidade com código antigo
+}
+
+const variantStyles = {
+  primary: {
+    container: 'bg-brand-primary active:opacity-80',
+    text: 'text-white',
+  },
+  secondary: {
+    container: 'bg-gray-600 active:bg-gray-700',
+    text: 'text-white',
+  },
+  danger: {
+    container: 'bg-red-600 active:bg-red-700',
+    text: 'text-white',
+  },
+  outline: {
+    container: 'bg-transparent border-2 border-gray-300 active:bg-gray-50',
+    text: 'text-gray-950',
+  },
 };
 
-const getButtonStyles = (isPrimary: boolean, pressed: boolean) => {
-  const baseStyles = 'py-[11px] flex items-center justify-center rounded-[13px]';
-  const variantStyles = isPrimary ? 'bg-blue-800' : 'bg-gray-50';
-  const pressedStyles = isPrimary ? 'opacity-95' : pressed ? 'bg-gray-100' : '';
-
-  return tailwind.style(baseStyles, variantStyles, pressedStyles);
+const sizeStyles = {
+  sm: {
+    container: 'px-3 py-2',
+    text: 'text-sm',
+  },
+  md: {
+    container: 'px-4 py-3',
+    text: 'text-base',
+  },
+  lg: {
+    container: 'px-6 py-4',
+    text: 'text-lg',
+  },
 };
 
-const getTextStyles = (isPrimary: boolean, isDestructive: boolean) => {
-  const baseStyles = 'text-base font-medium tracking-[0.16px] leading-[22px]';
-  const colorStyles = isPrimary
-    ? isDestructive
-      ? 'text-tomato-800'
-      : 'text-white'
-    : isDestructive
-      ? 'text-ruby-800'
-      : 'text-gray-950';
+export const Button = memo<ButtonProps>(
+  ({
+    title,
+    text,
+    onPress,
+    handlePress,
+    variant = 'primary',
+    disabled = false,
+    loading = false,
+    size = 'md',
+    fullWidth = false,
+    style,
+    isDestructive = false,
+  }) => {
+    // Compatibilidade: usar title ou text, onPress ou handlePress
+    const buttonText = title || text || '';
+    const buttonOnPress = onPress || handlePress || (() => {});
 
-  return tailwind.style(baseStyles, colorStyles);
-};
+    // Se isDestructive, usar variant danger
+    const finalVariant = isDestructive ? 'danger' : variant;
 
-export const Button = ({
-  text,
-  isDestructive = false,
-  handlePress,
-  variant = 'primary',
-  disabled = false,
-}: ButtonProps) => {
-  const { handlers, animatedStyle } = useScaleAnimation();
-  const haptic = useHaptic(isDestructive ? 'medium' : 'selection');
+    const variantStyle = variantStyles[finalVariant];
+    const sizeStyle = sizeStyles[size];
 
-  const handleButtonPress = useCallback(() => {
-    if (!disabled) {
-      haptic?.();
-      handlePress?.();
-    }
-  }, [disabled, handlePress, haptic]);
-
-  const isPrimary = variant === 'primary';
-
-  return (
-    <Animated.View style={animatedStyle}>
+    return (
       <Pressable
-        onPress={handleButtonPress}
-        disabled={disabled}
-        accessible
-        accessibilityRole="button"
-        accessibilityState={{ disabled }}
-        style={({ pressed }) => getButtonStyles(isPrimary, pressed)}
-        {...handlers}>
-        <Animated.Text style={getTextStyles(isPrimary, isDestructive)}>{text}</Animated.Text>
+        onPress={buttonOnPress}
+        disabled={disabled || loading}
+        style={[
+          tailwind.style('rounded-lg items-center justify-center flex-row'),
+          tailwind.style(variantStyle.container),
+          tailwind.style(sizeStyle.container),
+          fullWidth && tailwind.style('w-full'),
+          (disabled || loading) && tailwind.style('opacity-50'),
+          style,
+        ]}
+      >
+        {loading && (
+          <ActivityIndicator
+            size="small"
+            color={finalVariant === 'outline' ? '#111827' : '#FFFFFF'}
+            style={tailwind.style('mr-2')}
+          />
+        )}
+        <Text
+          style={[
+            tailwind.style('font-inter-medium-24'),
+            tailwind.style(variantStyle.text),
+            tailwind.style(sizeStyle.text),
+          ]}
+        >
+          {buttonText}
+        </Text>
       </Pressable>
-    </Animated.View>
-  );
-};
+    );
+  },
+);
+
+Button.displayName = 'Button';

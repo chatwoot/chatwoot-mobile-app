@@ -171,7 +171,8 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
           <Animated.View
             style={tailwind.style('pl-0.5 pr-0.5')}
             entering={FadeIn}
-            exiting={FadeOut}>
+            exiting={FadeOut}
+          >
             <Icon
               icon={
                 <PauseIcon
@@ -186,7 +187,8 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
           <Animated.View
             style={tailwind.style('pl-0.5 pr-0.5')}
             entering={FadeIn}
-            exiting={FadeOut}>
+            exiting={FadeOut}
+          >
             <PlayIcon
               fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
               fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}

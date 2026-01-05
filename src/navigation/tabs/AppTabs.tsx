@@ -1,18 +1,18 @@
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 import { authActions } from '@/store/auth/authActions';
 import * as Sentry from '@sentry/react-native';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import {
-  selectCurrentUserAccount,
-  selectCurrentUserAccountId,
-  selectLoggedIn,
-  selectPubSubToken,
-  selectUser,
-  selectUserId,
+    selectCurrentUserAccount,
+    selectCurrentUserAccountId,
+    selectLoggedIn,
+    selectPubSubToken,
+    selectUser,
+    selectUserId,
 } from '@/store/auth/authSelectors';
 import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 
@@ -22,7 +22,9 @@ import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 import ChatScreen from '@/screens/chat-screen/ChatScreen';
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
-import { AuthStack, ConversationStack, InboxStack, SettingsStack } from '../stack';
+import { KanbanBoardScreen } from '@/screens/kanban/KanbanBoardScreen';
+import { KanbanBoardsListScreen } from '@/screens/kanban/KanbanBoardsListScreen';
+import { AuthStack, ConversationStack, InboxStack, KanbanStack, SettingsStack } from '../stack';
 
 import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
@@ -31,7 +33,12 @@ import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
 import { inboxActions } from '@/store/inbox/inboxActions';
 import { labelActions } from '@/store/label/labelActions';
 import { settingsActions } from '@/store/settings/settingsActions';
-import { selectChatwootVersion, selectInstallationUrl } from '@/store/settings/settingsSelectors';
+import {
+    selectAppVersion,
+    selectInstallationUrl,
+    selectPushToken,
+} from '@/store/settings/settingsSelectors';
+import { setTokenValid } from '@/store/settings/settingsSlice';
 import actionCableConnector from '@/utils/actionCable';
 import AnalyticsHelper from '@/utils/analyticsUtils';
 import { clearAllDeliveredNotifications } from '@/utils/pushUtils';
@@ -43,6 +50,7 @@ const Tab = createBottomTabNavigator();
 export type TabParamList = {
   Conversations: undefined;
   Inbox: undefined;
+  Kanban: undefined;
   Settings: undefined;
   Login: undefined;
   ConfigInstallationURL: undefined;
@@ -62,6 +70,8 @@ export type TabBarExcludedScreenParamList = {
   ImageScreen: undefined;
   ConversationDetails: undefined;
   ConversationAction: undefined;
+  KanbanBoardsList: undefined;
+  KanbanBoard: { funnelId: number };
 };
 const Stack = createNativeStackNavigator<TabBarExcludedScreenParamList>();
 
@@ -71,32 +81,107 @@ const Tabs = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const installationUrl = useAppSelector(selectInstallationUrl);
-  const chatwootVersion = useAppSelector(selectChatwootVersion);
+  const appVersion = useAppSelector(selectAppVersion);
   const currentAccount = useAppSelector(selectCurrentUserAccount);
   const currentAccountRole = currentAccount?.role;
   const pubSubToken = useAppSelector(selectPubSubToken);
   const userId = useAppSelector(selectUserId);
   const accountId = useAppSelector(selectCurrentUserAccountId);
   const webSocketUrl = useAppSelector(selectWebSocketUrl);
+  const pushToken = useAppSelector(selectPushToken);
+  const isTokenValid = useAppSelector(state => state.settings.isTokenValid);
+
+  // Ref para evitar chamadas múltiplas de saveDeviceDetails
+  const hasRegisteredDeviceRef = useRef(false);
+  const registrationInProgressRef = useRef(false);
 
   useEffect(() => {
     // Here is the place we are loading all the data for the app first time first time or user switches account
     if (user) {
       dispatch(authActions.getProfile());
-      dispatch(settingsActions.saveDeviceDetails()); // Só registra token se usuário estiver logado
-      dispatch(inboxActions.fetchInboxes());
-      initActionCable();
-      dispatch(labelActions.fetchLabels());
-      dispatch(setCurrentState('none'));
-      dispatch(clearSelection());
-      dispatch(dashboardAppActions.index());
-      dispatch(customAttributeActions.index());
+      // API Access Token já é salvo automaticamente durante o login
+
+      // Registrar dispositivo apenas uma vez por sessão ou se não tiver pushToken
+      // OU se o token foi marcado como válido mas ainda não foi registrado
+      if (
+        (!hasRegisteredDeviceRef.current && !registrationInProgressRef.current) ||
+        (isTokenValid && !hasRegisteredDeviceRef.current)
+      ) {
+        registrationInProgressRef.current = true;
+        dispatch(settingsActions.saveDeviceDetails())
+          .then(() => {
+            hasRegisteredDeviceRef.current = true;
+            registrationInProgressRef.current = false;
+            // Token válido - carregar dados normalmente
+            dispatch(setTokenValid(true));
+
+            // Carregar dados apenas se token for válido
+            dispatch(inboxActions.fetchInboxes());
+            initActionCable();
+            dispatch(labelActions.fetchLabels());
+            dispatch(setCurrentState('none'));
+            dispatch(clearSelection());
+            dispatch(dashboardAppActions.index());
+            dispatch(customAttributeActions.index());
+          })
+          .catch(error => {
+            registrationInProgressRef.current = false;
+
+            // Se for erro de token, marcar como inválido e não carregar dados
+            const errorPayload = error?.payload || error;
+            const isTokenError =
+              (typeof errorPayload === 'object' &&
+                errorPayload !== null &&
+                'isTokenError' in errorPayload) ||
+              (typeof errorPayload === 'string' &&
+                (errorPayload.includes('token inválido') ||
+                  errorPayload.includes('token não autorizado') ||
+                  errorPayload.includes('configure o token') ||
+                  errorPayload.includes('Access token inválido')));
+
+            if (isTokenError) {
+              dispatch(setTokenValid(false));
+              // Não carregar conversas/dados se token for inválido
+              console.log('[NOTCHAT] Token inválido - não carregando dados');
+              // Resetar ref para permitir nova tentativa quando token for configurado
+              hasRegisteredDeviceRef.current = false;
+            } else {
+              // Para outros erros, ainda tentar carregar dados
+              dispatch(setTokenValid(true));
+              dispatch(inboxActions.fetchInboxes());
+              initActionCable();
+              dispatch(labelActions.fetchLabels());
+              dispatch(setCurrentState('none'));
+              dispatch(clearSelection());
+              dispatch(dashboardAppActions.index());
+              dispatch(customAttributeActions.index());
+            }
+
+            // Se falhar, permite tentar novamente na próxima vez
+            hasRegisteredDeviceRef.current = false;
+          });
+      } else if (isTokenValid && hasRegisteredDeviceRef.current) {
+        // Se já registrado e token válido, carregar dados normalmente
+        dispatch(inboxActions.fetchInboxes());
+        initActionCable();
+        dispatch(labelActions.fetchLabels());
+        dispatch(setCurrentState('none'));
+        dispatch(clearSelection());
+        dispatch(dashboardAppActions.index());
+        dispatch(customAttributeActions.index());
+      }
+      // Se token não válido, não carregar nada
+
       initAnalytics();
       initSentry();
       initPushNotifications();
+    } else {
+      // Reset ref quando usuário faz logout
+      hasRegisteredDeviceRef.current = false;
+      registrationInProgressRef.current = false;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]); // Mudar dependência de [] para [user]
+  }, [user?.id, isTokenValid]); // Adicionar isTokenValid como dependência
 
   const initAnalytics = useCallback(async () => {
     if (user) {
@@ -128,7 +213,7 @@ const Tabs = () => {
   }, [accountId, pubSubToken, userId, webSocketUrl]);
 
   useEffect(() => {
-    dispatch(settingsActions.getChatwootVersion({ installationUrl: installationUrl }));
+    dispatch(settingsActions.getAppVersion({ installationUrl: installationUrl }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [installationUrl]);
 
@@ -140,13 +225,13 @@ const Tabs = () => {
   );
 
   const checkAppVersion = useCallback(async () => {
-    if (chatwootVersion) {
+    if (appVersion) {
       checkServerSupport({
-        installedVersion: chatwootVersion,
+        installedVersion: appVersion,
         userRole: currentAccountRole,
       });
     }
-  }, [chatwootVersion, currentAccountRole]);
+  }, [appVersion, currentAccountRole]);
 
   useEffect(() => {
     checkAppVersion();
@@ -165,6 +250,7 @@ const Tabs = () => {
           component={ConversationStack}
         />
       )}
+      <Tab.Screen name="Kanban" options={{ headerShown: false }} component={KanbanStack} />
       <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
     </Tab.Navigator>
   );
@@ -197,6 +283,22 @@ export const AppTabs = () => {
           }}
           name="Dashboard"
           component={DashboardScreen}
+        />
+        <Stack.Screen
+          options={{
+            animation: 'slide_from_right',
+            headerShown: false,
+          }}
+          name="KanbanBoardsList"
+          component={KanbanBoardsListScreen}
+        />
+        <Stack.Screen
+          options={{
+            animation: 'slide_from_right',
+            headerShown: false,
+          }}
+          name="KanbanBoard"
+          component={KanbanBoardScreen}
         />
       </Stack.Navigator>
     );

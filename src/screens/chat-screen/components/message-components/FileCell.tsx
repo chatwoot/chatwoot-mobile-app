@@ -97,7 +97,8 @@ export const FilePreview = (props: FilePreviewProps) => {
                 isOutgoing ? 'text-blue-800' : '',
               ),
               style.androidTextOnlyStyle,
-            ]}>
+            ]}
+          >
             {fileName}
           </Animated.Text>
           <Animated.View
@@ -157,7 +158,8 @@ export const FileCell = (props: FileCellProps) => {
         !shouldRenderAvatar && isIncoming ? 'ml-7' : '',
         !shouldRenderAvatar && isOutgoing ? 'pr-7' : '',
         shouldRenderAvatar ? 'pb-2' : '',
-      )}>
+      )}
+    >
       <Animated.View style={tailwind.style('flex flex-row')}>
         {sender?.thumbnail && sender?.name && isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
@@ -179,16 +181,19 @@ export const FileCell = (props: FileCellProps) => {
                       : ''
                   : '',
               ),
-            ]}>
+            ]}
+          >
             <FilePreview {...{ fileSrc, isIncoming, isOutgoing }} />
             <Animated.View
-              style={tailwind.style('h-[21px] pt-[5px] pb-0.5 flex flex-row items-center pl-1.5')}>
+              style={tailwind.style('h-[21px] pt-[5px] pb-0.5 flex flex-row items-center pl-1.5')}
+            >
               <Animated.Text
                 style={tailwind.style(
                   'text-xs font-inter-420-20 tracking-[0.32px] leading-[14px] pr-1',
                   isIncoming ? 'text-whiteA-A11' : '',
                   isOutgoing ? 'text-gray-700' : '',
-                )}>
+                )}
+              >
                 {unixTimestampToReadableTime(timeStamp)}
               </Animated.Text>
               <DeliveryStatus

@@ -1,23 +1,23 @@
+import { BlurView, BlurViewProps } from '@react-native-community/blur';
 import React, { PropsWithChildren } from 'react';
 import { Dimensions, Platform, Pressable, StyleSheet } from 'react-native';
 import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useDerivedValue,
-  withSpring,
+    interpolate,
+    useAnimatedStyle,
+    useDerivedValue,
+    withSpring,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
-import { BlurView, BlurViewProps } from '@react-native-community/blur';
 
 import { TAB_BAR_HEIGHT } from '@/constants';
 import { useRefsContext } from '@/context';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { setActionState } from '@/store/conversation/conversationActionSlice';
+import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '../common';
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice';
-import { setActionState } from '@/store/conversation/conversationActionSlice';
 
 const ACTION_TAB_HEIGHT = 58;
 
@@ -56,12 +56,41 @@ const ActionUserIcon = () => (
 );
 
 const ActionStatusIcon = () => (
-  <Svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+  <Svg width="38" height="38" viewBox="0 0 38 38" fill="none">
     <Path
       d="M3.5 7.33301L17.5 7.33301M17.5 7.33301C17.5 9.26601 19.067 10.833 21 10.833C22.933 10.833 24.5 9.266 24.5 7.33301C24.5 5.40001 22.933 3.83301 21 3.83301C19.067 3.83301 17.5 5.40001 17.5 7.33301ZM10.5 21.6663L24.5 21.6663M10.5 21.6663C10.5 23.5993 8.933 25.1663 7 25.1663C5.067 25.1663 3.5 23.5993 3.5 21.6663C3.5 19.7333 5.067 18.1663 7 18.1663C8.933 18.1663 10.5 19.7333 10.5 21.6663Z"
       stroke="black"
       strokeOpacity="0.91"
       strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+const ActionMoveToInboxIcon = () => (
+  <Svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+    <Path
+      d="M2 6h20v16H2z"
+      stroke="black"
+      strokeOpacity="0.91"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M2 6l10 9 10-9"
+      stroke="black"
+      strokeOpacity="0.91"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M23 14h4m0 0l-2-2m2 2l-2 2"
+      stroke="black"
+      strokeOpacity="0.91"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
@@ -139,15 +168,15 @@ export const ActionTabs = () => {
 
   const handleBulkChangeStatus = () => {
     dispatch(setActionState('Status'));
-    actionsModalSheetRef.current?.present();
   };
   const handleBulkChangeAssignee = () => {
     dispatch(setActionState('Assign'));
-    actionsModalSheetRef.current?.present();
   };
   const handleBulkSetLabels = () => {
     dispatch(setActionState('Label'));
-    actionsModalSheetRef.current?.present();
+  };
+  const handleBulkMoveToInbox = () => {
+    dispatch(setActionState('MoveToInbox'));
   };
 
   const bulkSelectActions = [
@@ -162,9 +191,9 @@ export const ActionTabs = () => {
       onPress: handleBulkChangeAssignee,
     },
     {
-      action: 'assign_team',
-      icon: <ActionStatusIcon />,
-      onPress: handleBulkChangeStatus,
+      action: 'move_to_inbox',
+      icon: <ActionMoveToInboxIcon />,
+      onPress: handleBulkMoveToInbox,
     },
   ];
 

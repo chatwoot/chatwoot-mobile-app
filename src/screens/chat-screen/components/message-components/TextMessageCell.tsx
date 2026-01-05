@@ -58,7 +58,8 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
           shouldRenderAvatar ? 'mb-1' : '',
           messageItem.private ? 'my-2' : '',
         ),
-      ]}>
+      ]}
+    >
       <Animated.View style={tailwind.style('flex flex-row')}>
         {sender && sender?.name && isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>

@@ -1,19 +1,19 @@
 import React from 'react';
 
 import {
-  ChatwootIcon,
-  WebsiteFilledIcon,
-  MailFilledIcon,
-  TelegramFilledIcon,
-  XFilledIcon,
-  WhatsAppFilledIcon,
-  InstagramFilledIcon,
-  MessengerFilledIcon,
-  SMSFilledIcon,
+    InstagramFilledIcon,
+    MailFilledIcon,
+    MessengerFilledIcon,
+    NotchatIcon,
+    SMSFilledIcon,
+    TelegramFilledIcon,
+    WebsiteFilledIcon,
+    WhatsAppFilledIcon,
+    XFilledIcon,
 } from '@/svg-icons';
 
-import { Channel, InboxTypes } from '@/types';
 import { LineFilledIcon } from '@/svg-icons/channels/Line';
+import { Channel, InboxTypes } from '@/types';
 
 const isTwilioChannel = (channelType: Channel) => {
   return channelType === InboxTypes.TWILIO;
@@ -74,5 +74,5 @@ export const getChannelIcon = (channelType: Channel, medium: string, additionalT
     return <XFilledIcon />;
   }
 
-  return <ChatwootIcon />;
+  return <NotchatIcon />;
 };

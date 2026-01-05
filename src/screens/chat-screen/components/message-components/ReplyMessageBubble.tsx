@@ -64,14 +64,16 @@ export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
           `max-w-[${TEXT_MAX_WIDTH}px]`,
           variantBaseMap[props.variant],
         ),
-      ]}>
+      ]}
+    >
       <Animated.View style={tailwind.style('flex flex-row')}>
         <Animated.View style={tailwind.style('w-[3px] bg-gray-300 h-auto rounded-[4px]')} />
         <Animated.View style={tailwind.style('pl-2.5')}>
           <Animated.Text
             style={tailwind.style(
               'text-cxs font-inter-420-20 leading-[14.95px] tracking-[0.32px] text-blackA-A11',
-            )}>
+            )}
+          >
             Replying to {replyMessageItem?.sender?.name}
           </Animated.Text>
           {hasAttachments ? (
@@ -80,7 +82,8 @@ export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
               <Animated.Text
                 style={tailwind.style(
                   'text-[14px] font-inter-normal-20 leading-[19.6px] tracking-[0.16px] text-gray-950 capitalize pl-1.5',
-                )}>
+                )}
+              >
                 {replyMessageItem?.attachments[0].fileType}
               </Animated.Text>
             </Animated.View>
@@ -97,7 +100,8 @@ export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
                 numberOfLines={1}
                 style={tailwind.style(
                   'text-[14px] font-inter-normal-20 leading-[19.6px] tracking-[0.16px] text-gray-950 capitalize',
-                )}>
+                )}
+              >
                 {replyMessageItem?.content}
               </Animated.Text>
             )

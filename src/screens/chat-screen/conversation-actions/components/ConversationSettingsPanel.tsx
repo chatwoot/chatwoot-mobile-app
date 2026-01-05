@@ -7,29 +7,35 @@ import { Agent, ConversationPriority, Team } from '@/types';
 import AssigneePanel from './AssigneePanel';
 import TeamPanel from './TeamPanel';
 import PriorityPanel from './PriorityPanel';
+import InboxPanel from './InboxPanel';
 
 type ConversationSettingsPanelProps = {
   priority: ConversationPriority;
   team: Team | null;
   assignee: Agent | null;
+  inboxId: number | undefined;
   onChangeAssignee: () => void;
   onChangeTeamAssignee: () => void;
   onChangePriority: () => void;
+  onChangeInbox: () => void;
 };
 
 export const ConversationSettingsPanel = ({
   assignee,
   team,
   priority,
+  inboxId,
   onChangeAssignee,
   onChangeTeamAssignee,
   onChangePriority,
+  onChangeInbox,
 }: ConversationSettingsPanelProps) => {
   return (
     <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
       <AssigneePanel assignee={assignee} onPress={onChangeAssignee} />
       <TeamPanel team={team} onPress={onChangeTeamAssignee} />
       <PriorityPanel priority={priority} onPress={onChangePriority} />
+      <InboxPanel inboxId={inboxId} onPress={onChangeInbox} />
     </Animated.View>
   );
 };

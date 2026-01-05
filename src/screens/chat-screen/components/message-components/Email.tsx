@@ -65,7 +65,8 @@ export const Email = (props: EmailProps) => {
                 : ''
             : '',
         ),
-      ]}>
+      ]}
+    >
       {contentAttributes && <EmailMeta {...{ contentAttributes, sender }} />}
       <Animated.View style={[tailwind.style('flex bg-white rounded-2xl w-full')]}>
         <Animated.View style={tailwind.style('px-4 py-2 w-full')}>
@@ -89,12 +90,14 @@ export const Email = (props: EmailProps) => {
         </Animated.View>
       </Animated.View>
       <Animated.View
-        style={tailwind.style('h-[21px] pt-[6px] pb-0.5 flex flex-row items-center justify-end')}>
+        style={tailwind.style('h-[21px] pt-[6px] pb-0.5 flex flex-row items-center justify-end')}
+      >
         <Text
           style={tailwind.style(
             'text-xs font-inter-420-20 tracking-[0.32px] pr-1 text-gray-700',
             isMessageFailed ? 'text-whiteA-A11' : '',
-          )}>
+          )}
+        >
           {unixTimestampToReadableTime(timeStamp)}
         </Text>
         <DeliveryStatus

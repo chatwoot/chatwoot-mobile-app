@@ -93,7 +93,7 @@ android {
         applicationId 'com.chatwoot.app'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode 10
         versionName "4.3.10"
     }
     signingConfigs {

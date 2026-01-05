@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import Constants from 'expo-constants';
 
 interface User {
   id: string | number;
@@ -27,7 +28,8 @@ class AnalyticsHelper {
   private APIHelper: AxiosInstance;
 
   constructor() {
-    this.analyticsToken = process.env.EXPO_PUBLIC_JUNE_SDK_KEY || '';
+    const extra = Constants.expoConfig?.extra || {};
+    this.analyticsToken = extra.juneSdkKey || '';
     this.user = {} as User;
     this.isAnalyticsEnabled = !!(!__DEV__ && this.analyticsToken);
     this.APIHelper = axios.create({

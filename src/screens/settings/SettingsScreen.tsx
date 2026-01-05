@@ -1,73 +1,75 @@
+import Constants from 'expo-constants';
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, Text, Platform, Pressable } from 'react-native';
+import { Platform, Pressable, StatusBar, Text } from 'react-native';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { StackActions, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StackActions, useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { clearAllContacts } from '@/store/contact/contactSlice';
+import { clearAllConversations } from '@/store/conversation/conversationSlice';
+import { resetNotifications } from '@/store/notification/notificationSlice';
+import { Account, AvailabilityStatus } from '@/types';
+import ChatWootWidget from '@chatwoot/react-native-widget';
 import {
   BottomSheetModal,
   BottomSheetScrollView,
   useBottomSheetSpringConfigs,
 } from '@gorhom/bottom-sheet';
-import DeviceInfo from 'react-native-device-info';
-import * as WebBrowser from 'expo-web-browser';
-import ChatWootWidget from '@chatwoot/react-native-widget';
-import { useSelector } from 'react-redux';
 import * as Application from 'expo-application';
-import { Account, AvailabilityStatus } from '@/types';
-import { clearAllConversations } from '@/store/conversation/conversationSlice';
-import { resetNotifications } from '@/store/notification/notificationSlice';
-import { clearAllContacts } from '@/store/contact/contactSlice';
+import * as WebBrowser from 'expo-web-browser';
+import DeviceInfo from 'react-native-device-info';
+import { useSelector } from 'react-redux';
 
-import i18n from 'i18n';
 import { HELP_URL } from '@/constants/url';
-import { tailwind } from '@/theme';
+import { BrandTokens, tailwind } from '@/theme';
+import i18n from 'i18n';
 
 import {
+  AvailabilityStatusList,
   BottomSheetBackdrop,
   BottomSheetHeader,
   BottomSheetWrapper,
   Button,
   LanguageList,
-  AvailabilityStatusList,
   NotificationPreferences,
-  SwitchAccount,
   SettingsList,
+  SwitchAccount,
 } from '@/components-next';
 import { UserAvatar } from './components/UserAvatar';
 
 import { LANGUAGES, TAB_BAR_HEIGHT } from '@/constants';
 import { useRefsContext } from '@/context';
-import { ChatwootIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
+import { NotchatIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
 import { GenericListType } from '@/types';
 
+import { backendService } from '@/services/BackendService';
+import { authActions } from '@/store/auth/authActions';
+import {
+  selectAccounts,
+  selectCurrentUserAvailability,
+  selectUser,
+} from '@/store/auth/authSelectors';
+import { logout, resetAuth, setAccount } from '@/store/auth/authSlice';
+import { settingsActions } from '@/store/settings/settingsActions';
+import {
+  selectIsCloud,
+  selectLocale,
+  selectPushToken,
+} from '@/store/settings/settingsSelectors';
+import { setLocale, setTokenValid } from '@/store/settings/settingsSlice';
 import { useHaptic } from '@/utils';
 import { SettingsHeader } from './SettingsHeader';
 import { DebugActions } from './components/DebugActions';
-import {
-  selectCurrentUserAvailability,
-  selectUser,
-  selectAccounts,
-} from '@/store/auth/authSelectors';
-import { logout, setAccount } from '@/store/auth/authSlice';
-import { authActions } from '@/store/auth/authActions';
-import {
-  selectLocale,
-  selectIsChatwootCloud,
-  selectPushToken,
-} from '@/store/settings/settingsSelectors';
-import { settingsActions } from '@/store/settings/settingsActions';
-import { setLocale } from '@/store/settings/settingsSlice';
 
-import AnalyticsHelper from '@/utils/analyticsUtils';
 import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
-import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import AnalyticsHelper from '@/utils/analyticsUtils';
+import { getUserPermissions } from '@/utils/permissionUtils';
 
-const appName = Application.applicationName;
+const appName = BrandTokens.name;
 const appVersion = Application.nativeApplicationVersion;
 
 const buildNumber = Application.nativeBuildVersion;
@@ -97,7 +99,7 @@ const SettingsScreen = () => {
 
   const pushToken = useAppSelector(selectPushToken);
 
-  const userPermissions = getUserPermissions(user, activeAccountId);
+  const userPermissions = user ? getUserPermissions(user, activeAccountId || null) : [];
 
   const hasConversationPermission = CONVERSATION_PERMISSIONS.some(permission =>
     userPermissions.includes(permission),
@@ -120,9 +122,9 @@ const SettingsScreen = () => {
     operatingSystem: Platform.OS, // android/ios
   };
 
-  const isChatwootCloud = useAppSelector(selectIsChatwootCloud);
+  const isCloud = useAppSelector(selectIsCloud);
 
-  const chatwootInstance = isChatwootCloud ? `${appName} cloud` : `${appName} self-hosted`;
+  const appInstance = isCloud ? `${BrandTokens.name} Cloud` : `${BrandTokens.name} v1 (beta)`;
 
   const accounts = useSelector(selectAccounts) || [];
 
@@ -169,7 +171,12 @@ const SettingsScreen = () => {
     dispatch(setLocale(locale));
   };
 
-  const changeAccount = (accountId: number) => {
+  const changeAccount = async (accountId: number) => {
+    // Resetar estado de token válido
+    dispatch(setTokenValid(true)); // Corrigir: usar setTokenValid diretamente, não settingsActions.setTokenValid
+
+    dispatch(resetAuth());
+
     dispatch(clearAllContacts());
     dispatch(clearAllConversations());
     dispatch(resetNotifications());
@@ -205,8 +212,28 @@ const SettingsScreen = () => {
   // };
 
   const onClickLogout = useCallback(async () => {
+    // Resetar estado de token válido
+    dispatch(setTokenValid(true)); // Corrigir: usar setTokenValid diretamente, não settingsActions.setTokenValid
+
     await AsyncStorage.removeItem('cwCookie');
-    await dispatch(settingsActions.removeDevice({ pushToken }));
+
+    // Desregistrar dispositivo do backend NOTCHAT
+    if (pushToken) {
+      try {
+        await backendService.unregisterDevice(pushToken);
+        console.log('[NOTCHAT] Device unregistered from backend successfully');
+      } catch (error) {
+        console.error('[NOTCHAT] Failed to unregister device from backend:', error);
+        // Continuar logout mesmo se falhar
+      }
+    }
+
+    // Remover token FCM do AsyncStorage
+    await AsyncStorage.removeItem('fcm_token');
+
+    // Opcional: também remover do Chatwoot (se necessário)
+    // await dispatch(settingsActions.removeDevice({ pushToken }));
+
     dispatch(logout());
   }, [dispatch, pushToken]);
 
@@ -263,7 +290,7 @@ const SettingsScreen = () => {
     {
       hasChevron: true,
       title: i18n.t('SETTINGS.CHAT_WITH_US'),
-      icon: <ChatwootIcon />,
+      icon: <NotchatIcon />,
       subtitle: '',
       subtitleType: 'light',
       onPressListItem: () => toggleWidget(true),
@@ -280,14 +307,16 @@ const SettingsScreen = () => {
       <SettingsHeader />
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}>
+        contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}
+      >
         <Animated.View style={tailwind.style('flex justify-center items-center pt-4 gap-4')}>
           <Animated.View>
             <UserAvatar src={avatarUrl} name={name} status={availabilityStatus} />
             <Animated.View
               style={tailwind.style(
                 'absolute border-[2px] border-white rounded-full -bottom-[2px] right-[10px]',
-              )}></Animated.View>
+              )}
+            ></Animated.View>
           </Animated.View>
           <Animated.View style={tailwind.style('flex flex-col items-center gap-1')}>
             <Animated.Text style={tailwind.style('text-[22px] font-inter-580-24 text-gray-950')}>
@@ -296,7 +325,8 @@ const SettingsScreen = () => {
             <Animated.Text
               style={tailwind.style(
                 'text-[15px] font-inter-420-20 leading-[17.25px] text-gray-900',
-              )}>
+              )}
+            >
               {email}
             </Animated.Text>
           </Animated.View>
@@ -317,9 +347,10 @@ const SettingsScreen = () => {
         </Animated.View>
         <Pressable
           style={tailwind.style('p-4 items-center')}
-          onLongPress={() => debugActionsSheetRef.current?.present()}>
+          onLongPress={() => debugActionsSheetRef.current?.present()}
+        >
           <Text style={tailwind.style('text-sm text-gray-700 ')}>
-            {`${chatwootInstance} ${appVersionDetails}`}
+            {appInstance}
           </Text>
         </Pressable>
       </Animated.ScrollView>
@@ -333,7 +364,8 @@ const SettingsScreen = () => {
         // bottomInset={bottom === 0 ? 12 : bottom}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
-        snapPoints={[190]}>
+        snapPoints={[190]}
+      >
         <BottomSheetWrapper>
           <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_AVAILABILITY')} />
           <AvailabilityStatusList
@@ -352,7 +384,8 @@ const SettingsScreen = () => {
         animationConfigs={animationConfigs}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
-        snapPoints={['70%']}>
+        snapPoints={['70%']}
+      >
         <BottomSheetScrollView showsVerticalScrollIndicator={false}>
           <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_LANGUAGE')} />
           <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
@@ -368,7 +401,8 @@ const SettingsScreen = () => {
         animationConfigs={animationConfigs}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
-        snapPoints={['52%']}>
+        snapPoints={['52%']}
+      >
         <BottomSheetWrapper>
           <BottomSheetHeader headerText={i18n.t('SETTINGS.NOTIFICATION_PREFERENCES')} />
           <NotificationPreferences />
@@ -384,7 +418,8 @@ const SettingsScreen = () => {
         animationConfigs={animationConfigs}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
-        snapPoints={['50%']}>
+        snapPoints={['50%']}
+      >
         <BottomSheetWrapper>
           <BottomSheetHeader headerText={i18n.t('SETTINGS.SWITCH_ACCOUNT')} />
           <SwitchAccount
@@ -402,19 +437,20 @@ const SettingsScreen = () => {
         animationConfigs={animationConfigs}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
-        snapPoints={['36%']}>
+        snapPoints={['36%']}
+      >
         <BottomSheetWrapper>
           <BottomSheetHeader headerText={i18n.t('SETTINGS.DEBUG_ACTIONS')} />
           <DebugActions />
         </BottomSheetWrapper>
       </BottomSheetModal>
-      {!!process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN &&
-        !!process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL &&
+      {!!Constants.expoConfig?.extra?.chatwootWebsiteToken &&
+        !!Constants.expoConfig?.extra?.chatwootBaseUrl &&
         !!showWidget && (
           <ChatWootWidget
-            websiteToken={process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN}
+            websiteToken={Constants.expoConfig?.extra?.chatwootWebsiteToken}
             locale="en"
-            baseUrl={process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL}
+            baseUrl={Constants.expoConfig?.extra?.chatwootBaseUrl}
             closeModal={() => toggleWidget(false)}
             isModalVisible={showWidget}
             user={userDetails}

@@ -1,3 +1,9 @@
+import {
+  BottomSheetModal,
+  useBottomSheetModal,
+  useBottomSheetSpringConfigs,
+} from '@gorhom/bottom-sheet';
+import { FlashList } from '@shopify/flash-list';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, AppState, RefreshControl, StatusBar } from 'react-native';
 import Animated, {
@@ -7,58 +13,53 @@ import Animated, {
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  BottomSheetModal,
-  useBottomSheetSpringConfigs,
-  useBottomSheetModal,
-} from '@gorhom/bottom-sheet';
-import { FlashList } from '@shopify/flash-list';
 
 import {
-  ConversationItemContainer,
-  ConversationHeader,
-  StatusFilters,
-  SortByFilters,
-  InboxFilters,
   AssigneeTypeFilters,
+  ConversationHeader,
+  ConversationItemContainer,
+  InboxFilters,
+  SortByFilters,
+  StatusFilters,
 } from './components';
 
 import { ActionTabs, BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
 
-import { EmptyStateIcon } from '@/svg-icons';
 import {
-  SCREENS,
-  TAB_BAR_HEIGHT,
   LAST_ACTIVE_TIMESTAMP_KEY,
   LAST_ACTIVE_TIMESTAMP_THRESHOLD,
+  SCREENS,
+  TAB_BAR_HEIGHT,
 } from '@/constants';
 import {
   ConversationListStateProvider,
   useConversationListStateContext,
   useRefsContext,
 } from '@/context';
+import { EmptyStateIcon } from '@/svg-icons';
 
-import { tailwind } from '@/theme';
-import { Conversation } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentSlice';
+import { selectUserId } from '@/store/auth/authSelectors';
+import { clearAllContacts } from '@/store/contact/contactSlice';
+import { resetActionState } from '@/store/conversation/conversationActionSlice';
+import { conversationActions } from '@/store/conversation/conversationActions';
+import { FilterState, selectFilters } from '@/store/conversation/conversationFilterSlice';
 import {
   selectBottomSheetState,
   setBottomSheetState,
 } from '@/store/conversation/conversationHeaderSlice';
-import { resetActionState } from '@/store/conversation/conversationActionSlice';
-import { conversationActions } from '@/store/conversation/conversationActions';
 import {
+  getFilteredConversations,
   selectConversationsLoading,
   selectIsAllConversationsFetched,
-  getFilteredConversations,
 } from '@/store/conversation/conversationSelectors';
-import { selectFilters, FilterState } from '@/store/conversation/conversationFilterSlice';
-import { ConversationPayload } from '@/store/conversation/conversationTypes';
 import { clearAllConversations } from '@/store/conversation/conversationSlice';
-import { selectUserId } from '@/store/auth/authSelectors';
-import { clearAllContacts } from '@/store/contact/contactSlice';
-import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentSlice';
+import { ConversationPayload } from '@/store/conversation/conversationTypes';
+import { tailwind } from '@/theme';
+import { Conversation } from '@/types';
 
+import { TokenRequiredMessage } from '@/components-next/token-required/TokenRequiredMessage';
 import i18n from '@/i18n';
 import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
 import { getCurrentRouteName } from '@/utils/navigationUtils';
@@ -94,6 +95,7 @@ const ConversationList = () => {
   const isConversationsLoading = useAppSelector(selectConversationsLoading);
   // This is used to check if all the conversations are fetched
   const isAllConversationsFetched = useAppSelector(selectIsAllConversationsFetched);
+  const isTokenValid = useAppSelector(state => state.settings.isTokenValid);
 
   const handleRender = useCallback(({ item, index }: FlashListRenderItemType) => {
     return (
@@ -124,18 +126,29 @@ const ConversationList = () => {
 
   useEffect(() => {
     dismissAll();
-    clearAndFetchConversations(filters);
+    // Só buscar conversas se token for válido
+    if (isTokenValid) {
+      clearAndFetchConversations(filters);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []); // Adicionar verificação de isTokenValid
 
-  const clearAndFetchConversations = useCallback(async (filters: FilterState) => {
-    setPageNumber(1);
-    await dispatch(clearAllConversations());
-    await dispatch(clearAllContacts());
-    await dispatch(clearAssignableAgents());
-    fetchConversations(filters);
+  const clearAndFetchConversations = useCallback(
+    async (filters: FilterState) => {
+      // Não buscar conversas se token não for válido
+      if (!isTokenValid) {
+        return;
+      }
+
+      setPageNumber(1);
+      await dispatch(clearAllConversations());
+      await dispatch(clearAllContacts());
+      await dispatch(clearAssignableAgents());
+      fetchConversations(filters);
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    [filters, isTokenValid], // Adicionar isTokenValid como dependência
+  );
 
   const ListFooterComponent = () => {
     if (isAllConversationsFetched) return null;
@@ -194,6 +207,11 @@ const ConversationList = () => {
 
   const fetchConversations = useCallback(
     async (filters: FilterState, page: number = 1) => {
+      // Não buscar conversas se token não for válido
+      if (!isTokenValid) {
+        return;
+      }
+
       const conversationFilters = {
         status: filters.status,
         assigneeType: filters.assignee_type,
@@ -205,7 +223,7 @@ const ConversationList = () => {
       dispatch(conversationActions.fetchConversations(conversationFilters));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    [isTokenValid], // Adicionar isTokenValid como dependência
   );
 
   const onChangePageNumber = () => {
@@ -236,6 +254,11 @@ const ConversationList = () => {
   );
 
   const shouldShowEmptyLoader = isConversationsLoading && allConversations.length === 0;
+
+  // Se token não for válido, mostrar mensagem em vez das conversas
+  if (!isTokenValid) {
+    return <TokenRequiredMessage />;
+  }
 
   return shouldShowEmptyLoader ? (
     <Animated.View

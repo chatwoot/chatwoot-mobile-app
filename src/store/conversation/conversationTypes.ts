@@ -1,12 +1,12 @@
-import type { Conversation, ConversationListMeta, ConversationMeta } from '@/types/Conversation';
+import { MESSAGE_STATUS, MESSAGE_TYPES } from '@/constants';
+import { Agent, ConversationPriority, Team } from '@/types';
 import type {
   AssigneeTypes,
   ConversationStatus,
   SortTypes,
 } from '@/types/common/ConversationStatus';
+import type { Conversation, ConversationListMeta, ConversationMeta } from '@/types/Conversation';
 import type { Message } from '@/types/Message';
-import { MESSAGE_STATUS, MESSAGE_TYPES } from '@/constants';
-import { Agent, ConversationPriority, Team } from '@/types';
 
 export interface ConversationListAPIResponse {
   data: {
@@ -237,4 +237,34 @@ export interface TypingPayload {
 export interface TogglePriorityPayload {
   conversationId: number;
   priority: ConversationPriority;
+}
+
+export interface MoveToInboxPayload {
+  conversationId: number;
+  inboxId: number;
+}
+
+export interface BulkMoveToInboxPayload {
+  conversationIds: number[];
+  inboxId: number;
+}
+
+export interface MoveToInboxAPIResponse {
+  message?: string;
+  payload?: {
+    id: number;
+    inbox_id: number;
+  };
+  id?: number;
+  inbox_id?: number;
+}
+
+export interface BulkMoveToInboxAPIResponse {
+  message?: string;
+  payload?: {
+    moved_count: number;
+    inbox_id: number;
+  };
+  moved_count?: number;
+  inbox_id?: number;
 }

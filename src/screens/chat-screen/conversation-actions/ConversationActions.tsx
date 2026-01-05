@@ -1,33 +1,33 @@
+import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 import React, { useEffect } from 'react';
 import { Alert, Dimensions, Platform, Share } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
-import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 
 import { BottomSheetBackdrop, Button } from '@/components-next';
-import {
-  ConversationBasicActions,
-  ConversationLabelActions,
-  ConversationSettingsPanel,
-  AddParticipantList,
-  UpdateParticipant,
-} from './components';
 import { TAB_BAR_HEIGHT } from '@/constants';
-import { tailwind } from '@/theme';
-import { ConversationStatus } from '@/types';
 import { useChatWindowContext } from '@/context';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { conversationActions } from '@/store/conversation/conversationActions';
+import { selectConversationById } from '@/store/conversation/conversationSelectors';
+import { tailwind } from '@/theme';
+import { ConversationStatus } from '@/types';
+import {
+    AddParticipantList,
+    ConversationBasicActions,
+    ConversationLabelActions,
+    ConversationSettingsPanel,
+    UpdateParticipant,
+} from './components';
 
-import { setActionState } from '@/store/conversation/conversationActionSlice';
 import { useRefsContext } from '@/context';
+import { selectConversationParticipantsByConversationId } from '@/store/conversation-participant/conversationParticipantSelectors';
+import { setActionState } from '@/store/conversation/conversationActionSlice';
 import { selectSingleConversation } from '@/store/conversation/conversationSelectedSlice';
+import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { teamActions } from '@/store/team/teamActions';
 import { selectAllTeams } from '@/store/team/teamSelectors';
-import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { ConversationMetaInformation } from './components/ConversationMetaInformation';
-import { selectConversationParticipantsByConversationId } from '@/store/conversation-participant/conversationParticipantSelectors';
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 
@@ -97,21 +97,24 @@ export const ConversationActions = () => {
     if (!conversation) return;
     dispatch(selectSingleConversation(conversation));
     dispatch(setActionState('Assign'));
-    actionsModalSheetRef.current?.present();
   };
 
   const onChangeTeamAssignee = () => {
     if (!conversation) return;
     dispatch(selectSingleConversation(conversation));
     dispatch(setActionState('TeamAssign'));
-    actionsModalSheetRef.current?.present();
   };
 
   const onChangePriority = () => {
     if (!conversation) return;
     dispatch(selectSingleConversation(conversation));
     dispatch(setActionState('Priority'));
-    actionsModalSheetRef.current?.present();
+  };
+
+  const onChangeInbox = () => {
+    if (!conversation) return;
+    dispatch(selectSingleConversation(conversation));
+    dispatch(setActionState('MoveToInbox'));
   };
 
   const onAddParticipant = () => {
@@ -135,9 +138,11 @@ export const ConversationActions = () => {
             assignee={assignee || null}
             team={currentTeam || null}
             priority={priority || null}
+            inboxId={conversation?.inboxId}
             onChangeAssignee={onChangeAssignee}
             onChangeTeamAssignee={onChangeTeamAssignee}
             onChangePriority={onChangePriority}
+            onChangeInbox={onChangeInbox}
           />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-10')}>

@@ -1,3 +1,3 @@
-export * from './Button';
-export * from './IconButton';
-export * from './AuthButton';
+export { AuthButton } from './AuthButton';
+export { Button } from './Button';
+export type { ButtonProps } from './Button';

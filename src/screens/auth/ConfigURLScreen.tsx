@@ -1,23 +1,23 @@
+import { Button, Icon } from '@/components-next';
+import { URL_WITHOUT_HTTP_REGEX } from '@/constants';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import i18n from '@/i18n';
+import { settingsActions } from '@/store/settings/settingsActions';
+import { selectBaseUrl } from '@/store/settings/settingsSelectors';
+import { resetSettings } from '@/store/settings/settingsSlice';
+import { LinkIcon } from '@/svg-icons';
+import { BrandTokens, tailwind } from '@/theme';
+import * as Application from 'expo-application';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Animated, StatusBar, TextInput, View } from 'react-native';
-import * as Application from 'expo-application';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, Icon } from '@/components-next';
-import { URL_WITHOUT_HTTP_REGEX } from '@/constants';
-import { LinkIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
-import i18n from '@/i18n';
-import { useAppSelector, useAppDispatch } from '@/hooks';
-import { selectBaseUrl } from '@/store/settings/settingsSelectors';
-import { resetSettings } from '@/store/settings/settingsSlice';
-import { settingsActions } from '@/store/settings/settingsActions';
 
 type FormData = {
   url: string;
 };
 
-const appName = Application.applicationName;
+const appIdentifier = Application.applicationName;
 
 const ConfigURLScreen = () => {
   const baseUrl = useAppSelector(selectBaseUrl);
@@ -30,7 +30,7 @@ const ConfigURLScreen = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      url: baseUrl ? baseUrl : appName === 'Chatwoot' ? 'app.chatwoot.com' : '',
+      url: baseUrl ? baseUrl : (appIdentifier === 'Chatwoot' || appIdentifier === 'notchat' || appIdentifier === BrandTokens.name) ? 'app.chatwoot.com' : '',
     },
   });
 
@@ -65,7 +65,7 @@ const ConfigURLScreen = () => {
               style={tailwind.style(
                 'font-inter-normal-20 leading-[18px] tracking-[0.32px] text-gray-900',
               )}>
-              {i18n.t('CONFIGURE_URL.DESCRIPTION')}
+              {i18n.t('CONFIGURE_URL.DESCRIPTION', { appName: BrandTokens.name })}
             </Animated.Text>
           </View>
 

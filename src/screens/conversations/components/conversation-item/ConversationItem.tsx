@@ -14,10 +14,10 @@ import {
 } from '@/types';
 import { Inbox } from '@/types/Inbox';
 
+import { SLA } from '@/types/common/SLA';
 import { ConversationAvatar } from './ConversationAvatar';
 import { ConversationItemDetail } from './ConversationItemDetail';
 import { ConversationSelect } from './ConversationSelect';
-import { SLA } from '@/types/common/SLA';
 
 export type ConversationItemProps = {
   // Basic info
@@ -57,6 +57,14 @@ export type ConversationItemProps = {
   allLabels: Label[];
 
   typingText?: string;
+  kanbanInfo?: {
+    items: {
+      funnelName: string;
+      stageName: string;
+      color: string;
+    }[];
+    hasMore: boolean;
+  } | null;
 };
 
 export const ConversationItem = memo(
@@ -82,6 +90,7 @@ export const ConversationItem = memo(
     additionalAttributes,
     allLabels,
     typingText,
+    kanbanInfo,
   }: ConversationItemProps) => {
     return (
       <NativeView style={tailwind.style('px-3 gap-3 flex-row justify-between')}>
@@ -113,6 +122,7 @@ export const ConversationItem = memo(
             currentState,
             allLabels,
             typingText,
+            kanbanInfo,
           }}
         />
       </NativeView>

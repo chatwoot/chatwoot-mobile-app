@@ -12,6 +12,7 @@ export interface LoginPayload {
 export interface LoginResponse {
   user: User;
   headers: AuthHeaders;
+  apiAccessToken?: string; // API Access Token do body da resposta
 }
 
 export interface MfaRequiredResponse {
@@ -26,7 +27,9 @@ export interface MfaVerificationPayload {
 }
 
 export interface LoginApiResponse {
-  data?: User;
+  data?: User & {
+    access_token?: string; // API Access Token vem no body da resposta
+  };
   mfa_required?: boolean;
   mfa_token?: string;
 }
@@ -46,6 +49,7 @@ export interface AvailabilityPayload {
 
 export interface ProfileResponse {
   user: User;
+  headers?: AuthHeaders;
 }
 
 export interface ApiErrorResponse {
@@ -67,4 +71,5 @@ export interface SsoAuthPayload {
 export interface SsoAuthResponse {
   user: User;
   headers: AuthHeaders;
+  apiAccessToken?: string; // API Access Token do body da resposta
 }

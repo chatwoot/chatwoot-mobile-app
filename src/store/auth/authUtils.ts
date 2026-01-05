@@ -1,6 +1,7 @@
-import { AxiosError } from 'axios';
-import { showToast } from '@/utils/toastUtils';
 import I18n from '@/i18n';
+import { BrandTokens } from '@/theme';
+import { showToast } from '@/utils/toastUtils';
+import { AxiosError } from 'axios';
 import type { ApiErrorResponse } from './authTypes';
 
 export const handleApiError = (error: unknown, customErrorMsg?: string) => {
@@ -23,7 +24,7 @@ export const handleApiError = (error: unknown, customErrorMsg?: string) => {
     }
   }
 
-  const message = customErrorMsg || I18n.t('ERRORS.COMMON_ERROR');
+  const message = customErrorMsg || I18n.t('ERRORS.COMMON_ERROR', { appName: BrandTokens.name });
   showToast({ message });
   return { success: false, errors: [message] };
 };

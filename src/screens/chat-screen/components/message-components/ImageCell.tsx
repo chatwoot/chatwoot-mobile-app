@@ -51,7 +51,8 @@ export const ImageCell = (props: ImageCellProps) => {
         !shouldRenderAvatar && isIncoming ? 'ml-7' : '',
         !shouldRenderAvatar && isOutgoing ? 'pr-7' : '',
         shouldRenderAvatar ? 'pb-2' : '',
-      )}>
+      )}
+    >
       <Animated.View style={tailwind.style('flex flex-row')}>
         {sender?.name && isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
@@ -74,7 +75,8 @@ export const ImageCell = (props: ImageCellProps) => {
                       : ''
                   : '',
               ),
-            ]}>
+            ]}
+          >
             <Animated.View
               style={tailwind.style(
                 'relative w-[300px] rounded-[14px] overflow-hidden',
@@ -85,7 +87,8 @@ export const ImageCell = (props: ImageCellProps) => {
                       ? 'rounded-bl-none'
                       : ''
                   : '',
-              )}>
+              )}
+            >
               <Animated.View pointerEvents={'none'}>
                 <ImageBackground
                   source={require('../../../../assets/local/ImageCellTimeStampOverlay.png')} // eslint-disable-line @typescript-eslint/no-require-imports
@@ -98,13 +101,16 @@ export const ImageCell = (props: ImageCellProps) => {
                           ? 'rounded-bl-none'
                           : ''
                       : '',
-                  )}>
+                  )}
+                >
                   <Animated.View
-                    style={tailwind.style('flex flex-row absolute right-3 bottom-[5px]')}>
+                    style={tailwind.style('flex flex-row absolute right-3 bottom-[5px]')}
+                  >
                     <Text
                       style={tailwind.style(
                         'text-xs font-inter-420-20 tracking-[0.32px] leading-[14px] text-whiteA-A12 pr-1',
-                      )}>
+                      )}
+                    >
                       {unixTimestampToReadableTime(timeStamp)}
                     </Text>
                     <DeliveryStatus

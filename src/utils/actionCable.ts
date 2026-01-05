@@ -1,29 +1,29 @@
+import { MESSAGE_STATUS, MESSAGE_TYPES } from '@/constants';
+import { store } from '@/store';
+import { setCurrentUserAvailability } from '@/store/auth/authSlice';
+import { addContact, updateContact, updateContactsPresence } from '@/store/contact/contactSlice';
 import {
-  updateConversation,
-  updateConversationLastActivity,
   addConversation,
   addOrUpdateMessage,
+  updateConversation,
+  updateConversationLastActivity,
 } from '@/store/conversation/conversationSlice';
-import { addContact, updateContact, updateContactsPresence } from '@/store/contact/contactSlice';
-import { setTypingUsers, removeTypingUser } from '@/store/conversation/conversationTypingSlice';
-import BaseActionCableConnector from './baseActionCableConnector';
-import { store } from '@/store';
-import { Contact, Conversation, Message, PresenceUpdateData, TypingData } from '@/types';
-import {
-  transformMessage,
-  transformConversation,
-  transformTypingData,
-  transformContact,
-  transformNotificationCreatedResponse,
-  transformNotificationRemovedResponse,
-} from './camelCaseKeys';
-import { addNotification } from '@/store/notification/notificationSlice';
-import { setCurrentUserAvailability } from '@/store/auth/authSlice';
-import { removeNotification } from '@/store/notification/notificationSlice';
+import { removeTypingUser, setTypingUsers } from '@/store/conversation/conversationTypingSlice';
+import { addNotification, removeNotification } from '@/store/notification/notificationSlice';
 import {
   NotificationCreatedResponse,
   NotificationRemovedResponse,
 } from '@/store/notification/notificationTypes';
+import { Contact, Conversation, Message, PresenceUpdateData, TypingData } from '@/types';
+import BaseActionCableConnector from './baseActionCableConnector';
+import {
+  transformContact,
+  transformConversation,
+  transformMessage,
+  transformNotificationCreatedResponse,
+  transformNotificationRemovedResponse,
+  transformTypingData,
+} from './camelCaseKeys';
 
 interface ActionCableConfig {
   pubSubToken: string;
@@ -67,6 +67,25 @@ class ActionCableConnector extends BaseActionCableConnector {
     const message = transformMessage(data);
     const { conversation, conversationId } = message;
     const lastActivityAt = conversation?.lastActivityAt;
+
+    const isOutgoingMessage = message.messageType === MESSAGE_TYPES.OUTGOING;
+    const hasEchoId = message.echoId;
+
+    if (isOutgoingMessage && hasEchoId) {
+      const state = store.getState();
+      const conversationState = state.conversations.entities[conversationId];
+
+      if (conversationState) {
+        const existingMessage = conversationState.messages.find(
+          m => m.echoId === message.echoId && m.status === MESSAGE_STATUS.PROGRESS,
+        );
+
+        if (existingMessage) {
+          return;
+        }
+      }
+    }
+
     store.dispatch(updateConversationLastActivity({ lastActivityAt, conversationId }));
     store.dispatch(addOrUpdateMessage(message));
   };
@@ -79,6 +98,67 @@ class ActionCableConnector extends BaseActionCableConnector {
 
   onMessageUpdated = (data: Message) => {
     const message = transformMessage(data);
+    const isOutgoingMessage = message.messageType === MESSAGE_TYPES.OUTGOING;
+
+    if (isOutgoingMessage) {
+      const state = store.getState();
+      const conversationState = state.conversations.entities[message.conversationId];
+
+      if (conversationState) {
+        const existingMessage = conversationState.messages.find(m => {
+          const sameEcho = message.echoId && m.echoId === message.echoId;
+          const sameId = m.id === message.id;
+          return (
+            sameEcho ||
+            (sameId &&
+              (m.status === MESSAGE_STATUS.PROGRESS ||
+                m.status === MESSAGE_STATUS.SENT ||
+                m.status === MESSAGE_STATUS.FAILED))
+          );
+        });
+
+
+        if (existingMessage) {
+          if (message.status === MESSAGE_STATUS.FAILED) {
+            store.dispatch(
+              addOrUpdateMessage({
+                ...message,
+                echoId: message.echoId ?? existingMessage.echoId,
+              }),
+            );
+            return;
+          }
+
+          if (existingMessage.status === MESSAGE_STATUS.PROGRESS) {
+            store.dispatch(
+              addOrUpdateMessage({
+                ...message,
+                echoId: message.echoId ?? existingMessage.echoId,
+              }),
+            );
+            return;
+          }
+
+          if (
+            existingMessage.status === MESSAGE_STATUS.SENT &&
+            (message.status === MESSAGE_STATUS.DELIVERED || message.status === MESSAGE_STATUS.READ)
+          ) {
+            store.dispatch(
+              addOrUpdateMessage({
+                ...message,
+                echoId: message.echoId ?? existingMessage.echoId,
+              }),
+            );
+            return;
+          }
+
+          if (existingMessage.status === MESSAGE_STATUS.SENT && !message.status) {
+            return;
+          }
+        }
+      }
+    }
+
     store.dispatch(addOrUpdateMessage(message));
   };
 

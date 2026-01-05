@@ -16,7 +16,8 @@ export const ActivityBubble = (props: ActivityBubbleProps) => {
       <Animated.Text
         style={tailwind.style(
           'text-cxs font-inter-420-20 tracking-[0.32px] leading-[18px] text-blackA-A11 text-center',
-        )}>
+        )}
+      >
         {text} {unixTimestampToReadableTime(timeStamp)}
       </Animated.Text>
     </Animated.View>

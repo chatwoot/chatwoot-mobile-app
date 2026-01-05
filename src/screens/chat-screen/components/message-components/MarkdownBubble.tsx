@@ -81,7 +81,8 @@ export const MarkdownBubble = (props: MarkdownBubbleProps) => {
         typographer: true,
       })}
       onLinkPress={handleURL}
-      style={styles}>
+      style={styles}
+    >
       {messageContent}
     </Markdown>
   );

@@ -58,7 +58,8 @@ export const LocationCell: React.FC<LocationCellProps> = props => {
         !shouldRenderAvatar && isIncoming ? 'ml-7' : '',
         !shouldRenderAvatar && isOutgoing ? 'pr-7' : '',
         shouldRenderAvatar ? 'pb-2' : '',
-      )}>
+      )}
+    >
       <Animated.View style={tailwind.style('flex flex-row')}>
         {sender?.name && isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
@@ -82,9 +83,11 @@ export const LocationCell: React.FC<LocationCellProps> = props => {
                       : ''
                   : '',
               ),
-            ]}>
+            ]}
+          >
             <Animated.View
-              style={tailwind.style('flex flex-row justify-center items-center gap-1')}>
+              style={tailwind.style('flex flex-row justify-center items-center gap-1')}
+            >
               <Icon icon={<MapIcon fill="white" />} size={24} />
               <Text
                 onPress={() => openURL({ URL: mapUrl })}
@@ -94,7 +97,8 @@ export const LocationCell: React.FC<LocationCellProps> = props => {
                     : '',
                   isIncoming ? 'text-white' : '',
                   isOutgoing ? 'text-gray-950' : '',
-                )}>
+                )}
+              >
                 See on map
               </Text>
             </Animated.View>
@@ -102,14 +106,16 @@ export const LocationCell: React.FC<LocationCellProps> = props => {
             <Animated.View
               style={tailwind.style(
                 'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',
-              )}>
+              )}
+            >
               <Text
                 style={tailwind.style(
                   'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
                   isIncoming ? 'text-whiteA-A11' : '',
                   isOutgoing ? 'text-gray-700' : '',
                   isMessageFailed ? 'text-ruby-900' : '',
-                )}>
+                )}
+              >
                 {unixTimestampToReadableTime(timeStamp)}
               </Text>
               <DeliveryStatus

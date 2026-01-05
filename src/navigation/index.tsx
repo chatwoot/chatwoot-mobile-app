@@ -6,17 +6,23 @@ import Inter60020 from '@/assets/fonts/Inter-600-20.ttf';
 import { SSO_CALLBACK_URL } from '@/constants';
 import { RefsProvider } from '@/context';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { backendService } from '@/services/BackendService';
+import { NotificationService } from '@/services/NotificationService';
+import { settingsActions } from '@/store/settings/settingsActions';
 import { selectInstallationUrl, selectLocale } from '@/store/settings/settingsSelectors';
-import { SettingsService } from '@/store/settings/settingsService';
-import type { PushPayload } from '@/store/settings/settingsTypes';
 import { getStore } from '@/store/storeAccessor';
 import { transformNotification } from '@/utils/camelCaseKeys';
 import { extractConversationIdFromUrl } from '@/utils/conversationUtils';
 import { navigationRef } from '@/utils/navigationUtils';
+import {
+  extractParamsFromNotification,
+  navigateToConversation,
+} from '@/utils/notificationNavigationUtils';
 import { findConversationLinkFromPush, findNotificationFromFCM } from '@/utils/pushUtils';
 import { SsoUtils } from '@/utils/ssoUtils';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import notifee from '@notifee/react-native';
+import notifee, { EventType } from '@notifee/react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import { getStateFromPath, NavigationContainer } from '@react-navigation/native';
 import * as Sentry from '@sentry/react-native';
@@ -24,49 +30,17 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import i18n from 'i18n';
 import React, { useCallback, useEffect, useRef } from 'react';
-import { ActivityIndicator, Linking, Platform, StyleSheet, View } from 'react-native';
-import {
-  getApiLevel,
-  getBrand,
-  getBuildNumber,
-  getManufacturer,
-  getModel,
-  getSystemName,
-  getUniqueId,
-} from 'react-native-device-info';
+import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppTabs } from './tabs/AppTabs';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
-  console.log('Message handled in the background!', remoteMessage);
-
-  // Exibir notificação em background usando Notifee
-  if (Platform.OS === 'android' && remoteMessage.data) {
-    const notification = findNotificationFromFCM({ message: remoteMessage });
-    if (notification) {
-      const transformedNotification = transformNotification(notification);
-      // Usar title/body do objeto original ou pushMessageTitle do transformado
-      const title =
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (notification as any).title || transformedNotification.pushMessageTitle || 'Chatwoot';
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const body = (notification as any).body || (notification as any).content || '';
-
-      await notifee.displayNotification({
-        title,
-        body,
-        android: {
-          channelId: 'default',
-          smallIcon: 'ic_notification',
-          pressAction: {
-            id: 'default',
-          },
-        },
-        data: remoteMessage.data,
-      });
-    }
+  try {
+    await NotificationService.displayNotification(remoteMessage);
+  } catch (error) {
+    console.error('[Navigation] Error handling background notification:', error);
   }
 });
 
@@ -85,42 +59,39 @@ export const AppNavigationContainer = () => {
   const installationUrl = useAppSelector(selectInstallationUrl);
   const locale = useAppSelector(selectLocale);
 
-  // Adicionar handler para notificações em foreground
+  useEffect(() => {
+    const unsubscribeNotifee = notifee.onForegroundEvent(async ({ type, detail }) => {
+      if (type !== EventType.PRESS || !detail.notification?.data) {
+        return;
+      }
+
+      try {
+        const params = extractParamsFromNotification(
+          detail.notification.data as Record<string, string>,
+          installationUrl,
+        );
+
+        if (params) {
+          await navigateToConversation(params);
+        }
+      } catch (error) {
+        console.error('[Navigation] Error processing notification press:', error);
+      }
+    });
+
+    return unsubscribeNotifee;
+  }, [installationUrl]);
+
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('Message received in foreground!', remoteMessage);
-
-      // Exibir notificação quando o app está em foreground
-      if (Platform.OS === 'android' && remoteMessage.data) {
-        try {
-          const notification = findNotificationFromFCM({ message: remoteMessage });
-          if (notification) {
-            const transformedNotification = transformNotification(notification);
-            // Usar title/body do objeto original ou pushMessageTitle do transformado
-            const title =
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              (notification as any).title || transformedNotification.pushMessageTitle || 'Chatwoot';
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const body =
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              (notification as any).body || (notification as any).content || '';
-
-            await notifee.displayNotification({
-              title,
-              body,
-              android: {
-                channelId: 'default',
-                smallIcon: 'ic_notification',
-                pressAction: {
-                  id: 'default',
-                },
-              },
-              data: remoteMessage.data,
-            });
-          }
-        } catch (error) {
-          console.error('Error displaying notification:', error);
-        }
+      try {
+        // Quando o Firebase recebe uma mensagem com 'notification' payload,
+        // ele exibe automaticamente. Para evitar isso e usar apenas o notifee,
+        // precisamos processar a mensagem antes que o Firebase a exiba.
+        // O notifee vai substituir qualquer notificação do Firebase.
+        await NotificationService.displayNotification(remoteMessage);
+      } catch (error) {
+        console.error('[Navigation] Error handling foreground message:', error);
       }
     });
 
@@ -139,38 +110,66 @@ export const AppNavigationContainer = () => {
         return;
       }
 
-      // Atualizar o token no backend quando ele for renovado
+      // Atualizar o token no backend NOTCHAT quando ele for renovado
       try {
-        const deviceId = await getUniqueId();
-        const devicePlatform = getSystemName();
-        const manufacturer = await getManufacturer();
-        const model = await getModel();
-        const apiLevel = await getApiLevel();
-        const deviceName = `${manufacturer} ${model}`;
-        const brandName = await getBrand();
-        const buildNumber = await getBuildNumber();
+        const oldToken = (await AsyncStorage.getItem('fcm_token')) || '';
+        const currentState = store.getState();
+        const { installationUrl } = currentState.settings;
+        const { user } = currentState.auth;
 
-        const pushData: PushPayload = {
-          subscription_type: 'fcm',
-          subscription_attributes: {
-            deviceName,
-            devicePlatform,
-            apiLevel: apiLevel.toString(),
-            brandName,
-            buildNumber,
-            push_token: fcmToken,
-            device_id: deviceId,
-          },
-        };
-        await SettingsService.saveDeviceDetails(pushData);
+        if (oldToken && user && installationUrl) {
+          // Atualizar token existente no backend NOTCHAT
+          try {
+            await backendService.updateFcmToken({
+              old_token: oldToken,
+              new_token: fcmToken,
+              chatwoot_url: installationUrl,
+              agent_id: user.id,
+            });
+            await AsyncStorage.setItem('fcm_token', fcmToken);
+            console.log('[NOTCHAT] FCM token updated successfully');
+          } catch (updateError: unknown) {
+            const errorMessage =
+              updateError instanceof Error ? updateError.message : String(updateError);
+            if (errorMessage.includes('Muitas tentativas')) {
+              console.warn(
+                '[NOTCHAT] Rate limit atingido ao atualizar token. Tentará novamente na próxima atualização.',
+              );
+              // Não atualizar o token no AsyncStorage se rate limit foi atingido
+              return;
+            }
+            throw updateError;
+          }
+        } else if (user && installationUrl) {
+          // Se não tem token antigo, registrar como novo dispositivo
+          try {
+            await dispatch(settingsActions.registerWithBackend()).unwrap();
+            await AsyncStorage.setItem('fcm_token', fcmToken);
+          } catch (registerError: unknown) {
+            const errorMessage =
+              registerError instanceof Error ? registerError.message : String(registerError);
+            if (errorMessage.includes('Muitas tentativas')) {
+              console.warn(
+                '[NOTCHAT] Rate limit atingido ao registrar dispositivo. Tentará novamente mais tarde.',
+              );
+              // Não salvar o token se rate limit foi atingido
+              return;
+            }
+            throw registerError;
+          }
+        } else {
+          console.log(
+            '[NOTCHAT] User not authenticated or installation URL not set, skipping token update',
+          );
+        }
       } catch (error) {
-        console.error('Error updating FCM token:', error);
+        console.error('[NOTCHAT] Error updating FCM token:', error);
         Sentry.captureException(error);
       }
     });
 
     return unsubscribeTokenRefresh;
-  }, []);
+  }, [dispatch]);
 
   const linking = {
     prefixes: [installationUrl, SSO_CALLBACK_URL],
@@ -186,7 +185,6 @@ export const AppNavigationContainer = () => {
         },
       },
     },
-    // getStateFromPath: App running, receives deep link - handles SSO callbacks and conversation navigation
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getStateFromPath: (path: string, config: any) => {
       // Handle SSO callback - App running, receives deep link
@@ -249,13 +247,19 @@ export const AppNavigationContainer = () => {
       const message = await messaging().getInitialNotification();
       if (message) {
         const notification = findNotificationFromFCM({ message });
-        const camelCaseNotification = transformNotification(notification);
-        const conversationLink = findConversationLinkFromPush({
-          notification: camelCaseNotification,
-          installationUrl,
-        });
-        if (conversationLink) {
-          return conversationLink;
+        if (notification) {
+          try {
+            const camelCaseNotification = transformNotification(notification);
+            const conversationLink = findConversationLinkFromPush({
+              notification: camelCaseNotification,
+              installationUrl,
+            });
+            if (conversationLink) {
+              return conversationLink;
+            }
+          } catch (error) {
+            console.error('[Navigation] Error processing initial notification:', error);
+          }
         }
       }
       return undefined;
@@ -280,14 +284,20 @@ export const AppNavigationContainer = () => {
       const unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
         if (message) {
           const notification = findNotificationFromFCM({ message });
-          const camelCaseNotification = transformNotification(notification);
+          if (notification) {
+            try {
+              const camelCaseNotification = transformNotification(notification);
 
-          const conversationLink = findConversationLinkFromPush({
-            notification: camelCaseNotification,
-            installationUrl,
-          });
-          if (conversationLink) {
-            listener(conversationLink);
+              const conversationLink = findConversationLinkFromPush({
+                notification: camelCaseNotification,
+                installationUrl,
+              });
+              if (conversationLink) {
+                listener(conversationLink);
+              }
+            } catch (error) {
+              console.error('[Navigation] Error processing notification opened:', error);
+            }
           }
         }
       });
@@ -321,7 +331,8 @@ export const AppNavigationContainer = () => {
       onStateChange={async () => {
         routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
       }}
-      fallback={<ActivityIndicator animating />}>
+      fallback={<ActivityIndicator animating />}
+    >
       <BottomSheetModalProvider>
         <View style={styles.navigationLayout} onLayout={onLayoutRootView}>
           <AppTabs />

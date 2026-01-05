@@ -1,21 +1,28 @@
-import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react';
-import { StackActions, useNavigation } from '@react-navigation/native';
+import { CONVERSATION_STATUS } from '@/constants';
 import { useChatWindowContext, useRefsContext } from '@/context';
-import { showToast } from '@/utils/toastUtils';
-import i18n from '@/i18n';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import i18n from '@/i18n';
+import { selectUser, selectUserId } from '@/store/auth/authSelectors';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
-import { CONVERSATION_STATUS } from '@/constants';
-import { ConversationStatus } from '@/types/common/ConversationStatus';
-import { ChatHeader } from './ChatHeader';
-import { DashboardList } from './DropdownMenu';
-import { ImageSourcePropType } from 'react-native';
-import { SLAStatus } from '@/types/common/SLA';
-import { evaluateSLAStatus } from '@chatwoot/utils';
 import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
 import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
-import { selectUser } from '@/store/auth/authSelectors';
+import { kanbanActions } from '@/store/kanban/kanbanActions';
+import {
+    selectKanbanFunnels,
+    selectKanbanItemByConversationId,
+} from '@/store/kanban/kanbanSelectors';
+import { ConversationStatus } from '@/types/common/ConversationStatus';
+import { SLAStatus } from '@/types/common/SLA';
+import { showToast } from '@/utils/toastUtils';
+import { evaluateSLAStatus } from '@chatwoot/utils';
+import { StackActions, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ImageSourcePropType } from 'react-native';
+import { AssignToFunnelModal } from './AssignToFunnelModal';
+import { ChatHeader } from './ChatHeader';
+import { DashboardList } from './DropdownMenu';
+import { NextStageModal } from './NextStageModal';
 
 type ChatScreenHeaderProps = {
   name: string;
@@ -31,7 +38,17 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const currentUser = useAppSelector(selectUser);
+  const userId = useAppSelector(selectUserId);
   const dashboardApps = useAppSelector(selectAllDashboardApps);
+
+  // Buscar item do Kanban associado à conversa
+  const kanbanItem = useAppSelector(state =>
+    conversationId ? selectKanbanItemByConversationId(state, conversationId) : undefined,
+  );
+  const funnels = useAppSelector(selectKanbanFunnels);
+
+  const nextStageModalRef = useRef(null); // <any>
+  const assignToFunnelModalRef = useRef(null); // <any>
 
   const appliedSla = conversation?.appliedSla;
 
@@ -132,6 +149,24 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
     });
   };
 
+  const assigneeId = conversation?.meta?.assignee?.id;
+  const isAssignedToMe = assigneeId === userId;
+
+  const handleAssignToMe = async () => {
+    if (!userId || !conversationId) return;
+
+    await dispatch(
+      conversationActions.assignConversation({
+        conversationId,
+        assigneeId: userId,
+      }),
+    );
+
+    showToast({
+      message: i18n.t('CONVERSATION.ASSIGN_CHANGE'),
+    });
+  };
+
   const dashboardRoutes = dashboardApps.map(dashboardApp => ({
     title: dashboardApp.title,
     url: dashboardApp.content[0].url,
@@ -158,19 +193,58 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       status: i18n.t(`SLA.STATUS.${statusKey}`),
     });
   };
+
+  const handleNextStagePress = useCallback(() => {
+    if (kanbanItem) {
+      nextStageModalRef.current?.present();
+    }
+  }, [kanbanItem]);
+
+  const handleAssignToFunnelPress = useCallback(() => {
+    assignToFunnelModalRef.current?.present();
+  }, []);
+
+  // Carregar funnels e items quando necessário
+  useEffect(() => {
+    if (funnels.length === 0) {
+      dispatch(kanbanActions.getFunnels());
+    }
+    // Carregar items do Kanban para que o seletor funcione
+    dispatch(kanbanActions.getKanbanItems());
+  }, [dispatch, funnels.length]);
+
   return (
-    <ChatHeader
-      name={name}
-      imageSrc={imageSrc}
-      isResolved={isResolved}
-      dashboardsList={dashboardsList}
-      isSlaMissed={slaStatus?.isSlaMissed}
-      hasSla={!!appliedSla}
-      slaEvents={conversation?.slaEvents}
-      statusText={`${sLAStatusText()}: ${slaStatus?.threshold}`}
-      onBackPress={handleBackPress}
-      onContactDetailsPress={handleNavigationToContactDetails}
-      onToggleChatStatus={toggleChatStatus}
-    />
+    <>
+      <ChatHeader
+        name={name}
+        imageSrc={imageSrc}
+        isResolved={isResolved}
+        dashboardsList={dashboardsList}
+        isSlaMissed={slaStatus?.isSlaMissed}
+        hasSla={!!appliedSla}
+        slaEvents={conversation?.slaEvents}
+        statusText={`${sLAStatusText()}: ${slaStatus?.threshold}`}
+        onBackPress={handleBackPress}
+        onContactDetailsPress={handleNavigationToContactDetails}
+        onToggleChatStatus={toggleChatStatus}
+        onAssignToMe={handleAssignToMe}
+        isAssignedToMe={isAssignedToMe}
+        onNextStagePress={handleNextStagePress}
+        onAssignToFunnelPress={handleAssignToFunnelPress}
+        hasKanbanItem={!!kanbanItem}
+      />
+      {kanbanItem && (
+        <NextStageModal
+          ref={nextStageModalRef}
+          kanbanItem={kanbanItem}
+          conversationId={conversationId}
+        />
+      )}
+      <AssignToFunnelModal
+        ref={assignToFunnelModalRef}
+        conversationId={conversationId}
+        funnels={funnels}
+      />
+    </>
   );
 };

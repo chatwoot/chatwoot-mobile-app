@@ -11,18 +11,25 @@ const blackA = require('./colors/blackA');
 // White with alpha variations
 const whiteA = require('./colors/whiteA');
 
-const chatwootAppColors = {
+const { BrandTokens } = require('./brand');
+
+const notchatAppColors = {
   ...blackA,
   ...whiteA,
   ...radixUILightColors,
   ...radixUIDarkColors,
+  brand: {
+    primary: BrandTokens.colors.primary,
+    secondary: BrandTokens.colors.secondary,
+    accent: BrandTokens.colors.accent,
+  },
 };
 
 export const twConfig = {
   theme: {
     ...defaultTheme,
     extend: {
-      colors: { ...chatwootAppColors },
+      colors: { ...notchatAppColors },
       fontSize: {
         xs: '12px',
         cxs: '13px',

@@ -31,7 +31,8 @@ export const LocationBubble: React.FC<LocationBubbleProps> = props => {
             : '',
           variant === MESSAGE_VARIANTS.USER ? 'text-white' : '',
           variant === MESSAGE_VARIANTS.AGENT ? 'text-gray-950' : '',
-        )}>
+        )}
+      >
         See on map
       </Text>
     </Animated.View>

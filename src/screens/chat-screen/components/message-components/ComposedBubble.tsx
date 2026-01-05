@@ -86,10 +86,12 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
                   key={attachment.fileType + index}
                   style={tailwind.style(
                     'flex flex-row items-center justify-center py-8 bg-slate-100 gap-1 rounded-lg',
-                  )}>
+                  )}
+                >
                   <Icon icon={<FileErrorIcon fill={tailwind.color('text-gray-900')} />} />
                   <Animated.Text
-                    style={tailwind.style('text-cxs font-inter-420-20 text-gray-900 mt-[1px]')}>
+                    style={tailwind.style('text-cxs font-inter-420-20 text-gray-900 mt-[1px]')}
+                  >
                     {i18n.t('CONVERSATION.STORY_NOT_AVAILABLE')}
                   </Animated.Text>
                 </Animated.View>
@@ -108,7 +110,8 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
               return (
                 <Animated.View
                   key={attachment.fileType + index}
-                  style={tailwind.style('flex flex-row items-center relative max-w-[300px] my-2')}>
+                  style={tailwind.style('flex flex-row items-center relative max-w-[300px] my-2')}
+                >
                   <FileBubblePreview
                     fileSrc={attachment.dataUrl}
                     isComposed
@@ -121,7 +124,8 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
               return (
                 <Animated.View
                   key={attachment.fileType + index}
-                  style={tailwind.style('flex flex-row items-center my-2')}>
+                  style={tailwind.style('flex flex-row items-center my-2')}
+                >
                   <VideoBubble videoSrc={attachment.dataUrl} />
                 </Animated.View>
               );
@@ -130,7 +134,8 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
               return (
                 <Animated.View
                   key={attachment.fileType + index}
-                  style={tailwind.style('flex flex-row items-center my-2')}>
+                  style={tailwind.style('flex flex-row items-center my-2')}
+                >
                   <VideoBubble videoSrc={attachment.dataUrl} />
                 </Animated.View>
               );
@@ -139,7 +144,8 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
               return (
                 <Animated.View
                   key={attachment.fileType + index}
-                  style={tailwind.style('flex flex-row items-center my-2')}>
+                  style={tailwind.style('flex flex-row items-center my-2')}
+                >
                   <AudioBubble audioSrc={attachment.dataUrl} variant={props.variant} />
                 </Animated.View>
               );
@@ -149,7 +155,8 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
               return (
                 <Animated.View
                   key={attachment.fileType + index}
-                  style={tailwind.style('flex flex-row items-center my-2')}>
+                  style={tailwind.style('flex flex-row items-center my-2')}
+                >
                   <LocationBubble
                     latitude={attachment.coordinatesLat}
                     longitude={attachment.coordinatesLong}

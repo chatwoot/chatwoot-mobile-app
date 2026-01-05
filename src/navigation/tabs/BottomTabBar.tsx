@@ -1,29 +1,32 @@
-import React, { PropsWithChildren } from 'react';
-import { Platform, Pressable } from 'react-native';
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useDerivedValue,
-  withSpring,
-} from 'react-native-reanimated';
+import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import { BlurView, BlurViewProps } from '@react-native-community/blur';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
-import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice';
+import React, { PropsWithChildren } from 'react';
+import { Platform, Pressable } from 'react-native';
+import Animated, {
+    interpolate,
+    useAnimatedStyle,
+    useDerivedValue,
+    withSpring,
+} from 'react-native-reanimated';
 
 import {
-  ConversationIconFilled,
-  ConversationIconOutline,
-  InboxIconFilled,
-  InboxIconOutline,
-  SettingsIconFilled,
-  SettingsIconOutline,
+    ConversationIconFilled,
+    ConversationIconOutline,
+    InboxIconFilled,
+    InboxIconOutline,
+    KanbanIconFilled,
+    KanbanIconOutline,
+    SettingsIconFilled,
+    SettingsIconOutline,
 } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';
 
-import { TabParamList } from './AppTabs';
 import { useAppSelector } from '@/hooks';
+import { BrandTokens } from '@/theme';
+import { TabParamList } from './AppTabs';
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
@@ -36,13 +39,18 @@ type TabBarIconsProps = {
 };
 
 const TabBarIcons = ({ focused, route }: TabBarIconsProps) => {
+  const activeColor = BrandTokens.colors.primary;
   switch (route.name) {
     case 'Conversations':
-      return focused ? <ConversationIconFilled /> : <ConversationIconOutline />;
+      return focused ? <ConversationIconFilled color={activeColor} /> : <ConversationIconOutline />;
     case 'Inbox':
-      return focused ? <InboxIconFilled /> : <InboxIconOutline />;
+      return focused ? <InboxIconFilled color={activeColor} /> : <InboxIconOutline />;
+    case 'Kanban':
+      return focused ? <KanbanIconFilled color={activeColor} /> : <KanbanIconOutline />;
     case 'Settings':
-      return focused ? <SettingsIconFilled /> : <SettingsIconOutline />;
+      return focused ? <SettingsIconFilled color={activeColor} /> : <SettingsIconOutline />;
+    default:
+      return null;
   }
 };
 

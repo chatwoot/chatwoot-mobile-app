@@ -1,10 +1,10 @@
-import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { Conversation } from '@/types/Conversation';
-import { conversationActions } from './conversationActions';
 import { findPendingMessageIndex } from '@/utils/conversationUtils';
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { conversationActions } from './conversationActions';
 
 import { MESSAGE_TYPES } from '@/constants';
-import { Message } from '@/types/Message';
+import { Message, MessageStatus } from '@/types/Message';
 import { PendingMessage } from './conversationTypes';
 
 export interface ConversationState {
@@ -71,25 +71,76 @@ const conversationSlice = createSlice({
 
       const conversation = state.entities[conversationId];
 
-      // If the conversation is not present in the store, we don't need to add the message
       if (!conversation) {
         return;
       }
-      // If the message type is incoming, set the can reply to true
+
       if (message.messageType === MESSAGE_TYPES.INCOMING) {
         conversation.canReply = true;
       }
-      // Check message is already present in the conversation
+
       const pendingMessageIndex = findPendingMessageIndex(conversation, message);
+      const isNewMessage = pendingMessageIndex === -1;
+      const isIncomingMessage = message.messageType === MESSAGE_TYPES.INCOMING;
+
       if (pendingMessageIndex !== -1) {
-        conversation.messages[pendingMessageIndex] = message as Message;
-      }
-      // If the message is not present in the conversation, add it
-      else {
+        const existingMessage = conversation.messages[pendingMessageIndex];
+        const incomingStatus = (message.status || existingMessage.status) as MessageStatus;
+
+        const finalStatus: MessageStatus =
+          incomingStatus === 'failed'
+            ? 'failed'
+            : incomingStatus === 'read' || incomingStatus === 'delivered'
+              ? incomingStatus
+              : incomingStatus;
+
+        const existingMeta = (existingMessage as { meta?: { error?: string } }).meta;
+        const newMeta = (message as { meta?: { error?: string } }).meta;
+        const contentAttrs = message.contentAttributes as
+          | Record<string, unknown>
+          | null
+          | undefined;
+        const externalError = contentAttrs?.externalError || contentAttrs?.external_error;
+
+        const updatedMessage: Message & { meta?: { error?: string } } = {
+          ...(message as Message),
+          echoId: (message as Message).echoId ?? existingMessage.echoId,
+          status: finalStatus,
+        };
+
+        if (externalError && finalStatus === 'failed') {
+          const errorText =
+            typeof externalError === 'string' ? externalError : JSON.stringify(externalError);
+          updatedMessage.meta = {
+            error: errorText,
+          };
+        } else if (newMeta) {
+          updatedMessage.meta = newMeta;
+        } else if (existingMeta && existingMeta.error) {
+          updatedMessage.meta = existingMeta;
+        }
+
+        conversation.messages[pendingMessageIndex] = updatedMessage as Message;
+      } else {
         conversation.messages.push(message as Message);
       }
+
       conversation.timestamp = message.createdAt;
-      conversation.unreadCount = (message as Message).conversation?.unreadCount || 0;
+      
+      // Atualizar unreadCount: priorizar o valor do backend, mas se for uma nova mensagem INCOMING
+      // e o unreadCount não vier do backend, incrementar o contador atual
+      const backendUnreadCount = (message as Message).conversation?.unreadCount;
+      if (backendUnreadCount !== undefined && backendUnreadCount !== null) {
+        // Se o backend enviou o unreadCount, usar esse valor
+        conversation.unreadCount = backendUnreadCount;
+      } else if (isNewMessage && isIncomingMessage && message.status !== 'read') {
+        // Se é uma nova mensagem INCOMING não lida e o backend não enviou o unreadCount,
+        // incrementar o contador atual
+        conversation.unreadCount = (conversation.unreadCount || 0) + 1;
+      } else {
+        // Caso contrário, manter o valor atual ou usar 0 se não existir
+        conversation.unreadCount = conversation.unreadCount || 0;
+      }
     },
     updateConversationLastActivity: (state, action) => {
       const { conversationId, lastActivityAt } = action.payload;

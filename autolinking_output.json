@@ -1,0 +1,198 @@
+{
+  extraDependencies: [],
+  modules: [
+    {
+      packageName: [32m'@nandorojo/galeria'[39m,
+      packageVersion: [32m'1.2.0'[39m,
+      projects: [
+        {
+          name: [32m'nandorojo-galeria'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\@nandorojo\\galeria\\android'[39m
+        }
+      ],
+      modules: [ [32m'nandorojo.modules.galeria.GaleriaModule'[39m ]
+    },
+    {
+      packageName: [32m'expo'[39m,
+      packageVersion: [32m'52.0.47'[39m,
+      projects: [
+        {
+          name: [32m'expo'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\expo\\android'[39m
+        }
+      ],
+      modules: [ [32m'expo.modules.fetch.ExpoFetchModule'[39m ]
+    },
+    {
+      packageName: [32m'expo-application'[39m,
+      packageVersion: [32m'6.0.2'[39m,
+      projects: [
+        {
+          name: [32m'expo-application'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\expo-application\\android'[39m
+        }
+      ],
+      modules: [ [32m'expo.modules.application.ApplicationModule'[39m ]
+    },
+    {
+      packageName: [32m'expo-asset'[39m,
+      packageVersion: [32m'11.0.5'[39m,
+      projects: [
+        {
+          name: [32m'expo-asset'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\expo-asset\\android'[39m
+        }
+      ],
+      modules: [ [32m'expo.modules.asset.AssetModule'[39m ]
+    },
+    {
+      packageName: [32m'expo-av'[39m,
+      packageVersion: [32m'15.0.2'[39m,
+      projects: [
+        {
+          name: [32m'expo-av'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\expo-av\\android'[39m
+        }
+      ],
+      modules: [
+        [32m'expo.modules.av.video.VideoViewModule'[39m,
+        [32m'expo.modules.av.AVModule'[39m
+      ]
+    },
+    {
+      packageName: [32m'expo-constants'[39m,
+      packageVersion: [32m'17.0.8'[39m,
+      projects: [
+        {
+          name: [32m'expo-constants'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\expo-constants\\android'[39m
+        }
+      ],
+      modules: [ [32m'expo.modules.constants.ConstantsModule'[39m ]
+    },
+    {
+      packageName: [32m'expo-crypto'[39m,
+      packageVersion: [32m'14.0.2'[39m,
+      projects: [
+        {
+          name: [32m'expo-crypto'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\expo-crypto\\android'[39m
+        }
+      ],
+      modules: [ [32m'expo.modules.crypto.CryptoModule'[39m ]
+    },
+    {
+      packageName: [32m'expo-file-system'[39m,
+      packageVersion: [32m'18.0.12'[39m,
+      projects: [
+        {
+          name: [32m'expo-file-system'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\expo-file-system\\android'[39m
+        }
+      ],
+      modules: [
+        [32m'expo.modules.filesystem.FileSystemModule'[39m,
+        [32m'expo.modules.filesystem.next.FileSystemNextModule'[39m
+      ]
+    },
+    {
+      packageName: [32m'expo-font'[39m,
+      packageVersion: [32m'13.0.4'[39m,
+      projects: [
+        {
+          name: [32m'expo-font'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\expo-font\\android'[39m
+        }
+      ],
+      modules: [ [32m'expo.modules.font.FontLoaderModule'[39m ]
+    },
+    {
+      packageName: [32m'expo-haptics'[39m,
+      packageVersion: [32m'14.0.1'[39m,
+      projects: [
+        {
+          name: [32m'expo-haptics'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\expo-haptics\\android'[39m
+        }
+      ],
+      modules: [ [32m'expo.modules.haptics.HapticsModule'[39m ]
+    },
+    {
+      packageName: [32m'expo-image'[39m,
+      packageVersion: [32m'2.0.7'[39m,
+      projects: [
+        {
+          name: [32m'expo-image'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\expo-image\\android'[39m
+        }
+      ],
+      modules: [ [32m'expo.modules.image.ExpoImageModule'[39m ]
+    },
+    {
+      packageName: [32m'expo-keep-awake'[39m,
+      packageVersion: [32m'14.0.3'[39m,
+      projects: [
+        {
+          name: [32m'expo-keep-awake'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\expo-keep-awake\\android'[39m
+        }
+      ],
+      modules: [ [32m'expo.modules.keepawake.KeepAwakeModule'[39m ]
+    },
+    {
+      packageName: [32m'expo-linking'[39m,
+      packageVersion: [32m'7.0.5'[39m,
+      projects: [
+        {
+          name: [32m'expo-linking'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\expo-linking\\android'[39m
+        }
+      ],
+      modules: [ [32m'expo.modules.linking.ExpoLinkingModule'[39m ]
+    },
+    {
+      packageName: [32m'expo-modules-core'[39m,
+      packageVersion: [32m'2.2.3'[39m,
+      projects: [
+        {
+          name: [32m'expo-modules-core'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\expo-modules-core\\android'[39m
+        }
+      ],
+      modules: []
+    },
+    {
+      packageName: [32m'expo-splash-screen'[39m,
+      packageVersion: [32m'0.29.24'[39m,
+      projects: [
+        {
+          name: [32m'expo-splash-screen'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\expo-splash-screen\\android'[39m
+        }
+      ],
+      modules: [ [32m'expo.modules.splashscreen.SplashScreenModule'[39m ]
+    },
+    {
+      packageName: [32m'expo-system-ui'[39m,
+      packageVersion: [32m'4.0.9'[39m,
+      projects: [
+        {
+          name: [32m'expo-system-ui'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\expo-system-ui\\android'[39m
+        }
+      ],
+      modules: [ [32m'expo.modules.systemui.SystemUIModule'[39m ]
+    },
+    {
+      packageName: [32m'expo-web-browser'[39m,
+      packageVersion: [32m'14.0.2'[39m,
+      projects: [
+        {
+          name: [32m'expo-web-browser'[39m,
+          sourceDir: [32m'C:\\Users\\Juan macedo\\Documents\\projetos\\projeto crystian 2\\mobilecw2\\node_modules\\expo-web-browser\\android'[39m
+        }
+      ],
+      modules: [ [32m'expo.modules.webbrowser.WebBrowserModule'[39m ]
+    }
+  ]
+}

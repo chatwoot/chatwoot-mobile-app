@@ -1,13 +1,13 @@
 // Conversation Filter Slice is used to manage the filters for the conversations screen
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ConversationFilterOptions } from '@/types';
 import { RootState } from '@/store';
+import { ConversationFilterOptions } from '@/types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type FilterState = Record<ConversationFilterOptions, string>;
 
 export const defaultFilterState: FilterState = {
-  assignee_type: 'me',
+  assignee_type: 'all',
   status: 'open',
   sort_by: 'latest',
   inbox_id: '0',

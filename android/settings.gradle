@@ -21,7 +21,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
   }
 }
 
-rootProject.name = 'Chatwoot'
+rootProject.name = 'notchat'
 
 dependencyResolutionManagement {
   versionCatalogs {

@@ -70,4 +70,8 @@ export const authActions = {
     AuthService.loginWithSso,
     I18n.t('ERRORS.AUTH'),
   ),
+
+  getApiAccessToken: createAuthThunk<string | null, void>('auth/getApiAccessToken', () =>
+    AuthService.getApiAccessToken(),
+  ),
 };

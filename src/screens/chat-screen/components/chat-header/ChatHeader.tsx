@@ -1,15 +1,20 @@
+import {
+  BottomSheetModal,
+  BottomSheetScrollView,
+  useBottomSheetSpringConfigs,
+} from '@gorhom/bottom-sheet';
 import React from 'react';
 import { ImageSourcePropType, Keyboard, Platform, Pressable } from 'react-native';
-import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 import Animated from 'react-native-reanimated';
 
-import { Avatar, Icon } from '@/components-next';
-import { ChevronLeft, OpenIcon, Overflow, ResolvedIcon, SLAIcon } from '@/svg-icons';
-import { BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
-import { tailwind } from '@/theme';
-import { ChatDropdownMenu, DashboardList } from './DropdownMenu';
-import { SLAEvent } from '@/types/common';
+import { Avatar, BottomSheetBackdrop, BottomSheetWrapper, Icon } from '@/components-next';
 import { useRefsContext } from '@/context';
+import { ChevronLeft, OpenIcon, Overflow, ResolvedIcon, SLAIcon, SelfAssign } from '@/svg-icons';
+import { FunnelIcon } from '@/svg-icons/conversation-icons/assignToFunnel';
+import { MoveIcon } from '@/svg-icons/conversation-icons/moveIcon';
+import { tailwind } from '@/theme';
+import { SLAEvent } from '@/types/common';
+import { ChatDropdownMenu, DashboardList } from './DropdownMenu';
 import { SlaEvents } from './SlaEvents';
 
 type ChatHeaderProps = {
@@ -24,6 +29,11 @@ type ChatHeaderProps = {
   onBackPress: () => void;
   onContactDetailsPress: () => void;
   onToggleChatStatus: () => void;
+  onAssignToMe?: () => void;
+  isAssignedToMe?: boolean;
+  onNextStagePress?: () => void;
+  onAssignToFunnelPress?: () => void;
+  hasKanbanItem?: boolean;
 };
 
 export const ChatHeader = ({
@@ -38,6 +48,11 @@ export const ChatHeader = ({
   onBackPress,
   onContactDetailsPress,
   onToggleChatStatus,
+  onAssignToMe,
+  isAssignedToMe = false,
+  onNextStagePress,
+  onAssignToFunnelPress,
+  hasKanbanItem = false,
 }: ChatHeaderProps) => {
   const { slaEventsSheetRef } = useRefsContext();
 
@@ -85,6 +100,31 @@ export const ChatHeader = ({
             `flex flex-row flex-1 justify-end ${Platform.OS === 'ios' ? 'gap-4' : ''}`,
           )}>
           <Animated.View style={tailwind.style('flex flex-row items-center gap-4')}>
+            {hasKanbanItem && onNextStagePress && (
+              <Pressable
+                hitSlop={8}
+                onPress={onNextStagePress}
+                style={tailwind.style(
+                  'h-8 w-8 flex items-center justify-center bg-transparent rounded-lg',
+                )}>
+                <Icon icon={<MoveIcon color="#858585" strokeWidth={1.5} />} size={20} />
+              </Pressable>
+            )}
+            {!hasKanbanItem && onAssignToFunnelPress && (
+              <Pressable
+                hitSlop={8}
+                onPress={onAssignToFunnelPress}
+                style={tailwind.style(
+                  'h-8 w-8 flex items-center justify-center bg-transparent rounded-lg',
+                )}>
+                <Icon icon={<FunnelIcon color="#858585" strokeWidth={1.5} />} size={20} />
+              </Pressable>
+            )}
+            {onAssignToMe && !isAssignedToMe && (
+              <Pressable hitSlop={8} onPress={onAssignToMe}>
+                <Icon icon={<SelfAssign />} size={24} />
+              </Pressable>
+            )}
             {hasSla && (
               <Pressable hitSlop={8} onPress={toggleSlaEventsSheet}>
                 <Icon icon={<SLAIcon color={isSlaMissed ? '#E13D45' : '#BBBBBB'} />} size={24} />
@@ -94,9 +134,9 @@ export const ChatHeader = ({
               <Icon
                 icon={
                   isResolved ? (
-                    <ResolvedIcon strokeWidth={2} stroke={tailwind.color('bg-green-700')} />
+                    <ResolvedIcon strokeWidth={1.5} stroke={tailwind.color('bg-green-700')} />
                   ) : (
-                    <OpenIcon strokeWidth={2} />
+                    <OpenIcon strokeWidth={1.5} />
                   )
                 }
                 size={24}
@@ -113,14 +153,18 @@ export const ChatHeader = ({
       <BottomSheetModal
         ref={slaEventsSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        handleIndicatorStyle={tailwind.style(
+          'overflow-hidden bg-blackA-A6 w-8 h-1 mb-2 rounded-[11px]',
+        )}
         enablePanDownToClose
         animationConfigs={animationConfigs}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
         snapPoints={['36%']}>
         <BottomSheetWrapper>
-          <SlaEvents slaEvents={slaEvents} statusText={statusText ?? ''} />
+          <BottomSheetScrollView style={{ flex: 1 }}>
+            <SlaEvents slaEvents={slaEvents} statusText={statusText ?? ''} />
+          </BottomSheetScrollView>
         </BottomSheetWrapper>
       </BottomSheetModal>
     </Animated.View>

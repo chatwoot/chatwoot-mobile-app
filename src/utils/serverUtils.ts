@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 import semver from 'semver';
 
 import I18n from '@/i18n';
+import { BrandTokens } from '@/theme';
 
 interface VersionCheck {
   installedVersion: string;
@@ -25,24 +26,30 @@ export const checkShouldShowServerUpgradeWarning = ({
   }
 };
 
-const minimumVersion: string | undefined = process.env.EXPO_PUBLIC_MINIMUM_CHATWOOT_VERSION;
+const minimumVersion: string | undefined = BrandTokens.version;
 
 export function checkServerSupport({ installedVersion, userRole }: ServerSupportCheck): void {
-  if (!minimumVersion || !installedVersion) {
+  const versionToCheck = minimumVersion || '2.7.0';
+  if (!installedVersion) {
     return;
   }
-  const shouldShowServerUpgradeWarning = semver.lt(installedVersion, minimumVersion);
+  const shouldShowServerUpgradeWarning = semver.lt(installedVersion, versionToCheck);
   if (shouldShowServerUpgradeWarning) {
     if (userRole === 'administrator') {
       Alert.alert(
         I18n.t('SERVER_UPGRADE.TITLE'),
-        I18n.t('SERVER_UPGRADE.WARNING_FOR_ADMIN', { minimumVersion }),
+        I18n.t('SERVER_UPGRADE.WARNING_FOR_ADMIN', {
+          minimumVersion,
+          appName: BrandTokens.name,
+        }),
         [{ text: 'OK' }],
       );
     } else {
-      Alert.alert(I18n.t('SERVER_UPGRADE.TITLE'), I18n.t('SERVER_UPGRADE.WARNING_FOR_AGENT'), [
-        { text: 'OK' },
-      ]);
+      Alert.alert(
+        I18n.t('SERVER_UPGRADE.TITLE'),
+        I18n.t('SERVER_UPGRADE.WARNING_FOR_AGENT', { appName: BrandTokens.name }),
+        [{ text: 'OK' }],
+      );
     }
   }
 }

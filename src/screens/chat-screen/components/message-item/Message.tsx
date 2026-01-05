@@ -1,42 +1,42 @@
-import React from 'react';
-import { Channel, Message } from '@/types';
-import Animated, { FadeIn } from 'react-native-reanimated';
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectConversationById } from '@/store/conversation/conversationSelectors';
-import { useChatWindowContext } from '@/context';
-import { conversationActions } from '@/store/conversation/conversationActions';
-import { unixTimestampToReadableTime, useHaptic } from '@/utils';
+import { Avatar } from '@/components-next';
 import {
+  CONTENT_TYPES,
+  // ATTACHMENT_TYPES,
+  MESSAGE_STATUS,
+  MESSAGE_TYPES,
+  MESSAGE_VARIANTS,
+  ORIENTATION,
+  SENDER_TYPES,
+  TEXT_MAX_WIDTH,
+} from '@/constants';
+import { useChatWindowContext } from '@/context';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import i18n from '@/i18n';
+import { conversationActions } from '@/store/conversation/conversationActions';
+import { selectConversationById } from '@/store/conversation/conversationSelectors';
+import { CopyIcon, Trash } from '@/svg-icons';
+import { tailwind } from '@/theme';
+import { Channel, Message } from '@/types';
+import { unixTimestampToReadableTime, useHaptic } from '@/utils';
+import { showToast } from '@/utils/toastUtils';
+import Clipboard from '@react-native-clipboard/clipboard';
+import React from 'react';
+import { Dimensions, View } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
+import {
+  ActivityBubble,
   ComposedBubble,
   DeliveryStatus,
-  TextBubble,
-  ActivityBubble,
   // LocationBubble,
   // ImageBubble,
   // AudioBubble,
   // VideoBubble,
   // FileBubble,
   EmailBubble,
+  TextBubble,
   UnsupportedBubble,
 } from '../message-components';
-import { showToast } from '@/utils/toastUtils';
-import {
-  // ATTACHMENT_TYPES,
-  MESSAGE_STATUS,
-  MESSAGE_VARIANTS,
-  ORIENTATION,
-  SENDER_TYPES,
-  TEXT_MAX_WIDTH,
-  CONTENT_TYPES,
-  MESSAGE_TYPES,
-} from '@/constants';
-import i18n from '@/i18n';
-import Clipboard from '@react-native-clipboard/clipboard';
-import { CopyIcon, Trash } from '@/svg-icons';
 import { MenuOption, MessageMenu } from '../message-menu';
-import { tailwind } from '@/theme';
-import { Dimensions, View } from 'react-native';
-import { Avatar } from '@/components-next';
 
 // import { ImageMetadata } from '@/types';
 
@@ -171,16 +171,20 @@ const MessageWrapper = ({
                   )}>
                   {unixTimestampToReadableTime(item.createdAt)}
                 </Animated.Text>
-                <DeliveryStatus
-                  isPrivate={item.private}
-                  status={item.status}
-                  messageType={item.messageType}
-                  channel={channel}
-                  sourceId={item.sourceId}
-                  errorMessage={item.contentAttributes?.externalError || ''}
-                  deliveredColor="text-gray-700"
-                  sentColor="text-gray-700"
-                />
+                {(() => {
+                  const messageWithMeta = item as Message & { meta?: { error?: string } };
+                  const errorMsg = messageWithMeta.meta?.error || 'Erro ao enviar mensagem';
+                  return (
+                    <DeliveryStatus
+                      channel={channel}
+                      isPrivate={item.private}
+                      status={item.status}
+                      messageType={item.messageType}
+                      sourceId={item.sourceId}
+                      errorMessage={errorMsg}
+                    />
+                  );
+                })()}
               </Animated.View>
             )}
           </Animated.View>

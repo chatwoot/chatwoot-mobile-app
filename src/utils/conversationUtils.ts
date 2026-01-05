@@ -71,8 +71,27 @@ export const findPendingMessageIndex = (
   conversation: Conversation,
   message: PendingMessage | Message,
 ) => {
-  const { echoId: tempMessageId } = message;
-  return conversation.messages.findIndex(m => m.id === message.id || m.id === tempMessageId);
+  const { echoId: tempMessageId, id } = message;
+
+  return conversation.messages.findIndex(m => {
+    if (id && m.id === id) {
+      return true;
+    }
+
+    if (!tempMessageId) {
+      return false;
+    }
+
+    if (m.echoId === tempMessageId) {
+      return true;
+    }
+
+    if (typeof m.id === 'string' && m.id === tempMessageId) {
+      return true;
+    }
+
+    return false;
+  });
 };
 
 export type SectionGroupMessages = {

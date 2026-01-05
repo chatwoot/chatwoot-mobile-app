@@ -100,7 +100,8 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
                 : ''
             : '',
         ),
-      ]}>
+      ]}
+    >
       {contentAttributes && <EmailMeta {...{ contentAttributes, sender }} />}
       <MarkdownDisplay {...{ isIncoming, isOutgoing, isMessageFailed }} messageContent={text} />
       {/* <Text
@@ -121,14 +122,16 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
           // singleLineShortText ? "pl-1.5" : "",
           // singleLineLongText || isMultiLine ? "justify-end" : "",
           // multiLineShortText ? " absolute bottom-0.5 right-2.5" : "",
-        )}>
+        )}
+      >
         <Text
           style={tailwind.style(
             'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
             isIncoming ? 'text-whiteA-A11' : '',
             isOutgoing ? 'text-gray-700' : '',
             isMessageFailed ? 'text-whiteA-A11' : '',
-          )}>
+          )}
+        >
           {unixTimestampToReadableTime(timeStamp)}
         </Text>
         <DeliveryStatus

@@ -1,39 +1,38 @@
+import {
+    AuthButton,
+    BottomSheetBackdrop,
+    BottomSheetHeader,
+    Button,
+    Icon,
+    LanguageList
+} from '@/components-next';
+import { EMAIL_REGEX } from '@/constants';
+import { useRefsContext } from '@/context/RefsContext';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import i18n from '@/i18n';
+import { authActions } from '@/store/auth/authActions';
+import { selectIsLoggingIn } from '@/store/auth/authSelectors';
+import { resetAuth } from '@/store/auth/authSlice';
+import { settingsActions } from '@/store/settings/settingsActions';
+import {
+    selectBaseUrl,
+    selectInstallationUrl,
+    selectLocale,
+} from '@/store/settings/settingsSelectors';
+import { setLocale } from '@/store/settings/settingsSlice';
+import { EyeIcon, EyeSlash, LockIcon } from '@/svg-icons';
+import { tailwind } from '@/theme';
+import { SsoUtils } from '@/utils/ssoUtils';
+import {
+    BottomSheetModal,
+    BottomSheetScrollView,
+    useBottomSheetSpringConfigs,
+} from '@gorhom/bottom-sheet';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Animated, Image, Pressable, StatusBar, TextInput, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import {
-  BottomSheetModal,
-  BottomSheetScrollView,
-  useBottomSheetSpringConfigs,
-} from '@gorhom/bottom-sheet';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { EMAIL_REGEX } from '@/constants';
-import { EyeIcon, EyeSlash, LockIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
-import i18n from '@/i18n';
-import { resetAuth } from '@/store/auth/authSlice';
-import { authActions } from '@/store/auth/authActions';
-import { useAppDispatch, useAppSelector } from '@/hooks';
-
-import {
-  BottomSheetBackdrop,
-  BottomSheetHeader,
-  LanguageList,
-  Button,
-  Icon,
-  AuthButton,
-} from '@/components-next';
-import {
-  selectInstallationUrl,
-  selectBaseUrl,
-  selectLocale,
-} from '@/store/settings/settingsSelectors';
-import { selectIsLoggingIn } from '@/store/auth/authSelectors';
-import { setLocale } from '@/store/settings/settingsSlice';
-import { useRefsContext } from '@/context/RefsContext';
-import { SsoUtils } from '@/utils/ssoUtils';
 
 type FormData = {
   email: string;
@@ -85,11 +84,66 @@ const LoginScreen = () => {
 
   const onSubmit = async (data: FormData) => {
     const { email, password } = data;
+
+    try {
+      // Step 0: Verify if this instance is registered in NOTCHAT backend
+      console.log('[NOTCHAT] Verifying instance before login:', installationUrl);
+      await dispatch(settingsActions.verifyInstance(installationUrl)).unwrap();
+    } catch (verifyError: any) {
+      console.error('[NOTCHAT] Instance verification failed:', verifyError);
+      // O erro já deve ter sido tratado ou podemos mostrar um Toast específico aqui se necessário
+      // O unwrap joga o erro direto aqui
+      return; 
+    }
+
     // Clear any existing auth state before login
     dispatch(resetAuth());
 
     try {
+      // Step 1: Login directly to app instance
       const result = await dispatch(authActions.login({ email, password })).unwrap();
+
+      // Step 2: Register device with NOTCHAT backend (after successful login)
+      if (!('mfa_required' in result)) {
+        // Get FCM token and register with backend
+        try {
+          await dispatch(settingsActions.registerWithBackend()).unwrap();
+          console.log('[NOTCHAT] Device registered with backend successfully');
+        } catch (backendError: unknown) {
+          // Log error but don't block login - user can still use the app
+          console.error('[NOTCHAT] Failed to register with backend:', backendError);
+
+          const errorPayload =
+            (backendError as { payload?: { isTokenError?: boolean; message?: string } })?.payload ||
+            backendError;
+
+          // Corrigir: garantir que errorMessage seja sempre string
+          const errorMessage =
+            typeof errorPayload === 'string'
+              ? errorPayload
+              : errorPayload && typeof errorPayload === 'object' && 'message' in errorPayload
+                ? (errorPayload as { message?: string }).message || ''
+                : String(errorPayload || '');
+
+          // Verificar se é erro de token antes de usar .includes
+          const isTokenError =
+            (errorPayload &&
+              typeof errorPayload === 'object' &&
+              'isTokenError' in errorPayload &&
+              (errorPayload as { isTokenError?: boolean }).isTokenError) ||
+            (typeof errorMessage === 'string' &&
+              (errorMessage.includes('Access token inválido') ||
+                errorMessage.includes('token inválido') ||
+                errorMessage.includes('token não autorizado') ||
+                errorMessage.includes('Verifique o token no Chatwoot') ||
+                errorMessage.includes('configure o token')));
+
+          if (isTokenError) {
+            // Não bloquear login - apenas logar o erro
+            console.log('[NOTCHAT] Token inválido detectado após login');
+          }
+        }
+      }
 
       // Check if MFA is required in the response
       if ('mfa_required' in result && result.mfa_required) {
@@ -147,11 +201,12 @@ const LoginScreen = () => {
       <View style={tailwind.style('flex-1 bg-white')}>
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={tailwind.style('px-6 pt-24')}>
+          contentContainerStyle={tailwind.style('px-6 pt-24')}
+        >
           <Image
             // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
             source={require('@/assets/images/logo.png')}
-            style={tailwind.style('w-10 h-10')}
+            style={tailwind.style('w-87 h-10')}
             resizeMode="contain"
           />
           <View style={tailwind.style('pt-6 gap-4')}>
@@ -161,7 +216,8 @@ const LoginScreen = () => {
             <Animated.Text
               style={tailwind.style(
                 'font-inter-normal-20 leading-[18px] tracking-[0.32px] text-gray-900',
-              )}>
+              )}
+            >
               {i18n.t('LOGIN.DESCRIPTION', { baseUrl })}
             </Animated.Text>
           </View>
@@ -257,7 +313,8 @@ const LoginScreen = () => {
                   />
                   <Pressable
                     style={tailwind.style('absolute right-4 top-2.5')}
-                    onPress={() => setShowPassword(!showPassword)}>
+                    onPress={() => setShowPassword(!showPassword)}
+                  >
                     <Icon size={20} icon={showPassword ? <EyeIcon /> : <EyeSlash />} />
                   </Pressable>
                 </View>
@@ -284,14 +341,16 @@ const LoginScreen = () => {
 
           <Pressable
             style={tailwind.style('flex-row justify-center items-center mt-6')}
-            onPress={openConfigInstallationURL}>
+            onPress={openConfigInstallationURL}
+          >
             <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
               {i18n.t('LOGIN.CHANGE_URL')}
             </Animated.Text>
           </Pressable>
           <Pressable
             style={tailwind.style('flex-row justify-center items-center mt-4')}
-            onPress={() => languagesModalSheetRef.current?.present()}>
+            onPress={() => languagesModalSheetRef.current?.present()}
+          >
             <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
               {i18n.t('LOGIN.CHANGE_LANGUAGE')}
             </Animated.Text>
@@ -307,7 +366,8 @@ const LoginScreen = () => {
         animationConfigs={animationConfigs}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
-        snapPoints={['70%']}>
+        snapPoints={['70%']}
+      >
         <BottomSheetScrollView showsVerticalScrollIndicator={false}>
           <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_LANGUAGE')} />
           <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />

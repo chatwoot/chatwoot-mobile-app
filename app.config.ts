@@ -1,25 +1,27 @@
-import { ExpoConfig, ConfigContext } from 'expo/config';
+import { ConfigContext, ExpoConfig } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => {
   return {
-    name: 'Chatwoot',
+    name: process.env.EXPO_PUBLIC_APP_NAME || 'notchat',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
     version: '4.3.10',
     orientation: 'portrait',
-    icon: './assets/icon.png',
+    icon: process.env.EXPO_PUBLIC_APP_ICON || './assets/icon.png',
     userInterfaceStyle: 'light',
     newArchEnabled: false,
-    scheme: 'chatwootapp',
+    scheme: process.env.EXPO_PUBLIC_APP_SCHEME || 'chatwootapp',
+    assetBundlePatterns: ['**/*'],
     splash: {
-      image: './assets/splash.png',
+      image: process.env.EXPO_PUBLIC_SPLASH_IMAGE || './assets/splash.png',
       resizeMode: 'contain',
-      backgroundColor: '#ffffff',
+      backgroundColor: process.env.EXPO_PUBLIC_SPLASH_BACKGROUND_COLOR || '#ffffff',
       enableFullScreenImage_legacy: true,
     },
     ios: {
       supportsTablet: true,
-      bundleIdentifier: 'com.chatwoot.app',
+      bundleIdentifier: process.env.EXPO_PUBLIC_IOS_BUNDLE_IDENTIFIER || 'com.chatwoot.app',
       infoPlist: {
+        UIBackgroundModes: ['fetch', 'remote-notification'],
         NSCameraUsageDescription:
           'This app requires access to the camera to upload images and videos.',
         NSPhotoLibraryUsageDescription:
@@ -27,17 +29,20 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         NSMicrophoneUsageDescription: 'This app requires access to the microphone to record audio.',
         NSAppleMusicUsageDescription:
           'This app does not use Apple Music, but a system API may require this permission.',
-        UIBackgroundModes: ['fetch', 'remote-notification'],
         ITSAppUsesNonExemptEncryption: false,
       },
       // Please use the relative path to the google-services.json file
-      googleServicesFile: process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE,
+      googleServicesFile: process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE || './GoogleService-Info.plist',
       entitlements: { 'aps-environment': 'production' },
       associatedDomains: ['applinks:app.chatwoot.com'],
     },
     android: {
-      adaptiveIcon: { foregroundImage: './assets/adaptive-icon.png', backgroundColor: '#ffffff' },
-      package: 'com.chatwoot.app',
+      adaptiveIcon: {
+        foregroundImage: process.env.EXPO_PUBLIC_APP_ADAPTIVE_ICON || './assets/adaptive-icon.png',
+        backgroundColor: process.env.EXPO_PUBLIC_PRIMARY_COLOR || '#ffffff',
+      },
+      package: process.env.EXPO_PUBLIC_ANDROID_PACKAGE || 'com.chatwoot.app',
+      versionCode: 10,
       permissions: ['android.permission.CAMERA', 'android.permission.RECORD_AUDIO'],
       // Please use the relative path to the google-services.json file
       googleServicesFile: process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE || './google-services.json',
@@ -68,9 +73,21 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     extra: {
       eas: {
-        projectId: '101f016d-383a-4d57-9cbb-c0566ab41508',
+        projectId: '98d5a8bb-b30f-4318-9717-380d3ec2e022',
         storybookEnabled: process.env.EXPO_STORYBOOK_ENABLED,
       },
+      // Backend URL - use environment variable or default
+      // For local testing, create a .env file with: EXPO_PUBLIC_BACKEND_URL=http://192.168.18.103:8000
+      // IMPORTANTE: Use o IP da sua máquina na rede local, não localhost
+      backendUrl: process.env.EXPO_PUBLIC_BACKEND_URL || 'https://api.notchat.me',
+      appName: process.env.EXPO_PUBLIC_APP_NAME || 'Notchat',
+      primaryColor: process.env.EXPO_PUBLIC_PRIMARY_COLOR || '#1FB6FF',
+      secondaryColor: process.env.EXPO_PUBLIC_SECONDARY_COLOR || '#0084FF',
+      accentColor: process.env.EXPO_PUBLIC_ACCENT_COLOR || '#FF3B30',
+      minChatwootVersion: process.env.EXPO_PUBLIC_MINIMUM_CHATWOOT_VERSION || '2.7.0',
+      juneSdkKey: process.env.EXPO_PUBLIC_JUNE_SDK_KEY || '',
+      chatwootWebsiteToken: process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN || '',
+      chatwootBaseUrl: process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL || '',
     },
     owner: 'juandev1998',
     plugins: [
@@ -93,12 +110,14 @@ export default ({ config }: ConfigContext): ExpoConfig => {
             compileSdkVersion: 35,
             targetSdkVersion: 35,
             enableProguardInReleaseBuilds: true,
+            buildToolsVersion: '35.0.0',
           },
-          ios: { useFrameworks: 'static' },
+          ios: { useFrameworks: 'static', deploymentTarget: '15.1' },
         },
       ],
       '@react-native-firebase/app',
       '@react-native-firebase/messaging',
+      './with-notifee-repo.js',
       './with-ffmpeg-pod.js',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },

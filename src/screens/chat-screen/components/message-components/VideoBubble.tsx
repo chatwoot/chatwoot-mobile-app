@@ -87,10 +87,12 @@ export const VideoBubblePlayer = (props: VideoPlayerProps) => {
         <Animated.View
           entering={FadeIn.duration(300).easing(Easing.ease)}
           exiting={FadeOut.duration(300).easing(Easing.ease)}
-          style={tailwind.style('absolute inset-0 flex items-center justify-center')}>
+          style={tailwind.style('absolute inset-0 flex items-center justify-center')}
+        >
           <Pressable
             onPress={handlePlayPress}
-            style={tailwind.style('h-full w-full flex items-center justify-center')}>
+            style={tailwind.style('h-full w-full flex items-center justify-center')}
+          >
             <Image
               source={require('../../../../assets/local/PlayIcon.png')} // eslint-disable-line @typescript-eslint/no-require-imports
               style={tailwind.style('h-12 w-12 z-10')}

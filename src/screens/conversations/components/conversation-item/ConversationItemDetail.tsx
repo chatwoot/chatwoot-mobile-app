@@ -1,24 +1,25 @@
 /* eslint-disable react/display-name */
-import React, { memo, useState } from 'react';
-import { Dimensions, ImageURISource, Text } from 'react-native';
-import { LinearTransition } from 'react-native-reanimated';
 import { isEqual } from 'lodash';
+import React, { memo, useState } from 'react';
+import { Dimensions, ImageURISource, Modal, Pressable, ScrollView, Text, View } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { LinearTransition, runOnJS } from 'react-native-reanimated';
 
 import { Avatar } from '@/components-next/common';
 import { AnimatedNativeView, NativeView } from '@/components-next/native-components';
 import { tailwind } from '@/theme';
 import { Agent, Conversation, ConversationAdditionalAttributes, Label, Message } from '@/types';
 
-import { ConversationId } from './ConversationId';
-import { ConversationLastMessage } from './ConversationLastMessage';
-import { PriorityIndicator, ChannelIndicator } from '@/components-next/list-components';
-import { UnreadIndicator } from './UnreadIndicator';
-import { SLAIndicator } from './SLAIndicator';
-import { LabelIndicator } from './LabelIndicator';
-import { LastActivityTime } from './LastActivityTime';
+import { ChannelIndicator, PriorityIndicator } from '@/components-next/list-components';
 import { SLA } from '@/types/common/SLA';
 import { Inbox } from '@/types/Inbox';
+import { ConversationId } from './ConversationId';
+import { ConversationLastMessage } from './ConversationLastMessage';
+import { LabelIndicator } from './LabelIndicator';
+import { LastActivityTime } from './LastActivityTime';
+import { SLAIndicator } from './SLAIndicator';
 import { TypingMessage } from './TypingMessage';
+import { UnreadIndicator } from './UnreadIndicator';
 
 const { width } = Dimensions.get('screen');
 
@@ -42,6 +43,14 @@ type ConversationDetailSubCellProps = Pick<
   additionalAttributes?: ConversationAdditionalAttributes;
   allLabels: Label[];
   typingText?: string;
+  kanbanInfo?: {
+    items: {
+      funnelName: string;
+      stageName: string;
+      color: string;
+    }[];
+    hasMore: boolean;
+  } | null;
 };
 
 const checkIfPropsAreSame = (
@@ -69,13 +78,17 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
     additionalAttributes,
     allLabels,
     typingText,
+    kanbanInfo,
   } = props;
 
   const [shouldShowSLA, setShouldShowSLA] = useState(true);
+  const [showPipelinesModal, setShowPipelinesModal] = useState(false);
 
   const hasPriority = priority !== null;
 
   const hasLabels = labels.length > 0;
+  
+  const hasKanban = !!kanbanInfo;
 
   const hasSLA = !!slaPolicyId && shouldShowSLA;
 
@@ -108,7 +121,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           <LastActivityTime timestamp={timestamp} />
         </AnimatedNativeView>
       </AnimatedNativeView>
-      {hasLabels || hasSLA ? (
+      {hasLabels || hasSLA || hasKanban ? (
         <AnimatedNativeView style={tailwind.style('flex flex-col items-center gap-1')}>
           <AnimatedNativeView
             style={tailwind.style('flex flex-row w-full justify-between items-center gap-2')}>
@@ -145,6 +158,34 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
                 <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500')} />
               )}
               {hasLabels && <LabelIndicator labels={labels} allLabels={allLabels} />}
+              {hasKanban && kanbanInfo && kanbanInfo.items.length > 0 && (
+                <GestureDetector
+                  gesture={Gesture.Tap().onEnd(() => {
+                    if (kanbanInfo.items.length > 1) {
+                      runOnJS(setShowPipelinesModal)(true);
+                    }
+                  })}>
+                  <AnimatedNativeView
+                    style={[
+                      tailwind.style('flex flex-row items-center gap-1 mr-1'),
+                      { zIndex: 10, elevation: 5 },
+                    ]}>
+                    {(hasLabels || hasSLA) && (
+                      <NativeView style={tailwind.style('w-[1px] h-3 bg-slate-500 mx-1')} />
+                    )}
+                    <NativeView
+                      style={[
+                        tailwind.style('w-2 h-2 rounded-full'),
+                        { backgroundColor: kanbanInfo.items[0].color || '#374151' },
+                      ]}
+                    />
+                    <Text style={tailwind.style('text-[10px] font-inter-medium-24 text-gray-700')}>
+                      {kanbanInfo.items[0].funnelName} • {kanbanInfo.items[0].stageName}
+                      {kanbanInfo.hasMore ? '...' : ''}
+                    </Text>
+                  </AnimatedNativeView>
+                </GestureDetector>
+              )}
             </AnimatedNativeView>
 
             {assignee ? (
@@ -181,6 +222,49 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           </AnimatedNativeView>
         </AnimatedNativeView>
       )}
+      <Modal
+        visible={showPipelinesModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowPipelinesModal(false)}>
+        <Pressable
+          style={tailwind.style('flex-1 bg-black/50 justify-center items-center p-4')}
+          onPress={() => setShowPipelinesModal(false)}>
+          <Pressable
+            style={tailwind.style('bg-white rounded-lg w-full max-w-sm p-4 shadow-lg')}
+            onPress={e => e.stopPropagation()}>
+            <Text style={tailwind.style('text-lg font-inter-semibold-20 text-gray-900 mb-3')}>
+              Pipelines Atribuídos
+            </Text>
+            <ScrollView style={{ maxHeight: 300 }}>
+              {kanbanInfo?.items.map((item, index) => (
+                <View
+                  key={index}
+                  style={tailwind.style(
+                    'flex-row items-center py-2 border-b border-gray-100 last:border-0',
+                  )}>
+                  <View
+                    style={[
+                      tailwind.style('w-3 h-3 rounded-full mr-2'),
+                      { backgroundColor: item.color },
+                    ]}
+                  />
+                  <Text style={tailwind.style('text-sm text-gray-700 font-inter-medium-24')}>
+                    {item.funnelName}
+                  </Text>
+                  <Text style={tailwind.style('text-xs text-gray-400 mx-1')}>•</Text>
+                  <Text style={tailwind.style('text-sm text-gray-600')}>{item.stageName}</Text>
+                </View>
+              ))}
+            </ScrollView>
+            <Pressable
+              onPress={() => setShowPipelinesModal(false)}
+              style={tailwind.style('mt-4 bg-gray-100 p-2 rounded-lg items-center')}>
+              <Text style={tailwind.style('text-gray-900 font-inter-medium-24')}>Fechar</Text>
+            </Pressable>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </AnimatedNativeView>
   );
 }, checkIfPropsAreSame);

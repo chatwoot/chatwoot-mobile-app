@@ -206,7 +206,8 @@ const MenuOption = (props: MenuOptionProps) => {
           <Text
             style={tailwind.style(
               'text-base font-inter-normal-20 leading-[18px] tracking-[0.24px] text-gray-950 pl-5',
-            )}>
+            )}
+          >
             {menuOption.title}
           </Text>
         </Animated.View>
@@ -225,7 +226,8 @@ export const CommandOptionsMenu = () => {
     <Animated.View
       entering={SlideInDown.springify().damping(38).stiffness(240)}
       exiting={SlideOutDown.springify().damping(38).stiffness(240)}
-      style={tailwind.style('mx-1 pt-2 items-start', `h-[${containerHeight}px]`)}>
+      style={tailwind.style('mx-1 pt-2 items-start', `h-[${containerHeight}px]`)}
+    >
       {ADD_MENU_OPTIONS.map((menuOption, index) => {
         return <MenuOption key={menuOption.title} {...{ menuOption, index }} />;
       })}

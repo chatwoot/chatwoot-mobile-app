@@ -1,33 +1,36 @@
 /* eslint-disable react/display-name */
-import React, { memo, useCallback, useMemo } from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import React, { memo, useCallback, useMemo } from 'react';
 import Animated, { SharedValue } from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { Conversation } from '@/types';
+import { selectContactById } from '@/store/contact/contactSelectors';
+import { conversationActions } from '@/store/conversation/conversationActions';
+import { setActionState } from '@/store/conversation/conversationActionSlice';
+import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import {
-  toggleSelection,
+  clearSelection,
   selectSelected,
   selectSingleConversation,
-  clearSelection,
+  toggleSelection,
 } from '@/store/conversation/conversationSelectedSlice';
-import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
-import { setActionState } from '@/store/conversation/conversationActionSlice';
-import { selectInboxById } from '@/store/inbox/inboxSelectors';
-import { selectContactById } from '@/store/contact/contactSelectors';
 import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
-import { conversationActions } from '@/store/conversation/conversationActions';
+import { selectInboxById } from '@/store/inbox/inboxSelectors';
+import {
+  selectKanbanFunnels,
+  selectKanbanItemsListByConversationId,
+} from '@/store/kanban/kanbanSelectors';
 import { selectAllLabels } from '@/store/label/labelSelectors';
+import { Conversation } from '@/types';
 
-import { isContactTyping, getLastMessage, getTypingUsersText } from '@/utils';
 import { Icon, Swipeable } from '@/components-next/common';
+import { getLastMessage, getTypingUsersText, isContactTyping } from '@/utils';
 
-import { ConversationItem } from './ConversationItem';
-import { MarkAsUnRead, StatusIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
-import { MarkAsRead } from '@/svg-icons';
 import i18n from '@/i18n';
+import { MarkAsRead, MarkAsUnRead, StatusIcon } from '@/svg-icons';
+import { tailwind } from '@/theme';
+import { ConversationItem } from './ConversationItem';
 
 type ConversationItemContainerProps = {
   conversationItem: Conversation;
@@ -93,6 +96,8 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
   const allLabels = useAppSelector(selectAllLabels);
   const contact = useAppSelector(state => selectContactById(state, contactId));
   const inbox = useAppSelector(state => selectInboxById(state, inboxId));
+  const kanbanItems = useAppSelector(state => selectKanbanItemsListByConversationId(state, id));
+  const funnels = useAppSelector(selectKanbanFunnels);
   const typingUsers = useAppSelector(selectTypingUsersByConversationId(id));
   const selected = useAppSelector(selectSelected);
   const currentState = useAppSelector(selectCurrentState);
@@ -115,8 +120,7 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
   const onStatusAction = useCallback(() => {
     dispatch(selectSingleConversation(conversationItem));
     dispatch(setActionState('Status'));
-    actionsModalSheetRef.current?.present();
-  }, [dispatch, conversationItem, actionsModalSheetRef]);
+  }, [dispatch, conversationItem]);
 
   const onLongPressAction = useCallback(() => {
     dispatch(clearSelection());
@@ -134,6 +138,46 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
       navigation.dispatch(pushToChatScreen);
     }
   }, [currentState, dispatch, conversationItem, navigation, id]);
+
+  const kanbanInfo = useMemo(() => {
+    if (!kanbanItems || kanbanItems.length === 0 || !funnels) return null;
+
+    const items = kanbanItems
+      .map(item => {
+        const funnel = funnels.find(f => f.id === item.funnel_id);
+        if (!funnel) return null;
+
+        let stageName = item.stage_key || item.funnel_stage;
+        let stageColor = '#1F2937'; // gray-800 default
+
+        if (funnel.stages) {
+          const stages = Array.isArray(funnel.stages)
+            ? funnel.stages
+            : Object.values(funnel.stages);
+          const stage = stages.find(
+            (s: any) => s.id === item.stage_id || s.stage_key === item.stage_key,
+          );
+          if (stage) {
+            stageName = stage.name;
+            if (stage.color) stageColor = stage.color;
+          }
+        }
+
+        return {
+          funnelName: funnel.name,
+          stageName: stageName || '',
+          color: stageColor,
+        };
+      })
+      .filter(Boolean) as { funnelName: string; stageName: string; color: string }[];
+
+    if (items.length === 0) return null;
+
+    return {
+      items,
+      hasMore: items.length > 1,
+    };
+  }, [kanbanItems, funnels]);
 
   const viewProps = {
     id,
@@ -162,6 +206,7 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
     additionalAttributes,
     allLabels,
     typingText: typingText as string | undefined,
+    kanbanInfo,
   };
 
   return (

@@ -1,10 +1,10 @@
-import axios from 'axios';
 import { apiService } from '@/services/APIService';
+import axios from 'axios';
 import type {
-  NotificationSettings,
-  NotificationSettingsPayload,
-  PushPayload,
-  RemoveDevicePayload,
+    NotificationSettings,
+    NotificationSettingsPayload,
+    PushPayload,
+    RemoveDevicePayload,
 } from './settingsTypes';
 
 export class SettingsService {
@@ -29,7 +29,7 @@ export class SettingsService {
     return response.data;
   }
 
-  static async getChatwootVersion(installationUrl: string): Promise<{ version: string }> {
+  static async getAppVersion(installationUrl: string): Promise<{ version: string }> {
     const response = await axios.get(`${installationUrl}api`);
     return response.data;
   }

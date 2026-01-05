@@ -1,20 +1,21 @@
-import React, { useMemo } from 'react';
-import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
-import tailwind from 'twrnc';
 import { BottomSheetBackdrop } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import {
   resetActionState,
   selectCurrentActionState,
 } from '@/store/conversation/conversationActionSlice';
+import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
+import React, { useEffect, useMemo } from 'react';
+import tailwind from 'twrnc';
 
 import { useRefsContext } from '@/context';
 import {
+  MoveToInbox,
   UpdateAssignee,
-  UpdateStatus,
   UpdateLabels,
-  UpdateTeam,
   UpdatePriority,
+  UpdateStatus,
+  UpdateTeam,
 } from '@/screens/conversations/components/conversation-actions';
 
 const ActionBottomSheet = () => {
@@ -29,6 +30,16 @@ const ActionBottomSheet = () => {
 
   const { actionsModalSheetRef } = useRefsContext();
 
+  useEffect(() => {
+    if (currentActionState) {
+      // Small delay to ensure snapPoints are updated before presenting
+      const timer = setTimeout(() => {
+        actionsModalSheetRef.current?.present();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [currentActionState, actionsModalSheetRef]);
+
   const actionSnapPoints = useMemo(() => {
     switch (currentActionState) {
       case 'Assign':
@@ -41,6 +52,8 @@ const ActionBottomSheet = () => {
         return [300];
       case 'TeamAssign':
         return ['50%'];
+      case 'MoveToInbox':
+        return ['60%'];
       default:
         return [250];
     }
@@ -59,6 +72,7 @@ const ActionBottomSheet = () => {
       style={tailwind.style('rounded-[26px] overflow-hidden')}
       animationConfigs={animationConfigs}
       enablePanDownToClose
+      enableDynamicSizing={false}
       snapPoints={actionSnapPoints}
       onDismiss={handleOnDismiss}>
       {currentActionState === 'Assign' ? <UpdateAssignee /> : null}
@@ -66,6 +80,7 @@ const ActionBottomSheet = () => {
       {currentActionState === 'Status' ? <UpdateStatus /> : null}
       {currentActionState === 'Label' ? <UpdateLabels /> : null}
       {currentActionState === 'Priority' ? <UpdatePriority /> : null}
+      {currentActionState === 'MoveToInbox' ? <MoveToInbox /> : null}
     </BottomSheetModal>
   );
 };

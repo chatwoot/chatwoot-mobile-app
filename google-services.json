@@ -23,25 +23,6 @@
           "other_platform_oauth_client": []
         }
       }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:373005582208:android:0a12e96c468be7cfac4b65",
-        "android_client_info": {
-          "package_name": "com.chatwoot.appq"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAXpdAFf1ZvaSWszPS1NLWOqt4ENMU1p0o"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
     }
   ],
   "configuration_version": "1"

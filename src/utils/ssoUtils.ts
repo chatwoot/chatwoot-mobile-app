@@ -1,9 +1,9 @@
+import i18n from '@/i18n';
+import { AppDispatch } from '@/store';
+import { authActions } from '@/store/auth/authActions';
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
-import { authActions } from '@/store/auth/authActions';
-import { AppDispatch } from '@/store';
 import { showToast } from './toastUtils';
-import i18n from '@/i18n';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -16,7 +16,7 @@ export interface SsoLoginParams {
 export class SsoUtils {
   /**
    * Initiates SSO login flow using Expo AuthSession
-   * @param installationUrl - The Chatwoot installation URL
+   * @param installationUrl - The Notchat installation URL
    * @returns Promise with SSO login result
    */
   static async loginWithSSO(

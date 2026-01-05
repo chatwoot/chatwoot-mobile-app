@@ -1,8 +1,8 @@
+import { Theme } from '@/types/common/Theme';
+import * as RootNavigation from '@/utils/navigationUtils';
 import { createSlice } from '@reduxjs/toolkit';
 import { settingsActions } from './settingsActions';
-import * as RootNavigation from '@/utils/navigationUtils';
 import { NotificationSettings } from './settingsTypes';
-import { Theme } from '@/types/common/Theme';
 
 interface SettingsState {
   baseUrl: string;
@@ -18,6 +18,7 @@ interface SettingsState {
   theme: Theme;
   version: string;
   pushToken: string;
+  isTokenValid: boolean; // Adicionar estado para token válido
 }
 const initialState: SettingsState = {
   baseUrl: 'app.chatwoot.com',
@@ -41,6 +42,7 @@ const initialState: SettingsState = {
   theme: 'system',
   version: '',
   pushToken: '',
+  isTokenValid: true, // Iniciar como true, será atualizado após validação
 };
 export const settingsSlice = createSlice({
   name: 'settings',
@@ -49,10 +51,14 @@ export const settingsSlice = createSlice({
     resetSettings: state => {
       state.uiFlags.isSettingUrl = false;
       state.uiFlags.isUpdating = false;
+      state.isTokenValid = true; // Resetar para true no reset
     },
     setLocale: (state, action) => {
       state.localeValue = action.payload;
       state.uiFlags.isLocaleSet = true;
+    },
+    setTokenValid: (state, action) => {
+      state.isTokenValid = action.payload;
     },
   },
   extraReducers: builder => {
@@ -85,7 +91,7 @@ export const settingsSlice = createSlice({
       .addCase(settingsActions.updateNotificationSettings.rejected, state => {
         state.uiFlags.isUpdating = false;
       })
-      .addCase(settingsActions.getChatwootVersion.fulfilled, (state, action) => {
+      .addCase(settingsActions.getAppVersion.fulfilled, (state, action) => {
         const { version } = action.payload;
         state.version = version;
       })
@@ -93,11 +99,32 @@ export const settingsSlice = createSlice({
         if (action?.payload?.fcmToken) {
           state.pushToken = action.payload.fcmToken;
         }
+        state.isTokenValid = true; // Token é válido se o registro foi bem-sucedido
       })
       .addCase(settingsActions.saveDeviceDetails.rejected, (state, action) => {
-        state.pushToken = '';
+        // Não limpar pushToken se for erro de rate limit - mantém o token existente
+        const errorMessage = action.payload as string;
+        if (errorMessage && errorMessage.includes('Rate limit')) {
+          // Manter o pushToken existente em caso de rate limit
+          return;
+        }
+
+        // Verificar se é erro de token inválido
+        const isTokenError =
+          typeof errorMessage === 'string' &&
+          (errorMessage.includes('token inválido') ||
+            errorMessage.includes('token não autorizado') ||
+            errorMessage.includes('configure o token') ||
+            errorMessage.includes('Access token inválido'));
+
+        if (isTokenError) {
+          state.isTokenValid = false; // Marcar token como inválido
+        } else {
+          // Limpar apenas em outros tipos de erro
+          state.pushToken = '';
+        }
       });
   },
 });
-export const { resetSettings, setLocale } = settingsSlice.actions;
+export const { resetSettings, setLocale, setTokenValid } = settingsSlice.actions;
 export default settingsSlice.reducer;

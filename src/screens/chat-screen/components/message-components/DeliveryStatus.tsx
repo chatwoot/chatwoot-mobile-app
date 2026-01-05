@@ -1,16 +1,15 @@
+import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 import React from 'react';
 import { Pressable } from 'react-native';
-import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 
 import { BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
-import { tailwind } from '@/theme';
-import { DoubleCheckIcon, WarningIcon, MessagePendingIcon } from '@/svg-icons';
 import { Icon } from '@/components-next/common';
-import { MessageStatus, MessageType } from '@/types';
-import { Channel } from '@/types';
-import { INBOX_TYPES, MESSAGE_TYPES, MESSAGE_STATUS } from '@/constants';
-import { ErrorInformation } from './ErrorInformation';
+import { INBOX_TYPES, MESSAGE_STATUS, MESSAGE_TYPES } from '@/constants';
 import { useRefsContext } from '@/context';
+import { DoubleCheckIcon, MessagePendingIcon, WarningIcon } from '@/svg-icons';
+import { tailwind } from '@/theme';
+import { Channel, MessageStatus, MessageType } from '@/types';
+import { ErrorInformation } from './ErrorInformation';
 
 type DeliveryStatusProps = {
   channel?: Channel;

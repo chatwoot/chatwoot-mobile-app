@@ -21,7 +21,8 @@ export const ImageBubbleContainer = (props: ImageContainerProps) => {
       width={lightboxW}
       height={lightboxH}
       imgLayout={{ width: lightboxW, height: lightboxH }}
-      tapToClose={true}>
+      tapToClose={true}
+    >
       <AnimatedExpoImage
         source={{ uri: imageSrc }}
         contentFit="cover"

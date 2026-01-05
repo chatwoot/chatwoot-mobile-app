@@ -1,25 +1,30 @@
 import { ConfigContext, ExpoConfig } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => {
+  const appName = process.env.APP_NAME || process.env.EXPO_PUBLIC_APP_NAME || 'Notchat';
+  const bundleId = process.env.BUNDLE_ID || process.env.EXPO_PUBLIC_ANDROID_PACKAGE || 'com.chatwoot.app';
+
   return {
-    name: process.env.EXPO_PUBLIC_APP_NAME || 'notchat',
-    slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
+    ...config,
+    name: appName,
+    slug: process.env.APP_SLUG || process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
     version: '4.3.10',
     orientation: 'portrait',
-    icon: process.env.EXPO_PUBLIC_APP_ICON || './assets/icon.png',
+    icon: process.env.APP_ICON || process.env.EXPO_PUBLIC_APP_ICON || './assets/icon.png',
     userInterfaceStyle: 'light',
     newArchEnabled: false,
-    scheme: process.env.EXPO_PUBLIC_APP_SCHEME || 'chatwootapp',
+    scheme: process.env.APP_SCHEME || process.env.EXPO_PUBLIC_APP_SCHEME || 'chatwootapp',
     assetBundlePatterns: ['**/*'],
     splash: {
-      image: process.env.EXPO_PUBLIC_SPLASH_IMAGE || './assets/splash.png',
+      image: process.env.SPLASH_IMAGE || process.env.EXPO_PUBLIC_SPLASH_IMAGE || './assets/splash.png',
       resizeMode: 'contain',
-      backgroundColor: process.env.EXPO_PUBLIC_SPLASH_BACKGROUND_COLOR || '#ffffff',
+      backgroundColor: process.env.SPLASH_BACKGROUND_COLOR || process.env.EXPO_PUBLIC_SPLASH_BACKGROUND_COLOR || '#ffffff',
       enableFullScreenImage_legacy: true,
     },
     ios: {
+      ...config.ios,
       supportsTablet: true,
-      bundleIdentifier: process.env.EXPO_PUBLIC_IOS_BUNDLE_IDENTIFIER || 'com.chatwoot.app',
+      bundleIdentifier: process.env.IOS_BUNDLE_ID || bundleId,
       infoPlist: {
         UIBackgroundModes: ['fetch', 'remote-notification'],
         NSCameraUsageDescription:
@@ -32,20 +37,21 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         ITSAppUsesNonExemptEncryption: false,
       },
       // Please use the relative path to the google-services.json file
-      googleServicesFile: process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE || './GoogleService-Info.plist',
+      googleServicesFile: process.env.IOS_GOOGLE_SERVICES_FILE || process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE || './GoogleService-Info.plist',
       entitlements: { 'aps-environment': 'production' },
       associatedDomains: ['applinks:app.chatwoot.com'],
     },
     android: {
+      ...config.android,
       adaptiveIcon: {
-        foregroundImage: process.env.EXPO_PUBLIC_APP_ADAPTIVE_ICON || './assets/adaptive-icon.png',
-        backgroundColor: process.env.EXPO_PUBLIC_PRIMARY_COLOR || '#ffffff',
+        foregroundImage: process.env.APP_ADAPTIVE_ICON || process.env.EXPO_PUBLIC_APP_ADAPTIVE_ICON || './assets/adaptive-icon.png',
+        backgroundColor: process.env.PRIMARY_COLOR || process.env.EXPO_PUBLIC_PRIMARY_COLOR || '#ffffff',
       },
-      package: process.env.EXPO_PUBLIC_ANDROID_PACKAGE || 'com.chatwoot.app',
+      package: process.env.ANDROID_PACKAGE || bundleId,
       versionCode: 10,
       permissions: ['android.permission.CAMERA', 'android.permission.RECORD_AUDIO'],
       // Please use the relative path to the google-services.json file
-      googleServicesFile: process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE || './google-services.json',
+      googleServicesFile: process.env.ANDROID_GOOGLE_SERVICES_FILE || process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE || './google-services.json',
       intentFilters: [
         {
           action: 'VIEW',
@@ -72,22 +78,21 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       ],
     },
     extra: {
+      ...config.extra,
       eas: {
         projectId: '98d5a8bb-b30f-4318-9717-380d3ec2e022',
         storybookEnabled: process.env.EXPO_STORYBOOK_ENABLED,
       },
       // Backend URL - use environment variable or default
-      // For local testing, create a .env file with: EXPO_PUBLIC_BACKEND_URL=http://192.168.18.103:8000
-      // IMPORTANTE: Use o IP da sua máquina na rede local, não localhost
-      backendUrl: process.env.EXPO_PUBLIC_BACKEND_URL || 'https://api.notchat.me',
-      appName: process.env.EXPO_PUBLIC_APP_NAME || 'Notchat',
-      primaryColor: process.env.EXPO_PUBLIC_PRIMARY_COLOR || '#1FB6FF',
-      secondaryColor: process.env.EXPO_PUBLIC_SECONDARY_COLOR || '#0084FF',
-      accentColor: process.env.EXPO_PUBLIC_ACCENT_COLOR || '#FF3B30',
-      minChatwootVersion: process.env.EXPO_PUBLIC_MINIMUM_CHATWOOT_VERSION || '2.7.0',
-      juneSdkKey: process.env.EXPO_PUBLIC_JUNE_SDK_KEY || '',
-      chatwootWebsiteToken: process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN || '',
-      chatwootBaseUrl: process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL || '',
+      backendUrl: process.env.CHATWOOT_URL || process.env.EXPO_PUBLIC_BACKEND_URL || 'https://api.notchat.me',
+      appName: appName,
+      primaryColor: process.env.PRIMARY_COLOR || process.env.EXPO_PUBLIC_PRIMARY_COLOR || '#1FB6FF',
+      secondaryColor: process.env.SECONDARY_COLOR || process.env.EXPO_PUBLIC_SECONDARY_COLOR || '#0084FF',
+      accentColor: process.env.ACCENT_COLOR || process.env.EXPO_PUBLIC_ACCENT_COLOR || '#FF3B30',
+      minChatwootVersion: process.env.MINIMUM_CHATWOOT_VERSION || process.env.EXPO_PUBLIC_MINIMUM_CHATWOOT_VERSION || '2.7.0',
+      juneSdkKey: process.env.JUNE_SDK_KEY || process.env.EXPO_PUBLIC_JUNE_SDK_KEY || '',
+      chatwootWebsiteToken: process.env.CHATWOOT_WEBSITE_TOKEN || process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN || '',
+      chatwootBaseUrl: process.env.CHATWOOT_BASE_URL || process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL || '',
     },
     owner: 'juandev1998',
     plugins: [

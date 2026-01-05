@@ -8,7 +8,7 @@
     "ios": "expo run:ios",
     "clean": "watchman watch-del-all && yarn cache clean",
     "test": "jest",
-    "lint": "eslint .",
+    "lint": "npx eslint .",
     "generate": "npx expo prebuild --clean",
     "generate:soft": "npx expo prebuild",
     "run:ios": "npx expo run:ios -d",

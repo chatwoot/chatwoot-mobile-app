@@ -38,6 +38,6 @@ ios/
 android/
 
 # google-services.json  # Commented out for EAS builds
-GoogleService-Info.plist
+# GoogleService-Info.plist
 .env
 .env.local

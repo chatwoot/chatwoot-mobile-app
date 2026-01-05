@@ -17,18 +17,27 @@
         "SENTRY_DISABLE_AUTO_UPLOAD": "true"
       }
     },
+    "simulator": {
+      "ios": {
+        "simulator": true
+      },
+      "android": {
+        "buildType": "apk"
+      },
+      "developmentClient": true,
+      "distribution": "internal"
+    },
     "production": {
       "autoIncrement": true,
-        "env": {
+      "env": {
         "APP_ENV": "production",
         "SENTRY_DISABLE_AUTO_UPLOAD": "true",
         "SENTRY_ALLOW_FAILURE": "true"
       }
-      
     }
   },
   "submit": {
-   "production": {
+    "production": {
       "ios": {
         "appleTeamId": "52ASKF85JT",
         "ascAppId": "6753868709"

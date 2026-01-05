@@ -74,11 +74,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     extra: {
       eas: {
-        projectId: process.env.EXPO_PUBLIC_PROJECT_ID || '594dbcca-228d-4feb-b536-e698a8b33791',
+        projectId: process.env.EXPO_PUBLIC_PROJECT_ID || 'd69a19fd-92ae-4f8a-8765-998e61ccb906',
         storybookEnabled: process.env.EXPO_STORYBOOK_ENABLED,
       },
     },
-    owner: 'codemonger20',
     plugins: [
       'expo-font',
       ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary', 'Notifications'] }],

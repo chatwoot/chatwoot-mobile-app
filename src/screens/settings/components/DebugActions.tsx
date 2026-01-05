@@ -1,10 +1,10 @@
 import React from 'react';
-import { Pressable, Text, Animated, View } from 'react-native';
+import { Pressable, Text, Animated, View, Alert, Platform } from 'react-native';
 // import Clipboard from '@react-native-clipboard/clipboard';
 
 import { showToast } from '@/utils/toastUtils';
 import { tailwind } from '@/theme';
-import { sendTestNotification } from '@/services/NotificationService';
+import { sendTestNotification, runNotificationDiagnostics } from '@/services/NotificationService';
 
 let Clipboard: any = null;
 try {
@@ -123,6 +123,8 @@ const DebugActionCell = ({ item, index, isLastItem }: DebugActionCellProps) => {
 };
 
 export const DebugActions = () => {
+  const pushToken = useAppSelector(selectPushToken);
+
   const handleTestNotification = async () => {
     showToast({ message: 'Sending test notification...' });
     const result = await sendTestNotification();
@@ -130,6 +132,35 @@ export const DebugActions = () => {
       showToast({ message: '✅ Test notification sent!' });
     } else {
       showToast({ message: '❌ Failed to send notification' });
+    }
+  };
+
+  const handleRunDiagnostics = async () => {
+    showToast({ message: 'Running diagnostics...' });
+    try {
+      const { results, fcmToken, allPassed } = await runNotificationDiagnostics();
+      
+      const message = results.join('\n');
+      const title = allPassed ? '✅ All Checks Passed' : '❌ Some Checks Failed';
+      
+      Alert.alert(
+        title,
+        message,
+        [
+          {
+            text: 'Copy FCM Token',
+            onPress: () => {
+              if (fcmToken) {
+                Clipboard.setString(fcmToken);
+                showToast({ message: 'FCM Token copied!' });
+              }
+            },
+          },
+          { text: 'OK' },
+        ],
+      );
+    } catch (error) {
+      Alert.alert('Diagnostic Error', String(error));
     }
   };
 
@@ -143,6 +174,32 @@ export const DebugActions = () => {
           isLastItem={false}
         />
       ))}
+      
+      {/* Run Diagnostics Button */}
+      <Pressable onPress={handleRunDiagnostics}>
+        <Animated.View style={tailwind.style('flex flex-row items-center')}>
+          <Animated.View
+            style={tailwind.style(
+              'flex-1 ml-3 flex-row justify-between py-[11px] pr-3 border-b-[1px] border-blackA-A3',
+            )}>
+            <View>
+              <Text
+                style={tailwind.style(
+                  'text-base text-green-600 font-inter-420-20 leading-[21px] tracking-[0.16px]',
+                )}>
+                🔍 Run Notification Diagnostics
+              </Text>
+              <Text
+                style={tailwind.style(
+                  'text-sm text-gray-900 font-inter-420-20 leading-[18px] tracking-[0.16px] italic',
+                )}>
+                Check all notification components
+              </Text>
+            </View>
+          </Animated.View>
+        </Animated.View>
+      </Pressable>
+
       {/* Test Notification Button */}
       <Pressable onPress={handleTestNotification}>
         <Animated.View style={tailwind.style('flex flex-row items-center')}>
@@ -167,6 +224,13 @@ export const DebugActions = () => {
           </Animated.View>
         </Animated.View>
       </Pressable>
+
+      {/* Show Current Token Status */}
+      <View style={tailwind.style('ml-3 py-2')}>
+        <Text style={tailwind.style('text-xs text-gray-600')}>
+          Token Status: {pushToken ? '✅ Registered' : '❌ Not registered'}
+        </Text>
+      </View>
     </Animated.View>
   );
 };

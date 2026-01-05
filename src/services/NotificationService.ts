@@ -484,5 +484,102 @@ export const sendTestNotification = async () => {
   return result;
 };
 
+// DIAGNOSTIC FUNCTION: Check entire notification stack and return results
+export const runNotificationDiagnostics = async (): Promise<{
+  results: string[];
+  fcmToken: string | null;
+  allPassed: boolean;
+}> => {
+  const results: string[] = [];
+  let fcmToken: string | null = null;
+  let allPassed = true;
+
+  // Check 1: Notifee availability
+  if (isNotifeeAvailable) {
+    results.push('✅ Notifee: Available');
+  } else {
+    results.push('❌ Notifee: NOT available');
+    allPassed = false;
+  }
+
+  // Check 2: Firebase Messaging availability
+  if (isMessagingAvailable) {
+    results.push('✅ Firebase Messaging: Available');
+  } else {
+    results.push('❌ Firebase Messaging: NOT available');
+    allPassed = false;
+  }
+
+  // Check 3: Notification permission
+  try {
+    if (isMessagingAvailable) {
+      const authStatus = await messaging().hasPermission();
+      if (authStatus === 1 || authStatus === 2) {
+        results.push(`✅ Permission: Granted (status: ${authStatus})`);
+      } else {
+        results.push(`❌ Permission: DENIED (status: ${authStatus})`);
+        allPassed = false;
+      }
+    }
+  } catch (e) {
+    results.push(`❌ Permission check failed: ${e}`);
+    allPassed = false;
+  }
+
+  // Check 4: FCM Token
+  try {
+    if (isMessagingAvailable) {
+      fcmToken = await messaging().getToken();
+      if (fcmToken && fcmToken.length > 0) {
+        results.push(`✅ FCM Token: ${fcmToken.substring(0, 20)}...`);
+      } else {
+        results.push('❌ FCM Token: EMPTY or NULL');
+        allPassed = false;
+      }
+    }
+  } catch (e) {
+    results.push(`❌ FCM Token error: ${e}`);
+    allPassed = false;
+  }
+
+  // Check 5: Android notification channel
+  if (Platform.OS === 'android' && isNotifeeAvailable) {
+    try {
+      const channels = await notifee.getChannels();
+      const hasChannel = channels.some((c: any) => c.id === CHANNEL_ID.MESSAGES);
+      if (hasChannel) {
+        results.push('✅ Android Channel: Created');
+      } else {
+        results.push('❌ Android Channel: NOT found - creating now...');
+        await createNotificationChannels();
+        results.push('   → Channel created');
+      }
+    } catch (e) {
+      results.push(`❌ Channel check error: ${e}`);
+    }
+  }
+
+  // Check 6: Test local notification
+  try {
+    const testResult = await displayNotification({
+      title: '🔍 Diagnostic Test',
+      body: 'This is a diagnostic notification',
+      data: { diagnostic: true },
+    });
+    if (testResult) {
+      results.push('✅ Local Notification: Displayed');
+    } else {
+      results.push('❌ Local Notification: FAILED to display');
+      allPassed = false;
+    }
+  } catch (e) {
+    results.push(`❌ Local Notification error: ${e}`);
+    allPassed = false;
+  }
+
+  console.log('[Diagnostics] Results:', results);
+  return { results, fcmToken, allPassed };
+};
+
 // Export availability flags
 export { isNotifeeAvailable, isMessagingAvailable };

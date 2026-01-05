@@ -188,7 +188,15 @@ export const settingsActions = {
         await sleep(500);
         
         const fcmToken = await messaging().getToken();
-        console.log('[saveDeviceDetails] FCM Token obtained:', fcmToken ? 'Yes' : 'No');
+        console.log('[saveDeviceDetails] ====== FCM TOKEN ======');
+        console.log('[saveDeviceDetails] Token obtained:', fcmToken ? 'YES' : 'NO');
+        console.log('[saveDeviceDetails] Token value:', fcmToken);
+        console.log('[saveDeviceDetails] ========================');
+
+        if (!fcmToken) {
+          console.error('[saveDeviceDetails] ❌ NO FCM TOKEN - notifications will NOT work!');
+          return rejectWithValue('No FCM token obtained');
+        }
 
         const pushData: PushPayload = {
           subscription_type: 'fcm',
@@ -202,7 +210,10 @@ export const settingsActions = {
             device_id: deviceId,
           },
         };
+        
+        console.log('[saveDeviceDetails] Sending to backend:', JSON.stringify(pushData, null, 2));
         await SettingsService.saveDeviceDetails(pushData);
+        console.log('[saveDeviceDetails] ✅ FCM token registered with backend successfully!');
         return { fcmToken };
       } catch (error) {
         Sentry.captureException(error);

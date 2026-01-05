@@ -1,4 +1,4 @@
-import { Platform, PermissionsAndroid } from 'react-native';
+import { Platform, PermissionsAndroid, Alert } from 'react-native';
 import { transformNotification } from '@/utils/camelCaseKeys';
 import { Notification } from '@/types/Notification';
 
@@ -6,6 +6,7 @@ import { Notification } from '@/types/Notification';
 let notifee: any = null;
 let messaging: any = null;
 let EventType: any = null;
+let AndroidImportance: any = null;
 let isNotifeeAvailable = false;
 let isMessagingAvailable = false;
 
@@ -14,10 +15,11 @@ try {
   const notifeeModule = require('@notifee/react-native');
   notifee = notifeeModule.default;
   EventType = notifeeModule.EventType;
+  AndroidImportance = notifeeModule.AndroidImportance;
   isNotifeeAvailable = true;
-  console.log('[NotificationService] Notifee loaded successfully');
+  console.log('[NotificationService] ✅ Notifee loaded');
 } catch (e) {
-  console.warn('[NotificationService] @notifee/react-native not available:', e);
+  console.warn('[NotificationService] ❌ Notifee not available:', e);
 }
 
 // Initialize Firebase messaging
@@ -26,17 +28,19 @@ try {
   if (messagingModule && messagingModule.default) {
     messaging = messagingModule.default;
     isMessagingAvailable = true;
-    console.log('[NotificationService] Firebase messaging loaded successfully');
+    console.log('[NotificationService] ✅ Firebase messaging loaded');
   }
 } catch (e) {
-  console.warn('[NotificationService] @react-native-firebase/messaging not available:', e);
+  console.warn('[NotificationService] ❌ Firebase messaging not available:', e);
 }
 
-// Channel IDs
+// Channel IDs - MUST match firebase.json messaging_android_notification_channel_id
 export const CHANNEL_ID = {
   MESSAGES: 'aloochat_messages',
   DEFAULT: 'aloochat_default',
 };
+
+let channelsCreated = false;
 
 // Parse FCM message to get notification data
 export const parseNotificationFromFCM = (remoteMessage: any): Notification | null => {
@@ -66,17 +70,19 @@ export const parseNotificationFromFCM = (remoteMessage: any): Notification | nul
 
 // Create notification channels for Android
 export const createNotificationChannels = async () => {
-  if (!isNotifeeAvailable || Platform.OS !== 'android') {
-    return;
+  if (!isNotifeeAvailable || Platform.OS !== 'android' || channelsCreated) {
+    return CHANNEL_ID.MESSAGES;
   }
 
   try {
+    console.log('[NotificationService] Creating notification channels...');
+    
     // Messages channel - high importance for chat messages
-    await notifee.createChannel({
+    const channelId = await notifee.createChannel({
       id: CHANNEL_ID.MESSAGES,
-      name: 'Messages',
-      description: 'New message notifications',
-      importance: 4, // HIGH - AndroidImportance.HIGH
+      name: 'Chat Messages',
+      description: 'Notifications for new chat messages',
+      importance: AndroidImportance?.HIGH || 4,
       vibration: true,
       vibrationPattern: [300, 500],
       sound: 'default',
@@ -90,13 +96,16 @@ export const createNotificationChannels = async () => {
       id: CHANNEL_ID.DEFAULT,
       name: 'General',
       description: 'General notifications',
-      importance: 3, // DEFAULT - AndroidImportance.DEFAULT
+      importance: AndroidImportance?.DEFAULT || 3,
       sound: 'default',
     });
 
-    console.log('Notification channels created successfully');
+    channelsCreated = true;
+    console.log('[NotificationService] ✅ Channels created:', channelId);
+    return channelId;
   } catch (error) {
-    console.error('Error creating notification channels:', error);
+    console.error('[NotificationService] ❌ Channel creation error:', error);
+    return CHANNEL_ID.MESSAGES;
   }
 };
 
@@ -112,30 +121,36 @@ export const displayNotification = async ({
   data?: Record<string, any>;
   channelId?: string;
 }) => {
+  console.log('[NotificationService] 📢 displayNotification called:', { title, body });
+  
   if (!isNotifeeAvailable) {
-    console.warn('Notifee not available, cannot display notification');
-    return;
+    console.error('[NotificationService] ❌ Cannot display - Notifee not available!');
+    return null;
   }
 
   try {
+    // CRITICAL: Ensure channel exists before displaying notification
+    if (Platform.OS === 'android') {
+      await createNotificationChannels();
+    }
+
     const notificationConfig: any = {
-      title,
-      body,
-      data,
+      title: title || 'AlooChat',
+      body: body || 'You have a new message',
+      data: data || {},
       android: {
-        channelId,
-        smallIcon: 'ic_launcher', // Uses the app launcher icon
+        channelId: CHANNEL_ID.MESSAGES,
+        smallIcon: 'ic_launcher',
+        color: '#1F93FF',
         pressAction: {
           id: 'default',
+          launchActivity: 'default',
         },
-        importance: 4, // HIGH
+        importance: AndroidImportance?.HIGH || 4,
         sound: 'default',
         vibrationPattern: [300, 500],
-        lights: ['#1F93FF', 300, 600],
-        style: {
-          type: 0, // BigTextStyle
-          text: body,
-        },
+        showTimestamp: true,
+        autoCancel: true,
       },
       ios: {
         sound: 'default',
@@ -148,10 +163,12 @@ export const displayNotification = async ({
       },
     };
 
-    await notifee.displayNotification(notificationConfig);
-    console.log('Notification displayed:', title);
+    const notificationId = await notifee.displayNotification(notificationConfig);
+    console.log('[NotificationService] ✅ Notification displayed! ID:', notificationId);
+    return notificationId;
   } catch (error) {
-    console.error('Error displaying notification:', error);
+    console.error('[NotificationService] ❌ Display error:', error);
+    return null;
   }
 };
 
@@ -293,17 +310,26 @@ export const handleBackgroundMessage = async (remoteMessage: any) => {
 
 // Set up foreground message listener
 export const setupForegroundMessageListener = () => {
+  console.log('[NotificationService] Setting up foreground message listener...');
+  
   if (!isMessagingAvailable) {
-    console.warn('Firebase messaging not available');
+    console.error('[NotificationService] ❌ Cannot setup listener - Firebase not available!');
     return () => {};
   }
 
   try {
-    const unsubscribe = messaging().onMessage(handleForegroundMessage);
-    console.log('Foreground message listener set up');
+    const unsubscribe = messaging().onMessage(async (remoteMessage: any) => {
+      console.log('[NotificationService] 🔔 ====== FCM MESSAGE RECEIVED ======');
+      console.log('[NotificationService] 🔔 Raw message:', JSON.stringify(remoteMessage, null, 2));
+      
+      // Always try to show notification
+      await handleForegroundMessage(remoteMessage);
+    });
+    
+    console.log('[NotificationService] ✅ Foreground message listener ACTIVE');
     return unsubscribe;
   } catch (error) {
-    console.error('Error setting up foreground message listener:', error);
+    console.error('[NotificationService] ❌ Listener setup error:', error);
     return () => {};
   }
 };
@@ -414,7 +440,10 @@ export const setupNotifeeBackgroundHandler = () => {
 
 // Initialize notification service
 export const initializeNotificationService = async () => {
-  console.log('[NotificationService] Initializing notification service...');
+  console.log('[NotificationService] ====== INITIALIZING ======');
+  console.log('[NotificationService] Platform:', Platform.OS);
+  console.log('[NotificationService] Notifee available:', isNotifeeAvailable);
+  console.log('[NotificationService] Firebase available:', isMessagingAvailable);
   
   // Create notification channels for Android (MUST be done before showing notifications)
   await createNotificationChannels();
@@ -423,12 +452,36 @@ export const initializeNotificationService = async () => {
   const permissionGranted = await requestNotificationPermission();
   console.log('[NotificationService] Permission granted:', permissionGranted);
   
+  if (!permissionGranted) {
+    console.error('[NotificationService] ❌ PERMISSION DENIED - notifications will NOT work!');
+  }
+  
   // Set up notifee background handler
   setupNotifeeBackgroundHandler();
   
-  console.log('[NotificationService] Notification service initialized successfully');
+  console.log('[NotificationService] ✅ Notification service initialized');
+  console.log('[NotificationService] ================================');
   
   return permissionGranted;
+};
+
+// TEST FUNCTION: Send a test notification to verify everything works
+export const sendTestNotification = async () => {
+  console.log('[NotificationService] 🧪 Sending TEST notification...');
+  
+  const result = await displayNotification({
+    title: '🔔 AlooChat Test',
+    body: 'If you see this, notifications are working!',
+    data: { test: true, timestamp: Date.now() },
+  });
+  
+  if (result) {
+    console.log('[NotificationService] 🧪 ✅ Test notification sent successfully!');
+  } else {
+    console.log('[NotificationService] 🧪 ❌ Test notification FAILED!');
+  }
+  
+  return result;
 };
 
 // Export availability flags

@@ -1,6 +1,6 @@
 // Background message handler - MUST be registered at app entry point (App.tsx)
 // This file is imported at the top of App.tsx BEFORE React renders
-import { Platform, AppRegistry } from 'react-native';
+import { Platform } from 'react-native';
 
 let messaging: any = null;
 let notifee: any = null;

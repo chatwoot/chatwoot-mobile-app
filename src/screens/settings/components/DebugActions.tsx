@@ -4,6 +4,7 @@ import { Pressable, Text, Animated, View } from 'react-native';
 
 import { showToast } from '@/utils/toastUtils';
 import { tailwind } from '@/theme';
+import { sendTestNotification } from '@/services/NotificationService';
 
 let Clipboard: any = null;
 try {
@@ -121,15 +122,51 @@ const DebugActionCell = ({ item, index, isLastItem }: DebugActionCellProps) => {
   );
 };
 
-export const DebugActions = () => (
-  <Animated.View style={tailwind.style('py-1 pl-3')}>
-    {DEBUG_ACTIONS.map((item, index) => (
-      <DebugActionCell
-        key={item.key}
-        item={item}
-        index={index}
-        isLastItem={index === DEBUG_ACTIONS.length - 1}
-      />
-    ))}
-  </Animated.View>
-);
+export const DebugActions = () => {
+  const handleTestNotification = async () => {
+    showToast({ message: 'Sending test notification...' });
+    const result = await sendTestNotification();
+    if (result) {
+      showToast({ message: '✅ Test notification sent!' });
+    } else {
+      showToast({ message: '❌ Failed to send notification' });
+    }
+  };
+
+  return (
+    <Animated.View style={tailwind.style('py-1 pl-3')}>
+      {DEBUG_ACTIONS.map((item, index) => (
+        <DebugActionCell
+          key={item.key}
+          item={item}
+          index={index}
+          isLastItem={false}
+        />
+      ))}
+      {/* Test Notification Button */}
+      <Pressable onPress={handleTestNotification}>
+        <Animated.View style={tailwind.style('flex flex-row items-center')}>
+          <Animated.View
+            style={tailwind.style(
+              'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
+            )}>
+            <View>
+              <Text
+                style={tailwind.style(
+                  'text-base text-blue-600 font-inter-420-20 leading-[21px] tracking-[0.16px]',
+                )}>
+                🔔 Send Test Notification
+              </Text>
+              <Text
+                style={tailwind.style(
+                  'text-sm text-gray-900 font-inter-420-20 leading-[18px] tracking-[0.16px] italic',
+                )}>
+                Tap to verify notifications work
+              </Text>
+            </View>
+          </Animated.View>
+        </Animated.View>
+      </Pressable>
+    </Animated.View>
+  );
+};

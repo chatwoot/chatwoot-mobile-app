@@ -40,7 +40,7 @@ const ensureChannelExists = async () => {
   if (!isNotifeeAvailable || Platform.OS !== 'android' || channelCreated) {
     return CHANNEL_ID;
   }
-  
+
   try {
     const channelId = await notifee.createChannel({
       id: CHANNEL_ID,
@@ -63,7 +63,7 @@ const ensureChannelExists = async () => {
 // Display notification - THE CORE FUNCTION
 const showNotification = async (title: string, body: string, data?: any) => {
   console.log('[BGHandler] Attempting to show notification:', { title, body });
-  
+
   if (!isNotifeeAvailable) {
     console.error('[BGHandler] CANNOT SHOW NOTIFICATION - Notifee not available!');
     return false;
@@ -71,14 +71,14 @@ const showNotification = async (title: string, body: string, data?: any) => {
 
   try {
     const channelId = await ensureChannelExists();
-    
+
     const notificationId = await notifee.displayNotification({
       title: title || 'AlooChat',
       body: body || 'You have a new message',
       data: data || {},
       android: {
         channelId: channelId,
-        smallIcon: 'ic_launcher',
+        smallIcon: 'ic_notification',
         color: '#1F93FF',
         pressAction: {
           id: 'default',
@@ -100,7 +100,7 @@ const showNotification = async (title: string, body: string, data?: any) => {
         },
       },
     });
-    
+
     console.log('[BGHandler] ✅ Notification displayed! ID:', notificationId);
     return true;
   } catch (error) {
@@ -131,23 +131,23 @@ const extractNotificationInfo = (remoteMessage: any): { title: string; body: str
       try {
         const payload = JSON.parse(remoteMessage.data.payload);
         const notification = payload?.data?.notification || payload?.notification;
-        
+
         if (notification) {
           title = notification.push_message_title || notification.title || title;
           body = notification.push_message_body || 'New message received';
-          
+
           // Get sender name if available
           const senderName = notification.primary_actor?.meta?.sender?.name;
           if (senderName) {
             title = senderName;
           }
-          
+
           // Get message content if available
           const messageContent = notification.primary_actor?.meta?.last_message?.content;
           if (messageContent) {
             body = messageContent;
           }
-          
+
           data = {
             conversationId: String(notification.primary_actor?.conversation_id || notification.primary_actor?.id || ''),
             notificationType: notification.notification_type,
@@ -166,12 +166,12 @@ const extractNotificationInfo = (remoteMessage: any): { title: string; body: str
         const notification = JSON.parse(remoteMessage.data.notification);
         title = notification.push_message_title || notification.title || title;
         body = notification.push_message_body || 'New message received';
-        
+
         const senderName = notification.primary_actor?.meta?.sender?.name;
         if (senderName) {
           title = senderName;
         }
-        
+
         data = {
           conversationId: String(notification.primary_actor?.conversation_id || notification.primary_actor?.id || ''),
           notificationType: notification.notification_type,
@@ -212,16 +212,16 @@ const handleBackgroundMessage = async (remoteMessage: any) => {
   try {
     const { title, body, data } = extractNotificationInfo(remoteMessage);
     console.log('[BGHandler] Extracted - Title:', title, 'Body:', body);
-    
+
     // ALWAYS try to show a notification
     await showNotification(title, body, data);
-    
+
   } catch (error) {
     console.error('[BGHandler] Handler error:', error);
     // Even on error, try to show a basic notification
     await showNotification('AlooChat', 'You have a new notification', {});
   }
-  
+
   console.log('[BGHandler] ====== HANDLER COMPLETE ======');
 };
 
@@ -236,7 +236,7 @@ const registerHandler = () => {
     // Set the background message handler for FCM
     messaging().setBackgroundMessageHandler(handleBackgroundMessage);
     console.log('[BGHandler] ✅ Background handler registered with Firebase');
-    
+
     // Also register notifee background handler for notification actions
     if (isNotifeeAvailable) {
       notifee.onBackgroundEvent(async ({ type, detail }: any) => {

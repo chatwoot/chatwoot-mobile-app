@@ -46,7 +46,7 @@ let channelsCreated = false;
 export const parseNotificationFromFCM = (remoteMessage: any): Notification | null => {
   try {
     let notification = null;
-    
+
     // FCM HTTP v1 format
     if (remoteMessage?.data?.payload) {
       const parsedPayload = JSON.parse(remoteMessage.data.payload);
@@ -56,11 +56,11 @@ export const parseNotificationFromFCM = (remoteMessage: any): Notification | nul
     else if (remoteMessage?.data?.notification) {
       notification = JSON.parse(remoteMessage.data.notification);
     }
-    
+
     if (notification) {
       return transformNotification(notification);
     }
-    
+
     return null;
   } catch (error) {
     console.error('Error parsing FCM notification:', error);
@@ -76,7 +76,7 @@ export const createNotificationChannels = async () => {
 
   try {
     console.log('[NotificationService] Creating notification channels...');
-    
+
     // Messages channel - high importance for chat messages
     const channelId = await notifee.createChannel({
       id: CHANNEL_ID.MESSAGES,
@@ -122,7 +122,7 @@ export const displayNotification = async ({
   channelId?: string;
 }) => {
   console.log('[NotificationService] 📢 displayNotification called:', { title, body });
-  
+
   if (!isNotifeeAvailable) {
     console.error('[NotificationService] ❌ Cannot display - Notifee not available!');
     return null;
@@ -140,7 +140,7 @@ export const displayNotification = async ({
       data: data || {},
       android: {
         channelId: CHANNEL_ID.MESSAGES,
-        smallIcon: 'ic_launcher',
+        smallIcon: 'ic_notification',
         color: '#1F93FF',
         pressAction: {
           id: 'default',
@@ -191,17 +191,17 @@ const extractNotificationInfo = (remoteMessage: any): { title: string; body: str
       try {
         const payload = JSON.parse(remoteMessage.data.payload);
         const notification = payload?.data?.notification || payload?.notification;
-        
+
         if (notification) {
           title = notification.push_message_title || notification.title || title;
           body = notification.push_message_body || 'New message received';
-          
+
           const senderName = notification.primary_actor?.meta?.sender?.name;
           if (senderName) title = senderName;
-          
+
           const messageContent = notification.primary_actor?.meta?.last_message?.content;
           if (messageContent) body = messageContent;
-          
+
           data = {
             conversationId: String(notification.primary_actor?.conversation_id || notification.primary_actor?.id || ''),
             notificationType: notification.notification_type,
@@ -218,10 +218,10 @@ const extractNotificationInfo = (remoteMessage: any): { title: string; body: str
         const notification = JSON.parse(remoteMessage.data.notification);
         title = notification.push_message_title || notification.title || title;
         body = notification.push_message_body || 'New message received';
-        
+
         const senderName = notification.primary_actor?.meta?.sender?.name;
         if (senderName) title = senderName;
-        
+
         data = {
           conversationId: String(notification.primary_actor?.conversation_id || notification.primary_actor?.id || ''),
           notificationType: notification.notification_type,
@@ -248,14 +248,14 @@ const extractNotificationInfo = (remoteMessage: any): { title: string; body: str
 export const handleForegroundMessage = async (remoteMessage: any) => {
   console.log('[NotificationService] ====== FOREGROUND MESSAGE ======');
   console.log('[NotificationService] Message:', JSON.stringify(remoteMessage, null, 2));
-  
+
   try {
     const { title, body, data } = extractNotificationInfo(remoteMessage);
     console.log('[NotificationService] Extracted - Title:', title, 'Body:', body);
-    
+
     // ALWAYS display notification for foreground messages
     await displayNotification({ title, body, data });
-    
+
   } catch (error) {
     console.error('[NotificationService] Foreground handler error:', error);
     // Fallback - still try to show something
@@ -272,23 +272,23 @@ export const handleForegroundMessage = async (remoteMessage: any) => {
 // Handle background FCM messages
 export const handleBackgroundMessage = async (remoteMessage: any) => {
   console.log('Background message received:', JSON.stringify(remoteMessage, null, 2));
-  
+
   // For background messages, we need to display a notification manually
   // because FCM data-only messages don't show notifications automatically
   const notification = parseNotificationFromFCM(remoteMessage);
-  
+
   if (notification) {
     const { notificationType, pushMessageTitle, primaryActor } = notification;
-    
+
     let title = pushMessageTitle || 'New Message';
     let body = 'You have a new message';
-    
+
     // Try to get sender info
     const senderName = (primaryActor?.meta?.sender as any)?.name;
     if (senderName) {
       title = senderName;
     }
-    
+
     await displayNotification({
       title,
       body,
@@ -311,40 +311,40 @@ export const handleBackgroundMessage = async (remoteMessage: any) => {
 // Set up foreground message listener
 export const setupForegroundMessageListener = () => {
   console.log('[NotificationService] Setting up foreground message listener...');
-  
+
   if (!isMessagingAvailable) {
     console.error('[NotificationService] ❌ Cannot setup listener - Firebase not available!');
-    return () => {};
+    return () => { };
   }
 
   try {
     const unsubscribe = messaging().onMessage(async (remoteMessage: any) => {
       console.log('[NotificationService] 🔔 ====== FCM MESSAGE RECEIVED ======');
       console.log('[NotificationService] 🔔 Raw message:', JSON.stringify(remoteMessage, null, 2));
-      
+
       // Always try to show notification
       await handleForegroundMessage(remoteMessage);
     });
-    
+
     console.log('[NotificationService] ✅ Foreground message listener ACTIVE');
     return unsubscribe;
   } catch (error) {
     console.error('[NotificationService] ❌ Listener setup error:', error);
-    return () => {};
+    return () => { };
   }
 };
 
 // Set up notification event handlers (for when user taps notification)
 export const setupNotificationEventHandlers = (onNotificationPress: (data: any) => void) => {
   if (!isNotifeeAvailable) {
-    return () => {};
+    return () => { };
   }
 
   try {
     // Handle notification press when app is in foreground/background
     const unsubscribeForeground = notifee.onForegroundEvent(({ type, detail }: any) => {
       console.log('[NotificationService] Foreground event type:', type);
-      
+
       if (type === EventType?.PRESS) {
         console.log('[NotificationService] Notification pressed:', detail.notification);
         if (detail.notification?.data) {
@@ -356,7 +356,7 @@ export const setupNotificationEventHandlers = (onNotificationPress: (data: any) 
     return unsubscribeForeground;
   } catch (error) {
     console.error('Error setting up notification event handlers:', error);
-    return () => {};
+    return () => { };
   }
 };
 
@@ -381,7 +381,7 @@ export const requestNotificationPermission = async (): Promise<boolean> => {
       const enabled =
         authStatus === 1 || // AUTHORIZED
         authStatus === 2;   // PROVISIONAL
-      
+
       console.log('[NotificationService] Firebase permission status:', authStatus, 'enabled:', enabled);
       return enabled;
     }
@@ -426,7 +426,7 @@ export const setupNotifeeBackgroundHandler = () => {
   try {
     notifee.onBackgroundEvent(async ({ type, detail }: any) => {
       console.log('[NotificationService] Background event:', type, detail);
-      
+
       if (type === EventType?.PRESS) {
         // Handle notification press when app is killed
         console.log('[NotificationService] Background notification pressed:', detail.notification);
@@ -444,43 +444,43 @@ export const initializeNotificationService = async () => {
   console.log('[NotificationService] Platform:', Platform.OS);
   console.log('[NotificationService] Notifee available:', isNotifeeAvailable);
   console.log('[NotificationService] Firebase available:', isMessagingAvailable);
-  
+
   // Create notification channels for Android (MUST be done before showing notifications)
   await createNotificationChannels();
-  
+
   // Request permissions
   const permissionGranted = await requestNotificationPermission();
   console.log('[NotificationService] Permission granted:', permissionGranted);
-  
+
   if (!permissionGranted) {
     console.error('[NotificationService] ❌ PERMISSION DENIED - notifications will NOT work!');
   }
-  
+
   // Set up notifee background handler
   setupNotifeeBackgroundHandler();
-  
+
   console.log('[NotificationService] ✅ Notification service initialized');
   console.log('[NotificationService] ================================');
-  
+
   return permissionGranted;
 };
 
 // TEST FUNCTION: Send a test notification to verify everything works
 export const sendTestNotification = async () => {
   console.log('[NotificationService] 🧪 Sending TEST notification...');
-  
+
   const result = await displayNotification({
     title: '🔔 AlooChat Test',
     body: 'If you see this, notifications are working!',
     data: { test: true, timestamp: Date.now() },
   });
-  
+
   if (result) {
     console.log('[NotificationService] 🧪 ✅ Test notification sent successfully!');
   } else {
     console.log('[NotificationService] 🧪 ❌ Test notification FAILED!');
   }
-  
+
   return result;
 };
 
@@ -579,7 +579,7 @@ export const runNotificationDiagnostics = async (): Promise<{
       data: { diagnostic: true, timestamp: Date.now() },
     });
     console.log('[Diagnostics] Notification result:', testResult);
-    
+
     if (testResult) {
       results.push(`✅ Local Notification: ID ${testResult} (Check your notification tray!)`);
       // Wait a moment then check if notification was delivered

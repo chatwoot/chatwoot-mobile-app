@@ -93,6 +93,15 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       '@react-native-firebase/app',
       '@react-native-firebase/messaging',
       [
+        '@notifee/react-native',
+        {
+          android: {
+            smallIcon: 'ic_notification',
+            color: '#1F93FF',
+          },
+        },
+      ],
+      [
         'expo-build-properties',
         {
           // https://github.com/invertase/notifee/issues/808#issuecomment-2175934609

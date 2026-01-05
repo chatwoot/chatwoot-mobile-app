@@ -100,7 +100,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
             minSdkVersion: 24,
             compileSdkVersion: 35,
             targetSdkVersion: 35,
-            enableProguardInReleaseBuilds: true,
+            enableProguardInReleaseBuilds: false,
           },
           ios: { useFrameworks: 'static' },
         },

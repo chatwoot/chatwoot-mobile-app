@@ -4,7 +4,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'AlooChat',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'aloo-chat-app',
-    version: '4.3.10',
+    version: '4.3.12',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',

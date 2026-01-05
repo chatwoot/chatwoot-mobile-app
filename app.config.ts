@@ -80,7 +80,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     extra: {
       ...config.extra,
       eas: {
-        projectId: '98d5a8bb-b30f-4318-9717-380d3ec2e022',
+        // projectId: '98d5a8bb-b30f-4318-9717-380d3ec2e022',
         storybookEnabled: process.env.EXPO_STORYBOOK_ENABLED,
       },
       // Backend URL - use environment variable or default

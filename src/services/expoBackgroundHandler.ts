@@ -4,7 +4,11 @@
  */
 
 import * as Notifications from 'expo-notifications';
+import * as TaskManager from 'expo-task-manager';
 import { Platform } from 'react-native';
+
+// Background notification task name
+const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
 
 // Lazy load Firebase messaging
 let messaging: any = null;
@@ -280,31 +284,61 @@ async function displayBackgroundNotification(
 }
 
 /**
- * Register background message handler with Firebase
+ * Define the background notification task
+ * This handles notifications received when app is in background
  */
-function registerBackgroundHandler(): void {
-  const firebaseMessaging = getMessaging();
+TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, async ({ data, error, executionInfo }: { data: any; error: any; executionInfo: any }) => {
+  console.log('[ExpoBackgroundHandler] 🔔 Background task triggered');
   
-  if (!firebaseMessaging) {
-    console.warn('[ExpoBackgroundHandler] Firebase not available, skipping registration');
+  if (error) {
+    console.error('[ExpoBackgroundHandler] Background task error:', error);
     return;
   }
+  
+  if (data) {
+    console.log('[ExpoBackgroundHandler] Background notification data:', JSON.stringify(data));
+    // The notification is already displayed by the system when it has notification payload
+    // This task is for handling the data payload for navigation etc.
+  }
+});
 
-  firebaseMessaging().setBackgroundMessageHandler(async (remoteMessage: any) => {
-    console.log('[ExpoBackgroundHandler] Background message received:', JSON.stringify(remoteMessage));
+/**
+ * Register background message handler
+ */
+function registerBackgroundHandler(): void {
+  // Register expo-notifications background task
+  Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK)
+    .then(() => {
+      console.log('[ExpoBackgroundHandler] ✅ Expo background task registered');
+    })
+    .catch((error) => {
+      console.warn('[ExpoBackgroundHandler] Failed to register Expo background task:', error);
+    });
 
-    const { title, body, data, channelId, notificationType } = parsePayload(remoteMessage);
-    
-    console.log('[ExpoBackgroundHandler] Parsed notification type:', notificationType);
-    
-    // Only display if there's no notification payload (data-only message)
-    // Messages with notification payload are auto-displayed by the system
-    if (!remoteMessage?.notification) {
-      await displayBackgroundNotification(title, body, data, channelId);
+  // Also try Firebase if available (for production builds)
+  const firebaseMessaging = getMessaging();
+  
+  if (firebaseMessaging) {
+    try {
+      firebaseMessaging().setBackgroundMessageHandler(async (remoteMessage: any) => {
+        console.log('[ExpoBackgroundHandler] Firebase background message received:', JSON.stringify(remoteMessage));
+
+        const { title, body, data, channelId, notificationType } = parsePayload(remoteMessage);
+        
+        console.log('[ExpoBackgroundHandler] Parsed notification type:', notificationType);
+        
+        // Only display if there's no notification payload (data-only message)
+        if (!remoteMessage?.notification) {
+          await displayBackgroundNotification(title, body, data, channelId);
+        }
+      });
+      console.log('[ExpoBackgroundHandler] ✅ Firebase background handler registered');
+    } catch (error) {
+      console.warn('[ExpoBackgroundHandler] Firebase handler error:', error);
     }
-  });
-
-  console.log('[ExpoBackgroundHandler] ✅ Background handler registered');
+  } else {
+    console.warn('[ExpoBackgroundHandler] Firebase not available, using Expo-only handlers');
+  }
 }
 
 // Register immediately when this module is imported

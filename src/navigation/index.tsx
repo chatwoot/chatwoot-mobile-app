@@ -28,11 +28,12 @@ try {
   console.warn('@react-native-firebase/messaging not available:', e);
 }
 
-// Provide mock if not available
+// Provide mock if not available (for Expo Go compatibility)
 if (!messaging) {
   messaging = () => ({
     getInitialNotification: () => Promise.resolve(null),
     onNotificationOpenedApp: () => () => {},
+    onMessage: () => () => {}, // Mock for foreground listener
   });
 }
 

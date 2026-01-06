@@ -136,6 +136,7 @@ const withFCMNotificationMetadata = (config) => {
             mainApplication['meta-data'] = [];
         }
 
+        // Only add channel and icon - color will be set in JavaScript via Notifee
         const metaDataToAdd = [
             {
                 $: {
@@ -147,13 +148,6 @@ const withFCMNotificationMetadata = (config) => {
                 $: {
                     'android:name': 'com.google.firebase.messaging.default_notification_icon',
                     'android:resource': '@drawable/ic_notification',
-                    'tools:replace': 'android:resource',
-                },
-            },
-            {
-                $: {
-                    'android:name': 'com.google.firebase.messaging.default_notification_color',
-                    'android:resource': '@color/notification_icon_color',
                     'tools:replace': 'android:resource',
                 },
             },

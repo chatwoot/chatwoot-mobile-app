@@ -10,8 +10,10 @@ import {
   initializeExpoNotifications,
   addNotificationReceivedListener,
   addNotificationResponseListener,
-  displayNotification,
 } from '@/services/ExpoNotificationService';
+
+// Import background handler's display function for foreground messages
+import { displayBackgroundNotification, parsePayload } from '@/services/expoBackgroundHandler';
 
 // NOTE: Background handler is now registered in App.tsx (entry point) for proper background notification handling
 
@@ -81,7 +83,7 @@ export const AppNavigationContainer = () => {
     // Initialize notification channels and permissions
     initializeExpoNotifications();
 
-    // Set up foreground notification listener
+    // Set up foreground notification listener (for expo-notifications)
     const notificationListener = addNotificationReceivedListener(notification => {
       console.log('[Navigation] Notification received:', notification);
     });
@@ -97,9 +99,31 @@ export const AppNavigationContainer = () => {
       }
     });
 
+    // CRITICAL: Set up Firebase foreground message listener
+    // This displays notifications when FCM messages arrive while app is in foreground
+    let unsubscribeFCM = () => {};
+    if (messaging) {
+      try {
+        unsubscribeFCM = messaging().onMessage(async (remoteMessage: any) => {
+          console.log('[Navigation] 🔔 FCM foreground message received:', JSON.stringify(remoteMessage));
+          
+          // Parse the payload and display notification
+          const { title, body, data, channelId } = parsePayload(remoteMessage);
+          console.log('[Navigation] Parsed:', { title, body, notificationType: data?.notificationType });
+          
+          // Display the notification using expo-notifications
+          await displayBackgroundNotification(title, body, data, channelId);
+        });
+        console.log('[Navigation] ✅ FCM foreground listener registered');
+      } catch (error) {
+        console.error('[Navigation] ❌ Failed to setup FCM listener:', error);
+      }
+    }
+
     return () => {
       notificationListener.remove();
       responseListener.remove();
+      unsubscribeFCM();
     };
   }, [installationUrl]);
 

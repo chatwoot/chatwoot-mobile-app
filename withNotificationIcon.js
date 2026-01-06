@@ -66,6 +66,12 @@ const withNotificationIconCopy = (config) => {
 const withFCMNotificationMetadata = (config) => {
     return withAndroidManifest(config, async (config) => {
         const mainApplication = config.modResults.manifest.application[0];
+        const manifest = config.modResults.manifest;
+
+        // Add tools namespace if not present
+        if (!manifest.$['xmlns:tools']) {
+            manifest.$['xmlns:tools'] = 'http://schemas.android.com/tools';
+        }
 
         // Ensure meta-data array exists
         if (!mainApplication['meta-data']) {
@@ -83,22 +89,28 @@ const withFCMNotificationMetadata = (config) => {
                 $: {
                     'android:name': 'com.google.firebase.messaging.default_notification_icon',
                     'android:resource': '@drawable/ic_notification',
+                    'tools:replace': 'android:resource',
                 },
             },
             {
                 $: {
                     'android:name': 'com.google.firebase.messaging.default_notification_color',
                     'android:resource': '@color/notification_icon_color',
+                    'tools:replace': 'android:resource',
                 },
             },
         ];
 
         // Add each meta-data if it doesn't already exist
         for (const metaData of metaDataToAdd) {
-            const exists = mainApplication['meta-data'].some(
+            const existingIndex = mainApplication['meta-data'].findIndex(
                 (m) => m.$['android:name'] === metaData.$['android:name']
             );
-            if (!exists) {
+            if (existingIndex >= 0) {
+                // Update existing entry
+                mainApplication['meta-data'][existingIndex] = metaData;
+                console.log(`[withFCMNotificationMetadata] Updated ${metaData.$['android:name']}`);
+            } else {
                 mainApplication['meta-data'].push(metaData);
                 console.log(`[withFCMNotificationMetadata] Added ${metaData.$['android:name']}`);
             }

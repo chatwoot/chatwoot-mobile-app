@@ -40,7 +40,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppTabs } from './tabs/AppTabs';
-import i18n from 'i18n';
+import i18n from '@/i18n';
 import { navigationRef } from '@/utils/navigationUtils';
 import { findConversationLinkFromPush, findNotificationFromFCM } from '@/utils/pushUtils';
 import { extractConversationIdFromUrl } from '@/utils/conversationUtils';

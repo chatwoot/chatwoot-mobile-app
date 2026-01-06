@@ -27,7 +27,7 @@ import {
 import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 
 import { getUserPermissions } from '@/utils/permissionUtils';
-import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
+import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 
 import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stack';
 import ChatScreen from '@/screens/chat-screen/ChatScreen';

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { SafeAreaView, StatusBar, Animated, Easing } from 'react-native';
 // import NetInfo from '@react-native-community/netinfo';
-import i18n from 'i18n';
+import i18n from '@/i18n';
 import { tailwind } from '@/theme';
 
 let NetInfo: any = null;

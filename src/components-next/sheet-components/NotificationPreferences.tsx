@@ -4,7 +4,7 @@ import Animated from 'react-native-reanimated';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 
 import { tailwind } from '@/theme';
-import i18n from 'i18n';
+import i18n from '@/i18n';
 import { selectNotificationSettings, selectPushToken } from '@/store/settings/settingsSelectors';
 import { settingsActions } from '@/store/settings/settingsActions';
 import { NOTIFICATION_PREFERENCE_TYPES } from '@/constants';

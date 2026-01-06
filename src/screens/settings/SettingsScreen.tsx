@@ -49,7 +49,7 @@ import { clearAllConversations } from '@/store/conversation/conversationSlice';
 import { resetNotifications } from '@/store/notification/notificationSlice';
 import { clearAllContacts } from '@/store/contact/contactSlice';
 
-import i18n from 'i18n';
+import i18n from '@/i18n';
 import { HELP_URL } from '@/constants/url';
 import { tailwind } from '@/theme';
 

@@ -78,7 +78,8 @@ const showNotification = async (title: string, body: string, data?: any) => {
       data: data || {},
       android: {
         channelId: channelId,
-        smallIcon: 'ic_notification',
+        // Use ic_launcher as fallback - it always exists
+        smallIcon: 'ic_launcher',
         color: '#1F93FF',
         pressAction: {
           id: 'default',

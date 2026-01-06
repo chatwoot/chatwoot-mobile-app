@@ -2,7 +2,6 @@
   "name": "@aloochat/mobile-app",
   "version": "4.3.12",
   "scripts": {
-    "postinstall": "patch-package",
     "start": "expo start --dev-client",
     "start:production": "expo start --no-dev --minify",
     "android": "expo run:android",
@@ -135,7 +134,6 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "jest": "^29.6.3",
-    "patch-package": "^8.0.1",
     "prettier": "^3.3.3",
     "react-dom": "18.3.1",
     "reactotron-react-native": "^5.1.12",

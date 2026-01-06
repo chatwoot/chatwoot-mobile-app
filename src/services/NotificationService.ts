@@ -140,27 +140,12 @@ export const displayNotification = async ({
       data: data || {},
       android: {
         channelId: CHANNEL_ID.MESSAGES,
-        // Use ic_launcher as fallback - it always exists
-        smallIcon: 'ic_launcher',
-        color: '#1F93FF',
         pressAction: {
           id: 'default',
-          launchActivity: 'default',
         },
-        importance: AndroidImportance?.HIGH || 4,
-        sound: 'default',
-        vibrationPattern: [300, 500],
-        showTimestamp: true,
-        autoCancel: true,
       },
       ios: {
         sound: 'default',
-        foregroundPresentationOptions: {
-          badge: true,
-          sound: true,
-          banner: true,
-          list: true,
-        },
       },
     };
 

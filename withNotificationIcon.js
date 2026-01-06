@@ -1,14 +1,15 @@
-const { withDangerousMod } = require('@expo/config-plugins');
+const { withDangerousMod, withAndroidManifest } = require('@expo/config-plugins');
 const fs = require('fs');
 const path = require('path');
 
-const withNotificationIcon = (config) => {
+// Plugin to copy notification icon from assets to drawable
+const withNotificationIconCopy = (config) => {
     return withDangerousMod(config, [
         'android',
         async (config) => {
             const projectRoot = config.modRequest.projectRoot;
-            const invalidPath = path.join(projectRoot, 'assets', 'ic_notification.xml');
-            const validPath = path.join(
+            const sourcePath = path.join(projectRoot, 'assets', 'ic_notification.xml');
+            const destPath = path.join(
                 projectRoot,
                 'android',
                 'app',
@@ -19,21 +20,99 @@ const withNotificationIcon = (config) => {
                 'ic_notification.xml'
             );
 
-            if (fs.existsSync(invalidPath)) {
+            if (fs.existsSync(sourcePath)) {
                 // Ensure drawable directory exists
-                const drawableDir = path.dirname(validPath);
+                const drawableDir = path.dirname(destPath);
                 if (!fs.existsSync(drawableDir)) {
                     fs.mkdirSync(drawableDir, { recursive: true });
                 }
 
-                // Read file
-                const contents = fs.readFileSync(invalidPath, 'utf-8');
-                // Write file
-                fs.writeFileSync(validPath, contents);
+                // Read and write file
+                const contents = fs.readFileSync(sourcePath, 'utf-8');
+                fs.writeFileSync(destPath, contents);
+                console.log('[withNotificationIcon] Copied ic_notification.xml to drawable');
             }
+
+            // Also add notification_icon_color to colors.xml
+            const colorsPath = path.join(
+                projectRoot,
+                'android',
+                'app',
+                'src',
+                'main',
+                'res',
+                'values',
+                'colors.xml'
+            );
+
+            if (fs.existsSync(colorsPath)) {
+                let colorsContent = fs.readFileSync(colorsPath, 'utf-8');
+                if (!colorsContent.includes('notification_icon_color')) {
+                    colorsContent = colorsContent.replace(
+                        '</resources>',
+                        '  <color name="notification_icon_color">#1F93FF</color>\n</resources>'
+                    );
+                    fs.writeFileSync(colorsPath, colorsContent);
+                    console.log('[withNotificationIcon] Added notification_icon_color to colors.xml');
+                }
+            }
+
             return config;
         },
     ]);
+};
+
+// Plugin to add FCM notification metadata to AndroidManifest
+const withFCMNotificationMetadata = (config) => {
+    return withAndroidManifest(config, async (config) => {
+        const mainApplication = config.modResults.manifest.application[0];
+
+        // Ensure meta-data array exists
+        if (!mainApplication['meta-data']) {
+            mainApplication['meta-data'] = [];
+        }
+
+        const metaDataToAdd = [
+            {
+                $: {
+                    'android:name': 'com.google.firebase.messaging.default_notification_channel_id',
+                    'android:value': 'aloochat_messages',
+                },
+            },
+            {
+                $: {
+                    'android:name': 'com.google.firebase.messaging.default_notification_icon',
+                    'android:resource': '@drawable/ic_notification',
+                },
+            },
+            {
+                $: {
+                    'android:name': 'com.google.firebase.messaging.default_notification_color',
+                    'android:resource': '@color/notification_icon_color',
+                },
+            },
+        ];
+
+        // Add each meta-data if it doesn't already exist
+        for (const metaData of metaDataToAdd) {
+            const exists = mainApplication['meta-data'].some(
+                (m) => m.$['android:name'] === metaData.$['android:name']
+            );
+            if (!exists) {
+                mainApplication['meta-data'].push(metaData);
+                console.log(`[withFCMNotificationMetadata] Added ${metaData.$['android:name']}`);
+            }
+        }
+
+        return config;
+    });
+};
+
+// Combined plugin
+const withNotificationIcon = (config) => {
+    config = withNotificationIconCopy(config);
+    config = withFCMNotificationMetadata(config);
+    return config;
 };
 
 module.exports = withNotificationIcon;

@@ -456,6 +456,30 @@ export const initializeNotificationService = async () => {
     console.error('[NotificationService] ❌ PERMISSION DENIED - notifications will NOT work!');
   }
 
+  // Check if notification channel is blocked on Android
+  if (Platform.OS === 'android' && isNotifeeAvailable) {
+    try {
+      const channel = await notifee.getChannel(CHANNEL_ID.MESSAGES);
+      if (channel && channel.blocked) {
+        console.warn('[NotificationService] ⚠️ Notification channel is BLOCKED by user!');
+        // Show alert to user
+        Alert.alert(
+          'Notifications Blocked',
+          'The notification channel is blocked. Please enable it in settings to receive notifications.',
+          [
+            { text: 'Cancel', style: 'cancel' },
+            { 
+              text: 'Open Settings', 
+              onPress: () => notifee.openNotificationSettings(CHANNEL_ID.MESSAGES)
+            },
+          ]
+        );
+      }
+    } catch (e) {
+      console.error('[NotificationService] Error checking channel:', e);
+    }
+  }
+
   // Set up notifee background handler
   setupNotifeeBackgroundHandler();
 
@@ -559,12 +583,25 @@ export const runNotificationDiagnostics = async (): Promise<{
     }
   }
 
-  // Check 6: Android notification settings
+  // Check 6: Android notification settings and channel block status
   if (Platform.OS === 'android' && isNotifeeAvailable) {
     try {
       const settings = await notifee.getNotificationSettings();
       results.push(`📱 Android Settings - Authorization: ${settings.authorizationStatus}`);
-      results.push(`📱 Android Settings - Blocked: ${settings.android?.alarm || 'unknown'}`);
+      
+      // Check if the messages channel is blocked
+      const channel = await notifee.getChannel(CHANNEL_ID.MESSAGES);
+      if (channel) {
+        if (channel.blocked) {
+          results.push(`❌ Android Settings - Channel BLOCKED! User must unblock in settings.`);
+          allPassed = false;
+        } else {
+          results.push(`✅ Android Settings - Channel enabled`);
+        }
+      } else {
+        results.push(`⚠️ Android Settings - Channel not found, will create`);
+        await createNotificationChannels();
+      }
     } catch (e) {
       results.push(`❌ Settings check error: ${e}`);
     }
@@ -600,6 +637,49 @@ export const runNotificationDiagnostics = async (): Promise<{
 
   console.log('[Diagnostics] Results:', results);
   return { results, fcmToken, allPassed };
+};
+
+// Check if notification channel is blocked and open settings if needed
+export const checkAndPromptForBlockedChannel = async (): Promise<boolean> => {
+  if (Platform.OS !== 'android' || !isNotifeeAvailable) {
+    return true; // Not applicable for iOS
+  }
+
+  try {
+    const channel = await notifee.getChannel(CHANNEL_ID.MESSAGES);
+    
+    if (channel && channel.blocked) {
+      console.log('[NotificationService] ⚠️ Notification channel is BLOCKED!');
+      
+      // Open the notification channel settings so user can unblock
+      await notifee.openNotificationSettings(CHANNEL_ID.MESSAGES);
+      return false;
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('[NotificationService] Error checking channel block status:', error);
+    return true;
+  }
+};
+
+// Open app notification settings
+export const openNotificationSettings = async () => {
+  if (!isNotifeeAvailable) {
+    return;
+  }
+
+  try {
+    if (Platform.OS === 'android') {
+      // Open the specific channel settings
+      await notifee.openNotificationSettings(CHANNEL_ID.MESSAGES);
+    } else {
+      // iOS - open general app settings
+      await notifee.openNotificationSettings();
+    }
+  } catch (error) {
+    console.error('[NotificationService] Error opening notification settings:', error);
+  }
 };
 
 // Export availability flags

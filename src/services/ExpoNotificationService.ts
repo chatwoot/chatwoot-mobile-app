@@ -20,15 +20,20 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const CHANNEL_ID = 'aloochat_messages';
+const CHANNEL_ID = {
+  MESSAGES: 'aloochat_messages',
+  SLA_ALERTS: 'aloochat_sla_alerts',
+};
 
 /**
- * Create Android notification channel - required for Android 8+
+ * Create Android notification channels - required for Android 8+
  */
 export async function createNotificationChannel(): Promise<void> {
   if (Platform.OS === 'android') {
-    await Notifications.setNotificationChannelAsync(CHANNEL_ID, {
-      name: 'AlooChat Messages',
+    // Messages channel
+    await Notifications.setNotificationChannelAsync(CHANNEL_ID.MESSAGES, {
+      name: 'Chat Messages',
+      description: 'New messages and conversation updates',
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
       lightColor: '#1F93FF',
@@ -37,7 +42,21 @@ export async function createNotificationChannel(): Promise<void> {
       enableLights: true,
       showBadge: true,
     });
-    console.log('[ExpoNotification] ✅ Android channel created:', CHANNEL_ID);
+
+    // SLA Alerts channel
+    await Notifications.setNotificationChannelAsync(CHANNEL_ID.SLA_ALERTS, {
+      name: 'SLA Alerts',
+      description: 'Service Level Agreement alerts',
+      importance: Notifications.AndroidImportance.HIGH,
+      vibrationPattern: [0, 500, 200, 500],
+      lightColor: '#FF4444',
+      sound: 'default',
+      enableVibrate: true,
+      enableLights: true,
+      showBadge: true,
+    });
+
+    console.log('[ExpoNotification] ✅ Android channels created');
   }
 }
 
@@ -214,10 +233,12 @@ export async function runDiagnostics(): Promise<{
     checks['Expo Push Token'] = 'ERROR';
   }
   
-  // Check Android channel
+  // Check Android channels
   if (Platform.OS === 'android') {
-    const channel = await Notifications.getNotificationChannelAsync(CHANNEL_ID);
-    checks['Android Channel'] = channel ? 'Created' : 'Missing';
+    const messagesChannel = await Notifications.getNotificationChannelAsync(CHANNEL_ID.MESSAGES);
+    const slaChannel = await Notifications.getNotificationChannelAsync(CHANNEL_ID.SLA_ALERTS);
+    checks['Messages Channel'] = messagesChannel ? 'Created' : 'Missing';
+    checks['SLA Alerts Channel'] = slaChannel ? 'Created' : 'Missing';
   }
   
   // Test local notification

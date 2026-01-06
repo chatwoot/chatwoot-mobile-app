@@ -72,16 +72,31 @@ function getNotificationContent(notificationType: string, notificationData: any)
   body: string;
   channelId: string;
 } {
-  const senderName = notificationData?.primary_actor?.meta?.sender?.name || 'Someone';
-  const messageContent = notificationData?.primary_actor?.meta?.last_message?.content || '';
-  const conversationId = notificationData?.primary_actor?.conversation_id || notificationData?.primary_actor?.id || '';
+  // Extract data from various locations in the payload
+  const senderName = notificationData?.primary_actor?.meta?.sender?.name || 
+                     notificationData?.meta?.sender?.name || '';
+  const messageContent = notificationData?.primary_actor?.meta?.last_message?.content || 
+                         notificationData?.meta?.last_message?.content || '';
+  const conversationId = notificationData?.primary_actor?.conversation_id || 
+                         notificationData?.primary_actor?.id ||
+                         notificationData?.conversation_id || '';
   const pushTitle = notificationData?.push_message_title || '';
+  const pushBody = notificationData?.push_message_body || '';
+  
+  console.log('[ExpoBackgroundHandler] Extracting content:', {
+    notificationType,
+    senderName,
+    messageContent: messageContent?.substring(0, 50),
+    conversationId,
+    pushTitle,
+    pushBody: pushBody?.substring(0, 50),
+  });
 
   switch (notificationType) {
     case NOTIFICATION_TYPES.ASSIGNED_CONVERSATION_NEW_MESSAGE:
       return {
-        title: senderName || 'New Message',
-        body: messageContent || 'You have a new message in your assigned conversation',
+        title: senderName || pushTitle || 'New Message',
+        body: messageContent || pushBody || 'You have a new message in your assigned conversation',
         channelId: CHANNEL_ID.MESSAGES,
       };
 
@@ -94,22 +109,22 @@ function getNotificationContent(notificationType: string, notificationData: any)
 
     case NOTIFICATION_TYPES.PARTICIPATING_CONVERSATION_NEW_MESSAGE:
       return {
-        title: senderName || 'New Message',
-        body: messageContent || 'New message in a conversation you\'re participating in',
+        title: senderName || pushTitle || 'New Message',
+        body: messageContent || pushBody || 'New message in a conversation you\'re participating in',
         channelId: CHANNEL_ID.MESSAGES,
       };
 
     case NOTIFICATION_TYPES.CONVERSATION_CREATION:
       return {
         title: '💬 New Conversation',
-        body: pushTitle || 'A new conversation has been created',
+        body: pushBody || pushTitle || 'A new conversation has been created',
         channelId: CHANNEL_ID.MESSAGES,
       };
 
     case NOTIFICATION_TYPES.CONVERSATION_MENTION:
       return {
         title: '🔔 You were mentioned',
-        body: messageContent || `${senderName} mentioned you in a conversation`,
+        body: messageContent || pushBody || `${senderName || 'Someone'} mentioned you in a conversation`,
         channelId: CHANNEL_ID.MESSAGES,
       };
 
@@ -136,8 +151,8 @@ function getNotificationContent(notificationType: string, notificationData: any)
 
     default:
       return {
-        title: pushTitle || 'AlooChat',
-        body: messageContent || 'You have a new notification',
+        title: pushTitle || senderName || 'AlooChat',
+        body: messageContent || pushBody || 'You have a new notification',
         channelId: CHANNEL_ID.MESSAGES,
       };
   }
@@ -153,6 +168,9 @@ function parsePayload(remoteMessage: any): {
   channelId: string;
   notificationType: string;
 } {
+  console.log('[ExpoBackgroundHandler] ====== PARSING FCM MESSAGE ======');
+  console.log('[ExpoBackgroundHandler] Raw message:', JSON.stringify(remoteMessage, null, 2));
+  
   const fcmNotification = remoteMessage?.notification || {};
   const data = remoteMessage?.data || {};
 
@@ -162,10 +180,13 @@ function parsePayload(remoteMessage: any): {
 
   // Method 1: Chatwoot HTTP v1 format - data.payload
   if (data.payload) {
+    console.log('[ExpoBackgroundHandler] Found data.payload, parsing...');
     try {
       const payload = JSON.parse(data.payload);
+      console.log('[ExpoBackgroundHandler] Parsed payload:', JSON.stringify(payload, null, 2));
       notificationData = payload?.data?.notification || payload?.notification;
       notificationType = notificationData?.notification_type || '';
+      console.log('[ExpoBackgroundHandler] Method 1 - notification_type:', notificationType);
     } catch (e) {
       console.warn('[ExpoBackgroundHandler] Failed to parse payload:', e);
     }
@@ -173,12 +194,21 @@ function parsePayload(remoteMessage: any): {
 
   // Method 2: Chatwoot legacy format - data.notification
   if (!notificationData && data.notification) {
+    console.log('[ExpoBackgroundHandler] Found data.notification, parsing...');
     try {
       notificationData = JSON.parse(data.notification);
       notificationType = notificationData?.notification_type || '';
+      console.log('[ExpoBackgroundHandler] Method 2 - notification_type:', notificationType);
     } catch (e) {
       console.warn('[ExpoBackgroundHandler] Failed to parse legacy notification:', e);
     }
+  }
+
+  // Method 3: Direct notification_type in data
+  if (!notificationType && data.notification_type) {
+    notificationType = data.notification_type;
+    notificationData = data;
+    console.log('[ExpoBackgroundHandler] Method 3 - notification_type from data:', notificationType);
   }
 
   // Get content based on notification type
@@ -186,20 +216,26 @@ function parsePayload(remoteMessage: any): {
   let body = 'You have a new notification';
 
   if (notificationType && notificationData) {
+    console.log('[ExpoBackgroundHandler] Using getNotificationContent for type:', notificationType);
     const content = getNotificationContent(notificationType, notificationData);
     title = content.title;
     body = content.body;
     channelId = content.channelId;
   } else {
     // Fallback to FCM notification or direct data fields
-    title = fcmNotification.title || data.title || 'AlooChat';
-    body = fcmNotification.body || data.body || data.message || 'You have a new notification';
+    console.log('[ExpoBackgroundHandler] Using fallback extraction');
+    title = fcmNotification.title || data.title || data.push_message_title || 'AlooChat';
+    body = fcmNotification.body || data.body || data.push_message_body || data.message || 'You have a new notification';
   }
 
   // Build data payload for navigation
   const conversationId = notificationData?.primary_actor?.conversation_id || 
                          notificationData?.primary_actor?.id || 
-                         data.conversation_id || '';
+                         data.conversation_id || 
+                         data.conversationId || '';
+
+  console.log('[ExpoBackgroundHandler] Final notification:', { title, body, notificationType, conversationId });
+  console.log('[ExpoBackgroundHandler] ================================');
 
   return { 
     title, 

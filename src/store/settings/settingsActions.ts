@@ -224,10 +224,44 @@ export const settingsActions = {
             }
             
             if (finalStatus === 'granted') {
-              const tokenData = await expoNotifications.getDevicePushTokenAsync();
-              pushToken = tokenData.data as string;
-              subscriptionType = 'fcm'; // Device token is still FCM on Android
-              console.log('[saveDeviceDetails] Expo device token:', pushToken ? 'obtained' : 'FAILED');
+              // Try getDevicePushTokenAsync with retry for SERVICE_NOT_AVAILABLE
+              const maxRetries = 3;
+              for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                try {
+                  console.log(`[saveDeviceDetails] Attempting getDevicePushTokenAsync (attempt ${attempt}/${maxRetries})...`);
+                  const tokenData = await expoNotifications.getDevicePushTokenAsync();
+                  pushToken = tokenData.data as string;
+                  subscriptionType = 'fcm';
+                  console.log('[saveDeviceDetails] Expo device token obtained!');
+                  break;
+                } catch (tokenError: any) {
+                  console.warn(`[saveDeviceDetails] Attempt ${attempt} failed:`, tokenError?.message || tokenError);
+                  if (attempt < maxRetries) {
+                    // Wait before retry (exponential backoff)
+                    await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+                  }
+                }
+              }
+              
+              // If device token failed, try Expo Push Token as final fallback
+              if (!pushToken) {
+                try {
+                  console.log('[saveDeviceDetails] Trying Expo Push Token as final fallback...');
+                  const Constants = require('expo-constants').default;
+                  const projectId = Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId;
+                  
+                  if (projectId) {
+                    const expoPushToken = await expoNotifications.getExpoPushTokenAsync({ projectId });
+                    pushToken = expoPushToken.data;
+                    subscriptionType = 'expo'; // Mark as Expo token
+                    console.log('[saveDeviceDetails] Expo Push Token obtained:', pushToken);
+                  } else {
+                    console.warn('[saveDeviceDetails] No projectId for Expo Push Token');
+                  }
+                } catch (expoTokenError) {
+                  console.warn('[saveDeviceDetails] Expo Push Token error:', expoTokenError);
+                }
+              }
             } else {
               console.warn('[saveDeviceDetails] Expo notification permission not granted');
             }

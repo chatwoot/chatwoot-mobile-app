@@ -81,6 +81,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     plugins: [
       'expo-font',
+      'expo-notifications',
       ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary', 'Notifications'] }],
       [
         '@sentry/react-native/expo',

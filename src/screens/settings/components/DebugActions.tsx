@@ -4,7 +4,7 @@ import { Pressable, Text, Animated, View, Alert, Platform } from 'react-native';
 
 import { showToast } from '@/utils/toastUtils';
 import { tailwind } from '@/theme';
-import { sendTestNotification, runNotificationDiagnostics } from '@/services/NotificationService';
+import { sendTestNotification, runDiagnostics } from '@/services/ExpoNotificationService';
 
 let Clipboard: any = null;
 try {
@@ -138,21 +138,28 @@ export const DebugActions = () => {
   const handleRunDiagnostics = async () => {
     showToast({ message: 'Running diagnostics...' });
     try {
-      const { results, fcmToken, allPassed } = await runNotificationDiagnostics();
+      const { success, checks } = await runDiagnostics();
+      
+      const results = Object.entries(checks).map(([key, value]) => {
+        const icon = value === true || value === 'SUCCESS' || value === 'Created' || value === 'granted' 
+          ? '✅' : (value === false || value === 'FAILED' || value === 'Missing' ? '❌' : '🔸');
+        return `${icon} ${key}: ${value}`;
+      });
       
       const message = results.join('\n');
-      const title = allPassed ? '✅ All Checks Passed' : '❌ Some Checks Failed';
+      const title = success ? '✅ All Checks Passed' : '❌ Some Checks Failed';
       
       Alert.alert(
         title,
         message,
         [
           {
-            text: 'Copy FCM Token',
+            text: 'Copy Token',
             onPress: () => {
-              if (fcmToken) {
-                Clipboard.setString(fcmToken);
-                showToast({ message: 'FCM Token copied!' });
+              const token = checks['Expo Push Token'];
+              if (token && typeof token === 'string') {
+                Clipboard.setString(token);
+                showToast({ message: 'Token copied!' });
               }
             },
           },

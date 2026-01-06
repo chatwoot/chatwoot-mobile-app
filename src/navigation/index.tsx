@@ -5,13 +5,13 @@ import { getStateFromPath } from '@react-navigation/native';
 // Force mock KeyboardProvider for Expo Go compatibility
 const KeyboardProvider: any = ({ children }: any) => <>{children}</>;
 
-// Import notification service
+// Import expo notification service (official Expo approach)
 import {
-  initializeNotificationService,
-  setupForegroundMessageListener,
-  setupNotificationEventHandlers,
-  isMessagingAvailable,
-} from '@/services/NotificationService';
+  initializeExpoNotifications,
+  addNotificationReceivedListener,
+  addNotificationResponseListener,
+  displayNotification,
+} from '@/services/ExpoNotificationService';
 
 // NOTE: Background handler is now registered in App.tsx (entry point) for proper background notification handling
 
@@ -76,16 +76,20 @@ export const AppNavigationContainer = () => {
   const installationUrl = useAppSelector(selectInstallationUrl);
   const locale = useAppSelector(selectLocale);
 
-  // Initialize notification service and set up listeners
+  // Initialize notification service and set up listeners (expo-notifications)
   useEffect(() => {
     // Initialize notification channels and permissions
-    initializeNotificationService();
+    initializeExpoNotifications();
 
-    // Set up foreground message listener
-    const unsubscribeForeground = setupForegroundMessageListener();
+    // Set up foreground notification listener
+    const notificationListener = addNotificationReceivedListener(notification => {
+      console.log('[Navigation] Notification received:', notification);
+    });
 
-    // Set up notification press handler
-    const unsubscribeNotificationPress = setupNotificationEventHandlers((data: any) => {
+    // Set up notification response listener (when user taps notification)
+    const responseListener = addNotificationResponseListener(response => {
+      console.log('[Navigation] Notification tapped:', response);
+      const data = response.notification.request.content.data;
       // Handle notification tap - navigate to conversation
       if (data?.conversationId && installationUrl) {
         const conversationLink = `${installationUrl}/app/accounts/1/conversations/${data.conversationId}`;
@@ -94,8 +98,8 @@ export const AppNavigationContainer = () => {
     });
 
     return () => {
-      unsubscribeForeground();
-      unsubscribeNotificationPress();
+      notificationListener.remove();
+      responseListener.remove();
     };
   }, [installationUrl]);
 
@@ -173,7 +177,7 @@ export const AppNavigationContainer = () => {
       }
 
       // getInitialNotification: When the application is opened from a quit state.
-      if (isMessagingAvailable) {
+      if (messaging) {
         try {
           const message = await messaging().getInitialNotification();
           if (message) {
@@ -211,7 +215,7 @@ export const AppNavigationContainer = () => {
 
       //onNotificationOpenedApp: When the application is running, but in the background.
       let unsubscribeNotification = () => {};
-      if (isMessagingAvailable) {
+      if (messaging) {
         try {
           unsubscribeNotification = messaging().onNotificationOpenedApp((message: any) => {
             if (message) {

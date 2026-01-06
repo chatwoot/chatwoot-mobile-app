@@ -2,7 +2,7 @@
 
 // CRITICAL: Register background message handler as early as possible
 // This must be at the top of the app entry point for background notifications to work
-import './src/services/backgroundMessageHandler';
+import './src/services/expoBackgroundHandler';
 
 import Constants from 'expo-constants';
 import App from './src/app';

@@ -40,6 +40,19 @@ const getFirebaseMessaging = () => {
   return firebaseMessaging;
 };
 
+// Lazy load expo-notifications as fallback
+let Notifications: any = null;
+const getExpoNotifications = () => {
+  if (Notifications) return Notifications;
+  try {
+    Notifications = require('expo-notifications');
+    return Notifications;
+  } catch (error) {
+    console.warn('expo-notifications not available:', error);
+    return null;
+  }
+};
+
 let DeviceInfo: any = null;
 const getDeviceInfo = () => {
   if (DeviceInfo) return DeviceInfo;
@@ -137,13 +150,8 @@ export const settingsActions = {
     async (_, { rejectWithValue }) => {
       try {
         const messaging = getFirebaseMessaging();
+        const expoNotifications = getExpoNotifications();
         
-        if (!messaging) {
-          console.warn('Firebase messaging not available, skipping device details save');
-          return rejectWithValue('Firebase messaging not available');
-        }
-
-        const permissionEnabled = await messaging().hasPermission();
         const {
           getUniqueId,
           getSystemName,
@@ -160,61 +168,102 @@ export const settingsActions = {
         const model = await getModel();
         const apiLevel = await getApiLevel();
         const deviceName = `${manufacturer} ${model}`;
-
         const isAndroidAPILevelGreater32 = apiLevel > 32 && Platform.OS === 'android';
         const brandName = await getBrand();
         const buildNumber = await getBuildNumber();
 
-        if (!permissionEnabled || permissionEnabled === -1) {
-          if (isAndroidAPILevelGreater32) {
-            await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
-          }
-          await messaging().requestPermission();
-        }
+        let pushToken: string | null = null;
+        let subscriptionType = 'fcm';
 
-        // Register device for remote messages (required for iOS)
-        // https://github.com/invertase/react-native-firebase/issues/6893#issuecomment-1427998691
-        if (Platform.OS === 'ios') {
+        // Try Firebase first
+        if (messaging) {
           try {
-            await messaging().registerDeviceForRemoteMessages();
-            console.log('[saveDeviceDetails] Registered for remote messages on iOS');
-          } catch (regError) {
-            console.warn('[saveDeviceDetails] Failed to register for remote messages:', regError);
+            console.log('[saveDeviceDetails] Trying Firebase messaging...');
+            const permissionEnabled = await messaging().hasPermission();
+
+            if (!permissionEnabled || permissionEnabled === -1) {
+              if (isAndroidAPILevelGreater32) {
+                await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+              }
+              await messaging().requestPermission();
+            }
+
+            // Register device for remote messages (required for iOS)
+            if (Platform.OS === 'ios') {
+              try {
+                await messaging().registerDeviceForRemoteMessages();
+                console.log('[saveDeviceDetails] Registered for remote messages on iOS');
+              } catch (regError) {
+                console.warn('[saveDeviceDetails] Failed to register for remote messages:', regError);
+              }
+            }
+
+            // Small delay to ensure registration completes
+            const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+            await sleep(500);
+            
+            pushToken = await messaging().getToken();
+            console.log('[saveDeviceDetails] Firebase FCM token:', pushToken ? 'obtained' : 'FAILED');
+          } catch (firebaseError) {
+            console.warn('[saveDeviceDetails] Firebase error:', firebaseError);
           }
         }
 
-        // Small delay to ensure registration completes
-        const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-        await sleep(500);
-        
-        const fcmToken = await messaging().getToken();
-        console.log('[saveDeviceDetails] ====== FCM TOKEN ======');
-        console.log('[saveDeviceDetails] Token obtained:', fcmToken ? 'YES' : 'NO');
-        console.log('[saveDeviceDetails] Token value:', fcmToken);
+        // Fallback to expo-notifications device token if Firebase failed
+        if (!pushToken && expoNotifications) {
+          try {
+            console.log('[saveDeviceDetails] Trying expo-notifications fallback...');
+            
+            // Request permission through expo-notifications
+            const { status: existingStatus } = await expoNotifications.getPermissionsAsync();
+            let finalStatus = existingStatus;
+            
+            if (existingStatus !== 'granted') {
+              const { status } = await expoNotifications.requestPermissionsAsync();
+              finalStatus = status;
+            }
+            
+            if (finalStatus === 'granted') {
+              const tokenData = await expoNotifications.getDevicePushTokenAsync();
+              pushToken = tokenData.data as string;
+              subscriptionType = 'fcm'; // Device token is still FCM on Android
+              console.log('[saveDeviceDetails] Expo device token:', pushToken ? 'obtained' : 'FAILED');
+            } else {
+              console.warn('[saveDeviceDetails] Expo notification permission not granted');
+            }
+          } catch (expoError) {
+            console.warn('[saveDeviceDetails] Expo notifications error:', expoError);
+          }
+        }
+
+        console.log('[saveDeviceDetails] ====== PUSH TOKEN ======');
+        console.log('[saveDeviceDetails] Token obtained:', pushToken ? 'YES' : 'NO');
+        console.log('[saveDeviceDetails] Token value:', pushToken);
+        console.log('[saveDeviceDetails] Subscription type:', subscriptionType);
         console.log('[saveDeviceDetails] ========================');
 
-        if (!fcmToken) {
-          console.error('[saveDeviceDetails] ❌ NO FCM TOKEN - notifications will NOT work!');
-          return rejectWithValue('No FCM token obtained');
+        if (!pushToken) {
+          console.error('[saveDeviceDetails] ❌ NO PUSH TOKEN - notifications will NOT work!');
+          return rejectWithValue('No push token obtained');
         }
 
         const pushData: PushPayload = {
-          subscription_type: 'fcm',
+          subscription_type: subscriptionType,
           subscription_attributes: {
             deviceName,
             devicePlatform,
             apiLevel: apiLevel.toString(),
             brandName,
             buildNumber,
-            push_token: fcmToken,
+            push_token: pushToken,
             device_id: deviceId,
           },
         };
         
         console.log('[saveDeviceDetails] Sending to backend:', JSON.stringify(pushData, null, 2));
         await SettingsService.saveDeviceDetails(pushData);
-        console.log('[saveDeviceDetails] ✅ FCM token registered with backend successfully!');
-        return { fcmToken };
+        console.log('[saveDeviceDetails] ✅ Push token registered with backend successfully!');
+        return { fcmToken: pushToken };
       } catch (error) {
         Sentry.captureException(error);
         return rejectWithValue(

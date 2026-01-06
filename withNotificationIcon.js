@@ -34,16 +34,21 @@ const withNotificationIconCopy = (config) => {
             }
 
             // Also add notification_icon_color to colors.xml
-            const colorsPath = path.join(
+            const valuesDir = path.join(
                 projectRoot,
                 'android',
                 'app',
                 'src',
                 'main',
                 'res',
-                'values',
-                'colors.xml'
+                'values'
             );
+            const colorsPath = path.join(valuesDir, 'colors.xml');
+
+            // Ensure values directory exists
+            if (!fs.existsSync(valuesDir)) {
+                fs.mkdirSync(valuesDir, { recursive: true });
+            }
 
             if (fs.existsSync(colorsPath)) {
                 let colorsContent = fs.readFileSync(colorsPath, 'utf-8');
@@ -55,6 +60,15 @@ const withNotificationIconCopy = (config) => {
                     fs.writeFileSync(colorsPath, colorsContent);
                     console.log('[withNotificationIcon] Added notification_icon_color to colors.xml');
                 }
+            } else {
+                // Create colors.xml if it doesn't exist
+                const colorsContent = `<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="notification_icon_color">#1F93FF</color>
+</resources>
+`;
+                fs.writeFileSync(colorsPath, colorsContent);
+                console.log('[withNotificationIcon] Created colors.xml with notification_icon_color');
             }
 
             return config;

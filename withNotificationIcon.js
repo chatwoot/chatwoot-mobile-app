@@ -8,17 +8,13 @@ const withNotificationIconCopy = (config) => {
         'android',
         async (config) => {
             const projectRoot = config.modRequest.projectRoot;
+            const platformProjectRoot = config.modRequest.platformProjectRoot;
+            
+            console.log('[withNotificationIcon] projectRoot:', projectRoot);
+            console.log('[withNotificationIcon] platformProjectRoot:', platformProjectRoot);
+            
             const sourcePath = path.join(projectRoot, 'assets', 'ic_notification.xml');
-            const destPath = path.join(
-                projectRoot,
-                'android',
-                'app',
-                'src',
-                'main',
-                'res',
-                'drawable',
-                'ic_notification.xml'
-            );
+            const destPath = path.join(platformProjectRoot, 'app', 'src', 'main', 'res', 'drawable', 'ic_notification.xml');
 
             if (fs.existsSync(sourcePath)) {
                 // Ensure drawable directory exists
@@ -31,44 +27,54 @@ const withNotificationIconCopy = (config) => {
                 const contents = fs.readFileSync(sourcePath, 'utf-8');
                 fs.writeFileSync(destPath, contents);
                 console.log('[withNotificationIcon] Copied ic_notification.xml to drawable');
+            } else {
+                console.log('[withNotificationIcon] WARNING: ic_notification.xml not found at:', sourcePath);
             }
 
             // Also add notification_icon_color to colors.xml
-            const valuesDir = path.join(
-                projectRoot,
-                'android',
-                'app',
-                'src',
-                'main',
-                'res',
-                'values'
-            );
+            const valuesDir = path.join(platformProjectRoot, 'app', 'src', 'main', 'res', 'values');
             const colorsPath = path.join(valuesDir, 'colors.xml');
+
+            console.log('[withNotificationIcon] valuesDir:', valuesDir);
+            console.log('[withNotificationIcon] colorsPath:', colorsPath);
 
             // Ensure values directory exists
             if (!fs.existsSync(valuesDir)) {
+                console.log('[withNotificationIcon] Creating values directory...');
                 fs.mkdirSync(valuesDir, { recursive: true });
             }
 
             if (fs.existsSync(colorsPath)) {
+                console.log('[withNotificationIcon] colors.xml exists, checking for notification_icon_color...');
                 let colorsContent = fs.readFileSync(colorsPath, 'utf-8');
                 if (!colorsContent.includes('notification_icon_color')) {
                     colorsContent = colorsContent.replace(
                         '</resources>',
-                        '  <color name="notification_icon_color">#1F93FF</color>\n</resources>'
+                        '    <color name="notification_icon_color">#1F93FF</color>\n</resources>'
                     );
                     fs.writeFileSync(colorsPath, colorsContent);
-                    console.log('[withNotificationIcon] Added notification_icon_color to colors.xml');
+                    console.log('[withNotificationIcon] Added notification_icon_color to existing colors.xml');
+                } else {
+                    console.log('[withNotificationIcon] notification_icon_color already exists in colors.xml');
                 }
             } else {
                 // Create colors.xml if it doesn't exist
+                console.log('[withNotificationIcon] Creating new colors.xml...');
                 const colorsContent = `<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="notification_icon_color">#1F93FF</color>
+    <color name="notification_icon_color">#1F93FF</color>
 </resources>
 `;
                 fs.writeFileSync(colorsPath, colorsContent);
                 console.log('[withNotificationIcon] Created colors.xml with notification_icon_color');
+            }
+
+            // Verify the file was created
+            if (fs.existsSync(colorsPath)) {
+                const verifyContent = fs.readFileSync(colorsPath, 'utf-8');
+                console.log('[withNotificationIcon] Verified colors.xml content:', verifyContent);
+            } else {
+                console.log('[withNotificationIcon] ERROR: colors.xml was not created!');
             }
 
             return config;

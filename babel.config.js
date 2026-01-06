@@ -9,5 +9,16 @@ module.exports = function (api) {
         },
       ],
     ],
+    plugins: [
+      [
+        'module-resolver',
+        {
+          root: ['.'],
+          alias: {
+            '@': './src',
+          },
+        },
+      ],
+    ],
   };
 };

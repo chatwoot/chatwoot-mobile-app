@@ -14,7 +14,10 @@
         "buildType": "apk"
       },
       "env": {
-        "SENTRY_DISABLE_AUTO_UPLOAD": "true"
+        "SENTRY_DISABLE_AUTO_UPLOAD": "true",
+        "GRADLE_OPTS": "-Dorg.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1024m",
+        "NODE_ENV": "production",
+        "EAS_BUILD_NPM_FORCE_PNPM": "1"
       }
     },
     "simulator": {

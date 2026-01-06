@@ -4,6 +4,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'AlooChat',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'aloo-chat-app',
+    owner: 'aloochat',
     version: '4.3.12',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -74,7 +75,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     extra: {
       eas: {
-        projectId: process.env.EXPO_PUBLIC_PROJECT_ID || 'd69a19fd-92ae-4f8a-8765-998e61ccb906',
+        projectId: process.env.EXPO_PUBLIC_PROJECT_ID || '702829cd-b41f-4649-aee4-606570ba876e',
         storybookEnabled: process.env.EXPO_STORYBOOK_ENABLED,
       },
     },
@@ -97,9 +98,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           // https://github.com/invertase/notifee/issues/808#issuecomment-2175934609
           android: {
             minSdkVersion: 24,
-            compileSdkVersion: 35,
-            targetSdkVersion: 35,
+            compileSdkVersion: 34,
+            targetSdkVersion: 34,
             enableProguardInReleaseBuilds: false,
+            // Only build for ARM architectures to save memory and time
+            abiFilters: ['armeabi-v7a', 'arm64-v8a'],
           },
           ios: { useFrameworks: 'static' },
         },

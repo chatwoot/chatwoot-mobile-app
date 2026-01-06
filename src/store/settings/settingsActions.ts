@@ -53,23 +53,42 @@ const getExpoNotifications = () => {
   }
 };
 
+// Mock device info for Expo Go
+const mockDeviceInfo = {
+  getSystemName: () => Platform.OS === 'ios' ? 'iOS' : 'Android',
+  getManufacturer: () => Promise.resolve('Unknown'),
+  getModel: () => Promise.resolve('Unknown'),
+  getApiLevel: () => Promise.resolve(33),
+  getBrand: () => Promise.resolve('Unknown'),
+  getBuildNumber: () => Promise.resolve('1'),
+  getUniqueId: () => Promise.resolve(`expo-go-${Date.now()}`),
+};
+
 let DeviceInfo: any = null;
+let deviceInfoChecked = false;
+
 const getDeviceInfo = () => {
-  if (DeviceInfo) return DeviceInfo;
+  if (deviceInfoChecked) return DeviceInfo || mockDeviceInfo;
+  
+  deviceInfoChecked = true;
   try {
-    DeviceInfo = require('react-native-device-info');
-    return DeviceInfo;
+    const RNDeviceInfo = require('react-native-device-info');
+    // Check if native module is actually available by testing a sync method
+    if (RNDeviceInfo && typeof RNDeviceInfo.getSystemName === 'function') {
+      try {
+        // This will throw if native module is not linked
+        RNDeviceInfo.getSystemName();
+        DeviceInfo = RNDeviceInfo;
+        return DeviceInfo;
+      } catch (nativeError) {
+        console.warn('react-native-device-info native module not available');
+        return mockDeviceInfo;
+      }
+    }
+    return mockDeviceInfo;
   } catch (error) {
-    console.warn('react-native-device-info not available:', error);
-    return {
-      getSystemName: () => 'Unknown',
-      getManufacturer: () => Promise.resolve('Unknown'),
-      getModel: () => Promise.resolve('Unknown'),
-      getApiLevel: () => Promise.resolve('Unknown'),
-      getBrand: () => Promise.resolve('Unknown'),
-      getBuildNumber: () => Promise.resolve('Unknown'),
-      getUniqueId: () => Promise.resolve('Unknown'),
-    };
+    console.warn('react-native-device-info not available');
+    return mockDeviceInfo;
   }
 };
 

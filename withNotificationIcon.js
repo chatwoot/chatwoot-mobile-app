@@ -35,7 +35,7 @@ const withNotificationIconCopy = (config) => {
             }
 
             // Copy colors.xml from template
-            const colorsSourcePath = path.join(projectRoot, 'assets', 'android', 'values', 'colors.xml');
+            const colorsSourcePath = path.join(projectRoot, 'android-resources', 'values', 'colors.xml');
             const valuesDir = path.join(platformProjectRoot, 'app', 'src', 'main', 'res', 'values');
             const colorsDestPath = path.join(valuesDir, 'colors.xml');
 

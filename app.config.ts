@@ -98,7 +98,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           // https://github.com/invertase/notifee/issues/808#issuecomment-2175934609
           android: {
             minSdkVersion: 24,
-            compileSdkVersion: 34,
+            compileSdkVersion: 35,
             targetSdkVersion: 34,
             enableProguardInReleaseBuilds: false,
             // Only build for ARM architectures to save memory and time

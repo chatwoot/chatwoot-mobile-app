@@ -235,10 +235,11 @@ const registerHandler = () => {
   }
 };
 
-// Register handler immediately when module loads
-if (isMessagingAvailable) {
-  registerHandler();
-}
+// DISABLED: Auto-registration removed to prevent conflict with expoBackgroundHandler.ts
+// The expoBackgroundHandler.ts is now the single source of truth for background notifications
+// if (isMessagingAvailable) {
+//   registerHandler();
+// }
 
 // Export for testing
 export { showNotification, handleBackgroundMessage, registerHandler as registerBackgroundMessageHandler };

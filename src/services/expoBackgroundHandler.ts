@@ -321,16 +321,18 @@ function registerBackgroundHandler(): void {
   if (firebaseMessaging) {
     try {
       firebaseMessaging().setBackgroundMessageHandler(async (remoteMessage: any) => {
-        console.log('[ExpoBackgroundHandler] Firebase background message received:', JSON.stringify(remoteMessage));
+        console.log('[ExpoBackgroundHandler] 🔔 Firebase background message received');
+        console.log('[ExpoBackgroundHandler] Raw message:', JSON.stringify(remoteMessage, null, 2));
 
         const { title, body, data, channelId, notificationType } = parsePayload(remoteMessage);
         
-        console.log('[ExpoBackgroundHandler] Parsed notification type:', notificationType);
+        console.log('[ExpoBackgroundHandler] Parsed:', { title, body, notificationType });
         
-        // Only display if there's no notification payload (data-only message)
-        if (!remoteMessage?.notification) {
-          await displayBackgroundNotification(title, body, data, channelId);
-        }
+        // ALWAYS display notification - don't rely on system auto-display
+        // Chatwoot sends notification+data payload, but system auto-display may not work reliably
+        console.log('[ExpoBackgroundHandler] Displaying notification...');
+        await displayBackgroundNotification(title, body, data, channelId);
+        console.log('[ExpoBackgroundHandler] ✅ Background notification displayed');
       });
       console.log('[ExpoBackgroundHandler] ✅ Firebase background handler registered');
     } catch (error) {

@@ -86,7 +86,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         {
           icon: './assets/icon.png',
           color: '#1F93FF',
-          sounds: ['./assets/notification-sound.wav'],
           mode: 'production',
         },
       ],

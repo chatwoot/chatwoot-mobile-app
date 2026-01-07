@@ -17,13 +17,14 @@ import {
   transformNotificationCreatedResponse,
   transformNotificationRemovedResponse,
 } from './camelCaseKeys';
-import { addNotification } from '@/store/notification/notificationSlice';
+import { addNotification, removeNotification } from '@/store/notification/notificationSlice';
 import { setCurrentUserAvailability } from '@/store/auth/authSlice';
-import { removeNotification } from '@/store/notification/notificationSlice';
 import {
   NotificationCreatedResponse,
   NotificationRemovedResponse,
 } from '@/store/notification/notificationTypes';
+import * as Notifications from 'expo-notifications';
+import { AppState, Platform } from 'react-native';
 
 interface ActionCableConfig {
   pubSubToken: string;
@@ -63,12 +64,47 @@ class ActionCableConnector extends BaseActionCableConnector {
     };
   }
 
-  onMessageCreated = (data: Message) => {
+  onMessageCreated = async (data: Message) => {
     const message = transformMessage(data);
     const { conversation, conversationId } = message;
     const lastActivityAt = conversation?.lastActivityAt;
     store.dispatch(updateConversationLastActivity({ lastActivityAt, conversationId }));
     store.dispatch(addOrUpdateMessage(message));
+
+    // Display notification for incoming message
+    try {
+      const currentUserId = store.getState().auth.currentUser?.id;
+      const senderId = message.sender?.id;
+      const senderName = message.sender?.name || 'Someone';
+      const messageContent = message.content || 'New message';
+      
+      // Only show notification if message is from someone else
+      if (senderId && senderId !== currentUserId) {
+        console.log('[ActionCable] New message from', senderName, '- displaying notification');
+        
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: senderName,
+            body: messageContent,
+            data: {
+              conversationId: String(conversationId),
+              notificationType: 'message_created',
+              messageId: message.id,
+            },
+            sound: 'default',
+            badge: 1,
+            ...(Platform.OS === 'android' && {
+              channelId: 'aloochat_messages',
+            }),
+          },
+          trigger: null,
+        });
+        
+        console.log('[ActionCable] ✅ Notification displayed for new message');
+      }
+    } catch (error) {
+      console.error('[ActionCable] Failed to display notification:', error);
+    }
   };
 
   onConversationCreated = (data: Conversation) => {
@@ -88,9 +124,44 @@ class ActionCableConnector extends BaseActionCableConnector {
     store.dispatch(addContact(conversation));
   };
 
-  onAssigneeChanged = (data: Conversation) => {
+  onAssigneeChanged = async (data: Conversation) => {
     const conversation = transformConversation(data);
     store.dispatch(updateConversation(conversation));
+
+    // Display notification for conversation assignment
+    try {
+      const currentUserId = store.getState().auth.currentUser?.id;
+      const assigneeId = conversation.meta?.assignee?.id;
+      
+      // Only show notification if conversation is assigned to current user
+      if (assigneeId && assigneeId === currentUserId) {
+        console.log('[ActionCable] Conversation assigned to you - displaying notification');
+        
+        const contactName = conversation.meta?.sender?.name || 'Unknown';
+        const conversationId = conversation.id;
+        
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: '📋 Conversation Assigned',
+            body: `New conversation from ${contactName} has been assigned to you`,
+            data: {
+              conversationId: String(conversationId),
+              notificationType: 'conversation_assignment',
+            },
+            sound: 'default',
+            badge: 1,
+            ...(Platform.OS === 'android' && {
+              channelId: 'aloochat_messages',
+            }),
+          },
+          trigger: null,
+        });
+        
+        console.log('[ActionCable] ✅ Notification displayed for assignment');
+      }
+    } catch (error) {
+      console.error('[ActionCable] Failed to display assignment notification:', error);
+    }
   };
 
   onStatusChange = (data: Conversation) => {

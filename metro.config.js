@@ -14,6 +14,19 @@ const config = {
     ...defaultConfig.resolver,
     ...sentryConfig.resolver,
   },
+  transformer: {
+    ...defaultConfig.transformer,
+    ...sentryConfig.transformer,
+    // Performance: Minify code in production
+    minifierConfig: {
+      compress: {
+        drop_console: true, // Remove console logs
+        reduce_funcs: false,
+      },
+    },
+  },
+  // Performance: Increase max workers for faster builds
+  maxWorkers: 4,
 };
 
 // Custom module resolution

@@ -166,13 +166,18 @@ const InboxList = () => {
       layout={LinearTransition.springify().damping(18).stiffness(120)}
       showsVerticalScrollIndicator={false}
       data={notifications}
-      estimatedItemSize={71}
+      estimatedItemSize={100}
+      renderItem={handleRender}
+      keyExtractor={item => item.id.toString()}
       onScroll={scrollHandler}
       onEndReached={handleOnEndReached}
-      onEndReachedThreshold={0.5}
-      ListFooterComponent={ListFooterComponent}
-      renderItem={handleRender}
-      contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}
+      onEndReachedThreshold={0.1}
+      contentContainerStyle={tailwind.style('pb-4')}
+      removeClippedSubviews={true}
+      maxToRenderPerBatch={10}
+      updateCellsBatchingPeriod={50}
+      windowSize={21}
+      initialNumToRender={15}
     />
   );
 };

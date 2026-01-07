@@ -280,16 +280,19 @@ const ConversationList = () => {
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       layout={LinearTransition.springify().damping(18).stiffness(120)}
       showsVerticalScrollIndicator={false}
-      data={allConversations}
-      estimatedItemSize={91}
       onScroll={scrollHandler}
-      onEndReached={handleOnEndReached}
-      onEndReachedThreshold={0.5}
-      ListFooterComponent={ListFooterComponent}
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      estimatedItemSize={100}
+      data={allConversations}
       renderItem={handleRender}
-      contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}
+      keyExtractor={item => item.id.toString()}
+      onEndReached={handleOnEndReached}
+      onEndReachedThreshold={0.1}
+      contentContainerStyle={tailwind.style('pb-4')}
+      removeClippedSubviews={true}
+      maxToRenderPerBatch={10}
+      updateCellsBatchingPeriod={50}
+      windowSize={21}
+      initialNumToRender={15}
     />
   );
 };

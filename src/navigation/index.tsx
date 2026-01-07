@@ -92,11 +92,17 @@ export const AppNavigationContainer = () => {
     // Set up notification response listener (when user taps notification)
     const responseListener = addNotificationResponseListener(response => {
       console.log('[Navigation] Notification tapped:', response);
-      const data = response.notification.request.content.data;
-      // Handle notification tap - navigate to conversation
-      if (data?.conversationId && installationUrl) {
-        const conversationLink = `${installationUrl}/app/accounts/1/conversations/${data.conversationId}`;
-        Linking.openURL(conversationLink);
+      try {
+        const data = response.notification.request.content.data;
+        // Handle notification tap - navigate to conversation
+        if (data?.conversationId && installationUrl) {
+          const conversationLink = `${installationUrl}/app/accounts/1/conversations/${data.conversationId}`;
+          Linking.openURL(conversationLink).catch(err => {
+            console.error('[Navigation] Failed to open link:', err);
+          });
+        }
+      } catch (error) {
+        console.error('[Navigation] Error handling notification tap:', error);
       }
     });
 
@@ -145,12 +151,17 @@ export const AppNavigationContainer = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // getStateFromPath: App running, receives deep link - handles SSO callbacks and conversation navigation
     getStateFromPath: (path: string, config: any) => {
-      // Handle SSO callback - App running, receives deep link
-      if (path.includes(SSO_CALLBACK_URL) || path.includes('auth/saml')) {
-        const ssoParams = SsoUtils.parseCallbackUrl(`AlooChatapp://${path}`);
-        // Handle both success and error cases
-        SsoUtils.handleSsoCallback(ssoParams, dispatch);
-        // Return undefined to prevent navigation change for SSO callback
+      try {
+        // Handle SSO callback - App running, receives deep link
+        if (path.includes(SSO_CALLBACK_URL) || path.includes('auth/saml')) {
+          const ssoParams = SsoUtils.parseCallbackUrl(`AlooChatapp://${path}`);
+          // Handle both success and error cases
+          SsoUtils.handleSsoCallback(ssoParams, dispatch);
+          // Return undefined to prevent navigation change for SSO callback
+          return undefined;
+        }
+      } catch (error) {
+        console.error('[Navigation] Error in getStateFromPath:', error);
         return undefined;
       }
 

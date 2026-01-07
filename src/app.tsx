@@ -1,20 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Provider } from 'react-redux';
 import { Alert, BackHandler } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store';
 import { AppNavigator } from '@/navigation';
+import { ErrorBoundary } from '@/utils/ErrorBoundary';
 
 import i18n from '@/i18n';
 
 const AlooChat = () => {
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
-    };
-  }, []);
-  const handleBackButtonClick = () => {
+  const handleBackButtonClick = useCallback(() => {
     Alert.alert(
       i18n.t('EXIT.TITLE'),
       i18n.t('EXIT.SUBTITLE'),
@@ -29,14 +24,23 @@ const AlooChat = () => {
       { cancelable: false },
     );
     return true;
-  };
+  }, []);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      backHandler.remove();
+    };
+  }, [handleBackButtonClick]);
 
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <AppNavigator />
-      </PersistGate>
-    </Provider>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <AppNavigator />
+        </PersistGate>
+      </Provider>
+    </ErrorBoundary>
   );
 };
 

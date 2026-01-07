@@ -1,15 +1,31 @@
-# Background Notifications Setup Guide
+# Background Notifications - COMPLETE FIX
 
-## ✅ What Has Been Fixed
-
-Your app now has complete background notification support configured for both iOS and Android.
+## ✅ Critical Fixes Applied (Latest)
 
 ### Changes Made:
 
-1. **app.config.ts** - Added expo-notifications configuration with production mode
-2. **firebase.json** - Updated iOS foreground presentation options and enabled notification content extension
-3. **expoBackgroundHandler.ts** - Enhanced notification channels and auto-registration
-4. **Existing handlers** - Already properly configured in App.tsx
+1. **app.config.ts** 
+   - ✅ Updated app icon to use `AlooChat blue App Icon.svg`
+   - ✅ Configured iOS to use `AppIcon.appiconset`
+   - ✅ Updated notification icon for branding consistency
+   - ✅ Expo-notifications configured with production mode
+
+2. **firebase.json** 
+   - ✅ Updated iOS foreground presentation to `["alert", "badge", "sound"]`
+   - ✅ Enabled notification content extension for iOS
+
+3. **expoBackgroundHandler.ts** 
+   - ✅ Enhanced background message handler with error handling
+   - ✅ Added fallback notification display for parse errors
+   - ✅ Comprehensive logging for debugging
+   - ✅ Auto-registration on module load
+
+4. **backgroundMessageHandler.ts**
+   - ✅ Disabled to prevent duplicate handler conflicts
+   - ✅ Only expoBackgroundHandler is now active
+
+5. **App.tsx**
+   - ✅ Imports expoBackgroundHandler at the top (critical for background/killed state)
 
 ## 📱 How Background Notifications Work Now
 
@@ -24,6 +40,75 @@ Your app now has complete background notification support configured for both iO
 - ✅ **Background**: Notifications display when app is minimized
 - ✅ **Killed**: Notifications display when app is completely closed
 - ✅ **Channels**: High-priority channels configured
+
+## 🚨 CRITICAL: FCM Payload Requirements
+
+**For notifications to work in BACKGROUND/KILLED state, your backend MUST send:**
+
+### iOS - Required Payload Structure:
+```json
+{
+  "message": {
+    "token": "DEVICE_FCM_TOKEN",
+    "notification": {
+      "title": "Sender Name",
+      "body": "Message content"
+    },
+    "data": {
+      "conversationId": "123",
+      "notificationType": "assigned_conversation_new_message"
+    },
+    "apns": {
+      "payload": {
+        "aps": {
+          "alert": {
+            "title": "Sender Name",
+            "body": "Message content"
+          },
+          "sound": "default",
+          "badge": 1,
+          "content-available": 1
+        }
+      },
+      "headers": {
+        "apns-priority": "10"
+      }
+    }
+  }
+}
+```
+
+### Android - Required Payload Structure:
+```json
+{
+  "message": {
+    "token": "DEVICE_FCM_TOKEN",
+    "notification": {
+      "title": "Sender Name",
+      "body": "Message content"
+    },
+    "data": {
+      "conversationId": "123",
+      "notificationType": "assigned_conversation_new_message"
+    },
+    "android": {
+      "priority": "high",
+      "notification": {
+        "channel_id": "aloochat_messages",
+        "sound": "default",
+        "notification_priority": "PRIORITY_MAX"
+      }
+    }
+  }
+}
+```
+
+**⚠️ IMPORTANT:**
+- **MUST include `notification` object** - Without this, iOS won't show notifications in killed state
+- **MUST include `content-available: 1`** for iOS background processing
+- **MUST set `apns-priority: 10`** for high priority on iOS
+- **MUST set `priority: high`** for Android
+- Data-only messages will NOT work in killed state on iOS!
 
 ## 🔧 Next Steps
 

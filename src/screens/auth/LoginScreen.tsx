@@ -139,33 +139,34 @@ const LoginScreen = () => {
   };
 
   return (
-    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-gray-50')}>
+    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
       <StatusBar
         translucent
-        backgroundColor={tailwind.color('bg-gray-50')}
+        backgroundColor={tailwind.color('bg-white')}
         barStyle={'dark-content'}
       />
-      <View style={tailwind.style('flex-1 bg-gray-50')}>
+      <View style={tailwind.style('flex-1 bg-white')}>
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={tailwind.style('flex-grow justify-center px-6 py-8')}>
-          <View style={tailwind.style('items-center mb-16')}>
-            <AlooLogo width={200} height={36} />
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={tailwind.style('flex-grow justify-center px-5 py-6')}>
+          <View style={tailwind.style('items-center mb-8')}>
+            <AlooLogo width={80} height={80} />
           </View>
-          <View style={tailwind.style('gap-3 mb-10 items-center')}>
-            <Animated.Text style={tailwind.style('text-3xl text-gray-950 font-inter-semibold-20 text-center')}>
+          <View style={tailwind.style('gap-1.5 mb-6 items-center')}>
+            <Animated.Text style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20 text-center')}>
               {i18n.t('LOGIN.TITLE')}
             </Animated.Text>
             <Animated.Text
               style={tailwind.style(
-                'font-inter-normal-20 text-base text-gray-600 text-center',
+                'font-inter-normal-20 text-sm text-gray-500 text-center',
               )}>
               Sign in to continue to your account
             </Animated.Text>
           </View>
 
           {showSsoLogin && (
-            <View style={tailwind.style('mb-6')}>
+            <View style={tailwind.style('mb-5')}>
               <AuthButton
                 text={i18n.t('LOGIN.LOGIN_VIA_SSO')}
                 icon={<LockIcon />}
@@ -174,12 +175,12 @@ const LoginScreen = () => {
                 variant="outline"
               />
 
-              <View style={tailwind.style('flex-row items-center my-8')}>
-                <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
-                <Animated.Text style={tailwind.style('px-4 text-sm text-gray-500 font-inter-medium-24')}>
+              <View style={tailwind.style('flex-row items-center my-5')}>
+                <View style={tailwind.style('flex-1 h-px bg-gray-200')} />
+                <Animated.Text style={tailwind.style('px-3 text-xs text-gray-400 font-inter-medium-24')}>
                   OR
                 </Animated.Text>
-                <View style={tailwind.style('flex-1 h-px bg-gray-300')} />
+                <View style={tailwind.style('flex-1 h-px bg-gray-200')} />
               </View>
             </View>
           )}
@@ -194,30 +195,35 @@ const LoginScreen = () => {
               },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <View style={tailwind.style('gap-3')}>
-                <Animated.Text style={tailwind.style('font-inter-medium-24 text-sm text-gray-700 ml-1')}>
+              <View style={tailwind.style('gap-2')}>
+                <Animated.Text style={tailwind.style('font-inter-medium-24 text-sm text-gray-700')}>
                   {i18n.t('LOGIN.EMAIL')}
                 </Animated.Text>
-                <View style={tailwind.style('bg-white rounded-2xl border-2 border-gray-200 shadow-md')}>
+                <View style={tailwind.style('bg-gray-50 rounded-xl border border-gray-200', errors.email && 'border-red-500')}>
                   <TextInput
                     style={[
                       tailwind.style(
-                        'text-base font-inter-normal-20 tracking-[0.24px] leading-[20px] android:leading-[18px]',
-                        'py-4 px-5 text-gray-950',
-                        'h-16',
+                        'text-base font-inter-normal-20',
+                        'py-3.5 px-4 text-gray-950',
+                        'h-14',
                       ),
                     ]}
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                    onChangeText={(text) => {
+                      onChange(text);
+                      // Instant validation feedback
+                    }}
                     value={value}
                     placeholder="Enter your email"
                     placeholderTextColor={tailwind.color('text-gray-400')}
                     keyboardType="email-address"
                     autoCapitalize="none"
+                    autoCorrect={false}
+                    textContentType="emailAddress"
                   />
                 </View>
                 {errors.email && (
-                  <Animated.Text style={tailwind.style('font-inter-normal-20 text-sm text-ruby-900 ml-1')}>
+                  <Animated.Text style={tailwind.style('font-inter-normal-20 text-xs text-red-600')}>
                     {errors.email.message}
                   </Animated.Text>
                 )}
@@ -236,18 +242,18 @@ const LoginScreen = () => {
               },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <View style={tailwind.style('gap-3 mt-5')}>
-                <Animated.Text style={tailwind.style('font-inter-medium-24 text-sm text-gray-700 ml-1')}>
+              <View style={tailwind.style('gap-2 mt-4')}>
+                <Animated.Text style={tailwind.style('font-inter-medium-24 text-sm text-gray-700')}>
                   {i18n.t('LOGIN.PASSWORD')}
                 </Animated.Text>
-                <View style={tailwind.style('bg-white rounded-2xl border-2 border-gray-200 shadow-md')}>
+                <View style={tailwind.style('bg-gray-50 rounded-xl border border-gray-200', errors.password && 'border-red-500')}>
                   <View style={tailwind.style('relative')}>
                     <TextInput
                       style={[
                         tailwind.style(
-                          'text-base font-inter-normal-20 tracking-[0.24px] leading-[20px] android:leading-[18px]',
-                          'py-4 pl-5 pr-14 text-gray-950',
-                          'h-16',
+                          'text-base font-inter-normal-20',
+                          'py-3.5 pl-4 pr-12 text-gray-950',
+                          'h-14',
                         ),
                       ]}
                       onBlur={onBlur}
@@ -256,16 +262,18 @@ const LoginScreen = () => {
                       placeholder="Enter your password"
                       placeholderTextColor={tailwind.color('text-gray-400')}
                       secureTextEntry={!showPassword}
+                      textContentType="password"
+                      autoCorrect={false}
                     />
                     <Pressable
-                      style={tailwind.style('absolute right-5 top-5')}
+                      style={tailwind.style('absolute right-4 top-4')}
                       onPress={() => setShowPassword(!showPassword)}>
-                      <Icon size={22} icon={showPassword ? <EyeIcon /> : <EyeSlash />} />
+                      <Icon size={20} icon={showPassword ? <EyeIcon /> : <EyeSlash />} />
                     </Pressable>
                   </View>
                 </View>
                 {errors.password && (
-                  <Animated.Text style={tailwind.style('text-sm text-ruby-900 ml-1')}>
+                  <Animated.Text style={tailwind.style('text-xs text-red-600')}>
                     {errors.password.message}
                   </Animated.Text>
                 )}
@@ -274,10 +282,9 @@ const LoginScreen = () => {
             name="password"
           />
 
-          <View style={tailwind.style('flex-row justify-between items-center mt-4 mb-8')}>
-            <View />
+          <View style={tailwind.style('flex-row justify-end items-center mt-3 mb-6')}>
             <Pressable onPress={openResetPassword}>
-              <Animated.Text style={tailwind.style('text-blue-500 font-inter-medium-24 text-sm')}>
+              <Animated.Text style={tailwind.style('text-blue-600 font-inter-medium-24 text-sm')}>
                 {i18n.t('LOGIN.FORGOT_PASSWORD')}
               </Animated.Text>
             </Pressable>
@@ -286,17 +293,18 @@ const LoginScreen = () => {
           <Button
             text={isLoggingIn ? i18n.t('LOGIN.LOGIN_LOADING') : i18n.t('LOGIN.LOGIN')}
             handlePress={handleSubmit(onSubmit)}
+            disabled={isLoggingIn}
           />
 
-          <View style={tailwind.style('flex-row justify-center items-center gap-6 mt-8')}>
+          <View style={tailwind.style('flex-row justify-center items-center gap-4 mt-6')}>
             <Pressable onPress={openConfigInstallationURL}>
-              <Animated.Text style={tailwind.style('text-sm text-gray-600 font-inter-normal-20')}>
+              <Animated.Text style={tailwind.style('text-xs text-gray-500 font-inter-normal-20')}>
                 {i18n.t('LOGIN.CHANGE_URL')}
               </Animated.Text>
             </Pressable>
-            <View style={tailwind.style('w-px h-4 bg-gray-300')} />
+            <View style={tailwind.style('w-px h-3 bg-gray-300')} />
             <Pressable onPress={() => languagesModalSheetRef.current?.present()}>
-              <Animated.Text style={tailwind.style('text-sm text-gray-600 font-inter-normal-20')}>
+              <Animated.Text style={tailwind.style('text-xs text-gray-500 font-inter-normal-20')}>
                 {i18n.t('LOGIN.CHANGE_LANGUAGE')}
               </Animated.Text>
             </Pressable>

@@ -135,6 +135,15 @@ export const MessagesList = ({
           }
           return item.id.toString();
         }}
+        // Performance optimizations to prevent crashes
+        removeClippedSubviews={true}
+        maxToRenderPerBatch={10}
+        updateCellsBatchingPeriod={50}
+        windowSize={21}
+        initialNumToRender={15}
+        maintainVisibleContentPosition={{
+          minIndexForVisible: 0,
+        }}
       />
     </Animated.View>
   );

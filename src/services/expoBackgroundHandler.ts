@@ -327,18 +327,32 @@ function registerBackgroundHandler(): void {
   if (firebaseMessaging) {
     try {
       firebaseMessaging().setBackgroundMessageHandler(async (remoteMessage: any) => {
-        console.log('[ExpoBackgroundHandler] 🔔 Firebase background message received');
+        console.log('[ExpoBackgroundHandler] 🔔 ====== BACKGROUND MESSAGE ======');
+        console.log('[ExpoBackgroundHandler] Time:', new Date().toISOString());
         console.log('[ExpoBackgroundHandler] Raw message:', JSON.stringify(remoteMessage, null, 2));
 
-        const { title, body, data, channelId, notificationType } = parsePayload(remoteMessage);
+        try {
+          const { title, body, data, channelId, notificationType } = parsePayload(remoteMessage);
+          
+          console.log('[ExpoBackgroundHandler] Parsed:', { title, body, notificationType });
+          
+          // CRITICAL: Always display notification for background/killed state
+          // iOS/Android may not auto-display data-only messages
+          console.log('[ExpoBackgroundHandler] Displaying notification...');
+          await displayBackgroundNotification(title, body, data, channelId);
+          console.log('[ExpoBackgroundHandler] ✅ Background notification displayed');
+        } catch (parseError) {
+          console.error('[ExpoBackgroundHandler] Parse error:', parseError);
+          // Fallback: show basic notification
+          await displayBackgroundNotification(
+            remoteMessage?.notification?.title || 'AlooChat',
+            remoteMessage?.notification?.body || 'You have a new message',
+            remoteMessage?.data || {},
+            CHANNEL_ID.MESSAGES
+          );
+        }
         
-        console.log('[ExpoBackgroundHandler] Parsed:', { title, body, notificationType });
-        
-        // ALWAYS display notification - don't rely on system auto-display
-        // Chatwoot sends notification+data payload, but system auto-display may not work reliably
-        console.log('[ExpoBackgroundHandler] Displaying notification...');
-        await displayBackgroundNotification(title, body, data, channelId);
-        console.log('[ExpoBackgroundHandler] ✅ Background notification displayed');
+        console.log('[ExpoBackgroundHandler] ====== HANDLER COMPLETE ======');
       });
       console.log('[ExpoBackgroundHandler] ✅ Firebase background handler registered');
     } catch (error) {

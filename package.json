@@ -130,6 +130,7 @@
     "@types/jest": "^29.5.12",
     "@types/react": "~18.3.18",
     "@welldone-software/why-did-you-render": "^8.0.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "dotenv-cli": "^7.4.2",
     "eslint": "^8.57.0",
     "eslint-config-expo": "^8.0.1",

@@ -73,7 +73,7 @@ class ActionCableConnector extends BaseActionCableConnector {
 
     // Display notification for incoming message
     try {
-      const currentUserId = store.getState().auth.currentUser?.id;
+      const currentUserId = store.getState().auth.user?.id;
       const senderId = message.sender?.id;
       const senderName = message.sender?.name || 'Someone';
       const messageContent = message.content || 'New message';
@@ -130,7 +130,7 @@ class ActionCableConnector extends BaseActionCableConnector {
 
     // Display notification for conversation assignment
     try {
-      const currentUserId = store.getState().auth.currentUser?.id;
+      const currentUserId = store.getState().auth.user?.id;
       const assigneeId = conversation.meta?.assignee?.id;
       
       // Only show notification if conversation is assigned to current user
@@ -208,12 +208,12 @@ class ActionCableConnector extends BaseActionCableConnector {
   private initTimer = (data: TypingData) => {
     const { conversation } = data;
     const conversationId = conversation.id;
-    if (this.CancelTyping[conversationId]) {
-      clearTimeout(this.CancelTyping[conversationId]!);
-      this.CancelTyping[conversationId] = null;
-    }
+    // Always clear existing timer before creating new one
+    this.clearTimer(conversationId);
+    
     this.CancelTyping[conversationId] = setTimeout(() => {
       this.onTypingOff(data);
+      this.CancelTyping[conversationId] = null;
     }, 30000);
   };
 
@@ -222,6 +222,14 @@ class ActionCableConnector extends BaseActionCableConnector {
       clearTimeout(this.CancelTyping[conversationId]!);
       this.CancelTyping[conversationId] = null;
     }
+  };
+
+  // Clear all timers on disconnect
+  clearAllTimers = () => {
+    Object.keys(this.CancelTyping).forEach(key => {
+      const conversationId = parseInt(key);
+      this.clearTimer(conversationId);
+    });
   };
 
   onPresenceUpdate = (data: PresenceUpdateData) => {

@@ -11,6 +11,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     userInterfaceStyle: 'light',
     newArchEnabled: false,
     scheme: 'AlooChatapp',
+    jsEngine: 'hermes',
     splash: {
       image: './assets/splash.png',
       resizeMode: 'contain',
@@ -19,6 +20,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ios: {
       supportsTablet: true,
       bundleIdentifier: 'com.aloochat.app',
+      icon: './assets/AppIcon.appiconset',
       infoPlist: {
         NSCameraUsageDescription:
           'This app requires access to the camera to upload images and videos.',
@@ -29,6 +31,9 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           'This app does not use Apple Music, but a system API may require this permission.',
         UIBackgroundModes: ['fetch', 'remote-notification'],
         ITSAppUsesNonExemptEncryption: false,
+        // Performance optimizations
+        UIApplicationExitsOnSuspend: false,
+        UIViewControllerBasedStatusBarAppearance: true,
       },
       // Please use the relative path to the google-services.json file
       googleServicesFile:
@@ -38,6 +43,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     android: {
       package: 'com.aloochat.app',
+      icon: './assets/AppIcon.appiconset/1024.png',
+      adaptiveIcon: {
+        foregroundImage: './assets/AppIcon.appiconset/1024.png',
+        backgroundColor: '#FFFFFF',
+      },
       permissions: [
         'android.permission.CAMERA',
         'android.permission.RECORD_AUDIO',
@@ -112,7 +122,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
             // Only build for ARM architectures to save memory and time
             abiFilters: ['armeabi-v7a', 'arm64-v8a'],
           },
-          ios: { useFrameworks: 'static' },
+          ios: { 
+            useFrameworks: 'static',
+            // Performance optimizations
+            deploymentTarget: '15.1',
+          },
         },
       ],
       './withNotificationIcon.js',

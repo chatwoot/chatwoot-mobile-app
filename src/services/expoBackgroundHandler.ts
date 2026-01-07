@@ -54,6 +54,9 @@ async function ensureChannels(): Promise<void> {
       vibrationPattern: [0, 250, 250, 250],
       lightColor: '#1F93FF',
       sound: 'default',
+      enableLights: true,
+      enableVibrate: true,
+      showBadge: true,
     });
 
     // SLA Alerts channel
@@ -64,6 +67,9 @@ async function ensureChannels(): Promise<void> {
       vibrationPattern: [0, 500, 200, 500],
       lightColor: '#FF4444',
       sound: 'default',
+      enableLights: true,
+      enableVibrate: true,
+      showBadge: true,
     });
   }
 }
@@ -339,11 +345,14 @@ function registerBackgroundHandler(): void {
       console.warn('[ExpoBackgroundHandler] Firebase handler error:', error);
     }
   } else {
-    console.warn('[ExpoBackgroundHandler] Firebase not available, using Expo-only handlers');
+    console.warn('[ExpoBackgroundHandler] Firebase messaging not available - background notifications may not work');
   }
 }
 
-// Register immediately when this module is imported
+// CRITICAL: Auto-register when module loads (App.tsx imports this at the top)
+console.log('[ExpoBackgroundHandler] 🚀 Module loaded - registering handlers...');
 registerBackgroundHandler();
+console.log('[ExpoBackgroundHandler] ✅ Handlers registered');
 
-export { displayBackgroundNotification, parsePayload };
+// Export for manual registration if needed
+export { registerBackgroundHandler, displayBackgroundNotification, parsePayload };

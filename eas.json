@@ -29,6 +29,15 @@
       "developmentClient": true,
       "distribution": "internal"
     },
+    "testflight": {
+      "distribution": "store",
+      "autoIncrement": true,
+      "env": {
+        "APP_ENV": "production",
+        "SENTRY_DISABLE_AUTO_UPLOAD": "true",
+        "SENTRY_ALLOW_FAILURE": "true"
+      }
+    },
     "production": {
       "autoIncrement": true,
       "env": {
@@ -39,6 +48,12 @@
     }
   },
   "submit": {
+    "testflight": {
+      "ios": {
+        "appleTeamId": "52ASKF85JT",
+        "ascAppId": "6753868709"
+      }
+    },
     "production": {
       "ios": {
         "appleTeamId": "52ASKF85JT",

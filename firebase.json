@@ -3,6 +3,7 @@
     "messaging_ios_auto_register_for_remote_messages": true,
     "messaging_android_notification_channel_id": "aloochat_messages",
     "messaging_android_headless_task_timeout": 60000,
-    "messaging_ios_foreground_presentation_options": ["badge", "sound", "list", "banner"]
+    "messaging_ios_foreground_presentation_options": ["alert", "badge", "sound"],
+    "messaging_ios_notification_content_extension": true
   }
 }

@@ -81,7 +81,15 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     plugins: [
       'expo-font',
-      'expo-notifications',
+      [
+        'expo-notifications',
+        {
+          icon: './assets/icon.png',
+          color: '#1F93FF',
+          sounds: ['./assets/notification-sound.wav'],
+          mode: 'production',
+        },
+      ],
       ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary', 'Notifications'] }],
       [
         '@sentry/react-native/expo',

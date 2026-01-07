@@ -19,8 +19,10 @@ const config = {
     ...sentryConfig.transformer,
     // Performance: Minify code in production
     minifierConfig: {
+      ...defaultConfig.transformer?.minifierConfig,
       compress: {
-        drop_console: true, // Remove console logs
+        ...defaultConfig.transformer?.minifierConfig?.compress,
+        drop_console: process.env.NODE_ENV === 'production', // Remove console logs in production only
         reduce_funcs: false,
       },
     },

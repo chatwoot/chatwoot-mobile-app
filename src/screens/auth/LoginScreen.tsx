@@ -145,21 +145,18 @@ const LoginScreen = () => {
         backgroundColor={tailwind.color('bg-white')}
         barStyle={'dark-content'}
       />
-      <View style={tailwind.style('flex-1 bg-white')}>
-        <Animated.ScrollView
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={tailwind.style('flex-grow justify-center px-5 py-6')}>
-          <View style={tailwind.style('items-center mb-8')}>
-            <AlooLogo width={80} height={80} />
+      <View style={tailwind.style('flex-1 bg-white justify-between px-5 py-6')}>
+        <View style={tailwind.style('flex-1 justify-center')}>
+          <View style={tailwind.style('items-center mb-6')}>
+            <AlooLogo width={64} height={64} />
           </View>
-          <View style={tailwind.style('gap-1.5 mb-6 items-center')}>
-            <Animated.Text style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20 text-center')}>
+          <View style={tailwind.style('gap-1 mb-5 items-center')}>
+            <Animated.Text style={tailwind.style('text-xl text-gray-950 font-inter-semibold-20 text-center')}>
               {i18n.t('LOGIN.TITLE')}
             </Animated.Text>
             <Animated.Text
               style={tailwind.style(
-                'font-inter-normal-20 text-sm text-gray-500 text-center',
+                'font-inter-normal-20 text-xs text-gray-500 text-center',
               )}>
               Sign in to continue to your account
             </Animated.Text>
@@ -282,7 +279,7 @@ const LoginScreen = () => {
             name="password"
           />
 
-          <View style={tailwind.style('flex-row justify-end items-center mt-3 mb-6')}>
+          <View style={tailwind.style('flex-row justify-end items-center mt-2 mb-5')}>
             <Pressable onPress={openResetPassword}>
               <Animated.Text style={tailwind.style('text-blue-600 font-inter-medium-24 text-sm')}>
                 {i18n.t('LOGIN.FORGOT_PASSWORD')}
@@ -295,21 +292,15 @@ const LoginScreen = () => {
             handlePress={handleSubmit(onSubmit)}
             disabled={isLoggingIn}
           />
+        </View>
 
-          <View style={tailwind.style('flex-row justify-center items-center gap-4 mt-6')}>
-            <Pressable onPress={openConfigInstallationURL}>
-              <Animated.Text style={tailwind.style('text-xs text-gray-500 font-inter-normal-20')}>
-                {i18n.t('LOGIN.CHANGE_URL')}
-              </Animated.Text>
-            </Pressable>
-            <View style={tailwind.style('w-px h-3 bg-gray-300')} />
-            <Pressable onPress={() => languagesModalSheetRef.current?.present()}>
-              <Animated.Text style={tailwind.style('text-xs text-gray-500 font-inter-normal-20')}>
-                {i18n.t('LOGIN.CHANGE_LANGUAGE')}
-              </Animated.Text>
-            </Pressable>
-          </View>
-        </Animated.ScrollView>
+        <View style={tailwind.style('items-center pb-2')}>
+          <Pressable onPress={() => languagesModalSheetRef.current?.present()}>
+            <Animated.Text style={tailwind.style('text-xs text-gray-400 font-inter-normal-20')}>
+              {i18n.t('LOGIN.CHANGE_LANGUAGE')}
+            </Animated.Text>
+          </Pressable>
+        </View>
       </View>
       <BottomSheetModal
         ref={languagesModalSheetRef}

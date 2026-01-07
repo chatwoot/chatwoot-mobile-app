@@ -77,9 +77,20 @@ class ActionCableConnector extends BaseActionCableConnector {
       const senderId = message.sender?.id;
       const senderName = message.sender?.name || 'Someone';
       const messageContent = message.content || 'New message';
+      const messageType = message.messageType; // 0 = incoming, 1 = outgoing
+      const senderType = message.sender?.type; // 'contact' = real user, 'agent_bot' = AI
       
-      // Only show notification if message is from someone else
-      if (senderId && senderId !== currentUserId) {
+      // Only show notification if:
+      // 1. Message is from someone else (not current user)
+      // 2. Message is incoming (messageType === 0)
+      // 3. Sender is not an AI bot (senderType !== 'agent_bot')
+      const isIncomingFromRealUser = 
+        senderId && 
+        senderId !== currentUserId && 
+        messageType === 0 && 
+        senderType !== 'agent_bot';
+      
+      if (isIncomingFromRealUser) {
         console.log('[ActionCable] New message from', senderName, '- displaying notification');
         
         await Notifications.scheduleNotificationAsync({

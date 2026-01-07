@@ -13,9 +13,13 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     scheme: 'AlooChatapp',
     jsEngine: 'hermes',
     splash: {
-      image: './assets/splash.png',
+      image: './assets/AlooChat Android App Icon.png',
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
+    },
+    notification: {
+      icon: './assets/AlooChat Android App Icon.png',
+      color: '#1F93FF',
     },
     ios: {
       supportsTablet: true,
@@ -44,10 +48,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     android: {
       package: 'com.aloochat.app',
       icon: './assets/AppIcon.appiconset/1024.png',
-      adaptiveIcon: {
-        foregroundImage: './assets/AppIcon.appiconset/1024.png',
-        backgroundColor: '#FFFFFF',
-      },
       permissions: [
         'android.permission.CAMERA',
         'android.permission.RECORD_AUDIO',
@@ -94,7 +94,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       [
         'expo-notifications',
         {
-          icon: './assets/icon.png',
+          icon: './assets/AlooChat Android App Icon.png',
           color: '#1F93FF',
           mode: 'production',
         },

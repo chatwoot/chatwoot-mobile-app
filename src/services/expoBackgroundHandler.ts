@@ -336,11 +336,26 @@ function registerBackgroundHandler(): void {
           
           console.log('[ExpoBackgroundHandler] Parsed:', { title, body, notificationType });
           
-          // CRITICAL: Always display notification for background/killed state
-          // iOS/Android may not auto-display data-only messages
-          console.log('[ExpoBackgroundHandler] Displaying notification...');
-          await displayBackgroundNotification(title, body, data, channelId);
-          console.log('[ExpoBackgroundHandler] ✅ Background notification displayed');
+          // Filter out AI bot messages and outgoing messages
+          const messageType = remoteMessage?.data?.message_type || remoteMessage?.data?.messageType;
+          const senderType = remoteMessage?.data?.sender_type || remoteMessage?.data?.senderType;
+          
+          // Only show notification for incoming messages from real users
+          // messageType: 0 = incoming, 1 = outgoing
+          // senderType: 'Contact' = real user, 'agent_bot' = AI bot
+          const shouldShowNotification = 
+            messageType === '0' || messageType === 0 || messageType === undefined;
+          const isNotBot = senderType !== 'agent_bot' && senderType !== 'AgentBot';
+          
+          if (shouldShowNotification && isNotBot) {
+            // CRITICAL: Always display notification for background/killed state
+            // iOS/Android may not auto-display data-only messages
+            console.log('[ExpoBackgroundHandler] Displaying notification...');
+            await displayBackgroundNotification(title, body, data, channelId);
+            console.log('[ExpoBackgroundHandler] ✅ Background notification displayed');
+          } else {
+            console.log('[ExpoBackgroundHandler] ⏭️ Skipped notification - outgoing or bot message');
+          }
         } catch (parseError) {
           console.error('[ExpoBackgroundHandler] Parse error:', parseError);
           // Fallback: show basic notification

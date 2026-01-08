@@ -46,6 +46,7 @@ import i18n from '@/i18n';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { MacrosList } from './components/macros/MacrosList';
 import { macroActions } from '@/store/macro/macroActions';
+import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
 // import { LightBoxProvider } from '@alantoa/lightbox';
 
 let LightBoxProvider: any = ({ children }: any) => <>{children}</>;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Animated, Image, Pressable, StatusBar, TextInput, View } from 'react-native';
+import { Animated, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StatusBar, TextInput, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {
   BottomSheetModal,
@@ -145,12 +145,20 @@ const LoginScreen = () => {
         backgroundColor={tailwind.color('bg-white')}
         barStyle={'dark-content'}
       />
-      <View style={tailwind.style('flex-1 bg-white justify-between px-5 py-6')}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={tailwind.style('flex-1')}
+        keyboardVerticalOffset={0}>
+        <ScrollView
+          contentContainerStyle={tailwind.style('flex-grow')}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}>
+          <View style={tailwind.style('flex-1 bg-white justify-between px-5 py-6')}>
         <View style={tailwind.style('flex-1 justify-center')}>
-          <View style={tailwind.style('items-center mb-6')}>
+          <View style={tailwind.style('items-center mb-4')}>
             <AlooLogo width={64} height={64} />
           </View>
-          <View style={tailwind.style('gap-1 mb-5 items-center')}>
+          <View style={tailwind.style('gap-1 mb-3 items-center')}>
             <Animated.Text style={tailwind.style('text-xl text-gray-950 font-inter-semibold-20 text-center')}>
               {i18n.t('LOGIN.TITLE')}
             </Animated.Text>
@@ -163,7 +171,7 @@ const LoginScreen = () => {
           </View>
 
           {showSsoLogin && (
-            <View style={tailwind.style('mb-5')}>
+            <View style={tailwind.style('mb-3')}>
               <AuthButton
                 text={i18n.t('LOGIN.LOGIN_VIA_SSO')}
                 icon={<LockIcon />}
@@ -172,7 +180,7 @@ const LoginScreen = () => {
                 variant="outline"
               />
 
-              <View style={tailwind.style('flex-row items-center my-5')}>
+              <View style={tailwind.style('flex-row items-center my-3')}>
                 <View style={tailwind.style('flex-1 h-px bg-gray-200')} />
                 <Animated.Text style={tailwind.style('px-3 text-xs text-gray-400 font-inter-medium-24')}>
                   OR
@@ -239,7 +247,7 @@ const LoginScreen = () => {
               },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <View style={tailwind.style('gap-2 mt-4')}>
+              <View style={tailwind.style('gap-2 mt-3')}>
                 <Animated.Text style={tailwind.style('font-inter-medium-24 text-sm text-gray-700')}>
                   {i18n.t('LOGIN.PASSWORD')}
                 </Animated.Text>
@@ -285,7 +293,7 @@ const LoginScreen = () => {
             name="password"
           />
 
-          <View style={tailwind.style('flex-row justify-end items-center mt-2 mb-5')}>
+          <View style={tailwind.style('flex-row justify-end items-center mt-1.5 mb-3')}>
             <Pressable onPress={openResetPassword}>
               <Animated.Text style={tailwind.style('text-blue-600 font-inter-medium-24 text-sm')}>
                 {i18n.t('LOGIN.FORGOT_PASSWORD')}
@@ -307,7 +315,9 @@ const LoginScreen = () => {
             </Animated.Text>
           </Pressable>
         </View>
-      </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <BottomSheetModal
         ref={languagesModalSheetRef}
         backdropComponent={BottomSheetBackdrop}

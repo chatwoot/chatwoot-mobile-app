@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useEffect } from 'react';
+import React, { useCallback, useRef, useEffect, useState } from 'react';
 import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
 import { getStateFromPath } from '@react-navigation/native';
 
@@ -40,6 +40,9 @@ if (!messaging) {
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
+// Keep the native splash screen visible until we manually hide it
+SplashScreen.preventAutoHideAsync();
+
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppTabs } from './tabs/AppTabs';
@@ -73,11 +76,30 @@ export const AppNavigationContainer = () => {
     'Inter-600-20': Inter60020,
   });
 
+  const [appIsReady, setAppIsReady] = useState(false);
+  const [splashMinTimeElapsed, setSplashMinTimeElapsed] = useState(false);
+
   const routeNameRef = useRef<string | undefined>(undefined);
   const dispatch = useAppDispatch();
 
   const installationUrl = useAppSelector(selectInstallationUrl);
   const locale = useAppSelector(selectLocale);
+
+  // Ensure splash screen shows for at least 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSplashMinTimeElapsed(true);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Mark app as ready when fonts are loaded
+  useEffect(() => {
+    if (fontsLoaded) {
+      setAppIsReady(true);
+    }
+  }, [fontsLoaded]);
 
   // Initialize notification service and set up listeners (expo-notifications)
   useEffect(() => {
@@ -287,14 +309,17 @@ export const AppNavigationContainer = () => {
   i18n.locale = locale;
 
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
+    if (appIsReady && splashMinTimeElapsed) {
       await SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [appIsReady, splashMinTimeElapsed]);
 
   const { colors, isDark } = useTheme();
 
-  if (!fontsLoaded) {
+  // Show custom splash screen until both conditions are met:
+  // 1. Fonts are loaded
+  // 2. Minimum 5 seconds have elapsed
+  if (!appIsReady || !splashMinTimeElapsed) {
     return <CustomSplashScreen />;
   }
 

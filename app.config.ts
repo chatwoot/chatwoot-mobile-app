@@ -7,15 +7,15 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     owner: 'aloochat',
     version: '4.3.13',
     orientation: 'portrait',
-    icon: './assets/icon.png',
+    icon: './assets/AppIcon.appiconset/1024.png',
     userInterfaceStyle: 'light',
     newArchEnabled: false,
     scheme: 'AlooChatapp',
     jsEngine: 'hermes',
     splash: {
-      image: './assets/Frame 1.png',
+      image: './assets/splash.png',
       resizeMode: 'contain',
-      backgroundColor: '#ffffff',
+      backgroundColor: '#000000',
     },
     notification: {
       icon: './assets/AlooChat Android App Icon.png',
@@ -24,6 +24,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ios: {
       supportsTablet: true,
       bundleIdentifier: 'com.aloochat.app',
+      icon: './assets/AppIcon.appiconset/1024.png',
       infoPlist: {
         NSCameraUsageDescription:
           'This app requires access to the camera to upload images and videos.',
@@ -45,7 +46,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     android: {
       package: 'com.aloochat.app',
-      icon: './assets/AppIcon.appiconset/1024.png',
+      adaptiveIcon: {
+        foregroundImage: './assets/AppIcon.appiconset/1024.png',
+        backgroundColor: '#ffffff',
+        monochromeImage: './assets/AppIcon.appiconset/1024.png',
+      },
       permissions: [
         'android.permission.CAMERA',
         'android.permission.RECORD_AUDIO',

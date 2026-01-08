@@ -88,11 +88,20 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   }, [createTimer, updateSlaStatus]);
 
   const handleBackPress = () => {
-    dispatch(resetSentMessage());
-    if (navigation.canGoBack()) {
-      navigation.dispatch(StackActions.pop());
-    } else {
-      navigation.dispatch(StackActions.replace('Tab'));
+    try {
+      // Clear any pending state before navigation
+      dispatch(resetSentMessage());
+      
+      // Use goBack instead of pop for better iOS gesture handling
+      if (navigation.canGoBack()) {
+        navigation.goBack();
+      } else {
+        navigation.dispatch(StackActions.replace('Tab'));
+      }
+    } catch (error) {
+      console.error('[ChatHeader] Back navigation error:', error);
+      // Fallback to tab navigation
+      navigation.navigate('Tab' as never);
     }
   };
 

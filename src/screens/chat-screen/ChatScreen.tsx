@@ -159,14 +159,28 @@ const ChatScreen = (props: ChatScreenProps) => {
       dispatch(notificationActions.markAsRead(payload));
     }
 
+    // Cleanup on unmount to prevent crashes
+    return () => {
+      try {
+        // Clear any pending operations
+        dispatch(resetSentMessage());
+      } catch (error) {
+        console.error('[ChatScreen] Cleanup error:', error);
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleBackPress = () => {
-    if (navigation.canGoBack()) {
-      navigation.dispatch(StackActions.pop());
-    } else {
-      navigation.dispatch(StackActions.replace('Tab'));
+    try {
+      if (navigation.canGoBack()) {
+        navigation.goBack();
+      } else {
+        navigation.dispatch(StackActions.replace('Tab'));
+      }
+    } catch (error) {
+      console.error('[ChatScreen] Back navigation error:', error);
+      navigation.navigate('Tab' as never);
     }
   };
 

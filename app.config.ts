@@ -5,7 +5,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     name: 'AlooChat',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'aloo-chat-app',
     owner: 'aloochat',
-    version: '4.3.12',
+    version: '4.3.13',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
@@ -13,7 +13,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     scheme: 'AlooChatapp',
     jsEngine: 'hermes',
     splash: {
-      image: './assets/AlooChat Android App Icon.png',
+      image: './assets/Frame 1.png',
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
     },
@@ -24,7 +24,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ios: {
       supportsTablet: true,
       bundleIdentifier: 'com.aloochat.app',
-      icon: './assets/AppIcon.appiconset',
       infoPlist: {
         NSCameraUsageDescription:
           'This app requires access to the camera to upload images and videos.',
@@ -36,7 +35,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         UIBackgroundModes: ['fetch', 'remote-notification'],
         ITSAppUsesNonExemptEncryption: false,
         // Performance optimizations
-        UIApplicationExitsOnSuspend: false,
         UIViewControllerBasedStatusBarAppearance: true,
       },
       // Please use the relative path to the google-services.json file
@@ -130,6 +128,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         },
       ],
       './withNotificationIcon.js',
+      './withIosAppIcon.js',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },
   };

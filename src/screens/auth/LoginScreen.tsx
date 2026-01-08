@@ -261,10 +261,16 @@ const LoginScreen = () => {
                       secureTextEntry={!showPassword}
                       textContentType="password"
                       autoCorrect={false}
+                      autoComplete="password"
+                      keyboardType="default"
+                      returnKeyType="done"
                     />
                     <Pressable
                       style={tailwind.style('absolute right-4 top-4')}
-                      onPress={() => setShowPassword(!showPassword)}>
+                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                      onPress={() => {
+                        setShowPassword(!showPassword);
+                      }}>
                       <Icon size={20} icon={showPassword ? <EyeIcon /> : <EyeSlash />} />
                     </Pressable>
                   </View>

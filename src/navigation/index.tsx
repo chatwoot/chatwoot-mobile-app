@@ -94,12 +94,17 @@ export const AppNavigationContainer = () => {
       console.log('[Navigation] Notification tapped:', response);
       try {
         const data = response.notification.request.content.data;
-        // Handle notification tap - navigate to conversation
-        if (data?.conversationId && installationUrl) {
-          const conversationLink = `${installationUrl}/app/accounts/1/conversations/${data.conversationId}`;
-          Linking.openURL(conversationLink).catch(err => {
-            console.error('[Navigation] Failed to open link:', err);
-          });
+        // Handle notification tap - navigate within app, not to website
+        if (data?.conversationId) {
+          const conversationId = parseInt(data.conversationId);
+          if (!isNaN(conversationId)) {
+            // Navigate directly to ChatScreen within the app
+            navigationRef.current?.navigate('ChatScreen' as never, {
+              conversationId,
+              primaryActorId: data?.primaryActorId,
+              primaryActorType: data?.primaryActorType,
+            } as never);
+          }
         }
       } catch (error) {
         console.error('[Navigation] Error handling notification tap:', error);

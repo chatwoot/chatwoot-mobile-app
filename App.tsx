@@ -4,7 +4,6 @@
 // This must be at the top of the app entry point for background notifications to work
 import './src/services/expoBackgroundHandler';
 
-import Constants from 'expo-constants';
 import App from './src/app';
 
 let Sentry: any = {
@@ -25,8 +24,6 @@ try {
 import './reanimatedConfig';
 // import './wdyr';
 
-const isStorybookEnabled = Constants.expoConfig?.extra?.eas?.storybookEnabled;
-
 if (!__DEV__) {
   Sentry.init({
     dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
@@ -39,13 +36,8 @@ if (__DEV__) {
   // eslint-disable-next-line
   require('./ReactotronConfig');
 }
-// Ref: https://dev.to/dannyhw/how-to-swap-between-react-native-storybook-and-your-app-p3o
-export default (() => {
-  if (isStorybookEnabled === 'true') {
-    // eslint-disable-next-line
-    return require('./.storybook').default;
-  }
 
+export default (() => {
   if (!__DEV__) {
     return Sentry.wrap(App);
   }

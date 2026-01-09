@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, StyleSheet, Image, Dimensions, Platform } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -113,10 +113,20 @@ const styles = StyleSheet.create({
     width: width,
     height: height,
     position: 'absolute',
+    // Android fix: use 'cover' to fill the screen properly
+    ...Platform.select({
+      android: {
+        resizeMode: 'cover',
+      },
+      ios: {
+        resizeMode: 'contain',
+      },
+    }),
   },
   loaderWrapper: {
     position: 'absolute',
-    bottom: height * 0.25, // Position below the Arabic text area
+    // Position below the Arabic text - adjust for different screen sizes
+    bottom: Platform.OS === 'android' ? height * 0.22 : height * 0.25,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -127,13 +137,15 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
     backgroundColor: NEON_GREEN,
     shadowColor: NEON_GREEN,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.8,
-    shadowRadius: 8,
+    shadowRadius: 10,
+    // Android elevation for shadow
+    elevation: 5,
   },
 });

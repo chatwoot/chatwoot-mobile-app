@@ -14,7 +14,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     jsEngine: 'hermes',
     splash: {
       image: './assets/splash.png',
-      resizeMode: 'contain',
+      resizeMode: 'cover',
       backgroundColor: '#000000',
     },
     notification: {

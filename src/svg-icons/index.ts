@@ -10,3 +10,5 @@ export * from './tabs';
 export * from './priority-icons';
 export * from './sla-icons';
 export * from './conversation-icons';
+export * from './AlooLogo';
+export * from './AlooLogoRounded';

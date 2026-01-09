@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { EMAIL_REGEX } from '@/constants';
 import { EyeIcon, EyeSlash, LockIcon } from '@/svg-icons';
 import { AlooLogo } from '@/svg-icons/AlooLogo';
+import { AlooLogoRounded } from '@/svg-icons/AlooLogoRounded';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { resetAuth } from '@/store/auth/authSlice';
@@ -156,7 +157,12 @@ const LoginScreen = () => {
           <View style={tailwind.style('flex-1 bg-white justify-between px-5 py-6')}>
         <View style={tailwind.style('flex-1 justify-center')}>
           <View style={tailwind.style('items-center mb-4')}>
-            <AlooLogo width={64} height={64} />
+            {/* Platform-specific logo: Android uses rounded, iOS uses square corners */}
+            {Platform.OS === 'android' ? (
+              <AlooLogoRounded width={64} height={64} />
+            ) : (
+              <AlooLogo width={64} height={64} />
+            )}
           </View>
           <View style={tailwind.style('gap-1 mb-3 items-center')}>
             <Animated.Text style={tailwind.style('text-xl text-gray-950 font-inter-semibold-20 text-center')}>

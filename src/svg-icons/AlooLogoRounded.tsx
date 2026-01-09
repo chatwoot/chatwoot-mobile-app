@@ -1,0 +1,44 @@
+import React from 'react';
+import Svg, { Path, Rect } from 'react-native-svg';
+
+interface AlooLogoRoundedProps {
+  width?: number;
+  height?: number;
+}
+
+// Rounded/Circular logo for Android - matches AlooChat Android App Icon
+export const AlooLogoRounded: React.FC<AlooLogoRoundedProps> = ({ width = 120, height = 120 }) => {
+  return (
+    <Svg width={width} height={height} viewBox="0 0 1024 1024" fill="none">
+      {/* Fully circular background (rx="512" makes it a perfect circle) */}
+      <Rect width="1024" height="1024" rx="512" fill="#2E4AFF" />
+      <Path
+        d="M679.804 397.804L344.062 397.382C282.254 397.304 232.085 447.346 232.007 509.155L231.796 677.026C231.718 738.834 281.76 789.003 343.569 789.081L679.311 789.503C741.119 789.581 791.288 739.539 791.366 677.73L791.577 509.859C791.655 448.051 741.612 397.882 679.804 397.804Z"
+        fill="white"
+        stroke="black"
+        strokeWidth="55.957"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M512.078 285.66C542.982 285.699 568.066 260.678 568.105 229.774C568.144 198.87 543.123 173.785 512.219 173.746C481.315 173.708 456.23 198.729 456.191 229.633C456.152 260.537 481.174 285.622 512.078 285.66Z"
+        fill="black"
+        stroke="black"
+        strokeWidth="55.957"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M512.079 285.62L511.938 397.534M427.721 621.256L427.791 565.299M595.662 565.511L595.592 621.468"
+        stroke="black"
+        strokeWidth="55.957"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M511.654 269.786C511.681 247.971 528.494 230.351 549.208 230.376L549.21 229.072C528.495 229.046 511.726 211.386 511.752 189.571C511.753 189.205 511.753 188.892 511.753 188.527L510.341 188.525C510.341 188.891 510.34 189.204 510.34 189.569C510.313 211.384 493.5 229.004 472.786 228.978L472.784 230.283C493.499 230.308 510.268 247.969 510.242 269.784C510.241 270.149 510.241 270.462 510.241 270.828L511.653 270.829C511.653 270.464 511.654 270.151 511.654 269.786Z"
+        fill="#E2FF28"
+      />
+    </Svg>
+  );
+};

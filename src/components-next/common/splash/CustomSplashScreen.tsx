@@ -10,7 +10,7 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 
-const { width, height } = Dimensions.get('window');
+const { width: screenWidth, height: screenHeight } = Dimensions.get('screen');
 
 // Brand colors
 const NEON_GREEN = '#DFFF00';
@@ -87,14 +87,14 @@ const SparkleLoader: React.FC = () => {
 export const CustomSplashScreen: React.FC = () => {
   return (
     <View style={styles.container}>
-      {/* Background splash image */}
+      {/* Background splash image - full screen high quality */}
       <Image
         source={require('@/assets/images/splash.png')}
         style={styles.image}
-        resizeMode="contain"
+        resizeMode={Platform.OS === 'android' ? 'cover' : 'contain'}
       />
 
-      {/* Simple sparkle loader positioned below the Arabic text */}
+      {/* Simple sparkle loader positioned below the Arabic text - centered */}
       <View style={styles.loaderWrapper}>
         <SparkleLoader />
       </View>
@@ -110,23 +110,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   image: {
-    width: width,
-    height: height,
+    width: screenWidth,
+    height: screenHeight,
     position: 'absolute',
-    // Android fix: use 'cover' to fill the screen properly
-    ...Platform.select({
-      android: {
-        resizeMode: 'cover',
-      },
-      ios: {
-        resizeMode: 'contain',
-      },
-    }),
+    top: 0,
+    left: 0,
   },
   loaderWrapper: {
     position: 'absolute',
-    // Position below the Arabic text - adjust for different screen sizes
-    bottom: Platform.OS === 'android' ? height * 0.22 : height * 0.25,
+    // Position below the Arabic text - centered horizontally
+    bottom: screenHeight * 0.28,
+    left: 0,
+    right: 0,
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -44,8 +44,10 @@ const HeaderTitle = () => {
   return (
     <Animated.View style={tailwind.style('flex-1')}>
       <Text
+        numberOfLines={1}
+        adjustsFontSizeToFit
         style={[
-          tailwind.style('text-[17px] font-inter-medium-24 tracking-[0.32px] leading-[17px] text-center'),
+          tailwind.style('text-[17px] font-inter-medium-24 tracking-[0.32px] leading-[22px] text-center'),
           { color: colors.text },
         ]}>
         {i18n.t('CONVERSATION.HEADER.TITLE')}

@@ -170,7 +170,7 @@ const Tabs = () => {
       {hasConversationPermission && (
         <Tab.Screen
           name="Conversations"
-          options={{ headerShown: false, tabBarLabel: 'Chats' }}
+          options={{ headerShown: false }}
           component={ConversationStack}
         />
       )}

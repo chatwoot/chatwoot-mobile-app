@@ -72,11 +72,11 @@ export const AppNavigationContainer = () => {
   const installationUrl = useAppSelector(selectInstallationUrl);
   const locale = useAppSelector(selectLocale);
 
-  // Ensure splash screen shows for at least 5 seconds
+  // Ensure splash screen shows for at least 1 second
   useEffect(() => {
     const timer = setTimeout(() => {
       setSplashMinTimeElapsed(true);
-    }, 5000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);

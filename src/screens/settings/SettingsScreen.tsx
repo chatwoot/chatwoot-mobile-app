@@ -28,12 +28,15 @@ import * as WebBrowser from 'expo-web-browser';
 import { useSelector } from 'react-redux';
 import * as Application from 'expo-application';
 
-let ChatWootWidget: any = () => <View><Text>ChatWootWidget not available</Text></View>;
-try {
-  ChatWootWidget = require('@chatwoot/react-native-widget').default;
-} catch (e) {
-  console.warn('@chatwoot/react-native-widget not available');
-}
+// ChatWoot widget - use WebBrowser for Expo Go compatibility
+const openChatWidget = async () => {
+  const baseUrl = process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL;
+  const token = process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN;
+  if (baseUrl && token) {
+    // Open chat widget in browser
+    await WebBrowser.openBrowserAsync(`${baseUrl}/widget?website_token=${token}`);
+  }
+};
 
 // Mock DeviceInfo for Expo Go compatibility
 const DeviceInfo = {
@@ -107,7 +110,7 @@ const SettingsScreen = () => {
 
   // const { bottom } = useSafeAreaInsets();
 
-  const [showWidget, toggleWidget] = useState(false);
+  // Widget state removed - using WebBrowser instead
   const user = useSelector(selectUser);
   const {
     name,
@@ -148,7 +151,7 @@ const SettingsScreen = () => {
 
   const isAlooChatCloud = useAppSelector(selectIsAlooChatCloud);
 
-  const AlooChatInstance = isAlooChatCloud ? `${appName} cloud` : `${appName} self-hosted`;
+  const AlooChatInstance = isAlooChatCloud ? `${appName}` : `${appName} self-hosted`;
 
   const accounts = useSelector(selectAccounts) || [];
 
@@ -291,7 +294,7 @@ const SettingsScreen = () => {
       icon: <AlooChatIcon />,
       subtitle: '',
       subtitleType: 'light',
-      onPressListItem: () => toggleWidget(true),
+      onPressListItem: openChatWidget,
     },
   ];
 
@@ -422,18 +425,6 @@ const SettingsScreen = () => {
           />
         </BottomSheetWrapper>
       </BottomSheetModal>
-      {!!process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN &&
-        !!process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL &&
-        !!showWidget && (
-          <ChatWootWidget
-            websiteToken={process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN}
-            locale="en"
-            baseUrl={process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL}
-            closeModal={() => toggleWidget(false)}
-            isModalVisible={showWidget}
-            user={userDetails}
-          />
-        )}
     </SafeAreaView>
   );
 };

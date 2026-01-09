@@ -7,23 +7,17 @@ import {
   BottomSheetModal,
   useBottomSheetSpringConfigs,
 } from '@gorhom/bottom-sheet';
-// import * as DropdownMenu from 'zeego/dropdown-menu';
 import { Text } from 'react-native';
 
-let DropdownMenu: any = {
+// zeego/dropdown-menu is not available in Expo Go - use mock
+const DropdownMenu: any = {
   create: (comp: any) => comp,
   Trigger: View,
   Item: View,
   ItemTitle: Text,
   Content: View,
-  Root: View,
+  Root: ({ children }: any) => <>{children}</>,
 };
-
-try {
-  DropdownMenu = require('zeego/dropdown-menu');
-} catch (e) {
-  console.warn('zeego/dropdown-menu not available');
-}
 
 import { BottomSheetHeader, BottomSheetWrapper } from '@/components-next';
 import { tailwind } from '@/theme';
@@ -121,80 +115,61 @@ export const ChatDropdownMenu = (props: PropsWithChildren<ChatDropdownMenuProps>
     [],
   );
 
-  if (Platform.OS === 'android') {
-    return (
-      <React.Fragment>
-        <Pressable onPress={openSheet} style={tailwind.style('ml-4')} hitSlop={8}>
-          {children}
-        </Pressable>
-        <BottomSheetModal
-          ref={contextMenuSheetRef}
-          backdropComponent={renderBackDrop}
-          handleIndicatorStyle={tailwind.style(
-            'overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]',
-          )}
-          handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-          style={tailwind.style('mx-3 rounded-[26px] overflow-hidden')}
-          detached
-          bottomInset={bottom === 0 ? 12 : bottom}
-          animationConfigs={animationConfigs}
-          enablePanDownToClose
-          snapPoints={[dropdownMenuList.length * 44 + 4 + 37]}>
-          <BottomSheetWrapper>
-            <BottomSheetHeader headerText="Select action" />
-            <Animated.View style={tailwind.style('py-1 pl-3')}>
-              {dropdownMenuList?.map((option, index) => {
-                const handleOnOptionSelect = () => {
-                  option.onSelect(option.url, option.title);
-
-                  setTimeout(() => {
-                    closeSheet();
-                  }, 100);
-                };
-                return (
-                  <Pressable
-                    key={option.title + index}
-                    style={tailwind.style('flex flex-row items-center')}
-                    onPress={handleOnOptionSelect}>
-                    <Animated.View
-                      style={tailwind.style(
-                        'flex-1 flex-row justify-between py-[11px] pr-3',
-                        index !== dropdownMenuList.length - 1
-                          ? 'border-b-[1px] border-blackA-A3'
-                          : '',
-                      )}>
-                      <Animated.Text
-                        style={tailwind.style(
-                          'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px] capitalize',
-                        )}>
-                        {option.title}
-                      </Animated.Text>
-                    </Animated.View>
-                  </Pressable>
-                );
-              })}
-            </Animated.View>
-          </BottomSheetWrapper>
-        </BottomSheetModal>
-      </React.Fragment>
-    );
-  }
-
+  // Use bottom sheet for both iOS and Android in Expo Go (zeego not available)
   return (
-    <DropdownMenu.Root>
-      <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
-      <DropdownMenu.Content>
-        {dropdownMenuList.map(menuOption => {
-          const handleOnOptionSelect = () => {
-            menuOption.onSelect(menuOption.url, menuOption.title);
-          };
-          return (
-            <DropdownMenuItem onSelect={handleOnOptionSelect} key={menuOption.title}>
-              {menuOption.title}
-            </DropdownMenuItem>
-          );
-        })}
-      </DropdownMenu.Content>
-    </DropdownMenu.Root>
+    <React.Fragment>
+      <Pressable onPress={openSheet} style={tailwind.style('ml-4')} hitSlop={8}>
+        {children}
+      </Pressable>
+      <BottomSheetModal
+        ref={contextMenuSheetRef}
+        backdropComponent={renderBackDrop}
+        handleIndicatorStyle={tailwind.style(
+          'overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]',
+        )}
+        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        style={tailwind.style('mx-3 rounded-[26px] overflow-hidden')}
+        detached
+        bottomInset={bottom === 0 ? 12 : bottom}
+        animationConfigs={animationConfigs}
+        enablePanDownToClose
+        snapPoints={[dropdownMenuList.length * 44 + 4 + 37]}>
+        <BottomSheetWrapper>
+          <BottomSheetHeader headerText="Select action" />
+          <Animated.View style={tailwind.style('py-1 pl-3')}>
+            {dropdownMenuList?.map((option, index) => {
+              const handleOnOptionSelect = () => {
+                option.onSelect(option.url, option.title);
+
+                setTimeout(() => {
+                  closeSheet();
+                }, 100);
+              };
+              return (
+                <Pressable
+                  key={option.title + index}
+                  style={tailwind.style('flex flex-row items-center')}
+                  onPress={handleOnOptionSelect}>
+                  <Animated.View
+                    style={tailwind.style(
+                      'flex-1 flex-row justify-between py-[11px] pr-3',
+                      index !== dropdownMenuList.length - 1
+                        ? 'border-b-[1px] border-blackA-A3'
+                        : '',
+                    )}>
+                    <Animated.Text
+                      style={tailwind.style(
+                        'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px] capitalize',
+                      )}>
+                      {option.title}
+                    </Animated.Text>
+                  </Animated.View>
+                </Pressable>
+              );
+            })}
+          </Animated.View>
+        </BottomSheetWrapper>
+      </BottomSheetModal>
+    </React.Fragment>
   );
 };

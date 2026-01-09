@@ -191,7 +191,7 @@ export const AppTabs = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Tab" component={Tabs} />
         <Stack.Screen
-          options={{ animation: 'slide_from_right' }}
+          options={{ animation: 'slide_from_right', gestureEnabled: true }}
           name="ChatScreen"
           component={ChatScreen}
         />

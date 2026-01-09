@@ -6,23 +6,11 @@ import Animated, {
   useDerivedValue,
   withSpring,
 } from 'react-native-reanimated';
-// import { BlurView, BlurViewProps } from '@react-native-community/blur';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useTheme } from '@/context/ThemeContext';
 
-let BlurViewComponent: any = null;
-let isBlurAvailable = false;
-try {
-  const blurModule = require('@react-native-community/blur');
-  if (blurModule && blurModule.BlurView) {
-    BlurViewComponent = blurModule.BlurView;
-    isBlurAvailable = true;
-  }
-} catch (e) {
-  console.warn('@react-native-community/blur not available');
-}
-
-// Mock BlurViewProps
+// BlurView is not available in Expo Go - use solid background fallback
+const isBlurAvailable = false;
 type BlurViewProps = any;
 
 import { RouteProp } from '@react-navigation/native';
@@ -42,10 +30,8 @@ import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';
 import { TabParamList } from './AppTabs';
 import { useAppSelector } from '@/hooks';
 
-// Only create AnimatedBlurView when blur is available
-const AnimatedBlurView: any = isBlurAvailable
-  ? Animated.createAnimatedComponent(BlurViewComponent)
-  : null;
+// BlurView not available in Expo Go
+const AnimatedBlurView: any = null;
 
 const tabExitSpringConfig = { damping: 20, stiffness: 360, mass: 1 };
 const tabEnterSpringConfig = { damping: 30, stiffness: 360, mass: 1 };

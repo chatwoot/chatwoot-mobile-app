@@ -2,34 +2,12 @@
 // This file is imported at the top of App.tsx BEFORE React renders
 import { Platform } from 'react-native';
 
-let messaging: any = null;
-let notifee: any = null;
-let AndroidImportance: any = null;
-let isMessagingAvailable = false;
-let isNotifeeAvailable = false;
-
-// Initialize Firebase messaging
-try {
-  const messagingModule = require('@react-native-firebase/messaging');
-  if (messagingModule && messagingModule.default) {
-    messaging = messagingModule.default;
-    isMessagingAvailable = true;
-    console.log('[BGHandler] Firebase messaging loaded');
-  }
-} catch (e) {
-  console.warn('[BGHandler] Firebase messaging not available:', e);
-}
-
-// Initialize notifee for displaying notifications
-try {
-  const notifeeModule = require('@notifee/react-native');
-  notifee = notifeeModule.default;
-  AndroidImportance = notifeeModule.AndroidImportance;
-  isNotifeeAvailable = true;
-  console.log('[BGHandler] Notifee loaded');
-} catch (e) {
-  console.warn('[BGHandler] Notifee not available:', e);
-}
+// Native modules not available in Expo Go - use mocks
+const messaging: any = null;
+const notifee: any = null;
+const AndroidImportance: any = null;
+const isMessagingAvailable = false;
+const isNotifeeAvailable = false;
 
 // Channel ID for messages - MUST match across all notification code
 const CHANNEL_ID = 'aloochat_messages';

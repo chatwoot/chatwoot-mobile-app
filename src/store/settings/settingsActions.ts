@@ -13,32 +13,8 @@ try {
 
 import { Platform, PermissionsAndroid } from 'react-native';
 
-// Lazy load Firebase to avoid module initialization errors in Expo Go
-let firebaseMessaging: any = null;
-let isFirebaseAvailable = true;
-
-const getFirebaseMessaging = () => {
-  if (!isFirebaseAvailable) {
-    return null;
-  }
-  
-  if (firebaseMessaging === null) {
-    try {
-      firebaseMessaging = require('@react-native-firebase/messaging').default;
-      // Check if the native module is actually available
-      if (!firebaseMessaging) {
-        isFirebaseAvailable = false;
-        firebaseMessaging = null;
-      }
-    } catch (error) {
-      console.warn('Firebase messaging module not available:', error);
-      isFirebaseAvailable = false;
-      firebaseMessaging = null;
-    }
-  }
-  
-  return firebaseMessaging;
-};
+// Firebase messaging is not available in Expo Go
+const getFirebaseMessaging = () => null;
 
 // Lazy load expo-notifications as fallback
 let Notifications: any = null;

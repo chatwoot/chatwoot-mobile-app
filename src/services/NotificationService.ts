@@ -2,37 +2,13 @@ import { Platform, PermissionsAndroid, Alert } from 'react-native';
 import { transformNotification } from '@/utils/camelCaseKeys';
 import { Notification } from '@/types/Notification';
 
-// Lazy load modules to avoid crashes when not available
-let notifee: any = null;
-let messaging: any = null;
-let EventType: any = null;
-let AndroidImportance: any = null;
-let isNotifeeAvailable = false;
-let isMessagingAvailable = false;
-
-// Initialize notifee
-try {
-  const notifeeModule = require('@notifee/react-native');
-  notifee = notifeeModule.default;
-  EventType = notifeeModule.EventType;
-  AndroidImportance = notifeeModule.AndroidImportance;
-  isNotifeeAvailable = true;
-  console.log('[NotificationService] ✅ Notifee loaded');
-} catch (e) {
-  console.warn('[NotificationService] ❌ Notifee not available:', e);
-}
-
-// Initialize Firebase messaging
-try {
-  const messagingModule = require('@react-native-firebase/messaging');
-  if (messagingModule && messagingModule.default) {
-    messaging = messagingModule.default;
-    isMessagingAvailable = true;
-    console.log('[NotificationService] ✅ Firebase messaging loaded');
-  }
-} catch (e) {
-  console.warn('[NotificationService] ❌ Firebase messaging not available:', e);
-}
+// Native modules not available in Expo Go - use mocks
+const notifee: any = null;
+const messaging: any = null;
+const EventType: any = null;
+const AndroidImportance: any = null;
+const isNotifeeAvailable = false;
+const isMessagingAvailable = false;
 
 // Channel IDs - MUST match firebase.json messaging_android_notification_channel_id
 export const CHANNEL_ID = {

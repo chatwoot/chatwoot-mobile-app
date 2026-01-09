@@ -10,19 +10,9 @@ import { Platform } from 'react-native';
 // Background notification task name
 const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
 
-// Lazy load Firebase messaging
-let messaging: any = null;
-
-const getMessaging = () => {
-  if (messaging) return messaging;
-  try {
-    messaging = require('@react-native-firebase/messaging').default;
-    return messaging;
-  } catch (error) {
-    console.warn('[ExpoBackgroundHandler] Firebase messaging not available');
-    return null;
-  }
-};
+// Firebase messaging is not available in Expo Go
+// This will only work in development builds with native modules
+const getMessaging = () => null;
 
 const CHANNEL_ID = {
   MESSAGES: 'aloochat_messages',

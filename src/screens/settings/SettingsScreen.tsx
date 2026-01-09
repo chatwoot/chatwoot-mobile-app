@@ -35,15 +35,10 @@ try {
   console.warn('@chatwoot/react-native-widget not available');
 }
 
-let DeviceInfo: any = null;
-try {
-  DeviceInfo = require('react-native-device-info');
-} catch (error) {
-  console.warn('react-native-device-info not available:', error);
-  DeviceInfo = {
-    getDeviceId: () => 'unknown',
-  };
-}
+// Mock DeviceInfo for Expo Go compatibility
+const DeviceInfo = {
+  getDeviceId: () => 'expo-go-device',
+};
 import { Account, AvailabilityStatus } from '@/types';
 import { clearAllConversations } from '@/store/conversation/conversationSlice';
 import { resetNotifications } from '@/store/notification/notificationSlice';

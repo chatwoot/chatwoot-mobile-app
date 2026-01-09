@@ -17,25 +17,12 @@ import { displayBackgroundNotification, parsePayload } from '@/services/expoBack
 
 // NOTE: Background handler is now registered in App.tsx (entry point) for proper background notification handling
 
-let messaging: any = null;
-
-try {
-  const messagingModule = require('@react-native-firebase/messaging');
-  if (messagingModule && messagingModule.default) {
-    messaging = messagingModule.default;
-  }
-} catch (e) {
-  console.warn('@react-native-firebase/messaging not available:', e);
-}
-
-// Provide mock if not available (for Expo Go compatibility)
-if (!messaging) {
-  messaging = () => ({
-    getInitialNotification: () => Promise.resolve(null),
-    onNotificationOpenedApp: () => () => {},
-    onMessage: () => () => {}, // Mock for foreground listener
-  });
-}
+// Firebase messaging is not available in Expo Go - use mock
+const messaging = () => ({
+  getInitialNotification: () => Promise.resolve(null),
+  onNotificationOpenedApp: () => () => {},
+  onMessage: () => () => {},
+});
 
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';

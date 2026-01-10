@@ -72,11 +72,11 @@ export const AppNavigationContainer = () => {
   const installationUrl = useAppSelector(selectInstallationUrl);
   const locale = useAppSelector(selectLocale);
 
-  // Ensure splash screen shows for exactly 3 seconds
+  // WhatsApp-like splash: Show for 1.5 seconds (fast, professional)
   useEffect(() => {
     const timer = setTimeout(() => {
       setSplashMinTimeElapsed(true);
-    }, 3000);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -305,15 +305,10 @@ export const AppNavigationContainer = () => {
 
   // Show custom splash screen until both conditions are met:
   // 1. Fonts are loaded
-  // 2. Minimum 3 seconds have elapsed
-  // Android: Show custom splash (white bg, rounded logo, blue sparkles)
-  // iOS: Uses default native splash screen
+  // 2. Minimum 1.5 seconds have elapsed (WhatsApp-like timing)
+  // Both Android and iOS use CustomSplashScreen for consistent branding
   if (!appIsReady || !splashMinTimeElapsed) {
-    if (Platform.OS === 'android') {
-      return <CustomSplashScreen />;
-    }
-    // iOS: Return null to show native splash until ready
-    return null;
+    return <CustomSplashScreen />;
   }
 
   return (

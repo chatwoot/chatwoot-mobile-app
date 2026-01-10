@@ -237,14 +237,15 @@ const MessageWrapper = ({
 };
 
 export const MessageComponent = (props: MessageComponentProps) => {
-  const dispatch = useAppDispatch();
-  const { conversationId } = useChatWindowContext();
-  const { item, currentUserId, isEmailInbox } = props;
-  
-  // Null safety: ensure item exists
-  if (!item) {
-    return <View />;
-  }
+  try {
+    const dispatch = useAppDispatch();
+    const { conversationId } = useChatWindowContext();
+    const { item, currentUserId, isEmailInbox } = props;
+    
+    // Null safety: ensure item exists
+    if (!item) {
+      return <View />;
+    }
   
   const {
     messageType,
@@ -446,7 +447,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
       } else {
         return <View />;
       }
-
       return (
         <MessageWrapper
           item={item}
@@ -462,10 +462,14 @@ export const MessageComponent = (props: MessageComponentProps) => {
         </MessageWrapper>
       );
     } catch (error) {
-      console.error('[MessageComponent] Render error:', error);
+      console.error('[MessageComponent] Render error for ID:', item?.id, error);
       return <View />;
     }
   };
 
   return renderMessageContent();
+  } catch (error) {
+    console.error('[MessageComponent] Fatal error:', error);
+    return <View />;
+  }
 };

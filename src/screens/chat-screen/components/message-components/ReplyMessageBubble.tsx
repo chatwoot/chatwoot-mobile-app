@@ -23,18 +23,27 @@ const variantBaseMap = {
 };
 
 export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
-  const replyMessageItem = props.replyMessage as Message;
-  const { colors, isDark } = useTheme();
+  try {
+    if (!props?.replyMessage) {
+      return <Animated.View style={{ height: 0 }} />;
+    }
 
-  const { messageListRef } = useRefsContext();
+    const replyMessageItem = props.replyMessage as Message;
+    const { colors, isDark } = useTheme();
 
-  const hasAttachments = useMemo(
-    () => replyMessageItem?.attachments?.length > 0,
-    [replyMessageItem?.attachments],
-  );
+    const { messageListRef } = useRefsContext();
 
-  const renderAttachmentSection = () => {
-    switch (replyMessageItem.attachments[0].fileType) {
+    const hasAttachments = useMemo(
+      () => replyMessageItem?.attachments?.length > 0,
+      [replyMessageItem?.attachments],
+    );
+
+    const renderAttachmentSection = () => {
+      try {
+        if (!replyMessageItem?.attachments || replyMessageItem.attachments.length === 0) {
+          return null;
+        }
+        switch (replyMessageItem.attachments[0]?.fileType) {
       case 'audio':
         return <Icon size={15} icon={<VoiceNote />} />;
       case 'video':
@@ -46,14 +55,22 @@ export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
       default:
         return null;
     }
+      } catch (error) {
+        console.error('[ReplyMessageBubble] renderAttachmentSection error:', error);
+        return null;
+      }
   };
 
   const handleScrollToMessage = useCallback(() => {
-    messageListRef.current?.scrollToItem({
-      item: replyMessageItem,
-      animated: true,
-      viewPosition: 0.5,
-    });
+    try {
+      messageListRef.current?.scrollToItem({
+        item: replyMessageItem,
+        animated: true,
+        viewPosition: 0.5,
+      });
+    } catch (error) {
+      console.error('[ReplyMessageBubble] scrollToItem error:', error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -78,7 +95,7 @@ export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
               ),
               { color: isDark ? colors.textSecondary : tailwind.color('text-blackA-A11') },
             ]}>
-            Replying to {replyMessageItem?.sender?.name}
+            Replying to {replyMessageItem?.sender?.name || 'Unknown'}
           </Animated.Text>
           {hasAttachments ? (
             <Animated.View style={tailwind.style('py-[3px] flex flex-row items-center')}>
@@ -90,7 +107,7 @@ export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
                   ),
                   { color: isDark ? colors.text : tailwind.color('text-gray-950') },
                 ]}>
-                {replyMessageItem?.attachments[0].fileType}
+                {replyMessageItem?.attachments?.[0]?.fileType || 'file'}
               </Animated.Text>
             </Animated.View>
           ) : null}
@@ -118,4 +135,8 @@ export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
       </Animated.View>
     </Pressable>
   );
+  } catch (error) {
+    console.error('[ReplyMessageBubble] Render error:', error);
+    return <Animated.View style={{ height: 0 }} />;
+  }
 };

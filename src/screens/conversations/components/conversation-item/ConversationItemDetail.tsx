@@ -92,13 +92,13 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
       style={[tailwind.style('flex-1 gap-1 py-3 border-b-[1px]'), { borderBottomColor: colors.divider }]}>
       <AnimatedNativeView
         style={tailwind.style('flex flex-row justify-between items-center h-[24px]')}>
-        <AnimatedNativeView style={tailwind.style('flex flex-row items-center h-[24px] gap-[5px]')}>
+        <AnimatedNativeView style={tailwind.style('flex-1 flex-row items-center h-[24px] gap-[5px] pr-2')}>
           <Text
             numberOfLines={1}
+            ellipsizeMode="tail"
             style={[
               tailwind.style(
-                'text-base font-inter-medium-24 tracking-[0.24px] capitalize flex-1',
-                `max-w-[${width - 160}px]`,
+                'text-base font-inter-medium-24 tracking-[0.24px] capitalize flex-shrink',
               ),
               { color: colors.text },
             ]}>
@@ -106,7 +106,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           </Text>
           <ConversationId id={conversationId} />
         </AnimatedNativeView>
-        <AnimatedNativeView style={tailwind.style('flex flex-row items-center gap-2')}>
+        <AnimatedNativeView style={tailwind.style('flex-shrink-0 flex-row items-center gap-1')}>
           {hasPriority ? <PriorityIndicator {...{ priority }} /> : null}
           {inbox && <ChannelIndicator inbox={inbox} additionalAttributes={additionalAttributes} />}
           <LastActivityTime timestamp={timestamp} />

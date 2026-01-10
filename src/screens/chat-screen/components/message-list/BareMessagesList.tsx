@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { FlatList, View, Text, StyleSheet } from 'react-native';
 import { Message } from '@/types';
 import { MESSAGE_TYPES } from '@/constants';
-import { useRefsContext } from '@/context';
 
 interface BareMessagesListProps {
   messages: (Message | { date: string })[];
@@ -25,7 +24,6 @@ export const BareMessagesList: React.FC<BareMessagesListProps> = ({
   onEndReached,
   currentUserId,
 }) => {
-  const { messageListRef } = useRefsContext();
 
   const renderItem = useCallback(({ item }: { item: Message | { date: string } }) => {
     try {
@@ -79,7 +77,7 @@ export const BareMessagesList: React.FC<BareMessagesListProps> = ({
   return (
     <View style={styles.container}>
       <FlatList
-        ref={messageListRef as any}
+        
         data={messages}
         renderItem={renderItem}
         keyExtractor={keyExtractor}

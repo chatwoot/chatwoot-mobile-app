@@ -23,6 +23,7 @@ import {
   ContactDetailsScreenHeader,
   ContactBasicActions,
   ContactMetaInformation,
+  ContactLabelActions,
 } from './components';
 import { AttributeList } from '@/components-next';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -32,6 +33,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { contactLabelActions } from '@/store/contact/contactLabelActions';
 import { getContactCustomAttributes } from '@/store/custom-attribute/customAttributeSlice';
 import { selectContactById } from '@/store/contact/contactSelectors';
+import { selectContactLabelsByContactId } from '@/store/contact/contactLabelSlice';
 import i18n from '@/i18n';
 
 type ContactDetailsScreenProps = NativeStackScreenProps<
@@ -157,6 +159,10 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
 
   const hasContactCustomAttributes = usedContactCustomAttributes.length > 0;
 
+  const contactLabels = useAppSelector(state =>
+    contactId ? selectContactLabelsByContactId(contactId)(state) : [],
+  );
+
   useEffect(() => {
     if (contactId) {
       dispatch(contactLabelActions.getContactLabels({ contactId }));
@@ -232,6 +238,11 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
             <ContactMetaInformation attributes={usedContactCustomAttributes} />
           </Animated.View>
         )}
+        {contactId ? (
+          <Animated.View style={tailwind.style('pt-10')}>
+            <ContactLabelActions labels={contactLabels} contactId={contactId} />
+          </Animated.View>
+        ) : null}
       </Animated.ScrollView>
     </View>
   );

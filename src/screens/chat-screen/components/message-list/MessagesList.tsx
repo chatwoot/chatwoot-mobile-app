@@ -83,7 +83,6 @@ export const MessagesList = ({
   isEmailInbox,
   currentUserId,
 }: MessagesListPresentationProps) => {
-  console.log('[MessagesList] Rendering with', messages?.length, 'messages');
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
   const typedMessageListRef = messageListRef as any;
@@ -133,15 +132,13 @@ export const MessagesList = ({
 
   // Handle empty state
   if (!messages || messages.length === 0) {
-    console.log('[MessagesList] Empty state - no messages');
     return (
-      <Animated.View style={tailwind.style('flex-1 items-center justify-center bg-red-100')}>
-        <Animated.Text style={tailwind.style('text-gray-900 text-lg')}>No messages yet</Animated.Text>
+      <Animated.View style={tailwind.style('flex-1 items-center justify-center')}>
+        <Animated.Text style={tailwind.style('text-gray-500')}>No messages yet</Animated.Text>
       </Animated.View>
     );
   }
 
-  console.log('[MessagesList] Rendering FlashList with', messages.length, 'items');
   return (
     <Animated.View
       layout={LinearTransition.springify().damping(38).stiffness(240)}

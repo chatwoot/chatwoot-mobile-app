@@ -97,13 +97,9 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       [
         'expo-splash-screen',
         {
-          backgroundColor: '#000000',
-          image: './assets/splash.png',
-          dark: {
-            backgroundColor: '#000000',
-            image: './assets/splash.png',
-          },
-          imageWidth: 300,
+          backgroundColor: '#FFFFFF',
+          image: './assets/AlooChat Android App Icon.png',
+          imageWidth: 200,
         },
       ],
       [

@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useEffect, useState } from 'react';
-import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Linking, Platform, StyleSheet, View } from 'react-native';
 import { getStateFromPath } from '@react-navigation/native';
 
 // Force mock KeyboardProvider for Expo Go compatibility
@@ -305,9 +305,15 @@ export const AppNavigationContainer = () => {
 
   // Show custom splash screen until both conditions are met:
   // 1. Fonts are loaded
-  // 2. Minimum 5 seconds have elapsed
+  // 2. Minimum 3 seconds have elapsed
+  // Android: Show custom splash (white bg, rounded logo, blue sparkles)
+  // iOS: Uses default native splash screen
   if (!appIsReady || !splashMinTimeElapsed) {
-    return <CustomSplashScreen />;
+    if (Platform.OS === 'android') {
+      return <CustomSplashScreen />;
+    }
+    // iOS: Return null to show native splash until ready
+    return null;
   }
 
   return (

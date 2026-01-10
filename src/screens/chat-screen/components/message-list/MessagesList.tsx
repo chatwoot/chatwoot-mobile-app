@@ -74,29 +74,35 @@ export const MessagesList = ({
   isEmailInbox,
   currentUserId,
 }: MessagesListPresentationProps) => {
+  console.log('[MessagesList] Rendering with', messages?.length, 'messages');
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
   const typedMessageListRef = messageListRef as any;
 
   const handleRender = ({ item, index }: { item: Message | { date: string }; index: number }) => {
-    if (!item) {
-      return <Animated.View style={{ height: 0 }} />;
-    }
-    
-    if ('date' in item) {
-      return <DateSection item={item} />;
-    }
+    try {
+      if (!item) {
+        return <Animated.View style={{ height: 1, width: 1 }} />;
+      }
+      
+      if ('date' in item) {
+        return <DateSection item={item} />;
+      }
 
-    return (
-      <MessageComponent
-        item={item}
-        index={index}
-        isEmailInbox={isEmailInbox}
-        currentUserId={currentUserId}
-      />
-    );
-    // TODO: Deprecate this after the new message item is ready
-    // return <MessageItemContainer item={item} index={index} />;
+      return (
+        <MessageComponent
+          item={item}
+          index={index}
+          isEmailInbox={isEmailInbox}
+          currentUserId={currentUserId}
+        />
+      );
+      // TODO: Deprecate this after the new message item is ready
+      // return <MessageItemContainer item={item} index={index} />;
+    } catch (error) {
+      console.error('[MessagesList] Render error:', error);
+      return <Animated.View style={{ height: 1, width: 1 }} />;
+    }
   };
 
   const animatedFlashlistStyle = useAnimatedStyle(() => {
@@ -116,10 +122,21 @@ export const MessagesList = ({
     },
   });
 
+  // Handle empty state
+  if (!messages || messages.length === 0) {
+    console.log('[MessagesList] Empty state - no messages');
+    return (
+      <Animated.View style={tailwind.style('flex-1 items-center justify-center bg-red-100')}>
+        <Animated.Text style={tailwind.style('text-gray-900 text-lg')}>No messages yet</Animated.Text>
+      </Animated.View>
+    );
+  }
+
+  console.log('[MessagesList] Rendering FlashList with', messages.length, 'items');
   return (
     <Animated.View
       layout={LinearTransition.springify().damping(38).stiffness(240)}
-      style={[tailwind.style('flex-1 min-h-10'), animatedFlashlistStyle]}>
+      style={[tailwind.style('flex-1 w-full'), animatedFlashlistStyle]}>
       <AnimatedFlashlist
         layout={LinearTransition.springify().damping(38).stiffness(240)}
         onScroll={scrollHandler}
@@ -134,18 +151,13 @@ export const MessagesList = ({
         contentContainerStyle={tailwind.style('px-3')}
         keyboardShouldPersistTaps="handled"
         keyExtractor={(item: { date: string } | Message, index: number) => {
-          try {
-            if (!item) {
-              return `empty-${index}`;
-            }
-            if ('date' in item) {
-              return `date-${item.date?.toString() || index}`;
-            }
-            return `msg-${item.id?.toString() || index}`;
-          } catch (error) {
-            console.error('[MessagesList] KeyExtractor error:', error);
-            return `error-${index}`;
+          if (!item) {
+            return `empty-${index}`;
           }
+          if ('date' in item) {
+            return `date-${item.date?.toString() || index}`;
+          }
+          return `msg-${item.id?.toString() || index}`;
         }}
         // Performance optimizations to prevent crashes
         removeClippedSubviews={true}

@@ -132,7 +132,7 @@ const OptimizedMessageItem: React.FC<OptimizedMessageItemProps> = memo(
       if (!sender || sender.type === SENDER_TYPES.AGENT_BOT) {
         return {
           name: 'Bot',
-          src: require('../../../../../assets/local/bot-avatar.png'),
+          src: null,
         };
       }
 

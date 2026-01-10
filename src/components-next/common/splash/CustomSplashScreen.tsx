@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Image, Dimensions, useWindowDimensions } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ImageBackground,
+  Platform,
+  StatusBar,
+} from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -10,91 +16,100 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 
-// Brand color - matches splash.png neon green
+// Brand colors matching splash design
 const NEON_GREEN = '#DFFF00';
+const WHITE = '#FFFFFF';
 
-// Simple AI Sparkle Loader - three dots fading sequentially
-const SimpleLoader: React.FC = () => {
+// ✨ Sparkle Loader Component - positioned below Arabic text
+const SparkleLoader: React.FC = () => {
   const dot1Opacity = useSharedValue(0.3);
   const dot2Opacity = useSharedValue(0.3);
   const dot3Opacity = useSharedValue(0.3);
+  const dot4Opacity = useSharedValue(0.3);
+  const dot5Opacity = useSharedValue(0.3);
 
   useEffect(() => {
-    dot1Opacity.value = withRepeat(
-      withSequence(
-        withTiming(1, { duration: 400, easing: Easing.inOut(Easing.ease) }),
-        withTiming(0.3, { duration: 400, easing: Easing.inOut(Easing.ease) })
-      ),
-      -1,
-      true
-    );
+    // Staggered animation for sparkle effect
+    const animateDot = (dotOpacity: { value: number }, delay: number) => {
+      dotOpacity.value = withDelay(
+        delay,
+        withRepeat(
+          withSequence(
+            withTiming(1, { duration: 350, easing: Easing.inOut(Easing.ease) }),
+            withTiming(0.3, { duration: 350, easing: Easing.inOut(Easing.ease) })
+          ),
+          -1,
+          true
+        )
+      );
+    };
 
-    dot2Opacity.value = withDelay(
-      150,
-      withRepeat(
-        withSequence(
-          withTiming(1, { duration: 400, easing: Easing.inOut(Easing.ease) }),
-          withTiming(0.3, { duration: 400, easing: Easing.inOut(Easing.ease) })
-        ),
-        -1,
-        true
-      )
-    );
-
-    dot3Opacity.value = withDelay(
-      300,
-      withRepeat(
-        withSequence(
-          withTiming(1, { duration: 400, easing: Easing.inOut(Easing.ease) }),
-          withTiming(0.3, { duration: 400, easing: Easing.inOut(Easing.ease) })
-        ),
-        -1,
-        true
-      )
-    );
+    animateDot(dot1Opacity, 0);
+    animateDot(dot2Opacity, 100);
+    animateDot(dot3Opacity, 200);
+    animateDot(dot4Opacity, 300);
+    animateDot(dot5Opacity, 400);
   }, []);
 
   const dot1Style = useAnimatedStyle(() => ({
     opacity: dot1Opacity.value,
-    transform: [{ scale: 0.8 + dot1Opacity.value * 0.3 }],
+    transform: [{ scale: 0.7 + dot1Opacity.value * 0.4 }],
   }));
 
   const dot2Style = useAnimatedStyle(() => ({
     opacity: dot2Opacity.value,
-    transform: [{ scale: 0.8 + dot2Opacity.value * 0.3 }],
+    transform: [{ scale: 0.7 + dot2Opacity.value * 0.4 }],
   }));
 
   const dot3Style = useAnimatedStyle(() => ({
     opacity: dot3Opacity.value,
-    transform: [{ scale: 0.8 + dot3Opacity.value * 0.3 }],
+    transform: [{ scale: 0.7 + dot3Opacity.value * 0.4 }],
+  }));
+
+  const dot4Style = useAnimatedStyle(() => ({
+    opacity: dot4Opacity.value,
+    transform: [{ scale: 0.7 + dot4Opacity.value * 0.4 }],
+  }));
+
+  const dot5Style = useAnimatedStyle(() => ({
+    opacity: dot5Opacity.value,
+    transform: [{ scale: 0.7 + dot5Opacity.value * 0.4 }],
   }));
 
   return (
-    <View style={styles.loaderContainer}>
-      <Animated.View style={[styles.dot, dot1Style]} />
-      <Animated.View style={[styles.dot, dot2Style]} />
-      <Animated.View style={[styles.dot, dot3Style]} />
+    <View style={styles.sparkleContainer}>
+      <Animated.View style={[styles.sparkleDot, styles.dotSmall, dot1Style]} />
+      <Animated.View style={[styles.sparkleDot, styles.dotMedium, dot2Style]} />
+      <Animated.View style={[styles.sparkleDot, styles.dotLarge, dot3Style]} />
+      <Animated.View style={[styles.sparkleDot, styles.dotMedium, dot4Style]} />
+      <Animated.View style={[styles.sparkleDot, styles.dotSmall, dot5Style]} />
     </View>
   );
 };
 
 export const CustomSplashScreen: React.FC = () => {
-  // Use hook for responsive dimensions
-  const { width, height } = useWindowDimensions();
+  // Use Android-specific splash image
+  const splashImage = Platform.select({
+    android: require('@/assets/images/splash-android.png'),
+    ios: require('@/assets/images/splash.png'),
+    default: require('@/assets/images/splash-android.png'),
+  });
 
   return (
     <View style={styles.container}>
-      {/* splash.png displayed as-is - full screen responsive */}
-      <Image
-        source={require('@/assets/images/splash.png')}
-        style={[styles.splashImage, { width, height }]}
-        resizeMode="cover"
-      />
+      <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
       
-      {/* Simple loader at bottom center - below Arabic text */}
-      <View style={[styles.loaderWrapper, { bottom: height * 0.05 }]}>
-        <SimpleLoader />
-      </View>
+      {/* Full screen splash image - ImageBackground for proper scaling */}
+      <ImageBackground
+        source={splashImage}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+      >
+        {/* Sparkle loader positioned at bottom center, below Arabic text */}
+        <View style={styles.loaderPositioner}>
+          <SparkleLoader />
+        </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -102,35 +117,48 @@ export const CustomSplashScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: '#0A0A0A',
   },
-  splashImage: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
   },
-  loaderWrapper: {
+  loaderPositioner: {
     position: 'absolute',
+    bottom: '6%',
     left: 0,
     right: 0,
     alignItems: 'center',
-    justifyContent: 'center',
   },
-  loaderContainer: {
+  sparkleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 10,
+    gap: 8,
+    paddingVertical: 10,
   },
-  dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+  sparkleDot: {
     backgroundColor: NEON_GREEN,
     shadowColor: NEON_GREEN,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
-    shadowRadius: 8,
-    elevation: 8,
+    shadowRadius: 10,
+    elevation: 10,
+  },
+  dotSmall: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+  },
+  dotMedium: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  dotLarge: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
   },
 });

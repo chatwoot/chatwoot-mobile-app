@@ -445,9 +445,6 @@ const BottomSheetContent = () => {
             {(messageContent.length > 0 || attachmentsLength > 0) && (
               <SendMessageButton onPress={() => confirmOnSendReply(null)} />
             )}
-            {messageContent.length === 0 && attachmentsLength === 0 && shouldShowFileUpload ? (
-              <VoiceRecordButton onPress={onPressVoiceRecordIcon} />
-            ) : null}
           </Animated.View>
         ) : null}
       </Animated.View>

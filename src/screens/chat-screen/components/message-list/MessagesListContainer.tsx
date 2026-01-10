@@ -21,6 +21,8 @@ import { selectAttachments } from '@/store/conversation/sendMessageSlice';
 import { Animated } from 'react-native';
 import { getGroupedMessages, isAnEmailChannel } from '@/utils';
 import { MessagesList } from './MessagesList';
+import { OptimizedMessagesList } from './OptimizedMessagesList';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import tailwind from 'twrnc';
 import { conversationParticipantActions } from '@/store/conversation-participant/conversationParticipantActions';
 import { MESSAGE_TYPES, SCREENS } from '@/constants';
@@ -178,14 +180,16 @@ export const MessagesListContainer = () => {
     <PlatformSpecificKeyboardWrapperComponent
       style={[tailwind.style('flex-1'), { backgroundColor: colors.background }]}
       interpolator="linear">
-      <MessagesList
-        messages={messagesWithGrouping}
-        isFlashListReady={isFlashListReady}
-        setFlashListReady={setFlashListReady}
-        onEndReached={onEndReached}
-        isEmailInbox={isEmailInbox}
-        currentUserId={userId as number}
-      />
+      <ErrorBoundary>
+        <OptimizedMessagesList
+          messages={messagesWithGrouping}
+          isFlashListReady={isFlashListReady}
+          setFlashListReady={setFlashListReady}
+          onEndReached={onEndReached}
+          isEmailInbox={isEmailInbox}
+          currentUserId={userId as number}
+        />
+      </ErrorBoundary>
     </PlatformSpecificKeyboardWrapperComponent>
   );
 };

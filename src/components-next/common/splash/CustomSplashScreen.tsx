@@ -88,12 +88,8 @@ const SparkleLoader: React.FC = () => {
 };
 
 export const CustomSplashScreen: React.FC = () => {
-  // Use Android-specific splash image
-  const splashImage = Platform.select({
-    android: require('@/assets/images/splash-android.png'),
-    ios: require('@/assets/images/splash.png'),
-    default: require('@/assets/images/splash-android.png'),
-  });
+  // Use the same splash image for both platforms - responsive via ImageBackground
+  const splashImage = require('../../../../assets/splash.png');
 
   return (
     <View style={styles.container}>

@@ -1,14 +1,28 @@
 import React from 'react';
-import { View, StyleSheet, Image, StatusBar } from 'react-native';
+import { View, StyleSheet, Image, ImageBackground, StatusBar, Platform } from 'react-native';
 
 const WHITE = '#FFFFFF';
 
 export const CustomSplashScreen: React.FC = () => {
+  // iOS: Full splash.png image (client requirement)
+  // Android: Rounded logo on white background
+  if (Platform.OS === 'ios') {
+    return (
+      <View style={styles.iosContainer}>
+        <StatusBar barStyle="light-content" />
+        <ImageBackground
+          source={require('../../../../assets/splash.png')}
+          style={styles.iosBackground}
+          resizeMode="cover"
+        />
+      </View>
+    );
+  }
+
+  // Android: Rounded logo on white background
   return (
-    <View style={styles.container}>
+    <View style={styles.androidContainer}>
       <StatusBar backgroundColor={WHITE} barStyle="dark-content" />
-      
-      {/* Rounded Logo - WhatsApp style, clean and simple */}
       <View style={styles.logoContainer}>
         <Image
           source={require('../../../../assets/AlooChat Android App Icon.png')}
@@ -21,7 +35,18 @@ export const CustomSplashScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  // iOS - Full screen splash image
+  iosContainer: {
+    flex: 1,
+    backgroundColor: '#000000',
+  },
+  iosBackground: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  // Android - White background with rounded logo
+  androidContainer: {
     flex: 1,
     backgroundColor: WHITE,
     alignItems: 'center',

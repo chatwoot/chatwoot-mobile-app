@@ -35,26 +35,35 @@ const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList as any);
 type DateSectionProps = { item: { date: string } };
 
 const DateSection = ({ item }: DateSectionProps) => {
-  const { colors, isDark } = useTheme();
-  return (
-    <Animated.View style={tailwind.style('flex flex-row justify-center items-center py-4')}>
-      <Animated.View
-        style={[
-          tailwind.style('rounded-lg py-1 px-[7px] bg-blackA-A3'),
-          isDark && { backgroundColor: colors.backgroundSecondary },
-        ]}>
-        <Animated.Text
+  try {
+    if (!item?.date) {
+      return <Animated.View style={{ height: 0 }} />;
+    }
+    
+    const { colors, isDark } = useTheme();
+    return (
+      <Animated.View style={tailwind.style('flex flex-row justify-center items-center py-4')}>
+        <Animated.View
           style={[
-            tailwind.style(
-              'text-cxs font-inter-420-20 tracking-[0.32px] text-blackA-A11 leading-[15px]',
-            ),
-            isDark && { color: colors.textSecondary },
+            tailwind.style('rounded-lg py-1 px-[7px] bg-blackA-A3'),
+            isDark && { backgroundColor: colors.backgroundSecondary },
           ]}>
-          {item.date}
-        </Animated.Text>
+          <Animated.Text
+            style={[
+              tailwind.style(
+                'text-cxs font-inter-420-20 tracking-[0.32px] text-blackA-A11 leading-[15px]',
+              ),
+              isDark && { color: colors.textSecondary },
+            ]}>
+            {item.date}
+          </Animated.Text>
+        </Animated.View>
       </Animated.View>
-    </Animated.View>
-  );
+    );
+  } catch (error) {
+    console.error('[DateSection] Render error:', error);
+    return <Animated.View style={{ height: 0 }} />;
+  }
 };
 
 type MessagesListPresentationProps = {

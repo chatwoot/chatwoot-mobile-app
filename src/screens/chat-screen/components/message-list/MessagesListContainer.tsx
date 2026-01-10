@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/hooks';
 import { useChatWindowContext } from '@/context';
 import { AppState, Platform, View } from 'react-native';
+// View already imported
 import { useTheme } from '@/context/ThemeContext';
 // import { KeyboardGestureArea } from 'react-native-keyboard-controller';
 
@@ -22,6 +23,7 @@ import { Animated } from 'react-native';
 import { getGroupedMessages, isAnEmailChannel } from '@/utils';
 import { MessagesList } from './MessagesList';
 import { OptimizedMessagesList } from './OptimizedMessagesList';
+import { BareMessagesList } from './BareMessagesList';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import tailwind from 'twrnc';
 import { conversationParticipantActions } from '@/store/conversation-participant/conversationParticipantActions';
@@ -176,20 +178,14 @@ export const MessagesListContainer = () => {
   const isEmailInbox = isAnEmailChannel(inbox);
   const userId = useAppSelector(selectUserId);
 
+  // Using BARE FlatList - no animations, no FlashList - to isolate crash
   return (
-    <PlatformSpecificKeyboardWrapperComponent
-      style={[tailwind.style('flex-1'), { backgroundColor: colors.background }]}
-      interpolator="linear">
-      <ErrorBoundary>
-        <OptimizedMessagesList
-          messages={messagesWithGrouping}
-          isFlashListReady={isFlashListReady}
-          setFlashListReady={setFlashListReady}
-          onEndReached={onEndReached}
-          isEmailInbox={isEmailInbox}
-          currentUserId={userId as number}
-        />
-      </ErrorBoundary>
-    </PlatformSpecificKeyboardWrapperComponent>
+    <View style={[tailwind.style('flex-1'), { backgroundColor: colors.background }]}>
+      <BareMessagesList
+        messages={messagesWithGrouping}
+        onEndReached={onEndReached}
+        currentUserId={userId as number}
+      />
+    </View>
   );
 };

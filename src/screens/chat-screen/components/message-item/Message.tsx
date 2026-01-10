@@ -114,13 +114,18 @@ const MessageWrapper = ({
   variant,
   channel,
 }: MessageWrapperProps) => {
-  const { colors, isDark } = useTheme();
+  try {
+    if (!item || !children) {
+      return <Animated.View style={{ height: 0 }} />;
+    }
 
-  const isAgentOrBot =
-    variant === MESSAGE_VARIANTS.AGENT ||
-    variant === MESSAGE_VARIANTS.BOT ||
-    variant === MESSAGE_VARIANTS.TEMPLATE ||
-    variant === MESSAGE_VARIANTS.EMAIL;
+    const { colors, isDark } = useTheme();
+
+    const isAgentOrBot =
+      variant === MESSAGE_VARIANTS.AGENT ||
+      variant === MESSAGE_VARIANTS.BOT ||
+      variant === MESSAGE_VARIANTS.TEMPLATE ||
+      variant === MESSAGE_VARIANTS.EMAIL;
 
   const flexOrientationClass = () => {
     const map = {
@@ -135,96 +140,100 @@ const MessageWrapper = ({
   // 52 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (4)
   const EMAIL_WIDTH = windowWidth - 52;
 
-  return (
-    <Animated.View
-      entering={FadeIn.duration(350)}
-      style={[
-        tailwind.style(
-          'my-[1px]',
-          flexOrientationClass(),
-          shouldGroupWithPrevious && orientation === ORIENTATION.LEFT ? 'ml-7' : '',
-          shouldGroupWithPrevious && orientation === ORIENTATION.RIGHT ? 'mr-0' : '',
-          !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
-          item.private ? 'my-1' : '',
-        ),
-      ]}>
-      <Animated.View style={tailwind.style(
-        'flex flex-row w-full',
-        orientation === ORIENTATION.RIGHT ? 'justify-end' : 'justify-start'
-      )}>
-        {!shouldGroupWithPrevious && shouldShowAvatar ? (
-          <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-            <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
-          </Animated.View>
-        ) : null}
-        <MessageMenu menuOptions={getMenuOptions(item)}>
-          <Animated.View
-            style={[
-              tailwind.style(
-                'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
-                `${variant === MESSAGE_VARIANTS.EMAIL ? `max-w-[${EMAIL_WIDTH}px]` : `max-w-[${TEXT_MAX_WIDTH}px]`}`,
-                variantBaseMap[variant],
-                variantBorderMap[variant],
-                shouldGroupWithNext && shouldGroupWithPrevious
-                  ? orientation === ORIENTATION.LEFT
-                    ? 'rounded-l-none'
-                    : 'rounded-r-none'
-                  : '',
-                shouldGroupWithNext && !shouldGroupWithPrevious
-                  ? orientation === ORIENTATION.LEFT
-                    ? 'rounded-tl-none'
-                    : 'rounded-tr-none'
-                  : '',
-                !shouldGroupWithNext && shouldGroupWithPrevious
-                  ? orientation === ORIENTATION.LEFT
-                    ? 'rounded-bl-none'
-                    : 'rounded-br-none'
-                  : '',
-              ),
-              isDark && isAgentOrBot
-                ? {
-                    backgroundColor: colors.card,
-                    borderColor: colors.border,
-                  }
-                : {},
-            ]}>
-            {children}
-            {!shouldGroupWithPrevious && (
-              <Animated.View
-                style={tailwind.style(
-                  'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',
-                )}>
-                <Animated.Text
-                  style={[
-                    tailwind.style(
-                      'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
-                      variantTextMap[variant],
-                    ),
-                    isDark && isAgentOrBot
-                      ? {
-                          color: colors.textSecondary,
-                        }
-                      : {},
-                  ]}>
-                  {unixTimestampToReadableTime(item.createdAt)}
-                </Animated.Text>
-                <DeliveryStatus
-                  isPrivate={item.private}
-                  status={item.status}
-                  messageType={item.messageType}
-                  channel={channel}
-                  sourceId={item.sourceId}
-                  errorMessage={item.contentAttributes?.externalError || ''}
-                  deliveredColor="text-gray-700"
-                  sentColor="text-gray-700"
-                />
-              </Animated.View>
-            )}
-          </Animated.View>
-        </MessageMenu>
+    return (
+      <Animated.View
+        entering={FadeIn.duration(350)}
+        style={[
+          tailwind.style(
+            'my-[1px]',
+            flexOrientationClass(),
+            shouldGroupWithPrevious && orientation === ORIENTATION.LEFT ? 'ml-7' : '',
+            shouldGroupWithPrevious && orientation === ORIENTATION.RIGHT ? 'mr-0' : '',
+            !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
+            item.private ? 'my-1' : '',
+          ),
+        ]}>
+        <Animated.View style={tailwind.style(
+          'flex flex-row w-full',
+          orientation === ORIENTATION.RIGHT ? 'justify-end' : 'justify-start'
+        )}>
+          {!shouldGroupWithPrevious && shouldShowAvatar && avatarInfo ? (
+            <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
+              <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
+            </Animated.View>
+          ) : null}
+          <MessageMenu menuOptions={getMenuOptions(item)}>
+            <Animated.View
+              style={[
+                tailwind.style(
+                  'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
+                  `${variant === MESSAGE_VARIANTS.EMAIL ? `max-w-[${EMAIL_WIDTH}px]` : `max-w-[${TEXT_MAX_WIDTH}px]`}`,
+                  variantBaseMap[variant],
+                  variantBorderMap[variant],
+                  shouldGroupWithNext && shouldGroupWithPrevious
+                    ? orientation === ORIENTATION.LEFT
+                      ? 'rounded-l-none'
+                      : 'rounded-r-none'
+                    : '',
+                  shouldGroupWithNext && !shouldGroupWithPrevious
+                    ? orientation === ORIENTATION.LEFT
+                      ? 'rounded-tl-none'
+                      : 'rounded-tr-none'
+                    : '',
+                  !shouldGroupWithNext && shouldGroupWithPrevious
+                    ? orientation === ORIENTATION.LEFT
+                      ? 'rounded-bl-none'
+                      : 'rounded-br-none'
+                    : '',
+                ),
+                isDark && isAgentOrBot
+                  ? {
+                      backgroundColor: colors.card,
+                      borderColor: colors.border,
+                    }
+                  : {},
+              ]}>
+              {children}
+              {!shouldGroupWithPrevious && item.createdAt && (
+                <Animated.View
+                  style={tailwind.style(
+                    'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',
+                  )}>
+                  <Animated.Text
+                    style={[
+                      tailwind.style(
+                        'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
+                        variantTextMap[variant],
+                      ),
+                      isDark && isAgentOrBot
+                        ? {
+                            color: colors.textSecondary,
+                          }
+                        : {},
+                    ]}>
+                    {unixTimestampToReadableTime(item.createdAt)}
+                  </Animated.Text>
+                  <DeliveryStatus
+                    isPrivate={item.private}
+                    status={item.status}
+                    messageType={item.messageType}
+                    channel={channel}
+                    sourceId={item.sourceId}
+                    errorMessage={item.contentAttributes?.externalError || ''}
+                    deliveredColor="text-gray-700"
+                    sentColor="text-gray-700"
+                  />
+                </Animated.View>
+              )}
+            </Animated.View>
+          </MessageMenu>
+        </Animated.View>
       </Animated.View>
-    </Animated.View>
-  );
+    );
+  } catch (error) {
+    console.error('[MessageWrapper] Render error:', error);
+    return <Animated.View style={{ height: 0 }} />;
+  }
 };
 
 export const MessageComponent = (props: MessageComponentProps) => {

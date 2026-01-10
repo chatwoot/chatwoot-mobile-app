@@ -231,6 +231,12 @@ export const MessageComponent = (props: MessageComponentProps) => {
   const dispatch = useAppDispatch();
   const { conversationId } = useChatWindowContext();
   const { item, currentUserId, isEmailInbox } = props;
+  
+  // Null safety: ensure item exists
+  if (!item) {
+    return <View />;
+  }
+  
   const {
     messageType,
     contentType,
@@ -334,16 +340,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
     const senderIdentifier = senderId ?? sender?.id;
     const senderTypeValue = senderType ?? sender?.type;
 
-    // Debug logging to see actual values
-    console.log('=== MESSAGE DEBUG ===');
-    console.log('messageType:', messageType);
-    console.log('currentUserId:', currentUserId);
-    console.log('senderIdentifier:', senderIdentifier);
-    console.log('senderTypeValue:', senderTypeValue);
-    console.log('SENDER_TYPES.USER:', SENDER_TYPES.USER);
-    console.log('sender object:', sender);
-    console.log('===================');
-
     if (!senderTypeValue || !senderIdentifier) {
       return false;
     }
@@ -413,48 +409,53 @@ export const MessageComponent = (props: MessageComponentProps) => {
   // };
 
   const renderMessageContent = () => {
-    if (messageType === MESSAGE_TYPES.ACTIVITY) {
-      return <ActivityBubble text={item.content} timeStamp={item.createdAt} />;
-    }
+    try {
+      if (messageType === MESSAGE_TYPES.ACTIVITY) {
+        return <ActivityBubble text={item.content} timeStamp={item.createdAt} />;
+      }
 
-    const attachments = item.attachments;
-    const isReplyMessage = item.contentAttributes?.inReplyTo;
-    const isUnsupported = item.contentAttributes?.isUnsupported;
-    let messageContent;
+      const attachments = item.attachments;
+      const isReplyMessage = item.contentAttributes?.inReplyTo;
+      const isUnsupported = item.contentAttributes?.isUnsupported;
+      let messageContent;
 
-    if (isUnsupported) {
-      messageContent = <UnsupportedBubble />;
-    } else if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
-      messageContent = <EmailBubble item={item} variant={variant()} />;
-    } else if (isEmailInbox && !item.private) {
-      messageContent = <EmailBubble item={item} variant={variant()} />;
-    }
-    // TODO: Add this once we have a proper way to render single attachments
-    // else if (attachments?.length === 1 && !item.content && !isReplyMessage) {
-    //   messageContent = renderSingleAttachment(attachments[0]);
-    // }
-    else if (attachments?.length >= 1 || isReplyMessage) {
-      messageContent = <ComposedBubble item={item} variant={variant()} />;
-    } else if (item.content) {
-      messageContent = <TextBubble item={item} variant={variant()} />;
-    } else {
+      if (isUnsupported) {
+        messageContent = <UnsupportedBubble />;
+      } else if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
+        messageContent = <EmailBubble item={item} variant={variant()} />;
+      } else if (isEmailInbox && !item.private) {
+        messageContent = <EmailBubble item={item} variant={variant()} />;
+      }
+      // TODO: Add this once we have a proper way to render single attachments
+      // else if (attachments?.length === 1 && !item.content && !isReplyMessage) {
+      //   messageContent = renderSingleAttachment(attachments[0]);
+      // }
+      else if (attachments?.length >= 1 || isReplyMessage) {
+        messageContent = <ComposedBubble item={item} variant={variant()} />;
+      } else if (item.content) {
+        messageContent = <TextBubble item={item} variant={variant()} />;
+      } else {
+        return <View />;
+      }
+
+      return (
+        <MessageWrapper
+          item={item}
+          orientation={orientation()}
+          shouldGroupWithPrevious={shouldGroupWithPrevious()}
+          shouldGroupWithNext={shouldGroupWithNext()}
+          shouldShowAvatar={shouldShowAvatar()}
+          avatarInfo={avatarInfo()}
+          getMenuOptions={getMenuOptions}
+          variant={variant()}
+          channel={channel}>
+          {messageContent}
+        </MessageWrapper>
+      );
+    } catch (error) {
+      console.error('[MessageComponent] Render error:', error);
       return <View />;
     }
-
-    return (
-      <MessageWrapper
-        item={item}
-        orientation={orientation()}
-        shouldGroupWithPrevious={shouldGroupWithPrevious()}
-        shouldGroupWithNext={shouldGroupWithNext()}
-        shouldShowAvatar={shouldShowAvatar()}
-        avatarInfo={avatarInfo()}
-        getMenuOptions={getMenuOptions}
-        variant={variant()}
-        channel={channel}>
-        {messageContent}
-      </MessageWrapper>
-    );
   };
 
   return renderMessageContent();

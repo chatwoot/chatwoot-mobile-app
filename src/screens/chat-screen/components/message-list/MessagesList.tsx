@@ -79,20 +79,29 @@ export const MessagesList = ({
   const typedMessageListRef = messageListRef as any;
 
   const handleRender = ({ item, index }: { item: Message | { date: string }; index: number }) => {
-    if ('date' in item) {
-      return <DateSection item={item} />;
-    }
+    try {
+      if (!item) {
+        return null;
+      }
+      
+      if ('date' in item) {
+        return <DateSection item={item} />;
+      }
 
-    return (
-      <MessageComponent
-        item={item}
-        index={index}
-        isEmailInbox={isEmailInbox}
-        currentUserId={currentUserId}
-      />
-    );
-    // TODO: Deprecate this after the new message item is ready
-    // return <MessageItemContainer item={item} index={index} />;
+      return (
+        <MessageComponent
+          item={item}
+          index={index}
+          isEmailInbox={isEmailInbox}
+          currentUserId={currentUserId}
+        />
+      );
+      // TODO: Deprecate this after the new message item is ready
+      // return <MessageItemContainer item={item} index={index} />;
+    } catch (error) {
+      console.error('[MessagesList] Render error for item:', error);
+      return null;
+    }
   };
 
   const animatedFlashlistStyle = useAnimatedStyle(() => {
@@ -129,11 +138,19 @@ export const MessagesList = ({
         data={messages}
         contentContainerStyle={tailwind.style('px-3')}
         keyboardShouldPersistTaps="handled"
-        keyExtractor={(item: { date: string } | Message) => {
-          if ('date' in item) {
-            return item.date.toString();
+        keyExtractor={(item: { date: string } | Message, index: number) => {
+          try {
+            if (!item) {
+              return `empty-${index}`;
+            }
+            if ('date' in item) {
+              return `date-${item.date?.toString() || index}`;
+            }
+            return `msg-${item.id?.toString() || index}`;
+          } catch (error) {
+            console.error('[MessagesList] KeyExtractor error:', error);
+            return `error-${index}`;
           }
-          return item.id.toString();
         }}
         // Performance optimizations to prevent crashes
         removeClippedSubviews={true}

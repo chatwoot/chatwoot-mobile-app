@@ -160,11 +160,12 @@ export const MessagesList = ({
           return `msg-${item.id?.toString() || index}`;
         }}
         // Performance optimizations to prevent crashes
-        removeClippedSubviews={true}
-        maxToRenderPerBatch={10}
-        updateCellsBatchingPeriod={50}
-        windowSize={21}
-        initialNumToRender={15}
+        removeClippedSubviews={false}
+        maxToRenderPerBatch={5}
+        updateCellsBatchingPeriod={100}
+        windowSize={10}
+        initialNumToRender={10}
+        drawDistance={250}
         maintainVisibleContentPosition={{
           minIndexForVisible: 0,
         }}

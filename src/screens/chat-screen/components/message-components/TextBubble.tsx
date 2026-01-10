@@ -11,24 +11,37 @@ export type TextBubbleProps = {
 };
 
 export const TextBubble = (props: TextBubbleProps) => {
-  const messageItem = props.item as Message;
-  const { variant } = props;
+  try {
+    const messageItem = props?.item as Message;
+    const { variant } = props || {};
 
-  const { private: isPrivate, content, contentAttributes, sender } = messageItem;
+    if (!messageItem || !variant) {
+      return <Animated.View style={{ height: 0 }} />;
+    }
 
-  return (
-    <React.Fragment>
-      {contentAttributes && <EmailMeta {...{ contentAttributes, sender }} />}
-      {isPrivate ? (
-        <Animated.View style={tailwind.style('flex flex-row')}>
-          <Animated.View style={tailwind.style('w-[3px] bg-amber-700 h-auto rounded-[4px]')} />
-          <Animated.View style={tailwind.style('pl-2.5')}>
-            <MarkdownBubble messageContent={content} variant={variant} />
+    const { private: isPrivate, content, contentAttributes, sender } = messageItem;
+
+    if (!content && !contentAttributes) {
+      return <Animated.View style={{ height: 0 }} />;
+    }
+
+    return (
+      <React.Fragment>
+        {contentAttributes && <EmailMeta {...{ contentAttributes, sender }} />}
+        {isPrivate ? (
+          <Animated.View style={tailwind.style('flex flex-row')}>
+            <Animated.View style={tailwind.style('w-[3px] bg-amber-700 h-auto rounded-[4px]')} />
+            <Animated.View style={tailwind.style('pl-2.5')}>
+              <MarkdownBubble messageContent={content || ''} variant={variant} />
+            </Animated.View>
           </Animated.View>
-        </Animated.View>
-      ) : (
-        <MarkdownBubble messageContent={content} variant={variant} />
-      )}
-    </React.Fragment>
-  );
+        ) : (
+          <MarkdownBubble messageContent={content || ''} variant={variant} />
+        )}
+      </React.Fragment>
+    );
+  } catch (error) {
+    console.error('[TextBubble] Render error:', error);
+    return <Animated.View style={{ height: 0 }} />;
+  }
 };

@@ -35,16 +35,21 @@ const isMessageCreatedAtLessThan24HoursOld = (messageTimestamp: number) => {
 };
 
 export const ComposedBubble = (props: ComposedBubbleProps) => {
-  const {
-    content,
-    private: isPrivate,
-    createdAt,
-    contentAttributes,
-    status,
-  } = props.item as Message;
-  const { conversationId } = useChatWindowContext();
+  try {
+    if (!props?.item) {
+      return <Animated.View style={{ height: 0 }} />;
+    }
 
-  const messages = useAppSelector(state => getMessagesByConversationId(state, { conversationId }));
+    const {
+      content,
+      private: isPrivate,
+      createdAt,
+      contentAttributes,
+      status,
+    } = props.item as Message;
+    const { conversationId } = useChatWindowContext();
+
+    const messages = useAppSelector(state => getMessagesByConversationId(state, { conversationId }));
 
   const isReplyMessage = useMemo(
     () => contentAttributes?.inReplyTo !== undefined,
@@ -54,13 +59,13 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
   const replyMessage = useMemo(
     () =>
       contentAttributes && contentAttributes?.inReplyTo
-        ? messages.find(message => message.id === contentAttributes?.inReplyTo) || null
+        ? messages?.find(message => message?.id === contentAttributes?.inReplyTo) || null
         : null,
     [messages, contentAttributes],
   );
   const { imageType } = contentAttributes || {};
   const isAnInstagramStory = imageType === ATTACHMENT_TYPES.STORY_MENTION;
-  const isInstagramStoryExpired = isMessageCreatedAtLessThan24HoursOld(createdAt);
+  const isInstagramStoryExpired = createdAt ? isMessageCreatedAtLessThan24HoursOld(createdAt) : false;
   const isMessageSending = status === MESSAGE_STATUS.PROGRESS;
 
   return (
@@ -78,8 +83,10 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
             <Spinner size={12} stroke={tailwind.color('text-gray-900')} />
           </Animated.View>
         )}
-        {props.item.attachments &&
+        {props.item?.attachments && Array.isArray(props.item.attachments) &&
           props.item.attachments.map((attachment, index) => {
+            if (!attachment) return null;
+            
             if (attachment.fileType === 'image') {
               return isAnInstagramStory && isInstagramStoryExpired ? (
                 <Animated.View
@@ -164,4 +171,8 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
       </Animated.View>
     </Animated.View>
   );
+  } catch (error) {
+    console.error('[ComposedBubble] Render error:', error);
+    return <Animated.View style={{ height: 0 }} />;
+  }
 };

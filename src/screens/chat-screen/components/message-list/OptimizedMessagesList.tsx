@@ -7,6 +7,7 @@ import { useTheme } from '@/context/ThemeContext';
 import { useRefsContext } from '@/context';
 import { useAppKeyboardAnimation } from '@/utils';
 import OptimizedMessageItem from './OptimizedMessageItem';
+import MinimalMessageItem from './MinimalMessageItem';
 
 // Try to use FlashList, fallback to FlatList
 let FlashList: any = FlatList;
@@ -116,12 +117,11 @@ export const OptimizedMessagesList: React.FC<OptimizedMessagesListProps> = ({
           return <DateSection item={item} />;
         }
 
-        // Message item
+        // Message item - using MINIMAL version to isolate crash
         return (
-          <OptimizedMessageItem
+          <MinimalMessageItem
             message={item}
             currentUserId={currentUserId}
-            isEmailInbox={isEmailInbox}
           />
         );
       } catch (error) {

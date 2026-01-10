@@ -8,7 +8,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 // import { FlashList } from '@shopify/flash-list';
-import { FlatList } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { useAppKeyboardAnimation } from '@/utils';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
@@ -31,6 +31,41 @@ export type FlashListRenderProps = {
 };
 
 const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList as any);
+
+// Error Boundary for catching rendering crashes
+class MessageErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean; errorCount: number }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, errorCount: 0 };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    console.error('[MessageErrorBoundary] Caught error:', error);
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('[MessageErrorBoundary] Error details:', error, errorInfo);
+    this.setState(prev => ({ errorCount: prev.errorCount + 1 }));
+    
+    // Reset error state after a brief delay to allow recovery
+    setTimeout(() => {
+      if (this.state.errorCount < 10) {
+        this.setState({ hasError: false });
+      }
+    }, 100);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <View style={{ height: 0 }} />;
+    }
+    return this.props.children;
+  }
+}
 
 type DateSectionProps = { item: { date: string } };
 
@@ -94,16 +129,22 @@ export const MessagesList = ({
       }
       
       if ('date' in item) {
-        return <DateSection item={item} />;
+        return (
+          <MessageErrorBoundary>
+            <DateSection item={item} />
+          </MessageErrorBoundary>
+        );
       }
 
       return (
-        <MessageComponent
-          item={item}
-          index={index}
-          isEmailInbox={isEmailInbox}
-          currentUserId={currentUserId}
-        />
+        <MessageErrorBoundary>
+          <MessageComponent
+            item={item}
+            index={index}
+            isEmailInbox={isEmailInbox}
+            currentUserId={currentUserId}
+          />
+        </MessageErrorBoundary>
       );
       // TODO: Deprecate this after the new message item is ready
       // return <MessageItemContainer item={item} index={index} />;

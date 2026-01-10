@@ -79,29 +79,24 @@ export const MessagesList = ({
   const typedMessageListRef = messageListRef as any;
 
   const handleRender = ({ item, index }: { item: Message | { date: string }; index: number }) => {
-    try {
-      if (!item) {
-        return null;
-      }
-      
-      if ('date' in item) {
-        return <DateSection item={item} />;
-      }
-
-      return (
-        <MessageComponent
-          item={item}
-          index={index}
-          isEmailInbox={isEmailInbox}
-          currentUserId={currentUserId}
-        />
-      );
-      // TODO: Deprecate this after the new message item is ready
-      // return <MessageItemContainer item={item} index={index} />;
-    } catch (error) {
-      console.error('[MessagesList] Render error for item:', error);
-      return null;
+    if (!item) {
+      return <Animated.View style={{ height: 0 }} />;
     }
+    
+    if ('date' in item) {
+      return <DateSection item={item} />;
+    }
+
+    return (
+      <MessageComponent
+        item={item}
+        index={index}
+        isEmailInbox={isEmailInbox}
+        currentUserId={currentUserId}
+      />
+    );
+    // TODO: Deprecate this after the new message item is ready
+    // return <MessageItemContainer item={item} index={index} />;
   };
 
   const animatedFlashlistStyle = useAnimatedStyle(() => {

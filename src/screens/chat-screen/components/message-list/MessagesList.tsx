@@ -8,7 +8,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 // import { FlashList } from '@shopify/flash-list';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList } from 'react-native';
 import { useAppKeyboardAnimation } from '@/utils';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
@@ -32,73 +32,29 @@ export type FlashListRenderProps = {
 
 const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList as any);
 
-// Error Boundary for catching rendering crashes
-class MessageErrorBoundary extends React.Component<
-  { children: React.ReactNode },
-  { hasError: boolean; errorCount: number }
-> {
-  constructor(props: { children: React.ReactNode }) {
-    super(props);
-    this.state = { hasError: false, errorCount: 0 };
-  }
-
-  static getDerivedStateFromError(error: Error) {
-    console.error('[MessageErrorBoundary] Caught error:', error);
-    return { hasError: true };
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('[MessageErrorBoundary] Error details:', error, errorInfo);
-    this.setState(prev => ({ errorCount: prev.errorCount + 1 }));
-    
-    // Reset error state after a brief delay to allow recovery
-    setTimeout(() => {
-      if (this.state.errorCount < 10) {
-        this.setState({ hasError: false });
-      }
-    }, 100);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return <View style={{ height: 0 }} />;
-    }
-    return this.props.children;
-  }
-}
-
 type DateSectionProps = { item: { date: string } };
 
 const DateSection = ({ item }: DateSectionProps) => {
-  try {
-    if (!item?.date) {
-      return <Animated.View style={{ height: 0 }} />;
-    }
-    
-    const { colors, isDark } = useTheme();
-    return (
-      <Animated.View style={tailwind.style('flex flex-row justify-center items-center py-4')}>
-        <Animated.View
+  const { colors, isDark } = useTheme();
+  return (
+    <Animated.View style={tailwind.style('flex flex-row justify-center items-center py-4')}>
+      <Animated.View
+        style={[
+          tailwind.style('rounded-lg py-1 px-[7px] bg-blackA-A3'),
+          isDark && { backgroundColor: colors.backgroundSecondary },
+        ]}>
+        <Animated.Text
           style={[
-            tailwind.style('rounded-lg py-1 px-[7px] bg-blackA-A3'),
-            isDark && { backgroundColor: colors.backgroundSecondary },
+            tailwind.style(
+              'text-cxs font-inter-420-20 tracking-[0.32px] text-blackA-A11 leading-[15px]',
+            ),
+            isDark && { color: colors.textSecondary },
           ]}>
-          <Animated.Text
-            style={[
-              tailwind.style(
-                'text-cxs font-inter-420-20 tracking-[0.32px] text-blackA-A11 leading-[15px]',
-              ),
-              isDark && { color: colors.textSecondary },
-            ]}>
-            {item.date}
-          </Animated.Text>
-        </Animated.View>
+          {item.date}
+        </Animated.Text>
       </Animated.View>
-    );
-  } catch (error) {
-    console.error('[DateSection] Render error:', error);
-    return <Animated.View style={{ height: 0 }} />;
-  }
+    </Animated.View>
+  );
 };
 
 type MessagesListPresentationProps = {
@@ -123,35 +79,20 @@ export const MessagesList = ({
   const typedMessageListRef = messageListRef as any;
 
   const handleRender = ({ item, index }: { item: Message | { date: string }; index: number }) => {
-    try {
-      if (!item) {
-        return <Animated.View style={{ height: 1, width: 1 }} />;
-      }
-      
-      if ('date' in item) {
-        return (
-          <MessageErrorBoundary>
-            <DateSection item={item} />
-          </MessageErrorBoundary>
-        );
-      }
-
-      return (
-        <MessageErrorBoundary>
-          <MessageComponent
-            item={item}
-            index={index}
-            isEmailInbox={isEmailInbox}
-            currentUserId={currentUserId}
-          />
-        </MessageErrorBoundary>
-      );
-      // TODO: Deprecate this after the new message item is ready
-      // return <MessageItemContainer item={item} index={index} />;
-    } catch (error) {
-      console.error('[MessagesList] Render error:', error);
-      return <Animated.View style={{ height: 1, width: 1 }} />;
+    if ('date' in item) {
+      return <DateSection item={item} />;
     }
+
+    return (
+      <MessageComponent
+        item={item}
+        index={index}
+        isEmailInbox={isEmailInbox}
+        currentUserId={currentUserId}
+      />
+    );
+    // TODO: Deprecate this after the new message item is ready
+    // return <MessageItemContainer item={item} index={index} />;
   };
 
   const animatedFlashlistStyle = useAnimatedStyle(() => {
@@ -171,19 +112,10 @@ export const MessagesList = ({
     },
   });
 
-  // Handle empty state
-  if (!messages || messages.length === 0) {
-    return (
-      <Animated.View style={tailwind.style('flex-1 items-center justify-center')}>
-        <Animated.Text style={tailwind.style('text-gray-500')}>No messages yet</Animated.Text>
-      </Animated.View>
-    );
-  }
-
   return (
     <Animated.View
       layout={LinearTransition.springify().damping(38).stiffness(240)}
-      style={[tailwind.style('flex-1 w-full'), animatedFlashlistStyle]}>
+      style={[tailwind.style('flex-1 min-h-10'), animatedFlashlistStyle]}>
       <AnimatedFlashlist
         layout={LinearTransition.springify().damping(38).stiffness(240)}
         onScroll={scrollHandler}
@@ -197,22 +129,18 @@ export const MessagesList = ({
         data={messages}
         contentContainerStyle={tailwind.style('px-3')}
         keyboardShouldPersistTaps="handled"
-        keyExtractor={(item: { date: string } | Message, index: number) => {
-          if (!item) {
-            return `empty-${index}`;
-          }
+        keyExtractor={(item: { date: string } | Message) => {
           if ('date' in item) {
-            return `date-${item.date?.toString() || index}`;
+            return item.date.toString();
           }
-          return `msg-${item.id?.toString() || index}`;
+          return item.id.toString();
         }}
         // Performance optimizations to prevent crashes
-        removeClippedSubviews={false}
-        maxToRenderPerBatch={5}
-        updateCellsBatchingPeriod={100}
-        windowSize={10}
-        initialNumToRender={10}
-        drawDistance={250}
+        removeClippedSubviews={true}
+        maxToRenderPerBatch={10}
+        updateCellsBatchingPeriod={50}
+        windowSize={21}
+        initialNumToRender={15}
         maintainVisibleContentPosition={{
           minIndexForVisible: 0,
         }}

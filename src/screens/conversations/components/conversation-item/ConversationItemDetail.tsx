@@ -97,8 +97,8 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
             numberOfLines={1}
             style={[
               tailwind.style(
-                'text-base font-inter-medium-24 tracking-[0.24px] capitalize',
-                `max-w-[${width - 250}px]`,
+                'text-base font-inter-medium-24 tracking-[0.24px] capitalize flex-1',
+                `max-w-[${width - 160}px]`,
               ),
               { color: colors.text },
             ]}>

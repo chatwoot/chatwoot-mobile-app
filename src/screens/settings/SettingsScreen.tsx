@@ -28,13 +28,16 @@ import * as WebBrowser from 'expo-web-browser';
 import { useSelector } from 'react-redux';
 import * as Application from 'expo-application';
 
-// Chat with us - opens support URL
+// Chat with us - opens Chatwoot chat widget in browser
 const openChatWidget = async () => {
-  const supportUrl = 'https://cx.aloochat.ai/hc/user-guide/en';
+  const baseUrl = process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL || 'https://cx.aloochat.ai';
+  const websiteToken = process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN || 'xepyhKkhoZm13wA3PMCRwcR9';
+  const chatwootUrl = `${baseUrl}/widget?website_token=${websiteToken}`;
+  
   try {
-    await WebBrowser.openBrowserAsync(supportUrl);
+    await WebBrowser.openBrowserAsync(chatwootUrl);
   } catch (error) {
-    console.error('Failed to open support URL:', error);
+    console.error('Failed to open Chatwoot chat:', error);
   }
 };
 

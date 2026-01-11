@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
-import { FlatList, View, Text, StyleSheet, Linking } from 'react-native';
+import { FlatList, View, Text, StyleSheet } from 'react-native';
 import { Message } from '@/types';
 import { MESSAGE_TYPES, SENDER_TYPES, MESSAGE_STATUS } from '@/constants';
+import { useTheme } from '@/context/ThemeContext';
 
 interface BareMessagesListProps {
   messages: (Message | { date: string })[];
@@ -10,7 +11,7 @@ interface BareMessagesListProps {
 }
 
 /**
- * Stable Messages List - Plain FlatList, WhatsApp-like styling
+ * Stable Messages List - Plain FlatList, Theme-aware styling
  * 
  * NO FlashList (causes crashes)
  * NO Reanimated (causes crashes)
@@ -21,6 +22,23 @@ export const BareMessagesList: React.FC<BareMessagesListProps> = ({
   onEndReached,
   currentUserId,
 }) => {
+  const { colors, isDark } = useTheme();
+
+  // Theme-aware colors
+  const themeColors = {
+    background: isDark ? '#1F2C34' : '#ECE5DD',
+    myBubble: isDark ? '#005C4B' : '#DCF8C6',
+    otherBubble: isDark ? '#202C33' : '#FFFFFF',
+    myText: isDark ? '#E9EDEF' : '#000000',
+    otherText: isDark ? '#E9EDEF' : '#000000',
+    myTime: isDark ? '#8FBBAF' : '#6B8E6B',
+    otherTime: isDark ? '#8696A0' : '#999999',
+    dateBadge: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+    dateText: isDark ? '#8696A0' : '#555555',
+    activityBg: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)',
+    activityText: isDark ? '#8696A0' : '#666666',
+    senderName: isDark ? '#00A884' : '#075E54',
+  };
 
   // Format timestamp
   const formatTime = (timestamp: number) => {
@@ -51,8 +69,8 @@ export const BareMessagesList: React.FC<BareMessagesListProps> = ({
       if ('date' in item) {
         return (
           <View style={styles.dateContainer}>
-            <View style={styles.dateBadge}>
-              <Text style={styles.dateText}>{item.date}</Text>
+            <View style={[styles.dateBadge, { backgroundColor: themeColors.dateBadge }]}>
+              <Text style={[styles.dateText, { color: themeColors.dateText }]}>{item.date}</Text>
             </View>
           </View>
         );
@@ -62,9 +80,13 @@ export const BareMessagesList: React.FC<BareMessagesListProps> = ({
       if (item.messageType === MESSAGE_TYPES.ACTIVITY) {
         return (
           <View style={styles.activityContainer}>
-            <View style={styles.activityBubble}>
-              <Text style={styles.activityText}>{item.content || 'Activity'}</Text>
-              <Text style={styles.activityTime}>{formatTime(item.createdAt)}</Text>
+            <View style={[styles.activityBubble, { backgroundColor: themeColors.activityBg }]}>
+              <Text style={[styles.activityText, { color: themeColors.activityText }]}>
+                {item.content || 'Activity'}
+              </Text>
+              <Text style={[styles.activityTime, { color: themeColors.activityText }]}>
+                {formatTime(item.createdAt)}
+              </Text>
             </View>
           </View>
         );
@@ -87,22 +109,35 @@ export const BareMessagesList: React.FC<BareMessagesListProps> = ({
         <View style={[styles.msgContainer, isMyMessage ? styles.myMsg : styles.otherMsg]}>
           {/* Sender name for received messages */}
           {!isMyMessage && senderName && !item.groupWithPrevious && (
-            <Text style={styles.senderName}>{senderName}</Text>
+            <Text style={[styles.senderName, { color: themeColors.senderName }]}>{senderName}</Text>
           )}
           
-          <View style={[styles.bubble, isMyMessage ? styles.myBubble : styles.otherBubble]}>
+          <View style={[
+            styles.bubble, 
+            isMyMessage 
+              ? [styles.myBubble, { backgroundColor: themeColors.myBubble }] 
+              : [styles.otherBubble, { backgroundColor: themeColors.otherBubble }]
+          ]}>
             {/* Message content */}
-            <Text style={[styles.msgText, isMyMessage ? styles.myMsgText : styles.otherMsgText]}>
+            <Text style={[
+              styles.msgText, 
+              { color: isMyMessage ? themeColors.myText : themeColors.otherText }
+            ]}>
               {item.content || '[No content]'}
             </Text>
             
             {/* Footer: Time + Status */}
             <View style={styles.msgFooter}>
-              <Text style={[styles.msgTime, isMyMessage ? styles.myMsgTime : styles.otherMsgTime]}>
+              <Text style={[
+                styles.msgTime, 
+                { color: isMyMessage ? themeColors.myTime : themeColors.otherTime }
+              ]}>
                 {formatTime(item.createdAt)}
               </Text>
               {isMyMessage && (
-                <Text style={styles.statusIcon}>{getStatusIcon(item.status)}</Text>
+                <Text style={[styles.statusIcon, { color: themeColors.myTime }]}>
+                  {getStatusIcon(item.status)}
+                </Text>
               )}
             </View>
           </View>
@@ -112,7 +147,7 @@ export const BareMessagesList: React.FC<BareMessagesListProps> = ({
       console.error('Render error:', e);
       return <View style={{ height: 1 }} />;
     }
-  }, [currentUserId]);
+  }, [currentUserId, themeColors]);
 
   const keyExtractor = useCallback((item: any, index: number) => {
     try {
@@ -124,9 +159,8 @@ export const BareMessagesList: React.FC<BareMessagesListProps> = ({
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: themeColors.background }]}>
       <FlatList
-        
         data={messages}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
@@ -147,7 +181,6 @@ export const BareMessagesList: React.FC<BareMessagesListProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ECE5DD',
   },
   content: {
     padding: 12,
@@ -157,14 +190,12 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
   dateBadge: {
-    backgroundColor: 'rgba(0,0,0,0.1)',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8,
   },
   dateText: {
     fontSize: 12,
-    color: '#555',
     fontWeight: '500',
   },
   activityContainer: {
@@ -172,7 +203,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   activityBubble: {
-    backgroundColor: 'rgba(0,0,0,0.06)',
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 10,
@@ -180,12 +210,10 @@ const styles = StyleSheet.create({
   },
   activityText: {
     fontSize: 13,
-    color: '#666',
     textAlign: 'center',
   },
   activityTime: {
     fontSize: 11,
-    color: '#888',
     textAlign: 'center',
     marginTop: 4,
   },
@@ -201,7 +229,6 @@ const styles = StyleSheet.create({
   },
   senderName: {
     fontSize: 12,
-    color: '#075E54',
     fontWeight: '600',
     marginBottom: 2,
     marginLeft: 4,
@@ -211,29 +238,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 1,
-    elevation: 1,
   },
   myBubble: {
-    backgroundColor: '#DCF8C6',
     borderTopRightRadius: 4,
   },
   otherBubble: {
-    backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 4,
   },
   msgText: {
     fontSize: 16,
     lineHeight: 22,
-  },
-  myMsgText: {
-    color: '#000',
-  },
-  otherMsgText: {
-    color: '#000',
   },
   msgFooter: {
     flexDirection: 'row',
@@ -244,15 +258,8 @@ const styles = StyleSheet.create({
   msgTime: {
     fontSize: 11,
   },
-  myMsgTime: {
-    color: '#6B8E6B',
-  },
-  otherMsgTime: {
-    color: '#999',
-  },
   statusIcon: {
     fontSize: 12,
     marginLeft: 4,
-    color: '#6B8E6B',
   },
 });

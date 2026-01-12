@@ -138,7 +138,9 @@ export const LabelActions = (props: LabelActionsProps) => {
         snapPoints={[316]}
         keyboardBehavior="interactive"
         keyboardBlurBehavior="restore"
-        onChange={handleChange}>
+        onChange={handleChange}
+        enableDynamicSizing={false}
+        detached>
         <SearchBar
           isInsideBottomSheet
           onSubmitEditing={handleOnSubmitEditing}
@@ -154,7 +156,6 @@ export const LabelActions = (props: LabelActionsProps) => {
             isStandAloneComponent={allLabels.length > 3}
             handleLabelPress={handleAddOrUpdateLabels}
           />
-          <Animated.View style={tailwind.style('items-start')}></Animated.View>
         </BottomSheetScrollView>
       </BottomSheetModal>
     </Animated.View>

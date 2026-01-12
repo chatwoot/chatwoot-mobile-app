@@ -97,8 +97,10 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
                 <Animated.View key={attachment.fileType + index} style={tailwind.style('my-2')}>
                   <ImageBubbleContainer
                     imageSrc={attachment.dataUrl}
-                    width={300 - 24 - (isPrivate ? 13 : 0)}
-                    height={215}
+                    imageWidth={attachment.width}
+                    imageHeight={attachment.height}
+                    displayMaxWidth={300 - 24 - (isPrivate ? 13 : 0)}
+                    
                   />
                 </Animated.View>
               );

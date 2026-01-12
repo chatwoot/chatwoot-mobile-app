@@ -38,6 +38,8 @@ export type ImageMetadata = {
   fallbackTitle: string;
   coordinatesLat: number;
   coordinatesLong: number;
+  width?: number;
+  height?: number;
 };
 
 export type MessageContentAttributes = {

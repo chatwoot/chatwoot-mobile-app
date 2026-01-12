@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   myBubble: {
-    backgroundColor: '#DCF8C6',
+    backgroundColor: '#1F93FF',
     borderBottomRightRadius: 4,
   },
   otherBubble: {
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   myText: {
-    color: '#000',
+    color: '#FFFFFF',
   },
   otherText: {
     color: '#000',

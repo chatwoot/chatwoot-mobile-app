@@ -33,6 +33,7 @@ import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stac
 import ChatScreen from '@/screens/chat-screen/ChatScreen';
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
+import { ChatWithUsScreen } from '@/screens/support/ChatWithUsScreen';
 
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { BottomTabBar } from './BottomTabBar';
@@ -210,6 +211,11 @@ export const AppTabs = () => {
           }}
           name="Dashboard"
           component={DashboardScreen}
+        />
+        <Stack.Screen
+          options={{ animation: 'slide_from_right', gestureEnabled: true }}
+          name="ChatWithUs"
+          component={ChatWithUsScreen}
         />
       </Stack.Navigator>
     );

@@ -1,6 +1,8 @@
 import React, { useCallback, useRef, useEffect, useState } from 'react';
 import { ActivityIndicator, Linking, Platform, StyleSheet, View } from 'react-native';
 import { getStateFromPath } from '@react-navigation/native';
+import * as Device from 'expo-device';
+import Constants from 'expo-constants';
 
 // Force mock KeyboardProvider for Expo Go compatibility
 const KeyboardProvider: any = ({ children }: any) => <>{children}</>;
@@ -10,19 +12,26 @@ import {
   initializeExpoNotifications,
   addNotificationReceivedListener,
   addNotificationResponseListener,
+  displayNotification,
 } from '@/services/ExpoNotificationService';
-
-// Import background handler's display function for foreground messages
-import { displayBackgroundNotification, parsePayload } from '@/services/expoBackgroundHandler';
 
 // NOTE: Background handler is now registered in App.tsx (entry point) for proper background notification handling
 
-// Firebase messaging is not available in Expo Go - use mock
-const messaging = () => ({
-  getInitialNotification: () => Promise.resolve(null),
-  onNotificationOpenedApp: () => () => {},
-  onMessage: () => () => {},
-});
+// Firebase messaging - safely import for production builds only
+let messaging: any = null;
+const isExpoGo = Constants?.appOwnership === 'expo';
+if (!isExpoGo) {
+  try {
+    const firebaseMessaging = require('@react-native-firebase/messaging');
+    if (firebaseMessaging && firebaseMessaging.default) {
+      messaging = firebaseMessaging.default;
+      console.log('[Navigation] ✅ Firebase messaging loaded');
+    }
+  } catch (e) {
+    console.warn('[Navigation] Firebase messaging not available');
+    messaging = null;
+  }
+}
 
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -93,6 +102,46 @@ export const AppNavigationContainer = () => {
     // Initialize notification channels and permissions
     initializeExpoNotifications();
 
+    // CRITICAL: Check for initial notification (app opened from killed state)
+    const checkInitialNotification = async () => {
+      try {
+        // Check Firebase initial notification (killed mode)
+        if (messaging && !isExpoGo) {
+          const initialNotification = await messaging().getInitialNotification();
+          if (initialNotification) {
+            console.log('[Navigation] 🚀 App opened from KILLED state via notification!');
+            console.log('[Navigation] Initial notification:', JSON.stringify(initialNotification));
+            
+            const data = initialNotification.data;
+            if (data?.conversationId || data?.conversation_id) {
+              const conversationId = parseInt(data.conversationId || data.conversation_id);
+              if (!isNaN(conversationId)) {
+                // Small delay to ensure navigation is ready
+                setTimeout(() => {
+                  navigationRef.current?.navigate('ChatScreen' as never, {
+                    conversationId,
+                    primaryActorId: data?.primaryActorId || data?.primary_actor_id,
+                    primaryActorType: data?.primaryActorType || data?.primary_actor_type,
+                  } as never);
+                }, 500);
+              }
+            }
+          }
+        }
+        
+        // Also check expo-notifications last response
+        const Notifications = require('expo-notifications');
+        const lastResponse = await Notifications.getLastNotificationResponseAsync();
+        if (lastResponse) {
+          console.log('[Navigation] Last notification response:', lastResponse.actionIdentifier);
+        }
+      } catch (error) {
+        console.warn('[Navigation] Error checking initial notification:', error);
+      }
+    };
+    
+    checkInitialNotification();
+
     // Set up foreground notification listener (for expo-notifications)
     const notificationListener = addNotificationReceivedListener(notification => {
       console.log('[Navigation] Notification received:', notification);
@@ -120,20 +169,59 @@ export const AppNavigationContainer = () => {
       }
     });
 
-    // CRITICAL: Set up Firebase foreground message listener
-    // This displays notifications when FCM messages arrive while app is in foreground
+    // CRITICAL: Set up Firebase listeners (production builds only)
     let unsubscribeFCM = () => {};
-    if (messaging) {
+    let unsubscribeNotificationOpened = () => {};
+    
+    if (messaging && !isExpoGo) {
       try {
+        // Handle notification tap when app is in background (not killed)
+        unsubscribeNotificationOpened = messaging().onNotificationOpenedApp((remoteMessage: any) => {
+          console.log('[Navigation] 🔔 App opened from BACKGROUND via notification!');
+          console.log('[Navigation] Notification data:', JSON.stringify(remoteMessage.data));
+          
+          const data = remoteMessage.data;
+          if (data?.conversationId || data?.conversation_id) {
+            const conversationId = parseInt(data.conversationId || data.conversation_id);
+            if (!isNaN(conversationId)) {
+              navigationRef.current?.navigate('ChatScreen' as never, {
+                conversationId,
+                primaryActorId: data?.primaryActorId || data?.primary_actor_id,
+                primaryActorType: data?.primaryActorType || data?.primary_actor_type,
+              } as never);
+            }
+          }
+        });
+        console.log('[Navigation] ✅ Firebase notification opened listener registered');
+        
+        // Handle FCM messages when app is in foreground
         unsubscribeFCM = messaging().onMessage(async (remoteMessage: any) => {
           console.log('[Navigation] 🔔 FCM foreground message received:', JSON.stringify(remoteMessage));
           
-          // Parse the payload and display notification
-          const { title, body, data, channelId } = parsePayload(remoteMessage);
-          console.log('[Navigation] Parsed:', { title, body, notificationType: data?.notificationType });
+          // Extract notification data from FCM message
+          let title = remoteMessage?.notification?.title || 'AlooChat';
+          let body = remoteMessage?.notification?.body || 'You have a new message';
           
-          // Display the notification using expo-notifications
-          await displayBackgroundNotification(title, body, data, channelId);
+          // Try to parse Chatwoot payload format
+          try {
+            if (remoteMessage?.data?.payload) {
+              const payload = JSON.parse(remoteMessage.data.payload);
+              const notification = payload?.data?.notification || payload?.notification;
+              if (notification) {
+                const senderName = notification?.primary_actor?.meta?.sender?.name;
+                const messageContent = notification?.primary_actor?.meta?.last_message?.content;
+                if (senderName) title = senderName;
+                if (messageContent) body = messageContent;
+              }
+            }
+          } catch (e) {
+            console.warn('[Navigation] Failed to parse FCM payload');
+          }
+          
+          console.log('[Navigation] Displaying notification:', { title, body });
+          
+          // Display using expo-notifications
+          await displayNotification(title, body, remoteMessage?.data);
         });
         console.log('[Navigation] ✅ FCM foreground listener registered');
       } catch (error) {
@@ -145,6 +233,7 @@ export const AppNavigationContainer = () => {
       notificationListener.remove();
       responseListener.remove();
       unsubscribeFCM();
+      unsubscribeNotificationOpened();
     };
   }, [installationUrl]);
 

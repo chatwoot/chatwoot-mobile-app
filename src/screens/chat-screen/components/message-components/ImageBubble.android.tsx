@@ -1,15 +1,24 @@
 import React from 'react';
 import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
-// import { LightBox, LightBoxProps } from '@alantoa/lightbox';
+import Constants from 'expo-constants';
 import { Image } from 'expo-image';
 import { tailwind } from '@/theme';
 
-let LightBox: any = ({ children }: any) => <View>{children}</View>;
-try {
-  LightBox = require('@alantoa/lightbox').LightBox;
-} catch (e) {
-  console.warn('@alantoa/lightbox not available');
+// Check if running in Expo Go
+const isExpoGo = Constants?.appOwnership === 'expo';
+
+// Mock LightBox for Expo Go
+const MockLightBox: any = ({ children }: any) => <View>{children}</View>;
+
+let LightBox: any = MockLightBox;
+if (!isExpoGo) {
+  try {
+    LightBox = require('@alantoa/lightbox').LightBox;
+  } catch (e) {
+    console.warn('@alantoa/lightbox not available');
+    LightBox = MockLightBox;
+  }
 }
 
 // Mock type

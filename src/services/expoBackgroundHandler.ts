@@ -6,13 +6,31 @@
 import * as Notifications from 'expo-notifications';
 import * as TaskManager from 'expo-task-manager';
 import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 
 // Background notification task name
 const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
 
-// Firebase messaging is not available in Expo Go
-// This will only work in development builds with native modules
-const getMessaging = () => null;
+// Check if running in Expo Go
+const isExpoGo = Constants?.appOwnership === 'expo';
+
+// Firebase messaging - only load in production builds, not Expo Go
+let firebaseMessaging: any = null;
+if (!isExpoGo) {
+  try {
+    const messaging = require('@react-native-firebase/messaging');
+    if (messaging && messaging.default) {
+      firebaseMessaging = messaging.default;
+      console.log('[ExpoBackgroundHandler] ✅ Firebase messaging loaded');
+    }
+  } catch (e) {
+    console.warn('[ExpoBackgroundHandler] Firebase messaging not available');
+    firebaseMessaging = null;
+  }
+} else {
+  console.log('[ExpoBackgroundHandler] Running in Expo Go - Firebase disabled');
+}
+const getMessaging = () => firebaseMessaging;
 
 const CHANNEL_ID = {
   MESSAGES: 'aloochat_messages',
@@ -326,29 +344,38 @@ function registerBackgroundHandler(): void {
           
           console.log('[ExpoBackgroundHandler] Parsed:', { title, body, notificationType });
           
-          // Filter out AI bot messages and outgoing messages
-          const messageType = remoteMessage?.data?.message_type || remoteMessage?.data?.messageType;
-          const senderType = remoteMessage?.data?.sender_type || remoteMessage?.data?.senderType;
+          // Extract sender info to filter AI bot messages
+          let senderType = '';
+          try {
+            if (remoteMessage?.data?.payload) {
+              const payload = JSON.parse(remoteMessage.data.payload);
+              const notification = payload?.data?.notification || payload?.notification;
+              senderType = notification?.primary_actor?.meta?.sender?.type || '';
+            } else if (remoteMessage?.data?.notification) {
+              const notification = JSON.parse(remoteMessage.data.notification);
+              senderType = notification?.primary_actor?.meta?.sender?.type || '';
+            }
+          } catch (e) {
+            // Ignore parse errors for sender type
+          }
           
-          // Only show notification for incoming messages from real users
-          // messageType: 0 = incoming, 1 = outgoing
-          // senderType: 'Contact' = real user, 'agent_bot' = AI bot
-          const shouldShowNotification = 
-            messageType === '0' || messageType === 0 || messageType === undefined;
-          const isNotBot = senderType !== 'agent_bot' && senderType !== 'AgentBot';
+          const senderTypeLower = (senderType || remoteMessage?.data?.sender_type || '').toLowerCase();
+          const isBot = senderTypeLower === 'agent_bot' || senderTypeLower === 'agentbot';
           
-          if (shouldShowNotification && isNotBot) {
-            // CRITICAL: Always display notification for background/killed state
-            // iOS/Android may not auto-display data-only messages
-            console.log('[ExpoBackgroundHandler] Displaying notification...');
+          console.log('[ExpoBackgroundHandler] Sender check:', { senderType: senderTypeLower, isBot, notificationType });
+          
+          // Show notification for all types EXCEPT AI bot auto-responses
+          // We want: new messages, assignments, mentions, SLA alerts, etc.
+          if (!isBot) {
+            console.log('[ExpoBackgroundHandler] 🔔 Displaying notification...');
             await displayBackgroundNotification(title, body, data, channelId);
             console.log('[ExpoBackgroundHandler] ✅ Background notification displayed');
           } else {
-            console.log('[ExpoBackgroundHandler] ⏭️ Skipped notification - outgoing or bot message');
+            console.log('[ExpoBackgroundHandler] ⏭️ Skipped - AI bot message');
           }
         } catch (parseError) {
           console.error('[ExpoBackgroundHandler] Parse error:', parseError);
-          // Fallback: show basic notification
+          // Fallback: show basic notification (don't lose important notifications)
           await displayBackgroundNotification(
             remoteMessage?.notification?.title || 'AlooChat',
             remoteMessage?.notification?.body || 'You have a new message',

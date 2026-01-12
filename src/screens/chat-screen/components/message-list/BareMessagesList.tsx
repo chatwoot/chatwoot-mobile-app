@@ -24,20 +24,19 @@ export const BareMessagesList: React.FC<BareMessagesListProps> = ({
 }) => {
   const { colors, isDark } = useTheme();
 
-  // Theme-aware colors
+  // Theme-aware colors - Blue primary like logo
   const themeColors = {
-    background: isDark ? '#1F2C34' : '#ECE5DD',
-    myBubble: isDark ? '#005C4B' : '#DCF8C6',
+    background: isDark ? '#1F2C34' : '#F5F5F5',
+    myBubble: isDark ? '#1E3A5F' : '#1F93FF',
     otherBubble: isDark ? '#202C33' : '#FFFFFF',
-    myText: isDark ? '#E9EDEF' : '#000000',
+    myText: '#FFFFFF',
     otherText: isDark ? '#E9EDEF' : '#000000',
-    myTime: isDark ? '#8FBBAF' : '#6B8E6B',
+    myTime: isDark ? '#A8C7E8' : 'rgba(255,255,255,0.7)',
     otherTime: isDark ? '#8696A0' : '#999999',
-    dateBadge: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+    dateBadge: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)',
     dateText: isDark ? '#8696A0' : '#555555',
     activityBg: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)',
     activityText: isDark ? '#8696A0' : '#666666',
-    senderName: isDark ? '#00A884' : '#075E54',
   };
 
   // Format timestamp
@@ -102,16 +101,9 @@ export const BareMessagesList: React.FC<BareMessagesListProps> = ({
                                  currentUserId === senderId;
       const isMyMessage = isOutgoing || isFromCurrentUser;
 
-      // Get sender name for received messages
-      const senderName = item.sender?.name || '';
       
       return (
         <View style={[styles.msgContainer, isMyMessage ? styles.myMsg : styles.otherMsg]}>
-          {/* Sender name for received messages */}
-          {!isMyMessage && senderName && !item.groupWithPrevious && (
-            <Text style={[styles.senderName, { color: themeColors.senderName }]}>{senderName}</Text>
-          )}
-          
           <View style={[
             styles.bubble, 
             isMyMessage 
@@ -226,12 +218,6 @@ const styles = StyleSheet.create({
   },
   otherMsg: {
     alignItems: 'flex-start',
-  },
-  senderName: {
-    fontSize: 12,
-    fontWeight: '600',
-    marginBottom: 2,
-    marginLeft: 4,
   },
   bubble: {
     maxWidth: '80%',

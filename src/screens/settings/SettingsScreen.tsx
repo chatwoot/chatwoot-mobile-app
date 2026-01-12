@@ -28,18 +28,6 @@ import * as WebBrowser from 'expo-web-browser';
 import { useSelector } from 'react-redux';
 import * as Application from 'expo-application';
 
-// Chat with us - opens Chatwoot chat widget in browser
-const openChatWidget = async () => {
-  const baseUrl = process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL || 'https://cx.aloochat.ai';
-  const websiteToken = process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN || 'xepyhKkhoZm13wA3PMCRwcR9';
-  const chatwootUrl = `${baseUrl}/widget?website_token=${websiteToken}`;
-  
-  try {
-    await WebBrowser.openBrowserAsync(chatwootUrl);
-  } catch (error) {
-    console.error('Failed to open Chatwoot chat:', error);
-  }
-};
 
 // Mock DeviceInfo for Expo Go compatibility
 const DeviceInfo = {
@@ -69,9 +57,11 @@ import { UserAvatar } from './components/UserAvatar';
 
 import { LANGUAGES, TAB_BAR_HEIGHT } from '@/constants';
 import { useRefsContext } from '@/context';
-import { AlooChatIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
-import { ThemeSelector } from '@/components-next/settings/ThemeSelector';
+import { AlooChatIcon, NotificationIcon, SwitchIcon, TranslateIcon, AppearanceIcon } from '@/svg-icons';
+import { ThemeList } from '@/components-next/settings/ThemeSelector';
 import { useTheme } from '@/context/ThemeContext';
+import { Theme } from '@/types/common/Theme';
+
 import { GenericListType } from '@/types';
 
 import { useHaptic } from '@/utils';
@@ -107,7 +97,7 @@ const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVe
 const SettingsScreen = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const { colors, isDark } = useTheme();
+  const { colors, isDark, theme, setThemeMode } = useTheme();
   const availabilityStatus =
     (useSelector(selectCurrentUserAvailability) as AvailabilityStatus) || 'offline';
 
@@ -168,6 +158,7 @@ const SettingsScreen = () => {
   const {
     userAvailabilityStatusSheetRef,
     languagesModalSheetRef,
+    themeModalSheetRef,
     notificationPreferencesSheetRef,
     switchAccountSheetRef,
   } = useRefsContext();
@@ -223,6 +214,17 @@ const SettingsScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeLocale]);
 
+  useEffect(() => {
+    themeModalSheetRef.current?.dismiss({
+      overshootClamping: true,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [theme]);
+
+  const onChangeTheme = (newTheme: Theme) => {
+    setThemeMode(newTheme);
+  };
+
   const openURL = async () => {
     await WebBrowser.openBrowserAsync(HELP_URL);
   };
@@ -269,6 +271,14 @@ const SettingsScreen = () => {
       onPressListItem: () => languagesModalSheetRef.current?.present(),
     },
     {
+      hasChevron: true,
+      title: i18n.t('SETTINGS.APPEARANCE'),
+      icon: <AppearanceIcon />,
+      subtitle: i18n.t(`SETTINGS.THEME_${theme.toUpperCase()}`),
+      subtitleType: 'light',
+      onPressListItem: () => themeModalSheetRef.current?.present(),
+    },
+    {
       hasChevron: enableAccountSwitch,
       title: i18n.t('SETTINGS.SWITCH_ACCOUNT'),
       icon: <SwitchIcon />,
@@ -297,7 +307,7 @@ const SettingsScreen = () => {
       icon: <AlooChatIcon />,
       subtitle: '',
       subtitleType: 'light',
-      onPressListItem: openChatWidget,
+      onPressListItem: () => navigation.navigate('ChatWithUs' as never),
     },
   ];
 
@@ -333,12 +343,6 @@ const SettingsScreen = () => {
         </Animated.View>
         <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.PREFERENCES')} list={preferencesList} />
-        </Animated.View>
-        <Animated.View style={tailwind.style('pt-6')}>
-          <Animated.Text style={[tailwind.style('text-md font-inter-420-20 px-4 pb-2'), { color: colors.textSecondary }]}>
-            {i18n.t('SETTINGS.APPEARANCE')}
-          </Animated.Text>
-          <ThemeSelector />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.SUPPORT')} list={supportList} />
@@ -426,6 +430,20 @@ const SettingsScreen = () => {
             changeAccount={changeAccount}
             accounts={accounts}
           />
+        </BottomSheetWrapper>
+      </BottomSheetModal>
+      <BottomSheetModal
+        ref={themeModalSheetRef}
+        backdropComponent={BottomSheetBackdrop}
+        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        enablePanDownToClose
+        animationConfigs={animationConfigs}
+        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        style={tailwind.style('rounded-[26px] overflow-hidden')}
+        snapPoints={[190]}>
+        <BottomSheetWrapper>
+          <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_THEME')} />
+          <ThemeList onChangeTheme={onChangeTheme} currentTheme={theme} />
         </BottomSheetWrapper>
       </BottomSheetModal>
     </SafeAreaView>

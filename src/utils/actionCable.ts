@@ -26,6 +26,21 @@ import {
 import * as Notifications from 'expo-notifications';
 import { AppState, Platform } from 'react-native';
 
+// Deduplication: Track recently notified message IDs to prevent duplicates
+const recentlyNotifiedMessages = new Set<string>();
+const NOTIFICATION_DEDUP_TIMEOUT = 5000; // 5 seconds
+
+const shouldShowNotification = (notificationKey: string): boolean => {
+  if (recentlyNotifiedMessages.has(notificationKey)) {
+    console.log('[ActionCable] ⚠️ Duplicate notification blocked:', notificationKey);
+    return false; // Already notified
+  }
+  recentlyNotifiedMessages.add(notificationKey);
+  // Clean up after timeout
+  setTimeout(() => recentlyNotifiedMessages.delete(notificationKey), NOTIFICATION_DEDUP_TIMEOUT);
+  return true;
+};
+
 interface ActionCableConfig {
   pubSubToken: string;
   webSocketUrl: string;
@@ -75,23 +90,38 @@ class ActionCableConnector extends BaseActionCableConnector {
     try {
       const currentUserId = store.getState().auth.user?.id;
       const senderId = message.sender?.id;
-      const senderName = message.sender?.name || 'Someone';
-      const messageContent = message.content || 'New message';
+      const senderName = message.sender?.name || 'New Message';
+      const messageContent = message.content || 'You have a new message';
       const messageType = message.messageType; // 0 = incoming, 1 = outgoing
-      const senderType = message.sender?.type; // 'contact' = real user, 'agent_bot' = AI
+      const senderType = message.sender?.type?.toLowerCase(); // 'contact' = real user, 'agent_bot' = AI
+      
+      console.log('[ActionCable] Message received:', {
+        senderId,
+        currentUserId,
+        messageType,
+        senderType,
+        senderName,
+      });
       
       // Only show notification if:
-      // 1. Message is from someone else (not current user)
+      // 1. Message is from someone else (not current user) OR senderId is undefined (contact message)
       // 2. Message is incoming (messageType === 0)
-      // 3. Sender is not an AI bot (senderType !== 'agent_bot')
-      const isIncomingFromRealUser = 
-        senderId && 
-        senderId !== currentUserId && 
-        messageType === 0 && 
-        senderType !== 'agent_bot';
+      // 3. Sender is not an AI bot
+      const isNotFromCurrentUser = !senderId || senderId !== currentUserId;
+      const isIncoming = messageType === 0;
+      const isNotBot = senderType !== 'agent_bot' && senderType !== 'agentbot';
       
-      if (isIncomingFromRealUser) {
-        console.log('[ActionCable] New message from', senderName, '- displaying notification');
+      const shouldNotify = isNotFromCurrentUser && isIncoming && isNotBot;
+      
+      console.log('[ActionCable] Notification check:', {
+        isNotFromCurrentUser,
+        isIncoming,
+        isNotBot,
+        shouldNotify,
+      });
+      
+      if (shouldNotify && message.id && shouldShowNotification(`msg_${message.id}`)) {
+        console.log('[ActionCable] 🔔 Displaying notification for message from:', senderName);
         
         await Notifications.scheduleNotificationAsync({
           content: {
@@ -111,10 +141,12 @@ class ActionCableConnector extends BaseActionCableConnector {
           trigger: null,
         });
         
-        console.log('[ActionCable] ✅ Notification displayed for new message');
+        console.log('[ActionCable] ✅ Notification displayed successfully');
+      } else {
+        console.log('[ActionCable] ⏭️ Skipping notification - bot or outgoing message');
       }
     } catch (error) {
-      console.error('[ActionCable] Failed to display notification:', error);
+      console.error('[ActionCable] ❌ Failed to display notification:', error);
     }
   };
 
@@ -145,7 +177,8 @@ class ActionCableConnector extends BaseActionCableConnector {
       const assigneeId = conversation.meta?.assignee?.id;
       
       // Only show notification if conversation is assigned to current user
-      if (assigneeId && assigneeId === currentUserId) {
+      const assignmentKey = `assign_${conversation.id}_${assigneeId}`;
+      if (assigneeId && assigneeId === currentUserId && shouldShowNotification(assignmentKey)) {
         console.log('[ActionCable] Conversation assigned to you - displaying notification');
         
         const contactName = conversation.meta?.sender?.name || 'Unknown';
@@ -190,9 +223,93 @@ class ActionCableConnector extends BaseActionCableConnector {
     store.dispatch(updateContact(contact));
   };
 
-  onNotificationCreated = (data: NotificationCreatedResponse) => {
+  onNotificationCreated = async (data: NotificationCreatedResponse) => {
     const notification: NotificationCreatedResponse = transformNotificationCreatedResponse(data);
     store.dispatch(addNotification(notification));
+    
+    // Display notification for notification activities
+    try {
+      const notificationType = notification.notificationType;
+      const primaryActor = notification.primaryActor;
+      const senderName = (primaryActor?.meta?.sender as any)?.name || 'AlooChat';
+      const messageContent = (primaryActor?.meta?.lastMessage as any)?.content || '';
+      const conversationId = primaryActor?.conversationId || primaryActor?.id;
+      
+      console.log('[ActionCable] Notification created:', {
+        notificationType,
+        senderName,
+        conversationId,
+      });
+      
+      // Define which notification types should show a notification
+      const notifiableTypes = [
+        'conversation_creation',
+        'conversation_assignment', 
+        'assigned_conversation_new_message',
+        'participating_conversation_new_message',
+        'conversation_mention',
+        'sla_missed_first_response',
+        'sla_missed_next_response',
+        'sla_missed_resolution',
+      ];
+      
+      if (notifiableTypes.includes(notificationType)) {
+        let title = 'AlooChat';
+        let body = 'You have a new notification';
+        
+        switch (notificationType) {
+          case 'conversation_assignment':
+            title = '📋 Conversation Assigned';
+            body = `A conversation from ${senderName} has been assigned to you`;
+            break;
+          case 'assigned_conversation_new_message':
+          case 'participating_conversation_new_message':
+            title = senderName;
+            body = messageContent || 'New message received';
+            break;
+          case 'conversation_mention':
+            title = '🔔 You were mentioned';
+            body = `${senderName} mentioned you in a conversation`;
+            break;
+          case 'conversation_creation':
+            title = '💬 New Conversation';
+            body = `New conversation from ${senderName}`;
+            break;
+          case 'sla_missed_first_response':
+          case 'sla_missed_next_response':
+          case 'sla_missed_resolution':
+            title = '⚠️ SLA Alert';
+            body = `Conversation #${conversationId} requires attention`;
+            break;
+          default:
+            title = notification.pushMessageTitle || senderName;
+            body = messageContent || 'You have a new notification';
+        }
+        
+        console.log('[ActionCable] 🔔 Displaying notification:', { title, body });
+        
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title,
+            body,
+            data: {
+              conversationId: String(conversationId || ''),
+              notificationType,
+            },
+            sound: 'default',
+            badge: 1,
+            ...(Platform.OS === 'android' && {
+              channelId: 'aloochat_messages',
+            }),
+          },
+          trigger: null,
+        });
+        
+        console.log('[ActionCable] ✅ Notification displayed for:', notificationType);
+      }
+    } catch (error) {
+      console.error('[ActionCable] ❌ Failed to display notification:', error);
+    }
   };
 
   onNotificationRemoved = (data: NotificationRemovedResponse) => {
@@ -258,8 +375,25 @@ class ActionCableConnector extends BaseActionCableConnector {
   };
 }
 
+// Singleton instance to prevent multiple connections
+let instance: ActionCableConnector | null = null;
+
 export default {
   init({ pubSubToken, webSocketUrl, accountId, userId }: ActionCableConfig) {
-    return new ActionCableConnector(pubSubToken, webSocketUrl, accountId, userId);
+    // Return existing instance if already connected with same config
+    if (instance) {
+      console.log('[ActionCable] ⚠️ Already connected - reusing existing instance');
+      return instance;
+    }
+    
+    console.log('[ActionCable] 🔌 Creating new connection');
+    instance = new ActionCableConnector(pubSubToken, webSocketUrl, accountId, userId);
+    return instance;
+  },
+  
+  // Allow resetting for logout scenarios
+  reset() {
+    console.log('[ActionCable] 🔄 Resetting connection');
+    instance = null;
   },
 };

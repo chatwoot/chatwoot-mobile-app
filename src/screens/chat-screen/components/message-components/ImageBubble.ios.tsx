@@ -1,17 +1,25 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Image } from 'expo-image';
-// import { Galeria } from '@nandorojo/galeria';
+import Constants from 'expo-constants';
 import { tailwind } from '@/theme';
 
-let Galeria: any = ({ children }: any) => <View>{children}</View>;
-// Add static properties that might be used
-Galeria.Image = ({ children }: any) => <View>{children}</View>;
+// Check if running in Expo Go - Galeria native module not available there
+const isExpoGo = Constants?.appOwnership === 'expo';
 
-try {
-  Galeria = require('@nandorojo/galeria').Galeria;
-} catch (e) {
-  console.warn('@nandorojo/galeria not available');
+// Mock Galeria for Expo Go
+const MockGaleria: any = ({ children }: any) => <View>{children}</View>;
+MockGaleria.Image = ({ children }: any) => <>{children}</>;
+
+// Only load real Galeria in production builds
+let Galeria: any = MockGaleria;
+if (!isExpoGo) {
+  try {
+    Galeria = require('@nandorojo/galeria').Galeria;
+  } catch (e) {
+    console.warn('@nandorojo/galeria not available');
+    Galeria = MockGaleria;
+  }
 }
 
 type ImageCellProps = {

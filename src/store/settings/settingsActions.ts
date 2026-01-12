@@ -12,9 +12,25 @@ try {
 }
 
 import { Platform, PermissionsAndroid } from 'react-native';
+import Constants from 'expo-constants';
 
-// Firebase messaging is not available in Expo Go
-const getFirebaseMessaging = () => null;
+// Firebase messaging - only load in production builds, not Expo Go
+let firebaseMessaging: any = null;
+const isExpoGo = Constants?.appOwnership === 'expo';
+
+if (!isExpoGo) {
+  try {
+    const messaging = require('@react-native-firebase/messaging');
+    if (messaging && messaging.default) {
+      firebaseMessaging = messaging.default;
+      console.log('[settingsActions] ✅ Firebase messaging loaded');
+    }
+  } catch (e) {
+    console.warn('[settingsActions] Firebase messaging not available');
+  }
+}
+
+const getFirebaseMessaging = () => firebaseMessaging;
 
 // Lazy load expo-notifications as fallback
 let Notifications: any = null;
@@ -168,7 +184,7 @@ export const settingsActions = {
         const buildNumber = await getBuildNumber();
 
         let pushToken: string | null = null;
-        let subscriptionType = 'fcm';
+        let subscriptionType = Platform.OS === 'ios' ? 'apns' : 'fcm';
 
         // Try Firebase first
         if (messaging) {
@@ -198,7 +214,13 @@ export const settingsActions = {
             await sleep(500);
             
             pushToken = await messaging().getToken();
-            console.log('[saveDeviceDetails] Firebase FCM token:', pushToken ? 'obtained' : 'FAILED');
+            if (pushToken) {
+              // Firebase token is always FCM format (handles APNs conversion internally)
+              subscriptionType = 'fcm';
+              console.log('[saveDeviceDetails] ✅ Firebase FCM token obtained!');
+            } else {
+              console.warn('[saveDeviceDetails] Firebase getToken returned null');  
+            }
           } catch (firebaseError) {
             console.warn('[saveDeviceDetails] Firebase error:', firebaseError);
           }
@@ -226,8 +248,9 @@ export const settingsActions = {
                   console.log(`[saveDeviceDetails] Attempting getDevicePushTokenAsync (attempt ${attempt}/${maxRetries})...`);
                   const tokenData = await expoNotifications.getDevicePushTokenAsync();
                   pushToken = tokenData.data as string;
-                  subscriptionType = 'fcm';
-                  console.log('[saveDeviceDetails] Expo device token obtained!');
+                  // getDevicePushTokenAsync returns APNs token on iOS, FCM token on Android
+                  subscriptionType = Platform.OS === 'ios' ? 'apns' : 'fcm';
+                  console.log(`[saveDeviceDetails] Expo device token obtained! Type: ${subscriptionType}`);
                   break;
                 } catch (tokenError: any) {
                   console.warn(`[saveDeviceDetails] Attempt ${attempt} failed:`, tokenError?.message || tokenError);

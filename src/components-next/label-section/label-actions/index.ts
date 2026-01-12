@@ -1,3 +1,3 @@
-export { LabelStack } from './LabelStack';
-export { LabelBackdrop } from './LabelBackdrop';
-export { LabelActions } from './LabelActions';
+export * from './LabelStack';
+export * from './LabelBackdrop';
+export * from './LabelActions';

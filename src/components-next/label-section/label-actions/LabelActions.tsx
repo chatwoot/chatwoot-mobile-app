@@ -1,51 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Platform, Pressable, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetModal,
+  BottomSheetScrollView,
+  BottomSheetBackgroundProps,
+} from '@gorhom/bottom-sheet';
 
 import { useRefsContext } from '@/context';
 import { LabelTag } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { Label } from '@/types';
-import { BottomSheetBackdrop, Icon, SearchBar } from '@/components-next';
+import { Icon, SearchBar } from '@/components-next';
 import { useAppSelector } from '@/hooks';
 import { filterLabels } from '@/store/label/labelSelectors';
 
-import { LabelCell, LabelItem } from '@/components-next/label-section';
-
-type LabelStackProps = {
-  filteredLabels: Label[];
-  selectedLabels: string[];
-  handleLabelPress: (label: string) => void;
-  isStandAloneComponent?: boolean;
-};
-const LabelStack = (props: LabelStackProps) => {
-  const { filteredLabels, selectedLabels, isStandAloneComponent = true, handleLabelPress } = props;
-
-  return (
-    <BottomSheetScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
-      {filteredLabels.map((value, index) => {
-        return (
-          <LabelCell
-            key={index}
-            {...{ value, index }}
-            handleLabelPress={handleLabelPress}
-            isActive={selectedLabels.includes(value.title)}
-            isLastItem={index === filteredLabels.length - 1 && isStandAloneComponent ? true : false}
-          />
-        );
-      })}
-    </BottomSheetScrollView>
-  );
-};
+import { LabelItem } from '@/components-next/label-section';
+import { LabelStack, LabelBackdrop } from './';
 
 interface LabelActionsProps {
   labels: string[];
   onLabelsUpdate: (updatedLabels: string[]) => Promise<void> | void;
+  sheetRef?: React.RefObject<BottomSheetModal>;
 }
 
 export const LabelActions = (props: LabelActionsProps) => {
-  const { labels, onLabelsUpdate } = props;
+  const { labels, onLabelsUpdate, sheetRef } = props;
   const [searchTerm, setSearchTerm] = useState('');
 
   const [selectedLabels, setSelectedLabels] = useState(labels);
@@ -54,7 +33,13 @@ export const LabelActions = (props: LabelActionsProps) => {
     setSelectedLabels(labels);
   }, [labels]);
 
-  const { addLabelSheetRef } = useRefsContext();
+  const { addLabelSheetRef: contextAddLabelSheetRef } = useRefsContext();
+  const addLabelSheetRef = sheetRef || contextAddLabelSheetRef;
+
+  // Custom backdrop that uses the instance's own ref instead of the shared context ref
+  const backdropComponent = (props: BottomSheetBackgroundProps) => (
+    <LabelBackdrop {...props} sheetRef={addLabelSheetRef} />
+  );
 
   const allLabels = useAppSelector(state => filterLabels(state, ''));
 
@@ -130,7 +115,7 @@ export const LabelActions = (props: LabelActionsProps) => {
       </Animated.View>
       <BottomSheetModal
         ref={addLabelSheetRef}
-        backdropComponent={BottomSheetBackdrop}
+        backdropComponent={backdropComponent}
         handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-[26px] overflow-hidden')}

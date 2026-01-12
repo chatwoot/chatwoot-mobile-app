@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 import { useAppDispatch } from '@/hooks';
 import { contactLabelActions } from '@/store/contact/contactLabelActions';
@@ -13,6 +14,7 @@ interface ContactLabelActionsProps {
 export const ContactLabelActions = (props: ContactLabelActionsProps) => {
   const { labels, contactId } = props;
   const dispatch = useAppDispatch();
+  const contactLabelSheetRef = useRef<BottomSheetModal>(null);
 
   const handleLabelsUpdate = (updatedLabels: string[]) => {
     dispatch(
@@ -23,6 +25,12 @@ export const ContactLabelActions = (props: ContactLabelActionsProps) => {
     );
   };
 
-  return <LabelActions labels={labels} onLabelsUpdate={handleLabelsUpdate} />;
+  return (
+    <LabelActions
+      labels={labels}
+      onLabelsUpdate={handleLabelsUpdate}
+      sheetRef={contactLabelSheetRef}
+    />
+  );
 };
 

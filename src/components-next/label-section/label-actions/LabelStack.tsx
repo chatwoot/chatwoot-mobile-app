@@ -3,7 +3,7 @@ import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 import { tailwind } from '@/theme';
 import { Label } from '@/types';
-import { LabelCell } from '@/components-next/label-section';
+import { LabelCell } from '../LabelCell';
 
 type LabelStackProps = {
   filteredLabels: Label[];

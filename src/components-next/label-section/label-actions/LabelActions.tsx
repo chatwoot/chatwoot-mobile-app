@@ -10,12 +10,14 @@ import {
 import { useRefsContext } from '@/context';
 import { LabelTag } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { Icon, SearchBar } from '@/components-next';
+import { Icon } from '@/components-next/common/icon';
+import { SearchBar } from '@/components-next/common/search';
 import { useAppSelector } from '@/hooks';
 import { filterLabels } from '@/store/label/labelSelectors';
 
-import { LabelItem } from '@/components-next/label-section';
-import { LabelStack, LabelBackdrop } from './';
+import { LabelItem } from '../LabelItem';
+import { LabelStack } from './LabelStack';
+import { LabelBackdrop } from './LabelBackdrop';
 
 interface LabelActionsProps {
   labels: string[];

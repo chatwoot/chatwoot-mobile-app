@@ -18,6 +18,7 @@ interface ChatWindowContextType {
   pagerViewIndex: number;
   setPagerViewIndex: React.Dispatch<React.SetStateAction<number>>;
   conversationId: number;
+  messageId?: number;
 }
 
 const ChatWindowContext = React.createContext<ChatWindowContextType | undefined>(undefined);
@@ -43,7 +44,7 @@ const ChatWindowProvider: React.FC<
 
   const textInputRef = useRef<TextInputProps>(null);
 
-  const { children, conversationId = 0 } = props;
+  const { children, conversationId = 0, messageId } = props;
 
   return (
     <ChatWindowContext.Provider
@@ -58,6 +59,7 @@ const ChatWindowProvider: React.FC<
         pagerViewIndex,
         setPagerViewIndex,
         conversationId,
+        messageId,
       }}>
       {children}
     </ChatWindowContext.Provider>

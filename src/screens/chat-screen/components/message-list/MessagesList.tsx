@@ -45,6 +45,7 @@ type MessagesListPresentationProps = {
   onEndReached: () => void;
   isEmailInbox: boolean;
   currentUserId: number;
+  targetMessageId?: number;
 };
 
 export const MessagesList = ({
@@ -54,6 +55,7 @@ export const MessagesList = ({
   onEndReached,
   isEmailInbox,
   currentUserId,
+  targetMessageId,
 }: MessagesListPresentationProps) => {
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
@@ -66,12 +68,15 @@ export const MessagesList = ({
       return <DateSection item={item} />;
     }
 
+    const isTarget = targetMessageId !== undefined && targetMessageId === item.id;
+
     return (
       <MessageComponent
         item={item}
         index={index}
         isEmailInbox={isEmailInbox}
         currentUserId={currentUserId}
+        isTargetMessage={isTarget}
       />
     );
     // TODO: Deprecate this after the new message item is ready
@@ -93,7 +98,7 @@ export const MessagesList = ({
       style={[tailwind.style('flex-1 min-h-10'), animatedFlashlistStyle]}>
       <AnimatedFlashlist
         layout={LinearTransition.springify().damping(38).stiffness(240)}
-        onScroll={() => {
+        onLayout={() => {
           if (!isFlashListReady) {
             setFlashListReady(true);
           }

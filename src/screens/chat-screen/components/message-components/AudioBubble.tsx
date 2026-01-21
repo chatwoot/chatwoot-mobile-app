@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { Platform, Pressable, View } from 'react-native';
 import { PlayBackType } from 'react-native-audio-recorder-player';
-import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut, useSharedValue, useDerivedValue } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
 import * as Sentry from '@sentry/react-native';
 
@@ -20,6 +20,7 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
 // eslint-disable-next-line import/no-unresolved
 import { convertOggToWav } from '@/utils/audioConverter';
+import { formatDuration } from '@/utils/dateTimeUtils';
 
 const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
   return (
@@ -59,8 +60,16 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const currentPosition = useSharedValue(0);
   const totalDuration = useSharedValue(0);
 
+  const currentFormattedTime = useDerivedValue(() => {
+    return formatDuration(currentPosition.value);
+  });
+
+  const totalFormattedDuration = useDerivedValue(() => {
+    return formatDuration(totalDuration.value);
+  });
+
   const audioPlayBackStatus = useCallback(
-    (args: { status?: AudioStatus; data?: PlayBackType }) => {
+    (args: { status: AudioStatus; data?: PlayBackType }) => {
       const { data: playBackData, status } = args;
       if (playBackData) {
         currentPosition.value = playBackData.currentPosition;
@@ -73,7 +82,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
         }
       }
     },
-    [currentPosition, totalDuration, dispatch, status],
+    [currentPosition, totalDuration, dispatch],
   );
 
   useEffect(() => {
@@ -166,14 +175,17 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
           </Animated.View>
         ) : isCurrentAudioSrcPlaying ? (
           <Animated.View
-            style={tailwind.style('pl-0.5 pr-0.5')}
+            style={tailwind.style(
+              'w-7 h-7 rounded-full items-center justify-center mr-1',
+              variant === MESSAGE_VARIANTS.USER ? 'bg-white' : 'bg-gray-400',
+            )}
             entering={FadeIn}
             exiting={FadeOut}>
             <Icon
               icon={
                 <PauseIcon
                   fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-                  fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
+                  fill={variant === MESSAGE_VARIANTS.USER ? 'blue' : 'black'}
                 />
               }
               size={13}
@@ -181,17 +193,27 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
           </Animated.View>
         ) : (
           <Animated.View
-            style={tailwind.style('pl-0.5 pr-0.5')}
+            style={tailwind.style(
+              'w-7 h-7 rounded-full items-center justify-center mr-1',
+              variant === MESSAGE_VARIANTS.USER ? 'bg-white' : 'bg-gray-400',
+            )}
             entering={FadeIn}
             exiting={FadeOut}>
             <PlayIcon
               fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-              fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
+              fill={variant === MESSAGE_VARIANTS.USER ? 'blue' : 'black'}
             />
           </Animated.View>
         )}
       </Pressable>
       <Slider {...sliderProps} />
+      <Animated.Text
+        style={tailwind.style(
+          'text-xs ml-1',
+          variant === MESSAGE_VARIANTS.USER ? 'text-whiteA-A11' : 'text-gray-700',
+        )}>
+        {currentFormattedTime.value} / {totalFormattedDuration.value}
+      </Animated.Text>
     </View>
   );
 });

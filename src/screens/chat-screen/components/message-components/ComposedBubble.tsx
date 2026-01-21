@@ -41,11 +41,13 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
     private: isPrivate,
     createdAt,
     contentAttributes,
-    status,
+    status: rawStatus, // Destructure status into a temporary variable
   } = props.item as Message;
   const { conversationId } = useChatWindowContext();
 
   const messages = useAppSelector(state => getMessagesByConversationId(state, { conversationId }));
+
+  const messageStatus = rawStatus || MESSAGE_STATUS.SENT; // Provide a default status
 
   const isReplyMessage = useMemo(
     () => contentAttributes?.inReplyTo !== undefined,
@@ -62,7 +64,7 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
   const { imageType } = contentAttributes || {};
   const isAnInstagramStory = imageType === ATTACHMENT_TYPES.STORY_MENTION;
   const isInstagramStoryExpired = isMessageCreatedAtLessThan24HoursOld(createdAt);
-  const isMessageSending = status === MESSAGE_STATUS.PROGRESS;
+  const isMessageSending = messageStatus === MESSAGE_STATUS.PROGRESS;
   // Removed: style={tailwind.style('my-2')}
   return (
     <Animated.View style={tailwind.style('flex flex-row')}>

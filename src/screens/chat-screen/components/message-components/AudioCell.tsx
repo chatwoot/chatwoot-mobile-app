@@ -14,7 +14,7 @@ import { Channel, IconProps, Message, MessageStatus, UnixTimestamp } from '@/typ
 import { unixTimestampToReadableTime } from '@/utils';
 import { Avatar, Icon, Slider } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
-import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
+import { AudioStatus, pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { MESSAGE_TYPES } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
@@ -69,8 +69,8 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
   const currentPosition = useSharedValue(0);
   const totalDuration = useSharedValue(0);
 
-  const audioPlayBackStatus = (data: { data: PlayBackType }) => {
-    const playBackData = data.data as PlayBackType;
+  const audioPlayBackStatus = (args: { status?: AudioStatus; data?: PlayBackType }) => {
+    const { data: playBackData, status } = args;
     if (playBackData) {
       currentPosition.value = playBackData.currentPosition;
       totalDuration.value = playBackData.duration;
@@ -213,9 +213,7 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
       )}>
       <Animated.View style={tailwind.style('flex flex-row')}>
         {sender?.name && isIncoming && shouldRenderAvatar ? (
-          <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
-          </Animated.View>
+            <Avatar size={'md'} src={sender?.thumbnail ? { uri: sender.thumbnail } : undefined} name={sender?.name} />
         ) : null}
         <MessageMenu menuOptions={menuOptions}>
           <Animated.View
@@ -261,7 +259,7 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
         </MessageMenu>
         {sender?.name && isOutgoing && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end ml-1')}>
-            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
+            <Avatar size={'md'} src={sender?.thumbnail ? { uri: sender.thumbnail } : undefined} name={sender?.name} />
           </Animated.View>
         ) : null}
       </Animated.View>

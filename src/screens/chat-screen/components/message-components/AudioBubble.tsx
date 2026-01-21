@@ -14,14 +14,13 @@ import { tailwind } from '@/theme';
 import { IconProps } from '@/types';
 import { Icon, Slider } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
-import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
+import { AudioStatus, pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
 import { MESSAGE_VARIANTS } from '@/constants';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
 // eslint-disable-next-line import/no-unresolved
 import { convertOggToWav } from '@/utils/audioConverter';
 
-// eslint-disable-next-line react/display-name
 const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
   return (
     <Svg width="10" height="13" viewBox="0 0 10 13" fill="none">
@@ -29,7 +28,6 @@ const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
     </Svg>
   );
 });
-// eslint-disable-next-line react/display-name
 const PauseIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
   return (
     <Svg width="10" height="12" viewBox="0 0 10 12" fill="none">
@@ -48,7 +46,6 @@ type AudioPlayerProps = Pick<AudioBubbleProps, 'audioSrc'> & {
   variant: string;
 };
 
-// eslint-disable-next-line react/display-name
 export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const { audioSrc, variant } = props;
 
@@ -63,8 +60,8 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const totalDuration = useSharedValue(0);
 
   const audioPlayBackStatus = useCallback(
-    (data: { data: PlayBackType }) => {
-      const playBackData = data.data as PlayBackType;
+    (args: { status?: AudioStatus; data?: PlayBackType }) => {
+      const { data: playBackData, status } = args;
       if (playBackData) {
         currentPosition.value = playBackData.currentPosition;
         totalDuration.value = playBackData.duration;
@@ -76,7 +73,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
         }
       }
     },
-    [currentPosition, totalDuration, dispatch],
+    [currentPosition, totalDuration, dispatch, status],
   );
 
   useEffect(() => {
@@ -85,7 +82,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
         setIsSoundLoading(true);
         try {
           const convertedSrc = await convertOggToWav(audioSrc);
-          setConvertedAudioSrc(convertedSrc);
+          setConvertedAudioSrc(convertedSrc as string);
         } catch (error) {
           Sentry.captureException(error);
         } finally {
@@ -199,7 +196,6 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   );
 });
 
-// eslint-disable-next-line react/display-name
 export const AudioBubble = React.memo<AudioBubbleProps>(props => {
   const { audioSrc, variant } = props;
 

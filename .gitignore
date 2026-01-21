@@ -43,3 +43,7 @@ GoogleService-Info.plist
 .env.local
 
 AGENTS.md
+
+eslint.config.js
+yarn.lock
+settings.json

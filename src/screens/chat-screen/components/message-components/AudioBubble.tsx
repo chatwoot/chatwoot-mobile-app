@@ -80,6 +80,10 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
           setAudioPlaying(false);
           dispatch(setCurrentPlayingAudioSrc(''));
         }
+      } else if (status === AudioStatus.STOPPED) {
+        currentPosition.value = 0;
+        setAudioPlaying(false);
+        dispatch(setCurrentPlayingAudioSrc(''));
       }
     },
     [currentPosition, totalDuration, dispatch],
@@ -175,17 +179,14 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
           </Animated.View>
         ) : isCurrentAudioSrcPlaying ? (
           <Animated.View
-            style={tailwind.style(
-              'w-7 h-7 rounded-full items-center justify-center mr-1',
-              variant === MESSAGE_VARIANTS.USER ? 'bg-white' : 'bg-gray-400',
-            )}
+            style={tailwind.style('pl-0.5 pr-0.5')}
             entering={FadeIn}
             exiting={FadeOut}>
             <Icon
               icon={
                 <PauseIcon
                   fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-                  fill={variant === MESSAGE_VARIANTS.USER ? 'blue' : 'black'}
+                  fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
                 />
               }
               size={13}
@@ -193,15 +194,12 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
           </Animated.View>
         ) : (
           <Animated.View
-            style={tailwind.style(
-              'w-7 h-7 rounded-full items-center justify-center mr-1',
-              variant === MESSAGE_VARIANTS.USER ? 'bg-white' : 'bg-gray-400',
-            )}
+            style={tailwind.style('pl-0.5 pr-0.5')}
             entering={FadeIn}
             exiting={FadeOut}>
             <PlayIcon
               fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-              fill={variant === MESSAGE_VARIANTS.USER ? 'blue' : 'black'}
+              fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
             />
           </Animated.View>
         )}
@@ -209,7 +207,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       <Slider {...sliderProps} />
       <Animated.Text
         style={tailwind.style(
-          'text-xs ml-1',
+          'text-xs ml-2',
           variant === MESSAGE_VARIANTS.USER ? 'text-whiteA-A11' : 'text-gray-700',
         )}>
         {currentFormattedTime.value} / {totalFormattedDuration.value}

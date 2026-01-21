@@ -40,7 +40,15 @@ export function useScrollToMessage({
     const targetIndex = messages.findIndex(
       (item) => !('date' in item) && 'id' in item && item.id === messageId,
     );
-    if (targetIndex === -1) return;
+
+    // If target message not found, make list visible anyway
+    if (targetIndex === -1) {
+      const fallbackTimer = setTimeout(() => {
+        hasPositionedMessageRef.current = true;
+        onPositioned();
+      }, 100);
+      return () => clearTimeout(fallbackTimer);
+    }
 
     // Initial scroll (may be inaccurate before items render)
     messageListRef.current?.scrollToIndex({

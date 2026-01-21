@@ -114,8 +114,25 @@ export const MessagesListContainer = () => {
   }, [messages]);
 
   const loadMessages = useCallback(
-    async ({ loadingMessagesForFirstTime = false, loadOlder = true }) => {
-      if (loadingMessagesForFirstTime) {
+    async ({
+      loadingMessagesForFirstTime = false,
+      loadOlder = true,
+      targetMessageId,
+    }: {
+      loadingMessagesForFirstTime?: boolean;
+      loadOlder?: boolean;
+      targetMessageId?: number;
+    }) => {
+      if (targetMessageId !== undefined) {
+        // Load target message and messages around it (for search navigation)
+        dispatch(
+          conversationActions.fetchPreviousMessages({
+            conversationId,
+            afterId: targetMessageId - 100,
+            beforeId: targetMessageId + 100,
+          }),
+        );
+      } else if (loadingMessagesForFirstTime) {
         dispatch(
           conversationActions.fetchPreviousMessages({
             conversationId,
@@ -135,6 +152,7 @@ export const MessagesListContainer = () => {
         }
       } else {
         // Load newer messages (after the newest message we have)
+        // Note: This is not currently triggered as Flashlist v1 doesnot support onStartReached
         const afterId = firstMessageId();
         if (afterId) {
           dispatch(
@@ -187,21 +205,7 @@ export const MessagesListContainer = () => {
 
   useEffect(() => {
     if (messageId) {
-      // Load target message and messages after it (for search navigation)
-      dispatch(
-        conversationActions.fetchPreviousMessages({
-          conversationId,
-          afterId: messageId,
-          beforeId: messageId + 50,
-        }),
-      );
-      // Load messages before target for context
-      dispatch(
-        conversationActions.fetchPreviousMessages({
-          conversationId,
-          beforeId: messageId,
-        }),
-      );
+      loadMessages({ targetMessageId: messageId });
     } else {
       loadMessages({ loadingMessagesForFirstTime: true });
     }

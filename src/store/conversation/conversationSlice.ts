@@ -133,8 +133,8 @@ const conversationSlice = createSlice({
       .addCase(conversationActions.fetchPreviousMessages.pending, state => {
         state.isLoadingMessages = true;
       })
-      .addCase(conversationActions.fetchPreviousMessages.fulfilled, (state, { payload }) => {
-        const { messages, conversationId, meta } = payload;
+      .addCase(conversationActions.fetchPreviousMessages.fulfilled, (state, action) => {
+        const { messages, conversationId, meta: responseMeta } = action.payload;
         if (!state.entities[conversationId]) {
           return;
         }
@@ -142,10 +142,15 @@ const conversationSlice = createSlice({
         conversation.messages.unshift(...messages);
         conversation.meta = {
           ...conversation.meta,
-          ...meta,
+          ...responseMeta,
         };
         state.isLoadingMessages = false;
+        // Only update isAllMessagesFetched for "before" requests (pagination of older messages)
+        // Skip for "after" requests or when both are present (search navigation)
+        const { afterId } = action.meta.arg;
+        if (!afterId) {
         state.isAllMessagesFetched = messages.length < 20 || false;
+        }
       })
       .addCase(conversationActions.fetchPreviousMessages.rejected, state => {
         state.isLoadingMessages = false;

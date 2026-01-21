@@ -8,7 +8,7 @@ import { Message } from '@/types';
 import { Icon, Spinner } from '@/components-next';
 import { ReplyMessageBubble } from './ReplyMessageBubble';
 
-import { ImageBubbleContainer } from './ImageBubble';
+import { ImageBubble } from './ImageBubble'; // Changed from ImageBubbleContainer
 
 import { useAppSelector } from '@/hooks';
 import { useChatWindowContext } from '@/context';
@@ -20,6 +20,7 @@ import { FileBubblePreview } from './FileBubble';
 import { AudioBubble } from './AudioBubble';
 import { VideoBubble } from './VideoBubble';
 import { LocationBubble } from './LocationBubble';
+// Removed: import {getRemoteImageSize} from '@/utils/messageUtils';
 
 type ComposedBubbleProps = {
   item: Message;
@@ -62,7 +63,7 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
   const isAnInstagramStory = imageType === ATTACHMENT_TYPES.STORY_MENTION;
   const isInstagramStoryExpired = isMessageCreatedAtLessThan24HoursOld(createdAt);
   const isMessageSending = status === MESSAGE_STATUS.PROGRESS;
-
+  // Removed: style={tailwind.style('my-2')}
   return (
     <Animated.View style={tailwind.style('flex flex-row')}>
       {isPrivate ? (
@@ -81,6 +82,10 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
         {props.item.attachments &&
           props.item.attachments.map((attachment, index) => {
             if (attachment.fileType === 'image') {
+              // Removed: getRemoteImageSize(attachment.dataUrl).then(({ width, height }) => {
+              // Removed: console.log('Image dimensions:', width, height);
+              // Removed: })
+
               return isAnInstagramStory && isInstagramStoryExpired ? (
                 <Animated.View
                   key={attachment.fileType + index}
@@ -94,11 +99,11 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
                   </Animated.Text>
                 </Animated.View>
               ) : (
-                <Animated.View key={attachment.fileType + index} style={tailwind.style('my-2')}>
-                  <ImageBubbleContainer
+                <Animated.View key={attachment.fileType + index} style={tailwind.style('')}> 
+                  <ImageBubble
                     imageSrc={attachment.dataUrl}
                     width={300 - 24 - (isPrivate ? 13 : 0)}
-                    height={215}
+                    //height={215}
                   />
                 </Animated.View>
               );

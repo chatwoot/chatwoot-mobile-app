@@ -83,7 +83,7 @@ const PlayerHub = (() => {
    * @returns A promise that resolves when the enqueued function completes.
    */
   const enqueue = (fn: () => Promise<void>) => {
-    opChain = opChain.then(fn).catch(() => {});
+    opChain = opChain.then(fn).catch((e) => Sentry.captureException(e)); // Log errors instead of swallowing.
     return opChain;
   };
 
@@ -665,13 +665,23 @@ export const AudioBubblePlayer = React.memo((props: AudioBubbleProps) => {
         currentPosition.value = next;
         setCurrentTime(formatTime(next));
 
-        await PlayerHub.seekTo(next);
+        try {
+          await PlayerHub.seekTo(next);
+        } catch (e) {
+          Sentry.captureException(e);
+        }
 
         // If this player is current and was paused, resume playback after seeking.
         if (isThisCurrent) {
           const st = lastStatusRef.current;
           const playing = st && (st as any).isLoaded ? (st as any).isPlaying : isAudioPlaying;
-          if (!playing) await PlayerHub.resume();
+          if (!playing) {
+            try {
+              await PlayerHub.resume();
+            } catch (e) {
+              Sentry.captureException(e);
+            }
+          }
         }
       });
     },
@@ -684,7 +694,11 @@ export const AudioBubblePlayer = React.memo((props: AudioBubbleProps) => {
   const pauseAudioJS = useCallback(async () => {
     await PlayerHub.enqueue(async () => {
       PlayerHub.suppressNextOnce(idRef.current); // Prevent auto-play next.
-      await PlayerHub.pause();
+      try {
+        await PlayerHub.pause();
+      } catch (e) {
+        Sentry.captureException(e);
+      }
     });
   }, []);
 

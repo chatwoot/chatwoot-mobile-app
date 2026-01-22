@@ -41,3 +41,9 @@ google-services.json
 GoogleService-Info.plist
 .env
 .env.local
+
+AGENTS.md
+
+eslint.config.js
+yarn.lock
+settings.json

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Platform, Pressable } from 'react-native';
 import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
 import {
@@ -13,86 +13,111 @@ import { tailwind } from '@/theme';
 import { Spinner } from '@/components-next/spinner';
 
 type VideoBubbleProps = {
-  videoSrc: string;
+  videoSrc: string; // The source URI of the video to display.
+  width?: number; // Optional maximum width for the video bubble.
 };
 
-type VideoPlayerProps = Pick<VideoBubbleProps, 'videoSrc'> & {
-  playerEnabled?: boolean;
-};
+type VideoPlayerProps = Pick<VideoBubbleProps, 'videoSrc' | 'width'>; // Inherit videoSrc and width from VideoBubbleProps.
 
 export const VideoBubblePlayer = (props: VideoPlayerProps) => {
-  const { videoSrc, playerEnabled = true } = props;
-  const video = React.useRef<Video>(null);
-  const [playVideo, setPlayVideo] = useState(false);
+  const { videoSrc, width: videoMaxWidth } = props;
+  const video = React.useRef<Video>(null); // Ref to access the Video component instance.
+  const [playVideo, setPlayVideo] = useState(false); // State to control video playback (play/pause).
 
-  const [videoLoading, setVideoLoading] = useState(true);
+  const [videoLoading, setVideoLoading] = useState(true); // State to indicate if the video is loading.
+  // State to store the calculated width and height of the video to maintain aspect ratio.
+  // Defaults to a placeholder size before the actual dimensions are determined.
+  const [videoSize, setVideoSize] = useState({ width: 300, height: 215 });
 
-  const [videoStatus, setVideoStatus] = React.useState<AVPlaybackStatus | null>(null);
   const handlePlayPress = () => {
     setPlayVideo(true);
-    video.current?.presentFullscreenPlayer();
-    video.current?.playAsync();
-  };
-
-  useEffect(() => {
-    if (videoStatus?.isLoaded) {
-      if (videoStatus?.didJustFinish) {
-        video.current?.playFromPositionAsync(0);
-        setPlayVideo(false);
-      }
-    }
-  }, [videoStatus]);
-
-  const handlePlaybackStatus = (status: AVPlaybackStatus) => {
-    setVideoStatus(status);
+    video.current?.presentFullscreenPlayer(); // Present the video in fullscreen.
+    video.current?.playAsync(); // Start video playback asynchronously.
   };
 
   const handleOnFullScreenUpdate = (event: VideoFullscreenUpdateEvent) => {
+    // If the fullscreen player is dismissed, stop playback.
     if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_WILL_DISMISS) {
       setPlayVideo(false);
     }
   };
 
-  // To have a loader while the Video is loaded, and
-  // thumbnail is shown
+  // Callback when video loading starts, sets loading state to true.
   const handleOnLoadStart = useCallback(() => {
     setVideoLoading(true);
   }, []);
 
+  /**
+   * Callback when the video finishes loading.
+   * This is primarily used to set the videoLoading state to false.
+   * Note: Video dimensions are handled by `onReadyForDisplay`.
+   */
   const handleOnLoad = useCallback(() => {
     setVideoLoading(false);
   }, []);
 
+  // Callback for general playback status updates.
+  // This is used for checking `didJustFinish` to loop or reset playback.
+  const handlePlaybackStatus = useCallback((status: AVPlaybackStatus) => {
+    if (status.isLoaded) {
+      if (status.didJustFinish) {
+        video.current?.playFromPositionAsync(0);
+        setPlayVideo(false);
+      }
+    }
+  }, []);
+
+
   return (
     <React.Fragment>
       <Video
-        style={tailwind.style('w-full ios:h-full aspect-video')}
+        // Apply dynamically calculated width and height to maintain aspect ratio.
+        style={[
+          tailwind.style('bg-gray-100 overflow-hidden rounded-lg'),
+          { width: videoSize.width, height: videoSize.height },
+        ]}
         ref={video}
         source={{
           uri: videoSrc,
         }}
-        shouldPlay={playVideo}
-        resizeMode={Platform.OS === 'android' ? ResizeMode.CONTAIN : ResizeMode.COVER}
-        onLoadStart={handleOnLoadStart}
-        onLoad={handleOnLoad}
-        onPlaybackStatusUpdate={handlePlaybackStatus}
-        onFullscreenUpdate={handleOnFullScreenUpdate}
+        shouldPlay={playVideo} // Control playback based on local state.
+        resizeMode={Platform.OS === 'android' ? ResizeMode.CONTAIN : ResizeMode.COVER} // Ensure the video fits within its bounds without cropping.
+        onLoadStart={handleOnLoadStart} // Callback for when video starts loading.
+        onLoad={handleOnLoad} // Callback for when video finishes loading.
+        onPlaybackStatusUpdate={handlePlaybackStatus} // Callback for general playback status updates.
+        onFullscreenUpdate={handleOnFullScreenUpdate} // Callback for fullscreen events.
+        onReadyForDisplay={(e) => {
+          // This callback is fired when the video is ready to be displayed.
+          // It provides the natural size of the video, which is used to calculate the bubble dimensions.
+          const { width, height } = e.naturalSize;
+          const maxWidth = videoMaxWidth || 300; // Use provided max width or default.
+          const aspectRatio = width / height;
+          const calculatedHeight = maxWidth / aspectRatio; // Calculate height.
+          if(calculatedHeight > 337) {
+            const adjustedWidth = 337 * aspectRatio;
+            setVideoSize({ width: adjustedWidth, height: 337 });
+            return;
+          }
+          setVideoSize({ width: maxWidth, height: calculatedHeight });
+        }}
       />
       {videoLoading ? (
+        // Show spinner while video is loading.
         <Animated.View style={tailwind.style('absolute inset-0 flex items-center justify-center')}>
           <Spinner size={20} />
         </Animated.View>
       ) : null}
-      {!playVideo && playerEnabled ? (
+      {!playVideo ? (
+        // Show play icon overlay if video is not playing.
         <Animated.View
           entering={FadeIn.duration(300).easing(Easing.ease)}
           exiting={FadeOut.duration(300).easing(Easing.ease)}
           style={tailwind.style('absolute inset-0 flex items-center justify-center')}>
           <Pressable
-            onPress={handlePlayPress}
+            onPress={handlePlayPress} // Handle play button press.
             style={tailwind.style('h-full w-full flex items-center justify-center')}>
             <Image
-              source={require('../../../../assets/local/PlayIcon.png')} // eslint-disable-line @typescript-eslint/no-require-imports
+              source={require('../../../../assets/local/PlayIcon.png')} // Play icon image.
               style={tailwind.style('h-12 w-12 z-10')}
             />
           </Pressable>
@@ -103,13 +128,15 @@ export const VideoBubblePlayer = (props: VideoPlayerProps) => {
 };
 
 export const VideoBubble = (props: VideoBubbleProps) => {
-  const { videoSrc } = props;
+  const { videoSrc, width } = props;
 
   return (
     <React.Fragment>
+      {/* Renders the VideoBubblePlayer component, passing down relevant props including calculated width. */}
       <VideoBubblePlayer
         {...{
           videoSrc,
+          width,
         }}
       />
       {/* TODO: Fix this */}

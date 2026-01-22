@@ -14,7 +14,7 @@ import { Channel, IconProps, Message, MessageStatus, UnixTimestamp } from '@/typ
 import { unixTimestampToReadableTime } from '@/utils';
 import { Avatar, Icon, Slider } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
-import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
+import { AudioStatus, pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { MESSAGE_TYPES } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
@@ -39,6 +39,7 @@ export const PauseIcon = ({ fill, fillOpacity }: IconProps) => {
 };
 
 type AudioCellProps = {
+  id: string; // Unique identifier for the message/audio.
   audioSrc: string;
   shouldRenderAvatar: boolean;
   messageType: number;
@@ -52,13 +53,13 @@ type AudioCellProps = {
   errorMessage?: string;
 };
 
-type AudioPlayerProps = Pick<AudioCellProps, 'audioSrc'> & {
+type AudioPlayerProps = Pick<AudioCellProps, 'audioSrc' | 'id'> & { // Include 'id' here.
   isIncoming: boolean;
   isOutgoing: boolean;
 };
 
 export const AudioPlayer = (props: AudioPlayerProps) => {
-  const { audioSrc, isIncoming } = props;
+  const { audioSrc, isIncoming, id } = props; // Destructure id here.
 
   const [isSoundLoading, setIsSoundLoading] = useState(false);
   const [isAudioPlaying, setAudioPlaying] = useState(false);
@@ -69,8 +70,10 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
   const currentPosition = useSharedValue(0);
   const totalDuration = useSharedValue(0);
 
-  const audioPlayBackStatus = (data: { data: PlayBackType }) => {
-    const playBackData = data.data as PlayBackType;
+  const audioKey = useMemo(() => `${id}::${audioSrc}`, [id, audioSrc]); // Construct the unique audio key.
+
+  const audioPlayBackStatus = (args: { status: AudioStatus; data?: PlayBackType }) => {
+    const { data: playBackData, status } = args;
     if (playBackData) {
       currentPosition.value = playBackData.currentPosition;
       totalDuration.value = playBackData.duration;
@@ -78,13 +81,13 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
         currentPosition.value = 0;
         totalDuration.value = 0;
         setAudioPlaying(false);
-        dispatch(setCurrentPlayingAudioSrc(''));
+        dispatch(setCurrentPlayingAudioSrc('')); // Clear global state when playback finishes.
       }
     }
   };
 
   const togglePlayback = () => {
-    if (audioSrc === currentPlayingAudioSrc) {
+    if (audioKey === currentPlayingAudioSrc) { // Compare using the unique audioKey.
       // The current playing audio file is same as the component audio src so
       // we will have to just toggle the audio playing
       if (isAudioPlaying) {
@@ -99,7 +102,7 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
       startPlayer(audioSrc, audioPlayBackStatus).then(() => {
         setIsSoundLoading(false);
         setAudioPlaying(true);
-        dispatch(setCurrentPlayingAudioSrc(audioSrc));
+        dispatch(setCurrentPlayingAudioSrc(audioKey)); // Set global state with the unique audioKey.
       });
     }
   };
@@ -115,17 +118,17 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
   };
 
   const isCurrentAudioSrcPlaying = useMemo(
-    () => currentPlayingAudioSrc === audioSrc && isAudioPlaying,
-    [audioSrc, currentPlayingAudioSrc, isAudioPlaying],
+    () => audioKey === currentPlayingAudioSrc && isAudioPlaying, // Compare using the unique audioKey.
+    [audioKey, currentPlayingAudioSrc, isAudioPlaying],
   );
 
   useEffect(() => {
-    if (currentPlayingAudioSrc !== audioSrc) {
+    if (audioKey !== currentPlayingAudioSrc) { // Check against the unique audioKey.
       currentPosition.value = 0;
       totalDuration.value = 0;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlayingAudioSrc]);
+  }, [currentPlayingAudioSrc, audioKey]); // Add audioKey to dependencies.
 
   useEffect(() => {
     return () => {
@@ -133,11 +136,14 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
         .then()
         .finally(() => {
           setAudioPlaying(false);
-          dispatch(setCurrentPlayingAudioSrc(''));
+          // Only clear global state if this audio is the one currently playing.
+          if (currentPlayingAudioSrc === audioKey) {
+            dispatch(setCurrentPlayingAudioSrc(''));
+          }
         });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [audioKey, currentPlayingAudioSrc]); // Add audioKey and currentPlayingAudioSrc to dependencies.
 
   return (
     <View style={tailwind.style('flex flex-row items-center flex-1')}>
@@ -213,9 +219,7 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
       )}>
       <Animated.View style={tailwind.style('flex flex-row')}>
         {sender?.name && isIncoming && shouldRenderAvatar ? (
-          <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
-          </Animated.View>
+            <Avatar size={'md'} src={sender?.thumbnail ? { uri: sender.thumbnail } : undefined} name={sender?.name} />
         ) : null}
         <MessageMenu menuOptions={menuOptions}>
           <Animated.View
@@ -261,7 +265,7 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
         </MessageMenu>
         {sender?.name && isOutgoing && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end ml-1')}>
-            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
+            <Avatar size={'md'} src={sender?.thumbnail ? { uri: sender.thumbnail } : undefined} name={sender?.name} />
           </Animated.View>
         ) : null}
       </Animated.View>

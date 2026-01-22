@@ -3,6 +3,7 @@ export * from './AudioCell';
 export * from './ComposedCell';
 export * from './FileCell';
 export * from './VideoCell';
+export * from './ImageCell';
 export * from './TextMessageCell';
 export * from './MarkdownDisplay';
 export * from './PrivateTextCell';

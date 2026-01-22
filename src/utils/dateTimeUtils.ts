@@ -71,3 +71,15 @@ export const messageStamp = ({
   const unixTime = fromUnixTime(time);
   return format(unixTime, dateFormat);
 };
+
+export const formatDuration = (milliseconds: number): string => {
+  'worklet';
+  const totalSeconds = Math.floor(milliseconds / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  const formattedMinutes = String(minutes);
+  const formattedSeconds = String(seconds).padStart(2, '0');
+
+  return `${formattedMinutes}:${formattedSeconds}`;
+};

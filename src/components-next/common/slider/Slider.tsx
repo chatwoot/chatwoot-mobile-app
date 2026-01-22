@@ -54,6 +54,9 @@ export const Slider = (props: SliderProps) => {
   useAnimatedReaction(
     () => currentPosition.value,
     (next, _prev) => {
+      if (totalDuration.value === 0) {
+        return;
+      }
       translationX.value = withSpring(
         interpolate(next, [0, totalDuration.value], [0, sliderMaxWidth.value - 16]),
         {

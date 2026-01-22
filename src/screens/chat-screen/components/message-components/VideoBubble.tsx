@@ -7,6 +7,7 @@ import {
   Video,
   VideoFullscreenUpdate,
   VideoFullscreenUpdateEvent,
+  AVPlaybackStatusLoaded, // Import AVPlaybackStatusLoaded type.
 } from 'expo-av';
 import { Image } from 'expo-image';
 import { tailwind } from '@/theme';

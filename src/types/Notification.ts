@@ -26,7 +26,26 @@ export type Notification = {
   createdAt: number;
   lastActivityAt: number;
   meta: object;
+  secondaryActor?: SecondaryActor;
 };
+
+export type SecondaryActor = {
+  id: number;
+  conversationId: number;
+  senderType: 'User' | 'Contact';
+  senderId: number;
+  sender: {
+    id: number;
+    name: string;
+    type: 'contact' | 'user' | string;
+    email: string | null;
+    phoneNumber: string;
+    thumbnail: string;
+    identifier: string;
+  };
+};
+
+
 
 export type PrimaryActor = {
   id: number;

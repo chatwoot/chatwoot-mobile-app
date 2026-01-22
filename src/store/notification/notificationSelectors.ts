@@ -1,7 +1,7 @@
 import { createDraftSafeSelector, createSelector } from '@reduxjs/toolkit';
 import type { RootState } from '@/store';
 import { notificationsAdapter } from './notificationSlice';
-import { SortTypes } from './notificationFilterSlice';
+import { FilterState, SortTypes } from './notificationFilterSlice';
 import { Notification } from '@/types/Notification';
 export const selectNotificationsState = (state: RootState) => state.notifications;
 
@@ -44,8 +44,9 @@ export const selectIsAllNotificationsFetched = createSelector(
 );
 
 export const getFilteredNotifications = createDraftSafeSelector(
-  [selectAllNotifications, (_, sortOrder: SortTypes) => sortOrder],
-  (notifications, sortOrder) => {
+  [selectAllNotifications, (_, filters: FilterState) => filters], // Receber FilterState
+  (notifications, filters) => {
+    const { sortOrder, search_text: searchText } = filters; // Desestruturar sortOrder e searchText
     type SortComparator = {
       asc: (a: Notification, b: Notification) => number;
       desc: (a: Notification, b: Notification) => number;
@@ -54,6 +55,19 @@ export const getFilteredNotifications = createDraftSafeSelector(
       asc: (a, b) => a.createdAt - b.createdAt,
       desc: (a, b) => b.createdAt - a.createdAt,
     };
-    return notifications.sort(comparator[sortOrder]);
+
+    let filteredNotifications = notifications;
+
+    if (searchText) {
+      const lowerCaseSearchText = searchText.toLowerCase();
+      filteredNotifications = notifications.filter(notification => {
+        const pushMessageTitle = notification.pushMessageTitle?.toLowerCase() || '';
+
+        return pushMessageTitle.includes(lowerCaseSearchText) || notification?.secondaryActor?.sender?.phoneNumber.toLowerCase().includes(lowerCaseSearchText) || 
+        notification?.secondaryActor?.sender?.name.toLowerCase().includes(lowerCaseSearchText);
+      });
+    }
+
+    return filteredNotifications.sort(comparator[sortOrder as SortTypes]); // Aplicar sort no resultado da busca
   },
 );

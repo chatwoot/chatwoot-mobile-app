@@ -25,7 +25,7 @@ import { useInboxListStateContext } from '@/context';
 import { resetNotifications } from '@/store/notification/notificationSlice';
 import { showToast } from '@/utils/toastUtils';
 import i18n from '@/i18n';
-import { selectSortOrder } from '@/store/notification/notificationFilterSlice';
+import { selectSortOrder, selectFilters, FilterState } from '@/store/notification/notificationFilterSlice'; // Adicionado selectFilters e FilterState
 import { EmptyStateIcon } from '@/svg-icons';
 import { InboxSortTypes } from '@/store/notification/notificationTypes';
 
@@ -39,21 +39,21 @@ const InboxList = () => {
 
   const isNotificationsLoading = useAppSelector(selectIsLoadingNotifications);
   const isAllNotificationsFetched = useAppSelector(selectIsAllNotificationsFetched);
-  const sortOrder = useAppSelector(selectSortOrder);
+  const filters = useAppSelector(selectFilters); // Obter filters completos
 
-  const notifications = useAppSelector(state => getFilteredNotifications(state, sortOrder));
+  const notifications = useAppSelector(state => getFilteredNotifications(state, filters)); // Passar filters
 
-  const previousSortOrder = useRef(sortOrder);
+  const previousFilters = useRef(filters); // Alterado para filters
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (previousSortOrder.current !== sortOrder) {
-      previousSortOrder.current = sortOrder;
-      clearAndFetchNotifications(sortOrder);
+    if (previousFilters.current !== filters) { // Comparar filters
+      previousFilters.current = filters;
+      clearAndFetchNotifications(filters); // Passar filters
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortOrder]);
+  }, [filters]); // Depender de filters
 
   // eslint-disable-next-line react/display-name
   const ListFooterComponent = React.memo(() => {
@@ -70,20 +70,20 @@ const InboxList = () => {
   });
 
   useEffect(() => {
-    clearAndFetchNotifications(sortOrder);
+    clearAndFetchNotifications(filters); // Passar filters
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const clearAndFetchNotifications = useCallback(async (sortOrder: InboxSortTypes) => {
+  const clearAndFetchNotifications = useCallback(async (filters: FilterState) => { // Tipagem para filters
     setPageNumber(1);
     await dispatch(resetNotifications());
-    fetchNotifications(sortOrder);
+    fetchNotifications(filters); // Passar filters
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchNotifications = useCallback(
-    async (sortOrder: InboxSortTypes, page: number = 1) => {
-      dispatch(notificationActions.fetchNotifications({ page, sort_order: sortOrder }));
+    async (filters: FilterState, page: number = 1) => { // Tipagem para filters
+      dispatch(notificationActions.fetchNotifications({ page, sort_order: filters.sortOrder })); // Usar filters.sortOrder
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
@@ -92,7 +92,7 @@ const InboxList = () => {
   const onChangePageNumber = () => {
     const nextPageNumber = pageNumber + 1;
     setPageNumber(nextPageNumber);
-    fetchNotifications(sortOrder, nextPageNumber);
+    fetchNotifications(filters, nextPageNumber); // Passar filters
   };
 
   const handleOnEndReached = () => {
@@ -106,10 +106,10 @@ const InboxList = () => {
   const handleRefresh = useCallback(() => {
     setFlashListReady(false);
     setIsRefreshing(true);
-    clearAndFetchNotifications(sortOrder).finally(() => {
+    clearAndFetchNotifications(filters).finally(() => { // Passar filters
       setIsRefreshing(false);
     });
-  }, [clearAndFetchNotifications, sortOrder]);
+  }, [clearAndFetchNotifications, filters]); // Depender de filters
 
   const { openedRowIndex } = useInboxListStateContext();
 

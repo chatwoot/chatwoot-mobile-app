@@ -13,6 +13,9 @@ const meta: Meta<typeof ConversationHeaderPresenter> = {
     onLeftIconPress: () => {},
     onRightIconPress: () => {},
     onClearFilter: () => {},
+    searchText: '',
+    onSearchTextChange: () => {},
+    onClearSearch: () => {},
   },
   argTypes: {
     currentState: {
@@ -66,6 +69,9 @@ export const AllVariants: Story = {
           onLeftIconPress={() => {}}
           onRightIconPress={() => {}}
           onClearFilter={() => {}}
+          searchText=""
+          onSearchTextChange={() => {}}
+          onClearSearch={() => {}}
         />
       </HeaderContainer>
       <Title title="Selected All" />
@@ -77,6 +83,9 @@ export const AllVariants: Story = {
           onLeftIconPress={() => {}}
           onRightIconPress={() => {}}
           onClearFilter={() => {}}
+          searchText=""
+          onSearchTextChange={() => {}}
+          onClearSearch={() => {}}
         />
       </HeaderContainer>
 
@@ -89,6 +98,9 @@ export const AllVariants: Story = {
           onLeftIconPress={() => {}}
           onRightIconPress={() => {}}
           onClearFilter={() => {}}
+          searchText=""
+          onSearchTextChange={() => {}}
+          onClearSearch={() => {}}
         />
       </HeaderContainer>
 
@@ -101,6 +113,9 @@ export const AllVariants: Story = {
           onLeftIconPress={() => {}}
           onRightIconPress={() => {}}
           onClearFilter={() => {}}
+          searchText=""
+          onSearchTextChange={() => {}}
+          onClearSearch={() => {}}
         />
       </HeaderContainer>
 
@@ -113,6 +128,9 @@ export const AllVariants: Story = {
           onLeftIconPress={() => {}}
           onRightIconPress={() => {}}
           onClearFilter={() => {}}
+          searchText=""
+          onSearchTextChange={() => {}}
+          onClearSearch={() => {}}
         />
       </HeaderContainer>
 
@@ -125,6 +143,9 @@ export const AllVariants: Story = {
           onLeftIconPress={() => {}}
           onRightIconPress={() => {}}
           onClearFilter={() => {}}
+          searchText=""
+          onSearchTextChange={() => {}}
+          onClearSearch={() => {}}
         />
       </HeaderContainer>
     </ScrollView>

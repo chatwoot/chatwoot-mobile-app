@@ -23,6 +23,6 @@ export const WithLoading: Story = {
 // Search with prefix icon
 export const WithPrefixIcon: Story = {
   args: {
-    prefix: <CloseIcon />,
+    leftIcon: <CloseIcon />, // Usar leftIcon
   },
 };

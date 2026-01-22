@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, TextInputProps } from 'react-native';
+import { TextInput, TextInputProps, ViewStyle, TextStyle, Pressable } from 'react-native'; // Adicionar Pressable e TextStyle
 import Animated, { withTiming } from 'react-native-reanimated';
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
@@ -11,14 +11,33 @@ import { Icon } from '../icon';
 
 interface SearchBarProps extends TextInputProps {
   isLoading?: boolean;
-  prefix?: RenderPropType;
+  leftIcon?: RenderPropType;
+  onLeftIconPress?: () => void;
+  rightIcon?: RenderPropType;
+  onRightIconPress?: () => void;
   isInsideBottomSheet?: boolean;
+  bottomLeft?: RenderPropType;
+  wrapperStyle?: Animated.AnimateStyle<ViewStyle>;
+  inputStyle?: TextStyle; // Alterado para TextStyle
+  isActive?: boolean;
 }
 
 export const SearchBar = (props: SearchBarProps) => {
-  const { isLoading = false, prefix, isInsideBottomSheet = false, ...otherProps } = props;
+  const {
+    isLoading = false,
+    leftIcon,
+    onLeftIconPress,
+    rightIcon,
+    onRightIconPress,
+    isInsideBottomSheet = false,
+    bottomLeft,
+    wrapperStyle,
+    inputStyle,
+    isActive = false,
+    ...otherProps
+  } = props;
 
-  // Row Exit Animation
+  // Row Exit Animation (manter)
   const exiting = () => {
     'worklet';
     const animations = {
@@ -36,20 +55,39 @@ export const SearchBar = (props: SearchBarProps) => {
   const SearchTextInput = isInsideBottomSheet ? BottomSheetTextInput : TextInput;
 
   return (
-    <Animated.View exiting={exiting} style={tailwind.style('px-3 h-[36px] relative')}>
-      <Animated.View
-        style={tailwind.style(
-          'flex items-center justify-center absolute bg-transparent z-10 inset-y-0 left-0',
-          'pl-5.5',
-        )}>
-        <Icon icon={prefix ? prefix : <SearchIcon />} size={18} />
-      </Animated.View>
+    <Animated.View
+      exiting={exiting}
+      style={[
+        tailwind.style(
+          'px-3 h-[36px] relative flex-row items-center',
+          isActive ? 'flex-1 bg-white rounded-[11px]' : ''
+        ),
+        wrapperStyle,
+      ]}>
+      {leftIcon && (
+        <Animated.View
+          style={tailwind.style(
+            'flex items-center justify-center absolute bg-transparent z-10 inset-y-0 left-0',
+            'pl-5.5',
+          )}>
+          {onLeftIconPress ? (
+            <Pressable onPress={onLeftIconPress}>
+              <Icon icon={leftIcon} size={18} />
+            </Pressable>
+          ) : (
+            <Icon icon={leftIcon} size={18} />
+          )}
+        </Animated.View>
+      )}
       <SearchTextInput
         style={[
           tailwind.style(
-            'h-9 px-8.5 py-[7px] bg-blackA-A3 text-black text-base font-inter-normal-20 leading-[19.5px] rounded-[11px]',
-            isLoading ? 'px-8.5' : 'pl-8.5 pr-4',
+            'flex-1 h-9 px-8.5 py-[7px] text-black text-base font-inter-normal-20 leading-[19.5px] rounded-[11px]',
+            isActive ? 'bg-white' : 'bg-blackA-A3',
+            isLoading ? 'pr-8.5' : 'pr-4',
+            leftIcon ? 'pl-8.5' : 'pl-4'
           ),
+          inputStyle,
         ]}
         placeholderTextColor={tailwind.color('text-gray-800')}
         {...otherProps}
@@ -59,6 +97,20 @@ export const SearchBar = (props: SearchBarProps) => {
           size={18}
           style={tailwind.style('absolute bg-transparent z-10 inset-y-0 right-0 mr-5.5')}
         />
+      ) : rightIcon ? (
+        <Animated.View
+          style={tailwind.style(
+            'flex items-center justify-center absolute bg-transparent z-10 inset-y-0 right-0',
+            'pr-5.5',
+          )}>
+          {onRightIconPress ? (
+            <Pressable onPress={onRightIconPress}>
+              <Icon icon={rightIcon} size={18} />
+            </Pressable>
+          ) : (
+            <Icon icon={rightIcon} size={18} />
+          )}
+        </Animated.View>
       ) : null}
     </Animated.View>
   );

@@ -2,11 +2,18 @@ import React from 'react';
 import { Pressable, Text, ViewStyle } from 'react-native';
 import Animated, { AnimatedStyle } from 'react-native-reanimated';
 import { Icon } from '@/components-next/common';
-import { CheckedIcon, CloseIcon, FilterIcon, UncheckedIcon } from '@/svg-icons';
+import {
+  CheckedIcon,
+  CloseIcon,
+  FilterIcon,
+  UncheckedIcon,
+  SearchIcon,
+} from '@/svg-icons';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { useScaleAnimation } from '@/utils';
 import { useHeaderAnimation } from '@/hooks/useHeaderAnimation';
+import { SearchBar } from '@/components-next/common/search/SearchBar';
 
 type HeaderState = 'Search' | 'Filter' | 'Select' | 'none';
 
@@ -17,6 +24,9 @@ type ConversationHeaderPresenterProps = {
   onLeftIconPress: () => void;
   onRightIconPress: () => void;
   onClearFilter: () => void;
+  searchText: string;
+  onSearchTextChange: (text: string) => void;
+  onClearSearch: () => void;
 };
 
 type LeftSectionProps = {
@@ -49,15 +59,21 @@ const HeaderTitle = () => (
   </Animated.View>
 );
 
-const LeftSection = ({ currentState, isSelectedAll, onLeftIconPress }: LeftSectionProps) => {
+const LeftSection = ({
+  currentState,
+  isSelectedAll,
+  onLeftIconPress,
+}: LeftSectionProps) => {
   const { entering, exiting } = useHeaderAnimation();
 
   if (currentState === 'Filter' || currentState === 'Search') return null;
   if (currentState !== 'Select') {
     return (
       <Animated.View style={tailwind.style('flex-1 items-start')}>
-        <Pressable hitSlop={16}>
-          <Animated.View exiting={exiting} entering={entering} />
+        <Pressable onPress={onLeftIconPress} hitSlop={16}>
+          <Animated.View exiting={exiting} entering={entering}>
+            <Icon size={24} icon={<SearchIcon />} />
+          </Animated.View>
         </Pressable>
       </Animated.View>
     );
@@ -96,7 +112,10 @@ const FilterSection = ({
       style={[tailwind.style('flex-1'), animatedStyle]}
       exiting={exiting}
       entering={entering}>
-      <Pressable onPress={onClearFilter} disabled={filtersAppliedCount === 0} {...handlers}>
+      <Pressable
+        onPress={onClearFilter}
+        disabled={filtersAppliedCount === 0}
+        {...handlers}>
         <Text
           style={tailwind.style(
             'text-md font-inter-medium-24 leading-[17px] tracking-[0.24px]',
@@ -148,12 +167,40 @@ export const ConversationHeaderPresenter = ({
   onLeftIconPress,
   onRightIconPress,
   onClearFilter,
+  searchText,
+  onSearchTextChange,
+  onClearSearch,
 }: ConversationHeaderPresenterProps) => {
   const { handlers, animatedStyle } = useScaleAnimation();
 
+  if (currentState === 'Search') {
+    return (
+      <Animated.View
+        style={[
+          tailwind.style(
+            'flex flex-row justify-between items-center px-4 pt-2 pb-[12px]',
+          ),
+        ]}
+      >
+        <SearchBar
+          isActive
+          value={searchText}
+          onChangeText={onSearchTextChange}
+          placeholder={i18n.t('CONVERSATION.SEARCH_PLACEHOLDER')}
+          onRightIconPress={onClearSearch}
+          rightIcon={<CloseIcon />}
+        />
+      </Animated.View>
+    );
+  }
+
   return (
     <Animated.View
-      style={[tailwind.style('flex flex-row justify-between items-center px-4 pt-2 pb-[12px]')]}>
+      style={[
+        tailwind.style(
+          'flex flex-row justify-between items-center px-4 pt-2 pb-[12px]',
+        ),
+      ]}>
       <LeftSection
         currentState={currentState}
         isSelectedAll={isSelectedAll}

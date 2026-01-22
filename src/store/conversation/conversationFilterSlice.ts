@@ -4,13 +4,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ConversationFilterOptions } from '@/types';
 import { RootState } from '@/store';
 
-export type FilterState = Record<ConversationFilterOptions, string>;
+export type FilterState = Record<ConversationFilterOptions, string> & {
+  search_text: string;
+};
 
 export const defaultFilterState: FilterState = {
   assignee_type: 'me',
   status: 'open',
   sort_by: 'latest',
   inbox_id: '0',
+  search_text: '',
 };
 
 interface ConversationFilterState {
@@ -35,10 +38,13 @@ const conversationFilterSlice = createSlice({
     resetFilters: state => {
       state.filters = defaultFilterState;
     },
+    setSearchText: (state, action: PayloadAction<string>) => {
+      state.filters.search_text = action.payload;
+    },
   },
 });
 
-export const { setFilters, resetFilters } = conversationFilterSlice.actions;
+export const { setFilters, resetFilters, setSearchText } = conversationFilterSlice.actions;
 
 export const selectFilters = (state: RootState) => state.conversationFilter.filters;
 

@@ -52,7 +52,7 @@ export const getFilteredConversations = createDraftSafeSelector(
     (_, __, userId: number | undefined) => userId,
   ],
   (conversations, filters, userId) => {
-    const { assignee_type: assigneeType, sort_by: sortBy } = filters;
+    const { assignee_type: assigneeType, sort_by: sortBy, search_text: searchText } = filters; // Obter searchText
     let sortType = filters.sort_by; // Create mutable variable
 
     type SortComparator = {
@@ -81,7 +81,31 @@ export const getFilteredConversations = createDraftSafeSelector(
       sortType = 'latest';
     }
 
-    const sortedConversations = conversations.sort(comparator[sortType as keyof SortComparator]);
+    let filteredBySearchText = conversations;
+
+    if (searchText) {
+      const lowerCaseSearchText = searchText.toLowerCase();
+      filteredBySearchText = conversations.filter(conversation => {
+        const { name, phoneNumber } = conversation.meta.sender;
+        const contactName = name?.toLowerCase() || '';
+        const conversationId = phoneNumber?.toLowerCase() || '';
+
+        return (
+          contactName.includes(lowerCaseSearchText) ||
+          conversationId.includes(lowerCaseSearchText) || conversation.messages.some(message => {
+            const { contentAttributes, messageType, content } = message;
+            const { email } = contentAttributes || {};
+            const isIncomingOrOutgoing =
+              messageType === MESSAGE_TYPES.OUTGOING || messageType === MESSAGE_TYPES.INCOMING;
+            const emailContent = email?.textContent?.full?.toLowerCase() || '';
+            return isIncomingOrOutgoing && emailContent.includes(lowerCaseSearchText) || content?.toLowerCase().includes(lowerCaseSearchText);
+          })
+        );
+      });
+    }
+
+    const sortedConversations = filteredBySearchText.sort(comparator[sortType as keyof SortComparator]); // Aplicar sort no resultado da busca
+
 
     if (assigneeType === 'me') {
       return sortedConversations.filter(conversation => {
@@ -136,11 +160,11 @@ export const getLastEmailInSelectedChat = createDraftSafeSelector(
       return [];
     }
     const lastEmail = [...conversation.messages].reverse().find(message => {
-      const { contentAttributes = {}, messageType } = message;
-      const { email = {} } = contentAttributes || {};
+      const { contentAttributes, messageType } = message;
+      const { email } = contentAttributes || {};
       const isIncomingOrOutgoing =
         messageType === MESSAGE_TYPES.OUTGOING || messageType === MESSAGE_TYPES.INCOMING;
-      if (email.from && isIncomingOrOutgoing) {
+      if (email?.from && isIncomingOrOutgoing) {
         return true;
       }
       return false;

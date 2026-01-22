@@ -16,6 +16,7 @@ import {
   selectFilters,
   defaultFilterState,
   FilterState,
+  setSearchText, // Importar setSearchText
 } from '@/store/conversation/conversationFilterSlice';
 import {
   clearSelection,
@@ -87,6 +88,7 @@ export const ConversationHeader = () => {
   const handleLeftIconPress = () => {
     if (currentState === 'Search') {
       dispatch(setCurrentState('none'));
+      dispatch(setSearchText('')); // Limpar o search_text ao sair do modo busca
     } else if (currentState === 'Select') {
       if (isSelectedAll) {
         dispatch(clearSelection());
@@ -119,6 +121,15 @@ export const ConversationHeader = () => {
     dispatch(resetFilters());
   };
 
+  const onSearchTextChange = (text: string) => {
+    dispatch(setSearchText(text));
+  };
+
+  const handleClearSearch = () => {
+    dispatch(setCurrentState('none'));
+    dispatch(setSearchText(''));
+  };
+
   return (
     <Animated.View style={[tailwind.style('border-b-[1px]'), headerBorderAnimation]}>
       <ConversationHeaderPresenter
@@ -128,6 +139,9 @@ export const ConversationHeader = () => {
         onLeftIconPress={handleLeftIconPress}
         onRightIconPress={handleRightIconPress}
         onClearFilter={handleClearFilter}
+        searchText={filters.search_text} // Passar searchText
+        onSearchTextChange={onSearchTextChange} // Passar onSearchTextChange
+        onClearSearch={handleClearSearch} // Passar onClearSearch
       />
       {currentState === 'Filter' ? <ConversationFilterBar /> : null}
     </Animated.View>

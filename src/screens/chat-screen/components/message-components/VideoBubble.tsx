@@ -28,6 +28,7 @@ export const VideoBubblePlayer = (props: VideoPlayerProps) => {
   // State to store the calculated width and height of the video to maintain aspect ratio.
   // Defaults to a placeholder size before the actual dimensions are determined.
   const [videoSize, setVideoSize] = useState({ width: 300, height: 215 });
+  const videoSizeSetRef = useRef(false); // Ref to track if video dimensions have been set.
 
   const handlePlayPress = () => {
     setPlayVideo(true);
@@ -55,24 +56,29 @@ export const VideoBubblePlayer = (props: VideoPlayerProps) => {
   const handleOnLoad = useCallback((status: AVPlaybackStatus) => {
     setVideoLoading(false); // Video has loaded, hide spinner.
     if (status.isLoaded) {
-      // Use 'any' to bypass TypeScript's strict checking because naturalSize
-      // is present at runtime when isLoaded is true, but not explicitly in AVPlaybackStatus type definition.
-      const loadedStatus: any = status;
       // If video playback finished, reset to beginning and pause.
-      if (loadedStatus.didJustFinish) {
+      if (status.didJustFinish) {
         video.current?.playFromPositionAsync(0);
         setPlayVideo(false);
       }
-      // If natural size is available, calculate and set the video bubble dimensions.
-      if (loadedStatus.naturalSize?.width && loadedStatus.naturalSize?.height) {
+      // Use 'any' to bypass TypeScript's strict checking because naturalSize
+      // is present at runtime when isLoaded is true, but not explicitly in AVPlaybackStatus type definition.
+      const loadedStatus: any = status;
+      // If natural size is available and not yet set, calculate and set the video bubble dimensions.
+      if (
+        !videoSizeSetRef.current &&
+        loadedStatus.naturalSize?.width &&
+        loadedStatus.naturalSize?.height
+      ) {
         const { width, height } = loadedStatus.naturalSize;
         const maxWidth = videoMaxWidth || 300; // Use provided max width or default.
         const aspectRatio = width / height;
         const calculatedHeight = maxWidth / aspectRatio; // Calculate height.
         setVideoSize({ width: maxWidth, height: calculatedHeight });
+        videoSizeSetRef.current = true; // Mark video size as set.
       }
     }
-  }, [videoMaxWidth]); // Re-run effect if videoMaxWidth changes.
+  }, [videoMaxWidth]);
 
   return (
     <React.Fragment>

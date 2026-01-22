@@ -48,8 +48,8 @@ The audio playback functionality, including play, pause, seek, and resume operat
 ## Checklist:
 
 - [x] I have performed a self-review of my own code
-- [ ] I have commented on my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
+- [x] I have commented on my code, particularly in hard-to-understand areas
+- [x] I have made corresponding changes to the documentation
 - [x] I have tested in both Android and iOS platform
 - [x] My changes generate no new warnings
-- [ ] Any dependent changes have been merged and published in downstream modules
+- [x] Any dependent changes have been merged and published in downstream modules

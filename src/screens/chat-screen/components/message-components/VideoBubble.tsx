@@ -55,14 +55,15 @@ export const VideoBubblePlayer = (props: VideoPlayerProps) => {
   const handleOnLoad = useCallback((status: AVPlaybackStatus) => {
     setVideoLoading(false); // Video has loaded, hide spinner.
     if (status.isLoaded) {
+      const loadedStatus = status as AVPlaybackStatusLoaded;
       // If video playback finished, reset to beginning and pause.
-      if (status.didJustFinish) {
+      if (loadedStatus.didJustFinish) {
         video.current?.playFromPositionAsync(0);
         setPlayVideo(false);
       }
       // If natural size is available, calculate and set the video bubble dimensions.
-      if (status.naturalSize?.width && status.naturalSize?.height) {
-        const { width, height } = status.naturalSize;
+      if (loadedStatus.naturalSize?.width && loadedStatus.naturalSize?.height) {
+        const { width, height } = loadedStatus.naturalSize;
         const maxWidth = videoMaxWidth || 300; // Use provided max width or default.
         const aspectRatio = width / height;
         const calculatedHeight = maxWidth / aspectRatio; // Calculate height.

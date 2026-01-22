@@ -7,7 +7,6 @@ import {
   Video,
   VideoFullscreenUpdate,
   VideoFullscreenUpdateEvent,
-  AVPlaybackStatusLoaded, // Import AVPlaybackStatusLoaded type.
 } from 'expo-av';
 import { Image } from 'expo-image';
 import { tailwind } from '@/theme';
@@ -56,7 +55,9 @@ export const VideoBubblePlayer = (props: VideoPlayerProps) => {
   const handleOnLoad = useCallback((status: AVPlaybackStatus) => {
     setVideoLoading(false); // Video has loaded, hide spinner.
     if (status.isLoaded) {
-      const loadedStatus = status as AVPlaybackStatusLoaded;
+      // Use 'any' to bypass TypeScript's strict checking because naturalSize
+      // is present at runtime when isLoaded is true, but not explicitly in AVPlaybackStatus type definition.
+      const loadedStatus: any = status;
       // If video playback finished, reset to beginning and pause.
       if (loadedStatus.didJustFinish) {
         video.current?.playFromPositionAsync(0);

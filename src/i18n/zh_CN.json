@@ -1,458 +1,482 @@
 {
-  "WELCOME": "欢迎",
+  "AGENT": {
+    "TITLE": "选择客服"
+  },
+  "AVAILABILITY": {
+    "BUSY": "忙碌中",
+    "OFFLINE": "离线",
+    "ONLINE": "在线"
+  },
+  "BANNER": {
+    "24_HOURS_WINDOW": "24 小时消息窗口限制",
+    "CANNOT_REPLY": "您不能回复，原因是：",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 小时消息窗口限制",
+    "TWILIO_WHATSAPP_CAN_REPLY": "您只能使用模板信息回复此会话，原因是"
+  },
   "COMMON": {
+    "CLOSE": "关闭",
     "ERROR": "错误",
     "ERROR_TITLE": "发生了意外错误",
-    "REPORT_MESSAGE": "我们已经上报此错误，请关闭并重启应用。",
-    "CLOSE": "关闭"
-  },
-  "FOOTER": {
-    "HOME": "主页",
-    "CONVERSATION": "会话",
-    "NOTIFICATION": "消息通知",
-    "SETTINGS": "设置"
+    "REPORT_MESSAGE": "我们已经上报此错误，请关闭并重启应用。"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "安装链接",
-    "DESCRIPTION": "如果您正在使用自己托管的Chatwoot 安装，请输入您的服务器URL。否则，请使用 app.chatwoot.com。",
-    "URL_ERROR": "输入有效网址",
-    "URL_REQUIRED": "URL 是必填项",
+    "CHANGE_LANGUAGE": "更改语言",
     "CONNECT": "连接",
-    "CHANGE_LANGUAGE": "更改语言",
-    "ERROR": "无效的安装链接"
+    "DESCRIPTION": "如果您正在使用自己托管的Chatwoot 安装，请输入您的服务器URL。否则，请使用 app.chatwoot.com。",
+    "ENTER_URL": "安装链接",
+    "ERROR": "无效的安装链接",
+    "URL_ERROR": "输入有效网址",
+    "URL_REQUIRED": "URL 是必填项"
   },
-  "LOGIN": {
-    "TITLE": "登录您的账户",
-    "DESCRIPTION": "您已连接到 {{baseUrl}}。",
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "联系人属性"
+  },
+  "CONTACT_DETAILS": {
+    "CALL": "呼叫",
+    "CONTACT_ATTRIBUTES": "联系人属性",
     "EMAIL": "Email",
-    "PASSWORD": "密码",
-    "EMAIL_REQUIRED": "Email 是必填项",
-    "EMAIL_ERROR": "输入有效的电子邮件",
-    "PASSWORD_REQUIRED": "密码是必填项",
-    "PASSWORD_ERROR": "输入有效的密码",
-    "LOGIN": "登录",
-    "LOGIN_LOADING": "正在登录……",
-    "FORGOT_PASSWORD": "忘记密码？",
-    "RESET_HERE": "重置",
-    "NO_ACCOUNT": "没有注册？",
-    "CREATE_ACCOUNT": "注册新用户",
-    "SETTINGS": "设置",
-    "CHANGE_LANGUAGE": "更改语言",
-    "TERMS": "服务条款",
-    "CHANGE_URL": "更改网址"
-  },
-  "FORGOT_PASSWORD": {
-    "EMAIL": "请输入 Email 地址",
-    "EMAIL_ERROR": "输入有效的 Email",
-    "RESET_HERE": "重置密码",
-    "HEADER_TITLE": "重置密码",
-    "TITLE": "忘记密码？",
-    "SUB_TITLE": "别担心，我们会支持你的",
-    "API_SUCCESS": "密码重置链接已发送到您的电子邮件地址"
+    "PHONE_NUMBER": "电话号码",
+    "TITLE": "联系人详细信息",
+    "VALUE_UNAVAILABLE": "不可用"
   },
   "CONVERSATION": {
-    "HEADER": {
-      "TITLE": "会话",
-      "CLEAR_FILTER": "清除"
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "ASSIGN": "分配",
+        "EDIT": "编辑",
+        "EMPTY": "未分配的"
+      },
+      "PRIORITY": {
+        "EDIT": "编辑",
+        "EMPTY": "未添加优先级"
+      },
+      "TEAM": {
+        "ASSIGN": "分配",
+        "EMPTY": "未分配团队"
+      }
     },
+    "ALL": "全部",
+    "ALL_CONVERSATION_LOADED": "已加载所有会话",
+    "ASSIGN": "重新打开会话",
+    "ASSIGNED_AGENT": "分配的客服代表",
+    "ASSIGNEE": {
+      "AGENTS": {
+        "SEARCH_AGENT": "搜索客服代表"
+      },
+      "LABELS": {
+        "SEARCH_LABELS": "搜索标签"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "分配状态",
+        "OPTIONS": {
+          "ALL": "全部",
+          "OPEN": "打开",
+          "PENDING": "等待中",
+          "RESOLVED": "已解决",
+          "SNOOZED": "已关闭"
+        },
+        "TITLE": "按状态过滤"
+      }
+    },
+    "ASSIGN_CHANGE": "对话分配人已更改",
+    "ATTACHMENTS": {
+      "audio": {
+        "CONTENT": "音频消息"
+      },
+      "contact": {
+        "CONTENT": "分享了一个联系人"
+      },
+      "fallback": {
+        "CONTENT": "分享了一个网址"
+      },
+      "file": {
+        "CONTENT": "附件"
+      },
+      "image": {
+        "CONTENT": "图片消息"
+      },
+      "location": {
+        "CONTENT": "位置"
+      },
+      "video": {
+        "CONTENT": "视频消息"
+      }
+    },
+    "ATTACHMENT_CONTENT": "附件",
+    "BOT": "机器人",
+    "CHANGE_PRIORITY": "更改优先级",
+    "CHANGE_STATUS": "更改状态",
+    "CONVERSATION_NOT_FOUND": "无法获取会话",
+    "COPY_MESSAGE": "消息已复制到剪贴板",
+    "DEFAULT_HEADER_TITLE": "会话",
+    "DELETE_MESSAGE_SUB_TITLE": "此操作无法撤销。",
+    "DELETE_MESSAGE_SUCCESS": "已成功删除消息",
+    "DELETE_MESSAGE_TITLE": "您确定要删除这条消息吗？",
+    "DETAILS": "详情",
+    "DOWNLOAD": "下载",
+    "EMAIL_HEAD": {
+      "BCC": "密送",
+      "CC": "抄送",
+      "TO": "发送至"
+    },
+    "EMAIL_HEADER": {
+      "BCC": "密送",
+      "CC": "抄送",
+      "EXPAND": "展开邮件",
+      "FROM": "来自",
+      "SUBJECT": "主题",
+      "TO": "发送至"
+    },
+    "EMPTY": "此群组中没有活动的会话。",
+    "FILE_SIZE_LIMIT": "文件超过 5MB 附件限制",
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "搜索客服代表"
+      },
+      "ASSIGNEE_TYPE": {
+        "OPTIONS": {
+          "ALL": "全部",
+          "ME": "我",
+          "UNASSIGNED": "未分配的"
+        },
+        "TITLE": "按分配人类型过滤"
       },
       "INBOX": {
         "TITLE": "按收件箱过滤"
       },
       "SORT_BY": {
-        "TITLE": "排序方式",
         "OPTIONS": {
           "LATEST": "最新",
           "SORT_ON_CREATED_AT": "创建于",
           "SORT_ON_PRIORITY": "优先级"
-        }
+        },
+        "TITLE": "排序方式"
       },
       "STATUS": {
-        "TITLE": "按状态过滤",
         "OPTIONS": {
+          "ALL": "全部",
           "OPEN": "打开",
           "PENDING": "等待中",
-          "SNOOZED": "已关闭",
           "RESOLVED": "已解决",
-          "ALL": "全部"
-        }
-      },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "按分配人类型过滤",
-        "OPTIONS": {
-          "ME": "我",
-          "UNASSIGNED": "未分配的",
-          "ALL": "全部"
-        }
+          "SNOOZED": "已关闭"
+        },
+        "TITLE": "按状态过滤"
       }
     },
-    "ASSIGNEE": {
-      "LABELS": {
-        "SEARCH_LABELS": "搜索标签"
-      },
-      "AGENTS": {
-        "SEARCH_AGENT": "搜索客服代表"
-      },
-      "STATUS": {
-        "HEADER_TITLE": "分配状态",
-        "TITLE": "按状态过滤",
-        "OPTIONS": {
-          "OPEN": "打开",
-          "PENDING": "等待中",
-          "SNOOZED": "已关闭",
-          "RESOLVED": "已解决",
-          "ALL": "全部"
-        }
-      }
-    },
-    "DEFAULT_HEADER_TITLE": "会话",
-    "UPDATING": "更新中……",
-    "MINE": "我的",
-    "UN_ASSIGNED": "未分配的",
-    "ALL": "全部",
-    "EMPTY": "此群组中没有活动的会话。",
-    "PICTURE_CONTENT": "图片消息",
-    "ATTACHMENT_CONTENT": "附件",
-    "DOWNLOAD": "下载",
-    "TODAY": "今日",
-    "YESTERDAY": "昨日",
-    "TYPE_MESSAGE": "输入消息",
-    "TYPING": "正在输入",
-    "ALL_CONVERSATION_LOADED": "已加载所有会话",
-    "ASSIGN": "重新打开会话",
-    "FILE_SIZE_LIMIT": "文件超过 5MB 附件限制",
-    "SHARE": "分享会话",
-    "DETAILS": "详情",
-    "LABELS": "会话标签",
-    "ASSIGNED_AGENT": "分配的客服代表",
-    "TEAM": "团队",
-    "PRIVATE_MSG_INPUT": "此操作仅对客服人员可见",
-    "UNSUPPORTED_MESSAGE": "不支持此消息。您可以在 Facebook Messenger 应用上查看此消息。",
-    "NOT_FOUND": {
-      "TITLE": "无法获取会话",
-      "RETRY": "重试",
-      "BACK_TO_HOME": "返回主页",
-      "DESCRIPTION": "似乎无法正确获取该会话。可能是由于网络问题或会话已不可用。请点击重试按钮再次尝试。"
-    },
-    "BOT": "机器人",
-    "EMAIL_HEAD": {
-      "TO": "发送至",
-      "CC": "抄送",
-      "BCC": "密送"
-    },
-    "SELF_ASSIGN": "分配给我",
-    "UN_ASSIGN": "取消分配对话",
-    "CONVERSATION_NOT_FOUND": "无法获取会话",
-    "MARK_AS_PENDING": "标记为待处理",
-    "SNOOZE_UNTIL": "推迟到",
-    "SNOOZE_UNTIL_NEXT_REPLY": "直到下次回复",
-    "SNOOZE_UNTIL_TOMORROW": "直到明天",
-    "SNOOZE_UNTIL_NEXT_WEEK": "直到下周",
-    "SNOOZE": "推迟会话",
-    "CHANGE_PRIORITY": "更改优先级",
-    "MESSAGES": "消息",
-    "UNDEFINED_VARIABLES_TITLE": "未定义的变量",
-    "UNDEFINED_VARIABLES_CLOSE": "关闭",
-    "DELETE_MESSAGE_TITLE": "您确定要删除这条消息吗？",
-    "DELETE_MESSAGE_SUB_TITLE": "此操作无法撤销。",
-    "COPY_MESSAGE": "消息已复制到剪贴板",
-    "STORY_NOT_AVAILABLE": "此故事已不可用",
-    "DELETE_MESSAGE_SUCCESS": "已成功删除消息",
-    "NO_CONTENT": "没有可用的内容",
-    "ASSIGN_CHANGE": "对话分配人已更改",
-    "TEAM_CHANGE": "会话团队已更改",
-    "STATUS_CHANGE": "会话状态已更改",
-    "PRIORITY_CHANGE": "会话优先级已更改",
-    "PARTICIPANT_CHANGE": "会话参与者已更改",
-    "CHANGE_STATUS": "更改状态",
-    "SEARCH_TEAM": "查找团队",
-    "PRIORITY": {
-      "TITLE": "优先级",
-      "OPTIONS": {
-        "NONE": "无",
-        "URGENT": "紧急",
-        "HIGH": "高",
-        "MEDIUM": "中",
-        "LOW": "低"
-      },
-      "CHANGE_PRIORITY": {
-        "SELECT_PLACEHOLDER": "无",
-        "INPUT_PLACEHOLDER": "选择优先级",
-        "NO_RESULTS": "没有检索到相关信息",
-        "SUCCESSFUL": "已将会话 ID %{conversationId} 的优先级更改为 %{priority}",
-        "FAILED": "无法更改优先级。请重试。"
-      }
+    "HEADER": {
+      "CLEAR_FILTER": "清除",
+      "TITLE": "会话"
     },
     "ITEM": {
       "ASSIGN": "分配",
       "STATUS": "状态"
     },
-    "ATTACHMENTS": {
-      "image": {
-        "CONTENT": "图片消息"
-      },
-      "audio": {
-        "CONTENT": "音频消息"
-      },
-      "video": {
-        "CONTENT": "视频消息"
-      },
-      "file": {
-        "CONTENT": "附件"
-      },
-      "location": {
-        "CONTENT": "位置"
-      },
-      "fallback": {
-        "CONTENT": "分享了一个网址"
-      },
-      "contact": {
-        "CONTENT": "分享了一个联系人"
-      }
-    },
+    "LABELS": "会话标签",
     "LONG_PRESS_ACTIONS": {
       "COPY": "复制",
-      "REPLY": "回复",
-      "DELETE_MESSAGE": "删除消息"
+      "DELETE_MESSAGE": "删除消息",
+      "REPLY": "回复"
     },
-    "EMAIL_HEADER": {
-      "FROM": "来自",
-      "TO": "发送至",
-      "BCC": "密送",
-      "CC": "抄送",
-      "SUBJECT": "主题",
-      "EXPAND": "展开邮件"
+    "MARK_AS_PENDING": "标记为待处理",
+    "MESSAGES": "消息",
+    "MINE": "我的",
+    "NOT_FOUND": {
+      "BACK_TO_HOME": "返回主页",
+      "DESCRIPTION": "似乎无法正确获取该会话。可能是由于网络问题或会话已不可用。请点击重试按钮再次尝试。",
+      "RETRY": "重试",
+      "TITLE": "无法获取会话"
     },
-    "ACTIONS": {
-      "ASSIGNEE": {
-        "EMPTY": "未分配的",
-        "ASSIGN": "分配",
-        "EDIT": "编辑"
+    "NO_CONTENT": "没有可用的内容",
+    "PARTICIPANT_CHANGE": "会话参与者已更改",
+    "PICTURE_CONTENT": "图片消息",
+    "PRIORITY": {
+      "CHANGE_PRIORITY": {
+        "FAILED": "无法更改优先级。请重试。",
+        "INPUT_PLACEHOLDER": "选择优先级",
+        "NO_RESULTS": "没有检索到相关信息",
+        "SELECT_PLACEHOLDER": "无",
+        "SUCCESSFUL": "已将会话 ID %{conversationId} 的优先级更改为 %{priority}"
       },
-      "TEAM": {
-        "EMPTY": "未分配团队",
-        "ASSIGN": "分配"
+      "OPTIONS": {
+        "HIGH": "高",
+        "LOW": "低",
+        "MEDIUM": "中",
+        "NONE": "无",
+        "URGENT": "紧急"
       },
-      "PRIORITY": {
-        "EMPTY": "未添加优先级",
-        "EDIT": "编辑"
-      }
-    }
-  },
-  "FILTER": {
-    "ALL_INBOXES": "所有收件箱",
-    "FILTER_BY_ASSIGNEE_TYPE": "按分配人类型过滤",
-    "FILTER_BY_CONVERSATION_STATUS": "按会话状态过滤",
-    "SORT_BY": "排序方式",
-    "FILTER_BY_INBOX": "按收件箱过滤",
-    "HEADER_TITLE": "会话过滤器",
-    "CHOOSE_INBOX": "选择收件箱",
-    "CHOOSE_STATUS": "会话状态",
-    "OPEN": "打开",
-    "RESOLVED": "已解决",
-    "BOT": "机器人",
-    "SUBMIT": "提交",
-    "PENDING": "等待中",
-    "SNOOZED": "已关闭"
-  },
-  "SETTINGS": {
-    "HEADER_TITLE": "设置",
-    "SET_AVAILABILITY": "将自己设置为",
-    "CHANGE_AVAILABILITY": "设置可用性",
-    "PREFERENCES": "偏好设置",
-    "ABOUT": "关于",
-    "SUPPORT": "支持",
-    "SWITCH_ACCOUNT": "切换账户",
-    "CHANGE_LANGUAGE": "更改语言",
-    "NOTIFICATIONS": "消息通知",
-    "NOTIFICATION_PREFERENCES": "通知设置",
-    "READ_DOCS": "阅读文档",
-    "CHAT_WITH_US": "联系我们",
-    "LOGOUT": "注销",
-    "SUBMIT": "提交",
-    "SET_LANGUAGE": "设置语言",
-    "DEBUG_ACTIONS": "调试操作"
-  },
-  "NOTIFICATION": {
-    "HEADER_TITLE": "消息通知",
-    "INBOX": "收件箱",
-    "EMPTY": "还没有消息通知",
-    "EMPTY_MORE_TEXT": "一旦你收到通知，它们将出现在这里。",
-    "ALL_NOTIFICATION_LOADED": "所有通知已加载",
-    "MARK_ALL": "全部标记为已读",
-    "CANCEL": "取消",
-    "DELETE": "删除",
-    "TYPES": {
-      "CONVERSATION_MENTION": "您在一个会话中被提及",
-      "CONVERSATION_CREATION": "新会话已创建",
-      "CONVERSATION_ASSIGNMENT": "一个会话已分配给您",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "已分配会话中的新消息",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "您参与的会话中的新消息",
-      "SLA_MISSED_FIRST_RESPONSE": "会话的首次响应 SLA 未达标",
-      "SLA_MISSED_NEXT_RESPONSE": "会话的后续响应 SLA 未达标",
-      "SLA_MISSED_RESOLUTION": "会话的解决 SLA 未达标"
+      "TITLE": "优先级"
     },
-    "FILTERS": {
-      "SORT_BY": {
-        "TITLE": "排序方式",
-        "OPTIONS": {
-          "ASC": "最早",
-          "DESC": "最新"
-        }
-      }
-    },
-    "ALERTS": {
-      "MARK_AS_READ": "通知已标记为已读",
-      "MARK_AS_UNREAD": "通知已标记为未读",
-      "SNOOZE": "通知已推迟",
-      "DELETE": "通知已删除",
-      "MARK_ALL_READ": "所有通知已标记为已读",
-      "DELETE_ALL": "所有通知已删除",
-      "DELETE_ALL_READ": "所有已读通知已删除"
-    }
-  },
-  "AVAILABILITY": {
-    "ONLINE": "在线",
-    "BUSY": "忙碌中",
-    "OFFLINE": "离线"
-  },
-  "NOTIFICATION_PREFERENCE": {
-    "TITLE": "通知设置",
-    "EMAIL": "电子邮件通知",
-    "PUSH": "推送通知",
-    "CONVERSATION_CREATE_PUSH": "新会话已创建",
-    "CONVERSATION_ASSIGNEE_PUSH": "一个会话已分配给您",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "您在一个会话中被提及",
-    "CONVERSATION_MENTION": "已分配会话中的新消息",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "您参与的会话中的新消息",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "会话的首次响应 SLA 未达标",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "会话的后续响应 SLA 未达标",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "会话的解决 SLA 未达标"
-  },
-  "CONVERSATION_DETAILS": {
-    "TITLE": "属性",
-    "BROWSER": "浏览器",
-    "OPERATING_SYSTEM": "操作系统",
-    "INITIATED_AT": "发起于",
-    "INITIATED_FROM": "发起自",
-    "IP_ADDRESS": "IP 地址",
-    "CONVERSATION_ID": "会话 ID",
-    "CLIPBOARD_SUCCESS": "已复制到剪贴板"
-  },
-  "CONTACT_DETAILS": {
-    "TITLE": "联系人详细信息",
-    "EMAIL": "Email",
-    "PHONE_NUMBER": "电话号码",
-    "CALL": "呼叫",
-    "CONTACT_ATTRIBUTES": "联系人属性",
-    "VALUE_UNAVAILABLE": "不可用"
-  },
-  "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "参与者",
-    "TOTAL_PARTICIPANTS_TEXT": "有%{count}人参与。",
-    "TOTAL_PARTICIPANT_TEXT": "有%{count}人参与。",
-    "NO_PARTICIPANTS_TEXT": "没有人参与！",
-    "WATCH_CONVERSATION": "加入对话",
-    "YOU_ARE_WATCHING": "你正在参与",
-    "NO_RECORDS_FOUND": "没有检索到相关信息",
-    "SELECT_PARTICIPANTS": "选择客服人员",
-    "ADD_PARTICIPANTS": "选择参与者",
-    "REMAINING_PARTICIPANTS_TEXT": "其他",
-    "REMAINING_PARTICIPANT_TEXT": "其他",
-    "ADD_PARTICIPANT": "添加参与者"
-  },
-  "CONTACT_ATTRIBUTES": {
-    "TITLE": "联系人属性"
+    "PRIORITY_CHANGE": "会话优先级已更改",
+    "PRIVATE_MSG_INPUT": "此操作仅对客服人员可见",
+    "SEARCH_PLACEHOLDER": "搜索会话...",
+    "SEARCH_TEAM": "查找团队",
+    "SELF_ASSIGN": "分配给我",
+    "SHARE": "分享会话",
+    "SNOOZE": "推迟会话",
+    "SNOOZE_UNTIL": "推迟到",
+    "SNOOZE_UNTIL_NEXT_REPLY": "直到下次回复",
+    "SNOOZE_UNTIL_NEXT_WEEK": "直到下周",
+    "SNOOZE_UNTIL_TOMORROW": "直到明天",
+    "STATUS_CHANGE": "会话状态已更改",
+    "STORY_NOT_AVAILABLE": "此故事已不可用",
+    "TEAM": "团队",
+    "TEAM_CHANGE": "会话团队已更改",
+    "TODAY": "今日",
+    "TYPE_MESSAGE": "输入消息",
+    "TYPING": "正在输入",
+    "UNDEFINED_VARIABLES_CLOSE": "关闭",
+    "UNDEFINED_VARIABLES_TITLE": "未定义的变量",
+    "UNSUPPORTED_MESSAGE": "不支持此消息。您可以在 Facebook Messenger 应用上查看此消息。",
+    "UN_ASSIGN": "取消分配对话",
+    "UN_ASSIGNED": "未分配的",
+    "UPDATING": "更新中……",
+    "YESTERDAY": "昨日"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "操作"
   },
-  "CONVERSATION_TEAMS": {
-    "TITLE": "分配团队",
-    "SELECT_TEAM": "选择团队",
-    "NO_RESULT": "未找到团队"
+  "CONVERSATION_AGENTS": {
+    "NO_RESULT": "未找到客服代表",
+    "SELECT_AGENT": "选择客服代表",
+    "TITLE": "分配客服代表"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "浏览器",
+    "CLIPBOARD_SUCCESS": "已复制到剪贴板",
+    "CONVERSATION_ID": "会话 ID",
+    "INITIATED_AT": "发起于",
+    "INITIATED_FROM": "发起自",
+    "IP_ADDRESS": "IP 地址",
+    "OPERATING_SYSTEM": "操作系统",
+    "TITLE": "属性"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "对话标记",
     "ADD_LABEL": "添加标签",
     "EMPTY_LIST": "请为您的账户添加标签",
-    "NO_LABEL": "未分配标签",
-    "UPDATE_LABEL": "标签已成功更新",
-    "SELECTED": "已选择",
     "NOT_SELECTED": "未选择标签",
-    "NO_RESULT": "未找到标签"
+    "NO_LABEL": "未分配标签",
+    "NO_RESULT": "未找到标签",
+    "SELECTED": "已选择",
+    "TITLE": "对话标记",
+    "UPDATE_LABEL": "标签已成功更新"
   },
-  "CONVERSATION_AGENTS": {
-    "TITLE": "分配客服代表",
-    "SELECT_AGENT": "选择客服代表",
-    "NO_RESULT": "未找到客服代表"
+  "CONVERSATION_PARTICIPANTS": {
+    "ADD_PARTICIPANT": "添加参与者",
+    "ADD_PARTICIPANTS": "选择参与者",
+    "NO_PARTICIPANTS_TEXT": "没有人参与！",
+    "NO_RECORDS_FOUND": "没有检索到相关信息",
+    "REMAINING_PARTICIPANTS_TEXT": "其他",
+    "REMAINING_PARTICIPANT_TEXT": "其他",
+    "SELECT_PARTICIPANTS": "选择客服人员",
+    "TITLE": "参与者",
+    "TOTAL_PARTICIPANTS_TEXT": "有%{count}人参与。",
+    "TOTAL_PARTICIPANT_TEXT": "有%{count}人参与。",
+    "WATCH_CONVERSATION": "加入对话",
+    "YOU_ARE_WATCHING": "你正在参与"
   },
-  "AGENT": {
-    "TITLE": "选择客服"
-  },
-  "TEAMS": {
-    "TITLE": "选择团队",
-    "EMPTY": "请为您的账户添加团队以分配会话。",
-    "CHANGE_TEAMS": "会话团队已更改"
+  "CONVERSATION_TEAMS": {
+    "NO_RESULT": "未找到团队",
+    "SELECT_TEAM": "选择团队",
+    "TITLE": "分配团队"
   },
   "ERRORS": {
-    "COMMON_ERROR": "无法连接到 Chatwoot 服务器，请稍后重试",
-    "OfFLINE": "您必须连接到 Wi-Fi 或蜂窝网络才能重新上线。",
-    "CANNOT_FETCH": "获取信息时出现错误，请重试",
     "AUTH": "用户名 / 密码不正确。请重试",
-    "NO_ACCOUNTS_MESSAGE": "您无权访问任何账户"
+    "CANNOT_FETCH": "获取信息时出现错误，请重试",
+    "COMMON_ERROR": "无法连接到 Chatwoot 服务器，请稍后重试",
+    "NO_ACCOUNTS_MESSAGE": "您无权访问任何账户",
+    "OfFLINE": "您必须连接到 Wi-Fi 或蜂窝网络才能重新上线。"
+  },
+  "EXIT": {
+    "CANCEL": "取消",
+    "OK": "确定",
+    "SUBTITLE": "您确定要退出吗？",
+    "TITLE": "退出"
+  },
+  "FILTER": {
+    "ALL_INBOXES": "所有收件箱",
+    "BOT": "机器人",
+    "CHOOSE_INBOX": "选择收件箱",
+    "CHOOSE_STATUS": "会话状态",
+    "FILTER_BY_ASSIGNEE_TYPE": "按分配人类型过滤",
+    "FILTER_BY_CONVERSATION_STATUS": "按会话状态过滤",
+    "FILTER_BY_INBOX": "按收件箱过滤",
+    "HEADER_TITLE": "会话过滤器",
+    "OPEN": "打开",
+    "PENDING": "等待中",
+    "RESOLVED": "已解决",
+    "SNOOZED": "已关闭",
+    "SORT_BY": "排序方式",
+    "SUBMIT": "提交"
+  },
+  "FOOTER": {
+    "CONVERSATION": "会话",
+    "HOME": "主页",
+    "NOTIFICATION": "消息通知",
+    "SETTINGS": "设置"
+  },
+  "FORGOT_PASSWORD": {
+    "API_SUCCESS": "密码重置链接已发送到您的电子邮件地址",
+    "EMAIL": "请输入 Email 地址",
+    "EMAIL_ERROR": "输入有效的 Email",
+    "HEADER_TITLE": "重置密码",
+    "RESET_HERE": "重置密码",
+    "SUB_TITLE": "别担心，我们会支持你的",
+    "TITLE": "忘记密码？"
+  },
+  "LOGIN": {
+    "CHANGE_LANGUAGE": "更改语言",
+    "CHANGE_URL": "更改网址",
+    "CREATE_ACCOUNT": "注册新用户",
+    "DESCRIPTION": "您已连接到 {{baseUrl}}。",
+    "EMAIL": "Email",
+    "EMAIL_ERROR": "输入有效的电子邮件",
+    "EMAIL_REQUIRED": "Email 是必填项",
+    "FORGOT_PASSWORD": "忘记密码？",
+    "LOGIN": "登录",
+    "LOGIN_LOADING": "正在登录……",
+    "LOGIN_VIA_SSO": "通过 SSO 登录",
+    "NO_ACCOUNT": "没有注册？",
+    "PASSWORD": "密码",
+    "PASSWORD_ERROR": "输入有效的密码",
+    "PASSWORD_REQUIRED": "密码是必填项",
+    "RESET_HERE": "重置",
+    "SETTINGS": "设置",
+    "SSO_AUTH_FAILED": "SSO 认证失败。请检查您的凭据并重试。",
+    "SSO_INVALID_RESPONSE": "无效的 SSO 响应。请重试。",
+    "SSO_UNEXPECTED_ERROR": "SSO 登录过程中发生意外错误。请重试。",
+    "TERMS": "服务条款",
+    "TITLE": "登录您的账户"
+  },
+  "MACRO": {
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_ERROR": "Macro execution failed",
+    "EXECUTION_SUCCESS": "宏成功执行",
+    "NO_MACROS": "未找到宏",
+    "SELECT_MACRO": "",
+    "TITLE": "宏"
+  },
+  "MFA": {
+    "BUTTONS": {
+      "VERIFY": "验证",
+      "VERIFYING": "验证中..."
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "请输入身份验证器应用中的 6 位代码",
+      "BACKUP": "请输入您的一个备用代码"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "请输入备用代码"
+    },
+    "TABS": {
+      "AUTHENTICATOR_APP": "身份验证器应用",
+      "BACKUP_CODE": "备用代码"
+    },
+    "TITLE": "双重身份验证"
+  },
+  "NOTIFICATION": {
+    "ALERTS": {
+      "DELETE": "通知已删除",
+      "DELETE_ALL": "所有通知已删除",
+      "DELETE_ALL_READ": "所有已读通知已删除",
+      "MARK_ALL_READ": "所有通知已标记为已读",
+      "MARK_AS_READ": "通知已标记为已读",
+      "MARK_AS_UNREAD": "通知已标记为未读",
+      "SNOOZE": "通知已推迟"
+    },
+    "ALL_NOTIFICATION_LOADED": "所有通知已加载",
+    "CANCEL": "取消",
+    "DELETE": "删除",
+    "EMPTY": "还没有消息通知",
+    "EMPTY_MORE_TEXT": "一旦你收到通知，它们将出现在这里。",
+    "FILTERS": {
+      "SORT_BY": {
+        "OPTIONS": {
+          "ASC": "最早",
+          "DESC": "最新"
+        },
+        "TITLE": "排序方式"
+      }
+    },
+    "HEADER_TITLE": "消息通知",
+    "INBOX": "收件箱",
+    "MARK_ALL": "全部标记为已读",
+    "SEARCH_PLACEHOLDER": "搜索通知...",
+    "TYPES": {
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "已分配会话中的新消息",
+      "CONVERSATION_ASSIGNMENT": "一个会话已分配给您",
+      "CONVERSATION_CREATION": "新会话已创建",
+      "CONVERSATION_MENTION": "您在一个会话中被提及",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "您参与的会话中的新消息",
+      "SLA_MISSED_FIRST_RESPONSE": "会话的首次响应 SLA 未达标",
+      "SLA_MISSED_NEXT_RESPONSE": "会话的后续响应 SLA 未达标",
+      "SLA_MISSED_RESOLUTION": "会话的解决 SLA 未达标"
+    }
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "您在一个会话中被提及",
+    "CONVERSATION_ASSIGNEE_PUSH": "一个会话已分配给您",
+    "CONVERSATION_CREATE_PUSH": "新会话已创建",
+    "CONVERSATION_MENTION": "已分配会话中的新消息",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "您参与的会话中的新消息",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "会话的首次响应 SLA 未达标",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "会话的后续响应 SLA 未达标",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "会话的解决 SLA 未达标",
+    "EMAIL": "电子邮件通知",
+    "PUSH": "推送通知",
+    "TITLE": "通知设置"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "需要更新服务器",
+    "WARNING_FOR_ADMIN": "您的手机应用似乎正在使用不支持的Chatwoot 服务器。需要升级到服务器版本 %{minimumVersion} 或更高版本。",
+    "WARNING_FOR_AGENT": "您的手机应用似乎正在使用不受支持的Chatwoot 服务器。请联系您的管理员升级您的Chatwoot 服务器。"
+  },
+  "SETTINGS": {
+    "ABOUT": "关于",
+    "CHANGE_AVAILABILITY": "设置可用性",
+    "CHANGE_LANGUAGE": "更改语言",
+    "CHAT_WITH_US": "联系我们",
+    "DEBUG_ACTIONS": "调试操作",
+    "HEADER_TITLE": "设置",
+    "LOGOUT": "注销",
+    "NOTIFICATIONS": "消息通知",
+    "NOTIFICATION_PREFERENCES": "通知设置",
+    "PREFERENCES": "偏好设置",
+    "READ_DOCS": "阅读文档",
+    "SET_AVAILABILITY": "将自己设置为",
+    "SET_LANGUAGE": "设置语言",
+    "SUBMIT": "提交",
+    "SUPPORT": "支持",
+    "SWITCH_ACCOUNT": "切换账户"
+  },
+  "SLA": {
+    "FRT": "首次响应时间",
+    "MISSES": {
+      "FRT": "首次响应时间",
+      "HIDE": "隐藏 {count} 行",
+      "NRT": "下次响应时间",
+      "RT": "解决时间",
+      "SHOW_MORE": "还有 {count} 条",
+      "TITLE": "SLA 未达标"
+    },
+    "NRT": "下次响应时间",
+    "RT": "解决时间",
+    "STATUS": {
+      "DUE": "即将到期",
+      "FRT": "首次响应时间 %{status}",
+      "MISSED": "未达标",
+      "NRT": "下次响应时间 %{status}",
+      "RT": "解决时间 %{status}"
+    }
   },
   "SUCCESS": {
     "AUTH": "登录成功"
   },
-  "SERVER_UPGRADE": {
-    "TITLE": "需要更新服务器",
-    "WARNING_FOR_AGENT": "您的手机应用似乎正在使用不受支持的Chatwoot 服务器。请联系您的管理员升级您的Chatwoot 服务器。",
-    "WARNING_FOR_ADMIN": "您的手机应用似乎正在使用不支持的Chatwoot 服务器。需要升级到服务器版本 %{minimumVersion} 或更高版本。"
+  "TEAMS": {
+    "CHANGE_TEAMS": "会话团队已更改",
+    "EMPTY": "请为您的账户添加团队以分配会话。",
+    "TITLE": "选择团队"
   },
-  "EXIT": {
-    "TITLE": "退出",
-    "SUBTITLE": "您确定要退出吗？",
-    "CANCEL": "取消",
-    "OK": "确定"
-  },
-  "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "您只能使用模板信息回复此会话，原因是",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 小时消息窗口限制",
-    "24_HOURS_WINDOW": "24 小时消息窗口限制",
-    "CANNOT_REPLY": "您不能回复，原因是："
-  },
-  "SLA": {
-    "FRT": "首次响应时间",
-    "NRT": "下次响应时间",
-    "RT": "解决时间",
-    "STATUS": {
-      "FRT": "首次响应时间 %{status}",
-      "NRT": "下次响应时间 %{status}",
-      "RT": "解决时间 %{status}",
-      "MISSED": "未达标",
-      "DUE": "即将到期"
-    },
-    "MISSES": {
-      "TITLE": "SLA 未达标",
-      "FRT": "首次响应时间",
-      "NRT": "下次响应时间",
-      "RT": "解决时间",
-      "SHOW_MORE": "还有 {count} 条",
-      "HIDE": "隐藏 {count} 行"
-    }
-  },
-  "MACRO": {
-    "TITLE": "宏",
-    "SELECT_MACRO": "",
-    "ACTIONS": {
-      "RUN": "Run"
-    },
-    "EXECUTION_SUCCESS": "宏成功执行",
-    "EXECUTION_ERROR": "Macro execution failed",
-    "NO_MACROS": "未找到宏"
-  }
+  "WELCOME": "欢迎"
 }

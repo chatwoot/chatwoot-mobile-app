@@ -1,458 +1,482 @@
 {
-  "WELCOME": "Welcome",
+  "AGENT": {
+    "TITLE": "Επιλογή πράκτορα"
+  },
+  "AVAILABILITY": {
+    "BUSY": "Απασχολημένος",
+    "OFFLINE": "Εκτός",
+    "ONLINE": "Στην Γραμμή"
+  },
+  "BANNER": {
+    "24_HOURS_WINDOW": "του περιορισμού των 24 ωρών",
+    "CANNOT_REPLY": "Δεν μπορείτε να απαντήσετε εξαιτίας",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "του περιορισμού των 24 ωρών",
+    "TWILIO_WHATSAPP_CAN_REPLY": "Μπορείτε να απαντήσετε μόνο σε αυτή τη συνομιλία χρησιμοποιώντας ένα πρότυπο μήνυμα επειδή"
+  },
   "COMMON": {
+    "CLOSE": "Κλείσιμο",
     "ERROR": "Error",
     "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Κλείσιμο"
-  },
-  "FOOTER": {
-    "HOME": "Αρχική",
-    "CONVERSATION": "Συζητήσεις",
-    "NOTIFICATION": "Ειδοποιήσεις",
-    "SETTINGS": "Ρυθμίσεις"
+    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
-    "URL_ERROR": "Enter a valid URL",
-    "URL_REQUIRED": "URL is required",
+    "CHANGE_LANGUAGE": "Change language",
     "CONNECT": "Σύνδεση",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "ENTER_URL": "Installation URL",
+    "ERROR": "Invalid installation url",
+    "URL_ERROR": "Enter a valid URL",
+    "URL_REQUIRED": "URL is required"
   },
-  "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Ιδιότητες Επαφής"
+  },
+  "CONTACT_DETAILS": {
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "Ιδιότητες Επαφής",
     "EMAIL": "Email",
-    "PASSWORD": "Κωδικός",
-    "EMAIL_REQUIRED": "Email is required",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_REQUIRED": "Password is required",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
-    "LOGIN_LOADING": "Signing In...",
-    "FORGOT_PASSWORD": "Ξεχάσατε τον κωδικό;",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "Δημιουργία νέου Λογαριασμού",
-    "SETTINGS": "Ρυθμίσεις",
-    "CHANGE_LANGUAGE": "Change language",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
-  },
-  "FORGOT_PASSWORD": {
-    "EMAIL": "Παρακαλώ εισάγετε το email σας",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "PHONE_NUMBER": "Αριθμός Τηλεφώνου",
+    "TITLE": "Λεπτομέρειες Επαφής",
+    "VALUE_UNAVAILABLE": "Μη διαθέσιμος"
   },
   "CONVERSATION": {
-    "HEADER": {
-      "TITLE": "Συζητήσεις",
-      "CLEAR_FILTER": "Clear"
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "ASSIGN": "Αντιστοίχιση",
+        "EDIT": "Επεξεργασία",
+        "EMPTY": "Χωρίς Αντιστοίχιση"
+      },
+      "PRIORITY": {
+        "EDIT": "Επεξεργασία",
+        "EMPTY": "No priority added"
+      },
+      "TEAM": {
+        "ASSIGN": "Αντιστοίχιση",
+        "EMPTY": "No team assigned"
+      }
     },
+    "ALL": "Όλες",
+    "ALL_CONVERSATION_LOADED": "All conversations loaded",
+    "ASSIGN": "Assign conversation",
+    "ASSIGNED_AGENT": "Αντιστοιχισμένος πράκτορας",
+    "ASSIGNEE": {
+      "AGENTS": {
+        "SEARCH_AGENT": "Αναζήτηση πράκτορων"
+      },
+      "LABELS": {
+        "SEARCH_LABELS": "Αναζήτηση ετικετών"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "OPTIONS": {
+          "ALL": "Όλες",
+          "OPEN": "Ανοιχτές",
+          "PENDING": "Εκκρεμεί",
+          "RESOLVED": "Επιλύθηκαν",
+          "SNOOZED": "Αναβολή"
+        },
+        "TITLE": "Filter by status"
+      }
+    },
+    "ASSIGN_CHANGE": "Η εκπροσώπηση για την συνομιλία άλλαξε",
+    "ATTACHMENTS": {
+      "audio": {
+        "CONTENT": "Μήνυμα ήχου"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
+      },
+      "fallback": {
+        "CONTENT": "έχει μοιράσει ένα σύνδεσμο"
+      },
+      "file": {
+        "CONTENT": "Επισυναπτόμενο αρχείο"
+      },
+      "image": {
+        "CONTENT": "Μήνυμα εικόνας"
+      },
+      "location": {
+        "CONTENT": "Θέση"
+      },
+      "video": {
+        "CONTENT": "Μήνυμα βίντεο"
+      }
+    },
+    "ATTACHMENT_CONTENT": "Επισυναπτόμενο αρχείο",
+    "BOT": "Bot",
+    "CHANGE_PRIORITY": "Change priority",
+    "CHANGE_STATUS": "Αλλαγή κατάστασης",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "DEFAULT_HEADER_TITLE": "Συζητήσεις",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "DELETE_MESSAGE_SUCCESS": "Το μήνυμα διαγράφηκε επιτυχώς",
+    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
+    "DETAILS": "Details",
+    "DOWNLOAD": "Κατέβασμα",
+    "EMAIL_HEAD": {
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "TO": "Προς"
+    },
+    "EMAIL_HEADER": {
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "EXPAND": "Expand email",
+      "FROM": "Από",
+      "SUBJECT": "Θέμα",
+      "TO": "Προς"
+    },
+    "EMPTY": "Δεν υπάρχουν ενεργές συζητήσεις σε αυτήν την ομάδα.",
+    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "Αναζήτηση πράκτορων"
+      },
+      "ASSIGNEE_TYPE": {
+        "OPTIONS": {
+          "ALL": "Όλες",
+          "ME": "Me",
+          "UNASSIGNED": "Χωρίς Αντιστοίχιση"
+        },
+        "TITLE": "Filter by assignee type"
       },
       "INBOX": {
         "TITLE": "Filter by inbox"
       },
       "SORT_BY": {
-        "TITLE": "Ταξινόμηση κατά",
         "OPTIONS": {
           "LATEST": "Latest",
           "SORT_ON_CREATED_AT": "Δημιουργήθηκε στις",
           "SORT_ON_PRIORITY": "Priority"
-        }
+        },
+        "TITLE": "Ταξινόμηση κατά"
       },
       "STATUS": {
-        "TITLE": "Filter by status",
         "OPTIONS": {
+          "ALL": "Όλες",
           "OPEN": "Ανοιχτές",
           "PENDING": "Εκκρεμεί",
-          "SNOOZED": "Αναβολή",
           "RESOLVED": "Επιλύθηκαν",
-          "ALL": "Όλες"
-        }
-      },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Χωρίς Αντιστοίχιση",
-          "ALL": "Όλες"
-        }
+          "SNOOZED": "Αναβολή"
+        },
+        "TITLE": "Filter by status"
       }
     },
-    "ASSIGNEE": {
-      "LABELS": {
-        "SEARCH_LABELS": "Αναζήτηση ετικετών"
-      },
-      "AGENTS": {
-        "SEARCH_AGENT": "Αναζήτηση πράκτορων"
-      },
-      "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
-        "OPTIONS": {
-          "OPEN": "Ανοιχτές",
-          "PENDING": "Εκκρεμεί",
-          "SNOOZED": "Αναβολή",
-          "RESOLVED": "Επιλύθηκαν",
-          "ALL": "Όλες"
-        }
-      }
-    },
-    "DEFAULT_HEADER_TITLE": "Συζητήσεις",
-    "UPDATING": "Updating...",
-    "MINE": "Mine",
-    "UN_ASSIGNED": "Χωρίς Αντιστοίχιση",
-    "ALL": "Όλες",
-    "EMPTY": "Δεν υπάρχουν ενεργές συζητήσεις σε αυτήν την ομάδα.",
-    "PICTURE_CONTENT": "Μήνυμα εικόνας",
-    "ATTACHMENT_CONTENT": "Επισυναπτόμενο αρχείο",
-    "DOWNLOAD": "Κατέβασμα",
-    "TODAY": "Σήμερα",
-    "YESTERDAY": "Χτες",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share conversation",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
-    "ASSIGNED_AGENT": "Αντιστοιχισμένος πράκτορας",
-    "TEAM": "Ομάδα",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
-    "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
-    },
-    "BOT": "Bot",
-    "EMAIL_HEAD": {
-      "TO": "Προς",
-      "CC": "Cc",
-      "BCC": "Bcc"
-    },
-    "SELF_ASSIGN": "Ανάθεση σε μένα",
-    "UN_ASSIGN": "Unassign conversation",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
-    "MARK_AS_PENDING": "Σήμανση ως εκκρεμής",
-    "SNOOZE_UNTIL": "Αναβολή έως",
-    "SNOOZE_UNTIL_NEXT_REPLY": "Μέχρι την επόμενη απάντηση",
-    "SNOOZE_UNTIL_TOMORROW": "Μέχρι αύριο",
-    "SNOOZE_UNTIL_NEXT_WEEK": "Έως την επόμενη εβδομάδα",
-    "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Change priority",
-    "MESSAGES": "Μηνύματα",
-    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
-    "UNDEFINED_VARIABLES_CLOSE": "Κλείσιμο",
-    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Το μήνυμα διαγράφηκε επιτυχώς",
-    "NO_CONTENT": "Μη διαθέσιμο περιεχόμενο",
-    "ASSIGN_CHANGE": "Η εκπροσώπηση για την συνομιλία άλλαξε",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Αλλαγή κατάστασης",
-    "SEARCH_TEAM": "Αναζήτηση ομάδων",
-    "PRIORITY": {
-      "TITLE": "Priority",
-      "OPTIONS": {
-        "NONE": "Κανένα",
-        "URGENT": "Urgent",
-        "HIGH": "High",
-        "MEDIUM": "Medium",
-        "LOW": "Low"
-      },
-      "CHANGE_PRIORITY": {
-        "SELECT_PLACEHOLDER": "Κανένα",
-        "INPUT_PLACEHOLDER": "Select priority",
-        "NO_RESULTS": "Δεν βρέθηκαν αποτελέσματα",
-        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
-        "FAILED": "Couldn't change priority. Please try again."
-      }
+    "HEADER": {
+      "CLEAR_FILTER": "Clear",
+      "TITLE": "Συζητήσεις"
     },
     "ITEM": {
       "ASSIGN": "Αντιστοίχιση",
       "STATUS": "Κατάσταση"
     },
-    "ATTACHMENTS": {
-      "image": {
-        "CONTENT": "Μήνυμα εικόνας"
-      },
-      "audio": {
-        "CONTENT": "Μήνυμα ήχου"
-      },
-      "video": {
-        "CONTENT": "Μήνυμα βίντεο"
-      },
-      "file": {
-        "CONTENT": "Επισυναπτόμενο αρχείο"
-      },
-      "location": {
-        "CONTENT": "Θέση"
-      },
-      "fallback": {
-        "CONTENT": "έχει μοιράσει ένα σύνδεσμο"
-      },
-      "contact": {
-        "CONTENT": "Shared a contact"
-      }
-    },
+    "LABELS": "Conversation labels",
     "LONG_PRESS_ACTIONS": {
       "COPY": "Αντιγραφή",
-      "REPLY": "Απάντηση",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "REPLY": "Απάντηση"
     },
-    "EMAIL_HEADER": {
-      "FROM": "Από",
-      "TO": "Προς",
-      "BCC": "Bcc",
-      "CC": "Cc",
-      "SUBJECT": "Θέμα",
-      "EXPAND": "Expand email"
+    "MARK_AS_PENDING": "Σήμανση ως εκκρεμής",
+    "MESSAGES": "Μηνύματα",
+    "MINE": "Mine",
+    "NOT_FOUND": {
+      "BACK_TO_HOME": "Go back to home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again.",
+      "RETRY": "Retry",
+      "TITLE": "Unable to fetch conversation"
     },
-    "ACTIONS": {
-      "ASSIGNEE": {
-        "EMPTY": "Χωρίς Αντιστοίχιση",
-        "ASSIGN": "Αντιστοίχιση",
-        "EDIT": "Επεξεργασία"
+    "NO_CONTENT": "Μη διαθέσιμο περιεχόμενο",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "PICTURE_CONTENT": "Μήνυμα εικόνας",
+    "PRIORITY": {
+      "CHANGE_PRIORITY": {
+        "FAILED": "Couldn't change priority. Please try again.",
+        "INPUT_PLACEHOLDER": "Select priority",
+        "NO_RESULTS": "Δεν βρέθηκαν αποτελέσματα",
+        "SELECT_PLACEHOLDER": "Κανένα",
+        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}"
       },
-      "TEAM": {
-        "EMPTY": "No team assigned",
-        "ASSIGN": "Αντιστοίχιση"
+      "OPTIONS": {
+        "HIGH": "High",
+        "LOW": "Low",
+        "MEDIUM": "Medium",
+        "NONE": "Κανένα",
+        "URGENT": "Urgent"
       },
-      "PRIORITY": {
-        "EMPTY": "No priority added",
-        "EDIT": "Επεξεργασία"
-      }
-    }
-  },
-  "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
-    "SORT_BY": "Ταξινόμηση κατά",
-    "FILTER_BY_INBOX": "Filter by inbox",
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
-    "OPEN": "Ανοιχτές",
-    "RESOLVED": "Επιλύθηκαν",
-    "BOT": "Bot",
-    "SUBMIT": "Καταχώρηση",
-    "PENDING": "Εκκρεμεί",
-    "SNOOZED": "Αναβολή"
-  },
-  "SETTINGS": {
-    "HEADER_TITLE": "Ρυθμίσεις",
-    "SET_AVAILABILITY": "Ορίστε τον εαυτό σας ως",
-    "CHANGE_AVAILABILITY": "Set availability",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
-    "SWITCH_ACCOUNT": "Αλλαγή Λογαριασμού",
-    "CHANGE_LANGUAGE": "Change Language",
-    "NOTIFICATIONS": "Ειδοποιήσεις",
-    "NOTIFICATION_PREFERENCES": "Notification Preferences",
-    "READ_DOCS": "Read Docs",
-    "CHAT_WITH_US": "Συνομιλήστε μαζί μας",
-    "LOGOUT": "Έξοδος (Logout)",
-    "SUBMIT": "Καταχώρηση",
-    "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
-  },
-  "NOTIFICATION": {
-    "HEADER_TITLE": "Ειδοποιήσεις",
-    "INBOX": "Εισερχόμενα",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
-    "CANCEL": "Άκυρο",
-    "DELETE": "Διαγραφή",
-    "TYPES": {
-      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
-      "CONVERSATION_CREATION": "New conversation created",
-      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
-      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
-      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+      "TITLE": "Priority"
     },
-    "FILTERS": {
-      "SORT_BY": {
-        "TITLE": "Ταξινόμηση κατά",
-        "OPTIONS": {
-          "ASC": "Oldest",
-          "DESC": "Newest"
-        }
-      }
-    },
-    "ALERTS": {
-      "MARK_AS_READ": "Notification marked as read",
-      "MARK_AS_UNREAD": "Notification marked as unread",
-      "SNOOZE": "Notification snoozed",
-      "DELETE": "Notification deleted",
-      "MARK_ALL_READ": "All notifications marked as read",
-      "DELETE_ALL": "All notifications deleted",
-      "DELETE_ALL_READ": "All read notifications deleted"
-    }
-  },
-  "AVAILABILITY": {
-    "ONLINE": "Στην Γραμμή",
-    "BUSY": "Απασχολημένος",
-    "OFFLINE": "Εκτός"
-  },
-  "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
-    "EMAIL": "Ειδοποιήσεις Email",
-    "PUSH": "Ειδοποιήσεις Push",
-    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
-    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
-  },
-  "CONVERSATION_DETAILS": {
-    "TITLE": "Ιδιότητες",
-    "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Λειτουργικό",
-    "INITIATED_AT": "Αρχικοποίηση τις",
-    "INITIATED_FROM": "Αρχικοποίηση από",
-    "IP_ADDRESS": "Διεύθυνση IP",
-    "CONVERSATION_ID": "Conversation ID",
-    "CLIPBOARD_SUCCESS": "Ο κώδικας αντιγράφτηκε με επιτυχία στο πρόχειρο"
-  },
-  "CONTACT_DETAILS": {
-    "TITLE": "Λεπτομέρειες Επαφής",
-    "EMAIL": "Email",
-    "PHONE_NUMBER": "Αριθμός Τηλεφώνου",
-    "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Ιδιότητες Επαφής",
-    "VALUE_UNAVAILABLE": "Μη διαθέσιμος"
-  },
-  "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
-    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
-    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
-    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
-    "WATCH_CONVERSATION": "Join conversation",
-    "YOU_ARE_WATCHING": "You are participating",
-    "NO_RECORDS_FOUND": "Δεν βρέθηκαν αποτελέσματα",
-    "SELECT_PARTICIPANTS": "Select agents",
-    "ADD_PARTICIPANTS": "Select participants",
-    "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other",
-    "ADD_PARTICIPANT": "Add Participant"
-  },
-  "CONTACT_ATTRIBUTES": {
-    "TITLE": "Ιδιότητες Επαφής"
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "SEARCH_PLACEHOLDER": "Αναζήτηση συνομιλιών...",
+    "SEARCH_TEAM": "Αναζήτηση ομάδων",
+    "SELF_ASSIGN": "Ανάθεση σε μένα",
+    "SHARE": "Share conversation",
+    "SNOOZE": "Snooze conversation",
+    "SNOOZE_UNTIL": "Αναβολή έως",
+    "SNOOZE_UNTIL_NEXT_REPLY": "Μέχρι την επόμενη απάντηση",
+    "SNOOZE_UNTIL_NEXT_WEEK": "Έως την επόμενη εβδομάδα",
+    "SNOOZE_UNTIL_TOMORROW": "Μέχρι αύριο",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "TEAM": "Ομάδα",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "TODAY": "Σήμερα",
+    "TYPE_MESSAGE": "Type message",
+    "TYPING": "typing",
+    "UNDEFINED_VARIABLES_CLOSE": "Κλείσιμο",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "UN_ASSIGN": "Unassign conversation",
+    "UN_ASSIGNED": "Χωρίς Αντιστοίχιση",
+    "UPDATING": "Updating...",
+    "YESTERDAY": "Χτες"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Ενέργειες"
   },
-  "CONVERSATION_TEAMS": {
-    "TITLE": "Ανάθεση ομάδας",
-    "SELECT_TEAM": "Επιλογή ομάδας",
-    "NO_RESULT": "No team found"
+  "CONVERSATION_AGENTS": {
+    "NO_RESULT": "No agent found",
+    "SELECT_AGENT": "Επιλογή πράκτορα",
+    "TITLE": "Ανάθεση σε πράκτορα"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Browser",
+    "CLIPBOARD_SUCCESS": "Ο κώδικας αντιγράφτηκε με επιτυχία στο πρόχειρο",
+    "CONVERSATION_ID": "Conversation ID",
+    "INITIATED_AT": "Αρχικοποίηση τις",
+    "INITIATED_FROM": "Αρχικοποίηση από",
+    "IP_ADDRESS": "Διεύθυνση IP",
+    "OPERATING_SYSTEM": "Λειτουργικό",
+    "TITLE": "Ιδιότητες"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "Ετικέτες συνομιλίας",
     "ADD_LABEL": "Προσθήκη Ετικετών",
     "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Η ετικέτα ενημερώθηκε επιτυχώς",
-    "SELECTED": "Selected",
     "NOT_SELECTED": "No labels selected",
-    "NO_RESULT": "Δεν βρέθηκαν ετικέτες"
+    "NO_LABEL": "No labels assigned",
+    "NO_RESULT": "Δεν βρέθηκαν ετικέτες",
+    "SELECTED": "Selected",
+    "TITLE": "Ετικέτες συνομιλίας",
+    "UPDATE_LABEL": "Η ετικέτα ενημερώθηκε επιτυχώς"
   },
-  "CONVERSATION_AGENTS": {
-    "TITLE": "Ανάθεση σε πράκτορα",
-    "SELECT_AGENT": "Επιλογή πράκτορα",
-    "NO_RESULT": "No agent found"
+  "CONVERSATION_PARTICIPANTS": {
+    "ADD_PARTICIPANT": "Add Participant",
+    "ADD_PARTICIPANTS": "Select participants",
+    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
+    "NO_RECORDS_FOUND": "Δεν βρέθηκαν αποτελέσματα",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "TITLE": "Participants",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
+    "WATCH_CONVERSATION": "Join conversation",
+    "YOU_ARE_WATCHING": "You are participating"
   },
-  "AGENT": {
-    "TITLE": "Επιλογή πράκτορα"
-  },
-  "TEAMS": {
-    "TITLE": "Επιλογή Ομάδας",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
-    "CHANGE_TEAMS": "Η ομάδα συνομιλίας άλλαξε"
+  "CONVERSATION_TEAMS": {
+    "NO_RESULT": "No team found",
+    "SELECT_TEAM": "Επιλογή ομάδας",
+    "TITLE": "Ανάθεση ομάδας"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
     "AUTH": "Το όνομα χρήστη ή ο κωδικός δεν είναι σωστός. Παρακαλώ ξαναπροσπαθήστε",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts",
+    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again"
+  },
+  "EXIT": {
+    "CANCEL": "Άκυρο",
+    "OK": "Ok",
+    "SUBTITLE": "Are you sure you want to quit?",
+    "TITLE": "Exit"
+  },
+  "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "BOT": "Bot",
+    "CHOOSE_INBOX": "Choose Inbox",
+    "CHOOSE_STATUS": "Conversation Status",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
+    "HEADER_TITLE": "Conversation Filter",
+    "OPEN": "Ανοιχτές",
+    "PENDING": "Εκκρεμεί",
+    "RESOLVED": "Επιλύθηκαν",
+    "SNOOZED": "Αναβολή",
+    "SORT_BY": "Ταξινόμηση κατά",
+    "SUBMIT": "Καταχώρηση"
+  },
+  "FOOTER": {
+    "CONVERSATION": "Συζητήσεις",
+    "HOME": "Αρχική",
+    "NOTIFICATION": "Ειδοποιήσεις",
+    "SETTINGS": "Ρυθμίσεις"
+  },
+  "FORGOT_PASSWORD": {
+    "API_SUCCESS": "Password reset link has been sent to your email address",
+    "EMAIL": "Παρακαλώ εισάγετε το email σας",
+    "EMAIL_ERROR": "Enter a valid email",
+    "HEADER_TITLE": "Reset password",
+    "RESET_HERE": "Reset password",
+    "SUB_TITLE": "Don't worry! We got your back",
+    "TITLE": "Forgot Password?"
+  },
+  "LOGIN": {
+    "CHANGE_LANGUAGE": "Change language",
+    "CHANGE_URL": "Change URL",
+    "CREATE_ACCOUNT": "Δημιουργία νέου Λογαριασμού",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "EMAIL": "Email",
+    "EMAIL_ERROR": "Enter a valid email",
+    "EMAIL_REQUIRED": "Email is required",
+    "FORGOT_PASSWORD": "Ξεχάσατε τον κωδικό;",
+    "LOGIN": "Sign In",
+    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Σύνδεση μέσω SSO",
+    "NO_ACCOUNT": "Don't have an account?",
+    "PASSWORD": "Κωδικός",
+    "PASSWORD_ERROR": "Enter a valid password",
+    "PASSWORD_REQUIRED": "Password is required",
+    "RESET_HERE": "Reset here",
+    "SETTINGS": "Ρυθμίσεις",
+    "SSO_AUTH_FAILED": "Η ταυτοποίηση SSO απέτυχε. Ελέγξτε τα στοιχεία σας και δοκιμάστε ξανά.",
+    "SSO_INVALID_RESPONSE": "Μη έγκυρη απόκριση SSO. Δοκιμάστε ξανά.",
+    "SSO_UNEXPECTED_ERROR": "Παρουσιάστηκε απρόσμενο σφάλμα κατά τη σύνδεση μέσω SSO. Δοκιμάστε ξανά.",
+    "TERMS": "Terms & Conditions",
+    "TITLE": "Log in to your account"
+  },
+  "MACRO": {
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_ERROR": "Macro execution failed",
+    "EXECUTION_SUCCESS": "Η μακροεντολή εκτελέστηκε επιτυχώς",
+    "NO_MACROS": "Δεν βρέθηκαν μακροεντολές",
+    "SELECT_MACRO": "Select macro",
+    "TITLE": "Μακροεντολές"
+  },
+  "MFA": {
+    "BUTTONS": {
+      "VERIFY": "Επαλήθευση",
+      "VERIFYING": "Γίνεται επαλήθευση..."
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Εισάγετε τον 6ψήφιο κωδικό από την εφαρμογή ελέγχου ταυτότητας",
+      "BACKUP": "Εισάγετε έναν από τους εφεδρικούς κωδικούς σας"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Εισάγετε κωδικό εφεδρείας"
+    },
+    "TABS": {
+      "AUTHENTICATOR_APP": "Εφαρμογή ελέγχου ταυτότητας",
+      "BACKUP_CODE": "Κωδικός εφεδρείας"
+    },
+    "TITLE": "Έλεγχος ταυτότητας δύο παραγόντων"
+  },
+  "NOTIFICATION": {
+    "ALERTS": {
+      "DELETE": "Notification deleted",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed"
+    },
+    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
+    "CANCEL": "Άκυρο",
+    "DELETE": "Διαγραφή",
+    "EMPTY": "No notifications yet.",
+    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
+    "FILTERS": {
+      "SORT_BY": {
+        "OPTIONS": {
+          "ASC": "Oldest",
+          "DESC": "Newest"
+        },
+        "TITLE": "Ταξινόμηση κατά"
+      }
+    },
+    "HEADER_TITLE": "Ειδοποιήσεις",
+    "INBOX": "Εισερχόμενα",
+    "MARK_ALL": "Mark all as read",
+    "SEARCH_PLACEHOLDER": "Αναζήτηση ειδοποιήσεων...",
+    "TYPES": {
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
+      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
+      "CONVERSATION_CREATION": "New conversation created",
+      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    }
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA",
+    "EMAIL": "Ειδοποιήσεις Email",
+    "PUSH": "Ειδοποιήσεις Push",
+    "TITLE": "Notification Preferences"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "Server upgrade required",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required.",
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server."
+  },
+  "SETTINGS": {
+    "ABOUT": "About",
+    "CHANGE_AVAILABILITY": "Set availability",
+    "CHANGE_LANGUAGE": "Change Language",
+    "CHAT_WITH_US": "Συνομιλήστε μαζί μας",
+    "DEBUG_ACTIONS": "Debug Actions",
+    "HEADER_TITLE": "Ρυθμίσεις",
+    "LOGOUT": "Έξοδος (Logout)",
+    "NOTIFICATIONS": "Ειδοποιήσεις",
+    "NOTIFICATION_PREFERENCES": "Notification Preferences",
+    "PREFERENCES": "Preferences",
+    "READ_DOCS": "Read Docs",
+    "SET_AVAILABILITY": "Ορίστε τον εαυτό σας ως",
+    "SET_LANGUAGE": "Set Language",
+    "SUBMIT": "Καταχώρηση",
+    "SUPPORT": "Support",
+    "SWITCH_ACCOUNT": "Αλλαγή Λογαριασμού"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "MISSES": {
+      "FRT": "Χρόνος πρώτης ανταπόκρισης",
+      "HIDE": "Hide {count} rows",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "TITLE": "SLA Misses"
+    },
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "DUE": "due",
+      "FRT": "FRT %{status}",
+      "MISSED": "missed",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}"
+    }
   },
   "SUCCESS": {
     "AUTH": "Επιτυχής είσοδος"
   },
-  "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+  "TEAMS": {
+    "CHANGE_TEAMS": "Η ομάδα συνομιλίας άλλαξε",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "TITLE": "Επιλογή Ομάδας"
   },
-  "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
-    "CANCEL": "Άκυρο",
-    "OK": "Ok"
-  },
-  "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "Μπορείτε να απαντήσετε μόνο σε αυτή τη συνομιλία χρησιμοποιώντας ένα πρότυπο μήνυμα επειδή",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "του περιορισμού των 24 ωρών",
-    "24_HOURS_WINDOW": "του περιορισμού των 24 ωρών",
-    "CANNOT_REPLY": "Δεν μπορείτε να απαντήσετε εξαιτίας"
-  },
-  "SLA": {
-    "FRT": "FRT",
-    "NRT": "NRT",
-    "RT": "RT",
-    "STATUS": {
-      "FRT": "FRT %{status}",
-      "NRT": "NRT %{status}",
-      "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "due"
-    },
-    "MISSES": {
-      "TITLE": "SLA Misses",
-      "FRT": "Χρόνος πρώτης ανταπόκρισης",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
-    }
-  },
-  "MACRO": {
-    "TITLE": "Μακροεντολές",
-    "SELECT_MACRO": "Select macro",
-    "ACTIONS": {
-      "RUN": "Run"
-    },
-    "EXECUTION_SUCCESS": "Η μακροεντολή εκτελέστηκε επιτυχώς",
-    "EXECUTION_ERROR": "Macro execution failed",
-    "NO_MACROS": "Δεν βρέθηκαν μακροεντολές"
-  }
+  "WELCOME": "Welcome"
 }

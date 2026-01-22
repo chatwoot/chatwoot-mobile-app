@@ -1,458 +1,482 @@
 {
-  "WELCOME": "Вітаємо",
+  "AGENT": {
+    "TITLE": "Select Agent"
+  },
+  "AVAILABILITY": {
+    "BUSY": "Зайнятий",
+    "OFFLINE": "Не в мережі",
+    "ONLINE": "В мережі"
+  },
+  "BANNER": {
+    "24_HOURS_WINDOW": "24-годинне обмеження на повідомлення",
+    "CANNOT_REPLY": "Ви не можете відповісти через",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24-годинне обмеження на повідомлення",
+    "TWILIO_WHATSAPP_CAN_REPLY": "Ви можете відповісти на цю розмову тільки за допомогою шаблонного повідомлення через"
+  },
   "COMMON": {
+    "CLOSE": "Закрити",
     "ERROR": "Помилка",
     "ERROR_TITLE": "Сталася неочікувана помилка",
-    "REPORT_MESSAGE": "Ми повідомили про це нашій команді! Будь ласка, закрийте додаток та почніть знову!",
-    "CLOSE": "Закрити"
-  },
-  "FOOTER": {
-    "HOME": "Головна",
-    "CONVERSATION": "Бесіди",
-    "NOTIFICATION": "Сповіщення",
-    "SETTINGS": "Налаштування"
+    "REPORT_MESSAGE": "Ми повідомили про це нашій команді! Будь ласка, закрийте додаток та почніть знову!"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "URL-адреса встановлення",
-    "DESCRIPTION": "Якщо ви використовуєте власну установку Chatwoot, введіть URL-адресу свого сервера. В іншому випадку використовуйте app.chatwoot.com.",
-    "URL_ERROR": "Введіть дійсну URL-адресу домену",
-    "URL_REQUIRED": "URL-адреса обов'язкова",
+    "CHANGE_LANGUAGE": "Змінити мову",
     "CONNECT": "Під'єднатися",
-    "CHANGE_LANGUAGE": "Змінити мову",
-    "ERROR": "Хибна URL-адреса встановлення"
+    "DESCRIPTION": "Якщо ви використовуєте власну установку Chatwoot, введіть URL-адресу свого сервера. В іншому випадку використовуйте app.chatwoot.com.",
+    "ENTER_URL": "URL-адреса встановлення",
+    "ERROR": "Хибна URL-адреса встановлення",
+    "URL_ERROR": "Введіть дійсну URL-адресу домену",
+    "URL_REQUIRED": "URL-адреса обов'язкова"
   },
-  "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Атрибути контакту"
+  },
+  "CONTACT_DETAILS": {
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "Атрибути контакту",
     "EMAIL": "Email",
-    "PASSWORD": "Пароль",
-    "EMAIL_REQUIRED": "Необхідно вказати електронну адресу",
-    "EMAIL_ERROR": "Введіть дійсну адресу електронної пошти",
-    "PASSWORD_REQUIRED": "Необхідно вказати пароль",
-    "PASSWORD_ERROR": "Введіть дійсний пароль",
-    "LOGIN": "Увійти",
-    "LOGIN_LOADING": "Signing In...",
-    "FORGOT_PASSWORD": "Забули пароль?",
-    "RESET_HERE": "Скинути тут",
-    "NO_ACCOUNT": "Немає облікового запису?",
-    "CREATE_ACCOUNT": "Створити новий обліковий запис",
-    "SETTINGS": "Налаштування",
-    "CHANGE_LANGUAGE": "Змінити мову",
-    "TERMS": "Правила та Умови",
-    "CHANGE_URL": "Змінити URL-адресу"
-  },
-  "FORGOT_PASSWORD": {
-    "EMAIL": "Введіть адресу електронної пошти",
-    "EMAIL_ERROR": "Введіть дійсну адресу електронної пошти",
-    "RESET_HERE": "Скинути пароль",
-    "HEADER_TITLE": "Скинути пароль",
-    "TITLE": "Забули пароль?",
-    "SUB_TITLE": "Don't worry! We got your back",
-    "API_SUCCESS": "Посилання для зміни пароля було надіслано на вашу електронну пошту"
+    "PHONE_NUMBER": "Номер телефону",
+    "TITLE": "Контактні дані",
+    "VALUE_UNAVAILABLE": "Неприсутній"
   },
   "CONVERSATION": {
-    "HEADER": {
-      "TITLE": "Бесіди",
-      "CLEAR_FILTER": "Очистити"
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "ASSIGN": "Призначити",
+        "EDIT": "Редагувати",
+        "EMPTY": "Непризначені"
+      },
+      "PRIORITY": {
+        "EDIT": "Редагувати",
+        "EMPTY": "No priority added"
+      },
+      "TEAM": {
+        "ASSIGN": "Призначити",
+        "EMPTY": "No team assigned"
+      }
     },
+    "ALL": "Всі",
+    "ALL_CONVERSATION_LOADED": "Всі бесіди завантажено",
+    "ASSIGN": "Призначити бесіду",
+    "ASSIGNED_AGENT": "Призначений агент",
+    "ASSIGNEE": {
+      "AGENTS": {
+        "SEARCH_AGENT": "Пошук агентів"
+      },
+      "LABELS": {
+        "SEARCH_LABELS": "Пошук міток"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "OPTIONS": {
+          "ALL": "Всі",
+          "OPEN": "Відкриті",
+          "PENDING": "В очікуванні",
+          "RESOLVED": "Вирішений",
+          "SNOOZED": "Відкладено"
+        },
+        "TITLE": "Filter by status"
+      }
+    },
+    "ASSIGN_CHANGE": "Оператора бесіди змінено",
+    "ATTACHMENTS": {
+      "audio": {
+        "CONTENT": "Аудіо-повідомлення"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
+      },
+      "fallback": {
+        "CONTENT": "поділився посиланням"
+      },
+      "file": {
+        "CONTENT": "Повідомлення з файлом"
+      },
+      "image": {
+        "CONTENT": "Повідомлення з картинкою"
+      },
+      "location": {
+        "CONTENT": "Місцезнаходження"
+      },
+      "video": {
+        "CONTENT": "Відеоповідомлення"
+      }
+    },
+    "ATTACHMENT_CONTENT": "Повідомлення з файлом",
+    "BOT": "Бот",
+    "CHANGE_PRIORITY": "Змінити пріоритет",
+    "CHANGE_STATUS": "Змінити статус",
+    "CONVERSATION_NOT_FOUND": "Не вдалося завантажити бесіду",
+    "COPY_MESSAGE": "Повідомлення скопійовано до буфера обміну",
+    "DEFAULT_HEADER_TITLE": "Бесіди",
+    "DELETE_MESSAGE_SUB_TITLE": "Цю дію не можна скасувати.",
+    "DELETE_MESSAGE_SUCCESS": "Повідомлення успішно видалено",
+    "DELETE_MESSAGE_TITLE": "Ви справді бажаєте вилучити це повідомлення?",
+    "DETAILS": "Подробиці",
+    "DOWNLOAD": "Звантажити",
+    "EMAIL_HEAD": {
+      "BCC": "Прихована копія",
+      "CC": "Копія",
+      "TO": "Для"
+    },
+    "EMAIL_HEADER": {
+      "BCC": "Прихована копія",
+      "CC": "Копія",
+      "EXPAND": "Expand email",
+      "FROM": "Від",
+      "SUBJECT": "Тема",
+      "TO": "Для"
+    },
+    "EMPTY": "В цій групі немає активних бесід.",
+    "FILE_SIZE_LIMIT": "Файл перевищує ліміт вкладення у 5 МБ",
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "Пошук агентів"
+      },
+      "ASSIGNEE_TYPE": {
+        "OPTIONS": {
+          "ALL": "Всі",
+          "ME": "Me",
+          "UNASSIGNED": "Непризначені"
+        },
+        "TITLE": "Filter by assignee type"
       },
       "INBOX": {
         "TITLE": "Фільтрувати за вхідними"
       },
       "SORT_BY": {
-        "TITLE": "Сортувати за",
         "OPTIONS": {
           "LATEST": "Latest",
           "SORT_ON_CREATED_AT": "Створений в",
           "SORT_ON_PRIORITY": "Пріоритет"
-        }
+        },
+        "TITLE": "Сортувати за"
       },
       "STATUS": {
-        "TITLE": "Filter by status",
         "OPTIONS": {
+          "ALL": "Всі",
           "OPEN": "Відкриті",
           "PENDING": "В очікуванні",
-          "SNOOZED": "Відкладено",
           "RESOLVED": "Вирішений",
-          "ALL": "Всі"
-        }
-      },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Непризначені",
-          "ALL": "Всі"
-        }
+          "SNOOZED": "Відкладено"
+        },
+        "TITLE": "Filter by status"
       }
     },
-    "ASSIGNEE": {
-      "LABELS": {
-        "SEARCH_LABELS": "Пошук міток"
-      },
-      "AGENTS": {
-        "SEARCH_AGENT": "Пошук агентів"
-      },
-      "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
-        "OPTIONS": {
-          "OPEN": "Відкриті",
-          "PENDING": "В очікуванні",
-          "SNOOZED": "Відкладено",
-          "RESOLVED": "Вирішений",
-          "ALL": "Всі"
-        }
-      }
-    },
-    "DEFAULT_HEADER_TITLE": "Бесіди",
-    "UPDATING": "Оновлення...",
-    "MINE": "Мої",
-    "UN_ASSIGNED": "Непризначені",
-    "ALL": "Всі",
-    "EMPTY": "В цій групі немає активних бесід.",
-    "PICTURE_CONTENT": "Повідомлення з картинкою",
-    "ATTACHMENT_CONTENT": "Повідомлення з файлом",
-    "DOWNLOAD": "Звантажити",
-    "TODAY": "Сьогодні",
-    "YESTERDAY": "Вчора",
-    "TYPE_MESSAGE": "Введіть повідомлення",
-    "TYPING": "друкує",
-    "ALL_CONVERSATION_LOADED": "Всі бесіди завантажено",
-    "ASSIGN": "Призначити бесіду",
-    "FILE_SIZE_LIMIT": "Файл перевищує ліміт вкладення у 5 МБ",
-    "SHARE": "Share conversation",
-    "DETAILS": "Подробиці",
-    "LABELS": "Мітки бесіди",
-    "ASSIGNED_AGENT": "Призначений агент",
-    "TEAM": "Команда",
-    "PRIVATE_MSG_INPUT": "Це буде видно лише співробітникам",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
-    "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
-    },
-    "BOT": "Бот",
-    "EMAIL_HEAD": {
-      "TO": "Для",
-      "CC": "Копія",
-      "BCC": "Прихована копія"
-    },
-    "SELF_ASSIGN": "Призначити мені",
-    "UN_ASSIGN": "Скасувати призначення бесіди",
-    "CONVERSATION_NOT_FOUND": "Не вдалося завантажити бесіду",
-    "MARK_AS_PENDING": "Позначити як \"В очікуванні\"",
-    "SNOOZE_UNTIL": "Відкласти до",
-    "SNOOZE_UNTIL_NEXT_REPLY": "До наступної відповіді",
-    "SNOOZE_UNTIL_TOMORROW": "До завтра",
-    "SNOOZE_UNTIL_NEXT_WEEK": "До наступного тижня",
-    "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Змінити пріоритет",
-    "MESSAGES": "Текст повідомлень",
-    "UNDEFINED_VARIABLES_TITLE": "Невизначені змінні",
-    "UNDEFINED_VARIABLES_CLOSE": "Закрити",
-    "DELETE_MESSAGE_TITLE": "Ви справді бажаєте вилучити це повідомлення?",
-    "DELETE_MESSAGE_SUB_TITLE": "Цю дію не можна скасувати.",
-    "COPY_MESSAGE": "Повідомлення скопійовано до буфера обміну",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Повідомлення успішно видалено",
-    "NO_CONTENT": "Немає вмісту",
-    "ASSIGN_CHANGE": "Оператора бесіди змінено",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Змінити статус",
-    "SEARCH_TEAM": "Пошук команд",
-    "PRIORITY": {
-      "TITLE": "Пріоритет",
-      "OPTIONS": {
-        "NONE": "Нiчого",
-        "URGENT": "Терміновий",
-        "HIGH": "Високий",
-        "MEDIUM": "Середній",
-        "LOW": "Низький"
-      },
-      "CHANGE_PRIORITY": {
-        "SELECT_PLACEHOLDER": "Нiчого",
-        "INPUT_PLACEHOLDER": "Оберіть пріоритет",
-        "NO_RESULTS": "Результатів не знайдено",
-        "SUCCESSFUL": "Змінено пріоритет для бесід з ID %{conversationId} на %{priority}",
-        "FAILED": "Не вдалося змінити пріоритет. Будь ласка, спробуйте ще раз."
-      }
+    "HEADER": {
+      "CLEAR_FILTER": "Очистити",
+      "TITLE": "Бесіди"
     },
     "ITEM": {
       "ASSIGN": "Призначити",
       "STATUS": "Статус"
     },
-    "ATTACHMENTS": {
-      "image": {
-        "CONTENT": "Повідомлення з картинкою"
-      },
-      "audio": {
-        "CONTENT": "Аудіо-повідомлення"
-      },
-      "video": {
-        "CONTENT": "Відеоповідомлення"
-      },
-      "file": {
-        "CONTENT": "Повідомлення з файлом"
-      },
-      "location": {
-        "CONTENT": "Місцезнаходження"
-      },
-      "fallback": {
-        "CONTENT": "поділився посиланням"
-      },
-      "contact": {
-        "CONTENT": "Shared a contact"
-      }
-    },
+    "LABELS": "Мітки бесіди",
     "LONG_PRESS_ACTIONS": {
       "COPY": "Копіювати",
-      "REPLY": "Відповісти",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "REPLY": "Відповісти"
     },
-    "EMAIL_HEADER": {
-      "FROM": "Від",
-      "TO": "Для",
-      "BCC": "Прихована копія",
-      "CC": "Копія",
-      "SUBJECT": "Тема",
-      "EXPAND": "Expand email"
+    "MARK_AS_PENDING": "Позначити як \"В очікуванні\"",
+    "MESSAGES": "Текст повідомлень",
+    "MINE": "Мої",
+    "NOT_FOUND": {
+      "BACK_TO_HOME": "Go back to home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again.",
+      "RETRY": "Retry",
+      "TITLE": "Unable to fetch conversation"
     },
-    "ACTIONS": {
-      "ASSIGNEE": {
-        "EMPTY": "Непризначені",
-        "ASSIGN": "Призначити",
-        "EDIT": "Редагувати"
+    "NO_CONTENT": "Немає вмісту",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "PICTURE_CONTENT": "Повідомлення з картинкою",
+    "PRIORITY": {
+      "CHANGE_PRIORITY": {
+        "FAILED": "Не вдалося змінити пріоритет. Будь ласка, спробуйте ще раз.",
+        "INPUT_PLACEHOLDER": "Оберіть пріоритет",
+        "NO_RESULTS": "Результатів не знайдено",
+        "SELECT_PLACEHOLDER": "Нiчого",
+        "SUCCESSFUL": "Змінено пріоритет для бесід з ID %{conversationId} на %{priority}"
       },
-      "TEAM": {
-        "EMPTY": "No team assigned",
-        "ASSIGN": "Призначити"
+      "OPTIONS": {
+        "HIGH": "Високий",
+        "LOW": "Низький",
+        "MEDIUM": "Середній",
+        "NONE": "Нiчого",
+        "URGENT": "Терміновий"
       },
-      "PRIORITY": {
-        "EMPTY": "No priority added",
-        "EDIT": "Редагувати"
-      }
-    }
-  },
-  "FILTER": {
-    "ALL_INBOXES": "Усі вхідні",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Фільтрувати за статусом розмови",
-    "SORT_BY": "Сортувати за",
-    "FILTER_BY_INBOX": "Фільтрувати за вхідними",
-    "HEADER_TITLE": "Фільтр бесід",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Статус бесіди",
-    "OPEN": "Відкриті",
-    "RESOLVED": "Вирішений",
-    "BOT": "Бот",
-    "SUBMIT": "Додати",
-    "PENDING": "В очікуванні",
-    "SNOOZED": "Відкладено"
-  },
-  "SETTINGS": {
-    "HEADER_TITLE": "Налаштування",
-    "SET_AVAILABILITY": "Позначити себе як",
-    "CHANGE_AVAILABILITY": "Set availability",
-    "PREFERENCES": "Налаштування",
-    "ABOUT": "About",
-    "SUPPORT": "Підтримка",
-    "SWITCH_ACCOUNT": "Змінити обліковий запис",
-    "CHANGE_LANGUAGE": "Змінити мову",
-    "NOTIFICATIONS": "Сповіщення",
-    "NOTIFICATION_PREFERENCES": "Налаштування сповіщень",
-    "READ_DOCS": "Read Docs",
-    "CHAT_WITH_US": "Почніть розмову з нами",
-    "LOGOUT": "Вийти",
-    "SUBMIT": "Додати",
-    "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
-  },
-  "NOTIFICATION": {
-    "HEADER_TITLE": "Сповіщення",
-    "INBOX": "Вхідні",
-    "EMPTY": "Немає сповіщень.",
-    "EMPTY_MORE_TEXT": "Як тільки ви почнете отримувати сповіщення, вони з'являться тут.",
-    "ALL_NOTIFICATION_LOADED": "Всі сповіщення завантажено",
-    "MARK_ALL": "Позначити всі як прочитані",
-    "CANCEL": "Скасувати",
-    "DELETE": "Видалити",
-    "TYPES": {
-      "CONVERSATION_MENTION": "Ви були згадані в розмові",
-      "CONVERSATION_CREATION": "Діалог створено",
-      "CONVERSATION_ASSIGNMENT": "Розмова була призначена для вас",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Нове повідомлення в призначеній розмові",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Нове повідомлення в розмові, в якій ви берете участь",
-      "SLA_MISSED_FIRST_RESPONSE": "Перша відповідь на SLA пропущена для розмови",
-      "SLA_MISSED_NEXT_RESPONSE": "Запропонована відповідь SLA відсутня для розмови",
-      "SLA_MISSED_RESOLUTION": "Цільова роздільна здатність SLA відсутня для розмови"
+      "TITLE": "Пріоритет"
     },
-    "FILTERS": {
-      "SORT_BY": {
-        "TITLE": "Сортувати за",
-        "OPTIONS": {
-          "ASC": "Старіші",
-          "DESC": "Новіші"
-        }
-      }
-    },
-    "ALERTS": {
-      "MARK_AS_READ": "Повідомлення помічено як прочитане",
-      "MARK_AS_UNREAD": "Повідомлення помічено як непрочитане",
-      "SNOOZE": "Сповіщення відключено",
-      "DELETE": "Сповіщення видалено",
-      "MARK_ALL_READ": "Повідомлення помічено як прочитане",
-      "DELETE_ALL": "Сповіщення видалено",
-      "DELETE_ALL_READ": "Всі прочитані повідомлення видалено"
-    }
-  },
-  "AVAILABILITY": {
-    "ONLINE": "В мережі",
-    "BUSY": "Зайнятий",
-    "OFFLINE": "Не в мережі"
-  },
-  "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Налаштування сповіщень",
-    "EMAIL": "Сповіщення електронною поштою",
-    "PUSH": "Push-сповіщення",
-    "CONVERSATION_CREATE_PUSH": "Діалог створено",
-    "CONVERSATION_ASSIGNEE_PUSH": "Розмова призначена вам",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Ви згадані в розмові",
-    "CONVERSATION_MENTION": "Нове повідомлення створено в призначеній розмові",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Створено нове повідомлення в розмові з учасниками",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "Розмова пропускає першу відповідь SLA",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "Розмова пропускає наступну відповідь SLA",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "Розмова пропускає SLA розширення"
-  },
-  "CONVERSATION_DETAILS": {
-    "TITLE": "Атрибути",
-    "BROWSER": "Браузер",
-    "OPERATING_SYSTEM": "Операційна система",
-    "INITIATED_AT": "Час початку",
-    "INITIATED_FROM": "Розпочато з",
-    "IP_ADDRESS": "IP-адреса",
-    "CONVERSATION_ID": "ID бесіди",
-    "CLIPBOARD_SUCCESS": "Код скопійований в буфер обміну"
-  },
-  "CONTACT_DETAILS": {
-    "TITLE": "Контактні дані",
-    "EMAIL": "Email",
-    "PHONE_NUMBER": "Номер телефону",
-    "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Атрибути контакту",
-    "VALUE_UNAVAILABLE": "Неприсутній"
-  },
-  "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
-    "TOTAL_PARTICIPANTS_TEXT": "%{count} людей беруть участь.",
-    "TOTAL_PARTICIPANT_TEXT": "%{count} людей беруть участь.",
-    "NO_PARTICIPANTS_TEXT": "Нікого немає!.",
-    "WATCH_CONVERSATION": "Підключитись до бесіди",
-    "YOU_ARE_WATCHING": "Ви підключились",
-    "NO_RECORDS_FOUND": "Результатів не знайдено",
-    "SELECT_PARTICIPANTS": "Select agents",
-    "ADD_PARTICIPANTS": "Виберіть учасників",
-    "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other",
-    "ADD_PARTICIPANT": "Add Participant"
-  },
-  "CONTACT_ATTRIBUTES": {
-    "TITLE": "Атрибути контакту"
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PRIVATE_MSG_INPUT": "Це буде видно лише співробітникам",
+    "SEARCH_PLACEHOLDER": "Пошук діалогів...",
+    "SEARCH_TEAM": "Пошук команд",
+    "SELF_ASSIGN": "Призначити мені",
+    "SHARE": "Share conversation",
+    "SNOOZE": "Snooze conversation",
+    "SNOOZE_UNTIL": "Відкласти до",
+    "SNOOZE_UNTIL_NEXT_REPLY": "До наступної відповіді",
+    "SNOOZE_UNTIL_NEXT_WEEK": "До наступного тижня",
+    "SNOOZE_UNTIL_TOMORROW": "До завтра",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "TEAM": "Команда",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "TODAY": "Сьогодні",
+    "TYPE_MESSAGE": "Введіть повідомлення",
+    "TYPING": "друкує",
+    "UNDEFINED_VARIABLES_CLOSE": "Закрити",
+    "UNDEFINED_VARIABLES_TITLE": "Невизначені змінні",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "UN_ASSIGN": "Скасувати призначення бесіди",
+    "UN_ASSIGNED": "Непризначені",
+    "UPDATING": "Оновлення...",
+    "YESTERDAY": "Вчора"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Дії"
   },
-  "CONVERSATION_TEAMS": {
-    "TITLE": "Призначити команду",
-    "SELECT_TEAM": "Виберіть команду",
-    "NO_RESULT": "Команда не знайдена"
+  "CONVERSATION_AGENTS": {
+    "NO_RESULT": "No agent found",
+    "SELECT_AGENT": "Виберіть агента",
+    "TITLE": "Призначити агента"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Браузер",
+    "CLIPBOARD_SUCCESS": "Код скопійований в буфер обміну",
+    "CONVERSATION_ID": "ID бесіди",
+    "INITIATED_AT": "Час початку",
+    "INITIATED_FROM": "Розпочато з",
+    "IP_ADDRESS": "IP-адреса",
+    "OPERATING_SYSTEM": "Операційна система",
+    "TITLE": "Атрибути"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "Мітки бесіди",
     "ADD_LABEL": "Додати мітки",
     "EMPTY_LIST": "Будь ласка, додайте мітки до вашого облікового запису",
-    "NO_LABEL": "Міток не призначено",
-    "UPDATE_LABEL": "Мітку успішно оновлено",
-    "SELECTED": "Вибрано",
     "NOT_SELECTED": "Мітки не вибрані",
-    "NO_RESULT": "Міток не знайдено"
+    "NO_LABEL": "Міток не призначено",
+    "NO_RESULT": "Міток не знайдено",
+    "SELECTED": "Вибрано",
+    "TITLE": "Мітки бесіди",
+    "UPDATE_LABEL": "Мітку успішно оновлено"
   },
-  "CONVERSATION_AGENTS": {
-    "TITLE": "Призначити агента",
-    "SELECT_AGENT": "Виберіть агента",
-    "NO_RESULT": "No agent found"
+  "CONVERSATION_PARTICIPANTS": {
+    "ADD_PARTICIPANT": "Add Participant",
+    "ADD_PARTICIPANTS": "Виберіть учасників",
+    "NO_PARTICIPANTS_TEXT": "Нікого немає!.",
+    "NO_RECORDS_FOUND": "Результатів не знайдено",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "TITLE": "Participants",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} людей беруть участь.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} людей беруть участь.",
+    "WATCH_CONVERSATION": "Підключитись до бесіди",
+    "YOU_ARE_WATCHING": "Ви підключились"
   },
-  "AGENT": {
-    "TITLE": "Select Agent"
-  },
-  "TEAMS": {
-    "TITLE": "Оберіть команду",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
-    "CHANGE_TEAMS": "Команда змінена"
+  "CONVERSATION_TEAMS": {
+    "NO_RESULT": "Команда не знайдена",
+    "SELECT_TEAM": "Виберіть команду",
+    "TITLE": "Призначити команду"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
-    "OfFLINE": "Ви повинні під'єднатися до Wi-Fi або до стільникового зв'язку, щоб бути онлайн",
-    "CANNOT_FETCH": "Помилка при отриманні інформації, будь ласка, спробуйте ще раз",
     "AUTH": "Неправильне ім'я користувача / пароль. Будь ласка, спробуйте ще раз",
-    "NO_ACCOUNTS_MESSAGE": "Ви не маєте доступу до жодних облікових записів chatwoot"
+    "CANNOT_FETCH": "Помилка при отриманні інформації, будь ласка, спробуйте ще раз",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "NO_ACCOUNTS_MESSAGE": "Ви не маєте доступу до жодних облікових записів chatwoot",
+    "OfFLINE": "Ви повинні під'єднатися до Wi-Fi або до стільникового зв'язку, щоб бути онлайн"
+  },
+  "EXIT": {
+    "CANCEL": "Скасувати",
+    "OK": "Гаразд",
+    "SUBTITLE": "Ви впевнені, що хочете вийти?",
+    "TITLE": "Вийти"
+  },
+  "FILTER": {
+    "ALL_INBOXES": "Усі вхідні",
+    "BOT": "Бот",
+    "CHOOSE_INBOX": "Choose Inbox",
+    "CHOOSE_STATUS": "Статус бесіди",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Фільтрувати за статусом розмови",
+    "FILTER_BY_INBOX": "Фільтрувати за вхідними",
+    "HEADER_TITLE": "Фільтр бесід",
+    "OPEN": "Відкриті",
+    "PENDING": "В очікуванні",
+    "RESOLVED": "Вирішений",
+    "SNOOZED": "Відкладено",
+    "SORT_BY": "Сортувати за",
+    "SUBMIT": "Додати"
+  },
+  "FOOTER": {
+    "CONVERSATION": "Бесіди",
+    "HOME": "Головна",
+    "NOTIFICATION": "Сповіщення",
+    "SETTINGS": "Налаштування"
+  },
+  "FORGOT_PASSWORD": {
+    "API_SUCCESS": "Посилання для зміни пароля було надіслано на вашу електронну пошту",
+    "EMAIL": "Введіть адресу електронної пошти",
+    "EMAIL_ERROR": "Введіть дійсну адресу електронної пошти",
+    "HEADER_TITLE": "Скинути пароль",
+    "RESET_HERE": "Скинути пароль",
+    "SUB_TITLE": "Don't worry! We got your back",
+    "TITLE": "Забули пароль?"
+  },
+  "LOGIN": {
+    "CHANGE_LANGUAGE": "Змінити мову",
+    "CHANGE_URL": "Змінити URL-адресу",
+    "CREATE_ACCOUNT": "Створити новий обліковий запис",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "EMAIL": "Email",
+    "EMAIL_ERROR": "Введіть дійсну адресу електронної пошти",
+    "EMAIL_REQUIRED": "Необхідно вказати електронну адресу",
+    "FORGOT_PASSWORD": "Забули пароль?",
+    "LOGIN": "Увійти",
+    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Увійти через SSO",
+    "NO_ACCOUNT": "Немає облікового запису?",
+    "PASSWORD": "Пароль",
+    "PASSWORD_ERROR": "Введіть дійсний пароль",
+    "PASSWORD_REQUIRED": "Необхідно вказати пароль",
+    "RESET_HERE": "Скинути тут",
+    "SETTINGS": "Налаштування",
+    "SSO_AUTH_FAILED": "Помилка автентифікації SSO. Перевірте свої облікові дані та спробуйте ще раз.",
+    "SSO_INVALID_RESPONSE": "Неприпустима відповідь SSO. Спробуйте ще раз.",
+    "SSO_UNEXPECTED_ERROR": "Під час входу через SSO сталася непередбачена помилка. Спробуйте ще раз.",
+    "TERMS": "Правила та Умови",
+    "TITLE": "Log in to your account"
+  },
+  "MACRO": {
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_ERROR": "Macro execution failed",
+    "EXECUTION_SUCCESS": "Макрос успішно виконано",
+    "NO_MACROS": "Макросів не знайдено",
+    "SELECT_MACRO": "Select macro",
+    "TITLE": "Макрос"
+  },
+  "MFA": {
+    "BUTTONS": {
+      "VERIFY": "Підтвердити",
+      "VERIFYING": "Перевірка..."
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Введіть 6-значний код з вашого додатка-аутентифікатора",
+      "BACKUP": "Введіть один із ваших резервних кодів"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Введіть резервний код"
+    },
+    "TABS": {
+      "AUTHENTICATOR_APP": "Додаток-аутентифікатор",
+      "BACKUP_CODE": "Резервний код"
+    },
+    "TITLE": "Двофакторна автентифікація"
+  },
+  "NOTIFICATION": {
+    "ALERTS": {
+      "DELETE": "Сповіщення видалено",
+      "DELETE_ALL": "Сповіщення видалено",
+      "DELETE_ALL_READ": "Всі прочитані повідомлення видалено",
+      "MARK_ALL_READ": "Повідомлення помічено як прочитане",
+      "MARK_AS_READ": "Повідомлення помічено як прочитане",
+      "MARK_AS_UNREAD": "Повідомлення помічено як непрочитане",
+      "SNOOZE": "Сповіщення відключено"
+    },
+    "ALL_NOTIFICATION_LOADED": "Всі сповіщення завантажено",
+    "CANCEL": "Скасувати",
+    "DELETE": "Видалити",
+    "EMPTY": "Немає сповіщень.",
+    "EMPTY_MORE_TEXT": "Як тільки ви почнете отримувати сповіщення, вони з'являться тут.",
+    "FILTERS": {
+      "SORT_BY": {
+        "OPTIONS": {
+          "ASC": "Старіші",
+          "DESC": "Новіші"
+        },
+        "TITLE": "Сортувати за"
+      }
+    },
+    "HEADER_TITLE": "Сповіщення",
+    "INBOX": "Вхідні",
+    "MARK_ALL": "Позначити всі як прочитані",
+    "SEARCH_PLACEHOLDER": "Пошук сповіщень...",
+    "TYPES": {
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Нове повідомлення в призначеній розмові",
+      "CONVERSATION_ASSIGNMENT": "Розмова була призначена для вас",
+      "CONVERSATION_CREATION": "Діалог створено",
+      "CONVERSATION_MENTION": "Ви були згадані в розмові",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Нове повідомлення в розмові, в якій ви берете участь",
+      "SLA_MISSED_FIRST_RESPONSE": "Перша відповідь на SLA пропущена для розмови",
+      "SLA_MISSED_NEXT_RESPONSE": "Запропонована відповідь SLA відсутня для розмови",
+      "SLA_MISSED_RESOLUTION": "Цільова роздільна здатність SLA відсутня для розмови"
+    }
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Ви згадані в розмові",
+    "CONVERSATION_ASSIGNEE_PUSH": "Розмова призначена вам",
+    "CONVERSATION_CREATE_PUSH": "Діалог створено",
+    "CONVERSATION_MENTION": "Нове повідомлення створено в призначеній розмові",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Створено нове повідомлення в розмові з учасниками",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "Розмова пропускає першу відповідь SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "Розмова пропускає наступну відповідь SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "Розмова пропускає SLA розширення",
+    "EMAIL": "Сповіщення електронною поштою",
+    "PUSH": "Push-сповіщення",
+    "TITLE": "Налаштування сповіщень"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "Необхідно оновити сервер",
+    "WARNING_FOR_ADMIN": "Схоже, ви використовуєте непідтримуваний сервер Chatwoot для вашого мобільного додатку. Потрібне оновлення до версії сервера %{minimumVersion} або вище.",
+    "WARNING_FOR_AGENT": "Схоже, ви використовуєте непідтримуваний сервер Chatwoot для вашого мобільного додатку. Будь ласка, зверніться до адміністратора, щоб оновити ваш сервер Chatwoot."
+  },
+  "SETTINGS": {
+    "ABOUT": "About",
+    "CHANGE_AVAILABILITY": "Set availability",
+    "CHANGE_LANGUAGE": "Змінити мову",
+    "CHAT_WITH_US": "Почніть розмову з нами",
+    "DEBUG_ACTIONS": "Debug Actions",
+    "HEADER_TITLE": "Налаштування",
+    "LOGOUT": "Вийти",
+    "NOTIFICATIONS": "Сповіщення",
+    "NOTIFICATION_PREFERENCES": "Налаштування сповіщень",
+    "PREFERENCES": "Налаштування",
+    "READ_DOCS": "Read Docs",
+    "SET_AVAILABILITY": "Позначити себе як",
+    "SET_LANGUAGE": "Set Language",
+    "SUBMIT": "Додати",
+    "SUPPORT": "Підтримка",
+    "SWITCH_ACCOUNT": "Змінити обліковий запис"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "MISSES": {
+      "FRT": "Час першої відповіді",
+      "HIDE": "Hide {count} rows",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "TITLE": "SLA Misses"
+    },
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "DUE": "due",
+      "FRT": "FRT %{status}",
+      "MISSED": "missed",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}"
+    }
   },
   "SUCCESS": {
     "AUTH": "Вхід успішно здійснено"
   },
-  "SERVER_UPGRADE": {
-    "TITLE": "Необхідно оновити сервер",
-    "WARNING_FOR_AGENT": "Схоже, ви використовуєте непідтримуваний сервер Chatwoot для вашого мобільного додатку. Будь ласка, зверніться до адміністратора, щоб оновити ваш сервер Chatwoot.",
-    "WARNING_FOR_ADMIN": "Схоже, ви використовуєте непідтримуваний сервер Chatwoot для вашого мобільного додатку. Потрібне оновлення до версії сервера %{minimumVersion} або вище."
+  "TEAMS": {
+    "CHANGE_TEAMS": "Команда змінена",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "TITLE": "Оберіть команду"
   },
-  "EXIT": {
-    "TITLE": "Вийти",
-    "SUBTITLE": "Ви впевнені, що хочете вийти?",
-    "CANCEL": "Скасувати",
-    "OK": "Гаразд"
-  },
-  "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "Ви можете відповісти на цю розмову тільки за допомогою шаблонного повідомлення через",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24-годинне обмеження на повідомлення",
-    "24_HOURS_WINDOW": "24-годинне обмеження на повідомлення",
-    "CANNOT_REPLY": "Ви не можете відповісти через"
-  },
-  "SLA": {
-    "FRT": "FRT",
-    "NRT": "NRT",
-    "RT": "RT",
-    "STATUS": {
-      "FRT": "FRT %{status}",
-      "NRT": "NRT %{status}",
-      "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "due"
-    },
-    "MISSES": {
-      "TITLE": "SLA Misses",
-      "FRT": "Час першої відповіді",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
-    }
-  },
-  "MACRO": {
-    "TITLE": "Макрос",
-    "SELECT_MACRO": "Select macro",
-    "ACTIONS": {
-      "RUN": "Run"
-    },
-    "EXECUTION_SUCCESS": "Макрос успішно виконано",
-    "EXECUTION_ERROR": "Macro execution failed",
-    "NO_MACROS": "Макросів не знайдено"
-  }
+  "WELCOME": "Вітаємо"
 }

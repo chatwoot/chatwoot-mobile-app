@@ -1,458 +1,482 @@
 {
-  "WELCOME": "歡迎",
+  "AGENT": {
+    "TITLE": "选择代理"
+  },
+  "AVAILABILITY": {
+    "BUSY": "忙碌中",
+    "OFFLINE": "離線的",
+    "ONLINE": "線上的"
+  },
+  "BANNER": {
+    "24_HOURS_WINDOW": "24 小时消息窗口限制",
+    "CANNOT_REPLY": "您不能回覆，原因是：",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 小时消息窗口限制",
+    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to"
+  },
   "COMMON": {
+    "CLOSE": "關閉",
     "ERROR": "錯誤",
     "ERROR_TITLE": "發生意外錯誤",
-    "REPORT_MESSAGE": "我們已將此情況報告給我們的團隊！請關閉應用程式並重新開始！",
-    "CLOSE": "關閉"
-  },
-  "FOOTER": {
-    "HOME": "首頁",
-    "CONVERSATION": "對話",
-    "NOTIFICATION": "通知",
-    "SETTINGS": "設定"
+    "REPORT_MESSAGE": "我們已將此情況報告給我們的團隊！請關閉應用程式並重新開始！"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "安裝網址",
-    "DESCRIPTION": "如果您正在使用自己托管的Chatwoot 安装，请输入您的服务器URL。否则，请使用 app.chatwoot.com。",
-    "URL_ERROR": "輸入有效的網址",
-    "URL_REQUIRED": "URL is required",
+    "CHANGE_LANGUAGE": "更換語言",
     "CONNECT": "連接",
-    "CHANGE_LANGUAGE": "更換語言",
-    "ERROR": "安裝網址無效"
+    "DESCRIPTION": "如果您正在使用自己托管的Chatwoot 安装，请输入您的服务器URL。否则，请使用 app.chatwoot.com。",
+    "ENTER_URL": "安裝網址",
+    "ERROR": "安裝網址無效",
+    "URL_ERROR": "輸入有效的網址",
+    "URL_REQUIRED": "URL is required"
   },
-  "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "聯絡人屬性"
+  },
+  "CONTACT_DETAILS": {
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "聯絡人屬性",
     "EMAIL": "Email",
-    "PASSWORD": "密碼",
-    "EMAIL_REQUIRED": "Email is required",
-    "EMAIL_ERROR": "輸入錯誤信箱",
-    "PASSWORD_REQUIRED": "Password is required",
-    "PASSWORD_ERROR": "輸入錯誤密碼",
-    "LOGIN": "登入",
-    "LOGIN_LOADING": "Signing In...",
-    "FORGOT_PASSWORD": "忘記密碼了？",
-    "RESET_HERE": "在此重置",
-    "NO_ACCOUNT": "有登入帳號嗎",
-    "CREATE_ACCOUNT": "建立新帳戶",
-    "SETTINGS": "設定",
-    "CHANGE_LANGUAGE": "更換語言",
-    "TERMS": "條款及條件",
-    "CHANGE_URL": "更改網址"
-  },
-  "FORGOT_PASSWORD": {
-    "EMAIL": "請輸入您的電子信箱",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "重設密碼",
-    "HEADER_TITLE": "重設密碼",
-    "TITLE": "忘記密碼",
-    "SUB_TITLE": "不用擔心，我們降返回",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "PHONE_NUMBER": "聯絡人電話",
+    "TITLE": "聯絡人詳細資料",
+    "VALUE_UNAVAILABLE": "無法使用"
   },
   "CONVERSATION": {
-    "HEADER": {
-      "TITLE": "對話",
-      "CLEAR_FILTER": "Clear"
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "ASSIGN": "指派",
+        "EDIT": "編輯",
+        "EMPTY": "未指派的"
+      },
+      "PRIORITY": {
+        "EDIT": "編輯",
+        "EMPTY": "No priority added"
+      },
+      "TEAM": {
+        "ASSIGN": "指派",
+        "EMPTY": "No team assigned"
+      }
     },
+    "ALL": "所有的",
+    "ALL_CONVERSATION_LOADED": "所有對話以加載",
+    "ASSIGN": "重新打开会话",
+    "ASSIGNED_AGENT": "Assigned agent",
+    "ASSIGNEE": {
+      "AGENTS": {
+        "SEARCH_AGENT": "搜尋客服"
+      },
+      "LABELS": {
+        "SEARCH_LABELS": "搜尋標籤"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "OPTIONS": {
+          "ALL": "所有的",
+          "OPEN": "正在進行的\n",
+          "PENDING": "等待中",
+          "RESOLVED": "已解決",
+          "SNOOZED": "擱置"
+        },
+        "TITLE": "Filter by status"
+      }
+    },
+    "ASSIGN_CHANGE": "對話指派人已更改",
+    "ATTACHMENTS": {
+      "audio": {
+        "CONTENT": "聲音訊息"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
+      },
+      "fallback": {
+        "CONTENT": "分享了一個網址"
+      },
+      "file": {
+        "CONTENT": "附件"
+      },
+      "image": {
+        "CONTENT": "圖片訊息"
+      },
+      "location": {
+        "CONTENT": "位置"
+      },
+      "video": {
+        "CONTENT": "影片訊息"
+      }
+    },
+    "ATTACHMENT_CONTENT": "附件",
+    "BOT": "機器人",
+    "CHANGE_PRIORITY": "Change priority",
+    "CHANGE_STATUS": "Change status",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "DEFAULT_HEADER_TITLE": "對話",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "DELETE_MESSAGE_SUCCESS": "已成功刪除訊息",
+    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
+    "DETAILS": "Details",
+    "DOWNLOAD": "下載",
+    "EMAIL_HEAD": {
+      "BCC": "密件副本",
+      "CC": "副本",
+      "TO": "To"
+    },
+    "EMAIL_HEADER": {
+      "BCC": "密件副本",
+      "CC": "副本",
+      "EXPAND": "Expand email",
+      "FROM": "From",
+      "SUBJECT": "主旨",
+      "TO": "To"
+    },
+    "EMPTY": "這個群組中無有效對話",
+    "FILE_SIZE_LIMIT": "文件超过 5MB 附件限制",
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "搜尋客服"
+      },
+      "ASSIGNEE_TYPE": {
+        "OPTIONS": {
+          "ALL": "所有的",
+          "ME": "Me",
+          "UNASSIGNED": "未指派的"
+        },
+        "TITLE": "Filter by assignee type"
       },
       "INBOX": {
         "TITLE": "Filter by inbox"
       },
       "SORT_BY": {
-        "TITLE": "Sort by",
         "OPTIONS": {
           "LATEST": "Latest",
           "SORT_ON_CREATED_AT": "建立於",
           "SORT_ON_PRIORITY": "優先程度"
-        }
+        },
+        "TITLE": "Sort by"
       },
       "STATUS": {
-        "TITLE": "Filter by status",
         "OPTIONS": {
+          "ALL": "所有的",
           "OPEN": "正在進行的\n",
           "PENDING": "等待中",
-          "SNOOZED": "擱置",
           "RESOLVED": "已解決",
-          "ALL": "所有的"
-        }
-      },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "未指派的",
-          "ALL": "所有的"
-        }
+          "SNOOZED": "擱置"
+        },
+        "TITLE": "Filter by status"
       }
     },
-    "ASSIGNEE": {
-      "LABELS": {
-        "SEARCH_LABELS": "搜尋標籤"
-      },
-      "AGENTS": {
-        "SEARCH_AGENT": "搜尋客服"
-      },
-      "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
-        "OPTIONS": {
-          "OPEN": "正在進行的\n",
-          "PENDING": "等待中",
-          "SNOOZED": "擱置",
-          "RESOLVED": "已解決",
-          "ALL": "所有的"
-        }
-      }
-    },
-    "DEFAULT_HEADER_TITLE": "對話",
-    "UPDATING": "Updating...",
-    "MINE": "我的",
-    "UN_ASSIGNED": "未指派的",
-    "ALL": "所有的",
-    "EMPTY": "這個群組中無有效對話",
-    "PICTURE_CONTENT": "圖片訊息",
-    "ATTACHMENT_CONTENT": "附件",
-    "DOWNLOAD": "下載",
-    "TODAY": "今天",
-    "YESTERDAY": "昨天",
-    "TYPE_MESSAGE": "輸入信息",
-    "TYPING": "輸入",
-    "ALL_CONVERSATION_LOADED": "所有對話以加載",
-    "ASSIGN": "重新打开会话",
-    "FILE_SIZE_LIMIT": "文件超过 5MB 附件限制",
-    "SHARE": "Share conversation",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
-    "ASSIGNED_AGENT": "Assigned agent",
-    "TEAM": "Team",
-    "PRIVATE_MSG_INPUT": "此操作仅对代理人可见",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
-    "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
-    },
-    "BOT": "機器人",
-    "EMAIL_HEAD": {
-      "TO": "To",
-      "CC": "副本",
-      "BCC": "密件副本"
-    },
-    "SELF_ASSIGN": "指定給我",
-    "UN_ASSIGN": "取消分配对话",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
-    "MARK_AS_PENDING": "標記為待處理",
-    "SNOOZE_UNTIL": "Snooze until",
-    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
-    "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
-    "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
-    "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Change priority",
-    "MESSAGES": "訊息",
-    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
-    "UNDEFINED_VARIABLES_CLOSE": "關閉",
-    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "已成功刪除訊息",
-    "NO_CONTENT": "沒有可用內容",
-    "ASSIGN_CHANGE": "對話指派人已更改",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "搜尋團隊",
-    "PRIORITY": {
-      "TITLE": "Priority",
-      "OPTIONS": {
-        "NONE": "無",
-        "URGENT": "Urgent",
-        "HIGH": "High",
-        "MEDIUM": "Medium",
-        "LOW": "Low"
-      },
-      "CHANGE_PRIORITY": {
-        "SELECT_PLACEHOLDER": "無",
-        "INPUT_PLACEHOLDER": "Select priority",
-        "NO_RESULTS": "No results found",
-        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
-        "FAILED": "Couldn't change priority. Please try again."
-      }
+    "HEADER": {
+      "CLEAR_FILTER": "Clear",
+      "TITLE": "對話"
     },
     "ITEM": {
       "ASSIGN": "指派",
       "STATUS": "狀態"
     },
-    "ATTACHMENTS": {
-      "image": {
-        "CONTENT": "圖片訊息"
-      },
-      "audio": {
-        "CONTENT": "聲音訊息"
-      },
-      "video": {
-        "CONTENT": "影片訊息"
-      },
-      "file": {
-        "CONTENT": "附件"
-      },
-      "location": {
-        "CONTENT": "位置"
-      },
-      "fallback": {
-        "CONTENT": "分享了一個網址"
-      },
-      "contact": {
-        "CONTENT": "Shared a contact"
-      }
-    },
+    "LABELS": "Conversation labels",
     "LONG_PRESS_ACTIONS": {
       "COPY": "複製",
-      "REPLY": "回覆",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "REPLY": "回覆"
     },
-    "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "To",
-      "BCC": "密件副本",
-      "CC": "副本",
-      "SUBJECT": "主旨",
-      "EXPAND": "Expand email"
+    "MARK_AS_PENDING": "標記為待處理",
+    "MESSAGES": "訊息",
+    "MINE": "我的",
+    "NOT_FOUND": {
+      "BACK_TO_HOME": "Go back to home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again.",
+      "RETRY": "Retry",
+      "TITLE": "Unable to fetch conversation"
     },
-    "ACTIONS": {
-      "ASSIGNEE": {
-        "EMPTY": "未指派的",
-        "ASSIGN": "指派",
-        "EDIT": "編輯"
+    "NO_CONTENT": "沒有可用內容",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "PICTURE_CONTENT": "圖片訊息",
+    "PRIORITY": {
+      "CHANGE_PRIORITY": {
+        "FAILED": "Couldn't change priority. Please try again.",
+        "INPUT_PLACEHOLDER": "Select priority",
+        "NO_RESULTS": "No results found",
+        "SELECT_PLACEHOLDER": "無",
+        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}"
       },
-      "TEAM": {
-        "EMPTY": "No team assigned",
-        "ASSIGN": "指派"
+      "OPTIONS": {
+        "HIGH": "High",
+        "LOW": "Low",
+        "MEDIUM": "Medium",
+        "NONE": "無",
+        "URGENT": "Urgent"
       },
-      "PRIORITY": {
-        "EMPTY": "No priority added",
-        "EDIT": "編輯"
-      }
-    }
-  },
-  "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
-    "SORT_BY": "Sort by",
-    "FILTER_BY_INBOX": "Filter by inbox",
-    "HEADER_TITLE": "對話過濾",
-    "CHOOSE_INBOX": "選擇收件夾",
-    "CHOOSE_STATUS": "通話狀況",
-    "OPEN": "正在進行的\n",
-    "RESOLVED": "已解決",
-    "BOT": "機器人",
-    "SUBMIT": "送出",
-    "PENDING": "等待中",
-    "SNOOZED": "已关闭"
-  },
-  "SETTINGS": {
-    "HEADER_TITLE": "設定",
-    "SET_AVAILABILITY": "Set yourself as",
-    "CHANGE_AVAILABILITY": "Set availability",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
-    "SWITCH_ACCOUNT": "切換帳戶",
-    "CHANGE_LANGUAGE": "更換語言",
-    "NOTIFICATIONS": "通知",
-    "NOTIFICATION_PREFERENCES": "通知首選",
-    "READ_DOCS": "Read Docs",
-    "CHAT_WITH_US": "與我們對話",
-    "LOGOUT": "退出登入",
-    "SUBMIT": "送出",
-    "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
-  },
-  "NOTIFICATION": {
-    "HEADER_TITLE": "通知",
-    "INBOX": "收件匣",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "一旦你開始收到通知，他們就會出現她",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
-    "CANCEL": "取消",
-    "DELETE": "刪除",
-    "TYPES": {
-      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
-      "CONVERSATION_CREATION": "New conversation created",
-      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
-      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
-      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+      "TITLE": "Priority"
     },
-    "FILTERS": {
-      "SORT_BY": {
-        "TITLE": "Sort by",
-        "OPTIONS": {
-          "ASC": "Oldest",
-          "DESC": "Newest"
-        }
-      }
-    },
-    "ALERTS": {
-      "MARK_AS_READ": "Notification marked as read",
-      "MARK_AS_UNREAD": "Notification marked as unread",
-      "SNOOZE": "Notification snoozed",
-      "DELETE": "Notification deleted",
-      "MARK_ALL_READ": "All notifications marked as read",
-      "DELETE_ALL": "All notifications deleted",
-      "DELETE_ALL_READ": "All read notifications deleted"
-    }
-  },
-  "AVAILABILITY": {
-    "ONLINE": "線上的",
-    "BUSY": "忙碌中",
-    "OFFLINE": "離線的"
-  },
-  "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
-    "EMAIL": "電子信箱通知",
-    "PUSH": "推送通知",
-    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
-    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
-  },
-  "CONVERSATION_DETAILS": {
-    "TITLE": "屬性",
-    "BROWSER": "瀏覽器",
-    "OPERATING_SYSTEM": "作業系统",
-    "INITIATED_AT": "發起於",
-    "INITIATED_FROM": "發起自：",
-    "IP_ADDRESS": "IP 地址",
-    "CONVERSATION_ID": "Conversation ID",
-    "CLIPBOARD_SUCCESS": "Copied to clipboard"
-  },
-  "CONTACT_DETAILS": {
-    "TITLE": "聯絡人詳細資料",
-    "EMAIL": "Email",
-    "PHONE_NUMBER": "聯絡人電話",
-    "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "聯絡人屬性",
-    "VALUE_UNAVAILABLE": "無法使用"
-  },
-  "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
-    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
-    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
-    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
-    "WATCH_CONVERSATION": "Join conversation",
-    "YOU_ARE_WATCHING": "You are participating",
-    "NO_RECORDS_FOUND": "No results found",
-    "SELECT_PARTICIPANTS": "Select agents",
-    "ADD_PARTICIPANTS": "Select participants",
-    "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other",
-    "ADD_PARTICIPANT": "Add Participant"
-  },
-  "CONTACT_ATTRIBUTES": {
-    "TITLE": "聯絡人屬性"
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PRIVATE_MSG_INPUT": "此操作仅对代理人可见",
+    "SEARCH_PLACEHOLDER": "搜尋對話...",
+    "SEARCH_TEAM": "搜尋團隊",
+    "SELF_ASSIGN": "指定給我",
+    "SHARE": "Share conversation",
+    "SNOOZE": "Snooze conversation",
+    "SNOOZE_UNTIL": "Snooze until",
+    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
+    "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
+    "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "TEAM": "Team",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "TODAY": "今天",
+    "TYPE_MESSAGE": "輸入信息",
+    "TYPING": "輸入",
+    "UNDEFINED_VARIABLES_CLOSE": "關閉",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "UN_ASSIGN": "取消分配对话",
+    "UN_ASSIGNED": "未指派的",
+    "UPDATING": "Updating...",
+    "YESTERDAY": "昨天"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "操作"
   },
-  "CONVERSATION_TEAMS": {
-    "TITLE": "Assign team",
-    "SELECT_TEAM": "選擇團隊",
-    "NO_RESULT": "No team found"
+  "CONVERSATION_AGENTS": {
+    "NO_RESULT": "No agent found",
+    "SELECT_AGENT": "選擇客服",
+    "TITLE": "Assign agent"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "瀏覽器",
+    "CLIPBOARD_SUCCESS": "Copied to clipboard",
+    "CONVERSATION_ID": "Conversation ID",
+    "INITIATED_AT": "發起於",
+    "INITIATED_FROM": "發起自：",
+    "IP_ADDRESS": "IP 地址",
+    "OPERATING_SYSTEM": "作業系统",
+    "TITLE": "屬性"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "对话标记",
     "ADD_LABEL": "添加标签",
     "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "标签已成功更新",
-    "SELECTED": "Selected",
     "NOT_SELECTED": "No labels selected",
-    "NO_RESULT": "查無標籤"
+    "NO_LABEL": "No labels assigned",
+    "NO_RESULT": "查無標籤",
+    "SELECTED": "Selected",
+    "TITLE": "对话标记",
+    "UPDATE_LABEL": "标签已成功更新"
   },
-  "CONVERSATION_AGENTS": {
-    "TITLE": "Assign agent",
-    "SELECT_AGENT": "選擇客服",
-    "NO_RESULT": "No agent found"
+  "CONVERSATION_PARTICIPANTS": {
+    "ADD_PARTICIPANT": "Add Participant",
+    "ADD_PARTICIPANTS": "Select participants",
+    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
+    "NO_RECORDS_FOUND": "No results found",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "TITLE": "Participants",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
+    "WATCH_CONVERSATION": "Join conversation",
+    "YOU_ARE_WATCHING": "You are participating"
   },
-  "AGENT": {
-    "TITLE": "选择代理"
-  },
-  "TEAMS": {
-    "TITLE": "Select Team",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
-    "CHANGE_TEAMS": "Conversation team changed"
+  "CONVERSATION_TEAMS": {
+    "NO_RESULT": "No team found",
+    "SELECT_TEAM": "選擇團隊",
+    "TITLE": "Assign team"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
     "AUTH": "用户名/密碼不正確。請重試",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts",
+    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again"
+  },
+  "EXIT": {
+    "CANCEL": "取消",
+    "OK": "Ok",
+    "SUBTITLE": "Are you sure you want to quit?",
+    "TITLE": "Exit"
+  },
+  "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "BOT": "機器人",
+    "CHOOSE_INBOX": "選擇收件夾",
+    "CHOOSE_STATUS": "通話狀況",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
+    "HEADER_TITLE": "對話過濾",
+    "OPEN": "正在進行的\n",
+    "PENDING": "等待中",
+    "RESOLVED": "已解決",
+    "SNOOZED": "已关闭",
+    "SORT_BY": "Sort by",
+    "SUBMIT": "送出"
+  },
+  "FOOTER": {
+    "CONVERSATION": "對話",
+    "HOME": "首頁",
+    "NOTIFICATION": "通知",
+    "SETTINGS": "設定"
+  },
+  "FORGOT_PASSWORD": {
+    "API_SUCCESS": "Password reset link has been sent to your email address",
+    "EMAIL": "請輸入您的電子信箱",
+    "EMAIL_ERROR": "Enter a valid email",
+    "HEADER_TITLE": "重設密碼",
+    "RESET_HERE": "重設密碼",
+    "SUB_TITLE": "不用擔心，我們降返回",
+    "TITLE": "忘記密碼"
+  },
+  "LOGIN": {
+    "CHANGE_LANGUAGE": "更換語言",
+    "CHANGE_URL": "更改網址",
+    "CREATE_ACCOUNT": "建立新帳戶",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "EMAIL": "Email",
+    "EMAIL_ERROR": "輸入錯誤信箱",
+    "EMAIL_REQUIRED": "Email is required",
+    "FORGOT_PASSWORD": "忘記密碼了？",
+    "LOGIN": "登入",
+    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "透過 SSO 登入",
+    "NO_ACCOUNT": "有登入帳號嗎",
+    "PASSWORD": "密碼",
+    "PASSWORD_ERROR": "輸入錯誤密碼",
+    "PASSWORD_REQUIRED": "Password is required",
+    "RESET_HERE": "在此重置",
+    "SETTINGS": "設定",
+    "SSO_AUTH_FAILED": "SSO 驗證失敗。請檢查您的憑證並再試一次。",
+    "SSO_INVALID_RESPONSE": "無效的 SSO 回應。請再試一次。",
+    "SSO_UNEXPECTED_ERROR": "SSO 登入期間發生非預期錯誤。請再試一次。",
+    "TERMS": "條款及條件",
+    "TITLE": "Log in to your account"
+  },
+  "MACRO": {
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_ERROR": "Macro execution failed",
+    "EXECUTION_SUCCESS": "Macro executed successfully",
+    "NO_MACROS": "No macros found",
+    "SELECT_MACRO": "Select macro",
+    "TITLE": "巨集"
+  },
+  "MFA": {
+    "BUTTONS": {
+      "VERIFY": "驗證",
+      "VERIFYING": "驗證中..."
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "請輸入驗證器應用程式中的 6 位數代碼",
+      "BACKUP": "請輸入您的其中一個備用代碼"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "請輸入備用代碼"
+    },
+    "TABS": {
+      "AUTHENTICATOR_APP": "驗證器應用程式",
+      "BACKUP_CODE": "備用代碼"
+    },
+    "TITLE": "雙重驗證"
+  },
+  "NOTIFICATION": {
+    "ALERTS": {
+      "DELETE": "Notification deleted",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed"
+    },
+    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
+    "CANCEL": "取消",
+    "DELETE": "刪除",
+    "EMPTY": "No notifications yet.",
+    "EMPTY_MORE_TEXT": "一旦你開始收到通知，他們就會出現她",
+    "FILTERS": {
+      "SORT_BY": {
+        "OPTIONS": {
+          "ASC": "Oldest",
+          "DESC": "Newest"
+        },
+        "TITLE": "Sort by"
+      }
+    },
+    "HEADER_TITLE": "通知",
+    "INBOX": "收件匣",
+    "MARK_ALL": "Mark all as read",
+    "SEARCH_PLACEHOLDER": "搜尋通知...",
+    "TYPES": {
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
+      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
+      "CONVERSATION_CREATION": "New conversation created",
+      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    }
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA",
+    "EMAIL": "電子信箱通知",
+    "PUSH": "推送通知",
+    "TITLE": "Notification Preferences"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "需要更新服务器",
+    "WARNING_FOR_ADMIN": "您的手机应用似乎正在使用不支持的Chatwoot 服务器。需要升级到服务器版本 %{minimumVersion} 或更高版本。",
+    "WARNING_FOR_AGENT": "您的手机应用似乎正在使用不受支持的Chatwoot 服务器。请联系您的管理员升级您的Chatwoot 服务器。"
+  },
+  "SETTINGS": {
+    "ABOUT": "About",
+    "CHANGE_AVAILABILITY": "Set availability",
+    "CHANGE_LANGUAGE": "更換語言",
+    "CHAT_WITH_US": "與我們對話",
+    "DEBUG_ACTIONS": "Debug Actions",
+    "HEADER_TITLE": "設定",
+    "LOGOUT": "退出登入",
+    "NOTIFICATIONS": "通知",
+    "NOTIFICATION_PREFERENCES": "通知首選",
+    "PREFERENCES": "Preferences",
+    "READ_DOCS": "Read Docs",
+    "SET_AVAILABILITY": "Set yourself as",
+    "SET_LANGUAGE": "Set Language",
+    "SUBMIT": "送出",
+    "SUPPORT": "Support",
+    "SWITCH_ACCOUNT": "切換帳戶"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "MISSES": {
+      "FRT": "首次回覆時間",
+      "HIDE": "Hide {count} rows",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "TITLE": "SLA Misses"
+    },
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "DUE": "due",
+      "FRT": "FRT %{status}",
+      "MISSED": "missed",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}"
+    }
   },
   "SUCCESS": {
     "AUTH": "登入成功"
   },
-  "SERVER_UPGRADE": {
-    "TITLE": "需要更新服务器",
-    "WARNING_FOR_AGENT": "您的手机应用似乎正在使用不受支持的Chatwoot 服务器。请联系您的管理员升级您的Chatwoot 服务器。",
-    "WARNING_FOR_ADMIN": "您的手机应用似乎正在使用不支持的Chatwoot 服务器。需要升级到服务器版本 %{minimumVersion} 或更高版本。"
+  "TEAMS": {
+    "CHANGE_TEAMS": "Conversation team changed",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "TITLE": "Select Team"
   },
-  "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
-    "CANCEL": "取消",
-    "OK": "Ok"
-  },
-  "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 小时消息窗口限制",
-    "24_HOURS_WINDOW": "24 小时消息窗口限制",
-    "CANNOT_REPLY": "您不能回覆，原因是："
-  },
-  "SLA": {
-    "FRT": "FRT",
-    "NRT": "NRT",
-    "RT": "RT",
-    "STATUS": {
-      "FRT": "FRT %{status}",
-      "NRT": "NRT %{status}",
-      "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "due"
-    },
-    "MISSES": {
-      "TITLE": "SLA Misses",
-      "FRT": "首次回覆時間",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
-    }
-  },
-  "MACRO": {
-    "TITLE": "巨集",
-    "SELECT_MACRO": "Select macro",
-    "ACTIONS": {
-      "RUN": "Run"
-    },
-    "EXECUTION_SUCCESS": "Macro executed successfully",
-    "EXECUTION_ERROR": "Macro execution failed",
-    "NO_MACROS": "No macros found"
-  }
+  "WELCOME": "歡迎"
 }

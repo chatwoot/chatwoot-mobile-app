@@ -1,458 +1,482 @@
 {
-  "WELCOME": "Köszöntünk",
+  "AGENT": {
+    "TITLE": "Ügynök kiválasztása"
+  },
+  "AVAILABILITY": {
+    "BUSY": "Foglalt",
+    "OFFLINE": "Offline",
+    "ONLINE": "Online"
+  },
+  "BANNER": {
+    "24_HOURS_WINDOW": "24 órás üzeneti ablak megkötés",
+    "CANNOT_REPLY": "Nem tudunk válaszolni, mivel",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 órás üzeneti ablak megkötés",
+    "TWILIO_WHATSAPP_CAN_REPLY": "Erre a beszélgetésre csak konzerv válasszal válaszolhatsz, mert"
+  },
   "COMMON": {
+    "CLOSE": "Bezár",
     "ERROR": "Hiba",
     "ERROR_TITLE": "Váratlan hiba történt",
-    "REPORT_MESSAGE": "Jeleztük a csapatunknak! Kérjük csukd be az alkalmazást és kezdd előröl!",
-    "CLOSE": "Bezár"
-  },
-  "FOOTER": {
-    "HOME": "Kezdőlap",
-    "CONVERSATION": "Beszélgetések",
-    "NOTIFICATION": "Értesítések",
-    "SETTINGS": "Beállítások"
+    "REPORT_MESSAGE": "Jeleztük a csapatunknak! Kérjük csukd be az alkalmazást és kezdd előröl!"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installációs URL",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
-    "URL_ERROR": "Kérjük helyes URL-t adj meg",
-    "URL_REQUIRED": "URL is required",
+    "CHANGE_LANGUAGE": "Nyelvválasztás",
     "CONNECT": "Kapcsolódás",
-    "CHANGE_LANGUAGE": "Nyelvválasztás",
-    "ERROR": "Helytelen installációs Url"
+    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "ENTER_URL": "Installációs URL",
+    "ERROR": "Helytelen installációs Url",
+    "URL_ERROR": "Kérjük helyes URL-t adj meg",
+    "URL_REQUIRED": "URL is required"
   },
-  "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
+  },
+  "CONTACT_DETAILS": {
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "Kontakt Tulajdonságok",
     "EMAIL": "E-mail",
-    "PASSWORD": "Jelszó",
-    "EMAIL_REQUIRED": "Email is required",
-    "EMAIL_ERROR": "Kérjük helyes E-mailt adj meg",
-    "PASSWORD_REQUIRED": "Password is required",
-    "PASSWORD_ERROR": "Kérjük helyes jelszót adj meg",
-    "LOGIN": "Belépés",
-    "LOGIN_LOADING": "Signing In...",
-    "FORGOT_PASSWORD": "Elfelejtetted a jelszavad?",
-    "RESET_HERE": "Megváltoztatni itt",
-    "NO_ACCOUNT": "Nincs még fiókod?",
-    "CREATE_ACCOUNT": "Fiók létrehozása",
-    "SETTINGS": "Beállítások",
-    "CHANGE_LANGUAGE": "Nyelvválasztás",
-    "TERMS": "Felhasználási feltételek",
-    "CHANGE_URL": "URL megváltoztatása"
-  },
-  "FORGOT_PASSWORD": {
-    "EMAIL": "Kérjük add meg az e-mailcímed",
-    "EMAIL_ERROR": "Kérjük helyes E-mailt adj meg",
-    "RESET_HERE": "Jelszó megváltoztatása",
-    "HEADER_TITLE": "Jelszó megváltoztatása",
-    "TITLE": "Elfelejtetted a jelszavad?",
-    "SUB_TITLE": "Ne aggódj, segítünk",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "PHONE_NUMBER": "Telefonszám",
+    "TITLE": "Kontakt adatai",
+    "VALUE_UNAVAILABLE": "Nem elérhető"
   },
   "CONVERSATION": {
-    "HEADER": {
-      "TITLE": "Beszélgetések",
-      "CLEAR_FILTER": "Clear"
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "ASSIGN": "Hozzárendelés",
+        "EDIT": "Szerkesztés",
+        "EMPTY": "Gazdátlan"
+      },
+      "PRIORITY": {
+        "EDIT": "Szerkesztés",
+        "EMPTY": "No priority added"
+      },
+      "TEAM": {
+        "ASSIGN": "Hozzárendelés",
+        "EMPTY": "No team assigned"
+      }
     },
+    "ALL": "Mind",
+    "ALL_CONVERSATION_LOADED": "Minden beszélgetés betöltve",
+    "ASSIGN": "Beszélgetés hozzárendelése",
+    "ASSIGNED_AGENT": "Assigned agent",
+    "ASSIGNEE": {
+      "AGENTS": {
+        "SEARCH_AGENT": "Ügynökök keresése"
+      },
+      "LABELS": {
+        "SEARCH_LABELS": "Címkék keresése"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "OPTIONS": {
+          "ALL": "Mind",
+          "OPEN": "Megnyitva",
+          "PENDING": "Függőben lévő",
+          "RESOLVED": "Megoldva",
+          "SNOOZED": "Elnémított"
+        },
+        "TITLE": "Filter by status"
+      }
+    },
+    "ASSIGN_CHANGE": "Hozzárendelt ügynök megváltoztatva",
+    "ATTACHMENTS": {
+      "audio": {
+        "CONTENT": "Hangüzenet"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
+      },
+      "fallback": {
+        "CONTENT": "megosztott URL-t tartalmaz"
+      },
+      "file": {
+        "CONTENT": "Csatolt file"
+      },
+      "image": {
+        "CONTENT": "Képüzenet"
+      },
+      "location": {
+        "CONTENT": "Hely"
+      },
+      "video": {
+        "CONTENT": "Videoüzenet"
+      }
+    },
+    "ATTACHMENT_CONTENT": "Csatolt file",
+    "BOT": "Bot",
+    "CHANGE_PRIORITY": "Change priority",
+    "CHANGE_STATUS": "Státusz változtatása",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "DEFAULT_HEADER_TITLE": "Beszélgetések",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "DELETE_MESSAGE_SUCCESS": "Üzenet törölve",
+    "DELETE_MESSAGE_TITLE": "Biztosan törölni szeretnéd ezt az üzenetet?",
+    "DETAILS": "Details",
+    "DOWNLOAD": "Letöltés",
+    "EMAIL_HEAD": {
+      "BCC": "Titkos másolat",
+      "CC": "Másolat",
+      "TO": "Ide"
+    },
+    "EMAIL_HEADER": {
+      "BCC": "Titkos másolat",
+      "CC": "Másolat",
+      "EXPAND": "Expand email",
+      "FROM": "Innen",
+      "SUBJECT": "Tárgy",
+      "TO": "Ide"
+    },
+    "EMPTY": "Nincs aktív beszélgetés ebben a csoportban.",
+    "FILE_SIZE_LIMIT": "A file nagyobb az 5MB-os limitnél",
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "Ügynökök keresése"
+      },
+      "ASSIGNEE_TYPE": {
+        "OPTIONS": {
+          "ALL": "Mind",
+          "ME": "Me",
+          "UNASSIGNED": "Gazdátlan"
+        },
+        "TITLE": "Filter by assignee type"
       },
       "INBOX": {
         "TITLE": "Filter by inbox"
       },
       "SORT_BY": {
-        "TITLE": "Rendezés",
         "OPTIONS": {
           "LATEST": "Latest",
           "SORT_ON_CREATED_AT": "Létrehozva",
           "SORT_ON_PRIORITY": "Prioritás"
-        }
+        },
+        "TITLE": "Rendezés"
       },
       "STATUS": {
-        "TITLE": "Filter by status",
         "OPTIONS": {
+          "ALL": "Mind",
           "OPEN": "Megnyitva",
           "PENDING": "Függőben lévő",
-          "SNOOZED": "Elnémított",
           "RESOLVED": "Megoldva",
-          "ALL": "Mind"
-        }
-      },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Gazdátlan",
-          "ALL": "Mind"
-        }
+          "SNOOZED": "Elnémított"
+        },
+        "TITLE": "Filter by status"
       }
     },
-    "ASSIGNEE": {
-      "LABELS": {
-        "SEARCH_LABELS": "Címkék keresése"
-      },
-      "AGENTS": {
-        "SEARCH_AGENT": "Ügynökök keresése"
-      },
-      "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
-        "OPTIONS": {
-          "OPEN": "Megnyitva",
-          "PENDING": "Függőben lévő",
-          "SNOOZED": "Elnémított",
-          "RESOLVED": "Megoldva",
-          "ALL": "Mind"
-        }
-      }
-    },
-    "DEFAULT_HEADER_TITLE": "Beszélgetések",
-    "UPDATING": "Updating...",
-    "MINE": "Sajátom",
-    "UN_ASSIGNED": "Gazdátlan",
-    "ALL": "Mind",
-    "EMPTY": "Nincs aktív beszélgetés ebben a csoportban.",
-    "PICTURE_CONTENT": "Képüzenet",
-    "ATTACHMENT_CONTENT": "Csatolt file",
-    "DOWNLOAD": "Letöltés",
-    "TODAY": "Ma",
-    "YESTERDAY": "Tegnap",
-    "TYPE_MESSAGE": "Gépeld az üzeneted",
-    "TYPING": "gépel",
-    "ALL_CONVERSATION_LOADED": "Minden beszélgetés betöltve",
-    "ASSIGN": "Beszélgetés hozzárendelése",
-    "FILE_SIZE_LIMIT": "A file nagyobb az 5MB-os limitnél",
-    "SHARE": "Share conversation",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
-    "ASSIGNED_AGENT": "Assigned agent",
-    "TEAM": "Team",
-    "PRIVATE_MSG_INPUT": "Ezt csak ügynökök láthatják",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
-    "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
-    },
-    "BOT": "Bot",
-    "EMAIL_HEAD": {
-      "TO": "Ide",
-      "CC": "Másolat",
-      "BCC": "Titkos másolat"
-    },
-    "SELF_ASSIGN": "Hozzárendelés magamhoz",
-    "UN_ASSIGN": "Beszélgetés hozzárendelés törlése",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
-    "MARK_AS_PENDING": "Mark as pending",
-    "SNOOZE_UNTIL": "Snooze until",
-    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
-    "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
-    "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
-    "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Change priority",
-    "MESSAGES": "Messages",
-    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
-    "UNDEFINED_VARIABLES_CLOSE": "Bezár",
-    "DELETE_MESSAGE_TITLE": "Biztosan törölni szeretnéd ezt az üzenetet?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Üzenet törölve",
-    "NO_CONTENT": "Nincs elérhető tartalom",
-    "ASSIGN_CHANGE": "Hozzárendelt ügynök megváltoztatva",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Státusz változtatása",
-    "SEARCH_TEAM": "Csapatok keresése",
-    "PRIORITY": {
-      "TITLE": "Prioritás",
-      "OPTIONS": {
-        "NONE": "Nincs",
-        "URGENT": "Sürgős",
-        "HIGH": "Magas",
-        "MEDIUM": "Közepes",
-        "LOW": "Alacsony"
-      },
-      "CHANGE_PRIORITY": {
-        "SELECT_PLACEHOLDER": "Nincs",
-        "INPUT_PLACEHOLDER": "Prioritás megadása",
-        "NO_RESULTS": "Nincs találat",
-        "SUCCESSFUL": "Beszélgetés prioritásának megváltoztatása",
-        "FAILED": "Nem sikerült megváltoztatni a prioritást. Kérlek, próbáld újra."
-      }
+    "HEADER": {
+      "CLEAR_FILTER": "Clear",
+      "TITLE": "Beszélgetések"
     },
     "ITEM": {
       "ASSIGN": "Hozzárendelés",
       "STATUS": "Státusz"
     },
-    "ATTACHMENTS": {
-      "image": {
-        "CONTENT": "Képüzenet"
-      },
-      "audio": {
-        "CONTENT": "Hangüzenet"
-      },
-      "video": {
-        "CONTENT": "Videoüzenet"
-      },
-      "file": {
-        "CONTENT": "Csatolt file"
-      },
-      "location": {
-        "CONTENT": "Hely"
-      },
-      "fallback": {
-        "CONTENT": "megosztott URL-t tartalmaz"
-      },
-      "contact": {
-        "CONTENT": "Shared a contact"
-      }
-    },
+    "LABELS": "Conversation labels",
     "LONG_PRESS_ACTIONS": {
       "COPY": "Másolás",
-      "REPLY": "Válasz",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "REPLY": "Válasz"
     },
-    "EMAIL_HEADER": {
-      "FROM": "Innen",
-      "TO": "Ide",
-      "BCC": "Titkos másolat",
-      "CC": "Másolat",
-      "SUBJECT": "Tárgy",
-      "EXPAND": "Expand email"
+    "MARK_AS_PENDING": "Mark as pending",
+    "MESSAGES": "Messages",
+    "MINE": "Sajátom",
+    "NOT_FOUND": {
+      "BACK_TO_HOME": "Go back to home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again.",
+      "RETRY": "Retry",
+      "TITLE": "Unable to fetch conversation"
     },
-    "ACTIONS": {
-      "ASSIGNEE": {
-        "EMPTY": "Gazdátlan",
-        "ASSIGN": "Hozzárendelés",
-        "EDIT": "Szerkesztés"
+    "NO_CONTENT": "Nincs elérhető tartalom",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "PICTURE_CONTENT": "Képüzenet",
+    "PRIORITY": {
+      "CHANGE_PRIORITY": {
+        "FAILED": "Nem sikerült megváltoztatni a prioritást. Kérlek, próbáld újra.",
+        "INPUT_PLACEHOLDER": "Prioritás megadása",
+        "NO_RESULTS": "Nincs találat",
+        "SELECT_PLACEHOLDER": "Nincs",
+        "SUCCESSFUL": "Beszélgetés prioritásának megváltoztatása"
       },
-      "TEAM": {
-        "EMPTY": "No team assigned",
-        "ASSIGN": "Hozzárendelés"
+      "OPTIONS": {
+        "HIGH": "Magas",
+        "LOW": "Alacsony",
+        "MEDIUM": "Közepes",
+        "NONE": "Nincs",
+        "URGENT": "Sürgős"
       },
-      "PRIORITY": {
-        "EMPTY": "No priority added",
-        "EDIT": "Szerkesztés"
-      }
-    }
-  },
-  "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
-    "SORT_BY": "Rendezés",
-    "FILTER_BY_INBOX": "Filter by inbox",
-    "HEADER_TITLE": "Beszélgetés szűrő",
-    "CHOOSE_INBOX": "Inbox kiválasztása",
-    "CHOOSE_STATUS": "Beszélgetés státusz",
-    "OPEN": "Megnyitva",
-    "RESOLVED": "Megoldva",
-    "BOT": "Bot",
-    "SUBMIT": "Elküld",
-    "PENDING": "Pending",
-    "SNOOZED": "Snoozed"
-  },
-  "SETTINGS": {
-    "HEADER_TITLE": "Beállítások",
-    "SET_AVAILABILITY": "Set yourself as",
-    "CHANGE_AVAILABILITY": "Set availability",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
-    "SWITCH_ACCOUNT": "Fiókváltás",
-    "CHANGE_LANGUAGE": "Nyelvválasztás",
-    "NOTIFICATIONS": "Értesítések",
-    "NOTIFICATION_PREFERENCES": "Értesítési beállítások",
-    "READ_DOCS": "Read Docs",
-    "CHAT_WITH_US": "Chatelj velünk",
-    "LOGOUT": "Kilépés",
-    "SUBMIT": "Elküld",
-    "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
-  },
-  "NOTIFICATION": {
-    "HEADER_TITLE": "Értesítések",
-    "INBOX": "Fiók",
-    "EMPTY": "Még nem érkezett értesítés.",
-    "EMPTY_MORE_TEXT": "Amint kapsz értesítést, itt fogod találni őket.",
-    "ALL_NOTIFICATION_LOADED": "Minden értesítés betöltve",
-    "MARK_ALL": "Mindent olvasottra állít",
-    "CANCEL": "Mégse",
-    "DELETE": "Törlés",
-    "TYPES": {
-      "CONVERSATION_MENTION": "Önt megemlítették egy beszélgetésben",
-      "CONVERSATION_CREATION": "Új beszélgetés létrehozása",
-      "CONVERSATION_ASSIGNMENT": "Egy beszélgetés hozzád lett rendelve",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Új üzenet egy kijelölt beszélgetésben",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Új üzenet egy beszélgetésben, amelyben részt vesz",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
-      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
-      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+      "TITLE": "Prioritás"
     },
-    "FILTERS": {
-      "SORT_BY": {
-        "TITLE": "Rendezés",
-        "OPTIONS": {
-          "ASC": "Legrégibb",
-          "DESC": "Legújabb"
-        }
-      }
-    },
-    "ALERTS": {
-      "MARK_AS_READ": "Notification marked as read",
-      "MARK_AS_UNREAD": "Notification marked as unread",
-      "SNOOZE": "Notification snoozed",
-      "DELETE": "Notification deleted",
-      "MARK_ALL_READ": "All notifications marked as read",
-      "DELETE_ALL": "All notifications deleted",
-      "DELETE_ALL_READ": "All read notifications deleted"
-    }
-  },
-  "AVAILABILITY": {
-    "ONLINE": "Online",
-    "BUSY": "Foglalt",
-    "OFFLINE": "Offline"
-  },
-  "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Értesítési beállítások",
-    "EMAIL": "E-mail értesítések",
-    "PUSH": "Push üzenetek",
-    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
-    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
-  },
-  "CONVERSATION_DETAILS": {
-    "TITLE": "Attributes",
-    "BROWSER": "Böngésző",
-    "OPERATING_SYSTEM": "Operációs rendszer",
-    "INITIATED_AT": "Kezdeményezve ekkor:",
-    "INITIATED_FROM": "Kezdeményezve innen:",
-    "IP_ADDRESS": "IP cím",
-    "CONVERSATION_ID": "Beszélgetés azonosítója",
-    "CLIPBOARD_SUCCESS": "Vágólapra másolva"
-  },
-  "CONTACT_DETAILS": {
-    "TITLE": "Kontakt adatai",
-    "EMAIL": "E-mail",
-    "PHONE_NUMBER": "Telefonszám",
-    "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Kontakt Tulajdonságok",
-    "VALUE_UNAVAILABLE": "Nem elérhető"
-  },
-  "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
-    "TOTAL_PARTICIPANTS_TEXT": "+%{count} fő vesz részt.",
-    "TOTAL_PARTICIPANT_TEXT": "+%{count} fő vesz részt.",
-    "NO_PARTICIPANTS_TEXT": "Nincs részvevő!.",
-    "WATCH_CONVERSATION": "Csatlakozás a beszélgetéshez",
-    "YOU_ARE_WATCHING": "Te részt veszel",
-    "NO_RECORDS_FOUND": "Nincs találat",
-    "SELECT_PARTICIPANTS": "Select agents",
-    "ADD_PARTICIPANTS": "Résztvevők kiválasztása",
-    "REMAINING_PARTICIPANTS_TEXT": "egyebek",
-    "REMAINING_PARTICIPANT_TEXT": "egyéb",
-    "ADD_PARTICIPANT": "Add Participant"
-  },
-  "CONTACT_ATTRIBUTES": {
-    "TITLE": "Contact Attributes"
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PRIVATE_MSG_INPUT": "Ezt csak ügynökök láthatják",
+    "SEARCH_PLACEHOLDER": "Beszélgetések keresése...",
+    "SEARCH_TEAM": "Csapatok keresése",
+    "SELF_ASSIGN": "Hozzárendelés magamhoz",
+    "SHARE": "Share conversation",
+    "SNOOZE": "Snooze conversation",
+    "SNOOZE_UNTIL": "Snooze until",
+    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
+    "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
+    "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "TEAM": "Team",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "TODAY": "Ma",
+    "TYPE_MESSAGE": "Gépeld az üzeneted",
+    "TYPING": "gépel",
+    "UNDEFINED_VARIABLES_CLOSE": "Bezár",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "UN_ASSIGN": "Beszélgetés hozzárendelés törlése",
+    "UN_ASSIGNED": "Gazdátlan",
+    "UPDATING": "Updating...",
+    "YESTERDAY": "Tegnap"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Lehetőségek"
   },
-  "CONVERSATION_TEAMS": {
-    "TITLE": "Assign team",
-    "SELECT_TEAM": "Csapat kiválasztása",
-    "NO_RESULT": "No team found"
+  "CONVERSATION_AGENTS": {
+    "NO_RESULT": "No agent found",
+    "SELECT_AGENT": "Ügynök kiválasztása",
+    "TITLE": "Assign agent"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Böngésző",
+    "CLIPBOARD_SUCCESS": "Vágólapra másolva",
+    "CONVERSATION_ID": "Beszélgetés azonosítója",
+    "INITIATED_AT": "Kezdeményezve ekkor:",
+    "INITIATED_FROM": "Kezdeményezve innen:",
+    "IP_ADDRESS": "IP cím",
+    "OPERATING_SYSTEM": "Operációs rendszer",
+    "TITLE": "Attributes"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "Beszélgetés cimkék",
     "ADD_LABEL": "Címkék hozzáadása",
     "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Cimke sikeresen frissítve",
-    "SELECTED": "Selected",
     "NOT_SELECTED": "No labels selected",
-    "NO_RESULT": "Nem találtunk címkét"
+    "NO_LABEL": "No labels assigned",
+    "NO_RESULT": "Nem találtunk címkét",
+    "SELECTED": "Selected",
+    "TITLE": "Beszélgetés cimkék",
+    "UPDATE_LABEL": "Cimke sikeresen frissítve"
   },
-  "CONVERSATION_AGENTS": {
-    "TITLE": "Assign agent",
-    "SELECT_AGENT": "Ügynök kiválasztása",
-    "NO_RESULT": "No agent found"
+  "CONVERSATION_PARTICIPANTS": {
+    "ADD_PARTICIPANT": "Add Participant",
+    "ADD_PARTICIPANTS": "Résztvevők kiválasztása",
+    "NO_PARTICIPANTS_TEXT": "Nincs részvevő!.",
+    "NO_RECORDS_FOUND": "Nincs találat",
+    "REMAINING_PARTICIPANTS_TEXT": "egyebek",
+    "REMAINING_PARTICIPANT_TEXT": "egyéb",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "TITLE": "Participants",
+    "TOTAL_PARTICIPANTS_TEXT": "+%{count} fő vesz részt.",
+    "TOTAL_PARTICIPANT_TEXT": "+%{count} fő vesz részt.",
+    "WATCH_CONVERSATION": "Csatlakozás a beszélgetéshez",
+    "YOU_ARE_WATCHING": "Te részt veszel"
   },
-  "AGENT": {
-    "TITLE": "Ügynök kiválasztása"
-  },
-  "TEAMS": {
-    "TITLE": "Select Team",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
-    "CHANGE_TEAMS": "A beszélgetés csapata megváltozott"
+  "CONVERSATION_TEAMS": {
+    "NO_RESULT": "No team found",
+    "SELECT_TEAM": "Csapat kiválasztása",
+    "TITLE": "Assign team"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
-    "OfFLINE": "Wi-Fi vagy mobilhálózat szükséges hogy ismét online legyél",
-    "CANNOT_FETCH": "Hiba történt az információ lekérése során, kérjük próbált újra",
     "AUTH": "Felhasználó / Jelszó nem jó. Kérjük próbáld újra.",
-    "NO_ACCOUNTS_MESSAGE": "Nincs hozzáférésed Chatwoot fiókhoz"
+    "CANNOT_FETCH": "Hiba történt az információ lekérése során, kérjük próbált újra",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "NO_ACCOUNTS_MESSAGE": "Nincs hozzáférésed Chatwoot fiókhoz",
+    "OfFLINE": "Wi-Fi vagy mobilhálózat szükséges hogy ismét online legyél"
+  },
+  "EXIT": {
+    "CANCEL": "Mégse",
+    "OK": "Ok",
+    "SUBTITLE": "Biztos vagy benne, hogy kilépsz?",
+    "TITLE": "Kilép"
+  },
+  "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "BOT": "Bot",
+    "CHOOSE_INBOX": "Inbox kiválasztása",
+    "CHOOSE_STATUS": "Beszélgetés státusz",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
+    "HEADER_TITLE": "Beszélgetés szűrő",
+    "OPEN": "Megnyitva",
+    "PENDING": "Pending",
+    "RESOLVED": "Megoldva",
+    "SNOOZED": "Snoozed",
+    "SORT_BY": "Rendezés",
+    "SUBMIT": "Elküld"
+  },
+  "FOOTER": {
+    "CONVERSATION": "Beszélgetések",
+    "HOME": "Kezdőlap",
+    "NOTIFICATION": "Értesítések",
+    "SETTINGS": "Beállítások"
+  },
+  "FORGOT_PASSWORD": {
+    "API_SUCCESS": "Password reset link has been sent to your email address",
+    "EMAIL": "Kérjük add meg az e-mailcímed",
+    "EMAIL_ERROR": "Kérjük helyes E-mailt adj meg",
+    "HEADER_TITLE": "Jelszó megváltoztatása",
+    "RESET_HERE": "Jelszó megváltoztatása",
+    "SUB_TITLE": "Ne aggódj, segítünk",
+    "TITLE": "Elfelejtetted a jelszavad?"
+  },
+  "LOGIN": {
+    "CHANGE_LANGUAGE": "Nyelvválasztás",
+    "CHANGE_URL": "URL megváltoztatása",
+    "CREATE_ACCOUNT": "Fiók létrehozása",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "EMAIL": "E-mail",
+    "EMAIL_ERROR": "Kérjük helyes E-mailt adj meg",
+    "EMAIL_REQUIRED": "Email is required",
+    "FORGOT_PASSWORD": "Elfelejtetted a jelszavad?",
+    "LOGIN": "Belépés",
+    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Bejelentkezés SSO-val",
+    "NO_ACCOUNT": "Nincs még fiókod?",
+    "PASSWORD": "Jelszó",
+    "PASSWORD_ERROR": "Kérjük helyes jelszót adj meg",
+    "PASSWORD_REQUIRED": "Password is required",
+    "RESET_HERE": "Megváltoztatni itt",
+    "SETTINGS": "Beállítások",
+    "SSO_AUTH_FAILED": "Az SSO-hitelesítés sikertelen. Ellenőrizze a hitelesítő adatait, és próbálja újra.",
+    "SSO_INVALID_RESPONSE": "Érvénytelen SSO-válasz. Próbálja újra.",
+    "SSO_UNEXPECTED_ERROR": "Váratlan hiba történt az SSO-bejelentkezés során. Próbálja újra.",
+    "TERMS": "Felhasználási feltételek",
+    "TITLE": "Log in to your account"
+  },
+  "MACRO": {
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_ERROR": "Macro execution failed",
+    "EXECUTION_SUCCESS": "Makró végrehajtása sikeres",
+    "NO_MACROS": "Nem találtunk makrót",
+    "SELECT_MACRO": "Select macro",
+    "TITLE": "Makrók"
+  },
+  "MFA": {
+    "BUTTONS": {
+      "VERIFY": "Ellenőrzés",
+      "VERIFYING": "Ellenőrzés..."
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Adja meg a 6 számjegyű kódot a hitelesítő alkalmazásból",
+      "BACKUP": "Adja meg az egyik tartalékkódját"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Tartalékkód megadása"
+    },
+    "TABS": {
+      "AUTHENTICATOR_APP": "Hitelesítő alkalmazás",
+      "BACKUP_CODE": "Tartalékkód"
+    },
+    "TITLE": "Kétfaktoros hitelesítés"
+  },
+  "NOTIFICATION": {
+    "ALERTS": {
+      "DELETE": "Notification deleted",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed"
+    },
+    "ALL_NOTIFICATION_LOADED": "Minden értesítés betöltve",
+    "CANCEL": "Mégse",
+    "DELETE": "Törlés",
+    "EMPTY": "Még nem érkezett értesítés.",
+    "EMPTY_MORE_TEXT": "Amint kapsz értesítést, itt fogod találni őket.",
+    "FILTERS": {
+      "SORT_BY": {
+        "OPTIONS": {
+          "ASC": "Legrégibb",
+          "DESC": "Legújabb"
+        },
+        "TITLE": "Rendezés"
+      }
+    },
+    "HEADER_TITLE": "Értesítések",
+    "INBOX": "Fiók",
+    "MARK_ALL": "Mindent olvasottra állít",
+    "SEARCH_PLACEHOLDER": "Értesítések keresése...",
+    "TYPES": {
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Új üzenet egy kijelölt beszélgetésben",
+      "CONVERSATION_ASSIGNMENT": "Egy beszélgetés hozzád lett rendelve",
+      "CONVERSATION_CREATION": "Új beszélgetés létrehozása",
+      "CONVERSATION_MENTION": "Önt megemlítették egy beszélgetésben",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Új üzenet egy beszélgetésben, amelyben részt vesz",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    }
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA",
+    "EMAIL": "E-mail értesítések",
+    "PUSH": "Push üzenetek",
+    "TITLE": "Értesítési beállítások"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "Server upgrade required",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required.",
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server."
+  },
+  "SETTINGS": {
+    "ABOUT": "About",
+    "CHANGE_AVAILABILITY": "Set availability",
+    "CHANGE_LANGUAGE": "Nyelvválasztás",
+    "CHAT_WITH_US": "Chatelj velünk",
+    "DEBUG_ACTIONS": "Debug Actions",
+    "HEADER_TITLE": "Beállítások",
+    "LOGOUT": "Kilépés",
+    "NOTIFICATIONS": "Értesítések",
+    "NOTIFICATION_PREFERENCES": "Értesítési beállítások",
+    "PREFERENCES": "Preferences",
+    "READ_DOCS": "Read Docs",
+    "SET_AVAILABILITY": "Set yourself as",
+    "SET_LANGUAGE": "Set Language",
+    "SUBMIT": "Elküld",
+    "SUPPORT": "Support",
+    "SWITCH_ACCOUNT": "Fiókváltás"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "MISSES": {
+      "FRT": "Első reakció idő",
+      "HIDE": "Hide {count} rows",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "TITLE": "SLA Misses"
+    },
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "DUE": "due",
+      "FRT": "FRT %{status}",
+      "MISSED": "missed",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}"
+    }
   },
   "SUCCESS": {
     "AUTH": "Sikeres bejelentkezés"
   },
-  "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+  "TEAMS": {
+    "CHANGE_TEAMS": "A beszélgetés csapata megváltozott",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "TITLE": "Select Team"
   },
-  "EXIT": {
-    "TITLE": "Kilép",
-    "SUBTITLE": "Biztos vagy benne, hogy kilépsz?",
-    "CANCEL": "Mégse",
-    "OK": "Ok"
-  },
-  "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "Erre a beszélgetésre csak konzerv válasszal válaszolhatsz, mert",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 órás üzeneti ablak megkötés",
-    "24_HOURS_WINDOW": "24 órás üzeneti ablak megkötés",
-    "CANNOT_REPLY": "Nem tudunk válaszolni, mivel"
-  },
-  "SLA": {
-    "FRT": "FRT",
-    "NRT": "NRT",
-    "RT": "RT",
-    "STATUS": {
-      "FRT": "FRT %{status}",
-      "NRT": "NRT %{status}",
-      "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "due"
-    },
-    "MISSES": {
-      "TITLE": "SLA Misses",
-      "FRT": "Első reakció idő",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
-    }
-  },
-  "MACRO": {
-    "TITLE": "Makrók",
-    "SELECT_MACRO": "Select macro",
-    "ACTIONS": {
-      "RUN": "Run"
-    },
-    "EXECUTION_SUCCESS": "Makró végrehajtása sikeres",
-    "EXECUTION_ERROR": "Macro execution failed",
-    "NO_MACROS": "Nem találtunk makrót"
-  }
+  "WELCOME": "Köszöntünk"
 }

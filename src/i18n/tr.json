@@ -1,458 +1,482 @@
 {
-  "WELCOME": "Hoşgeldiniz",
+  "AGENT": {
+    "TITLE": "Temsilci Seçin"
+  },
+  "AVAILABILITY": {
+    "BUSY": "Meşgul",
+    "OFFLINE": "Çevirimdışı",
+    "ONLINE": "Çevirimiçi"
+  },
+  "BANNER": {
+    "24_HOURS_WINDOW": "24 saat mesaj penceresi kısıtlaması",
+    "CANNOT_REPLY": "Nedeniyle cevap veremezsiniz",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 saat mesaj penceresi kısıtlaması",
+    "TWILIO_WHATSAPP_CAN_REPLY": "Bu konuşmaya yalnızca şablon mesaj kullanarak yanıt verebilirsiniz, çünkü"
+  },
   "COMMON": {
+    "CLOSE": "Kapat",
     "ERROR": "Hata",
     "ERROR_TITLE": "Beklenmedik hata oluştu",
-    "REPORT_MESSAGE": "Bunu ekibimize bildirdik! Lütfen uygulamayı kapatın ve tekrar başlayın!",
-    "CLOSE": "Kapat"
-  },
-  "FOOTER": {
-    "HOME": "Anasayfa",
-    "CONVERSATION": "Konuşmalar",
-    "NOTIFICATION": "Bildirimler",
-    "SETTINGS": "Ayarlar"
+    "REPORT_MESSAGE": "Bunu ekibimize bildirdik! Lütfen uygulamayı kapatın ve tekrar başlayın!"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Kurulum URL'si",
-    "DESCRIPTION": "Kendi barındırdığınız bir Chatwoot kurulumu kullanıyorsanız, sunucu URL'nizi girin. Aksi takdirde app.chatwoot.com'u kullanın.",
-    "URL_ERROR": "Geçerli bir URL girin",
-    "URL_REQUIRED": "URL gereklidir",
+    "CHANGE_LANGUAGE": "Dili değiştir",
     "CONNECT": "Bağlan",
-    "CHANGE_LANGUAGE": "Dili değiştir",
-    "ERROR": "Geçersiz yükleme url'si"
+    "DESCRIPTION": "Kendi barındırdığınız bir Chatwoot kurulumu kullanıyorsanız, sunucu URL'nizi girin. Aksi takdirde app.chatwoot.com'u kullanın.",
+    "ENTER_URL": "Kurulum URL'si",
+    "ERROR": "Geçersiz yükleme url'si",
+    "URL_ERROR": "Geçerli bir URL girin",
+    "URL_REQUIRED": "URL gereklidir"
   },
-  "LOGIN": {
-    "TITLE": "Hesabınıza giriş yapın",
-    "DESCRIPTION": "{{baseUrl}}'a bağlısınız.",
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "İletişim Nitelikleri"
+  },
+  "CONTACT_DETAILS": {
+    "CALL": "Ara",
+    "CONTACT_ATTRIBUTES": "İletişim Nitelikleri",
     "EMAIL": "E-posta",
-    "PASSWORD": "Parola",
-    "EMAIL_REQUIRED": "E-posta gereklidir",
-    "EMAIL_ERROR": "Geçerli bir e-posta giriniz",
-    "PASSWORD_REQUIRED": "Şifre gereklidir",
-    "PASSWORD_ERROR": "Geçerli bir parola girin",
-    "LOGIN": "Oturum aç",
-    "LOGIN_LOADING": "Giriş yapılıyor...",
-    "FORGOT_PASSWORD": "Parolanızı mı unuttunuz?",
-    "RESET_HERE": "Buradan sıfırlayın",
-    "NO_ACCOUNT": "Hesabın yok mu?",
-    "CREATE_ACCOUNT": "Yeni hesap oluştur",
-    "SETTINGS": "Ayarlar",
-    "CHANGE_LANGUAGE": "Dili değiştir",
-    "TERMS": "şartlar ve koşullar",
-    "CHANGE_URL": "URL'yi değiştir"
-  },
-  "FORGOT_PASSWORD": {
-    "EMAIL": "Lütfen E-postanızı girin",
-    "EMAIL_ERROR": "Geçerli bir e-posta giriniz",
-    "RESET_HERE": "Parola yenile",
-    "HEADER_TITLE": "Parola yenile",
-    "TITLE": "Parolanızı mı unuttunuz?",
-    "SUB_TITLE": "Merak etmeyin! Arkanı kolluyoruz",
-    "API_SUCCESS": "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi"
+    "PHONE_NUMBER": "Telefon Numarası",
+    "TITLE": "İletişim Detayları",
+    "VALUE_UNAVAILABLE": "Uygun Değil"
   },
   "CONVERSATION": {
-    "HEADER": {
-      "TITLE": "Konuşmalar",
-      "CLEAR_FILTER": "Temizle"
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "ASSIGN": "Atama yap",
+        "EDIT": "Düzenle",
+        "EMPTY": "Atanmamış"
+      },
+      "PRIORITY": {
+        "EDIT": "Düzenle",
+        "EMPTY": "Eklenmiş öncelik yok"
+      },
+      "TEAM": {
+        "ASSIGN": "Atama yap",
+        "EMPTY": "Atanmış takım yok"
+      }
     },
+    "ALL": "Hepsi",
+    "ALL_CONVERSATION_LOADED": "Tüm görüşmeler yüklendi",
+    "ASSIGN": "Sohbet ata",
+    "ASSIGNED_AGENT": "Atanan ajan",
+    "ASSIGNEE": {
+      "AGENTS": {
+        "SEARCH_AGENT": "Temsilci ara"
+      },
+      "LABELS": {
+        "SEARCH_LABELS": "Etiketleri ara"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Durum ata",
+        "OPTIONS": {
+          "ALL": "Hepsi",
+          "OPEN": "Açık",
+          "PENDING": "Bekliyor",
+          "RESOLVED": "Çözüldü",
+          "SNOOZED": "Susturuldu"
+        },
+        "TITLE": "Duruma göre filtrele"
+      }
+    },
+    "ASSIGN_CHANGE": "Atanan kişiyi değiştirildi",
+    "ATTACHMENTS": {
+      "audio": {
+        "CONTENT": "Sesli mesaj"
+      },
+      "contact": {
+        "CONTENT": "Bir ileti paylaşıldı"
+      },
+      "fallback": {
+        "CONTENT": "bir bağlantı paylaştı"
+      },
+      "file": {
+        "CONTENT": "Dosya eklentisi"
+      },
+      "image": {
+        "CONTENT": "Görsel mesaj"
+      },
+      "location": {
+        "CONTENT": "Konum"
+      },
+      "video": {
+        "CONTENT": "Video mesajı"
+      }
+    },
+    "ATTACHMENT_CONTENT": "Dosya eklentisi",
+    "BOT": "Bot",
+    "CHANGE_PRIORITY": "Önceliği değiştir",
+    "CHANGE_STATUS": "Durumu değiştir",
+    "CONVERSATION_NOT_FOUND": "Sohbet alınamadı",
+    "COPY_MESSAGE": "Mesaj panoya kopyalandı",
+    "DEFAULT_HEADER_TITLE": "Konuşmalar",
+    "DELETE_MESSAGE_SUB_TITLE": "Bu işlem geri alınamaz.",
+    "DELETE_MESSAGE_SUCCESS": "Mesaj başarıyla silindi",
+    "DELETE_MESSAGE_TITLE": "Bu mesajı silmek istediğinizden emin misiniz?",
+    "DETAILS": "Detaylar",
+    "DOWNLOAD": "İndir",
+    "EMAIL_HEAD": {
+      "BCC": "Gizli Kopya",
+      "CC": "Kopya",
+      "TO": "Kime"
+    },
+    "EMAIL_HEADER": {
+      "BCC": "Gizli Kopya",
+      "CC": "Kopya",
+      "EXPAND": "E-postayı genişlet",
+      "FROM": "Kimden",
+      "SUBJECT": "Konu",
+      "TO": "Kime"
+    },
+    "EMPTY": "Bu grupta aktif görüşme yok.",
+    "FILE_SIZE_LIMIT": "Dosya 5MB ek sınırını aşıyor",
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "Temsilci ara"
+      },
+      "ASSIGNEE_TYPE": {
+        "OPTIONS": {
+          "ALL": "Hepsi",
+          "ME": "Ben",
+          "UNASSIGNED": "Atanmamış"
+        },
+        "TITLE": "Atanan türüne göre filtrele"
       },
       "INBOX": {
         "TITLE": "Gelen kutusuna göre filtrele"
       },
       "SORT_BY": {
-        "TITLE": "Sırala",
         "OPTIONS": {
           "LATEST": "En son",
           "SORT_ON_CREATED_AT": "Oluşturuldu",
           "SORT_ON_PRIORITY": "Öncelik"
-        }
+        },
+        "TITLE": "Sırala"
       },
       "STATUS": {
-        "TITLE": "Duruma göre filtrele",
         "OPTIONS": {
+          "ALL": "Hepsi",
           "OPEN": "Açık",
           "PENDING": "Bekliyor",
-          "SNOOZED": "Susturuldu",
           "RESOLVED": "Çözüldü",
-          "ALL": "Hepsi"
-        }
-      },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Atanan türüne göre filtrele",
-        "OPTIONS": {
-          "ME": "Ben",
-          "UNASSIGNED": "Atanmamış",
-          "ALL": "Hepsi"
-        }
+          "SNOOZED": "Susturuldu"
+        },
+        "TITLE": "Duruma göre filtrele"
       }
     },
-    "ASSIGNEE": {
-      "LABELS": {
-        "SEARCH_LABELS": "Etiketleri ara"
-      },
-      "AGENTS": {
-        "SEARCH_AGENT": "Temsilci ara"
-      },
-      "STATUS": {
-        "HEADER_TITLE": "Durum ata",
-        "TITLE": "Duruma göre filtrele",
-        "OPTIONS": {
-          "OPEN": "Açık",
-          "PENDING": "Bekliyor",
-          "SNOOZED": "Susturuldu",
-          "RESOLVED": "Çözüldü",
-          "ALL": "Hepsi"
-        }
-      }
-    },
-    "DEFAULT_HEADER_TITLE": "Konuşmalar",
-    "UPDATING": "Güncelleniyor...",
-    "MINE": "Benim",
-    "UN_ASSIGNED": "Atanmamış",
-    "ALL": "Hepsi",
-    "EMPTY": "Bu grupta aktif görüşme yok.",
-    "PICTURE_CONTENT": "Görsel mesaj",
-    "ATTACHMENT_CONTENT": "Dosya eklentisi",
-    "DOWNLOAD": "İndir",
-    "TODAY": "Bugün",
-    "YESTERDAY": "Dün",
-    "TYPE_MESSAGE": "Mesajınızı yazın",
-    "TYPING": "yazıyor...",
-    "ALL_CONVERSATION_LOADED": "Tüm görüşmeler yüklendi",
-    "ASSIGN": "Sohbet ata",
-    "FILE_SIZE_LIMIT": "Dosya 5MB ek sınırını aşıyor",
-    "SHARE": "Share conversation",
-    "DETAILS": "Detaylar",
-    "LABELS": "Sohbet etiketleri",
-    "ASSIGNED_AGENT": "Atanan ajan",
-    "TEAM": "Ekip",
-    "PRIVATE_MSG_INPUT": "Bu yalnızca Ajanlar için görünür olacak",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
-    "NOT_FOUND": {
-      "TITLE": "Sohbet alınamıyor",
-      "RETRY": "Tekrar dene",
-      "BACK_TO_HOME": "Ana sayfaya dön",
-      "DESCRIPTION": "Görünüşe göre o sohbet düzgün bir şekilde alınamıyor. Bu bir ağ sorunundan kaynaklanıyor olabilir veya sohbet artık mevcut olmayabilir. Lütfen tekrar dene butonuna tıklayarak yeniden deneyin."
-    },
-    "BOT": "Bot",
-    "EMAIL_HEAD": {
-      "TO": "Kime",
-      "CC": "Kopya",
-      "BCC": "Gizli Kopya"
-    },
-    "SELF_ASSIGN": "Bana Ata",
-    "UN_ASSIGN": "Sohbeti atamayı kaldır",
-    "CONVERSATION_NOT_FOUND": "Sohbet alınamadı",
-    "MARK_AS_PENDING": "Beklemede olarak işaretle",
-    "SNOOZE_UNTIL": "Şu tarihe kadar ertele",
-    "SNOOZE_UNTIL_NEXT_REPLY": "Sonraki yanıta kadar",
-    "SNOOZE_UNTIL_TOMORROW": "Yarına kadar",
-    "SNOOZE_UNTIL_NEXT_WEEK": "Gelecek haftaya kadar",
-    "SNOOZE": "Sohbeti ertele",
-    "CHANGE_PRIORITY": "Önceliği değiştir",
-    "MESSAGES": "Mesajlar",
-    "UNDEFINED_VARIABLES_TITLE": "Tanımsız değişkenler",
-    "UNDEFINED_VARIABLES_CLOSE": "Kapat",
-    "DELETE_MESSAGE_TITLE": "Bu mesajı silmek istediğinizden emin misiniz?",
-    "DELETE_MESSAGE_SUB_TITLE": "Bu işlem geri alınamaz.",
-    "COPY_MESSAGE": "Mesaj panoya kopyalandı",
-    "STORY_NOT_AVAILABLE": "Bu hikaye artık mevcut değil",
-    "DELETE_MESSAGE_SUCCESS": "Mesaj başarıyla silindi",
-    "NO_CONTENT": "Kullanılabilir içerik yok",
-    "ASSIGN_CHANGE": "Atanan kişiyi değiştirildi",
-    "TEAM_CHANGE": "Sohbet Takımı değişti",
-    "STATUS_CHANGE": "Sohbet Durumu değişti",
-    "PRIORITY_CHANGE": "Sohbet Önceliği değişti",
-    "PARTICIPANT_CHANGE": "Sohbet Katılımcısı değişti",
-    "CHANGE_STATUS": "Durumu değiştir",
-    "SEARCH_TEAM": "Takım ara",
-    "PRIORITY": {
-      "TITLE": "Öncelik",
-      "OPTIONS": {
-        "NONE": "Hiçbiri",
-        "URGENT": "Acil",
-        "HIGH": "Yüksek",
-        "MEDIUM": "Orta",
-        "LOW": "Düşük"
-      },
-      "CHANGE_PRIORITY": {
-        "SELECT_PLACEHOLDER": "Hiçbiri",
-        "INPUT_PLACEHOLDER": "Öncelik seçin",
-        "NO_RESULTS": "Sonuç bulunamadı",
-        "SUCCESSFUL": "Sohbet kimliği %{conversationId} önceliği %{priority} olarak değiştirildi",
-        "FAILED": "Öncelik değiştirilemedi. Lütfen tekrar deneyin."
-      }
+    "HEADER": {
+      "CLEAR_FILTER": "Temizle",
+      "TITLE": "Konuşmalar"
     },
     "ITEM": {
       "ASSIGN": "Atama yap",
       "STATUS": "Durum"
     },
-    "ATTACHMENTS": {
-      "image": {
-        "CONTENT": "Görsel mesaj"
-      },
-      "audio": {
-        "CONTENT": "Sesli mesaj"
-      },
-      "video": {
-        "CONTENT": "Video mesajı"
-      },
-      "file": {
-        "CONTENT": "Dosya eklentisi"
-      },
-      "location": {
-        "CONTENT": "Konum"
-      },
-      "fallback": {
-        "CONTENT": "bir bağlantı paylaştı"
-      },
-      "contact": {
-        "CONTENT": "Bir ileti paylaşıldı"
-      }
-    },
+    "LABELS": "Sohbet etiketleri",
     "LONG_PRESS_ACTIONS": {
       "COPY": "Kopyala",
-      "REPLY": "Cevapla",
-      "DELETE_MESSAGE": "Mesajı sil"
+      "DELETE_MESSAGE": "Mesajı sil",
+      "REPLY": "Cevapla"
     },
-    "EMAIL_HEADER": {
-      "FROM": "Kimden",
-      "TO": "Kime",
-      "BCC": "Gizli Kopya",
-      "CC": "Kopya",
-      "SUBJECT": "Konu",
-      "EXPAND": "E-postayı genişlet"
+    "MARK_AS_PENDING": "Beklemede olarak işaretle",
+    "MESSAGES": "Mesajlar",
+    "MINE": "Benim",
+    "NOT_FOUND": {
+      "BACK_TO_HOME": "Ana sayfaya dön",
+      "DESCRIPTION": "Görünüşe göre o sohbet düzgün bir şekilde alınamıyor. Bu bir ağ sorunundan kaynaklanıyor olabilir veya sohbet artık mevcut olmayabilir. Lütfen tekrar dene butonuna tıklayarak yeniden deneyin.",
+      "RETRY": "Tekrar dene",
+      "TITLE": "Sohbet alınamıyor"
     },
-    "ACTIONS": {
-      "ASSIGNEE": {
-        "EMPTY": "Atanmamış",
-        "ASSIGN": "Atama yap",
-        "EDIT": "Düzenle"
+    "NO_CONTENT": "Kullanılabilir içerik yok",
+    "PARTICIPANT_CHANGE": "Sohbet Katılımcısı değişti",
+    "PICTURE_CONTENT": "Görsel mesaj",
+    "PRIORITY": {
+      "CHANGE_PRIORITY": {
+        "FAILED": "Öncelik değiştirilemedi. Lütfen tekrar deneyin.",
+        "INPUT_PLACEHOLDER": "Öncelik seçin",
+        "NO_RESULTS": "Sonuç bulunamadı",
+        "SELECT_PLACEHOLDER": "Hiçbiri",
+        "SUCCESSFUL": "Sohbet kimliği %{conversationId} önceliği %{priority} olarak değiştirildi"
       },
-      "TEAM": {
-        "EMPTY": "Atanmış takım yok",
-        "ASSIGN": "Atama yap"
+      "OPTIONS": {
+        "HIGH": "Yüksek",
+        "LOW": "Düşük",
+        "MEDIUM": "Orta",
+        "NONE": "Hiçbiri",
+        "URGENT": "Acil"
       },
-      "PRIORITY": {
-        "EMPTY": "Eklenmiş öncelik yok",
-        "EDIT": "Düzenle"
-      }
-    }
-  },
-  "FILTER": {
-    "ALL_INBOXES": "Tüm gelen kutuları",
-    "FILTER_BY_ASSIGNEE_TYPE": "Atanan türüne göre filtrele",
-    "FILTER_BY_CONVERSATION_STATUS": "Sohbet durumuna göre filtrele",
-    "SORT_BY": "Sırala",
-    "FILTER_BY_INBOX": "Gelen kutusuna göre filtrele",
-    "HEADER_TITLE": "Görüşme Filtresi",
-    "CHOOSE_INBOX": "Gelen Kutusu Seçin",
-    "CHOOSE_STATUS": "Görüşme Durumu",
-    "OPEN": "Açık",
-    "RESOLVED": "Çözüldü",
-    "BOT": "Bot",
-    "SUBMIT": "Yolla",
-    "PENDING": "Beklemede",
-    "SNOOZED": "Ertelendi"
-  },
-  "SETTINGS": {
-    "HEADER_TITLE": "Ayarlar",
-    "SET_AVAILABILITY": "Kendinizi olarak ayarlayın",
-    "CHANGE_AVAILABILITY": "Uygunluğu ayarla",
-    "PREFERENCES": "Tercihler",
-    "ABOUT": "Hakkında",
-    "SUPPORT": "Destek",
-    "SWITCH_ACCOUNT": "Hesap değiştir",
-    "CHANGE_LANGUAGE": "Dili değiştir",
-    "NOTIFICATIONS": "Bildirimler",
-    "NOTIFICATION_PREFERENCES": "Bildirim Tercihleri",
-    "READ_DOCS": "Belgeleri oku",
-    "CHAT_WITH_US": "Sohbet et",
-    "LOGOUT": "Çıkış Yap",
-    "SUBMIT": "Yolla",
-    "SET_LANGUAGE": "Dili ayarla",
-    "DEBUG_ACTIONS": "Hata Ayıklama Eylemleri"
-  },
-  "NOTIFICATION": {
-    "HEADER_TITLE": "Bildirimler",
-    "INBOX": "Gelen Kutusu",
-    "EMPTY": "Henüz bildirim yok.",
-    "EMPTY_MORE_TEXT": "Bildirimler almaya başladığınızda burada görünecekler.",
-    "ALL_NOTIFICATION_LOADED": "Tüm bildirimler yüklendi",
-    "MARK_ALL": "Tümünü okundu olarak işaretle",
-    "CANCEL": "İptal etmek",
-    "DELETE": "Sil",
-    "TYPES": {
-      "CONVERSATION_MENTION": "Bir konuşmada senden bahsedildi",
-      "CONVERSATION_CREATION": "Yeni bir görüşme oluşturuldu",
-      "CONVERSATION_ASSIGNMENT": "Size bir görüşme atandı",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Atandığınız görüşmeden bir yeni mesaj",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Katıldığınız sohbetteki yeni mesaj",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA hedef ilk yanıtı kaçırıldı",
-      "SLA_MISSED_NEXT_RESPONSE": "SLA hedef sonraki yanıtı kaçırıldı",
-      "SLA_MISSED_RESOLUTION": "SLA hedef çözümü kaçırıldı"
+      "TITLE": "Öncelik"
     },
-    "FILTERS": {
-      "SORT_BY": {
-        "TITLE": "Sırala",
-        "OPTIONS": {
-          "ASC": "En Eski",
-          "DESC": "En Yeni"
-        }
-      }
-    },
-    "ALERTS": {
-      "MARK_AS_READ": "Bildirim okundu olarak işaretlendi",
-      "MARK_AS_UNREAD": "Bildirim okunmamış olarak işaretlendi",
-      "SNOOZE": "Bildirim Sessize Alındı",
-      "DELETE": "Bildirim Silindi",
-      "MARK_ALL_READ": "Tüm Bildirimler Okundu Olarak İşaretlendi",
-      "DELETE_ALL": "Tüm Bildirimler Silindi",
-      "DELETE_ALL_READ": "Tüm Okunmuş Bildirimler Silindi"
-    }
-  },
-  "AVAILABILITY": {
-    "ONLINE": "Çevirimiçi",
-    "BUSY": "Meşgul",
-    "OFFLINE": "Çevirimdışı"
-  },
-  "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Bildirim Tercihleri",
-    "EMAIL": "E-posta Bildirimleri",
-    "PUSH": "Bildirimler",
-    "CONVERSATION_CREATE_PUSH": "Yeni bir sohbet oluşturuldu",
-    "CONVERSATION_ASSIGNEE_PUSH": "Bir sohbet size atandı",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Bir sohbette adınız geçiyor",
-    "CONVERSATION_MENTION": "Atanmış bir sohbette yeni bir mesaj oluşturuldu",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Katılımcı olduğunuz bir sohbette yeni bir mesaj oluşturuldu",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "Bir sohbet ilk yanıt SLA'sını kaçırdı",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "Bir sohbet sonraki yanıt SLA'sını kaçırdı",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "Bir sohbet çözüm SLA'sını kaçırdı"
-  },
-  "CONVERSATION_DETAILS": {
-    "TITLE": "Öznitelikler",
-    "BROWSER": "Tarayıcı",
-    "OPERATING_SYSTEM": "İşletim sistemi",
-    "INITIATED_AT": "Başlatıldı",
-    "INITIATED_FROM": "Başlatıldı",
-    "IP_ADDRESS": "IP Adresi",
-    "CONVERSATION_ID": "Sohbet Kodu",
-    "CLIPBOARD_SUCCESS": "Kod başarıyla panoya kopyalandı"
-  },
-  "CONTACT_DETAILS": {
-    "TITLE": "İletişim Detayları",
-    "EMAIL": "E-posta",
-    "PHONE_NUMBER": "Telefon Numarası",
-    "CALL": "Ara",
-    "CONTACT_ATTRIBUTES": "İletişim Nitelikleri",
-    "VALUE_UNAVAILABLE": "Uygun Değil"
-  },
-  "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Katılımcılar",
-    "TOTAL_PARTICIPANTS_TEXT": "%{count} kişi katılıyor.",
-    "TOTAL_PARTICIPANT_TEXT": "%{count} kişi katılıyor.",
-    "NO_PARTICIPANTS_TEXT": "Kimse katılmıyor!",
-    "WATCH_CONVERSATION": "Konuşmaya Katıl",
-    "YOU_ARE_WATCHING": "Katılıyorsunuz",
-    "NO_RECORDS_FOUND": "Kayıt bulunamadı",
-    "SELECT_PARTICIPANTS": "Ajanları seçin",
-    "ADD_PARTICIPANTS": "Katılımcıları Seç",
-    "REMAINING_PARTICIPANTS_TEXT": "diğerleri",
-    "REMAINING_PARTICIPANT_TEXT": "diğer",
-    "ADD_PARTICIPANT": "Katılımcı Ekle"
-  },
-  "CONTACT_ATTRIBUTES": {
-    "TITLE": "İletişim Nitelikleri"
+    "PRIORITY_CHANGE": "Sohbet Önceliği değişti",
+    "PRIVATE_MSG_INPUT": "Bu yalnızca Ajanlar için görünür olacak",
+    "SEARCH_PLACEHOLDER": "Konuşmaları ara...",
+    "SEARCH_TEAM": "Takım ara",
+    "SELF_ASSIGN": "Bana Ata",
+    "SHARE": "Share conversation",
+    "SNOOZE": "Sohbeti ertele",
+    "SNOOZE_UNTIL": "Şu tarihe kadar ertele",
+    "SNOOZE_UNTIL_NEXT_REPLY": "Sonraki yanıta kadar",
+    "SNOOZE_UNTIL_NEXT_WEEK": "Gelecek haftaya kadar",
+    "SNOOZE_UNTIL_TOMORROW": "Yarına kadar",
+    "STATUS_CHANGE": "Sohbet Durumu değişti",
+    "STORY_NOT_AVAILABLE": "Bu hikaye artık mevcut değil",
+    "TEAM": "Ekip",
+    "TEAM_CHANGE": "Sohbet Takımı değişti",
+    "TODAY": "Bugün",
+    "TYPE_MESSAGE": "Mesajınızı yazın",
+    "TYPING": "yazıyor...",
+    "UNDEFINED_VARIABLES_CLOSE": "Kapat",
+    "UNDEFINED_VARIABLES_TITLE": "Tanımsız değişkenler",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "UN_ASSIGN": "Sohbeti atamayı kaldır",
+    "UN_ASSIGNED": "Atanmamış",
+    "UPDATING": "Güncelleniyor...",
+    "YESTERDAY": "Dün"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Hareketler"
   },
-  "CONVERSATION_TEAMS": {
-    "TITLE": "Takım ata",
-    "SELECT_TEAM": "Takım seçin",
-    "NO_RESULT": "Takım bulunamadı"
+  "CONVERSATION_AGENTS": {
+    "NO_RESULT": "Ajan bulunamadı",
+    "SELECT_AGENT": "Temsilci seçin",
+    "TITLE": "Temsilci ata"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Tarayıcı",
+    "CLIPBOARD_SUCCESS": "Kod başarıyla panoya kopyalandı",
+    "CONVERSATION_ID": "Sohbet Kodu",
+    "INITIATED_AT": "Başlatıldı",
+    "INITIATED_FROM": "Başlatıldı",
+    "IP_ADDRESS": "IP Adresi",
+    "OPERATING_SYSTEM": "İşletim sistemi",
+    "TITLE": "Öznitelikler"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "Konuşma Etiketleri",
     "ADD_LABEL": "Etiketler ekleyin",
     "EMPTY_LIST": "Lütfen hesabınıza etiket ekleyin",
-    "NO_LABEL": "Atanmış etiket yok",
-    "UPDATE_LABEL": "Etiket başarıyla güncellendi",
-    "SELECTED": "Seçildi",
     "NOT_SELECTED": "Seçili etiket yok",
-    "NO_RESULT": "Etiket bulunamadı"
+    "NO_LABEL": "Atanmış etiket yok",
+    "NO_RESULT": "Etiket bulunamadı",
+    "SELECTED": "Seçildi",
+    "TITLE": "Konuşma Etiketleri",
+    "UPDATE_LABEL": "Etiket başarıyla güncellendi"
   },
-  "CONVERSATION_AGENTS": {
-    "TITLE": "Temsilci ata",
-    "SELECT_AGENT": "Temsilci seçin",
-    "NO_RESULT": "Ajan bulunamadı"
+  "CONVERSATION_PARTICIPANTS": {
+    "ADD_PARTICIPANT": "Katılımcı Ekle",
+    "ADD_PARTICIPANTS": "Katılımcıları Seç",
+    "NO_PARTICIPANTS_TEXT": "Kimse katılmıyor!",
+    "NO_RECORDS_FOUND": "Kayıt bulunamadı",
+    "REMAINING_PARTICIPANTS_TEXT": "diğerleri",
+    "REMAINING_PARTICIPANT_TEXT": "diğer",
+    "SELECT_PARTICIPANTS": "Ajanları seçin",
+    "TITLE": "Katılımcılar",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} kişi katılıyor.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} kişi katılıyor.",
+    "WATCH_CONVERSATION": "Konuşmaya Katıl",
+    "YOU_ARE_WATCHING": "Katılıyorsunuz"
   },
-  "AGENT": {
-    "TITLE": "Temsilci Seçin"
-  },
-  "TEAMS": {
-    "TITLE": "Takım Seçin",
-    "EMPTY": "Lütfen sohbetleri takımlara atamak için hesabınıza takımlar ekleyin.",
-    "CHANGE_TEAMS": "Görüşme takımı değişti"
+  "CONVERSATION_TEAMS": {
+    "NO_RESULT": "Takım bulunamadı",
+    "SELECT_TEAM": "Takım seçin",
+    "TITLE": "Takım ata"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Chatwoot Sunucusuna bağlanılamadı, Lütfen daha sonra tekrar deneyin",
-    "OfFLINE": "Tekrar çevrimiçi olmak için kablosuz ağa veya hücresel ağa bağlanmanız gerekir",
-    "CANNOT_FETCH": "Bilgi alınırken bir hata oluştu, lütfen tekrar deneyin",
     "AUTH": "Kullanıcı Adı / Parola Yanlış. Lütfen tekrar deneyin",
-    "NO_ACCOUNTS_MESSAGE": "Herhangi bir chatwoot hesabına erişiminiz yok"
+    "CANNOT_FETCH": "Bilgi alınırken bir hata oluştu, lütfen tekrar deneyin",
+    "COMMON_ERROR": "Chatwoot Sunucusuna bağlanılamadı, Lütfen daha sonra tekrar deneyin",
+    "NO_ACCOUNTS_MESSAGE": "Herhangi bir chatwoot hesabına erişiminiz yok",
+    "OfFLINE": "Tekrar çevrimiçi olmak için kablosuz ağa veya hücresel ağa bağlanmanız gerekir"
+  },
+  "EXIT": {
+    "CANCEL": "İptal et",
+    "OK": "Tamam",
+    "SUBTITLE": "Çıkmak istediğinden emin misin?",
+    "TITLE": "Çıkış"
+  },
+  "FILTER": {
+    "ALL_INBOXES": "Tüm gelen kutuları",
+    "BOT": "Bot",
+    "CHOOSE_INBOX": "Gelen Kutusu Seçin",
+    "CHOOSE_STATUS": "Görüşme Durumu",
+    "FILTER_BY_ASSIGNEE_TYPE": "Atanan türüne göre filtrele",
+    "FILTER_BY_CONVERSATION_STATUS": "Sohbet durumuna göre filtrele",
+    "FILTER_BY_INBOX": "Gelen kutusuna göre filtrele",
+    "HEADER_TITLE": "Görüşme Filtresi",
+    "OPEN": "Açık",
+    "PENDING": "Beklemede",
+    "RESOLVED": "Çözüldü",
+    "SNOOZED": "Ertelendi",
+    "SORT_BY": "Sırala",
+    "SUBMIT": "Yolla"
+  },
+  "FOOTER": {
+    "CONVERSATION": "Konuşmalar",
+    "HOME": "Anasayfa",
+    "NOTIFICATION": "Bildirimler",
+    "SETTINGS": "Ayarlar"
+  },
+  "FORGOT_PASSWORD": {
+    "API_SUCCESS": "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi",
+    "EMAIL": "Lütfen E-postanızı girin",
+    "EMAIL_ERROR": "Geçerli bir e-posta giriniz",
+    "HEADER_TITLE": "Parola yenile",
+    "RESET_HERE": "Parola yenile",
+    "SUB_TITLE": "Merak etmeyin! Arkanı kolluyoruz",
+    "TITLE": "Parolanızı mı unuttunuz?"
+  },
+  "LOGIN": {
+    "CHANGE_LANGUAGE": "Dili değiştir",
+    "CHANGE_URL": "URL'yi değiştir",
+    "CREATE_ACCOUNT": "Yeni hesap oluştur",
+    "DESCRIPTION": "{{baseUrl}}'a bağlısınız.",
+    "EMAIL": "E-posta",
+    "EMAIL_ERROR": "Geçerli bir e-posta giriniz",
+    "EMAIL_REQUIRED": "E-posta gereklidir",
+    "FORGOT_PASSWORD": "Parolanızı mı unuttunuz?",
+    "LOGIN": "Oturum aç",
+    "LOGIN_LOADING": "Giriş yapılıyor...",
+    "LOGIN_VIA_SSO": "SSO ile giriş yap",
+    "NO_ACCOUNT": "Hesabın yok mu?",
+    "PASSWORD": "Parola",
+    "PASSWORD_ERROR": "Geçerli bir parola girin",
+    "PASSWORD_REQUIRED": "Şifre gereklidir",
+    "RESET_HERE": "Buradan sıfırlayın",
+    "SETTINGS": "Ayarlar",
+    "SSO_AUTH_FAILED": "SSO kimlik doğrulaması başarısız oldu. Kimlik bilgilerinizi kontrol edip tekrar deneyin.",
+    "SSO_INVALID_RESPONSE": "Geçersiz SSO yanıtı. Lütfen tekrar deneyin.",
+    "SSO_UNEXPECTED_ERROR": "SSO ile giriş sırasında beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.",
+    "TERMS": "şartlar ve koşullar",
+    "TITLE": "Hesabınıza giriş yapın"
+  },
+  "MACRO": {
+    "ACTIONS": {
+      "RUN": "Çalıştır"
+    },
+    "EXECUTION_ERROR": "Makro yürütme başarısız oldu",
+    "EXECUTION_SUCCESS": "Kısayol başarıyla çalıştırıldı",
+    "NO_MACROS": "Hiç kısayol bulunamadı",
+    "SELECT_MACRO": "Makro seçin",
+    "TITLE": "Kısayollar"
+  },
+  "MFA": {
+    "BUTTONS": {
+      "VERIFY": "Doğrula",
+      "VERIFYING": "Doğrulanıyor..."
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Kimlik doğrulayıcı uygulamanızdaki 6 haneli kodu girin",
+      "BACKUP": "Yedek kodlarınızdan birini girin"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Yedek kodu girin"
+    },
+    "TABS": {
+      "AUTHENTICATOR_APP": "Kimlik doğrulayıcı uygulama",
+      "BACKUP_CODE": "Yedek kod"
+    },
+    "TITLE": "İki faktörlü kimlik doğrulama"
+  },
+  "NOTIFICATION": {
+    "ALERTS": {
+      "DELETE": "Bildirim Silindi",
+      "DELETE_ALL": "Tüm Bildirimler Silindi",
+      "DELETE_ALL_READ": "Tüm Okunmuş Bildirimler Silindi",
+      "MARK_ALL_READ": "Tüm Bildirimler Okundu Olarak İşaretlendi",
+      "MARK_AS_READ": "Bildirim okundu olarak işaretlendi",
+      "MARK_AS_UNREAD": "Bildirim okunmamış olarak işaretlendi",
+      "SNOOZE": "Bildirim Sessize Alındı"
+    },
+    "ALL_NOTIFICATION_LOADED": "Tüm bildirimler yüklendi",
+    "CANCEL": "İptal etmek",
+    "DELETE": "Sil",
+    "EMPTY": "Henüz bildirim yok.",
+    "EMPTY_MORE_TEXT": "Bildirimler almaya başladığınızda burada görünecekler.",
+    "FILTERS": {
+      "SORT_BY": {
+        "OPTIONS": {
+          "ASC": "En Eski",
+          "DESC": "En Yeni"
+        },
+        "TITLE": "Sırala"
+      }
+    },
+    "HEADER_TITLE": "Bildirimler",
+    "INBOX": "Gelen Kutusu",
+    "MARK_ALL": "Tümünü okundu olarak işaretle",
+    "SEARCH_PLACEHOLDER": "Bildirimleri ara...",
+    "TYPES": {
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Atandığınız görüşmeden bir yeni mesaj",
+      "CONVERSATION_ASSIGNMENT": "Size bir görüşme atandı",
+      "CONVERSATION_CREATION": "Yeni bir görüşme oluşturuldu",
+      "CONVERSATION_MENTION": "Bir konuşmada senden bahsedildi",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Katıldığınız sohbetteki yeni mesaj",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA hedef ilk yanıtı kaçırıldı",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA hedef sonraki yanıtı kaçırıldı",
+      "SLA_MISSED_RESOLUTION": "SLA hedef çözümü kaçırıldı"
+    }
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Bir sohbette adınız geçiyor",
+    "CONVERSATION_ASSIGNEE_PUSH": "Bir sohbet size atandı",
+    "CONVERSATION_CREATE_PUSH": "Yeni bir sohbet oluşturuldu",
+    "CONVERSATION_MENTION": "Atanmış bir sohbette yeni bir mesaj oluşturuldu",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Katılımcı olduğunuz bir sohbette yeni bir mesaj oluşturuldu",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "Bir sohbet ilk yanıt SLA'sını kaçırdı",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "Bir sohbet sonraki yanıt SLA'sını kaçırdı",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "Bir sohbet çözüm SLA'sını kaçırdı",
+    "EMAIL": "E-posta Bildirimleri",
+    "PUSH": "Bildirimler",
+    "TITLE": "Bildirim Tercihleri"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "Sunucu yükseltmesi gerekiyor",
+    "WARNING_FOR_ADMIN": "Görünüşe göre mobil uygulamanız için desteklenmeyen bir Chatwoot sunucusu kullanıyorsunuz. Sunucu sürümünü %{minimumVersion} veya daha yenisine yükseltmek gerekmektedir.",
+    "WARNING_FOR_AGENT": "Görünüşe göre mobil uygulamanız için desteklenmeyen bir Chatwoot sunucusu kullanıyorsunuz. Lütfen Chatwoot sunucunuzu yükseltmek için sistem yöneticinizle iletişime geçin."
+  },
+  "SETTINGS": {
+    "ABOUT": "Hakkında",
+    "CHANGE_AVAILABILITY": "Uygunluğu ayarla",
+    "CHANGE_LANGUAGE": "Dili değiştir",
+    "CHAT_WITH_US": "Sohbet et",
+    "DEBUG_ACTIONS": "Hata Ayıklama Eylemleri",
+    "HEADER_TITLE": "Ayarlar",
+    "LOGOUT": "Çıkış Yap",
+    "NOTIFICATIONS": "Bildirimler",
+    "NOTIFICATION_PREFERENCES": "Bildirim Tercihleri",
+    "PREFERENCES": "Tercihler",
+    "READ_DOCS": "Belgeleri oku",
+    "SET_AVAILABILITY": "Kendinizi olarak ayarlayın",
+    "SET_LANGUAGE": "Dili ayarla",
+    "SUBMIT": "Yolla",
+    "SUPPORT": "Destek",
+    "SWITCH_ACCOUNT": "Hesap değiştir"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "MISSES": {
+      "FRT": "İlk yanıt süresi",
+      "HIDE": "{count} satırı gizle",
+      "NRT": "Sonraki yanıt süresi",
+      "RT": "Çözüm süresi",
+      "SHOW_MORE": "{count} daha",
+      "TITLE": "SLA Kaçırmaları"
+    },
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "DUE": "son tarih",
+      "FRT": "FRT %{status}",
+      "MISSED": "kaçırıldı",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}"
+    }
   },
   "SUCCESS": {
     "AUTH": "Giriş başarılı"
   },
-  "SERVER_UPGRADE": {
-    "TITLE": "Sunucu yükseltmesi gerekiyor",
-    "WARNING_FOR_AGENT": "Görünüşe göre mobil uygulamanız için desteklenmeyen bir Chatwoot sunucusu kullanıyorsunuz. Lütfen Chatwoot sunucunuzu yükseltmek için sistem yöneticinizle iletişime geçin.",
-    "WARNING_FOR_ADMIN": "Görünüşe göre mobil uygulamanız için desteklenmeyen bir Chatwoot sunucusu kullanıyorsunuz. Sunucu sürümünü %{minimumVersion} veya daha yenisine yükseltmek gerekmektedir."
+  "TEAMS": {
+    "CHANGE_TEAMS": "Görüşme takımı değişti",
+    "EMPTY": "Lütfen sohbetleri takımlara atamak için hesabınıza takımlar ekleyin.",
+    "TITLE": "Takım Seçin"
   },
-  "EXIT": {
-    "TITLE": "Çıkış",
-    "SUBTITLE": "Çıkmak istediğinden emin misin?",
-    "CANCEL": "İptal et",
-    "OK": "Tamam"
-  },
-  "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "Bu konuşmaya yalnızca şablon mesaj kullanarak yanıt verebilirsiniz, çünkü",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 saat mesaj penceresi kısıtlaması",
-    "24_HOURS_WINDOW": "24 saat mesaj penceresi kısıtlaması",
-    "CANNOT_REPLY": "Nedeniyle cevap veremezsiniz"
-  },
-  "SLA": {
-    "FRT": "FRT",
-    "NRT": "NRT",
-    "RT": "RT",
-    "STATUS": {
-      "FRT": "FRT %{status}",
-      "NRT": "NRT %{status}",
-      "RT": "RT %{status}",
-      "MISSED": "kaçırıldı",
-      "DUE": "son tarih"
-    },
-    "MISSES": {
-      "TITLE": "SLA Kaçırmaları",
-      "FRT": "İlk yanıt süresi",
-      "NRT": "Sonraki yanıt süresi",
-      "RT": "Çözüm süresi",
-      "SHOW_MORE": "{count} daha",
-      "HIDE": "{count} satırı gizle"
-    }
-  },
-  "MACRO": {
-    "TITLE": "Kısayollar",
-    "SELECT_MACRO": "Makro seçin",
-    "ACTIONS": {
-      "RUN": "Çalıştır"
-    },
-    "EXECUTION_SUCCESS": "Kısayol başarıyla çalıştırıldı",
-    "EXECUTION_ERROR": "Makro yürütme başarısız oldu",
-    "NO_MACROS": "Hiç kısayol bulunamadı"
-  }
+  "WELCOME": "Hoşgeldiniz"
 }

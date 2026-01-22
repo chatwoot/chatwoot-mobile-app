@@ -1,191 +1,482 @@
 {
-  "WELCOME": "Selamat Datang",
-  "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Terjadi kesalahan yang tidak terduga",
-    "REPORT_MESSAGE": "Kami telah melaporkan ini kepada tim! Silakan tutup aplikasi dan mulai lagi!",
-    "CLOSE": "Tutup"
-  },
-  "FOOTER": {
-    "HOME": "Beranda",
-    "CONVERSATION": "Percakapan",
-    "NOTIFICATION": "Notifikasi",
-    "SETTINGS": "Pengaturan"
-  },
-  "CONFIGURE_URL": {
-    "ENTER_URL": "URL Instalasi",
-    "DESCRIPTION": "Jika Anda menggunakan instalasi Chatwoot yang di server anda sendiri, masukkan URL server Anda. Jika tidak, gunakan app.chatwoot.com.",
-    "URL_ERROR": "Masukkan URL yang valid",
-    "URL_REQUIRED": "URL wajib diisi",
-    "CONNECT": "Hubungkan",
-    "CHANGE_LANGUAGE": "Ganti bahasa",
-    "ERROR": "Url instalasi tidak valid"
-  },
-  "LOGIN": {
-    "TITLE": "Login ke akun Anda",
-    "DESCRIPTION": "Anda terhubung ke {{baseUrl}}. Login dengan alamat email dan kata sandi Anda.",
-    "EMAIL": "Email",
-    "PASSWORD": "Password",
-    "EMAIL_REQUIRED": "Email wajib diisi",
-    "EMAIL_ERROR": "Masukkan email yang valid",
-    "PASSWORD_REQUIRED": "Password wajib diisi",
-    "PASSWORD_ERROR": "Masukkan kata sandi yang valid",
-    "LOGIN": "Masuk",
-    "FORGOT_PASSWORD": "Lupa kata sandi?",
-    "RESET_HERE": "Atur disini",
-    "NO_ACCOUNT": "Belum punya akun?",
-    "CREATE_ACCOUNT": "Daftar akun baru",
-    "SETTINGS": "Pengaturan",
-    "CHANGE_LANGUAGE": "Ganti bahasa",
-    "TERMS": "Syarat & Ketentuan",
-    "CHANGE_URL": "Ganti URL"
-  },
-  "FORGOT_PASSWORD": {
-    "EMAIL": "Silakan masukkan email Anda",
-    "EMAIL_ERROR": "Masukkan email yang valid",
-    "RESET_HERE": "Atur kata sandi",
-    "HEADER_TITLE": "Atur kata sandi",
-    "TITLE": "Lupa kata sandi?",
-    "SUB_TITLE": "Jangan khawatir! Kami mendukung Anda",
-    "API_SUCCESS": "Link reset kata sandi telah dikirim ke alamat email Anda"
-  },
-  "CONVERSATION": {
-    "DEFAULT_HEADER_TITLE": "Percakapan",
-    "UPDATING": "Mengambil...",
-    "MINE": "Saya",
-    "UN_ASSIGNED": "Belum Diambil",
-    "ALL": "Semua",
-    "EMPTY": "Tidak ada percakapan aktif di grup ini.",
-    "PICTURE_CONTENT": "Pesan gambar",
-    "ATTACHMENT_CONTENT": "Lampiran File",
-    "DOWNLOAD": "Unduh",
-    "TODAY": "Hari ini",
-    "YESTERDAY": "Kemarin",
-    "TYPE_MESSAGE": "Ketik pesan",
-    "TYPING": "mengetik",
-    "ALL_CONVERSATION_LOADED": "Semua percakapan dimuat",
-    "ASSIGN": "Tetapkan percakapan",
-    "FILE_SIZE_LIMIT": "File melebihi batas lampiran 5MB",
-    "SHARE": "Bagikan percakapan",
-    "CANCEL": "Batal",
-    "PRIVATE_MSG_INPUT": "Ini hanya akan terlihat oleh Agen",
-    "UN_ASSIGN": "Menghapus penetapan percakapan",
-    "MUTE_CONVERSATION": "Bisukan percakapan",
-    "UNMUTE_CONVERSATION": "Menyalakan suara percakapan",
-    "CONVERSATION_NOT_FOUND": "Tidak dapat mengambil percakapan"
-  },
-  "FILTER": {
-    "ALL_INBOXES": "Semua kotak masuk",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter menurut jenis penerima tugas",
-    "FILTER_BY_CONVERSATION_STATUS": "Memfilter menurut status percakapan",
-    "FILTER_BY_INBOX": "Filter menurut kotak masuk",
-    "HEADER_TITLE": "Filter Percakapan",
-    "CHOOSE_INBOX": "Pilih Kotak Masuk",
-    "CHOOSE_STATUS": "Status Percakapan",
-    "OPEN": "Buka",
-    "RESOLVED": "Diselesaikan",
-    "BOT": "Robot",
-    "SUBMIT": "Submit",
-    "PENDING": "Tertunda",
-    "SNOOZED": "Ditunda"
-  },
-  "SETTINGS": {
-    "HEADER_TITLE": "Pengaturan",
-    "AVAILABILITY": "Ketersediaan",
-    "NOTIFICATION": "Preferensi Pemberitahuan",
-    "HELP": "Dokumen Bantuan",
-    "CHAT_WITH_US": "Ngobrol dengan Kami",
-    "LOG_OUT": "Keluar",
-    "SWITCH_ACCOUNT": "Ganti Akun",
-    "CHANGE_LANGUAGE": "Ganti Bahasa",
-    "SUBMIT": "Submit"
-  },
-  "NOTIFICATION": {
-    "HEADER_TITLE": "Notifikasi",
-    "EMPTY": "Belum ada notifikasi saat ini.",
-    "EMPTY_MORE_TEXT": "Setelah Anda mulai menerima pemberitahuan, semua akan muncul di sini.",
-    "ALL_NOTIFICATION_LOADED": "Semua notifikasi dimuat",
-    "MARK_ALL": "Menandai semua sebagai sudah dibaca",
-    "CANCEL": "Batal"
+  "AGENT": {
+    "TITLE": "Pilih Agen"
   },
   "AVAILABILITY": {
-    "ONLINE": "Online",
     "BUSY": "Sibuk",
-    "OFFLINE": "Offline"
+    "OFFLINE": "Offline",
+    "ONLINE": "Online"
   },
-  "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Preferensi Pemberitahuan",
-    "EMAIL": "Email",
-    "PUSH": "Push",
-    "CONVERSATION_CREATE_PUSH": "Mengirim pemberitahuan push saat percakapan baru dibuat",
-    "CONVERSATION_ASSIGNEE_PUSH": "Mengirim pemberitahuan push saat percakapan ditetapkan kepada saya",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Mengirim pemberitahuan push saat pesan baru dibuat dalam percakapan yang ditetapkan",
-    "CONVERSATION_MENTION": "Mengirim pemberitahuan push saat Anda disebutkan dalam percakapan",
-    "CONVERSATION_CREATE_EMAIL": "Mengirim pemberitahuan email saat percakapan baru dibuat",
-    "CONVERSATION_ASSIGNEE_EMAIL": "Mengirim pemberitahuan email saat percakapan ditetapkan kepada saya",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_EMAIL": "Mengirim pemberitahuan email saat pesan baru dibuat dalam percakapan yang ditetapkan"
+  "BANNER": {
+    "24_HOURS_WINDOW": "Batasan jendela pesan 24 jam",
+    "CANNOT_REPLY": "Anda tidak dapat membalas karena",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "Batasan jendela pesan 24 jam",
+    "TWILIO_WHATSAPP_CAN_REPLY": "Anda hanya dapat membalas percakapan ini menggunakan pesan template karena"
   },
-  "CONVERSATION_DETAILS": {
-    "TITLE": "Informasi Percakapan",
-    "BROWSER": "Peramban",
-    "OPERATING_SYSTEM": "Sistem operasi",
-    "INITIATED_AT": "Diprakarsai di",
-    "INITIATED_FROM": "Diprakarsai dari",
-    "IP_ADDRESS": "Alamat IP"
+  "COMMON": {
+    "CLOSE": "Tutup",
+    "ERROR": "Error",
+    "ERROR_TITLE": "Terjadi kesalahan yang tidak terduga",
+    "REPORT_MESSAGE": "Kami telah melaporkan ini kepada tim! Silakan tutup aplikasi dan mulai lagi!"
+  },
+  "CONFIGURE_URL": {
+    "CHANGE_LANGUAGE": "Ganti bahasa",
+    "CONNECT": "Hubungkan",
+    "DESCRIPTION": "Jika Anda menggunakan instalasi Chatwoot yang di server anda sendiri, masukkan URL server Anda. Jika tidak, gunakan app.chatwoot.com.",
+    "ENTER_URL": "URL Instalasi",
+    "ERROR": "Url instalasi tidak valid",
+    "URL_ERROR": "Masukkan URL yang valid",
+    "URL_REQUIRED": "URL wajib diisi"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Atribut Kontak"
   },
+  "CONTACT_DETAILS": {
+    "CALL": "Panggil",
+    "CONTACT_ATTRIBUTES": "Kontak Attributes",
+    "EMAIL": "Email",
+    "PHONE_NUMBER": "Telepon Nomor",
+    "TITLE": "Kontak Detail",
+    "VALUE_UNAVAILABLE": "Tidak tersedia"
+  },
+  "CONVERSATION": {
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "ASSIGN": "Tetapkan",
+        "EDIT": "Ubah",
+        "EMPTY": "Belum ditugaskan"
+      },
+      "PRIORITY": {
+        "EDIT": "Ubah",
+        "EMPTY": "No prioritas added"
+      },
+      "TEAM": {
+        "ASSIGN": "Tetapkan",
+        "EMPTY": "Tidak ada team assigned"
+      }
+    },
+    "ALL": "Semua",
+    "ALL_CONVERSATION_LOADED": "Semua percakapan dimuat",
+    "ASSIGN": "Tetapkan percakapan",
+    "ASSIGNED_AGENT": "Agen yang ditugaskan",
+    "ASSIGNEE": {
+      "AGENTS": {
+        "SEARCH_AGENT": "Cari agents"
+      },
+      "LABELS": {
+        "SEARCH_LABELS": "Cari labels"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Tetapkan status",
+        "OPTIONS": {
+          "ALL": "Semua",
+          "OPEN": "Terbuka",
+          "PENDING": "Menunggu",
+          "RESOLVED": "Selesai",
+          "SNOOZED": "Ditunda"
+        },
+        "TITLE": "Filter berdasarkan status"
+      }
+    },
+    "ASSIGN_CHANGE": "Percakapan Assignee berubah",
+    "ATTACHMENTS": {
+      "audio": {
+        "CONTENT": "Audio pesan"
+      },
+      "contact": {
+        "CONTENT": "Membagikan sebuah contact"
+      },
+      "fallback": {
+        "CONTENT": "has shared sebuah tautan"
+      },
+      "file": {
+        "CONTENT": "Berkas Lampiran"
+      },
+      "image": {
+        "CONTENT": "Gambar pesan"
+      },
+      "location": {
+        "CONTENT": "Lokasi"
+      },
+      "video": {
+        "CONTENT": "Video pesan"
+      }
+    },
+    "ATTACHMENT_CONTENT": "Lampiran File",
+    "BOT": "Bot",
+    "CHANGE_PRIORITY": "Ubah prioritas",
+    "CHANGE_STATUS": "Ubah status",
+    "CONVERSATION_NOT_FOUND": "Tidak dapat mengambil percakapan",
+    "COPY_MESSAGE": "Pesan disalin ke papan klip",
+    "DEFAULT_HEADER_TITLE": "Percakapan",
+    "DELETE_MESSAGE_SUB_TITLE": "Tindakan ini tidak dapat dibatalkan.",
+    "DELETE_MESSAGE_SUCCESS": "Pesan deleted successfully",
+    "DELETE_MESSAGE_TITLE": "Sedang Anda sure Anda want ke delete this pesan?",
+    "DETAILS": "Detail",
+    "DOWNLOAD": "Unduh",
+    "EMAIL_HEAD": {
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "TO": "Ke"
+    },
+    "EMAIL_HEADER": {
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "EXPAND": "Perluas email",
+      "FROM": "Dari",
+      "SUBJECT": "Subjek",
+      "TO": "Ke"
+    },
+    "EMPTY": "Tidak ada percakapan aktif di grup ini.",
+    "FILE_SIZE_LIMIT": "File melebihi batas lampiran 5MB",
+    "FILTERS": {
+      "AGENT": {
+        "SEARCH_AGENT": "Cari agents"
+      },
+      "ASSIGNEE_TYPE": {
+        "OPTIONS": {
+          "ALL": "Semua",
+          "ME": "Saya",
+          "UNASSIGNED": "Belum ditugaskan"
+        },
+        "TITLE": "Filter berdasarkan assignee type"
+      },
+      "INBOX": {
+        "TITLE": "Filter berdasarkan inbox"
+      },
+      "SORT_BY": {
+        "OPTIONS": {
+          "LATEST": "Terbaru",
+          "SORT_ON_CREATED_AT": "Dibuat At",
+          "SORT_ON_PRIORITY": "Prioritas"
+        },
+        "TITLE": "Sort berdasarkan"
+      },
+      "STATUS": {
+        "OPTIONS": {
+          "ALL": "Semua",
+          "OPEN": "Terbuka",
+          "PENDING": "Menunggu",
+          "RESOLVED": "Selesai",
+          "SNOOZED": "Ditunda"
+        },
+        "TITLE": "Filter berdasarkan status"
+      }
+    },
+    "HEADER": {
+      "CLEAR_FILTER": "Bersihkan",
+      "TITLE": "Percakapan"
+    },
+    "ITEM": {
+      "ASSIGN": "Tetapkan",
+      "STATUS": "Status"
+    },
+    "LABELS": "Percakapan labels",
+    "LONG_PRESS_ACTIONS": {
+      "COPY": "Salin",
+      "DELETE_MESSAGE": "Hapus pesan",
+      "REPLY": "Balas"
+    },
+    "MARK_AS_PENDING": "Tandai sebagai menunggu",
+    "MESSAGES": "Pesan",
+    "MINE": "Saya",
+    "NOT_FOUND": {
+      "BACK_TO_HOME": "Go back ke home",
+      "DESCRIPTION": "Sepertinya percakapan tersebut tidak dapat diambil dengan benar. Ini mungkin karena percakapan sudah dihapus atau tidak tersedia lagi. Silakan ketuk tombol coba lagi untuk mencoba kembali.",
+      "RETRY": "Coba lagi",
+      "TITLE": "Unable ke fetch percakapan"
+    },
+    "NO_CONTENT": "Tidak ada konten yang tersedia",
+    "PARTICIPANT_CHANGE": "Percakapan Participant berubah",
+    "PICTURE_CONTENT": "Pesan gambar",
+    "PRIORITY": {
+      "CHANGE_PRIORITY": {
+        "FAILED": "Couldn't change prioritas. Silakan try lagi.",
+        "INPUT_PLACEHOLDER": "Select prioritas",
+        "NO_RESULTS": "Tidak ada hasil",
+        "SELECT_PLACEHOLDER": "None",
+        "SUCCESSFUL": "Berubah prioritas of percakapan id %{conversationId} ke %{priority}"
+      },
+      "OPTIONS": {
+        "HIGH": "Tinggi",
+        "LOW": "Rendah",
+        "MEDIUM": "Sedang",
+        "NONE": "Tidak ada",
+        "URGENT": "Mendesak"
+      },
+      "TITLE": "Prioritas"
+    },
+    "PRIORITY_CHANGE": "Percakapan Prioritas berubah",
+    "PRIVATE_MSG_INPUT": "Ini hanya akan terlihat oleh Agen",
+    "SEARCH_PLACEHOLDER": "Cari percakapan...",
+    "SEARCH_TEAM": "Cari teams",
+    "SELF_ASSIGN": "Tetapkan ke me",
+    "SHARE": "Bagikan percakapan",
+    "SNOOZE": "Snooze percakapan",
+    "SNOOZE_UNTIL": "Tunda hingga",
+    "SNOOZE_UNTIL_NEXT_REPLY": "Until berikutnya reply",
+    "SNOOZE_UNTIL_NEXT_WEEK": "Until berikutnya week",
+    "SNOOZE_UNTIL_TOMORROW": "Sampai besok",
+    "STATUS_CHANGE": "Percakapan Status berubah",
+    "STORY_NOT_AVAILABLE": "This story is no longer tersedia",
+    "TEAM": "Tim",
+    "TEAM_CHANGE": "Percakapan Team berubah",
+    "TODAY": "Hari ini",
+    "TYPE_MESSAGE": "Ketik pesan",
+    "TYPING": "mengetik",
+    "UNDEFINED_VARIABLES_CLOSE": "Tutup",
+    "UNDEFINED_VARIABLES_TITLE": "Variabel tidak terdefinisi",
+    "UNSUPPORTED_MESSAGE": "Pesan ini tidak didukung. Anda dapat melihat pesan ini di aplikasi Facebook / Instagram.",
+    "UN_ASSIGN": "Menghapus penetapan percakapan",
+    "UN_ASSIGNED": "Belum Diambil",
+    "UPDATING": "Mengambil...",
+    "YESTERDAY": "Kemarin"
+  },
   "CONVERSATION_ACTION": {
     "TITLE": "Tindakan"
   },
+  "CONVERSATION_AGENTS": {
+    "NO_RESULT": "Agen tidak ditemukan",
+    "SELECT_AGENT": "Pilih agent",
+    "TITLE": "Tetapkan agent"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Peramban",
+    "CLIPBOARD_SUCCESS": "Disalin ke papan klip",
+    "CONVERSATION_ID": "Percakapan ID",
+    "INITIATED_AT": "Diprakarsai di",
+    "INITIATED_FROM": "Diprakarsai dari",
+    "IP_ADDRESS": "Alamat IP",
+    "OPERATING_SYSTEM": "Sistem operasi",
+    "TITLE": "Informasi Percakapan"
+  },
   "CONVERSATION_LABELS": {
-    "TITLE": "Label Percakapan",
     "ADD_LABEL": "Tambahkan Label",
     "EMPTY_LIST": "Harap tambahkan label ke akun Anda",
+    "NOT_SELECTED": "Tidak ada label selected",
     "NO_LABEL": "Tidak ada label yang ditetapkan",
+    "NO_RESULT": "Label tidak ditemukan",
+    "SELECTED": "Dipilih",
+    "TITLE": "Label Percakapan",
     "UPDATE_LABEL": "Label berhasil diperbarui"
   },
-  "AGENT": {
-    "TITLE": "Pilih Agen"
+  "CONVERSATION_PARTICIPANTS": {
+    "ADD_PARTICIPANT": "Add Peserta",
+    "ADD_PARTICIPANTS": "Pilih peserta",
+    "NO_PARTICIPANTS_TEXT": "No one is berpartisipasi!.",
+    "NO_RECORDS_FOUND": "Tidak ada hasil",
+    "REMAINING_PARTICIPANTS_TEXT": "lainnya",
+    "REMAINING_PARTICIPANT_TEXT": "lainnya",
+    "SELECT_PARTICIPANTS": "Pilih agents",
+    "TITLE": "Peserta",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} people sedang berpartisipasi.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} person is berpartisipasi.",
+    "WATCH_CONVERSATION": "Join percakapan",
+    "YOU_ARE_WATCHING": "Anda sedang berpartisipasi"
   },
-  "TEAMS": {
-    "TITLE": "Pilih Tim",
-    "EMPTY": "Tambahkan tim ke akun Anda untuk menetapkan percakapan ke tim.",
-    "CHANGE_TEAMS": "Tim percakapan berubah"
+  "CONVERSATION_TEAMS": {
+    "NO_RESULT": "Tidak ada team ditemukan",
+    "SELECT_TEAM": "Pilih team",
+    "TITLE": "Tetapkan team"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Tidak dapat terhubung ke Woot Server, Silakan coba lagi nanti",
-    "OfFLINE": "Anda harus terhubung ke Wi-fi atau jaringan seluler untuk online kembali",
-    "OFFLINE": "Anda harus terhubung ke Wi-fi atau jaringan seluler untuk online kembali",
-    "CANNOT_FETCH": "Ada kesalahan saat mengambil informasi, silakan coba lagi",
     "AUTH": "Nama pengguna / kata sandi salah. Silakan coba lagi",
-    "NO_ACCOUNTS_MESSAGE": "Anda tidak memiliki akses ke akun chatwoot apa pun"
+    "CANNOT_FETCH": "Ada kesalahan saat mengambil informasi, silakan coba lagi",
+    "COMMON_ERROR": "Tidak dapat terhubung ke Woot Server, Silakan coba lagi nanti",
+    "NO_ACCOUNTS_MESSAGE": "Anda tidak memiliki akses ke akun chatwoot apa pun",
+    "OfFLINE": "Anda harus terhubung ke Wi-fi atau jaringan seluler untuk online kembali"
+  },
+  "EXIT": {
+    "CANCEL": "Batal",
+    "OK": "Ok",
+    "SUBTITLE": "Apakah Anda yakin ingin berhenti?",
+    "TITLE": "Keluar"
+  },
+  "FILTER": {
+    "ALL_INBOXES": "Semua kotak masuk",
+    "BOT": "Robot",
+    "CHOOSE_INBOX": "Pilih Kotak Masuk",
+    "CHOOSE_STATUS": "Status Percakapan",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter menurut jenis penerima tugas",
+    "FILTER_BY_CONVERSATION_STATUS": "Memfilter menurut status percakapan",
+    "FILTER_BY_INBOX": "Filter menurut kotak masuk",
+    "HEADER_TITLE": "Filter Percakapan",
+    "OPEN": "Buka",
+    "PENDING": "Tertunda",
+    "RESOLVED": "Diselesaikan",
+    "SNOOZED": "Ditunda",
+    "SORT_BY": "Sort berdasarkan",
+    "SUBMIT": "Submit"
+  },
+  "FOOTER": {
+    "CONVERSATION": "Percakapan",
+    "HOME": "Beranda",
+    "NOTIFICATION": "Notifikasi",
+    "SETTINGS": "Pengaturan"
+  },
+  "FORGOT_PASSWORD": {
+    "API_SUCCESS": "Link reset kata sandi telah dikirim ke alamat email Anda",
+    "EMAIL": "Silakan masukkan email Anda",
+    "EMAIL_ERROR": "Masukkan email yang valid",
+    "HEADER_TITLE": "Atur kata sandi",
+    "RESET_HERE": "Atur kata sandi",
+    "SUB_TITLE": "Jangan khawatir! Kami mendukung Anda",
+    "TITLE": "Lupa kata sandi?"
+  },
+  "LOGIN": {
+    "CHANGE_LANGUAGE": "Ganti bahasa",
+    "CHANGE_URL": "Ganti URL",
+    "CREATE_ACCOUNT": "Daftar akun baru",
+    "DESCRIPTION": "Anda terhubung ke {{baseUrl}}. Login dengan alamat email dan kata sandi Anda.",
+    "EMAIL": "Email",
+    "EMAIL_ERROR": "Masukkan email yang valid",
+    "EMAIL_REQUIRED": "Email wajib diisi",
+    "FORGOT_PASSWORD": "Lupa kata sandi?",
+    "LOGIN": "Masuk",
+    "LOGIN_LOADING": "Signing Di...",
+    "LOGIN_VIA_SSO": "Masuk lewat SSO",
+    "NO_ACCOUNT": "Belum punya akun?",
+    "PASSWORD": "Password",
+    "PASSWORD_ERROR": "Masukkan kata sandi yang valid",
+    "PASSWORD_REQUIRED": "Password wajib diisi",
+    "RESET_HERE": "Atur disini",
+    "SETTINGS": "Pengaturan",
+    "SSO_AUTH_FAILED": "Autentikasi SSO gagal. Periksa kredensial Anda dan coba lagi.",
+    "SSO_INVALID_RESPONSE": "Respons SSO tidak valid. Coba lagi.",
+    "SSO_UNEXPECTED_ERROR": "Terjadi kesalahan tak terduga saat login SSO. Coba lagi.",
+    "TERMS": "Syarat & Ketentuan",
+    "TITLE": "Login ke akun Anda"
+  },
+  "MACRO": {
+    "ACTIONS": {
+      "RUN": "Jalankan"
+    },
+    "EXECUTION_ERROR": "Makro execution failed",
+    "EXECUTION_SUCCESS": "Makro berhasil dijalankan",
+    "NO_MACROS": "Tidak ada macros ditemukan",
+    "SELECT_MACRO": "Pilih macro",
+    "TITLE": "Makro"
+  },
+  "MFA": {
+    "BUTTONS": {
+      "VERIFY": "Verifikasi",
+      "VERIFYING": "Memverifikasi..."
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Masukkan kode 6 digit dari aplikasi autentikator Anda",
+      "BACKUP": "Masukkan salah satu kode cadangan Anda"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Masukkan kode cadangan"
+    },
+    "TABS": {
+      "AUTHENTICATOR_APP": "Aplikasi autentikator",
+      "BACKUP_CODE": "Kode cadangan"
+    },
+    "TITLE": "Autentikasi dua faktor"
+  },
+  "NOTIFICATION": {
+    "ALERTS": {
+      "DELETE": "Notifikasi deleted",
+      "DELETE_ALL": "All notifikasi deleted",
+      "DELETE_ALL_READ": "All read notifikasi deleted",
+      "MARK_ALL_READ": "All notifikasi marked as read",
+      "MARK_AS_READ": "Notifikasi marked as read",
+      "MARK_AS_UNREAD": "Notifikasi marked as unread",
+      "SNOOZE": "Notifikasi snoozed"
+    },
+    "ALL_NOTIFICATION_LOADED": "Semua notifikasi dimuat",
+    "CANCEL": "Batal",
+    "DELETE": "Hapus",
+    "EMPTY": "Belum ada notifikasi saat ini.",
+    "EMPTY_MORE_TEXT": "Setelah Anda mulai menerima pemberitahuan, semua akan muncul di sini.",
+    "FILTERS": {
+      "SORT_BY": {
+        "OPTIONS": {
+          "ASC": "Terlama",
+          "DESC": "Terbaru"
+        },
+        "TITLE": "Sort berdasarkan"
+      }
+    },
+    "HEADER_TITLE": "Notifikasi",
+    "INBOX": "Kotak masuk",
+    "MARK_ALL": "Menandai semua sebagai sudah dibaca",
+    "SEARCH_PLACEHOLDER": "Cari notifikasi...",
+    "TYPES": {
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Baru pesan di an assigned percakapan",
+      "CONVERSATION_ASSIGNMENT": "Sebuah percakapan has been assigned ke Anda",
+      "CONVERSATION_CREATION": "Baru percakapan dibuat",
+      "CONVERSATION_MENTION": "Anda have been mentioned di sebuah percakapan",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Baru pesan di sebuah percakapan Anda sedang berpartisipasi di",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target pertama respons terlewat untuk percakapan",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target berikutnya respons terlewat untuk percakapan",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution terlewat untuk percakapan"
+    }
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Mengirim pemberitahuan push saat pesan baru dibuat dalam percakapan yang ditetapkan",
+    "CONVERSATION_ASSIGNEE_PUSH": "Mengirim pemberitahuan push saat percakapan ditetapkan kepada saya",
+    "CONVERSATION_CREATE_PUSH": "Mengirim pemberitahuan push saat percakapan baru dibuat",
+    "CONVERSATION_MENTION": "Mengirim pemberitahuan push saat Anda disebutkan dalam percakapan",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Sebuah new pesan is dibuat di sebuah berpartisipasi percakapan",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "Sebuah percakapan misses pertama respons SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "Sebuah percakapan misses berikutnya respons SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "Sebuah percakapan misses resolution SLA",
+    "EMAIL": "Email",
+    "PUSH": "Push",
+    "TITLE": "Preferensi Pemberitahuan"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "Peningkatan server diperlukan",
+    "WARNING_FOR_ADMIN": "Sepertinya Anda menggunakan server Chatwoot yang tidak didukung perangkat seluler Anda. Diperlukan peningkatan ke versi server %{minimumVersion} atau yang lebih baru.",
+    "WARNING_FOR_AGENT": "Sepertinya Anda menggunakan server Chatwoot yang tidak didukung perangkat seluler Anda. Silakan hubungi admin Anda untuk meningkatkan server Chatwoot Anda."
+  },
+  "SETTINGS": {
+    "ABOUT": "Tentang",
+    "CHANGE_AVAILABILITY": "Atur ketersediaan",
+    "CHANGE_LANGUAGE": "Ganti Bahasa",
+    "CHAT_WITH_US": "Ngobrol dengan Kami",
+    "DEBUG_ACTIONS": "Aksi debug",
+    "HEADER_TITLE": "Pengaturan",
+    "LOGOUT": "Keluar",
+    "NOTIFICATIONS": "Notifikasi",
+    "NOTIFICATION_PREFERENCES": "Notifikasi Preferences",
+    "PREFERENCES": "Preferensi",
+    "READ_DOCS": "Baca Dokumen",
+    "SET_AVAILABILITY": "Tetapkan diri Anda sebagai",
+    "SET_LANGUAGE": "Atur bahasa",
+    "SUBMIT": "Submit",
+    "SUPPORT": "Dukungan",
+    "SWITCH_ACCOUNT": "Ganti Akun"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "MISSES": {
+      "FRT": "Pertama respons time",
+      "HIDE": "Sembunyikan {count} baris",
+      "NRT": "Berikutnya respons time",
+      "RT": "Waktu penyelesaian",
+      "SHOW_MORE": "{count} lainnya",
+      "TITLE": "Pelanggaran SLA"
+    },
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "DUE": "karena",
+      "FRT": "FRT %{status}",
+      "MISSED": "terlewat",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}"
+    }
   },
   "SUCCESS": {
     "AUTH": "Login Berhasil"
   },
-  "SERVER_UPGRADE": {
-    "TITLE": "Peningkatan server diperlukan",
-    "WARNING_FOR_AGENT": "Sepertinya Anda menggunakan server Chatwoot yang tidak didukung perangkat seluler Anda. Silakan hubungi admin Anda untuk meningkatkan server Chatwoot Anda.",
-    "WARNING_FOR_ADMIN": "Sepertinya Anda menggunakan server Chatwoot yang tidak didukung perangkat seluler Anda. Diperlukan peningkatan ke versi server %{minimumVersion} atau yang lebih baru."
+  "TEAMS": {
+    "CHANGE_TEAMS": "Tim percakapan berubah",
+    "EMPTY": "Tambahkan tim ke akun Anda untuk menetapkan percakapan ke tim.",
+    "TITLE": "Pilih Tim"
   },
-  "EXIT": {
-    "TITLE": "Keluar",
-    "SUBTITLE": "Apakah Anda yakin ingin berhenti?",
-    "CANCEL": "Batal",
-    "OK": "Ok"
-  },
-  "BANNER": {
-    "TWILIO_WHATSAPP": {
-      "TEXT": "Anda hanya dapat membalas percakapan ini menggunakan pesan templat karena ",
-      "HREF_TEXT": "pembatasan jendela pesan 24 jam",
-      "HREF_LINK": "https://www.twilio.com/docs/whatsapp/tutorial/send-whatsapp-notification-messages-templates#sending-non-template-messages-within-a-24-hour-session"
-    },
-    "FACEBOOK": {
-      "TEXT": "Anda tidak dapat membalas karena ",
-      "HREF_TEXT": "pembatasan jendela pesan 24 jam",
-      "HREF_LINK": "https://developers.facebook.com/docs/messenger-platform/policy/policy-overview/"
-    }
-  }
+  "WELCOME": "Selamat Datang"
 }

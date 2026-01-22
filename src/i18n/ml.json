@@ -1,458 +1,482 @@
 {
-  "WELCOME": "സ്വാഗതം",
+  "AGENT": {
+    "TITLE": "ഏജന്റ് തിരഞ്ഞെടുക്കുക"
+  },
+  "AVAILABILITY": {
+    "BUSY": "തിരക്ക്",
+    "OFFLINE": "ഓഫ്‌ലൈൻ",
+    "ONLINE": "ഓൺ‌ലൈൻ"
+  },
+  "BANNER": {
+    "24_HOURS_WINDOW": "24 മണിക്കൂർ സന്ദേശ വിൻഡോ നിയന്ത്രണം",
+    "CANNOT_REPLY": "നിങ്ങൾക്ക് മറുപടി നൽകാൻ കഴിയില്ല",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 മണിക്കൂർ സന്ദേശ വിൻഡോ നിയന്ത്രണം",
+    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to"
+  },
   "COMMON": {
+    "CLOSE": "അടയ്ക്കുക",
     "ERROR": "തെറ്റ്",
     "ERROR_TITLE": "അപ്രതീക്ഷിത തെറ്റ് സംഭവിച്ചു",
-    "REPORT_MESSAGE": "ഞങ്ങൾ ഇത് ഞങ്ങളുടെ ടീമിന് റിപ്പോർട്ട് ചെയ്തിട്ടുണ്ട്! ദയവായി ആപ്പ് അടച്ച് വീണ്ടും ആരംഭിക്കുക!",
-    "CLOSE": "അടയ്ക്കുക"
-  },
-  "FOOTER": {
-    "HOME": "ഹോം",
-    "CONVERSATION": "സംഭാഷണങ്ങൾ",
-    "NOTIFICATION": "അറിയിപ്പുകൾ",
-    "SETTINGS": "ക്രമീകരണങ്ങൾ"
+    "REPORT_MESSAGE": "ഞങ്ങൾ ഇത് ഞങ്ങളുടെ ടീമിന് റിപ്പോർട്ട് ചെയ്തിട്ടുണ്ട്! ദയവായി ആപ്പ് അടച്ച് വീണ്ടും ആരംഭിക്കുക!"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "ഇൻസ്റ്റലേഷൻ URL",
-    "DESCRIPTION": "നിങ്ങൾ സ്വയം ഹോസ്റ്റ് ചെയ്‌ത ചാറ്റ്‌വൂട്ട് ഇൻസ്റ്റാളേഷനാണ് ഉപയോഗിക്കുന്നതെങ്കിൽ, നിങ്ങളുടെ സെർവർ URL നൽകുക. അല്ലെങ്കിൽ, app.chatwoot.com ഉപയോഗിക്കുക.",
-    "URL_ERROR": "സാധുവായ ഒരു URL നൽകുക",
-    "URL_REQUIRED": "URL ആവശ്യമാണ്",
+    "CHANGE_LANGUAGE": "ഭാഷ മാറ്റുക",
     "CONNECT": "ബന്ധിപ്പിക്കുക",
-    "CHANGE_LANGUAGE": "ഭാഷ മാറ്റുക",
-    "ERROR": "അസാധുവായ ഇൻസ്റ്റാളേഷൻ url"
+    "DESCRIPTION": "നിങ്ങൾ സ്വയം ഹോസ്റ്റ് ചെയ്‌ത ചാറ്റ്‌വൂട്ട് ഇൻസ്റ്റാളേഷനാണ് ഉപയോഗിക്കുന്നതെങ്കിൽ, നിങ്ങളുടെ സെർവർ URL നൽകുക. അല്ലെങ്കിൽ, app.chatwoot.com ഉപയോഗിക്കുക.",
+    "ENTER_URL": "ഇൻസ്റ്റലേഷൻ URL",
+    "ERROR": "അസാധുവായ ഇൻസ്റ്റാളേഷൻ url",
+    "URL_ERROR": "സാധുവായ ഒരു URL നൽകുക",
+    "URL_REQUIRED": "URL ആവശ്യമാണ്"
   },
-  "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
+  },
+  "CONTACT_DETAILS": {
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "Contact Attributes",
     "EMAIL": "ഇമെയിൽ",
-    "PASSWORD": "പാസ്‌വേഡ്",
-    "EMAIL_REQUIRED": "ഇമെയിൽ ആവശ്യമാണ്",
-    "EMAIL_ERROR": "സാധുവായ ഒരു ഇമെയിൽ നൽകുക",
-    "PASSWORD_REQUIRED": "പാസ്‌വേഡ് ആവശ്യമാണ്",
-    "PASSWORD_ERROR": "സാധുവായ ഒരു പാസ്‌വേഡ് നൽകുക",
-    "LOGIN": "സൈൻ ഇൻ",
-    "LOGIN_LOADING": "Signing In...",
-    "FORGOT_PASSWORD": "നിങ്ങളുടെ പാസ്‌വേഡ് മറന്നോ?",
-    "RESET_HERE": "ഇവിടെ പുനഃസജ്ജമാക്കുക",
-    "NO_ACCOUNT": "അക്കൗണ്ട് ഇല്ലേ?",
-    "CREATE_ACCOUNT": "പുതിയ അക്കൗണ്ട് സൃഷ്ടിക്കുക",
-    "SETTINGS": "ക്രമീകരണങ്ങൾ",
-    "CHANGE_LANGUAGE": "ഭാഷ മാറ്റുക",
-    "TERMS": "നിബന്ധനകളും വ്യവസ്ഥകളും",
-    "CHANGE_URL": "URL മാറ്റുക"
-  },
-  "FORGOT_PASSWORD": {
-    "EMAIL": "ദയവായി നിങ്ങളുടെ ഇമെയിൽ നൽകുക",
-    "EMAIL_ERROR": "സാധുവായ ഒരു ഇമെയിൽ നൽകുക",
-    "RESET_HERE": "പാസ്‌വേഡ് പുനഃസജ്ജമാക്കുക",
-    "HEADER_TITLE": "പാസ്‌വേഡ് പുനഃസജ്ജമാക്കുക",
-    "TITLE": "പാസ്സ്‌വേർഡ് മറന്നോ?",
-    "SUB_TITLE": "വിഷമിക്കേണ്ട! ഞങ്ങൾക്ക് നിങ്ങളുടെ പിൻബലം ലഭിച്ചു",
-    "API_SUCCESS": "പാസ്‌വേഡ് പുനഃസജ്ജീകരണ ലിങ്ക് നിങ്ങളുടെ ഇമെയിലിലേക്ക് അയച്ചു"
+    "PHONE_NUMBER": "ഫോൺ നമ്പർ",
+    "TITLE": "Contact Details",
+    "VALUE_UNAVAILABLE": "Unavailable"
   },
   "CONVERSATION": {
-    "HEADER": {
-      "TITLE": "സംഭാഷണങ്ങൾ",
-      "CLEAR_FILTER": "Clear"
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "ASSIGN": "നിയോഗിക്കുക",
+        "EDIT": "എഡിറ്റുചെയ്യുക",
+        "EMPTY": "നിയുക്തമാക്കാത്തത്"
+      },
+      "PRIORITY": {
+        "EDIT": "എഡിറ്റുചെയ്യുക",
+        "EMPTY": "No priority added"
+      },
+      "TEAM": {
+        "ASSIGN": "നിയോഗിക്കുക",
+        "EMPTY": "No team assigned"
+      }
     },
+    "ALL": "എല്ലാം",
+    "ALL_CONVERSATION_LOADED": "എല്ലാ സംഭാഷണങ്ങളും ലോഡ് ചെയ്തു",
+    "ASSIGN": "സംഭാഷണം നിയോഗിക്കുക",
+    "ASSIGNED_AGENT": "നിയോഗിച്ച ഏജന്റ്",
+    "ASSIGNEE": {
+      "AGENTS": {
+        "SEARCH_AGENT": "ഏജന്റുകളെ തിരയുക"
+      },
+      "LABELS": {
+        "SEARCH_LABELS": "ലേബലുകൾ തിരയുക"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "OPTIONS": {
+          "ALL": "എല്ലാം",
+          "OPEN": "സജീവം",
+          "PENDING": "കെട്ടിക്കിടക്കുന്നു",
+          "RESOLVED": "പരിഹരിച്ചത്",
+          "SNOOZED": "സ്‌നൂസ് ചെയ്തു"
+        },
+        "TITLE": "Filter by status"
+      }
+    },
+    "ASSIGN_CHANGE": "സംഭാഷണ നിയുക്തനെ മാറ്റി",
+    "ATTACHMENTS": {
+      "audio": {
+        "CONTENT": "ഓഡിയോ സന്ദേശം"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
+      },
+      "fallback": {
+        "CONTENT": "ഒരു യു. ആർ. എൽ പങ്കിട്ടു"
+      },
+      "file": {
+        "CONTENT": "ഫയൽ അറ്റാച്ചുമെന്റ്"
+      },
+      "image": {
+        "CONTENT": "ചിത്ര സന്ദേശം"
+      },
+      "location": {
+        "CONTENT": "സ്ഥാനം"
+      },
+      "video": {
+        "CONTENT": "വീഡിയോ സന്ദേശം"
+      }
+    },
+    "ATTACHMENT_CONTENT": "ഫയൽ അറ്റാച്ചുമെന്റ്",
+    "BOT": "ബോട്ട്",
+    "CHANGE_PRIORITY": "Change priority",
+    "CHANGE_STATUS": "Change status",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "DEFAULT_HEADER_TITLE": "സംഭാഷണങ്ങൾ",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
+    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
+    "DETAILS": "Details",
+    "DOWNLOAD": "ഡൗൺലോഡ്",
+    "EMAIL_HEAD": {
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "TO": "To"
+    },
+    "EMAIL_HEADER": {
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "EXPAND": "Expand email",
+      "FROM": "From",
+      "SUBJECT": "വിഷയം",
+      "TO": "To"
+    },
+    "EMPTY": "ഈ ഗ്രൂപ്പിൽ സജീവ സംഭാഷണങ്ങളൊന്നുമില്ല.",
+    "FILE_SIZE_LIMIT": "ഫയൽ 5MB അറ്റാച്ച്‌മെന്റ് പരിധി കവിഞ്ഞു",
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "ഏജന്റുകളെ തിരയുക"
+      },
+      "ASSIGNEE_TYPE": {
+        "OPTIONS": {
+          "ALL": "എല്ലാം",
+          "ME": "Me",
+          "UNASSIGNED": "നിയുക്തമാക്കാത്തത്"
+        },
+        "TITLE": "Filter by assignee type"
       },
       "INBOX": {
         "TITLE": "Filter by inbox"
       },
       "SORT_BY": {
-        "TITLE": "Sort by",
         "OPTIONS": {
           "LATEST": "Latest",
           "SORT_ON_CREATED_AT": "Created At",
           "SORT_ON_PRIORITY": "Priority"
-        }
+        },
+        "TITLE": "Sort by"
       },
       "STATUS": {
-        "TITLE": "Filter by status",
         "OPTIONS": {
+          "ALL": "എല്ലാം",
           "OPEN": "സജീവം",
           "PENDING": "കെട്ടിക്കിടക്കുന്നു",
-          "SNOOZED": "സ്‌നൂസ് ചെയ്തു",
           "RESOLVED": "പരിഹരിച്ചത്",
-          "ALL": "എല്ലാം"
-        }
-      },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "നിയുക്തമാക്കാത്തത്",
-          "ALL": "എല്ലാം"
-        }
+          "SNOOZED": "സ്‌നൂസ് ചെയ്തു"
+        },
+        "TITLE": "Filter by status"
       }
     },
-    "ASSIGNEE": {
-      "LABELS": {
-        "SEARCH_LABELS": "ലേബലുകൾ തിരയുക"
-      },
-      "AGENTS": {
-        "SEARCH_AGENT": "ഏജന്റുകളെ തിരയുക"
-      },
-      "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
-        "OPTIONS": {
-          "OPEN": "സജീവം",
-          "PENDING": "കെട്ടിക്കിടക്കുന്നു",
-          "SNOOZED": "സ്‌നൂസ് ചെയ്തു",
-          "RESOLVED": "പരിഹരിച്ചത്",
-          "ALL": "എല്ലാം"
-        }
-      }
-    },
-    "DEFAULT_HEADER_TITLE": "സംഭാഷണങ്ങൾ",
-    "UPDATING": "Updating...",
-    "MINE": "എന്റേത്",
-    "UN_ASSIGNED": "നിയുക്തമാക്കാത്തത്",
-    "ALL": "എല്ലാം",
-    "EMPTY": "ഈ ഗ്രൂപ്പിൽ സജീവ സംഭാഷണങ്ങളൊന്നുമില്ല.",
-    "PICTURE_CONTENT": "ചിത്ര സന്ദേശം",
-    "ATTACHMENT_CONTENT": "ഫയൽ അറ്റാച്ചുമെന്റ്",
-    "DOWNLOAD": "ഡൗൺലോഡ്",
-    "TODAY": "ഇന്ന്",
-    "YESTERDAY": "ഇന്നലെ",
-    "TYPE_MESSAGE": "സന്ദേശം ടൈപ്പ് ചെയ്യുക",
-    "TYPING": "ടൈപ്പിംഗ്",
-    "ALL_CONVERSATION_LOADED": "എല്ലാ സംഭാഷണങ്ങളും ലോഡ് ചെയ്തു",
-    "ASSIGN": "സംഭാഷണം നിയോഗിക്കുക",
-    "FILE_SIZE_LIMIT": "ഫയൽ 5MB അറ്റാച്ച്‌മെന്റ് പരിധി കവിഞ്ഞു",
-    "SHARE": "സംഭാഷണം പങ്കിടുക",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
-    "ASSIGNED_AGENT": "നിയോഗിച്ച ഏജന്റ്",
-    "TEAM": "Team",
-    "PRIVATE_MSG_INPUT": "ഇത് ഏജന്റുമാർക്ക് മാത്രമേ ദൃശ്യമാകൂ",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
-    "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
-    },
-    "BOT": "ബോട്ട്",
-    "EMAIL_HEAD": {
-      "TO": "To",
-      "CC": "Cc",
-      "BCC": "Bcc"
-    },
-    "SELF_ASSIGN": "Assign to me",
-    "UN_ASSIGN": "സംഭാഷണം നിയോഗിക്കാതിരിക്കുക",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
-    "MARK_AS_PENDING": "Mark as pending",
-    "SNOOZE_UNTIL": "Snooze until",
-    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
-    "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
-    "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
-    "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Change priority",
-    "MESSAGES": "Messages",
-    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
-    "UNDEFINED_VARIABLES_CLOSE": "അടയ്ക്കുക",
-    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
-    "NO_CONTENT": "ഉള്ളടക്കമൊന്നും ലഭ്യമല്ല",
-    "ASSIGN_CHANGE": "സംഭാഷണ നിയുക്തനെ മാറ്റി",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "ടീമുകളെ തിരയുക",
-    "PRIORITY": {
-      "TITLE": "Priority",
-      "OPTIONS": {
-        "NONE": "ഒന്നുമില്ല",
-        "URGENT": "Urgent",
-        "HIGH": "High",
-        "MEDIUM": "Medium",
-        "LOW": "Low"
-      },
-      "CHANGE_PRIORITY": {
-        "SELECT_PLACEHOLDER": "ഒന്നുമില്ല",
-        "INPUT_PLACEHOLDER": "Select priority",
-        "NO_RESULTS": "ഒരു ഫലവും കണ്ടെത്താനായില്ല",
-        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
-        "FAILED": "Couldn't change priority. Please try again."
-      }
+    "HEADER": {
+      "CLEAR_FILTER": "Clear",
+      "TITLE": "സംഭാഷണങ്ങൾ"
     },
     "ITEM": {
       "ASSIGN": "നിയോഗിക്കുക",
       "STATUS": "സ്റ്റാറ്റസ്"
     },
-    "ATTACHMENTS": {
-      "image": {
-        "CONTENT": "ചിത്ര സന്ദേശം"
-      },
-      "audio": {
-        "CONTENT": "ഓഡിയോ സന്ദേശം"
-      },
-      "video": {
-        "CONTENT": "വീഡിയോ സന്ദേശം"
-      },
-      "file": {
-        "CONTENT": "ഫയൽ അറ്റാച്ചുമെന്റ്"
-      },
-      "location": {
-        "CONTENT": "സ്ഥാനം"
-      },
-      "fallback": {
-        "CONTENT": "ഒരു യു. ആർ. എൽ പങ്കിട്ടു"
-      },
-      "contact": {
-        "CONTENT": "Shared a contact"
-      }
-    },
+    "LABELS": "Conversation labels",
     "LONG_PRESS_ACTIONS": {
       "COPY": "പകർത്തുക",
-      "REPLY": "മറുപടി",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "REPLY": "മറുപടി"
     },
-    "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "To",
-      "BCC": "Bcc",
-      "CC": "Cc",
-      "SUBJECT": "വിഷയം",
-      "EXPAND": "Expand email"
+    "MARK_AS_PENDING": "Mark as pending",
+    "MESSAGES": "Messages",
+    "MINE": "എന്റേത്",
+    "NOT_FOUND": {
+      "BACK_TO_HOME": "Go back to home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again.",
+      "RETRY": "Retry",
+      "TITLE": "Unable to fetch conversation"
     },
-    "ACTIONS": {
-      "ASSIGNEE": {
-        "EMPTY": "നിയുക്തമാക്കാത്തത്",
-        "ASSIGN": "നിയോഗിക്കുക",
-        "EDIT": "എഡിറ്റുചെയ്യുക"
+    "NO_CONTENT": "ഉള്ളടക്കമൊന്നും ലഭ്യമല്ല",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "PICTURE_CONTENT": "ചിത്ര സന്ദേശം",
+    "PRIORITY": {
+      "CHANGE_PRIORITY": {
+        "FAILED": "Couldn't change priority. Please try again.",
+        "INPUT_PLACEHOLDER": "Select priority",
+        "NO_RESULTS": "ഒരു ഫലവും കണ്ടെത്താനായില്ല",
+        "SELECT_PLACEHOLDER": "ഒന്നുമില്ല",
+        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}"
       },
-      "TEAM": {
-        "EMPTY": "No team assigned",
-        "ASSIGN": "നിയോഗിക്കുക"
+      "OPTIONS": {
+        "HIGH": "High",
+        "LOW": "Low",
+        "MEDIUM": "Medium",
+        "NONE": "ഒന്നുമില്ല",
+        "URGENT": "Urgent"
       },
-      "PRIORITY": {
-        "EMPTY": "No priority added",
-        "EDIT": "എഡിറ്റുചെയ്യുക"
-      }
-    }
-  },
-  "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
-    "SORT_BY": "Sort by",
-    "FILTER_BY_INBOX": "Filter by inbox",
-    "HEADER_TITLE": "സംഭാഷണ ഫിൽട്ടർ",
-    "CHOOSE_INBOX": "ഇൻബോക്സ് തിരഞ്ഞെടുക്കുക",
-    "CHOOSE_STATUS": "സംഭാഷണ നില",
-    "OPEN": "സജീവം",
-    "RESOLVED": "പരിഹരിച്ചത്",
-    "BOT": "ബോട്ട്",
-    "SUBMIT": "സമർപ്പിക്കുക",
-    "PENDING": "തീർപ്പാക്കാത്തത്",
-    "SNOOZED": "സ്‌നൂസ് ചെയ്തു"
-  },
-  "SETTINGS": {
-    "HEADER_TITLE": "ക്രമീകരണങ്ങൾ",
-    "SET_AVAILABILITY": "Set yourself as",
-    "CHANGE_AVAILABILITY": "Set availability",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
-    "SWITCH_ACCOUNT": "അക്കൗണ്ട് സ്വിച്ചുചെയ്യുക",
-    "CHANGE_LANGUAGE": "ഭാഷ മാറ്റുക",
-    "NOTIFICATIONS": "അറിയിപ്പുകൾ",
-    "NOTIFICATION_PREFERENCES": "അറിയിപ്പ് മുൻഗണനകൾ",
-    "READ_DOCS": "Read Docs",
-    "CHAT_WITH_US": "ഞങ്ങളുമായി ചാറ്റുചെയ്യുക",
-    "LOGOUT": "ലോഗൗട്ട്",
-    "SUBMIT": "സമർപ്പിക്കുക",
-    "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
-  },
-  "NOTIFICATION": {
-    "HEADER_TITLE": "അറിയിപ്പുകൾ",
-    "INBOX": "ഇൻബോക്സ്",
-    "EMPTY": "ഇതുവരെ അറിയിപ്പുകളൊന്നുമില്ല.",
-    "EMPTY_MORE_TEXT": "നിങ്ങൾക്ക് അറിയിപ്പുകൾ ലഭിച്ചുതുടങ്ങിയാൽ, അവ ഇവിടെ ദൃശ്യമാകും.",
-    "ALL_NOTIFICATION_LOADED": "എല്ലാ അറിയിപ്പുകളും ലോഡ് ചെയ്തു",
-    "MARK_ALL": "എല്ലാം വായിച്ചതായി അടയാളപ്പെടുത്തുക",
-    "CANCEL": "റദ്ദാക്കുക",
-    "DELETE": "ഇല്ലാതാക്കുക",
-    "TYPES": {
-      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
-      "CONVERSATION_CREATION": "New conversation created",
-      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
-      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
-      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+      "TITLE": "Priority"
     },
-    "FILTERS": {
-      "SORT_BY": {
-        "TITLE": "Sort by",
-        "OPTIONS": {
-          "ASC": "Oldest",
-          "DESC": "Newest"
-        }
-      }
-    },
-    "ALERTS": {
-      "MARK_AS_READ": "Notification marked as read",
-      "MARK_AS_UNREAD": "Notification marked as unread",
-      "SNOOZE": "Notification snoozed",
-      "DELETE": "Notification deleted",
-      "MARK_ALL_READ": "All notifications marked as read",
-      "DELETE_ALL": "All notifications deleted",
-      "DELETE_ALL_READ": "All read notifications deleted"
-    }
-  },
-  "AVAILABILITY": {
-    "ONLINE": "ഓൺ‌ലൈൻ",
-    "BUSY": "തിരക്ക്",
-    "OFFLINE": "ഓഫ്‌ലൈൻ"
-  },
-  "NOTIFICATION_PREFERENCE": {
-    "TITLE": "അറിയിപ്പ് മുൻഗണനകൾ",
-    "EMAIL": "ഇമെയിൽ അറിയിപ്പുകൾ",
-    "PUSH": "Push Notifications",
-    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
-    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
-  },
-  "CONVERSATION_DETAILS": {
-    "TITLE": "Attributes",
-    "BROWSER": "ബ്രൗസർ",
-    "OPERATING_SYSTEM": "ഓപ്പറേറ്റിംഗ് സിസ്റ്റം",
-    "INITIATED_AT": "ആരംഭിച്ച സമയം ",
-    "INITIATED_FROM": "ആരംഭിച്ച ആൾ ",
-    "IP_ADDRESS": "IP വിലാസം",
-    "CONVERSATION_ID": "Conversation ID",
-    "CLIPBOARD_SUCCESS": "കോഡ് ക്ലിപ്പ്ബോർഡിലേക്ക് വിജയകരമായി പകർത്തി"
-  },
-  "CONTACT_DETAILS": {
-    "TITLE": "Contact Details",
-    "EMAIL": "ഇമെയിൽ",
-    "PHONE_NUMBER": "ഫോൺ നമ്പർ",
-    "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Contact Attributes",
-    "VALUE_UNAVAILABLE": "Unavailable"
-  },
-  "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
-    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
-    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
-    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
-    "WATCH_CONVERSATION": "Join conversation",
-    "YOU_ARE_WATCHING": "You are participating",
-    "NO_RECORDS_FOUND": "ഒരു ഫലവും കണ്ടെത്താനായില്ല",
-    "SELECT_PARTICIPANTS": "Select agents",
-    "ADD_PARTICIPANTS": "Select participants",
-    "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other",
-    "ADD_PARTICIPANT": "Add Participant"
-  },
-  "CONTACT_ATTRIBUTES": {
-    "TITLE": "Contact Attributes"
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PRIVATE_MSG_INPUT": "ഇത് ഏജന്റുമാർക്ക് മാത്രമേ ദൃശ്യമാകൂ",
+    "SEARCH_PLACEHOLDER": "സംഭാഷണങ്ങൾ തിരയുക...",
+    "SEARCH_TEAM": "ടീമുകളെ തിരയുക",
+    "SELF_ASSIGN": "Assign to me",
+    "SHARE": "സംഭാഷണം പങ്കിടുക",
+    "SNOOZE": "Snooze conversation",
+    "SNOOZE_UNTIL": "Snooze until",
+    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
+    "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
+    "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "TEAM": "Team",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "TODAY": "ഇന്ന്",
+    "TYPE_MESSAGE": "സന്ദേശം ടൈപ്പ് ചെയ്യുക",
+    "TYPING": "ടൈപ്പിംഗ്",
+    "UNDEFINED_VARIABLES_CLOSE": "അടയ്ക്കുക",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "UN_ASSIGN": "സംഭാഷണം നിയോഗിക്കാതിരിക്കുക",
+    "UN_ASSIGNED": "നിയുക്തമാക്കാത്തത്",
+    "UPDATING": "Updating...",
+    "YESTERDAY": "ഇന്നലെ"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "പ്രവർത്തനങ്ങൾ"
   },
-  "CONVERSATION_TEAMS": {
-    "TITLE": "Assign team",
-    "SELECT_TEAM": "ടീം തിരഞ്ഞെടുക്കുക",
-    "NO_RESULT": "No team found"
+  "CONVERSATION_AGENTS": {
+    "NO_RESULT": "No agent found",
+    "SELECT_AGENT": "ഏജന്റിനെ തിരഞ്ഞെടുക്കുക",
+    "TITLE": "Assign agent"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "ബ്രൗസർ",
+    "CLIPBOARD_SUCCESS": "കോഡ് ക്ലിപ്പ്ബോർഡിലേക്ക് വിജയകരമായി പകർത്തി",
+    "CONVERSATION_ID": "Conversation ID",
+    "INITIATED_AT": "ആരംഭിച്ച സമയം ",
+    "INITIATED_FROM": "ആരംഭിച്ച ആൾ ",
+    "IP_ADDRESS": "IP വിലാസം",
+    "OPERATING_SYSTEM": "ഓപ്പറേറ്റിംഗ് സിസ്റ്റം",
+    "TITLE": "Attributes"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "സംഭാഷണ ലേബലുകൾ",
     "ADD_LABEL": "ലേബലുകൾ ചേർക്കുക",
     "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "ലേബൽ വിജയകരമായി അപ്‌ഡേറ്റുചെയ്‌തു",
-    "SELECTED": "Selected",
     "NOT_SELECTED": "No labels selected",
-    "NO_RESULT": "ലേബലുകളൊന്നും കണ്ടെത്തിയില്ല"
+    "NO_LABEL": "No labels assigned",
+    "NO_RESULT": "ലേബലുകളൊന്നും കണ്ടെത്തിയില്ല",
+    "SELECTED": "Selected",
+    "TITLE": "സംഭാഷണ ലേബലുകൾ",
+    "UPDATE_LABEL": "ലേബൽ വിജയകരമായി അപ്‌ഡേറ്റുചെയ്‌തു"
   },
-  "CONVERSATION_AGENTS": {
-    "TITLE": "Assign agent",
-    "SELECT_AGENT": "ഏജന്റിനെ തിരഞ്ഞെടുക്കുക",
-    "NO_RESULT": "No agent found"
+  "CONVERSATION_PARTICIPANTS": {
+    "ADD_PARTICIPANT": "Add Participant",
+    "ADD_PARTICIPANTS": "Select participants",
+    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
+    "NO_RECORDS_FOUND": "ഒരു ഫലവും കണ്ടെത്താനായില്ല",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "TITLE": "Participants",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
+    "WATCH_CONVERSATION": "Join conversation",
+    "YOU_ARE_WATCHING": "You are participating"
   },
-  "AGENT": {
-    "TITLE": "ഏജന്റ് തിരഞ്ഞെടുക്കുക"
-  },
-  "TEAMS": {
-    "TITLE": "ടീം തിരഞ്ഞെടുക്കുക",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
-    "CHANGE_TEAMS": "Conversation team changed"
+  "CONVERSATION_TEAMS": {
+    "NO_RESULT": "No team found",
+    "SELECT_TEAM": "ടീം തിരഞ്ഞെടുക്കുക",
+    "TITLE": "Assign team"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
-    "OfFLINE": "വീണ്ടും ഓൺലൈനാകാൻ നിങ്ങൾ വൈഫൈയിലേക്കോ സെല്ലുലാർ നെറ്റ്‌വർക്കിലേക്കോ കണക്‌റ്റ് ചെയ്യണം",
-    "CANNOT_FETCH": "വിവരങ്ങൾ ലഭ്യമാക്കുന്നതിൽ ഒരു തെറ്റുണ്ടായി, ദയവായി വീണ്ടും ശ്രമിക്കുക",
     "AUTH": "ഉപയോക്തൃനാമം / പാസ്‌വേഡ് തെറ്റാണ്. ദയവായി വീണ്ടും ശ്രമിക്കുക",
-    "NO_ACCOUNTS_MESSAGE": "നിങ്ങൾക്ക് ഒരു ചാറ്റ്‌വൂട്ട് അക്കൗണ്ടുകളിലേക്കും ആക്‌സസ് ഇല്ല"
+    "CANNOT_FETCH": "വിവരങ്ങൾ ലഭ്യമാക്കുന്നതിൽ ഒരു തെറ്റുണ്ടായി, ദയവായി വീണ്ടും ശ്രമിക്കുക",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "NO_ACCOUNTS_MESSAGE": "നിങ്ങൾക്ക് ഒരു ചാറ്റ്‌വൂട്ട് അക്കൗണ്ടുകളിലേക്കും ആക്‌സസ് ഇല്ല",
+    "OfFLINE": "വീണ്ടും ഓൺലൈനാകാൻ നിങ്ങൾ വൈഫൈയിലേക്കോ സെല്ലുലാർ നെറ്റ്‌വർക്കിലേക്കോ കണക്‌റ്റ് ചെയ്യണം"
+  },
+  "EXIT": {
+    "CANCEL": "റദ്ദാക്കുക",
+    "OK": "ശരി",
+    "SUBTITLE": "നിങ്ങള് പുറത്തു പോകുകയാണ് എന്ന് ഉറപ്പാണോ?",
+    "TITLE": "പുറത്ത്"
+  },
+  "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "BOT": "ബോട്ട്",
+    "CHOOSE_INBOX": "ഇൻബോക്സ് തിരഞ്ഞെടുക്കുക",
+    "CHOOSE_STATUS": "സംഭാഷണ നില",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
+    "HEADER_TITLE": "സംഭാഷണ ഫിൽട്ടർ",
+    "OPEN": "സജീവം",
+    "PENDING": "തീർപ്പാക്കാത്തത്",
+    "RESOLVED": "പരിഹരിച്ചത്",
+    "SNOOZED": "സ്‌നൂസ് ചെയ്തു",
+    "SORT_BY": "Sort by",
+    "SUBMIT": "സമർപ്പിക്കുക"
+  },
+  "FOOTER": {
+    "CONVERSATION": "സംഭാഷണങ്ങൾ",
+    "HOME": "ഹോം",
+    "NOTIFICATION": "അറിയിപ്പുകൾ",
+    "SETTINGS": "ക്രമീകരണങ്ങൾ"
+  },
+  "FORGOT_PASSWORD": {
+    "API_SUCCESS": "പാസ്‌വേഡ് പുനഃസജ്ജീകരണ ലിങ്ക് നിങ്ങളുടെ ഇമെയിലിലേക്ക് അയച്ചു",
+    "EMAIL": "ദയവായി നിങ്ങളുടെ ഇമെയിൽ നൽകുക",
+    "EMAIL_ERROR": "സാധുവായ ഒരു ഇമെയിൽ നൽകുക",
+    "HEADER_TITLE": "പാസ്‌വേഡ് പുനഃസജ്ജമാക്കുക",
+    "RESET_HERE": "പാസ്‌വേഡ് പുനഃസജ്ജമാക്കുക",
+    "SUB_TITLE": "വിഷമിക്കേണ്ട! ഞങ്ങൾക്ക് നിങ്ങളുടെ പിൻബലം ലഭിച്ചു",
+    "TITLE": "പാസ്സ്‌വേർഡ് മറന്നോ?"
+  },
+  "LOGIN": {
+    "CHANGE_LANGUAGE": "ഭാഷ മാറ്റുക",
+    "CHANGE_URL": "URL മാറ്റുക",
+    "CREATE_ACCOUNT": "പുതിയ അക്കൗണ്ട് സൃഷ്ടിക്കുക",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "EMAIL": "ഇമെയിൽ",
+    "EMAIL_ERROR": "സാധുവായ ഒരു ഇമെയിൽ നൽകുക",
+    "EMAIL_REQUIRED": "ഇമെയിൽ ആവശ്യമാണ്",
+    "FORGOT_PASSWORD": "നിങ്ങളുടെ പാസ്‌വേഡ് മറന്നോ?",
+    "LOGIN": "സൈൻ ഇൻ",
+    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "SSO വഴി ലോഗിൻ ചെയ്യുക",
+    "NO_ACCOUNT": "അക്കൗണ്ട് ഇല്ലേ?",
+    "PASSWORD": "പാസ്‌വേഡ്",
+    "PASSWORD_ERROR": "സാധുവായ ഒരു പാസ്‌വേഡ് നൽകുക",
+    "PASSWORD_REQUIRED": "പാസ്‌വേഡ് ആവശ്യമാണ്",
+    "RESET_HERE": "ഇവിടെ പുനഃസജ്ജമാക്കുക",
+    "SETTINGS": "ക്രമീകരണങ്ങൾ",
+    "SSO_AUTH_FAILED": "SSO സ്ഥിരീകരണം പരാജയപ്പെട്ടു. നിങ്ങളുടെ ക്രെഡൻഷ്യലുകൾ പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.",
+    "SSO_INVALID_RESPONSE": "അസാധുവായ SSO പ്രതികരണം. വീണ്ടും ശ്രമിക്കുക.",
+    "SSO_UNEXPECTED_ERROR": "SSO ലോഗിൻ ചെയ്യുന്നതിനിടെ പ്രതീക്ഷിക്കാത്ത പിശക് സംഭവിച്ചു. വീണ്ടും ശ്രമിക്കുക.",
+    "TERMS": "നിബന്ധനകളും വ്യവസ്ഥകളും",
+    "TITLE": "Log in to your account"
+  },
+  "MACRO": {
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_ERROR": "Macro execution failed",
+    "EXECUTION_SUCCESS": "Macro executed successfully",
+    "NO_MACROS": "No macros found",
+    "SELECT_MACRO": "Select macro",
+    "TITLE": "Macros"
+  },
+  "MFA": {
+    "BUTTONS": {
+      "VERIFY": "സ്ഥിരീകരിക്കുക",
+      "VERIFYING": "സ്ഥിരീകരിക്കുന്നു..."
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "നിങ്ങളുടെ ഓതന്റിക്കേറ്റർ ആപ്പിലെ 6 അക്ക കോഡ് നൽകുക",
+      "BACKUP": "നിങ്ങളുടെ ബാക്കപ്പ് കോഡുകളിൽ ഒന്നുകൂടി നൽകുക"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "ബാക്കപ്പ് കോഡ് നൽകുക"
+    },
+    "TABS": {
+      "AUTHENTICATOR_APP": "ഓതന്റിക്കേറ്റർ ആപ്പ്",
+      "BACKUP_CODE": "ബാക്കപ്പ് കോഡ്"
+    },
+    "TITLE": "രണ്ടുഘട്ട സ്ഥിരീകരണം"
+  },
+  "NOTIFICATION": {
+    "ALERTS": {
+      "DELETE": "Notification deleted",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed"
+    },
+    "ALL_NOTIFICATION_LOADED": "എല്ലാ അറിയിപ്പുകളും ലോഡ് ചെയ്തു",
+    "CANCEL": "റദ്ദാക്കുക",
+    "DELETE": "ഇല്ലാതാക്കുക",
+    "EMPTY": "ഇതുവരെ അറിയിപ്പുകളൊന്നുമില്ല.",
+    "EMPTY_MORE_TEXT": "നിങ്ങൾക്ക് അറിയിപ്പുകൾ ലഭിച്ചുതുടങ്ങിയാൽ, അവ ഇവിടെ ദൃശ്യമാകും.",
+    "FILTERS": {
+      "SORT_BY": {
+        "OPTIONS": {
+          "ASC": "Oldest",
+          "DESC": "Newest"
+        },
+        "TITLE": "Sort by"
+      }
+    },
+    "HEADER_TITLE": "അറിയിപ്പുകൾ",
+    "INBOX": "ഇൻബോക്സ്",
+    "MARK_ALL": "എല്ലാം വായിച്ചതായി അടയാളപ്പെടുത്തുക",
+    "SEARCH_PLACEHOLDER": "അറിയിപ്പുകൾ തിരയുക...",
+    "TYPES": {
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
+      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
+      "CONVERSATION_CREATION": "New conversation created",
+      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    }
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA",
+    "EMAIL": "ഇമെയിൽ അറിയിപ്പുകൾ",
+    "PUSH": "Push Notifications",
+    "TITLE": "അറിയിപ്പ് മുൻഗണനകൾ"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "ഒരു സംഭാഷണത്തിൽ നിങ്ങളെ പരാമർശിക്കുമ്പോൾ പുഷ് അറിയിപ്പുകൾ അയക്കുക",
+    "WARNING_FOR_ADMIN": "നിങ്ങളുടെ മൊബൈൽ ആപ്പിനായി നിങ്ങൾ പിന്തുണയ്ക്കാത്ത Chatwoot സെർവർ ഉപയോഗിക്കുന്നതായി തോന്നുന്നു. സെർവർ പതിപ്പ് %{minimumVersion} അല്ലെങ്കിൽ അതിന് ശേഷമുള്ള പതിപ്പിലേക്ക് അപ്‌ഗ്രേഡ് ചെയ്യേണ്ടതുണ്ട്.",
+    "WARNING_FOR_AGENT": "നിങ്ങളുടെ മൊബൈൽ ആപ്പിനായി നിങ്ങൾ പിന്തുണയ്ക്കാത്ത Chatwoot സെർവർ ഉപയോഗിക്കുന്നതായി തോന്നുന്നു. നിങ്ങളുടെ Chatwoot സെർവർ അപ്‌ഗ്രേഡ് ചെയ്യാൻ നിങ്ങളുടെ അഡ്മിനെ ബന്ധപ്പെടുക."
+  },
+  "SETTINGS": {
+    "ABOUT": "About",
+    "CHANGE_AVAILABILITY": "Set availability",
+    "CHANGE_LANGUAGE": "ഭാഷ മാറ്റുക",
+    "CHAT_WITH_US": "ഞങ്ങളുമായി ചാറ്റുചെയ്യുക",
+    "DEBUG_ACTIONS": "Debug Actions",
+    "HEADER_TITLE": "ക്രമീകരണങ്ങൾ",
+    "LOGOUT": "ലോഗൗട്ട്",
+    "NOTIFICATIONS": "അറിയിപ്പുകൾ",
+    "NOTIFICATION_PREFERENCES": "അറിയിപ്പ് മുൻഗണനകൾ",
+    "PREFERENCES": "Preferences",
+    "READ_DOCS": "Read Docs",
+    "SET_AVAILABILITY": "Set yourself as",
+    "SET_LANGUAGE": "Set Language",
+    "SUBMIT": "സമർപ്പിക്കുക",
+    "SUPPORT": "Support",
+    "SWITCH_ACCOUNT": "അക്കൗണ്ട് സ്വിച്ചുചെയ്യുക"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "MISSES": {
+      "FRT": "ആദ്യ പ്രതികരണ സമയം",
+      "HIDE": "Hide {count} rows",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "TITLE": "SLA Misses"
+    },
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "DUE": "due",
+      "FRT": "FRT %{status}",
+      "MISSED": "missed",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}"
+    }
   },
   "SUCCESS": {
     "AUTH": "ലോഗിൻ വിജയകരം"
   },
-  "SERVER_UPGRADE": {
-    "TITLE": "ഒരു സംഭാഷണത്തിൽ നിങ്ങളെ പരാമർശിക്കുമ്പോൾ പുഷ് അറിയിപ്പുകൾ അയക്കുക",
-    "WARNING_FOR_AGENT": "നിങ്ങളുടെ മൊബൈൽ ആപ്പിനായി നിങ്ങൾ പിന്തുണയ്ക്കാത്ത Chatwoot സെർവർ ഉപയോഗിക്കുന്നതായി തോന്നുന്നു. നിങ്ങളുടെ Chatwoot സെർവർ അപ്‌ഗ്രേഡ് ചെയ്യാൻ നിങ്ങളുടെ അഡ്മിനെ ബന്ധപ്പെടുക.",
-    "WARNING_FOR_ADMIN": "നിങ്ങളുടെ മൊബൈൽ ആപ്പിനായി നിങ്ങൾ പിന്തുണയ്ക്കാത്ത Chatwoot സെർവർ ഉപയോഗിക്കുന്നതായി തോന്നുന്നു. സെർവർ പതിപ്പ് %{minimumVersion} അല്ലെങ്കിൽ അതിന് ശേഷമുള്ള പതിപ്പിലേക്ക് അപ്‌ഗ്രേഡ് ചെയ്യേണ്ടതുണ്ട്."
+  "TEAMS": {
+    "CHANGE_TEAMS": "Conversation team changed",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "TITLE": "ടീം തിരഞ്ഞെടുക്കുക"
   },
-  "EXIT": {
-    "TITLE": "പുറത്ത്",
-    "SUBTITLE": "നിങ്ങള് പുറത്തു പോകുകയാണ് എന്ന് ഉറപ്പാണോ?",
-    "CANCEL": "റദ്ദാക്കുക",
-    "OK": "ശരി"
-  },
-  "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 മണിക്കൂർ സന്ദേശ വിൻഡോ നിയന്ത്രണം",
-    "24_HOURS_WINDOW": "24 മണിക്കൂർ സന്ദേശ വിൻഡോ നിയന്ത്രണം",
-    "CANNOT_REPLY": "നിങ്ങൾക്ക് മറുപടി നൽകാൻ കഴിയില്ല"
-  },
-  "SLA": {
-    "FRT": "FRT",
-    "NRT": "NRT",
-    "RT": "RT",
-    "STATUS": {
-      "FRT": "FRT %{status}",
-      "NRT": "NRT %{status}",
-      "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "due"
-    },
-    "MISSES": {
-      "TITLE": "SLA Misses",
-      "FRT": "ആദ്യ പ്രതികരണ സമയം",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
-    }
-  },
-  "MACRO": {
-    "TITLE": "Macros",
-    "SELECT_MACRO": "Select macro",
-    "ACTIONS": {
-      "RUN": "Run"
-    },
-    "EXECUTION_SUCCESS": "Macro executed successfully",
-    "EXECUTION_ERROR": "Macro execution failed",
-    "NO_MACROS": "No macros found"
-  }
+  "WELCOME": "സ്വാഗതം"
 }

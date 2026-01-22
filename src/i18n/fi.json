@@ -1,458 +1,482 @@
 {
-  "WELCOME": "Tervetuloa",
+  "AGENT": {
+    "TITLE": "Valitse edustaja"
+  },
+  "AVAILABILITY": {
+    "BUSY": "Varattu",
+    "OFFLINE": "Offline",
+    "ONLINE": "Paikalla"
+  },
+  "BANNER": {
+    "24_HOURS_WINDOW": "24h vastausikkuna",
+    "CANNOT_REPLY": "Et voi vastata, sillä",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24h vastausikkuna",
+    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to"
+  },
   "COMMON": {
+    "CLOSE": "Sulje",
     "ERROR": "Virhe",
     "ERROR_TITLE": "Odottamaton virhe tapahtui",
-    "REPORT_MESSAGE": "Olemme ilmoittaneet tästä tiimillemme! Ole hyvä ja sulje sovellus ja aloita uudelleen!",
-    "CLOSE": "Sulje"
-  },
-  "FOOTER": {
-    "HOME": "Etusivu",
-    "CONVERSATION": "Keskustelut",
-    "NOTIFICATION": "Ilmoitukset",
-    "SETTINGS": "Asetukset"
+    "REPORT_MESSAGE": "Olemme ilmoittaneet tästä tiimillemme! Ole hyvä ja sulje sovellus ja aloita uudelleen!"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Asennuksen URL",
-    "DESCRIPTION": "Jos käytät itse ylläpidettyä Chatwoot asennusta, syötä palvelimen URL-osoite. Muussa tapauksessa käytä osoitetta app.chatwoot.com.",
-    "URL_ERROR": "Anna kelvollinen URL-osoite",
-    "URL_REQUIRED": "URL osoite vaaditaan",
+    "CHANGE_LANGUAGE": "Vaihda kieli",
     "CONNECT": "Yhdistä",
-    "CHANGE_LANGUAGE": "Vaihda kieli",
-    "ERROR": "Virheellinen asennusosoite"
+    "DESCRIPTION": "Jos käytät itse ylläpidettyä Chatwoot asennusta, syötä palvelimen URL-osoite. Muussa tapauksessa käytä osoitetta app.chatwoot.com.",
+    "ENTER_URL": "Asennuksen URL",
+    "ERROR": "Virheellinen asennusosoite",
+    "URL_ERROR": "Anna kelvollinen URL-osoite",
+    "URL_REQUIRED": "URL osoite vaaditaan"
   },
-  "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Yhteystiedon määritteet"
+  },
+  "CONTACT_DETAILS": {
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "Yhteystiedon määritteet",
     "EMAIL": "Sähköposti",
-    "PASSWORD": "Salasana",
-    "EMAIL_REQUIRED": "Sähköpostiosoite vaaditaan",
-    "EMAIL_ERROR": "Syötä kelvollinen sähköpostiosoite",
-    "PASSWORD_REQUIRED": "Salasana on pakollinen",
-    "PASSWORD_ERROR": "Anna kelvollinen salasana",
-    "LOGIN": "Kirjaudu sisään",
-    "LOGIN_LOADING": "Signing In...",
-    "FORGOT_PASSWORD": "Salasana unohtunut?",
-    "RESET_HERE": "Palauta täällä",
-    "NO_ACCOUNT": "Eikö sinulla ole tiliä?",
-    "CREATE_ACCOUNT": "Luo uusi tili",
-    "SETTINGS": "Asetukset",
-    "CHANGE_LANGUAGE": "Vaihda kieli",
-    "TERMS": "Käyttöehdot ja säännöt",
-    "CHANGE_URL": "Vaihda URL-osoite"
-  },
-  "FORGOT_PASSWORD": {
-    "EMAIL": "Ole hyvä ja syötä sähköpostiosoitteesi",
-    "EMAIL_ERROR": "Syötä kelvollinen sähköpostiosoite",
-    "RESET_HERE": "Nollaa salasana",
-    "HEADER_TITLE": "Nollaa salasana",
-    "TITLE": "Salasana unohtunut?",
-    "SUB_TITLE": "Älä huoli! Takaamme selustasi.",
-    "API_SUCCESS": "Salasanan palautuslinkki on lähetetty sähköpostiisi"
+    "PHONE_NUMBER": "Puhelinnumero",
+    "TITLE": "Contact Details",
+    "VALUE_UNAVAILABLE": "Unavailable"
   },
   "CONVERSATION": {
-    "HEADER": {
-      "TITLE": "Keskustelut",
-      "CLEAR_FILTER": "Clear"
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "ASSIGN": "Delegoi",
+        "EDIT": "Muokkaa",
+        "EMPTY": "Osoittamaton"
+      },
+      "PRIORITY": {
+        "EDIT": "Muokkaa",
+        "EMPTY": "No priority added"
+      },
+      "TEAM": {
+        "ASSIGN": "Delegoi",
+        "EMPTY": "No team assigned"
+      }
     },
+    "ALL": "Kaikki",
+    "ALL_CONVERSATION_LOADED": "Kaikki keskustelut ladattu",
+    "ASSIGN": "Yhdistä keskustelu",
+    "ASSIGNED_AGENT": "Osoitettu edustajalle",
+    "ASSIGNEE": {
+      "AGENTS": {
+        "SEARCH_AGENT": "Search agents"
+      },
+      "LABELS": {
+        "SEARCH_LABELS": "Search labels"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "OPTIONS": {
+          "ALL": "Kaikki",
+          "OPEN": "Avaa",
+          "PENDING": "Odottava",
+          "RESOLVED": "Ratkaistu",
+          "SNOOZED": "Torkutettu"
+        },
+        "TITLE": "Filter by status"
+      }
+    },
+    "ASSIGN_CHANGE": "Keskustelun vastaanottaja vaihdettu",
+    "ATTACHMENTS": {
+      "audio": {
+        "CONTENT": "Ääniviesti"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
+      },
+      "fallback": {
+        "CONTENT": "on jakanut URL-osoitteen"
+      },
+      "file": {
+        "CONTENT": "Liitetiedosto"
+      },
+      "image": {
+        "CONTENT": "Kuvaviesti"
+      },
+      "location": {
+        "CONTENT": "Sijainti"
+      },
+      "video": {
+        "CONTENT": "Videoviesti"
+      }
+    },
+    "ATTACHMENT_CONTENT": "Liitetiedosto",
+    "BOT": "Botti",
+    "CHANGE_PRIORITY": "Change priority",
+    "CHANGE_STATUS": "Change status",
+    "CONVERSATION_NOT_FOUND": "Keskustelua ei voitu hakea",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "DEFAULT_HEADER_TITLE": "Keskustelut",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
+    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
+    "DETAILS": "Tiedot",
+    "DOWNLOAD": "Lataa",
+    "EMAIL_HEAD": {
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "TO": "To"
+    },
+    "EMAIL_HEADER": {
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "EXPAND": "Expand email",
+      "FROM": "From",
+      "SUBJECT": "Subject",
+      "TO": "To"
+    },
+    "EMPTY": "Tässä ryhmässä ei ole aktiivisia keskusteluja.",
+    "FILE_SIZE_LIMIT": "Tiedosto ylittää 5MB liiterajan",
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "Search agents"
+      },
+      "ASSIGNEE_TYPE": {
+        "OPTIONS": {
+          "ALL": "Kaikki",
+          "ME": "Me",
+          "UNASSIGNED": "Osoittamaton"
+        },
+        "TITLE": "Suodata vastuuhenkilön tyypin mukaan"
       },
       "INBOX": {
         "TITLE": "Suodata saapuneet-kansion mukaan"
       },
       "SORT_BY": {
-        "TITLE": "Sort by",
         "OPTIONS": {
           "LATEST": "Latest",
           "SORT_ON_CREATED_AT": "Created At",
           "SORT_ON_PRIORITY": "Priority"
-        }
+        },
+        "TITLE": "Sort by"
       },
       "STATUS": {
-        "TITLE": "Filter by status",
         "OPTIONS": {
+          "ALL": "Kaikki",
           "OPEN": "Avaa",
           "PENDING": "Odottava",
-          "SNOOZED": "Torkutettu",
           "RESOLVED": "Ratkaistu",
-          "ALL": "Kaikki"
-        }
-      },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Suodata vastuuhenkilön tyypin mukaan",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Osoittamaton",
-          "ALL": "Kaikki"
-        }
+          "SNOOZED": "Torkutettu"
+        },
+        "TITLE": "Filter by status"
       }
     },
-    "ASSIGNEE": {
-      "LABELS": {
-        "SEARCH_LABELS": "Search labels"
-      },
-      "AGENTS": {
-        "SEARCH_AGENT": "Search agents"
-      },
-      "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
-        "OPTIONS": {
-          "OPEN": "Avaa",
-          "PENDING": "Odottava",
-          "SNOOZED": "Torkutettu",
-          "RESOLVED": "Ratkaistu",
-          "ALL": "Kaikki"
-        }
-      }
-    },
-    "DEFAULT_HEADER_TITLE": "Keskustelut",
-    "UPDATING": "Päivitetään...",
-    "MINE": "Minun",
-    "UN_ASSIGNED": "Osoittamaton",
-    "ALL": "Kaikki",
-    "EMPTY": "Tässä ryhmässä ei ole aktiivisia keskusteluja.",
-    "PICTURE_CONTENT": "Kuvaviesti",
-    "ATTACHMENT_CONTENT": "Liitetiedosto",
-    "DOWNLOAD": "Lataa",
-    "TODAY": "Tänään",
-    "YESTERDAY": "Eilen",
-    "TYPE_MESSAGE": "Kirjoita viesti",
-    "TYPING": "kirjoittaa",
-    "ALL_CONVERSATION_LOADED": "Kaikki keskustelut ladattu",
-    "ASSIGN": "Yhdistä keskustelu",
-    "FILE_SIZE_LIMIT": "Tiedosto ylittää 5MB liiterajan",
-    "SHARE": "Share conversation",
-    "DETAILS": "Tiedot",
-    "LABELS": "Keskustelun tunnisteet",
-    "ASSIGNED_AGENT": "Osoitettu edustajalle",
-    "TEAM": "Tiimi",
-    "PRIVATE_MSG_INPUT": "Tämä näkyy vain agenteille",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
-    "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
-    },
-    "BOT": "Botti",
-    "EMAIL_HEAD": {
-      "TO": "To",
-      "CC": "Cc",
-      "BCC": "Bcc"
-    },
-    "SELF_ASSIGN": "Siirrä minulle",
-    "UN_ASSIGN": "Poista keskustelu itseltä",
-    "CONVERSATION_NOT_FOUND": "Keskustelua ei voitu hakea",
-    "MARK_AS_PENDING": "Merkitse odottavaksi",
-    "SNOOZE_UNTIL": "Torkuta asti",
-    "SNOOZE_UNTIL_NEXT_REPLY": "Seuraavaan vastaukseen saakka",
-    "SNOOZE_UNTIL_TOMORROW": "Huomiseen asti",
-    "SNOOZE_UNTIL_NEXT_WEEK": "Ensi viikkoon asti",
-    "SNOOZE": "Torkuta keskustelu",
-    "CHANGE_PRIORITY": "Change priority",
-    "MESSAGES": "Viestit",
-    "UNDEFINED_VARIABLES_TITLE": "Määrittelemättömät muuttujat",
-    "UNDEFINED_VARIABLES_CLOSE": "Sulje",
-    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
-    "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "Keskustelun vastaanottaja vaihdettu",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Search teams",
-    "PRIORITY": {
-      "TITLE": "Priority",
-      "OPTIONS": {
-        "NONE": "None",
-        "URGENT": "Urgent",
-        "HIGH": "High",
-        "MEDIUM": "Medium",
-        "LOW": "Low"
-      },
-      "CHANGE_PRIORITY": {
-        "SELECT_PLACEHOLDER": "None",
-        "INPUT_PLACEHOLDER": "Select priority",
-        "NO_RESULTS": "Tuloksia ei löytynyt",
-        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
-        "FAILED": "Couldn't change priority. Please try again."
-      }
+    "HEADER": {
+      "CLEAR_FILTER": "Clear",
+      "TITLE": "Keskustelut"
     },
     "ITEM": {
       "ASSIGN": "Delegoi",
       "STATUS": "Tila"
     },
-    "ATTACHMENTS": {
-      "image": {
-        "CONTENT": "Kuvaviesti"
-      },
-      "audio": {
-        "CONTENT": "Ääniviesti"
-      },
-      "video": {
-        "CONTENT": "Videoviesti"
-      },
-      "file": {
-        "CONTENT": "Liitetiedosto"
-      },
-      "location": {
-        "CONTENT": "Sijainti"
-      },
-      "fallback": {
-        "CONTENT": "on jakanut URL-osoitteen"
-      },
-      "contact": {
-        "CONTENT": "Shared a contact"
-      }
-    },
+    "LABELS": "Keskustelun tunnisteet",
     "LONG_PRESS_ACTIONS": {
       "COPY": "Kopioi",
-      "REPLY": "Vastaa",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "REPLY": "Vastaa"
     },
-    "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "To",
-      "BCC": "Bcc",
-      "CC": "Cc",
-      "SUBJECT": "Subject",
-      "EXPAND": "Expand email"
+    "MARK_AS_PENDING": "Merkitse odottavaksi",
+    "MESSAGES": "Viestit",
+    "MINE": "Minun",
+    "NOT_FOUND": {
+      "BACK_TO_HOME": "Go back to home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again.",
+      "RETRY": "Retry",
+      "TITLE": "Unable to fetch conversation"
     },
-    "ACTIONS": {
-      "ASSIGNEE": {
-        "EMPTY": "Osoittamaton",
-        "ASSIGN": "Delegoi",
-        "EDIT": "Muokkaa"
+    "NO_CONTENT": "No content available",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "PICTURE_CONTENT": "Kuvaviesti",
+    "PRIORITY": {
+      "CHANGE_PRIORITY": {
+        "FAILED": "Couldn't change priority. Please try again.",
+        "INPUT_PLACEHOLDER": "Select priority",
+        "NO_RESULTS": "Tuloksia ei löytynyt",
+        "SELECT_PLACEHOLDER": "None",
+        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}"
       },
-      "TEAM": {
-        "EMPTY": "No team assigned",
-        "ASSIGN": "Delegoi"
+      "OPTIONS": {
+        "HIGH": "High",
+        "LOW": "Low",
+        "MEDIUM": "Medium",
+        "NONE": "None",
+        "URGENT": "Urgent"
       },
-      "PRIORITY": {
-        "EMPTY": "No priority added",
-        "EDIT": "Muokkaa"
-      }
-    }
-  },
-  "FILTER": {
-    "ALL_INBOXES": "Kaikki saapuneet",
-    "FILTER_BY_ASSIGNEE_TYPE": "Suodata vastuuhenkilön tyypin mukaan",
-    "FILTER_BY_CONVERSATION_STATUS": "Suodata keskustelun tilan perusteella",
-    "SORT_BY": "Sort by",
-    "FILTER_BY_INBOX": "Suodata saapuneet-kansion mukaan",
-    "HEADER_TITLE": "Keskustelusuodatin",
-    "CHOOSE_INBOX": "Valitse saapuneet",
-    "CHOOSE_STATUS": "Keskustelun Tila",
-    "OPEN": "Avaa",
-    "RESOLVED": "Ratkaistu",
-    "BOT": "Botti",
-    "SUBMIT": "Lähetä",
-    "PENDING": "Odottava",
-    "SNOOZED": "Torkutettu"
-  },
-  "SETTINGS": {
-    "HEADER_TITLE": "Asetukset",
-    "SET_AVAILABILITY": "Aseta itsesi",
-    "CHANGE_AVAILABILITY": "Set availability",
-    "PREFERENCES": "Asetukset",
-    "ABOUT": "Lisätietoja",
-    "SUPPORT": "Tuki",
-    "SWITCH_ACCOUNT": "Vaihda tiliä",
-    "CHANGE_LANGUAGE": "Vaihda kieli",
-    "NOTIFICATIONS": "Ilmoitukset",
-    "NOTIFICATION_PREFERENCES": "Ilmoitusasetukset",
-    "READ_DOCS": "Read Docs",
-    "CHAT_WITH_US": "Keskustele kanssamme",
-    "LOGOUT": "Kirjaudu ulos",
-    "SUBMIT": "Lähetä",
-    "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
-  },
-  "NOTIFICATION": {
-    "HEADER_TITLE": "Ilmoitukset",
-    "INBOX": "Inbox",
-    "EMPTY": "Ei ilmoituksia vielä.",
-    "EMPTY_MORE_TEXT": "Kun alat vastaanottaa ilmoituksia, ne ilmestyvät tänne.",
-    "ALL_NOTIFICATION_LOADED": "Kaikki ilmoitukset ladattu",
-    "MARK_ALL": "Merkitse kaikki luetuiksi",
-    "CANCEL": "Peruuta",
-    "DELETE": "Poista",
-    "TYPES": {
-      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
-      "CONVERSATION_CREATION": "New conversation created",
-      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
-      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
-      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+      "TITLE": "Priority"
     },
-    "FILTERS": {
-      "SORT_BY": {
-        "TITLE": "Sort by",
-        "OPTIONS": {
-          "ASC": "Oldest",
-          "DESC": "Newest"
-        }
-      }
-    },
-    "ALERTS": {
-      "MARK_AS_READ": "Notification marked as read",
-      "MARK_AS_UNREAD": "Notification marked as unread",
-      "SNOOZE": "Notification snoozed",
-      "DELETE": "Notification deleted",
-      "MARK_ALL_READ": "All notifications marked as read",
-      "DELETE_ALL": "All notifications deleted",
-      "DELETE_ALL_READ": "All read notifications deleted"
-    }
-  },
-  "AVAILABILITY": {
-    "ONLINE": "Paikalla",
-    "BUSY": "Varattu",
-    "OFFLINE": "Offline"
-  },
-  "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Ilmoitusasetukset",
-    "EMAIL": "Sähköposti-ilmoitukset",
-    "PUSH": "Push-ilmoitukset",
-    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
-    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
-  },
-  "CONVERSATION_DETAILS": {
-    "TITLE": "Attributes",
-    "BROWSER": "Selain",
-    "OPERATING_SYSTEM": "Käyttöjärjestelmä",
-    "INITIATED_AT": "Aloitettu klo",
-    "INITIATED_FROM": "Aloitettu osoitteesta",
-    "IP_ADDRESS": "IP-osoite",
-    "CONVERSATION_ID": "Conversation ID",
-    "CLIPBOARD_SUCCESS": "Koodi kopioitu leikepöydälle onnistuneesti"
-  },
-  "CONTACT_DETAILS": {
-    "TITLE": "Contact Details",
-    "EMAIL": "Sähköposti",
-    "PHONE_NUMBER": "Puhelinnumero",
-    "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Yhteystiedon määritteet",
-    "VALUE_UNAVAILABLE": "Unavailable"
-  },
-  "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
-    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
-    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
-    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
-    "WATCH_CONVERSATION": "Join conversation",
-    "YOU_ARE_WATCHING": "You are participating",
-    "NO_RECORDS_FOUND": "Tuloksia ei löytynyt",
-    "SELECT_PARTICIPANTS": "Select agents",
-    "ADD_PARTICIPANTS": "Select participants",
-    "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other",
-    "ADD_PARTICIPANT": "Add Participant"
-  },
-  "CONTACT_ATTRIBUTES": {
-    "TITLE": "Yhteystiedon määritteet"
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PRIVATE_MSG_INPUT": "Tämä näkyy vain agenteille",
+    "SEARCH_PLACEHOLDER": "Etsi keskusteluja...",
+    "SEARCH_TEAM": "Search teams",
+    "SELF_ASSIGN": "Siirrä minulle",
+    "SHARE": "Share conversation",
+    "SNOOZE": "Torkuta keskustelu",
+    "SNOOZE_UNTIL": "Torkuta asti",
+    "SNOOZE_UNTIL_NEXT_REPLY": "Seuraavaan vastaukseen saakka",
+    "SNOOZE_UNTIL_NEXT_WEEK": "Ensi viikkoon asti",
+    "SNOOZE_UNTIL_TOMORROW": "Huomiseen asti",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "TEAM": "Tiimi",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "TODAY": "Tänään",
+    "TYPE_MESSAGE": "Kirjoita viesti",
+    "TYPING": "kirjoittaa",
+    "UNDEFINED_VARIABLES_CLOSE": "Sulje",
+    "UNDEFINED_VARIABLES_TITLE": "Määrittelemättömät muuttujat",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "UN_ASSIGN": "Poista keskustelu itseltä",
+    "UN_ASSIGNED": "Osoittamaton",
+    "UPDATING": "Päivitetään...",
+    "YESTERDAY": "Eilen"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Toiminnot"
   },
-  "CONVERSATION_TEAMS": {
-    "TITLE": "Määritä tiimi",
-    "SELECT_TEAM": "Valitse tiimi",
-    "NO_RESULT": "Tiimiä ei löytynyt"
+  "CONVERSATION_AGENTS": {
+    "NO_RESULT": "Edustajia ei löytynyt",
+    "SELECT_AGENT": "Valitse edustaja",
+    "TITLE": "Liitä agentti"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Selain",
+    "CLIPBOARD_SUCCESS": "Koodi kopioitu leikepöydälle onnistuneesti",
+    "CONVERSATION_ID": "Conversation ID",
+    "INITIATED_AT": "Aloitettu klo",
+    "INITIATED_FROM": "Aloitettu osoitteesta",
+    "IP_ADDRESS": "IP-osoite",
+    "OPERATING_SYSTEM": "Käyttöjärjestelmä",
+    "TITLE": "Attributes"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "Keskustelutunnisteet",
     "ADD_LABEL": "Lisää tunniste",
     "EMPTY_LIST": "Ole hyvä ja lisää tunnisteita tilillesi",
-    "NO_LABEL": "Tunnisteita ei ole määritetty",
-    "UPDATE_LABEL": "Tunniste päivitetty onnistuneesti",
-    "SELECTED": "Valitut",
     "NOT_SELECTED": "Tunnisteita ei ole valittu",
-    "NO_RESULT": "Tunnisteita ei löytynyt"
+    "NO_LABEL": "Tunnisteita ei ole määritetty",
+    "NO_RESULT": "Tunnisteita ei löytynyt",
+    "SELECTED": "Valitut",
+    "TITLE": "Keskustelutunnisteet",
+    "UPDATE_LABEL": "Tunniste päivitetty onnistuneesti"
   },
-  "CONVERSATION_AGENTS": {
-    "TITLE": "Liitä agentti",
-    "SELECT_AGENT": "Valitse edustaja",
-    "NO_RESULT": "Edustajia ei löytynyt"
+  "CONVERSATION_PARTICIPANTS": {
+    "ADD_PARTICIPANT": "Add Participant",
+    "ADD_PARTICIPANTS": "Select participants",
+    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
+    "NO_RECORDS_FOUND": "Tuloksia ei löytynyt",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "TITLE": "Participants",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
+    "WATCH_CONVERSATION": "Join conversation",
+    "YOU_ARE_WATCHING": "You are participating"
   },
-  "AGENT": {
-    "TITLE": "Valitse edustaja"
-  },
-  "TEAMS": {
-    "TITLE": "Valitse tiimi",
-    "EMPTY": "Ole hyvä ja lisää tiimejä tilillesi määrittääksesi keskusteluja tiimeille.",
-    "CHANGE_TEAMS": "Keskustelutiimi vaihdettu"
+  "CONVERSATION_TEAMS": {
+    "NO_RESULT": "Tiimiä ei löytynyt",
+    "SELECT_TEAM": "Valitse tiimi",
+    "TITLE": "Määritä tiimi"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
-    "OfFLINE": "Sinun on yhdistettävä Wi-Fi- tai matkapuhelinverkkoon, jotta voit olla taas paikalla",
-    "CANNOT_FETCH": "Tietojen haussa tapahtui virhe. Ole hyvä ja yritä uudelleen",
     "AUTH": "Käyttäjätunnus / salasana virheellinen. Yritä uudelleen",
-    "NO_ACCOUNTS_MESSAGE": "Sinulla ei ole pääsyä mihinkään Chatwoot-tiliin"
+    "CANNOT_FETCH": "Tietojen haussa tapahtui virhe. Ole hyvä ja yritä uudelleen",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "NO_ACCOUNTS_MESSAGE": "Sinulla ei ole pääsyä mihinkään Chatwoot-tiliin",
+    "OfFLINE": "Sinun on yhdistettävä Wi-Fi- tai matkapuhelinverkkoon, jotta voit olla taas paikalla"
+  },
+  "EXIT": {
+    "CANCEL": "Peruuta",
+    "OK": "OK",
+    "SUBTITLE": "Oletko varma, että haluat poistua?",
+    "TITLE": "Poistu"
+  },
+  "FILTER": {
+    "ALL_INBOXES": "Kaikki saapuneet",
+    "BOT": "Botti",
+    "CHOOSE_INBOX": "Valitse saapuneet",
+    "CHOOSE_STATUS": "Keskustelun Tila",
+    "FILTER_BY_ASSIGNEE_TYPE": "Suodata vastuuhenkilön tyypin mukaan",
+    "FILTER_BY_CONVERSATION_STATUS": "Suodata keskustelun tilan perusteella",
+    "FILTER_BY_INBOX": "Suodata saapuneet-kansion mukaan",
+    "HEADER_TITLE": "Keskustelusuodatin",
+    "OPEN": "Avaa",
+    "PENDING": "Odottava",
+    "RESOLVED": "Ratkaistu",
+    "SNOOZED": "Torkutettu",
+    "SORT_BY": "Sort by",
+    "SUBMIT": "Lähetä"
+  },
+  "FOOTER": {
+    "CONVERSATION": "Keskustelut",
+    "HOME": "Etusivu",
+    "NOTIFICATION": "Ilmoitukset",
+    "SETTINGS": "Asetukset"
+  },
+  "FORGOT_PASSWORD": {
+    "API_SUCCESS": "Salasanan palautuslinkki on lähetetty sähköpostiisi",
+    "EMAIL": "Ole hyvä ja syötä sähköpostiosoitteesi",
+    "EMAIL_ERROR": "Syötä kelvollinen sähköpostiosoite",
+    "HEADER_TITLE": "Nollaa salasana",
+    "RESET_HERE": "Nollaa salasana",
+    "SUB_TITLE": "Älä huoli! Takaamme selustasi.",
+    "TITLE": "Salasana unohtunut?"
+  },
+  "LOGIN": {
+    "CHANGE_LANGUAGE": "Vaihda kieli",
+    "CHANGE_URL": "Vaihda URL-osoite",
+    "CREATE_ACCOUNT": "Luo uusi tili",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "EMAIL": "Sähköposti",
+    "EMAIL_ERROR": "Syötä kelvollinen sähköpostiosoite",
+    "EMAIL_REQUIRED": "Sähköpostiosoite vaaditaan",
+    "FORGOT_PASSWORD": "Salasana unohtunut?",
+    "LOGIN": "Kirjaudu sisään",
+    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Kirjaudu sisään SSO:n kautta",
+    "NO_ACCOUNT": "Eikö sinulla ole tiliä?",
+    "PASSWORD": "Salasana",
+    "PASSWORD_ERROR": "Anna kelvollinen salasana",
+    "PASSWORD_REQUIRED": "Salasana on pakollinen",
+    "RESET_HERE": "Palauta täällä",
+    "SETTINGS": "Asetukset",
+    "SSO_AUTH_FAILED": "SSO-todennus epäonnistui. Tarkista tunnuksesi ja yritä uudelleen.",
+    "SSO_INVALID_RESPONSE": "Virheellinen SSO-vastaus. Yritä uudelleen.",
+    "SSO_UNEXPECTED_ERROR": "Odottamaton virhe SSO-kirjautumisen aikana. Yritä uudelleen.",
+    "TERMS": "Käyttöehdot ja säännöt",
+    "TITLE": "Log in to your account"
+  },
+  "MACRO": {
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_ERROR": "Macro execution failed",
+    "EXECUTION_SUCCESS": "Macro executed successfully",
+    "NO_MACROS": "No macros found",
+    "SELECT_MACRO": "Select macro",
+    "TITLE": "Macros"
+  },
+  "MFA": {
+    "BUTTONS": {
+      "VERIFY": "Vahvista",
+      "VERIFYING": "Vahvistetaan..."
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Syötä 6-numeroinen koodi autentikaattorisovelluksestasi",
+      "BACKUP": "Syötä yksi varmuuskoodeistasi"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Syötä varmuuskoodi"
+    },
+    "TABS": {
+      "AUTHENTICATOR_APP": "Autentikaattorisovellus",
+      "BACKUP_CODE": "Varmuuskoodi"
+    },
+    "TITLE": "Kaksivaiheinen tunnistautuminen"
+  },
+  "NOTIFICATION": {
+    "ALERTS": {
+      "DELETE": "Notification deleted",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed"
+    },
+    "ALL_NOTIFICATION_LOADED": "Kaikki ilmoitukset ladattu",
+    "CANCEL": "Peruuta",
+    "DELETE": "Poista",
+    "EMPTY": "Ei ilmoituksia vielä.",
+    "EMPTY_MORE_TEXT": "Kun alat vastaanottaa ilmoituksia, ne ilmestyvät tänne.",
+    "FILTERS": {
+      "SORT_BY": {
+        "OPTIONS": {
+          "ASC": "Oldest",
+          "DESC": "Newest"
+        },
+        "TITLE": "Sort by"
+      }
+    },
+    "HEADER_TITLE": "Ilmoitukset",
+    "INBOX": "Inbox",
+    "MARK_ALL": "Merkitse kaikki luetuiksi",
+    "SEARCH_PLACEHOLDER": "Etsi ilmoituksia...",
+    "TYPES": {
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
+      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
+      "CONVERSATION_CREATION": "New conversation created",
+      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    }
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA",
+    "EMAIL": "Sähköposti-ilmoitukset",
+    "PUSH": "Push-ilmoitukset",
+    "TITLE": "Ilmoitusasetukset"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "Palvelimen päivitys tarvitaan",
+    "WARNING_FOR_ADMIN": "Näyttää siltä, että käytät yhteensopimatonta Chatwoot palvelinversiota mobiilisovelluksellesi. Päivitys palvelimen versioon %{minimumVersion} tai uudempaan vaaditaan.",
+    "WARNING_FOR_AGENT": "Näyttää siltä, että käytät mobiiliapille sellaista Chatwoot palvelinta jota ei tueta. Ota yhteyttä ylläpitäjään ja päivitä Chatwoot palvelin."
+  },
+  "SETTINGS": {
+    "ABOUT": "Lisätietoja",
+    "CHANGE_AVAILABILITY": "Set availability",
+    "CHANGE_LANGUAGE": "Vaihda kieli",
+    "CHAT_WITH_US": "Keskustele kanssamme",
+    "DEBUG_ACTIONS": "Debug Actions",
+    "HEADER_TITLE": "Asetukset",
+    "LOGOUT": "Kirjaudu ulos",
+    "NOTIFICATIONS": "Ilmoitukset",
+    "NOTIFICATION_PREFERENCES": "Ilmoitusasetukset",
+    "PREFERENCES": "Asetukset",
+    "READ_DOCS": "Read Docs",
+    "SET_AVAILABILITY": "Aseta itsesi",
+    "SET_LANGUAGE": "Set Language",
+    "SUBMIT": "Lähetä",
+    "SUPPORT": "Tuki",
+    "SWITCH_ACCOUNT": "Vaihda tiliä"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "MISSES": {
+      "FRT": "Ensimmäinen vasteaika",
+      "HIDE": "Hide {count} rows",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "TITLE": "SLA Misses"
+    },
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "DUE": "due",
+      "FRT": "FRT %{status}",
+      "MISSED": "missed",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}"
+    }
   },
   "SUCCESS": {
     "AUTH": "Kirjautuminen onnistui"
   },
-  "SERVER_UPGRADE": {
-    "TITLE": "Palvelimen päivitys tarvitaan",
-    "WARNING_FOR_AGENT": "Näyttää siltä, että käytät mobiiliapille sellaista Chatwoot palvelinta jota ei tueta. Ota yhteyttä ylläpitäjään ja päivitä Chatwoot palvelin.",
-    "WARNING_FOR_ADMIN": "Näyttää siltä, että käytät yhteensopimatonta Chatwoot palvelinversiota mobiilisovelluksellesi. Päivitys palvelimen versioon %{minimumVersion} tai uudempaan vaaditaan."
+  "TEAMS": {
+    "CHANGE_TEAMS": "Keskustelutiimi vaihdettu",
+    "EMPTY": "Ole hyvä ja lisää tiimejä tilillesi määrittääksesi keskusteluja tiimeille.",
+    "TITLE": "Valitse tiimi"
   },
-  "EXIT": {
-    "TITLE": "Poistu",
-    "SUBTITLE": "Oletko varma, että haluat poistua?",
-    "CANCEL": "Peruuta",
-    "OK": "OK"
-  },
-  "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24h vastausikkuna",
-    "24_HOURS_WINDOW": "24h vastausikkuna",
-    "CANNOT_REPLY": "Et voi vastata, sillä"
-  },
-  "SLA": {
-    "FRT": "FRT",
-    "NRT": "NRT",
-    "RT": "RT",
-    "STATUS": {
-      "FRT": "FRT %{status}",
-      "NRT": "NRT %{status}",
-      "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "due"
-    },
-    "MISSES": {
-      "TITLE": "SLA Misses",
-      "FRT": "Ensimmäinen vasteaika",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
-    }
-  },
-  "MACRO": {
-    "TITLE": "Macros",
-    "SELECT_MACRO": "Select macro",
-    "ACTIONS": {
-      "RUN": "Run"
-    },
-    "EXECUTION_SUCCESS": "Macro executed successfully",
-    "EXECUTION_ERROR": "Macro execution failed",
-    "NO_MACROS": "No macros found"
-  }
+  "WELCOME": "Tervetuloa"
 }

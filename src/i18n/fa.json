@@ -1,458 +1,482 @@
 {
-  "WELCOME": "خوش آمدید",
+  "AGENT": {
+    "TITLE": "انتخاب ایجنت"
+  },
+  "AVAILABILITY": {
+    "BUSY": "مشغول",
+    "OFFLINE": "آفلاین",
+    "ONLINE": "آنلاین"
+  },
+  "BANNER": {
+    "24_HOURS_WINDOW": "محدودیت ۲۴ ساعته پنجره پیام",
+    "CANNOT_REPLY": "شما نمی‌توانید پاسخ بدهید به دلیل",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "محدودیت ۲۴ ساعته پنجره پیام",
+    "TWILIO_WHATSAPP_CAN_REPLY": "شما فقط می توانید با استفاده از یک پیام الگو به این مکالمه پاسخ دهید"
+  },
   "COMMON": {
+    "CLOSE": "بستن",
     "ERROR": "خطا",
     "ERROR_TITLE": "خطای غیرمنتظره رخ داده است",
-    "REPORT_MESSAGE": "ما این مورد را به تیم خود گزارش داده ایم! لطفاً برنامه را ببندید و دوباره اجرا کنید!",
-    "CLOSE": "بستن"
-  },
-  "FOOTER": {
-    "HOME": "صفحه اصلی",
-    "CONVERSATION": "گفتگوها",
-    "NOTIFICATION": "اعلان ها",
-    "SETTINGS": "تنظیمات"
+    "REPORT_MESSAGE": "ما این مورد را به تیم خود گزارش داده ایم! لطفاً برنامه را ببندید و دوباره اجرا کنید!"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "نصب با URL",
-    "DESCRIPTION": "اگر از نرم افزار روی سرورهای شخصی استفاده می کنید ، آدرس سرور خود را وارد کنید. در غیر این صورت ، از app.chatwoot.com استفاده کنید.",
-    "URL_ERROR": "نشانی وب معتبری وارد کنید",
-    "URL_REQUIRED": "نشانی اینترنتی الزامی است",
+    "CHANGE_LANGUAGE": "تغییر زبان",
     "CONNECT": "اتصال",
-    "CHANGE_LANGUAGE": "تغییر زبان",
-    "ERROR": "نشانی اینترنتی نصب نامعتبر است"
+    "DESCRIPTION": "اگر از نرم افزار روی سرورهای شخصی استفاده می کنید ، آدرس سرور خود را وارد کنید. در غیر این صورت ، از app.chatwoot.com استفاده کنید.",
+    "ENTER_URL": "نصب با URL",
+    "ERROR": "نشانی اینترنتی نصب نامعتبر است",
+    "URL_ERROR": "نشانی وب معتبری وارد کنید",
+    "URL_REQUIRED": "نشانی اینترنتی الزامی است"
   },
-  "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "ویژگی‌های تماس"
+  },
+  "CONTACT_DETAILS": {
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "ویژگی‌های تماس",
     "EMAIL": "ایمیل",
-    "PASSWORD": "رمز عبور",
-    "EMAIL_REQUIRED": "ایمیل الزامی است",
-    "EMAIL_ERROR": "یک ایمیل معتبر وارد کنید",
-    "PASSWORD_REQUIRED": "رمز عبور الزامی است",
-    "PASSWORD_ERROR": "رمز عبور معتبر وارد کنید",
-    "LOGIN": "ورود",
-    "LOGIN_LOADING": "Signing In...",
-    "FORGOT_PASSWORD": "رمز عبورتان را فراموش کردید؟",
-    "RESET_HERE": "اینجا ریست کنید",
-    "NO_ACCOUNT": "حساب کاربری ندارید؟",
-    "CREATE_ACCOUNT": "حساب جدید بسازید",
-    "SETTINGS": "تنظیمات",
-    "CHANGE_LANGUAGE": "تغییر زبان",
-    "TERMS": "شرایط و ضوابط",
-    "CHANGE_URL": "تغییر URL"
-  },
-  "FORGOT_PASSWORD": {
-    "EMAIL": "لطفا ایمیل خود را وارد کنید",
-    "EMAIL_ERROR": "یک ایمیل معتبر وارد کنید",
-    "RESET_HERE": "تغییر رمز عبور",
-    "HEADER_TITLE": "تغییر رمز عبور",
-    "TITLE": "رمز عبورتان را فراموش کردید؟",
-    "SUB_TITLE": "نگران نباش! ما پشتت رو گرفتیم",
-    "API_SUCCESS": "پیوند بازنشانی رمز عبور به ایمیل شما ارسال شد"
+    "PHONE_NUMBER": "شماره موبایل",
+    "TITLE": "اطلاعات تماس",
+    "VALUE_UNAVAILABLE": "غیر قابل دسترسی"
   },
   "CONVERSATION": {
-    "HEADER": {
-      "TITLE": "گفتگوها",
-      "CLEAR_FILTER": "پاک کردن"
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "ASSIGN": "اختصاص دادن",
+        "EDIT": "ویرایش",
+        "EMPTY": "تخصیص داده نشده"
+      },
+      "PRIORITY": {
+        "EDIT": "ویرایش",
+        "EMPTY": "No priority added"
+      },
+      "TEAM": {
+        "ASSIGN": "اختصاص دادن",
+        "EMPTY": "No team assigned"
+      }
     },
+    "ALL": "همه",
+    "ALL_CONVERSATION_LOADED": "همه گفتگوها دریافت شدند",
+    "ASSIGN": "اختصاص مکالمه",
+    "ASSIGNED_AGENT": "ایجنت تعیین شده",
+    "ASSIGNEE": {
+      "AGENTS": {
+        "SEARCH_AGENT": "جستجوی اپراتور"
+      },
+      "LABELS": {
+        "SEARCH_LABELS": "جستجو برچسب‌ها"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "OPTIONS": {
+          "ALL": "همه",
+          "OPEN": "باز",
+          "PENDING": "در انتظار",
+          "RESOLVED": "حل شده",
+          "SNOOZED": "به تعویق افتاد"
+        },
+        "TITLE": "Filter by status"
+      }
+    },
+    "ASSIGN_CHANGE": "مسول گفتگو تغییر کرد",
+    "ATTACHMENTS": {
+      "audio": {
+        "CONTENT": "پیام صوتی"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
+      },
+      "fallback": {
+        "CONTENT": "یک آدرس URL به اشتراک گذاشته شده"
+      },
+      "file": {
+        "CONTENT": "فایل الصاقی"
+      },
+      "image": {
+        "CONTENT": "پیام تصویری"
+      },
+      "location": {
+        "CONTENT": "موقعیت جغرافیایی"
+      },
+      "video": {
+        "CONTENT": "پیام ویدیویی"
+      }
+    },
+    "ATTACHMENT_CONTENT": "فایل الصاقی",
+    "BOT": "ربات",
+    "CHANGE_PRIORITY": "Change priority",
+    "CHANGE_STATUS": "تغییر وضعیت",
+    "CONVERSATION_NOT_FOUND": "گفتگو را نمی‌تواند دریافت کرد",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "DEFAULT_HEADER_TITLE": "گفتگوها",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "DELETE_MESSAGE_SUCCESS": "پیام با موفقیت حذف شد",
+    "DELETE_MESSAGE_TITLE": "آیا از حذف این پیام مطمئن هستید؟",
+    "DETAILS": "Details",
+    "DOWNLOAD": "دانلود",
+    "EMAIL_HEAD": {
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "TO": "به"
+    },
+    "EMAIL_HEADER": {
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "EXPAND": "Expand email",
+      "FROM": "از",
+      "SUBJECT": "موضوع",
+      "TO": "به"
+    },
+    "EMPTY": "هیچ گفتگوی فعالی در این گروه نیست",
+    "FILE_SIZE_LIMIT": "محدودیت حجم فایل پیوست 5MB می باشد",
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "جستجوی اپراتور"
+      },
+      "ASSIGNEE_TYPE": {
+        "OPTIONS": {
+          "ALL": "همه",
+          "ME": "Me",
+          "UNASSIGNED": "تخصیص داده نشده"
+        },
+        "TITLE": "فیلتر براساس نوع اختصاص شده"
       },
       "INBOX": {
         "TITLE": "فیلتر براساس صندوق‌ورودی"
       },
       "SORT_BY": {
-        "TITLE": "مرتب‌سازی براساس",
         "OPTIONS": {
           "LATEST": "Latest",
           "SORT_ON_CREATED_AT": "ایجاد شده در",
           "SORT_ON_PRIORITY": "اولویت"
-        }
+        },
+        "TITLE": "مرتب‌سازی براساس"
       },
       "STATUS": {
-        "TITLE": "Filter by status",
         "OPTIONS": {
+          "ALL": "همه",
           "OPEN": "باز",
           "PENDING": "در انتظار",
-          "SNOOZED": "به تعویق افتاد",
           "RESOLVED": "حل شده",
-          "ALL": "همه"
-        }
-      },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "فیلتر براساس نوع اختصاص شده",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "تخصیص داده نشده",
-          "ALL": "همه"
-        }
+          "SNOOZED": "به تعویق افتاد"
+        },
+        "TITLE": "Filter by status"
       }
     },
-    "ASSIGNEE": {
-      "LABELS": {
-        "SEARCH_LABELS": "جستجو برچسب‌ها"
-      },
-      "AGENTS": {
-        "SEARCH_AGENT": "جستجوی اپراتور"
-      },
-      "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
-        "OPTIONS": {
-          "OPEN": "باز",
-          "PENDING": "در انتظار",
-          "SNOOZED": "به تعویق افتاد",
-          "RESOLVED": "حل شده",
-          "ALL": "همه"
-        }
-      }
-    },
-    "DEFAULT_HEADER_TITLE": "گفتگوها",
-    "UPDATING": "در حال به‌روزرسانی...",
-    "MINE": "من",
-    "UN_ASSIGNED": "تخصیص داده نشده",
-    "ALL": "همه",
-    "EMPTY": "هیچ گفتگوی فعالی در این گروه نیست",
-    "PICTURE_CONTENT": "پیام تصویری",
-    "ATTACHMENT_CONTENT": "فایل الصاقی",
-    "DOWNLOAD": "دانلود",
-    "TODAY": "امروز",
-    "YESTERDAY": "دیروز",
-    "TYPE_MESSAGE": "پیام خود را وارد کنید",
-    "TYPING": "تایپ کردن",
-    "ALL_CONVERSATION_LOADED": "همه گفتگوها دریافت شدند",
-    "ASSIGN": "اختصاص مکالمه",
-    "FILE_SIZE_LIMIT": "محدودیت حجم فایل پیوست 5MB می باشد",
-    "SHARE": "اشتراک گذاری گفتگو",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
-    "ASSIGNED_AGENT": "ایجنت تعیین شده",
-    "TEAM": "تیم‌",
-    "PRIVATE_MSG_INPUT": "این فقط برای ایجنت ها قابل مشاهده خواهد بود",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
-    "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
-    },
-    "BOT": "ربات",
-    "EMAIL_HEAD": {
-      "TO": "به",
-      "CC": "Cc",
-      "BCC": "Bcc"
-    },
-    "SELF_ASSIGN": "اختصاص به من",
-    "UN_ASSIGN": "لغو اختصاص مکالمه",
-    "CONVERSATION_NOT_FOUND": "گفتگو را نمی‌تواند دریافت کرد",
-    "MARK_AS_PENDING": "علامت گذاری به عنوان در انتظار",
-    "SNOOZE_UNTIL": "به تعویق انداختن تا",
-    "SNOOZE_UNTIL_NEXT_REPLY": "تا پاسخ بعدی",
-    "SNOOZE_UNTIL_TOMORROW": "تا فردا",
-    "SNOOZE_UNTIL_NEXT_WEEK": "تا هفته بعد",
-    "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Change priority",
-    "MESSAGES": "پیام‌ها",
-    "UNDEFINED_VARIABLES_TITLE": "متغیرهای تعریف نشده",
-    "UNDEFINED_VARIABLES_CLOSE": "بستن",
-    "DELETE_MESSAGE_TITLE": "آیا از حذف این پیام مطمئن هستید؟",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "پیام با موفقیت حذف شد",
-    "NO_CONTENT": "هیچ محتوایی موجود نیست",
-    "ASSIGN_CHANGE": "مسول گفتگو تغییر کرد",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "تغییر وضعیت",
-    "SEARCH_TEAM": "جستجوی تیم",
-    "PRIORITY": {
-      "TITLE": "اولویت",
-      "OPTIONS": {
-        "NONE": "هیچکدام",
-        "URGENT": "Urgent",
-        "HIGH": "بالا",
-        "MEDIUM": "متوسط",
-        "LOW": "پایین"
-      },
-      "CHANGE_PRIORITY": {
-        "SELECT_PLACEHOLDER": "هیچکدام",
-        "INPUT_PLACEHOLDER": "انتخاب اولویت",
-        "NO_RESULTS": "نتیجه‌ای یافت نشد",
-        "SUCCESSFUL": "تغییر اولویت گفتگوی با شناسه %{conversationId} به %{priority}",
-        "FAILED": "تغییر اولویت گفتگو با موفقیت انجام نشد. لطفا دوباره تلاش نمایید."
-      }
+    "HEADER": {
+      "CLEAR_FILTER": "پاک کردن",
+      "TITLE": "گفتگوها"
     },
     "ITEM": {
       "ASSIGN": "اختصاص دادن",
       "STATUS": "وضعیت"
     },
-    "ATTACHMENTS": {
-      "image": {
-        "CONTENT": "پیام تصویری"
-      },
-      "audio": {
-        "CONTENT": "پیام صوتی"
-      },
-      "video": {
-        "CONTENT": "پیام ویدیویی"
-      },
-      "file": {
-        "CONTENT": "فایل الصاقی"
-      },
-      "location": {
-        "CONTENT": "موقعیت جغرافیایی"
-      },
-      "fallback": {
-        "CONTENT": "یک آدرس URL به اشتراک گذاشته شده"
-      },
-      "contact": {
-        "CONTENT": "Shared a contact"
-      }
-    },
+    "LABELS": "Conversation labels",
     "LONG_PRESS_ACTIONS": {
       "COPY": "کپی",
-      "REPLY": "پاسخ",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "REPLY": "پاسخ"
     },
-    "EMAIL_HEADER": {
-      "FROM": "از",
-      "TO": "به",
-      "BCC": "Bcc",
-      "CC": "Cc",
-      "SUBJECT": "موضوع",
-      "EXPAND": "Expand email"
+    "MARK_AS_PENDING": "علامت گذاری به عنوان در انتظار",
+    "MESSAGES": "پیام‌ها",
+    "MINE": "من",
+    "NOT_FOUND": {
+      "BACK_TO_HOME": "Go back to home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again.",
+      "RETRY": "Retry",
+      "TITLE": "Unable to fetch conversation"
     },
-    "ACTIONS": {
-      "ASSIGNEE": {
-        "EMPTY": "تخصیص داده نشده",
-        "ASSIGN": "اختصاص دادن",
-        "EDIT": "ویرایش"
+    "NO_CONTENT": "هیچ محتوایی موجود نیست",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "PICTURE_CONTENT": "پیام تصویری",
+    "PRIORITY": {
+      "CHANGE_PRIORITY": {
+        "FAILED": "تغییر اولویت گفتگو با موفقیت انجام نشد. لطفا دوباره تلاش نمایید.",
+        "INPUT_PLACEHOLDER": "انتخاب اولویت",
+        "NO_RESULTS": "نتیجه‌ای یافت نشد",
+        "SELECT_PLACEHOLDER": "هیچکدام",
+        "SUCCESSFUL": "تغییر اولویت گفتگوی با شناسه %{conversationId} به %{priority}"
       },
-      "TEAM": {
-        "EMPTY": "No team assigned",
-        "ASSIGN": "اختصاص دادن"
+      "OPTIONS": {
+        "HIGH": "بالا",
+        "LOW": "پایین",
+        "MEDIUM": "متوسط",
+        "NONE": "هیچکدام",
+        "URGENT": "Urgent"
       },
-      "PRIORITY": {
-        "EMPTY": "No priority added",
-        "EDIT": "ویرایش"
-      }
-    }
-  },
-  "FILTER": {
-    "ALL_INBOXES": "همه صندوق‌های‌ورودی",
-    "FILTER_BY_ASSIGNEE_TYPE": "فیلتر براساس نوع اختصاص شده",
-    "FILTER_BY_CONVERSATION_STATUS": "فیلتر براساس وضعیت گفتگو",
-    "SORT_BY": "مرتب‌سازی براساس",
-    "FILTER_BY_INBOX": "فیلتر براساس صندوق‌ورودی",
-    "HEADER_TITLE": "فیلتر مکالمه",
-    "CHOOSE_INBOX": "صندوق ورودی را انتخاب کنید",
-    "CHOOSE_STATUS": "وضعیت مکالمه",
-    "OPEN": "باز",
-    "RESOLVED": "حل شده",
-    "BOT": "ربات",
-    "SUBMIT": "ثبت",
-    "PENDING": "در انتظار",
-    "SNOOZED": "به تعویق افتاد"
-  },
-  "SETTINGS": {
-    "HEADER_TITLE": "تنظیمات",
-    "SET_AVAILABILITY": "خود را به عنوان",
-    "CHANGE_AVAILABILITY": "Set availability",
-    "PREFERENCES": "تنظیمات",
-    "ABOUT": "درباره",
-    "SUPPORT": "پشتیبانی",
-    "SWITCH_ACCOUNT": "سوییچ به یک حساب دیگر",
-    "CHANGE_LANGUAGE": "تغییر زبان",
-    "NOTIFICATIONS": "اعلان ها",
-    "NOTIFICATION_PREFERENCES": "تنظیمات اعلان",
-    "READ_DOCS": "Read Docs",
-    "CHAT_WITH_US": "با ما گفتگو کنید",
-    "LOGOUT": "خروج از حساب",
-    "SUBMIT": "ثبت",
-    "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
-  },
-  "NOTIFICATION": {
-    "HEADER_TITLE": "اعلان ها",
-    "INBOX": "صندوق ورودی",
-    "EMPTY": "اعلانی وجود ندارد.",
-    "EMPTY_MORE_TEXT": "هنگامی که اعلان جدیدی دریافت می کنید ، آنها در اینجا نمایش داده می شوند.",
-    "ALL_NOTIFICATION_LOADED": "همه اعلان ها بارگیری شدند",
-    "MARK_ALL": "همه را به عنوان خوانده شده علامت بزن",
-    "CANCEL": "انصراف",
-    "DELETE": "حذف",
-    "TYPES": {
-      "CONVERSATION_MENTION": "به نام شما در یک گفتگو اشاره شده است",
-      "CONVERSATION_CREATION": "گفتگو ایجاد شد",
-      "CONVERSATION_ASSIGNMENT": "یک گفتگو به شما اختصاص داده شده",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "پیام جدید در یک گفتگوی اختصاص داده شده",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "پیام جدید در گفتگویی که در آن شرکت داشته اید",
-      "SLA_MISSED_FIRST_RESPONSE": "سیاست SLA مربوط به اولین پاسخ در گفتگوی نقض شده",
-      "SLA_MISSED_NEXT_RESPONSE": "سیاست SLA مربوط به پاسخ بعدی در گفتگوی نقض شده",
-      "SLA_MISSED_RESOLUTION": "سیاست SLA مربوط به زمان حل موضوع در گفتگوی نقض شده"
+      "TITLE": "اولویت"
     },
-    "FILTERS": {
-      "SORT_BY": {
-        "TITLE": "مرتب‌سازی براساس",
-        "OPTIONS": {
-          "ASC": "قدیمی ترین",
-          "DESC": "جدیدترین"
-        }
-      }
-    },
-    "ALERTS": {
-      "MARK_AS_READ": "ثبت اعلان به عنوان خوانده شده",
-      "MARK_AS_UNREAD": "ثبت اعلان به عنوان خوانده نشده",
-      "SNOOZE": "اعلان به تعویق افتاده",
-      "DELETE": "اعلان حدف شده",
-      "MARK_ALL_READ": "ثبت همه اعلان ها به عنوان خوانده شده",
-      "DELETE_ALL": "حذف همه اعلان ها",
-      "DELETE_ALL_READ": "حذف همه اعلان های خوانده شده"
-    }
-  },
-  "AVAILABILITY": {
-    "ONLINE": "آنلاین",
-    "BUSY": "مشغول",
-    "OFFLINE": "آفلاین"
-  },
-  "NOTIFICATION_PREFERENCE": {
-    "TITLE": "تنظیمات اعلان",
-    "EMAIL": "اعلامیه‌ به ایمیل",
-    "PUSH": "پوش نوتیفیکیشن",
-    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
-    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
-  },
-  "CONVERSATION_DETAILS": {
-    "TITLE": "ویژگی ها",
-    "BROWSER": "مرورگر",
-    "OPERATING_SYSTEM": "سیستم عامل",
-    "INITIATED_AT": "شروع شده در",
-    "INITIATED_FROM": "شروع شده از",
-    "IP_ADDRESS": "آدرس آی‌پی",
-    "CONVERSATION_ID": "شناسه گفتگو",
-    "CLIPBOARD_SUCCESS": "کد به حافظه کپی شد"
-  },
-  "CONTACT_DETAILS": {
-    "TITLE": "اطلاعات تماس",
-    "EMAIL": "ایمیل",
-    "PHONE_NUMBER": "شماره موبایل",
-    "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "ویژگی‌های تماس",
-    "VALUE_UNAVAILABLE": "غیر قابل دسترسی"
-  },
-  "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
-    "TOTAL_PARTICIPANTS_TEXT": "%{count} نفر شرکت می کنند.",
-    "TOTAL_PARTICIPANT_TEXT": "%{count} نفر شرکت می کند.",
-    "NO_PARTICIPANTS_TEXT": "هیچ کس شرکت نمی کند!.",
-    "WATCH_CONVERSATION": "به گفتگو بپیوندید",
-    "YOU_ARE_WATCHING": "شما شرکت می کنید",
-    "NO_RECORDS_FOUND": "نتیجه‌ای یافت نشد",
-    "SELECT_PARTICIPANTS": "Select agents",
-    "ADD_PARTICIPANTS": "شرکت کنندگان را انتخاب کنید",
-    "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other",
-    "ADD_PARTICIPANT": "Add Participant"
-  },
-  "CONTACT_ATTRIBUTES": {
-    "TITLE": "ویژگی‌های تماس"
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PRIVATE_MSG_INPUT": "این فقط برای ایجنت ها قابل مشاهده خواهد بود",
+    "SEARCH_PLACEHOLDER": "جستجوی گفتگوها...",
+    "SEARCH_TEAM": "جستجوی تیم",
+    "SELF_ASSIGN": "اختصاص به من",
+    "SHARE": "اشتراک گذاری گفتگو",
+    "SNOOZE": "Snooze conversation",
+    "SNOOZE_UNTIL": "به تعویق انداختن تا",
+    "SNOOZE_UNTIL_NEXT_REPLY": "تا پاسخ بعدی",
+    "SNOOZE_UNTIL_NEXT_WEEK": "تا هفته بعد",
+    "SNOOZE_UNTIL_TOMORROW": "تا فردا",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "TEAM": "تیم‌",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "TODAY": "امروز",
+    "TYPE_MESSAGE": "پیام خود را وارد کنید",
+    "TYPING": "تایپ کردن",
+    "UNDEFINED_VARIABLES_CLOSE": "بستن",
+    "UNDEFINED_VARIABLES_TITLE": "متغیرهای تعریف نشده",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "UN_ASSIGN": "لغو اختصاص مکالمه",
+    "UN_ASSIGNED": "تخصیص داده نشده",
+    "UPDATING": "در حال به‌روزرسانی...",
+    "YESTERDAY": "دیروز"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "عملیات"
   },
-  "CONVERSATION_TEAMS": {
-    "TITLE": "تیم را تعیین کنید",
-    "SELECT_TEAM": "انتخاب تیم",
-    "NO_RESULT": "No team found"
+  "CONVERSATION_AGENTS": {
+    "NO_RESULT": "No agent found",
+    "SELECT_AGENT": "انتخاب ایجنت",
+    "TITLE": "ایجنت را تعیین کنید"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "مرورگر",
+    "CLIPBOARD_SUCCESS": "کد به حافظه کپی شد",
+    "CONVERSATION_ID": "شناسه گفتگو",
+    "INITIATED_AT": "شروع شده در",
+    "INITIATED_FROM": "شروع شده از",
+    "IP_ADDRESS": "آدرس آی‌پی",
+    "OPERATING_SYSTEM": "سیستم عامل",
+    "TITLE": "ویژگی ها"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "برچسب‌های گفتگو",
     "ADD_LABEL": "افزودن برچسب‌ها",
     "EMPTY_LIST": "لطفا برچسب‌ها را به حساب‌کاربری خود اضافه کنید",
-    "NO_LABEL": "هیچ برچسبی اختصاص داده نشده است",
-    "UPDATE_LABEL": "برچسب با موفقیت به روز شد",
-    "SELECTED": "Selected",
     "NOT_SELECTED": "No labels selected",
-    "NO_RESULT": "هیچ برچسبی یافت نشد"
+    "NO_LABEL": "هیچ برچسبی اختصاص داده نشده است",
+    "NO_RESULT": "هیچ برچسبی یافت نشد",
+    "SELECTED": "Selected",
+    "TITLE": "برچسب‌های گفتگو",
+    "UPDATE_LABEL": "برچسب با موفقیت به روز شد"
   },
-  "CONVERSATION_AGENTS": {
-    "TITLE": "ایجنت را تعیین کنید",
-    "SELECT_AGENT": "انتخاب ایجنت",
-    "NO_RESULT": "No agent found"
+  "CONVERSATION_PARTICIPANTS": {
+    "ADD_PARTICIPANT": "Add Participant",
+    "ADD_PARTICIPANTS": "شرکت کنندگان را انتخاب کنید",
+    "NO_PARTICIPANTS_TEXT": "هیچ کس شرکت نمی کند!.",
+    "NO_RECORDS_FOUND": "نتیجه‌ای یافت نشد",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "TITLE": "Participants",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} نفر شرکت می کنند.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} نفر شرکت می کند.",
+    "WATCH_CONVERSATION": "به گفتگو بپیوندید",
+    "YOU_ARE_WATCHING": "شما شرکت می کنید"
   },
-  "AGENT": {
-    "TITLE": "انتخاب ایجنت"
-  },
-  "TEAMS": {
-    "TITLE": "تیم را انتخاب کنید",
-    "EMPTY": "لطفا تیم‌ها را به حساب‌کاربری خود اضافه کنید تا گفتگوها را به تیم‌ها اختصاص دهید.",
-    "CHANGE_TEAMS": "تیم مکالمه تغییر کرد"
+  "CONVERSATION_TEAMS": {
+    "NO_RESULT": "No team found",
+    "SELECT_TEAM": "انتخاب تیم",
+    "TITLE": "تیم را تعیین کنید"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
-    "OfFLINE": "برای اتصال مجدد باید به وای فای یا شبکه تلفن همراه متصل شوید",
-    "CANNOT_FETCH": "هنگام دریافت اطلاعات خطایی روی داد ، لطفاً دوباره امتحان کنید",
     "AUTH": "این نام کاربری و رمز عبور صحیح نیست",
-    "NO_ACCOUNTS_MESSAGE": "شما به هیچ حسابی دسترسی ندارید"
+    "CANNOT_FETCH": "هنگام دریافت اطلاعات خطایی روی داد ، لطفاً دوباره امتحان کنید",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "NO_ACCOUNTS_MESSAGE": "شما به هیچ حسابی دسترسی ندارید",
+    "OfFLINE": "برای اتصال مجدد باید به وای فای یا شبکه تلفن همراه متصل شوید"
+  },
+  "EXIT": {
+    "CANCEL": "انصراف",
+    "OK": "باشه",
+    "SUBTITLE": "آیا مطمئن هستید که می خواهید خارج شوید؟",
+    "TITLE": "خروج"
+  },
+  "FILTER": {
+    "ALL_INBOXES": "همه صندوق‌های‌ورودی",
+    "BOT": "ربات",
+    "CHOOSE_INBOX": "صندوق ورودی را انتخاب کنید",
+    "CHOOSE_STATUS": "وضعیت مکالمه",
+    "FILTER_BY_ASSIGNEE_TYPE": "فیلتر براساس نوع اختصاص شده",
+    "FILTER_BY_CONVERSATION_STATUS": "فیلتر براساس وضعیت گفتگو",
+    "FILTER_BY_INBOX": "فیلتر براساس صندوق‌ورودی",
+    "HEADER_TITLE": "فیلتر مکالمه",
+    "OPEN": "باز",
+    "PENDING": "در انتظار",
+    "RESOLVED": "حل شده",
+    "SNOOZED": "به تعویق افتاد",
+    "SORT_BY": "مرتب‌سازی براساس",
+    "SUBMIT": "ثبت"
+  },
+  "FOOTER": {
+    "CONVERSATION": "گفتگوها",
+    "HOME": "صفحه اصلی",
+    "NOTIFICATION": "اعلان ها",
+    "SETTINGS": "تنظیمات"
+  },
+  "FORGOT_PASSWORD": {
+    "API_SUCCESS": "پیوند بازنشانی رمز عبور به ایمیل شما ارسال شد",
+    "EMAIL": "لطفا ایمیل خود را وارد کنید",
+    "EMAIL_ERROR": "یک ایمیل معتبر وارد کنید",
+    "HEADER_TITLE": "تغییر رمز عبور",
+    "RESET_HERE": "تغییر رمز عبور",
+    "SUB_TITLE": "نگران نباش! ما پشتت رو گرفتیم",
+    "TITLE": "رمز عبورتان را فراموش کردید؟"
+  },
+  "LOGIN": {
+    "CHANGE_LANGUAGE": "تغییر زبان",
+    "CHANGE_URL": "تغییر URL",
+    "CREATE_ACCOUNT": "حساب جدید بسازید",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "EMAIL": "ایمیل",
+    "EMAIL_ERROR": "یک ایمیل معتبر وارد کنید",
+    "EMAIL_REQUIRED": "ایمیل الزامی است",
+    "FORGOT_PASSWORD": "رمز عبورتان را فراموش کردید؟",
+    "LOGIN": "ورود",
+    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "ورود با SSO",
+    "NO_ACCOUNT": "حساب کاربری ندارید؟",
+    "PASSWORD": "رمز عبور",
+    "PASSWORD_ERROR": "رمز عبور معتبر وارد کنید",
+    "PASSWORD_REQUIRED": "رمز عبور الزامی است",
+    "RESET_HERE": "اینجا ریست کنید",
+    "SETTINGS": "تنظیمات",
+    "SSO_AUTH_FAILED": "احراز هویت SSO ناموفق بود. لطفاً اطلاعات ورود خود را بررسی کرده و دوباره تلاش کنید.",
+    "SSO_INVALID_RESPONSE": "پاسخ SSO نامعتبر است. لطفاً دوباره تلاش کنید.",
+    "SSO_UNEXPECTED_ERROR": "در هنگام ورود با SSO یک خطای غیرمنتظره رخ داد. لطفاً دوباره تلاش کنید.",
+    "TERMS": "شرایط و ضوابط",
+    "TITLE": "Log in to your account"
+  },
+  "MACRO": {
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_ERROR": "Macro execution failed",
+    "EXECUTION_SUCCESS": "ماکرو با موفقیت اجرا شد",
+    "NO_MACROS": "هیچ ماکروی یافت نشد",
+    "SELECT_MACRO": "Select macro",
+    "TITLE": "ماکروها"
+  },
+  "MFA": {
+    "BUTTONS": {
+      "VERIFY": "تأیید",
+      "VERIFYING": "در حال تأیید..."
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "کد ۶ رقمی را از اپلیکیشن احراز هویت وارد کنید",
+      "BACKUP": "یکی از کدهای پشتیبان خود را وارد کنید"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "کد پشتیبان را وارد کنید"
+    },
+    "TABS": {
+      "AUTHENTICATOR_APP": "اپلیکیشن احراز هویت",
+      "BACKUP_CODE": "کد پشتیبان"
+    },
+    "TITLE": "احراز هویت دومرحله‌ای"
+  },
+  "NOTIFICATION": {
+    "ALERTS": {
+      "DELETE": "اعلان حدف شده",
+      "DELETE_ALL": "حذف همه اعلان ها",
+      "DELETE_ALL_READ": "حذف همه اعلان های خوانده شده",
+      "MARK_ALL_READ": "ثبت همه اعلان ها به عنوان خوانده شده",
+      "MARK_AS_READ": "ثبت اعلان به عنوان خوانده شده",
+      "MARK_AS_UNREAD": "ثبت اعلان به عنوان خوانده نشده",
+      "SNOOZE": "اعلان به تعویق افتاده"
+    },
+    "ALL_NOTIFICATION_LOADED": "همه اعلان ها بارگیری شدند",
+    "CANCEL": "انصراف",
+    "DELETE": "حذف",
+    "EMPTY": "اعلانی وجود ندارد.",
+    "EMPTY_MORE_TEXT": "هنگامی که اعلان جدیدی دریافت می کنید ، آنها در اینجا نمایش داده می شوند.",
+    "FILTERS": {
+      "SORT_BY": {
+        "OPTIONS": {
+          "ASC": "قدیمی ترین",
+          "DESC": "جدیدترین"
+        },
+        "TITLE": "مرتب‌سازی براساس"
+      }
+    },
+    "HEADER_TITLE": "اعلان ها",
+    "INBOX": "صندوق ورودی",
+    "MARK_ALL": "همه را به عنوان خوانده شده علامت بزن",
+    "SEARCH_PLACEHOLDER": "جستجوی اعلان‌ها...",
+    "TYPES": {
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "پیام جدید در یک گفتگوی اختصاص داده شده",
+      "CONVERSATION_ASSIGNMENT": "یک گفتگو به شما اختصاص داده شده",
+      "CONVERSATION_CREATION": "گفتگو ایجاد شد",
+      "CONVERSATION_MENTION": "به نام شما در یک گفتگو اشاره شده است",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "پیام جدید در گفتگویی که در آن شرکت داشته اید",
+      "SLA_MISSED_FIRST_RESPONSE": "سیاست SLA مربوط به اولین پاسخ در گفتگوی نقض شده",
+      "SLA_MISSED_NEXT_RESPONSE": "سیاست SLA مربوط به پاسخ بعدی در گفتگوی نقض شده",
+      "SLA_MISSED_RESOLUTION": "سیاست SLA مربوط به زمان حل موضوع در گفتگوی نقض شده"
+    }
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA",
+    "EMAIL": "اعلامیه‌ به ایمیل",
+    "PUSH": "پوش نوتیفیکیشن",
+    "TITLE": "تنظیمات اعلان"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "سرور باید بروزرسانی شود",
+    "WARNING_FOR_ADMIN": "به نظر می رسد که از سرور پشتیبانی نشده Chatwoot برای برنامه تلفن همراه خود استفاده می کنید. ارتقاء به نسخه سرور %{minimumVersion} یا بالاتر مورد نیاز است.",
+    "WARNING_FOR_AGENT": "به نظر می رسد که از سرور پشتیبانی نشده Chatwoot برای برنامه تلفن همراه خود استفاده می کنید. لطفاً برای ارتقاء سرور Chatwoot با مدیر سرور خود تماس بگیرید."
+  },
+  "SETTINGS": {
+    "ABOUT": "درباره",
+    "CHANGE_AVAILABILITY": "Set availability",
+    "CHANGE_LANGUAGE": "تغییر زبان",
+    "CHAT_WITH_US": "با ما گفتگو کنید",
+    "DEBUG_ACTIONS": "Debug Actions",
+    "HEADER_TITLE": "تنظیمات",
+    "LOGOUT": "خروج از حساب",
+    "NOTIFICATIONS": "اعلان ها",
+    "NOTIFICATION_PREFERENCES": "تنظیمات اعلان",
+    "PREFERENCES": "تنظیمات",
+    "READ_DOCS": "Read Docs",
+    "SET_AVAILABILITY": "خود را به عنوان",
+    "SET_LANGUAGE": "Set Language",
+    "SUBMIT": "ثبت",
+    "SUPPORT": "پشتیبانی",
+    "SWITCH_ACCOUNT": "سوییچ به یک حساب دیگر"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "MISSES": {
+      "FRT": "زمان تا اولین پاسخ",
+      "HIDE": "مخفی کردم {count} مورد",
+      "NRT": "زمان پاسخگویی بعدی",
+      "RT": "زمان تا حل شدن مساله",
+      "SHOW_MORE": "{count} بیشتر",
+      "TITLE": "SLA های از دست رفته"
+    },
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "DUE": "نقض",
+      "FRT": "FRT %{status}",
+      "MISSED": "از دست رفته",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}"
+    }
   },
   "SUCCESS": {
     "AUTH": "ورود موفق"
   },
-  "SERVER_UPGRADE": {
-    "TITLE": "سرور باید بروزرسانی شود",
-    "WARNING_FOR_AGENT": "به نظر می رسد که از سرور پشتیبانی نشده Chatwoot برای برنامه تلفن همراه خود استفاده می کنید. لطفاً برای ارتقاء سرور Chatwoot با مدیر سرور خود تماس بگیرید.",
-    "WARNING_FOR_ADMIN": "به نظر می رسد که از سرور پشتیبانی نشده Chatwoot برای برنامه تلفن همراه خود استفاده می کنید. ارتقاء به نسخه سرور %{minimumVersion} یا بالاتر مورد نیاز است."
+  "TEAMS": {
+    "CHANGE_TEAMS": "تیم مکالمه تغییر کرد",
+    "EMPTY": "لطفا تیم‌ها را به حساب‌کاربری خود اضافه کنید تا گفتگوها را به تیم‌ها اختصاص دهید.",
+    "TITLE": "تیم را انتخاب کنید"
   },
-  "EXIT": {
-    "TITLE": "خروج",
-    "SUBTITLE": "آیا مطمئن هستید که می خواهید خارج شوید؟",
-    "CANCEL": "انصراف",
-    "OK": "باشه"
-  },
-  "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "شما فقط می توانید با استفاده از یک پیام الگو به این مکالمه پاسخ دهید",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "محدودیت ۲۴ ساعته پنجره پیام",
-    "24_HOURS_WINDOW": "محدودیت ۲۴ ساعته پنجره پیام",
-    "CANNOT_REPLY": "شما نمی‌توانید پاسخ بدهید به دلیل"
-  },
-  "SLA": {
-    "FRT": "FRT",
-    "NRT": "NRT",
-    "RT": "RT",
-    "STATUS": {
-      "FRT": "FRT %{status}",
-      "NRT": "NRT %{status}",
-      "RT": "RT %{status}",
-      "MISSED": "از دست رفته",
-      "DUE": "نقض"
-    },
-    "MISSES": {
-      "TITLE": "SLA های از دست رفته",
-      "FRT": "زمان تا اولین پاسخ",
-      "NRT": "زمان پاسخگویی بعدی",
-      "RT": "زمان تا حل شدن مساله",
-      "SHOW_MORE": "{count} بیشتر",
-      "HIDE": "مخفی کردم {count} مورد"
-    }
-  },
-  "MACRO": {
-    "TITLE": "ماکروها",
-    "SELECT_MACRO": "Select macro",
-    "ACTIONS": {
-      "RUN": "Run"
-    },
-    "EXECUTION_SUCCESS": "ماکرو با موفقیت اجرا شد",
-    "EXECUTION_ERROR": "Macro execution failed",
-    "NO_MACROS": "هیچ ماکروی یافت نشد"
-  }
+  "WELCOME": "خوش آمدید"
 }

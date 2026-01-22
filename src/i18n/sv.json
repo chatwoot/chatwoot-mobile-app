@@ -1,458 +1,482 @@
 {
-  "WELCOME": "Välkommen",
+  "AGENT": {
+    "TITLE": "Välj agent"
+  },
+  "AVAILABILITY": {
+    "BUSY": "Upptagen",
+    "OFFLINE": "Offline",
+    "ONLINE": "Online"
+  },
+  "BANNER": {
+    "24_HOURS_WINDOW": "24 timmars meddelandebegränsning",
+    "CANNOT_REPLY": "Du kan inte svara på grund av",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 timmars meddelandebegränsning",
+    "TWILIO_WHATSAPP_CAN_REPLY": "Du kan bara svara på denna konversation med ett mallmeddelande på grund av"
+  },
   "COMMON": {
+    "CLOSE": "Stäng",
     "ERROR": "Fel",
     "ERROR_TITLE": "Oväntat fel inträffade",
-    "REPORT_MESSAGE": "Vi har rapporterat detta till vårt team! Vänligen stäng appen och börja om igen!",
-    "CLOSE": "Stäng"
-  },
-  "FOOTER": {
-    "HOME": "Hem",
-    "CONVERSATION": "Konversationer",
-    "NOTIFICATION": "Aviseringar",
-    "SETTINGS": "Inställningar"
+    "REPORT_MESSAGE": "Vi har rapporterat detta till vårt team! Vänligen stäng appen och börja om igen!"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "URL för installationen",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
-    "URL_ERROR": "Ange en giltig URL",
-    "URL_REQUIRED": "URL is required",
+    "CHANGE_LANGUAGE": "Byt språk",
     "CONNECT": "Anslut",
-    "CHANGE_LANGUAGE": "Byt språk",
-    "ERROR": "Ogiltig installations-URL"
+    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
+    "ENTER_URL": "URL för installationen",
+    "ERROR": "Ogiltig installations-URL",
+    "URL_ERROR": "Ange en giltig URL",
+    "URL_REQUIRED": "URL is required"
   },
-  "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
+  },
+  "CONTACT_DETAILS": {
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "Contact Attributes",
     "EMAIL": "E-post",
-    "PASSWORD": "Lösenord",
-    "EMAIL_REQUIRED": "Email is required",
-    "EMAIL_ERROR": "Ange en giltig e-postadress",
-    "PASSWORD_REQUIRED": "Password is required",
-    "PASSWORD_ERROR": "Ange ett giltigt lösenord",
-    "LOGIN": "Logga in",
-    "LOGIN_LOADING": "Signing In...",
-    "FORGOT_PASSWORD": "Glömt ditt lösenord?",
-    "RESET_HERE": "Återställ här",
-    "NO_ACCOUNT": "Har du inget konto?",
-    "CREATE_ACCOUNT": "Skapa nytt konto",
-    "SETTINGS": "Inställningar",
-    "CHANGE_LANGUAGE": "Byt språk",
-    "TERMS": "Allmänna villkor",
-    "CHANGE_URL": "Ändra URL"
-  },
-  "FORGOT_PASSWORD": {
-    "EMAIL": "Ange din e-postadress",
-    "EMAIL_ERROR": "Ange en giltig e-postadress",
-    "RESET_HERE": "Återställ lösenord",
-    "HEADER_TITLE": "Återställ lösenord",
-    "TITLE": "Glömt lösenordet?",
-    "SUB_TITLE": "Oroa dig inte! Vi löser det",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "PHONE_NUMBER": "Telefonnummer",
+    "TITLE": "Contact Details",
+    "VALUE_UNAVAILABLE": "Unavailable"
   },
   "CONVERSATION": {
-    "HEADER": {
-      "TITLE": "Konversationer",
-      "CLEAR_FILTER": "Clear"
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "ASSIGN": "Tilldela",
+        "EDIT": "Redigera",
+        "EMPTY": "Otilldelade"
+      },
+      "PRIORITY": {
+        "EDIT": "Redigera",
+        "EMPTY": "No priority added"
+      },
+      "TEAM": {
+        "ASSIGN": "Tilldela",
+        "EMPTY": "No team assigned"
+      }
     },
+    "ALL": "Alla",
+    "ALL_CONVERSATION_LOADED": "Alla konversationer laddade",
+    "ASSIGN": "Tilldela konversation",
+    "ASSIGNED_AGENT": "Assigned agent",
+    "ASSIGNEE": {
+      "AGENTS": {
+        "SEARCH_AGENT": "Sök efter agenter"
+      },
+      "LABELS": {
+        "SEARCH_LABELS": "Sök etiketter"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "OPTIONS": {
+          "ALL": "Alla",
+          "OPEN": "Öppna",
+          "PENDING": "Väntande",
+          "RESOLVED": "Löst",
+          "SNOOZED": "Pausad"
+        },
+        "TITLE": "Filter by status"
+      }
+    },
+    "ASSIGN_CHANGE": "Konversationstilldelning ändrad",
+    "ATTACHMENTS": {
+      "audio": {
+        "CONTENT": "Ljudmeddelande"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
+      },
+      "fallback": {
+        "CONTENT": "har delat en webbadress"
+      },
+      "file": {
+        "CONTENT": "Bifogad fil"
+      },
+      "image": {
+        "CONTENT": "Bildmeddelande"
+      },
+      "location": {
+        "CONTENT": "Plats"
+      },
+      "video": {
+        "CONTENT": "Videomeddelande"
+      }
+    },
+    "ATTACHMENT_CONTENT": "Bifogad fil",
+    "BOT": "Bot",
+    "CHANGE_PRIORITY": "Ändra prioritet",
+    "CHANGE_STATUS": "Change status",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "COPY_MESSAGE": "Meddelandet har kopierats till urklipp",
+    "DEFAULT_HEADER_TITLE": "Konversationer",
+    "DELETE_MESSAGE_SUB_TITLE": "Denna åtgärd kan inte ångras.",
+    "DELETE_MESSAGE_SUCCESS": "Meddelandet har tagits bort",
+    "DELETE_MESSAGE_TITLE": "Är du säker på att du vill radera detta meddelande?",
+    "DETAILS": "Details",
+    "DOWNLOAD": "Hämta",
+    "EMAIL_HEAD": {
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "TO": "Till"
+    },
+    "EMAIL_HEADER": {
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "EXPAND": "Expand email",
+      "FROM": "Från",
+      "SUBJECT": "Ämne",
+      "TO": "Till"
+    },
+    "EMPTY": "Det finns inga aktiva konversationer i denna grupp.",
+    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "Sök efter agenter"
+      },
+      "ASSIGNEE_TYPE": {
+        "OPTIONS": {
+          "ALL": "Alla",
+          "ME": "Me",
+          "UNASSIGNED": "Otilldelade"
+        },
+        "TITLE": "Filter by assignee type"
       },
       "INBOX": {
         "TITLE": "Filter by inbox"
       },
       "SORT_BY": {
-        "TITLE": "Sortera efter",
         "OPTIONS": {
           "LATEST": "Latest",
           "SORT_ON_CREATED_AT": "Created At",
           "SORT_ON_PRIORITY": "Prioritet"
-        }
+        },
+        "TITLE": "Sortera efter"
       },
       "STATUS": {
-        "TITLE": "Filter by status",
         "OPTIONS": {
+          "ALL": "Alla",
           "OPEN": "Öppna",
           "PENDING": "Väntande",
-          "SNOOZED": "Pausad",
           "RESOLVED": "Löst",
-          "ALL": "Alla"
-        }
-      },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Otilldelade",
-          "ALL": "Alla"
-        }
+          "SNOOZED": "Pausad"
+        },
+        "TITLE": "Filter by status"
       }
     },
-    "ASSIGNEE": {
-      "LABELS": {
-        "SEARCH_LABELS": "Sök etiketter"
-      },
-      "AGENTS": {
-        "SEARCH_AGENT": "Sök efter agenter"
-      },
-      "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
-        "OPTIONS": {
-          "OPEN": "Öppna",
-          "PENDING": "Väntande",
-          "SNOOZED": "Pausad",
-          "RESOLVED": "Löst",
-          "ALL": "Alla"
-        }
-      }
-    },
-    "DEFAULT_HEADER_TITLE": "Konversationer",
-    "UPDATING": "Updating...",
-    "MINE": "Mina",
-    "UN_ASSIGNED": "Otilldelade",
-    "ALL": "Alla",
-    "EMPTY": "Det finns inga aktiva konversationer i denna grupp.",
-    "PICTURE_CONTENT": "Bildmeddelande",
-    "ATTACHMENT_CONTENT": "Bifogad fil",
-    "DOWNLOAD": "Hämta",
-    "TODAY": "Idag",
-    "YESTERDAY": "Igår",
-    "TYPE_MESSAGE": "Skriv ett meddelande",
-    "TYPING": "skriver",
-    "ALL_CONVERSATION_LOADED": "Alla konversationer laddade",
-    "ASSIGN": "Tilldela konversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share conversation",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
-    "ASSIGNED_AGENT": "Assigned agent",
-    "TEAM": "Team",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
-    "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
-    },
-    "BOT": "Bot",
-    "EMAIL_HEAD": {
-      "TO": "Till",
-      "CC": "Cc",
-      "BCC": "Bcc"
-    },
-    "SELF_ASSIGN": "Tilldela mig",
-    "UN_ASSIGN": "Unassign conversation",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
-    "MARK_AS_PENDING": "Markera som väntande",
-    "SNOOZE_UNTIL": "Snooza tills",
-    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
-    "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
-    "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
-    "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Ändra prioritet",
-    "MESSAGES": "Messages",
-    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
-    "UNDEFINED_VARIABLES_CLOSE": "Stäng",
-    "DELETE_MESSAGE_TITLE": "Är du säker på att du vill radera detta meddelande?",
-    "DELETE_MESSAGE_SUB_TITLE": "Denna åtgärd kan inte ångras.",
-    "COPY_MESSAGE": "Meddelandet har kopierats till urklipp",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Meddelandet har tagits bort",
-    "NO_CONTENT": "Inget innehåll tillgängligt",
-    "ASSIGN_CHANGE": "Konversationstilldelning ändrad",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Sök efter team",
-    "PRIORITY": {
-      "TITLE": "Prioritet",
-      "OPTIONS": {
-        "NONE": "Inget",
-        "URGENT": "Brådskande",
-        "HIGH": "Hög",
-        "MEDIUM": "Medel",
-        "LOW": "Låg"
-      },
-      "CHANGE_PRIORITY": {
-        "SELECT_PLACEHOLDER": "Inget",
-        "INPUT_PLACEHOLDER": "Välj prioritet",
-        "NO_RESULTS": "Inga resultat hittades",
-        "SUCCESSFUL": "Ändrad prioritet för konversations-id %{conversationId} till %{priority}",
-        "FAILED": "Kunde inte ändra prioritet. Försök igen."
-      }
+    "HEADER": {
+      "CLEAR_FILTER": "Clear",
+      "TITLE": "Konversationer"
     },
     "ITEM": {
       "ASSIGN": "Tilldela",
       "STATUS": "Status"
     },
-    "ATTACHMENTS": {
-      "image": {
-        "CONTENT": "Bildmeddelande"
-      },
-      "audio": {
-        "CONTENT": "Ljudmeddelande"
-      },
-      "video": {
-        "CONTENT": "Videomeddelande"
-      },
-      "file": {
-        "CONTENT": "Bifogad fil"
-      },
-      "location": {
-        "CONTENT": "Plats"
-      },
-      "fallback": {
-        "CONTENT": "har delat en webbadress"
-      },
-      "contact": {
-        "CONTENT": "Shared a contact"
-      }
-    },
+    "LABELS": "Conversation labels",
     "LONG_PRESS_ACTIONS": {
       "COPY": "Kopiera",
-      "REPLY": "Svara",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "REPLY": "Svara"
     },
-    "EMAIL_HEADER": {
-      "FROM": "Från",
-      "TO": "Till",
-      "BCC": "Bcc",
-      "CC": "Cc",
-      "SUBJECT": "Ämne",
-      "EXPAND": "Expand email"
+    "MARK_AS_PENDING": "Markera som väntande",
+    "MESSAGES": "Messages",
+    "MINE": "Mina",
+    "NOT_FOUND": {
+      "BACK_TO_HOME": "Go back to home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again.",
+      "RETRY": "Retry",
+      "TITLE": "Unable to fetch conversation"
     },
-    "ACTIONS": {
-      "ASSIGNEE": {
-        "EMPTY": "Otilldelade",
-        "ASSIGN": "Tilldela",
-        "EDIT": "Redigera"
+    "NO_CONTENT": "Inget innehåll tillgängligt",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "PICTURE_CONTENT": "Bildmeddelande",
+    "PRIORITY": {
+      "CHANGE_PRIORITY": {
+        "FAILED": "Kunde inte ändra prioritet. Försök igen.",
+        "INPUT_PLACEHOLDER": "Välj prioritet",
+        "NO_RESULTS": "Inga resultat hittades",
+        "SELECT_PLACEHOLDER": "Inget",
+        "SUCCESSFUL": "Ändrad prioritet för konversations-id %{conversationId} till %{priority}"
       },
-      "TEAM": {
-        "EMPTY": "No team assigned",
-        "ASSIGN": "Tilldela"
+      "OPTIONS": {
+        "HIGH": "Hög",
+        "LOW": "Låg",
+        "MEDIUM": "Medel",
+        "NONE": "Inget",
+        "URGENT": "Brådskande"
       },
-      "PRIORITY": {
-        "EMPTY": "No priority added",
-        "EDIT": "Redigera"
-      }
-    }
-  },
-  "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
-    "SORT_BY": "Sortera efter",
-    "FILTER_BY_INBOX": "Filter by inbox",
-    "HEADER_TITLE": "Konversationsfilter",
-    "CHOOSE_INBOX": "Välj inkorg",
-    "CHOOSE_STATUS": "Konversationsstatus",
-    "OPEN": "Öppna",
-    "RESOLVED": "Löst",
-    "BOT": "Bot",
-    "SUBMIT": "Skicka",
-    "PENDING": "Pending",
-    "SNOOZED": "Snoozed"
-  },
-  "SETTINGS": {
-    "HEADER_TITLE": "Inställningar",
-    "SET_AVAILABILITY": "Set yourself as",
-    "CHANGE_AVAILABILITY": "Set availability",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
-    "SWITCH_ACCOUNT": "Byt konto",
-    "CHANGE_LANGUAGE": "Byt språk",
-    "NOTIFICATIONS": "Aviseringar",
-    "NOTIFICATION_PREFERENCES": "Aviseringsinställningar",
-    "READ_DOCS": "Read Docs",
-    "CHAT_WITH_US": "Chatta med oss",
-    "LOGOUT": "Logga ut",
-    "SUBMIT": "Skicka",
-    "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
-  },
-  "NOTIFICATION": {
-    "HEADER_TITLE": "Aviseringar",
-    "INBOX": "Inkorg",
-    "EMPTY": "Inga aviseringar ännu.",
-    "EMPTY_MORE_TEXT": "När du väl börjat att ta emot aviseringar, kommer de att visas här.",
-    "ALL_NOTIFICATION_LOADED": "Alla aviseringar laddade",
-    "MARK_ALL": "Markera alla som lästa",
-    "CANCEL": "Avbryt",
-    "DELETE": "Radera",
-    "TYPES": {
-      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
-      "CONVERSATION_CREATION": "New conversation created",
-      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
-      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
-      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+      "TITLE": "Prioritet"
     },
-    "FILTERS": {
-      "SORT_BY": {
-        "TITLE": "Sortera efter",
-        "OPTIONS": {
-          "ASC": "Oldest",
-          "DESC": "Newest"
-        }
-      }
-    },
-    "ALERTS": {
-      "MARK_AS_READ": "Notification marked as read",
-      "MARK_AS_UNREAD": "Notification marked as unread",
-      "SNOOZE": "Notification snoozed",
-      "DELETE": "Notification deleted",
-      "MARK_ALL_READ": "All notifications marked as read",
-      "DELETE_ALL": "All notifications deleted",
-      "DELETE_ALL_READ": "All read notifications deleted"
-    }
-  },
-  "AVAILABILITY": {
-    "ONLINE": "Online",
-    "BUSY": "Upptagen",
-    "OFFLINE": "Offline"
-  },
-  "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Aviseringsinställningar",
-    "EMAIL": "E-postaviseringar",
-    "PUSH": "Push-notiser",
-    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
-    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
-  },
-  "CONVERSATION_DETAILS": {
-    "TITLE": "Attributes",
-    "BROWSER": "Webbläsare",
-    "OPERATING_SYSTEM": "Operativsystem",
-    "INITIATED_AT": "Initierad",
-    "INITIATED_FROM": "Initierad från",
-    "IP_ADDRESS": "IP-adress",
-    "CONVERSATION_ID": "Conversation ID",
-    "CLIPBOARD_SUCCESS": "Koden har kopierats till urklipp"
-  },
-  "CONTACT_DETAILS": {
-    "TITLE": "Contact Details",
-    "EMAIL": "E-post",
-    "PHONE_NUMBER": "Telefonnummer",
-    "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Contact Attributes",
-    "VALUE_UNAVAILABLE": "Unavailable"
-  },
-  "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
-    "TOTAL_PARTICIPANTS_TEXT": "%{count} personer deltar.",
-    "TOTAL_PARTICIPANT_TEXT": "%{count} person deltar.",
-    "NO_PARTICIPANTS_TEXT": "Ingen deltar!.",
-    "WATCH_CONVERSATION": "Gå med i konversation",
-    "YOU_ARE_WATCHING": "Du deltar",
-    "NO_RECORDS_FOUND": "Inga resultat hittades",
-    "SELECT_PARTICIPANTS": "Välj agenter",
-    "ADD_PARTICIPANTS": "Välj deltagare",
-    "REMAINING_PARTICIPANTS_TEXT": "andra",
-    "REMAINING_PARTICIPANT_TEXT": "annan",
-    "ADD_PARTICIPANT": "Add Participant"
-  },
-  "CONTACT_ATTRIBUTES": {
-    "TITLE": "Contact Attributes"
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "SEARCH_PLACEHOLDER": "Sök konversationer...",
+    "SEARCH_TEAM": "Sök efter team",
+    "SELF_ASSIGN": "Tilldela mig",
+    "SHARE": "Share conversation",
+    "SNOOZE": "Snooze conversation",
+    "SNOOZE_UNTIL": "Snooza tills",
+    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
+    "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
+    "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "TEAM": "Team",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "TODAY": "Idag",
+    "TYPE_MESSAGE": "Skriv ett meddelande",
+    "TYPING": "skriver",
+    "UNDEFINED_VARIABLES_CLOSE": "Stäng",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "UN_ASSIGN": "Unassign conversation",
+    "UN_ASSIGNED": "Otilldelade",
+    "UPDATING": "Updating...",
+    "YESTERDAY": "Igår"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Åtgärder"
   },
-  "CONVERSATION_TEAMS": {
-    "TITLE": "Assign team",
-    "SELECT_TEAM": "Välj team",
-    "NO_RESULT": "No team found"
+  "CONVERSATION_AGENTS": {
+    "NO_RESULT": "No agent found",
+    "SELECT_AGENT": "Välj agent",
+    "TITLE": "Assign agent"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Webbläsare",
+    "CLIPBOARD_SUCCESS": "Koden har kopierats till urklipp",
+    "CONVERSATION_ID": "Conversation ID",
+    "INITIATED_AT": "Initierad",
+    "INITIATED_FROM": "Initierad från",
+    "IP_ADDRESS": "IP-adress",
+    "OPERATING_SYSTEM": "Operativsystem",
+    "TITLE": "Attributes"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "Etiketter för konversation",
     "ADD_LABEL": "Lägg till etiketter",
     "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Etiketten har uppdaterats",
-    "SELECTED": "Selected",
     "NOT_SELECTED": "No labels selected",
-    "NO_RESULT": "Inga etiketter hittades"
+    "NO_LABEL": "No labels assigned",
+    "NO_RESULT": "Inga etiketter hittades",
+    "SELECTED": "Selected",
+    "TITLE": "Etiketter för konversation",
+    "UPDATE_LABEL": "Etiketten har uppdaterats"
   },
-  "CONVERSATION_AGENTS": {
-    "TITLE": "Assign agent",
-    "SELECT_AGENT": "Välj agent",
-    "NO_RESULT": "No agent found"
+  "CONVERSATION_PARTICIPANTS": {
+    "ADD_PARTICIPANT": "Add Participant",
+    "ADD_PARTICIPANTS": "Välj deltagare",
+    "NO_PARTICIPANTS_TEXT": "Ingen deltar!.",
+    "NO_RECORDS_FOUND": "Inga resultat hittades",
+    "REMAINING_PARTICIPANTS_TEXT": "andra",
+    "REMAINING_PARTICIPANT_TEXT": "annan",
+    "SELECT_PARTICIPANTS": "Välj agenter",
+    "TITLE": "Participants",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} personer deltar.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} person deltar.",
+    "WATCH_CONVERSATION": "Gå med i konversation",
+    "YOU_ARE_WATCHING": "Du deltar"
   },
-  "AGENT": {
-    "TITLE": "Välj agent"
-  },
-  "TEAMS": {
-    "TITLE": "Select Team",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
-    "CHANGE_TEAMS": "Konversationsteamet har ändrats"
+  "CONVERSATION_TEAMS": {
+    "NO_RESULT": "No team found",
+    "SELECT_TEAM": "Välj team",
+    "TITLE": "Assign team"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
-    "OfFLINE": "Du måste ansluta till Wi-Fi eller ett mobilnätverk för att gå online igen",
-    "CANNOT_FETCH": "Det uppstod ett fel när informationen skulle hämtas, försök igen",
     "AUTH": "Användarnamn / Lösenord felaktigt. Försök igen",
-    "NO_ACCOUNTS_MESSAGE": "Du har inte tillgång till några chatwoot-konton"
+    "CANNOT_FETCH": "Det uppstod ett fel när informationen skulle hämtas, försök igen",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "NO_ACCOUNTS_MESSAGE": "Du har inte tillgång till några chatwoot-konton",
+    "OfFLINE": "Du måste ansluta till Wi-Fi eller ett mobilnätverk för att gå online igen"
+  },
+  "EXIT": {
+    "CANCEL": "Avbryt",
+    "OK": "Okej",
+    "SUBTITLE": "Är du säker på att du vill avsluta?",
+    "TITLE": "Avsluta"
+  },
+  "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "BOT": "Bot",
+    "CHOOSE_INBOX": "Välj inkorg",
+    "CHOOSE_STATUS": "Konversationsstatus",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
+    "HEADER_TITLE": "Konversationsfilter",
+    "OPEN": "Öppna",
+    "PENDING": "Pending",
+    "RESOLVED": "Löst",
+    "SNOOZED": "Snoozed",
+    "SORT_BY": "Sortera efter",
+    "SUBMIT": "Skicka"
+  },
+  "FOOTER": {
+    "CONVERSATION": "Konversationer",
+    "HOME": "Hem",
+    "NOTIFICATION": "Aviseringar",
+    "SETTINGS": "Inställningar"
+  },
+  "FORGOT_PASSWORD": {
+    "API_SUCCESS": "Password reset link has been sent to your email address",
+    "EMAIL": "Ange din e-postadress",
+    "EMAIL_ERROR": "Ange en giltig e-postadress",
+    "HEADER_TITLE": "Återställ lösenord",
+    "RESET_HERE": "Återställ lösenord",
+    "SUB_TITLE": "Oroa dig inte! Vi löser det",
+    "TITLE": "Glömt lösenordet?"
+  },
+  "LOGIN": {
+    "CHANGE_LANGUAGE": "Byt språk",
+    "CHANGE_URL": "Ändra URL",
+    "CREATE_ACCOUNT": "Skapa nytt konto",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "EMAIL": "E-post",
+    "EMAIL_ERROR": "Ange en giltig e-postadress",
+    "EMAIL_REQUIRED": "Email is required",
+    "FORGOT_PASSWORD": "Glömt ditt lösenord?",
+    "LOGIN": "Logga in",
+    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Logga in via SSO",
+    "NO_ACCOUNT": "Har du inget konto?",
+    "PASSWORD": "Lösenord",
+    "PASSWORD_ERROR": "Ange ett giltigt lösenord",
+    "PASSWORD_REQUIRED": "Password is required",
+    "RESET_HERE": "Återställ här",
+    "SETTINGS": "Inställningar",
+    "SSO_AUTH_FAILED": "SSO-autentisering misslyckades. Kontrollera dina uppgifter och försök igen.",
+    "SSO_INVALID_RESPONSE": "Ogiltigt SSO-svar. Försök igen.",
+    "SSO_UNEXPECTED_ERROR": "Ett oväntat fel uppstod under SSO-inloggning. Försök igen.",
+    "TERMS": "Allmänna villkor",
+    "TITLE": "Log in to your account"
+  },
+  "MACRO": {
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_ERROR": "Macro execution failed",
+    "EXECUTION_SUCCESS": "Macro executed successfully",
+    "NO_MACROS": "No macros found",
+    "SELECT_MACRO": "Select macro",
+    "TITLE": "Macros"
+  },
+  "MFA": {
+    "BUTTONS": {
+      "VERIFY": "Verifiera",
+      "VERIFYING": "Verifierar..."
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Ange den 6-siffriga koden från din autentiseringsapp",
+      "BACKUP": "Ange en av dina reservkoder"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Ange reservkod"
+    },
+    "TABS": {
+      "AUTHENTICATOR_APP": "Autentiseringsapp",
+      "BACKUP_CODE": "Reservkod"
+    },
+    "TITLE": "Tvåfaktorsautentisering"
+  },
+  "NOTIFICATION": {
+    "ALERTS": {
+      "DELETE": "Notification deleted",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed"
+    },
+    "ALL_NOTIFICATION_LOADED": "Alla aviseringar laddade",
+    "CANCEL": "Avbryt",
+    "DELETE": "Radera",
+    "EMPTY": "Inga aviseringar ännu.",
+    "EMPTY_MORE_TEXT": "När du väl börjat att ta emot aviseringar, kommer de att visas här.",
+    "FILTERS": {
+      "SORT_BY": {
+        "OPTIONS": {
+          "ASC": "Oldest",
+          "DESC": "Newest"
+        },
+        "TITLE": "Sortera efter"
+      }
+    },
+    "HEADER_TITLE": "Aviseringar",
+    "INBOX": "Inkorg",
+    "MARK_ALL": "Markera alla som lästa",
+    "SEARCH_PLACEHOLDER": "Sök aviseringar...",
+    "TYPES": {
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
+      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
+      "CONVERSATION_CREATION": "New conversation created",
+      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    }
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA",
+    "EMAIL": "E-postaviseringar",
+    "PUSH": "Push-notiser",
+    "TITLE": "Aviseringsinställningar"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "Server upgrade required",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required.",
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server."
+  },
+  "SETTINGS": {
+    "ABOUT": "About",
+    "CHANGE_AVAILABILITY": "Set availability",
+    "CHANGE_LANGUAGE": "Byt språk",
+    "CHAT_WITH_US": "Chatta med oss",
+    "DEBUG_ACTIONS": "Debug Actions",
+    "HEADER_TITLE": "Inställningar",
+    "LOGOUT": "Logga ut",
+    "NOTIFICATIONS": "Aviseringar",
+    "NOTIFICATION_PREFERENCES": "Aviseringsinställningar",
+    "PREFERENCES": "Preferences",
+    "READ_DOCS": "Read Docs",
+    "SET_AVAILABILITY": "Set yourself as",
+    "SET_LANGUAGE": "Set Language",
+    "SUBMIT": "Skicka",
+    "SUPPORT": "Support",
+    "SWITCH_ACCOUNT": "Byt konto"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "MISSES": {
+      "FRT": "Första svarstiden",
+      "HIDE": "Hide {count} rows",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "TITLE": "SLA Misses"
+    },
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "DUE": "due",
+      "FRT": "FRT %{status}",
+      "MISSED": "missed",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}"
+    }
   },
   "SUCCESS": {
     "AUTH": "Inloggning lyckades"
   },
-  "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+  "TEAMS": {
+    "CHANGE_TEAMS": "Konversationsteamet har ändrats",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "TITLE": "Select Team"
   },
-  "EXIT": {
-    "TITLE": "Avsluta",
-    "SUBTITLE": "Är du säker på att du vill avsluta?",
-    "CANCEL": "Avbryt",
-    "OK": "Okej"
-  },
-  "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "Du kan bara svara på denna konversation med ett mallmeddelande på grund av",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 timmars meddelandebegränsning",
-    "24_HOURS_WINDOW": "24 timmars meddelandebegränsning",
-    "CANNOT_REPLY": "Du kan inte svara på grund av"
-  },
-  "SLA": {
-    "FRT": "FRT",
-    "NRT": "NRT",
-    "RT": "RT",
-    "STATUS": {
-      "FRT": "FRT %{status}",
-      "NRT": "NRT %{status}",
-      "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "due"
-    },
-    "MISSES": {
-      "TITLE": "SLA Misses",
-      "FRT": "Första svarstiden",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
-    }
-  },
-  "MACRO": {
-    "TITLE": "Macros",
-    "SELECT_MACRO": "Select macro",
-    "ACTIONS": {
-      "RUN": "Run"
-    },
-    "EXECUTION_SUCCESS": "Macro executed successfully",
-    "EXECUTION_ERROR": "Macro execution failed",
-    "NO_MACROS": "No macros found"
-  }
+  "WELCOME": "Välkommen"
 }

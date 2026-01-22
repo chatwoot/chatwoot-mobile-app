@@ -1,458 +1,482 @@
 {
-  "WELCOME": "어서오세요",
+  "AGENT": {
+    "TITLE": "에이전트 선택"
+  },
+  "AVAILABILITY": {
+    "BUSY": "바쁨",
+    "OFFLINE": "오프라인",
+    "ONLINE": "온라인"
+  },
+  "BANNER": {
+    "24_HOURS_WINDOW": "24시간 메시지 창 제한",
+    "CANNOT_REPLY": "당신은 답장을 할 수 없습니다",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24시간 메시지 창 제한",
+    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to"
+  },
   "COMMON": {
+    "CLOSE": "닫기",
     "ERROR": "에러",
     "ERROR_TITLE": "예상치 못한 에러 발견",
-    "REPORT_MESSAGE": "저희 팀으로 신고접수가 완료되었습니다! 곧 처리될 예정이며, 어플을 닫고 다시 시작해주세요!",
-    "CLOSE": "닫기"
-  },
-  "FOOTER": {
-    "HOME": "홈",
-    "CONVERSATION": "대화",
-    "NOTIFICATION": "알림",
-    "SETTINGS": "설정"
+    "REPORT_MESSAGE": "저희 팀으로 신고접수가 완료되었습니다! 곧 처리될 예정이며, 어플을 닫고 다시 시작해주세요!"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "설치 URL",
-    "DESCRIPTION": "만약 자체 호스팅한 Chatwoot 설치를 사용하는 경우 서버 링크를 입력하세요. 그렇지 않으면 app.chatwoot.com을 사용하세요.",
-    "URL_ERROR": "유효한 URL을 입력해주세요",
-    "URL_REQUIRED": "링크가 필요합니다",
+    "CHANGE_LANGUAGE": "언어 바꾸기",
     "CONNECT": "연결",
-    "CHANGE_LANGUAGE": "언어 바꾸기",
-    "ERROR": "유효하지 않은 설치 URL"
+    "DESCRIPTION": "만약 자체 호스팅한 Chatwoot 설치를 사용하는 경우 서버 링크를 입력하세요. 그렇지 않으면 app.chatwoot.com을 사용하세요.",
+    "ENTER_URL": "설치 URL",
+    "ERROR": "유효하지 않은 설치 URL",
+    "URL_ERROR": "유효한 URL을 입력해주세요",
+    "URL_REQUIRED": "링크가 필요합니다"
   },
-  "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "연락처 속성"
+  },
+  "CONTACT_DETAILS": {
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "연락처 속성",
     "EMAIL": "이메일",
-    "PASSWORD": "비밀번호",
-    "EMAIL_REQUIRED": "이메일이 필요합니다",
-    "EMAIL_ERROR": "유효한 이메일을 입력해주세요",
-    "PASSWORD_REQUIRED": "비밀번호가 필요합니다",
-    "PASSWORD_ERROR": "유효한 비밀번호를 입력해주세요",
-    "LOGIN": "가입하기",
-    "LOGIN_LOADING": "Signing In...",
-    "FORGOT_PASSWORD": "암호를 잊으셨나요?",
-    "RESET_HERE": "리셋 시키기",
-    "NO_ACCOUNT": "계정이 없으신가요?",
-    "CREATE_ACCOUNT": "계정 생성",
-    "SETTINGS": "설정",
-    "CHANGE_LANGUAGE": "언어 바꾸기",
-    "TERMS": "이용약관",
-    "CHANGE_URL": "URL 바꾸기"
-  },
-  "FORGOT_PASSWORD": {
-    "EMAIL": "이메일 주소를 입력하세요.",
-    "EMAIL_ERROR": "유효한 이메일을 입력해주세요",
-    "RESET_HERE": "비밀번호 재설정하기",
-    "HEADER_TITLE": "비밀번호 재설정하기",
-    "TITLE": "비밀번호를 잊으셨나요?",
-    "SUB_TITLE": "걱정마세요! 저희가 있잖아요",
-    "API_SUCCESS": "비밀번호 재설정 링크가 이메일로 전송되었습니다"
+    "PHONE_NUMBER": "전화 번호",
+    "TITLE": "Contact Details",
+    "VALUE_UNAVAILABLE": "영업 종료"
   },
   "CONVERSATION": {
-    "HEADER": {
-      "TITLE": "대화",
-      "CLEAR_FILTER": "Clear"
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "ASSIGN": "할당하다",
+        "EDIT": "수정",
+        "EMPTY": "지정되지 않음"
+      },
+      "PRIORITY": {
+        "EDIT": "수정",
+        "EMPTY": "No priority added"
+      },
+      "TEAM": {
+        "ASSIGN": "할당하다",
+        "EMPTY": "No team assigned"
+      }
     },
+    "ALL": "모두",
+    "ALL_CONVERSATION_LOADED": "모든 대화가 불러와졌음",
+    "ASSIGN": "대화에 참여시키기",
+    "ASSIGNED_AGENT": "Assigned agent",
+    "ASSIGNEE": {
+      "AGENTS": {
+        "SEARCH_AGENT": "에이전트 찾기"
+      },
+      "LABELS": {
+        "SEARCH_LABELS": "라벨 찾기"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "OPTIONS": {
+          "ALL": "모두",
+          "OPEN": "열기",
+          "PENDING": "보내는 중",
+          "RESOLVED": "해결됨",
+          "SNOOZED": "일시 중지됨"
+        },
+        "TITLE": "Filter by status"
+      }
+    },
+    "ASSIGN_CHANGE": "대화 담당자가 변경됨",
+    "ATTACHMENTS": {
+      "audio": {
+        "CONTENT": "음성 메시지"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
+      },
+      "fallback": {
+        "CONTENT": "URL을 공유함"
+      },
+      "file": {
+        "CONTENT": "파일 첨부"
+      },
+      "image": {
+        "CONTENT": "사진 메시지"
+      },
+      "location": {
+        "CONTENT": "장소"
+      },
+      "video": {
+        "CONTENT": "영상 메시지"
+      }
+    },
+    "ATTACHMENT_CONTENT": "파일 첨부",
+    "BOT": "봇",
+    "CHANGE_PRIORITY": "Change priority",
+    "CHANGE_STATUS": "Change status",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "DEFAULT_HEADER_TITLE": "대화",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
+    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
+    "DETAILS": "Details",
+    "DOWNLOAD": "다운로드",
+    "EMAIL_HEAD": {
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "TO": "~~에게"
+    },
+    "EMAIL_HEADER": {
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "EXPAND": "Expand email",
+      "FROM": "From",
+      "SUBJECT": "Subject",
+      "TO": "~~에게"
+    },
+    "EMPTY": "이 그룹에는 활성 대화가 없습니다.",
+    "FILE_SIZE_LIMIT": "파일이 5MB 첨부 파일 제한을 초과했습니다.",
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "에이전트 찾기"
+      },
+      "ASSIGNEE_TYPE": {
+        "OPTIONS": {
+          "ALL": "모두",
+          "ME": "Me",
+          "UNASSIGNED": "지정되지 않음"
+        },
+        "TITLE": "Filter by assignee type"
       },
       "INBOX": {
         "TITLE": "Filter by inbox"
       },
       "SORT_BY": {
-        "TITLE": "Sort by",
         "OPTIONS": {
           "LATEST": "Latest",
           "SORT_ON_CREATED_AT": "에 만들어짐",
           "SORT_ON_PRIORITY": "Priority"
-        }
+        },
+        "TITLE": "Sort by"
       },
       "STATUS": {
-        "TITLE": "Filter by status",
         "OPTIONS": {
+          "ALL": "모두",
           "OPEN": "열기",
           "PENDING": "보내는 중",
-          "SNOOZED": "일시 중지됨",
           "RESOLVED": "해결됨",
-          "ALL": "모두"
-        }
-      },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "지정되지 않음",
-          "ALL": "모두"
-        }
+          "SNOOZED": "일시 중지됨"
+        },
+        "TITLE": "Filter by status"
       }
     },
-    "ASSIGNEE": {
-      "LABELS": {
-        "SEARCH_LABELS": "라벨 찾기"
-      },
-      "AGENTS": {
-        "SEARCH_AGENT": "에이전트 찾기"
-      },
-      "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
-        "OPTIONS": {
-          "OPEN": "열기",
-          "PENDING": "보내는 중",
-          "SNOOZED": "일시 중지됨",
-          "RESOLVED": "해결됨",
-          "ALL": "모두"
-        }
-      }
-    },
-    "DEFAULT_HEADER_TITLE": "대화",
-    "UPDATING": "Updating...",
-    "MINE": "나에게 할당",
-    "UN_ASSIGNED": "지정되지 않음",
-    "ALL": "모두",
-    "EMPTY": "이 그룹에는 활성 대화가 없습니다.",
-    "PICTURE_CONTENT": "사진 메시지",
-    "ATTACHMENT_CONTENT": "파일 첨부",
-    "DOWNLOAD": "다운로드",
-    "TODAY": "오늘",
-    "YESTERDAY": "어제",
-    "TYPE_MESSAGE": "메시지 쓰기",
-    "TYPING": "쓰는 중",
-    "ALL_CONVERSATION_LOADED": "모든 대화가 불러와졌음",
-    "ASSIGN": "대화에 참여시키기",
-    "FILE_SIZE_LIMIT": "파일이 5MB 첨부 파일 제한을 초과했습니다.",
-    "SHARE": "대화 공유하기",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
-    "ASSIGNED_AGENT": "Assigned agent",
-    "TEAM": "Team",
-    "PRIVATE_MSG_INPUT": "이건 에이전트에게만 보일것입니다",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
-    "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
-    },
-    "BOT": "봇",
-    "EMAIL_HEAD": {
-      "TO": "~~에게",
-      "CC": "Cc",
-      "BCC": "Bcc"
-    },
-    "SELF_ASSIGN": "Assign to me",
-    "UN_ASSIGN": "대화에서 제외시키기",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
-    "MARK_AS_PENDING": "Mark as pending",
-    "SNOOZE_UNTIL": "Snooze until",
-    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
-    "SNOOZE_UNTIL_TOMORROW": "내일까지",
-    "SNOOZE_UNTIL_NEXT_WEEK": "다음 주까지",
-    "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Change priority",
-    "MESSAGES": "메시지",
-    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
-    "UNDEFINED_VARIABLES_CLOSE": "닫기",
-    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Message deleted successfully",
-    "NO_CONTENT": "콘텐츠 이용 불가",
-    "ASSIGN_CHANGE": "대화 담당자가 변경됨",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "팀 찾기",
-    "PRIORITY": {
-      "TITLE": "Priority",
-      "OPTIONS": {
-        "NONE": "없음",
-        "URGENT": "Urgent",
-        "HIGH": "High",
-        "MEDIUM": "Medium",
-        "LOW": "Low"
-      },
-      "CHANGE_PRIORITY": {
-        "SELECT_PLACEHOLDER": "없음",
-        "INPUT_PLACEHOLDER": "Select priority",
-        "NO_RESULTS": "검색 결과가 없습니다",
-        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
-        "FAILED": "Couldn't change priority. Please try again."
-      }
+    "HEADER": {
+      "CLEAR_FILTER": "Clear",
+      "TITLE": "대화"
     },
     "ITEM": {
       "ASSIGN": "할당하다",
       "STATUS": "상태"
     },
-    "ATTACHMENTS": {
-      "image": {
-        "CONTENT": "사진 메시지"
-      },
-      "audio": {
-        "CONTENT": "음성 메시지"
-      },
-      "video": {
-        "CONTENT": "영상 메시지"
-      },
-      "file": {
-        "CONTENT": "파일 첨부"
-      },
-      "location": {
-        "CONTENT": "장소"
-      },
-      "fallback": {
-        "CONTENT": "URL을 공유함"
-      },
-      "contact": {
-        "CONTENT": "Shared a contact"
-      }
-    },
+    "LABELS": "Conversation labels",
     "LONG_PRESS_ACTIONS": {
       "COPY": "복사",
-      "REPLY": "답글",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "REPLY": "답글"
     },
-    "EMAIL_HEADER": {
-      "FROM": "From",
-      "TO": "~~에게",
-      "BCC": "Bcc",
-      "CC": "Cc",
-      "SUBJECT": "Subject",
-      "EXPAND": "Expand email"
+    "MARK_AS_PENDING": "Mark as pending",
+    "MESSAGES": "메시지",
+    "MINE": "나에게 할당",
+    "NOT_FOUND": {
+      "BACK_TO_HOME": "Go back to home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again.",
+      "RETRY": "Retry",
+      "TITLE": "Unable to fetch conversation"
     },
-    "ACTIONS": {
-      "ASSIGNEE": {
-        "EMPTY": "지정되지 않음",
-        "ASSIGN": "할당하다",
-        "EDIT": "수정"
+    "NO_CONTENT": "콘텐츠 이용 불가",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "PICTURE_CONTENT": "사진 메시지",
+    "PRIORITY": {
+      "CHANGE_PRIORITY": {
+        "FAILED": "Couldn't change priority. Please try again.",
+        "INPUT_PLACEHOLDER": "Select priority",
+        "NO_RESULTS": "검색 결과가 없습니다",
+        "SELECT_PLACEHOLDER": "없음",
+        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}"
       },
-      "TEAM": {
-        "EMPTY": "No team assigned",
-        "ASSIGN": "할당하다"
+      "OPTIONS": {
+        "HIGH": "High",
+        "LOW": "Low",
+        "MEDIUM": "Medium",
+        "NONE": "없음",
+        "URGENT": "Urgent"
       },
-      "PRIORITY": {
-        "EMPTY": "No priority added",
-        "EDIT": "수정"
-      }
-    }
-  },
-  "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
-    "SORT_BY": "Sort by",
-    "FILTER_BY_INBOX": "Filter by inbox",
-    "HEADER_TITLE": "대화 필터",
-    "CHOOSE_INBOX": "받은 편지함 선택하기",
-    "CHOOSE_STATUS": "대화 상태",
-    "OPEN": "열기",
-    "RESOLVED": "해결됨",
-    "BOT": "봇",
-    "SUBMIT": "보내기",
-    "PENDING": "보내는 중",
-    "SNOOZED": "일시 중지됨"
-  },
-  "SETTINGS": {
-    "HEADER_TITLE": "설정",
-    "SET_AVAILABILITY": "Set yourself as",
-    "CHANGE_AVAILABILITY": "Set availability",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
-    "SWITCH_ACCOUNT": "계정 전환",
-    "CHANGE_LANGUAGE": "언어 바꾸기",
-    "NOTIFICATIONS": "알림",
-    "NOTIFICATION_PREFERENCES": "알림 기본 설정",
-    "READ_DOCS": "Read Docs",
-    "CHAT_WITH_US": "채팅하기",
-    "LOGOUT": "로그아웃",
-    "SUBMIT": "보내기",
-    "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
-  },
-  "NOTIFICATION": {
-    "HEADER_TITLE": "알림",
-    "INBOX": "받은 메시지함",
-    "EMPTY": "알림 없음.",
-    "EMPTY_MORE_TEXT": "알림이 온다면, 여기서 나타날 겁니다",
-    "ALL_NOTIFICATION_LOADED": "모든 알림이 불러와졌음",
-    "MARK_ALL": "전부 읽음으로 바꾸기",
-    "CANCEL": "취소",
-    "DELETE": "삭제",
-    "TYPES": {
-      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
-      "CONVERSATION_CREATION": "New conversation created",
-      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
-      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
-      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+      "TITLE": "Priority"
     },
-    "FILTERS": {
-      "SORT_BY": {
-        "TITLE": "Sort by",
-        "OPTIONS": {
-          "ASC": "Oldest",
-          "DESC": "Newest"
-        }
-      }
-    },
-    "ALERTS": {
-      "MARK_AS_READ": "Notification marked as read",
-      "MARK_AS_UNREAD": "Notification marked as unread",
-      "SNOOZE": "Notification snoozed",
-      "DELETE": "Notification deleted",
-      "MARK_ALL_READ": "All notifications marked as read",
-      "DELETE_ALL": "All notifications deleted",
-      "DELETE_ALL_READ": "All read notifications deleted"
-    }
-  },
-  "AVAILABILITY": {
-    "ONLINE": "온라인",
-    "BUSY": "바쁨",
-    "OFFLINE": "오프라인"
-  },
-  "NOTIFICATION_PREFERENCE": {
-    "TITLE": "알림 기본 설정",
-    "EMAIL": "이메일 알림",
-    "PUSH": "푸시 알림",
-    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
-    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
-  },
-  "CONVERSATION_DETAILS": {
-    "TITLE": "Attributes",
-    "BROWSER": "브라우저",
-    "OPERATING_SYSTEM": "운영 체제",
-    "INITIATED_AT": "시작 시간",
-    "INITIATED_FROM": "시작 위치",
-    "IP_ADDRESS": "IP 주소",
-    "CONVERSATION_ID": "Conversation ID",
-    "CLIPBOARD_SUCCESS": "코드가 클립보드에 복사됨"
-  },
-  "CONTACT_DETAILS": {
-    "TITLE": "Contact Details",
-    "EMAIL": "이메일",
-    "PHONE_NUMBER": "전화 번호",
-    "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "연락처 속성",
-    "VALUE_UNAVAILABLE": "영업 종료"
-  },
-  "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
-    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
-    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
-    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
-    "WATCH_CONVERSATION": "Join conversation",
-    "YOU_ARE_WATCHING": "You are participating",
-    "NO_RECORDS_FOUND": "검색 결과가 없습니다",
-    "SELECT_PARTICIPANTS": "Select agents",
-    "ADD_PARTICIPANTS": "Select participants",
-    "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other",
-    "ADD_PARTICIPANT": "Add Participant"
-  },
-  "CONTACT_ATTRIBUTES": {
-    "TITLE": "연락처 속성"
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PRIVATE_MSG_INPUT": "이건 에이전트에게만 보일것입니다",
+    "SEARCH_PLACEHOLDER": "대화 검색...",
+    "SEARCH_TEAM": "팀 찾기",
+    "SELF_ASSIGN": "Assign to me",
+    "SHARE": "대화 공유하기",
+    "SNOOZE": "Snooze conversation",
+    "SNOOZE_UNTIL": "Snooze until",
+    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
+    "SNOOZE_UNTIL_NEXT_WEEK": "다음 주까지",
+    "SNOOZE_UNTIL_TOMORROW": "내일까지",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "TEAM": "Team",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "TODAY": "오늘",
+    "TYPE_MESSAGE": "메시지 쓰기",
+    "TYPING": "쓰는 중",
+    "UNDEFINED_VARIABLES_CLOSE": "닫기",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "UN_ASSIGN": "대화에서 제외시키기",
+    "UN_ASSIGNED": "지정되지 않음",
+    "UPDATING": "Updating...",
+    "YESTERDAY": "어제"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "액션"
   },
-  "CONVERSATION_TEAMS": {
-    "TITLE": "Assign team",
-    "SELECT_TEAM": "팀 선택",
-    "NO_RESULT": "No team found"
+  "CONVERSATION_AGENTS": {
+    "NO_RESULT": "No agent found",
+    "SELECT_AGENT": "에이전트 선택",
+    "TITLE": "Assign agent"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "브라우저",
+    "CLIPBOARD_SUCCESS": "코드가 클립보드에 복사됨",
+    "CONVERSATION_ID": "Conversation ID",
+    "INITIATED_AT": "시작 시간",
+    "INITIATED_FROM": "시작 위치",
+    "IP_ADDRESS": "IP 주소",
+    "OPERATING_SYSTEM": "운영 체제",
+    "TITLE": "Attributes"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "대화 라벨",
     "ADD_LABEL": "라벨 추가하기",
     "EMPTY_LIST": "계정에 라벨을 추가해주세요",
-    "NO_LABEL": "할당된 라벨 없음",
-    "UPDATE_LABEL": "라벨이 성공적으로 업데이트됨",
-    "SELECTED": "Selected",
     "NOT_SELECTED": "No labels selected",
-    "NO_RESULT": "라벨을 찾을 수 없습니다"
+    "NO_LABEL": "할당된 라벨 없음",
+    "NO_RESULT": "라벨을 찾을 수 없습니다",
+    "SELECTED": "Selected",
+    "TITLE": "대화 라벨",
+    "UPDATE_LABEL": "라벨이 성공적으로 업데이트됨"
   },
-  "CONVERSATION_AGENTS": {
-    "TITLE": "Assign agent",
-    "SELECT_AGENT": "에이전트 선택",
-    "NO_RESULT": "No agent found"
+  "CONVERSATION_PARTICIPANTS": {
+    "ADD_PARTICIPANT": "Add Participant",
+    "ADD_PARTICIPANTS": "Select participants",
+    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
+    "NO_RECORDS_FOUND": "검색 결과가 없습니다",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "TITLE": "Participants",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
+    "WATCH_CONVERSATION": "Join conversation",
+    "YOU_ARE_WATCHING": "You are participating"
   },
-  "AGENT": {
-    "TITLE": "에이전트 선택"
-  },
-  "TEAMS": {
-    "TITLE": "팀 선택하기",
-    "EMPTY": "대화에 팀을 추가하려면 계정에 팀을 추가해주세요",
-    "CHANGE_TEAMS": "대화 담당자가 변경됨"
+  "CONVERSATION_TEAMS": {
+    "NO_RESULT": "No team found",
+    "SELECT_TEAM": "팀 선택",
+    "TITLE": "Assign team"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
-    "OfFLINE": "온라인에 다시 연결하려면 와이파이나 이동통신망에 연결되어야 합니다",
-    "CANNOT_FETCH": "설명 불러오는 동안 오류가 발생했습니다. 다시 시도하십시오.",
     "AUTH": "사용자 이름/암호가 잘못됨. 다시 시도하십시오.",
-    "NO_ACCOUNTS_MESSAGE": "모든 Chatwoot 계정에 접근 권한이 없습니다"
+    "CANNOT_FETCH": "설명 불러오는 동안 오류가 발생했습니다. 다시 시도하십시오.",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "NO_ACCOUNTS_MESSAGE": "모든 Chatwoot 계정에 접근 권한이 없습니다",
+    "OfFLINE": "온라인에 다시 연결하려면 와이파이나 이동통신망에 연결되어야 합니다"
+  },
+  "EXIT": {
+    "CANCEL": "취소",
+    "OK": "네",
+    "SUBTITLE": "정말로 종료하시겠습니까?",
+    "TITLE": "나가기"
+  },
+  "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "BOT": "봇",
+    "CHOOSE_INBOX": "받은 편지함 선택하기",
+    "CHOOSE_STATUS": "대화 상태",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
+    "HEADER_TITLE": "대화 필터",
+    "OPEN": "열기",
+    "PENDING": "보내는 중",
+    "RESOLVED": "해결됨",
+    "SNOOZED": "일시 중지됨",
+    "SORT_BY": "Sort by",
+    "SUBMIT": "보내기"
+  },
+  "FOOTER": {
+    "CONVERSATION": "대화",
+    "HOME": "홈",
+    "NOTIFICATION": "알림",
+    "SETTINGS": "설정"
+  },
+  "FORGOT_PASSWORD": {
+    "API_SUCCESS": "비밀번호 재설정 링크가 이메일로 전송되었습니다",
+    "EMAIL": "이메일 주소를 입력하세요.",
+    "EMAIL_ERROR": "유효한 이메일을 입력해주세요",
+    "HEADER_TITLE": "비밀번호 재설정하기",
+    "RESET_HERE": "비밀번호 재설정하기",
+    "SUB_TITLE": "걱정마세요! 저희가 있잖아요",
+    "TITLE": "비밀번호를 잊으셨나요?"
+  },
+  "LOGIN": {
+    "CHANGE_LANGUAGE": "언어 바꾸기",
+    "CHANGE_URL": "URL 바꾸기",
+    "CREATE_ACCOUNT": "계정 생성",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "EMAIL": "이메일",
+    "EMAIL_ERROR": "유효한 이메일을 입력해주세요",
+    "EMAIL_REQUIRED": "이메일이 필요합니다",
+    "FORGOT_PASSWORD": "암호를 잊으셨나요?",
+    "LOGIN": "가입하기",
+    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "SSO로 로그인",
+    "NO_ACCOUNT": "계정이 없으신가요?",
+    "PASSWORD": "비밀번호",
+    "PASSWORD_ERROR": "유효한 비밀번호를 입력해주세요",
+    "PASSWORD_REQUIRED": "비밀번호가 필요합니다",
+    "RESET_HERE": "리셋 시키기",
+    "SETTINGS": "설정",
+    "SSO_AUTH_FAILED": "SSO 인증에 실패했습니다. 자격 증명을 확인하고 다시 시도하세요.",
+    "SSO_INVALID_RESPONSE": "잘못된 SSO 응답입니다. 다시 시도하세요.",
+    "SSO_UNEXPECTED_ERROR": "SSO 로그인 중 예기치 않은 오류가 발생했습니다. 다시 시도하세요.",
+    "TERMS": "이용약관",
+    "TITLE": "Log in to your account"
+  },
+  "MACRO": {
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_ERROR": "Macro execution failed",
+    "EXECUTION_SUCCESS": "Macro executed successfully",
+    "NO_MACROS": "No macros found",
+    "SELECT_MACRO": "Select macro",
+    "TITLE": "Macros"
+  },
+  "MFA": {
+    "BUTTONS": {
+      "VERIFY": "확인",
+      "VERIFYING": "확인 중..."
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "인증 앱의 6자리 코드를 입력하세요",
+      "BACKUP": "백업 코드 중 하나를 입력하세요"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "백업 코드를 입력하세요"
+    },
+    "TABS": {
+      "AUTHENTICATOR_APP": "인증 앱",
+      "BACKUP_CODE": "백업 코드"
+    },
+    "TITLE": "2단계 인증"
+  },
+  "NOTIFICATION": {
+    "ALERTS": {
+      "DELETE": "Notification deleted",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed"
+    },
+    "ALL_NOTIFICATION_LOADED": "모든 알림이 불러와졌음",
+    "CANCEL": "취소",
+    "DELETE": "삭제",
+    "EMPTY": "알림 없음.",
+    "EMPTY_MORE_TEXT": "알림이 온다면, 여기서 나타날 겁니다",
+    "FILTERS": {
+      "SORT_BY": {
+        "OPTIONS": {
+          "ASC": "Oldest",
+          "DESC": "Newest"
+        },
+        "TITLE": "Sort by"
+      }
+    },
+    "HEADER_TITLE": "알림",
+    "INBOX": "받은 메시지함",
+    "MARK_ALL": "전부 읽음으로 바꾸기",
+    "SEARCH_PLACEHOLDER": "알림 검색...",
+    "TYPES": {
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
+      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
+      "CONVERSATION_CREATION": "New conversation created",
+      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    }
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA",
+    "EMAIL": "이메일 알림",
+    "PUSH": "푸시 알림",
+    "TITLE": "알림 기본 설정"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "서버 업그레이드가 필요합니다",
+    "WARNING_FOR_ADMIN": "모바일 앱에 지원되지 않는 Chatwoot 서버를 사용하고 있는 것 같습니다. 서버 버전 %{minimumVersion} 이상으로 업그레이드해야 합니다.",
+    "WARNING_FOR_AGENT": "모바일 앱에 지원되지 않는 Chatwoot 서버를 사용하고 있는 것 같습니다. Chatwoot 서버를 업그레이드하려면 관리자에게 문의하세요."
+  },
+  "SETTINGS": {
+    "ABOUT": "About",
+    "CHANGE_AVAILABILITY": "Set availability",
+    "CHANGE_LANGUAGE": "언어 바꾸기",
+    "CHAT_WITH_US": "채팅하기",
+    "DEBUG_ACTIONS": "Debug Actions",
+    "HEADER_TITLE": "설정",
+    "LOGOUT": "로그아웃",
+    "NOTIFICATIONS": "알림",
+    "NOTIFICATION_PREFERENCES": "알림 기본 설정",
+    "PREFERENCES": "Preferences",
+    "READ_DOCS": "Read Docs",
+    "SET_AVAILABILITY": "Set yourself as",
+    "SET_LANGUAGE": "Set Language",
+    "SUBMIT": "보내기",
+    "SUPPORT": "Support",
+    "SWITCH_ACCOUNT": "계정 전환"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "MISSES": {
+      "FRT": "첫 번째 응답 시간",
+      "HIDE": "Hide {count} rows",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "TITLE": "SLA Misses"
+    },
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "DUE": "due",
+      "FRT": "FRT %{status}",
+      "MISSED": "missed",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}"
+    }
   },
   "SUCCESS": {
     "AUTH": "로그인 성공"
   },
-  "SERVER_UPGRADE": {
-    "TITLE": "서버 업그레이드가 필요합니다",
-    "WARNING_FOR_AGENT": "모바일 앱에 지원되지 않는 Chatwoot 서버를 사용하고 있는 것 같습니다. Chatwoot 서버를 업그레이드하려면 관리자에게 문의하세요.",
-    "WARNING_FOR_ADMIN": "모바일 앱에 지원되지 않는 Chatwoot 서버를 사용하고 있는 것 같습니다. 서버 버전 %{minimumVersion} 이상으로 업그레이드해야 합니다."
+  "TEAMS": {
+    "CHANGE_TEAMS": "대화 담당자가 변경됨",
+    "EMPTY": "대화에 팀을 추가하려면 계정에 팀을 추가해주세요",
+    "TITLE": "팀 선택하기"
   },
-  "EXIT": {
-    "TITLE": "나가기",
-    "SUBTITLE": "정말로 종료하시겠습니까?",
-    "CANCEL": "취소",
-    "OK": "네"
-  },
-  "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24시간 메시지 창 제한",
-    "24_HOURS_WINDOW": "24시간 메시지 창 제한",
-    "CANNOT_REPLY": "당신은 답장을 할 수 없습니다"
-  },
-  "SLA": {
-    "FRT": "FRT",
-    "NRT": "NRT",
-    "RT": "RT",
-    "STATUS": {
-      "FRT": "FRT %{status}",
-      "NRT": "NRT %{status}",
-      "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "due"
-    },
-    "MISSES": {
-      "TITLE": "SLA Misses",
-      "FRT": "첫 번째 응답 시간",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
-    }
-  },
-  "MACRO": {
-    "TITLE": "Macros",
-    "SELECT_MACRO": "Select macro",
-    "ACTIONS": {
-      "RUN": "Run"
-    },
-    "EXECUTION_SUCCESS": "Macro executed successfully",
-    "EXECUTION_ERROR": "Macro execution failed",
-    "NO_MACROS": "No macros found"
-  }
+  "WELCOME": "어서오세요"
 }

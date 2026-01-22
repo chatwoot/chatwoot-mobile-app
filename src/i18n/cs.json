@@ -1,458 +1,482 @@
 {
-  "WELCOME": "Welcome",
-  "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Zavřít"
+  "AGENT": {
+    "TITLE": "Vybrat agenta"
   },
-  "FOOTER": {
-    "HOME": "Domů",
-    "CONVERSATION": "Konverzace",
-    "NOTIFICATION": "Oznámení",
-    "SETTINGS": "Nastavení"
+  "AVAILABILITY": {
+    "BUSY": "Zaneprázdněn",
+    "OFFLINE": "Offline",
+    "ONLINE": "Online"
+  },
+  "BANNER": {
+    "24_HOURS_WINDOW": "24 hodinové omezení okna",
+    "CANNOT_REPLY": "Nemůžete odpovědět z důvodu",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hodinové omezení okna",
+    "TWILIO_WHATSAPP_CAN_REPLY": "Na tuto konverzaci můžete odpovědět pouze pomocí šablony zprávy z důvodu"
+  },
+  "COMMON": {
+    "CLOSE": "Zavřít",
+    "ERROR": "Chyba",
+    "ERROR_TITLE": "Došlo k neočekávané chybě",
+    "REPORT_MESSAGE": "Nahlásili jsme to našemu týmu! Zavřete prosím aplikaci a spusťte ji znovu!"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
-    "URL_ERROR": "Enter a valid URL",
-    "URL_REQUIRED": "URL is required",
-    "CONNECT": "Connect",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "CHANGE_LANGUAGE": "Změnit jazyk",
+    "CONNECT": "Připojit",
+    "DESCRIPTION": "Pokud používáte self-hosted instalaci Chatwoot, zadejte URL svého serveru. Jinak použijte app.chatwoot.com.",
+    "ENTER_URL": "URL instalace",
+    "ERROR": "Neplatná instalační URL",
+    "URL_ERROR": "Zadejte platnou URL",
+    "URL_REQUIRED": "URL je povinná"
   },
-  "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Atributy kontaktu"
+  },
+  "CONTACT_DETAILS": {
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "Atributy kontaktu",
     "EMAIL": "E-mailová adresa",
-    "PASSWORD": "Password",
-    "EMAIL_REQUIRED": "Email is required",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_REQUIRED": "Password is required",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
-    "LOGIN_LOADING": "Signing In...",
-    "FORGOT_PASSWORD": "Forgot your password?",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "Create new account",
-    "SETTINGS": "Nastavení",
-    "CHANGE_LANGUAGE": "Change language",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
-  },
-  "FORGOT_PASSWORD": {
-    "EMAIL": "Prosím, zadejte svůj e-mail",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "PHONE_NUMBER": "Telefonní číslo",
+    "TITLE": "Podrobnosti kontaktu",
+    "VALUE_UNAVAILABLE": "Nedostupný"
   },
   "CONVERSATION": {
-    "HEADER": {
-      "TITLE": "Konverzace",
-      "CLEAR_FILTER": "Clear"
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "ASSIGN": "Přiřadit",
+        "EDIT": "Upravit",
+        "EMPTY": "Unassigned"
+      },
+      "PRIORITY": {
+        "EDIT": "Upravit",
+        "EMPTY": "No priority added"
+      },
+      "TEAM": {
+        "ASSIGN": "Přiřadit",
+        "EMPTY": "No team assigned"
+      }
     },
+    "ALL": "All",
+    "ALL_CONVERSATION_LOADED": "All conversations loaded",
+    "ASSIGN": "Assign conversation",
+    "ASSIGNED_AGENT": "Assigned agent",
+    "ASSIGNEE": {
+      "AGENTS": {
+        "SEARCH_AGENT": "Hledat agenty"
+      },
+      "LABELS": {
+        "SEARCH_LABELS": "Search labels"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "OPTIONS": {
+          "ALL": "All",
+          "OPEN": "Otevřít",
+          "PENDING": "Čekající",
+          "RESOLVED": "Resolved",
+          "SNOOZED": "Odložené"
+        },
+        "TITLE": "Filter by status"
+      }
+    },
+    "ASSIGN_CHANGE": "Konverzace pověřená osoba změněna",
+    "ATTACHMENTS": {
+      "audio": {
+        "CONTENT": "Zvuková zpráva"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
+      },
+      "fallback": {
+        "CONTENT": "sdílel URL"
+      },
+      "file": {
+        "CONTENT": "File Attachment"
+      },
+      "image": {
+        "CONTENT": "Picture message"
+      },
+      "location": {
+        "CONTENT": "Poloha"
+      },
+      "video": {
+        "CONTENT": "Video zpráva"
+      }
+    },
+    "ATTACHMENT_CONTENT": "File Attachment",
+    "BOT": "Bot",
+    "CHANGE_PRIORITY": "Change priority",
+    "CHANGE_STATUS": "Change status",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "DEFAULT_HEADER_TITLE": "Konverzace",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "DELETE_MESSAGE_SUCCESS": "Zpráva byla úspěšně smazána",
+    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
+    "DETAILS": "Details",
+    "DOWNLOAD": "Stáhnout",
+    "EMAIL_HEAD": {
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "TO": "Komu"
+    },
+    "EMAIL_HEADER": {
+      "BCC": "Bcc",
+      "CC": "Cc",
+      "EXPAND": "Expand email",
+      "FROM": "Od",
+      "SUBJECT": "Předmět",
+      "TO": "Komu"
+    },
+    "EMPTY": "There are no active conversations in this group.",
+    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "Hledat agenty"
+      },
+      "ASSIGNEE_TYPE": {
+        "OPTIONS": {
+          "ALL": "All",
+          "ME": "Me",
+          "UNASSIGNED": "Unassigned"
+        },
+        "TITLE": "Filter by assignee type"
       },
       "INBOX": {
         "TITLE": "Filter by inbox"
       },
       "SORT_BY": {
-        "TITLE": "Seřadit podle",
         "OPTIONS": {
           "LATEST": "Latest",
           "SORT_ON_CREATED_AT": "Vytvořeno",
           "SORT_ON_PRIORITY": "Priority"
-        }
+        },
+        "TITLE": "Seřadit podle"
       },
       "STATUS": {
-        "TITLE": "Filter by status",
         "OPTIONS": {
+          "ALL": "All",
           "OPEN": "Otevřít",
           "PENDING": "Čekající",
-          "SNOOZED": "Odložené",
           "RESOLVED": "Resolved",
-          "ALL": "All"
-        }
-      },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "Unassigned",
-          "ALL": "All"
-        }
+          "SNOOZED": "Odložené"
+        },
+        "TITLE": "Filter by status"
       }
     },
-    "ASSIGNEE": {
-      "LABELS": {
-        "SEARCH_LABELS": "Search labels"
-      },
-      "AGENTS": {
-        "SEARCH_AGENT": "Hledat agenty"
-      },
-      "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
-        "OPTIONS": {
-          "OPEN": "Otevřít",
-          "PENDING": "Čekající",
-          "SNOOZED": "Odložené",
-          "RESOLVED": "Resolved",
-          "ALL": "All"
-        }
-      }
-    },
-    "DEFAULT_HEADER_TITLE": "Konverzace",
-    "UPDATING": "Updating...",
-    "MINE": "Mine",
-    "UN_ASSIGNED": "Unassigned",
-    "ALL": "All",
-    "EMPTY": "There are no active conversations in this group.",
-    "PICTURE_CONTENT": "Picture message",
-    "ATTACHMENT_CONTENT": "File Attachment",
-    "DOWNLOAD": "Stáhnout",
-    "TODAY": "Dnes",
-    "YESTERDAY": "Včera",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share conversation",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
-    "ASSIGNED_AGENT": "Assigned agent",
-    "TEAM": "Team",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
-    "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
-    },
-    "BOT": "Bot",
-    "EMAIL_HEAD": {
-      "TO": "Komu",
-      "CC": "Cc",
-      "BCC": "Bcc"
-    },
-    "SELF_ASSIGN": "Přiřadit mi",
-    "UN_ASSIGN": "Unassign conversation",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
-    "MARK_AS_PENDING": "Označit jako nevyřízené",
-    "SNOOZE_UNTIL": "Odložit do",
-    "SNOOZE_UNTIL_NEXT_REPLY": "Do další odpovědi",
-    "SNOOZE_UNTIL_TOMORROW": "Do zítřka",
-    "SNOOZE_UNTIL_NEXT_WEEK": "Do příštího týdne",
-    "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Change priority",
-    "MESSAGES": "Zprávy",
-    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
-    "UNDEFINED_VARIABLES_CLOSE": "Zavřít",
-    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "Zpráva byla úspěšně smazána",
-    "NO_CONTENT": "Žádný obsah k dispozici",
-    "ASSIGN_CHANGE": "Konverzace pověřená osoba změněna",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Hledat týmy",
-    "PRIORITY": {
-      "TITLE": "Priority",
-      "OPTIONS": {
-        "NONE": "Nic",
-        "URGENT": "Urgent",
-        "HIGH": "High",
-        "MEDIUM": "Medium",
-        "LOW": "Low"
-      },
-      "CHANGE_PRIORITY": {
-        "SELECT_PLACEHOLDER": "Nic",
-        "INPUT_PLACEHOLDER": "Select priority",
-        "NO_RESULTS": "Žádné výsledky",
-        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
-        "FAILED": "Couldn't change priority. Please try again."
-      }
+    "HEADER": {
+      "CLEAR_FILTER": "Clear",
+      "TITLE": "Konverzace"
     },
     "ITEM": {
       "ASSIGN": "Přiřadit",
       "STATUS": "Stav"
     },
-    "ATTACHMENTS": {
-      "image": {
-        "CONTENT": "Picture message"
-      },
-      "audio": {
-        "CONTENT": "Zvuková zpráva"
-      },
-      "video": {
-        "CONTENT": "Video zpráva"
-      },
-      "file": {
-        "CONTENT": "File Attachment"
-      },
-      "location": {
-        "CONTENT": "Poloha"
-      },
-      "fallback": {
-        "CONTENT": "sdílel URL"
-      },
-      "contact": {
-        "CONTENT": "Shared a contact"
-      }
-    },
+    "LABELS": "Conversation labels",
     "LONG_PRESS_ACTIONS": {
       "COPY": "Kopírovat",
-      "REPLY": "Odpověď",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "REPLY": "Odpověď"
     },
-    "EMAIL_HEADER": {
-      "FROM": "Od",
-      "TO": "Komu",
-      "BCC": "Bcc",
-      "CC": "Cc",
-      "SUBJECT": "Předmět",
-      "EXPAND": "Expand email"
+    "MARK_AS_PENDING": "Označit jako nevyřízené",
+    "MESSAGES": "Zprávy",
+    "MINE": "Mine",
+    "NOT_FOUND": {
+      "BACK_TO_HOME": "Go back to home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again.",
+      "RETRY": "Retry",
+      "TITLE": "Unable to fetch conversation"
     },
-    "ACTIONS": {
-      "ASSIGNEE": {
-        "EMPTY": "Unassigned",
-        "ASSIGN": "Přiřadit",
-        "EDIT": "Upravit"
+    "NO_CONTENT": "Žádný obsah k dispozici",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "PICTURE_CONTENT": "Picture message",
+    "PRIORITY": {
+      "CHANGE_PRIORITY": {
+        "FAILED": "Couldn't change priority. Please try again.",
+        "INPUT_PLACEHOLDER": "Select priority",
+        "NO_RESULTS": "Žádné výsledky",
+        "SELECT_PLACEHOLDER": "Nic",
+        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}"
       },
-      "TEAM": {
-        "EMPTY": "No team assigned",
-        "ASSIGN": "Přiřadit"
+      "OPTIONS": {
+        "HIGH": "High",
+        "LOW": "Low",
+        "MEDIUM": "Medium",
+        "NONE": "Nic",
+        "URGENT": "Urgent"
       },
-      "PRIORITY": {
-        "EMPTY": "No priority added",
-        "EDIT": "Upravit"
-      }
-    }
-  },
-  "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
-    "SORT_BY": "Seřadit podle",
-    "FILTER_BY_INBOX": "Filter by inbox",
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
-    "OPEN": "Otevřít",
-    "RESOLVED": "Resolved",
-    "BOT": "Bot",
-    "SUBMIT": "Odeslat",
-    "PENDING": "Pending",
-    "SNOOZED": "Snoozed"
-  },
-  "SETTINGS": {
-    "HEADER_TITLE": "Nastavení",
-    "SET_AVAILABILITY": "Set yourself as",
-    "CHANGE_AVAILABILITY": "Set availability",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
-    "SWITCH_ACCOUNT": "Přepnout účet",
-    "CHANGE_LANGUAGE": "Change Language",
-    "NOTIFICATIONS": "Oznámení",
-    "NOTIFICATION_PREFERENCES": "Notification Preferences",
-    "READ_DOCS": "Read Docs",
-    "CHAT_WITH_US": "Napiště nám",
-    "LOGOUT": "Logout",
-    "SUBMIT": "Odeslat",
-    "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
-  },
-  "NOTIFICATION": {
-    "HEADER_TITLE": "Oznámení",
-    "INBOX": "Inbox",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
-    "CANCEL": "Zrušit",
-    "DELETE": "Vymazat",
-    "TYPES": {
-      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
-      "CONVERSATION_CREATION": "New conversation created",
-      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
-      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
-      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+      "TITLE": "Priority"
     },
-    "FILTERS": {
-      "SORT_BY": {
-        "TITLE": "Seřadit podle",
-        "OPTIONS": {
-          "ASC": "Oldest",
-          "DESC": "Newest"
-        }
-      }
-    },
-    "ALERTS": {
-      "MARK_AS_READ": "Notification marked as read",
-      "MARK_AS_UNREAD": "Notification marked as unread",
-      "SNOOZE": "Notification snoozed",
-      "DELETE": "Notification deleted",
-      "MARK_ALL_READ": "All notifications marked as read",
-      "DELETE_ALL": "All notifications deleted",
-      "DELETE_ALL_READ": "All read notifications deleted"
-    }
-  },
-  "AVAILABILITY": {
-    "ONLINE": "Online",
-    "BUSY": "Zaneprázdněn",
-    "OFFLINE": "Offline"
-  },
-  "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
-    "EMAIL": "E-mailová oznámení",
-    "PUSH": "Push oznámení",
-    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
-    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
-  },
-  "CONVERSATION_DETAILS": {
-    "TITLE": "Attributes",
-    "BROWSER": "Browser",
-    "OPERATING_SYSTEM": "Operating System",
-    "INITIATED_AT": "Initiated at",
-    "INITIATED_FROM": "Initiated from",
-    "IP_ADDRESS": "IP adresa",
-    "CONVERSATION_ID": "Conversation ID",
-    "CLIPBOARD_SUCCESS": "Kód byl úspěšně zkopírován do schránky"
-  },
-  "CONTACT_DETAILS": {
-    "TITLE": "Podrobnosti kontaktu",
-    "EMAIL": "E-mailová adresa",
-    "PHONE_NUMBER": "Telefonní číslo",
-    "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Atributy kontaktu",
-    "VALUE_UNAVAILABLE": "Nedostupný"
-  },
-  "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
-    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
-    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
-    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
-    "WATCH_CONVERSATION": "Join conversation",
-    "YOU_ARE_WATCHING": "You are participating",
-    "NO_RECORDS_FOUND": "Žádné výsledky",
-    "SELECT_PARTICIPANTS": "Select agents",
-    "ADD_PARTICIPANTS": "Select participants",
-    "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other",
-    "ADD_PARTICIPANT": "Add Participant"
-  },
-  "CONTACT_ATTRIBUTES": {
-    "TITLE": "Atributy kontaktu"
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "SEARCH_PLACEHOLDER": "Vyhledat konverzace...",
+    "SEARCH_TEAM": "Hledat týmy",
+    "SELF_ASSIGN": "Přiřadit mi",
+    "SHARE": "Share conversation",
+    "SNOOZE": "Snooze conversation",
+    "SNOOZE_UNTIL": "Odložit do",
+    "SNOOZE_UNTIL_NEXT_REPLY": "Do další odpovědi",
+    "SNOOZE_UNTIL_NEXT_WEEK": "Do příštího týdne",
+    "SNOOZE_UNTIL_TOMORROW": "Do zítřka",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "TEAM": "Team",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "TODAY": "Dnes",
+    "TYPE_MESSAGE": "Type message",
+    "TYPING": "typing",
+    "UNDEFINED_VARIABLES_CLOSE": "Zavřít",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "UN_ASSIGN": "Unassign conversation",
+    "UN_ASSIGNED": "Unassigned",
+    "UPDATING": "Updating...",
+    "YESTERDAY": "Včera"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "Actions"
   },
-  "CONVERSATION_TEAMS": {
-    "TITLE": "Přiřadit tým",
-    "SELECT_TEAM": "Vybrat tým",
-    "NO_RESULT": "No team found"
+  "CONVERSATION_AGENTS": {
+    "NO_RESULT": "No agent found",
+    "SELECT_AGENT": "Vybrat agenta",
+    "TITLE": "Přiřadit agenta"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "Browser",
+    "CLIPBOARD_SUCCESS": "Kód byl úspěšně zkopírován do schránky",
+    "CONVERSATION_ID": "Conversation ID",
+    "INITIATED_AT": "Initiated at",
+    "INITIATED_FROM": "Initiated from",
+    "IP_ADDRESS": "IP adresa",
+    "OPERATING_SYSTEM": "Operating System",
+    "TITLE": "Attributes"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "Štítky konverzace",
     "ADD_LABEL": "Add Labels",
     "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "Label updated successfully",
-    "SELECTED": "Selected",
     "NOT_SELECTED": "No labels selected",
-    "NO_RESULT": "No labels found"
+    "NO_LABEL": "No labels assigned",
+    "NO_RESULT": "No labels found",
+    "SELECTED": "Selected",
+    "TITLE": "Štítky konverzace",
+    "UPDATE_LABEL": "Label updated successfully"
   },
-  "CONVERSATION_AGENTS": {
-    "TITLE": "Přiřadit agenta",
-    "SELECT_AGENT": "Vybrat agenta",
-    "NO_RESULT": "No agent found"
+  "CONVERSATION_PARTICIPANTS": {
+    "ADD_PARTICIPANT": "Add Participant",
+    "ADD_PARTICIPANTS": "Select participants",
+    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
+    "NO_RECORDS_FOUND": "Žádné výsledky",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "TITLE": "Participants",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
+    "WATCH_CONVERSATION": "Join conversation",
+    "YOU_ARE_WATCHING": "You are participating"
   },
-  "AGENT": {
-    "TITLE": "Vybrat agenta"
-  },
-  "TEAMS": {
-    "TITLE": "Select Team",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
-    "CHANGE_TEAMS": "Tým konverzace se změnil"
+  "CONVERSATION_TEAMS": {
+    "NO_RESULT": "No team found",
+    "SELECT_TEAM": "Vybrat tým",
+    "TITLE": "Přiřadit tým"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
     "AUTH": "Username / Password Incorrect. Please try again",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts",
+    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again"
+  },
+  "EXIT": {
+    "CANCEL": "Zrušit",
+    "OK": "Ok",
+    "SUBTITLE": "Are you sure you want to quit?",
+    "TITLE": "Exit"
+  },
+  "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "BOT": "Bot",
+    "CHOOSE_INBOX": "Choose Inbox",
+    "CHOOSE_STATUS": "Conversation Status",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
+    "HEADER_TITLE": "Conversation Filter",
+    "OPEN": "Otevřít",
+    "PENDING": "Pending",
+    "RESOLVED": "Resolved",
+    "SNOOZED": "Snoozed",
+    "SORT_BY": "Seřadit podle",
+    "SUBMIT": "Odeslat"
+  },
+  "FOOTER": {
+    "CONVERSATION": "Konverzace",
+    "HOME": "Domů",
+    "NOTIFICATION": "Oznámení",
+    "SETTINGS": "Nastavení"
+  },
+  "FORGOT_PASSWORD": {
+    "API_SUCCESS": "Odkaz pro reset hesla byl odeslán na váš e-mail",
+    "EMAIL": "Prosím, zadejte svůj e-mail",
+    "EMAIL_ERROR": "Zadejte platný e-mail",
+    "HEADER_TITLE": "Reset hesla",
+    "RESET_HERE": "Resetovat heslo",
+    "SUB_TITLE": "Nebojte se! Pomůžeme vám",
+    "TITLE": "Zapomenuté heslo?"
+  },
+  "LOGIN": {
+    "CHANGE_LANGUAGE": "Změnit jazyk",
+    "CHANGE_URL": "Změnit URL",
+    "CREATE_ACCOUNT": "Vytvořit nový účet",
+    "DESCRIPTION": "Jste připojeni k {{baseUrl}}.",
+    "EMAIL": "E-mailová adresa",
+    "EMAIL_ERROR": "Zadejte platný e-mail",
+    "EMAIL_REQUIRED": "E-mail je povinný",
+    "FORGOT_PASSWORD": "Zapomněli jste heslo?",
+    "LOGIN": "Přihlásit se",
+    "LOGIN_LOADING": "Přihlašování...",
+    "LOGIN_VIA_SSO": "Přihlásit se přes SSO",
+    "NO_ACCOUNT": "Nemáte účet?",
+    "PASSWORD": "Heslo",
+    "PASSWORD_ERROR": "Zadejte platné heslo",
+    "PASSWORD_REQUIRED": "Heslo je povinné",
+    "RESET_HERE": "Resetovat zde",
+    "SETTINGS": "Nastavení",
+    "SSO_AUTH_FAILED": "Ověření SSO se nezdařilo. Zkontrolujte své přihlašovací údaje a zkuste to znovu.",
+    "SSO_INVALID_RESPONSE": "Neplatná odpověď SSO. Zkuste to znovu.",
+    "SSO_UNEXPECTED_ERROR": "Během přihlášení přes SSO došlo k neočekávané chybě. Zkuste to znovu.",
+    "TERMS": "Podmínky",
+    "TITLE": "Přihlaste se ke svému účtu"
+  },
+  "MACRO": {
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_ERROR": "Macro execution failed",
+    "EXECUTION_SUCCESS": "Macro executed successfully",
+    "NO_MACROS": "No macros found",
+    "SELECT_MACRO": "Select macro",
+    "TITLE": "Macros"
+  },
+  "MFA": {
+    "BUTTONS": {
+      "VERIFY": "Ověřit",
+      "VERIFYING": "Ověřování..."
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Zadejte 6místný kód z aplikace autentizátoru",
+      "BACKUP": "Zadejte jeden ze svých záložních kódů"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Zadejte záložní kód"
+    },
+    "TABS": {
+      "AUTHENTICATOR_APP": "Aplikace autentizátoru",
+      "BACKUP_CODE": "Záložní kód"
+    },
+    "TITLE": "Dvoufaktorové ověření"
+  },
+  "NOTIFICATION": {
+    "ALERTS": {
+      "DELETE": "Notification deleted",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed"
+    },
+    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
+    "CANCEL": "Zrušit",
+    "DELETE": "Vymazat",
+    "EMPTY": "No notifications yet.",
+    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
+    "FILTERS": {
+      "SORT_BY": {
+        "OPTIONS": {
+          "ASC": "Oldest",
+          "DESC": "Newest"
+        },
+        "TITLE": "Seřadit podle"
+      }
+    },
+    "HEADER_TITLE": "Oznámení",
+    "INBOX": "Inbox",
+    "MARK_ALL": "Mark all as read",
+    "SEARCH_PLACEHOLDER": "Vyhledat oznámení...",
+    "TYPES": {
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
+      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
+      "CONVERSATION_CREATION": "New conversation created",
+      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    }
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA",
+    "EMAIL": "E-mailová oznámení",
+    "PUSH": "Push oznámení",
+    "TITLE": "Notification Preferences"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "Server upgrade required",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required.",
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server."
+  },
+  "SETTINGS": {
+    "ABOUT": "About",
+    "CHANGE_AVAILABILITY": "Set availability",
+    "CHANGE_LANGUAGE": "Změnit jazyk",
+    "CHAT_WITH_US": "Napiště nám",
+    "DEBUG_ACTIONS": "Debug Actions",
+    "HEADER_TITLE": "Nastavení",
+    "LOGOUT": "Logout",
+    "NOTIFICATIONS": "Oznámení",
+    "NOTIFICATION_PREFERENCES": "Notification Preferences",
+    "PREFERENCES": "Preferences",
+    "READ_DOCS": "Read Docs",
+    "SET_AVAILABILITY": "Set yourself as",
+    "SET_LANGUAGE": "Nastavit jazyk",
+    "SUBMIT": "Odeslat",
+    "SUPPORT": "Support",
+    "SWITCH_ACCOUNT": "Přepnout účet"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "MISSES": {
+      "FRT": "Čas první odpovědi",
+      "HIDE": "Hide {count} rows",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "TITLE": "SLA Misses"
+    },
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "DUE": "due",
+      "FRT": "FRT %{status}",
+      "MISSED": "missed",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}"
+    }
   },
   "SUCCESS": {
     "AUTH": "Login Successful"
   },
-  "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+  "TEAMS": {
+    "CHANGE_TEAMS": "Tým konverzace se změnil",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "TITLE": "Select Team"
   },
-  "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
-    "CANCEL": "Zrušit",
-    "OK": "Ok"
-  },
-  "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "Na tuto konverzaci můžete odpovědět pouze pomocí šablony zprávy z důvodu",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hodinové omezení okna",
-    "24_HOURS_WINDOW": "24 hodinové omezení okna",
-    "CANNOT_REPLY": "Nemůžete odpovědět z důvodu"
-  },
-  "SLA": {
-    "FRT": "FRT",
-    "NRT": "NRT",
-    "RT": "RT",
-    "STATUS": {
-      "FRT": "FRT %{status}",
-      "NRT": "NRT %{status}",
-      "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "due"
-    },
-    "MISSES": {
-      "TITLE": "SLA Misses",
-      "FRT": "Čas první odpovědi",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
-    }
-  },
-  "MACRO": {
-    "TITLE": "Macros",
-    "SELECT_MACRO": "Select macro",
-    "ACTIONS": {
-      "RUN": "Run"
-    },
-    "EXECUTION_SUCCESS": "Macro executed successfully",
-    "EXECUTION_ERROR": "Macro execution failed",
-    "NO_MACROS": "No macros found"
-  }
+  "WELCOME": "Vítejte"
 }

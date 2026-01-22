@@ -11,10 +11,10 @@ import { AxiosError } from 'axios';
 export const notificationActions = {
   fetchNotifications: createAsyncThunk<
     NotificationResponse,
-    { page: number; sort_order: InboxSortTypes }
+    { page: number; sort_order: InboxSortTypes; } // Removido search_text
   >('notifications/fetchNotifications', async (payload, { rejectWithValue }) => {
     try {
-      return await NotificationService.getNotifications(payload.page, payload.sort_order);
+      return await NotificationService.getNotifications(payload.page, payload.sort_order); // Removido payload.search_text
     } catch (error) {
       const { response } = error as AxiosError<ApiErrorResponse>;
       if (!response) {

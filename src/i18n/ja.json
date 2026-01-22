@@ -1,458 +1,482 @@
 {
-  "WELCOME": "Welcome",
-  "COMMON": {
-    "ERROR": "Error",
-    "ERROR_TITLE": "Unexpected error occurred",
-    "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "閉じる"
+  "AGENT": {
+    "TITLE": "Select Agent"
   },
-  "FOOTER": {
-    "HOME": "ホーム",
-    "CONVERSATION": "会話データ",
-    "NOTIFICATION": "Notifications",
-    "SETTINGS": "設定"
+  "AVAILABILITY": {
+    "BUSY": "取り込み中",
+    "OFFLINE": "オフライン",
+    "ONLINE": "オンライン"
+  },
+  "BANNER": {
+    "24_HOURS_WINDOW": "24 hour message window restriction",
+    "CANNOT_REPLY": "以下の理由で返信できません：",
+    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
+    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to"
+  },
+  "COMMON": {
+    "CLOSE": "閉じる",
+    "ERROR": "エラー",
+    "ERROR_TITLE": "予期しないエラーが発生しました",
+    "REPORT_MESSAGE": "この問題はチームに報告しました。アプリを閉じて再起動してください。"
   },
   "CONFIGURE_URL": {
-    "ENTER_URL": "Installation URL",
-    "DESCRIPTION": "If you are using a self-hosted Chatwoot installation, input your server URL. Otherwise, use app.chatwoot.com.",
-    "URL_ERROR": "Enter a valid URL",
-    "URL_REQUIRED": "URL is required",
+    "CHANGE_LANGUAGE": "言語を変更",
     "CONNECT": "接続",
-    "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "DESCRIPTION": "セルフホスト版のChatwootをご利用の場合は、サーバーURLを入力してください。それ以外の場合は app.chatwoot.com を使用してください。",
+    "ENTER_URL": "インストールURL",
+    "ERROR": "無効なインストールURL",
+    "URL_ERROR": "有効なURLを入力してください",
+    "URL_REQUIRED": "URLは必須です"
   },
-  "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+  "CONTACT_ATTRIBUTES": {
+    "TITLE": "Contact Attributes"
+  },
+  "CONTACT_DETAILS": {
+    "CALL": "Call",
+    "CONTACT_ATTRIBUTES": "Contact Attributes",
     "EMAIL": "Eメール",
-    "PASSWORD": "パスワード",
-    "EMAIL_REQUIRED": "Email is required",
-    "EMAIL_ERROR": "Enter a valid email",
-    "PASSWORD_REQUIRED": "Password is required",
-    "PASSWORD_ERROR": "Enter a valid password",
-    "LOGIN": "Sign In",
-    "LOGIN_LOADING": "Signing In...",
-    "FORGOT_PASSWORD": "パスワードをお忘れですか?",
-    "RESET_HERE": "Reset here",
-    "NO_ACCOUNT": "Don't have an account?",
-    "CREATE_ACCOUNT": "新しいアカウントを作成",
-    "SETTINGS": "設定",
-    "CHANGE_LANGUAGE": "Change language",
-    "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
-  },
-  "FORGOT_PASSWORD": {
-    "EMAIL": "メールアドレスを入力してください。",
-    "EMAIL_ERROR": "Enter a valid email",
-    "RESET_HERE": "Reset password",
-    "HEADER_TITLE": "Reset password",
-    "TITLE": "Forgot Password?",
-    "SUB_TITLE": "Don't worry! We got your back",
-    "API_SUCCESS": "Password reset link has been sent to your email address"
+    "PHONE_NUMBER": "電話番号",
+    "TITLE": "Contact Details",
+    "VALUE_UNAVAILABLE": "Unavailable"
   },
   "CONVERSATION": {
-    "HEADER": {
-      "TITLE": "会話データ",
-      "CLEAR_FILTER": "Clear"
+    "ACTIONS": {
+      "ASSIGNEE": {
+        "ASSIGN": "Assign",
+        "EDIT": "編集",
+        "EMPTY": "未割当"
+      },
+      "PRIORITY": {
+        "EDIT": "編集",
+        "EMPTY": "No priority added"
+      },
+      "TEAM": {
+        "ASSIGN": "Assign",
+        "EMPTY": "No team assigned"
+      }
     },
+    "ALL": "すべて",
+    "ALL_CONVERSATION_LOADED": "All conversations loaded",
+    "ASSIGN": "Assign conversation",
+    "ASSIGNED_AGENT": "Assigned agent",
+    "ASSIGNEE": {
+      "AGENTS": {
+        "SEARCH_AGENT": "Search agents"
+      },
+      "LABELS": {
+        "SEARCH_LABELS": "Search labels"
+      },
+      "STATUS": {
+        "HEADER_TITLE": "Assign status",
+        "OPTIONS": {
+          "ALL": "すべて",
+          "OPEN": "開く",
+          "PENDING": "Pending",
+          "RESOLVED": "解決済み",
+          "SNOOZED": "Snoozed"
+        },
+        "TITLE": "Filter by status"
+      }
+    },
+    "ASSIGN_CHANGE": "会話の担当者が変更されました",
+    "ATTACHMENTS": {
+      "audio": {
+        "CONTENT": "音声メッセージ"
+      },
+      "contact": {
+        "CONTENT": "Shared a contact"
+      },
+      "fallback": {
+        "CONTENT": "URLを共有しています"
+      },
+      "file": {
+        "CONTENT": "添付ファイル"
+      },
+      "image": {
+        "CONTENT": "画像メッセージ"
+      },
+      "location": {
+        "CONTENT": "場所"
+      },
+      "video": {
+        "CONTENT": "ビデオ メッセージ"
+      }
+    },
+    "ATTACHMENT_CONTENT": "添付ファイル",
+    "BOT": "Bot",
+    "CHANGE_PRIORITY": "Change priority",
+    "CHANGE_STATUS": "Change status",
+    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
+    "COPY_MESSAGE": "Message copied to clipboard",
+    "DEFAULT_HEADER_TITLE": "会話データ",
+    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
+    "DELETE_MESSAGE_SUCCESS": "メッセージの削除に成功",
+    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
+    "DETAILS": "Details",
+    "DOWNLOAD": "ダウンロード",
+    "EMAIL_HEAD": {
+      "BCC": "ビーシーシー",
+      "CC": "シーシー",
+      "TO": "宛先:"
+    },
+    "EMAIL_HEADER": {
+      "BCC": "ビーシーシー",
+      "CC": "シーシー",
+      "EXPAND": "Expand email",
+      "FROM": "差出人:",
+      "SUBJECT": "件名",
+      "TO": "宛先:"
+    },
+    "EMPTY": "このグループには有効な会話データがありません",
+    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "Search agents"
+      },
+      "ASSIGNEE_TYPE": {
+        "OPTIONS": {
+          "ALL": "すべて",
+          "ME": "Me",
+          "UNASSIGNED": "未割当"
+        },
+        "TITLE": "Filter by assignee type"
       },
       "INBOX": {
         "TITLE": "Filter by inbox"
       },
       "SORT_BY": {
-        "TITLE": "Sort by",
         "OPTIONS": {
           "LATEST": "Latest",
           "SORT_ON_CREATED_AT": "Created At",
           "SORT_ON_PRIORITY": "Priority"
-        }
+        },
+        "TITLE": "Sort by"
       },
       "STATUS": {
-        "TITLE": "Filter by status",
         "OPTIONS": {
+          "ALL": "すべて",
           "OPEN": "開く",
           "PENDING": "Pending",
-          "SNOOZED": "Snoozed",
           "RESOLVED": "解決済み",
-          "ALL": "すべて"
-        }
-      },
-      "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
-        "OPTIONS": {
-          "ME": "Me",
-          "UNASSIGNED": "未割当",
-          "ALL": "すべて"
-        }
+          "SNOOZED": "Snoozed"
+        },
+        "TITLE": "Filter by status"
       }
     },
-    "ASSIGNEE": {
-      "LABELS": {
-        "SEARCH_LABELS": "Search labels"
-      },
-      "AGENTS": {
-        "SEARCH_AGENT": "Search agents"
-      },
-      "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
-        "OPTIONS": {
-          "OPEN": "開く",
-          "PENDING": "Pending",
-          "SNOOZED": "Snoozed",
-          "RESOLVED": "解決済み",
-          "ALL": "すべて"
-        }
-      }
-    },
-    "DEFAULT_HEADER_TITLE": "会話データ",
-    "UPDATING": "Updating...",
-    "MINE": "自分",
-    "UN_ASSIGNED": "未割当",
-    "ALL": "すべて",
-    "EMPTY": "このグループには有効な会話データがありません",
-    "PICTURE_CONTENT": "画像メッセージ",
-    "ATTACHMENT_CONTENT": "添付ファイル",
-    "DOWNLOAD": "ダウンロード",
-    "TODAY": "今日",
-    "YESTERDAY": "昨日",
-    "TYPE_MESSAGE": "Type message",
-    "TYPING": "typing",
-    "ALL_CONVERSATION_LOADED": "All conversations loaded",
-    "ASSIGN": "Assign conversation",
-    "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share conversation",
-    "DETAILS": "Details",
-    "LABELS": "Conversation labels",
-    "ASSIGNED_AGENT": "Assigned agent",
-    "TEAM": "Team",
-    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
-    "UNSUPPORTED_MESSAGE": "このメッセージはサポートされていません。Facebook / Instagram で表示できます。",
-    "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
-    },
-    "BOT": "Bot",
-    "EMAIL_HEAD": {
-      "TO": "宛先:",
-      "CC": "シーシー",
-      "BCC": "ビーシーシー"
-    },
-    "SELF_ASSIGN": "自分に割り当て",
-    "UN_ASSIGN": "Unassign conversation",
-    "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
-    "MARK_AS_PENDING": "保留としてマークする",
-    "SNOOZE_UNTIL": "までスヌーズする",
-    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
-    "SNOOZE_UNTIL_TOMORROW": "明日まで",
-    "SNOOZE_UNTIL_NEXT_WEEK": "来週まで",
-    "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Change priority",
-    "MESSAGES": "メッセージ",
-    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
-    "UNDEFINED_VARIABLES_CLOSE": "閉じる",
-    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
-    "DELETE_MESSAGE_SUCCESS": "メッセージの削除に成功",
-    "NO_CONTENT": "No content available",
-    "ASSIGN_CHANGE": "会話の担当者が変更されました",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
-    "CHANGE_STATUS": "Change status",
-    "SEARCH_TEAM": "Search teams",
-    "PRIORITY": {
-      "TITLE": "Priority",
-      "OPTIONS": {
-        "NONE": "該当なし",
-        "URGENT": "Urgent",
-        "HIGH": "High",
-        "MEDIUM": "Medium",
-        "LOW": "Low"
-      },
-      "CHANGE_PRIORITY": {
-        "SELECT_PLACEHOLDER": "該当なし",
-        "INPUT_PLACEHOLDER": "Select priority",
-        "NO_RESULTS": "No results found",
-        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
-        "FAILED": "Couldn't change priority. Please try again."
-      }
+    "HEADER": {
+      "CLEAR_FILTER": "Clear",
+      "TITLE": "会話データ"
     },
     "ITEM": {
       "ASSIGN": "Assign",
       "STATUS": "状況"
     },
-    "ATTACHMENTS": {
-      "image": {
-        "CONTENT": "画像メッセージ"
-      },
-      "audio": {
-        "CONTENT": "音声メッセージ"
-      },
-      "video": {
-        "CONTENT": "ビデオ メッセージ"
-      },
-      "file": {
-        "CONTENT": "添付ファイル"
-      },
-      "location": {
-        "CONTENT": "場所"
-      },
-      "fallback": {
-        "CONTENT": "URLを共有しています"
-      },
-      "contact": {
-        "CONTENT": "Shared a contact"
-      }
-    },
+    "LABELS": "Conversation labels",
     "LONG_PRESS_ACTIONS": {
       "COPY": "コピー",
-      "REPLY": "返信",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "REPLY": "返信"
     },
-    "EMAIL_HEADER": {
-      "FROM": "差出人:",
-      "TO": "宛先:",
-      "BCC": "ビーシーシー",
-      "CC": "シーシー",
-      "SUBJECT": "件名",
-      "EXPAND": "Expand email"
+    "MARK_AS_PENDING": "保留としてマークする",
+    "MESSAGES": "メッセージ",
+    "MINE": "自分",
+    "NOT_FOUND": {
+      "BACK_TO_HOME": "Go back to home",
+      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again.",
+      "RETRY": "Retry",
+      "TITLE": "Unable to fetch conversation"
     },
-    "ACTIONS": {
-      "ASSIGNEE": {
-        "EMPTY": "未割当",
-        "ASSIGN": "Assign",
-        "EDIT": "編集"
+    "NO_CONTENT": "No content available",
+    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "PICTURE_CONTENT": "画像メッセージ",
+    "PRIORITY": {
+      "CHANGE_PRIORITY": {
+        "FAILED": "Couldn't change priority. Please try again.",
+        "INPUT_PLACEHOLDER": "Select priority",
+        "NO_RESULTS": "No results found",
+        "SELECT_PLACEHOLDER": "該当なし",
+        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}"
       },
-      "TEAM": {
-        "EMPTY": "No team assigned",
-        "ASSIGN": "Assign"
+      "OPTIONS": {
+        "HIGH": "High",
+        "LOW": "Low",
+        "MEDIUM": "Medium",
+        "NONE": "該当なし",
+        "URGENT": "Urgent"
       },
-      "PRIORITY": {
-        "EMPTY": "No priority added",
-        "EDIT": "編集"
-      }
-    }
-  },
-  "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
-    "SORT_BY": "Sort by",
-    "FILTER_BY_INBOX": "Filter by inbox",
-    "HEADER_TITLE": "Conversation Filter",
-    "CHOOSE_INBOX": "Choose Inbox",
-    "CHOOSE_STATUS": "Conversation Status",
-    "OPEN": "開く",
-    "RESOLVED": "解決済み",
-    "BOT": "Bot",
-    "SUBMIT": "送信",
-    "PENDING": "Pending",
-    "SNOOZED": "Snoozed"
-  },
-  "SETTINGS": {
-    "HEADER_TITLE": "設定",
-    "SET_AVAILABILITY": "Set yourself as",
-    "CHANGE_AVAILABILITY": "Set availability",
-    "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
-    "SWITCH_ACCOUNT": "アカウントの切り替え",
-    "CHANGE_LANGUAGE": "Change Language",
-    "NOTIFICATIONS": "Notifications",
-    "NOTIFICATION_PREFERENCES": "Notification Preferences",
-    "READ_DOCS": "Read Docs",
-    "CHAT_WITH_US": "チャットをする",
-    "LOGOUT": "ログアウト",
-    "SUBMIT": "送信",
-    "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
-  },
-  "NOTIFICATION": {
-    "HEADER_TITLE": "Notifications",
-    "INBOX": "Inbox",
-    "EMPTY": "No notifications yet.",
-    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
-    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
-    "MARK_ALL": "Mark all as read",
-    "CANCEL": "キャンセル",
-    "DELETE": "削除",
-    "TYPES": {
-      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
-      "CONVERSATION_CREATION": "New conversation created",
-      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
-      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
-      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+      "TITLE": "Priority"
     },
-    "FILTERS": {
-      "SORT_BY": {
-        "TITLE": "Sort by",
-        "OPTIONS": {
-          "ASC": "Oldest",
-          "DESC": "Newest"
-        }
-      }
-    },
-    "ALERTS": {
-      "MARK_AS_READ": "Notification marked as read",
-      "MARK_AS_UNREAD": "Notification marked as unread",
-      "SNOOZE": "Notification snoozed",
-      "DELETE": "Notification deleted",
-      "MARK_ALL_READ": "All notifications marked as read",
-      "DELETE_ALL": "All notifications deleted",
-      "DELETE_ALL_READ": "All read notifications deleted"
-    }
-  },
-  "AVAILABILITY": {
-    "ONLINE": "オンライン",
-    "BUSY": "取り込み中",
-    "OFFLINE": "オフライン"
-  },
-  "NOTIFICATION_PREFERENCE": {
-    "TITLE": "Notification Preferences",
-    "EMAIL": "Eメール通知",
-    "PUSH": "プッシュ通知",
-    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
-    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
-  },
-  "CONVERSATION_DETAILS": {
-    "TITLE": "Attributes",
-    "BROWSER": "ブラウザ",
-    "OPERATING_SYSTEM": "OS",
-    "INITIATED_AT": "開始場所",
-    "INITIATED_FROM": "開始元",
-    "IP_ADDRESS": "IP Address",
-    "CONVERSATION_ID": "Conversation ID",
-    "CLIPBOARD_SUCCESS": "コードが正常にクリップボードにコピーされました"
-  },
-  "CONTACT_DETAILS": {
-    "TITLE": "Contact Details",
-    "EMAIL": "Eメール",
-    "PHONE_NUMBER": "電話番号",
-    "CALL": "Call",
-    "CONTACT_ATTRIBUTES": "Contact Attributes",
-    "VALUE_UNAVAILABLE": "Unavailable"
-  },
-  "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
-    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
-    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
-    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
-    "WATCH_CONVERSATION": "Join conversation",
-    "YOU_ARE_WATCHING": "You are participating",
-    "NO_RECORDS_FOUND": "No results found",
-    "SELECT_PARTICIPANTS": "Select agents",
-    "ADD_PARTICIPANTS": "Select participants",
-    "REMAINING_PARTICIPANTS_TEXT": "others",
-    "REMAINING_PARTICIPANT_TEXT": "other",
-    "ADD_PARTICIPANT": "Add Participant"
-  },
-  "CONTACT_ATTRIBUTES": {
-    "TITLE": "Contact Attributes"
+    "PRIORITY_CHANGE": "Conversation Priority changed",
+    "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "SEARCH_PLACEHOLDER": "会話を検索...",
+    "SEARCH_TEAM": "Search teams",
+    "SELF_ASSIGN": "自分に割り当て",
+    "SHARE": "Share conversation",
+    "SNOOZE": "Snooze conversation",
+    "SNOOZE_UNTIL": "までスヌーズする",
+    "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
+    "SNOOZE_UNTIL_NEXT_WEEK": "来週まで",
+    "SNOOZE_UNTIL_TOMORROW": "明日まで",
+    "STATUS_CHANGE": "Conversation Status changed",
+    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "TEAM": "Team",
+    "TEAM_CHANGE": "Conversation Team changed",
+    "TODAY": "今日",
+    "TYPE_MESSAGE": "Type message",
+    "TYPING": "typing",
+    "UNDEFINED_VARIABLES_CLOSE": "閉じる",
+    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNSUPPORTED_MESSAGE": "このメッセージはサポートされていません。Facebook / Instagram で表示できます。",
+    "UN_ASSIGN": "Unassign conversation",
+    "UN_ASSIGNED": "未割当",
+    "UPDATING": "Updating...",
+    "YESTERDAY": "昨日"
   },
   "CONVERSATION_ACTION": {
     "TITLE": "操作"
   },
-  "CONVERSATION_TEAMS": {
-    "TITLE": "チームを割り当てる",
-    "SELECT_TEAM": "Select team",
-    "NO_RESULT": "No team found"
+  "CONVERSATION_AGENTS": {
+    "NO_RESULT": "No agent found",
+    "SELECT_AGENT": "Select agent",
+    "TITLE": "エージェントを割り当てる"
+  },
+  "CONVERSATION_DETAILS": {
+    "BROWSER": "ブラウザ",
+    "CLIPBOARD_SUCCESS": "コードが正常にクリップボードにコピーされました",
+    "CONVERSATION_ID": "Conversation ID",
+    "INITIATED_AT": "開始場所",
+    "INITIATED_FROM": "開始元",
+    "IP_ADDRESS": "IP Address",
+    "OPERATING_SYSTEM": "OS",
+    "TITLE": "Attributes"
   },
   "CONVERSATION_LABELS": {
-    "TITLE": "会話のラベル",
     "ADD_LABEL": "Add Labels",
     "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
-    "UPDATE_LABEL": "ラベルが正常に更新されました",
-    "SELECTED": "Selected",
     "NOT_SELECTED": "No labels selected",
-    "NO_RESULT": "No labels found"
+    "NO_LABEL": "No labels assigned",
+    "NO_RESULT": "No labels found",
+    "SELECTED": "Selected",
+    "TITLE": "会話のラベル",
+    "UPDATE_LABEL": "ラベルが正常に更新されました"
   },
-  "CONVERSATION_AGENTS": {
-    "TITLE": "エージェントを割り当てる",
-    "SELECT_AGENT": "Select agent",
-    "NO_RESULT": "No agent found"
+  "CONVERSATION_PARTICIPANTS": {
+    "ADD_PARTICIPANT": "Add Participant",
+    "ADD_PARTICIPANTS": "Select participants",
+    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
+    "NO_RECORDS_FOUND": "No results found",
+    "REMAINING_PARTICIPANTS_TEXT": "others",
+    "REMAINING_PARTICIPANT_TEXT": "other",
+    "SELECT_PARTICIPANTS": "Select agents",
+    "TITLE": "Participants",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
+    "WATCH_CONVERSATION": "Join conversation",
+    "YOU_ARE_WATCHING": "You are participating"
   },
-  "AGENT": {
-    "TITLE": "Select Agent"
-  },
-  "TEAMS": {
-    "TITLE": "Select Team",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
-    "CHANGE_TEAMS": "Conversation team changed"
+  "CONVERSATION_TEAMS": {
+    "NO_RESULT": "No team found",
+    "SELECT_TEAM": "Select team",
+    "TITLE": "チームを割り当てる"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
-    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again",
-    "CANNOT_FETCH": "There was an error fetching the information, please try again",
     "AUTH": "ユーザー名/パスワードが正しくありません。もう一度やり直してください",
-    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts"
+    "CANNOT_FETCH": "There was an error fetching the information, please try again",
+    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "NO_ACCOUNTS_MESSAGE": "You don't have access to any chatwoot accounts",
+    "OfFLINE": "You must connect to Wi-fi or a cellular network to get online again"
+  },
+  "EXIT": {
+    "CANCEL": "キャンセル",
+    "OK": "Ok",
+    "SUBTITLE": "Are you sure you want to quit?",
+    "TITLE": "Exit"
+  },
+  "FILTER": {
+    "ALL_INBOXES": "All inboxes",
+    "BOT": "Bot",
+    "CHOOSE_INBOX": "Choose Inbox",
+    "CHOOSE_STATUS": "Conversation Status",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "FILTER_BY_INBOX": "Filter by inbox",
+    "HEADER_TITLE": "Conversation Filter",
+    "OPEN": "開く",
+    "PENDING": "Pending",
+    "RESOLVED": "解決済み",
+    "SNOOZED": "Snoozed",
+    "SORT_BY": "Sort by",
+    "SUBMIT": "送信"
+  },
+  "FOOTER": {
+    "CONVERSATION": "会話データ",
+    "HOME": "ホーム",
+    "NOTIFICATION": "通知",
+    "SETTINGS": "設定"
+  },
+  "FORGOT_PASSWORD": {
+    "API_SUCCESS": "パスワードリセット用リンクをメールアドレスに送信しました",
+    "EMAIL": "メールアドレスを入力してください。",
+    "EMAIL_ERROR": "有効なメールアドレスを入力してください",
+    "HEADER_TITLE": "パスワードをリセット",
+    "RESET_HERE": "パスワードをリセット",
+    "SUB_TITLE": "ご安心ください。お手伝いします",
+    "TITLE": "パスワードをお忘れですか？"
+  },
+  "LOGIN": {
+    "CHANGE_LANGUAGE": "言語を変更",
+    "CHANGE_URL": "URLを変更",
+    "CREATE_ACCOUNT": "新しいアカウントを作成",
+    "DESCRIPTION": "{{baseUrl}} に接続しています。",
+    "EMAIL": "Eメール",
+    "EMAIL_ERROR": "有効なメールアドレスを入力してください",
+    "EMAIL_REQUIRED": "メールは必須です",
+    "FORGOT_PASSWORD": "パスワードをお忘れですか?",
+    "LOGIN": "サインイン",
+    "LOGIN_LOADING": "サインイン中…",
+    "LOGIN_VIA_SSO": "SSOでログイン",
+    "NO_ACCOUNT": "アカウントをお持ちでないですか？",
+    "PASSWORD": "パスワード",
+    "PASSWORD_ERROR": "有効なパスワードを入力してください",
+    "PASSWORD_REQUIRED": "パスワードは必須です",
+    "RESET_HERE": "ここでリセット",
+    "SETTINGS": "設定",
+    "SSO_AUTH_FAILED": "SSO認証に失敗しました。認証情報を確認して、もう一度お試しください。",
+    "SSO_INVALID_RESPONSE": "無効なSSO応答です。もう一度お試しください。",
+    "SSO_UNEXPECTED_ERROR": "SSOログイン中に予期しないエラーが発生しました。もう一度お試しください。",
+    "TERMS": "利用規約",
+    "TITLE": "アカウントにログイン"
+  },
+  "MACRO": {
+    "ACTIONS": {
+      "RUN": "Run"
+    },
+    "EXECUTION_ERROR": "Macro execution failed",
+    "EXECUTION_SUCCESS": "マクロが正常に実行されました",
+    "NO_MACROS": "マクロが見つかりませんでした",
+    "SELECT_MACRO": "Select macro",
+    "TITLE": "マクロ"
+  },
+  "MFA": {
+    "BUTTONS": {
+      "VERIFY": "確認",
+      "VERIFYING": "確認中..."
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "認証アプリの6桁コードを入力してください",
+      "BACKUP": "バックアップコードのいずれかを入力してください"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "バックアップコードを入力"
+    },
+    "TABS": {
+      "AUTHENTICATOR_APP": "認証アプリ",
+      "BACKUP_CODE": "バックアップコード"
+    },
+    "TITLE": "二要素認証"
+  },
+  "NOTIFICATION": {
+    "ALERTS": {
+      "DELETE": "Notification deleted",
+      "DELETE_ALL": "All notifications deleted",
+      "DELETE_ALL_READ": "All read notifications deleted",
+      "MARK_ALL_READ": "All notifications marked as read",
+      "MARK_AS_READ": "Notification marked as read",
+      "MARK_AS_UNREAD": "Notification marked as unread",
+      "SNOOZE": "Notification snoozed"
+    },
+    "ALL_NOTIFICATION_LOADED": "All notifications loaded",
+    "CANCEL": "キャンセル",
+    "DELETE": "削除",
+    "EMPTY": "No notifications yet.",
+    "EMPTY_MORE_TEXT": "Once you start receiving notifications, they'll appear here.",
+    "FILTERS": {
+      "SORT_BY": {
+        "OPTIONS": {
+          "ASC": "Oldest",
+          "DESC": "Newest"
+        },
+        "TITLE": "Sort by"
+      }
+    },
+    "HEADER_TITLE": "Notifications",
+    "INBOX": "Inbox",
+    "MARK_ALL": "Mark all as read",
+    "SEARCH_PLACEHOLDER": "通知を検索...",
+    "TYPES": {
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
+      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
+      "CONVERSATION_CREATION": "New conversation created",
+      "CONVERSATION_MENTION": "You have been mentioned in a conversation",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
+      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
+      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+    }
+  },
+  "NOTIFICATION_PREFERENCE": {
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
+    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
+    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
+    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA",
+    "EMAIL": "Eメール通知",
+    "PUSH": "プッシュ通知",
+    "TITLE": "Notification Preferences"
+  },
+  "SERVER_UPGRADE": {
+    "TITLE": "Server upgrade required",
+    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required.",
+    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server."
+  },
+  "SETTINGS": {
+    "ABOUT": "About",
+    "CHANGE_AVAILABILITY": "Set availability",
+    "CHANGE_LANGUAGE": "言語を変更",
+    "CHAT_WITH_US": "チャットをする",
+    "DEBUG_ACTIONS": "Debug Actions",
+    "HEADER_TITLE": "設定",
+    "LOGOUT": "ログアウト",
+    "NOTIFICATIONS": "Notifications",
+    "NOTIFICATION_PREFERENCES": "Notification Preferences",
+    "PREFERENCES": "Preferences",
+    "READ_DOCS": "Read Docs",
+    "SET_AVAILABILITY": "Set yourself as",
+    "SET_LANGUAGE": "言語を設定",
+    "SUBMIT": "送信",
+    "SUPPORT": "Support",
+    "SWITCH_ACCOUNT": "アカウントの切り替え"
+  },
+  "SLA": {
+    "FRT": "FRT",
+    "MISSES": {
+      "FRT": "最初の応答時間",
+      "HIDE": "Hide {count} rows",
+      "NRT": "Next response time",
+      "RT": "Resolution time",
+      "SHOW_MORE": "{count} more",
+      "TITLE": "SLA Misses"
+    },
+    "NRT": "NRT",
+    "RT": "RT",
+    "STATUS": {
+      "DUE": "due",
+      "FRT": "FRT %{status}",
+      "MISSED": "missed",
+      "NRT": "NRT %{status}",
+      "RT": "RT %{status}"
+    }
   },
   "SUCCESS": {
     "AUTH": "ログインしました"
   },
-  "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+  "TEAMS": {
+    "CHANGE_TEAMS": "Conversation team changed",
+    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "TITLE": "Select Team"
   },
-  "EXIT": {
-    "TITLE": "Exit",
-    "SUBTITLE": "Are you sure you want to quit?",
-    "CANCEL": "キャンセル",
-    "OK": "Ok"
-  },
-  "BANNER": {
-    "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
-    "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
-    "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "以下の理由で返信できません："
-  },
-  "SLA": {
-    "FRT": "FRT",
-    "NRT": "NRT",
-    "RT": "RT",
-    "STATUS": {
-      "FRT": "FRT %{status}",
-      "NRT": "NRT %{status}",
-      "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "due"
-    },
-    "MISSES": {
-      "TITLE": "SLA Misses",
-      "FRT": "最初の応答時間",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
-    }
-  },
-  "MACRO": {
-    "TITLE": "マクロ",
-    "SELECT_MACRO": "Select macro",
-    "ACTIONS": {
-      "RUN": "Run"
-    },
-    "EXECUTION_SUCCESS": "マクロが正常に実行されました",
-    "EXECUTION_ERROR": "Macro execution failed",
-    "NO_MACROS": "マクロが見つかりませんでした"
-  }
+  "WELCOME": "ようこそ"
 }

@@ -147,7 +147,7 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
                 <Animated.View
                   key={attachment.fileType + index}
                   style={tailwind.style('flex flex-row items-center my-2')}>
-                  <AudioBubble audioSrc={attachment.dataUrl} variant={props.variant} />
+                  <AudioBubble id={attachment.id} audioSrc={attachment.dataUrl} variant={props.variant} />
                 </Animated.View>
               );
             }

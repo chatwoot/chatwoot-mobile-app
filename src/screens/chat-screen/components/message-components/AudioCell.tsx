@@ -69,7 +69,7 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
   const currentPosition = useSharedValue(0);
   const totalDuration = useSharedValue(0);
 
-  const audioPlayBackStatus = (args: { status?: AudioStatus; data?: PlayBackType }) => {
+  const audioPlayBackStatus = (args: { status: AudioStatus; data?: PlayBackType }) => {
     const { data: playBackData, status } = args;
     if (playBackData) {
       currentPosition.value = playBackData.currentPosition;

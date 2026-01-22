@@ -47,6 +47,8 @@ const InboxList = () => {
 
   const dispatch = useAppDispatch();
 
+  // This useEffect is used to re-fetch the notifications whenever the filters change.
+  // The previousFilters ref is used to prevent an infinite loop.
   useEffect(() => {
     if (previousFilters.current !== filters) { // Comparar filters
       previousFilters.current = filters;

@@ -175,6 +175,8 @@ export const ConversationHeaderPresenter = ({
 
   if (currentState === 'Search') {
     return (
+      // This wrapper is necessary to maintain a consistent header height and layout when the search is active,
+      // which prevents the list from scrolling over it.
       <Animated.View
         style={[
           tailwind.style(

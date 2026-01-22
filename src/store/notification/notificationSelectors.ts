@@ -58,6 +58,8 @@ export const getFilteredNotifications = createDraftSafeSelector(
 
     let filteredNotifications = notifications;
 
+    // Filter notifications based on the search text.
+    // The filtering is done on the pushMessageTitle, sender's phone number, and sender's name.
     if (searchText) {
       const lowerCaseSearchText = searchText.toLowerCase();
       filteredNotifications = notifications.filter(notification => {

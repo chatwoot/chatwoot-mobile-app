@@ -702,26 +702,6 @@ export const AudioBubblePlayer = React.memo((props: AudioBubbleProps) => {
     });
   }, []);
 
-  /**
-   * Memoized version of `manualSeekToJS` for use in Reanimated worklets (UI thread).
-   */
-  const manualSeekTo = useMemo(() => {
-    return (ms: number) => {
-      'worklet'; // Marks this function to be executed on the UI thread.
-      runOnJS(manualSeekToJS)(ms); // Call the JS thread function from the UI thread.
-    };
-  }, [manualSeekToJS]);
-
-  /**
-   * Memoized version of `pauseAudioJS` for use in Reanimated worklets (UI thread).
-   */
-  const pauseAudio = useMemo(() => {
-    return () => {
-      'worklet'; // Marks this function to be executed on the UI thread.
-      runOnJS(pauseAudioJS)(); // Call the JS thread function from the UI thread.
-    };
-  }, [pauseAudioJS]);
-
   // Memoized boolean indicating if this specific audio is currently playing and active.
   const isCurrentAudioPlaying = useMemo(
     () => isThisCurrent && isAudioPlaying,
@@ -733,12 +713,12 @@ export const AudioBubblePlayer = React.memo((props: AudioBubbleProps) => {
       trackColor: variant === MESSAGE_VARIANTS.USER ? 'bg-whiteA-A9' : 'bg-gray-500',
       filledTrackColor: variant === MESSAGE_VARIANTS.USER ? 'bg-white' : 'bg-blue-700',
       knobStyle: variant === MESSAGE_VARIANTS.USER ? 'border-blue-300' : 'border-blue-700',
-      manualSeekTo,
+      manualSeekTo: manualSeekToJS, // Pass plain JS function.
       currentPosition,
       totalDuration,
-      pauseAudio,
+      pauseAudio: pauseAudioJS, // Pass plain JS function.
     }),
-    [variant, manualSeekTo, currentPosition, totalDuration, pauseAudio],
+    [variant, manualSeekToJS, currentPosition, totalDuration, pauseAudioJS], // Update dependencies.
   );
 
   return (

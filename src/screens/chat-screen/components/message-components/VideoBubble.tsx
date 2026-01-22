@@ -81,7 +81,7 @@ export const VideoBubblePlayer = (props: VideoPlayerProps) => {
           uri: videoSrc,
         }}
         shouldPlay={playVideo} // Control playback based on local state.
-        resizeMode={ResizeMode.CONTAIN} // Ensure the video fits within its bounds without cropping.
+        resizeMode={Platform.OS === 'android' ? ResizeMode.CONTAIN : ResizeMode.COVER} // Ensure the video fits within its bounds without cropping.
         onLoadStart={handleOnLoadStart} // Callback for when video starts loading.
         onLoad={handleOnLoad} // Callback for when video finishes loading.
         onPlaybackStatusUpdate={handlePlaybackStatus} // Callback for general playback status updates.

@@ -60,6 +60,7 @@ export const MessageItem = ({ item, channel, getMenuOptions }: MessageItemPresen
   // Message has only one attachment, no content and not a reply message
   if (attachments?.length === 1 && !item.content && !isReplyMessage) {
     const commonProps = {
+      id: item.id, // Pass the message ID to attachment cells.
       sender: item.sender,
       timeStamp: item.createdAt,
       shouldRenderAvatar: !!item.shouldRenderAvatar,

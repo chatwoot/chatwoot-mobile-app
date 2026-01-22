@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, Pressable, Text, View } from 'react-native';
-import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut, runOnJS, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
 import * as Sentry from '@sentry/react-native';
 import { Audio, AVPlaybackStatus } from 'expo-av';
@@ -74,10 +74,10 @@ const PlayerHub = (() => {
     try {
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
-        interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+        interruptionModeIOS: Audio.InterruptionModeIOS.DoNotMix,
         playsInSilentModeIOS: true,
         staysActiveInBackground: false,
-        interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+        interruptionModeAndroid: Audio.InterruptionModeAndroid.DoNotMix,
         shouldDuckAndroid: true,
         playThroughEarpieceAndroid: false,
       });
@@ -114,6 +114,18 @@ const PlayerHub = (() => {
     currentSrc = null;
     await stopAndReset();
     await detachAndUnload();
+  };
+
+  const forceStopAll = async () => {
+    currentId = null;
+    currentKey = null;
+    currentSrc = null;
+    try {
+      await stopAndReset();
+    } catch {}
+    try {
+      await detachAndUnload();
+    } catch {}
   };
 
   const register = (entry: QueueEntry) => {
@@ -168,6 +180,25 @@ const PlayerHub = (() => {
     if (!src || !key) return;
 
     await safeSetAudioMode();
+
+    if (currentId === id && sound) {
+      try {
+        const st = await sound.getStatusAsync();
+        if (st.isLoaded) {
+          currentSrc = src;
+          currentKey = key;
+          if ((st as any).isPlaying) {
+            entry.onLoading(false);
+            return;
+          }
+          await sound.playAsync();
+          entry.onLoading(false);
+          return;
+        }
+      } catch (e) {
+        Sentry.captureException(e);
+      }
+    }
 
     if (currentId && currentId !== id) {
       suppressNextOnce(currentId);
@@ -256,10 +287,31 @@ const PlayerHub = (() => {
     playNextAfter,
     suppressNextOnce,
     stopAndUnloadIfCurrent,
+    forceStopAll,
     isCurrent,
     getCurrentKey,
   };
 })();
+
+const g: any = globalThis as any;
+try {
+  const prev = g.__AUDIO_BUBBLE_PLAYER_HUB__;
+  if (prev && typeof prev.forceStopAll === 'function') {
+    prev.enqueue(() => prev.forceStopAll());
+  }
+} catch {}
+g.__AUDIO_BUBBLE_PLAYER_HUB__ = PlayerHub;
+
+// Best-effort cleanup on Fast Refresh / HMR
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const _m: any = typeof module !== 'undefined' ? (module as any) : null;
+if (_m?.hot) {
+  _m.hot.dispose(() => {
+    try {
+      PlayerHub.enqueue(() => PlayerHub.forceStopAll());
+    } catch {}
+  });
+}
 
 const probeDurationMs = async (uri: string): Promise<number> => {
   try {
@@ -337,6 +389,11 @@ export const AudioBubblePlayer = React.memo((props: AudioBubbleProps) => {
       }
     });
 
+    const hubKey = PlayerHub.getCurrentKey();
+    if (hubKey && hubKey === key) {
+      dispatch(setCurrentPlayingAudioSrc(key));
+    }
+
     return () => {
       cancelled = true;
     };
@@ -397,13 +454,6 @@ export const AudioBubblePlayer = React.memo((props: AudioBubbleProps) => {
 
     return () => {
       PlayerHub.unregister(idRef.current);
-
-      PlayerHub.enqueue(async () => {
-        if (PlayerHub.isCurrent(idRef.current)) {
-          await PlayerHub.stopAndUnloadIfCurrent(idRef.current);
-          dispatch(setCurrentPlayingAudioSrc(''));
-        }
-      });
     };
   }, [convertedAudioSrc, dispatch, currentPosition, key, onStatus]);
 
@@ -449,7 +499,7 @@ export const AudioBubblePlayer = React.memo((props: AudioBubbleProps) => {
     });
   }, [convertedAudioSrc, dispatch, isThisCurrent, isAudioPlaying, key]);
 
-  const manualSeekTo = useCallback(
+  const manualSeekToJS = useCallback(
     async (manualSeekPositionMs: number) => {
       await PlayerHub.enqueue(async () => {
         const max = totalDuration.value > 0 ? totalDuration.value : manualSeekPositionMs;
@@ -470,12 +520,26 @@ export const AudioBubblePlayer = React.memo((props: AudioBubbleProps) => {
     [currentPosition, totalDuration, isThisCurrent, isAudioPlaying],
   );
 
-  const pauseAudio = useCallback(async () => {
+  const pauseAudioJS = useCallback(async () => {
     await PlayerHub.enqueue(async () => {
       PlayerHub.suppressNextOnce(idRef.current);
       await PlayerHub.pause();
     });
   }, []);
+
+  const manualSeekTo = useMemo(() => {
+    return (ms: number) => {
+      'worklet';
+      runOnJS(manualSeekToJS)(ms);
+    };
+  }, [manualSeekToJS]);
+
+  const pauseAudio = useMemo(() => {
+    return () => {
+      'worklet';
+      runOnJS(pauseAudioJS)();
+    };
+  }, [pauseAudioJS]);
 
   const isCurrentAudioPlaying = useMemo(
     () => isThisCurrent && isAudioPlaying,

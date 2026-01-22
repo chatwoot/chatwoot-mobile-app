@@ -513,6 +513,9 @@ export const AudioBubblePlayer = React.memo((props: AudioBubbleProps) => {
         durationLoadedRef.current = true;
         totalDuration.value = d;
         setTotalTime(formatTime(d));
+        // Explicitly set currentPosition.value to 0 again after totalDuration is known
+        // to ensure the animated reaction in Slider picks up the change.
+        currentPosition.value = 0;
       }
     });
 

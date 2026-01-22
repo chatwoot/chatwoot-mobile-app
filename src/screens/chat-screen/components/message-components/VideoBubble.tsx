@@ -93,6 +93,11 @@ export const VideoBubblePlayer = (props: VideoPlayerProps) => {
           const maxWidth = videoMaxWidth || 300; // Use provided max width or default.
           const aspectRatio = width / height;
           const calculatedHeight = maxWidth / aspectRatio; // Calculate height.
+          if(calculatedHeight > 337) {
+            const adjustedWidth = 337 * aspectRatio;
+            setVideoSize({ width: adjustedWidth, height: 337 });
+            return;
+          }
           setVideoSize({ width: maxWidth, height: calculatedHeight });
         }}
       />

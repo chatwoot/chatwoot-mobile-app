@@ -118,20 +118,27 @@ const processContactAttributes = (
 };
 
 const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
-  const { conversationId } = props.route.params;
+  const { conversationId, contactId: routeContactId } = props.route.params;
   const dispatch = useAppDispatch();
 
-  const conversation = useAppSelector(state => selectConversationById(state, conversationId));
+  const conversation = conversationId
+    ? useAppSelector(state => selectConversationById(state, conversationId))
+    : null;
 
-  const {
-    meta: {
-      sender: { email, id: contactId, name, thumbnail },
-    },
-  } = conversation || { meta: { sender: { name: '', thumbnail: '' } } };
+  const contactIdFromConversation = conversation?.meta?.sender?.id;
+  const contactId = routeContactId || contactIdFromConversation;
+
+  const emailFromConversation = conversation?.meta?.sender?.email;
+  const nameFromConversation = conversation?.meta?.sender?.name;
+  const thumbnailFromConversation = conversation?.meta?.sender?.thumbnail;
 
   const contact = useAppSelector(state => (contactId ? selectContactById(state, contactId) : null));
 
-  const { name: contactName, thumbnail: contactThumbnail, phoneNumber } = contact || {};
+  const { name: contactName, thumbnail: contactThumbnail, phoneNumber, email: contactEmail } = contact || {};
+  
+  const email = emailFromConversation || contactEmail;
+  const name = nameFromConversation || contactName;
+  const thumbnail = thumbnailFromConversation || contactThumbnail;
 
   const {
     city,

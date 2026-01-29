@@ -72,6 +72,7 @@ export interface ApiErrorResponse {
 export interface MessagesPayload {
   conversationId: number;
   beforeId?: number | null;
+  afterId?: number | null;
 }
 
 export interface MessagesResponse {

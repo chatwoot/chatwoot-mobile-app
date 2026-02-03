@@ -18,7 +18,7 @@ patchedDependencies:
     hash: uwpjeogvjx4ieurmxobcesvywy
     path: patches/expo-constants@17.1.8.patch
   ffmpeg-kit-react-native@6.0.2:
-    hash: 2nq3fjhw7kz4xedvlglmwrryxe
+    hash: reaqqfmqq634ngguara77nsct4
     path: patches/ffmpeg-kit-react-native.patch
 
 dependencies:
@@ -150,7 +150,7 @@ dependencies:
     version: 14.0.2(expo@52.0.49)(react-native@0.76.9)
   ffmpeg-kit-react-native:
     specifier: ^6.0.2
-    version: 6.0.2(patch_hash=2nq3fjhw7kz4xedvlglmwrryxe)(react-native@0.76.9)(react@18.3.1)
+    version: 6.0.2(patch_hash=reaqqfmqq634ngguara77nsct4)(react-native@0.76.9)(react@18.3.1)
   i18n-js:
     specifier: ^3.8.0
     version: 3.9.2
@@ -7643,7 +7643,7 @@ packages:
   /fetch-retry@4.1.1:
     resolution: {integrity: sha512-e6eB7zN6UBSwGVwrbWVH+gdLnkW9WwHhmq2YDK1Sh30pzx1onRVGBvogTlUeWxwTa+L86NYdo4hFkh7O8ZjSnA==}
 
-  /ffmpeg-kit-react-native@6.0.2(patch_hash=2nq3fjhw7kz4xedvlglmwrryxe)(react-native@0.76.9)(react@18.3.1):
+  /ffmpeg-kit-react-native@6.0.2(patch_hash=reaqqfmqq634ngguara77nsct4)(react-native@0.76.9)(react@18.3.1):
     resolution: {integrity: sha512-r9uSmahq8TeyIb7fXf3ft+uUXyoeWRFa99+khjo0TAzWO9y0z9wU7eGnab9JLw1MmCB9v64o4yojNluJhVm9nQ==}
     deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
     peerDependencies:

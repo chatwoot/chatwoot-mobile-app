@@ -1,0 +1,27 @@
+--- a/android/build.gradle
++++ b/android/build.gradle
+@@ -1,6 +1,5 @@
+ plugins {
+   id 'com.android.library'
+-  id 'expo-module-gradle-plugin'
+ }
+ 
+ apply from: "../scripts/get-app-config-android.gradle"
+@@ -8,14 +7,12 @@
+ group = 'host.exp.exponent'
+ version = '17.1.8'
+ 
+-expoModule {
+-  // We can't prebuild the module because we need to apply `get-app-config-android.gradle` script.
+-  canBePublished false
+-}
+-
+ android {
++  compileSdkVersion 35
+   namespace "expo.modules.constants"
+   defaultConfig {
++    minSdkVersion 24
++    targetSdkVersion 35
+     versionCode 33
+     versionName "17.1.8"
+   }

@@ -14,6 +14,9 @@ overrides:
   storybook: 8.6.15
 
 patchedDependencies:
+  expo-constants@17.1.8:
+    hash: b3erbushck3n6b6ff5grh52aay
+    path: patches/expo-constants@17.1.8.patch
   ffmpeg-kit-react-native@6.0.2:
     hash: 2nq3fjhw7kz4xedvlglmwrryxe
     path: patches/ffmpeg-kit-react-native.patch
@@ -120,7 +123,7 @@ dependencies:
     version: 0.13.3(expo@52.0.49)
   expo-constants:
     specifier: ^17.0.8
-    version: 17.1.8(expo@52.0.49)(react-native@0.76.9)
+    version: 17.1.8(patch_hash=b3erbushck3n6b6ff5grh52aay)(expo@52.0.49)(react-native@0.76.9)
   expo-file-system:
     specifier: ~18.0.12
     version: 18.0.12(expo@52.0.49)(react-native@0.76.9)
@@ -2071,7 +2074,7 @@ packages:
 
   /@expo/bunyan@4.0.1:
     resolution: {integrity: sha512-+Lla7nYSiHZirgK+U/uYzsLv/X+HaJienbD5AKX1UQZHYfWaP+9uuQluRB4GrEVWF0GZ7vEVp/jzaOT9k/SQlg==}
-    engines: {node: '>=0.10.0'}
+    engines: {'0': node >=0.10.0}
     dependencies:
       uuid: 8.3.2
 
@@ -4955,7 +4958,7 @@ packages:
     peerDependencies:
       storybook: 8.6.15
     dependencies:
-      storybook: 8.6.15(prettier@3.8.1)
+      storybook: 8.6.15(prettier@2.8.8)
     dev: true
 
   /@tybys/wasm-util@0.10.1:
@@ -7343,7 +7346,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /expo-constants@17.1.8(expo@52.0.49)(react-native@0.76.9):
+  /expo-constants@17.1.8(patch_hash=b3erbushck3n6b6ff5grh52aay)(expo@52.0.49)(react-native@0.76.9):
     resolution: {integrity: sha512-sOCeMN/BWLA7hBP6lMwoEQzFNgTopk6YY03sBAmwT216IHyL54TjNseg8CRU1IQQ/+qinJ2fYWCl7blx2TiNcA==}
     peerDependencies:
       expo: '*'
@@ -7356,6 +7359,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: false
+    patched: true
 
   /expo-crypto@14.0.2(expo@52.0.49):
     resolution: {integrity: sha512-WRc9PBpJraJN29VD5Ef7nCecxJmZNyRKcGkNiDQC1nhY5agppzwhqh7zEzNFarE/GqDgSiaDHS8yd5EgFhP9AQ==}

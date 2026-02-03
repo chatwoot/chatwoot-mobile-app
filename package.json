@@ -178,6 +178,7 @@
   },
   "pnpm": {
     "patchedDependencies": {
+      "expo-constants@17.1.8": "patches/expo-constants@17.1.8.patch",
       "ffmpeg-kit-react-native@6.0.2": "patches/ffmpeg-kit-react-native.patch"
     },
     "overrides": {

@@ -161,7 +161,7 @@ export const AudioRecorder = ({
         stats = await RNFetchBlob.fs.stat(finalPath);
         const mp3Info = getMp3FileInfo();
         return {
-          uri: finalPath,
+          uri: `file://${finalPath}`,
           originalPath: finalPath,
           type: mp3Info.mimeType,
           fileName: `audio-${localRecordedAudioCacheFilePaths.length}.${mp3Info.extension}`,
@@ -170,7 +170,7 @@ export const AudioRecorder = ({
         };
       }
       return {
-        uri: finalPath,
+        uri: `file://${finalPath}`,
         originalPath: finalPath,
         type: recorderFileInfo.mimeType,
         fileName: `audio-${localRecordedAudioCacheFilePaths.length}.${recorderFileInfo.extension}`,

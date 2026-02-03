@@ -1,7 +1,85 @@
+import RNFS from 'react-native-fs';
+import { FFmpegKit } from 'ffmpeg-kit-react-native';
+import * as Sentry from '@sentry/react-native';
+
 export const convertOggToWav = async (oggUrl: string): Promise<string | Error> => {
-  return '';
+  const tempOggPath = `${RNFS.CachesDirectoryPath}/temp.ogg`;
+  const fileName = `converted_${Date.now()}.wav`;
+  const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+
+  try {
+    const downloadResult = await RNFS.downloadFile({ fromUrl: oggUrl, toFile: tempOggPath }).promise;
+
+    if (downloadResult.statusCode !== 200) {
+      Sentry.captureException(
+        new Error(`Download failed with status ${downloadResult.statusCode}`),
+      );
+      throw new Error(`Download failed with status ${downloadResult.statusCode}`);
+    }
+
+    const fileExists = await RNFS.exists(tempOggPath);
+    if (!fileExists) {
+      throw new Error('Downloaded file not found');
+    }
+
+    await FFmpegKit.execute(
+      `-i "${tempOggPath}" -vn -y -ar 44100 -ac 2 -c:a pcm_s16le "${outputPath}"`,
+    );
+
+    if (await RNFS.exists(tempOggPath)) {
+      await RNFS.unlink(tempOggPath);
+    }
+
+    const outputExists = await RNFS.exists(outputPath);
+    if (!outputExists) {
+      throw new Error('Conversion failed - output file not found');
+    }
+
+    return outputPath;
+  } catch (error) {
+    Sentry.captureException(error);
+    return error as Error;
+  }
 };
 
 export const convertAacToWav = async (inputPath: string): Promise<string> => {
-  return '';
+  try {
+    const fileName = `converted_${Date.now()}.wav`;
+    const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+
+    await FFmpegKit.execute(
+      `-i "${inputPath}" -vn -y -ar 44100 -ac 2 -c:a pcm_s16le "${outputPath}"`,
+    );
+
+    const outputExists = await RNFS.exists(outputPath);
+    if (!outputExists) {
+      throw new Error('Conversion failed - output file not found');
+    }
+
+    return outputPath;
+  } catch (error) {
+    Sentry.captureException(error);
+    throw error;
+  }
+};
+
+export const convertToMp3 = async (inputPath: string): Promise<string> => {
+  try {
+    const fileName = `converted_${Date.now()}.mp3`;
+    const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+
+    await FFmpegKit.execute(
+      `-i "${inputPath}" -vn -y -ar 44100 -ac 2 -b:a 96k -codec:a libmp3lame "${outputPath}"`,
+    );
+
+    const outputExists = await RNFS.exists(outputPath);
+    if (!outputExists) {
+      throw new Error('Conversion failed - output file not found');
+    }
+
+    return outputPath;
+  } catch (error) {
+    Sentry.captureException(error);
+    throw error;
+  }
 };

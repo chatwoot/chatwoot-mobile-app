@@ -56,6 +56,11 @@ You can leave the Beta testing program at any time:
 - On Android, [click this link](https://play.google.com/apps/testing/com.chatwoot.app) while logged in with your Google Play email address used to opt-in for the Beta program, then click **Leave the program**.
 - On iOS, access the `Chatwoot` app page in TestFlight and click **Stop Testing**.
 
+## Telegram voice notes compatibility
+
+Mobile voice notes sent from a Telegram inbox are transcoded to `.mp3` before upload so Telegram can
+accept and deliver the attachment.
+
 ## Feedback & Contributing
 
 Feel free to send us feedback on [X](https://x.com/chatwootapp) or [file an issue](https://github.com/chatwoot/chatwoot-mobile-app/issues).

@@ -69,3 +69,24 @@ export const convertAacToWav = async (inputPath: string): Promise<string> => {
     throw error;
   }
 };
+
+export const convertToMp3 = async (inputPath: string): Promise<string> => {
+  try {
+    const fileName = `converted_${Date.now()}.mp3`;
+    const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+
+    await FFmpegKit.execute(
+      `-i "${inputPath}" -vn -y -ar 44100 -ac 2 -b:a 96k -codec:a libmp3lame "${outputPath}"`,
+    );
+
+    const outputExists = await RNFS.exists(outputPath);
+    if (!outputExists) {
+      throw new Error('Conversion failed - output file not found');
+    }
+
+    return outputPath;
+  } catch (error) {
+    Sentry.captureException(error);
+    throw error;
+  }
+};

@@ -21,7 +21,8 @@ import {
   selectLocalRecordedAudioCacheFilePaths,
 } from '@/store/conversation/localRecordedAudioCacheSlice';
 // eslint-disable-next-line import/no-unresolved
-import { convertAacToWav } from '@/utils/audioConverter';
+import { convertAacToWav, convertToMp3 } from '@/utils/audioConverter';
+import { getMp3FileInfo, getRecorderFileInfo } from '@/utils/audioFormatUtils';
 
 const RecorderSegmentWidth = Dimensions.get('screen').width - 8 - 80 - 12;
 
@@ -63,9 +64,11 @@ const millisecondsToTimeString = (milliseconds: number | undefined) => {
 export const AudioRecorder = ({
   onRecordingComplete,
   audioFormat,
+  shouldTranscodeToMp3,
 }: {
   onRecordingComplete: (audioFile: File) => void;
   audioFormat: 'audio/m4a' | 'audio/wav';
+  shouldTranscodeToMp3?: boolean;
 }) => {
   const localRecordedAudioCacheFilePaths = useAppSelector(selectLocalRecordedAudioCacheFilePaths);
   const dispatch = useAppDispatch();
@@ -99,9 +102,10 @@ export const AudioRecorder = ({
         setRecorderData(recordingMeta);
       });
       const dirs = RNFetchBlob.fs.dirs;
+      const recorderFileInfo = getRecorderFileInfo(audioFormat, Platform.OS);
       const path = Platform.select({
         ios: `audio-${localRecordedAudioCacheFilePaths.length}.m4a`,
-        android: `${dirs.CacheDir}/audio-${localRecordedAudioCacheFilePaths.length}.aac`,
+        android: `${dirs.CacheDir}/audio-${localRecordedAudioCacheFilePaths.length}.${recorderFileInfo.extension}`,
       });
 
       ARPlayer.startRecorder(path, {
@@ -109,8 +113,8 @@ export const AudioRecorder = ({
         AVNumberOfChannelsKeyIOS: 2,
         AVSampleRateKeyIOS: 44100,
         AudioSourceAndroid: 1, // MIC
-        OutputFormatAndroid: 6, // AAC_ADTS
-        AudioEncoderAndroid: 3, // AAC
+        OutputFormatAndroid: recorderFileInfo.androidOutputFormat ?? 6, // AAC_ADTS
+        AudioEncoderAndroid: recorderFileInfo.androidAudioEncoder ?? 3, // AAC
         AudioSamplingRateAndroid: 16000,
         AudioEncodingBitRateAndroid: 128000,
         AudioChannelsAndroid: 2,
@@ -148,15 +152,29 @@ export const AudioRecorder = ({
         android: value.replace(/\/\/+/g, '/'),
       }) || value;
     let finalPath = cleanPath;
-    const stats = await RNFetchBlob.fs.stat(finalPath);
+    let stats = await RNFetchBlob.fs.stat(finalPath);
 
     if (Platform.OS === 'android') {
+      const recorderFileInfo = getRecorderFileInfo(audioFormat, Platform.OS);
+      if (shouldTranscodeToMp3) {
+        finalPath = await convertToMp3(finalPath);
+        stats = await RNFetchBlob.fs.stat(finalPath);
+        const mp3Info = getMp3FileInfo();
+        return {
+          uri: finalPath,
+          originalPath: finalPath,
+          type: mp3Info.mimeType,
+          fileName: `audio-${localRecordedAudioCacheFilePaths.length}.${mp3Info.extension}`,
+          name: `audio-${localRecordedAudioCacheFilePaths.length}.${mp3Info.extension}`,
+          fileSize: stats.size,
+        };
+      }
       return {
         uri: finalPath,
         originalPath: finalPath,
-        type: 'audio/aac',
-        fileName: `audio-${localRecordedAudioCacheFilePaths.length}.aac`,
-        name: `audio-${localRecordedAudioCacheFilePaths.length}.aac`,
+        type: recorderFileInfo.mimeType,
+        fileName: `audio-${localRecordedAudioCacheFilePaths.length}.${recorderFileInfo.extension}`,
+        name: `audio-${localRecordedAudioCacheFilePaths.length}.${recorderFileInfo.extension}`,
         fileSize: stats.size,
       };
     }
@@ -166,6 +184,21 @@ export const AudioRecorder = ({
     if (audioFormat === 'audio/wav') {
       finalPath = await convertAacToWav(cleanPath);
       finalPath = finalPath.replace('file://', '');
+    }
+
+    if (shouldTranscodeToMp3) {
+      finalPath = await convertToMp3(finalPath);
+      finalPath = finalPath.replace('file://', '');
+      stats = await RNFetchBlob.fs.stat(finalPath);
+      const mp3Info = getMp3FileInfo();
+      return {
+        uri: Platform.OS === 'ios' ? `file://${finalPath}` : finalPath,
+        originalPath: finalPath,
+        type: mp3Info.mimeType,
+        fileName: `audio-${localRecordedAudioCacheFilePaths.length}.${mp3Info.extension}`,
+        name: `audio-${localRecordedAudioCacheFilePaths.length}.${mp3Info.extension}`,
+        fileSize: stats.size,
+      };
     }
 
     const audioFile = {

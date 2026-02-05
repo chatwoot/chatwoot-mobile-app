@@ -87,7 +87,7 @@
     "react-native-document-picker": "^9.3.1",
     "react-native-file-viewer": "^2.1.5",
     "react-native-fs": "^2.20.0",
-    "react-native-gesture-handler": "^2.20.2",
+    "react-native-gesture-handler": "2.20.2",
     "react-native-image-picker": "^7.1.2",
     "react-native-ios-context-menu": "^3.1.0",
     "react-native-ios-utilities": "^5.1.1",
@@ -95,9 +95,9 @@
     "react-native-markdown-display": "^7.0.0-alpha.2",
     "react-native-pager-view": "^6.5.1",
     "react-native-permissions": "^5.2.4",
-    "react-native-reanimated": "^3.16.7",
+    "react-native-reanimated": "3.16.7",
     "react-native-safe-area-context": "^4.12.0",
-    "react-native-screens": "^4.4.0",
+    "react-native-screens": "4.4.0",
     "react-native-snackbar": "^2.8.0",
     "react-native-svg": "^15.8.0",
     "react-native-webview": "^13.12.5",
@@ -178,6 +178,7 @@
   },
   "pnpm": {
     "patchedDependencies": {
+      "expo-constants@17.1.8": "patches/expo-constants@17.1.8.patch",
       "ffmpeg-kit-react-native@6.0.2": "patches/ffmpeg-kit-react-native.patch"
     },
     "overrides": {

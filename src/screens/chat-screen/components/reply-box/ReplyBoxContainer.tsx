@@ -413,7 +413,11 @@ const BottomSheetContent = () => {
         {typingText && <TypingIndicator typingText={typingText} />}
 
         {isVoiceRecorderOpen ? (
-          <AudioRecorder onRecordingComplete={onRecordingComplete} audioFormat={audioFormat()} />
+          <AudioRecorder
+            onRecordingComplete={onRecordingComplete}
+            audioFormat={audioFormat()}
+            shouldTranscodeToMp3={isATelegramChannel(inbox)}
+          />
         ) : null}
         {!isVoiceRecorderOpen ? (
           <Animated.View style={tailwind.style('flex flex-row px-1 items-end z-20 relative')}>

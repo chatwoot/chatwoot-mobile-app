@@ -62,10 +62,10 @@
     },
     "INSTRUCTIONS": {
       "AUTHENTICATOR": "Insira o código de 6 dígitos do seu aplicativo autenticador",
-      "BACKUP": "Insira o seu código de backup"
+      "BACKUP": "Informe um dos seus códigos de recuperação"
     },
     "PLACEHOLDERS": {
-      "BACKUP_CODE": "Insira o código de backup"
+      "BACKUP_CODE": "Inserir código de recuperação"
     },
     "BUTTONS": {
       "VERIFY": "Verificar",
@@ -152,7 +152,7 @@
     "ASSIGNED_AGENT": "Agente atribuído",
     "TEAM": "Time",
     "PRIVATE_MSG_INPUT": "Isto será visível apenas para Agentes",
-    "UNSUPPORTED_MESSAGE": "Esta mensagem não é suportada. Você pode ver esta mensagem no aplicativo Facebook Messenger.",
+    "UNSUPPORTED_MESSAGE": "Esta mensagem não é suportada. Você pode ver esta mensagem no aplicativo do Facebook / Instagram.",
     "NOT_FOUND": {
       "TITLE": "Não foi possível carregar a conversa",
       "RETRY": "Tentar novamente",

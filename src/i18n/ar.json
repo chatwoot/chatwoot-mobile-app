@@ -34,8 +34,8 @@
     "LOGIN_LOADING": "Signing In...",
     "LOGIN_VIA_SSO": "Login via SSO",
     "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
-    "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
-    "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
+    "SSO_INVALID_RESPONSE": "قناة Slack غير صحيحة. الرجاء المحاولة مرة أخرى.",
+    "SSO_UNEXPECTED_ERROR": "حدث خطأ غير متوقع أثناء تسجيل دخول SSO. الرجاء المحاولة مرة أخرى.",
     "FORGOT_PASSWORD": "نسيت كلمة المرور؟",
     "RESET_HERE": "إعادة تعيين من هنا",
     "NO_ACCOUNT": "ليس لديك حساب؟",
@@ -55,13 +55,13 @@
     "API_SUCCESS": "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني"
   },
   "MFA": {
-    "TITLE": "Two-Factor Authentication",
+    "TITLE": "Manage Two-Factor Authentication",
     "TABS": {
-      "AUTHENTICATOR_APP": "Authenticator App",
-      "BACKUP_CODE": "Backup Code"
+      "AUTHENTICATOR_APP": "Authentication Type",
+      "BACKUP_CODE": "Backup Codes"
     },
     "INSTRUCTIONS": {
-      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "AUTHENTICATOR": "Enter the 6-digit code from your authenticator app",
       "BACKUP": "Enter your one of your backup code"
     },
     "PLACEHOLDERS": {

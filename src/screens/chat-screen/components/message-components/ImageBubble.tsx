@@ -12,6 +12,8 @@ type ImageContainerProps = Pick<ImageCellProps, 'imageSrc'> & {
   maxHeight?: number;
 };
 
+const imageDimensionsCache = new Map<string, { width: number; height: number }>();
+
 /**
  * Renders a chat image preview and fullscreen modal.
  *
@@ -26,6 +28,14 @@ export const ImageBubbleContainer = (props: ImageContainerProps) => {
 
   useEffect(() => {
     let isMounted = true;
+    const cachedImageDimensions = imageDimensionsCache.get(imageSrc);
+
+    if (cachedImageDimensions) {
+      setImageDimensions(cachedImageDimensions);
+      return () => {
+        isMounted = false;
+      };
+    }
 
     RNImage.getSize(
       imageSrc,
@@ -33,7 +43,9 @@ export const ImageBubbleContainer = (props: ImageContainerProps) => {
         if (!isMounted || width <= 0 || height <= 0) {
           return;
         }
-        setImageDimensions({ width, height });
+        const dimensions = { width, height };
+        imageDimensionsCache.set(imageSrc, dimensions);
+        setImageDimensions(dimensions);
       },
       () => {
         if (!isMounted) {

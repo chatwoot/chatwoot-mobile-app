@@ -1,10 +1,10 @@
-import { ExpoConfig, ConfigContext } from 'expo/config';
+import { ConfigContext, ExpoConfig } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'Chatwoot',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
-    version: '4.3.13',
+    version: '4.3.16',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',

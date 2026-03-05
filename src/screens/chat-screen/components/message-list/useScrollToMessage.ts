@@ -12,9 +12,19 @@ interface UseScrollToMessageParams {
   onPositioned: () => void;
 }
 
+// Maximum time to wait for the target message to appear in the data
+// before giving up and showing the list as-is (safety net)
+const TARGET_MESSAGE_TIMEOUT_MS = 5000;
+
 /**
  * Hook to handle scrolling to a target message when navigating from search.
- * Positions the target message at the top of the viewport.
+ * Uses multiple staggered scroll attempts to work around FlashList's estimated
+ * item size inaccuracy (items near the target get measured progressively).
+ *
+ * viewPosition: 0.5 centers the target in the viewport, which provides
+ * tolerance for estimation errors in both directions. This is especially
+ * important because the list is inverted (viewPosition coordinates are
+ * flipped relative to the visual layout).
  */
 export function useScrollToMessage({
   messageId,
@@ -32,7 +42,22 @@ export function useScrollToMessage({
     }
   }, [messageId]);
 
-  // Position target message at top when navigating from search
+  // Safety-net timeout: if the target message never appears in the data
+  // (e.g. it was deleted), reveal the list after a reasonable wait
+  useEffect(() => {
+    if (!messageId) return;
+
+    const timeout = setTimeout(() => {
+      if (!hasPositionedMessageRef.current) {
+        hasPositionedMessageRef.current = true;
+        onPositioned();
+      }
+    }, TARGET_MESSAGE_TIMEOUT_MS);
+
+    return () => clearTimeout(timeout);
+  }, [messageId, onPositioned]);
+
+  // Position target message when navigating from search
   useEffect(() => {
     if (!messageId || !isFlashListReady || messages.length === 0) return;
     if (hasPositionedMessageRef.current) return;
@@ -41,36 +66,56 @@ export function useScrollToMessage({
       item => !('date' in item) && 'id' in item && item.id === messageId,
     );
 
-    // If target message not found, make list visible anyway
+    // Target message not yet in the data — wait for the next messages update.
+    // This happens when the conversation is opened for the first time:
+    // fetchConversation loads latest messages first, then fetchPreviousMessages
+    // loads messages around the target. We must wait for the latter to complete.
     if (targetIndex === -1) {
-      const fallbackTimer = setTimeout(() => {
-        hasPositionedMessageRef.current = true;
-        onPositioned();
-      }, 100);
-      return () => clearTimeout(fallbackTimer);
+      return;
     }
 
-    // Initial scroll (may be inaccurate before items render)
-    messageListRef.current?.scrollToIndex({
-      index: targetIndex,
-      animated: false,
-      viewPosition: 1,
+    const scrollToTarget = () => {
+      try {
+        messageListRef.current?.scrollToIndex({
+          index: targetIndex,
+          animated: false,
+          viewPosition: 0.5,
+        });
+      } catch {
+        // scrollToIndex can throw if index is out of range during layout changes
+      }
+    };
+
+    // Staggered scroll attempts — each one becomes more accurate as FlashList
+    // measures actual item heights for items rendered near the target.
+    //
+    // Attempt 1 (immediate): uses estimated sizes, gets FlashList to render
+    //   items near the target so they can be measured.
+    // Attempt 2 (200ms): items near target are now measured, position improves.
+    // Attempt 3 (450ms): final correction with most items measured.
+    const delays = [0, 200, 450];
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    delays.forEach((delay, i) => {
+      const timer = setTimeout(() => {
+        scrollToTarget();
+
+        // After the last scroll attempt, reveal the list
+        if (i === delays.length - 1) {
+          const revealTimer = setTimeout(() => {
+            requestAnimationFrame(() => {
+              hasPositionedMessageRef.current = true;
+              onPositioned();
+            });
+          }, 100);
+          timers.push(revealTimer);
+        }
+      }, delay);
+      timers.push(timer);
     });
 
-    // Correct scroll after items render and measure
-    const timer = setTimeout(() => {
-      messageListRef.current?.scrollToIndex({
-        index: targetIndex,
-        animated: false,
-        viewPosition: 1,
-      });
-
-      requestAnimationFrame(() => {
-        hasPositionedMessageRef.current = true;
-        onPositioned();
-      });
-    }, 250);
-
-    return () => clearTimeout(timer);
+    return () => {
+      timers.forEach(clearTimeout);
+    };
   }, [messageId, isFlashListReady, messages, messageListRef, onPositioned]);
 }

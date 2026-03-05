@@ -46,6 +46,8 @@ type MessagesListPresentationProps = {
   isEmailInbox: boolean;
   currentUserId: number;
   targetMessageId?: number;
+  initialScrollIndex?: number;
+  isListPositioned?: boolean;
 };
 
 export const MessagesList = ({
@@ -56,6 +58,8 @@ export const MessagesList = ({
   isEmailInbox,
   currentUserId,
   targetMessageId,
+  initialScrollIndex,
+  isListPositioned = true,
 }: MessagesListPresentationProps) => {
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
@@ -77,6 +81,7 @@ export const MessagesList = ({
         isEmailInbox={isEmailInbox}
         currentUserId={currentUserId}
         isTargetMessage={isTarget}
+        isListPositioned={isListPositioned}
       />
     );
     // TODO: Deprecate this after the new message item is ready
@@ -106,6 +111,7 @@ export const MessagesList = ({
         ref={typedMessageListRef}
         inverted
         estimatedItemSize={100}
+        {...(initialScrollIndex !== undefined ? { initialScrollIndex } : {})}
         showsVerticalScrollIndicator={false}
         renderItem={handleRender}
         onEndReached={onEndReached}

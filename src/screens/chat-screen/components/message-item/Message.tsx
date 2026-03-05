@@ -47,6 +47,7 @@ type MessageComponentProps = {
   isEmailInbox: boolean;
   currentUserId: number;
   isTargetMessage?: boolean;
+  isListPositioned?: boolean;
 };
 
 type MessageWrapperProps = {
@@ -62,6 +63,7 @@ type MessageWrapperProps = {
   variant: string;
   channel?: Channel;
   isTargetMessage?: boolean;
+  isListPositioned?: boolean;
 };
 
 const variantTextMap = {
@@ -105,10 +107,12 @@ const MessageWrapper = ({
   variant,
   channel,
   isTargetMessage = false,
+  isListPositioned = true,
 }: MessageWrapperProps) => {
   const { zoomStyle, highlightStyle } = useTargetMessageAnimation({
     isTargetMessage,
     messageId: item.id,
+    isListPositioned,
   });
 
   const flexOrientationClass = () => {
@@ -173,7 +177,7 @@ const MessageWrapper = ({
             {isTargetMessage && (
               <Animated.View
                 style={[
-                  tailwind.style('absolute inset-0 bg-amber-300 rounded-2xl'),
+                  tailwind.style('absolute inset-0 bg-white rounded-2xl'),
                   highlightStyle,
                 ]}
                 pointerEvents="none"
@@ -213,7 +217,7 @@ const MessageWrapper = ({
 export const MessageComponent = (props: MessageComponentProps) => {
   const dispatch = useAppDispatch();
   const { conversationId } = useChatWindowContext();
-  const { item, currentUserId, isEmailInbox, isTargetMessage = false } = props;
+  const { item, currentUserId, isEmailInbox, isTargetMessage = false, isListPositioned = true } = props;
   const {
     messageType,
     contentType,
@@ -425,7 +429,8 @@ export const MessageComponent = (props: MessageComponentProps) => {
         getMenuOptions={getMenuOptions}
         variant={variant()}
         channel={channel}
-        isTargetMessage={isTargetMessage}>
+        isTargetMessage={isTargetMessage}
+        isListPositioned={isListPositioned}>
         {messageContent}
       </MessageWrapper>
     );

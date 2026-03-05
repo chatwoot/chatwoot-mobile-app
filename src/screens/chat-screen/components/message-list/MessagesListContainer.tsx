@@ -233,6 +233,14 @@ export const MessagesListContainer = () => {
   const isEmailInbox = isAnEmailChannel(inbox);
   const userId = useAppSelector(selectUserId);
 
+  // Compute target message index for initialScrollIndex (so FlashList starts
+  // rendering from the target position, making items near it measured early)
+  const targetMessageIndex = messageId
+    ? messagesWithGrouping.findIndex(
+        item => !('date' in item) && 'id' in item && item.id === messageId,
+      )
+    : undefined;
+
   useScrollToMessage({
     messageId,
     messages: messagesWithGrouping,
@@ -266,6 +274,12 @@ export const MessagesListContainer = () => {
           isEmailInbox={isEmailInbox}
           currentUserId={userId as number}
           targetMessageId={messageId}
+          initialScrollIndex={
+            targetMessageIndex !== undefined && targetMessageIndex >= 0
+              ? targetMessageIndex
+              : undefined
+          }
+          isListPositioned={isListVisible}
         />
       </View>
       {!isListVisible && messageId && (

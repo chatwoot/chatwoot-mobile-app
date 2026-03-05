@@ -1,7 +1,6 @@
 import { apiService } from '@/services/APIService';
-import type { SearchItem, SearchPayload, SearchSectionType } from './searchTypes';
+import type { SearchItem, SearchPayload } from './searchTypes';
 import type { AxiosRequestConfig } from 'axios';
-import { SEARCH_SECTIONS } from '@/screens/search/config';
 
 export interface SearchSectionResponse {
   items: SearchItem[];
@@ -9,20 +8,16 @@ export interface SearchSectionResponse {
 
 export class SearchService {
   static async searchSection(
-    sectionId: SearchSectionType,
+    apiEndpoint: string,
+    transformResponse: (data: unknown) => SearchItem[],
     payload: SearchPayload,
   ): Promise<SearchSectionResponse> {
-    const section = SEARCH_SECTIONS.find(s => s.id === sectionId);
-    if (!section) {
-      throw new Error(`Unknown search section: ${sectionId}`);
-    }
-
     const { q, page = 1 } = payload;
-    const response = await apiService.get(section.apiEndpoint, {
+    const response = await apiService.get(apiEndpoint, {
       params: { q, page },
     } as AxiosRequestConfig);
 
-    const transformedItems = section.transformResponse(response.data);
+    const transformedItems = transformResponse(response.data);
 
     return {
       items: transformedItems || [],

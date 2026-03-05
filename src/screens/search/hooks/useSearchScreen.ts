@@ -64,7 +64,15 @@ export function useSearchScreen() {
         dispatch(setQuery(trimmedQuery));
         dispatch(clearSearchResults());
         SEARCH_SECTIONS.forEach(section => {
-          dispatch(searchSection({ sectionId: section.id, q: trimmedQuery, page: 1 }));
+          dispatch(
+            searchSection({
+              sectionId: section.id,
+              apiEndpoint: section.apiEndpoint,
+              transformResponse: section.transformResponse,
+              q: trimmedQuery,
+              page: 1,
+            }),
+          );
         });
         RecentSearches.add(trimmedQuery).then(() => {
           RecentSearches.get().then(setRecentSearches);
@@ -125,7 +133,15 @@ export function useSearchScreen() {
       dispatch(setQuery(recentQuery));
       dispatch(clearSearchResults());
       SEARCH_SECTIONS.forEach(section => {
-        dispatch(searchSection({ sectionId: section.id, q: recentQuery, page: 1 }));
+        dispatch(
+          searchSection({
+            sectionId: section.id,
+            apiEndpoint: section.apiEndpoint,
+            transformResponse: section.transformResponse,
+            q: recentQuery,
+            page: 1,
+          }),
+        );
       });
       setActiveTab('all');
       const newExpanded: Record<SearchSectionType, boolean> = {} as Record<
@@ -174,7 +190,19 @@ export function useSearchScreen() {
       }
 
       const nextPage = section.currentPage;
-      dispatch(searchSection({ sectionId, q: searchQuery, page: nextPage }));
+      const sectionConfig = SEARCH_SECTIONS.find(s => s.id === sectionId);
+      if (!sectionConfig) {
+        return;
+      }
+      dispatch(
+        searchSection({
+          sectionId,
+          apiEndpoint: sectionConfig.apiEndpoint,
+          transformResponse: sectionConfig.transformResponse,
+          q: searchQuery,
+          page: nextPage,
+        }),
+      );
     },
     [searchQuery, sectionData, dispatch],
   );

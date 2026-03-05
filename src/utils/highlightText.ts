@@ -1,6 +1,6 @@
 /**
- * Highlights search terms in text by wrapping matches in a span
- * Returns an array of text segments with highlighted parts marked
+ * Highlights search terms in text by splitting into segments with matches marked.
+ * Returns an array of text segments with highlighted parts indicated.
  */
 export interface HighlightSegment {
   text: string;
@@ -20,53 +20,36 @@ export const highlightText = (text: string, searchTerm: string): HighlightSegmen
   // Escape special regex characters
   const escapedSearchTerm = trimmedSearchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-  // Create regex with word boundaries for better matching
+  // Create regex for case-insensitive matching
   const regex = new RegExp(`(${escapedSearchTerm})`, 'gi');
   const segments: HighlightSegment[] = [];
   let lastIndex = 0;
   let match;
 
-  // Reset regex lastIndex to avoid issues with global regex
-  regex.lastIndex = 0;
-
-  // Use original text (not trimmed) to preserve spacing and match correctly
   while ((match = regex.exec(text)) !== null) {
-    // Add text before match (only if it's not empty)
+    // Add text before match
     if (match.index > lastIndex) {
-      const beforeText = text.substring(lastIndex, match.index);
-      if (beforeText.length > 0) {
-        segments.push({
-          text: beforeText,
-          isHighlight: false,
-        });
-      }
-    }
-
-    // Add highlighted match (only if it's not empty)
-    if (match[0].length > 0) {
       segments.push({
-        text: match[0],
-        isHighlight: true,
-      });
-    }
-
-    lastIndex = regex.lastIndex;
-
-    // Prevent infinite loop if regex.lastIndex doesn't advance
-    if (match.index === regex.lastIndex) {
-      regex.lastIndex++;
-    }
-  }
-
-  // Add remaining text (only if it's not empty)
-  if (lastIndex < text.length) {
-    const remainingText = text.substring(lastIndex);
-    if (remainingText.length > 0) {
-      segments.push({
-        text: remainingText,
+        text: text.substring(lastIndex, match.index),
         isHighlight: false,
       });
     }
+
+    // Add highlighted match
+    segments.push({
+      text: match[0],
+      isHighlight: true,
+    });
+
+    lastIndex = regex.lastIndex;
+  }
+
+  // Add remaining text after last match
+  if (lastIndex < text.length) {
+    segments.push({
+      text: text.substring(lastIndex),
+      isHighlight: false,
+    });
   }
 
   // If no matches found, return original text

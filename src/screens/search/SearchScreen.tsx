@@ -8,7 +8,8 @@ import { tailwind } from '@/theme';
 import { useSearchScreen } from './hooks/useSearchScreen';
 import { SearchHeader } from './components/header/SearchHeader';
 import { SearchContent } from './components/views/SearchContent';
-import { SEARCH_SECTIONS, type SearchSectionType } from '@/screens/search/config';
+import type { SearchSectionType } from '@/store/search/searchTypes';
+import { SEARCH_SECTIONS } from '@/screens/search/config';
 import { createRenderItem } from './utils/renderItem';
 
 const SearchScreen = () => {
@@ -38,7 +39,7 @@ const SearchScreen = () => {
   } = useSearchScreen();
 
   const renderItem = useMemo(
-    () => createRenderItem(searchQuery, allSectionsData, navigation as any, dispatch),
+    () => createRenderItem(searchQuery, allSectionsData, navigation, dispatch),
     [searchQuery, allSectionsData, navigation, dispatch],
   );
 
@@ -75,11 +76,7 @@ const SearchScreen = () => {
       />
       {searchText.length >= 2 && (
         <View style={tailwind.style('pl-4 py-6')}>
-          <Tabs
-            items={tabItems}
-            activeTabId={activeTab}
-            onTabPress={handleTabChange}
-          />
+          <Tabs items={tabItems} activeTabId={activeTab} onTabPress={handleTabChange} />
         </View>
       )}
       <Animated.View

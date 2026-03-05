@@ -4,8 +4,9 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import { FlashList } from '@shopify/flash-list';
 
 import { tailwind } from '@/theme';
-import { SEARCH_SECTIONS, type SearchSectionType } from '@/screens/search/config';
-import type { TabType } from '../hooks/useSearchScreen';
+import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
+import { SEARCH_SECTIONS } from '@/screens/search/config';
+import type { TabType } from '../../hooks/useSearchScreen';
 import { RecentSearchesView } from './RecentSearchesView';
 import { AllResultsView } from './AllResultsView';
 import { SearchResultsList } from './SearchResultsList';
@@ -16,25 +17,28 @@ interface SearchContentProps {
   recentSearches: string[];
   searchText: string;
   activeTab: TabType;
-  sectionData: Record<SearchSectionType, {
-    items: any[];
-    isLoading: boolean;
-    currentPage: number;
-    hasMore: boolean;
-  }>;
-  tabData: Record<SearchSectionType, any[]>;
+  sectionData: Record<
+    SearchSectionType,
+    {
+      items: SearchItem[];
+      isLoading: boolean;
+      currentPage: number;
+      hasMore: boolean;
+    }
+  >;
+  tabData: Record<SearchSectionType, SearchItem[]>;
   expandedSections: Record<SearchSectionType, boolean>;
   searchQuery: string;
-  allSectionsData: Record<SearchSectionType, any[]>;
-  listRefs: Record<SearchSectionType, React.RefObject<FlashList<any>>>;
-  getItemsToShow: (items: any[], sectionId: SearchSectionType) => any[];
+  allSectionsData: Record<SearchSectionType, SearchItem[]>;
+  listRefs: Record<SearchSectionType, React.RefObject<FlashList<SearchItem>>>;
+  getItemsToShow: (items: SearchItem[], sectionId: SearchSectionType) => SearchItem[];
   onRecentSearchSelect: (query: string) => void;
   onClearRecentSearches: () => void;
   onViewMore: (sectionId: SearchSectionType) => void;
   onLoadMore: (sectionId: SearchSectionType) => void;
   onTabChange: (sectionId: SearchSectionType) => void;
   onEndReached: (sectionId: SearchSectionType) => () => void;
-  renderItem: (item: any, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
+  renderItem: (item: SearchItem, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
 }
 
 export function SearchContent({
@@ -88,9 +92,10 @@ export function SearchContent({
   const hasResults = totalResults > 0;
 
   if (allSearchesCompleted && !hasResults && searchText.length >= 2) {
-    const sectionLabel = activeTab === 'all' 
-      ? 'Results' 
-      : SEARCH_SECTIONS.find(s => s.id === activeTab)?.label || 'Results';
+    const sectionLabel =
+      activeTab === 'all'
+        ? 'Results'
+        : SEARCH_SECTIONS.find(s => s.id === activeTab)?.label || 'Results';
     return <SearchEmptyState sectionLabel={sectionLabel} searchQuery={searchText} />;
   }
 
@@ -106,7 +111,7 @@ export function SearchContent({
         </Animated.View>
       );
     }
-    
+
     const items = tabData[activeSection.id] || [];
     const isLoading = section.isLoading && section.currentPage === 1;
     const isLoadingMore = section.isLoading && section.currentPage > 1;

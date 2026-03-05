@@ -5,17 +5,19 @@ import { FlashList } from '@shopify/flash-list';
 
 import { tailwind } from '@/theme';
 import { TAB_BAR_HEIGHT } from '@/constants';
-import type { SearchSectionType } from '@/screens/search/config';
+import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
 
-const AnimatedFlashList = Animated.createAnimatedComponent(FlashList<any>) as typeof FlashList<any>;
+const AnimatedFlashList = Animated.createAnimatedComponent(
+  FlashList<SearchItem>,
+) as typeof FlashList<SearchItem>;
 
 interface SearchListItemsProps {
   sectionId: SearchSectionType;
-  items: any[];
-  renderItem: (item: any, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
-  getItemId: (item: any) => string | number;
+  items: SearchItem[];
+  renderItem: (item: SearchItem, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
+  getItemId: (item: SearchItem) => string | number;
   useFlashList?: boolean;
-  listRef?: React.RefObject<FlashList<any>>;
+  listRef?: React.RefObject<FlashList<SearchItem>>;
   onEndReached?: () => void;
   isLoadingMore?: boolean;
   estimatedItemSize?: number;
@@ -41,7 +43,7 @@ export function SearchListItems({
           ref={listRef}
           data={items}
           estimatedItemSize={estimatedItemSize}
-          keyExtractor={(item) => `${sectionId}-${getItemId(item)}`}
+          keyExtractor={item => `${sectionId}-${getItemId(item)}`}
           renderItem={({ item, index }) => {
             const isLast = index === items.length - 1;
             return renderItem(item, sectionId, isLast) as React.ReactElement | null;

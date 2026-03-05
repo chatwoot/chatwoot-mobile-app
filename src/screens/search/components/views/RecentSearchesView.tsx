@@ -9,11 +9,14 @@ interface RecentSearchesViewProps {
   onClear: () => void;
 }
 
-export function RecentSearchesView({ recentSearches, onSearchSelect, onClear }: RecentSearchesViewProps) {
+export function RecentSearchesView({
+  recentSearches,
+  onSearchSelect,
+  onClear,
+}: RecentSearchesViewProps) {
   return (
     <View>
-      <View
-        style={tailwind.style('flex-row items-center justify-between px-6 pb-2 pt-6 mb-2')}>
+      <View style={tailwind.style('flex-row items-center justify-between px-6 pb-2 pt-6 mb-2')}>
         <Text
           style={tailwind.style(
             'text-md font-inter-medium-24 leading-[17px] tracking-[0.16px] text-gray-700',

@@ -18,28 +18,28 @@ import {
   handleMessagePress,
 } from './utils/handlers';
 import type { AppDispatch } from '@/store';
-
-export type SearchSectionType = 'contacts' | 'conversations' | 'messages';
+import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
+import type { ParamListBase } from '@react-navigation/native';
 
 export interface SearchSectionConfig {
   id: SearchSectionType;
   label: string;
   apiEndpoint: string;
   dataKey: string[];
-  transformResponse: (data: any) => any[];
-  renderComponent: ComponentType<any>;
-  getId: (item: any) => string | number;
-  getItemId: (item: any) => string | number;
+  transformResponse: (data: unknown) => SearchItem[];
+  renderComponent: ComponentType<Record<string, unknown>>;
+  getId: (item: SearchItem) => string | number;
+  getItemId: (item: SearchItem) => string | number;
   onPress: (
-    navigation: NavigationProp<any>,
-    item: Contact | Conversation | Message,
+    navigation: NavigationProp<ParamListBase>,
+    item: SearchItem,
     dispatch?: AppDispatch,
-    additionalData?: Record<string, any>,
+    additionalData?: Record<string, unknown>,
   ) => void | Promise<void>;
   getAdditionalData?: (
-    item: Contact | Conversation | Message,
-    allSectionsData: Record<SearchSectionType, (Contact | Conversation | Message)[]>,
-  ) => Record<string, any>;
+    item: SearchItem,
+    allSectionsData: Record<SearchSectionType, SearchItem[]>,
+  ) => Record<string, unknown>;
 }
 
 export const SEARCH_SECTIONS: SearchSectionConfig[] = [
@@ -48,13 +48,13 @@ export const SEARCH_SECTIONS: SearchSectionConfig[] = [
     label: 'Contacts',
     apiEndpoint: 'search/contacts',
     dataKey: ['payload', 'contacts'],
-    transformResponse: (data: any) => {
-      const contacts = data.payload?.contacts || [];
+    transformResponse: (data: unknown) => {
+      const contacts = (data as { payload?: { contacts?: Contact[] } }).payload?.contacts || [];
       return contacts.map(transformContact);
     },
-    renderComponent: SearchResultContactItem,
-    getId: (item: Contact) => item.id,
-    getItemId: (item: Contact) => item.id,
+    renderComponent: SearchResultContactItem as ComponentType<Record<string, unknown>>,
+    getId: (item: SearchItem) => (item as Contact).id,
+    getItemId: (item: SearchItem) => (item as Contact).id,
     getAdditionalData: (item, allSectionsData) =>
       getContactAdditionalData(item as Contact, allSectionsData),
     onPress: (navigation, item, dispatch) =>
@@ -65,13 +65,14 @@ export const SEARCH_SECTIONS: SearchSectionConfig[] = [
     label: 'Conversations',
     apiEndpoint: 'search/conversations',
     dataKey: ['payload', 'conversations'],
-    transformResponse: (data: any) => {
-      const conversations = data.payload?.conversations || [];
+    transformResponse: (data: unknown) => {
+      const conversations =
+        (data as { payload?: { conversations?: Conversation[] } }).payload?.conversations || [];
       return conversations.map(transformSearchConversation);
     },
-    renderComponent: SearchResultConversationItem,
-    getId: (item: Conversation) => item.id,
-    getItemId: (item: Conversation) => item.id,
+    renderComponent: SearchResultConversationItem as ComponentType<Record<string, unknown>>,
+    getId: (item: SearchItem) => (item as Conversation).id,
+    getItemId: (item: SearchItem) => (item as Conversation).id,
     onPress: (navigation, item) => handleConversationPress(navigation, item as Conversation),
   },
   {
@@ -79,13 +80,13 @@ export const SEARCH_SECTIONS: SearchSectionConfig[] = [
     label: 'Messages',
     apiEndpoint: 'search/messages',
     dataKey: ['payload', 'messages'],
-    transformResponse: (data: any) => {
-      const messages = data.payload?.messages || [];
+    transformResponse: (data: unknown) => {
+      const messages = (data as { payload?: { messages?: Message[] } }).payload?.messages || [];
       return messages.map(transformMessage);
     },
-    renderComponent: SearchResultMessageItem,
-    getId: (item: Message) => item.id,
-    getItemId: (item: Message) => item.id,
+    renderComponent: SearchResultMessageItem as ComponentType<Record<string, unknown>>,
+    getId: (item: SearchItem) => (item as Message).id,
+    getItemId: (item: SearchItem) => (item as Message).id,
     onPress: (navigation, item) => handleMessagePress(navigation, item as Message),
   },
 ];

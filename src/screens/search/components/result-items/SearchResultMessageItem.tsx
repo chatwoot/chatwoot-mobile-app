@@ -34,16 +34,20 @@ export const SearchResultMessageItem = ({
   const inboxName = inbox?.name || '';
   const channelType = inbox?.channelType;
   const medium = inbox?.medium || '';
-  const additionalType = (message.conversation as any)?.additionalAttributes?.type || '';
+  const additionalType =
+    (message.conversation as { additionalAttributes?: { type?: string } } | undefined)
+      ?.additionalAttributes?.type || '';
   const createdAt = message.createdAt;
 
   const audioAttachment = message.attachments?.find(a => a.fileType === 'audio');
-  const transcribedText = (audioAttachment as any)?.transcribedText || (audioAttachment as any)?.transcribed_text || '';
-  const messageContent =
-    message.content ||
-    message.contentAttributes?.email?.subject ||
-    transcribedText ||
+  const transcribedText =
+    (audioAttachment as { transcribedText?: string; transcribed_text?: string } | undefined)
+      ?.transcribedText ||
+    (audioAttachment as { transcribedText?: string; transcribed_text?: string } | undefined)
+      ?.transcribed_text ||
     '';
+  const messageContent =
+    message.content || message.contentAttributes?.email?.subject || transcribedText || '';
 
   const { animatedStyle, handlers } = useScaleAnimation();
 
@@ -60,8 +64,7 @@ export const SearchResultMessageItem = ({
         ]}
         {...handlers}>
         <Animated.View style={animatedStyle}>
-          <Animated.View
-            style={tailwind.style('flex-row items-center justify-between mb-2')}>
+          <Animated.View style={tailwind.style('flex-row items-center justify-between mb-2')}>
             <Animated.View style={tailwind.style('flex-row items-center gap-3 flex-1')}>
               <ConversationId id={conversationId} />
               {inboxName && (
@@ -91,8 +94,7 @@ export const SearchResultMessageItem = ({
               {message.private && (
                 <>
                   <Animated.View style={tailwind.style('w-px h-3 bg-gray-300')} />
-                  <Animated.View
-                    style={tailwind.style('flex-row items-center gap-1.5')}>
+                  <Animated.View style={tailwind.style('flex-row items-center gap-1.5')}>
                     <Icon icon={<LockIcon fill={tailwind.color('text-amber-700')} />} size={14} />
                     <Animated.Text
                       style={tailwind.style(
@@ -104,23 +106,19 @@ export const SearchResultMessageItem = ({
                 </>
               )}
             </Animated.View>
-            {createdAt && (
-              <LastActivityTime timestamp={createdAt} />
-            )}
+            {createdAt && <LastActivityTime timestamp={createdAt} />}
           </Animated.View>
           {messageContent && (
             <Animated.View style={tailwind.style('mt-1')}>
-              <Animated.Text
-                numberOfLines={2}>
-                <Animated.Text style={tailwind.style(
-                  'text-sm font-inter-420-20 leading-[17px] text-gray-600',
-                )}>{senderName} wrote: </Animated.Text>
+              <Animated.Text numberOfLines={2}>
+                <Animated.Text
+                  style={tailwind.style('text-sm font-inter-420-20 leading-[17px] text-gray-600')}>
+                  {senderName} wrote:{' '}
+                </Animated.Text>
                 <HighlightedText
                   text={messageContent}
                   searchQuery={searchQuery}
-                  style={tailwind.style(
-                    'text-sm font-inter-420-20 leading-[17px] text-gray-800',
-                  )}
+                  style={tailwind.style('text-sm font-inter-420-20 leading-[17px] text-gray-800')}
                 />
               </Animated.Text>
             </Animated.View>

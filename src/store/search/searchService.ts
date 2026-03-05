@@ -1,10 +1,10 @@
 import { apiService } from '@/services/APIService';
-import type { SearchPayload } from './searchTypes';
+import type { SearchItem, SearchPayload, SearchSectionType } from './searchTypes';
 import type { AxiosRequestConfig } from 'axios';
-import { SEARCH_SECTIONS, type SearchSectionType } from '@/screens/search/config';
+import { SEARCH_SECTIONS } from '@/screens/search/config';
 
 export interface SearchSectionResponse {
-  items: any[];
+  items: SearchItem[];
 }
 
 export class SearchService {
@@ -23,7 +23,7 @@ export class SearchService {
     } as AxiosRequestConfig);
 
     const transformedItems = section.transformResponse(response.data);
-    
+
     return {
       items: transformedItems || [],
     };

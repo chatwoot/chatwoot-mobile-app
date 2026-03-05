@@ -38,7 +38,7 @@ export function useScrollToMessage({
     if (hasPositionedMessageRef.current) return;
 
     const targetIndex = messages.findIndex(
-      (item) => !('date' in item) && 'id' in item && item.id === messageId,
+      item => !('date' in item) && 'id' in item && item.id === messageId,
     );
 
     // If target message not found, make list visible anyway

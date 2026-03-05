@@ -8,12 +8,18 @@ import type { Conversation } from '@/types/Conversation';
 import { HighlightedText } from '../shared/HighlightedText';
 import { useScaleAnimation } from '@/utils';
 import { getChannelIcon } from '@/utils/getChannelIcon';
-import { ChannelIndicator } from '@/components-next/list-components/ChannelIndicator';
 import { LastActivityTime } from '@/screens/conversations/components/conversation-item/LastActivityTime';
 import { ConversationId } from '@/screens/conversations/components/conversation-item/ConversationId';
 
+// Search API returns extra fields not present in the base Conversation type
+type SearchConversation = Conversation & {
+  contact?: { name?: string; email?: string };
+  additionalAttributes?: { mailSubject?: string; emailSubject?: string; type?: string };
+  inbox?: { name?: string; channelType?: string; medium?: string; id?: number };
+};
+
 type SearchResultConversationItemProps = {
-  conversation: Conversation;
+  conversation: SearchConversation;
   searchQuery: string;
   onPress: () => void | Promise<void>;
   isLast?: boolean;
@@ -25,23 +31,17 @@ export const SearchResultConversationItem = ({
   onPress,
   isLast = false,
 }: SearchResultConversationItemProps) => {
-  const contactName =
-    conversation.meta?.sender?.name ||
-    (conversation as any).contact?.name ||
-    '';
-  const contactEmail =
-    conversation.meta?.sender?.email ||
-    (conversation as any).contact?.email ||
-    '';
+  const contactName = conversation.meta?.sender?.name || conversation.contact?.name || '';
+  const contactEmail = conversation.meta?.sender?.email || conversation.contact?.email || '';
   const emailSubject =
-    (conversation as any).additionalAttributes?.mailSubject ||
-    (conversation as any).additionalAttributes?.emailSubject ||
+    conversation.additionalAttributes?.mailSubject ||
+    conversation.additionalAttributes?.emailSubject ||
     '';
-  const inbox = (conversation as any).inbox;
+  const inbox = conversation.inbox;
   const inboxName = inbox?.name || '';
   const channelType = inbox?.channelType || conversation.meta?.channel;
   const medium = inbox?.medium || '';
-  const additionalType = (conversation as any).additionalAttributes?.type || '';
+  const additionalType = conversation.additionalAttributes?.type || '';
   const createdAt = conversation.createdAt;
 
   const infoItems = [
@@ -65,8 +65,7 @@ export const SearchResultConversationItem = ({
         ]}
         {...handlers}>
         <Animated.View style={animatedStyle}>
-          <Animated.View
-            style={tailwind.style('flex-row items-center justify-between mb-2')}>
+          <Animated.View style={tailwind.style('flex-row items-center justify-between mb-2')}>
             <Animated.View style={tailwind.style('flex-row items-center gap-3 flex-1')}>
               <ConversationId id={conversation.id} />
               {inboxName && (
@@ -94,9 +93,7 @@ export const SearchResultConversationItem = ({
                 </>
               )}
             </Animated.View>
-            {createdAt && (
-              <LastActivityTime timestamp={createdAt} />
-            )}
+            {createdAt && <LastActivityTime timestamp={createdAt} />}
           </Animated.View>
           {infoItems.length > 0 && (
             <Animated.View style={tailwind.style('flex-row flex-wrap gap-x-2 gap-y-1.5')}>
@@ -110,13 +107,13 @@ export const SearchResultConversationItem = ({
                       {item.label}:
                     </Animated.Text>
                     <HighlightedText
-                        text={item.value}
-                        searchQuery={searchQuery}
-                        style={tailwind.style(
-                          'text-sm font-inter-420-20 leading-[17px] text-gray-800 ml-1',
-                        )}
-                        numberOfLines={1}
-                      />
+                      text={item.value}
+                      searchQuery={searchQuery}
+                      style={tailwind.style(
+                        'text-sm font-inter-420-20 leading-[17px] text-gray-800 ml-1',
+                      )}
+                      numberOfLines={1}
+                    />
                   </Animated.View>
                   {index < infoItems.length - 1 && (
                     <Animated.View style={tailwind.style('w-px h-3 bg-gray-300')} />

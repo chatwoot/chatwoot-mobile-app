@@ -19,7 +19,7 @@ export const highlightText = (text: string, searchTerm: string): HighlightSegmen
 
   // Escape special regex characters
   const escapedSearchTerm = trimmedSearchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  
+
   // Create regex with word boundaries for better matching
   const regex = new RegExp(`(${escapedSearchTerm})`, 'gi');
   const segments: HighlightSegment[] = [];

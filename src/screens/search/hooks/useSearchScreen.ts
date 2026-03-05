@@ -13,7 +13,8 @@ import {
 } from '@/store/search/searchSelectors';
 import { clearSearchResults, setQuery } from '@/store/search/searchSlice';
 import { RecentSearches } from '../utils/recentSearches';
-import { SEARCH_SECTIONS, type SearchSectionType, getSearchSectionById } from '@/screens/search/config';
+import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
+import { SEARCH_SECTIONS } from '@/screens/search/config';
 
 export type TabType = 'all' | SearchSectionType;
 
@@ -26,18 +27,22 @@ export function useSearchScreen() {
   const [searchText, setSearchText] = useState('');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<TabType>('all');
-  const [expandedSections, setExpandedSections] = useState<Record<SearchSectionType, boolean>>(() => {
-    const initial: Record<SearchSectionType, boolean> = {} as Record<SearchSectionType, boolean>;
-    SEARCH_SECTIONS.forEach(section => {
-      initial[section.id] = true;
-    });
-    return initial;
-  });
+  const [expandedSections, setExpandedSections] = useState<Record<SearchSectionType, boolean>>(
+    () => {
+      const initial: Record<SearchSectionType, boolean> = {} as Record<SearchSectionType, boolean>;
+      SEARCH_SECTIONS.forEach(section => {
+        initial[section.id] = true;
+      });
+      return initial;
+    },
+  );
 
-  const listRefs = useRef<Record<SearchSectionType, React.RefObject<FlashList<any>>>>({} as Record<SearchSectionType, React.RefObject<FlashList<any>>>);
+  const listRefs = useRef<Record<SearchSectionType, React.RefObject<FlashList<SearchItem>>>>(
+    {} as Record<SearchSectionType, React.RefObject<FlashList<SearchItem>>>,
+  );
   SEARCH_SECTIONS.forEach(section => {
     if (!listRefs.current[section.id]) {
-      listRefs.current[section.id] = React.createRef<FlashList<any>>();
+      listRefs.current[section.id] = React.createRef<FlashList<SearchItem>>();
     }
   });
 
@@ -65,7 +70,10 @@ export function useSearchScreen() {
           RecentSearches.get().then(setRecentSearches);
         });
         setActiveTab('all');
-        const newExpanded: Record<SearchSectionType, boolean> = {} as Record<SearchSectionType, boolean>;
+        const newExpanded: Record<SearchSectionType, boolean> = {} as Record<
+          SearchSectionType,
+          boolean
+        >;
         SEARCH_SECTIONS.forEach(section => {
           newExpanded[section.id] = true;
         });
@@ -93,7 +101,10 @@ export function useSearchScreen() {
         dispatch(clearSearchResults());
         dispatch(setQuery(''));
         setActiveTab('all');
-        const newExpanded: Record<SearchSectionType, boolean> = {} as Record<SearchSectionType, boolean>;
+        const newExpanded: Record<SearchSectionType, boolean> = {} as Record<
+          SearchSectionType,
+          boolean
+        >;
         SEARCH_SECTIONS.forEach(section => {
           newExpanded[section.id] = true;
         });
@@ -117,7 +128,10 @@ export function useSearchScreen() {
         dispatch(searchSection({ sectionId: section.id, q: recentQuery, page: 1 }));
       });
       setActiveTab('all');
-      const newExpanded: Record<SearchSectionType, boolean> = {} as Record<SearchSectionType, boolean>;
+      const newExpanded: Record<SearchSectionType, boolean> = {} as Record<
+        SearchSectionType,
+        boolean
+      >;
       SEARCH_SECTIONS.forEach(section => {
         newExpanded[section.id] = true;
       });
@@ -177,7 +191,10 @@ export function useSearchScreen() {
   }, []);
 
   const tabData = useMemo(() => {
-    const results: Record<SearchSectionType, any[]> = {} as Record<SearchSectionType, any[]>;
+    const results: Record<SearchSectionType, SearchItem[]> = {} as Record<
+      SearchSectionType,
+      SearchItem[]
+    >;
     SEARCH_SECTIONS.forEach(section => {
       const sectionState = sectionData[section.id];
       if (!sectionState) {
@@ -187,62 +204,70 @@ export function useSearchScreen() {
       if (activeTab === 'all') {
         results[section.id] = sectionState.items || [];
       } else {
-        results[section.id] = activeTab === section.id ? (sectionState.items || []) : [];
+        results[section.id] = activeTab === section.id ? sectionState.items || [] : [];
       }
     });
     return results;
   }, [activeTab, sectionData]);
 
   const allSectionsData = useMemo(() => {
-    const data: Record<SearchSectionType, any[]> = {} as Record<SearchSectionType, any[]>;
+    const data: Record<SearchSectionType, SearchItem[]> = {} as Record<
+      SearchSectionType,
+      SearchItem[]
+    >;
     SEARCH_SECTIONS.forEach(section => {
       data[section.id] = sectionData[section.id]?.items || [];
     });
     return data;
   }, [sectionData]);
 
-  const loadingMoreRef = useRef<Record<SearchSectionType, boolean>>({} as Record<SearchSectionType, boolean>);
+  const loadingMoreRef = useRef<Record<SearchSectionType, boolean>>(
+    {} as Record<SearchSectionType, boolean>,
+  );
   SEARCH_SECTIONS.forEach(section => {
     if (loadingMoreRef.current[section.id] === undefined) {
       loadingMoreRef.current[section.id] = false;
     }
   });
 
-  const createEndReachedHandler = useCallback((sectionId: SearchSectionType) => {
-    return () => {
-      const section = sectionData[sectionId];
-      if (!section) {
-        return;
-      }
+  const createEndReachedHandler = useCallback(
+    (sectionId: SearchSectionType) => {
+      return () => {
+        const section = sectionData[sectionId];
+        if (!section) {
+          return;
+        }
 
-      const currentSearchQuery = searchText.trim() || query.trim();
+        const currentSearchQuery = searchText.trim() || query.trim();
 
-      if (section.isLoading) {
-        return;
-      }
+        if (section.isLoading) {
+          return;
+        }
 
-      if (!section.hasMore) {
-        return;
-      }
+        if (!section.hasMore) {
+          return;
+        }
 
-      if (!currentSearchQuery) {
-        return;
-      }
+        if (!currentSearchQuery) {
+          return;
+        }
 
-      if (loadingMoreRef.current[sectionId]) {
-        return;
-      }
+        if (loadingMoreRef.current[sectionId]) {
+          return;
+        }
 
-      loadingMoreRef.current[sectionId] = true;
-      handleLoadMore(sectionId);
-      setTimeout(() => {
-        loadingMoreRef.current[sectionId] = false;
-      }, 1000);
-    };
-  }, [handleLoadMore, sectionData, searchText, query]);
+        loadingMoreRef.current[sectionId] = true;
+        handleLoadMore(sectionId);
+        setTimeout(() => {
+          loadingMoreRef.current[sectionId] = false;
+        }, 1000);
+      };
+    },
+    [handleLoadMore, sectionData, searchText, query],
+  );
 
   const getItemsToShow = useCallback(
-    (items: any[], sectionId: SearchSectionType) => {
+    (items: SearchItem[], sectionId: SearchSectionType) => {
       if (activeTab === 'all') {
         return expandedSections[sectionId] ? items.slice(0, INITIAL_ITEMS_TO_SHOW) : [];
       }

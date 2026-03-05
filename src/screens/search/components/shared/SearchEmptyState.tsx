@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import type { BaseAnimationBuilder } from 'react-native-reanimated';
 
@@ -24,7 +24,9 @@ export function SearchEmptyState({
     <Animated.View style={tailwind.style('flex-row items-center gap-2')}>
       <Icon icon={<InfoIcon />} size={20} />
       <Animated.Text
-        style={tailwind.style('text-sm font-inter-420-20 tracking-[0.32px] text-gray-800 text-center')}>
+        style={tailwind.style(
+          'text-sm font-inter-420-20 tracking-[0.32px] text-gray-800 text-center',
+        )}>
         No {sectionLabel.toLowerCase()} found for query '{searchQuery}'
       </Animated.Text>
     </Animated.View>

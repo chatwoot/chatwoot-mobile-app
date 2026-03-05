@@ -31,8 +31,8 @@ export const SearchResultContactItem = ({
   const { animatedStyle, handlers } = useScaleAnimation();
 
   const contactInfoItems = useMemo(() => {
-    const items: Array<{ type: 'text' | 'separator'; content?: string; isHighlighted?: boolean }> = [];
-    
+    const items: { type: 'text' | 'separator'; content?: string; isHighlighted?: boolean }[] = [];
+
     if (contact.email) {
       items.push({
         type: 'text',
@@ -40,11 +40,11 @@ export const SearchResultContactItem = ({
         isHighlighted: true,
       });
     }
-    
+
     if (contact.email && contact.phoneNumber) {
       items.push({ type: 'separator' });
     }
-    
+
     if (contact.phoneNumber) {
       items.push({
         type: 'text',
@@ -52,11 +52,11 @@ export const SearchResultContactItem = ({
         isHighlighted: true,
       });
     }
-    
+
     if ((contact.email || contact.phoneNumber) && formattedLocation) {
       items.push({ type: 'separator' });
     }
-    
+
     if (formattedLocation) {
       items.push({
         type: 'text',
@@ -64,7 +64,7 @@ export const SearchResultContactItem = ({
         isHighlighted: false,
       });
     }
-    
+
     return items;
   }, [contact.email, contact.phoneNumber, formattedLocation]);
 
@@ -88,8 +88,7 @@ export const SearchResultContactItem = ({
           />
         </Animated.View>
         <Animated.View style={tailwind.style('flex-1 ml-3')}>
-          <Animated.View
-            style={tailwind.style('flex-row items-center justify-between mb-1.5')}>
+          <Animated.View style={tailwind.style('flex-row items-center justify-between mb-1.5')}>
             <HighlightedText
               text={contact.name || ''}
               searchQuery={searchQuery}
@@ -98,11 +97,10 @@ export const SearchResultContactItem = ({
               )}
               numberOfLines={1}
             />
-            {updatedAt && (
-              <LastActivityTime timestamp={updatedAt} />
-            )}
+            {updatedAt && <LastActivityTime timestamp={updatedAt} />}
           </Animated.View>
-          <Animated.View style={tailwind.style('flex-row flex-wrap items-center gap-x-2 gap-y-1.5')}>
+          <Animated.View
+            style={tailwind.style('flex-row flex-wrap items-center gap-x-2 gap-y-1.5')}>
             {contactInfoItems.map((item, index) => {
               if (item.type === 'separator') {
                 return (
@@ -124,10 +122,7 @@ export const SearchResultContactItem = ({
                   numberOfLines={1}
                 />
               ) : (
-                <Animated.Text
-                  key={`text-${index}`}
-                  style={textStyle}
-                  numberOfLines={1}>
+                <Animated.Text key={`text-${index}`} style={textStyle} numberOfLines={1}>
                   {item.content || ''}
                 </Animated.Text>
               );

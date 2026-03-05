@@ -1,5 +1,12 @@
 import { useEffect, useRef } from 'react';
-import { useSharedValue, useAnimatedStyle, withSequence, withTiming, withDelay, withSpring } from 'react-native-reanimated';
+import {
+  useSharedValue,
+  useAnimatedStyle,
+  withSequence,
+  withTiming,
+  withDelay,
+  withSpring,
+} from 'react-native-reanimated';
 import { useChatWindowContext } from '@/context';
 
 interface UseTargetMessageAnimationParams {
@@ -33,8 +40,11 @@ export function useTargetMessageAnimation({
       return;
     }
 
-    if (isTargetMessage && contextMessageId !== undefined && 
-        lastAnimatedContextMessageIdRef.current !== contextMessageId) {
+    if (
+      isTargetMessage &&
+      contextMessageId !== undefined &&
+      lastAnimatedContextMessageIdRef.current !== contextMessageId
+    ) {
       messageScale.value = 1;
       highlightOpacity.value = 0;
       lastAnimatedContextMessageIdRef.current = contextMessageId;
@@ -52,8 +62,8 @@ export function useTargetMessageAnimation({
             // Small bounce back
             withSpring(1.02, { damping: 20, stiffness: 400 }),
             // Final settle
-            withSpring(1, { damping: 18, stiffness: 350 })
-          )
+            withSpring(1, { damping: 18, stiffness: 350 }),
+          ),
         );
         // Subtle highlight that fades
         highlightOpacity.value = withDelay(
@@ -61,8 +71,8 @@ export function useTargetMessageAnimation({
           withSequence(
             withTiming(0.4, { duration: 150 }),
             withTiming(0.2, { duration: 200 }),
-            withTiming(0, { duration: 300 })
-          )
+            withTiming(0, { duration: 300 }),
+          ),
         );
       });
     }

@@ -255,11 +255,7 @@ export const MessagesListContainer = () => {
     <PlatformSpecificKeyboardWrapperComponent
       style={tailwind.style('flex-1 bg-white')}
       interpolator="linear">
-      <View
-        style={[
-          tailwind.style('flex-1'),
-          !isListVisible && messageId ? { opacity: 0 } : {},
-        ]}>
+      <View style={[tailwind.style('flex-1'), !isListVisible && messageId ? { opacity: 0 } : {}]}>
         <MessagesList
           // Key forces remount when messageId changes, ensuring correct scroll position
           key={messageId ? `search-${messageId}` : 'normal-chat'}

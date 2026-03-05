@@ -4,19 +4,20 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import { FlashList } from '@shopify/flash-list';
 
 import { tailwind } from '@/theme';
-import { type SearchSectionType, SEARCH_SECTIONS, getSearchSectionById } from '@/screens/search/config';
+import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
+import { SEARCH_SECTIONS } from '@/screens/search/config';
 import { SearchEmptyState } from '../shared/SearchEmptyState';
 import { SearchListItems } from '../shared/SearchListItems';
 
 interface SearchResultsListProps {
   sectionId: SearchSectionType;
-  items: any[];
+  items: SearchItem[];
   isLoading: boolean;
   isLoadingMore: boolean;
   hasMore: boolean;
   searchQuery: string;
-  renderItem: (item: any, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
-  listRef: React.RefObject<FlashList<any>>;
+  renderItem: (item: SearchItem, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
+  listRef: React.RefObject<FlashList<SearchItem>>;
   onEndReached: () => void;
 }
 
@@ -32,7 +33,7 @@ export function SearchResultsList({
   onEndReached,
 }: SearchResultsListProps) {
   const section = SEARCH_SECTIONS.find(s => s.id === sectionId);
-  
+
   if (!section || (isLoading && items.length === 0)) {
     return (
       <Animated.View

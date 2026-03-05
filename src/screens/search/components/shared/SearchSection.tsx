@@ -1,12 +1,20 @@
 import React from 'react';
-import { ActivityIndicator, Pressable, View } from 'react-native';
-import Animated, { FadeIn, FadeOut, Layout, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { ActivityIndicator, Pressable } from 'react-native';
+import Animated, {
+  FadeIn,
+  FadeOut,
+  Layout,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 import { tailwind } from '@/theme';
 import { CaretBottomSmall } from '@/svg-icons';
 import { Icon } from '@/components-next/common';
-import { type SearchSectionType, getSearchSectionById } from '@/screens/search/config';
-import type { TabType } from '../hooks/useSearchScreen';
+import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
+import { getSearchSectionById } from '@/screens/search/config';
+import type { TabType } from '../../hooks/useSearchScreen';
 import { SearchEmptyState } from './SearchEmptyState';
 import { SearchListItems } from './SearchListItems';
 
@@ -14,8 +22,8 @@ const INITIAL_ITEMS_TO_SHOW = 5;
 
 interface SearchSectionProps {
   sectionId: SearchSectionType;
-  items: any[];
-  itemsToShow: any[];
+  items: SearchItem[];
+  itemsToShow: SearchItem[];
   isLoadingMore: boolean;
   hasMore: boolean;
   isInitialLoading: boolean;
@@ -25,7 +33,7 @@ interface SearchSectionProps {
   onViewMore: (sectionId: SearchSectionType) => void;
   onLoadMore: (sectionId: SearchSectionType) => void;
   onTabChange: (sectionId: SearchSectionType) => void;
-  renderItem: (item: any, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
+  renderItem: (item: SearchItem, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
 }
 
 export function SearchSection({
@@ -43,6 +51,17 @@ export function SearchSection({
   onTabChange,
   renderItem,
 }: SearchSectionProps) {
+  // All hooks must be called before any early returns
+  const rotation = useSharedValue(isExpanded ? 0 : 180);
+
+  React.useEffect(() => {
+    rotation.value = withTiming(isExpanded ? 0 : 180, { duration: 200 });
+  }, [isExpanded, rotation]);
+
+  const animatedIconStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${rotation.value}deg` }],
+  }));
+
   const section = getSearchSectionById(sectionId);
   if (!section) return null;
 
@@ -54,16 +73,6 @@ export function SearchSection({
   const handleViewMorePress = () => {
     onTabChange(sectionId);
   };
-
-  const rotation = useSharedValue(isExpanded ? 0 : 180);
-  
-  React.useEffect(() => {
-    rotation.value = withTiming(isExpanded ? 0 : 180, { duration: 200 });
-  }, [isExpanded, rotation]);
-
-  const animatedIconStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${rotation.value}deg` }],
-  }));
 
   return (
     <Animated.View key={sectionId} layout={Layout.springify().damping(20).stiffness(180)}>
@@ -96,16 +105,19 @@ export function SearchSection({
             </Animated.Text>
           </Animated.View>
         )}
-        {activeTab === 'all' && items.length > 0 && !isInitialLoading && items.length > INITIAL_ITEMS_TO_SHOW && (
-          <Pressable onPress={handleViewMorePress}>
-            <Animated.Text
-              style={tailwind.style(
-                'text-xs font-inter-420-20 leading-[17px] tracking-[0.16px] text-blue-800',
-              )}>
-              View more
-            </Animated.Text>
-          </Pressable>
-        )}
+        {activeTab === 'all' &&
+          items.length > 0 &&
+          !isInitialLoading &&
+          items.length > INITIAL_ITEMS_TO_SHOW && (
+            <Pressable onPress={handleViewMorePress}>
+              <Animated.Text
+                style={tailwind.style(
+                  'text-xs font-inter-420-20 leading-[17px] tracking-[0.16px] text-blue-800',
+                )}>
+                View more
+              </Animated.Text>
+            </Pressable>
+          )}
       </Animated.View>
       {isInitialLoading && items.length === 0 ? (
         <Animated.View

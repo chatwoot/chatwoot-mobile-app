@@ -149,7 +149,7 @@ const conversationSlice = createSlice({
         // Skip for "after" requests or when both are present (search navigation)
         const { afterId } = action.meta.arg;
         if (!afterId) {
-        state.isAllMessagesFetched = messages.length < 20 || false;
+          state.isAllMessagesFetched = messages.length < 20 || false;
         }
       })
       .addCase(conversationActions.fetchPreviousMessages.rejected, state => {

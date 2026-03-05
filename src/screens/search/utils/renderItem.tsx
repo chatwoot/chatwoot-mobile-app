@@ -1,16 +1,20 @@
 import React from 'react';
-import type { NavigationProp } from '@react-navigation/native';
+import type { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { getSearchSectionById } from '@/screens/search/config';
-import type { SearchSectionType } from '@/screens/search/config';
+import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
 import type { AppDispatch } from '@/store';
 
 export function createRenderItem(
   searchQuery: string,
-  allSectionsData: Record<SearchSectionType, any[]>,
-  navigation: NavigationProp<any>,
+  allSectionsData: Record<SearchSectionType, SearchItem[]>,
+  navigation: NavigationProp<ParamListBase>,
   dispatch: AppDispatch,
 ) {
-  return (item: any, sectionId: SearchSectionType, isLast: boolean = false) => {
+  const SearchResultItem = (
+    item: SearchItem,
+    sectionId: SearchSectionType,
+    isLast: boolean = false,
+  ) => {
     const section = getSearchSectionById(sectionId);
     if (!section) return null;
 
@@ -19,7 +23,7 @@ export function createRenderItem(
       ? section.getAdditionalData(item, allSectionsData)
       : {};
     const propName = sectionId.slice(0, -1);
-    const props: any = {
+    const props: Record<string, unknown> = {
       [propName]: item,
       searchQuery,
       isLast,
@@ -32,16 +36,12 @@ export function createRenderItem(
     const handlePress = async () => {
       try {
         await section.onPress(navigation, item, dispatch, additionalData);
-      } catch (error) {
+      } catch {
         // Silently handle errors - navigation failures shouldn't crash the app
       }
     };
 
-    return (
-      <Component
-        {...props}
-        onPress={handlePress}
-      />
-    );
+    return <Component {...props} onPress={handlePress} />;
   };
+  return SearchResultItem;
 }

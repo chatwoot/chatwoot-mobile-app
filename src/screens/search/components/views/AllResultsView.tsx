@@ -3,26 +3,30 @@ import { ScrollView } from 'react-native';
 
 import { tailwind } from '@/theme';
 import { TAB_BAR_HEIGHT } from '@/constants';
-import { SEARCH_SECTIONS, type SearchSectionType } from '@/screens/search/config';
+import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
+import { SEARCH_SECTIONS } from '@/screens/search/config';
 import type { TabType } from '../hooks/useSearchScreen';
 import { SearchSection } from '../shared/SearchSection';
 
 interface AllResultsViewProps {
-  sectionData: Record<SearchSectionType, {
-    items: any[];
-    isLoading: boolean;
-    currentPage: number;
-    hasMore: boolean;
-  }>;
-  tabData: Record<SearchSectionType, any[]>;
+  sectionData: Record<
+    SearchSectionType,
+    {
+      items: SearchItem[];
+      isLoading: boolean;
+      currentPage: number;
+      hasMore: boolean;
+    }
+  >;
+  tabData: Record<SearchSectionType, SearchItem[]>;
   expandedSections: Record<SearchSectionType, boolean>;
   activeTab: TabType;
   searchQuery: string;
-  getItemsToShow: (items: any[], sectionId: SearchSectionType) => any[];
+  getItemsToShow: (items: SearchItem[], sectionId: SearchSectionType) => SearchItem[];
   onViewMore: (sectionId: SearchSectionType) => void;
   onLoadMore: (sectionId: SearchSectionType) => void;
   onTabChange: (sectionId: SearchSectionType) => void;
-  renderItem: (item: any, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
+  renderItem: (item: SearchItem, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
 }
 
 export function AllResultsView({
@@ -45,7 +49,7 @@ export function AllResultsView({
         const sectionState = sectionData[section.id];
         const items = tabData[section.id] || [];
         const itemsToShow = getItemsToShow(items, section.id);
-        
+
         return (
           <SearchSection
             key={section.id}

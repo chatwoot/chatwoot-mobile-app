@@ -55,7 +55,12 @@ export type TabParamList = {
 
 export type TabBarExcludedScreenParamList = {
   Tab: undefined;
-  ChatScreen: { conversationId: number; primaryActorId?: number; primaryActorType?: string; messageId?: number };
+  ChatScreen: {
+    conversationId: number;
+    primaryActorId?: number;
+    primaryActorType?: string;
+    messageId?: number;
+  };
   ContactDetails: { conversationId?: number; contactId?: number };
   ConversationActions: undefined;
   Dashboard: { url: string };

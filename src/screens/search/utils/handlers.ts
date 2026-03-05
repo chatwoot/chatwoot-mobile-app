@@ -1,10 +1,10 @@
-import type { NavigationProp } from '@react-navigation/native';
+import type { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/native';
 
 import type { Contact } from '@/types/Contact';
 import type { Conversation } from '@/types/Conversation';
 import type { Message } from '@/types/Message';
-import type { SearchSectionType } from '@/screens/search/config';
+import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
 import { transformContact } from '@/utils/camelCaseKeys';
 import { addContact } from '@/store/contact/contactSlice';
 import { apiService } from '@/services/APIService';
@@ -15,15 +15,13 @@ import type { AppDispatch } from '@/store';
  */
 export function getContactAdditionalData(
   item: Contact,
-  allSectionsData: Record<SearchSectionType, (Contact | Conversation | Message)[]>,
-): Record<string, any> {
+  allSectionsData: Record<SearchSectionType, SearchItem[]>,
+): Record<string, unknown> {
   const conversationsItems = allSectionsData.conversations || [];
-  const relatedConversation = conversationsItems.find(
-    (conv): conv is Conversation => {
-      const conversation = conv as Conversation;
-      return conversation.meta?.sender?.id === item.id;
-    },
-  );
+  const relatedConversation = conversationsItems.find((conv): conv is Conversation => {
+    const conversation = conv as Conversation;
+    return conversation.meta?.sender?.id === item.id;
+  });
   return { conversationId: relatedConversation?.id };
 }
 
@@ -31,7 +29,7 @@ export function getContactAdditionalData(
  * Handle contact item press - fetches full contact details and navigates
  */
 export async function handleContactPress(
-  navigation: NavigationProp<any>,
+  navigation: NavigationProp<ParamListBase>,
   item: Contact,
   dispatch?: AppDispatch,
 ): Promise<void> {
@@ -49,7 +47,7 @@ export async function handleContactPress(
   }
 
   try {
-    const response = await apiService.get<{ payload: any }>(`contacts/${contactId}`);
+    const response = await apiService.get<{ payload: unknown }>(`contacts/${contactId}`);
     const transformedContact = transformContact(response.data.payload);
     if (dispatch) {
       dispatch(addContact(transformedContact));
@@ -68,7 +66,7 @@ export async function handleContactPress(
  * Handle conversation item press - navigates to chat screen
  */
 export function handleConversationPress(
-  navigation: NavigationProp<any>,
+  navigation: NavigationProp<ParamListBase>,
   item: Conversation,
 ): void {
   const pushToChatScreen = StackActions.push('ChatScreen', {
@@ -81,7 +79,7 @@ export function handleConversationPress(
 /**
  * Handle message item press - navigates to chat screen with message ID
  */
-export function handleMessagePress(navigation: NavigationProp<any>, item: Message): void {
+export function handleMessagePress(navigation: NavigationProp<ParamListBase>, item: Message): void {
   const pushToChatScreen = StackActions.push('ChatScreen', {
     conversationId: item.conversationId,
     isConversationOpenedExternally: false,

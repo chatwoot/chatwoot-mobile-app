@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar, Pressable } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 
 import { SearchBar } from '@/components-next/common/search';
 import { Icon } from '@/components-next';

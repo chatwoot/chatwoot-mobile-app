@@ -6,8 +6,10 @@ import { transformContact, transformMessage } from '@/utils/camelCaseKeys';
 /**
  * Transform search conversation API response to Conversation type
  */
-export function transformSearchConversation(conversation: any): Conversation {
-  const transformed = camelcaseKeys(conversation, { deep: true }) as any;
+export function transformSearchConversation(conversation: unknown): Conversation {
+  const transformed = camelcaseKeys(conversation as Record<string, unknown>, {
+    deep: true,
+  }) as Record<string, unknown>;
 
   if (transformed.message) {
     transformed.lastNonActivityMessage = transformMessage(transformed.message);
@@ -15,7 +17,7 @@ export function transformSearchConversation(conversation: any): Conversation {
     transformed.lastNonActivityMessage = null;
   }
 
-  const meta: any = {
+  const meta: Record<string, unknown> = {
     sender: transformed.contact ? transformContact(transformed.contact) : null,
     assignee: transformed.agent ? camelcaseKeys(transformed.agent, { deep: true }) : null,
     team: null,

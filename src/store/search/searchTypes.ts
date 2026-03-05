@@ -2,6 +2,10 @@ import type { Contact } from '@/types/Contact';
 import type { Conversation } from '@/types/Conversation';
 import type { Message } from '@/types/Message';
 
+export const SEARCH_SECTION_IDS = ['contacts', 'conversations', 'messages'] as const;
+export type SearchSectionType = (typeof SEARCH_SECTION_IDS)[number];
+export type SearchItem = Contact | Conversation | Message;
+
 export interface SearchPayload {
   q: string;
   page?: number;

@@ -1,12 +1,12 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, type TextStyle, type StyleProp } from 'react-native';
 import { highlightText } from '@/utils/highlightText';
 import { tailwind } from '@/theme';
 
 type HighlightedTextProps = {
   text: string;
   searchQuery: string;
-  style?: any;
+  style?: StyleProp<TextStyle>;
   numberOfLines?: number;
 };
 
@@ -44,7 +44,9 @@ export const HighlightedText = ({
       {validSegments.map((segment, index) => (
         <Text
           key={index}
-          style={segment.isHighlight ? tailwind.style('font-inter-medium-24 text-blue-800') : undefined}>
+          style={
+            segment.isHighlight ? tailwind.style('font-inter-medium-24 text-blue-800') : undefined
+          }>
           {segment.text}
         </Text>
       ))}

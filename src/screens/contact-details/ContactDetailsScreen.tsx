@@ -121,9 +121,9 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
   const { conversationId, contactId: routeContactId } = props.route.params;
   const dispatch = useAppDispatch();
 
-  const conversation = conversationId
-    ? useAppSelector(state => selectConversationById(state, conversationId))
-    : null;
+  const conversation = useAppSelector(state =>
+    conversationId ? selectConversationById(state, conversationId) : null,
+  );
 
   const contactIdFromConversation = conversation?.meta?.sender?.id;
   const contactId = routeContactId || contactIdFromConversation;
@@ -134,8 +134,13 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
 
   const contact = useAppSelector(state => (contactId ? selectContactById(state, contactId) : null));
 
-  const { name: contactName, thumbnail: contactThumbnail, phoneNumber, email: contactEmail } = contact || {};
-  
+  const {
+    name: contactName,
+    thumbnail: contactThumbnail,
+    phoneNumber,
+    email: contactEmail,
+  } = contact || {};
+
   const email = emailFromConversation || contactEmail;
   const name = nameFromConversation || contactName;
   const thumbnail = thumbnailFromConversation || contactThumbnail;

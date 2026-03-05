@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { searchSection } from './searchActions';
-import { SEARCH_SECTIONS, type SearchSectionType } from '@/screens/search/config';
+import { SEARCH_SECTION_IDS, type SearchItem, type SearchSectionType } from './searchTypes';
 
 export interface SectionState {
-  items: any[];
+  items: SearchItem[];
   isLoading: boolean;
   currentPage: number;
   hasMore: boolean;
@@ -25,8 +25,8 @@ const createInitialSectionState = (): SectionState => ({
 
 const createInitialSections = (): Record<SearchSectionType, SectionState> => {
   const sections = {} as Record<SearchSectionType, SectionState>;
-  SEARCH_SECTIONS.forEach(section => {
-    sections[section.id] = createInitialSectionState();
+  SEARCH_SECTION_IDS.forEach(id => {
+    sections[id] = createInitialSectionState();
   });
   return sections;
 };
@@ -92,9 +92,7 @@ const searchSlice = createSlice({
           sectionState.hasMore = items.length >= 15;
 
           // Mark search as completed if all sections are done loading
-          const allSectionsDone = SEARCH_SECTIONS.every(
-            s => !state.sections[s.id].isLoading,
-          );
+          const allSectionsDone = SEARCH_SECTION_IDS.every(id => !state.sections[id].isLoading);
           if (allSectionsDone) {
             state.isSearchCompleted = true;
           }
@@ -105,11 +103,9 @@ const searchSlice = createSlice({
         const sectionState = state.sections[sectionId];
         if (sectionState) {
           sectionState.isLoading = false;
-          
+
           // Mark search as completed if all sections are done loading
-          const allSectionsDone = SEARCH_SECTIONS.every(
-            s => !state.sections[s.id].isLoading,
-          );
+          const allSectionsDone = SEARCH_SECTION_IDS.every(id => !state.sections[id].isLoading);
           if (allSectionsDone) {
             state.isSearchCompleted = true;
           }

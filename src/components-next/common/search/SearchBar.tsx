@@ -17,7 +17,14 @@ interface SearchBarProps extends TextInputProps {
 }
 
 export const SearchBar = (props: SearchBarProps) => {
-  const { isLoading = false, prefix, isInsideBottomSheet = false, onClear, value, ...otherProps } = props;
+  const {
+    isLoading = false,
+    prefix,
+    isInsideBottomSheet = false,
+    onClear,
+    value,
+    ...otherProps
+  } = props;
 
   // Row Exit Animation
   const exiting = () => {
@@ -66,7 +73,9 @@ export const SearchBar = (props: SearchBarProps) => {
         <Pressable
           onPress={onClear}
           hitSlop={8}
-          style={tailwind.style('absolute bg-transparent z-10 inset-y-0 right-0 mr-5.5 flex items-center justify-center')}>
+          style={tailwind.style(
+            'absolute bg-transparent z-10 inset-y-0 right-0 mr-5.5 flex items-center justify-center',
+          )}>
           <Icon size={18} icon={<CloseIcon />} />
         </Pressable>
       ) : null}

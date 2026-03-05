@@ -3,7 +3,7 @@ import { SearchService, type SearchSectionResponse } from './searchService';
 import type { SearchPayload } from './searchTypes';
 import type { AxiosError } from 'axios';
 import type { ApiErrorResponse } from '@/store/conversation/conversationTypes';
-import type { SearchSectionType } from '@/screens/search/config';
+import type { SearchSectionType } from './searchTypes';
 
 interface SearchSectionPayload extends SearchPayload {
   sectionId: SearchSectionType;

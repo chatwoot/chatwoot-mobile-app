@@ -58,7 +58,7 @@ export const Tabs = ({ items, activeTabId, onTabPress }: TabsProps) => {
         animated: true,
       });
     }
-  }, [activeTabId, items, isMeasured]);
+  }, [activeTabId, items, isMeasured, indicatorW, indicatorX]);
 
   const indicatorStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: indicatorX.value }],
@@ -74,8 +74,7 @@ export const Tabs = ({ items, activeTabId, onTabPress }: TabsProps) => {
         showsHorizontalScrollIndicator={false}
         style={tailwind.style('bg-gray-50 rounded-lg grow-0 overflow-hidden')}
         contentContainerStyle={tailwind.style('items-center')}
-        onLayout={e => (containerWidthRef.current = e.nativeEvent.layout.width)}
-      >
+        onLayout={e => (containerWidthRef.current = e.nativeEvent.layout.width)}>
         <Animated.View
           style={[
             tailwind.style(
@@ -101,8 +100,7 @@ export const Tabs = ({ items, activeTabId, onTabPress }: TabsProps) => {
                 if (isActive && !isMeasured) {
                   setIsMeasured(true);
                 }
-              }}
-            >
+              }}>
               <Pressable
                 onPress={() => onTabPress(item.id)}
                 hitSlop={8}
@@ -110,14 +108,12 @@ export const Tabs = ({ items, activeTabId, onTabPress }: TabsProps) => {
                 accessibilityState={{ selected: isActive }}
                 style={({ pressed }) =>
                   tailwind.style('px-4 py-1.5 justify-center items-center', pressed && 'opacity-70')
-                }
-              >
+                }>
                 <Text
                   style={tailwind.style(
                     'text-sm font-medium',
                     isActive ? 'text-blue-800' : 'text-gray-800',
-                  )}
-                >
+                  )}>
                   {item.label}
                   {!!item.count && ` (${item.count})`}
                 </Text>

@@ -13,7 +13,7 @@ interface SearchSectionPayload extends SearchPayload {
 
 export const searchSection = createAsyncThunk<SearchSectionResponse, SearchSectionPayload>(
   'search/searchSection',
-  async ({ sectionId: _, apiEndpoint, transformResponse, ...payload }, { rejectWithValue }) => {
+  async ({ sectionId: _sectionId, apiEndpoint, transformResponse, ...payload }, { rejectWithValue }) => {
     try {
       return await SearchService.searchSection(apiEndpoint, transformResponse, payload);
     } catch (error) {

@@ -39,7 +39,7 @@ export function SearchHeader({
           </Pressable>
           <Animated.View style={tailwind.style('flex-1')}>
             <SearchBar
-              placeholder="Type 3 or more characters to search"
+              placeholder="Type 2 or more characters to search"
               autoFocus
               value={searchText}
               onChangeText={onSearchChange}

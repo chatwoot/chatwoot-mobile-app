@@ -24,6 +24,7 @@ interface SearchContentProps {
       isLoading: boolean;
       currentPage: number;
       hasMore: boolean;
+      hasError: boolean;
     }
   >;
   tabData: Record<SearchSectionType, SearchItem[]>;
@@ -84,12 +85,27 @@ export function SearchContent({
   }
 
   const totalResults = SEARCH_SECTIONS.reduce(
-    (sum, section) => sum + allSectionsData[section.id].length,
+    (sum, section) => sum + (allSectionsData[section.id]?.length ?? 0),
     0,
   );
 
-  const allSearchesCompleted = SEARCH_SECTIONS.every(section => !sectionData[section.id].isLoading);
+  const allSearchesCompleted = SEARCH_SECTIONS.every(
+    section => !sectionData[section.id]?.isLoading,
+  );
+  const allSearchesFailed = SEARCH_SECTIONS.every(
+    section => sectionData[section.id]?.hasError,
+  );
   const hasResults = totalResults > 0;
+
+  if (allSearchesCompleted && allSearchesFailed && searchText.length >= 2) {
+    return (
+      <SearchEmptyState
+        sectionLabel="results"
+        searchQuery={searchText}
+        errorMessage="Something went wrong. Please try again."
+      />
+    );
+  }
 
   if (allSearchesCompleted && !hasResults && searchText.length >= 2) {
     const sectionLabel =

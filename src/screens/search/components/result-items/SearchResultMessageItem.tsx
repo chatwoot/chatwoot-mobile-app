@@ -34,8 +34,9 @@ export const SearchResultMessageItem = ({
   const inboxName = inbox?.name || '';
   const channelType = inbox?.channelType;
   const medium = inbox?.medium || '';
+  const conversationData = (message as unknown as Record<string, unknown>)?.conversation;
   const additionalType =
-    (message.conversation as { additionalAttributes?: { type?: string } } | undefined)
+    (conversationData as { additionalAttributes?: { type?: string } } | undefined)
       ?.additionalAttributes?.type || '';
   const createdAt = message.createdAt;
 

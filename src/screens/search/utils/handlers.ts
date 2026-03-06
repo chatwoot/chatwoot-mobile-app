@@ -46,6 +46,13 @@ export async function handleContactPress(
     dispatch(addContact(item));
   }
 
+  // Navigate immediately with the search result data already in the store,
+  // then fetch full contact details in the background to enrich the screen
+  const pushToContactDetails = StackActions.push('ContactDetails', {
+    contactId: contactId,
+  });
+  navigation.dispatch(pushToContactDetails);
+
   try {
     const response = await apiService.get<{ payload: unknown }>(`contacts/${contactId}`);
     const transformedContact = transformContact(response.data.payload);
@@ -53,13 +60,8 @@ export async function handleContactPress(
       dispatch(addContact(transformedContact));
     }
   } catch (error) {
-    console.error('Failed to fetch contact details:', error);
+    // Navigation already happened with basic contact data from search results
   }
-
-  const pushToContactDetails = StackActions.push('ContactDetails', {
-    contactId: contactId,
-  });
-  navigation.dispatch(pushToContactDetails);
 }
 
 /**

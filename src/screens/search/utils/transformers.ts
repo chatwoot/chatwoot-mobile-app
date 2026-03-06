@@ -22,7 +22,7 @@ export function transformSearchConversation(conversation: unknown): Conversation
     assignee: transformed.agent ? camelcaseKeys(transformed.agent, { deep: true }) : null,
     team: null,
     hmacVerified: null,
-    channel: transformed.inbox?.channelType || transformed.inbox?.channel_type || null,
+    channel: transformed.inbox?.channelType || null,
   };
 
   if (transformed.meta) {

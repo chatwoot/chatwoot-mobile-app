@@ -4,6 +4,12 @@ import { getSearchSectionById } from '@/screens/search/config';
 import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
 import type { AppDispatch } from '@/store';
 
+const SECTION_PROP_NAMES: Record<SearchSectionType, string> = {
+  contacts: 'contact',
+  conversations: 'conversation',
+  messages: 'message',
+};
+
 export function createRenderItem(
   searchQuery: string,
   allSectionsData: Record<SearchSectionType, SearchItem[]>,
@@ -22,7 +28,7 @@ export function createRenderItem(
     const additionalData = section.getAdditionalData
       ? section.getAdditionalData(item, allSectionsData)
       : {};
-    const propName = sectionId.slice(0, -1);
+    const propName = SECTION_PROP_NAMES[sectionId];
     const props: Record<string, unknown> = {
       [propName]: item,
       searchQuery,

@@ -13,8 +13,10 @@ import {
 } from '@/store/search/searchSelectors';
 import { clearSearchResults, setQuery } from '@/store/search/searchSlice';
 import { RecentSearches } from '../utils/recentSearches';
-import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
+import { SEARCH_SECTION_IDS, type SearchItem, type SearchSectionType } from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
+
+const VALID_TAB_IDS = new Set<string>(['all', ...SEARCH_SECTION_IDS]);
 
 export type TabType = 'all' | SearchSectionType;
 
@@ -37,13 +39,12 @@ export function useSearchScreen() {
     },
   );
 
-  const listRefs = useRef<Record<SearchSectionType, React.RefObject<FlashList<SearchItem>>>>(
-    {} as Record<SearchSectionType, React.RefObject<FlashList<SearchItem>>>,
-  );
-  SEARCH_SECTIONS.forEach(section => {
-    if (!listRefs.current[section.id]) {
-      listRefs.current[section.id] = React.createRef<FlashList<SearchItem>>();
-    }
+  const [listRefs] = useState(() => {
+    const refs = {} as Record<SearchSectionType, React.RefObject<FlashList<SearchItem>>>;
+    SEARCH_SECTIONS.forEach(section => {
+      refs[section.id] = React.createRef<FlashList<SearchItem>>();
+    });
+    return refs;
   });
 
   const sectionData = useAppSelector(selectAllSearchSections);
@@ -215,7 +216,9 @@ export function useSearchScreen() {
   }, []);
 
   const handleTabChange = useCallback((tabId: string) => {
-    setActiveTab(tabId as TabType);
+    if (VALID_TAB_IDS.has(tabId)) {
+      setActiveTab(tabId as TabType);
+    }
   }, []);
 
   const tabData = useMemo(() => {
@@ -249,14 +252,6 @@ export function useSearchScreen() {
     return data;
   }, [sectionData]);
 
-  const loadingMoreRef = useRef<Record<SearchSectionType, boolean>>(
-    {} as Record<SearchSectionType, boolean>,
-  );
-  SEARCH_SECTIONS.forEach(section => {
-    if (loadingMoreRef.current[section.id] === undefined) {
-      loadingMoreRef.current[section.id] = false;
-    }
-  });
 
   const createEndReachedHandler = useCallback(
     (sectionId: SearchSectionType) => {
@@ -268,11 +263,7 @@ export function useSearchScreen() {
 
         const currentSearchQuery = searchText.trim() || query.trim();
 
-        if (section.isLoading) {
-          return;
-        }
-
-        if (!section.hasMore) {
+        if (!section.hasMore || section.isLoading) {
           return;
         }
 
@@ -280,15 +271,7 @@ export function useSearchScreen() {
           return;
         }
 
-        if (loadingMoreRef.current[sectionId]) {
-          return;
-        }
-
-        loadingMoreRef.current[sectionId] = true;
         handleLoadMore(sectionId);
-        setTimeout(() => {
-          loadingMoreRef.current[sectionId] = false;
-        }, 1000);
       };
     },
     [handleLoadMore, sectionData, searchText, query],
@@ -311,9 +294,9 @@ export function useSearchScreen() {
   useEffect(() => {
     if (activeTab !== 'all') {
       const section = SEARCH_SECTIONS.find(s => activeTab === s.id);
-      if (section && listRefs.current[section.id]?.current) {
+      if (section && listRefs[section.id]?.current) {
         setTimeout(() => {
-          listRefs.current[section.id]?.current?.scrollToOffset({ offset: 0, animated: true });
+          listRefs[section.id]?.current?.scrollToOffset({ offset: 0, animated: true });
         }, 100);
       }
     }
@@ -332,7 +315,7 @@ export function useSearchScreen() {
     searchQuery,
     tabData,
     allSectionsData,
-    listRefs: listRefs.current,
+    listRefs,
     handleSearchChange,
     handleRecentSearchSelect,
     handleClearRecentSearches,

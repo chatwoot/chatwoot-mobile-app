@@ -10,6 +10,7 @@ import { Icon } from '@/components-next';
 interface SearchEmptyStateProps {
   sectionLabel: string;
   searchQuery: string;
+  errorMessage?: string;
   entering?: BaseAnimationBuilder;
   exiting?: BaseAnimationBuilder;
 }
@@ -17,6 +18,7 @@ interface SearchEmptyStateProps {
 export function SearchEmptyState({
   sectionLabel,
   searchQuery,
+  errorMessage,
   entering = FadeIn.duration(300),
   exiting = FadeOut.duration(200),
 }: SearchEmptyStateProps) {
@@ -27,7 +29,7 @@ export function SearchEmptyState({
         style={tailwind.style(
           'text-sm font-inter-420-20 tracking-[0.32px] text-gray-800 text-center',
         )}>
-        No {sectionLabel.toLowerCase()} found for query '{searchQuery}'
+        {errorMessage || `No ${sectionLabel.toLowerCase()} found for query '${searchQuery}'`}
       </Animated.Text>
     </Animated.View>
   );

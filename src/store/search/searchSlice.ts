@@ -7,6 +7,7 @@ export interface SectionState {
   isLoading: boolean;
   currentPage: number;
   hasMore: boolean;
+  hasError: boolean;
 }
 
 export interface SearchState {
@@ -21,6 +22,7 @@ const createInitialSectionState = (): SectionState => ({
   isLoading: false,
   currentPage: 1,
   hasMore: false,
+  hasError: false,
 });
 
 const createInitialSections = (): Record<SearchSectionType, SectionState> => {
@@ -51,6 +53,7 @@ const searchSlice = createSlice({
             section.isLoading = false;
             section.currentPage = 1;
             section.hasMore = false;
+            section.hasError = false;
           }
         });
       }
@@ -68,6 +71,7 @@ const searchSlice = createSlice({
         const sectionState = state.sections[sectionId];
         if (sectionState) {
           sectionState.isLoading = true;
+          sectionState.hasError = false;
           // Reset to page 1 if this is a new search (page 1 in payload)
           if (actionMeta.meta.arg.page === 1) {
             sectionState.currentPage = 1;
@@ -103,6 +107,7 @@ const searchSlice = createSlice({
         const sectionState = state.sections[sectionId];
         if (sectionState) {
           sectionState.isLoading = false;
+          sectionState.hasError = true;
 
           // Mark search as completed if all sections are done loading
           const allSectionsDone = SEARCH_SECTION_IDS.every(id => !state.sections[id].isLoading);

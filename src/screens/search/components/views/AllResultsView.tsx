@@ -5,7 +5,7 @@ import { tailwind } from '@/theme';
 import { TAB_BAR_HEIGHT } from '@/constants';
 import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
-import type { TabType } from '../hooks/useSearchScreen';
+import type { TabType } from '../../hooks/useSearchScreen';
 import { SearchSection } from '../shared/SearchSection';
 
 interface AllResultsViewProps {

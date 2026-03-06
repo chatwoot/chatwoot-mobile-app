@@ -22,6 +22,7 @@ type SectionData = {
   isLoading: boolean;
   currentPage: number;
   hasMore: boolean;
+  hasError: boolean;
 };
 
 // Selector that returns all sections data at once
@@ -38,6 +39,7 @@ export const selectAllSearchSections = createSelector(
         isLoading: sectionState?.isLoading || false,
         currentPage: sectionState?.currentPage || 1,
         hasMore: sectionState?.hasMore || false,
+        hasError: sectionState?.hasError || false,
       };
     });
 

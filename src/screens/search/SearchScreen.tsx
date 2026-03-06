@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -43,8 +43,8 @@ const SearchScreen = () => {
     [searchQuery, allSectionsData, navigation, dispatch],
   );
 
-  const handleSectionTabChange = useMemo(
-    () => (sectionId: SearchSectionType) => {
+  const handleSectionTabChange = useCallback(
+    (sectionId: SearchSectionType) => {
       handleTabChange(sectionId);
     },
     [handleTabChange],

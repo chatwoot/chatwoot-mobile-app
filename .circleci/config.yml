@@ -13,24 +13,28 @@ jobs:
           command: |
             ls -la
             pwd
+      - run:
+          name: Enable pnpm via Corepack
+          command: |
+            corepack enable
+            corepack prepare pnpm@10.11.0 --activate
       - restore_cache:
-          name: Restore Yarn Package Cache
+          name: Restore pnpm Package Cache
           keys:
-            - yarn-packages-v1-{{ checksum "package.json" }}
-            - yarn-packages-v1-
+            - pnpm-packages-v1-{{ checksum "pnpm-lock.yaml" }}
+            - pnpm-packages-v1-
       - run:
           name: Install Dependencies
-          command: yarn install
+          command: pnpm install --frozen-lockfile
       - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-v1-{{ checksum "package.json" }}
+          name: Save pnpm Package Cache
+          key: pnpm-packages-v1-{{ checksum "pnpm-lock.yaml" }}
           paths:
-            - .yarn/cache
-            - .yarn/unplugged
+            - .pnpm-store
             - node_modules
       - run:
-          command: yarn run test
-          name: Run YARN tests
+          command: pnpm test
+          name: Run pnpm tests
 
 workflows:
   test_my_app:

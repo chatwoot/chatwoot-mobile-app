@@ -28,7 +28,7 @@ jobs:
             - .pnpm-store
             - node_modules
       - run:
-          command: npx pnpm@10.11.0 test
+          command: npx pnpm@10.11.0 test -- --maxWorkers=2
           name: Run pnpm tests
 
 workflows:

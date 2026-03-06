@@ -13,11 +13,6 @@ jobs:
           command: |
             ls -la
             pwd
-      - run:
-          name: Enable pnpm via Corepack
-          command: |
-            corepack enable
-            corepack prepare pnpm@10.11.0 --activate
       - restore_cache:
           name: Restore pnpm Package Cache
           keys:
@@ -25,7 +20,7 @@ jobs:
             - pnpm-packages-v1-
       - run:
           name: Install Dependencies
-          command: pnpm install --frozen-lockfile
+          command: npx pnpm@10.11.0 install --frozen-lockfile
       - save_cache:
           name: Save pnpm Package Cache
           key: pnpm-packages-v1-{{ checksum "pnpm-lock.yaml" }}
@@ -33,7 +28,7 @@ jobs:
             - .pnpm-store
             - node_modules
       - run:
-          command: pnpm test
+          command: npx pnpm@10.11.0 test
           name: Run pnpm tests
 
 workflows:

@@ -53,7 +53,7 @@
     "@sentry/react-native": "^6.10.0",
     "@shopify/flash-list": "^1.7.3",
     "@types/lodash": "^4.17.9",
-    "axios": "^1.12.0",
+    "axios": "^1.13.5",
     "camelcase": "^8.0.0",
     "camelcase-keys": "^7.0.2",
     "cross-env": "^7.0.3",
@@ -186,7 +186,10 @@
       "markdown-it": "^12.3.2",
       "brace-expansion": "^2.0.2",
       "js-yaml": "^4.1.1",
-      "storybook": "8.6.15"
+      "@typescript-eslint/typescript-estree>minimatch": "9.0.7",
+      "glob>minimatch": "9.0.7",
+      "tar": "7.5.10",
+      "storybook": "8.6.17"
     }
   }
 }

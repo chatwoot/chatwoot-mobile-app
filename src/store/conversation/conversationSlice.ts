@@ -139,18 +139,28 @@ const conversationSlice = createSlice({
           return;
         }
         const conversation = state.entities[conversationId];
-        conversation.messages.unshift(...messages);
+        const { afterId } = action.meta.arg;
+
+        if (afterId) {
+          // Search navigation: merge messages, deduplicate by ID, and sort by
+          // createdAt to preserve chronological order (matches web app behavior)
+          const existingIds = new Set(conversation.messages.map(m => m.id));
+          const newMessages = messages.filter(m => !existingIds.has(m.id));
+          conversation.messages.push(...newMessages);
+          conversation.messages.sort((a, b) => a.createdAt - b.createdAt);
+          // Reset so older-message pagination isn't blocked after search nav
+          state.isAllMessagesFetched = false;
+        } else {
+          // Normal pagination: prepend older messages
+          conversation.messages.unshift(...messages);
+          state.isAllMessagesFetched = messages.length < 20 || false;
+        }
+
         conversation.meta = {
           ...conversation.meta,
           ...responseMeta,
         };
         state.isLoadingMessages = false;
-        // Only update isAllMessagesFetched for "before" requests (pagination of older messages)
-        // Skip for "after" requests or when both are present (search navigation)
-        const { afterId } = action.meta.arg;
-        if (!afterId) {
-          state.isAllMessagesFetched = messages.length < 20 || false;
-        }
       })
       .addCase(conversationActions.fetchPreviousMessages.rejected, state => {
         state.isLoadingMessages = false;

@@ -246,6 +246,7 @@ export const MessagesListContainer = () => {
     messages: messagesWithGrouping,
     messageListRef,
     isFlashListReady,
+    isLoadingMessages,
     onPositioned: () => setIsListVisible(true),
   });
 

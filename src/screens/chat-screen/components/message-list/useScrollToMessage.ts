@@ -9,6 +9,7 @@ interface UseScrollToMessageParams {
   messages: MessageOrDate[];
   messageListRef: React.RefObject<FlashList<MessageOrDate>>;
   isFlashListReady: boolean;
+  isLoadingMessages: boolean;
   onPositioned: () => void;
 }
 
@@ -31,6 +32,7 @@ export function useScrollToMessage({
   messages,
   messageListRef,
   isFlashListReady,
+  isLoadingMessages,
   onPositioned,
 }: UseScrollToMessageParams) {
   const hasPositionedMessageRef = useRef(false);
@@ -66,11 +68,14 @@ export function useScrollToMessage({
       item => !('date' in item) && 'id' in item && item.id === messageId,
     );
 
-    // Target message not yet in the data — wait for the next messages update.
-    // This happens when the conversation is opened for the first time:
-    // fetchConversation loads latest messages first, then fetchPreviousMessages
-    // loads messages around the target. We must wait for the latter to complete.
+    // Target message not in the data yet
     if (targetIndex === -1) {
+      // If messages finished loading and target still not found (e.g. deleted),
+      // reveal the list immediately instead of waiting for the 5s timeout
+      if (!isLoadingMessages) {
+        hasPositionedMessageRef.current = true;
+        onPositioned();
+      }
       return;
     }
 
@@ -117,5 +122,5 @@ export function useScrollToMessage({
     return () => {
       timers.forEach(clearTimeout);
     };
-  }, [messageId, isFlashListReady, messages, messageListRef, onPositioned]);
+  }, [messageId, isFlashListReady, isLoadingMessages, messages, messageListRef, onPositioned]);
 }

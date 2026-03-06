@@ -11,7 +11,7 @@ import {
   selectSearchIsCompleted,
   selectSearchQuery,
 } from '@/store/search/searchSelectors';
-import { clearSearchResults, setQuery } from '@/store/search/searchSlice';
+import { clearSearchResults, prepareNewSearch, setQuery } from '@/store/search/searchSlice';
 import { RecentSearches } from '../utils/recentSearches';
 import { SEARCH_SECTION_IDS, type SearchItem, type SearchSectionType } from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
@@ -59,11 +59,10 @@ export function useSearchScreen() {
   const debouncedSearchRef = useRef<ReturnType<typeof debounce> | null>(null);
 
   useEffect(() => {
+    // Debounce only the API calls — loaders are shown immediately in handleSearchChange
     debouncedSearchRef.current = debounce((searchQuery: string) => {
       const trimmedQuery = searchQuery.trim();
       if (trimmedQuery.length >= 2) {
-        dispatch(setQuery(trimmedQuery));
-        dispatch(clearSearchResults());
         SEARCH_SECTIONS.forEach(section => {
           dispatch(
             searchSection({
@@ -78,18 +77,6 @@ export function useSearchScreen() {
         RecentSearches.add(trimmedQuery).then(() => {
           RecentSearches.get().then(setRecentSearches);
         });
-        setActiveTab('all');
-        const newExpanded: Record<SearchSectionType, boolean> = {} as Record<
-          SearchSectionType,
-          boolean
-        >;
-        SEARCH_SECTIONS.forEach(section => {
-          newExpanded[section.id] = true;
-        });
-        setExpandedSections(newExpanded);
-      } else {
-        dispatch(clearSearchResults());
-        RecentSearches.get().then(setRecentSearches);
       }
     }, 500);
 
@@ -103,7 +90,9 @@ export function useSearchScreen() {
   const handleSearchChange = useCallback(
     (text: string) => {
       setSearchText(text);
-      if (!text || text.trim().length === 0) {
+      const trimmed = text.trim();
+
+      if (trimmed.length < 2) {
         if (debouncedSearchRef.current) {
           debouncedSearchRef.current.cancel();
         }
@@ -120,6 +109,19 @@ export function useSearchScreen() {
         setExpandedSections(newExpanded);
         RecentSearches.get().then(setRecentSearches);
       } else {
+        // Immediately show loaders and update query — don't wait for debounce
+        dispatch(setQuery(trimmed));
+        dispatch(prepareNewSearch());
+        setActiveTab('all');
+        const newExpanded: Record<SearchSectionType, boolean> = {} as Record<
+          SearchSectionType,
+          boolean
+        >;
+        SEARCH_SECTIONS.forEach(section => {
+          newExpanded[section.id] = true;
+        });
+        setExpandedSections(newExpanded);
+        // Debounce the actual API calls
         if (debouncedSearchRef.current) {
           debouncedSearchRef.current(text);
         }
@@ -132,7 +134,7 @@ export function useSearchScreen() {
     (recentQuery: string) => {
       setSearchText(recentQuery);
       dispatch(setQuery(recentQuery));
-      dispatch(clearSearchResults());
+      dispatch(prepareNewSearch());
       SEARCH_SECTIONS.forEach(section => {
         dispatch(
           searchSection({

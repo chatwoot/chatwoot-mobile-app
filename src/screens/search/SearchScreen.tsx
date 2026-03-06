@@ -21,6 +21,7 @@ const SearchScreen = () => {
     expandedSections,
     sectionData,
     isLoading,
+    isSearchCompleted,
     tabData,
     searchQuery,
     allSectionsData,
@@ -89,6 +90,7 @@ const SearchScreen = () => {
           recentSearches={recentSearches}
           searchText={searchText}
           activeTab={activeTab}
+          isSearchCompleted={isSearchCompleted}
           sectionData={sectionData}
           tabData={tabData}
           expandedSections={expandedSections}

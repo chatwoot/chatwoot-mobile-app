@@ -17,6 +17,7 @@ interface SearchContentProps {
   recentSearches: string[];
   searchText: string;
   activeTab: TabType;
+  isSearchCompleted: boolean;
   sectionData: Record<
     SearchSectionType,
     {
@@ -47,6 +48,7 @@ export function SearchContent({
   recentSearches,
   searchText,
   activeTab,
+  isSearchCompleted,
   sectionData,
   tabData,
   expandedSections,
@@ -89,15 +91,12 @@ export function SearchContent({
     0,
   );
 
-  const allSearchesCompleted = SEARCH_SECTIONS.every(
-    section => !sectionData[section.id]?.isLoading,
-  );
   const allSearchesFailed = SEARCH_SECTIONS.every(
     section => sectionData[section.id]?.hasError,
   );
   const hasResults = totalResults > 0;
 
-  if (allSearchesCompleted && allSearchesFailed && searchText.length >= 2) {
+  if (isSearchCompleted && allSearchesFailed && searchText.length >= 2) {
     return (
       <SearchEmptyState
         sectionLabel="results"
@@ -107,7 +106,7 @@ export function SearchContent({
     );
   }
 
-  if (allSearchesCompleted && !hasResults && searchText.length >= 2) {
+  if (isSearchCompleted && !hasResults && searchText.length >= 2) {
     const sectionLabel =
       activeTab === 'all'
         ? 'Results'

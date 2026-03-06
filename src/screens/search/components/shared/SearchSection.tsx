@@ -125,7 +125,7 @@ export function SearchSection({
           style={tailwind.style('px-4 py-8 items-center')}>
           <ActivityIndicator />
         </Animated.View>
-      ) : items.length === 0 && activeTab === 'all' ? (
+      ) : items.length === 0 && activeTab === 'all' && !isInitialLoading ? (
         <SearchEmptyState
           sectionLabel={section.label}
           searchQuery={searchQuery}

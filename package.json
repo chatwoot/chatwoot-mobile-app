@@ -59,7 +59,7 @@
     "cross-env": "^7.0.3",
     "date-fns": "2.21.1",
     "diff": "8.0.3",
-    "expo": "~52.0.46",
+    "expo": "~53.0.0",
     "expo-application": "~6.0.2",
     "expo-auth-session": "~6.0.3",
     "expo-av": "~15.0.2",

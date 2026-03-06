@@ -1,7 +1,9 @@
 import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 
-export const LockIcon = ({ fill }: { fill?: string }) => {
+import { IconProps } from '../../types';
+
+export const LockIcon = ({ fill }: IconProps): JSX.Element => {
   return (
     <Svg width="100%" height="100%" viewBox="0 0 12 12" fill="none">
       <Path

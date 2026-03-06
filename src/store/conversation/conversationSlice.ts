@@ -143,7 +143,7 @@ const conversationSlice = createSlice({
 
         if (afterId) {
           // Search navigation: merge messages, deduplicate by ID, and sort by
-          // createdAt to preserve chronological order (matches web app behavior)
+          // createdAt to preserve chronological order
           const existingIds = new Set(conversation.messages.map(m => m.id));
           const newMessages = messages.filter(m => !existingIds.has(m.id));
           conversation.messages.push(...newMessages);

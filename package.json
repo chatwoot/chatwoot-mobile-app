@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "4.3.20",
+  "version": "4.3.21",
   "packageManager": "pnpm@10.11.0",
   "scripts": {
     "start": "expo start --dev-client",
@@ -185,11 +185,7 @@
       "node-forge": "^1.3.2",
       "glob": "^10.5.0",
       "markdown-it": "^12.3.2",
-      "brace-expansion": "^2.0.2",
       "js-yaml": "^4.1.1",
-      "@typescript-eslint/typescript-estree>minimatch": "9.0.7",
-      "glob>minimatch": "9.0.7",
-      "tar": "7.5.10",
       "storybook": "8.6.17"
     }
   }

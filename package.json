@@ -186,7 +186,10 @@
       "glob": "^10.5.0",
       "markdown-it": "^12.3.2",
       "js-yaml": "^4.1.1",
-      "storybook": "8.6.17"
+      "storybook": "8.6.17",
+      "@typescript-eslint/typescript-estree>minimatch": "9.0.7",
+      "glob>minimatch": "9.0.7",
+      "tar": "7.5.10"
     }
   }
 }

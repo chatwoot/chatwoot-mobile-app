@@ -62,16 +62,19 @@
       "INBOX": {
         "TITLE": "Filtrar por bandeja de entrada"
       },
+      "LABELS": {
+        "TITLE": "Filtrar por etiquetas"
+      },
       "SORT_BY": {
         "TITLE": "Ordenar por",
         "OPTIONS": {
-          "LATEST": "Latest",
+          "LATEST": "Más recientes",
           "SORT_ON_CREATED_AT": "Creado el",
           "SORT_ON_PRIORITY": "Prioridad"
         }
       },
       "STATUS": {
-        "TITLE": "Filter by status",
+        "TITLE": "Filtrar por estado",
         "OPTIONS": {
           "OPEN": "Abrir",
           "PENDING": "En espera",
@@ -83,7 +86,7 @@
       "ASSIGNEE_TYPE": {
         "TITLE": "Filtrar por tipo de asignado",
         "OPTIONS": {
-          "ME": "Me",
+          "ME": "Para mí",
           "UNASSIGNED": "Sin asignar",
           "ALL": "Todo"
         }
@@ -97,8 +100,8 @@
         "SEARCH_AGENT": "Buscar agentes"
       },
       "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
+        "HEADER_TITLE": "Asignar estado",
+        "TITLE": "Filtrar por estado",
         "OPTIONS": {
           "OPEN": "Abrir",
           "PENDING": "En espera",
@@ -132,9 +135,9 @@
     "PRIVATE_MSG_INPUT": "Esto será visible sólo para los agentes",
     "UNSUPPORTED_MESSAGE": "Este mensaje no es compatible. Puedes ver este mensaje en la aplicación de Facebook/Instagram.",
     "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
+      "TITLE": "No se puede obtener la conversación",
+      "RETRY": "Repetir",
+      "BACK_TO_HOME": "Regresar a casa",
       "DESCRIPTION": "Parece que no se pudo obtener la conversación correctamente. Podría deberse a un problema de red o la conversación ya no está disponible. Haga clic en el botón de reintentar para intentarlo nuevamente."
     },
     "BOT": "Bot",
@@ -163,10 +166,10 @@
     "DELETE_MESSAGE_SUCCESS": "Mensaje eliminado correctamente",
     "NO_CONTENT": "No hay contenido disponible",
     "ASSIGN_CHANGE": "Conversación cambiada de asignatario",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "TEAM_CHANGE": "El equipo de conversación cambió",
+    "STATUS_CHANGE": "Estado de la conversación cambiado",
+    "PRIORITY_CHANGE": "La prioridad de la conversación cambió",
+    "PARTICIPANT_CHANGE": "El participante de la conversación cambió",
     "CHANGE_STATUS": "Cambiar estado",
     "SEARCH_TEAM": "Buscar equipos",
     "PRIORITY": {
@@ -210,7 +213,7 @@
         "CONTENT": "ha compartido una url"
       },
       "contact": {
-        "CONTENT": "Shared a contact"
+        "CONTENT": "Compartió un contacto"
       }
     },
     "LONG_PRESS_ACTIONS": {
@@ -233,11 +236,11 @@
         "EDIT": "Editar"
       },
       "TEAM": {
-        "EMPTY": "No team assigned",
+        "EMPTY": "Ningún equipo asignado",
         "ASSIGN": "Asignar"
       },
       "PRIORITY": {
-        "EMPTY": "No priority added",
+        "EMPTY": "Ninguna prioridad añadida",
         "EDIT": "Editar"
       }
     }
@@ -256,11 +259,12 @@
     "BOT": "Bot",
     "SUBMIT": "Enviar",
     "PENDING": "En espera",
-    "SNOOZED": "Pospuesto"
+    "SNOOZED": "Pospuesto",
+    "LABELS": "Etiquetas"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Preferencias",
-    "SET_AVAILABILITY": "Ponte como",
+    "SET_AVAILABILITY": "Cambiar estado",
     "CHANGE_AVAILABILITY": "Establecer disponibilidad",
     "PREFERENCES": "Preferencias",
     "ABOUT": "Acerca de",
@@ -333,7 +337,7 @@
     "CONVERSATION_SLA_MISSED_RESOLUTION": "Una conversación carece de resolución SLA"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Attributes",
+    "TITLE": "Atributos",
     "BROWSER": "Navegador",
     "OPERATING_SYSTEM": "Sistema operativo",
     "INITIATED_AT": "Iniciado a las",
@@ -344,9 +348,12 @@
   },
   "CONTACT_DETAILS": {
     "TITLE": "Detalles de contacto",
-    "EMAIL": "Email",
+    "EMAIL": "Correo electrónico",
     "PHONE_NUMBER": "Número telefónico",
-    "CALL": "Call",
+    "PHONE": "Teléfono",
+    "CALL": "Llamar",
+    "LOCATION": "Ubicación",
+    "COMPANY": "Empresa",
     "CONTACT_ATTRIBUTES": "Atributos de contacto",
     "VALUE_UNAVAILABLE": "No disponible"
   },
@@ -362,7 +369,7 @@
     "ADD_PARTICIPANTS": "Seleccionar participantes",
     "REMAINING_PARTICIPANTS_TEXT": "otros",
     "REMAINING_PARTICIPANT_TEXT": "otro",
-    "ADD_PARTICIPANT": "Add Participant"
+    "ADD_PARTICIPANT": "Añadir participante"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Atributos de contacto"
@@ -370,10 +377,18 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Acciones",
     "OPTIONS": {
-      "OPEN": "Open",
-      "PENDING": "Pending",
-      "SNOOZED": "Snooze",
-      "RESOLVED": "resolve"
+      "OPEN": "Abrir",
+      "PENDING": "En espera",
+      "SNOOZED": "Pospuesto",
+      "RESOLVED": "Resuelto"
+    }
+  },
+  "CONVERSATION_ATTACHMENT": {
+    "OPTIONS": {
+      "PHOTOS": "Fotos",
+      "CAMERA": "Cámara",
+      "ATTACH_FILE": "Adjuntar archivo",
+      "MACROS": "Macros"
     }
   },
   "CONVERSATION_TEAMS": {
@@ -383,6 +398,16 @@
   },
   "CONVERSATION_LABELS": {
     "TITLE": "Etiquetas de conversación",
+    "ADD_LABEL": "Añadir etiquetas",
+    "EMPTY_LIST": "Por favor, añade etiquetas a tu cuenta",
+    "NO_LABEL": "No hay etiquetas asignadas",
+    "UPDATE_LABEL": "Etiqueta actualizada correctamente",
+    "SELECTED": "Seleccionado",
+    "NOT_SELECTED": "No hay etiquetas seleccionadas",
+    "NO_RESULT": "No se encontraron etiquetas"
+  },
+  "CONTACT_LABELS": {
+    "TITLE": "Etiquetas de contacto",
     "ADD_LABEL": "Añadir etiquetas",
     "EMPTY_LIST": "Por favor, añade etiquetas a tu cuenta",
     "NO_LABEL": "No hay etiquetas asignadas",
@@ -405,11 +430,11 @@
     "CHANGE_TEAMS": "Equipo de conversación cambiado"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "No se pudo conectar al servidor de Chatwoot, Inténtalo de nuevo más tarde",
     "OfFLINE": "Debe conectarse a Wi-Fi o a una red móvil para conectarse de nuevo",
     "CANNOT_FETCH": "Hubo un error al recuperar la información, por favor inténtalo de nuevo",
     "AUTH": "Nombre de usuario / Contraseña incorrecto. Inténtalo de nuevo",
-    "NO_ACCOUNTS_MESSAGE": "No tienes acceso a ninguna cuenta de chatwoot"
+    "NO_ACCOUNTS_MESSAGE": "No tienes acceso a ninguna cuenta de Chatwoot"
   },
   "SUCCESS": {
     "AUTH": "Inicio de sesión exitoso"
@@ -424,6 +449,12 @@
     "SUBTITLE": "¿Estás seguro que quieres salir?",
     "CANCEL": "Cancelar",
     "OK": "De acuerdo"
+  },
+  "DELETE_USER": {
+    "TITLE": "Eliminar datos del usuario",
+    "SUBTITLE": "¿Está seguro de que desea eliminar sus datos? Esta acción no se puede deshacer.",
+    "CANCEL": "Cancelar",
+    "CONFIRM": "De acuerdo"
   },
   "BANNER": {
     "TWILIO_WHATSAPP_CAN_REPLY": "Sólo puede responder a esta conversación usando una plantilla de mensaje debido a",
@@ -453,7 +484,7 @@
   },
   "MACRO": {
     "TITLE": "Macros",
-    "SELECT_MACRO": "Select macro",
+    "SELECT_MACRO": "Seleccionar macro",
     "ACTIONS": {
       "RUN": "Run"
     },

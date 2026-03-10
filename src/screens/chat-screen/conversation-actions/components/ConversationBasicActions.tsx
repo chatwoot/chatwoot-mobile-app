@@ -137,7 +137,7 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
           style={tailwind.style(
             'text-md font-inter-normal-20 leading-[17px] tracking-[0.32px] text-center pt-5 capitalize text-gray-950 ',
           )}>
-          {conversationAction.actionText}
+          {i18n.t(`CONVERSATION_ACTION.OPTIONS.${conversationAction.actionStatus.toUpperCase()}`)}
         </Animated.Text>
       </Pressable>
     </Animated.View>

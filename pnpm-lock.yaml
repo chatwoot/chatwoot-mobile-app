@@ -184,8 +184,8 @@ importers:
         specifier: ^2.20.2
         version: 2.20.2(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
       react-native-image-modal:
-        specifier: ^3.0.13
-        version: 3.0.13
+        specifier: ^3.0.14
+        version: 3.0.14
       react-native-image-picker:
         specifier: ^7.1.2
         version: 7.2.3(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
@@ -5829,8 +5829,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-image-modal@3.0.13:
-    resolution: {integrity: sha512-kezzhfKUSBZNM8jaQVII/3aOT34hrNVvQdCTtJcsx2EGE43UhoRY+GBg7rMQZCOvbPfvk4Zw58yh1JyY6QsE+Q==}
+  react-native-image-modal@3.0.14:
+    resolution: {integrity: sha512-ih1pXgd+oR/BFlQIUdggfE0GbX4vPyU0aWVxRdmU4A2K1sImvHo8daZR7iYIwfxCO5blAKHTx9ehBC2VLBB3fA==}
 
   react-native-image-picker@7.2.3:
     resolution: {integrity: sha512-zKIZUlQNU3EtqizsXSH92zPeve4vpUrsqHu2kkpCxWE9TZhJFZBb+irDsBOY8J21k0+Edgt06TMQGJ+iPUIXyA==}
@@ -13792,7 +13792,7 @@ snapshots:
       react: 18.3.1
       react-native: 0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1)
 
-  react-native-image-modal@3.0.13: {}
+  react-native-image-modal@3.0.14: {}
 
   react-native-image-picker@7.2.3(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.27.1(@babel/core@7.27.1))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1):
     dependencies:

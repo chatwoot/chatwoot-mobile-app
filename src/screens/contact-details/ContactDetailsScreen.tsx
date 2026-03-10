@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import camelCase from 'camelcase';
 
 import { TAB_BAR_HEIGHT } from '@/constants';
@@ -23,6 +24,7 @@ import {
   ContactDetailsScreenHeader,
   ContactBasicActions,
   ContactMetaInformation,
+  ContactLabelActions,
 } from './components';
 import { AttributeList } from '@/components-next';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -32,6 +34,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { contactLabelActions } from '@/store/contact/contactLabelActions';
 import { getContactCustomAttributes } from '@/store/custom-attribute/customAttributeSlice';
 import { selectContactById } from '@/store/contact/contactSelectors';
+import { selectContactLabelsByContactId } from '@/store/contact/contactLabelSlice';
 import i18n from '@/i18n';
 
 type ContactDetailsScreenProps = NativeStackScreenProps<
@@ -157,6 +160,10 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
 
   const hasContactCustomAttributes = usedContactCustomAttributes.length > 0;
 
+  const contactLabels = useAppSelector(state =>
+    contactId ? selectContactLabelsByContactId(contactId)(state) : [],
+  );
+
   useEffect(() => {
     if (contactId) {
       dispatch(contactLabelActions.getContactLabels({ contactId }));
@@ -207,33 +214,40 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
   const allDetails = [...userDetails, ...socialMediaDetails];
 
   return (
-    <View
-      style={tailwind.style(
-        `flex-1 bg-white pt-6 ${Platform.OS === 'android' ? 'pt-12' : 'pt-6'}`,
-      )}>
-      <ContactDetailsScreenHeader
-        name={name || contactName || ''}
-        thumbnail={thumbnail || contactThumbnail || ''}
-        bio={description || ''}
-      />
-      <Animated.ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT}]`)}>
-        {email || phoneNumber ? (
-          <Animated.View style={tailwind.style('mt-[23px] px-4')}>
-            <ContactBasicActions phoneNumber={phoneNumber || ''} email={email || ''} />
-          </Animated.View>
-        ) : null}
-        <Animated.View style={tailwind.style('pt-10')}>
-          <AttributeList list={allDetails as AttributeListType[]} />
-        </Animated.View>
-        {hasContactCustomAttributes && (
+    <BottomSheetModalProvider>
+      <View
+        style={tailwind.style(
+          `flex-1 bg-white pt-6 ${Platform.OS === 'android' ? 'pt-12' : 'pt-6'}`,
+        )}>
+        <ContactDetailsScreenHeader
+          name={name || contactName || ''}
+          thumbnail={thumbnail || contactThumbnail || ''}
+          bio={description || ''}
+        />
+        <Animated.ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT}]`)}>
+          {email || phoneNumber ? (
+            <Animated.View style={tailwind.style('mt-[23px] px-4')}>
+              <ContactBasicActions phoneNumber={phoneNumber || ''} email={email || ''} />
+            </Animated.View>
+          ) : null}
           <Animated.View style={tailwind.style('pt-10')}>
-            <ContactMetaInformation attributes={usedContactCustomAttributes} />
+            <AttributeList list={allDetails as AttributeListType[]} />
           </Animated.View>
-        )}
-      </Animated.ScrollView>
-    </View>
+          {hasContactCustomAttributes && (
+            <Animated.View style={tailwind.style('pt-10')}>
+              <ContactMetaInformation attributes={usedContactCustomAttributes} />
+            </Animated.View>
+          )}
+          {contactId ? (
+            <Animated.View style={tailwind.style('pt-10')}>
+              <ContactLabelActions labels={contactLabels} contactId={contactId} />
+            </Animated.View>
+          ) : null}
+        </Animated.ScrollView>
+      </View>
+    </BottomSheetModalProvider>
   );
 };
 

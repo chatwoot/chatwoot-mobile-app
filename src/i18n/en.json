@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "Enter a valid password",
     "LOGIN": "Sign In",
     "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Login via SSO",
+    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
+    "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
+    "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
     "FORGOT_PASSWORD": "Forgot your password?",
     "RESET_HERE": "Reset here",
     "NO_ACCOUNT": "Don't have an account?",
@@ -49,6 +53,24 @@
     "TITLE": "Forgot Password?",
     "SUB_TITLE": "Don't worry! We got your back",
     "API_SUCCESS": "Password reset link has been sent to your email address"
+  },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "Verifying..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {

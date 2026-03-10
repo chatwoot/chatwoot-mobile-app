@@ -20,6 +20,7 @@ import {
   addNewCachePath,
   selectLocalRecordedAudioCacheFilePaths,
 } from '@/store/conversation/localRecordedAudioCacheSlice';
+// eslint-disable-next-line import/no-unresolved
 import { convertAacToWav } from '@/utils/audioConverter';
 
 const RecorderSegmentWidth = Dimensions.get('screen').width - 8 - 80 - 12;

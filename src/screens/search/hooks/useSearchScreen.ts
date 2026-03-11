@@ -122,6 +122,9 @@ export function useSearchScreen() {
 
   const handleRecentSearchSelect = useCallback(
     (recentQuery: string) => {
+      if (debouncedSearchRef.current) {
+        debouncedSearchRef.current.cancel();
+      }
       setSearchText(recentQuery);
       dispatch(setQuery(recentQuery));
       dispatch(prepareNewSearch());

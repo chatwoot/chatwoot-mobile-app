@@ -16,7 +16,7 @@ overrides:
   '@expo/fingerprint>minimatch': 3.1.4
   '@typescript-eslint/typescript-estree>minimatch': 9.0.7
   glob>minimatch: 9.0.7
-  tar: 7.5.10
+  tar: 7.5.11
 
 patchedDependencies:
   ffmpeg-kit-react-native@6.0.2:
@@ -6513,8 +6513,8 @@ packages:
     engines: {node: '>=14.0.0'}
     hasBin: true
 
-  tar@7.5.10:
-    resolution: {integrity: sha512-8mOPs1//5q/rlkNSPcCegA6hiHJYDmSLEI8aMH/CdSQJNWztHC9WHNam5zdQlfpTwB9Xp7IBEsHfV5LKMJGVAw==}
+  tar@7.5.11:
+    resolution: {integrity: sha512-ChjMH33/KetonMTAtpYdgUFr0tbz69Fp2v7zWxQfYZX4g5ZN2nOBXm1R2xyA+lMIKrLKIoKAwFj93jE/avX9cQ==}
     engines: {node: '>=18'}
 
   temp-dir@2.0.0:
@@ -8388,7 +8388,7 @@ snapshots:
       source-map-support: 0.5.21
       stacktrace-parser: 0.1.11
       structured-headers: 0.4.1
-      tar: 7.5.10
+      tar: 7.5.11
       temp-dir: 2.0.0
       tempy: 0.7.1
       terminal-link: 2.1.1
@@ -10792,7 +10792,7 @@ snapshots:
       minipass-pipeline: 1.2.4
       p-map: 4.0.0
       ssri: 10.0.6
-      tar: 7.5.10
+      tar: 7.5.11
       unique-filename: 3.0.0
 
   call-bind-apply-helpers@1.0.2:
@@ -14613,7 +14613,7 @@ snapshots:
     transitivePeerDependencies:
       - ts-node
 
-  tar@7.5.10:
+  tar@7.5.11:
     dependencies:
       '@isaacs/fs-minipass': 4.0.1
       chownr: 3.0.0

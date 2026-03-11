@@ -255,7 +255,7 @@ export const MessagesListContainer = () => {
   if (messageId && messagesWithGrouping.length === 0 && isLoadingMessages) {
     return (
       <View style={tailwind.style('flex-1 bg-white justify-center items-center')}>
-        <ActivityIndicator size="large" />
+        <ActivityIndicator />
       </View>
     );
   }
@@ -287,7 +287,7 @@ export const MessagesListContainer = () => {
         <View
           pointerEvents="none"
           style={tailwind.style('flex-1 bg-white justify-center items-center absolute inset-0')}>
-          <ActivityIndicator size="large" />
+          <ActivityIndicator />
         </View>
       )}
     </PlatformSpecificKeyboardWrapperComponent>

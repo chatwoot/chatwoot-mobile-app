@@ -86,8 +86,9 @@ export const SearchResultMessageItem = ({
                       </Animated.View>
                     )}
                     <Animated.Text
+                      numberOfLines={1}
                       style={tailwind.style(
-                        'text-sm font-inter-420-20 leading-[17px] text-gray-950',
+                        'text-sm font-inter-420-20 leading-[17px] text-gray-950 flex-shrink',
                       )}>
                       {inboxName}
                     </Animated.Text>
@@ -100,6 +101,7 @@ export const SearchResultMessageItem = ({
                   <Animated.View style={tailwind.style('flex-row items-center gap-1.5')}>
                     <Icon icon={<LockIcon fill={tailwind.color('text-amber-700')} />} size={14} />
                     <Animated.Text
+                      numberOfLines={1}
                       style={tailwind.style(
                         'text-sm font-inter-420-20 leading-[17px] text-amber-700',
                       )}>

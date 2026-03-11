@@ -84,8 +84,9 @@ export const SearchResultConversationItem = ({
                       </Animated.View>
                     )}
                     <Animated.Text
+                      numberOfLines={1}
                       style={tailwind.style(
-                        'text-sm font-inter-420-20 leading-[17px] text-gray-950',
+                        'text-sm font-inter-420-20 leading-[17px] text-gray-950 flex-shrink',
                       )}>
                       {inboxName}
                     </Animated.Text>
@@ -99,7 +100,7 @@ export const SearchResultConversationItem = ({
             <Animated.View style={tailwind.style('flex-row flex-wrap gap-x-2 gap-y-1.5')}>
               {infoItems.map((item, index) => (
                 <React.Fragment key={index}>
-                  <Animated.View style={tailwind.style('flex-row items-center')}>
+                  <Animated.View style={tailwind.style('flex-row items-center flex-shrink')}>
                     <Animated.Text
                       style={tailwind.style(
                         'text-sm font-inter-420-20 leading-[17px] text-gray-600',
@@ -110,7 +111,7 @@ export const SearchResultConversationItem = ({
                       text={item.value}
                       searchQuery={searchQuery}
                       style={tailwind.style(
-                        'text-sm font-inter-420-20 leading-[17px] text-gray-800 ml-1',
+                        'text-sm font-inter-420-20 leading-[17px] text-gray-800 ml-1 flex-shrink',
                       )}
                       numberOfLines={1}
                     />

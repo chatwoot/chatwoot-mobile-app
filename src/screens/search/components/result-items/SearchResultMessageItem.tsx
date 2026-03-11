@@ -7,6 +7,7 @@ import { tailwind } from '@/theme';
 import type { Message } from '@/types/Message';
 import { HighlightedText } from '../shared/HighlightedText';
 import { useScaleAnimation } from '@/utils';
+import { getPlainText } from '@/utils/messageFormatterUtils';
 import { getChannelIcon } from '@/utils/getChannelIcon';
 import { LockIcon } from '@/svg-icons';
 import { useAppSelector } from '@/hooks';
@@ -47,8 +48,9 @@ export const SearchResultMessageItem = ({
     (audioAttachment as { transcribedText?: string; transcribed_text?: string } | undefined)
       ?.transcribed_text ||
     '';
-  const messageContent =
+  const rawContent =
     message.content || message.contentAttributes?.email?.subject || transcribedText || '';
+  const messageContent = getPlainText(rawContent);
 
   const { animatedStyle, handlers } = useScaleAnimation();
 

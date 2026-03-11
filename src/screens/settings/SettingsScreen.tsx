@@ -21,6 +21,7 @@ import { clearAllConversations } from '@/store/conversation/conversationSlice';
 import { resetNotifications } from '@/store/notification/notificationSlice';
 import { clearAllContacts } from '@/store/contact/contactSlice';
 
+import { RecentSearches } from '@/screens/search/utils/recentSearches';
 import i18n from 'i18n';
 import { HELP_URL } from '@/constants/url';
 import { tailwind } from '@/theme';
@@ -206,10 +207,12 @@ const SettingsScreen = () => {
 
   const onClickLogout = useCallback(async () => {
     await AsyncStorage.removeItem('cwCookie');
-    await AsyncStorage.removeItem('recentSearches');
+    if (activeAccountId) {
+      await RecentSearches.clear(activeAccountId);
+    }
     await dispatch(settingsActions.removeDevice({ pushToken }));
     dispatch(logout());
-  }, [dispatch, pushToken]);
+  }, [dispatch, pushToken, activeAccountId]);
 
   const preferencesList: GenericListType[] = [
     {

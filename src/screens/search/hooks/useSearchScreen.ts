@@ -11,6 +11,7 @@ import {
   selectSearchIsCompleted,
   selectSearchQuery,
 } from '@/store/search/searchSelectors';
+import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
 import { clearSearchResults, prepareNewSearch, setQuery } from '@/store/search/searchSlice';
 import { RecentSearches } from '../utils/recentSearches';
 import { SEARCH_SECTION_IDS, type SearchItem, type SearchSectionType } from '@/store/search/searchTypes';
@@ -51,10 +52,13 @@ export function useSearchScreen() {
   const isLoading = useAppSelector(selectSearchIsLoading);
   const isSearchCompleted = useAppSelector(selectSearchIsCompleted);
   const query = useAppSelector(selectSearchQuery);
+  const accountId = useAppSelector(selectCurrentUserAccountId);
 
   useEffect(() => {
-    RecentSearches.get().then(setRecentSearches);
-  }, []);
+    if (accountId) {
+      RecentSearches.get(accountId).then(setRecentSearches);
+    }
+  }, [accountId]);
 
   const debouncedSearchRef = useRef<ReturnType<typeof debounce> | null>(null);
 
@@ -77,9 +81,11 @@ export function useSearchScreen() {
             }),
           );
         });
-        RecentSearches.add(trimmedQuery).then(() => {
-          RecentSearches.get().then(setRecentSearches);
-        });
+        if (accountId) {
+          RecentSearches.add(accountId, trimmedQuery).then(() => {
+            RecentSearches.get(accountId).then(setRecentSearches);
+          });
+        }
       }
     }, 500);
 
@@ -88,7 +94,7 @@ export function useSearchScreen() {
         debouncedSearchRef.current.cancel();
       }
     };
-  }, [dispatch]);
+  }, [dispatch, accountId]);
 
   const handleSearchChange = useCallback(
     (text: string) => {
@@ -110,14 +116,16 @@ export function useSearchScreen() {
           newExpanded[section.id] = true;
         });
         setExpandedSections(newExpanded);
-        RecentSearches.get().then(setRecentSearches);
+        if (accountId) {
+          RecentSearches.get(accountId).then(setRecentSearches);
+        }
       } else {
         if (debouncedSearchRef.current) {
           debouncedSearchRef.current(text);
         }
       }
     },
-    [dispatch],
+    [dispatch, accountId],
   );
 
   const handleRecentSearchSelect = useCallback(
@@ -149,13 +157,15 @@ export function useSearchScreen() {
       });
       setExpandedSections(newExpanded);
     },
-    [dispatch],
+    [dispatch, accountId],
   );
 
   const handleClearRecentSearches = useCallback(async () => {
-    await RecentSearches.clear();
+    if (accountId) {
+      await RecentSearches.clear(accountId);
+    }
     setRecentSearches([]);
-  }, []);
+  }, [accountId]);
 
   const handleBackPress = useCallback(() => {
     dispatch(clearSearchResults());

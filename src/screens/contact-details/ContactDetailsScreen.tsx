@@ -192,9 +192,7 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
     }));
 
   const fullLocation =
-    location || city || country !== undefined
-      ? location || `${city}${city ? ',' : ''} ${country}`
-      : null;
+    location || [city, country].filter(Boolean).join(', ') || null;
 
   const userDetails: GenericListType[] = [
     {

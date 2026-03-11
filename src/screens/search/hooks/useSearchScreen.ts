@@ -290,8 +290,8 @@ export function useSearchScreen() {
   );
 
   const showRecentSearches = useMemo(() => {
-    return searchText.length < 2 && recentSearches.length > 0;
-  }, [searchText.length, recentSearches.length]);
+    return searchText.trim().length < 2 && recentSearches.length > 0;
+  }, [searchText, recentSearches.length]);
 
   useEffect(() => {
     if (activeTab !== 'all') {

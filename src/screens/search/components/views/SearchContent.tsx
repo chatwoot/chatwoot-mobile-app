@@ -64,7 +64,7 @@ export function SearchContent({
   onEndReached,
   renderItem,
 }: SearchContentProps) {
-  if (searchText.length < 2) {
+  if (searchText.trim().length < 2) {
     return (
       <View style={tailwind.style('flex-1')}>
         {showRecentSearches && (
@@ -96,7 +96,7 @@ export function SearchContent({
   );
   const hasResults = totalResults > 0;
 
-  if (isSearchCompleted && allSearchesFailed && searchText.length >= 2) {
+  if (isSearchCompleted && allSearchesFailed && searchText.trim().length >= 2) {
     return (
       <SearchEmptyState
         sectionLabel="results"
@@ -106,7 +106,7 @@ export function SearchContent({
     );
   }
 
-  if (isSearchCompleted && !hasResults && searchText.length >= 2) {
+  if (isSearchCompleted && !hasResults && searchText.trim().length >= 2) {
     const sectionLabel =
       activeTab === 'all'
         ? 'Results'

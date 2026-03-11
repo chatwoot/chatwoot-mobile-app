@@ -75,7 +75,7 @@ const SearchScreen = () => {
         onClear={() => handleSearchChange('')}
         onBackPress={handleBackPress}
       />
-      {searchText.length >= 2 && (
+      {searchText.trim().length >= 2 && (
         <View style={tailwind.style('pl-4 py-6')}>
           <Tabs items={tabItems} activeTabId={activeTab} onTabPress={handleTabChange} />
         </View>

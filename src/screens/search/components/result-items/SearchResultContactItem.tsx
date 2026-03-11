@@ -7,7 +7,6 @@ import { tailwind } from '@/theme';
 import type { Contact } from '@/types/Contact';
 import { HighlightedText } from '../shared/HighlightedText';
 import { useScaleAnimation } from '@/utils';
-import { LastActivityTime } from '@/screens/conversations/components/conversation-item/LastActivityTime';
 
 type SearchResultContactItemProps = {
   contact: Contact;
@@ -22,7 +21,6 @@ export const SearchResultContactItem = ({
   onPress,
   isLast = false,
 }: SearchResultContactItemProps) => {
-  const updatedAt = contact.lastActivityAt;
   const city = contact.additionalAttributes?.city;
   const country = contact.additionalAttributes?.country;
 
@@ -97,7 +95,6 @@ export const SearchResultContactItem = ({
               )}
               numberOfLines={1}
             />
-            {updatedAt && <LastActivityTime timestamp={updatedAt} />}
           </Animated.View>
           <Animated.View
             style={tailwind.style('flex-row flex-wrap items-center gap-x-2 gap-y-1.5')}>

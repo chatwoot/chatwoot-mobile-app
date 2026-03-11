@@ -206,6 +206,7 @@ const SettingsScreen = () => {
 
   const onClickLogout = useCallback(async () => {
     await AsyncStorage.removeItem('cwCookie');
+    await AsyncStorage.removeItem('recentSearches');
     await dispatch(settingsActions.removeDevice({ pushToken }));
     dispatch(logout());
   }, [dispatch, pushToken]);

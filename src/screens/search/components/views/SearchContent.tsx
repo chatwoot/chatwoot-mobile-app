@@ -100,7 +100,7 @@ export function SearchContent({
     return (
       <SearchEmptyState
         sectionLabel="results"
-        searchQuery={searchText}
+        searchQuery={searchQuery}
         errorMessage="Something went wrong. Please try again."
       />
     );
@@ -111,7 +111,7 @@ export function SearchContent({
       activeTab === 'all'
         ? 'Results'
         : SEARCH_SECTIONS.find(s => s.id === activeTab)?.label || 'Results';
-    return <SearchEmptyState sectionLabel={sectionLabel} searchQuery={searchText} />;
+    return <SearchEmptyState sectionLabel={sectionLabel} searchQuery={searchQuery} />;
   }
 
   const activeSection = SEARCH_SECTIONS.find(s => activeTab === s.id);

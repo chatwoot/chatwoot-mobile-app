@@ -59,10 +59,13 @@ export function useSearchScreen() {
   const debouncedSearchRef = useRef<ReturnType<typeof debounce> | null>(null);
 
   useEffect(() => {
-    // Debounce only the API calls — loaders are shown immediately in handleSearchChange
     debouncedSearchRef.current = debounce((searchQuery: string) => {
       const trimmedQuery = searchQuery.trim();
       if (trimmedQuery.length >= 2) {
+        // setQuery + prepareNewSearch + searchSection dispatches are synchronous,
+        // so React batches them into one render — no flash between loaders and content
+        dispatch(setQuery(trimmedQuery));
+        dispatch(prepareNewSearch());
         SEARCH_SECTIONS.forEach(section => {
           dispatch(
             searchSection({
@@ -109,19 +112,6 @@ export function useSearchScreen() {
         setExpandedSections(newExpanded);
         RecentSearches.get().then(setRecentSearches);
       } else {
-        // Immediately show loaders and update query — don't wait for debounce
-        dispatch(setQuery(trimmed));
-        dispatch(prepareNewSearch());
-        setActiveTab('all');
-        const newExpanded: Record<SearchSectionType, boolean> = {} as Record<
-          SearchSectionType,
-          boolean
-        >;
-        SEARCH_SECTIONS.forEach(section => {
-          newExpanded[section.id] = true;
-        });
-        setExpandedSections(newExpanded);
-        // Debounce the actual API calls
         if (debouncedSearchRef.current) {
           debouncedSearchRef.current(text);
         }
@@ -171,7 +161,7 @@ export function useSearchScreen() {
     }
   }, [dispatch, navigation]);
 
-  const searchQuery = searchText.trim() || query.trim();
+  const searchQuery = query.trim();
 
   const handleLoadMore = useCallback(
     (sectionId: SearchSectionType) => {
@@ -219,6 +209,16 @@ export function useSearchScreen() {
 
   const handleTabChange = useCallback((tabId: string) => {
     if (VALID_TAB_IDS.has(tabId)) {
+      if (tabId === 'all') {
+        const newExpanded: Record<SearchSectionType, boolean> = {} as Record<
+          SearchSectionType,
+          boolean
+        >;
+        SEARCH_SECTIONS.forEach(section => {
+          newExpanded[section.id] = true;
+        });
+        setExpandedSections(newExpanded);
+      }
       setActiveTab(tabId as TabType);
     }
   }, []);
@@ -263,7 +263,7 @@ export function useSearchScreen() {
           return;
         }
 
-        const currentSearchQuery = searchText.trim() || query.trim();
+        const currentSearchQuery = query.trim();
 
         if (!section.hasMore || section.isLoading) {
           return;

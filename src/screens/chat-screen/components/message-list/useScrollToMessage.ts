@@ -51,7 +51,6 @@ export function useScrollToMessage({
 
     const timeout = setTimeout(() => {
       if (!hasPositionedMessageRef.current) {
-        hasPositionedMessageRef.current = true;
         onPositioned();
       }
     }, TARGET_MESSAGE_TIMEOUT_MS);

@@ -168,6 +168,10 @@ export function useSearchScreen() {
   }, [accountId]);
 
   const handleBackPress = useCallback(() => {
+    if (debouncedSearchRef.current) {
+      debouncedSearchRef.current.cancel();
+    }
+    dispatch(setQuery(''));
     dispatch(clearSearchResults());
     if (navigation.canGoBack()) {
       navigation.goBack();

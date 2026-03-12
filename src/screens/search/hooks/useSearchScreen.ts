@@ -126,6 +126,10 @@ export function useSearchScreen() {
           RecentSearches.get(accountId).then(setRecentSearches);
         }
       } else {
+        // Show loaders immediately so the UI doesn't flash empty states
+        // during the 500ms debounce window
+        dispatch(setQuery(trimmed));
+        dispatch(prepareNewSearch());
         if (debouncedSearchRef.current) {
           debouncedSearchRef.current(text);
         }

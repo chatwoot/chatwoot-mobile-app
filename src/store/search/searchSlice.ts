@@ -59,6 +59,7 @@ const searchSlice = createSlice({
         }
       });
       state.isSearchCompleted = false;
+      state.query = '';
     },
     prepareNewSearch: state => {
       Object.keys(state.sections).forEach(sectionId => {

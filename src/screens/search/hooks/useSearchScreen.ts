@@ -61,17 +61,22 @@ export function useSearchScreen() {
   }, [accountId]);
 
   const debouncedSearchRef = useRef<ReturnType<typeof debounce> | null>(null);
+  const inFlightSearchesRef = useRef<Array<{ abort: () => void }>>([]);
+
+  const cancelInFlightSearches = useCallback(() => {
+    inFlightSearchesRef.current.forEach(promise => promise.abort());
+    inFlightSearchesRef.current = [];
+  }, []);
 
   useEffect(() => {
     debouncedSearchRef.current = debounce((searchQuery: string) => {
       const trimmedQuery = searchQuery.trim();
       if (trimmedQuery.length >= 2) {
-        // setQuery + prepareNewSearch + searchSection dispatches are synchronous,
-        // so React batches them into one render — no flash between loaders and content
+        cancelInFlightSearches();
         dispatch(setQuery(trimmedQuery));
         dispatch(prepareNewSearch());
         SEARCH_SECTIONS.forEach(section => {
-          dispatch(
+          const promise = dispatch(
             searchSection({
               sectionId: section.id,
               apiEndpoint: section.apiEndpoint,
@@ -80,6 +85,7 @@ export function useSearchScreen() {
               page: 1,
             }),
           );
+          inFlightSearchesRef.current.push(promise);
         });
         if (accountId) {
           RecentSearches.add(accountId, trimmedQuery).then(() => {
@@ -133,11 +139,12 @@ export function useSearchScreen() {
       if (debouncedSearchRef.current) {
         debouncedSearchRef.current.cancel();
       }
+      cancelInFlightSearches();
       setSearchText(recentQuery);
       dispatch(setQuery(recentQuery));
       dispatch(prepareNewSearch());
       SEARCH_SECTIONS.forEach(section => {
-        dispatch(
+        const promise = dispatch(
           searchSection({
             sectionId: section.id,
             apiEndpoint: section.apiEndpoint,
@@ -146,6 +153,7 @@ export function useSearchScreen() {
             page: 1,
           }),
         );
+        inFlightSearchesRef.current.push(promise);
       });
       setActiveTab('all');
       const newExpanded: Record<SearchSectionType, boolean> = {} as Record<
@@ -171,12 +179,13 @@ export function useSearchScreen() {
     if (debouncedSearchRef.current) {
       debouncedSearchRef.current.cancel();
     }
+    cancelInFlightSearches();
     dispatch(setQuery(''));
     dispatch(clearSearchResults());
     if (navigation.canGoBack()) {
       navigation.goBack();
     }
-  }, [dispatch, navigation]);
+  }, [dispatch, navigation, cancelInFlightSearches]);
 
   const searchQuery = query.trim();
 
@@ -204,7 +213,7 @@ export function useSearchScreen() {
       if (!sectionConfig) {
         return;
       }
-      dispatch(
+      const promise = dispatch(
         searchSection({
           sectionId,
           apiEndpoint: sectionConfig.apiEndpoint,
@@ -213,8 +222,28 @@ export function useSearchScreen() {
           page: nextPage,
         }),
       );
+      inFlightSearchesRef.current.push(promise);
     },
     [searchQuery, sectionData, dispatch],
+  );
+
+  const handleRetry = useCallback(
+    (sectionId: SearchSectionType) => {
+      if (!searchQuery) return;
+      const sectionConfig = SEARCH_SECTIONS.find(s => s.id === sectionId);
+      if (!sectionConfig) return;
+      const promise = dispatch(
+        searchSection({
+          sectionId,
+          apiEndpoint: sectionConfig.apiEndpoint,
+          transformResponse: sectionConfig.transformResponse,
+          q: searchQuery,
+          page: 1,
+        }),
+      );
+      inFlightSearchesRef.current.push(promise);
+    },
+    [searchQuery, dispatch],
   );
 
   const handleViewMore = useCallback((sectionId: SearchSectionType) => {
@@ -310,6 +339,14 @@ export function useSearchScreen() {
     return searchText.trim().length < 2 && recentSearches.length > 0;
   }, [searchText, recentSearches.length]);
 
+  // Cancel in-flight search requests when navigating away from the search screen
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      cancelInFlightSearches();
+    });
+    return unsubscribe;
+  }, [navigation, cancelInFlightSearches]);
+
   useEffect(() => {
     if (activeTab !== 'all') {
       const section = SEARCH_SECTIONS.find(s => activeTab === s.id);
@@ -340,6 +377,7 @@ export function useSearchScreen() {
     handleClearRecentSearches,
     handleBackPress,
     handleLoadMore,
+    handleRetry,
     handleViewMore,
     handleTabChange,
     setActiveTab,

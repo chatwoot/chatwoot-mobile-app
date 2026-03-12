@@ -23,6 +23,7 @@ type SectionData = {
   currentPage: number;
   hasMore: boolean;
   hasError: boolean;
+  isCancelled: boolean;
 };
 
 // Selector that returns all sections data at once
@@ -40,6 +41,7 @@ export const selectAllSearchSections = createSelector(
         currentPage: sectionState?.currentPage || 1,
         hasMore: sectionState?.hasMore || false,
         hasError: sectionState?.hasError || false,
+        isCancelled: sectionState?.isCancelled || false,
       };
     });
 

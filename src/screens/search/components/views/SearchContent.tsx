@@ -26,6 +26,7 @@ interface SearchContentProps {
       currentPage: number;
       hasMore: boolean;
       hasError: boolean;
+      isCancelled: boolean;
     }
   >;
   tabData: Record<SearchSectionType, SearchItem[]>;
@@ -38,6 +39,7 @@ interface SearchContentProps {
   onClearRecentSearches: () => void;
   onViewMore: (sectionId: SearchSectionType) => void;
   onLoadMore: (sectionId: SearchSectionType) => void;
+  onRetry: (sectionId: SearchSectionType) => void;
   onTabChange: (sectionId: SearchSectionType) => void;
   onEndReached: (sectionId: SearchSectionType) => () => void;
   renderItem: (item: SearchItem, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
@@ -60,6 +62,7 @@ export function SearchContent({
   onClearRecentSearches,
   onViewMore,
   onLoadMore,
+  onRetry,
   onTabChange,
   onEndReached,
   renderItem,
@@ -96,12 +99,28 @@ export function SearchContent({
   );
   const hasResults = totalResults > 0;
 
+  const allSearchesCancelled = SEARCH_SECTIONS.every(
+    section => sectionData[section.id]?.isCancelled,
+  );
+
+  if (allSearchesCancelled && searchText.trim().length >= 2) {
+    return (
+      <SearchEmptyState
+        sectionLabel="results"
+        searchQuery={searchQuery}
+        errorMessage="Couldn't load results."
+        onRetry={() => SEARCH_SECTIONS.forEach(section => onRetry(section.id))}
+      />
+    );
+  }
+
   if (isSearchCompleted && allSearchesFailed && searchText.trim().length >= 2) {
     return (
       <SearchEmptyState
         sectionLabel="results"
         searchQuery={searchQuery}
         errorMessage="Something went wrong. Please try again."
+        onRetry={() => SEARCH_SECTIONS.forEach(section => onRetry(section.id))}
       />
     );
   }
@@ -132,6 +151,28 @@ export function SearchContent({
     const isLoadingMore = section.isLoading && section.currentPage > 1;
     const hasMore = section.hasMore;
 
+    if (section.isCancelled && items.length === 0) {
+      return (
+        <SearchEmptyState
+          sectionLabel={SEARCH_SECTIONS.find(s => s.id === activeSection.id)?.label || 'results'}
+          searchQuery={searchQuery}
+          errorMessage="Couldn't load results."
+          onRetry={() => onRetry(activeSection.id)}
+        />
+      );
+    }
+
+    if (section.hasError && items.length === 0) {
+      return (
+        <SearchEmptyState
+          sectionLabel={SEARCH_SECTIONS.find(s => s.id === activeSection.id)?.label || 'results'}
+          searchQuery={searchQuery}
+          errorMessage="Something went wrong. Please try again."
+          onRetry={() => onRetry(activeSection.id)}
+        />
+      );
+    }
+
     return (
       <SearchResultsList
         sectionId={activeSection.id}
@@ -157,6 +198,7 @@ export function SearchContent({
       getItemsToShow={getItemsToShow}
       onViewMore={onViewMore}
       onLoadMore={onLoadMore}
+      onRetry={onRetry}
       onTabChange={onTabChange}
       renderItem={renderItem}
     />

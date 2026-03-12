@@ -8,6 +8,7 @@ export interface SectionState {
   currentPage: number;
   hasMore: boolean;
   hasError: boolean;
+  isCancelled: boolean;
 }
 
 export interface SearchState {
@@ -23,6 +24,7 @@ const createInitialSectionState = (): SectionState => ({
   currentPage: 1,
   hasMore: false,
   hasError: false,
+  isCancelled: false,
 });
 
 const createInitialSections = (): Record<SearchSectionType, SectionState> => {
@@ -53,6 +55,7 @@ const searchSlice = createSlice({
           section.currentPage = 1;
           section.hasMore = false;
           section.hasError = false;
+          section.isCancelled = false;
         }
       });
       state.isSearchCompleted = false;
@@ -66,6 +69,7 @@ const searchSlice = createSlice({
           section.currentPage = 1;
           section.hasMore = false;
           section.hasError = false;
+          section.isCancelled = false;
         }
       });
       state.isSearchCompleted = false;
@@ -82,6 +86,8 @@ const searchSlice = createSlice({
         if (sectionState) {
           sectionState.isLoading = true;
           sectionState.hasError = false;
+          sectionState.isCancelled = false;
+          state.isSearchCompleted = false;
           if (actionMeta.meta.arg.page === 1) {
             sectionState.currentPage = 1;
           }
@@ -117,6 +123,16 @@ const searchSlice = createSlice({
         const sectionId = actionMeta.meta.arg.sectionId;
         const sectionState = state.sections[sectionId];
         if (!sectionState) return;
+
+        // For aborted requests (e.g. user navigated away), stop loading
+        // but don't mark as error so the section stays in its current state
+        if (actionMeta.meta.aborted) {
+          sectionState.isLoading = false;
+          if (sectionState.items.length === 0) {
+            sectionState.isCancelled = true;
+          }
+          return;
+        }
 
         // Discard stale responses — section is still loading for the current query
         if (actionMeta.meta.arg.q !== state.query) return;

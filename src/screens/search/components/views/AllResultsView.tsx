@@ -16,6 +16,8 @@ interface AllResultsViewProps {
       isLoading: boolean;
       currentPage: number;
       hasMore: boolean;
+      hasError: boolean;
+      isCancelled: boolean;
     }
   >;
   tabData: Record<SearchSectionType, SearchItem[]>;
@@ -25,6 +27,7 @@ interface AllResultsViewProps {
   getItemsToShow: (items: SearchItem[], sectionId: SearchSectionType) => SearchItem[];
   onViewMore: (sectionId: SearchSectionType) => void;
   onLoadMore: (sectionId: SearchSectionType) => void;
+  onRetry: (sectionId: SearchSectionType) => void;
   onTabChange: (sectionId: SearchSectionType) => void;
   renderItem: (item: SearchItem, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
 }
@@ -38,6 +41,7 @@ export function AllResultsView({
   getItemsToShow,
   onViewMore,
   onLoadMore,
+  onRetry,
   onTabChange,
   renderItem,
 }: AllResultsViewProps) {
@@ -58,12 +62,15 @@ export function AllResultsView({
             itemsToShow={itemsToShow}
             isLoadingMore={sectionState.isLoading && sectionState.currentPage > 1}
             hasMore={sectionState.hasMore}
+            hasError={sectionState.hasError}
+            isCancelled={sectionState.isCancelled}
             isInitialLoading={sectionState.isLoading && sectionState.currentPage === 1}
             isExpanded={expandedSections[section.id] ?? true}
             activeTab={activeTab}
             searchQuery={searchQuery}
             onViewMore={onViewMore}
             onLoadMore={onLoadMore}
+            onRetry={onRetry}
             onTabChange={onTabChange}
             renderItem={renderItem}
           />

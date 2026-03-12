@@ -31,6 +31,7 @@ const SearchScreen = () => {
     handleClearRecentSearches,
     handleBackPress,
     handleLoadMore,
+    handleRetry,
     handleViewMore,
     handleTabChange,
     getItemsToShow,
@@ -102,6 +103,7 @@ const SearchScreen = () => {
           onClearRecentSearches={handleClearRecentSearches}
           onViewMore={handleViewMore}
           onLoadMore={handleLoadMore}
+          onRetry={handleRetry}
           onTabChange={handleSectionTabChange}
           onEndReached={createEndReachedHandler}
           renderItem={renderItem}

@@ -26,12 +26,15 @@ interface SearchSectionProps {
   itemsToShow: SearchItem[];
   isLoadingMore: boolean;
   hasMore: boolean;
+  hasError: boolean;
+  isCancelled: boolean;
   isInitialLoading: boolean;
   isExpanded: boolean;
   activeTab: TabType;
   searchQuery: string;
   onViewMore: (sectionId: SearchSectionType) => void;
   onLoadMore: (sectionId: SearchSectionType) => void;
+  onRetry: (sectionId: SearchSectionType) => void;
   onTabChange: (sectionId: SearchSectionType) => void;
   renderItem: (item: SearchItem, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
 }
@@ -42,12 +45,15 @@ export function SearchSection({
   itemsToShow,
   isLoadingMore,
   hasMore,
+  hasError,
+  isCancelled,
   isInitialLoading,
   isExpanded,
   activeTab,
   searchQuery,
   onViewMore,
   onLoadMore,
+  onRetry,
   onTabChange,
   renderItem,
 }: SearchSectionProps) {
@@ -65,7 +71,7 @@ export function SearchSection({
   const section = getSearchSectionById(sectionId);
   if (!section) return null;
 
-  const shouldShowSection = activeTab === 'all' || items.length > 0 || isInitialLoading;
+  const shouldShowSection = activeTab === 'all' || items.length > 0 || isInitialLoading || hasError || isCancelled;
   if (!shouldShowSection) {
     return null;
   }
@@ -119,7 +125,25 @@ export function SearchSection({
             </Pressable>
           )}
       </Animated.View>
-      {isInitialLoading && items.length === 0 ? (
+      {isCancelled && items.length === 0 ? (
+        <SearchEmptyState
+          sectionLabel={section.label}
+          searchQuery={searchQuery}
+          errorMessage="Couldn't load results."
+          onRetry={() => onRetry(sectionId)}
+          entering={FadeIn.duration(200)}
+          exiting={FadeOut.duration(200)}
+        />
+      ) : hasError && items.length === 0 ? (
+        <SearchEmptyState
+          sectionLabel={section.label}
+          searchQuery={searchQuery}
+          errorMessage="Something went wrong. Please try again."
+          onRetry={() => onRetry(sectionId)}
+          entering={FadeIn.duration(200)}
+          exiting={FadeOut.duration(200)}
+        />
+      ) : isInitialLoading && items.length === 0 ? (
         <Animated.View
           entering={FadeIn.duration(200)}
           style={tailwind.style('px-4 py-8 items-center')}>

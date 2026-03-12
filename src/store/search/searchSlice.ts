@@ -125,6 +125,9 @@ const searchSlice = createSlice({
         const sectionState = state.sections[sectionId];
         if (!sectionState) return;
 
+        // Discard stale responses — section is still loading for the current query
+        if (actionMeta.meta.arg.q !== state.query) return;
+
         // For aborted requests (e.g. user navigated away), stop loading
         // but don't mark as error so the section stays in its current state
         if (actionMeta.meta.aborted) {
@@ -134,9 +137,6 @@ const searchSlice = createSlice({
           }
           return;
         }
-
-        // Discard stale responses — section is still loading for the current query
-        if (actionMeta.meta.arg.q !== state.query) return;
 
         sectionState.isLoading = false;
         sectionState.hasError = true;

@@ -61,6 +61,7 @@ export async function handleContactPress(
     }
   } catch (error) {
     // Navigation already happened with basic contact data from search results
+    console.warn('Failed to fetch full contact details:', error);
   }
 }
 

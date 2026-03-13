@@ -104,7 +104,14 @@ export const MessagesList = ({
       <AnimatedFlashlist
         layout={LinearTransition.springify().damping(38).stiffness(240)}
         onLayout={() => {
-          if (!isFlashListReady) {
+          // For search navigation, mark ready on layout since there's no user scroll
+          if (targetMessageId && !isFlashListReady) {
+            setFlashListReady(true);
+          }
+        }}
+        onScroll={() => {
+          // For normal chat, mark ready on first scroll (preserves existing behavior)
+          if (!targetMessageId && !isFlashListReady) {
             setFlashListReady(true);
           }
         }}

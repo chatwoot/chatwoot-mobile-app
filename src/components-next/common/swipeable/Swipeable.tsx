@@ -16,6 +16,7 @@ import Animated, {
   useDerivedValue,
   useSharedValue,
   withSpring,
+  withTiming,
 } from 'react-native-reanimated';
 
 import { tailwind } from '@/theme';
@@ -203,9 +204,9 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
     .onFinalize(() => (isTapped.value = withSpring(0, { damping: 25, stiffness: 120 })));
 
   const tapGesture = Gesture.Tap()
-    .onBegin(() => (isTapped.value = withSpring(1, { damping: 25, stiffness: 120 })))
+    .onStart(() => (isTapped.value = withTiming(1, { duration: 100 })))
     .onEnd(() => runOnJS(handlePress)())
-    .onFinalize(() => (isTapped.value = withSpring(0, { damping: 25, stiffness: 120 })));
+    .onFinalize(() => (isTapped.value = withTiming(0, { duration: 150 })));
 
   const panGesture = Gesture.Pan()
     .maxPointers(noOfPointers)

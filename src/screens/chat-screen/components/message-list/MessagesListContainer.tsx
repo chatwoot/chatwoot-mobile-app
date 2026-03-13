@@ -247,7 +247,7 @@ export const MessagesListContainer = () => {
     messageListRef,
     isFlashListReady,
     isLoadingMessages,
-    onPositioned: () => setIsListVisible(true),
+    onPositioned: useCallback(() => setIsListVisible(true), []),
   });
 
   // Show loader when navigating to a message from search until messages are loaded

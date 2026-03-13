@@ -111,6 +111,7 @@ export function useSearchScreen() {
         if (debouncedSearchRef.current) {
           debouncedSearchRef.current.cancel();
         }
+        cancelInFlightSearches();
         dispatch(clearSearchResults());
         dispatch(setQuery(''));
         setActiveTab('all');
@@ -135,7 +136,7 @@ export function useSearchScreen() {
         }
       }
     },
-    [dispatch, accountId],
+    [dispatch, accountId, cancelInFlightSearches],
   );
 
   const handleRecentSearchSelect = useCallback(

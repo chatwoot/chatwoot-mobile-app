@@ -11,16 +11,56 @@ type MessageVariables = {
   [key: string]: string | number | boolean;
 };
 
+// Convert camelCase keys back to snake_case (e.g. "regNumber" -> "reg_number")
+// since the mobile app camelCases all API responses but templates use snake_case keys.
+const toSnakeCase = (str: string) => str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+
+const toSnakeCaseKeys = (obj: Record<string, string>): Record<string, string> =>
+  Object.entries(obj).reduce<Record<string, string>>((acc, [key, value]) => {
+    acc[toSnakeCase(key)] = value;
+    return acc;
+  }, {});
+
 export const allMessageVariables = ({ conversation }: { conversation: Conversation }) => {
   if (!conversation) return {};
   const contact = conversation?.meta?.sender as Contact;
+  // @chatwoot/utils expects snake_case keys, but the mobile app camelCases all API responses.
+  // Convert the relevant fields back to snake_case before passing them to getMessageVariables.
+  const conversationCustomAttrs = toSnakeCaseKeys(conversation.customAttributes ?? {});
+  const contactCustomAttrs = toSnakeCaseKeys(contact?.customAttributes ?? {});
+  const snakeCaseConversation = {
+    ...conversation,
+    custom_attributes: conversationCustomAttrs,
+    meta: {
+      ...conversation.meta,
+      sender: contact
+        ? {
+            ...contact,
+            phone_number: contact.phoneNumber,
+            custom_attributes: contactCustomAttrs,
+          }
+        : conversation.meta.sender,
+      assignee: conversation.meta.assignee
+        ? {
+            ...conversation.meta.assignee,
+          }
+        : undefined,
+    },
+  };
+  const snakeCaseContact = contact
+    ? {
+        ...contact,
+        phone_number: contact.phoneNumber,
+        custom_attributes: contactCustomAttrs,
+      }
+    : undefined;
   return getMessageVariables({
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    conversation,
+    conversation: snakeCaseConversation,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    contact,
+    contact: snakeCaseContact,
   }) as MessageVariables;
 };
 

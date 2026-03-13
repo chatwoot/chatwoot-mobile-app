@@ -48,6 +48,8 @@ export function AllResultsView({
   return (
     <ScrollView
       style={tailwind.style('flex-1')}
+      keyboardDismissMode="on-drag"
+      keyboardShouldPersistTaps="handled"
       contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}>
       {SEARCH_SECTIONS.map(section => {
         const sectionState = sectionData[section.id];

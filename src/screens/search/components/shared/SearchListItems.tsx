@@ -50,6 +50,8 @@ export function SearchListItems({
           }}
           onEndReached={onEndReached}
           onEndReachedThreshold={0.5}
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
           contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}
           ListFooterComponent={

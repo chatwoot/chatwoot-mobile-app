@@ -209,12 +209,10 @@ const SettingsScreen = () => {
 
   const onClickLogout = useCallback(async () => {
     await AsyncStorage.removeItem('cwCookie');
-    if (activeAccountId) {
-      await RecentSearches.clear(activeAccountId);
-    }
+    await RecentSearches.clearAll();
     await dispatch(settingsActions.removeDevice({ pushToken }));
     dispatch(logout());
-  }, [dispatch, pushToken, activeAccountId]);
+  }, [dispatch, pushToken]);
 
   const preferencesList: GenericListType[] = [
     {

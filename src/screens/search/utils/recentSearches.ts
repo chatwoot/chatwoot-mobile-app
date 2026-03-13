@@ -45,4 +45,12 @@ export const RecentSearches = {
   async clear(accountId: number): Promise<void> {
     await AsyncStorage.removeItem(getStorageKey(accountId));
   },
+
+  async clearAll(): Promise<void> {
+    const keys = await AsyncStorage.getAllKeys();
+    const searchKeys = keys.filter(key => key.startsWith(RECENT_SEARCHES_KEY_PREFIX));
+    if (searchKeys.length > 0) {
+      await AsyncStorage.multiRemove(searchKeys);
+    }
+  },
 };

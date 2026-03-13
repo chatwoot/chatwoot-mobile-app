@@ -4,11 +4,9 @@ import type { NavigationProp } from '@react-navigation/native';
 import type { Contact } from '@/types/Contact';
 import type { Conversation } from '@/types/Conversation';
 import type { Message } from '@/types/Message';
-import {
-  SearchResultContactItem,
-  SearchResultConversationItem,
-  SearchResultMessageItem,
-} from '@/screens/search/components';
+import { SearchResultContactItem } from '@/screens/search/components/result-items/SearchResultContactItem';
+import { SearchResultConversationItem } from '@/screens/search/components/result-items/SearchResultConversationItem';
+import { SearchResultMessageItem } from '@/screens/search/components/result-items/SearchResultMessageItem';
 import { transformContact, transformMessage } from '@/utils/camelCaseKeys';
 import { transformSearchConversation } from './utils/transformers';
 import {

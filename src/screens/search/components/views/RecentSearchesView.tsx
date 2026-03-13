@@ -32,9 +32,9 @@ export function RecentSearchesView({
           </Text>
         </Pressable>
       </View>
-      {recentSearches.map((item, index) => (
+      {recentSearches.map(item => (
         <Pressable
-          key={`recent-${index}`}
+          key={item}
           onPress={() => onSearchSelect(item)}
           style={tailwind.style('px-6 py-2 mb-2')}>
           <Text

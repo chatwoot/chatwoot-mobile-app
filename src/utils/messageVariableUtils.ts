@@ -11,9 +11,15 @@ type MessageVariables = {
   [key: string]: string | number | boolean;
 };
 
-// Convert camelCase keys back to snake_case (e.g. "regNumber" -> "reg_number")
-// since the mobile app camelCases all API responses but templates use snake_case keys.
-const toSnakeCase = (str: string) => str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+// Convert camelCase keys back to snake_case (e.g. "regNumber" -> "reg_number",
+// "addressLine1" -> "address_line_1") since the mobile app camelCases all API
+// responses but templates use snake_case keys.
+const toSnakeCase = (str: string) =>
+  str
+    .replace(/([a-z])([A-Z])/g, '$1_$2')
+    .replace(/([a-zA-Z])(\d)/g, '$1_$2')
+    .replace(/(\d)([a-zA-Z])/g, '$1_$2')
+    .toLowerCase();
 
 const toSnakeCaseKeys = (obj: Record<string, string>): Record<string, string> =>
   Object.entries(obj).reduce<Record<string, string>>((acc, [key, value]) => {

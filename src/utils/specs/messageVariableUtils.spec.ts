@@ -128,6 +128,22 @@ describe('messageVariableUtils', () => {
       expect(variables['conversation.custom_attribute.company_name']).toBe('Acme Corp');
     });
 
+    it('should preserve numeric boundaries when converting keys to snake_case', () => {
+      const conversation = buildConversation({
+        customAttributes: { addressLine1: '123 Main St', field2Value: 'test' },
+      });
+      (conversation.meta.sender as { customAttributes: Record<string, string> }).customAttributes = {
+        phone2Type: 'mobile',
+        line1Address: 'home',
+      };
+      const variables = allMessageVariables({ conversation });
+
+      expect(variables['conversation.custom_attribute.address_line_1']).toBe('123 Main St');
+      expect(variables['conversation.custom_attribute.field_2_value']).toBe('test');
+      expect(variables['contact.custom_attribute.phone_2_type']).toBe('mobile');
+      expect(variables['contact.custom_attribute.line_1_address']).toBe('home');
+    });
+
     it('should handle empty custom attributes', () => {
       const conversation = buildConversation({
         customAttributes: {},

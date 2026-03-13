@@ -346,6 +346,9 @@ export function useSearchScreen() {
   // Cancel in-flight search requests when navigating away from the search screen
   useEffect(() => {
     const unsubscribe = navigation.addListener('blur', () => {
+      if (debouncedSearchRef.current) {
+        debouncedSearchRef.current.cancel();
+      }
       cancelInFlightSearches();
     });
     return unsubscribe;

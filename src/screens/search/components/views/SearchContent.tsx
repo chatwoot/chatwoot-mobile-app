@@ -125,7 +125,11 @@ export function SearchContent({
     );
   }
 
-  if (isSearchCompleted && !hasResults && searchText.trim().length >= 2) {
+  const anySectionErrored = SEARCH_SECTIONS.some(
+    section => sectionData[section.id]?.hasError || sectionData[section.id]?.isCancelled,
+  );
+
+  if (isSearchCompleted && !hasResults && !anySectionErrored && searchText.trim().length >= 2) {
     const sectionLabel =
       activeTab === 'all'
         ? 'Results'

@@ -355,9 +355,10 @@ export function useSearchScreen() {
     if (activeTab !== 'all') {
       const section = SEARCH_SECTIONS.find(s => activeTab === s.id);
       if (section && listRefs[section.id]?.current) {
-        setTimeout(() => {
+        const timer = setTimeout(() => {
           listRefs[section.id]?.current?.scrollToOffset({ offset: 0, animated: true });
         }, 100);
+        return () => clearTimeout(timer);
       }
     }
   }, [activeTab]);

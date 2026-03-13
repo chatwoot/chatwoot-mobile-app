@@ -142,12 +142,13 @@ const conversationSlice = createSlice({
         const { afterId } = action.meta.arg;
 
         if (afterId) {
-          // Search navigation: merge messages, deduplicate by ID, and sort by
-          // createdAt to preserve chronological order
+          // Search navigation: merge messages, deduplicate by ID, and sort
+          // descending (newest first) to match the array order that normal
+          // pagination produces via unshift — lastMessageId() relies on this.
           const existingIds = new Set(conversation.messages.map(m => m.id));
           const newMessages = messages.filter(m => !existingIds.has(m.id));
           conversation.messages.push(...newMessages);
-          conversation.messages.sort((a, b) => a.createdAt - b.createdAt);
+          conversation.messages.sort((a, b) => b.createdAt - a.createdAt);
           // Reset so older-message pagination isn't blocked after search nav
           state.isAllMessagesFetched = false;
         } else {

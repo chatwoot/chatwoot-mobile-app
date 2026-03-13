@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 
 import { tailwind } from '@/theme';
+import i18n from 'i18n';
 
 interface RecentSearchesViewProps {
   recentSearches: string[];
@@ -21,14 +22,14 @@ export function RecentSearchesView({
           style={tailwind.style(
             'text-md font-inter-medium-24 leading-[17px] tracking-[0.16px] text-gray-700',
           )}>
-          Recent Searches
+          {i18n.t('SEARCH.RECENT_SEARCHES')}
         </Text>
         <Pressable onPress={onClear}>
           <Text
             style={tailwind.style(
               'text-xs font-inter-medium-24 leading-[17px] tracking-[0.16px] text-blue-800',
             )}>
-            Clear all
+            {i18n.t('SEARCH.CLEAR_ALL')}
           </Text>
         </Pressable>
       </View>

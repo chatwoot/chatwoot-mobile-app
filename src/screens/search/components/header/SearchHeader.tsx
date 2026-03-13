@@ -6,6 +6,7 @@ import { SearchBar } from '@/components-next/common/search';
 import { Icon } from '@/components-next';
 import { ChevronLeft } from '@/svg-icons';
 import { tailwind } from '@/theme';
+import i18n from 'i18n';
 
 interface SearchHeaderProps {
   searchText: string;
@@ -39,7 +40,7 @@ export function SearchHeader({
           </Pressable>
           <Animated.View style={tailwind.style('flex-1')}>
             <SearchBar
-              placeholder="Type 2 or more characters to search"
+              placeholder={i18n.t('SEARCH.PLACEHOLDER')}
               autoFocus
               value={searchText}
               onChangeText={onSearchChange}

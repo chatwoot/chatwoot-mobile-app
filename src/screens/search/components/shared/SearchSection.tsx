@@ -17,6 +17,7 @@ import { getSearchSectionById } from '@/screens/search/config';
 import type { TabType } from '../../hooks/useSearchScreen';
 import { SearchEmptyState } from './SearchEmptyState';
 import { SearchListItems } from './SearchListItems';
+import i18n from 'i18n';
 
 const INITIAL_ITEMS_TO_SHOW = 5;
 
@@ -94,7 +95,7 @@ export function SearchSection({
               style={tailwind.style(
                 'text-sm font-inter-medium-24 leading-[17px] tracking-[0.16px] text-gray-700',
               )}>
-              {section.label}
+              {i18n.t(section.labelKey)}
             </Animated.Text>
             <Animated.View style={[animatedIconStyle, tailwind.style('ml-2')]}>
               <Icon icon={<CaretBottomSmall fill={tailwind.color('text-gray-700')} />} size={8} />
@@ -106,7 +107,7 @@ export function SearchSection({
               style={tailwind.style(
                 'text-sm font-inter-medium-24 leading-[17px] tracking-[0.16px] text-gray-700',
               )}>
-              {section.label}
+              {i18n.t(section.labelKey)}
               {activeTab !== 'all' && ` (${items.length})`}
             </Animated.Text>
           </Animated.View>
@@ -120,25 +121,25 @@ export function SearchSection({
                 style={tailwind.style(
                   'text-xs font-inter-420-20 leading-[17px] tracking-[0.16px] text-blue-800',
                 )}>
-                View more
+                {i18n.t('SEARCH.VIEW_MORE')}
               </Animated.Text>
             </Pressable>
           )}
       </Animated.View>
       {isCancelled && items.length === 0 ? (
         <SearchEmptyState
-          sectionLabel={section.label}
+          sectionLabel={i18n.t(section.labelKey)}
           searchQuery={searchQuery}
-          errorMessage="Couldn't load results."
+          errorMessage={i18n.t('SEARCH.ERROR_CANCELLED')}
           onRetry={() => onRetry(sectionId)}
           entering={FadeIn.duration(200)}
           exiting={FadeOut.duration(200)}
         />
       ) : hasError && items.length === 0 ? (
         <SearchEmptyState
-          sectionLabel={section.label}
+          sectionLabel={i18n.t(section.labelKey)}
           searchQuery={searchQuery}
-          errorMessage="Something went wrong. Please try again."
+          errorMessage={i18n.t('SEARCH.ERROR_GENERIC')}
           onRetry={() => onRetry(sectionId)}
           entering={FadeIn.duration(200)}
           exiting={FadeOut.duration(200)}
@@ -151,7 +152,7 @@ export function SearchSection({
         </Animated.View>
       ) : items.length === 0 && activeTab === 'all' && !isInitialLoading ? (
         <SearchEmptyState
-          sectionLabel={section.label}
+          sectionLabel={i18n.t(section.labelKey)}
           searchQuery={searchQuery}
           entering={FadeIn.duration(200)}
           exiting={FadeOut.duration(200)}

@@ -7,6 +7,7 @@ import type { BaseAnimationBuilder } from 'react-native-reanimated';
 import { tailwind } from '@/theme';
 import { InfoIcon } from '@/svg-icons';
 import { Icon } from '@/components-next';
+import i18n from 'i18n';
 
 interface SearchEmptyStateProps {
   sectionLabel: string;
@@ -36,7 +37,7 @@ export function SearchEmptyState({
           style={tailwind.style(
             'text-sm font-inter-420-20 tracking-[0.32px] text-gray-800 text-center',
           )}>
-          {errorMessage || `No ${sectionLabel.toLowerCase()} found for query '${searchQuery}'`}
+          {errorMessage || i18n.t('SEARCH.NO_RESULTS', { sectionLabel: sectionLabel.toLowerCase(), searchQuery })}
         </Animated.Text>
       </Animated.View>
       {onRetry && (
@@ -45,7 +46,7 @@ export function SearchEmptyState({
             style={tailwind.style(
               'text-sm font-inter-420-20 tracking-[0.32px] text-blue-800',
             )}>
-            Tap to retry
+            {i18n.t('SEARCH.TAP_TO_RETRY')}
           </Animated.Text>
         </Pressable>
       )}

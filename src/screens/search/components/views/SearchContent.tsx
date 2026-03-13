@@ -11,6 +11,7 @@ import { RecentSearchesView } from './RecentSearchesView';
 import { AllResultsView } from './AllResultsView';
 import { SearchResultsList } from './SearchResultsList';
 import { SearchEmptyState } from '../shared/SearchEmptyState';
+import i18n from 'i18n';
 
 interface SearchContentProps {
   showRecentSearches: boolean;
@@ -82,7 +83,7 @@ export function SearchContent({
             style={tailwind.style(
               'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-700 text-center',
             )}>
-            Search by conversation id, email, phone number, messages for better search results.
+            {i18n.t('SEARCH.HINT')}
           </Text>
         </View>
       </View>
@@ -108,7 +109,7 @@ export function SearchContent({
       <SearchEmptyState
         sectionLabel="results"
         searchQuery={searchQuery}
-        errorMessage="Couldn't load results."
+        errorMessage={i18n.t('SEARCH.ERROR_CANCELLED')}
         onRetry={() => SEARCH_SECTIONS.forEach(section => onRetry(section.id))}
       />
     );
@@ -119,7 +120,7 @@ export function SearchContent({
       <SearchEmptyState
         sectionLabel="results"
         searchQuery={searchQuery}
-        errorMessage="Something went wrong. Please try again."
+        errorMessage={i18n.t('SEARCH.ERROR_GENERIC')}
         onRetry={() => SEARCH_SECTIONS.forEach(section => onRetry(section.id))}
       />
     );
@@ -133,7 +134,7 @@ export function SearchContent({
     const sectionLabel =
       activeTab === 'all'
         ? 'Results'
-        : SEARCH_SECTIONS.find(s => s.id === activeTab)?.label || 'Results';
+        : i18n.t(SEARCH_SECTIONS.find(s => s.id === activeTab)?.labelKey || '') || 'Results';
     return <SearchEmptyState sectionLabel={sectionLabel} searchQuery={searchQuery} />;
   }
 
@@ -158,9 +159,9 @@ export function SearchContent({
     if (section.isCancelled && items.length === 0) {
       return (
         <SearchEmptyState
-          sectionLabel={SEARCH_SECTIONS.find(s => s.id === activeSection.id)?.label || 'results'}
+          sectionLabel={i18n.t(SEARCH_SECTIONS.find(s => s.id === activeSection.id)?.labelKey || '') || 'results'}
           searchQuery={searchQuery}
-          errorMessage="Couldn't load results."
+          errorMessage={i18n.t('SEARCH.ERROR_CANCELLED')}
           onRetry={() => onRetry(activeSection.id)}
         />
       );
@@ -169,9 +170,9 @@ export function SearchContent({
     if (section.hasError && items.length === 0) {
       return (
         <SearchEmptyState
-          sectionLabel={SEARCH_SECTIONS.find(s => s.id === activeSection.id)?.label || 'results'}
+          sectionLabel={i18n.t(SEARCH_SECTIONS.find(s => s.id === activeSection.id)?.labelKey || '') || 'results'}
           searchQuery={searchQuery}
-          errorMessage="Something went wrong. Please try again."
+          errorMessage={i18n.t('SEARCH.ERROR_GENERIC')}
           onRetry={() => onRetry(activeSection.id)}
         />
       );

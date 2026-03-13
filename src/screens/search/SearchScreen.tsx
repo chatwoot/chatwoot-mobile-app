@@ -11,6 +11,7 @@ import { SearchContent } from './components/views/SearchContent';
 import type { SearchSectionType } from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
 import { createRenderItem } from './utils/renderItem';
+import i18n from 'i18n';
 
 const SearchScreen = () => {
   const {
@@ -56,11 +57,11 @@ const SearchScreen = () => {
     () => [
       {
         id: 'all',
-        label: 'All Results',
+        label: i18n.t('SEARCH.ALL_RESULTS'),
       },
       ...SEARCH_SECTIONS.map(section => ({
         id: section.id,
-        label: section.label,
+        label: i18n.t(section.labelKey),
         count: sectionData[section.id]?.items?.length || 0,
       })),
     ],

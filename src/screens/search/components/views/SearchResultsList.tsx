@@ -8,6 +8,7 @@ import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
 import { SearchEmptyState } from '../shared/SearchEmptyState';
 import { SearchListItems } from '../shared/SearchListItems';
+import i18n from 'i18n';
 
 interface SearchResultsListProps {
   sectionId: SearchSectionType;
@@ -45,7 +46,7 @@ export function SearchResultsList({
   }
 
   if (items.length === 0 && !isLoading) {
-    return <SearchEmptyState sectionLabel={section.label} searchQuery={searchQuery} />;
+    return <SearchEmptyState sectionLabel={i18n.t(section.labelKey)} searchQuery={searchQuery} />;
   }
 
   return (

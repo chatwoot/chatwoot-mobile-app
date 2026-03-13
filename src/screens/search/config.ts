@@ -21,7 +21,7 @@ import type { ParamListBase } from '@react-navigation/native';
 
 export interface SearchSectionConfig {
   id: SearchSectionType;
-  label: string;
+  labelKey: string;
   apiEndpoint: string;
   dataKey: string[];
   transformResponse: (data: unknown) => SearchItem[];
@@ -43,7 +43,7 @@ export interface SearchSectionConfig {
 export const SEARCH_SECTIONS: SearchSectionConfig[] = [
   {
     id: 'contacts',
-    label: 'Contacts',
+    labelKey: 'SEARCH.SECTIONS.CONTACTS',
     apiEndpoint: 'search/contacts',
     dataKey: ['payload', 'contacts'],
     transformResponse: (data: unknown) => {
@@ -60,7 +60,7 @@ export const SEARCH_SECTIONS: SearchSectionConfig[] = [
   },
   {
     id: 'conversations',
-    label: 'Conversations',
+    labelKey: 'SEARCH.SECTIONS.CONVERSATIONS',
     apiEndpoint: 'search/conversations',
     dataKey: ['payload', 'conversations'],
     transformResponse: (data: unknown) => {
@@ -75,7 +75,7 @@ export const SEARCH_SECTIONS: SearchSectionConfig[] = [
   },
   {
     id: 'messages',
-    label: 'Messages',
+    labelKey: 'SEARCH.SECTIONS.MESSAGES',
     apiEndpoint: 'search/messages',
     dataKey: ['payload', 'messages'],
     transformResponse: (data: unknown) => {

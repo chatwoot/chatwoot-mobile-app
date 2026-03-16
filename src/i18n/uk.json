@@ -476,5 +476,22 @@
     "EXECUTION_SUCCESS": "Макрос успішно виконано",
     "EXECUTION_ERROR": "Macro execution failed",
     "NO_MACROS": "Макросів не знайдено"
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Type 2 or more characters to search",
+    "HINT": "Пошук бесід по id, email, тел. номеру, повідомлень для кращого пошуку результатів.",
+    "ALL_RESULTS": "All Results",
+    "RECENT_SEARCHES": "Recent Searches",
+    "CLEAR_ALL": "Очистити все",
+    "VIEW_MORE": "View more",
+    "TAP_TO_RETRY": "Tap to retry",
+    "NO_RESULTS": "No {{sectionLabel}} found for query '{{searchQuery}}'",
+    "ERROR_CANCELLED": "Couldn't load results.",
+    "ERROR_GENERIC": "Something went wrong. Please try again.",
+    "SECTIONS": {
+      "CONTACTS": "Контакти",
+      "CONVERSATIONS": "Бесіди",
+      "MESSAGES": "Текст повідомлень"
+    }
   }
 }

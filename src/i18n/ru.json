@@ -476,5 +476,22 @@
     "EXECUTION_SUCCESS": "Макрос успешно выполнен",
     "EXECUTION_ERROR": "Выполнение макроса не удалось",
     "NO_MACROS": "Макросы не найдены"
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Type 2 or more characters to search",
+    "HINT": "Search by conversation id, email, phone number, messages for better search results.",
+    "ALL_RESULTS": "All Results",
+    "RECENT_SEARCHES": "Recent Searches",
+    "CLEAR_ALL": "Очистить всё",
+    "VIEW_MORE": "Посмотреть больше",
+    "TAP_TO_RETRY": "Tap to retry",
+    "NO_RESULTS": "No {{sectionLabel}} found for query '{{searchQuery}}'",
+    "ERROR_CANCELLED": "Couldn't load results.",
+    "ERROR_GENERIC": "Что-то пошло не так. Попробуйте еще раз.",
+    "SECTIONS": {
+      "CONTACTS": "Контакты",
+      "CONVERSATIONS": "Разговоры",
+      "MESSAGES": "Сообщения"
+    }
   }
 }

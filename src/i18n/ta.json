@@ -476,5 +476,22 @@
     "EXECUTION_SUCCESS": "Macro executed successfully",
     "EXECUTION_ERROR": "Macro execution failed",
     "NO_MACROS": "No macros found"
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Type 2 or more characters to search",
+    "HINT": "Search by conversation id, email, phone number, messages for better search results.",
+    "ALL_RESULTS": "All Results",
+    "RECENT_SEARCHES": "Recent Searches",
+    "CLEAR_ALL": "Clear all",
+    "VIEW_MORE": "View more",
+    "TAP_TO_RETRY": "Tap to retry",
+    "NO_RESULTS": "No {{sectionLabel}} found for query '{{searchQuery}}'",
+    "ERROR_CANCELLED": "Couldn't load results.",
+    "ERROR_GENERIC": "Something went wrong. Please try again.",
+    "SECTIONS": {
+      "CONTACTS": "Contacts",
+      "CONVERSATIONS": "உரையாடல்கள்",
+      "MESSAGES": "Messages"
+    }
   }
 }

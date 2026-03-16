@@ -476,5 +476,22 @@
     "EXECUTION_SUCCESS": "המאקרו הופעל בהצלחה",
     "EXECUTION_ERROR": "Macro execution failed",
     "NO_MACROS": "לא נמצאו פקודות מאקרו"
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Type 2 or more characters to search",
+    "HINT": "חפש לפי מזהה שיחה, אימייל, מספר טלפון, הודעות לתוצאות חיפוש טובות יותר.",
+    "ALL_RESULTS": "All Results",
+    "RECENT_SEARCHES": "Recent Searches",
+    "CLEAR_ALL": "נקה הכל",
+    "VIEW_MORE": "הצג עוד",
+    "TAP_TO_RETRY": "Tap to retry",
+    "NO_RESULTS": "No {{sectionLabel}} found for query '{{searchQuery}}'",
+    "ERROR_CANCELLED": "Couldn't load results.",
+    "ERROR_GENERIC": "Something went wrong. Please try again.",
+    "SECTIONS": {
+      "CONTACTS": "איש קשר",
+      "CONVERSATIONS": "שיחות",
+      "MESSAGES": "הודעות"
+    }
   }
 }

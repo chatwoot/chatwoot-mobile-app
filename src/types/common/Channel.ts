@@ -9,6 +9,7 @@ export type Channel =
   | 'Channel::FacebookPage'
   | 'Channel::Email'
   | 'Channel::Api'
+  | 'Channel::Tiktok'
   | 'Channel::All';
 
 export type AllChannels = Channel | 'All';
@@ -30,6 +31,7 @@ export const InboxTypes = {
   TELEGRAM: 'Channel::Telegram',
   LINE: 'Channel::Line',
   SMS: 'Channel::Sms',
+  TIKTOK: 'Channel::Tiktok',
 };
 
 export const getRandomChannel = () => {

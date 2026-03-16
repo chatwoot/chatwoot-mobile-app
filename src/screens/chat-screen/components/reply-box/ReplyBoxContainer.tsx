@@ -35,6 +35,7 @@ import {
   selectIsPrivateMessage,
   togglePrivateMessage,
   setMessageContent,
+  setQuoteMessage,
 } from '@/store/conversation/sendMessageSlice';
 import { selectUserId, selectUserName, selectUserThumbnail } from '@/store/auth/authSelectors';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
@@ -178,6 +179,7 @@ const BottomSheetContent = () => {
     } else {
       setReplyEditorMode(REPLY_EDITOR_MODES.NOTE);
       dispatch(togglePrivateMessage(true));
+      dispatch(setQuoteMessage(null));
     }
   }, [inbox, canReply, dispatch]);
 
@@ -205,11 +207,16 @@ const BottomSheetContent = () => {
     }
   };
 
-  // TODO: Implement this
-  const setReplyToInPayload = (messagePayload: Record<string, unknown>) => {
-    //     ...(quoteMessage?.id && {
-    //       contentAttributes: { inReplyTo: quoteMessage.id },
-    //     }),
+  const setReplyToInPayload = (messagePayload: SendMessagePayload) => {
+    if (quoteMessage?.id) {
+      return {
+        ...messagePayload,
+        contentAttributes: {
+          ...messagePayload.contentAttributes,
+          inReplyTo: quoteMessage.id,
+        },
+      };
+    }
     return messagePayload;
   };
 
@@ -393,9 +400,9 @@ const BottomSheetContent = () => {
         style={tailwind.style(
           `pb-2 border-t-[1px] border-t-blackA-A3 ${shouldShowReplyHeader ? 'pt-0' : 'pt-2'}`,
         )}>
-        {quoteMessage && (
+        {quoteMessage && !isPrivate && (
           <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>
-            <QuoteReply />s
+            <QuoteReply />
           </Animated.View>
         )}
 

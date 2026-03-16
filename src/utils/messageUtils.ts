@@ -65,16 +65,21 @@ export const buildCreatePayload = (data: PendingMessage): MessageBuilderPayload 
       payload.append('to_emails', toEmails);
     }
     if (contentAttributes) {
-      payload.append('content_attributes', JSON.stringify(contentAttributes));
+      const { inReplyTo, ...rest } = contentAttributes;
+      payload.append(
+        'content_attributes',
+        JSON.stringify({ ...rest, ...(inReplyTo ? { in_reply_to: inReplyTo } : {}) }),
+      );
     }
   } else {
+    const { inReplyTo, ...restAttributes } = contentAttributes || {};
     payload = {
       content: message,
       private: isPrivate,
       echo_id: echoId,
       content_attributes: {
-        ...contentAttributes,
-        in_reply_to: contentAttributes?.inReplyTo,
+        ...restAttributes,
+        ...(inReplyTo ? { in_reply_to: inReplyTo } : {}),
       },
       cc_emails: ccEmails,
       bcc_emails: bccEmails,

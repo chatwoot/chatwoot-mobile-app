@@ -22,6 +22,7 @@ import {
 import { showToast } from '@/utils/toastUtils';
 import {
   // ATTACHMENT_TYPES,
+  INBOX_FEATURES,
   MESSAGE_STATUS,
   MESSAGE_VARIANTS,
   ORIENTATION,
@@ -32,7 +33,9 @@ import {
 } from '@/constants';
 import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { CopyIcon, Trash } from '@/svg-icons';
+import { CopyIcon, Trash, ReplyIcon } from '@/svg-icons';
+import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
+import { inboxHasFeature, is360DialogWhatsAppChannel } from '@/utils';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { tailwind } from '@/theme';
 import { Dimensions, View } from 'react-native';
@@ -275,11 +278,24 @@ export const MessageComponent = (props: MessageComponentProps) => {
     showToast({ message: i18n.t('CONVERSATION.DELETE_MESSAGE_SUCCESS') });
   };
 
+  const handleQuoteReply = (message: Message) => {
+    dispatch(setQuoteMessage(message));
+  };
+
+  const inboxSupportsReplyTo = (channelType: string) => {
+    const incoming = inboxHasFeature(INBOX_FEATURES.REPLY_TO, channelType);
+    const outgoing =
+      inboxHasFeature(INBOX_FEATURES.REPLY_TO_OUTGOING, channelType) &&
+      !is360DialogWhatsAppChannel(channelType);
+    return { incoming, outgoing };
+  };
+
   const getMenuOptions = (message: Message): MenuOption[] => {
-    const { messageType, content, attachments } = message;
+    const { messageType, content, attachments, private: isPrivate } = message;
     const hasText = !!content;
     const hasAttachments = !!(attachments && attachments.length > 0);
     const isDeleted = message.contentAttributes?.deleted;
+    const channelType = conversation?.meta?.channel || conversation?.channel;
 
     const menuOptions: MenuOption[] = [];
     if (messageType === MESSAGE_TYPES.ACTIVITY || isDeleted) {
@@ -291,6 +307,15 @@ export const MessageComponent = (props: MessageComponentProps) => {
         title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.COPY'),
         icon: <CopyIcon />,
         handleOnPressMenuOption: () => handleCopyMessage(content),
+        destructive: false,
+      });
+    }
+
+    if (!isPrivate && channelType && inboxSupportsReplyTo(channelType).outgoing) {
+      menuOptions.push({
+        title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.REPLY'),
+        icon: <ReplyIcon />,
+        handleOnPressMenuOption: () => handleQuoteReply(message),
         destructive: false,
       });
     }

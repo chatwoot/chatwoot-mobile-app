@@ -6,20 +6,13 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
-import { FlashList } from '@shopify/flash-list';
+import { FlashList, FlashListRef } from '@shopify/flash-list';
 import { useAppKeyboardAnimation } from '@/utils';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { MessageComponent } from '../message-item/Message';
 // import { MessageItemContainer } from '../message-item/MessageItemContainer';
 import { useRefsContext } from '@/context';
-
-export type FlashListRenderProps = {
-  item: { date: string } | Message;
-  index: number;
-};
-
-const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList<Message | { date: string }>);
 
 type DateSectionProps = { item: { date: string } };
 
@@ -58,7 +51,7 @@ export const MessagesList = ({
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
   const typedMessageListRef = messageListRef as React.RefObject<
-    FlashList<Message | { date: string }>
+    FlashListRef<Message | { date: string }>
   >;
 
   const handleRender = ({ item, index }: { item: Message | { date: string }; index: number }) => {
@@ -78,6 +71,22 @@ export const MessagesList = ({
     // return <MessageItemContainer item={item} index={index} />;
   };
 
+  // FlashList v2 removed the `inverted` prop.
+  // Use scaleY transform to simulate inverted list behavior.
+  const invertedRenderItem = ({
+    item,
+    index,
+  }: {
+    item: Message | { date: string };
+    index: number;
+  }) => {
+    return (
+      <Animated.View style={{ transform: [{ scaleY: -1 }] }}>
+        {handleRender({ item, index })}
+      </Animated.View>
+    );
+  };
+
   const animatedFlashlistStyle = useAnimatedStyle(() => {
     return {
       marginBottom: withSpring(interpolate(progress.value, [0, 1], [0, height.value]), {
@@ -91,23 +100,22 @@ export const MessagesList = ({
     <Animated.View
       layout={LinearTransition.springify().damping(38).stiffness(240)}
       style={[tailwind.style('flex-1 min-h-10'), animatedFlashlistStyle]}>
-      <AnimatedFlashlist
-        layout={LinearTransition.springify().damping(38).stiffness(240)}
+      <FlashList
         onScroll={() => {
           if (!isFlashListReady) {
             setFlashListReady(true);
           }
         }}
         ref={typedMessageListRef}
-        inverted
         estimatedItemSize={100}
         showsVerticalScrollIndicator={false}
-        renderItem={handleRender}
+        renderItem={invertedRenderItem}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.1}
         data={messages}
         contentContainerStyle={tailwind.style('px-3')}
         keyboardShouldPersistTaps="handled"
+        style={{ transform: [{ scaleY: -1 }] }}
         keyExtractor={(item: { date: string } | Message) => {
           if ('date' in item) {
             return item.date.toString();

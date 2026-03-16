@@ -6,7 +6,7 @@ import { BottomSheetBackgroundProps, BottomSheetModal } from '@gorhom/bottom-she
 import { tailwind } from '@/theme';
 
 interface LabelBackdropProps extends BottomSheetBackgroundProps {
-  sheetRef: React.RefObject<BottomSheetModal>;
+  sheetRef: React.RefObject<BottomSheetModal | null>;
 }
 
 export const LabelBackdrop: React.FC<LabelBackdropProps> = props => {

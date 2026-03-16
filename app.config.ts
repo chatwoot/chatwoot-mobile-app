@@ -75,6 +75,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     owner: 'chatwoot',
     plugins: [
       'expo-font',
+      'expo-video',
       ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary'] }],
       [
         '@sentry/react-native/expo',
@@ -100,6 +101,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         },
       ],
       './with-ffmpeg-pod.js',
+      './with-modular-headers-fix.js',
+      './with-firebase-appdelegate.js',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },
   };

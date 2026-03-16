@@ -133,19 +133,35 @@ const conversationSlice = createSlice({
       .addCase(conversationActions.fetchPreviousMessages.pending, state => {
         state.isLoadingMessages = true;
       })
-      .addCase(conversationActions.fetchPreviousMessages.fulfilled, (state, { payload }) => {
-        const { messages, conversationId, meta } = payload;
+      .addCase(conversationActions.fetchPreviousMessages.fulfilled, (state, action) => {
+        const { messages, conversationId, meta: responseMeta } = action.payload;
         if (!state.entities[conversationId]) {
           return;
         }
         const conversation = state.entities[conversationId];
-        conversation.messages.unshift(...messages);
+        const { afterId } = action.meta.arg;
+
+        if (afterId) {
+          // Search navigation: merge messages, deduplicate by ID, and sort
+          // descending (newest first) to match the array order that normal
+          // pagination produces via unshift — lastMessageId() relies on this.
+          const existingIds = new Set(conversation.messages.map(m => m.id));
+          const newMessages = messages.filter(m => !existingIds.has(m.id));
+          conversation.messages.push(...newMessages);
+          conversation.messages.sort((a, b) => b.createdAt - a.createdAt);
+          // Reset so older-message pagination isn't blocked after search nav
+          state.isAllMessagesFetched = false;
+        } else {
+          // Normal pagination: prepend older messages
+          conversation.messages.unshift(...messages);
+          state.isAllMessagesFetched = messages.length < 20 || false;
+        }
+
         conversation.meta = {
           ...conversation.meta,
-          ...meta,
+          ...responseMeta,
         };
         state.isLoadingMessages = false;
-        state.isAllMessagesFetched = messages.length < 20 || false;
       })
       .addCase(conversationActions.fetchPreviousMessages.rejected, state => {
         state.isLoadingMessages = false;

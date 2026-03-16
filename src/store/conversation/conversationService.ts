@@ -75,14 +75,20 @@ export class ConversationService {
   }
 
   static async fetchPreviousMessages(payload: MessagesPayload): Promise<MessagesResponse> {
-    const { conversationId, beforeId } = payload;
+    const { conversationId, beforeId, afterId } = payload;
+
+    const params: Record<string, number> = {};
+    if (beforeId) {
+      params.before = beforeId;
+    }
+    if (afterId) {
+      params.after = afterId;
+    }
 
     const response = await apiService.get<MessagesAPIResponse>(
       `conversations/${conversationId}/messages`,
       {
-        params: {
-          before: beforeId,
-        },
+        params,
       },
     );
     const { meta, payload: messages } = response.data;

@@ -476,5 +476,22 @@
     "EXECUTION_SUCCESS": "Macro ejecutado correctamente",
     "EXECUTION_ERROR": "Macro execution failed",
     "NO_MACROS": "No se encontraron macros"
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Type 2 or more characters to search",
+    "HINT": "Buscar por Id de conversación, correo electrónico, número de teléfono, mensajes para mejores resultados de búsqueda.",
+    "ALL_RESULTS": "All Results",
+    "RECENT_SEARCHES": "Recent Searches",
+    "CLEAR_ALL": "Limpiar todo",
+    "VIEW_MORE": "Ver más",
+    "TAP_TO_RETRY": "Tap to retry",
+    "NO_RESULTS": "No {{sectionLabel}} found for query '{{searchQuery}}'",
+    "ERROR_CANCELLED": "Couldn't load results.",
+    "ERROR_GENERIC": "Something went wrong. Please try again.",
+    "SECTIONS": {
+      "CONTACTS": "Contactos",
+      "CONVERSATIONS": "Conversaciones",
+      "MESSAGES": "Messages"
+    }
   }
 }

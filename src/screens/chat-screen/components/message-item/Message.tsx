@@ -37,6 +37,7 @@ import { MenuOption, MessageMenu } from '../message-menu';
 import { tailwind } from '@/theme';
 import { Dimensions, View } from 'react-native';
 import { Avatar } from '@/components-next';
+import { useTargetMessageAnimation } from './useTargetMessageAnimation';
 
 // import { ImageMetadata } from '@/types';
 
@@ -45,6 +46,8 @@ type MessageComponentProps = {
   index: number;
   isEmailInbox: boolean;
   currentUserId: number;
+  isTargetMessage?: boolean;
+  isListPositioned?: boolean;
 };
 
 type MessageWrapperProps = {
@@ -59,6 +62,8 @@ type MessageWrapperProps = {
   getMenuOptions: (message: Message) => MenuOption[];
   variant: string;
   channel?: Channel;
+  isTargetMessage?: boolean;
+  isListPositioned?: boolean;
 };
 
 const variantTextMap = {
@@ -101,7 +106,15 @@ const MessageWrapper = ({
   getMenuOptions,
   variant,
   channel,
+  isTargetMessage = false,
+  isListPositioned = true,
 }: MessageWrapperProps) => {
+  const { zoomStyle, highlightStyle } = useTargetMessageAnimation({
+    isTargetMessage,
+    messageId: item.id,
+    isListPositioned,
+  });
+
   const flexOrientationClass = () => {
     const map = {
       [ORIENTATION.LEFT]: 'items-start',
@@ -157,8 +170,19 @@ const MessageWrapper = ({
                     : 'rounded-br-none'
                   : '',
               ),
+              zoomStyle,
             ]}>
             {children}
+            {/* Highlight overlay for target message */}
+            {isTargetMessage && (
+              <Animated.View
+                style={[
+                  tailwind.style('absolute inset-0 bg-white rounded-2xl'),
+                  highlightStyle,
+                ]}
+                pointerEvents="none"
+              />
+            )}
             {!shouldGroupWithPrevious && (
               <Animated.View
                 style={tailwind.style(
@@ -193,7 +217,7 @@ const MessageWrapper = ({
 export const MessageComponent = (props: MessageComponentProps) => {
   const dispatch = useAppDispatch();
   const { conversationId } = useChatWindowContext();
-  const { item, currentUserId, isEmailInbox } = props;
+  const { item, currentUserId, isEmailInbox, isTargetMessage = false, isListPositioned = true } = props;
   const {
     messageType,
     contentType,
@@ -404,7 +428,9 @@ export const MessageComponent = (props: MessageComponentProps) => {
         avatarInfo={avatarInfo()}
         getMenuOptions={getMenuOptions}
         variant={variant()}
-        channel={channel}>
+        channel={channel}
+        isTargetMessage={isTargetMessage}
+        isListPositioned={isListPositioned}>
         {messageContent}
       </MessageWrapper>
     );

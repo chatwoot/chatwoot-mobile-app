@@ -476,5 +476,22 @@
     "EXECUTION_SUCCESS": "ماکرو با موفقیت اجرا شد",
     "EXECUTION_ERROR": "Macro execution failed",
     "NO_MACROS": "هیچ ماکروی یافت نشد"
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Type 2 or more characters to search",
+    "HINT": "جستجو بر اساس شناسه گفتگو، ایمیل، شماره تلفن، پیام‌ها برای نتایج جستجوی بهتر.",
+    "ALL_RESULTS": "All Results",
+    "RECENT_SEARCHES": "Recent Searches",
+    "CLEAR_ALL": "حذف همه",
+    "VIEW_MORE": "View more",
+    "TAP_TO_RETRY": "Tap to retry",
+    "NO_RESULTS": "No {{sectionLabel}} found for query '{{searchQuery}}'",
+    "ERROR_CANCELLED": "Couldn't load results.",
+    "ERROR_GENERIC": "مشکلی پیش آمد. لطفا دوباره تلاش کنید.",
+    "SECTIONS": {
+      "CONTACTS": "مخاطبین",
+      "CONVERSATIONS": "گفتگوها",
+      "MESSAGES": "پیام‌ها"
+    }
   }
 }

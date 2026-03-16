@@ -476,5 +476,22 @@
     "EXECUTION_SUCCESS": "Macro eseguita correttamente",
     "EXECUTION_ERROR": "Esecuzione macro fallita",
     "NO_MACROS": "Nessuna macro trovata"
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Type 2 or more characters to search",
+    "HINT": "Search by conversation id, email, phone number, messages for better search results.",
+    "ALL_RESULTS": "All Results",
+    "RECENT_SEARCHES": "Recent Searches",
+    "CLEAR_ALL": "Rimuovi tutto",
+    "VIEW_MORE": "Mostra di più",
+    "TAP_TO_RETRY": "Tap to retry",
+    "NO_RESULTS": "No {{sectionLabel}} found for query '{{searchQuery}}'",
+    "ERROR_CANCELLED": "Couldn't load results.",
+    "ERROR_GENERIC": "Qualcosa è andato storto. Per favore, riprova.",
+    "SECTIONS": {
+      "CONTACTS": "Contatti",
+      "CONVERSATIONS": "Conversazioni",
+      "MESSAGES": "Messaggi"
+    }
   }
 }

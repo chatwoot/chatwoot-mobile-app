@@ -489,9 +489,9 @@
     "ERROR_CANCELLED": "Couldn't load results.",
     "ERROR_GENERIC": "Something went wrong. Please try again.",
     "SECTIONS": {
-      "CONTACTS": "Contacts",
+      "CONTACTS": "Contacte",
       "CONVERSATIONS": "Conversații",
-      "MESSAGES": "Messages"
+      "MESSAGES": "Mesaje"
     }
   }
 }

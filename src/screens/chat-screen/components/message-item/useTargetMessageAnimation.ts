@@ -11,41 +11,49 @@ import { useChatWindowContext } from '@/context';
 
 interface UseTargetMessageAnimationParams {
   isTargetMessage: boolean;
-  messageId: number;
   isListPositioned: boolean;
 }
 
 /**
- * Hook to handle zoom and highlight animation for target messages when navigating from search.
- * Animation triggers only after the list is positioned and visible, avoiding the race
- * condition where a fixed delay could fire while the list is still hidden.
+ * Hook to handle zoom and highlight animation for target messages.
+ * Triggers from both search navigation (contextMessageId) and quote tap (scrollToMessageId).
  */
 export function useTargetMessageAnimation({
   isTargetMessage,
-  messageId,
   isListPositioned,
 }: UseTargetMessageAnimationParams) {
   const messageScale = useSharedValue(1);
   const highlightOpacity = useSharedValue(0);
-  const { messageId: contextMessageId } = useChatWindowContext();
-  const lastAnimatedContextMessageIdRef = useRef<number | undefined>(undefined);
+  const { messageId: contextMessageId, scrollToMessageId } = useChatWindowContext();
+  const lastAnimatedTriggerRef = useRef<number | undefined>(undefined);
+
+  // Combine both triggers into one — scrollToMessageId takes priority
+  const activeTriggerId = scrollToMessageId ?? contextMessageId;
+  // For quote taps, skip the isListPositioned check since the list is already visible
+  const isQuoteTap = scrollToMessageId !== undefined;
+
+  // Reset animation guard when scrollToMessageId is cleared,
+  // so tapping the same quote again can re-trigger the animation
+  useEffect(() => {
+    if (scrollToMessageId === undefined) {
+      lastAnimatedTriggerRef.current = undefined;
+    }
+  }, [scrollToMessageId]);
 
   useEffect(() => {
-    if (!isTargetMessage || contextMessageId === undefined || !isListPositioned) {
+    if (!isTargetMessage || activeTriggerId === undefined || (!isListPositioned && !isQuoteTap)) {
       messageScale.value = 1;
       highlightOpacity.value = 0;
       return;
     }
 
-    // Only animate once per contextMessageId to avoid re-triggering on re-renders
-    if (lastAnimatedContextMessageIdRef.current === contextMessageId) return;
-    lastAnimatedContextMessageIdRef.current = contextMessageId;
+    // Only animate once per trigger to avoid re-triggering on re-renders
+    if (lastAnimatedTriggerRef.current === activeTriggerId) return;
+    lastAnimatedTriggerRef.current = activeTriggerId;
 
     messageScale.value = 1;
     highlightOpacity.value = 0;
 
-    // Short delay after list is visible to let the user register the message position
-    // before the highlight draws their attention
     messageScale.value = withDelay(
       150,
       withSequence(
@@ -63,7 +71,7 @@ export function useTargetMessageAnimation({
         withTiming(0, { duration: 300 }),
       ),
     );
-  }, [isTargetMessage, messageId, contextMessageId, isListPositioned, messageScale, highlightOpacity]);
+  }, [isTargetMessage, activeTriggerId, isListPositioned, isQuoteTap, messageScale, highlightOpacity]);
 
   const zoomStyle = useAnimatedStyle(() => {
     return {

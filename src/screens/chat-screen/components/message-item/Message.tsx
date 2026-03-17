@@ -114,7 +114,6 @@ const MessageWrapper = ({
 }: MessageWrapperProps) => {
   const { zoomStyle, highlightStyle } = useTargetMessageAnimation({
     isTargetMessage,
-    messageId: item.id,
     isListPositioned,
   });
 

@@ -491,7 +491,7 @@
     "SECTIONS": {
       "CONTACTS": "Contactos",
       "CONVERSATIONS": "Conversaciones",
-      "MESSAGES": "Messages"
+      "MESSAGES": "Mensajes"
     }
   }
 }

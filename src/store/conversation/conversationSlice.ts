@@ -225,14 +225,18 @@ const conversationSlice = createSlice({
         if (!conversation) {
           return;
         }
-        const message = conversation.messages.find(m => m.id === messageId);
-        if (message) {
+        const messageIndex = conversation.messages.findIndex(m => m.id === messageId);
+        if (messageIndex !== -1) {
+          const message = conversation.messages[messageIndex];
           const existing = message.contentAttributes ?? ({} as NonNullable<Message['contentAttributes']>);
-          message.contentAttributes = {
-            ...existing,
-            translations: {
-              ...existing.translations,
-              [targetLanguage]: content,
+          conversation.messages[messageIndex] = {
+            ...message,
+            contentAttributes: {
+              ...existing,
+              translations: {
+                ...existing.translations,
+                [targetLanguage]: content,
+              },
             },
           };
         }

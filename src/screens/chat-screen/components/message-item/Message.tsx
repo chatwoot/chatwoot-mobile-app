@@ -32,7 +32,7 @@ import {
 } from '@/constants';
 import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { CopyIcon, Trash } from '@/svg-icons';
+import { CopyIcon, Trash, TranslateIcon } from '@/svg-icons';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { tailwind } from '@/theme';
 import { Dimensions, View } from 'react-native';
@@ -275,6 +275,19 @@ export const MessageComponent = (props: MessageComponentProps) => {
     showToast({ message: i18n.t('CONVERSATION.DELETE_MESSAGE_SUCCESS') });
   };
 
+  const handleTranslateMessage = async (messageId: number) => {
+    hapticSelection?.();
+    const targetLanguage = i18n.locale?.split('_')[0] || 'en';
+    try {
+      await dispatch(
+        conversationActions.translateMessage({ conversationId, messageId, targetLanguage }),
+      ).unwrap();
+      showToast({ message: i18n.t('CONVERSATION.TRANSLATE_SUCCESS') });
+    } catch {
+      showToast({ message: i18n.t('CONVERSATION.TRANSLATE_ERROR') });
+    }
+  };
+
   const getMenuOptions = (message: Message): MenuOption[] => {
     const { messageType, content, attachments } = message;
     const hasText = !!content;
@@ -293,6 +306,16 @@ export const MessageComponent = (props: MessageComponentProps) => {
         handleOnPressMenuOption: () => handleCopyMessage(content),
         destructive: false,
       });
+
+      const hasTranslation = !!message.contentAttributes?.translations;
+      if (!hasTranslation) {
+        menuOptions.push({
+          title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.TRANSLATE'),
+          icon: <TranslateIcon />,
+          handleOnPressMenuOption: () => handleTranslateMessage(message.id),
+          destructive: false,
+        });
+      }
     }
 
     if (hasAttachments || hasText) {

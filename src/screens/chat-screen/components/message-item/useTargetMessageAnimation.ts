@@ -26,19 +26,24 @@ export function useTargetMessageAnimation({
   const highlightOpacity = useSharedValue(0);
   const { messageId: contextMessageId, scrollToMessageId } = useChatWindowContext();
   const lastAnimatedTriggerRef = useRef<number | undefined>(undefined);
+  const prevScrollToMessageIdRef = useRef<number | undefined>(undefined);
 
   // Combine both triggers into one — scrollToMessageId takes priority
   const activeTriggerId = scrollToMessageId ?? contextMessageId;
   // For quote taps, skip the isListPositioned check since the list is already visible
   const isQuoteTap = scrollToMessageId !== undefined;
 
-  // Reset animation guard when scrollToMessageId is cleared,
-  // so tapping the same quote again can re-trigger the animation
+  // When scrollToMessageId transitions from a value to undefined (i.e. quote scroll
+  // finished), restore the guard to contextMessageId so the search target doesn't
+  // re-animate, while ensuring a repeat quote tap can still trigger.
   useEffect(() => {
-    if (scrollToMessageId === undefined) {
-      lastAnimatedTriggerRef.current = undefined;
+    const wasSet = prevScrollToMessageIdRef.current !== undefined;
+    prevScrollToMessageIdRef.current = scrollToMessageId;
+
+    if (wasSet && scrollToMessageId === undefined) {
+      lastAnimatedTriggerRef.current = contextMessageId;
     }
-  }, [scrollToMessageId]);
+  }, [scrollToMessageId, contextMessageId]);
 
   useEffect(() => {
     if (!isTargetMessage || activeTriggerId === undefined || (!isListPositioned && !isQuoteTap)) {

@@ -66,6 +66,22 @@ import { getLastEmailInSelectedChat } from '@/store/conversation/conversationSel
 import { selectAssignableParticipantsByInboxId } from '@/store/assignable-agent/assignableAgentSelectors';
 import { AudioRecorder } from '../audio-recorder/AudioRecorder';
 import { VoiceRecordButton } from './buttons/VoiceRecordButton';
+import { CopilotButton } from './buttons/CopilotButton';
+import { CopilotMenu } from '../copilot/CopilotMenu';
+import { CopilotEditorSection } from '../copilot/CopilotEditorSection';
+import { CopilotInputBar } from '../copilot/CopilotInputBar';
+import { ToneSelectionSheet } from '../copilot/ToneSelectionSheet';
+import {
+  selectIsCopilotActive,
+  selectIsGenerating,
+  selectGeneratedContent,
+  selectOriginalContent,
+  selectFollowUpContext,
+  setOriginalContent,
+  resetCopilot,
+} from '@/store/copilot/copilotSlice';
+import { executeCopilotAction, sendCopilotFollowUp } from '@/store/copilot/copilotActions';
+import type { CopilotActionKey } from '@/types/Copilot';
 
 const SHEET_APPEAR_SPRING_CONFIG = {
   damping: 20,
@@ -102,7 +118,17 @@ const BottomSheetContent = () => {
     conversationId,
     isVoiceRecorderOpen,
     setIsVoiceRecorderOpen,
+    isCopilotMenuOpen,
+    setIsCopilotMenuOpen,
   } = useChatWindowContext();
+
+  // Copilot selectors
+  const isCopilotActive = useAppSelector(selectIsCopilotActive);
+  const isGenerating = useAppSelector(selectIsGenerating);
+  const generatedContent = useAppSelector(selectGeneratedContent);
+  const originalContent = useAppSelector(selectOriginalContent);
+  const followUpContext = useAppSelector(selectFollowUpContext);
+  const { toneSelectionSheetRef } = useRefsContext();
 
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const { inboxId, canReply } = conversation || {};
@@ -202,6 +228,49 @@ const BottomSheetContent = () => {
       Keyboard.dismiss();
       hapticSelection?.();
       setAddMenuOptionSheetState(true);
+    }
+  };
+
+  const handleToggleCopilotMenu = () => {
+    hapticSelection?.();
+    if (isCopilotMenuOpen) {
+      setIsCopilotMenuOpen(false);
+    } else {
+      Keyboard.dismiss();
+      setAddMenuOptionSheetState(false);
+      setIsCopilotMenuOpen(true);
+    }
+  };
+
+  const handleCopilotAction = (actionKey: CopilotActionKey) => {
+    setIsCopilotMenuOpen(false);
+    dispatch(setOriginalContent(messageContent));
+    dispatch(executeCopilotAction({ actionKey, content: messageContent, conversationId }));
+  };
+
+  const handleCopilotChangeTone = () => {
+    setIsCopilotMenuOpen(false);
+    toneSelectionSheetRef.current?.present();
+  };
+
+  const handleToneSelected = (tone: CopilotActionKey) => {
+    dispatch(setOriginalContent(messageContent));
+    dispatch(executeCopilotAction({ actionKey: tone, content: messageContent, conversationId }));
+  };
+
+  const handleCopilotAccept = () => {
+    dispatch(setMessageContent(generatedContent));
+    dispatch(resetCopilot());
+  };
+
+  const handleCopilotDiscard = () => {
+    dispatch(setMessageContent(originalContent));
+    dispatch(resetCopilot());
+  };
+
+  const handleCopilotFollowUp = (message: string) => {
+    if (followUpContext) {
+      dispatch(sendCopilotFollowUp({ followUpContext, message }));
     }
   };
 
@@ -412,39 +481,73 @@ const BottomSheetContent = () => {
 
         {typingText && <TypingIndicator typingText={typingText} />}
 
+        {isCopilotActive && (
+          <CopilotEditorSection
+            isGenerating={isGenerating}
+            generatedContent={generatedContent}
+            originalContent={originalContent}
+            onAccept={handleCopilotAccept}
+            onDiscard={handleCopilotDiscard}
+          />
+        )}
+
         {isVoiceRecorderOpen ? (
           <AudioRecorder onRecordingComplete={onRecordingComplete} audioFormat={audioFormat()} />
         ) : null}
         {!isVoiceRecorderOpen ? (
           <Animated.View style={tailwind.style('flex flex-row px-1 items-end z-20 relative')}>
-            {attachmentsLength === 0 && shouldShowFileUpload && (
+            {!isCopilotActive && attachmentsLength === 0 && shouldShowFileUpload && (
               <AddCommandButton
                 onPress={handleShowAddMenuOption}
                 derivedAddMenuOptionStateValue={derivedAddMenuOptionStateValue}
               />
             )}
-            <MessageTextInput
-              maxLength={maxLength()}
-              replyEditorMode={replyEditorMode}
-              selectedCannedResponse={selectedCannedResponse}
-              agents={agents as Agent[]}
-              messageContent={messageContent}
+            <CopilotButton
+              isActive={isCopilotMenuOpen || isCopilotActive}
+              onPress={isCopilotActive ? undefined : handleToggleCopilotMenu}
+              disabled={isCopilotActive}
             />
-            {(messageContent.length > 0 || attachmentsLength > 0) && (
-              <SendMessageButton onPress={() => confirmOnSendReply(null)} />
+            {isCopilotActive ? (
+              <CopilotInputBar
+                isGenerating={isGenerating}
+                onSendFollowUp={handleCopilotFollowUp}
+              />
+            ) : (
+              <>
+                <MessageTextInput
+                  maxLength={maxLength()}
+                  replyEditorMode={replyEditorMode}
+                  selectedCannedResponse={selectedCannedResponse}
+                  agents={agents as Agent[]}
+                  messageContent={messageContent}
+                />
+                {(messageContent.length > 0 || attachmentsLength > 0) && (
+                  <SendMessageButton onPress={() => confirmOnSendReply(null)} />
+                )}
+                {messageContent.length === 0 && attachmentsLength === 0 && shouldShowFileUpload ? (
+                  <VoiceRecordButton onPress={onPressVoiceRecordIcon} />
+                ) : null}
+              </>
             )}
-            {messageContent.length === 0 && attachmentsLength === 0 && shouldShowFileUpload ? (
-              <VoiceRecordButton onPress={onPressVoiceRecordIcon} />
-            ) : null}
+            {isCopilotMenuOpen && (
+              <CopilotMenu
+                editorContent={messageContent}
+                editorMode={replyEditorMode}
+                onSelectAction={handleCopilotAction}
+                onSelectChangeTone={handleCopilotChangeTone}
+              />
+            )}
           </Animated.View>
         ) : null}
       </Animated.View>
 
-      {isAddMenuOptionSheetOpen ? (
+      {!isCopilotActive && isAddMenuOptionSheetOpen ? (
         <CommandOptionsMenu />
-      ) : attachmentsLength > 0 ? (
+      ) : !isCopilotActive && attachmentsLength > 0 ? (
         <AttachedMedia />
       ) : null}
+
+      <ToneSelectionSheet ref={toneSelectionSheetRef} onSelectTone={handleToneSelected} />
     </AnimatedKeyboardStickyView>
   );
 };

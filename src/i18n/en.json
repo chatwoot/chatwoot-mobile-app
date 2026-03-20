@@ -494,5 +494,21 @@
       "CONVERSATIONS": "Conversations",
       "MESSAGES": "Messages"
     }
+  },
+  "COPILOT": {
+    "IMPROVE_REPLY": "Improve reply",
+    "CHANGE_TONE": "Change tone",
+    "FIX_GRAMMAR": "Fix grammar",
+    "SUGGEST_REPLY": "Suggest reply",
+    "SUMMARIZE": "Summarize conversation",
+    "THINKING": "Copilot is thinking...",
+    "FOLLOW_UP_PLACEHOLDER": "Send additional prompts and follow-up",
+    "SELECT_TONE": "Select tone",
+    "TONE_PROFESSIONAL": "Professional",
+    "TONE_FRIENDLY": "Friendly",
+    "TONE_STRAIGHTFORWARD": "Straightforward",
+    "TONE_CASUAL": "Casual",
+    "TONE_CONFIDENT": "Confident",
+    "GENERATION_FAILED": "Failed to generate content. Please try again."
   }
 }

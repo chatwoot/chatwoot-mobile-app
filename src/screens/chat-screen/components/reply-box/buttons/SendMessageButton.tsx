@@ -11,20 +11,27 @@ import { SendMessageButtonProps } from '../types';
 import { sendIconEnterAnimation, sendIconExitAnimation } from '@/utils/customAnimations';
 
 export const SendMessageButton = (props: SendMessageButtonProps) => {
+  const { disabled, ...restProps } = props;
   const { animatedStyle, handlers } = useScaleAnimation();
   const isPrivateMessage = useAppSelector(selectIsPrivateMessage);
 
+  const getBgColor = () => {
+    if (disabled) return 'bg-gray-400';
+    if (isPrivateMessage) return 'bg-amber-700';
+    return 'bg-gray-950';
+  };
+
   return (
-    <Pressable {...props} {...handlers}>
+    <Pressable {...restProps} disabled={disabled} {...(disabled ? {} : handlers)}>
       <Animated.View
         layout={LinearTransition.springify().damping(20).stiffness(180)}
         entering={sendIconEnterAnimation}
         exiting={sendIconExitAnimation}
-        style={[tailwind.style('flex items-center justify-center h-10 w-10'), animatedStyle]}>
+        style={[tailwind.style('flex items-center justify-center h-10 w-10'), disabled ? {} : animatedStyle]}>
         <Animated.View
           style={tailwind.style(
-            'flex items-center justify-center h-7 w-7 rounded-full bg-gray-950',
-            isPrivateMessage ? 'bg-amber-700' : 'bg-gray-950',
+            'flex items-center justify-center h-7 w-7 rounded-full',
+            getBgColor(),
           )}>
           <Icon icon={<SendIcon />} size={16} />
         </Animated.View>

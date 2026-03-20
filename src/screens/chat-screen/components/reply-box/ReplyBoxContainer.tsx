@@ -142,6 +142,7 @@ const BottomSheetContent = () => {
   const [bccEmails, setBCCEmails] = useState('');
   const [toEmails, setToEmails] = useState('');
   const [selectedCannedResponse, setSelectedCannedResponse] = useState<string | null>(null);
+  const [copilotFollowUpText, setCopilotFollowUpText] = useState('');
 
   const typingUsers = useAppSelector(selectTypingUsersByConversationId(conversationId));
   const typingText = useMemo(() => getTypingUsersText({ users: typingUsers }), [typingUsers]);
@@ -269,8 +270,9 @@ const BottomSheetContent = () => {
   };
 
   const handleCopilotFollowUp = (message: string) => {
-    if (followUpContext) {
+    if (followUpContext && message.trim().length > 0) {
       dispatch(sendCopilotFollowUp({ followUpContext, message }));
+      setCopilotFollowUpText('');
     }
   };
 
@@ -508,10 +510,17 @@ const BottomSheetContent = () => {
               disabled={isCopilotActive}
             />
             {isCopilotActive ? (
-              <CopilotInputBar
-                isGenerating={isGenerating}
-                onSendFollowUp={handleCopilotFollowUp}
-              />
+              <>
+                <CopilotInputBar
+                  isGenerating={isGenerating}
+                  onSendFollowUp={handleCopilotFollowUp}
+                  onFollowUpTextChange={setCopilotFollowUpText}
+                />
+                <SendMessageButton
+                  onPress={() => handleCopilotFollowUp(copilotFollowUpText)}
+                  disabled={isGenerating || copilotFollowUpText.trim().length === 0}
+                />
+              </>
             ) : (
               <>
                 <MessageTextInput
@@ -529,19 +538,18 @@ const BottomSheetContent = () => {
                 ) : null}
               </>
             )}
-            {isCopilotMenuOpen && (
-              <CopilotMenu
-                editorContent={messageContent}
-                editorMode={replyEditorMode}
-                onSelectAction={handleCopilotAction}
-                onSelectChangeTone={handleCopilotChangeTone}
-              />
-            )}
           </Animated.View>
         ) : null}
       </Animated.View>
 
-      {!isCopilotActive && isAddMenuOptionSheetOpen ? (
+      {isCopilotMenuOpen ? (
+        <CopilotMenu
+          editorContent={messageContent}
+          editorMode={replyEditorMode}
+          onSelectAction={handleCopilotAction}
+          onSelectChangeTone={handleCopilotChangeTone}
+        />
+      ) : !isCopilotActive && isAddMenuOptionSheetOpen ? (
         <CommandOptionsMenu />
       ) : !isCopilotActive && attachmentsLength > 0 ? (
         <AttachedMedia />

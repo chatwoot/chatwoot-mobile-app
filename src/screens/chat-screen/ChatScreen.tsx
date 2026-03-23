@@ -33,7 +33,6 @@ import i18n from '@/i18n';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { MacrosList } from './components/macros/MacrosList';
 import { macroActions } from '@/store/macro/macroActions';
-import { LightBoxProvider } from '@alantoa/lightbox';
 
 export const ChatWindow = (props: ChatScreenProps) => {
   return (
@@ -137,13 +136,12 @@ const ChatScreen = (props: ChatScreenProps) => {
   };
 
   if (conversation) {
+    const { messageId } = props.route.params;
     return (
       <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
-        <LightBoxProvider>
-          <ChatWindowProvider conversationId={conversationId}>
-            <ChatScreenWrapper {...props} />
-          </ChatWindowProvider>
-        </LightBoxProvider>
+        <ChatWindowProvider conversationId={conversationId} messageId={messageId}>
+          <ChatScreenWrapper {...props} />
+        </ChatWindowProvider>
         <ActionBottomSheet />
       </SafeAreaView>
     );

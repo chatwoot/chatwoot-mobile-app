@@ -19,7 +19,7 @@ export class ContactService {
     payload: UpdateContactLabelsPayload,
   ): Promise<ContactLabelsAPIResponse> {
     const { contactId, labels } = payload;
-    const response = await apiService.put<ContactLabelsAPIResponse>(
+    const response = await apiService.post<ContactLabelsAPIResponse>(
       `contacts/${contactId}/labels`,
       { labels },
     );

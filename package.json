@@ -1,6 +1,7 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "4.3.0",
+  "version": "4.4.0",
+  "packageManager": "pnpm@10.11.0",
   "scripts": {
     "start": "expo start --dev-client",
     "start:production": "expo start --no-dev --minify",
@@ -33,7 +34,6 @@
     "adb:connect": "adb reverse tcp:9090 tcp:9090"
   },
   "dependencies": {
-    "@alantoa/lightbox": "^0.3.1",
     "@chatwoot/markdown-to-txt": "^2.0.4",
     "@chatwoot/react-native-widget": "^0.0.21",
     "@chatwoot/utils": "^0.0.33",
@@ -55,12 +55,12 @@
     "@sentry/react-native": "^6.10.0",
     "@shopify/flash-list": "^1.7.3",
     "@types/lodash": "^4.17.9",
-    "axios": "^1.6.4",
+    "axios": "^1.13.5",
     "camelcase": "^8.0.0",
     "camelcase-keys": "^7.0.2",
     "cross-env": "^7.0.3",
     "date-fns": "2.21.1",
-    "diff": "5.0.0",
+    "diff": "8.0.3",
     "expo": "~52.0.46",
     "expo-application": "~6.0.2",
     "expo-auth-session": "~6.0.3",
@@ -88,6 +88,7 @@
     "react-native-file-viewer": "^2.1.5",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.20.2",
+    "react-native-image-modal": "^3.0.14",
     "react-native-image-picker": "^7.1.2",
     "react-native-ios-context-menu": "^3.1.0",
     "react-native-ios-utilities": "^5.1.1",
@@ -117,9 +118,9 @@
     "@babel/core": "^7.20.0",
     "@react-native-community/datetimepicker": "^8.2.0",
     "@react-native-community/slider": "^4.5.5",
-    "@storybook/addon-ondevice-actions": "^8.5.2",
-    "@storybook/addon-ondevice-controls": "^8.5.2",
-    "@storybook/react-native": "^8.5.2",
+    "@storybook/addon-ondevice-actions": "^8.6.2",
+    "@storybook/addon-ondevice-controls": "^8.6.2",
+    "@storybook/react-native": "^8.6.2",
     "@types/jest": "^29.5.12",
     "@types/react": "~18.3.18",
     "@welldone-software/why-did-you-render": "^10.0.1",
@@ -179,6 +180,20 @@
   "pnpm": {
     "patchedDependencies": {
       "ffmpeg-kit-react-native@6.0.2": "patches/ffmpeg-kit-react-native.patch"
+    },
+    "overrides": {
+      "form-data": "^4.0.4",
+      "node-forge": "^1.3.2",
+      "glob": "^10.5.0",
+      "markdown-it": "^12.3.2",
+      "js-yaml": "^4.1.1",
+      "storybook": "8.6.17",
+      "@expo/cli>minimatch": "3.1.4",
+      "@expo/metro-config>minimatch": "3.1.4",
+      "@expo/fingerprint>minimatch": "3.1.4",
+      "@typescript-eslint/typescript-estree>minimatch": "9.0.7",
+      "glob>minimatch": "9.0.7",
+      "tar": "7.5.11"
     }
   }
 }

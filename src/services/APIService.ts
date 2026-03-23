@@ -71,6 +71,9 @@ class APIService {
     this.api.interceptors.response.use(
       (response: AxiosResponse) => response,
       async (error: AxiosError) => {
+        if (axios.isCancel(error)) {
+          return Promise.reject(error);
+        }
         if (error.response?.status === 401) {
           const store = getStore();
           store.dispatch({ type: 'auth/logout' });

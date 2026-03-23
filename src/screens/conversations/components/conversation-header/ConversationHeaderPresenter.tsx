@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, Text, ViewStyle } from 'react-native';
 import Animated, { AnimatedStyle } from 'react-native-reanimated';
 import { Icon } from '@/components-next/common';
-import { CheckedIcon, CloseIcon, FilterIcon, UncheckedIcon } from '@/svg-icons';
+import { CheckedIcon, CloseIcon, FilterIcon, UncheckedIcon, SearchIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { useScaleAnimation } from '@/utils';
@@ -56,8 +56,10 @@ const LeftSection = ({ currentState, isSelectedAll, onLeftIconPress }: LeftSecti
   if (currentState !== 'Select') {
     return (
       <Animated.View style={tailwind.style('flex-1 items-start')}>
-        <Pressable hitSlop={16}>
-          <Animated.View exiting={exiting} entering={entering} />
+        <Pressable onPress={onLeftIconPress} hitSlop={16}>
+          <Animated.View exiting={exiting} entering={entering}>
+            <Icon size={24} icon={<SearchIcon stroke={tailwind.color('text-gray-800')} />} />
+          </Animated.View>
         </Pressable>
       </Animated.View>
     );

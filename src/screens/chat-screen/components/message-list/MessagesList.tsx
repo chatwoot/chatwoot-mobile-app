@@ -45,6 +45,9 @@ type MessagesListPresentationProps = {
   onEndReached: () => void;
   isEmailInbox: boolean;
   currentUserId: number;
+  targetMessageId?: number;
+  initialScrollIndex?: number;
+  isListPositioned?: boolean;
 };
 
 export const MessagesList = ({
@@ -54,6 +57,9 @@ export const MessagesList = ({
   onEndReached,
   isEmailInbox,
   currentUserId,
+  targetMessageId,
+  initialScrollIndex,
+  isListPositioned = true,
 }: MessagesListPresentationProps) => {
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
@@ -66,12 +72,16 @@ export const MessagesList = ({
       return <DateSection item={item} />;
     }
 
+    const isTarget = targetMessageId !== undefined && targetMessageId === item.id;
+
     return (
       <MessageComponent
         item={item}
         index={index}
         isEmailInbox={isEmailInbox}
         currentUserId={currentUserId}
+        isTargetMessage={isTarget}
+        isListPositioned={isListPositioned}
       />
     );
     // TODO: Deprecate this after the new message item is ready
@@ -93,14 +103,22 @@ export const MessagesList = ({
       style={[tailwind.style('flex-1 min-h-10'), animatedFlashlistStyle]}>
       <AnimatedFlashlist
         layout={LinearTransition.springify().damping(38).stiffness(240)}
+        onLayout={() => {
+          // For search navigation, mark ready on layout since there's no user scroll
+          if (targetMessageId && !isFlashListReady) {
+            setFlashListReady(true);
+          }
+        }}
         onScroll={() => {
-          if (!isFlashListReady) {
+          // For normal chat, mark ready on first scroll (preserves existing behavior)
+          if (!targetMessageId && !isFlashListReady) {
             setFlashListReady(true);
           }
         }}
         ref={typedMessageListRef}
         inverted
         estimatedItemSize={100}
+        {...(initialScrollIndex !== undefined ? { initialScrollIndex } : {})}
         showsVerticalScrollIndicator={false}
         renderItem={handleRender}
         onEndReached={onEndReached}

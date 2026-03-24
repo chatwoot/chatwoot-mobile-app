@@ -57,6 +57,7 @@ export class CopilotService {
       {
         follow_up_context: payload.followUpContext,
         message: payload.message,
+        conversation_display_id: payload.conversationId,
       },
       { signal },
     );

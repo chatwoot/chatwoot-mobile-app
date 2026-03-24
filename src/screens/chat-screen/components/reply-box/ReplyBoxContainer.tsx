@@ -272,7 +272,7 @@ const BottomSheetContent = () => {
 
   const handleCopilotFollowUp = (message: string) => {
     if (followUpContext && message.trim().length > 0) {
-      dispatch(sendCopilotFollowUp({ followUpContext, message }));
+      dispatch(sendCopilotFollowUp({ followUpContext, message, conversationId }));
       setCopilotFollowUpText('');
     }
   };

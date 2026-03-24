@@ -14,6 +14,7 @@ interface ExecuteCopilotActionPayload {
 interface SendCopilotFollowUpPayload {
   followUpContext: Record<string, unknown>;
   message: string;
+  conversationId: number;
 }
 
 export const executeCopilotAction = createAsyncThunk<

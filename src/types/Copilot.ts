@@ -35,6 +35,7 @@ export type CopilotReplySuggestionPayload = {
 export type CopilotFollowUpPayload = {
   followUpContext: Record<string, unknown>;
   message: string;
+  conversationId: number;
 };
 
 export type CopilotTaskResponse = {

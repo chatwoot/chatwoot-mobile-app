@@ -17,7 +17,7 @@ export class CopilotService {
       {
         content: payload.content,
         operation: payload.operation,
-        conversation_id: payload.conversationId,
+        conversation_display_id: payload.conversationId,
       },
       { signal },
     );
@@ -30,7 +30,7 @@ export class CopilotService {
   ): Promise<CopilotTaskResponse> {
     const response = await apiService.post<CopilotTaskResponse>(
       'captain/tasks/summarize',
-      { conversation_id: payload.conversationId },
+      { conversation_display_id: payload.conversationId },
       { signal },
     );
     return response.data;
@@ -42,7 +42,7 @@ export class CopilotService {
   ): Promise<CopilotTaskResponse> {
     const response = await apiService.post<CopilotTaskResponse>(
       'captain/tasks/reply_suggestion',
-      { conversation_id: payload.conversationId },
+      { conversation_display_id: payload.conversationId },
       { signal },
     );
     return response.data;

@@ -29,26 +29,32 @@ export const CopilotInputBar = ({ isGenerating, onSendFollowUp, onFollowUpTextCh
     <Animated.View
       entering={FadeIn.duration(200)}
       exiting={FadeOut.duration(150)}
-      style={tailwind.style('flex-1 flex-row items-center bg-[#E0E0FD] rounded-[20px] h-9 pl-3 pr-1')}>
+      style={tailwind.style('flex-1')}>
       {isGenerating ? (
-        <Text
-          style={tailwind.style(
-            'flex-1 text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-[#4747C2]',
-          )}>
-          {i18n.t('COPILOT.THINKING')}
-        </Text>
+        <Animated.View
+          style={tailwind.style('bg-[#E0E0FD] rounded-[20px] h-9 px-3 py-4 justify-center')}>
+          <Text
+            style={tailwind.style(
+              'text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-[#4747C2]',
+            )}>
+            {i18n.t('COPILOT.THINKING')}
+          </Text>
+        </Animated.View>
       ) : (
         <TextInput
           value={followUpText}
           onChangeText={handleChangeText}
           placeholder={i18n.t('COPILOT.FOLLOW_UP_PLACEHOLDER')}
           placeholderTextColor="#4747C2"
+          multiline
           style={tailwind.style(
-            'flex-1 text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-[#4747C2] p-0',
+            'bg-[#E0E0FD] rounded-[20px] min-h-9 max-h-[76px] px-3 py-4',
+            'text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-[#4747C2]',
           )}
           editable={!isGenerating}
           onSubmitEditing={handleSend}
           returnKeyType="send"
+          scrollEnabled
         />
       )}
     </Animated.View>

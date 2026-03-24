@@ -57,8 +57,7 @@ export const CopilotEditorSection = ({
         style={tailwind.style('flex-1 max-h-[120px] border border-blackA-A3 rounded-2xl px-3 py-2')}>
         <Text
           style={tailwind.style(
-            'text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-gray-950',
-            showActions ? 'underline decoration-[#9B9EF0]' : '',
+            'text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-slate-950',
           )}>
           {displayText}
         </Text>

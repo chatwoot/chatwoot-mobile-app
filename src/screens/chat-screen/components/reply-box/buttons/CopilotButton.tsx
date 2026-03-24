@@ -23,7 +23,7 @@ export const CopilotButton = ({ isActive = false, ...props }: CopilotButtonProps
         {...handlers}>
         <Animated.View
           style={tailwind.style('flex items-center justify-center h-10 w-10 rounded-2xl')}>
-          <Icon icon={<SparkleIcon stroke={isActive ? '#5B5BD6' : '#171717'} />} size={24} />
+          <Icon icon={<SparkleIcon filled={isActive} />} size={24} />
         </Animated.View>
       </Pressable>
     </Animated.View>

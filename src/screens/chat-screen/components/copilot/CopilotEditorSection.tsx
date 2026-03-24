@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, ScrollView, Text } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { Icon } from '@/components-next/common';
-import { CloseIcon, TickIcon } from '@/svg-icons';
+import { CopilotDiscardIcon, CopilotAcceptIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 
@@ -48,22 +48,13 @@ export const CopilotEditorSection = ({
         <Pressable
           onPress={handleDiscard}
           style={tailwind.style('flex items-center justify-center h-10 w-10')}>
-          <Icon icon={<CloseIcon stroke="#171717" />} size={16} />
+          <Icon icon={<CopilotDiscardIcon />} size={28} />
         </Pressable>
       ) : (
         <Animated.View style={tailwind.style('w-10')} />
       )}
       <ScrollView
-        style={[
-          tailwind.style('flex-1 max-h-[120px] rounded-2xl'),
-          {
-            borderWidth: 1,
-            borderColor: 'rgba(0, 0, 0, 0.11)',
-            borderRadius: 16,
-            paddingHorizontal: 12,
-            paddingVertical: 8,
-          },
-        ]}>
+        style={tailwind.style('flex-1 max-h-[120px] border border-blackA-A3 rounded-2xl px-3 py-2')}>
         <Text
           style={tailwind.style(
             'text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-gray-950',
@@ -76,7 +67,7 @@ export const CopilotEditorSection = ({
         <Pressable
           onPress={handleAccept}
           style={tailwind.style('flex items-center justify-center h-10 w-10')}>
-          <Icon icon={<TickIcon stroke="#46A758" />} size={20} />
+          <Icon icon={<CopilotAcceptIcon />} size={28} />
         </Pressable>
       ) : (
         <Animated.View style={tailwind.style('w-10')} />

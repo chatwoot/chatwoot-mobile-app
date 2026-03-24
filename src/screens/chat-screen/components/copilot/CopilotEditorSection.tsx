@@ -43,18 +43,27 @@ export const CopilotEditorSection = ({
     <Animated.View
       entering={FadeIn.duration(200)}
       exiting={FadeOut.duration(150)}
-      style={tailwind.style('flex-row items-start mx-[50px] mb-2')}>
-      {showActions && (
+      style={tailwind.style('flex-row items-start px-1 mb-2')}>
+      {showActions ? (
         <Pressable
           onPress={handleDiscard}
           style={tailwind.style('flex items-center justify-center h-10 w-10')}>
           <Icon icon={<CloseIcon stroke="#171717" />} size={16} />
         </Pressable>
+      ) : (
+        <Animated.View style={tailwind.style('w-10')} />
       )}
       <ScrollView
-        style={tailwind.style(
-          'flex-1 border border-blackA-A3 rounded-2xl px-3 py-2 max-h-[120px]',
-        )}>
+        style={[
+          tailwind.style('flex-1 max-h-[120px] rounded-2xl'),
+          {
+            borderWidth: 1,
+            borderColor: 'rgba(0, 0, 0, 0.11)',
+            borderRadius: 16,
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+          },
+        ]}>
         <Text
           style={tailwind.style(
             'text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-gray-950',
@@ -63,12 +72,14 @@ export const CopilotEditorSection = ({
           {displayText}
         </Text>
       </ScrollView>
-      {showActions && (
+      {showActions ? (
         <Pressable
           onPress={handleAccept}
           style={tailwind.style('flex items-center justify-center h-10 w-10')}>
           <Icon icon={<TickIcon stroke="#46A758" />} size={20} />
         </Pressable>
+      ) : (
+        <Animated.View style={tailwind.style('w-10')} />
       )}
     </Animated.View>
   );

@@ -32,7 +32,7 @@ export const CopilotInputBar = ({ isGenerating, onSendFollowUp, onFollowUpTextCh
       style={tailwind.style('flex-1')}>
       {isGenerating ? (
         <Animated.View
-          style={tailwind.style('bg-[#E0E0FD] rounded-[20px] h-9 px-3 justify-center')}>
+          style={tailwind.style('bg-[#E0E0FD] rounded-[20px] px-3 py-2 justify-center')}>
           <Text
             style={tailwind.style(
               'text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-[#4747C2]',
@@ -48,7 +48,7 @@ export const CopilotInputBar = ({ isGenerating, onSendFollowUp, onFollowUpTextCh
           placeholderTextColor="#4747C2"
           multiline
           style={tailwind.style(
-            'bg-[#E0E0FD] rounded-[20px] min-h-9 max-h-[76px] px-3 py-2',
+            'bg-[#E0E0FD] rounded-[20px] max-h-[76px] px-3 py-2',
             'text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-[#4747C2]',
           )}
           editable={!isGenerating}

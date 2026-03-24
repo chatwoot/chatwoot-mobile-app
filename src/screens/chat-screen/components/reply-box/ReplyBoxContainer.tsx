@@ -251,11 +251,11 @@ const BottomSheetContent = () => {
   };
 
   const handleCopilotChangeTone = () => {
-    setIsCopilotMenuOpen(false);
     toneSelectionSheetRef.current?.present();
   };
 
   const handleToneSelected = (tone: CopilotActionKey) => {
+    setIsCopilotMenuOpen(false);
     dispatch(setOriginalContent(messageContent));
     dispatch(executeCopilotAction({ actionKey: tone, content: messageContent, conversationId }));
   };

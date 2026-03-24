@@ -228,6 +228,7 @@ const BottomSheetContent = () => {
     } else {
       Keyboard.dismiss();
       hapticSelection?.();
+      setIsCopilotMenuOpen(false);
       setAddMenuOptionSheetState(true);
     }
   };
@@ -538,18 +539,19 @@ const BottomSheetContent = () => {
                 ) : null}
               </>
             )}
+            {isCopilotMenuOpen && (
+              <CopilotMenu
+                editorContent={messageContent}
+                editorMode={replyEditorMode}
+                onSelectAction={handleCopilotAction}
+                onSelectChangeTone={handleCopilotChangeTone}
+              />
+            )}
           </Animated.View>
         ) : null}
       </Animated.View>
 
-      {isCopilotMenuOpen ? (
-        <CopilotMenu
-          editorContent={messageContent}
-          editorMode={replyEditorMode}
-          onSelectAction={handleCopilotAction}
-          onSelectChangeTone={handleCopilotChangeTone}
-        />
-      ) : !isCopilotActive && isAddMenuOptionSheetOpen ? (
+      {!isCopilotActive && isAddMenuOptionSheetOpen ? (
         <CommandOptionsMenu />
       ) : !isCopilotActive && attachmentsLength > 0 ? (
         <AttachedMedia />

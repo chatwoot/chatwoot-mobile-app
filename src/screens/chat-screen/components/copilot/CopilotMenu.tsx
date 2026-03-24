@@ -1,7 +1,6 @@
 import React from 'react';
-import { Platform } from 'react-native';
-import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View } from 'react-native';
+import Animated, { EntryAnimationsValues, withSpring } from 'react-native-reanimated';
 import {
   ImproveReplyIcon,
   ChangeToneIcon,
@@ -31,8 +30,6 @@ export const CopilotMenu = ({
 }: CopilotMenuProps) => {
   const hasContent = editorContent.trim().length > 0;
   const isReplyMode = editorMode === REPLY_EDITOR_MODES.REPLY;
-  const { bottom } = useSafeAreaInsets();
-  const isAndroid = Platform.OS === 'android';
 
   const menuItems = [
     hasContent && {
@@ -62,19 +59,38 @@ export const CopilotMenu = ({
     },
   ].filter(Boolean) as { icon: React.ReactNode; label: string; onPress: () => void }[];
 
-  const itemHeight = 48;
-  const containerHeight = isAndroid
-    ? menuItems.length * itemHeight + (bottom === 0 ? 16 : bottom)
-    : menuItems.length * itemHeight + (bottom === 0 ? 16 : bottom);
-
   return (
-    <Animated.View
-      entering={SlideInDown.springify().damping(38).stiffness(240)}
-      exiting={SlideOutDown.springify().damping(38).stiffness(240)}
-      style={tailwind.style('mx-1 pt-2 items-start', `h-[${containerHeight}px]`)}>
-      {menuItems.map(item => (
-        <CopilotMenuItem key={item.label} icon={item.icon} label={item.label} onPress={item.onPress} />
-      ))}
-    </Animated.View>
+    <View
+      style={tailwind.style(
+        'absolute bottom-full left-0 right-0 overflow-hidden',
+      )}>
+      <Animated.View
+        entering={(values: EntryAnimationsValues) => {
+          'worklet';
+          // Start pushed down by own height (hidden below clip), spring up into view
+          return {
+            initialValues: {
+              transform: [{ translateY: values.targetHeight }],
+            },
+            animations: {
+              transform: [
+                { translateY: withSpring(0, { damping: 38, stiffness: 240 }) },
+              ],
+            },
+          };
+        }}
+        style={tailwind.style(
+          'bg-white border-t border-t-blackA-A3 mx-1 pt-2 items-start',
+        )}>
+        {menuItems.map(item => (
+          <CopilotMenuItem
+            key={item.label}
+            icon={item.icon}
+            label={item.label}
+            onPress={item.onPress}
+          />
+        ))}
+      </Animated.View>
+    </View>
   );
 };

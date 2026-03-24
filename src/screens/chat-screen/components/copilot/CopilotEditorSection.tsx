@@ -25,6 +25,10 @@ export const CopilotEditorSection = ({
   const displayText = isGenerating ? originalContent : generatedContent;
   const showActions = !isGenerating && generatedContent.length > 0;
 
+  if (isGenerating && originalContent.trim().length === 0) {
+    return null;
+  }
+
   const handleAccept = () => {
     hapticSelection?.();
     onAccept();

@@ -37,6 +37,13 @@ const ThinkingText = () => {
 export const CopilotInputBar = ({ isGenerating, onSendFollowUp, onFollowUpTextChange }: CopilotInputBarProps) => {
   const [followUpText, setFollowUpText] = useState('');
 
+  useEffect(() => {
+    if (isGenerating) {
+      setFollowUpText('');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isGenerating]);
+
   const handleChangeText = (text: string) => {
     setFollowUpText(text);
     onFollowUpTextChange?.(text);

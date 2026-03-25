@@ -40,6 +40,7 @@ export const CopilotInputBar = ({ isGenerating, onSendFollowUp, onFollowUpTextCh
   useEffect(() => {
     if (isGenerating) {
       setFollowUpText('');
+      onFollowUpTextChange?.('');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isGenerating]);

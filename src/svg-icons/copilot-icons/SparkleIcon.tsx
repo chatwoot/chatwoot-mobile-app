@@ -1,10 +1,18 @@
 import React from 'react';
+import { View } from 'react-native';
 import { Path, Svg } from 'react-native-svg';
+import Animated, { type AnimatedStyle } from 'react-native-reanimated';
+import type { ViewStyle } from 'react-native';
 
 import { IconProps } from '../../types';
 
 type SparkleIconProps = IconProps & {
   filled?: boolean;
+};
+
+type AnimatedSparkleIconProps = {
+  smallStarStyle: AnimatedStyle<ViewStyle>;
+  largeStarStyle: AnimatedStyle<ViewStyle>;
 };
 
 const PATHS = {
@@ -57,5 +65,38 @@ export const SparkleIcon = ({ stroke = 'black', filled = false }: SparkleIconPro
         strokeLinejoin="round"
       />
     </Svg>
+  );
+};
+
+export const AnimatedSparkleIcon = ({ smallStarStyle, largeStarStyle }: AnimatedSparkleIconProps): JSX.Element => {
+  return (
+    <View style={{ width: 24, height: 24 }}>
+      {/* Large star layer */}
+      <Animated.View style={[{ position: 'absolute', width: 24, height: 24 }, largeStarStyle]}>
+        <Svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
+          <Path
+            d={PATHS.large}
+            fill="#5B5BD6"
+            stroke="#5B5BD6"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </Svg>
+      </Animated.View>
+      {/* Small star layer */}
+      <Animated.View style={[{ position: 'absolute', width: 24, height: 24 }, smallStarStyle]}>
+        <Svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
+          <Path
+            d={PATHS.small}
+            fill="#5B5BD6"
+            stroke="#5B5BD6"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </Svg>
+      </Animated.View>
+    </View>
   );
 };

@@ -507,6 +507,7 @@ const BottomSheetContent = () => {
             )}
             <CopilotButton
               isActive={isCopilotMenuOpen || isCopilotActive}
+              isThinking={isGenerating}
               onPress={isCopilotActive ? undefined : handleToggleCopilotMenu}
               disabled={isCopilotActive}
             />

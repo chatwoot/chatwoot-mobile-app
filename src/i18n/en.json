@@ -501,7 +501,7 @@
     "FIX_GRAMMAR": "Fix grammar",
     "SUGGEST_REPLY": "Suggest reply",
     "SUMMARIZE": "Summarize conversation",
-    "THINKING": "Copilot is thinking...",
+    "THINKING": "Copilot is thinking",
     "FOLLOW_UP_PLACEHOLDER": "Send additional prompts and follow-up",
     "SELECT_TONE": "Select tone",
     "TONE_PROFESSIONAL": "Professional",

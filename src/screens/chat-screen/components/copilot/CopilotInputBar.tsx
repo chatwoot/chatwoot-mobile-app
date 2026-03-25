@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { TextInput, Text } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { tailwind } from '@/theme';
@@ -8,6 +8,30 @@ type CopilotInputBarProps = {
   isGenerating: boolean;
   onSendFollowUp: (message: string) => void;
   onFollowUpTextChange?: (text: string) => void;
+};
+
+const ThinkingText = () => {
+  const [dots, setDots] = useState('');
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      setDots(prev => (prev.length >= 3 ? '' : prev + '.'));
+    }, 400);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
+
+  return (
+    <Text
+      style={tailwind.style(
+        'text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-[#4747C2]',
+      )}>
+      {i18n.t('COPILOT.THINKING')}
+      {dots}
+    </Text>
+  );
 };
 
 export const CopilotInputBar = ({ isGenerating, onSendFollowUp, onFollowUpTextChange }: CopilotInputBarProps) => {
@@ -33,12 +57,7 @@ export const CopilotInputBar = ({ isGenerating, onSendFollowUp, onFollowUpTextCh
       {isGenerating ? (
         <Animated.View
           style={tailwind.style('bg-[#E0E0FD] rounded-[20px] px-3 py-2 justify-center')}>
-          <Text
-            style={tailwind.style(
-              'text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-[#4747C2]',
-            )}>
-            {i18n.t('COPILOT.THINKING')}
-          </Text>
+          <ThinkingText />
         </Animated.View>
       ) : (
         <TextInput

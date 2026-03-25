@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { TextInput, Text } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 
@@ -58,8 +58,9 @@ export const CopilotInputBar = ({ isGenerating, onSendFollowUp, onFollowUpTextCh
 
   return (
     <Animated.View
-      entering={FadeIn.duration(200)}
+      entering={FadeIn.duration(250)}
       exiting={FadeOut.duration(150)}
+      layout={LinearTransition.springify().damping(20).stiffness(180)}
       style={tailwind.style('flex-1')}>
       {isGenerating ? (
         <Animated.View

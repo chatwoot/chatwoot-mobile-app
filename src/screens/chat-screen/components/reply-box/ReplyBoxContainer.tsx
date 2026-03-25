@@ -498,7 +498,9 @@ const BottomSheetContent = () => {
           <AudioRecorder onRecordingComplete={onRecordingComplete} audioFormat={audioFormat()} />
         ) : null}
         {!isVoiceRecorderOpen ? (
-          <Animated.View style={tailwind.style('flex flex-row px-1 items-end z-20 relative')}>
+          <Animated.View
+            layout={LinearTransition.springify().damping(20).stiffness(180)}
+            style={tailwind.style('flex flex-row px-1 items-end z-20 relative')}>
             {!isCopilotActive && attachmentsLength === 0 && shouldShowFileUpload && (
               <AddCommandButton
                 onPress={handleShowAddMenuOption}

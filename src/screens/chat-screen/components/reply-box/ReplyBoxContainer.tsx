@@ -130,6 +130,12 @@ const BottomSheetContent = () => {
   const followUpContext = useAppSelector(selectFollowUpContext);
   const { toneSelectionSheetRef } = useRefsContext();
 
+  // Reset copilot state when conversation changes
+  useEffect(() => {
+    dispatch(resetCopilot());
+    setIsCopilotMenuOpen(false);
+  }, [conversationId, dispatch, setIsCopilotMenuOpen]);
+
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const { inboxId, canReply } = conversation || {};
   const inbox = useAppSelector(state => (inboxId ? selectInboxById(state, inboxId) : undefined));

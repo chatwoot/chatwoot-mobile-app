@@ -1,12 +1,11 @@
 import React from 'react';
-import { Pressable, ScrollView, Text } from 'react-native';
+import { Pressable, ScrollView, StyleSheet } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { Icon } from '@/components-next/common';
 import { CopilotDiscardIcon, CopilotAcceptIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
-import { MESSAGE_VARIANTS } from '@/constants';
-import { MarkdownBubble } from '../message-components/MarkdownBubble';
 
 type CopilotEditorSectionProps = {
   isGenerating: boolean;
@@ -15,6 +14,29 @@ type CopilotEditorSectionProps = {
   onAccept: () => void;
   onDiscard: () => void;
 };
+
+const markdownStyles = StyleSheet.create({
+  body: {
+    fontSize: 14,
+    fontFamily: 'Inter-400-20',
+    lineHeight: 21,
+    letterSpacing: -0.1,
+    color: tailwind.color('text-slate-950') as string,
+  },
+  paragraph: {
+    marginTop: 0,
+    marginBottom: 0,
+  },
+  strong: {
+    fontFamily: 'Inter-600-20',
+    fontWeight: '600',
+  },
+  em: {
+    fontStyle: 'italic',
+  },
+});
+
+const markdownIt = MarkdownIt({ typographer: true });
 
 export const CopilotEditorSection = ({
   isGenerating,
@@ -58,16 +80,9 @@ export const CopilotEditorSection = ({
       <ScrollView
         style={tailwind.style('flex-1 max-h-[120px] border border-blackA-A3 rounded-2xl')}
         contentContainerStyle={tailwind.style('px-3 py-2')}>
-        {showActions ? (
-          <MarkdownBubble messageContent={displayText} variant={MESSAGE_VARIANTS.AGENT} />
-        ) : (
-          <Text
-            style={tailwind.style(
-              'text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-slate-950',
-            )}>
-            {displayText}
-          </Text>
-        )}
+        <Markdown style={markdownStyles} markdownit={markdownIt}>
+          {displayText}
+        </Markdown>
       </ScrollView>
       {showActions ? (
         <Pressable

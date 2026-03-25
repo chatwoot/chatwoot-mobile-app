@@ -37,7 +37,7 @@ export const CopilotMenu = ({
       label: i18n.t('COPILOT.IMPROVE_REPLY'),
       onPress: () => onSelectAction(COPILOT_ACTIONS.IMPROVE as CopilotActionKey),
     },
-    {
+    hasContent && {
       icon: <ChangeToneIcon />,
       label: i18n.t('COPILOT.CHANGE_TONE'),
       onPress: onSelectChangeTone,

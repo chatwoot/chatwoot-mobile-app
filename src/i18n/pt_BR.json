@@ -478,15 +478,15 @@
     "NO_MACROS": "Nenhuma macro encontrada"
   },
   "SEARCH": {
-    "PLACEHOLDER": "Type 2 or more characters to search",
+    "PLACEHOLDER": "Digite 2 ou mais caracteres para pesquisar",
     "HINT": "Procurar por ID de conversa, e-mail, número de telefone, mensagens para melhores resultados de busca.",
-    "ALL_RESULTS": "All Results",
-    "RECENT_SEARCHES": "Recent Searches",
+    "ALL_RESULTS": "Todos os resultados",
+    "RECENT_SEARCHES": "Pesquisas recentes",
     "CLEAR_ALL": "Limpar tudo",
     "VIEW_MORE": "Ver mais",
-    "TAP_TO_RETRY": "Tap to retry",
-    "NO_RESULTS": "No {{sectionLabel}} found for query '{{searchQuery}}'",
-    "ERROR_CANCELLED": "Couldn't load results.",
+    "TAP_TO_RETRY": "Toque para tentar novamente",
+    "NO_RESULTS": "Não foi encontrado nenhum {{sectionLabel}} para a consulta '{{searchQuery}}'",
+    "ERROR_CANCELLED": "Não foi possível carregar os resultados.",
     "ERROR_GENERIC": "Algo deu errado. Por favor, tente novamente.",
     "SECTIONS": {
       "CONTACTS": "Contatos",

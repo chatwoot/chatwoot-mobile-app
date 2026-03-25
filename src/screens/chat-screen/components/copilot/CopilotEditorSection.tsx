@@ -5,6 +5,8 @@ import { Icon } from '@/components-next/common';
 import { CopilotDiscardIcon, CopilotAcceptIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
+import { MESSAGE_VARIANTS } from '@/constants';
+import { MarkdownBubble } from '../message-components/MarkdownBubble';
 
 type CopilotEditorSectionProps = {
   isGenerating: boolean;
@@ -56,12 +58,16 @@ export const CopilotEditorSection = ({
       <ScrollView
         style={tailwind.style('flex-1 max-h-[120px] border border-blackA-A3 rounded-2xl')}
         contentContainerStyle={tailwind.style('px-3 py-2')}>
-        <Text
-          style={tailwind.style(
-            'text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-slate-950',
-          )}>
-          {displayText}
-        </Text>
+        {showActions ? (
+          <MarkdownBubble messageContent={displayText} variant={MESSAGE_VARIANTS.AGENT} />
+        ) : (
+          <Text
+            style={tailwind.style(
+              'text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-slate-950',
+            )}>
+            {displayText}
+          </Text>
+        )}
       </ScrollView>
       {showActions ? (
         <Pressable

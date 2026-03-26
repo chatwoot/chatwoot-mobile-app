@@ -1,18 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Message } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
+import { selectLocale } from '@/store/settings/settingsSelectors';
 import { useChatWindowContext } from '@/context';
-// import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { useHaptic } from '@/utils';
-// import { inboxHasFeature, is360DialogWhatsAppChannel, useHaptic } from '@/utils';
-// import { INBOX_FEATURES } from '@/constants';
 import { showToast } from '@/utils/toastUtils';
 import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { MESSAGE_TYPES } from '@/constants';
-import { CopyIcon, Trash } from '@/svg-icons';
+import { CopyIcon, Trash, TranslateIcon } from '@/svg-icons';
 import { MenuOption } from '../message-menu';
 import { MessageItem } from './MessageItem';
 
@@ -27,10 +25,8 @@ export const MessageItemContainer = (props: MessageItemContainerProps) => {
 
   const hapticSelection = useHaptic();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
-
-  // const handleQuoteReplyAttachment = () => {
-  //   dispatch(setQuoteMessage(props.item as Message));
-  // };
+  const locale = useAppSelector(selectLocale);
+  const [translatingMessageId, setTranslatingMessageId] = useState<number | null>(null);
 
   const handleCopyMessage = (content: string) => {
     hapticSelection?.();
@@ -45,28 +41,40 @@ export const MessageItemContainer = (props: MessageItemContainerProps) => {
     showToast({ message: i18n.t('CONVERSATION.DELETE_MESSAGE_SUCCESS') });
   };
 
-  // const inboxSupportsReplyTo = (channel: string) => {
-  //   const incoming = inboxHasFeature(INBOX_FEATURES.REPLY_TO, channel);
-  //   const outgoing =
-  //     inboxHasFeature(INBOX_FEATURES.REPLY_TO_OUTGOING, channel) &&
-  //     !is360DialogWhatsAppChannel(channel);
-
-  //   return { incoming, outgoing };
-  // };
+  const handleTranslateMessage = async (messageId: number) => {
+    hapticSelection?.();
+    setTranslatingMessageId(messageId);
+    try {
+      await dispatch(
+        conversationActions.translateMessage({
+          conversationId,
+          messageId,
+          targetLanguage: locale || 'en',
+        }),
+      ).unwrap();
+      showToast({ message: i18n.t('CONVERSATION.TRANSLATE_MESSAGE_SUCCESS') });
+    } catch {
+      showToast({ message: i18n.t('CONVERSATION.TRANSLATE_MESSAGE_ERROR') });
+    } finally {
+      setTranslatingMessageId(null);
+    }
+  };
 
   const getMenuOptions = (message: Message): MenuOption[] => {
     const { messageType, content, attachments } = message;
-    // const { private: isPrivate } = message;
     const hasText = !!content;
     const hasAttachments = !!(attachments && attachments.length > 0);
-    // const channel = conversation?.meta?.channel;
-
     const isDeleted = message.contentAttributes?.deleted;
 
     const menuOptions: MenuOption[] = [];
     if (messageType === MESSAGE_TYPES.ACTIVITY || isDeleted) {
       return [];
     }
+
+    const hasTranslations =
+      message.contentAttributes?.translations &&
+      Object.keys(message.contentAttributes.translations).length > 0;
+    const isTranslating = translatingMessageId === message.id;
 
     if (hasText) {
       menuOptions.push({
@@ -75,17 +83,15 @@ export const MessageItemContainer = (props: MessageItemContainerProps) => {
         handleOnPressMenuOption: () => handleCopyMessage(content),
         destructive: false,
       });
+      if (!hasTranslations && !isTranslating) {
+        menuOptions.push({
+          title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.TRANSLATE'),
+          icon: <TranslateIcon />,
+          handleOnPressMenuOption: () => handleTranslateMessage(message.id),
+          destructive: false,
+        });
+      }
     }
-
-    // TODO: Add reply to message when we have the feature
-    // if (!isPrivate && channel && inboxSupportsReplyTo(channel).outgoing) {
-    //   menuOptions.push({
-    //     title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.REPLY'),
-    //     icon: null,
-    //     handleOnPressMenuOption: handleQuoteReplyAttachment,
-    //     destructive: false,
-    //   });
-    // }
 
     if (hasAttachments || hasText) {
       menuOptions.push({

@@ -25,12 +25,14 @@ import type {
   SendMessageAPIResponse,
   SendMessagePayload,
   TogglePriorityPayload,
+  TranslateMessagePayload,
 } from './conversationTypes';
 import { AxiosError } from 'axios';
 import { MESSAGE_STATUS } from '@/constants';
 import { buildCreatePayload, createPendingMessage } from '@/utils/messageUtils';
 import { transformMessage } from '@/utils/camelCaseKeys';
 import { Platform } from 'react-native';
+import type { Message } from '@/types';
 
 export const conversationActions = {
   fetchConversations: createAsyncThunk<ConversationListResponse, ConversationPayload>(
@@ -252,6 +254,50 @@ export const conversationActions = {
     'conversations/togglePriority',
     async (payload, { rejectWithValue }) => {
       return await ConversationService.togglePriority(payload);
+    },
+  ),
+  translateMessage: createAsyncThunk<void, TranslateMessagePayload>(
+    'conversations/translateMessage',
+    async (payload, { getState, dispatch, rejectWithValue }) => {
+      try {
+        const response = await ConversationService.translateMessage(payload);
+        const translatedContent = response?.content;
+        if (typeof translatedContent === 'string') {
+          const state = getState() as {
+            conversations: {
+              entities: Record<number, { messages: Message[] } | undefined>;
+            };
+          };
+          const conversation = state.conversations.entities[payload.conversationId];
+          const existingMessage = conversation?.messages?.find(
+            message => message.id === payload.messageId,
+          );
+
+          if (existingMessage) {
+            const contentAttributes = existingMessage.contentAttributes ?? {};
+            const translations = contentAttributes.translations ?? {};
+            dispatch({
+              type: 'conversation/addOrUpdateMessage',
+              payload: {
+                ...existingMessage,
+                contentAttributes: {
+                  ...contentAttributes,
+                  translations: {
+                    ...translations,
+                    [payload.targetLanguage]: translatedContent,
+                  },
+                },
+              },
+            });
+          }
+        }
+      } catch (error) {
+        const { response } = error as AxiosError<ApiErrorResponse>;
+        if (!response) {
+          throw error;
+        }
+        return rejectWithValue(response.data);
+      }
     },
   ),
 };

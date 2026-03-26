@@ -1,5 +1,6 @@
 import conversationFilterReducer, {
   setFilters,
+  setFiltersState,
   resetFilters,
   selectFilters,
   defaultFilterState,
@@ -44,6 +45,27 @@ describe('conversationFilter reducer', () => {
       const nextState = conversationFilterReducer(modifiedState, resetFilters());
 
       expect(nextState.filters).toEqual(defaultFilterState);
+    });
+  });
+
+  describe('setFiltersState', () => {
+    it('should replace filters with provided state', () => {
+      const nextState = conversationFilterReducer(
+        { filters: defaultFilterState },
+        setFiltersState({
+          assignee_type: 'all',
+          status: 'resolved',
+          sort_by: 'sort_on_created_at',
+          inbox_id: '12',
+        }),
+      );
+
+      expect(nextState.filters).toEqual({
+        assignee_type: 'all',
+        status: 'resolved',
+        sort_by: 'sort_on_created_at',
+        inbox_id: '12',
+      });
     });
   });
 

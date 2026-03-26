@@ -13,6 +13,22 @@ import { TEXT_ONLY } from './mock-data/textOnly';
 import { getAllGroupedMessages } from './mock-data/helper';
 
 const ALL_MESSAGES_MOCKDATA = getAllGroupedMessages(TEXT_ONLY);
+const TRANSLATED_MESSAGES_MOCKDATA = getAllGroupedMessages(
+  TEXT_ONLY.map(message => {
+    if (message.id !== 5301) {
+      return message;
+    }
+    return {
+      ...message,
+      content_attributes: {
+        ...message.content_attributes,
+        translations: {
+          es: 'Hola, soy Shivam. ¿En qué puedo ayudar hoy?',
+        },
+      },
+    };
+  }),
+);
 
 const PlatformSpecificKeyboardWrapperComponent =
   Platform.OS === 'android' ? Animated.View : KeyboardGestureArea;
@@ -75,6 +91,37 @@ export const Basic: Story = {
                       currentUserId={1}
                       isEmailInbox={false}
                       messages={ALL_MESSAGES_MOCKDATA}
+                      isFlashListReady={false}
+                      setFlashListReady={() => {}}
+                      onEndReached={() => {}}
+                    />
+                  </PlatformSpecificKeyboardWrapperComponent>
+                </ScrollView>
+              </ChatWindowProvider>
+            </KeyboardProvider>
+          </RefsProvider>
+        </BottomSheetModalProvider>
+      </Provider>
+    );
+  },
+};
+
+export const TranslatedMessage: Story = {
+  render: function TranslatedMessageComponent() {
+    return (
+      <Provider store={mockStore}>
+        <BottomSheetModalProvider>
+          <RefsProvider>
+            <KeyboardProvider>
+              <ChatWindowProvider conversationId={29}>
+                <ScrollView contentContainerStyle={tailwind.style('flex')}>
+                  <PlatformSpecificKeyboardWrapperComponent
+                    style={tailwind.style('flex-1 bg-white')}
+                    interpolator="linear">
+                    <MessagesList
+                      currentUserId={1}
+                      isEmailInbox={false}
+                      messages={TRANSLATED_MESSAGES_MOCKDATA}
                       isFlashListReady={false}
                       setFlashListReady={() => {}}
                       onEndReached={() => {}}

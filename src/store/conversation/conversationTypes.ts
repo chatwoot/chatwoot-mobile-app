@@ -239,3 +239,13 @@ export interface TogglePriorityPayload {
   conversationId: number;
   priority: ConversationPriority;
 }
+
+export interface TranslateMessagePayload {
+  conversationId: number;
+  messageId: number;
+  targetLanguage: string;
+}
+
+export interface TranslateMessageAPIResponse {
+  content?: string | null;
+}

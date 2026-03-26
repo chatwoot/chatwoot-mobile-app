@@ -29,6 +29,8 @@ import type {
   MarkMessageReadOrUnreadResponse,
   ToggleConversationStatusAPIResponse,
   TogglePriorityPayload,
+  TranslateMessagePayload,
+  TranslateMessageAPIResponse,
 } from './conversationTypes';
 
 import {
@@ -217,5 +219,18 @@ export class ConversationService {
   static async togglePriority(payload: TogglePriorityPayload): Promise<void> {
     const { conversationId, priority } = payload;
     await apiService.post(`conversations/${conversationId}/toggle_priority`, { priority });
+  }
+
+  static async translateMessage(
+    payload: TranslateMessagePayload,
+  ): Promise<TranslateMessageAPIResponse> {
+    const { conversationId, messageId, targetLanguage } = payload;
+    const response = await apiService.post<TranslateMessageAPIResponse>(
+      `conversations/${conversationId}/messages/${messageId}/translate`,
+      {
+      target_language: targetLanguage,
+      },
+    );
+    return response.data;
   }
 }

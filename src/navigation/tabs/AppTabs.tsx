@@ -19,7 +19,7 @@ import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 
-import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stack';
+import { AuthStack, ChannelsStack, ConversationStack, SettingsStack, InboxStack } from '../stack';
 import ChatScreen from '@/screens/chat-screen/ChatScreen';
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
@@ -43,6 +43,7 @@ import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
 const Tab = createBottomTabNavigator();
 
 export type TabParamList = {
+  Channels: undefined;
   Conversations: undefined;
   Inbox: undefined;
   Settings: undefined;
@@ -160,6 +161,9 @@ const Tabs = () => {
 
   return (
     <Tab.Navigator tabBar={CustomTabBar} initialRouteName="Inbox">
+      {hasConversationPermission && (
+        <Tab.Screen name="Channels" component={ChannelsStack} options={{ headerShown: false }} />
+      )}
       {hasConversationPermission && (
         <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
       )}

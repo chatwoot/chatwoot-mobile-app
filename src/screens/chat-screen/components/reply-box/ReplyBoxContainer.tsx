@@ -183,6 +183,11 @@ const BottomSheetContent = () => {
     }
   }, [inbox, canReply, dispatch]);
 
+  // Clear quote state when switching conversations to prevent cross-conversation replies
+  useEffect(() => {
+    dispatch(resetSentMessage());
+  }, [conversationId, dispatch]);
+
   const derivedAddMenuOptionStateValue = useDerivedValue(() => {
     return isAddMenuOptionSheetOpen
       ? withSpring(1, SHEET_APPEAR_SPRING_CONFIG)

@@ -3,6 +3,7 @@ import { Channel, Message } from '@/types';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
+import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { useChatWindowContext } from '@/context';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { unixTimestampToReadableTime, useHaptic } from '@/utils';
@@ -234,6 +235,8 @@ export const MessageComponent = (props: MessageComponentProps) => {
   const hapticSelection = useHaptic();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const channel = conversation?.channel || conversation?.meta?.channel;
+  const { inboxId } = conversation || {};
+  const inbox = useAppSelector(state => (inboxId ? selectInboxById(state, inboxId) : undefined));
 
   const variant = () => {
     if (item.private) return MESSAGE_VARIANTS.PRIVATE;
@@ -282,11 +285,12 @@ export const MessageComponent = (props: MessageComponentProps) => {
   };
 
   const getMenuOptions = (message: Message): MenuOption[] => {
-    const { messageType, content, attachments, private: isPrivate } = message;
+    const { messageType, content, attachments, private: isPrivate, status: messageStatus } = message;
     const hasText = !!content;
     const hasAttachments = !!(attachments && attachments.length > 0);
     const isDeleted = message.contentAttributes?.deleted;
-    const channelType = conversation?.meta?.channel || conversation?.channel;
+    const isFailedOrProcessing =
+      messageStatus === MESSAGE_STATUS.FAILED || messageStatus === MESSAGE_STATUS.PROGRESS;
 
     const menuOptions: MenuOption[] = [];
     if (messageType === MESSAGE_TYPES.ACTIVITY || isDeleted) {
@@ -302,7 +306,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
       });
     }
 
-    if (!isPrivate && channelType && inboxSupportsReplyTo(channelType).outgoing) {
+    if (!isPrivate && !isFailedOrProcessing && inboxSupportsReplyTo(inbox).outgoing) {
       menuOptions.push({
         title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.REPLY'),
         icon: <ReplyIcon />,

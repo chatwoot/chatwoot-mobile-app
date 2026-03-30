@@ -2,6 +2,7 @@ import React from 'react';
 import { Message } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
+import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { useChatWindowContext } from '@/context';
 import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
@@ -25,6 +26,8 @@ export const MessageItemContainer = (props: MessageItemContainerProps) => {
 
   const hapticSelection = useHaptic();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
+  const { inboxId } = conversation || {};
+  const inbox = useAppSelector(state => (inboxId ? selectInboxById(state, inboxId) : undefined));
 
   const handleQuoteReplyAttachment = () => {
     dispatch(setQuoteMessage(props.item as Message));
@@ -47,7 +50,6 @@ export const MessageItemContainer = (props: MessageItemContainerProps) => {
     const { messageType, content, attachments, private: isPrivate } = message;
     const hasText = !!content;
     const hasAttachments = !!(attachments && attachments.length > 0);
-    const channel = conversation?.meta?.channel || conversation?.channel;
 
     const isDeleted = message.contentAttributes?.deleted;
 
@@ -65,7 +67,7 @@ export const MessageItemContainer = (props: MessageItemContainerProps) => {
       });
     }
 
-    if (!isPrivate && channel && inboxSupportsReplyTo(channel).outgoing) {
+    if (!isPrivate && inboxSupportsReplyTo(inbox).outgoing) {
       menuOptions.push({
         title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.REPLY'),
         icon: <ReplyIcon />,

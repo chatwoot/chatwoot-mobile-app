@@ -5,8 +5,7 @@ import { selectConversationById } from '@/store/conversation/conversationSelecto
 import { useChatWindowContext } from '@/context';
 import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
-import { inboxHasFeature, is360DialogWhatsAppChannel, useHaptic } from '@/utils';
-import { INBOX_FEATURES } from '@/constants';
+import { inboxSupportsReplyTo, useHaptic } from '@/utils';
 import { showToast } from '@/utils/toastUtils';
 import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -42,15 +41,6 @@ export const MessageItemContainer = (props: MessageItemContainerProps) => {
   const handleDeleteMessage = async (messageId: number) => {
     await dispatch(conversationActions.deleteMessage({ conversationId, messageId }));
     showToast({ message: i18n.t('CONVERSATION.DELETE_MESSAGE_SUCCESS') });
-  };
-
-  const inboxSupportsReplyTo = (channel: string) => {
-    const incoming = inboxHasFeature(INBOX_FEATURES.REPLY_TO, channel);
-    const outgoing =
-      inboxHasFeature(INBOX_FEATURES.REPLY_TO_OUTGOING, channel) &&
-      !is360DialogWhatsAppChannel(channel);
-
-    return { incoming, outgoing };
   };
 
   const getMenuOptions = (message: Message): MenuOption[] => {

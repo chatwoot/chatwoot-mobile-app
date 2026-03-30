@@ -22,7 +22,6 @@ import {
 import { showToast } from '@/utils/toastUtils';
 import {
   // ATTACHMENT_TYPES,
-  INBOX_FEATURES,
   MESSAGE_STATUS,
   MESSAGE_VARIANTS,
   ORIENTATION,
@@ -35,7 +34,7 @@ import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { CopyIcon, Trash, ReplyIcon } from '@/svg-icons';
 import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
-import { inboxHasFeature, is360DialogWhatsAppChannel } from '@/utils';
+import { inboxSupportsReplyTo } from '@/utils';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { tailwind } from '@/theme';
 import { Dimensions, View } from 'react-native';
@@ -279,14 +278,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
   const handleQuoteReply = (message: Message) => {
     dispatch(setQuoteMessage(message));
-  };
-
-  const inboxSupportsReplyTo = (channelType: string) => {
-    const incoming = inboxHasFeature(INBOX_FEATURES.REPLY_TO, channelType);
-    const outgoing =
-      inboxHasFeature(INBOX_FEATURES.REPLY_TO_OUTGOING, channelType) &&
-      !is360DialogWhatsAppChannel(channelType);
-    return { incoming, outgoing };
   };
 
   const getMenuOptions = (message: Message): MenuOption[] => {

@@ -94,3 +94,11 @@ export const whatsAppAPIProvider = (inbox: Inbox) => {
 export const isAnInstagramChannel = (inbox: Inbox | undefined) => {
   return inbox?.channelType === INBOX_TYPES.INSTAGRAM;
 };
+
+export const inboxSupportsReplyTo = (channelType: string) => {
+  const incoming = inboxHasFeature(INBOX_FEATURES.REPLY_TO, channelType);
+  const outgoing =
+    inboxHasFeature(INBOX_FEATURES.REPLY_TO_OUTGOING, channelType) &&
+    !is360DialogWhatsAppChannel(channelType);
+  return { incoming, outgoing };
+};

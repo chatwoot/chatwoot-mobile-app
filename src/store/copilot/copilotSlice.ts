@@ -43,13 +43,10 @@ const copilotSlice = createSlice({
         state.followUpContext = action.payload.follow_up_context;
       })
       .addCase(executeCopilotAction.rejected, (state, action) => {
+        if (action.meta.aborted) return;
         state.isGenerating = false;
-        state.error = action.meta.aborted
-          ? null
-          : (action.error.message ?? 'Failed to generate content');
-        if (!action.meta.aborted) {
-          state.showEditor = false;
-        }
+        state.showEditor = false;
+        state.error = action.error.message ?? 'Failed to generate content';
       })
       .addCase(sendCopilotFollowUp.pending, state => {
         state.isGenerating = true;
@@ -61,10 +58,9 @@ const copilotSlice = createSlice({
         state.followUpContext = action.payload.follow_up_context;
       })
       .addCase(sendCopilotFollowUp.rejected, (state, action) => {
+        if (action.meta.aborted) return;
         state.isGenerating = false;
-        state.error = action.meta.aborted
-          ? null
-          : (action.error.message ?? 'Failed to send follow-up');
+        state.error = action.error.message ?? 'Failed to send follow-up';
       });
   },
 });

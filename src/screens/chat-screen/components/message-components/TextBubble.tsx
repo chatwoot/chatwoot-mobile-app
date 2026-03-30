@@ -20,9 +20,10 @@ export const TextBubble = (props: TextBubbleProps) => {
   const { private: isPrivate, content, contentAttributes, sender } = messageItem;
 
   const translations = contentAttributes?.translations;
+  const activeLocale = i18n.locale?.split('_')[0] || 'en';
   const translatedText =
-    translations && Object.keys(translations).length > 0
-      ? Object.values(translations)[0]
+    translations
+      ? (translations[activeLocale] || Object.values(translations)[0] || null)
       : null;
   const hasTranslations = !!translatedText;
 

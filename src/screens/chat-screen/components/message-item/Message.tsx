@@ -307,8 +307,9 @@ export const MessageComponent = (props: MessageComponentProps) => {
         destructive: false,
       });
 
-      const hasTranslation = !!message.contentAttributes?.translations;
-      if (!hasTranslation) {
+      const targetLanguage = i18n.locale?.split('_')[0] || 'en';
+      const hasTranslationForLocale = !!message.contentAttributes?.translations?.[targetLanguage];
+      if (!hasTranslationForLocale) {
         menuOptions.push({
           title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.TRANSLATE'),
           icon: <TranslateIcon />,

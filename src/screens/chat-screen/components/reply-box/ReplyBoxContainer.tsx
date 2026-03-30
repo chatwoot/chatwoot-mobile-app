@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Keyboard, TextInput } from 'react-native';
 import { KeyboardStickyView } from 'react-native-keyboard-controller';
 import Animated, {
@@ -122,7 +122,8 @@ const BottomSheetContent = () => {
     setIsCopilotMenuOpen,
   } = useChatWindowContext();
 
-  // Copilot selectors
+  // Copilot
+  const copilotAbortRef = useRef<ReturnType<typeof dispatch> & { abort: () => void }>();
   const isCopilotActive = useAppSelector(selectIsCopilotActive);
   const isGenerating = useAppSelector(selectIsGenerating);
   const generatedContent = useAppSelector(selectGeneratedContent);
@@ -130,8 +131,9 @@ const BottomSheetContent = () => {
   const followUpContext = useAppSelector(selectFollowUpContext);
   const { toneSelectionSheetRef } = useRefsContext();
 
-  // Reset copilot state when conversation changes
+  // Reset copilot state and abort in-flight requests when conversation changes
   useEffect(() => {
+    copilotAbortRef.current?.abort();
     dispatch(resetCopilot());
     setIsCopilotMenuOpen(false);
   }, [conversationId, dispatch, setIsCopilotMenuOpen]);
@@ -252,8 +254,11 @@ const BottomSheetContent = () => {
 
   const handleCopilotAction = (actionKey: CopilotActionKey) => {
     setIsCopilotMenuOpen(false);
+    copilotAbortRef.current?.abort();
     dispatch(setOriginalContent(messageContent));
-    dispatch(executeCopilotAction({ actionKey, content: messageContent, conversationId }));
+    copilotAbortRef.current = dispatch(
+      executeCopilotAction({ actionKey, content: messageContent, conversationId }),
+    ) as ReturnType<typeof dispatch> & { abort: () => void };
   };
 
   const handleCopilotChangeTone = () => {
@@ -262,8 +267,11 @@ const BottomSheetContent = () => {
 
   const handleToneSelected = (tone: CopilotActionKey) => {
     setIsCopilotMenuOpen(false);
+    copilotAbortRef.current?.abort();
     dispatch(setOriginalContent(messageContent));
-    dispatch(executeCopilotAction({ actionKey: tone, content: messageContent, conversationId }));
+    copilotAbortRef.current = dispatch(
+      executeCopilotAction({ actionKey: tone, content: messageContent, conversationId }),
+    ) as ReturnType<typeof dispatch> & { abort: () => void };
   };
 
   const handleCopilotAccept = () => {
@@ -272,13 +280,17 @@ const BottomSheetContent = () => {
   };
 
   const handleCopilotDiscard = () => {
+    copilotAbortRef.current?.abort();
     dispatch(setMessageContent(originalContent));
     dispatch(resetCopilot());
   };
 
   const handleCopilotFollowUp = (message: string) => {
     if (followUpContext && message.trim().length > 0) {
-      dispatch(sendCopilotFollowUp({ followUpContext, message, conversationId }));
+      copilotAbortRef.current?.abort();
+      copilotAbortRef.current = dispatch(
+        sendCopilotFollowUp({ followUpContext, message, conversationId }),
+      ) as ReturnType<typeof dispatch> & { abort: () => void };
       setCopilotFollowUpText('');
     }
   };

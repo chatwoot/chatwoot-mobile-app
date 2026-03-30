@@ -56,6 +56,8 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
   const shouldShowStatusIndicator =
     (messageType === MESSAGE_TYPES.OUTGOING || isTemplate) && !isPrivate;
   const isALineChannel = channel === INBOX_TYPES.LINE;
+  const isAnInstagramChannel = channel === INBOX_TYPES.INSTAGRAM;
+  const isATiktokChannel = channel === INBOX_TYPES.TIKTOK;
 
   const animationConfigs = useBottomSheetSpringConfigs({
     mass: 1,
@@ -77,7 +79,9 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
       isATwilioChannel ||
       isAFacebookChannel ||
       isATelegramChannel ||
-      isASmsInbox
+      isASmsInbox ||
+      isAnInstagramChannel ||
+      isATiktokChannel
     ) {
       return sourceId && isSent;
     }
@@ -97,7 +101,7 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
     if (!shouldShowStatusIndicator) {
       return false;
     }
-    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel || isASmsInbox) {
+    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel || isASmsInbox || isAnInstagramChannel || isATiktokChannel) {
       return sourceId && isDelivered;
     }
 
@@ -125,7 +129,7 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
       return isRead;
     }
 
-    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel) {
+    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel || isAnInstagramChannel || isATiktokChannel) {
       return sourceId && isRead;
     }
 

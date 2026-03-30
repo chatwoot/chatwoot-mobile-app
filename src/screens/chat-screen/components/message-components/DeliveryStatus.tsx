@@ -81,6 +81,10 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
     ) {
       return sourceId && isSent;
     }
+    // API inbox messages use real sent/delivered/read status values from the external system.
+    if (isAPIChannel) {
+      return isSent;
+    }
     // There is no source id for the line channel
     if (isALineChannel) {
       return true;
@@ -97,8 +101,12 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
       return sourceId && isDelivered;
     }
 
-    // We will consider messages as delivered for web widget inbox and API inbox if they are sent
-    if (isAWebWidgetChannel || isAPIChannel) {
+    // API inbox messages use real delivered status from the external system.
+    if (isAPIChannel) {
+      return isDelivered;
+    }
+    // All messages marked as delivered for the web widget inbox once they are sent.
+    if (isAWebWidgetChannel) {
       return isSent;
     }
 

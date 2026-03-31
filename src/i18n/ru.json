@@ -238,8 +238,13 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "Копировать",
       "REPLY": "Ответить",
-      "DELETE_MESSAGE": "Удалить сообщение"
+      "DELETE_MESSAGE": "Удалить сообщение",
+      "TRANSLATE": "Перевести"
     },
+    "TRANSLATE_SUCCESS": "Message translated",
+    "TRANSLATE_ERROR": "Failed to translate message",
+    "VIEW_ORIGINAL": "View original",
+    "VIEW_TRANSLATED": "View translated",
     "EMAIL_HEADER": {
       "FROM": "От",
       "TO": "Кому",

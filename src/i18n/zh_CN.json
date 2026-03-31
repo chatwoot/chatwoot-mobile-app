@@ -238,8 +238,13 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "复制",
       "REPLY": "回复",
-      "DELETE_MESSAGE": "删除消息"
+      "DELETE_MESSAGE": "删除消息",
+      "TRANSLATE": "翻译"
     },
+    "TRANSLATE_SUCCESS": "Message translated",
+    "TRANSLATE_ERROR": "Failed to translate message",
+    "VIEW_ORIGINAL": "查看原始内容",
+    "VIEW_TRANSLATED": "查看翻译",
     "EMAIL_HEADER": {
       "FROM": "来自",
       "TO": "发送至",

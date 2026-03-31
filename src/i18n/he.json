@@ -238,8 +238,13 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "עותק",
       "REPLY": "הגב",
-      "DELETE_MESSAGE": "מחיקת הודעה"
+      "DELETE_MESSAGE": "מחיקת הודעה",
+      "TRANSLATE": "תרגום"
     },
+    "TRANSLATE_SUCCESS": "Message translated",
+    "TRANSLATE_ERROR": "Failed to translate message",
+    "VIEW_ORIGINAL": "הצג מקור",
+    "VIEW_TRANSLATED": "הצג מתורגם",
     "EMAIL_HEADER": {
       "FROM": "מאת",
       "TO": "אל",

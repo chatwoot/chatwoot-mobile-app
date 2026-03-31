@@ -185,7 +185,7 @@ const BottomSheetContent = () => {
 
   // Clear quote state when switching conversations to prevent cross-conversation replies
   useEffect(() => {
-    dispatch(resetSentMessage());
+    dispatch(setQuoteMessage(null));
   }, [conversationId, dispatch]);
 
   const derivedAddMenuOptionStateValue = useDerivedValue(() => {

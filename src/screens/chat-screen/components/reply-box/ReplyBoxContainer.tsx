@@ -213,7 +213,7 @@ const BottomSheetContent = () => {
   };
 
   const setReplyToInPayload = (messagePayload: SendMessagePayload) => {
-    if (quoteMessage?.id) {
+    if (quoteMessage?.id && !isPrivate) {
       return {
         ...messagePayload,
         contentAttributes: {

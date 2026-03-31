@@ -238,8 +238,13 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "Copy",
       "REPLY": "Reply",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "TRANSLATE": "অনুবাদ করুন"
     },
+    "TRANSLATE_SUCCESS": "Message translated",
+    "TRANSLATE_ERROR": "Failed to translate message",
+    "VIEW_ORIGINAL": "মূল দেখুন",
+    "VIEW_TRANSLATED": "অনুবাদ দেখুন",
     "EMAIL_HEADER": {
       "FROM": "From",
       "TO": "To",

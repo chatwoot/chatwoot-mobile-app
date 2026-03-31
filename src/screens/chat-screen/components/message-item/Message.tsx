@@ -33,7 +33,7 @@ import {
 } from '@/constants';
 import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { CopyIcon, Trash, ReplyIcon } from '@/svg-icons';
+import { CopyIcon, Trash, ReplyIcon, TranslateIcon} from '@/svg-icons';
 import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 import { inboxSupportsReplyTo } from '@/utils';
 import { MenuOption, MessageMenu } from '../message-menu';
@@ -281,6 +281,19 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
   const handleQuoteReply = (message: Message) => {
     dispatch(setQuoteMessage(message));
+  }
+  
+  const handleTranslateMessage = async (messageId: number) => {
+    hapticSelection?.();
+    const targetLanguage = i18n.locale?.split('_')[0] || 'en';
+    try {
+      await dispatch(
+        conversationActions.translateMessage({ conversationId, messageId, targetLanguage }),
+      ).unwrap();
+      showToast({ message: i18n.t('CONVERSATION.TRANSLATE_SUCCESS') });
+    } catch {
+      showToast({ message: i18n.t('CONVERSATION.TRANSLATE_ERROR') });
+    }
   };
 
   const getMenuOptions = (message: Message): MenuOption[] => {
@@ -303,6 +316,17 @@ export const MessageComponent = (props: MessageComponentProps) => {
         handleOnPressMenuOption: () => handleCopyMessage(content),
         destructive: false,
       });
+
+      const targetLanguage = i18n.locale?.split('_')[0] || 'en';
+      const hasTranslationForLocale = !!message.contentAttributes?.translations?.[targetLanguage];
+      if (!hasTranslationForLocale) {
+        menuOptions.push({
+          title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.TRANSLATE'),
+          icon: <TranslateIcon />,
+          handleOnPressMenuOption: () => handleTranslateMessage(message.id),
+          destructive: false,
+        });
+      }
     }
 
     if (!isPrivate && !isFailedOrProcessing && inboxSupportsReplyTo(inbox).outgoing) {

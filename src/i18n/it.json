@@ -238,8 +238,13 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "Copia",
       "REPLY": "Rispondi",
-      "DELETE_MESSAGE": "Elimina messaggio"
+      "DELETE_MESSAGE": "Elimina messaggio",
+      "TRANSLATE": "Traduci"
     },
+    "TRANSLATE_SUCCESS": "Message translated",
+    "TRANSLATE_ERROR": "Failed to translate message",
+    "VIEW_ORIGINAL": "Visualizza originale",
+    "VIEW_TRANSLATED": "Visualizza traduzione",
     "EMAIL_HEADER": {
       "FROM": "Da",
       "TO": "A",

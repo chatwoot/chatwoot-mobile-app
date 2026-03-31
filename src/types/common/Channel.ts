@@ -9,6 +9,7 @@ export type Channel =
   | 'Channel::FacebookPage'
   | 'Channel::Email'
   | 'Channel::Api'
+  | 'Channel::Instagram'
   | 'Channel::Tiktok'
   | 'Channel::All';
 
@@ -31,6 +32,7 @@ export const InboxTypes = {
   TELEGRAM: 'Channel::Telegram',
   LINE: 'Channel::Line',
   SMS: 'Channel::Sms',
+  INSTAGRAM: 'Channel::Instagram',
   TIKTOK: 'Channel::Tiktok',
 };
 

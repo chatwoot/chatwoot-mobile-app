@@ -238,8 +238,13 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "Copy",
       "REPLY": "Reply",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "TRANSLATE": "Tərcümə et"
     },
+    "TRANSLATE_SUCCESS": "Message translated",
+    "TRANSLATE_ERROR": "Failed to translate message",
+    "VIEW_ORIGINAL": "Orijinalı göstər",
+    "VIEW_TRANSLATED": "Tərcüməni göstər",
     "EMAIL_HEADER": {
       "FROM": "From",
       "TO": "To",

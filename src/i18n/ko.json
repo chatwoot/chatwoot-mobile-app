@@ -238,8 +238,13 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "복사",
       "REPLY": "답글",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "TRANSLATE": "번역"
     },
+    "TRANSLATE_SUCCESS": "Message translated",
+    "TRANSLATE_ERROR": "Failed to translate message",
+    "VIEW_ORIGINAL": "원본 보기",
+    "VIEW_TRANSLATED": "번역 보기",
     "EMAIL_HEADER": {
       "FROM": "From",
       "TO": "~~에게",

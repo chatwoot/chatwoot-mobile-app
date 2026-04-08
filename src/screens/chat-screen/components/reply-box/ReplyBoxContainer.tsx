@@ -270,7 +270,8 @@ const BottomSheetContent = () => {
       executeCopilotAction({ actionKey, content: messageContent, conversationId }),
     );
     copilotAbortRef.current = promise;
-    promise.unwrap().catch(() => {
+    promise.unwrap().catch((err: { name?: string }) => {
+      if (err?.name === 'AbortError') return;
       showToast({ message: i18n.t('COPILOT.GENERATION_FAILED') });
     });
   };
@@ -287,7 +288,8 @@ const BottomSheetContent = () => {
       executeCopilotAction({ actionKey: tone, content: messageContent, conversationId }),
     );
     copilotAbortRef.current = promise;
-    promise.unwrap().catch(() => {
+    promise.unwrap().catch((err: { name?: string }) => {
+      if (err?.name === 'AbortError') return;
       showToast({ message: i18n.t('COPILOT.GENERATION_FAILED') });
     });
   };
@@ -310,7 +312,8 @@ const BottomSheetContent = () => {
         sendCopilotFollowUp({ followUpContext, message, conversationId }),
       );
       copilotAbortRef.current = promise;
-      promise.unwrap().catch(() => {
+      promise.unwrap().catch((err: { name?: string }) => {
+        if (err?.name === 'AbortError') return;
         showToast({ message: i18n.t('COPILOT.FOLLOW_UP_FAILED') });
       });
       setCopilotFollowUpText('');

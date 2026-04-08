@@ -137,7 +137,8 @@ const BottomSheetContent = () => {
     copilotAbortRef.current?.abort();
     dispatch(resetCopilot());
     setIsCopilotMenuOpen(false);
-  }, [conversationId, dispatch, setIsCopilotMenuOpen]);
+    toneSelectionSheetRef.current?.dismiss();
+  }, [conversationId, dispatch, setIsCopilotMenuOpen, toneSelectionSheetRef]);
 
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const { inboxId, canReply } = conversation || {};

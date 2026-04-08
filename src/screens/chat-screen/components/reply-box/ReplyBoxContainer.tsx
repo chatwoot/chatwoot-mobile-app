@@ -126,7 +126,7 @@ const BottomSheetContent = () => {
   } = useChatWindowContext();
 
   // Copilot
-  const copilotAbortRef = useRef<ReturnType<typeof dispatch> & { abort: () => void }>();
+  const copilotAbortRef = useRef<{ abort: () => void; unwrap: () => Promise<unknown> }>();
   const isCopilotActive = useAppSelector(selectIsCopilotActive);
   const isGenerating = useAppSelector(selectIsGenerating);
   const generatedContent = useAppSelector(selectGeneratedContent);
@@ -268,7 +268,7 @@ const BottomSheetContent = () => {
     dispatch(setOriginalContent(messageContent));
     const promise = dispatch(
       executeCopilotAction({ actionKey, content: messageContent, conversationId }),
-    ) as ReturnType<typeof dispatch> & { abort: () => void };
+    );
     copilotAbortRef.current = promise;
     promise.unwrap().catch(() => {
       showToast({ message: i18n.t('COPILOT.GENERATION_FAILED') });
@@ -285,7 +285,7 @@ const BottomSheetContent = () => {
     dispatch(setOriginalContent(messageContent));
     const promise = dispatch(
       executeCopilotAction({ actionKey: tone, content: messageContent, conversationId }),
-    ) as ReturnType<typeof dispatch> & { abort: () => void };
+    );
     copilotAbortRef.current = promise;
     promise.unwrap().catch(() => {
       showToast({ message: i18n.t('COPILOT.GENERATION_FAILED') });
@@ -308,7 +308,7 @@ const BottomSheetContent = () => {
       copilotAbortRef.current?.abort();
       const promise = dispatch(
         sendCopilotFollowUp({ followUpContext, message, conversationId }),
-      ) as ReturnType<typeof dispatch> & { abort: () => void };
+      );
       copilotAbortRef.current = promise;
       promise.unwrap().catch(() => {
         showToast({ message: i18n.t('COPILOT.FOLLOW_UP_FAILED') });

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { TextInput, Text, View } from 'react-native';
-import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 
@@ -58,18 +58,13 @@ export const CopilotInputBar = ({ isGenerating, onSendFollowUp, onFollowUpTextCh
   };
 
   return (
-    <Animated.View
-      entering={FadeIn.duration(250)}
-      exiting={FadeOut.duration(150)}
-      layout={LinearTransition.springify().damping(20).stiffness(180)}
-      style={tailwind.style('flex-1')}>
+    <View style={tailwind.style('flex-1 bg-[#E0E0FD] rounded-[20px] min-h-9 max-h-[76px] px-3 py-2 justify-center')}>
       {isGenerating ? (
-        <Animated.View
-          style={tailwind.style('bg-[#E0E0FD] rounded-[20px] px-3 py-2 justify-center')}>
+        <Animated.View key="thinking" entering={FadeIn.duration(200)} exiting={FadeOut.duration(150)}>
           <ThinkingText />
         </Animated.View>
       ) : (
-        <View style={tailwind.style('bg-[#E0E0FD] rounded-[20px] max-h-[76px] px-3 py-2')}>
+        <Animated.View key="input" entering={FadeIn.duration(200)} exiting={FadeOut.duration(150)}>
           <TextInput
             value={followUpText}
             onChangeText={handleChangeText}
@@ -84,8 +79,8 @@ export const CopilotInputBar = ({ isGenerating, onSendFollowUp, onFollowUpTextCh
             returnKeyType="send"
             scrollEnabled
           />
-        </View>
+        </Animated.View>
       )}
-    </Animated.View>
+    </View>
   );
 };

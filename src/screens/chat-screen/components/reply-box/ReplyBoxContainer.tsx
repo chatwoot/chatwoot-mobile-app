@@ -569,6 +569,7 @@ const BottomSheetContent = () => {
                   onFollowUpTextChange={setCopilotFollowUpText}
                 />
                 <SendMessageButton
+                  variant="copilot"
                   onPress={() => handleCopilotFollowUp(copilotFollowUpText)}
                   disabled={isGenerating || copilotFollowUpText.trim().length === 0}
                 />

@@ -11,11 +11,14 @@ import { SendMessageButtonProps } from '../types';
 import { sendIconEnterAnimation, sendIconExitAnimation } from '@/utils/customAnimations';
 
 export const SendMessageButton = (props: SendMessageButtonProps) => {
-  const { disabled, ...restProps } = props;
+  const { disabled, variant, ...restProps } = props;
   const { animatedStyle, handlers } = useScaleAnimation();
   const isPrivateMessage = useAppSelector(selectIsPrivateMessage);
 
   const getBgColor = () => {
+    if (variant === 'copilot') {
+      return disabled ? 'bg-[#9B9EF0]' : 'bg-[#5B5BD6]';
+    }
     if (disabled) return 'bg-gray-400';
     if (isPrivateMessage) return 'bg-amber-700';
     return 'bg-gray-950';

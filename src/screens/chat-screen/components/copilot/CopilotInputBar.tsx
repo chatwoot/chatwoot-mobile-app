@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { TextInput, Text } from 'react-native';
+import { TextInput, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
@@ -69,21 +69,22 @@ export const CopilotInputBar = ({ isGenerating, onSendFollowUp, onFollowUpTextCh
           <ThinkingText />
         </Animated.View>
       ) : (
-        <TextInput
-          value={followUpText}
-          onChangeText={handleChangeText}
-          placeholder={i18n.t('COPILOT.FOLLOW_UP_PLACEHOLDER')}
-          placeholderTextColor="#4747C2"
-          multiline
-          style={tailwind.style(
-            'bg-[#E0E0FD] rounded-[20px] max-h-[76px] px-3 py-2',
-            'text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-[#4747C2]',
-          )}
-          editable={!isGenerating}
-          onSubmitEditing={handleSend}
-          returnKeyType="send"
-          scrollEnabled
-        />
+        <View style={tailwind.style('bg-[#E0E0FD] rounded-[20px] max-h-[76px] px-3 py-2')}>
+          <TextInput
+            value={followUpText}
+            onChangeText={handleChangeText}
+            placeholder={i18n.t('COPILOT.FOLLOW_UP_PLACEHOLDER')}
+            placeholderTextColor="#4747C2"
+            multiline
+            style={tailwind.style(
+              'text-sm font-inter-normal-20 leading-[18px] tracking-[-0.1px] text-[#4747C2] p-0',
+            )}
+            editable={!isGenerating}
+            onSubmitEditing={handleSend}
+            returnKeyType="send"
+            scrollEnabled
+          />
+        </View>
       )}
     </Animated.View>
   );

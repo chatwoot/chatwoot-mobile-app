@@ -56,6 +56,8 @@ import { getTypingUsersText } from '@/utils';
 import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
 import { Agent, CannedResponse, Conversation } from '@/types';
 import AnalyticsHelper from '@/utils/analyticsUtils';
+import { showToast } from '@/utils/toastUtils';
+import i18n from '@/i18n';
 import { CONVERSATION_EVENTS } from '@/constants/analyticsEvents';
 import {
   allMessageVariables,
@@ -264,9 +266,13 @@ const BottomSheetContent = () => {
     setIsCopilotMenuOpen(false);
     copilotAbortRef.current?.abort();
     dispatch(setOriginalContent(messageContent));
-    copilotAbortRef.current = dispatch(
+    const promise = dispatch(
       executeCopilotAction({ actionKey, content: messageContent, conversationId }),
     ) as ReturnType<typeof dispatch> & { abort: () => void };
+    copilotAbortRef.current = promise;
+    promise.unwrap().catch(() => {
+      showToast({ message: i18n.t('COPILOT.GENERATION_FAILED') });
+    });
   };
 
   const handleCopilotChangeTone = () => {
@@ -277,9 +283,13 @@ const BottomSheetContent = () => {
     setIsCopilotMenuOpen(false);
     copilotAbortRef.current?.abort();
     dispatch(setOriginalContent(messageContent));
-    copilotAbortRef.current = dispatch(
+    const promise = dispatch(
       executeCopilotAction({ actionKey: tone, content: messageContent, conversationId }),
     ) as ReturnType<typeof dispatch> & { abort: () => void };
+    copilotAbortRef.current = promise;
+    promise.unwrap().catch(() => {
+      showToast({ message: i18n.t('COPILOT.GENERATION_FAILED') });
+    });
   };
 
   const handleCopilotAccept = () => {
@@ -296,9 +306,13 @@ const BottomSheetContent = () => {
   const handleCopilotFollowUp = (message: string) => {
     if (followUpContext && message.trim().length > 0) {
       copilotAbortRef.current?.abort();
-      copilotAbortRef.current = dispatch(
+      const promise = dispatch(
         sendCopilotFollowUp({ followUpContext, message, conversationId }),
       ) as ReturnType<typeof dispatch> & { abort: () => void };
+      copilotAbortRef.current = promise;
+      promise.unwrap().catch(() => {
+        showToast({ message: i18n.t('COPILOT.FOLLOW_UP_FAILED') });
+      });
       setCopilotFollowUpText('');
     }
   };

@@ -514,6 +514,7 @@
     "TONE_STRAIGHTFORWARD": "Straightforward",
     "TONE_CASUAL": "Casual",
     "TONE_CONFIDENT": "Confident",
-    "GENERATION_FAILED": "Failed to generate content. Please try again."
+    "GENERATION_FAILED": "Failed to generate content. Please try again.",
+    "FOLLOW_UP_FAILED": "Failed to send follow-up. Please try again."
   }
 }

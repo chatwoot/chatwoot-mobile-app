@@ -72,7 +72,8 @@ const PlatformSpecificKeyboardWrapperComponent =
 
 export const MessagesListContainer = () => {
   const [appState, setAppState] = useState(AppState.currentState);
-  const { conversationId, messageId } = useChatWindowContext();
+  const { conversationId, messageId, scrollToMessageId, setScrollToMessageId } =
+    useChatWindowContext();
   const dispatch = useAppDispatch();
   const [isFlashListReady, setFlashListReady] = React.useState(false);
   const [isListVisible, setIsListVisible] = useState(!messageId);
@@ -250,6 +251,37 @@ export const MessagesListContainer = () => {
     onPositioned: useCallback(() => setIsListVisible(true), []),
   });
 
+  // Handle scroll-to-message when tapping a quoted message reply
+  useEffect(() => {
+    if (!scrollToMessageId) return;
+
+    const targetIndex = messagesWithGrouping.findIndex(
+      item => !('date' in item) && 'id' in item && item.id === scrollToMessageId,
+    );
+
+    if (targetIndex >= 0) {
+      try {
+        messageListRef.current?.scrollToIndex({
+          index: targetIndex,
+          animated: true,
+          viewPosition: 0.5,
+        });
+      } catch {
+        // scrollToIndex can throw if index is out of range during layout changes
+      }
+    }
+
+    // Clear after a delay to allow the highlight animation to complete
+    const timer = setTimeout(() => {
+      setScrollToMessageId(undefined);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [scrollToMessageId, messagesWithGrouping, messageListRef, setScrollToMessageId]);
+
+  // The active target message ID — either from search navigation or quote tap
+  const activeTargetMessageId = scrollToMessageId || messageId;
+
   // Show loader when navigating to a message from search until messages are loaded
   // (prevents list from rendering at wrong position)
   if (messageId && messagesWithGrouping.length === 0 && isLoadingMessages) {
@@ -274,7 +306,7 @@ export const MessagesListContainer = () => {
           onEndReached={onEndReached}
           isEmailInbox={isEmailInbox}
           currentUserId={userId as number}
-          targetMessageId={messageId}
+          targetMessageId={activeTargetMessageId}
           initialScrollIndex={
             targetMessageIndex !== undefined && targetMessageIndex >= 0
               ? targetMessageIndex

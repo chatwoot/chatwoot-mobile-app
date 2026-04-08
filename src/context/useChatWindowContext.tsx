@@ -22,6 +22,9 @@ interface ChatWindowContextType {
   setPagerViewIndex: React.Dispatch<React.SetStateAction<number>>;
   conversationId: number;
   messageId?: number;
+
+  scrollToMessageId?: number;
+  setScrollToMessageId: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
 const ChatWindowContext = React.createContext<ChatWindowContextType | undefined>(undefined);
@@ -45,6 +48,7 @@ const ChatWindowProvider: React.FC<
   const [isVoiceRecorderOpen, setIsVoiceRecorderOpen] = useState(false);
   const [isCopilotMenuOpen, setIsCopilotMenuOpen] = useState(false);
   const [pagerViewIndex, setPagerViewIndex] = useState(0);
+  const [scrollToMessageId, setScrollToMessageId] = useState<number | undefined>(undefined);
 
   const textInputRef = useRef<TextInputProps>(null);
 
@@ -66,6 +70,8 @@ const ChatWindowProvider: React.FC<
         setPagerViewIndex,
         conversationId,
         messageId,
+        scrollToMessageId,
+        setScrollToMessageId,
       }}>
       {children}
     </ChatWindowContext.Provider>

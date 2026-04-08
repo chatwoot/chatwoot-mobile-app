@@ -215,6 +215,31 @@ const conversationSlice = createSlice({
         }
         conversation.unreadCount = unreadCount;
         conversation.agentLastSeenAt = agentLastSeenAt;
+      })
+      .addCase(conversationActions.translateMessage.fulfilled, (state, action) => {
+        const { conversationId, messageId, targetLanguage, content } = action.payload;
+        if (!content) {
+          return;
+        }
+        const conversation = state.entities[conversationId];
+        if (!conversation) {
+          return;
+        }
+        const messageIndex = conversation.messages.findIndex(m => m.id === messageId);
+        if (messageIndex !== -1) {
+          const message = conversation.messages[messageIndex];
+          const existing = message.contentAttributes ?? ({} as NonNullable<Message['contentAttributes']>);
+          conversation.messages[messageIndex] = {
+            ...message,
+            contentAttributes: {
+              ...existing,
+              translations: {
+                ...existing.translations,
+                [targetLanguage]: content,
+              },
+            },
+          };
+        }
       });
   },
 });

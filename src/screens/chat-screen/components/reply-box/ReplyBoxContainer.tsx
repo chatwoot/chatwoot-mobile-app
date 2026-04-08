@@ -134,12 +134,16 @@ const BottomSheetContent = () => {
   const followUpContext = useAppSelector(selectFollowUpContext);
   const { toneSelectionSheetRef } = useRefsContext();
 
-  // Reset copilot state and abort in-flight requests when conversation changes
+  // Reset copilot state and abort in-flight requests when conversation changes or unmount
   useEffect(() => {
     copilotAbortRef.current?.abort();
     dispatch(resetCopilot());
     setIsCopilotMenuOpen(false);
     toneSelectionSheetRef.current?.dismiss();
+    return () => {
+      copilotAbortRef.current?.abort();
+      dispatch(resetCopilot());
+    };
   }, [conversationId, dispatch, setIsCopilotMenuOpen, toneSelectionSheetRef]);
 
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));

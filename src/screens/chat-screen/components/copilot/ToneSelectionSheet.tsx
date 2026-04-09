@@ -10,12 +10,12 @@ import type { CopilotActionKey } from '@/types/Copilot';
 import i18n from '@/i18n';
 
 const TONE_OPTIONS = [
-  { key: COPILOT_ACTIONS.PROFESSIONAL, label: i18n.t('COPILOT.TONE_PROFESSIONAL') },
-  { key: COPILOT_ACTIONS.FRIENDLY, label: i18n.t('COPILOT.TONE_FRIENDLY') },
-  { key: COPILOT_ACTIONS.STRAIGHTFORWARD, label: i18n.t('COPILOT.TONE_STRAIGHTFORWARD') },
-  { key: COPILOT_ACTIONS.CASUAL, label: i18n.t('COPILOT.TONE_CASUAL') },
-  { key: COPILOT_ACTIONS.CONFIDENT, label: i18n.t('COPILOT.TONE_CONFIDENT') },
-];
+  { key: COPILOT_ACTIONS.PROFESSIONAL, labelKey: 'COPILOT.TONE_PROFESSIONAL' },
+  { key: COPILOT_ACTIONS.FRIENDLY, labelKey: 'COPILOT.TONE_FRIENDLY' },
+  { key: COPILOT_ACTIONS.STRAIGHTFORWARD, labelKey: 'COPILOT.TONE_STRAIGHTFORWARD' },
+  { key: COPILOT_ACTIONS.CASUAL, labelKey: 'COPILOT.TONE_CASUAL' },
+  { key: COPILOT_ACTIONS.CONFIDENT, labelKey: 'COPILOT.TONE_CONFIDENT' },
+] as const;
 
 type ToneSelectionSheetProps = {
   onSelectTone: (tone: CopilotActionKey) => void;
@@ -65,7 +65,7 @@ export const ToneSelectionSheet = forwardRef<BottomSheetModal, ToneSelectionShee
                 style={tailwind.style(
                   'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] text-gray-950',
                 )}>
-                {option.label}
+                {i18n.t(option.labelKey)}
               </Text>
             </Pressable>
           ))}

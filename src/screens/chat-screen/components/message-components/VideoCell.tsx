@@ -1,13 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Platform, Pressable, Text } from 'react-native';
 import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
-import {
-  AVPlaybackStatus,
-  ResizeMode,
-  Video,
-  VideoFullscreenUpdate,
-  VideoFullscreenUpdateEvent,
-} from 'expo-av';
+import { useVideoPlayer, VideoView } from 'expo-video';
+import { useEventListener } from 'expo';
 import { Image, ImageBackground } from 'expo-image';
 
 import { tailwind } from '@/theme';
@@ -39,61 +34,48 @@ type VideoPlayerProps = Pick<VideoCellProps, 'videoSrc'> & {
 
 export const VideoPlayer = (props: VideoPlayerProps) => {
   const { videoSrc, playerEnabled = true } = props;
-  const video = React.useRef<Video>(null);
+  const videoViewRef = useRef<VideoView>(null);
   const [playVideo, setPlayVideo] = useState(false);
-
   const [videoLoading, setVideoLoading] = useState(true);
 
-  const [videoStatus, setVideoStatus] = React.useState<AVPlaybackStatus | null>(null);
-  const handlePlayPress = () => {
+  const player = useVideoPlayer(videoSrc, player => {
+    player.loop = false;
+  });
+
+  useEventListener(player, 'statusChange', ({ status }) => {
+    if (status === 'readyToPlay') {
+      setVideoLoading(false);
+    } else if (status === 'loading') {
+      setVideoLoading(true);
+    }
+  });
+
+  useEventListener(player, 'playToEnd', () => {
+    player.currentTime = 0;
+    setPlayVideo(false);
+  });
+
+  const handlePlayPress = useCallback(() => {
     setPlayVideo(true);
-    video.current?.presentFullscreenPlayer();
-    video.current?.playAsync();
-  };
+    videoViewRef.current?.enterFullscreen();
+    player.play();
+  }, [player]);
 
-  useEffect(() => {
-    if (videoStatus?.isLoaded) {
-      if (videoStatus?.didJustFinish) {
-        video.current?.playFromPositionAsync(0);
-        setPlayVideo(false);
-      }
-    }
-  }, [videoStatus]);
-
-  const handlePlaybackStatus = (status: AVPlaybackStatus) => {
-    setVideoStatus(status);
-  };
-
-  const handleOnFullScreenUpdate = (event: VideoFullscreenUpdateEvent) => {
-    if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_WILL_DISMISS) {
-      setPlayVideo(false);
-    }
-  };
-
-  // To have a loader while the Video is loaded, and
-  // thumbnail is shown
-  const handleOnLoadStart = useCallback(() => {
-    setVideoLoading(true);
-  }, []);
-
-  const handleOnLoad = useCallback(() => {
-    setVideoLoading(false);
-  }, []);
+  const handleFullscreenExit = useCallback(() => {
+    setPlayVideo(false);
+    player.pause();
+  }, [player]);
 
   return (
     <React.Fragment>
-      <Video
+      <VideoView
+        ref={videoViewRef}
+        player={player}
         style={tailwind.style('w-full ios:h-full aspect-video')}
-        ref={video}
-        source={{
-          uri: videoSrc,
-        }}
-        shouldPlay={playVideo}
-        resizeMode={Platform.OS === 'android' ? ResizeMode.CONTAIN : ResizeMode.COVER}
-        onLoadStart={handleOnLoadStart}
-        onLoad={handleOnLoad}
-        onPlaybackStatusUpdate={handlePlaybackStatus}
-        onFullscreenUpdate={handleOnFullScreenUpdate}
+        contentFit={Platform.OS === 'android' ? 'contain' : 'cover'}
+        nativeControls={false}
+        fullscreenOptions={{ enable: true }}
+        onFullscreenExit={handleFullscreenExit}
       />
       {videoLoading ? (
         <Animated.View style={tailwind.style('absolute inset-0 flex items-center justify-center')}>
@@ -151,7 +133,7 @@ export const VideoCell = (props: VideoCellProps) => {
       <Animated.View style={tailwind.style('flex flex-row')}>
         {isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name || ''} />
+            <Avatar size={'md'} src={{ uri: sender?.thumbnail ?? undefined }} name={sender?.name || ''} />
           </Animated.View>
         ) : null}
         <MessageMenu menuOptions={menuOptions}>
@@ -210,7 +192,7 @@ export const VideoCell = (props: VideoCellProps) => {
         </MessageMenu>
         {sender?.name && isOutgoing && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end ml-1')}>
-            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
+            <Avatar size={'md'} src={{ uri: sender?.thumbnail ?? undefined }} name={sender?.name} />
           </Animated.View>
         ) : null}
       </Animated.View>

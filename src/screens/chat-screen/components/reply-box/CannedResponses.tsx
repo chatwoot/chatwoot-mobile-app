@@ -63,6 +63,7 @@ export const CannedResponses = (props: CannedResponsesProps) => {
         renderItem={({ item }) => <CannedResponseItem item={item} onSelect={props.onSelect} />}
         keyExtractor={item => item.id.toString()}
         keyboardShouldPersistTaps="always"
+        estimatedItemSize={50}
       />
     </Animated.View>
   );

@@ -72,7 +72,7 @@ const DropdownMenuBottomSheetBackdrop = forwardRef<
 
 type ChatDropdownMenuProps = {
   dropdownMenuList: DashboardList[];
-  children: React.ReactNode | JSX.Element;
+  children: React.ReactNode;
 };
 
 export const ChatDropdownMenu = (props: PropsWithChildren<ChatDropdownMenuProps>) => {

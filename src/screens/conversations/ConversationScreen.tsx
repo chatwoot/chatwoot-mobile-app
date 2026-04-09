@@ -67,7 +67,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // The screen list thats need to be checked for refreshing the conversations list
 const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.INBOX, SCREENS.SETTINGS];
 
-const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
 
 type FlashListRenderItemType = {
   item: Conversation;
@@ -255,9 +254,8 @@ const ConversationList = () => {
       </Animated.Text>
     </Animated.ScrollView>
   ) : (
-    <AnimatedFlashList
+    <FlashList
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-      layout={LinearTransition.springify().damping(18).stiffness(120)}
       showsVerticalScrollIndicator={false}
       data={allConversations}
       estimatedItemSize={91}

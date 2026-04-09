@@ -103,7 +103,7 @@ export const ComposedCell = (props: ComposedCellProps) => {
       <Animated.View style={tailwind.style('flex flex-row')}>
         {sender?.name && isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name || ''} />
+            <Avatar size={'md'} src={{ uri: sender?.thumbnail ?? undefined }} name={sender?.name || ''} />
           </Animated.View>
         ) : null}
 
@@ -244,7 +244,7 @@ export const ComposedCell = (props: ComposedCellProps) => {
               src={
                 isTemplate
                   ? require('../../../../assets/local/bot-avatar.png') // eslint-disable-line @typescript-eslint/no-require-imports
-                  : { uri: sender?.thumbnail }
+                  : { uri: sender?.thumbnail ?? undefined }
               }
               name={sender?.name || ''}
             />

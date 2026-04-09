@@ -15,7 +15,7 @@ import { BottomSheetHeader, BottomSheetWrapper, Icon } from '@/components-next/c
 
 export type MenuOption = {
   title: string;
-  icon: React.ReactNode | JSX.Element;
+  icon: React.ReactNode;
   handleOnPressMenuOption: () => void;
   destructive?: boolean;
 };

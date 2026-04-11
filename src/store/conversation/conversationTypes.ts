@@ -72,6 +72,7 @@ export interface ApiErrorResponse {
 export interface MessagesPayload {
   conversationId: number;
   beforeId?: number | null;
+  afterId?: number | null;
 }
 
 export interface MessagesResponse {
@@ -237,4 +238,14 @@ export interface TypingPayload {
 export interface TogglePriorityPayload {
   conversationId: number;
   priority: ConversationPriority;
+}
+
+export interface TranslateMessagePayload {
+  conversationId: number;
+  messageId: number;
+  targetLanguage: string;
+}
+
+export interface TranslateMessageAPIResponse {
+  content: string;
 }

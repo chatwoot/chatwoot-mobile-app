@@ -73,7 +73,7 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
           <ReplyMessageBubble replyMessage={replyMessage} variant={props.variant} />
         ) : null}
         {content && <MarkdownBubble messageContent={content} variant={props.variant} />}
-        {isMessageSending && (
+        {isMessageSending && props.item.attachments && props.item.attachments.length > 0 && (
           <Animated.View style={tailwind.style('flex h-8 w-16 items-center justify-center')}>
             <Spinner size={12} stroke={tailwind.color('text-gray-900')} />
           </Animated.View>
@@ -97,8 +97,7 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
                 <Animated.View key={attachment.fileType + index} style={tailwind.style('my-2')}>
                   <ImageBubbleContainer
                     imageSrc={attachment.dataUrl}
-                    width={300 - 24 - (isPrivate ? 13 : 0)}
-                    height={215}
+                    maxWidth={300 - 24 - (isPrivate ? 13 : 0)}
                   />
                 </Animated.View>
               );

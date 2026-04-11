@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/hooks';
-import { useChatWindowContext } from '@/context';
-import { AppState, Platform } from 'react-native';
+import { useChatWindowContext, useRefsContext } from '@/context';
+import { AppState, Platform, View, ActivityIndicator } from 'react-native';
 import { KeyboardGestureArea } from 'react-native-keyboard-controller';
 import { flatMap } from 'lodash';
 import useDeepCompareEffect from 'use-deep-compare-effect';
@@ -16,6 +16,7 @@ import { selectAttachments } from '@/store/conversation/sendMessageSlice';
 import { Animated } from 'react-native';
 import { getGroupedMessages, isAnEmailChannel } from '@/utils';
 import { MessagesList } from './MessagesList';
+import { useScrollToMessage } from './useScrollToMessage';
 import tailwind from 'twrnc';
 import { conversationParticipantActions } from '@/store/conversation-participant/conversationParticipantActions';
 import { MESSAGE_TYPES, SCREENS } from '@/constants';
@@ -71,9 +72,11 @@ const PlatformSpecificKeyboardWrapperComponent =
 
 export const MessagesListContainer = () => {
   const [appState, setAppState] = useState(AppState.currentState);
-  const { conversationId } = useChatWindowContext();
+  const { conversationId, messageId, scrollToMessageId, setScrollToMessageId } =
+    useChatWindowContext();
   const dispatch = useAppDispatch();
   const [isFlashListReady, setFlashListReady] = React.useState(false);
+  const [isListVisible, setIsListVisible] = useState(!messageId);
 
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const isAllMessagesFetched = useAppSelector(selectIsAllMessagesFetched);
@@ -82,6 +85,7 @@ export const MessagesListContainer = () => {
   const attachments = useAppSelector(selectAttachments);
 
   const { setAddMenuOptionSheetState } = useChatWindowContext();
+  const { messageListRef } = useRefsContext();
 
   useDeepCompareEffect(() => {
     setAddMenuOptionSheetState(false);
@@ -102,17 +106,66 @@ export const MessagesListContainer = () => {
     return null;
   }, [messages]);
 
+  const firstMessageId = useCallback(() => {
+    if (messages && messages.length) {
+      const firstMessage = messages[0];
+      return firstMessage.id;
+    }
+    return null;
+  }, [messages]);
+
   const loadMessages = useCallback(
-    async ({ loadingMessagesForFirstTime = false }) => {
-      const beforeId = loadingMessagesForFirstTime ? null : lastMessageId();
-      dispatch(
-        conversationActions.fetchPreviousMessages({
-          conversationId,
-          beforeId,
-        }),
-      );
+    async ({
+      loadingMessagesForFirstTime = false,
+      loadOlder = true,
+      targetMessageId,
+    }: {
+      loadingMessagesForFirstTime?: boolean;
+      loadOlder?: boolean;
+      targetMessageId?: number;
+    }) => {
+      if (targetMessageId !== undefined) {
+        // Load target message and messages around it (for search navigation)
+        dispatch(
+          conversationActions.fetchPreviousMessages({
+            conversationId,
+            afterId: targetMessageId - 100,
+            beforeId: targetMessageId + 100,
+          }),
+        );
+      } else if (loadingMessagesForFirstTime) {
+        dispatch(
+          conversationActions.fetchPreviousMessages({
+            conversationId,
+            beforeId: null,
+          }),
+        );
+      } else if (loadOlder) {
+        // Load older messages (before the oldest message we have)
+        const beforeId = lastMessageId();
+        if (beforeId) {
+          dispatch(
+            conversationActions.fetchPreviousMessages({
+              conversationId,
+              beforeId,
+            }),
+          );
+        }
+      } else {
+        // Load newer messages (after the newest message we have)
+        // Note: This is not currently triggered as Flashlist v1 doesnot support onStartReached
+        const afterId = firstMessageId();
+        if (afterId) {
+          dispatch(
+            conversationActions.fetchPreviousMessages({
+              conversationId,
+              afterId: afterId + 1, // +1 to exclude the message we already have
+            }),
+          );
+        }
+      }
     },
-    [conversationId, dispatch, lastMessageId],
+    [conversationId, dispatch, lastMessageId, firstMessageId],
   );
 
   // Update messages when app comes to foreground from background
@@ -143,10 +196,23 @@ export const MessagesListContainer = () => {
   };
 
   useEffect(() => {
-    loadMessages({ loadingMessagesForFirstTime: true });
+    if (messageId) {
+      setIsListVisible(false);
+      setFlashListReady(false);
+    } else {
+      setIsListVisible(true);
+    }
+  }, [messageId]);
+
+  useEffect(() => {
+    if (messageId) {
+      loadMessages({ targetMessageId: messageId });
+    } else {
+      loadMessages({ loadingMessagesForFirstTime: true });
+    }
     dispatch(conversationParticipantActions.index({ conversationId }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [conversationId, messageId]);
 
   const groupedMessages = getGroupedMessages(messages);
 
@@ -168,18 +234,94 @@ export const MessagesListContainer = () => {
   const isEmailInbox = isAnEmailChannel(inbox);
   const userId = useAppSelector(selectUserId);
 
+  // Compute target message index for initialScrollIndex (so FlashList starts
+  // rendering from the target position, making items near it measured early)
+  const targetMessageIndex = messageId
+    ? messagesWithGrouping.findIndex(
+        item => !('date' in item) && 'id' in item && item.id === messageId,
+      )
+    : undefined;
+
+  useScrollToMessage({
+    messageId,
+    messages: messagesWithGrouping,
+    messageListRef,
+    isFlashListReady,
+    isLoadingMessages,
+    onPositioned: useCallback(() => setIsListVisible(true), []),
+  });
+
+  // Handle scroll-to-message when tapping a quoted message reply
+  useEffect(() => {
+    if (!scrollToMessageId) return;
+
+    const targetIndex = messagesWithGrouping.findIndex(
+      item => !('date' in item) && 'id' in item && item.id === scrollToMessageId,
+    );
+
+    if (targetIndex >= 0) {
+      try {
+        messageListRef.current?.scrollToIndex({
+          index: targetIndex,
+          animated: true,
+          viewPosition: 0.5,
+        });
+      } catch {
+        // scrollToIndex can throw if index is out of range during layout changes
+      }
+    }
+
+    // Clear after a delay to allow the highlight animation to complete
+    const timer = setTimeout(() => {
+      setScrollToMessageId(undefined);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [scrollToMessageId, messagesWithGrouping, messageListRef, setScrollToMessageId]);
+
+  // The active target message ID — either from search navigation or quote tap
+  const activeTargetMessageId = scrollToMessageId || messageId;
+
+  // Show loader when navigating to a message from search until messages are loaded
+  // (prevents list from rendering at wrong position)
+  if (messageId && messagesWithGrouping.length === 0 && isLoadingMessages) {
+    return (
+      <View style={tailwind.style('flex-1 bg-white justify-center items-center')}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
   return (
     <PlatformSpecificKeyboardWrapperComponent
       style={tailwind.style('flex-1 bg-white')}
       interpolator="linear">
-      <MessagesList
-        messages={messagesWithGrouping}
-        isFlashListReady={isFlashListReady}
-        setFlashListReady={setFlashListReady}
-        onEndReached={onEndReached}
-        isEmailInbox={isEmailInbox}
-        currentUserId={userId as number}
-      />
+      <View style={[tailwind.style('flex-1'), !isListVisible && messageId ? { opacity: 0 } : {}]}>
+        <MessagesList
+          // Key forces remount when messageId changes, ensuring correct scroll position
+          key={messageId ? `search-${messageId}` : 'normal-chat'}
+          messages={messagesWithGrouping}
+          isFlashListReady={isFlashListReady}
+          setFlashListReady={setFlashListReady}
+          onEndReached={onEndReached}
+          isEmailInbox={isEmailInbox}
+          currentUserId={userId as number}
+          targetMessageId={activeTargetMessageId}
+          initialScrollIndex={
+            targetMessageIndex !== undefined && targetMessageIndex >= 0
+              ? targetMessageIndex
+              : undefined
+          }
+          isListPositioned={isListVisible}
+        />
+      </View>
+      {!isListVisible && messageId && (
+        <View
+          pointerEvents="none"
+          style={tailwind.style('flex-1 bg-white justify-center items-center absolute inset-0')}>
+          <ActivityIndicator />
+        </View>
+      )}
     </PlatformSpecificKeyboardWrapperComponent>
   );
 };

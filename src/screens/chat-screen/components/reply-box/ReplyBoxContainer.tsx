@@ -54,7 +54,8 @@ import { SendMessagePayload } from '@/store/conversation/conversationTypes';
 import { TypingIndicator } from './TypingIndicator';
 import { getTypingUsersText } from '@/utils';
 import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
-import { Agent, CannedResponse, Conversation } from '@/types';
+import { Agent, CannedResponse, Conversation, Message } from '@/types';
+import type { MessageContentAttributes } from '@/types/Message';
 import AnalyticsHelper from '@/utils/analyticsUtils';
 import { CONVERSATION_EVENTS } from '@/constants/analyticsEvents';
 import {
@@ -127,43 +128,44 @@ const BottomSheetContent = () => {
 
   const lastEmail = useAppSelector(state =>
     shouldShowReplyHeader ? getLastEmailInSelectedChat(state, { conversationId }) : null,
-  );
+  ) as Message | null;
 
   useEffect(() => {
     if (!lastEmail) return;
-    const {
-      contentAttributes: { email: emailAttributes = {} },
-    } = lastEmail;
+    const emailAttributes = (lastEmail.contentAttributes?.email ?? {}) as NonNullable<
+      MessageContentAttributes['email']
+    >;
+    const { cc = [], from = [], bcc = [] } = emailAttributes;
 
     // Retrieve the email of the current conversation's sender
     const conversationContact = conversation?.meta?.sender?.email || '';
-    let cc = emailAttributes.cc ? [...emailAttributes.cc] : [];
-    let to = [];
+    let updatedCc = [...cc];
+    let to: string[] = [];
 
     // there might be a situation where the current conversation will include a message from a third person,
     // and the current conversation contact is in CC.
     // This is an edge-case, reported here: CW-1511 [ONLY FOR INTERNAL REFERENCE]
     // So we remove the current conversation contact's email from the CC list if present
-    if (cc.includes(conversationContact)) {
-      cc = cc.filter(email => email !== conversationContact);
+    if (updatedCc.includes(conversationContact)) {
+      updatedCc = updatedCc.filter((email: string) => email !== conversationContact);
     }
 
     // If the last incoming message sender is different from the conversation contact, add them to the "to"
     // and add the conversation contact to the CC
-    if (!emailAttributes.from.includes(conversationContact)) {
-      to.push(...emailAttributes.from);
-      cc.push(conversationContact);
+    if (!from.includes(conversationContact)) {
+      to.push(...from);
+      updatedCc.push(conversationContact);
     }
 
     // Remove the conversation contact's email from the BCC list if present
-    let bcc = (emailAttributes.bcc || []).filter(email => email !== conversationContact);
+    let updatedBcc = bcc.filter((email: string) => email !== conversationContact);
 
     // Ensure only unique email addresses are in the CC list
-    bcc = [...new Set(bcc)];
-    cc = [...new Set(cc)];
+    updatedBcc = [...new Set(updatedBcc)];
+    updatedCc = [...new Set(updatedCc)];
     to = [...new Set(to)];
-    setCCEmails(cc.join(', '));
-    setBCCEmails(bcc.join(', '));
+    setCCEmails(updatedCc.join(', '));
+    setBCCEmails(updatedBcc.join(', '));
     setToEmails(to.join(', '));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastEmail]);
@@ -404,7 +406,8 @@ const BottomSheetContent = () => {
         layout={LinearTransition.springify().damping(38).stiffness(240)}
         style={tailwind.style(
           `pb-2 border-t-[1px] border-t-blackA-A3 ${shouldShowReplyHeader ? 'pt-0' : 'pt-2'}`,
-        )}>
+        )}
+      >
         {quoteMessage && !isPrivate && (
           <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>
             <QuoteReply />

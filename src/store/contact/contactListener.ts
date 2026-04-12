@@ -7,13 +7,19 @@ import { addNotification } from '../notification/notificationSlice';
 import { addContact, addContacts } from './contactSlice';
 import { Conversation } from '@/types/Conversation';
 import { Notification } from '@/types/Notification';
+import type { TypedStartListening } from '@reduxjs/toolkit';
+import type { AppDispatch, RootState } from '@/store';
 
 export const contactListenerMiddleware = createListenerMiddleware();
+const startAppListening = contactListenerMiddleware.startListening as TypedStartListening<
+  RootState,
+  AppDispatch
+>;
 
-contactListenerMiddleware.startListening({
+startAppListening({
   matcher: isAnyOf(conversationActions.fetchConversations.fulfilled),
   effect: (action, listenerApi) => {
-    const { payload } = action;
+    const { payload } = action as unknown as { payload: { conversations: Conversation[] } };
     const { conversations } = payload;
     const contacts = conversations.map((conversation: Conversation) => conversation.meta.sender);
     if (contacts.length > 0) {
@@ -22,7 +28,7 @@ contactListenerMiddleware.startListening({
   },
 });
 
-contactListenerMiddleware.startListening({
+startAppListening({
   matcher: isAnyOf(conversationActions.fetchConversation.fulfilled),
   effect: (action, listenerApi) => {
     const conversation = action.payload as Conversation;
@@ -33,10 +39,10 @@ contactListenerMiddleware.startListening({
   },
 });
 
-contactListenerMiddleware.startListening({
+startAppListening({
   matcher: isAnyOf(notificationActions.fetchNotifications.fulfilled),
   effect: (action, listenerApi) => {
-    const { payload: notifications } = action.payload;
+    const { payload: notifications } = action.payload as { payload: Notification[] };
     const conversationNotifications = notifications.filter(
       (notification: Notification) =>
         notification.primaryActorType === 'Conversation' && notification.primaryActor?.meta?.sender,
@@ -50,10 +56,10 @@ contactListenerMiddleware.startListening({
   },
 });
 
-contactListenerMiddleware.startListening({
+startAppListening({
   matcher: isAnyOf(addNotification),
   effect: (action, listenerApi) => {
-    const { payload } = action;
+    const { payload } = action as unknown as { payload: { notification: Notification } };
     const { notification } = payload;
     const contact = notification?.primaryActor?.meta?.sender;
     if (contact) {

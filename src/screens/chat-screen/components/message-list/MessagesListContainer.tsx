@@ -214,7 +214,7 @@ export const MessagesListContainer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversationId, messageId]);
 
-  const groupedMessages = getGroupedMessages(messages);
+  const groupedMessages = getGroupedMessages(messages ?? []);
 
   const allMessages = flatMap(groupedMessages, section => [
     ...section.data,
@@ -295,7 +295,8 @@ export const MessagesListContainer = () => {
   return (
     <PlatformSpecificKeyboardWrapperComponent
       style={tailwind.style('flex-1 bg-white')}
-      interpolator="linear">
+      interpolator="linear"
+    >
       <View style={[tailwind.style('flex-1'), !isListVisible && messageId ? { opacity: 0 } : {}]}>
         <MessagesList
           // Key forces remount when messageId changes, ensuring correct scroll position
@@ -318,7 +319,8 @@ export const MessagesListContainer = () => {
       {!isListVisible && messageId && (
         <View
           pointerEvents="none"
-          style={tailwind.style('flex-1 bg-white justify-center items-center absolute inset-0')}>
+          style={tailwind.style('flex-1 bg-white justify-center items-center absolute inset-0')}
+        >
           <ActivityIndicator />
         </View>
       )}

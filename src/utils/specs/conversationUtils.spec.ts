@@ -35,6 +35,7 @@ export const conversation: Conversation = {
       createdAt: 1,
       identifier: null,
       lastActivityAt: 1,
+      type: 'contact',
     },
     assignee: {
       id: 1,
@@ -70,6 +71,7 @@ export const conversation: Conversation = {
       lastNonActivityMessage: null,
       conversation: null,
       shouldRenderAvatar: false,
+      senderId: 1,
     },
     {
       id: 438100,
@@ -89,8 +91,10 @@ export const conversation: Conversation = {
       lastNonActivityMessage: null,
       conversation: null,
       shouldRenderAvatar: false,
+      senderId: 1,
     },
   ],
+  slaEvents: [],
 };
 
 const lastMessage = {
@@ -111,6 +115,7 @@ const lastMessage = {
   lastNonActivityMessage: null,
   conversation: null,
   shouldRenderAvatar: false,
+  senderId: 1,
 };
 
 describe('getLastMessage', () => {

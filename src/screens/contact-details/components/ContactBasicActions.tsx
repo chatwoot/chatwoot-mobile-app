@@ -45,13 +45,15 @@ const ContactOptionComponent = (props: ContactOptionProps) => {
           ),
         ]}
         onPress={handleOnPress}
-        {...handlers}>
+        {...handlers}
+      >
         <Icon icon={option.icon} size={24} />
         <Animated.Text
           numberOfLines={1}
           style={tailwind.style(
             'text-cxs font-inter-medium-24 leading-[15px] tracking-[0.32px] text-center text-blue-800 pt-2',
-          )}>
+          )}
+        >
           {option.contactType}
         </Animated.Text>
       </Pressable>
@@ -68,10 +70,16 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
   const { phoneNumber, email } = props;
 
   const onCallPress = () => {
+    if (!phoneNumber) {
+      return;
+    }
     openNumber({ phoneNumber });
   };
 
   const onEmailPress = () => {
+    if (!email) {
+      return;
+    }
     openEmail({ email });
   };
 

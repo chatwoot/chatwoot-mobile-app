@@ -101,7 +101,10 @@ export const UserAvatar: React.FC<Partial<UserAvatarProps>> = props => {
       {...boxProps}
     >
       {imageAvailable && src ? (
-        <AvatarImage src={src} handleFallback={loadFallback} />
+        <AvatarImage
+          src={typeof src === 'string' ? { uri: src } : src}
+          handleFallback={loadFallback}
+        />
       ) : name ? (
         <Text
           style={[

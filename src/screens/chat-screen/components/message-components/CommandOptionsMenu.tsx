@@ -6,6 +6,7 @@ import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppDispatch } from '@/hooks';
+import type { AppDispatch } from '@/store';
 import { updateAttachments } from '@/store/conversation/sendMessageSlice';
 import { useRefsContext } from '@/context';
 import { AttachFileIcon, CameraIcon, MacrosIcon, PhotosIcon } from '@/svg-icons';
@@ -17,7 +18,13 @@ import i18n from '@/i18n';
 import { showToast } from '@/utils/toastUtils';
 import { findFileSize } from '@/utils/fileUtils';
 
-export const handleOpenPhotosLibrary = async dispatch => {
+type AttachmentAsset = Asset & {
+  fileSize?: number | null;
+};
+
+type MenuAction = (dispatch: AppDispatch) => Promise<void> | void;
+
+export const handleOpenPhotosLibrary = async (dispatch: AppDispatch) => {
   const pickedAssets = await launchImageLibrary({
     quality: 1,
     selectionLimit: 4,
@@ -52,7 +59,7 @@ export const handleOpenPhotosLibrary = async dispatch => {
   }
 };
 
-const handleLaunchCamera = async dispatch => {
+const handleLaunchCamera = async (dispatch: AppDispatch) => {
   request(Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA).then(
     async result => {
       if (RESULTS.BLOCKED === result) {
@@ -111,7 +118,7 @@ const mapObject = (originalObject: DocumentPickerResponse): Asset[] => {
   ];
 };
 
-const handleAttachFile = async dispatch => {
+const handleAttachFile = async (dispatch: AppDispatch) => {
   try {
     const result = await DocumentPicker.pick({
       type: [
@@ -162,13 +169,16 @@ const ADD_MENU_OPTIONS = [
   {
     icon: <MacrosIcon />,
     title: 'Macros',
-    handlePress: () => {},
+    handlePress: (() => {}) as MenuAction,
   },
 ];
 
-export const validateFileAndSetAttachments = async (dispatch, attachment) => {
+export const validateFileAndSetAttachments = async (
+  dispatch: AppDispatch,
+  attachment: AttachmentAsset,
+) => {
   const { fileSize } = attachment;
-  if (findFileSize(fileSize) <= MAXIMUM_FILE_UPLOAD_SIZE) {
+  if (findFileSize(fileSize ?? 0) <= MAXIMUM_FILE_UPLOAD_SIZE) {
     dispatch(updateAttachments([attachment]));
   } else {
     showToast({ message: i18n.t('CONVERSATION.FILE_SIZE_LIMIT') });
@@ -206,7 +216,8 @@ const MenuOption = (props: MenuOptionProps) => {
           <Text
             style={tailwind.style(
               'text-base font-inter-normal-20 leading-[18px] tracking-[0.24px] text-gray-950 pl-5',
-            )}>
+            )}
+          >
             {menuOption.title}
           </Text>
         </Animated.View>
@@ -225,7 +236,8 @@ export const CommandOptionsMenu = () => {
     <Animated.View
       entering={SlideInDown.springify().damping(38).stiffness(240)}
       exiting={SlideOutDown.springify().damping(38).stiffness(240)}
-      style={tailwind.style('mx-1 pt-2 items-start', `h-[${containerHeight}px]`)}>
+      style={tailwind.style('mx-1 pt-2 items-start', `h-[${containerHeight}px]`)}
+    >
       {ADD_MENU_OPTIONS.map((menuOption, index) => {
         return <MenuOption key={menuOption.title} {...{ menuOption, index }} />;
       })}

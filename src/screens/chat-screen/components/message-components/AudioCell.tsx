@@ -14,7 +14,14 @@ import { Channel, IconProps, Message, MessageStatus, UnixTimestamp } from '@/typ
 import { unixTimestampToReadableTime } from '@/utils';
 import { Avatar, Icon, Slider } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
-import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
+import {
+  AudioStatus,
+  pausePlayer,
+  resumePlayer,
+  seekTo,
+  startPlayer,
+  stopPlayer,
+} from '../audio-recorder';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { MESSAGE_TYPES } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
@@ -69,8 +76,11 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
   const currentPosition = useSharedValue(0);
   const totalDuration = useSharedValue(0);
 
-  const audioPlayBackStatus = (data: { data: PlayBackType }) => {
-    const playBackData = data.data as PlayBackType;
+  const audioPlayBackStatus = ({ data, status }: { data?: PlayBackType; status: AudioStatus }) => {
+    if (status !== AudioStatus.PLAYING && status !== AudioStatus.STOPPED) {
+      return;
+    }
+    const playBackData = data as PlayBackType | undefined;
     if (playBackData) {
       currentPosition.value = playBackData.currentPosition;
       totalDuration.value = playBackData.duration;
@@ -150,7 +160,8 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
           <Animated.View
             style={tailwind.style('pl-0.5 pr-0.5')}
             entering={FadeIn}
-            exiting={FadeOut}>
+            exiting={FadeOut}
+          >
             <Icon
               icon={
                 <PauseIcon
@@ -165,7 +176,8 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
           <Animated.View
             style={tailwind.style('pl-0.5 pr-0.5')}
             entering={FadeIn}
-            exiting={FadeOut}>
+            exiting={FadeOut}
+          >
             <PlayIcon
               fillOpacity={isIncoming ? '1' : '0.565'}
               fill={isIncoming ? 'white' : 'black'}
@@ -210,11 +222,12 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
         !shouldRenderAvatar && isIncoming ? 'ml-7' : '',
         !shouldRenderAvatar && isOutgoing ? 'pr-7' : '',
         shouldRenderAvatar ? 'pb-2' : '',
-      )}>
+      )}
+    >
       <Animated.View style={tailwind.style('flex flex-row')}>
         {sender?.name && isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
+            <Avatar size={'md'} src={{ uri: sender?.thumbnail ?? undefined }} name={sender?.name} />
           </Animated.View>
         ) : null}
         <MessageMenu menuOptions={menuOptions}>
@@ -232,18 +245,21 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
                       : ''
                   : '',
               ),
-            ]}>
+            ]}
+          >
             <AudioPlayer {...{ audioSrc, isIncoming, isOutgoing }} />
             <Animated.View
               style={tailwind.style(
                 'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center self-end pl-1.5',
-              )}>
+              )}
+            >
               <Text
                 style={tailwind.style(
                   'text-xs font-inter-420-20 tracking-[0.32px] leading-[14px] pr-1',
                   isIncoming ? 'text-whiteA-A11' : '',
                   isOutgoing ? 'text-gray-700' : '',
-                )}>
+                )}
+              >
                 {unixTimestampToReadableTime(timeStamp)}
               </Text>
               <DeliveryStatus
@@ -261,7 +277,7 @@ export const AudioCell: React.FC<AudioCellProps> = props => {
         </MessageMenu>
         {sender?.name && isOutgoing && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end ml-1')}>
-            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name} />
+            <Avatar size={'md'} src={{ uri: sender?.thumbnail ?? undefined }} name={sender?.name} />
           </Animated.View>
         ) : null}
       </Animated.View>

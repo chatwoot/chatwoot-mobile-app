@@ -8,6 +8,7 @@ export const inbox: Inbox = {
   channelType: 'Channel::WebWidget',
   phoneNumber: '+1234567890',
   medium: 'web',
+  provider: 'chatwoot',
 };
 
 export const mockInboxesResponse = { data: { payload: [inbox] } };

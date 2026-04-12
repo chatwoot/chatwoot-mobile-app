@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlashList } from '@shopify/flash-list';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { debounce } from 'lodash';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -14,8 +14,13 @@ import {
 import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
 import { clearSearchResults, prepareNewSearch, setQuery } from '@/store/search/searchSlice';
 import { RecentSearches } from '../utils/recentSearches';
-import { SEARCH_SECTION_IDS, type SearchItem, type SearchSectionType } from '@/store/search/searchTypes';
+import {
+  SEARCH_SECTION_IDS,
+  type SearchItem,
+  type SearchSectionType,
+} from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
+import type { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 
 const VALID_TAB_IDS = new Set<string>(['all', ...SEARCH_SECTION_IDS]);
 
@@ -24,7 +29,7 @@ export type TabType = 'all' | SearchSectionType;
 const INITIAL_ITEMS_TO_SHOW = 5;
 
 export function useSearchScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<TabBarExcludedScreenParamList>>();
   const dispatch = useAppDispatch();
 
   const [searchText, setSearchText] = useState('');
@@ -304,7 +309,6 @@ export function useSearchScreen() {
     });
     return data;
   }, [sectionData]);
-
 
   const createEndReachedHandler = useCallback(
     (sectionId: SearchSectionType) => {

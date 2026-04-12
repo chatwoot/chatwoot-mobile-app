@@ -1,7 +1,21 @@
 import camelcaseKeys from 'camelcase-keys';
 
 import type { Conversation } from '@/types/Conversation';
+import type { Channel } from '@/types';
 import { transformContact, transformMessage } from '@/utils/camelCaseKeys';
+
+type SearchConversationRecord = Record<string, unknown> & {
+  message?: unknown;
+  contact?: unknown;
+  agent?: unknown;
+  meta?: Record<string, unknown>;
+  messages?: unknown;
+  inbox?: {
+    id?: number;
+    channelType?: Channel;
+  };
+  inboxId?: number;
+};
 
 /**
  * Transform search conversation API response to Conversation type
@@ -9,7 +23,7 @@ import { transformContact, transformMessage } from '@/utils/camelCaseKeys';
 export function transformSearchConversation(conversation: unknown): Conversation {
   const transformed = camelcaseKeys(conversation as Record<string, unknown>, {
     deep: true,
-  }) as Record<string, unknown>;
+  }) as SearchConversationRecord;
 
   if (transformed.message) {
     transformed.lastNonActivityMessage = transformMessage(transformed.message);
@@ -42,5 +56,5 @@ export function transformSearchConversation(conversation: unknown): Conversation
     transformed.inboxId = transformed.inbox.id;
   }
 
-  return transformed as Conversation;
+  return transformed as unknown as Conversation;
 }

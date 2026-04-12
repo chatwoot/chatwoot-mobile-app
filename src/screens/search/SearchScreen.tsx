@@ -86,7 +86,8 @@ const SearchScreen = () => {
         key={activeTab}
         entering={FadeIn.duration(200)}
         exiting={FadeOut.duration(150)}
-        style={tailwind.style('flex-1')}>
+        style={tailwind.style('flex-1')}
+      >
         <SearchContent
           showRecentSearches={showRecentSearches}
           recentSearches={recentSearches}

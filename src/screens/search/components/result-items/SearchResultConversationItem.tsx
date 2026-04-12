@@ -4,6 +4,7 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 
 import { Icon } from '@/components-next/common';
 import { tailwind } from '@/theme';
+import type { Channel } from '@/types';
 import type { Conversation } from '@/types/Conversation';
 import { HighlightedText } from '../shared/HighlightedText';
 import { useScaleAnimation } from '@/utils';
@@ -63,7 +64,8 @@ export const SearchResultConversationItem = ({
             pressed ? 'bg-gray-50' : '',
           ),
         ]}
-        {...handlers}>
+        {...handlers}
+      >
         <Animated.View style={animatedStyle}>
           <Animated.View style={tailwind.style('flex-row items-center justify-between mb-2')}>
             <Animated.View style={tailwind.style('flex-row items-center gap-3 flex-1')}>
@@ -76,9 +78,10 @@ export const SearchResultConversationItem = ({
                       <Animated.View
                         style={tailwind.style(
                           'h-4 w-4 rounded-full bg-gray-100 items-center justify-center',
-                        )}>
+                        )}
+                      >
                         <Icon
-                          icon={getChannelIcon(channelType, medium, additionalType)}
+                          icon={getChannelIcon(channelType as Channel, medium, additionalType)}
                           size={10}
                         />
                       </Animated.View>
@@ -87,7 +90,8 @@ export const SearchResultConversationItem = ({
                       numberOfLines={1}
                       style={tailwind.style(
                         'text-sm font-inter-420-20 leading-[17px] text-gray-950 flex-shrink',
-                      )}>
+                      )}
+                    >
                       {inboxName}
                     </Animated.Text>
                   </Animated.View>
@@ -104,7 +108,8 @@ export const SearchResultConversationItem = ({
                     <Animated.Text
                       style={tailwind.style(
                         'text-sm font-inter-420-20 leading-[17px] text-gray-600',
-                      )}>
+                      )}
+                    >
                       {item.label}:
                     </Animated.Text>
                     <HighlightedText

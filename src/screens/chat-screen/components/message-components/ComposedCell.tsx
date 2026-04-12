@@ -15,7 +15,7 @@ import { INBOX_TYPES, MESSAGE_TYPES, TEXT_MAX_WIDTH } from '@/constants';
 
 import { AudioPlayer } from './AudioCell';
 import { FilePreview } from './FileCell';
-import { ImageContainer } from './ImageCell';
+import { ImageBubbleContainer } from './ImageBubble';
 import { VideoPlayer } from './VideoCell';
 import { DeliveryStatus } from './DeliveryStatus';
 import { useAppSelector } from '@/hooks';
@@ -53,7 +53,8 @@ export const ComposedCell = (props: ComposedCellProps) => {
   const { channel, menuOptions } = props;
   const { conversationId } = useChatWindowContext();
 
-  const messages = useAppSelector(state => getMessagesByConversationId(state, { conversationId }));
+  const messages =
+    useAppSelector(state => getMessagesByConversationId(state, { conversationId })) ?? [];
 
   const isIncoming = messageType === MESSAGE_TYPES.INCOMING;
   const isOutgoing = messageType === MESSAGE_TYPES.OUTGOING;
@@ -99,11 +100,16 @@ export const ComposedCell = (props: ComposedCellProps) => {
         !shouldRenderAvatar && isTemplate ? 'pr-7' : '',
         shouldRenderAvatar ? 'mb-2' : '',
         isPrivate ? 'my-6' : '',
-      )}>
+      )}
+    >
       <Animated.View style={tailwind.style('flex flex-row')}>
         {sender?.name && isIncoming && shouldRenderAvatar ? (
           <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-            <Avatar size={'md'} src={{ uri: sender?.thumbnail }} name={sender?.name || ''} />
+            <Avatar
+              size={'md'}
+              src={{ uri: sender?.thumbnail ?? undefined }}
+              name={sender?.name || ''}
+            />
           </Animated.View>
         ) : null}
 
@@ -124,7 +130,8 @@ export const ComposedCell = (props: ComposedCellProps) => {
                       : ''
                   : '',
               ),
-            ]}>
+            ]}
+          >
             <Animated.View style={tailwind.style('flex flex-row')}>
               {isPrivate ? (
                 <Animated.View
@@ -144,7 +151,8 @@ export const ComposedCell = (props: ComposedCellProps) => {
                       return (
                         <Animated.View
                           key={attachment.fileType + index}
-                          style={tailwind.style('flex-1 py-3 px-2 rounded-xl my-2')}>
+                          style={tailwind.style('flex-1 py-3 px-2 rounded-xl my-2')}
+                        >
                           <AudioPlayer
                             audioSrc={attachment.dataUrl}
                             {...{ isIncoming, isOutgoing }}
@@ -157,23 +165,26 @@ export const ComposedCell = (props: ComposedCellProps) => {
                         <Animated.View
                           style={tailwind.style(
                             'flex flex-row items-center justify-center py-8 bg-slate-100 gap-1',
-                          )}>
+                          )}
+                        >
                           <Icon icon={<FileErrorIcon fill={tailwind.color('text-gray-900')} />} />
                           <Animated.Text
                             style={tailwind.style(
                               'text-cxs font-inter-420-20 text-gray-900 mt-[1px]',
-                            )}>
+                            )}
+                          >
                             {i18n.t('CONVERSATION.STORY_NOT_AVAILABLE')}
                           </Animated.Text>
                         </Animated.View>
                       ) : (
                         <Animated.View
                           key={attachment.fileType + index}
-                          style={tailwind.style('my-2')}>
-                          <ImageContainer
+                          style={tailwind.style('my-2')}
+                        >
+                          <ImageBubbleContainer
                             imageSrc={attachment.dataUrl}
-                            width={300 - 24 - (isPrivate ? 13 : 0)}
-                            height={215}
+                            maxWidth={300 - 24 - (isPrivate ? 13 : 0)}
+                            maxHeight={215}
                           />
                         </Animated.View>
                       );
@@ -184,7 +195,8 @@ export const ComposedCell = (props: ComposedCellProps) => {
                           key={attachment.fileType + index}
                           style={tailwind.style(
                             'flex flex-row items-center relative max-w-[300px] my-2',
-                          )}>
+                          )}
+                        >
                           <FilePreview
                             fileSrc={attachment.dataUrl}
                             isComposed
@@ -197,7 +209,8 @@ export const ComposedCell = (props: ComposedCellProps) => {
                       return (
                         <Animated.View
                           key={attachment.fileType + index}
-                          style={tailwind.style('flex flex-row items-center my-2')}>
+                          style={tailwind.style('flex flex-row items-center my-2')}
+                        >
                           <VideoPlayer videoSrc={attachment.dataUrl} />
                         </Animated.View>
                       );
@@ -210,7 +223,8 @@ export const ComposedCell = (props: ComposedCellProps) => {
                     // singleLineShortText ? "pl-1.5" : "",
                     // singleLineLongText || isMultiLine ? "justify-end" : "",
                     // multiLineShortText ? " absolute bottom-0.5 right-2.5" : "",
-                  )}>
+                  )}
+                >
                   {isPrivate ? <Icon icon={<LockIcon />} size={12} /> : null}
                   <Text
                     style={tailwind.style(
@@ -218,7 +232,8 @@ export const ComposedCell = (props: ComposedCellProps) => {
                       isIncoming ? 'text-whiteA-A11' : '',
                       isOutgoing ? 'text-gray-700' : '',
                       isPrivate ? 'pl-1' : '',
-                    )}>
+                    )}
+                  >
                     {unixTimestampToReadableTime(createdAt)}
                   </Text>
                   <DeliveryStatus
@@ -244,7 +259,7 @@ export const ComposedCell = (props: ComposedCellProps) => {
               src={
                 isTemplate
                   ? require('../../../../assets/local/bot-avatar.png') // eslint-disable-line @typescript-eslint/no-require-imports
-                  : { uri: sender?.thumbnail }
+                  : { uri: sender?.thumbnail ?? undefined }
               }
               name={sender?.name || ''}
             />

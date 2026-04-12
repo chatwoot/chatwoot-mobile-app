@@ -45,6 +45,12 @@ export const buildCreatePayload = (data: PendingMessage): MessageBuilderPayload 
     toEmails,
   } = data;
   if (file) {
+    const attachment = file as File & {
+      uri?: string;
+      fileName?: string;
+      name?: string;
+      type?: string;
+    };
     payload = new FormData();
     if (message) {
       payload.append('content', message);
@@ -52,9 +58,9 @@ export const buildCreatePayload = (data: PendingMessage): MessageBuilderPayload 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     payload.append('attachments[]', {
-      uri: file.uri,
-      name: file.fileName,
-      type: file.type,
+      uri: attachment.uri,
+      name: attachment.fileName ?? attachment.name,
+      type: attachment.type,
     });
     payload.append('private', isPrivate.toString());
     payload.append('echo_id', echoId);

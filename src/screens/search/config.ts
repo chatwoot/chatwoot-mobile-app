@@ -17,7 +17,7 @@ import {
 } from './utils/handlers';
 import type { AppDispatch } from '@/store';
 import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
-import type { ParamListBase } from '@react-navigation/native';
+import type { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 
 export interface SearchSectionConfig {
   id: SearchSectionType;
@@ -29,7 +29,7 @@ export interface SearchSectionConfig {
   getId: (item: SearchItem) => string | number;
   getItemId: (item: SearchItem) => string | number;
   onPress: (
-    navigation: NavigationProp<ParamListBase>,
+    navigation: NavigationProp<TabBarExcludedScreenParamList>,
     item: SearchItem,
     dispatch?: AppDispatch,
     additionalData?: Record<string, unknown>,

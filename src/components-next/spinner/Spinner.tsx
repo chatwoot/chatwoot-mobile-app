@@ -1,5 +1,5 @@
 import React from 'react';
-import { ViewProps } from 'react-native';
+import { StyleProp, ViewProps, ViewStyle } from 'react-native';
 import Animated, {
   Easing,
   FadeIn,
@@ -49,7 +49,12 @@ export const Spinner = (props: SpinnerProps) => {
     <Animated.View
       entering={FadeIn}
       exiting={FadeOut}
-      style={[tailwind.style('flex items-center justify-center'), animatedStyle, style]}>
+      style={[
+        tailwind.style('flex items-center justify-center'),
+        animatedStyle as StyleProp<ViewStyle>,
+        style,
+      ]}
+    >
       <Icon icon={<LoadingIcon stroke={stroke} />} size={size} />
     </Animated.View>
   );

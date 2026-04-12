@@ -6,10 +6,19 @@
  */
 
 import messaging from '@react-native-firebase/messaging';
+import type { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
 
 const FIREBASE_ENABLED = process.env.EXPO_PUBLIC_FIREBASE_ENABLED === 'true';
 
-let isInitialized = false;
+const noop = () => {};
+
+if (FIREBASE_ENABLED) {
+  messaging().setBackgroundMessageHandler(
+    async (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
+      console.log('[Firebase] Message handled in the background!', remoteMessage);
+    },
+  );
+}
 
 /**
  * Initialize Firebase Messaging
@@ -20,22 +29,10 @@ export const initializeFirebaseMessaging = async () => {
     return;
   }
 
-  if (isInitialized) {
-    console.log('[Firebase] Messaging already initialized');
-    return;
-  }
-
   try {
     // Check if Firebase is available
     const fcmToken = await messaging().getToken();
     console.log('[Firebase] FCM Token:', fcmToken);
-
-    // Set up background message handler
-    messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('[Firebase] Message handled in the background!', remoteMessage);
-    });
-
-    isInitialized = true;
     console.log('[Firebase] Messaging initialized successfully');
   } catch (error) {
     console.error('[Firebase] Failed to initialize messaging:', error);
@@ -45,51 +42,37 @@ export const initializeFirebaseMessaging = async () => {
 /**
  * Get initial notification when app is opened from a quit state
  */
-export const getInitialNotification = async () => {
-  if (!FIREBASE_ENABLED) {
-    return null;
-  }
+export const getInitialNotification =
+  async (): Promise<FirebaseMessagingTypes.RemoteMessage | null> => {
+    if (!FIREBASE_ENABLED) {
+      return null;
+    }
 
-  if (!isInitialized) {
-    console.warn('[Firebase] Messaging not initialized yet');
-    return null;
-  }
-
-  try {
-    const message = await messaging().getInitialNotification();
-    return message;
-  } catch (error) {
-    console.error('[Firebase] Failed to get initial notification:', error);
-    return null;
-  }
-};
+    try {
+      return await messaging().getInitialNotification();
+    } catch (error) {
+      console.error('[Firebase] Failed to get initial notification:', error);
+      return null;
+    }
+  };
 
 /**
  * Subscribe to notification opened events when app is in background
  */
-export const onNotificationOpenedApp = (callback: (message: any) => void) => {
+export const onNotificationOpenedApp = (
+  callback: (message: FirebaseMessagingTypes.RemoteMessage) => void,
+): (() => void) => {
   if (!FIREBASE_ENABLED) {
-    return () => {}; // Return empty unsubscribe function
-  }
-
-  if (!isInitialized) {
-    console.warn('[Firebase] Messaging not initialized yet');
-    return () => {}; // Return empty unsubscribe function
+    return noop;
   }
 
   try {
-    const unsubscribe = messaging().onNotificationOpenedApp(callback);
-    return unsubscribe;
+    return messaging().onNotificationOpenedApp(callback);
   } catch (error) {
     console.error('[Firebase] Failed to subscribe to notification opened:', error);
-    return () => {}; // Return empty unsubscribe function
+    return noop;
   }
 };
-
-/**
- * Check if Firebase Messaging is initialized
- */
-export const isMessagingInitialized = () => FIREBASE_ENABLED && isInitialized;
 
 /**
  * Check if Firebase is enabled

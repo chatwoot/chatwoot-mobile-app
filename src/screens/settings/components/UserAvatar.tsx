@@ -3,7 +3,7 @@ import { ImageSourcePropType, Text, View, ViewProps } from 'react-native';
 import { Image } from 'expo-image';
 import { AvailabilityStatus } from '@/types/common/AvailabilityStatus';
 
-import { tailwind } from '@/theme';
+import { tailwind, useThemedStyles } from '@/theme';
 import { cx, styleAdapter } from '@/utils';
 import { userStatusList } from '@/constants';
 
@@ -32,15 +32,16 @@ const AvatarStatus = ({
   status: AvailabilityStatus;
   parentsBackground: string;
 }) => {
+  const styles = useThemedStyles();
   const bgColor = getBgColorBasedOnStatus(status);
   return (
     <View
       style={[
-        tailwind.style(
-          'absolute border-[1.5px] border-white bg-white rounded-full bottom-[2px] right-[2px]',
-        ),
+        tailwind.style('absolute border-[1.5px] rounded-full bottom-[2px] right-[2px]'),
+        styles.bgPrimary,
         { borderColor: tailwind.color(parentsBackground) },
-      ]}>
+      ]}
+    >
       <View style={tailwind.style(cx('rounded-full h-4 w-4', bgColor))} />
     </View>
   );
@@ -84,6 +85,7 @@ export interface UserAvatarProps extends ViewProps {
 
 export const UserAvatar: React.FC<Partial<UserAvatarProps>> = props => {
   const { name, src, status, parentsBackground = 'text-white', style, ...boxProps } = props;
+  const styles = useThemedStyles();
 
   const isSourceAvailable = useMemo(() => (src ? true : false), [src]);
   const [imageAvailable, setImageAvailable] = useState(isSourceAvailable);
@@ -92,19 +94,23 @@ export const UserAvatar: React.FC<Partial<UserAvatarProps>> = props => {
   return (
     <View
       style={[
-        tailwind.style('relative items-center justify-center bg-gray-100 rounded-full h-24 w-24'),
+        tailwind.style('relative items-center justify-center rounded-full h-24 w-24'),
+        styles.bgTertiary,
         styleAdapter(style),
       ]}
-      {...boxProps}>
+      {...boxProps}
+    >
       {imageAvailable && src ? (
         <AvatarImage src={src} handleFallback={loadFallback} />
       ) : name ? (
         <Text
           style={[
-            tailwind.style('text-center uppercase text-gray-800 font-inter-medium-24 text-3xl'),
+            tailwind.style('text-center uppercase font-inter-medium-24 text-3xl'),
+            styles.textPrimary,
           ]}
           adjustsFontSizeToFit
-          allowFontScaling={false}>
+          allowFontScaling={false}
+        >
           {getInitials(name)}
         </Text>
       ) : null}

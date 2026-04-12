@@ -31,7 +31,7 @@ const semanticColors = {
     primary: '#FFFFFF', // white
     secondary: '#F8F9FA', // oceanCoral-50
     dark: '#012A4A', // oceanDeep-600
-    darkAlt: '#0D1B2A', // oceanBlack-600
+    darkAlt: '#0B1121', // oceanBlack-600
     input: 'rgba(72, 202, 228, 0.08)', // oceanTurquoise-600 at 8%
   },
 
@@ -87,6 +87,8 @@ export const THEME_COLORS = {
     // Backgrounds
     bgPrimary: semanticColors.background.primary,
     bgSecondary: semanticColors.background.secondary,
+    bgTertiary: '#E5E7EB', // Avatar background / tertiary elements (light gray)
+    bgPressed: '#E9ECEF', // Pressed state for list items
     bgInput: semanticColors.background.input,
 
     // Text
@@ -94,6 +96,7 @@ export const THEME_COLORS = {
     textSecondary: semanticColors.text.secondary,
     textTertiary: semanticColors.text.tertiary,
     textLink: semanticColors.text.link,
+    iconColor: '#858585', // Icon stroke color in light mode
 
     // Borders
     border: semanticColors.border.DEFAULT,
@@ -112,23 +115,31 @@ export const THEME_COLORS = {
     btnPrimaryBgDisabled: semanticColors.primary.disabled, // #99D7EF
     btnPrimaryText: semanticColors.text.inverse, // #FFFFFF
     btnPrimaryTextDisabled: semanticColors.text.secondary, // #ADB5BD
+    btnSecondaryBg: semanticColors.background.secondary, // #F8F9FA
+    btnSecondaryBgPressed: brandColors.oceanCoral[200], // #E9ECEF
+    btnSecondaryBgDisabled: semanticColors.background.secondary, // #F8F9FA
+    btnSecondaryText: semanticColors.text.primary, // #0D1B2A
+    btnSecondaryTextDisabled: semanticColors.text.secondary, // #ADB5BD
   },
 
   dark: {
     // Backgrounds
-    bgPrimary: semanticColors.background.darkAlt, // #0D1B2A
-    bgSecondary: '#171717', // brandColors.grayDark[50]
-    bgInput: '#1A1A1A', // Slightly lighter than bgPrimary for contrast
+    bgPrimary: semanticColors.background.darkAlt, // #0D1B2A (main background)
+    bgSecondary: '#161E31', // Card background with better contrast
+    bgTertiary: '#2A3847', // Avatar background / tertiary elements
+    bgPressed: 'rgba(255, 255, 255, 0.05)', // Very subtle pressed state overlay
+    bgInput: '#161E31', // Input fields
 
     // Text
-    textPrimary: semanticColors.text.inverse, // #FFFFFF
-    textSecondary: semanticColors.text.secondary, // #ADB5BD
-    textTertiary: semanticColors.text.tertiary, // #CED4DA
-    textLink: brandColors.oceanTurquoise[600], // #48CAE4
+    textPrimary: semanticColors.text.inverse, // #FFFFFF (main text)
+    textSecondary: '#8B95A0', // Muted gray for secondary text (email, subtitles)
+    textTertiary: '#6B7280', // Darker gray for section headers (PREFERENCES, SUPPORT)
+    textLink: brandColors.oceanElectric[700], // #0077B6
+    iconColor: '#9CA3AF', // Icon stroke color in dark mode
 
     // Borders
-    border: semanticColors.background.dark, // #012a4a
-    divider: brandColors.grayDark[300], // #262626
+    border: 'rgba(255, 255, 255, 0.06)', // Very subtle borders between items (matching design)
+    divider: 'rgba(255, 255, 255, 0.08)', // Slightly more visible dividers
 
     // Sheet/Modal components
     sheetBg: '#171717', // brandColors.grayDark[50]
@@ -143,6 +154,11 @@ export const THEME_COLORS = {
     btnPrimaryBgDisabled: brandColors.grayDark[300], // #262626
     btnPrimaryText: semanticColors.text.inverse, // #FFFFFF
     btnPrimaryTextDisabled: brandColors.grayDark[700], // #737373
+    btnSecondaryBg: '#1E293B',
+    btnSecondaryBgPressed: '#2A3847',
+    btnSecondaryBgDisabled: '#161E31',
+    btnSecondaryText: semanticColors.text.inverse, // #FFFFFF
+    btnSecondaryTextDisabled: '#8B95A0',
   },
 } as const;
 

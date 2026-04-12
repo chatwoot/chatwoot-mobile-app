@@ -13,62 +13,40 @@ type ButtonProps = {
   disabled?: boolean;
 };
 
-const getButtonStyles = (
-  isPrimary: boolean,
-  pressed: boolean,
-  disabled: boolean,
-  btnStyles: any,
-) => {
+type ThemedButtonStyles = ReturnType<typeof useThemedStyles>['btnPrimary'];
+
+const getButtonStyles = (pressed: boolean, disabled: boolean, btnStyles: ThemedButtonStyles) => {
   const baseStyles = tailwind.style('py-[11px] flex items-center justify-center rounded-[13px]');
 
-  if (isPrimary) {
-    if (disabled) {
-      return [baseStyles, btnStyles.bgDisabled];
-    }
-    if (pressed) {
-      return [baseStyles, btnStyles.bgPressed];
-    }
-    return [baseStyles, btnStyles.bg];
+  if (disabled) {
+    return [baseStyles, btnStyles.bgDisabled];
   }
 
-  // Secondary button (keep original behavior)
-  const bgColor = pressed ? 'bg-oceanCoral-100' : 'bg-oceanCoral-50';
-  return tailwind.style('py-[11px] flex items-center justify-center rounded-[13px]', bgColor);
+  if (pressed) {
+    return [baseStyles, btnStyles.bgPressed];
+  }
+
+  return [baseStyles, btnStyles.bg];
 };
 
 const getTextStyles = (
   isPrimary: boolean,
   isDestructive: boolean,
   disabled: boolean,
-  btnStyles: any,
+  btnStyles: ThemedButtonStyles,
+  destructiveTextStyle: { color: string },
 ) => {
   const baseStyles = tailwind.style('text-base font-medium tracking-[0.16px] leading-[22px]');
 
-  if (isPrimary) {
-    if (disabled) {
-      return [baseStyles, btnStyles.textDisabled];
-    }
-
-    if (isDestructive) {
-      return tailwind.style(
-        'text-base font-medium tracking-[0.16px] leading-[22px]',
-        'text-tomato-800',
-      );
-    }
-
-    return [baseStyles, btnStyles.text];
-  }
-
-  // Secondary button
   if (disabled) {
-    return tailwind.style(
-      'text-base font-medium tracking-[0.16px] leading-[22px]',
-      'text-oceanCoral-600',
-    );
+    return [baseStyles, btnStyles.textDisabled];
   }
 
-  const colorStyles = isDestructive ? 'text-ruby-800' : 'text-text-primary';
-  return tailwind.style('text-base font-medium tracking-[0.16px] leading-[22px]', colorStyles);
+  if (!isPrimary && isDestructive) {
+    return [baseStyles, destructiveTextStyle];
+  }
+
+  return [baseStyles, btnStyles.text];
 };
 
 export const Button = ({
@@ -80,7 +58,7 @@ export const Button = ({
 }: ButtonProps) => {
   const { handlers, animatedStyle } = useScaleAnimation();
   const haptic = useHaptic(isDestructive ? 'medium' : 'selection');
-  const { btnPrimary } = useThemedStyles();
+  const { btnPrimary, btnSecondary, stateError } = useThemedStyles();
 
   const handleButtonPress = useCallback(() => {
     if (!disabled) {
@@ -90,6 +68,7 @@ export const Button = ({
   }, [disabled, handlePress, haptic]);
 
   const isPrimary = variant === 'primary';
+  const buttonStyles = isPrimary ? btnPrimary : btnSecondary;
 
   return (
     <Animated.View style={animatedStyle}>
@@ -99,10 +78,12 @@ export const Button = ({
         accessible
         accessibilityRole="button"
         accessibilityState={{ disabled }}
-        style={({ pressed }) => getButtonStyles(isPrimary, pressed, disabled, btnPrimary)}
+        style={({ pressed }) => getButtonStyles(pressed, disabled, buttonStyles)}
         {...handlers}
       >
-        <Animated.Text style={getTextStyles(isPrimary, isDestructive, disabled, btnPrimary)}>
+        <Animated.Text
+          style={getTextStyles(isPrimary, isDestructive, disabled, buttonStyles, stateError)}
+        >
           {text}
         </Animated.Text>
       </Pressable>

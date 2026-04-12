@@ -25,7 +25,7 @@ import { clearSearchResults } from '@/store/search/searchSlice';
 import { RecentSearches } from '@/screens/search/utils/recentSearches';
 import i18n from 'i18n';
 import { HELP_URL } from '@/constants/url';
-import { tailwind } from '@/theme';
+import { tailwind, useThemedStyles } from '@/theme';
 
 import {
   BottomSheetBackdrop,
@@ -43,7 +43,14 @@ import { UserAvatar } from './components/UserAvatar';
 
 import { LANGUAGES, TAB_BAR_HEIGHT } from '@/constants';
 import { useRefsContext, useTheme } from '@/context';
-import { ChatwootIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
+import {
+  ChatwootIcon,
+  MoonIcon,
+  NotificationIcon,
+  SwitchAccountIcon,
+  SwitchIcon,
+  TranslateIcon,
+} from '@/svg-icons';
 import { GenericListType } from '@/types';
 
 import { useHaptic } from '@/utils';
@@ -77,6 +84,7 @@ const buildNumber = Application.nativeBuildVersion;
 const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVersion;
 
 const SettingsScreen = () => {
+  const styles = useThemedStyles();
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const availabilityStatus =
@@ -137,6 +145,11 @@ const SettingsScreen = () => {
 
   const activeLocale = useSelector(selectLocale);
   const { theme, setTheme } = useTheme();
+  const themeLabels = {
+    system: i18n.t('SETTINGS.THEME_SYSTEM'),
+    light: i18n.t('SETTINGS.THEME_LIGHT'),
+    dark: i18n.t('SETTINGS.THEME_DARK'),
+  } as const;
   const {
     userAvailabilityStatusSheetRef,
     languagesModalSheetRef,
@@ -246,16 +259,16 @@ const SettingsScreen = () => {
     },
     {
       hasChevron: true,
-      title: 'Appearance',
-      icon: <SwitchIcon />,
-      subtitle: theme === 'system' ? 'System' : theme === 'light' ? 'Light' : 'Dark',
+      title: i18n.t('SETTINGS.APPEARANCE'),
+      icon: <MoonIcon />,
+      subtitle: themeLabels[theme],
       subtitleType: 'light',
       onPressListItem: () => themeModalSheetRef.current?.present(),
     },
     {
       hasChevron: enableAccountSwitch,
       title: i18n.t('SETTINGS.SWITCH_ACCOUNT'),
-      icon: <SwitchIcon />,
+      icon: <SwitchAccountIcon />,
       subtitle: activeAccountName,
       subtitleType: 'light',
       onPressListItem: () => {
@@ -286,12 +299,8 @@ const SettingsScreen = () => {
   ];
 
   return (
-    <SafeAreaView style={tailwind.style('flex-1 bg-white font-inter-normal-20')}>
-      <StatusBar
-        translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
-      />
+    <SafeAreaView style={[tailwind.style('flex-1 font-inter-normal-20'), styles.bgPrimary]}>
+      <StatusBar translucent backgroundColor="transparent" barStyle={styles.statusBar} />
       <SettingsHeader />
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
@@ -307,13 +316,16 @@ const SettingsScreen = () => {
             ></Animated.View>
           </Animated.View>
           <Animated.View style={tailwind.style('flex flex-col items-center gap-1')}>
-            <Animated.Text style={tailwind.style('text-[22px] font-inter-580-24 text-gray-950')}>
+            <Animated.Text
+              style={[tailwind.style('text-[22px] font-inter-580-24'), styles.textPrimary]}
+            >
               {name}
             </Animated.Text>
             <Animated.Text
-              style={tailwind.style(
-                'text-[15px] font-inter-420-20 leading-[17.25px] text-gray-900',
-              )}
+              style={[
+                tailwind.style('text-[15px] font-inter-420-20 leading-[17.25px]'),
+                styles.textSecondary,
+              ]}
             >
               {email}
             </Animated.Text>
@@ -337,7 +349,7 @@ const SettingsScreen = () => {
           style={tailwind.style('p-4 items-center')}
           onLongPress={() => debugActionsSheetRef.current?.present()}
         >
-          <Text style={tailwind.style('text-sm text-gray-700 ')}>
+          <Text style={[tailwind.style('text-sm'), styles.textTertiary]}>
             {`${chatwootInstance} ${appVersionDetails}`}
           </Text>
         </Pressable>
@@ -345,7 +357,11 @@ const SettingsScreen = () => {
       <BottomSheetModal
         ref={userAvailabilityStatusSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        handleIndicatorStyle={tailwind.style(
+          'overflow-hidden w-8 h-1 rounded-[11px]',
+          styles.sheetIndicator,
+        )}
+        backgroundStyle={tailwind.style(styles.sheetBg)}
         enablePanDownToClose
         animationConfigs={animationConfigs}
         // TODO: Fix this later
@@ -365,7 +381,11 @@ const SettingsScreen = () => {
       <BottomSheetModal
         ref={languagesModalSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        handleIndicatorStyle={tailwind.style(
+          'overflow-hidden w-8 h-1 rounded-[11px]',
+          styles.sheetIndicator,
+        )}
+        backgroundStyle={tailwind.style(styles.sheetBg)}
         // TODO: Fix this later
         // bottomInset={bottom === 0 ? 12 : bottom}
         enablePanDownToClose
@@ -382,7 +402,11 @@ const SettingsScreen = () => {
       <BottomSheetModal
         ref={notificationPreferencesSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        handleIndicatorStyle={tailwind.style(
+          'overflow-hidden w-8 h-1 rounded-[11px]',
+          styles.sheetIndicator,
+        )}
+        backgroundStyle={tailwind.style(styles.sheetBg)}
         // TODO: Fix this later
         // bottomInset={bottom === 0 ? 12 : bottom}
         enablePanDownToClose
@@ -399,7 +423,11 @@ const SettingsScreen = () => {
       <BottomSheetModal
         ref={switchAccountSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        handleIndicatorStyle={tailwind.style(
+          'overflow-hidden w-8 h-1 rounded-[11px]',
+          styles.sheetIndicator,
+        )}
+        backgroundStyle={tailwind.style(styles.sheetBg)}
         // TODO: Fix this later
         // bottomInset={bottom === 0 ? 12 : bottom}
         enablePanDownToClose
@@ -420,7 +448,11 @@ const SettingsScreen = () => {
       <BottomSheetModal
         ref={themeModalSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        handleIndicatorStyle={tailwind.style(
+          'overflow-hidden w-8 h-1 rounded-[11px]',
+          styles.sheetIndicator,
+        )}
+        backgroundStyle={tailwind.style(styles.sheetBg)}
         enablePanDownToClose
         animationConfigs={animationConfigs}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
@@ -428,14 +460,18 @@ const SettingsScreen = () => {
         snapPoints={[280]}
       >
         <BottomSheetWrapper>
-          <BottomSheetHeader headerText="Appearance" />
+          <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_APPEARANCE')} />
           <ThemeList onChangeTheme={setTheme} currentTheme={theme} />
         </BottomSheetWrapper>
       </BottomSheetModal>
       <BottomSheetModal
         ref={debugActionsSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        handleIndicatorStyle={tailwind.style(
+          'overflow-hidden w-8 h-1 rounded-[11px]',
+          styles.sheetIndicator,
+        )}
+        backgroundStyle={tailwind.style(styles.sheetBg)}
         enablePanDownToClose
         animationConfigs={animationConfigs}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}

@@ -38,6 +38,7 @@
     "CREATE_ACCOUNT": "Crear nueva cuenta",
     "SETTINGS": "Preferencias",
     "CHANGE_LANGUAGE": "Cambiar idioma",
+    "CHANGE_APPEARANCE": "Cambiar apariencia",
     "TERMS": "Términos y condiciones",
     "CHANGE_URL": "Cambiar URL"
   },
@@ -267,6 +268,7 @@
     "SUPPORT": "Soporte",
     "SWITCH_ACCOUNT": "Cambiar de cuenta",
     "CHANGE_LANGUAGE": "Cambiar idioma",
+    "APPEARANCE": "Apariencia",
     "NOTIFICATIONS": "Notificaciones",
     "NOTIFICATION_PREFERENCES": "Preferencias de Notificación",
     "READ_DOCS": "Leer documentación",
@@ -274,6 +276,13 @@
     "LOGOUT": "Cerrar sesión",
     "SUBMIT": "Enviar",
     "SET_LANGUAGE": "Definir idioma",
+    "SET_APPEARANCE": "Elegir apariencia",
+    "THEME_SYSTEM": "Sistema",
+    "THEME_LIGHT": "Claro",
+    "THEME_DARK": "Oscuro",
+    "THEME_SYSTEM_DESCRIPTION": "Seguir la apariencia del sistema",
+    "THEME_LIGHT_DESCRIPTION": "Modo claro siempre",
+    "THEME_DARK_DESCRIPTION": "Modo oscuro siempre",
     "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {

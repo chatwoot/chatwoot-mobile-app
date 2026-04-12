@@ -7,6 +7,7 @@
  * ✅ SINGLE SOURCE OF TRUTH: Uses colors from @/theme/colors/index
  */
 
+import { StyleSheet } from 'react-native';
 import { useTheme } from '@/context';
 import { THEME_COLORS } from './colors';
 
@@ -21,6 +22,8 @@ export const useThemedStyles = () => {
     // Background styles
     bgPrimary: { backgroundColor: colors.bgPrimary },
     bgSecondary: { backgroundColor: colors.bgSecondary },
+    bgTertiary: { backgroundColor: colors.bgTertiary },
+    bgPressed: { backgroundColor: colors.bgPressed },
     bgInput: { backgroundColor: colors.bgInput },
 
     // Text styles
@@ -29,9 +32,13 @@ export const useThemedStyles = () => {
     textTertiary: { color: colors.textTertiary },
     textLink: { color: colors.textLink },
 
+    // Icon color (for SVG stroke)
+    iconColor: colors.iconColor,
+
     // Border styles
     border: { borderColor: colors.border },
-    borderStyle: { borderWidth: 1, borderColor: colors.border },
+    borderStyle: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border },
+    borderStyleLegacy: { borderWidth: 1, borderColor: colors.border }, // For components that need thicker borders
 
     // Divider
     divider: { backgroundColor: colors.divider },
@@ -50,6 +57,13 @@ export const useThemedStyles = () => {
       bgDisabled: { backgroundColor: colors.btnPrimaryBgDisabled },
       text: { color: colors.btnPrimaryText },
       textDisabled: { color: colors.btnPrimaryTextDisabled },
+    },
+    btnSecondary: {
+      bg: { backgroundColor: colors.btnSecondaryBg },
+      bgPressed: { backgroundColor: colors.btnSecondaryBgPressed },
+      bgDisabled: { backgroundColor: colors.btnSecondaryBgDisabled },
+      text: { color: colors.btnSecondaryText },
+      textDisabled: { color: colors.btnSecondaryTextDisabled },
     },
 
     // Status bar

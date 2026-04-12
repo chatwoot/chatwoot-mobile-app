@@ -19,7 +19,7 @@ import {
   SettingsIconFilled,
   SettingsIconOutline,
 } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { tailwind, useThemedStyles } from '@/theme';
 import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';
 
 import { TabParamList } from './AppTabs';
@@ -36,20 +36,34 @@ type TabBarIconsProps = {
 };
 
 const TabBarIcons = ({ focused, route }: TabBarIconsProps) => {
+  const styles = useThemedStyles();
+  const iconColor = focused ? styles.colors.textPrimary : styles.colors.iconColor;
+
   switch (route.name) {
     case 'Conversations':
-      return focused ? <ConversationIconFilled /> : <ConversationIconOutline />;
+      return focused ? (
+        <ConversationIconFilled color={iconColor} />
+      ) : (
+        <ConversationIconOutline color={iconColor} />
+      );
     case 'Inbox':
-      return focused ? <InboxIconFilled /> : <InboxIconOutline />;
+      return focused ? <InboxIconFilled color={iconColor} /> : <InboxIconOutline color={iconColor} />;
     case 'Settings':
-      return focused ? <SettingsIconFilled /> : <SettingsIconOutline />;
+      return focused ? (
+        <SettingsIconFilled color={iconColor} />
+      ) : (
+        <SettingsIconOutline color={iconColor} />
+      );
   }
 };
 
-type TabBarBackgroundProps = BlurViewProps & PropsWithChildren;
+type TabBarBackgroundProps = BlurViewProps &
+  PropsWithChildren & {
+    useBlur?: boolean;
+  };
 
 const TabBarBackground = (props: TabBarBackgroundProps) => {
-  const { children, style, blurAmount, blurType } = props;
+  const { children, style, blurAmount, blurType, useBlur = true } = props;
 
   const currentState = useAppSelector(selectCurrentState);
 
@@ -71,7 +85,7 @@ const TabBarBackground = (props: TabBarBackgroundProps) => {
     };
   });
 
-  return Platform.OS === 'ios' ? (
+  return Platform.OS === 'ios' && useBlur ? (
     <AnimatedBlurView {...{ blurAmount, blurType }} style={[style, animatedTabBarStyle]}>
       {children}
     </AnimatedBlurView>
@@ -115,6 +129,9 @@ const TabItem = (props: any) => {
 export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const hapticSelection = useHaptic();
   const tabBarHeight = useTabBarHeight();
+  const styles = useThemedStyles();
+  const tabBarBgColor = styles.colors.bgSecondary;
+  const tabBarBlurType = styles.isDark ? 'dark' : 'light';
 
   // Memoize press handlers using useCallback
   const createPressHandler = React.useCallback(
@@ -151,22 +168,25 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
   return (
     <TabBarBackground
       blurAmount={25}
-      blurType="light"
+      blurType={tabBarBlurType}
+      useBlur={false}
       style={Platform.select({
         ios: [
           tailwind.style(
-            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] pb-8 bg-[#00000009]',
+            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] pb-8',
             `h-[${tabBarHeight}px]`,
           ),
+          { backgroundColor: tabBarBgColor },
         ],
         android: [
           tailwind.style(
-            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] py-[11px] bg-white',
+            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] py-[11px]',
             `h-[${tabBarHeight}px]`,
           ),
+          { backgroundColor: tabBarBgColor },
         ],
       })}>
-      <Animated.View style={tailwind.style('absolute inset-0 h-[1px] bg-blackA-A3')} />
+      <Animated.View style={[tailwind.style('absolute inset-0 h-[1px]'), styles.divider]} />
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;

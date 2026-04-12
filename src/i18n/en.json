@@ -23,7 +23,7 @@
   },
   "LOGIN": {
     "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to ",
+    "DESCRIPTION": "You are connected to {{baseUrl}}.",
     "EMAIL": "Email",
     "PASSWORD": "Password",
     "EMAIL_REQUIRED": "Email is required",
@@ -42,6 +42,7 @@
     "CREATE_ACCOUNT": "Create new account",
     "SETTINGS": "Settings",
     "CHANGE_LANGUAGE": "Change language",
+    "CHANGE_APPEARANCE": "Change Appearance",
     "TERMS": "Terms & Conditions",
     "CHANGE_URL": "Change URL"
   },
@@ -295,6 +296,7 @@
     "SUPPORT": "Support",
     "SWITCH_ACCOUNT": "Switch Account",
     "CHANGE_LANGUAGE": "Change Language",
+    "APPEARANCE": "Appearance",
     "NOTIFICATIONS": "Notifications",
     "NOTIFICATION_PREFERENCES": "Notification Preferences",
     "READ_DOCS": "Read Docs",
@@ -302,6 +304,13 @@
     "LOGOUT": "Logout",
     "SUBMIT": "Submit",
     "SET_LANGUAGE": "Set Language",
+    "SET_APPEARANCE": "Set Appearance",
+    "THEME_SYSTEM": "System",
+    "THEME_LIGHT": "Light",
+    "THEME_DARK": "Dark",
+    "THEME_SYSTEM_DESCRIPTION": "Follow system appearance",
+    "THEME_LIGHT_DESCRIPTION": "Light mode always",
+    "THEME_DARK_DESCRIPTION": "Dark mode always",
     "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {

@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EMAIL_REGEX } from '@/constants';
-import { EyeIcon, EyeSlash, LockIcon } from '@/svg-icons';
+import { CaretRight, EyeIcon, EyeSlash, LockIcon, MoonIcon, TranslateIcon } from '@/svg-icons';
 import { tailwind, useThemedStyles } from '@/theme';
 import i18n from '@/i18n';
 import { resetAuth } from '@/store/auth/authSlice';
@@ -181,8 +181,7 @@ const LoginScreen = () => {
                 styles.textSecondary,
               ]}
             >
-              {i18n.t('LOGIN.DESCRIPTION')}
-              <Animated.Text style={styles.textLink}>{baseUrl}</Animated.Text>
+              {i18n.t('LOGIN.DESCRIPTION', { baseUrl })}
             </Animated.Text>
           </View>
 
@@ -309,30 +308,45 @@ const LoginScreen = () => {
             handlePress={handleSubmit(onSubmit)}
           />
 
-          <Pressable
-            style={tailwind.style('flex-row justify-center items-center mt-6')}
-            onPress={openConfigInstallationURL}
-          >
-            <Animated.Text style={[tailwind.style('text-sm'), styles.textSecondary]}>
-              {i18n.t('LOGIN.CHANGE_URL')}
-            </Animated.Text>
-          </Pressable>
-          <Pressable
-            style={tailwind.style('flex-row justify-center items-center mt-4')}
-            onPress={() => languagesModalSheetRef.current?.present()}
-          >
-            <Animated.Text style={[tailwind.style('text-sm'), styles.textSecondary]}>
-              {i18n.t('LOGIN.CHANGE_LANGUAGE')}
-            </Animated.Text>
-          </Pressable>
-          <Pressable
-            style={tailwind.style('flex-row justify-center items-center mt-4')}
-            onPress={() => themeModalSheetRef.current?.present()}
-          >
-            <Animated.Text style={[tailwind.style('text-sm'), styles.textSecondary]}>
-              Change Appearance
-            </Animated.Text>
-          </Pressable>
+          <View style={tailwind.style('mt-10')}>
+            <View style={[tailwind.style('h-px'), styles.divider]} />
+            <Pressable
+              style={tailwind.style('flex-row justify-center items-center gap-2 py-6')}
+              onPress={openConfigInstallationURL}
+            >
+              <Animated.Text style={[tailwind.style('text-sm'), styles.textSecondary]}>
+                {i18n.t('LOGIN.CHANGE_URL')}
+              </Animated.Text>
+              <Icon size={16} icon={<CaretRight stroke={styles.colors.textSecondary} />} />
+            </Pressable>
+            <View style={tailwind.style('flex-row items-center justify-between pt-4 pb-6')}>
+              <Pressable
+                style={tailwind.style('flex-1 flex-row items-center justify-center gap-2')}
+                onPress={() => languagesModalSheetRef.current?.present()}
+              >
+                <Icon size={16} icon={<TranslateIcon />} />
+                <Animated.Text
+                  style={[tailwind.style('text-sm text-center'), styles.textSecondary]}
+                >
+                  {i18n.t('LOGIN.CHANGE_LANGUAGE')}
+                </Animated.Text>
+              </Pressable>
+              <View style={tailwind.style('px-3')}>
+                <View style={[tailwind.style('h-6 w-px'), styles.divider]} />
+              </View>
+              <Pressable
+                style={tailwind.style('flex-1 flex-row items-center justify-center gap-2')}
+                onPress={() => themeModalSheetRef.current?.present()}
+              >
+                <Icon size={16} icon={<MoonIcon />} />
+                <Animated.Text
+                  style={[tailwind.style('text-sm text-center'), styles.textSecondary]}
+                >
+                  {i18n.t('LOGIN.CHANGE_APPEARANCE')}
+                </Animated.Text>
+              </Pressable>
+            </View>
+          </View>
         </Animated.ScrollView>
       </View>
       <BottomSheetModal
@@ -379,7 +393,7 @@ const LoginScreen = () => {
           showsVerticalScrollIndicator={false}
           style={tailwind.style(styles.sheetBg)}
         >
-          <BottomSheetHeader headerText="Appearance" />
+          <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_APPEARANCE')} />
           <ThemeList onChangeTheme={onChangeTheme} currentTheme={theme} />
         </BottomSheetScrollView>
       </BottomSheetModal>

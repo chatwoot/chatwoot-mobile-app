@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/react-native';
 
 import Constants from 'expo-constants';
+import './src/services/firebaseMessaging';
 import App from './src/app';
 
 // TODO: It is a temporary fix to fix the reanimated logger issue

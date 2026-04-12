@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { settingsActions } from './settingsActions';
 import * as RootNavigation from '@/utils/navigationUtils';
 import { NotificationSettings } from './settingsTypes';
-import { Theme } from '@/types/common/Theme';
 
 interface SettingsState {
   baseUrl: string;
@@ -15,7 +14,6 @@ interface SettingsState {
   notificationSettings: NotificationSettings;
   localeValue: string;
   webSocketUrl: string;
-  theme: Theme;
   version: string;
   pushToken: string;
 }
@@ -38,7 +36,6 @@ const initialState: SettingsState = {
     user_id: 0,
   },
   webSocketUrl: 'wss://app.chatwoot.com/cable',
-  theme: 'system',
   version: '',
   pushToken: '',
 };

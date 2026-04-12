@@ -7,7 +7,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     version: '4.4.1',
     orientation: 'portrait',
     icon: './assets/icon.png',
-    userInterfaceStyle: 'light',
+    userInterfaceStyle: 'automatic',
     newArchEnabled: false,
     scheme: 'chatwootapp',
     splash: {

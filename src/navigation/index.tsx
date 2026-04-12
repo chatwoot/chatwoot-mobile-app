@@ -1,13 +1,17 @@
 import React, { useCallback, useRef } from 'react';
 import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
-import { getStateFromPath } from '@react-navigation/native';
+import {
+  DarkTheme,
+  DefaultTheme,
+  getStateFromPath,
+  NavigationContainer,
+} from '@react-navigation/native';
 import { getInitialNotification, onNotificationOpenedApp } from '@/services/firebaseMessaging';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { NavigationContainer } from '@react-navigation/native';
 import { AppTabs } from './tabs/AppTabs';
 import i18n from 'i18n';
 import { navigationRef } from '@/utils/navigationUtils';
@@ -17,7 +21,7 @@ import { useAppSelector } from '@/hooks';
 import { selectInstallationUrl, selectLocale } from '@/store/settings/settingsSelectors';
 import { SSO_CALLBACK_URL } from '@/constants';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { RefsProvider } from '@/context';
+import { RefsProvider, useTheme } from '@/context';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { transformNotification } from '@/utils/camelCaseKeys';
 import { SsoUtils } from '@/utils/ssoUtils';
@@ -39,6 +43,7 @@ export const AppNavigationContainer = () => {
 
   const routeNameRef = useRef<string | undefined>(undefined);
   const dispatch = useAppDispatch();
+  const { isDark } = useTheme();
 
   const installationUrl = useAppSelector(selectInstallationUrl);
   const locale = useAppSelector(selectLocale);
@@ -186,6 +191,7 @@ export const AppNavigationContainer = () => {
     <NavigationContainer
       linking={linking}
       ref={navigationRef}
+      theme={isDark ? DarkTheme : DefaultTheme}
       onReady={() => {
         routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
       }}

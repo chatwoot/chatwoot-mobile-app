@@ -7,6 +7,7 @@ import { tailwind, useThemedStyles } from '@/theme';
 import { useHaptic } from '@/utils';
 import { Icon } from '@/components-next/common';
 import { Theme } from '@/types';
+import i18n from '@/i18n';
 
 export type ThemeItemType = {
   title: string;
@@ -17,30 +18,13 @@ export type ThemeItemType = {
 type ThemeCellProps = {
   item: ThemeItemType;
   index: number;
+  totalItems: number;
   currentTheme: Theme;
   onChangeTheme: (theme: Theme) => void;
 };
 
-const themesList: ThemeItemType[] = [
-  {
-    title: 'System',
-    key: 'system',
-    description: 'Follow system appearance',
-  },
-  {
-    title: 'Light',
-    key: 'light',
-    description: 'Light mode always',
-  },
-  {
-    title: 'Dark',
-    key: 'dark',
-    description: 'Dark mode always',
-  },
-];
-
 const ThemeCell = (props: ThemeCellProps) => {
-  const { item, index, currentTheme, onChangeTheme } = props;
+  const { item, index, currentTheme, onChangeTheme, totalItems } = props;
   const styles = useThemedStyles();
   const hapticSelection = useHaptic();
   const handlePress = () => {
@@ -48,7 +32,7 @@ const ThemeCell = (props: ThemeCellProps) => {
     onChangeTheme(item.key);
   };
 
-  const isLastItem = index === themesList.length - 1;
+  const isLastItem = index === totalItems - 1;
   const isSelected = currentTheme === item.key;
 
   return (
@@ -96,10 +80,34 @@ export const ThemeList = ({
   currentTheme: Theme;
   onChangeTheme: (theme: Theme) => void;
 }) => {
+  const themesList: ThemeItemType[] = [
+    {
+      title: i18n.t('SETTINGS.THEME_SYSTEM'),
+      key: 'system',
+      description: i18n.t('SETTINGS.THEME_SYSTEM_DESCRIPTION'),
+    },
+    {
+      title: i18n.t('SETTINGS.THEME_LIGHT'),
+      key: 'light',
+      description: i18n.t('SETTINGS.THEME_LIGHT_DESCRIPTION'),
+    },
+    {
+      title: i18n.t('SETTINGS.THEME_DARK'),
+      key: 'dark',
+      description: i18n.t('SETTINGS.THEME_DARK_DESCRIPTION'),
+    },
+  ];
+
   return (
     <Animated.View style={tailwind.style('pt-1 pb-4 pl-2')}>
       {themesList.map((item, index) => {
-        return <ThemeCell key={index} {...{ item, index, currentTheme, onChangeTheme }} />;
+        return (
+          <ThemeCell
+            key={item.key}
+            {...{ item, index, currentTheme, onChangeTheme }}
+            totalItems={themesList.length}
+          />
+        );
       })}
     </Animated.View>
   );

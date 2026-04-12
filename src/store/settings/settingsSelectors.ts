@@ -29,8 +29,6 @@ export const selectNotificationSettings = createSelector(
 
 export const selectWebSocketUrl = createSelector(selectSettings, settings => settings.webSocketUrl);
 
-export const selectTheme = createSelector(selectSettings, settings => settings.theme);
-
 export const selectIsChatwootCloud = createSelector(selectSettings, settings =>
   settings.installationUrl.includes('app.chatwoot.com'),
 );

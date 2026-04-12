@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
+import { tailwind, useThemedStyles } from '@/theme';
 import { Label } from '@/types';
 
 type LabelItemProps = {
@@ -12,17 +12,22 @@ type LabelItemProps = {
 
 export const LabelItem = (props: LabelItemProps) => {
   const { item } = props;
+  const themed = useThemedStyles();
   return (
     <Animated.View
       style={[
         styles.labelShadow,
-        tailwind.style('flex flex-row items-center bg-white px-3 py-[7px] rounded-lg mr-2 mt-3'),
-      ]}>
+        tailwind.style('flex flex-row items-center px-3 py-[7px] rounded-lg mr-2 mt-3'),
+        themed.bgPrimary,
+      ]}
+    >
       <Animated.View style={tailwind.style('h-2 w-2 rounded-full', `bg-[${item.color}]`)} />
       <Animated.Text
-        style={tailwind.style(
-          'text-md font-inter-normal-20 leading-[17px] tracking-[0.32px] pl-1.5 text-gray-950',
-        )}>
+        style={[
+          tailwind.style('text-md font-inter-normal-20 leading-[17px] tracking-[0.32px] pl-1.5'),
+          themed.textPrimary,
+        ]}
+      >
         {item.title}
       </Animated.Text>
     </Animated.View>

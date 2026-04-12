@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, Text, Animated, View } from 'react-native';
 
 import { TickIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { tailwind, useThemedStyles } from '@/theme';
 import { useHaptic } from '@/utils';
 import { Icon } from '@/components-next/common/icon';
 import { Account } from '@/types';
@@ -23,6 +23,7 @@ const AccountCell = ({
   isLastItem,
 }: AccountCellProps) => {
   const hapticSelection = useHaptic();
+  const styles = useThemedStyles();
 
   const handlePress = () => {
     hapticSelection?.();
@@ -35,21 +36,30 @@ const AccountCell = ({
     <Pressable onPress={handlePress}>
       <Animated.View style={tailwind.style('flex flex-row items-center')}>
         <Animated.View
-          style={tailwind.style(
-            'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
-            !isLastItem && 'border-b-[1px] border-blackA-A3',
-          )}>
+          style={[
+            tailwind.style('flex-1 ml-3 flex-row justify-between py-[11px] pr-3'),
+            !isLastItem && { borderBottomWidth: 1, borderBottomColor: styles.colors.border },
+          ]}
+        >
           <View>
             <Text
-              style={tailwind.style(
-                'text-base capitalize text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
-              )}>
+              style={[
+                tailwind.style(
+                  'text-base capitalize font-inter-420-20 leading-[21px] tracking-[0.16px]',
+                ),
+                styles.textPrimary,
+              ]}
+            >
               {item.name}
             </Text>
             <Text
-              style={tailwind.style(
-                'text-sm text-gray-900 font-inter-420-20 leading-[18px] tracking-[0.16px] capitalize',
-              )}>
+              style={[
+                tailwind.style(
+                  'text-sm font-inter-420-20 leading-[18px] tracking-[0.16px] capitalize',
+                ),
+                styles.textSecondary,
+              ]}
+            >
               {item.role}
             </Text>
           </View>

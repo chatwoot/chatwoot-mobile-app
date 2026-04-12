@@ -6,7 +6,7 @@ import Animated, {
   withTiming,
   Easing,
 } from 'react-native-reanimated';
-import { tailwind } from '@/theme';
+import { tailwind, useThemedStyles } from '@/theme';
 
 export interface TabItem {
   id: string;
@@ -29,6 +29,7 @@ type TabMeasurement = { x: number; width: number };
  * Features automatic scrolling to center the active tab and smooth transitions.
  */
 export const Tabs = ({ items, activeTabId, onTabPress }: TabsProps) => {
+  const styles = useThemedStyles();
   const scrollViewRef = useRef<ScrollView>(null);
   const containerWidthRef = useRef<number>(0);
   const measuresRef = useRef<Record<string, TabMeasurement>>({});
@@ -72,14 +73,15 @@ export const Tabs = ({ items, activeTabId, onTabPress }: TabsProps) => {
         ref={scrollViewRef}
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={tailwind.style('bg-gray-50 rounded-lg grow-0 overflow-hidden')}
+        style={[tailwind.style('rounded-lg grow-0 overflow-hidden'), styles.bgSecondary]}
         contentContainerStyle={tailwind.style('items-center')}
-        onLayout={e => (containerWidthRef.current = e.nativeEvent.layout.width)}>
+        onLayout={e => (containerWidthRef.current = e.nativeEvent.layout.width)}
+      >
         <Animated.View
           style={[
-            tailwind.style(
-              'absolute top-0 bottom-0 bg-white rounded-lg shadow-sm border border-gray-200 z-0',
-            ),
+            tailwind.style('absolute top-0 bottom-0 rounded-lg shadow-sm z-0'),
+            styles.bgPrimary,
+            { borderWidth: 1, borderColor: styles.colors.border },
             indicatorStyle,
           ]}
         />
@@ -100,7 +102,8 @@ export const Tabs = ({ items, activeTabId, onTabPress }: TabsProps) => {
                 if (isActive && !isMeasured) {
                   setIsMeasured(true);
                 }
-              }}>
+              }}
+            >
               <Pressable
                 onPress={() => onTabPress(item.id)}
                 hitSlop={8}
@@ -108,18 +111,25 @@ export const Tabs = ({ items, activeTabId, onTabPress }: TabsProps) => {
                 accessibilityState={{ selected: isActive }}
                 style={({ pressed }) =>
                   tailwind.style('px-4 py-1.5 justify-center items-center', pressed && 'opacity-70')
-                }>
+                }
+              >
                 <Text
-                  style={tailwind.style(
-                    'text-sm font-medium',
-                    isActive ? 'text-blue-800' : 'text-gray-800',
-                  )}>
+                  style={[
+                    tailwind.style('text-sm font-medium', isActive ? 'text-blue-800' : ''),
+                    !isActive && styles.textSecondary,
+                  ]}
+                >
                   {item.label}
                   {!!item.count && ` (${item.count})`}
                 </Text>
               </Pressable>
 
-              <View style={tailwind.style('w-px h-4 bg-gray-300', !showDivider && 'opacity-0')} />
+              <View
+                style={[
+                  tailwind.style('w-px h-4', !showDivider && 'opacity-0'),
+                  { backgroundColor: styles.colors.border },
+                ]}
+              />
             </View>
           );
         })}

@@ -3,7 +3,7 @@ import { Pressable, Text, Animated } from 'react-native';
 
 import { AVAILABILITY_STATUS_LIST } from '@/constants';
 import { TickIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { tailwind, useThemedStyles } from '@/theme';
 import { AvailabilityStatus, AvailabilityStatusListItemType } from '@/types';
 import { useHaptic } from '@/utils';
 import { Icon } from '@/components-next/common/icon';
@@ -22,6 +22,7 @@ const StatusCell = ({
   changeAvailabilityStatus,
 }: StatusCellProps) => {
   const hapticSelection = useHaptic();
+  const styles = useThemedStyles();
 
   const handlePress = () => {
     hapticSelection?.();
@@ -36,14 +37,19 @@ const StatusCell = ({
       <Animated.View style={tailwind.style('flex flex-row items-center')}>
         <Animated.View style={tailwind.style('h-4 w-4 rounded-full m-1.5', item.statusColor)} />
         <Animated.View
-          style={tailwind.style(
-            'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
-            !isLastItem && 'border-b-[1px] border-blackA-A3',
-          )}>
+          style={[
+            tailwind.style('flex-1 ml-3 flex-row justify-between py-[11px] pr-3'),
+            !isLastItem && { borderBottomWidth: 1, borderBottomColor: styles.colors.border },
+          ]}
+        >
           <Text
-            style={tailwind.style(
-              'text-base capitalize text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
-            )}>
+            style={[
+              tailwind.style(
+                'text-base capitalize font-inter-420-20 leading-[21px] tracking-[0.16px]',
+              ),
+              styles.textPrimary,
+            ]}
+          >
             {item.status}
           </Text>
           {isSelected && <Icon icon={<TickIcon />} size={20} />}

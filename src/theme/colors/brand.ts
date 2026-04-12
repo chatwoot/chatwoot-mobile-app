@@ -4,7 +4,7 @@
  * Base colors with generated scales for UI consistency
  */
 
-module.exports = {
+export const BRAND_COLORS = {
   // Base brand colors
   oceanBlack: {
     DEFAULT: '#0D1B2A',
@@ -99,4 +99,4 @@ module.exports = {
   white: {
     DEFAULT: '#FFFFFF',
   },
-};
+} as const;

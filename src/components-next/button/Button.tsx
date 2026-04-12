@@ -13,7 +13,7 @@ type ButtonProps = {
   disabled?: boolean;
 };
 
-type ThemedButtonStyles = ReturnType<typeof useThemedStyles>['btnPrimary'];
+type ThemedButtonStyles = ReturnType<typeof useThemedStyles>['btnPrimary' | 'btnSecondary'];
 
 const getButtonStyles = (pressed: boolean, disabled: boolean, btnStyles: ThemedButtonStyles) => {
   const baseStyles = tailwind.style('py-[11px] flex items-center justify-center rounded-[13px]');

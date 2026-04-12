@@ -5,7 +5,7 @@
  * This provides a single source of truth for color usage across the app
  */
 
-module.exports = {
+export const SEMANTIC_COLORS = {
   // Primary action colors (buttons, CTAs)
   primary: {
     DEFAULT: '#007FB6', // oceanElectric-600
@@ -62,4 +62,4 @@ module.exports = {
     success: '#16A34A', // Keep existing success green
     warning: '#F59E0B', // Keep existing warning amber
   },
-};
+} as const;

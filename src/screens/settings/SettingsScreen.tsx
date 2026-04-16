@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, Text, Platform, Pressable } from 'react-native';
+import { Switch, Text, Platform, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,18 +25,20 @@ import { clearSearchResults } from '@/store/search/searchSlice';
 import { RecentSearches } from '@/screens/search/utils/recentSearches';
 import i18n from 'i18n';
 import { HELP_URL } from '@/constants/url';
-import { tailwind } from '@/theme';
+import { tailwind, useAppTheme } from '@/theme';
 
 import {
   BottomSheetBackdrop,
   BottomSheetHeader,
   BottomSheetWrapper,
+  useBottomSheetThemedStyles,
   Button,
   LanguageList,
   AvailabilityStatusList,
   NotificationPreferences,
   SwitchAccount,
   SettingsList,
+  ThemedStatusBar,
 } from '@/components-next';
 import { UserAvatar } from './components/UserAvatar';
 
@@ -59,9 +61,10 @@ import {
   selectLocale,
   selectIsChatwootCloud,
   selectPushToken,
+  selectTheme,
 } from '@/store/settings/settingsSelectors';
 import { settingsActions } from '@/store/settings/settingsActions';
-import { setLocale } from '@/store/settings/settingsSlice';
+import { setLocale, setTheme } from '@/store/settings/settingsSlice';
 
 import AnalyticsHelper from '@/utils/analyticsUtils';
 import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
@@ -135,6 +138,9 @@ const SettingsScreen = () => {
   const enableAccountSwitch = accounts.length > 1;
 
   const activeLocale = useSelector(selectLocale);
+  const activeTheme = useAppSelector(selectTheme);
+  const appTheme = useAppTheme();
+  const isDarkModeEnabled = activeTheme === 'dark' || (activeTheme === 'system' && appTheme.isDark);
   const {
     userAvailabilityStatusSheetRef,
     languagesModalSheetRef,
@@ -150,6 +156,7 @@ const SettingsScreen = () => {
     stiffness: 420,
     damping: 30,
   });
+  const bottomSheetStyles = useBottomSheetThemedStyles();
 
   const openSheet = () => {
     hapticSelection?.();
@@ -169,6 +176,10 @@ const SettingsScreen = () => {
 
   const onChangeLanguage = (locale: string) => {
     dispatch(setLocale(locale));
+  };
+
+  const onToggleDarkMode = (isEnabled: boolean) => {
+    dispatch(setTheme(isEnabled ? 'dark' : 'light'));
   };
 
   const changeAccount = (accountId: number) => {
@@ -242,6 +253,26 @@ const SettingsScreen = () => {
       onPressListItem: () => languagesModalSheetRef.current?.present(),
     },
     {
+      hasChevron: false,
+      title: i18n.t('SETTINGS.DARK_MODE'),
+      icon: <SwitchIcon />,
+      subtitle: '',
+      subtitleType: 'light',
+      accessory: (
+        <Switch
+          value={isDarkModeEnabled}
+          onValueChange={onToggleDarkMode}
+          trackColor={{
+            false: tailwind.color('bg-gray-300'),
+            true: appTheme.colors.primary,
+          }}
+          thumbColor={isDarkModeEnabled ? '#FFFFFF' : '#F4F4F5'}
+          ios_backgroundColor={tailwind.color('bg-gray-300')}
+        />
+      ),
+      onPressListItem: () => onToggleDarkMode(!isDarkModeEnabled),
+    },
+    {
       hasChevron: enableAccountSwitch,
       title: i18n.t('SETTINGS.SWITCH_ACCOUNT'),
       icon: <SwitchIcon />,
@@ -276,11 +307,7 @@ const SettingsScreen = () => {
 
   return (
     <SafeAreaView style={tailwind.style('flex-1 bg-white font-inter-normal-20')}>
-      <StatusBar
-        translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
-      />
+      <ThemedStatusBar />
       <SettingsHeader />
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
@@ -330,12 +357,13 @@ const SettingsScreen = () => {
       <BottomSheetModal
         ref={userAvailabilityStatusSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        backgroundStyle={bottomSheetStyles.backgroundStyle}
+        handleIndicatorStyle={bottomSheetStyles.handleIndicatorStyle}
         enablePanDownToClose
         animationConfigs={animationConfigs}
         // TODO: Fix this later
         // bottomInset={bottom === 0 ? 12 : bottom}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        handleStyle={bottomSheetStyles.handleStyle}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
         snapPoints={[190]}>
         <BottomSheetWrapper>
@@ -349,15 +377,18 @@ const SettingsScreen = () => {
       <BottomSheetModal
         ref={languagesModalSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        backgroundStyle={bottomSheetStyles.backgroundStyle}
+        handleIndicatorStyle={bottomSheetStyles.handleIndicatorStyle}
         // TODO: Fix this later
         // bottomInset={bottom === 0 ? 12 : bottom}
         enablePanDownToClose
         animationConfigs={animationConfigs}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        handleStyle={bottomSheetStyles.handleStyle}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
         snapPoints={['70%']}>
-        <BottomSheetScrollView showsVerticalScrollIndicator={false}>
+        <BottomSheetScrollView
+          showsVerticalScrollIndicator={false}
+          style={bottomSheetStyles.contentStyle}>
           <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_LANGUAGE')} />
           <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
         </BottomSheetScrollView>
@@ -365,12 +396,13 @@ const SettingsScreen = () => {
       <BottomSheetModal
         ref={notificationPreferencesSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        backgroundStyle={bottomSheetStyles.backgroundStyle}
+        handleIndicatorStyle={bottomSheetStyles.handleIndicatorStyle}
         // TODO: Fix this later
         // bottomInset={bottom === 0 ? 12 : bottom}
         enablePanDownToClose
         animationConfigs={animationConfigs}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        handleStyle={bottomSheetStyles.handleStyle}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
         snapPoints={['52%']}>
         <BottomSheetWrapper>
@@ -381,12 +413,13 @@ const SettingsScreen = () => {
       <BottomSheetModal
         ref={switchAccountSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        backgroundStyle={bottomSheetStyles.backgroundStyle}
+        handleIndicatorStyle={bottomSheetStyles.handleIndicatorStyle}
         // TODO: Fix this later
         // bottomInset={bottom === 0 ? 12 : bottom}
         enablePanDownToClose
         animationConfigs={animationConfigs}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        handleStyle={bottomSheetStyles.handleStyle}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
         snapPoints={['50%']}>
         <BottomSheetWrapper>
@@ -401,10 +434,11 @@ const SettingsScreen = () => {
       <BottomSheetModal
         ref={debugActionsSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        backgroundStyle={bottomSheetStyles.backgroundStyle}
+        handleIndicatorStyle={bottomSheetStyles.handleIndicatorStyle}
         enablePanDownToClose
         animationConfigs={animationConfigs}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        handleStyle={bottomSheetStyles.handleStyle}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
         snapPoints={['36%']}>
         <BottomSheetWrapper>

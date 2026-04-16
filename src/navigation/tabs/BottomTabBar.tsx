@@ -19,7 +19,7 @@ import {
   SettingsIconFilled,
   SettingsIconOutline,
 } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { tailwind, useAppTheme } from '@/theme';
 import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';
 
 import { TabParamList } from './AppTabs';
@@ -36,13 +36,27 @@ type TabBarIconsProps = {
 };
 
 const TabBarIcons = ({ focused, route }: TabBarIconsProps) => {
+  const iconColor = tailwind.color('text-gray-950');
+
   switch (route.name) {
     case 'Conversations':
-      return focused ? <ConversationIconFilled /> : <ConversationIconOutline />;
+      return focused ? (
+        <ConversationIconFilled color={iconColor} />
+      ) : (
+        <ConversationIconOutline color={iconColor} />
+      );
     case 'Inbox':
-      return focused ? <InboxIconFilled /> : <InboxIconOutline />;
+      return focused ? (
+        <InboxIconFilled color={iconColor} />
+      ) : (
+        <InboxIconOutline color={iconColor} />
+      );
     case 'Settings':
-      return focused ? <SettingsIconFilled /> : <SettingsIconOutline />;
+      return focused ? (
+        <SettingsIconFilled color={iconColor} />
+      ) : (
+        <SettingsIconOutline color={iconColor} />
+      );
   }
 };
 
@@ -115,6 +129,7 @@ const TabItem = (props: any) => {
 export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const hapticSelection = useHaptic();
   const tabBarHeight = useTabBarHeight();
+  const { isDark } = useAppTheme();
 
   // Memoize press handlers using useCallback
   const createPressHandler = React.useCallback(
@@ -151,7 +166,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
   return (
     <TabBarBackground
       blurAmount={25}
-      blurType="light"
+      blurType={isDark ? 'dark' : 'light'}
       style={Platform.select({
         ios: [
           tailwind.style(

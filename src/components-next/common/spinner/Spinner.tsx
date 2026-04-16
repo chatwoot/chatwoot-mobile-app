@@ -9,7 +9,7 @@ import Animated, {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
-import tailwind from 'twrnc';
+import { tailwind } from '@/theme';
 
 import { LoadingIcon } from '@/svg-icons';
 import { withAnchorPoint } from '@/utils';

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Animated, Image, Pressable, StatusBar, TextInput, View } from 'react-native';
+import { Animated, Image, Pressable, TextInput, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {
   BottomSheetModal,
@@ -24,6 +24,8 @@ import {
   Button,
   Icon,
   AuthButton,
+  ThemedStatusBar,
+  useBottomSheetThemedStyles,
 } from '@/components-next';
 import {
   selectInstallationUrl,
@@ -61,6 +63,7 @@ const LoginScreen = () => {
     stiffness: 420,
     damping: 30,
   });
+  const bottomSheetStyles = useBottomSheetThemedStyles();
 
   const dispatch = useAppDispatch();
   const isLoggingIn = useAppSelector(selectIsLoggingIn);
@@ -139,11 +142,7 @@ const LoginScreen = () => {
 
   return (
     <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
-      <StatusBar
-        translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
-      />
+      <ThemedStatusBar />
       <View style={tailwind.style('flex-1 bg-white')}>
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
@@ -301,14 +300,17 @@ const LoginScreen = () => {
       <BottomSheetModal
         ref={languagesModalSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        backgroundStyle={bottomSheetStyles.backgroundStyle}
+        handleIndicatorStyle={bottomSheetStyles.handleIndicatorStyle}
         detached
         enablePanDownToClose
         animationConfigs={animationConfigs}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        handleStyle={bottomSheetStyles.handleStyle}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
         snapPoints={['70%']}>
-        <BottomSheetScrollView showsVerticalScrollIndicator={false}>
+        <BottomSheetScrollView
+          showsVerticalScrollIndicator={false}
+          style={bottomSheetStyles.contentStyle}>
           <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_LANGUAGE')} />
           <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
         </BottomSheetScrollView>

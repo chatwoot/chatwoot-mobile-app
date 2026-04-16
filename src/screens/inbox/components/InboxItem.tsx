@@ -1,7 +1,7 @@
 import React from 'react';
 import Animated from 'react-native-reanimated';
 import { Avatar } from '@/components-next';
-import { tailwind } from '@/theme';
+import { tailwind, useAppTheme } from '@/theme';
 import type { NotificationType } from '@/types/Notification';
 import { ConversationPriority } from '@/types/common';
 import { AnimatedNativeView, NativeView } from '@/components-next/native-components';
@@ -34,6 +34,7 @@ type InboxItemProps = {
 const { width } = Dimensions.get('screen');
 
 export const InboxItemComponent = (props: InboxItemProps) => {
+  const { isDark } = useAppTheme();
   const {
     isRead,
     inbox,
@@ -112,7 +113,12 @@ export const InboxItemComponent = (props: InboxItemProps) => {
         </Animated.View>
       </Animated.View>
       {isRead && (
-        <Animated.View style={tailwind.style('absolute bg-white opacity-50 inset-0 z-20')} />
+        <Animated.View
+          style={tailwind.style(
+            'absolute inset-0 z-20',
+            isDark ? 'bg-black opacity-20' : 'bg-white opacity-50',
+          )}
+        />
       )}
     </Animated.View>
   );

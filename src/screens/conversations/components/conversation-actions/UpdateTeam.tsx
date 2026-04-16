@@ -6,7 +6,7 @@ import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
 import { Team } from '@/types';
-import { Avatar, Icon, SearchBar } from '@/components-next';
+import { Avatar, Icon, SearchBar, useBottomSheetThemedStyles } from '@/components-next';
 import { TickIcon } from '@/svg-icons';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -71,9 +71,12 @@ const TeamCell = (props: TeamCellProps) => {
 
 const TeamStack = ({ teams, teamId }: { teams: Team[]; teamId: string | undefined }) => {
   const isFetching = useAppSelector(selectLoading);
+  const bottomSheetStyles = useBottomSheetThemedStyles();
 
   return (
-    <BottomSheetScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
+    <BottomSheetScrollView
+      showsVerticalScrollIndicator={false}
+      style={[tailwind.style('my-1 pl-3'), bottomSheetStyles.contentStyle]}>
       {isFetching ? (
         <ActivityIndicator />
       ) : (

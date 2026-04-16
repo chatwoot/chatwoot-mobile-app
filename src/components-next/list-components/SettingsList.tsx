@@ -53,13 +53,17 @@ const ListItem = (props: ListItemProps) => {
             </Animated.Text>
           </Animated.View>
           <Animated.View style={tailwind.style('flex flex-row items-center pr-3')}>
-            <Animated.Text
-              style={tailwind.style(
-                'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px]',
-                listItem.subtitleType === 'light' ? 'text-gray-900' : 'text-gray-950',
-              )}>
-              {listItem.subtitle}
-            </Animated.Text>
+            {listItem.accessory ? (
+              listItem.accessory
+            ) : (
+              <Animated.Text
+                style={tailwind.style(
+                  'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px]',
+                  listItem.subtitleType === 'light' ? 'text-gray-900' : 'text-gray-950',
+                )}>
+                {listItem.subtitle}
+              </Animated.Text>
+            )}
             {listItem.hasChevron ? <Icon icon={<CaretRight />} size={20} /> : null}
           </Animated.View>
         </Animated.View>
@@ -110,7 +114,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 4,
-        backgroundColor: 'white',
       },
     }) || {}, // Add fallback empty object
 });

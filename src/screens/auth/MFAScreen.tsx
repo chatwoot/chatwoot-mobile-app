@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, StatusBar, View, TextInput, Text, Pressable, ScrollView } from 'react-native';
+import { Animated, View, TextInput, Text, Pressable, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
-import { Button, VerificationCode } from '@/components-next';
+import { Button, ThemedStatusBar, VerificationCode } from '@/components-next';
 import { useAnimatedShake } from '@/components-next/verification-code/hooks/use-animated-shake';
 import type { StatusType } from '@/components-next/verification-code';
 import { tailwind } from '@/theme';
@@ -99,11 +99,7 @@ const MFAScreen = () => {
 
   return (
     <SafeAreaView style={tailwind.style('flex-1 bg-white')}>
-      <StatusBar
-        translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
-      />
+      <ThemedStatusBar />
       <View style={tailwind.style('flex-1 bg-white')}>
         <ScrollView
           showsVerticalScrollIndicator={false}

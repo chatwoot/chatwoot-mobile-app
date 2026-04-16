@@ -20,17 +20,20 @@ const ListItem = (props: ListItemProps) => {
       key={index}
       style={({ pressed }) => [
         tailwind.style(pressed ? 'bg-gray-100' : '', index === 0 ? 'rounded-t-[13px]' : ''),
-      ]}>
+      ]}
+    >
       <Animated.View style={tailwind.style('flex flex-row items-center ml-3')}>
         <Animated.View>
           <Avatar src={{ uri: listItem.thumbnail || undefined }} size="lg" />
         </Animated.View>
         <Animated.View
-          style={tailwind.style('flex-1 py-[11px] ml-2 border-b-[1px] border-b-blackA-A3')}>
+          style={tailwind.style('flex-1 py-[11px] ml-2 border-b-[1px] border-b-blackA-A3')}
+        >
           <Animated.Text
             style={tailwind.style(
               'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
-            )}>
+            )}
+          >
             {listItem.name}
           </Animated.Text>
         </Animated.View>
@@ -47,11 +50,13 @@ const ParticipantOverflowCell = ({ count }: { count: number }) => {
           <Icon icon={<Overflow stroke={tailwind.color('text-gray-600')} />} size={28} />
         </Animated.View>
         <Animated.View
-          style={tailwind.style('flex-1 py-[11px] ml-2 border-b-[1px] border-b-blackA-A3')}>
+          style={tailwind.style('flex-1 py-[11px] ml-2 border-b-[1px] border-b-blackA-A3')}
+        >
           <Animated.Text
             style={tailwind.style(
               'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
-            )}>
+            )}
+          >
             {count} participants
           </Animated.Text>
         </Animated.View>
@@ -75,7 +80,8 @@ export const AddParticipantList = (props: AddParticipantListProps) => {
         <Animated.Text
           style={tailwind.style(
             'text-sm font-inter-medium-24 tracking-[0.32px] leading-[16px] text-gray-700',
-          )}>
+          )}
+        >
           {i18n.t('CONVERSATION_PARTICIPANTS.TITLE')}
         </Animated.Text>
       </Animated.View>
@@ -89,7 +95,8 @@ export const AddParticipantList = (props: AddParticipantListProps) => {
           onPress={onAddParticipant}
           style={({ pressed }) => [
             tailwind.style('rounded-b-[13px]', pressed ? 'bg-blue-100' : ''),
-          ]}>
+          ]}
+        >
           <Animated.View style={tailwind.style('flex flex-row items-center ml-3')}>
             <Animated.View style={tailwind.style('p-0.5')}>
               <Icon icon={<AddParticipant stroke={tailwind.color('text-blue-800')} />} size={24} />
@@ -98,7 +105,8 @@ export const AddParticipantList = (props: AddParticipantListProps) => {
               <Animated.Text
                 style={tailwind.style(
                   'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-blue-800',
-                )}>
+                )}
+              >
                 {i18n.t('CONVERSATION_PARTICIPANTS.ADD_PARTICIPANT')}
               </Animated.Text>
             </Animated.View>
@@ -121,7 +129,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 4,
-        backgroundColor: 'white',
       },
     }) || {}, // Add fallback empty object
 });

@@ -33,11 +33,11 @@ import {
 } from '@/constants';
 import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { CopyIcon, Trash, ReplyIcon, TranslateIcon} from '@/svg-icons';
+import { CopyIcon, Trash, ReplyIcon, TranslateIcon } from '@/svg-icons';
 import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 import { inboxSupportsReplyTo } from '@/utils';
 import { MenuOption, MessageMenu } from '../message-menu';
-import { tailwind } from '@/theme';
+import { tailwind, useAppTheme } from '@/theme';
 import { Dimensions, View } from 'react-native';
 import { Avatar } from '@/components-next';
 import { useTargetMessageAnimation } from './useTargetMessageAnimation';
@@ -75,6 +75,20 @@ const variantTextMap = {
   [MESSAGE_VARIANTS.BOT]: 'text-gray-700',
   [MESSAGE_VARIANTS.TEMPLATE]: 'text-gray-700',
   [MESSAGE_VARIANTS.ERROR]: 'text-white',
+  [MESSAGE_VARIANTS.PRIVATE]: 'text-blackA-A10',
+  [MESSAGE_VARIANTS.EMAIL]: 'text-gray-700',
+  [MESSAGE_VARIANTS.UNSUPPORTED]: 'text-gray-700',
+};
+
+const darkVariantTextMap = {
+  [MESSAGE_VARIANTS.AGENT]: 'text-grayDark-800',
+  [MESSAGE_VARIANTS.USER]: 'text-whiteA-A11',
+  [MESSAGE_VARIANTS.BOT]: 'text-grayDark-800',
+  [MESSAGE_VARIANTS.TEMPLATE]: 'text-grayDark-800',
+  [MESSAGE_VARIANTS.ERROR]: 'text-whiteA-A11',
+  [MESSAGE_VARIANTS.PRIVATE]: 'text-amberDark-900',
+  [MESSAGE_VARIANTS.EMAIL]: 'text-grayDark-800',
+  [MESSAGE_VARIANTS.UNSUPPORTED]: 'text-amberDark-900',
 };
 
 const variantBaseMap = {
@@ -88,6 +102,17 @@ const variantBaseMap = {
   [MESSAGE_VARIANTS.UNSUPPORTED]: 'bg-amber-100 border border-dashed border-amber-700',
 };
 
+const darkVariantBaseMap = {
+  [MESSAGE_VARIANTS.AGENT]: 'bg-grayDark-200',
+  [MESSAGE_VARIANTS.PRIVATE]: 'bg-amberDark-200',
+  [MESSAGE_VARIANTS.USER]: 'bg-blueDark-600',
+  [MESSAGE_VARIANTS.BOT]: 'bg-blueDark-200',
+  [MESSAGE_VARIANTS.TEMPLATE]: 'bg-blueDark-200',
+  [MESSAGE_VARIANTS.ERROR]: 'bg-rubyDark-600',
+  [MESSAGE_VARIANTS.EMAIL]: 'bg-grayDark-200',
+  [MESSAGE_VARIANTS.UNSUPPORTED]: 'bg-amberDark-200 border border-dashed border-amberDark-700',
+};
+
 const variantBorderMap = {
   [MESSAGE_VARIANTS.AGENT]: 'border-gray-100',
   [MESSAGE_VARIANTS.USER]: 'border-gray-100',
@@ -96,6 +121,17 @@ const variantBorderMap = {
   [MESSAGE_VARIANTS.ERROR]: 'border-gray-100',
   [MESSAGE_VARIANTS.EMAIL]: 'border-gray-100',
   [MESSAGE_VARIANTS.UNSUPPORTED]: 'border-gray-100',
+};
+
+const darkVariantBorderMap = {
+  [MESSAGE_VARIANTS.AGENT]: 'border-grayDark-300',
+  [MESSAGE_VARIANTS.USER]: 'border-blueDark-500',
+  [MESSAGE_VARIANTS.BOT]: 'border-blueDark-300',
+  [MESSAGE_VARIANTS.TEMPLATE]: 'border-blueDark-300',
+  [MESSAGE_VARIANTS.ERROR]: 'border-rubyDark-500',
+  [MESSAGE_VARIANTS.PRIVATE]: 'border-amberDark-300',
+  [MESSAGE_VARIANTS.EMAIL]: 'border-grayDark-300',
+  [MESSAGE_VARIANTS.UNSUPPORTED]: 'border-amberDark-700',
 };
 
 const MessageWrapper = ({
@@ -112,6 +148,7 @@ const MessageWrapper = ({
   isTargetMessage = false,
   isListPositioned = true,
 }: MessageWrapperProps) => {
+  const { isDark } = useAppTheme();
   const { zoomStyle, highlightStyle } = useTargetMessageAnimation({
     isTargetMessage,
     isListPositioned,
@@ -129,6 +166,15 @@ const MessageWrapper = ({
   const windowWidth = Dimensions.get('window').width;
   // 52 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (4)
   const EMAIL_WIDTH = windowWidth - 52;
+  const variantBaseClass = isDark ? darkVariantBaseMap[variant] : variantBaseMap[variant];
+  const variantBorderClass = isDark ? darkVariantBorderMap[variant] : variantBorderMap[variant];
+  const timestampTextClass = isDark ? darkVariantTextMap[variant] : variantTextMap[variant];
+  const deliveryStatusColor =
+    isDark && (variant === MESSAGE_VARIANTS.USER || variant === MESSAGE_VARIANTS.ERROR)
+      ? 'text-whiteA-A12'
+      : isDark
+        ? 'text-grayDark-800'
+        : 'text-gray-700';
 
   return (
     <Animated.View
@@ -154,8 +200,8 @@ const MessageWrapper = ({
               tailwind.style(
                 'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
                 `${variant === MESSAGE_VARIANTS.EMAIL ? `max-w-[${EMAIL_WIDTH}px]` : `max-w-[${TEXT_MAX_WIDTH}px]`}`,
-                variantBaseMap[variant],
-                variantBorderMap[variant],
+                variantBaseClass,
+                variantBorderClass,
                 shouldGroupWithNext && shouldGroupWithPrevious
                   ? orientation === ORIENTATION.LEFT
                     ? 'rounded-l-none'
@@ -179,7 +225,10 @@ const MessageWrapper = ({
             {isTargetMessage && (
               <Animated.View
                 style={[
-                  tailwind.style('absolute inset-0 bg-white rounded-2xl'),
+                  tailwind.style(
+                    'absolute inset-0 rounded-2xl',
+                    isDark ? 'bg-whiteA-A3' : 'bg-white',
+                  ),
                   highlightStyle,
                 ]}
                 pointerEvents="none"
@@ -193,7 +242,7 @@ const MessageWrapper = ({
                 <Animated.Text
                   style={tailwind.style(
                     'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
-                    variantTextMap[variant],
+                    timestampTextClass,
                   )}>
                   {unixTimestampToReadableTime(item.createdAt)}
                 </Animated.Text>
@@ -204,8 +253,8 @@ const MessageWrapper = ({
                   channel={channel}
                   sourceId={item.sourceId}
                   errorMessage={item.contentAttributes?.externalError || ''}
-                  deliveredColor="text-gray-700"
-                  sentColor="text-gray-700"
+                  deliveredColor={deliveryStatusColor}
+                  sentColor={deliveryStatusColor}
                 />
               </Animated.View>
             )}
@@ -219,7 +268,13 @@ const MessageWrapper = ({
 export const MessageComponent = (props: MessageComponentProps) => {
   const dispatch = useAppDispatch();
   const { conversationId } = useChatWindowContext();
-  const { item, currentUserId, isEmailInbox, isTargetMessage = false, isListPositioned = true } = props;
+  const {
+    item,
+    currentUserId,
+    isEmailInbox,
+    isTargetMessage = false,
+    isListPositioned = true,
+  } = props;
   const {
     messageType,
     contentType,
@@ -281,8 +336,8 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
   const handleQuoteReply = (message: Message) => {
     dispatch(setQuoteMessage(message));
-  }
-  
+  };
+
   const handleTranslateMessage = async (messageId: number) => {
     hapticSelection?.();
     const targetLanguage = i18n.locale?.split('_')[0] || 'en';
@@ -297,7 +352,13 @@ export const MessageComponent = (props: MessageComponentProps) => {
   };
 
   const getMenuOptions = (message: Message): MenuOption[] => {
-    const { messageType, content, attachments, private: isPrivate, status: messageStatus } = message;
+    const {
+      messageType,
+      content,
+      attachments,
+      private: isPrivate,
+      status: messageStatus,
+    } = message;
     const hasText = !!content;
     const hasAttachments = !!(attachments && attachments.length > 0);
     const isDeleted = message.contentAttributes?.deleted;

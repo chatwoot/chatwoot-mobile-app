@@ -1,6 +1,6 @@
 import React from 'react';
 import Animated, { FadeIn } from 'react-native-reanimated';
-import tailwind from 'twrnc';
+import { tailwind } from '@/theme';
 
 import { Channel, Message } from '@/types';
 import { Avatar } from '@/components-next/common';

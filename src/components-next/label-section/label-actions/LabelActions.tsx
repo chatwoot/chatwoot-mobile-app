@@ -12,6 +12,7 @@ import { LabelTag } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common/icon';
 import { SearchBar } from '@/components-next/common/search';
+import { useBottomSheetThemedStyles } from '@/components-next/common/bottomsheet';
 import { useAppSelector } from '@/hooks';
 import { filterLabels } from '@/store/label/labelSelectors';
 
@@ -37,6 +38,7 @@ export const LabelActions = (props: LabelActionsProps) => {
 
   const { addLabelSheetRef: contextAddLabelSheetRef } = useRefsContext();
   const addLabelSheetRef = sheetRef || contextAddLabelSheetRef;
+  const bottomSheetStyles = useBottomSheetThemedStyles();
 
   // Custom backdrop that uses the instance's own ref instead of the shared context ref
   const backdropComponent = (props: BottomSheetBackgroundProps) => (
@@ -118,8 +120,9 @@ export const LabelActions = (props: LabelActionsProps) => {
       <BottomSheetModal
         ref={addLabelSheetRef}
         backdropComponent={backdropComponent}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        backgroundStyle={bottomSheetStyles.backgroundStyle}
+        handleIndicatorStyle={bottomSheetStyles.handleIndicatorStyle}
+        handleStyle={bottomSheetStyles.handleStyle}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
         enablePanDownToClose
         snapPoints={[316]}
@@ -136,7 +139,9 @@ export const LabelActions = (props: LabelActionsProps) => {
           returnKeyLabel="done"
           returnKeyType="done"
         />
-        <BottomSheetScrollView showsVerticalScrollIndicator={false}>
+        <BottomSheetScrollView
+          showsVerticalScrollIndicator={false}
+          style={bottomSheetStyles.contentStyle}>
           <LabelStack
             filteredLabels={filteredLabels}
             selectedLabels={selectedLabels}
@@ -161,7 +166,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 4,
-        backgroundColor: 'white',
       },
     }) || {}, // Add fallback empty object
 });

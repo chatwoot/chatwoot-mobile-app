@@ -22,6 +22,7 @@ export interface GenericListType {
   subtitleType?: 'dark' | 'light';
   hasChevron?: boolean;
   disabled?: boolean;
+  accessory?: React.ReactNode;
   link?: string;
   onPressListItem?: (key?: string) => void;
   actions?: {
@@ -38,7 +39,9 @@ export interface AttributeListType {
   subtitleType?: 'dark' | 'light';
   hasChevron?: boolean;
   disabled?: boolean;
-  type: 'text' | 'date' | 'checkbox' | 'link';
+  type?: 'text' | 'date' | 'checkbox' | 'link';
+  link?: string;
+  copyValue?: string;
 }
 
 /**

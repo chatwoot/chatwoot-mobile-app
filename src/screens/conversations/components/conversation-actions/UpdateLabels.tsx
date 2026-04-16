@@ -3,7 +3,7 @@ import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
-import { SearchBar } from '@/components-next';
+import { SearchBar, useBottomSheetThemedStyles } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { filterLabels } from '@/store/label/labelSelectors';
 import { Label } from '@/types/common/Label';
@@ -21,9 +21,12 @@ type LabelStackProps = {
 
 export const LabelStack = (props: LabelStackProps) => {
   const { labelList, handleLabelPress, selectedLabels, isStandAloneComponent = true } = props;
+  const bottomSheetStyles = useBottomSheetThemedStyles();
 
   return (
-    <BottomSheetScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
+    <BottomSheetScrollView
+      showsVerticalScrollIndicator={false}
+      style={[tailwind.style('my-1 pl-3'), bottomSheetStyles.contentStyle]}>
       {labelList.map((value, index) => {
         return (
           <LabelCell

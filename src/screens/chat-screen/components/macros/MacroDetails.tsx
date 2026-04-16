@@ -3,7 +3,7 @@ import { Pressable, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
-import { Icon, Spinner } from '@/components-next';
+import { Icon, Spinner, useBottomSheetThemedStyles } from '@/components-next';
 import i18n from '@/i18n';
 import { ChevronLeft } from '@/svg-icons';
 import { tailwind } from '@/theme';
@@ -33,6 +33,7 @@ const MacroDetails = ({ macro, onBack, onClose }: MacroDetailsProps) => {
   const labels = useAppSelector(selectAllLabels);
   const teams = useAppSelector(selectAllTeams);
   const { executeMacro, executingMacroId, conversationId } = useMacroContext();
+  const bottomSheetStyles = useBottomSheetThemedStyles();
 
   // Check if this specific macro is executing
   const isThisMacroExecuting = executingMacroId === macro.id;
@@ -78,7 +79,9 @@ const MacroDetails = ({ macro, onBack, onClose }: MacroDetailsProps) => {
   }, []);
 
   return (
-    <Animated.View entering={FadeIn.duration(300).springify()} style={tailwind.style('flex-1')}>
+    <Animated.View
+      entering={FadeIn.duration(300).springify()}
+      style={[tailwind.style('flex-1'), bottomSheetStyles.contentStyle]}>
       <View style={tailwind.style('flex-row items-center p-4')}>
         <Pressable onPress={onBack} style={tailwind.style('flex-1 flex-row items-center')}>
           <Icon icon={<ChevronLeft />} size={18} style={tailwind.style('mr-1')} />
@@ -109,6 +112,7 @@ const MacroDetails = ({ macro, onBack, onClose }: MacroDetailsProps) => {
       {macro.actions && (
         <BottomSheetScrollView
           showsVerticalScrollIndicator={false}
+          style={bottomSheetStyles.contentStyle}
           contentContainerStyle={tailwind.style('px-4')}>
           {resolvedMacro().map((action, index) => (
             <View key={index} style={tailwind.style('relative pl-6 pb-4')}>

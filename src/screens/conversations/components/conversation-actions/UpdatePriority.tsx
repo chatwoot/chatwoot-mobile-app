@@ -7,7 +7,7 @@ import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
 import { ConversationPriority, PriorityOptions } from '@/types';
 import { getPriorityIcon, useHaptic } from '@/utils';
-import { BottomSheetHeader, Icon } from '@/components-next';
+import { BottomSheetHeader, Icon, useBottomSheetThemedStyles } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectSelectedConversation } from '@/store/conversation/conversationSelectedSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
@@ -60,6 +60,7 @@ const PriorityCell = (props: PriorityCellProps) => {
 
 export const UpdatePriority = () => {
   const { actionsModalSheetRef } = useRefsContext();
+  const bottomSheetStyles = useBottomSheetThemedStyles();
 
   const dispatch = useAppDispatch();
   const selectedConversation = useAppSelector(selectSelectedConversation);
@@ -83,7 +84,7 @@ export const UpdatePriority = () => {
   };
 
   return (
-    <BottomSheetView>
+    <BottomSheetView style={bottomSheetStyles.contentStyle}>
       <BottomSheetHeader headerText={i18n.t('CONVERSATION.CHANGE_PRIORITY')} />
       <Animated.View style={tailwind.style('py-1 pl-3')}>
         {PriorityList.map((value, index) => (

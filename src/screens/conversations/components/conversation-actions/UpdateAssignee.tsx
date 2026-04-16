@@ -6,7 +6,7 @@ import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
 import { Agent } from '@/types';
-import { Avatar, Icon, SearchBar } from '@/components-next';
+import { Avatar, Icon, SearchBar, useBottomSheetThemedStyles } from '@/components-next';
 import { SelfAssign, TickIcon } from '@/svg-icons';
 
 import { assignableAgentActions } from '@/store/assignable-agent/assignableAgentActions';
@@ -61,6 +61,7 @@ export const UpdateAssignee = () => {
   const dispatch = useAppDispatch();
   const { actionsModalSheetRef } = useRefsContext();
   const [searchTerm, setSearchTerm] = useState('');
+  const bottomSheetStyles = useBottomSheetThemedStyles();
 
   const selectedInboxes = useAppSelector(selectSelectedInboxes);
   const selectedConversation = useAppSelector(selectSelectedConversation);
@@ -135,7 +136,7 @@ export const UpdateAssignee = () => {
 
       <BottomSheetScrollView
         showsVerticalScrollIndicator={false}
-        style={tailwind.style('my-1 pl-3')}>
+        style={[tailwind.style('my-1 pl-3'), bottomSheetStyles.contentStyle]}>
         {isFetching ? (
           <ActivityIndicator />
         ) : (

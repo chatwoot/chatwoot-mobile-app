@@ -7,7 +7,7 @@ import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
 import { ConversationStatus, StatusCollection } from '@/types';
 import { getStatusTypeIcon, useHaptic } from '@/utils';
-import { BottomSheetHeader, Icon } from '@/components-next';
+import { BottomSheetHeader, Icon, useBottomSheetThemedStyles } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import {
   selectSelectedConversation,
@@ -61,6 +61,7 @@ const filterStatusList = (status: ConversationStatus) => {
 
 export const UpdateStatus = () => {
   const { actionsModalSheetRef } = useRefsContext();
+  const bottomSheetStyles = useBottomSheetThemedStyles();
 
   const dispatch = useAppDispatch();
   const selectedIds = useAppSelector(selectSelectedIds);
@@ -95,7 +96,7 @@ export const UpdateStatus = () => {
   };
 
   return (
-    <BottomSheetView>
+    <BottomSheetView style={bottomSheetStyles.contentStyle}>
       <BottomSheetHeader headerText={i18n.t('CONVERSATION.CHANGE_STATUS')} />
       <Animated.View style={tailwind.style('py-1 pl-3')}>
         {statusList.map((value, index) => (

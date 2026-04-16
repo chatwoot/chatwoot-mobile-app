@@ -11,7 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EMAIL_REGEX } from '@/constants';
 import { EyeIcon, EyeSlash, LockIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { tailwind, useAppTheme } from '@/theme';
 import i18n from '@/i18n';
 import { resetAuth } from '@/store/auth/authSlice';
 import { authActions } from '@/store/auth/authActions';
@@ -67,6 +67,8 @@ const LoginScreen = () => {
 
   const dispatch = useAppDispatch();
   const isLoggingIn = useAppSelector(selectIsLoggingIn);
+  const { isDark } = useAppTheme();
+  const ssoIconFill = tailwind.color(isDark ? 'text-grayDark-950' : 'text-black') as string;
 
   const installationUrl = useAppSelector(selectInstallationUrl);
   const baseUrl = useAppSelector(selectBaseUrl);
@@ -169,7 +171,7 @@ const LoginScreen = () => {
             <View>
               <AuthButton
                 text={i18n.t('LOGIN.LOGIN_VIA_SSO')}
-                icon={<LockIcon />}
+                icon={<LockIcon fill={ssoIconFill} fillOpacity={isDark ? 0.78 : 0.478} />}
                 handlePress={handleSsoLogin}
                 disabled={isLoggingIn}
                 variant="outline"

@@ -20,6 +20,7 @@ interface RefsContextType {
   slaEventsSheetRef: React.RefObject<BottomSheetModal | null>;
   deliveryStatusSheetRef: React.RefObject<BottomSheetModal | null>;
   updateParticipantSheetRef: React.RefObject<BottomSheetModal | null>;
+  toneSelectionSheetRef: React.RefObject<BottomSheetModal | null>;
 }
 
 const RefsContext = React.createContext<RefsContextType | undefined>(undefined);
@@ -51,6 +52,7 @@ const RefsProvider: React.FC<Partial<RefsContextType & { children: React.ReactNo
   const slaEventsSheetRef = useRef<BottomSheetModal>(null);
   const deliveryStatusSheetRef = useRef<BottomSheetModal>(null);
   const updateParticipantSheetRef = useRef<BottomSheetModal>(null);
+  const toneSelectionSheetRef = useRef<BottomSheetModal>(null);
 
   const { children } = props;
 
@@ -70,6 +72,7 @@ const RefsProvider: React.FC<Partial<RefsContextType & { children: React.ReactNo
     slaEventsSheetRef,
     deliveryStatusSheetRef,
     updateParticipantSheetRef,
+    toneSelectionSheetRef,
   };
 
   return <RefsContext.Provider value={contextRefValues}>{children}</RefsContext.Provider>;

@@ -1,10 +1,10 @@
-import React from 'react';
-import { Pressable, ScrollView, StyleSheet } from 'react-native';
+import React, { useMemo } from 'react';
+import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
 import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { Icon } from '@/components-next/common';
 import { CopilotDiscardIcon, CopilotAcceptIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { tailwind, useAppTheme } from '@/theme';
 import { useHaptic } from '@/utils';
 
 type CopilotEditorSectionProps = {
@@ -14,27 +14,6 @@ type CopilotEditorSectionProps = {
   onAccept: () => void;
   onDiscard: () => void;
 };
-
-const markdownStyles = StyleSheet.create({
-  body: {
-    fontSize: 14,
-    fontFamily: 'Inter-400-20',
-    lineHeight: 21,
-    letterSpacing: -0.1,
-    color: tailwind.color('text-slate-950') as string,
-  },
-  paragraph: {
-    marginTop: 0,
-    marginBottom: 0,
-  },
-  strong: {
-    fontFamily: 'Inter-600-20',
-    fontWeight: '600',
-  },
-  em: {
-    fontStyle: 'italic',
-  },
-});
 
 const markdownIt = MarkdownIt({ typographer: true });
 
@@ -46,8 +25,89 @@ export const CopilotEditorSection = ({
   onDiscard,
 }: CopilotEditorSectionProps) => {
   const hapticSelection = useHaptic();
+  const { isDark } = useAppTheme();
   const displayText = isGenerating ? originalContent : generatedContent;
   const showActions = !isGenerating && generatedContent.length > 0;
+  const markdownStyles = useMemo(() => {
+    const bodyTextColor = tailwind.color(isDark ? 'text-grayDark-950' : 'text-slate-950') as string;
+    const codeTextColor = tailwind.color(isDark ? 'text-grayDark-950' : 'text-gray-950') as string;
+    const codeBorderColor = tailwind.color(
+      isDark ? 'border-whiteA-A6' : 'border-blackA-A6',
+    ) as string;
+    const codeBackgroundColor = tailwind.color(
+      isDark ? 'bg-grayDark-200' : 'bg-gray-100',
+    ) as string;
+
+    return StyleSheet.create({
+      body: {
+        fontSize: 14,
+        fontFamily: 'Inter-400-20',
+        lineHeight: 21,
+        letterSpacing: -0.1,
+        color: bodyTextColor,
+      },
+      paragraph: {
+        marginTop: 0,
+        marginBottom: 0,
+      },
+      strong: {
+        fontFamily: 'Inter-600-20',
+        fontWeight: '600',
+      },
+      em: {
+        fontStyle: 'italic',
+      },
+      code_inline: {
+        color: codeTextColor,
+        backgroundColor: codeBackgroundColor,
+        borderColor: codeBorderColor,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderRadius: 4,
+        paddingHorizontal: 4,
+        paddingVertical: 1,
+        ...Platform.select({
+          ios: {
+            fontFamily: 'Courier',
+          },
+          android: {
+            fontFamily: 'monospace',
+          },
+        }),
+      },
+      code_block: {
+        color: codeTextColor,
+        backgroundColor: codeBackgroundColor,
+        borderColor: codeBorderColor,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderRadius: 8,
+        padding: 10,
+        ...Platform.select({
+          ios: {
+            fontFamily: 'Courier',
+          },
+          android: {
+            fontFamily: 'monospace',
+          },
+        }),
+      },
+      fence: {
+        color: codeTextColor,
+        backgroundColor: codeBackgroundColor,
+        borderColor: codeBorderColor,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderRadius: 8,
+        padding: 10,
+        ...Platform.select({
+          ios: {
+            fontFamily: 'Courier',
+          },
+          android: {
+            fontFamily: 'monospace',
+          },
+        }),
+      },
+    });
+  }, [isDark]);
 
   if (isGenerating && originalContent.trim().length === 0) {
     return null;
@@ -78,7 +138,10 @@ export const CopilotEditorSection = ({
         <Animated.View style={tailwind.style('w-10')} />
       )}
       <ScrollView
-        style={tailwind.style('flex-1 max-h-[120px] border border-blackA-A3 rounded-2xl')}
+        style={tailwind.style(
+          'flex-1 max-h-[240px] border rounded-2xl',
+          isDark ? 'bg-grayDark-100 border-whiteA-A3' : 'bg-white border-blackA-A3',
+        )}
         contentContainerStyle={tailwind.style('px-3 py-2')}>
         <Markdown style={markdownStyles} markdownit={markdownIt}>
           {displayText}

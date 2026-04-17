@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { TextInput, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
-import { tailwind } from '@/theme';
+import { tailwind, useAppTheme } from '@/theme';
 import i18n from '@/i18n';
 
 type CopilotInputBarProps = {
@@ -10,7 +10,7 @@ type CopilotInputBarProps = {
   onFollowUpTextChange?: (text: string) => void;
 };
 
-const ThinkingText = () => {
+const ThinkingText = ({ textColorClass }: { textColorClass: string }) => {
   const [dots, setDots] = useState('');
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -26,7 +26,8 @@ const ThinkingText = () => {
   return (
     <Text
       style={tailwind.style(
-        'text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px] text-[#4747C2]',
+        'text-sm font-inter-normal-20 leading-[21px] tracking-[-0.1px]',
+        textColorClass,
       )}>
       {i18n.t('COPILOT.THINKING')}
       {dots}
@@ -34,8 +35,18 @@ const ThinkingText = () => {
   );
 };
 
-export const CopilotInputBar = ({ isGenerating, onSendFollowUp, onFollowUpTextChange }: CopilotInputBarProps) => {
+export const CopilotInputBar = ({
+  isGenerating,
+  onSendFollowUp,
+  onFollowUpTextChange,
+}: CopilotInputBarProps) => {
   const [followUpText, setFollowUpText] = useState('');
+  const { isDark } = useAppTheme();
+  const containerColorClass = isDark ? 'bg-indigoDark-200' : 'bg-indigo-100';
+  const textColorClass = isDark ? 'text-indigoDark-950' : 'text-indigo-900';
+  const placeholderTextColor = tailwind.color(
+    isDark ? 'text-indigoDark-900' : 'text-indigo-800',
+  ) as string;
 
   useEffect(() => {
     if (isGenerating) {
@@ -58,10 +69,17 @@ export const CopilotInputBar = ({ isGenerating, onSendFollowUp, onFollowUpTextCh
   };
 
   return (
-    <View style={tailwind.style('flex-1 bg-[#E0E0FD] rounded-[20px] min-h-9 max-h-[76px] px-3 py-2 justify-center')}>
+    <View
+      style={tailwind.style(
+        'flex-1 rounded-[20px] min-h-9 max-h-[76px] px-3 py-2 justify-center',
+        containerColorClass,
+      )}>
       {isGenerating ? (
-        <Animated.View key="thinking" entering={FadeIn.duration(200)} exiting={FadeOut.duration(150)}>
-          <ThinkingText />
+        <Animated.View
+          key="thinking"
+          entering={FadeIn.duration(200)}
+          exiting={FadeOut.duration(150)}>
+          <ThinkingText textColorClass={textColorClass} />
         </Animated.View>
       ) : (
         <Animated.View key="input" entering={FadeIn.duration(200)} exiting={FadeOut.duration(150)}>
@@ -69,10 +87,11 @@ export const CopilotInputBar = ({ isGenerating, onSendFollowUp, onFollowUpTextCh
             value={followUpText}
             onChangeText={handleChangeText}
             placeholder={i18n.t('COPILOT.FOLLOW_UP_PLACEHOLDER')}
-            placeholderTextColor="#4747C2"
+            placeholderTextColor={placeholderTextColor}
             multiline
             style={tailwind.style(
-              'text-sm font-inter-normal-20 leading-[18px] tracking-[-0.1px] text-[#4747C2] p-0',
+              'text-sm font-inter-normal-20 leading-[18px] tracking-[-0.1px] p-0',
+              textColorClass,
             )}
             editable={!isGenerating}
             onSubmitEditing={handleSend}

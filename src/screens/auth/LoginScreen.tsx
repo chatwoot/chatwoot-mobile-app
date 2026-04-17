@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Animated, Image, Pressable, StatusBar, TextInput, View } from 'react-native';
+import { Animated, Image, Pressable, TextInput, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {
   BottomSheetModal,
@@ -11,7 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EMAIL_REGEX } from '@/constants';
 import { EyeIcon, EyeSlash, LockIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { tailwind, useAppTheme } from '@/theme';
 import i18n from '@/i18n';
 import { resetAuth } from '@/store/auth/authSlice';
 import { authActions } from '@/store/auth/authActions';
@@ -24,6 +24,8 @@ import {
   Button,
   Icon,
   AuthButton,
+  ThemedStatusBar,
+  useBottomSheetThemedStyles,
 } from '@/components-next';
 import {
   selectInstallationUrl,
@@ -61,9 +63,12 @@ const LoginScreen = () => {
     stiffness: 420,
     damping: 30,
   });
+  const bottomSheetStyles = useBottomSheetThemedStyles();
 
   const dispatch = useAppDispatch();
   const isLoggingIn = useAppSelector(selectIsLoggingIn);
+  const { isDark } = useAppTheme();
+  const ssoIconFill = tailwind.color(isDark ? 'text-grayDark-950' : 'text-black') as string;
 
   const installationUrl = useAppSelector(selectInstallationUrl);
   const baseUrl = useAppSelector(selectBaseUrl);
@@ -139,11 +144,7 @@ const LoginScreen = () => {
 
   return (
     <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
-      <StatusBar
-        translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
-      />
+      <ThemedStatusBar />
       <View style={tailwind.style('flex-1 bg-white')}>
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
@@ -170,7 +171,7 @@ const LoginScreen = () => {
             <View>
               <AuthButton
                 text={i18n.t('LOGIN.LOGIN_VIA_SSO')}
-                icon={<LockIcon />}
+                icon={<LockIcon fill={ssoIconFill} fillOpacity={isDark ? 0.78 : 0.478} />}
                 handlePress={handleSsoLogin}
                 disabled={isLoggingIn}
                 variant="outline"
@@ -301,14 +302,17 @@ const LoginScreen = () => {
       <BottomSheetModal
         ref={languagesModalSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        backgroundStyle={bottomSheetStyles.backgroundStyle}
+        handleIndicatorStyle={bottomSheetStyles.handleIndicatorStyle}
         detached
         enablePanDownToClose
         animationConfigs={animationConfigs}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        handleStyle={bottomSheetStyles.handleStyle}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
         snapPoints={['70%']}>
-        <BottomSheetScrollView showsVerticalScrollIndicator={false}>
+        <BottomSheetScrollView
+          showsVerticalScrollIndicator={false}
+          style={bottomSheetStyles.contentStyle}>
           <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_LANGUAGE')} />
           <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
         </BottomSheetScrollView>

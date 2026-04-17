@@ -5,7 +5,11 @@ import Animated from 'react-native-reanimated';
 
 import { Avatar, Icon } from '@/components-next';
 import { ChevronLeft, OpenIcon, Overflow, ResolvedIcon, SLAIcon } from '@/svg-icons';
-import { BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
+import {
+  BottomSheetBackdrop,
+  BottomSheetWrapper,
+  useBottomSheetThemedStyles,
+} from '@/components-next';
 import { tailwind } from '@/theme';
 import { ChatDropdownMenu, DashboardList } from './DropdownMenu';
 import { SLAEvent } from '@/types/common';
@@ -46,6 +50,7 @@ export const ChatHeader = ({
     stiffness: 420,
     damping: 30,
   });
+  const bottomSheetStyles = useBottomSheetThemedStyles();
 
   const toggleSlaEventsSheet = () => {
     if (slaEvents?.length) {
@@ -113,10 +118,11 @@ export const ChatHeader = ({
       <BottomSheetModal
         ref={slaEventsSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
+        backgroundStyle={bottomSheetStyles.backgroundStyle}
+        handleIndicatorStyle={bottomSheetStyles.handleIndicatorStyle}
         enablePanDownToClose
         animationConfigs={animationConfigs}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        handleStyle={bottomSheetStyles.handleStyle}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
         snapPoints={['36%']}>
         <BottomSheetWrapper>

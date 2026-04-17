@@ -25,7 +25,7 @@ import {
   isAnInstagramChannel,
 } from '@/utils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { MESSAGE_MAX_LENGTH, REPLY_EDITOR_MODES } from '@/constants';
+import { INBOX_TYPES, MESSAGE_MAX_LENGTH, REPLY_EDITOR_MODES } from '@/constants';
 import { tailwind } from '@/theme';
 import {
   selectMessageContent,
@@ -149,6 +149,7 @@ const BottomSheetContent = () => {
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const { inboxId, canReply } = conversation || {};
   const inbox = useAppSelector(state => (inboxId ? selectInboxById(state, inboxId) : undefined));
+  const conversationChannelType = conversation?.channel || conversation?.meta?.channel;
 
   const selectAgents = useAppSelector(selectAssignableParticipantsByInboxId);
   const agents = inboxId ? selectAgents(inboxId, '') : [];
@@ -312,9 +313,7 @@ const BottomSheetContent = () => {
   const handleCopilotFollowUp = (message: string) => {
     if (followUpContext && message.trim().length > 0) {
       copilotAbortRef.current?.abort();
-      const promise = dispatch(
-        sendCopilotFollowUp({ followUpContext, message, conversationId }),
-      );
+      const promise = dispatch(sendCopilotFollowUp({ followUpContext, message, conversationId }));
       copilotAbortRef.current = promise;
       promise.unwrap().catch((err: { name?: string }) => {
         if (err?.name === 'AbortError') return;
@@ -447,9 +446,8 @@ const BottomSheetContent = () => {
     messageListRef?.current?.scrollToOffset({ offset: 0, animated: true });
   };
 
-  const shouldShowFileUpload =
-    inbox &&
-    (isAWebWidgetInbox(inbox) ||
+  const shouldShowFileUpload = inbox
+    ? isAWebWidgetInbox(inbox) ||
       isAFacebookInbox(inbox) ||
       isAWhatsAppChannel(inbox) ||
       isAPIInbox(inbox) ||
@@ -457,7 +455,17 @@ const BottomSheetContent = () => {
       isAnEmailChannel(inbox) ||
       isATelegramChannel(inbox) ||
       isALineChannel(inbox) ||
-      isAnInstagramChannel(inbox));
+      isAnInstagramChannel(inbox)
+    : conversationChannelType === INBOX_TYPES.WEB ||
+      conversationChannelType === INBOX_TYPES.FB ||
+      conversationChannelType === INBOX_TYPES.WHATSAPP ||
+      conversationChannelType === INBOX_TYPES.API ||
+      conversationChannelType === INBOX_TYPES.SMS ||
+      conversationChannelType === INBOX_TYPES.TWILIO ||
+      conversationChannelType === INBOX_TYPES.EMAIL ||
+      conversationChannelType === INBOX_TYPES.TELEGRAM ||
+      conversationChannelType === INBOX_TYPES.LINE ||
+      conversationChannelType === INBOX_TYPES.INSTAGRAM;
 
   const maxLength = () => {
     if (isPrivate) {
@@ -513,7 +521,9 @@ const BottomSheetContent = () => {
       )}
 
       <Animated.View
-        layout={isCopilotActive ? undefined : LinearTransition.springify().damping(38).stiffness(240)}
+        layout={
+          isCopilotActive ? undefined : LinearTransition.springify().damping(38).stiffness(240)
+        }
         style={tailwind.style(
           `pb-2 border-t-[1px] border-t-blackA-A3 ${shouldShowReplyHeader ? 'pt-0' : 'pt-2'}`,
         )}>
@@ -551,7 +561,9 @@ const BottomSheetContent = () => {
         ) : null}
         {!isVoiceRecorderOpen ? (
           <Animated.View
-            layout={isCopilotActive ? undefined : LinearTransition.springify().damping(20).stiffness(180)}
+            layout={
+              isCopilotActive ? undefined : LinearTransition.springify().damping(20).stiffness(180)
+            }
             style={tailwind.style('flex flex-row px-1 items-end z-20 relative')}>
             {!isCopilotActive && attachmentsLength === 0 && shouldShowFileUpload && (
               <AddCommandButton

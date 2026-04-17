@@ -9,7 +9,11 @@ import {
 } from '@gorhom/bottom-sheet';
 import * as DropdownMenu from 'zeego/dropdown-menu';
 
-import { BottomSheetHeader, BottomSheetWrapper } from '@/components-next';
+import {
+  BottomSheetHeader,
+  BottomSheetWrapper,
+  useBottomSheetThemedStyles,
+} from '@/components-next';
 import { tailwind } from '@/theme';
 
 export type DashboardList = {
@@ -93,6 +97,7 @@ export const ChatDropdownMenu = (props: PropsWithChildren<ChatDropdownMenuProps>
     stiffness: 420,
     damping: 30,
   });
+  const bottomSheetStyles = useBottomSheetThemedStyles();
 
   const renderBackDrop = useCallback(
     (backdropProps: BottomSheetBackdropProps) => (
@@ -114,10 +119,9 @@ export const ChatDropdownMenu = (props: PropsWithChildren<ChatDropdownMenuProps>
         <BottomSheetModal
           ref={contextMenuSheetRef}
           backdropComponent={renderBackDrop}
-          handleIndicatorStyle={tailwind.style(
-            'overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]',
-          )}
-          handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+          backgroundStyle={bottomSheetStyles.backgroundStyle}
+          handleIndicatorStyle={bottomSheetStyles.handleIndicatorStyle}
+          handleStyle={bottomSheetStyles.handleStyle}
           style={tailwind.style('mx-3 rounded-[26px] overflow-hidden')}
           detached
           bottomInset={bottom === 0 ? 12 : bottom}

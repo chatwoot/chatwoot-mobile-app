@@ -4,7 +4,12 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 
-import { BottomSheetBackdrop, Button } from '@/components-next';
+import {
+  BottomSheetBackdrop,
+  BottomSheetWrapper,
+  Button,
+  useBottomSheetThemedStyles,
+} from '@/components-next';
 import {
   ConversationBasicActions,
   ConversationLabelActions,
@@ -40,6 +45,7 @@ export const ConversationActions = () => {
     stiffness: 420,
     damping: 30,
   });
+  const bottomSheetStyles = useBottomSheetThemedStyles();
   const { updateParticipantSheetRef, actionsModalSheetRef } = useRefsContext();
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
@@ -159,13 +165,16 @@ export const ConversationActions = () => {
       <BottomSheetModal
         ref={updateParticipantSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        backgroundStyle={bottomSheetStyles.backgroundStyle}
+        handleIndicatorStyle={bottomSheetStyles.handleIndicatorStyle}
+        handleStyle={bottomSheetStyles.handleStyle}
         style={tailwind.style('rounded-[26px] overflow-hidden')}
         animationConfigs={animationConfigs}
         enablePanDownToClose
         snapPoints={['50%']}>
-        <UpdateParticipant activeConversationParticipants={conversationParticipants} />
+        <BottomSheetWrapper>
+          <UpdateParticipant activeConversationParticipants={conversationParticipants} />
+        </BottomSheetWrapper>
       </BottomSheetModal>
     </Animated.View>
   );

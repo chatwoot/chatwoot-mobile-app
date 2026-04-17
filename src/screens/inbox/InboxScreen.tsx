@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, RefreshControl, StatusBar } from 'react-native';
+import { ActivityIndicator, RefreshControl } from 'react-native';
 import Animated, {
   LinearTransition,
   runOnJS,
@@ -21,6 +21,7 @@ import {
   getFilteredNotifications,
 } from '@/store/notification/notificationSelectors';
 import { InboxHeader, InboxItemContainer } from './components';
+import { ThemedStatusBar } from '@/components-next';
 import { useInboxListStateContext } from '@/context';
 import { resetNotifications } from '@/store/notification/notificationSlice';
 import { showToast } from '@/utils/toastUtils';
@@ -181,11 +182,7 @@ const InboxScreen = () => {
 
   return (
     <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
-      <StatusBar
-        translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
-      />
+      <ThemedStatusBar />
       <InboxListStateProvider>
         <InboxHeader markAllAsRead={markAllAsRead} />
         <InboxList />

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Platform, Pressable, StyleSheet } from 'react-native';
+import { Linking, Platform, Pressable, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Clipboard from '@react-native-clipboard/clipboard';
 import * as Sentry from '@sentry/react-native';
@@ -19,15 +19,34 @@ type AttributeItemProps = {
 const AttributeItem = (props: AttributeItemProps) => {
   const { listItem, index, isLastItem } = props;
 
-  const handlePress = () => {
-    if (formattedValue) {
+  const copyValue = (value: string) => {
+    try {
+      Clipboard.setString(value);
+      showToast({ message: `${listItem.title} copied to clipboard` });
+    } catch (error) {
+      Sentry.captureException(error);
+    }
+  };
+
+  const handlePress = async () => {
+    if (!formattedValue) {
+      return;
+    }
+
+    const valueToCopy = listItem.copyValue || formattedValue;
+    const link = listItem.link || formattedValue;
+
+    if (listItem.type === 'link') {
       try {
-        Clipboard.setString(formattedValue);
-        showToast({ message: `${listItem.title} copied to clipboard` });
+        await Linking.openURL(link);
       } catch (error) {
+        copyValue(valueToCopy);
         Sentry.captureException(error);
       }
+      return;
     }
+
+    copyValue(valueToCopy);
   };
 
   const formattedDate = useMemo(() => {
@@ -143,7 +162,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 4,
-        backgroundColor: 'white',
       },
     }) || {}, // Add fallback empty object
 });

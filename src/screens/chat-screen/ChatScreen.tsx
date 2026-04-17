@@ -33,6 +33,8 @@ import i18n from '@/i18n';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { MacrosList } from './components/macros/MacrosList';
 import { macroActions } from '@/store/macro/macroActions';
+import { inboxActions } from '@/store/inbox/inboxActions';
+import { selectInboxById } from '@/store/inbox/inboxSelectors';
 
 export const ChatWindow = (props: ChatScreenProps) => {
   return (
@@ -74,6 +76,7 @@ const ChatScreenWrapper = (props: ChatScreenProps) => {
 
   const { meta: { sender: { name = '', thumbnail = '' } = {} } = {} } = conversation || {};
   const { inboxId } = conversation || {};
+  const inbox = useAppSelector(state => (inboxId ? selectInboxById(state, inboxId) : undefined));
 
   useEffect(() => {
     const inboxIds = inboxId ? [inboxId] : [];
@@ -82,6 +85,12 @@ const ChatScreenWrapper = (props: ChatScreenProps) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inboxId]);
+
+  useEffect(() => {
+    if (inboxId && !inbox) {
+      dispatch(inboxActions.fetchInboxes());
+    }
+  }, [dispatch, inboxId, inbox]);
 
   return (
     <React.Fragment>

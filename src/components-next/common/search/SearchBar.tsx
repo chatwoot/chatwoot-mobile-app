@@ -55,7 +55,7 @@ export const SearchBar = (props: SearchBarProps) => {
       <SearchTextInput
         style={[
           tailwind.style(
-            'h-9 px-8.5 py-[7px] bg-blackA-A3 text-black text-base font-inter-normal-20 leading-[19.5px] rounded-[11px]',
+            'h-9 px-8.5 py-[7px] bg-blackA-A3 text-gray-950 text-base font-inter-normal-20 leading-[19.5px] rounded-[11px]',
             isLoading ? 'px-8.5' : value && onClear ? 'pl-8.5 pr-10' : 'pl-8.5 pr-4',
           ),
         ]}

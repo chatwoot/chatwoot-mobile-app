@@ -4,7 +4,7 @@ import { Pressable } from 'react-native';
 import { Icon } from '@/components-next/common';
 import { SendIcon } from '@/svg-icons';
 import { useScaleAnimation } from '@/utils';
-import { tailwind } from '@/theme';
+import { tailwind, useAppTheme } from '@/theme';
 import { useAppSelector } from '@/hooks';
 import { selectIsPrivateMessage } from '@/store/conversation/sendMessageSlice';
 import { SendMessageButtonProps } from '../types';
@@ -14,14 +14,15 @@ export const SendMessageButton = (props: SendMessageButtonProps) => {
   const { disabled, variant, ...restProps } = props;
   const { animatedStyle, handlers } = useScaleAnimation();
   const isPrivateMessage = useAppSelector(selectIsPrivateMessage);
+  const { isDark } = useAppTheme();
 
   const getBgColor = () => {
     if (variant === 'copilot') {
       return disabled ? 'bg-[#9B9EF0]' : 'bg-[#5B5BD6]';
     }
-    if (disabled) return 'bg-gray-400';
-    if (isPrivateMessage) return 'bg-amber-700';
-    return 'bg-gray-950';
+    if (disabled) return isDark ? 'bg-grayDark-500' : 'bg-gray-400';
+    if (isPrivateMessage) return isDark ? 'bg-amberDark-600' : 'bg-amber-700';
+    return isDark ? 'bg-blueDark-600' : 'bg-gray-950';
   };
 
   return (
@@ -30,7 +31,10 @@ export const SendMessageButton = (props: SendMessageButtonProps) => {
         layout={LinearTransition.springify().damping(20).stiffness(180)}
         entering={sendIconEnterAnimation}
         exiting={sendIconExitAnimation}
-        style={[tailwind.style('flex items-center justify-center h-10 w-10'), disabled ? {} : animatedStyle]}>
+        style={[
+          tailwind.style('flex items-center justify-center h-10 w-10'),
+          disabled ? {} : animatedStyle,
+        ]}>
         <Animated.View
           style={tailwind.style(
             'flex items-center justify-center h-7 w-7 rounded-full',

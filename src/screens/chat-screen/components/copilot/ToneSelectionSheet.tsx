@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback } from 'react';
 import { Pressable, Text } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
-import { BottomSheetBackdrop } from '@/components-next';
+import { BottomSheetBackdrop, useBottomSheetThemedStyles } from '@/components-next';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { COPILOT_ACTIONS } from '@/constants/copilot';
@@ -24,6 +24,7 @@ type ToneSelectionSheetProps = {
 export const ToneSelectionSheet = forwardRef<BottomSheetModal, ToneSelectionSheetProps>(
   ({ onSelectTone }, ref) => {
     const hapticSelection = useHaptic();
+    const bottomSheetStyles = useBottomSheetThemedStyles();
 
     const handleSelectTone = useCallback(
       (tone: CopilotActionKey) => {
@@ -40,12 +41,13 @@ export const ToneSelectionSheet = forwardRef<BottomSheetModal, ToneSelectionShee
       <BottomSheetModal
         ref={ref}
         backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+        backgroundStyle={bottomSheetStyles.backgroundStyle}
+        handleIndicatorStyle={bottomSheetStyles.handleIndicatorStyle}
+        handleStyle={bottomSheetStyles.handleStyle}
         style={tailwind.style('rounded-t-[26px] overflow-hidden')}
         enablePanDownToClose
         enableDynamicSizing>
-        <BottomSheetView>
+        <BottomSheetView style={bottomSheetStyles.contentStyle}>
           <Animated.View style={tailwind.style('items-center pt-1 pb-4')}>
             <Text
               style={tailwind.style(
@@ -58,9 +60,7 @@ export const ToneSelectionSheet = forwardRef<BottomSheetModal, ToneSelectionShee
             <Pressable
               key={option.key}
               onPress={() => handleSelectTone(option.key as CopilotActionKey)}
-              style={tailwind.style(
-                'h-[60px] justify-center pl-4 pr-3 border-b border-slate-200',
-              )}>
+              style={tailwind.style('h-[60px] justify-center pl-4 pr-3 border-b border-slate-200')}>
               <Text
                 style={tailwind.style(
                   'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] text-gray-950',

@@ -124,7 +124,8 @@ const ActionItem = (props: ActionItemProps) => {
         {...handlers}
         hitSlop={{ left: 10, right: 10, bottom: 8, top: 4 }}
         onPress={handleOnPress}
-        key={actionItem.action}>
+        key={actionItem.action}
+      >
         <Icon size={28} icon={actionItem.icon} />
       </Pressable>
     </Animated.View>
@@ -189,7 +190,8 @@ export const ActionTabs = () => {
             }px]`,
           ),
         ],
-      })}>
+      })}
+    >
       {bulkSelectActions.map(actionItem => {
         return <ActionItem key={actionItem.action} {...{ actionItem }} />;
       })}
@@ -209,7 +211,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 4,
-        backgroundColor: 'white',
       },
     }) || {}, // Add fallback empty object
 });

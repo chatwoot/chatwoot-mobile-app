@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { openURL } from '@/utils/urlUtils';
 
-import { tailwind } from '@/theme';
+import { tailwind, useAppTheme } from '@/theme';
 import { MESSAGE_VARIANTS } from '@/constants';
 
 type MarkdownBubbleProps = {
@@ -18,16 +18,30 @@ const variantTextMap = {
   [MESSAGE_VARIANTS.TEMPLATE]: 'text-gray-950',
   [MESSAGE_VARIANTS.ERROR]: 'text-white',
   [MESSAGE_VARIANTS.PRIVATE]: 'text-amber-950 font-inter-medium-24',
+  [MESSAGE_VARIANTS.EMAIL]: 'text-gray-950',
+  [MESSAGE_VARIANTS.UNSUPPORTED]: 'text-amber-950 font-inter-medium-24',
+};
+
+const darkVariantTextMap = {
+  [MESSAGE_VARIANTS.AGENT]: 'text-grayDark-950',
+  [MESSAGE_VARIANTS.USER]: 'text-white',
+  [MESSAGE_VARIANTS.BOT]: 'text-grayDark-950',
+  [MESSAGE_VARIANTS.TEMPLATE]: 'text-grayDark-950',
+  [MESSAGE_VARIANTS.ERROR]: 'text-white',
+  [MESSAGE_VARIANTS.PRIVATE]: 'text-amberDark-950 font-inter-medium-24',
+  [MESSAGE_VARIANTS.EMAIL]: 'text-grayDark-950',
+  [MESSAGE_VARIANTS.UNSUPPORTED]: 'text-amberDark-950 font-inter-medium-24',
 };
 
 export const MarkdownBubble = (props: MarkdownBubbleProps) => {
   const { messageContent, variant } = props;
+  const { isDark } = useAppTheme();
   const handleURL = (url: string) => {
     openURL({ URL: url });
     return true;
   };
 
-  const textStyle = tailwind.style(variantTextMap[variant]);
+  const textStyle = tailwind.style(isDark ? darkVariantTextMap[variant] : variantTextMap[variant]);
 
   const styles = StyleSheet.create({
     text: {

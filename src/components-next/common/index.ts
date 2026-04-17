@@ -6,3 +6,4 @@ export * from './search';
 export * from './slider';
 export * from './swipeable';
 export * from './tabs';
+export * from './themed-status-bar';

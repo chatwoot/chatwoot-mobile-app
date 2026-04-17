@@ -1,10 +1,11 @@
 import React, { useCallback, useRef } from 'react';
 import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
-import { getStateFromPath } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, getStateFromPath } from '@react-navigation/native';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import * as SystemUI from 'expo-system-ui';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
@@ -27,10 +28,13 @@ import Inter42020 from '@/assets/fonts/Inter-420-20.ttf';
 import Inter50024 from '@/assets/fonts/Inter-500-24.ttf';
 import Inter58024 from '@/assets/fonts/Inter-580-24.ttf';
 import Inter60020 from '@/assets/fonts/Inter-600-20.ttf';
+import { setTailwindColorScheme, useAppTheme } from '@/theme';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
 });
+
+type GetStateFromPathConfig = Parameters<typeof getStateFromPath>[1];
 
 export const AppNavigationContainer = () => {
   const [fontsLoaded] = useFonts({
@@ -43,9 +47,28 @@ export const AppNavigationContainer = () => {
 
   const routeNameRef = useRef<string | undefined>(undefined);
   const dispatch = useAppDispatch();
+  const appTheme = useAppTheme();
+  const navigationTreeKey = `theme-${appTheme.colorScheme}`;
+
+  setTailwindColorScheme(appTheme.colorScheme);
 
   const installationUrl = useAppSelector(selectInstallationUrl);
   const locale = useAppSelector(selectLocale);
+
+  const navigationTheme = React.useMemo(
+    () => ({
+      ...(appTheme.isDark ? DarkTheme : DefaultTheme),
+      colors: {
+        ...(appTheme.isDark ? DarkTheme.colors : DefaultTheme.colors),
+        background: appTheme.colors.background,
+        card: appTheme.colors.surface,
+        border: appTheme.colors.border,
+        primary: appTheme.colors.primary,
+        text: appTheme.colors.text,
+      },
+    }),
+    [appTheme],
+  );
 
   const linking = {
     prefixes: [installationUrl, SSO_CALLBACK_URL],
@@ -61,9 +84,8 @@ export const AppNavigationContainer = () => {
         },
       },
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // getStateFromPath: App running, receives deep link - handles SSO callbacks and conversation navigation
-    getStateFromPath: (path: string, config: any) => {
+    getStateFromPath: (path: string, config: GetStateFromPathConfig) => {
       // Handle SSO callback - App running, receives deep link
       if (path.includes(SSO_CALLBACK_URL) || path.includes('auth/saml')) {
         const ssoParams = SsoUtils.parseCallbackUrl(`chatwootapp://${path}`);
@@ -182,12 +204,17 @@ export const AppNavigationContainer = () => {
     }
   }, [fontsLoaded]);
 
+  React.useEffect(() => {
+    SystemUI.setBackgroundColorAsync(appTheme.colors.background);
+  }, [appTheme.colors.background]);
+
   if (!fontsLoaded) {
     return null;
   }
 
   return (
     <NavigationContainer
+      theme={navigationTheme}
       linking={linking}
       ref={navigationRef}
       onReady={() => {
@@ -196,9 +223,11 @@ export const AppNavigationContainer = () => {
       onStateChange={async () => {
         routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
       }}
-      fallback={<ActivityIndicator animating />}>
-      <BottomSheetModalProvider>
-        <View style={styles.navigationLayout} onLayout={onLayoutRootView}>
+      fallback={<ActivityIndicator animating color={appTheme.colors.primary} />}>
+      <BottomSheetModalProvider key={navigationTreeKey}>
+        <View
+          style={[styles.navigationLayout, { backgroundColor: appTheme.colors.background }]}
+          onLayout={onLayoutRootView}>
           <AppTabs />
         </View>
       </BottomSheetModalProvider>

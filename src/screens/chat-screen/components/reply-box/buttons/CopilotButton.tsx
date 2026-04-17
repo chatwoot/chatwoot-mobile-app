@@ -12,24 +12,27 @@ import { Pressable, PressableProps } from 'react-native';
 import { Icon } from '@/components-next/common';
 import { SparkleIcon, AnimatedSparkleIcon } from '@/svg-icons';
 import { useScaleAnimation } from '@/utils';
-import { tailwind } from '@/theme';
+import { tailwind, useAppTheme } from '@/theme';
 
 type CopilotButtonProps = PressableProps & {
   isActive?: boolean;
   isThinking?: boolean;
 };
 
-export const CopilotButton = ({ isActive = false, isThinking = false, ...props }: CopilotButtonProps) => {
+export const CopilotButton = ({
+  isActive = false,
+  isThinking = false,
+  ...props
+}: CopilotButtonProps) => {
   const { animatedStyle, handlers } = useScaleAnimation();
+  const { isDark } = useAppTheme();
   const starPhase = useSharedValue(0);
+  const iconColor = tailwind.color(isDark ? 'text-grayDark-950' : 'text-black') as string;
 
   useEffect(() => {
     if (isThinking) {
       starPhase.value = withRepeat(
-        withSequence(
-          withTiming(1, { duration: 600 }),
-          withTiming(0, { duration: 600 }),
-        ),
+        withSequence(withTiming(1, { duration: 600 }), withTiming(0, { duration: 600 })),
         -1,
         false,
       );
@@ -60,12 +63,18 @@ export const CopilotButton = ({ isActive = false, isThinking = false, ...props }
         <Animated.View
           style={tailwind.style('flex items-center justify-center h-10 w-10 rounded-2xl')}>
           {isThinking ? (
-            <AnimatedSparkleIcon
-              smallStarStyle={smallStarStyle}
-              largeStarStyle={largeStarStyle}
-            />
+            <AnimatedSparkleIcon smallStarStyle={smallStarStyle} largeStarStyle={largeStarStyle} />
           ) : (
-            <Icon icon={<SparkleIcon filled={isActive} />} size={24} />
+            <Icon
+              icon={
+                <SparkleIcon
+                  filled={isActive}
+                  stroke={iconColor}
+                  strokeOpacity={isDark ? 0.78 : 0.608}
+                />
+              }
+              size={24}
+            />
           )}
         </Animated.View>
       </Pressable>

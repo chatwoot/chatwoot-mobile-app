@@ -6,7 +6,7 @@ import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
 import { Agent } from '@/types';
-import { Avatar, Icon, SearchBar } from '@/components-next';
+import { Avatar, Icon, SearchBar, useBottomSheetThemedStyles } from '@/components-next';
 import { TickIcon } from '@/svg-icons';
 
 import { assignableAgentActions } from '@/store/assignable-agent/assignableAgentActions';
@@ -59,6 +59,7 @@ const ParticipantStack = ({
   activeConversationParticipants: Agent[];
 }) => {
   const isFetching = useAppSelector(isAssignableAgentFetching);
+  const bottomSheetStyles = useBottomSheetThemedStyles();
 
   const dispatch = useAppDispatch();
 
@@ -96,7 +97,9 @@ const ParticipantStack = ({
   };
 
   return (
-    <BottomSheetScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
+    <BottomSheetScrollView
+      showsVerticalScrollIndicator={false}
+      style={[tailwind.style('my-1 pl-3'), bottomSheetStyles.contentStyle]}>
       {isFetching ? (
         <ActivityIndicator />
       ) : (

@@ -17,7 +17,7 @@ import { Animated } from 'react-native';
 import { getGroupedMessages, isAnEmailChannel } from '@/utils';
 import { MessagesList } from './MessagesList';
 import { useScrollToMessage } from './useScrollToMessage';
-import tailwind from 'twrnc';
+import { tailwind } from '@/theme';
 import { conversationParticipantActions } from '@/store/conversation-participant/conversationParticipantActions';
 import { MESSAGE_TYPES, SCREENS } from '@/constants';
 import { Message } from '@/types';

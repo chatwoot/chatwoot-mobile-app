@@ -4,12 +4,14 @@ import { Pressable } from 'react-native';
 import { Icon } from '@/components-next/common';
 import { PhotosIcon } from '@/svg-icons';
 import { useScaleAnimation } from '@/utils';
-import { tailwind } from '@/theme';
+import { tailwind, useAppTheme } from '@/theme';
 import { PhotosCommandButtonProps } from '../types';
 import { photoIconEnterAnimation, photoIconExitAnimation } from '@/utils/customAnimations';
 
 export const PhotosCommandButton = (props: PhotosCommandButtonProps) => {
   const { animatedStyle, handlers } = useScaleAnimation();
+  const { isDark } = useAppTheme();
+  const iconColor = tailwind.color(isDark ? 'text-grayDark-950' : 'text-black') as string;
 
   return (
     <Pressable
@@ -23,7 +25,10 @@ export const PhotosCommandButton = (props: PhotosCommandButtonProps) => {
           tailwind.style('flex items-center justify-center h-10 w-10 rounded-2xl'),
           animatedStyle,
         ]}>
-        <Icon icon={<PhotosIcon />} size={24} />
+        <Icon
+          icon={<PhotosIcon stroke={iconColor} strokeOpacity={isDark ? 0.78 : 0.565} />}
+          size={24}
+        />
       </Animated.View>
     </Pressable>
   );

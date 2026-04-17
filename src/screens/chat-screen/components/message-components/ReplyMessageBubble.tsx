@@ -4,7 +4,7 @@ import Animated from 'react-native-reanimated';
 
 import { useChatWindowContext } from '@/context';
 import { AttachFileIcon, CameraIcon, VideoCall, VoiceNote } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { tailwind, useAppTheme } from '@/theme';
 import { Message } from '@/types';
 import { isMarkdown } from '@/utils';
 import { Icon } from '@/components-next';
@@ -21,8 +21,14 @@ const variantBaseMap = {
   [MESSAGE_VARIANTS.USER]: 'bg-blackA-A7',
 };
 
+const darkVariantBaseMap = {
+  [MESSAGE_VARIANTS.AGENT]: 'bg-grayDark-300',
+  [MESSAGE_VARIANTS.USER]: 'bg-blackA-A7',
+};
+
 export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
   const replyMessageItem = props.replyMessage as Message;
+  const { isDark } = useAppTheme();
 
   const { setScrollToMessageId } = useChatWindowContext();
 
@@ -60,7 +66,7 @@ export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
         tailwind.style(
           'relative max-w-[300px] pl-2 pr-2.5 py-2 mb-2 rounded-[10px] overflow-hidden -ml-[5px]',
           `max-w-[${TEXT_MAX_WIDTH}px]`,
-          variantBaseMap[props.variant],
+          isDark ? darkVariantBaseMap[props.variant] : variantBaseMap[props.variant],
         ),
       ]}>
       <Animated.View style={tailwind.style('flex flex-row')}>

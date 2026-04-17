@@ -4,7 +4,7 @@ import Animated from 'react-native-reanimated';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import camelCase from 'camelcase';
 
-import { TAB_BAR_HEIGHT } from '@/constants';
+import { INBOX_TYPES, TAB_BAR_HEIGHT } from '@/constants';
 import {
   CallIcon,
   EmailIcon,
@@ -36,6 +36,9 @@ import { getContactCustomAttributes } from '@/store/custom-attribute/customAttri
 import { selectContactById } from '@/store/contact/contactSelectors';
 import { selectContactLabelsByContactId } from '@/store/contact/contactLabelSlice';
 import i18n from '@/i18n';
+import { apiService } from '@/services/APIService';
+import { transformContact } from '@/utils/camelCaseKeys';
+import { addContact } from '@/store/contact/contactSlice';
 
 type ContactDetailsScreenProps = NativeStackScreenProps<
   TabBarExcludedScreenParamList,
@@ -81,7 +84,7 @@ const allSocialMediaProfiles: GenericListType[] = [
     title: 'Instagram',
     subtitleType: 'dark',
     key: 'instagram',
-    link: 'https://instagram/',
+    link: 'https://instagram.com/',
   },
   {
     icon: <TelegramFilledIcon />,
@@ -115,6 +118,19 @@ const processContactAttributes = (
 
     return result;
   }, []);
+};
+
+const TELEGRAM_LINK_PREFIX = 'https://t.me/';
+
+const sanitizeTelegramUsername = (value?: string | null) => {
+  if (!value) {
+    return '';
+  }
+
+  return value
+    .trim()
+    .replace(/^https?:\/\/(?:www\.)?t\.me\//i, '')
+    .replace(/^@/, '');
 };
 
 const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
@@ -153,7 +169,9 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
     companyName = '',
     socialProfiles,
     twitterScreenName,
+    screenName,
     telegramUsername,
+    socialTelegramUserName,
   } = contact?.additionalAttributes || {};
 
   const contactCustomAttributes = useAppSelector(getContactCustomAttributes);
@@ -164,12 +182,6 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
     (key, custom) => key in custom,
   );
 
-  const socialMediaProfiles = {
-    twitter: twitterScreenName,
-    telegram: telegramUsername,
-    ...(socialProfiles || {}),
-  };
-
   const hasContactCustomAttributes = usedContactCustomAttributes.length > 0;
 
   const contactLabels = useAppSelector(state =>
@@ -179,20 +191,95 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
   useEffect(() => {
     if (contactId) {
       dispatch(contactLabelActions.getContactLabels({ contactId }));
+
+      apiService
+        .get<{ payload: unknown }>(`contacts/${contactId}`, {
+          params: { include_contact_inboxes: true },
+        })
+        .then(response => {
+          dispatch(addContact(transformContact(response.data.payload)));
+        })
+        .catch(() => {
+          // The screen already has conversation contact data; this only enriches Telegram details.
+        });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [contactId, dispatch]);
+
+  const isTelegramConversation =
+    conversation?.channel === INBOX_TYPES.TELEGRAM ||
+    conversation?.meta?.channel === INBOX_TYPES.TELEGRAM;
+
+  const socialMediaProfiles = {
+    twitter: twitterScreenName || screenName,
+    telegram: telegramUsername || socialTelegramUserName,
+    ...(socialProfiles || {}),
+  };
+
+  const telegramUsernameValue = sanitizeTelegramUsername(socialMediaProfiles.telegram);
+  const telegramLink = telegramUsernameValue
+    ? `${TELEGRAM_LINK_PREFIX}${telegramUsernameValue}`
+    : '';
+  const contactInboxes = contact?.contactInboxes || [];
+  const currentContactInbox =
+    contactInboxes.find(contactInbox => contactInbox.inbox?.id === conversation?.inboxId) ||
+    contactInboxes.find(contactInbox => contactInbox.inbox?.channelType === INBOX_TYPES.TELEGRAM);
+  const telegramChatId = isTelegramConversation
+    ? currentContactInbox?.sourceId || contact?.identifier || ''
+    : '';
 
   const socialMediaDetails = allSocialMediaProfiles
-    .filter(profile => socialMediaProfiles?.[profile.key as keyof typeof socialMediaProfiles])
-    .map(profile => ({
-      ...profile,
-      subtitle: `${profile.link}${socialMediaProfiles?.[profile.key as keyof typeof socialMediaProfiles]}`,
-      type: 'link',
-    }));
+    .filter(profile => {
+      if (profile.key === 'telegram') {
+        return false;
+      }
 
-  const fullLocation =
-    location || [city, country].filter(Boolean).join(', ') || null;
+      return socialMediaProfiles?.[profile.key as keyof typeof socialMediaProfiles];
+    })
+    .map(profile => {
+      const profileValue = socialMediaProfiles?.[profile.key as keyof typeof socialMediaProfiles];
+      const profileLink = `${profile.link}${profileValue}`;
+
+      return {
+        ...profile,
+        link: profileLink,
+        subtitle: profileLink,
+        type: 'link',
+      };
+    });
+
+  const telegramDetails: AttributeListType[] = isTelegramConversation
+    ? [
+        ...(telegramLink
+          ? [
+              {
+                icon: <TelegramFilledIcon />,
+                subtitle: 'Open in Telegram',
+                title: 'Telegram Chat',
+                subtitleType: 'dark' as const,
+                key: 'telegram_chat_link',
+                link: telegramLink,
+                copyValue: telegramLink,
+                type: 'link' as const,
+              },
+            ]
+          : []),
+        ...(telegramChatId
+          ? [
+              {
+                icon: <TelegramFilledIcon />,
+                subtitle: telegramChatId,
+                title: 'Telegram Chat ID',
+                subtitleType: 'dark' as const,
+                key: 'telegram_chat_id',
+                copyValue: telegramChatId,
+                type: 'text' as const,
+              },
+            ]
+          : []),
+      ]
+    : [];
+
+  const fullLocation = location || [city, country].filter(Boolean).join(', ') || null;
 
   const userDetails: GenericListType[] = [
     {
@@ -221,7 +308,7 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
     },
   ];
 
-  const allDetails = [...userDetails, ...socialMediaDetails];
+  const allDetails = [...userDetails, ...telegramDetails, ...socialMediaDetails];
 
   return (
     <BottomSheetModalProvider>

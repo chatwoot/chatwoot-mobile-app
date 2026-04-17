@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, AppState, RefreshControl, StatusBar } from 'react-native';
+import { ActivityIndicator, AppState, RefreshControl } from 'react-native';
 import Animated, {
   LinearTransition,
   runOnJS,
@@ -23,7 +23,13 @@ import {
   AssigneeTypeFilters,
 } from './components';
 
-import { ActionTabs, BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
+import {
+  ActionTabs,
+  BottomSheetBackdrop,
+  BottomSheetWrapper,
+  ThemedStatusBar,
+  useBottomSheetThemedStyles,
+} from '@/components-next';
 
 import { EmptyStateIcon } from '@/svg-icons';
 import {
@@ -284,6 +290,7 @@ const ConversationScreen = () => {
   });
 
   const { filtersModalSheetRef } = useRefsContext();
+  const bottomSheetStyles = useBottomSheetThemedStyles();
 
   const handleOnDismiss = () => {
     /**
@@ -311,21 +318,16 @@ const ConversationScreen = () => {
 
   return (
     <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
-      <StatusBar
-        translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
-      />
+      <ThemedStatusBar />
       <ConversationListStateProvider>
         <ConversationHeader />
         <ConversationList />
         <BottomSheetModal
           ref={filtersModalSheetRef}
           backdropComponent={BottomSheetBackdrop}
-          handleIndicatorStyle={tailwind.style(
-            'overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]',
-          )}
-          handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+          backgroundStyle={bottomSheetStyles.backgroundStyle}
+          handleIndicatorStyle={bottomSheetStyles.handleIndicatorStyle}
+          handleStyle={bottomSheetStyles.handleStyle}
           style={tailwind.style('rounded-[26px] overflow-hidden')}
           animationConfigs={animationConfigs}
           enablePanDownToClose

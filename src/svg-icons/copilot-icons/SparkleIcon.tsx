@@ -22,7 +22,11 @@ const PATHS = {
     'M9.5 7L10.7632 10.2829C11.0654 11.0693 11.2164 11.4614 11.4511 11.7925C11.6592 12.0851 11.9149 12.3408 12.2075 12.5489C12.5386 12.7846 12.9307 12.9346 13.7171 13.2368L17 14.5L13.7171 15.7632C12.9307 16.0654 12.5386 16.2164 12.2075 16.4511C11.9149 16.6592 11.6592 16.9149 11.4511 17.2075C11.2154 17.5386 11.0654 17.9307 10.7632 18.7171L9.5 22L8.23679 18.7171C7.93464 17.9307 7.78357 17.5386 7.54893 17.2075C7.34081 16.9149 7.08512 16.6592 6.7925 16.4511C6.46143 16.2154 6.06929 16.0654 5.28286 15.7632L2 14.5L5.28286 13.2368C6.06929 12.9346 6.46143 12.7836 6.7925 12.5489C7.08512 12.3408 7.34081 12.0851 7.54893 11.7925C7.78464 11.4614 7.93464 11.0693 8.23679 10.2829L9.5 7Z',
 };
 
-export const SparkleIcon = ({ stroke = 'black', filled = false }: SparkleIconProps): JSX.Element => {
+export const SparkleIcon = ({
+  stroke = 'black',
+  strokeOpacity = 0.608,
+  filled = false,
+}: SparkleIconProps): JSX.Element => {
   if (filled) {
     return (
       <Svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
@@ -51,7 +55,7 @@ export const SparkleIcon = ({ stroke = 'black', filled = false }: SparkleIconPro
       <Path
         d={PATHS.small}
         stroke={stroke}
-        strokeOpacity={0.608}
+        strokeOpacity={strokeOpacity}
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -59,7 +63,7 @@ export const SparkleIcon = ({ stroke = 'black', filled = false }: SparkleIconPro
       <Path
         d={PATHS.large}
         stroke={stroke}
-        strokeOpacity={0.608}
+        strokeOpacity={strokeOpacity}
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -68,7 +72,10 @@ export const SparkleIcon = ({ stroke = 'black', filled = false }: SparkleIconPro
   );
 };
 
-export const AnimatedSparkleIcon = ({ smallStarStyle, largeStarStyle }: AnimatedSparkleIconProps): JSX.Element => {
+export const AnimatedSparkleIcon = ({
+  smallStarStyle,
+  largeStarStyle,
+}: AnimatedSparkleIconProps): JSX.Element => {
   return (
     <View style={{ width: 24, height: 24 }}>
       {/* Large star layer */}

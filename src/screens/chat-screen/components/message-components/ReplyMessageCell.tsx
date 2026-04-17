@@ -4,7 +4,7 @@ import Animated from 'react-native-reanimated';
 
 import { useChatWindowContext } from '@/context';
 import { AttachFileIcon, CameraIcon, VideoCall, VoiceNote } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { tailwind, useAppTheme } from '@/theme';
 import { Message } from '@/types';
 import { isMarkdown } from '@/utils';
 import { Icon } from '@/components-next';
@@ -21,6 +21,7 @@ export const ReplyMessageCell = (props: ReplyMessageCellProps) => {
   const replyMessageItem = props.replyMessage as Message;
 
   const { isIncoming, isOutgoing } = props;
+  const { isDark } = useAppTheme();
 
   const { setScrollToMessageId } = useChatWindowContext();
 
@@ -59,7 +60,7 @@ export const ReplyMessageCell = (props: ReplyMessageCellProps) => {
           'relative max-w-[300px] pl-2 pr-2.5 py-2 mb-2 rounded-[10px] overflow-hidden -ml-[5px]',
           `max-w-[${TEXT_MAX_WIDTH}px]`,
           isIncoming ? 'bg-blackA-A7' : '',
-          isOutgoing ? 'bg-white' : '',
+          isOutgoing ? (isDark ? 'bg-grayDark-300' : 'bg-white') : '',
           // singleLineShortText ? "flex flex-row" : "",
         ),
       ]}>

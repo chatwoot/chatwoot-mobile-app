@@ -9,7 +9,7 @@ import { useAppDispatch } from '@/hooks';
 import { updateAttachments } from '@/store/conversation/sendMessageSlice';
 import { useRefsContext } from '@/context';
 import { AttachFileIcon, CameraIcon, MacrosIcon, PhotosIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { tailwind, useAppTheme } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '@/components-next/common';
 import { MAXIMUM_FILE_UPLOAD_SIZE } from '@/constants';
@@ -145,22 +145,22 @@ const handleAttachFile = async dispatch => {
 
 const ADD_MENU_OPTIONS = [
   {
-    icon: <PhotosIcon />,
+    icon: PhotosIcon,
     title: 'Photos',
     handlePress: handleOpenPhotosLibrary,
   },
   {
-    icon: <CameraIcon />,
+    icon: CameraIcon,
     title: 'Camera',
     handlePress: handleLaunchCamera,
   },
   {
-    icon: <AttachFileIcon />,
+    icon: AttachFileIcon,
     title: 'Attach File',
     handlePress: handleAttachFile,
   },
   {
-    icon: <MacrosIcon />,
+    icon: MacrosIcon,
     title: 'Macros',
     handlePress: () => {},
   },
@@ -184,9 +184,12 @@ const MenuOption = (props: MenuOptionProps) => {
   const { index, menuOption } = props;
   const dispatch = useAppDispatch();
   const { macrosListSheetRef } = useRefsContext();
+  const { isDark } = useAppTheme();
 
   const { animatedStyle, handlers } = useScaleAnimation();
   const hapticSelection = useHaptic();
+  const iconColor = tailwind.color(isDark ? 'text-grayDark-950' : 'text-black') as string;
+  const MenuIcon = menuOption.icon;
 
   const handlePress = () => {
     hapticSelection?.();
@@ -201,7 +204,10 @@ const MenuOption = (props: MenuOptionProps) => {
       <Pressable onPress={handlePress} {...handlers}>
         <Animated.View key={index} style={[tailwind.style('flex-row items-center justify-start')]}>
           <Animated.View style={tailwind.style('p-2')}>
-            <Icon icon={menuOption.icon} size={24} />
+            <Icon
+              icon={<MenuIcon stroke={iconColor} strokeOpacity={isDark ? 0.78 : 0.565} />}
+              size={24}
+            />
           </Animated.View>
           <Text
             style={tailwind.style(

@@ -9,7 +9,7 @@ import { TickIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { StatusCollection } from '@/types';
 import { getStatusTypeIcon, useHaptic } from '@/utils';
-import { BottomSheetHeader, Icon } from '@/components-next';
+import { BottomSheetHeader, Icon, useBottomSheetThemedStyles } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import i18n from '@/i18n';
 import { StatusOptions } from '@/types';
@@ -79,8 +79,10 @@ const StatusStack = (props: StatusStackProps) => {
 };
 
 export const StatusFilters = () => {
+  const bottomSheetStyles = useBottomSheetThemedStyles();
+
   return (
-    <BottomSheetView>
+    <BottomSheetView style={bottomSheetStyles.contentStyle}>
       <BottomSheetHeader headerText={i18n.t('CONVERSATION.FILTERS.STATUS.TITLE')} />
       <StatusStack statusList={status} />
     </BottomSheetView>

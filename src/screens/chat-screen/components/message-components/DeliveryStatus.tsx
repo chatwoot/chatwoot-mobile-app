@@ -2,7 +2,11 @@ import React from 'react';
 import { Pressable } from 'react-native';
 import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 
-import { BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
+import {
+  BottomSheetBackdrop,
+  BottomSheetWrapper,
+  useBottomSheetThemedStyles,
+} from '@/components-next';
 import { tailwind } from '@/theme';
 import { DoubleCheckIcon, WarningIcon, MessagePendingIcon } from '@/svg-icons';
 import { Icon } from '@/components-next/common';
@@ -64,6 +68,7 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
     stiffness: 420,
     damping: 30,
   });
+  const bottomSheetStyles = useBottomSheetThemedStyles();
 
   const showSentIndicator = () => {
     if (!shouldShowStatusIndicator) {
@@ -101,7 +106,14 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
     if (!shouldShowStatusIndicator) {
       return false;
     }
-    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel || isASmsInbox || isAnInstagramChannel || isATiktokChannel) {
+    if (
+      isAWhatsappChannel ||
+      isATwilioChannel ||
+      isAFacebookChannel ||
+      isASmsInbox ||
+      isAnInstagramChannel ||
+      isATiktokChannel
+    ) {
       return sourceId && isDelivered;
     }
 
@@ -129,7 +141,13 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
       return isRead;
     }
 
-    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel || isAnInstagramChannel || isATiktokChannel) {
+    if (
+      isAWhatsappChannel ||
+      isATwilioChannel ||
+      isAFacebookChannel ||
+      isAnInstagramChannel ||
+      isATiktokChannel
+    ) {
       return sourceId && isRead;
     }
 
@@ -158,12 +176,11 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
         <BottomSheetModal
           ref={deliveryStatusSheetRef}
           backdropComponent={BottomSheetBackdrop}
-          handleIndicatorStyle={tailwind.style(
-            'overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]',
-          )}
+          backgroundStyle={bottomSheetStyles.backgroundStyle}
+          handleIndicatorStyle={bottomSheetStyles.handleIndicatorStyle}
           enablePanDownToClose
           animationConfigs={animationConfigs}
-          handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
+          handleStyle={bottomSheetStyles.handleStyle}
           style={tailwind.style('rounded-[26px] overflow-hidden')}
           snapPoints={['15']}>
           <BottomSheetWrapper>

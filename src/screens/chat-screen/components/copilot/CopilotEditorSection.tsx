@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Pressable, ScrollView, StyleSheet } from 'react-native';
+import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
 import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { Icon } from '@/components-next/common';
@@ -28,30 +28,86 @@ export const CopilotEditorSection = ({
   const { isDark } = useAppTheme();
   const displayText = isGenerating ? originalContent : generatedContent;
   const showActions = !isGenerating && generatedContent.length > 0;
-  const markdownStyles = useMemo(
-    () =>
-      StyleSheet.create({
-        body: {
-          fontSize: 14,
-          fontFamily: 'Inter-400-20',
-          lineHeight: 21,
-          letterSpacing: -0.1,
-          color: tailwind.color(isDark ? 'text-grayDark-950' : 'text-slate-950') as string,
-        },
-        paragraph: {
-          marginTop: 0,
-          marginBottom: 0,
-        },
-        strong: {
-          fontFamily: 'Inter-600-20',
-          fontWeight: '600',
-        },
-        em: {
-          fontStyle: 'italic',
-        },
-      }),
-    [isDark],
-  );
+  const markdownStyles = useMemo(() => {
+    const bodyTextColor = tailwind.color(isDark ? 'text-grayDark-950' : 'text-slate-950') as string;
+    const codeTextColor = tailwind.color(isDark ? 'text-grayDark-950' : 'text-gray-950') as string;
+    const codeBorderColor = tailwind.color(
+      isDark ? 'border-whiteA-A6' : 'border-blackA-A6',
+    ) as string;
+    const codeBackgroundColor = tailwind.color(
+      isDark ? 'bg-grayDark-200' : 'bg-gray-100',
+    ) as string;
+
+    return StyleSheet.create({
+      body: {
+        fontSize: 14,
+        fontFamily: 'Inter-400-20',
+        lineHeight: 21,
+        letterSpacing: -0.1,
+        color: bodyTextColor,
+      },
+      paragraph: {
+        marginTop: 0,
+        marginBottom: 0,
+      },
+      strong: {
+        fontFamily: 'Inter-600-20',
+        fontWeight: '600',
+      },
+      em: {
+        fontStyle: 'italic',
+      },
+      code_inline: {
+        color: codeTextColor,
+        backgroundColor: codeBackgroundColor,
+        borderColor: codeBorderColor,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderRadius: 4,
+        paddingHorizontal: 4,
+        paddingVertical: 1,
+        ...Platform.select({
+          ios: {
+            fontFamily: 'Courier',
+          },
+          android: {
+            fontFamily: 'monospace',
+          },
+        }),
+      },
+      code_block: {
+        color: codeTextColor,
+        backgroundColor: codeBackgroundColor,
+        borderColor: codeBorderColor,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderRadius: 8,
+        padding: 10,
+        ...Platform.select({
+          ios: {
+            fontFamily: 'Courier',
+          },
+          android: {
+            fontFamily: 'monospace',
+          },
+        }),
+      },
+      fence: {
+        color: codeTextColor,
+        backgroundColor: codeBackgroundColor,
+        borderColor: codeBorderColor,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderRadius: 8,
+        padding: 10,
+        ...Platform.select({
+          ios: {
+            fontFamily: 'Courier',
+          },
+          android: {
+            fontFamily: 'monospace',
+          },
+        }),
+      },
+    });
+  }, [isDark]);
 
   if (isGenerating && originalContent.trim().length === 0) {
     return null;

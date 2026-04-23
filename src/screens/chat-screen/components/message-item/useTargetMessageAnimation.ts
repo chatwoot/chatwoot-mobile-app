@@ -5,7 +5,7 @@ import {
   withSequence,
   withTiming,
   withDelay,
-  withSpring,
+  Easing,
 } from 'react-native-reanimated';
 import { useChatWindowContext } from '@/context';
 
@@ -62,10 +62,10 @@ export function useTargetMessageAnimation({
     messageScale.value = withDelay(
       150,
       withSequence(
-        withSpring(1.08, { damping: 12, stiffness: 200 }),
-        withSpring(1, { damping: 15, stiffness: 300 }),
-        withSpring(1.02, { damping: 20, stiffness: 400 }),
-        withSpring(1, { damping: 18, stiffness: 350 }),
+        withTiming(1.08, { duration: 180, easing: Easing.out(Easing.cubic) }),
+        withTiming(1, { duration: 160, easing: Easing.inOut(Easing.cubic) }),
+        withTiming(1.02, { duration: 100, easing: Easing.out(Easing.cubic) }),
+        withTiming(1, { duration: 130, easing: Easing.inOut(Easing.cubic) }),
       ),
     );
     highlightOpacity.value = withDelay(

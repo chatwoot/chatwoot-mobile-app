@@ -102,6 +102,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       './with-ffmpeg-pod.js',
       './with-modular-headers-fix.js',
       './with-firebase-appdelegate.js',
+      './with-notifee-maven.js',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },
   };

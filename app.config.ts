@@ -74,7 +74,9 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     owner: 'chatwoot',
     plugins: [
       'expo-font',
+      'expo-image',
       'expo-video',
+      'expo-web-browser',
       ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary'] }],
       [
         '@sentry/react-native/expo',

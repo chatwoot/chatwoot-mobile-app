@@ -41,8 +41,6 @@ const DefaultSpringConfig: WithSpringConfig = {
   damping: 17,
   stiffness: 250,
   overshootClamping: false,
-  restSpeedThreshold: 0.001,
-  restDisplacementThreshold: 0.001,
 };
 
 const DefaultAnimationType: AnimationTypes = {

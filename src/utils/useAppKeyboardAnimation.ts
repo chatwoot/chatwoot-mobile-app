@@ -6,8 +6,6 @@ const ANIMATION_CONFIGS_IOS = {
   stiffness: 1000,
   mass: 3,
   overshootClamping: true,
-  restDisplacementThreshold: 10,
-  restSpeedThreshold: 10,
 };
 
 const ANIMATION_CONFIGS = ANIMATION_CONFIGS_IOS;

@@ -1,17 +1,33 @@
-const { withPlugins, createRunOncePlugin, withDangerousMod } = require('@expo/config-plugins');
+const { withDangerousMod, createRunOncePlugin } = require('@expo/config-plugins');
 const fs = require('fs');
 const path = require('path');
 
 /**
- * Config plugin to fix non-modular header issues when using `useFrameworks: 'static'`
- * with packages like @react-native-firebase that import React headers.
+ * Config plugin for iOS Firebase + ExpoModulesCore + `useFrameworks: 'static'` compatibility.
  *
- * Disables DEFINES_MODULE for firebase pods so they are not treated as Clang modules,
- * avoiding the "must be imported from module" errors.
+ * Two changes to the generated Podfile:
+ *  1. `use_modular_headers!` — required so Firebase's Swift pods can see Objective-C
+ *     dependencies (GoogleUtilities) as modules.
+ *  2. `CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES` applied to every pod
+ *     target via post_install — required so Firebase framework modules can include
+ *     non-modular React-Core public headers.
  */
-function addModularHeadersFix(podfilePath) {
-  const fixSnippet = `
-    # Fix non-modular header issues with Firebase + static frameworks
+function patchPodfile(podfilePath) {
+  let contents = fs.readFileSync(podfilePath, 'utf8');
+
+  if (!contents.includes('use_modular_headers!')) {
+    contents = contents.replace(
+      /(\s*use_expo_modules!)/,
+      `\n  use_modular_headers!$1`,
+    );
+  }
+
+  if (!contents.includes('CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES')) {
+    const snippet = `
+    # Allow non-modular React headers inside framework modules.
+    # Also disable DEFINES_MODULE for RNFB pods so Clang doesn't treat their
+    # React-bridged types (e.g. RCTPromiseRejectBlock) as owned by RNFB's submodule,
+    # which otherwise triggers "must be imported from module" errors in consumers.
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
         config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
@@ -20,14 +36,12 @@ function addModularHeadersFix(podfilePath) {
         end
       end
     end`;
-
-  let contents = fs.readFileSync(podfilePath, 'utf8');
-  if (!contents.includes('CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES')) {
     contents = contents.replace(
       /post_install do \|installer\|/,
-      `post_install do |installer|${fixSnippet}`,
+      `post_install do |installer|${snippet}`,
     );
   }
+
   fs.writeFileSync(podfilePath, contents, 'utf8');
 }
 
@@ -36,14 +50,10 @@ function withModularHeadersFix(config) {
     'ios',
     cfg => {
       const podfilePath = path.join(cfg.modRequest.platformProjectRoot, 'Podfile');
-      addModularHeadersFix(podfilePath);
+      patchPodfile(podfilePath);
       return cfg;
     },
   ]);
 }
 
-const withPlugin = config => {
-  return withPlugins(config, [withModularHeadersFix]);
-};
-
-module.exports = createRunOncePlugin(withPlugin, 'with-modular-headers-fix', '1.0.0');
+module.exports = createRunOncePlugin(withModularHeadersFix, 'with-modular-headers-fix', '1.0.0');

@@ -251,33 +251,53 @@ export const MessagesListContainer = () => {
     onPositioned: useCallback(() => setIsListVisible(true), []),
   });
 
-  // Handle scroll-to-message when tapping a quoted message reply
+  // Handle scroll-to-message when tapping a quoted message reply.
+  // If the target isn't in the currently loaded messages, fetch around it first;
+  // the effect re-runs when messages update and then scrolls.
+  const fetchedForScrollRef = useRef<number | undefined>(undefined);
+  const scrolledToRef = useRef<number | undefined>(undefined);
+
   useEffect(() => {
     if (!scrollToMessageId) return;
+    if (scrolledToRef.current === scrollToMessageId) return;
 
     const targetIndex = messagesWithGrouping.findIndex(
       item => !('date' in item) && 'id' in item && item.id === scrollToMessageId,
     );
 
-    if (targetIndex >= 0) {
-      try {
-        messageListRef.current?.scrollToIndex({
-          index: targetIndex,
-          animated: true,
-          viewPosition: 0.5,
-        });
-      } catch {
-        // scrollToIndex can throw if index is out of range during layout changes
+    if (targetIndex < 0) {
+      // Target not loaded — fetch once around it and wait for messages to update.
+      if (fetchedForScrollRef.current !== scrollToMessageId) {
+        fetchedForScrollRef.current = scrollToMessageId;
+        loadMessages({ targetMessageId: scrollToMessageId });
       }
+      return;
     }
 
-    // Clear after a delay to allow the highlight animation to complete
-    const timer = setTimeout(() => {
-      setScrollToMessageId(undefined);
-    }, 1500);
+    scrolledToRef.current = scrollToMessageId;
+    try {
+      messageListRef.current?.scrollToIndex({
+        index: targetIndex,
+        animated: true,
+        viewPosition: 0.5,
+      });
+    } catch {
+      // scrollToIndex can throw if index is out of range during layout changes
+    }
+  }, [scrollToMessageId, messagesWithGrouping, messageListRef, loadMessages]);
 
+  // Bail timer: always clears scrollToMessageId after enough time for worst case
+  // (fetch ~1s + scroll ~800ms + animation ~1.5s + margin). Also handles the
+  // "target never loads" case (deleted message, bad id, network error).
+  useEffect(() => {
+    if (!scrollToMessageId) {
+      fetchedForScrollRef.current = undefined;
+      scrolledToRef.current = undefined;
+      return;
+    }
+    const timer = setTimeout(() => setScrollToMessageId(undefined), 4000);
     return () => clearTimeout(timer);
-  }, [scrollToMessageId, messagesWithGrouping, messageListRef, setScrollToMessageId]);
+  }, [scrollToMessageId, setScrollToMessageId]);
 
   // The active target message ID — either from search navigation or quote tap
   const activeTargetMessageId = scrollToMessageId || messageId;

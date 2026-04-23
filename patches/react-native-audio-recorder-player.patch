@@ -1,0 +1,29 @@
+diff --git a/android/src/main/java/com/dooboolab.audiorecorderplayer/RNAudioRecorderPlayerModule.kt b/android/src/main/java/com/dooboolab.audiorecorderplayer/RNAudioRecorderPlayerModule.kt
+index aafe3e273778fceacc947a69a442b18ce698402c..bf6454fa10f24167b7dfe2f1b3647295c5e5bc8e 100644
+--- a/android/src/main/java/com/dooboolab.audiorecorderplayer/RNAudioRecorderPlayerModule.kt
++++ b/android/src/main/java/com/dooboolab.audiorecorderplayer/RNAudioRecorderPlayerModule.kt
+@@ -44,13 +44,13 @@ class RNAudioRecorderPlayerModule(private val reactContext: ReactApplicationCont
+                 if (Build.VERSION.SDK_INT < 29 &&
+                         (ActivityCompat.checkSelfPermission(reactContext, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ||
+                         ActivityCompat.checkSelfPermission(reactContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED))  {
+-                    ActivityCompat.requestPermissions((currentActivity)!!, arrayOf(
++                    ActivityCompat.requestPermissions((getCurrentActivity())!!, arrayOf(
+                             Manifest.permission.RECORD_AUDIO,
+                             Manifest.permission.WRITE_EXTERNAL_STORAGE), 0)
+                     promise.reject("No permission granted.", "Try again after adding permission.")
+                     return
+                 } else if (ActivityCompat.checkSelfPermission(reactContext, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+-                    ActivityCompat.requestPermissions((currentActivity)!!, arrayOf(Manifest.permission.RECORD_AUDIO), 0)
++                    ActivityCompat.requestPermissions((getCurrentActivity())!!, arrayOf(Manifest.permission.RECORD_AUDIO), 0)
+                     promise.reject("No permission granted.", "Try again after adding permission.")
+                     return
+                 }
+@@ -252,7 +252,7 @@ class RNAudioRecorderPlayerModule(private val reactContext: ReactApplicationCont
+                         val key = iterator.nextKey()
+                         headers.put(key, httpHeaders.getString(key))
+                     }
+-                    mediaPlayer!!.setDataSource(currentActivity!!.applicationContext, Uri.parse(path), headers)
++                    mediaPlayer!!.setDataSource(getCurrentActivity()!!.applicationContext, Uri.parse(path), headers)
+                 } else {
+                     mediaPlayer!!.setDataSource(path)
+                 }

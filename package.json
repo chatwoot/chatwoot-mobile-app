@@ -177,7 +177,8 @@
   },
   "pnpm": {
     "patchedDependencies": {
-      "ffmpeg-kit-react-native@6.0.2": "patches/ffmpeg-kit-react-native.patch"
+      "ffmpeg-kit-react-native@6.0.2": "patches/ffmpeg-kit-react-native.patch",
+      "react-native-audio-recorder-player": "patches/react-native-audio-recorder-player.patch"
     },
     "overrides": {
       "form-data": "^4.0.4",

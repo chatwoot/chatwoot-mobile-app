@@ -8,7 +8,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
-    newArchEnabled: false,
     scheme: 'chatwootapp',
     splash: {
       image: './assets/splash.png',
@@ -93,7 +92,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           // https://github.com/invertase/notifee/issues/808#issuecomment-2175934609
           android: {
             minSdkVersion: 24,
-            compileSdkVersion: 35,
+            compileSdkVersion: 36,
             targetSdkVersion: 35,
             enableProguardInReleaseBuilds: true,
           },

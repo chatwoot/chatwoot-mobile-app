@@ -9,6 +9,8 @@ import Animated, {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 
+const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
+
 import { TAB_BAR_HEIGHT } from '@/constants';
 import { InboxListStateProvider } from '@/context';
 import type { Notification } from '@/types/Notification';
@@ -151,11 +153,10 @@ const InboxList = () => {
       </Animated.Text>
     </Animated.ScrollView>
   ) : (
-    <FlashList
+    <AnimatedFlashList
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       showsVerticalScrollIndicator={false}
       data={notifications}
-      estimatedItemSize={71}
       onScroll={scrollHandler}
       onEndReached={handleOnEndReached}
       onEndReachedThreshold={0.5}

@@ -14,6 +14,8 @@ import {
 } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 
+const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
+
 import {
   ConversationItemContainer,
   ConversationHeader,
@@ -254,11 +256,10 @@ const ConversationList = () => {
       </Animated.Text>
     </Animated.ScrollView>
   ) : (
-    <FlashList
+    <AnimatedFlashList
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       showsVerticalScrollIndicator={false}
       data={allConversations}
-      estimatedItemSize={91}
       onScroll={scrollHandler}
       onEndReached={handleOnEndReached}
       onEndReachedThreshold={0.5}

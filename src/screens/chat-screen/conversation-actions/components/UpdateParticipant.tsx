@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ActivityIndicator, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
@@ -9,7 +9,6 @@ import { Agent } from '@/types';
 import { Avatar, Icon, SearchBar } from '@/components-next';
 import { TickIcon } from '@/svg-icons';
 
-import { assignableAgentActions } from '@/store/assignable-agent/assignableAgentActions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAssignableParticipantsByInboxId } from '@/store/assignable-agent/assignableAgentSelectors';
 import { selectSelectedConversation } from '@/store/conversation/conversationSelectedSlice';
@@ -97,7 +96,7 @@ const ParticipantStack = ({
 
   return (
     <BottomSheetScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
-      {isFetching ? (
+      {isFetching && allAgents.length === 0 ? (
         <ActivityIndicator />
       ) : (
         updatedAgents.map((value, index) => {
@@ -123,15 +122,12 @@ type UpdateParticipantProps = {
 
 export const UpdateParticipant = (props: UpdateParticipantProps) => {
   const { activeConversationParticipants } = props;
-  const dispatch = useAppDispatch();
   const { updateParticipantSheetRef } = useRefsContext();
   const [searchTerm, setSearchTerm] = useState('');
 
   const selectedConversation = useAppSelector(selectSelectedConversation);
 
   const inboxId = selectedConversation?.inboxId;
-
-  const inboxIds = inboxId ? [inboxId] : [];
 
   const selectAgents = useAppSelector(selectAssignableParticipantsByInboxId);
   const allAgents = inboxId ? selectAgents(inboxId, searchTerm) : [];
@@ -142,11 +138,6 @@ export const UpdateParticipant = (props: UpdateParticipantProps) => {
   const handleBlur = () => {
     updateParticipantSheetRef.current?.dismiss({ overshootClamping: true });
   };
-
-  useEffect(() => {
-    dispatch(assignableAgentActions.fetchAgents({ inboxIds }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleChangeText = (text: string) => {
     setSearchTerm(text);

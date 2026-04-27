@@ -164,7 +164,8 @@ export const ConversationActions = () => {
         style={tailwind.style('rounded-[26px] overflow-hidden')}
         animationConfigs={animationConfigs}
         enablePanDownToClose
-        snapPoints={['50%']}>
+        enableDynamicSizing={false}
+        snapPoints={[400]}>
         <UpdateParticipant activeConversationParticipants={conversationParticipants} />
       </BottomSheetModal>
     </Animated.View>

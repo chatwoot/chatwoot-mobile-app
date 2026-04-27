@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/hooks';
 import { useChatWindowContext, useRefsContext } from '@/context';
 import { AppState, Platform, View, ActivityIndicator } from 'react-native';

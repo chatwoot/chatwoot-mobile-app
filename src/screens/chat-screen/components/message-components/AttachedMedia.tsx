@@ -8,7 +8,7 @@ import Animated, {
   SlideOutDown,
 } from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
-import { ResizeMode, Video } from 'expo-av';
+import { useVideoPlayer, VideoView } from 'expo-video';
 import { Image } from 'expo-image';
 
 import { AttachFileIcon } from '@/svg-icons';
@@ -104,6 +104,21 @@ const AttachedImage = (props: AttachedImageProps) => {
 
 type AttachedVideoProps = AttachedMediaProps & { attachmentsLength: number };
 
+const AttachedVideoPreview = ({ uri }: { uri: string }) => {
+  const player = useVideoPlayer(uri, player => {
+    player.muted = true;
+  });
+
+  return (
+    <VideoView
+      player={player}
+      style={tailwind.style('h-full w-full rounded-lg')}
+      contentFit="cover"
+      nativeControls={false}
+    />
+  );
+};
+
 const AttachedVideo = (props: AttachedVideoProps) => {
   const { item, index, attachmentsLength } = props;
 
@@ -126,14 +141,7 @@ const AttachedVideo = (props: AttachedVideoProps) => {
           'h-23 w-[137px] rounded-lg',
           index === attachmentsLength - 1 ? 'mr-4' : '',
         )}>
-        {item.uri ? (
-          <Video
-            shouldPlay={false}
-            resizeMode={ResizeMode.COVER}
-            source={{ uri: item.uri }}
-            style={[tailwind.style('h-full w-full rounded-lg')]}
-          />
-        ) : null}
+        {item.uri ? <AttachedVideoPreview uri={item.uri} /> : null}
         <Animated.View
           style={[
             StyleSheet.absoluteFillObject,

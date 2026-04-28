@@ -28,7 +28,10 @@ const contactLabelsSlice = createSlice({
 
 export const selectContactLabels = (state: RootState) => state.contactLabels.records;
 
-export const selectContactLabelsByContactId = (contactId: number) => (state: RootState) =>
-  state.contactLabels.records[contactId] || [];
+const EMPTY_LABELS: string[] = [];
+
+export const selectContactLabelsByContactId = (contactId: number | undefined) =>
+  (state: RootState) =>
+    contactId ? state.contactLabels.records[contactId] ?? EMPTY_LABELS : EMPTY_LABELS;
 
 export default contactLabelsSlice.reducer;

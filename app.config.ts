@@ -4,11 +4,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'Chatwoot',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
-    version: '4.5.0',
+    version: '4.5.1',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
-    newArchEnabled: false,
     scheme: 'chatwootapp',
     splash: {
       image: './assets/splash.png',
@@ -75,6 +74,9 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     owner: 'chatwoot',
     plugins: [
       'expo-font',
+      'expo-image',
+      'expo-video',
+      'expo-web-browser',
       ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary'] }],
       [
         '@sentry/react-native/expo',
@@ -92,7 +94,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           // https://github.com/invertase/notifee/issues/808#issuecomment-2175934609
           android: {
             minSdkVersion: 24,
-            compileSdkVersion: 35,
+            compileSdkVersion: 36,
             targetSdkVersion: 35,
             enableProguardInReleaseBuilds: true,
           },
@@ -100,6 +102,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         },
       ],
       './with-ffmpeg-pod.js',
+      './with-modular-headers-fix.js',
+      './with-notifee-maven.js',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },
   };

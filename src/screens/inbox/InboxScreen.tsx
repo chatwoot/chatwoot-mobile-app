@@ -9,6 +9,8 @@ import Animated, {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 
+const AnimatedFlashList = Animated.createAnimatedComponent(FlashList);
+
 import { TAB_BAR_HEIGHT } from '@/constants';
 import { InboxListStateProvider } from '@/context';
 import type { Notification } from '@/types/Notification';
@@ -29,7 +31,6 @@ import { selectSortOrder } from '@/store/notification/notificationFilterSlice';
 import { EmptyStateIcon } from '@/svg-icons';
 import { InboxSortTypes } from '@/store/notification/notificationTypes';
 
-const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList<Notification>);
 
 const InboxList = () => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -152,12 +153,10 @@ const InboxList = () => {
       </Animated.Text>
     </Animated.ScrollView>
   ) : (
-    <AnimatedFlashlist
+    <AnimatedFlashList
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-      layout={LinearTransition.springify().damping(18).stiffness(120)}
       showsVerticalScrollIndicator={false}
       data={notifications}
-      estimatedItemSize={71}
       onScroll={scrollHandler}
       onEndReached={handleOnEndReached}
       onEndReachedThreshold={0.5}

@@ -172,9 +172,7 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
 
   const hasContactCustomAttributes = usedContactCustomAttributes.length > 0;
 
-  const contactLabels = useAppSelector(state =>
-    contactId ? selectContactLabelsByContactId(contactId)(state) : [],
-  );
+  const contactLabels = useAppSelector(selectContactLabelsByContactId(contactId));
 
   useEffect(() => {
     if (contactId) {

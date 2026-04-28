@@ -1,26 +1,26 @@
 import React, { useRef } from 'react';
 import PagerView from 'react-native-pager-view';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { FlashList } from '@shopify/flash-list';
+import { FlashListRef } from '@shopify/flash-list';
 import { Message } from '@/types';
 
 interface RefsContextType {
-  userAvailabilityStatusSheetRef: React.RefObject<BottomSheetModal>;
-  filtersModalSheetRef: React.RefObject<BottomSheetModal>;
-  actionsModalSheetRef: React.RefObject<BottomSheetModal>;
-  languagesModalSheetRef: React.RefObject<BottomSheetModal>;
-  chatPagerView: React.RefObject<PagerView>;
-  addLabelSheetRef: React.RefObject<BottomSheetModal>;
-  macrosListSheetRef: React.RefObject<BottomSheetModal>;
-  notificationPreferencesSheetRef: React.RefObject<BottomSheetModal>;
-  switchAccountSheetRef: React.RefObject<BottomSheetModal>;
-  debugActionsSheetRef: React.RefObject<BottomSheetModal>;
-  messageListRef: React.RefObject<FlashList<Message | { date: string }>>;
-  inboxFiltersSheetRef: React.RefObject<BottomSheetModal>;
-  slaEventsSheetRef: React.RefObject<BottomSheetModal>;
-  deliveryStatusSheetRef: React.RefObject<BottomSheetModal>;
-  updateParticipantSheetRef: React.RefObject<BottomSheetModal>;
-  toneSelectionSheetRef: React.RefObject<BottomSheetModal>;
+  userAvailabilityStatusSheetRef: React.RefObject<BottomSheetModal | null>;
+  filtersModalSheetRef: React.RefObject<BottomSheetModal | null>;
+  actionsModalSheetRef: React.RefObject<BottomSheetModal | null>;
+  languagesModalSheetRef: React.RefObject<BottomSheetModal | null>;
+  chatPagerView: React.RefObject<PagerView | null>;
+  addLabelSheetRef: React.RefObject<BottomSheetModal | null>;
+  macrosListSheetRef: React.RefObject<BottomSheetModal | null>;
+  notificationPreferencesSheetRef: React.RefObject<BottomSheetModal | null>;
+  switchAccountSheetRef: React.RefObject<BottomSheetModal | null>;
+  debugActionsSheetRef: React.RefObject<BottomSheetModal | null>;
+  messageListRef: React.RefObject<FlashListRef<Message | { date: string }> | null>;
+  inboxFiltersSheetRef: React.RefObject<BottomSheetModal | null>;
+  slaEventsSheetRef: React.RefObject<BottomSheetModal | null>;
+  deliveryStatusSheetRef: React.RefObject<BottomSheetModal | null>;
+  updateParticipantSheetRef: React.RefObject<BottomSheetModal | null>;
+  toneSelectionSheetRef: React.RefObject<BottomSheetModal | null>;
 }
 
 const RefsContext = React.createContext<RefsContextType | undefined>(undefined);
@@ -48,7 +48,7 @@ const RefsProvider: React.FC<Partial<RefsContextType & { children: React.ReactNo
   const switchAccountSheetRef = useRef<BottomSheetModal>(null);
   const debugActionsSheetRef = useRef<BottomSheetModal>(null);
   const inboxFiltersSheetRef = useRef<BottomSheetModal>(null);
-  const messageListRef = useRef<FlashList<Message | { date: string }>>(null);
+  const messageListRef = useRef<FlashListRef<Message | { date: string }>>(null);
   const slaEventsSheetRef = useRef<BottomSheetModal>(null);
   const deliveryStatusSheetRef = useRef<BottomSheetModal>(null);
   const updateParticipantSheetRef = useRef<BottomSheetModal>(null);

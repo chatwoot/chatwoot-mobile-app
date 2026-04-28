@@ -22,7 +22,7 @@ import { LabelBackdrop } from './LabelBackdrop';
 interface LabelActionsProps {
   labels: string[];
   onLabelsUpdate: (updatedLabels: string[]) => Promise<void> | void;
-  sheetRef?: React.RefObject<BottomSheetModal>;
+  sheetRef?: React.RefObject<BottomSheetModal | null>;
 }
 
 export const LabelActions = (props: LabelActionsProps) => {

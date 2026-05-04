@@ -3,6 +3,7 @@ import { Channel, Message } from '@/types';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
+import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { useChatWindowContext } from '@/context';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { unixTimestampToReadableTime, useHaptic } from '@/utils';
@@ -32,7 +33,9 @@ import {
 } from '@/constants';
 import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { CopyIcon, Trash } from '@/svg-icons';
+import { CopyIcon, Trash, ReplyIcon, TranslateIcon} from '@/svg-icons';
+import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
+import { inboxSupportsReplyTo } from '@/utils';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { tailwind } from '@/theme';
 import { Dimensions, View } from 'react-native';
@@ -111,7 +114,6 @@ const MessageWrapper = ({
 }: MessageWrapperProps) => {
   const { zoomStyle, highlightStyle } = useTargetMessageAnimation({
     isTargetMessage,
-    messageId: item.id,
     isListPositioned,
   });
 
@@ -232,6 +234,8 @@ export const MessageComponent = (props: MessageComponentProps) => {
   const hapticSelection = useHaptic();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const channel = conversation?.channel || conversation?.meta?.channel;
+  const { inboxId } = conversation || {};
+  const inbox = useAppSelector(state => (inboxId ? selectInboxById(state, inboxId) : undefined));
 
   const variant = () => {
     if (item.private) return MESSAGE_VARIANTS.PRIVATE;
@@ -275,11 +279,30 @@ export const MessageComponent = (props: MessageComponentProps) => {
     showToast({ message: i18n.t('CONVERSATION.DELETE_MESSAGE_SUCCESS') });
   };
 
+  const handleQuoteReply = (message: Message) => {
+    dispatch(setQuoteMessage(message));
+  }
+  
+  const handleTranslateMessage = async (messageId: number) => {
+    hapticSelection?.();
+    const targetLanguage = i18n.locale?.split('_')[0] || 'en';
+    try {
+      await dispatch(
+        conversationActions.translateMessage({ conversationId, messageId, targetLanguage }),
+      ).unwrap();
+      showToast({ message: i18n.t('CONVERSATION.TRANSLATE_SUCCESS') });
+    } catch {
+      showToast({ message: i18n.t('CONVERSATION.TRANSLATE_ERROR') });
+    }
+  };
+
   const getMenuOptions = (message: Message): MenuOption[] => {
-    const { messageType, content, attachments } = message;
+    const { messageType, content, attachments, private: isPrivate, status: messageStatus } = message;
     const hasText = !!content;
     const hasAttachments = !!(attachments && attachments.length > 0);
     const isDeleted = message.contentAttributes?.deleted;
+    const isFailedOrProcessing =
+      messageStatus === MESSAGE_STATUS.FAILED || messageStatus === MESSAGE_STATUS.PROGRESS;
 
     const menuOptions: MenuOption[] = [];
     if (messageType === MESSAGE_TYPES.ACTIVITY || isDeleted) {
@@ -291,6 +314,26 @@ export const MessageComponent = (props: MessageComponentProps) => {
         title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.COPY'),
         icon: <CopyIcon />,
         handleOnPressMenuOption: () => handleCopyMessage(content),
+        destructive: false,
+      });
+
+      const targetLanguage = i18n.locale?.split('_')[0] || 'en';
+      const hasTranslationForLocale = !!message.contentAttributes?.translations?.[targetLanguage];
+      if (!hasTranslationForLocale) {
+        menuOptions.push({
+          title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.TRANSLATE'),
+          icon: <TranslateIcon />,
+          handleOnPressMenuOption: () => handleTranslateMessage(message.id),
+          destructive: false,
+        });
+      }
+    }
+
+    if (!isPrivate && !isFailedOrProcessing && inboxSupportsReplyTo(inbox).outgoing) {
+      menuOptions.push({
+        title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.REPLY'),
+        icon: <ReplyIcon />,
+        handleOnPressMenuOption: () => handleQuoteReply(message),
         destructive: false,
       });
     }

@@ -84,6 +84,10 @@ export const UpdateAssignee = () => {
 
   const isFetching = useAppSelector(isAssignableAgentFetching);
 
+  const hasAgentRecords = useAppSelector(state =>
+    inboxIds.some(id => (state.assignableAgents.records[id]?.length ?? 0) > 0),
+  );
+
   const handleFocus = () => {
     actionsModalSheetRef.current?.expand();
   };
@@ -136,7 +140,7 @@ export const UpdateAssignee = () => {
       <BottomSheetScrollView
         showsVerticalScrollIndicator={false}
         style={tailwind.style('my-1 pl-3')}>
-        {isFetching ? (
+        {isFetching && !hasAgentRecords ? (
           <ActivityIndicator />
         ) : (
           <>

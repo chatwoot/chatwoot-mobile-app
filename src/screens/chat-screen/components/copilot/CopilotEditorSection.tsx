@@ -1,6 +1,8 @@
 import React from 'react';
-import { Pressable, ScrollView, StyleSheet } from 'react-native';
-import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated';
+import { ScrollView, StyleSheet } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
+import Animated, { Easing, FadeInDown, FadeOutUp } from 'react-native-reanimated';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { Icon } from '@/components-next/common';
 import { CopilotDiscardIcon, CopilotAcceptIcon } from '@/svg-icons';
@@ -65,7 +67,7 @@ export const CopilotEditorSection = ({
 
   return (
     <Animated.View
-      entering={FadeInDown.springify().damping(20).stiffness(180)}
+      entering={FadeInDown.duration(260).easing(Easing.out(Easing.cubic))}
       exiting={FadeOutUp.duration(150)}
       style={tailwind.style('flex-row items-start px-1 mb-2')}>
       {showActions ? (

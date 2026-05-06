@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import Animated, { EntryAnimationsValues, withSpring } from 'react-native-reanimated';
+import Animated, { SlideInUp, SlideOutDown } from 'react-native-reanimated';
 import {
   ImproveReplyIcon,
   ChangeToneIcon,
@@ -65,20 +65,8 @@ export const CopilotMenu = ({
         'absolute bottom-full left-0 right-0 overflow-hidden',
       )}>
       <Animated.View
-        entering={(values: EntryAnimationsValues) => {
-          'worklet';
-          // Start pushed down by own height (hidden below clip), spring up into view
-          return {
-            initialValues: {
-              transform: [{ translateY: values.targetHeight }],
-            },
-            animations: {
-              transform: [
-                { translateY: withSpring(0, { damping: 38, stiffness: 240 }) },
-              ],
-            },
-          };
-        }}
+        entering={SlideInUp.duration(260)}
+        exiting={SlideOutDown.duration(180)}
         style={tailwind.style(
           'bg-white border-t border-t-blackA-A3 mx-1 pt-2 items-start',
         )}>

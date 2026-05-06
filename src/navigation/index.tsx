@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { getStateFromPath } from '@react-navigation/native';
@@ -28,18 +28,31 @@ import Inter50024 from '@/assets/fonts/Inter-500-24.ttf';
 import Inter58024 from '@/assets/fonts/Inter-580-24.ttf';
 import Inter60020 from '@/assets/fonts/Inter-600-20.ttf';
 
+// Hold the native splash until fonts are loaded. Otherwise returning null
+// from AppNavigationContainer gives React no first frame, which keeps the
+// Android system splash on screen indefinitely.
+SplashScreen.preventAutoHideAsync().catch(() => {});
+
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
 });
 
 export const AppNavigationContainer = () => {
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded, fontsError] = useFonts({
     'Inter-400-20': Inter40020,
     'Inter-420-20': Inter42020,
     'Inter-500-24': Inter50024,
     'Inter-580-24': Inter58024,
     'Inter-600-20': Inter60020,
   });
+
+  // Hide native splash once fonts have either loaded or errored — otherwise
+  // an unresolved load would leave the splash up forever.
+  useEffect(() => {
+    if (fontsLoaded || fontsError) {
+      SplashScreen.hideAsync().catch(() => {});
+    }
+  }, [fontsLoaded, fontsError]);
 
   const routeNameRef = useRef<string | undefined>(undefined);
   const dispatch = useAppDispatch();
@@ -176,13 +189,7 @@ export const AppNavigationContainer = () => {
 
   i18n.locale = locale;
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
+  if (!fontsLoaded && !fontsError) {
     return null;
   }
 
@@ -198,7 +205,7 @@ export const AppNavigationContainer = () => {
       }}
       fallback={<ActivityIndicator animating />}>
       <BottomSheetModalProvider>
-        <View style={styles.navigationLayout} onLayout={onLayoutRootView}>
+        <View style={styles.navigationLayout}>
           <AppTabs />
         </View>
       </BottomSheetModalProvider>

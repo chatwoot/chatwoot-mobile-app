@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { LayoutChangeEvent, StyleSheet } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
@@ -65,29 +65,41 @@ export const Slider = (props: SliderProps) => {
     [],
   );
 
-  const panGesture = Gesture.Pan()
-    .onBegin(() => {
-      runOnJS(pauseAudio)();
-      sliderActive.value = withSpring(1, DefaultSpringConfig);
-      context.value = { x: translationX.value };
-    })
-    .onUpdate(event => {
-      translationX.value = clamp(
-        event.translationX + context.value.x,
-        0,
-        sliderMaxWidth.value - 16, // because the knob width is 16
-      );
-    })
-    .onEnd(() => {
-      const seekToValue = interpolate(
-        translationX.value,
-        [0, sliderMaxWidth.value - 16],
-        [0, totalDuration.value],
-        Extrapolation.CLAMP,
-      );
-      runOnJS(manualSeekTo)(seekToValue);
-    })
-    .onFinalize(() => (sliderActive.value = withSpring(0, DefaultSpringConfig)));
+  const panGesture = useMemo(
+    () =>
+      Gesture.Pan()
+        .onBegin(() => {
+          runOnJS(pauseAudio)();
+          sliderActive.value = withSpring(1, DefaultSpringConfig);
+          context.value = { x: translationX.value };
+        })
+        .onUpdate(event => {
+          translationX.value = clamp(
+            event.translationX + context.value.x,
+            0,
+            sliderMaxWidth.value - 16, // because the knob width is 16
+          );
+        })
+        .onEnd(() => {
+          const seekToValue = interpolate(
+            translationX.value,
+            [0, sliderMaxWidth.value - 16],
+            [0, totalDuration.value],
+            Extrapolation.CLAMP,
+          );
+          runOnJS(manualSeekTo)(seekToValue);
+        })
+        .onFinalize(() => (sliderActive.value = withSpring(0, DefaultSpringConfig))),
+    [
+      pauseAudio,
+      manualSeekTo,
+      sliderActive,
+      sliderMaxWidth,
+      translationX,
+      totalDuration,
+      context,
+    ],
+  );
 
   const handleLayout = (e: LayoutChangeEvent) =>
     (sliderMaxWidth.value = e.nativeEvent.layout.width);

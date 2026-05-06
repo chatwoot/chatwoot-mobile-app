@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-import React, { forwardRef, useCallback } from 'react';
-import { Dimensions, Platform, Pressable, StyleSheet } from 'react-native';
+import React, { forwardRef, useCallback, useMemo } from 'react';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolation,
@@ -196,20 +198,30 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
     },
   );
 
-  const longPressGesture = Gesture.LongPress()
-    .enabled(handleLongPress !== undefined)
-    .minDuration(250)
-    .maxDistance(20)
-    .onStart(() => handleLongPress && runOnJS(handleLongPress)())
-    .onFinalize(() => (isTapped.value = withSpring(0, { damping: 25, stiffness: 120 })));
+  const longPressGesture = useMemo(
+    () =>
+      Gesture.LongPress()
+        .enabled(handleLongPress !== undefined)
+        .minDuration(250)
+        .maxDistance(20)
+        .onStart(() => handleLongPress && runOnJS(handleLongPress)())
+        .onFinalize(() => (isTapped.value = withSpring(0, { damping: 25, stiffness: 120 }))),
+    [handleLongPress, isTapped],
+  );
 
-  const tapGesture = Gesture.Tap()
-    .onStart(() => (isTapped.value = withTiming(1, { duration: 100 })))
-    .onEnd(() => runOnJS(handlePress)())
-    .onFinalize(() => (isTapped.value = withTiming(0, { duration: 150 })));
+  const tapGesture = useMemo(
+    () =>
+      Gesture.Tap()
+        .onStart(() => (isTapped.value = withTiming(1, { duration: 100 })))
+        .onEnd(() => runOnJS(handlePress)())
+        .onFinalize(() => (isTapped.value = withTiming(0, { duration: 150 }))),
+    [handlePress, isTapped],
+  );
 
-  const panGesture = Gesture.Pan()
-    .maxPointers(noOfPointers)
+  const panGesture = useMemo(
+    () =>
+      Gesture.Pan()
+        .maxPointers(noOfPointers)
     .activeOffsetX([-20, 20])
     .onBegin(() => {
       dragOverSwiped.value = false;
@@ -369,7 +381,30 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
           },
         );
       }
-    });
+    }),
+    [
+      noOfPointers,
+      maxTranslation,
+      maxSnapPointRight,
+      maxSnapPointLeft,
+      triggerOverswipeOnFlick,
+      index,
+      handleOnLeftOverswiped,
+      handleOnRightOverswiped,
+      hapticWarning,
+      isTapped,
+      dragOverSwiped,
+      startX,
+      animStatePos,
+      isGestureActive,
+      openedRowIndex,
+      hasLeftElement,
+      hasRightElement,
+      swipingLeft,
+      swipingRight,
+      overSwipedState,
+    ],
+  );
 
   const overlayStyle = useAnimatedStyle(() => {
     const transform = [{ translateX: animStatePos.value }];
@@ -441,9 +476,12 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
     handleRightElementPress?.();
   };
 
-  const flingGesture = Gesture.Fling();
+  const flingGesture = useMemo(() => Gesture.Fling(), []);
 
-  const cellGestures = Gesture.Race(panGesture, tapGesture, longPressGesture, flingGesture);
+  const cellGestures = useMemo(
+    () => Gesture.Race(panGesture, tapGesture, longPressGesture, flingGesture),
+    [panGesture, tapGesture, longPressGesture, flingGesture],
+  );
 
   return (
     <AnimatedNativeView style={tailwind.style('flex flex-row')}>

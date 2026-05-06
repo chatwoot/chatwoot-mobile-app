@@ -1,5 +1,7 @@
 import React from 'react';
-import { StatusBar, Pressable } from 'react-native';
+import { StatusBar } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated from 'react-native-reanimated';
 
 import { SearchBar } from '@/components-next/common/search';

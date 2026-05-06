@@ -1,6 +1,6 @@
 import React from 'react';
-import { Pressable, Text, View } from 'react-native';
-
+import { Text, View } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
 import { tailwind } from '@/theme';
 import i18n from 'i18n';
 

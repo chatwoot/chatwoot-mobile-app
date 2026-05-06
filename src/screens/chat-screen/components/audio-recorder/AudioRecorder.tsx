@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Dimensions, PermissionsAndroid, Platform, Pressable } from 'react-native';
+import { Alert, Dimensions, PermissionsAndroid, Platform } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import AudioRecorderPlayer, {
   RecordBackType,
   AVEncodingOption,

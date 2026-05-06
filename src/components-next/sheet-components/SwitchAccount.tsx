@@ -1,6 +1,6 @@
 import React from 'react';
-import { Pressable, Text, Animated, View } from 'react-native';
-
+import { Text, Animated, View } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
 import { TickIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';

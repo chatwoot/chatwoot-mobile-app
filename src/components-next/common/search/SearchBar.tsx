@@ -1,5 +1,7 @@
 import React from 'react';
-import { Pressable, TextInput, TextInputProps } from 'react-native';
+import { TextInput, TextInputProps } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated, { withTiming } from 'react-native-reanimated';
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 

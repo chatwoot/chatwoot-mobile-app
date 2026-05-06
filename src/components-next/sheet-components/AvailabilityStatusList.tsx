@@ -1,6 +1,6 @@
 import React from 'react';
-import { Pressable, Text, Animated } from 'react-native';
-
+import { Text, Animated } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
 import { AVAILABILITY_STATUS_LIST } from '@/constants';
 import { TickIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';

@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
-import { Dimensions, Pressable } from 'react-native';
+import { Dimensions } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated, {
   interpolateColor,
   useAnimatedStyle,

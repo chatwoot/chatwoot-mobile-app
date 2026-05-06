@@ -8,7 +8,9 @@ import Animated, {
   withTiming,
   cancelAnimation,
 } from 'react-native-reanimated';
-import { Pressable, PressableProps } from 'react-native';
+import { PressableProps } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import { Icon } from '@/components-next/common';
 import { SparkleIcon, AnimatedSparkleIcon } from '@/svg-icons';
 import { useScaleAnimation } from '@/utils';

@@ -1,5 +1,7 @@
 import React from 'react';
-import { Pressable, StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated from 'react-native-reanimated';
 
 import { CaretRight } from '@/svg-icons';

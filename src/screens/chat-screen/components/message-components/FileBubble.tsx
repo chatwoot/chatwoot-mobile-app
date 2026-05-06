@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Pressable, StyleSheet } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import FileViewer from 'react-native-file-viewer';
 import Animated from 'react-native-reanimated';
 import ReactNativeBlobUtil from 'react-native-blob-util';

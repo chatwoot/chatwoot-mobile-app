@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Animated, TextInput, Text, Pressable } from 'react-native';
+import { Animated, TextInput, Text } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import i18n from '@/i18n';
 
 import { tailwind } from '@/theme';

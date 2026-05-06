@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Animated, Image, Pressable, StatusBar, TextInput, View } from 'react-native';
+import { Animated, Image, StatusBar, TextInput, View } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import { useNavigation } from '@react-navigation/native';
 import {
   BottomSheetModal,

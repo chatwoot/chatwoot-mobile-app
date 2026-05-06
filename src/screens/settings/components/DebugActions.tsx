@@ -1,5 +1,7 @@
 import React from 'react';
-import { Pressable, Text, Animated, View } from 'react-native';
+import { Text, Animated, View } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import { showToast } from '@/utils/toastUtils';

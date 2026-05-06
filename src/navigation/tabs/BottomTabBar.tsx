@@ -1,5 +1,7 @@
 import React, { PropsWithChildren } from 'react';
-import { Platform, Pressable } from 'react-native';
+import { Platform } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated, {
   interpolate,
   useAnimatedStyle,

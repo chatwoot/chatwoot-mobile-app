@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
-import { Pressable } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated from 'react-native-reanimated';
 import { WebView } from 'react-native-webview';
 import snakecaseKeys from 'snakecase-keys';

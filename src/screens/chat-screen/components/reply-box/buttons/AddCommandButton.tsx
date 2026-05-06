@@ -1,6 +1,7 @@
 import React from 'react';
 import Animated, { LinearTransition, interpolate, useAnimatedStyle } from 'react-native-reanimated';
-import { Pressable } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import { Icon } from '@/components-next/common';
 import { AddIcon } from '@/svg-icons';
 import { useScaleAnimation } from '@/utils';

@@ -1,5 +1,7 @@
 import React, { forwardRef, PropsWithChildren, useCallback, useRef } from 'react';
-import { Platform, Pressable, View } from 'react-native';
+import { Platform, View } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {

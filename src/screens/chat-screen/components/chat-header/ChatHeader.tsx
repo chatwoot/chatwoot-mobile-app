@@ -1,5 +1,7 @@
 import React from 'react';
-import { ImageSourcePropType, Keyboard, Platform, Pressable } from 'react-native';
+import { ImageSourcePropType, Keyboard, Platform } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 import Animated from 'react-native-reanimated';
 

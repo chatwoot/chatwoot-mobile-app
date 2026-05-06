@@ -1,5 +1,7 @@
 import React from 'react';
-import { Dimensions, Pressable } from 'react-native';
+import { Dimensions } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated from 'react-native-reanimated';
 
 import { Icon, IconButton } from '@/components-next';

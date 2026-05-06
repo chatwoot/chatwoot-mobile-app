@@ -1,5 +1,7 @@
 import React from 'react';
-import { Pressable, Text, ViewStyle } from 'react-native';
+import { Text, ViewStyle } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated, { AnimatedStyle } from 'react-native-reanimated';
 import { Icon } from '@/components-next/common';
 import { CheckedIcon, CloseIcon, FilterIcon, UncheckedIcon, SearchIcon } from '@/svg-icons';

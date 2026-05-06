@@ -28,7 +28,9 @@ import { conversationActions } from '@/store/conversation/conversationActions';
 import { TAB_BAR_HEIGHT } from '@/constants';
 import { ErrorIcon } from '@/svg-icons';
 import { Button } from '@/components-next';
-import { ActivityIndicator, Pressable } from 'react-native';
+import { ActivityIndicator } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import i18n from '@/i18n';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { MacrosList } from './components/macros/MacrosList';

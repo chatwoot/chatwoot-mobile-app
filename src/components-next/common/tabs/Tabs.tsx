@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated, {
   useAnimatedStyle,
   useSharedValue,

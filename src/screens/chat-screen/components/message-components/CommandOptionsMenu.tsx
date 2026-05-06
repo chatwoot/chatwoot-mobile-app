@@ -1,5 +1,7 @@
 import React from 'react';
-import { Alert, Linking, Platform, Pressable, Text } from 'react-native';
+import { Alert, Linking, Platform, Text } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import {
   pick,
   types as documentPickerTypes,

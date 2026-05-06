@@ -1,5 +1,7 @@
 import React from 'react';
-import { ActivityIndicator, Pressable } from 'react-native';
+import { ActivityIndicator } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated, {
   FadeIn,
   FadeOut,

@@ -1,5 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { Platform, Pressable, Text } from 'react-native';
+import { Platform, Text } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { useEventListener } from 'expo';

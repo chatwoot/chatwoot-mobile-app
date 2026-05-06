@@ -1,5 +1,6 @@
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated from 'react-native-reanimated';
 import { Avatar, Icon } from '@/components-next';
 import { CaretRight, UnassignedIcon } from '@/svg-icons';

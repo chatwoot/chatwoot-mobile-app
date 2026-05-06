@@ -1,5 +1,6 @@
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 import { Icon } from '@/components-next/common';

@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
-import { Pressable } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 import { Avatar } from '@/components-next/common/avatar';

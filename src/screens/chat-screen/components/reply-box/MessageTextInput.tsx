@@ -1,12 +1,7 @@
 import React, { FC, useCallback, useEffect, useMemo } from 'react';
-import {
-  NativeSyntheticEvent,
-  Platform,
-  Pressable,
-  TextInputFocusEventData,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
+import { NativeSyntheticEvent, Platform, TextInputFocusEventData, StyleSheet, ScrollView } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated, {
   LayoutAnimationConfig,
   LinearTransition,

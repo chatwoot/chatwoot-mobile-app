@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, StatusBar, View, TextInput, Text, Pressable, ScrollView } from 'react-native';
+import { Animated, StatusBar, View, TextInput, Text, ScrollView } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';

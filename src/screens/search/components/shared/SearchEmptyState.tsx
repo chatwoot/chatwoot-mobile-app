@@ -1,6 +1,5 @@
 import React from 'react';
-import { Pressable } from 'react-native';
-
+import { Pressable } from 'react-native-gesture-handler';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import type { BaseAnimationBuilder } from 'react-native-reanimated';
 

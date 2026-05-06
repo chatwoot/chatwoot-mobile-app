@@ -1,5 +1,7 @@
 import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import { Asset } from 'react-native-image-picker';
 import Animated, {
   LinearTransition,

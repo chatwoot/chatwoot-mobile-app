@@ -1,5 +1,6 @@
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable } from 'react-native-gesture-handler';
+
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { BottomSheetBackgroundProps, BottomSheetModal } from '@gorhom/bottom-sheet';
 

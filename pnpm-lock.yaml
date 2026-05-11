@@ -60,6 +60,9 @@ importers:
       '@react-native-community/netinfo':
         specifier: ^11.4.1
         version: 11.4.1(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))
+      '@react-native-documents/picker':
+        specifier: ^12.0.1
+        version: 12.0.1(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       '@react-native-firebase/app':
         specifier: ^21.7.1
         version: 21.14.0(@react-native-async-storage/async-storage@2.1.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0)))(expo@53.0.27(@babel/core@7.27.1)(react-native-webview@13.13.5(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
@@ -177,9 +180,6 @@ importers:
       react-native-device-info:
         specifier: ^11.1.0
         version: 11.1.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))
-      react-native-document-picker:
-        specifier: ^9.3.1
-        version: 9.3.1(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       react-native-file-viewer:
         specifier: ^2.1.5
         version: 2.1.5(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))
@@ -1955,6 +1955,12 @@ packages:
 
   '@react-native-community/slider@4.5.5':
     resolution: {integrity: sha512-x2N415pg4ZxIltArOKczPwn7JEYh+1OxQ4+hTnafomnMsqs65HZuEWcX+Ch8c5r8V83DiunuQUf5hWGWlw8hQQ==}
+
+  '@react-native-documents/picker@12.0.1':
+    resolution: {integrity: sha512-vpJKb4t/5bnxe9+gQl+plJfKrrIsmYwANGhNH2B9E1dS1+6FDBzg4Dwmcq4ueaGfkRKEPJ606mJttVEH1ZKZaA==}
+    peerDependencies:
+      react: '*'
+      react-native: '>=0.79.0'
 
   '@react-native-firebase/app@21.14.0':
     resolution: {integrity: sha512-vBNfn7PoQrZfANLJnJiWZSHVu7WG6hjM5w3MDfmG8DLdr8VsAVBUgsn8lGpqobSuno1vTgwDIhR8PYZjMGsuvg==}
@@ -5137,17 +5143,6 @@ packages:
     peerDependencies:
       react-native: '*'
 
-  react-native-document-picker@9.3.1:
-    resolution: {integrity: sha512-Vcofv9wfB0j67zawFjfq9WQPMMzXxOZL9kBmvWDpjVuEcVK73ndRmlXHlkeFl5ZHVsv4Zb6oZYhqm9u5omJOPA==}
-    deprecated: the package was renamed, follow migration instructions at https://shorturl.at/QYT4t
-    peerDependencies:
-      react: '*'
-      react-native: '*'
-      react-native-windows: '*'
-    peerDependenciesMeta:
-      react-native-windows:
-        optional: true
-
   react-native-edge-to-edge@1.6.0:
     resolution: {integrity: sha512-2WCNdE3Qd6Fwg9+4BpbATUxCLcouF6YRY7K+J36KJ4l3y+tWN6XCqAC4DuoGblAAbb2sLkhEDp4FOlbOIot2Og==}
     peerDependencies:
@@ -8257,6 +8252,11 @@ snapshots:
       react-native: 0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0)
 
   '@react-native-community/slider@4.5.5': {}
+
+  '@react-native-documents/picker@12.0.1(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      react: 19.0.0
+      react-native: 0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0)
 
   '@react-native-firebase/app@21.14.0(@react-native-async-storage/async-storage@2.1.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0)))(expo@53.0.27(@babel/core@7.27.1)(react-native-webview@13.13.5(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)':
     dependencies:
@@ -12127,12 +12127,6 @@ snapshots:
 
   react-native-device-info@11.1.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0)):
     dependencies:
-      react-native: 0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0)
-
-  react-native-document-picker@9.3.1(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0):
-    dependencies:
-      invariant: 2.2.4
-      react: 19.0.0
       react-native: 0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0)
 
   react-native-edge-to-edge@1.6.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0):

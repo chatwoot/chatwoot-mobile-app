@@ -45,6 +45,7 @@
     "@react-native-clipboard/clipboard": "^1.6.1",
     "@react-native-community/blur": "^4.4.1",
     "@react-native-community/netinfo": "^11.4.1",
+    "@react-native-documents/picker": "^12.0.1",
     "@react-native-firebase/app": "^21.7.1",
     "@react-native-firebase/messaging": "^21.7.1",
     "@react-native-menu/menu": "^1.2.0",
@@ -84,7 +85,6 @@
     "react-native-audio-recorder-player": "^3.6.11",
     "react-native-autoheight-webview": "^1.6.5",
     "react-native-device-info": "^11.1.0",
-    "react-native-document-picker": "^9.3.1",
     "react-native-file-viewer": "^2.1.5",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.24.0",
@@ -148,7 +148,6 @@
         "exclude": [
           "@kesha-antonov/react-native-action-cable",
           "react-native-audio-recorder-player",
-          "react-native-document-picker",
           "react-native-file-viewer",
           "react-native-file-viewer",
           "react-native-fs",

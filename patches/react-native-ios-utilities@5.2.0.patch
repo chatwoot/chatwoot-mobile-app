@@ -1,16 +1,10 @@
 diff --git a/ios/Sources/RNIUtilitiesModule/RNIUtilitiesFollyConvert.h b/ios/Sources/RNIUtilitiesModule/RNIUtilitiesFollyConvert.h
-index bdf7ca90c1f224f0704acf65353cf881751724f6..fcf606ff9f19ed670e930b4b798f5a34d6c8e565 100644
+index bdf7ca90c1f224f0704acf65353cf881751724f6..1c75a62973649950999f17a4b81468a31bdcc668 100644
 --- a/ios/Sources/RNIUtilitiesModule/RNIUtilitiesFollyConvert.h
 +++ b/ios/Sources/RNIUtilitiesModule/RNIUtilitiesFollyConvert.h
-@@ -1,5 +1,3 @@
+@@ -1,4 +1,4 @@
 -#ifdef RCT_NEW_ARCH_ENABLED
--
++#ifdef __cplusplus
+ 
  #if __has_include(<react/utils/FollyConvert.h>)
    // static libs / header maps (no use_frameworks!)
-   #import <react/utils/FollyConvert.h>
-@@ -11,5 +9,3 @@
- #else
-   #error "FollyConvert.h not found. Ensure React-utils & RCT-Folly pods are installed."
- #endif
--
--#endif

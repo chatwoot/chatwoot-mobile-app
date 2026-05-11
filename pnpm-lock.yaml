@@ -38,7 +38,7 @@ importers:
         version: 0.0.33
       '@gorhom/bottom-sheet':
         specifier: ^5.1.2
-        version: 5.1.4(@types/react@18.3.20)(react-native-gesture-handler@2.24.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.17.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
+        version: 5.1.4(@types/react@18.3.20)(react-native-gesture-handler@2.31.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.19.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       '@kesha-antonov/react-native-action-cable':
         specifier: ^1.1.5
         version: 1.1.5
@@ -187,8 +187,8 @@ importers:
         specifier: ^2.20.0
         version: 2.20.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))
       react-native-gesture-handler:
-        specifier: ^2.24.0
-        version: 2.24.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
+        specifier: ^2.31.2
+        version: 2.31.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       react-native-image-modal:
         specifier: ^3.0.14
         version: 3.0.14
@@ -203,7 +203,7 @@ importers:
         version: 5.1.5(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       react-native-keyboard-controller:
         specifier: ^1.16.0
-        version: 1.17.1(react-native-reanimated@3.17.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
+        version: 1.17.1(react-native-reanimated@3.19.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       react-native-markdown-display:
         specifier: ^7.0.0-alpha.2
         version: 7.0.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
@@ -214,8 +214,8 @@ importers:
         specifier: ^5.2.4
         version: 5.4.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       react-native-reanimated:
-        specifier: ^3.17.5
-        version: 3.17.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
+        specifier: ^3.19.5
+        version: 3.19.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       react-native-safe-area-context:
         specifier: ^5.4.0
         version: 5.4.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
@@ -279,10 +279,10 @@ importers:
         version: 8.6.2(prettier@3.5.3)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)(storybook@8.6.17(prettier@3.5.3))
       '@storybook/addon-ondevice-controls':
         specifier: ^8.6.2
-        version: 8.6.2(deae6bb7585d4978d756c1e5cd392e83)
+        version: 8.6.2(245af74b8cc210b373427bafa2a5625d)
       '@storybook/react-native':
         specifier: ^8.6.2
-        version: 8.6.2(74b7bfb8eb65b9c7b56fb5cc3be8aca9)
+        version: 8.6.2(4c81c72c853c2172433f9175a5913c4f)
       '@types/jest':
         specifier: ^29.5.12
         version: 29.5.14
@@ -2397,6 +2397,9 @@ packages:
 
   '@types/prop-types@15.7.14':
     resolution: {integrity: sha512-gNMvNH49DJ7OJYv+KAKn0Xp45p8PLl6zo2YnvDIbTd4J6MER2BmWN49TG7n9LvkyihINxeKW8+3bfS2yDC9dzQ==}
+
+  '@types/react-test-renderer@19.1.0':
+    resolution: {integrity: sha512-XD0WZrHqjNrxA/MaR9O22w/RNidWR9YZmBdRGI7wcnWGrv/3dA8wKCJ8m63Sn+tLJhcjmuhOi629N66W6kgWzQ==}
 
   '@types/react@18.3.20':
     resolution: {integrity: sha512-IPaCZN7PShZK/3t6Q87pfTkRm6oLTd4vztyoj+cbHUF1g3FfVb2tFIL79uCRKEfv16AhqDMBywP2VW3KIZUvcg==}
@@ -5166,8 +5169,8 @@ packages:
       react-native-windows:
         optional: true
 
-  react-native-gesture-handler@2.24.0:
-    resolution: {integrity: sha512-ZdWyOd1C8axKJHIfYxjJKCcxjWEpUtUWgTOVY2wynbiveSQDm8X/PDyAKXSer/GOtIpjudUbACOndZXCN3vHsw==}
+  react-native-gesture-handler@2.31.2:
+    resolution: {integrity: sha512-rw5q74i2AfS7YGYdbxQDhOU7xqgY6WRM1132/CCm3erqjblhECZDZFHIm0tteHoC9ih24wogVBVVzcTBQtZ+5A==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -5241,8 +5244,8 @@ packages:
       react-native-windows:
         optional: true
 
-  react-native-reanimated@3.17.5:
-    resolution: {integrity: sha512-SxBK7wQfJ4UoWoJqQnmIC7ZjuNgVb9rcY5Xc67upXAFKftWg0rnkknTw6vgwnjRcvYThrjzUVti66XoZdDJGtw==}
+  react-native-reanimated@3.19.5:
+    resolution: {integrity: sha512-bd4AwIkBAaY4BjrgpSoKjEaRG/tXD756F5nGuiH5IMBSKN8tRdUEA8hWZCyIo/R6/kha/tVSoCqodVUACh7ZWw==}
     peerDependencies:
       '@babel/core': ^7.0.0-0
       react: '*'
@@ -7650,14 +7653,14 @@ snapshots:
 
   '@floating-ui/utils@0.2.9': {}
 
-  '@gorhom/bottom-sheet@5.1.4(@types/react@18.3.20)(react-native-gesture-handler@2.24.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.17.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)':
+  '@gorhom/bottom-sheet@5.1.4(@types/react@18.3.20)(react-native-gesture-handler@2.31.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.19.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)':
     dependencies:
       '@gorhom/portal': 1.0.14(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       invariant: 2.2.4
       react: 19.0.0
       react-native: 0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0)
-      react-native-gesture-handler: 2.24.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
-      react-native-reanimated: 3.17.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
+      react-native-gesture-handler: 2.31.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
+      react-native-reanimated: 3.19.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
     optionalDependencies:
       '@types/react': 18.3.20
 
@@ -8625,15 +8628,15 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@storybook/addon-ondevice-controls@8.6.2(deae6bb7585d4978d756c1e5cd392e83)':
+  '@storybook/addon-ondevice-controls@8.6.2(245af74b8cc210b373427bafa2a5625d)':
     dependencies:
-      '@gorhom/bottom-sheet': 5.1.4(@types/react@18.3.20)(react-native-gesture-handler@2.24.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.17.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
+      '@gorhom/bottom-sheet': 5.1.4(@types/react@18.3.20)(react-native-gesture-handler@2.31.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.19.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       '@react-native-community/datetimepicker': 8.2.0(expo@53.0.27(@babel/core@7.27.1)(react-native-webview@13.13.5(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       '@react-native-community/slider': 4.5.5
       '@storybook/addon-controls': 8.6.12(storybook@8.6.17(prettier@3.5.3))
       '@storybook/core': 8.6.12(prettier@3.5.3)(storybook@8.6.17(prettier@3.5.3))
       '@storybook/react-native-theming': 8.6.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
-      '@storybook/react-native-ui': 8.6.2(cd7c323b3cf5afefbb11560e335f24a3)
+      '@storybook/react-native-ui': 8.6.2(52d99ca6dc3ee607cde0aeeb44f21759)
       deep-equal: 1.1.2
       prop-types: 15.8.1
       react: 19.0.0
@@ -8747,9 +8750,9 @@ snapshots:
       react: 19.0.0
       react-native: 0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0)
 
-  '@storybook/react-native-ui@8.6.2(cd7c323b3cf5afefbb11560e335f24a3)':
+  '@storybook/react-native-ui@8.6.2(52d99ca6dc3ee607cde0aeeb44f21759)':
     dependencies:
-      '@gorhom/bottom-sheet': 5.1.4(@types/react@18.3.20)(react-native-gesture-handler@2.24.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.17.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
+      '@gorhom/bottom-sheet': 5.1.4(@types/react@18.3.20)(react-native-gesture-handler@2.31.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.19.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       '@storybook/core': 8.6.12(prettier@3.5.3)(storybook@8.6.17(prettier@3.5.3))
       '@storybook/react': 8.6.12(react-dom@18.3.1(react@19.0.0))(react@19.0.0)(storybook@8.6.17(prettier@3.5.3))(typescript@5.8.3)
       '@storybook/react-native-theming': 8.6.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
@@ -8758,8 +8761,8 @@ snapshots:
       polished: 4.3.1
       react: 19.0.0
       react-native: 0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0)
-      react-native-gesture-handler: 2.24.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
-      react-native-reanimated: 3.17.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
+      react-native-gesture-handler: 2.31.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
+      react-native-reanimated: 3.19.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       react-native-safe-area-context: 5.4.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       react-native-svg: 15.11.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       store2: 2.14.4
@@ -8773,9 +8776,9 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@storybook/react-native-ui@8.6.2(d5614a3200e33b3af8fb0ee12b966cf9)':
+  '@storybook/react-native-ui@8.6.2(ac0f8e739c6faea4d4aacc0920e02145)':
     dependencies:
-      '@gorhom/bottom-sheet': 5.1.4(@types/react@18.3.20)(react-native-gesture-handler@2.24.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.17.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
+      '@gorhom/bottom-sheet': 5.1.4(@types/react@18.3.20)(react-native-gesture-handler@2.31.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.19.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       '@storybook/core': 8.6.12(prettier@2.8.8)(storybook@8.6.17(prettier@2.8.8))
       '@storybook/react': 8.6.12(react-dom@18.3.1(react@19.0.0))(react@19.0.0)(storybook@8.6.17(prettier@3.5.3))(typescript@5.8.3)
       '@storybook/react-native-theming': 8.6.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
@@ -8784,8 +8787,8 @@ snapshots:
       polished: 4.3.1
       react: 19.0.0
       react-native: 0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0)
-      react-native-gesture-handler: 2.24.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
-      react-native-reanimated: 3.17.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
+      react-native-gesture-handler: 2.31.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
+      react-native-reanimated: 3.19.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       react-native-safe-area-context: 5.4.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       react-native-svg: 15.11.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       store2: 2.14.4
@@ -8799,22 +8802,22 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@storybook/react-native@8.6.2(74b7bfb8eb65b9c7b56fb5cc3be8aca9)':
+  '@storybook/react-native@8.6.2(4c81c72c853c2172433f9175a5913c4f)':
     dependencies:
-      '@gorhom/bottom-sheet': 5.1.4(@types/react@18.3.20)(react-native-gesture-handler@2.24.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.17.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
+      '@gorhom/bottom-sheet': 5.1.4(@types/react@18.3.20)(react-native-gesture-handler@2.31.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.19.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       '@storybook/core': 8.6.12(prettier@2.8.8)(storybook@8.6.17(prettier@2.8.8))
       '@storybook/csf': 0.1.13
       '@storybook/global': 5.0.0
       '@storybook/react': 8.6.12(react-dom@18.3.1(react@19.0.0))(react@19.0.0)(storybook@8.6.17(prettier@3.5.3))(typescript@5.8.3)
       '@storybook/react-native-theming': 8.6.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
-      '@storybook/react-native-ui': 8.6.2(d5614a3200e33b3af8fb0ee12b966cf9)
+      '@storybook/react-native-ui': 8.6.2(ac0f8e739c6faea4d4aacc0920e02145)
       commander: 8.3.0
       dedent: 1.6.0
       deepmerge: 4.3.1
       prettier: 2.8.8
       react: 19.0.0
       react-native: 0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0)
-      react-native-gesture-handler: 2.24.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
+      react-native-gesture-handler: 2.31.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       react-native-safe-area-context: 5.4.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       react-native-url-polyfill: 2.0.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))
       setimmediate: 1.0.5
@@ -8911,6 +8914,10 @@ snapshots:
       undici-types: 6.21.0
 
   '@types/prop-types@15.7.14': {}
+
+  '@types/react-test-renderer@19.1.0':
+    dependencies:
+      '@types/react': 18.3.20
 
   '@types/react@18.3.20':
     dependencies:
@@ -12148,9 +12155,10 @@ snapshots:
       react-native: 0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0)
       utf8: 3.0.0
 
-  react-native-gesture-handler@2.24.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0):
+  react-native-gesture-handler@2.31.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0):
     dependencies:
       '@egjs/hammerjs': 2.0.17
+      '@types/react-test-renderer': 19.1.0
       hoist-non-react-statics: 3.3.2
       invariant: 2.2.4
       react: 19.0.0
@@ -12180,12 +12188,12 @@ snapshots:
       react: 19.0.0
       react-native: 0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0)
 
-  react-native-keyboard-controller@1.17.1(react-native-reanimated@3.17.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0):
+  react-native-keyboard-controller@1.17.1(react-native-reanimated@3.19.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0):
     dependencies:
       react: 19.0.0
       react-native: 0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0)
       react-native-is-edge-to-edge: 1.1.7(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
-      react-native-reanimated: 3.17.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
+      react-native-reanimated: 3.19.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
 
   react-native-markdown-display@7.0.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0):
     dependencies:
@@ -12219,7 +12227,7 @@ snapshots:
       react: 19.0.0
       react-native: 0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0)
 
-  react-native-reanimated@3.17.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0):
+  react-native-reanimated@3.19.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@18.3.20)(react@19.0.0))(react@19.0.0):
     dependencies:
       '@babel/core': 7.27.1
       '@babel/plugin-transform-arrow-functions': 7.27.1(@babel/core@7.27.1)

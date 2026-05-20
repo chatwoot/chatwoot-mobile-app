@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "输入有效的密码",
     "LOGIN": "登录",
     "LOGIN_LOADING": "正在登录……",
+    "LOGIN_VIA_SSO": "Login via SSO",
+    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
+    "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
+    "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
     "FORGOT_PASSWORD": "忘记密码？",
     "RESET_HERE": "重置",
     "NO_ACCOUNT": "没有注册？",
@@ -49,6 +53,24 @@
     "TITLE": "忘记密码？",
     "SUB_TITLE": "别担心，我们会支持你的",
     "API_SUCCESS": "密码重置链接已发送到您的电子邮件地址"
+  },
+  "MFA": {
+    "TITLE": "两步验证",
+    "TABS": {
+      "AUTHENTICATOR_APP": "身份验证器应用",
+      "BACKUP_CODE": "备份代码"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "从您的身份验证程序中输入6位数字代码",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "验证",
+      "VERIFYING": "正在验证..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {
@@ -216,8 +238,13 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "复制",
       "REPLY": "回复",
-      "DELETE_MESSAGE": "删除消息"
+      "DELETE_MESSAGE": "删除消息",
+      "TRANSLATE": "翻译"
     },
+    "TRANSLATE_SUCCESS": "Message translated",
+    "TRANSLATE_ERROR": "Failed to translate message",
+    "VIEW_ORIGINAL": "查看原始内容",
+    "VIEW_TRANSLATED": "查看翻译",
     "EMAIL_HEADER": {
       "FROM": "来自",
       "TO": "发送至",
@@ -454,5 +481,22 @@
     "EXECUTION_SUCCESS": "宏成功执行",
     "EXECUTION_ERROR": "Macro execution failed",
     "NO_MACROS": "未找到宏"
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Type 2 or more characters to search",
+    "HINT": "Search by conversation id, email, phone number, messages for better search results.",
+    "ALL_RESULTS": "All Results",
+    "RECENT_SEARCHES": "Recent Searches",
+    "CLEAR_ALL": "清除全部",
+    "VIEW_MORE": "查看更多",
+    "TAP_TO_RETRY": "Tap to retry",
+    "NO_RESULTS": "No {{sectionLabel}} found for query '{{searchQuery}}'",
+    "ERROR_CANCELLED": "Couldn't load results.",
+    "ERROR_GENERIC": "Something went wrong. Please try again.",
+    "SECTIONS": {
+      "CONTACTS": "联系人",
+      "CONVERSATIONS": "会话",
+      "MESSAGES": "消息"
+    }
   }
 }

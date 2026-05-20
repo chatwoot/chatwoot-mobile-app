@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "Introduceți o parolă validă",
     "LOGIN": "Autentificare",
     "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Login via SSO",
+    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
+    "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
+    "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
     "FORGOT_PASSWORD": "Ai uitat parola?",
     "RESET_HERE": "Resetați aici",
     "NO_ACCOUNT": "Nu aveți un cont?",
@@ -49,6 +53,24 @@
     "TITLE": "Parolă uitată?",
     "SUB_TITLE": "Nu-ți face griji! Iți avem grija",
     "API_SUCCESS": "Linkul de resetare a parolei a fost trimis la adresa de e-mail"
+  },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "Verificare..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {
@@ -216,8 +238,13 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "Copiază",
       "REPLY": "Răspunde",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "TRANSLATE": "Traduceți"
     },
+    "TRANSLATE_SUCCESS": "Message translated",
+    "TRANSLATE_ERROR": "Failed to translate message",
+    "VIEW_ORIGINAL": "View original",
+    "VIEW_TRANSLATED": "View translated",
     "EMAIL_HEADER": {
       "FROM": "De la",
       "TO": "Către",
@@ -454,5 +481,22 @@
     "EXECUTION_SUCCESS": "Macrocomandă executată cu succes",
     "EXECUTION_ERROR": "Macro execution failed",
     "NO_MACROS": "Nu s-au găsit macrocomenzi"
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Type 2 or more characters to search",
+    "HINT": "Căutați după id-ul conversației, e-mail, numărul de telefon, mesajele pentru rezultate de căutare mai bune.",
+    "ALL_RESULTS": "All Results",
+    "RECENT_SEARCHES": "Recent Searches",
+    "CLEAR_ALL": "Clear all",
+    "VIEW_MORE": "View more",
+    "TAP_TO_RETRY": "Tap to retry",
+    "NO_RESULTS": "No {{sectionLabel}} found for query '{{searchQuery}}'",
+    "ERROR_CANCELLED": "Couldn't load results.",
+    "ERROR_GENERIC": "Something went wrong. Please try again.",
+    "SECTIONS": {
+      "CONTACTS": "Contacte",
+      "CONVERSATIONS": "Conversații",
+      "MESSAGES": "Mesaje"
+    }
   }
 }

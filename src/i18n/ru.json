@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "Введите корректный пароль",
     "LOGIN": "Войти",
     "LOGIN_LOADING": "Выполняется вход...",
+    "LOGIN_VIA_SSO": "Вход через SSO",
+    "SSO_AUTH_FAILED": "Ошибка аутентификации SSO. Пожалуйста, проверьте ваши учетные данные и повторите попытку.",
+    "SSO_INVALID_RESPONSE": "Неверный ответ SSO. Пожалуйста, попробуйте еще раз.",
+    "SSO_UNEXPECTED_ERROR": "Во время входа SSO произошла непредвиденная ошибка. Пожалуйста, попробуйте еще раз.",
     "FORGOT_PASSWORD": "Забыли пароль?",
     "RESET_HERE": "Сбросить здесь",
     "NO_ACCOUNT": "Нет учетной записи?",
@@ -49,6 +53,24 @@
     "TITLE": "Забыли пароль?",
     "SUB_TITLE": "Не волнуйтесь! Все нормально",
     "API_SUCCESS": "Ссылка для сброса пароля была отправлена на ваш email"
+  },
+  "MFA": {
+    "TITLE": "2-FA аутентификация",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Приложение для 2-FA аутентификации",
+      "BACKUP_CODE": "Резервные коды"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Введите 6-значный код из вашего приложения аутентификации",
+      "BACKUP": "Введите ваш резервный код"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Введите резервный код"
+    },
+    "BUTTONS": {
+      "VERIFY": "Проверить",
+      "VERIFYING": "Проверка..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {
@@ -216,8 +238,13 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "Копировать",
       "REPLY": "Ответить",
-      "DELETE_MESSAGE": "Удалить сообщение"
+      "DELETE_MESSAGE": "Удалить сообщение",
+      "TRANSLATE": "Перевести"
     },
+    "TRANSLATE_SUCCESS": "Message translated",
+    "TRANSLATE_ERROR": "Failed to translate message",
+    "VIEW_ORIGINAL": "View original",
+    "VIEW_TRANSLATED": "View translated",
     "EMAIL_HEADER": {
       "FROM": "От",
       "TO": "Кому",
@@ -454,5 +481,22 @@
     "EXECUTION_SUCCESS": "Макрос успешно выполнен",
     "EXECUTION_ERROR": "Выполнение макроса не удалось",
     "NO_MACROS": "Макросы не найдены"
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Введите 2 или более символов для поиска",
+    "HINT": "Для более точного поиска используйте идентификатор беседы, адрес электронной почты, номер телефона или сообщения.",
+    "ALL_RESULTS": "Все результаты",
+    "RECENT_SEARCHES": "Недавние запросы",
+    "CLEAR_ALL": "Очистить всё",
+    "VIEW_MORE": "Посмотреть больше",
+    "TAP_TO_RETRY": "Повторить попытку",
+    "NO_RESULTS": "Не найдено {{sectionLabel}} для запроса '{{searchQuery}}'",
+    "ERROR_CANCELLED": "Не удалось загрузить результаты.",
+    "ERROR_GENERIC": "Что-то пошло не так. Попробуйте еще раз.",
+    "SECTIONS": {
+      "CONTACTS": "Контакты",
+      "CONVERSATIONS": "Разговоры",
+      "MESSAGES": "Сообщения"
+    }
   }
 }

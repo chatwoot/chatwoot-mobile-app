@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "輸入錯誤密碼",
     "LOGIN": "登入",
     "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Login via SSO",
+    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
+    "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
+    "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
     "FORGOT_PASSWORD": "忘記密碼了？",
     "RESET_HERE": "在此重置",
     "NO_ACCOUNT": "有登入帳號嗎",
@@ -49,6 +53,24 @@
     "TITLE": "忘記密碼",
     "SUB_TITLE": "不用擔心，我們降返回",
     "API_SUCCESS": "Password reset link has been sent to your email address"
+  },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "正在驗證..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {
@@ -216,8 +238,13 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "複製",
       "REPLY": "回覆",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "TRANSLATE": "Translate"
     },
+    "TRANSLATE_SUCCESS": "Message translated",
+    "TRANSLATE_ERROR": "Failed to translate message",
+    "VIEW_ORIGINAL": "View original",
+    "VIEW_TRANSLATED": "View translated",
     "EMAIL_HEADER": {
       "FROM": "From",
       "TO": "To",
@@ -454,5 +481,22 @@
     "EXECUTION_SUCCESS": "Macro executed successfully",
     "EXECUTION_ERROR": "Macro execution failed",
     "NO_MACROS": "No macros found"
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Type 2 or more characters to search",
+    "HINT": "Search by conversation id, email, phone number, messages for better search results.",
+    "ALL_RESULTS": "All Results",
+    "RECENT_SEARCHES": "Recent Searches",
+    "CLEAR_ALL": "Clear all",
+    "VIEW_MORE": "View more",
+    "TAP_TO_RETRY": "Tap to retry",
+    "NO_RESULTS": "No {{sectionLabel}} found for query '{{searchQuery}}'",
+    "ERROR_CANCELLED": "Couldn't load results.",
+    "ERROR_GENERIC": "Something went wrong. Please try again.",
+    "SECTIONS": {
+      "CONTACTS": "聯絡人",
+      "CONVERSATIONS": "對話",
+      "MESSAGES": "訊息"
+    }
   }
 }

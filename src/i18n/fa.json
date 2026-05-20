@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "رمز عبور معتبر وارد کنید",
     "LOGIN": "ورود",
     "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Login via SSO",
+    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
+    "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
+    "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
     "FORGOT_PASSWORD": "رمز عبورتان را فراموش کردید؟",
     "RESET_HERE": "اینجا ریست کنید",
     "NO_ACCOUNT": "حساب کاربری ندارید؟",
@@ -49,6 +53,24 @@
     "TITLE": "رمز عبورتان را فراموش کردید؟",
     "SUB_TITLE": "نگران نباش! ما پشتت رو گرفتیم",
     "API_SUCCESS": "پیوند بازنشانی رمز عبور به ایمیل شما ارسال شد"
+  },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "در حال تایید..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {
@@ -216,8 +238,13 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "کپی",
       "REPLY": "پاسخ",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "TRANSLATE": "ترجمه"
     },
+    "TRANSLATE_SUCCESS": "Message translated",
+    "TRANSLATE_ERROR": "Failed to translate message",
+    "VIEW_ORIGINAL": "View original",
+    "VIEW_TRANSLATED": "View translated",
     "EMAIL_HEADER": {
       "FROM": "از",
       "TO": "به",
@@ -454,5 +481,22 @@
     "EXECUTION_SUCCESS": "ماکرو با موفقیت اجرا شد",
     "EXECUTION_ERROR": "Macro execution failed",
     "NO_MACROS": "هیچ ماکروی یافت نشد"
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Type 2 or more characters to search",
+    "HINT": "جستجو بر اساس شناسه گفتگو، ایمیل، شماره تلفن، پیام‌ها برای نتایج جستجوی بهتر.",
+    "ALL_RESULTS": "All Results",
+    "RECENT_SEARCHES": "Recent Searches",
+    "CLEAR_ALL": "حذف همه",
+    "VIEW_MORE": "View more",
+    "TAP_TO_RETRY": "Tap to retry",
+    "NO_RESULTS": "No {{sectionLabel}} found for query '{{searchQuery}}'",
+    "ERROR_CANCELLED": "Couldn't load results.",
+    "ERROR_GENERIC": "مشکلی پیش آمد. لطفا دوباره تلاش کنید.",
+    "SECTIONS": {
+      "CONTACTS": "مخاطبین",
+      "CONVERSATIONS": "گفتگوها",
+      "MESSAGES": "پیام‌ها"
+    }
   }
 }

@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "أدخل كلمة مرور صالحة",
     "LOGIN": "تسجيل الدخول",
     "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Login via SSO",
+    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
+    "SSO_INVALID_RESPONSE": "قناة Slack غير صحيحة. الرجاء المحاولة مرة أخرى.",
+    "SSO_UNEXPECTED_ERROR": "حدث خطأ غير متوقع أثناء تسجيل دخول SSO. الرجاء المحاولة مرة أخرى.",
     "FORGOT_PASSWORD": "نسيت كلمة المرور؟",
     "RESET_HERE": "إعادة تعيين من هنا",
     "NO_ACCOUNT": "ليس لديك حساب؟",
@@ -49,6 +53,24 @@
     "TITLE": "هل نسيت كلمة المرور؟",
     "SUB_TITLE": "لاتقلق، سنهتم بذلك",
     "API_SUCCESS": "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني"
+  },
+  "MFA": {
+    "TITLE": "Manage Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authentication Type",
+      "BACKUP_CODE": "Backup Codes"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter the 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "جار التحقق..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {
@@ -216,8 +238,13 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "نسخ",
       "REPLY": "إضافة رد",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "TRANSLATE": "ترجم"
     },
+    "TRANSLATE_SUCCESS": "Message translated",
+    "TRANSLATE_ERROR": "Failed to translate message",
+    "VIEW_ORIGINAL": "View original",
+    "VIEW_TRANSLATED": "View translated",
     "EMAIL_HEADER": {
       "FROM": "من",
       "TO": "إلى",
@@ -454,5 +481,22 @@
     "EXECUTION_SUCCESS": "تم تنفيذ الماكرو بنجاح",
     "EXECUTION_ERROR": "Macro execution failed",
     "NO_MACROS": "لم يتم العثور على الماكروس"
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Type 2 or more characters to search",
+    "HINT": "Search by conversation id, email, phone number, messages for better search results.",
+    "ALL_RESULTS": "All Results",
+    "RECENT_SEARCHES": "Recent Searches",
+    "CLEAR_ALL": "مسح الكل",
+    "VIEW_MORE": "View more",
+    "TAP_TO_RETRY": "Tap to retry",
+    "NO_RESULTS": "No {{sectionLabel}} found for query '{{searchQuery}}'",
+    "ERROR_CANCELLED": "Couldn't load results.",
+    "ERROR_GENERIC": "Something went wrong. Please try again.",
+    "SECTIONS": {
+      "CONTACTS": "جهات الاتصال",
+      "CONVERSATIONS": "المحادثات",
+      "MESSAGES": "الرسائل"
+    }
   }
 }

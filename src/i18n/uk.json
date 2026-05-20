@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "Введіть дійсний пароль",
     "LOGIN": "Увійти",
     "LOGIN_LOADING": "Signing In...",
+    "LOGIN_VIA_SSO": "Login via SSO",
+    "SSO_AUTH_FAILED": "SSO authentication failed. Please check your credentials and try again.",
+    "SSO_INVALID_RESPONSE": "Invalid SSO response. Please try again.",
+    "SSO_UNEXPECTED_ERROR": "An unexpected error occurred during SSO login. Please try again.",
     "FORGOT_PASSWORD": "Забули пароль?",
     "RESET_HERE": "Скинути тут",
     "NO_ACCOUNT": "Немає облікового запису?",
@@ -49,6 +53,24 @@
     "TITLE": "Забули пароль?",
     "SUB_TITLE": "Don't worry! We got your back",
     "API_SUCCESS": "Посилання для зміни пароля було надіслано на вашу електронну пошту"
+  },
+  "MFA": {
+    "TITLE": "Two-Factor Authentication",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Authenticator App",
+      "BACKUP_CODE": "Backup Code"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Enter 6-digit code from your authenticator app",
+      "BACKUP": "Enter your one of your backup code"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Enter backup code"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verify",
+      "VERIFYING": "Перевірка..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {
@@ -216,8 +238,13 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "Копіювати",
       "REPLY": "Відповісти",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Delete message",
+      "TRANSLATE": "Перекласти"
     },
+    "TRANSLATE_SUCCESS": "Message translated",
+    "TRANSLATE_ERROR": "Failed to translate message",
+    "VIEW_ORIGINAL": "View original",
+    "VIEW_TRANSLATED": "View translated",
     "EMAIL_HEADER": {
       "FROM": "Від",
       "TO": "Для",
@@ -454,5 +481,22 @@
     "EXECUTION_SUCCESS": "Макрос успішно виконано",
     "EXECUTION_ERROR": "Macro execution failed",
     "NO_MACROS": "Макросів не знайдено"
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Type 2 or more characters to search",
+    "HINT": "Пошук бесід по id, email, тел. номеру, повідомлень для кращого пошуку результатів.",
+    "ALL_RESULTS": "All Results",
+    "RECENT_SEARCHES": "Recent Searches",
+    "CLEAR_ALL": "Очистити все",
+    "VIEW_MORE": "View more",
+    "TAP_TO_RETRY": "Tap to retry",
+    "NO_RESULTS": "No {{sectionLabel}} found for query '{{searchQuery}}'",
+    "ERROR_CANCELLED": "Couldn't load results.",
+    "ERROR_GENERIC": "Something went wrong. Please try again.",
+    "SECTIONS": {
+      "CONTACTS": "Контакти",
+      "CONVERSATIONS": "Бесіди",
+      "MESSAGES": "Текст повідомлень"
+    }
   }
 }

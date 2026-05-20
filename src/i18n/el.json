@@ -368,7 +368,13 @@
     "TITLE": "Ιδιότητες Επαφής"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Ενέργειες"
+    "TITLE": "Ενέργειες",
+    "OPTIONS": {
+      "OPEN": "Open",
+      "PENDING": "Pending",
+      "SNOOZED": "Snooze",
+      "RESOLVED": "resolve"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "Ανάθεση ομάδας",

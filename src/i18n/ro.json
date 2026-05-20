@@ -368,7 +368,13 @@
     "TITLE": "Atribute Contacte"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Acțiuni"
+    "TITLE": "Acțiuni",
+    "OPTIONS": {
+      "OPEN": "Open",
+      "PENDING": "Pending",
+      "SNOOZED": "Snooze",
+      "RESOLVED": "resolve"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "Atribuiți echipă",

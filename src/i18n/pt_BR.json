@@ -346,7 +346,10 @@
     "TITLE": "Detalhes do contato",
     "EMAIL": "e-mail",
     "PHONE_NUMBER": "Número de Telefone",
+    "PHONE": "Telefone",
     "CALL": "Chamada",
+    "LOCATION": "Localização",
+    "COMPANY": "Empresa",
     "CONTACT_ATTRIBUTES": "Atributos do contato",
     "VALUE_UNAVAILABLE": "Indisponível"
   },
@@ -368,7 +371,21 @@
     "TITLE": "Atributos do contato"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Ações"
+    "TITLE": "Ações",
+    "OPTIONS": {
+      "OPEN": "Abrir",
+      "PENDING": "Pendente",
+      "SNOOZED": "Adiar",
+      "RESOLVED": "Resolver"
+    }
+  },
+  "CONVERSATION_ATTACHMENT": {
+    "OPTIONS": {
+      "PHOTOS": "Fotos",
+      "CAMERA": "Câmera",
+      "ATTACH_FILE": "Documento",
+      "MACROS": "Macros"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "Atribuir time",
@@ -384,6 +401,16 @@
     "SELECTED": "Selecionar",
     "NOT_SELECTED": "Nenhuma etiqueta selecionada",
     "NO_RESULT": "Nenhua etiqueta encontrada"
+  },
+  "CONTACT_LABELS": {
+    "TITLE": "Etiquetas do contato",
+    "ADD_LABEL": "Adicionar etiqueta",
+    "EMPTY_LIST": "Por favor, adicione marcadores à sua conta",
+    "NO_LABEL": "Nenhum marcador atribuído",
+    "UPDATE_LABEL": "Etiqueta atualizada com sucesso",
+    "SELECTED": "Selecionar",
+    "NOT_SELECTED": "Nenhuma etiqueta selecionada",
+    "NO_RESULT": "Nenhuma etiqueta encontrada"
   },
   "CONVERSATION_AGENTS": {
     "TITLE": "Atribuir agente",

@@ -5,6 +5,7 @@ import Animated from 'react-native-reanimated';
 import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 
 import { BottomSheetBackdrop, Button } from '@/components-next';
+import i18n from '@/i18n';
 import {
   ConversationBasicActions,
   ConversationLabelActions,
@@ -153,7 +154,11 @@ export const ConversationActions = () => {
           {conversation && <ConversationMetaInformation conversation={conversation} />}
         </Animated.View>
         <Animated.View style={tailwind.style('px-4 pt-10')}>
-          <Button variant="secondary" handlePress={onShareConversation} text="Share conversation" />
+          <Button
+            variant="secondary"
+            handlePress={onShareConversation}
+            text={i18n.t('CONVERSATION.ACTIONS.SHARE_CONVERSATION')}
+          />
         </Animated.View>
       </ScrollView>
       <BottomSheetModal

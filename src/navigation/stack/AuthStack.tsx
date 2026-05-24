@@ -5,6 +5,7 @@ import ConfigInstallationURL from '@/screens/auth/ConfigURLScreen';
 import Login from '@/screens/auth/LoginScreen';
 import ForgotPassword from '@/screens/auth/ForgotPassword';
 import MFAScreen from '@/screens/auth/MFAScreen';
+import i18n from '@/i18n';
 
 export type AuthStackParamList = {
   Login: undefined;
@@ -28,7 +29,7 @@ export const AuthStack = () => {
       <Stack.Screen
         options={{
           headerShown: true,
-          headerBackTitle: 'Back',
+          headerBackTitle: i18n.t('COMMON.BACK'),
           headerBackVisible: true,
           headerShadowVisible: false,
           title: '',
@@ -39,7 +40,7 @@ export const AuthStack = () => {
       <Stack.Screen
         options={{
           headerShown: true,
-          headerBackTitle: 'Back',
+          headerBackTitle: i18n.t('COMMON.BACK'),
           headerBackVisible: true,
           headerShadowVisible: false,
           title: '',
@@ -50,7 +51,7 @@ export const AuthStack = () => {
       <Stack.Screen
         options={{
           headerShown: true,
-          headerBackTitle: 'Back',
+          headerBackTitle: i18n.t('COMMON.BACK'),
           headerBackVisible: true,
           headerShadowVisible: false,
           title: '',

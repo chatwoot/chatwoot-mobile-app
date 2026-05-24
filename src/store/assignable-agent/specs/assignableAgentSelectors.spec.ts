@@ -1,8 +1,15 @@
+import i18n from '@/i18n';
 import { selectAssignableAgentsByInboxId } from '../assignableAgentSelectors';
 import { RootState } from '@/store';
 import { agent } from './assignableAgentMockData';
 
 describe('inboxAgentSelectors', () => {
+  // Lock the locale so the literal `name: 'None'` assertions below are stable
+  // and act as a canary for the en.json key path.
+  beforeAll(() => {
+    i18n.locale = 'en';
+  });
+
   const state = {
     assignableAgents: {
       records: {
@@ -11,6 +18,7 @@ describe('inboxAgentSelectors', () => {
       },
       uiFlags: { isLoading: false },
     },
+    settings: { localeValue: 'en' },
   } as Partial<RootState> as RootState;
 
   it('selects all inbox agents for single inbox', () => {

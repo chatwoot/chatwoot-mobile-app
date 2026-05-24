@@ -161,7 +161,7 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
     },
     additionalAttributes,
     allLabels,
-    typingText: typingText as string | undefined,
+    typingText,
   };
 
   return (

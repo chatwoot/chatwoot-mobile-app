@@ -16,6 +16,7 @@ import { selectQuoteMessage, setQuoteMessage } from '@/store/conversation/sendMe
 
 import { VideoPlayer } from '../message-components';
 import { Message } from '@/types';
+import i18n from '@/i18n';
 
 const AudioIcon = () => {
   return (
@@ -132,7 +133,7 @@ export const QuoteReply = () => {
             style={tailwind.style(
               'text-cxs tracking-[0.32px] leading-[15px] font-inter-420-20 text-blackA-A11',
             )}>
-            Replying to {quoteMessage?.sender?.name}
+            {i18n.t('CONVERSATION.REPLYING_TO', { name: quoteMessage?.sender?.name ?? '' })}
           </Animated.Text>
         </Animated.View>
         <Animated.View style={tailwind.style('pt-0.5')}>
@@ -159,8 +160,7 @@ export const QuoteReply = () => {
               </Text>
             )
           ) : (
-            <Text
-              style={tailwind.style('text-md font-inter-normal-20 tracking-[0.32px]')}>
+            <Text style={tailwind.style('text-md font-inter-normal-20 tracking-[0.32px]')}>
               {quoteMessage?.attachments?.[0]?.fileType}
             </Text>
           )}

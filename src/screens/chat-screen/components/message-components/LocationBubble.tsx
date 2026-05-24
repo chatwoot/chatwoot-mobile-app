@@ -8,6 +8,7 @@ import { Icon } from '@/components-next/common';
 import { MESSAGE_VARIANTS } from '@/constants';
 import { MapIcon } from '@/svg-icons';
 import { openURL } from '@/utils/urlUtils';
+import i18n from '@/i18n';
 
 type LocationBubbleProps = {
   latitude: number | 0;
@@ -32,7 +33,7 @@ export const LocationBubble: React.FC<LocationBubbleProps> = props => {
           variant === MESSAGE_VARIANTS.USER ? 'text-white' : '',
           variant === MESSAGE_VARIANTS.AGENT ? 'text-gray-950' : '',
         )}>
-        See on map
+        {i18n.t('CONVERSATION.LOCATION_SEE_ON_MAP')}
       </Text>
     </Animated.View>
   );

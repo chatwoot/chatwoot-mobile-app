@@ -4,7 +4,8 @@
     "ERROR": "Erro",
     "ERROR_TITLE": "Ocorreu um erro inesperado",
     "REPORT_MESSAGE": "Já relatamos isso para nossa equipe! Por favor, feche o aplicativo e comece novamente!",
-    "CLOSE": "Fechar"
+    "CLOSE": "Fechar",
+    "BACK": "Voltar"
   },
   "FOOTER": {
     "HOME": "Principal",
@@ -152,6 +153,11 @@
     "SNOOZE_UNTIL_TOMORROW": "Até amanhã",
     "SNOOZE_UNTIL_NEXT_WEEK": "Até a próxima semana",
     "SNOOZE": "Adiar conversa",
+    "REPLYING_TO": "Respondendo a %{name}",
+    "LOCATION_SEE_ON_MAP": "Ver no mapa",
+    "IS_TYPING": "%{name} está digitando",
+    "ARE_TYPING_PAIR": "%{first} e %{second} estão digitando",
+    "OTHERS_ARE_TYPING": "%{name} e mais %{count} estão digitando",
     "CHANGE_PRIORITY": "Alterar prioridade",
     "MESSAGES": "Mensagens",
     "UNDEFINED_VARIABLES_TITLE": "Variáveis não definidas",
@@ -227,6 +233,16 @@
       "EXPAND": "Expandir e-mail"
     },
     "ACTIONS": {
+      "MENU_TITLE": "Ações da conversa",
+      "SHARE_CONVERSATION": "Compartilhar conversa",
+      "SELECT_ACTION": "Selecionar ação",
+      "NONE": "Nenhum",
+      "STATUS": {
+        "OPEN": "Abrir",
+        "PENDING": "Pendente",
+        "SNOOZE": "Adiar",
+        "RESOLVE": "Resolver"
+      },
       "ASSIGNEE": {
         "EMPTY": "Não atribuídas",
         "ASSIGN": "Atribuir",
@@ -274,7 +290,12 @@
     "LOGOUT": "Sair",
     "SUBMIT": "Enviar",
     "SET_LANGUAGE": "Configurar Idioma",
-    "DEBUG_ACTIONS": "Ações de Depuração"
+    "DEBUG_ACTIONS": "Ações de Depuração",
+    "AVAILABILITY_STATUS": {
+      "ONLINE": "Online",
+      "BUSY": "Ocupado",
+      "OFFLINE": "Offline"
+    }
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notificações",
@@ -344,7 +365,10 @@
   },
   "CONTACT_DETAILS": {
     "TITLE": "Detalhes do contato",
+    "LOCATION": "Localização",
+    "PHONE": "Telefone",
     "EMAIL": "e-mail",
+    "COMPANY": "Empresa",
     "PHONE_NUMBER": "Número de Telefone",
     "CALL": "Chamada",
     "CONTACT_ATTRIBUTES": "Atributos do contato",
@@ -352,6 +376,7 @@
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participantes",
+    "PARTICIPANT_COUNT_TEXT": "%{count} participantes",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} pessoas estão participando.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} pessoa está participando.",
     "NO_PARTICIPANTS_TEXT": "Ninguém está participando!",

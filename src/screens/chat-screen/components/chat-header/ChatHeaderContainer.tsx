@@ -16,6 +16,7 @@ import { evaluateSLAStatus } from '@chatwoot/utils';
 import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
 import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
 import { selectUser } from '@/store/auth/authSelectors';
+import { selectLocale } from '@/store/settings/settingsSelectors';
 
 type ChatScreenHeaderProps = {
   name: string;
@@ -32,6 +33,7 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const currentUser = useAppSelector(selectUser);
   const dashboardApps = useAppSelector(selectAllDashboardApps);
+  const locale = useAppSelector(selectLocale);
 
   const appliedSla = conversation?.appliedSla;
 
@@ -142,14 +144,15 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
     return [
       pagerViewIndex === 0
         ? {
-            title: 'Conversation Actions',
+            title: i18n.t('CONVERSATION.ACTIONS.MENU_TITLE'),
             onSelect: handleNavigation,
           }
         : undefined,
       ...dashboardRoutes,
     ].filter((item): item is DashboardList => item !== undefined);
+    // `locale` is included so the i18n.t() title above re-evaluates on locale switch.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pagerViewIndex]);
+  }, [pagerViewIndex, locale]);
 
   const sLAStatusText = () => {
     const upperCaseType = slaStatus?.type?.toUpperCase(); // FRT, NRT, or RT

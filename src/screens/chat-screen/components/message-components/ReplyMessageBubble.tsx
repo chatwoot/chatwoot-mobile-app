@@ -10,6 +10,7 @@ import { isMarkdown } from '@/utils';
 import { Icon } from '@/components-next';
 import { MarkdownBubble } from './MarkdownBubble';
 import { MESSAGE_VARIANTS, TEXT_MAX_WIDTH } from '@/constants';
+import i18n from '@/i18n';
 
 type ReplyMessageBubbleProps = {
   replyMessage: Message;
@@ -70,7 +71,7 @@ export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
             style={tailwind.style(
               'text-cxs font-inter-420-20 leading-[14.95px] tracking-[0.32px] text-blackA-A11',
             )}>
-            Replying to {replyMessageItem?.sender?.name}
+            {i18n.t('CONVERSATION.REPLYING_TO', { name: replyMessageItem?.sender?.name ?? '' })}
           </Animated.Text>
           {hasAttachments ? (
             <Animated.View style={tailwind.style('py-[3px] flex flex-row items-center')}>

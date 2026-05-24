@@ -11,6 +11,7 @@ import { MESSAGE_STATUS, MESSAGE_TYPES, TEXT_MAX_WIDTH } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
 import { MapIcon } from '@/svg-icons';
 import { openURL } from '@/utils/urlUtils';
+import i18n from '@/i18n';
 
 type LocationCellProps = {
   shouldRenderAvatar: boolean;
@@ -95,7 +96,7 @@ export const LocationCell: React.FC<LocationCellProps> = props => {
                   isIncoming ? 'text-white' : '',
                   isOutgoing ? 'text-gray-950' : '',
                 )}>
-                See on map
+                {i18n.t('CONVERSATION.LOCATION_SEE_ON_MAP')}
               </Text>
             </Animated.View>
 

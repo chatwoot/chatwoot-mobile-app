@@ -3,6 +3,7 @@ export type AvailabilityStatus = 'online' | 'offline' | 'busy' | 'typing';
 export type AvailabilityStatusListItemType = {
   status: AvailabilityStatus;
   statusColor: string;
+  titleKey: string;
 };
 
 export type PresenceUpdateData = {

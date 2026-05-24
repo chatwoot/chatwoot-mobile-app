@@ -12,17 +12,16 @@ import { OpenIcon, ResolvedFilledIcon, PendingFilledIcon, SnoozedFilledIcon } fr
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { ConversationStatus } from '@/types';
+import i18n from '@/i18n';
 
 import { ConversationActionType } from '../ConversationActions';
-
-type ConversationStateType = 'open' | 'pending' | 'snooze' | 'resolve';
 
 type ConversationActionOptionsType = {
   backgroundActionColor: string;
   backgroundActionPressedColor: string;
   borderActionColor: string;
   actionIcon: React.JSX.Element;
-  actionText: ConversationStateType;
+  titleKey: string;
   actionStatus: ConversationStatus | 'open';
 };
 
@@ -35,7 +34,7 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-gray-200',
     borderActionColor: 'bg-gray-700',
     actionIcon: <OpenIcon stroke={tailwind.color('text-gray-700') as string} />,
-    actionText: 'open',
+    titleKey: 'CONVERSATION.ACTIONS.STATUS.OPEN',
     actionStatus: 'open',
   },
   {
@@ -43,7 +42,7 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-amber-200',
     borderActionColor: 'bg-amber-700',
     actionIcon: <PendingFilledIcon />,
-    actionText: 'pending',
+    titleKey: 'CONVERSATION.ACTIONS.STATUS.PENDING',
     actionStatus: 'pending',
   },
   {
@@ -51,7 +50,7 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-indigo-200',
     borderActionColor: 'bg-indigo-700',
     actionIcon: <SnoozedFilledIcon />,
-    actionText: 'snooze',
+    titleKey: 'CONVERSATION.ACTIONS.STATUS.SNOOZE',
     actionStatus: 'snoozed',
   },
   {
@@ -59,7 +58,7 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-green-200',
     borderActionColor: 'bg-green-700',
     actionIcon: <ResolvedFilledIcon />,
-    actionText: 'resolve',
+    titleKey: 'CONVERSATION.ACTIONS.STATUS.RESOLVE',
     actionStatus: 'resolved',
   },
 ];
@@ -91,13 +90,7 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
     } else {
       actionActive.value = withSpring(0);
     }
-  }, [
-    actionActive,
-    conversationAction.actionStatus,
-    conversationAction.actionText,
-    status,
-    isMuted,
-  ]);
+  }, [actionActive, conversationAction.actionStatus, conversationAction.titleKey, status, isMuted]);
 
   const actionBorderColor = tailwind.color(conversationAction.borderActionColor) as string;
 
@@ -134,9 +127,9 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
         <Icon icon={conversationAction.actionIcon} size={32} />
         <Animated.Text
           style={tailwind.style(
-            'text-md font-inter-normal-20 leading-[17px] tracking-[0.32px] text-center pt-5 capitalize text-gray-950 ',
+            'text-md font-inter-normal-20 leading-[17px] tracking-[0.32px] text-center pt-5 text-gray-950 ',
           )}>
-          {conversationAction.actionText}
+          {i18n.t(conversationAction.titleKey)}
         </Animated.Text>
       </Pressable>
     </Animated.View>

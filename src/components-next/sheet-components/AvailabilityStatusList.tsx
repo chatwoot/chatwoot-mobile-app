@@ -7,6 +7,7 @@ import { tailwind } from '@/theme';
 import { AvailabilityStatus, AvailabilityStatusListItemType } from '@/types';
 import { useHaptic } from '@/utils';
 import { Icon } from '@/components-next/common/icon';
+import i18n from '@/i18n';
 
 type StatusCellProps = {
   item: AvailabilityStatusListItemType;
@@ -42,9 +43,9 @@ const StatusCell = ({
           )}>
           <Text
             style={tailwind.style(
-              'text-base capitalize text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
+              'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
             )}>
-            {item.status}
+            {i18n.t(item.titleKey)}
           </Text>
           {isSelected && <Icon icon={<TickIcon />} size={20} />}
         </Animated.View>

@@ -1,6 +1,8 @@
 import type { RootState } from '@/store';
 
 import { createSelector } from '@reduxjs/toolkit';
+import i18n from '@/i18n';
+import { selectLocale } from '@/store/settings/settingsSelectors';
 
 export const selectAssignableAgentsState = (state: RootState) => state.assignableAgents;
 
@@ -17,16 +19,19 @@ export const selectAssignableAgents = createSelector(
 export const selectAssignableAgentsByInboxId = createSelector(
   [
     selectAssignableAgents,
+    // Forces re-memoization when the user switches locale so the synthetic
+    // "None" entry below is re-evaluated with the current i18n.t value.
+    selectLocale,
     (_state: RootState, inboxIds: number | number[]) =>
       Array.isArray(inboxIds) ? inboxIds : [inboxIds],
     (_state: RootState, _inboxIds: number | number[], searchTerm: string) => searchTerm,
   ],
-  (state, inboxIds, searchTerm) => {
+  (state, _locale, inboxIds, searchTerm) => {
     const agents = inboxIds.flatMap(id => state[id] || []);
     const agentsList = [
       {
         confirmed: true,
-        name: 'None',
+        name: i18n.t('CONVERSATION.ACTIONS.NONE'),
         id: 0,
         role: 'agent',
         accountId: 0,

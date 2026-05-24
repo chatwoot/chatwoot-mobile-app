@@ -54,6 +54,7 @@ import { SendMessagePayload } from '@/store/conversation/conversationTypes';
 import { TypingIndicator } from './TypingIndicator';
 import { getTypingUsersText } from '@/utils';
 import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
+import { selectLocale } from '@/store/settings/settingsSelectors';
 import { Agent, CannedResponse, Conversation } from '@/types';
 import AnalyticsHelper from '@/utils/analyticsUtils';
 import { showToast } from '@/utils/toastUtils';
@@ -161,7 +162,16 @@ const BottomSheetContent = () => {
   const [copilotFollowUpText, setCopilotFollowUpText] = useState('');
 
   const typingUsers = useAppSelector(selectTypingUsersByConversationId(conversationId));
-  const typingText = useMemo(() => getTypingUsersText({ users: typingUsers }), [typingUsers]);
+  // `locale` is an extra dependency for the typingText memo: getTypingUsersText
+  // reads i18n.locale via i18n.t, so the memoized string would stay in the
+  // previous language until `typingUsers` changes. ESLint can't infer that
+  // side effect, hence the disable.
+  const locale = useAppSelector(selectLocale);
+  const typingText = useMemo(
+    () => getTypingUsersText({ users: typingUsers }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [typingUsers, locale],
+  );
 
   const attachmentsLength = useMemo(() => attachedFiles.length, [attachedFiles.length]);
 

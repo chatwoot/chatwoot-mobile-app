@@ -19,6 +19,7 @@ import { selectContactById } from '@/store/contact/contactSelectors';
 import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { selectAllLabels } from '@/store/label/labelSelectors';
+import { selectLocale } from '@/store/settings/settingsSelectors';
 
 import { isContactTyping, getLastMessage, getTypingUsersText } from '@/utils';
 import { Icon, Swipeable } from '@/components-next/common';
@@ -96,11 +97,20 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
   const typingUsers = useAppSelector(selectTypingUsersByConversationId(id));
   const selected = useAppSelector(selectSelected);
   const currentState = useAppSelector(selectCurrentState);
+  // `locale` is an extra dependency for the typingText memo below: the
+  // function reads `i18n.locale` via i18n.t, so the memoized value would
+  // otherwise stay in the previous language until `typingUsers` changes.
+  // ESLint can't infer that side effect, hence the disable.
+  const locale = useAppSelector(selectLocale);
 
   const { availabilityStatus, name: contactName, thumbnail: contactThumbnail } = contact || {};
   const isSelected = useMemo(() => id in selected, [selected, id]);
   const isTyping = useMemo(() => isContactTyping(typingUsers, contactId), [typingUsers, contactId]);
-  const typingText = useMemo(() => getTypingUsersText({ users: typingUsers }), [typingUsers]);
+  const typingText = useMemo(
+    () => getTypingUsersText({ users: typingUsers }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [typingUsers, locale],
+  );
 
   const lastMessage = getLastMessage(conversationItem);
 

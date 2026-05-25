@@ -8,7 +8,9 @@ export const selectInstallationUrl = createSelector(
   settings => settings.installationUrl,
 );
 
-export const selectLocale = createSelector(selectSettings, settings => settings.localeValue);
+export const selectLocale = createSelector(selectSettings, settings =>
+  settings.localeValue === 'zh' ? 'zh_CN' : settings.localeValue,
+);
 
 export const selectIsLocaleSet = createSelector(
   selectSettings,

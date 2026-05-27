@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import { Alert, Linking, Platform, Pressable, Text } from 'react-native';
 import {
   pick,
@@ -22,6 +22,7 @@ import { MAXIMUM_FILE_UPLOAD_SIZE } from '@/constants';
 import i18n from '@/i18n';
 import { showToast } from '@/utils/toastUtils';
 import { findFileSize } from '@/utils/fileUtils';
+import { compressImageIfNeeded } from '@/utils/imageCompressionUtils';
 
 export const handleOpenPhotosLibrary = async dispatch => {
   const pickedAssets = await launchImageLibrary({
@@ -173,9 +174,13 @@ const ADD_MENU_OPTIONS = [
 ];
 
 export const validateFileAndSetAttachments = async (dispatch, attachment) => {
-  const { fileSize } = attachment;
+  // Compress images before the size check.
+  // This fixes the bug where iPhone screenshots / HEIC photos
+  // hit the upload limit even though they could fit after compression.
+  const processed = await compressImageIfNeeded(attachment);
+  const { fileSize } = processed;
   if (findFileSize(fileSize) <= MAXIMUM_FILE_UPLOAD_SIZE) {
-    dispatch(updateAttachments([attachment]));
+    dispatch(updateAttachments([processed]));
   } else {
     showToast({ message: i18n.t('CONVERSATION.FILE_SIZE_LIMIT') });
   }

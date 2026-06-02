@@ -483,6 +483,13 @@
     "EXECUTION_ERROR": "Macro execution failed",
     "NO_MACROS": "No macros found"
   },
+  "CONTENT_TEMPLATE": {
+    "TITLE": "Templates",
+    "SELECT_TEMPLATE": "Select WhatsApp Template",
+    "VARIABLES": "Variables",
+    "SEND": "Send",
+    "NO_TEMPLATES": "No templates available"
+  },
   "SEARCH": {
     "PLACEHOLDER": "Type 2 or more characters to search",
     "HINT": "Search by conversation id, email, phone number, messages for better search results.",

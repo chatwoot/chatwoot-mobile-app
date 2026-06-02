@@ -8,6 +8,7 @@ import {
   useBottomSheetSpringConfigs,
 } from '@gorhom/bottom-sheet';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 import { EMAIL_REGEX } from '@/constants';
 import { EyeIcon, EyeSlash, LockIcon } from '@/svg-icons';
@@ -145,9 +146,11 @@ const LoginScreen = () => {
         barStyle={'dark-content'}
       />
       <View style={tailwind.style('flex-1 bg-white')}>
-        <Animated.ScrollView
+        <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={tailwind.style('px-6 pt-24')}>
+          keyboardShouldPersistTaps="handled"
+          bottomOffset={24}
+          contentContainerStyle={tailwind.style('px-6 pt-24 pb-8')}>
           <Image
             // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
             source={require('@/assets/images/logo.png')}
@@ -296,7 +299,7 @@ const LoginScreen = () => {
               {i18n.t('LOGIN.CHANGE_LANGUAGE')}
             </Animated.Text>
           </Pressable>
-        </Animated.ScrollView>
+        </KeyboardAwareScrollView>
       </View>
       <BottomSheetModal
         ref={languagesModalSheetRef}

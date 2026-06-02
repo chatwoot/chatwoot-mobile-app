@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Alert, Linking, Platform, Pressable, Text } from 'react-native';
 import {
   pick,
@@ -11,17 +11,25 @@ import { Asset, launchCamera, launchImageLibrary } from 'react-native-image-pick
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useAppDispatch } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { updateAttachments } from '@/store/conversation/sendMessageSlice';
-import { useRefsContext } from '@/context';
-import { AttachFileIcon, CameraIcon, MacrosIcon, PhotosIcon } from '@/svg-icons';
+import { useChatWindowContext, useRefsContext } from '@/context';
+import {
+  AttachFileIcon,
+  CameraIcon,
+  CannedResponseIcon,
+  MacrosIcon,
+  PhotosIcon,
+} from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { useHaptic, useScaleAnimation } from '@/utils';
+import { isAWhatsAppChannel, useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '@/components-next/common';
 import { MAXIMUM_FILE_UPLOAD_SIZE } from '@/constants';
 import i18n from '@/i18n';
 import { showToast } from '@/utils/toastUtils';
 import { findFileSize } from '@/utils/fileUtils';
+import { selectConversationById } from '@/store/conversation/conversationSelectors';
+import { selectInboxById } from '@/store/inbox/inboxSelectors';
 
 export const handleOpenPhotosLibrary = async dispatch => {
   const pickedAssets = await launchImageLibrary({
@@ -172,6 +180,12 @@ const ADD_MENU_OPTIONS = [
   },
 ];
 
+const TEMPLATES_MENU_OPTION = {
+  icon: <CannedResponseIcon />,
+  title: 'Templates',
+  handlePress: () => {},
+};
+
 export const validateFileAndSetAttachments = async (dispatch, attachment) => {
   const { fileSize } = attachment;
   if (findFileSize(fileSize) <= MAXIMUM_FILE_UPLOAD_SIZE) {
@@ -189,7 +203,7 @@ type MenuOptionProps = {
 const MenuOption = (props: MenuOptionProps) => {
   const { index, menuOption } = props;
   const dispatch = useAppDispatch();
-  const { macrosListSheetRef } = useRefsContext();
+  const { macrosListSheetRef, contentTemplatesSheetRef } = useRefsContext();
 
   const { animatedStyle, handlers } = useScaleAnimation();
   const hapticSelection = useHaptic();
@@ -199,6 +213,9 @@ const MenuOption = (props: MenuOptionProps) => {
     menuOption?.handlePress(dispatch);
     if (menuOption.title === 'Macros') {
       macrosListSheetRef.current?.present();
+    }
+    if (menuOption.title === 'Templates') {
+      contentTemplatesSheetRef.current?.present();
     }
   };
 
@@ -224,15 +241,27 @@ const MenuOption = (props: MenuOptionProps) => {
 export const CommandOptionsMenu = () => {
   const { bottom } = useSafeAreaInsets();
   const isAndroid = Platform.OS === 'android';
-  const containerHeight = isAndroid
-    ? 210 + (bottom === 0 ? 16 : bottom)
-    : 175 + (bottom === 0 ? 16 : bottom);
+  const { conversationId } = useChatWindowContext();
+  const conversation = useAppSelector(state => selectConversationById(state, conversationId));
+  const inboxId = conversation?.inboxId;
+  const inbox = useAppSelector(state => (inboxId ? selectInboxById(state, inboxId) : undefined));
+
+  const menuOptions = useMemo(() => {
+    if (inbox && isAWhatsAppChannel(inbox)) {
+      return [...ADD_MENU_OPTIONS, TEMPLATES_MENU_OPTION];
+    }
+    return ADD_MENU_OPTIONS;
+  }, [inbox]);
+
+  const perItemHeight = isAndroid ? 53 : 44;
+  const containerHeight = perItemHeight * menuOptions.length + (bottom === 0 ? 16 : bottom);
+
   return (
     <Animated.View
       entering={SlideInDown.springify().damping(38).stiffness(240)}
       exiting={SlideOutDown.springify().damping(38).stiffness(240)}
       style={tailwind.style('mx-1 pt-2 items-start', `h-[${containerHeight}px]`)}>
-      {ADD_MENU_OPTIONS.map((menuOption, index) => {
+      {menuOptions.map((menuOption, index) => {
         return <MenuOption key={menuOption.title} {...{ menuOption, index }} />;
       })}
     </Animated.View>

@@ -13,6 +13,7 @@ import {
   useBottomSheetModal,
 } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
+import { useRoute } from '@react-navigation/native';
 
 import {
   ConversationItemContainer,
@@ -63,6 +64,7 @@ import i18n from '@/i18n';
 import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
 import { getCurrentRouteName } from '@/utils/navigationUtils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getInboxFilterIds } from '@/utils/conversationUtils';
 
 // The screen list thats need to be checked for refreshing the conversations list
 const REFRESH_SCREEN_LIST = [SCREENS.CONVERSATION, SCREENS.INBOX, SCREENS.SETTINGS];
@@ -194,12 +196,18 @@ const ConversationList = () => {
 
   const fetchConversations = useCallback(
     async (filters: FilterState, page: number = 1) => {
+      const selectedInboxIds = getInboxFilterIds(filters.inbox_id);
       const conversationFilters = {
         status: filters.status,
         assigneeType: filters.assignee_type,
         page: page,
         sortBy: filters.sort_by,
-        inboxId: parseInt(filters.inbox_id),
+        inboxId:
+          selectedInboxIds.length > 1
+            ? selectedInboxIds
+            : selectedInboxIds.length === 1
+              ? selectedInboxIds[0]
+              : 0,
       } as ConversationPayload;
 
       dispatch(conversationActions.fetchConversations(conversationFilters));
@@ -276,6 +284,8 @@ const ConversationList = () => {
 const ConversationScreen = () => {
   const currentBottomSheet = useAppSelector(selectBottomSheetState);
   const dispatch = useAppDispatch();
+  const route = useRoute();
+  const showFilters = (route.params as { showFilters?: boolean } | undefined)?.showFilters;
 
   const animationConfigs = useBottomSheetSpringConfigs({
     mass: 1.2,
@@ -317,7 +327,7 @@ const ConversationScreen = () => {
         barStyle={'dark-content'}
       />
       <ConversationListStateProvider>
-        <ConversationHeader />
+        <ConversationHeader showFilters={showFilters} />
         <ConversationList />
         <BottomSheetModal
           ref={filtersModalSheetRef}

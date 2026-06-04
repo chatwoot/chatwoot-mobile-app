@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { Alert, BackHandler } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -8,13 +8,7 @@ import { AppNavigator } from '@/navigation';
 import i18n from '@/i18n';
 
 const Chatwoot = () => {
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackButtonClick);
-    };
-  }, []);
-  const handleBackButtonClick = () => {
+  const handleBackButtonClick = useCallback(() => {
     Alert.alert(
       i18n.t('EXIT.TITLE'),
       i18n.t('EXIT.SUBTITLE'),
@@ -29,7 +23,14 @@ const Chatwoot = () => {
       { cancelable: false },
     );
     return true;
-  };
+  }, []);
+
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      subscription.remove();
+    };
+  }, [handleBackButtonClick]);
 
   return (
     <Provider store={store}>

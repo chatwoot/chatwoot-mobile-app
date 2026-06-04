@@ -42,7 +42,7 @@ import { UserAvatar } from './components/UserAvatar';
 
 import { LANGUAGES, TAB_BAR_HEIGHT } from '@/constants';
 import { useRefsContext } from '@/context';
-import { ChatwootIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
+import { ChatwootIcon, NotificationIcon, PhoneIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
 import { GenericListType } from '@/types';
 
 import { useHaptic } from '@/utils';
@@ -232,6 +232,15 @@ const SettingsScreen = () => {
       disabled: !hasConversationPermission,
       onPressListItem: () => notificationPreferencesSheetRef.current?.present(),
       // onPressListItem: openSystemSettings,
+    },
+    {
+      hasChevron: true,
+      title: i18n.t('SETTINGS.VOICE_ALERTS'),
+      icon: <PhoneIcon />,
+      subtitle: '',
+      subtitleType: 'light',
+      disabled: !hasConversationPermission,
+      onPressListItem: () => navigation.dispatch(StackActions.push('VoiceAlertSettingsScreen')),
     },
     {
       hasChevron: true,

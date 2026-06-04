@@ -70,12 +70,38 @@ const MessageContent = ({
 }) => {
   const { contentAttributes } = message || {};
   const { email: { subject = '' } = {} } = contentAttributes || {};
+  const callData = {
+    ...(contentAttributes?.data || {}),
+    ...(message.call || {}),
+  };
+  const callStatus = String(callData?.status || callData?.endReason || callData?.end_reason || '')
+    .toLowerCase()
+    .replace(/\s+/g, '_');
+  const isVoiceCall = message.contentType === 'voice_call';
+  const isMissedCall = ['missed', 'no_answer', 'not_answered', 'busy', 'failed'].includes(
+    callStatus,
+  );
 
   const lastMessageContent = getPlainText(subject || message?.content);
 
   const lastMessageFileType = message?.attachments?.[0]?.fileType;
 
   const isMessageSticker = message?.contentType === ('sticker' as Message['contentType']);
+
+  if (isVoiceCall) {
+    return (
+      <NativeView style={tailwind.style('flex-row gap-1 items-center')}>
+        <Text
+          numberOfLines={1}
+          style={tailwind.style(
+            'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[21px]',
+            isMissedCall ? 'text-ruby-900' : 'text-gray-900',
+          )}>
+          {isMissedCall ? i18n.t('VOICE_CALL.MISSED_CALL') : i18n.t('VOICE_CALL.CALL_ENDED')}
+        </Text>
+      </NativeView>
+    );
+  }
 
   if (message.content && isMessageSticker) {
     return (

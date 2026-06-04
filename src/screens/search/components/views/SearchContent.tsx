@@ -95,9 +95,7 @@ export function SearchContent({
     0,
   );
 
-  const allSearchesFailed = SEARCH_SECTIONS.every(
-    section => sectionData[section.id]?.hasError,
-  );
+  const allSearchesFailed = SEARCH_SECTIONS.every(section => sectionData[section.id]?.hasError);
   const hasResults = totalResults > 0;
 
   const allSearchesCancelled = SEARCH_SECTIONS.every(
@@ -159,7 +157,10 @@ export function SearchContent({
     if (section.isCancelled && items.length === 0) {
       return (
         <SearchEmptyState
-          sectionLabel={i18n.t(SEARCH_SECTIONS.find(s => s.id === activeSection.id)?.labelKey || '') || 'results'}
+          sectionLabel={
+            i18n.t(SEARCH_SECTIONS.find(s => s.id === activeSection.id)?.labelKey || '') ||
+            'results'
+          }
           searchQuery={searchQuery}
           errorMessage={i18n.t('SEARCH.ERROR_CANCELLED')}
           onRetry={() => onRetry(activeSection.id)}
@@ -170,7 +171,10 @@ export function SearchContent({
     if (section.hasError && items.length === 0) {
       return (
         <SearchEmptyState
-          sectionLabel={i18n.t(SEARCH_SECTIONS.find(s => s.id === activeSection.id)?.labelKey || '') || 'results'}
+          sectionLabel={
+            i18n.t(SEARCH_SECTIONS.find(s => s.id === activeSection.id)?.labelKey || '') ||
+            'results'
+          }
           searchQuery={searchQuery}
           errorMessage={i18n.t('SEARCH.ERROR_GENERIC')}
           onRetry={() => onRetry(activeSection.id)}

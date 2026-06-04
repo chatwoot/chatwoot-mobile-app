@@ -14,7 +14,7 @@ interface ContactLabelActionsProps {
 export const ContactLabelActions = (props: ContactLabelActionsProps) => {
   const { labels, contactId } = props;
   const dispatch = useAppDispatch();
-  const contactLabelSheetRef = useRef<BottomSheetModal>(null);
+  const contactLabelSheetRef = useRef<BottomSheetModal>(null!);
 
   const handleLabelsUpdate = (updatedLabels: string[]) => {
     dispatch(
@@ -33,4 +33,3 @@ export const ContactLabelActions = (props: ContactLabelActionsProps) => {
     />
   );
 };
-

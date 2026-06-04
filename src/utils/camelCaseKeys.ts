@@ -15,6 +15,13 @@ import {
   CannedResponse,
   Macro,
 } from '@/types';
+import type {
+  CompanyAPIResponse,
+  CompanyContactsAPIResponse,
+  CompanyListAPIResponse,
+  CompanyNoteAPIResponse,
+  CompanyNotesAPIResponse,
+} from '@/types/Company';
 import type { Inbox } from '@/types/Inbox';
 import type { NotificationMeta, Notification } from '@/types/Notification';
 import { NotificationCreatedResponse } from '@/store/notification/notificationTypes';
@@ -26,6 +33,26 @@ export const transformConversation = (conversation: any): Conversation => {
 
 export const transformContact = (contact: any): Contact => {
   return camelcaseKeys(contact, { deep: true }) as unknown as Contact;
+};
+
+export const transformCompanyAPIResponse = (data: any): CompanyAPIResponse => {
+  return camelcaseKeys(data, { deep: true }) as unknown as CompanyAPIResponse;
+};
+
+export const transformCompanyListAPIResponse = (data: any): CompanyListAPIResponse => {
+  return camelcaseKeys(data, { deep: true }) as unknown as CompanyListAPIResponse;
+};
+
+export const transformCompanyContactsAPIResponse = (data: any): CompanyContactsAPIResponse => {
+  return camelcaseKeys(data, { deep: true }) as unknown as CompanyContactsAPIResponse;
+};
+
+export const transformCompanyNotesAPIResponse = (data: any): CompanyNotesAPIResponse => {
+  return camelcaseKeys(data, { deep: true }) as unknown as CompanyNotesAPIResponse;
+};
+
+export const transformCompanyNoteAPIResponse = (data: any): CompanyNoteAPIResponse => {
+  return camelcaseKeys(data, { deep: true }) as unknown as CompanyNoteAPIResponse;
 };
 
 export const transformInbox = (inbox: any): Inbox => {

@@ -4,10 +4,13 @@ import { type UnixTimestamp } from './common/UnixTimestamp';
 export interface Contact {
   additionalAttributes: {
     location?: string;
+    companyId?: number;
     companyName?: string;
+    company?: { id?: number; name?: string };
     city?: string;
     country?: string;
     description?: string;
+    role?: string;
     createdAtIp?: string;
     socialProfiles?: Record<string, string>;
     twitterScreenName?: string;
@@ -24,4 +27,7 @@ export interface Contact {
   phoneNumber: string | null;
   thumbnail: string | null;
   type: string;
+  company?: { id?: number; name?: string };
+  companyId?: number;
+  companyName?: string;
 }

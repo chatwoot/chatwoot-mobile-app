@@ -2,7 +2,15 @@ import React from 'react';
 import { Pressable, Text, ViewStyle } from 'react-native';
 import Animated, { AnimatedStyle } from 'react-native-reanimated';
 import { Icon } from '@/components-next/common';
-import { CheckedIcon, CloseIcon, FilterIcon, UncheckedIcon, SearchIcon } from '@/svg-icons';
+import {
+  CheckedIcon,
+  CloseIcon,
+  DoubleCheckIcon,
+  FilterIcon,
+  InboxFilterIcon,
+  UncheckedIcon,
+  SearchIcon,
+} from '@/svg-icons';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { useScaleAnimation } from '@/utils';
@@ -14,6 +22,8 @@ type ConversationHeaderPresenterProps = {
   currentState: HeaderState;
   isSelectedAll: boolean;
   filtersAppliedCount: number;
+  isChannelView: boolean;
+  title?: string;
   onLeftIconPress: () => void;
   onRightIconPress: () => void;
   onClearFilter: () => void;
@@ -22,6 +32,7 @@ type ConversationHeaderPresenterProps = {
 type LeftSectionProps = {
   currentState: HeaderState;
   isSelectedAll: boolean;
+  isChannelView: boolean;
   onLeftIconPress: () => void;
 };
 
@@ -35,30 +46,46 @@ type FilterSectionProps = {
 type RightSectionProps = {
   currentState: HeaderState;
   filtersAppliedCount: number;
+  isChannelView: boolean;
   onRightIconPress: () => void;
 };
 
-const HeaderTitle = () => (
-  <Animated.View style={tailwind.style('flex-1')}>
+const HeaderTitle = ({ title }: { title: string }) => (
+  <Animated.View style={tailwind.style('flex-1 min-w-0 px-3')}>
     <Text
+      numberOfLines={1}
       style={tailwind.style(
-        'text-[17px] font-inter-medium-24 tracking-[0.32px] leading-[17px] text-center text-gray-950',
+        'text-[17px] font-inter-medium-24 tracking-[0.32px] leading-[21px] text-center text-gray-950',
       )}>
-      {i18n.t('CONVERSATION.HEADER.TITLE')}
+      {title}
     </Text>
   </Animated.View>
 );
 
-const LeftSection = ({ currentState, isSelectedAll, onLeftIconPress }: LeftSectionProps) => {
+const LeftSection = ({
+  currentState,
+  isSelectedAll,
+  isChannelView,
+  onLeftIconPress,
+}: LeftSectionProps) => {
   const { entering, exiting } = useHeaderAnimation();
 
   if (currentState === 'Filter' || currentState === 'Search') return null;
   if (currentState !== 'Select') {
     return (
-      <Animated.View style={tailwind.style('flex-1 items-start')}>
+      <Animated.View style={tailwind.style('w-12 items-start')}>
         <Pressable onPress={onLeftIconPress} hitSlop={16}>
           <Animated.View exiting={exiting} entering={entering}>
-            <Icon size={24} icon={<SearchIcon stroke={tailwind.color('text-gray-800')} />} />
+            <Icon
+              size={24}
+              icon={
+                isChannelView ? (
+                  <DoubleCheckIcon stroke={tailwind.color('text-gray-800')} />
+                ) : (
+                  <SearchIcon stroke={tailwind.color('text-gray-800')} />
+                )
+              }
+            />
           </Animated.View>
         </Pressable>
       </Animated.View>
@@ -66,7 +93,7 @@ const LeftSection = ({ currentState, isSelectedAll, onLeftIconPress }: LeftSecti
   }
 
   return (
-    <Animated.View style={tailwind.style('flex-1 items-start')}>
+    <Animated.View style={tailwind.style('w-12 items-start')}>
       <Pressable onPress={onLeftIconPress} hitSlop={16}>
         <Animated.View exiting={exiting} entering={entering}>
           <Icon
@@ -115,12 +142,13 @@ const FilterSection = ({
 const RightSection = ({
   currentState,
   filtersAppliedCount,
+  isChannelView,
   onRightIconPress,
 }: RightSectionProps) => {
   const { entering, exiting } = useHeaderAnimation();
 
   return (
-    <Animated.View style={tailwind.style('flex-1 items-end')}>
+    <Animated.View style={tailwind.style('w-12 items-end')}>
       <Pressable onPress={onRightIconPress} hitSlop={16}>
         {currentState === 'Filter' || currentState === 'Select' ? (
           <Animated.View exiting={exiting} entering={entering}>
@@ -135,7 +163,7 @@ const RightSection = ({
                 )}
               />
             )}
-            <Icon size={24} icon={<FilterIcon />} />
+            <Icon size={24} icon={isChannelView ? <InboxFilterIcon /> : <FilterIcon />} />
           </Animated.View>
         )}
       </Pressable>
@@ -147,6 +175,8 @@ export const ConversationHeaderPresenter = ({
   currentState,
   isSelectedAll,
   filtersAppliedCount,
+  isChannelView,
+  title,
   onLeftIconPress,
   onRightIconPress,
   onClearFilter,
@@ -159,6 +189,7 @@ export const ConversationHeaderPresenter = ({
       <LeftSection
         currentState={currentState}
         isSelectedAll={isSelectedAll}
+        isChannelView={isChannelView}
         onLeftIconPress={onLeftIconPress}
       />
       {currentState === 'Filter' && (
@@ -169,10 +200,11 @@ export const ConversationHeaderPresenter = ({
           animatedStyle={animatedStyle}
         />
       )}
-      <HeaderTitle />
+      <HeaderTitle title={title || i18n.t('CONVERSATION.HEADER.TITLE')} />
       <RightSection
         currentState={currentState}
         filtersAppliedCount={filtersAppliedCount}
+        isChannelView={isChannelView}
         onRightIconPress={onRightIconPress}
       />
     </Animated.View>

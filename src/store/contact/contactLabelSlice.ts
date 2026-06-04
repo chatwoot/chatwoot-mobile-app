@@ -6,6 +6,8 @@ interface ContactLabelsState {
   records: { [key: number]: string[] };
 }
 
+const EMPTY_CONTACT_LABELS: string[] = [];
+
 const initialState: ContactLabelsState = {
   records: {},
 };
@@ -29,6 +31,6 @@ const contactLabelsSlice = createSlice({
 export const selectContactLabels = (state: RootState) => state.contactLabels.records;
 
 export const selectContactLabelsByContactId = (contactId: number) => (state: RootState) =>
-  state.contactLabels.records[contactId] || [];
+  state.contactLabels.records[contactId] || EMPTY_CONTACT_LABELS;
 
 export default contactLabelsSlice.reducer;

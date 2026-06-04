@@ -3,6 +3,7 @@ import { ConversationService } from './conversationService';
 import type {
   ConversationResponse,
   ConversationPayload,
+  CreateConversationPayload,
   ApiErrorResponse,
   MessagesPayload,
   MessagesResponse,
@@ -54,6 +55,20 @@ export const conversationActions = {
     async (conversationId, { rejectWithValue }) => {
       try {
         return await ConversationService.fetchConversation(conversationId);
+      } catch (error) {
+        const { response } = error as AxiosError<ApiErrorResponse>;
+        if (!response) {
+          throw error;
+        }
+        return rejectWithValue(response.data);
+      }
+    },
+  ),
+  createConversation: createAsyncThunk<ConversationResponse, CreateConversationPayload>(
+    'conversations/createConversation',
+    async (payload, { rejectWithValue }) => {
+      try {
+        return await ConversationService.createConversation(payload);
       } catch (error) {
         const { response } = error as AxiosError<ApiErrorResponse>;
         if (!response) {
@@ -257,7 +272,11 @@ export const conversationActions = {
     },
   ),
   translateMessage: createAsyncThunk<
-    TranslateMessageAPIResponse & { conversationId: number; messageId: number; targetLanguage: string },
+    TranslateMessageAPIResponse & {
+      conversationId: number;
+      messageId: number;
+      targetLanguage: string;
+    },
     TranslateMessagePayload
   >('conversations/translateMessage', async (payload, { rejectWithValue }) => {
     try {

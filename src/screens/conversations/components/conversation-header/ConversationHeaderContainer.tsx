@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
+import { Pressable, View } from 'react-native';
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
@@ -6,7 +7,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
-import { useConversationListStateContext } from '@/context';
+import { useConversationListStateContext, useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { getFilteredConversations } from '@/store/conversation/conversationSelectors';
@@ -22,13 +23,43 @@ import {
   selectAll,
   selectSelectedConversations,
 } from '@/store/conversation/conversationSelectedSlice';
-import { selectCurrentState, setCurrentState } from '@/store/conversation/conversationHeaderSlice';
+import {
+  selectCurrentState,
+  setBottomSheetState,
+  setCurrentState,
+} from '@/store/conversation/conversationHeaderSlice';
+import { notificationActions } from '@/store/notification/notificationAction';
 import { ConversationFilterBar } from '../conversation-filters';
 import { ConversationHeaderPresenter } from './ConversationHeaderPresenter';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/native';
+import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
+import i18n from '@/i18n';
+import { getInboxFilterIds } from '@/utils/conversationUtils';
+import { Icon } from '@/components-next/common';
+import { SearchIcon } from '@/svg-icons';
+
+const ChannelSearchButton = ({ onPress }: { onPress: () => void }) => (
+  <View style={tailwind.style('px-4 pb-1')}>
+    <Pressable
+      accessibilityRole="search"
+      onPress={onPress}
+      style={({ pressed }) =>
+        tailwind.style(
+          'h-10 flex-row items-center rounded-[13px] border border-gray-100 bg-gray-50 px-3',
+          pressed ? 'bg-gray-100' : '',
+        )
+      }>
+      <Icon icon={<SearchIcon />} size={20} />
+      <Animated.Text
+        style={tailwind.style('ml-2 text-base font-inter-normal-20 leading-[22px] text-gray-700')}>
+        {i18n.t('CHANNELS.SEARCH_CONVERSATIONS_PLACEHOLDER')}
+      </Animated.Text>
+    </Pressable>
+  </View>
+);
 
 const getFiltersAppliedCount = (defaultState: FilterState, updatedState: FilterState): number => {
   let count = 0;
@@ -41,13 +72,19 @@ const getFiltersAppliedCount = (defaultState: FilterState, updatedState: FilterS
   return count;
 };
 
-export const ConversationHeader = () => {
+type ConversationHeaderProps = {
+  showFilters?: boolean;
+};
+
+export const ConversationHeader = ({ showFilters = false }: ConversationHeaderProps) => {
   const currentState = useAppSelector(selectCurrentState);
 
   const filters = useAppSelector(selectFilters);
+  const inboxes = useAppSelector(selectAllInboxes);
   const dispatch = useAppDispatch();
   const userId = useAppSelector(selectUserId);
   const navigation = useNavigation();
+  const { filtersModalSheetRef } = useRefsContext();
 
   const { openedRowIndex } = useConversationListStateContext();
 
@@ -94,6 +131,8 @@ export const ConversationHeader = () => {
       } else {
         dispatch(selectAll(allConversations));
       }
+    } else if (showFilters) {
+      dispatch(notificationActions.markAllAsRead());
     } else {
       // Navigate to search screen
       const pushToSearchScreen = StackActions.push('SearchScreen');
@@ -107,6 +146,9 @@ export const ConversationHeader = () => {
     } else if (currentState === 'Select') {
       dispatch(clearSelection());
       dispatch(setCurrentState('none'));
+    } else if (showFilters) {
+      filtersModalSheetRef.current?.present();
+      dispatch(setBottomSheetState('sort_by'));
     } else {
       dispatch(setCurrentState('Filter'));
     }
@@ -117,9 +159,23 @@ export const ConversationHeader = () => {
     [filters],
   );
 
+  const headerTitle = useMemo(() => {
+    const selectedInboxIds = getInboxFilterIds(filters.inbox_id);
+    if (selectedInboxIds.length > 1) {
+      return i18n.t('CHANNELS.SELECTED_COUNT', { count: selectedInboxIds.length });
+    }
+
+    const selectedInbox = inboxes.find(inbox => inbox.id === selectedInboxIds[0]);
+    return selectedInbox?.name || i18n.t('CONVERSATION.HEADER.TITLE');
+  }, [filters.inbox_id, inboxes]);
+
   const handleClearFilter = () => {
     hapticSuccess?.();
     dispatch(resetFilters());
+  };
+
+  const openSearchScreen = () => {
+    navigation.dispatch(StackActions.push('SearchScreen'));
   };
 
   return (
@@ -128,11 +184,16 @@ export const ConversationHeader = () => {
         currentState={currentState}
         isSelectedAll={isSelectedAll}
         filtersAppliedCount={filtersAppliedCount}
+        isChannelView={showFilters}
+        title={headerTitle}
         onLeftIconPress={handleLeftIconPress}
         onRightIconPress={handleRightIconPress}
         onClearFilter={handleClearFilter}
       />
-      {currentState === 'Filter' ? <ConversationFilterBar /> : null}
+      {showFilters ? <ChannelSearchButton onPress={openSearchScreen} /> : null}
+      {currentState === 'Filter' || showFilters ? (
+        <ConversationFilterBar prioritizeInbox={showFilters} />
+      ) : null}
     </Animated.View>
   );
 };

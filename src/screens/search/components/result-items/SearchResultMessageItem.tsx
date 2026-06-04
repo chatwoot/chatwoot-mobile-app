@@ -80,7 +80,7 @@ export const SearchResultMessageItem = ({
                           'h-4 w-4 rounded-full bg-gray-100 items-center justify-center',
                         )}>
                         <Icon
-                          icon={getChannelIcon(channelType, medium, additionalType)}
+                          icon={getChannelIcon(channelType, medium, additionalType, inboxName)}
                           size={10}
                         />
                       </Animated.View>

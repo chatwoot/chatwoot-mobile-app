@@ -19,6 +19,7 @@ import {
   // FileBubble,
   EmailBubble,
   UnsupportedBubble,
+  VoiceCallCard,
 } from '../message-components';
 import { showToast } from '@/utils/toastUtils';
 import {
@@ -33,7 +34,7 @@ import {
 } from '@/constants';
 import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { CopyIcon, Trash, ReplyIcon, TranslateIcon} from '@/svg-icons';
+import { CopyIcon, Trash, ReplyIcon, TranslateIcon } from '@/svg-icons';
 import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 import { inboxSupportsReplyTo } from '@/utils';
 import { MenuOption, MessageMenu } from '../message-menu';
@@ -178,10 +179,7 @@ const MessageWrapper = ({
             {/* Highlight overlay for target message */}
             {isTargetMessage && (
               <Animated.View
-                style={[
-                  tailwind.style('absolute inset-0 bg-white rounded-2xl'),
-                  highlightStyle,
-                ]}
+                style={[tailwind.style('absolute inset-0 bg-white rounded-2xl'), highlightStyle]}
                 pointerEvents="none"
               />
             )}
@@ -219,7 +217,13 @@ const MessageWrapper = ({
 export const MessageComponent = (props: MessageComponentProps) => {
   const dispatch = useAppDispatch();
   const { conversationId } = useChatWindowContext();
-  const { item, currentUserId, isEmailInbox, isTargetMessage = false, isListPositioned = true } = props;
+  const {
+    item,
+    currentUserId,
+    isEmailInbox,
+    isTargetMessage = false,
+    isListPositioned = true,
+  } = props;
   const {
     messageType,
     contentType,
@@ -281,8 +285,8 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
   const handleQuoteReply = (message: Message) => {
     dispatch(setQuoteMessage(message));
-  }
-  
+  };
+
   const handleTranslateMessage = async (messageId: number) => {
     hapticSelection?.();
     const targetLanguage = i18n.locale?.split('_')[0] || 'en';
@@ -297,7 +301,13 @@ export const MessageComponent = (props: MessageComponentProps) => {
   };
 
   const getMenuOptions = (message: Message): MenuOption[] => {
-    const { messageType, content, attachments, private: isPrivate, status: messageStatus } = message;
+    const {
+      messageType,
+      content,
+      attachments,
+      private: isPrivate,
+      status: messageStatus,
+    } = message;
     const hasText = !!content;
     const hasAttachments = !!(attachments && attachments.length > 0);
     const isDeleted = message.contentAttributes?.deleted;
@@ -442,7 +452,9 @@ export const MessageComponent = (props: MessageComponentProps) => {
     const isUnsupported = item.contentAttributes?.isUnsupported;
     let messageContent;
 
-    if (isUnsupported) {
+    if (contentType === 'voice_call') {
+      messageContent = <VoiceCallCard message={item} />;
+    } else if (isUnsupported) {
       messageContent = <UnsupportedBubble />;
     } else if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
       messageContent = <EmailBubble item={item} variant={variant()} />;

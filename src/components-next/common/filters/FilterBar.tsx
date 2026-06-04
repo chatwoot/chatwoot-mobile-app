@@ -40,9 +40,13 @@ export const FilterBar = ({ allFilters, selectedFilters, onFilterPress }: Filter
   };
 
   return (
-    <Animated.View
+    <Animated.ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      bounces={false}
       exiting={exiting}
-      style={tailwind.style('px-3 pt-2 pb-1.5 h-[46px] flex flex-row')}>
+      style={tailwind.style('h-[46px]')}
+      contentContainerStyle={tailwind.style('px-3 pt-2 pb-1.5 flex-row')}>
       {allFilters.map((value, index) => {
         if (value.type === 'inbox_id') {
           return (
@@ -69,6 +73,6 @@ export const FilterBar = ({ allFilters, selectedFilters, onFilterPress }: Filter
           </Animated.View>
         );
       })}
-    </Animated.View>
+    </Animated.ScrollView>
   );
 };

@@ -3,6 +3,15 @@ import camelcaseKeys from 'camelcase-keys';
 import type { Conversation } from '@/types/Conversation';
 import { transformContact, transformMessage } from '@/utils/camelCaseKeys';
 
+const normalizeSearchString = (value: unknown) => {
+  if (typeof value !== 'string') {
+    return value;
+  }
+
+  const trimmedValue = value.trim();
+  return trimmedValue.toLowerCase() === 'undefined' ? '' : value;
+};
+
 /**
  * Transform search conversation API response to Conversation type
  */
@@ -40,6 +49,12 @@ export function transformSearchConversation(conversation: unknown): Conversation
 
   if (transformed.inbox?.id && !transformed.inboxId) {
     transformed.inboxId = transformed.inbox.id;
+  }
+
+  if (transformed.additionalAttributes) {
+    const additionalAttributes = transformed.additionalAttributes as Record<string, unknown>;
+    additionalAttributes.mailSubject = normalizeSearchString(additionalAttributes.mailSubject);
+    additionalAttributes.emailSubject = normalizeSearchString(additionalAttributes.emailSubject);
   }
 
   return transformed as Conversation;

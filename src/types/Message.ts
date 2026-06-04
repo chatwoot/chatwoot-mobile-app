@@ -15,8 +15,40 @@ export type ContentType =
   | 'form'
   | 'article'
   | 'incoming_email'
+  | 'voice_call'
   | 'input_csat'
   | 'integrations';
+
+export type VoiceCallPayload = {
+  id?: number;
+  callId?: number;
+  callSid?: string;
+  providerCallId?: string;
+  provider?: string;
+  callSource?: string;
+  status?: string;
+  direction?: 'incoming' | 'outgoing' | 'inbound' | 'outbound';
+  callDirection?: 'incoming' | 'outgoing' | 'inbound' | 'outbound';
+  answeredBy?: string;
+  acceptedBy?: { id?: number; name?: string };
+  acceptedByAgentName?: string;
+  accepted_by_agent_name?: string;
+  recordingUrl?: string;
+  recording_url?: string;
+  transcript?: string;
+  summary?: string;
+  duration?: number;
+  durationSeconds?: number;
+  duration_seconds?: number;
+  recordingDuration?: number;
+  recording_duration?: number;
+  endReason?: string;
+  end_reason?: string;
+};
+
+export type VoiceCallContentAttributes = {
+  data?: VoiceCallPayload;
+};
 
 export enum MessageType {
   'incoming',
@@ -40,7 +72,7 @@ export type ImageMetadata = {
   coordinatesLong: number;
 };
 
-export type MessageContentAttributes = {
+export type MessageContentAttributes = VoiceCallContentAttributes & {
   inReplyTo: number;
   inReplyToExternalId: null;
   deleted?: boolean;
@@ -81,6 +113,7 @@ export interface Message {
   sender?: Agent | User | AgentBot | Contact | null;
   sourceId: string | null;
   status: MessageStatus;
+  call?: VoiceCallPayload | null;
   lastNonActivityMessage: Message | null;
   conversation?: Conversation | null;
   shouldRenderAvatar?: boolean | false;

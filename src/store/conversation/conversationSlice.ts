@@ -126,6 +126,9 @@ const conversationSlice = createSlice({
         state.isConversationFetching = false;
         state.isAllMessagesFetched = false;
       })
+      .addCase(conversationActions.createConversation.fulfilled, (state, { payload }) => {
+        conversationAdapter.upsertOne(state, payload.conversation);
+      })
       .addCase(conversationActions.fetchConversation.rejected, state => {
         state.isConversationFetching = false;
         state.error = state.error || 'Unable to load conversation';
@@ -228,7 +231,8 @@ const conversationSlice = createSlice({
         const messageIndex = conversation.messages.findIndex(m => m.id === messageId);
         if (messageIndex !== -1) {
           const message = conversation.messages[messageIndex];
-          const existing = message.contentAttributes ?? ({} as NonNullable<Message['contentAttributes']>);
+          const existing =
+            message.contentAttributes ?? ({} as NonNullable<Message['contentAttributes']>);
           conversation.messages[messageIndex] = {
             ...message,
             contentAttributes: {

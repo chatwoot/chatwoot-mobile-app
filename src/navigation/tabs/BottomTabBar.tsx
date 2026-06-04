@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { Platform, Pressable } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -10,20 +10,21 @@ import { BlurView, BlurViewProps } from '@react-native-community/blur';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
 import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice';
+import { useAppSelector } from '@/hooks';
 
 import {
+  Bolt,
+  ContactsIcon,
   ConversationIconFilled,
   ConversationIconOutline,
   InboxIconFilled,
   InboxIconOutline,
-  SettingsIconFilled,
-  SettingsIconOutline,
+  PhoneIcon,
 } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';
 
 import { TabParamList } from './AppTabs';
-import { useAppSelector } from '@/hooks';
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
@@ -35,14 +36,42 @@ type TabBarIconsProps = {
   route: RouteProp<TabParamList, keyof TabParamList>;
 };
 
+type TabRoute = RouteProp<TabParamList, keyof TabParamList>;
+
+type TabItemProps = {
+  options: BottomTabBarProps['descriptors'][string]['options'];
+  onPress: () => void;
+  onLongPress: () => void;
+  route: TabRoute;
+  isFocused: boolean;
+};
+
 const TabBarIcons = ({ focused, route }: TabBarIconsProps) => {
+  const iconColor = focused ? tailwind.color('text-gray-950') : tailwind.color('text-gray-700');
+
   switch (route.name) {
-    case 'Conversations':
-      return focused ? <ConversationIconFilled /> : <ConversationIconOutline />;
     case 'Inbox':
-      return focused ? <InboxIconFilled /> : <InboxIconOutline />;
-    case 'Settings':
-      return focused ? <SettingsIconFilled /> : <SettingsIconOutline />;
+      return focused ? (
+        <InboxIconFilled stroke={iconColor} />
+      ) : (
+        <InboxIconOutline stroke={iconColor} />
+      );
+    case 'Contacts':
+      return <ContactsIcon stroke={iconColor} />;
+    case 'Dial':
+      return <PhoneIcon stroke={iconColor} />;
+    case 'Channels':
+      return focused ? (
+        <ConversationIconFilled fill={iconColor} />
+      ) : (
+        <ConversationIconOutline stroke={iconColor} />
+      );
+    case 'More':
+      return (
+        <View style={tailwind.style('h-6 w-6')}>
+          <Bolt stroke={iconColor} />
+        </View>
+      );
   }
 };
 
@@ -80,8 +109,7 @@ const TabBarBackground = (props: TabBarBackgroundProps) => {
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const TabItem = (props: any) => {
+const TabItem = (props: TabItemProps) => {
   const { handlers, animatedStyle } = useScaleAnimation();
 
   const { onPress, onLongPress, isFocused, options, route } = props;
@@ -94,6 +122,9 @@ const TabItem = (props: any) => {
     () => (isFocused ? { selected: true } : {}),
     [isFocused],
   );
+
+  const iconStyle = React.useMemo(() => tailwind.style('h-8 w-8 items-center justify-center'), []);
+
   return (
     <Animated.View
       style={[tailwind.style('justify-center items-center flex-1 bg-transparent'), animatedStyle]}>
@@ -105,8 +136,11 @@ const TabItem = (props: any) => {
         accessibilityLabel={options.tabBarAccessibilityLabel}
         testID={options.tabBarTestID}
         onPress={onPress}
-        onLongPress={onLongPress}>
-        <TabBarIcons focused={isFocused} route={route} />
+        onLongPress={onLongPress}
+        style={tailwind.style('h-16 flex-1 items-center justify-center')}>
+        <Animated.View style={iconStyle}>
+          <TabBarIcons focused={isFocused} route={route} />
+        </Animated.View>
       </Pressable>
     </Animated.View>
   );
@@ -118,7 +152,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
 
   // Memoize press handlers using useCallback
   const createPressHandler = React.useCallback(
-    (route: { key: string; name: string; params?: object }, isFocused: boolean) => {
+    (route: TabRoute, isFocused: boolean) => {
       return () => {
         hapticSelection?.();
         const event = navigation.emit({
@@ -128,6 +162,14 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
         });
 
         if (!isFocused && !event.defaultPrevented) {
+          if (route.name === 'Channels') {
+            navigation.navigate(route.name, {
+              screen: 'ConversationScreen',
+              params: { showFilters: true },
+            });
+            return;
+          }
+
           navigation.navigate(route.name, route.params);
         }
       };
@@ -137,7 +179,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
 
   // Memoize long press handler
   const createLongPressHandler = React.useCallback(
-    (route: { key: string; name: string; params?: object }) => {
+    (route: TabRoute) => {
       return () => {
         navigation.emit({
           type: 'tabLongPress',
@@ -155,13 +197,13 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
       style={Platform.select({
         ios: [
           tailwind.style(
-            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] pb-8 bg-[#00000009]',
+            'flex flex-row absolute w-full bottom-0 px-3 pt-[8px] pb-8 bg-[#00000009]',
             `h-[${tabBarHeight}px]`,
           ),
         ],
         android: [
           tailwind.style(
-            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] py-[11px] bg-white',
+            'flex flex-row absolute w-full bottom-0 px-3 py-[8px] bg-white',
             `h-[${tabBarHeight}px]`,
           ),
         ],
@@ -175,9 +217,9 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
           <TabItem
             key={route.key}
             options={options}
-            onPress={createPressHandler(route, isFocused)}
-            onLongPress={createLongPressHandler(route)}
-            route={route}
+            onPress={createPressHandler(route as TabRoute, isFocused)}
+            onLongPress={createLongPressHandler(route as TabRoute)}
+            route={route as TabRoute}
             isFocused={isFocused}
           />
         );

@@ -159,8 +159,7 @@ export const QuoteReply = () => {
               </Text>
             )
           ) : (
-            <Text
-              style={tailwind.style('text-md font-inter-normal-20 tracking-[0.32px]')}>
+            <Text style={tailwind.style('text-md font-inter-normal-20 tracking-[0.32px]')}>
               {quoteMessage?.attachments?.[0]?.fileType}
             </Text>
           )}

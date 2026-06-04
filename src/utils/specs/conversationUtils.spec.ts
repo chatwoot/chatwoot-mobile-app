@@ -1,4 +1,4 @@
-import { getLastMessage } from '@/utils/conversationUtils';
+import { getInboxFilterIds, getLastMessage, shouldApplyFilters } from '@/utils/conversationUtils';
 import { ContentType, Conversation, MessageStatus } from '@/types';
 
 export const conversation: Conversation = {
@@ -140,5 +140,26 @@ describe('getLastMessage', () => {
       messages: [lastMessage],
     };
     expect(getLastMessage(testConversation)).toEqual(lastMessage);
+  });
+});
+
+describe('getInboxFilterIds', () => {
+  it('parses multiple selected inbox ids', () => {
+    expect(getInboxFilterIds('12,29,53')).toEqual([12, 29, 53]);
+  });
+
+  it('treats all inboxes as an empty filter', () => {
+    expect(getInboxFilterIds('0')).toEqual([]);
+  });
+});
+
+describe('shouldApplyFilters', () => {
+  it('matches conversations against any selected inbox id', () => {
+    expect(
+      shouldApplyFilters(
+        { ...conversation, inboxId: 29 },
+        { assignee_type: 'all', status: 'open', sort_by: 'latest', inbox_id: '12,29,53' },
+      ),
+    ).toBe(true);
   });
 });

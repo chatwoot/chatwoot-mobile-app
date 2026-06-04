@@ -72,7 +72,8 @@ export function SearchSection({
   const section = getSearchSectionById(sectionId);
   if (!section) return null;
 
-  const shouldShowSection = activeTab === 'all' || items.length > 0 || isInitialLoading || hasError || isCancelled;
+  const shouldShowSection =
+    activeTab === 'all' || items.length > 0 || isInitialLoading || hasError || isCancelled;
   if (!shouldShowSection) {
     return null;
   }

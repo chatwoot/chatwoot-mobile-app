@@ -85,6 +85,10 @@ export const seekTo = async (position: number) => {
   currentCallback({ status: AudioStatus.PLAYING });
 };
 
+export const setPlayerSpeed = async (speed: number) => {
+  await audioRecorderPlayer?.setPlaybackSpeed(speed);
+};
+
 export const stopPlayer = async () => {
   await audioRecorderPlayer?.stopPlayer();
   audioRecorderPlayer?.removePlayBackListener();

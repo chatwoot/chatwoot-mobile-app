@@ -9,13 +9,24 @@ import { formatDate } from '@/utils/dateTimeUtils';
 const filterByStatus = (chatStatus: string, filterStatus: string) =>
   filterStatus === 'all' ? true : chatStatus === filterStatus;
 
+export const getInboxFilterIds = (inboxId?: string) => {
+  if (!inboxId || inboxId === '0') {
+    return [];
+  }
+
+  return inboxId
+    .split(',')
+    .map(id => Number(id))
+    .filter(id => Number.isFinite(id) && id > 0);
+};
+
 export const shouldApplyFilters = (conversation: Conversation, filters: FilterState) => {
   const { inbox_id: inboxId, status } = filters;
   const { status: chatStatus, inboxId: chatInboxId } = conversation;
   let shouldFilter = filterByStatus(chatStatus, status);
-  const hasInboxFilter = inboxId && inboxId !== '0';
-  if (hasInboxFilter) {
-    const filterByInbox = Number(inboxId) === chatInboxId;
+  const inboxFilterIds = getInboxFilterIds(inboxId);
+  if (inboxFilterIds.length) {
+    const filterByInbox = inboxFilterIds.includes(chatInboxId);
     shouldFilter = shouldFilter && filterByInbox;
   }
 

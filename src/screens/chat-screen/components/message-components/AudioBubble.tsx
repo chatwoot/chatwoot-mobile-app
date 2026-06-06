@@ -87,6 +87,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
 
     const prepareAudio = async () => {
       setConvertedAudioSrc(audioSrc);
+      setIsSoundLoading(false);
 
       if (Platform.OS !== 'ios' || !isOggAudioAttachment({ audioSrc, contentType, extension })) {
         return;

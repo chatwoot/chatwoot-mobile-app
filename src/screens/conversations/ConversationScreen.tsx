@@ -202,12 +202,7 @@ const ConversationList = () => {
         assigneeType: filters.assignee_type,
         page: page,
         sortBy: filters.sort_by,
-        inboxId:
-          selectedInboxIds.length > 1
-            ? selectedInboxIds
-            : selectedInboxIds.length === 1
-              ? selectedInboxIds[0]
-              : 0,
+        inboxId: selectedInboxIds.length === 1 ? selectedInboxIds[0] : 0,
       } as ConversationPayload;
 
       dispatch(conversationActions.fetchConversations(conversationFilters));

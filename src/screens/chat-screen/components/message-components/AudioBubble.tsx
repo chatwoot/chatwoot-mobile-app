@@ -83,23 +83,37 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   );
 
   useEffect(() => {
+    let isActive = true;
+
     const prepareAudio = async () => {
-      if (Platform.OS === 'ios' && isOggAudioAttachment({ audioSrc, contentType, extension })) {
-        setIsSoundLoading(true);
-        try {
-          const convertedSrc = await convertOggToWav(audioSrc);
-          if (convertedSrc instanceof Error) {
-            throw convertedSrc;
-          }
+      setConvertedAudioSrc(audioSrc);
+
+      if (Platform.OS !== 'ios' || !isOggAudioAttachment({ audioSrc, contentType, extension })) {
+        return;
+      }
+
+      setIsSoundLoading(true);
+      try {
+        const convertedSrc = await convertOggToWav(audioSrc);
+        if (convertedSrc instanceof Error) {
+          throw convertedSrc;
+        }
+        if (isActive) {
           setConvertedAudioSrc(convertedSrc);
-        } catch (error) {
-          Sentry.captureException(error);
-        } finally {
+        }
+      } catch (error) {
+        Sentry.captureException(error);
+      } finally {
+        if (isActive) {
           setIsSoundLoading(false);
         }
       }
     };
     prepareAudio();
+
+    return () => {
+      isActive = false;
+    };
   }, [audioSrc, contentType, extension]);
 
   const togglePlayback = useCallback(() => {

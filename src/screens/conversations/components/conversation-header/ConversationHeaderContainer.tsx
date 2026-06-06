@@ -28,7 +28,7 @@ import {
   setBottomSheetState,
   setCurrentState,
 } from '@/store/conversation/conversationHeaderSlice';
-import { notificationActions } from '@/store/notification/notificationAction';
+import { conversationActions } from '@/store/conversation/conversationActions';
 import { ConversationFilterBar } from '../conversation-filters';
 import { ConversationHeaderPresenter } from './ConversationHeaderPresenter';
 
@@ -132,7 +132,11 @@ export const ConversationHeader = ({ showFilters = false }: ConversationHeaderPr
         dispatch(selectAll(allConversations));
       }
     } else if (showFilters) {
-      dispatch(notificationActions.markAllAsRead());
+      allConversations
+        .filter(conversation => conversation.unreadCount > 0)
+        .forEach(conversation => {
+          dispatch(conversationActions.markMessageRead({ conversationId: conversation.id }));
+        });
     } else {
       // Navigate to search screen
       const pushToSearchScreen = StackActions.push('SearchScreen');

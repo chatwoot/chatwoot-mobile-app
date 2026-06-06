@@ -24,6 +24,7 @@ import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';
 
 import { TabParamList } from './AppTabs';
 import { useAppSelector } from '@/hooks';
+import { useTheme } from '@/context';
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
@@ -115,6 +116,26 @@ const TabItem = (props: any) => {
 export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const hapticSelection = useHaptic();
   const tabBarHeight = useTabBarHeight();
+  const { isDark } = useTheme();
+
+  const tabBarStyle = React.useMemo(
+    () =>
+      Platform.select({
+        ios: [
+          tailwind.style(
+            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] pb-8 bg-[#00000009]',
+            `h-[${tabBarHeight}px]`,
+          ),
+        ],
+        android: [
+          tailwind.style(
+            `flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] py-[11px] ${isDark ? 'bg-grayDark-50' : 'bg-white'}`,
+            `h-[${tabBarHeight}px]`,
+          ),
+        ],
+      }),
+    [isDark, tabBarHeight],
+  );
 
   // Memoize press handlers using useCallback
   const createPressHandler = React.useCallback(
@@ -149,23 +170,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
   );
 
   return (
-    <TabBarBackground
-      blurAmount={25}
-      blurType="light"
-      style={Platform.select({
-        ios: [
-          tailwind.style(
-            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] pb-8 bg-[#00000009]',
-            `h-[${tabBarHeight}px]`,
-          ),
-        ],
-        android: [
-          tailwind.style(
-            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] py-[11px] bg-white dark:bg-grayDark-50',
-            `h-[${tabBarHeight}px]`,
-          ),
-        ],
-      })}>
+    <TabBarBackground blurAmount={25} blurType="light" style={tabBarStyle}>
       <Animated.View style={tailwind.style('absolute inset-0 h-[1px] bg-blackA-A3')} />
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];

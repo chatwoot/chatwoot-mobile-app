@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
@@ -107,6 +107,10 @@ export const InboxFilters = () => {
   const filters = useAppSelector(selectFilters);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedIds, setSelectedIds] = useState<number[]>(getInboxFilterIds(filters.inbox_id));
+
+  useEffect(() => {
+    setSelectedIds(getInboxFilterIds(filters.inbox_id));
+  }, [filters.inbox_id]);
 
   const inboxList = useMemo(() => {
     const sortedInboxes = sortInboxesByName(inboxes);

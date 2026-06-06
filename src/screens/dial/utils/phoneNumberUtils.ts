@@ -1,4 +1,6 @@
 const DEFAULT_COUNTRY_CODE = '1';
+const MIN_E164_DIGITS = 8;
+const MAX_E164_DIGITS = 15;
 
 export const digitsOnly = (value: string) => value.replace(/\D/g, '');
 
@@ -21,7 +23,9 @@ export const normalizeDialedNumber = (value: string) => {
 export const isCompleteDialedNumber = (value: string) => {
   const digits = digitsOnly(value);
 
-  return digits.length === 10 || (digits.length === 11 && digits.startsWith(DEFAULT_COUNTRY_CODE));
+  return (
+    digits.length >= MIN_E164_DIGITS && digits.length <= MAX_E164_DIGITS && !digits.startsWith('0')
+  );
 };
 
 export const formatDialedNumber = (value: string) => {

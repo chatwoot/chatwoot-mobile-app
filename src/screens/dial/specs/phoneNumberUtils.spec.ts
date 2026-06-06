@@ -18,10 +18,12 @@ describe('phoneNumberUtils', () => {
     expect(sanitizeDialedNumber('+1 (202) 555-0198 ext hello')).toBe('12025550198');
   });
 
-  it('validates complete NANP dialed numbers', () => {
+  it('validates complete dialed numbers', () => {
     expect(isCompleteDialedNumber('(202) 555-0198')).toBe(true);
     expect(isCompleteDialedNumber('+1 (202) 555-0198')).toBe(true);
+    expect(isCompleteDialedNumber('+44 20 7183 8750')).toBe(true);
     expect(isCompleteDialedNumber('202555')).toBe(false);
     expect(isCompleteDialedNumber('02025550198')).toBe(false);
+    expect(isCompleteDialedNumber('+1234567890123456')).toBe(false);
   });
 });

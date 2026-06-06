@@ -71,7 +71,14 @@ export const DialScreen = () => {
   );
 
   useEffect(() => {
-    if (!selectedVoiceInboxId && voiceInboxes.length) {
+    if (!voiceInboxes.length) {
+      setSelectedVoiceInboxId(undefined);
+      return;
+    }
+
+    const hasSelectedInbox = voiceInboxes.some(inbox => inbox.id === selectedVoiceInboxId);
+
+    if (!selectedVoiceInboxId || !hasSelectedInbox) {
       setSelectedVoiceInboxId(voiceInboxes[0].id);
     }
   }, [selectedVoiceInboxId, voiceInboxes]);

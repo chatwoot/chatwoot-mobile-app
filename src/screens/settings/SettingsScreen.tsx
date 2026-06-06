@@ -80,6 +80,7 @@ const SettingsScreen = () => {
   const dispatch = useAppDispatch();
   const availabilityStatus =
     (useSelector(selectCurrentUserAvailability) as AvailabilityStatus) || 'offline';
+  const canGoBack = navigation.canGoBack();
 
   // const { bottom } = useSafeAreaInsets();
 
@@ -214,6 +215,15 @@ const SettingsScreen = () => {
     dispatch(logout());
   }, [dispatch, pushToken]);
 
+  const handleBackPress = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+      return;
+    }
+
+    navigation.dispatch(StackActions.replace('MoreScreen'));
+  };
+
   const preferencesList: GenericListType[] = [
     {
       hasChevron: true,
@@ -290,7 +300,7 @@ const SettingsScreen = () => {
         backgroundColor={tailwind.color('bg-white')}
         barStyle={'dark-content'}
       />
-      <SettingsHeader />
+      <SettingsHeader onBackPress={canGoBack ? handleBackPress : undefined} />
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}>

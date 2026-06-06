@@ -96,6 +96,29 @@ describe('conversation reducer', () => {
 
     expect(state.entities[conversation.id]?.status).toBe('open');
     expect(state.entities[conversation.id]?.updatedAt).toBe(201);
+    expect(state.entities[conversation.id]?.localStatusUpdatedAt).toBeUndefined();
+  });
+
+  it('does not let client-clock local markers block server status updates', () => {
+    const initialConversation = {
+      ...conversation,
+      status: 'resolved' as const,
+      updatedAt: 100,
+      localStatusUpdatedAt: Date.now(),
+    };
+
+    const serverConversation = {
+      ...conversation,
+      status: 'open' as const,
+      updatedAt: 101,
+    };
+
+    let state = conversationReducer(undefined, addConversation(initialConversation));
+    state = conversationReducer(state, updateConversation(serverConversation));
+
+    expect(state.entities[conversation.id]?.status).toBe('open');
+    expect(state.entities[conversation.id]?.updatedAt).toBe(101);
+    expect(state.entities[conversation.id]?.localStatusUpdatedAt).toBeUndefined();
   });
 
   it('ignores outdated conversations from list fetches', () => {

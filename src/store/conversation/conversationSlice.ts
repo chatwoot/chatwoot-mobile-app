@@ -58,11 +58,14 @@ const shouldPreserveLocalStatus = (
   incomingConversation: Conversation,
 ) => {
   const localStatusUpdatedAt = existingConversation?.localStatusUpdatedAt;
+  const existingUpdatedAt = existingConversation?.updatedAt;
   const incomingUpdatedAt = incomingConversation.updatedAt;
 
   return (
     typeof localStatusUpdatedAt === 'number' &&
+    typeof existingUpdatedAt === 'number' &&
     typeof incomingUpdatedAt === 'number' &&
+    localStatusUpdatedAt === existingUpdatedAt &&
     incomingUpdatedAt <= localStatusUpdatedAt &&
     existingConversation?.status !== incomingConversation.status
   );
@@ -73,7 +76,10 @@ const preserveLocalStatus = (
   incomingConversation: Conversation,
 ) => {
   if (!shouldPreserveLocalStatus(existingConversation, incomingConversation)) {
-    return incomingConversation;
+    return {
+      ...incomingConversation,
+      localStatusUpdatedAt: undefined,
+    };
   }
 
   return {

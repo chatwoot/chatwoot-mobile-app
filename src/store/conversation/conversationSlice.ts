@@ -39,6 +39,51 @@ const initialState = conversationAdapter.getInitialState<ConversationState>({
   isChangingConversationStatus: false,
 });
 
+const isOutdatedConversationUpdate = (
+  existingConversation: Conversation | undefined,
+  incomingConversation: Conversation,
+) => {
+  const existingUpdatedAt = existingConversation?.updatedAt;
+  const incomingUpdatedAt = incomingConversation.updatedAt;
+
+  return (
+    typeof existingUpdatedAt === 'number' &&
+    typeof incomingUpdatedAt === 'number' &&
+    incomingUpdatedAt < existingUpdatedAt
+  );
+};
+
+const shouldPreserveLocalStatus = (
+  existingConversation: Conversation | undefined,
+  incomingConversation: Conversation,
+) => {
+  const localStatusUpdatedAt = existingConversation?.localStatusUpdatedAt;
+  const incomingUpdatedAt = incomingConversation.updatedAt;
+
+  return (
+    typeof localStatusUpdatedAt === 'number' &&
+    typeof incomingUpdatedAt === 'number' &&
+    incomingUpdatedAt <= localStatusUpdatedAt &&
+    existingConversation?.status !== incomingConversation.status
+  );
+};
+
+const preserveLocalStatus = (
+  existingConversation: Conversation | undefined,
+  incomingConversation: Conversation,
+) => {
+  if (!shouldPreserveLocalStatus(existingConversation, incomingConversation)) {
+    return incomingConversation;
+  }
+
+  return {
+    ...incomingConversation,
+    status: existingConversation.status,
+    snoozedUntil: existingConversation.snoozedUntil,
+    localStatusUpdatedAt: existingConversation.localStatusUpdatedAt,
+  };
+};
+
 const conversationSlice = createSlice({
   name: 'conversation',
   initialState,
@@ -52,7 +97,15 @@ const conversationSlice = createSlice({
       const conversation = action.payload as Conversation;
       const conversationIds = conversationAdapter.getSelectors().selectIds(state);
       if (conversationIds.includes(conversation.id)) {
-        const { messages, ...conversationAttributes } = conversation;
+        const existingConversation = state.entities[conversation.id];
+        if (isOutdatedConversationUpdate(existingConversation, conversation)) {
+          return;
+        }
+
+        const { messages, ...conversationAttributes } = preserveLocalStatus(
+          existingConversation,
+          conversation,
+        );
         conversationAdapter.updateOne(state, {
           id: conversation.id,
           changes: conversationAttributes,
@@ -108,7 +161,16 @@ const conversationSlice = createSlice({
       })
       .addCase(conversationActions.fetchConversations.fulfilled, (state, { payload }) => {
         const { conversations, meta } = payload;
-        conversationAdapter.upsertMany(state, conversations);
+        const conversationsToUpsert = conversations.filter(
+          conversation =>
+            !isOutdatedConversationUpdate(state.entities[conversation.id], conversation),
+        );
+        conversationAdapter.upsertMany(
+          state,
+          conversationsToUpsert.map(conversation =>
+            preserveLocalStatus(state.entities[conversation.id], conversation),
+          ),
+        );
         state.isLoadingConversations = false;
         state.isAllConversationsFetched = conversations.length < 20 || false;
         state.meta = meta;
@@ -122,7 +184,15 @@ const conversationSlice = createSlice({
       })
       .addCase(conversationActions.fetchConversation.fulfilled, (state, { payload }) => {
         const { conversation } = payload;
-        conversationAdapter.upsertOne(state, conversation);
+        if (isOutdatedConversationUpdate(state.entities[conversation.id], conversation)) {
+          state.isConversationFetching = false;
+          return;
+        }
+
+        conversationAdapter.upsertOne(
+          state,
+          preserveLocalStatus(state.entities[conversation.id], conversation),
+        );
         state.isConversationFetching = false;
         state.isAllMessagesFetched = false;
       })
@@ -177,6 +247,7 @@ const conversationSlice = createSlice({
         }
         conversation.status = currentStatus;
         conversation.snoozedUntil = snoozedUntil;
+        conversation.localStatusUpdatedAt = conversation.updatedAt;
         state.isChangingConversationStatus = false;
       })
       .addCase(conversationActions.toggleConversationStatus.rejected, state => {
@@ -228,7 +299,8 @@ const conversationSlice = createSlice({
         const messageIndex = conversation.messages.findIndex(m => m.id === messageId);
         if (messageIndex !== -1) {
           const message = conversation.messages[messageIndex];
-          const existing = message.contentAttributes ?? ({} as NonNullable<Message['contentAttributes']>);
+          const existing =
+            message.contentAttributes ?? ({} as NonNullable<Message['contentAttributes']>);
           conversation.messages[messageIndex] = {
             ...message,
             contentAttributes: {

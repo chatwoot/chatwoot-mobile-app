@@ -81,16 +81,20 @@ const ParticipantStack = ({
     }
     const userIds = updateAgentList.map(agent => agent.id);
     if (selectedConversation) {
-      await dispatch(
-        conversationParticipantActions.update({
-          conversationId: selectedConversation?.id,
-          userIds,
-        }),
-      );
-      AnalyticsHelper.track(CONVERSATION_EVENTS.PARTICIPANT_CHANGED);
-      showToast({
-        message: i18n.t('CONVERSATION.PARTICIPANT_CHANGE'),
-      });
+      try {
+        await dispatch(
+          conversationParticipantActions.update({
+            conversationId: selectedConversation?.id,
+            userIds,
+          }),
+        ).unwrap();
+        AnalyticsHelper.track(CONVERSATION_EVENTS.PARTICIPANT_CHANGED);
+        showToast({
+          message: i18n.t('CONVERSATION.PARTICIPANT_CHANGE'),
+        });
+      } catch {
+        showToast({ message: i18n.t('ERRORS.COMMON_ERROR') });
+      }
     }
   };
 

@@ -234,7 +234,14 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
       const contactableInboxPayload = hasLoadedContactableInboxes
         ? availableContactableInboxes
         : await loadContactableInboxes();
-      setContactableInboxes(filterContactableInboxes(contactableInboxPayload, intent));
+      const filteredInboxes = filterContactableInboxes(contactableInboxPayload, intent);
+      if (!filteredInboxes.length) {
+        setContactableSelectorVisible(false);
+        openSystemContactAction(intent);
+        return;
+      }
+
+      setContactableInboxes(filteredInboxes);
     } catch {
       setContactableSelectorVisible(false);
     } finally {

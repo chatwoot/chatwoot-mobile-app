@@ -98,6 +98,8 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
                   <ImageBubbleContainer
                     imageSrc={attachment.dataUrl}
                     maxWidth={300 - 24 - (isPrivate ? 13 : 0)}
+                    sourceWidth={attachment.width}
+                    sourceHeight={attachment.height}
                   />
                 </Animated.View>
               );
@@ -139,7 +141,12 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
                 <Animated.View
                   key={attachment.fileType + index}
                   style={tailwind.style('flex flex-row items-center my-2')}>
-                  <AudioBubble audioSrc={attachment.dataUrl} variant={props.variant} />
+                  <AudioBubble
+                    audioSrc={attachment.dataUrl}
+                    contentType={attachment.contentType}
+                    extension={attachment.extension}
+                    variant={props.variant}
+                  />
                 </Animated.View>
               );
             }

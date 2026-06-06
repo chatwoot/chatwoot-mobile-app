@@ -269,7 +269,7 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
 
   const onCallPress = () => {
     if (!voiceInboxes.length) {
-      setVoiceSelectorVisible(true);
+      openSystemContactAction('call');
       return;
     }
 

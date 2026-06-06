@@ -10,25 +10,25 @@ import i18n from '@/i18n';
 
 type ThemeListItemType = {
   value: Theme;
-  label: string;
-  description: string;
+  labelKey: string;
+  descriptionKey: string;
 };
 
 const THEME_OPTIONS: ThemeListItemType[] = [
   {
     value: 'light',
-    label: i18n.t('SETTINGS.THEME.LIGHT'),
-    description: i18n.t('SETTINGS.THEME.LIGHT_DESCRIPTION'),
+    labelKey: 'SETTINGS.THEME.LIGHT',
+    descriptionKey: 'SETTINGS.THEME.LIGHT_DESCRIPTION',
   },
   {
     value: 'dark',
-    label: i18n.t('SETTINGS.THEME.DARK'),
-    description: i18n.t('SETTINGS.THEME.DARK_DESCRIPTION'),
+    labelKey: 'SETTINGS.THEME.DARK',
+    descriptionKey: 'SETTINGS.THEME.DARK_DESCRIPTION',
   },
   {
     value: 'system',
-    label: i18n.t('SETTINGS.THEME.SYSTEM'),
-    description: i18n.t('SETTINGS.THEME.SYSTEM_DESCRIPTION'),
+    labelKey: 'SETTINGS.THEME.SYSTEM',
+    descriptionKey: 'SETTINGS.THEME.SYSTEM_DESCRIPTION',
   },
 ];
 
@@ -62,13 +62,13 @@ const ThemeCell = ({ item, index, currentTheme, changeTheme }: ThemeCellProps) =
             style={tailwind.style(
               'text-base text-gray-950 dark:text-grayDark-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
             )}>
-            {item.label}
+            {i18n.t(item.labelKey)}
           </Text>
           <Text
             style={tailwind.style(
               'text-sm text-gray-700 dark:text-grayDark-700 font-inter-normal-20 mt-0.5',
             )}>
-            {item.description}
+            {i18n.t(item.descriptionKey)}
           </Text>
         </Animated.View>
         {isSelected && (

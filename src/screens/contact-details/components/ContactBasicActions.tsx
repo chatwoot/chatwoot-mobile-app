@@ -283,10 +283,9 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
 
   const activeIconColor = tailwind.color('bg-blue-800');
   const disabledIconColor = tailwind.color('text-gray-700');
-  const hasMessageAction =
-    !!phoneNumber ||
-    !!email ||
-    (!isLoadingContactableInboxes && messageContactableInboxes.length > 0);
+  const hasMessageAction = contactId
+    ? !isLoadingContactableInboxes && messageContactableInboxes.length > 0
+    : !!phoneNumber;
 
   const options: ContactOption[] = [
     {

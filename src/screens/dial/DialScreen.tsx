@@ -85,7 +85,7 @@ export const DialScreen = () => {
   const hasCompleteNumber = isCompleteDialedNumber(dialedNumber);
   const isStartingAction = isStartingCall || isStartingMessage;
   const canCall = !!selectedVoiceInbox && hasCompleteNumber && !isStartingAction;
-  const canMessage = !!matchedContact && hasCompleteNumber && !isStartingAction;
+  const canMessage = hasCompleteNumber && !isStartingAction;
   const formattedNumber = formatDialedNumber(dialedNumber);
   const selectedVoiceInboxTitle = selectedVoiceInbox?.name || i18n.t('DIAL.NO_VOICE_INBOX');
 
@@ -245,7 +245,7 @@ export const DialScreen = () => {
   };
 
   const openMessageInboxSelector = async () => {
-    if (!matchedContact || !hasCompleteNumber || isStartingAction) {
+    if (!hasCompleteNumber || isStartingAction) {
       return;
     }
 

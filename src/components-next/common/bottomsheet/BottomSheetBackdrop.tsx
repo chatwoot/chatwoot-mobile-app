@@ -15,6 +15,7 @@ export const BottomSheetBackdrop: React.FC<BottomSheetBackgroundProps> = props =
     actionsModalSheetRef,
     addLabelSheetRef,
     languagesModalSheetRef,
+    themeSheetRef,
     macrosListSheetRef,
     notificationPreferencesSheetRef,
     switchAccountSheetRef,
@@ -39,6 +40,7 @@ export const BottomSheetBackdrop: React.FC<BottomSheetBackgroundProps> = props =
     actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
     addLabelSheetRef.current?.dismiss({ overshootClamping: true });
     languagesModalSheetRef.current?.dismiss({ overshootClamping: true });
+    themeSheetRef.current?.dismiss({ overshootClamping: true });
     macrosListSheetRef.current?.dismiss({ overshootClamping: true });
     notificationPreferencesSheetRef.current?.dismiss({ overshootClamping: true });
     switchAccountSheetRef.current?.dismiss({ overshootClamping: true });

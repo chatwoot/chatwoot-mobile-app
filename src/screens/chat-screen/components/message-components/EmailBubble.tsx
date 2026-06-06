@@ -38,6 +38,20 @@ export const EmailBubble = (props: EmailBubbleProps) => {
   const isOutgoing = messageType === MESSAGE_TYPES.OUTGOING;
 
   const FormattedEmail = emailMessageContent().replace('height:100%;', '');
+  const readableOutgoingEmailStyle = isOutgoing
+    ? `
+        html, body {
+          background: #ffffff !important;
+          color: #111827 !important;
+        }
+        body, p, div, span, td, th, li {
+          color: #111827 !important;
+        }
+        a {
+          color: #2563eb !important;
+        }
+      `
+    : '';
 
   return (
     <React.Fragment>
@@ -55,6 +69,7 @@ export const EmailBubble = (props: EmailBubbleProps) => {
           font-family: system,-apple-system,".SFNSText-Regular","San Francisco",Roboto,"Segoe UI","Helvetica Neue","Lucida Grande",sans-serif;
           font-size: 16px;
         } 
+        ${readableOutgoingEmailStyle}
         img{
           max-width: 100% !important;
         }

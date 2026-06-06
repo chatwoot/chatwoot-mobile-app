@@ -28,6 +28,7 @@ const MentionInput = React.forwardRef<TextInput, MentionInputProps>(
     const [selection, setSelection] = useState({ start: 0, end: 0 });
 
     const { plainText, parts } = useMemo(() => parseValue(value, partTypes), [value, partTypes]);
+    const hasStyledParts = parts.some(part => part.partType != null);
 
     const handleSelectionChange = (
       event: NativeSyntheticEvent<TextInputSelectionChangeEventData>,
@@ -122,21 +123,24 @@ const MentionInput = React.forwardRef<TextInput, MentionInputProps>(
           multiline
           {...textInputProps}
           ref={handleTextInputRef}
+          value={hasStyledParts ? undefined : plainText}
           onChangeText={onChangeInput}
           onSelectionChange={handleSelectionChange}>
-          <Text>
-            {parts.map(({ text, partType, data }, index) =>
-              partType ? (
-                <Text
-                  key={`${index}-${data?.trigger ?? 'pattern'}`}
-                  style={partType.textStyle ?? defaultMentionTextStyle}>
-                  {text}
-                </Text>
-              ) : (
-                <Text key={index}>{text}</Text>
-              ),
-            )}
-          </Text>
+          {hasStyledParts ? (
+            <Text>
+              {parts.map(({ text, partType, data }, index) =>
+                partType ? (
+                  <Text
+                    key={`${index}-${data?.trigger ?? 'pattern'}`}
+                    style={partType.textStyle ?? defaultMentionTextStyle}>
+                    {text}
+                  </Text>
+                ) : (
+                  <Text key={index}>{text}</Text>
+                ),
+              )}
+            </Text>
+          ) : null}
         </TextInput>
 
         {(

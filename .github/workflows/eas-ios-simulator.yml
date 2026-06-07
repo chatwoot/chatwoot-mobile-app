@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -20,8 +22,18 @@ jobs:
         with:
           version: 10.11.0
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Regenerate lockfile to fix patch hashes
+        # EAS macOS uses pnpm 9.x which computes different patch hashes.
+        # We update the lockfile here on Linux so EAS receives matching hashes.
+        run: |
+          pnpm install --no-frozen-lockfile
+          if ! git diff --quiet pnpm-lock.yaml; then
+            git config user.email "actions@github.com"
+            git config user.name "GitHub Actions"
+            git add pnpm-lock.yaml
+            git commit -m "chore: update lockfile patch hashes for EAS build [skip ci]"
+            git push
+          fi
 
       - name: Setup EAS
         uses: expo/expo-github-action@v8

@@ -15,25 +15,33 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '20'
 
-      - name: Setup pnpm
+      - name: Setup pnpm matching EAS version (9.15.9)
+        # EAS macOS builder has pnpm 9.15.9 pre-installed.
+        # We regenerate the lockfile with the same pnpm version so patch hashes match.
         uses: pnpm/action-setup@v4
         with:
-          version: 10.11.0
+          version: 9.15.9
 
-      - name: Regenerate lockfile to fix patch hashes
-        # EAS macOS uses pnpm 9.x which computes different patch hashes.
-        # We update the lockfile here on Linux so EAS receives matching hashes.
+      - name: Regenerate lockfile with pnpm 9.15.9 to match EAS
         run: |
           pnpm install --no-frozen-lockfile
           if ! git diff --quiet pnpm-lock.yaml; then
             git config user.email "actions@github.com"
             git config user.name "GitHub Actions"
             git add pnpm-lock.yaml
-            git commit -m "chore: update lockfile patch hashes for EAS build [skip ci]"
+            git commit -m "chore: update lockfile to pnpm 9.15.9 hashes for EAS [skip ci]"
             git push
+            echo "Lockfile updated and pushed"
+          else
+            echo "Lockfile unchanged"
           fi
+
+      - name: Setup pnpm for EAS CLI
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.0
 
       - name: Setup EAS
         uses: expo/expo-github-action@v8

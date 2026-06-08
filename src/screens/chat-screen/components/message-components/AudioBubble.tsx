@@ -68,7 +68,10 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       if (playBackData) {
         currentPosition.value = playBackData.currentPosition;
         totalDuration.value = playBackData.duration;
-        if (playBackData.currentPosition === playBackData.duration) {
+        // Defense in depth: see matching guard in AudioManager + AudioCell —
+        // raw 0===0 equality would clear playback state before the file
+        // metadata is available.
+        if (playBackData.duration > 0 && playBackData.currentPosition >= playBackData.duration) {
           currentPosition.value = 0;
           totalDuration.value = 0;
           setAudioPlaying(false);

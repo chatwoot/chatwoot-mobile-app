@@ -53,7 +53,14 @@ export const startPlayer = async (path: string, callback: Callback) => {
     status: AudioStatus.STARTED,
   });
   audioRecorderPlayer.addPlayBackListener(async e => {
-    if (e.currentPosition === e.duration) {
+    // On Android, the first event for streamed media (most visibly OGG voice
+    // notes from web/Android senders) arrives with currentPosition=0 AND
+    // duration=0 before the file's metadata is loaded. The raw equality
+    // check (0 === 0) immediately tripped the "audio ended" path and tore
+    // the player down, so the user saw the spinner flash and no sound.
+    // Guard with `duration > 0` so end-of-playback only fires once we
+    // actually know the duration.
+    if (e.duration > 0 && e.currentPosition >= e.duration) {
       currentCallback({
         status: AudioStatus.STOPPED,
         data: e,

@@ -74,7 +74,11 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
     if (playBackData) {
       currentPosition.value = playBackData.currentPosition;
       totalDuration.value = playBackData.duration;
-      if (playBackData.currentPosition === playBackData.duration) {
+      // Defense in depth: AudioManager already gates the STOPPED dispatch on
+      // duration>0, but if any future caller forwards a pre-load event the
+      // raw equality check would still clear our slice state. See the
+      // matching guard in AudioManager.addPlayBackListener.
+      if (playBackData.duration > 0 && playBackData.currentPosition >= playBackData.duration) {
         currentPosition.value = 0;
         totalDuration.value = 0;
         setAudioPlaying(false);

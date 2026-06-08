@@ -67,11 +67,13 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       const playBackData = data.data as PlayBackType;
       if (playBackData) {
         currentPosition.value = playBackData.currentPosition;
-        totalDuration.value = playBackData.duration;
-        // Defense in depth: see matching guard in AudioManager + AudioCell —
-        // raw 0===0 equality would clear playback state before the file
-        // metadata is available.
-        if (playBackData.duration > 0 && playBackData.currentPosition >= playBackData.duration) {
+        // Only adopt a positive duration — Chrome-OGG voice notes report
+        // duration=-1 on Android, which would invert the Slider's
+        // interpolate range. See matching guard in AudioCell.
+        if (playBackData.duration > 0) {
+          totalDuration.value = playBackData.duration;
+        }
+        if (playBackData.isFinished) {
           currentPosition.value = 0;
           totalDuration.value = 0;
           setAudioPlaying(false);

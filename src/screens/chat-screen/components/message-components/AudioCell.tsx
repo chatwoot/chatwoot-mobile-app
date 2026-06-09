@@ -73,8 +73,18 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
     const playBackData = data.data as PlayBackType;
     if (playBackData) {
       currentPosition.value = playBackData.currentPosition;
-      totalDuration.value = playBackData.duration;
-      if (playBackData.currentPosition === playBackData.duration) {
+      // Only adopt a positive duration. On Android, OGG voice notes from
+      // Chrome's MediaRecorder report duration=-1 because the container has
+      // no duration metadata — writing that into a SharedValue makes the
+      // Slider's interpolate() range invert and freezes the knob at 0.
+      // Audio still plays; slider stays at 0 for unknown-duration files.
+      if (playBackData.duration > 0) {
+        totalDuration.value = playBackData.duration;
+      }
+      // Use the lib's explicit isFinished flag (set only by the native
+      // setOnCompletionListener) instead of currentPosition === duration —
+      // that equality is meaningless when duration is unknown.
+      if (playBackData.isFinished) {
         currentPosition.value = 0;
         totalDuration.value = 0;
         setAudioPlaying(false);

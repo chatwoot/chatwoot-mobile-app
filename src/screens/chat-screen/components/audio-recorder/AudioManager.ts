@@ -53,7 +53,14 @@ export const startPlayer = async (path: string, callback: Callback) => {
     status: AudioStatus.STARTED,
   });
   audioRecorderPlayer.addPlayBackListener(async e => {
-    if (e.currentPosition === e.duration) {
+    // Use the lib's explicit `isFinished` flag (set only by the native
+    // setOnCompletionListener) rather than inferring end-of-playback from
+    // currentPosition === duration. OGG voice notes recorded by Chrome's
+    // MediaRecorder don't carry duration metadata, so on Android
+    // MediaPlayer.getDuration() returns -1 throughout playback — the
+    // equality-based check either tripped at the very first event (0===0)
+    // or never tripped at all.
+    if (e.isFinished) {
       currentCallback({
         status: AudioStatus.STOPPED,
         data: e,

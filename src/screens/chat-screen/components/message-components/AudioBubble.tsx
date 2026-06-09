@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import { Platform, Pressable, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { PlayBackType } from 'react-native-audio-recorder-player';
 import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
@@ -67,8 +67,13 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       const playBackData = data.data as PlayBackType;
       if (playBackData) {
         currentPosition.value = playBackData.currentPosition;
-        totalDuration.value = playBackData.duration;
-        if (playBackData.currentPosition === playBackData.duration) {
+        // Only adopt a positive duration — Chrome-OGG voice notes report
+        // duration=-1 on Android, which would invert the Slider's
+        // interpolate range. See matching guard in AudioCell.
+        if (playBackData.duration > 0) {
+          totalDuration.value = playBackData.duration;
+        }
+        if (playBackData.isFinished) {
           currentPosition.value = 0;
           totalDuration.value = 0;
           setAudioPlaying(false);
@@ -81,11 +86,13 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
 
   useEffect(() => {
     const prepareAudio = async () => {
-      if (Platform.OS === 'ios' && audioSrc.toLowerCase().endsWith('.ogg')) {
+      if (audioSrc.toLowerCase().endsWith('.ogg')) {
         setIsSoundLoading(true);
         try {
           const convertedSrc = await convertOggToWav(audioSrc);
-          setConvertedAudioSrc(convertedSrc);
+          if (typeof convertedSrc === 'string' && convertedSrc.length > 0) {
+            setConvertedAudioSrc(convertedSrc);
+          }
         } catch (error) {
           Sentry.captureException(error);
         } finally {

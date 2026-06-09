@@ -60,15 +60,12 @@ export const Email = (props: EmailProps) => {
         }
       `;
   const outgoingReadableStyle = `
+        :root {
+          color-scheme: light;
+        }
         html, body {
-          background: #ffffff !important;
-          color: #111827 !important;
-        }
-        body, p, div, span, td, th, li, h1, h2, h3, h4, h5, h6 {
-          color: #111827 !important;
-        }
-        a {
-          color: #2563eb !important;
+          background: #ffffff;
+          color: #111827;
         }
       `;
   const emailCustomStyle = isOutgoing ? `${outgoingReadableStyle}${baseStyle}` : baseStyle;

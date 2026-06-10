@@ -194,7 +194,10 @@ export const buildTemplateParams = (
   });
   const processedParams: TemplateSendParams['processed_params'] = { body };
   if (requiresImageUrl(template) && imageUrl && imageUrl.trim().length > 0) {
-    processedParams.header = { media: { url: imageUrl.trim() } };
+    processedParams.header = {
+      media_url: imageUrl.trim(),
+      media_type: 'image',
+    };
   }
   return {
     name: template.name,

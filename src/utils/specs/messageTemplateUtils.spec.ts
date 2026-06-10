@@ -341,7 +341,7 @@ describe('buildTemplateParams', () => {
     });
   });
 
-  it('includes processed_params.header.media.url for image header templates', () => {
+  it('includes header.media_url and media_type for image header templates', () => {
     const template = normalized({
       header: { format: 'IMAGE' },
       body: '{{1}}',
@@ -354,7 +354,7 @@ describe('buildTemplateParams', () => {
       namespace: undefined,
       processed_params: {
         body: { '1': 'A' },
-        header: { media: { url: 'https://example.com/img.png' } },
+        header: { media_url: 'https://example.com/img.png', media_type: 'image' },
       },
     });
   });

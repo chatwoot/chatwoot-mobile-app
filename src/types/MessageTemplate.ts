@@ -82,6 +82,10 @@ export interface TemplateSendParams {
   namespace?: string;
   processed_params: {
     body: Record<string, string>;
-    header?: { media?: { url: string } };
+    header?: {
+      media_url: string;
+      media_type: 'image' | 'video' | 'document';
+      media_name?: string;
+    };
   };
 }

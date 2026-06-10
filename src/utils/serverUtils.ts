@@ -31,10 +31,8 @@ export function checkServerSupport({ installedVersion, userRole }: ServerSupport
   if (!minimumVersion || !installedVersion) {
     return;
   }
-  // Coerce loose versions (e.g. 4-segment "4.11.1.004") into valid semver
-  // before comparing; semver.lt throws TypeError on non-standard strings.
-  const installedSemver = semver.coerce(installedVersion);
-  const minimumSemver = semver.coerce(minimumVersion);
+  const installedSemver = semver.valid(installedVersion) ?? semver.coerce(installedVersion);
+  const minimumSemver = semver.valid(minimumVersion) ?? semver.coerce(minimumVersion);
   if (!installedSemver || !minimumSemver) {
     return;
   }

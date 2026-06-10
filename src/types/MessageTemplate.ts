@@ -56,6 +56,11 @@ export interface TwilioContentTemplates {
 
 export type TemplatePlatform = 'whatsapp' | 'twilio';
 
+export interface NormalizedTemplateHeader {
+  format: WhatsAppTemplateHeaderFormat;
+  text?: string;
+}
+
 export interface NormalizedTemplate {
   id: string;
   name: string;
@@ -66,6 +71,8 @@ export interface NormalizedTemplate {
   body: string;
   variables: string[];
   parameterFormat?: 'POSITIONAL' | 'NAMED';
+  header?: NormalizedTemplateHeader;
+  actions?: string[];
 }
 
 export interface TemplateSendParams {
@@ -73,5 +80,8 @@ export interface TemplateSendParams {
   category?: string;
   language: string;
   namespace?: string;
-  processed_params: { body: Record<string, string> };
+  processed_params: {
+    body: Record<string, string>;
+    header?: { media?: { url: string } };
+  };
 }

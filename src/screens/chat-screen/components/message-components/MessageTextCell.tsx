@@ -9,7 +9,6 @@ import { MarkdownDisplay } from './MarkdownDisplay';
 import { MESSAGE_STATUS, INBOX_TYPES, TEXT_MAX_WIDTH } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
 import { EmailMeta } from './EmailMeta';
-import { TemplateHeaderImage } from './TemplateHeaderImage';
 
 type MessageTextCellProps = {
   text: string;
@@ -26,7 +25,6 @@ type MessageTextCellProps = {
   errorMessage: string;
   sender: Message['sender'];
   contentAttributes: Message['contentAttributes'];
-  additionalAttributes?: Message['additionalAttributes'];
 };
 
 export const MessageTextCell = (props: MessageTextCellProps) => {
@@ -44,7 +42,6 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
     errorMessage,
     sender,
     contentAttributes,
-    additionalAttributes,
   } = props;
 
   // const [singleLineLongText, setSingleLineLongText] = useState(false);
@@ -104,7 +101,6 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
             : '',
         ),
       ]}>
-      <TemplateHeaderImage additionalAttributes={additionalAttributes} />
       {contentAttributes && <EmailMeta {...{ contentAttributes, sender }} />}
       <MarkdownDisplay {...{ isIncoming, isOutgoing, isMessageFailed }} messageContent={text} />
       {/* <Text

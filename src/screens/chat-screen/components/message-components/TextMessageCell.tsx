@@ -31,7 +31,6 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
     content,
     createdAt,
     contentAttributes,
-    additionalAttributes,
   } = messageItem;
   const { channel } = props;
   const isIncoming = messageItem.messageType === MESSAGE_TYPES.INCOMING;
@@ -92,7 +91,6 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
                     errorMessage={errorMessage}
                     sender={sender}
                     contentAttributes={contentAttributes}
-                    additionalAttributes={additionalAttributes}
                   />
                 ) : null}
                 {(isOutgoing && isSentByBot) || isTemplate ? (
@@ -106,7 +104,6 @@ export const TextMessageCell = (props: TextMessageCellProps) => {
                     sourceId={sourceId || ''}
                     isPrivate={isPrivate}
                     errorMessage={errorMessage}
-                    additionalAttributes={additionalAttributes}
                   />
                 ) : null}
                 {isActivity ? <ActivityTextCell text={content} timeStamp={createdAt} /> : null}

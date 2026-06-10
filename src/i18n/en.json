@@ -488,7 +488,12 @@
     "SELECT_TEMPLATE": "Select WhatsApp Template",
     "VARIABLES": "Variables",
     "SEND": "Send",
-    "NO_TEMPLATES": "No templates available"
+    "NO_TEMPLATES": "No templates available",
+    "NO_RESULTS": "No templates match your search",
+    "SEARCH_PLACEHOLDER": "Search for the template you want to send",
+    "IMAGE_URL": "Image URL",
+    "IMAGE_URL_PLACEHOLDER": "https://...",
+    "IMAGE_PREVIEW_FAILED": "Could not load image from URL"
   },
   "SEARCH": {
     "PLACEHOLDER": "Type 2 or more characters to search",

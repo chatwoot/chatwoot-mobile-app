@@ -137,6 +137,45 @@ describe('isSendableTemplate', () => {
       ),
     ).toBe(true);
   });
+
+  it('rejects templates with LOCATION header', () => {
+    expect(
+      isSendableTemplate(
+        baseTemplate({
+          components: [
+            { type: 'HEADER', format: 'LOCATION' },
+            { type: 'BODY', text: 'Hi {{1}}' },
+          ],
+        }),
+      ),
+    ).toBe(false);
+  });
+
+  it('rejects templates with unsupported component types', () => {
+    const cases = ['LIST', 'PRODUCT', 'CATALOG', 'CALL_PERMISSION_REQUEST'];
+    cases.forEach(type => {
+      expect(
+        isSendableTemplate(
+          baseTemplate({
+            components: [
+              { type: 'BODY', text: 'Hi {{1}}' },
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              { type: type as any },
+            ],
+          }),
+        ),
+      ).toBe(false);
+    });
+  });
+
+  it('rejects templates missing status or components', () => {
+    expect(
+      isSendableTemplate(baseTemplate({ status: '' as unknown as string })),
+    ).toBe(false);
+    expect(
+      isSendableTemplate(baseTemplate({ components: undefined as unknown as never })),
+    ).toBe(false);
+  });
 });
 
 describe('getTemplatesForInbox', () => {

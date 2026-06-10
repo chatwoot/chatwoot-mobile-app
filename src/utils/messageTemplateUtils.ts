@@ -9,6 +9,12 @@ import type {
 } from '@/types/MessageTemplate';
 
 const MEDIA_HEADER_FORMATS = new Set(['IMAGE', 'VIDEO', 'DOCUMENT']);
+const UNSUPPORTED_COMPONENT_TYPES = new Set([
+  'LIST',
+  'PRODUCT',
+  'CATALOG',
+  'CALL_PERMISSION_REQUEST',
+]);
 const VARIABLE_REGEX = /\{\{([^{}]+)\}\}/g;
 
 const findComponent = <T extends WhatsAppTemplateComponent['type']>(
@@ -57,9 +63,18 @@ export const renderTemplateLabel = (body: string): string => {
 };
 
 export const isSendableTemplate = (template: WhatsAppMessageTemplate): boolean => {
+  if (!template?.status || !Array.isArray(template?.components)) return false;
   if (!isApproved(template.status)) return false;
   if ((template.category || '').toUpperCase() === 'AUTHENTICATION') return false;
   if (isCsatTemplate(template.name || '')) return false;
+
+  const hasUnsupportedComponent = template.components.some(component => {
+    if (UNSUPPORTED_COMPONENT_TYPES.has(component.type)) return true;
+    if (component.type === 'HEADER' && component.format === 'LOCATION') return true;
+    return false;
+  });
+  if (hasUnsupportedComponent) return false;
+
   const body = findComponent(template, 'BODY');
   return Boolean(body?.text);
 };

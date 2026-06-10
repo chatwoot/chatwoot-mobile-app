@@ -66,6 +66,26 @@ export type MessageContentAttributes = {
   translations?: Record<string, string>;
 };
 
+export type MessageTemplateParams = {
+  name?: string;
+  category?: string;
+  language?: string;
+  namespace?: string;
+  processedParams?: {
+    body?: Record<string, string>;
+    header?: {
+      mediaUrl?: string;
+      mediaType?: 'image' | 'video' | 'document' | string;
+      mediaName?: string;
+    };
+  };
+};
+
+export type MessageAdditionalAttributes = {
+  templateParams?: MessageTemplateParams;
+  campaignId?: number;
+};
+
 export interface Message {
   id: number;
   attachments: ImageMetadata[];
@@ -88,4 +108,5 @@ export interface Message {
   groupWithNext?: boolean | false;
   groupWithPrevious?: boolean | false;
   senderType?: string;
+  additionalAttributes?: MessageAdditionalAttributes | null;
 }

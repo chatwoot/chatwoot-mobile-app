@@ -2,12 +2,13 @@ import React from 'react';
 import { Animated, Text } from 'react-native';
 
 import { tailwind } from '@/theme';
-import { Channel, MessageStatus, MessageType } from '@/types';
+import { Channel, Message, MessageStatus, MessageType } from '@/types';
 import { unixTimestampToReadableTime } from '@/utils';
 
 import { MarkdownDisplay } from './MarkdownDisplay';
 import { TEXT_MAX_WIDTH } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
+import { TemplateHeaderImage } from './TemplateHeaderImage';
 
 type BotTextCellProps = {
   text: string;
@@ -19,6 +20,7 @@ type BotTextCellProps = {
   sourceId?: string;
   isPrivate: boolean;
   errorMessage?: string;
+  additionalAttributes?: Message['additionalAttributes'];
 };
 export const BotTextCell = (props: BotTextCellProps) => {
   const {
@@ -31,6 +33,7 @@ export const BotTextCell = (props: BotTextCellProps) => {
     sourceId,
     isPrivate,
     errorMessage,
+    additionalAttributes,
   } = props;
 
   // const [singleLineLongText, setSingleLineLongText] = useState(false);
@@ -82,6 +85,7 @@ export const BotTextCell = (props: BotTextCellProps) => {
       >
         {text} 
       </Text> */}
+      <TemplateHeaderImage additionalAttributes={additionalAttributes} />
       <MarkdownDisplay isBotText messageContent={text} />
 
       <Animated.View

@@ -1,12 +1,17 @@
 import type { Inbox } from '@/types/Inbox';
-import type { WhatsAppMessageTemplate } from '@/types/MessageTemplate';
+import type { NormalizedTemplate, WhatsAppMessageTemplate } from '@/types/MessageTemplate';
 import {
   allVariablesFilled,
   buildTemplateParams,
+  canSendTemplate,
   extractVariables,
+  filterTemplatesByQuery,
+  getHeaderSubtitle,
   getTemplatesForInbox,
-  isWhatsAppTextOnlyTemplate,
+  isSendableTemplate,
+  renderTemplateLabel,
   renderTemplatePreview,
+  requiresImageUrl,
 } from '../messageTemplateUtils';
 
 const baseTemplate = (
@@ -23,6 +28,16 @@ const baseTemplate = (
       text: 'This is your flight confirmation from {{1}} to {{2}} for {{3}}',
     },
   ],
+  ...overrides,
+});
+
+const normalized = (overrides: Partial<NormalizedTemplate> = {}): NormalizedTemplate => ({
+  id: 't',
+  name: 't',
+  platform: 'whatsapp',
+  language: 'en',
+  body: '{{1}}',
+  variables: ['1'],
   ...overrides,
 });
 
@@ -55,28 +70,38 @@ describe('renderTemplatePreview', () => {
   });
 });
 
-describe('isWhatsAppTextOnlyTemplate', () => {
+describe('renderTemplateLabel', () => {
+  it('converts {{n}} placeholders to { n } for display', () => {
+    expect(renderTemplateLabel('From {{1}} to {{2}}')).toBe('From { 1 } to { 2 }');
+  });
+
+  it('handles named params', () => {
+    expect(renderTemplateLabel('Hi {{name}}')).toBe('Hi { name }');
+  });
+});
+
+describe('isSendableTemplate', () => {
   it('accepts approved text-body templates', () => {
-    expect(isWhatsAppTextOnlyTemplate(baseTemplate())).toBe(true);
+    expect(isSendableTemplate(baseTemplate())).toBe(true);
   });
 
   it('rejects non-approved templates', () => {
-    expect(isWhatsAppTextOnlyTemplate(baseTemplate({ status: 'pending' }))).toBe(false);
+    expect(isSendableTemplate(baseTemplate({ status: 'pending' }))).toBe(false);
   });
 
   it('rejects AUTHENTICATION category', () => {
-    expect(isWhatsAppTextOnlyTemplate(baseTemplate({ category: 'AUTHENTICATION' }))).toBe(false);
+    expect(isSendableTemplate(baseTemplate({ category: 'AUTHENTICATION' }))).toBe(false);
   });
 
   it('rejects CSAT survey templates by name prefix', () => {
-    expect(
-      isWhatsAppTextOnlyTemplate(baseTemplate({ name: 'customer_satisfaction_survey_v1' })),
-    ).toBe(false);
+    expect(isSendableTemplate(baseTemplate({ name: 'customer_satisfaction_survey_v1' }))).toBe(
+      false,
+    );
   });
 
-  it('rejects templates with media header', () => {
+  it('accepts templates with media header', () => {
     expect(
-      isWhatsAppTextOnlyTemplate(
+      isSendableTemplate(
         baseTemplate({
           components: [
             { type: 'HEADER', format: 'IMAGE' },
@@ -84,12 +109,12 @@ describe('isWhatsAppTextOnlyTemplate', () => {
           ],
         }),
       ),
-    ).toBe(false);
+    ).toBe(true);
   });
 
-  it('rejects templates with buttons', () => {
+  it('accepts templates with buttons', () => {
     expect(
-      isWhatsAppTextOnlyTemplate(
+      isSendableTemplate(
         baseTemplate({
           components: [
             { type: 'BODY', text: 'Hi {{1}}' },
@@ -97,12 +122,12 @@ describe('isWhatsAppTextOnlyTemplate', () => {
           ],
         }),
       ),
-    ).toBe(false);
+    ).toBe(true);
   });
 
   it('accepts templates with a TEXT header', () => {
     expect(
-      isWhatsAppTextOnlyTemplate(
+      isSendableTemplate(
         baseTemplate({
           components: [
             { type: 'HEADER', format: 'TEXT', text: 'Header' },
@@ -115,19 +140,32 @@ describe('isWhatsAppTextOnlyTemplate', () => {
 });
 
 describe('getTemplatesForInbox', () => {
-  it('returns whatsapp message templates normalized', () => {
+  it('normalizes whatsapp templates with header and action labels', () => {
     const inbox = {
-      messageTemplates: [baseTemplate()],
+      messageTemplates: [
+        baseTemplate({
+          name: 'delivery_failed',
+          components: [
+            { type: 'HEADER', format: 'TEXT', text: 'Could not deliver your order' },
+            { type: 'BODY', text: 'Hi {{1}}, your order {{2}} could not be delivered' },
+            {
+              type: 'BUTTONS',
+              buttons: [
+                { type: 'QUICK_REPLY', text: 'Manage delivery' },
+                { type: 'URL', text: 'Call us' },
+              ],
+            },
+          ],
+        }),
+      ],
     } as Inbox;
     const templates = getTemplatesForInbox(inbox);
     expect(templates).toHaveLength(1);
-    expect(templates[0]).toMatchObject({
-      id: 'sample_flight_confirmation',
-      name: 'sample_flight_confirmation',
-      platform: 'whatsapp',
-      language: 'en_US',
-      variables: ['1', '2', '3'],
+    expect(templates[0].header).toEqual({
+      format: 'TEXT',
+      text: 'Could not deliver your order',
     });
+    expect(templates[0].actions).toEqual(['Manage delivery', 'Call us']);
   });
 
   it('returns twilio content templates normalized', () => {
@@ -160,15 +198,88 @@ describe('getTemplatesForInbox', () => {
   });
 });
 
+describe('getHeaderSubtitle', () => {
+  it('returns header text for TEXT header', () => {
+    expect(getHeaderSubtitle(normalized({ header: { format: 'TEXT', text: 'Header text' } }))).toBe(
+      'Header text',
+    );
+  });
+
+  it('returns label for media headers', () => {
+    expect(getHeaderSubtitle(normalized({ header: { format: 'IMAGE' } }))).toBe('Image Header');
+    expect(getHeaderSubtitle(normalized({ header: { format: 'VIDEO' } }))).toBe('Video Header');
+    expect(getHeaderSubtitle(normalized({ header: { format: 'DOCUMENT' } }))).toBe(
+      'Document Header',
+    );
+  });
+
+  it('returns undefined when template has no header', () => {
+    expect(getHeaderSubtitle(normalized())).toBeUndefined();
+  });
+});
+
+describe('filterTemplatesByQuery', () => {
+  const templates = [
+    normalized({ id: 'a', name: 'flight_confirmation', body: 'Hi {{1}}' }),
+    normalized({ id: 'b', name: 'order_update', body: 'Your order has shipped' }),
+    normalized({
+      id: 'c',
+      name: 'delivery_failed',
+      body: 'Could not deliver',
+      actions: ['Call us'],
+    }),
+  ];
+
+  it('returns all templates for an empty query', () => {
+    expect(filterTemplatesByQuery(templates, '')).toHaveLength(3);
+    expect(filterTemplatesByQuery(templates, '   ')).toHaveLength(3);
+  });
+
+  it('matches against template name (case-insensitive)', () => {
+    expect(filterTemplatesByQuery(templates, 'FLIGHT').map(t => t.id)).toEqual(['a']);
+  });
+
+  it('matches against template body', () => {
+    expect(filterTemplatesByQuery(templates, 'shipped').map(t => t.id)).toEqual(['b']);
+  });
+
+  it('matches against action button labels', () => {
+    expect(filterTemplatesByQuery(templates, 'call us').map(t => t.id)).toEqual(['c']);
+  });
+});
+
+describe('canSendTemplate', () => {
+  it('returns true when all body vars are filled and no image is required', () => {
+    expect(canSendTemplate(normalized({ variables: ['1'] }), { '1': 'A' }, '')).toBe(true);
+  });
+
+  it('returns false when a body var is missing', () => {
+    expect(canSendTemplate(normalized({ variables: ['1'] }), {}, '')).toBe(false);
+  });
+
+  it('returns false when image header template has no URL', () => {
+    expect(
+      canSendTemplate(
+        normalized({ variables: ['1'], header: { format: 'IMAGE' } }),
+        { '1': 'A' },
+        '',
+      ),
+    ).toBe(false);
+  });
+
+  it('returns true when image header template has a URL', () => {
+    expect(
+      canSendTemplate(
+        normalized({ variables: ['1'], header: { format: 'IMAGE' } }),
+        { '1': 'A' },
+        'https://example.com/img.png',
+      ),
+    ).toBe(true);
+  });
+});
+
 describe('allVariablesFilled', () => {
-  const template = {
-    id: 't',
-    name: 't',
-    platform: 'whatsapp' as const,
-    language: 'en',
-    body: 'Hi {{1}} {{2}}',
-    variables: ['1', '2'],
-  };
+  const template = normalized({ body: 'Hi {{1}} {{2}}', variables: ['1', '2'] });
 
   it('returns true when every variable has a non-empty value', () => {
     expect(allVariablesFilled(template, { '1': 'A', '2': 'B' })).toBe(true);
@@ -183,18 +294,33 @@ describe('allVariablesFilled', () => {
   });
 });
 
+describe('requiresImageUrl', () => {
+  it('returns true for image header templates', () => {
+    expect(requiresImageUrl(normalized({ header: { format: 'IMAGE' } }))).toBe(true);
+  });
+
+  it('returns false for text, video, document headers', () => {
+    expect(requiresImageUrl(normalized({ header: { format: 'TEXT' } }))).toBe(false);
+    expect(requiresImageUrl(normalized({ header: { format: 'VIDEO' } }))).toBe(false);
+    expect(requiresImageUrl(normalized({ header: { format: 'DOCUMENT' } }))).toBe(false);
+  });
+
+  it('returns false when no header', () => {
+    expect(requiresImageUrl(normalized())).toBe(false);
+  });
+});
+
 describe('buildTemplateParams', () => {
   it('builds the payload shape expected by the backend processor', () => {
-    const template = {
+    const template = normalized({
       id: 'sample_flight_confirmation',
       name: 'sample_flight_confirmation',
-      platform: 'whatsapp' as const,
       language: 'en_US',
       category: 'UTILITY',
       namespace: 'ns-1',
       body: 'From {{1}} to {{2}}',
       variables: ['1', '2'],
-    };
+    });
     expect(buildTemplateParams(template, { '1': 'NYC', '2': 'SFO' })).toEqual({
       name: 'sample_flight_confirmation',
       category: 'UTILITY',
@@ -205,20 +331,42 @@ describe('buildTemplateParams', () => {
   });
 
   it('handles missing values as empty strings', () => {
-    const template = {
-      id: 't',
-      name: 't',
-      platform: 'whatsapp' as const,
-      language: 'en',
-      body: '{{1}}',
-      variables: ['1'],
-    };
+    const template = normalized({ body: '{{1}}', variables: ['1'] });
     expect(buildTemplateParams(template, {})).toEqual({
       name: 't',
       category: undefined,
       language: 'en',
       namespace: undefined,
       processed_params: { body: { '1': '' } },
+    });
+  });
+
+  it('includes processed_params.header.media.url for image header templates', () => {
+    const template = normalized({
+      header: { format: 'IMAGE' },
+      body: '{{1}}',
+      variables: ['1'],
+    });
+    expect(buildTemplateParams(template, { '1': 'A' }, '  https://example.com/img.png  ')).toEqual({
+      name: 't',
+      category: undefined,
+      language: 'en',
+      namespace: undefined,
+      processed_params: {
+        body: { '1': 'A' },
+        header: { media: { url: 'https://example.com/img.png' } },
+      },
+    });
+  });
+
+  it('does not include header for non-image templates even if URL passed', () => {
+    const template = normalized({ body: '{{1}}', variables: ['1'] });
+    expect(buildTemplateParams(template, { '1': 'A' }, 'https://example.com/img.png')).toEqual({
+      name: 't',
+      category: undefined,
+      language: 'en',
+      namespace: undefined,
+      processed_params: { body: { '1': 'A' } },
     });
   });
 });

@@ -17,9 +17,9 @@ import { useChatWindowContext, useRefsContext } from '@/context';
 import {
   AttachFileIcon,
   CameraIcon,
-  CannedResponseIcon,
   MacrosIcon,
   PhotosIcon,
+  WhatsAppMonochromeIcon,
 } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { isAWhatsAppChannel, useHaptic, useScaleAnimation } from '@/utils';
@@ -181,8 +181,8 @@ const ADD_MENU_OPTIONS = [
 ];
 
 const TEMPLATES_MENU_OPTION = {
-  icon: <CannedResponseIcon />,
-  title: 'Templates',
+  icon: <WhatsAppMonochromeIcon />,
+  title: 'Whatsapp Templates',
   handlePress: () => {},
 };
 
@@ -214,7 +214,7 @@ const MenuOption = (props: MenuOptionProps) => {
     if (menuOption.title === 'Macros') {
       macrosListSheetRef.current?.present();
     }
-    if (menuOption.title === 'Templates') {
+    if (menuOption.title === 'Whatsapp Templates') {
       contentTemplatesSheetRef.current?.present();
     }
   };

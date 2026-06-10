@@ -169,12 +169,10 @@ describe('isSendableTemplate', () => {
   });
 
   it('rejects templates missing status or components', () => {
-    expect(
-      isSendableTemplate(baseTemplate({ status: '' as unknown as string })),
-    ).toBe(false);
-    expect(
-      isSendableTemplate(baseTemplate({ components: undefined as unknown as never })),
-    ).toBe(false);
+    expect(isSendableTemplate(baseTemplate({ status: '' as unknown as string }))).toBe(false);
+    expect(isSendableTemplate(baseTemplate({ components: undefined as unknown as never }))).toBe(
+      false,
+    );
   });
 });
 

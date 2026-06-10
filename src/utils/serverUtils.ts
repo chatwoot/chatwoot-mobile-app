@@ -31,7 +31,14 @@ export function checkServerSupport({ installedVersion, userRole }: ServerSupport
   if (!minimumVersion || !installedVersion) {
     return;
   }
-  const shouldShowServerUpgradeWarning = semver.lt(installedVersion, minimumVersion);
+  // Coerce loose versions (e.g. 4-segment "4.11.1.004") into valid semver
+  // before comparing; semver.lt throws TypeError on non-standard strings.
+  const installedSemver = semver.coerce(installedVersion);
+  const minimumSemver = semver.coerce(minimumVersion);
+  if (!installedSemver || !minimumSemver) {
+    return;
+  }
+  const shouldShowServerUpgradeWarning = semver.lt(installedSemver, minimumSemver);
   if (shouldShowServerUpgradeWarning) {
     if (userRole === 'administrator') {
       Alert.alert(

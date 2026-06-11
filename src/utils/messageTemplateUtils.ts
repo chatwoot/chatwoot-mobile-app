@@ -74,9 +74,7 @@ const hasUrlButtonWithVariable = (component: WhatsAppTemplateComponent): boolean
 
 const hasUnsupportedButton = (component: WhatsAppTemplateComponent): boolean => {
   if (component.type !== 'BUTTONS') return false;
-  return (component.buttons || []).some(button =>
-    UNSUPPORTED_BUTTON_TYPES.has(button.type),
-  );
+  return (component.buttons || []).some(button => UNSUPPORTED_BUTTON_TYPES.has(button.type));
 };
 
 export const isSendableTemplate = (template: WhatsAppMessageTemplate): boolean => {

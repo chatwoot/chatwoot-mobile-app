@@ -1,19 +1,13 @@
 import React, { useMemo, useState } from 'react';
-import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import {
-  BottomSheetModal,
-  BottomSheetScrollView,
-  BottomSheetTextInput,
-} from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
-import { BottomSheetBackdrop, Icon } from '@/components-next';
+import { BottomSheetBackdrop } from '@/components-next';
 import i18n from '@/i18n';
 import { useRefsContext } from '@/context';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { tailwind } from '@/theme';
 import { NormalizedTemplate, TemplateSendParams } from '@/types';
-import { SearchIcon } from '@/svg-icons';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { selectUserId, selectUserThumbnail } from '@/store/auth/authSelectors';
@@ -22,10 +16,22 @@ import { filterTemplatesByQuery, getTemplatesForInbox } from '@/utils/messageTem
 
 import ContentTemplateItem from './ContentTemplateItem';
 import ContentTemplateForm from './ContentTemplateForm';
+import TemplateSearchBar from './TemplateSearchBar';
 
 type ContentTemplatesListProps = {
   conversationId: number;
 };
+
+const EmptyState = ({ label }: { label: string }) => (
+  <Animated.View style={tailwind.style('flex-1 items-center justify-center px-6 pt-6')}>
+    <Animated.Text
+      style={tailwind.style(
+        'text-md font-inter-420-20 tracking-[0.16px] text-gray-700 text-center',
+      )}>
+      {label}
+    </Animated.Text>
+  </Animated.View>
+);
 
 export const ContentTemplatesList = ({ conversationId }: ContentTemplatesListProps) => {
   const dispatch = useAppDispatch();
@@ -45,14 +51,13 @@ export const ContentTemplatesList = ({ conversationId }: ContentTemplatesListPro
     [templates, searchQuery],
   );
 
-  const handleDismiss = () => {
+  const resetLocalState = () => {
     setSelectedTemplate(null);
     setSearchQuery('');
   };
 
   const handleClose = () => {
-    setSelectedTemplate(null);
-    setSearchQuery('');
+    resetLocalState();
     contentTemplatesSheetRef.current?.dismiss({ overshootClamping: true });
   };
 
@@ -80,28 +85,10 @@ export const ContentTemplatesList = ({ conversationId }: ContentTemplatesListPro
 
   const renderListBody = () => {
     if (templates.length === 0) {
-      return (
-        <Animated.View style={tailwind.style('flex-1 items-center justify-center px-6')}>
-          <Animated.Text
-            style={tailwind.style(
-              'text-md font-inter-420-20 tracking-[0.16px] text-gray-700 text-center',
-            )}>
-            {i18n.t('CONTENT_TEMPLATE.NO_TEMPLATES')}
-          </Animated.Text>
-        </Animated.View>
-      );
+      return <EmptyState label={i18n.t('CONTENT_TEMPLATE.NO_TEMPLATES')} />;
     }
     if (filteredTemplates.length === 0) {
-      return (
-        <Animated.View style={tailwind.style('flex-1 items-center justify-center px-6 pt-6')}>
-          <Animated.Text
-            style={tailwind.style(
-              'text-md font-inter-420-20 tracking-[0.16px] text-gray-700 text-center',
-            )}>
-            {i18n.t('CONTENT_TEMPLATE.NO_RESULTS')}
-          </Animated.Text>
-        </Animated.View>
-      );
+      return <EmptyState label={i18n.t('CONTENT_TEMPLATE.NO_RESULTS')} />;
     }
     return (
       <BottomSheetScrollView
@@ -125,7 +112,7 @@ export const ContentTemplatesList = ({ conversationId }: ContentTemplatesListPro
       <BottomSheetModal
         ref={contentTemplatesSheetRef}
         backdropComponent={BottomSheetBackdrop}
-        onDismiss={handleDismiss}
+        onDismiss={resetLocalState}
         handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
         handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
         style={tailwind.style('rounded-t-[26px] overflow-hidden')}
@@ -144,25 +131,7 @@ export const ContentTemplatesList = ({ conversationId }: ContentTemplatesListPro
           ) : (
             <Animated.View style={tailwind.style('flex-1')}>
               {templates.length > 0 && (
-                <View style={tailwind.style('px-3 pb-1')}>
-                  <View
-                    style={tailwind.style(
-                      'h-9 flex-row items-center gap-[6px] px-[10px] rounded-[11px] bg-blackA-A3',
-                    )}>
-                    <Icon icon={<SearchIcon />} size={18} />
-                    <BottomSheetTextInput
-                      value={searchQuery}
-                      onChangeText={setSearchQuery}
-                      placeholder={i18n.t('CONTENT_TEMPLATE.SEARCH_PLACEHOLDER')}
-                      placeholderTextColor={tailwind.color('text-gray-600')}
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      style={tailwind.style(
-                        'flex-1 text-base font-inter-420-20 tracking-[0.24px] text-gray-950 p-0',
-                      )}
-                    />
-                  </View>
-                </View>
+                <TemplateSearchBar value={searchQuery} onChangeText={setSearchQuery} />
               )}
               {renderListBody()}
             </Animated.View>

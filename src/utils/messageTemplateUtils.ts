@@ -63,6 +63,36 @@ export const renderTemplateLabel = (body: string): string => {
   return body.replace(VARIABLE_REGEX, (_match, rawKey) => `{ ${rawKey.trim()} }`);
 };
 
+export type PreviewSegment = { text: string; filled: boolean };
+
+export const buildPreviewSegments = (
+  body: string,
+  values: Record<string, string>,
+): PreviewSegment[] => {
+  if (!body) return [];
+  const segments: PreviewSegment[] = [];
+  const regex = new RegExp(VARIABLE_REGEX.source, 'g');
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  while ((match = regex.exec(body)) !== null) {
+    if (match.index > lastIndex) {
+      segments.push({ text: body.slice(lastIndex, match.index), filled: false });
+    }
+    const key = match[1].trim();
+    const value = values[key];
+    if (value && value.length > 0) {
+      segments.push({ text: value, filled: true });
+    } else {
+      segments.push({ text: `{{${key}}}`, filled: false });
+    }
+    lastIndex = regex.lastIndex;
+  }
+  if (lastIndex < body.length) {
+    segments.push({ text: body.slice(lastIndex), filled: false });
+  }
+  return segments;
+};
+
 const hasUrlButtonWithVariable = (component: WhatsAppTemplateComponent): boolean => {
   if (component.type !== 'BUTTONS') return false;
   return (component.buttons || []).some(button => {

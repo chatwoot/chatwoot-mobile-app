@@ -58,7 +58,6 @@ export const renderTemplatePreview = (body: string, values: Record<string, strin
   });
 };
 
-// Display form used by the list view, where `{{1}}` is shown as `{ 1 }`.
 export const renderTemplateLabel = (body: string): string => {
   if (!body) return '';
   return body.replace(VARIABLE_REGEX, (_match, rawKey) => `{ ${rawKey.trim()} }`);

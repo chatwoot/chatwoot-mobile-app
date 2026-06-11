@@ -15,6 +15,8 @@ const UNSUPPORTED_COMPONENT_TYPES = new Set([
   'CATALOG',
   'CALL_PERMISSION_REQUEST',
 ]);
+const UNSUPPORTED_HEADER_FORMATS = new Set(['VIDEO', 'DOCUMENT', 'LOCATION']);
+const UNSUPPORTED_BUTTON_TYPES = new Set(['COPY_CODE']);
 const VARIABLE_REGEX = /\{\{([^{}]+)\}\}/g;
 
 const findComponent = <T extends WhatsAppTemplateComponent['type']>(
@@ -62,6 +64,21 @@ export const renderTemplateLabel = (body: string): string => {
   return body.replace(VARIABLE_REGEX, (_match, rawKey) => `{ ${rawKey.trim()} }`);
 };
 
+const hasUrlButtonWithVariable = (component: WhatsAppTemplateComponent): boolean => {
+  if (component.type !== 'BUTTONS') return false;
+  return (component.buttons || []).some(button => {
+    if (button.type !== 'URL') return false;
+    return Boolean(button.url && button.url.includes('{{'));
+  });
+};
+
+const hasUnsupportedButton = (component: WhatsAppTemplateComponent): boolean => {
+  if (component.type !== 'BUTTONS') return false;
+  return (component.buttons || []).some(button =>
+    UNSUPPORTED_BUTTON_TYPES.has(button.type),
+  );
+};
+
 export const isSendableTemplate = (template: WhatsAppMessageTemplate): boolean => {
   if (!template?.status || !Array.isArray(template?.components)) return false;
   if (!isApproved(template.status)) return false;
@@ -70,7 +87,11 @@ export const isSendableTemplate = (template: WhatsAppMessageTemplate): boolean =
 
   const hasUnsupportedComponent = template.components.some(component => {
     if (UNSUPPORTED_COMPONENT_TYPES.has(component.type)) return true;
-    if (component.type === 'HEADER' && component.format === 'LOCATION') return true;
+    if (component.type === 'HEADER' && component.format) {
+      if (UNSUPPORTED_HEADER_FORMATS.has(component.format)) return true;
+    }
+    if (hasUnsupportedButton(component)) return true;
+    if (hasUrlButtonWithVariable(component)) return true;
     return false;
   });
   if (hasUnsupportedComponent) return false;

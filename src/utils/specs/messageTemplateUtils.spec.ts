@@ -174,6 +174,77 @@ describe('isSendableTemplate', () => {
       false,
     );
   });
+
+  it('rejects templates with VIDEO header (not supported by mobile form)', () => {
+    expect(
+      isSendableTemplate(
+        baseTemplate({
+          components: [
+            { type: 'HEADER', format: 'VIDEO' },
+            { type: 'BODY', text: 'Hi {{1}}' },
+          ],
+        }),
+      ),
+    ).toBe(false);
+  });
+
+  it('rejects templates with DOCUMENT header (not supported by mobile form)', () => {
+    expect(
+      isSendableTemplate(
+        baseTemplate({
+          components: [
+            { type: 'HEADER', format: 'DOCUMENT' },
+            { type: 'BODY', text: 'Hi {{1}}' },
+          ],
+        }),
+      ),
+    ).toBe(false);
+  });
+
+  it('rejects templates with COPY_CODE buttons (no payload support)', () => {
+    expect(
+      isSendableTemplate(
+        baseTemplate({
+          components: [
+            { type: 'BODY', text: 'Hi {{1}}' },
+            { type: 'BUTTONS', buttons: [{ type: 'COPY_CODE', text: 'Copy code' }] },
+          ],
+        }),
+      ),
+    ).toBe(false);
+  });
+
+  it('rejects templates with URL buttons containing variables', () => {
+    expect(
+      isSendableTemplate(
+        baseTemplate({
+          components: [
+            { type: 'BODY', text: 'Hi {{1}}' },
+            {
+              type: 'BUTTONS',
+              buttons: [{ type: 'URL', text: 'Visit', url: 'https://x.com/{{1}}' }],
+            },
+          ],
+        }),
+      ),
+    ).toBe(false);
+  });
+
+  it('accepts templates with static URL buttons (no variable in url)', () => {
+    expect(
+      isSendableTemplate(
+        baseTemplate({
+          components: [
+            { type: 'BODY', text: 'Hi {{1}}' },
+            {
+              type: 'BUTTONS',
+              buttons: [{ type: 'URL', text: 'Visit', url: 'https://x.com/static' }],
+            },
+          ],
+        }),
+      ),
+    ).toBe(true);
+  });
 });
 
 describe('getTemplatesForInbox', () => {

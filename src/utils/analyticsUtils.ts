@@ -44,6 +44,11 @@ class AnalyticsHelper {
     }
   }
 
+  // Analytics is non-critical: swallow network/request failures so a flaky
+  // connection never surfaces as an unhandled promise rejection (reported to
+  // Sentry as "AxiosError: Network Error").
+  private silenceError(): void {}
+
   private identifyUser() {
     return this.APIHelper.post('identify', {
       userId: this.user.id,
@@ -53,7 +58,7 @@ class AnalyticsHelper {
         avatar: this.user.avatar_url,
       },
       timestamp: new Date(),
-    });
+    }).catch(this.silenceError);
   }
 
   private identifyGroup() {
@@ -66,7 +71,7 @@ class AnalyticsHelper {
           name: currentAccount.name,
         },
         timestamp: new Date(),
-      });
+      }).catch(this.silenceError);
     }
   }
 
@@ -89,7 +94,7 @@ class AnalyticsHelper {
         context: {
           groupId: currentAccount ? currentAccount.id : '',
         },
-      });
+      }).catch(this.silenceError);
     }
   }
 }

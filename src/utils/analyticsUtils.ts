@@ -44,9 +44,7 @@ class AnalyticsHelper {
     }
   }
 
-  // Analytics is non-critical: swallow network/request failures so a flaky
-  // connection never surfaces as an unhandled promise rejection (reported to
-  // Sentry as "AxiosError: Network Error").
+  // Suppress failures: analytics is non-critical and must not throw.
   private silenceError(): void {}
 
   private identifyUser() {

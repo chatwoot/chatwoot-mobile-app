@@ -135,6 +135,7 @@ export const INBOX_TYPES = {
   LINE: 'Channel::Line',
   SMS: 'Channel::Sms',
   INSTAGRAM: 'Channel::Instagram',
+  TIKTOK: 'Channel::Tiktok',
 };
 
 export const INBOX_FEATURES = {
@@ -168,6 +169,7 @@ export const LANGUAGES = {
   fa: 'Farsi',
   fi: 'Finnish',
   fr: 'French',
+  he: 'Hebrew',
   hu: 'Hungarian',
   it: 'Italian',
   ja: 'Japanese',
@@ -186,7 +188,8 @@ export const LANGUAGES = {
   tr: 'Turkish',
   uk: 'Ukrainian',
   vi: 'Vietnamese',
-  zh: 'Chinese',
+  zh_CN: 'Chinese (Simplified)',
+  zh_TW: 'Chinese (Traditional)',
 };
 
 export const URL_REGEX = {

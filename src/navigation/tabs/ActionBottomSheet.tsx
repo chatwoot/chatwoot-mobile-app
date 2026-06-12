@@ -32,7 +32,7 @@ const ActionBottomSheet = () => {
   const actionSnapPoints = useMemo(() => {
     switch (currentActionState) {
       case 'Assign':
-        return ['50%'];
+        return [400];
       case 'Status':
         return [250];
       case 'Label':
@@ -40,7 +40,7 @@ const ActionBottomSheet = () => {
       case 'Priority':
         return [300];
       case 'TeamAssign':
-        return ['50%'];
+        return [400];
       default:
         return [250];
     }
@@ -59,6 +59,7 @@ const ActionBottomSheet = () => {
       style={tailwind.style('rounded-[26px] overflow-hidden')}
       animationConfigs={animationConfigs}
       enablePanDownToClose
+      enableDynamicSizing={false}
       snapPoints={actionSnapPoints}
       onDismiss={handleOnDismiss}>
       {currentActionState === 'Assign' ? <UpdateAssignee /> : null}

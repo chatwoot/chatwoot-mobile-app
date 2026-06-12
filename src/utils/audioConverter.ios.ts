@@ -32,8 +32,10 @@ export const convertOggToWav = async (oggUrl: string): Promise<string | Error> =
     );
 
     // Clean up the temporary OGG file
-    if (await RNFS.exists(tempOggPath)) {
+    try {
       await RNFS.unlink(tempOggPath);
+    } catch {
+      // File may already be cleaned up
     }
 
     // Verify output file exists

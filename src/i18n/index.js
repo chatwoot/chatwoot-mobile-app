@@ -12,6 +12,7 @@ import es from './es.json';
 import fa from './fa.json';
 import fi from './fi.json';
 import fr from './fr.json';
+import he from './he.json';
 import hu from './hu.json';
 import id from './id.json';
 import it from './it.json';
@@ -31,7 +32,8 @@ import ta from './ta.json';
 import tr from './tr.json';
 import uk from './uk.json';
 import vi from './vi.json';
-import zh from './zh.json';
+import zh_CN from './zh_CN.json';
+import zh_TW from './zh_TW.json';
 
 i18n.locale = 'en';
 i18n.fallbacks = true;
@@ -48,6 +50,7 @@ i18n.translations = {
   fa,
   fi,
   fr,
+  he,
   hu,
   id,
   it,
@@ -67,7 +70,9 @@ i18n.translations = {
   tr,
   uk,
   vi,
-  zh,
+  zh_CN,
+  zh_TW,
+  zh: zh_CN,
 };
 
 export default i18n;

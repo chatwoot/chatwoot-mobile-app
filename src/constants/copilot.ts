@@ -1,0 +1,25 @@
+export const COPILOT_ACTIONS = {
+  PROFESSIONAL: 'professional',
+  CASUAL: 'casual',
+  STRAIGHTFORWARD: 'straightforward',
+  CONFIDENT: 'confident',
+  FRIENDLY: 'friendly',
+  FIX_SPELLING_GRAMMAR: 'fix_spelling_grammar',
+  IMPROVE: 'improve',
+  REPLY_SUGGESTION: 'reply_suggestion',
+  SUMMARIZE: 'summarize',
+} as const;
+
+export const TONE_ACTIONS = [
+  COPILOT_ACTIONS.PROFESSIONAL,
+  COPILOT_ACTIONS.CASUAL,
+  COPILOT_ACTIONS.STRAIGHTFORWARD,
+  COPILOT_ACTIONS.CONFIDENT,
+  COPILOT_ACTIONS.FRIENDLY,
+];
+
+export const REWRITE_ACTIONS = [
+  ...TONE_ACTIONS,
+  COPILOT_ACTIONS.FIX_SPELLING_GRAMMAR,
+  COPILOT_ACTIONS.IMPROVE,
+];

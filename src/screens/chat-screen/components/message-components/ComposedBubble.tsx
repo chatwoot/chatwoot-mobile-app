@@ -73,7 +73,7 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
           <ReplyMessageBubble replyMessage={replyMessage} variant={props.variant} />
         ) : null}
         {content && <MarkdownBubble messageContent={content} variant={props.variant} />}
-        {isMessageSending && (
+        {isMessageSending && props.item.attachments && props.item.attachments.length > 0 && (
           <Animated.View style={tailwind.style('flex h-8 w-16 items-center justify-center')}>
             <Spinner size={12} stroke={tailwind.color('text-gray-900')} />
           </Animated.View>

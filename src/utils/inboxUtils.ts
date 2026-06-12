@@ -10,6 +10,7 @@ export const INBOX_FEATURE_MAP = {
     INBOX_TYPES.TWITTER,
     INBOX_TYPES.WHATSAPP,
     INBOX_TYPES.TELEGRAM,
+    INBOX_TYPES.TIKTOK,
     INBOX_TYPES.API,
   ],
   [INBOX_FEATURES.REPLY_TO_OUTGOING]: [
@@ -17,6 +18,7 @@ export const INBOX_FEATURE_MAP = {
     INBOX_TYPES.TWITTER,
     INBOX_TYPES.WHATSAPP,
     INBOX_TYPES.TELEGRAM,
+    INBOX_TYPES.TIKTOK,
     INBOX_TYPES.API,
   ],
 };
@@ -64,11 +66,8 @@ export const isAWhatsAppChannel = (inbox: Inbox | undefined) => {
   return inbox?.channelType === INBOX_TYPES.WHATSAPP || isATwilioWhatsAppChannel(inbox);
 };
 
-export const is360DialogWhatsAppChannel = (inboxType?: string) => {
-  if (!inboxType) {
-    return false;
-  }
-  return inboxType === INBOX_TYPES.WHATSAPP && inboxType === 'default';
+export const is360DialogWhatsAppChannel = (inbox: Inbox | undefined) => {
+  return inbox?.channelType === INBOX_TYPES.WHATSAPP && whatsAppAPIProvider(inbox) === 'default';
 };
 
 export const isATwilioWhatsAppChannel = (inbox: Inbox | undefined) => {
@@ -85,10 +84,19 @@ export const isASmsInbox = (inbox: Inbox | undefined) => {
   return inbox?.channelType === INBOX_TYPES.SMS || isATwilioSMSChannel(inbox);
 };
 
-export const whatsAppAPIProvider = (inbox: Inbox) => {
-  return inbox.provider || '';
+export const whatsAppAPIProvider = (inbox: Inbox | undefined) => {
+  return inbox?.provider || '';
 };
 
 export const isAnInstagramChannel = (inbox: Inbox | undefined) => {
   return inbox?.channelType === INBOX_TYPES.INSTAGRAM;
+};
+
+export const inboxSupportsReplyTo = (inbox: Inbox | undefined) => {
+  const channelType = inbox?.channelType;
+  const incoming = inboxHasFeature(INBOX_FEATURES.REPLY_TO, channelType);
+  const outgoing =
+    inboxHasFeature(INBOX_FEATURES.REPLY_TO_OUTGOING, channelType) &&
+    !is360DialogWhatsAppChannel(inbox);
+  return { incoming, outgoing };
 };

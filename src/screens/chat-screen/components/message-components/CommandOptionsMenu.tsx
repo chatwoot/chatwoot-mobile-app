@@ -1,6 +1,12 @@
 import React from 'react';
 import { Alert, Linking, Platform, Pressable, Text } from 'react-native';
-import DocumentPicker, { DocumentPickerResponse } from 'react-native-document-picker';
+import {
+  pick,
+  types as documentPickerTypes,
+  errorCodes as documentPickerErrorCodes,
+  isErrorWithCode,
+  type DocumentPickerResponse,
+} from '@react-native-documents/picker';
 import { Asset, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
@@ -113,29 +119,29 @@ const mapObject = (originalObject: DocumentPickerResponse): Asset[] => {
 
 const handleAttachFile = async dispatch => {
   try {
-    const result = await DocumentPicker.pick({
+    const result = await pick({
       type: [
-        DocumentPicker.types.allFiles,
-        DocumentPicker.types.images,
-        DocumentPicker.types.plainText,
-        DocumentPicker.types.audio,
-        DocumentPicker.types.pdf,
-        DocumentPicker.types.zip,
-        DocumentPicker.types.csv,
-        DocumentPicker.types.doc,
-        DocumentPicker.types.docx,
-        DocumentPicker.types.ppt,
-        DocumentPicker.types.pptx,
-        DocumentPicker.types.xls,
-        DocumentPicker.types.xlsx,
-      ], // You can specify the file types you want to allow
+        documentPickerTypes.allFiles,
+        documentPickerTypes.images,
+        documentPickerTypes.plainText,
+        documentPickerTypes.audio,
+        documentPickerTypes.pdf,
+        documentPickerTypes.zip,
+        documentPickerTypes.csv,
+        documentPickerTypes.doc,
+        documentPickerTypes.docx,
+        documentPickerTypes.ppt,
+        documentPickerTypes.pptx,
+        documentPickerTypes.xls,
+        documentPickerTypes.xlsx,
+      ],
       presentationStyle: 'formSheet',
     });
     // TODO: Support multiple files
     const file = mapObject(result[0])[0];
     validateFileAndSetAttachments(dispatch, file);
   } catch (err) {
-    if (DocumentPicker.isCancel(err)) {
+    if (isErrorWithCode(err) && err.code === documentPickerErrorCodes.OPERATION_CANCELED) {
       // User cancelled the picker
     } else {
       throw err;

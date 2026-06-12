@@ -6,7 +6,7 @@ export const getCurrentAccount = (
   user: User = {} as User,
   accountId: number | null = null,
 ): Account | undefined => {
-  const accounts = user.accounts || [];
+  const accounts = user?.accounts || [];
   return accounts.find(account => Number(account.id) === Number(accountId));
 };
 

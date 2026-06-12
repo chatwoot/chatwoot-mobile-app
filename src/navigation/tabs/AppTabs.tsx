@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
+import { Platform } from 'react-native';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -23,6 +24,7 @@ import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stac
 import ChatScreen from '@/screens/chat-screen/ChatScreen';
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
+import SearchScreen from '@/screens/search/SearchScreen';
 
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { BottomTabBar } from './BottomTabBar';
@@ -54,8 +56,13 @@ export type TabParamList = {
 
 export type TabBarExcludedScreenParamList = {
   Tab: undefined;
-  ChatScreen: { conversationId: number; primaryActorId?: number; primaryActorType?: string };
-  ContactDetails: { conversationId: number };
+  ChatScreen: {
+    conversationId: number;
+    primaryActorId?: number;
+    primaryActorType?: string;
+    messageId?: number;
+  };
+  ContactDetails: { conversationId?: number; contactId?: number };
   ConversationActions: undefined;
   Dashboard: { url: string };
   Login: undefined;
@@ -183,7 +190,7 @@ export const AppTabs = () => {
         />
         <Stack.Screen
           options={{
-            presentation: 'formSheet',
+            presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
             animation: 'slide_from_bottom',
           }}
           name="ContactDetails"
@@ -191,11 +198,16 @@ export const AppTabs = () => {
         />
         <Stack.Screen
           options={{
-            presentation: 'formSheet',
+            presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
             animation: 'slide_from_bottom',
           }}
           name="Dashboard"
           component={DashboardScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false, animation: 'slide_from_right' }}
+          name="SearchScreen"
+          component={SearchScreen}
         />
       </Stack.Navigator>
     );

@@ -27,6 +27,8 @@ import { ConversationFilterBar } from '../conversation-filters';
 import { ConversationHeaderPresenter } from './ConversationHeaderPresenter';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useNavigation } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 
 const getFiltersAppliedCount = (defaultState: FilterState, updatedState: FilterState): number => {
   let count = 0;
@@ -45,6 +47,7 @@ export const ConversationHeader = () => {
   const filters = useAppSelector(selectFilters);
   const dispatch = useAppDispatch();
   const userId = useAppSelector(selectUserId);
+  const navigation = useNavigation();
 
   const { openedRowIndex } = useConversationListStateContext();
 
@@ -85,16 +88,16 @@ export const ConversationHeader = () => {
   }, [currentState, openedRowIndex]);
 
   const handleLeftIconPress = () => {
-    if (currentState === 'Search') {
-      dispatch(setCurrentState('none'));
-    } else if (currentState === 'Select') {
+    if (currentState === 'Select') {
       if (isSelectedAll) {
         dispatch(clearSelection());
       } else {
         dispatch(selectAll(allConversations));
       }
     } else {
-      dispatch(setCurrentState('Search'));
+      // Navigate to search screen
+      const pushToSearchScreen = StackActions.push('SearchScreen');
+      navigation.dispatch(pushToSearchScreen);
     }
   };
 

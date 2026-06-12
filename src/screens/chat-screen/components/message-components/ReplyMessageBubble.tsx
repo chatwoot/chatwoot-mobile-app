@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { useRefsContext } from '@/context';
+import { useChatWindowContext } from '@/context';
 import { AttachFileIcon, CameraIcon, VideoCall, VoiceNote } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
@@ -24,7 +24,7 @@ const variantBaseMap = {
 export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
   const replyMessageItem = props.replyMessage as Message;
 
-  const { messageListRef } = useRefsContext();
+  const { setScrollToMessageId } = useChatWindowContext();
 
   const hasAttachments = useMemo(
     () => replyMessageItem?.attachments?.length > 0,
@@ -47,13 +47,11 @@ export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
   };
 
   const handleScrollToMessage = useCallback(() => {
-    messageListRef.current?.scrollToItem({
-      item: replyMessageItem,
-      animated: true,
-      viewPosition: 0.5,
-    });
+    if (replyMessageItem?.id) {
+      setScrollToMessageId(replyMessageItem.id);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [replyMessageItem?.id]);
 
   return (
     <Pressable

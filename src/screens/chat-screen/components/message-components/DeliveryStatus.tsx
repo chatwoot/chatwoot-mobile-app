@@ -56,6 +56,8 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
   const shouldShowStatusIndicator =
     (messageType === MESSAGE_TYPES.OUTGOING || isTemplate) && !isPrivate;
   const isALineChannel = channel === INBOX_TYPES.LINE;
+  const isAnInstagramChannel = channel === INBOX_TYPES.INSTAGRAM;
+  const isATiktokChannel = channel === INBOX_TYPES.TIKTOK;
 
   const animationConfigs = useBottomSheetSpringConfigs({
     mass: 1,
@@ -77,9 +79,15 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
       isATwilioChannel ||
       isAFacebookChannel ||
       isATelegramChannel ||
-      isASmsInbox
+      isASmsInbox ||
+      isAnInstagramChannel ||
+      isATiktokChannel
     ) {
       return sourceId && isSent;
+    }
+    // API inbox messages use real sent/delivered/read status values from the external system.
+    if (isAPIChannel) {
+      return isSent;
     }
     // There is no source id for the line channel
     if (isALineChannel) {
@@ -93,12 +101,16 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
     if (!shouldShowStatusIndicator) {
       return false;
     }
-    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel || isASmsInbox) {
+    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel || isASmsInbox || isAnInstagramChannel || isATiktokChannel) {
       return sourceId && isDelivered;
     }
 
-    // We will consider messages as delivered for web widget inbox and API inbox if they are sent
-    if (isAWebWidgetChannel || isAPIChannel) {
+    // API inbox messages use real delivered status from the external system.
+    if (isAPIChannel) {
+      return isDelivered;
+    }
+    // All messages marked as delivered for the web widget inbox once they are sent.
+    if (isAWebWidgetChannel) {
       return isSent;
     }
 
@@ -117,7 +129,7 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
       return isRead;
     }
 
-    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel) {
+    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel || isAnInstagramChannel || isATiktokChannel) {
       return sourceId && isRead;
     }
 

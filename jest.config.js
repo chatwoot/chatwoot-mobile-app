@@ -1,10 +1,7 @@
 module.exports = {
-  preset: 'react-native',
+  preset: 'jest-expo',
   moduleDirectories: ['node_modules', 'src'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
-  transformIgnorePatterns: [
-    'node_modules/(?!(jest-)?@?react-native|@react-native-community|@react-navigation|@reduxjs|immer)',
-  ],
 };

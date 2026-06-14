@@ -1,5 +1,38 @@
+import { Platform } from 'react-native';
+import notifee, { AndroidImportance } from '@notifee/react-native';
 import { transformNotification } from '../camelCaseKeys';
-import { findConversationLinkFromPush, findNotificationFromFCM } from '../pushUtils';
+import {
+  ANDROID_DEFAULT_CHANNEL_ID,
+  createDefaultNotificationChannel,
+  findConversationLinkFromPush,
+  findNotificationFromFCM,
+} from '../pushUtils';
+
+describe('createDefaultNotificationChannel', () => {
+  const originalOS = Platform.OS;
+
+  afterEach(() => {
+    (Platform as { OS: string }).OS = originalOS;
+    jest.clearAllMocks();
+  });
+
+  it('creates the default channel on Android', async () => {
+    (Platform as { OS: string }).OS = 'android';
+    await createDefaultNotificationChannel();
+    expect(notifee.createChannel).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: ANDROID_DEFAULT_CHANNEL_ID,
+        importance: AndroidImportance.HIGH,
+      }),
+    );
+  });
+
+  it('does not create a channel on iOS', async () => {
+    (Platform as { OS: string }).OS = 'ios';
+    await createDefaultNotificationChannel();
+    expect(notifee.createChannel).not.toHaveBeenCalled();
+  });
+});
 
 describe('findNotificationFromFCM', () => {
   it('should return notification from FCM HTTP v1 message', () => {

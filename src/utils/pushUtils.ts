@@ -1,23 +1,36 @@
 import { Platform } from 'react-native';
+import notifee, { AndroidImportance } from '@notifee/react-native';
 import { NOTIFICATION_TYPES } from '@/constants';
 import { Notification } from '@/types/Notification';
 
-let notifee: typeof import('@notifee/react-native').default | undefined;
+// Android notification channel that all Chatwoot push notifications are posted to.
+// On Android 8.0+ an app only appears in system menus such as "Do Not Disturb"
+// app exceptions and per-app custom notification sounds once it has registered at
+// least one notification channel, so we create this channel on startup.
+// This id must stay in sync with the default channel declared for Firebase
+// Messaging in with-android-notification-channel.js.
+export const ANDROID_DEFAULT_CHANNEL_ID = 'default';
+export const ANDROID_DEFAULT_CHANNEL_NAME = 'Notifications';
 
-if (Platform.OS === 'ios') {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  notifee = require('@notifee/react-native')
-    .default as typeof import('@notifee/react-native').default;
-}
+export const createDefaultNotificationChannel = async () => {
+  if (Platform.OS !== 'android') {
+    return;
+  }
+  await notifee.createChannel({
+    id: ANDROID_DEFAULT_CHANNEL_ID,
+    name: ANDROID_DEFAULT_CHANNEL_NAME,
+    importance: AndroidImportance.HIGH,
+  });
+};
 
 export const clearAllDeliveredNotifications = async () => {
-  if (Platform.OS === 'ios' && notifee) {
+  if (Platform.OS === 'ios') {
     await notifee.cancelAllNotifications();
   }
 };
 
 export const updateBadgeCount = async ({ count = 0 }) => {
-  if (Platform.OS === 'ios' && count >= 0 && notifee) {
+  if (Platform.OS === 'ios' && count >= 0) {
     await notifee.setBadgeCount(count);
   }
 };

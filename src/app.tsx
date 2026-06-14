@@ -4,10 +4,17 @@ import { Alert, BackHandler } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store';
 import { AppNavigator } from '@/navigation';
+import { createDefaultNotificationChannel } from '@/utils/pushUtils';
 
 import i18n from '@/i18n';
 
 const Chatwoot = () => {
+  useEffect(() => {
+    // Register the Android notification channel so the app shows up in system
+    // settings like Do Not Disturb exceptions and per-app notification sounds.
+    createDefaultNotificationChannel();
+  }, []);
+
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
     return () => {

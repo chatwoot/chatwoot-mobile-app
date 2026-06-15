@@ -1,23 +1,29 @@
 import type { Inbox } from '@/types/Inbox';
 import type {
   NormalizedTemplate,
+  NormalizedTemplateButton,
   NormalizedTemplateHeader,
+  TemplateButtonParam,
   TemplateSendParams,
   TwilioContentTemplate,
+  TwilioProcessedParams,
   WhatsAppMessageTemplate,
+  WhatsAppProcessedParams,
   WhatsAppTemplateComponent,
 } from '@/types/MessageTemplate';
 
-const MEDIA_HEADER_FORMATS = new Set(['IMAGE', 'VIDEO', 'DOCUMENT']);
+// Mirrors web `templateHelper.MEDIA_FORMATS`.
+const MEDIA_FORMATS = new Set(['IMAGE', 'VIDEO', 'DOCUMENT']);
+// Mirrors web `getFilteredWhatsAppTemplates` unsupported component list.
 const UNSUPPORTED_COMPONENT_TYPES = new Set([
   'LIST',
   'PRODUCT',
   'CATALOG',
   'CALL_PERMISSION_REQUEST',
 ]);
-const UNSUPPORTED_HEADER_FORMATS = new Set(['VIDEO', 'DOCUMENT', 'LOCATION']);
-const UNSUPPORTED_BUTTON_TYPES = new Set(['COPY_CODE']);
-const VARIABLE_REGEX = /\{\{([^{}]+)\}\}/g;
+const TWILIO_MEDIA_TEMPLATE_TYPE = 'media';
+// Same pattern web uses across templateHelper / parsers (`/{{([^}]+)}}/g`).
+const VARIABLE_REGEX = /\{\{([^}]+)\}\}/g;
 
 const findComponent = <T extends WhatsAppTemplateComponent['type']>(
   template: WhatsAppMessageTemplate,
@@ -26,10 +32,6 @@ const findComponent = <T extends WhatsAppTemplateComponent['type']>(
   return template.components?.find(component => component.type === type) as
     | Extract<WhatsAppTemplateComponent, { type: T }>
     | undefined;
-};
-
-const isApproved = (status: string | undefined) => {
-  return typeof status === 'string' && status.toLowerCase() === 'approved';
 };
 
 const isCsatTemplate = (name: string) => name.startsWith('customer_satisfaction_survey');
@@ -93,42 +95,40 @@ export const buildPreviewSegments = (
   return segments;
 };
 
-const hasUrlButtonWithVariable = (component: WhatsAppTemplateComponent): boolean => {
-  if (component.type !== 'BUTTONS') return false;
-  return (component.buttons || []).some(button => {
-    if (button.type !== 'URL') return false;
-    return Boolean(button.url && button.url.includes('{{'));
-  });
-};
-
-const hasUnsupportedButton = (component: WhatsAppTemplateComponent): boolean => {
-  if (component.type !== 'BUTTONS') return false;
-  return (component.buttons || []).some(button => UNSUPPORTED_BUTTON_TYPES.has(button.type));
-};
-
+/**
+ * Replicates web `getFilteredWhatsAppTemplates` (store/modules/inboxes.js) exactly:
+ *  - requires status + components
+ *  - status (case-insensitive) === 'approved'
+ *  - category !== 'AUTHENTICATION'
+ *  - name does not start with 'customer_satisfaction_survey'
+ *  - no LIST/PRODUCT/CATALOG/CALL_PERMISSION_REQUEST component and no LOCATION header
+ */
 export const isSendableTemplate = (template: WhatsAppMessageTemplate): boolean => {
-  if (!template?.status || !Array.isArray(template?.components)) return false;
-  if (!isApproved(template.status)) return false;
-  if ((template.category || '').toUpperCase() === 'AUTHENTICATION') return false;
-  if (isCsatTemplate(template.name || '')) return false;
+  if (!template || !template.status || !template.components) return false;
+  if (template.status.toLowerCase() !== 'approved') return false;
+  if (template.category === 'AUTHENTICATION') return false;
+  if (template.name && isCsatTemplate(template.name)) return false;
 
-  const hasUnsupportedComponent = template.components.some(component => {
-    if (UNSUPPORTED_COMPONENT_TYPES.has(component.type)) return true;
-    if (component.type === 'HEADER' && component.format) {
-      if (UNSUPPORTED_HEADER_FORMATS.has(component.format)) return true;
-    }
-    if (hasUnsupportedButton(component)) return true;
-    if (hasUrlButtonWithVariable(component)) return true;
-    return false;
-  });
-  if (hasUnsupportedComponent) return false;
+  const hasUnsupportedComponents = template.components.some(
+    component =>
+      UNSUPPORTED_COMPONENT_TYPES.has(component.type) ||
+      (component.type === 'HEADER' && component.format === 'LOCATION'),
+  );
+  if (hasUnsupportedComponents) return false;
 
-  const body = findComponent(template, 'BODY');
-  return Boolean(body?.text);
+  return true;
 };
 
-export const requiresImageUrl = (template: NormalizedTemplate): boolean => {
-  return template.header?.format === 'IMAGE';
+export const hasMediaHeader = (template: NormalizedTemplate): boolean => {
+  return template.header ? MEDIA_FORMATS.has(template.header.format) : false;
+};
+
+export const isDocumentHeader = (template: NormalizedTemplate): boolean => {
+  return template.header?.format === 'DOCUMENT';
+};
+
+export const getMediaType = (template: NormalizedTemplate): string => {
+  return template.header ? template.header.format.toLowerCase() : '';
 };
 
 const headerLabelMap: Record<string, string | undefined> = {
@@ -153,6 +153,7 @@ const extractHeader = (template: WhatsAppMessageTemplate): NormalizedTemplateHea
   return { format, text: header.text };
 };
 
+// Labels for the list-row action chips (display only).
 const extractActions = (template: WhatsAppMessageTemplate): string[] | undefined => {
   const buttons = findComponent(template, 'BUTTONS');
   if (!buttons?.buttons?.length) return undefined;
@@ -162,9 +163,41 @@ const extractActions = (template: WhatsAppMessageTemplate): string[] | undefined
   return labels.length > 0 ? labels : undefined;
 };
 
-const normalizeWhatsApp = (template: WhatsAppMessageTemplate): NormalizedTemplate | null => {
+// Mirrors web `buildTemplateParameters` button handling: collect only the
+// buttons that require a user-supplied parameter (URL buttons with a `{{ }}`
+// variable, and COPY_CODE buttons), preserving their positional index.
+const extractButtonParams = (
+  template: WhatsAppMessageTemplate,
+): NormalizedTemplateButton[] | undefined => {
+  const buttonComponents = (template.components || []).filter(
+    component => component.type === 'BUTTONS',
+  );
+  const result: NormalizedTemplateButton[] = [];
+  buttonComponents.forEach(component => {
+    if (component.type !== 'BUTTONS' || !component.buttons) return;
+    component.buttons.forEach((button, index) => {
+      if (button.type === 'URL' && button.url && button.url.includes('{{')) {
+        const buttonVars = button.url.match(VARIABLE_REGEX) || [];
+        if (buttonVars.length > 0) {
+          result.push({
+            index,
+            type: 'url',
+            url: button.url,
+            variables: buttonVars.map(v => v.replace(/{{|}}/g, '')),
+          });
+        }
+      }
+      if (button.type === 'COPY_CODE') {
+        result.push({ index, type: 'copy_code' });
+      }
+    });
+  });
+  return result.length > 0 ? result : undefined;
+};
+
+const normalizeWhatsApp = (template: WhatsAppMessageTemplate): NormalizedTemplate => {
   const body = findComponent(template, 'BODY');
-  if (!body?.text) return null;
+  const bodyText = body?.text ?? '';
   return {
     id: template.name,
     name: template.name,
@@ -172,96 +205,168 @@ const normalizeWhatsApp = (template: WhatsAppMessageTemplate): NormalizedTemplat
     language: template.language,
     category: template.category,
     namespace: template.namespace,
-    body: body.text,
-    variables: extractVariables(body.text),
+    body: bodyText,
+    variables: extractVariables(bodyText),
     parameterFormat: template.parameterFormat,
     header: extractHeader(template),
     actions: extractActions(template),
+    buttons: extractButtonParams(template),
   };
 };
 
+const getTwilioMediaUrl = (template: TwilioContentTemplate): string => {
+  return template.types?.['twilio/media']?.media?.[0] ?? '';
+};
+
 const normalizeTwilio = (template: TwilioContentTemplate): NormalizedTemplate | null => {
-  if (!isApproved(template.status)) return null;
-  if (!template.body) return null;
+  // Web Twilio picker filters with an exact (case-sensitive) `status === 'approved'`.
+  if (template.status !== 'approved') return null;
+  const body = template.body || '';
+  const isMediaTemplate = template.templateType === TWILIO_MEDIA_TEMPLATE_TYPE;
+  const mediaUrl = isMediaTemplate ? getTwilioMediaUrl(template) : '';
+  const mediaVariableKey = mediaUrl ? (mediaUrl.match(/{{(\d+)}}/)?.[1] ?? null) : null;
   return {
     id: template.contentSid,
     name: template.friendlyName,
     platform: 'twilio',
     language: template.language,
     category: template.category,
-    body: template.body,
-    variables: extractVariables(template.body),
+    body,
+    variables: extractVariables(body),
+    isMediaTemplate,
+    mediaVariableKey,
+    templateMediaUrl: mediaUrl,
   };
 };
 
 export const getTemplatesForInbox = (inbox: Inbox | undefined): NormalizedTemplate[] => {
   if (!inbox) return [];
-  const whatsapp = (inbox.messageTemplates || [])
-    .filter(isSendableTemplate)
-    .map(normalizeWhatsApp)
-    .filter((entry): entry is NormalizedTemplate => entry !== null);
+  const whatsapp = (inbox.messageTemplates || []).filter(isSendableTemplate).map(normalizeWhatsApp);
   const twilio = (inbox.contentTemplates?.templates || [])
     .map(normalizeTwilio)
     .filter((entry): entry is NormalizedTemplate => entry !== null);
   return [...whatsapp, ...twilio];
 };
 
+// Web pickers search by template name only (WhatsApp `name`, Twilio `friendly_name`).
 export const filterTemplatesByQuery = (
   templates: NormalizedTemplate[],
   query: string,
 ): NormalizedTemplate[] => {
   const trimmed = query.trim().toLowerCase();
   if (!trimmed) return templates;
-  return templates.filter(template => {
-    const haystack = [
-      template.name,
-      template.body,
-      template.header?.text,
-      ...(template.actions || []),
-    ]
-      .filter(Boolean)
-      .join(' ')
-      .toLowerCase();
-    return haystack.includes(trimmed);
-  });
+  return templates.filter(template => template.name.toLowerCase().includes(trimmed));
 };
 
-export const allVariablesFilled = (
-  template: NormalizedTemplate,
-  values: Record<string, string>,
-): boolean => {
-  return template.variables.every(key => {
-    const value = values[key];
-    return typeof value === 'string' && value.trim().length > 0;
-  });
+/**
+ * Extracts a filename from a URL. Mirrors web `URLHelper.extractFilenameFromUrl`.
+ */
+export const extractFilenameFromUrl = (url: string): string => {
+  if (!url || typeof url !== 'string') return url;
+  try {
+    const urlObj = new URL(url);
+    const filename = urlObj.pathname.split('/').pop();
+    return filename || url;
+  } catch {
+    const match = url.match(/\/([^/?#]+)(?:[?#]|$)/);
+    return match ? match[1] : url;
+  }
 };
 
-export const canSendTemplate = (
+// Mutable form state collected by the in-conversation template form.
+export interface TemplateFormState {
+  // body variable values keyed by variable token
+  bodyValues: Record<string, string>;
+  // WhatsApp media header URL / Twilio media variable value
+  mediaUrl: string;
+  // WhatsApp document header filename (optional)
+  mediaName: string;
+  // WhatsApp button parameters keyed by button index
+  buttonValues: Record<number, string>;
+}
+
+export const createEmptyFormState = (): TemplateFormState => ({
+  bodyValues: {},
+  mediaUrl: '',
+  mediaName: '',
+  buttonValues: {},
+});
+
+// Web treats empty/missing values as invalid via a plain truthiness check
+// (`value => !value`), without trimming.
+const isFilled = (value: string | undefined): boolean => Boolean(value);
+
+// Whether the Twilio media variable input is in play.
+const hasTwilioMediaVariable = (template: NormalizedTemplate): boolean => {
+  return Boolean(template.isMediaTemplate && template.mediaVariableKey);
+};
+
+/**
+ * Replicates the web `isFormInvalid` gates (inverted) for both platforms.
+ */
+export const isTemplateComplete = (
   template: NormalizedTemplate,
-  values: Record<string, string>,
-  imageUrl: string,
+  state: TemplateFormState,
 ): boolean => {
-  if (!allVariablesFilled(template, values)) return false;
-  if (requiresImageUrl(template) && imageUrl.trim().length === 0) return false;
+  if (template.platform === 'twilio') {
+    const mediaVariable = hasTwilioMediaVariable(template);
+    if (template.variables.length === 0 && !mediaVariable) return true;
+    if (template.variables.some(key => !isFilled(state.bodyValues[key]))) return false;
+    if (mediaVariable && !isFilled(state.mediaUrl)) return false;
+    return true;
+  }
+
+  const media = hasMediaHeader(template);
+  // Web early-returns valid when there are no variables and no media header,
+  // even if the template has buttons.
+  if (template.variables.length === 0 && !media) return true;
+  if (media && !isFilled(state.mediaUrl)) return false;
+  if (template.variables.some(key => !isFilled(state.bodyValues[key]))) return false;
+  if (template.buttons?.some(button => !isFilled(state.buttonValues[button.index]))) return false;
   return true;
 };
 
-export const buildTemplateParams = (
+const buildWhatsAppParams = (
   template: NormalizedTemplate,
-  values: Record<string, string>,
-  imageUrl?: string,
+  state: TemplateFormState,
 ): TemplateSendParams => {
-  const body: Record<string, string> = {};
-  template.variables.forEach(key => {
-    body[key] = (values[key] ?? '').toString();
-  });
-  const processedParams: TemplateSendParams['processed_params'] = { body };
-  if (requiresImageUrl(template) && imageUrl && imageUrl.trim().length > 0) {
-    processedParams.header = {
-      media_url: imageUrl.trim(),
-      media_type: 'image',
-    };
+  const processedParams: WhatsAppProcessedParams = {};
+
+  if (template.variables.length > 0) {
+    const body: Record<string, string> = {};
+    template.variables.forEach(key => {
+      body[key] = state.bodyValues[key] ?? '';
+    });
+    processedParams.body = body;
   }
+
+  if (hasMediaHeader(template)) {
+    processedParams.header = {
+      media_url: state.mediaUrl,
+      media_type: getMediaType(template),
+    };
+    if (isDocumentHeader(template)) {
+      processedParams.header.media_name = state.mediaName ?? '';
+    }
+  }
+
+  if (template.buttons && template.buttons.length > 0) {
+    // Sparse array indexed by button position, matching web.
+    const buttons: TemplateButtonParam[] = [];
+    template.buttons.forEach(button => {
+      buttons[button.index] =
+        button.type === 'url'
+          ? {
+              type: 'url',
+              parameter: state.buttonValues[button.index] ?? '',
+              url: button.url,
+              variables: button.variables,
+            }
+          : { type: 'copy_code', parameter: state.buttonValues[button.index] ?? '' };
+    });
+    processedParams.buttons = buttons;
+  }
+
   return {
     name: template.name,
     category: template.category,
@@ -271,4 +376,55 @@ export const buildTemplateParams = (
   };
 };
 
-export { MEDIA_HEADER_FORMATS };
+const buildTwilioParams = (
+  template: NormalizedTemplate,
+  state: TemplateFormState,
+): TemplateSendParams => {
+  const processedParams: TwilioProcessedParams = {};
+  template.variables.forEach(key => {
+    processedParams[key] = state.bodyValues[key] ?? '';
+  });
+  if (template.mediaVariableKey) {
+    processedParams[template.mediaVariableKey] = state.mediaUrl
+      ? extractFilenameFromUrl(state.mediaUrl)
+      : '';
+  }
+  return {
+    name: template.name,
+    language: template.language,
+    processed_params: processedParams,
+  };
+};
+
+export const buildTemplateParams = (
+  template: NormalizedTemplate,
+  state: TemplateFormState,
+): TemplateSendParams => {
+  return template.platform === 'twilio'
+    ? buildTwilioParams(template, state)
+    : buildWhatsAppParams(template, state);
+};
+
+// Renders the outgoing message body with the values the agent typed in.
+export const renderTemplateMessage = (
+  template: NormalizedTemplate,
+  state: TemplateFormState,
+): string => {
+  const values: Record<string, string> = { ...state.bodyValues };
+  if (template.platform === 'twilio' && template.mediaVariableKey) {
+    values[template.mediaVariableKey] = state.mediaUrl;
+  }
+  return renderTemplatePreview(template.body, values);
+};
+
+export const buildTemplateSendPayload = (
+  template: NormalizedTemplate,
+  state: TemplateFormState,
+): { message: string; templateParams: TemplateSendParams } => {
+  return {
+    message: renderTemplateMessage(template, state),
+    templateParams: buildTemplateParams(template, state),
+  };
+};
+
+export { MEDIA_FORMATS };

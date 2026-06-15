@@ -1,17 +1,26 @@
 import type { Inbox } from '@/types/Inbox';
-import type { NormalizedTemplate, WhatsAppMessageTemplate } from '@/types/MessageTemplate';
+import type {
+  NormalizedTemplate,
+  TwilioContentTemplate,
+  WhatsAppMessageTemplate,
+} from '@/types/MessageTemplate';
 import {
-  allVariablesFilled,
+  TemplateFormState,
   buildTemplateParams,
-  canSendTemplate,
+  buildTemplateSendPayload,
+  createEmptyFormState,
+  extractFilenameFromUrl,
   extractVariables,
   filterTemplatesByQuery,
   getHeaderSubtitle,
+  getMediaType,
   getTemplatesForInbox,
+  hasMediaHeader,
+  isDocumentHeader,
   isSendableTemplate,
+  isTemplateComplete,
   renderTemplateLabel,
   renderTemplatePreview,
-  requiresImageUrl,
 } from '../messageTemplateUtils';
 
 const baseTemplate = (
@@ -38,6 +47,11 @@ const normalized = (overrides: Partial<NormalizedTemplate> = {}): NormalizedTemp
   language: 'en',
   body: '{{1}}',
   variables: ['1'],
+  ...overrides,
+});
+
+const formState = (overrides: Partial<TemplateFormState> = {}): TemplateFormState => ({
+  ...createEmptyFormState(),
   ...overrides,
 });
 
@@ -80,9 +94,14 @@ describe('renderTemplateLabel', () => {
   });
 });
 
+// Mirrors web getFilteredWhatsAppTemplates (store/modules/inboxes.js).
 describe('isSendableTemplate', () => {
   it('accepts approved text-body templates', () => {
     expect(isSendableTemplate(baseTemplate())).toBe(true);
+  });
+
+  it('accepts approved templates regardless of status casing', () => {
+    expect(isSendableTemplate(baseTemplate({ status: 'APPROVED' }))).toBe(true);
   });
 
   it('rejects non-approved templates', () => {
@@ -99,30 +118,19 @@ describe('isSendableTemplate', () => {
     );
   });
 
-  it('accepts templates with media header', () => {
-    expect(
-      isSendableTemplate(
-        baseTemplate({
-          components: [
-            { type: 'HEADER', format: 'IMAGE' },
-            { type: 'BODY', text: 'Hi {{1}}' },
-          ],
-        }),
-      ),
-    ).toBe(true);
-  });
-
-  it('accepts templates with buttons', () => {
-    expect(
-      isSendableTemplate(
-        baseTemplate({
-          components: [
-            { type: 'BODY', text: 'Hi {{1}}' },
-            { type: 'BUTTONS', buttons: [{ type: 'QUICK_REPLY', text: 'Yes' }] },
-          ],
-        }),
-      ),
-    ).toBe(true);
+  it('accepts templates with image, video and document media headers', () => {
+    (['IMAGE', 'VIDEO', 'DOCUMENT'] as const).forEach(format => {
+      expect(
+        isSendableTemplate(
+          baseTemplate({
+            components: [
+              { type: 'HEADER', format },
+              { type: 'BODY', text: 'Hi {{1}}' },
+            ],
+          }),
+        ),
+      ).toBe(true);
+    });
   });
 
   it('accepts templates with a TEXT header', () => {
@@ -132,6 +140,35 @@ describe('isSendableTemplate', () => {
           components: [
             { type: 'HEADER', format: 'TEXT', text: 'Header' },
             { type: 'BODY', text: 'Hi {{1}}' },
+          ],
+        }),
+      ),
+    ).toBe(true);
+  });
+
+  it('accepts templates with COPY_CODE buttons', () => {
+    expect(
+      isSendableTemplate(
+        baseTemplate({
+          components: [
+            { type: 'BODY', text: 'Hi {{1}}' },
+            { type: 'BUTTONS', buttons: [{ type: 'COPY_CODE', text: 'Copy code' }] },
+          ],
+        }),
+      ),
+    ).toBe(true);
+  });
+
+  it('accepts templates with URL buttons containing variables', () => {
+    expect(
+      isSendableTemplate(
+        baseTemplate({
+          components: [
+            { type: 'BODY', text: 'Hi {{1}}' },
+            {
+              type: 'BUTTONS',
+              buttons: [{ type: 'URL', text: 'Visit', url: 'https://x.com/{{1}}' }],
+            },
           ],
         }),
       ),
@@ -174,77 +211,6 @@ describe('isSendableTemplate', () => {
       false,
     );
   });
-
-  it('rejects templates with VIDEO header (not supported by mobile form)', () => {
-    expect(
-      isSendableTemplate(
-        baseTemplate({
-          components: [
-            { type: 'HEADER', format: 'VIDEO' },
-            { type: 'BODY', text: 'Hi {{1}}' },
-          ],
-        }),
-      ),
-    ).toBe(false);
-  });
-
-  it('rejects templates with DOCUMENT header (not supported by mobile form)', () => {
-    expect(
-      isSendableTemplate(
-        baseTemplate({
-          components: [
-            { type: 'HEADER', format: 'DOCUMENT' },
-            { type: 'BODY', text: 'Hi {{1}}' },
-          ],
-        }),
-      ),
-    ).toBe(false);
-  });
-
-  it('rejects templates with COPY_CODE buttons (no payload support)', () => {
-    expect(
-      isSendableTemplate(
-        baseTemplate({
-          components: [
-            { type: 'BODY', text: 'Hi {{1}}' },
-            { type: 'BUTTONS', buttons: [{ type: 'COPY_CODE', text: 'Copy code' }] },
-          ],
-        }),
-      ),
-    ).toBe(false);
-  });
-
-  it('rejects templates with URL buttons containing variables', () => {
-    expect(
-      isSendableTemplate(
-        baseTemplate({
-          components: [
-            { type: 'BODY', text: 'Hi {{1}}' },
-            {
-              type: 'BUTTONS',
-              buttons: [{ type: 'URL', text: 'Visit', url: 'https://x.com/{{1}}' }],
-            },
-          ],
-        }),
-      ),
-    ).toBe(false);
-  });
-
-  it('accepts templates with static URL buttons (no variable in url)', () => {
-    expect(
-      isSendableTemplate(
-        baseTemplate({
-          components: [
-            { type: 'BODY', text: 'Hi {{1}}' },
-            {
-              type: 'BUTTONS',
-              buttons: [{ type: 'URL', text: 'Visit', url: 'https://x.com/static' }],
-            },
-          ],
-        }),
-      ),
-    ).toBe(true);
-  });
 });
 
 describe('getTemplatesForInbox', () => {
@@ -276,7 +242,33 @@ describe('getTemplatesForInbox', () => {
     expect(templates[0].actions).toEqual(['Manage delivery', 'Call us']);
   });
 
-  it('returns twilio content templates normalized', () => {
+  it('extracts URL-variable and COPY_CODE button parameters with their index', () => {
+    const inbox = {
+      messageTemplates: [
+        baseTemplate({
+          name: 'with_buttons',
+          components: [
+            { type: 'BODY', text: 'Hi {{1}}' },
+            {
+              type: 'BUTTONS',
+              buttons: [
+                { type: 'QUICK_REPLY', text: 'No-op' },
+                { type: 'URL', text: 'Track', url: 'https://x.com/{{1}}' },
+                { type: 'COPY_CODE', text: 'Copy' },
+              ],
+            },
+          ],
+        }),
+      ],
+    } as Inbox;
+    const [template] = getTemplatesForInbox(inbox);
+    expect(template.buttons).toEqual([
+      { index: 1, type: 'url', url: 'https://x.com/{{1}}', variables: ['1'] },
+      { index: 2, type: 'copy_code' },
+    ]);
+  });
+
+  it('returns twilio content templates normalized (approved only, exact case)', () => {
     const inbox = {
       contentTemplates: {
         templates: [
@@ -287,7 +279,14 @@ describe('getTemplatesForInbox', () => {
             status: 'approved',
             body: 'Order {{1}} is on the way',
           },
-        ],
+          {
+            contentSid: 'HX002',
+            friendlyName: 'pending_one',
+            language: 'en',
+            status: 'Approved',
+            body: 'Nope {{1}}',
+          },
+        ] as TwilioContentTemplate[],
       },
     } as Inbox;
     const templates = getTemplatesForInbox(inbox);
@@ -298,6 +297,28 @@ describe('getTemplatesForInbox', () => {
       platform: 'twilio',
       variables: ['1'],
     });
+  });
+
+  it('captures the twilio media variable key from types["twilio/media"]', () => {
+    const inbox = {
+      contentTemplates: {
+        templates: [
+          {
+            contentSid: 'HX003',
+            friendlyName: 'media_template',
+            language: 'en',
+            status: 'approved',
+            templateType: 'media',
+            body: 'Here is your file {{2}}',
+            types: { 'twilio/media': { media: ['https://cdn.example.com/{{1}}'] } },
+          },
+        ] as TwilioContentTemplate[],
+      },
+    } as Inbox;
+    const [template] = getTemplatesForInbox(inbox);
+    expect(template.isMediaTemplate).toBe(true);
+    expect(template.mediaVariableKey).toBe('1');
+    expect(template.variables).toEqual(['2']);
   });
 
   it('returns empty array for inbox with no templates', () => {
@@ -330,12 +351,7 @@ describe('filterTemplatesByQuery', () => {
   const templates = [
     normalized({ id: 'a', name: 'flight_confirmation', body: 'Hi {{1}}' }),
     normalized({ id: 'b', name: 'order_update', body: 'Your order has shipped' }),
-    normalized({
-      id: 'c',
-      name: 'delivery_failed',
-      body: 'Could not deliver',
-      actions: ['Call us'],
-    }),
+    normalized({ id: 'c', name: 'delivery_failed', body: 'Could not deliver' }),
   ];
 
   it('returns all templates for an empty query', () => {
@@ -347,79 +363,106 @@ describe('filterTemplatesByQuery', () => {
     expect(filterTemplatesByQuery(templates, 'FLIGHT').map(t => t.id)).toEqual(['a']);
   });
 
-  it('matches against template body', () => {
-    expect(filterTemplatesByQuery(templates, 'shipped').map(t => t.id)).toEqual(['b']);
-  });
-
-  it('matches against action button labels', () => {
-    expect(filterTemplatesByQuery(templates, 'call us').map(t => t.id)).toEqual(['c']);
+  it('does not match against template body (web searches by name only)', () => {
+    expect(filterTemplatesByQuery(templates, 'shipped')).toHaveLength(0);
   });
 });
 
-describe('canSendTemplate', () => {
-  it('returns true when all body vars are filled and no image is required', () => {
-    expect(canSendTemplate(normalized({ variables: ['1'] }), { '1': 'A' }, '')).toBe(true);
+describe('header helpers', () => {
+  it('hasMediaHeader is true for image/video/document, false otherwise', () => {
+    expect(hasMediaHeader(normalized({ header: { format: 'IMAGE' } }))).toBe(true);
+    expect(hasMediaHeader(normalized({ header: { format: 'VIDEO' } }))).toBe(true);
+    expect(hasMediaHeader(normalized({ header: { format: 'DOCUMENT' } }))).toBe(true);
+    expect(hasMediaHeader(normalized({ header: { format: 'TEXT' } }))).toBe(false);
+    expect(hasMediaHeader(normalized())).toBe(false);
   });
 
-  it('returns false when a body var is missing', () => {
-    expect(canSendTemplate(normalized({ variables: ['1'] }), {}, '')).toBe(false);
+  it('isDocumentHeader only for document headers', () => {
+    expect(isDocumentHeader(normalized({ header: { format: 'DOCUMENT' } }))).toBe(true);
+    expect(isDocumentHeader(normalized({ header: { format: 'IMAGE' } }))).toBe(false);
   });
 
-  it('returns false when image header template has no URL', () => {
+  it('getMediaType lowercases the header format', () => {
+    expect(getMediaType(normalized({ header: { format: 'IMAGE' } }))).toBe('image');
+    expect(getMediaType(normalized({ header: { format: 'DOCUMENT' } }))).toBe('document');
+    expect(getMediaType(normalized())).toBe('');
+  });
+});
+
+describe('extractFilenameFromUrl', () => {
+  it('returns the last path segment', () => {
+    expect(extractFilenameFromUrl('https://cdn.example.com/a/b/invoice.pdf')).toBe('invoice.pdf');
+  });
+
+  it('strips query strings', () => {
+    expect(extractFilenameFromUrl('https://cdn.example.com/files/report.pdf?token=1')).toBe(
+      'report.pdf',
+    );
+  });
+
+  it('returns the input when it is not a parseable url', () => {
+    expect(extractFilenameFromUrl('not a url')).toBe('not a url');
+  });
+});
+
+// Mirrors web isFormInvalid (inverted) for both platforms.
+describe('isTemplateComplete', () => {
+  it('whatsapp: valid when no variables and no media header', () => {
+    expect(isTemplateComplete(normalized({ variables: [] }), formState())).toBe(true);
+  });
+
+  it('whatsapp: requires every body variable to be filled', () => {
+    const template = normalized({ variables: ['1', '2'] });
+    expect(isTemplateComplete(template, formState({ bodyValues: { '1': 'A' } }))).toBe(false);
+    expect(isTemplateComplete(template, formState({ bodyValues: { '1': 'A', '2': 'B' } }))).toBe(
+      true,
+    );
+  });
+
+  it('whatsapp: requires a media url for media header templates', () => {
+    const template = normalized({ variables: ['1'], header: { format: 'IMAGE' } });
+    expect(isTemplateComplete(template, formState({ bodyValues: { '1': 'A' } }))).toBe(false);
     expect(
-      canSendTemplate(
-        normalized({ variables: ['1'], header: { format: 'IMAGE' } }),
-        { '1': 'A' },
-        '',
+      isTemplateComplete(
+        template,
+        formState({ bodyValues: { '1': 'A' }, mediaUrl: 'https://x/y.png' }),
       ),
-    ).toBe(false);
+    ).toBe(true);
   });
 
-  it('returns true when image header template has a URL', () => {
+  it('whatsapp: requires every button parameter to be filled', () => {
+    const template = normalized({
+      variables: ['1'],
+      buttons: [{ index: 1, type: 'copy_code' }],
+    });
+    expect(isTemplateComplete(template, formState({ bodyValues: { '1': 'A' } }))).toBe(false);
     expect(
-      canSendTemplate(
-        normalized({ variables: ['1'], header: { format: 'IMAGE' } }),
-        { '1': 'A' },
-        'https://example.com/img.png',
+      isTemplateComplete(
+        template,
+        formState({ bodyValues: { '1': 'A' }, buttonValues: { 1: 'CODE' } }),
+      ),
+    ).toBe(true);
+  });
+
+  it('twilio: requires body variables and media variable when present', () => {
+    const template = normalized({
+      platform: 'twilio',
+      variables: ['2'],
+      isMediaTemplate: true,
+      mediaVariableKey: '1',
+    });
+    expect(isTemplateComplete(template, formState({ bodyValues: { '2': 'x' } }))).toBe(false);
+    expect(
+      isTemplateComplete(
+        template,
+        formState({ bodyValues: { '2': 'x' }, mediaUrl: 'https://x/y.pdf' }),
       ),
     ).toBe(true);
   });
 });
 
-describe('allVariablesFilled', () => {
-  const template = normalized({ body: 'Hi {{1}} {{2}}', variables: ['1', '2'] });
-
-  it('returns true when every variable has a non-empty value', () => {
-    expect(allVariablesFilled(template, { '1': 'A', '2': 'B' })).toBe(true);
-  });
-
-  it('returns false when a variable is missing', () => {
-    expect(allVariablesFilled(template, { '1': 'A' })).toBe(false);
-  });
-
-  it('returns false when a variable value is whitespace only', () => {
-    expect(allVariablesFilled(template, { '1': 'A', '2': '   ' })).toBe(false);
-  });
-});
-
-describe('requiresImageUrl', () => {
-  it('returns true for image header templates', () => {
-    expect(requiresImageUrl(normalized({ header: { format: 'IMAGE' } }))).toBe(true);
-  });
-
-  it('returns false for text, video, document headers', () => {
-    expect(requiresImageUrl(normalized({ header: { format: 'TEXT' } }))).toBe(false);
-    expect(requiresImageUrl(normalized({ header: { format: 'VIDEO' } }))).toBe(false);
-    expect(requiresImageUrl(normalized({ header: { format: 'DOCUMENT' } }))).toBe(false);
-  });
-
-  it('returns false when no header', () => {
-    expect(requiresImageUrl(normalized())).toBe(false);
-  });
-});
-
-describe('buildTemplateParams', () => {
-  it('builds the payload shape expected by the backend processor', () => {
+describe('buildTemplateParams (whatsapp)', () => {
+  it('builds nested body params', () => {
     const template = normalized({
       id: 'sample_flight_confirmation',
       name: 'sample_flight_confirmation',
@@ -429,7 +472,9 @@ describe('buildTemplateParams', () => {
       body: 'From {{1}} to {{2}}',
       variables: ['1', '2'],
     });
-    expect(buildTemplateParams(template, { '1': 'NYC', '2': 'SFO' })).toEqual({
+    expect(
+      buildTemplateParams(template, formState({ bodyValues: { '1': 'NYC', '2': 'SFO' } })),
+    ).toEqual({
       name: 'sample_flight_confirmation',
       category: 'UTILITY',
       language: 'en_US',
@@ -438,24 +483,14 @@ describe('buildTemplateParams', () => {
     });
   });
 
-  it('handles missing values as empty strings', () => {
-    const template = normalized({ body: '{{1}}', variables: ['1'] });
-    expect(buildTemplateParams(template, {})).toEqual({
-      name: 't',
-      category: undefined,
-      language: 'en',
-      namespace: undefined,
-      processed_params: { body: { '1': '' } },
-    });
-  });
-
-  it('includes header.media_url and media_type for image header templates', () => {
-    const template = normalized({
-      header: { format: 'IMAGE' },
-      body: '{{1}}',
-      variables: ['1'],
-    });
-    expect(buildTemplateParams(template, { '1': 'A' }, '  https://example.com/img.png  ')).toEqual({
+  it('includes header media_url/media_type (raw url, not trimmed)', () => {
+    const template = normalized({ header: { format: 'IMAGE' }, body: '{{1}}', variables: ['1'] });
+    expect(
+      buildTemplateParams(
+        template,
+        formState({ bodyValues: { '1': 'A' }, mediaUrl: 'https://example.com/img.png' }),
+      ),
+    ).toEqual({
       name: 't',
       category: undefined,
       language: 'en',
@@ -467,14 +502,102 @@ describe('buildTemplateParams', () => {
     });
   });
 
-  it('does not include header for non-image templates even if URL passed', () => {
-    const template = normalized({ body: '{{1}}', variables: ['1'] });
-    expect(buildTemplateParams(template, { '1': 'A' }, 'https://example.com/img.png')).toEqual({
-      name: 't',
-      category: undefined,
-      language: 'en',
-      namespace: undefined,
-      processed_params: { body: { '1': 'A' } },
+  it('includes media_name for document headers', () => {
+    const template = normalized({
+      header: { format: 'DOCUMENT' },
+      body: '{{1}}',
+      variables: ['1'],
     });
+    const params = buildTemplateParams(
+      template,
+      formState({
+        bodyValues: { '1': 'A' },
+        mediaUrl: 'https://example.com/doc.pdf',
+        mediaName: 'invoice.pdf',
+      }),
+    );
+    expect(params.processed_params).toEqual({
+      body: { '1': 'A' },
+      header: {
+        media_url: 'https://example.com/doc.pdf',
+        media_type: 'document',
+        media_name: 'invoice.pdf',
+      },
+    });
+  });
+
+  it('builds a sparse buttons array indexed by button position', () => {
+    const template = normalized({
+      body: '{{1}}',
+      variables: ['1'],
+      buttons: [
+        { index: 1, type: 'url', url: 'https://x.com/{{1}}', variables: ['1'] },
+        { index: 2, type: 'copy_code' },
+      ],
+    });
+    const params = buildTemplateParams(
+      template,
+      formState({ bodyValues: { '1': 'A' }, buttonValues: { 1: 'devi', 2: 'CODE' } }),
+    );
+    const buttons = (params.processed_params as { buttons: unknown[] }).buttons;
+    expect(buttons[0]).toBeUndefined();
+    expect(buttons[1]).toEqual({
+      type: 'url',
+      parameter: 'devi',
+      url: 'https://x.com/{{1}}',
+      variables: ['1'],
+    });
+    expect(buttons[2]).toEqual({ type: 'copy_code', parameter: 'CODE' });
+  });
+});
+
+describe('buildTemplateParams (twilio)', () => {
+  it('builds a flat processed_params with no category/namespace', () => {
+    const template = normalized({
+      platform: 'twilio',
+      name: 'order_update',
+      language: 'en',
+      category: 'utility',
+      body: 'Order {{1}} for {{2}}',
+      variables: ['1', '2'],
+    });
+    expect(
+      buildTemplateParams(template, formState({ bodyValues: { '1': 'A', '2': 'B' } })),
+    ).toEqual({
+      name: 'order_update',
+      language: 'en',
+      processed_params: { '1': 'A', '2': 'B' },
+    });
+  });
+
+  it('reduces the media variable value to a filename', () => {
+    const template = normalized({
+      platform: 'twilio',
+      name: 'media_template',
+      language: 'en',
+      body: 'File {{2}}',
+      variables: ['2'],
+      isMediaTemplate: true,
+      mediaVariableKey: '1',
+    });
+    expect(
+      buildTemplateParams(
+        template,
+        formState({ bodyValues: { '2': 'B' }, mediaUrl: 'https://cdn.example.com/x/invoice.pdf' }),
+      ),
+    ).toEqual({
+      name: 'media_template',
+      language: 'en',
+      processed_params: { '2': 'B', '1': 'invoice.pdf' },
+    });
+  });
+});
+
+describe('buildTemplateSendPayload', () => {
+  it('renders the message and builds params together', () => {
+    const template = normalized({ body: 'Hi {{1}}', variables: ['1'] });
+    const payload = buildTemplateSendPayload(template, formState({ bodyValues: { '1': 'Devi' } }));
+    expect(payload.message).toBe('Hi Devi');
+    expect(payload.templateParams.processed_params).toEqual({ body: { '1': 'Devi' } });
   });
 });

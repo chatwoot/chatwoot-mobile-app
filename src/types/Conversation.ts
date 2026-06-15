@@ -39,6 +39,7 @@ export interface Conversation {
   timestamp: UnixTimestamp;
   updatedAt?: UnixTimestamp;
   localStatusUpdatedAt?: UnixTimestamp;
+  localStatusPreviousStatus?: ConversationStatus;
 
   slaPolicyId: number | null;
 

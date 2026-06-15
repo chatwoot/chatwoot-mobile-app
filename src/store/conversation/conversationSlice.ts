@@ -76,7 +76,8 @@ const shouldPreserveLocalStatus = (
 ) => {
   return (
     shouldKeepLocalStatusMarker(existingConversation, incomingConversation) &&
-    existingConversation?.status !== incomingConversation.status
+    existingConversation?.status !== incomingConversation.status &&
+    existingConversation?.localStatusPreviousStatus === incomingConversation.status
   );
 };
 
@@ -88,6 +89,7 @@ const preserveLocalStatus = (
     return {
       ...incomingConversation,
       localStatusUpdatedAt: undefined,
+      localStatusPreviousStatus: undefined,
     };
   }
 
@@ -95,6 +97,7 @@ const preserveLocalStatus = (
     return {
       ...incomingConversation,
       localStatusUpdatedAt: existingConversation?.localStatusUpdatedAt,
+      localStatusPreviousStatus: existingConversation?.localStatusPreviousStatus,
     };
   }
 
@@ -103,6 +106,7 @@ const preserveLocalStatus = (
     status: existingConversation.status,
     snoozedUntil: existingConversation.snoozedUntil,
     localStatusUpdatedAt: existingConversation.localStatusUpdatedAt,
+    localStatusPreviousStatus: existingConversation.localStatusPreviousStatus,
   };
 };
 
@@ -267,6 +271,7 @@ const conversationSlice = createSlice({
         if (!conversation) {
           return;
         }
+        conversation.localStatusPreviousStatus = conversation.status;
         conversation.status = currentStatus;
         conversation.snoozedUntil = snoozedUntil;
         conversation.localStatusUpdatedAt = conversation.updatedAt;

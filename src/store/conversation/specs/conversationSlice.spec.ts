@@ -105,13 +105,53 @@ describe('conversation reducer', () => {
 
     expect(state.entities[conversation.id]?.status).toBe('resolved');
     expect(state.entities[conversation.id]?.localStatusUpdatedAt).toBe(100);
+    expect(state.entities[conversation.id]?.localStatusPreviousStatus).toBe('open');
     expect(state.entities[conversation.id]?.labels).toEqual(['confirmed']);
 
     state = conversationReducer(state, updateConversation(staleConversation));
 
     expect(state.entities[conversation.id]?.status).toBe('resolved');
     expect(state.entities[conversation.id]?.localStatusUpdatedAt).toBe(100);
+    expect(state.entities[conversation.id]?.localStatusPreviousStatus).toBe('open');
     expect(state.entities[conversation.id]?.labels).toEqual(['stale']);
+  });
+
+  it('accepts equal-timestamp status updates that are not stale pre-toggle echoes', () => {
+    const initialConversation = {
+      ...conversation,
+      status: 'open' as const,
+      updatedAt: 100,
+    };
+
+    const serverConversation = {
+      ...conversation,
+      status: 'pending' as const,
+      updatedAt: 100,
+    };
+
+    let state = conversationReducer(undefined, addConversation(initialConversation));
+    state = conversationReducer(
+      state,
+      conversationActions.toggleConversationStatus.fulfilled(
+        {
+          conversationId: conversation.id,
+          currentStatus: 'resolved',
+          snoozedUntil: null,
+        },
+        'request-id',
+        {
+          conversationId: conversation.id,
+          payload: { status: 'resolved', snoozed_until: null },
+        },
+      ),
+    );
+
+    state = conversationReducer(state, updateConversation(serverConversation));
+
+    expect(state.entities[conversation.id]?.status).toBe('pending');
+    expect(state.entities[conversation.id]?.updatedAt).toBe(100);
+    expect(state.entities[conversation.id]?.localStatusUpdatedAt).toBe(100);
+    expect(state.entities[conversation.id]?.localStatusPreviousStatus).toBe('open');
   });
 
   it('accepts newer server status updates after a local status toggle', () => {
@@ -148,6 +188,7 @@ describe('conversation reducer', () => {
     expect(state.entities[conversation.id]?.status).toBe('open');
     expect(state.entities[conversation.id]?.updatedAt).toBe(201);
     expect(state.entities[conversation.id]?.localStatusUpdatedAt).toBeUndefined();
+    expect(state.entities[conversation.id]?.localStatusPreviousStatus).toBeUndefined();
   });
 
   it('does not let client-clock local markers block server status updates', () => {
@@ -170,6 +211,7 @@ describe('conversation reducer', () => {
     expect(state.entities[conversation.id]?.status).toBe('open');
     expect(state.entities[conversation.id]?.updatedAt).toBe(101);
     expect(state.entities[conversation.id]?.localStatusUpdatedAt).toBeUndefined();
+    expect(state.entities[conversation.id]?.localStatusPreviousStatus).toBeUndefined();
   });
 
   it('ignores outdated conversations from list fetches', () => {

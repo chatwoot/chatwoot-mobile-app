@@ -14,11 +14,11 @@ import { selectUserId, selectUserThumbnail } from '@/store/auth/authSelectors';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { filterTemplatesByQuery, getTemplatesForInbox } from '@/utils/messageTemplateUtils';
 
-import ContentTemplateItem from './ContentTemplateItem';
-import ContentTemplateForm from './ContentTemplateForm';
+import WhatsAppTemplateItem from './WhatsAppTemplateItem';
+import WhatsAppTemplateForm from './WhatsAppTemplateForm';
 import TemplateSearchBar from './TemplateSearchBar';
 
-type ContentTemplatesListProps = {
+type WhatsAppTemplatesListProps = {
   conversationId: number;
 };
 
@@ -33,9 +33,9 @@ const EmptyState = ({ label }: { label: string }) => (
   </Animated.View>
 );
 
-export const ContentTemplatesList = ({ conversationId }: ContentTemplatesListProps) => {
+export const WhatsAppTemplatesList = ({ conversationId }: WhatsAppTemplatesListProps) => {
   const dispatch = useAppDispatch();
-  const { contentTemplatesSheetRef } = useRefsContext();
+  const { whatsAppTemplatesSheetRef } = useRefsContext();
   const [selectedTemplate, setSelectedTemplate] = useState<NormalizedTemplate | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -58,7 +58,7 @@ export const ContentTemplatesList = ({ conversationId }: ContentTemplatesListPro
 
   const handleClose = () => {
     resetLocalState();
-    contentTemplatesSheetRef.current?.dismiss({ overshootClamping: true });
+    whatsAppTemplatesSheetRef.current?.dismiss({ overshootClamping: true });
   };
 
   const handleSend = ({
@@ -96,7 +96,7 @@ export const ContentTemplatesList = ({ conversationId }: ContentTemplatesListPro
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={tailwind.style('pb-6')}>
         {filteredTemplates.map((template, index) => (
-          <ContentTemplateItem
+          <WhatsAppTemplateItem
             key={`${template.platform}-${template.id}`}
             template={template}
             onPress={setSelectedTemplate}
@@ -110,7 +110,7 @@ export const ContentTemplatesList = ({ conversationId }: ContentTemplatesListPro
   return (
     <Animated.View>
       <BottomSheetModal
-        ref={contentTemplatesSheetRef}
+        ref={whatsAppTemplatesSheetRef}
         backdropComponent={BottomSheetBackdrop}
         onDismiss={resetLocalState}
         handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
@@ -123,7 +123,7 @@ export const ContentTemplatesList = ({ conversationId }: ContentTemplatesListPro
         keyboardBlurBehavior="restore">
         <Animated.View style={tailwind.style('flex-1 pt-4')}>
           {selectedTemplate ? (
-            <ContentTemplateForm
+            <WhatsAppTemplateForm
               template={selectedTemplate}
               onBack={() => setSelectedTemplate(null)}
               onSend={handleSend}
@@ -142,4 +142,4 @@ export const ContentTemplatesList = ({ conversationId }: ContentTemplatesListPro
   );
 };
 
-export default ContentTemplatesList;
+export default WhatsAppTemplatesList;

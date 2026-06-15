@@ -203,7 +203,7 @@ type MenuOptionProps = {
 const MenuOption = (props: MenuOptionProps) => {
   const { index, menuOption } = props;
   const dispatch = useAppDispatch();
-  const { macrosListSheetRef, contentTemplatesSheetRef } = useRefsContext();
+  const { macrosListSheetRef, whatsAppTemplatesSheetRef } = useRefsContext();
 
   const { animatedStyle, handlers } = useScaleAnimation();
   const hapticSelection = useHaptic();
@@ -215,7 +215,7 @@ const MenuOption = (props: MenuOptionProps) => {
       macrosListSheetRef.current?.present();
     }
     if (menuOption.title === 'Whatsapp Templates') {
-      contentTemplatesSheetRef.current?.present();
+      whatsAppTemplatesSheetRef.current?.present();
     }
   };
 

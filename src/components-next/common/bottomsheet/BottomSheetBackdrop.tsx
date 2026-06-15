@@ -23,7 +23,7 @@ export const BottomSheetBackdrop: React.FC<BottomSheetBackgroundProps> = props =
     slaEventsSheetRef,
     updateParticipantSheetRef,
     toneSelectionSheetRef,
-    contentTemplatesSheetRef,
+    whatsAppTemplatesSheetRef,
   } = useRefsContext();
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -48,7 +48,7 @@ export const BottomSheetBackdrop: React.FC<BottomSheetBackgroundProps> = props =
     slaEventsSheetRef.current?.dismiss({ overshootClamping: true });
     updateParticipantSheetRef.current?.dismiss({ overshootClamping: true });
     toneSelectionSheetRef.current?.dismiss({ overshootClamping: true });
-    contentTemplatesSheetRef.current?.dismiss({ overshootClamping: true });
+    whatsAppTemplatesSheetRef.current?.dismiss({ overshootClamping: true });
   };
 
   return (

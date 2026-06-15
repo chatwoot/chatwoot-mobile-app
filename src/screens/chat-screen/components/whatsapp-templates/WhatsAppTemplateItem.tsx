@@ -7,7 +7,7 @@ import { NormalizedTemplate } from '@/types';
 import { useHaptic } from '@/utils';
 import { getHeaderSubtitle, renderTemplateLabel } from '@/utils/messageTemplateUtils';
 
-type ContentTemplateItemProps = {
+type WhatsAppTemplateItemProps = {
   template: NormalizedTemplate;
   onPress: (template: NormalizedTemplate) => void;
   isLastItem: boolean;
@@ -38,7 +38,7 @@ const ActionChip = ({ label }: { label: string }) => (
   </View>
 );
 
-const ContentTemplateItem = ({ template, onPress, isLastItem }: ContentTemplateItemProps) => {
+const WhatsAppTemplateItem = ({ template, onPress, isLastItem }: WhatsAppTemplateItemProps) => {
   const hapticSelection = useHaptic();
 
   const handlePress = useCallback(() => {
@@ -101,4 +101,4 @@ const ContentTemplateItem = ({ template, onPress, isLastItem }: ContentTemplateI
   );
 };
 
-export default ContentTemplateItem;
+export default WhatsAppTemplateItem;

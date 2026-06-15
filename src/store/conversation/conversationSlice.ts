@@ -53,7 +53,7 @@ const isOutdatedConversationUpdate = (
   );
 };
 
-const shouldPreserveLocalStatus = (
+const shouldKeepLocalStatusMarker = (
   existingConversation: Conversation | undefined,
   incomingConversation: Conversation,
 ) => {
@@ -66,7 +66,16 @@ const shouldPreserveLocalStatus = (
     typeof existingUpdatedAt === 'number' &&
     typeof incomingUpdatedAt === 'number' &&
     localStatusUpdatedAt === existingUpdatedAt &&
-    incomingUpdatedAt <= localStatusUpdatedAt &&
+    incomingUpdatedAt <= localStatusUpdatedAt
+  );
+};
+
+const shouldPreserveLocalStatus = (
+  existingConversation: Conversation | undefined,
+  incomingConversation: Conversation,
+) => {
+  return (
+    shouldKeepLocalStatusMarker(existingConversation, incomingConversation) &&
     existingConversation?.status !== incomingConversation.status
   );
 };
@@ -75,10 +84,17 @@ const preserveLocalStatus = (
   existingConversation: Conversation | undefined,
   incomingConversation: Conversation,
 ) => {
-  if (!shouldPreserveLocalStatus(existingConversation, incomingConversation)) {
+  if (!shouldKeepLocalStatusMarker(existingConversation, incomingConversation)) {
     return {
       ...incomingConversation,
       localStatusUpdatedAt: undefined,
+    };
+  }
+
+  if (!shouldPreserveLocalStatus(existingConversation, incomingConversation)) {
+    return {
+      ...incomingConversation,
+      localStatusUpdatedAt: existingConversation?.localStatusUpdatedAt,
     };
   }
 

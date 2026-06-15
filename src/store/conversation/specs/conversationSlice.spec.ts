@@ -63,6 +63,57 @@ describe('conversation reducer', () => {
     expect(state.entities[conversation.id]?.priority).toBe('high');
   });
 
+  it('keeps the status guard after same-second server confirmation', () => {
+    const initialConversation = {
+      ...conversation,
+      status: 'open' as const,
+      updatedAt: 100,
+    };
+
+    const serverConfirmation = {
+      ...conversation,
+      status: 'resolved' as const,
+      updatedAt: 100,
+      labels: ['confirmed'],
+    };
+
+    const staleConversation = {
+      ...conversation,
+      status: 'open' as const,
+      updatedAt: 100,
+      labels: ['stale'],
+    };
+
+    let state = conversationReducer(undefined, addConversation(initialConversation));
+    state = conversationReducer(
+      state,
+      conversationActions.toggleConversationStatus.fulfilled(
+        {
+          conversationId: conversation.id,
+          currentStatus: 'resolved',
+          snoozedUntil: null,
+        },
+        'request-id',
+        {
+          conversationId: conversation.id,
+          payload: { status: 'resolved', snoozed_until: null },
+        },
+      ),
+    );
+
+    state = conversationReducer(state, updateConversation(serverConfirmation));
+
+    expect(state.entities[conversation.id]?.status).toBe('resolved');
+    expect(state.entities[conversation.id]?.localStatusUpdatedAt).toBe(100);
+    expect(state.entities[conversation.id]?.labels).toEqual(['confirmed']);
+
+    state = conversationReducer(state, updateConversation(staleConversation));
+
+    expect(state.entities[conversation.id]?.status).toBe('resolved');
+    expect(state.entities[conversation.id]?.localStatusUpdatedAt).toBe(100);
+    expect(state.entities[conversation.id]?.labels).toEqual(['stale']);
+  });
+
   it('accepts newer server status updates after a local status toggle', () => {
     const initialConversation = {
       ...conversation,

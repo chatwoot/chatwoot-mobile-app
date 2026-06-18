@@ -117,7 +117,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@react-native-community/datetimepicker": "^8.4.4",
-    "@react-native-community/slider": "^4.5.5",
+    "@react-native-community/slider": "^5.0.1",
     "@storybook/addon-ondevice-actions": "^8.6.2",
     "@storybook/addon-ondevice-controls": "^8.6.2",
     "@storybook/react-native": "^8.6.2",
@@ -142,8 +142,7 @@
       "exclude": [
         "@kesha-antonov/react-native-action-cable",
         "react-native-reanimated",
-        "@shopify/flash-list",
-        "@react-native-community/slider"
+        "@shopify/flash-list"
       ]
     },
     "doctor": {

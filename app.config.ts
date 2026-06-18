@@ -91,11 +91,12 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       [
         'expo-build-properties',
         {
-          // https://github.com/invertase/notifee/issues/808#issuecomment-2175934609
+          // compileSdk/targetSdk 36 = Expo SDK 54 / RN 0.81 default (Android 16).
+          // notifee (issue #808) needs compileSdk >= 35, satisfied by 36.
           android: {
             minSdkVersion: 24,
-            compileSdkVersion: 35,
-            targetSdkVersion: 35,
+            compileSdkVersion: 36,
+            targetSdkVersion: 36,
             enableProguardInReleaseBuilds: true,
           },
           ios: { useFrameworks: 'static' },

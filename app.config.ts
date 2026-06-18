@@ -77,13 +77,15 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       'expo-font',
       ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary'] }],
       [
-        '@sentry/react-native/expo',
+        '@sentry/react-native',
         {
           url: 'https://sentry.io/',
           project: process.env.EXPO_PUBLIC_SENTRY_PROJECT_NAME,
           organization: process.env.EXPO_PUBLIC_SENTRY_ORG_NAME,
         },
       ],
+      'expo-web-browser',
+      '@react-native-community/datetimepicker',
       '@react-native-firebase/app',
       '@react-native-firebase/messaging',
       [
@@ -100,6 +102,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         },
       ],
       './with-ffmpeg-pod.js',
+      './with-notifee-maven-repo.js',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },
   };

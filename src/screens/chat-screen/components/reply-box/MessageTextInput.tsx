@@ -1,9 +1,9 @@
 import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import {
-  NativeSyntheticEvent,
+  BlurEvent,
+  FocusEvent,
   Platform,
   Pressable,
-  TextInputFocusEventData,
   StyleSheet,
   ScrollView,
 } from 'react-native';
@@ -139,7 +139,7 @@ export const MessageTextInput = ({
   };
 
   const handleOnFocus = useCallback(
-    (_args: NativeSyntheticEvent<TextInputFocusEventData>) => {
+    (_args: FocusEvent) => {
       setAddMenuOptionSheetState(false);
       setIsTextInputFocused(true);
     },
@@ -162,7 +162,7 @@ export const MessageTextInput = ({
   }, [quoteMessage]);
 
   const handleOnBlur = useCallback(
-    (_args: NativeSyntheticEvent<TextInputFocusEventData>) => {
+    (_args: BlurEvent) => {
       // shouldHandleKeyboardEvents.value = false;
       setIsTextInputFocused(false);
       onBlur();

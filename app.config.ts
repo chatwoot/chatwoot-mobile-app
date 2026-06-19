@@ -99,7 +99,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
             targetSdkVersion: 36,
             enableProguardInReleaseBuilds: true,
           },
-          ios: { useFrameworks: 'static' },
         },
       ],
       './with-ffmpeg-pod.js',

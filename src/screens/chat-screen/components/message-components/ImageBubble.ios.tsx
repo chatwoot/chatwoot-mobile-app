@@ -11,9 +11,7 @@ export const ImageBubbleContainer = (props: ImageContainerProps) => {
 
   return (
     <Galeria urls={[imageSrc]}>
-      {/* Give Galeria.Image the same dimensions as the image so the open
-          animation lines up (per galeria's guidance). */}
-      <Galeria.Image style={imageStyle}>
+      <Galeria.Image>
         <Image
           source={{ uri: imageSrc }}
           contentFit="contain"

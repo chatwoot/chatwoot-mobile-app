@@ -99,6 +99,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
             targetSdkVersion: 36,
             enableProguardInReleaseBuilds: true,
           },
+          // @nandorojo/galeria v3 (New-Arch image viewer) requires iOS 16.4+.
+          ios: { deploymentTarget: '16.4' },
         },
       ],
       './with-ffmpeg-pod.js',

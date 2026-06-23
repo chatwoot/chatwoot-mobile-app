@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
-import { FlashList } from '@shopify/flash-list';
+import { FlashListRef } from '@shopify/flash-list';
 
 import { tailwind } from '@/theme';
 import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
@@ -18,7 +18,7 @@ interface SearchResultsListProps {
   hasMore: boolean;
   searchQuery: string;
   renderItem: (item: SearchItem, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
-  listRef: React.RefObject<FlashList<SearchItem>>;
+  listRef: React.RefObject<FlashListRef<SearchItem>>;
   onEndReached: () => void;
 }
 

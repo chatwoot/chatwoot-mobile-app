@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import PagerView from 'react-native-pager-view';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { FlashList } from '@shopify/flash-list';
+import { FlashListRef } from '@shopify/flash-list';
 import { Message } from '@/types';
 
 interface RefsContextType {
@@ -15,7 +15,7 @@ interface RefsContextType {
   notificationPreferencesSheetRef: React.RefObject<BottomSheetModal>;
   switchAccountSheetRef: React.RefObject<BottomSheetModal>;
   debugActionsSheetRef: React.RefObject<BottomSheetModal>;
-  messageListRef: React.RefObject<FlashList<Message | { date: string }>>;
+  messageListRef: React.RefObject<FlashListRef<Message | { date: string }>>;
   inboxFiltersSheetRef: React.RefObject<BottomSheetModal>;
   slaEventsSheetRef: React.RefObject<BottomSheetModal>;
   deliveryStatusSheetRef: React.RefObject<BottomSheetModal>;
@@ -48,7 +48,7 @@ const RefsProvider: React.FC<Partial<RefsContextType & { children: React.ReactNo
   const switchAccountSheetRef = useRef<BottomSheetModal>(null);
   const debugActionsSheetRef = useRef<BottomSheetModal>(null);
   const inboxFiltersSheetRef = useRef<BottomSheetModal>(null);
-  const messageListRef = useRef<FlashList<Message | { date: string }>>(null);
+  const messageListRef = useRef<FlashListRef<Message | { date: string }>>(null);
   const slaEventsSheetRef = useRef<BottomSheetModal>(null);
   const deliveryStatusSheetRef = useRef<BottomSheetModal>(null);
   const updateParticipantSheetRef = useRef<BottomSheetModal>(null);

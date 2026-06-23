@@ -75,7 +75,7 @@ export const EmailMessageList: Story = {
                       messages={ALL_MESSAGES_MOCKDATA}
                       isFlashListReady={false}
                       setFlashListReady={() => {}}
-                      onEndReached={() => {}}
+                      onStartReached={() => {}}
                       isEmailInbox={true}
                       currentUserId={1}
                     />

@@ -75,7 +75,7 @@ export const Instagram: Story = {
                       messages={ALL_MESSAGES_MOCKDATA}
                       isFlashListReady={false}
                       setFlashListReady={() => {}}
-                      onEndReached={() => {}}
+                      onStartReached={() => {}}
                       isEmailInbox={false}
                       currentUserId={1}
                     />

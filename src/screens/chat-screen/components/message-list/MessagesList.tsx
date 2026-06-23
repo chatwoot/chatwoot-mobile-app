@@ -6,7 +6,7 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
-import { FlashList } from '@shopify/flash-list';
+import { FlashList, FlashListRef } from '@shopify/flash-list';
 import { useAppKeyboardAnimation } from '@/utils';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
@@ -42,7 +42,7 @@ type MessagesListPresentationProps = {
   messages: (Message | { date: string })[];
   isFlashListReady: boolean;
   setFlashListReady: (ready: boolean) => void;
-  onEndReached: () => void;
+  onStartReached: () => void;
   isEmailInbox: boolean;
   currentUserId: number;
   targetMessageId?: number;
@@ -54,7 +54,7 @@ export const MessagesList = ({
   messages,
   isFlashListReady,
   setFlashListReady,
-  onEndReached,
+  onStartReached,
   isEmailInbox,
   currentUserId,
   targetMessageId,
@@ -64,7 +64,7 @@ export const MessagesList = ({
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
   const typedMessageListRef = messageListRef as React.RefObject<
-    FlashList<Message | { date: string }>
+    FlashListRef<Message | { date: string }>
   >;
 
   const handleRender = ({ item, index }: { item: Message | { date: string }; index: number }) => {
@@ -116,13 +116,19 @@ export const MessagesList = ({
           }
         }}
         ref={typedMessageListRef}
-        inverted
-        estimatedItemSize={100}
+        // FlashList v2 is new-arch only and has no `inverted`/`estimatedItemSize`.
+        // For a chat list we render chronologically and start at the bottom;
+        // maintainVisibleContentPosition keeps the view steady when older
+        // messages are prepended at the top.
+        maintainVisibleContentPosition={{
+          startRenderingFromBottom: true,
+          autoscrollToBottomThreshold: 0.2,
+        }}
         {...(initialScrollIndex !== undefined ? { initialScrollIndex } : {})}
         showsVerticalScrollIndicator={false}
         renderItem={handleRender}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={0.1}
+        onStartReached={onStartReached}
+        onStartReachedThreshold={0.1}
         data={messages}
         contentContainerStyle={tailwind.style('px-3')}
         keyboardShouldPersistTaps="handled"

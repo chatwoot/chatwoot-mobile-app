@@ -157,7 +157,6 @@ const InboxList = () => {
       layout={LinearTransition.springify().damping(18).stiffness(120)}
       showsVerticalScrollIndicator={false}
       data={notifications}
-      estimatedItemSize={71}
       onScroll={scrollHandler}
       onEndReached={handleOnEndReached}
       onEndReachedThreshold={0.5}

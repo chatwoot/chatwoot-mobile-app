@@ -260,7 +260,6 @@ const ConversationList = () => {
       layout={LinearTransition.springify().damping(18).stiffness(120)}
       showsVerticalScrollIndicator={false}
       data={allConversations}
-      estimatedItemSize={91}
       onScroll={scrollHandler}
       onEndReached={handleOnEndReached}
       onEndReachedThreshold={0.5}

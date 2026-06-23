@@ -188,7 +188,9 @@ export const MessagesListContainer = () => {
     };
   }, [appState, conversationId, dispatch]);
 
-  const onEndReached = () => {
+  // Older history now lives at the TOP of the (chronological) list, so it is
+  // fetched when the user scrolls to the start instead of the end.
+  const onStartReached = () => {
     const shouldFetchMoreMessages = !isAllMessagesFetched && !isLoadingMessages && isFlashListReady;
     if (shouldFetchMoreMessages) {
       loadMessages({ loadingMessagesForFirstTime: false });
@@ -216,16 +218,27 @@ export const MessagesListContainer = () => {
 
   const groupedMessages = getGroupedMessages(messages);
 
+  // `messages` (and therefore `groupedMessages`) is newest-first. FlashList v2
+  // has no `inverted` prop, so the list renders in visual order (top -> bottom).
+  // Reverse into chronological order (oldest at top, newest at bottom) and place
+  // each day's date separator BEFORE that day's messages.
+  // NOTE: `[...section.data, { date }]` then `.reverse()` yields
+  // `[date, ...oldest->newest]` per day — the date ends up before its messages.
   const allMessages = flatMap(groupedMessages, section => [
     ...section.data,
     { date: section.date },
-  ]);
+  ]).reverse();
 
+  // Grouping flags describe whether a message visually joins the one ABOVE
+  // (older) or BELOW (newer) it. The list keeps newest-at-bottom, so to preserve
+  // the exact same per-message values as the old inverted list we swap the
+  // indices: `groupWithNext` = joins the older message above (index-1),
+  // `groupWithPrevious` = joins the newer message below (index).
   const messagesWithGrouping = allMessages.map((message, index) => {
     return {
       ...message,
-      groupWithNext: shouldGroupWithNext(index, allMessages as MessageOrDate[]),
-      groupWithPrevious: shouldGroupWithNext(index - 1, allMessages as MessageOrDate[]),
+      groupWithNext: shouldGroupWithNext(index - 1, allMessages as MessageOrDate[]),
+      groupWithPrevious: shouldGroupWithNext(index, allMessages as MessageOrDate[]),
     };
   });
 
@@ -303,7 +316,7 @@ export const MessagesListContainer = () => {
           messages={messagesWithGrouping}
           isFlashListReady={isFlashListReady}
           setFlashListReady={setFlashListReady}
-          onEndReached={onEndReached}
+          onStartReached={onStartReached}
           isEmailInbox={isEmailInbox}
           currentUserId={userId as number}
           targetMessageId={activeTargetMessageId}

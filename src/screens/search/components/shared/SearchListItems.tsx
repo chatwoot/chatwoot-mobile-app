@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
 import Animated, { FadeIn, Layout, LinearTransition } from 'react-native-reanimated';
-import { FlashList } from '@shopify/flash-list';
+import { FlashList, FlashListRef } from '@shopify/flash-list';
 
 import { tailwind } from '@/theme';
 import { TAB_BAR_HEIGHT } from '@/constants';
@@ -17,10 +17,9 @@ interface SearchListItemsProps {
   renderItem: (item: SearchItem, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
   getItemId: (item: SearchItem) => string | number;
   useFlashList?: boolean;
-  listRef?: React.RefObject<FlashList<SearchItem>>;
+  listRef?: React.RefObject<FlashListRef<SearchItem>>;
   onEndReached?: () => void;
   isLoadingMore?: boolean;
-  estimatedItemSize?: number;
 }
 
 export function SearchListItems({
@@ -32,7 +31,6 @@ export function SearchListItems({
   listRef,
   onEndReached,
   isLoadingMore,
-  estimatedItemSize = 80,
 }: SearchListItemsProps) {
   if (useFlashList) {
     return (
@@ -42,7 +40,6 @@ export function SearchListItems({
         <AnimatedFlashList
           ref={listRef}
           data={items}
-          estimatedItemSize={estimatedItemSize}
           keyExtractor={item => `${sectionId}-${getItemId(item)}`}
           renderItem={({ item, index }) => {
             const isLast = index === items.length - 1;

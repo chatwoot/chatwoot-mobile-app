@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
-import { FlashList } from '@shopify/flash-list';
+import { FlashListRef } from '@shopify/flash-list';
 
 import { tailwind } from '@/theme';
 import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
@@ -34,7 +34,7 @@ interface SearchContentProps {
   expandedSections: Record<SearchSectionType, boolean>;
   searchQuery: string;
   allSectionsData: Record<SearchSectionType, SearchItem[]>;
-  listRefs: Record<SearchSectionType, React.RefObject<FlashList<SearchItem>>>;
+  listRefs: Record<SearchSectionType, React.RefObject<FlashListRef<SearchItem>>>;
   getItemsToShow: (items: SearchItem[], sectionId: SearchSectionType) => SearchItem[];
   onRecentSearchSelect: (query: string) => void;
   onClearRecentSearches: () => void;

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { FlashList } from '@shopify/flash-list';
+import { FlashListRef } from '@shopify/flash-list';
 import { Message } from '@/types';
 
 type MessageOrDate = Message | { date: string };
@@ -7,7 +7,7 @@ type MessageOrDate = Message | { date: string };
 interface UseScrollToMessageParams {
   messageId?: number;
   messages: MessageOrDate[];
-  messageListRef: React.RefObject<FlashList<MessageOrDate>>;
+  messageListRef: React.RefObject<FlashListRef<MessageOrDate>>;
   isFlashListReady: boolean;
   isLoadingMessages: boolean;
   onPositioned: () => void;
@@ -78,47 +78,41 @@ export function useScrollToMessage({
       return;
     }
 
-    const scrollToTarget = () => {
+    let cancelled = false;
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    // FlashList v2 measures items precisely (no size estimates), and
+    // scrollToIndex resolves once the scroll completes — so a single accurate
+    // scroll replaces v1's staggered retry workaround. viewPosition 0.5 centers
+    // the target, leaving tolerance in both directions.
+    const positionAndReveal = async () => {
       try {
-        messageListRef.current?.scrollToIndex({
+        await messageListRef.current?.scrollToIndex({
           index: targetIndex,
           animated: false,
           viewPosition: 0.5,
         });
       } catch {
-        // scrollToIndex can throw if index is out of range during layout changes
+        // scrollToIndex can reject if the index is briefly out of range during
+        // a layout change; the reveal below still runs so the list isn't stuck.
       }
+
+      if (cancelled) return;
+      // One more frame so the scrolled position is committed before revealing.
+      const revealTimer = setTimeout(() => {
+        requestAnimationFrame(() => {
+          if (cancelled) return;
+          hasPositionedMessageRef.current = true;
+          onPositioned();
+        });
+      }, 100);
+      timers.push(revealTimer);
     };
 
-    // Staggered scroll attempts — each one becomes more accurate as FlashList
-    // measures actual item heights for items rendered near the target.
-    //
-    // Attempt 1 (immediate): uses estimated sizes, gets FlashList to render
-    //   items near the target so they can be measured.
-    // Attempt 2 (200ms): items near target are now measured, position improves.
-    // Attempt 3 (450ms): final correction with most items measured.
-    const delays = [0, 200, 450];
-    const timers: ReturnType<typeof setTimeout>[] = [];
-
-    delays.forEach((delay, i) => {
-      const timer = setTimeout(() => {
-        scrollToTarget();
-
-        // After the last scroll attempt, reveal the list
-        if (i === delays.length - 1) {
-          const revealTimer = setTimeout(() => {
-            requestAnimationFrame(() => {
-              hasPositionedMessageRef.current = true;
-              onPositioned();
-            });
-          }, 100);
-          timers.push(revealTimer);
-        }
-      }, delay);
-      timers.push(timer);
-    });
+    positionAndReveal();
 
     return () => {
+      cancelled = true;
       timers.forEach(clearTimeout);
     };
   }, [messageId, isFlashListReady, isLoadingMessages, messages, messageListRef, onPositioned]);

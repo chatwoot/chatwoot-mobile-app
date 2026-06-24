@@ -38,8 +38,8 @@ const buildConversation = (overrides: Record<string, unknown> = {}): Conversatio
         id: 11824,
         name: 'Solitary-Wave-900',
         thumbnail: '',
-        email: 'test@example.com',
-        phoneNumber: '+1234567890',
+        email: 'contact@example.test',
+        phoneNumber: '+12025550198',
         additionalAttributes: {},
         customAttributes: {},
         createdAt: 1,
@@ -49,9 +49,9 @@ const buildConversation = (overrides: Record<string, unknown> = {}): Conversatio
       },
       assignee: {
         id: 1,
-        name: 'John Doe',
+        name: 'Example Agent',
         thumbnail: '',
-        email: 'john@example.com',
+        email: 'agent@example.test',
         customAttributes: {},
       },
       team: null,
@@ -70,7 +70,7 @@ describe('messageVariableUtils', () => {
 
       expect(variables['contact.name']).toBe('Solitary-Wave-900');
       expect(variables['contact.first_name']).toBe('Solitary-Wave-900');
-      expect(variables['contact.email']).toBe('test@example.com');
+      expect(variables['contact.email']).toBe('contact@example.test');
       expect(variables['contact.id']).toBe(11824);
       expect(variables['conversation.id']).toBe(11306);
     });
@@ -79,17 +79,17 @@ describe('messageVariableUtils', () => {
       const conversation = buildConversation();
       const variables = allMessageVariables({ conversation });
 
-      expect(variables['agent.name']).toBe('John Doe');
-      expect(variables['agent.first_name']).toBe('John');
-      expect(variables['agent.last_name']).toBe('Doe');
-      expect(variables['agent.email']).toBe('john@example.com');
+      expect(variables['agent.name']).toBe('Example Agent');
+      expect(variables['agent.first_name']).toBe('Example');
+      expect(variables['agent.last_name']).toBe('Agent');
+      expect(variables['agent.email']).toBe('agent@example.test');
     });
 
     it('should map contact.phone from camelCase phoneNumber', () => {
       const conversation = buildConversation();
       const variables = allMessageVariables({ conversation });
 
-      expect(variables['contact.phone']).toBe('+1234567890');
+      expect(variables['contact.phone']).toBe('+12025550198');
     });
 
     it('should convert camelCase conversation custom attribute keys to snake_case', () => {
@@ -108,10 +108,11 @@ describe('messageVariableUtils', () => {
     it('should convert camelCase contact custom attribute keys to snake_case', () => {
       const conversation = buildConversation();
       // Override sender customAttributes
-      (conversation.meta.sender as { customAttributes: Record<string, string> }).customAttributes = {
-        userName: 'testuser',
-        accountType: 'business',
-      };
+      (conversation.meta.sender as { customAttributes: Record<string, string> }).customAttributes =
+        {
+          userName: 'testuser',
+          accountType: 'business',
+        };
       const variables = allMessageVariables({ conversation });
 
       expect(variables['contact.custom_attribute.user_name']).toBe('testuser');
@@ -132,10 +133,11 @@ describe('messageVariableUtils', () => {
       const conversation = buildConversation({
         customAttributes: { addressLine1: '123 Main St', field2Value: 'test' },
       });
-      (conversation.meta.sender as { customAttributes: Record<string, string> }).customAttributes = {
-        phone2Type: 'mobile',
-        line1Address: 'home',
-      };
+      (conversation.meta.sender as { customAttributes: Record<string, string> }).customAttributes =
+        {
+          phone2Type: 'mobile',
+          line1Address: 'home',
+        };
       const variables = allMessageVariables({ conversation });
 
       expect(variables['conversation.custom_attribute.address_line_1']).toBe('123 Main St');
@@ -177,9 +179,10 @@ describe('messageVariableUtils', () => {
 
     it('should replace contact custom attribute variables in message', () => {
       const conversation = buildConversation();
-      (conversation.meta.sender as { customAttributes: Record<string, string> }).customAttributes = {
-        userName: 'testuser',
-      };
+      (conversation.meta.sender as { customAttributes: Record<string, string> }).customAttributes =
+        {
+          userName: 'testuser',
+        };
       const variables = allMessageVariables({ conversation });
 
       const result = replaceMessageVariables({
@@ -199,7 +202,7 @@ describe('messageVariableUtils', () => {
         variables,
       });
 
-      expect(result).toBe('Hi Solitary-Wave-900, your agent is John Doe');
+      expect(result).toBe('Hi Solitary-Wave-900, your agent is Example Agent');
     });
 
     it('should replace multiple custom attribute variables', () => {

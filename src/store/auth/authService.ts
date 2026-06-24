@@ -15,6 +15,14 @@ import type {
   SsoAuthResponse,
 } from './authTypes';
 
+const buildAuthHeaders = (headers: Record<string, string | undefined>) => ({
+  'access-token': headers['access-token'] ?? '',
+  uid: headers.uid ?? '',
+  client: headers.client ?? '',
+  ...(headers.expiry ? { expiry: headers.expiry } : {}),
+  ...(headers['token-type'] ? { 'token-type': headers['token-type'] } : {}),
+});
+
 export class AuthService {
   static async login(credentials: LoginPayload): Promise<LoginResponse | MfaRequiredResponse> {
     const response = await apiService.post<LoginApiResponse>('auth/sign_in', credentials);
@@ -30,11 +38,7 @@ export class AuthService {
     // Regular login response
     return {
       user: response.data.data,
-      headers: {
-        'access-token': response.headers['access-token'],
-        uid: response.headers.uid,
-        client: response.headers.client,
-      },
+      headers: buildAuthHeaders(response.headers),
     } as LoginResponse;
   }
 
@@ -42,11 +46,7 @@ export class AuthService {
     const response = await apiService.post<{ data: User }>('auth/sign_in', payload);
     return {
       user: response.data.data,
-      headers: {
-        'access-token': response.headers['access-token'],
-        uid: response.headers.uid,
-        client: response.headers.client,
-      },
+      headers: buildAuthHeaders(response.headers),
     };
   }
   static async getProfile(): Promise<ProfileResponse> {
@@ -71,11 +71,7 @@ export class AuthService {
     const response = await apiService.post<{ data: User }>('auth/sign_in', payload);
     return {
       user: response.data.data,
-      headers: {
-        'access-token': response.headers['access-token'],
-        uid: response.headers.uid,
-        client: response.headers.client,
-      },
+      headers: buildAuthHeaders(response.headers),
     };
   }
 }

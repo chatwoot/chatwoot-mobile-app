@@ -33,6 +33,13 @@ export interface ConversationResponse {
   conversation: Conversation;
 }
 
+export interface CreateConversationPayload {
+  contactId: number;
+  inboxId: number;
+  sourceId: string;
+  assigneeId?: number;
+}
+
 export interface ConversationPayload {
   page: number;
   status: ConversationStatus;

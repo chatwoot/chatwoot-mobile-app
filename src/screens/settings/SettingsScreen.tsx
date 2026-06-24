@@ -42,7 +42,7 @@ import { UserAvatar } from './components/UserAvatar';
 
 import { LANGUAGES, TAB_BAR_HEIGHT } from '@/constants';
 import { useRefsContext } from '@/context';
-import { ChatwootIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
+import { ChatwootIcon, NotificationIcon, PhoneIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
 import { GenericListType } from '@/types';
 
 import { useHaptic } from '@/utils';
@@ -80,6 +80,7 @@ const SettingsScreen = () => {
   const dispatch = useAppDispatch();
   const availabilityStatus =
     (useSelector(selectCurrentUserAvailability) as AvailabilityStatus) || 'offline';
+  const canGoBack = navigation.canGoBack();
 
   // const { bottom } = useSafeAreaInsets();
 
@@ -214,6 +215,15 @@ const SettingsScreen = () => {
     dispatch(logout());
   }, [dispatch, pushToken]);
 
+  const handleBackPress = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+      return;
+    }
+
+    navigation.dispatch(StackActions.replace('MoreScreen'));
+  };
+
   const preferencesList: GenericListType[] = [
     {
       hasChevron: true,
@@ -232,6 +242,15 @@ const SettingsScreen = () => {
       disabled: !hasConversationPermission,
       onPressListItem: () => notificationPreferencesSheetRef.current?.present(),
       // onPressListItem: openSystemSettings,
+    },
+    {
+      hasChevron: true,
+      title: i18n.t('SETTINGS.VOICE_ALERTS'),
+      icon: <PhoneIcon />,
+      subtitle: '',
+      subtitleType: 'light',
+      disabled: !hasConversationPermission,
+      onPressListItem: () => navigation.dispatch(StackActions.push('VoiceAlertSettingsScreen')),
     },
     {
       hasChevron: true,
@@ -281,7 +300,7 @@ const SettingsScreen = () => {
         backgroundColor={tailwind.color('bg-white')}
         barStyle={'dark-content'}
       />
-      <SettingsHeader />
+      <SettingsHeader onBackPress={canGoBack ? handleBackPress : undefined} />
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}>

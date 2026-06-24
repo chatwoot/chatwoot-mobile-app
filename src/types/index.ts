@@ -6,6 +6,7 @@ export * from './Agent';
 export * from './AgentBot';
 export * from './common';
 export * from './Contact';
+export * from './Company';
 export * from './Conversation';
 export * from './Message';
 export * from './Team';

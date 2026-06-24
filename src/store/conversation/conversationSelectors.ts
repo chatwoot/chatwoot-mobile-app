@@ -81,7 +81,9 @@ export const getFilteredConversations = createDraftSafeSelector(
       sortType = 'latest';
     }
 
-    const sortedConversations = conversations.sort(comparator[sortType as keyof SortComparator]);
+    const sortedConversations = [...conversations].sort(
+      comparator[sortType as keyof SortComparator],
+    );
 
     if (assigneeType === 'me') {
       return sortedConversations.filter(conversation => {

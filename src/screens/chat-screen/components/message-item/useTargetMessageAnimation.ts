@@ -76,7 +76,14 @@ export function useTargetMessageAnimation({
         withTiming(0, { duration: 300 }),
       ),
     );
-  }, [isTargetMessage, activeTriggerId, isListPositioned, isQuoteTap, messageScale, highlightOpacity]);
+  }, [
+    isTargetMessage,
+    activeTriggerId,
+    isListPositioned,
+    isQuoteTap,
+    messageScale,
+    highlightOpacity,
+  ]);
 
   const zoomStyle = useAnimatedStyle(() => {
     return {

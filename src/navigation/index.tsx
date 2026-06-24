@@ -28,6 +28,8 @@ import Inter50024 from '@/assets/fonts/Inter-500-24.ttf';
 import Inter58024 from '@/assets/fonts/Inter-580-24.ttf';
 import Inter60020 from '@/assets/fonts/Inter-600-20.ttf';
 
+type GetStateFromPathConfig = Parameters<typeof getStateFromPath>[1];
+
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
 });
@@ -61,9 +63,8 @@ export const AppNavigationContainer = () => {
         },
       },
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // getStateFromPath: App running, receives deep link - handles SSO callbacks and conversation navigation
-    getStateFromPath: (path: string, config: any) => {
+    getStateFromPath: (path: string, config: GetStateFromPathConfig) => {
       // Handle SSO callback - App running, receives deep link
       if (path.includes(SSO_CALLBACK_URL) || path.includes('auth/saml')) {
         const ssoParams = SsoUtils.parseCallbackUrl(`chatwootapp://${path}`);

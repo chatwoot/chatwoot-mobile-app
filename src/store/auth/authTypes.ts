@@ -4,6 +4,8 @@ export interface AuthHeaders {
   'access-token': string;
   uid: string;
   client: string;
+  expiry?: string;
+  'token-type'?: string;
 }
 export interface LoginPayload {
   email: string;

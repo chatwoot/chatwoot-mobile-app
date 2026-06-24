@@ -27,7 +27,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         NSMicrophoneUsageDescription: 'This app requires access to the microphone to record audio.',
         NSAppleMusicUsageDescription:
           'This app does not use Apple Music, but a system API may require this permission.',
-        UIBackgroundModes: ['fetch', 'remote-notification'],
+        UIBackgroundModes: ['fetch', 'remote-notification', 'voip'],
         ITSAppUsesNonExemptEncryption: false,
       },
       // Please use the relative path to the google-services.json file

@@ -312,9 +312,7 @@ const BottomSheetContent = () => {
   const handleCopilotFollowUp = (message: string) => {
     if (followUpContext && message.trim().length > 0) {
       copilotAbortRef.current?.abort();
-      const promise = dispatch(
-        sendCopilotFollowUp({ followUpContext, message, conversationId }),
-      );
+      const promise = dispatch(sendCopilotFollowUp({ followUpContext, message, conversationId }));
       copilotAbortRef.current = promise;
       promise.unwrap().catch((err: { name?: string }) => {
         if (err?.name === 'AbortError') return;
@@ -513,7 +511,9 @@ const BottomSheetContent = () => {
       )}
 
       <Animated.View
-        layout={isCopilotActive ? undefined : LinearTransition.springify().damping(38).stiffness(240)}
+        layout={
+          isCopilotActive ? undefined : LinearTransition.springify().damping(38).stiffness(240)
+        }
         style={tailwind.style(
           `pb-2 border-t-[1px] border-t-blackA-A3 ${shouldShowReplyHeader ? 'pt-0' : 'pt-2'}`,
         )}>
@@ -551,7 +551,9 @@ const BottomSheetContent = () => {
         ) : null}
         {!isVoiceRecorderOpen ? (
           <Animated.View
-            layout={isCopilotActive ? undefined : LinearTransition.springify().damping(20).stiffness(180)}
+            layout={
+              isCopilotActive ? undefined : LinearTransition.springify().damping(20).stiffness(180)
+            }
             style={tailwind.style('flex flex-row px-1 items-end z-20 relative')}>
             {!isCopilotActive && attachmentsLength === 0 && shouldShowFileUpload && (
               <AddCommandButton

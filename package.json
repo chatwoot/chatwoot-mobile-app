@@ -55,6 +55,7 @@
     "@reduxjs/toolkit": "^2.5.1",
     "@sentry/react-native": "^6.14.0",
     "@shopify/flash-list": "^1.7.6",
+    "@twilio/voice-react-native-sdk": "^1.7.0",
     "@types/lodash": "^4.17.9",
     "axios": "^1.13.5",
     "camelcase": "^8.0.0",

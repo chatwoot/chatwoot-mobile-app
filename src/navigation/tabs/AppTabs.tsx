@@ -17,12 +17,19 @@ import {
 } from '@/store/auth/authSelectors';
 import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 
+import {
+  AuthStack,
+  ChannelsStack,
+  ContactsStack,
+  DialStack,
+  InboxStack,
+  MoreStack,
+} from '../stack';
 import { getUserPermissions } from '@/utils/permissionUtils';
-import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
-
-import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stack';
+import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import ChatScreen from '@/screens/chat-screen/ChatScreen';
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
+import CompanyDetailsScreen from '@/screens/company-details/CompanyDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
 import SearchScreen from '@/screens/search/SearchScreen';
 
@@ -32,6 +39,7 @@ import { settingsActions } from '@/store/settings/settingsActions';
 import { selectChatwootVersion } from '@/store/settings/settingsSelectors';
 import { checkServerSupport } from '@/utils/serverUtils';
 import { inboxActions } from '@/store/inbox/inboxActions';
+import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
 import { labelActions } from '@/store/label/labelActions';
 import actionCableConnector from '@/utils/actionCable';
 import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
@@ -40,18 +48,20 @@ import { clearAllDeliveredNotifications } from '@/utils/pushUtils';
 import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
 import { customAttributeActions } from '@/store/custom-attribute/customAttributeActions';
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
+import { isVoiceCallEnabled } from '@/utils/inboxUtils';
+import { nativeVoiceRegistrationService } from '@/services/voice/nativeVoiceRegistrationService';
+import type { Contact } from '@/types/Contact';
+import type { Company } from '@/types/Company';
+import type { SearchSectionType } from '@/store/search/searchTypes';
 
 const Tab = createBottomTabNavigator();
 
 export type TabParamList = {
-  Conversations: undefined;
   Inbox: undefined;
-  Settings: undefined;
-  Login: undefined;
-  ConfigInstallationURL: undefined;
-  ForgotPassword: undefined;
-  Search: undefined;
-  Notifications: undefined;
+  Contacts: undefined;
+  Dial: undefined;
+  Channels: undefined;
+  More: undefined;
 };
 
 export type TabBarExcludedScreenParamList = {
@@ -62,11 +72,28 @@ export type TabBarExcludedScreenParamList = {
     primaryActorType?: string;
     messageId?: number;
   };
-  ContactDetails: { conversationId?: number; contactId?: number };
+  ContactDetails: {
+    conversationId?: number;
+    contactId?: number;
+    contact?: Partial<Contact>;
+    company?: Pick<Company, 'id' | 'name'>;
+  };
+  CompanyDetails: {
+    companyId: number;
+    contactsCount?: number;
+    companyName?: string;
+    companyDomain?: string | null;
+    companyDescription?: string | null;
+    companyAvatarUrl?: string | null;
+  };
   ConversationActions: undefined;
   Dashboard: { url: string };
   Login: undefined;
-  SearchScreen: undefined;
+  SearchScreen:
+    | {
+        initialTab?: 'all' | SearchSectionType;
+      }
+    | undefined;
   ImageScreen: undefined;
   ConversationDetails: undefined;
   ConversationAction: undefined;
@@ -86,6 +113,12 @@ const Tabs = () => {
   const userId = useAppSelector(selectUserId);
   const accountId = useAppSelector(selectCurrentUserAccountId);
   const webSocketUrl = useAppSelector(selectWebSocketUrl);
+  const inboxes = useAppSelector(selectAllInboxes);
+  const userPermissions = user ? getUserPermissions(user, user.account_id) : [];
+  const hasConversationPermission = CONVERSATION_PERMISSIONS.some(permission =>
+    userPermissions.includes(permission),
+  );
+  const hasVoiceCallInbox = inboxes.some(isVoiceCallEnabled);
 
   useEffect(() => {
     // Here is the place we are loading all the data for the app first time first time or user switches account
@@ -138,13 +171,6 @@ const Tabs = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [installationUrl]);
 
-  const userPermissions = user ? getUserPermissions(user, user.account_id) : [];
-
-  // Checking if user has conversation permission to show inbox and conversations tabs
-  const hasConversationPermission = CONVERSATION_PERMISSIONS.some(permission =>
-    userPermissions.includes(permission),
-  );
-
   const checkAppVersion = useCallback(async () => {
     if (chatwootVersion) {
       checkServerSupport({
@@ -159,19 +185,34 @@ const Tabs = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    nativeVoiceRegistrationService
+      .syncTwilioVoiceRegistrations({ accountId, inboxes })
+      .catch(error => {
+        Sentry.captureException(error);
+      });
+  }, [accountId, inboxes]);
+
+  useEffect(() => {
+    return () => {
+      nativeVoiceRegistrationService.unregisterAll().catch(error => {
+        Sentry.captureException(error);
+      });
+    };
+  }, []);
+
   return (
-    <Tab.Navigator tabBar={CustomTabBar} initialRouteName="Inbox">
-      {hasConversationPermission && (
-        <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
+    <Tab.Navigator
+      tabBar={CustomTabBar}
+      screenOptions={{ headerShown: false }}
+      initialRouteName={hasConversationPermission ? 'Inbox' : 'More'}>
+      {hasConversationPermission && <Tab.Screen name="Inbox" component={InboxStack} />}
+      {hasConversationPermission && <Tab.Screen name="Channels" component={ChannelsStack} />}
+      {hasConversationPermission && hasVoiceCallInbox && (
+        <Tab.Screen name="Dial" component={DialStack} />
       )}
-      {hasConversationPermission && (
-        <Tab.Screen
-          name="Conversations"
-          options={{ headerShown: false }}
-          component={ConversationStack}
-        />
-      )}
-      <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
+      {hasConversationPermission && <Tab.Screen name="Contacts" component={ContactsStack} />}
+      <Tab.Screen name="More" component={MoreStack} />
     </Tab.Navigator>
   );
 };
@@ -195,6 +236,14 @@ export const AppTabs = () => {
           }}
           name="ContactDetails"
           component={ContactDetailsScreen}
+        />
+        <Stack.Screen
+          options={{
+            presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
+            animation: 'slide_from_bottom',
+          }}
+          name="CompanyDetails"
+          component={CompanyDetailsScreen}
         />
         <Stack.Screen
           options={{

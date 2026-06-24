@@ -62,6 +62,35 @@ export const isATwilioSMSChannel = (inbox: Inbox | undefined) => {
   return inbox?.channelType === INBOX_TYPES.TWILIO && inbox.medium === 'sms';
 };
 
+export const VOICE_CALL_PROVIDERS = {
+  TWILIO: 'twilio',
+  WHATSAPP: 'whatsapp',
+} as const;
+
+export const getVoiceCallProvider = (inbox: Inbox | undefined) => {
+  if (!inbox?.voiceEnabled) {
+    return null;
+  }
+
+  if (inbox.channelType === INBOX_TYPES.TWILIO && inbox.medium !== 'whatsapp') {
+    return VOICE_CALL_PROVIDERS.TWILIO;
+  }
+
+  if (inbox.channelType === INBOX_TYPES.WHATSAPP) {
+    return VOICE_CALL_PROVIDERS.WHATSAPP;
+  }
+
+  return null;
+};
+
+export const isVoiceCallEnabled = (inbox: Inbox | undefined) => {
+  return getVoiceCallProvider(inbox) !== null;
+};
+
+export const isTwilioVoiceInbox = (inbox: Inbox | undefined) => {
+  return getVoiceCallProvider(inbox) === VOICE_CALL_PROVIDERS.TWILIO;
+};
+
 export const isAWhatsAppChannel = (inbox: Inbox | undefined) => {
   return inbox?.channelType === INBOX_TYPES.WHATSAPP || isATwilioWhatsAppChannel(inbox);
 };

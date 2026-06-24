@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
+import { useRoute, type RouteProp } from '@react-navigation/native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Tabs, type TabItem } from '@/components-next/common/tabs';
@@ -12,8 +13,10 @@ import type { SearchSectionType } from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
 import { createRenderItem } from './utils/renderItem';
 import i18n from 'i18n';
+import type { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 
 const SearchScreen = () => {
+  const route = useRoute<RouteProp<TabBarExcludedScreenParamList, 'SearchScreen'>>();
   const {
     searchText,
     recentSearches,
@@ -39,7 +42,7 @@ const SearchScreen = () => {
     createEndReachedHandler,
     navigation,
     dispatch,
-  } = useSearchScreen();
+  } = useSearchScreen({ initialTab: route.params?.initialTab });
 
   const renderItem = useMemo(
     () => createRenderItem(searchQuery, allSectionsData, navigation, dispatch),

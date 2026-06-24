@@ -117,6 +117,10 @@ class APIService {
     return this.api.put<T>(url, data, config);
   }
 
+  public async patch<T, D = unknown>(url: string, data?: D, config?: AxiosRequestConfig) {
+    return this.api.patch<T>(url, data, config);
+  }
+
   public async delete<T>(url: string, config?: AxiosRequestConfig) {
     return this.api.delete<T>(url, config);
   }

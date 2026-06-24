@@ -138,6 +138,11 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
     onSelect: handleNavigation,
   }));
 
+  const companyName = conversation?.meta?.sender?.additionalAttributes?.companyName;
+  const contactContext =
+    conversation?.meta?.sender?.phoneNumber || conversation?.meta?.sender?.email;
+  const subtitle = [companyName, contactContext].filter(Boolean).join(' - ');
+
   const dashboardsList = useMemo(() => {
     return [
       pagerViewIndex === 0
@@ -161,6 +166,7 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   return (
     <ChatHeader
       name={name}
+      subtitle={subtitle}
       imageSrc={imageSrc}
       isResolved={isResolved}
       dashboardsList={dashboardsList}

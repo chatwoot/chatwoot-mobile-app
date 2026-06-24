@@ -26,6 +26,7 @@ import type {
   ConversationListResponse,
   MessagesResponse,
   ConversationResponse,
+  CreateConversationPayload,
   MarkMessageReadOrUnreadResponse,
   ToggleConversationStatusAPIResponse,
   TogglePriorityPayload,
@@ -40,6 +41,35 @@ import {
   transformConversationMeta,
 } from '@/utils/camelCaseKeys';
 import type { AxiosRequestConfig } from 'axios';
+
+type ConversationReadStateResponse = {
+  id?: number;
+  unread_count?: number;
+  unreadCount?: number;
+  agent_last_seen_at?: number;
+  agentLastSeenAt?: number;
+  data?: ConversationReadStateResponse;
+  payload?: ConversationReadStateResponse;
+};
+
+const readStateFromConversation = (
+  conversation: ConversationReadStateResponse | undefined,
+  fallbackConversationId: number,
+): MarkMessageReadOrUnreadResponse | undefined => {
+  const payload = conversation?.data || conversation?.payload || conversation;
+
+  if (!payload || (payload.unread_count === undefined && payload.unreadCount === undefined)) {
+    return undefined;
+  }
+
+  const transformedPayload = transformConversation(payload);
+
+  return {
+    conversationId: transformedPayload.id ?? fallbackConversationId,
+    unreadCount: transformedPayload.unreadCount,
+    agentLastSeenAt: transformedPayload.agentLastSeenAt ?? 0,
+  };
+};
 
 export class ConversationService {
   static async getConversations(payload: ConversationPayload): Promise<ConversationListResponse> {
@@ -73,6 +103,22 @@ export class ConversationService {
     const { data: conversation } = response;
     return {
       conversation: transformConversation(conversation),
+    };
+  }
+
+  static async createConversation(
+    payload: CreateConversationPayload,
+  ): Promise<ConversationResponse> {
+    const { contactId, inboxId, sourceId, assigneeId } = payload;
+    const response = await apiService.post<ConversationAPIResponse>('conversations', {
+      contact_id: contactId,
+      inbox_id: inboxId,
+      source_id: sourceId,
+      ...(assigneeId ? { assignee_id: assigneeId } : {}),
+    });
+
+    return {
+      conversation: transformConversation(response.data.data || response.data),
     };
   }
 
@@ -162,12 +208,14 @@ export class ConversationService {
     const response = await apiService.post<MarkMessagesUnreadAPIResponse>(
       `conversations/${conversationId}/unread`,
     );
-    const { id, unread_count: unreadCount, agent_last_seen_at: agentLastSeenAt } = response.data;
-    return {
-      conversationId: id,
-      unreadCount,
-      agentLastSeenAt,
-    };
+
+    const readState = readStateFromConversation(response.data, conversationId);
+
+    if (!readState) {
+      return ConversationService.fetchConversationReadState(conversationId);
+    }
+
+    return readState;
   }
 
   static async markMessageRead(
@@ -177,11 +225,25 @@ export class ConversationService {
     const response = await apiService.post<MarkMessageReadAPIResponse>(
       `conversations/${conversationId}/update_last_seen`,
     );
-    const { id, unread_count: unreadCount, agent_last_seen_at: agentLastSeenAt } = response.data;
+
+    const readState = readStateFromConversation(response.data, conversationId);
+
+    if (!readState) {
+      return ConversationService.fetchConversationReadState(conversationId);
+    }
+
+    return readState;
+  }
+
+  private static async fetchConversationReadState(
+    conversationId: number,
+  ): Promise<MarkMessageReadOrUnreadResponse> {
+    const { conversation } = await ConversationService.fetchConversation(conversationId);
+
     return {
-      conversationId: id,
-      unreadCount,
-      agentLastSeenAt,
+      conversationId: conversation.id,
+      unreadCount: conversation.unreadCount,
+      agentLastSeenAt: conversation.agentLastSeenAt,
     };
   }
 

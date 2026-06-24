@@ -14,6 +14,7 @@ import { SlaEvents } from './SlaEvents';
 
 type ChatHeaderProps = {
   name: string;
+  subtitle?: string;
   imageSrc: ImageSourcePropType;
   isResolved: boolean;
   isSlaMissed?: boolean;
@@ -28,6 +29,7 @@ type ChatHeaderProps = {
 
 export const ChatHeader = ({
   name,
+  subtitle,
   imageSrc,
   isResolved,
   slaEvents,
@@ -57,7 +59,7 @@ export const ChatHeader = ({
   return (
     <Animated.View style={[tailwind.style('border-b-[1px] border-b-blackA-A3')]}>
       <Animated.View style={tailwind.style('flex flex-row justify-between items-center px-4 py-2')}>
-        <Animated.View style={tailwind.style('flex-1 flex-row gap-2 items-center justify-center')}>
+        <Animated.View style={tailwind.style('flex-1 flex-row gap-2 items-center')}>
           <Pressable
             hitSlop={8}
             style={tailwind.style('h-8 w-8 flex  justify-center items-start')}
@@ -66,9 +68,9 @@ export const ChatHeader = ({
           </Pressable>
           <Pressable
             onPress={onContactDetailsPress}
-            style={tailwind.style('flex flex-row items-center flex-1')}>
+            style={tailwind.style('min-w-0 flex-1 flex-row items-center')}>
             <Avatar size="xl" src={imageSrc} name={name} />
-            <Animated.View style={tailwind.style('pl-2')}>
+            <Animated.View style={tailwind.style('min-w-0 flex-1 pl-2')}>
               <Animated.Text
                 numberOfLines={1}
                 style={tailwind.style(
@@ -76,13 +78,22 @@ export const ChatHeader = ({
                 )}>
                 {name}
               </Animated.Text>
+              {!!subtitle && (
+                <Animated.Text
+                  numberOfLines={1}
+                  style={tailwind.style(
+                    'text-xs font-inter-420-20 tracking-[0.32px] text-gray-700 pt-0.5',
+                  )}>
+                  {subtitle}
+                </Animated.Text>
+              )}
             </Animated.View>
           </Pressable>
         </Animated.View>
 
         <Animated.View
           style={tailwind.style(
-            `flex flex-row flex-1 justify-end ${Platform.OS === 'ios' ? 'gap-4' : ''}`,
+            `flex-shrink-0 flex-row justify-end ${Platform.OS === 'ios' ? 'gap-4' : ''}`,
           )}>
           <Animated.View style={tailwind.style('flex flex-row items-center gap-4')}>
             {hasSla && (

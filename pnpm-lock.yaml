@@ -93,6 +93,9 @@ importers:
       '@shopify/flash-list':
         specifier: ^1.7.6
         version: 1.7.6(@babel/runtime@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      '@twilio/voice-react-native-sdk':
+        specifier: ^1.7.0
+        version: 1.7.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@types/lodash':
         specifier: ^4.17.9
         version: 4.17.16
@@ -2371,6 +2374,15 @@ packages:
     resolution: {integrity: sha512-HqmEUIGRJ5fSXchkVgR5F7qn48bDBzv0kWj/Kfu5e6uci4UlEeng4331LnBkWffb++Ei3FOVLxo8JJWMFBDMeQ==}
     engines: {node: '>= 10'}
 
+  '@twilio/voice-errors@1.8.0':
+    resolution: {integrity: sha512-Mh3CCCNOZ+OCFNv90ibml1VrsXiJy/1+/FP6382tUQuqZztndp41eqnJhsnM44UBkMAtlvVUSd1HuK8iCdHM/A==}
+
+  '@twilio/voice-react-native-sdk@1.7.0':
+    resolution: {integrity: sha512-okuASZJffRZHRN7ayxhhK7UI86quKsXQTSm8G92Tmru1RPBqf0ek3jITCf90dRiOoFD3VxpdpcFFePZ3xEMNQw==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+
   '@tybys/wasm-util@0.9.0':
     resolution: {integrity: sha512-6+7nlbMVX/PVDCwaIQ8nTOPveOcFLSt8GcXdx8hD0bt39uWxYT88uXzqTd4fTvqta7oeUJqudepapKNt2DYJFw==}
 
@@ -3598,6 +3610,9 @@ packages:
   event-target-shim@5.0.1:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
     engines: {node: '>=6'}
+
+  eventemitter3@4.0.7:
+    resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
 
   eventemitter3@5.0.1:
     resolution: {integrity: sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==}
@@ -9101,6 +9116,15 @@ snapshots:
 
   '@tootallnate/once@2.0.1': {}
 
+  '@twilio/voice-errors@1.8.0': {}
+
+  '@twilio/voice-react-native-sdk@1.7.0(react-native@0.79.6(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@twilio/voice-errors': 1.8.0
+      eventemitter3: 4.0.7
+      react: 19.0.0
+      react-native: 0.79.6(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0)
+
   '@tybys/wasm-util@0.9.0':
     dependencies:
       tslib: 2.8.1
@@ -10537,6 +10561,8 @@ snapshots:
   etag@1.8.1: {}
 
   event-target-shim@5.0.1: {}
+
+  eventemitter3@4.0.7: {}
 
   eventemitter3@5.0.1: {}
 

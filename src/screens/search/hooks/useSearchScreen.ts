@@ -14,7 +14,11 @@ import {
 import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
 import { clearSearchResults, prepareNewSearch, setQuery } from '@/store/search/searchSlice';
 import { RecentSearches } from '../utils/recentSearches';
-import { SEARCH_SECTION_IDS, type SearchItem, type SearchSectionType } from '@/store/search/searchTypes';
+import {
+  SEARCH_SECTION_IDS,
+  type SearchItem,
+  type SearchSectionType,
+} from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
 
 const VALID_TAB_IDS = new Set<string>(['all', ...SEARCH_SECTION_IDS]);
@@ -23,13 +27,13 @@ export type TabType = 'all' | SearchSectionType;
 
 const INITIAL_ITEMS_TO_SHOW = 5;
 
-export function useSearchScreen() {
+export function useSearchScreen({ initialTab = 'all' }: { initialTab?: TabType } = {}) {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
   const [searchText, setSearchText] = useState('');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
-  const [activeTab, setActiveTab] = useState<TabType>('all');
+  const [activeTab, setActiveTab] = useState<TabType>(initialTab);
   const [expandedSections, setExpandedSections] = useState<Record<SearchSectionType, boolean>>(
     () => {
       const initial: Record<SearchSectionType, boolean> = {} as Record<SearchSectionType, boolean>;
@@ -61,7 +65,7 @@ export function useSearchScreen() {
   }, [accountId]);
 
   const debouncedSearchRef = useRef<ReturnType<typeof debounce> | null>(null);
-  const inFlightSearchesRef = useRef<Array<{ abort: () => void }>>([]);
+  const inFlightSearchesRef = useRef<{ abort: () => void }[]>([]);
 
   const cancelInFlightSearches = useCallback(() => {
     inFlightSearchesRef.current.forEach(promise => promise.abort());
@@ -100,7 +104,7 @@ export function useSearchScreen() {
         debouncedSearchRef.current.cancel();
       }
     };
-  }, [dispatch, accountId]);
+  }, [dispatch, accountId, cancelInFlightSearches]);
 
   const handleSearchChange = useCallback(
     (text: string) => {
@@ -114,7 +118,7 @@ export function useSearchScreen() {
         cancelInFlightSearches();
         dispatch(clearSearchResults());
         dispatch(setQuery(''));
-        setActiveTab('all');
+        setActiveTab(initialTab);
         const newExpanded: Record<SearchSectionType, boolean> = {} as Record<
           SearchSectionType,
           boolean
@@ -136,7 +140,7 @@ export function useSearchScreen() {
         }
       }
     },
-    [dispatch, accountId, cancelInFlightSearches],
+    [dispatch, accountId, cancelInFlightSearches, initialTab],
   );
 
   const handleRecentSearchSelect = useCallback(
@@ -160,7 +164,7 @@ export function useSearchScreen() {
         );
         inFlightSearchesRef.current.push(promise);
       });
-      setActiveTab('all');
+      setActiveTab(initialTab);
       const newExpanded: Record<SearchSectionType, boolean> = {} as Record<
         SearchSectionType,
         boolean
@@ -170,7 +174,7 @@ export function useSearchScreen() {
       });
       setExpandedSections(newExpanded);
     },
-    [dispatch, accountId],
+    [dispatch, cancelInFlightSearches, initialTab],
   );
 
   const handleClearRecentSearches = useCallback(async () => {
@@ -305,7 +309,6 @@ export function useSearchScreen() {
     return data;
   }, [sectionData]);
 
-
   const createEndReachedHandler = useCallback(
     (sectionId: SearchSectionType) => {
       return () => {
@@ -327,7 +330,7 @@ export function useSearchScreen() {
         handleLoadMore(sectionId);
       };
     },
-    [handleLoadMore, sectionData, searchText, query],
+    [handleLoadMore, sectionData, query],
   );
 
   const getItemsToShow = useCallback(
@@ -365,7 +368,7 @@ export function useSearchScreen() {
         return () => clearTimeout(timer);
       }
     }
-  }, [activeTab]);
+  }, [activeTab, listRefs]);
 
   return {
     searchText,

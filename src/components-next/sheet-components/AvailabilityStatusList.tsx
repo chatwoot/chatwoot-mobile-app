@@ -42,7 +42,7 @@ const StatusCell = ({
           )}>
           <Text
             style={tailwind.style(
-              'text-base capitalize text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
+              'text-base capitalize text-gray-950 dark:text-grayDark-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
             )}>
             {item.status}
           </Text>

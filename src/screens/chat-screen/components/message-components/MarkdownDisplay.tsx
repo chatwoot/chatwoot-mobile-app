@@ -22,8 +22,8 @@ export const MarkdownDisplay = (props: MarkdownDisplayProps) => {
 
   const textStyle = tailwind.style(
     isIncoming ? 'text-white' : '',
-    isOutgoing || isBotText ? 'text-gray-950' : '',
-    isPrivate ? 'text-amber-950 font-inter-medium-24' : '',
+    isOutgoing || isBotText ? 'text-gray-950 dark:text-grayDark-950' : '',
+    isPrivate ? 'text-amber-950 dark:text-grayDark-950 font-inter-medium-24' : '',
     isMessageFailed ? 'text-white' : '',
   );
 

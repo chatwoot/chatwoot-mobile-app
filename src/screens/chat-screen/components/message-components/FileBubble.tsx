@@ -115,7 +115,7 @@ export const FileBubblePreview = (props: FilePreviewProps) => {
                 variant === MESSAGE_VARIANTS.USER
                   ? 'text-white'
                   : variant === MESSAGE_VARIANTS.AGENT
-                    ? 'text-gray-700'
+                    ? 'text-gray-700 dark:text-grayDark-700'
                     : '',
               ),
               style.androidTextOnlyStyle,

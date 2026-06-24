@@ -64,8 +64,8 @@ export const ImageCell = (props: ImageCellProps) => {
               tailwind.style(
                 'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
                 isIncoming ? 'bg-blue-700' : '',
-                isOutgoing ? 'bg-gray-100' : '',
-                isPrivate ? ' bg-amber-100' : '',
+                isOutgoing ? 'bg-gray-100 dark:bg-grayDark-100' : '',
+                isPrivate ? ' bg-amber-100 dark:bg-grayDark-100' : '',
                 shouldRenderAvatar
                   ? isOutgoing
                     ? 'rounded-br-none'

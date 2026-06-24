@@ -72,7 +72,7 @@ export const LocationCell: React.FC<LocationCellProps> = props => {
                 'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
                 `max-w-[${TEXT_MAX_WIDTH}px]`,
                 isIncoming ? 'bg-blue-700' : '',
-                isOutgoing ? 'bg-gray-100' : '',
+                isOutgoing ? 'bg-gray-100 dark:bg-grayDark-100' : '',
                 isMessageFailed ? 'bg-ruby-400' : '',
                 shouldRenderAvatar
                   ? isOutgoing
@@ -93,7 +93,7 @@ export const LocationCell: React.FC<LocationCellProps> = props => {
                     ? 'text-base tracking-[0.32px] leading-[22px] font-inter-normal-20 underline'
                     : '',
                   isIncoming ? 'text-white' : '',
-                  isOutgoing ? 'text-gray-950' : '',
+                  isOutgoing ? 'text-gray-950 dark:text-grayDark-950' : '',
                 )}>
                 See on map
               </Text>
@@ -107,7 +107,7 @@ export const LocationCell: React.FC<LocationCellProps> = props => {
                 style={tailwind.style(
                   'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
                   isIncoming ? 'text-whiteA-A11' : '',
-                  isOutgoing ? 'text-gray-700' : '',
+                  isOutgoing ? 'text-gray-700 dark:text-grayDark-700' : '',
                   isMessageFailed ? 'text-ruby-900' : '',
                 )}>
                 {unixTimestampToReadableTime(timeStamp)}

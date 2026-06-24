@@ -90,7 +90,7 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
           'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
           isEmailMessage ? `max-w-[${EMAIL_MESSAGE_WIDTH}px]` : `max-w-[${TEXT_MAX_WIDTH}px]`,
           isIncoming ? 'bg-blue-700' : '',
-          isOutgoing ? 'bg-gray-100' : '',
+          isOutgoing ? 'bg-gray-100 dark:bg-grayDark-100' : '',
           isMessageFailed ? 'bg-ruby-700' : '',
           isAvatarRendered
             ? isOutgoing
@@ -111,7 +111,7 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
             : "",
           isIncoming ? "text-white" : "",
           isOutgoing ? "text-gray-950" : "",
-        )} 
+        )}
       >
         {text}
       </Text> */}
@@ -126,7 +126,7 @@ export const MessageTextCell = (props: MessageTextCellProps) => {
           style={tailwind.style(
             'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
             isIncoming ? 'text-whiteA-A11' : '',
-            isOutgoing ? 'text-gray-700' : '',
+            isOutgoing ? 'text-gray-700 dark:text-grayDark-700' : '',
             isMessageFailed ? 'text-whiteA-A11' : '',
           )}>
           {unixTimestampToReadableTime(timeStamp)}

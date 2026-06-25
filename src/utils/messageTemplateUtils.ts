@@ -12,9 +12,8 @@ import type {
   WhatsAppTemplateComponent,
 } from '@/types/MessageTemplate';
 
-// Mirrors web `templateHelper.MEDIA_FORMATS`.
 const MEDIA_FORMATS = new Set(['IMAGE', 'VIDEO', 'DOCUMENT']);
-// Mirrors web `getFilteredWhatsAppTemplates` unsupported component list.
+// Component types that aren't supported when sending a template.
 const UNSUPPORTED_COMPONENT_TYPES = new Set([
   'LIST',
   'PRODUCT',
@@ -22,7 +21,6 @@ const UNSUPPORTED_COMPONENT_TYPES = new Set([
   'CALL_PERMISSION_REQUEST',
 ]);
 const TWILIO_MEDIA_TEMPLATE_TYPE = 'media';
-// Same pattern web uses across templateHelper / parsers (`/{{([^}]+)}}/g`).
 const VARIABLE_REGEX = /\{\{([^}]+)\}\}/g;
 
 const findComponent = <T extends WhatsAppTemplateComponent['type']>(
@@ -96,7 +94,7 @@ export const buildPreviewSegments = (
 };
 
 /**
- * Replicates web `getFilteredWhatsAppTemplates` (store/modules/inboxes.js) exactly:
+ * Filters WhatsApp templates down to the ones that can be sent:
  *  - requires status + components
  *  - status (case-insensitive) === 'approved'
  *  - category !== 'AUTHENTICATION'
@@ -163,9 +161,8 @@ const extractActions = (template: WhatsAppMessageTemplate): string[] | undefined
   return labels.length > 0 ? labels : undefined;
 };
 
-// Mirrors web `buildTemplateParameters` button handling: collect only the
-// buttons that require a user-supplied parameter (URL buttons with a `{{ }}`
-// variable, and COPY_CODE buttons), preserving their positional index.
+// Collect only the buttons that require a user-supplied parameter (URL buttons
+// with a `{{ }}` variable, and COPY_CODE buttons), preserving their positional index.
 const extractButtonParams = (
   template: WhatsAppMessageTemplate,
 ): NormalizedTemplateButton[] | undefined => {
@@ -219,7 +216,7 @@ const getTwilioMediaUrl = (template: TwilioContentTemplate): string => {
 };
 
 const normalizeTwilio = (template: TwilioContentTemplate): NormalizedTemplate | null => {
-  // Web Twilio picker filters with an exact (case-sensitive) `status === 'approved'`.
+  // Twilio templates filter with an exact (case-sensitive) `status === 'approved'`.
   if (template.status !== 'approved') return null;
   const body = template.body || '';
   const isMediaTemplate = template.templateType === TWILIO_MEDIA_TEMPLATE_TYPE;
@@ -248,7 +245,7 @@ export const getTemplatesForInbox = (inbox: Inbox | undefined): NormalizedTempla
   return [...whatsapp, ...twilio];
 };
 
-// Web pickers search by template name only (WhatsApp `name`, Twilio `friendly_name`).
+// Search by template name only (WhatsApp `name`, Twilio `friendly_name`).
 export const filterTemplatesByQuery = (
   templates: NormalizedTemplate[],
   query: string,
@@ -259,7 +256,7 @@ export const filterTemplatesByQuery = (
 };
 
 /**
- * Extracts a filename from a URL. Mirrors web `URLHelper.extractFilenameFromUrl`.
+ * Extracts a filename from a URL.
  */
 export const extractFilenameFromUrl = (url: string): string => {
   if (!url || typeof url !== 'string') return url;
@@ -292,8 +289,7 @@ export const createEmptyFormState = (): TemplateFormState => ({
   buttonValues: {},
 });
 
-// Web treats empty/missing values as invalid via a plain truthiness check
-// (`value => !value`), without trimming.
+// Empty/missing values are invalid via a plain truthiness check, without trimming.
 const isFilled = (value: string | undefined): boolean => Boolean(value);
 
 // Whether the Twilio media variable input is in play.
@@ -302,7 +298,7 @@ const hasTwilioMediaVariable = (template: NormalizedTemplate): boolean => {
 };
 
 /**
- * Replicates the web `isFormInvalid` gates (inverted) for both platforms.
+ * Whether every required input for the template has been filled, for both platforms.
  */
 export const isTemplateComplete = (
   template: NormalizedTemplate,
@@ -317,7 +313,7 @@ export const isTemplateComplete = (
   }
 
   const media = hasMediaHeader(template);
-  // Web early-returns valid when there are no variables and no media header,
+  // Early-returns valid when there are no variables and no media header,
   // even if the template has buttons.
   if (template.variables.length === 0 && !media) return true;
   if (media && !isFilled(state.mediaUrl)) return false;
@@ -351,7 +347,7 @@ const buildWhatsAppParams = (
   }
 
   if (template.buttons && template.buttons.length > 0) {
-    // Sparse array indexed by button position, matching web.
+    // Sparse array indexed by button position.
     const buttons: TemplateButtonParam[] = [];
     template.buttons.forEach(button => {
       buttons[button.index] =

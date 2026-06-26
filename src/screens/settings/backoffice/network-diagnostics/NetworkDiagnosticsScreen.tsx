@@ -68,7 +68,7 @@ export default function NetworkDiagnosticsScreen(): JSX.Element {
       key: 'all',
       labelKey: 'CHIP_ALL',
       count: counts.all,
-      active: state.status === '' && state.churnRisk !== 'true',
+      active: state.status === '' && state.churnRisk === '',
       onPress: () => {
         setFilter('status', '');
         setFilter('churnRisk', '');
@@ -155,42 +155,6 @@ export default function NetworkDiagnosticsScreen(): JSX.Element {
     [commentCase, saveComment],
   );
 
-  const renderHeader = () => (
-    <>
-      <View style={styles.searchRow}>
-        <Text style={styles.searchGlyph}>⌕</Text>
-        <TextInput
-          style={styles.searchInput}
-          value={search}
-          onChangeText={setSearch}
-          placeholder={i18n.t('NETWORK_DIAGNOSTICS.SEARCH_PLACEHOLDER')}
-          placeholderTextColor="#5C6680"
-        />
-        {!!search && (
-          <Pressable onPress={() => setSearch('')}>
-            <Text style={styles.clearGlyph}>✕</Text>
-          </Pressable>
-        )}
-      </View>
-      <View style={styles.chipsRow}>
-        {chips.map(chip => (
-          <Pressable
-            key={chip.key}
-            style={[styles.chip, chip.active && styles.chipActive]}
-            onPress={chip.onPress}>
-            <Text style={[styles.chipText, chip.active && styles.chipTextActive]}>
-              {i18n.t(`NETWORK_DIAGNOSTICS.${chip.labelKey}`)}
-            </Text>
-            <Text style={styles.chipCount}>{chip.count}</Text>
-          </Pressable>
-        ))}
-      </View>
-      <Text style={styles.countLine}>
-        {i18n.t('NETWORK_DIAGNOSTICS.CASES_COUNT').replace('{count}', String(visibleCases.length))}
-      </Text>
-    </>
-  );
-
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <StatusBar barStyle="light-content" backgroundColor={colors.bg} />
@@ -228,13 +192,50 @@ export default function NetworkDiagnosticsScreen(): JSX.Element {
         </Pressable>
       )}
 
+      {tab === 'casos' && (
+        <>
+          <View style={styles.searchRow}>
+            <Text style={styles.searchGlyph}>⌕</Text>
+            <TextInput
+              style={styles.searchInput}
+              value={search}
+              onChangeText={setSearch}
+              placeholder={i18n.t('NETWORK_DIAGNOSTICS.SEARCH_PLACEHOLDER')}
+              placeholderTextColor="#5C6680"
+            />
+            {!!search && (
+              <Pressable onPress={() => setSearch('')}>
+                <Text style={styles.clearGlyph}>✕</Text>
+              </Pressable>
+            )}
+          </View>
+          <View style={styles.chipsRow}>
+            {chips.map(chip => (
+              <Pressable
+                key={chip.key}
+                style={[styles.chip, chip.active && styles.chipActive]}
+                onPress={chip.onPress}>
+                <Text style={[styles.chipText, chip.active && styles.chipTextActive]}>
+                  {i18n.t(`NETWORK_DIAGNOSTICS.${chip.labelKey}`)}
+                </Text>
+                <Text style={styles.chipCount}>{chip.count}</Text>
+              </Pressable>
+            ))}
+          </View>
+          <Text style={styles.countLine}>
+            {i18n
+              .t('NETWORK_DIAGNOSTICS.CASES_COUNT')
+              .replace('{count}', String(visibleCases.length))}
+          </Text>
+        </>
+      )}
+
       {tab === 'casos' ? (
         <FlashList
           data={visibleCases}
           keyExtractor={item => item.sk}
           estimatedItemSize={140}
           contentContainerStyle={styles.listContent}
-          ListHeaderComponent={renderHeader}
           renderItem={({ item }) => (
             <View style={styles.cardWrap}>
               <CaseCard
@@ -263,6 +264,7 @@ export default function NetworkDiagnosticsScreen(): JSX.Element {
         <FlashList
           data={[0]}
           keyExtractor={() => 'resumo'}
+          estimatedItemSize={500}
           renderItem={() => (
             <View>
               <StatCards stats={state.stats} loading={state.loadingStats} />

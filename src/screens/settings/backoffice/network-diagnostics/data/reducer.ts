@@ -98,7 +98,7 @@ export function diagnosticsReducer(
     case 'LIST_ERROR':
       return { ...state, loadingList: false, error: action.error };
     case 'STATS_LOADING':
-      return { ...state, loadingStats: true };
+      return { ...state, loadingStats: true, error: null };
     case 'STATS_SUCCESS':
       return { ...state, loadingStats: false, stats: action.stats };
     case 'STATS_ERROR':
@@ -114,7 +114,7 @@ export function diagnosticsReducer(
 }
 
 function normalize(s: string): string {
-  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  return s.normalize('NFD').replace(/[̀-ͯ]/gu, '').toLowerCase();
 }
 
 /** Client-side name search over already-loaded items (API has no name param). */

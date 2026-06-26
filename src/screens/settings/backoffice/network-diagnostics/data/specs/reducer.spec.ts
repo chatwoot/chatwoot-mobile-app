@@ -51,6 +51,21 @@ describe('diagnosticsReducer', () => {
     expect(s.churnRisk).toBe('');
     expect(s.page).toBe(1);
   });
+
+  it('SET_RANGE resets the page to 1', () => {
+    let s = { ...initialState(), page: 5 };
+    s = diagnosticsReducer(s, { type: 'SET_RANGE', from: '2026-06-01', to: '2026-06-30' });
+    expect(s.page).toBe(1);
+    expect(s.from).toBe('2026-06-01');
+    expect(s.to).toBe('2026-06-30');
+  });
+
+  it('STATS_LOADING clears a prior error', () => {
+    let s = { ...initialState(), error: 'boom' };
+    s = diagnosticsReducer(s, { type: 'STATS_LOADING' });
+    expect(s.error).toBeNull();
+    expect(s.loadingStats).toBe(true);
+  });
 });
 
 describe('searchCases', () => {

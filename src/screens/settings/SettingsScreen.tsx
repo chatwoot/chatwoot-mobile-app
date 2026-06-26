@@ -249,6 +249,15 @@ const SettingsScreen = () => {
         }
       },
     },
+    {
+      hasChevron: true,
+      title: i18n.t('SETTINGS.BACKOFFICE'),
+      icon: <SwitchIcon />,
+      subtitle: '',
+      subtitleType: 'light',
+      // @ts-expect-error navigation typed loosely across stacks
+      onPressListItem: () => navigation.navigate('BackofficeScreen'),
+    },
   ];
 
   const supportList: GenericListType[] = [

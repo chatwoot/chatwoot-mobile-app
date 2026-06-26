@@ -99,6 +99,10 @@ export default function NetworkDiagnosticsScreen(): JSX.Element {
 
   const onToggleStatus = useCallback(
     async (item: NetworkCase) => {
+      if (!nd.ready) {
+        showToast({ message: i18n.t('NETWORK_DIAGNOSTICS.ERROR_NO_SESSION') });
+        return;
+      }
       const current = caseStatus(item);
       try {
         await toggleStatus(item.sk, current);
@@ -113,7 +117,7 @@ export default function NetworkDiagnosticsScreen(): JSX.Element {
         showToast({ message: i18n.t('NETWORK_DIAGNOSTICS.ERROR_UPDATE') });
       }
     },
-    [toggleStatus],
+    [nd.ready, toggleStatus],
   );
 
   const onOpenCase = useCallback(
@@ -137,6 +141,10 @@ export default function NetworkDiagnosticsScreen(): JSX.Element {
 
   const onSaveComment = useCallback(
     async (text: string) => {
+      if (!nd.ready) {
+        showToast({ message: i18n.t('NETWORK_DIAGNOSTICS.ERROR_NO_SESSION') });
+        return;
+      }
       if (!commentCase) return;
       try {
         await saveComment(commentCase.sk, text);
@@ -152,7 +160,7 @@ export default function NetworkDiagnosticsScreen(): JSX.Element {
         showToast({ message: i18n.t('NETWORK_DIAGNOSTICS.ERROR_UPDATE') });
       }
     },
-    [commentCase, saveComment],
+    [nd.ready, commentCase, saveComment],
   );
 
   return (

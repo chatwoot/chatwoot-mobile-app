@@ -115,6 +115,12 @@ describe('diagnosticsReducer', () => {
     expect(s.error).toBeNull();
     expect(s.loadingStats).toBe(true);
   });
+
+  it('RECONCILE increments the reconcile nonce', () => {
+    let s = initialState();
+    s = diagnosticsReducer(s, { type: 'RECONCILE' });
+    expect(s.reconcileNonce).toBe(1);
+  });
 });
 
 describe('searchCases', () => {

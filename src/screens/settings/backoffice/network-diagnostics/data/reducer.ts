@@ -29,6 +29,7 @@ export interface DiagnosticsState {
   loadingList: boolean;
   loadingStats: boolean;
   error: string | null;
+  reconcileNonce: number;
 }
 
 export type FilterKey =
@@ -49,7 +50,8 @@ export type DiagnosticsAction =
   | { type: 'STATS_LOADING' }
   | { type: 'STATS_SUCCESS'; stats: NetworkStats }
   | { type: 'STATS_ERROR'; error: string }
-  | { type: 'PATCH_CASE'; item: NetworkCase };
+  | { type: 'PATCH_CASE'; item: NetworkCase }
+  | { type: 'RECONCILE' };
 
 export function initialState(): DiagnosticsState {
   return {
@@ -69,6 +71,7 @@ export function initialState(): DiagnosticsState {
     loadingList: false,
     loadingStats: false,
     error: null,
+    reconcileNonce: 0,
   };
 }
 
@@ -119,6 +122,8 @@ export function diagnosticsReducer(
         ...state,
         items: state.items.map(i => (i.sk === action.item.sk ? action.item : i)),
       };
+    case 'RECONCILE':
+      return { ...state, reconcileNonce: state.reconcileNonce + 1 };
     default:
       return state;
   }

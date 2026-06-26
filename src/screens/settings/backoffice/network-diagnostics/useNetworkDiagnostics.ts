@@ -41,6 +41,7 @@ export function useNetworkDiagnostics(): UseNetworkDiagnostics {
   const [state, dispatch] = useReducer(diagnosticsReducer, undefined, initialState);
   const [updatingSk, setUpdatingSk] = useState<string | null>(null);
   const inFlight = useRef(false);
+  const genRef = useRef(0);
 
   const listParams = useCallback(
     () => ({
@@ -78,6 +79,7 @@ export function useNetworkDiagnostics(): UseNetworkDiagnostics {
     status: state.status,
   });
   useEffect(() => {
+    genRef.current += 1;
     if (!ready) return;
     let active = true;
     dispatch({ type: 'LIST_LOADING' });
@@ -102,7 +104,7 @@ export function useNetworkDiagnostics(): UseNetworkDiagnostics {
       active = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, token, accountId, state.from, state.to]);
+  }, [ready, token, accountId, state.from, state.to, state.reconcileNonce]);
 
   const setRange = useCallback(
     (from: string, to: string) => dispatch({ type: 'SET_RANGE', from, to }),
@@ -119,8 +121,11 @@ export function useNetworkDiagnostics(): UseNetworkDiagnostics {
     inFlight.current = true;
     const nextPage = state.page + 1;
     dispatch({ type: 'LIST_LOADING' });
+    const gen = genRef.current;
     fetchNetworkCases(token as string, accountId as number, { ...listParams(), page: nextPage })
-      .then(r => dispatch({ type: 'LIST_SUCCESS', append: true, response: r }))
+      .then(r => {
+        if (gen === genRef.current) dispatch({ type: 'LIST_SUCCESS', append: true, response: r });
+      })
       .catch(e => dispatch({ type: 'LIST_ERROR', error: msg(e) }))
       .finally(() => {
         inFlight.current = false;
@@ -148,6 +153,7 @@ export function useNetworkDiagnostics(): UseNetworkDiagnostics {
         const next: NetworkCaseStatus = current === 'resolvido' ? 'pendente' : 'resolvido';
         const r = await updateNetworkCaseStatus(token as string, accountId as number, sk, next);
         dispatch({ type: 'PATCH_CASE', item: r.item });
+        dispatch({ type: 'RECONCILE' });
       } finally {
         setUpdatingSk(null);
       }
@@ -167,6 +173,7 @@ export function useNetworkDiagnostics(): UseNetworkDiagnostics {
           comentario,
         );
         dispatch({ type: 'PATCH_CASE', item: r.item });
+        dispatch({ type: 'RECONCILE' });
       } finally {
         setUpdatingSk(null);
       }

@@ -1,8 +1,12 @@
 // data/reducer.ts
 import { isoDate } from './format';
 import type {
-  BoolFilter, NetworkCase, NetworkCasesListResponse, NetworkOutcome,
-  NetworkStats, StatusFilter,
+  BoolFilter,
+  NetworkCase,
+  NetworkCasesListResponse,
+  NetworkOutcome,
+  NetworkStats,
+  StatusFilter,
 } from './types';
 
 export const DEFAULT_PAGE_SIZE = 25;
@@ -28,7 +32,11 @@ export interface DiagnosticsState {
 }
 
 export type FilterKey =
-  | 'outcome' | 'transferido' | 'connectionIssueObserved' | 'churnRisk' | 'status';
+  | 'outcome'
+  | 'transferido'
+  | 'connectionIssueObserved'
+  | 'churnRisk'
+  | 'status';
 
 export type DiagnosticsAction =
   | { type: 'SET_RANGE'; from: string; to: string }
@@ -65,7 +73,8 @@ export function initialState(): DiagnosticsState {
 }
 
 export function diagnosticsReducer(
-  state: DiagnosticsState, action: DiagnosticsAction,
+  state: DiagnosticsState,
+  action: DiagnosticsAction,
 ): DiagnosticsState {
   switch (action.type) {
     case 'SET_RANGE':
@@ -77,8 +86,12 @@ export function diagnosticsReducer(
         ...state,
         from: isoDate(DEFAULT_RANGE_DAYS - 1),
         to: isoDate(0),
-        outcome: '', transferido: '', connectionIssueObserved: '',
-        churnRisk: '', status: '', page: 1,
+        outcome: '',
+        transferido: '',
+        connectionIssueObserved: '',
+        churnRisk: '',
+        status: '',
+        page: 1,
       };
     case 'SET_PAGE':
       return { ...state, page: action.page };
@@ -91,9 +104,7 @@ export function diagnosticsReducer(
         page: action.response.page,
         total: action.response.total,
         hasMore: action.response.has_more,
-        items: action.append
-          ? [...state.items, ...action.response.items]
-          : action.response.items,
+        items: action.append ? [...state.items, ...action.response.items] : action.response.items,
       };
     case 'LIST_ERROR':
       return { ...state, loadingList: false, error: action.error };
@@ -125,7 +136,10 @@ export function searchCases(items: NetworkCase[], query: string): NetworkCase[] 
 }
 
 export function chipCounts(stats: NetworkStats | null): {
-  all: number; pending: number; risk: number; resolved: number;
+  all: number;
+  pending: number;
+  risk: number;
+  resolved: number;
 } {
   return {
     all: stats?.total ?? 0,

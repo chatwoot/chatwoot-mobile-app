@@ -19,12 +19,19 @@ export type Tone = 'brand' | 'warning' | 'danger' | 'info' | 'success' | 'churn'
 
 export function tone(name: Tone): string {
   switch (name) {
-    case 'brand': return colors.brand;
-    case 'warning': return colors.amber;
-    case 'danger': return colors.red;
-    case 'info': return colors.brand;
-    case 'success': return colors.green;
-    case 'churn': return colors.red;
-    default: return colors.textDim;
+    case 'brand':
+      return colors.brand;
+    case 'warning':
+      return colors.amber;
+    case 'danger':
+      return colors.red;
+    case 'info':
+      return colors.brand;
+    case 'success':
+      return colors.green;
+    case 'churn':
+      return colors.red;
+    default:
+      return colors.textDim;
   }
 }

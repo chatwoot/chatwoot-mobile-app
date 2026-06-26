@@ -1,7 +1,12 @@
 // data/specs/format.spec.ts
 import {
-  caseStatus, outcomeLabelKey, outcomeTone, caseDate,
-  parseEditHistory, isoDate, zeroFillByDay,
+  caseStatus,
+  outcomeLabelKey,
+  outcomeTone,
+  caseDate,
+  parseEditHistory,
+  isoDate,
+  zeroFillByDay,
 } from '../format';
 
 describe('caseStatus', () => {
@@ -14,7 +19,9 @@ describe('caseStatus', () => {
 
 describe('outcomeLabelKey / outcomeTone', () => {
   it('maps known outcomes', () => {
-    expect(outcomeLabelKey('instavel_transferido_suporte')).toBe('NETWORK_DIAGNOSTICS.OUTCOME_INSTAVEL');
+    expect(outcomeLabelKey('instavel_transferido_suporte')).toBe(
+      'NETWORK_DIAGNOSTICS.OUTCOME_INSTAVEL',
+    );
     expect(outcomeTone('instavel_transferido_suporte')).toBe('warning');
     expect(outcomeTone('offline_transferido_suporte')).toBe('danger');
     expect(outcomeTone('problema_conexao_observado')).toBe('info');
@@ -53,7 +60,14 @@ describe('isoDate', () => {
 describe('zeroFillByDay', () => {
   it('produces one ascending bucket per day, filling gaps with zeros', () => {
     const out = zeroFillByDay('2026-06-01', '2026-06-03', [
-      { date: '2026-06-02', total: 5, instaveis: 2, offline: 1, conexao_observada: 2, transferido: 1 },
+      {
+        date: '2026-06-02',
+        total: 5,
+        instaveis: 2,
+        offline: 1,
+        conexao_observada: 2,
+        transferido: 1,
+      },
     ]);
     expect(out.map(b => b.date)).toEqual(['2026-06-01', '2026-06-02', '2026-06-03']);
     expect(out[0].total).toBe(0);

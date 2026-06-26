@@ -1,7 +1,10 @@
 // data/format.ts
 import type {
-  NetworkCase, NetworkCaseStatus, NetworkOutcome,
-  NetworkCaseEditEntry, NetworkDayBucket,
+  NetworkCase,
+  NetworkCaseStatus,
+  NetworkOutcome,
+  NetworkCaseEditEntry,
+  NetworkDayBucket,
 } from './types';
 
 export function caseStatus(item: NetworkCase): NetworkCaseStatus {
@@ -10,24 +13,36 @@ export function caseStatus(item: NetworkCase): NetworkCaseStatus {
 
 export function outcomeLabelKey(outcome?: NetworkOutcome): string {
   switch (outcome) {
-    case 'instavel_transferido_suporte': return 'NETWORK_DIAGNOSTICS.OUTCOME_INSTAVEL';
-    case 'offline_transferido_suporte': return 'NETWORK_DIAGNOSTICS.OUTCOME_OFFLINE';
-    case 'problema_conexao_observado': return 'NETWORK_DIAGNOSTICS.OUTCOME_CONEXAO';
-    default: return outcome || '—';
+    case 'instavel_transferido_suporte':
+      return 'NETWORK_DIAGNOSTICS.OUTCOME_INSTAVEL';
+    case 'offline_transferido_suporte':
+      return 'NETWORK_DIAGNOSTICS.OUTCOME_OFFLINE';
+    case 'problema_conexao_observado':
+      return 'NETWORK_DIAGNOSTICS.OUTCOME_CONEXAO';
+    default:
+      return outcome || '—';
   }
 }
 
 export function outcomeTone(outcome?: NetworkOutcome): 'warning' | 'danger' | 'info' | 'neutral' {
   switch (outcome) {
-    case 'instavel_transferido_suporte': return 'warning';
-    case 'offline_transferido_suporte': return 'danger';
-    case 'problema_conexao_observado': return 'info';
-    default: return 'neutral';
+    case 'instavel_transferido_suporte':
+      return 'warning';
+    case 'offline_transferido_suporte':
+      return 'danger';
+    case 'problema_conexao_observado':
+      return 'info';
+    default:
+      return 'neutral';
   }
 }
 
 const DATE_FMT = new Intl.DateTimeFormat('pt-BR', {
-  day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
 });
 
 export function caseDate(item: NetworkCase): string {
@@ -56,12 +71,19 @@ export function isoDate(daysAgo = 0): string {
 }
 
 const EMPTY_BUCKET = (date: string): NetworkDayBucket => ({
-  date, total: 0, instaveis: 0, offline: 0, conexao_observada: 0, transferido: 0,
+  date,
+  total: 0,
+  instaveis: 0,
+  offline: 0,
+  conexao_observada: 0,
+  transferido: 0,
 });
 
 /** One ascending bucket per day in [from, to], filling gaps with zeros. */
 export function zeroFillByDay(
-  from: string, to: string, buckets: NetworkDayBucket[] = [],
+  from: string,
+  to: string,
+  buckets: NetworkDayBucket[] = [],
 ): NetworkDayBucket[] {
   const bySorted = new Map(buckets.map(b => [b.date, b]));
   const out: NetworkDayBucket[] = [];

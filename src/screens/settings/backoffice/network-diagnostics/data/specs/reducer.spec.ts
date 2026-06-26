@@ -1,6 +1,7 @@
 // data/specs/reducer.spec.ts
 import {
   initialState, diagnosticsReducer, searchCases, chipCounts, DEFAULT_PAGE_SIZE,
+  type DiagnosticsState,
 } from '../reducer';
 import type { NetworkCase } from '../types';
 
@@ -45,7 +46,7 @@ describe('diagnosticsReducer', () => {
   });
 
   it('CLEAR_FILTERS restores defaults', () => {
-    let s = { ...initialState(), status: 'resolvido' as const, churnRisk: 'true' as const, page: 3 };
+    let s: DiagnosticsState = { ...initialState(), status: 'resolvido', churnRisk: 'true', page: 3 };
     s = diagnosticsReducer(s, { type: 'CLEAR_FILTERS' });
     expect(s.status).toBe('');
     expect(s.churnRisk).toBe('');
@@ -61,7 +62,7 @@ describe('diagnosticsReducer', () => {
   });
 
   it('STATS_LOADING clears a prior error', () => {
-    let s = { ...initialState(), error: 'boom' };
+    let s: DiagnosticsState = { ...initialState(), error: 'boom' };
     s = diagnosticsReducer(s, { type: 'STATS_LOADING' });
     expect(s.error).toBeNull();
     expect(s.loadingStats).toBe(true);

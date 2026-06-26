@@ -45,11 +45,16 @@ const DATE_FMT = new Intl.DateTimeFormat('pt-BR', {
   minute: '2-digit',
 });
 
-export function caseDate(item: NetworkCase): string {
-  const raw = item.created_at || item.sk?.split('#')[0];
+/** Formats an ISO timestamp as `DD mon YYYY, HH:MM` (pt-BR); '—' for empty/invalid. */
+export function formatDateTime(raw?: string): string {
   if (!raw) return '—';
   const d = new Date(raw);
   return Number.isNaN(d.getTime()) ? '—' : DATE_FMT.format(d);
+}
+
+export function caseDate(item: NetworkCase): string {
+  const raw = item.created_at || item.sk?.split('#')[0];
+  return formatDateTime(raw);
 }
 
 export function parseEditHistory(raw?: string): NetworkCaseEditEntry[] {

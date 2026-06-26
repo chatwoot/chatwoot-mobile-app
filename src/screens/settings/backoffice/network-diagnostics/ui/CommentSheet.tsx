@@ -7,7 +7,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import i18n from 'i18n';
 import type { NetworkCase, NetworkCaseEditEntry } from '../data/types';
-import { parseEditHistory } from '../data/format';
+import { formatDateTime, parseEditHistory } from '../data/format';
 import { colors } from './theme';
 
 const MAX = 2000;
@@ -73,6 +73,14 @@ export const CommentSheet = forwardRef<BottomSheetModal, Props>(function Comment
           </Text>
         </View>
 
+        {item?.comentario_updated_at && (
+          <Text style={styles.updatedAt}>
+            {i18n
+              .t('NETWORK_DIAGNOSTICS.COMMENT_UPDATED_AT')
+              .replace('{date}', formatDateTime(item.comentario_updated_at))}
+          </Text>
+        )}
+
         {history.length > 0 && (
           <View style={styles.history}>
             <Text style={styles.historyTitle}>{i18n.t('NETWORK_DIAGNOSTICS.HISTORY_TITLE')}</Text>
@@ -83,7 +91,7 @@ export const CommentSheet = forwardRef<BottomSheetModal, Props>(function Comment
                   {i18n
                     .t('NETWORK_DIAGNOSTICS.HISTORY_ENTRY_META')
                     .replace('{by}', entry.by || '—')
-                    .replace('{date}', entry.at || '—')}
+                    .replace('{date}', formatDateTime(entry.at))}
                 </Text>
               </View>
             ))}
@@ -127,6 +135,7 @@ const styles = StyleSheet.create({
   metaRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 },
   hint: { fontSize: 11.5, color: colors.textMuted },
   counter: { fontSize: 11.5, color: colors.textMuted },
+  updatedAt: { fontSize: 11.5, color: colors.textMuted, marginTop: 10 },
   history: { marginTop: 18, gap: 8 },
   historyTitle: { fontSize: 12, fontWeight: '600', color: colors.textDim },
   historyItem: { gap: 2 },

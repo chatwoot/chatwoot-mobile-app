@@ -4,6 +4,7 @@ import {
   outcomeLabelKey,
   outcomeTone,
   caseDate,
+  formatDateTime,
   parseEditHistory,
   isoDate,
   zeroFillByDay,
@@ -38,6 +39,14 @@ describe('caseDate', () => {
     expect(caseDate({ created_at: '2026-06-25T09:26:00.000Z' } as never)).not.toBe('—');
     expect(caseDate({ sk: '2026-06-25T09:26:00.000Z#abc' } as never)).not.toBe('—');
     expect(caseDate({} as never)).toBe('—');
+  });
+});
+
+describe('formatDateTime', () => {
+  it('formats valid ISO and dashes empty/invalid', () => {
+    expect(formatDateTime('2026-06-25T09:26:00.000Z')).not.toBe('—');
+    expect(formatDateTime(undefined)).toBe('—');
+    expect(formatDateTime('nope')).toBe('—');
   });
 });
 

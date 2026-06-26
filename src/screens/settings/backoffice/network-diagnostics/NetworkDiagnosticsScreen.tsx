@@ -230,49 +230,51 @@ export default function NetworkDiagnosticsScreen(): JSX.Element {
         </>
       )}
 
-      {tab === 'casos' ? (
-        <FlashList
-          data={visibleCases}
-          keyExtractor={item => item.sk}
-          estimatedItemSize={140}
-          contentContainerStyle={styles.listContent}
-          renderItem={({ item }) => (
-            <View style={styles.cardWrap}>
-              <CaseCard
-                item={item}
-                busy={updatingSk === item.sk}
-                onToggleStatus={() => onToggleStatus(item)}
-                onComment={() => openComment(item)}
-                onOpen={item.conversation_id ? () => onOpenCase(item) : undefined}
-              />
-            </View>
-          )}
-          onEndReachedThreshold={0.5}
-          onEndReached={loadMore}
-          ListEmptyComponent={
-            !state.loadingList ? (
-              <Text style={styles.empty}>{i18n.t('NETWORK_DIAGNOSTICS.EMPTY')}</Text>
-            ) : null
-          }
-          ListFooterComponent={
-            state.loadingList ? (
-              <ActivityIndicator color={colors.brand} style={styles.footer} />
-            ) : null
-          }
-        />
-      ) : (
-        <FlashList
-          data={[0]}
-          keyExtractor={() => 'resumo'}
-          estimatedItemSize={500}
-          renderItem={() => (
-            <View>
-              <StatCards stats={state.stats} loading={state.loadingStats} />
-              <TrendChart stats={state.stats} from={state.from} to={state.to} />
-            </View>
-          )}
-        />
-      )}
+      <View style={styles.listWrap}>
+        {tab === 'casos' ? (
+          <FlashList
+            data={visibleCases}
+            keyExtractor={item => item.sk}
+            estimatedItemSize={140}
+            contentContainerStyle={styles.listContent}
+            renderItem={({ item }) => (
+              <View style={styles.cardWrap}>
+                <CaseCard
+                  item={item}
+                  busy={updatingSk === item.sk}
+                  onToggleStatus={() => onToggleStatus(item)}
+                  onComment={() => openComment(item)}
+                  onOpen={item.conversation_id ? () => onOpenCase(item) : undefined}
+                />
+              </View>
+            )}
+            onEndReachedThreshold={0.5}
+            onEndReached={loadMore}
+            ListEmptyComponent={
+              !state.loadingList ? (
+                <Text style={styles.empty}>{i18n.t('NETWORK_DIAGNOSTICS.EMPTY')}</Text>
+              ) : null
+            }
+            ListFooterComponent={
+              state.loadingList ? (
+                <ActivityIndicator color={colors.brand} style={styles.footer} />
+              ) : null
+            }
+          />
+        ) : (
+          <FlashList
+            data={[0]}
+            keyExtractor={() => 'resumo'}
+            estimatedItemSize={500}
+            renderItem={() => (
+              <View>
+                <StatCards stats={state.stats} loading={state.loadingStats} />
+                <TrendChart stats={state.stats} from={state.from} to={state.to} />
+              </View>
+            )}
+          />
+        )}
+      </View>
 
       <FilterSheet
         ref={filterRef}
@@ -296,6 +298,7 @@ export default function NetworkDiagnosticsScreen(): JSX.Element {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.bg },
+  listWrap: { flex: 1 },
   header: {
     backgroundColor: colors.bg,
     borderBottomWidth: 1,

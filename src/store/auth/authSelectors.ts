@@ -49,3 +49,5 @@ export const selectCurrentUserAccount = createSelector(selectAuth, auth => {
   );
   return currentAccount;
 });
+
+export const selectAccessToken = createSelector(selectAuth, auth => auth.user?.access_token);

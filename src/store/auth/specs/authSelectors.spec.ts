@@ -6,6 +6,7 @@ import {
   selectAuthError,
   selectLoggedIn,
   selectUserId,
+  selectAccessToken,
 } from '@/store/auth/authSelectors';
 import { mockUser, mockHeaders } from './authMockData';
 import { RootState } from '@/store';
@@ -48,5 +49,18 @@ describe('Auth Selectors', () => {
 
   it('should select user id', () => {
     expect(selectUserId(mockState)).toBe(mockUser.id);
+  });
+});
+
+describe('selectAccessToken', () => {
+  it('returns the user access_token', () => {
+    const stateWith = (user: unknown) =>
+      ({ auth: { user } } as unknown as Parameters<typeof selectAccessToken>[0]);
+    expect(selectAccessToken(stateWith({ access_token: 'tok_123' }))).toBe('tok_123');
+  });
+  it('returns undefined when there is no user', () => {
+    const stateWith = (user: unknown) =>
+      ({ auth: { user } } as unknown as Parameters<typeof selectAccessToken>[0]);
+    expect(selectAccessToken(stateWith(null))).toBeUndefined();
   });
 });

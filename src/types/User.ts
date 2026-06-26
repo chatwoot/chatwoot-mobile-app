@@ -9,6 +9,8 @@ export type User = {
   account_id: number;
   accounts: Account[];
   email: string;
+  /** Chatwoot personal access token (from /profile) — used as Bearer for n8n. */
+  access_token?: string;
   pubsub_token: string;
   avatar_url: string;
   available_name: string;

@@ -4,6 +4,9 @@ import axios, {
   AxiosError,
   InternalAxiosRequestConfig,
 } from 'axios';
+import Constants from 'expo-constants';
+import * as Device from 'expo-device';
+import { Platform } from 'react-native';
 
 import { getStore } from '@/store/storeAccessor';
 import I18n from '@/i18n';
@@ -16,11 +19,29 @@ const nonAccountRoutes = [
   'profile/set_active_account',
 ];
 
+const CLIENT_NAME = 'Chatwoot Mobile';
+const CLIENT_VERSION = Constants.expoConfig?.version ?? 'unknown';
+
+function deviceHeaders(): Record<string, string> {
+  const platform = Platform.OS;
+  const osVersion = String(Device.osVersion ?? Platform.Version);
+  const model = Device.modelName ?? 'Unknown';
+  return {
+    'X-Chatwoot-Client-Name': CLIENT_NAME,
+    'X-Chatwoot-Client-Version': CLIENT_VERSION,
+    'X-Chatwoot-Platform': platform,
+    'X-Chatwoot-Platform-Version': osVersion,
+    'X-Chatwoot-Device-Model': model,
+    'User-Agent': `${CLIENT_NAME}/${CLIENT_VERSION} (${platform} ${osVersion}; ${model})`,
+  };
+}
+
 class APIService {
   private static instance: APIService;
   private api = axios.create();
 
   private constructor() {
+    Object.assign(this.api.defaults.headers.common, deviceHeaders());
     this.setupInterceptors();
   }
 

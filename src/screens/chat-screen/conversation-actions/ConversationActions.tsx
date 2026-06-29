@@ -15,6 +15,7 @@ import {
 } from './components';
 import { TAB_BAR_HEIGHT } from '@/constants';
 import { tailwind } from '@/theme';
+import i18n from '@/i18n';
 import { ConversationStatus } from '@/types';
 import { useChatWindowContext } from '@/context';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -148,6 +149,7 @@ export const ConversationActions = () => {
           <AddParticipantList
             conversationParticipants={conversationParticipants}
             onAddParticipant={onAddParticipant}
+            conversationId={conversationId}
           />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-10')}>

@@ -4,8 +4,7 @@
     "ERROR": "Erro",
     "ERROR_TITLE": "Ocorreu um erro inesperado",
     "REPORT_MESSAGE": "Já relatamos isso para nossa equipe! Por favor, feche o aplicativo e comece novamente!",
-    "CLOSE": "Fechar",
-    "BACK": "Voltar"
+    "CLOSE": "Fechar"
   },
   "FOOTER": {
     "HOME": "Principal",
@@ -153,11 +152,6 @@
     "SNOOZE_UNTIL_TOMORROW": "Até amanhã",
     "SNOOZE_UNTIL_NEXT_WEEK": "Até a próxima semana",
     "SNOOZE": "Adiar conversa",
-    "REPLYING_TO": "Respondendo a %{name}",
-    "LOCATION_SEE_ON_MAP": "Ver no mapa",
-    "IS_TYPING": "%{name} está digitando",
-    "ARE_TYPING_PAIR": "%{first} e %{second} estão digitando",
-    "OTHERS_ARE_TYPING": "%{name} e mais %{count} estão digitando",
     "CHANGE_PRIORITY": "Alterar prioridade",
     "MESSAGES": "Mensagens",
     "UNDEFINED_VARIABLES_TITLE": "Variáveis não definidas",
@@ -233,16 +227,6 @@
       "EXPAND": "Expandir e-mail"
     },
     "ACTIONS": {
-      "MENU_TITLE": "Ações da conversa",
-      "SHARE_CONVERSATION": "Compartilhar conversa",
-      "SELECT_ACTION": "Selecionar ação",
-      "NONE": "Nenhum",
-      "STATUS": {
-        "OPEN": "Abrir",
-        "PENDING": "Pendente",
-        "SNOOZE": "Adiar",
-        "RESOLVE": "Resolver"
-      },
       "ASSIGNEE": {
         "EMPTY": "Não atribuídas",
         "ASSIGN": "Atribuir",
@@ -290,12 +274,7 @@
     "LOGOUT": "Sair",
     "SUBMIT": "Enviar",
     "SET_LANGUAGE": "Configurar Idioma",
-    "DEBUG_ACTIONS": "Ações de Depuração",
-    "AVAILABILITY_STATUS": {
-      "ONLINE": "Online",
-      "BUSY": "Ocupado",
-      "OFFLINE": "Offline"
-    }
+    "DEBUG_ACTIONS": "Ações de Depuração"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notificações",
@@ -365,18 +344,17 @@
   },
   "CONTACT_DETAILS": {
     "TITLE": "Detalhes do contato",
-    "LOCATION": "Localização",
-    "PHONE": "Telefone",
     "EMAIL": "e-mail",
-    "COMPANY": "Empresa",
     "PHONE_NUMBER": "Número de Telefone",
+    "PHONE": "Telefone",
     "CALL": "Chamada",
+    "LOCATION": "Localização",
+    "COMPANY": "Empresa",
     "CONTACT_ATTRIBUTES": "Atributos do contato",
     "VALUE_UNAVAILABLE": "Indisponível"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participantes",
-    "PARTICIPANT_COUNT_TEXT": "%{count} participantes",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} pessoas estão participando.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} pessoa está participando.",
     "NO_PARTICIPANTS_TEXT": "Ninguém está participando!",
@@ -393,7 +371,21 @@
     "TITLE": "Atributos do contato"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Ações"
+    "TITLE": "Ações",
+    "OPTIONS": {
+      "OPEN": "Abrir",
+      "PENDING": "Pendente",
+      "SNOOZED": "Adiar",
+      "RESOLVED": "Resolver"
+    }
+  },
+  "CONVERSATION_ATTACHMENT": {
+    "OPTIONS": {
+      "PHOTOS": "Fotos",
+      "CAMERA": "Câmera",
+      "ATTACH_FILE": "Documento",
+      "MACROS": "Macros"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "Atribuir time",
@@ -409,6 +401,16 @@
     "SELECTED": "Selecionar",
     "NOT_SELECTED": "Nenhuma etiqueta selecionada",
     "NO_RESULT": "Nenhua etiqueta encontrada"
+  },
+  "CONTACT_LABELS": {
+    "TITLE": "Etiquetas do contato",
+    "ADD_LABEL": "Adicionar etiqueta",
+    "EMPTY_LIST": "Por favor, adicione marcadores à sua conta",
+    "NO_LABEL": "Nenhum marcador atribuído",
+    "UPDATE_LABEL": "Etiqueta atualizada com sucesso",
+    "SELECTED": "Selecionar",
+    "NOT_SELECTED": "Nenhuma etiqueta selecionada",
+    "NO_RESULT": "Nenhuma etiqueta encontrada"
   },
   "CONVERSATION_AGENTS": {
     "TITLE": "Atribuir agente",

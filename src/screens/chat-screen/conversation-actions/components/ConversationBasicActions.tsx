@@ -10,9 +10,9 @@ import Animated, {
 import { Icon } from '@/components-next';
 import { OpenIcon, ResolvedFilledIcon, PendingFilledIcon, SnoozedFilledIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
+import i18n from '@/i18n';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { ConversationStatus } from '@/types';
-import i18n from '@/i18n';
 
 import { ConversationActionType } from '../ConversationActions';
 

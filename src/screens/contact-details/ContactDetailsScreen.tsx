@@ -73,7 +73,7 @@ const allSocialMediaProfiles: GenericListType[] = [
     title: 'Linkedin',
     subtitleType: 'dark',
     key: 'linkedin',
-    link: 'https://linkedin.com/',
+    link: 'https://linkedin.com/in/',
   },
   {
     icon: <InstagramFilledIcon />,

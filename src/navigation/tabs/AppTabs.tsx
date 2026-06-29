@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
+import { Platform } from 'react-native';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -189,7 +190,7 @@ export const AppTabs = () => {
         />
         <Stack.Screen
           options={{
-            presentation: 'formSheet',
+            presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
             animation: 'slide_from_bottom',
           }}
           name="ContactDetails"
@@ -197,7 +198,7 @@ export const AppTabs = () => {
         />
         <Stack.Screen
           options={{
-            presentation: 'formSheet',
+            presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
             animation: 'slide_from_bottom',
           }}
           name="Dashboard"

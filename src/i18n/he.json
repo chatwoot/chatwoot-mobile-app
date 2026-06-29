@@ -368,7 +368,13 @@
     "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "פעולות"
+    "TITLE": "פעולות",
+    "OPTIONS": {
+      "OPEN": "Open",
+      "PENDING": "Pending",
+      "SNOOZED": "Snooze",
+      "RESOLVED": "resolve"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "שייך צוות",

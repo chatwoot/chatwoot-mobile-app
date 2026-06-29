@@ -198,13 +198,17 @@ const generateValueFromPartsAndChangedText = (
   let cursor = 0;
 
   changes.forEach(change => {
+    // Use code-unit length, not `change.count` which counts code points and
+    // diverges from part positions for surrogate-pair characters like emoji.
+    const changeLength = change.value.length;
+
     switch (true) {
       /**
        * We should:
        * - Move cursor forward on the changed text length
        */
       case change.removed: {
-        cursor += change.count;
+        cursor += changeLength;
 
         break;
       }
@@ -225,10 +229,10 @@ const generateValueFromPartsAndChangedText = (
        * - In case we have two affected parts we should push first
        */
       default: {
-        if (change.count !== 0) {
-          newParts = newParts.concat(getPartsInterval(parts, cursor, change.count));
+        if (changeLength !== 0) {
+          newParts = newParts.concat(getPartsInterval(parts, cursor, changeLength));
 
-          cursor += change.count;
+          cursor += changeLength;
         }
 
         break;

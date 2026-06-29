@@ -368,7 +368,13 @@
     "TITLE": "ویژگی‌های تماس"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "عملیات"
+    "TITLE": "عملیات",
+    "OPTIONS": {
+      "OPEN": "Open",
+      "PENDING": "Pending",
+      "SNOOZED": "Snooze",
+      "RESOLVED": "resolve"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "تیم را تعیین کنید",

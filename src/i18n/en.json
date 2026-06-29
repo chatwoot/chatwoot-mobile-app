@@ -147,7 +147,7 @@
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "ASSIGN": "Assign conversation",
     "FILE_SIZE_LIMIT": "File exceeds the 5MB attachment limit",
-    "SHARE": "Share",
+    "SHARE": "Share conversation",
     "DETAILS": "Details",
     "LABELS": "Conversation labels",
     "ASSIGNED_AGENT": "Assigned agent",
@@ -398,7 +398,10 @@
     "EMAIL": "Email",
     "COMPANY": "Company",
     "PHONE_NUMBER": "Phone Number",
+    "PHONE": "Phone",
     "CALL": "Call",
+    "LOCATION": "Location",
+    "COMPANY": "Company",
     "CONTACT_ATTRIBUTES": "Contact Attributes",
     "VALUE_UNAVAILABLE": "Unavailable"
   },
@@ -421,7 +424,21 @@
     "TITLE": "Contact Attributes"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Actions"
+    "TITLE": "Actions",
+    "OPTIONS": {
+      "OPEN": "Open",
+      "PENDING": "Pending",
+      "SNOOZED": "Snooze",
+      "RESOLVED": "resolve"
+    }
+  },
+  "CONVERSATION_ATTACHMENT": {
+    "OPTIONS": {
+      "PHOTOS": "Photos",
+      "CAMERA": "Camera",
+      "ATTACH_FILE": "Attach File",
+      "MACROS": "Macros"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "Assign team",
@@ -430,6 +447,16 @@
   },
   "CONVERSATION_LABELS": {
     "TITLE": "Conversation Labels",
+    "ADD_LABEL": "Add Labels",
+    "EMPTY_LIST": "Please add labels to your account",
+    "NO_LABEL": "No labels assigned",
+    "UPDATE_LABEL": "Label updated successfully",
+    "SELECTED": "Selected",
+    "NOT_SELECTED": "No labels selected",
+    "NO_RESULT": "No labels found"
+  },
+  "CONTACT_LABELS": {
+    "TITLE": "Contact Labels",
     "ADD_LABEL": "Add Labels",
     "EMPTY_LIST": "Please add labels to your account",
     "NO_LABEL": "No labels assigned",

@@ -44,6 +44,9 @@ class AnalyticsHelper {
     }
   }
 
+  // Suppress failures: analytics is non-critical and must not throw.
+  private silenceError(): void {}
+
   private identifyUser() {
     return this.APIHelper.post('identify', {
       userId: this.user.id,
@@ -53,7 +56,7 @@ class AnalyticsHelper {
         avatar: this.user.avatar_url,
       },
       timestamp: new Date(),
-    });
+    }).catch(this.silenceError);
   }
 
   private identifyGroup() {
@@ -66,7 +69,7 @@ class AnalyticsHelper {
           name: currentAccount.name,
         },
         timestamp: new Date(),
-      });
+      }).catch(this.silenceError);
     }
   }
 
@@ -89,7 +92,7 @@ class AnalyticsHelper {
         context: {
           groupId: currentAccount ? currentAccount.id : '',
         },
-      });
+      }).catch(this.silenceError);
     }
   }
 }

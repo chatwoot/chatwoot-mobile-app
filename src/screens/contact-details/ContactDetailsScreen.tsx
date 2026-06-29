@@ -73,7 +73,7 @@ const allSocialMediaProfiles: GenericListType[] = [
     title: 'Linkedin',
     subtitleType: 'dark',
     key: 'linkedin',
-    link: 'https://linkedin.com/',
+    link: 'https://linkedin.com/in/',
   },
   {
     icon: <InstagramFilledIcon />,
@@ -198,25 +198,25 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
     {
       icon: <LocationIcon />,
       subtitle: fullLocation || i18n.t('CONTACT_DETAILS.VALUE_UNAVAILABLE'),
-      title: 'Location',
+      title: i18n.t('CONTACT_DETAILS.LOCATION'),
       subtitleType: 'dark',
     },
     {
       icon: <CallIcon />,
       subtitle: phoneNumber || i18n.t('CONTACT_DETAILS.VALUE_UNAVAILABLE'),
-      title: 'Phone',
+      title: i18n.t('CONTACT_DETAILS.PHONE'),
       subtitleType: 'dark',
     },
     {
       icon: <EmailIcon />,
       subtitle: email || i18n.t('CONTACT_DETAILS.VALUE_UNAVAILABLE'),
-      title: 'Email',
+      title: i18n.t('CONTACT_DETAILS.EMAIL'),
       subtitleType: 'dark',
     },
     {
       icon: <CompanyIcon />,
       subtitle: companyName || i18n.t('CONTACT_DETAILS.VALUE_UNAVAILABLE'),
-      title: 'Company',
+      title: i18n.t('CONTACT_DETAILS.COMPANY'),
       subtitleType: 'dark',
     },
   ];

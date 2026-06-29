@@ -16,14 +16,11 @@ import { ConversationStatus } from '@/types';
 
 import { ConversationActionType } from '../ConversationActions';
 
-type ConversationStateType = 'open' | 'pending' | 'snooze' | 'resolve';
-
 type ConversationActionOptionsType = {
   backgroundActionColor: string;
   backgroundActionPressedColor: string;
   borderActionColor: string;
   actionIcon: React.JSX.Element;
-  actionText: string;
   actionStatus: ConversationStatus | 'open';
 };
 
@@ -36,7 +33,6 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-gray-200',
     borderActionColor: 'bg-gray-700',
     actionIcon: <OpenIcon stroke={tailwind.color('text-gray-700') as string} />,
-    actionText: i18n.t('CONVERSATION_ACTION.OPTIONS.OPEN'),
     actionStatus: 'open',
   },
   {
@@ -44,7 +40,6 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-amber-200',
     borderActionColor: 'bg-amber-700',
     actionIcon: <PendingFilledIcon />,
-    actionText: i18n.t('CONVERSATION_ACTION.OPTIONS.PENDING'),
     actionStatus: 'pending',
   },
   {
@@ -52,7 +47,6 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-indigo-200',
     borderActionColor: 'bg-indigo-700',
     actionIcon: <SnoozedFilledIcon />,
-    actionText: i18n.t('CONVERSATION_ACTION.OPTIONS.SNOOZED'),
     actionStatus: 'snoozed',
   },
   {
@@ -60,7 +54,6 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-green-200',
     borderActionColor: 'bg-green-700',
     actionIcon: <ResolvedFilledIcon />,
-    actionText: i18n.t('CONVERSATION_ACTION.OPTIONS.RESOLVED'),
     actionStatus: 'resolved',
   },
 ];
@@ -95,7 +88,6 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
   }, [
     actionActive,
     conversationAction.actionStatus,
-    conversationAction.actionText,
     status,
     isMuted,
   ]);

@@ -22,8 +22,8 @@
     "ERROR": "URL d'instal·lació no vàlid"
   },
   "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "TITLE": "Inicia la sessió al teu compte",
+    "DESCRIPTION": "Estàs connectat a {{baseUrl}}.",
     "EMAIL": "Correu electrònic",
     "PASSWORD": "Contrasenya",
     "EMAIL_REQUIRED": "El correu electrònic és obligatori",
@@ -60,18 +60,21 @@
         "SEARCH_AGENT": "Cerca agents"
       },
       "INBOX": {
-        "TITLE": "Filter by inbox"
+        "TITLE": "Filtrar per safata d’entrada"
+      },
+      "LABELS": {
+        "TITLE": "Filtra per etiquetes"
       },
       "SORT_BY": {
         "TITLE": "Ordenat per",
         "OPTIONS": {
-          "LATEST": "Latest",
+          "LATEST": "Més recents",
           "SORT_ON_CREATED_AT": "Creat per",
           "SORT_ON_PRIORITY": "Prioritat"
         }
       },
       "STATUS": {
-        "TITLE": "Filter by status",
+        "TITLE": "Filtra per estat",
         "OPTIONS": {
           "OPEN": "Obrir",
           "PENDING": "Pendent",
@@ -81,9 +84,9 @@
         }
       },
       "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
+        "TITLE": "Filtrar per tipus d’assignació",
         "OPTIONS": {
-          "ME": "Me",
+          "ME": "Per a mi",
           "UNASSIGNED": "Sense assignar",
           "ALL": "Totes"
         }
@@ -98,7 +101,7 @@
       },
       "STATUS": {
         "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
+        "TITLE": "Filtra per estat",
         "OPTIONS": {
           "OPEN": "Obrir",
           "PENDING": "Pendent",
@@ -124,18 +127,18 @@
     "ALL_CONVERSATION_LOADED": "S'han carregat totes les converses",
     "ASSIGN": "Assignar conversa",
     "FILE_SIZE_LIMIT": "El fitxer supera el límit de 5 MB de fitxers adjunts",
-    "SHARE": "Share conversation",
+    "SHARE": "Compartir conversa",
     "DETAILS": "Detalls",
     "LABELS": "Etiquetes de converses",
     "ASSIGNED_AGENT": "Agent assignat",
     "TEAM": "Equip",
     "PRIVATE_MSG_INPUT": "Això només serà visible per als agents",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "UNSUPPORTED_MESSAGE": "Aquest missatge no és compatible. Pots veure'l a l'aplicació de Facebook / Instagram.",
     "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+      "TITLE": "No s'ha pogut recuperar la conversa",
+      "RETRY": "Reintenta",
+      "BACK_TO_HOME": "Torna a casa",
+      "DESCRIPTION": "Sembla que la conversa no es pot recuperar correctament. Pot ser degut a un problema de xarxa o la conversa ja no està disponible. Feu clic al botó de tornar-ho a intentar per tornar-ho a intentar."
     },
     "BOT": "Bot",
     "EMAIL_HEAD": {
@@ -158,15 +161,15 @@
     "UNDEFINED_VARIABLES_CLOSE": "Tancar",
     "DELETE_MESSAGE_TITLE": "Estàs segur que vols suprimir aquest missatge?",
     "DELETE_MESSAGE_SUB_TITLE": "Aquesta acció no es pot desfer.",
-    "COPY_MESSAGE": "Message copied to clipboard",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "COPY_MESSAGE": "Missatge copiat al porta-retalls",
+    "STORY_NOT_AVAILABLE": "Aquesta història ja no està disponible",
     "DELETE_MESSAGE_SUCCESS": "El missatge s'ha suprimit correctament",
     "NO_CONTENT": "No hi ha contingut disponible",
     "ASSIGN_CHANGE": "Assignació de la conversa canviat",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "TEAM_CHANGE": "L'equip de conversa ha canviat",
+    "STATUS_CHANGE": "L'estat de la conversa ha canviat",
+    "PRIORITY_CHANGE": "La prioritat de la conversa ha canviat",
+    "PARTICIPANT_CHANGE": "Participant de la conversa ha canviat",
     "CHANGE_STATUS": "Canvia l'estat",
     "SEARCH_TEAM": "Cerca equips",
     "PRIORITY": {
@@ -216,7 +219,7 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "Copia",
       "REPLY": "Respon",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Suprimeix el missatge"
     },
     "EMAIL_HEADER": {
       "FROM": "Des de",
@@ -233,21 +236,21 @@
         "EDIT": "Edita"
       },
       "TEAM": {
-        "EMPTY": "No team assigned",
+        "EMPTY": "Cap equip assignat",
         "ASSIGN": "Assignar"
       },
       "PRIORITY": {
-        "EMPTY": "No priority added",
+        "EMPTY": "Cap prioritat afegida",
         "EDIT": "Edita"
       }
     }
   },
   "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
+    "ALL_INBOXES": "Totes les safates d’entrada",
+    "FILTER_BY_ASSIGNEE_TYPE": "Filtrar per tipus d’assignació",
     "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
     "SORT_BY": "Ordenat per",
-    "FILTER_BY_INBOX": "Filter by inbox",
+    "FILTER_BY_INBOX": "Filtrar per safata d’entrada",
     "HEADER_TITLE": "Filtre de converses",
     "CHOOSE_INBOX": "Trieu Safata d'entrada",
     "CHOOSE_STATUS": "Estat de la conversa",
@@ -256,24 +259,25 @@
     "BOT": "Bot",
     "SUBMIT": "Trametre",
     "PENDING": "Pendent",
-    "SNOOZED": "Posposat"
+    "SNOOZED": "Posposat",
+    "LABELS": "Labels"
   },
   "SETTINGS": {
     "HEADER_TITLE": "Configuració",
     "SET_AVAILABILITY": "Posa't com",
-    "CHANGE_AVAILABILITY": "Set availability",
+    "CHANGE_AVAILABILITY": "Establir disponibilitat",
     "PREFERENCES": "Preferences",
-    "ABOUT": "About",
-    "SUPPORT": "Support",
+    "ABOUT": "Sobre",
+    "SUPPORT": "Suport",
     "SWITCH_ACCOUNT": "Canvia de compte",
     "CHANGE_LANGUAGE": "Canviar d'idioma",
     "NOTIFICATIONS": "Notificacions",
     "NOTIFICATION_PREFERENCES": "Preferències de notificació",
-    "READ_DOCS": "Read Docs",
+    "READ_DOCS": "Llegir documents",
     "CHAT_WITH_US": "Xateja amb nosaltres",
     "LOGOUT": "Tancar sessió",
     "SUBMIT": "Trametre",
-    "SET_LANGUAGE": "Set Language",
+    "SET_LANGUAGE": "Estableix l’idioma",
     "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {
@@ -333,7 +337,7 @@
     "CONVERSATION_SLA_MISSED_RESOLUTION": "Una conversa no resol un SLA"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Attributes",
+    "TITLE": "Atributs",
     "BROWSER": "Navegador",
     "OPERATING_SYSTEM": "Sistema operatiu",
     "INITIATED_AT": "Iniciada a",
@@ -346,14 +350,17 @@
     "TITLE": "Detalls de contacte",
     "EMAIL": "Correu electrònic",
     "PHONE_NUMBER": "Número de telèfon",
-    "CALL": "Call",
+    "PHONE": "Telèfon",
+    "CALL": "Truca",
+    "LOCATION": "Ubicació",
+    "COMPANY": "Empresa",
     "CONTACT_ATTRIBUTES": "Atributs de contacte",
     "VALUE_UNAVAILABLE": "No disponible"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participants",
-    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
-    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} la gent hi participa.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} persona hi participa.",
     "NO_PARTICIPANTS_TEXT": "No hi participa ningú!.",
     "WATCH_CONVERSATION": "Uneix-te a la conversa",
     "YOU_ARE_WATCHING": "Estàs participant",
@@ -362,13 +369,27 @@
     "ADD_PARTICIPANTS": "Selecciona els participants",
     "REMAINING_PARTICIPANTS_TEXT": "altres",
     "REMAINING_PARTICIPANT_TEXT": "altre",
-    "ADD_PARTICIPANT": "Add Participant"
+    "ADD_PARTICIPANT": "Afegir participant"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Atributs de contacte"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Accions"
+    "TITLE": "Accions",
+    "OPTIONS": {
+      "OPEN": "Obrir",
+      "PENDING": "Pendent",
+      "SNOOZED": "Posposat",
+      "RESOLVED": "Resolt"
+    }
+  },
+  "CONVERSATION_ATTACHMENT": {
+    "OPTIONS": {
+      "PHOTOS": "Fotos",
+      "CAMERA": "Càmera",
+      "ATTACH_FILE": "Adjunta fitxer",
+      "MACROS": "Macros"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "Assigna un equip",
@@ -379,10 +400,20 @@
     "TITLE": "Etiquetes de converses",
     "ADD_LABEL": "Afegir etiquetes",
     "EMPTY_LIST": "Please add labels to your account",
-    "NO_LABEL": "No labels assigned",
+    "NO_LABEL": "Sense etiquetes assignades",
     "UPDATE_LABEL": "L'etiqueta s'ha actualitzat correctament",
     "SELECTED": "Seleccionat",
-    "NOT_SELECTED": "No labels selected",
+    "NOT_SELECTED": "No s'han seleccionat etiquetes",
+    "NO_RESULT": "No s'han trobat etiquetes"
+  },
+  "CONTACT_LABELS": {
+    "TITLE": "Etiquetes de contacte",
+    "ADD_LABEL": "Afegir etiquetes",
+    "EMPTY_LIST": "Afegeix etiquetes al teu compte",
+    "NO_LABEL": "Sense etiquetes assignades",
+    "UPDATE_LABEL": "L'etiqueta s'ha actualitzat correctament",
+    "SELECTED": "Seleccionat",
+    "NOT_SELECTED": "No s'han seleccionat etiquetes",
     "NO_RESULT": "No s'han trobat etiquetes"
   },
   "CONVERSATION_AGENTS": {
@@ -395,29 +426,35 @@
   },
   "TEAMS": {
     "TITLE": "Selecciona equip",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "EMPTY": "Afegeix equips al teu compte per assignar converses a equips.",
     "CHANGE_TEAMS": "Conversation team changed"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "No s'ha pogut connectar al servidor Chatwoot. Si us plau, torneu-ho a intentar més tard.",
     "OfFLINE": "Has de connectar a la xarxa Wi-Fi o a una xarxa mòbil per tornar a connectar-te",
     "CANNOT_FETCH": "S'ha produït un error en obtenir la informació. Torna-ho a provar",
     "AUTH": "Nom d’usuari / contrasenya incorrecte. Si us plau torna-ho a provar",
-    "NO_ACCOUNTS_MESSAGE": "No tens accés a cap compte de chatwoot"
+    "NO_ACCOUNTS_MESSAGE": "No tens accés a cap compte de Chatwoot"
   },
   "SUCCESS": {
     "AUTH": "Inici de sessió correcte"
   },
   "SERVER_UPGRADE": {
-    "TITLE": "Server upgrade required",
-    "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
-    "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
+    "TITLE": "Cal actualització del servidor",
+    "WARNING_FOR_AGENT": "Sembla que esteu utilitzant un servidor Chatwoot no compatible per a la vostra aplicació mòbil. Poseu-vos en contacte amb el vostre administrador per actualitzar el vostre servidor Chatwoot.",
+    "WARNING_FOR_ADMIN": "Sembla que esteu utilitzant un servidor Chatwoot no compatible per a la vostra aplicació mòbil. Cal actualitzar a la versió del servidor %{minimumVersion} o posterior."
   },
   "EXIT": {
     "TITLE": "Sortir",
     "SUBTITLE": "Estar segur que vols sortir?",
     "CANCEL": "Cancel·lar",
     "OK": "D'acord"
+  },
+  "DELETE_USER": {
+    "TITLE": "Eliminar dades de l’usuari",
+    "SUBTITLE": "Esteu segur que voleu suprimir les vostres dades? Aquesta acció no es pot desfer.",
+    "CANCEL": "cancel·lar",
+    "CONFIRM": "confirmar"
   },
   "BANNER": {
     "TWILIO_WHATSAPP_CAN_REPLY": "Només pots respondre a aquesta conversa mitjançant una plantilla de missatge a causa de",
@@ -447,9 +484,9 @@
   },
   "MACRO": {
     "TITLE": "Macros",
-    "SELECT_MACRO": "Select macro",
+    "SELECT_MACRO": "Selecciona una macro",
     "ACTIONS": {
-      "RUN": "Run"
+      "RUN": "Corre"
     },
     "EXECUTION_SUCCESS": "La macro s'ha executat correctament",
     "EXECUTION_ERROR": "Macro execution failed",

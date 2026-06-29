@@ -138,6 +138,9 @@ importers:
       expo-constants:
         specifier: ^18.0.13
         version: 18.0.13(expo@54.0.35(@babel/core@7.27.1)(react-native-webview@13.15.0(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3))(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))
+      expo-device:
+        specifier: ~8.0.10
+        version: 8.0.10(expo@54.0.35(@babel/core@7.27.1)(react-native-webview@13.15.0(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3))
       expo-file-system:
         specifier: ~19.0.23
         version: 19.0.23(expo@54.0.35(@babel/core@7.27.1)(react-native-webview@13.15.0(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3))(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))
@@ -3751,6 +3754,11 @@ packages:
     peerDependencies:
       expo: '*'
 
+  expo-device@8.0.10:
+    resolution: {integrity: sha512-jd5BxjaF7382JkDMaC+P04aXXknB2UhWaVx5WiQKA05ugm/8GH5uaz9P9ckWdMKZGQVVEOC8MHaUADoT26KmFA==}
+    peerDependencies:
+      expo: '*'
+
   expo-file-system@19.0.23:
     resolution: {integrity: sha512-MeGkid9OeNILfT/qonaXHp4f2c15xaB28U/bcN7pqZej0Kx0+6+V7e9ZIXpPHm07zVatxA+QkMTPQEGfmvVOxA==}
     peerDependencies:
@@ -6226,6 +6234,10 @@ packages:
   typescript@5.9.3:
     resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
     engines: {node: '>=14.17'}
+    hasBin: true
+
+  ua-parser-js@0.7.41:
+    resolution: {integrity: sha512-O3oYyCMPYgNNHuO7Jjk3uacJWZF8loBgwrfd/5LE/HyZ3lUIOdniQ7DNXJcIgZbwioZxk0fLfI4EVnetdiX5jg==}
     hasBin: true
 
   uc.micro@1.0.6:
@@ -10826,6 +10838,11 @@ snapshots:
       base64-js: 1.5.1
       expo: 54.0.35(@babel/core@7.27.1)(react-native-webview@13.15.0(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)
 
+  expo-device@8.0.10(expo@54.0.35(@babel/core@7.27.1)(react-native-webview@13.15.0(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)):
+    dependencies:
+      expo: 54.0.35(@babel/core@7.27.1)(react-native-webview@13.15.0(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)
+      ua-parser-js: 0.7.41
+
   expo-file-system@19.0.23(expo@54.0.35(@babel/core@7.27.1)(react-native-webview@13.15.0(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3))(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0)):
     dependencies:
       expo: 54.0.35(@babel/core@7.27.1)(react-native-webview@13.15.0(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)
@@ -13749,6 +13766,8 @@ snapshots:
       reflect.getprototypeof: 1.0.10
 
   typescript@5.9.3: {}
+
+  ua-parser-js@0.7.41: {}
 
   uc.micro@1.0.6: {}
 

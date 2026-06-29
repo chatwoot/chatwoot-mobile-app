@@ -368,7 +368,13 @@
     "TITLE": "Атрибуты контакта"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Действия"
+    "TITLE": "Действия",
+    "OPTIONS": {
+      "OPEN": "Open",
+      "PENDING": "Pending",
+      "SNOOZED": "Snooze",
+      "RESOLVED": "resolve"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "Назначить команду",

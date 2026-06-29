@@ -23,10 +23,14 @@ interface LabelActionsProps {
   labels: string[];
   onLabelsUpdate: (updatedLabels: string[]) => Promise<void> | void;
   sheetRef?: React.RefObject<BottomSheetModal>;
+  titleText?: string;
+  addLabelText?: string;
+  searchPlaceholderText?: string;
 }
 
 export const LabelActions = (props: LabelActionsProps) => {
-  const { labels, onLabelsUpdate, sheetRef } = props;
+  const { labels, onLabelsUpdate, sheetRef, titleText, addLabelText, searchPlaceholderText } =
+    props;
   const [searchTerm, setSearchTerm] = useState('');
 
   const [selectedLabels, setSelectedLabels] = useState(labels);
@@ -90,7 +94,7 @@ export const LabelActions = (props: LabelActionsProps) => {
           style={tailwind.style(
             'text-sm font-inter-medium-24 leading-[16px] tracking-[0.32px] text-gray-700',
           )}>
-          Labels
+          {titleText}
         </Animated.Text>
       </Animated.View>
       <Animated.View style={tailwind.style('flex flex-row flex-wrap pl-4')}>
@@ -111,7 +115,7 @@ export const LabelActions = (props: LabelActionsProps) => {
             style={tailwind.style(
               'text-md font-inter-medium-24 leading-[17px] tracking-[0.24px] pl-1.5 text-blue-800',
             )}>
-            Add
+            {addLabelText}
           </Animated.Text>
         </Pressable>
       </Animated.View>
@@ -132,7 +136,7 @@ export const LabelActions = (props: LabelActionsProps) => {
           isInsideBottomSheet
           onSubmitEditing={handleOnSubmitEditing}
           onChangeText={handleChangeText}
-          placeholder="Search labels"
+          placeholder={searchPlaceholderText}
           returnKeyLabel="done"
           returnKeyType="done"
         />

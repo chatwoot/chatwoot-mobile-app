@@ -151,23 +151,27 @@ const handleAttachFile = async dispatch => {
 
 const ADD_MENU_OPTIONS = [
   {
+    id: 'photos',
     icon: <PhotosIcon />,
-    title: 'Photos',
+    titleKey: 'CONVERSATION_ATTACHMENT.OPTIONS.PHOTOS',
     handlePress: handleOpenPhotosLibrary,
   },
   {
+    id: 'camera',
     icon: <CameraIcon />,
-    title: 'Camera',
+    titleKey: 'CONVERSATION_ATTACHMENT.OPTIONS.CAMERA',
     handlePress: handleLaunchCamera,
   },
   {
+    id: 'attach_file',
     icon: <AttachFileIcon />,
-    title: 'Attach File',
+    titleKey: 'CONVERSATION_ATTACHMENT.OPTIONS.ATTACH_FILE',
     handlePress: handleAttachFile,
   },
   {
+    id: 'macros',
     icon: <MacrosIcon />,
-    title: 'Macros',
+    titleKey: 'CONVERSATION_ATTACHMENT.OPTIONS.MACROS',
     handlePress: () => {},
   },
 ];
@@ -197,7 +201,7 @@ const MenuOption = (props: MenuOptionProps) => {
   const handlePress = () => {
     hapticSelection?.();
     menuOption?.handlePress(dispatch);
-    if (menuOption.title === 'Macros') {
+    if (menuOption.id === 'macros') {
       macrosListSheetRef.current?.present();
     }
   };
@@ -213,7 +217,7 @@ const MenuOption = (props: MenuOptionProps) => {
             style={tailwind.style(
               'text-base font-inter-normal-20 leading-[18px] tracking-[0.24px] text-gray-950 pl-5',
             )}>
-            {menuOption.title}
+            {i18n.t(menuOption.titleKey)}
           </Text>
         </Animated.View>
       </Pressable>
@@ -233,7 +237,7 @@ export const CommandOptionsMenu = () => {
       exiting={SlideOutDown.springify().damping(38).stiffness(240)}
       style={tailwind.style('mx-1 pt-2 items-start', `h-[${containerHeight}px]`)}>
       {ADD_MENU_OPTIONS.map((menuOption, index) => {
-        return <MenuOption key={menuOption.title} {...{ menuOption, index }} />;
+        return <MenuOption key={menuOption.id} {...{ menuOption, index }} />;
       })}
     </Animated.View>
   );

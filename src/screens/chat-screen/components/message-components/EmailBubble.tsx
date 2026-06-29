@@ -38,20 +38,26 @@ export const EmailBubble = (props: EmailBubbleProps) => {
   const isOutgoing = messageType === MESSAGE_TYPES.OUTGOING;
 
   const FormattedEmail = emailMessageContent().replace('height:100%;', '');
-  const readableOutgoingEmailStyle = isOutgoing
-    ? `
+
+  const baseStyle = `
+        * {
+          font-family: system,-apple-system,".SFNSText-Regular","San Francisco",Roboto,"Segoe UI","Helvetica Neue","Lucida Grande",sans-serif;
+          font-size: 16px;
+        }
+        img{
+          max-width: 100% !important;
+        }
+      `;
+  const outgoingReadableStyle = `
+        :root {
+          color-scheme: light;
+        }
         html, body {
-          background: #ffffff !important;
-          color: #111827 !important;
+          background: #ffffff;
+          color: #111827;
         }
-        body, p, div, span, td, th, li {
-          color: #111827 !important;
-        }
-        a {
-          color: #2563eb !important;
-        }
-      `
-    : '';
+      `;
+  const emailCustomStyle = isOutgoing ? `${outgoingReadableStyle}${baseStyle}` : baseStyle;
 
   return (
     <React.Fragment>
@@ -64,16 +70,8 @@ export const EmailBubble = (props: EmailBubbleProps) => {
             <AutoHeightWebView
               style={{ width: '100%', minHeight: 1, minWidth: '100%' }}
               scrollEnabled={false}
-              customStyle={`
-        * {
-          font-family: system,-apple-system,".SFNSText-Regular","San Francisco",Roboto,"Segoe UI","Helvetica Neue","Lucida Grande",sans-serif;
-          font-size: 16px;
-        } 
-        ${readableOutgoingEmailStyle}
-        img{
-          max-width: 100% !important;
-        }
-      `}
+              forceDarkOn={false}
+              customStyle={emailCustomStyle}
               source={{
                 html: FormattedEmail,
               }}

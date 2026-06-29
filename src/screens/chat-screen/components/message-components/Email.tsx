@@ -46,20 +46,6 @@ export const Email = (props: EmailProps) => {
 
   const isMessageFailed = status === MESSAGE_STATUS.FAILED;
   const FormattedEmail = text.replace('height:100%;', '');
-  const readableOutgoingEmailStyle = isOutgoing
-    ? `
-        html, body {
-          background: #ffffff !important;
-          color: #111827 !important;
-        }
-        body, p, div, span, td, th, li {
-          color: #111827 !important;
-        }
-        a {
-          color: #2563eb !important;
-        }
-      `
-    : '';
 
   const windowWidth = Dimensions.get('window').width;
   const WIDTH = windowWidth - 52; // 52 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (4)
@@ -91,7 +77,6 @@ export const Email = (props: EmailProps) => {
           font-family: system,-apple-system,".SFNSText-Regular","San Francisco",Roboto,"Segoe UI","Helvetica Neue","Lucida Grande",sans-serif;
           font-size: 14px;
         } 
-        ${readableOutgoingEmailStyle}
         img{
           max-width: 100% !important;
         }

@@ -368,7 +368,13 @@
     "TITLE": "Atributos do Contato"
   },
   "CONVERSATION_ACTION": {
-    "TITLE": "Ações."
+    "TITLE": "Ações",
+    "OPTIONS": {
+      "OPEN": "Open",
+      "PENDING": "Pending",
+      "SNOOZED": "Snooze",
+      "RESOLVED": "resolve"
+    }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "Atribuir equipe",
@@ -384,6 +390,16 @@
     "SELECTED": "Selecionado",
     "NOT_SELECTED": "Nenhuma etiqueta selecionada",
     "NO_RESULT": "Nenhuma Etiqueta encontrada"
+  },
+  "CONTACT_LABELS": {
+    "TITLE": "Etiquetas do contacto",
+    "ADD_LABEL": "Adicionar etiqueta",
+    "EMPTY_LIST": "Por favor, adicione etiquetas à sua conta",
+    "NO_LABEL": "Nenhuma etiqueta atribuída",
+    "UPDATE_LABEL": "Etiqueta atualizada com sucesso",
+    "SELECTED": "Selecionado",
+    "NOT_SELECTED": "Nenhuma etiqueta selecionada",
+    "NO_RESULT": "Nenhuma etiqueta encontrada"
   },
   "CONVERSATION_AGENTS": {
     "TITLE": "Atribuir agente",

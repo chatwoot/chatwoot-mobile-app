@@ -18,6 +18,7 @@ const variantTextMap = {
   [MESSAGE_VARIANTS.TEMPLATE]: 'text-gray-950',
   [MESSAGE_VARIANTS.ERROR]: 'text-white',
   [MESSAGE_VARIANTS.PRIVATE]: 'text-amber-950 font-inter-medium-24',
+  [MESSAGE_VARIANTS.EMAIL]: 'text-gray-950',
 };
 
 export const MarkdownBubble = (props: MarkdownBubbleProps) => {

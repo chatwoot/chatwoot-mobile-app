@@ -116,13 +116,12 @@ export const MessagesList = ({
           }
         }}
         ref={typedMessageListRef}
-        // FlashList v2 is new-arch only and has no `inverted`/`estimatedItemSize`.
-        // For a chat list we render chronologically and start at the bottom;
-        // maintainVisibleContentPosition keeps the view steady when older
-        // messages are prepended at the top.
+        // Open at the newest message and hold position when older messages are
+        // prepended at the top. autoscrollToBottomThreshold is intentionally
+        // omitted: it pulls the list back to the bottom on re-render while the
+        // user is near the bottom, which overrides scroll-to-message.
         maintainVisibleContentPosition={{
           startRenderingFromBottom: true,
-          autoscrollToBottomThreshold: 0.2,
         }}
         {...(initialScrollIndex !== undefined ? { initialScrollIndex } : {})}
         showsVerticalScrollIndicator={false}

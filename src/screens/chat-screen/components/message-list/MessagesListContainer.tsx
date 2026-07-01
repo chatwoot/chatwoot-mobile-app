@@ -76,7 +76,6 @@ export const MessagesListContainer = () => {
     useChatWindowContext();
   const dispatch = useAppDispatch();
   const [isFlashListReady, setFlashListReady] = React.useState(false);
-  const [isListVisible, setIsListVisible] = useState(!messageId);
 
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const isAllMessagesFetched = useAppSelector(selectIsAllMessagesFetched);
@@ -152,8 +151,8 @@ export const MessagesListContainer = () => {
           );
         }
       } else {
-        // Load newer messages (after the newest message we have)
-        // Note: This is not currently triggered as Flashlist v1 doesnot support onStartReached
+        // Load newer messages (after the newest message we have). Not currently
+        // wired to a scroll trigger; kept for completeness.
         const afterId = firstMessageId();
         if (afterId) {
           dispatch(
@@ -188,21 +187,19 @@ export const MessagesListContainer = () => {
     };
   }, [appState, conversationId, dispatch]);
 
-  // Older history now lives at the TOP of the (chronological) list, so it is
-  // fetched when the user scrolls to the start instead of the end.
-  const onStartReached = () => {
+  // Inverted list: older history is at the end of the data, fetched when the
+  // user scrolls to the bottom (visually the top).
+  const onEndReached = () => {
     const shouldFetchMoreMessages = !isAllMessagesFetched && !isLoadingMessages && isFlashListReady;
     if (shouldFetchMoreMessages) {
       loadMessages({ loadingMessagesForFirstTime: false });
     }
   };
 
+  // A new search target re-mounts the list; wait for its layout before positioning.
   useEffect(() => {
     if (messageId) {
-      setIsListVisible(false);
       setFlashListReady(false);
-    } else {
-      setIsListVisible(true);
     }
   }, [messageId]);
 
@@ -218,27 +215,18 @@ export const MessagesListContainer = () => {
 
   const groupedMessages = getGroupedMessages(messages);
 
-  // `messages` (and therefore `groupedMessages`) is newest-first. FlashList v2
-  // has no `inverted` prop, so the list renders in visual order (top -> bottom).
-  // Reverse into chronological order (oldest at top, newest at bottom) and place
-  // each day's date separator BEFORE that day's messages.
-  // NOTE: `[...section.data, { date }]` then `.reverse()` yields
-  // `[date, ...oldest->newest]` per day — the date ends up before its messages.
+  // The list is rendered inverted, so data stays newest-first and each day's
+  // date separator follows that day's messages (it renders above them).
   const allMessages = flatMap(groupedMessages, section => [
     ...section.data,
     { date: section.date },
-  ]).reverse();
+  ]);
 
-  // Grouping flags describe whether a message visually joins the one ABOVE
-  // (older) or BELOW (newer) it. The list keeps newest-at-bottom, so to preserve
-  // the exact same per-message values as the old inverted list we swap the
-  // indices: `groupWithNext` = joins the older message above (index-1),
-  // `groupWithPrevious` = joins the newer message below (index).
   const messagesWithGrouping = allMessages.map((message, index) => {
     return {
       ...message,
-      groupWithNext: shouldGroupWithNext(index - 1, allMessages as MessageOrDate[]),
-      groupWithPrevious: shouldGroupWithNext(index, allMessages as MessageOrDate[]),
+      groupWithNext: shouldGroupWithNext(index, allMessages as MessageOrDate[]),
+      groupWithPrevious: shouldGroupWithNext(index - 1, allMessages as MessageOrDate[]),
     };
   });
 
@@ -247,53 +235,28 @@ export const MessagesListContainer = () => {
   const isEmailInbox = isAnEmailChannel(inbox);
   const userId = useAppSelector(selectUserId);
 
-  // Compute target message index for initialScrollIndex (so FlashList starts
-  // rendering from the target position, making items near it measured early)
+  // initialScrollIndex mounts the search-target list at the target so it does
+  // not start at the bottom and scroll up.
   const targetMessageIndex = messageId
     ? messagesWithGrouping.findIndex(
         item => !('date' in item) && 'id' in item && item.id === messageId,
       )
     : undefined;
 
-  useScrollToMessage({
+  const clearScrollToMessageId = useCallback(
+    () => setScrollToMessageId(undefined),
+    [setScrollToMessageId],
+  );
+
+  const { highlightedMessageId, isListVisible } = useScrollToMessage({
     messageId,
+    scrollToMessageId,
+    clearScrollToMessageId,
     messages: messagesWithGrouping,
     messageListRef,
     isFlashListReady,
     isLoadingMessages,
-    onPositioned: useCallback(() => setIsListVisible(true), []),
   });
-
-  // Handle scroll-to-message when tapping a quoted message reply
-  useEffect(() => {
-    if (!scrollToMessageId) return;
-
-    const targetIndex = messagesWithGrouping.findIndex(
-      item => !('date' in item) && 'id' in item && item.id === scrollToMessageId,
-    );
-
-    if (targetIndex >= 0) {
-      try {
-        messageListRef.current?.scrollToIndex({
-          index: targetIndex,
-          animated: true,
-          viewPosition: 0.5,
-        });
-      } catch {
-        // scrollToIndex can throw if index is out of range during layout changes
-      }
-    }
-
-    // Clear after a delay to allow the highlight animation to complete
-    const timer = setTimeout(() => {
-      setScrollToMessageId(undefined);
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, [scrollToMessageId, messagesWithGrouping, messageListRef, setScrollToMessageId]);
-
-  // The active target message ID — either from search navigation or quote tap
-  const activeTargetMessageId = scrollToMessageId || messageId;
 
   // Show loader when navigating to a message from search until messages are loaded
   // (prevents list from rendering at wrong position)
@@ -316,16 +279,16 @@ export const MessagesListContainer = () => {
           messages={messagesWithGrouping}
           isFlashListReady={isFlashListReady}
           setFlashListReady={setFlashListReady}
-          onStartReached={onStartReached}
+          onEndReached={onEndReached}
           isEmailInbox={isEmailInbox}
           currentUserId={userId as number}
-          targetMessageId={activeTargetMessageId}
+          isSearchNavigation={messageId !== undefined}
+          highlightedMessageId={highlightedMessageId}
           initialScrollIndex={
             targetMessageIndex !== undefined && targetMessageIndex >= 0
               ? targetMessageIndex
               : undefined
           }
-          isListPositioned={isListVisible}
         />
       </View>
       {!isListVisible && messageId && (

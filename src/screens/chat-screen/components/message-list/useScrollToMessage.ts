@@ -1,119 +1,133 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FlashListRef } from '@shopify/flash-list';
 import { Message } from '@/types';
 
 type MessageOrDate = Message | { date: string };
 
 interface UseScrollToMessageParams {
+  // Target opened from search. Undefined for a normal chat session.
   messageId?: number;
+  // Target from tapping a quoted reply. Set transiently, then cleared.
+  scrollToMessageId?: number;
+  clearScrollToMessageId: () => void;
   messages: MessageOrDate[];
   messageListRef: React.RefObject<FlashListRef<MessageOrDate>>;
   isFlashListReady: boolean;
   isLoadingMessages: boolean;
-  onPositioned: () => void;
 }
 
-// Maximum time to wait for the target message to appear in the data
-// before giving up and showing the list as-is (safety net)
-const TARGET_MESSAGE_TIMEOUT_MS = 5000;
+// Reveal the list even if the target never appears in the data (e.g. deleted).
+const TARGET_NOT_FOUND_TIMEOUT_MS = 5000;
+// How long the highlight stays set before it is cleared so it can replay.
+const HIGHLIGHT_DURATION_MS = 1600;
+// Delay before highlighting an animated (quote-tap) scroll so the pulse plays
+// once the scroll has moved rather than during it. Search jumps are instant.
+const ANIMATED_HIGHLIGHT_DELAY_MS = 350;
+
+const findMessageIndex = (messages: MessageOrDate[], id: number) =>
+  messages.findIndex(item => !('date' in item) && 'id' in item && item.id === id);
 
 /**
- * Hook to handle scrolling to a target message when navigating from search.
- * Uses multiple staggered scroll attempts to work around FlashList's estimated
- * item size inaccuracy (items near the target get measured progressively).
- *
- * viewPosition: 0.5 centers the target in the viewport, which provides
- * tolerance for estimation errors in both directions. This is especially
- * important because the list is inverted (viewPosition coordinates are
- * flipped relative to the visual layout).
+ * Drives scroll-to-message for both entry points (search navigation and quoted
+ * reply taps): the target is scrolled to center and then highlighted. Returns
+ * the id to highlight and whether the list should be shown (search keeps it
+ * hidden until the target is positioned).
  */
 export function useScrollToMessage({
   messageId,
+  scrollToMessageId,
+  clearScrollToMessageId,
   messages,
   messageListRef,
   isFlashListReady,
   isLoadingMessages,
-  onPositioned,
 }: UseScrollToMessageParams) {
-  const hasPositionedMessageRef = useRef(false);
+  const [highlightedMessageId, setHighlightedMessageId] = useState<number | undefined>(undefined);
+  const [isListVisible, setIsListVisible] = useState(!messageId);
 
-  // Reset positioning state when messageId changes
+  // Read messages from a ref so scrollThenHighlight keeps a stable identity and
+  // the effects below don't re-run on every data change.
+  const messagesRef = useRef(messages);
+  messagesRef.current = messages;
+
+  const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  // Scroll the target to center, then highlight it. scrollToIndex is
+  // fire-and-forget; the highlight is deferred so it resets for repeat taps and
+  // plays after an animated scroll rather than during it.
+  const scrollThenHighlight = useCallback(
+    (id: number, animated: boolean) => {
+      const index = findMessageIndex(messagesRef.current, id);
+      if (index < 0) return false;
+      setHighlightedMessageId(undefined);
+      try {
+        messageListRef.current?.scrollToIndex({ index, viewPosition: 0.5, animated });
+      } catch {
+        // Index can be transiently out of range during a layout change.
+      }
+      clearTimeout(highlightTimerRef.current);
+      highlightTimerRef.current = setTimeout(
+        () => setHighlightedMessageId(id),
+        animated ? ANIMATED_HIGHLIGHT_DELAY_MS : 0,
+      );
+      return true;
+    },
+    [messageListRef],
+  );
+
+  useEffect(() => () => clearTimeout(highlightTimerRef.current), []);
+
+  // Clear the highlight once it has played so it can be triggered again.
   useEffect(() => {
-    if (messageId) {
-      hasPositionedMessageRef.current = false;
-    }
+    if (highlightedMessageId === undefined) return;
+    const timer = setTimeout(() => setHighlightedMessageId(undefined), HIGHLIGHT_DURATION_MS);
+    return () => clearTimeout(timer);
+  }, [highlightedMessageId]);
+
+  // Reset visibility when the search target changes.
+  useEffect(() => {
+    setIsListVisible(!messageId);
   }, [messageId]);
 
-  // Safety-net timeout: if the target message never appears in the data
-  // (e.g. it was deleted), reveal the list after a reasonable wait
+  // Search navigation: position the target once it has loaded and the list is
+  // laid out, then reveal the list.
+  const positionedRef = useRef(false);
   useEffect(() => {
-    if (!messageId) return;
+    positionedRef.current = false;
+  }, [messageId]);
 
-    const timeout = setTimeout(() => {
-      if (!hasPositionedMessageRef.current) {
-        onPositioned();
-      }
-    }, TARGET_MESSAGE_TIMEOUT_MS);
-
-    return () => clearTimeout(timeout);
-  }, [messageId, onPositioned]);
-
-  // Position target message when navigating from search
   useEffect(() => {
-    if (!messageId || !isFlashListReady || messages.length === 0) return;
-    if (hasPositionedMessageRef.current) return;
+    if (!messageId || !isFlashListReady || positionedRef.current || messages.length === 0) return;
 
-    const targetIndex = messages.findIndex(
-      item => !('date' in item) && 'id' in item && item.id === messageId,
-    );
-
-    // Target message not in the data yet
-    if (targetIndex === -1) {
-      // If messages finished loading and target still not found (e.g. deleted),
-      // reveal the list immediately instead of waiting for the 5s timeout
+    if (findMessageIndex(messages, messageId) < 0) {
+      // Target not in the data; reveal once loading settles so the list isn't stuck.
       if (!isLoadingMessages) {
-        hasPositionedMessageRef.current = true;
-        onPositioned();
+        positionedRef.current = true;
+        setIsListVisible(true);
       }
       return;
     }
 
-    let cancelled = false;
-    const timers: ReturnType<typeof setTimeout>[] = [];
+    positionedRef.current = true;
+    scrollThenHighlight(messageId, false);
+    setIsListVisible(true);
+  }, [messageId, isFlashListReady, isLoadingMessages, messages, scrollThenHighlight]);
 
-    // FlashList v2 measures items precisely (no size estimates), and
-    // scrollToIndex resolves once the scroll completes — so a single accurate
-    // scroll replaces v1's staggered retry workaround. viewPosition 0.5 centers
-    // the target, leaving tolerance in both directions.
-    const positionAndReveal = async () => {
-      try {
-        await messageListRef.current?.scrollToIndex({
-          index: targetIndex,
-          animated: false,
-          viewPosition: 0.5,
-        });
-      } catch {
-        // scrollToIndex can reject if the index is briefly out of range during
-        // a layout change; the reveal below still runs so the list isn't stuck.
-      }
+  useEffect(() => {
+    if (!messageId) return;
+    const timer = setTimeout(() => {
+      if (!positionedRef.current) setIsListVisible(true);
+    }, TARGET_NOT_FOUND_TIMEOUT_MS);
+    return () => clearTimeout(timer);
+  }, [messageId]);
 
-      if (cancelled) return;
-      // One more frame so the scrolled position is committed before revealing.
-      const revealTimer = setTimeout(() => {
-        requestAnimationFrame(() => {
-          if (cancelled) return;
-          hasPositionedMessageRef.current = true;
-          onPositioned();
-        });
-      }, 100);
-      timers.push(revealTimer);
-    };
+  // Quoted reply tap: animate-scroll to the target, then clear the transient id.
+  useEffect(() => {
+    if (scrollToMessageId === undefined) return;
+    scrollThenHighlight(scrollToMessageId, true);
+    const timer = setTimeout(() => clearScrollToMessageId(), HIGHLIGHT_DURATION_MS);
+    return () => clearTimeout(timer);
+  }, [scrollToMessageId, scrollThenHighlight, clearScrollToMessageId]);
 
-    positionAndReveal();
-
-    return () => {
-      cancelled = true;
-      timers.forEach(clearTimeout);
-    };
-  }, [messageId, isFlashListReady, isLoadingMessages, messages, messageListRef, onPositioned]);
+  return { highlightedMessageId, isListVisible };
 }

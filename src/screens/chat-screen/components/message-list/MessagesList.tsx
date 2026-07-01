@@ -42,24 +42,24 @@ type MessagesListPresentationProps = {
   messages: (Message | { date: string })[];
   isFlashListReady: boolean;
   setFlashListReady: (ready: boolean) => void;
-  onStartReached: () => void;
+  onEndReached: () => void;
   isEmailInbox: boolean;
   currentUserId: number;
-  targetMessageId?: number;
+  isSearchNavigation?: boolean;
+  highlightedMessageId?: number;
   initialScrollIndex?: number;
-  isListPositioned?: boolean;
 };
 
 export const MessagesList = ({
   messages,
   isFlashListReady,
   setFlashListReady,
-  onStartReached,
+  onEndReached,
   isEmailInbox,
   currentUserId,
-  targetMessageId,
+  isSearchNavigation = false,
+  highlightedMessageId,
   initialScrollIndex,
-  isListPositioned = true,
 }: MessagesListPresentationProps) => {
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
@@ -72,7 +72,7 @@ export const MessagesList = ({
       return <DateSection item={item} />;
     }
 
-    const isTarget = targetMessageId !== undefined && targetMessageId === item.id;
+    const isTarget = highlightedMessageId !== undefined && highlightedMessageId === item.id;
 
     return (
       <MessageComponent
@@ -81,7 +81,6 @@ export const MessagesList = ({
         isEmailInbox={isEmailInbox}
         currentUserId={currentUserId}
         isTargetMessage={isTarget}
-        isListPositioned={isListPositioned}
       />
     );
     // TODO: Deprecate this after the new message item is ready
@@ -104,30 +103,26 @@ export const MessagesList = ({
       <AnimatedFlashlist
         layout={LinearTransition.springify().damping(38).stiffness(240)}
         onLayout={() => {
-          // For search navigation, mark ready on layout since there's no user scroll
-          if (targetMessageId && !isFlashListReady) {
+          // Search navigation has no user scroll, so mark ready on layout.
+          if (isSearchNavigation && !isFlashListReady) {
             setFlashListReady(true);
           }
         }}
         onScroll={() => {
-          // For normal chat, mark ready on first scroll (preserves existing behavior)
-          if (!targetMessageId && !isFlashListReady) {
+          // Normal chat marks ready on first scroll.
+          if (!isSearchNavigation && !isFlashListReady) {
             setFlashListReady(true);
           }
         }}
         ref={typedMessageListRef}
-        // Open at the newest message and hold position when older messages are
-        // prepended at the top. autoscrollToBottomThreshold is intentionally
-        // omitted: it pulls the list back to the bottom on re-render while the
-        // user is near the bottom, which overrides scroll-to-message.
-        maintainVisibleContentPosition={{
-          startRenderingFromBottom: true,
-        }}
+        // Inverted keeps the newest message anchored at the bottom; data is
+        // newest-first and older history loads via onEndReached.
+        inverted
         {...(initialScrollIndex !== undefined ? { initialScrollIndex } : {})}
         showsVerticalScrollIndicator={false}
         renderItem={handleRender}
-        onStartReached={onStartReached}
-        onStartReachedThreshold={0.1}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={0.1}
         data={messages}
         contentContainerStyle={tailwind.style('px-3')}
         keyboardShouldPersistTaps="handled"

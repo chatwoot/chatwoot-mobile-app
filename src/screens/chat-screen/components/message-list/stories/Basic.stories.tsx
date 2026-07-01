@@ -77,7 +77,7 @@ export const Basic: Story = {
                       messages={ALL_MESSAGES_MOCKDATA}
                       isFlashListReady={false}
                       setFlashListReady={() => {}}
-                      onStartReached={() => {}}
+                      onEndReached={() => {}}
                     />
                   </PlatformSpecificKeyboardWrapperComponent>
                 </ScrollView>

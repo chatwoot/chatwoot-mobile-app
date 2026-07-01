@@ -134,7 +134,7 @@
     "jest-expo": "~54.0.17",
     "prettier": "^3.3.3",
     "react-dom": "19.1.0",
-    "reactotron-react-native": "^5.1.12",
+    "reactotron-react-native": "^5.2.0",
     "typescript": "^5.9.3"
   },
   "private": true,

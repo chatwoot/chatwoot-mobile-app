@@ -73,6 +73,9 @@ export interface MessagesPayload {
   conversationId: number;
   beforeId?: number | null;
   afterId?: number | null;
+  // Replace the stored messages with this response (search navigation) instead
+  // of merging, so the target's window has no gap with previously loaded messages.
+  resetMessages?: boolean;
 }
 
 export interface MessagesResponse {

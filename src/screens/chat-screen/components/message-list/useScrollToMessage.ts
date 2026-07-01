@@ -24,8 +24,8 @@ const HIGHLIGHT_DURATION_MS = 1600;
 // once the scroll has moved rather than during it. Search jumps are instant.
 const ANIMATED_HIGHLIGHT_DELAY_MS = 350;
 
-const findMessageIndex = (messages: MessageOrDate[], id: number) =>
-  messages.findIndex(item => !('date' in item) && 'id' in item && item.id === id);
+const findMessage = (messages: MessageOrDate[], id: number) =>
+  messages.find(item => !('date' in item) && 'id' in item && item.id === id);
 
 /**
  * Drives scroll-to-message for both entry points (search navigation and quoted
@@ -51,19 +51,28 @@ export function useScrollToMessage({
   messagesRef.current = messages;
 
   const highlightTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const isMountedRef = useRef(true);
+  useEffect(
+    () => () => {
+      isMountedRef.current = false;
+    },
+    [],
+  );
 
   // Scroll the target to center, then highlight it. scrollToIndex is
   // fire-and-forget; the highlight is deferred so it resets for repeat taps and
   // plays after an animated scroll rather than during it.
   const scrollThenHighlight = useCallback(
     (id: number, animated: boolean) => {
-      const index = findMessageIndex(messagesRef.current, id);
-      if (index < 0) return false;
+      const item = findMessage(messagesRef.current, id);
+      if (!item) return false;
       setHighlightedMessageId(undefined);
       try {
-        messageListRef.current?.scrollToIndex({ index, viewPosition: 0.5, animated });
+        // scrollToItem resolves the index at call time, so it tolerates the list
+        // shifting (e.g. newer messages prepending) — unlike scrollToIndex.
+        messageListRef.current?.scrollToItem({ item, viewPosition: 0.5, animated });
       } catch {
-        // Index can be transiently out of range during a layout change.
+        // Item can be transiently unresolvable during a layout change.
       }
       clearTimeout(highlightTimerRef.current);
       highlightTimerRef.current = setTimeout(
@@ -99,7 +108,8 @@ export function useScrollToMessage({
   useEffect(() => {
     if (!messageId || !isFlashListReady || positionedRef.current || messages.length === 0) return;
 
-    if (findMessageIndex(messages, messageId) < 0) {
+    const targetItem = findMessage(messages, messageId);
+    if (!targetItem) {
       // Target not in the data; reveal once loading settles so the list isn't stuck.
       if (!isLoadingMessages) {
         positionedRef.current = true;
@@ -109,9 +119,27 @@ export function useScrollToMessage({
     }
 
     positionedRef.current = true;
-    scrollThenHighlight(messageId, false);
-    setIsListVisible(true);
-  }, [messageId, isFlashListReady, isLoadingMessages, messages, scrollThenHighlight]);
+    try {
+      messageListRef.current?.scrollToItem({
+        item: targetItem,
+        viewPosition: 0.5,
+        animated: false,
+      });
+    } catch {
+      // Item can be transiently unresolvable during a layout change.
+    }
+    // Reveal after the centering scroll has committed (so it isn't seen as a
+    // jump), then play the highlight in place. positionedRef guarantees this
+    // runs once, so it must not be cancelled by dependency-change re-renders
+    // (e.g. the follow-up newer-messages fetch) — only guarded against unmount.
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        if (!isMountedRef.current) return;
+        setIsListVisible(true);
+        setHighlightedMessageId(messageId);
+      }),
+    );
+  }, [messageId, isFlashListReady, isLoadingMessages, messages, messageListRef]);
 
   useEffect(() => {
     if (!messageId) return;

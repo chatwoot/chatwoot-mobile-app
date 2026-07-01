@@ -43,11 +43,11 @@ type MessagesListPresentationProps = {
   isFlashListReady: boolean;
   setFlashListReady: (ready: boolean) => void;
   onEndReached: () => void;
+  onStartReached: () => void;
   isEmailInbox: boolean;
   currentUserId: number;
   isSearchNavigation?: boolean;
   highlightedMessageId?: number;
-  initialScrollIndex?: number;
 };
 
 export const MessagesList = ({
@@ -55,11 +55,11 @@ export const MessagesList = ({
   isFlashListReady,
   setFlashListReady,
   onEndReached,
+  onStartReached,
   isEmailInbox,
   currentUserId,
   isSearchNavigation = false,
   highlightedMessageId,
-  initialScrollIndex,
 }: MessagesListPresentationProps) => {
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
@@ -102,8 +102,9 @@ export const MessagesList = ({
       style={[tailwind.style('flex-1 min-h-10'), animatedFlashlistStyle]}>
       <AnimatedFlashlist
         layout={LinearTransition.springify().damping(38).stiffness(240)}
-        onLayout={() => {
-          // Search navigation has no user scroll, so mark ready on layout.
+        onLoad={() => {
+          // Search navigation positions once items are drawn (measured), so
+          // scroll-to-target lands accurately.
           if (isSearchNavigation && !isFlashListReady) {
             setFlashListReady(true);
           }
@@ -116,13 +117,20 @@ export const MessagesList = ({
         }}
         ref={typedMessageListRef}
         // Inverted keeps the newest message anchored at the bottom; data is
-        // newest-first and older history loads via onEndReached.
+        // newest-first, older history loads via onEndReached and newer via
+        // onStartReached. maintainVisibleContentPosition holds position when
+        // messages are prepended; getItemType + drawDistance reduce the
+        // re-measure blank when paging.
         inverted
-        {...(initialScrollIndex !== undefined ? { initialScrollIndex } : {})}
+        maintainVisibleContentPosition={{ autoscrollToBottomThreshold: 0.2 }}
+        getItemType={item => ('date' in item ? 'date' : 'message')}
+        drawDistance={500}
         showsVerticalScrollIndicator={false}
         renderItem={handleRender}
         onEndReached={onEndReached}
-        onEndReachedThreshold={0.1}
+        onEndReachedThreshold={0.5}
+        onStartReached={onStartReached}
+        onStartReachedThreshold={0.1}
         data={messages}
         contentContainerStyle={tailwind.style('px-3')}
         keyboardShouldPersistTaps="handled"

@@ -76,6 +76,7 @@ export const Instagram: Story = {
                       isFlashListReady={false}
                       setFlashListReady={() => {}}
                       onEndReached={() => {}}
+                      onStartReached={() => {}}
                       isEmailInbox={false}
                       currentUserId={1}
                     />

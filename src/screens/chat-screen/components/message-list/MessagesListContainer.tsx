@@ -9,6 +9,7 @@ import {
   getMessagesByConversationId,
   selectConversationById,
   selectIsAllMessagesFetched,
+  selectIsAllNewerMessagesFetched,
   selectIsLoadingMessages,
 } from '@/store/conversation/conversationSelectors';
 import { conversationActions } from '@/store/conversation/conversationActions';
@@ -76,9 +77,13 @@ export const MessagesListContainer = () => {
     useChatWindowContext();
   const dispatch = useAppDispatch();
   const [isFlashListReady, setFlashListReady] = React.useState(false);
+  // True while a search jump is loading both sides of the target, so the list is
+  // mounted once with stable data (avoids the target index shifting mid-load).
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
 
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const isAllMessagesFetched = useAppSelector(selectIsAllMessagesFetched);
+  const isAllNewerMessagesFetched = useAppSelector(selectIsAllNewerMessagesFetched);
   const isLoadingMessages = useAppSelector(selectIsLoadingMessages);
   const messages = useAppSelector(state => getMessagesByConversationId(state, { conversationId }));
   const attachments = useAppSelector(selectAttachments);
@@ -124,12 +129,21 @@ export const MessagesListContainer = () => {
       targetMessageId?: number;
     }) => {
       if (targetMessageId !== undefined) {
-        // Load target message and messages around it (for search navigation)
-        dispatch(
+        // Search navigation: load a count-based window around the target (ID
+        // spans are unreliable because message ids are global across all
+        // conversations). First the target + older messages (resets the list),
+        // then a page of newer messages so the target has context on both sides.
+        await dispatch(
           conversationActions.fetchPreviousMessages({
             conversationId,
-            afterId: targetMessageId - 100,
-            beforeId: targetMessageId + 100,
+            beforeId: targetMessageId + 1,
+            resetMessages: true,
+          }),
+        );
+        await dispatch(
+          conversationActions.fetchPreviousMessages({
+            conversationId,
+            afterId: targetMessageId,
           }),
         );
       } else if (loadingMessagesForFirstTime) {
@@ -151,14 +165,14 @@ export const MessagesListContainer = () => {
           );
         }
       } else {
-        // Load newer messages (after the newest message we have). Not currently
-        // wired to a scroll trigger; kept for completeness.
+        // Load newer messages (after the newest we have). Any overlap is
+        // de-duplicated in the slice, so pass the id directly to avoid skipping one.
         const afterId = firstMessageId();
         if (afterId) {
           dispatch(
             conversationActions.fetchPreviousMessages({
               conversationId,
-              afterId: afterId + 1, // +1 to exclude the message we already have
+              afterId,
             }),
           );
         }
@@ -196,6 +210,17 @@ export const MessagesListContainer = () => {
     }
   };
 
+  // After a search jump the loaded window can sit before the latest messages;
+  // page newer ones in when the user scrolls to the newest edge (visually the
+  // bottom). No-op on a normal chat, which is already at the latest.
+  const onStartReached = () => {
+    const shouldFetchNewerMessages =
+      !isAllNewerMessagesFetched && !isLoadingMessages && isFlashListReady;
+    if (shouldFetchNewerMessages) {
+      loadMessages({ loadOlder: false });
+    }
+  };
+
   // A new search target re-mounts the list; wait for its layout before positioning.
   useEffect(() => {
     if (messageId) {
@@ -204,12 +229,19 @@ export const MessagesListContainer = () => {
   }, [messageId]);
 
   useEffect(() => {
+    let active = true;
     if (messageId) {
-      loadMessages({ targetMessageId: messageId });
+      setIsSearchLoading(true);
+      loadMessages({ targetMessageId: messageId }).finally(() => {
+        if (active) setIsSearchLoading(false);
+      });
     } else {
       loadMessages({ loadingMessagesForFirstTime: true });
     }
     dispatch(conversationParticipantActions.index({ conversationId }));
+    return () => {
+      active = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversationId, messageId]);
 
@@ -235,14 +267,6 @@ export const MessagesListContainer = () => {
   const isEmailInbox = isAnEmailChannel(inbox);
   const userId = useAppSelector(selectUserId);
 
-  // initialScrollIndex mounts the search-target list at the target so it does
-  // not start at the bottom and scroll up.
-  const targetMessageIndex = messageId
-    ? messagesWithGrouping.findIndex(
-        item => !('date' in item) && 'id' in item && item.id === messageId,
-      )
-    : undefined;
-
   const clearScrollToMessageId = useCallback(
     () => setScrollToMessageId(undefined),
     [setScrollToMessageId],
@@ -258,9 +282,10 @@ export const MessagesListContainer = () => {
     isLoadingMessages,
   });
 
-  // Show loader when navigating to a message from search until messages are loaded
-  // (prevents list from rendering at wrong position)
-  if (messageId && messagesWithGrouping.length === 0 && isLoadingMessages) {
+  // For search navigation, keep the loader up until BOTH sides of the target
+  // have loaded, so the list mounts once with stable data (the target's index
+  // doesn't shift mid-load) and positions reliably.
+  if (messageId && (isSearchLoading || messagesWithGrouping.length === 0)) {
     return (
       <View style={tailwind.style('flex-1 bg-white justify-center items-center')}>
         <ActivityIndicator />
@@ -280,15 +305,11 @@ export const MessagesListContainer = () => {
           isFlashListReady={isFlashListReady}
           setFlashListReady={setFlashListReady}
           onEndReached={onEndReached}
+          onStartReached={onStartReached}
           isEmailInbox={isEmailInbox}
           currentUserId={userId as number}
           isSearchNavigation={messageId !== undefined}
           highlightedMessageId={highlightedMessageId}
-          initialScrollIndex={
-            targetMessageIndex !== undefined && targetMessageIndex >= 0
-              ? targetMessageIndex
-              : undefined
-          }
         />
       </View>
       {!isListVisible && messageId && (

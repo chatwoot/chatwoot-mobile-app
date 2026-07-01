@@ -76,6 +76,7 @@ export const EmailMessageList: Story = {
                       isFlashListReady={false}
                       setFlashListReady={() => {}}
                       onEndReached={() => {}}
+                      onStartReached={() => {}}
                       isEmailInbox={true}
                       currentUserId={1}
                     />

@@ -78,6 +78,7 @@ export const Basic: Story = {
                       isFlashListReady={false}
                       setFlashListReady={() => {}}
                       onEndReached={() => {}}
+                      onStartReached={() => {}}
                     />
                   </PlatformSpecificKeyboardWrapperComponent>
                 </ScrollView>

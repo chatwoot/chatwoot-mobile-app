@@ -19,6 +19,9 @@ overrides:
   tar: 7.5.11
 
 patchedDependencies:
+  '@react-native-clipboard/clipboard@1.16.2':
+    hash: 416a65f964e795836a1496511cc8dd6e7a015b997c3fe7091621a9593206a1dd
+    path: patches/@react-native-clipboard__clipboard@1.16.2.patch
   '@react-native-menu/menu@1.2.3':
     hash: 32cb895fbfa1e8d7913d50afc7204f9474ec12701e558533b3e412ee810285f0
     path: patches/@react-native-menu__menu@1.2.3.patch
@@ -62,7 +65,7 @@ importers:
         version: 2.2.0(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))
       '@react-native-clipboard/clipboard':
         specifier: ^1.6.1
-        version: 1.16.2(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+        version: 1.16.2(patch_hash=416a65f964e795836a1496511cc8dd6e7a015b997c3fe7091621a9593206a1dd)(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@react-native-community/blur':
         specifier: ^4.4.1
         version: 4.4.1(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -248,7 +251,7 @@ importers:
         version: 9.2.0(@types/react@19.1.17)(react@19.1.0)(redux@5.0.1)
       reactotron-redux:
         specifier: ^3.1.11
-        version: 3.2.0(reactotron-core-client@2.9.7)(redux@5.0.1)
+        version: 3.2.0(reactotron-core-client@2.10.0)(redux@5.0.1)
       redux-persist:
         specifier: ^6.0.0
         version: 6.0.0(react@19.1.0)(redux@5.0.1)
@@ -333,7 +336,7 @@ importers:
         version: 19.1.0(react@19.1.0)
       reactotron-react-native:
         specifier: ^5.1.12
-        version: 5.1.13(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))
+        version: 5.2.0(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -5605,14 +5608,14 @@ packages:
     resolution: {integrity: sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg==}
     engines: {node: '>=0.10.0'}
 
-  reactotron-core-client@2.9.7:
-    resolution: {integrity: sha512-QWd0ekjU71CQL70J87NT5f7cmIJAMVZND+YgOaaUgmgFjhiXzHrpeIWs19+IFQPVLsJr97gdi58X8Y62Hchs9w==}
+  reactotron-core-client@2.10.0:
+    resolution: {integrity: sha512-mOzkc1Rb4sN98OLY/frkP0e1A60bTFjuXUgG8D4m+pwCcjVCWZupdSFV8c5+gqcZBnreoVR20/ko6D8X/7KPvg==}
 
-  reactotron-core-contract@0.2.5:
-    resolution: {integrity: sha512-pxuXFG1jffAWQSdT0FBws+/Xvl8++6T6WrAi4g7AxIZU5FPeut2wq//0yDhDWx6lF82eAo5JTZK7zECQy45QxA==}
+  reactotron-core-contract@0.4.0:
+    resolution: {integrity: sha512-o7m4mSzaUM/IGDc1dBfe0q6rgSi7mZCP7FCs3kHF7AJQwXBOKx/awjVaeNVqz+w6ADiw7X4dtDdQvEROAXdD3w==}
 
-  reactotron-react-native@5.1.13:
-    resolution: {integrity: sha512-+mlAzW9DIOfWkz0v3OoquX9uhvvCzJNczx2YBfU+22TxorpaC/nSVddi63qxoL9q4lNScw4EqXSEbdra1jbNaQ==}
+  reactotron-react-native@5.2.0:
+    resolution: {integrity: sha512-7Jd47Eti4wvyn1p5MsQ4mEg2mGG8B5HIZHASjK5RKVfOajEP9Sf4Vume9URG6inB/UQWGpBP6ahCGqcSo4qn3w==}
     peerDependencies:
       react-native: '>=0.40.0'
 
@@ -8711,7 +8714,7 @@ snapshots:
       merge-options: 3.0.4
       react-native: 0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0)
 
-  '@react-native-clipboard/clipboard@1.16.2(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
+  '@react-native-clipboard/clipboard@1.16.2(patch_hash=416a65f964e795836a1496511cc8dd6e7a015b997c3fe7091621a9593206a1dd)(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0)
@@ -13021,22 +13024,23 @@ snapshots:
 
   react@19.1.0: {}
 
-  reactotron-core-client@2.9.7:
+  reactotron-core-client@2.10.0:
     dependencies:
-      reactotron-core-contract: 0.2.5
+      reactotron-core-contract: 0.4.0
 
-  reactotron-core-contract@0.2.5: {}
+  reactotron-core-contract@0.4.0: {}
 
-  reactotron-react-native@5.1.13(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0)):
+  reactotron-react-native@5.2.0(react-native@0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0)):
     dependencies:
       mitt: 3.0.1
       react-native: 0.81.5(@babel/core@7.27.1)(@types/react@19.1.17)(react@19.1.0)
-      reactotron-core-client: 2.9.7
+      reactotron-core-client: 2.10.0
+      reactotron-core-contract: 0.4.0
 
-  reactotron-redux@3.2.0(reactotron-core-client@2.9.7)(redux@5.0.1):
+  reactotron-redux@3.2.0(reactotron-core-client@2.10.0)(redux@5.0.1):
     dependencies:
       microdiff: 1.5.0
-      reactotron-core-client: 2.9.7
+      reactotron-core-client: 2.10.0
       redux: 5.0.1
 
   read-cache@1.0.0:

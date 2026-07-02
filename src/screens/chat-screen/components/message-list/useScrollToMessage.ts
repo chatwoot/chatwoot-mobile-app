@@ -69,7 +69,7 @@ export function useScrollToMessage({
       setHighlightedMessageId(undefined);
       try {
         // scrollToItem resolves the index at call time, so it tolerates the list
-        // shifting (e.g. newer messages prepending) — unlike scrollToIndex.
+        // shifting (e.g. newer messages prepending).
         messageListRef.current?.scrollToItem({ item, viewPosition: 0.5, animated });
       } catch {
         // Item can be transiently unresolvable during a layout change.

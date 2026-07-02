@@ -1,6 +1,5 @@
-// React 19 / @types/react 19.1 removed the global `JSX` namespace in favour of
-// the `React.JSX` namespace. This shim restores the global so existing
-// `JSX.Element` (and related) annotations keep compiling without touching every file.
+// Maps the global `JSX` namespace to `React.JSX`, where @types/react 19.1 defines
+// these types, so global `JSX.Element` and related annotations resolve.
 // See: https://react.dev/blog/2024/04/25/react-19-upgrade-guide#the-jsx-namespace-in-typescript
 import type * as React from 'react';
 

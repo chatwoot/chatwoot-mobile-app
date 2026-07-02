@@ -1,11 +1,6 @@
 import React from 'react';
 
-import Animated, {
-  interpolate,
-  LinearTransition,
-  useAnimatedStyle,
-  withSpring,
-} from 'react-native-reanimated';
+import Animated, { interpolate, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { FlashList, FlashListRef } from '@shopify/flash-list';
 import { useAppKeyboardAnimation } from '@/utils';
 import { tailwind } from '@/theme';
@@ -97,11 +92,8 @@ export const MessagesList = ({
   });
 
   return (
-    <Animated.View
-      layout={LinearTransition.springify().damping(38).stiffness(240)}
-      style={[tailwind.style('flex-1 min-h-10'), animatedFlashlistStyle]}>
+    <Animated.View style={[tailwind.style('flex-1 min-h-10'), animatedFlashlistStyle]}>
       <AnimatedFlashlist
-        layout={LinearTransition.springify().damping(38).stiffness(240)}
         onLoad={() => {
           // Search navigation positions once items are drawn (measured), so
           // scroll-to-target lands accurately.
@@ -109,26 +101,22 @@ export const MessagesList = ({
             setFlashListReady(true);
           }
         }}
-        onScroll={() => {
-          // Normal chat marks ready on first scroll.
+        onScrollBeginDrag={() => {
+          // Normal chat becomes ready on the first user drag, which gates pagination.
           if (!isSearchNavigation && !isFlashListReady) {
             setFlashListReady(true);
           }
         }}
         ref={typedMessageListRef}
-        // Inverted keeps the newest message anchored at the bottom; data is
-        // newest-first, older history loads via onEndReached and newer via
-        // onStartReached. maintainVisibleContentPosition holds position when
-        // messages are prepended; getItemType + drawDistance reduce the
-        // re-measure blank when paging.
+        // Data is newest-first, so inverted renders index 0 at the visual bottom.
+        // Older history loads via onEndReached, newer via onStartReached.
         inverted
-        maintainVisibleContentPosition={{ autoscrollToBottomThreshold: 0.2 }}
         getItemType={item => ('date' in item ? 'date' : 'message')}
         drawDistance={500}
         showsVerticalScrollIndicator={false}
         renderItem={handleRender}
         onEndReached={onEndReached}
-        onEndReachedThreshold={0.5}
+        onEndReachedThreshold={0.2}
         onStartReached={onStartReached}
         onStartReachedThreshold={0.1}
         data={messages}

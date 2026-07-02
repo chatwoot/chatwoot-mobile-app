@@ -1,6 +1,6 @@
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
-import Animated, { FadeIn, Layout, LinearTransition } from 'react-native-reanimated';
+import { ActivityIndicator, View } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import { FlashList, FlashListRef } from '@shopify/flash-list';
 
 import { tailwind } from '@/theme';
@@ -34,9 +34,7 @@ export function SearchListItems({
 }: SearchListItemsProps) {
   if (useFlashList) {
     return (
-      <Animated.View
-        layout={LinearTransition.springify().damping(18).stiffness(120)}
-        style={tailwind.style('flex-1')}>
+      <View style={tailwind.style('flex-1')}>
         <AnimatedFlashList
           ref={listRef}
           data={items}
@@ -61,7 +59,7 @@ export function SearchListItems({
             ) : null
           }
         />
-      </Animated.View>
+      </View>
     );
   }
 
@@ -72,8 +70,7 @@ export function SearchListItems({
         return (
           <Animated.View
             key={`${sectionId}-${getItemId(item)}-${index}`}
-            entering={FadeIn.duration(200).delay(index * 30)}
-            layout={Layout.springify().damping(20).stiffness(180)}>
+            entering={FadeIn.duration(200).delay(index * 30)}>
             {renderItem(item, sectionId, isLast)}
           </Animated.View>
         );

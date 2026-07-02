@@ -3,7 +3,6 @@ import { ActivityIndicator, Pressable } from 'react-native';
 import Animated, {
   FadeIn,
   FadeOut,
-  Layout,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -72,7 +71,8 @@ export function SearchSection({
   const section = getSearchSectionById(sectionId);
   if (!section) return null;
 
-  const shouldShowSection = activeTab === 'all' || items.length > 0 || isInitialLoading || hasError || isCancelled;
+  const shouldShowSection =
+    activeTab === 'all' || items.length > 0 || isInitialLoading || hasError || isCancelled;
   if (!shouldShowSection) {
     return null;
   }
@@ -82,7 +82,7 @@ export function SearchSection({
   };
 
   return (
-    <Animated.View key={sectionId} layout={Layout.springify().damping(20).stiffness(180)}>
+    <Animated.View key={sectionId}>
       <Animated.View
         entering={FadeIn.duration(200)}
         style={tailwind.style('px-4 py-2 flex-row items-center justify-between')}>

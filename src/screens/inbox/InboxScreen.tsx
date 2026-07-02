@@ -1,11 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StatusBar } from 'react-native';
-import Animated, {
-  LinearTransition,
-  runOnJS,
-  SharedValue,
-  useAnimatedScrollHandler,
-} from 'react-native-reanimated';
+import Animated, { runOnJS, SharedValue, useAnimatedScrollHandler } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 
@@ -154,7 +149,6 @@ const InboxList = () => {
   ) : (
     <AnimatedFlashlist
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-      layout={LinearTransition.springify().damping(18).stiffness(120)}
       showsVerticalScrollIndicator={false}
       data={notifications}
       onScroll={scrollHandler}

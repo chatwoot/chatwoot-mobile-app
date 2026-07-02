@@ -1,6 +1,6 @@
 import React from 'react';
 import { Channel, Message } from '@/types';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
@@ -128,7 +128,6 @@ const MessageWrapper = ({
 
   return (
     <Animated.View
-      entering={FadeIn.duration(350)}
       style={[
         tailwind.style(
           'my-[1px]',

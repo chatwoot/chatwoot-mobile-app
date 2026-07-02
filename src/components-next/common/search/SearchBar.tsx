@@ -1,12 +1,11 @@
 import React from 'react';
-import { Pressable, TextInput, TextInputProps } from 'react-native';
+import { ActivityIndicator, Pressable, TextInput, TextInputProps } from 'react-native';
 import Animated, { withTiming } from 'react-native-reanimated';
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
 import { CloseIcon, SearchIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { RenderPropType } from '@/types';
-import { Spinner } from '@/components-next/spinner';
 import { Icon } from '../icon';
 
 interface SearchBarProps extends TextInputProps {
@@ -65,8 +64,8 @@ export const SearchBar = (props: SearchBarProps) => {
         {...otherProps}
       />
       {isLoading ? (
-        <Spinner
-          size={18}
+        <ActivityIndicator
+          size="small"
           style={tailwind.style('absolute bg-transparent z-10 inset-y-0 right-0 mr-5.5')}
         />
       ) : value && onClear ? (

@@ -37,6 +37,9 @@ export interface Conversation {
 
   // Deprecated
   timestamp: UnixTimestamp;
+  updatedAt?: UnixTimestamp;
+  localStatusUpdatedAt?: UnixTimestamp;
+  localStatusPreviousStatus?: ConversationStatus;
 
   slaPolicyId: number | null;
 

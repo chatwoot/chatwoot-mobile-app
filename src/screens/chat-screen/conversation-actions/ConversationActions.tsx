@@ -148,6 +148,7 @@ export const ConversationActions = () => {
           <AddParticipantList
             conversationParticipants={conversationParticipants}
             onAddParticipant={onAddParticipant}
+            conversationId={conversationId}
           />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-10')}>

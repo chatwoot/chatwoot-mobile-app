@@ -36,9 +36,7 @@ export const startPlayer = async (path: string, callback: Callback) => {
 
   if (audioRecorderPlayer === undefined) {
     audioRecorderPlayer = new AudioRecorderPlayer();
-    // Emit playback updates every 100ms so the slider has enough samples to
-    // animate smoothly. Keep in sync with PROGRESS_TWEEN_DURATION in Slider.
-    await audioRecorderPlayer.setSubscriptionDuration(0.1);
+    audioRecorderPlayer.setSubscriptionDuration(0.1);
   }
 
   const shouldBeResumed = currentPath === path && currentPosition > 0;

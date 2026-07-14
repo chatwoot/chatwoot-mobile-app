@@ -24,9 +24,6 @@ const DefaultSpringConfig: WithSpringConfig = {
   stiffness: 280,
 };
 
-// Length of the linear tween between playback samples. Matches the player's
-// subscription interval (setSubscriptionDuration in AudioManager) so the knob
-// glides continuously from one sample to the next.
 const PROGRESS_TWEEN_DURATION = 100;
 
 type SliderProps = {
@@ -61,8 +58,6 @@ export const Slider = (props: SliderProps) => {
   useAnimatedReaction(
     () => currentPosition.value,
     (next, _prev) => {
-      // Guard against a zero/unknown duration (e.g. some Android voice notes),
-      // which would make the interpolation input range degenerate.
       const target =
         totalDuration.value > 0
           ? interpolate(
@@ -119,8 +114,6 @@ export const Slider = (props: SliderProps) => {
     [],
   );
 
-  // Scale a full-width bar from its left edge instead of animating `width`, so
-  // the fill is composited on the UI thread without triggering a layout pass.
   const animatedFilledTrack = useAnimatedStyle(() => {
     const maxWidth = sliderMaxWidth.value;
     return {

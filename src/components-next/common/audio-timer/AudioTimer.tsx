@@ -29,8 +29,6 @@ export const AudioTimer = ({ currentPosition, totalDuration, textColor }: AudioT
     () => `${formatTime(currentPosition.value)} / ${formatTime(totalDuration.value)}`,
   );
 
-  // `text` is a native TextInput prop that is not part of the public prop types,
-  // so it is applied through animatedProps to update on the UI thread.
   const animatedProps = useAnimatedProps(() => ({ text: text.value }) as object);
 
   return (

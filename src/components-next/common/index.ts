@@ -1,3 +1,4 @@
+export * from './audio-timer';
 export * from './avatar';
 export * from './bottomsheet';
 export * from './filters';

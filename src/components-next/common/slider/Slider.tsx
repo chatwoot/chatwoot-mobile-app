@@ -3,6 +3,7 @@ import { LayoutChangeEvent, StyleSheet } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   clamp,
+  Easing,
   Extrapolation,
   interpolate,
   runOnJS,
@@ -11,6 +12,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
+  withTiming,
   WithSpringConfig,
 } from 'react-native-reanimated';
 
@@ -21,6 +23,11 @@ const DefaultSpringConfig: WithSpringConfig = {
   damping: 18,
   stiffness: 280,
 };
+
+// Length of the linear tween between playback samples. Matches the player's
+// subscription interval (setSubscriptionDuration in AudioManager) so the knob
+// glides continuously from one sample to the next.
+const PROGRESS_TWEEN_DURATION = 100;
 
 type SliderProps = {
   currentPosition: SharedValue<number>;
@@ -54,13 +61,21 @@ export const Slider = (props: SliderProps) => {
   useAnimatedReaction(
     () => currentPosition.value,
     (next, _prev) => {
-      translationX.value = withSpring(
-        interpolate(next, [0, totalDuration.value], [0, sliderMaxWidth.value - 16]),
-        {
-          damping: 24,
-          stiffness: 200,
-        },
-      );
+      // Guard against a zero/unknown duration (e.g. some Android voice notes),
+      // which would make the interpolation input range degenerate.
+      const target =
+        totalDuration.value > 0
+          ? interpolate(
+              next,
+              [0, totalDuration.value],
+              [0, sliderMaxWidth.value - 16],
+              Extrapolation.CLAMP,
+            )
+          : 0;
+      translationX.value = withTiming(target, {
+        duration: PROGRESS_TWEEN_DURATION,
+        easing: Easing.linear,
+      });
     },
     [],
   );
@@ -104,9 +119,16 @@ export const Slider = (props: SliderProps) => {
     [],
   );
 
-  const animatedFilledTrack = useAnimatedStyle(() => ({
-    width: translationX.value + 8,
-  }));
+  // Scale a full-width bar from its left edge instead of animating `width`, so
+  // the fill is composited on the UI thread without triggering a layout pass.
+  const animatedFilledTrack = useAnimatedStyle(() => {
+    const maxWidth = sliderMaxWidth.value;
+    return {
+      width: maxWidth,
+      transformOrigin: 'left',
+      transform: [{ scaleX: maxWidth > 0 ? (translationX.value + 8) / maxWidth : 0 }],
+    };
+  });
 
   return (
     <Animated.View style={tailwind.style('flex flex-row flex-1 mx-1.5')}>
@@ -115,10 +137,7 @@ export const Slider = (props: SliderProps) => {
         style={tailwind.style('relative rounded-2xl flex-1 h-1', trackColor)}
       />
       <Animated.View
-        style={[
-          tailwind.style('absolute rounded-2xl flex-1 w-1/2 h-1', filledTrackColor),
-          animatedFilledTrack,
-        ]}
+        style={[tailwind.style('absolute rounded-2xl h-1', filledTrackColor), animatedFilledTrack]}
       />
       <GestureDetector gesture={panGesture}>
         <Animated.View

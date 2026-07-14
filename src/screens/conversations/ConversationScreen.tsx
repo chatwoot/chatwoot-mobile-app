@@ -331,12 +331,15 @@ const ConversationScreen = () => {
           enablePanDownToClose
           snapPoints={filterSnapPoints}
           onDismiss={handleOnDismiss}>
-          <BottomSheetWrapper>
-            {currentBottomSheet === 'status' ? <StatusFilters /> : null}
-            {currentBottomSheet === 'sort_by' ? <SortByFilters /> : null}
-            {currentBottomSheet === 'assignee_type' ? <AssigneeTypeFilters /> : null}
-            {currentBottomSheet === 'inbox_id' ? <InboxFilters /> : null}
-          </BottomSheetWrapper>
+          {currentBottomSheet === 'inbox_id' ? (
+            <InboxFilters />
+          ) : (
+            <BottomSheetWrapper>
+              {currentBottomSheet === 'status' ? <StatusFilters /> : null}
+              {currentBottomSheet === 'sort_by' ? <SortByFilters /> : null}
+              {currentBottomSheet === 'assignee_type' ? <AssigneeTypeFilters /> : null}
+            </BottomSheetWrapper>
+          )}
         </BottomSheetModal>
         <ActionBottomSheet />
         <ActionTabs />

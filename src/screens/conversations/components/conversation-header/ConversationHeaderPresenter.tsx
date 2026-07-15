@@ -39,8 +39,9 @@ type RightSectionProps = {
 };
 
 const HeaderTitle = () => (
-  <Animated.View style={tailwind.style('flex-1')}>
+  <Animated.View style={tailwind.style('flex-2')}>
     <Text
+      numberOfLines={1}
       style={tailwind.style(
         'text-[17px] font-inter-medium-24 tracking-[0.32px] leading-[17px] text-center text-gray-950',
       )}>

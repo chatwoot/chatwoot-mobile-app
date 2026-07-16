@@ -69,6 +69,18 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const currentPosition = useSharedValue(0);
   const totalDuration = useSharedValue(0);
 
+  const isMountedRef = useRef(true);
+  const rafHandleRef = useRef<number | null>(null);
+  const isPlaybackOwnerRef = useRef(false);
+  const startPendingRef = useRef(false);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
   const audioPlayBackStatus = useCallback(
     ({ status, data }: { status: AudioStatus; data?: PlayBackType }) => {
       if (status === AudioStatus.STOPPED) {
@@ -80,7 +92,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       if (data) {
         currentPosition.value = data.currentPosition;
         totalDuration.value = data.duration;
-        if (data.currentPosition === data.duration) {
+        if (data.duration > 0 && data.currentPosition >= data.duration) {
           currentPosition.value = 0;
           totalDuration.value = 0;
           setAudioPlaying(false);
@@ -97,11 +109,15 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
         setIsSoundLoading(true);
         try {
           const convertedSrc = await convertOggToWav(audioSrc);
-          setConvertedAudioSrc(convertedSrc);
+          if (isMountedRef.current) {
+            setConvertedAudioSrc(convertedSrc);
+          }
         } catch (error) {
           Sentry.captureException(error);
         } finally {
-          setIsSoundLoading(false);
+          if (isMountedRef.current) {
+            setIsSoundLoading(false);
+          }
         }
       }
     };
@@ -117,6 +133,10 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       }
       setAudioPlaying(!isAudioPlaying);
     } else {
+      // Ignore repeat taps while a start is already in flight.
+      if (startPendingRef.current) {
+        return;
+      }
       // Show the loader immediately and consistently while the native player
       // buffers, then switch to the pause icon once playback actually starts.
       // Defer the heavier redux dispatch and native start to the next frame so
@@ -125,17 +145,40 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       // Claim ownership synchronously (before the deferred dispatch lands) so
       // the unmount cleanup can still tear down a start that is mid-buffer.
       isPlaybackOwnerRef.current = true;
+      startPendingRef.current = true;
       rafHandleRef.current = requestAnimationFrame(() => {
         rafHandleRef.current = null;
         startPlayer(convertedAudioSrc, audioPlayBackStatus)
           .then(() => {
+            startPendingRef.current = false;
+            // Superseded by another clip (or torn down) while buffering: our
+            // native player is already gone, so just clear the local loader.
+            if (!isPlaybackOwnerRef.current) {
+              if (isMountedRef.current) {
+                setIsSoundLoading(false);
+              }
+              return;
+            }
+            // Started successfully but this bubble unmounted meanwhile: nothing
+            // owns the player now, so stop it and clear the global marker.
+            if (!isMountedRef.current) {
+              stopPlayer()
+                .then()
+                .finally(() => {
+                  dispatch(setCurrentPlayingAudioSrc(''));
+                });
+              return;
+            }
             setIsSoundLoading(false);
             setAudioPlaying(true);
             dispatch(setCurrentPlayingAudioSrc(convertedAudioSrc));
           })
           .catch(() => {
-            setIsSoundLoading(false);
+            startPendingRef.current = false;
             isPlaybackOwnerRef.current = false;
+            if (isMountedRef.current) {
+              setIsSoundLoading(false);
+            }
           });
       });
     }
@@ -156,8 +199,6 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
     [convertedAudioSrc, currentPlayingAudioSrc, isAudioPlaying],
   );
 
-  const rafHandleRef = useRef<number | null>(null);
-  const isPlaybackOwnerRef = useRef(false);
   useEffect(() => {
     // Another src becoming active means this bubble no longer owns the player.
     if (currentPlayingAudioSrc !== convertedAudioSrc) {
@@ -166,11 +207,11 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   }, [currentPlayingAudioSrc, convertedAudioSrc]);
 
   useEffect(() => {
-    if (currentPlayingAudioSrc !== audioSrc) {
+    if (currentPlayingAudioSrc !== convertedAudioSrc) {
       currentPosition.value = 0;
       totalDuration.value = 0;
     }
-  }, [currentPlayingAudioSrc, audioSrc, currentPosition, totalDuration]);
+  }, [currentPlayingAudioSrc, convertedAudioSrc, currentPosition, totalDuration]);
 
   useEffect(() => {
     return () => {
@@ -183,6 +224,11 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       // does from the tap onward, even while still buffering). Other bubbles
       // unmounting while the list settles must not stop the audio in progress.
       if (!isPlaybackOwnerRef.current) {
+        return;
+      }
+      // A start is still in flight; its own continuation stops the now-ownerless
+      // player once it resolves. Stopping here would race the concurrent start.
+      if (startPendingRef.current) {
         return;
       }
       stopPlayer()

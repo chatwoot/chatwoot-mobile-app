@@ -200,6 +200,14 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   );
 
   useEffect(() => {
+    // While our own start is still pending, keep ownership even though redux
+    // (currentPlayingAudioSrc) has not caught up yet — otherwise a clip ending
+    // or another player claiming redux in that window would drop this bubble's
+    // claim and leave its just-started audio untracked. A genuine supersession
+    // is instead handled by startPlayer rejecting via the generation guard.
+    if (startPendingRef.current) {
+      return;
+    }
     // Another src becoming active means this bubble no longer owns the player.
     if (currentPlayingAudioSrc !== convertedAudioSrc) {
       isPlaybackOwnerRef.current = false;

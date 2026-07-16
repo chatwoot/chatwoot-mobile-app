@@ -7,8 +7,6 @@ import AudioRecorderPlayer, { PlayBackType } from 'react-native-audio-recorder-p
 
 export type Callback = (args: { status: AudioStatus; data?: PlayBackType }) => void;
 
-type Path = string | undefined;
-
 export enum AudioStatus {
   PLAYING = 'PLAYING',
   STARTED = 'STARTED',
@@ -18,8 +16,10 @@ export enum AudioStatus {
 }
 
 let audioRecorderPlayer: AudioRecorderPlayer | undefined;
-let currentPath: Path;
 let currentCallback: Callback = () => {};
+// Bumped on every start/stop so a start that is still awaiting the native
+// player can detect it was superseded and avoid touching the replaced player.
+let activeGeneration = 0;
 
 export const startPlayer = async (path: string, callback: Callback) => {
   // Always tear down any existing player so playback begins from a clean state,
@@ -29,18 +29,31 @@ export const startPlayer = async (path: string, callback: Callback) => {
     await stopPlayer();
   }
 
-  currentPath = path;
+  const generation = ++activeGeneration;
   currentCallback = callback;
 
-  audioRecorderPlayer = new AudioRecorderPlayer();
-  audioRecorderPlayer.setSubscriptionDuration(0.1);
+  const player = new AudioRecorderPlayer();
+  audioRecorderPlayer = player;
+  player.setSubscriptionDuration(0.1);
 
-  await audioRecorderPlayer.startPlayer(currentPath);
+  await player.startPlayer(path);
+
+  // A newer start (or a stop) superseded this one while the native player was
+  // preparing; abandon so we don't attach a listener to a replaced player.
+  if (generation !== activeGeneration) {
+    return;
+  }
+
   currentCallback({
     status: AudioStatus.STARTED,
   });
-  audioRecorderPlayer.addPlayBackListener(async e => {
-    if (e.currentPosition === e.duration) {
+  player.addPlayBackListener(async e => {
+    if (generation !== activeGeneration) {
+      return;
+    }
+    // Use >= with a positive duration so completion still fires when the native
+    // position never lands exactly on the reported duration (common on Android).
+    if (e.duration > 0 && e.currentPosition >= e.duration) {
       currentCallback({
         status: AudioStatus.STOPPED,
         data: e,
@@ -72,9 +85,10 @@ export const seekTo = async (position: number) => {
 };
 
 export const stopPlayer = async () => {
+  // Invalidate any in-flight start so it does not re-attach to this player.
+  activeGeneration++;
   await audioRecorderPlayer?.stopPlayer();
   audioRecorderPlayer?.removePlayBackListener();
   currentCallback({ status: AudioStatus.STOPPED });
   audioRecorderPlayer = undefined;
-  currentPath = undefined;
 };

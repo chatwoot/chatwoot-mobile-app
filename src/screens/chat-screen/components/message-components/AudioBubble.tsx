@@ -105,11 +105,21 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       }
       setAudioPlaying(!isAudioPlaying);
     } else {
+      // Show the loader immediately and consistently while the native player
+      // buffers, then switch to the pause icon once playback actually starts.
+      // Defer the heavier redux dispatch and native start to the next frame so
+      // the loader paints first instead of being blocked by that work.
       setIsSoundLoading(true);
-      startPlayer(convertedAudioSrc, audioPlayBackStatus).then(() => {
-        setIsSoundLoading(false);
-        setAudioPlaying(true);
-        dispatch(setCurrentPlayingAudioSrc(convertedAudioSrc));
+      requestAnimationFrame(() => {
+        startPlayer(convertedAudioSrc, audioPlayBackStatus)
+          .then(() => {
+            setIsSoundLoading(false);
+            setAudioPlaying(true);
+            dispatch(setCurrentPlayingAudioSrc(convertedAudioSrc));
+          })
+          .catch(() => {
+            setIsSoundLoading(false);
+          });
       });
     }
   }, [convertedAudioSrc, currentPlayingAudioSrc, isAudioPlaying, dispatch, audioPlayBackStatus]);

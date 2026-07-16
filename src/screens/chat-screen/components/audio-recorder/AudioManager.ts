@@ -27,11 +27,29 @@ export class StartSupersededError extends Error {
 
 let audioRecorderPlayer: AudioRecorderPlayer | undefined;
 let currentCallback: Callback = () => {};
-// Bumped on every start/stop so a start that is still awaiting the native
-// player can detect it was superseded and avoid touching the replaced player.
-let activeGeneration = 0;
+// Monotonic token identifying the most recent playback request. Reserved at
+// intent time (the tap) so callers that defer their startPlayer to a later
+// frame still order correctly against callers that start immediately: whichever
+// tap is newest holds the latest token and wins, regardless of call timing.
+let latestToken = 0;
 
-export const startPlayer = async (path: string, callback: Callback) => {
+// Reserve a playback token synchronously. Deferred callers must reserve at the
+// moment of intent and pass the token to startPlayer; immediate callers can
+// rely on startPlayer's default, which reserves at call time.
+export const reservePlayback = (): number => ++latestToken;
+
+export const startPlayer = async (
+  path: string,
+  callback: Callback,
+  token: number = ++latestToken,
+) => {
+  // A newer request superseded this one before it began — e.g. it sat in a
+  // deferred frame while another control started playback. Reject so the caller
+  // does not claim playback for a clip that never started.
+  if (token !== latestToken) {
+    throw new StartSupersededError();
+  }
+
   // Always tear down any existing player so playback begins from a clean state,
   // bound to the current caller's callback with exactly one playback listener.
   // Resuming a paused clip goes through resumePlayer, never through startPlayer.
@@ -39,7 +57,6 @@ export const startPlayer = async (path: string, callback: Callback) => {
     await stopPlayer();
   }
 
-  const generation = ++activeGeneration;
   currentCallback = callback;
 
   const player = new AudioRecorderPlayer();
@@ -48,10 +65,8 @@ export const startPlayer = async (path: string, callback: Callback) => {
 
   await player.startPlayer(path);
 
-  // A newer start (or a stop) superseded this one while the native player was
-  // preparing. Reject rather than resolve so callers don't treat a cancelled
-  // start as success and claim playback for a clip that never started.
-  if (generation !== activeGeneration) {
+  // A newer request superseded this one while the native player was preparing.
+  if (token !== latestToken) {
     throw new StartSupersededError();
   }
 
@@ -59,7 +74,8 @@ export const startPlayer = async (path: string, callback: Callback) => {
     status: AudioStatus.STARTED,
   });
   player.addPlayBackListener(async e => {
-    if (generation !== activeGeneration) {
+    // Ignore stray callbacks from a player that has since been replaced.
+    if (audioRecorderPlayer !== player) {
       return;
     }
     // Use >= with a positive duration so completion still fires when the native
@@ -96,10 +112,12 @@ export const seekTo = async (position: number) => {
 };
 
 export const stopPlayer = async () => {
-  // Invalidate any in-flight start so it does not re-attach to this player.
-  activeGeneration++;
-  await audioRecorderPlayer?.stopPlayer();
-  audioRecorderPlayer?.removePlayBackListener();
-  currentCallback({ status: AudioStatus.STOPPED });
+  // Detach synchronously so any queued listener callback for this player is
+  // ignored, and so a concurrent start knows the player was replaced. Stopping
+  // does not bump latestToken — a stop must not supersede a queued start.
+  const player = audioRecorderPlayer;
   audioRecorderPlayer = undefined;
+  await player?.stopPlayer();
+  player?.removePlayBackListener();
+  currentCallback({ status: AudioStatus.STOPPED });
 };

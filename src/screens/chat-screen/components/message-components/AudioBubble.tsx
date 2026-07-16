@@ -17,6 +17,7 @@ import { Spinner } from '@/components-next/spinner';
 import {
   AudioStatus,
   pausePlayer,
+  reservePlayback,
   resumePlayer,
   seekTo,
   startPlayer,
@@ -146,9 +147,12 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       // the unmount cleanup can still tear down a start that is mid-buffer.
       isPlaybackOwnerRef.current = true;
       startPendingRef.current = true;
+      // Reserve the playback token now, at tap time, so a later tap that starts
+      // before this deferred frame runs still wins the ordering.
+      const token = reservePlayback();
       rafHandleRef.current = requestAnimationFrame(() => {
         rafHandleRef.current = null;
-        startPlayer(convertedAudioSrc, audioPlayBackStatus)
+        startPlayer(convertedAudioSrc, audioPlayBackStatus, token)
           .then(() => {
             startPendingRef.current = false;
             // Superseded by another clip (or torn down) while buffering: our

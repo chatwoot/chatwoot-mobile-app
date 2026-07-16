@@ -15,6 +15,16 @@ export enum AudioStatus {
   STOPPED = 'STOPPED',
 }
 
+// Thrown by startPlayer when a newer start (or a stop) replaced it while the
+// native player was still preparing. Callers should treat it as "did not
+// start" and must not claim playback.
+export class StartSupersededError extends Error {
+  constructor() {
+    super('Audio start superseded by a newer playback request');
+    this.name = 'StartSupersededError';
+  }
+}
+
 let audioRecorderPlayer: AudioRecorderPlayer | undefined;
 let currentCallback: Callback = () => {};
 // Bumped on every start/stop so a start that is still awaiting the native
@@ -39,9 +49,10 @@ export const startPlayer = async (path: string, callback: Callback) => {
   await player.startPlayer(path);
 
   // A newer start (or a stop) superseded this one while the native player was
-  // preparing; abandon so we don't attach a listener to a replaced player.
+  // preparing. Reject rather than resolve so callers don't treat a cancelled
+  // start as success and claim playback for a clip that never started.
   if (generation !== activeGeneration) {
-    return;
+    throw new StartSupersededError();
   }
 
   currentCallback({

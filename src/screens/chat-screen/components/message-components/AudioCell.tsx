@@ -14,7 +14,14 @@ import { Channel, IconProps, Message, MessageStatus, UnixTimestamp } from '@/typ
 import { unixTimestampToReadableTime } from '@/utils';
 import { Avatar, Icon, Slider } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
-import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
+import {
+  AudioStatus,
+  pausePlayer,
+  resumePlayer,
+  seekTo,
+  startPlayer,
+  stopPlayer,
+} from '../audio-recorder';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { MESSAGE_TYPES } from '@/constants';
 import { DeliveryStatus } from './DeliveryStatus';
@@ -69,12 +76,11 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
   const currentPosition = useSharedValue(0);
   const totalDuration = useSharedValue(0);
 
-  const audioPlayBackStatus = (data: { data: PlayBackType }) => {
-    const playBackData = data.data as PlayBackType;
-    if (playBackData) {
-      currentPosition.value = playBackData.currentPosition;
-      totalDuration.value = playBackData.duration;
-      if (playBackData.currentPosition === playBackData.duration) {
+  const audioPlayBackStatus = ({ data }: { status: AudioStatus; data?: PlayBackType }) => {
+    if (data) {
+      currentPosition.value = data.currentPosition;
+      totalDuration.value = data.duration;
+      if (data.duration > 0 && data.currentPosition >= data.duration) {
         currentPosition.value = 0;
         totalDuration.value = 0;
         setAudioPlaying(false);
@@ -96,11 +102,17 @@ export const AudioPlayer = (props: AudioPlayerProps) => {
     } else {
       setIsSoundLoading(true);
 
-      startPlayer(audioSrc, audioPlayBackStatus).then(() => {
-        setIsSoundLoading(false);
-        setAudioPlaying(true);
-        dispatch(setCurrentPlayingAudioSrc(audioSrc));
-      });
+      startPlayer(audioSrc, audioPlayBackStatus)
+        .then(() => {
+          setIsSoundLoading(false);
+          setAudioPlaying(true);
+          dispatch(setCurrentPlayingAudioSrc(audioSrc));
+        })
+        .catch(() => {
+          // Start was superseded by a newer clip (or failed); don't claim
+          // playback for this src.
+          setIsSoundLoading(false);
+        });
     }
   };
 

@@ -79,7 +79,7 @@ export const MessagesListContainer = () => {
   const [isFlashListReady, setFlashListReady] = React.useState(false);
   // True while a search jump is loading both sides of the target, so the list is
   // mounted once with stable data (avoids the target index shifting mid-load).
-  const [isSearchLoading, setIsSearchLoading] = useState(false);
+  const [isSearchLoading, setIsSearchLoading] = useState(!!messageId);
 
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const isAllMessagesFetched = useAppSelector(selectIsAllMessagesFetched);
@@ -282,10 +282,11 @@ export const MessagesListContainer = () => {
     isLoadingMessages,
   });
 
-  // For search navigation, keep the loader up until BOTH sides of the target
-  // have loaded, so the list mounts once with stable data (the target's index
-  // doesn't shift mid-load) and positions reliably.
-  if (messageId && (isSearchLoading || messagesWithGrouping.length === 0)) {
+  // For search navigation, keep the loader up while both sides of the target load
+  // so the list mounts once with stable data. Gated on isSearchLoading only: once
+  // loading settles the list renders even with no messages, so an empty or deleted
+  // target lands on a recoverable empty state instead of a permanent spinner.
+  if (messageId && isSearchLoading) {
     return (
       <View style={tailwind.style('flex-1 bg-white justify-center items-center')}>
         <ActivityIndicator />

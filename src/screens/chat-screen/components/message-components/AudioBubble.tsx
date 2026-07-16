@@ -14,7 +14,14 @@ import { tailwind } from '@/theme';
 import { IconProps } from '@/types';
 import { AudioTimer, Icon, Slider } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
-import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
+import {
+  AudioStatus,
+  pausePlayer,
+  resumePlayer,
+  seekTo,
+  startPlayer,
+  stopPlayer,
+} from '../audio-recorder';
 import { MESSAGE_VARIANTS } from '@/constants';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
@@ -63,12 +70,17 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const totalDuration = useSharedValue(0);
 
   const audioPlayBackStatus = useCallback(
-    (data: { data: PlayBackType }) => {
-      const playBackData = data.data as PlayBackType;
-      if (playBackData) {
-        currentPosition.value = playBackData.currentPosition;
-        totalDuration.value = playBackData.duration;
-        if (playBackData.currentPosition === playBackData.duration) {
+    ({ status, data }: { status: AudioStatus; data?: PlayBackType }) => {
+      if (status === AudioStatus.STOPPED) {
+        // The shared player was torn down (finished, or handed off because
+        // another clip started), so this bubble no longer owns it and must not
+        // stop it on a later unmount.
+        isPlaybackOwnerRef.current = false;
+      }
+      if (data) {
+        currentPosition.value = data.currentPosition;
+        totalDuration.value = data.duration;
+        if (data.currentPosition === data.duration) {
           currentPosition.value = 0;
           totalDuration.value = 0;
           setAudioPlaying(false);

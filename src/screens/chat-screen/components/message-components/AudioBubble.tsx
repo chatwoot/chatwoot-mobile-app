@@ -105,11 +105,20 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       }
       setAudioPlaying(!isAudioPlaying);
     } else {
+      // Show the loader immediately, then defer the native start one frame so
+      // the spinner paints before the bridge call instead of lagging behind it
+      // (noticeable on Android). Flip to pause once playback actually starts.
       setIsSoundLoading(true);
-      startPlayer(convertedAudioSrc, audioPlayBackStatus).then(() => {
-        setIsSoundLoading(false);
-        setAudioPlaying(true);
-        dispatch(setCurrentPlayingAudioSrc(convertedAudioSrc));
+      requestAnimationFrame(() => {
+        startPlayer(convertedAudioSrc, audioPlayBackStatus)
+          .then(() => {
+            setIsSoundLoading(false);
+            setAudioPlaying(true);
+            dispatch(setCurrentPlayingAudioSrc(convertedAudioSrc));
+          })
+          .catch(() => {
+            setIsSoundLoading(false);
+          });
       });
     }
   }, [convertedAudioSrc, currentPlayingAudioSrc, isAudioPlaying, dispatch, audioPlayBackStatus]);

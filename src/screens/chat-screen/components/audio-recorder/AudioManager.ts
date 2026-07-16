@@ -20,34 +20,20 @@ export enum AudioStatus {
 let audioRecorderPlayer: AudioRecorderPlayer | undefined;
 let currentPath: Path;
 let currentCallback: Callback = () => {};
-let currentPosition = 0;
 
 export const startPlayer = async (path: string, callback: Callback) => {
-  if (currentPath === undefined) {
-    currentPath = path;
-    currentCallback = callback;
-  } else if (currentPath !== path) {
-    if (audioRecorderPlayer !== undefined) {
-      await stopPlayer();
-    }
-    currentPath = path;
-    currentCallback = callback;
+  // Always tear down any existing player so playback begins from a clean state,
+  // bound to the current caller's callback with exactly one playback listener.
+  // Resuming a paused clip goes through resumePlayer, never through startPlayer.
+  if (audioRecorderPlayer !== undefined) {
+    await stopPlayer();
   }
 
-  if (audioRecorderPlayer === undefined) {
-    audioRecorderPlayer = new AudioRecorderPlayer();
-    audioRecorderPlayer.setSubscriptionDuration(0.1);
-  }
+  currentPath = path;
+  currentCallback = callback;
 
-  const shouldBeResumed = currentPath === path && currentPosition > 0;
-
-  if (shouldBeResumed) {
-    await audioRecorderPlayer.resumePlayer();
-    currentCallback({
-      status: AudioStatus.RESUMED,
-    });
-    return;
-  }
+  audioRecorderPlayer = new AudioRecorderPlayer();
+  audioRecorderPlayer.setSubscriptionDuration(0.1);
 
   await audioRecorderPlayer.startPlayer(currentPath);
   currentCallback({
@@ -61,7 +47,6 @@ export const startPlayer = async (path: string, callback: Callback) => {
       });
       await stopPlayer();
     } else {
-      currentPosition = e.currentPosition;
       currentCallback({
         status: AudioStatus.PLAYING,
         data: e,
@@ -89,7 +74,7 @@ export const seekTo = async (position: number) => {
 export const stopPlayer = async () => {
   await audioRecorderPlayer?.stopPlayer();
   audioRecorderPlayer?.removePlayBackListener();
-  currentPosition = 0;
   currentCallback({ status: AudioStatus.STOPPED });
   audioRecorderPlayer = undefined;
+  currentPath = undefined;
 };

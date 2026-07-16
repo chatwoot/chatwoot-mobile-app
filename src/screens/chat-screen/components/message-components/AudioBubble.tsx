@@ -12,7 +12,7 @@ import {
 
 import { tailwind } from '@/theme';
 import { IconProps } from '@/types';
-import { AudioTimer, Icon, Slider } from '@/components-next/common';
+import { Icon, Slider } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
 import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
 import { MESSAGE_VARIANTS } from '@/constants';
@@ -161,49 +161,40 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   );
 
   return (
-    <View style={tailwind.style('w-full flex flex-col flex-1')}>
-      <View style={tailwind.style('w-full flex flex-row items-center flex-1')}>
-        <Pressable disabled={isSoundLoading} hitSlop={10} onPress={togglePlayback}>
-          {isSoundLoading ? (
-            <Animated.View>
-              <Spinner size={13} stroke={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'} />
-            </Animated.View>
-          ) : isCurrentAudioSrcPlaying ? (
-            <Animated.View
-              style={tailwind.style('pl-0.5 pr-0.5')}
-              entering={FadeIn}
-              exiting={FadeOut}>
-              <Icon
-                icon={
-                  <PauseIcon
-                    fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-                    fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
-                  />
-                }
-                size={13}
-              />
-            </Animated.View>
-          ) : (
-            <Animated.View
-              style={tailwind.style('pl-0.5 pr-0.5')}
-              entering={FadeIn}
-              exiting={FadeOut}>
-              <PlayIcon
-                fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-                fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
-              />
-            </Animated.View>
-          )}
-        </Pressable>
-        <Slider {...sliderProps} />
-      </View>
-      <View style={tailwind.style('pl-0.5')}>
-        <AudioTimer
-          currentPosition={currentPosition}
-          totalDuration={totalDuration}
-          textColor={variant === MESSAGE_VARIANTS.USER ? 'text-whiteA-A11' : 'text-gray-700'}
-        />
-      </View>
+    <View style={tailwind.style('w-full flex flex-row items-center flex-1')}>
+      <Pressable disabled={isSoundLoading} hitSlop={10} onPress={togglePlayback}>
+        {isSoundLoading ? (
+          <Animated.View>
+            <Spinner size={13} stroke={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'} />
+          </Animated.View>
+        ) : isCurrentAudioSrcPlaying ? (
+          <Animated.View
+            style={tailwind.style('pl-0.5 pr-0.5')}
+            entering={FadeIn}
+            exiting={FadeOut}>
+            <Icon
+              icon={
+                <PauseIcon
+                  fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
+                  fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
+                />
+              }
+              size={13}
+            />
+          </Animated.View>
+        ) : (
+          <Animated.View
+            style={tailwind.style('pl-0.5 pr-0.5')}
+            entering={FadeIn}
+            exiting={FadeOut}>
+            <PlayIcon
+              fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
+              fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
+            />
+          </Animated.View>
+        )}
+      </Pressable>
+      <Slider {...sliderProps} />
     </View>
   );
 });

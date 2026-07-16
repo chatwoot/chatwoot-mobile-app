@@ -116,10 +116,10 @@ export const Slider = (props: SliderProps) => {
 
   const animatedFilledTrack = useAnimatedStyle(() => {
     const maxWidth = sliderMaxWidth.value;
+    const fillRatio = maxWidth > 0 ? (translationX.value + 8) / maxWidth : 0;
     return {
       width: maxWidth,
-      transformOrigin: 'left',
-      transform: [{ scaleX: maxWidth > 0 ? (translationX.value + 8) / maxWidth : 0 }],
+      transform: [{ translateX: -(maxWidth * (1 - fillRatio)) / 2 }, { scaleX: fillRatio }],
     };
   });
 

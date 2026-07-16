@@ -201,7 +201,10 @@ export const MessagesListContainer = () => {
     const appStateListener = AppState.addEventListener('change', nextAppState => {
       if (appState.match(/inactive|background/) && nextAppState === 'active') {
         const routeName = getCurrentRouteName();
-        if (routeName && SCREENS.CHAT === routeName) {
+        // Only refresh to the latest page when already at the newest edge. While a
+        // search window (older messages) is showing, refreshing would prepend the
+        // latest page with a gap and disable newer pagination.
+        if (routeName && SCREENS.CHAT === routeName && isAllNewerMessagesFetched) {
           dispatch(
             conversationActions.fetchPreviousMessages({
               conversationId,
@@ -214,7 +217,7 @@ export const MessagesListContainer = () => {
     return () => {
       appStateListener?.remove();
     };
-  }, [appState, conversationId, dispatch]);
+  }, [appState, conversationId, dispatch, isAllNewerMessagesFetched]);
 
   // Inverted list: older history is at the end of the data, fetched when the
   // user scrolls to the bottom (visually the top).

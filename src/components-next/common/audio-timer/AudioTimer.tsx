@@ -37,10 +37,10 @@ export const AudioTimer = ({ currentPosition, totalDuration, textColor }: AudioT
       underlineColorAndroid="transparent"
       value={text.value}
       animatedProps={animatedProps}
-      style={tailwind.style(
-        'p-0 text-xs font-inter-420-20 tracking-[0.32px] leading-[14px]',
-        textColor,
-      )}
+      style={[
+        tailwind.style('p-0 text-xs font-inter-420-20 tracking-[0.32px]', textColor),
+        { includeFontPadding: false, height: 14, lineHeight: 14, textAlignVertical: 'center' },
+      ]}
     />
   );
 };

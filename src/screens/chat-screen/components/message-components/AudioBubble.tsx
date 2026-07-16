@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import React, { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { Platform, Pressable, View } from 'react-native';
 import { PlayBackType } from 'react-native-audio-recorder-player';
 import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
@@ -129,6 +129,13 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
     [convertedAudioSrc, currentPlayingAudioSrc, isAudioPlaying],
   );
 
+  const activeSrcRef = useRef(currentPlayingAudioSrc);
+  const convertedSrcRef = useRef(convertedAudioSrc);
+  useEffect(() => {
+    activeSrcRef.current = currentPlayingAudioSrc;
+    convertedSrcRef.current = convertedAudioSrc;
+  }, [currentPlayingAudioSrc, convertedAudioSrc]);
+
   useEffect(() => {
     if (currentPlayingAudioSrc !== audioSrc) {
       currentPosition.value = 0;
@@ -138,10 +145,15 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
 
   useEffect(() => {
     return () => {
+      // Only tear down the shared player if this bubble is the one playing.
+      // Other bubbles unmounting (e.g. while the list settles on open) must not
+      // stop the audio the user just started.
+      if (activeSrcRef.current !== convertedSrcRef.current) {
+        return;
+      }
       stopPlayer()
         .then()
         .finally(() => {
-          setAudioPlaying(false);
           dispatch(setCurrentPlayingAudioSrc(''));
         });
     };

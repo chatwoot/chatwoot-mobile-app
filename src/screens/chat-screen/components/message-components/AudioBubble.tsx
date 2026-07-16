@@ -197,7 +197,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
         </Pressable>
         <Slider {...sliderProps} />
       </View>
-      <View style={tailwind.style('pl-0.5')}>
+      <View style={tailwind.style('pl-0.5 mt-1')}>
         <AudioTimer
           currentPosition={currentPosition}
           totalDuration={totalDuration}

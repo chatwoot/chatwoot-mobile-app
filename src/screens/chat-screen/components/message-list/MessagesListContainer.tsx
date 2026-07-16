@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/hooks';
 import { useChatWindowContext, useRefsContext } from '@/context';
 import { AppState, Platform, View, ActivityIndicator } from 'react-native';
@@ -80,6 +80,9 @@ export const MessagesListContainer = () => {
   // True while a search jump is loading both sides of the target, so the list is
   // mounted once with stable data (avoids the target index shifting mid-load).
   const [isSearchLoading, setIsSearchLoading] = useState(!!messageId);
+  // Search-jump fetches, aborted when navigating to another target or conversation
+  // so a stale resetMessages response can't replace the current target's window.
+  const inFlightSearchFetchesRef = useRef<{ abort: () => void }[]>([]);
 
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const isAllMessagesFetched = useAppSelector(selectIsAllMessagesFetched);
@@ -133,19 +136,31 @@ export const MessagesListContainer = () => {
         // spans are unreliable because message ids are global across all
         // conversations). First the target + older messages (resets the list),
         // then a page of newer messages so the target has context on both sides.
-        await dispatch(
+        const resetRequest = dispatch(
           conversationActions.fetchPreviousMessages({
             conversationId,
             beforeId: targetMessageId + 1,
             resetMessages: true,
           }),
         );
-        await dispatch(
+        inFlightSearchFetchesRef.current.push(resetRequest);
+        const resetResult = await resetRequest;
+        // Aborted because a newer target or conversation took over; skip the
+        // follow-up fetch so stale data can't land on the current window.
+        if (
+          conversationActions.fetchPreviousMessages.rejected.match(resetResult) &&
+          resetResult.meta.aborted
+        ) {
+          return;
+        }
+        const newerRequest = dispatch(
           conversationActions.fetchPreviousMessages({
             conversationId,
             afterId: targetMessageId,
           }),
         );
+        inFlightSearchFetchesRef.current.push(newerRequest);
+        await newerRequest;
       } else if (loadingMessagesForFirstTime) {
         dispatch(
           conversationActions.fetchPreviousMessages({
@@ -241,6 +256,8 @@ export const MessagesListContainer = () => {
     dispatch(conversationParticipantActions.index({ conversationId }));
     return () => {
       active = false;
+      inFlightSearchFetchesRef.current.forEach(request => request.abort());
+      inFlightSearchFetchesRef.current = [];
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversationId, messageId]);

@@ -110,7 +110,11 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       // Defer the heavier redux dispatch and native start to the next frame so
       // the loader paints first instead of being blocked by that work.
       setIsSoundLoading(true);
-      requestAnimationFrame(() => {
+      // Claim ownership synchronously (before the deferred dispatch lands) so
+      // the unmount cleanup can still tear down a start that is mid-buffer.
+      isPlaybackOwnerRef.current = true;
+      rafHandleRef.current = requestAnimationFrame(() => {
+        rafHandleRef.current = null;
         startPlayer(convertedAudioSrc, audioPlayBackStatus)
           .then(() => {
             setIsSoundLoading(false);
@@ -119,6 +123,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
           })
           .catch(() => {
             setIsSoundLoading(false);
+            isPlaybackOwnerRef.current = false;
           });
       });
     }
@@ -139,11 +144,13 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
     [convertedAudioSrc, currentPlayingAudioSrc, isAudioPlaying],
   );
 
-  const activeSrcRef = useRef(currentPlayingAudioSrc);
-  const convertedSrcRef = useRef(convertedAudioSrc);
+  const rafHandleRef = useRef<number | null>(null);
+  const isPlaybackOwnerRef = useRef(false);
   useEffect(() => {
-    activeSrcRef.current = currentPlayingAudioSrc;
-    convertedSrcRef.current = convertedAudioSrc;
+    // Another src becoming active means this bubble no longer owns the player.
+    if (currentPlayingAudioSrc !== convertedAudioSrc) {
+      isPlaybackOwnerRef.current = false;
+    }
   }, [currentPlayingAudioSrc, convertedAudioSrc]);
 
   useEffect(() => {
@@ -155,10 +162,15 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
 
   useEffect(() => {
     return () => {
-      // Only tear down the shared player if this bubble is the one playing.
-      // Other bubbles unmounting (e.g. while the list settles on open) must not
-      // stop the audio the user just started.
-      if (activeSrcRef.current !== convertedSrcRef.current) {
+      // Cancel a start that is still queued for the next frame.
+      if (rafHandleRef.current !== null) {
+        cancelAnimationFrame(rafHandleRef.current);
+        rafHandleRef.current = null;
+      }
+      // Only tear down the shared player if this bubble owns playback (which it
+      // does from the tap onward, even while still buffering). Other bubbles
+      // unmounting while the list settles must not stop the audio in progress.
+      if (!isPlaybackOwnerRef.current) {
         return;
       }
       stopPlayer()

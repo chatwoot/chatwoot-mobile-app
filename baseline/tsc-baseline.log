@@ -1,0 +1,162 @@
+src/app.tsx(14,19): error TS2339: Property 'removeEventListener' does not exist on type 'BackHandlerStatic'.
+src/components-next/common/filters/stories/FilterButton.stories.tsx(25,5): error TS2353: Object literal may only specify known properties, and 'allFilters' does not exist in type 'Partial<{ value: string; handleOnPress: () => void; }> & { value: string; handleOnPress: () => void; }'.
+src/context/RefsContext.tsx(78,32): error TS2322: Type '{ userAvailabilityStatusSheetRef: React.RefObject<BottomSheetModal | null>; filtersModalSheetRef: React.RefObject<BottomSheetModal | null>; ... 13 more ...; toneSelectionSheetRef: React.RefObject<...>; }' is not assignable to type 'RefsContextType'.
+  Types of property 'userAvailabilityStatusSheetRef' are incompatible.
+    Type 'RefObject<BottomSheetModal | null>' is not assignable to type 'RefObject<BottomSheetModal>'.
+      Type 'BottomSheetModal | null' is not assignable to type 'BottomSheetModal'.
+        Type 'null' is not assignable to type 'BottomSheetModalMethods<any>'.
+src/screens/chat-screen/components/audio-recorder/AudioRecorder.tsx(24,33): error TS2307: Cannot find module '@/utils/audioConverter' or its corresponding type declarations.
+src/screens/chat-screen/components/message-components/AudioBubble.tsx(22,33): error TS2307: Cannot find module '@/utils/audioConverter' or its corresponding type declarations.
+src/screens/chat-screen/components/message-components/AudioBubble.tsx(109,38): error TS2345: Argument of type '(data: { data: PlayBackType; }) => void' is not assignable to parameter of type 'Callback'.
+  Types of parameters 'data' and 'args' are incompatible.
+    Type '{ status: AudioStatus; data?: PlayBackType | undefined; }' is not assignable to type '{ data: PlayBackType; }'.
+      Types of property 'data' are incompatible.
+        Type 'PlayBackType | undefined' is not assignable to type 'PlayBackType'.
+          Type 'undefined' is not assignable to type 'PlayBackType'.
+src/screens/chat-screen/components/message-components/AudioCell.tsx(99,29): error TS2345: Argument of type '(data: { data: PlayBackType; }) => void' is not assignable to parameter of type 'Callback'.
+  Types of parameters 'data' and 'args' are incompatible.
+    Type '{ status: AudioStatus; data?: PlayBackType | undefined; }' is not assignable to type '{ data: PlayBackType; }'.
+      Types of property 'data' are incompatible.
+        Type 'PlayBackType | undefined' is not assignable to type 'PlayBackType'.
+          Type 'undefined' is not assignable to type 'PlayBackType'.
+src/screens/chat-screen/components/message-components/AudioCell.tsx(217,33): error TS2322: Type '{ uri: string | null | undefined; }' is not assignable to type 'ImageSourcePropType | undefined'.
+  Types of property 'uri' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+      Type 'null' is not assignable to type 'string | undefined'.
+src/screens/chat-screen/components/message-components/AudioCell.tsx(264,33): error TS2322: Type '{ uri: string | null | undefined; }' is not assignable to type 'ImageSourcePropType | undefined'.
+  Types of property 'uri' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+      Type 'null' is not assignable to type 'string | undefined'.
+src/screens/chat-screen/components/message-components/CommandOptionsMenu.tsx(26,46): error TS7006: Parameter 'dispatch' implicitly has an 'any' type.
+src/screens/chat-screen/components/message-components/CommandOptionsMenu.tsx(61,34): error TS7006: Parameter 'dispatch' implicitly has an 'any' type.
+src/screens/chat-screen/components/message-components/CommandOptionsMenu.tsx(120,32): error TS7006: Parameter 'dispatch' implicitly has an 'any' type.
+src/screens/chat-screen/components/message-components/CommandOptionsMenu.tsx(175,53): error TS7006: Parameter 'dispatch' implicitly has an 'any' type.
+src/screens/chat-screen/components/message-components/CommandOptionsMenu.tsx(175,63): error TS7006: Parameter 'attachment' implicitly has an 'any' type.
+src/screens/chat-screen/components/message-components/ComposedBubble.tsx(11,38): error TS2307: Cannot find module './ImageBubble' or its corresponding type declarations.
+src/screens/chat-screen/components/message-components/ComposedCell.tsx(18,10): error TS2305: Module '"./ImageCell"' has no exported member 'ImageContainer'.
+src/screens/chat-screen/components/message-components/ComposedCell.tsx(106,33): error TS2322: Type '{ uri: string | null | undefined; }' is not assignable to type 'ImageSourcePropType | undefined'.
+  Types of property 'uri' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+      Type 'null' is not assignable to type 'string | undefined'.
+src/screens/chat-screen/components/message-components/ImageCell.tsx(58,33): error TS2322: Type '{ uri: string | null | undefined; }' is not assignable to type 'ImageSourcePropType | undefined'.
+  Types of property 'uri' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+      Type 'null' is not assignable to type 'string | undefined'.
+src/screens/chat-screen/components/message-components/ImageCell.tsx(126,33): error TS2322: Type '{ uri: string | null | undefined; }' is not assignable to type 'ImageSourcePropType | undefined'.
+  Types of property 'uri' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+      Type 'null' is not assignable to type 'string | undefined'.
+src/screens/chat-screen/components/message-components/LocationCell.tsx(65,33): error TS2322: Type '{ uri: string | null | undefined; }' is not assignable to type 'ImageSourcePropType | undefined'.
+  Types of property 'uri' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+      Type 'null' is not assignable to type 'string | undefined'.
+src/screens/chat-screen/components/message-components/LocationCell.tsx(130,33): error TS2322: Type '{ uri: string | null | undefined; }' is not assignable to type 'ImageSourcePropType | undefined'.
+  Types of property 'uri' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+      Type 'null' is not assignable to type 'string | undefined'.
+src/screens/chat-screen/components/message-components/VideoCell.tsx(154,33): error TS2322: Type '{ uri: string | null | undefined; }' is not assignable to type 'ImageSourcePropType | undefined'.
+  Types of property 'uri' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+      Type 'null' is not assignable to type 'string | undefined'.
+src/screens/chat-screen/components/message-components/VideoCell.tsx(213,33): error TS2322: Type '{ uri: string | null | undefined; }' is not assignable to type 'ImageSourcePropType | undefined'.
+  Types of property 'uri' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+      Type 'null' is not assignable to type 'string | undefined'.
+src/screens/chat-screen/components/message-components/index.ts(21,15): error TS2307: Cannot find module './ImageBubble' or its corresponding type declarations.
+src/screens/chat-screen/components/message-item/MessageItem.tsx(12,3): error TS2305: Module '"../message-components"' has no exported member 'ImageCell'.
+src/screens/chat-screen/components/reply-box/MessageTextInput.tsx(234,15): error TS2322: Type 'FC<MentionSuggestionsProps>' is not assignable to type '(props: MentionSuggestionsProps) => ReactNode'.
+  Type 'ReactNode | Promise<ReactNode>' is not assignable to type 'ReactNode'.
+    Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+      Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+        Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+          Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/screens/chat-screen/components/reply-box/QuoteReply.tsx(90,7): error TS2345: Argument of type '(item: Message) => boolean' is not assignable to parameter of type '(value: Message | { date: string; }, index: number, obj: readonly (Message | { date: string; })[]) => unknown'.
+  Types of parameters 'item' and 'value' are incompatible.
+    Type 'Message | { date: string; }' is not assignable to type 'Message'.
+      Type '{ date: string; }' is missing the following properties from type 'Message': id, attachments, content, contentType, and 10 more.
+src/screens/chat-screen/components/reply-box/ReplyBoxContainer.tsx(129,27): error TS2554: Expected 1 arguments, but got 0.
+src/screens/chat-screen/components/reply-box/ReplyBoxContainer.tsx(177,7): error TS2339: Property 'contentAttributes' does not exist on type 'never[] | Message'.
+src/screens/chat-screen/components/reply-box/ReplyBoxContainer.tsx(201,50): error TS7006: Parameter 'email' implicitly has an 'any' type.
+src/screens/chat-screen/components/reply-box/ReplyBoxContainer.tsx(559,17): error TS2322: Type 'DerivedValue<0 | 1>' is not assignable to type 'SharedValue<number>'.
+  Types of property 'set' are incompatible.
+    Type '(value: 0 | 1 | ((value: 0 | 1) => 0 | 1)) => void' is not assignable to type '(value: number | ((value: number) => number)) => void'.
+      Types of parameters 'value' and 'value' are incompatible.
+        Type 'number | ((value: number) => number)' is not assignable to type '0 | 1 | ((value: 0 | 1) => 0 | 1)'.
+          Type 'number' is not assignable to type '0 | 1 | ((value: 0 | 1) => 0 | 1)'.
+src/screens/chat-screen/conversation-actions/components/ConversationLabelActions.tsx(33,7): error TS2322: Type 'RefObject<BottomSheetModal | null>' is not assignable to type 'RefObject<BottomSheetModal>'.
+  Type 'BottomSheetModal | null' is not assignable to type 'BottomSheetModal'.
+    Type 'null' is not assignable to type 'BottomSheetModalMethods<any>'.
+src/screens/contact-details/components/ContactBasicActions.tsx(71,18): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/screens/contact-details/components/ContactBasicActions.tsx(75,17): error TS2322: Type 'string | undefined' is not assignable to type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/screens/contact-details/components/ContactLabelActions.tsx(32,7): error TS2322: Type 'RefObject<BottomSheetModal | null>' is not assignable to type 'RefObject<BottomSheetModal>'.
+  Type 'BottomSheetModal | null' is not assignable to type 'BottomSheetModal'.
+    Type 'null' is not assignable to type 'BottomSheetModalMethods<any>'.
+src/screens/conversations/components/conversation-actions/UpdateTeam.tsx(40,9): error TS2322: Type 'number | undefined' is not assignable to type 'string | undefined'.
+  Type 'number' is not assignable to type 'string'.
+src/screens/conversations/components/conversation-actions/UpdateTeam.tsx(40,17): error TS2367: This comparison appears to be unintentional because the types 'number' and 'string | undefined' have no overlap.
+src/screens/conversations/components/conversation-actions/UpdateTeam.tsx(66,10): error TS2367: This comparison appears to be unintentional because the types 'string | undefined' and 'number' have no overlap.
+src/screens/conversations/components/conversation-actions/UpdateTeam.tsx(120,18): error TS2322: Type '(Team | { id: string; name: string; description: null; allowAutoAssign: boolean; accountId: number; isMember: boolean; })[]' is not assignable to type 'Team[]'.
+  Type 'Team | { id: string; name: string; description: null; allowAutoAssign: boolean; accountId: number; isMember: boolean; }' is not assignable to type 'Team'.
+    Type '{ id: string; name: string; description: null; allowAutoAssign: boolean; accountId: number; isMember: boolean; }' is not assignable to type 'Team'.
+      Types of property 'id' are incompatible.
+        Type 'string' is not assignable to type 'number'.
+src/screens/conversations/components/conversation-actions/UpdateTeam.tsx(120,32): error TS2322: Type 'number | undefined' is not assignable to type 'string | undefined'.
+  Type 'number' is not assignable to type 'string'.
+src/screens/search/SearchScreen.tsx(45,58): error TS2345: Argument of type 'Omit<NavigationProp<RootParamList>, "getState"> & { getState(): Readonly<{ key: string; index: number; routeNames: string[]; history?: unknown[] | undefined; routes: NavigationRoute<...>[]; type: string; stale: false; }> | undefined; }' is not assignable to parameter of type 'NavigationProp<ParamListBase>'.
+  Type 'Omit<NavigationProp<RootParamList>, "getState"> & { getState(): Readonly<{ key: string; index: number; routeNames: string[]; history?: unknown[] | undefined; routes: NavigationRoute<...>[]; type: string; stale: false; }> | undefined; }' is not assignable to type 'Omit<NavigationHelpersCommon<ParamListBase, Readonly<{ key: string; index: number; routeNames: string[]; history?: unknown[] | undefined; routes: NavigationRoute<ParamListBase, string>[]; type: string; stale: false; }>>, "getParent">'.
+    The types returned by 'getState()' are incompatible between these types.
+      Type 'Readonly<{ key: string; index: number; routeNames: string[]; history?: unknown[] | undefined; routes: NavigationRoute<ParamListBase, string>[]; type: string; stale: false; }> | undefined' is not assignable to type 'Readonly<{ key: string; index: number; routeNames: string[]; history?: unknown[] | undefined; routes: NavigationRoute<ParamListBase, string>[]; type: string; stale: false; }>'.
+        Type 'undefined' is not assignable to type 'Readonly<{ key: string; index: number; routeNames: string[]; history?: unknown[] | undefined; routes: NavigationRoute<ParamListBase, string>[]; type: string; stale: false; }>'.
+src/screens/search/components/result-items/SearchResultConversationItem.tsx(81,48): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Channel'.
+src/screens/search/hooks/useSearchScreen.ts(46,7): error TS2322: Type 'RefObject<FlashList<SearchItem> | null>' is not assignable to type 'RefObject<FlashList<SearchItem>>'.
+  Type 'FlashList<SearchItem> | null' is not assignable to type 'FlashList<SearchItem>'.
+    Type 'null' is not assignable to type 'FlashList<SearchItem>'.
+src/screens/search/utils/transformers.ts(25,33): error TS2339: Property 'channelType' does not exist on type '{}'.
+src/screens/search/utils/transformers.ts(41,26): error TS2339: Property 'id' does not exist on type '{}'.
+src/screens/search/utils/transformers.ts(42,45): error TS2339: Property 'id' does not exist on type '{}'.
+src/screens/search/utils/transformers.ts(45,10): error TS2352: Conversion of type 'Record<string, unknown>' to type 'Conversation' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'Record<string, unknown>' is missing the following properties from type 'Conversation': accountId, additionalAttributes, agentLastSeenAt, assigneeLastSeenAt, and 23 more.
+src/screens/settings/SettingsScreen.tsx(102,46): error TS2345: Argument of type 'User | null' is not assignable to parameter of type 'User'.
+  Type 'null' is not assignable to type 'User'.
+src/screens/settings/components/UserAvatar.tsx(100,22): error TS2322: Type 'string | ImageSourcePropType' is not assignable to type 'ImageSourcePropType'.
+  Type 'string' is not assignable to type 'ImageSourcePropType'.
+src/store/assignable-agent/specs/assignableAgentSlice.spec.ts(5,33): error TS2322: Type 'undefined' is not assignable to type 'string'.
+src/store/contact/contactActions.ts(16,44): error TS2339: Property 'data' does not exist on type 'ContactLabelsAPIResponse'.
+src/store/contact/contactListener.ts(17,13): error TS2339: Property 'conversations' does not exist on type 'unknown'.
+src/store/contact/contactListener.ts(39,13): error TS2339: Property 'payload' does not exist on type 'unknown'.
+src/store/contact/contactListener.ts(57,13): error TS2339: Property 'notification' does not exist on type 'unknown'.
+src/store/conversation/conversationSelectors.ts(140,15): error TS2339: Property 'email' does not exist on type '{}'.
+src/store/conversation/specs/conversationMockData.ts(28,5): error TS2741: Property 'type' is missing in type '{ id: number; name: string; thumbnail: string; email: string; phoneNumber: null; additionalAttributes: {}; customAttributes: {}; createdAt: number; identifier: null; lastActivityAt: number; }' but required in type 'Contact'.
+src/store/inbox/specs/inboxMockData.ts(3,14): error TS2741: Property 'provider' is missing in type '{ id: number; avatarUrl: string; channelId: number; name: string; channelType: "Channel::WebWidget"; phoneNumber: string; medium: string; }' but required in type 'Inbox'.
+src/store/inbox/specs/inboxSlice.spec.ts(5,33): error TS2322: Type 'undefined' is not assignable to type 'string'.
+src/store/label/specs/labelSlice.spec.ts(5,33): error TS2322: Type 'undefined' is not assignable to type 'string'.
+src/store/macro/specs/macroSlice.spec.ts(5,33): error TS2322: Type 'undefined' is not assignable to type 'string'.
+src/utils/messageUtils.ts(55,17): error TS2339: Property 'uri' does not exist on type 'File'.
+src/utils/messageUtils.ts(56,18): error TS2339: Property 'fileName' does not exist on type 'File'.
+src/utils/pushUtils.ts(66,31): error TS18048: 'message.data' is possibly 'undefined'.
+src/utils/pushUtils.ts(66,31): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/utils/specs/conversationUtils.spec.ts(27,5): error TS2741: Property 'type' is missing in type '{ id: number; name: string; thumbnail: string; email: string; phoneNumber: null; additionalAttributes: {}; customAttributes: {}; createdAt: number; identifier: null; lastActivityAt: number; }' but required in type 'Contact'.
+src/utils/specs/conversationUtils.spec.ts(54,5): error TS2741: Property 'senderId' is missing in type '{ id: number; content: string; inboxId: number; conversationId: number; messageType: 1; createdAt: number; private: false; status: "sent"; sourceId: null; attachments: never[]; contentAttributes: null; ... 5 more ...; shouldRenderAvatar: false; }' but required in type 'Message'.
+src/utils/specs/conversationUtils.spec.ts(74,5): error TS2741: Property 'senderId' is missing in type '{ id: number; content: string; inboxId: number; conversationId: number; messageType: 0; createdAt: number; private: false; status: "sent"; sourceId: null; attachments: never[]; contentAttributes: null; ... 5 more ...; shouldRenderAvatar: false; }' but required in type 'Message'.
+src/utils/specs/conversationUtils.spec.ts(126,27): error TS2345: Argument of type '{ messages: never[]; lastNonActivityMessage: { id: number; content: string; inboxId: number; conversationId: number; messageType: number; createdAt: number; private: boolean; status: MessageStatus; ... 8 more ...; shouldRenderAvatar: boolean; }; ... 25 more ...; slaEvents: SLAEvent[]; }' is not assignable to parameter of type 'Conversation'.
+  Types of property 'lastNonActivityMessage' are incompatible.
+    Property 'senderId' is missing in type '{ id: number; content: string; inboxId: number; conversationId: number; messageType: number; createdAt: number; private: boolean; status: MessageStatus; sourceId: null; attachments: never[]; contentAttributes: null; ... 5 more ...; shouldRenderAvatar: boolean; }' but required in type 'Message'.
+src/utils/specs/conversationUtils.spec.ts(134,27): error TS2345: Argument of type '{ messages: { id: number; content: string; inboxId: number; conversationId: number; messageType: number; createdAt: number; private: boolean; status: MessageStatus; sourceId: null; attachments: never[]; ... 6 more ...; shouldRenderAvatar: boolean; }[]; ... 26 more ...; slaEvents: SLAEvent[]; }' is not assignable to parameter of type 'Conversation'.
+  Types of property 'messages' are incompatible.
+    Type '{ id: number; content: string; inboxId: number; conversationId: number; messageType: number; createdAt: number; private: boolean; status: MessageStatus; sourceId: null; attachments: never[]; ... 6 more ...; shouldRenderAvatar: boolean; }[]' is not assignable to type 'Message[]'.
+      Property 'senderId' is missing in type '{ id: number; content: string; inboxId: number; conversationId: number; messageType: number; createdAt: number; private: boolean; status: MessageStatus; sourceId: null; attachments: never[]; contentAttributes: null; ... 5 more ...; shouldRenderAvatar: boolean; }' but required in type 'Message'.
+src/utils/specs/conversationUtils.spec.ts(142,27): error TS2345: Argument of type '{ messages: { id: number; content: string; inboxId: number; conversationId: number; messageType: number; createdAt: number; private: boolean; status: MessageStatus; sourceId: null; attachments: never[]; ... 6 more ...; shouldRenderAvatar: boolean; }[]; ... 26 more ...; slaEvents: SLAEvent[]; }' is not assignable to parameter of type 'Conversation'.
+  Types of property 'messages' are incompatible.
+    Type '{ id: number; content: string; inboxId: number; conversationId: number; messageType: number; createdAt: number; private: boolean; status: MessageStatus; sourceId: null; attachments: never[]; ... 6 more ...; shouldRenderAvatar: boolean; }[]' is not assignable to type 'Message[]'.
+      Property 'senderId' is missing in type '{ id: number; content: string; inboxId: number; conversationId: number; messageType: number; createdAt: number; private: boolean; status: MessageStatus; sourceId: null; attachments: never[]; contentAttributes: null; ... 5 more ...; shouldRenderAvatar: boolean; }' but required in type 'Message'.
+src/utils/withAnchorPoint.ts(38,5): error TS2322: Type '(string | ({ translateX: `${number}%` | AnimatableNumericValue; } & { translateY?: undefined; scale?: undefined; scaleX?: undefined; scaleY?: undefined; skewX?: undefined; ... 6 more ...; matrix?: undefined; }) | ... 11 more ... | ({ ...; } & { ...; }))[]' is not assignable to type 'string | readonly (({ translateX: `${number}%` | AnimatableNumericValue; } & { translateY?: undefined; scale?: undefined; scaleX?: undefined; scaleY?: undefined; skewX?: undefined; ... 6 more ...; matrix?: undefined; }) | ... 11 more ... | ({ ...; } & { ...; }))[] | undefined'.
+  Type '(string | ({ translateX: `${number}%` | AnimatableNumericValue; } & { translateY?: undefined; scale?: undefined; scaleX?: undefined; scaleY?: undefined; skewX?: undefined; ... 6 more ...; matrix?: undefined; }) | ... 11 more ... | ({ ...; } & { ...; }))[]' is not assignable to type 'readonly (({ translateX: `${number}%` | AnimatableNumericValue; } & { translateY?: undefined; scale?: undefined; scaleX?: undefined; scaleY?: undefined; skewX?: undefined; skewY?: undefined; ... 5 more ...; matrix?: undefined; }) | ... 11 more ... | ({ ...; } & { ...; }))[]'.
+    Type 'string | ({ translateX: `${number}%` | AnimatableNumericValue; } & { translateY?: undefined; scale?: undefined; scaleX?: undefined; scaleY?: undefined; skewX?: undefined; ... 6 more ...; matrix?: undefined; }) | ... 11 more ... | ({ ...; } & { ...; })' is not assignable to type '({ translateX: `${number}%` | AnimatableNumericValue; } & { translateY?: undefined; scale?: undefined; scaleX?: undefined; scaleY?: undefined; skewX?: undefined; skewY?: undefined; ... 5 more ...; matrix?: undefined; }) | ... 11 more ... | ({ ...; } & { ...; })'.
+      Type 'string' is not assignable to type '({ translateX: `${number}%` | AnimatableNumericValue; } & { translateY?: undefined; scale?: undefined; scaleX?: undefined; scaleY?: undefined; skewX?: undefined; skewY?: undefined; ... 5 more ...; matrix?: undefined; }) | ... 11 more ... | ({ ...; } & { ...; })'.
+src/utils/withAnchorPoint.ts(40,5): error TS18048: 'injectedTransform' is possibly 'undefined'.
+src/utils/withAnchorPoint.ts(40,23): error TS2339: Property 'push' does not exist on type 'string | readonly (({ translateX: `${number}%` | AnimatableNumericValue; } & { translateY?: undefined; scale?: undefined; scaleX?: undefined; scaleY?: undefined; skewX?: undefined; ... 6 more ...; matrix?: undefined; }) | ... 11 more ... | ({ ...; } & { ...; }))[]'.
+  Property 'push' does not exist on type 'string'.
+src/utils/withAnchorPoint.ts(57,23): error TS2339: Property 'push' does not exist on type 'readonly (({ translateX: `${number}%` | AnimatableNumericValue; } & { translateY?: undefined; scale?: undefined; scaleX?: undefined; scaleY?: undefined; skewX?: undefined; skewY?: undefined; ... 5 more ...; matrix?: undefined; }) | ... 11 more ... | ({ ...; } & { ...; }))[]'.

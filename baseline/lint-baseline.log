@@ -1,0 +1,126 @@
+
+> @chatwoot/mobile-app@4.7.0 lint /home/gpaul/projects/conomni-mobile
+> eslint .
+
+
+/home/gpaul/projects/conomni-mobile/src/components-next/button/AuthButton.tsx
+  14:11  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/gpaul/projects/conomni-mobile/src/hooks/useImageDimensions.ts
+  15:36  error  Replace `⏎··imageSrc:·string,⏎··maxWidth·=·300,⏎··maxHeight·=·360,⏎` with `imageSrc:·string,·maxWidth·=·300,·maxHeight·=·360`  prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/navigation/index.tsx
+  66:46  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/gpaul/projects/conomni-mobile/src/screens/chat-screen/components/copilot/CopilotInputBar.tsx
+  37:34  error  Replace `·isGenerating,·onSendFollowUp,·onFollowUpTextChange·` with `⏎··isGenerating,⏎··onSendFollowUp,⏎··onFollowUpTextChange,⏎`                                                                                                                            prettier/prettier
+  61:10  error  Replace `·style={tailwind.style('flex-1·bg-[#E0E0FD]·rounded-[20px]·min-h-9·max-h-[76px]·px-3·py-2·justify-center'` with `⏎······style={tailwind.style(⏎········'flex-1·bg-[#E0E0FD]·rounded-[20px]·min-h-9·max-h-[76px]·px-3·py-2·justify-center',⏎······`  prettier/prettier
+  63:23  error  Replace `·key="thinking"·entering={FadeIn.duration(200)}` with `⏎··········key="thinking"⏎··········entering={FadeIn.duration(200)}⏎·········`                                                                                                               prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/screens/chat-screen/components/copilot/CopilotMenu.tsx
+  63:10  error  Replace `⏎······style={tailwind.style(⏎········'absolute·bottom-full·left-0·right-0·overflow-hidden',⏎······` with `·style={tailwind.style('absolute·bottom-full·left-0·right-0·overflow-hidden'`  prettier/prettier
+  76:27  error  Replace `⏎················{·translateY:·withSpring(0,·{·damping:·38,·stiffness:·240·})·},⏎··············` with `{·translateY:·withSpring(0,·{·damping:·38,·stiffness:·240·})·}`                    prettier/prettier
+  82:31  error  Replace `⏎··········'bg-white·border-t·border-t-blackA-A3·mx-1·pt-2·items-start',⏎········` with `'bg-white·border-t·border-t-blackA-A3·mx-1·pt-2·items-start'`                                    prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/screens/chat-screen/components/copilot/ToneSelectionSheet.tsx
+  24:35  warning  Component definition is missing display name                                                                                                                                   react/display-name
+  61:37  error    Replace `⏎················'h-[60px]·justify-center·pl-4·pr-3·border-b·border-slate-200',⏎··············` with `'h-[60px]·justify-center·pl-4·pr-3·border-b·border-slate-200'`  prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/screens/chat-screen/components/message-components/DeliveryStatus.tsx
+  104:9  error  Replace `isAWhatsappChannel·||·isATwilioChannel·||·isAFacebookChannel·||·isASmsInbox·||·isAnInstagramChannel·||·isATiktokChannel` with `⏎······isAWhatsappChannel·||⏎······isATwilioChannel·||⏎······isAFacebookChannel·||⏎······isASmsInbox·||⏎······isAnInstagramChannel·||⏎······isATiktokChannel⏎····`  prettier/prettier
+  132:9  error  Replace `isAWhatsappChannel·||·isATwilioChannel·||·isAFacebookChannel·||·isAnInstagramChannel·||·isATiktokChannel` with `⏎······isAWhatsappChannel·||⏎······isATwilioChannel·||⏎······isAFacebookChannel·||⏎······isAnInstagramChannel·||⏎······isATiktokChannel⏎····`                                      prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/screens/chat-screen/components/message-components/TextBubble.tsx
+  24:25  error  Delete `⏎···`                                                                                                                                                       prettier/prettier
+  26:5   error  Replace `··?·(translations[activeLocale]·||·Object.values(translations)[0]·||·null)` with `?·translations[activeLocale]·||·Object.values(translations)[0]·||·null`  prettier/prettier
+  27:1   error  Delete `··`                                                                                                                                                         prettier/prettier
+  36:25  error  Replace `⏎····hasTranslations·&&·!showOriginal·?·translatedText·:·(content·||·'')` with `·hasTranslations·&&·!showOriginal·?·translatedText·:·content·||·''`        prettier/prettier
+  39:26  error  Delete `⏎···`                                                                                                                                                       prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/screens/chat-screen/components/message-item/Message.tsx
+   36:51  error  Insert `·`                                                                                                                                                                                                               prettier/prettier
+  181:25  error  Replace `⏎··················tailwind.style('absolute·inset-0·bg-white·rounded-2xl'),⏎··················highlightStyle,⏎················` with `tailwind.style('absolute·inset-0·bg-white·rounded-2xl'),·highlightStyle`  prettier/prettier
+  222:10  error  Replace `·item,·currentUserId,·isEmailInbox,·isTargetMessage·=·false,·isListPositioned·=·true` with `⏎····item,⏎····currentUserId,⏎····isEmailInbox,⏎····isTargetMessage·=·false,⏎····isListPositioned·=·true,⏎·`        prettier/prettier
+  284:4   error  Insert `;`                                                                                                                                                                                                               prettier/prettier
+  285:1   error  Delete `··`                                                                                                                                                                                                              prettier/prettier
+  300:12  error  Replace `·messageType,·content,·attachments,·private:·isPrivate,·status:·messageStatus` with `⏎······messageType,⏎······content,⏎······attachments,⏎······private:·isPrivate,⏎······status:·messageStatus,⏎···`          prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/screens/chat-screen/components/message-item/useTargetMessageAnimation.ts
+  79:7  error  Replace `isTargetMessage,·activeTriggerId,·isListPositioned,·isQuoteTap,·messageScale,·highlightOpacity` with `⏎····isTargetMessage,⏎····activeTriggerId,⏎····isListPositioned,⏎····isQuoteTap,⏎····messageScale,⏎····highlightOpacity,⏎··`  prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/screens/chat-screen/components/reply-box/QuoteReply.tsx
+  162:18  error  Delete `⏎·············`  prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/screens/chat-screen/components/reply-box/ReplyBoxContainer.tsx
+  315:32  error  Replace `⏎········sendCopilotFollowUp({·followUpContext,·message,·conversationId·}),⏎······` with `sendCopilotFollowUp({·followUpContext,·message,·conversationId·})`                                                     prettier/prettier
+  516:17  error  Replace `isCopilotActive·?·undefined·:·LinearTransition.springify().damping(38).stiffness(240)` with `⏎··········isCopilotActive·?·undefined·:·LinearTransition.springify().damping(38).stiffness(240)⏎········`          prettier/prettier
+  554:21  error  Replace `isCopilotActive·?·undefined·:·LinearTransition.springify().damping(20).stiffness(180)` with `⏎··············isCopilotActive·?·undefined·:·LinearTransition.springify().damping(20).stiffness(180)⏎············`  prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/screens/chat-screen/components/reply-box/buttons/CopilotButton.tsx
+  22:32  error  Replace `·isActive·=·false,·isThinking·=·false,·...props·` with `⏎··isActive·=·false,⏎··isThinking·=·false,⏎··...props⏎`                                                                    prettier/prettier
+  29:22  error  Replace `⏎··········withTiming(1,·{·duration:·600·}),⏎··········withTiming(0,·{·duration:·600·}),⏎········` with `withTiming(1,·{·duration:·600·}),·withTiming(0,·{·duration:·600·})`       prettier/prettier
+  63:33  error  Replace `⏎··············smallStarStyle={smallStarStyle}⏎··············largeStarStyle={largeStarStyle}⏎···········` with `·smallStarStyle={smallStarStyle}·largeStarStyle={largeStarStyle}`  prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/screens/chat-screen/components/reply-box/buttons/SendMessageButton.tsx
+  33:17  error  Replace `tailwind.style('flex·items-center·justify-center·h-10·w-10'),·disabled·?·{}·:·animatedStyle` with `⏎··········tailwind.style('flex·items-center·justify-center·h-10·w-10'),⏎··········disabled·?·{}·:·animatedStyle,⏎········`  prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/screens/contact-details/ContactDetailsScreen.tsx
+  194:23  error  Delete `⏎···`  prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/screens/contact-details/components/ContactLabelActions.tsx
+  36:1  error  Delete `⏎`  prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/screens/search/components/shared/SearchEmptyState.tsx
+  40:27  error  Insert `⏎···········`                                                                                                                                                  prettier/prettier
+  46:35  error  Replace `⏎··············'text-sm·font-inter-420-20·tracking-[0.32px]·text-blue-800',⏎············` with `'text-sm·font-inter-420-20·tracking-[0.32px]·text-blue-800'`  prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/screens/search/components/shared/SearchSection.tsx
+  75:28  error  Insert `⏎···`  prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/screens/search/components/views/SearchContent.tsx
+   98:51  error  Replace `⏎····section·=>·sectionData[section.id]?.hasError,⏎··` with `section·=>·sectionData[section.id]?.hasError`                                                                                                                       prettier/prettier
+  162:25  error  Replace `i18n.t(SEARCH_SECTIONS.find(s·=>·s.id·===·activeSection.id)?.labelKey·||·'')·||·'results'` with `⏎············i18n.t(SEARCH_SECTIONS.find(s·=>·s.id·===·activeSection.id)?.labelKey·||·'')·||⏎············'results'⏎··········`  prettier/prettier
+  173:25  error  Replace `i18n.t(SEARCH_SECTIONS.find(s·=>·s.id·===·activeSection.id)?.labelKey·||·'')·||·'results'` with `⏎············i18n.t(SEARCH_SECTIONS.find(s·=>·s.id·===·activeSection.id)?.labelKey·||·'')·||⏎············'results'⏎··········`  prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/screens/search/hooks/useSearchScreen.ts
+   17:9   error    Replace `·SEARCH_SECTION_IDS,·type·SearchItem,·type·SearchSectionType·` with `⏎··SEARCH_SECTION_IDS,⏎··type·SearchItem,⏎··type·SearchSectionType,⏎`  prettier/prettier
+   64:38  warning  Array type using 'Array<T>' is forbidden. Use 'T[]' instead                                                                                          @typescript-eslint/array-type
+  103:6   warning  React Hook useEffect has a missing dependency: 'cancelInFlightSearches'. Either include it or remove the dependency array                            react-hooks/exhaustive-deps
+  173:5   warning  React Hook useCallback has a missing dependency: 'cancelInFlightSearches'. Either include it or remove the dependency array                          react-hooks/exhaustive-deps
+  306:21  error    Delete `⏎`                                                                                                                                           prettier/prettier
+  330:5   warning  React Hook useCallback has an unnecessary dependency: 'searchText'. Either exclude it or remove the dependency array                                 react-hooks/exhaustive-deps
+  368:6   warning  React Hook useEffect has a missing dependency: 'listRefs'. Either include it or remove the dependency array                                          react-hooks/exhaustive-deps
+
+/home/gpaul/projects/conomni-mobile/src/store/conversation/conversationActions.ts
+  260:36  error  Replace `·conversationId:·number;·messageId:·number;·targetLanguage:·string` with `⏎······conversationId:·number;⏎······messageId:·number;⏎······targetLanguage:·string;⏎···`  prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/store/conversation/conversationSlice.ts
+  231:27  error  Insert `⏎···········`  prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/store/search/searchActions.ts
+  16:10  error  Replace `{·sectionId:·_sectionId,·apiEndpoint,·transformResponse,·...payload·},·{·rejectWithValue,·signal·}` with `⏎····{·sectionId:·_sectionId,·apiEndpoint,·transformResponse,·...payload·},⏎····{·rejectWithValue,·signal·},⏎··`  prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/svg-icons/copilot-icons/SparkleIcon.tsx
+  25:30  error  Replace `·stroke·=·'black',·filled·=·false·` with `⏎··stroke·=·'black',⏎··filled·=·false,⏎`  prettier/prettier
+  71:38  error  Replace `·smallStarStyle,·largeStarStyle·` with `⏎··smallStarStyle,⏎··largeStarStyle,⏎`      prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/utils/specs/highlightText.spec.ts
+  10:57  error  Replace `{·text:·'hello·world',·isHighlight:·false·}` with `⏎········{·text:·'hello·world',·isHighlight:·false·},⏎······`  prettier/prettier
+
+/home/gpaul/projects/conomni-mobile/src/utils/specs/messageVariableUtils.spec.ts
+  111:100  error  Insert `⏎·······`  prettier/prettier
+  112:1    error  Insert `··`        prettier/prettier
+  113:9    error  Insert `··`        prettier/prettier
+  114:1    error  Insert `··`        prettier/prettier
+  135:100  error  Insert `⏎·······`  prettier/prettier
+  136:1    error  Insert `··`        prettier/prettier
+  137:9    error  Insert `··`        prettier/prettier
+  138:1    error  Insert `··`        prettier/prettier
+  180:100  error  Insert `⏎·······`  prettier/prettier
+  181:1    error  Insert `··`        prettier/prettier
+  182:1    error  Insert `··`        prettier/prettier
+
+✖ 65 problems (59 errors, 6 warnings)
+  57 errors and 1 warning potentially fixable with the `--fix` option.
+
+ ELIFECYCLE  Command failed with exit code 1.

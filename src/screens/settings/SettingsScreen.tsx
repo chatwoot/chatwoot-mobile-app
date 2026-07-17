@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, Text, Platform, Pressable } from 'react-native';
+import React, { useCallback, useEffect } from 'react';
+import { StatusBar, Text, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -11,9 +11,7 @@ import {
   BottomSheetScrollView,
   useBottomSheetSpringConfigs,
 } from '@gorhom/bottom-sheet';
-import DeviceInfo from 'react-native-device-info';
 import * as WebBrowser from 'expo-web-browser';
-import ChatWootWidget from '@chatwoot/react-native-widget';
 import { useSelector } from 'react-redux';
 import * as Application from 'expo-application';
 import { Account, AvailabilityStatus } from '@/types';
@@ -42,7 +40,7 @@ import { UserAvatar } from './components/UserAvatar';
 
 import { LANGUAGES, TAB_BAR_HEIGHT } from '@/constants';
 import { useRefsContext } from '@/context';
-import { ChatwootIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
+import { ConomniIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
 import { GenericListType } from '@/types';
 
 import { useHaptic } from '@/utils';
@@ -55,11 +53,7 @@ import {
 } from '@/store/auth/authSelectors';
 import { logout, setAccount } from '@/store/auth/authSlice';
 import { authActions } from '@/store/auth/authActions';
-import {
-  selectLocale,
-  selectIsChatwootCloud,
-  selectPushToken,
-} from '@/store/settings/settingsSelectors';
+import { selectLocale, selectPushToken } from '@/store/settings/settingsSelectors';
 import { settingsActions } from '@/store/settings/settingsActions';
 import { setLocale } from '@/store/settings/settingsSlice';
 
@@ -69,7 +63,6 @@ import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 
-const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
 
 const buildNumber = Application.nativeBuildVersion;
@@ -83,15 +76,8 @@ const SettingsScreen = () => {
 
   // const { bottom } = useSafeAreaInsets();
 
-  const [showWidget, toggleWidget] = useState(false);
   const user = useSelector(selectUser);
-  const {
-    name,
-    email,
-    avatar_url: avatarUrl,
-    identifier_hash: identifierHash,
-    account_id: activeAccountId,
-  } = user || {};
+  const { name, email, avatar_url: avatarUrl, account_id: activeAccountId } = user || {};
 
   useEffect(() => {
     dispatch(settingsActions.getNotificationSettings());
@@ -105,26 +91,9 @@ const SettingsScreen = () => {
     userPermissions.includes(permission),
   );
 
-  const userDetails = {
-    identifier: email,
-    name,
-    avatar_url: avatarUrl,
-    email,
-    identifier_hash: identifierHash,
-  };
-
-  const customAttributes = {
-    originatedFrom: 'mobile-app',
-    appName,
-    appVersion: appVersionDetails,
-    deviceId: DeviceInfo.getDeviceId(),
-    packageName: appName,
-    operatingSystem: Platform.OS, // android/ios
-  };
-
-  const isChatwootCloud = useAppSelector(selectIsChatwootCloud);
-
-  const chatwootInstance = isChatwootCloud ? `${appName} cloud` : `${appName} self-hosted`;
+  // [conomni] m2: instance label is always the ConOmni brand name — there is
+  // no cloud/self-hosted distinction to surface to the operator.
+  const instanceLabel = 'ConOmni';
 
   const accounts = useSelector(selectAccounts) || [];
 
@@ -267,10 +236,13 @@ const SettingsScreen = () => {
     {
       hasChevron: true,
       title: i18n.t('SETTINGS.CHAT_WITH_US'),
-      icon: <ChatwootIcon />,
+      icon: <ConomniIcon />,
       subtitle: '',
       subtitleType: 'light',
-      onPressListItem: () => toggleWidget(true),
+      // [conomni] m2: there is no embedded chatwoot.com support widget anymore
+      // (ChatWootWidget block removed) — this entry now opens our own help
+      // center, same as "Read Docs".
+      onPressListItem: openURL,
     },
   ];
 
@@ -323,7 +295,7 @@ const SettingsScreen = () => {
           style={tailwind.style('p-4 items-center')}
           onLongPress={() => debugActionsSheetRef.current?.present()}>
           <Text style={tailwind.style('text-sm text-gray-700 ')}>
-            {`${chatwootInstance} ${appVersionDetails}`}
+            {`${instanceLabel} ${appVersionDetails}`}
           </Text>
         </Pressable>
       </Animated.ScrollView>
@@ -412,19 +384,6 @@ const SettingsScreen = () => {
           <DebugActions />
         </BottomSheetWrapper>
       </BottomSheetModal>
-      {!!process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN &&
-        !!process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL &&
-        !!showWidget && (
-          <ChatWootWidget
-            websiteToken={process.env.EXPO_PUBLIC_CHATWOOT_WEBSITE_TOKEN}
-            locale="en"
-            baseUrl={process.env.EXPO_PUBLIC_CHATWOOT_BASE_URL}
-            closeModal={() => toggleWidget(false)}
-            isModalVisible={showWidget}
-            user={userDetails}
-            customAttributes={customAttributes}
-          />
-        )}
     </SafeAreaView>
   );
 };

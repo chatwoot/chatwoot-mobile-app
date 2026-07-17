@@ -79,10 +79,9 @@ const LoginScreen = () => {
 
   useEffect(() => {
     dispatch(resetAuth());
-    if (!installationUrl) {
-      navigation.navigate('ConfigureURL' as never);
-    }
-  }, [installationUrl, navigation, dispatch]);
+    // [conomni] m1: installationUrl is now always hardcoded (conomni.ru), so
+    // it can never be empty here — the ConfigureURL screen is unreachable.
+  }, [dispatch]);
 
   const onSubmit = async (data: FormData) => {
     const { email, password } = data;
@@ -110,10 +109,6 @@ const LoginScreen = () => {
 
   const openResetPassword = () => {
     navigation.navigate('ResetPassword' as never);
-  };
-
-  const openConfigInstallationURL = () => {
-    navigation.navigate('ConfigureURL' as never);
   };
 
   const onChangeLanguage = (locale: string) => {
@@ -287,13 +282,6 @@ const LoginScreen = () => {
 
           <Pressable
             style={tailwind.style('flex-row justify-center items-center mt-6')}
-            onPress={openConfigInstallationURL}>
-            <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
-              {i18n.t('LOGIN.CHANGE_URL')}
-            </Animated.Text>
-          </Pressable>
-          <Pressable
-            style={tailwind.style('flex-row justify-center items-center mt-4')}
             onPress={() => languagesModalSheetRef.current?.present()}>
             <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
               {i18n.t('LOGIN.CHANGE_LANGUAGE')}

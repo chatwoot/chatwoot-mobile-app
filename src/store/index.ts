@@ -19,7 +19,10 @@ const shouldLoadDebugger = __DEV__ && !process.env.JEST_WORKER_ID;
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const reactotronInstance = shouldLoadDebugger ? require('../../ReactotronConfig').default : null;
 
-const CURRENT_VERSION = 2;
+// [conomni] m1: bumped 2 -> 3 to force redux-persist migration onto the
+// hardcoded conomni.ru settings for anyone who already installed a dev build
+// pointed at app.chatwoot.com (see settingsSlice.ts initialState).
+const CURRENT_VERSION = 3;
 
 const persistConfig = {
   key: 'Root',

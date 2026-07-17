@@ -14,6 +14,7 @@ import { Icon } from '@/components-next/common/icon';
 import { SearchBar } from '@/components-next/common/search';
 import { useAppSelector } from '@/hooks';
 import { filterLabels } from '@/store/label/labelSelectors';
+import i18n from '@/i18n';
 
 import { LabelItem } from '../LabelItem';
 import { LabelStack } from './LabelStack';
@@ -90,7 +91,7 @@ export const LabelActions = (props: LabelActionsProps) => {
           style={tailwind.style(
             'text-sm font-inter-medium-24 leading-[16px] tracking-[0.32px] text-gray-700',
           )}>
-          Labels
+          {i18n.t('CONVERSATION.ASSIGNEE.LABELS.TITLE')}
         </Animated.Text>
       </Animated.View>
       <Animated.View style={tailwind.style('flex flex-row flex-wrap pl-4')}>
@@ -111,7 +112,7 @@ export const LabelActions = (props: LabelActionsProps) => {
             style={tailwind.style(
               'text-md font-inter-medium-24 leading-[17px] tracking-[0.24px] pl-1.5 text-blue-800',
             )}>
-            Add
+            {i18n.t('CONVERSATION.ASSIGNEE.LABELS.ADD')}
           </Animated.Text>
         </Pressable>
       </Animated.View>
@@ -132,7 +133,7 @@ export const LabelActions = (props: LabelActionsProps) => {
           isInsideBottomSheet
           onSubmitEditing={handleOnSubmitEditing}
           onChangeText={handleChangeText}
-          placeholder="Search labels"
+          placeholder={i18n.t('CONVERSATION.ASSIGNEE.LABELS.SEARCH_LABELS')}
           returnKeyLabel="done"
           returnKeyType="done"
         />

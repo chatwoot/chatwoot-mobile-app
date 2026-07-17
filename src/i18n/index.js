@@ -35,7 +35,8 @@ import vi from './vi.json';
 import zh_CN from './zh_CN.json';
 import zh_TW from './zh_TW.json';
 
-i18n.locale = 'en';
+// [conomni] m4: русский по умолчанию (был 'en'); переключатель языков в Settings не тронут
+i18n.locale = 'ru';
 i18n.fallbacks = true;
 i18n.translations = {
   af,

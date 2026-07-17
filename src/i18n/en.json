@@ -113,7 +113,9 @@
     },
     "ASSIGNEE": {
       "LABELS": {
-        "SEARCH_LABELS": "Search labels"
+        "SEARCH_LABELS": "Search labels",
+        "TITLE": "Labels",
+        "ADD": "Add"
       },
       "AGENTS": {
         "SEARCH_AGENT": "Search agents"
@@ -163,7 +165,8 @@
     "EMAIL_HEAD": {
       "TO": "To",
       "CC": "Cc",
-      "BCC": "Bcc"
+      "BCC": "Bcc",
+      "EMAILS_PLACEHOLDER": "Emails separated by commas"
     },
     "SELF_ASSIGN": "Assign to me",
     "UN_ASSIGN": "Unassign conversation",
@@ -266,6 +269,12 @@
       "PRIORITY": {
         "EMPTY": "No priority added",
         "EDIT": "Edit"
+      },
+      "QUICK_ACTIONS": {
+        "OPEN": "Open",
+        "PENDING": "Pending",
+        "SNOOZE": "Snooze",
+        "RESOLVE": "Resolve"
       }
     }
   },

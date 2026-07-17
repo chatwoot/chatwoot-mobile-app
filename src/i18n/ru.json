@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "Введите корректный пароль",
     "LOGIN": "Войти",
     "LOGIN_LOADING": "Выполняется вход...",
+    "LOGIN_VIA_SSO": "Войти через SSO",
+    "SSO_AUTH_FAILED": "Ошибка аутентификации SSO. Проверьте учётные данные и попробуйте снова.",
+    "SSO_INVALID_RESPONSE": "Некорректный ответ SSO. Попробуйте снова.",
+    "SSO_UNEXPECTED_ERROR": "При входе через SSO произошла непредвиденная ошибка. Попробуйте снова.",
     "FORGOT_PASSWORD": "Забыли пароль?",
     "RESET_HERE": "Сбросить здесь",
     "NO_ACCOUNT": "Нет учетной записи?",
@@ -49,6 +53,24 @@
     "TITLE": "Забыли пароль?",
     "SUB_TITLE": "Не волнуйтесь! Все нормально",
     "API_SUCCESS": "Ссылка для сброса пароля была отправлена на ваш email"
+  },
+  "MFA": {
+    "TITLE": "Двухфакторная аутентификация",
+    "TABS": {
+      "AUTHENTICATOR_APP": "Приложение-аутентификатор",
+      "BACKUP_CODE": "Резервный код"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Введите 6-значный код из приложения-аутентификатора",
+      "BACKUP": "Введите один из ваших резервных кодов"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Введите резервный код"
+    },
+    "BUTTONS": {
+      "VERIFY": "Подтвердить",
+      "VERIFYING": "Подтверждение..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {
@@ -91,7 +113,9 @@
     },
     "ASSIGNEE": {
       "LABELS": {
-        "SEARCH_LABELS": "Поиск меток"
+        "SEARCH_LABELS": "Поиск меток",
+        "TITLE": "Метки",
+        "ADD": "Добавить"
       },
       "AGENTS": {
         "SEARCH_AGENT": "Поиск агентов"
@@ -141,7 +165,8 @@
     "EMAIL_HEAD": {
       "TO": "Кому",
       "CC": "Cc",
-      "BCC": "Bcc"
+      "BCC": "Bcc",
+      "EMAILS_PLACEHOLDER": "Email через запятую"
     },
     "SELF_ASSIGN": "Назначить мне",
     "UN_ASSIGN": "Отменить беседу",
@@ -216,8 +241,13 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "Копировать",
       "REPLY": "Ответить",
-      "DELETE_MESSAGE": "Удалить сообщение"
+      "DELETE_MESSAGE": "Удалить сообщение",
+      "TRANSLATE": "Перевести"
     },
+    "TRANSLATE_SUCCESS": "Сообщение переведено",
+    "TRANSLATE_ERROR": "Не удалось перевести сообщение",
+    "VIEW_ORIGINAL": "Показать оригинал",
+    "VIEW_TRANSLATED": "Показать перевод",
     "EMAIL_HEADER": {
       "FROM": "От",
       "TO": "Кому",
@@ -239,6 +269,12 @@
       "PRIORITY": {
         "EMPTY": "Приоритет не добавлен",
         "EDIT": "Редактировать"
+      },
+      "QUICK_ACTIONS": {
+        "OPEN": "Открыть",
+        "PENDING": "Ожидание",
+        "SNOOZE": "Отложить",
+        "RESOLVE": "Завершить"
       }
     }
   },
@@ -278,7 +314,7 @@
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Уведомления",
-    "INBOX": "Электронная почта",
+    "INBOX": "Входящие",
     "EMPTY": "Уведомлений пока нет.",
     "EMPTY_MORE_TEXT": "Как только вы начнете получать уведомления, они появятся здесь.",
     "ALL_NOTIFICATION_LOADED": "Все уведомления загружены",
@@ -454,5 +490,39 @@
     "EXECUTION_SUCCESS": "Макрос успешно выполнен",
     "EXECUTION_ERROR": "Выполнение макроса не удалось",
     "NO_MACROS": "Макросы не найдены"
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Введите 2 или более символов для поиска",
+    "HINT": "Поиск по ID диалога, email, номеру телефона, сообщениям — для более точных результатов.",
+    "ALL_RESULTS": "Все результаты",
+    "RECENT_SEARCHES": "Недавние запросы",
+    "CLEAR_ALL": "Очистить всё",
+    "VIEW_MORE": "Посмотреть больше",
+    "TAP_TO_RETRY": "Нажмите, чтобы повторить",
+    "NO_RESULTS": "По запросу «{{searchQuery}}» ничего не найдено в разделе «{{sectionLabel}}»",
+    "ERROR_CANCELLED": "Не удалось загрузить результаты.",
+    "ERROR_GENERIC": "Что-то пошло не так. Попробуйте ещё раз.",
+    "SECTIONS": {
+      "CONTACTS": "Контакты",
+      "CONVERSATIONS": "Диалоги",
+      "MESSAGES": "Сообщения"
+    }
+  },
+  "COPILOT": {
+    "IMPROVE_REPLY": "Улучшить ответ",
+    "CHANGE_TONE": "Изменить тон",
+    "FIX_GRAMMAR": "Исправить грамматику",
+    "SUGGEST_REPLY": "Предложить ответ",
+    "SUMMARIZE": "Резюмировать диалог",
+    "THINKING": "Copilot думает",
+    "FOLLOW_UP_PLACEHOLDER": "Отправьте дополнительный запрос или уточнение",
+    "SELECT_TONE": "Выберите тон",
+    "TONE_PROFESSIONAL": "Профессиональный",
+    "TONE_FRIENDLY": "Дружелюбный",
+    "TONE_STRAIGHTFORWARD": "Прямой",
+    "TONE_CASUAL": "Непринуждённый",
+    "TONE_CONFIDENT": "Уверенный",
+    "GENERATION_FAILED": "Не удалось сгенерировать текст. Попробуйте ещё раз.",
+    "FOLLOW_UP_FAILED": "Не удалось отправить уточнение. Попробуйте ещё раз."
   }
 }

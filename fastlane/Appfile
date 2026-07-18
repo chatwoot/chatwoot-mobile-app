@@ -1,0 +1,3 @@
+app_identifier('ru.conomni.app')
+# Аутентификация — App Store Connect API key (см. Fastfile), не Apple ID.
+team_id(ENV['APPSTORE_TEAM_ID'])

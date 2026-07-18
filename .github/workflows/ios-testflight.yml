@@ -1,0 +1,81 @@
+# [conomni] m7: сборка iOS на облачном macOS-раннере — Mac у нас нет.
+# Репозиторий публичный, поэтому macOS-минуты GitHub Actions бесплатны
+# (в conv42 ради этого приходилось временно открывать приватный репо, здесь не нужно).
+#
+# Запуск только вручную: сборка тратит ~30-40 минут раннера и заливает билд в TestFlight.
+name: iOS TestFlight
+
+on:
+  workflow_dispatch:
+    inputs:
+      lane:
+        description: 'fastlane lane: beta (сборка+TestFlight) или bootstrap (создать запись приложения)'
+        required: true
+        default: 'beta'
+        type: choice
+        options: [beta, bootstrap]
+
+jobs:
+  ios:
+    runs-on: macos-15
+    env:
+      APPSTORE_KEY_ID: ${{ secrets.APPSTORE_KEY_ID }}
+      APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+      APPSTORE_TEAM_ID: ${{ secrets.APPSTORE_TEAM_ID }}
+      APPLE_DIST_CERT_PASSWORD: ${{ secrets.APPLE_DIST_CERT_PASSWORD }}
+      # app.config.ts читает эти пути на этапе prebuild
+      EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE: ./firebase/GoogleService-Info.plist
+      EXPO_PUBLIC_MINIMUM_CHATWOOT_VERSION: '4.1.0'
+      # Xcode + SwiftPM: `xcodebuild -showBuildSettings` бывает медленным,
+      # дефолтный таймаут fastlane (3с×4) флачит. Поднимаем (грабля conv42).
+      FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: '180'
+      FASTLANE_XCODEBUILD_SETTINGS_RETRIES: '6'
+    steps:
+      - uses: actions/checkout@v4
+
+      # Apple требует сборку свежим SDK для приёма в App Store Connect;
+      # дефолтный Xcode раннера бывает старее.
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Секретные файлы приезжают из base64-секретов: в git их нет (см. .gitignore).
+      - name: Разложить секреты
+        run: |
+          mkdir -p firebase
+          echo "${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}" | base64 -d > firebase/GoogleService-Info.plist
+          echo "ASC_KEY_PATH=$RUNNER_TEMP/AuthKey_${APPSTORE_KEY_ID}.p8" >> "$GITHUB_ENV"
+          echo "DIST_CERT_PATH=$RUNNER_TEMP/dist.p12" >> "$GITHUB_ENV"
+          echo "${{ secrets.APPSTORE_API_KEY_P8 }}" | base64 -d > "$RUNNER_TEMP/AuthKey_${APPSTORE_KEY_ID}.p8"
+          echo "${{ secrets.APPLE_DIST_CERT_P12 }}" | base64 -d > "$RUNNER_TEMP/dist.p12"
+
+      - name: Prebuild (генерация ios/)
+        if: inputs.lane == 'beta'
+        run: npx expo prebuild -p ios --clean
+
+      - name: CocoaPods
+        if: inputs.lane == 'beta'
+        run: cd ios && pod install
+
+      - name: fastlane ${{ inputs.lane }}
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
+        # fastlane предустановлен на macOS-раннерах GitHub — Gemfile не заводим.
+        run: fastlane ios ${{ inputs.lane }}
+
+      - uses: actions/upload-artifact@v4
+        if: always() && inputs.lane == 'beta'
+        with:
+          name: conomni-ios-ipa
+          path: build/ios-ipa/*.ipa
+          if-no-files-found: warn

@@ -1,0 +1,112 @@
+# [conomni] m7: подписанная сборка iOS + заливка в TestFlight.
+#
+# Лежит в КОРНЕ репозитория, а не в ios/: каталог ios/ генерируется `expo prebuild`
+# (CNG) и в .gitignore — всё, что положить внутрь, теряется при каждой пересборке.
+# Поэтому fastlane запускается из корня, а пути к проекту указаны явно (ios/...).
+#
+# Аутентификация — App Store Connect API key (.p8 через ASC_KEY_PATH), без Apple ID и 2FA.
+# Подпись РУЧНАЯ: готовый distribution-сертификат (.p12) + профиль App Store из sigh.
+# Ключи общие с conv42 — они уровня команды Apple, а не приложения (Bitwarden
+# «conv42-appstore-api-key»: AuthKey_4AHN759DCR.p8, dist.p12, AuthKey_LUGRLBXZ4T.p8 для APNs).
+default_platform(:ios)
+
+APP_ID = 'ru.conomni.app'
+XCODEPROJ = 'ios/ConOmni.xcodeproj'
+WORKSPACE = 'ios/ConOmni.xcworkspace'
+SCHEME = 'ConOmni'
+
+def asc_api_key
+  app_store_connect_api_key(
+    key_id: ENV['APPSTORE_KEY_ID'],
+    issuer_id: ENV['APPSTORE_ISSUER_ID'],
+    key_filepath: ENV['ASC_KEY_PATH'],
+    in_house: false,
+  )
+end
+
+platform :ios do
+  desc 'Один раз: зарегистрировать bundle id и создать запись приложения в App Store Connect'
+  lane :bootstrap do
+    produce(
+      api_key: asc_api_key,
+      app_identifier: APP_ID,
+      app_name: 'ConOmni',
+      language: 'Russian',
+      app_version: '1.0.0',
+      sku: 'conomni-mobile-1',
+      team_id: ENV['APPSTORE_TEAM_ID'],
+      enable_services: { push_notification: 'on' },
+    )
+  end
+
+  desc 'Собрать подписанный .ipa и залить в TestFlight'
+  lane :beta do
+    setup_ci
+
+    team = ENV['APPSTORE_TEAM_ID']
+    api_key = asc_api_key
+
+    # Номер сборки должен расти при каждой заливке — берём номер прогона CI.
+    increment_build_number(
+      xcodeproj: XCODEPROJ,
+      build_number: ENV['BUILD_NUMBER'] || '1',
+    )
+
+    # Готовый distribution-сертификат: НЕ генерим на раннере, иначе упрёмся
+    # в лимит сертификатов Apple (грабля conv42).
+    import_certificate(
+      certificate_path: ENV['DIST_CERT_PATH'],
+      certificate_password: ENV['APPLE_DIST_CERT_PASSWORD'],
+      keychain_name: ENV['MATCH_KEYCHAIN_NAME'],
+      keychain_password: ENV['MATCH_KEYCHAIN_PASSWORD'],
+    )
+
+    # Профиль App Store (без списка устройств, в отличие от Development).
+    profile_name = "#{APP_ID} AppStore"
+    sigh(
+      api_key: api_key,
+      app_identifier: APP_ID,
+      provisioning_name: profile_name,
+      force: true, # пересоздать с актуальными capability (Push)
+    )
+
+    # Ручную подпись ставим ТОЛЬКО на основной таргет: через xcargs она бы
+    # применилась и к Pods, а те профили не поддерживают.
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: XCODEPROJ,
+      team_id: team,
+      code_sign_identity: 'Apple Distribution',
+      profile_name: profile_name,
+      bundle_identifier: APP_ID,
+      targets: [SCHEME],
+    )
+
+    build_app(
+      workspace: WORKSPACE,
+      scheme: SCHEME,
+      export_method: 'app-store',
+      output_directory: 'build/ios-ipa',
+      output_name: 'conomni.ipa',
+      export_options: {
+        method: 'app-store',
+        teamID: team,
+        signingStyle: 'manual',
+        provisioningProfiles: { APP_ID => profile_name },
+      },
+    )
+
+    # Заливка требует существующей записи приложения (lane bootstrap). Если её нет —
+    # не валим прогон: .ipa уже подписан и уедет артефактом, заливка пройдёт при ре-ране.
+    begin
+      upload_to_testflight(
+        api_key: api_key,
+        skip_waiting_for_build_processing: true,
+        skip_submission: true,
+      )
+    rescue => e
+      UI.important("TestFlight upload не прошёл: #{e.message}")
+      UI.important("Вероятно, нет записи приложения в App Store Connect — прогнать lane bootstrap.")
+    end
+  end
+end

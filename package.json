@@ -186,7 +186,8 @@
       "react-native-ios-utilities@5.2.0": "patches/react-native-ios-utilities@5.2.0.patch",
       "react-native-audio-recorder-player@3.6.12": "patches/react-native-audio-recorder-player@3.6.12.patch",
       "@react-native-menu/menu@1.2.3": "patches/@react-native-menu__menu@1.2.3.patch",
-      "@react-native-clipboard/clipboard@1.16.2": "patches/@react-native-clipboard__clipboard@1.16.2.patch"
+      "@react-native-clipboard/clipboard@1.16.2": "patches/@react-native-clipboard__clipboard@1.16.2.patch",
+      "react-native-modal": "patches/react-native-modal.patch"
     },
     "overrides": {
       "form-data": "^4.0.4",

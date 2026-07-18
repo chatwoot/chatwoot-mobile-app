@@ -4,7 +4,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'ConOmni',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'conomni-mobile',
-    version: '4.7.0',
+    // [conomni] m6: своя версия релиза (апстрим здесь держал свою — 4.7.0)
+    version: '1.0.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
@@ -38,6 +39,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     android: {
       adaptiveIcon: { foregroundImage: './assets/adaptive-icon.png', backgroundColor: '#ffffff' },
       package: 'ru.conomni.app',
+      versionCode: 1,
       permissions: ['android.permission.CAMERA', 'android.permission.RECORD_AUDIO'],
       // Please use the relative path to the google-services.json file
       googleServicesFile: process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE,
@@ -92,6 +94,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         },
       ],
       './with-ffmpeg-pod.js',
+      './with-android-signing.js',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },
   };

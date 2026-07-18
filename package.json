@@ -11,6 +11,7 @@
     "test": "jest",
     "lint": "eslint .",
     "generate": "npx expo prebuild --clean",
+    "generate:android": "npx expo prebuild --clean -p android",
     "generate:soft": "npx expo prebuild",
     "run:ios": "npx expo run:ios -d",
     "run:android": "npx expo run:android -d",

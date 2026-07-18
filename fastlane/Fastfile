@@ -103,7 +103,7 @@ platform :ios do
       )
     rescue => e
       UI.important("TestFlight upload не прошёл: #{e.message}")
-      UI.important("Вероятно, нет записи приложения в App Store Connect — прогнать lane bootstrap.")
+      UI.important("Скорее всего нет записи приложения в App Store Connect — её создают руками ОДИН раз (см. комментарий выше). .ipa уже подписан и уехал артефактом; после создания записи хватит ре-рана.")
     end
   end
 end

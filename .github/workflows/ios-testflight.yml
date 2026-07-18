@@ -9,11 +9,11 @@ on:
   workflow_dispatch:
     inputs:
       lane:
-        description: 'fastlane lane: beta (сборка+TestFlight) или bootstrap (создать запись приложения)'
+        description: 'fastlane lane (сейчас только beta: сборка + заливка в TestFlight)'
         required: true
         default: 'beta'
         type: choice
-        options: [beta, bootstrap]
+        options: [beta]
 
 jobs:
   ios:

@@ -25,21 +25,16 @@ def asc_api_key
 end
 
 platform :ios do
-  desc 'Один раз: зарегистрировать bundle id и создать запись приложения в App Store Connect'
-  lane :bootstrap do
-    # produce НЕ принимает api_key параметром (в отличие от sigh/pilot): он ходит через
-    # Spaceship, которому токен ставит сам вызов app_store_connect_api_key (lane context).
-    asc_api_key
-    produce(
-      app_identifier: APP_ID,
-      app_name: 'ConOmni',
-      language: 'Russian',
-      app_version: '1.0.0',
-      sku: 'conomni-mobile-1',
-      team_id: ENV['APPSTORE_TEAM_ID'],
-      enable_services: { push_notification: 'on' },
-    )
-  end
+  # Лейна bootstrap здесь НЕТ, и это осознанно (проверено прогонами CI 2026-07-18):
+  #   * `produce` не умеет работать по App Store Connect API key — требует Apple ID
+  #     (`No value found for 'username'`), а с ним прилетает 2FA;
+  #   * создать ЗАПИСЬ приложения через ASC API нельзя в принципе — POST /v1/apps не
+  #     существует. В conv42 запись тоже заводили руками (см. его Fastfile).
+  # Что автоматизируется: регистрация bundle id + capability Push — сделано напрямую
+  # через ASC API (POST /v1/bundleIds, /v1/bundleIdCapabilities), ru.conomni.app = 8YLUJY7WFR.
+  # Что остаётся руками ОДИН раз: App Store Connect → «+» → New App → платформа iOS,
+  # имя ConOmni, язык русский, bundle ru.conomni.app, SKU любой. После этого `beta`
+  # заливает билды сама.
 
   desc 'Собрать подписанный .ipa и залить в TestFlight'
   lane :beta do

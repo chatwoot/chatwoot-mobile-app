@@ -110,8 +110,26 @@ export const settingsActions = {
 
         const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
         // https://github.com/invertase/react-native-firebase/issues/6893#issuecomment-1427998691
-        // await messaging().registerDeviceForRemoteMessages();
-        await sleep(1000);
+        // [conomni] m8: на iOS `getToken()` возвращает пусто, пока FCM не получил APNs-токен
+        // от системы. Апстрим ждал фиксированную секунду — это гонка: на холодном старте и
+        // на медленной сети токен приходит позже, устройство молча остаётся без пушей.
+        // В conv42 тот же класс бага дал 0 iOS-токенов при 5 android (память
+        // push-enabled-2026-07-18): лечится ожиданием APNs-токена с ретраями.
+        if (Platform.OS === 'ios') {
+          // Идемпотентно; RNFB обычно регистрирует сам, но при выключенной авторегистрации
+          // без этого вызова getAPNSToken() не наполнится никогда.
+          await messaging().registerDeviceForRemoteMessages();
+          for (let attempt = 0; attempt < 15; attempt += 1) {
+            // eslint-disable-next-line no-await-in-loop
+            if (await messaging().getAPNSToken()) {
+              break;
+            }
+            // eslint-disable-next-line no-await-in-loop
+            await sleep(1000);
+          }
+        } else {
+          await sleep(1000);
+        }
         const fcmToken = await messaging().getToken();
 
         const pushData: PushPayload = {

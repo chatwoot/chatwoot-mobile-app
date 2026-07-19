@@ -8,14 +8,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
-    newArchEnabled: true,
     scheme: 'chatwootapp',
-    splash: {
-      image: './assets/splash.png',
-      resizeMode: 'contain',
-      backgroundColor: '#ffffff',
-      enableFullScreenImage_legacy: true,
-    },
     ios: {
       supportsTablet: true,
       bundleIdentifier: 'com.chatwoot.app',
@@ -75,6 +68,17 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     owner: 'chatwoot',
     plugins: [
       'expo-font',
+      'expo-image',
+      'expo-status-bar',
+      [
+        'expo-splash-screen',
+        {
+          image: './assets/splash.png',
+          resizeMode: 'contain',
+          backgroundColor: '#ffffff',
+          enableFullScreenImage_legacy: true,
+        },
+      ],
       ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary'] }],
       [
         '@sentry/react-native',

@@ -1,7 +1,8 @@
 import React, { forwardRef, PropsWithChildren, useCallback, useRef } from 'react';
 import { Platform, Pressable, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { interpolate, runOnJS, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   BottomSheetBackdropProps,
@@ -78,7 +79,7 @@ export const MessageMenu = (props: PropsWithChildren<MessageMenuProps>) => {
   };
   const longPressGesture = Gesture.LongPress()
     .minDuration(500)
-    .onStart(() => runOnJS(openSheet)());
+    .onStart(() => scheduleOnRN(openSheet));
 
   const { bottom } = useSafeAreaInsets();
 

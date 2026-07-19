@@ -5,7 +5,6 @@ import Animated, {
   clamp,
   Extrapolation,
   interpolate,
-  runOnJS,
   SharedValue,
   useAnimatedReaction,
   useAnimatedStyle,
@@ -13,6 +12,7 @@ import Animated, {
   withSpring,
   WithSpringConfig,
 } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 
 import { tailwind } from '@/theme';
 
@@ -67,7 +67,7 @@ export const Slider = (props: SliderProps) => {
 
   const panGesture = Gesture.Pan()
     .onBegin(() => {
-      runOnJS(pauseAudio)();
+      scheduleOnRN(pauseAudio);
       sliderActive.value = withSpring(1, DefaultSpringConfig);
       context.value = { x: translationX.value };
     })
@@ -85,7 +85,7 @@ export const Slider = (props: SliderProps) => {
         [0, totalDuration.value],
         Extrapolation.CLAMP,
       );
-      runOnJS(manualSeekTo)(seekToValue);
+      scheduleOnRN(manualSeekTo, seekToValue);
     })
     .onFinalize(() => (sliderActive.value = withSpring(0, DefaultSpringConfig)));
 

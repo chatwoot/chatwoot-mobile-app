@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StatusBar } from 'react-native';
-import Animated, { runOnJS, SharedValue, useAnimatedScrollHandler } from 'react-native-reanimated';
+import Animated, { SharedValue, useAnimatedScrollHandler } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 
@@ -122,7 +123,7 @@ const InboxList = () => {
     onBeginDrag: () => {
       openedRowIndex.value = -1;
       if (!isFlashListReady) {
-        runOnJS(setFlashListReady)(true);
+        scheduleOnRN(setFlashListReady, true);
       }
     },
   });

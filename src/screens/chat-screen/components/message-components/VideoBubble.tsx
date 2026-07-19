@@ -1,13 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Platform, Pressable } from 'react-native';
 import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
-import {
-  AVPlaybackStatus,
-  ResizeMode,
-  Video,
-  VideoFullscreenUpdate,
-  VideoFullscreenUpdateEvent,
-} from 'expo-av';
+import { useVideoPlayer, VideoView, type VideoPlayerStatus } from 'expo-video';
 import { Image } from 'expo-image';
 import { tailwind } from '@/theme';
 import { Spinner } from '@/components-next/spinner';
@@ -22,61 +16,49 @@ type VideoPlayerProps = Pick<VideoBubbleProps, 'videoSrc'> & {
 
 export const VideoBubblePlayer = (props: VideoPlayerProps) => {
   const { videoSrc, playerEnabled = true } = props;
-  const video = React.useRef<Video>(null);
+  const videoRef = useRef<VideoView>(null);
   const [playVideo, setPlayVideo] = useState(false);
+  const [status, setStatus] = useState<VideoPlayerStatus>('loading');
 
-  const [videoLoading, setVideoLoading] = useState(true);
-
-  const [videoStatus, setVideoStatus] = React.useState<AVPlaybackStatus | null>(null);
-  const handlePlayPress = () => {
-    setPlayVideo(true);
-    video.current?.presentFullscreenPlayer();
-    video.current?.playAsync();
-  };
+  const player = useVideoPlayer({ uri: videoSrc }, instance => {
+    instance.loop = false;
+  });
 
   useEffect(() => {
-    if (videoStatus?.isLoaded) {
-      if (videoStatus?.didJustFinish) {
-        video.current?.playFromPositionAsync(0);
-        setPlayVideo(false);
-      }
-    }
-  }, [videoStatus]);
-
-  const handlePlaybackStatus = (status: AVPlaybackStatus) => {
-    setVideoStatus(status);
-  };
-
-  const handleOnFullScreenUpdate = (event: VideoFullscreenUpdateEvent) => {
-    if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_WILL_DISMISS) {
+    const statusSub = player.addListener('statusChange', ({ status: nextStatus }) => {
+      setStatus(nextStatus);
+    });
+    const endSub = player.addListener('playToEnd', () => {
+      player.currentTime = 0;
       setPlayVideo(false);
-    }
+    });
+    return () => {
+      statusSub.remove();
+      endSub.remove();
+    };
+  }, [player]);
+
+  // Loader shown over the thumbnail until the first frame is ready.
+  const videoLoading = status === 'loading' || status === 'idle';
+
+  const handlePlayPress = async () => {
+    setPlayVideo(true);
+    player.play();
+    await videoRef.current?.enterFullscreen();
   };
-
-  // To have a loader while the Video is loaded, and
-  // thumbnail is shown
-  const handleOnLoadStart = useCallback(() => {
-    setVideoLoading(true);
-  }, []);
-
-  const handleOnLoad = useCallback(() => {
-    setVideoLoading(false);
-  }, []);
 
   return (
     <React.Fragment>
-      <Video
+      <VideoView
         style={tailwind.style('w-full ios:h-full aspect-video')}
-        ref={video}
-        source={{
-          uri: videoSrc,
+        ref={videoRef}
+        player={player}
+        contentFit={Platform.OS === 'android' ? 'contain' : 'cover'}
+        nativeControls
+        onFullscreenExit={() => {
+          player.pause();
+          setPlayVideo(false);
         }}
-        shouldPlay={playVideo}
-        resizeMode={Platform.OS === 'android' ? ResizeMode.CONTAIN : ResizeMode.COVER}
-        onLoadStart={handleOnLoadStart}
-        onLoad={handleOnLoad}
-        onPlaybackStatusUpdate={handlePlaybackStatus}
-        onFullscreenUpdate={handleOnFullScreenUpdate}
       />
       {videoLoading ? (
         <Animated.View style={tailwind.style('absolute inset-0 flex items-center justify-center')}>

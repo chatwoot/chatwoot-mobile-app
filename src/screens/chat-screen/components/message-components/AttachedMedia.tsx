@@ -8,7 +8,7 @@ import Animated, {
   SlideOutDown,
 } from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
-import { ResizeMode, Video } from 'expo-av';
+import { useVideoPlayer, VideoView } from 'expo-video';
 import { Image } from 'expo-image';
 
 import { AttachFileIcon } from '@/svg-icons';
@@ -82,7 +82,7 @@ const AttachedImage = (props: AttachedImageProps) => {
         <Image source={{ uri: item.uri }} style={tailwind.style('h-full w-full rounded-lg')} />
         <Animated.View
           style={[
-            StyleSheet.absoluteFillObject,
+            StyleSheet.absoluteFill,
             tailwind.style('border-[1px] rounded-lg border-[#0000000F] z-50'),
           ]}
         />
@@ -111,6 +111,10 @@ const AttachedVideo = (props: AttachedVideoProps) => {
 
   const { animatedStyle, handlers } = useScaleAnimation();
 
+  const player = useVideoPlayer(item.uri ? { uri: item.uri } : null, instance => {
+    instance.loop = false;
+  });
+
   const handleOnDelete = () => {
     dispatch(deleteAttachment(index));
   };
@@ -127,16 +131,16 @@ const AttachedVideo = (props: AttachedVideoProps) => {
           index === attachmentsLength - 1 ? 'mr-4' : '',
         )}>
         {item.uri ? (
-          <Video
-            shouldPlay={false}
-            resizeMode={ResizeMode.COVER}
-            source={{ uri: item.uri }}
+          <VideoView
+            player={player}
+            contentFit="cover"
+            nativeControls={false}
             style={[tailwind.style('h-full w-full rounded-lg')]}
           />
         ) : null}
         <Animated.View
           style={[
-            StyleSheet.absoluteFillObject,
+            StyleSheet.absoluteFill,
             tailwind.style('border-[1px] rounded-lg border-[#0000000F] z-50'),
           ]}
         />
@@ -153,7 +157,7 @@ const AttachedVideo = (props: AttachedVideoProps) => {
         </Animated.View>
         <Image
           style={[
-            StyleSheet.absoluteFillObject,
+            StyleSheet.absoluteFill,
             tailwind.style('rounded-lg'),
             { transform: [{ rotateY: '180deg' }] },
           ]}
@@ -215,7 +219,7 @@ const AttachedFile = (props: AttachedFileProps) => {
         </Animated.View>
         <Animated.View
           style={[
-            StyleSheet.absoluteFillObject,
+            StyleSheet.absoluteFill,
             tailwind.style('border-[1px] rounded-lg border-[#0000000F] z-50'),
           ]}
         />

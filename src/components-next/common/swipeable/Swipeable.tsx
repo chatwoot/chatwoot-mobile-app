@@ -160,8 +160,10 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
 
   const isTapped = useSharedValue(0);
 
-  const hasLeftElement = useDerivedValue(() => leftElement !== undefined);
-  const hasRightElement = useDerivedValue(() => rightElement !== undefined);
+  // Plain booleans (not derived values): capturing the React element inside a
+  // worklet closure throws "Cannot copy value of type FiberNode" on Reanimated 4.
+  const hasLeftElement = leftElement !== undefined;
+  const hasRightElement = rightElement !== undefined;
 
   const closeRow = () => {
     'worklet';
@@ -260,13 +262,13 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
 
       // Clamped Value > 0 - for Left Element
       // Clamped Value < 0 - for Right Element
-      if (clampedVal > 0 && hasLeftElement.value) {
+      if (clampedVal > 0 && hasLeftElement) {
         animStatePos.value = withSpring(clampedVal, {
           damping: dampingValue,
           stiffness: stiffnessValue,
         });
       }
-      if (clampedVal < 0 && hasRightElement.value) {
+      if (clampedVal < 0 && hasRightElement) {
         animStatePos.value = withSpring(clampedVal, {
           damping: dampingValue,
           stiffness: stiffnessValue,
@@ -278,7 +280,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
        * The below two conditions takes care of triggering the over swipe
        * when `triggerOverswipeOnFlick` is set to true
        */
-      if (hasLeftElement.value && evt.translationX > maxSnapPointRight && triggerOverswipeOnFlick) {
+      if (hasLeftElement && evt.translationX > maxSnapPointRight && triggerOverswipeOnFlick) {
         // The case where you are swiping towards right and the left element is present
         handleOnLeftOverswiped && runOnJS(handleOnLeftOverswiped)();
         if (!dragOverSwiped.value) {
@@ -298,7 +300,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
         );
         return;
       }
-      if (hasRightElement.value && evt.translationX < maxSnapPointLeft && triggerOverswipeOnFlick) {
+      if (hasRightElement && evt.translationX < maxSnapPointLeft && triggerOverswipeOnFlick) {
         // The case where you are swiping towards left and the right element is present
         handleOnRightOverswiped && runOnJS(handleOnRightOverswiped)();
         if (!dragOverSwiped.value) {
@@ -320,11 +322,11 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
       }
       if (dragOverSwiped.value) {
         // Pane is overswiped and the direction is towards right and it has left element
-        if (hasLeftElement.value && swipingRight.value) {
+        if (hasLeftElement && swipingRight.value) {
           handleOnLeftOverswiped && runOnJS(handleOnLeftOverswiped)();
         }
         // Pane is overswiped and the direction is towards left and it has right element
-        if (hasRightElement.value && swipingLeft.value) {
+        if (hasRightElement && swipingLeft.value) {
           handleOnRightOverswiped && runOnJS(handleOnRightOverswiped)();
         }
         animStatePos.value = withSpring(
@@ -349,8 +351,8 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
         // Conditional Snap points so that we dont open the
         const allSnapPoints = [
           0,
-          !hasLeftElement.value ? 0 : isLeftOpen ? 0 : SNAP_POINT,
-          !hasRightElement.value ? 0 : isRightOpen ? 0 : -SNAP_POINT,
+          !hasLeftElement ? 0 : isLeftOpen ? 0 : SNAP_POINT,
+          !hasRightElement ? 0 : isRightOpen ? 0 : -SNAP_POINT,
         ];
 
         const closestSnapPoint = allSnapPoints.reduce((acc, cur) => {
@@ -450,7 +452,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
       <AnimatedPressable
         onPress={handleOnPressLeft}
         style={[
-          StyleSheet.absoluteFillObject,
+          StyleSheet.absoluteFill,
           tailwind.style('flex justify-center items-start', leftElementBgColor),
           leftStyle,
         ]}>
@@ -461,7 +463,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
       <AnimatedPressable
         onPress={handleOnPressRight}
         style={[
-          StyleSheet.absoluteFillObject,
+          StyleSheet.absoluteFill,
           tailwind.style('flex justify-center items-end', rightElementBgColor),
           rightStyle,
         ]}>

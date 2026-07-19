@@ -5,7 +5,7 @@ const ANIMATION_CONFIGS_IOS = {
   damping: 500,
   stiffness: 1000,
   mass: 3,
-  overshootClamping: true,
+  overshootClamping: false,
   restDisplacementThreshold: 10,
   restSpeedThreshold: 10,
 };

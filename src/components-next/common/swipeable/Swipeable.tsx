@@ -477,11 +477,12 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
             Platform.OS === 'ios'
               ? SlideInDown.delay(index * 20)
                   .springify()
-                  .damping(20)
-                  .stiffness(120)
+                  .mass(1)
+                  .damping(15)
+                  .stiffness(70)
               : FadeIn
           }
-          layout={LinearTransition.springify().damping(28).stiffness(200)}
+          layout={LinearTransition.springify().mass(1).damping(21).stiffness(115)}
           style={[tailwind.style('flex-1 z-10', `w-[${WIDTH}px]`), overlayStyle, tappedCellStyle]}>
           {children}
         </AnimatedNativeView>

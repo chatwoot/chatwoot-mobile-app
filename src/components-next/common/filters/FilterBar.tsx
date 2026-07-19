@@ -47,7 +47,7 @@ export const FilterBar = ({ allFilters, selectedFilters, onFilterPress }: Filter
         if (value.type === 'inbox_id') {
           return (
             <Animated.View
-              layout={LinearTransition.springify().stiffness(200).damping(24)}
+              layout={LinearTransition.springify().mass(1).stiffness(115).damping(18)}
               key={index}
               style={tailwind.style('pr-2')}>
               <FilterButton
@@ -59,7 +59,7 @@ export const FilterBar = ({ allFilters, selectedFilters, onFilterPress }: Filter
         }
         return (
           <Animated.View
-            layout={LinearTransition.springify().stiffness(200).damping(24)}
+            layout={LinearTransition.springify().mass(1).stiffness(115).damping(18)}
             key={index}
             style={tailwind.style('pr-2')}>
             <FilterButton

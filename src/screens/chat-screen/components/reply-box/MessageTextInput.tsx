@@ -221,12 +221,12 @@ export const MessageTextInput = ({
   return (
     <LayoutAnimationConfig skipEntering={true}>
       <Animated.View
-        layout={LinearTransition.springify().damping(20).stiffness(120)}
+        layout={LinearTransition.springify().mass(1).damping(15).stiffness(70)}
         style={[tailwind.style('flex-1 my-0.5')]}>
         <MentionInput
           // @ts-expect-error MentionInput ref typing issue with forwardRef
           ref={textInputRef}
-          layout={LinearTransition.springify().damping(20).stiffness(120)}
+          layout={LinearTransition.springify().mass(1).damping(15).stiffness(70)}
           onChange={onChangeText}
           partTypes={[
             {

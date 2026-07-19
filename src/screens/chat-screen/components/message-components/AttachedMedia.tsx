@@ -70,8 +70,8 @@ const AttachedImage = (props: AttachedImageProps) => {
 
   return (
     <Animated.View
-      entering={SlideInDown.springify().damping(20).stiffness(120)}
-      exiting={SlideOutDown.springify().damping(20).stiffness(120)}
+      entering={SlideInDown.springify().mass(1).damping(15).stiffness(70)}
+      exiting={SlideOutDown.springify().mass(1).damping(15).stiffness(70)}
       style={tailwind.style('pr-3 relative')}>
       <Animated.View
         layout={LinearTransition.springify()}
@@ -121,8 +121,8 @@ const AttachedVideo = (props: AttachedVideoProps) => {
 
   return (
     <Animated.View
-      entering={SlideInDown.springify().damping(20).stiffness(120)}
-      exiting={SlideOutDown.springify().damping(20).stiffness(120)}
+      entering={SlideInDown.springify().mass(1).damping(15).stiffness(70)}
+      exiting={SlideOutDown.springify().mass(1).damping(15).stiffness(70)}
       style={tailwind.style('pr-3 relative')}>
       <Animated.View
         layout={LinearTransition.springify()}
@@ -195,8 +195,8 @@ const AttachedFile = (props: AttachedFileProps) => {
 
   return (
     <Animated.View
-      entering={SlideInDown.springify().damping(20).stiffness(120)}
-      exiting={SlideOutDown.springify().damping(20).stiffness(120)}
+      entering={SlideInDown.springify().mass(1).damping(15).stiffness(70)}
+      exiting={SlideOutDown.springify().mass(1).damping(15).stiffness(70)}
       style={tailwind.style('pr-3 relative')}>
       <Animated.View
         layout={LinearTransition.springify()}
@@ -255,7 +255,7 @@ export const AttachedMedia = () => {
   return attachments.length > 0 ? (
     <Animated.View style={tailwind.style('py-4')}>
       <Animated.FlatList
-        itemLayoutAnimation={LinearTransition.springify().damping(25).stiffness(200)}
+        itemLayoutAnimation={LinearTransition.springify().mass(1).damping(19).stiffness(115)}
         entering={SlideInUp}
         exiting={SlideOutDown}
         style={tailwind.style('px-4 pr-12')}

@@ -1,11 +1,11 @@
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
 import { FlashListRef } from '@shopify/flash-list';
 
 import { tailwind } from '@/theme';
 import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
+import { FadeInView } from '../shared/FadeInView';
 import { SearchEmptyState } from '../shared/SearchEmptyState';
 import { SearchListItems } from '../shared/SearchListItems';
 import i18n from 'i18n';
@@ -37,11 +37,9 @@ export function SearchResultsList({
 
   if (!section || (isLoading && items.length === 0)) {
     return (
-      <Animated.View
-        entering={FadeIn.duration(200)}
-        style={tailwind.style('flex-1 items-center justify-center')}>
+      <FadeInView style={tailwind.style('flex-1 items-center justify-center')}>
         <ActivityIndicator />
-      </Animated.View>
+      </FadeInView>
     );
   }
 

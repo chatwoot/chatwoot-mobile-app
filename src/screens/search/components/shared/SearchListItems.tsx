@@ -1,11 +1,12 @@
 import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import { FlashList, FlashListRef } from '@shopify/flash-list';
 
 import { tailwind } from '@/theme';
 import { TAB_BAR_HEIGHT } from '@/constants';
 import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
+import { FadeInView } from './FadeInView';
 
 const AnimatedFlashList = Animated.createAnimatedComponent(
   FlashList<SearchItem>,
@@ -51,11 +52,9 @@ export function SearchListItems({
           contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}
           ListFooterComponent={
             isLoadingMore ? (
-              <Animated.View
-                entering={FadeIn.duration(200)}
-                style={tailwind.style('py-4 items-center')}>
+              <FadeInView style={tailwind.style('py-4 items-center')}>
                 <ActivityIndicator size="small" />
-              </Animated.View>
+              </FadeInView>
             ) : null
           }
         />
@@ -68,11 +67,9 @@ export function SearchListItems({
       {items.map((item, index) => {
         const isLast = index === items.length - 1;
         return (
-          <Animated.View
-            key={`${sectionId}-${getItemId(item)}-${index}`}
-            entering={FadeIn.duration(200).delay(index * 30)}>
+          <FadeInView key={`${sectionId}-${getItemId(item)}-${index}`} delay={index * 30}>
             {renderItem(item, sectionId, isLast)}
-          </Animated.View>
+          </FadeInView>
         );
       })}
     </>

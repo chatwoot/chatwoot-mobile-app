@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 
 import { Icon } from '@/components-next/common';
 import { tailwind } from '@/theme';
@@ -55,81 +55,76 @@ export const SearchResultMessageItem = ({
   const { animatedStyle, handlers } = useScaleAnimation();
 
   return (
-    <Animated.View entering={FadeIn.duration(200)}>
-      <Pressable
-        onPress={onPress}
-        style={({ pressed }) => [
-          tailwind.style(
-            'px-4 py-3',
-            !isLast && 'border-b border-b-blackA-A3',
-            pressed ? 'bg-gray-50' : '',
-          ),
-        ]}
-        {...handlers}>
-        <Animated.View style={animatedStyle}>
-          <Animated.View style={tailwind.style('flex-row items-center justify-between mb-2')}>
-            <Animated.View style={tailwind.style('flex-row items-center gap-3 flex-1')}>
-              <ConversationId id={conversationId} />
-              {inboxName && (
-                <>
-                  <Animated.View style={tailwind.style('w-px h-3 bg-gray-300')} />
-                  <Animated.View style={tailwind.style('flex-row items-center gap-1.5')}>
-                    {inbox && channelType && (
-                      <Animated.View
-                        style={tailwind.style(
-                          'h-4 w-4 rounded-full bg-gray-100 items-center justify-center',
-                        )}>
-                        <Icon
-                          icon={getChannelIcon(channelType, medium, additionalType)}
-                          size={10}
-                        />
-                      </Animated.View>
-                    )}
-                    <Animated.Text
-                      numberOfLines={1}
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        tailwind.style(
+          'px-4 py-3',
+          !isLast && 'border-b border-b-blackA-A3',
+          pressed ? 'bg-gray-50' : '',
+        ),
+      ]}
+      {...handlers}>
+      <Animated.View style={animatedStyle}>
+        <Animated.View style={tailwind.style('flex-row items-center justify-between mb-2')}>
+          <Animated.View style={tailwind.style('flex-row items-center gap-3 flex-1')}>
+            <ConversationId id={conversationId} />
+            {inboxName && (
+              <>
+                <Animated.View style={tailwind.style('w-px h-3 bg-gray-300')} />
+                <Animated.View style={tailwind.style('flex-row items-center gap-1.5')}>
+                  {inbox && channelType && (
+                    <Animated.View
                       style={tailwind.style(
-                        'text-sm font-inter-420-20 leading-[17px] text-gray-950 flex-shrink',
+                        'h-4 w-4 rounded-full bg-gray-100 items-center justify-center',
                       )}>
-                      {inboxName}
-                    </Animated.Text>
-                  </Animated.View>
-                </>
-              )}
-              {message.private && (
-                <>
-                  <Animated.View style={tailwind.style('w-px h-3 bg-gray-300')} />
-                  <Animated.View style={tailwind.style('flex-row items-center gap-1.5')}>
-                    <Icon icon={<LockIcon fill={tailwind.color('text-amber-700')} />} size={14} />
-                    <Animated.Text
-                      numberOfLines={1}
-                      style={tailwind.style(
-                        'text-sm font-inter-420-20 leading-[17px] text-amber-700',
-                      )}>
-                      Private note
-                    </Animated.Text>
-                  </Animated.View>
-                </>
-              )}
-            </Animated.View>
-            {createdAt && <LastActivityTime timestamp={createdAt} />}
+                      <Icon icon={getChannelIcon(channelType, medium, additionalType)} size={10} />
+                    </Animated.View>
+                  )}
+                  <Animated.Text
+                    numberOfLines={1}
+                    style={tailwind.style(
+                      'text-sm font-inter-420-20 leading-[17px] text-gray-950 flex-shrink',
+                    )}>
+                    {inboxName}
+                  </Animated.Text>
+                </Animated.View>
+              </>
+            )}
+            {message.private && (
+              <>
+                <Animated.View style={tailwind.style('w-px h-3 bg-gray-300')} />
+                <Animated.View style={tailwind.style('flex-row items-center gap-1.5')}>
+                  <Icon icon={<LockIcon fill={tailwind.color('text-amber-700')} />} size={14} />
+                  <Animated.Text
+                    numberOfLines={1}
+                    style={tailwind.style(
+                      'text-sm font-inter-420-20 leading-[17px] text-amber-700',
+                    )}>
+                    Private note
+                  </Animated.Text>
+                </Animated.View>
+              </>
+            )}
           </Animated.View>
-          {messageContent && (
-            <Animated.View style={tailwind.style('mt-1')}>
-              <Animated.Text numberOfLines={2}>
-                <Animated.Text
-                  style={tailwind.style('text-sm font-inter-420-20 leading-[17px] text-gray-600')}>
-                  {senderName} wrote:{' '}
-                </Animated.Text>
-                <HighlightedText
-                  text={messageContent}
-                  searchQuery={searchQuery}
-                  style={tailwind.style('text-sm font-inter-420-20 leading-[17px] text-gray-800')}
-                />
-              </Animated.Text>
-            </Animated.View>
-          )}
+          {createdAt && <LastActivityTime timestamp={createdAt} />}
         </Animated.View>
-      </Pressable>
-    </Animated.View>
+        {messageContent && (
+          <Animated.View style={tailwind.style('mt-1')}>
+            <Animated.Text numberOfLines={2}>
+              <Animated.Text
+                style={tailwind.style('text-sm font-inter-420-20 leading-[17px] text-gray-600')}>
+                {senderName} wrote:{' '}
+              </Animated.Text>
+              <HighlightedText
+                text={messageContent}
+                searchQuery={searchQuery}
+                style={tailwind.style('text-sm font-inter-420-20 leading-[17px] text-gray-800')}
+              />
+            </Animated.Text>
+          </Animated.View>
+        )}
+      </Animated.View>
+    </Pressable>
   );
 };

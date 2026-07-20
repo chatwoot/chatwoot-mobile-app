@@ -331,13 +331,13 @@ export function useSearchScreen() {
   );
 
   const getItemsToShow = useCallback(
-    (items: SearchItem[], sectionId: SearchSectionType) => {
+    (items: SearchItem[], _sectionId: SearchSectionType) => {
       if (activeTab === 'all') {
-        return expandedSections[sectionId] ? items.slice(0, INITIAL_ITEMS_TO_SHOW) : [];
+        return items.slice(0, INITIAL_ITEMS_TO_SHOW);
       }
       return items;
     },
-    [activeTab, expandedSections],
+    [activeTab],
   );
 
   const showRecentSearches = useMemo(() => {
